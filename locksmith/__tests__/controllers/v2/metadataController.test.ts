@@ -444,19 +444,23 @@ describe('Metadata v2 endpoints for locksmith', () => {
     expect(lockAddressMetadataResponse.status).toBe(400)
   })
 
-  it('Does return 403 when metadata requested userAddress and loggedIn are different', async () => {
+  it('Should not return metadata when requested userAddress and loggedIn are different', async () => {
     expect.assertions(1)
 
     const walletAddress = await ethers.Wallet.createRandom().getAddress()
 
-    const { address, loginResponse } = await loginRandomUser(app)
+    const { loginResponse } = await loginRandomUser(app)
 
     const getUserMetadataResponse = await request(app)
       .get(`/v2/api/metadata/100/locks/${lockAddress}/users/${walletAddress}`)
-      
       .set('Authorization', `Bearer ${loginResponse.body.accessToken}`)
       .send()
 
-    expect(getUserMetadataResponse.status).toBe(403)
+    expect(getUserMetadataResponse.body).toStrictEqual({
+      metadata: {},
+      userAddress: walletAddress,
+      lockAddress,
+      network: 100,
+    })
   })
 })

@@ -251,20 +251,20 @@ export const updateUsersMetadata: RequestHandler = async (
 export const readUserMetadata: RequestHandler = async (request, response) => {
   const userAddress = Normalizer.ethereumAddress(request.params.userAddress)
   const tokenAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+  const network = Number(request.params.network)
   const loggedInUser = request.user!.walletAddress
   const normalisedLoggedInAddress = Normalizer.ethereumAddress(loggedInUser)
 
   const user = await getMetadata(
     tokenAddress,
     userAddress,
-    normalisedLoggedInAddress === userAddress /* includeProtected */,
-    true /* includeNetwork */
+    normalisedLoggedInAddress === userAddress /* includeProtected */
   )
 
   return response.status(200).send({
     metadata: user?.userMetadata || {},
     userAddress,
     lockAddress: tokenAddress,
-    network: user?.network,
+    network,
   })
 }
