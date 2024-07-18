@@ -6,6 +6,7 @@ import { SetKickbackContractAsLockManager } from './Components/Kickback/SetKickb
 import { SaveRootForRefunds } from './Components/Kickback/SaveRootForRefunds'
 import { useGetApprovedRefunds } from '~/hooks/useGetApprovedRefunds'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { useAttendeeRefund } from '~/hooks/useAttendeeRefund'
 
 export interface StakeRefundProps {
   event: Event
@@ -20,6 +21,10 @@ export const StakeRefund = ({ event, checkoutConfig }: StakeRefundProps) => {
   const lockAddress = Object.keys(checkoutConfig.config.locks)[0]
   const network = (checkoutConfig.config.locks[lockAddress].network ||
     checkoutConfig.config.network)!
+
+  const { data: refundAmount } = useAttendeeRefund({
+    attendeeRefund: event.attendeeRefund,
+  })
 
   const approveRefundsMutation = useMutation(async () => {
     try {
@@ -57,7 +62,8 @@ export const StakeRefund = ({ event, checkoutConfig }: StakeRefundProps) => {
       <div>
         <p className="mb-4">
           At this point, {refundsToApprove.values.length} attendees have been
-          checked-in and could claim a refund, if you approve them.
+          checked-in and could claim a refund, if you approve them, they will be
+          able to claim {refundAmount}.
         </p>
         <ul className="flex flex-col gap-4">
           <li className="flex">

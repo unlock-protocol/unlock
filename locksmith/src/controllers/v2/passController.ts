@@ -31,7 +31,8 @@ export const generateGoogleWalletPass: RequestHandler = async (
     const keyId = request.params.keyId
 
     // Retrieve Google application credentials
-    const { client_email, private_key } = config.googleApplicationCredentials!
+    const { client_email, private_key } =
+      config.googleWalletApplicationCredentials!
 
     // Retrieve Google wallet issuer ID and class ID from the configuration
     const { googleWalletIssuerID, googleWalletClass } = config
