@@ -3,6 +3,7 @@ import QRCode from 'qrcode.react'
 import {
   generateAppleWalletPass,
   generateGoogleWalletPass,
+  Platform,
 } from '../../../services/passService'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import Image from 'next/image'
@@ -39,6 +40,7 @@ export const ApplePassModal = ({
 }
 
 interface AddToWalletProps {
+  platform: Platform
   as: React.ElementType
   network: number
   lockAddress: string
@@ -53,86 +55,54 @@ interface AddToWalletProps {
   className?: string
 }
 
-// Add to Apple wallet
-export const AddToAppleWallet = ({
+export const AddToPhoneWallet = ({
   as,
   lockAddress,
   tokenId,
   network,
   handlePassUrl,
+  platform,
   minimised,
   ...rest
 }: AddToWalletProps) => {
+  const walletConfig = {
+    [Platform.APPLE]: {
+      generatePass: generateAppleWalletPass,
+      imgSrc: `/images/illustrations/apple-wallet.svg`,
+      altText: 'Apple Wallet',
+      loadingMessage:
+        'Generating your Apple Wallet pass. This takes a few seconds.',
+    },
+    [Platform.GOOGLE]: {
+      generatePass: generateGoogleWalletPass,
+      imgSrc: `/images/illustrations/google-wallet.svg`,
+      altText: 'Google Wallet',
+      loadingMessage:
+        'Generating your Google Wallet pass. This takes a few seconds.',
+    },
+  }
+
+  const config = walletConfig[platform]
+
   const handleClick = async () => {
     const generate = async () => {
-      const passUrl = await generateAppleWalletPass(
-        lockAddress,
-        network,
-        tokenId
-      )
+      const passUrl = await config.generatePass(lockAddress, network, tokenId)
       if (passUrl) {
         handlePassUrl(passUrl)
       }
     }
 
     await ToastHelper.promise(generate(), {
-      loading: 'Generating your Apple Wallet pass. This takes a few seconds.',
+      loading: config.loadingMessage,
       success: 'Successfully generated!',
-      error: 'Failed to generate your Apple Wallet pass. Please try again.',
+      error: `Failed to generate your ${config.altText} pass. Please try again.`,
     })
   }
 
   return (
     <Box as={as} {...rest} onClick={handleClick}>
-      <Image
-        width="16"
-        height="16"
-        alt="Google Wallet"
-        src={`/images/illustrations/apple-wallet.svg`}
-      />
-      {!minimised && 'Add to my Apple Wallet'}
-    </Box>
-  )
-}
-
-// Add to Google wallet
-export const AddToGoogleWallet = ({
-  as,
-  lockAddress,
-  tokenId,
-  network,
-  handlePassUrl,
-  minimised,
-  ...rest
-}: AddToWalletProps) => {
-  const handleClick = async () => {
-    const generate = async () => {
-      const passUrl = await generateGoogleWalletPass(
-        lockAddress,
-        network,
-        tokenId
-      )
-      if (passUrl) {
-        handlePassUrl(passUrl)
-      }
-    }
-
-    await ToastHelper.promise(generate(), {
-      loading: 'Generating your Google Wallet pass. This takes a few seconds.',
-      success: 'Successfully generated!',
-      error: 'Failed to generate your Google Wallet pass. Please try again.',
-    })
-  }
-
-  return (
-    <Box as={as} {...rest} onClick={handleClick}>
-      <Image
-        width="16"
-        height="16"
-        alt="Google Wallet"
-        src={`/images/illustrations/google-wallet.svg`}
-      />
-      {!minimised && 'Add to my Google Wallet'}
+      <Image width="16" height="16" alt={config.altText} src={config.imgSrc} />
+      {!minimised && `Add to my ${config.altText}`}
     </Box>
   )
 }
