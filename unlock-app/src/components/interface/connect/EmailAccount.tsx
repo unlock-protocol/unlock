@@ -181,7 +181,6 @@ const SignIn = ({
 
 export interface SignWithGoogleProps {
   callbackUrl: string
-  checkoutService?: CheckoutService
   isSignUp: boolean
 }
 
