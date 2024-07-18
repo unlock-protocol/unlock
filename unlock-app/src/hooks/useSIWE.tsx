@@ -86,7 +86,7 @@ export const SIWEProvider = ({ children }: Props) => {
   const signOut = async () => {
     try {
       setStatus('loading')
-      // Before signing ouq, we need to revoke the token
+      // Before signing out, we need to revoke the token
       await nextSignOut({ redirect: false })
       await signOutToken()
       await Promise.all([queryClient.invalidateQueries(), refetchSession()])
