@@ -62,7 +62,7 @@ export async function createAppleWalletPass(
     // Set primary field to display the lock (event) name
     walletPass.primaryFields.push({
       key: 'lockName',
-      label: 'Lock Name',
+      label: 'Event',
       value: lockName,
     })
 
