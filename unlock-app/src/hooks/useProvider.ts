@@ -211,6 +211,7 @@ export const useProvider = (config: any) => {
     )
     try {
       if (provider && provider?.isWaas) {
+        localStorage.removeItem('nextAuthProvider')
         await provider.disconnect()
       }
       // unlock provider does not support removing listeners or closing.
