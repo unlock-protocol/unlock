@@ -1,18 +1,22 @@
-import { PaywallLockConfigType } from '@unlock-protocol/core'
+import { PaywallConfigType } from '@unlock-protocol/core'
 import { Placeholder } from '@unlock-protocol/ui'
 import { ExplorerLink } from '~/components/interface/AddressLink'
 import { useMetadata } from '~/hooks/metadata'
 
 interface LockExplorerLinkProps {
   lockAddress: string
-  network: number
-  lockCheckoutConfig: PaywallLockConfigType
+  checkoutConfig: {
+    id?: string
+    config: PaywallConfigType
+  }
 }
 export const LockExplorerLink = ({
   lockAddress,
-  network,
-  lockCheckoutConfig,
+  checkoutConfig,
 }: LockExplorerLinkProps) => {
+  const lockCheckoutConfig = checkoutConfig.config.locks[lockAddress]
+  const network = lockCheckoutConfig.network || checkoutConfig.config.network!
+
   const { data: lockMetadata, isLoading: isLockMetadtaLoading } = useMetadata({
     lockAddress: lockAddress as string,
     network: network as number,
@@ -21,7 +25,7 @@ export const LockExplorerLink = ({
   const name = lockCheckoutConfig.name || lockMetadata?.name
 
   return (
-    <div className="flex gap-2 flex-row text-brand-gray">
+    <div className="flex gap-2 flex-row text-brand-gray whitespace-nowrap">
       {isLockMetadtaLoading ? (
         <Placeholder.Root className="grid w-full">
           <Placeholder.Line width="full" />

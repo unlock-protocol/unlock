@@ -12,6 +12,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useGetApprovedRefunds } from '~/hooks/useGetApprovedRefunds'
 import { useMemo } from 'react'
 import { LockExplorerLink } from './LockExplorerLink'
+import { EventLocksExplorerLinks } from './EventLocksExplorerLinks'
 
 export const ClaimRefund = ({
   refundProofAndValue,
@@ -174,27 +175,7 @@ export const PastEvent = ({
   }
   return (
     <Card className="grid gap-4 mt-5 md:mt-0">
-      {Object.keys(checkoutConfig.config.locks)
-        ?.sort((l, m) => {
-          return (
-            (checkoutConfig.config.locks[l].order || 0) -
-            (checkoutConfig.config.locks[m].order || 0)
-          )
-        })
-        ?.map((lockAddress: string) => {
-          return (
-            <LockExplorerLink
-              key={lockAddress}
-              lockAddress={lockAddress}
-              network={
-                (checkoutConfig.config.locks[
-                  Object.keys(checkoutConfig.config.locks)[0]
-                ].network || checkoutConfig.config.network)!
-              }
-              lockCheckoutConfig={checkoutConfig.config.locks[lockAddress]}
-            />
-          )
-        })}
+      <EventLocksExplorerLinks checkoutConfig={checkoutConfig} />
       <p className="text-lg">
         <MdAssignmentLate className="inline" />
         This event is over. It is not possible to register for it anymore.
