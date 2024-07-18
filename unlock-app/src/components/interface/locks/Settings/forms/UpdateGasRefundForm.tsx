@@ -7,6 +7,7 @@ import useGetGasRefund from '~/hooks/useGetGasRefund'
 interface Props {
   lockAddress: string
   network: number
+  price: number
   disabled?: boolean
   onChanged: () => void
 }
@@ -18,6 +19,7 @@ interface FormValues {
 export function UpdateGasRefundForm({
   lockAddress,
   network,
+  price,
   disabled,
   onChanged,
 }: Props) {
@@ -70,8 +72,9 @@ export function UpdateGasRefundForm({
         placeholder="0.00"
         step="any"
         min={0}
+        max={price}
         error={errors.amount?.message}
-        description="The amount of tokens to refund when someone sends a renewal transaction for users. This is paid using the currency of the lock."
+        description="The amount of tokens to refund when someone sends a renewal transaction for users. This is paid using the currency of the lock. This should not be higher than the lock price."
       />
       <Button disabled={disabled} loading={isSubmitting} type="submit">
         Set gas refund

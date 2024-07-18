@@ -103,6 +103,8 @@ export function handleNewLock(event: NewLock): void {
   lock.address = lockAddress
   lock.version = version
   lock.createdAtBlock = event.block.number
+  lock.lastKeyMintedAt = null
+  lock.lastKeyRenewedAt = null
 
   if (version.le(BigInt.fromI32(8))) {
     // prior to v8, add default lock manager
