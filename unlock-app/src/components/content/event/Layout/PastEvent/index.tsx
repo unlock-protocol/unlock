@@ -11,7 +11,6 @@ import KickbackAbi from '../../Settings/Components/Kickback/KickbackAbi'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useGetApprovedRefunds } from '~/hooks/useGetApprovedRefunds'
 import { useMemo } from 'react'
-import { LockExplorerLink } from './LockExplorerLink'
 import { EventLocksExplorerLinks } from './EventLocksExplorerLinks'
 
 export const ClaimRefund = ({
