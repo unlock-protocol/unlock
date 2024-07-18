@@ -17606,15 +17606,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/nock@npm:11.1.0":
-  version: 11.1.0
-  resolution: "@types/nock@npm:11.1.0"
-  dependencies:
-    nock: "npm:*"
-  checksum: 10/7da1724ea2cbcd00730cc41e4880d987b0450823d5246cb1b0665be8db43ea9517bdff2161a1ecba8f23382c1e410b9b46da621614a9ae286568e6a8fd8a0a74
-  languageName: node
-  linkType: hard
-
 "@types/node-cron@npm:3.0.11":
   version: 3.0.11
   resolution: "@types/node-cron@npm:3.0.11"
@@ -18766,7 +18757,6 @@ __metadata:
     "@types/jsonwebtoken": "npm:9.0.6"
     "@types/multer": "npm:1.4.11"
     "@types/multer-s3": "npm:3.0.3"
-    "@types/nock": "npm:11.1.0"
     "@types/node": "npm:20.14.9"
     "@types/node-cron": "npm:3.0.11"
     "@types/request-promise-native": "npm:1.0.21"
@@ -39771,7 +39761,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nock@npm:*, nock@npm:13.5.4":
+"nock@npm:13.5.4":
   version: 13.5.4
   resolution: "nock@npm:13.5.4"
   dependencies:
