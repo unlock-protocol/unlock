@@ -7,12 +7,11 @@ import { useSIWE } from '~/hooks/useSIWE'
 import BlockiesSvg from 'blockies-react-svg'
 import { UserAccountType } from '~/utils/userAccountType'
 import { CheckoutService } from '../checkout/main/checkoutMachine'
-import { useRouter } from 'next/router'
 import { ConnectButton } from './Custom'
 import { signIn } from 'next-auth/react'
 import { popupCenter } from '~/utils/popup'
 import SvgComponents from '../svg'
-import { useSelector } from '@xstate/react'
+import useSignInCallbackUrl from '~/hooks/useSignInCallbackUrl'
 
 interface UserDetails {
   email: string
@@ -124,6 +123,11 @@ const SignIn = ({
   shoudOpenConnectModal = false,
   checkoutService,
 }: SignInProps) => {
+  const callbackUrl = useSignInCallbackUrl(
+    shoudOpenConnectModal,
+    checkoutService
+  )
+
   return (
     <div className="grid gap-2 px-6">
       <div className="grid gap-4">
@@ -140,7 +144,7 @@ const SignIn = ({
         )}
         {accountType.includes(UserAccountType.GoogleAccount) && (
           <SignWithGoogle
-            shoudOpenConnectModal={shoudOpenConnectModal}
+            callbackUrl={callbackUrl}
             checkoutService={checkoutService}
             isSignUp={false}
           />
@@ -155,7 +159,7 @@ const SignIn = ({
           <div className="w-full grid gap-4">
             <div className="text-sm text-gray-600">Create a new account:</div>
             <SignWithGoogle
-              shoudOpenConnectModal={shoudOpenConnectModal}
+              callbackUrl={callbackUrl}
               checkoutService={checkoutService}
               isSignUp={true}
             />
@@ -179,39 +183,19 @@ const SignIn = ({
 }
 
 export interface SignWithGoogleProps {
-  shoudOpenConnectModal: boolean
+  callbackUrl: string
   checkoutService?: CheckoutService
   isSignUp: boolean
 }
 
 const SignWithGoogle = ({
-  shoudOpenConnectModal,
+  callbackUrl,
   checkoutService,
   isSignUp,
 }: SignWithGoogleProps) => {
-  const router = useRouter()
-
-  const context = useSelector(checkoutService, (state) => state?.context)
-  const url = new URL(
-    `${window.location.protocol}//${window.location.host}${router.asPath}`
-  )
-
-  const params = new URLSearchParams(url.search)
-  params.append(
-    'shouldOpenConnectModal',
-    encodeURIComponent(shoudOpenConnectModal)
-  )
-  if (context?.lock) {
-    params.set('lock', encodeURIComponent(context.lock.address))
-  }
-
-  url.search = params.toString()
-
-  const callbackUrl = url.toString()
-
   const signWithGoogle = () => {
     if (window !== window.parent) {
-      popupCenter('/google', 'Sample Sign In')
+      popupCenter('/google', 'Google Sign In')
       checkoutService?.send({ type: 'SELECT' })
       return
     }
