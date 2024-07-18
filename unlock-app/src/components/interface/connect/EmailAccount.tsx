@@ -199,7 +199,6 @@ const SignIn = ({
             />
             {/*}
             <div>Passkey Account</div>
-            <div>Email Code Account</div>
             */}
           </div>
         )}
