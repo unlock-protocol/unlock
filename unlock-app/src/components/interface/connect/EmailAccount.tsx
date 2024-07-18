@@ -158,11 +158,7 @@ const SignIn = ({
           />
         )}
         {accountType.includes(UserAccountType.GoogleAccount) && (
-          <SignWithGoogle
-            callbackUrl={callbackUrl}
-            checkoutService={checkoutService}
-            isSignUp={false}
-          />
+          <SignWithGoogle callbackUrl={callbackUrl} isSignUp={false} />
         )}
         {accountType.includes(UserAccountType.PasskeyAccount) && (
           <div>Passkey Account</div>
@@ -178,11 +174,7 @@ const SignIn = ({
         {accountType.length === 0 && (
           <div className="w-full grid gap-4">
             <div className="text-sm text-gray-600">Create a new account:</div>
-            <SignWithGoogle
-              callbackUrl={callbackUrl}
-              checkoutService={checkoutService}
-              isSignUp={true}
-            />
+            <SignWithGoogle callbackUrl={callbackUrl} isSignUp={true} />
             <SignWithEmail
               isSignUp={true}
               email={email}
@@ -210,21 +202,15 @@ const SignIn = ({
 
 export interface SignWithGoogleProps {
   callbackUrl: string
-  checkoutService?: CheckoutService
   isSignUp: boolean
 }
 
-const SignWithGoogle = ({
-  callbackUrl,
-  checkoutService,
-  isSignUp,
-}: SignWithGoogleProps) => {
+const SignWithGoogle = ({ callbackUrl, isSignUp }: SignWithGoogleProps) => {
   const signWithGoogle = () => {
     localStorage.setItem('nextAuthProvider', 'google')
 
     if (window !== window.parent) {
       popupCenter('/google', 'Google Sign In')
-      checkoutService?.send({ type: 'SELECT' })
       return
     }
 
