@@ -12,6 +12,7 @@ import SvgComponents from '../svg'
 import { useCaptcha } from '~/hooks/useCaptcha'
 import ReCaptcha from 'react-google-recaptcha'
 import { signOut as nextSignOut } from 'next-auth/react'
+import { UserAccountType } from '~/utils/userAccountType'
 
 export type ConnectingWaasProps = {
   openConnectModalWindow?: boolean
@@ -22,8 +23,8 @@ export const ConnectingWaas = ({
 }: ConnectingWaasProps) => {
   const { data: session } = useSession()
 
-  const [selectedProvider, _] = useState(
-    localStorage.getItem('nextAuthProvider')
+  const [selectedProvider, _] = useState<UserAccountType>(
+    localStorage.getItem('nextAuthProvider') as UserAccountType
   )
 
   const { authenticateWithProvider } = useAuthenticate()
@@ -97,10 +98,10 @@ export const ConnectingWaas = ({
       />
       <div className="grid">
         <div className="flex flex-col items-center justify-center gap-6 pb-6">
-          {selectedProvider === 'google' && (
+          {selectedProvider == UserAccountType.GoogleAccount && (
             <SvgComponents.Google width={40} height={40} />
           )}
-          {selectedProvider === 'email' && (
+          {selectedProvider == UserAccountType.EmailCodeAccount && (
             <SvgComponents.Email width={40} height={40} />
           )}
           <div className="inline-flex items-center gap-2 text-lg font-bold">

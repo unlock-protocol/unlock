@@ -12,28 +12,14 @@ import { UserAccountType } from './userAccountType'
 export const getUserWaasUuid = async (
   captcha: string,
   emailAddress: string,
-  provider: string,
+  provider: UserAccountType,
   token: string
 ) => {
-  let selectedProvider
-
-  switch (provider) {
-    case 'google':
-      selectedProvider = UserAccountType.GoogleAccount
-      break
-    case 'email':
-      selectedProvider = UserAccountType.EmailCodeAccount
-      break
-    default:
-      selectedProvider = ''
-      break
-  }
-
   try {
     const response = await locksmith.getWaasToken(
       captcha,
       emailAddress,
-      selectedProvider,
+      provider,
       { token }
     )
 
