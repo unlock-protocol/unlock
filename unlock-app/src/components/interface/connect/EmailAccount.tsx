@@ -17,6 +17,8 @@ import { useCaptcha } from '~/hooks/useCaptcha'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { config } from '~/config/app'
 import ReCaptcha from 'react-google-recaptcha'
+import { useState } from 'react'
+import { EnterCode } from './EnterCode'
 
 interface UserDetails {
   email: string
@@ -128,6 +130,8 @@ const SignIn = ({
   shoudOpenConnectModal = false,
   checkoutService,
 }: SignInProps) => {
+  const [isEmailCodeSent, setEmailCodeSent] = useState(false)
+
   const callbackUrl = useSignInCallbackUrl(
     shoudOpenConnectModal,
     checkoutService
@@ -137,6 +141,12 @@ const SignIn = ({
     localStorage.setItem('nextAuthProvider', signInMethod)
 
     await handler()
+  }
+
+  if (isEmailCodeSent) {
+    return (
+      <EnterCode email={email} callbackUrl={callbackUrl} onReturn={onReturn} />
+    )
   }
 
   return (
@@ -164,7 +174,13 @@ const SignIn = ({
           <div>Passkey Account</div>
         )}
         {accountType.includes(UserAccountType.EmailCodeAccount) && (
-          <div>Email Code Account</div>
+          <SignWithEmail
+            isSignUp={true}
+            email={email}
+            setEmailCodeSent={setEmailCodeSent}
+            callbackUrl={callbackUrl}
+            handleSignIn={handleSignIn}
+          />
         )}
         {accountType.length === 0 && (
           <div className="w-full grid gap-4">
@@ -174,9 +190,15 @@ const SignIn = ({
               isSignUp={true}
               handleSignIn={handleSignIn}
             />
+            <SignWithEmail
+              isSignUp={true}
+              email={email}
+              setEmailCodeSent={setEmailCodeSent}
+              callbackUrl={callbackUrl}
+              handleSignIn={handleSignIn}
+            />
             {/*}
             <div>Passkey Account</div>
-            <div>Email Code Account</div>
             */}
           </div>
         )}
@@ -231,7 +253,7 @@ const SignWithGoogle = ({
 export interface SignWithEmail {
   isSignUp: boolean
   email: string
-  setEmailCodeSent: (isEmailCodeSent: string) => void
+  setEmailCodeSent: (isEmailCodeSent: boolean) => void
   callbackUrl: string
   handleSignIn: (signInMethod: string, handler: () => void) => void
 }
@@ -253,7 +275,7 @@ const SignWithEmail = ({
       ToastHelper.error('Error sending email code, try again later')
     }
 
-    setEmailCodeSent('sent')
+    setEmailCodeSent(true)
   }
 
   return (
