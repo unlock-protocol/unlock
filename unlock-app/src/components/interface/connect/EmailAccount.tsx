@@ -267,8 +267,8 @@ const SignWithEmail = ({
       <ConnectButton
         className="w-full"
         icon={<SvgComponents.Email width={40} height={40} />}
-        onClick={() => {
-          handleSignIn(UserAccountType.EmailCodeAccount, signWithEmail)
+        onClick={async () => {
+          await handleSignIn(UserAccountType.EmailCodeAccount, signWithEmail)
         }}
       >
         {isSignUp ? 'Sign up with Email' : 'Sign in with Email'}
