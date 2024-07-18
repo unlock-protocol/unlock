@@ -1664,9 +1664,6 @@ paths:
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
 
-        403:
-          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
-
         404:
           $ref: '#/components/responses/404.NotFound'
 
