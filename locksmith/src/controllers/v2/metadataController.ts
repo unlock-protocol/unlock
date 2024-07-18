@@ -253,11 +253,6 @@ export const readUserMetadata: RequestHandler = async (request, response) => {
   const tokenAddress = Normalizer.ethereumAddress(request.params.lockAddress)
   const loggedInUser = request.user!.walletAddress
   const normalisedLoggedInAddress = Normalizer.ethereumAddress(loggedInUser)
-  if (normalisedLoggedInAddress !== userAddress) {
-    return response.status(403).send({
-      message: `Signee ${normalisedLoggedInAddress} and requested data for ${userAddress} are different`,
-    })
-  }
 
   const user = await getMetadata(
     tokenAddress,
