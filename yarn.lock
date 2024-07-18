@@ -8647,7 +8647,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hapi/topo@npm:^5.1.0":
+"@hapi/topo@npm:^5.0.0, @hapi/topo@npm:^5.1.0":
   version: 5.1.0
   resolution: "@hapi/topo@npm:5.1.0"
   dependencies:
@@ -14268,7 +14268,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sideway/address@npm:^4.1.5":
+"@sideway/address@npm:^4.1.0, @sideway/address@npm:^4.1.5":
   version: 4.1.5
   resolution: "@sideway/address@npm:4.1.5"
   dependencies:
@@ -14277,7 +14277,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sideway/formula@npm:^3.0.1":
+"@sideway/formula@npm:^3.0.0, @sideway/formula@npm:^3.0.1":
   version: 3.0.1
   resolution: "@sideway/formula@npm:3.0.1"
   checksum: 10/8d3ee7f80df4e5204b2cbe92a2a711ca89684965a5c9eb3b316b7051212d3522e332a65a0bb2a07cc708fcd1d0b27fcb30f43ff0bcd5089d7006c7160a89eefe
@@ -18798,6 +18798,7 @@ __metadata:
     node-mocks-http: "npm:1.15.0"
     p-retry: "npm:6.2.0"
     parse-data-uri: "npm:0.2.0"
+    passkit-generator: "npm:3.1.11"
     path-to-regexp: "npm:6.2.2"
     pg: "npm:8.12.0"
     rate-limiter-flexible: "npm:5.0.3"
@@ -26890,6 +26891,13 @@ __metadata:
   dependencies:
     "@leichtgewicht/ip-codec": "npm:^2.0.1"
   checksum: 10/ef5496dd5a906e22ed262cbe1a6f5d532c0893c4f1884a7aa37d4d0d8b8376a2b43f749aab087c8bb1354d67b40444f7fca8de4017b161a4cea468543061aed3
+  languageName: node
+  linkType: hard
+
+"do-not-zip@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "do-not-zip@npm:1.0.0"
+  checksum: 10/02a8809775cc1d4cf03d5730d0d9b03190ddd1b953f8bd87c241335e5ff728202e28ed3985b30277fe3e7aef0fce37a6f3b4234232988c500ec2f4d262241260
   languageName: node
   linkType: hard
 
@@ -35271,6 +35279,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"joi@npm:17.4.2":
+  version: 17.4.2
+  resolution: "joi@npm:17.4.2"
+  dependencies:
+    "@hapi/hoek": "npm:^9.0.0"
+    "@hapi/topo": "npm:^5.0.0"
+    "@sideway/address": "npm:^4.1.0"
+    "@sideway/formula": "npm:^3.0.0"
+    "@sideway/pinpoint": "npm:^2.0.0"
+  checksum: 10/35fc3ab817e7035ff12bdd8dd6b39d74936562f1a257412ec738f0fb157a86191c9cc5caaf89c6f4b80f2241658435341f185574196642c5c67350ff19703787
+  languageName: node
+  linkType: hard
+
 "joi@npm:^17.9.2":
   version: 17.13.1
   resolution: "joi@npm:17.13.1"
@@ -39884,7 +39905,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-forge@npm:1.3.1, node-forge@npm:^1, node-forge@npm:^1.2.1, node-forge@npm:^1.3.1":
+"node-forge@npm:1.3.1, node-forge@npm:^1, node-forge@npm:^1.2.1, node-forge@npm:^1.3.0, node-forge@npm:^1.3.1":
   version: 1.3.1
   resolution: "node-forge@npm:1.3.1"
   checksum: 10/05bab6868633bf9ad4c3b1dd50ec501c22ffd69f556cdf169a00998ca1d03e8107a6032ba013852f202035372021b845603aeccd7dfcb58cdb7430013b3daa8d
@@ -41382,6 +41403,18 @@ __metadata:
   version: 0.1.1
   resolution: "pascalcase@npm:0.1.1"
   checksum: 10/f83681c3c8ff75fa473a2bb2b113289952f802ff895d435edd717e7cb898b0408cbdb247117a938edcbc5d141020909846cc2b92c47213d764e2a94d2ad2b925
+  languageName: node
+  linkType: hard
+
+"passkit-generator@npm:3.1.11":
+  version: 3.1.11
+  resolution: "passkit-generator@npm:3.1.11"
+  dependencies:
+    do-not-zip: "npm:^1.0.0"
+    joi: "npm:17.4.2"
+    node-forge: "npm:^1.3.0"
+    tslib: "npm:^2.3.1"
+  checksum: 10/358b1c4a115520dedcb6a2c1c40da5b5aa11a6186e73715b7c41806b57a5eef592356dfbb405fdfcfcbf04a27afe166e936edc444e66dc2a6cc961d5297c8973
   languageName: node
   linkType: hard
 

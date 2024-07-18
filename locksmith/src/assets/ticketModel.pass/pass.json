@@ -1,0 +1,13 @@
+{
+  "backgroundColor": "rgb(255,252,246)",
+  "foregroundColor": "rgb(96,61,235)",
+  "labelColor": "rgb(0,0,0)",
+  "description": "this is an Apple Wallet pass for an Unlock Protocol event",
+  "organizationName": "UnlockProtocol",
+  "passTypeIdentifier": "pass.unlock-protocol.com",
+  "teamIdentifier": "743J7GQP7Q",
+  "formatVersion": 1,
+  "eventTicket": {
+    "backFields": []
+  }
+}
