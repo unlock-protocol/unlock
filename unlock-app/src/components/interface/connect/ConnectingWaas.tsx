@@ -24,7 +24,7 @@ export const ConnectingWaas = ({
   const { authenticateWithProvider } = useAuthenticate()
   const { signIn: siweSignIn, isSignedIn, signOut: siweSignOut } = useSIWE()
 
-  const { connected, deAuthenticate } = useAuth()
+  const { account, connected, deAuthenticate } = useAuth()
   const { openConnectModal } = useConnectModal()
 
   const { recaptchaRef, getCaptchaValue } = useCaptcha()
@@ -80,7 +80,7 @@ export const ConnectingWaas = ({
     }
 
     connect()
-  }, [connected, isSignedIn])
+  }, [connected, isSignedIn, account])
 
   return (
     <div className="h-full px-6 pb-6">
