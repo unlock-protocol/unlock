@@ -102,7 +102,7 @@ describe('Email verification code', async () => {
   it('should send email verification code', async () => {
     expect.assertions(1)
     const res = await request(app).get(
-      `/v2/api/users/${emailAddress2}/send-verification-code`
+      `/v2/api/users/${emailAddress2}/sendVerificationCode`
     )
 
     expect(res.status).toBe(200)
@@ -111,7 +111,7 @@ describe('Email verification code', async () => {
   it('should return 200 if email code is valid', async () => {
     expect.assertions(1)
     const res = await request(app)
-      .post(`/v2/api/users/${emailAddress}/verify-email-code`)
+      .post(`/v2/api/users/${emailAddress}/verifyEmailCode`)
       .send({ code: emailCode })
 
     expect(res.status).toBe(200)
@@ -120,7 +120,7 @@ describe('Email verification code', async () => {
   it('should return 400 if email code is invalid', async () => {
     expect.assertions(1)
     const res = await request(app)
-      .post(`/v2/api/users/${emailAddress}/verify-email-code`)
+      .post(`/v2/api/users/${emailAddress}/verifyEmailCode`)
       .send({ code: '654321' })
 
     expect(res.status).toBe(400)
@@ -129,7 +129,7 @@ describe('Email verification code', async () => {
   it('should return 400 if email code has been used', async () => {
     expect.assertions(1)
     const res = await request(app)
-      .post(`/v2/api/users/${emailAddress}/verify-email-code`)
+      .post(`/v2/api/users/${emailAddress}/verifyEmailCode`)
       .send({ code: emailCode })
 
     expect(res.status).toBe(400)
@@ -138,13 +138,13 @@ describe('Email verification code', async () => {
   it('should change used email code', async () => {
     expect.assertions(2)
     const res = await request(app).get(
-      `/v2/api/users/some@test.email/send-verification-code`
+      `/v2/api/users/some@test.email/sendVerificationCode`
     )
 
     expect(res.status).toBe(200)
 
     const codeRes = await request(app)
-      .post(`/v2/api/users/${emailAddress}/verify-email-code`)
+      .post(`/v2/api/users/${emailAddress}/verifyEmailCode`)
       .send({ code: emailCode })
 
     expect(codeRes.status).toBe(400)
