@@ -1,10 +1,10 @@
 ---
-title: "Configuring Email in Unlock Labs Apps"
-subtitle: ""
-authorName: "Unlock Protocol"
-publishDate: "Wed Jul 17 2024 20:50:48 GMT+0000 (Coordinated Universal Time)"
-description: "Even as more people move onchain, email remains an important comms channel. This is esp. true in the case of users who are simply trying to achieve a goal (e.g. “get a ticket to attend an event”) and who are less interested in the technical details."
-image: "/images/blog/configuring-email-in-unlock-labs-apps/5e34743f6135a8a46a694f3b06354ad8.jpg"
+title: 'Configuring Email in Unlock Labs Apps'
+subtitle: ''
+authorName: 'Unlock Protocol'
+publishDate: 'Wed Jul 17 2024 20:50:48 GMT+0000 (Coordinated Universal Time)'
+description: 'Even as more people move onchain, email remains an important comms channel. This is esp. true in the case of users who are simply trying to achieve a goal (e.g. “get a ticket to attend an event”) and who are less interested in the technical details.'
+image: '/images/blog/configuring-email-in-unlock-labs-apps/5e34743f6135a8a46a694f3b06354ad8.jpg'
 ---
 
 ![Configuring Email in Unlock Labs Apps](https://storage.googleapis.com/papyrus_images/5e34743f6135a8a46a694f3b06354ad8.jpg)
