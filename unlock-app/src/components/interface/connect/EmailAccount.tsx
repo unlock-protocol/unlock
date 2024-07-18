@@ -133,6 +133,12 @@ const SignIn = ({
     checkoutService
   )
 
+  const handleSignIn = async (signInMethod: string, handler: () => void) => {
+    localStorage.setItem('nextAuthProvider', signInMethod)
+
+    await handler()
+  }
+
   return (
     <div className="grid gap-2 px-6">
       <div className="grid gap-4">
@@ -148,7 +154,11 @@ const SignIn = ({
           />
         )}
         {accountType.includes(UserAccountType.GoogleAccount) && (
-          <SignWithGoogle callbackUrl={callbackUrl} isSignUp={false} />
+          <SignWithGoogle
+            callbackUrl={callbackUrl}
+            isSignUp={false}
+            handleSignIn={handleSignIn}
+          />
         )}
         {accountType.includes(UserAccountType.PasskeyAccount) && (
           <div>Passkey Account</div>
@@ -159,7 +169,11 @@ const SignIn = ({
         {accountType.length === 0 && (
           <div className="w-full grid gap-4">
             <div className="text-sm text-gray-600">Create a new account:</div>
-            <SignWithGoogle callbackUrl={callbackUrl} isSignUp={true} />
+            <SignWithGoogle
+              callbackUrl={callbackUrl}
+              isSignUp={true}
+              handleSignIn={handleSignIn}
+            />
             {/*}
             <div>Passkey Account</div>
             <div>Email Code Account</div>
@@ -182,12 +196,15 @@ const SignIn = ({
 export interface SignWithGoogleProps {
   callbackUrl: string
   isSignUp: boolean
+  handleSignIn: (signInMethod: string, handler: () => void) => void
 }
 
-const SignWithGoogle = ({ callbackUrl, isSignUp }: SignWithGoogleProps) => {
+const SignWithGoogle = ({
+  callbackUrl,
+  isSignUp,
+  handleSignIn,
+}: SignWithGoogleProps) => {
   const signWithGoogle = () => {
-    localStorage.setItem('nextAuthProvider', 'google')
-
     if (window !== window.parent) {
       popupCenter('/google', 'Google Sign In')
       return
@@ -202,7 +219,7 @@ const SignWithGoogle = ({ callbackUrl, isSignUp }: SignWithGoogleProps) => {
         className="w-full"
         icon={<SvgComponents.Google width={40} height={40} />}
         onClick={() => {
-          signWithGoogle()
+          handleSignIn(UserAccountType.GoogleAccount, signWithGoogle)
         }}
       >
         {isSignUp ? 'Sign up with Google' : 'Sign in with Google'}
@@ -216,18 +233,18 @@ export interface SignWithEmail {
   email: string
   setEmailCodeSent: (isEmailCodeSent: string) => void
   callbackUrl: string
+  handleSignIn: (signInMethod: string, handler: () => void) => void
 }
 
 const SignWithEmail = ({
   isSignUp,
   email,
   setEmailCodeSent,
+  handleSignIn,
 }: SignWithEmail) => {
   const { recaptchaRef, getCaptchaValue } = useCaptcha()
 
   const signWithEmail = async () => {
-    localStorage.setItem('nextAuthProvider', 'email')
-
     try {
       const captcha = await getCaptchaValue()
       await locksmith.sendVerificationCode(captcha, email)
@@ -251,7 +268,7 @@ const SignWithEmail = ({
         className="w-full"
         icon={<SvgComponents.Email width={40} height={40} />}
         onClick={() => {
-          signWithEmail()
+          handleSignIn(UserAccountType.EmailCodeAccount, signWithEmail)
         }}
       >
         {isSignUp ? 'Sign up with Email' : 'Sign in with Email'}
