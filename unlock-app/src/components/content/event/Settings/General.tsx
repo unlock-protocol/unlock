@@ -62,8 +62,12 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
     event.ticket?.event_start_date,
     'day'
   )
-  const minEndTime = isSameDay ? event.ticket?.event_start_time : undefined
-  const minEndDate = dayjs(event.ticket?.event_start_date).format('YYYY-MM-DD')
+  const minEndTime = isSameDay
+    ? getValues('ticket.event_start_time')
+    : undefined
+  const minEndDate = dayjs(getValues('ticket.event_start_date')).format(
+    'YYYY-MM-DD'
+  )
 
   const save = async (values: {
     name: string
@@ -194,7 +198,7 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
               </div>
             </div>
             <div className="flex flex-col self-start gap-2 justify-top">
-              <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+              <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
                 <Input
                   {...register('ticket.event_start_date', {
                     required: {
@@ -230,7 +234,7 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
                 />
               </div>
 
-              <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+              <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
                 <Input
                   {...register('ticket.event_end_date', {
                     required: {
