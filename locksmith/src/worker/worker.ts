@@ -12,6 +12,7 @@ import { fiatRenewalJob } from './tasks/renewal/fiatRenewalJob'
 import { addHookJobs } from './tasks/hooks/addHookJobs'
 import { sendHook } from './tasks/hooks/sendHook'
 import { sendEmailJob } from './tasks/sendEmail'
+import { sendSimpleEmailJob } from './tasks/sendSimpleEmail'
 import { sendToAllJob } from './tasks/sendToAll'
 import { monitor } from './tasks/monitor'
 import { checkBalances } from './tasks/checkBalances'
@@ -100,6 +101,7 @@ export async function startWorker() {
       addRenewalJobsWeekly,
       addHookJobs,
       sendEmailJob,
+      sendSimpleEmailJob,
       sendToAllJob,
       sendHook,
       fiatRenewalJob,

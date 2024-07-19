@@ -15,6 +15,7 @@ import {
   emailTemplate,
   sendSimpleEmail,
 } from '../operations/wedlocksOperations'
+import { addJob } from '../worker/worker'
 
 // Decoy users are cached for 15 minutes
 const cacheDuration = 60 * 15
@@ -189,6 +190,12 @@ export const retrieveWaasUuid = async (
       selectedProvider as UserAccountType
     )
     userUUID = newUserUUID
+
+    // Send a welcome email
+    await addJob('sendSimpleEmailJob', {
+      template: emailTemplate.welcome,
+      recipient: emailAddress,
+    })
   }
 
   try {

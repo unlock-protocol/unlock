@@ -64,6 +64,7 @@ interface SendEmailProps {
 
 export enum emailTemplate {
   verificationCode = 'nextAuthCode',
+  welcome = 'welcome',
 }
 
 type SimpleParams = {
