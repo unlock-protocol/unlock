@@ -21,6 +21,7 @@ import { createAppleWalletPass } from '../../operations/generate-pass/ios/create
  * @returns A response object with status 200 and the URL to the created wallet pass object.
  *          In case of an error, it returns a response object with status 500 and an error message.
  */
+
 export const generateGoogleWalletPass: RequestHandler = async (
   request,
   response
