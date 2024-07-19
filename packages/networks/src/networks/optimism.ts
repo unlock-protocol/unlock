@@ -76,6 +76,7 @@ export const optimism: NetworkConfig = {
   id: 10,
   isTestNetwork: false,
   keyManagerAddress: '0x8c5D54B2CAA4C2D08B0DDF82a1e6D2641779B8EC',
+  kickbackAddress: '0x981e0Ac8ABde773a72FeD793c1BEF99a53fAC342',
   maxFreeClaimCost: 100,
   multisig: '0x6E78b4447e34e751EC181DCBed63633aA753e145',
   name: 'Optimism',

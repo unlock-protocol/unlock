@@ -71,6 +71,7 @@ export const base: NetworkConfig = {
   id: 8453,
   isTestNetwork: false,
   keyManagerAddress: '0xD26c05a33349a6DeD02DD9360e1ef303d1246fb6',
+  kickbackAddress: '0xCf5802682F194C2447E92a63283471A99CB792f6',
   maxFreeClaimCost: 100,
   multisig: '0x8149FeaFa41DD1ee3CA62299b9c67e9ac12FA340',
   name: 'Base',

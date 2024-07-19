@@ -72,6 +72,7 @@ export const gnosis: NetworkConfig = {
   id: 100,
   isTestNetwork: false,
   keyManagerAddress: '0xBa81C9379AC1221BF8C100800dD0B0b0b048ba14',
+  kickbackAddress: '0x247a38358c4d99A29091C1cEadfb8a54B783D438',
   maxFreeClaimCost: 100,
   multisig: '0xfAC611a5b5a578628C28F77cEBDDB8C6159Ae79D',
   name: 'Gnosis Chain',

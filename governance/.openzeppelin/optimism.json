@@ -14,6 +14,16 @@
       "address": "0x8c5D54B2CAA4C2D08B0DDF82a1e6D2641779B8EC",
       "txHash": "0xed0146258a80d8fa6d42b1f58cb8ab120c33255140eb57ce3c1ff46bf0cc39ae",
       "kind": "transparent"
+    },
+    {
+      "address": "0xD1404043C6b62a8be643312B2b346C276A1361Ed",
+      "txHash": "0xd29853efee2d6058740c01b91ddbadb109cab697d2cbbcb388b7278fde7a7092",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x981e0Ac8ABde773a72FeD793c1BEF99a53fAC342",
+      "txHash": "0x5c7e0c277b4522c25cdeeeee6f032c8e19734d01ff804b5de299e581ce45ae9c",
+      "kind": "transparent"
     }
   ],
   "impls": {
@@ -1496,6 +1506,58 @@
           "t_uint16": {
             "label": "uint16",
             "numberOfBytes": "2"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        },
+        "namespaces": {}
+      }
+    },
+    "4f69752d41c5db5565f7a4d43e78e8e0c21ae0a2ce6dd433fc0f12b63a55b17c": {
+      "address": "0xe6CA7706198D24C087F2E8be8fab7E6D8C4F150a",
+      "txHash": "0x3e790d96d9cf0a5f9f914c27c4474353b07040b08535bacef6fa66ae67add5f9",
+      "layout": {
+        "solcVersion": "0.8.21",
+        "storage": [
+          {
+            "label": "issuedRefunds",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+            "contract": "Kickback",
+            "src": "contracts/past-versions/Kickback.sol:897"
+          },
+          {
+            "label": "roots",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_mapping(t_address,t_bytes32)",
+            "contract": "Kickback",
+            "src": "contracts/past-versions/Kickback.sol:898"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_bytes32)": {
+            "label": "mapping(address => bytes32)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+            "label": "mapping(address => mapping(address => uint256))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
           },
           "t_uint256": {
             "label": "uint256",
