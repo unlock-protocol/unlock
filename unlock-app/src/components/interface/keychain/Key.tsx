@@ -48,8 +48,7 @@ import { ExtendMembershipModal } from './Extend'
 import { Key as HookKey } from '~/hooks/useKeys'
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
 import { useGetReceiptsPageUrl } from '~/hooks/useReceipts'
-import { AddToPhoneWallet, ApplePassModal } from './AddToPhoneWallet'
-import { isIOS } from 'react-device-detect'
+import { AddToPhoneWallet } from './AddToPhoneWallet'
 import { useRouter } from 'next/router'
 import { Platform } from '~/services/passService'
 
@@ -83,8 +82,6 @@ function Key({ ownedKey, owner, network }: Props) {
   const [showCancelModal, setShowCancelModal] = useState(false)
   const [expireAndRefunded, setExpireAndRefunded] = useState(false)
   const [showExtendMembershipModal, setShowExtendMembership] = useState(false)
-  const [showApplePassModal, setShowApplePassModal] = useState(false)
-  const [applePassUrl, setPassUrl] = useState<string>()
   const videoRef = useRef(null)
   const [canPlayImageAsVideo, setCanPlayImageAsVideo] = useState(false)
   const isKeyExpired = isExpired || expireAndRefunded
@@ -253,11 +250,6 @@ function Key({ ownedKey, owner, network }: Props) {
         network={network}
         ownedKey={ownedKey}
       />
-      <ApplePassModal
-        isOpen={showApplePassModal}
-        setIsOpen={setShowApplePassModal}
-        applePassUrl={applePassUrl}
-      />
       <div className="flex items-center justify-between">
         <div>
           {isKeyExpired ? (
@@ -376,14 +368,6 @@ function Key({ ownedKey, owner, network }: Props) {
                             network={network}
                             lockAddress={lock.address}
                             tokenId={tokenId}
-                            handlePassUrl={(url: string) => {
-                              if (isIOS) {
-                                window.location.assign(url)
-                              } else {
-                                setPassUrl(url)
-                                setShowApplePassModal(true)
-                              }
-                            }}
                           />
                         )}
                       </Menu.Item>
