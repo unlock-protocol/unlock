@@ -368,9 +368,6 @@ function Key({ ownedKey, owner, network }: Props) {
                             network={network}
                             lockAddress={lock.address}
                             tokenId={tokenId}
-                            handlePassUrl={(url: string) => {
-                              window.location.assign(url)
-                            }}
                           />
                         )}
                       </Menu.Item>
