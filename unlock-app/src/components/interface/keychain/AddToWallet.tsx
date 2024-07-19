@@ -92,9 +92,6 @@ export const AddToWallet = ({ network, lockAddress, tokenId }: AddToWallet) => {
                     network={network}
                     lockAddress={lockAddress}
                     tokenId={tokenId}
-                    handlePassUrl={(url: string) => {
-                      window.location.assign(url)
-                    }}
                   />
                 </div>
               </Tooltip.Trigger>
