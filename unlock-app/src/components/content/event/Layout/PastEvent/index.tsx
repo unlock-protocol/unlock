@@ -165,6 +165,8 @@ export const PastEvent = ({
     config: PaywallConfigType
   }
 }) => {
+  // Check here if the user has a ticket?
+  // If so, show ClaimRefundInfo
   if (event.attendeeRefund) {
     return (
       <Card className="grid gap-4 mt-5 md:mt-0">
