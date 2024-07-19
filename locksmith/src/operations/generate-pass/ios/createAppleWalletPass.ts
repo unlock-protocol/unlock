@@ -13,15 +13,37 @@ const modelPath = path.resolve(
 // Retrieve certificates necessary for signing the pass
 const { wwdr, signerCert, signerKey, signerKeyPassphrase } = getCertificates()
 
+// Utility to map content types to file extensions
+const contentTypeToExtensionMap: { [key: string]: string } = {
+  'image/png': 'png',
+  'image/jpeg': 'jpg',
+  'image/jpg': 'jpg',
+  'image/gif': 'gif',
+  'image/webp': 'webp',
+  'image/svg+xml': 'svg',
+}
+
 // utility to retrieve an image via HTTP and return it as a Buffer
 async function fetchImageAsBuffer(imageUrl: string) {
   const response = await fetch(imageUrl)
   if (!response.ok) {
     throw new Error(`Failed to fetch image: ${response.statusText}`)
   }
+  const contentType = response.headers.get('content-type')
+  const extension = contentType
+    ? contentTypeToExtensionMap[contentType] || 'png'
+    : 'png'
   const imageArrayBuffer = await response.arrayBuffer()
   // Convert the ArrayBuffer to a Node.js Buffer
-  return Buffer.from(imageArrayBuffer)
+  const buffer = Buffer.from(imageArrayBuffer)
+  return { buffer, extension }
+}
+
+// utility to generate serial numbers
+function generateRandomSerialNumber() {
+  return {
+    serialNumber: `unloprot${Math.random()}`,
+  }
 }
 
 // Create and configure an Apple Wallet Pass
@@ -35,20 +57,25 @@ export async function createAppleWalletPass(
 ) {
   try {
     // Instantiate the pass using the model and certificates
-    const walletPass = await PKPass.from({
-      model: modelPath,
-      certificates: {
-        wwdr,
-        signerCert,
-        signerKey,
-        signerKeyPassphrase,
+    const walletPass = await PKPass.from(
+      {
+        model: modelPath,
+        certificates: {
+          wwdr,
+          signerCert,
+          signerKey,
+          signerKeyPassphrase,
+        },
       },
-    })
+      // Generate a random serial number for the pass
+      generateRandomSerialNumber()
+    )
 
-    // retrieve lock's image as thumbnail buffer
-    const thumbnailBuffer = await fetchImageAsBuffer(lockThumbnailUrl)
+    // Retrieve lock's image as thumbnail buffer
+    const { buffer: thumbnailBuffer, extension } =
+      await fetchImageAsBuffer(lockThumbnailUrl)
     // Add the thumbnail image as a buffer to the pass
-    walletPass.addBuffer('thumbnail.png', thumbnailBuffer)
+    walletPass.addBuffer(`thumbnail.${extension}`, thumbnailBuffer)
 
     // Configure the pass fields
     // Set header field to display the key ID
