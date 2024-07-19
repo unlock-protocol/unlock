@@ -38,6 +38,7 @@ export const baseSepolia: NetworkConfig = {
   id: 84532,
   isTestNetwork: true,
   keyManagerAddress: '',
+  kickbackAddress: '0x930730F962133216353A989d9b6cfACb19FFB49D',
   maxFreeClaimCost: 1000,
   multisig: '0x68F2c5D9009dc4d553f814D689102a53B2b349Cc',
   name: 'Base Sepolia',
