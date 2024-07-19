@@ -1,5 +1,4 @@
-import { Box, Modal, Size } from '@unlock-protocol/ui'
-import QRCode from 'qrcode.react'
+import { Box, Size } from '@unlock-protocol/ui'
 import {
   generateAppleWalletPass,
   generateGoogleWalletPass,
@@ -8,44 +7,13 @@ import {
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import Image from 'next/image'
 
-interface ApplePassModalProps {
-  isOpen: boolean
-  setIsOpen: (state: boolean) => void
-  applePassUrl?: string
-}
-
-export const ApplePassModal = ({
-  isOpen,
-  setIsOpen,
-  applePassUrl,
-}: ApplePassModalProps) => {
-  return (
-    <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-      {applePassUrl ? (
-        <div className="flex flex-col items-center">
-          <p>
-            Please scan this QR code with your phone or{' '}
-            <a href={applePassUrl} className="underline">
-              click here to download it
-            </a>
-            .
-          </p>
-          <QRCode value={applePassUrl} size={256} includeMargin />
-        </div>
-      ) : (
-        <p>Generating your pass...</p>
-      )}
-    </Modal>
-  )
-}
-
 interface AddToWalletProps {
   platform: Platform
   as: React.ElementType
   network: number
   lockAddress: string
   tokenId: string
-  handlePassUrl: (url: string) => void
+  handlePassUrl?: (url: string) => void
   disabled?: boolean
   active?: boolean
   minimised?: boolean
@@ -87,7 +55,7 @@ export const AddToPhoneWallet = ({
   const handleClick = async () => {
     const generate = async () => {
       const passUrl = await config.generatePass(lockAddress, network, tokenId)
-      if (passUrl) {
+      if (platform === Platform.GOOGLE && handlePassUrl && passUrl) {
         handlePassUrl(passUrl)
       }
     }

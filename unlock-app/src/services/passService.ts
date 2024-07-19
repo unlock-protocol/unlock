@@ -27,7 +27,7 @@ export const generateGoogleWalletPass = async (
     return response?.data?.passObjectUrl
   } catch (error) {
     console.error('Error generating Google wallet pass:', error)
-    throw new Error('Failed to generate Apple wallet pass')
+    throw new Error('Failed to generate Google wallet pass')
   }
 }
 
@@ -48,10 +48,31 @@ export const generateAppleWalletPass = async (
     const response = await locksmith.generateAppleWalletPass(
       network,
       lockAddress,
-      keyId
+      keyId,
+      {
+        // Ensure the response is treated as binary data
+        responseType: 'arraybuffer',
+      }
     )
+    // Convert the received data into a Blob
+    const blob = new Blob([response.data], {
+      type: 'application/vnd.apple.pkpass',
+    })
 
-    return response.data
+    // Generate a URL for the Blob and trigger the download
+    const downloadUrl = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = downloadUrl
+
+    // Construct filename based on the lock data and ensure the .pkpass extension is included
+    link.download = `Unlock-Pass-${keyId}.pkpass`
+
+    document.body.appendChild(link)
+    // Trigger download using the filename specified
+    link.click()
+    document.body.removeChild(link)
+
+    return downloadUrl
   } catch (error) {
     console.error('Error generating Apple wallet pass:', error)
     throw new Error('Failed to generate Apple wallet pass')

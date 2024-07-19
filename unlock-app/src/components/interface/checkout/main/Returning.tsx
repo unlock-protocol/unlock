@@ -125,9 +125,6 @@ export function Returning({ checkoutService, onClose, communication }: Props) {
                     network={lock!.network}
                     lockAddress={lock!.address}
                     tokenId={tokenId}
-                    handlePassUrl={(url: string) => {
-                      window.location.assign(url)
-                    }}
                   />
                 </li>
               )}
