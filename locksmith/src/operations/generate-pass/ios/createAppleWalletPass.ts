@@ -40,9 +40,13 @@ async function fetchImageAsBuffer(imageUrl: string) {
 }
 
 // utility to generate serial numbers
-function generateRandomSerialNumber() {
+function generateRandomSerialNumber(
+  networkName: string,
+  lockAddress: string,
+  keyId: string
+) {
   return {
-    serialNumber: `unloprot${Math.random()}`,
+    serialNumber: `up:${networkName}${lockAddress}${keyId}`,
   }
 }
 
@@ -68,7 +72,7 @@ export async function createAppleWalletPass(
         },
       },
       // Generate a random serial number for the pass
-      generateRandomSerialNumber()
+      generateRandomSerialNumber(networkName, lockAddress, keyId)
     )
 
     // Retrieve lock's image as thumbnail buffer
