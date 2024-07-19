@@ -91,6 +91,9 @@ export function ConfirmCrossChainPurchase({
       case 'ACTION_REJECTED':
         ToastHelper.error('Transaction rejected.')
         break
+      case 'INSUFFICIENT_FUNDS':
+        ToastHelper.error('Insufficient funds.')
+        break
       default:
         ToastHelper.error(message || error?.error?.message || error.message)
     }
