@@ -59,7 +59,7 @@ export const ClaimRefund = ({
 
   return (
     <>
-      <p>You attended this event are your wallet is eligible for a refund!</p>
+      <p>You attended this event and your wallet is eligible for a refund!</p>
       <Button onClick={claim} loading={claimRefund.isLoading}>
         Claim Refund
       </Button>
@@ -165,6 +165,8 @@ export const PastEvent = ({
     config: PaywallConfigType
   }
 }) => {
+  // Check here if the user has a ticket?
+  // If so, show ClaimRefundInfo
   if (event.attendeeRefund) {
     return (
       <Card className="grid gap-4 mt-5 md:mt-0">
