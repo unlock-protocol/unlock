@@ -59,7 +59,7 @@ export const ClaimRefund = ({
 
   return (
     <>
-      <p>You attended this event are your wallet is eligible for a refund!</p>
+      <p>You attended this event and your wallet is eligible for a refund!</p>
       <Button onClick={claim} loading={claimRefund.isLoading}>
         Claim Refund
       </Button>
