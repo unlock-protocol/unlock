@@ -70,6 +70,8 @@ export const arbitrum: NetworkConfig = {
   id: 42161,
   isTestNetwork: false,
   keyManagerAddress: '0x520294E736167303efa038205D4391b58261BC9c',
+  kickbackAddress: '0x62f155229fb60d793440b8c733c4C5937C626c1A',
+
   maxFreeClaimCost: 100,
   multisig: '0x310e9f9E3918a71dB8230cFCF32a083c7D9536d0',
   name: 'Arbitrum',
