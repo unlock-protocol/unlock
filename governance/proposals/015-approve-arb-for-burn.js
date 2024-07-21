@@ -165,7 +165,7 @@ module.exports = async ({
   # Approve ${amount} ARB to buy back and burn UDT
   
   ### Goal of the proposal
-   This proposal requests to use ${amount} ARB from the tokens given to Unlock Protocol DAO by ArbitrumDAO to buy back and burn UDT. If successful, we can later submit more proposal to approve more tokens.
+   This proposal requests to use ${amount} ARB from the tokens given to Unlock Protocol DAO by ArbitrumDAO to buy back and burn UDT. If successful, we can later submit more proposals to approve more tokens.
   
   #### Current situation of DAO's ARB Tokens
     - total: ${ethers.utils.formatUnits(balanceOf, decimals).toString()} ARB.
