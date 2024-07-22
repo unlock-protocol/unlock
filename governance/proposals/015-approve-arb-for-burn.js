@@ -80,7 +80,6 @@ const l1Provider = new ethers.providers.StaticJsonRpcProvider(mainnet.provider)
 const l2Provider = new ethers.providers.StaticJsonRpcProvider(arbitrum.provider)
 const amount = '23000'
 
-
 module.exports = async ({
   tokenAddressL2 = ARB_TOKEN_ADRESS_ON_L2,
   fromL1 = L1_TIMELOCK_CONTRACT,
@@ -197,7 +196,6 @@ module.exports = async ({
 
   console.log(proposalName)
   console.log(calls)
-
 
   return {
     proposalName,
