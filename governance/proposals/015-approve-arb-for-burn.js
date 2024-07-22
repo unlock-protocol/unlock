@@ -6,7 +6,7 @@ const { EthBridger, getL2Network } = require('@arbitrum/sdk')
 const { getBaseFee } = require('@arbitrum/sdk/dist/lib/utils/lib')
 const { mainnet, arbitrum } = require('@unlock-protocol/networks')
 
-const BURNER_CONTRACT = '0x52818DF6575d88Fd1AFBd63071078D6374c11F16 ' // Burner contract on Arbitrum
+const BURNER_CONTRACT = '0x52818DF6575d88Fd1AFBd63071078D6374c11F16' // Burner contract on Arbitrum
 const TIMELOCK_L2_ALIAS = '0x28ffDfB0A6e6E06E95B3A1f928Dc4024240bD87c' // Timelock Alias Address on L2
 const L1_TIMELOCK_CONTRACT = '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B' // Timelock Address mainnet
 
