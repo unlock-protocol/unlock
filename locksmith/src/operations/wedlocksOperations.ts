@@ -62,7 +62,7 @@ interface SendEmailProps {
   emailSender?: string
 }
 
-export enum emailTemplate {
+export enum EmailTemplate {
   verificationCode = 'nextAuthCode',
   welcome = 'welcome',
 }
@@ -148,7 +148,7 @@ export const sendEmail = async ({
 }
 
 export const sendSimpleEmail = async (
-  template: emailTemplate,
+  template: EmailTemplate,
   recipient: string,
   params: SimpleParams = {},
   attachments: SimpleAttachment[] = [],

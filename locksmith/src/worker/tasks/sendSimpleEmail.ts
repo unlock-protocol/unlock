@@ -1,12 +1,12 @@
 import { Task } from 'graphile-worker'
 import { z } from 'zod'
 import {
-  emailTemplate,
+  EmailTemplate,
   sendSimpleEmail,
 } from '../../operations/wedlocksOperations'
 
 const SimpleEmailPayload = z.object({
-  template: z.nativeEnum(emailTemplate),
+  template: z.nativeEnum(EmailTemplate),
   recipient: z.string().email(),
   params: z.any().default({}),
   attachments: z.array(z.any()).default([]),

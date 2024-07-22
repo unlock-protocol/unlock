@@ -12,7 +12,7 @@ import { z } from 'zod'
 import { generateVerificationCode } from '../utils/generateVerificationCode'
 import VerificationCodes from '../models/verificationCodes'
 import {
-  emailTemplate,
+  EmailTemplate,
   sendSimpleEmail,
 } from '../operations/wedlocksOperations'
 import { addJob } from '../worker/worker'
@@ -193,7 +193,7 @@ export const retrieveWaasUuid = async (
 
     // Send a welcome email
     await addJob('sendSimpleEmailJob', {
-      template: emailTemplate.welcome,
+      template: EmailTemplate.welcome,
       recipient: emailAddress,
     })
   }
@@ -466,7 +466,7 @@ export const sendVerificationCode = async (
       }
     }
 
-    sendSimpleEmail(emailTemplate.verificationCode, emailAddress, {
+    sendSimpleEmail(EmailTemplate.verificationCode, emailAddress, {
       code: verificationEntry.code,
     })
 
