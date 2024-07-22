@@ -8,8 +8,8 @@ import {
 const SimpleEmailPayload = z.object({
   template: z.nativeEnum(emailTemplate),
   recipient: z.string().email(),
-  params: z.any().default({}), // Assuming SimpleParams is compatible with z.any(), otherwise define its shape
-  attachments: z.array(z.any()).default([]), // Assuming SimpleAttachment is compatible with z.any(), otherwise define its shape
+  params: z.any().default({}),
+  attachments: z.array(z.any()).default([]),
   replyTo: z.string().email().optional().nullable(),
   emailSender: z.string().optional().nullable(),
 })
