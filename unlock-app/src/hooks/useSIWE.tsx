@@ -12,6 +12,7 @@ import {
 import { config } from '~/config/app'
 import ProviderContext from '~/contexts/ProviderContext'
 import { isInIframe } from '~/utils/iframe'
+import { signOut as nextSignOut } from 'next-auth/react'
 
 export type Status = 'loading' | 'error' | 'success' | 'rejected' | 'idle'
 
@@ -85,6 +86,8 @@ export const SIWEProvider = ({ children }: Props) => {
   const signOut = async () => {
     try {
       setStatus('loading')
+      // Before signing out, we need to revoke the token
+      await nextSignOut({ redirect: false })
       await signOutToken()
       await Promise.all([queryClient.invalidateQueries(), refetchSession()])
       setStatus('idle')

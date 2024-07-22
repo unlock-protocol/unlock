@@ -11,6 +11,7 @@ import KickbackAbi from '../../Settings/Components/Kickback/KickbackAbi'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useGetApprovedRefunds } from '~/hooks/useGetApprovedRefunds'
 import { useMemo } from 'react'
+import { EventLocksExplorerLinks } from './EventLocksExplorerLinks'
 
 export const ClaimRefund = ({
   refundProofAndValue,
@@ -175,6 +176,7 @@ export const PastEvent = ({
   }
   return (
     <Card className="grid gap-4 mt-5 md:mt-0">
+      <EventLocksExplorerLinks checkoutConfig={checkoutConfig} />
       <p className="text-lg">
         <MdAssignmentLate className="inline" />
         This event is over. It is not possible to register for it anymore.
