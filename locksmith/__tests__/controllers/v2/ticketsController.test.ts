@@ -56,7 +56,7 @@ vi.mock('@unlock-protocol/unlock-js', () => {
 
 vi.mock('../../../src/operations/wedlocksOperations', () => {
   return {
-    emailTemplate: vi.fn(),
+    EmailTemplate: vi.fn(),
     sendSimpleEmail: vi.fn().mockImplementation(() => {
       return true
     }),

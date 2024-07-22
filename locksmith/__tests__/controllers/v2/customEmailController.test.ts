@@ -16,7 +16,7 @@ const customEmailContent = `Custom Email Content`
 
 vi.mock('../../../src/operations/wedlocksOperations', () => {
   return {
-    emailTemplate: vi.fn(),
+    EmailTemplate: vi.fn(),
     sendSimpleEmail: vi.fn().mockImplementation(() => {
       return true
     }),

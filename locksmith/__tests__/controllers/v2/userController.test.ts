@@ -38,7 +38,7 @@ vi.mock('@coinbase/waas-server-auth', () => {
 
 vi.mock('../../../src/operations/wedlocksOperations', () => {
   return {
-    emailTemplate: vi.fn(),
+    EmailTemplate: vi.fn(),
     sendSimpleEmail: vi.fn().mockImplementation(() => {
       return true
     }),
