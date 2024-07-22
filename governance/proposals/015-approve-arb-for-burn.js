@@ -185,7 +185,6 @@ module.exports = async ({
     
     Thank you!
     `
-  
   const calls = [
     {
       contractAddress: inboxAddress,
