@@ -13,10 +13,8 @@ import { generateVerificationCode } from '../utils/generateVerificationCode'
 import VerificationCodes from '../models/verificationCodes'
 import {
   EmailTemplate,
-  sendEmail,
   sendSimpleEmail,
 } from '../operations/wedlocksOperations'
-import { addJob } from '../worker/worker'
 
 // Decoy users are cached for 15 minutes
 const cacheDuration = 60 * 15
@@ -193,12 +191,7 @@ export const retrieveWaasUuid = async (
     userUUID = newUserUUID
 
     // Send a welcome email
-    sendEmail({
-      recipient: emailAddress,
-      template: EmailTemplate.welcome.toString(),
-      failoverTemplate: EmailTemplate.debug.toString(),
-      network: 1,
-    })
+    sendSimpleEmail(EmailTemplate.welcome, emailAddress)
   }
 
   try {
