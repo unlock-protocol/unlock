@@ -85,7 +85,7 @@ const WalletlessRegistrationClaiming = ({
       </div>
 
       {claimResult && transactionStatus && (
-        <div className="m-auto mt-20 h-72 mb-36">
+        <div className="m-auto mt-10 pt-5 h-full mb-10">
           <MintingScreen
             mint={{
               network: network,
