@@ -1644,6 +1644,32 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
+    get:
+      operationId: getUserMetadata
+      security:
+        - User: ['user']
+
+      description: get user metadata for a lock.
+      parameters:
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/UserAddress'
+      responses:
+        200:
+          description: Returns user metadata if authenticated for a lock.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserMetadata'
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
   /v2/api/metadata/users:
     put:
       operationId: updateUsersMetadata
@@ -1776,6 +1802,89 @@ paths:
           $ref: '#/components/responses/400.BadRequest'
         404:
           $ref: '#/components/responses/404.NotFound'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/users/{emailAddress}/send-verification-code:
+    get:
+      operationId: sendVerificationCode
+      description: Sends a verification code to the user's email if the current code is expired or does not exist.
+      parameters:
+        - name: captcha
+          in: header
+          required: true
+          description: Recaptcha value to pass.
+          schema:
+            type: string
+        - name: emailAddress
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Email code sent successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        400:
+          $ref: '#/components/responses/400.BadRequest'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/users/{emailAddress}/verify-email-code:
+    post:
+      operationId: verifyEmailCode
+      description: Verifies the email code sent to the users email address.
+      parameters:
+        - name: emailAddress
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+      responses:
+        200:
+          description: Verification successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  token:
+                    type: string
+        400:
+          description: Missing parameters or invalid/expired verification code.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        404:
+          description: Verification code not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
         500:
           $ref: '#/components/responses/500.InternalError'
 
@@ -4494,5 +4603,50 @@ paths:
         400:
           $ref: '#/components/responses/400.Invalid'
 
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/pass/{network}/{lockAddress}/{keyId}/ios:
+    get:
+      operationId: generateAppleWalletPass
+      security:
+        - User: ['keyOwner']
+      description: Generate and return an Apple Wallet pass for a specified key associated with a lock.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+      responses:
+        200:
+          description: Returns the streamable generated Apple Wallet pass file.
+          content:
+            application/vnd.apple.pkpass:
+              schema:
+                type: string
+                format: binary
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/pass/{network}/{lockAddress}/{keyId}/android:
+    get:
+      operationId: generateGoogleWalletPass
+      security:
+        - User: ['keyOwner']
+      description: Generate and return a Google Wallet pass for a specified key associated with a lock.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+      responses:
+        200:
+          description: Returns the URL to the created wallet pass object.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  passObjectUrl:
+                    type: string
+                    nullable: false
         500:
           $ref: '#/components/responses/500.InternalError'

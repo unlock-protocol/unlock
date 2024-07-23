@@ -213,6 +213,12 @@ export function ConfirmCrypto({
         case 'ACTION_REJECTED':
           onError('Transaction rejected.')
           break
+        case 'INSUFFICIENT_FUNDS':
+          onError('Insufficient funds.')
+          break
+        case 'CALL_EXCEPTION':
+          onError('Transaction failed.')
+          break
         default:
           onError(error?.error?.message || error.message)
       }

@@ -358,7 +358,7 @@ export const CreateLockForm = ({
                   />
                 </div>
                 {errors?.keyPrice && (
-                  <span className="absolute text-xs text-red-700 ">
+                  <span className="text-xs text-red-700 ">
                     Please enter a positive number for the price
                   </span>
                 )}

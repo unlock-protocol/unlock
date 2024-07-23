@@ -29,6 +29,8 @@ type Lock @entity {
   createdAtBlock: BigInt
   "The timestamp of the block in which the last key was minted"
   lastKeyMintedAt: BigInt
+  "The timestamp of the block in which the last key was renewed"
+  lastKeyRenewedAt: BigInt
   "Address of the lock deployer"
   deployer: Bytes!
   "Number of receipts of lock"

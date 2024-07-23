@@ -1,99 +1,76 @@
-import { Box, Modal, Size } from '@unlock-protocol/ui'
-import QRCode from 'qrcode.react'
-import { createWalletPass, Platform } from '../../../services/ethpass'
-import { useAuth } from '~/contexts/AuthenticationContext'
+import { Box, Size } from '@unlock-protocol/ui'
+import {
+  generateAppleWalletPass,
+  generateGoogleWalletPass,
+  Platform,
+} from '../../../services/passService'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-
-interface ApplePassModalProps {
-  isOpen: boolean
-  setIsOpen: (state: boolean) => void
-  applePassUrl?: string
-}
-
-/**
- * Apple needs a modal to show a QR code
- * @param param0
- * @returns
- */
-export const ApplePassModal = ({
-  isOpen,
-  setIsOpen,
-  applePassUrl,
-}: ApplePassModalProps) => {
-  return (
-    <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-      {applePassUrl && (
-        <div className="flex flex-col items-center">
-          <p>
-            Please scan this device with your phone or{' '}
-            <a href={applePassUrl} className="underline">
-              click here to download it
-            </a>
-            .
-          </p>
-          <QRCode value={applePassUrl} size={256} includeMargin />
-        </div>
-      )}
-      {!applePassUrl && <p>Generating your pass...</p>}
-    </Modal>
-  )
-}
+import Image from 'next/image'
 
 interface AddToWalletProps {
-  children: React.ReactNode
+  platform: Platform
   as: React.ElementType
   network: number
   lockAddress: string
   tokenId: string
-  platform: Platform
-  handlePassUrl: (url: string) => void
+  handlePassUrl?: (url: string) => void
   disabled?: boolean
   active?: boolean
-  name: string
+  minimised?: boolean
   iconLeft?: JSX.Element
   size?: Size
   variant?: string
   className?: string
 }
 
-export const AddToDeviceWallet = ({
-  children,
+export const AddToPhoneWallet = ({
   as,
   lockAddress,
   tokenId,
   network,
-  name,
   handlePassUrl,
   platform,
+  minimised,
   ...rest
 }: AddToWalletProps) => {
-  const { account } = useAuth()
+  const walletConfig = {
+    [Platform.APPLE]: {
+      generatePass: generateAppleWalletPass,
+      imgSrc: `/images/illustrations/apple-wallet.svg`,
+      altText: 'Apple Wallet',
+      loadingMessage:
+        'Generating your Apple Wallet pass. This takes a few seconds.',
+    },
+    [Platform.GOOGLE]: {
+      generatePass: generateGoogleWalletPass,
+      imgSrc: `/images/illustrations/google-wallet.svg`,
+      altText: 'Google Wallet',
+      loadingMessage:
+        'Generating your Google Wallet pass. This takes a few seconds.',
+    },
+  }
+
+  const config = walletConfig[platform]
+
   const handleClick = async () => {
     const generate = async () => {
-      const passUrl = await createWalletPass({
-        lockAddress,
-        tokenId,
-        network,
-        signedByOwner: true,
-        platform,
-        name,
-        owner: account,
-      })
-      if (passUrl) {
+      const passUrl = await config.generatePass(lockAddress, network, tokenId)
+      if (platform === Platform.GOOGLE && handlePassUrl && passUrl) {
         handlePassUrl(passUrl)
       }
     }
 
     await ToastHelper.promise(generate(), {
-      loading: 'Generating a pass. This takes a few seconds.',
+      loading: config.loadingMessage,
       success: 'Successfully generated!',
-      error: `The pass could not generated. Please try again.`,
+      error: `Failed to generate your ${config.altText} pass. Please try again.`,
     })
   }
 
   return (
     <Box as={as} {...rest} onClick={handleClick}>
-      {children}
+      <Image width="16" height="16" alt={config.altText} src={config.imgSrc} />
+      {!minimised && `Add to my ${config.altText}`}
     </Box>
   )
 }

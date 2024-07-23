@@ -5,7 +5,7 @@ import {
 import SvgComponents from '../svg'
 import { ConnectButton } from './Custom'
 import { useLocalStorage } from '@rehooks/local-storage'
-import { MouseEventHandler, useState } from 'react'
+import { MouseEventHandler, useEffect, useState } from 'react'
 import { Button, Input } from '@unlock-protocol/ui'
 import { useForm } from 'react-hook-form'
 import { ConnectUnlockAccount } from './EmailAccount'
@@ -42,12 +42,7 @@ export const ConnectViaEmail = ({
     setError,
     formState: { errors, isSubmitting },
     watch,
-    setValue,
   } = useForm<UserDetails>()
-
-  if (email) {
-    setValue('email', email)
-  }
 
   const onSubmit = async (data: UserDetails) => {
     if (!data.email) return
@@ -77,7 +72,7 @@ export const ConnectViaEmail = ({
         <Input
           type="email"
           autoComplete="email"
-          placeholder="your@email.com"
+          placeholder={email ? email : 'your@email.com'}
           error={errors.email?.message}
           {...register('email', {
             required: {
@@ -148,6 +143,12 @@ export const ConnectWallet = ({
       setUserEmail(email)
     }
   }
+
+  useEffect(() => {
+    if (!email) {
+      setUserEmail('')
+    }
+  }, [email])
 
   return (
     <div className="space-y-4">

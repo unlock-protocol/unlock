@@ -191,7 +191,7 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
   })
 
   // show gas cost only when custom credit card price is present
-  const gasCosts = creditCardPrice ? undefined : totalPricing?.gasCost
+  const gasCosts = creditCardPrice ? totalPricing?.gasCost : undefined
 
   const { mutateAsync: capturePayment } = useCapturePayment({
     network: lock!.network,
