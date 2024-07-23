@@ -18,6 +18,7 @@ export default async function (
   {
     lockAddress,
     tokenId,
+    owner,
     keyPrice,
     erc20Address,
     decimals,
@@ -49,9 +50,15 @@ export default async function (
   }
 
   let actualAmount
+
+  // We might not have the keyPrice, in which case, we need to retrieve from the the lock!
   if (!keyPrice) {
-    // We might not have the keyPrice, in which case, we need to retrieve from the the lock!
-    actualAmount = await lockContract.keyPrice()
+    console.log('owner', owner)
+    if (owner) {
+      actualAmount = await lockContract.purchasePriceFor(owner, referrer, data)
+    } else {
+      actualAmount = await lockContract.keyPrice()
+    }
   } else {
     actualAmount = await formatKeyPrice(
       keyPrice,

@@ -28,19 +28,37 @@ export default async function getPurchaseKeysArguments({
   // we parse by default a length corresponding to the owners length
   const defaultArray = Array(owners.length).fill(null)
 
+  const data = (_data || defaultArray).map((d) => d || '0x')
+
   const keyPrices = await Promise.all(
-    (_keyPrices || defaultArray).map(async (kp) => {
+    Array.from({ length: owners.length }).map(async (_, index) => {
+      const kp = _keyPrices && _keyPrices[index]
+      const owner = owners[index]
+      let referrer = _referrers && _referrers[index]
+      let d = data[index]
+
+      if (!referrer) {
+        referrer = ZERO
+      }
+
+      if (!d) {
+        d = '0x'
+      }
+
       if (!kp) {
-        // We might not have the keyPrice, in which case, we need to retrieve from the the lock!
-        // TODO: consider using `keyPurchasePriceFor`
-        return await lockContract.keyPrice()
+        // We might not have the keyPrice, in which case, we need to retrieve from the lock!
+        if (owner) {
+          console.log('owner', owner)
+          return await lockContract.purchasePriceFor(owner, referrer, _data)
+        } else {
+          return await lockContract.keyPrice()
+        }
       }
       return formatKeyPrice(kp, erc20Address, decimals, this.provider)
     })
   )
   const keyManagers = (_keyManagers || defaultArray).map((km) => km || ZERO)
   const referrers = (_referrers || defaultArray).map((km) => km || ZERO)
-  const data = (_data || defaultArray).map((d) => d || '0x')
 
   if (
     !(
