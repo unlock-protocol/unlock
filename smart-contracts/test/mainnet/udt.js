@@ -14,7 +14,7 @@ const {
   MULTISIG_ADDRESS_OWNER,
 } = require('../helpers')
 
-describe('UnlockDiscountToken on mainnet', async () => {
+describe('UnlockDiscountToken on mainnet', () => {
   let udt
   const chainId = 1 // mainnet
   let unlockAddress
@@ -63,7 +63,9 @@ describe('UnlockDiscountToken on mainnet', async () => {
   })
 
   describe('mint', () => {
-    const amount = ethers.hexStripZeros(ethers.parseEther('1000'))
+    const amount = ethers.stripZerosLeft(
+      ethers.toBeHex(ethers.parseEther('1000'))
+    )
 
     it('minters can not be added anymore', async () => {
       const [, minter] = await ethers.getSigners()
