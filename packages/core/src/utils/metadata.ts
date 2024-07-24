@@ -10,6 +10,7 @@ export interface Ticket {
   event_end_date?: string
   event_end_time?: string
   event_address?: string
+  event_location?: string
   event_url?: string
   event_timezone?: string
   event_cover_image?: string
@@ -220,6 +221,13 @@ export const formDataToMetadata = ({
     metadata.attributes.push({
       trait_type: 'event_address',
       value: ticket.event_address,
+    })
+  }
+
+  if (ticket?.event_location) {
+    metadata.attributes.push({
+      trait_type: 'event_location',
+      value: ticket.event_location,
     })
   }
 
