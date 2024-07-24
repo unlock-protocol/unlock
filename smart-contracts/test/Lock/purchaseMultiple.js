@@ -90,6 +90,22 @@ describe('Lock / purchase multiple keys at once', () => {
             isErc20 ? 'INSUFFICIENT_ERC20_VALUE' : 'INSUFFICIENT_VALUE'
           )
         })
+
+        it('reverts when wrong recepients counts are specified', async () => {
+          await reverts(
+            lock.connect(keyOwners[1]).purchase(
+              keyOwners.map(() => ethers.parseUnits('0.005', 'ether')),
+              keyOwners.map(({ address }) => address),
+              keyOwners.map(() => ADDRESS_ZERO),
+              keyOwners.map(() => ADDRESS_ZERO).slice(0, -1),
+              keyOwners.map(() => '0x'),
+              {
+                value: isErc20 ? 0 : keyPrice * BigInt(keyOwners.length - 2),
+              }
+            ),
+            'INVALID_LENGTH'
+          )
+        })
       })
     })
   })
