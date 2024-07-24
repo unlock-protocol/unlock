@@ -331,6 +331,7 @@ export const EventObject = z.object({
   name: z.string(),
   slug: z.string(),
   image: z.string().url(),
+  layout: z.string(),
   description: z.string(),
   requiresApproval: z.boolean(),
   hideRemaining: z.boolean().optional(), // This should rather be a checkoutConfig property.

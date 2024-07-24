@@ -50,6 +50,7 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
       description: event.description,
       image: event.image,
       ticket: event.ticket,
+      layout: event.layout,
     },
   })
   const [mapAddress, setMapAddress] = useState(
@@ -73,6 +74,7 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
     name: string
     description: string
     image: string
+    layout: string
   }) => {
     await ToastHelper.promise(
       locksmith.saveEventData({
@@ -95,7 +97,7 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
   return (
     <form className="grid grid-cols-1 gap-6" onSubmit={handleSubmit(save)}>
       <SettingCard
-        label="Name, description, and image"
+        label="Name, description, layout and image"
         description="Change the name description and image for your event!"
       >
         <div className="flex gap-4 flex-col md:flex-row">
@@ -159,6 +161,31 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
               }
               rows={getValues('description').split('\n').length + 2}
               error={errors.description?.message as string}
+            />
+            <Controller
+              name="layout"
+              control={control}
+              render={({ field: { onChange, value } }) => {
+                return (
+                  <Select
+                    onChange={(newValue: any) => {
+                      console.log(newValue)
+                      onChange({
+                        target: {
+                          value: newValue,
+                        },
+                      })
+                    }}
+                    options={[
+                      { label: 'Default', value: 'default' },
+                      { label: 'Bannerless', value: 'bannerless' },
+                    ]}
+                    label="Layout"
+                    defaultValue={value ? value : 'default'}
+                    description="Choose the layout for your event page."
+                  />
+                )
+              }}
             />
           </div>
         </div>
