@@ -4,7 +4,15 @@ const {
   createLockCalldata,
   getEvent,
 } = require('@unlock-protocol/hardhat-helpers')
-const { ADDRESS_ZERO, reverts } = require('../helpers')
+const {
+  ADDRESS_ZERO,
+  reverts,
+  upgradeUpgreadableContract,
+  deployUpgreadableContract,
+  getContractFactoryAtVersion,
+  decodeError,
+} = require('../helpers')
+const { ZeroAddress } = require('ethers')
 // lock args
 const args = [
   60 * 60 * 24 * 30, // expirationDuration: 30 days
@@ -108,6 +116,48 @@ describe('Unlock / createUpgradeableLockAtVersion', () => {
     await reverts(
       unlock.createUpgradeableLockAtVersion(calldata, 3),
       'MISSING_LOCK_TEMPLATE'
+    )
+  })
+})
+
+describe('Unlock / createUpgradeableLockAtVersion failing when proxyAdmin is not Set', () => {
+  let unlock
+  let calldata
+  let unlockOwner
+  let lockOwner
+  let Unlock9
+  let UnlockLatest
+  let proxyAdmin
+
+  beforeEach(async () => {
+    ;[unlockOwner, lockOwner] = await ethers.getSigners()
+    Unlock9 = await getContractFactoryAtVersion('Unlock', 9)
+    UnlockLatest = await ethers.getContractFactory(
+      'contracts/Unlock.sol:Unlock'
+    )
+    ;({ contract: unlock, proxyAdmin } = await deployUpgreadableContract(
+      Unlock9,
+      [await unlockOwner.getAddress()]
+    ))
+
+    calldata = await createLockCalldata({
+      args,
+      from: await lockOwner.getAddress(),
+    })
+  })
+
+  it('reverts if proxyAdmin is not set', async () => {
+    unlock = await upgradeUpgreadableContract(
+      await unlock.getAddress(),
+      await proxyAdmin.getAddress(),
+      UnlockLatest
+    )
+
+    expect(await unlock.unlockVersion()).to.equal(13n)
+
+    await reverts(
+      unlock.createUpgradeableLockAtVersion(calldata, 3),
+      'MISSING_PROXY_ADMIN'
     )
   })
 })

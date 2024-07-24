@@ -4,7 +4,7 @@ const { deployContracts, reverts, getBalance } = require('../helpers')
 
 const oneEth = ethers.parseEther('1')
 
-describe('Unlock / receive', async () => {
+describe('Unlock / receive', () => {
   let unlock, signer
 
   before(async () => {
@@ -30,5 +30,32 @@ describe('Unlock / receive', async () => {
         'Unlock__INVALID_AMOUNT'
       )
     })
+  })
+})
+
+describe('Unlock / networkBaseFee', () => {
+  let unlock, signer
+
+  before(async () => {
+    ;[signer] = await ethers.getSigners()
+    ;({ unlock } = await deployContracts())
+  })
+
+  it('returns the network base fee', async () => {
+    const networkBaseFee = await unlock.networkBaseFee()
+    assert.equal(networkBaseFee, 0)
+  })
+})
+
+describe('Unlock / recordConsumedDiscount', () => {
+  let unlock, signer
+
+  before(async () => {
+    ;[signer] = await ethers.getSigners()
+    ;({ unlock } = await deployContracts())
+  })
+
+  it('revert if caller is not registered lock', async () => {
+    await reverts(unlock.recordConsumedDiscount(0, 0), 'ONLY_LOCKS')
   })
 })

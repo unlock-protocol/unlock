@@ -1,11 +1,18 @@
 const assert = require('assert')
 const { ethers, upgrades } = require('hardhat')
 const contracts = require('@unlock-protocol/contracts')
-const { ADDRESS_ZERO, reverts } = require('../helpers')
+const {
+  ADDRESS_ZERO,
+  reverts,
+  getContractFactoryAtVersion,
+  deployUpgreadableContract,
+  upgradeUpgreadableContract,
+} = require('../helpers')
 const {
   createLockCalldata,
   getEvent,
 } = require('@unlock-protocol/hardhat-helpers')
+const { ZeroAddress } = require('ethers')
 
 describe('upgradeLock (deploy template with Proxy)', () => {
   let unlock
@@ -290,5 +297,36 @@ describe('upgrades', async () => {
       assert.equal(await lock.maxNumberOfKeys(), maxKeys)
       assert.equal(await lock.tokenAddress(), currency)
     }
+  })
+})
+
+describe('Unlock / upgradeLock failing when proxyAdmin is not Set', () => {
+  let unlock
+  let unlockOwner
+  let lockOwner
+  let Unlock9
+  let UnlockLatest
+  let proxyAdmin
+
+  beforeEach(async () => {
+    ;[unlockOwner, lockOwner] = await ethers.getSigners()
+    Unlock9 = await getContractFactoryAtVersion('Unlock', 9)
+    UnlockLatest = await ethers.getContractFactory(
+      'contracts/Unlock.sol:Unlock'
+    )
+    ;({ contract: unlock, proxyAdmin } = await deployUpgreadableContract(
+      Unlock9,
+      [await unlockOwner.getAddress()]
+    ))
+  })
+
+  it('reverts if proxyAdmin is not set', async () => {
+    unlock = await upgradeUpgreadableContract(
+      await unlock.getAddress(),
+      await proxyAdmin.getAddress(),
+      UnlockLatest
+    )
+
+    await reverts(unlock.upgradeLock(ZeroAddress, 3), 'MISSING_PROXY_ADMIN')
   })
 })
