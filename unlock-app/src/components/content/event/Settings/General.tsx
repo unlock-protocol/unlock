@@ -34,7 +34,6 @@ interface GeneralProps {
 const today = dayjs().format('YYYY-MM-DD')
 
 export const General = ({ event, checkoutConfig }: GeneralProps) => {
-  const [isInPerson, setIsInPerson] = useState(true)
   const {
     register,
     getValues,
@@ -52,6 +51,9 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
       ticket: event.ticket,
     },
   })
+  const [isInPerson, setIsInPerson] = useState<boolean>(
+    encodeURIComponent(getValues('ticket.event_is_in_person')) === 'true'
+  )
   const [mapAddress, setMapAddress] = useState(
     encodeURIComponent(getValues('ticket.event_address') || 'Ethereum')
   )
@@ -298,8 +300,10 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
                     title="In person"
                     enabled={isInPerson}
                     setEnabled={setIsInPerson}
-                    onChange={() => {
+                    onChange={(enabled) => {
+                      setValue('ticket.event_is_in_person', enabled.toString())
                       setValue('ticket.event_address', '')
+                      setValue('ticket.event_location', '')
                     }}
                   />
                 </div>

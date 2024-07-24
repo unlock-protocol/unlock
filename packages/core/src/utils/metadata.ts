@@ -9,6 +9,7 @@ export interface Ticket {
   event_start_time?: string
   event_end_date?: string
   event_end_time?: string
+  event_is_in_person?: string
   event_address?: string
   event_location?: string
   event_url?: string
@@ -217,17 +218,36 @@ export const formDataToMetadata = ({
     })
   }
 
+  if (ticket?.event_is_in_person) {
+    metadata.attributes.push({
+      trait_type: 'event_is_in_person',
+      value: ticket.event_is_in_person,
+    })
+  }
+
+  // We should set empty string if the value is not provided
   if (ticket?.event_address) {
     metadata.attributes.push({
       trait_type: 'event_address',
       value: ticket.event_address,
     })
+  } else {
+    metadata.attributes.push({
+      trait_type: 'event_address',
+      value: '',
+    })
   }
 
+  // We should set empty string if the value is not provided
   if (ticket?.event_location) {
     metadata.attributes.push({
       trait_type: 'event_location',
       value: ticket.event_location,
+    })
+  } else {
+    metadata.attributes.push({
+      trait_type: 'event_location',
+      value: '',
     })
   }
 
