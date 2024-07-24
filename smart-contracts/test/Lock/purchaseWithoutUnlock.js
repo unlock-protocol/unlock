@@ -1,6 +1,5 @@
 const assert = require('assert')
 const { ethers, upgrades } = require('hardhat')
-console.log(upgrades)
 const {
   createLockCalldata,
   getEvent,
