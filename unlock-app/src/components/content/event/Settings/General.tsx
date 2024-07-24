@@ -167,6 +167,7 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
               control={control}
               render={({ field: { onChange, value } }) => {
                 return (
+                  // TODO: Create seperate setting with layout preview
                   <Select
                     onChange={(newValue: any) => {
                       console.log(newValue)
