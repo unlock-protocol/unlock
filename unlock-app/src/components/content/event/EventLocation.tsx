@@ -10,7 +10,6 @@ export const EventLocation = ({ event }: { event: Partial<Metadata> }) => {
   if (event.ticket?.event_address.startsWith('http')) {
     inPerson = false
   }
-  console.log('Event', event)
   return (
     <EventDetail label="Location" icon={inPerson ? MapPinIcon : ZoomIcon}>
       <div
