@@ -487,60 +487,59 @@ const MultipleReceiptBox = ({
 
   return (
     <div className="relative border border-gray-200 rounded-2xl w-full max-w-[490px]">
-      <div
-        className="relative w-full max-w-[490px] p-6 bg-white"
-        ref={componentRef}
-      >
-        {receipts.length > 0 &&
-          receipts.map((receipt: Receipt, i) => (
-            <div
-              key={i}
-              className="mb-6 pb-6 bg-white border-b-2 border-gray-200"
-            >
-              <a href={getTransactionUrl(receipt.id)} target="_blank">
-                <div className="flex items-center gap-2 mb-6">
-                  <span>{`Transaction Hash:`} </span>
-                  <span className="font-semibold text-brand-ui-primary">
-                    {addressMinify(receipt.id)}
-                  </span>
-                  <ExternalLinkIcon
-                    size={20}
-                    className="text-brand-ui-primary"
-                  />
-                </div>
-              </a>
-
-              <div className="grid w-full max-w-lg gap-4">
-                <div className="grid w-full">
-                  <div className="flex flex-col-reverse gap-4 mb-6 sm:mb-0 sm:flex-row sm:justify-between">
-                    <Supplier supplier={receipt.supplierAddress} />
-                    <PurchaseDetails
-                      receiptNumber={receipt.receiptNumber}
-                      transactionDate={getTransactionDate(
-                        Number(receipt.timestamp)
-                      )}
-                      hash={receipt.id}
+      <div ref={componentRef} className="flex justify-center">
+        <div className="relative w-full max-w-[490px] p-6 bg-white">
+          {receipts.length > 0 &&
+            receipts.map((receipt: Receipt, i) => (
+              <div
+                key={i}
+                className="mb-6 pb-6 bg-white border-b-2 border-gray-200"
+              >
+                <a href={getTransactionUrl(receipt.id)} target="_blank">
+                  <div className="flex items-center gap-2 mb-6">
+                    <span>{`Transaction Hash:`} </span>
+                    <span className="font-semibold text-brand-ui-primary">
+                      {addressMinify(receipt.id)}
+                    </span>
+                    <ExternalLinkIcon
+                      size={20}
+                      className="text-brand-ui-primary"
                     />
                   </div>
-                  <h2 className="text-lg font-bold text-brand-ui-primary">
-                    Bill to:
-                  </h2>
-                  <p>Wallet: {addressMinify(receipt.recipient)}</p>
+                </a>
 
-                  <ReceiptDetails
-                    network={network}
-                    tokenSymbol={tokenSymbol}
-                    hash={receipt.id}
-                    amount={Number(receipt.amountTransferred)}
-                    currencyContractAddress={receipt.tokenAddress}
-                    isCancelReceipt={receipt.payer == lockAddress}
-                  />
+                <div className="grid w-full max-w-lg gap-4">
+                  <div className="grid w-full">
+                    <div className="flex flex-col-reverse gap-4 mb-6 sm:mb-0 sm:flex-row sm:justify-between">
+                      <Supplier supplier={receipt.supplierAddress} />
+                      <PurchaseDetails
+                        receiptNumber={receipt.receiptNumber}
+                        transactionDate={getTransactionDate(
+                          Number(receipt.timestamp)
+                        )}
+                        hash={receipt.id}
+                      />
+                    </div>
+                    <h2 className="text-lg font-bold text-brand-ui-primary">
+                      Bill to:
+                    </h2>
+                    <p>Wallet: {addressMinify(receipt.recipient)}</p>
+
+                    <ReceiptDetails
+                      network={network}
+                      tokenSymbol={tokenSymbol}
+                      hash={receipt.id}
+                      amount={Number(receipt.amountTransferred)}
+                      currencyContractAddress={receipt.tokenAddress}
+                      isCancelReceipt={receipt.payer == lockAddress}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        <div className="mt-4 pb-6">
-          <PoweredByUnlock />
+            ))}
+          <div className="mt-4 pb-6">
+            <PoweredByUnlock />
+          </div>
         </div>
       </div>
 
