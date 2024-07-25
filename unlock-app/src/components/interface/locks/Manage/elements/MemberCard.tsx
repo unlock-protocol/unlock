@@ -175,7 +175,6 @@ export const MemberCard = ({
       disabled={!isManager}
       content={MemberInfo ? <MemberInfo /> : <MemberInfoDefault />}
     >
-      <div></div>
       {MetadataCard ? (
         MetadataCard
       ) : (
