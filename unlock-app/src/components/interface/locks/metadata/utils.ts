@@ -9,7 +9,6 @@ export interface Ticket {
   event_start_time?: string
   event_end_date?: string
   event_end_time?: string
-  event_is_in_person?: string
   event_address?: string
   event_location?: string
   event_url?: string

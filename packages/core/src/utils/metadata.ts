@@ -218,13 +218,6 @@ export const formDataToMetadata = ({
     })
   }
 
-  if (ticket?.event_is_in_person) {
-    metadata.attributes.push({
-      trait_type: 'event_is_in_person',
-      value: ticket.event_is_in_person,
-    })
-  }
-
   // We should set empty string if the value is not provided
   if (ticket?.event_address) {
     metadata.attributes.push({
