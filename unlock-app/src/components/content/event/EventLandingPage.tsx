@@ -69,7 +69,7 @@ const features = [
       'Volunteers or door staff can check attendees in with just a smartphone, and ensure tickets aren’t transferred or reused once someone has come through the door.',
   },
   {
-    image: '/images/illustrations/events/reduce.jpg',
+    image: '/images/illustrations/events/imgoing.svg',
     name: 'Increase attendance rates up to 90%',
     description:
       '“I’m Going!” commitment feature requires attendees to stake a small amount of money when RSVPing for free events which they get as a “kickback” if they attend, while no-shows forfeit their commitment.',
