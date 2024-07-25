@@ -457,16 +457,12 @@ export const sendVerificationCode = async (
     }
 
     await sendEmail({
-      network: 1,
       template: 'nextAuthCode',
       failoverTemplate: 'debug',
       recipient: emailAddress,
+      // @ts-expect-error object incomplete
       params: {
         code: verificationEntry.code,
-        keyId: '1',
-        network: '1',
-        lockName: '1',
-        lockAddress: ZeroAddress,
       },
     })
 
