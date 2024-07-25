@@ -3,7 +3,7 @@ import StripeOperations from '../operations/stripeOperations'
 import * as Normalizer from '../utils/normalizer'
 import UserOperations from '../operations/userOperations'
 import logger from '../logger'
-import { ethers } from 'ethers'
+import { ethers, ZeroAddress } from 'ethers'
 import { MemoryCache } from 'memory-cache-node'
 import { issueUserToken } from '@coinbase/waas-server-auth'
 import config from '../config/config'
@@ -13,6 +13,7 @@ import { generateVerificationCode } from '../utils/generateVerificationCode'
 import VerificationCodes from '../models/verificationCodes'
 import {
   emailTemplate,
+  sendEmail,
   sendSimpleEmail,
 } from '../operations/wedlocksOperations'
 
@@ -189,6 +190,18 @@ export const retrieveWaasUuid = async (
       selectedProvider as UserAccountType
     )
     userUUID = newUserUUID
+    await sendEmail({
+      network: 1,
+      template: 'welcome',
+      failoverTemplate: 'debug',
+      recipient: emailAddress,
+      params: {
+        keyId: '1',
+        network: '1',
+        lockName: '1',
+        lockAddress: ZeroAddress,
+      },
+    })
   }
 
   try {
