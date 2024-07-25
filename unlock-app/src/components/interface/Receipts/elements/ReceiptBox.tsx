@@ -6,7 +6,7 @@ import {
   PriceFormatter,
 } from '@unlock-protocol/ui'
 import ReactToPrint from 'react-to-print'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { PoweredByUnlock } from '../../checkout/PoweredByUnlock'
 import { addressMinify } from '~/utils/strings'
 import { UpdatePurchaserDrawer } from './UpdatePurchaserDrawer'
@@ -20,11 +20,38 @@ import { useQuery } from '@tanstack/react-query'
 import { useGetPrice } from '~/hooks/usePrice'
 import Link from 'next/link'
 import { HiOutlineExternalLink as ExternalLinkIcon } from 'react-icons/hi'
+import { locksmith } from '~/config/locksmith'
+
+interface SingleReceiptBoxProps {
+  lockAddress: string
+  network: number
+  hash: string
+}
+
+interface MultipleReceiptBoxProps {
+  lockAddress: string
+  network: number
+}
 
 interface ReceiptBoxProps {
   lockAddress: string
   network: number
-  hash: string
+  hash?: string
+}
+
+interface Receipt {
+  id: string
+  receiptNumber: string
+  timestamp: string
+  sender: string
+  payer: string
+  recipient: string
+  lockAddress: string
+  tokenAddress: string
+  gasTotal: string
+  amountTransferred: string
+  network: number
+  supplierAddress: string
 }
 
 const Address = ({
@@ -62,7 +89,173 @@ const NotAuthorizedBar = () => {
   )
 }
 
-export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
+const PurchaseDetails = ({
+  receiptNumber,
+  transactionDate,
+  hash,
+}: {
+  receiptNumber: string
+  transactionDate: string
+  hash: string
+}) => {
+  return (
+    <div className="grid gap-2">
+      <Detail label="Receipt Number">#{receiptNumber}</Detail>
+      <Detail label="Transaction Date">{transactionDate}</Detail>
+      <Detail label="Transaction Hash">{addressMinify(hash)}</Detail>
+    </div>
+  )
+}
+
+const ReceiptDetails = ({
+  tokenSymbol,
+  network,
+  amount,
+  currencyContractAddress,
+  hash,
+  isCancelReceipt,
+  supplier = null,
+}: {
+  tokenSymbol: string | null
+  network: number
+  amount: number
+  currencyContractAddress: string
+  hash: string
+  isCancelReceipt: boolean
+  supplier?: any
+}) => {
+  const symbol = tokenSymbol || networks[network]?.nativeCurrency?.symbol
+
+  const { data: receiptPrice } = useGetPrice({
+    network,
+    amount,
+    currencyContractAddress,
+    hash,
+  })
+  const multiplier = isCancelReceipt ? -1 : 1
+
+  const vatRatePercentage = (supplier?.vatBasisPointsRate ?? 0) / 100
+  const subtotal =
+    (multiplier * receiptPrice?.total) / (1 + vatRatePercentage / 100)
+  const vatTotalInAmount = Number((subtotal * vatRatePercentage) / 100)
+
+  return (
+    <div className="grid gap-2 mt-4">
+      <div className="flex flex-col gap-4">
+        <div className="grid grid-cols-3 gap-4 pb-2 border-b border-gray-400 last-of-type:border-none">
+          <div className="col-span-full">
+            <h2 className="text-lg font-bold text-brand-ui-primary">
+              Service performed:
+            </h2>
+            {isCancelReceipt
+              ? 'NFT membership canceled'
+              : supplier?.servicePerformed || 'NFT membership'}
+          </div>
+          <div className="flex flex-col w-full gap-1 mt-5 md:ml-auto md:w-1/2 col-span-full">
+            <h2 className="text-lg font-bold md:ml-auto text-brand-ui-primary">
+              Amount
+            </h2>
+            <div className="grid gap-1">
+              {vatRatePercentage > 0 && (
+                <>
+                  <Detail label="Subtotal" inline>
+                    {`${subtotal.toFixed(2)} ${symbol}`}
+                  </Detail>
+                  <Detail label={`VAT (${vatRatePercentage}%)`} inline>
+                    {vatTotalInAmount.toFixed(2)} {symbol}
+                  </Detail>
+                </>
+              )}
+              <Detail label="TOTAL" labelSize="medium" inline>
+                <PriceFormatter
+                  price={(
+                    multiplier * parseFloat(receiptPrice?.total)
+                  ).toString()}
+                />{' '}
+                {symbol}
+              </Detail>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const Purchaser = ({
+  isCancelReceipt,
+  purchaser,
+  purchaserDrawer,
+  setPurchaserDrawer,
+  isPurchaser,
+  disabledInput,
+  receiptDetails,
+}: {
+  isCancelReceipt: boolean
+  purchaser: any
+  purchaserDrawer: boolean
+  setPurchaserDrawer: (purchaserDrawer: boolean) => void
+  isPurchaser: boolean
+  disabledInput: boolean
+  receiptDetails: any
+}) => {
+  return (
+    <div className="grid gap-2">
+      <div className="flex items-center gap-2">
+        <h2 className="text-lg font-bold text-brand-ui-primary">
+          {isCancelReceipt ? 'Refunded to:' : 'Bill to:'}
+        </h2>
+        {isPurchaser && (
+          <Button
+            onClick={() => setPurchaserDrawer(!purchaserDrawer)}
+            className="print:hidden"
+            size="tiny"
+            disabled={disabledInput}
+            variant="outlined-primary"
+          >
+            {purchaser ? 'Edit' : 'Add details'}
+          </Button>
+        )}
+      </div>
+      <div className="flex flex-col gap-1">
+        <span className="text-lg font-semibold">{purchaser?.businessName}</span>
+        {purchaser?.email && (
+          <span className="text-base">Email: {purchaser?.email}</span>
+        )}
+        <span className="text-base">
+          Wallet:{' '}
+          {isCancelReceipt
+            ? receiptDetails?.recipient?.length > 0
+              ? addressMinify(receiptDetails?.recipient)
+              : ''
+            : receiptDetails?.payer?.length > 0
+              ? addressMinify(receiptDetails?.payer)
+              : ''}
+        </span>
+        <span className="text-base">{purchaser?.fullname}</span>
+        <Address {...purchaser} />
+      </div>
+    </div>
+  )
+}
+
+const Supplier = ({ supplier }: { supplier: any }) => {
+  return (
+    <div className="grid gap-2">
+      <div className="flex flex-col gap-1">
+        <span className="text-lg font-semibold">{supplier?.supplierName}</span>
+        <span className="text-base">{supplier?.vat}</span>
+        <Address {...supplier} />
+      </div>
+    </div>
+  )
+}
+
+const SingleReceiptBox = ({
+  lockAddress,
+  hash,
+  network,
+}: SingleReceiptBoxProps) => {
   const { account } = useAuth()
 
   const [purchaserDrawer, setPurchaserDrawer] = useState(false)
@@ -126,132 +319,6 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
   ]
     .filter((z: string) => !!z)
     .join('-')
-
-  const PurchaseDetails = () => {
-    return (
-      <div className="grid gap-2">
-        <Detail label="Receipt Number">#{receiptNumber}</Detail>
-        <Detail label="Transaction Date">{transactionDate}</Detail>
-        <Detail label="Transaction Hash">{addressMinify(hash)}</Detail>
-      </div>
-    )
-  }
-
-  const ReceiptDetails = () => {
-    const symbol = tokenSymbol || networks[network]?.nativeCurrency?.symbol
-
-    const { data: receiptPrice } = useGetPrice({
-      network,
-      amount: receiptDetails?.amountTransferred || 0,
-      currencyContractAddress: receiptDetails?.tokenAddress,
-      hash,
-    })
-    const multiplier = isCancelReceipt ? -1 : 1
-
-    const vatRatePercentage = (supplier?.vatBasisPointsRate ?? 0) / 100
-    const subtotal =
-      (multiplier * receiptPrice?.total) / (1 + vatRatePercentage / 100)
-    const vatTotalInAmount = Number((subtotal * vatRatePercentage) / 100)
-
-    return (
-      <div className="grid gap-2 mt-4">
-        <div className="flex flex-col gap-4">
-          <div className="grid grid-cols-3 gap-4 pb-2 border-b border-gray-400 last-of-type:border-none">
-            <div className="col-span-full">
-              <h2 className="text-lg font-bold text-brand-ui-primary">
-                Service performed:
-              </h2>
-              {isCancelReceipt
-                ? 'NFT membership canceled'
-                : supplier?.servicePerformed || 'NFT membership'}
-            </div>
-            <div className="flex flex-col w-full gap-1 mt-5 md:ml-auto md:w-1/2 col-span-full">
-              <h2 className="text-lg font-bold md:ml-auto text-brand-ui-primary">
-                Amount
-              </h2>
-              <div className="grid gap-1">
-                {vatRatePercentage > 0 && (
-                  <>
-                    <Detail label="Subtotal" inline>
-                      {`${subtotal.toFixed(2)} ${symbol}`}
-                    </Detail>
-                    <Detail label={`VAT (${vatRatePercentage}%)`} inline>
-                      {vatTotalInAmount.toFixed(2)} {symbol}
-                    </Detail>
-                  </>
-                )}
-                <Detail label="TOTAL" labelSize="medium" inline>
-                  <PriceFormatter
-                    price={(
-                      multiplier * parseFloat(receiptPrice?.total)
-                    ).toString()}
-                  />{' '}
-                  {symbol}
-                </Detail>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  const Purchaser = () => {
-    return (
-      <div className="grid gap-2">
-        <div className="flex items-center gap-2">
-          <h2 className="text-lg font-bold text-brand-ui-primary">
-            {isCancelReceipt ? 'Refunded to:' : 'Bill to:'}
-          </h2>
-          {isPurchaser && (
-            <Button
-              onClick={() => setPurchaserDrawer(!purchaserDrawer)}
-              className="print:hidden"
-              size="tiny"
-              disabled={disabledInput}
-              variant="outlined-primary"
-            >
-              {purchaser ? 'Edit' : 'Add details'}
-            </Button>
-          )}
-        </div>
-        <div className="flex flex-col gap-1">
-          <span className="text-lg font-semibold">
-            {purchaser?.businessName}
-          </span>
-          {purchaser?.email && (
-            <span className="text-base">Email: {purchaser?.email}</span>
-          )}
-          <span className="text-base">
-            Wallet:{' '}
-            {isCancelReceipt
-              ? receiptDetails?.recipient?.length > 0
-                ? addressMinify(receiptDetails?.recipient)
-                : ''
-              : receiptDetails?.payer?.length > 0
-                ? addressMinify(receiptDetails?.payer)
-                : ''}
-          </span>
-          <span className="text-base">{purchaser?.fullname}</span>
-          <Address {...purchaser} />
-        </div>
-      </div>
-    )
-  }
-
-  const Supplier = () => {
-    return (
-      <div className="grid gap-2">
-        <div className="flex flex-col gap-1">
-          <span className="text-lg font-semibold">
-            {supplier?.supplierName}
-          </span>
-          <span className="text-base">{supplier?.vat}</span>
-          <Address {...supplier} />
-        </div>
-      </div>
-    )
-  }
 
   const componentRef = useRef<any>()
 
@@ -320,11 +387,30 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
               ref={componentRef}
             >
               <div className="flex flex-col-reverse gap-4 mb-4 md:flex-row md:mb-0 md:justify-between">
-                <Supplier />
-                <PurchaseDetails />
+                <Supplier supplier={supplier} />
+                <PurchaseDetails
+                  receiptNumber={receiptNumber}
+                  transactionDate={transactionDate}
+                  hash={hash}
+                />
               </div>
-              <Purchaser />
-              <ReceiptDetails />
+              <Purchaser
+                isCancelReceipt={isCancelReceipt}
+                purchaser={purchaser}
+                disabledInput={disabledInput}
+                isPurchaser={isPurchaser}
+                purchaserDrawer={purchaserDrawer}
+                receiptDetails={receiptDetails}
+                setPurchaserDrawer={setPurchaserDrawer}
+              />
+              <ReceiptDetails
+                network={network}
+                tokenSymbol={tokenSymbol}
+                hash={hash}
+                amount={receiptDetails?.amountTransferred || 0}
+                currencyContractAddress={receiptDetails?.tokenAddress}
+                isCancelReceipt={isCancelReceipt}
+              />
               <div className="mt-4">
                 <PoweredByUnlock />
               </div>
@@ -342,4 +428,143 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
       </div>
     </>
   )
+}
+
+const MultipleReceiptBox = ({
+  lockAddress,
+  network,
+}: MultipleReceiptBoxProps) => {
+  const [receipts, setReceipts] = useState<Receipt[]>([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [tokenSymbol, setTokenSymbol] = useState<string | null>(null)
+
+  const componentRef = useRef<any>()
+  const web3Service = useWeb3Service()
+
+  useEffect(() => {
+    fetchReceipts()
+  }, [])
+
+  useEffect(() => {
+    if (receipts.length > 0) {
+      getTokenSymbol(receipts[0].tokenAddress)
+    }
+  }, [receipts])
+
+  function getTransactionUrl(hash: string) {
+    return networks[network].explorer?.urls.transaction(hash)
+  }
+
+  function getTransactionDate(timestamp: number) {
+    return dayjs.unix(timestamp).format('D MMM YYYY')
+  }
+
+  async function getTokenSymbol(tokenAddress: string) {
+    const tokenSymbol = await web3Service.getTokenSymbol(tokenAddress, network)
+    setTokenSymbol(tokenSymbol)
+  }
+
+  async function fetchReceipts() {
+    setIsLoading(true)
+    try {
+      const { data } = await locksmith.getReceipts(network, lockAddress)
+      const items: Receipt[] = data.items as Receipt[]
+      setReceipts(items)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  if (isLoading) {
+    return (
+      <Placeholder.Root>
+        <Placeholder.Image className="h-[500px] md:w-[490px]" />
+      </Placeholder.Root>
+    )
+  }
+
+  return (
+    <div className="relative border border-gray-200 rounded-2xl w-full max-w-[490px]">
+      <div
+        className="relative w-full max-w-[490px] p-6 bg-white"
+        ref={componentRef}
+      >
+        {receipts.length > 0 &&
+          receipts.map((receipt: Receipt, i) => (
+            <div
+              key={i}
+              className="mb-6 pb-6 bg-white border-b-2 border-gray-200"
+            >
+              <a href={getTransactionUrl(receipt.id)} target="_blank">
+                <div className="flex items-center gap-2 mb-6">
+                  <span>{`Transaction Hash:`} </span>
+                  <span className="font-semibold text-brand-ui-primary">
+                    {addressMinify(receipt.id)}
+                  </span>
+                  <ExternalLinkIcon
+                    size={20}
+                    className="text-brand-ui-primary"
+                  />
+                </div>
+              </a>
+
+              <div className="grid w-full max-w-lg gap-4">
+                <div className="grid w-full">
+                  <div className="flex flex-col-reverse gap-4 mb-6 sm:mb-0 sm:flex-row sm:justify-between">
+                    <Supplier supplier={receipt.supplierAddress} />
+                    <PurchaseDetails
+                      receiptNumber={receipt.receiptNumber}
+                      transactionDate={getTransactionDate(
+                        Number(receipt.timestamp)
+                      )}
+                      hash={receipt.id}
+                    />
+                  </div>
+                  <h2 className="text-lg font-bold text-brand-ui-primary">
+                    Bill to:
+                  </h2>
+                  <p>Wallet: {addressMinify(receipt.recipient)}</p>
+
+                  <ReceiptDetails
+                    network={network}
+                    tokenSymbol={tokenSymbol}
+                    hash={receipt.id}
+                    amount={Number(receipt.amountTransferred)}
+                    currencyContractAddress={receipt.tokenAddress}
+                    isCancelReceipt={receipt.payer == lockAddress}
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+        <div className="mt-4 pb-6">
+          <PoweredByUnlock />
+        </div>
+      </div>
+
+      <ReactToPrint
+        trigger={() => (
+          <Button className="absolute bottom-6 right-6" size="small">
+            Print PDF
+          </Button>
+        )}
+        content={() => componentRef.current}
+      />
+    </div>
+  )
+}
+
+export const ReceiptBox = ({ lockAddress, network, hash }: ReceiptBoxProps) => {
+  if (hash) {
+    return (
+      <SingleReceiptBox
+        lockAddress={lockAddress}
+        network={network}
+        hash={hash}
+      />
+    )
+  }
+  return <MultipleReceiptBox lockAddress={lockAddress} network={network} />
 }
