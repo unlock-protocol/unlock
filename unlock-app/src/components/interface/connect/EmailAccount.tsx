@@ -7,12 +7,18 @@ import { useSIWE } from '~/hooks/useSIWE'
 import BlockiesSvg from 'blockies-react-svg'
 import { UserAccountType } from '~/utils/userAccountType'
 import { CheckoutService } from '../checkout/main/checkoutMachine'
-import { useRouter } from 'next/router'
 import { ConnectButton } from './Custom'
 import { signIn } from 'next-auth/react'
 import { popupCenter } from '~/utils/popup'
 import SvgComponents from '../svg'
-import { useSelector } from '@xstate/react'
+import useSignInCallbackUrl from '~/hooks/useSignInCallbackUrl'
+import { locksmith } from '~/config/locksmith'
+import { useCaptcha } from '~/hooks/useCaptcha'
+import { ToastHelper } from '~/components/helpers/toast.helper'
+import { config } from '~/config/app'
+import ReCaptcha from 'react-google-recaptcha'
+import { useState } from 'react'
+import { EnterCode } from './EnterCode'
 
 interface UserDetails {
   email: string
@@ -124,6 +130,25 @@ const SignIn = ({
   shoudOpenConnectModal = false,
   checkoutService,
 }: SignInProps) => {
+  const [isEmailCodeSent, setEmailCodeSent] = useState(false)
+
+  const callbackUrl = useSignInCallbackUrl(
+    shoudOpenConnectModal,
+    checkoutService
+  )
+
+  const handleSignIn = async (signInMethod: string, handler: () => void) => {
+    localStorage.setItem('nextAuthProvider', signInMethod)
+
+    await handler()
+  }
+
+  if (isEmailCodeSent) {
+    return (
+      <EnterCode email={email} callbackUrl={callbackUrl} onReturn={onReturn} />
+    )
+  }
+
   return (
     <div className="grid gap-2 px-6">
       <div className="grid gap-4">
@@ -140,28 +165,40 @@ const SignIn = ({
         )}
         {accountType.includes(UserAccountType.GoogleAccount) && (
           <SignWithGoogle
-            shoudOpenConnectModal={shoudOpenConnectModal}
-            checkoutService={checkoutService}
+            callbackUrl={callbackUrl}
             isSignUp={false}
+            handleSignIn={handleSignIn}
           />
         )}
         {accountType.includes(UserAccountType.PasskeyAccount) && (
           <div>Passkey Account</div>
         )}
         {accountType.includes(UserAccountType.EmailCodeAccount) && (
-          <div>Email Code Account</div>
+          <SignWithEmail
+            isSignUp={true}
+            email={email}
+            setEmailCodeSent={setEmailCodeSent}
+            callbackUrl={callbackUrl}
+            handleSignIn={handleSignIn}
+          />
         )}
         {accountType.length === 0 && (
           <div className="w-full grid gap-4">
             <div className="text-sm text-gray-600">Create a new account:</div>
             <SignWithGoogle
-              shoudOpenConnectModal={shoudOpenConnectModal}
-              checkoutService={checkoutService}
+              callbackUrl={callbackUrl}
               isSignUp={true}
+              handleSignIn={handleSignIn}
+            />
+            <SignWithEmail
+              isSignUp={true}
+              email={email}
+              setEmailCodeSent={setEmailCodeSent}
+              callbackUrl={callbackUrl}
+              handleSignIn={handleSignIn}
             />
             {/*}
             <div>Passkey Account</div>
-            <div>Email Code Account</div>
             */}
           </div>
         )}
@@ -179,40 +216,19 @@ const SignIn = ({
 }
 
 export interface SignWithGoogleProps {
-  shoudOpenConnectModal: boolean
-  checkoutService?: CheckoutService
+  callbackUrl: string
   isSignUp: boolean
+  handleSignIn: (signInMethod: string, handler: () => void) => void
 }
 
 const SignWithGoogle = ({
-  shoudOpenConnectModal,
-  checkoutService,
+  callbackUrl,
   isSignUp,
+  handleSignIn,
 }: SignWithGoogleProps) => {
-  const router = useRouter()
-
-  const context = useSelector(checkoutService, (state) => state?.context)
-  const url = new URL(
-    `${window.location.protocol}//${window.location.host}${router.asPath}`
-  )
-
-  const params = new URLSearchParams(url.search)
-  params.append(
-    'shouldOpenConnectModal',
-    encodeURIComponent(shoudOpenConnectModal)
-  )
-  if (context?.lock) {
-    params.set('lock', encodeURIComponent(context.lock.address))
-  }
-
-  url.search = params.toString()
-
-  const callbackUrl = url.toString()
-
   const signWithGoogle = () => {
     if (window !== window.parent) {
-      popupCenter('/google', 'Sample Sign In')
-      checkoutService?.send({ type: 'SELECT' })
+      popupCenter('/google', 'Google Sign In')
       return
     }
 
@@ -225,10 +241,59 @@ const SignWithGoogle = ({
         className="w-full"
         icon={<SvgComponents.Google width={40} height={40} />}
         onClick={() => {
-          signWithGoogle()
+          handleSignIn(UserAccountType.GoogleAccount, signWithGoogle)
         }}
       >
         {isSignUp ? 'Sign up with Google' : 'Sign in with Google'}
+      </ConnectButton>
+    </div>
+  )
+}
+
+export interface SignWithEmail {
+  isSignUp: boolean
+  email: string
+  setEmailCodeSent: (isEmailCodeSent: boolean) => void
+  callbackUrl: string
+  handleSignIn: (signInMethod: string, handler: () => void) => void
+}
+
+const SignWithEmail = ({
+  isSignUp,
+  email,
+  setEmailCodeSent,
+  handleSignIn,
+}: SignWithEmail) => {
+  const { recaptchaRef, getCaptchaValue } = useCaptcha()
+
+  const signWithEmail = async () => {
+    try {
+      const captcha = await getCaptchaValue()
+      await locksmith.sendVerificationCode(captcha, email)
+    } catch (error) {
+      console.error(error)
+      ToastHelper.error('Error sending email code, try again later')
+    }
+
+    setEmailCodeSent(true)
+  }
+
+  return (
+    <div className="w-full">
+      <ReCaptcha
+        ref={recaptchaRef}
+        sitekey={config.recaptchaKey}
+        size="invisible"
+        badge="bottomleft"
+      />
+      <ConnectButton
+        className="w-full"
+        icon={<SvgComponents.Email width={40} height={40} />}
+        onClick={async () => {
+          await handleSignIn(UserAccountType.EmailCodeAccount, signWithEmail)
+        }}
+      >
+        {isSignUp ? 'Sign up with Email' : 'Sign in with Email'}
       </ConnectButton>
     </div>
   )
