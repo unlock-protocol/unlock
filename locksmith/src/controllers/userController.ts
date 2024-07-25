@@ -191,14 +191,11 @@ export const retrieveWaasUuid = async (
     )
     userUUID = newUserUUID
     await sendEmail({
-      network: 1,
       template: 'welcome',
       failoverTemplate: 'debug',
       recipient: emailAddress,
+      // @ts-expect-error object incomplete
       params: {
-        keyId: '1',
-        network: '1',
-        lockName: '1',
         lockAddress: ZeroAddress,
       },
     })
