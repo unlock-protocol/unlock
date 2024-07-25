@@ -51,7 +51,6 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
       ticket: event.ticket,
     },
   })
-  console.log(event)
   const [isInPerson, setIsInPerson] = useState<boolean>(
     encodeURIComponent(getValues('ticket.event_is_in_person')) === 'true'
   )
