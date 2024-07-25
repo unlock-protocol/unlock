@@ -177,12 +177,12 @@ export const LockTypeLandingPage = ({
         {callToAction?.subtitle && (
           <p className="mt-4 text-center md:w-1/2">{callToAction?.subtitle}</p>
         )}
-        <ul className="grid lg:grid-cols-4 gap-8 my-8">
+        <ul className="grid lg:grid-cols-2 gap-16 my-8 md:w-4/5">
           {features?.map(({ image, name, description }) => {
             return (
               <li key={name}>
                 <Image
-                  className="border rounded-lg border-1 border-ui-main-100 mx-auto"
+                  className="border rounded-lg border-1 border-ui-main-100 mx-auto w-full"
                   width="400"
                   height="300"
                   alt="No-code"
