@@ -25,11 +25,11 @@ import { createCertificate } from '../utils/certification'
 
 type Params = {
   [key: string]: string | number | undefined | boolean
-  keyId?: string
+  keyId: string
   keychainUrl?: string
-  lockName?: string
-  network?: string
-  lockAddress?: string
+  lockName: string
+  network: string
+  lockAddress: string
   txUrl?: string
   openSeaUrl?: string
 }
@@ -52,7 +52,7 @@ interface Key {
 }
 
 interface SendEmailProps {
-  network?: number
+  network: number
   template: string
   failoverTemplate: string
   recipient: string
