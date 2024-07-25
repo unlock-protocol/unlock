@@ -22,6 +22,7 @@ import { Detail } from '@unlock-protocol/ui'
 import { AttendeesActionsWrapper } from './AttendeesActions'
 import { ApproveAttendeeModal } from './ApproveAttendeeModal'
 import { DenyAttendeeModal } from './DenyAttendeeModal'
+import MetadataCard from './MetadataCard'
 
 interface AttendeesProps {
   event: Event
@@ -193,29 +194,11 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
                     expirationDuration={expirationDuration}
                     lockSettings={lockSettings}
                     MetadataCard={
-                      <div className="flex flex-col divide-y divide-gray-400">
-                        {Object.entries(metadata || {})
-                          .filter(([key]) => {
-                            return ![
-                              'keyholderAddress',
-                              'keyManager',
-                              'lockAddress',
-                            ].includes(key)
-                          })
-                          .map(([key, value]: any, index: number) => {
-                            return (
-                              <Detail
-                                className="py-2"
-                                key={`${key}-${index}`}
-                                label={`${key}: `}
-                                inline
-                                justify={false}
-                              >
-                                {value || null}
-                              </Detail>
-                            )
-                          })}
-                      </div>
+                      <MetadataCard
+                        metadata={metadata}
+                        network={network}
+                        data={{ lockAddress, token }}
+                      />
                     }
                     MemberInfo={() => {
                       if (!token) {

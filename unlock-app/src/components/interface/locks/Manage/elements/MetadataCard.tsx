@@ -30,6 +30,7 @@ import { LockType, getLockTypeByMetadata } from '@unlock-protocol/core'
 import { FiInfo as InfoIcon } from 'react-icons/fi'
 import { TransferKeyDrawer } from '~/components/interface/keychain/TransferKeyDrawer'
 import { useMarkAsCheckInMutation } from '~/hooks/useMarkAsCheckImMutation'
+import { getCheckInTime } from '~/utils/getCheckInTime'
 
 interface MetadataCardProps {
   metadata: any
@@ -284,27 +285,6 @@ export const MetadataCard = ({
       tokenId: metadata.token,
     })
 
-  const getCheckInTime = () => {
-    if (checkInTimestamp) {
-      // checked in from this UI
-      return checkInTimestamp
-    }
-    // Check the metadata
-    const [_, checkInTimeValue] =
-      Object.entries(metadata)?.find(([key]) => key === 'checkedInAt') ?? []
-    if (!checkInTimeValue) {
-      return null
-    }
-    if (Array.isArray(checkInTimeValue)) {
-      // Multiple check ins
-      return new Date(
-        checkInTimeValue[checkInTimeValue.length - 1] as number
-      ).toLocaleString()
-    }
-    // single checkin
-    return new Date(checkInTimeValue as number).toLocaleString()
-  }
-
   const { data: subscription, isLoading: isSubscriptionLoading } = useQuery(
     ['subscription', lockAddress, tokenId, network],
     async () => {
@@ -337,7 +317,10 @@ export const MetadataCard = ({
     })
   }
 
-  const isCheckedIn = typeof getCheckInTime() === 'string' || !!checkInTimestamp
+  const isCheckedIn =
+    typeof getCheckInTime(checkInTimestamp, metadata) === 'string' ||
+    !!checkInTimestamp
+
   const hasEmail = Object.entries(data || {})
     .map(([key]) => key.toLowerCase())
     .includes('email')
@@ -436,7 +419,7 @@ export const MetadataCard = ({
                 justify={false}
                 label="Checked-in at:"
               >
-                {getCheckInTime()}
+                {getCheckInTime(checkInTimestamp, metadata)}
               </Detail>
             )}
             <Detail
