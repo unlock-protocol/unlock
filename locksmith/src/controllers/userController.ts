@@ -3,7 +3,7 @@ import StripeOperations from '../operations/stripeOperations'
 import * as Normalizer from '../utils/normalizer'
 import UserOperations from '../operations/userOperations'
 import logger from '../logger'
-import { ethers, ZeroAddress } from 'ethers'
+import { ethers } from 'ethers'
 import { MemoryCache } from 'memory-cache-node'
 import { issueUserToken } from '@coinbase/waas-server-auth'
 import config from '../config/config'
@@ -190,14 +190,12 @@ export const retrieveWaasUuid = async (
       selectedProvider as UserAccountType
     )
     userUUID = newUserUUID
+
+    // @ts-expect-error object incomplete
     await sendEmail({
       template: 'welcome',
       failoverTemplate: 'debug',
       recipient: emailAddress,
-      // @ts-expect-error object incomplete
-      params: {
-        lockAddress: ZeroAddress,
-      },
     })
   }
 
