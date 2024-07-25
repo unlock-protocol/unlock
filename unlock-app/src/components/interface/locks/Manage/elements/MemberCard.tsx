@@ -12,8 +12,6 @@ import ExtendKeysDrawer from '~/components/creator/members/ExtendKeysDrawer'
 import { useLockManager } from '~/hooks/useLockManager'
 import useEns from '~/hooks/useEns'
 import { addressMinify } from '~/utils/strings'
-import { useMarkAsCheckInMutation } from '~/hooks/useMarkAsCheckImMutation'
-import { getCheckInTime } from '~/utils/getCheckInTime'
 
 export interface MemberCardProps {
   token: string
@@ -49,10 +47,6 @@ export const MemberCard = ({
   const [expireAndRefundOpen, setExpireAndRefundOpen] = useState(false)
   const [extendKeysOpen, setExtendKeysOpen] = useState(false)
 
-  const [checkInTimestamp, setCheckedInTimestamp] = useState<string | null>(
-    null
-  )
-
   const addressToEns = useEns(owner)
 
   const resolvedAddress =
@@ -87,16 +81,6 @@ export const MemberCard = ({
 
   // boolean to check if the membership/key is expired
   const isExpired = expirationAsDate(expiration) === 'Expired'
-
-  const isCheckedIn =
-    typeof getCheckInTime(checkInTimestamp, metadata) === 'string' ||
-    !!checkInTimestamp
-
-  const markAsCheckInMutation = useMarkAsCheckInMutation({
-    network,
-    data: { lockAddress, token: tokenId },
-    setCheckedInTimestamp,
-  })
 
   const MemberInfoDefault = () => {
     return (
