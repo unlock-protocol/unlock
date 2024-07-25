@@ -1,9 +1,6 @@
 import * as Base64 from '../src/utils/base64'
 import { generateTypedSignature } from '../src/utils/signature'
 
-// const args = require('yargs').argv
-const request = require('request-promise-native')
-
 function generatePurchasePayload(message: any, messageKey: string) {
   return {
     types: {
@@ -44,16 +41,20 @@ async function postPurchaseRequest(
   endpoint: string
 ) {
   const signature = await generateTypedSignature(privateKey, metadata)
-  const params = {
-    uri: endpoint,
+  const response = await fetch(endpoint, {
     method: 'POST',
     headers: {
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${Base64.encode(signature)}`,
     },
-    json: metadata,
+    body: JSON.stringify(metadata),
+  })
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`)
   }
 
-  await request(params)
+  return await response.json()
 }
 
 postPurchaseRequest(pk, typedData, 'http://localhost:8080/purchase/USD')
