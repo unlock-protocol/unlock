@@ -3,7 +3,7 @@ import StripeOperations from '../operations/stripeOperations'
 import * as Normalizer from '../utils/normalizer'
 import UserOperations from '../operations/userOperations'
 import logger from '../logger'
-import { ethers } from 'ethers'
+import { ethers, ZeroAddress } from 'ethers'
 import { MemoryCache } from 'memory-cache-node'
 import { issueUserToken } from '@coinbase/waas-server-auth'
 import config from '../config/config'
@@ -11,10 +11,7 @@ import { verifyNextAuthToken } from '../utils/verifyNextAuthToken'
 import { z } from 'zod'
 import { generateVerificationCode } from '../utils/generateVerificationCode'
 import VerificationCodes from '../models/verificationCodes'
-import {
-  emailTemplate,
-  sendSimpleEmail,
-} from '../operations/wedlocksOperations'
+import { sendEmail } from '../operations/wedlocksOperations'
 
 // Decoy users are cached for 15 minutes
 const cacheDuration = 60 * 15
@@ -189,6 +186,18 @@ export const retrieveWaasUuid = async (
       selectedProvider as UserAccountType
     )
     userUUID = newUserUUID
+    await sendEmail({
+      network: 1,
+      template: 'welcome',
+      failoverTemplate: 'debug',
+      recipient: emailAddress,
+      params: {
+        keyId: '1',
+        network: '1',
+        lockName: '1',
+        lockAddress: ZeroAddress,
+      },
+    })
   }
 
   try {
@@ -459,8 +468,18 @@ export const sendVerificationCode = async (
       }
     }
 
-    sendSimpleEmail(emailTemplate.verificationCode, emailAddress, {
-      code: verificationEntry.code,
+    await sendEmail({
+      network: 1,
+      template: 'nextAuthCode',
+      failoverTemplate: 'debug',
+      recipient: emailAddress,
+      params: {
+        code: verificationEntry.code,
+        keyId: '1',
+        network: '1',
+        lockName: '1',
+        lockAddress: ZeroAddress,
+      },
     })
 
     return response.status(200).json({
