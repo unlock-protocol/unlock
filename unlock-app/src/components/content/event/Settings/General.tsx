@@ -22,6 +22,8 @@ import { useState } from 'react'
 import { config } from '~/config/app'
 import dayjs from 'dayjs'
 import { GoogleMapsAutoComplete } from '../Form'
+import { DefaultLayoutSkeleton } from './DefaultLayoutSkeleton'
+import { BannerlessLayoutSkeleton } from './BannerlessLayoutSkeleton'
 
 interface GeneralProps {
   event: Event
@@ -69,6 +71,12 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
   const minEndDate = dayjs(getValues('ticket.event_start_date')).format(
     'YYYY-MM-DD'
   )
+
+  const [selectedLayout, setSelectedLayout] = useState('')
+
+  const handleSelect = (layout: any) => {
+    setSelectedLayout(layout)
+  }
 
   const save = async (values: {
     name: string
@@ -181,30 +189,26 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
             control={control}
             render={({ field: { onChange, value } }) => {
               return (
-                // TODO: Create seperate setting with layout preview
-                <Select
-                  onChange={(newValue: any) => {
-                    console.log(newValue)
-                    onChange({
-                      target: {
-                        value: newValue,
-                      },
-                    })
-                  }}
-                  options={[
-                    { label: 'Default', value: 'default' },
-                    { label: 'Bannerless', value: 'bannerless' },
-                  ]}
-                  label="Layout"
-                  defaultValue={value ? value : 'default'}
-                  description="Choose the layout for your event page."
-                />
+                <div className="flex flex-col sm:flex-row justify-around gap-8 mx-4 sm:mx-8 my-4 h-auto sm:h-64">
+                  <DefaultLayoutSkeleton
+                    selectedLayout={selectedLayout}
+                    handleSelect={handleSelect}
+                  />
+                  <BannerlessLayoutSkeleton
+                    selectedLayout={selectedLayout}
+                    handleSelect={handleSelect}
+                  />
+                </div>
               )
             }}
           />
         </div>
-        <div className="flex flex-end w-full pt-8 flex-row-reverse">
-          <Button loading={isSubmitting} type="submit" className="w-48">
+        <div className="flex flex-col sm:flex-row-reverse w-full pt-8">
+          <Button
+            loading={isSubmitting}
+            type="submit"
+            className="w-full sm:w-48"
+          >
             Save
           </Button>
         </div>
