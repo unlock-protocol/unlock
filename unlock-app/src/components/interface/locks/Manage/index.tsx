@@ -46,7 +46,7 @@ interface ActionBarProps {
   setIsOpen: (open: boolean) => void
   isOpen: boolean
   page: number
-  name: string
+  name?: string
 }
 
 interface TopActionBarProps {
@@ -119,7 +119,7 @@ export const ActionBar = ({ lockAddress, network, name }: ActionBarProps) => {
 
   const viewReceipts = () => {
     const route =
-      name.length > 0
+      name && name.length > 0
         ? `/receipts?address=${lockAddress}&network=${network}&name=${name}`
         : `/receipts?address=${lockAddress}&network=${network}`
     router.push(route)
