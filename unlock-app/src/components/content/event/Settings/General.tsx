@@ -162,33 +162,46 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
               rows={getValues('description').split('\n').length + 2}
               error={errors.description?.message as string}
             />
-            <Controller
-              name="layout"
-              control={control}
-              render={({ field: { onChange, value } }) => {
-                return (
-                  // TODO: Create seperate setting with layout preview
-                  <Select
-                    onChange={(newValue: any) => {
-                      console.log(newValue)
-                      onChange({
-                        target: {
-                          value: newValue,
-                        },
-                      })
-                    }}
-                    options={[
-                      { label: 'Default', value: 'default' },
-                      { label: 'Bannerless', value: 'bannerless' },
-                    ]}
-                    label="Layout"
-                    defaultValue={value ? value : 'default'}
-                    description="Choose the layout for your event page."
-                  />
-                )
-              }}
-            />
           </div>
+        </div>
+        <div className="flex flex-end w-full pt-8 flex-row-reverse">
+          <Button loading={isSubmitting} type="submit" className="w-48">
+            Save
+          </Button>
+        </div>
+      </SettingCard>
+
+      <SettingCard
+        label="Layout"
+        description="Update the layout of your event."
+      >
+        <div>
+          <Controller
+            name="layout"
+            control={control}
+            render={({ field: { onChange, value } }) => {
+              return (
+                // TODO: Create seperate setting with layout preview
+                <Select
+                  onChange={(newValue: any) => {
+                    console.log(newValue)
+                    onChange({
+                      target: {
+                        value: newValue,
+                      },
+                    })
+                  }}
+                  options={[
+                    { label: 'Default', value: 'default' },
+                    { label: 'Bannerless', value: 'bannerless' },
+                  ]}
+                  label="Layout"
+                  defaultValue={value ? value : 'default'}
+                  description="Choose the layout for your event page."
+                />
+              )
+            }}
+          />
         </div>
         <div className="flex flex-end w-full pt-8 flex-row-reverse">
           <Button loading={isSubmitting} type="submit" className="w-48">
