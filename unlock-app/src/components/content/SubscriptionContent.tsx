@@ -23,7 +23,7 @@ export const SubscriptionContent = () => {
       <SubscriptionLandingPage
         handleCreateSubscription={() => {
           router.push(
-          'https://unlock-protocol-19942922.hs-sites.com/unlock-subscription-signup'
+            'https://unlock-protocol-19942922.hs-sites.com/unlock-subscription-signup'
           )
         }}
       />
