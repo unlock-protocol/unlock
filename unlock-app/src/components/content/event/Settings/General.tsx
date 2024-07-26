@@ -72,7 +72,9 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
     'YYYY-MM-DD'
   )
 
-  const [selectedLayout, setSelectedLayout] = useState('')
+  const [selectedLayout, setSelectedLayout] = useState(
+    getValues('layout') || 'default'
+  )
 
   const handleSelect = (layout: any) => {
     setSelectedLayout(layout)
@@ -187,16 +189,22 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
           <Controller
             name="layout"
             control={control}
-            render={({ field: { onChange, value } }) => {
+            render={({ field: { onChange } }) => {
               return (
                 <div className="flex flex-col sm:flex-row justify-around gap-8 mx-4 sm:mx-8 my-4 h-auto sm:h-64">
                   <DefaultLayoutSkeleton
                     selectedLayout={selectedLayout}
-                    handleSelect={handleSelect}
+                    handleSelect={() => {
+                      onChange('default')
+                      handleSelect('default')
+                    }}
                   />
                   <BannerlessLayoutSkeleton
                     selectedLayout={selectedLayout}
-                    handleSelect={handleSelect}
+                    handleSelect={() => {
+                      onChange('bannerless')
+                      handleSelect('bannerless')
+                    }}
                   />
                 </div>
               )

@@ -1,6 +1,6 @@
 interface DefaultLayoutSkeletonProps {
   selectedLayout: string
-  handleSelect: (layout: string) => void
+  handleSelect: () => void
 }
 
 export const DefaultLayoutSkeleton = ({
@@ -12,7 +12,7 @@ export const DefaultLayoutSkeleton = ({
       <p>Default</p>
       <div
         className={`h-full cursor-pointer border-4 border-ui-main-500 rounded-lg overflow-hidden ${selectedLayout === 'default' ? '' : 'border-transparent'}`}
-        onClick={() => handleSelect('default')}
+        onClick={() => handleSelect()}
       >
         <div className="h-full">
           <div className="h-full relative">

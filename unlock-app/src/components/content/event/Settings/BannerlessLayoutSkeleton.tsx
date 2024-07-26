@@ -1,6 +1,6 @@
 interface BannerlessLayoutSkeletonProps {
   selectedLayout: string
-  handleSelect: (layout: string) => void
+  handleSelect: () => void
 }
 
 export const BannerlessLayoutSkeleton = ({
@@ -12,7 +12,7 @@ export const BannerlessLayoutSkeleton = ({
       <p>Bannerless</p>
       <div
         className={`h-full cursor-pointer border-4 border-ui-main-500 rounded-lg overflow-hidden ${selectedLayout === 'bannerless' ? '' : 'border-transparent'}`}
-        onClick={() => handleSelect('bannerless')}
+        onClick={() => handleSelect()}
       >
         <div className="h-full">
           <div className="relative h-full">
