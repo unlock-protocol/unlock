@@ -11,6 +11,7 @@ export const ReceiptsPage = () => {
   const isMultipleReceiptBox = !router.query.hash
   const network = Number(router.query.network)
   const lockAddress = router.query!.address as string
+  const name = router.query.name
 
   let hashes: string[] = []
   if (typeof router.query.hash === 'string') {
@@ -25,7 +26,9 @@ export const ReceiptsPage = () => {
         <>
           <div className="flex flex-col items-center">
             <CloseReceiptButton lockAddress={lockAddress} network={network} />
-            <h1 className="mb-10 text-4xl font-bold">Receipt details</h1>
+            <h1 className="mb-10 text-4xl font-bold">
+              {name ? `${name} receipts` : 'Receipt details'}
+            </h1>
             {isMultipleReceiptBox ? (
               <ReceiptBox lockAddress={lockAddress} network={network} />
             ) : (

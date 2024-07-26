@@ -31,7 +31,7 @@ import {
 import { CgWebsite as WebsiteIcon } from 'react-icons/cg'
 import { FaRegEdit as EditIcon } from 'react-icons/fa'
 import { BiRightArrow as RightArrowIcon } from 'react-icons/bi'
-import { TbPlant as PlantIcon } from 'react-icons/tb'
+import { TbPlant as PlantIcon, TbReceipt as ReceiptIcon } from 'react-icons/tb'
 import { IconType } from 'react-icons'
 import { Picker } from '../../Picker'
 import { locksmith } from '~/config/locksmith'
@@ -46,6 +46,7 @@ interface ActionBarProps {
   setIsOpen: (open: boolean) => void
   isOpen: boolean
   page: number
+  name: string
 }
 
 interface TopActionBarProps {
@@ -72,7 +73,7 @@ export function downloadAsCSV({
   FileSaver.saveAs(blob, fileName)
 }
 
-export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
+export const ActionBar = ({ lockAddress, network, name }: ActionBarProps) => {
   const { isLoading: isLoadingMetadata, data: metadata } = useMetadata({
     lockAddress,
     network,
@@ -81,6 +82,7 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
   const { isEvent } = getLockTypeByMetadata(metadata)
   const [keysJobId, setKeysJobId] = useState<string | null>(null)
   const [isKeysJobLoading, setIsKeysJobLoading] = useState<boolean>(false)
+  const router = useRouter()
 
   const onDownloadCsvMutation = useMutation(
     async () => {
@@ -114,6 +116,14 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
       },
     }
   )
+
+  const viewReceipts = () => {
+    const route =
+      name.length > 0
+        ? `/receipts?address=${lockAddress}&network=${network}&name=${name}`
+        : `/receipts?address=${lockAddress}&network=${network}`
+    router.push(route)
+  }
 
   useEffect(() => {
     let intervalId: any = null
@@ -177,6 +187,14 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
             onClick={() => onDownloadCsvMutation.mutate()}
           >
             Download {isEvent ? 'attendee' : 'member'} list
+          </Button>
+          <Button
+            variant="outlined-primary"
+            size="small"
+            onClick={viewReceipts}
+            iconLeft={<ReceiptIcon />}
+          >
+            View Receipts
           </Button>
         </div>
       )}
@@ -369,6 +387,7 @@ export const ManageLockPage = () => {
     (query?.address as string) ?? ''
   )
   const [airdropKeys, setAirdropKeys] = useState(false)
+  const [name, setName] = useState('')
 
   const lockNetwork = network ? parseInt(network as string) : undefined
 
@@ -474,6 +493,7 @@ export const ManageLockPage = () => {
                 <LockDetailCard
                   lockAddress={lockAddress}
                   network={lockNetwork!}
+                  setName={setName}
                 />
               </div>
               <div className="flex flex-col gap-6 lg:col-span-9">
@@ -498,6 +518,7 @@ export const ManageLockPage = () => {
                   network={lockNetwork!}
                   isOpen={airdropKeys}
                   setIsOpen={setAirdropKeys}
+                  name={name}
                 />
                 <FilterBar
                   filters={filters}

@@ -83,11 +83,6 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
             <Detail label="Key Minted" loading={loading} valueSize="large">
               {keySold}
             </Detail>
-            <Link href={`/receipts?address=${lockAddress}&network=${network}`}>
-              <Button variant="outlined-primary" size="tiny">
-                View Receipts
-              </Button>
-            </Link>
           </div>
           <div className={wrapperClass}>
             <Detail

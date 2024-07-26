@@ -437,8 +437,11 @@ const MultipleReceiptBox = ({
   const [receipts, setReceipts] = useState<Receipt[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [tokenSymbol, setTokenSymbol] = useState<string | null>(null)
+  const [isPrintMode, setIsPrintMode] = useState(false)
 
   const componentRef = useRef<any>()
+  const receiptRef = useRef<any>()
+  const printButtonRef = useRef<any>()
   const web3Service = useWeb3Service()
 
   useEffect(() => {
@@ -457,6 +460,13 @@ const MultipleReceiptBox = ({
 
   function getTransactionDate(timestamp: number) {
     return dayjs.unix(timestamp).format('D MMM YYYY')
+  }
+
+  function handlePrint() {
+    setIsPrintMode(true)
+    setTimeout(() => {
+      printButtonRef.current?.click()
+    }, 0)
   }
 
   async function getTokenSymbol(tokenAddress: string) {
@@ -486,70 +496,131 @@ const MultipleReceiptBox = ({
   }
 
   return (
-    <div className="relative border border-gray-200 rounded-2xl w-full max-w-[490px]">
+    <div
+      className={`relative rounded-2xl w-full ${isPrintMode ? 'max-w-[490px]' : ''}`}
+    >
       <div ref={componentRef} className="flex justify-center">
-        <div className="relative w-full max-w-[490px] p-6 bg-white">
+        <div
+          className={`relative w-full max-w-[490px] flex flex-col gap-6 ${isPrintMode ? 'bg-white p-6' : ''}`}
+        >
           {receipts.length > 0 &&
-            receipts.map((receipt: Receipt, i) => (
-              <div
-                key={i}
-                className="mb-6 pb-6 bg-white border-b-2 border-gray-200"
-              >
-                <a href={getTransactionUrl(receipt.id)} target="_blank">
-                  <div className="flex items-center gap-2 mb-6">
-                    <span>{`Transaction Hash:`} </span>
-                    <span className="font-semibold text-brand-ui-primary">
-                      {addressMinify(receipt.id)}
-                    </span>
-                    <ExternalLinkIcon
-                      size={20}
-                      className="text-brand-ui-primary"
-                    />
-                  </div>
-                </a>
+            receipts.map((receipt: Receipt, i) =>
+              isPrintMode ? (
+                <div key={i} className="mb-6 bg-white">
+                  <div className="grid w-full max-w-lg gap-4">
+                    <div className="grid w-full">
+                      <div className="flex flex-col-reverse gap-4 mb-6 md:mb-0 md:flex-row md:justify-start">
+                        <Supplier supplier={receipt.supplierAddress} />
+                        <PurchaseDetails
+                          receiptNumber={receipt.receiptNumber}
+                          transactionDate={getTransactionDate(
+                            Number(receipt.timestamp)
+                          )}
+                          hash={receipt.id}
+                        />
+                      </div>
+                      <h2 className="text-lg font-bold text-brand-ui-primary">
+                        Bill to:
+                      </h2>
+                      <p>Wallet: {addressMinify(receipt.recipient)}</p>
 
-                <div className="grid w-full max-w-lg gap-4">
-                  <div className="grid w-full">
-                    <div className="flex flex-col-reverse gap-4 mb-6 sm:mb-0 sm:flex-row sm:justify-between">
-                      <Supplier supplier={receipt.supplierAddress} />
-                      <PurchaseDetails
-                        receiptNumber={receipt.receiptNumber}
-                        transactionDate={getTransactionDate(
-                          Number(receipt.timestamp)
-                        )}
+                      <ReceiptDetails
+                        network={network}
+                        tokenSymbol={tokenSymbol}
                         hash={receipt.id}
+                        amount={Number(receipt.amountTransferred)}
+                        currencyContractAddress={receipt.tokenAddress}
+                        isCancelReceipt={receipt.payer == lockAddress}
                       />
                     </div>
-                    <h2 className="text-lg font-bold text-brand-ui-primary">
-                      Bill to:
-                    </h2>
-                    <p>Wallet: {addressMinify(receipt.recipient)}</p>
-
-                    <ReceiptDetails
-                      network={network}
-                      tokenSymbol={tokenSymbol}
-                      hash={receipt.id}
-                      amount={Number(receipt.amountTransferred)}
-                      currencyContractAddress={receipt.tokenAddress}
-                      isCancelReceipt={receipt.payer == lockAddress}
-                    />
                   </div>
                 </div>
-              </div>
-            ))}
-          <div className="mt-4 pb-6">
+              ) : (
+                <Disclosure
+                  key={i}
+                  label={`#${receipt.receiptNumber}`}
+                  description={
+                    <div
+                      onClick={(e: any) => {
+                        e?.stopPropagation()
+                      }}
+                      className="flex"
+                    >
+                      <a href={getTransactionUrl(receipt.id)} target="_blank">
+                        <div className="flex items-center gap-2">
+                          <span>{`Transaction Hash:`} </span>
+                          <span className="font-semibold text-brand-ui-primary">
+                            {addressMinify(receipt.id)}
+                          </span>
+                          <ExternalLinkIcon
+                            size={20}
+                            className="text-brand-ui-primary"
+                          />
+                        </div>
+                      </a>
+                    </div>
+                  }
+                >
+                  <div
+                    key={i}
+                    ref={receiptRef}
+                    className="bg-white relative print:p-6"
+                  >
+                    <div className="grid w-full max-w-lg gap-4">
+                      <div className="grid w-full">
+                        <div className="flex flex-col-reverse gap-0 pb-6 sm:mb-0 md:flex-row justify-start sm:justify-end print:justify-start">
+                          <Supplier supplier={receipt.supplierAddress} />
+                          <PurchaseDetails
+                            receiptNumber={receipt.receiptNumber}
+                            transactionDate={getTransactionDate(
+                              Number(receipt.timestamp)
+                            )}
+                            hash={receipt.id}
+                          />
+                        </div>
+                        <h2 className="text-lg font-bold text-brand-ui-primary">
+                          Bill to:
+                        </h2>
+                        <p>Wallet: {addressMinify(receipt.recipient)}</p>
+
+                        <ReceiptDetails
+                          network={network}
+                          tokenSymbol={tokenSymbol}
+                          hash={receipt.id}
+                          amount={Number(receipt.amountTransferred)}
+                          currencyContractAddress={receipt.tokenAddress}
+                          isCancelReceipt={receipt.payer == lockAddress}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex justify-end py-2 print:hidden">
+                      <ReactToPrint
+                        trigger={() => (
+                          <Button className="" size="small">
+                            Print PDF
+                          </Button>
+                        )}
+                        content={() => receiptRef.current}
+                      />
+                    </div>
+                  </div>
+                </Disclosure>
+              )
+            )}
+          <div className="mt-4 pb-6 hidden print:visible">
             <PoweredByUnlock />
           </div>
+          <Button className="print:hidden" size="medium" onClick={handlePrint}>
+            Print All
+          </Button>
         </div>
       </div>
 
       <ReactToPrint
-        trigger={() => (
-          <Button className="absolute bottom-6 right-6" size="small">
-            Print PDF
-          </Button>
-        )}
+        trigger={() => <button className="hidden" ref={printButtonRef} />}
         content={() => componentRef.current}
+        onAfterPrint={() => setIsPrintMode(false)}
       />
     </div>
   )
