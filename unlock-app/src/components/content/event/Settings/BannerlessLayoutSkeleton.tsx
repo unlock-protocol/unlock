@@ -21,6 +21,7 @@ export const BannerlessLayoutSkeleton = ({
                 <div className="h-4 bg-slate-300 rounded w-3/4 mb-2"></div>
                 <div className="h-4 bg-slate-300 rounded w-3/4 mb-2"></div>
                 <div className="h-4 bg-slate-300 rounded w-3/4 mb-2"></div>
+                <div className="h-4 bg-slate-300 rounded w-3/4 mb-2"></div>
                 <div className="h-4 bg-slate-300 rounded w-1/2"></div>
               </div>
               <div className="w-1/3 h-full flex flex-col justify-between">
