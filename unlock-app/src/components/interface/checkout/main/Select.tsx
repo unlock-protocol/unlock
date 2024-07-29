@@ -32,7 +32,6 @@ import Disconnect from './Disconnect'
 import { useSIWE } from '~/hooks/useSIWE'
 import { useMembership } from '~/hooks/useMembership'
 import { useRouter } from 'next/router'
-
 interface Props {
   checkoutService: CheckoutService
 }
