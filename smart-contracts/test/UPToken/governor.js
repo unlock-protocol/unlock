@@ -141,6 +141,11 @@ describe('UPToken Governor & Timelock', () => {
       )
       assert.equal(await gov.quorum(timestamp - 1), expectedQuorum)
     })
+
+    it('proposalNeedsQueuing', async () => {
+      const result = await gov.proposalNeedsQueuing(0)
+      assert.equal(result, true)
+    })
   })
 
   describe('Update voting params', () => {
