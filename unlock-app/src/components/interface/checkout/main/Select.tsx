@@ -32,6 +32,7 @@ import Disconnect from './Disconnect'
 import { useSIWE } from '~/hooks/useSIWE'
 import { useMembership } from '~/hooks/useMembership'
 import { useRouter } from 'next/router'
+
 interface Props {
   checkoutService: CheckoutService
 }
@@ -327,7 +328,7 @@ export function Select({ checkoutService }: Props) {
 
   const skipSelect = useMemo(() => {
     const skip = paywallConfig.skipSelect
-    return skip && Object.keys(paywallConfig.locks).length === 1
+    return skip === true && Object.keys(paywallConfig.locks).length === 1
   }, [paywallConfig])
 
   const config = useConfig()
@@ -374,7 +375,7 @@ export function Select({ checkoutService }: Props) {
     (lock?.isSoldOut && !(membership?.member || membership?.expired)) ||
     isNotExpectedAddress ||
     isLoadingHook ||
-    isSigning
+    (isSigning && !isSignedIn)
 
   useEffect(() => {
     if (locks?.length) {
@@ -436,6 +437,8 @@ export function Select({ checkoutService }: Props) {
       setSigning(true)
 
       await signIn()
+
+      setSigning(false)
       return
     }
 
