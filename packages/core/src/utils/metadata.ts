@@ -19,6 +19,7 @@ export interface MetadataFormData {
   name: string
   image?: string
   slug?: string
+  layout?: string
   description?: string
   external_url?: string
   youtube_url?: string
@@ -149,6 +150,7 @@ export const categorizeAttributes = (
 export const formDataToMetadata = ({
   name,
   slug,
+  layout,
   description,
   animation_url,
   youtube_url,
@@ -272,6 +274,10 @@ export const formDataToMetadata = ({
 
   if (external_url) {
     metadata.external_url = external_url
+  }
+
+  if (layout) {
+    metadata.layout = layout
   }
 
   if (slug) {
