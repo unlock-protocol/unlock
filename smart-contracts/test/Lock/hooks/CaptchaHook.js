@@ -1,8 +1,67 @@
 const assert = require('assert')
 const { ethers } = require('hardhat')
-const { reverts, deployLock } = require('../../helpers')
+const { reverts, deployLock, ADDRESS_ZERO } = require('../../helpers')
 
 describe('CaptchaHook', function () {
+  it("addSigner and removeSigner shouldn't work on user", async function () {
+    const [_, user2] = await ethers.getSigners()
+    const secretSigner = ethers.Wallet.createRandom()
+
+    const CaptchaHook = await ethers.getContractFactory('CaptchaHook')
+    const hook = await CaptchaHook.deploy()
+
+    await reverts(
+      hook.connect(user2).addSigner(await secretSigner.getAddress()),
+      'OwnableUnauthorizedAccount'
+    )
+    await reverts(
+      hook.connect(user2).removeSigner(await secretSigner.getAddress()),
+      'OwnableUnauthorizedAccount'
+    )
+  })
+
+  it('removeSigner should work on owner', async function () {
+    const [_, user2] = await ethers.getSigners()
+    const secretSigner = ethers.Wallet.createRandom()
+
+    const CaptchaHook = await ethers.getContractFactory('CaptchaHook')
+    const hook = await CaptchaHook.deploy()
+
+    await (await hook.addSigner(await secretSigner.getAddress())).wait()
+    const isSignerBefore = await hook.signers(await secretSigner.getAddress())
+    assert.equal(isSignerBefore, true)
+
+    await (await hook.removeSigner(await secretSigner.getAddress())).wait()
+    const isSignerAfter = await hook.signers(await secretSigner.getAddress())
+    assert.equal(isSignerAfter, false)
+  })
+
+  it('keyPurchasePrice should be 0 if caller is not a contract', async () => {
+    const secretSigner = ethers.Wallet.createRandom()
+    const [user] = await ethers.getSigners()
+
+    const CaptchaHook = await ethers.getContractFactory('CaptchaHook')
+    const hook = await CaptchaHook.deploy()
+    await (await hook.addSigner(await secretSigner.getAddress())).wait()
+
+    const messageHash = ethers.solidityPackedKeccak256(
+      ['string'],
+      [(await user.getAddress()).toLowerCase()]
+    )
+    const signedMessage = await secretSigner.signMessage(
+      ethers.getBytes(messageHash)
+    )
+
+    const price = await hook.keyPurchasePrice(
+      await user.getAddress(),
+      await user.getAddress(),
+      await user.getAddress(),
+      signedMessage
+    )
+
+    assert.equal(price, 0)
+  })
+
   it('Should work', async function () {
     const [user] = await ethers.getSigners()
     const secretSigner = ethers.Wallet.createRandom()
@@ -124,5 +183,30 @@ describe('CaptchaHook', function () {
       ),
       'ECDSAInvalidSignatureLength'
     )
+  })
+
+  it('toString - number', async () => {
+    const CaptchaHook = await ethers.getContractFactory('CaptchaHook')
+    const hook = await CaptchaHook.deploy()
+
+    const toStringFunction = hook.getFunction(
+      'function toString(uint256) public pure returns (string memory)'
+    )
+    const value = 123
+    const result = await toStringFunction(value)
+    assert.equal(result.includes(value.toString(16)), true)
+  })
+
+  it('toString - string', async () => {
+    const CaptchaHook = await ethers.getContractFactory('CaptchaHook')
+    const hook = await CaptchaHook.deploy()
+
+    const value = `0x${ethers.parseEther('10').toString(16)}`
+    const hexString = ethers.hexlify(ethers.zeroPadValue(value, 32))
+    const toStringFunction = hook.getFunction(
+      'function toString(bytes32) public pure returns (string memory)'
+    )
+    const result = await toStringFunction(hexString)
+    assert.equal(result, hexString)
   })
 })

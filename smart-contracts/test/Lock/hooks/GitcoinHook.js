@@ -110,6 +110,12 @@ describe('GitcoinHook', function () {
     )
     assert.equal(await hook.signers(await anotherSigner.getAddress()), false)
 
+    // Remove signer failing with none owner
+    await reverts(
+      hook.removeSigner(await anotherSigner.getAddress()),
+      `OwnableUnauthorizedAccount("${previousOwner}")`
+    )
+
     // Add a signer from new owner
     await hook.connect(anotherUser).addSigner(await anotherSigner.getAddress())
     assert.equal(await hook.signers(await anotherSigner.getAddress()), true)
@@ -117,5 +123,31 @@ describe('GitcoinHook', function () {
     // Remove signer from new owner
     await hook.connect(anotherUser).removeSigner(await signer.getAddress())
     assert.equal(await hook.signers(await signer.getAddress()), false)
+  })
+
+  it('keyPurchasePrice should be 0 if caller is not a contract', async () => {
+    const secretSigner = ethers.Wallet.createRandom()
+    const [user] = await ethers.getSigners()
+
+    const GitcoinHook = await ethers.getContractFactory('GitcoinHook')
+    const hook = await GitcoinHook.deploy()
+    await (await hook.addSigner(await secretSigner.getAddress())).wait()
+
+    const messageHash = ethers.solidityPackedKeccak256(
+      ['string'],
+      [(await user.getAddress()).toLowerCase()]
+    )
+    const signedMessage = await secretSigner.signMessage(
+      ethers.getBytes(messageHash)
+    )
+
+    const price = await hook.keyPurchasePrice(
+      await user.getAddress(),
+      await user.getAddress(),
+      await user.getAddress(),
+      signedMessage
+    )
+
+    assert.equal(price, 0)
   })
 })
