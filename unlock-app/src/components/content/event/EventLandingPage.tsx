@@ -51,12 +51,6 @@ const customers = [
 
 const features = [
   {
-    image: '/images/illustrations/events/easy.svg',
-    name: 'No-code smart contract deployment',
-    description:
-      'Simply fill up the form and hit the deploy button. All the metadata information will automatically be included in the NFT tickets. You can always add and modify other properties at later date.',
-  },
-  {
     image: '/images/illustrations/events/qr.svg',
     name: 'QR codes and proof of purchase ticketing',
     description:
