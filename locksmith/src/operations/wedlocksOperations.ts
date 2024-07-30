@@ -54,7 +54,7 @@ interface Key {
 interface SendEmailProps {
   network?: number
   template: string
-  failoverTemplate: string
+  failoverTemplate?: string
   recipient: string
   params?: Params
   attachments?: Attachment[]
