@@ -191,7 +191,6 @@ export const retrieveWaasUuid = async (
     )
     userUUID = newUserUUID
 
-    // @ts-expect-error object incomplete
     await sendEmail({
       template: 'welcome',
       failoverTemplate: 'debug',
