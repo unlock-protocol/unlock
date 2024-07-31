@@ -106,8 +106,6 @@ export function ConfirmCrypto({
     ),
   })
 
-  console.log('pricingData', pricingData)
-
   const isPricingDataAvailable =
     !isPricingDataLoading && !isPricingDataError && !!pricingData
 
