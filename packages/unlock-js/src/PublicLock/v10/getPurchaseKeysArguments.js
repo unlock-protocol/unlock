@@ -48,8 +48,7 @@ export default async function getPurchaseKeysArguments({
       if (!kp) {
         // We might not have the keyPrice, in which case, we need to retrieve from the lock!
         if (owner) {
-          console.log('owner', owner)
-          return await lockContract.purchasePriceFor(owner, referrer, _data)
+          return await lockContract.purchasePriceFor(owner, referrer, d)
         } else {
           return await lockContract.keyPrice()
         }

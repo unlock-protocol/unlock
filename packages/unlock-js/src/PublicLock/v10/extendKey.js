@@ -53,7 +53,6 @@ export default async function (
 
   // We might not have the keyPrice, in which case, we need to retrieve from the the lock!
   if (!keyPrice) {
-    console.log('owner', owner)
     if (owner) {
       actualAmount = await lockContract.purchasePriceFor(owner, referrer, data)
     } else {
