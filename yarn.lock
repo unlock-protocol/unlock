@@ -19078,7 +19078,7 @@ __metadata:
     eslint-plugin-sort-keys-fix: "npm:1.1.2"
     ethers: "npm:6.13.0"
     fs-extra: "npm:11.2.0"
-    tsup: "npm:8.1.0"
+    tsup: "npm:8.2.3"
     tsx: "npm:4.16.5"
     typescript: "npm:5.5.3"
   languageName: unknown
