@@ -18537,7 +18537,7 @@ __metadata:
     react-dom: "npm:18.3.1"
     storybook: "npm:8.1.1"
     tsup: "npm:8.1.0"
-    tsx: "npm:4.16.0"
+    tsx: "npm:4.16.4"
     typescript: "npm:5.5.3"
     vite: "npm:5.3.2"
     vite-plugin-svgr: "npm:4.2.0"
@@ -18776,7 +18776,7 @@ __metadata:
     siwe: "npm:2.3.2"
     stripe: "npm:16.2.0"
     supertest: "npm:7.0.0"
-    tsx: "npm:4.16.2"
+    tsx: "npm:4.16.4"
     typescript: "npm:5.5.3"
     unified: "npm:11.0.4"
     unlock-abi-1-1: "npm:1.1.1"
@@ -18799,7 +18799,7 @@ __metadata:
     ethers: "npm:6.13.0"
     fs-extra: "npm:11.2.0"
     tsup: "npm:8.1.0"
-    tsx: "npm:4.16.0"
+    tsx: "npm:4.16.4"
     typescript: "npm:5.5.3"
   languageName: unknown
   linkType: soft
@@ -18960,7 +18960,7 @@ __metadata:
     tailwind-merge: "npm:2.3.0"
     tailwindcss: "npm:3.4.4"
     tsup: "npm:8.1.0"
-    tsx: "npm:4.16.0"
+    tsx: "npm:4.16.4"
     typescript: "npm:5.5.3"
     url-loader: "npm:4.1.1"
     vite: "npm:5.3.2"
@@ -49362,9 +49362,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsx@npm:4.16.0":
-  version: 4.16.0
-  resolution: "tsx@npm:4.16.0"
+"tsx@npm:4.16.4":
+  version: 4.16.4
+  resolution: "tsx@npm:4.16.4"
   dependencies:
     esbuild: "npm:~0.21.5"
     fsevents: "npm:~2.3.3"
@@ -49374,23 +49374,7 @@ __metadata:
       optional: true
   bin:
     tsx: dist/cli.mjs
-  checksum: 10/6a81423bd63d80185079d4ac390325066ddc5e7d057a810ba6c7071e8b7535fa6a6bb0fd2494da68e6f61480ec0fb9f1f204f8655f0cfe40480896992748c46d
-  languageName: node
-  linkType: hard
-
-"tsx@npm:4.16.2":
-  version: 4.16.2
-  resolution: "tsx@npm:4.16.2"
-  dependencies:
-    esbuild: "npm:~0.21.5"
-    fsevents: "npm:~2.3.3"
-    get-tsconfig: "npm:^4.7.5"
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  bin:
-    tsx: dist/cli.mjs
-  checksum: 10/841ccbace3dc0c42704bb5c4cea47e1f4cd313aa4719fd4531e5ed40bb862b02349c76f7c56c53b64207eebbb1c2ac2e117482aabfbf197a30fbc0b2584b60be
+  checksum: 10/bb594e410978619c3cc1d159fcf6fb8443bcbb4b16ea2aa796f0740d2f278caba2b63fa49581eb3a7cc42908133c4f7a3a5193fdea9120779203f02515226cfa
   languageName: node
   linkType: hard
 
