@@ -19052,7 +19052,7 @@ __metadata:
     react-hook-form: "npm:7.52.0"
     react-hot-toast: "npm:2.4.1"
     react-icons: "npm:5.2.1"
-    react-jwt: "npm:1.2.1"
+    react-jwt: "npm:1.2.2"
     react-markdown: "npm:9.0.1"
     react-test-renderer: "npm:18.3.1"
     react-to-print: "npm:2.15.1"
@@ -43869,9 +43869,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-jwt@npm:1.2.1":
-  version: 1.2.1
-  resolution: "react-jwt@npm:1.2.1"
+"react-jwt@npm:1.2.2":
+  version: 1.2.2
+  resolution: "react-jwt@npm:1.2.2"
   dependencies:
     fsevents: "npm:^2.3.2"
   peerDependencies:
@@ -43879,7 +43879,7 @@ __metadata:
   dependenciesMeta:
     fsevents:
       optional: true
-  checksum: 10/f9b325e1070bb73a6a8de7d5210029b1b31020f834f772e4789574d3da40b36022cc4c8115d2c1661bfc63109a01b2ca18374520e9263063a38ea7a3cf8c40e1
+  checksum: 10/88cf19351af0520aa73332c6b3ed0cceebbe3d3a7b2f78b9bd5a493da696c47be77746fb30879bd1f9040bf0aefee8ac5ac2e972a814f5195c3779e0cc5d6b18
   languageName: node
   linkType: hard
 
