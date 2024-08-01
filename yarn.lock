@@ -19168,7 +19168,7 @@ __metadata:
     remark-html: "npm:16.0.1"
     rss: "npm:1.2.2"
     showdown-highlight: "npm:3.1.0"
-    tailwind-merge: "npm:2.3.0"
+    tailwind-merge: "npm:2.4.0"
     tailwindcss: "npm:3.4.4"
     typescript: "npm:5.5.3"
     use-local-storage: "npm:3.0.0"
@@ -48142,6 +48142,13 @@ __metadata:
   dependencies:
     "@babel/runtime": "npm:^7.24.1"
   checksum: 10/cf3b126bee82bc9ff3f60f9601b66925418db6906544198b637487b25fba1c9c307734ca37ccb8fa2355f69ad0c5aff34c5dce460809addb459a93205d9a0abe
+  languageName: node
+  linkType: hard
+
+"tailwind-merge@npm:2.4.0":
+  version: 2.4.0
+  resolution: "tailwind-merge@npm:2.4.0"
+  checksum: 10/dda331a95146c9943dd18f152156fe7a5daf450a686d0562fb521ebc027273bd0c8f9503742668b3e90d27e887aa794ea5e79c38faa51216e19e9d0f1ec55925
   languageName: node
   linkType: hard
 
