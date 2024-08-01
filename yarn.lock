@@ -281,15 +281,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@arbitrum/nitro-contracts@npm:1.2.1":
-  version: 1.2.1
-  resolution: "@arbitrum/nitro-contracts@npm:1.2.1"
+"@arbitrum/nitro-contracts@npm:2.1.0":
+  version: 2.1.0
+  resolution: "@arbitrum/nitro-contracts@npm:2.1.0"
   dependencies:
     "@offchainlabs/upgrade-executor": "npm:1.1.0-beta.0"
     "@openzeppelin/contracts": "npm:4.5.0"
     "@openzeppelin/contracts-upgradeable": "npm:4.5.2"
     patch-package: "npm:^6.4.7"
-  checksum: 10/b8e682e85a6cb45757427d8d24a59752e4e69167d8347ddf36bb299a64a892d9d847bd11ee8d4c6b61b62688e83657b3a1691a1d1dfb924006b39caa64ec2df1
+    solady: "npm:0.0.182"
+  checksum: 10/8b1bd2f987597b12ccbc8bbfe40c1edbdb76e923f4d94d4183b396a23b622728f564b2c6df1669ce617340a551f3791ad72d9ff7dadeffe55393483cd96023f9
   languageName: node
   linkType: hard
 
@@ -18606,7 +18607,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/governance@workspace:governance"
   dependencies:
-    "@arbitrum/nitro-contracts": "npm:1.2.1"
+    "@arbitrum/nitro-contracts": "npm:2.1.0"
     "@arbitrum/sdk": "npm:3.6.0"
     "@eth-optimism/sdk": "npm:3.3.2"
     "@matterlabs/hardhat-zksync-deploy": "npm:1.5.0"
@@ -46704,6 +46705,13 @@ __metadata:
     ip-address: "npm:^9.0.5"
     smart-buffer: "npm:^4.2.0"
   checksum: 10/ffcb622c22481dfcd7589aae71fbfd71ca34334064d181df64bf8b7feaeee19706aba4cffd1de35cc7bbaeeaa0af96be2d7f40fcbc7bc0ab69533a7ae9ffc4fb
+  languageName: node
+  linkType: hard
+
+"solady@npm:0.0.182":
+  version: 0.0.182
+  resolution: "solady@npm:0.0.182"
+  checksum: 10/3bc02c37da3e791b366ecbfa1b28bf204926c206f3c36da59cc11c16b97775fa62720022a5b3b7849b4a5efda33bcc829a0a24a411782232e247c85bc945c971
   languageName: node
   linkType: hard
 
