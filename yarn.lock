@@ -18817,7 +18817,7 @@ __metadata:
     react-dom: "npm:18.3.1"
     storybook: "npm:8.1.1"
     tsup: "npm:8.2.3"
-    tsx: "npm:4.16.4"
+    tsx: "npm:4.16.5"
     typescript: "npm:5.5.3"
     vite: "npm:5.3.2"
     vite-plugin-svgr: "npm:4.2.0"
@@ -19056,7 +19056,7 @@ __metadata:
     siwe: "npm:2.3.2"
     stripe: "npm:16.2.0"
     supertest: "npm:7.0.0"
-    tsx: "npm:4.16.4"
+    tsx: "npm:4.16.5"
     typescript: "npm:5.5.3"
     unified: "npm:11.0.4"
     unlock-abi-1-1: "npm:1.1.1"
@@ -19079,7 +19079,7 @@ __metadata:
     ethers: "npm:6.13.0"
     fs-extra: "npm:11.2.0"
     tsup: "npm:8.1.0"
-    tsx: "npm:4.16.4"
+    tsx: "npm:4.16.5"
     typescript: "npm:5.5.3"
   languageName: unknown
   linkType: soft
@@ -19240,7 +19240,7 @@ __metadata:
     tailwind-merge: "npm:2.3.0"
     tailwindcss: "npm:3.4.4"
     tsup: "npm:8.1.0"
-    tsx: "npm:4.16.4"
+    tsx: "npm:4.16.5"
     typescript: "npm:5.5.3"
     url-loader: "npm:4.1.1"
     vite: "npm:5.3.2"
@@ -49879,9 +49879,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsx@npm:4.16.4":
-  version: 4.16.4
-  resolution: "tsx@npm:4.16.4"
+"tsx@npm:4.16.5":
+  version: 4.16.5
+  resolution: "tsx@npm:4.16.5"
   dependencies:
     esbuild: "npm:~0.21.5"
     fsevents: "npm:~2.3.3"
@@ -49891,7 +49891,7 @@ __metadata:
       optional: true
   bin:
     tsx: dist/cli.mjs
-  checksum: 10/bb594e410978619c3cc1d159fcf6fb8443bcbb4b16ea2aa796f0740d2f278caba2b63fa49581eb3a7cc42908133c4f7a3a5193fdea9120779203f02515226cfa
+  checksum: 10/a9addbd9825bf54b1c401f0f1d6d5090ae48e6ade22e3821d6a0c9189945980fda33887f496796739be551aaccc3de7ae5d09aeade3bf010b34b53ad2c587e19
   languageName: node
   linkType: hard
 
