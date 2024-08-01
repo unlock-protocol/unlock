@@ -16951,10 +16951,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:5.51.16":
-  version: 5.51.16
-  resolution: "@tanstack/query-core@npm:5.51.16"
-  checksum: 10/7b5f48839d41e083fb0a00cd92a2710e4850b3e1c9daa74073b11319b4fa8a3ef335fb8da3dbc711144c7aa982597b34745bd5851b40eab17deadd56681ed798
+"@tanstack/query-core@npm:5.51.17":
+  version: 5.51.17
+  resolution: "@tanstack/query-core@npm:5.51.17"
+  checksum: 10/51736983d56ba9208603f0dbf239bc9c9baebdc4cb25f5aaddaf9bef7219ee8c6b9ef33ec3e8ab31dd1634a40008517fa3e56b5be272b312db3c3e9f571b0370
   languageName: node
   linkType: hard
 
@@ -16977,14 +16977,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:5.51.16":
-  version: 5.51.16
-  resolution: "@tanstack/react-query@npm:5.51.16"
+"@tanstack/react-query@npm:5.51.18":
+  version: 5.51.18
+  resolution: "@tanstack/react-query@npm:5.51.18"
   dependencies:
-    "@tanstack/query-core": "npm:5.51.16"
+    "@tanstack/query-core": "npm:5.51.17"
   peerDependencies:
     react: ^18.0.0
-  checksum: 10/84261a5c66c4311b06618af78d1534a84d908d5bc32c04f36f39dad977365090c244e8c5e3578f38118431e7a77970fae2ba6af75e1f03e8a22a48458f8d518d
+  checksum: 10/194e38b4749e24bc0015319183cd426fe59a269da5ac76dc19cc3485986742a0eeb7a12ed49ecde5e491d90a2700a8d3cdab893462224845306a94a177b354ef
   languageName: node
   linkType: hard
 
@@ -18838,7 +18838,7 @@ __metadata:
     "@docusaurus/plugin-content-docs": "npm:3.4.0"
     "@flockler/react-flockler-embed": "npm:1.0.4"
     "@mdx-js/react": "npm:3.0.1"
-    "@tanstack/react-query": "npm:5.51.16"
+    "@tanstack/react-query": "npm:5.51.18"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     clsx: "npm:2.1.1"
     docusaurus-gtm-plugin: "npm:0.0.2"
