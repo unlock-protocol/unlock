@@ -7,7 +7,7 @@
     "react-dom": "18.3.1"
   },
   "dependencies": {
-    "@airstack/airstack-react": "0.6.3",
+    "@airstack/airstack-react": "0.6.4",
     "@coinbase/waas-sdk-web": "3.3.2",
     "@coinbase/wallet-sdk": "4.0.4",
     "@crossmint/client-sdk-react-ui": "1.1.10",
