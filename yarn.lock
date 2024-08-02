@@ -19,15 +19,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@airstack/airstack-react@npm:0.6.3":
-  version: 0.6.3
-  resolution: "@airstack/airstack-react@npm:0.6.3"
+"@airstack/airstack-react@npm:0.6.4":
+  version: 0.6.4
+  resolution: "@airstack/airstack-react@npm:0.6.4"
   dependencies:
     graphql: "npm:16.6.0"
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 10/0bd0f02a6ebc0c6ce28258515e55e322adcd2f4a5d513cd37e54bff4dcfdeb6f9ee0b4c9db9e75a96706d0c550bee14d82a532738662ad80ec0c8fb27e11fded
+  checksum: 10/2c0e0690dc27fad4b1862a75d6058be2e172773f4fe080d786bcc4082478f46d552b4d77406488f3ba0854e073f09ef9a560ff23451345f7e88e99393ee25025
   languageName: node
   linkType: hard
 
@@ -19376,7 +19376,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/unlock-app@workspace:unlock-app"
   dependencies:
-    "@airstack/airstack-react": "npm:0.6.3"
+    "@airstack/airstack-react": "npm:0.6.4"
     "@coinbase/waas-sdk-web": "npm:3.3.2"
     "@coinbase/wallet-sdk": "npm:4.0.4"
     "@crossmint/client-sdk-react-ui": "npm:1.1.10"
