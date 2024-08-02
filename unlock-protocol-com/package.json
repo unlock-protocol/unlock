@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@babel/core": "7.24.7",
+    "@babel/core": "7.25.2",
     "@headlessui/react": "1.7.19",
     "@observablehq/plot": "0.6.15",
     "@radix-ui/react-avatar": "1.1.0",
