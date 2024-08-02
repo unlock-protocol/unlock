@@ -18340,7 +18340,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.10.6, @types/node@npm:^20.5.7":
+"@types/node@npm:^20.5.7":
   version: 20.12.12
   resolution: "@types/node@npm:20.12.12"
   dependencies:
@@ -19540,7 +19540,7 @@ __metadata:
     multer: "npm:1.4.5-lts.1"
     multer-s3: "npm:3.0.1"
     nock: "npm:13.5.4"
-    node-mocks-http: "npm:1.15.0"
+    node-mocks-http: "npm:1.15.1"
     p-retry: "npm:6.2.0"
     parse-data-uri: "npm:0.2.0"
     passkit-generator: "npm:3.1.11"
@@ -40726,12 +40726,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-mocks-http@npm:1.15.0":
-  version: 1.15.0
-  resolution: "node-mocks-http@npm:1.15.0"
+"node-mocks-http@npm:1.15.1":
+  version: 1.15.1
+  resolution: "node-mocks-http@npm:1.15.1"
   dependencies:
     "@types/express": "npm:^4.17.21"
-    "@types/node": "npm:^20.10.6"
+    "@types/node": "npm:*"
     accepts: "npm:^1.3.7"
     content-disposition: "npm:^0.5.3"
     depd: "npm:^1.1.0"
@@ -40742,7 +40742,7 @@ __metadata:
     parseurl: "npm:^1.3.3"
     range-parser: "npm:^1.2.0"
     type-is: "npm:^1.6.18"
-  checksum: 10/fda796fb8ed8cbc959bd2e04fc90fcc3a23debe56aee61aa05c13ab0410dd77d17c557189b039a5c826096ff0e06a69ea26b66aaa4814bc6c892523f37a31622
+  checksum: 10/70275908538a896d01bdf3224e7a1008f3f3f9bea32672b989dc39b6b17881bc37a5155022cb04e3f31b687beb720fec56e4cc834e648ae971ca1d9573928c21
   languageName: node
   linkType: hard
 
