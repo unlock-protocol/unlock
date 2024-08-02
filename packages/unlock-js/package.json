@@ -34,9 +34,9 @@
   },
   "devDependencies": {
     "@graphql-codegen/cli": "5.0.2",
-    "@graphql-codegen/typescript": "4.0.8",
+    "@graphql-codegen/typescript": "4.0.9",
     "@graphql-codegen/typescript-graphql-request": "6.2.0",
-    "@graphql-codegen/typescript-operations": "4.2.2",
+    "@graphql-codegen/typescript-operations": "4.2.3",
     "@nomicfoundation/hardhat-ethers": "3.0.6",
     "@openapitools/openapi-generator-cli": "2.13.4",
     "@unlock-protocol/contracts": "workspace:./packages/contracts",
