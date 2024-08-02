@@ -42,7 +42,7 @@ interface CreateLockFormProps {
 }
 
 export const networkDescription = (network: number) => {
-  const { description, url, faucet, nativeCurrency } = networks[network!]
+  const { description, url, faucets, nativeCurrency } = networks[network!]
   return (
     <>
       {description}{' '}
@@ -60,15 +60,22 @@ export const networkDescription = (network: number) => {
           Mainnet.
         </p>
       )}
-      {faucet && (
+      {faucets && (
         <>
           {' '}
           <br />
-          Need some {nativeCurrency.name} to pay for gas?{' '}
-          <Link className="underline" href={faucet} target="_blank">
-            Try this faucet
-          </Link>
-          .
+          Need some {nativeCurrency.name} to pay for gas? Try one of these
+          faucets:{' '}
+          {faucets.map((faucet: any) => {
+            return (
+              <>
+                <Link className="underline" href={faucet.url} target="_blank">
+                  {faucet.name}
+                </Link>
+                {', '}
+              </>
+            )
+          })}
         </>
       )}
     </>
