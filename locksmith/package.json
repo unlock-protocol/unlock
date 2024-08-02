@@ -116,7 +116,7 @@
     "run-script-os": "1.1.6",
     "supertest": "7.0.0",
     "tsx": "4.16.5",
-    "typescript": "5.5.3",
+    "typescript": "5.5.4",
     "vitest": "1.6.0"
   },
   "files": [
