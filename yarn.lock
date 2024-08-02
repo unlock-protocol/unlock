@@ -1924,9 +1924,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/eslint-parser@npm:7.24.7":
-  version: 7.24.7
-  resolution: "@babel/eslint-parser@npm:7.24.7"
+"@babel/eslint-parser@npm:7.25.1":
+  version: 7.25.1
+  resolution: "@babel/eslint-parser@npm:7.25.1"
   dependencies:
     "@nicolo-ribaudo/eslint-scope-5-internals": "npm:5.1.1-v1"
     eslint-visitor-keys: "npm:^2.1.0"
@@ -1934,7 +1934,7 @@ __metadata:
   peerDependencies:
     "@babel/core": ^7.11.0
     eslint: ^7.5.0 || ^8.0.0 || ^9.0.0
-  checksum: 10/4d7f1704cf3cb868404375298ff066603f1b27bb92a9011452d7eadcdc79c97ccd5f2202eca66d811d84e5d4466a1fb1cc7ceebed51fb0c71fb911050359b02b
+  checksum: 10/9a2ddab3accd391a1eb95cb1ea655daa8603515d0f17081c542db8621c6bbbc65aa3b9b96b779854eed80cc8664a8969d7ac54479e8738876c0be5d26fd66efa
   languageName: node
   linkType: hard
 
@@ -19508,16 +19508,16 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/eslint-config@workspace:packages/eslint-config"
   dependencies:
-    "@babel/eslint-parser": "npm:7.24.7"
-    "@typescript-eslint/eslint-plugin": "npm:7.15.0"
-    "@typescript-eslint/parser": "npm:7.15.0"
+    "@babel/eslint-parser": "npm:7.25.1"
+    "@typescript-eslint/eslint-plugin": "npm:7.18.0"
+    "@typescript-eslint/parser": "npm:7.18.0"
     eslint: "npm:8.57.0"
     eslint-config-next: "npm:14.2.5"
     eslint-config-prettier: "npm:9.1.0"
     eslint-plugin-evm-address-to-checksummed: "npm:0.0.6"
     eslint-plugin-json: "npm:3.1.0"
-    eslint-plugin-mocha: "npm:10.4.3"
-    eslint-plugin-prettier: "npm:5.1.3"
+    eslint-plugin-mocha: "npm:10.5.0"
+    eslint-plugin-prettier: "npm:5.2.1"
     eslint-plugin-vitest: "npm:0.5.4"
     typescript: "npm:5.5.4"
     vitest: "npm:1.6.0"
@@ -29640,6 +29640,19 @@ __metadata:
   peerDependencies:
     eslint: ">=7.0.0"
   checksum: 10/3db26ed8f70fb70e940069c3318c62584838f3dbf02fdd455967e8f9aa62815e383d2ea9eaede339c95e8e3100908b54b5ac86664cfe80fff802c9c7453f7906
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-mocha@npm:10.5.0":
+  version: 10.5.0
+  resolution: "eslint-plugin-mocha@npm:10.5.0"
+  dependencies:
+    eslint-utils: "npm:^3.0.0"
+    globals: "npm:^13.24.0"
+    rambda: "npm:^7.4.0"
+  peerDependencies:
+    eslint: ">=7.0.0"
+  checksum: 10/cc2e9cc8efda173967fb31a27b5ebbab989a20a06fd310bb88e4ddf4299c1445365b48c74eadf37eacffb1b16386e5a866ed098a2c242ad61763aea17f324c83
   languageName: node
   linkType: hard
 
