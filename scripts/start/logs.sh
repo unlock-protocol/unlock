@@ -8,4 +8,4 @@ set -e
 # export required envs
 source ./scripts/start/envs.sh
 
-docker-compose $COMPOSE_CONFIG logs "$@"
+docker compose $COMPOSE_CONFIG logs "$@"
