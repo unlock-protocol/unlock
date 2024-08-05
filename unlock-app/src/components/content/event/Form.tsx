@@ -121,7 +121,7 @@ export const Form = ({ onSubmit }: FormProps) => {
           event_end_date: today,
           event_end_time: '',
           event_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-          event_is_in_person: 'true',
+          event_is_in_person: true,
           event_address: '',
         },
         image: '',
@@ -489,7 +489,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                         onChange={(enabled) => {
                           setValue(
                             'metadata.ticket.event_is_in_person',
-                            enabled.toString()
+                            enabled
                           )
                           // reset the value
                           setValue('metadata.ticket.event_address', undefined)
