@@ -297,7 +297,7 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
                     enabled={isInPerson}
                     setEnabled={setIsInPerson}
                     onChange={(enabled) => {
-                      setValue('ticket.event_is_in_person', enabled.toString())
+                      setValue('ticket.event_is_in_person', enabled)
                       setValue('ticket.event_address', '')
                     }}
                   />
