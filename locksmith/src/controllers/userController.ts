@@ -13,6 +13,7 @@ import { generateVerificationCode } from '../utils/generateVerificationCode'
 import VerificationCodes from '../models/verificationCodes'
 import {
   emailTemplate,
+  sendEmail,
   sendSimpleEmail,
 } from '../operations/wedlocksOperations'
 
@@ -189,6 +190,11 @@ export const retrieveWaasUuid = async (
       selectedProvider as UserAccountType
     )
     userUUID = newUserUUID
+
+    await sendEmail({
+      template: 'welcome',
+      recipient: emailAddress,
+    })
   }
 
   try {
