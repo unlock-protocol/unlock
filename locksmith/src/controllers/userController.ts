@@ -193,7 +193,6 @@ export const retrieveWaasUuid = async (
 
     await sendEmail({
       template: 'welcome',
-      failoverTemplate: 'debug',
       recipient: emailAddress,
     })
   }
