@@ -66,7 +66,7 @@ yarn workspace @unlock-protocol/paywall lint
 You can run a local version of the protocol using [Docker](https://docs.docker.com/install/).
 
 ```
-cd docker && docker-compose up --build
+cd docker && docker compose up --build
 ```
 
 This will create the required infrastructure (database, local ethereum test network, subgraph...) and start core services such as the [Locksmith](./locksmith) API and a [Wedlocks](./wedlocks) mailing service for debug purposes.
@@ -79,7 +79,7 @@ The following script will deploy the contracts, create some dummy locks and send
 
 ```
 cd docker
-docker-compose exec eth-node yarn provision
+docker compose exec eth-node yarn provision
 ```
 
 ### Run one of the app
