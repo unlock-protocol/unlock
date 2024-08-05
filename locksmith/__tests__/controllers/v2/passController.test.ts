@@ -2,6 +2,7 @@ import request from 'supertest'
 import app from '../../app'
 import config from '../../../src/config/config'
 import { vi, expect } from 'vitest'
+import { createAppleWalletPass } from '../../../src/operations/generate-pass/ios/createAppleWalletPass'
 
 // Constants defining the parameters for the Google Wallet pass generation
 const network = 11155111
@@ -10,7 +11,7 @@ const keyId = '1'
 
 // Mock configuration specific to Google Wallet API interaction
 const mockGoogleConfig = {
-  googleApplicationCredentials: {
+  googleWalletApplicationCredentials: {
     client_email: 'test@example.com',
     private_key: 'test_private_key',
   },
@@ -19,8 +20,8 @@ const mockGoogleConfig = {
 }
 
 // config with Google Wallet specifics
-config.googleApplicationCredentials =
-  mockGoogleConfig.googleApplicationCredentials
+config.googleWalletApplicationCredentials =
+  mockGoogleConfig.googleWalletApplicationCredentials
 config.googleWalletIssuerID = mockGoogleConfig.googleWalletIssuerID
 config.googleWalletClass = mockGoogleConfig.googleWalletClass
 
@@ -58,7 +59,23 @@ vi.mock(
   })
 )
 
-// tesst suite for Google Wallet pass generation
+// Mock for streaming the generated Apple wallet pass
+vi.mock(
+  '../../../src/operations/generate-pass/ios/createAppleWalletPass',
+  () => ({
+    createAppleWalletPass: vi.fn(() => ({
+      getAsStream: () => ({
+        pipe: (res) => {
+          res.send()
+          return { on: (event, handler) => event === 'end' && handler() }
+        },
+      }),
+      mimeType: 'application/vnd.apple.pkpass',
+    })),
+  })
+)
+
+// test suite for Google Wallet pass generation
 describe("Generate a Google Wallet pass for a lock's key", () => {
   it('should return a response status of 200 and the URL to save the generated wallet pass', async () => {
     // number of assertions expected
@@ -75,5 +92,41 @@ describe("Generate a Google Wallet pass for a lock's key", () => {
     expect(generateGoogleWalletPassResponse.body).toEqual({
       passObjectUrl: 'https://example.com/pass',
     })
+  })
+})
+
+// test suite for Apple Wallet pass generation
+describe("Generate an Apple Wallet pass for a lock's key", () => {
+  it('should return a successful response with the correct headers for downloading the Apple Wallet pass', async () => {
+    expect.assertions(3)
+
+    const response = await request(app).get(
+      `/v2/pass/${network}/${lockAddress}/${keyId}/ios`
+    )
+
+    // Check if the response was successful
+    expect(response.status).toBe(200)
+
+    // Check if the correct content type is set
+    expect(response.headers['content-type']).toBe(
+      'application/vnd.apple.pkpass'
+    )
+
+    // Check if the content disposition is set correctly for a file download
+    expect(response.headers['content-disposition']).toContain('.pkpass')
+  })
+
+  it('should handle errors appropriately and return a status of 500 if the pass generation fails', async () => {
+    // Simulate an error in pass generation
+    vi.mocked(createAppleWalletPass).mockImplementationOnce(() => {
+      throw new Error('Failed to generate pass')
+    })
+
+    const response = await request(app).get(
+      `/v2/pass/${network}/${lockAddress}/${keyId}/ios`
+    )
+
+    expect(response.status).toBe(500)
+    expect(response.body.message).toBe('Error in generating apple wallet pass')
   })
 })

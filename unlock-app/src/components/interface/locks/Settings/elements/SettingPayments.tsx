@@ -51,7 +51,7 @@ export const SettingPayments = ({
 
       <SettingCard
         label="Subscription"
-        description="Incentize renewals of memberships when they expire. Users will need to have the previously approved the renewals, as well as have a sufficient amount of tokens in their wallets."
+        description="Incentivize renewals of memberships when they expire. Users will need to have the previously approved the renewals, as well as have a sufficient amount of tokens in their wallets."
         isLoading={isLoading}
       >
         <SubscriptionForm
@@ -60,6 +60,7 @@ export const SettingPayments = ({
           isManager={isManager}
           disabled={!isManager}
           lock={lock}
+          price={parseFloat(lock?.keyPrice ?? '0')}
         />
       </SettingCard>
 

@@ -1,7 +1,7 @@
 import { FaRegLightbulb } from 'react-icons/fa'
 import { usePlacesWidget } from 'react-google-autocomplete'
 import { config } from '~/config/app'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Lock, Token } from '@unlock-protocol/types'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 import { BiLogoZoom as ZoomIcon } from 'react-icons/bi'
@@ -175,6 +175,7 @@ export const Form = ({ onSubmit }: FormProps) => {
   const router = useRouter()
 
   const [currencyNetwork, setCurrencyNetwork] = useState<string>()
+  const [kickbackSupported, setKickBackSupported] = useState<boolean>(false)
 
   register('metadata.image', {
     required: {
@@ -198,6 +199,16 @@ export const Form = ({ onSubmit }: FormProps) => {
     }
     onSubmit(values)
   }
+
+  const [kickbackDisabled, setKickbackDisabled] = useState<boolean>(false)
+  useEffect(() => {
+    if (isFree || !kickbackSupported) {
+      setKickbackDisabled(true)
+      setAttendeeRefund(false)
+    } else {
+      setKickbackDisabled(false)
+    }
+  }, [isFree, details.lock?.keyPrice, kickbackSupported])
 
   return (
     <FormProvider {...methods}>
@@ -295,6 +306,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                       networks[newValue].nativeCurrency.symbol
                     )
                     setCurrencyNetwork(networks[newValue].name)
+                    setKickBackSupported(!!networks[newValue].kickbackAddress)
                   }}
                   options={networkOptions}
                   moreOptions={moreNetworkOptions}
@@ -359,7 +371,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                   </div>
                 </div>
                 <div className="flex flex-col self-start gap-2 justify-top">
-                  <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                  <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
                     <Input
                       {...register('metadata.ticket.event_start_date', {
                         required: {
@@ -407,7 +419,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                  <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
                     <Input
                       {...register('metadata.ticket.event_end_date', {
                         required: {
@@ -627,8 +639,8 @@ export const Form = ({ onSubmit }: FormProps) => {
 
                   <div className="text-sm mt-2 flex items-center justify-between">
                     <Checkbox
-                      disabled={isFree || !details.lock?.keyPrice}
-                      label="Treat the price as a deposit which will be refunded when attendees check in at the event (not applicable to credit cards)."
+                      disabled={kickbackDisabled}
+                      label={`Treat the price as a deposit which will be refunded when attendees check in at the event (not applicable to credit cards). ${!kickbackSupported ? `This feature is not supported on ${currencyNetwork}.` : ''}`}
                       checked={attendeeRefund}
                       onChange={(
                         event: React.ChangeEvent<HTMLInputElement>

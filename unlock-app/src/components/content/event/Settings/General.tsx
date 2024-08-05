@@ -22,6 +22,8 @@ import { useState } from 'react'
 import { config } from '~/config/app'
 import dayjs from 'dayjs'
 import { GoogleMapsAutoComplete } from '../Form'
+import { DefaultLayoutSkeleton } from './DefaultLayoutSkeleton'
+import { BannerlessLayoutSkeleton } from './BannerlessLayoutSkeleton'
 
 interface GeneralProps {
   event: Event
@@ -50,6 +52,7 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
       description: event.description,
       image: event.image,
       ticket: event.ticket,
+      layout: event.layout,
     },
   })
   const [mapAddress, setMapAddress] = useState(
@@ -62,13 +65,26 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
     event.ticket?.event_start_date,
     'day'
   )
-  const minEndTime = isSameDay ? event.ticket?.event_start_time : undefined
-  const minEndDate = dayjs(event.ticket?.event_start_date).format('YYYY-MM-DD')
+  const minEndTime = isSameDay
+    ? getValues('ticket.event_start_time')
+    : undefined
+  const minEndDate = dayjs(getValues('ticket.event_start_date')).format(
+    'YYYY-MM-DD'
+  )
+
+  const [selectedLayout, setSelectedLayout] = useState(
+    getValues('layout') || 'default'
+  )
+
+  const handleSelect = (layout: any) => {
+    setSelectedLayout(layout)
+  }
 
   const save = async (values: {
     name: string
     description: string
     image: string
+    layout: string
   }) => {
     await ToastHelper.promise(
       locksmith.saveEventData({
@@ -91,7 +107,7 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
   return (
     <form className="grid grid-cols-1 gap-6" onSubmit={handleSubmit(save)}>
       <SettingCard
-        label="Name, description, and image"
+        label="Name, description, layout and image"
         description="Change the name description and image for your event!"
       >
         <div className="flex gap-4 flex-col md:flex-row">
@@ -166,6 +182,47 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
       </SettingCard>
 
       <SettingCard
+        label="Layout"
+        description="Update the layout of your event."
+      >
+        <div>
+          <Controller
+            name="layout"
+            control={control}
+            render={({ field: { onChange } }) => {
+              return (
+                <div className="flex flex-col sm:flex-row justify-around gap-8 mx-4 sm:mx-8 my-4 h-auto sm:h-64">
+                  <DefaultLayoutSkeleton
+                    selectedLayout={selectedLayout}
+                    handleSelect={() => {
+                      onChange('default')
+                      handleSelect('default')
+                    }}
+                  />
+                  <BannerlessLayoutSkeleton
+                    selectedLayout={selectedLayout}
+                    handleSelect={() => {
+                      onChange('bannerless')
+                      handleSelect('bannerless')
+                    }}
+                  />
+                </div>
+              )
+            }}
+          />
+        </div>
+        <div className="flex flex-col sm:flex-row-reverse w-full pt-8">
+          <Button
+            loading={isSubmitting}
+            type="submit"
+            className="w-full sm:w-48"
+          >
+            Save
+          </Button>
+        </div>
+      </SettingCard>
+
+      <SettingCard
         label="Date, time and location"
         description="Update the date, time and location of your event."
       >
@@ -194,7 +251,7 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
               </div>
             </div>
             <div className="flex flex-col self-start gap-2 justify-top">
-              <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+              <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
                 <Input
                   {...register('ticket.event_start_date', {
                     required: {
@@ -230,7 +287,7 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
                 />
               </div>
 
-              <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+              <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
                 <Input
                   {...register('ticket.event_end_date', {
                     required: {

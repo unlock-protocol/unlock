@@ -15,7 +15,6 @@ import { onResolveName } from '~/utils/resolvers'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
 import { MetadataInputType } from '@unlock-protocol/core'
 import { useRsvp } from '~/hooks/useRsvp'
-import { IoWarningOutline } from 'react-icons/io5'
 import { useCaptcha } from '~/hooks/useCaptcha'
 import { useMutation } from '@tanstack/react-query'
 
@@ -86,7 +85,7 @@ const WalletlessRegistrationClaiming = ({
       </div>
 
       {claimResult && transactionStatus && (
-        <div className="m-auto mt-20 h-72 mb-36">
+        <div className="m-auto mt-10 pt-5 h-full mb-10">
           <MintingScreen
             mint={{
               network: network,
@@ -204,18 +203,7 @@ export const WalletlessRegistrationApply = ({
     )
   }
 
-  return (
-    <>
-      <div className="flex rounded-md bg-[#FFF7E8] p-2">
-        <IoWarningOutline size="32" className="w-24" />
-        <p>
-          This amount is a deposit to hold your reservation for the event. $XX
-          Will be refunded to you when you check in at the event
-        </p>
-      </div>
-      <RegistrationForm metadataInputs={metadataInputs} onRSVP={onRSVP} />
-    </>
-  )
+  return <RegistrationForm metadataInputs={metadataInputs} onRSVP={onRSVP} />
 }
 
 export const RegistrationForm = ({
