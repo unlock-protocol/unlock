@@ -11,7 +11,7 @@ export const BannerlessLayoutSkeleton = ({
     <div className="flex flex-col">
       <p>Bannerless</p>
       <div
-        className={`h-full cursor-pointer border-4 border-ui-main-500 rounded-lg overflow-hidden ${selectedLayout === 'bannerless' ? '' : 'border-transparent'}`}
+        className={`h-full cursor-pointer border-4 rounded-lg overflow-hidden ${selectedLayout === 'bannerless' ? 'border-ui-main-500' : ''}`}
         onClick={() => handleSelect()}
       >
         <div className="h-full">
