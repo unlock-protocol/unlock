@@ -25,12 +25,12 @@
     "@unlock-protocol/types": "workspace:^",
     "ethers": "6.12.1",
     "hardhat": "2.22.6",
-    "typescript": "5.5.3",
+    "typescript": "5.5.4",
     "zksync-ethers": "6.9.0"
   },
   "devDependencies": {
     "copyfiles": "2.4.1",
-    "tsup": "8.1.0"
+    "tsup": "8.2.3"
   },
   "repository": {
     "type": "git",

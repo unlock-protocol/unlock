@@ -7,11 +7,12 @@ export const DefaultLayoutSkeleton = ({
   selectedLayout,
   handleSelect,
 }: DefaultLayoutSkeletonProps) => {
+  console.log('DefaultLayoutSkeleton', selectedLayout)
   return (
     <div className="flex flex-col">
       <p>Default</p>
       <div
-        className={`h-full cursor-pointer border-4 border-ui-main-500 rounded-lg overflow-hidden ${selectedLayout === 'default' ? '' : 'border-transparent'}`}
+        className={`h-full cursor-pointer border-4  rounded-lg overflow-hidden ${selectedLayout === 'default' ? 'border-ui-main-500' : ''}`}
         onClick={() => handleSelect()}
       >
         <div className="h-full">
