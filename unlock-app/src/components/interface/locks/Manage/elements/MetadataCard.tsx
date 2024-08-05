@@ -18,7 +18,6 @@ import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import { ADDRESS_ZERO, MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
 import { durationAsText } from '~/utils/durations'
 import { locksmith } from '~/config/locksmith'
-import { AxiosError } from 'axios'
 import { useGetReceiptsPageUrl } from '~/hooks/useReceipts'
 import Link from 'next/link'
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
@@ -30,6 +29,8 @@ import { useMetadata } from '~/hooks/metadata'
 import { LockType, getLockTypeByMetadata } from '@unlock-protocol/core'
 import { FiInfo as InfoIcon } from 'react-icons/fi'
 import { TransferKeyDrawer } from '~/components/interface/keychain/TransferKeyDrawer'
+import { useMarkAsCheckInMutation } from '~/hooks/useMarkAsCheckImMutation'
+import { getCheckInTime } from '~/utils/getCheckInTime'
 
 interface MetadataCardProps {
   metadata: any
@@ -284,27 +285,6 @@ export const MetadataCard = ({
       tokenId: metadata.token,
     })
 
-  const getCheckInTime = () => {
-    if (checkInTimestamp) {
-      // checked in from this UI
-      return checkInTimestamp
-    }
-    // Check the metadata
-    const [_, checkInTimeValue] =
-      Object.entries(metadata)?.find(([key]) => key === 'checkedInAt') ?? []
-    if (!checkInTimeValue) {
-      return null
-    }
-    if (Array.isArray(checkInTimeValue)) {
-      // Multiple check ins
-      return new Date(
-        checkInTimeValue[checkInTimeValue.length - 1] as number
-      ).toLocaleString()
-    }
-    // single checkin
-    return new Date(checkInTimeValue as number).toLocaleString()
-  }
-
   const { data: subscription, isLoading: isSubscriptionLoading } = useQuery(
     ['subscription', lockAddress, tokenId, network],
     async () => {
@@ -337,7 +317,10 @@ export const MetadataCard = ({
     })
   }
 
-  const isCheckedIn = typeof getCheckInTime() === 'string' || !!checkInTimestamp
+  const isCheckedIn =
+    typeof getCheckInTime(checkInTimestamp, metadata) === 'string' ||
+    !!checkInTimestamp
+
   const hasEmail = Object.entries(data || {})
     .map(([key]) => key.toLowerCase())
     .includes('email')
@@ -351,25 +334,10 @@ export const MetadataCard = ({
 
   const metadataPageUrl = `/locks/metadata?lockAddress=${lockAddress}&network=${network}&keyId=${tokenId}`
 
-  const onMarkAsCheckIn = async () => {
-    const { lockAddress, token: keyId } = data
-    return locksmith.checkTicket(network, lockAddress, keyId)
-  }
-
-  const markAsCheckInMutation = useMutation(onMarkAsCheckIn, {
-    onSuccess: () => {
-      setCheckedInTimestamp(new Date().toLocaleString())
-      ToastHelper.success('Successfully marked ticket as checked-in')
-    },
-    onError: (error) => {
-      if (error instanceof AxiosError) {
-        if (error.response?.status === 409) {
-          ToastHelper.error('Ticket already checked-in')
-          return
-        }
-      }
-      ToastHelper.error('Error on marking ticket as checked-in')
-    },
+  const markAsCheckInMutation = useMarkAsCheckInMutation({
+    network,
+    data,
+    setCheckedInTimestamp,
   })
 
   const ownerIsManager = owner?.toLowerCase() === manager?.toLowerCase()
@@ -451,7 +419,7 @@ export const MetadataCard = ({
                 justify={false}
                 label="Checked-in at:"
               >
-                {getCheckInTime()}
+                {getCheckInTime(checkInTimestamp, metadata)}
               </Detail>
             )}
             <Detail
