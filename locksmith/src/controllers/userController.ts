@@ -157,7 +157,9 @@ export const retrieveWaasUuid = async (
     token
   )
   if (!isTokenValid) {
-    return res.status(401).json({ message: 'Verification token is not valid' })
+    return res.status(401).json({
+      message: 'There was an error verifying the token or it is not valid',
+    })
   }
 
   let userUUID
