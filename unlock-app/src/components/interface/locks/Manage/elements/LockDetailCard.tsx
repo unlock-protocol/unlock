@@ -242,17 +242,13 @@ export const LockDetailCard = ({
               </Detail>
             </div>
             <div className="py-2">
-              <Detail label="Token" loading={loading} inline>
-                {symbol}
-              </Detail>
-            </div>
-            <div className="py-2">
               <Detail label="Price" loading={loading} inline>
                 <div className="flex items-center gap-2">
                   <CryptoIcon symbol={symbol} />
                   <span>
                     <PriceFormatter price={priceLabel} precision={4} />
                   </span>
+                  {symbol}
                 </div>
               </Detail>
             </div>
