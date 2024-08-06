@@ -41,6 +41,9 @@ vi.mock('../../../src/operations/wedlocksOperations', () => {
     sendEmail: vi.fn().mockImplementation(() => {
       return true
     }),
+    sendEmail: vi.fn().mockImplementation(() => {
+      return true
+    }),
   }
 })
 

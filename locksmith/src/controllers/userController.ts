@@ -13,6 +13,7 @@ import { generateVerificationCode } from '../utils/generateVerificationCode'
 import VerificationCodes from '../models/verificationCodes'
 import { sendEmail } from '../operations/wedlocksOperations'
 
+
 // Decoy users are cached for 15 minutes
 const cacheDuration = 60 * 15
 const decoyUserCache = new MemoryCache<string, any>(cacheDuration / 5, 1000)
@@ -186,6 +187,11 @@ export const retrieveWaasUuid = async (
       selectedProvider as UserAccountType
     )
     userUUID = newUserUUID
+
+    await sendEmail({
+      template: 'welcome',
+      recipient: emailAddress,
+    })
   }
 
   try {
