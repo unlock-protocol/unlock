@@ -37,7 +37,7 @@ export interface Attribute {
   display_type?: string
   max_value?: number
   trait_type: string
-  value: string | number
+  value: string | number | boolean
 }
 
 export interface Metadata {
@@ -218,10 +218,10 @@ export const formDataToMetadata = ({
     })
   }
 
-  if (ticket?.event_is_in_person) {
+  if (ticket?.event_is_in_person != undefined) {
     metadata.attributes.push({
       trait_type: 'event_is_in_person',
-      value: ticket.event_is_in_person.toString(),
+      value: ticket.event_is_in_person,
     })
   }
 
