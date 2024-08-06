@@ -11173,12 +11173,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuintun/qrcode@npm:4.1.4":
-  version: 4.1.4
-  resolution: "@nuintun/qrcode@npm:4.1.4"
+"@nuintun/qrcode@npm:4.1.5":
+  version: 4.1.5
+  resolution: "@nuintun/qrcode@npm:4.1.5"
   dependencies:
     tslib: "npm:^2.6.3"
-  checksum: 10/967131575f9ad6c5c2be34f823b8d415048d944f41f5de75c077214943b234f5b57c1f437e043e09c2f8bfb402053be0699e0af6375e7759f342343d24ddbbd1
+  checksum: 10/b9e777f29a1dd3c7ba12295a125c110217476b37f7e22d8f3b1628053b750374dcd0f838668ffb7758fd2358c5b3a3ab4f77906ec3f930b6aed2c502d87ce01f
   languageName: node
   linkType: hard
 
@@ -19303,7 +19303,7 @@ __metadata:
     "@coinbase/waas-server-auth": "npm:3.1.2"
     "@logtail/node": "npm:0.4.21"
     "@logtail/winston": "npm:0.4.21"
-    "@nuintun/qrcode": "npm:4.1.4"
+    "@nuintun/qrcode": "npm:4.1.5"
     "@openzeppelin/defender-relay-client": "npm:1.54.6"
     "@openzeppelin/merkle-tree": "npm:1.0.6"
     "@resvg/resvg-js": "npm:2.6.2"
