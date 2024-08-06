@@ -12689,13 +12689,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/merkle-tree@npm:1.0.6":
-  version: 1.0.6
-  resolution: "@openzeppelin/merkle-tree@npm:1.0.6"
+"@openzeppelin/merkle-tree@npm:1.0.7":
+  version: 1.0.7
+  resolution: "@openzeppelin/merkle-tree@npm:1.0.7"
   dependencies:
     "@ethersproject/abi": "npm:^5.7.0"
-    ethereum-cryptography: "npm:^1.1.2"
-  checksum: 10/4e050b82e4e3a24df50c699dfaeb85c00138373d70cb0c60303b3c36ccabbcf81a25d6b2542d5f46199f97944df2d6c2552fe2292719c1ee3f54ce1b1b5c3a7f
+    "@ethersproject/bytes": "npm:^5.7.0"
+    "@ethersproject/constants": "npm:^5.7.0"
+    "@ethersproject/keccak256": "npm:^5.7.0"
+  checksum: 10/f90bb5ac243ff3340a3be7a0583c054dc263089cad2187b976d9148633e373336efa400458d8037897e0716daa88f273bed7b822359f37f42b43309698f7692b
   languageName: node
   linkType: hard
 
@@ -19586,7 +19588,7 @@ __metadata:
     "@logtail/winston": "npm:0.4.21"
     "@nuintun/qrcode": "npm:4.1.5"
     "@openzeppelin/defender-relay-client": "npm:1.54.6"
-    "@openzeppelin/merkle-tree": "npm:1.0.6"
+    "@openzeppelin/merkle-tree": "npm:1.0.7"
     "@resvg/resvg-js": "npm:2.6.2"
     "@sentry/node": "npm:7.118.0"
     "@sentry/tracing": "npm:7.114.0"
@@ -19730,7 +19732,7 @@ __metadata:
     "@openzeppelin/contracts-upgradeable5": "npm:@openzeppelin/contracts-upgradeable@5.0.2"
     "@openzeppelin/contracts5": "npm:@openzeppelin/contracts@5.0.2"
     "@openzeppelin/hardhat-upgrades": "npm:3.2.0"
-    "@openzeppelin/merkle-tree": "npm:1.0.6"
+    "@openzeppelin/merkle-tree": "npm:1.0.7"
     "@openzeppelin/upgrades-core": "npm:1.34.1"
     "@safe-global/safe-core-sdk": "npm:3.3.5"
     "@safe-global/safe-ethers-lib": "npm:1.9.3"
@@ -30049,7 +30051,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethereum-cryptography@npm:^1.0.3, ethereum-cryptography@npm:^1.1.2":
+"ethereum-cryptography@npm:^1.0.3":
   version: 1.2.0
   resolution: "ethereum-cryptography@npm:1.2.0"
   dependencies:
