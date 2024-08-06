@@ -451,8 +451,8 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
 
     const openSeaUrl =
       networks[network!] && tokenId && lockAddress
-        ? networks[network!].opensea?.tokenUrl(lockAddress, tokenId) ??
-          undefined
+        ? (networks[network!].opensea?.tokenUrl(lockAddress, tokenId) ??
+          undefined)
         : undefined
 
     const transferUrl = new URL('/transfer', config.unlockApp)
