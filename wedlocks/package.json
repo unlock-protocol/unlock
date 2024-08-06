@@ -20,7 +20,7 @@
     "nodemailer": "6.9.14",
     "prettier": "3.3.2",
     "typescript": "5.5.4",
-    "winston": "3.13.0"
+    "winston": "3.13.1"
   },
   "scripts": {
     "build": "netlify build",
