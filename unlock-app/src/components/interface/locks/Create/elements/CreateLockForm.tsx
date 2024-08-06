@@ -62,8 +62,10 @@ export const networkDescription = (network: number) => {
       )}
       {faucets && (
         <div className="mt-1">
-          Need some {nativeCurrency.name} to pay for gas? Try one of these
-          {faucets.length > 1 ? ' faucets' : ' faucet'}:{' '}
+          Need some {nativeCurrency.name} to pay for gas?
+          {faucets.length > 1
+            ? ' Try one of these faucets: '
+            : ' Try this faucet: '}
           {faucets.map((faucet: any, index) => {
             return (
               <>
