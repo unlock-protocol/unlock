@@ -26,7 +26,7 @@
     "eslint-plugin-vitest": "0.5.4",
     "husky": "9.1.4",
     "lint-staged": "15.2.7",
-    "prettier": "3.3.2",
+    "prettier": "3.3.3",
     "vitest": "1.6.0"
   },
   "workspaces": [
