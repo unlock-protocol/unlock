@@ -44,7 +44,7 @@ interface CreateLockFormProps {
 export const networkDescription = (network: number) => {
   const { description, url, faucets, nativeCurrency } = networks[network!]
   return (
-    <>
+    <div>
       {description}{' '}
       {url && (
         <>
@@ -61,9 +61,7 @@ export const networkDescription = (network: number) => {
         </p>
       )}
       {faucets && (
-        <>
-          {' '}
-          <br />
+        <div className="mt-1">
           Need some {nativeCurrency.name} to pay for gas? Try one of these
           {faucets.length > 1 ? ' faucets' : ' faucet'}:{' '}
           {faucets.map((faucet: any, index) => {
@@ -76,9 +74,9 @@ export const networkDescription = (network: number) => {
               </>
             )
           })}
-        </>
+        </div>
       )}
-    </>
+    </div>
   )
 }
 
