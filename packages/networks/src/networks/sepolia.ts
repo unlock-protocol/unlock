@@ -109,6 +109,7 @@ export const sepolia: NetworkConfig = {
       featured: true,
       name: 'USDC',
       symbol: 'USDC',
+      faucet: { name: 'Circle', url: 'https://faucet.circle.com/' },
     },
     {
       address: '0x7b79995e5f793A07Bc00c21412e50Ecae098E7f9',
@@ -140,6 +141,20 @@ export const sepolia: NetworkConfig = {
     address: '0x447B1492C5038203f1927eB2a374F5Fcdc25999d',
   },
   url: 'https://github.com/eth-clients/sepolia',
+  faucets: [
+    {
+      name: 'Google',
+      url: 'https://cloud.google.com/application/web3/faucet/ethereum/sepolia',
+    },
+    {
+      name: 'Alchemy',
+      url: 'https://www.alchemy.com/faucets/ethereum-sepolia',
+    },
+    {
+      name: 'Infura',
+      url: 'https://www.infura.io/faucet/sepolia',
+    },
+  ],
 }
 
 export default sepolia

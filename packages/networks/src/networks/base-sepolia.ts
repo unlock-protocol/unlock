@@ -71,6 +71,7 @@ export const baseSepolia: NetworkConfig = {
       featured: true,
       name: 'USDC',
       symbol: 'USDC',
+      faucet: { name: 'Circle', url: 'https://faucet.circle.com/' },
     },
     {
       address: '0x4200000000000000000000000000000000000006',
@@ -85,6 +86,20 @@ export const baseSepolia: NetworkConfig = {
   unlockDaoToken: {
     address: '0x68a8011d72E6D41bf7CE9dC49De0aeaEBAAC9b39',
   },
+  faucets: [
+    {
+      name: 'Coinbase',
+      url: 'https://portal.cdp.coinbase.com/products/faucet',
+    },
+    {
+      name: 'Superchain',
+      url: 'https://console.optimism.io/faucet',
+    },
+    {
+      name: 'Alchemy',
+      url: 'https://basefaucet.com/',
+    },
+  ],
 }
 
 export default baseSepolia
