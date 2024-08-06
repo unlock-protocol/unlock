@@ -248,6 +248,7 @@ export const LockDetailCard = ({
                   <span>
                     <PriceFormatter price={priceLabel} precision={4} />
                   </span>
+                  {keyPrice != 0 ? symbol : ''}
                 </div>
               </Detail>
             </div>
