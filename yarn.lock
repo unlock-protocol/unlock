@@ -19648,7 +19648,7 @@ __metadata:
     remark-html: "npm:16.0.1"
     remark-parse: "npm:11.0.0"
     run-script-os: "npm:1.1.6"
-    satori: "npm:0.10.13"
+    satori: "npm:0.10.14"
     sequelize: "npm:6.37.3"
     sequelize-cli: "npm:6.6.2"
     siwe: "npm:2.3.2"
@@ -46739,9 +46739,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"satori@npm:0.10.13":
-  version: 0.10.13
-  resolution: "satori@npm:0.10.13"
+"satori@npm:0.10.14":
+  version: 0.10.14
+  resolution: "satori@npm:0.10.14"
   dependencies:
     "@shuding/opentype.js": "npm:1.4.0-beta.0"
     css-background-parser: "npm:^0.1.0"
@@ -46753,7 +46753,7 @@ __metadata:
     parse-css-color: "npm:^0.2.1"
     postcss-value-parser: "npm:^4.2.0"
     yoga-wasm-web: "npm:^0.3.3"
-  checksum: 10/35ebca078095b4df19dc1d20cd18f6a70fca6e7f302c552d26392604cdfcbd2475c081b2515706666236e0b2e3da7278d889cf8176fb7136b9da53267fa84e87
+  checksum: 10/2c0ff97e931fc8034fdaeca49e608f555ad09457152e6304d9d3f30251700fa61192f8eb1c1ff8f22da195053f5635ca246299bac51f7453550cfeb34fca98ec
   languageName: node
   linkType: hard
 
