@@ -65,14 +65,14 @@ export const networkDescription = (network: number) => {
           {' '}
           <br />
           Need some {nativeCurrency.name} to pay for gas? Try one of these
-          faucets:{' '}
-          {faucets.map((faucet: any) => {
+          {faucets.length > 1 ? ' faucets' : ' faucet'}:{' '}
+          {faucets.map((faucet: any, index) => {
             return (
               <>
                 <Link className="underline" href={faucet.url} target="_blank">
                   {faucet.name}
                 </Link>
-                {', '}
+                {index < faucets.length - 1 ? ', ' : ''}
               </>
             )
           })}
@@ -155,6 +155,14 @@ export const CreateLockForm = ({
 
   const noBalance = balance === 0 && !isLoadingBalance
   const submitDisabled = isLoadingBalance || noBalance
+
+  const { tokens } = networks[selectedNetwork as number]
+
+  const token = tokens.find((token: Token) => {
+    return (
+      token.address.toLowerCase() === currencyContractAddress?.toLowerCase()
+    )
+  })
 
   const onChangeNetwork = useCallback(
     (network: number | string) => {
@@ -371,6 +379,24 @@ export const CreateLockForm = ({
                 )}
               </div>
               <CurrencyHint network={currencyNetwork as string} />
+              {token &&
+                token.faucet &&
+                token.address === currencyContractAddress && (
+                  <span className="text-sm text-gray-600">
+                    {' '}
+                    <br />
+                    Need some {token.name} for the lock? Try this faucet:{' '}
+                    <>
+                      <Link
+                        className="underline"
+                        href={token.faucet.url}
+                        target="_blank"
+                      >
+                        {token.faucet.name}
+                      </Link>
+                    </>
+                  </span>
+                )}
             </div>
             <Button
               className="mt-8 md:mt-0"

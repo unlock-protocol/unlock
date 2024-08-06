@@ -18,7 +18,6 @@ export const gnosis: NetworkConfig = {
       transaction: (hash) => `https://gnosisscan.io/tx/${hash}`,
     },
   },
-  faucets: [{ name: 'Gnosis Faucet', url: 'https://gnosisfaucet.com/' }],
   featured: true,
   governanceBridge: {
     connext: '0x5bB83e95f63217CDa6aE3D181BA580Ef377D2109',
