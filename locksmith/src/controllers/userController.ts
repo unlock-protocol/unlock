@@ -463,7 +463,6 @@ export const sendVerificationCode = async (
 
     await sendEmail({
       template: 'nextAuthCode',
-      failoverTemplate: 'debug',
       recipient: emailAddress,
       params: {
         code: verificationEntry.code,
