@@ -383,8 +383,6 @@ export const CreateLockForm = ({
                 token.faucet &&
                 token.address === currencyContractAddress && (
                   <span className="text-sm text-gray-600">
-                    {' '}
-                    <br />
                     Need some {token.name} for the lock? Try this faucet:{' '}
                     <>
                       <Link
