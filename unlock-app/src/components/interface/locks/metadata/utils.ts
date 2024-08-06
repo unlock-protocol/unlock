@@ -9,6 +9,7 @@ export interface Ticket {
   event_start_time?: string
   event_end_date?: string
   event_end_time?: string
+  event_is_in_person?: boolean
   event_address?: string
   event_location?: string
   event_url?: string
@@ -123,6 +124,7 @@ export const categorizeAttributes = (
   }
 
   const ticket = attributes.reduce((item, { trait_type, value }) => {
+    // @ts-expect-error Type 'string' is not assignable to type 'undefined'.
     item[trait_type.toLowerCase() as keyof Ticket] = value as string
     return item
   }, {} as Ticket)

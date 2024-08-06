@@ -345,6 +345,7 @@ export const EventObject = z.object({
     event_end_date: z.string(),
     event_end_time: z.string(),
     event_timezone: z.string(),
+    event_is_in_person: z.boolean(),
     event_address: z.string(),
     event_location: z.string(),
     event_url: z.string(),
