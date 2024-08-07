@@ -510,7 +510,9 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
         eventDate: eventDetail?.eventDate,
         eventTime: eventDetail?.eventTime,
         // Address and location can be used here, but location is more uinformative
-        eventAddress: eventDetail?.eventLocation,
+        eventAddress: eventDetail?.eventLocation
+          ? eventDetail?.eventLocation
+          : eventDetail?.eventAddress,
         eventUrl: eventDetail?.eventUrl || '',
         // add certification props
         ...certificationDetail,
