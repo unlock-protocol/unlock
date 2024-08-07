@@ -35,19 +35,20 @@ export default async function getPurchaseKeysArguments({
       const keyPrice = _keyPrices && _keyPrices[index]
       const owner = owners[index]
       let referrer = _referrers && _referrers[index]
+      let dataValue = data[index]
 
       if (!referrer) {
         referrer = ZERO
       }
 
+      if (!dataValue) {
+        dataValue = '0x'
+      }
+
       if (!keyPrice) {
         // We might not have the keyPrice, in which case, we need to retrieve from the lock!
         if (owner) {
-          return await lockContract.purchasePriceFor(
-            owner,
-            referrer,
-            data[index] | '0x'
-          )
+          return await lockContract.purchasePriceFor(owner, referrer, dataValue)
         } else {
           return await lockContract.keyPrice()
         }
