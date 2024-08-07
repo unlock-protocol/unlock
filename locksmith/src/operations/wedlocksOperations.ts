@@ -409,8 +409,8 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
 
     const openSeaUrl =
       networks[network!] && tokenId && lockAddress
-        ? (networks[network!].opensea?.tokenUrl(lockAddress, tokenId) ??
-          undefined)
+        ? networks[network!].opensea?.tokenUrl(lockAddress, tokenId) ??
+          undefined
         : undefined
 
     const transferUrl = new URL('/transfer', config.unlockApp)
@@ -509,7 +509,8 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
         eventName: eventDetail?.eventName,
         eventDate: eventDetail?.eventDate,
         eventTime: eventDetail?.eventTime,
-        eventAddress: eventDetail?.eventAddress,
+        // Address and location can be used here, but location is more uinformative
+        eventAddress: eventDetail?.eventLocation,
         eventUrl: eventDetail?.eventUrl || '',
         // add certification props
         ...certificationDetail,
