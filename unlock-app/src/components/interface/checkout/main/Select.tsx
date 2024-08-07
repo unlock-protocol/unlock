@@ -230,17 +230,23 @@ export function Select({ checkoutService }: Props) {
             let price
 
             if (account) {
-              price = await web3Service.purchasePriceFor({
-                lockAddress: lock,
-                userAddress: account,
-                referrer: account,
-                network: networkId,
-                data: '0x',
-              })
+              try {
+                price = await web3Service.purchasePriceFor({
+                  lockAddress: lock,
+                  userAddress: account,
+                  referrer: account,
+                  network: networkId,
+                  // We do not have the data
+                  data: '0x',
+                })
 
-              price = parseFloat(
-                ethers.formatUnits(price, lockData.currencyDecimals)
-              )
+                price = parseFloat(
+                  ethers.formatUnits(price, lockData.currencyDecimals)
+                )
+              } catch (e) {
+                console.error(e)
+                price = Number(lockData.keyPrice)
+              }
             } else {
               price = Number(lockData.keyPrice)
             }
