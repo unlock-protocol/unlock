@@ -29528,19 +29528,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-mocha@npm:10.4.3":
-  version: 10.4.3
-  resolution: "eslint-plugin-mocha@npm:10.4.3"
-  dependencies:
-    eslint-utils: "npm:^3.0.0"
-    globals: "npm:^13.24.0"
-    rambda: "npm:^7.4.0"
-  peerDependencies:
-    eslint: ">=7.0.0"
-  checksum: 10/3db26ed8f70fb70e940069c3318c62584838f3dbf02fdd455967e8f9aa62815e383d2ea9eaede339c95e8e3100908b54b5ac86664cfe80fff802c9c7453f7906
-  languageName: node
-  linkType: hard
-
 "eslint-plugin-mocha@npm:10.5.0":
   version: 10.5.0
   resolution: "eslint-plugin-mocha@npm:10.5.0"
@@ -51346,7 +51333,7 @@ __metadata:
     babel-plugin-polyfill-corejs2: "npm:0.4.11"
     eslint: "npm:8.57.0"
     eslint-plugin-evm-address-to-checksummed: "npm:0.0.6"
-    eslint-plugin-mocha: "npm:10.4.3"
+    eslint-plugin-mocha: "npm:10.5.0"
     eslint-plugin-prettier: "npm:5.2.1"
     eslint-plugin-sort-keys-fix: "npm:1.1.2"
     eslint-plugin-vitest: "npm:0.5.4"
