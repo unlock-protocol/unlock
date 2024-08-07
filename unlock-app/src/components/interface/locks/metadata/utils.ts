@@ -11,6 +11,7 @@ export interface Ticket {
   event_end_time?: string
   event_is_in_person?: boolean
   event_address?: string
+  event_location?: string
   event_url?: string
   event_timezone?: string
   event_cover_image?: string

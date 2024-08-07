@@ -80,7 +80,11 @@ export const createTicket = async ({
         id={tokenId}
         time={object?.event_start_time}
         date={object?.event_start_date}
-        location={object?.event_address}
+        location={
+          object?.event_location
+            ? object?.event_location
+            : object?.event_address
+        }
         QRCodeURL={qrCode}
         recipient={owner}
         lockAddress={lockAddress}
