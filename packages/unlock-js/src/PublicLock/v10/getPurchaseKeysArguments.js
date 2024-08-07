@@ -32,28 +32,27 @@ export default async function getPurchaseKeysArguments({
 
   const keyPrices = await Promise.all(
     Array.from({ length: owners.length }).map(async (_, index) => {
-      const kp = _keyPrices && _keyPrices[index]
+      const keyPrice = _keyPrices && _keyPrices[index]
       const owner = owners[index]
       let referrer = _referrers && _referrers[index]
-      let d = data[index]
 
       if (!referrer) {
         referrer = ZERO
       }
 
-      if (!d) {
-        d = '0x'
-      }
-
-      if (!kp) {
+      if (!keyPrice) {
         // We might not have the keyPrice, in which case, we need to retrieve from the lock!
         if (owner) {
-          return await lockContract.purchasePriceFor(owner, referrer, d)
+          return await lockContract.purchasePriceFor(
+            owner,
+            referrer,
+            data[index] | '0x'
+          )
         } else {
           return await lockContract.keyPrice()
         }
       }
-      return formatKeyPrice(kp, erc20Address, decimals, this.provider)
+      return formatKeyPrice(keyPrice, erc20Address, decimals, this.provider)
     })
   )
   const keyManagers = (_keyManagers || defaultArray).map((km) => km || ZERO)
