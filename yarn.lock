@@ -12689,13 +12689,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/merkle-tree@npm:1.0.6":
-  version: 1.0.6
-  resolution: "@openzeppelin/merkle-tree@npm:1.0.6"
+"@openzeppelin/merkle-tree@npm:1.0.7":
+  version: 1.0.7
+  resolution: "@openzeppelin/merkle-tree@npm:1.0.7"
   dependencies:
     "@ethersproject/abi": "npm:^5.7.0"
-    ethereum-cryptography: "npm:^1.1.2"
-  checksum: 10/4e050b82e4e3a24df50c699dfaeb85c00138373d70cb0c60303b3c36ccabbcf81a25d6b2542d5f46199f97944df2d6c2552fe2292719c1ee3f54ce1b1b5c3a7f
+    "@ethersproject/bytes": "npm:^5.7.0"
+    "@ethersproject/constants": "npm:^5.7.0"
+    "@ethersproject/keccak256": "npm:^5.7.0"
+  checksum: 10/f90bb5ac243ff3340a3be7a0583c054dc263089cad2187b976d9148633e373336efa400458d8037897e0716daa88f273bed7b822359f37f42b43309698f7692b
   languageName: node
   linkType: hard
 
@@ -19415,7 +19417,7 @@ __metadata:
     tsup: "npm:8.2.3"
     tsx: "npm:4.16.5"
     typescript: "npm:5.5.4"
-    vite: "npm:5.3.2"
+    vite: "npm:5.3.5"
     vite-plugin-svgr: "npm:4.2.0"
     vite-tsconfig-paths: "npm:4.3.2"
   peerDependencies:
@@ -19560,7 +19562,7 @@ __metadata:
     hardhat: "npm:2.22.6"
     hardhat-gas-reporter: "npm:2.2.0"
     mocha: "npm:10.7.0"
-    prettier: "npm:3.3.2"
+    prettier: "npm:3.3.3"
     solidity-coverage: "npm:0.8.12"
     ts-mocha: "npm:10.0.0"
     ts-node: "npm:10.9.2"
@@ -19586,7 +19588,7 @@ __metadata:
     "@logtail/winston": "npm:0.4.21"
     "@nuintun/qrcode": "npm:4.1.5"
     "@openzeppelin/defender-relay-client": "npm:1.54.6"
-    "@openzeppelin/merkle-tree": "npm:1.0.6"
+    "@openzeppelin/merkle-tree": "npm:1.0.7"
     "@resvg/resvg-js": "npm:2.6.2"
     "@sentry/node": "npm:7.118.0"
     "@sentry/tracing": "npm:7.114.0"
@@ -19646,7 +19648,7 @@ __metadata:
     remark-html: "npm:16.0.1"
     remark-parse: "npm:11.0.0"
     run-script-os: "npm:1.1.6"
-    satori: "npm:0.10.13"
+    satori: "npm:0.10.14"
     sequelize: "npm:6.37.3"
     sequelize-cli: "npm:6.6.2"
     siwe: "npm:2.3.2"
@@ -19689,9 +19691,9 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     eslint: "npm:8.57.0"
     next: "npm:14.2.5"
-    prettier: "npm:3.3.2"
+    prettier: "npm:3.3.3"
     typescript: "npm:5.5.4"
-    vite: "npm:5.3.2"
+    vite: "npm:5.3.5"
     vite-plugin-node-polyfills: "npm:0.22.0"
   languageName: unknown
   linkType: soft
@@ -19709,7 +19711,7 @@ __metadata:
     postmate: "npm:1.5.2"
     tsup: "npm:8.2.4"
     typescript: "npm:5.5.4"
-    vite: "npm:5.3.2"
+    vite: "npm:5.3.5"
     vite-plugin-css-injected-by-js: "npm:3.5.1"
     vite-plugin-node-polyfills: "npm:0.22.0"
     vitest: "npm:1.6.0"
@@ -19730,7 +19732,7 @@ __metadata:
     "@openzeppelin/contracts-upgradeable5": "npm:@openzeppelin/contracts-upgradeable@5.0.2"
     "@openzeppelin/contracts5": "npm:@openzeppelin/contracts@5.0.2"
     "@openzeppelin/hardhat-upgrades": "npm:3.2.0"
-    "@openzeppelin/merkle-tree": "npm:1.0.6"
+    "@openzeppelin/merkle-tree": "npm:1.0.7"
     "@openzeppelin/upgrades-core": "npm:1.34.1"
     "@safe-global/safe-core-sdk": "npm:3.3.5"
     "@safe-global/safe-ethers-lib": "npm:1.9.3"
@@ -19755,7 +19757,7 @@ __metadata:
     hardhat-gas-reporter: "npm:2.2.0"
     hardhat-storage-layout: "npm:0.1.7"
     hardhat-tracer: "npm:3.0.2"
-    prettier: "npm:3.3.2"
+    prettier: "npm:3.3.3"
     prettier-plugin-solidity: "npm:1.3.1"
     solhint: "npm:5.0.2"
     solidity-coverage: "npm:0.8.12"
@@ -19839,7 +19841,7 @@ __metadata:
     tsx: "npm:4.16.5"
     typescript: "npm:5.5.4"
     url-loader: "npm:4.1.1"
-    vite: "npm:5.3.2"
+    vite: "npm:5.3.5"
     vite-plugin-node-polyfills: "npm:0.22.0"
     vite-plugin-svgr: "npm:4.2.0"
     vite-tsconfig-paths: "npm:4.3.2"
@@ -19917,7 +19919,7 @@ __metadata:
     node-forge: "npm:1.3.1"
     postcss: "npm:8.4.40"
     postmate: "npm:1.5.2"
-    prettier: "npm:3.3.2"
+    prettier: "npm:3.3.3"
     qr-scanner: "npm:1.4.2"
     qrcode.react: "npm:3.1.0"
     react-device-detect: "npm:2.2.3"
@@ -19962,7 +19964,7 @@ __metadata:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     ethers: "npm:6.13.1"
     passport-custom: "npm:1.1.1"
-    prettier: "npm:3.3.2"
+    prettier: "npm:3.3.3"
   peerDependencies:
     passport: 0.6 || 0.7
   languageName: unknown
@@ -19987,7 +19989,7 @@ __metadata:
     graphql: "npm:16.9.0"
     graphql-request: "npm:6.1.0"
     hardhat: "npm:2.22.6"
-    prettier: "npm:3.3.2"
+    prettier: "npm:3.3.3"
     siwe: "npm:2.3.2"
     tsup: "npm:8.2.3"
     typescript: "npm:5.5.4"
@@ -20032,7 +20034,7 @@ __metadata:
     numeral: "npm:2.0.6"
     path-match: "npm:1.2.4"
     postcss: "npm:8.4.40"
-    prettier: "npm:3.3.2"
+    prettier: "npm:3.3.3"
     raw-loader: "npm:4.0.2"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
@@ -20072,7 +20074,7 @@ __metadata:
     netlify-cli: "npm:15.11.0"
     node-forge: "npm:1.3.1"
     nodemailer: "npm:6.9.14"
-    prettier: "npm:3.3.2"
+    prettier: "npm:3.3.3"
     regenerator-runtime: "npm:0.14.1"
     typescript: "npm:5.5.4"
     vitest: "npm:1.6.0"
@@ -30049,7 +30051,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethereum-cryptography@npm:^1.0.3, ethereum-cryptography@npm:^1.1.2":
+"ethereum-cryptography@npm:^1.0.3":
   version: 1.2.0
   resolution: "ethereum-cryptography@npm:1.2.0"
   dependencies:
@@ -43501,6 +43503,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"postcss@npm:^8.4.39":
+  version: 8.4.41
+  resolution: "postcss@npm:8.4.41"
+  dependencies:
+    nanoid: "npm:^3.3.7"
+    picocolors: "npm:^1.0.1"
+    source-map-js: "npm:^1.2.0"
+  checksum: 10/6e6176c2407eff60493ca60a706c6b7def20a722c3adda94ea1ece38345eb99964191336fd62b62652279cec6938e79e0b1e1d477142c8d3516e7a725a74ee37
+  languageName: node
+  linkType: hard
+
 "postgres-array@npm:~2.0.0":
   version: 2.0.0
   resolution: "postgres-array@npm:2.0.0"
@@ -43766,7 +43779,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier-fallback@npm:prettier@^3, prettier@npm:3.3.2, prettier@npm:^3.1.1":
+"prettier-fallback@npm:prettier@^3, prettier@npm:^3.1.1":
   version: 3.3.2
   resolution: "prettier@npm:3.3.2"
   bin:
@@ -43803,6 +43816,15 @@ __metadata:
   bin:
     prettier: bin/prettier.cjs
   checksum: 10/ccf1ead9794b017be6b42d0873f459070beef2069eb393c8b4c0d11aa3430acefc54f6d5f44a5b7ce9af05ad8daf694b912f0aa2808d1c22dfa86e61e9d563f8
+  languageName: node
+  linkType: hard
+
+"prettier@npm:3.3.3":
+  version: 3.3.3
+  resolution: "prettier@npm:3.3.3"
+  bin:
+    prettier: bin/prettier.cjs
+  checksum: 10/5beac1f30b5b40162532b8e2f7c3a4eb650910a2695e9c8512a62ffdc09dae93190c29db9107fa7f26d1b6c71aad3628ecb9b5de1ecb0911191099be109434d7
   languageName: node
   linkType: hard
 
@@ -46717,9 +46739,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"satori@npm:0.10.13":
-  version: 0.10.13
-  resolution: "satori@npm:0.10.13"
+"satori@npm:0.10.14":
+  version: 0.10.14
+  resolution: "satori@npm:0.10.14"
   dependencies:
     "@shuding/opentype.js": "npm:1.4.0-beta.0"
     css-background-parser: "npm:^0.1.0"
@@ -46731,7 +46753,7 @@ __metadata:
     parse-css-color: "npm:^0.2.1"
     postcss-value-parser: "npm:^4.2.0"
     yoga-wasm-web: "npm:^0.3.3"
-  checksum: 10/35ebca078095b4df19dc1d20cd18f6a70fca6e7f302c552d26392604cdfcbd2475c081b2515706666236e0b2e3da7278d889cf8176fb7136b9da53267fa84e87
+  checksum: 10/2c0ff97e931fc8034fdaeca49e608f555ad09457152e6304d9d3f30251700fa61192f8eb1c1ff8f22da195053f5635ca246299bac51f7453550cfeb34fca98ec
   languageName: node
   linkType: hard
 
@@ -51314,7 +51336,7 @@ __metadata:
     husky: "npm:9.1.4"
     lint-staged: "npm:15.2.7"
     node-gyp: "npm:10.2.0"
-    prettier: "npm:3.3.2"
+    prettier: "npm:3.3.3"
     prettier-plugin-solidity: "npm:1.3.1"
     typescript: "npm:5.5.4"
     vitest: "npm:1.6.0"
@@ -52005,13 +52027,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:5.3.2":
-  version: 5.3.2
-  resolution: "vite@npm:5.3.2"
+"vite@npm:5.3.5":
+  version: 5.3.5
+  resolution: "vite@npm:5.3.5"
   dependencies:
     esbuild: "npm:^0.21.3"
     fsevents: "npm:~2.3.3"
-    postcss: "npm:^8.4.38"
+    postcss: "npm:^8.4.39"
     rollup: "npm:^4.13.0"
   peerDependencies:
     "@types/node": ^18.0.0 || >=20.0.0
@@ -52041,7 +52063,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10/77b284938921da6c2c4055a5edd916ab221a973aa1403dba2aef303db1bd54ac7325db13f3fad13d77a7ac55cac7ffef49dffaa69bcadcc3caf2cae32ca03127
+  checksum: 10/5672dde4a969349d9cf90a9e43029c8489dfff60fb04d6a10717d6224553cf12283a8cace633fa80b006df6037f72d08a459a38bf8ea66cb19075d60fe159482
   languageName: node
   linkType: hard
 
