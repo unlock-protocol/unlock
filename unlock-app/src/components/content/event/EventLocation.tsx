@@ -19,7 +19,9 @@ export const EventLocation = ({ event }: { event: Partial<Metadata> }) => {
         {inPerson && (
           <>
             <span className="text-lg font-normal capitalize text-brand-dark">
-              {event.ticket?.event_address}
+              {event.ticket?.event_location
+                ? event.ticket.event_location
+                : event.ticket?.event_address}
             </span>
             <Link
               target="_blank"
