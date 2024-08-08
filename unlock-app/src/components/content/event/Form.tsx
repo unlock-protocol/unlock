@@ -138,6 +138,8 @@ export const Form = ({ onSubmit }: FormProps) => {
     trigger,
     setValue,
     getValues,
+    setError,
+    clearErrors,
     formState: { errors },
     watch,
   } = methods
@@ -502,9 +504,31 @@ export const Form = ({ onSubmit }: FormProps) => {
 
                     {!isInPerson && (
                       <Input
-                        {...register('metadata.ticket.event_address')}
+                        {...register('metadata.ticket.event_address', {
+                          required: {
+                            value: true,
+                            message: 'Add a link to your event',
+                          },
+                        })}
+                        onChange={(event) => {
+                          const urlPattern = new RegExp('^(http|https)://')
+
+                          if (!urlPattern.test(event.target.value)) {
+                            setError('metadata.ticket.event_address', {
+                              type: 'manual',
+                              message: 'Please enter a valid URL',
+                            })
+                          } else {
+                            clearErrors('metadata.ticket.event_address')
+                          }
+                        }}
                         type="text"
                         placeholder={'Zoom or Google Meet Link'}
+                        error={
+                          // @ts-expect-error Property 'event_address' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
+                          errors.metadata?.ticket?.event_address
+                            ?.message as string
+                        }
                       />
                     )}
 
