@@ -359,6 +359,13 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
                       setValue('ticket.event_is_in_person', enabled)
                       setValue('ticket.event_address', '')
                       setValue('ticket.event_location', '')
+
+                      if (!enabled) {
+                        setError('ticket.event_address', {
+                          type: 'manual',
+                          message: 'Please enter a valid URL',
+                        })
+                      }
                     }}
                   />
                 </div>

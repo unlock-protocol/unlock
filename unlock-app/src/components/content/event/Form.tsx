@@ -498,6 +498,13 @@ export const Form = ({ onSubmit }: FormProps) => {
                           )
                           // reset the value
                           setValue('metadata.ticket.event_address', undefined)
+
+                          if (!enabled) {
+                            setError('metadata.ticket.event_address', {
+                              type: 'manual',
+                              message: 'Please enter a valid URL',
+                            })
+                          }
                         }}
                       />
                     </div>
