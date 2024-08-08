@@ -18,6 +18,20 @@ export const sepolia: NetworkConfig = {
       transaction: (hash: string) => `https://sepolia.etherscan.io/tx/${hash}`,
     },
   },
+  faucets: [
+    {
+      name: 'Google',
+      url: 'https://cloud.google.com/application/web3/faucet/ethereum/sepolia',
+    },
+    {
+      name: 'Alchemy',
+      url: 'https://www.alchemy.com/faucets/ethereum-sepolia',
+    },
+    {
+      name: 'Infura',
+      url: 'https://www.infura.io/faucet/sepolia',
+    },
+  ],
   featured: true,
   fullySubsidizedGas: true,
   hooks: {
@@ -73,6 +87,7 @@ export const sepolia: NetworkConfig = {
   maxFreeClaimCost: 1000,
   multisig: '0x95fE514fe7F60722AFF0FD009ebeE4Ba2013924c',
   name: 'Sepolia',
+
   nativeCurrency: {
     coingecko: 'ethereum',
     decimals: 18,
@@ -93,7 +108,6 @@ export const sepolia: NetworkConfig = {
   provider: 'https://rpc.unlock-protocol.com/11155111',
 
   publicLockVersionToDeploy: 14,
-
   publicProvider: 'https://rpc2.sepolia.org/',
   startBlock: 4381710,
   subgraph: {
@@ -106,10 +120,10 @@ export const sepolia: NetworkConfig = {
     {
       address: '0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238',
       decimals: 6,
+      faucet: { name: 'Circle', url: 'https://faucet.circle.com/' },
       featured: true,
       name: 'USDC',
       symbol: 'USDC',
-      faucet: { name: 'Circle', url: 'https://faucet.circle.com/' },
     },
     {
       address: '0x7b79995e5f793A07Bc00c21412e50Ecae098E7f9',
@@ -141,20 +155,6 @@ export const sepolia: NetworkConfig = {
     address: '0x447B1492C5038203f1927eB2a374F5Fcdc25999d',
   },
   url: 'https://github.com/eth-clients/sepolia',
-  faucets: [
-    {
-      name: 'Google',
-      url: 'https://cloud.google.com/application/web3/faucet/ethereum/sepolia',
-    },
-    {
-      name: 'Alchemy',
-      url: 'https://www.alchemy.com/faucets/ethereum-sepolia',
-    },
-    {
-      name: 'Infura',
-      url: 'https://www.infura.io/faucet/sepolia',
-    },
-  ],
 }
 
 export default sepolia
