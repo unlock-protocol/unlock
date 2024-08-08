@@ -5,8 +5,6 @@ import networks from '@unlock-protocol/networks'
 import { createTicket } from '../utils/ticket'
 import { KeyManager } from '@unlock-protocol/unlock-js'
 import { unified } from 'unified'
-import remarkParse from 'remark-parse'
-import remarkHtml from 'remark-html'
 import * as emailOperations from './emailOperations'
 import * as lockSettingOperations from './lockSettingOperations'
 import * as userMetadataOperations from './userMetadataOperations'
@@ -22,6 +20,8 @@ import { LockType, getLockTypeByMetadata } from '@unlock-protocol/core'
 import { getCertificateLinkedinShareUrl } from '../utils/certificationHelpers'
 import { svgStringToDataURI } from '../utils/image'
 import { createCertificate } from '../utils/certification'
+import remarkParse from 'remark-parse'
+import remarkHtml from 'remark-html'
 
 type Params = {
   [key: string]: string | number | undefined | boolean
@@ -60,18 +60,6 @@ interface SendEmailProps {
   attachments?: Attachment[]
   replyTo?: string
   emailSender?: string
-}
-
-export enum emailTemplate {
-  verificationCode = 'nextAuthCode',
-}
-
-type SimpleParams = {
-  [key: string]: any
-}
-
-type SimpleAttachment = {
-  path: string
 }
 
 /**
@@ -146,36 +134,6 @@ export const sendEmail = async ({
   }
 }
 
-export const sendSimpleEmail = async (
-  template: emailTemplate,
-  recipient: string,
-  params: SimpleParams = {},
-  attachments: SimpleAttachment[] = [],
-  replyTo?: string | null,
-  emailSender?: string | null
-) => {
-  try {
-    const payload = {
-      template,
-      recipient,
-      params,
-      attachments,
-      replyTo,
-      emailSender,
-    }
-    return await fetch(config.services.wedlocks, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    })
-  } catch (error) {
-    logger.error(`Sending email to ${config.services.wedlocks} failed`, error)
-    return null
-  }
-}
-
 /**
  * Resolves when all new keys have been processed
  * @param keys
@@ -236,7 +194,9 @@ const getCustomContent = async (
     // parse markdown to HTML
     if (res) {
       const parsedContent = await unified()
+        // @ts-expect-error No overload matches this call.
         .use(remarkParse)
+        // @ts-expect-error No overload matches this call.
         .use(remarkHtml)
         .process(res?.content || '')
 
@@ -451,8 +411,8 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
 
     const openSeaUrl =
       networks[network!] && tokenId && lockAddress
-        ? networks[network!].opensea?.tokenUrl(lockAddress, tokenId) ??
-          undefined
+        ? (networks[network!].opensea?.tokenUrl(lockAddress, tokenId) ??
+          undefined)
         : undefined
 
     const transferUrl = new URL('/transfer', config.unlockApp)
@@ -551,7 +511,10 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
         eventName: eventDetail?.eventName,
         eventDate: eventDetail?.eventDate,
         eventTime: eventDetail?.eventTime,
-        eventAddress: eventDetail?.eventAddress,
+        // Address and location can be used here, but location is more uinformative
+        eventAddress: eventDetail?.eventLocation
+          ? eventDetail?.eventLocation
+          : eventDetail?.eventAddress,
         eventUrl: eventDetail?.eventUrl || '',
         // add certification props
         ...certificationDetail,

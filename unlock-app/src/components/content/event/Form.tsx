@@ -43,7 +43,7 @@ export interface NewEventForm {
 }
 
 interface GoogleMapsAutoCompleteProps {
-  onChange: (value: string) => void
+  onChange: (address: string, location: string) => void
   defaultValue?: string
 }
 
@@ -59,10 +59,10 @@ export const GoogleMapsAutoComplete = ({
     onPlaceSelected: (place, inputRef) => {
       if (place.formatted_address) {
         // @ts-expect-error Property 'value' does not exist on type 'RefObject<HTMLInputElement>'.ts(2339)
-        return onChange(`${inputRef.value}, ${place.formatted_address}`)
+        return onChange(inputRef.value, place.formatted_address)
       }
       // @ts-expect-error Property 'value' does not exist on type 'RefObject<HTMLInputElement>'.ts(2339)
-      return onChange(inputRef.value)
+      return onChange(inputRef.value, inputRef.value)
     },
   })
 
@@ -121,7 +121,9 @@ export const Form = ({ onSubmit }: FormProps) => {
           event_end_date: today,
           event_end_time: '',
           event_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          event_is_in_person: true,
           event_address: '',
+          event_location: '',
         },
         image: '',
         requiresApproval: false,
@@ -143,9 +145,9 @@ export const Form = ({ onSubmit }: FormProps) => {
     control,
   })
 
-  const mapAddress = `https://www.google.com/maps/embed/v1/place?q=${encodeURIComponent(
-    details.metadata?.ticket?.event_address || 'Ethereum'
-  )}&key=${config.googleMapsApiKey}`
+  const [mapAddress, setMapAddress] = useState(
+    encodeURIComponent(getValues('metadata.ticket.event_address') || 'Ethereum')
+  )
 
   const { isLoading: isLoadingBalance, data: balance } = useQuery(
     ['getBalance', account, details.network],
@@ -360,7 +362,9 @@ export const Form = ({ onSubmit }: FormProps) => {
                       <iframe
                         width="100%"
                         height="350"
-                        src={mapAddress}
+                        src={`https://www.google.com/maps/embed/v1/place?q=${encodeURIComponent(
+                          mapAddress
+                        )}&key=${config.googleMapsApiKey}`}
                       ></iframe>
                     )}
                     {!isInPerson && (
@@ -485,7 +489,11 @@ export const Form = ({ onSubmit }: FormProps) => {
                         title="In person"
                         enabled={isInPerson}
                         setEnabled={setIsInPerson}
-                        onChange={() => {
+                        onChange={(enabled) => {
+                          setValue(
+                            'metadata.ticket.event_is_in_person',
+                            enabled
+                          )
                           // reset the value
                           setValue('metadata.ticket.event_address', undefined)
                         }}
@@ -501,11 +509,12 @@ export const Form = ({ onSubmit }: FormProps) => {
                     )}
 
                     {isInPerson && (
-                      <Controller
-                        name="metadata.ticket.event_address"
-                        control={control}
-                        render={({ field: { onChange } }) => {
-                          return <GoogleMapsAutoComplete onChange={onChange} />
+                      <GoogleMapsAutoComplete
+                        defaultValue={mapAddress}
+                        onChange={(address, location) => {
+                          setValue('metadata.ticket.event_address', address)
+                          setValue('metadata.ticket.event_location', location)
+                          setMapAddress(address)
                         }}
                       />
                     )}

@@ -18,7 +18,7 @@ import {
 } from '@unlock-protocol/ui'
 import { useImageUpload } from '~/hooks/useImageUpload'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { config } from '~/config/app'
 import dayjs from 'dayjs'
 import { GoogleMapsAutoComplete } from '../Form'
@@ -36,7 +36,6 @@ interface GeneralProps {
 const today = dayjs().format('YYYY-MM-DD')
 
 export const General = ({ event, checkoutConfig }: GeneralProps) => {
-  const [isInPerson, setIsInPerson] = useState(true)
   const {
     register,
     getValues,
@@ -55,6 +54,9 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
       layout: event.layout,
     },
   })
+  const [isInPerson, setIsInPerson] = useState<boolean>(
+    encodeURIComponent(getValues('ticket.event_is_in_person')) === 'true'
+  )
   const [mapAddress, setMapAddress] = useState(
     encodeURIComponent(getValues('ticket.event_address') || 'Ethereum')
   )
@@ -71,6 +73,10 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
   const minEndDate = dayjs(getValues('ticket.event_start_date')).format(
     'YYYY-MM-DD'
   )
+
+  useEffect(() => {
+    setMapAddress(getValues('ticket.event_address'))
+  }, [event.ticket?.event_address])
 
   const [selectedLayout, setSelectedLayout] = useState(
     getValues('layout') || 'default'
@@ -347,8 +353,10 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
                     title="In person"
                     enabled={isInPerson}
                     setEnabled={setIsInPerson}
-                    onChange={() => {
+                    onChange={(enabled) => {
+                      setValue('ticket.event_is_in_person', enabled)
                       setValue('ticket.event_address', '')
+                      setValue('ticket.event_location', '')
                     }}
                   />
                 </div>
@@ -363,17 +371,12 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
                 )}
 
                 {isInPerson && (
-                  <Controller
-                    name="ticket.event_address"
-                    control={control}
-                    render={({ field: { onChange } }) => {
+                  <GoogleMapsAutoComplete
+                    defaultValue={event.ticket.event_location}
+                    onChange={(address, location) => {
+                      setValue('ticket.event_address', address)
+                      setValue('ticket.event_location', location)
                       setMapAddress(getValues('ticket.event_address'))
-                      return (
-                        <GoogleMapsAutoComplete
-                          defaultValue={event.ticket.event_address}
-                          onChange={onChange}
-                        />
-                      )
                     }}
                   />
                 )}

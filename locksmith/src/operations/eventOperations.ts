@@ -24,6 +24,7 @@ export interface EventProps {
   eventTime: string
   eventDate: string
   eventAddress: string
+  eventLocation: string
   eventName: string
   startDate: Date | null
   endDate: Date | null
@@ -120,6 +121,7 @@ export const getEventMetadataForLock = async (
       ) ?? (startDate ? dayjs(startDate).add(1, 'hour').toDate() : null)
 
     const eventAddress = getAttribute('event_address') ?? ''
+    const eventLocation = getAttribute('event_location') ?? ''
 
     const isSameDay = dayjs(startDate).isSame(endDate, 'day')
 
@@ -162,6 +164,7 @@ export const getEventMetadataForLock = async (
       eventDate,
       eventTime,
       eventAddress,
+      eventLocation,
       startDate,
       eventUrl: lockMetadata?.external_url,
       endDate,

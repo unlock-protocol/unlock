@@ -42,9 +42,9 @@ interface CreateLockFormProps {
 }
 
 export const networkDescription = (network: number) => {
-  const { description, url, faucet, nativeCurrency } = networks[network!]
+  const { description, url, faucets, nativeCurrency } = networks[network!]
   return (
-    <>
+    <div>
       {description}{' '}
       {url && (
         <>
@@ -60,18 +60,25 @@ export const networkDescription = (network: number) => {
           Mainnet.
         </p>
       )}
-      {faucet && (
-        <>
-          {' '}
-          <br />
-          Need some {nativeCurrency.name} to pay for gas?{' '}
-          <Link className="underline" href={faucet} target="_blank">
-            Try this faucet
-          </Link>
-          .
-        </>
+      {faucets && (
+        <div className="mt-1">
+          Need some {nativeCurrency.name} to pay for gas?
+          {faucets.length > 1
+            ? ' Try one of these faucets: '
+            : ' Try this faucet: '}
+          {faucets.map((faucet: any, index) => {
+            return (
+              <>
+                <Link className="underline" href={faucet.url} target="_blank">
+                  {faucet.name}
+                </Link>
+                {index < faucets.length - 1 ? ', ' : ''}
+              </>
+            )
+          })}
+        </div>
       )}
-    </>
+    </div>
   )
 }
 
@@ -148,6 +155,14 @@ export const CreateLockForm = ({
 
   const noBalance = balance === 0 && !isLoadingBalance
   const submitDisabled = isLoadingBalance || noBalance
+
+  const { tokens } = networks[selectedNetwork as number]
+
+  const token = tokens.find((token: Token) => {
+    return (
+      token.address.toLowerCase() === currencyContractAddress?.toLowerCase()
+    )
+  })
 
   const onChangeNetwork = useCallback(
     (network: number | string) => {
@@ -364,6 +379,22 @@ export const CreateLockForm = ({
                 )}
               </div>
               <CurrencyHint network={currencyNetwork as string} />
+              {token &&
+                token.faucet &&
+                token.address === currencyContractAddress && (
+                  <span className="text-sm text-gray-600">
+                    Need some {token.name} for the lock? Try this faucet:{' '}
+                    <>
+                      <Link
+                        className="underline"
+                        href={token.faucet.url}
+                        target="_blank"
+                      >
+                        {token.faucet.name}
+                      </Link>
+                    </>
+                  </span>
+                )}
             </div>
             <Button
               className="mt-8 md:mt-0"
