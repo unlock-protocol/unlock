@@ -5,8 +5,6 @@ import networks from '@unlock-protocol/networks'
 import { createTicket } from '../utils/ticket'
 import { KeyManager } from '@unlock-protocol/unlock-js'
 import { unified } from 'unified'
-import remarkParse from 'remark-parse'
-import remarkHtml from 'remark-html'
 import * as emailOperations from './emailOperations'
 import * as lockSettingOperations from './lockSettingOperations'
 import * as userMetadataOperations from './userMetadataOperations'
@@ -22,6 +20,8 @@ import { LockType, getLockTypeByMetadata } from '@unlock-protocol/core'
 import { getCertificateLinkedinShareUrl } from '../utils/certificationHelpers'
 import { svgStringToDataURI } from '../utils/image'
 import { createCertificate } from '../utils/certification'
+import remarkParse from 'remark-parse'
+import remarkHtml from 'remark-html'
 
 type Params = {
   [key: string]: string | number | undefined | boolean
@@ -194,7 +194,9 @@ const getCustomContent = async (
     // parse markdown to HTML
     if (res) {
       const parsedContent = await unified()
+        // @ts-expect-error No overload matches this call.
         .use(remarkParse)
+        // @ts-expect-error No overload matches this call.
         .use(remarkHtml)
         .process(res?.content || '')
 
