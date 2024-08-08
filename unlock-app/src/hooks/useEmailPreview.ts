@@ -101,7 +101,9 @@ export const useEmailPreviewDataForLock = ({
 const markdownToHtml = async (content: string) => {
   try {
     const parsedContent = await unified()
+      // @ts-expect-error No overload matches this call.
       .use(remarkParse)
+      // @ts-expect-error No overload matches this call.
       .use(remarkHtml, {
         sanitize: true,
       })
