@@ -33,6 +33,7 @@ import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
 import { useAvailableNetworks } from '~/utils/networks'
 import Link from 'next/link'
+import { regexUrlPattern } from '~/utils/regexUrlPattern'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewEventForm {
@@ -518,9 +519,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                           },
                         })}
                         onChange={(event) => {
-                          const urlPattern = new RegExp('^(http|https)://')
-
-                          if (!urlPattern.test(event.target.value)) {
+                          if (!regexUrlPattern.test(event.target.value)) {
                             setError('metadata.ticket.event_address', {
                               type: 'manual',
                               message: 'Please enter a valid URL',

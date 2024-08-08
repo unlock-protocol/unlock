@@ -24,6 +24,7 @@ import dayjs from 'dayjs'
 import { GoogleMapsAutoComplete } from '../Form'
 import { DefaultLayoutSkeleton } from './DefaultLayoutSkeleton'
 import { BannerlessLayoutSkeleton } from './BannerlessLayoutSkeleton'
+import { regexUrlPattern } from '~/utils/regexUrlPattern'
 
 interface GeneralProps {
   event: Event
@@ -377,9 +378,7 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
                     defaultValue={event?.ticket?.event_address}
                     placeholder={'Zoom or Google Meet Link'}
                     onChange={(event) => {
-                      const urlPattern = new RegExp('^(http|https)://')
-
-                      if (!urlPattern.test(event.target.value)) {
+                      if (!regexUrlPattern.test(event.target.value)) {
                         setError('ticket.event_address', {
                           type: 'manual',
                           message: 'Please enter a valid URL',
