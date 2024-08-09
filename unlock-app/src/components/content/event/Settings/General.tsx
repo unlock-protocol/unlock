@@ -366,6 +366,8 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
                           type: 'manual',
                           message: 'Please enter a valid URL',
                         })
+                      } else {
+                        clearErrors('ticket.event_address')
                       }
                     }}
                   />

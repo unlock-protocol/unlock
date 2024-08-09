@@ -505,6 +505,8 @@ export const Form = ({ onSubmit }: FormProps) => {
                               type: 'manual',
                               message: 'Please enter a valid URL',
                             })
+                          } else {
+                            clearErrors('metadata.ticket.event_address')
                           }
                         }}
                       />
