@@ -24,6 +24,7 @@ import dayjs from 'dayjs'
 import { GoogleMapsAutoComplete } from '../Form'
 import { DefaultLayoutSkeleton } from './DefaultLayoutSkeleton'
 import { BannerlessLayoutSkeleton } from './BannerlessLayoutSkeleton'
+import { regexUrlPattern } from '~/utils/regexUrlPattern'
 
 interface GeneralProps {
   event: Event
@@ -40,6 +41,8 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
     register,
     getValues,
     setValue,
+    setError,
+    clearErrors,
     handleSubmit,
     control,
     formState: { errors, isSubmitting },
@@ -357,6 +360,15 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
                       setValue('ticket.event_is_in_person', enabled)
                       setValue('ticket.event_address', '')
                       setValue('ticket.event_location', '')
+
+                      if (!enabled) {
+                        setError('ticket.event_address', {
+                          type: 'manual',
+                          message: 'Please enter a valid URL',
+                        })
+                      } else {
+                        clearErrors('ticket.event_address')
+                      }
                     }}
                   />
                 </div>
@@ -367,6 +379,17 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
                     type="text"
                     defaultValue={event?.ticket?.event_address}
                     placeholder={'Zoom or Google Meet Link'}
+                    onChange={(event) => {
+                      if (!regexUrlPattern.test(event.target.value)) {
+                        setError('ticket.event_address', {
+                          type: 'manual',
+                          message: 'Please enter a valid URL',
+                        })
+                      } else {
+                        clearErrors('ticket.event_address')
+                      }
+                    }}
+                    error={errors.ticket?.event_address?.message as string}
                   />
                 )}
 
@@ -385,7 +408,12 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
           </div>
         </div>
         <div className="flex flex-end w-full pt-8 flex-row-reverse">
-          <Button loading={isSubmitting} type="submit" className="w-48">
+          <Button
+            loading={isSubmitting}
+            disabled={Object.keys(errors).length > 0}
+            type="submit"
+            className="w-48"
+          >
             Save
           </Button>
         </div>
