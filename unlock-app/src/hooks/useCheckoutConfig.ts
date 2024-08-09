@@ -65,12 +65,12 @@ interface UpdateOptions {
 
 export const useCheckoutConfigUpdate = () => {
   return useMutation(async ({ name, config, id }: UpdateOptions) => {
-      const response = await locksmith.updateCheckoutConfig(id || '', {
-        config,
-        name,
-      })
+    const response = await locksmith.updateCheckoutConfig(id || '', {
+      config,
+      name,
+    })
 
-      return response.data
+    return response.data
   })
 }
 

@@ -170,6 +170,7 @@ export const CheckoutUrlPage = () => {
           await refetchConfigList()
         } catch (error) {
           // Pass error to the form to pblock skip to next step
+          console.error("Couldn't create new configuration: ", error)
           throw error
         }
       }
