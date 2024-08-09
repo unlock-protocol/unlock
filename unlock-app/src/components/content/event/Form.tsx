@@ -33,6 +33,7 @@ import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
 import { useAvailableNetworks } from '~/utils/networks'
 import Link from 'next/link'
+import { regexUrlPattern } from '~/utils/regexUrlPattern'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewEventForm {
@@ -138,6 +139,8 @@ export const Form = ({ onSubmit }: FormProps) => {
     trigger,
     setValue,
     getValues,
+    setError,
+    clearErrors,
     formState: { errors },
     watch,
   } = methods
@@ -496,15 +499,44 @@ export const Form = ({ onSubmit }: FormProps) => {
                           )
                           // reset the value
                           setValue('metadata.ticket.event_address', undefined)
+
+                          if (!enabled) {
+                            setError('metadata.ticket.event_address', {
+                              type: 'manual',
+                              message: 'Please enter a valid URL',
+                            })
+                          } else {
+                            clearErrors('metadata.ticket.event_address')
+                          }
                         }}
                       />
                     </div>
 
                     {!isInPerson && (
                       <Input
-                        {...register('metadata.ticket.event_address')}
+                        {...register('metadata.ticket.event_address', {
+                          required: {
+                            value: true,
+                            message: 'Add a link to your event',
+                          },
+                        })}
+                        onChange={(event) => {
+                          if (!regexUrlPattern.test(event.target.value)) {
+                            setError('metadata.ticket.event_address', {
+                              type: 'manual',
+                              message: 'Please enter a valid URL',
+                            })
+                          } else {
+                            clearErrors('metadata.ticket.event_address')
+                          }
+                        }}
                         type="text"
                         placeholder={'Zoom or Google Meet Link'}
+                        error={
+                          // @ts-expect-error Property 'event_address' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
+                          errors.metadata?.ticket?.event_address
+                            ?.message as string
+                        }
                       />
                     )}
 
