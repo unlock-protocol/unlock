@@ -51,10 +51,16 @@ export default async function (
 
   let actualAmount
 
+  const actualOwner = await lockContract.ownerOf(tokenId)
+
   // We might not have the keyPrice, in which case, we need to retrieve from the the lock!
   if (!keyPrice) {
-    if (owner) {
-      actualAmount = await lockContract.purchasePriceFor(owner, referrer, data)
+    if (actualOwner) {
+      actualAmount = await lockContract.purchasePriceFor(
+        actualOwner,
+        referrer,
+        data
+      )
     } else {
       actualAmount = await lockContract.keyPrice()
     }
