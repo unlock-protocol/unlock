@@ -6,10 +6,8 @@ import { FiMapPin as MapPinIcon } from 'react-icons/fi'
 import { BiLogoZoom as ZoomIcon } from 'react-icons/bi'
 
 export const EventLocation = ({ event }: { event: Partial<Metadata> }) => {
-  let inPerson = true
-  if (event.ticket?.event_address.startsWith('http')) {
-    inPerson = false
-  }
+  const inPerson = event.ticket?.event_is_in_person
+
   return (
     <EventDetail label="Location" icon={inPerson ? MapPinIcon : ZoomIcon}>
       <div
