@@ -2,27 +2,32 @@ import { useForm } from 'react-hook-form'
 import { Button, Input } from '@unlock-protocol/ui'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useCallback, useEffect } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import { Web3Service } from '@unlock-protocol/unlock-js'
-import { networks } from '@unlock-protocol/networks'
+import useGetGasRefund from '~/hooks/useGetGasRefund'
 
 interface Props {
   lockAddress: string
   network: number
+  price: number
   disabled?: boolean
+  onChanged: () => void
 }
 
 interface FormValues {
   amount: string
 }
 
-export function UpdateGasRefundForm({ lockAddress, network, disabled }: Props) {
+export function UpdateGasRefundForm({
+  lockAddress,
+  network,
+  price,
+  disabled,
+  onChanged,
+}: Props) {
   const { getWalletService } = useAuth()
   const {
     register,
     handleSubmit,
     setValue,
-
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
     defaultValues: {
@@ -34,14 +39,7 @@ export function UpdateGasRefundForm({ lockAddress, network, disabled }: Props) {
     data: gasRefundValue,
     isInitialLoading: isLoading,
     refetch: refetchGasRefundValue,
-  } = useQuery(['gasRefund', lockAddress, network], async () => {
-    const web3Service = new Web3Service(networks)
-    const value = await web3Service.getGasRefundValue({
-      lockAddress,
-      network,
-    })
-    return value
-  })
+  } = useGetGasRefund(lockAddress, network)
 
   useEffect(() => {
     if (!isLoading && gasRefundValue) {
@@ -57,6 +55,7 @@ export function UpdateGasRefundForm({ lockAddress, network, disabled }: Props) {
         gasRefundValue: amount.toString(),
       })
       await refetchGasRefundValue()
+      await onChanged()
     },
     [getWalletService, lockAddress, network, refetchGasRefundValue]
   )
@@ -65,7 +64,7 @@ export function UpdateGasRefundForm({ lockAddress, network, disabled }: Props) {
     <form className="space-y-6" onSubmit={handleSubmit(onSetGasRefund)}>
       <Input
         disabled={disabled || isSubmitting}
-        label="Gas Refund Value"
+        label="Gas Refund:"
         {...register('amount', {
           valueAsNumber: true,
         })}
@@ -73,12 +72,12 @@ export function UpdateGasRefundForm({ lockAddress, network, disabled }: Props) {
         placeholder="0.00"
         step="any"
         min={0}
+        max={price}
         error={errors.amount?.message}
-        description="The amount of tokens to refund when someone sends a renewal transaction for users. This is paid using the currency of the lock."
+        description="The amount of tokens to refund when someone sends a renewal transaction for users. This is paid using the currency of the lock. This should not be higher than the lock price."
       />
-      <div></div>
       <Button disabled={disabled} loading={isSubmitting} type="submit">
-        Set Gas Refund Value
+        Set gas refund
       </Button>
     </form>
   )

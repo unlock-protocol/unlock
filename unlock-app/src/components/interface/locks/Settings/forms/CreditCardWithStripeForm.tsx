@@ -3,7 +3,6 @@ import { Button, Badge, Select, Placeholder } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { useStorageService } from '~/utils/withStorageService'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { BsCheckCircle as CheckCircleIcon } from 'react-icons/bs'
 import { SettingCardDetail } from '../elements/SettingCard'
@@ -13,7 +12,7 @@ import {
   useStripeConnect,
   useStripeDisconnect,
 } from '~/hooks/useStripeConnect'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { useUSDPricing } from '~/hooks/useUSDPricing'
 import { useLockData } from '~/hooks/useLockData'
 import CreditCardCustomPrice from './CreditCardCustomPrice'
@@ -103,7 +102,7 @@ const ConnectStripe = ({
     data: stripeConnections = [],
     isLoading: isLoadingStripeConnections,
   } = useQuery(['stripeConnections', account], async () => {
-    const response = await storage.getStripeConnections()
+    const response = await locksmith.getStripeConnections()
     if (response.data.error) {
       throw new Error(response.data.error)
     }
@@ -296,8 +295,6 @@ export const CreditCardWithStripeForm = ({
   isManager,
   disabled,
 }: CardPaymentProps) => {
-  const storageService = useStorageService()
-
   const {
     isLoading,
     data: stripeConnectionDetails,
@@ -319,7 +316,7 @@ export const CreditCardWithStripeForm = ({
     stripeConnectionDetails?.countrySpec?.supported_payment_currencies ?? []
 
   const getKeyGranter = async () => {
-    return await storageService.getKeyGranter(network)
+    return (await locksmith.balance()).data[network].address
   }
 
   const disconnectStipeMutation = useStripeDisconnect({
@@ -387,7 +384,7 @@ export const CreditCardWithStripeForm = ({
           lockAddress={lockAddress}
           network={network}
           isManager={isManager}
-          keyGranter={keyGranter}
+          keyGranter={keyGranter as string}
           disabled={disabled || connectStripeMutation.isLoading}
         />
       )

@@ -64,6 +64,7 @@ export const polygon: NetworkConfig = {
   id: 137,
   isTestNetwork: false,
   keyManagerAddress: '0x7111a1aDfbED501beaAd556Bba7cB6dCa3296aa9',
+  kickbackAddress: '0x247a38358c4d99A29091C1cEadfb8a54B783D438',
   maxFreeClaimCost: 100,
   multisig: '0x479f3830fbd715342868BA95E438609BCe443DFB',
   name: 'Polygon',
@@ -96,8 +97,20 @@ export const polygon: NetworkConfig = {
     networkName: 'matic',
     studioName: 'unlock-protocol-polygon',
   },
-  swapPurchaser: '0x144C1ae588e3A67Db02D1f3C43671eB246b2f13b',
   tokens: [
+    {
+      address: '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359',
+      decimals: 6,
+      featured: true,
+      name: 'USD Coin',
+      symbol: 'USDC',
+    },
+    {
+      address: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
+      decimals: 6,
+      name: 'USD Coin (PoS)',
+      symbol: 'USDC',
+    },
     {
       address: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619',
       decimals: 18,
@@ -120,24 +133,11 @@ export const polygon: NetworkConfig = {
       symbol: 'USDT',
     },
     {
-      address: '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359',
-      decimals: 6,
-      featured: true,
-      name: 'USD Coin',
-      symbol: 'USDC',
-    },
-    {
       address: '0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6',
       decimals: 8,
       featured: true,
       name: '(PoS) Wrapped BTC',
       symbol: 'WBTC',
-    },
-    {
-      address: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
-      decimals: 6,
-      name: 'USD Coin (PoS)',
-      symbol: 'USDC',
     },
     {
       address: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',

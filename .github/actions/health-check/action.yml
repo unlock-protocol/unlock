@@ -16,44 +16,31 @@ runs:
       shell: bash
     - run: yarn build
       shell: bash
-    - name: Install Sentry CLI
-      shell: bash
-      run: npm install @sentry/cli -g
-    - name: Sentry CLI login
-      shell: bash
-      run: sentry-cli login --auth-token $SENTRY_AUTH_TOKEN
     - name: Check networks package
       run: |
-        yarn workspace @unlock-protocol/networks check >> networks.log
-        sentry-cli send-event -m "Networks" --logfile networks.log
+        yarn workspace @unlock-protocol/networks check:keys
       shell: bash
     - name: Check tokens in networks package
       run: |
-        yarn workspace @unlock-protocol/networks check-tokens >> networks-tokens.log
-        sentry-cli send-event -m "Networks Tokens" --logfile networks-tokens.log
+        yarn workspace @unlock-protocol/networks check:tokens
       shell: bash
     - name: Check hooks in networks package
       run: |
-        yarn workspace @unlock-protocol/networks check-hooks >> networks-hooks.log
-        sentry-cli send-event -m "Networks Hooks" --logfile networks-tokens.log
+        yarn workspace @unlock-protocol/networks check:hooks
       shell: bash
     - name: Check Unlock info
       run: |
-        yarn workspace @unlock-protocol/governance check >> governance.log
-        sentry-cli send-event -m "Governance" --logfile governance.log
+        yarn workspace @unlock-protocol/governance check
       shell: bash
     - name: Check Contract Verification
       run: |
-        yarn workspace @unlock-protocol/governance check:verify >> verification.log
-        sentry-cli send-event -m "Contract Verification" --logfile verification.log
+        yarn workspace @unlock-protocol/networks check:verify
       shell: bash
     - name: Check Subgraphs
       run: |
-        yarn workspace @unlock-protocol/subgraph check >> subgraph.log
-        sentry-cli send-event -m "Subgraph" --logfile subgraph.log
+        yarn workspace @unlock-protocol/subgraph check
       shell: bash
     - name: Check Team Multisigs
       run: |
-        yarn workspace @unlock-protocol/governance check:multisig >> multisig.log
-        sentry-cli send-event -m "Multisig" --logfile multisig.log
+        yarn workspace @unlock-protocol/governance check:multisig
       shell: bash

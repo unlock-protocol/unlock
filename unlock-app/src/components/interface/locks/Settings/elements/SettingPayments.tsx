@@ -4,9 +4,6 @@ import { ReceiptBaseForm } from '../forms/ReceiptBaseForm'
 import { SubscriptionForm } from '../forms/SubscriptionForm'
 import { UpdatePriceForm } from '../forms/UpdatePriceForm'
 import { SettingCard } from './SettingCard'
-import { UpdateGasRefundForm } from '../forms/UpdateGasRefundForm'
-import Link from 'next/link'
-import { CrossmintSettingsForm } from '../forms/CrossmintSetting'
 
 interface SettingPaymentsProps {
   lockAddress: string
@@ -53,44 +50,8 @@ export const SettingPayments = ({
       </SettingCard>
 
       <SettingCard
-        label="Payments with Crossmint"
-        description={
-          <>
-            Enabling payment with{' '}
-            <Link
-              href="https://www.crossmint.com/products/nft-checkout"
-              target="_blank"
-              className="underline"
-            >
-              Crossmint
-            </Link>{' '}
-            will allow your members to pay with by card while you receive funds
-            on your lock contract directly.
-          </>
-        }
-        isLoading={isLoading}
-      >
-        <CrossmintSettingsForm
-          lockAddress={lockAddress}
-          network={network}
-          isManager={isManager}
-          disabled={!isManager}
-        />
-      </SettingCard>
-
-      <SettingCard
-        label="Gas Refunds"
-        description="Set up a gas refund. This is required for renewals."
-      >
-        <UpdateGasRefundForm
-          lockAddress={lockAddress}
-          network={network}
-          disabled={!isManager}
-        />
-      </SettingCard>
-      <SettingCard
-        label="Renewals"
-        description="Automatically renew memberships when they expire. Users will need to have the previously approved the renewals, as well as have a sufficient amount of tokens in their wallets."
+        label="Subscription"
+        description="Incentivize renewals of memberships when they expire. Users will need to have the previously approved the renewals, as well as have a sufficient amount of tokens in their wallets."
         isLoading={isLoading}
       >
         <SubscriptionForm
@@ -99,6 +60,7 @@ export const SettingPayments = ({
           isManager={isManager}
           disabled={!isManager}
           lock={lock}
+          price={parseFloat(lock?.keyPrice ?? '0')}
         />
       </SettingCard>
 

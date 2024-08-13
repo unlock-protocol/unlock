@@ -180,6 +180,10 @@ export function ConfirmCrypto({
             owner: recipients?.[0],
             referrer: getReferrer(account!, paywallConfig, lockAddress),
             data: purchaseData?.[0],
+            recurringPayment: recurringPayments
+              ? recurringPayments[0]
+              : undefined,
+            totalApproval,
           },
           {} /** Transaction params */,
           onErrorCallback
@@ -208,6 +212,12 @@ export function ConfirmCrypto({
         case 4001:
         case 'ACTION_REJECTED':
           onError('Transaction rejected.')
+          break
+        case 'INSUFFICIENT_FUNDS':
+          onError('Insufficient funds.')
+          break
+        case 'CALL_EXCEPTION':
+          onError('Transaction failed.')
           break
         default:
           onError(error?.error?.message || error.message)

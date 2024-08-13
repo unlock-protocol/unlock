@@ -1,7 +1,5 @@
 import Forage from './forage'
 
-const request = require('request-promise-native')
-
 interface tokenCentricData {
   base: string
   address: string
@@ -20,8 +18,8 @@ interface tokenMetadataDefaultData {
 
 export const exists = async (image: string) => {
   try {
-    const lookup = await request(image, { resolveWithFullResponse: true })
-    return lookup.statusCode == 200
+    const response = await fetch(image, { method: 'HEAD' })
+    return response.ok
   } catch (e) {
     return false
   }

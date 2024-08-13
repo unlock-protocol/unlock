@@ -321,8 +321,8 @@ export const PaywallLocksConfig = z.record(z.string(), PaywallLockConfig)
 export type PaywallLocksConfigType = z.infer<typeof PaywallLocksConfig>
 
 export const AttendeeRefund = z.object({
-  amount: z.string(),
-  currency: z.string(),
+  amount: z.number().positive(),
+  currency: z.string().optional().nullable(), // undefined/null for native currency
   network: z.number().int().positive(),
 })
 export type AttendeeRefundType = z.infer<typeof AttendeeRefund>
@@ -331,6 +331,7 @@ export const EventObject = z.object({
   name: z.string(),
   slug: z.string(),
   image: z.string().url(),
+  layout: z.string(),
   description: z.string(),
   requiresApproval: z.boolean(),
   hideRemaining: z.boolean().optional(), // This should rather be a checkoutConfig property.
@@ -344,7 +345,9 @@ export const EventObject = z.object({
     event_end_date: z.string(),
     event_end_time: z.string(),
     event_timezone: z.string(),
+    event_is_in_person: z.boolean(),
     event_address: z.string(),
+    event_location: z.string(),
     event_url: z.string(),
   }),
 })

@@ -2,10 +2,7 @@ import Image from 'next/image'
 import { ethers } from 'ethers'
 import { CheckoutService } from './checkoutMachine'
 
-import {
-  RiExternalLinkLine as ExternalLinkIcon,
-  RiErrorWarningFill as ErrorIcon,
-} from 'react-icons/ri'
+import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useConfig } from '~/utils/withConfig'
 import { useSelector } from '@xstate/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -19,7 +16,6 @@ import {
   RiMastercardLine as MasterCardIcon,
 } from 'react-icons/ri'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
-import { useUniswapRoutes } from '~/hooks/useUniswapRoutes'
 import { useBalance } from '~/hooks/useBalance'
 import LoadingIcon from '../../Loading'
 import { formatNumber } from '~/utils/formatter'
@@ -27,10 +23,11 @@ import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { useCanClaim } from '~/hooks/useCanClaim'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { useCrossmintEnabled } from '~/hooks/useCrossmintEnabled'
-import { useCrossChainRoutes } from '~/hooks/useCrossChainRoutes'
+import { toBigInt, useCrossChainRoutes } from '~/hooks/useCrossChainRoutes'
 import { usePricing } from '~/hooks/usePricing'
 import Link from 'next/link'
 import Disconnect from './Disconnect'
+import { TransactionPreparationError } from './TransactionPreparationError'
 
 interface Props {
   checkoutService: CheckoutService
@@ -57,7 +54,6 @@ const defaultPaymentMethods = {
   crypto: true,
   card: true,
   crossmint: true,
-  swap: true,
   crosschain: true,
   claim: true,
 }
@@ -108,6 +104,7 @@ export function Payment({ checkoutService }: Props) {
     data: pricingData,
     isInitialLoading: isPricingDataLoading,
     isError: isPricingDataError,
+    refetch: refetchPricingData,
   } = usePricing({
     lockAddress: lock!.address,
     network: lock!.network,
@@ -165,27 +162,15 @@ export function Payment({ checkoutService }: Props) {
 
   const canAfford = balance?.isGasPayable && balance?.isPayable
 
-  const { data: uniswapRoutes, isInitialLoading: isUniswapRoutesLoading } =
-    useUniswapRoutes({
+  const { routes: crossChainRoutes, isLoading: isCrossChaingRoutesLoading } =
+    useCrossChainRoutes({
       lock,
-      recipients,
       purchaseData,
-      paywallConfig: state.context.paywallConfig,
-      enabled: !enableClaim && recipients.length === 1, // Disabled swap and purchase for multiple recipients
+      context: state.context,
+      enabled: !canAfford && !enableClaim,
     })
 
-  const {
-    data: crossChainRoutes,
-    isInitialLoading: isCrossChaingRoutesLoading,
-  } = useCrossChainRoutes({
-    lock,
-    purchaseData,
-    context: state.context,
-    enabled: !canAfford && !enableClaim,
-  })
-
-  const isLoadingMoreRoutes =
-    isUniswapRoutesLoading || isCrossChaingRoutesLoading
+  const isLoadingMoreRoutes = isCrossChaingRoutesLoading
 
   const allDisabled = [
     enableCreditCard,
@@ -204,12 +189,11 @@ export function Payment({ checkoutService }: Props) {
             <div className="w-full h-24 rounded-lg bg-zinc-50 animate-pulse" />
           </div>
         ) : isPricingDataError ? (
-          <div>
-            <p className="text-sm font-bold">
-              <ErrorIcon className="inline" />
-              There was an error when preparing the transaction.
-            </p>
-          </div>
+          <TransactionPreparationError
+            refetch={refetchPricingData}
+            lockAddress={lock.address}
+            network={lock.network}
+          />
         ) : (
           <div className="space-y-6">
             {/* Card Payment via Stripe! */}
@@ -270,7 +254,7 @@ export function Payment({ checkoutService }: Props) {
                 </div>
                 <div className="flex items-center justify-between w-full">
                   <div className="flex items-center w-full text-sm text-left text-gray-500">
-                    Your balance of {symbol.toUpperCase()} on{' '}
+                    Your balance of {symbol?.toUpperCase()} on{' '}
                     {networkConfig.name}:{' ~'}
                     {formatNumber(Number(balance?.balance))}{' '}
                   </div>
@@ -357,57 +341,19 @@ export function Payment({ checkoutService }: Props) {
               </button>
             )}
 
-            {/* Swap and purchase */}
-            {!isUniswapRoutesLoading &&
-              !enableClaim &&
-              paymentMethods['swap'] &&
-              uniswapRoutes?.map((route, index) => {
-                if (!route) {
-                  return null
-                }
-                return (
-                  <button
-                    key={index}
-                    onClick={(event) => {
-                      event.preventDefault()
-                      checkoutService.send({
-                        type: 'SELECT_PAYMENT_METHOD',
-                        payment: {
-                          method: 'swap_and_purchase',
-                          route,
-                        },
-                      })
-                    }}
-                    className="grid w-full p-4 space-y-2 text-left border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
-                  >
-                    <div className="flex justify-between w-full">
-                      <h3 className="font-bold">
-                        Pay with {route!.trade.inputAmount.currency.symbol}
-                      </h3>
-                      <AmountBadge
-                        amount={route!.quote.toFixed()}
-                        symbol={route!.trade.inputAmount.currency.symbol ?? ''}
-                      />
-                    </div>
-                    <div className="flex items-center justify-between w-full">
-                      <div className="flex items-center w-full text-sm text-left text-gray-500">
-                        Swap {route!.trade.inputAmount.currency.symbol} for{' '}
-                        {symbol.toUpperCase()} on {networkConfig.name} and pay{' '}
-                      </div>
-                      <RightArrowIcon
-                        className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
-                        size={20}
-                      />
-                    </div>
-                  </button>
-                )
-              })}
-
             {/* Crosschain purchase */}
-            {!isCrossChaingRoutesLoading &&
-              !enableClaim &&
+            {!enableClaim &&
               paymentMethods['crosschain'] &&
               crossChainRoutes?.map((route, index) => {
+                const symbol = route.tokenPayment.isNative
+                  ? route.currency
+                  : route.tokenPayment.symbol || ''
+
+                if (!symbol) {
+                  // Some routes are returned with Decent without a token
+                  console.error('Missing symbol for route', route)
+                  return null
+                }
                 return (
                   <button
                     key={index}
@@ -425,22 +371,26 @@ export function Payment({ checkoutService }: Props) {
                   >
                     <div className="flex justify-between w-full">
                       <h3 className="font-bold">
-                        Pay with {route.symbol} on {route.networkName}
+                        Pay with {symbol} on {route.networkName}
                       </h3>
                       <AmountBadge
                         amount={formatNumber(
-                          Number(ethers.formatEther(route.tx.value))
+                          Number(
+                            ethers.formatUnits(
+                              toBigInt(route.tokenPayment.amount),
+                              route.tokenPayment.decimals
+                            )
+                          )
                         )}
-                        symbol={route.symbol}
+                        symbol={symbol}
                       />
                     </div>
                     <div className="flex items-center justify-between w-full">
-                      <div className="flex items-center w-full text-sm text-left text-gray-500">
-                        Pay{' '}
-                        {formatNumber(
-                          Number(ethers.formatEther(route.tx.value))
-                        )}{' '}
-                        {route.currency} on {route.networkName} through{' '}
+                      <div className="w-full text-sm text-left text-gray-500">
+                        Your balance of {symbol?.toUpperCase()} on{' '}
+                        {route.networkName}:{' ~'}
+                        {formatNumber(Number(route.userTokenBalance))}. Payment
+                        through
                         <Link
                           className="underline ml-1"
                           target="_blank"

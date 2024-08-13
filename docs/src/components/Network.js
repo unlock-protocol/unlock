@@ -28,26 +28,44 @@ const getProtocolFee = async (provider, unlockAddress) => {
   return `${(Number(fee) / 100).toFixed(2)}%`
 }
 
-const getBalances = async (provider, tokens, ownerAddress) => {
-  const balances = await Promise.all(
-    tokens.map(async (token) => {
+const getBalances = async (provider, nativeCurrency, tokens, ownerAddress) => {
+  const balances = await Promise.all([
+    ...tokens.map(async (token) => {
       const contract = new Contract(token.address, ERC20_ABI, provider)
       return {
         token,
         balance: await contract.balanceOf(ownerAddress),
       }
-    })
-  )
+    }),
+    {
+      token: {
+        symbol: nativeCurrency.symbol,
+        decimals: nativeCurrency.decimals,
+      },
+      balance: await provider.getBalance(ownerAddress),
+    },
+  ])
   return balances.filter(({ balance }) => balance > 0)
 }
 
 const BurnableTokens = ({ network }) => {
-  const provider = new JsonRpcProvider(network.publicProvider)
+  const provider = new JsonRpcProvider(
+    network.publicProvider,
+    network.chainId,
+    {
+      batchMaxCount: 10,
+    }
+  )
 
   const { data: balances } = useQuery({
     queryKey: ['getBalances', network.tokens, network.unlockAddress],
     queryFn: () => {
-      return getBalances(provider, network.tokens, network.unlockAddress)
+      return getBalances(
+        provider,
+        network.nativeCurrency,
+        network.tokens,
+        network.unlockAddress
+      )
     },
   })
   if (!balances || balances.length === 0) {
@@ -56,9 +74,11 @@ const BurnableTokens = ({ network }) => {
   return (
     <li>
       <a href="/governance/unlock-dao-tokens#swap-and-burn">Burnable tokens</a>:{' '}
-      {balances.map(({ token, balance }) => {
-        return `${Number(formatUnits(balance, token.decimals)).toFixed(2)} ${token.symbol}`
-      })}
+      {balances
+        .map(({ token, balance }) => {
+          return `${Number(formatUnits(balance, token.decimals)).toFixed(2)} ${token.symbol}`
+        })
+        .join(', ')}
     </li>
   )
 }
@@ -106,7 +126,10 @@ const Network = ({ network }) => {
           <a href="/governance/unlock-dao-tokens#earning-udt">
             Protocol Reward
           </a>
-          : {udtBalance ? `✅ ${udtBalance} to be distributed` : '❌'}
+          :{' '}
+          {parseFloat(udtBalance) > 0
+            ? `✅ ${udtBalance} to be distributed`
+            : '❌'}
         </li>
         <li>Protocol Fee: {protocolFee}</li>
         <BurnableTokens network={network} />

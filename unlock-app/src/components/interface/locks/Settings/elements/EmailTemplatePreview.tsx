@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import { Button, Modal, Placeholder, TextBox } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import * as z from 'zod'
 import React from 'react'
@@ -73,7 +73,7 @@ export const EmailTemplatePreview = ({
 
   const onSaveCustomContent = async () => {
     const customContent = getValues('customContent')
-    const saveEmailPromise = storage.saveCustomEmailContent(
+    const saveEmailPromise = locksmith.saveCustomEmailContent(
       network,
       lockAddress,
       templateId,

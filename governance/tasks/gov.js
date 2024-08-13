@@ -47,7 +47,8 @@ task('gov:submit', 'Submit a proposal to UDT Governor contract')
   })
 
 task('gov:vote', 'Vote for a proposal on UDT Governor contract')
-  .addParam('proposal', 'The file containing the proposal')
+  .addOptionalParam('proposal', 'The file containing the proposal')
+  .addOptionalParam('proposalId', 'The id of the already submitted proposal')
   .addParam('govAddress', 'The address of the Governor contract')
   .addOptionalParam('voterAddress', 'The address of the voter')
   .addOptionalVariadicPositionalParam(
@@ -61,16 +62,19 @@ task('gov:vote', 'Vote for a proposal on UDT Governor contract')
   .setAction(
     async ({
       proposal: proposalPath,
+      proposalId,
       voterAddress,
       govAddress,
       proposalBlock,
       params,
     }) => {
       const voteProposal = require('../scripts/gov/vote')
-      const { loadProposal, getProposalId } = require('../helpers/gov')
-      const proposal = await loadProposal(resolve(proposalPath), params)
-      const proposalId =
-        proposal.proposalId || (await getProposalId(proposal, govAddress))
+      if (!proposalId) {
+        const { loadProposal, getProposalId } = require('../helpers/gov')
+        const proposal = await loadProposal(resolve(proposalPath), params)
+        proposalId =
+          proposal.proposalId || (await getProposalId(proposal, govAddress))
+      }
 
       return await voteProposal({
         proposalId,

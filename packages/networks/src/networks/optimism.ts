@@ -76,6 +76,7 @@ export const optimism: NetworkConfig = {
   id: 10,
   isTestNetwork: false,
   keyManagerAddress: '0x8c5D54B2CAA4C2D08B0DDF82a1e6D2641779B8EC',
+  kickbackAddress: '0x981e0Ac8ABde773a72FeD793c1BEF99a53fAC342',
   maxFreeClaimCost: 100,
   multisig: '0x6E78b4447e34e751EC181DCBed63633aA753e145',
   name: 'Optimism',
@@ -102,18 +103,17 @@ export const optimism: NetworkConfig = {
       'https://api.studio.thegraph.com/query/65299/unlock-protocol-optimism/version/latest',
     studioName: 'unlock-protocol-optimism',
   },
-  swapPurchaser: '0x1bd356194d97297F77e081fFFAB97b57297E93e4',
   tokens: [
-    {
-      address: '0x7F5c764cBc14f9669B88837ca1490cCa17c31607',
-      decimals: 6,
-      name: 'USD Coin',
-      symbol: 'USDC',
-    },
     {
       address: '0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85',
       decimals: 6,
       featured: true,
+      name: 'USD Coin',
+      symbol: 'USDC',
+    },
+    {
+      address: '0x7F5c764cBc14f9669B88837ca1490cCa17c31607',
+      decimals: 6,
       name: 'USD Coin',
       symbol: 'USDC',
     },

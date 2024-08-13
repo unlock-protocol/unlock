@@ -2,9 +2,6 @@ const { ethers } = require('hardhat')
 const { fetchFromSubgraph } = require('../../helpers/subgraph')
 
 async function main({ lockAddress }) {
-  const PublicLock = await ethers.getContractFactory('PublicLock')
-  const lock = PublicLock.attach(lockAddress)
-
   const { chainId } = await ethers.provider.getNetwork()
 
   const query = `
@@ -12,9 +9,7 @@ async function main({ lockAddress }) {
       locks(where:{
         address: "${lockAddress}"
       }) {
-        LockManagers {
-          address
-        }
+        lockManagers 
       }
     }
   `
@@ -23,7 +18,7 @@ async function main({ lockAddress }) {
     locks: [{ LockManagers }],
   } = await fetchFromSubgraph({ chainId, query })
 
-  const managers = LockManagers.map((m) => m.address)
+  const managers = LockManagers.map((address) => address)
   console.log(
     `LOCK > managers for the lock '${await lock.name()}' (${lockAddress}):`
   )

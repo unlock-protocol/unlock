@@ -1,6 +1,6 @@
 import { EthereumProvider } from '@walletconnect/ethereum-provider'
 
-import WalletLink from 'walletlink'
+import WalletLink from '@coinbase/wallet-sdk'
 import { useConfig } from '../utils/withConfig'
 import { useAuth } from '../contexts/AuthenticationContext'
 import { useAppStorage } from './useAppStorage'
@@ -9,7 +9,7 @@ import { useCallback } from 'react'
 import networks from '@unlock-protocol/networks'
 
 export interface EthereumWindow extends Window {
-  ethereum?: any
+  ethereum: any
 }
 
 interface RpcType {
@@ -52,6 +52,7 @@ export enum WALLET_PROVIDER {
   WALLET_CONNECT,
   COINBASE,
   UNLOCK,
+  WAAS,
 }
 
 export type WalletProvider = keyof typeof WALLET_PROVIDER
@@ -70,6 +71,13 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
   }, [authenticate, injectedOrDefaultProvider])
 
   const handleUnlockProvider = useCallback(
+    async (provider: any) => {
+      return authenticate(provider)
+    },
+    [authenticate]
+  )
+
+  const handleWaasProvider = useCallback(
     async (provider: any) => {
       return authenticate(provider)
     },
@@ -121,7 +129,7 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
       appLogoUrl: '/static/images/svg/default-lock-logo.svg',
     })
 
-    const ethereum = walletLink.makeWeb3Provider(config.networks[1].provider, 1)
+    const ethereum = walletLink.makeWeb3Provider(config.networks[1].provider)
     return authenticate(ethereum)
   }, [authenticate, config])
 
@@ -133,6 +141,7 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
     WALLET_CONNECT: handleWalletConnectProvider,
     COINBASE: handleCoinbaseWalletProvider,
     UNLOCK: handleUnlockProvider,
+    WAAS: handleWaasProvider,
   }
 
   const authenticateWithProvider = useCallback(

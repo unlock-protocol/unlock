@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { config } from '~/config/app'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import remarkParse from 'remark-parse'
 import remarkHtml from 'remark-html'
 import { unified } from 'unified'
@@ -17,7 +17,7 @@ export const useCustomContentForEmail = ({
   return useQuery(
     ['getCustomContent', network, lockAddress, templateId],
     async () => {
-      const response = await storage.getCustomEmailContent(
+      const response = await locksmith.getCustomEmailContent(
         network,
         lockAddress,
         templateId
@@ -75,7 +75,7 @@ export const useEmailPreviewDataForLock = ({
       const customContentHtml: string = await markdownToHtml(
         customContent || ''
       )
-      const { data: eventDetails } = await storage.getEventDetails(
+      const { data: eventDetails } = await locksmith.getEventDetails(
         network,
         lockAddress
       )
@@ -101,7 +101,9 @@ export const useEmailPreviewDataForLock = ({
 const markdownToHtml = async (content: string) => {
   try {
     const parsedContent = await unified()
+      // @ts-expect-error No overload matches this call.
       .use(remarkParse)
+      // @ts-expect-error No overload matches this call.
       .use(remarkHtml, {
         sanitize: true,
       })

@@ -15,9 +15,8 @@
     "ci": "yarn test && yarn lint && yarn build"
   },
   "dependencies": {
-    "@types/next": "9.0.0",
     "@unlock-protocol/paywall": "workspace:./packages/paywall",
-    "next": "14.2.3",
+    "next": "14.2.5",
     "vite-plugin-node-polyfills": "0.22.0"
   },
   "license": "MIT",
@@ -25,9 +24,9 @@
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "eslint": "8.57.0",
-    "prettier": "3.3.0",
-    "typescript": "5.4.5",
-    "vite": "5.2.12"
+    "prettier": "3.3.3",
+    "typescript": "5.5.4",
+    "vite": "5.3.5"
   },
   "browserslist": [
     "defaults",

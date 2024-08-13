@@ -18,10 +18,10 @@
     "eslint": "8.57.0",
     "ethers": "6.13.0",
     "fs-extra": "11.2.0",
-    "hardhat": "2.22.5",
+    "hardhat": "2.22.6",
     "hardhat-erc1820": "0.1.0",
     "ts-node": "10.9.2",
-    "typescript": "5.4.5"
+    "typescript": "5.5.4"
   },
-  "packageManager": "yarn@4.2.2"
+  "packageManager": "yarn@4.3.1"
 }

@@ -1,36 +1,14 @@
-import { useQuery } from '@tanstack/react-query'
-import networks from '@unlock-protocol/networks'
-import { Web3Service } from '@unlock-protocol/unlock-js'
-import { ethers } from 'ethers'
 import { AttendeeRefundType } from '@unlock-protocol/core'
+import { useAttendeeRefund } from '~/hooks/useAttendeeRefund'
 
 interface AttendeeStakingProps {
   attendeeRefund?: AttendeeRefundType
 }
 
 export const AttendeeStaking = ({ attendeeRefund }: AttendeeStakingProps) => {
-  const { data: refund } = useQuery(
-    ['attendeeRefund', attendeeRefund],
-    async () => {
-      const web3Service = new Web3Service(networks)
-      const [decimals, symbol] = await Promise.all([
-        web3Service.getTokenDecimals(
-          attendeeRefund!.currency,
-          attendeeRefund!.network
-        ),
-        web3Service.getTokenSymbol(
-          attendeeRefund!.currency,
-          attendeeRefund!.network
-        ),
-      ])
-      return `${ethers.formatUnits(attendeeRefund!.amount, decimals)} ${symbol}`
-    },
-    {
-      enabled: !!attendeeRefund,
-    }
-  )
+  const { data: refund } = useAttendeeRefund({ attendeeRefund })
 
-  if (!attendeeRefund) {
+  if (!attendeeRefund || !refund) {
     return null
   }
   return (

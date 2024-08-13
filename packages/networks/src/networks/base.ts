@@ -71,6 +71,7 @@ export const base: NetworkConfig = {
   id: 8453,
   isTestNetwork: false,
   keyManagerAddress: '0xD26c05a33349a6DeD02DD9360e1ef303d1246fb6',
+  kickbackAddress: '0xCf5802682F194C2447E92a63283471A99CB792f6',
   maxFreeClaimCost: 100,
   multisig: '0x8149FeaFa41DD1ee3CA62299b9c67e9ac12FA340',
   name: 'Base',
@@ -104,8 +105,14 @@ export const base: NetworkConfig = {
     networkName: 'base',
     studioName: 'unlock-protocol-base',
   },
-  swapPurchaser: '0x36b34e10295cCE69B652eEB5a8046041074515Da',
   tokens: [
+    {
+      address: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
+      decimals: 6,
+      featured: true,
+      name: 'USD Coin',
+      symbol: 'USDC',
+    },
     {
       address: '0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb',
       decimals: 18,
@@ -118,13 +125,6 @@ export const base: NetworkConfig = {
       decimals: 6,
       name: 'USD Base Coin',
       symbol: 'USDbC',
-    },
-    {
-      address: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
-      decimals: 6,
-      featured: true,
-      name: 'USD Coin',
-      symbol: 'USDC',
     },
     {
       address: '0x4200000000000000000000000000000000000006',

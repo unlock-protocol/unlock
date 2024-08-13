@@ -41,60 +41,6 @@ describe('Wedlocks Service', () => {
     expect(fetch).toHaveBeenCalledWith('http://notareal.host', fetchExpected)
   })
 
-  it('should request a welcome email, with the right headers and params', async () => {
-    expect.assertions(1)
-    const recipient = 'julien@unlock-protocol.com'
-    const expectedPayload = {
-      template: emailTemplate.welcome,
-      recipient,
-      params: {
-        email: encodeURIComponent(recipient),
-        recoveryLink: 'https://recovery',
-      },
-      attachments: [],
-    }
-
-    const fetchExpected = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(expectedPayload),
-    }
-
-    fetch.mockResolvedValue(fetchExpected)
-    await w.welcomeEmail(recipient, 'https://recovery')
-
-    expect(fetch).toHaveBeenCalledWith('http://notareal.host', fetchExpected)
-  })
-
-  it('should request a welcome email, with the right headers and params, including an encoded URL', async () => {
-    expect.assertions(1)
-    const recipient = 'julien+hello@unlock-protocol.com'
-    const expectedPayload = {
-      template: emailTemplate.welcome,
-      recipient,
-      params: {
-        email: encodeURIComponent(recipient),
-        recoveryLink: 'https://recovery',
-      },
-      attachments: [],
-    }
-
-    const fetchExpected = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(expectedPayload),
-    }
-
-    fetch.mockResolvedValue(fetchExpected)
-    await w.welcomeEmail(recipient, 'https://recovery')
-
-    expect(fetch).toHaveBeenCalledWith('http://notareal.host', fetchExpected)
-  })
-
   it('should request a QR code email, with the right headers and params', async () => {
     expect.assertions(1)
     const recipient = 'jefferson@airpla.ne'

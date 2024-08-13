@@ -1,5 +1,9 @@
+import { StandardMerkleTree } from '@openzeppelin/merkle-tree'
+import { ethers } from 'ethers'
+import networks from '@unlock-protocol/networks'
 import { RequestHandler } from 'express'
 import {
+  getCheckedInAttendees,
   getEventBySlug,
   getEventMetadataForLock,
   saveEvent,
@@ -9,12 +13,21 @@ import { CheckoutConfig, EventData } from '../../models'
 import { z } from 'zod'
 import { getLockSettingsBySlug } from '../../operations/lockSettingOperations'
 import { getLockMetadata } from '../../operations/metadataOperations'
-import { PaywallConfig, PaywallConfigType } from '@unlock-protocol/core'
+import {
+  PaywallConfig,
+  PaywallConfigType,
+  AttendeeRefund,
+} from '@unlock-protocol/core'
 import listManagers from '../../utils/lockManagers'
 import { removeProtectedAttributesFromObject } from '../../utils/protectedAttributes'
 import { isVerifierOrManagerForLock } from '../../utils/middlewares/isVerifierMiddleware'
 import { sendEmail } from '../../operations/wedlocksOperations'
 import { getEventUrl } from '../../utils/eventHelpers'
+import { Web3Service, getErc20Decimals } from '@unlock-protocol/unlock-js'
+import { uploadJsonToS3 } from '../../utils/uploadJsonToS3'
+import config from '../../config/config'
+import { downloadJsonFromS3 } from '../../utils/downloadJsonFromS3'
+import logger from '../../logger'
 
 // DEPRECATED!
 export const getEventDetailsByLock: RequestHandler = async (
@@ -64,7 +77,6 @@ export const saveEventDetails: RequestHandler = async (request, response) => {
     await sendEmail({
       template: 'eventDeployed',
       recipient: event.data.replyTo,
-      // @ts-expect-error object incomplete
       params: {
         eventName: event!.name,
         eventDate: event!.data.ticket.event_start_date,
@@ -168,6 +180,7 @@ export const getEvent: RequestHandler = async (request, response) => {
                   network: settings.network,
                 },
               },
+              referrer: request.user?.walletAddress,
             },
           }
 
@@ -194,4 +207,71 @@ export const getEvent: RequestHandler = async (request, response) => {
   return response.status(404).send({
     message: `No event found for slug ${slug}`,
   })
+}
+
+// API endpoint that a manager can call to approve refunds for attendees
+// This will create a a Merkle proof for the refunds and store it
+export const approveRefunds: RequestHandler = async (request, response) => {
+  const { amount, network, currency } = await AttendeeRefund.parseAsync(
+    request.body
+  )
+
+  let decimals = 18
+
+  if (currency) {
+    const web3Service = new Web3Service(networks)
+    const provider = web3Service.providerForNetwork(network)
+
+    // Get the decimals
+    decimals = await getErc20Decimals(currency, provider)
+  }
+
+  const refundAmount = ethers.parseUnits(amount.toString(), decimals)
+  const slug = request.params.slug.toLowerCase().trim()
+
+  // Then, get the list of all attendees that attendees!
+  const list = await getCheckedInAttendees(slug)
+
+  if (list.length === 0) {
+    return response.status(404).send({ error: 'No attendees found' })
+  }
+
+  // then, create the merkel tree using the OZ library
+  const tree = StandardMerkleTree.of(
+    list.map((recipient) => [recipient, refundAmount.toString()]),
+    ['address', 'uint256']
+  )
+
+  // dump the tree
+  const fullTree = tree.dump()
+
+  // Then, store the tree (at <slug>.json)
+  await uploadJsonToS3(
+    config.storage.merkleTreesBucket,
+    `${slug}.json`,
+    fullTree
+  )
+
+  return response.status(200).send(fullTree)
+}
+
+export const approvedRefunds: RequestHandler = async (request, response) => {
+  const slug = request.params.slug.toLowerCase().trim()
+  let file
+  try {
+    file = await downloadJsonFromS3(
+      config.storage.merkleTreesBucket,
+      `${slug}.json`
+    )
+  } catch (error) {
+    if (error.message !== 'NoSuchKey') {
+      logger.error('Error downloading file from S3', error)
+    }
+  }
+
+  if (!file) {
+    return response.status(404).send({ error: 'Not found' })
+  }
+
+  return response.status(200).send(file)
 }

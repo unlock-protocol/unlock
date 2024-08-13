@@ -5,19 +5,24 @@ import {
 import SvgComponents from '../svg'
 import { ConnectButton } from './Custom'
 import { useLocalStorage } from '@rehooks/local-storage'
-import { MouseEventHandler, useState } from 'react'
+import { MouseEventHandler, useEffect, useState } from 'react'
 import { Button, Input } from '@unlock-protocol/ui'
 import { useForm } from 'react-hook-form'
-import { ConnectUnlockAccount } from './UnlockAccount'
+import { ConnectUnlockAccount } from './EmailAccount'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useStorageService } from '~/utils/withStorageService'
+import { CheckoutService } from '../checkout/main/checkoutMachine'
+import { useQuery } from '@tanstack/react-query'
+import { locksmith } from '~/config/locksmith'
+import { UserAccountType } from '~/utils/userAccountType'
 
 interface ConnectWalletProps {
   injectedProvider?: unknown
+  shoudOpenConnectModal?: boolean
+  checkoutService?: CheckoutService
 }
 
 interface ConnectViaEmailProps {
+  email: string | undefined
   isLoadingUserExists: boolean
   onUnlockAccount: (email: string) => void
 }
@@ -27,6 +32,7 @@ interface UserDetails {
 }
 
 export const ConnectViaEmail = ({
+  email,
   isLoadingUserExists,
   onUnlockAccount,
 }: ConnectViaEmailProps) => {
@@ -66,7 +72,7 @@ export const ConnectViaEmail = ({
         <Input
           type="email"
           autoComplete="email"
-          placeholder="your@email.com"
+          placeholder={email ? email : 'your@email.com'}
           error={errors.email?.message}
           {...register('email', {
             required: {
@@ -91,21 +97,36 @@ export const ConnectViaEmail = ({
   )
 }
 
-export const ConnectWallet = ({ injectedProvider }: ConnectWalletProps) => {
-  const { email, isUnlockAccount } = useAuth()
-  const [useUnlockAccount, setUseUnlockAccount] = useState<string | undefined>(
+export const ConnectWallet = ({
+  injectedProvider,
+  shoudOpenConnectModal = false,
+  checkoutService,
+}: ConnectWalletProps) => {
+  const { email } = useAuth()
+  const [userEmail, setUserEmail] = useState<string | undefined>(
     email || undefined
   )
-  const [isExistingUser, setIsExistingUser] = useState<boolean>(
-    useUnlockAccount !== ''
+
+  const [isEmailLoading, setIsEmailLoading] = useState<boolean>(false)
+
+  const { data: userType } = useQuery(
+    ['userAccountType', userEmail],
+    async () => {
+      setIsEmailLoading(true)
+      const result = await locksmith.getUserAccountType(userEmail as string)
+      const userAccountType = result.data.userAccountType as UserAccountType[]
+      setIsEmailLoading(false)
+
+      return userAccountType
+    },
+    {
+      enabled: !!userEmail,
+    }
   )
 
   const { authenticateWithProvider } = useAuthenticate({ injectedProvider })
   const [recentlyUsedProvider] = useLocalStorage(RECENTLY_USED_PROVIDER, null)
   const [isConnecting, setIsConnecting] = useState('')
-  const [isLoadingUserExists, setIsLoadingUserExists] = useState(false)
-
-  const storageService = useStorageService()
 
   const createOnConnectHandler = (provider: any) => {
     const handler: MouseEventHandler<HTMLButtonElement> = async (event) => {
@@ -118,28 +139,20 @@ export const ConnectWallet = ({ injectedProvider }: ConnectWalletProps) => {
   }
 
   const verifyAndSetEmail = async (email: string) => {
-    setIsLoadingUserExists(true)
-    try {
-      const existingUser = await storageService.userExist(email)
-      if (existingUser) {
-        setUseUnlockAccount(email)
-        setIsExistingUser(true)
-        setIsLoadingUserExists(false)
-        return
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        ToastHelper.error(`Email Error: ${error.message}`)
-      }
+    if (email) {
+      setUserEmail(email)
     }
-    setUseUnlockAccount(email)
-    setIsLoadingUserExists(false)
-    setIsExistingUser(false)
   }
+
+  useEffect(() => {
+    if (!email) {
+      setUserEmail('')
+    }
+  }, [email])
 
   return (
     <div className="space-y-4">
-      {useUnlockAccount === undefined && !isUnlockAccount && (
+      {(!userEmail || isEmailLoading) && (
         <>
           <div className="grid gap-4 px-6">
             <div className=" text-sm text-gray-600">
@@ -179,21 +192,23 @@ export const ConnectWallet = ({ injectedProvider }: ConnectWalletProps) => {
               Otherwise, enter your email address:
             </div>
             <ConnectViaEmail
-              isLoadingUserExists={isLoadingUserExists}
+              email={userEmail}
+              isLoadingUserExists={isEmailLoading}
               onUnlockAccount={(email: string) => {
-                console.log('email', email)
                 verifyAndSetEmail(email)
               }}
             />
           </div>
         </>
       )}
-      {(useUnlockAccount != undefined || isUnlockAccount) && (
+      {userEmail && !isEmailLoading && (
         <ConnectUnlockAccount
-          defaultEmail={useUnlockAccount}
-          setDefaultEmail={setUseUnlockAccount}
-          isExistingUser={isExistingUser}
+          email={userEmail}
+          setEmail={setUserEmail}
+          accountType={userType || []}
           useIcon={false}
+          shoudOpenConnectModal={shoudOpenConnectModal}
+          checkoutService={checkoutService}
         />
       )}
     </div>

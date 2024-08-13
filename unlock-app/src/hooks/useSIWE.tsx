@@ -2,7 +2,7 @@ import { ReactNode, createContext, useContext, useState } from 'react'
 import { useSession } from './useSession'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { SiweMessage } from 'siwe'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { useQueryClient } from '@tanstack/react-query'
 import {
   getAccessToken,
@@ -12,6 +12,7 @@ import {
 import { config } from '~/config/app'
 import ProviderContext from '~/contexts/ProviderContext'
 import { isInIframe } from '~/utils/iframe'
+import { signOut as nextSignOut } from 'next-auth/react'
 
 export type Status = 'loading' | 'error' | 'success' | 'rejected' | 'idle'
 
@@ -34,7 +35,7 @@ const signOutToken = async () => {
   const session = getAccessToken()
   if (session) {
     // First, revoke the session on the server with the token
-    await storage.revoke().catch(console.error)
+    await locksmith.revoke().catch(console.error)
     // Then remove token locally
     return removeAccessToken()
   }
@@ -85,6 +86,8 @@ export const SIWEProvider = ({ children }: Props) => {
   const signOut = async () => {
     try {
       setStatus('loading')
+      // Before signing out, we need to revoke the token
+      await nextSignOut({ redirect: false })
       await signOutToken()
       await Promise.all([queryClient.invalidateQueries(), refetchSession()])
       setStatus('idle')
@@ -156,13 +159,13 @@ export const SIWEProvider = ({ children }: Props) => {
         throw new Error('No wallet connected.')
       }
 
-      const { data: nonce } = await storage.nonce()
+      const { data: nonce } = await locksmith.nonce()
       const siweResult = await siweSign(nonce, '')
 
       if (siweResult) {
         setSiweResult(siweResult)
         const { message, signature } = siweResult
-        const response = await storage.login({
+        const response = await locksmith.login({
           message,
           signature,
         })

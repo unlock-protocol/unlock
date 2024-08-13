@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { PaywallConfigType } from '@unlock-protocol/core'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface CheckoutConfigOptions {
@@ -12,7 +12,7 @@ export const useCheckoutConfig = ({ id }: CheckoutConfigOptions) => {
     ['checkoutConfigsById', id],
     async () => {
       try {
-        const response = await storage.getCheckoutConfig(id!)
+        const response = await locksmith.getCheckoutConfig(id!)
         return response.data
       } catch {
         return null
@@ -32,23 +32,27 @@ export const useCheckoutConfigsByUserAndLock = ({
   lockAddress: string
 }) => {
   const { account } = useAuth()
-  return useQuery(['checkoutConfigsByUser', account!], async () => {
-    const response = await storage.listCheckoutConfigs()
-    const locks = response.data.results?.filter((config) => {
-      const configLocks = Object.keys(config.config.locks || {}).map(
-        (lockAddress: string) => lockAddress.toLowerCase()
-      )
-      return configLocks.includes(lockAddress.toLowerCase())
-    })
+  return useQuery(
+    ['checkoutConfigsByUser', account!],
+    async () => {
+      const response = await locksmith.listCheckoutConfigs()
+      const locks = response.data.results?.filter((config) => {
+        const configLocks = Object.keys(config.config.locks || {}).map(
+          (lockAddress: string) => lockAddress.toLowerCase()
+        )
+        return configLocks.includes(lockAddress.toLowerCase())
+      })
 
-    return locks
-  })
+      return locks
+    },
+    { enabled: !!account }
+  )
 }
 
 export const useCheckoutConfigsByUser = () => {
   const { account } = useAuth()
   return useQuery(['checkoutConfigsByUser', account!], async () => {
-    const response = await storage.listCheckoutConfigs()
+    const response = await locksmith.listCheckoutConfigs()
     return response.data.results
   })
 }
@@ -61,7 +65,7 @@ interface UpdateOptions {
 
 export const useCheckoutConfigUpdate = () => {
   return useMutation(async ({ name, config, id }: UpdateOptions) => {
-    const response = await storage.updateCheckoutConfig(id || '', {
+    const response = await locksmith.updateCheckoutConfig(id || '', {
       config,
       name,
     })
@@ -71,7 +75,7 @@ export const useCheckoutConfigUpdate = () => {
 
 export const useCheckoutConfigRemove = () => {
   return useMutation(async (id: string) => {
-    const response = await storage.deleteCheckoutConfig(id)
+    const response = await locksmith.deleteCheckoutConfig(id)
     return response.data
   })
 }

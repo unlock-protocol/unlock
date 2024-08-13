@@ -17,6 +17,20 @@ export const baseSepolia: NetworkConfig = {
       transaction: (hash: string) => `https://sepolia.basescan.org/tx/${hash}`,
     },
   },
+  faucets: [
+    {
+      name: 'Coinbase',
+      url: 'https://portal.cdp.coinbase.com/products/faucet',
+    },
+    {
+      name: 'Superchain',
+      url: 'https://console.optimism.io/faucet',
+    },
+    {
+      name: 'Alchemy',
+      url: 'https://basefaucet.com/',
+    },
+  ],
   featured: false,
   fullySubsidizedGas: true,
   hooks: {
@@ -38,9 +52,11 @@ export const baseSepolia: NetworkConfig = {
   id: 84532,
   isTestNetwork: true,
   keyManagerAddress: '',
+  kickbackAddress: '0x930730F962133216353A989d9b6cfACb19FFB49D',
   maxFreeClaimCost: 1000,
   multisig: '0x68F2c5D9009dc4d553f814D689102a53B2b349Cc',
   name: 'Base Sepolia',
+
   nativeCurrency: {
     coingecko: 'ethereum',
     decimals: 18,
@@ -55,7 +71,6 @@ export const baseSepolia: NetworkConfig = {
   publicLockVersionToDeploy: 14,
 
   publicProvider: 'https://sepolia.base.org',
-
   startBlock: 7889118,
   subgraph: {
     endpoint:
@@ -63,8 +78,15 @@ export const baseSepolia: NetworkConfig = {
     networkName: 'base-sepolia',
     studioName: 'unlock-protocol-base-sepolia',
   },
-  swapPurchaser: '',
   tokens: [
+    {
+      address: '0x036CbD53842c5426634e7929541eC2318f3dCF7e',
+      decimals: 6,
+      faucet: { name: 'Circle', url: 'https://faucet.circle.com/' },
+      featured: true,
+      name: 'USDC',
+      symbol: 'USDC',
+    },
     {
       address: '0x4200000000000000000000000000000000000006',
       decimals: 18,
@@ -72,13 +94,6 @@ export const baseSepolia: NetworkConfig = {
       mainnetAddress: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
       name: 'Wrapped Ether',
       symbol: 'WETH',
-    },
-    {
-      address: '0x036CbD53842c5426634e7929541eC2318f3dCF7e',
-      decimals: 6,
-      featured: true,
-      name: 'USDC',
-      symbol: 'USDC',
     },
   ],
   unlockAddress: '0x259813B665C8f6074391028ef782e27B65840d89',

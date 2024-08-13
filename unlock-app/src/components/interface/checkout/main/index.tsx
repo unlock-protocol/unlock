@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo } from 'react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { checkoutMachine } from './checkoutMachine'
-import { Select } from './Select'
 import { Quantity } from './Quantity'
 import { Metadata } from './Metadata'
 import { Confirm } from './Confirm'
@@ -20,8 +19,10 @@ import { CheckoutHead, TopNavigation } from '../Shell'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { Guild } from './Guild'
 import { Gitcoin } from './Gitcoin'
-import { Connected } from '../Connected'
 import { isInIframe } from '~/utils/iframe'
+import { useRouter } from 'next/router'
+import { Select } from './Select'
+import { Connected } from '../Connected'
 
 interface Props {
   paywallConfig: PaywallConfigType
@@ -50,6 +51,8 @@ export function Checkout({
     paywallConfig,
     state.context.paywallConfig
   )
+
+  const router = useRouter()
 
   useEffect(() => {
     console.debug('Unlock paywall config', paywallConfig)
@@ -103,8 +106,8 @@ export function Checkout({
     },
     [
       handleClose,
-      communication,
       redirectURI,
+      communication,
       mint,
       messageToSign,
       paywallConfig.messageToSign,
@@ -126,6 +129,21 @@ export function Checkout({
     }
     return undefined
   }, [state, checkoutService])
+
+  useEffect(() => {
+    if (matched !== 'SELECT' && matched != 'CONNECT' && router.query.lock) {
+      // Remove the lock from the query string
+      const { lock, ...otherQueryParams } = router.query
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: otherQueryParams,
+        },
+        undefined,
+        { shallow: true }
+      )
+    }
+  }, [router])
 
   const Content = useCallback(() => {
     switch (matched) {
@@ -200,7 +218,7 @@ export function Checkout({
         return null
       }
     }
-  }, [onClose, matched, communication])
+  }, [matched])
 
   return (
     <div className="bg-white z-10  shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem]">

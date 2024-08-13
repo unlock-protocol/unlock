@@ -30,6 +30,6 @@ Contrary to the previous method, the granter can also customize the expiration o
 
 ### Protocol Fee
 
-As for version 13, the protocol includes a fee switch. The **fee is initially set to 0**. If the [DAO community](../../governance/unlock-dao) decides to change this, then a share of the payment will be sent to the Unlock contract on the chain on which the lock has been deployed.
+As for version 13, the protocol includes a fee switch. The **fee is initially set to 0**. On May 28th 2024, [a proposal was sent to the DAO](https://www.tally.xyz/gov/unlock/proposal/72110981722145472193202862106710876303006911465748904597113931014096574827698) to change that fee to 1%. As of June 14th 2024, the proposal was approved and the fee is now applied! You can [see on the Networks page](../unlock/networks.mdx) the fee for each network. The [DAO community](../../governance/unlock-dao) can decide to change this at any point, for all networks or just a subset of networks.
 
 This protocol fee aims at making the protocol economically sustainable by providing a budget to the DAO.

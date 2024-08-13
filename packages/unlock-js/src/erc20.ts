@@ -169,8 +169,7 @@ export async function signTransferAuthorization(
 ) {
   const { chainId } = await provider.getNetwork()
   const domain = await getDomain(chainId, erc20ContractAddress, provider)
-  // @ts-expect-error Property '_signTypedData' does not exist on type 'Signer'.ts(2339)
-  return signer._signTypedData(domain, TransferWithAuthorizationTypes, message)
+  return signer.signTypedData(domain, TransferWithAuthorizationTypes, message)
 }
 
 export async function recoverTransferAuthorization(
