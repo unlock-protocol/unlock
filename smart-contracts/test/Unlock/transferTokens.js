@@ -9,7 +9,7 @@ const {
   getEvent,
 } = require('@unlock-protocol/hardhat-helpers')
 const { compareBigNumbers } = require('../helpers')
-const { ZeroAddress } = require('ethers')
+const { ZeroAddress, parseEther } = require('ethers')
 
 describe('Unlock / transferTokens', async () => {
   let unlock, udtAddress, udt
@@ -58,6 +58,26 @@ describe('Unlock / transferTokens', async () => {
 
     compareBigNumbers(
       await getBalance(await unlock.getAddress(), await token.getAddress()),
+      unlockBalanceBefore - amount
+    )
+  })
+
+  it('should transfer native token properly', async () => {
+    await signer.sendTransaction({
+      from: await signer.getAddress(),
+      to: await unlock.getAddress(),
+      value: amount,
+    })
+
+    const unlockBalanceBefore = await ethers.provider.getBalance(
+      await unlock.getAddress()
+    )
+    compareBigNumbers(unlockBalanceBefore, amount)
+
+    await unlock.transferTokens(ZeroAddress, await signer.getAddress(), amount)
+
+    compareBigNumbers(
+      await ethers.provider.getBalance(await unlock.getAddress()),
       unlockBalanceBefore - amount
     )
   })
