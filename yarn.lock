@@ -11194,7 +11194,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomicfoundation/hardhat-ethers@npm:3.0.6, @nomicfoundation/hardhat-ethers@npm:^3.0.4":
+"@nomicfoundation/hardhat-ethers@npm:3.0.6":
   version: 3.0.6
   resolution: "@nomicfoundation/hardhat-ethers@npm:3.0.6"
   dependencies:
@@ -11220,7 +11220,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomicfoundation/hardhat-ignition@npm:0.15.5":
+"@nomicfoundation/hardhat-ignition@npm:0.15.5, @nomicfoundation/hardhat-ignition@npm:^0.15.5":
   version: 0.15.5
   resolution: "@nomicfoundation/hardhat-ignition@npm:0.15.5"
   dependencies:
@@ -17623,12 +17623,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tenderly/hardhat-tenderly@npm:2.2.2":
-  version: 2.2.2
-  resolution: "@tenderly/hardhat-tenderly@npm:2.2.2"
+"@tenderly/hardhat-tenderly@npm:2.3.0":
+  version: 2.3.0
+  resolution: "@tenderly/hardhat-tenderly@npm:2.3.0"
   dependencies:
     "@ethersproject/bignumber": "npm:^5.7.0"
-    "@nomicfoundation/hardhat-ethers": "npm:^3.0.4"
+    "@nomicfoundation/hardhat-ignition": "npm:^0.15.5"
+    "@nomicfoundation/hardhat-verify": "npm:^2.0.8"
     "@openzeppelin/hardhat-upgrades": "npm:^3.0.1"
     "@openzeppelin/upgrades-core": "npm:^1.32.2"
     axios: "npm:^1.6.7"
@@ -17638,11 +17639,11 @@ __metadata:
     tenderly: "npm:^0.9.1"
     ts-node: "npm:^10.9.1"
     tslog: "npm:^4.3.1"
-    typescript: "npm:^5.2.2"
+    typescript: "npm:^5.5.4"
   peerDependencies:
     ethers: ^6.8.1
-    hardhat: ^2.19.0
-  checksum: 10/3294f063d58d9e99c0c49d3a1fbe1e74a4d08e4ee91e0174f1150a0a9d890ec192e7614162620c3e338931f6aa8caf050f34cbeb62b068f7ff067c07dff82463
+    hardhat: ^2.22.6
+  checksum: 10/01f8d11f82c02ea4e939f6369ea9000d518e24fde9c7d7988144082e68fc67c56ed7716b6347727147459e0c44a9977003a4b30860549310ca58788db8362ae8
   languageName: node
   linkType: hard
 
@@ -19533,7 +19534,7 @@ __metadata:
     "@openzeppelin/upgrades-core": "npm:1.34.1"
     "@safe-global/api-kit": "npm:2.4.2"
     "@safe-global/protocol-kit": "npm:4.0.2"
-    "@tenderly/hardhat-tenderly": "npm:2.2.2"
+    "@tenderly/hardhat-tenderly": "npm:2.3.0"
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/hardhat-helpers": "workspace:^"
@@ -50823,13 +50824,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.2.2":
-  version: 5.2.2
-  resolution: "typescript@npm:5.2.2"
+"typescript@npm:^5.5.4":
+  version: 5.5.4
+  resolution: "typescript@npm:5.5.4"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10/d65e50eb849bd21ff8677e5b9447f9c6e74777e346afd67754934264dcbf4bd59e7d2473f6062d9a015d66bd573311166357e3eb07fea0b52859cf9bb2b58555
+  checksum: 10/1689ccafef894825481fc3d856b4834ba3cc185a9c2878f3c76a9a1ef81af04194849840f3c69e7961e2312771471bb3b460ca92561e1d87599b26c37d0ffb6f
   languageName: node
   linkType: hard
 
@@ -50863,13 +50864,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^5.2.2#optional!builtin<compat/typescript>":
-  version: 5.2.2
-  resolution: "typescript@patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"
+"typescript@patch:typescript@npm%3A^5.5.4#optional!builtin<compat/typescript>":
+  version: 5.5.4
+  resolution: "typescript@patch:typescript@npm%3A5.5.4#optional!builtin<compat/typescript>::version=5.5.4&hash=379a07"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10/f79cc2ba802c94c2b78dbb00d767a10adb67368ae764709737dc277273ec148aa4558033a03ce901406b35fddf4eac46dabc94a1e1d12d2587e2b9cfe5707b4a
+  checksum: 10/746fdd0865c5ce4f15e494c57ede03a9e12ede59cfdb40da3a281807853fe63b00ef1c912d7222143499aa82f18b8b472baa1830df8804746d09b55f6cf5b1cc
   languageName: node
   linkType: hard
 
