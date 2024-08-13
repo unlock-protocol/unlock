@@ -9560,7 +9560,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@matterlabs/hardhat-zksync-solc@npm:1.2.1":
+"@matterlabs/hardhat-zksync-solc@npm:1.2.1, @matterlabs/hardhat-zksync-solc@npm:^1.2.1":
   version: 1.2.1
   resolution: "@matterlabs/hardhat-zksync-solc@npm:1.2.1"
   dependencies:
@@ -9599,27 +9599,6 @@ __metadata:
   peerDependencies:
     hardhat: ^2.22.5
   checksum: 10/3b39c02684da3624bb0a99355b78458e178e2b21c714b1ee06543f05ee005cecfcc27466c43a11f37954ad6d0a95732c74916e81e3ec3bfe85b4c5601e9c6dca
-  languageName: node
-  linkType: hard
-
-"@matterlabs/hardhat-zksync-solc@npm:^1.2.1":
-  version: 1.2.1
-  resolution: "@matterlabs/hardhat-zksync-solc@npm:1.2.1"
-  dependencies:
-    "@nomiclabs/hardhat-docker": "npm:^2.0.2"
-    chai: "npm:^4.3.4"
-    chalk: "npm:^4.1.2"
-    debug: "npm:^4.3.5"
-    dockerode: "npm:^4.0.2"
-    fs-extra: "npm:^11.2.0"
-    proper-lockfile: "npm:^4.1.2"
-    semver: "npm:^7.6.2"
-    sinon: "npm:^18.0.0"
-    sinon-chai: "npm:^3.7.0"
-    undici: "npm:^6.18.2"
-  peerDependencies:
-    hardhat: ^2.22.5
-  checksum: 10/b94c27f3b83f040d03ba88c33f8c9b9438486f1f17766f88e95cda48c826a14a63d8726901f4933404cf608138686e1950da1fc27e45d1cebe2138879f66c631
   languageName: node
   linkType: hard
 
@@ -11371,7 +11350,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomicfoundation/hardhat-verify@npm:2.0.8, @nomicfoundation/hardhat-verify@npm:^2.0.8":
+"@nomicfoundation/hardhat-verify@npm:2.0.9":
+  version: 2.0.9
+  resolution: "@nomicfoundation/hardhat-verify@npm:2.0.9"
+  dependencies:
+    "@ethersproject/abi": "npm:^5.1.2"
+    "@ethersproject/address": "npm:^5.0.2"
+    cbor: "npm:^8.1.0"
+    chalk: "npm:^2.4.2"
+    debug: "npm:^4.1.1"
+    lodash.clonedeep: "npm:^4.5.0"
+    semver: "npm:^6.3.0"
+    table: "npm:^6.8.0"
+    undici: "npm:^5.14.0"
+  peerDependencies:
+    hardhat: "*"
+  checksum: 10/7e5229e4e659f7f1a3056e8811f12f48aed4a3cb7deec3a5fa73bd2a8974dd8c169555ccd7e31562b46f9a65f82ee6302f7c8772fb3feeac234bcb027647dd9e
+  languageName: node
+  linkType: hard
+
+"@nomicfoundation/hardhat-verify@npm:^2.0.8":
   version: 2.0.8
   resolution: "@nomicfoundation/hardhat-verify@npm:2.0.8"
   dependencies:
@@ -14331,19 +14329,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/api-kit@npm:2.4.2":
-  version: 2.4.2
-  resolution: "@safe-global/api-kit@npm:2.4.2"
+"@safe-global/api-kit@npm:2.4.4":
+  version: 2.4.4
+  resolution: "@safe-global/api-kit@npm:2.4.4"
   dependencies:
-    "@safe-global/protocol-kit": "npm:^4.0.2"
-    "@safe-global/safe-core-sdk-types": "npm:^5.0.2"
+    "@safe-global/protocol-kit": "npm:^4.0.4"
+    "@safe-global/safe-core-sdk-types": "npm:^5.0.3"
     ethers: "npm:^6.13.1"
     node-fetch: "npm:^2.7.0"
-  checksum: 10/021a64950545ba168bbae7f9f8bc1f34320ee714087a7baae9fa2f1818c05dbb9e986a45c6e27a72a14414a4a21439f2072aca36f26cfb13601c89cc2beff183
+  checksum: 10/578d1632bfc2f093af3ab89898e39674ba4cb55b42e69ee77c5f5c8976eef00ebc4730fabd53dec22b40a6bcdb72e622454b8fb2149c9abbaa956d1a0df0c82c
   languageName: node
   linkType: hard
 
-"@safe-global/protocol-kit@npm:4.0.2, @safe-global/protocol-kit@npm:^4.0.2":
+"@safe-global/protocol-kit@npm:4.0.2":
   version: 4.0.2
   resolution: "@safe-global/protocol-kit@npm:4.0.2"
   dependencies:
@@ -14355,6 +14353,21 @@ __metadata:
     ethers: "npm:^6.13.1"
     semver: "npm:^7.6.2"
   checksum: 10/aff8dfda28e2adc0a965969fb3513354eda7d4bf8de574075ccdac932b48337063f519fcffcf71b53b97658009e390ec7dbea84bd6c0a19ec6ff18c0a4570b68
+  languageName: node
+  linkType: hard
+
+"@safe-global/protocol-kit@npm:^4.0.4":
+  version: 4.0.4
+  resolution: "@safe-global/protocol-kit@npm:4.0.4"
+  dependencies:
+    "@noble/hashes": "npm:^1.3.3"
+    "@safe-global/safe-core-sdk-types": "npm:^5.0.3"
+    "@safe-global/safe-deployments": "npm:^1.37.3"
+    abitype: "npm:^1.0.2"
+    ethereumjs-util: "npm:^7.1.5"
+    ethers: "npm:^6.13.1"
+    semver: "npm:^7.6.2"
+  checksum: 10/4acdfa6d2c0ced96084a731d62f96463084ec97a0edd118b455f419e34d9f736e06d8186f56168b7fe4ef9b60eddcf5807710db18db4973ca995ac6e46bdb442
   languageName: node
   linkType: hard
 
@@ -14377,6 +14390,15 @@ __metadata:
   dependencies:
     abitype: "npm:^1.0.2"
   checksum: 10/53f0221e1c86b5b04f75cc773527e5e9c59ebb13ec21fe9a9246f6834c45b107e9a165da08ed58d40ed2564952f5360fb4c02051f236bfcc61bbfdb6015e3663
+  languageName: node
+  linkType: hard
+
+"@safe-global/safe-core-sdk-types@npm:^5.0.3":
+  version: 5.0.3
+  resolution: "@safe-global/safe-core-sdk-types@npm:5.0.3"
+  dependencies:
+    abitype: "npm:^1.0.2"
+  checksum: 10/e0646c319a7d774ac583f7c589af8a8c18064b4c9d835a19877c2d2edc40ce84b9af47e2fdadd9dd73eec9a7b26c5979b8ad30a80a3c947fb1c2199086068912
   languageName: node
   linkType: hard
 
@@ -14431,6 +14453,15 @@ __metadata:
   dependencies:
     semver: "npm:^7.6.0"
   checksum: 10/99304d3b67d564ca014d8d2d2a0773319a53ccc89846c05464353699864f229f35615bcfc8e08f13acbd099b5670d54885309c02f914c7eda75b2cf93e145350
+  languageName: node
+  linkType: hard
+
+"@safe-global/safe-deployments@npm:^1.37.3":
+  version: 1.37.3
+  resolution: "@safe-global/safe-deployments@npm:1.37.3"
+  dependencies:
+    semver: "npm:^7.6.2"
+  checksum: 10/3d1fcaac850a1d1100eaa5ff753c88c9bb889c678bb09248323c6b0c9d6228225a88be47973a89bb32829fe2d13ed17c21f854b9fdc29cc1b3c734021761f15c
   languageName: node
   linkType: hard
 
@@ -19669,11 +19700,11 @@ __metadata:
     "@matterlabs/hardhat-zksync-verify": "npm:1.6.0"
     "@nomicfoundation/hardhat-ethers": "npm:3.0.6"
     "@nomicfoundation/hardhat-network-helpers": "npm:1.0.11"
-    "@nomicfoundation/hardhat-verify": "npm:2.0.8"
+    "@nomicfoundation/hardhat-verify": "npm:2.0.9"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@openzeppelin/hardhat-upgrades": "npm:3.2.0"
     "@openzeppelin/upgrades-core": "npm:1.35.0"
-    "@safe-global/api-kit": "npm:2.4.2"
+    "@safe-global/api-kit": "npm:2.4.4"
     "@safe-global/protocol-kit": "npm:4.0.2"
     "@tenderly/hardhat-tenderly": "npm:2.3.0"
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
@@ -19902,7 +19933,7 @@ __metadata:
     "@connext/interfaces": "npm:2.0.5"
     "@nomicfoundation/hardhat-ethers": "npm:3.0.6"
     "@nomicfoundation/hardhat-network-helpers": "npm:1.0.11"
-    "@nomicfoundation/hardhat-verify": "npm:2.0.8"
+    "@nomicfoundation/hardhat-verify": "npm:2.0.9"
     "@openzeppelin/contracts": "npm:5.0.2"
     "@openzeppelin/contracts-upgradeable": "npm:4.9.6"
     "@openzeppelin/contracts-upgradeable5": "npm:@openzeppelin/contracts-upgradeable@5.0.2"
@@ -50945,7 +50976,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:5.5.4":
+"typescript@npm:5.5.4, typescript@npm:^5.5.4":
   version: 5.5.4
   resolution: "typescript@npm:5.5.4"
   bin:
@@ -50965,16 +50996,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.5.4":
-  version: 5.5.4
-  resolution: "typescript@npm:5.5.4"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10/1689ccafef894825481fc3d856b4834ba3cc185a9c2878f3c76a9a1ef81af04194849840f3c69e7961e2312771471bb3b460ca92561e1d87599b26c37d0ffb6f
-  languageName: node
-  linkType: hard
-
 "typescript@patch:typescript@npm%3A5.3.3#optional!builtin<compat/typescript>":
   version: 5.3.3
   resolution: "typescript@patch:typescript@npm%3A5.3.3#optional!builtin<compat/typescript>::version=5.3.3&hash=e012d7"
@@ -50985,7 +51006,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A5.5.4#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A5.5.4#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.5.4#optional!builtin<compat/typescript>":
   version: 5.5.4
   resolution: "typescript@patch:typescript@npm%3A5.5.4#optional!builtin<compat/typescript>::version=5.5.4&hash=379a07"
   bin:
@@ -51002,16 +51023,6 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10/88aff3244c31d4c6ede05b4fd28732fc8935a7fc638f2a3dcbbb767d1ac98e4b077f21ec74bc97f43c9307bc3f27e2359def1d793f9918c3429a744408fd75b4
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@npm%3A^5.5.4#optional!builtin<compat/typescript>":
-  version: 5.5.4
-  resolution: "typescript@patch:typescript@npm%3A5.5.4#optional!builtin<compat/typescript>::version=5.5.4&hash=379a07"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10/746fdd0865c5ce4f15e494c57ede03a9e12ede59cfdb40da3a281807853fe63b00ef1c912d7222143499aa82f18b8b472baa1830df8804746d09b55f6cf5b1cc
   languageName: node
   linkType: hard
 
