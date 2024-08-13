@@ -70,7 +70,7 @@ describe('Unlock / removeLock', () => {
     publicLockUpgraded = await PublicLockUpgraded.deploy()
   })
 
-  it('Should able to remove lock only Owner', async () => {
+  it('only owner should able to remove lock', async () => {
     const [, creator] = await ethers.getSigners()
 
     await reverts(
@@ -79,7 +79,7 @@ describe('Unlock / removeLock', () => {
     )
   })
 
-  it('Owner should able to remove lock', async () => {
+  it('Owner should be able to remove lock', async () => {
     const [unlockOwner] = await ethers.getSigners()
 
     const lockAddress = await lock.getAddress()

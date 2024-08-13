@@ -3,7 +3,7 @@ const { ethers } = require('hardhat')
 const { reverts, deployLock, ADDRESS_ZERO } = require('../../helpers')
 
 describe('CaptchaHook', function () {
-  it("addSigner and removeSigner shouldn't work on user", async function () {
+  it('random user should not be able to call addSigner and removeSigner', async function () {
     const [_, user2] = await ethers.getSigners()
     const secretSigner = ethers.Wallet.createRandom()
 
@@ -20,7 +20,7 @@ describe('CaptchaHook', function () {
     )
   })
 
-  it('removeSigner should work on owner', async function () {
+  it('owner should be able to call addSigner and removeSigner', async function () {
     const [_, user2] = await ethers.getSigners()
     const secretSigner = ethers.Wallet.createRandom()
 
