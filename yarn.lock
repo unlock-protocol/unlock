@@ -11372,6 +11372,86 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nomicfoundation/slang-darwin-arm64@npm:0.15.1":
+  version: 0.15.1
+  resolution: "@nomicfoundation/slang-darwin-arm64@npm:0.15.1"
+  checksum: 10/3edfa44f04cdfcb5c60ac8603aca0dbf696a228f083e607513273b6287ee6bbd3d6de2aaf44934cff4d8a58f25cec69906abf60acc9f3b4140244a09b515d156
+  languageName: node
+  linkType: hard
+
+"@nomicfoundation/slang-darwin-x64@npm:0.15.1":
+  version: 0.15.1
+  resolution: "@nomicfoundation/slang-darwin-x64@npm:0.15.1"
+  checksum: 10/c9cf505cc7a2c27aa0a28534becd00a20aab33caf8d5244fcdddb8303bca2c1195bb705f6d39aafb2e3d60f131a58ddfc1ad1b48fb550d6a71925a0575996844
+  languageName: node
+  linkType: hard
+
+"@nomicfoundation/slang-linux-arm64-gnu@npm:0.15.1":
+  version: 0.15.1
+  resolution: "@nomicfoundation/slang-linux-arm64-gnu@npm:0.15.1"
+  checksum: 10/e723aa6359212584a8f0ca28efb27c8718188c9404c246169656d5dad7131cbac3d3d66b95283292183d13127359cd4cdfccee0fa5df2d32d5adf88d3bbb6278
+  languageName: node
+  linkType: hard
+
+"@nomicfoundation/slang-linux-arm64-musl@npm:0.15.1":
+  version: 0.15.1
+  resolution: "@nomicfoundation/slang-linux-arm64-musl@npm:0.15.1"
+  checksum: 10/e19a24b1e25b3a5319f42b5242b649bc300ea3c806cb6a41110a986f93935200b4ecbefd116c8008e54d532429be8a7c3c3b621635c0aa9700a1e67bcfc6344d
+  languageName: node
+  linkType: hard
+
+"@nomicfoundation/slang-linux-x64-gnu@npm:0.15.1":
+  version: 0.15.1
+  resolution: "@nomicfoundation/slang-linux-x64-gnu@npm:0.15.1"
+  checksum: 10/db16aa2b4fbb9eea9cdfe5d634ffe8a2f362c7a73b7aa4e29c6f6f292b71a40d1847cbd535757059a655dc9a172073858744640327511677dcaae52b63ea0b5b
+  languageName: node
+  linkType: hard
+
+"@nomicfoundation/slang-linux-x64-musl@npm:0.15.1":
+  version: 0.15.1
+  resolution: "@nomicfoundation/slang-linux-x64-musl@npm:0.15.1"
+  checksum: 10/cee0611154a890879dab9089e9c44cfc9fb473cab5f9af85f811dbb1df3a82161087bebbf34e266a9191dfde01c89fbd8a64bff641e6050fcbfa7d9e0a5ba387
+  languageName: node
+  linkType: hard
+
+"@nomicfoundation/slang-win32-arm64-msvc@npm:0.15.1":
+  version: 0.15.1
+  resolution: "@nomicfoundation/slang-win32-arm64-msvc@npm:0.15.1"
+  checksum: 10/995fdb37f928856c77554dc0f76a96d9fc8262f56614733b6058eb2109eca4008fe5226a92eb6042d2dee45b3357b97787a0d3991de0f2b9b7fa00361af3b2d1
+  languageName: node
+  linkType: hard
+
+"@nomicfoundation/slang-win32-ia32-msvc@npm:0.15.1":
+  version: 0.15.1
+  resolution: "@nomicfoundation/slang-win32-ia32-msvc@npm:0.15.1"
+  checksum: 10/0626a9b1e557cb1da639f33860541f955a25288f6b5b57983b1c533cfd2154214246b57547a227f7ac7946eb67ba080a7776b6dc6f720302fa6248e6c86ab960
+  languageName: node
+  linkType: hard
+
+"@nomicfoundation/slang-win32-x64-msvc@npm:0.15.1":
+  version: 0.15.1
+  resolution: "@nomicfoundation/slang-win32-x64-msvc@npm:0.15.1"
+  checksum: 10/82e1863c4cb2dbd0ffebf58a0ffba51c60a88ba70c49f6f4d4a544034d2766a7c89e10a668f3a9d7854d63ed22f1da8335720c27e125afc144a7ac7003f67411
+  languageName: node
+  linkType: hard
+
+"@nomicfoundation/slang@npm:^0.15.1":
+  version: 0.15.1
+  resolution: "@nomicfoundation/slang@npm:0.15.1"
+  dependencies:
+    "@nomicfoundation/slang-darwin-arm64": "npm:0.15.1"
+    "@nomicfoundation/slang-darwin-x64": "npm:0.15.1"
+    "@nomicfoundation/slang-linux-arm64-gnu": "npm:0.15.1"
+    "@nomicfoundation/slang-linux-arm64-musl": "npm:0.15.1"
+    "@nomicfoundation/slang-linux-x64-gnu": "npm:0.15.1"
+    "@nomicfoundation/slang-linux-x64-musl": "npm:0.15.1"
+    "@nomicfoundation/slang-win32-arm64-msvc": "npm:0.15.1"
+    "@nomicfoundation/slang-win32-ia32-msvc": "npm:0.15.1"
+    "@nomicfoundation/slang-win32-x64-msvc": "npm:0.15.1"
+  checksum: 10/9d1e5f9ec913bab12653763af564d32643338da7bb98b8460d415db6499527c91c3eb39b542982f0536440b75482eb6cd79844f8d69ac9607d7811844f45f201
+  languageName: node
+  linkType: hard
+
 "@nomicfoundation/solidity-analyzer-darwin-arm64@npm:0.1.2":
   version: 0.1.2
   resolution: "@nomicfoundation/solidity-analyzer-darwin-arm64@npm:0.1.2"
@@ -12725,6 +12805,25 @@ __metadata:
   bin:
     openzeppelin-upgrades-core: dist/cli/cli.js
   checksum: 10/c9872b6393949ad189ebe436f2ecaaa1938d7b5ade1cfe18436fcf1495d7ee0507ece50f1fd94dedae5767baf70e0e6e2a8ceca727a9bac78f7f2dc2cf781c33
+  languageName: node
+  linkType: hard
+
+"@openzeppelin/upgrades-core@npm:1.35.0":
+  version: 1.35.0
+  resolution: "@openzeppelin/upgrades-core@npm:1.35.0"
+  dependencies:
+    "@nomicfoundation/slang": "npm:^0.15.1"
+    cbor: "npm:^9.0.0"
+    chalk: "npm:^4.1.0"
+    compare-versions: "npm:^6.0.0"
+    debug: "npm:^4.1.1"
+    ethereumjs-util: "npm:^7.0.3"
+    minimist: "npm:^1.2.7"
+    proper-lockfile: "npm:^4.1.1"
+    solidity-ast: "npm:^0.4.51"
+  bin:
+    openzeppelin-upgrades-core: dist/cli/cli.js
+  checksum: 10/d323d5ed96ce667fd37c8d7c277ce438b7a6ecb47ecc8aa3e5eecbaa9a2aa28ec2cdf8cfa163f5811fd664ca375910df86017ac17326547e34a90e3612915882
   languageName: node
   linkType: hard
 
@@ -19531,7 +19630,7 @@ __metadata:
     "@nomicfoundation/hardhat-verify": "npm:2.0.8"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@openzeppelin/hardhat-upgrades": "npm:3.2.0"
-    "@openzeppelin/upgrades-core": "npm:1.34.1"
+    "@openzeppelin/upgrades-core": "npm:1.35.0"
     "@safe-global/api-kit": "npm:2.4.2"
     "@safe-global/protocol-kit": "npm:4.0.2"
     "@tenderly/hardhat-tenderly": "npm:2.3.0"
