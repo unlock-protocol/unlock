@@ -293,16 +293,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@arbitrum/sdk@npm:3.6.0":
-  version: 3.6.0
-  resolution: "@arbitrum/sdk@npm:3.6.0"
+"@arbitrum/sdk@npm:3.7.0":
+  version: 3.7.0
+  resolution: "@arbitrum/sdk@npm:3.7.0"
   dependencies:
     "@ethersproject/address": "npm:^5.0.8"
     "@ethersproject/bignumber": "npm:^5.1.1"
     "@ethersproject/bytes": "npm:^5.0.8"
     async-mutex: "npm:^0.4.0"
     ethers: "npm:^5.1.0"
-  checksum: 10/ab1f5bc7174cf0a75d8a19921620d796ddf8597e7a4e094aac105d6d8d4519df61a5bc57158046b629827733424a233a80882ae21aab2dacb9e04b20860aa145
+  checksum: 10/917aea2040e79ab99f1618bccd7829e505a6379843e5fc9e9717969b98c80ff2f9f79f522d9b1d783599b3342628ea94a0224c492f8b53823334888a780d2e81
   languageName: node
   linkType: hard
 
@@ -19640,7 +19640,7 @@ __metadata:
   resolution: "@unlock-protocol/governance@workspace:governance"
   dependencies:
     "@arbitrum/nitro-contracts": "npm:1.2.1"
-    "@arbitrum/sdk": "npm:3.6.0"
+    "@arbitrum/sdk": "npm:3.7.0"
     "@eth-optimism/sdk": "npm:3.3.2"
     "@matterlabs/hardhat-zksync-deploy": "npm:1.5.0"
     "@matterlabs/hardhat-zksync-solc": "npm:1.2.0"
