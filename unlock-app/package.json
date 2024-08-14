@@ -37,7 +37,7 @@
     "@walletconnect/ethereum-provider": "2.14.0",
     "@walletconnect/modal": "2.6.2",
     "@xstate/react": "4.1.1",
-    "axios": "1.7.3",
+    "axios": "1.7.4",
     "blockies-react-svg": "0.0.13",
     "calendar-link": "2.7.0",
     "csv": "6.3.10",
