@@ -17,7 +17,7 @@
     "@openzeppelin/hardhat-upgrades": "3.2.1",
     "@openzeppelin/upgrades-core": "1.35.0",
     "@safe-global/api-kit": "2.4.4",
-    "@safe-global/protocol-kit": "4.0.2",
+    "@safe-global/protocol-kit": "4.0.4",
     "@tenderly/hardhat-tenderly": "2.3.0",
     "@unlock-protocol/contracts": "workspace:./packages/contracts",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
@@ -31,7 +31,7 @@
     "ethers5": "npm:ethers@5.7.2",
     "fs-extra": "11.2.0",
     "hardhat": "2.22.8",
-    "zksync-ethers": "6.9.0"
+    "zksync-ethers": "6.11.2"
   },
   "scripts": {
     "test": "hardhat test",
