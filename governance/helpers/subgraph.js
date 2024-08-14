@@ -9,6 +9,7 @@ const fetchFromSubgraph = async ({ chainId, query }) => {
     )
     return []
   }
+  console.log(subgraph.endpoint)
 
   const q = await fetch(subgraph.endpoint, {
     method: 'POST',
