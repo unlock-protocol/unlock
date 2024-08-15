@@ -183,7 +183,11 @@ export function ConfirmCrypto({
             recurringPayment: recurringPayments
               ? recurringPayments[0]
               : undefined,
-            totalApproval,
+            // Set totalApproval to 0 if the total is 0
+            totalApproval:
+              pricingData?.total && pricingData?.total > 0
+                ? totalApproval
+                : '0',
           },
           {} /** Transaction params */,
           onErrorCallback
@@ -198,7 +202,11 @@ export function ConfirmCrypto({
             keyManagers: keyManagers?.length ? keyManagers : undefined,
             recurringPayments,
             referrers,
-            totalApproval,
+            // Set totalApproval to 0 if the total is 0
+            totalApproval:
+              pricingData?.total && pricingData?.total > 0
+                ? totalApproval
+                : '0',
           },
           {} /** Transaction params */,
           onErrorCallback
