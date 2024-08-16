@@ -29,7 +29,7 @@ async function getAllActiveLocks({ timeLimit, chainId }) {
       }
     }
 `
-    const { receipts: results } = await fetchFromSubgraph({
+    const { locks: results } = await fetchFromSubgraph({
       chainId,
       query: receiptsQuery,
     })
@@ -70,7 +70,6 @@ function logLocks({ chainId, activeLocks, earliest, earliestLocks, count }) {
     `${name} (${chainId}): 
     - locks: ${activeLocks.length} unique locks
     - earliest version ${earliest} 
-    - earliest ${earliestLocks.length} locks (${parseInt(earliest) < 9 ? earliestLocks.map(({ address }) => address).join(',') : ''})
     - versions: ${Object.keys(count)
       .map((v) => `v${v}:${count[v]}`)
       .join(',')}
@@ -79,13 +78,12 @@ function logLocks({ chainId, activeLocks, earliest, earliestLocks, count }) {
 }
 
 async function main({ deadline = '2022-01-01' } = {}) {
-  console.log(`Before ${deadline}`)
+  console.log(`locks before ${deadline}`)
   const timeLimit = new Date(deadline).getTime() / 1000
 
-  // const chains = Object.keys(networks).filter(
-  //   (id) => !isNaN(parseInt(id)) && !networks[id].isTestNetwork
-  // )
-  const chains = [1]
+  const chains = Object.keys(networks).filter(
+    (id) => !isNaN(parseInt(id)) && !networks[id].isTestNetwork
+  )
 
   console.log(`Chains: ${chains.join(',')} `)
   const infos = {}
