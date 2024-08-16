@@ -1,7 +1,45 @@
 const { fetchFromSubgraph } = require('../../helpers/subgraph')
-const { networks } = require('@unlock-protocol/networks')
+const { getProvider } = require('../../helpers/multisig')
+const contracts = require('@unlock-protocol/contracts')
 
-async function getAllActiveLocks({ timeLimit, chainId }) {
+const { networks } = require('@unlock-protocol/networks')
+const { Contract, formatUnits } = require('ethers')
+const {
+  ADDRESS_ZERO,
+  getERC20Contract,
+  getNetwork,
+} = require('@unlock-protocol/hardhat-helpers')
+
+async function getLockBalance({ chainId, lock }) {
+  const { provider } = await getProvider(chainId)
+  const { nativeCurrency } = await getNetwork(chainId)
+
+  // check native
+  const balanceNative = await provider.getBalance(lock.address)
+
+  // check ERC20
+  const { abi } = contracts[`PublicLockV${lock.version}`]
+  const lockContract = new Contract(lock.address, abi, provider)
+  const tokenAddress = await lockContract.tokenAddress()
+
+  let balanceToken = 0n
+  let balanceTokenParsed = ''
+  if (tokenAddress !== ADDRESS_ZERO) {
+    const token = await getERC20Contract(tokenAddress, provider)
+    const decimals = await token.decimals()
+    balanceToken = await token.balanceOf(lock.address)
+    balanceTokenParsed = `${formatUnits(balanceToken, decimals)} ${await token.symbol()}`
+  }
+  return {
+    chainId,
+    ...lock,
+    balanceNative,
+    balanceToken,
+    balanceFormatted: `${balanceToken === 0n ? '' : balanceTokenParsed} ${balanceNative === 0n ? '' : `${formatUnits(balanceNative, 18)} ${nativeCurrency.symbol}`}`,
+  }
+}
+
+async function fetchAllActiveLocks({ timeLimit, chainId }) {
   const limit = 1000
   let skip = 0
   let more = true
@@ -26,6 +64,7 @@ async function getAllActiveLocks({ timeLimit, chainId }) {
       ) {
         address
         version
+        lastKeyMintedAt
       }
     }
 `
@@ -44,36 +83,70 @@ async function getAllActiveLocks({ timeLimit, chainId }) {
   return receipts
 }
 
-async function getAllLockVersionInfo({ chainId, timeLimit }) {
-  // get all locks that still have at least 1 key minted or renewed before the deadline
-  const activeLocks = await getAllActiveLocks({ chainId, timeLimit })
-
-  // count by versions
-  const count = activeLocks.reduce(
+const count = (locks) =>
+  locks.reduce(
     (prev, { version }) => ((prev[version] = (prev[version] || 0) + 1), prev),
     {}
   )
+
+async function getAllLocks({ chainId, timeLimit }) {
+  // get all locks that still have at least 1 key minted or renewed before the deadline
+  const activeLocks = await fetchAllActiveLocks({ chainId, timeLimit })
+
+  // count by versions
+  const versionCount = count(activeLocks)
   const earliest = Object.keys(count)[0]
-  const earliestLocks = activeLocks.filter(({ version }) => version == earliest)
+
+  // check balance on the earliest locks
+  const earlyLocks = (
+    await Promise.all(
+      activeLocks
+        .filter(({ version }) => version <= 9)
+        .map((lock) => getLockBalance({ chainId, lock }))
+    )
+  )
+    .filter(
+      ({ balanceNative, balanceToken }) =>
+        balanceNative !== 0n || balanceToken !== 0n
+    )
+    .sort(({ version: a }, { version: b }) => b - a)
+
   return {
     chainId,
     activeLocks,
-    earliestLocks,
     earliest,
-    count,
+    versions: versionCount,
+    earlyLocks,
   }
 }
 
-function logLocks({ chainId, activeLocks, earliest, earliestLocks, count }) {
+function logLocks({ chainId, activeLocks, earliest, earlyLocks, versions }) {
   const { name } = networks[chainId]
   console.log(
-    `${name} (${chainId}): 
-    - locks: ${activeLocks.length} unique locks
-    - earliest version ${earliest} 
-    - versions: ${Object.keys(count)
-      .map((v) => `v${v}:${count[v]}`)
+    `## ${name} (${chainId}):
+
+- **locks**: ${activeLocks.length} unique locks
+- **earliest version**: ${earliest} 
+- **versions**: ${Object.keys(versions)
+      .map((v) => `v${v}:${versions[v]}`)
       .join(',')}
-    `
+
+${
+  earlyLocks.length
+    ? `
+## earliest locks with money left (total: ${earlyLocks.length})
+
+| address | version | balance | lastKeyMinted |
+| --- | --- | --- | --- | 
+  ${earlyLocks
+    .map(
+      ({ address, balanceFormatted, lastKeyMintedAt, version }) =>
+        `| ${address} | v${version} | ${balanceFormatted} | ${new Date(lastKeyMintedAt * 1000).toLocaleDateString('en-US')} |`
+    )
+    .join('\n')}`
+    : ''
+}
+`
   )
 }
 
@@ -86,13 +159,14 @@ async function main({ deadline = '2022-01-01' } = {}) {
   )
 
   console.log(`Chains: ${chains.join(',')} `)
-  const infos = {}
+  const recentLocks = {}
   await Promise.all(
     chains.map(async (chainId) => {
       try {
-        const info = await getAllLockVersionInfo({ chainId, timeLimit })
-        infos[chainId] = info
-        logLocks(info)
+        const locks = await getAllLocks({ chainId, timeLimit })
+        // earliest ${earliestLocks.length} locks (${parseInt(earliest) < 9 ? earliestLocks.map(({ address }) => address).join(',') : ''})
+        recentLocks[chainId] = locks
+        logLocks(locks)
       } catch (error) {
         console.log(`Couldn't fetch chain ${chainId}: ${error.message}`)
       }

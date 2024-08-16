@@ -221,14 +221,16 @@ const getDelegates = async () => {
 
 const getERC20Contract = async (tokenAddress, signer) => {
   const { ethers } = require('hardhat')
-  const {
-    nativeCurrency: { wrapped },
-  } = await getNetwork()
+  const network = await getNetwork()
   if (!signer) {
     ;[signer] = await ethers.getSigners()
   }
-  return tokenAddress === wrapped
-    ? await ethers.getContractAt(WETH_ABI, wrapped, signer)
+  return tokenAddress === network.nativeCurrency?.wrapped
+    ? await ethers.getContractAt(
+        WETH_ABI,
+        network.nativeCurrency?.wrapped,
+        signer
+      )
     : await ethers.getContractAt(ERC20_ABI, tokenAddress, signer)
 }
 

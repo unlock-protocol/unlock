@@ -3,7 +3,6 @@ const contracts = require('@unlock-protocol/contracts')
 const {
   createLockCalldata,
   getEvent,
-  getLockVersion,
 } = require('@unlock-protocol/hardhat-helpers')
 
 const toBigNumber = (mayBN) => BigInt(mayBN.toString())
