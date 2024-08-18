@@ -1161,6 +1161,8 @@ export default class WalletService extends UnlockService {
       to: string
       tokenId: string
       lockAddress: string
+      time?: number
+      lend?: boolean
     },
     transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
@@ -1171,6 +1173,40 @@ export default class WalletService extends UnlockService {
     if (!params.tokenId) throw new Error('Missing tokenId')
 
     const version = await this.lockContractAbiVersion(params.lockAddress)
+
+    if (params.time) {
+      if (!version.shareKey) {
+        throw new Error('Lock version not supported')
+      }
+      const shareKeyParams = {
+        lockAddress: params.lockAddress,
+        tokenId: params.tokenId,
+        recipient: params.to,
+        duration: params.time,
+      }
+      return version.shareKey.bind(this)(
+        shareKeyParams,
+        transactionOptions,
+        callback
+      )
+    }
+
+    if (params.lend) {
+      if (!version.lendKey) {
+        throw new Error('Lock version not supported')
+      }
+      const lendKeyParams = {
+        from: params.keyOwner,
+        to: params.to,
+        tokenId: params.tokenId,
+      }
+      return version.lendKey.bind(this)(
+        lendKeyParams,
+        transactionOptions,
+        callback
+      )
+    }
+
     if (!version.transferFrom) {
       throw new Error('Lock version not supported')
     }

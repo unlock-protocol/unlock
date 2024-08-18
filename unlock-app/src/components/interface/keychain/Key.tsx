@@ -22,6 +22,7 @@ import {
   RiErrorWarningFill as DangerIcon,
   RiArrowGoForwardFill as ExtendMembershipIcon,
 } from 'react-icons/ri'
+import { BiTransfer as TransferIcon } from 'react-icons/bi'
 import { Badge, Button, Card, minifyAddress } from '@unlock-protocol/ui'
 import { networks } from '@unlock-protocol/networks'
 import QRModal from './QRModal'
@@ -51,6 +52,7 @@ import { useGetReceiptsPageUrl } from '~/hooks/useReceipts'
 import { AddToPhoneWallet } from './AddToPhoneWallet'
 import { useRouter } from 'next/router'
 import { Platform } from '~/services/passService'
+import { TransferModal } from './TransferModal'
 
 export const MenuButton = tw.button(
   'group flex gap-2 w-full font-semibold items-center rounded-md px-2 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed',
@@ -82,6 +84,7 @@ function Key({ ownedKey, owner, network }: Props) {
   const [showCancelModal, setShowCancelModal] = useState(false)
   const [expireAndRefunded, setExpireAndRefunded] = useState(false)
   const [showExtendMembershipModal, setShowExtendMembership] = useState(false)
+  const [showTransferModal, setShowTransferModal] = useState(false)
   const videoRef = useRef(null)
   const [canPlayImageAsVideo, setCanPlayImageAsVideo] = useState(false)
   const isKeyExpired = isExpired || expireAndRefunded
@@ -249,6 +252,15 @@ function Key({ ownedKey, owner, network }: Props) {
         currency={symbol}
         network={network}
         ownedKey={ownedKey}
+      />
+      <TransferModal
+        isOpen={showTransferModal}
+        setIsOpen={setShowTransferModal}
+        lock={lock}
+        network={network}
+        owner={owner}
+        tokenId={tokenId}
+        expiration={expiration}
       />
       <div className="flex items-center justify-between">
         <div>
@@ -422,6 +434,21 @@ function Key({ ownedKey, owner, network }: Props) {
                       )}
                     </Menu.Item>
                   )}
+                  <Menu.Item disabled={isKeyExpired}>
+                    {({ active, disabled }) => (
+                      <MenuButton
+                        disabled={disabled}
+                        active={active}
+                        onClick={(event) => {
+                          event.preventDefault()
+                          setShowTransferModal(true)
+                        }}
+                      >
+                        <TransferIcon />
+                        Transfer membership
+                      </MenuButton>
+                    )}
+                  </Menu.Item>
                 </div>
                 {owner == account && !isUnlockAccount && (
                   <div className="p-1">
