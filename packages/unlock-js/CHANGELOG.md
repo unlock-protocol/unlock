@@ -1,5 +1,9 @@
 # Changes
 
+# 0.47.0
+
+- using `purchasePriceFor` when possible in `getPurchaseKeysArguments`
+
 # 0.45.0
 
 - adding support for a password hook with caps and multiple passwords per lock
