@@ -58,12 +58,11 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
 
   const showRenewalLabel =
     lock.recurringPayments === 'forever' ||
-    typeof lock.recurringPayments === 'number'
+    !isNaN(Number(lock.recurringPayments))
 
-  const numberOfRenewals =
-    typeof lock.recurringPayments === 'number'
-      ? `${lock.recurringPayments} times`
-      : ''
+  const numberOfRenewals = !isNaN(Number(lock.recurringPayments))
+    ? `${lock.recurringPayments} times`
+    : ''
 
   return (
     <RadioGroup.Option
