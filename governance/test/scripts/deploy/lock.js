@@ -1,6 +1,6 @@
 const { ethers } = require('hardhat')
 const { UnlockV9 } = require('@unlock-protocol/contracts')
-const { PublicLockV8, LockSerializer } = require('@unlock-protocol/contracts')
+const { PublicLockV8 } = require('@unlock-protocol/contracts')
 const assert = require('assert')
 
 const {
@@ -74,13 +74,6 @@ describe('Scripts/deploy:lock', () => {
     await unlock
       .connect(unlockOwner)
       .setLockTemplate(await publicLock.getAddress())
-
-    // deploy serializer
-    const LockSerializerFactory = await ethers.getContractFactory(
-      LockSerializer.abi,
-      LockSerializer.bytecode
-    )
-    serializer = await LockSerializerFactory.deploy()
 
     // deploy locks
     await Promise.all(
