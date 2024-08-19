@@ -17732,13 +17732,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:4.36.1":
-  version: 4.36.1
-  resolution: "@tanstack/query-core@npm:4.36.1"
-  checksum: 10/7c648872cd491bcab2aa4c18e0b7ca130c072f05c277a5876977fa3bfa87634bbfde46e9d249236587d78c39866889a02e4e202b478dc6074ff96093732ae56d
-  languageName: node
-  linkType: hard
-
 "@tanstack/query-core@npm:5.51.17":
   version: 5.51.17
   resolution: "@tanstack/query-core@npm:5.51.17"
@@ -17746,22 +17739,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:4.36.1":
-  version: 4.36.1
-  resolution: "@tanstack/react-query@npm:4.36.1"
-  dependencies:
-    "@tanstack/query-core": "npm:4.36.1"
-    use-sync-external-store: "npm:^1.2.0"
-  peerDependencies:
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-    react-native: "*"
-  peerDependenciesMeta:
-    react-dom:
-      optional: true
-    react-native:
-      optional: true
-  checksum: 10/764b860c3ac8d254fc6b07e01054a0f58058644d59626c724b213293fbf1e31c198cbb26e4c32c0d16dcaec0353c0ae19147d9c667675b31f8cea1d64f1ff4ac
+"@tanstack/query-core@npm:5.51.24":
+  version: 5.51.24
+  resolution: "@tanstack/query-core@npm:5.51.24"
+  checksum: 10/ba9fda2e63d21bb7746ee1eb5384d3beae021e813b1b468b7e7de44b2c447d1a9716b913181cf764ff3d136dca3c3cc92e93a9b9564510f0b5f10f215e453207
   languageName: node
   linkType: hard
 
@@ -17773,6 +17754,17 @@ __metadata:
   peerDependencies:
     react: ^18.0.0
   checksum: 10/194e38b4749e24bc0015319183cd426fe59a269da5ac76dc19cc3485986742a0eeb7a12ed49ecde5e491d90a2700a8d3cdab893462224845306a94a177b354ef
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:5.51.24":
+  version: 5.51.24
+  resolution: "@tanstack/react-query@npm:5.51.24"
+  dependencies:
+    "@tanstack/query-core": "npm:5.51.24"
+  peerDependencies:
+    react: ^18.0.0
+  checksum: 10/79333dfaa13a4e2b8811138b638bf1e41d4716ba94724c608d99847e6563dcb0f8503af96d7c444ec1e94dcd6d4634b72aebb13bc6312cb53739ead4be5337ed
   languageName: node
   linkType: hard
 
@@ -20023,7 +20015,7 @@ __metadata:
     "@tailwindcss/forms": "npm:0.5.7"
     "@tailwindcss/line-clamp": "npm:0.4.4"
     "@tailwindcss/typography": "npm:0.5.13"
-    "@tanstack/react-query": "npm:4.36.1"
+    "@tanstack/react-query": "npm:5.51.24"
     "@tw-classed/react": "npm:1.7.0"
     "@types/react": "npm:18.3.3"
     "@types/react-dom": "npm:18.3.0"
@@ -20077,7 +20069,7 @@ __metadata:
     "@sentry/nextjs": "npm:7.118.0"
     "@stripe/react-stripe-js": "npm:2.7.3"
     "@stripe/stripe-js": "npm:4.1.0"
-    "@tanstack/react-query": "npm:4.36.1"
+    "@tanstack/react-query": "npm:5.51.24"
     "@testing-library/dom": "npm:10.4.0"
     "@testing-library/react": "npm:16.0.0"
     "@testing-library/react-hooks": "npm:8.0.1"
@@ -20214,7 +20206,7 @@ __metadata:
     "@headlessui/react": "npm:1.7.19"
     "@observablehq/plot": "npm:0.6.15"
     "@radix-ui/react-avatar": "npm:1.1.0"
-    "@tanstack/react-query": "npm:4.36.1"
+    "@tanstack/react-query": "npm:5.51.24"
     "@testing-library/react": "npm:16.0.0"
     "@types/node": "npm:20.14.13"
     "@types/react": "npm:18.3.3"
