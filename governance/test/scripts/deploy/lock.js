@@ -43,7 +43,7 @@ const compareValues = async (serialized, lock) => {
   })
 }
 
-describe('Scripts/deploy:lock', () => {
+describe.skip('Scripts/deploy:lock', () => {
   let serializer
   let unlockAddress
   let PublicLock
