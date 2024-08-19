@@ -1,4 +1,4 @@
-# IPublicLockV10
+# IPublicLockV13
 
 > The PublicLock Interface
 
@@ -7,7 +7,7 @@
 ### DEFAULT_ADMIN_ROLE
 
 ```solidity
-function DEFAULT_ADMIN_ROLE() external pure returns (bytes32 role)
+function DEFAULT_ADMIN_ROLE() external view returns (bytes32 role)
 ```
 
 #### Returns
@@ -15,42 +15,6 @@ function DEFAULT_ADMIN_ROLE() external pure returns (bytes32 role)
 | Name | Type    | Description |
 | ---- | ------- | ----------- |
 | role | bytes32 | undefined   |
-
-### KEY_GRANTER_ROLE
-
-```solidity
-function KEY_GRANTER_ROLE() external pure returns (bytes32 role)
-```
-
-#### Returns
-
-| Name | Type    | Description |
-| ---- | ------- | ----------- |
-| role | bytes32 | undefined   |
-
-### LOCK_MANAGER_ROLE
-
-```solidity
-function LOCK_MANAGER_ROLE() external pure returns (bytes32 role)
-```
-
-#### Returns
-
-| Name | Type    | Description |
-| ---- | ------- | ----------- |
-| role | bytes32 | undefined   |
-
-### addKeyGranter
-
-```solidity
-function addKeyGranter(address account) external nonpayable
-```
-
-#### Parameters
-
-| Name    | Type    | Description |
-| ------- | ------- | ----------- |
-| account | address | undefined   |
 
 ### addLockManager
 
@@ -77,34 +41,13 @@ function approve(address to, uint256 tokenId) external nonpayable
 | to      | address | undefined   |
 | tokenId | uint256 | undefined   |
 
-### approveBeneficiary
-
-```solidity
-function approveBeneficiary(address _spender, uint256 _amount) external nonpayable returns (bool)
-```
-
-An ERC-20 style approval, allowing the spender to transfer funds directly from this lock.
-
-#### Parameters
-
-| Name      | Type    | Description                                         |
-| --------- | ------- | --------------------------------------------------- |
-| \_spender | address | address that can spend tokens belonging to the lock |
-| \_amount  | uint256 | amount of tokens that can be spent by the spender   |
-
-#### Returns
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| \_0  | bool | undefined   |
-
 ### balanceOf
 
 ```solidity
 function balanceOf(address _owner) external view returns (uint256 balance)
 ```
 
-_Returns the number of NFTs in `owner`&#39;s account._
+In the specific case of a Lock, `balanceOf` returns only the tokens with a valid expiration timerange
 
 #### Parameters
 
@@ -114,23 +57,9 @@ _Returns the number of NFTs in `owner`&#39;s account._
 
 #### Returns
 
-| Name    | Type    | Description |
-| ------- | ------- | ----------- |
-| balance | uint256 | undefined   |
-
-### beneficiary
-
-```solidity
-function beneficiary() external view returns (address)
-```
-
-=================================================================== Auto-generated getter functions from public state variables
-
-#### Returns
-
-| Name | Type    | Description |
-| ---- | ------- | ----------- |
-| \_0  | address | undefined   |
+| Name    | Type    | Description                                   |
+| ------- | ------- | --------------------------------------------- |
+| balance | uint256 | The number of valid keys owned by `_keyOwner` |
 
 ### burn
 
@@ -151,6 +80,8 @@ Deactivate an existing keythe key will be expired and ownership records will be 
 ```solidity
 function cancelAndRefund(uint256 _tokenId) external nonpayable
 ```
+
+cancel is enabled with a 10% penalty by default on all Locks.
 
 _allows the key manager to expire a given tokenId and send a refund to the keyOwner based on the amount of time remaining._
 
@@ -224,7 +155,7 @@ function gasRefundValue() external view returns (uint256 _gasRefundValue)
 
 \_gasRefundValue price in wei or token in smallest price unit
 
-_Returns the value/rpice to be refunded to the sender on purchase_
+_Returns the value/price to be refunded to the sender on purchase_
 
 #### Returns
 
@@ -257,22 +188,24 @@ _Throws if `_tokenId` is not a valid NFT._
 ### getCancelAndRefundValue
 
 ```solidity
-function getCancelAndRefundValue(address _keyOwner) external view returns (uint256 refund)
+function getCancelAndRefundValue(uint256 _tokenId) external view returns (uint256 refund)
 ```
+
+Due to the time required to mine a tx, the actual refund amount will be lower than what the user reads from this call.
 
 _Determines how much of a refund a key owner would receive if they issued_
 
 #### Parameters
 
-| Name       | Type    | Description                                                                                                                                                                                                    |
-| ---------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| \_keyOwner | address | The key owner to get the refund value for. a cancelAndRefund block.timestamp. Note that due to the time required to mine a tx, the actual refund amount will be lower than what the user reads from this call. |
+| Name      | Type    | Description                                      |
+| --------- | ------- | ------------------------------------------------ |
+| \_tokenId | uint256 | the id of the token to get the refund value for. |
 
 #### Returns
 
-| Name   | Type    | Description |
-| ------ | ------- | ----------- |
-| refund | uint256 | undefined   |
+| Name   | Type    | Description                   |
+| ------ | ------- | ----------------------------- |
+| refund | uint256 | the amount of tokens refunded |
 
 ### getHasValidKey
 
@@ -337,10 +270,27 @@ _Throws if \_tokenId does not have a valid key_
 | ---- | ------- | ---------------------------- |
 | \_0  | uint256 | The transfer fee in seconds. |
 
+### grantKeyExtension
+
+```solidity
+function grantKeyExtension(uint256 _tokenId, uint256 _duration) external nonpayable
+```
+
+Allows the Lock owner to extend an existing keys with no charge.
+
+_set `_duration` to 0 to use the default duration of the lock_
+
+#### Parameters
+
+| Name       | Type    | Description                                |
+| ---------- | ------- | ------------------------------------------ |
+| \_tokenId  | uint256 | The id of the token to extend              |
+| \_duration | uint256 | The duration in secondes to add ot the key |
+
 ### grantKeys
 
 ```solidity
-function grantKeys(address[] _recipients, uint256[] _expirationTimestamps, address[] _keyManagers) external nonpayable
+function grantKeys(address[] _recipients, uint256[] _expirationTimestamps, address[] _keyManagers) external nonpayable returns (uint256[])
 ```
 
 Allows a Lock manager to give a collection of users a key with no charge. Each key may be assigned a different expiration date.
@@ -354,6 +304,12 @@ _Throws if called by other than a Lock manager_
 | \_recipients           | address[] | An array of receiving addresses                              |
 | \_expirationTimestamps | uint256[] | An array of expiration Timestamps for the keys being granted |
 | \_keyManagers          | address[] | undefined                                                    |
+
+#### Returns
+
+| Name | Type      | Description                   |
+| ---- | --------- | ----------------------------- |
+| \_0  | uint256[] | the ids of the granted tokens |
 
 ### grantRole
 
@@ -427,24 +383,6 @@ _Tells whether an operator is approved by a given keyManager_
 | ---- | ---- | -------------------------------------------------------------- |
 | \_0  | bool | bool whether the given operator is approved by the given owner |
 
-### isKeyGranter
-
-```solidity
-function isKeyGranter(address account) external view returns (bool)
-```
-
-#### Parameters
-
-| Name    | Type    | Description |
-| ------- | ------- | ----------- |
-| account | address | undefined   |
-
-#### Returns
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| \_0  | bool | undefined   |
-
 ### isLockManager
 
 ```solidity
@@ -466,7 +404,7 @@ function isLockManager(address account) external view returns (bool)
 ### isOwner
 
 ```solidity
-function isOwner(address account) external nonpayable returns (bool)
+function isOwner(address account) external view returns (bool isOwner)
 ```
 
 #### Parameters
@@ -477,9 +415,30 @@ function isOwner(address account) external nonpayable returns (bool)
 
 #### Returns
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| \_0  | bool | undefined   |
+| Name    | Type | Description |
+| ------- | ---- | ----------- |
+| isOwner | bool | undefined   |
+
+### isRenewable
+
+```solidity
+function isRenewable(uint256 tokenId, address referrer) external view returns (bool)
+```
+
+_helper to check if a key is currently renewable it will revert if the pricing or duration of the lock have been modified unfavorably since the key was bought(price increase or duration decrease). It will also revert if a lock is not renewable or if the key is not ready for renewal yet (at least 90% expired)._
+
+#### Parameters
+
+| Name     | Type    | Description                                |
+| -------- | ------- | ------------------------------------------ |
+| tokenId  | uint256 | the id of the token to check               |
+| referrer | address | the address where to send the referrer fee |
+
+#### Returns
+
+| Name | Type | Description                   |
+| ---- | ---- | ----------------------------- |
+| \_0  | bool | true if the terms has changed |
 
 ### isValidKey
 
@@ -550,6 +509,22 @@ function keyPrice() external view returns (uint256)
 | Name | Type    | Description |
 | ---- | ------- | ----------- |
 | \_0  | uint256 | undefined   |
+
+### lendKey
+
+```solidity
+function lendKey(address from, address to, uint256 tokenId) external nonpayable
+```
+
+Lending a key allows you to transfer the token while retaining the ownerships right by setting yourself as a key manager first.This function can only be called by 1) the key owner when no key manager is set or 2) the key manager. After calling the function, the `_recipent` will be the new owner, and the sender of the tx will become the key manager.
+
+#### Parameters
+
+| Name    | Type    | Description                             |
+| ------- | ------- | --------------------------------------- |
+| from    | address | the owner of token to transfer          |
+| to      | address | the address that will receive the token |
+| tokenId | uint256 | the id of the token                     |
 
 ### maxKeysPerAddress
 
@@ -638,64 +613,114 @@ Public function which returns the total number of unique owners (both expired an
 ### onKeyCancelHook
 
 ```solidity
-function onKeyCancelHook() external view returns (address)
+function onKeyCancelHook() external view returns (address hookAddress)
 ```
+
+Returns the address of the `onKeyCancelHook` hook.
 
 #### Returns
 
-| Name | Type    | Description |
-| ---- | ------- | ----------- |
-| \_0  | address | undefined   |
+| Name        | Type    | Description         |
+| ----------- | ------- | ------------------- |
+| hookAddress | address | address of the hook |
+
+### onKeyExtendHook
+
+```solidity
+function onKeyExtendHook() external view returns (address hookAddress)
+```
+
+Returns the address of the `onKeyExtendHook` hook.
+
+#### Returns
+
+| Name        | Type    | Description             |
+| ----------- | ------- | ----------------------- |
+| hookAddress | address | the address ok the hook |
+
+### onKeyGrantHook
+
+```solidity
+function onKeyGrantHook() external view returns (address hookAddress)
+```
+
+Returns the address of the `onKeyGrantHook` hook.
+
+#### Returns
+
+| Name        | Type    | Description             |
+| ----------- | ------- | ----------------------- |
+| hookAddress | address | the address ok the hook |
 
 ### onKeyPurchaseHook
 
 ```solidity
-function onKeyPurchaseHook() external view returns (address)
+function onKeyPurchaseHook() external view returns (address hookAddress)
 ```
+
+Returns the address of the `onKeyPurchaseHook` hook.
 
 #### Returns
 
-| Name | Type    | Description |
-| ---- | ------- | ----------- |
-| \_0  | address | undefined   |
+| Name        | Type    | Description         |
+| ----------- | ------- | ------------------- |
+| hookAddress | address | address of the hook |
+
+### onKeyTransferHook
+
+```solidity
+function onKeyTransferHook() external view returns (address hookAddress)
+```
+
+Returns the address of the `onKeyTransferHook` hook.
+
+#### Returns
+
+| Name        | Type    | Description         |
+| ----------- | ------- | ------------------- |
+| hookAddress | address | address of the hook |
 
 ### onTokenURIHook
 
 ```solidity
-function onTokenURIHook() external view returns (string)
+function onTokenURIHook() external view returns (address hookAddress)
 ```
+
+Returns the address of the `onTokenURIHook` hook.
 
 #### Returns
 
-| Name | Type   | Description |
-| ---- | ------ | ----------- |
-| \_0  | string | undefined   |
+| Name        | Type    | Description         |
+| ----------- | ------- | ------------------- |
+| hookAddress | address | address of the hook |
 
 ### onValidKeyHook
 
 ```solidity
-function onValidKeyHook() external view returns (bool)
+function onValidKeyHook() external view returns (address hookAddress)
 ```
+
+Returns the address of the `onValidKeyHook` hook.
 
 #### Returns
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| \_0  | bool | undefined   |
+| Name        | Type    | Description         |
+| ----------- | ------- | ------------------- |
+| hookAddress | address | address of the hook |
 
 ### owner
 
 ```solidity
-function owner() external view returns (address)
+function owner() external view returns (address owner)
 ```
 
 `owner()` is provided as an helper to mimick the `Ownable` contract ABI. The `Ownable` logic is used by many 3rd party services to determine contract ownership - e.g. who is allowed to edit metadata on Opensea.This logic is NOT used internally by the Unlock Protocol and is made available only as a convenience helper.
 
 #### Returns
 
-| Name | Type    | Description |
-| ---- | ------- | ----------- |
-| \_0  | address | undefined   |
+| Name  | Type    | Description |
+| ----- | ------- | ----------- |
+| owner | address | undefined   |
 
 ### ownerOf
 
@@ -734,7 +759,7 @@ The version number of the current implementation on this network.
 ### purchase
 
 ```solidity
-function purchase(uint256[] _values, address[] _recipients, address[] _referrers, address[] _keyManagers, bytes[] _data) external payable
+function purchase(uint256[] _values, address[] _recipients, address[] _referrers, address[] _keyManagers, bytes[] _data) external payable returns (uint256[] tokenIds)
 ```
 
 when called for an existing and non-expired key, the `_keyManager` param will be ignored
@@ -750,6 +775,12 @@ _Purchase functionSetting \_value to keyPrice exactly doubles as a security feat
 | \_referrers   | address[] | array of addresses of the users making the referral                                                                                       |
 | \_keyManagers | address[] | optional array of addresses to grant managing rights to a specific address on creation                                                    |
 | \_data        | bytes[]   | array of arbitrary data populated by the front-end which initiated the sale                                                               |
+
+#### Returns
+
+| Name     | Type      | Description                   |
+| -------- | --------- | ----------------------------- |
+| tokenIds | uint256[] | the ids of the created tokens |
 
 ### purchasePriceFor
 
@@ -774,6 +805,26 @@ _this considers any discount from Unlock or the OnKeyPurchase hook._
 | Name | Type    | Description |
 | ---- | ------- | ----------- |
 | \_0  | uint256 | undefined   |
+
+### referrerFees
+
+```solidity
+function referrerFees(address _referrer) external view returns (uint256 referrerFee)
+```
+
+Returns the percentage of the keyPrice to be sent to the referrer (in basis points)
+
+#### Parameters
+
+| Name       | Type    | Description                 |
+| ---------- | ------- | --------------------------- |
+| \_referrer | address | the address of the referrer |
+
+#### Returns
+
+| Name        | Type    | Description                                                                 |
+| ----------- | ------- | --------------------------------------------------------------------------- |
+| referrerFee | uint256 | the percentage of the keyPrice to be sent to the referrer (in basis points) |
 
 ### refundPenaltyBasisPoints
 
@@ -820,18 +871,6 @@ function renounceRole(bytes32 role, address account) external nonpayable
 | ------- | ------- | ----------- |
 | role    | bytes32 | undefined   |
 | account | address | undefined   |
-
-### revokeKeyGranter
-
-```solidity
-function revokeKeyGranter(address _granter) external nonpayable
-```
-
-#### Parameters
-
-| Name      | Type    | Description |
-| --------- | ------- | ----------- |
-| \_granter | address | undefined   |
 
 ### revokeRole
 
@@ -910,52 +949,25 @@ _Sets or unsets the approval of a given operator An operator is allowed to trans
 | \_operator | address | operator address to set the approval              |
 | \_approved | bool    | representing the status of the approval to be set |
 
-### setBaseTokenURI
-
-```solidity
-function setBaseTokenURI(string _baseTokenURI) external nonpayable
-```
-
-Allows a Lock manager to update the baseTokenURI for this Lock.
-
-_Throws if called by other than a Lock manager_
-
-#### Parameters
-
-| Name           | Type   | Description                                            |
-| -------------- | ------ | ------------------------------------------------------ |
-| \_baseTokenURI | string | String representing the base of the URI for this lock. |
-
 ### setEventHooks
 
 ```solidity
-function setEventHooks(address _onKeyPurchaseHook, address _onKeyCancelHook, address _onValidKeyHook, address _onTokenURIHook) external nonpayable
+function setEventHooks(address _onKeyPurchaseHook, address _onKeyCancelHook, address _onValidKeyHook, address _onTokenURIHook, address _onKeyTransferHook, address _onKeyExtendHook, address _onKeyGrantHook) external nonpayable
 ```
 
 Allows a Lock manager to add or remove an event hook
 
 #### Parameters
 
-| Name                | Type    | Description                                                         |
-| ------------------- | ------- | ------------------------------------------------------------------- |
-| \_onKeyPurchaseHook | address | Hook called when the `purchase` function is called                  |
-| \_onKeyCancelHook   | address | Hook called when the internal `_cancelAndRefund` function is called |
-| \_onValidKeyHook    | address | undefined                                                           |
-| \_onTokenURIHook    | address | undefined                                                           |
-
-### setExpirationDuration
-
-```solidity
-function setExpirationDuration(uint256 _newExpirationDuration) external nonpayable
-```
-
-A function to change the default duration of each key in the lockkeys previously bought are unaffected by this change (i.e. existing keys timestamps are not recalculated/updated)
-
-#### Parameters
-
-| Name                    | Type    | Description                                                                            |
-| ----------------------- | ------- | -------------------------------------------------------------------------------------- |
-| \_newExpirationDuration | uint256 | the new amount of time for each key purchased or type(uint).max for a non-expiring key |
+| Name                | Type    | Description                                                                            |
+| ------------------- | ------- | -------------------------------------------------------------------------------------- |
+| \_onKeyPurchaseHook | address | Hook called when the `purchase` function is called                                     |
+| \_onKeyCancelHook   | address | Hook called when the internal `_cancelAndRefund` function is called                    |
+| \_onValidKeyHook    | address | Hook called to determine if the contract should overide the status for a given address |
+| \_onTokenURIHook    | address | Hook called to generate a data URI used for NFT metadata                               |
+| \_onKeyTransferHook | address | Hook called when a key is transfered                                                   |
+| \_onKeyExtendHook   | address | Hook called when a key is extended or renewed                                          |
+| \_onKeyGrantHook    | address | Hook called when a key is granted                                                      |
 
 ### setGasRefundValue
 
@@ -986,33 +998,21 @@ Update transfer and cancel rights for a given key
 | \_tokenId    | uint256 | The id of the key to assign rights for                |
 | \_keyManager | address | The address to assign the rights to for the given key |
 
-### setMaxKeysPerAddress
+### setLockMetadata
 
 ```solidity
-function setMaxKeysPerAddress(uint256 _maxKeysPerAddress) external nonpayable
+function setLockMetadata(string _lockName, string _lockSymbol, string _baseTokenURI) external nonpayable
 ```
 
-Set the maximum number of keys a specific address can use
+Allows the Lock owner to assign
 
 #### Parameters
 
-| Name                | Type    | Description                              |
-| ------------------- | ------- | ---------------------------------------- |
-| \_maxKeysPerAddress | uint256 | the maximum amount of key a user can own |
-
-### setMaxNumberOfKeys
-
-```solidity
-function setMaxNumberOfKeys(uint256 _maxNumberOfKeys) external nonpayable
-```
-
-_Change the maximum number of keys the lock can edit_
-
-#### Parameters
-
-| Name              | Type    | Description                     |
-| ----------------- | ------- | ------------------------------- |
-| \_maxNumberOfKeys | uint256 | uint the maximum number of keys |
+| Name           | Type   | Description                              |
+| -------------- | ------ | ---------------------------------------- |
+| \_lockName     | string | a descriptive name for this Lock.        |
+| \_lockSymbol   | string | a Symbol for this Lock (default to KEY). |
+| \_baseTokenURI | string | the baseTokenURI for this Lock           |
 
 ### setOwner
 
@@ -1025,6 +1025,23 @@ function setOwner(address account) external nonpayable
 | Name    | Type    | Description |
 | ------- | ------- | ----------- |
 | account | address | undefined   |
+
+### setReferrerFee
+
+```solidity
+function setReferrerFee(address _referrer, uint256 _feeBasisPoint) external nonpayable
+```
+
+Set a specific percentage of the keyPrice to be sent to the referrer while purchasing, extending or renewing a key.
+
+_To send a fixed percentage of the key price to all referrers, sett a percentage to `address(0)`_
+
+#### Parameters
+
+| Name            | Type    | Description                                                                         |
+| --------------- | ------- | ----------------------------------------------------------------------------------- |
+| \_referrer      | address | the address of the referrer                                                         |
+| \_feeBasisPoint | uint256 | the percentage of the price to be used for this specific referrer (in basis points) |
 
 ### shareKey
 
@@ -1149,40 +1166,39 @@ _Throws if `_tokenId` is not a valid NFT. URIs are defined in RFC 3986. The URI 
 | ---- | ------ | --------------------------------------------------- |
 | \_0  | string | String representing the URI for the requested token |
 
-### totalSupply
+### totalKeys
 
 ```solidity
-function totalSupply() external view returns (uint256)
+function totalKeys(address _keyOwner) external view returns (uint256 numberOfKeys)
 ```
 
-#### Returns
-
-| Name | Type    | Description |
-| ---- | ------- | ----------- |
-| \_0  | uint256 | undefined   |
-
-### transfer
-
-```solidity
-function transfer(address _to, uint256 _value) external nonpayable returns (bool success)
-```
-
-An ERC-20 style transfer.
-
-_The typical use case would be to call this with \_value 1, which is on par with calling `transferFrom`. If the user has more than `expirationDuration` time remaining this may use the `shareKey` function to send some but not all of the token._
+Returns the number of keys owned by `_keyOwner` (expired or not)
 
 #### Parameters
 
-| Name    | Type    | Description                                                                                             |
-| ------- | ------- | ------------------------------------------------------------------------------------------------------- |
-| \_to    | address | undefined                                                                                               |
-| \_value | uint256 | sends a token with \_value \* expirationDuration (the amount of time remaining on a standard purchase). |
+| Name       | Type    | Description                                                  |
+| ---------- | ------- | ------------------------------------------------------------ |
+| \_keyOwner | address | address for which we are retrieving the total number of keys |
 
 #### Returns
 
-| Name    | Type | Description |
-| ------- | ---- | ----------- |
-| success | bool | undefined   |
+| Name         | Type    | Description                               |
+| ------------ | ------- | ----------------------------------------- |
+| numberOfKeys | uint256 | total number of keys owned by the address |
+
+### totalSupply
+
+```solidity
+function totalSupply() external view returns (uint256 _totalKeysCreated)
+```
+
+Returns the total number of keys, including non-valid ones
+
+#### Returns
+
+| Name               | Type    | Description                            |
+| ------------------ | ------- | -------------------------------------- |
+| \_totalKeysCreated | uint256 | the total number of keys, valid or not |
 
 ### transferFeeBasisPoints
 
@@ -1202,15 +1218,34 @@ function transferFeeBasisPoints() external view returns (uint256)
 function transferFrom(address from, address to, uint256 tokenId) external nonpayable
 ```
 
-_Transfers a specific NFT (`tokenId`) from one account (`from`) to another (`to`). Requirements: - If the caller is not `from`, it must be approved to move this NFT by either `approve` or `setApprovalForAll`._
+an ERC721-like function to transfer a token from one account to another.
+
+_Requirements: if the caller is not `from`, it must be approved to move this token by either `approve` or `setApprovalForAll`. The key manager will be reset to address zero after the transfer_
 
 #### Parameters
 
-| Name    | Type    | Description |
-| ------- | ------- | ----------- |
-| from    | address | undefined   |
-| to      | address | undefined   |
-| tokenId | uint256 | undefined   |
+| Name    | Type    | Description                             |
+| ------- | ------- | --------------------------------------- |
+| from    | address | the owner of token to transfer          |
+| to      | address | the address that will receive the token |
+| tokenId | uint256 | the id of the token                     |
+
+### unlendKey
+
+```solidity
+function unlendKey(address _recipient, uint256 _tokenId) external nonpayable
+```
+
+Unlend is called when you have lent a key and want to claim its full ownership back.
+
+_Only the key manager of the token can call this function_
+
+#### Parameters
+
+| Name        | Type    | Description                                       |
+| ----------- | ------- | ------------------------------------------------- |
+| \_recipient | address | the address that will receive the token ownership |
+| \_tokenId   | uint256 | the id of the token                               |
 
 ### unlockProtocol
 
@@ -1223,22 +1258,6 @@ function unlockProtocol() external view returns (address)
 | Name | Type    | Description |
 | ---- | ------- | ----------- |
 | \_0  | address | undefined   |
-
-### updateBeneficiary
-
-```solidity
-function updateBeneficiary(address _beneficiary) external nonpayable
-```
-
-A function which lets a Lock manager update the beneficiary account, which receives funds on withdrawal.
-
-_Throws if called by other than a Lock manager or beneficiaryThrows if \_beneficiary is address(0)_
-
-#### Parameters
-
-| Name          | Type    | Description                               |
-| ------------- | ------- | ----------------------------------------- |
-| \_beneficiary | address | The new address to set as the beneficiary |
 
 ### updateKeyPricing
 
@@ -1257,37 +1276,23 @@ _Throws if called by other than a Lock managerThrows if lock has been disabledTh
 | \_keyPrice     | uint256 | The new price to set for keys                                               |
 | \_tokenAddress | address | The address of the erc20 token to use for pricing the keys, or 0 to use ETH |
 
-### updateLockName
+### updateLockConfig
 
 ```solidity
-function updateLockName(string _lockName) external nonpayable
+function updateLockConfig(uint256 _newExpirationDuration, uint256 _maxNumberOfKeys, uint256 _maxKeysPerAcccount) external nonpayable
 ```
 
-Allows a Lock manager to assign a descriptive name for this Lock.
+Update the main key properties for the entire lock: - default duration of each key - the maximum number of keys the lock can edit - the maximum number of keys a single address can holdkeys previously bought are unaffected by this changes in expiration duration (i.e. existing keys timestamps are not recalculated/updated)
 
-_Throws if called by other than a Lock manager_
+_\_maxNumberOfKeys Can&#39;t be smaller than the existing supply_
 
 #### Parameters
 
-| Name       | Type   | Description               |
-| ---------- | ------ | ------------------------- |
-| \_lockName | string | The new name for the lock |
-
-### updateLockSymbol
-
-```solidity
-function updateLockSymbol(string _lockSymbol) external nonpayable
-```
-
-Allows a Lock manager to assign a Symbol for this Lock.
-
-_Throws if called by other than a Lock manager_
-
-#### Parameters
-
-| Name         | Type   | Description                 |
-| ------------ | ------ | --------------------------- |
-| \_lockSymbol | string | The new Symbol for the lock |
+| Name                    | Type    | Description                                                                            |
+| ----------------------- | ------- | -------------------------------------------------------------------------------------- |
+| \_newExpirationDuration | uint256 | the new amount of time for each key purchased or type(uint).max for a non-expiring key |
+| \_maxNumberOfKeys       | uint256 | uint the maximum number of keys                                                        |
+| \_maxKeysPerAcccount    | uint256 | the maximum amount of key a single user can own                                        |
 
 ### updateRefundPenalty
 
@@ -1333,14 +1338,15 @@ _Throws if called by other than a Lock manager_
 ### withdraw
 
 ```solidity
-function withdraw(address _tokenAddress, uint256 _amount) external nonpayable
+function withdraw(address _tokenAddress, address payable _recipient, uint256 _amount) external nonpayable
 ```
 
-_Called by a lock manager or beneficiary to withdraw all funds from the lock and send them to the `beneficiary`.Throws if called by other than a lock manager or beneficiary_
+_Called by lock manager to withdraw all funds from the lock_
 
 #### Parameters
 
-| Name           | Type    | Description                                                                                                                                                                                                                                                 |
-| -------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| \_tokenAddress | address | specifies the token address to withdraw or 0 for ETH. This is usually the same as `tokenAddress` in MixinFunds.                                                                                                                                             |
-| \_amount       | uint256 | specifies the max amount to withdraw, which may be reduced when considering the available balance. Set to 0 or MAX_UINT to withdraw everything. -- however be wary of draining funds as it breaks the `cancelAndRefund` and `expireAndRefundFor` use cases. |
+| Name           | Type            | Description                                                                                                                                                                                                                                                 |
+| -------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| \_tokenAddress | address         | specifies the token address to withdraw or 0 for ETH. This is usually the same as `tokenAddress` in MixinFunds.                                                                                                                                             |
+| \_recipient    | address payable | specifies the address that will receive the tokens                                                                                                                                                                                                          |
+| \_amount       | uint256         | specifies the max amount to withdraw, which may be reduced when considering the available balance. Set to 0 or MAX_UINT to withdraw everything. -- however be wary of draining funds as it breaks the `cancelAndRefund` and `expireAndRefundFor` use cases. |
