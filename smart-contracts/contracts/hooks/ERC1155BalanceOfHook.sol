@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.21;
 
-import "@unlock-protocol/contracts/dist/PublicLock/IPublicLockV9.sol";
+import "@unlock-protocol/contracts/dist/PublicLock/IPublicLockV14.sol";
 import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 
 contract ERC1155BalanceOfHook {
@@ -20,7 +20,7 @@ contract ERC1155BalanceOfHook {
     require(_nftAddress != address(0), "ERC1155 address can not be zero");
 
     // make sure lock manager
-    IPublicLockV9 lock = IPublicLockV9(_lockAddress);
+    IPublicLockV14 lock = IPublicLockV14(_lockAddress);
     require(
       lock.isLockManager(msg.sender),
       "Caller does not have the LockManager role"

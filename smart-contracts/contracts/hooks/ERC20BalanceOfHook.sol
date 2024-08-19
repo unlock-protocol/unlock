@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.21;
 
-import "@unlock-protocol/contracts/dist/PublicLock/IPublicLockV9.sol";
+import "@unlock-protocol/contracts/dist/PublicLock/IPublicLockV14.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract ERC20BalanceOfHook {
@@ -18,7 +18,7 @@ contract ERC20BalanceOfHook {
     require(_minAmount != 0, "minAmount can not be zero");
 
     // make sure lock manager
-    IPublicLockV9 lock = IPublicLockV9(_lockAddress);
+    IPublicLockV14 lock = IPublicLockV14(_lockAddress);
     require(
       lock.isLockManager(msg.sender),
       "Caller does not have the LockManager role"
