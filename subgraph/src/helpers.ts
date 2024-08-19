@@ -1,6 +1,5 @@
 import { Address, BigInt } from '@graphprotocol/graph-ts'
 import { PublicLockV11 } from '../generated/templates/PublicLock/PublicLockV11'
-import { PublicLockV7 } from '../generated/templates/PublicLock/PublicLockV7'
 import { UnlockDailyData, UnlockStats, Key } from '../generated/schema'
 
 // keccak 256 of 'LOCK_MANAGER'
@@ -34,12 +33,6 @@ export function getKeyExpirationTimestampFor(
   if (version.ge(BigInt.fromI32(10))) {
     const lockContract = PublicLockV11.bind(lockAddress)
     const response = lockContract.try_keyExpirationTimestampFor(tokenId)
-    if (!response.reverted) {
-      return response.value
-    }
-  } else {
-    const lockContract = PublicLockV7.bind(lockAddress)
-    const response = lockContract.try_keyExpirationTimestampFor(ownerAddress)
     if (!response.reverted) {
       return response.value
     }
@@ -81,7 +74,7 @@ export function getKeyManagerOf(
   tokenId: BigInt,
   owner: Address
 ): Address {
-  const lockContract = PublicLockV7.bind(lockAddress)
+  const lockContract = PublicLockV11.bind(lockAddress)
   const response = lockContract.try_keyManagerOf(tokenId)
   if (!response.reverted) {
     return response.value
