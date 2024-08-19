@@ -242,6 +242,9 @@ export const getAttachments = async ({
       description: event?.eventDescription ?? '',
       startDate: event?.startDate || null,
       endDate: event?.endDate ?? null,
+      location: event?.eventLocation
+        ? event?.eventLocation
+        : event?.eventAddress,
     })
 
     if (file) {
