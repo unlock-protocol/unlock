@@ -13,21 +13,21 @@ smart contract to the blockchain [network](../../core-protocol/unlock/networks) 
 Each lock is a standalone contract with its own deployment, address, and storage.
 
 - Each lock contract is an [ERC-721](https://eips.ethereum.org/EIPS/eip-721) compliant contract capable of creating and managing NFTs (non-fungible tokens we call "Keys"), as well as restricting access based on the user's possession (or lack of) one of these keys.
-- Keys for one lock are valid only for the lock which created them.
+- Keys for one lock are valid only for the lock that created them.
 - A given user may own only 1 key (NFT) at a time as a default, but that can be changed using the `setMaxKeysPerAddress` function.
+  Additionally, the Lock smart contract has multiple capabilities:
 
-Addittionaly, the Lock smart contract has multiple capabilities:
-
-- _Administrative_: these are the functions which change rights (see[ access control](./access-control/)) associated to the lock or individual parameters for the lock a such as its name or of course its price. Finally, there is a method to withdraw funds from the lock contract itself.
+- _Administrative_: these are the functions that change rights (see[ access control](./access-control/)) associated to the lock or individual parameters for the lock a such as its name or of course its price. Finally, there is a method to withdraw funds from the lock contract itself.
 - _Transferring key ownership_: keys can be purchased from the lock smart contract itself or from another user who purchased one previously. Another element is that keys can be purchased on behalf of somebody else \(this is important because this lets somebody pay gas fees on behalf of somebody else\)
 - _Changing key attributes_: the keys have an expiration date which can be changed \(for an earlier date by the lock owner\) as well as data attributes which can be changed to something else.
 
 ## Interacting with Protocol Contracts
 
-Here are some popular JavaScript libaries that can be used to interact with blockchain smart contracts including [Unlock.sol](../../core-protocol/unlock/).
+Here are some popular JavaScript libraries that can be used to interact with blockchain smart contracts including [Unlock.sol](../../core-protocol/unlock/), but you should be able to use _any_ library as long as it lets you import the Unlock Protocol's [contracts ABI](../../core-protocol/).
 
-- [web3.js](https://web3js.readthedocs.io/)
+- [Viem](https://viem.sh/)
 - [Ethers](https://docs.ethers.io/)
+- [web3.js](https://web3js.readthedocs.io/)
 
 Tools we've built and maintain can be found in the ["Tools"](../../tools/) section of the docs. The following tools can be used for deploying locks.
 
@@ -49,7 +49,7 @@ Changelogs can be found here for the last two versions.
 
 ### Version 14
 
-**Released:**: Jan 2024
+**Released**: Jan 2024
 
 The version 14 introduces several changes in user-facing features :
 
