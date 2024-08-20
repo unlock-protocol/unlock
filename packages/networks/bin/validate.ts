@@ -3,30 +3,13 @@ import {
   wait,
   isVerified,
   validateKeys,
+  validateTypes,
   validateERC20,
   validateBytecode,
+  getCreationTx,
   checkSubgraphHealth,
   getAllAddresses,
 } from './utils'
-import * as ts from 'typescript'
-import tsconfig from '../tsconfig.json'
-
-// validate ts types
-const validateTypes = async (filePath) => {
-  let errors: string[] = []
-  const program = ts.createProgram([filePath], tsconfig.compilerOptions)
-  const diagnostics = ts.getPreEmitDiagnostics(program)
-  for (const diagnostic of diagnostics) {
-    if (diagnostic.file?.fileName === filePath) {
-      const message = diagnostic.messageText
-      errors = [
-        ...errors,
-        `❌ Syntax Error: (${diagnostic.file?.fileName}) ${message}`,
-      ]
-    }
-  }
-  return errors
-}
 
 const run = async () => {
   const errors = {}
@@ -46,7 +29,10 @@ const run = async () => {
     const { default: network } = await import(resolvedPath)
 
     // TODO: validate Unlock + template bytecode
-    // need to check the contract creation tx
+    // check the contract creation tx
+    const unlockCreationTx = await getCreationTx(network.unlockAddress)
+    console.log(unlockCreationTx)
+
     /*
     const contractName = 'UnlockV13'
     try {
@@ -126,18 +112,22 @@ const run = async () => {
   return { errors }
 }
 
-run()
-  .then(({ errors }) => {
-    if (Object.keys(errors).length > 0) {
-      console.error(`We have found the followig errors :\n`)
-      Object.keys(errors).forEach((networkName) =>
-        console.error(
-          `
+const parseGithubComment = (errors) => {
+  console.error(`We have found the followig errors :\n`)
+  Object.keys(errors).forEach((networkName) =>
+    console.error(
+      `
 ### ${networkName}
 
 ${errors[networkName].map((error) => `- ${error}`).join('\n')}`
-        )
-      )
+    )
+  )
+}
+
+run()
+  .then(({ errors }) => {
+    if (Object.keys(errors).length > 0) {
+      parseGithubComment(errors)
       // Exit with error code so CI fails
       process.exit(1)
     }
