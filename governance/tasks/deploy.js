@@ -117,12 +117,6 @@ task('deploy:template', 'Deploy PublicLock contract')
     return await templateDeployer({ publicLockVersion })
   })
 
-task('deploy:serializer', 'Deploy LockSerializer').setAction(async () => {
-  // eslint-disable-next-line global-require
-  const serializerDeployer = require('../scripts/deployments/serializer')
-  return await serializerDeployer()
-})
-
 task('deploy:governor', 'Deploy governor contracts')
   .addParam('upAddress', 'address of the ERC20 token to use for governance')
   .addOptionalParam('timelockAddress', 'address of a timelock contract')

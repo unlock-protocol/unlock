@@ -1,152 +1,139 @@
-const { ethers } = require('hardhat')
-const { UnlockV9 } = require('@unlock-protocol/contracts')
-const { PublicLockV8, LockSerializer } = require('@unlock-protocol/contracts')
+const { upgrades, ethers } = require('hardhat')
+const { Unlock, PublicLock } = require('@unlock-protocol/contracts')
 const assert = require('assert')
 
 const {
   lockFixtures: Locks,
   ADDRESS_ZERO,
   getEvent,
+  getLock,
+  deployUpgradeableContract,
+  copyAndBuildContractsAtVersion,
 } = require('@unlock-protocol/hardhat-helpers')
+
 const deployLock = require('../../../scripts/deployments/lock')
 
-const compareValues = async (serialized, lock) => {
-  const arrays = [
-    'keyOwners',
-    'expirationTimestamps',
-    'keyManagers',
-    'tokenURISample',
-  ]
-  const propNames = Object.keys(serialized)
-    .filter((k) => Number.isNaN(Number.parseInt(k))) // remove numbers from array index
-    .filter((k) => !arrays.includes(k)) // exclude arrays
-  const values = await Promise.all(propNames.map((k) => lock[k]()))
+const getDeployArgs = async ({ name }) => {
+  const [, , manager] = await ethers.getSigners()
+  const deployArgs = {
+    owner: await manager.getAddress(),
+    duration: Locks[name].expirationDuration,
+    tokenAddress: ADDRESS_ZERO,
+    price: Locks[name].keyPrice.toString(),
+    maxNumberOfKeys: Locks[name].maxNumberOfKeys,
+    name: Locks[name].lockName,
+  }
+  return deployArgs
+}
 
-  // assertions
-  propNames.forEach((k, i) => {
-    if (
-      ethers.BigNumber.isBigNumber(serialized[k]) &&
-      ethers.BigNumber.isBigNumber(values[i])
-    ) {
-      assert.equal(
-        serialized[k].eq(values[i]),
-        true,
-        `different serialized value ${k}, ${serialized[k]}, ${values[i]}`
-      )
-    } else {
-      assert.equal(
-        serialized[k],
-        values[i],
-        `different serialized value ${k}, ${serialized[k]}, ${values[i]}`
-      )
-    }
-  })
+const createLock = async ({ name, unlock, version = 14 }) => {
+  const deployArgs = await getDeployArgs({ name })
+
+  // encode initializer data
+  const iface = new ethers.Interface(PublicLock.abi)
+  const fragment = iface.getFunction(
+    'initialize(address,uint256,address,uint256,uint256,string)'
+  )
+  const calldata = iface.encodeFunctionData(fragment, Object.values(deployArgs))
+
+  // parse result
+  const tx = await unlock.createUpgradeableLockAtVersion(calldata, version)
+  const receipt = await tx.wait()
+  const { args } = await getEvent(receipt, 'NewLock')
+
+  return {
+    name,
+    deployArgs,
+    lockAddress: args.newLockAddress,
+  }
+}
+
+const fetchLock = async (lockAddress) => {
+  const lock = await getLock(lockAddress)
+  const methods = [
+    'expirationDuration',
+    'keyPrice',
+    'maxNumberOfKeys',
+    'freeTrialLength',
+    'refundPenaltyBasisPoints',
+    'transferFeeBasisPoints',
+    'name',
+    'symbol',
+    'publicLockVersion',
+    'tokenAddress',
+    'numberOfOwners',
+    'totalSupply',
+  ]
+  const results = {}
+  await Promise.all(methods.map((method) => (results[method] = lock[method]())))
+
+  return results
 }
 
 describe('Scripts/deploy:lock', () => {
-  let serializer
   let unlockAddress
-  let PublicLock
-  const locks = {}
-  // addresses
-  let unlockOwner
-  let manager
+  const deployedLocks = {}
 
-  beforeEach(async () => {
-    ;[unlockOwner, , manager] = await ethers.getSigners()
+  before(async () => {
+    const [unlockOwner] = await ethers.getSigners()
 
     // deploy unlock
-    const Unlock = await ethers.getContractFactory(
-      UnlockV9.abi,
-      UnlockV9.bytecode
+    const [qualifiedPath] = await copyAndBuildContractsAtVersion(
+      `${__dirname}/..`,
+      [{ contractName: 'Unlock', version: 13 }]
     )
-    const unlock = await Unlock.deploy()
+    ;({ address: unlockAddress } = await deployUpgradeableContract(
+      qualifiedPath,
+      [await unlockOwner.getAddress()],
+      {
+        initializer: 'initialize(address)',
+      }
+    ))
+    const unlock = await ethers.getContractAt(Unlock.abi, unlockAddress)
 
     // deploy template
-    PublicLock = await ethers.getContractFactory(
-      PublicLockV8.abi,
-      PublicLockV8.bytecode
+    const PublicLockFactory = await ethers.getContractFactory(
+      PublicLock.abi,
+      PublicLock.bytecode
     )
-    const publicLock = await PublicLock.deploy()
+    const publicLock = await PublicLockFactory.deploy()
 
     // set unlock
-    await unlock.initialize(unlockOwner.address)
-    await unlock
-      .connect(unlockOwner)
-      .setLockTemplate(await publicLock.getAddress())
-
-    // deploy serializer
-    const LockSerializerFactory = await ethers.getContractFactory(
-      LockSerializer.abi,
-      LockSerializer.bytecode
+    await unlock.addLockTemplate(
+      await publicLock.getAddress(),
+      await publicLock.publicLockVersion()
     )
-    serializer = await LockSerializerFactory.deploy()
+    await unlock.setLockTemplate(await publicLock.getAddress())
 
-    // deploy locks
+    // deploy locks using local script
     await Promise.all(
       Object.keys(Locks)
-        .filter((name) => name != 'NON_EXPIRING') // avoid max 100yrs revert
+        // .filter((name) => name != 'NON_EXPIRING') // avoid max 100yrs revert
         .map(async (name) => {
-          const lockArgs = [
-            Locks[name].expirationDuration,
-            ADDRESS_ZERO,
-            Locks[name].keyPrice.toString(),
-            Locks[name].maxNumberOfKeys,
-            Locks[name].lockName,
-            ethers.hexlify(ethers.randomBytes(12)),
-          ]
-          const tx = await unlock.createLock(...lockArgs)
-          const receipt = await tx.wait()
-          const { args } = await getEvent(receipt, 'NewLock')
-          locks[name] = await PublicLock.attach(args.newLockAddress)
-          locks[name].params = Locks[name]
+          deployedLocks[name] = await createLock({ name, unlock })
         })
     )
-
-    unlockAddress = await unlock.getAddress()
   })
 
-  it('identical init args', async () => {
-    // check for all locks
-    Object.keys(locks).forEach(async (id) => {
-      const lock = locks[id]
-      const serialized = await serializer.serialize(lock.address)
+  it('identical initial settings after deployment', async () => {
+    Object.keys(deployedLocks).forEach(async (name) => {
+      const deployArgs = getDeployArgs({ name })
+
+      // make sure init are the same
+      assert.equal(deployArgs, deployedLocks[name].deployArgs)
 
       // redeploy our lock
       const newLockAddress = await deployLock({
         unlockAddress,
-        unlockVersion: 8,
-        serializedLock: serialized,
-        salt: ethers.hexlify(ethers.randomBytes(12)),
+        unlockVersion: 14,
+        ...deployArgs,
       })
 
       // make sure values are identical
-      const newLock = PublicLock.attach(newLockAddress)
-      await compareValues(serialized, lock)
-      await compareValues(serialized, newLock)
+      assert.equal(
+        await fetchLock(deployedLocks[name].lockAddress),
+        await fetchLock(newLockAddress)
+      )
     })
-  })
-  it('identical custom fees', async () => {
-    const lock = locks.FIRST
-
-    // set custom values
-    await lock.addLockManager(manager.address)
-    await lock.connect(manager).updateRefundPenalty(2222, 2222)
-    await lock.connect(manager).updateTransferFee(2222)
-
-    const serialized = await serializer.serialize(await lock.getAddress())
-
-    // redeploy our lock
-    const newLockAddress = await deployLock({
-      unlockAddress,
-      unlockVersion: 8,
-      serializedLock: serialized,
-      salt: ethers.hexlify(ethers.randomBytes(12)),
-    })
-
-    // make sure values are identical
-    const newLock = PublicLock.attach(newLockAddress)
-    await compareValues(serialized, lock)
-    await compareValues(serialized, newLock)
   })
 })
