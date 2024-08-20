@@ -1,5 +1,9 @@
 # Changes
 
+# 0.48.0
+
+- update `peerDependencies` to require `ethers` v6.
+
 # 0.47.0
 
 - using `purchasePriceFor` when possible in `getPurchaseKeysArguments`
