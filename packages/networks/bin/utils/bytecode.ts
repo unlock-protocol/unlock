@@ -31,6 +31,7 @@ export const validateBytecode = async ({
     contractAddress,
   })
 
+  // TODO: check that the bytecodes match accross networks
   const getCode = await provider.getCode(contractAddress)
 
   // TODO: remove written files used for debug
