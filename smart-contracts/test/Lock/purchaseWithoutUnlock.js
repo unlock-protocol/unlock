@@ -10,7 +10,7 @@ const keyPrice = ethers.parseEther('0.01')
 
 const breakUnlock = async (unlockAddress) => {
   // deploy a random contract to break Unlock implementation
-  const BrokenUnlock = await ethers.getContractFactory('LockSerializer')
+  const BrokenUnlock = await ethers.getContractFactory('KeyManager')
   await upgrades.upgradeProxy(unlockAddress, BrokenUnlock, {
     unsafeSkipStorageCheck: true,
   })
