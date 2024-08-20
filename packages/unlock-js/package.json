@@ -30,7 +30,7 @@
   "license": "MIT",
   "peerDependencies": {
     "axios": "1.7.4",
-    "ethers": "5.7.2"
+    "ethers": "^6.13.0"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "5.0.2",
