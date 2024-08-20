@@ -1,7 +1,7 @@
 import { FaRegLightbulb } from 'react-icons/fa'
 import { usePlacesWidget } from 'react-google-autocomplete'
 import { config } from '~/config/app'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Lock, Token } from '@unlock-protocol/types'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 import { BiLogoZoom as ZoomIcon } from 'react-icons/bi'
@@ -33,6 +33,7 @@ import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
 import { useAvailableNetworks } from '~/utils/networks'
 import Link from 'next/link'
+import { regexUrlPattern } from '~/utils/regexUrlPattern'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewEventForm {
@@ -43,7 +44,7 @@ export interface NewEventForm {
 }
 
 interface GoogleMapsAutoCompleteProps {
-  onChange: (value: string) => void
+  onChange: (address: string, location: string) => void
   defaultValue?: string
 }
 
@@ -59,10 +60,10 @@ export const GoogleMapsAutoComplete = ({
     onPlaceSelected: (place, inputRef) => {
       if (place.formatted_address) {
         // @ts-expect-error Property 'value' does not exist on type 'RefObject<HTMLInputElement>'.ts(2339)
-        return onChange(`${inputRef.value}, ${place.formatted_address}`)
+        return onChange(inputRef.value, place.formatted_address)
       }
       // @ts-expect-error Property 'value' does not exist on type 'RefObject<HTMLInputElement>'.ts(2339)
-      return onChange(inputRef.value)
+      return onChange(inputRef.value, inputRef.value)
     },
   })
 
@@ -121,7 +122,9 @@ export const Form = ({ onSubmit }: FormProps) => {
           event_end_date: today,
           event_end_time: '',
           event_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          event_is_in_person: true,
           event_address: '',
+          event_location: '',
         },
         image: '',
         requiresApproval: false,
@@ -136,6 +139,8 @@ export const Form = ({ onSubmit }: FormProps) => {
     trigger,
     setValue,
     getValues,
+    setError,
+    clearErrors,
     formState: { errors },
     watch,
   } = methods
@@ -143,9 +148,9 @@ export const Form = ({ onSubmit }: FormProps) => {
     control,
   })
 
-  const mapAddress = `https://www.google.com/maps/embed/v1/place?q=${encodeURIComponent(
-    details.metadata?.ticket?.event_address || 'Ethereum'
-  )}&key=${config.googleMapsApiKey}`
+  const [mapAddress, setMapAddress] = useState(
+    encodeURIComponent(getValues('metadata.ticket.event_address') || 'Ethereum')
+  )
 
   const { isLoading: isLoadingBalance, data: balance } = useQuery(
     ['getBalance', account, details.network],
@@ -175,6 +180,7 @@ export const Form = ({ onSubmit }: FormProps) => {
   const router = useRouter()
 
   const [currencyNetwork, setCurrencyNetwork] = useState<string>()
+  const [kickbackSupported, setKickBackSupported] = useState<boolean>(false)
 
   register('metadata.image', {
     required: {
@@ -198,6 +204,16 @@ export const Form = ({ onSubmit }: FormProps) => {
     }
     onSubmit(values)
   }
+
+  const [kickbackDisabled, setKickbackDisabled] = useState<boolean>(false)
+  useEffect(() => {
+    if (isFree || !kickbackSupported) {
+      setKickbackDisabled(true)
+      setAttendeeRefund(false)
+    } else {
+      setKickbackDisabled(false)
+    }
+  }, [isFree, details.lock?.keyPrice, kickbackSupported])
 
   return (
     <FormProvider {...methods}>
@@ -295,6 +311,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                       networks[newValue].nativeCurrency.symbol
                     )
                     setCurrencyNetwork(networks[newValue].name)
+                    setKickBackSupported(!!networks[newValue].kickbackAddress)
                   }}
                   options={networkOptions}
                   moreOptions={moreNetworkOptions}
@@ -348,7 +365,9 @@ export const Form = ({ onSubmit }: FormProps) => {
                       <iframe
                         width="100%"
                         height="350"
-                        src={mapAddress}
+                        src={`https://www.google.com/maps/embed/v1/place?q=${encodeURIComponent(
+                          mapAddress
+                        )}&key=${config.googleMapsApiKey}`}
                       ></iframe>
                     )}
                     {!isInPerson && (
@@ -359,7 +378,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                   </div>
                 </div>
                 <div className="flex flex-col self-start gap-2 justify-top">
-                  <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                  <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
                     <Input
                       {...register('metadata.ticket.event_start_date', {
                         required: {
@@ -407,7 +426,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                  <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
                     <Input
                       {...register('metadata.ticket.event_end_date', {
                         required: {
@@ -473,27 +492,61 @@ export const Form = ({ onSubmit }: FormProps) => {
                         title="In person"
                         enabled={isInPerson}
                         setEnabled={setIsInPerson}
-                        onChange={() => {
+                        onChange={(enabled) => {
+                          setValue(
+                            'metadata.ticket.event_is_in_person',
+                            enabled
+                          )
                           // reset the value
                           setValue('metadata.ticket.event_address', undefined)
+
+                          if (!enabled) {
+                            setError('metadata.ticket.event_address', {
+                              type: 'manual',
+                              message: 'Please enter a valid URL',
+                            })
+                          } else {
+                            clearErrors('metadata.ticket.event_address')
+                          }
                         }}
                       />
                     </div>
 
                     {!isInPerson && (
                       <Input
-                        {...register('metadata.ticket.event_address')}
+                        {...register('metadata.ticket.event_address', {
+                          required: {
+                            value: true,
+                            message: 'Add a link to your event',
+                          },
+                        })}
+                        onChange={(event) => {
+                          if (!regexUrlPattern.test(event.target.value)) {
+                            setError('metadata.ticket.event_address', {
+                              type: 'manual',
+                              message: 'Please enter a valid URL',
+                            })
+                          } else {
+                            clearErrors('metadata.ticket.event_address')
+                          }
+                        }}
                         type="text"
                         placeholder={'Zoom or Google Meet Link'}
+                        error={
+                          // @ts-expect-error Property 'event_address' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
+                          errors.metadata?.ticket?.event_address
+                            ?.message as string
+                        }
                       />
                     )}
 
                     {isInPerson && (
-                      <Controller
-                        name="metadata.ticket.event_address"
-                        control={control}
-                        render={({ field: { onChange } }) => {
-                          return <GoogleMapsAutoComplete onChange={onChange} />
+                      <GoogleMapsAutoComplete
+                        defaultValue={mapAddress}
+                        onChange={(address, location) => {
+                          setValue('metadata.ticket.event_address', address)
+                          setValue('metadata.ticket.event_location', location)
+                          setMapAddress(address)
                         }}
                       />
                     )}
@@ -627,8 +680,8 @@ export const Form = ({ onSubmit }: FormProps) => {
 
                   <div className="text-sm mt-2 flex items-center justify-between">
                     <Checkbox
-                      disabled={isFree || !details.lock?.keyPrice}
-                      label="Treat the price as a deposit which will be refunded when attendees check in at the event (not applicable to credit cards)."
+                      disabled={kickbackDisabled}
+                      label={`Treat the price as a deposit which will be refunded when attendees check in at the event (not applicable to credit cards). ${!kickbackSupported ? `This feature is not supported on ${currencyNetwork}.` : ''}`}
                       checked={attendeeRefund}
                       onChange={(
                         event: React.ChangeEvent<HTMLInputElement>

@@ -5,7 +5,7 @@ description: >-
   Networks on which the Unlock Protocol has been deployed.
 ---
 
-import Network from '../../../src/components/Network'
+import { SupportedNetwork } from '../../../src/components/Network'
 import { networks } from '@unlock-protocol/networks'
 
 # Networks
@@ -16,6 +16,6 @@ The core team has built a `networks` [npm module](https://www.npmjs.com/package/
 
 <>
   {Object.values(networks).map((network) => (
-    <Network network={network} />
+    <SupportedNetwork network={network} />
   ))}
 </>

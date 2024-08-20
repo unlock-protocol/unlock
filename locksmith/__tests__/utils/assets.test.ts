@@ -1,13 +1,4 @@
 import Asset from '../../src/utils/assets'
-import { vi } from 'vitest'
-
-vi.mock('request-promise-native', () => {
-  return {
-    default: vi.fn(() => {
-      return { statusCode: 200 }
-    }),
-  }
-})
 
 describe('Assets', () => {
   describe('exists', () => {

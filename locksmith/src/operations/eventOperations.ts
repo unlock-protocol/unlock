@@ -24,6 +24,8 @@ export interface EventProps {
   eventTime: string
   eventDate: string
   eventAddress: string
+  eventLocation: string
+  eventIsInPerson: boolean
   eventName: string
   startDate: Date | null
   endDate: Date | null
@@ -120,6 +122,9 @@ export const getEventMetadataForLock = async (
       ) ?? (startDate ? dayjs(startDate).add(1, 'hour').toDate() : null)
 
     const eventAddress = getAttribute('event_address') ?? ''
+    const eventLocation = getAttribute('event_location') ?? ''
+
+    const eventIsInPerson = getAttribute('event_is_in_person') === 'true'
 
     const isSameDay = dayjs(startDate).isSame(endDate, 'day')
 
@@ -162,6 +167,8 @@ export const getEventMetadataForLock = async (
       eventDate,
       eventTime,
       eventAddress,
+      eventLocation,
+      eventIsInPerson,
       startDate,
       eventUrl: lockMetadata?.external_url,
       endDate,

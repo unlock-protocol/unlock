@@ -77,7 +77,6 @@ export const saveEventDetails: RequestHandler = async (request, response) => {
     await sendEmail({
       template: 'eventDeployed',
       recipient: event.data.replyTo,
-      // @ts-expect-error object incomplete
       params: {
         eventName: event!.name,
         eventDate: event!.data.ticket.event_start_date,
@@ -232,6 +231,10 @@ export const approveRefunds: RequestHandler = async (request, response) => {
 
   // Then, get the list of all attendees that attendees!
   const list = await getCheckedInAttendees(slug)
+
+  if (list.length === 0) {
+    return response.status(404).send({ error: 'No attendees found' })
+  }
 
   // then, create the merkel tree using the OZ library
   const tree = StandardMerkleTree.of(

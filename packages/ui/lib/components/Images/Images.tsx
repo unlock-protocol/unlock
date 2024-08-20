@@ -9,6 +9,7 @@ import UnlockMonogram from './../../assets/unlockMonogram.svg?react'
 import UnlockWordMark from './../../assets/unlock-word-mark.svg?react'
 import WalletConnect from './../../assets/walletConnect.svg?react'
 import Google from './../../assets/google.svg?react'
+import Email from './../../assets/email.svg?react'
 
 export const Images = {
   Attention,
@@ -22,6 +23,7 @@ export const Images = {
   UnlockWordMark,
   WalletConnect,
   Google,
+  Email,
 }
 
 export default Images

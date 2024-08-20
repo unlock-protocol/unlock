@@ -89,7 +89,7 @@ const faqs = [
   {
     title: 'Are credit cards supported?',
     description:
-      'Yes, fans can support you via credit card as well. Credit card payments will include a additional fees, paid by the fan, to cover credit card processing and infrastructure costs.',
+      'Yes, fans can support you via credit card as well. Credit card payments will include additional fees, paid by the fan, to cover credit card processing and infrastructure costs.',
   },
 ]
 
@@ -136,7 +136,7 @@ export const SubscriptionLandingPage = ({
               backgroundImage:
                 'linear-gradient(85.7deg, #603DEB 3.25%, #27C1D6 90.24%)',
             }}
-            className="text-4xl font-extrabold text-transparent uppercase break-words md:text-7xl bg-clip-text"
+            className="text-4xl font-extrabold text-transparent uppercase md:text-7xl bg-clip-text"
           >
             Subscription Management made for creators
           </h1>
@@ -148,15 +148,14 @@ export const SubscriptionLandingPage = ({
         }
         illustration={
           <Image
-            width="2004"
-            height="1236"
+            width="375"
+            height="231"
             alt="Onchain subscriptions with Unlock Protocol"
-            className="w-full 4xl:right-0 md:absolute md:top-0"
             src="/images/illustrations/subscriptions/landing/subscriptions.svg"
           />
         }
         coverImage="/images/illustrations/events/party.svg"
-        subtitle="Create. Get paid. Repeat"
+        subtitle="Create. Get paid. Repeat."
         description="The only way for fans to subscribe and support your writing, podcasts, music, digital art, and creativity onchain with automatically recurring payments. Five minute setup."
         customers={{
           items: customers,
