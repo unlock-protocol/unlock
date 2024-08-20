@@ -885,7 +885,7 @@ function transferFeeBasisPoints() external view returns (uint256)
 function transferFrom(address from, address to, uint256 tokenId) external nonpayable
 ```
 
-_Transfers a specific NFT (`tokenId`) from one account (`from`) to another (`to`). _ Requirements: - If the caller is not `from`, it must be approved to move this N`T by ei`her `approve} or {setApprovalForAll`.\*
+_Transfers a specific NFT (`tokenId`) from one account (`from`) to another (`to`). _ Requirements: - If the caller is not `from`, it must be approved to move this NFT by either `approve` or `setApprovalForAll`.\*
 
 #### Parameters
 
