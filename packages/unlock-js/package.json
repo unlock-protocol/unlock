@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/unlock-js",
-  "version": "0.47.0",
+  "version": "0.48.0",
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -30,7 +30,7 @@
   "license": "MIT",
   "peerDependencies": {
     "axios": "1.7.4",
-    "ethers": "5.7.2"
+    "ethers": "^6.13.0"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "5.0.2",
