@@ -154,16 +154,25 @@ export const CheckoutUrlPage = () => {
         ...rest,
         config: config || DEFAULT_CONFIG,
       }
+
       setCheckoutConfig(option)
+
       if (!option.id) {
-        const response = await updateConfig(option)
-        setCheckoutConfig({
-          id: response.id!,
-          config: response.config as PaywallConfigType,
-          name: response.name,
-        })
-        setValue('configName', '') // reset field after new configuration is set
-        await refetchConfigList()
+        try {
+          const response = await updateConfig(option)
+
+          setCheckoutConfig({
+            id: response.id!,
+            config: response.config as PaywallConfigType,
+            name: response.name,
+          })
+          setValue('configName', '') // reset field after new configuration is set
+          await refetchConfigList()
+        } catch (error) {
+          // Pass error to the form to pblock skip to next step
+          console.error("Couldn't create new configuration: ", error)
+          throw error
+        }
       }
     },
     [DEFAULT_CONFIG, refetchConfigList, setValue, updateConfig]
@@ -190,12 +199,17 @@ export const CheckoutUrlPage = () => {
     if (!isValid) return Promise.reject() // pass rejected promise to block skip to next step
 
     if (isNewConfiguration) {
-      // this is a new config, let's pass an empty config
-      await handleSetConfiguration({
-        id: null,
-        name: configName,
-        config: DEFAULT_CONFIG.config,
-      })
+      try {
+        // this is a new config, let's pass an empty config
+        await handleSetConfiguration({
+          id: null,
+          name: configName,
+          config: DEFAULT_CONFIG.config,
+        })
+      } catch (error) {
+        ToastHelper.error('A configuration with that name already exists.')
+        return Promise.reject()
+      }
     } else {
       if (!checkoutConfig?.id) {
         ToastHelper.error('Please select a configuration or create a new one.')
