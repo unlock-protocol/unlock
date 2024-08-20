@@ -30,13 +30,11 @@ const run = async () => {
 
     // TODO: validate Unlock + template bytecode
     // check the contract creation tx
-    const unlockCreationTx = await getCreationTx(network.unlockAddress)
-    console.log(unlockCreationTx)
-
-    /*
+    // unlockCreationBytecode
     const contractName = 'UnlockV13'
     try {
       const isUnlockValid = await validateBytecode({
+        chainId: network.id,
         contractAddress: network.unlockAddress,
         contractName,
         providerURL: network.provider,
@@ -51,8 +49,8 @@ const run = async () => {
         `❌ Could not fetch Unlock bytecode, ${error.messageText}`
       )
     }
-      */
 
+    /*
     // make sure the contracts are verified on Etherscan.
     const addresses = await getAllAddresses({ network })
 
@@ -103,7 +101,8 @@ const run = async () => {
     // TODO: check other missing keys
     // const missingKeys = await validateKeys(path.resolve(filePath))
     // warnings = [...errors, ...missingKeys]
-
+    
+    */
     // store network prefix
     const networkName = `${filePath}`
     errors[networkName] = networkErrors
