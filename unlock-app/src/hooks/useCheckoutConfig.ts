@@ -69,6 +69,7 @@ export const useCheckoutConfigUpdate = () => {
       config,
       name,
     })
+
     return response.data
   })
 }
