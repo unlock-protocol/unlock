@@ -70,7 +70,18 @@ export const EventDetails = ({
     checkoutConfig,
   })
 
-  const { data: verifier } = useEventVerifiers({ event: eventProp })
+  const {
+    data: verifier,
+    isError,
+    error,
+  } = useEventVerifiers({ event: eventProp })
+
+  if (isError) {
+    console.error(
+      error ??
+        'We could not load the list of verifiers for your lock. Please reload to try again.'
+    )
+  }
 
   // Migrate legacy event and/or redirect
   // TODO: remove by June 1st 2024

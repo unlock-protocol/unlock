@@ -28,39 +28,41 @@ export const ClaimRefund = ({
   const { getWalletService } = useAuth()
   const { kickbackAddress } = config.networks[network]
 
-  const claimRefund = useMutation(async () => {
-    const walletService = await getWalletService(network)
-    const contract = new ethers.Contract(
-      kickbackAddress!,
-      KickbackAbi,
-      walletService.signer
-    )
+  const claimRefund = useMutation({
+    mutationFn: async () => {
+      const walletService = await getWalletService(network)
+      const contract = new ethers.Contract(
+        kickbackAddress!,
+        KickbackAbi,
+        walletService.signer
+      )
 
-    await ToastHelper.promise(
-      contract
-        .refund(
-          lockAddress,
-          refundProofAndValue.proof,
-          refundProofAndValue.leaf[1]
-        )
-        .then((tx: any) => tx.wait())
-        .then(() => refreshHasClaimedRefund()),
-      {
-        success: 'Your refund has been issued!',
-        error: 'We could not issue your refund. Please try again later.',
-        loading: `Issuing refund...`,
-      }
-    )
+      await ToastHelper.promise(
+        contract
+          .refund(
+            lockAddress,
+            refundProofAndValue.proof,
+            refundProofAndValue.leaf[1]
+          )
+          .then((tx: any) => tx.wait())
+          .then(() => refreshHasClaimedRefund()),
+        {
+          success: 'Your refund has been issued!',
+          error: 'We could not issue your refund. Please try again later.',
+          loading: `Issuing refund...`,
+        }
+      )
+    },
   })
 
-  const claim = async () => {
-    await claimRefund.mutateAsync()
+  const claim = () => {
+    claimRefund.mutate()
   }
 
   return (
     <>
       <p>You attended this event and your wallet is eligible for a refund!</p>
-      <Button onClick={claim} loading={claimRefund.isLoading}>
+      <Button onClick={claim} loading={claimRefund.isPending}>
         Claim Refund
       </Button>
     </>
