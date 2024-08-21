@@ -91,10 +91,10 @@ export const CustomDescription = {
 
 export const WithAction = {
   args: {
-    label: 'Input with Actions',
+    label: 'Input with Single Action',
     size: 'medium',
     value: 'Some input value',
-    description: 'This input has additional actions',
+    description: 'This input has a single action',
     actions: (
       <Button variant="borderless" className="p-2.5">
         Continue
@@ -105,10 +105,10 @@ export const WithAction = {
 
 export const WithMultipleActions = {
   args: {
-    label: 'Input with Copy and Actions',
+    label: 'Input with Multiple Actions',
     size: 'medium',
     value: 'Copyable text',
-    description: 'This input has a copy button and additional actions',
+    description: 'This input has multiple actions',
     copy: true,
     actions: (
       <Button size="small" variant="borderless">
