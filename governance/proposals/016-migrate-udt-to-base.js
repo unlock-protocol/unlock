@@ -6,8 +6,8 @@ const {
 const l1BridgeAbi = require('../helpers/abi/l1standardbridge.json')
 
 // TODO: change to mainnet / base
-const srcChainId = 1 // 11155111
-const destChainId = 8453 // 84532
+const srcChainId = 11155111 // 1
+const destChainId = 84532 // 8453
 
 // bridge address
 const standardBridges = {
@@ -15,13 +15,20 @@ const standardBridges = {
   11155111: '0xfd0Bf71F60660E2f608ed56e1659C450eB113120',
 }
 
-const L1_STANDARD_BRIDGE = standardBridges[srcChainId]
+// sepolia gov : 0x743e60B85220f0aF4B3075bFAcfaDb5b8916B24B
+const timelocks = {
+  1: '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B',
+  8453: '0xB34567C4cA697b39F72e1a8478f285329A98ed1b',
+  84532: '0x246A13358Fb27523642D86367a51C2aEB137Ac6C', // hehe
+  11155111: '0x4a1B95Ece5E181C5F9e78D9E14309520dF97fD24',
+}
+
 const defaultGasAmount = '200000'
 
 module.exports = async ({
-  mainnetTimelockAddress = '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B',
-  baseTimelockAddress = '0xB34567C4cA697b39F72e1a8478f285329A98ed1b',
-  bridgeAddress = L1_STANDARD_BRIDGE,
+  mainnetTimelockAddress = timelocks[srcChainId],
+  baseTimelockAddress = timelocks[destChainId],
+  bridgeAddress = standardBridges[srcChainId],
 } = {}) => {
   const {
     name: srcName,
@@ -34,6 +41,10 @@ module.exports = async ({
   console.log(
     `Submitting proposal to bridge UDT from ${srcName} to  ${destName} (${srcChainId} > ${destChainId})`
   )
+  console.log({
+    udtMainnetAddress,
+    udtBaseAddress,
+  })
 
   // get current UDT balance
   const udt = await getERC20Contract(udtMainnetAddress)
