@@ -141,7 +141,9 @@ const Tab = ({
     onChange?.(tab)
   }
 
-  const handleNextMutation = useMutation(handleNext)
+  const { mutate: handleNextMutation, isPending } = useMutation({
+    mutationFn: handleNext,
+  })
 
   return (
     <div
@@ -169,10 +171,10 @@ const Tab = ({
             {loading ? <Placeholder.Card /> : children}
             {showButton && (
               <Button
-                loading={handleNextMutation.isLoading}
+                loading={isPending}
                 className="w-full"
                 onClick={() => {
-                  handleNextMutation.mutateAsync()
+                  handleNextMutation()
                 }}
                 disabled={disabled || button?.disabled || loading}
                 {...button}
