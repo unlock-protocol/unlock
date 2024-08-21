@@ -213,9 +213,9 @@ export function Select({ checkoutService }: Props) {
 
   const router = useRouter()
 
-  const { isLoading: isLocksLoading, data: locks } = useQuery(
-    ['locks', JSON.stringify(paywallConfig)],
-    async () => {
+  const { isPending: isLocksLoading, data: locks } = useQuery({
+    queryKey: ['locks', JSON.stringify(paywallConfig)],
+    queryFn: async () => {
       const items = await Promise.all(
         Object.entries(paywallConfig.locks)
           .sort(([, l], [, m]) => {
@@ -275,8 +275,8 @@ export function Select({ checkoutService }: Props) {
       )
 
       return locks
-    }
-  )
+    },
+  })
 
   // This should be executed only if router is defined
   useEffect(() => {
@@ -367,12 +367,11 @@ export function Select({ checkoutService }: Props) {
     expectedAddress.toLowerCase() !== account.toLowerCase()
   )
 
-  const { isInitialLoading: isMembershipsLoading, data: memberships } =
-    useMembership({
-      account,
-      paywallConfig: paywallConfig,
-      web3Service,
-    })
+  const { isLoading: isMembershipsLoading, data: memberships } = useMembership({
+    account,
+    paywallConfig: paywallConfig,
+    web3Service,
+  })
 
   const membership = memberships?.find((item) => item.lock === lock?.address)
   const { isLoading: isLoadingHook, lockHookMapping } =

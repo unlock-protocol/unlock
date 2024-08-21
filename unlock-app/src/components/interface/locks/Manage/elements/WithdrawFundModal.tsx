@@ -98,7 +98,8 @@ export const WithdrawFundModal = ({
     }
   }
 
-  const withdrawMutation = useMutation(withdrawFromLockPromise, {
+  const withdrawMutation = useMutation({
+    mutationFn: withdrawFromLockPromise,
     onSuccess: () => {
       onDismiss()
     },
@@ -118,10 +119,7 @@ export const WithdrawFundModal = ({
     })
   }
 
-  const [
-    { data: isContract, isLoading: isLoadingContract },
-    { data: addressBalance, isLoading: isLoadingBalance },
-  ] = useQueries({
+  const queries = useQueries({
     queries: [
       {
         queryKey: ['getCode', lockAddress, network, beneficiary],
@@ -143,6 +141,11 @@ export const WithdrawFundModal = ({
       },
     ],
   })
+
+  const [
+    { data: isContract, isLoading: isLoadingContract },
+    { data: addressBalance, isLoading: isLoadingBalance },
+  ] = queries
 
   const isLoading = isLoadingContract || isLoadingBalance
   const noBalance = parseFloat(addressBalance ?? '0') === 0
@@ -226,7 +229,7 @@ export const WithdrawFundModal = ({
                 min={0}
                 max={balance}
                 step="any"
-                disabled={withdrawMutation.isLoading}
+                disabled={withdrawMutation.isPending}
                 {...register('amount', {
                   valueAsNumber: true,
                   validate: (value) => {
@@ -252,7 +255,7 @@ export const WithdrawFundModal = ({
               <Button
                 type="button"
                 variant="outlined-primary"
-                disabled={withdrawMutation.isLoading}
+                disabled={withdrawMutation.isPending}
                 onClick={() => {
                   setPreview(false)
                   reset({
@@ -267,11 +270,11 @@ export const WithdrawFundModal = ({
               </Button>
               <Button
                 type="submit"
-                loading={withdrawMutation.isLoading}
-                disabled={withdrawMutation.isLoading || isLoading}
+                loading={withdrawMutation.isPending}
+                disabled={withdrawMutation.isPending || isLoading}
                 size="medium"
               >
-                {!withdrawMutation.isLoading ? 'Confirm' : 'Withdrawing...'}
+                {!withdrawMutation.isPending ? 'Confirm' : 'Withdrawing...'}
               </Button>
             </div>
           ) : (
