@@ -9,9 +9,9 @@ export const useAttendeeRefund = ({
 }: {
   attendeeRefund?: AttendeeRefundType
 }) => {
-  return useQuery(
-    ['attendeeRefund', attendeeRefund],
-    async () => {
+  return useQuery({
+    queryKey: ['attendeeRefund', attendeeRefund],
+    queryFn: async () => {
       const web3Service = new Web3Service(networks)
       const networkConfig = networks[attendeeRefund!.network]
 
@@ -28,8 +28,6 @@ export const useAttendeeRefund = ({
       )
       return `${attendeeRefund!.amount} ${symbol}`
     },
-    {
-      enabled: !!attendeeRefund,
-    }
-  )
+    enabled: !!attendeeRefund,
+  })
 }

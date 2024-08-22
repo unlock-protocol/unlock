@@ -86,12 +86,12 @@ function Key({ ownedKey, owner, network }: Props) {
   const [canPlayImageAsVideo, setCanPlayImageAsVideo] = useState(false)
   const isKeyExpired = isExpired || expireAndRefunded
 
-  const { data: lockData, isLoading: isLockDataLoading } = useQuery(
-    ['lock', lock.address, network],
-    () => {
+  const { data: lockData, isPending: isLockDataLoading } = useQuery({
+    queryKey: ['lock', lock.address, network],
+    queryFn: () => {
       return web3Service.getLock(lock.address, network)
-    }
-  )
+    },
+  })
   const metadata = useMetadata(lock.address, tokenId, network)
   const [_, setCopied] = useClipboard(lock.address, {
     successDuration: 2000,
@@ -177,7 +177,7 @@ function Key({ ownedKey, owner, network }: Props) {
 
   const networkName = networks[ownedKey.network]?.name
 
-  const { isLoading: isLoadingUrl, data: receiptsPageUrl } =
+  const { isPending: isLoadingUrl, data: receiptsPageUrl } =
     useGetReceiptsPageUrl({
       lockAddress: lock.address,
       network,

@@ -11,9 +11,9 @@ export const useMembership = ({
   paywallConfig,
   web3Service,
 }: MembershipOptions) => {
-  const query = useQuery(
-    ['memberships', account, JSON.stringify(paywallConfig)],
-    async () => {
+  const query = useQuery({
+    queryKey: ['memberships', account, JSON.stringify(paywallConfig)],
+    queryFn: async () => {
       const memberships = await Promise.all(
         Object.entries(paywallConfig.locks).map(
           async ([lockAddress, props]) => {
@@ -36,9 +36,7 @@ export const useMembership = ({
       )
       return memberships
     },
-    {
-      enabled: !!account,
-    }
-  )
+    enabled: !!account,
+  })
   return query
 }

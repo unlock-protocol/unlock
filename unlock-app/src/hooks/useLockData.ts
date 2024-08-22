@@ -11,19 +11,17 @@ interface Options {
 
 export const useLockData = ({ lockAddress, network }: Options) => {
   const web3Service = new Web3Service(networks)
-  const { data: lock, isLoading: isLockLoading } = useQuery<Lock>(
-    ['lock', lockAddress, network],
-    async () => {
+  const { data: lock, isPending: isLockLoading } = useQuery({
+    queryKey: ['lock', lockAddress, network],
+    queryFn: async () => {
       const result = await web3Service.getLock(lockAddress, network)
       return {
         ...result,
         network,
       }
     },
-    {
-      refetchInterval: false,
-    }
-  )
+    refetchInterval: false,
+  })
   return {
     lock,
     isLockLoading,
@@ -46,7 +44,7 @@ export const useMultipleLockData = (locks: PaywallLocksConfigType) => {
   return results.map((result) => {
     return {
       lock: result.data,
-      isLockLoading: result.isLoading,
+      isLockLoading: result.isPending,
     }
   })
 }

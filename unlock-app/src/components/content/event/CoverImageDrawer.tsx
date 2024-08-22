@@ -33,7 +33,7 @@ export const CoverImageDrawer = ({
     checkoutConfig,
   })
 
-  const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
+  const { mutateAsync: uploadImage, isPending: isUploading } = useImageUpload()
 
   const coverImage = event.ticket.event_cover_image
 
