@@ -202,7 +202,7 @@ describe('Lock / transferFee', () => {
       const expiration = await lock.keyExpirationTimestampFor(tokenId)
 
       await ethers.provider.send('evm_setNextBlockTimestamp', [
-        parseInt(expiration),
+        parseInt(expiration) + 100,
       ])
       await ethers.provider.send('evm_mine')
 
