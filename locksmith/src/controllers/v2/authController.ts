@@ -40,17 +40,16 @@ export const login: RequestHandler = async (request, response) => {
         error.error.shortMessage === 'could not decode result data' &&
         provider
       ) {
-        console.log('TRY OTHER METHOD')
         try {
-          const isVerified = await verifyMessage({
-            signer: message.address,
-            message: message.toMessage(),
-            signature: request.body.signature,
-            // this is needed so that smart contract signatures can be verified
-            provider,
-          })
-          console.log({ isVerified })
-          if (isVerified) {
+          if (
+            await verifyMessage({
+              signer: message.address,
+              message: message.toMessage(),
+              signature: request.body.signature,
+              // @ts-expect-error Type 'JsonRpcProvider' is missing the following properties from type 'Provider': getGasPrice, getStorageAt, sendTransaction, getBlockWithTransactions, _isProvider
+              provider,
+            })
+          ) {
             verified = {
               success: true,
               data: message,
