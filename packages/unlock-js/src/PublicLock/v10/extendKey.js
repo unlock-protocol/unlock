@@ -1,4 +1,4 @@
-import { ZERO } from '../../constants'
+import { MAX_UINT, ZERO } from '../../constants'
 import formatKeyPrice from '../utils/formatKeyPrice'
 import approveAllowance from '../utils/approveAllowance'
 
@@ -25,7 +25,7 @@ export default async function (
     referrer,
     data,
     totalApproval,
-    recurringPayment,
+    recurringPayments,
   },
   transactionOptions = {},
   callback
@@ -84,12 +84,16 @@ export default async function (
     transactionOptions.value = actualAmount
   }
 
-  let totalAmountToApprove = totalApproval
+  let totalAmountToApprove = totalApproval || 0
 
-  if (!totalAmountToApprove) {
-    totalAmountToApprove = recurringPayment
-      ? actualAmount * BigInt(recurringPayment)
-      : actualAmount
+  if (!totalAmountToApprove && actualAmount > 0) {
+    if (!recurringPayments) {
+      totalAmountToApprove = actualAmount
+    } else if (recurringPayments === Infinity) {
+      totalAmountToApprove = MAX_UINT
+    } else {
+      totalAmountToApprove = actualAmount * BigInt(recurringPayments)
+    }
   }
 
   // If the lock is priced in ERC20, we need to approve the transfer
