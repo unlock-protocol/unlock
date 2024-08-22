@@ -16,6 +16,7 @@ import useEns, { getAddressForName } from '~/hooks/useEns'
 import { locksmith } from '~/config/locksmith'
 import { onResolveName } from '~/utils/resolvers'
 import { Verifier } from '@unlock-protocol/unlock-js'
+import { useEffect } from 'react'
 
 export interface VerifierFormProps {
   event: Event
@@ -103,60 +104,67 @@ export const VerifierForm = ({ event }: VerifierFormProps) => {
     return response.data
   }
 
-  const addEventVerifierMutation = useMutation(addVerifier, {
-    onSuccess: (res: any) => {
-      if (res?.message) {
-        ToastHelper.error(res?.message)
-      } else {
-        ToastHelper.success(`Verifier added to list`)
-        setValue('verifier', '')
-        setValue('name', '')
-      }
+  const addEventVerifierMutation = useMutation({
+    mutationFn: addVerifier,
+  })
+
+  useEffect(() => {
+    if (addEventVerifierMutation.isSuccess) {
+      ToastHelper.success(`Verifier added to list`)
+      setValue('verifier', '')
+      setValue('name', '')
       refetchList()
-    },
-    onError: (err: any) => {
+    }
+    if (addEventVerifierMutation.isError) {
       ToastHelper.error(
-        err?.error ??
+        (addEventVerifierMutation.error as any)?.error ??
           'There was a problem adding the verifier address, please re-load and try again'
       )
+    }
+  }, [addEventVerifierMutation.isSuccess, addEventVerifierMutation.isError])
+
+  const deleteVerifierMutation = useMutation({
+    mutationFn: async (address: string) => {
+      locksmith.deleteEventVerifier(event.slug, address)
     },
   })
 
-  const deleteVerifierMutation = useMutation(
-    async (address: string) => {
-      locksmith.deleteEventVerifier(event.slug, address)
-    },
-    {
-      onSuccess: (res: any, verifier: string) => {
-        if (res?.message) {
-          ToastHelper.error(res?.message)
-        } else {
-          ToastHelper.success(`${minifyAddress(verifier)} deleted from list`)
-        }
-        refetchList()
-      },
+  useEffect(() => {
+    if (deleteVerifierMutation.isSuccess) {
+      ToastHelper.success(
+        `${minifyAddress(deleteVerifierMutation.variables as string)} deleted from list`
+      )
+      refetchList()
     }
-  )
+    if (deleteVerifierMutation.isError) {
+      ToastHelper.error(
+        (deleteVerifierMutation.error as any)?.message ??
+          'Failed to delete verifier'
+      )
+    }
+  }, [deleteVerifierMutation.isSuccess, deleteVerifierMutation.isError])
 
   const {
     isLoading: isLoadingItems,
     refetch: refetchList,
     data: verifiers,
-  } = useQuery(
-    ['eventVerifiers', event.slug],
-    async () => {
+    error: verifiersError,
+  } = useQuery({
+    queryKey: ['eventVerifiers', event.slug],
+    queryFn: async () => {
       const response = await locksmith.eventVerifiers(event.slug)
       return response.data.results || []
     },
-    {
-      onError: (err: any) => {
-        ToastHelper.error(
-          err?.error ??
-            'We could not load the list of verifiers for your lock. Please reload to to try again.'
-        )
-      },
+  })
+
+  useEffect(() => {
+    if (verifiersError) {
+      ToastHelper.error(
+        (verifiersError as any)?.error ??
+          'We could not load the list of verifiers for your lock. Please reload to to try again.'
+      )
     }
-  )
+  }, [verifiersError])
 
   const onAddVerifier = async ({ verifier, name }: VerifierFormDataProps) => {
     await addEventVerifierMutation.mutateAsync({ address: verifier, name })
@@ -168,8 +176,8 @@ export const VerifierForm = ({ event }: VerifierFormProps) => {
 
   const isLoading =
     isLoadingItems ||
-    addEventVerifierMutation.isLoading ||
-    deleteVerifierMutation.isLoading
+    addEventVerifierMutation.isPending ||
+    deleteVerifierMutation.isPending
 
   const noVerifiers = verifiers?.length === 0
 
@@ -191,15 +199,15 @@ export const VerifierForm = ({ event }: VerifierFormProps) => {
                   verifier={verifier}
                   key={verifier.address}
                   onDeleteVerifier={onDeleteVerifier}
-                  isLoading={deleteVerifierMutation.isLoading}
+                  isLoading={deleteVerifierMutation.isPending}
                 />
               ))}
             </div>
           </div>
         )}
 
-        {(isLoadingItems || addEventVerifierMutation.isLoading) &&
-          !deleteVerifierMutation.isLoading && <Placeholder.Line size="xl" />}
+        {(isLoadingItems || addEventVerifierMutation.isPending) &&
+          !deleteVerifierMutation.isPending && <Placeholder.Line size="xl" />}
       </div>
       <form
         className="flex flex-col gap-6 mt-8"
@@ -246,7 +254,7 @@ export const VerifierForm = ({ event }: VerifierFormProps) => {
           type="submit"
           className="w-full md:w-1/2"
           disabled={isLoading}
-          loading={addEventVerifierMutation.isLoading}
+          loading={addEventVerifierMutation.isPending}
         >
           Add
         </Button>

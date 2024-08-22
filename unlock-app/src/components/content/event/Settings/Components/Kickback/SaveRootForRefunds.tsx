@@ -32,39 +32,44 @@ export const SaveRootForRefunds = ({
 
   const {
     data: proof,
-    isLoading: isLoadingProof,
+    isPending: isLoadingProof,
     refetch: refetchProof,
-  } = useQuery(['getProof', lockAddress], async () => {
-    const contract = new ethers.Contract(
-      kickbackAddress!,
-      KickbackAbi,
-      provider
-    )
+  } = useQuery({
+    queryKey: ['getProof', lockAddress],
+    queryFn: async () => {
+      const contract = new ethers.Contract(
+        kickbackAddress!,
+        KickbackAbi,
+        provider
+      )
 
-    return contract.roots(lockAddress)
+      return contract.roots(lockAddress)
+    },
   })
 
-  const setProof = useMutation(async (root: string) => {
-    const walletService = await getWalletService(network)
-    const contract = new ethers.Contract(
-      kickbackAddress!,
-      KickbackAbi,
-      walletService.signer
-    )
+  const setProof = useMutation({
+    mutationFn: async (root: string) => {
+      const walletService = await getWalletService(network)
+      const contract = new ethers.Contract(
+        kickbackAddress!,
+        KickbackAbi,
+        walletService.signer
+      )
 
-    await ToastHelper.promise(
-      contract
-        .approveRefunds(lockAddress, root)
-        .then((tx: any) => tx.wait())
-        .then(() => refetchProof())
-        .then(() => refetchApprovedRefunds()),
-      {
-        success: 'Refunds have been approved.',
-        error:
-          'We could not save your event. Please try again and report if the issue persists.',
-        loading: `Saving the list of attendees who can claim a refund.`,
-      }
-    )
+      await ToastHelper.promise(
+        contract
+          .approveRefunds(lockAddress, root)
+          .then((tx: any) => tx.wait())
+          .then(() => refetchProof())
+          .then(() => refetchApprovedRefunds()),
+        {
+          success: 'Refunds have been approved.',
+          error:
+            'We could not save your event. Please try again and report if the issue persists.',
+          loading: `Saving the list of attendees who can claim a refund.`,
+        }
+      )
+    },
   })
 
   const addProof = async () => {
@@ -88,7 +93,7 @@ export const SaveRootForRefunds = ({
         <p>
           ✅ The list of attendees approved for refunds has been saved.{' '}
           <Button
-            loading={approveRefundsMutation.isLoading || setProof.isLoading}
+            loading={approveRefundsMutation.isPending || setProof.isPending}
             size="tiny"
             onClick={async () => {
               const newTree = await approveRefundsMutation.mutateAsync()
@@ -109,7 +114,7 @@ export const SaveRootForRefunds = ({
         ❌ And finally you need to save the list of users who are approved for
         refunds.
       </p>
-      <Button onClick={addProof} loading={setProof.isLoading} size="small">
+      <Button onClick={addProof} loading={setProof.isPending} size="small">
         Save approved attendees
       </Button>
     </div>

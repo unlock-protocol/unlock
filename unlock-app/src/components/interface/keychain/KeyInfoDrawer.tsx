@@ -1,4 +1,4 @@
-import { Disclosure, Drawer, Tooltip } from '@unlock-protocol/ui'
+import { Drawer, Disclosure, Tooltip } from '@unlock-protocol/ui'
 import React, { ReactNode, useCallback, useRef, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Property } from '../locks/metadata/custom/AddProperty'
@@ -109,9 +109,14 @@ export const KeyInfo = ({
   const videoRef = useRef(null)
   const [canPlayImageAsVideo, setCanPlayImageAsVideo] = useState(false)
 
-  const { data: keyMetadata, isLoading: isKeyMetadataLoading } = useQuery(
-    ['keyMetadata', lock, tokenId, network],
-    async () => {
+  const {
+    data: keyMetadata,
+    isPending: isKeyMetadataPending,
+    error: keyMetadataError,
+    isError: isKeyMetadataError,
+  } = useQuery({
+    queryKey: ['keyMetadata', lock, tokenId, network],
+    queryFn: async () => {
       const response = await locksmith.keyMetadata(
         network,
         lock.address,
@@ -119,16 +124,15 @@ export const KeyInfo = ({
       )
       return response.data || {}
     },
-    {
-      onError(error) {
-        console.error(error)
-      },
-    }
-  )
+  })
 
-  const { data: keyPrice, isLoading: isKeyPriceLoading } = useQuery(
-    ['keyPrice', lock.address, network],
-    async () => {
+  if (isKeyMetadataError) {
+    console.error('Failed to fetch key metadata:', keyMetadataError)
+  }
+
+  const { data: keyPrice, isPending: isKeyPricePending } = useQuery({
+    queryKey: ['keyPrice', lock.address, network],
+    queryFn: async () => {
       if (isERC20) {
         const [symbol, decimals] = await Promise.all([
           getErc20TokenSymbol(lock.tokenAddress, provider),
@@ -151,31 +155,34 @@ export const KeyInfo = ({
           decimals,
         }
       }
-    }
-  )
+    },
+  })
 
-  const { data: subscriptions, isInitialLoading: isSubscriptionsLoading } =
-    useQuery(
-      ['subscriptions', lock.address, tokenId, network],
-      async () => {
-        const response = await locksmith.getSubscription(
-          network,
-          lock.address,
-          tokenId
-        )
-        return response.data.subscriptions
-      },
-      {
-        retry: 0,
-        enabled: !!(lock?.address && owner),
-        onError(error) {
-          console.error(error)
-        },
-      }
-    )
+  const {
+    data: subscriptions,
+    isLoading: isSubscriptionsLoading,
+    error: subscriptionsError,
+    isError: isSubscriptionsError,
+  } = useQuery({
+    queryKey: ['subscriptions', lock.address, tokenId, network],
+    queryFn: async () => {
+      const response = await locksmith.getSubscription(
+        network,
+        lock.address,
+        tokenId
+      )
+      return response.data.subscriptions
+    },
+    retry: 0,
+    enabled: !!(lock?.address && owner),
+  })
+
+  if (isSubscriptionsError) {
+    console.error('Failed to fetch subscriptions:', subscriptionsError)
+  }
 
   const isLoading =
-    isKeyMetadataLoading && isKeyPriceLoading && isSubscriptionsLoading
+    isKeyMetadataPending && isKeyPricePending && isSubscriptionsLoading
 
   const checkIfImageUrlIsVideo = async () => {
     const video = videoRef.current
