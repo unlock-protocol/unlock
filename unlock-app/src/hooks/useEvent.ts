@@ -10,12 +10,12 @@ interface useEventProps {
  *
  */
 export const useEvent = ({ slug }: useEventProps, useQueryProps = {}) => {
-  return useQuery(
-    ['useEvent', slug],
-    async (): Promise<any> => {
+  return useQuery({
+    queryKey: ['useEvent', slug],
+    queryFn: async (): Promise<any> => {
       const { data } = await locksmith.getEvent(slug)
       return toFormData(data.data!)
     },
-    useQueryProps
-  )
+    ...useQueryProps,
+  })
 }
