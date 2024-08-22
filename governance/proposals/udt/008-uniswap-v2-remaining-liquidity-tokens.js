@@ -3,7 +3,7 @@
  * from Uniswap v2 pool to the Uniswap v3 pool
  */
 const { ethers } = require('hardhat')
-const { getTokenInfo } = require('../helpers/uniswap')
+const { getTokenInfo } = require('../../helpers/uniswap')
 
 // const daoAddress = '0x440d9D4E66d39bb28FB58729Cb4D3ead2A595591'
 const timelockAddress = '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B'
