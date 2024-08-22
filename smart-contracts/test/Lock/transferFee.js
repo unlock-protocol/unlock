@@ -196,4 +196,18 @@ describe('Lock / transferFee', () => {
       )
     })
   })
+
+  describe('in case of the key is expired', () => {
+    it('when the key is expired, the fee is 0', async () => {
+      const expiration = await lock.keyExpirationTimestampFor(tokenId)
+
+      await ethers.provider.send('evm_setNextBlockTimestamp', [
+        parseInt(expiration),
+      ])
+      await ethers.provider.send('evm_mine')
+
+      const fee = await lock.getTransferFee(tokenId, 100)
+      assert.equal(fee, 0)
+    })
+  })
 })
