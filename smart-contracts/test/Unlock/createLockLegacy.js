@@ -62,6 +62,16 @@ describe('Unlock / createLock (Legacy)', () => {
           )
         })
 
+        it('schemaVersion has been updated', async () => {
+          const [, lockManager] = await ethers.getSigners()
+
+          await lock.connect(lockManager).updateSchemaVersion()
+          assert.equal(
+            await lock.schemaVersion(),
+            await lock.publicLockVersion()
+          )
+        })
+
         it('Can read from the lock', async () => {
           const result = await lock.expirationDuration()
           assert.equal(result, args[0])
