@@ -165,6 +165,7 @@ export const LockDetailCard = ({
     queryKey: ['lockMetadata', lockAddress, network],
     queryFn: async () => {
       const response = await locksmith.lockMetadata(network, lockAddress)
+      setName(response.data.name)
       return response.data
     },
     retry: 2,
