@@ -68,7 +68,7 @@ export const EventDetails = ({
 
   const { data: organizers } = useEventOrganizers({
     checkoutConfig,
-  }) as { data: string[] | undefined } // Add type assertion here
+  }) as { data: string[] | undefined }
 
   const {
     data: verifier,
@@ -107,7 +107,7 @@ export const EventDetails = ({
       }
     }
     migrateAndRedirect()
-  }, [router, event, eventUrl])
+  }, [router, event, eventUrl, checkoutConfig])
 
   const eventDate = getEventDate(event.ticket) // Full date + time of event
   const eventEndDate = getEventEndDate(event.ticket)
@@ -174,7 +174,7 @@ export const EventDetails = ({
     endTime,
     eventUrl,
     hasPassed,
-    organizers, // This will now be correctly typed
+    organizers,
     coverImage,
     refetch,
   }
