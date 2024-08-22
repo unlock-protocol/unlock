@@ -68,7 +68,7 @@ export const EventDetails = ({
 
   const { data: organizers } = useEventOrganizers({
     checkoutConfig,
-  })
+  }) as { data: string[] | undefined } // Add type assertion here
 
   const {
     data: verifier,
@@ -174,7 +174,7 @@ export const EventDetails = ({
     endTime,
     eventUrl,
     hasPassed,
-    organizers,
+    organizers, // This will now be correctly typed
     coverImage,
     refetch,
   }
