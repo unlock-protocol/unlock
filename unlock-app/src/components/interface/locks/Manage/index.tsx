@@ -72,7 +72,7 @@ export function downloadAsCSV({
   FileSaver.saveAs(blob, fileName)
 }
 
-export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
+export const ActionBar = ({ lockAddress, network, name }: ActionBarProps) => {
   const { isPending: isLoadingMetadata, data: metadata } = useMetadata({
     lockAddress,
     network,
