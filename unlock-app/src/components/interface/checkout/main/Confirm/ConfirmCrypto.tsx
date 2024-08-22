@@ -54,13 +54,13 @@ export function ConfirmCrypto({
 
   const currencyContractAddress = lock?.currencyContractAddress
 
-  const numberOfrecurringPayments = getNumberOfRecurringPayments(
+  const numberOfRecurringPayments = getNumberOfRecurringPayments(
     paywallConfig?.locks[lockAddress]?.recurringPayments ||
       paywallConfig?.recurringPayments
   )
 
   const recurringPayments: number[] = new Array(recipients.length).fill(
-    numberOfrecurringPayments
+    numberOfRecurringPayments
   )
 
   const { data: creditCardEnabled } = useCreditCardEnabled({
