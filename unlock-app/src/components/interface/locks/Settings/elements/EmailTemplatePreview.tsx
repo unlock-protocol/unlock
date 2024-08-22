@@ -129,7 +129,7 @@ export const EmailTemplatePreview = ({
           <div className="flex gap-2 ml-auto">
             <Button
               size="small"
-              onClick={() => saveCustomContent.mutate()}
+              onClick={() => saveCustomContent.mutateAsync()}
               loading={saveCustomContent.isPending}
             >
               Save

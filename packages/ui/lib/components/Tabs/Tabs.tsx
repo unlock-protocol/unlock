@@ -141,7 +141,7 @@ const Tab = ({
     onChange?.(tab)
   }
 
-  const { mutate: handleNextMutation, isPending } = useMutation({
+  const { mutateAsync: handleNextMutation, isPending } = useMutation({
     mutationFn: handleNext,
   })
 
@@ -173,8 +173,8 @@ const Tab = ({
               <Button
                 loading={isPending}
                 className="w-full"
-                onClick={() => {
-                  handleNextMutation()
+                onClick={async () => {
+                  await handleNextMutation()
                 }}
                 disabled={disabled || button?.disabled || loading}
                 {...button}

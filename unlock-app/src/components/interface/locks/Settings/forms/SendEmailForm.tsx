@@ -94,7 +94,7 @@ export const SendEmailForm = ({
         <Button
           loading={updateSettingsMutation.isPending}
           onClick={() => {
-            updateSettingsMutation.mutate()
+            updateSettingsMutation.mutateAsync()
           }}
           disabled={disabledInput || !changed || !isManager}
           className="w-full md:w-1/3"

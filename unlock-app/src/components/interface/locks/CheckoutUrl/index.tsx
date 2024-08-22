@@ -250,7 +250,7 @@ export const CheckoutUrlPage = () => {
               loading={isConfigRemoving}
               iconLeft={<TrashIcon />}
               onClick={() => {
-                deleteConfigurationMutation.mutate()
+                deleteConfigurationMutation.mutateAsync()
               }}
             >
               Delete {checkoutConfig.name}

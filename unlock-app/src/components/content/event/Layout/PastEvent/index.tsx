@@ -55,8 +55,8 @@ export const ClaimRefund = ({
     },
   })
 
-  const claim = () => {
-    claimRefund.mutate()
+  const claim = async () => {
+    await claimRefund.mutateAsync()
   }
 
   return (

@@ -107,7 +107,7 @@ export const CertificationDeploying = ({
                   disabled={updateTransferFeeMutation.isPending}
                   loading={updateTransferFeeMutation.isPending}
                   onClick={() => {
-                    updateTransferFeeMutation.mutate(100) // Make tokens non-transferable
+                    updateTransferFeeMutation.mutateAsync(100) // Make tokens non-transferable
                   }}
                 >
                   Make tokens non-transferable
