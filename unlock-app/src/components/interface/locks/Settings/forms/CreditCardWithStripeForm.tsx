@@ -100,13 +100,16 @@ const ConnectStripe = ({
 
   const {
     data: stripeConnections = [],
-    isLoading: isLoadingStripeConnections,
-  } = useQuery(['stripeConnections', account], async () => {
-    const response = await locksmith.getStripeConnections()
-    if (response.data.error) {
-      throw new Error(response.data.error)
-    }
-    return response.data.result || []
+    isPending: isLoadingStripeConnections,
+  } = useQuery({
+    queryKey: ['stripeConnections', account],
+    queryFn: async () => {
+      const response = await locksmith.getStripeConnections()
+      if (response.data.error) {
+        throw new Error(response.data.error)
+      }
+      return response.data.result || []
+    },
   })
 
   const checkIsKeyGranter = async (keyGranter: string) => {
@@ -114,22 +117,24 @@ const ConnectStripe = ({
   }
 
   const {
-    isLoading: isLoadingCheckGrantedStatus,
+    isPending: isLoadingCheckGrantedStatus,
     data: isGranted,
     refetch: refetchCheckKeyGranter,
-  } = useQuery(
-    ['checkIsKeyGranter', lockAddress, network, keyGranter],
-    async () => {
+  } = useQuery({
+    queryKey: ['checkIsKeyGranter', lockAddress, network, keyGranter],
+    queryFn: async () => {
       return checkIsKeyGranter(keyGranter)
-    }
-  )
+    },
+  })
 
-  const grantKeyGrantorRoleMutation = useMutation(async (): Promise<any> => {
-    const walletService = await getWalletService(network)
-    return walletService.addKeyGranter({
-      lockAddress,
-      keyGranter,
-    })
+  const grantKeyGrantorRoleMutation = useMutation({
+    mutationFn: async (): Promise<any> => {
+      const walletService = await getWalletService(network)
+      return walletService.addKeyGranter({
+        lockAddress,
+        keyGranter,
+      })
+    },
   })
 
   const onGrantKeyRole = async () => {
@@ -231,7 +236,7 @@ const ConnectStripe = ({
               variant="outlined-primary"
               className="w-full md:w-1/3"
               onClick={onGrantKeyRole}
-              disabled={grantKeyGrantorRoleMutation.isLoading}
+              disabled={grantKeyGrantorRoleMutation.isPending}
             >
               Accept
             </Button>
@@ -296,7 +301,7 @@ export const CreditCardWithStripeForm = ({
   disabled,
 }: CardPaymentProps) => {
   const {
-    isLoading,
+    isPending,
     data: stripeConnectionDetails,
     refetch: refetchStripeConnectionDetails,
   } = useGetLockStripeConnectionDetails({
@@ -304,12 +309,12 @@ export const CreditCardWithStripeForm = ({
     network,
   })
 
-  const { isLoading: isLoadingKeyGranter, data: keyGranter } = useQuery(
-    ['getKeyGranter', lockAddress, network],
-    () => {
+  const { isPending: isLoadingKeyGranter, data: keyGranter } = useQuery({
+    queryKey: ['getKeyGranter', lockAddress, network],
+    queryFn: () => {
       return getKeyGranter()
-    }
-  )
+    },
+  })
   const stripeConnectionState = stripeConnectionDetails?.connected ?? 0
   const connectedStripeAccount = stripeConnectionDetails?.account
   const supportedCurrencies =
@@ -334,7 +339,7 @@ export const CreditCardWithStripeForm = ({
     lockAddress,
   })
 
-  const { isLoading: isLoadingPricing, data: fiatPricing } = useUSDPricing({
+  const { isPending: isLoadingPricing, data: fiatPricing } = useUSDPricing({
     network,
     lockAddress,
     currencyContractAddress: undefined,
@@ -344,7 +349,7 @@ export const CreditCardWithStripeForm = ({
 
   const isPricingLow = (fiatPricing?.usd?.amount ?? 0) < 0.5
 
-  const loading = isLoading || isLoadingKeyGranter || isLoadingPricing
+  const loading = isPending || isLoadingKeyGranter || isLoadingPricing
 
   const onDisconnectStripe = async (event: any) => {
     event.preventDefault()
@@ -385,7 +390,7 @@ export const CreditCardWithStripeForm = ({
           network={network}
           isManager={isManager}
           keyGranter={keyGranter as string}
-          disabled={disabled || connectStripeMutation.isLoading}
+          disabled={disabled || connectStripeMutation.isPending}
         />
       )
     }
@@ -396,8 +401,8 @@ export const CreditCardWithStripeForm = ({
           isManager={isManager}
           disabled={
             disabled ||
-            connectStripeMutation.isLoading ||
-            disconnectStipeMutation.isLoading
+            connectStripeMutation.isPending ||
+            disconnectStipeMutation.isPending
           }
           onConnectStripe={onConnectStripe}
           onDisconnect={onDisconnectStripe}
@@ -412,7 +417,7 @@ export const CreditCardWithStripeForm = ({
           <DisconnectStripe
             isManager={isManager}
             onDisconnect={onDisconnectStripe}
-            disabled={disabled || disconnectStipeMutation.isLoading}
+            disabled={disabled || disconnectStipeMutation.isPending}
           />
           {connectedStripeAccount && (
             <span>

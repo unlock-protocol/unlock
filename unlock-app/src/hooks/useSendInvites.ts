@@ -7,11 +7,13 @@ interface Options {
 }
 
 export const useSendInvites = () => {
-  const mutation = useMutation(async ({ slug, recipients }: Options) => {
-    const response = await locksmith.sendEventInvites(slug, {
-      recipients,
-    })
-    return response.data.sent
+  const mutation = useMutation({
+    mutationFn: async ({ slug, recipients }: Options) => {
+      const response = await locksmith.sendEventInvites(slug, {
+        recipients,
+      })
+      return response.data.sent
+    },
   })
   return mutation
 }

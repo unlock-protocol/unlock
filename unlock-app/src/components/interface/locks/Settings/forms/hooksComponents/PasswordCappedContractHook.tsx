@@ -101,10 +101,11 @@ export const PasswordCappedContractHook = ({
       }
     )
     await reloadSettings()
-    return
   }
 
-  const setPasswordMutation = useMutation(savePassword)
+  const setPasswordMutation = useMutation({
+    mutationFn: savePassword,
+  })
 
   const onSubmit = async ({ password, ...hooks }: any) => {
     await setEventsHooksMutation.mutateAsync(hooks)
@@ -155,8 +156,8 @@ export const PasswordCappedContractHook = ({
                 disabled={!isValid}
                 size="small"
                 loading={
-                  setPasswordMutation.isLoading ||
-                  setEventsHooksMutation.isLoading
+                  setPasswordMutation.isPending ||
+                  setEventsHooksMutation.isPending
                 }
               >
                 Add

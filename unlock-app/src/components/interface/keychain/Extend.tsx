@@ -65,15 +65,18 @@ export const ExtendMembershipModal = ({
   const {
     data: lockExpirationDuration,
     isLoading: isLockExpirationDurationLoading,
-  } = useQuery(['expiration', lockAddress, network], async () => {
-    const contract = await web3Service.lockContract(lockAddress, network)
-    const duration = await contract.expirationDuration()
-    return duration?.toString() || ownedKey.lock.expirationDuration
+  } = useQuery({
+    queryKey: ['expiration', lockAddress, network],
+    queryFn: async () => {
+      const contract = await web3Service.lockContract(lockAddress, network)
+      const duration = await contract.expirationDuration()
+      return duration?.toString() || ownedKey.lock.expirationDuration
+    },
   })
 
-  const { isLoading: isRenewalInfoLoading, data: renewalInfo } = useQuery(
-    ['approval', lockAddress, network],
-    async () => {
+  const { isPending: isRenewalInfoLoading, data: renewalInfo } = useQuery({
+    queryKey: ['approval', lockAddress, network],
+    queryFn: async () => {
       if (
         ownedKey.lock.tokenAddress &&
         ownedKey.lock.tokenAddress === ADDRESS_ZERO
@@ -101,10 +104,8 @@ export const ExtendMembershipModal = ({
         renewals: allowance / ownedKey.lock.price,
       }
     },
-    {
-      retry: 2,
-    }
-  )
+    retry: 2,
+  })
 
   const extendMembership = async (renewal?: number) => {
     const walletService = await getWalletService(network)
@@ -130,7 +131,8 @@ export const ExtendMembershipModal = ({
     }
   }
 
-  const extend = useMutation(extendMembership, {
+  const extend = useMutation({
+    mutationFn: extendMembership,
     onSuccess: () => {
       ToastHelper.success('Successfully extended the membership!')
       setIsOpen(false)
@@ -231,14 +233,14 @@ export const ExtendMembershipModal = ({
           )}
           <Button
             type="button"
-            disabled={extend.isLoading || isRenewalInfoLoading}
+            disabled={extend.isPending || isRenewalInfoLoading}
             onClick={(event) => {
               event.preventDefault()
               extend.mutate(parseInt(renewalAmount.toString()))
             }}
-            loading={extend.isLoading}
+            loading={extend.isPending}
           >
-            {extend.isLoading ? 'Extending membership' : 'Extend membership'}
+            {extend.isPending ? 'Extending membership' : 'Extend membership'}
           </Button>
         </div>
       )}

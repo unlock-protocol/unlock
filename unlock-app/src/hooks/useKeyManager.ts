@@ -25,11 +25,11 @@ export const useTransferPossible = ({
   const keyManager = new KeyManager(config.networks)
   const {
     data: isTransferPossible,
-    isInitialLoading: isTransferPossibleLoading,
+    isLoading: isTransferPossibleLoading,
     error,
-  } = useQuery(
-    ['isTransferPossible', transferObject, transferSignature],
-    async () => {
+  } = useQuery({
+    queryKey: ['isTransferPossible', transferObject, transferSignature],
+    queryFn: async () => {
       const walletService = await getWalletService(network)
       const signer = walletService.signer
       if (!signer) {
@@ -45,10 +45,8 @@ export const useTransferPossible = ({
       })
       return true
     },
-    {
-      enabled,
-    }
-  )
+    enabled,
+  })
 
   const isTransferPossbleError = error
     ? getParsedEthersError(error as EthersError)

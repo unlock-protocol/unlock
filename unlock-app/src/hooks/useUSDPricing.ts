@@ -43,16 +43,14 @@ export const useUSDPricing = ({
   amount = 1,
   enabled = true,
 }: USDPricingOptions) => {
-  return useQuery(
-    ['price', network, lockAddress, currencyContractAddress, amount],
-    async () =>
+  return useQuery({
+    queryKey: ['price', network, lockAddress, currencyContractAddress, amount],
+    queryFn: async () =>
       getLockUsdPrice({
         network,
         currencyContractAddress,
         amount,
       }),
-    {
-      enabled,
-    }
-  )
+    enabled,
+  })
 }

@@ -30,7 +30,7 @@ export function UpdatePurchaserDrawer({
     },
   })
 
-  const { mutateAsync: updateReceiptMutation, isLoading } = useUpdateReceipt({
+  const { mutateAsync: updateReceiptMutation, isPending } = useUpdateReceipt({
     lockAddress,
     network,
     hash,
@@ -45,7 +45,7 @@ export function UpdatePurchaserDrawer({
     onSave()
   }
 
-  const disabledInput = isLoading
+  const disabledInput = isPending
 
   return (
     <Drawer isOpen={isOpen} setIsOpen={setIsOpen} title="Purchaser Details">

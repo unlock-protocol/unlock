@@ -9,11 +9,14 @@ interface User {
 }
 
 export const useUpdateUsersMetadata = () => {
-  return useMutation(['updateUserMetadata'], async (users: User[]) => {
-    const response = await locksmith.updateUsersMetadata({
-      users,
-    })
-    return response.data
+  return useMutation({
+    mutationKey: ['updateUserMetadata'],
+    mutationFn: async (users: User[]) => {
+      const response = await locksmith.updateUsersMetadata({
+        users,
+      })
+      return response.data
+    },
   })
 }
 
@@ -22,9 +25,9 @@ export const useUpdateUserMetadata = ({
   lockAddress,
   userAddress,
 }: Omit<User, 'metadata'>) => {
-  return useMutation(
-    ['updateUserMetadata', network, lockAddress, userAddress],
-    async (metadata: Record<string, any>) => {
+  return useMutation({
+    mutationKey: ['updateUserMetadata', network, lockAddress, userAddress],
+    mutationFn: async (metadata: Record<string, any>) => {
       const response = await locksmith.updateUserMetadata(
         network,
         lockAddress,
@@ -34,6 +37,6 @@ export const useUpdateUserMetadata = ({
         }
       )
       return response.data
-    }
-  )
+    },
+  })
 }

@@ -13,13 +13,13 @@ export type KeyTransferData = TransferObject & {
 }
 
 export const useTransferCode = ({ network, lockAddress, keyId }: Options) => {
-  const {
-    mutate: createTransferCode,
-    isLoading,
-    data,
-  } = useMutation(
-    ['transferCode', network, lockAddress, keyId],
-    async ({ captcha }: { captcha: string }): Promise<KeyTransferData> => {
+  const mutation = useMutation({
+    mutationKey: ['transferCode', network, lockAddress, keyId],
+    mutationFn: async ({
+      captcha,
+    }: {
+      captcha: string
+    }): Promise<KeyTransferData> => {
       const response = await locksmith.createTransferCode(
         network!,
         lockAddress!,
@@ -43,40 +43,31 @@ export const useTransferCode = ({ network, lockAddress, keyId }: Options) => {
       }
       return transferObject
     },
-    {
-      retry: 3,
-    }
-  )
+    retry: 3,
+  })
 
   return {
-    createTransferCode,
-    isLoading,
-    transferObject: data,
+    createTransferCode: mutation.mutate,
+    isLoading: mutation.isPending,
+    transferObject: mutation.data,
   }
 }
 
 export const useTransferDone = () => {
-  const {
-    mutate: transferDone,
-    isLoading,
-    isError,
-    error,
-    data,
-  } = useMutation(
-    async (
+  const mutation = useMutation({
+    mutationFn: async (
       option: TransferObject & { transferSignature: string; network: number }
     ): Promise<void> => {
       await locksmith.transferDone(option)
     },
-    {
-      retry: 3,
-    }
-  )
+    retry: 3,
+  })
+
   return {
-    transferDone,
-    isLoading,
-    isError,
-    error,
-    data,
+    transferDone: mutation.mutate,
+    isLoading: mutation.isPending,
+    isError: mutation.isError,
+    error: mutation.error,
+    data: mutation.data,
   }
 }

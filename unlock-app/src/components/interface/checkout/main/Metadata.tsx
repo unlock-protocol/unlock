@@ -320,9 +320,9 @@ export function Metadata({ checkoutService }: Props) {
 
   const recipient = recipientFromConfig(paywallConfig, lock) || account || ''
 
-  const { isInitialLoading: isMemberLoading, data: isMember } = useQuery(
-    ['isMember', recipient, lock],
-    async () => {
+  const { isLoading: isMemberLoading, data: isMember } = useQuery({
+    queryKey: ['isMember', recipient, lock],
+    queryFn: async () => {
       const total = await web3Service.totalKeys(
         lock!.address,
         recipient!,
@@ -330,10 +330,8 @@ export function Metadata({ checkoutService }: Props) {
       )
       return total > 0
     },
-    {
-      enabled: !!recipient,
-    }
-  )
+    enabled: !!recipient,
+  })
 
   useEffect(() => {
     if (recipient && quantity > fields.length && !isMemberLoading) {

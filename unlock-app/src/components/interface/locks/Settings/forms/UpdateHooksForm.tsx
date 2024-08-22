@@ -267,7 +267,7 @@ export const UpdateHooksForm = ({
   const { getWalletService } = useAuth()
   const [defaultValues, setDefaultValues] = useState<HooksFormProps>()
 
-  const { isLoading, refetch, getHookValues } = useCustomHook({
+  const { isPending, refetch, getHookValues } = useCustomHook({
     lockAddress,
     network,
     version,
@@ -311,7 +311,8 @@ export const UpdateHooksForm = ({
     )
   }
 
-  const setEventsHooksMutation = useMutation(setEventsHooks, {
+  const setEventsHooksMutation = useMutation({
+    mutationFn: setEventsHooks,
     onSuccess: async () => {
       const values = await getHookValues()
       setDefaultValues(values)
@@ -321,7 +322,7 @@ export const UpdateHooksForm = ({
   })
 
   const disabledInput =
-    disabled || setEventsHooksMutation.isLoading || isLoading
+    disabled || setEventsHooksMutation.isPending || isPending
 
   return (
     <FormProvider {...methods}>

@@ -44,7 +44,9 @@ export const UpdateNameForm = ({
     })
   }
 
-  const changeNameMutation = useMutation(changeName)
+  const changeNameMutation = useMutation({
+    mutationFn: changeName,
+  })
 
   const onChangeName = async ({ name }: FormProps) => {
     if (!isManager) return
@@ -61,7 +63,7 @@ export const UpdateNameForm = ({
     }
   }
 
-  const disabledInput = disabled || changeNameMutation.isLoading
+  const disabledInput = disabled || changeNameMutation.isPending
   const updateMetadataUrl = `/locks/metadata?lockAddress=${lockAddress}&network=${network}`
   return (
     <form className="flex flex-col gap-6" onSubmit={handleSubmit(onChangeName)}>
@@ -98,7 +100,7 @@ export const UpdateNameForm = ({
           type="submit"
           className="w-full md:w-1/3"
           disabled={disabledInput}
-          loading={changeNameMutation.isLoading}
+          loading={changeNameMutation.isPending}
         >
           Update
         </Button>

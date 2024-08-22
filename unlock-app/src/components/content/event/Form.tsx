@@ -92,7 +92,7 @@ export const Form = ({ onSubmit }: FormProps) => {
   const [attendeeRefund, setAttendeeRefund] = useState(false)
   const [isFree, setIsFree] = useState(true)
   const [isCurrencyModalOpen, setCurrencyModalOpen] = useState(false)
-  const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
+  const { mutateAsync: uploadImage, isPending: isUploading } = useImageUpload()
 
   const web3Service = useWeb3Service()
 
@@ -152,17 +152,17 @@ export const Form = ({ onSubmit }: FormProps) => {
     encodeURIComponent(getValues('metadata.ticket.event_address') || 'Ethereum')
   )
 
-  const { isLoading: isLoadingBalance, data: balance } = useQuery(
-    ['getBalance', account, details.network],
-    async () => {
+  const { isPending: isLoadingBalance, data: balance } = useQuery({
+    queryKey: ['getBalance', account, details.network],
+    queryFn: async () => {
       if (!details.network) {
         return 1.0
       }
       return parseFloat(
         await web3Service.getAddressBalance(account!, details.network!)
       )
-    }
-  )
+    },
+  })
 
   const noBalance = balance === 0 && !isLoadingBalance
 

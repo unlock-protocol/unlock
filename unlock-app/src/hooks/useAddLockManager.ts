@@ -20,5 +20,7 @@ export const useAddLockManager = (lockAddress: string, network: number) => {
     })
   }
 
-  return useMutation(addLockManager)
+  return useMutation({
+    mutationFn: addLockManager,
+  })
 }

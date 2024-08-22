@@ -130,9 +130,9 @@ export const CreateLockForm = ({
     control,
   })
 
-  const { isLoading: isLoadingBalance, data: balance } = useQuery(
-    ['getBalance', selectedNetwork, account],
-    async () => {
+  const { isPending: isLoadingBalance, data: balance } = useQuery({
+    queryKey: ['getBalance', selectedNetwork, account],
+    queryFn: async () => {
       const balance = await getAccountTokenBalance(
         web3Service,
         account!,
@@ -140,8 +140,8 @@ export const CreateLockForm = ({
         selectedNetwork || 10
       )
       return parseFloat(balance)
-    }
-  )
+    },
+  })
 
   const onHandleSubmit = (values: LockFormProps) => {
     if (isValid) {

@@ -14,9 +14,9 @@ interface PurchaseOptions {
   referrers?: string[]
 }
 export const usePurchase = ({ lockAddress, network }: Options) => {
-  return useMutation(
-    ['purchase', network, lockAddress],
-    async ({
+  return useMutation({
+    mutationKey: ['purchase', network, lockAddress],
+    mutationFn: async ({
       pricing,
       recipients,
       recurring = 0,
@@ -34,8 +34,6 @@ export const usePurchase = ({ lockAddress, network }: Options) => {
       })
       return response.data
     },
-    {
-      retry: 2,
-    }
-  )
+    retry: 2,
+  })
 }

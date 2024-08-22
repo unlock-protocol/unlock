@@ -22,7 +22,7 @@ export function useCustomHook({
       ...Object.entries(HookMapping).map(
         async ([fieldName, { hookName, fromPublicLockVersion = 0 }]) => {
           const hasRequiredVersion: boolean =
-            (version ?? 0) >= fromPublicLockVersion ?? false
+            (version ?? 0) >= fromPublicLockVersion
           if (hasRequiredVersion) {
             const hookValue = await web3Service[hookName]({
               lockAddress,
@@ -41,18 +41,16 @@ export function useCustomHook({
 
   const {
     data: values,
-    isLoading,
+    isPending,
     refetch,
-  } = useQuery(
-    ['getHookValues', lockAddress, network],
-    async () => await getHookValues(),
-    {
-      enabled: lockAddress?.length > 0,
-    }
-  )
+  } = useQuery({
+    queryKey: ['getHookValues', lockAddress, network],
+    queryFn: getHookValues,
+    enabled: lockAddress?.length > 0,
+  })
 
   return {
-    isLoading,
+    isPending,
     refetch,
     values,
     getHookValues,

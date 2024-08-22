@@ -20,13 +20,13 @@ export const SubscriptionForm = ({
   network,
   price,
 }: SubscriptionFormProps) => {
-  const { data: lock, isLoading: isLoadingLock } = useQuery(
-    ['getLock', lockAddress, network],
-    async () => {
+  const { data: lock, isPending: isLoadingLock } = useQuery({
+    queryKey: ['getLock', lockAddress, network],
+    queryFn: async () => {
       const web3Service = new Web3Service(networks)
       return web3Service.getLock(lockAddress, network)
-    }
-  )
+    },
+  })
 
   const {
     data: gasRefund,

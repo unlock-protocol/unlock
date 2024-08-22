@@ -39,9 +39,9 @@ export const useCrossChainRoutes = ({
   const web3Service = useWeb3Service()
   const { recipients, paywallConfig, keyManagers, renew } = context
 
-  const { data: prices, isLoading: isLoadingPrices } = useQuery(
-    ['prices', account, lock, recipients, purchaseData],
-    async () => {
+  const { data: prices, isPending: isLoadingPrices } = useQuery({
+    queryKey: ['prices', account, lock, recipients, purchaseData],
+    queryFn: async () => {
       // TODO: support renewals
       if (!purchaseData || !account || !lock || !recipients || renew) {
         return []
@@ -64,29 +64,26 @@ export const useCrossChainRoutes = ({
       }
       return prices
     },
-    {
-      staleTime: 1000 * 60 * 5,
-    }
-  )
+    staleTime: 1000 * 60 * 5,
+    enabled,
+  })
 
   const hasPrices = Array.isArray(prices) && prices.length > 0
 
   const balanceResults = useQueries({
     queries: BoxEvmChains.filter((network) => {
       return networks[network.id]
-    }).map((network) => {
-      return {
-        queryKey: ['balance', account, network.id],
-        queryFn: async () => {
-          return {
-            network: network.id,
-            balance: await web3Service.getAddressBalance(account!, network.id),
-          }
-        },
-        staleTime: 1000 * 60 * 5, // 5 minutes
-        enabled: enabled && hasPrices,
-      }
-    }),
+    }).map((network) => ({
+      queryKey: ['balance', account, network.id],
+      queryFn: async () => {
+        return {
+          network: network.id,
+          balance: await web3Service.getAddressBalance(account!, network.id),
+        }
+      },
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      enabled: enabled && hasPrices,
+    })),
   })
 
   const routeResults = useQueries({
@@ -130,78 +127,73 @@ export const useCrossChainRoutes = ({
           token: Token
           network: number
           balance: string
-        }) => {
-          return {
-            queryKey: [
-              'getCrossChainRoute',
-              account,
+        }) => ({
+          queryKey: [
+            'getCrossChainRoute',
+            account,
+            lock,
+            prices,
+            recipients,
+            token,
+            network,
+            nativeBalance,
+          ],
+          queryFn: async () => {
+            if (!prices) {
+              return null
+            }
+            if (
+              network === lock.network &&
+              (token.address === lock.currencyContractAddress ||
+                (!lock.currencyContractAddress &&
+                  token.address === ZeroAddress))
+            ) {
+              return null
+            }
+            const route = await getCrossChainRoute({
+              sender: account!,
               lock,
               prices,
               recipients,
-              token,
-              network,
-              nativeBalance,
-            ],
-            queryFn: async () => {
-              if (!prices) {
-                return null
-              }
-              if (
-                network === lock.network &&
-                (token.address === lock.currencyContractAddress ||
-                  (!lock.currencyContractAddress &&
-                    token.address === ZeroAddress))
-              ) {
-                return null
-              }
-              const route = await getCrossChainRoute({
-                sender: account!,
-                lock,
-                prices,
-                recipients,
-                keyManagers: keyManagers || recipients,
-                referrers: recipients.map(() =>
-                  getReferrer(account!, paywallConfig, lock.address)
-                ),
-                purchaseData: purchaseData || recipients.map(() => '0x'),
-                srcToken: token.address,
-                srcChainId: network,
-              })
-              if (!route) {
-                console.info(
-                  `No route found from ${network} and ${token.address} to ${lock.network} and ${lock.currencyContractAddress}`
-                )
-                return null
-              }
-              const amount = BigInt(toBigInt(route.tokenPayment.amount))
-              let userTokenBalance
-              if (route.tokenPayment.tokenAddress === ZeroAddress) {
-                userTokenBalance = nativeBalance
-              } else {
-                userTokenBalance = await web3Service.getAddressBalance(
-                  account!,
-                  network,
-                  route.tokenPayment.tokenAddress
-                )
-              }
-
-              const cost = ethers.formatUnits(
-                amount,
-                route.tokenPayment.decimals
+              keyManagers: keyManagers || recipients,
+              referrers: recipients.map(() =>
+                getReferrer(account!, paywallConfig, lock.address)
+              ),
+              purchaseData: purchaseData || recipients.map(() => '0x'),
+              srcToken: token.address,
+              srcChainId: network,
+            })
+            if (!route) {
+              console.info(
+                `No route found from ${network} and ${token.address} to ${lock.network} and ${lock.currencyContractAddress}`
               )
-              if (Number(cost) > Number(userTokenBalance)) {
-                return null
-              }
-              return {
-                resolvedAt: new Date().getTime(), // maintaining order
-                userTokenBalance,
-                ...route,
-              } as CrossChainRouteWithBalance
-            },
-            enabled: enabled && hasPrices,
-            staleTime: 1000 * 60 * 5, // 5 minutes
-          }
-        }
+              return null
+            }
+            const amount = BigInt(toBigInt(route.tokenPayment.amount))
+            let userTokenBalance
+            if (route.tokenPayment.tokenAddress === ZeroAddress) {
+              userTokenBalance = nativeBalance
+            } else {
+              userTokenBalance = await web3Service.getAddressBalance(
+                account!,
+                network,
+                route.tokenPayment.tokenAddress
+              )
+            }
+
+            const cost = ethers.formatUnits(amount, route.tokenPayment.decimals)
+            if (Number(cost) > Number(userTokenBalance)) {
+              return null
+            }
+            return {
+              resolvedAt: new Date().getTime(), // maintaining order
+              userTokenBalance,
+              ...route,
+            } as CrossChainRouteWithBalance
+          },
+          enabled: enabled && hasPrices,
+          staleTime: 1000 * 60 * 5, // 5 minutes
+        })
       ),
   })
 
@@ -214,8 +206,8 @@ export const useCrossChainRoutes = ({
   return {
     isLoading:
       isLoadingPrices ||
-      (hasPrices && balanceResults.some((result) => result.isLoading)) ||
-      (hasPrices && routeResults.some((result) => result.isLoading)),
+      (hasPrices && balanceResults.some((result) => result.isPending)) ||
+      (hasPrices && routeResults.some((result) => result.isPending)),
     routes: routes.sort(
       (a: CrossChainRouteWithBalance, b: CrossChainRouteWithBalance) =>
         a!.resolvedAt - b!.resolvedAt

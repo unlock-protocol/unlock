@@ -119,17 +119,15 @@ export const LockDetailCard = ({
     return web3Service.getLock(lockAddress, network)
   }
 
-  const { isLoading, data: lock } = useQuery(
-    ['getLock', lockAddress, network],
-    async () => getLock()
-  )
+  const { isPending, data: lock } = useQuery({
+    queryKey: ['getLock', lockAddress, network],
+    queryFn: getLock,
+  })
 
-  const { isLoading: isLoadingStripe, data: isConnected = 0 } = useQuery(
-    [],
-    async () => {
-      return isStripeConnected()
-    }
-  )
+  const { isPending: isPendingStripe, data: isConnected = 0 } = useQuery({
+    queryKey: ['isStripeConnected', lockAddress, network],
+    queryFn: isStripeConnected,
+  })
 
   const recurringPossible =
     lock?.expirationDuration != -1 &&
@@ -156,26 +154,20 @@ export const LockDetailCard = ({
       <Duration seconds={expirationDuration} />
     )
 
-  const loading = isLoading || isLoadingStripe
+  const loading = isPending || isPendingStripe
 
   const symbol = lock?.currencySymbol || nativeCurrency?.symbol
   const priceLabel = keyPrice == 0 ? 'FREE' : keyPrice?.toString()
 
-  const { data: lockMetadata, isInitialLoading: isLockMetadataLoading } =
-    useQuery<Record<string, any>>(
-      ['lockMetadata', lockAddress, network],
-      async () => {
-        const response = await locksmith.lockMetadata(network, lockAddress)
-        return response.data
-      },
-      {
-        onError(error) {
-          console.error(error)
-        },
-        retry: 2,
-        initialData: {},
-      }
-    )
+  const { data: lockMetadata, isLoading: isLockMetadataLoading } = useQuery({
+    queryKey: ['lockMetadata', lockAddress, network],
+    queryFn: async () => {
+      const response = await locksmith.lockMetadata(network, lockAddress)
+      return response.data
+    },
+    retry: 2,
+    initialData: {},
+  })
 
   const settingsPageUrl = `/locks/settings?address=${lockAddress}&network=${network}`
   const metadataPageUrl = `/locks/metadata?lockAddress=${lockAddress}&network=${network}`

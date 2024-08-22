@@ -67,17 +67,17 @@ export const TransferKeyDrawer = ({
 
   const maxKeysPerAddress = lock?.maxKeysPerAddress ?? 1
 
-  const onTransferFrom = async () => {
-    const walletService = await getWalletService(network)
-    await walletService.transferFrom({
-      keyOwner: owner,
-      to: newOwner!,
-      lockAddress,
-      tokenId,
-    })
-  }
-
-  const transferFromMutation = useMutation(onTransferFrom)
+  const transferFromMutation = useMutation({
+    mutationFn: async () => {
+      const walletService = await getWalletService(network)
+      await walletService.transferFrom({
+        keyOwner: owner,
+        to: newOwner!,
+        lockAddress,
+        tokenId,
+      })
+    },
+  })
 
   const onTransferKeyOwnership = async () => {
     const transferPromise = transferFromMutation.mutateAsync()
@@ -137,7 +137,7 @@ export const TransferKeyDrawer = ({
               <AddressInput
                 label="New Owner"
                 value={newOwner}
-                disabled={transferFromMutation.isLoading}
+                disabled={transferFromMutation.isPending}
                 onChange={(value: any) => {
                   setValue('newOwner', value, {
                     shouldValidate: true,
@@ -150,7 +150,7 @@ export const TransferKeyDrawer = ({
           }}
         />
 
-        <Button disabled={transferFromMutation.isLoading}>Transfer</Button>
+        <Button disabled={transferFromMutation.isPending}>Transfer</Button>
       </form>
     </Drawer>
   )

@@ -15,12 +15,11 @@ const getDataForGuild = async (
     )
     return response.data.result
   } catch (error: any) {
-    if (error.response.data.error) {
+    if (error.response?.data?.error) {
       throw new Error(error.response.data.error)
     }
     return recipients.map(() => '')
   }
-  return recipients.map(() => '')
 }
 
 interface UseDataForGuildProps {
@@ -34,18 +33,16 @@ export function useDataForGuild({
   network,
   recipients,
 }: UseDataForGuildProps) {
-  return useQuery(
-    ['getDataForGuild', lockAddress, network],
-    async () => {
+  return useQuery({
+    queryKey: ['getDataForGuild', lockAddress, network],
+    queryFn: async () => {
       try {
-        return getDataForGuild(network, lockAddress, recipients)
+        return await getDataForGuild(network, lockAddress, recipients)
       } catch (error: any) {
         ToastHelper.error(error.message)
         return recipients.map(() => '') // Return empty values by default
       }
     },
-    {
-      retry: false,
-    }
-  )
+    retry: false,
+  })
 }

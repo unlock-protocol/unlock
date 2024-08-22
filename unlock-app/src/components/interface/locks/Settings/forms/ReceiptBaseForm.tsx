@@ -77,15 +77,15 @@ export const ReceiptBaseForm = ({
 
   const {
     mutateAsync: receiptBaseMutation,
-    isLoading: isReceiptsBaseUpdating,
+    isPending: isReceiptsBaseUpdating,
   } = useUpdateReceiptsBase({
     lockAddress,
     network,
     isManager,
   })
 
-  const onDownloadReceiptsMutation = useMutation(
-    async () => {
+  const onDownloadReceiptsMutation = useMutation({
+    mutationFn: async () => {
       const response = await locksmith.getReceipts(network, lockAddress)
       const cols: string[] = []
       response?.data?.items?.map((item) => {
@@ -101,13 +101,8 @@ export const ReceiptBaseForm = ({
         fileName: 'receipts.csv',
       })
     },
-    {
-      mutationKey: ['downloadReceipts', lockAddress, network],
-      meta: {
-        errorMessage: 'Failed to download receipts',
-      },
-    }
-  )
+    mutationKey: ['downloadReceipts', lockAddress, network],
+  })
 
   const onHandleSubmit = async (data: SupplierBodyProps) => {
     if (isValid) {
@@ -142,7 +137,7 @@ export const ReceiptBaseForm = ({
         <Button
           variant="outlined-primary"
           size="small"
-          loading={onDownloadReceiptsMutation.isLoading}
+          loading={onDownloadReceiptsMutation.isPending}
           iconLeft={<CsvIcon className="text-brand-ui-primary" size={16} />}
           onClick={() => onDownloadReceiptsMutation.mutate()}
         >

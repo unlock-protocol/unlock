@@ -15,7 +15,7 @@ import { Input, Props as InputProps } from './Input'
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 60 * 10,
+      staleTime: 60 * 10 * 1000,
       refetchInterval: false,
       refetchOnReconnect: false,
       refetchOnWindowFocus: false,
@@ -36,7 +36,7 @@ const queryClient = new QueryClient({
 export interface Props extends InputProps {
   withIcon?: boolean
   isTruncated?: boolean
-  onResolveName: (address: string) => any
+  onResolveName: (address: string) => Promise<any>
 }
 
 const WalletIcon = (props: IconBaseProps) => (
@@ -70,7 +70,9 @@ export const WrappedAddressInput = ({
     setSuccess('')
   }
 
-  const resolveNameMutation = useMutation(onResolveName)
+  const resolveNameMutation = useMutation({
+    mutationFn: onResolveName,
+  })
 
   const handleResolver = async (address: string) => {
     try {
@@ -117,11 +119,11 @@ export const WrappedAddressInput = ({
       error={error || errorMessage}
       success={isTruncated ? minifyAddress(success) : success}
       description={description}
-      iconClass={resolveNameMutation.isLoading ? 'animate-spin' : ''}
-      icon={resolveNameMutation.isLoading ? LoadingIcon : WalletIcon}
+      iconClass={resolveNameMutation.isPending ? 'animate-spin' : ''}
+      icon={resolveNameMutation.isPending ? LoadingIcon : WalletIcon}
       onChange={async (e) => {
         const value: string = e.target.value
-        await resolveNameMutation.reset() // reset mutation
+        resolveNameMutation.reset() // reset mutation
         setAddressOrEns(value)
         onReset() // restore state when typing
 

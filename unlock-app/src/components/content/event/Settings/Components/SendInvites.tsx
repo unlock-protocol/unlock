@@ -37,7 +37,7 @@ export const ConfirmModal = ({
   onSuccess,
   formData,
 }: ConfirmModalProps) => {
-  const { mutateAsync: sendEventInvites, isLoading } = useSendInvites()
+  const { mutateAsync: sendEventInvites, isPending } = useSendInvites()
 
   const { handleSubmit } = useForm()
 
@@ -73,13 +73,13 @@ export const ConfirmModal = ({
           <div className="flex justify-end gap-6">
             <Button
               type="button"
-              disabled={isLoading}
+              disabled={isPending}
               variant="outlined-primary"
               onClick={() => setIsOpen(false)}
             >
               Cancel
             </Button>
-            <Button type="submit" loading={isLoading}>
+            <Button type="submit" loading={isPending}>
               Send
             </Button>
           </div>

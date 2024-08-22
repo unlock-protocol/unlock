@@ -16,9 +16,15 @@ export const useUniversalCardPrice = ({
   purchaseData,
   enabled = true,
 }: Options) => {
-  return useQuery(
-    ['useUniversalCardPrice', network, lockAddress, purchaseData, recipients],
-    async () => {
+  return useQuery({
+    queryKey: [
+      'useUniversalCardPrice',
+      network,
+      lockAddress,
+      purchaseData,
+      recipients,
+    ],
+    queryFn: async () => {
       const response = await locksmith.getUniversalCardPrice(
         network,
         lockAddress,
@@ -27,8 +33,6 @@ export const useUniversalCardPrice = ({
       )
       return response.data
     },
-    {
-      enabled,
-    }
-  )
+    enabled,
+  })
 }

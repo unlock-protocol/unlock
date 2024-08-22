@@ -17,9 +17,16 @@ export const usePurchaseData = ({
   recipients,
   paywallConfig,
 }: Options) => {
-  return useQuery(
-    ['purchaseData', network, lockAddress, paywallConfig, recipients, data],
-    async () => {
+  return useQuery({
+    queryKey: [
+      'purchaseData',
+      network,
+      lockAddress,
+      paywallConfig,
+      recipients,
+      data,
+    ],
+    queryFn: async () => {
       // promo, password, captcha are mutually exclusive and and are in fact arrays of promo codes,
       // passwords, or captchas for each recipient.
       let purchaseData =
@@ -41,14 +48,10 @@ export const usePurchaseData = ({
       }
       return purchaseData
     },
-    {
-      refetchInterval: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-      onError(error) {
-        console.error(error)
-      },
-    }
-  )
+    refetchInterval: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    retry: false, // Disable retries
+  })
 }

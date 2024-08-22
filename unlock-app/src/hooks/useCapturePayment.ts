@@ -20,8 +20,8 @@ export const useCapturePayment = ({
   purchaseType,
 }: Options) => {
   const { account } = useAuth()
-  return useMutation(
-    [
+  return useMutation({
+    mutationKey: [
       'capturePayment',
       account,
       network,
@@ -31,7 +31,7 @@ export const useCapturePayment = ({
       referrers,
       purchaseType,
     ],
-    async ({ paymentIntent }: Record<'paymentIntent', string>) => {
+    mutationFn: async ({ paymentIntent }: Record<'paymentIntent', string>) => {
       const response = await locksmith.capturePurchase({
         data: data as string[],
         referrers: referrers as string[],
@@ -43,6 +43,6 @@ export const useCapturePayment = ({
         purchaseType,
       })
       return response.data.transactionHash
-    }
-  )
+    },
+  })
 }

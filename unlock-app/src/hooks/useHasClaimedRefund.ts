@@ -13,9 +13,9 @@ export const useHasClaimedRefund = (
   const { kickbackAddress } = config.networks[network]
   const provider = web3Service.providerForNetwork(network)
 
-  return useQuery(
-    ['hasClaimedRefund', account, lockAddress, network],
-    async () => {
+  return useQuery({
+    queryKey: ['hasClaimedRefund', account, lockAddress, network],
+    queryFn: async () => {
       const contract = new ethers.Contract(
         kickbackAddress!,
         KickbackAbi,
@@ -24,8 +24,6 @@ export const useHasClaimedRefund = (
       const claimed = await contract.issuedRefunds(lockAddress, account)
       return !!claimed
     },
-    {
-      enabled: !!account,
-    }
-  )
+    enabled: !!account,
+  })
 }

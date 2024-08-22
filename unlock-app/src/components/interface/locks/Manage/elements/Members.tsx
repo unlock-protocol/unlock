@@ -9,6 +9,7 @@ import { subgraph } from '~/config/subgraph'
 import { locksmith } from '~/config/locksmith'
 import { Placeholder } from '@unlock-protocol/ui'
 import { PAGE_SIZE } from '@unlock-protocol/core'
+import { useEffect } from 'react'
 
 const DefaultNoMemberNoFilter = () => {
   return (
@@ -87,17 +88,18 @@ export const Members = ({
   }
 
   const [
-    { isLoading, data: { keys = [], meta = {} } = { keys: [] } },
-    { isLoading: isLockLoading, data: lock, isError: hasLockLoadingError },
-    { isLoading: isLoadingSettings, data: { data: lockSettings = {} } = {} },
+    {
+      isPending,
+      data: { keys = [], meta = {} } = { keys: [] },
+      error: membersError,
+    },
+    { isPending: isLockLoading, data: lock, error: lockError },
+    { isPending: isLoadingSettings, data: { data: lockSettings = {} } = {} },
   ] = useQueries({
     queries: [
       {
         queryFn: getMembers,
         queryKey: ['getMembers', page, lockAddress, network, filters],
-        onError: () => {
-          ToastHelper.error(`Can't load members, please try again`)
-        },
       },
       {
         queryFn: () => {
@@ -111,11 +113,6 @@ export const Members = ({
           )
         },
         queryKey: ['getSubgraphLock', lockAddress, network],
-        onError: () => {
-          ToastHelper.error(
-            `Unable to fetch lock ${lockAddress} from subgraph on network ${network}`
-          )
-        },
       },
       {
         queryKey: ['getLockSettings', lockAddress, network],
@@ -124,8 +121,22 @@ export const Members = ({
     ],
   })
 
+  useEffect(() => {
+    if (membersError) {
+      ToastHelper.error(`Can't load members, please try again`)
+    }
+  }, [membersError])
+
+  useEffect(() => {
+    if (lockError) {
+      ToastHelper.error(
+        `Unable to fetch lock ${lockAddress} from subgraph on network ${network}`
+      )
+    }
+  }, [lockError, lockAddress, network])
+
   const loading =
-    isLockLoading || isLoading || loadingFilters || isLoadingSettings
+    isLockLoading || isPending || loadingFilters || isLoadingSettings
 
   const noItems = keys?.length === 0 && !loading
 
@@ -147,7 +158,7 @@ export const Members = ({
     )
   }
 
-  if (hasLockLoadingError) {
+  if (lockError) {
     return (
       <ImageBar
         alt="Fetch error"

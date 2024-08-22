@@ -3,7 +3,7 @@ import { CheckoutService } from './../checkoutMachine'
 import { useQuery } from '@tanstack/react-query'
 import { useConfig } from '~/utils/withConfig'
 import { Button } from '@unlock-protocol/ui'
-import { Fragment, useRef, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { useSelector } from '@xstate/react'
@@ -79,18 +79,21 @@ export function ConfirmCrypto({
 
   const { mutateAsync: updateUsersMetadata } = useUpdateUsersMetadata()
 
-  const { isInitialLoading: isInitialDataLoading, data: purchaseData } =
-    usePurchaseData({
-      lockAddress: lock!.address,
-      network: lock!.network,
-      paywallConfig,
-      recipients,
-      data,
-    })
+  const {
+    isLoading: isInitialDataLoading,
+    data: purchaseData,
+    error,
+  } = usePurchaseData({
+    lockAddress: lock!.address,
+    network: lock!.network,
+    paywallConfig,
+    recipients,
+    data,
+  })
 
   const {
     data: pricingData,
-    isInitialLoading: isPricingDataLoading,
+    isLoading: isPricingDataLoading,
     isError: isPricingDataError,
   } = usePricing({
     lockAddress: lock!.address,
@@ -110,9 +113,9 @@ export function ConfirmCrypto({
     !isPricingDataLoading && !isPricingDataError && !!pricingData
 
   // TODO: run full estimate so we can catch all errors, rather just check balances
-  const { data: isPayable, isInitialLoading: isPayableLoading } = useQuery(
-    ['canAfford', account, lock, pricingData],
-    async () => {
+  const { data: isPayable, isLoading: isPayableLoading } = useQuery({
+    queryKey: ['canAfford', account, lock, pricingData],
+    queryFn: async () => {
       const [balance, networkBalance] = await Promise.all([
         getAccountTokenBalance(
           web3Service,
@@ -133,10 +136,8 @@ export function ConfirmCrypto({
         isGasPayable,
       }
     },
-    {
-      enabled: isPricingDataAvailable,
-    }
-  )
+    enabled: isPricingDataAvailable,
+  })
 
   // By default, until fully loaded we assume payable.
   const canAfford =
@@ -243,6 +244,12 @@ export function ConfirmCrypto({
       buttonLabel = 'Pay using crypto'
     }
   }
+
+  useEffect(() => {
+    if (error) {
+      console.error(error)
+    }
+  }, [error])
 
   return (
     <Fragment>

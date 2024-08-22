@@ -68,9 +68,9 @@ export const usePricing = ({
   payment,
 }: Options) => {
   const web3Service = useWeb3Service()
-  return useQuery(
-    ['purchasePriceFor', network, lockAddress, recipients, data],
-    async () => {
+  return useQuery({
+    queryKey: ['purchasePriceFor', network, lockAddress, recipients, data],
+    queryFn: async () => {
       const prices = await purchasePriceFor(web3Service, {
         lockAddress,
         network,
@@ -94,10 +94,8 @@ export const usePricing = ({
       }
       return item
     },
-    {
-      retry: false,
-      refetchInterval: 1000 * 60 * 5,
-      enabled,
-    }
-  )
+    retry: false,
+    refetchInterval: 1000 * 60 * 5,
+    enabled,
+  })
 }

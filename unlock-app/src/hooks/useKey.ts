@@ -12,18 +12,16 @@ export const useValidKey = ({ lockAddress, network }: ValidKeyProps) => {
   const { account } = useAuth()
 
   const web3Service = useWeb3Service()
-  return useQuery(
-    ['hasValidKey', network, lockAddress, account],
-    async () => {
+  return useQuery({
+    queryKey: ['hasValidKey', network, lockAddress, account],
+    queryFn: async () => {
       if (!account) {
         return false
       }
       return web3Service.getHasValidKey(lockAddress, account!, network)
     },
-    {
-      enabled: !!account,
-    }
-  )
+    enabled: !!account,
+  })
 }
 
 /** Check if there is a valid keys from a list of Locks */
@@ -43,6 +41,7 @@ export const useValidKeyBulk = (locks: PaywallLocksConfigType) => {
           }
           return web3Service.getHasValidKey(lockAddress, account!, network!)
         },
+        enabled: !!account,
       }
     }),
   })

@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
+import { useEffect } from 'react'
 
 interface UpdateSymbolFormProps {
   disabled: boolean
@@ -48,20 +49,35 @@ export const UpdateSymbolForm = ({
     })
   }
 
-  const changeSymbolMutation = useMutation(changeSymbol)
+  const changeSymbolMutation = useMutation({
+    mutationFn: changeSymbol,
+  })
 
-  const { isLoading } = useQuery(
-    ['getSymbol', lockAddress, network, changeSymbolMutation.isSuccess],
-    async () => getSymbol(),
-    {
-      onSuccess: (symbol: string) => {
-        setValue('symbol', symbol)
-      },
-      onError: () => {
-        ToastHelper.error('Unable to retrieve Lock symbol.')
-      },
+  const {
+    data: symbol,
+    isPending,
+    error,
+  } = useQuery({
+    queryKey: [
+      'getSymbol',
+      lockAddress,
+      network,
+      changeSymbolMutation.isSuccess,
+    ],
+    queryFn: getSymbol,
+  })
+
+  useEffect(() => {
+    if (symbol) {
+      setValue('symbol', symbol)
     }
-  )
+  }, [symbol, setValue])
+
+  useEffect(() => {
+    if (error) {
+      ToastHelper.error('Unable to retrieve Lock symbol.')
+    }
+  }, [error])
 
   const onChangeSymbol = async ({ symbol }: FormProps) => {
     if (!isManager) return
@@ -78,7 +94,7 @@ export const UpdateSymbolForm = ({
     }
   }
 
-  const disabledInput = disabled || changeSymbolMutation.isLoading || isLoading
+  const disabledInput = disabled || changeSymbolMutation.isPending || isPending
 
   return (
     <form
@@ -104,7 +120,7 @@ export const UpdateSymbolForm = ({
           type="submit"
           className="w-full md:w-1/3"
           disabled={disabledInput}
-          loading={changeSymbolMutation.isLoading || isLoading}
+          loading={changeSymbolMutation.isPending || isPending}
         >
           Update
         </Button>

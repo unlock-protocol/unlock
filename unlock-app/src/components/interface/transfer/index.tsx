@@ -255,10 +255,10 @@ export const Transfer = () => {
   const {
     isLoading: isLoadingTransferFeeBasisPoints,
     data: transferFeeBasisPoints,
-  } = useQuery(
-    ['getTransferFeeBasisPoints', props.lockAddress!, props.network!],
-    async () => getTransferFeeBasisPoints()
-  )
+  } = useQuery({
+    queryKey: ['getTransferFeeBasisPoints', props.lockAddress!, props.network!],
+    queryFn: async () => getTransferFeeBasisPoints(),
+  })
 
   const isLoading = isLoadingTransferCode || isLoadingTransferFeeBasisPoints
   // TODO: check is the key manager is also lock manager

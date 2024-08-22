@@ -36,9 +36,9 @@ export function useDataForGitcoinPassport({
   network,
   recipients,
 }: UseDataForGitcoinPassportProps) {
-  return useQuery(
-    ['getDataForGitcoinPassport', lockAddress, network, recipients],
-    async () => {
+  return useQuery({
+    queryKey: ['getDataForGitcoinPassport', lockAddress, network, recipients],
+    queryFn: async () => {
       try {
         return await getDataForGitcoinPassport(network, lockAddress, recipients)
       } catch (error: any) {
@@ -75,9 +75,7 @@ export function useDataForGitcoinPassport({
         return recipients.map(() => '')
       }
     },
-    {
-      enabled: false, // Manually trigger the query
-      retry: false, // Do not retry after a failure
-    }
-  )
+    enabled: false, // Manually trigger the query
+    retry: false, // Do not retry after a failure
+  })
 }

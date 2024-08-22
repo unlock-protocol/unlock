@@ -64,7 +64,7 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
     encodeURIComponent(getValues('ticket.event_address') || 'Ethereum')
   )
 
-  const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
+  const { mutateAsync: uploadImage, isPending: isUploading } = useImageUpload()
 
   const isSameDay = dayjs(event.ticket?.event_end_date).isSame(
     event.ticket?.event_start_date,

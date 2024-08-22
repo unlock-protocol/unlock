@@ -23,26 +23,24 @@ export const useLockManager = ({
   const addressToCheck = lockManagerAddress || account
   const {
     data: isManager = false,
-    isLoading,
+    isPending,
     refetch,
-  } = useQuery(
-    ['getLockManagerStatus', network, lockAddress, addressToCheck],
-    async () => {
+  } = useQuery({
+    queryKey: ['getLockManagerStatus', network, lockAddress, addressToCheck],
+    queryFn: async () => {
       if (!addressToCheck || !lockAddress || !network) {
         return false
       }
       const web3Service = new Web3Service(networks)
       return web3Service.isLockManager(lockAddress, addressToCheck, network)
     },
-    {
-      staleTime: 1000 * 60,
-      enabled: !!addressToCheck && !!lockAddress && !!network,
-    } // Cached for 1 minute!
-  )
+    staleTime: 1000 * 60,
+    enabled: !!addressToCheck && !!lockAddress && !!network,
+  }) // Cached for 1 minute!
 
   return {
     refetch,
     isManager,
-    isLoading,
+    isPending,
   }
 }

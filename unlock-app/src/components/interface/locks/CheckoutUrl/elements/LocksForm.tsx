@@ -334,17 +334,15 @@ export const LocksForm = ({
   }
 
   const { isLoading: isLoadingLocksByNetwork, data: locksByNetwork = [] } =
-    useQuery(
-      [network, account],
-      async () =>
+    useQuery({
+      queryKey: ['locksByNetwork', network, account],
+      queryFn: async () =>
         getLocksByNetwork({
           account,
           network,
         }),
-      {
-        enabled: !!account,
-      }
-    )
+      enabled: !!account,
+    })
 
   const onReorderInList = (lockAddress: string, order: number) => {
     const lock = locks[lockAddress]
@@ -537,7 +535,10 @@ export const LocksForm = ({
     setAddLock(false)
   }
 
-  const addLockMutation = useMutation(onAddLock)
+  const addLockMutation = useMutation({
+    mutationFn: onAddLock,
+  })
+
   const onAddMetadata = (fields: MetadataInputType) => {
     const lock = locks[lockAddress]
     const metadata = lock?.metadataInputs || []
@@ -773,7 +774,7 @@ export const LocksForm = ({
             )}
         </div>
       </div>
-      {addLockMutation?.isLoading && (
+      {addLockMutation?.isPending && (
         <Placeholder.Root className="mt-4">
           <Placeholder.Line size="xl" className="py-8" />
         </Placeholder.Root>

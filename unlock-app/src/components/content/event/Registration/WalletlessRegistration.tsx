@@ -249,7 +249,9 @@ export const RegistrationForm = ({
     reset,
   } = localForm
 
-  const handleResolve = useMutation(onResolveName)
+  const handleResolve = useMutation({
+    mutationFn: onResolveName,
+  })
 
   const onSubmit = async ({ recipient, ...data }: any) => {
     setLoading(true)
@@ -270,7 +272,7 @@ export const RegistrationForm = ({
     setLoading(false)
   }
 
-  const isLoading = loading || handleResolve.isLoading
+  const isLoading = loading || handleResolve.isPending
 
   return (
     <form

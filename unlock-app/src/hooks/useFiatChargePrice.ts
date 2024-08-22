@@ -19,9 +19,9 @@ export const useFiatChargePrice = ({
   amount,
   enabled = true,
 }: Options) => {
-  return useQuery(
-    ['purchasePrice', network, tokenAddress, amount],
-    async () => {
+  return useQuery({
+    queryKey: ['purchasePrice', network, tokenAddress, amount],
+    queryFn: async () => {
       const response = await locksmith.getTotalPrice(
         network,
         amount,
@@ -29,8 +29,6 @@ export const useFiatChargePrice = ({
       )
       return response.data
     },
-    {
-      enabled,
-    }
-  )
+    enabled,
+  })
 }
