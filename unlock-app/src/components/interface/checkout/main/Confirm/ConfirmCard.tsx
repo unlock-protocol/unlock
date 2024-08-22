@@ -18,7 +18,10 @@ import { useCapturePayment } from '~/hooks/useCapturePayment'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { PricingData } from './PricingData'
 import { formatNumber } from '~/utils/formatter'
-import { formatFiatPriceFromCents } from '../utils'
+import {
+  formatFiatPriceFromCents,
+  getNumberOfRecurringPayments,
+} from '../utils'
 import { useGetTotalCharges } from '~/hooks/usePrice'
 import { useGetLockSettings } from '~/hooks/useLockSettings'
 import { getCurrencySymbol } from '~/utils/currency'
@@ -117,13 +120,10 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
 
   const { address: lockAddress, network: lockNetwork } = lock!
 
-  const recurringPayment =
-    paywallConfig?.recurringPayments ||
-    paywallConfig?.locks[lockAddress]?.recurringPayments
-
-  const recurringPaymentAmount = recurringPayment
-    ? Math.abs(Math.floor(Number(recurringPayment)))
-    : undefined
+  const recurringPayments = getNumberOfRecurringPayments(
+    paywallConfig?.locks[lockAddress]?.recurringPayments ||
+      paywallConfig?.recurringPayments
+  )
 
   const { mutateAsync: createPurchaseIntent } = usePurchase({
     lockAddress,
@@ -223,7 +223,7 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
       recipients,
       referrers,
       data: purchaseData!,
-      recurring: recurringPaymentAmount || 0,
+      recurring: recurringPayments,
     })
 
     if (!stripeIntent?.clientSecret) {
