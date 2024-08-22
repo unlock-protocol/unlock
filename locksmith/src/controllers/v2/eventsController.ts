@@ -77,7 +77,6 @@ export const saveEventDetails: RequestHandler = async (request, response) => {
     await sendEmail({
       template: 'eventDeployed',
       recipient: event.data.replyTo,
-      // @ts-expect-error object incomplete
       params: {
         eventName: event!.name,
         eventDate: event!.data.ticket.event_start_date,
