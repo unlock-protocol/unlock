@@ -65,14 +65,6 @@ contract PasswordRequiredHook {
     return _toString(abi.encodePacked(account));
   }
 
-  function _toString(uint256 value) private pure returns (string memory) {
-    return _toString(abi.encodePacked(value));
-  }
-
-  function _toString(bytes32 value) private pure returns (string memory) {
-    return _toString(abi.encodePacked(value));
-  }
-
   function _toString(bytes memory data) private pure returns (string memory) {
     bytes memory alphabet = "0123456789abcdef";
 
