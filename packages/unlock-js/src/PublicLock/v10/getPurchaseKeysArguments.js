@@ -91,7 +91,7 @@ export default async function getPurchaseKeysArguments({
               return keyPrice * BigInt(recurringPayments)
             }
           }
-          return 0
+          return BigInt(0)
         })
         .reduce((total, approval) => {
           if (total === MAX_UINT || approval === MAX_UINT) {

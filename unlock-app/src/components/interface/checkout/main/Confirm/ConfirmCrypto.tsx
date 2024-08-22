@@ -21,6 +21,7 @@ import { formatNumber } from '~/utils/formatter'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { PricingData } from './PricingData'
 import Disconnect from '../Disconnect'
+import { getNumberOfRecurringPayments } from '../utils'
 
 interface Props {
   checkoutService: CheckoutService
@@ -53,24 +54,14 @@ export function ConfirmCrypto({
 
   const currencyContractAddress = lock?.currencyContractAddress
 
-  const recurringPayment =
-    paywallConfig?.recurringPayments ||
-    paywallConfig?.locks[lockAddress]?.recurringPayments
+  const numberOfrecurringPayments = getNumberOfRecurringPayments(
+    paywallConfig?.locks[lockAddress]?.recurringPayments ||
+      paywallConfig?.recurringPayments
+  )
 
-  const totalApproval =
-    typeof recurringPayment === 'string' &&
-    recurringPayment.toLowerCase() === 'forever' &&
-    payment.method === 'crypto'
-      ? MAX_UINT
-      : undefined
-
-  const recurringPaymentAmount = recurringPayment
-    ? Math.abs(Math.floor(Number(recurringPayment)))
-    : undefined
-
-  const recurringPayments: number[] | undefined = recurringPaymentAmount
-    ? new Array(recipients.length).fill(recurringPaymentAmount)
-    : undefined
+  const recurringPayments: number[] = new Array(recipients.length).fill(
+    numberOfrecurringPayments
+  )
 
   const { data: creditCardEnabled } = useCreditCardEnabled({
     lockAddress,
@@ -183,7 +174,6 @@ export function ConfirmCrypto({
             recurringPayment: recurringPayments
               ? recurringPayments[0]
               : undefined,
-            totalApproval,
           },
           {} /** Transaction params */,
           onErrorCallback
@@ -198,7 +188,6 @@ export function ConfirmCrypto({
             keyManagers: keyManagers?.length ? keyManagers : undefined,
             recurringPayments,
             referrers,
-            totalApproval,
           },
           {} /** Transaction params */,
           onErrorCallback
