@@ -57,14 +57,6 @@ contract GuildHook is Ownable {
     return toString(abi.encodePacked(account));
   }
 
-  function toString(uint256 value) private pure returns (string memory) {
-    return toString(abi.encodePacked(value));
-  }
-
-  function toString(bytes32 value) private pure returns (string memory) {
-    return toString(abi.encodePacked(value));
-  }
-
   function toString(bytes memory data) private pure returns (string memory) {
     bytes memory alphabet = "0123456789abcdef";
 

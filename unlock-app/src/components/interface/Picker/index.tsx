@@ -48,9 +48,9 @@ export function Picker({
 
   const currentNetwork = state.network || connectedNetwork || 1
 
-  const { data: locks, isLoading: isLoadingLocks } = useQuery(
-    ['locks', userAddress, currentNetwork],
-    async () => {
+  const { data: locks, isPending: isLoadingLocks } = useQuery({
+    queryKey: ['locks', userAddress, currentNetwork],
+    queryFn: async () => {
       const locks = await subgraph.locks(
         {
           first: 100,
@@ -64,10 +64,8 @@ export function Picker({
       )
       return locks
     },
-    {
-      enabled: !!currentNetwork,
-    }
-  )
+    enabled: !!currentNetwork,
+  })
 
   const networkOptions = Object.entries(config.networks).map(
     ([id, { name: label }]: [string, any]) => ({
