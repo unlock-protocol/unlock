@@ -5,31 +5,15 @@ const {
 } = require('@unlock-protocol/hardhat-helpers')
 const l1BridgeAbi = require('../helpers/abi/l1standardbridge.json')
 
-// TODO: change to mainnet / base
-const srcChainId = 11155111 // 1
-const destChainId = 84532 // 8453
-
-// bridge address
-const standardBridges = {
-  1: '0x3154Cf16ccdb4C6d922629664174b904d80F2C35',
-  11155111: '0xfd0Bf71F60660E2f608ed56e1659C450eB113120',
-}
-
-// sepolia gov : 0x84AaD43734930bf179B79d724904A6b6Fc14C72d
-// base sepolia gov : 0xfDBE81e89fcaA4E7b47d62A25636CC158F07aa0D
-const timelocks = {
-  1: '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B',
-  8453: '0xB34567C4cA697b39F72e1a8478f285329A98ed1b',
-  84532: '0xC50610a02C9EbF71aBe0Ec943Bc085EfaAc1099d',
-  11155111: '0x3C0c44EeCd29c7354F1b676BD73E8c414B8439B1',
-}
-
+// chains
+const srcChainId = 1 // mainnet
+const destChainId = 8453 // base
 const defaultGasAmount = '200000'
 
 module.exports = async ({
-  mainnetTimelockAddress = timelocks[srcChainId],
-  baseTimelockAddress = timelocks[destChainId],
-  bridgeAddress = standardBridges[srcChainId],
+  mainnetTimelockAddress = '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B',
+  baseTimelockAddress = '0xB34567C4cA697b39F72e1a8478f285329A98ed1b',
+  bridgeAddress = '0x3154Cf16ccdb4C6d922629664174b904d80F2C35',
 } = {}) => {
   const {
     name: srcName,
