@@ -11,12 +11,12 @@ const TIMELOCK_ADMIN_ROLE = ethers.keccak256(
 )
 const PROPOSER_ROLE = ethers.keccak256(ethers.toUtf8Bytes('PROPOSER_ROLE'))
 
-async function main({ upAddress, timelockAddress, testing = false } = {}) {
+async function main({ upAddress, timelockAddress } = {}) {
   const [deployer] = await ethers.getSigners()
   const deployerAddress = await deployer.getAddress()
 
   // fetch chain info
-  const { id, name } = await getNetwork()
+  const { id, name, isTestNetwork } = await getNetwork()
   console.log(
     `Deploying Governor on ${name} (${id}) with the account ${deployerAddress}...`
   )
@@ -31,7 +31,7 @@ async function main({ upAddress, timelockAddress, testing = false } = {}) {
   if (!timelockAddress) {
     // time lock delay in seconds
     const oneWeekInSeconds = 60 * 60 * 24 * 7
-    const MINDELAY = testing ? 30 : oneWeekInSeconds
+    const MINDELAY = isTestNetwork ? 30 : oneWeekInSeconds
 
     // deploying timelock with a proxy
     ;({ address: timelockAddress } = await deployUpgradeableContract(
