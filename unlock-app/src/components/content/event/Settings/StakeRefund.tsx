@@ -26,19 +26,22 @@ export const StakeRefund = ({ event, checkoutConfig }: StakeRefundProps) => {
     attendeeRefund: event.attendeeRefund,
   })
 
-  const approveRefundsMutation = useMutation(async () => {
-    try {
-      const response = await locksmith.approveRefunds(
-        event.slug,
-        event.attendeeRefund!
-      )
-      return response.data
-    } catch (error) {
-      console.error(error)
-      ToastHelper.error(
-        'Failed to approve refunds. Please make sure you have checked-in attendees.'
-      )
-    }
+  const approveRefundsMutation = useMutation({
+    mutationFn: async () => {
+      try {
+        const response = await locksmith.approveRefunds(
+          event.slug,
+          event.attendeeRefund!
+        )
+        return response.data
+      } catch (error) {
+        console.error(error)
+        ToastHelper.error(
+          'Failed to approve refunds. Please make sure you have checked-in attendees.'
+        )
+        throw error
+      }
+    },
   })
 
   const {
@@ -94,8 +97,8 @@ export const StakeRefund = ({ event, checkoutConfig }: StakeRefundProps) => {
         refunds for them only.
       </p>
       <Button
-        loading={approveRefundsMutation.isLoading}
-        onClick={() => approveRefundsMutation.mutateAsync()}
+        loading={approveRefundsMutation.isPending}
+        onClick={() => approveRefundsMutation.mutate()}
       >
         Prepare Refunds
       </Button>

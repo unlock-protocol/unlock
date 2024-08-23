@@ -17,7 +17,8 @@ export const useLockGuild = ({
   lockAddress: string
   network: number
 }) => {
-  return useQuery(['lockGuild', lockAddress, network], async () =>
-    getLockGuild(lockAddress, network)
-  )
+  return useQuery({
+    queryKey: ['lockGuild', lockAddress, network],
+    queryFn: () => getLockGuild(lockAddress, network),
+  })
 }

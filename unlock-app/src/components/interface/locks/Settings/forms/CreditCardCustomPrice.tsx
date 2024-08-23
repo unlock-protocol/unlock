@@ -90,7 +90,7 @@ export default function CreditCardCustomPrice({
 
   const {
     mutateAsync: saveSettingMutation,
-    isLoading: isSaveLockSettingLoading,
+    isPending: isSaveLockSettingLoading,
   } = useSaveLockSettings()
 
   const { keyPrice, currencyContractAddress } = lock

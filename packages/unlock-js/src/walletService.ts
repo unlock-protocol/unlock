@@ -40,7 +40,7 @@ interface PurchaseKeysParams {
   erc20Address?: string
   decimals?: number
   referrers?: (string | null)[]
-  recurringPayments?: number[] | string[]
+  recurringPayments?: number[]
   totalApproval?: string
   keyManagers?: string[]
 }
