@@ -8,6 +8,8 @@ import config from '../../config/config'
 import normalizer from '../../utils/normalizer'
 import { ethers } from 'ethers'
 import { networks } from '@unlock-protocol/networks'
+// Temporary since SIWE does not seem to support ERC-6492
+import { verifyMessage } from '@ambire/signature-validator'
 
 export const login: RequestHandler = async (request, response) => {
   try {
@@ -24,12 +26,67 @@ export const login: RequestHandler = async (request, response) => {
     if (networkConfig) {
       provider = new ethers.JsonRpcProvider(networkConfig.publicProvider)
     }
-    const { data: fields } = await message.verify(
-      {
-        signature: request.body.signature,
-      },
-      { provider }
-    )
+    let verified
+    try {
+      verified = await message.verify(
+        {
+          signature: request.body.signature,
+        },
+        { provider }
+      )
+    } catch (error) {
+      // Temporary fix since the siwe library does not support ERC 6492
+      if (
+        error.error.shortMessage === 'could not decode result data' &&
+        provider
+      ) {
+        try {
+          if (
+            await verifyMessage({
+              signer: message.address,
+              message: message.toMessage(),
+              signature: request.body.signature,
+              // @ts-expect-error Type 'JsonRpcProvider' is missing the following properties from type 'Provider': getGasPrice, getStorageAt, sendTransaction, getBlockWithTransactions, _isProvider
+              provider,
+            })
+          ) {
+            verified = {
+              success: true,
+              data: message,
+            }
+          }
+        } catch (error) {
+          logger.error(
+            `SIWE message verification with 6492 failed: ${error.message}`
+          )
+          response.status(500).json({ message: error.message })
+          return
+        }
+      } else {
+        switch (error) {
+          case SiweErrorType.EXPIRED_MESSAGE: {
+            response.status(440).json({ message: error.message })
+            return
+          }
+          case SiweErrorType.INVALID_SIGNATURE: {
+            response.status(422).json({ message: error.message })
+            return
+          }
+          default: {
+            logger.error(`SIWE message verification failed: ${error.message}`)
+            response.status(500).json({ message: error.message })
+            return
+          }
+        }
+      }
+    }
+
+    if (!verified) {
+      response.status(422).json({ message: 'Signature is not valid!' })
+      return
+    }
+
+    const { data: fields } = verified
     // Avoid replay attack.
     const isNonceLoggedIn = await Session.findOne({
       where: {
@@ -59,20 +116,7 @@ export const login: RequestHandler = async (request, response) => {
     })
   } catch (error) {
     logger.error(error.message)
-    switch (error) {
-      case SiweErrorType.EXPIRED_MESSAGE: {
-        response.status(440).json({ message: error.message })
-        break
-      }
-      case SiweErrorType.INVALID_SIGNATURE: {
-        response.status(422).json({ message: error.message })
-        break
-      }
-      default: {
-        response.status(500).json({ message: error.message })
-        break
-      }
-    }
+    response.status(500).json({ message: error.message })
   }
 }
 
