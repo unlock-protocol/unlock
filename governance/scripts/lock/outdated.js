@@ -105,10 +105,10 @@ async function getAllLocks({ chainId, timeLimit }) {
         .map((lock) => getLockBalance({ chainId, lock }))
     )
   )
-    .filter(
-      ({ balanceNative, balanceToken }) =>
-        balanceNative !== 0n || balanceToken !== 0n
-    )
+    // .filter(
+    //   ({ balanceNative, balanceToken }) =>
+    //     balanceNative !== 0n || balanceToken !== 0n
+    // )
     .sort(({ version: a }, { version: b }) => b - a)
 
   return {
@@ -121,7 +121,7 @@ async function getAllLocks({ chainId, timeLimit }) {
 }
 
 function logLocks({ chainId, activeLocks, earliest, earlyLocks, versions }) {
-  const { name } = networks[chainId]
+  const { name, explorer } = networks[chainId]
   console.log(
     `## ${name} (${chainId}):
 
@@ -134,14 +134,15 @@ function logLocks({ chainId, activeLocks, earliest, earlyLocks, versions }) {
 ${
   earlyLocks.length
     ? `
-## earliest locks with money left (total: ${earlyLocks.length})
+### Locks v8 and v9 (total: ${earlyLocks.length})
 
 | address | version | balance | lastKeyMinted |
 | --- | --- | --- | --- | 
   ${earlyLocks
+    .sort((a, b) => b.lastKeyMintedAt - a.lastKeyMintedAt)
     .map(
       ({ address, balanceFormatted, lastKeyMintedAt, version }) =>
-        `| ${address} | v${version} | ${balanceFormatted} | ${new Date(lastKeyMintedAt * 1000).toLocaleDateString('en-US')} |`
+        `| [${address}](${explorer.urls.address(address)}) | v${version} | ${balanceFormatted} | ${new Date(lastKeyMintedAt * 1000).toLocaleDateString('en-US')} |`
     )
     .join('\n')}`
     : ''
