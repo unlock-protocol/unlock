@@ -1,7 +1,7 @@
 import { locksmith } from '~/config/locksmith'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Placeholder, ToggleSwitch } from '@unlock-protocol/ui'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { EmailSettingsForm } from './EmailSettingsForm'
 import { useSaveLockSettings } from '~/hooks/useLockSettings'
 
@@ -31,22 +31,33 @@ export const SendEmailForm = ({
     })
   }
 
-  const updateSettingsMutation = useMutation(updateRequireEmail, {
+  const updateSettingsMutation = useMutation({
+    mutationFn: updateRequireEmail,
     onSuccess: () => {
       setChanged(false)
     },
   })
 
-  const { isLoading, data: { data: lockSettings } = {} } = useQuery(
-    ['getLockSettings', lockAddress, network, updateSettingsMutation.isSuccess],
-    async () => await locksmith.getLockSettings(network, lockAddress),
-    {
-      enabled: lockAddress?.length > 0 && !!network && isManager,
-      onSuccess: (res: any) => {
-        setSendEmail(res?.data?.sendEmail ?? true)
-      },
+  const { isLoading, data: lockSettings } = useQuery({
+    queryKey: [
+      'getLockSettings',
+      lockAddress,
+      network,
+      updateSettingsMutation.isSuccess,
+    ],
+    queryFn: async () => {
+      const response = await locksmith.getLockSettings(network, lockAddress)
+      return response.data
+    },
+    enabled: lockAddress?.length > 0 && !!network && isManager,
+  })
+
+  useEffect(() => {
+    if (lockSettings) {
+      setSendEmail(lockSettings.sendEmail ?? true)
     }
-  )
+  }, [lockSettings])
+
   const sendEmailValue = lockSettings?.sendEmail
   const disabledInput = disabled || isLoading || !isManager
 
@@ -81,7 +92,7 @@ export const SendEmailForm = ({
       />
       {isManager && (
         <Button
-          loading={updateSettingsMutation.isLoading}
+          loading={updateSettingsMutation.isPending}
           onClick={() => {
             updateSettingsMutation.mutateAsync()
           }}
@@ -98,7 +109,11 @@ export const SendEmailForm = ({
             isManager={isManager}
             network={network}
             disabled={disabled || !sendEmailValue}
-            lockSettings={lockSettings}
+            lockSettings={{
+              ...lockSettings,
+              replyTo: lockSettings?.replyTo ?? undefined,
+              emailSender: lockSettings?.emailSender ?? undefined,
+            }}
           />
         </div>
       )}
