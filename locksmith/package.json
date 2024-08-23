@@ -35,6 +35,7 @@
   "author": "Unlock Inc",
   "license": "ISC",
   "dependencies": {
+    "@ambire/signature-validator": "1.3.1",
     "@aws-sdk/client-s3": "3.614.0",
     "@coinbase/waas-server-auth": "3.1.2",
     "@logtail/node": "0.4.21",
