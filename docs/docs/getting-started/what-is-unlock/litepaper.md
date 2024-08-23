@@ -86,8 +86,6 @@ UDT rewards are granted upon each key purchase transaction. The rewards are base
 - The gas consumed by the key purchase transaction.
 - The actual value added to the protocol’s Gross Network Product (total value exchanged in the network).
 
-To sustain the work creating and maintaining Unlock Protocol, each reward is split between the creator (80%) and Unlock Labs (20%). This feature is optional and may be adjusted by the [Unlock DAO](../../governance/unlock-dao/).
-
 ## What can you do with Unlock Protocol?
 
 Unlock is a protocol for *memberships*. Our goal is for Unlock to support multiple kinds of memberships, enable easy integration of these memberships into any application, and share the protocol’s ownership with its adopters.
