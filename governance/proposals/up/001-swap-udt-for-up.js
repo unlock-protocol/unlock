@@ -6,6 +6,7 @@ const {
   getNetwork,
   getERC20Contract,
 } = require('@unlock-protocol/hardhat-helpers')
+const ERC20_ABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/erc20.json')
 
 const swapAddresses = {
   8453: '0x12be7322070cFA75E2f001C6B3d6Ac8C2efEF5Ea',
@@ -33,8 +34,14 @@ module.exports = async () => {
   const udtAmount = await udt.balanceOf(timelocks[chainId])
 
   // parse proposal
-  const proposalName = `Swap UDT for UP ds`
+  const proposalName = `Swap UDT for UP`
   const calls = [
+    {
+      contractAddress: udtAddress,
+      contractNameOrAbi: ERC20_ABI,
+      functionName: 'approve',
+      functionArgs: [swapAddress, udtAmount],
+    },
     {
       contractAddress: swapAddress,
       contractNameOrAbi: UPSwap.abi,
