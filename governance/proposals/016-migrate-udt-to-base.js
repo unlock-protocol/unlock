@@ -64,7 +64,7 @@ module.exports = async ({
   // parse calls for Safe
   const proposalName = `# Transfer UDT to base
 
-This proposal will bridge all existing UDT to Base and transfer them to the new UP Governor.
+This proposal will bridge the UDT owned by the DAO to Base and transfer them to the new UP Governor.
 `
 
   return {
