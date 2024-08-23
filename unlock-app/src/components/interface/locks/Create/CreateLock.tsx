@@ -67,13 +67,8 @@ export const CreateLockSteps = () => {
     changeStep('summary', data)
   }
 
-  const onSummarySubmit = async (data: LockFormProps) => {
-    const address = await createLockMutation.mutateAsync(data)
-    setLockAddress(address)
-  }
-
-  const createLockMutation = useMutation(
-    async ({
+  const createLockMutation = useMutation({
+    mutationFn: async ({
       name,
       unlimitedDuration,
       unlimitedQuantity,
@@ -114,13 +109,16 @@ export const CreateLockSteps = () => {
       )
       return lockAddress
     },
-    {
-      onError: (error) => {
-        console.error(error)
-        ToastHelper.error('Unexpected issue on lock creation, please try again')
-      },
-    }
-  )
+    onError: (error) => {
+      console.error(error)
+      ToastHelper.error('Unexpected issue on lock creation, please try again')
+    },
+  })
+
+  const onSummarySubmit = async (data: LockFormProps) => {
+    const address = await createLockMutation.mutateAsync(data)
+    setLockAddress(address as string)
+  }
 
   const onBack = () => {
     if (!backUrl) {

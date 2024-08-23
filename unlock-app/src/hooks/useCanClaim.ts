@@ -11,13 +11,13 @@ interface Options {
 export const useCanClaim = (
   { recipients, data, network, lockAddress }: Options,
   queryOptions?: Omit<
-    UseQueryOptions<unknown, unknown, unknown, (string | number | string[])[]>,
-    'initialData' | 'queryFn' | 'queryKey'
-  > & { initialData?: (() => undefined) | undefined }
+    UseQueryOptions<boolean, Error, boolean, (string | number | string[])[]>,
+    'queryKey' | 'queryFn'
+  >
 ) => {
-  return useQuery(
-    ['canClaim', network, lockAddress, recipients, data],
-    async () => {
+  return useQuery({
+    queryKey: ['canClaim', network, lockAddress, recipients, data],
+    queryFn: async () => {
       try {
         const response = await locksmith.checkClaim(network, lockAddress, {
           recipients,
@@ -29,6 +29,6 @@ export const useCanClaim = (
         return false
       }
     },
-    queryOptions
-  )
+    ...queryOptions,
+  })
 }

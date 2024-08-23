@@ -76,10 +76,10 @@ export const CheckoutUrlPage = () => {
     refetch: refetchConfigList,
   } = useCheckoutConfigsByUser()
 
-  const { mutateAsync: updateConfig, isLoading: isConfigUpdating } =
+  const { mutateAsync: updateConfig, isPending: isConfigUpdating } =
     useCheckoutConfigUpdate()
 
-  const { mutateAsync: removeConfig, isLoading: isConfigRemoving } =
+  const { mutateAsync: removeConfig, isPending: isConfigRemoving } =
     useCheckoutConfigRemove()
 
   useEffect(() => {
@@ -190,7 +190,9 @@ export const CheckoutUrlPage = () => {
     }
   }, [checkoutConfigList, query.id, handleSetConfiguration])
 
-  const handleSetConfigurationMutation = useMutation(handleSetConfiguration)
+  const handleSetConfigurationMutation = useMutation({
+    mutationFn: handleSetConfiguration,
+  })
 
   const isNewConfiguration = configuration === 'new'
 
@@ -218,8 +220,12 @@ export const CheckoutUrlPage = () => {
     }
   }
 
-  const submitConfigurationMutation = useMutation(onSubmitConfiguration)
-  const deleteConfigurationMutation = useMutation(onConfigRemove)
+  const submitConfigurationMutation = useMutation({
+    mutationFn: onSubmitConfiguration,
+  })
+  const deleteConfigurationMutation = useMutation({
+    mutationFn: onConfigRemove,
+  })
 
   const hasSelectedConfig =
     configuration === 'existing' && checkoutConfig?.id !== undefined
@@ -241,7 +247,7 @@ export const CheckoutUrlPage = () => {
     [checkoutConfig, updateConfig, refetchConfigList]
   )
   const loading =
-    isLoadingConfigList || handleSetConfigurationMutation.isLoading
+    isLoadingConfigList || handleSetConfigurationMutation.isPending
 
   return (
     <>
@@ -290,8 +296,8 @@ export const CheckoutUrlPage = () => {
                         <ChooseConfiguration
                           loading={
                             isLoadingConfigList ||
-                            submitConfigurationMutation.isLoading ||
-                            deleteConfigurationMutation.isLoading
+                            submitConfigurationMutation.isPending ||
+                            deleteConfigurationMutation.isPending
                           }
                           name="configName"
                           control={control}

@@ -32,9 +32,14 @@ export function useGetLockProps({
 }: GetLockProps) {
   const { name, address, network } = lock ?? {}
 
-  return useQuery(
-    ['getLockProps', lock?.address, lock?.network, numberOfRecipients],
-    async (): Promise<LockPropsResult> => {
+  return useQuery({
+    queryKey: [
+      'getLockProps',
+      lock?.address,
+      lock?.network,
+      numberOfRecipients,
+    ],
+    queryFn: async (): Promise<LockPropsResult> => {
       const keyPriceConverted = await convertedKeyPrice(
         lock,
         numberOfRecipients
@@ -54,6 +59,6 @@ export function useGetLockProps({
         prepend: numberOfRecipients > 1 ? `${numberOfRecipients} x ` : '',
         isSoldOut: numberOfAvailableKeys(lock) <= 0,
       }
-    }
-  )
+    },
+  })
 }
