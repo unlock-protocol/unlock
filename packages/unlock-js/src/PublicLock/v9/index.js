@@ -6,36 +6,36 @@ import setExpirationDuration from './setExpirationDuration'
 import setEventHooks from './setEventHooks'
 import transferFrom from './transferFrom'
 import setGasRefundValue from './setGasRefundValue'
-import v8 from '../v8'
+import previous from '../previous'
 
 const {
+  addKeyGranter,
+  addLockManager,
+  approveBeneficiary,
+  cancelAndRefund,
+  expireAndRefundFor,
+  getCancelAndRefundValueFor,
+  getKeyExpirationByLockForOwner,
+  getLock,
+  getTokenIdForOwner,
   grantKey,
   grantKeys,
-  updateKeyPrice,
-  withdrawFromLock,
   initializeTemplate,
-  isLockManager,
   isKeyGranter,
-  addKeyGranter,
-  expireAndRefundFor,
-  cancelAndRefund,
-  shareKey,
-  getLock,
+  isLockManager,
   keyManagerOf,
-  getCancelAndRefundValueFor,
-  getTokenIdForOwner,
-  getKeyExpirationByLockForOwner,
-  approveBeneficiary,
+  renounceLockManager,
+  setBaseTokenURI,
+  setKeyManagerOf,
+  shareKey,
   totalKeys,
+  updateKeyPrice,
   updateLockName,
   updateLockSymbol,
-  setBaseTokenURI,
-  addLockManager,
-  renounceLockManager,
   updateRefundPenalty,
   updateTransferFee,
-  setKeyManagerOf,
-} = v8
+  withdrawFromLock,
+} = previous
 
 export default {
   version: 'v9',
