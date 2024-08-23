@@ -23,7 +23,7 @@ import { MAX_UINT } from '~/constants'
 import { AirdropForm } from '~/components/interface/members/airdrop/AirdropDrawer'
 import LinkedinShareButton from './LinkedInShareButton'
 import { useCertification } from '~/hooks/useCertification'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Checkout } from '~/components/interface/checkout/main'
 import { useValidKey } from '~/hooks/useKey'
 import { useTransferFee } from '~/hooks/useTransferFee'
@@ -32,6 +32,7 @@ import { WarningBar } from '~/components/interface/locks/Create/elements/Balance
 import { UpdateTransferFee } from '~/components/interface/locks/Settings/forms/UpdateTransferFee'
 import { PaywallConfigType, getLockTypeByMetadata } from '@unlock-protocol/core'
 import { useLockData } from '~/hooks/useLockData'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 interface CertificationDetailsProps {
   lockAddress: string
   network: number
@@ -50,10 +51,10 @@ const CertificationManagerOptions = ({
     network,
   })
 
-  const { isLoading, data: transferFeeBasisPoints } = useQuery(
-    ['getTransferFeeBasisPoints', lockAddress, network],
-    async () => getTransferFeeBasisPoints()
-  )
+  const { isLoading, data: transferFeeBasisPoints } = useQuery({
+    queryKey: ['getTransferFeeBasisPoints', lockAddress, network],
+    queryFn: async () => getTransferFeeBasisPoints(),
+  })
 
   const certificationIsTransferable = Number(transferFeeBasisPoints) !== 10000
 
@@ -133,7 +134,7 @@ export const CertificationDetails = ({
     network,
   })
 
-  const { data: metadata, isInitialLoading: isMetadataLoading } = useMetadata({
+  const { data: metadata, isPending: isMetadataLoading } = useMetadata({
     lockAddress,
     network,
     keyId: tokenId,
@@ -145,13 +146,17 @@ export const CertificationDetails = ({
     )
   }
 
-  const { data: key, isFetched } = useCertification({
+  const {
+    data: key,
+    isFetched,
+    error,
+  } = useCertification({
     lockAddress,
     network,
     tokenId,
   })
 
-  const { isManager: isLockManager, isLoading: isLoadingLockManager } =
+  const { isManager: isLockManager, isPending: isLoadingLockManager } =
     useLockManager({
       lockAddress,
       network,
@@ -170,6 +175,13 @@ export const CertificationDetails = ({
     isHasValidKeyLoading
 
   const { isCertification } = getLockTypeByMetadata(metadata)
+
+  useEffect(() => {
+    if (error) {
+      console.error(error)
+      ToastHelper.error('No valid certification')
+    }
+  }, [error])
 
   if (loading) {
     return (
