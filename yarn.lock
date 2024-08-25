@@ -33512,6 +33512,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"graph-service@workspace:graph-service":
+  version: 0.0.0-use.local
+  resolution: "graph-service@workspace:graph-service"
+  dependencies:
+    "@cloudflare/workers-types": "npm:4.20240821.1"
+    vitest: "npm:^0.34.6"
+    wrangler: "npm:3.67.1"
+  languageName: unknown
+  linkType: soft
+
 "graphemer@npm:^1.4.0":
   version: 1.4.0
   resolution: "graphemer@npm:1.4.0"
@@ -49880,16 +49890,6 @@ __metadata:
   checksum: 10/4d3e3cb5cbfc7abdf14e424c8631a15fd15cbf0357ffc641c319587e00c2d1036b1a71cb88b42411bc3ce10d7730ad3fb9789b034d11365e8a19d23f56486c77
   languageName: node
   linkType: hard
-
-"subgraph-worker@workspace:subgraph-worker":
-  version: 0.0.0-use.local
-  resolution: "subgraph-worker@workspace:subgraph-worker"
-  dependencies:
-    "@cloudflare/workers-types": "npm:4.20240821.1"
-    vitest: "npm:^0.34.6"
-    wrangler: "npm:3.67.1"
-  languageName: unknown
-  linkType: soft
 
 "sucrase@npm:^3.32.0, sucrase@npm:^3.35.0":
   version: 3.35.0
