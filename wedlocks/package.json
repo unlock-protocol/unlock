@@ -13,7 +13,7 @@
     "babel-loader": "9.1.3",
     "babel-plugin-wildcard": "7.0.0",
     "dotenv": "16.4.5",
-    "eslint": "8.57.0",
+    "eslint": "9.9.1",
     "handlebars": "4.7.8",
     "netlify-cli": "15.11.0",
     "node-forge": "1.3.1",

@@ -11,7 +11,7 @@
     "build:docs": "yarn docs && yarn docs:copy",
     "build:index": "tsc && node dist/parser.js > src/index.ts && tsc",
     "ci": "yarn test",
-    "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .ts,.js src/",
+    "lint": "eslint src/",
     "contracts:copy": "copyfiles --verbose -u 2 src/**/*.sol dist",
     "copyfiles": "copyfiles",
     "docs": "sh ./bin/build_docs.sh",

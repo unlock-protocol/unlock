@@ -15,7 +15,7 @@
     "@unlock-protocol/contracts": "latest",
     "@unlock-protocol/hardhat-plugin": "latest",
     "@unlock-protocol/networks": "latest",
-    "eslint": "8.57.0",
+    "eslint": "9.9.1",
     "ethers": "6.13.2",
     "fs-extra": "11.2.0",
     "hardhat": "2.22.8",
