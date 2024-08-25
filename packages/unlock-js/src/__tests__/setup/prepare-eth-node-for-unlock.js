@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-require-imports */
 const { ethers } = require('hardhat')
 const { WalletService } = require('../../../dist/')
 

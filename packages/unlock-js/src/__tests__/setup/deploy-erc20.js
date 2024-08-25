@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-require-imports */
 const path = require('path')
 const { ethers } = require('hardhat')
 let fs = require('fs-extra')

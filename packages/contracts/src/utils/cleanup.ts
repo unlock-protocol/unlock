@@ -1,3 +1,7 @@
+import { ContractAbi } from '@unlock-protocol/types'
+// @ts-expect-error:next-line
+import fs from 'fs-extra'
+import { getAbiPaths } from './files'
 /**
  * This script is used to keep only required data in contracts ABI files
  * and remove anything added by Truffle or other building systems.
@@ -5,10 +9,6 @@
  * The file can be called directly with `yarn abi:cleanup`
  */
 import path from 'path'
-import { ContractAbi } from '@unlock-protocol/types'
-import { getAbiPaths } from './files'
-
-const fs = require('fs-extra')
 
 const keysToKeep = [
   'contractName',

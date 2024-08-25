@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 const rulesToIgnore = [
   'import/no-extraneous-dependencies',
   'no-underscore-dangle',
@@ -17,13 +18,20 @@ const rulesToIgnore = [
   'default-param-last',
   'prefer-promise-reject-errors',
   'prefer-const',
+  '@typescript-eslint/no-require-imports',
 ]
 
-module.exports = {
-  extends: ['@unlock-protocol/eslint-config'],
-  rules: {
-    ...rulesToIgnore.reduce((obj, rule) => {
-      return { ...obj, [rule]: 'off' }
-    }, {}),
+const unlockProtocolConfig = require('@unlock-protocol/eslint-config')
+
+module.exports = [
+  ...unlockProtocolConfig,
+  {
+    rules: {
+      ...rulesToIgnore.reduce((obj, rule) => {
+        return { ...obj, [rule]: 'off' }
+      }, {}),
+    },
+    files: ['.tsx', '.ts', '.js'],
+    ignores: ['dist/*', '@generated/*'],
   },
-}
+]
