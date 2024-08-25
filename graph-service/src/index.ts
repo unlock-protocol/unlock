@@ -2,11 +2,7 @@ import { getSubgraphId } from './networks'
 import { Env, GraphQLRequest } from './types'
 
 export default {
-  async fetch(
-    request: Request,
-    env: Env,
-    ctx: ExecutionContext
-  ): Promise<Response> {
+  async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url)
     // Remove the leading '/' to get the network name
     const network = url.pathname.slice(1)
