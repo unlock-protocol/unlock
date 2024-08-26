@@ -494,6 +494,29 @@ export default class WalletService extends UnlockService {
   }
 
   /**
+   * Lends a key to another address
+   * @param {function} callback : callback invoked with the transaction hash
+   */
+
+  async lendKey(
+    params: {
+      lockAddress: string
+      from: string
+      to: string
+      tokenId: string
+    },
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.lendKey) {
+      throw new Error('Lock version not supported')
+    }
+    return version.lendKey.bind(this)(params, transactionOptions, callback)
+  }
+
+  /**
    * Grants a key to an address
    * @param {function} callback : callback invoked with the transaction hash
    */
@@ -1161,8 +1184,6 @@ export default class WalletService extends UnlockService {
       to: string
       tokenId: string
       lockAddress: string
-      time?: number
-      lend?: boolean
     },
     transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
@@ -1173,40 +1194,6 @@ export default class WalletService extends UnlockService {
     if (!params.tokenId) throw new Error('Missing tokenId')
 
     const version = await this.lockContractAbiVersion(params.lockAddress)
-
-    if (params.time) {
-      if (!version.shareKey) {
-        throw new Error('Lock version not supported')
-      }
-      const shareKeyParams = {
-        lockAddress: params.lockAddress,
-        tokenId: params.tokenId,
-        recipient: params.to,
-        duration: params.time,
-      }
-      return version.shareKey.bind(this)(
-        shareKeyParams,
-        transactionOptions,
-        callback
-      )
-    }
-
-    if (params.lend) {
-      if (!version.lendKey) {
-        throw new Error('Lock version not supported')
-      }
-      const lendKeyParams = {
-        from: params.keyOwner,
-        to: params.to,
-        tokenId: params.tokenId,
-      }
-      return version.lendKey.bind(this)(
-        lendKeyParams,
-        transactionOptions,
-        callback
-      )
-    }
-
     if (!version.transferFrom) {
       throw new Error('Lock version not supported')
     }
