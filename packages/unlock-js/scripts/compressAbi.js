@@ -23,7 +23,6 @@ const unlockVersions = [
   'v13',
 ]
 const publicLockVersions = [
-  'v4',
   'v6',
   'v7',
   'v8',
