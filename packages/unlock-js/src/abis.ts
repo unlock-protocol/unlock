@@ -1125,33 +1125,6 @@ const abis = {
     }
   },
   "Unlock": {
-    "v4": {
-      "contractName": "Unlock",
-      "abi": [
-        "function locks(address) constant view returns (bool deployed,uint256 totalSales,uint256 yieldedDiscountTokens)",
-        "function renounceOwnership()",
-        "function owner() constant view returns (address)",
-        "function isOwner() constant view returns (bool)",
-        "function totalDiscountGranted() constant view returns (uint256)",
-        "function grossNetworkProduct() constant view returns (uint256)",
-        "function transferOwnership(address newOwner)",
-        "event NewLock (address indexed lockOwner,address indexed newLockAddress)",
-        "event NewTokenURI (string tokenURI)",
-        "event NewGlobalTokenSymbol (string tokenSymbol)",
-        "event OwnershipTransferred (address indexed previousOwner,address indexed newOwner)",
-        "function initialize(address _owner)",
-        "function createLock(uint256 _expirationDuration,address _tokenAddress,uint256 _keyPrice,uint256 _maxNumberOfKeys,string _lockName)",
-        "function computeAvailableDiscountFor(address _purchaser,uint256 _keyPrice) constant view returns (uint256 discount,uint256 tokens)",
-        "function recordKeyPurchase(uint256 _value,address _referrer)",
-        "function recordConsumedDiscount(uint256 _discount,uint256 _tokens)",
-        "function unlockVersion() constant pure returns (uint16)",
-        "function getGlobalBaseTokenURI() constant view returns (string)",
-        "function setGlobalBaseTokenURI(string _URI)",
-        "function getGlobalTokenSymbol() constant view returns (string)",
-        "function setGlobalTokenSymbol(string _symbol)"
-      ],
-      "bytecodeHash": "0xa1e7ddfa6d9183443aca067a96bd252f3ffa72a55ce36564ab77e79ce6527ac3"
-    },
     "v6": {
       "contractName": "Unlock",
       "abi": [
