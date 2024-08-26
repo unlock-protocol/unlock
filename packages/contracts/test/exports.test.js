@@ -10,7 +10,7 @@ describe('main exports', () => {
     const contracts = require('../dist')
     assert.notEqual(Object.keys(contracts).length, 0)
 
-    const v0 = require('../dist/abis/Unlock/UnlockV0.json')
+    const v0 = require('../dist/abis/Unlock/UnlockV13.json')
     assert.equal(v0.contractName, 'Unlock')
     assert(Object.keys(v0).includes('abi'))
     assert(Object.keys(v0).includes('bytecode'))
