@@ -1,4 +1,4 @@
-name = "subgraph-worker"
+name = "graph-service"
 main = "src/index.ts"
 
 [vars]
