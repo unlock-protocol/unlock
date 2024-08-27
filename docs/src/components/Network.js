@@ -1,10 +1,21 @@
 import { useQuery } from '@tanstack/react-query'
-import { JsonRpcProvider, Contract, formatUnits } from 'ethers'
+import { JsonRpcProvider, Contract, formatUnits, ZeroAddress } from 'ethers'
 
 const ERC20_ABI = [
   'function balanceOf(address) view returns (uint256)',
   'function decimals() view returns (uint256)',
   'function symbol() view returns (string)',
+  'function name() view returns (string)',
+]
+
+const UNLOCK_ABI = [
+  {
+    inputs: [],
+    name: 'udt',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
 ]
 
 const getBalance = async (provider, contractAddress, ownerAddress) => {
@@ -16,6 +27,31 @@ const getBalance = async (provider, contractAddress, ownerAddress) => {
   const decimals = await contract.decimals()
   const symbol = await contract.symbol()
   return `${Number(formatUnits(balance, decimals)).toFixed(2)} ${symbol}`
+}
+
+const getUdt = async (provider, unlockAddress) => {
+  if (!unlockAddress) {
+    return ''
+  }
+  const contract = new Contract(unlockAddress, UNLOCK_ABI, provider)
+  const udt = await contract.udt()
+  return udt
+}
+
+const getSymbol = async (provider, tokenAddress) => {
+  if (!tokenAddress) {
+    return ''
+  }
+  const contract = new Contract(tokenAddress, ERC20_ABI, provider)
+  return await contract.symbol()
+}
+
+const getName = async (provider, tokenAddress) => {
+  if (!tokenAddress) {
+    return ''
+  }
+  const contract = new Contract(tokenAddress, ERC20_ABI, provider)
+  return await contract.name()
 }
 
 const getProtocolFee = async (provider, unlockAddress) => {
@@ -83,7 +119,7 @@ const BurnableTokens = ({ network }) => {
   )
 }
 
-const Network = ({ network }) => {
+export const SupportedNetwork = ({ network }) => {
   const provider = new JsonRpcProvider(network.publicProvider)
   const { data: udtBalance } = useQuery({
     queryKey: [
@@ -138,4 +174,46 @@ const Network = ({ network }) => {
   )
 }
 
-export default Network
+export const TokenNetwork = ({ network }) => {
+  const provider = new JsonRpcProvider(network.publicProvider)
+  const { data: udt } = useQuery({
+    queryKey: ['getUdt', network.unlockAddress],
+    queryFn: async () => {
+      return getUdt(provider, network.unlockAddress)
+    },
+    enabled: !!network.unlockAddress,
+  })
+  console.log(udt)
+
+  const { data: symbol } = useQuery({
+    queryKey: ['getSymbol', network.unlockAddress, udt],
+    queryFn: async () => {
+      return getSymbol(provider, udt)
+    },
+    enabled: udt && udt !== ZeroAddress,
+  })
+
+  if (network.name === 'localhost') {
+    return null
+  }
+  if (udt === ZeroAddress) {
+    return null
+  }
+
+  return (
+    <tr>
+      <td>{network.name}</td>
+      <td>{symbol}</td>
+      <td>
+        <a target="_blank" href={network.explorer.urls.token(udt)}>
+          <code>{udt}</code>
+        </a>
+      </td>
+    </tr>
+  )
+}
+
+// export const Network = ({ network }) => {
+//   return (
+//   )
+// }

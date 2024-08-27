@@ -1,4 +1,4 @@
-# PublicLock (v13)
+# PublicLock (v14)
 
 > The PublicLock Interface
 
@@ -982,6 +982,21 @@ _Set the value to be refunded to the sender on purchase_
 | Name             | Type    | Description                                  |
 | ---------------- | ------- | -------------------------------------------- |
 | \_gasRefundValue | uint256 | price in wei or token in smallest price unit |
+
+### setKeyExpiration
+
+```solidity
+function setKeyExpiration(uint256 _tokenId, uint256 _newExpiration) external nonpayable
+```
+
+Set the expiration of a keyonly a lock manager can call this function
+
+#### Parameters
+
+| Name            | Type    | Description              |
+| --------------- | ------- | ------------------------ |
+| \_tokenId       | uint256 | the id of the key        |
+| \_newExpiration | uint256 | the new timestamp to use |
 
 ### setKeyManagerOf
 

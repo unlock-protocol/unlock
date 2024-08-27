@@ -9,7 +9,9 @@ export interface Ticket {
   event_start_time?: string
   event_end_date?: string
   event_end_time?: string
+  event_is_in_person?: boolean
   event_address?: string
+  event_location?: string
   event_url?: string
   event_timezone?: string
   event_cover_image?: string
@@ -37,7 +39,7 @@ export interface Attribute {
   display_type?: string
   max_value?: number
   trait_type: string
-  value: string | number
+  value: string | number | boolean
 }
 
 export interface Metadata {
@@ -114,6 +116,7 @@ export const categorizeAttributes = (
   }
 
   const ticket = attributes.reduce((item, { trait_type, value }) => {
+    // @ts-expect-error Type 'string' is not assignable to type 'undefined'.
     item[trait_type.toLowerCase() as keyof Ticket] = value as string
     return item
   }, {} as Ticket)
@@ -218,10 +221,36 @@ export const formDataToMetadata = ({
     })
   }
 
+  if (ticket?.event_is_in_person != undefined) {
+    metadata.attributes.push({
+      trait_type: 'event_is_in_person',
+      value: ticket.event_is_in_person,
+    })
+  }
+
+  // We should set empty string if the value is not provided
   if (ticket?.event_address) {
     metadata.attributes.push({
       trait_type: 'event_address',
       value: ticket.event_address,
+    })
+  } else {
+    metadata.attributes.push({
+      trait_type: 'event_address',
+      value: '',
+    })
+  }
+
+  // We should set empty string if the value is not provided
+  if (ticket?.event_location) {
+    metadata.attributes.push({
+      trait_type: 'event_location',
+      value: ticket.event_location,
+    })
+  } else {
+    metadata.attributes.push({
+      trait_type: 'event_location',
+      value: '',
     })
   }
 

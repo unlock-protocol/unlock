@@ -48,13 +48,11 @@ export const getAddressForName = async (_name: string): Promise<string> => {
  * @param {*} address
  */
 export const useEns = (address: string) => {
-  const { data: name } = useQuery(
-    ['ens', address],
-    async () => {
-      return getNameOrAddressForAddress(address)
-    },
-    { staleTime: Infinity }
-  )
+  const { data: name } = useQuery({
+    queryKey: ['ens', address],
+    queryFn: () => getNameOrAddressForAddress(address),
+    staleTime: Infinity,
+  })
   return name || address
 }
 

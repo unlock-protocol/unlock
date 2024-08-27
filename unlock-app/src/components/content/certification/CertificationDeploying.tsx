@@ -38,7 +38,9 @@ export const CertificationDeploying = ({
     network,
   })
 
-  const updateTransferFeeMutation = useMutation(updateTransferFee)
+  const updateTransferFeeMutation = useMutation({
+    mutationFn: updateTransferFee,
+  })
 
   useEffect(() => {
     window?.scrollTo(0, 0) // force scroll start of page
@@ -94,7 +96,7 @@ export const CertificationDeploying = ({
         <span className="mb-4 font-base">{message}</span>
         {status === 'deployed' && lockAddress && (
           <div className="flex flex-col items-center content-center text-center">
-            {!updateTransferFeeMutation.isLoading ? (
+            {!updateTransferFeeMutation.isPending ? (
               <>
                 <p>
                   {`We're almost there, but it's essential to make sure your
@@ -102,8 +104,8 @@ export const CertificationDeploying = ({
                 </p>
                 <Button
                   className="my-4"
-                  disabled={updateTransferFeeMutation.isLoading}
-                  loading={updateTransferFeeMutation.isLoading}
+                  disabled={updateTransferFeeMutation.isPending}
+                  loading={updateTransferFeeMutation.isPending}
                   onClick={() => {
                     updateTransferFeeMutation.mutateAsync(100) // Make tokens non-transferable
                   }}

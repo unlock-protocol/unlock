@@ -13,9 +13,9 @@ interface Options {
   network: number
 }
 export const useRsvp = ({ lockAddress, network }: Options) => {
-  return useMutation(
-    ['rsvp', network, lockAddress],
-    async ({ data, recipient, captcha, email }: RsvpOption) => {
+  return useMutation({
+    mutationKey: ['rsvp', network, lockAddress],
+    mutationFn: async ({ data, recipient, captcha, email }: RsvpOption) => {
       try {
         const response = await locksmith.rsvp(network, lockAddress, captcha, {
           recipient,
@@ -24,14 +24,12 @@ export const useRsvp = ({ lockAddress, network }: Options) => {
         })
         return response.data
       } catch (error: any) {
-        if (error.response.data?.message) {
+        if (error.response?.data?.message) {
           return error.response.data
         }
         throw error
       }
     },
-    {
-      retry: 2,
-    }
-  )
+    retry: 2,
+  })
 }
