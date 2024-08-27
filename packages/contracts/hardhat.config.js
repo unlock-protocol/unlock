@@ -33,8 +33,6 @@ const settings = {
 module.exports = {
   solidity: {
     compilers: [
-      { version: '0.4.24', settings },
-      { version: '0.4.25', settings },
       { version: '0.5.0', settings },
       { version: '0.5.12', settings },
       { version: '0.5.17', settings },
