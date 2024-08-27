@@ -1,0 +1,16 @@
+name = "graph-service"
+main = "src/index.ts"
+
+[vars]
+BASE_URL = ""
+NETWORK_MAINNET = ""
+NETWORK_OPTIMISM = ""
+NETWORK_POLYGON = ""
+NETWORK_ARBITRUM = ""
+NETWORK_BSC = ""
+NETWORK_GNOSIS = ""
+NETWORK_GOERLI = ""
+NETWORK_SEPOLIA = ""
+NETWORK_BASE = ""
+NETWORK_CELO = ""
+NETWORK_AVALANCHE = ""
