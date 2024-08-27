@@ -64,7 +64,9 @@ export const Deploy: React.FC = () => {
     [getWalletService]
   )
 
-  const onSubmitMutation = useMutation(deployLock)
+  const onSubmitMutation = useMutation({
+    mutationFn: deployLock,
+  })
 
   const router = useRouter()
 
@@ -140,7 +142,7 @@ export const Deploy: React.FC = () => {
                     keyPrice: 5.0,
                     expirationDuration: 30,
                   }}
-                  isLoading={onSubmitMutation.isLoading}
+                  isLoading={onSubmitMutation.isPending}
                 />
               </div>
             </div>

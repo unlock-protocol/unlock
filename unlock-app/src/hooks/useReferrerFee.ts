@@ -24,9 +24,11 @@ export const useReferrerFee = ({ lockAddress, network }: ReferrerFeeProps) => {
     })
   }
 
-  const setReferrerFee = useMutation(setReferrerFeeForLock)
+  const setReferrerFee = useMutation({
+    mutationFn: setReferrerFeeForLock,
+  })
 
-  const isSettingReferrerFee = setReferrerFee.isLoading
+  const isSettingReferrerFee = setReferrerFee.isPending
 
   const getLock = async () => {
     const service = new SubgraphService()
@@ -43,21 +45,21 @@ export const useReferrerFee = ({ lockAddress, network }: ReferrerFeeProps) => {
   }
 
   const {
-    isLoading,
+    isPending,
     data: referralFeesData,
     error,
     refetch,
-  } = useQuery(
-    ['getLock', lockAddress, network, setReferrerFee.isSuccess],
-    async () => getLock()
-  )
+  } = useQuery({
+    queryKey: ['getLock', lockAddress, network, setReferrerFee.isSuccess],
+    queryFn: getLock,
+  })
 
   const data = (referralFeesData?.referrerFees || []).filter(
     (referralFeesData) => referralFeesData.fee > 0
   )
 
   return {
-    isLoading,
+    isLoading: isPending,
     data,
     setReferrerFee,
     isSettingReferrerFee,

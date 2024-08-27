@@ -45,7 +45,7 @@ export const ConfirmModal = ({
   formData,
   checkoutConfig,
 }: ConfirmModalProps) => {
-  const { mutateAsync: sendCustomEmail, isLoading: isSendingCustomEmail } =
+  const { mutateAsync: sendCustomEmail, isPending: isSendingCustomEmail } =
     useCustomEmailSend()
 
   const { handleSubmit } = useForm()

@@ -11,7 +11,7 @@ import { Launcher } from '../interface/Launcher'
 import { useSession } from '~/hooks/useSession'
 
 export const HomeContent = () => {
-  const { isInitialLoading } = useSession()
+  const { isLoading } = useSession()
   const router = useRouter()
   const { account } = useAuth()
 
@@ -29,7 +29,7 @@ export const HomeContent = () => {
         <OpenGraphTags />
       </Head>
       {account && <Loading />}
-      {!account && !isInitialLoading && <Launcher />}
+      {!account && !isLoading && <Launcher />}
     </AppLayout>
   )
 }

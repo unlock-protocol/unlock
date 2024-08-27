@@ -5,7 +5,7 @@
  */
 
 /* You can override the default Infima variables here. */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500&display=swap');
 
 :root {
   --ifm-color-primary: #8064ef;
@@ -21,25 +21,25 @@
   --menu-background: #e6ded1;
   --text-800: #373a3e;
   --text-500: #75797e;
-  --ifm-navbar-item-padding-horizontal: 1.0rem;
-  --ifm-font-family-base: "Inter", sans-serif;
+  --ifm-navbar-item-padding-horizontal: 1rem;
+  --ifm-font-family-base: 'Inter', sans-serif;
   --ifm-heading-font-weight: 800;
   --ifm-h1-font-size: 2.5rem;
   --ifm-footer-background-color: #000000;
   --ifm-code-background-color: #373a3e;
   --ifm-global-radius: 1.5rem;
   --ifm-pre-padding: 1.5rem;
-  --ifm-color-secondary: #603DEB;
+  --ifm-color-secondary: #603deb;
   --ifm-color-success: #faffe7;
   --ifm-color-info: #ffffff;
   --ifm-color-warning: #fffbe3;
   --ifm-color-danger: #fff0f1;
-  --ifm-button-background-color: #603DEB;
+  --ifm-button-background-color: #603deb;
 }
-[data-theme="light"] {
+[data-theme='light'] {
   background-color: #fff9ef;
 }
-[data-theme="dark"] {
+[data-theme='dark'] {
   --ifm-color-primary: #bfb1f7;
   --ifm-color-primary-dark: #ffdfa4;
   --ifm-color-primary-darker: #ffde9f;
@@ -52,13 +52,12 @@
   --text-800: #e4e4e4;
   --text-500: #9ea3a7;
 }
-[data-theme="dark"] {
+[data-theme='dark'] {
   background-color: #282a2d;
 }
 
-
-[data-theme="light"] img[src$="#gh-dark-mode-only"],
-[data-theme="dark"] img[src$="#gh-light-mode-only"] {
+[data-theme='light'] img[src$='#gh-dark-mode-only'],
+[data-theme='dark'] img[src$='#gh-light-mode-only'] {
   display: none;
 }
 
@@ -129,7 +128,7 @@ p {
 }
 .navbar .navbar__link--active:after {
   background: var(--ifm-color-primary);
-  content: "";
+  content: '';
   display: flex;
   height: 4px;
   margin-left: -8px;
@@ -186,11 +185,11 @@ main {
   padding: 1.1rem;
 }
 /*page body*/
-.markdown h1:first-child{
+.markdown h1:first-child {
   font-size: 2.2rem;
 }
 
-dt{
+dt {
   font-weight: bold;
   padding-top: 14px;
   padding-bottom: 14px;
@@ -235,50 +234,50 @@ dd {
   border-radius: 6px !important;
 }
 
-[data-theme="dark"] .aa-DetachedSearchButton {
+[data-theme='dark'] .aa-DetachedSearchButton {
   background: #282a2d !important;
 }
 
 /* Admonition / Alerts */
 /* ::info */
-.alert--info{
-  background: #FFFFFF;
-  border-left: 8px solid #BFB1F7;
+.alert--info {
+  background: #ffffff;
+  border-left: 8px solid #bfb1f7;
 }
-[data-theme="dark"] .alert--info{
+[data-theme='dark'] .alert--info {
   background: #020207;
 }
 /* ::tip */
-.alert--success{
-  background: #FAFFE7;
-  border-left: 8px solid #BDE422;
+.alert--success {
+  background: #faffe7;
+  border-left: 8px solid #bde422;
 }
-[data-theme="dark"] .alert--success{
-  background: #3A4803;
+[data-theme='dark'] .alert--success {
+  background: #3a4803;
 }
 /* ::note */
-.alert--secondary{
-  background: #FFFFFF;
-  border-left: 8px solid #9EA3A7;
+.alert--secondary {
+  background: #ffffff;
+  border-left: 8px solid #9ea3a7;
 }
-[data-theme="dark"] .alert--note{
-        background: #373A3E;
+[data-theme='dark'] .alert--note {
+  background: #373a3e;
 }
 /* ::caution */
-.alert--warning{
-  background: #FFFBE3;
-  border-left: 8px solid #FADA33;
+.alert--warning {
+  background: #fffbe3;
+  border-left: 8px solid #fada33;
 }
-[data-theme="dark"] .alert--warning{
-  background: #60520B;
+[data-theme='dark'] .alert--warning {
+  background: #60520b;
 }
 /* ::danger */
-.alert--danger{
-  background: #FFF0F1;
-  border-left: 8px solid #B23E45;
+.alert--danger {
+  background: #fff0f1;
+  border-left: 8px solid #b23e45;
 }
-[data-theme="dark"] .alert--danger{
-  background: #8B2930;
+[data-theme='dark'] .alert--danger {
+  background: #8b2930;
 }
 
 /* Cards */
@@ -289,52 +288,52 @@ dd {
 .card {
   margin: 0px 10px 20px 10px;
   border-radius: 20px;
-  background-color: rgb(255, 255, 255, .8);
+  background-color: rgb(255, 255, 255, 0.8);
   width: 100%;
   height: 97%;
 }
 
-[data-theme="dark"] .card {
+[data-theme='dark'] .card {
   color: #373a3e;
 }
-.card__header h3{
+.card__header h3 {
   font-size: 1.3em;
   text-align: center;
 }
 .card__body {
   text-align: left;
-  font-size: .9em;
+  font-size: 0.9em;
 }
-.card__body dl{
+.card__body dl {
   margin-block-start: 0px;
 }
-.card__body dt{
+.card__body dt {
   font-weight: bold;
   padding-top: 15px;
 }
-.card__body dd{
+.card__body dd {
   margin: 0px 20px;
 }
 
 /* Getting Started Layout */
 
-.row .col.col--4{
-  padding: .5rem;
+.row .col.col--4 {
+  padding: 0.5rem;
 }
 
-.half-width{
+.half-width {
   width: 50%;
 }
 
 @media screen and (max-width: 996px) {
-  .half-width{
+  .half-width {
     width: 100%;
   }
 }
 
 /* Icons */
 
-.react-icons{
+.react-icons {
   vertical-align: text-bottom;
 }
 
@@ -346,11 +345,16 @@ dd {
   border-radius: 50%;
 }
 
-.icon-gasless{
-  background-image: url("/img/icons/gasless.svg");
+.icon-gasless {
+  background-image: url('/img/icons/gasless.svg');
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: bottom center, 50%, 50%;
+  background-position:
+    bottom center,
+    50%,
+    50%;
 }
 
-
+.button p {
+  margin: 0;
+}

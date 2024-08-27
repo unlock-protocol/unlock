@@ -16,7 +16,7 @@ interface Props {
   defaultValues?: z.infer<typeof BasicPaywallConfigSchema>
 }
 export const BasicConfigForm = ({ onChange, defaultValues }: Props) => {
-  const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
+  const { mutateAsync: uploadImage, isPending: isUploading } = useImageUpload()
   const [isOpen, setIsOpen] = useState(false)
 
   const {

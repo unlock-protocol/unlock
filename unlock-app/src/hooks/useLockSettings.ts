@@ -55,11 +55,14 @@ export function useLockSettings() {
 }
 
 export function useGetLockSettingsBySlug(slug = '') {
-  return useQuery(['getLockSettingsBySlug', slug], async () => {
-    if (slug) {
-      return (await locksmith.getLockSettingsBySlug(slug)).data
-    }
-    return null
+  return useQuery({
+    queryKey: ['getLockSettingsBySlug', slug],
+    queryFn: async () => {
+      if (slug) {
+        return (await locksmith.getLockSettingsBySlug(slug)).data
+      }
+      return null
+    },
   })
 }
 
@@ -67,9 +70,12 @@ export function useGetLockSettings({
   lockAddress,
   network,
 }: LockSettingsProps) {
-  return useQuery(['getLockSettings', lockAddress, network], async () => {
-    const response = await locksmith.getLockSettings(network, lockAddress)
-    return response?.data
+  return useQuery({
+    queryKey: ['getLockSettings', lockAddress, network],
+    queryFn: async () => {
+      const response = await locksmith.getLockSettings(network, lockAddress)
+      return response?.data
+    },
   })
 }
 
@@ -92,10 +98,12 @@ interface SaveLockProps {
 }
 
 export function useSaveLockSettings() {
-  return useMutation(async (config: SaveLockProps) => {
-    const { lockAddress, network } = config
-    return locksmith.saveLockSetting(network, lockAddress, {
-      ...config,
-    })
+  return useMutation({
+    mutationFn: async (config: SaveLockProps) => {
+      const { lockAddress, network } = config
+      return locksmith.saveLockSetting(network, lockAddress, {
+        ...config,
+      })
+    },
   })
 }

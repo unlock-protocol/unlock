@@ -3,6 +3,7 @@ import { Meta, StoryObj } from '@storybook/react'
 import { MdPerson as PersonIcon } from 'react-icons/md'
 import { FiAtSign as AtSignIcon } from 'react-icons/fi'
 import { IconBaseProps } from 'react-icons'
+import { Button } from '../Button/Button'
 
 const meta = {
   component: Input,
@@ -85,5 +86,34 @@ export const CustomDescription = {
     value: 'unlock',
     description: 'Type a good username',
     copy: true,
+  },
+} satisfies Story
+
+export const WithAction = {
+  args: {
+    label: 'Input with Single Action',
+    size: 'medium',
+    value: 'Some input value',
+    description: 'This input has a single action',
+    actions: (
+      <Button variant="borderless" className="p-2.5">
+        Continue
+      </Button>
+    ),
+  },
+} satisfies Story
+
+export const WithMultipleActions = {
+  args: {
+    label: 'Input with Multiple Actions',
+    size: 'medium',
+    value: 'Copyable text',
+    description: 'This input has multiple actions',
+    copy: true,
+    actions: (
+      <Button size="small" variant="borderless">
+        More
+      </Button>
+    ),
   },
 } satisfies Story

@@ -109,20 +109,17 @@ export const ConnectWallet = ({
 
   const [isEmailLoading, setIsEmailLoading] = useState<boolean>(false)
 
-  const { data: userType } = useQuery(
-    ['userAccountType', userEmail],
-    async () => {
+  const { data: userType } = useQuery({
+    queryKey: ['userAccountType', userEmail],
+    queryFn: async () => {
       setIsEmailLoading(true)
       const result = await locksmith.getUserAccountType(userEmail as string)
       const userAccountType = result.data.userAccountType as UserAccountType[]
       setIsEmailLoading(false)
-
       return userAccountType
     },
-    {
-      enabled: !!userEmail,
-    }
-  )
+    enabled: !!userEmail,
+  })
 
   const { authenticateWithProvider } = useAuthenticate({ injectedProvider })
   const [recentlyUsedProvider] = useLocalStorage(RECENTLY_USED_PROVIDER, null)

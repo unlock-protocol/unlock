@@ -15,9 +15,9 @@ interface useEventOrganizersProps {
 export const useEventOrganizers = ({
   checkoutConfig,
 }: useEventOrganizersProps) => {
-  return useQuery(
-    ['eventOrganizers', checkoutConfig],
-    async (): Promise<string[]> => {
+  return useQuery({
+    queryKey: ['eventOrganizers', checkoutConfig],
+    queryFn: async (): Promise<string[]> => {
       const service = new SubgraphService()
       // Group locks by network
       const locksByNetwork: { [key: string]: string[] } = {}
@@ -61,6 +61,6 @@ export const useEventOrganizers = ({
         })
       )
       return eventOrganizers
-    }
-  )
+    },
+  })
 }

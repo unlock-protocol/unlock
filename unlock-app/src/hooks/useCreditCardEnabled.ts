@@ -10,12 +10,15 @@ export const useCreditCardEnabled = ({
   lockAddress,
   network,
 }: CreditCardEnabledProps) => {
-  return useQuery(['useCreditCardEnabled', lockAddress, network], async () => {
-    const response = await locksmith.isCardPaymentEnabledForLock(
-      network,
-      lockAddress
-    )
+  return useQuery({
+    queryKey: ['useCreditCardEnabled', lockAddress, network],
+    queryFn: async () => {
+      const response = await locksmith.isCardPaymentEnabledForLock(
+        network,
+        lockAddress
+      )
 
-    return response?.data?.creditCardEnabled ?? false
+      return response?.data?.creditCardEnabled ?? false
+    },
   })
 }

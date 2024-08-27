@@ -5,9 +5,9 @@ import { getAccessToken, getCurrentAccount } from '~/utils/session'
 import { ReactNode, createContext, useContext } from 'react'
 
 export const useSessionUser = () => {
-  return useQuery(
-    ['session'],
-    async () => {
+  return useQuery({
+    queryKey: ['session'],
+    queryFn: async () => {
       const accessToken = getAccessToken()
       const address = getCurrentAccount()
       try {
@@ -27,24 +27,22 @@ export const useSessionUser = () => {
         }
       }
     },
-    {
-      staleTime: 60 * 10 * 1000,
-      refetchInterval: 60 * 10 * 1000,
-      retry: 3,
-      retryDelay: 1000,
-    }
-  )
+    staleTime: 60 * 10 * 1000,
+    refetchInterval: 60 * 10 * 1000,
+    retry: 3,
+    retryDelay: 1000,
+  })
 }
 
 interface SessionContextType {
-  isInitialLoading: boolean
+  isLoading: boolean
   session?: string
   refetchSession: () => Promise<UseQueryResult<string | null | undefined>>
 }
 
 export const SessionContext = createContext<SessionContextType>({
   session: undefined,
-  isInitialLoading: false,
+  isLoading: false,
   refetchSession: async () => {
     throw new Error('Session context not initialized')
   },
@@ -55,10 +53,10 @@ interface Props {
 }
 
 export const SessionProvider = ({ children }: Props) => {
-  const { data: session, refetch, isInitialLoading } = useSessionUser()
+  const { data: session, refetch, isLoading } = useSessionUser()
   return (
     <SessionContext.Provider
-      value={{ session, refetchSession: refetch, isInitialLoading }}
+      value={{ session, refetchSession: refetch, isLoading }}
     >
       {children}
     </SessionContext.Provider>

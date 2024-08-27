@@ -62,9 +62,10 @@ export const UpdatePriceForm = ({
     },
   })
 
-  const { data: lock } = useQuery(['getLock', lockAddress, network], async () =>
-    web3Service.getLock(lockAddress, network)
-  )
+  const { data: lock } = useQuery({
+    queryKey: ['getLock', lockAddress, network],
+    queryFn: async () => web3Service.getLock(lockAddress, network),
+  })
 
   const updatePrice = async ({
     keyPrice = '',
@@ -82,7 +83,9 @@ export const UpdatePriceForm = ({
     } as any)
   }
 
-  const updatePriceMutation = useMutation(updatePrice)
+  const updatePriceMutation = useMutation({
+    mutationFn: updatePrice,
+  })
 
   const onHandleSubmit = async (fields: EditFormProps) => {
     if (isValid) {
@@ -114,7 +117,7 @@ export const UpdatePriceForm = ({
 
   const symbol = lockTickerSymbol(networks[network!], selectedCurrency)
 
-  const disabledInput = disabled || updatePriceMutation.isLoading
+  const disabledInput = disabled || updatePriceMutation.isPending
 
   return (
     <>
@@ -195,7 +198,7 @@ export const UpdatePriceForm = ({
           <Button
             className="w-full md:w-1/3"
             type="submit"
-            loading={updatePriceMutation.isLoading}
+            loading={updatePriceMutation.isPending}
             disabled={disabledInput}
           >
             Update

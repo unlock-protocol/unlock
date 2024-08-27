@@ -18,7 +18,7 @@ export const SetKickbackContractAsLockManager = ({
   const { kickbackAddress } = config.networks[event.attendeeRefund!.network]
   const {
     isManager,
-    isLoading: isLoadingLockManager,
+    isPending: isLoadingLockManager,
     refetch,
   } = useLockManager({
     lockAddress,
@@ -57,7 +57,7 @@ export const SetKickbackContractAsLockManager = ({
       <Button
         onClick={onAddLockManager}
         size="small"
-        loading={isLoadingLockManager || addLockManagerMutation.isLoading}
+        loading={isLoadingLockManager || addLockManagerMutation.isPending}
       >
         Approve contract as manager
       </Button>

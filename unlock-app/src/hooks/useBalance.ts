@@ -16,9 +16,15 @@ export const useBalance = ({
   requiredAmount = 0,
 }: Options) => {
   const web3Service = useWeb3Service()
-  return useQuery(
-    ['balance', account, network, currencyContractAddress, requiredAmount],
-    async () => {
+  return useQuery({
+    queryKey: [
+      'balance',
+      account,
+      network,
+      currencyContractAddress,
+      requiredAmount,
+    ],
+    queryFn: async () => {
       const [balance, networkBalance] = await Promise.all([
         getAccountTokenBalance(
           web3Service,
@@ -40,8 +46,6 @@ export const useBalance = ({
 
       return options
     },
-    {
-      staleTime: 30000,
-    }
-  )
+    staleTime: 30000,
+  })
 }

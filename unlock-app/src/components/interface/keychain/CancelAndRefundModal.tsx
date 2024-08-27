@@ -44,26 +44,24 @@ export const CancelAndRefundModal = ({
     tokenAddress,
   })
 
-  const { isInitialLoading: isLoading, data } = useQuery(
-    ['getAmounts', lockAddress],
-    getAmounts,
-    {
-      enabled: isOpen, // execute query only when the modal is open
-      refetchInterval: false,
-      meta: {
-        errorMessage:
-          'We could not retrieve the refund amount for this membership.',
-      },
-    }
-  )
+  const { isLoading, data } = useQuery({
+    queryKey: ['getAmounts', lockAddress],
+    queryFn: getAmounts,
+    enabled: isOpen, // execute query only when the modal is open
+    refetchInterval: false,
+    meta: {
+      errorMessage:
+        'We could not retrieve the refund amount for this membership.',
+    },
+  })
 
   const web3Service = useWeb3Service()
-  const { data: keyManager, isLoading: isLoadingKeykManager } = useQuery(
-    ['keyManagerOf', lockAddress, tokenId, network],
-    async () => {
+  const { data: keyManager, isPending: isLoadingKeykManager } = useQuery({
+    queryKey: ['keyManagerOf', lockAddress, tokenId, network],
+    queryFn: async () => {
       return await web3Service.keyManagerOf(lockAddress, tokenId, network)
-    }
-  )
+    },
+  })
 
   const { refundAmount = 0, transferFee = 0, lockBalance = 0 } = data ?? {}
   const isNotOwnerOftheKey = owner !== keyManager
@@ -81,7 +79,8 @@ export const CancelAndRefundModal = ({
     )
   }
 
-  const cancelRefundMutation = useMutation(cancelAndRefund, {
+  const cancelRefundMutation = useMutation({
+    mutationFn: cancelAndRefund,
     onSuccess: () => {
       ToastHelper.success('Key cancelled and successfully refunded.')
       setIsOpen(false)
@@ -106,7 +105,7 @@ export const CancelAndRefundModal = ({
   const buttonDisabled =
     isLoading ||
     !isRefundable ||
-    cancelRefundMutation?.isLoading ||
+    cancelRefundMutation.isPending ||
     isLoadingKeykManager ||
     isNotOwnerOftheKey
 
@@ -172,9 +171,9 @@ export const CancelAndRefundModal = ({
               type="button"
               onClick={() => cancelRefundMutation.mutate()}
               disabled={buttonDisabled}
-              loading={cancelRefundMutation.isLoading}
+              loading={cancelRefundMutation.isPending}
             >
-              {cancelRefundMutation.isLoading ? 'Refunding...' : 'Confirm'}
+              {cancelRefundMutation.isPending ? 'Refunding...' : 'Confirm'}
             </Button>
           </div>
         )

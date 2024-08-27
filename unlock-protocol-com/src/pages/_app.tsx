@@ -6,9 +6,9 @@ import { DefaultSeo } from 'next-seo'
 import { DEFAULT_SEO } from '../config/seo'
 import { CookieBanner } from '../components/interface/CookieBanner'
 import {
-  Hydrate,
   QueryClient,
   QueryClientProvider,
+  HydrationBoundary,
   DehydratedState,
 } from '@tanstack/react-query'
 import { UnlockUIProvider } from '@unlock-protocol/ui'
@@ -21,6 +21,7 @@ const queryClient = new QueryClient({
     },
   },
 })
+
 function App({
   Component,
   pageProps,
@@ -28,13 +29,13 @@ function App({
   return (
     <UnlockUIProvider Link={NextLink}>
       <QueryClientProvider client={queryClient}>
-        <Hydrate state={pageProps.dehydratedState}>
+        <HydrationBoundary state={pageProps.dehydratedState}>
           <Provider>
             <CookieBanner />
             <DefaultSeo {...DEFAULT_SEO} />
             <Component {...pageProps} />
           </Provider>
-        </Hydrate>
+        </HydrationBoundary>
       </QueryClientProvider>
     </UnlockUIProvider>
   )

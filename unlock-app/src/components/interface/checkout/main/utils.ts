@@ -58,6 +58,7 @@ export function formatFiatPriceFromCents(priceInCents: number, currency = '$') {
   })
   return `${formatted} ${currency}`
 }
+
 interface Options {
   paywallConfig?: PaywallConfigType
   lock?: PaywallLockConfigType
@@ -90,4 +91,16 @@ export const validateEmail = (email: string) => {
     .match(
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     )
+}
+
+export const getNumberOfRecurringPayments = (
+  renewals: number | string | undefined
+): number => {
+  if (!renewals) {
+    return 0
+  }
+  if (typeof renewals === 'string' && renewals.toLowerCase() === 'forever') {
+    return Infinity
+  }
+  return Math.abs(Math.floor(Number(renewals)))
 }

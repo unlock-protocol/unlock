@@ -20,10 +20,16 @@ export const verifyNextAuthToken = async (
 
 export const verifyGoogleToken = async (email: string, token: string) => {
   const client = new OAuth2Client()
-  const ticket = await client.verifyIdToken({
-    idToken: token,
-    audience: config.googleAuthClientId,
-  })
+  let ticket
+  try {
+    ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: config.googleAuthClientId,
+    })
+  } catch (e) {
+    console.error('Error verifying Google token', e)
+    return false
+  }
 
   const payload = ticket.getPayload()
 
@@ -35,9 +41,15 @@ export const verifyGoogleToken = async (email: string, token: string) => {
 }
 
 export const verifyEmailToken = async (email: string, token: string) => {
-  const verificationEntry = await VerificationCodes.findOne({
-    where: { emailAddress: email, token: token },
-  })
+  let verificationEntry
+  try {
+    verificationEntry = await VerificationCodes.findOne({
+      where: { emailAddress: email, token: token },
+    })
+  } catch (e) {
+    console.error('Error verifying email token', e)
+    return false
+  }
 
   if (!verificationEntry) {
     return false

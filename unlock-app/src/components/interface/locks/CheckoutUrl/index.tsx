@@ -76,10 +76,10 @@ export const CheckoutUrlPage = () => {
     refetch: refetchConfigList,
   } = useCheckoutConfigsByUser()
 
-  const { mutateAsync: updateConfig, isLoading: isConfigUpdating } =
+  const { mutateAsync: updateConfig, isPending: isConfigUpdating } =
     useCheckoutConfigUpdate()
 
-  const { mutateAsync: removeConfig, isLoading: isConfigRemoving } =
+  const { mutateAsync: removeConfig, isPending: isConfigRemoving } =
     useCheckoutConfigRemove()
 
   useEffect(() => {
@@ -154,16 +154,25 @@ export const CheckoutUrlPage = () => {
         ...rest,
         config: config || DEFAULT_CONFIG,
       }
+
       setCheckoutConfig(option)
+
       if (!option.id) {
-        const response = await updateConfig(option)
-        setCheckoutConfig({
-          id: response.id!,
-          config: response.config as PaywallConfigType,
-          name: response.name,
-        })
-        setValue('configName', '') // reset field after new configuration is set
-        await refetchConfigList()
+        try {
+          const response = await updateConfig(option)
+
+          setCheckoutConfig({
+            id: response.id!,
+            config: response.config as PaywallConfigType,
+            name: response.name,
+          })
+          setValue('configName', '') // reset field after new configuration is set
+          await refetchConfigList()
+        } catch (error) {
+          // Pass error to the form to pblock skip to next step
+          console.error("Couldn't create new configuration: ", error)
+          throw error
+        }
       }
     },
     [DEFAULT_CONFIG, refetchConfigList, setValue, updateConfig]
@@ -181,7 +190,9 @@ export const CheckoutUrlPage = () => {
     }
   }, [checkoutConfigList, query.id, handleSetConfiguration])
 
-  const handleSetConfigurationMutation = useMutation(handleSetConfiguration)
+  const handleSetConfigurationMutation = useMutation({
+    mutationFn: handleSetConfiguration,
+  })
 
   const isNewConfiguration = configuration === 'new'
 
@@ -190,12 +201,17 @@ export const CheckoutUrlPage = () => {
     if (!isValid) return Promise.reject() // pass rejected promise to block skip to next step
 
     if (isNewConfiguration) {
-      // this is a new config, let's pass an empty config
-      await handleSetConfiguration({
-        id: null,
-        name: configName,
-        config: DEFAULT_CONFIG.config,
-      })
+      try {
+        // this is a new config, let's pass an empty config
+        await handleSetConfiguration({
+          id: null,
+          name: configName,
+          config: DEFAULT_CONFIG.config,
+        })
+      } catch (error) {
+        ToastHelper.error('A configuration with that name already exists.')
+        return Promise.reject()
+      }
     } else {
       if (!checkoutConfig?.id) {
         ToastHelper.error('Please select a configuration or create a new one.')
@@ -204,8 +220,12 @@ export const CheckoutUrlPage = () => {
     }
   }
 
-  const submitConfigurationMutation = useMutation(onSubmitConfiguration)
-  const deleteConfigurationMutation = useMutation(onConfigRemove)
+  const submitConfigurationMutation = useMutation({
+    mutationFn: onSubmitConfiguration,
+  })
+  const deleteConfigurationMutation = useMutation({
+    mutationFn: onConfigRemove,
+  })
 
   const hasSelectedConfig =
     configuration === 'existing' && checkoutConfig?.id !== undefined
@@ -227,7 +247,7 @@ export const CheckoutUrlPage = () => {
     [checkoutConfig, updateConfig, refetchConfigList]
   )
   const loading =
-    isLoadingConfigList || handleSetConfigurationMutation.isLoading
+    isLoadingConfigList || handleSetConfigurationMutation.isPending
 
   return (
     <>
@@ -276,8 +296,8 @@ export const CheckoutUrlPage = () => {
                         <ChooseConfiguration
                           loading={
                             isLoadingConfigList ||
-                            submitConfigurationMutation.isLoading ||
-                            deleteConfigurationMutation.isLoading
+                            submitConfigurationMutation.isPending ||
+                            deleteConfigurationMutation.isPending
                           }
                           name="configName"
                           control={control}

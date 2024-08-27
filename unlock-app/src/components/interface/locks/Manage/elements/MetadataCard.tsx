@@ -150,7 +150,8 @@ const ChangeManagerModal = ({
     })
   }
 
-  const changeManagerMutation = useMutation(setKeyManagerForKey, {
+  const changeManagerMutation = useMutation({
+    mutationFn: setKeyManagerForKey,
     onSuccess: () => {
       if (typeof onChange === 'function') {
         onChange(newManager)
@@ -167,7 +168,7 @@ const ChangeManagerModal = ({
   const managerUnchanged = newManager?.toLowerCase() === manager?.toLowerCase()
 
   const fieldDisabled =
-    managerUnchanged || changeManagerMutation.isLoading || !isValid
+    managerUnchanged || changeManagerMutation.isPending || !isValid
 
   useEffect(() => {
     if (isOpen) {
@@ -201,7 +202,7 @@ const ChangeManagerModal = ({
                     <AddressInput
                       label="New Manager"
                       value={newManager}
-                      disabled={changeManagerMutation.isLoading}
+                      disabled={changeManagerMutation.isPending}
                       onChange={(value: any) => {
                         setValue('newManager', value, {
                           shouldValidate: true,
@@ -223,7 +224,7 @@ const ChangeManagerModal = ({
             <Button
               disabled={fieldDisabled}
               type="submit"
-              loading={changeManagerMutation.isLoading}
+              loading={changeManagerMutation.isPending}
             >
               Update
             </Button>
@@ -278,16 +279,16 @@ export const MetadataCard = ({
   // defaults to the owner when the manager is not set
   const manager = data?.keyManager ?? data?.keyholderAddress
 
-  const { isLoading: isLoadingUrl, data: receiptsPageUrl } =
+  const { isPending: isLoadingUrl, data: receiptsPageUrl } =
     useGetReceiptsPageUrl({
       lockAddress,
       network,
       tokenId: metadata.token,
     })
 
-  const { data: subscription, isLoading: isSubscriptionLoading } = useQuery(
-    ['subscription', lockAddress, tokenId, network],
-    async () => {
+  const { data: subscription, isPending: isSubscriptionLoading } = useQuery({
+    queryKey: ['subscription', lockAddress, tokenId, network],
+    queryFn: async () => {
       const response = await locksmith.getSubscription(
         network,
         lockAddress,
@@ -295,18 +296,15 @@ export const MetadataCard = ({
       )
       return response.data.subscriptions?.[0] ?? null
     },
-    {
-      onError(error: any) {
-        console.error(error)
-      },
-    }
-  )
+  })
 
   const sendEmail = async () => {
     return locksmith.emailTicket(network, lockAddress, tokenId)
   }
 
-  const sendEmailMutation = useMutation(sendEmail)
+  const sendEmailMutation = useMutation({
+    mutationFn: sendEmail,
+  })
 
   const onSendQrCode = async () => {
     if (!network) return
@@ -375,8 +373,8 @@ export const MetadataCard = ({
             variant="outlined-primary"
             size="small"
             onClick={() => markAsCheckInMutation.mutate()}
-            disabled={markAsCheckInMutation.isLoading}
-            loading={markAsCheckInMutation.isLoading}
+            disabled={markAsCheckInMutation.isPending}
+            loading={markAsCheckInMutation.isPending}
           >
             Mark as checked-in
           </Button>
@@ -446,7 +444,7 @@ export const MetadataCard = ({
                             variant="outlined-primary"
                             onClick={onSendQrCode}
                             disabled={
-                              sendEmailMutation.isLoading ||
+                              sendEmailMutation.isPending ||
                               sendEmailMutation.isSuccess
                             }
                           >

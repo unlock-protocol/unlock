@@ -19,12 +19,13 @@ export const useMarkAsCheckInMutation = ({
     return locksmith.checkTicket(network, lockAddress, keyId)
   }
 
-  return useMutation(onMarkAsCheckIn, {
+  return useMutation({
+    mutationFn: onMarkAsCheckIn,
     onSuccess: () => {
       setCheckedInTimestamp(new Date().toLocaleString())
       ToastHelper.success('Successfully marked ticket as checked-in')
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       if (error instanceof AxiosError) {
         if (error.response?.status === 409) {
           ToastHelper.error('Ticket already checked-in')

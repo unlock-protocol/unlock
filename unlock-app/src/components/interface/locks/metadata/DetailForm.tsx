@@ -14,7 +14,7 @@ export function DetailForm({ disabled }: Props) {
     control,
     formState: { errors },
   } = useFormContext<MetadataFormData>()
-  const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
+  const { mutateAsync: uploadImage, isPending: isUploading } = useImageUpload()
 
   const { image } = useWatch({
     control,

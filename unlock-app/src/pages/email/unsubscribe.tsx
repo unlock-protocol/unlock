@@ -24,14 +24,14 @@ interface SubscriptionProps {
   network: number
 }
 export const Subscription = ({ lockAddress, network }: SubscriptionProps) => {
-  const { mutateAsync: resubscribe, isLoading: isResubscribing } =
+  const { mutateAsync: resubscribe, isPending: isResubscribing } =
     useEmailListReSubscribe({
       lockAddress,
       network,
     })
   const {
     mutateAsync: unsubscribe,
-    isLoading: isUnsubscribing,
+    isPending: isUnsubscribing,
     status,
   } = useEmailListUnSubscribe({
     lockAddress,

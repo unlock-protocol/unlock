@@ -15,9 +15,9 @@ export const useUpdateMetadata = ({
   keyId,
 }: Partial<Options>) => {
   const queryClient = useQueryClient()
-  return useMutation(
-    ['updateMetadata', network, lockAddress, keyId],
-    async (metadata: Metadata): Promise<Partial<Metadata>> => {
+  return useMutation({
+    mutationKey: ['updateMetadata', network, lockAddress, keyId],
+    mutationFn: async (metadata: Metadata): Promise<Partial<Metadata>> => {
       if (keyId) {
         const keyResponse = await locksmith.updateKeyMetadata(
           network!,
@@ -39,19 +39,17 @@ export const useUpdateMetadata = ({
         return lockResponse.data as Metadata
       }
     },
-    {
-      onError: (error: Error) => {
-        console.error(error)
-        ToastHelper.error('Metadata update failed')
-      },
-      onSuccess: () => {
-        ToastHelper.success('Metadata updated')
-        queryClient.invalidateQueries({
-          queryKey: ['metadata', lockAddress],
-        })
-      },
-    }
-  )
+    onError: (error: Error) => {
+      console.error(error)
+      ToastHelper.error('Metadata update failed')
+    },
+    onSuccess: () => {
+      ToastHelper.success('Metadata updated')
+      queryClient.invalidateQueries({
+        queryKey: ['metadata', lockAddress],
+      })
+    },
+  })
 }
 
 export const getMetadata = async (
@@ -81,16 +79,14 @@ export const useMetadata = ({
   network,
   keyId,
 }: Partial<Options>) => {
-  return useQuery(
-    ['metadata', network, lockAddress, keyId],
-    () => {
+  return useQuery({
+    queryKey: ['metadata', network, lockAddress, keyId],
+    queryFn: () => {
       if (lockAddress && network) {
         return getMetadata(lockAddress, network, keyId)
       }
       return {} as Metadata
     },
-    {
-      enabled: !!lockAddress && !!network,
-    }
-  )
+    enabled: !!lockAddress && !!network,
+  })
 }

@@ -42,7 +42,9 @@ export const EmailSettingsForm = ({
     })
   }
 
-  const updateReplyToMutation = useMutation(updateReplyTo)
+  const updateReplyToMutation = useMutation({
+    mutationFn: updateReplyTo,
+  })
 
   const disabledInput = !isManager || disabled
 
@@ -83,7 +85,7 @@ export const EmailSettingsForm = ({
             className="w-full md:w-1/3"
             type="submit"
             disabled={disabledInput}
-            loading={updateReplyToMutation.isLoading}
+            loading={updateReplyToMutation.isPending}
             size="small"
           >
             Apply

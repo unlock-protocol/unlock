@@ -18,9 +18,9 @@ export type Key = NonNullable<ReturnType<typeof useKeys>['keys']>[0]
 
 export const useKeys = ({ networks, lockAddress, owner }: Options) => {
   const subgraph = new SubgraphService()
-  const { data: keys, isLoading: isKeysLoading } = useQuery(
-    ['keys', owner, networks, lockAddress],
-    async () => {
+  const { data: keys, isPending: isKeysLoading } = useQuery({
+    queryKey: ['keys', owner, networks, lockAddress],
+    queryFn: async () => {
       const keys = await subgraph.keys(
         {
           first: 500,
@@ -58,8 +58,8 @@ export const useKeys = ({ networks, lockAddress, owner }: Options) => {
         }
       })
       return items
-    }
-  )
+    },
+  })
 
   return {
     isKeysLoading,

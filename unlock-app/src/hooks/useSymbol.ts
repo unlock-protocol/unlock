@@ -15,9 +15,9 @@ export const useGetLockCurrencySymbol = ({
   const web3service = useWeb3Service()
   const baseCurrencySymbol = networks?.[network]?.nativeCurrency?.symbol
 
-  return useQuery(
-    ['getLockSymbol', lockAddress, network, contractAddress],
-    async () => {
+  return useQuery({
+    queryKey: ['getLockSymbol', lockAddress, network, contractAddress],
+    queryFn: async () => {
       if (contractAddress) {
         const symbol = await web3service.getTokenSymbol(
           contractAddress,
@@ -27,6 +27,6 @@ export const useGetLockCurrencySymbol = ({
       }
 
       return baseCurrencySymbol
-    }
-  )
+    },
+  })
 }

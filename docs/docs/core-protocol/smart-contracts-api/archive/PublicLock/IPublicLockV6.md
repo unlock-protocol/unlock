@@ -698,7 +698,7 @@ function renounceOwnership() external nonpayable
 function safeTransferFrom(address from, address to, uint256 tokenId) external nonpayable
 ```
 
-_Transfers a specific NFT (`tokenId`) from one account (`from`) to another (`to`). _ _ Requirements: - `from`, `to` cannot be zero. - `tokenId` must be owned by `from`. - If the caller is not `from`, it must be have been allowed to move this NFT by either `approve` or `setApprovalForAll``._
+_Transfers a specific NFT (`tokenId`) from one account (`from`) to another (`to`). _ _ Requirements: - `from`, `to` cannot be zero. - `tokenId` must be owned by `from`. - If the caller is not `from`, it must be have been allowed to move this NFT by either `approve` or `setApprovalForAll`._
 
 #### Parameters
 
@@ -905,7 +905,7 @@ function transferFeeBasisPoints() external view returns (uint256)
 function transferFrom(address from, address to, uint256 tokenId) external nonpayable
 ```
 
-_Transfers a specific NFT (`tokenId`) from one account (`from`) to another (`to`). _ Requirements: - If the caller is not `from`, it must be approved to move this NFT by either `approve` or `setApprovalForAll``.\*
+_Transfers a specific NFT (`tokenId`) from one account (`from`) to another (`to`). _ Requirements: - If the caller is not `from`, it must be approved to move this NFT by either `approve` or `setApprovalForAll`.\*
 
 #### Parameters
 

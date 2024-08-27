@@ -9,14 +9,14 @@ interface Options {
 }
 
 export const useCustomEmailSend = () => {
-  const mutation = useMutation(
-    async ({ network, lockAddress, content, subject }: Options) => {
+  const mutation = useMutation({
+    mutationFn: async ({ network, lockAddress, content, subject }: Options) => {
       const response = await locksmith.sendCustomEmail(network, lockAddress, {
         content,
         subject,
       })
       return response.data.sent
-    }
-  )
+    },
+  })
   return mutation
 }

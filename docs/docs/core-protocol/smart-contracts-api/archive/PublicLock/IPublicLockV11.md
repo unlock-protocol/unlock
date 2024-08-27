@@ -574,7 +574,7 @@ function keyPrice() external view returns (uint256)
 function lendKey(address from, address to, uint256 tokenId) external nonpayable
 ```
 
-Lending a key allows you to transfer the token while retaining the ownerships right by setting yourself as a key manager first. This function can only called by 1) the key owner when no key manager is set or 2) the key manager. After calling the function, the `_recipent` will be the new owner, and the sender of the tx will become the key manager.
+Lending a key allows you to transfer the token while retaining the ownerships right by setting yourself as a key manager first.This function can only called by 1) the key owner when no key manager is set or 2) the key manager. After calling the function, the `_recipent` will be the new owner, and the sender of the tx will become the key manager.
 
 #### Parameters
 
@@ -744,7 +744,7 @@ Returns the address of the `onValidKeyHook` hook.
 function owner() external view returns (address)
 ```
 
-`owner()` is provided as an helper to mimick the `Ownable` contract ABI. The `Ownable` logic is used by many 3rd party services to determine contract ownership - e.g. who is allowed to edit metadata on Opensea. This logic is NOT used internally by the Unlock Protocol and is made available only as a convenience helper.
+`owner()` is provided as an helper to mimick the `Ownable` contract ABI. The `Ownable` logic is used by many 3rd party services to determine contract ownership - e.g. who is allowed to edit metadata on Opensea.This logic is NOT used internally by the Unlock Protocol and is made available only as a convenience helper.
 
 #### Returns
 

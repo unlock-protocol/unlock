@@ -18,12 +18,13 @@ import {
 } from '@unlock-protocol/ui'
 import { useImageUpload } from '~/hooks/useImageUpload'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { config } from '~/config/app'
 import dayjs from 'dayjs'
 import { GoogleMapsAutoComplete } from '../Form'
 import { DefaultLayoutSkeleton } from './DefaultLayoutSkeleton'
 import { BannerlessLayoutSkeleton } from './BannerlessLayoutSkeleton'
+import { regexUrlPattern } from '~/utils/regexUrlPattern'
 
 interface GeneralProps {
   event: Event
@@ -36,11 +37,12 @@ interface GeneralProps {
 const today = dayjs().format('YYYY-MM-DD')
 
 export const General = ({ event, checkoutConfig }: GeneralProps) => {
-  const [isInPerson, setIsInPerson] = useState(true)
   const {
     register,
     getValues,
     setValue,
+    setError,
+    clearErrors,
     handleSubmit,
     control,
     formState: { errors, isSubmitting },
@@ -55,11 +57,14 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
       layout: event.layout,
     },
   })
+  const [isInPerson, setIsInPerson] = useState<boolean>(
+    encodeURIComponent(getValues('ticket.event_is_in_person')) === 'true'
+  )
   const [mapAddress, setMapAddress] = useState(
     encodeURIComponent(getValues('ticket.event_address') || 'Ethereum')
   )
 
-  const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
+  const { mutateAsync: uploadImage, isPending: isUploading } = useImageUpload()
 
   const isSameDay = dayjs(event.ticket?.event_end_date).isSame(
     event.ticket?.event_start_date,
@@ -71,6 +76,10 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
   const minEndDate = dayjs(getValues('ticket.event_start_date')).format(
     'YYYY-MM-DD'
   )
+
+  useEffect(() => {
+    setMapAddress(getValues('ticket.event_address'))
+  }, [event.ticket?.event_address])
 
   const [selectedLayout, setSelectedLayout] = useState(
     getValues('layout') || 'default'
@@ -347,8 +356,19 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
                     title="In person"
                     enabled={isInPerson}
                     setEnabled={setIsInPerson}
-                    onChange={() => {
+                    onChange={(enabled) => {
+                      setValue('ticket.event_is_in_person', enabled)
                       setValue('ticket.event_address', '')
+                      setValue('ticket.event_location', '')
+
+                      if (!enabled) {
+                        setError('ticket.event_address', {
+                          type: 'manual',
+                          message: 'Please enter a valid URL',
+                        })
+                      } else {
+                        clearErrors('ticket.event_address')
+                      }
                     }}
                   />
                 </div>
@@ -359,21 +379,27 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
                     type="text"
                     defaultValue={event?.ticket?.event_address}
                     placeholder={'Zoom or Google Meet Link'}
+                    onChange={(event) => {
+                      if (!regexUrlPattern.test(event.target.value)) {
+                        setError('ticket.event_address', {
+                          type: 'manual',
+                          message: 'Please enter a valid URL',
+                        })
+                      } else {
+                        clearErrors('ticket.event_address')
+                      }
+                    }}
+                    error={errors.ticket?.event_address?.message as string}
                   />
                 )}
 
                 {isInPerson && (
-                  <Controller
-                    name="ticket.event_address"
-                    control={control}
-                    render={({ field: { onChange } }) => {
+                  <GoogleMapsAutoComplete
+                    defaultValue={event.ticket.event_location}
+                    onChange={(address, location) => {
+                      setValue('ticket.event_address', address)
+                      setValue('ticket.event_location', location)
                       setMapAddress(getValues('ticket.event_address'))
-                      return (
-                        <GoogleMapsAutoComplete
-                          defaultValue={event.ticket.event_address}
-                          onChange={onChange}
-                        />
-                      )
                     }}
                   />
                 )}
@@ -382,7 +408,12 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
           </div>
         </div>
         <div className="flex flex-end w-full pt-8 flex-row-reverse">
-          <Button loading={isSubmitting} type="submit" className="w-48">
+          <Button
+            loading={isSubmitting}
+            disabled={Object.keys(errors).length > 0}
+            type="submit"
+            className="w-48"
+          >
             Save
           </Button>
         </div>

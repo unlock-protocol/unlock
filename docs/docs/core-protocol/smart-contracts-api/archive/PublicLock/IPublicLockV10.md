@@ -689,7 +689,7 @@ function onValidKeyHook() external view returns (bool)
 function owner() external view returns (address)
 ```
 
-`owner()` is provided as an helper to mimick the `Ownable` contract ABI. The `Ownable` logic is used by many 3rd party services to determine contract ownership - e.g. who is allowed to edit metadata on Opensea. This logic is NOT used internally by the Unlock Protocol and is made available only as a convenience helper.
+`owner()` is provided as an helper to mimick the `Ownable` contract ABI. The `Ownable` logic is used by many 3rd party services to determine contract ownership - e.g. who is allowed to edit metadata on Opensea.This logic is NOT used internally by the Unlock Protocol and is made available only as a convenience helper.
 
 #### Returns
 

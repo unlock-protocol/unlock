@@ -23,9 +23,9 @@ export const Deploy: React.FC = () => {
 
   const { mutateAsync: updateConfig } = useCheckoutConfigUpdate()
 
-  const { data: locks, isLoading: isLoadingLocks } = useQuery(
-    ['locks', account, query.chainId],
-    async () => {
+  const { data: locks, isPending: isLoadingLocks } = useQuery({
+    queryKey: ['locks', account, query.chainId],
+    queryFn: async () => {
       const locks = await subgraph.locks(
         {
           first: 100,
@@ -40,10 +40,8 @@ export const Deploy: React.FC = () => {
       )
       return locks
     },
-    {
-      enabled: !!query.chainId && !!account && !!query.address,
-    }
-  )
+    enabled: !!query.chainId && !!account && !!query.address,
+  })
 
   useEffect(() => {
     if (locks && locks[0]) {
@@ -121,7 +119,9 @@ export const Deploy: React.FC = () => {
     [getWalletService, onLockDeployed]
   )
 
-  const onSubmitMutation = useMutation(deployLock)
+  const onSubmitMutation = useMutation({
+    mutationFn: deployLock,
+  })
 
   return (
     <div>
@@ -165,7 +165,7 @@ export const Deploy: React.FC = () => {
                 isFree: false,
                 network: Number(query.chainId?.toString()),
               }}
-              isLoading={onSubmitMutation.isLoading}
+              isLoading={onSubmitMutation.isPending}
             />
           )}
           {lockAddress && (

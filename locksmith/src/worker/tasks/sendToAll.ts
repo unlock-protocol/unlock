@@ -68,7 +68,9 @@ export const sendToAllJob: Task = async (payload, helper) => {
     unsubscribeLink.searchParams.set('network', parsed.network.toString())
 
     const content = await unified()
+      // @ts-expect-error No overload matches this call.
       .use(remarkParse)
+      // @ts-expect-error No overload matches this call.
       .use(remarkHtml)
       .process(parsed.content)
 

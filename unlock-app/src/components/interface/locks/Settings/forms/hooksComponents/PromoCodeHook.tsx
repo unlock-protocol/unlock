@@ -84,7 +84,9 @@ export const PromoCodeHook = ({
     return
   }
 
-  const setPromoCodeMutation = useMutation(savePromoCode)
+  const setPromoCodeMutation = useMutation({
+    mutationFn: savePromoCode,
+  })
 
   const onSubmit = async ({ promo, ...hooks }: any) => {
     await setEventsHooksMutation.mutateAsync(hooks)
@@ -148,8 +150,8 @@ export const PromoCodeHook = ({
                 disabled={!isValid}
                 size="small"
                 loading={
-                  setPromoCodeMutation.isLoading ||
-                  setEventsHooksMutation.isLoading
+                  setPromoCodeMutation.isPending ||
+                  setEventsHooksMutation.isPending
                 }
               >
                 Add

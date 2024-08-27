@@ -4,29 +4,25 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 
 export const useRemovePaymentMethods = () => {
   const { account } = useAuth()
-  return useMutation(
-    ['removePaymentMethods', account],
-    async () => {
+  return useMutation({
+    mutationKey: ['removePaymentMethods', account],
+    mutationFn: async () => {
       const response = await locksmith.removePaymentMethods()
       return response.data.success
     },
-    {
-      retry: 2,
-    }
-  )
+    retry: 2,
+  })
 }
 
 export const usePaymentMethodList = () => {
   const { account } = useAuth()
-  return useQuery(
-    ['listPaymentMethods', account],
-    async () => {
+  return useQuery({
+    queryKey: ['listPaymentMethods', account],
+    queryFn: async () => {
       const response = await locksmith.listPaymentMethods()
       return response.data.methods || []
     },
-    {
-      retry: 2,
-      enabled: !!account,
-    }
-  )
+    retry: 2,
+    enabled: !!account,
+  })
 }

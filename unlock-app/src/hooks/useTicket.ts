@@ -3,21 +3,19 @@ import { locksmith } from '~/config/locksmith'
 import { Event } from '@unlock-protocol/core'
 
 export const useLocksmithGranterAddress = () => {
-  const query = useQuery(
-    ['keyGranters'],
-    async () => {
+  const query = useQuery({
+    queryKey: ['keyGranters'],
+    queryFn: async () => {
       const response = await locksmith.balance()
       return response.data[1].address!
     },
-    {
-      staleTime: 86400,
-      refetchInterval: 86400,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-      retry: 3,
-    }
-  )
+    staleTime: 86400,
+    refetchInterval: 86400,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    retry: 3,
+  })
   return query
 }
 
@@ -34,9 +32,9 @@ export const useEventTicket = ({
   network,
   eventProp,
 }: EventTicketOptions) => {
-  const query = useQuery(
-    ['ticket', network, lockAddress, keyId],
-    async () => {
+  const query = useQuery({
+    queryKey: ['ticket', network, lockAddress, keyId],
+    queryFn: async () => {
       if (!eventProp) {
         const response = await locksmith.getTicket(network, lockAddress, keyId)
         return response.data
@@ -50,13 +48,11 @@ export const useEventTicket = ({
         return response.data
       }
     },
-    {
-      staleTime: 86400,
-      refetchInterval: 86400,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-    }
-  )
+    staleTime: 86400,
+    refetchInterval: 86400,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  })
   return query
 }

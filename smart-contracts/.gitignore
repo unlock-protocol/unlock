@@ -12,6 +12,7 @@ artifacts/
 cache/
 *.generated.sol
 *.generated.sol*
+*.flatten.sol
 *.sol.rej
 *.ref 
 

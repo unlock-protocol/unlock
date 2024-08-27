@@ -52,7 +52,9 @@ export const UpdateBaseTokenURI = ({
     })
   }
 
-  const setBaseTokenURIMutation = useMutation(setBaseTokenURI)
+  const setBaseTokenURIMutation = useMutation({
+    mutationFn: setBaseTokenURI,
+  })
 
   const onSetBaseTokenURI = async (fields: FormProps) => {
     const setBaseTokenURIPromise = setBaseTokenURIMutation.mutateAsync(fields)
@@ -63,18 +65,25 @@ export const UpdateBaseTokenURI = ({
     })
   }
 
-  const { isLoading: isLoadingTokenURI, data: baseTokenURI } = useQuery(
-    ['getTokenURI', lockAddress, network, setBaseTokenURIMutation.isSuccess],
-    async () => getTokenURI()
-  )
+  const { isLoading: isLoadingTokenURI, data: baseTokenURI } = useQuery({
+    queryKey: [
+      'getTokenURI',
+      lockAddress,
+      network,
+      setBaseTokenURIMutation.isSuccess,
+    ],
+    queryFn: getTokenURI,
+  })
 
   useEffect(() => {
-    setValue('baseTokenURI', baseTokenURI)
-  }, [])
+    if (baseTokenURI) {
+      setValue('baseTokenURI', baseTokenURI)
+    }
+  }, [baseTokenURI, setValue])
 
   const disabledInput =
-    disabled || setBaseTokenURIMutation.isLoading || isLoadingTokenURI
-  const isLoading = setBaseTokenURIMutation.isLoading || disabledInput
+    disabled || setBaseTokenURIMutation.isPending || isLoadingTokenURI
+  const isLoading = setBaseTokenURIMutation.isPending || disabledInput
 
   return (
     <form
@@ -104,7 +113,7 @@ export const UpdateBaseTokenURI = ({
           type="submit"
           className="w-full md:w-1/3"
           disabled={disabledInput}
-          loading={setBaseTokenURIMutation.isLoading || isLoading}
+          loading={setBaseTokenURIMutation.isPending || isLoading}
         >
           Update
         </Button>

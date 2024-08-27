@@ -11,9 +11,9 @@ interface useEventVerifiersProps {
 export const useEventVerifiers = ({ event }: useEventVerifiersProps) => {
   const { account } = useAuth()
 
-  return useQuery(
-    ['getEventVerifiers', event.slug, account],
-    async () => {
+  return useQuery({
+    queryKey: ['getEventVerifiers', event.slug, account],
+    queryFn: async () => {
       if (!account) {
         return false
       }
@@ -27,13 +27,5 @@ export const useEventVerifiers = ({ event }: useEventVerifiersProps) => {
       })
       return isVerifier
     },
-    {
-      onError: (err: any) => {
-        console.error(
-          err?.error ??
-            'We could not load the list of verifiers for your lock. Please reload to to try again.'
-        )
-      },
-    }
-  )
+  })
 }

@@ -48,7 +48,11 @@ export default async function (options, transactionOptions = {}, callback) {
   }
 
   // Only ask for approval if the lock is priced in ERC20
-  if (approvalOptions.erc20Address && approvalOptions.erc20Address !== ZERO) {
+  if (
+    approvalOptions.erc20Address &&
+    approvalOptions.erc20Address !== ZERO &&
+    totalAmountToApprove > 0
+  ) {
     await approveAllowance.bind(this)(approvalOptions)
   }
 

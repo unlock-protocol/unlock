@@ -14,17 +14,17 @@ export const useCustomContentForEmail = ({
   lockAddress: string
   templateId: string
 }) => {
-  return useQuery(
-    ['getCustomContent', network, lockAddress, templateId],
-    async () => {
+  return useQuery({
+    queryKey: ['getCustomContent', network, lockAddress, templateId],
+    queryFn: async () => {
       const response = await locksmith.getCustomEmailContent(
         network,
         lockAddress,
         templateId
       )
       return response.data.content
-    }
-  )
+    },
+  })
 }
 
 export const useEmailPreview = ({
@@ -34,24 +34,27 @@ export const useEmailPreview = ({
   params: any
   templateId: string
 }) => {
-  return useQuery(['getEmailPreview', templateId, params], async () => {
-    const url = new URL(
-      `${config.services.wedlocks.host}/preview/${templateId}`
-    )
+  return useQuery({
+    queryKey: ['getEmailPreview', templateId, params],
+    queryFn: async () => {
+      const url = new URL(
+        `${config.services.wedlocks.host}/preview/${templateId}`
+      )
 
-    Object.entries(params).map(([key, value]) => {
-      if (value) {
-        url.searchParams.append(key, value.toString())
-      }
-    })
-
-    return (
-      await fetch(url, {
-        headers: {
-          accept: 'application/json',
-        },
+      Object.entries(params).forEach(([key, value]) => {
+        if (value) {
+          url.searchParams.append(key, value.toString())
+        }
       })
-    ).json()
+
+      return (
+        await fetch(url, {
+          headers: {
+            accept: 'application/json',
+          },
+        })
+      ).json()
+    },
   })
 }
 
@@ -68,9 +71,14 @@ export const useEmailPreviewDataForLock = ({
   lockAddress: string
   customContent?: string
 }) => {
-  return useQuery(
-    ['useEmailPreviewDataForLock', lockAddress, network, customContent],
-    async () => {
+  return useQuery({
+    queryKey: [
+      'useEmailPreviewDataForLock',
+      lockAddress,
+      network,
+      customContent,
+    ],
+    queryFn: async () => {
       const lockImage = `${config.locksmithHost}/lock/${lockAddress}/icon`
       const customContentHtml: string = await markdownToHtml(
         customContent || ''
@@ -93,15 +101,17 @@ export const useEmailPreviewDataForLock = ({
 
       return params
     },
-    { enabled: !!customContent && !!lockAddress && !!network }
-  )
+    enabled: !!customContent && !!lockAddress && !!network,
+  })
 }
 
 // parse markdown to HTML
 const markdownToHtml = async (content: string) => {
   try {
     const parsedContent = await unified()
+      // @ts-expect-error No overload matches this call.
       .use(remarkParse)
+      // @ts-expect-error No overload matches this call.
       .use(remarkHtml, {
         sanitize: true,
       })

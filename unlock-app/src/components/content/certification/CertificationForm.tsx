@@ -52,7 +52,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
   const [allowPurchase, setAllowPurchase] = useState(false)
   const [forever, setForever] = useState(true)
   const [isCurrencyModalOpen, setCurrencyModalOpen] = useState(false)
-  const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
+  const { mutateAsync: uploadImage, isPending: isUploading } = useImageUpload()
   const router = useRouter()
 
   const [selectedNetwork, setSelectedNetwork] = useState<number>()
@@ -109,9 +109,9 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
     </p>
   )
 
-  const { data: balance, isLoading: isLoadingBalance } = useQuery(
-    ['getBalance', account, network, selectedNetwork],
-    async () => {
+  const { data: balance, isPending: isLoadingBalance } = useQuery({
+    queryKey: ['getBalance', account, network, selectedNetwork],
+    queryFn: async () => {
       const web3Service = new Web3Service(networks)
 
       return await getAccountTokenBalance(
@@ -120,8 +120,8 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
         null,
         selectedNetwork as number
       )
-    }
-  )
+    },
+  })
 
   const noBalance = balance && parseFloat(balance) === 0 && !isLoadingBalance
 

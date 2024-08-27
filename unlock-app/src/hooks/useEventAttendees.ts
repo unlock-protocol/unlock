@@ -15,9 +15,9 @@ interface useEventAttendeesProps {
 export const useEventAttendees = ({
   checkoutConfig,
 }: useEventAttendeesProps) => {
-  return useQuery(
-    ['eventAttendees', checkoutConfig],
-    async (): Promise<string[]> => {
+  return useQuery({
+    queryKey: ['eventAttendees', checkoutConfig],
+    queryFn: async (): Promise<string[]> => {
       const service = new SubgraphService()
       // Group locks by network
       const locksByNetwork: { [key: string]: string[] } = {}
@@ -58,6 +58,6 @@ export const useEventAttendees = ({
         })
       )
       return eventAttendees
-    }
-  )
+    },
+  })
 }

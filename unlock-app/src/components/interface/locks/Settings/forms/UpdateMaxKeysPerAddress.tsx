@@ -52,7 +52,9 @@ export const UpdateMaxKeysPerAddress = ({
     })
   }
 
-  const updateMaxKeysPerAddressMutation = useMutation(updateMaxKeysPerAddress)
+  const updateMaxKeysPerAddressMutation = useMutation({
+    mutationFn: updateMaxKeysPerAddress,
+  })
 
   const onHandleSubmit = async () => {
     if (isValid) {
@@ -71,7 +73,7 @@ export const UpdateMaxKeysPerAddress = ({
 
   const disabledInput =
     disabled ||
-    updateMaxKeysPerAddressMutation.isLoading ||
+    updateMaxKeysPerAddressMutation.isPending ||
     !canUpdateMaxKeysPerAddress
 
   const updateVersionUrl = `/locks/settings?address=${lockAddress}&network=${network}&defaultTab=advanced`
@@ -122,7 +124,7 @@ export const UpdateMaxKeysPerAddress = ({
           type="submit"
           className="w-full md:w-1/3"
           disabled={disabledInput}
-          loading={updateMaxKeysPerAddressMutation.isLoading}
+          loading={updateMaxKeysPerAddressMutation.isPending}
         >
           Update
         </Button>

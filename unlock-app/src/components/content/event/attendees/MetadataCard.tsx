@@ -36,8 +36,8 @@ const MetadataCard: React.FC<MetadataCardProps> = ({
           variant="outlined-primary"
           size="small"
           onClick={() => markAsCheckInMutation.mutate()}
-          disabled={markAsCheckInMutation.isLoading}
-          loading={markAsCheckInMutation.isLoading}
+          disabled={markAsCheckInMutation.isPending}
+          loading={markAsCheckInMutation.isPending}
         >
           Mark as checked-in
         </Button>

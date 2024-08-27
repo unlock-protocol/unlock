@@ -14,6 +14,16 @@ export function eventDetails(
   eventAddress: string,
   eventUrl: string
 ) {
+  const regexUrlPattern = new RegExp(
+    '^(http|https):\\/\\/|www\\.' // protocol or www
+  )
+
+  const isLink = regexUrlPattern.test(eventAddress)
+
+  const eventAddressLink = !isLink
+    ? 'https://www.google.com/maps/search/?api=1&query=' + eventAddress
+    : eventAddress
+
   let content = `
   <div style="${eventDetailStyle}">
   <h2>Event details</h2>
@@ -35,8 +45,8 @@ export function eventDetails(
     </div>
 
     <div>
-      <strong>Location:</strong>
-      <a target="_blank" href="https://www.google.com/maps/search/?api=1&query=${eventAddress}"> 
+      <strong>${isLink ? 'Link:' : 'Location:'}</strong>
+      <a target="_blank" href="${eventAddressLink}"> 
         ${eventAddress}
       </a>
     </div>

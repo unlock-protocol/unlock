@@ -334,17 +334,15 @@ export const LocksForm = ({
   }
 
   const { isLoading: isLoadingLocksByNetwork, data: locksByNetwork = [] } =
-    useQuery(
-      [network, account],
-      async () =>
+    useQuery({
+      queryKey: ['locksByNetwork', network, account],
+      queryFn: async () =>
         getLocksByNetwork({
           account,
           network,
         }),
-      {
-        enabled: !!account,
-      }
-    )
+      enabled: !!account,
+    })
 
   const onReorderInList = (lockAddress: string, order: number) => {
     const lock = locks[lockAddress]
@@ -413,8 +411,6 @@ export const LocksForm = ({
     setLocks(lockWithMetadata)
     setIsEditing(false)
   }
-
-  const hasMinValue = network && lockAddress && lockAddress?.length > 0
 
   const MetadataList = () => {
     if (!locks[lockAddress]?.metadataInputs) {
@@ -533,10 +529,16 @@ export const LocksForm = ({
     setLocks(locksByAddress)
     onChange(locksByAddress)
     setAddMetadata(false)
-    onEditLock(lockAddress)
+    setLockAddress(lockAddress)
+    setNetwork(network)
+    setDefaultValue({})
+    setAddLock(false)
   }
 
-  const addLockMutation = useMutation(onAddLock)
+  const addLockMutation = useMutation({
+    mutationFn: onAddLock,
+  })
+
   const onAddMetadata = (fields: MetadataInputType) => {
     const lock = locks[lockAddress]
     const metadata = lock?.metadataInputs || []
@@ -575,15 +577,19 @@ export const LocksForm = ({
     onChange(lockWithMetadata)
   }
 
+  // Called when editing a lock
   const onEditLock = (address: string) => {
     const [, config] =
       Object.entries(locks).find(
         ([lockAddress]) => lockAddress?.toLowerCase() === address?.toLowerCase()
       ) ?? []
-    setLockAddress(address)
-    setNetwork(config?.network)
-    setDefaultValue(config ?? {})
-    setAddLock(false)
+    if (config) {
+      setLockAddress(address)
+      setNetwork(config.network)
+      setDefaultValue(config)
+    } else {
+      // if no config is found, do not set the lock to be edited
+    }
   }
 
   const onRecurringChange = ({ recurringPayments }: any) => {
@@ -724,45 +730,42 @@ export const LocksForm = ({
                             />
                           </div>
                         </div>
-                        {hasMinValue && (
-                          <div className="flex flex-col gap-4 p-6 bg-gray-100">
-                            <div className="flex items-center justify-between">
-                              <div className="flex flex-col gap-2">
-                                <div className="flex items-start justify-between">
-                                  <h2 className="text-lg font-bold text-brand-ui-primary">
-                                    Metadata
-                                  </h2>
-                                  {!addMetadata && (
-                                    <Button
-                                      variant="outlined-primary"
-                                      size="small"
-                                      onClick={() => setAddMetadata(true)}
-                                    >
-                                      Add
-                                    </Button>
-                                  )}
-                                </div>
-                                <span className="text-xs text-gray-600">
-                                  (Optional) Collect additional information from
-                                  your members during the checkout process.
-                                  <br />
-                                  Note: if you have checked{' '}
-                                  <code>Collect email address</code> above,
-                                  there is no need to enter email address again
-                                  here.
-                                </span>
+                        <div className="flex flex-col gap-4 p-6 bg-gray-100">
+                          <div className="flex items-center justify-between">
+                            <div className="flex flex-col gap-2">
+                              <div className="flex items-start justify-between">
+                                <h2 className="text-lg font-bold text-brand-ui-primary">
+                                  Metadata
+                                </h2>
+                                {!addMetadata && (
+                                  <Button
+                                    variant="outlined-primary"
+                                    size="small"
+                                    onClick={() => setAddMetadata(true)}
+                                  >
+                                    Add
+                                  </Button>
+                                )}
                               </div>
+                              <span className="text-xs text-gray-600">
+                                (Optional) Collect additional information from
+                                your members during the checkout process.
+                                <br />
+                                Note: if you have checked{' '}
+                                <code>Collect email address</code> above, there
+                                is no need to enter email address again here.
+                              </span>
                             </div>
-                            {!addMetadata ? (
-                              <MetadataList />
-                            ) : (
-                              <div className="grid items-center grid-cols-1 gap-2 mt-2 rounded-xl">
-                                <LockMetadataForm onSubmit={onAddMetadata} />
-                              </div>
-                            )}
-                            <Button onClick={() => reset()}>Done</Button>
                           </div>
-                        )}
+                          {!addMetadata ? (
+                            <MetadataList />
+                          ) : (
+                            <div className="grid items-center grid-cols-1 gap-2 mt-2 rounded-xl">
+                              <LockMetadataForm onSubmit={onAddMetadata} />
+                            </div>
+                          )}
+                          <Button onClick={() => reset()}>Done</Button>
+                        </div>
                       </div>
                     )}
                   </div>
@@ -771,7 +774,7 @@ export const LocksForm = ({
             )}
         </div>
       </div>
-      {addLockMutation?.isLoading && (
+      {addLockMutation?.isPending && (
         <Placeholder.Root className="mt-4">
           <Placeholder.Line size="xl" className="py-8" />
         </Placeholder.Root>
