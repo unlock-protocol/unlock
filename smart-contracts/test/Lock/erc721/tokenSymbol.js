@@ -33,6 +33,10 @@ describe('Lock / erc721 / tokenSymbol', () => {
         )
       })
 
+      it('should return unlockToken Symbol if lock symbol is empty', async () => {
+        assert.equal(await lock.symbol(), await unlock.globalTokenSymbol())
+      })
+
       it('should allow the owner to set the global token Symbol', async () => {
         assert.equal(await unlock.globalTokenSymbol(), 'KEY')
       })

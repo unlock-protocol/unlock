@@ -8,6 +8,7 @@ const {
   ADDRESS_ZERO,
   purchaseKeys,
 } = require('../helpers')
+const { ZeroAddress } = require('ethers')
 
 const ONE_DAY = BigInt(60 * 60 * 24)
 const TOO_MUCH_TIME = BigInt(60 * 60 * 24 * 30 * 2) // 60 days
@@ -82,6 +83,21 @@ describe('Lock / shareKey', () => {
       )
       // make sure the key was not shared
       assert.notEqual(await lock.ownerOf(tokenIds[2]), address)
+    })
+
+    it('should fail if trying to share a key with a contract which implements onERC721Received with Wrong Result', async () => {
+      // A contract onERC721Received with wrong result:
+      const TestERC721Recevier = await ethers.getContractFactory(
+        'TestERC721RecevierWithWrongResult'
+      )
+      const nonCompliantContract = await TestERC721Recevier.deploy()
+
+      await reverts(
+        lock
+          .connect(keyOwners[2])
+          .shareKey(await nonCompliantContract.getAddress(), tokenIds[2], 1000),
+        'NON_COMPLIANT_ERC721_RECEIVER'
+      )
     })
 
     describe('fallback behaviors', () => {

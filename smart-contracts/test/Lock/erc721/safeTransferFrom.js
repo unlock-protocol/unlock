@@ -65,6 +65,24 @@ describe('Lock / erc721 / safeTransferFrom', () => {
     assert.equal(ownerOf, await random.getAddress())
   })
 
+  it('should fail to transfer when a contract implements onERC721Received with Wrong Result', async () => {
+    ;({ tokenId } = await purchaseKey(lock, await random3.getAddress()))
+    // A contract which does implement onERC721Received:
+    const TestERC721Recevier = await ethers.getContractFactory(
+      'TestERC721RecevierWithWrongResult'
+    )
+    const nonCompliantContract = await TestERC721Recevier.deploy()
+
+    await reverts(
+      lock
+        .connect(random3)
+        [
+          safeTransferFromSig
+        ](await random3.getAddress(), await nonCompliantContract.getAddress(), tokenId)
+    ),
+      'NON_COMPLIANT_ERC721_RECEIVER'
+  })
+
   it('should success to transfer when a contract implements onERC721Received', async () => {
     ;({ tokenId } = await purchaseKey(lock, await random3.getAddress()))
     // A contract which does implement onERC721Received:
