@@ -1,23 +1,26 @@
 /**
  * This interface defines the structure for environment variables
- * needed by the graph worker. Each property corresponds to a
- * specific network or setting, allowing dynamic access to endpoints
- * and identifiers. The string index signature enables flexibility
- * for future environment variables.
+ * required by the graph service. Each property corresponds to a
+ * specific subgraph endpoint for various blockchain networks,
+ * enabling dynamic access to their respective GraphQL APIs.
+ * The string index signature allows for the inclusion of additional
+ * environment variables in the future.
  */
 export interface Env {
-  BASE_URL: string
-  NETWORK_MAINNET: string
-  NETWORK_OPTIMISM: string
-  NETWORK_POLYGON: string
-  NETWORK_ARBITRUM: string
-  NETWORK_BSC: string
-  NETWORK_GNOSIS: string
-  NETWORK_GOERLI: string
-  NETWORK_SEPOLIA: string
-  NETWORK_BASE: string
-  NETWORK_CELO: string
-  NETWORK_AVALANCHE: string
+  MAINNET_SUBGRAPH: string
+  OPTIMISM_SUBGRAPH: string
+  BSC_SUBGRAPH: string
+  GNOSIS_SUBGRAPH: string
+  POLYGON_SUBGRAPH: string
+  ARBITRUM_SUBGRAPH: string
+  CELO_SUBGRAPH: string
+  AVALANCHE_SUBGRAPH: string
+  BASE_SUBGRAPH: string
+  SEPOLIA_SUBGRAPH: string
+  LINEA_SUBGRAPH: string
+  SCROLL_SUBGRAPH: string
+  ZKSYNC_SUBGRAPH: string
+  ZKEVM_SUBGRAPH: string
   [key: string]: string
 }
 
