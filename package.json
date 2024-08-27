@@ -45,7 +45,8 @@
     "paywall-app",
     "wedlocks",
     "provider",
-    "docs"
+    "docs",
+    "graph-service"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
