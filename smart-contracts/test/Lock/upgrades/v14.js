@@ -8,6 +8,7 @@ const {
   ADDRESS_ZERO,
   getEvents,
 } = require('@unlock-protocol/hardhat-helpers')
+const { reverts } = require('../../helpers')
 
 // pass proper root folder to helpers
 const dirname = path.join(__dirname, '..')
@@ -138,6 +139,22 @@ describe('PublicLock upgrade v13 > v14', () => {
 
     it('schemaVersion is not set correctly before migration', async () => {
       assert.equal(await lock.schemaVersion(), previousVersionNumber)
+    })
+
+    it('purchase should fail as migration is not finished', async () => {
+      await reverts(
+        lock.connect(buyers[0]).purchase(
+          [],
+          await Promise.all(buyers.map((k) => k.getAddress())),
+          buyers.map(() => ADDRESS_ZERO),
+          buyers.map(() => ADDRESS_ZERO),
+          buyers.map(() => '0x'),
+          {
+            value: keyPrice * BigInt(buyers.length),
+          }
+        ),
+        'MIGRATION_REQUIRED'
+      )
     })
 
     describe('data migration', () => {
