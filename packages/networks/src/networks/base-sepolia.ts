@@ -73,8 +73,7 @@ export const baseSepolia: NetworkConfig = {
   publicProvider: 'https://sepolia.base.org',
   startBlock: 7889118,
   subgraph: {
-    endpoint:
-      'https://api.studio.thegraph.com/query/65299/unlock-protocol-base-sepolia/version/latest',
+    endpoint: 'https://subgraph.unlock-protocol.com/84532',
     networkName: 'base-sepolia',
     studioName: 'unlock-protocol-base-sepolia',
   },

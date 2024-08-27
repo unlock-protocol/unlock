@@ -70,8 +70,7 @@ export const mainnet: NetworkConfig = {
   publicProvider: 'https://cloudflare-eth.com/v1/mainnet',
   startBlock: 16989000,
   subgraph: {
-    endpoint:
-      'https://api.studio.thegraph.com/query/65299/unlock-protocol-mainnet/version/latest',
+    endpoint: 'https://subgraph.unlock-protocol.com/1',
     studioName: 'unlock-protocol-mainnet',
   },
   tokens: [
