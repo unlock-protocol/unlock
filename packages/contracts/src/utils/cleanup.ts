@@ -22,7 +22,7 @@ const keysToKeep = [
 
 async function main() {
   const paths = await getAbiPaths()
-  paths.flat().forEach((abiPath) => {
+  paths.flat().forEach((abiPath: string) => {
     const abiFullPath = path.resolve('src', abiPath)
     const manifest = fs.readJsonSync(abiFullPath)
     if (Object.keys(manifest).length !== keysToKeep.length) {

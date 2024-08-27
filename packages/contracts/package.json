@@ -1,7 +1,7 @@
 {
   "name": "@unlock-protocol/contracts",
   "version": "0.0.29",
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
   "scripts": {
     "clean": "rm -rf dist docs src/index.ts",
     "test": "hardhat test",
@@ -9,7 +9,7 @@
     "build": "yarn clean && yarn build:index && yarn build:dist",
     "build:dist": "yarn contracts:copy",
     "build:docs": "yarn docs && yarn docs:copy",
-    "build:index": "tsc && node dist/parser.js > src/index.ts && tsc",
+    "build:index": "tsc && node dist/src/utils/parser.js > src/index.ts && tsc",
     "ci": "yarn test",
     "lint": "eslint src/",
     "contracts:copy": "copyfiles --verbose -u 2 src/**/*.sol dist",
