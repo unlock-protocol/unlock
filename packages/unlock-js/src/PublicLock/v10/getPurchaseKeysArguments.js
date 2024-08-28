@@ -80,7 +80,7 @@ export default async function getPurchaseKeysArguments({
     totalAmountToApprove = keyPrices
       .map((keyPrice, i) => {
         if (keyPrice > 0) {
-          const recurringPayment = recurringPayments[i]
+          const recurringPayment = recurringPayments && recurringPayments[i]
           if (!recurringPayment) {
             return keyPrice
           } else if (recurringPayment === Infinity) {
