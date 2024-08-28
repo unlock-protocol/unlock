@@ -15,6 +15,7 @@ import { AirstackProvider } from '@airstack/airstack-react'
 import { ErrorBoundary } from '@sentry/nextjs'
 import { Toaster } from 'react-hot-toast'
 import GlobalWrapper from '~/components/interface/GlobalWrapper'
+import TagManagerScript from '../src/components/TagManagerScript'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -45,6 +46,7 @@ export default function RootLayout({
                     <GlobalWrapper>{children}</GlobalWrapper>
                   </AirstackProvider>
                 </ErrorBoundary>
+                <TagManagerScript />
                 <Toaster />
               </ConnectModalProvider>
             </NextAuthSessionProvider>
