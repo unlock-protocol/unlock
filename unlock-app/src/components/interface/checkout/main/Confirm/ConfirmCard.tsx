@@ -50,6 +50,7 @@ export function CreditCardPricingBreakdown({
   loading,
   symbol = 'USD',
   unlockFeeChargedToUser = true,
+  total,
 }: CreditCardPricingBreakdownProps) {
   return (
     <div className="flex flex-col gap-2 pt-4 text-xs">
@@ -64,11 +65,11 @@ export function CreditCardPricingBreakdown({
           <span>Learn more</span> <ExternalLinkIcon className="inline" />
         </a>
       </h3>
-      <div className="divide-y">
+      <div className="border-b">
         {unlockFeeChargedToUser && !loading && (
           <Detail
             loading={loading}
-            className="flex justify-between w-full py-2 text-xs border-t border-gray-300"
+            className="flex justify-between w-full py-1 text-xs border-t border-gray-300"
             label="Service Fee"
             labelSize="tiny"
             valueSize="tiny"
@@ -82,7 +83,7 @@ export function CreditCardPricingBreakdown({
         {!!creditCardProcessingFee && (
           <Detail
             loading={loading}
-            className="flex justify-between w-full py-2 text-sm"
+            className="flex justify-between w-full py-1 text-sm"
             label="Payment Processor"
             labelSize="tiny"
             valueSize="tiny"
@@ -96,7 +97,7 @@ export function CreditCardPricingBreakdown({
         {!!gasCosts && (
           <Detail
             loading={loading}
-            className="flex justify-between w-full py-2 text-sm"
+            className="flex justify-between w-full py-1 text-sm"
             label="Minting (gas) cost"
             labelSize="tiny"
             valueSize="tiny"
@@ -106,6 +107,16 @@ export function CreditCardPricingBreakdown({
               {formatFiatPriceFromCents(gasCosts, symbol)}
             </div>
           </Detail>
+        )}
+        {total == 50 && (
+          <Detail
+            loading={loading}
+            className="flex justify-between w-full py-1"
+            label="(The minimum charge is $0.50)"
+            labelSize="tiny"
+            valueSize="tiny"
+            inline
+          />
         )}
       </div>
     </div>
@@ -189,9 +200,6 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
     network: lock!.network,
     purchaseData: purchaseData || [],
   })
-
-  // show gas cost only when custom credit card price is present
-  const gasCosts = creditCardPrice ? totalPricing?.gasCost : undefined
 
   const { mutateAsync: capturePayment } = useCapturePayment({
     network: lock!.network,
@@ -349,7 +357,7 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
                     totalPricing?.creditCardProcessingFee
                   }
                   unlockServiceFee={totalPricing?.unlockServiceFee ?? 0}
-                  gasCosts={gasCosts}
+                  gasCosts={totalPricing?.gasCost}
                   symbol={creditCardCurrencySymbol}
                   unlockFeeChargedToUser={unlockFeeChargedToUser}
                 />
