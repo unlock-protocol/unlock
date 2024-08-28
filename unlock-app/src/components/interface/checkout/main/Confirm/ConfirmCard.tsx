@@ -174,11 +174,10 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
       config.networks[lock!.network].nativeCurrency.symbol
     ),
   })
-  const { data: { creditCardPrice, unlockFeeChargedToUser } = {} } =
-    useGetLockSettings({
-      network: lock!.network,
-      lockAddress: lock!.address,
-    })
+  const { data: { unlockFeeChargedToUser } = {} } = useGetLockSettings({
+    network: lock!.network,
+    lockAddress: lock!.address,
+  })
 
   const isPricingDataAvailable =
     !isPricingDataLoading && !isPricingDataError && !!pricingData
