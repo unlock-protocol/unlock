@@ -198,11 +198,17 @@ export const getFees = async (
   )
 
   const feePaidByUser = unlockFeeChargedToUser ? unlockServiceFee : 0
+  let total = feePaidByUser + creditCardProcessingFee + subtotal + gasCost
+
+  if (total < MIN_PAYMENT_STRIPE_CREDIT_CARD) {
+    total = MIN_PAYMENT_STRIPE_CREDIT_CARD
+  }
+
   return {
     unlockServiceFee,
     creditCardProcessingFee,
     gasCost,
-    total: feePaidByUser + creditCardProcessingFee + subtotal + gasCost,
+    total,
   }
 }
 
