@@ -20,8 +20,8 @@ import {
   createExpireKeyEvent,
   createKeyManagerChangedEvent,
   createRenewKeyPurchaseEvent,
-  mockDataSourceV8,
-  updateExpirationV8,
+  mockDataSourceV9,
+  updateExpirationV9,
 } from './keys-utils'
 import {
   keyOwnerAddress,
@@ -30,18 +30,18 @@ import {
   tokenId,
   tokenURI,
   expiration,
-  lockAddressV8,
+  lockAddressV9,
   lockManagers,
 } from './constants'
 
 // mock contract functions
 import './mocks'
 
-const keyIDV8 = `${lockAddressV8}-${tokenId}`
+const keyIDV9 = `${lockAddressV9}-${tokenId}`
 
-describe('Key transfers (v8)', () => {
-  test('Creation of a new key (v8)', () => {
-    mockDataSourceV8()
+describe('Key transfers (V9)', () => {
+  test('Creation of a new key (V9)', () => {
+    mockDataSourceV9()
     const newTransferEvent = createTransferEvent(
       Address.fromString(nullAddress),
       Address.fromString(keyOwnerAddress),
@@ -50,14 +50,14 @@ describe('Key transfers (v8)', () => {
     handleTransfer(newTransferEvent)
 
     assert.entityCount('Key', 1)
-    assert.fieldEquals('Key', keyIDV8, 'lock', lockAddressV8)
-    assert.fieldEquals('Key', keyIDV8, 'owner', keyOwnerAddress)
-    assert.fieldEquals('Key', keyIDV8, 'tokenId', `${tokenId}`)
-    assert.fieldEquals('Key', keyIDV8, 'tokenURI', `${tokenURI}`)
-    assert.fieldEquals('Key', keyIDV8, 'expiration', `${expiration}`)
-    assert.fieldEquals('Key', keyIDV8, 'createdAtBlock', '1')
-    assert.fieldEquals('Key', keyIDV8, 'createdAt', '1')
-    assert.fieldEquals('Key', keyIDV8, 'manager', lockManagers[0])
+    assert.fieldEquals('Key', keyIDV9, 'lock', lockAddressV9)
+    assert.fieldEquals('Key', keyIDV9, 'owner', keyOwnerAddress)
+    assert.fieldEquals('Key', keyIDV9, 'tokenId', `${tokenId}`)
+    assert.fieldEquals('Key', keyIDV9, 'tokenURI', `${tokenURI}`)
+    assert.fieldEquals('Key', keyIDV9, 'expiration', `${expiration}`)
+    assert.fieldEquals('Key', keyIDV9, 'createdAtBlock', '1')
+    assert.fieldEquals('Key', keyIDV9, 'createdAt', '1')
+    assert.fieldEquals('Key', keyIDV9, 'manager', lockManagers[0])
   })
 
   afterAll(() => {
@@ -67,8 +67,8 @@ describe('Key transfers (v8)', () => {
 })
 
 describe('Change in expiration timestamp', () => {
-  test('should increase key timestamp (v8)', () => {
-    mockDataSourceV8()
+  test('should increase key timestamp (V9)', () => {
+    mockDataSourceV9()
     // create a key
     const newTransferEvent = createTransferEvent(
       Address.fromString(nullAddress),
@@ -78,7 +78,7 @@ describe('Change in expiration timestamp', () => {
     handleTransfer(newTransferEvent)
 
     // mock and test
-    updateExpirationV8(BigInt.fromU64(expiration + 1000))
+    updateExpirationV9(BigInt.fromU64(expiration + 1000))
     const newExpirationEvent = createExpirationChangedEventUntilV11(
       BigInt.fromU32(tokenId),
       BigInt.fromU32(1000),
@@ -86,14 +86,14 @@ describe('Change in expiration timestamp', () => {
     )
 
     handleExpirationChangedUntilV11(newExpirationEvent)
-    assert.fieldEquals('Key', keyIDV8, 'expiration', `${expiration + 1000}`)
+    assert.fieldEquals('Key', keyIDV9, 'expiration', `${expiration + 1000}`)
     dataSourceMock.resetValues()
   })
 })
 
 describe('Key is expired by lock manager', () => {
-  test('should update the key expiration (v8)', () => {
-    mockDataSourceV8()
+  test('should update the key expiration (V9)', () => {
+    mockDataSourceV9()
     // create a key
     const newTransferEvent = createTransferEvent(
       Address.fromString(nullAddress),
@@ -103,11 +103,11 @@ describe('Key is expired by lock manager', () => {
     handleTransfer(newTransferEvent)
 
     // mock and test
-    updateExpirationV8()
+    updateExpirationV9()
     const newExpireKeyEvent = createExpireKeyEvent(BigInt.fromU32(tokenId))
 
     handleExpireKey(newExpireKeyEvent)
-    assert.fieldEquals('Key', keyIDV8, 'expiration', `${now}`)
+    assert.fieldEquals('Key', keyIDV9, 'expiration', `${now}`)
     dataSourceMock.resetValues()
   })
 })
@@ -115,8 +115,8 @@ describe('Key is expired by lock manager', () => {
 describe('Key managers', () => {
   const newKeyManagerAddress = '0x0000000000000000000000000000000000000132'
 
-  test('key manager changed (v8)', () => {
-    mockDataSourceV8()
+  test('key manager changed (V9)', () => {
+    mockDataSourceV9()
 
     // create a key
     const newTransferEvent = createTransferEvent(
@@ -132,14 +132,14 @@ describe('Key managers', () => {
     )
 
     handleKeyManagerChanged(newKeyManagerChanged)
-    assert.fieldEquals('Key', keyIDV8, 'manager', newKeyManagerAddress)
+    assert.fieldEquals('Key', keyIDV9, 'manager', newKeyManagerAddress)
     dataSourceMock.resetValues()
   })
 })
 
 describe('RenewKeyPurchase (lock <v10)', () => {
-  test('extend a key by the correct time (v8)', () => {
-    mockDataSourceV8()
+  test('extend a key by the correct time (V9)', () => {
+    mockDataSourceV9()
 
     // create a key
     const newTransferEvent = createTransferEvent(
@@ -149,14 +149,14 @@ describe('RenewKeyPurchase (lock <v10)', () => {
     )
     handleTransfer(newTransferEvent)
 
-    updateExpirationV8()
+    updateExpirationV9()
     const newExpiration = expiration + 1000
     const newRenewKeyPurchase = createRenewKeyPurchaseEvent(
       Address.fromString(keyOwnerAddress),
       BigInt.fromU64(newExpiration)
     )
     handleRenewKeyPurchase(newRenewKeyPurchase)
-    assert.fieldEquals('Key', keyIDV8, 'expiration', `${newExpiration}`)
+    assert.fieldEquals('Key', keyIDV9, 'expiration', `${newExpiration}`)
     dataSourceMock.resetValues()
   })
 })

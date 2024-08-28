@@ -59,7 +59,7 @@ export function handleNewLock(event: NewLock): void {
   // fetch lock version
   let lockContract = PublicLockMerged.bind(lockAddress)
   let version = BigInt.fromI32(0)
-  let publicLockVersion = lockContract.try_publicLockVersion1()
+  let publicLockVersion = lockContract.try_publicLockVersion()
   if (!publicLockVersion.reverted) {
     version = BigInt.fromI32(publicLockVersion.value)
   }
@@ -87,7 +87,7 @@ export function handleNewLock(event: NewLock): void {
 
   // maxKeysPerAddress set to 1 prior to lock v10
   lock.maxKeysPerAddress = BigInt.fromI32(1)
-  if (version.ge(BigInt.fromI32(9))) {
+  if (version.ge(BigInt.fromI32(10))) {
     let maxKeysPerAddress = lockContract.try_maxKeysPerAddress()
     if (!maxKeysPerAddress.reverted) {
       lock.maxKeysPerAddress = maxKeysPerAddress.value
@@ -106,15 +106,9 @@ export function handleNewLock(event: NewLock): void {
   lock.lastKeyMintedAt = null
   lock.lastKeyRenewedAt = null
 
-  if (version.le(BigInt.fromI32(8))) {
-    // prior to v8, add default lock manager
-    lock.lockManagers = [event.params.lockOwner]
-    lock.keyGranters = [event.params.lockOwner]
-  } else {
-    // after v8, lock managers are parsed from `RoleGranted` events
-    lock.lockManagers = []
-    lock.keyGranters = []
-  }
+  // lock managers are parsed from `RoleGranted` events
+  lock.lockManagers = []
+  lock.keyGranters = []
 
   lock.save()
 

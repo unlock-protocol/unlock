@@ -283,8 +283,6 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
   createReceipt(event)
 }
 
-// NB: Up to PublicLock v8, we handle the addition of a new lock managers and key granters
-// with our custom events `LockManagerAdded` and `KeyGranterAdded`. Starting from v9,
 // we use OpenZeppelin native `RoleGranted` event.
 export function handleRoleGranted(event: RoleGrantedEvent): void {
   if (
@@ -374,7 +372,7 @@ export function handleKeyGranterRemoved(event: KeyGranterRemovedEvent): void {
   }
 }
 
-// `LockManagerAdded` event is used only until v8
+// `LockManagerAdded` event is replaced by OZ native Roles event
 export function handleLockManagerAdded(event: LockManagerAddedEvent): void {
   const lock = Lock.load(event.address.toHexString())
 

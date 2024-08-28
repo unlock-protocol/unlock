@@ -95,12 +95,6 @@ templates:
         - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
           handler: handleRoleRevoked
           receipt: true
-        - event: LockManagerAdded(indexed address)
-          handler: handleLockManagerAdded
-          receipt: true
-        - event: LockManagerRemoved(indexed address)
-          handler: handleLockManagerRemoved
-          receipt: true
         - event: PricingChanged(uint256,uint256,address,address)
           handler: handlePricingChanged
           receipt: true
