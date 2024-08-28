@@ -4,26 +4,27 @@ import type { NextPage } from 'next'
 import BrowserOnly from '~/components/helpers/BrowserOnly'
 import { AppLayout } from '~/components/interface/layouts/AppLayout'
 
-import { useRouter } from 'next/router'
+import { useSearchParams } from 'next/navigation'
 import { Input } from '@unlock-protocol/ui'
 import useWalletConnectClient from '~/hooks/useWalletConnectClient'
 import Loading from '~/components/interface/Loading'
 
 const Wc: NextPage = () => {
-  const { query } = useRouter()
+  const searchParams = useSearchParams()
   const [formUri, setFormUri] = useState('')
   const { connect, dapp, accept, connected } = useWalletConnectClient()
 
   useEffect(() => {
-    if (query.uri) {
-      connect(`${query.uri}`)
+    const uri = searchParams.get('uri')
+    if (uri) {
+      connect(uri)
     }
-  }, [query.uri])
+  }, [searchParams])
 
   return (
     <BrowserOnly>
       <AppLayout authRequired={true} showHeader={true}>
-        {!dapp && !query.uri && (
+        {!dapp && !searchParams.get('uri') && (
           <div className="flex flex-col w-9/12 mx-auto gap-4 mt-5">
             <Input
               value={formUri}
@@ -44,7 +45,7 @@ const Wc: NextPage = () => {
             </button>
           </div>
         )}
-        {!dapp && query.uri && <Loading />}
+        {!dapp && searchParams.get('uri') && <Loading />}
         {dapp && !connected && (
           <div className="flex flex-col w-9/12 mx-auto gap-4 mt-5">
             <p>

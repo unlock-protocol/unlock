@@ -1,15 +1,12 @@
-import { useRouter } from 'next/router'
+import { useSearchParams } from 'next/navigation'
 import { useGetLockSettingsBySlug } from './useLockSettings'
 
 export const useRouterQueryForLockAddressAndNetworks = () => {
-  const router = useRouter()
-  const query = router?.query as {
-    lockAddress?: string
-    network?: string
-    s?: string
-    tokenId: string
-  }
-  const { lockAddress, network, s: slug = '', tokenId } = query
+  const searchParams = useSearchParams()
+  const lockAddress = searchParams.get('lockAddress') || undefined
+  const network = searchParams.get('network') || undefined
+  const slug = searchParams.get('s') || ''
+  const tokenId = searchParams.get('tokenId') || ''
 
   const { data: lockSettings, isLoading } = useGetLockSettingsBySlug(
     slug as string

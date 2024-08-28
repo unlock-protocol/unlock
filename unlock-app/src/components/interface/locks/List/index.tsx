@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router'
+import { useSearchParams } from 'next/navigation'
 import React from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { WalletNotConnected } from '../../layouts/AppLayout'
@@ -6,8 +6,8 @@ import { LockList } from './elements/LockList'
 
 export const LocksListPage = () => {
   const { network, account } = useAuth()
-  const { query } = useRouter()
-  const { account: manager } = query
+  const searchParams = useSearchParams()
+  const manager = searchParams.get('account')
 
   // show lock for the specific manager if present in query parameters
   const locksOwner = manager ?? account!
