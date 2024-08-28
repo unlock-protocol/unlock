@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 0.0.30
+
+- Remove deprecated versions of `Unlock` (from V0 to v10)
+- Remove deprecated versions of `PublicLock` (from V0 to v7)
+
 ## 0.0.29
 
 - Adding `EmptyImpl` in `utils` to allow deploymeny of empty proxy
