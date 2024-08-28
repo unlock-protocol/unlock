@@ -4,22 +4,20 @@ import worker from '../src/index'
 
 // Mock environment variables to simulate different network configurations
 const mockEnv: Env = {
-  BASE_URL: 'https://api.example.com/query/12345',
-  NETWORK_MAINNET: 'test-mainnet',
-  NETWORK_OPTIMISM: 'test-optimism',
-  NETWORK_POLYGON: 'test-polygon',
-  NETWORK_ARBITRUM: 'test-arbitrum',
-  NETWORK_BSC: 'test-bsc',
-  NETWORK_GNOSIS: 'test-gnosis',
-  NETWORK_AVALANCHE: 'test-avalanche',
-  NETWORK_SEPOLIA: 'test-sepolia',
-  NETWORK_BASE: 'test-base',
-  NETWORK_CELO: 'test-celo',
-  NETWORK_GOERLI: 'test-goerli',
-  NETWORK_ARBITRUM_GOERLI: 'test-arbitrum-goerli',
-  NETWORK_BASE_SEPOLIA: 'test-base-sepolia',
-  NETWORK_CELO_ALFAJORES: 'test-celo-alfajores',
-  NETWORK_AVALANCHE_FUJI: 'test-avalanche-fuji',
+  MAINNET_SUBGRAPH: 'test-mainnet',
+  OPTIMISM_SUBGRAPH: 'test-optimism',
+  POLYGON_SUBGRAPH: 'test-polygon',
+  ARBITRUM_SUBGRAPH: 'test-arbitrum',
+  BSC_SUBGRAPH: 'test-bsc',
+  GNOSIS_SUBGRAPH: 'test-gnosis',
+  AVALANCHE_SUBGRAPH: 'test-avalanche',
+  SEPOLIA_SUBGRAPH: 'test-sepolia',
+  BASE_SUBGRAPH: 'test-base-subgraph',
+  CELO_SUBGRAPH: 'test-celo-subgraph',
+  LINEA_SUBGRAPH: 'test-linea-subgraph',
+  SCROLL_SUBGRAPH: 'test-scroll-subgraph',
+  ZKSYNC_SUBGRAPH: 'test-zksync-subgraph',
+  ZKEVM_SUBGRAPH: 'test-zkevm-subgraph',
 }
 
 // Grouping tests related to the graph service
@@ -29,56 +27,50 @@ describe('Graph Service', () => {
     vi.resetAllMocks()
   })
 
-  // Test case for unsupported network requests
+  // Test for unsupported network
   it('should return 400 for unsupported network', async () => {
-    const request = new Request('https://example.com/unsupported-network', {
+    const request = new Request('https://example.com/999999', {
       method: 'POST',
     })
     const response = await worker.fetch(request, mockEnv)
-    // Expect a 400 status and the appropriate error message
     expect(response.status).toBe(400)
-    expect(await response.text()).toBe(
-      'Unsupported network: unsupported-network'
-    )
+    expect(await response.text()).toBe('Unsupported network ID: 999999')
   })
 
-  // Test case for handling non-POST requests
+  // Test for non-POST requests
   it('should return 405 for non-POST requests', async () => {
-    const request = new Request('https://example.com/mainnet', {
+    const request = new Request('https://example.com/1', {
       method: 'GET',
     })
     const response = await worker.fetch(request, mockEnv)
-    // Expect a 405 status for method not allowed
     expect(response.status).toBe(405)
     expect(await response.text()).toBe('Method Not Allowed')
   })
 
-  // Test case for missing GraphQL query in the request
+  // Test for missing query
   it('should return 400 for missing query', async () => {
-    const request = new Request('https://example.com/mainnet', {
+    const request = new Request('https://example.com/1', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({}),
     })
     const response = await worker.fetch(request, mockEnv)
-    // Expect a 400 status and the appropriate error message
     expect(response.status).toBe(400)
     expect(await response.text()).toBe('Bad Request: query is required')
   })
 
-  // Test case for forwarding requests to the correct subgraph
+  // Test for forwarding request to correct subgraph
   it('should forward request to correct subgraph and return response', async () => {
     const mockQuery = '{ locks { address } }'
     const mockResponse = { data: { locks: [{ address: '0x123' }] } }
 
-    // Mock the global fetch function to simulate a successful response
     global.fetch = vi.fn().mockResolvedValue({
       status: 200,
       headers: new Headers({ 'Content-Type': 'application/json' }),
       text: () => Promise.resolve(JSON.stringify(mockResponse)),
     })
 
-    const request = new Request('https://example.com/mainnet', {
+    const request = new Request('https://example.com/1', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ query: mockQuery }),
@@ -86,12 +78,10 @@ describe('Graph Service', () => {
 
     const response = await worker.fetch(request, mockEnv)
 
-    // Expect a 200 status and the correct response data
     expect(response.status).toBe(200)
     expect(await response.json()).toEqual(mockResponse)
-    // Verify that the fetch was called with the correct URL and options
     expect(global.fetch).toHaveBeenCalledWith(
-      'https://api.example.com/query/12345/test-mainnet/version/latest',
+      mockEnv.MAINNET_SUBGRAPH,
       expect.objectContaining({
         method: 'POST',
         body: JSON.stringify({ query: mockQuery }),
@@ -99,12 +89,11 @@ describe('Graph Service', () => {
     )
   })
 
-  // Test case for handling errors during fetch
+  // Test for handling errors
   it('should handle errors and return 500', async () => {
-    // Mock the global fetch function to simulate a network error
     global.fetch = vi.fn().mockRejectedValue(new Error('Network error'))
 
-    const request = new Request('https://example.com/mainnet', {
+    const request = new Request('https://example.com/1', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ query: '{ locks { address } }' }),
@@ -112,7 +101,6 @@ describe('Graph Service', () => {
 
     const response = await worker.fetch(request, mockEnv)
 
-    // Expect a 500 status for internal server error
     expect(response.status).toBe(500)
     expect(await response.text()).toBe('Internal Server Error')
   })

@@ -1,15 +1,24 @@
 import { Env } from './types'
 
-// This function retrieves the subgraph ID associated with a specified network.
-// It takes two parameters:
-// 1. `network`: A string representing the name of the network (e.g., 'mainnet', 'optimism').
-// 2. `env`: An object conforming to the Env interface, containing environment variables for various networks.
-export function getSubgraphId(network: string, env: Env): string | undefined {
-  // Constructing the key for the environment variable by concatenating 'NETWORK_' with the uppercased network name.
-  // This key will be used to access the corresponding subgraph ID from the env object.
-  const networkKey = `NETWORK_${network.toUpperCase()}` as keyof Env
-
-  // Returning the subgraph ID from the env object using the constructed network key.
-  // If the key does not exist, it will return undefined, indicating that the network is unsupported.
-  return env[networkKey]
+export function getSubgraphUrl(
+  networkId: string,
+  env: Env
+): string | undefined {
+  return {
+    '1': env.MAINNET_SUBGRAPH,
+    '10': env.OPTIMISM_SUBGRAPH,
+    '56': env.BSC_SUBGRAPH,
+    '100': env.GNOSIS_SUBGRAPH,
+    '137': env.POLYGON_SUBGRAPH,
+    '324': env.ZKSYNC_SUBGRAPH,
+    '1101': env.ZKEVM_SUBGRAPH,
+    '42161': env.ARBITRUM_SUBGRAPH,
+    '42220': env.CELO_SUBGRAPH,
+    '43114': env.AVALANCHE_SUBGRAPH,
+    '84532': env.BASE_SEPOLIA_SUBGRAPH,
+    '8453': env.BASE_SUBGRAPH,
+    '11155111': env.SEPOLIA_SUBGRAPH,
+    '59144': env.LINEA_SUBGRAPH,
+    '534352': env.SCROLL_SUBGRAPH,
+  }[networkId]
 }

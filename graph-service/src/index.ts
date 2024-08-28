@@ -1,18 +1,22 @@
-import { getSubgraphId } from './networks'
+import { getSubgraphUrl } from './networks'
 import { Env, GraphQLRequest } from './types'
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url)
-    // Remove the leading '/' to get the network name
-    const network = url.pathname.slice(1)
+    const matched = url.pathname.match(/\/([0-9]+)/)
+    if (!matched || !matched[1]) {
+      return new Response('Bad Request, missing chain id', { status: 400 })
+    }
+    const networkId = matched[1]
 
     // Validate the network by retrieving the corresponding subgraph ID
-    const subgraphId = getSubgraphId(network, env)
-    if (!subgraphId) {
-      return new Response(`Unsupported network: ${network}`, { status: 400 })
+    const subgraphUrl = getSubgraphUrl(networkId, env)
+    if (!subgraphUrl) {
+      return new Response(`Unsupported network ID: ${networkId}`, {
+        status: 400,
+      })
     }
-    const graphUrl = `${env.BASE_URL}/${subgraphId}/version/latest`
 
     // Ensure that only POST requests are allowed for this endpoint
     if (request.method !== 'POST') {
@@ -31,7 +35,7 @@ export default {
       }
 
       // Forward the request with the constructed URL
-      const graphResponse = await fetch(graphUrl, {
+      const graphResponse = await fetch(subgraphUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
