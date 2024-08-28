@@ -116,16 +116,12 @@ export const CreateLockFormSummary = ({
     return { ...tx, confirmations }
   }
 
-  const { data, isError } = useQuery(
-    ['getTransactionDetails', transactionHash, network],
-    () => {
-      return getTransactionDetails(transactionHash!)
-    },
-    {
-      enabled: !!transactionHash,
-      refetchInterval: 5000,
-    }
-  )
+  const { data, isError } = useQuery({
+    queryKey: ['getTransactionDetails', transactionHash, network],
+    queryFn: () => getTransactionDetails(transactionHash!),
+    enabled: !!transactionHash,
+    refetchInterval: 5000,
+  })
 
   const hasError = isError && data
   const isDeployed =
@@ -139,10 +135,10 @@ export const CreateLockFormSummary = ({
       )
     : null
 
-  const { data: subgraphLock } = useQuery(
-    ['getLockFromSubgraph', transactionHash, lockAddress, network],
-    () => {
-      const subgraphLock = subgraph.lock(
+  const { data: subgraphLock } = useQuery({
+    queryKey: ['getLockFromSubgraph', transactionHash, lockAddress, network],
+    queryFn: () => {
+      return subgraph.lock(
         {
           where: {
             address: lockAddress,
@@ -150,16 +146,10 @@ export const CreateLockFormSummary = ({
         },
         { network: network! }
       )
-      if (subgraphLock) {
-        return subgraphLock
-      }
-      return null
     },
-    {
-      enabled: !!lockAddress && !!network,
-      refetchInterval: 1000,
-    }
-  )
+    enabled: !!lockAddress && !!network,
+    refetchInterval: 1000,
+  })
 
   const currentStatus: DeployStatus = hasError
     ? 'txError'

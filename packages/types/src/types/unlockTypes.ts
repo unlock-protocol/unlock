@@ -38,6 +38,7 @@ export interface Token {
   mainnetAddress?: string
   wrapped?: string
   featured?: boolean
+  faucet?: Faucet
 }
 
 export enum HookType {
@@ -80,6 +81,11 @@ export interface NetworkBridgeConfig {
     connextMod?: string
     delayMod?: string
   }
+}
+
+export interface Faucet {
+  name: string
+  url: string
 }
 
 export interface NetworkConfig {
@@ -153,7 +159,7 @@ export interface NetworkConfig {
   previousDeploys?: NetworkDeploy[]
   description: string
   url?: string
-  faucet?: string
+  faucets?: Faucet[]
   tokens?: Token[]
   hooks?: Partial<Record<HookName, Hook[]>>
   fullySubsidizedGas?: boolean

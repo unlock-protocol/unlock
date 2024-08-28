@@ -32,6 +32,7 @@ import Disconnect from './Disconnect'
 import { useSIWE } from '~/hooks/useSIWE'
 import { useMembership } from '~/hooks/useMembership'
 import { useRouter } from 'next/router'
+import { ethers } from 'ethers'
 interface Props {
   checkoutService: CheckoutService
 }
@@ -57,12 +58,11 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
 
   const showRenewalLabel =
     lock.recurringPayments === 'forever' ||
-    typeof lock.recurringPayments === 'number'
+    !isNaN(Number(lock.recurringPayments))
 
-  const numberOfRenewals =
-    typeof lock.recurringPayments === 'number'
-      ? `${lock.recurringPayments} times`
-      : ''
+  const numberOfRenewals = !isNaN(Number(lock.recurringPayments))
+    ? `${lock.recurringPayments} times`
+    : ''
 
   return (
     <RadioGroup.Option
@@ -212,9 +212,9 @@ export function Select({ checkoutService }: Props) {
 
   const router = useRouter()
 
-  const { isLoading: isLocksLoading, data: locks } = useQuery(
-    ['locks', JSON.stringify(paywallConfig)],
-    async () => {
+  const { isPending: isLocksLoading, data: locks } = useQuery({
+    queryKey: ['locks', JSON.stringify(paywallConfig)],
+    queryFn: async () => {
       const items = await Promise.all(
         Object.entries(paywallConfig.locks)
           .sort(([, l], [, m]) => {
@@ -225,16 +225,41 @@ export function Select({ checkoutService }: Props) {
               props.network || paywallConfig.network || 1
 
             const lockData = await web3Service.getLock(lock, networkId)
+
+            let price
+
+            if (account) {
+              try {
+                price = await web3Service.purchasePriceFor({
+                  lockAddress: lock,
+                  userAddress: account,
+                  referrer: account,
+                  network: networkId,
+                  // We do not have the data
+                  data: '0x',
+                })
+
+                price = parseFloat(
+                  ethers.formatUnits(price, lockData.currencyDecimals)
+                )
+              } catch (e) {
+                console.error(e)
+                price = Number(lockData.keyPrice)
+              }
+            } else {
+              price = Number(lockData.keyPrice)
+            }
+
             const fiatPricing = await getLockUsdPrice({
               network: networkId,
               currencyContractAddress: lockData?.currencyContractAddress,
-              amount: Number(lockData.keyPrice),
+              amount: price,
             })
 
             return {
               ...props,
               ...lockData,
-              keyPrice: Number(lockData.keyPrice),
+              keyPrice: price,
               name: props.name || lockData.name,
               network: networkId,
               address: lock,
@@ -249,8 +274,8 @@ export function Select({ checkoutService }: Props) {
       )
 
       return locks
-    }
-  )
+    },
+  })
 
   // This should be executed only if router is defined
   useEffect(() => {
@@ -341,12 +366,11 @@ export function Select({ checkoutService }: Props) {
     expectedAddress.toLowerCase() !== account.toLowerCase()
   )
 
-  const { isInitialLoading: isMembershipsLoading, data: memberships } =
-    useMembership({
-      account,
-      paywallConfig: paywallConfig,
-      web3Service,
-    })
+  const { isLoading: isMembershipsLoading, data: memberships } = useMembership({
+    account,
+    paywallConfig: paywallConfig,
+    web3Service,
+  })
 
   const membership = memberships?.find((item) => item.lock === lock?.address)
   const { isLoading: isLoadingHook, lockHookMapping } =

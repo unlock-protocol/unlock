@@ -95,7 +95,7 @@ export const createPaymentIntent: RequestHandler = async (
 
   const soldOut = await isSoldOut(lockAddress, network, recipients.length)
   if (soldOut) {
-    throw new Error('Lock is sold out.')
+    return response.status(400).send({ message: 'Lock is sold out.' })
   }
 
   const { stripeEnabled, stripeAccount } = await getStripeConnectForLock(
@@ -137,19 +137,26 @@ export const createPaymentIntent: RequestHandler = async (
     })
   }
   const processor = new PaymentProcessor()
-  const paymentIntentDetails = await processor.createPaymentIntent(
-    userAddress,
-    recipients,
-    stripeCustomerId,
-    lockAddress,
-    pricing,
-    network,
-    stripeConnectApiKey,
-    recurring,
-    data,
-    referrers
-  )
-  return response.send(paymentIntentDetails)
+  try {
+    const paymentIntentDetails = await processor.createPaymentIntent(
+      userAddress,
+      recipients,
+      stripeCustomerId,
+      lockAddress,
+      pricing,
+      network,
+      stripeConnectApiKey,
+      recurring,
+      data,
+      referrers
+    )
+    return response.send(paymentIntentDetails)
+  } catch (error) {
+    logger.error(error.message)
+    return response.status(500).send({
+      error: `We could not capture the payment. ${error.message}`,
+    })
+  }
 }
 
 export const removePaymentMethods: RequestHandler = async (

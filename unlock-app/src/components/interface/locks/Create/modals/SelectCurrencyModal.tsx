@@ -99,10 +99,11 @@ export const SelectCurrencyModal = ({
     }
   }
 
-  const { isLoading: isLoadingContractToken, data: contractTokenSymbol } =
-    useQuery(['getContractTokenSymbol', contractAddress, query], async () =>
-      web3Service.getTokenSymbol(contractAddress, network)
-    )
+  const { isPending: isLoadingContractToken, data: contractTokenSymbol } =
+    useQuery({
+      queryKey: ['getContractTokenSymbol', contractAddress, query],
+      queryFn: async () => web3Service.getTokenSymbol(contractAddress, network),
+    })
 
   const addToken = ({
     name,
