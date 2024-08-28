@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "yarn wrangler dev",
     "deploy": "yarn wrangler deploy",
-    "set-graph-urls": "op run --env-file=.op.env -- ./scripts/set-graph-urls.sh",
+    "set-graph-urls": "op run --env-file=.op.env -- ./src/scripts/set-graph-urls.sh",
     "test": "vitest"
   }
 }
