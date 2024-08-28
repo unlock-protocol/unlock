@@ -1,16 +1,9 @@
 const { ethers } = require('hardhat')
-const { networks } = require('@unlock-protocol/networks')
+const { fetchFromSubgraph } = require('../../helpers/subgraph')
+const { getLock } = require('@unlock-protocol/hardhat-helpers')
 
 async function main({ lockAddress }) {
   const { chainId } = await ethers.provider.getNetwork()
-  const { subgraph } = networks[chainId]
-
-  if (!subgraph || !subgraph.endpoint) {
-    console.log(
-      'Missing subGraphURI for this network. Can not fetch from The Graph'
-    )
-    return []
-  }
 
   const query = `
     {
@@ -22,27 +15,15 @@ async function main({ lockAddress }) {
     }
   `
 
-  const q = await fetch(subgraph.endpoint, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      query,
-    }),
-  })
-
-  const { data, errors } = await q.json()
-  if (errors) {
-    console.log('LOCK > Error while fetching the graph', errors)
-    return []
-  }
-
   const {
-    locks: [{ lockManagers }],
-  } = data
-  console.log(lockManagers)
-  const managers = lockManagers.map((address) => address)
+    locks: [{ LockManagers }],
+  } = await fetchFromSubgraph({ chainId, query })
 
-  console.log(`LOCK > managers for the lock (${lockAddress}):`)
+  const managers = LockManagers.map((address) => address)
+  const lock = await getLock(lockAddress)
+  console.log(
+    `LOCK > managers for the lock '${await lock.name()}' (${lockAddress}):`
+  )
   managers.forEach((account, i) => {
     console.log(`[${i}]: ${account}`)
   })
