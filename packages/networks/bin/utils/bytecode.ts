@@ -23,7 +23,7 @@ export const validateBytecode = async ({
 
   const { abi, deployedBytecode, bytecode } = contracts[contractName]
   const ContractFactory = new ethers.ContractFactory(abi, bytecode)
-  const deployTx = await ContractFactory.getDeployTransaction()
+  const { data: deployTx } = await ContractFactory.getDeployTransaction()
   console.log({ chainId, contractAddress, contractName })
   // get the data used in the creation tx to match the bytecode
   // we can get that tx id using etherscan
@@ -32,14 +32,14 @@ export const validateBytecode = async ({
     contractAddress,
   })
 
-  // TODO: check that the bytecodes match accross networks
-  // const getCode = await provider.getCode(contractAddress)
+  const getCode = await provider.getCode(contractAddress)
 
-  // TODO: remove written files used for debug
-  // await fs.writeFile('bytecode .txt', bytecode)
-  // await fs.writeFile('deployedBytecode.txt', deployedBytecode)
+  // check that the bytecode match the creation tx bytecode
+  await fs.writeFile(`bytecode-${chainId}.txt`, bytecode)
   await fs.writeFile(`creationBytecode-${chainId}.txt`, creationBytecode)
-  await fs.writeFile(`deployTx-${chainId}.txt`, deployTx.data)
-  // await fs.writeFile('getCode.txt', getCode)
-  return deployTx.data === creationBytecode
+  await fs.writeFile(`deployTx-${chainId}.txt`, deployTx)
+  await fs.writeFile(`getCode-${chainId}.txt`, getCode)
+  await fs.writeFile(`deployedBytecode-${chainId}.txt`, deployedBytecode)
+
+  return deployTx === creationBytecode
 }
