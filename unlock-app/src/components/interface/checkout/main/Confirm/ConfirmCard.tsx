@@ -26,6 +26,7 @@ import { useGetTotalCharges } from '~/hooks/usePrice'
 import { useGetLockSettings } from '~/hooks/useLockSettings'
 import { getCurrencySymbol } from '~/utils/currency'
 import Disconnect from '../Disconnect'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface Props {
   checkoutService: CheckoutService
@@ -219,68 +220,67 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
 
   const onConfirmCard = async () => {
     setIsConfirming(true)
-    const referrers: string[] = recipients.map((recipient) => {
-      return getReferrer(recipient, paywallConfig, lockAddress)
-    })
+    try {
+      const referrers: string[] = recipients.map((recipient) => {
+        return getReferrer(recipient, paywallConfig, lockAddress)
+      })
 
-    const stripeIntent = await createPurchaseIntent({
-      pricing: totalPricing!.total,
-      // @ts-expect-error - generated types don't narrow down to the right type
-      stripeTokenId: payment.cardId!,
-      recipients,
-      referrers,
-      data: purchaseData!,
-      recurring: recurringPayments,
-    })
+      const stripeIntent = await createPurchaseIntent({
+        pricing: totalPricing!.total,
+        // @ts-expect-error - generated types don't narrow down to the right type
+        stripeTokenId: payment.cardId!,
+        recipients,
+        referrers,
+        data: purchaseData!,
+        recurring: recurringPayments,
+      })
 
-    if (!stripeIntent?.clientSecret) {
-      throw new Error('Creating payment intent failed')
-    }
+      if (!stripeIntent?.clientSecret) {
+        throw new Error('Creating payment intent failed')
+      }
 
-    const stripe = await loadStripe(config.stripeApiKey, {
-      stripeAccount: stripeIntent.stripeAccount,
-    })
+      const stripe = await loadStripe(config.stripeApiKey, {
+        stripeAccount: stripeIntent.stripeAccount,
+      })
 
-    if (!stripe) {
-      throw new Error('There was a problem in loading stripe')
-    }
+      if (!stripe) {
+        throw new Error('There was a problem in loading stripe')
+      }
 
-    const { paymentIntent } = await stripe.retrievePaymentIntent(
-      stripeIntent.clientSecret
-    )
-
-    if (!paymentIntent) {
-      throw new Error('Payment intent is missing. Please retry.')
-    }
-
-    if (paymentIntent.status !== 'requires_capture') {
-      const confirmation = await stripe.confirmCardPayment(
+      const { paymentIntent } = await stripe.retrievePaymentIntent(
         stripeIntent.clientSecret
       )
-      if (
-        confirmation.error ||
-        confirmation.paymentIntent?.status !== 'requires_capture'
-      ) {
-        onError(confirmation.error?.message || 'Failed to confirm payment')
-        setIsConfirming(false)
-        return
-      }
-    }
 
-    capturePayment({
-      paymentIntent: paymentIntent.id,
-    })
-      .then((transactionHash) => {
-        onConfirmed(lockAddress, lockNetwork, transactionHash)
-        setIsConfirming(false)
-      })
-      .catch((error) => {
-        onError(
-          'There was an error while trying to capture your payment. Please check with your financial institution.'
+      if (!paymentIntent) {
+        throw new Error('Payment intent is missing. Please retry.')
+      }
+
+      if (paymentIntent.status !== 'requires_capture') {
+        const confirmation = await stripe.confirmCardPayment(
+          stripeIntent.clientSecret
         )
-        console.log(error.response.data)
-        setIsConfirming(false)
+        if (
+          confirmation.error ||
+          confirmation.paymentIntent?.status !== 'requires_capture'
+        ) {
+          onError(confirmation.error?.message || 'Failed to confirm payment')
+          setIsConfirming(false)
+          return
+        }
+      }
+
+      const transactionHash = await capturePayment({
+        paymentIntent: paymentIntent.id,
       })
+      onConfirmed(lockAddress, lockNetwork, transactionHash)
+    } catch (error) {
+      console.error('Error while confirming card payment', error)
+      ToastHelper.error(
+        // @ts-expect-error Property 'response' does not exist on type '{}'.
+        `There was an error when trying to perform the payment. You card was not charged. ${error?.response?.data?.error}`
+      )
+    }
+    setIsConfirming(false)
   }
 
   const isError = isPricingDataError
