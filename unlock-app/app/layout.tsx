@@ -16,6 +16,8 @@ import { ErrorBoundary } from '@sentry/nextjs'
 import { Toaster } from 'react-hot-toast'
 import GlobalWrapper from '~/components/interface/GlobalWrapper'
 import TagManagerScript from '../src/components/TagManagerScript'
+import { Suspense } from 'react'
+import LoadingIcon from '~/components/interface/Loading'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -39,12 +41,14 @@ export default function RootLayout({
                 <ErrorBoundary
                   fallback={(props: any) => <ErrorFallback {...props} />}
                 >
-                  <ShouldOpenConnectModal />
-                  <AirstackProvider
-                    apiKey={'162b7c4dda5c44afdb0857b6b04454f99'}
-                  >
-                    <GlobalWrapper>{children}</GlobalWrapper>
-                  </AirstackProvider>
+                  <Suspense fallback={<LoadingIcon />}>
+                    <ShouldOpenConnectModal />
+                    <AirstackProvider
+                      apiKey={'162b7c4dda5c44afdb0857b6b04454f99'}
+                    >
+                      <GlobalWrapper>{children}</GlobalWrapper>
+                    </AirstackProvider>
+                  </Suspense>
                 </ErrorBoundary>
                 <TagManagerScript />
                 <Toaster />
