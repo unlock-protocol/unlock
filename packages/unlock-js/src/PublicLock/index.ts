@@ -1,4 +1,3 @@
-import v7 from './v7'
 import v8 from './v8'
 import v9 from './v9'
 import v10 from './v10'
@@ -8,7 +7,6 @@ import v13 from './v13'
 import v14 from './v14'
 
 export default {
-  v7,
   v8,
   v9,
   v10,
