@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "ethers": "6.13.2",
-    "toucan-js": "3.4.0",
+    "toucan-js": "4.0.0",
     "wrangler": "3.67.1"
   },
   "scripts": {
