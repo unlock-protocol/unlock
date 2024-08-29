@@ -5,17 +5,16 @@ type Lock = {
   address: string
   network: string
   image: string
+  description: string
 }
 
 export type State = {
-  step: string
   lock: Lock | null
 }
 
 export const frames = createFrames<State>({
-  basePath: '/',
+  basePath: '/frames/checkout',
   initialState: {
-    step: 'select',
     lock: null,
   },
 })
