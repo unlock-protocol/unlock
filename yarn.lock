@@ -20289,7 +20289,7 @@ __metadata:
     docusaurus-node-polyfills: "npm:1.0.0"
     docusaurus-preset-openapi: "npm:0.7.5"
     ethers: "npm:6.13.2"
-    prism-react-renderer: "npm:2.0.6"
+    prism-react-renderer: "npm:2.4.0"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
     react-icons: "npm:5.2.1"
@@ -20673,7 +20673,7 @@ __metadata:
     autoprefixer: "npm:10.4.19"
     ethers: "npm:6.13.2"
     postcss: "npm:8.4.40"
-    prism-react-renderer: "npm:2.3.0"
+    prism-react-renderer: "npm:2.4.0"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
     react-dropzone: "npm:14.2.3"
@@ -44774,27 +44774,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prism-react-renderer@npm:2.0.6":
-  version: 2.0.6
-  resolution: "prism-react-renderer@npm:2.0.6"
-  dependencies:
-    "@types/prismjs": "npm:^1.26.0"
-    clsx: "npm:^1.2.1"
-  peerDependencies:
-    react: ">=16.0.0"
-  checksum: 10/241b6480d09bf4979b2e038ab92e84e1a62d442ae0fdd4fcd62ae111bed92fc49c1602d606eabcd00215acd264df889fff8b3cfd6ced04d9c766d3f2fb61b1e3
-  languageName: node
-  linkType: hard
-
-"prism-react-renderer@npm:2.3.0":
-  version: 2.3.0
-  resolution: "prism-react-renderer@npm:2.3.0"
+"prism-react-renderer@npm:2.4.0":
+  version: 2.4.0
+  resolution: "prism-react-renderer@npm:2.4.0"
   dependencies:
     "@types/prismjs": "npm:^1.26.0"
     clsx: "npm:^2.0.0"
   peerDependencies:
     react: ">=16.0.0"
-  checksum: 10/f582e0de68548dbe16754c5125929b13b59d430acc57ad1f724e811d247d2e1d00185e151e4b5b76661f62a34b3fdcf3caf88f057531ece0fbc8b0946c0300ef
+  checksum: 10/74a3e23b225fdcb588682253a9deef7d7f8d68619dfb910928c3630c4c692e982ae1444b3451e2cdc85ca3ca9cb368b8b2b0f81495f3fe2e3b321c3a0669f3a9
   languageName: node
   linkType: hard
 
