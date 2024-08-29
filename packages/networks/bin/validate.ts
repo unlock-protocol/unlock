@@ -6,7 +6,6 @@ import {
   validateTypes,
   validateERC20,
   validateContractSource,
-  getCreationTx,
   checkSubgraphHealth,
   getAllAddresses,
 } from './utils'
