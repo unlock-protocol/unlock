@@ -1,8 +1,4 @@
-import {
-  DefenderRelaySigner,
-  DefenderRelayProvider,
-} from '@openzeppelin/defender-relay-client/lib/ethers'
-import { Relayer } from '@openzeppelin/defender-relay-client'
+import { Defender } from '@openzeppelin/defender-sdk'
 
 import {
   KeyManager,
@@ -63,19 +59,19 @@ export const getLocalPurchaser = async function ({ network = 1 }) {
 export const getPurchaser = async function ({
   network = 1,
   address = undefined,
-}: PurchaserArgs): Promise<ethers.Signer | DefenderRelaySigner> {
+}: PurchaserArgs): Promise<ethers.Signer> {
   // If we have a provider, we need to fetch that one... or yield an error!
   const defenderRelayCredential = config.defenderRelayCredentials[network]
   if (defenderRelayCredential?.apiKey && defenderRelayCredential?.apiSecret) {
-    const provider = new DefenderRelayProvider(defenderRelayCredential)
-    const wallet = new DefenderRelaySigner(defenderRelayCredential, provider, {
+    const defender = new Defender(defenderRelayCredential)
+    const provider = defender.relaySigner.getProvider()
+    const wallet = await defender.relaySigner.getSigner(provider, {
       speed: 'fast',
     })
     if (!address || address === (await wallet.getAddress())) {
-      const relayer = new Relayer(defenderRelayCredential)
-      const relayerStatus = await relayer.getRelayerStatus()
+      const relayerStatus = await defender.relaySigner.getRelayerStatus()
       if (!relayerStatus.paused) {
-        return wallet
+        return wallet as ethers.Signer
       } else {
         logger.warn(
           `The OpenZeppelin Relayer purchaser at ${address} is paused! We will use the local purchaser instead.`
@@ -102,8 +98,9 @@ export const getAllPurchasers = async function ({
   const purchasers = []
   const defenderRelayCredential = config.defenderRelayCredentials[network]
   if (defenderRelayCredential?.apiKey && defenderRelayCredential?.apiSecret) {
-    const provider = new DefenderRelayProvider(defenderRelayCredential)
-    const wallet = new DefenderRelaySigner(defenderRelayCredential, provider, {
+    const defender = new Defender(defenderRelayCredential)
+    const provider = defender.relaySigner.getProvider()
+    const wallet = await defender.relaySigner.getSigner(provider, {
       speed: 'fast',
     })
     purchasers.push(wallet)
