@@ -1,15 +1,15 @@
 {
   "name": "@unlock-protocol/contracts",
   "version": "0.0.29",
-  "main": "dist/src/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "clean": "rm -rf dist docs src/index.ts",
     "test": "hardhat test",
-    "abi:cleanup": "yarn clean && tsc && node dist/utils/cleanup.js",
+    "abi:cleanup": "yarn clean && tsc && node dist/cleanup.js",
     "build": "yarn clean && yarn build:index && yarn build:dist",
     "build:dist": "yarn contracts:copy",
     "build:docs": "yarn docs && yarn docs:copy",
-    "build:index": "tsc && node dist/src/utils/parser.js > src/index.ts && tsc",
+    "build:index": "tsc && node dist/parser.js > src/index.ts && tsc",
     "ci": "yarn test",
     "lint": "eslint src/",
     "contracts:copy": "copyfiles --verbose -u 2 src/**/*.sol dist",
@@ -31,7 +31,7 @@
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "@unlock-protocol/types": "workspace:^",
     "copyfiles": "2.4.1",
-    "eslint": "8.57.0",
+    "eslint": "9.9.0",
     "fs-extra": "11.2.0",
     "hardhat": "2.22.8",
     "typescript": "5.5.4"
