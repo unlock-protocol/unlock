@@ -71,6 +71,7 @@ const run = async () => {
         contractName: 'Unlock',
         // TODO: fetch version automatically
         contractVersion: 13,
+        isProxy: true,
         providerURL: network.provider,
       })
       if (!isUnlockValid) {
@@ -91,6 +92,7 @@ const run = async () => {
     // check that template source code is indetical
     try {
       const publicLockAddress = addresses['PublicLockLatest']
+      console.log(publicLockAddress)
       const isPublicLockValid = await validateContractSource({
         chainId: network.id,
         contractAddress: publicLockAddress,

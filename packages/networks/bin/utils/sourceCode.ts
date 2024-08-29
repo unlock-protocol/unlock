@@ -8,7 +8,7 @@ export const validateContractSource = async ({
   providerURL,
   contractName = 'Unlock',
   contractVersion = 13,
-  isProxy = true,
+  isProxy = false,
 }) => {
   const provider = new ethers.JsonRpcProvider(providerURL)
 
@@ -30,7 +30,8 @@ export const validateContractSource = async ({
   const etherscanRes = await getContractSourceCode({ chainId, contractAddress })
   const { SourceCode } = etherscanRes.result[0]
   const { sources } = JSON.parse(SourceCode.substring(1, SourceCode.length - 1))
-  // use identical path naming as in govenance folder
+
+  // use naming pattern identical to the one in govenance folder deployment
   const submittedContractPath = `contracts/past-versions/${contractName}V${contractVersion}.sol`
   const distSource = sources[submittedContractPath]
 
