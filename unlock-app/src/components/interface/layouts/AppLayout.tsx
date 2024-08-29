@@ -13,7 +13,7 @@ import { useConnectModal } from '~/hooks/useConnectModal'
 import useEns from '~/hooks/useEns'
 import { ConnectModal } from '../connect/ConnectModal'
 
-interface DashboardLayoutProps {
+export interface DashboardLayoutProps {
   title?: ReactNode
   description?: React.ReactNode
   children: React.ReactNode
