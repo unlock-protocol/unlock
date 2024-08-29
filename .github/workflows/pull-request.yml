@@ -11,7 +11,6 @@ jobs:
       targets: '[
         "locksmith",
         "packages/contracts",
-        "packages/networks",
         "packages/hardhat-plugin",
         "packages/unlock-js",
         "packages/paywall",
@@ -43,9 +42,8 @@ jobs:
     with:
       service: smart-contracts
 
+  # the check for changes in network files is included within the workflow itself
   networks-changed:
-    needs: check-changes
-    if: ${{ needs.check-changes.outputs.changed != '[]' && contains(fromJson(needs.check-changes.outputs.changed), 'packages/networks') }}
     uses: ./.github/workflows/_networks.yml
 
   # Netlify Deployments (run as drafts, unpublished to main URL)
