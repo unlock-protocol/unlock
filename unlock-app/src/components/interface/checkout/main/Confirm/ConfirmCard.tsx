@@ -26,6 +26,7 @@ import { useGetTotalCharges } from '~/hooks/usePrice'
 import { useGetLockSettings } from '~/hooks/useLockSettings'
 import { getCurrencySymbol } from '~/utils/currency'
 import Disconnect from '../Disconnect'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface Props {
   checkoutService: CheckoutService
@@ -50,6 +51,7 @@ export function CreditCardPricingBreakdown({
   loading,
   symbol = 'USD',
   unlockFeeChargedToUser = true,
+  total,
 }: CreditCardPricingBreakdownProps) {
   return (
     <div className="flex flex-col gap-2 pt-4 text-xs">
@@ -64,11 +66,11 @@ export function CreditCardPricingBreakdown({
           <span>Learn more</span> <ExternalLinkIcon className="inline" />
         </a>
       </h3>
-      <div className="divide-y">
+      <div className="border-b">
         {unlockFeeChargedToUser && !loading && (
           <Detail
             loading={loading}
-            className="flex justify-between w-full py-2 text-xs border-t border-gray-300"
+            className="flex justify-between w-full py-1 text-xs border-t border-gray-300"
             label="Service Fee"
             labelSize="tiny"
             valueSize="tiny"
@@ -82,7 +84,7 @@ export function CreditCardPricingBreakdown({
         {!!creditCardProcessingFee && (
           <Detail
             loading={loading}
-            className="flex justify-between w-full py-2 text-sm"
+            className="flex justify-between w-full py-1 text-sm"
             label="Payment Processor"
             labelSize="tiny"
             valueSize="tiny"
@@ -96,7 +98,7 @@ export function CreditCardPricingBreakdown({
         {!!gasCosts && (
           <Detail
             loading={loading}
-            className="flex justify-between w-full py-2 text-sm"
+            className="flex justify-between w-full py-1 text-sm"
             label="Minting (gas) cost"
             labelSize="tiny"
             valueSize="tiny"
@@ -106,6 +108,16 @@ export function CreditCardPricingBreakdown({
               {formatFiatPriceFromCents(gasCosts, symbol)}
             </div>
           </Detail>
+        )}
+        {total == 50 && (
+          <Detail
+            loading={loading}
+            className="flex justify-between w-full py-1"
+            label="(The minimum charge is $0.50)"
+            labelSize="tiny"
+            valueSize="tiny"
+            inline
+          />
         )}
       </div>
     </div>
@@ -163,11 +175,10 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
       config.networks[lock!.network].nativeCurrency.symbol
     ),
   })
-  const { data: { creditCardPrice, unlockFeeChargedToUser } = {} } =
-    useGetLockSettings({
-      network: lock!.network,
-      lockAddress: lock!.address,
-    })
+  const { data: { unlockFeeChargedToUser } = {} } = useGetLockSettings({
+    network: lock!.network,
+    lockAddress: lock!.address,
+  })
 
   const isPricingDataAvailable =
     !isPricingDataLoading && !isPricingDataError && !!pricingData
@@ -190,9 +201,6 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
     purchaseData: purchaseData || [],
   })
 
-  // show gas cost only when custom credit card price is present
-  const gasCosts = creditCardPrice ? totalPricing?.gasCost : undefined
-
   const { mutateAsync: capturePayment } = useCapturePayment({
     network: lock!.network,
     lockAddress: lock!.address,
@@ -212,68 +220,67 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
 
   const onConfirmCard = async () => {
     setIsConfirming(true)
-    const referrers: string[] = recipients.map((recipient) => {
-      return getReferrer(recipient, paywallConfig, lockAddress)
-    })
+    try {
+      const referrers: string[] = recipients.map((recipient) => {
+        return getReferrer(recipient, paywallConfig, lockAddress)
+      })
 
-    const stripeIntent = await createPurchaseIntent({
-      pricing: totalPricing!.total,
-      // @ts-expect-error - generated types don't narrow down to the right type
-      stripeTokenId: payment.cardId!,
-      recipients,
-      referrers,
-      data: purchaseData!,
-      recurring: recurringPayments,
-    })
+      const stripeIntent = await createPurchaseIntent({
+        pricing: totalPricing!.total,
+        // @ts-expect-error - generated types don't narrow down to the right type
+        stripeTokenId: payment.cardId!,
+        recipients,
+        referrers,
+        data: purchaseData!,
+        recurring: recurringPayments,
+      })
 
-    if (!stripeIntent?.clientSecret) {
-      throw new Error('Creating payment intent failed')
-    }
+      if (!stripeIntent?.clientSecret) {
+        throw new Error('Creating payment intent failed')
+      }
 
-    const stripe = await loadStripe(config.stripeApiKey, {
-      stripeAccount: stripeIntent.stripeAccount,
-    })
+      const stripe = await loadStripe(config.stripeApiKey, {
+        stripeAccount: stripeIntent.stripeAccount,
+      })
 
-    if (!stripe) {
-      throw new Error('There was a problem in loading stripe')
-    }
+      if (!stripe) {
+        throw new Error('There was a problem in loading stripe')
+      }
 
-    const { paymentIntent } = await stripe.retrievePaymentIntent(
-      stripeIntent.clientSecret
-    )
-
-    if (!paymentIntent) {
-      throw new Error('Payment intent is missing. Please retry.')
-    }
-
-    if (paymentIntent.status !== 'requires_capture') {
-      const confirmation = await stripe.confirmCardPayment(
+      const { paymentIntent } = await stripe.retrievePaymentIntent(
         stripeIntent.clientSecret
       )
-      if (
-        confirmation.error ||
-        confirmation.paymentIntent?.status !== 'requires_capture'
-      ) {
-        onError(confirmation.error?.message || 'Failed to confirm payment')
-        setIsConfirming(false)
-        return
-      }
-    }
 
-    capturePayment({
-      paymentIntent: paymentIntent.id,
-    })
-      .then((transactionHash) => {
-        onConfirmed(lockAddress, lockNetwork, transactionHash)
-        setIsConfirming(false)
-      })
-      .catch((error) => {
-        onError(
-          'There was an error while trying to capture your payment. Please check with your financial institution.'
+      if (!paymentIntent) {
+        throw new Error('Payment intent is missing. Please retry.')
+      }
+
+      if (paymentIntent.status !== 'requires_capture') {
+        const confirmation = await stripe.confirmCardPayment(
+          stripeIntent.clientSecret
         )
-        console.log(error.response.data)
-        setIsConfirming(false)
+        if (
+          confirmation.error ||
+          confirmation.paymentIntent?.status !== 'requires_capture'
+        ) {
+          onError(confirmation.error?.message || 'Failed to confirm payment')
+          setIsConfirming(false)
+          return
+        }
+      }
+
+      const transactionHash = await capturePayment({
+        paymentIntent: paymentIntent.id,
       })
+      onConfirmed(lockAddress, lockNetwork, transactionHash)
+    } catch (error) {
+      console.error('Error while confirming card payment', error)
+      ToastHelper.error(
+        // @ts-expect-error Property 'response' does not exist on type '{}'.
+        `There was an error when trying to perform the payment. You card was not charged. ${error?.response?.data?.error}`
+      )
+    }
+    setIsConfirming(false)
   }
 
   const isError = isPricingDataError
@@ -349,7 +356,7 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
                     totalPricing?.creditCardProcessingFee
                   }
                   unlockServiceFee={totalPricing?.unlockServiceFee ?? 0}
-                  gasCosts={gasCosts}
+                  gasCosts={totalPricing?.gasCost}
                   symbol={creditCardCurrencySymbol}
                   unlockFeeChargedToUser={unlockFeeChargedToUser}
                 />

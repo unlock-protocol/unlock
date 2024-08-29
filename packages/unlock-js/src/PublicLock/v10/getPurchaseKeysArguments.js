@@ -77,29 +77,26 @@ export default async function getPurchaseKeysArguments({
   let totalAmountToApprove = totalApproval
 
   if (!totalAmountToApprove) {
-    // total amount to approve
-    if (!recurringPayments) {
-      totalAmountToApprove = totalPrice
-    } else {
-      totalAmountToApprove = keyPrices
-        .map((keyPrice, i) => {
-          if (keyPrice > 0) {
-            const recurringPayment = recurringPayments[i]
-            if (recurringPayment === Infinity) {
-              return MAX_UINT
-            } else {
-              return keyPrice * BigInt(recurringPayments)
-            }
-          }
-          return BigInt(0)
-        })
-        .reduce((total, approval) => {
-          if (total === MAX_UINT || approval === MAX_UINT) {
+    totalAmountToApprove = keyPrices
+      .map((keyPrice, i) => {
+        if (keyPrice > 0) {
+          const recurringPayment = recurringPayments && recurringPayments[i]
+          if (!recurringPayment) {
+            return keyPrice
+          } else if (recurringPayment === Infinity) {
             return MAX_UINT
+          } else {
+            return keyPrice * BigInt(recurringPayments)
           }
-          return total + approval
-        }, BigInt(0))
-    }
+        }
+        return BigInt(0)
+      })
+      .reduce((total, approval) => {
+        if (total === MAX_UINT || approval === MAX_UINT) {
+          return MAX_UINT
+        }
+        return total + approval
+      }, BigInt(0))
   }
 
   return {
