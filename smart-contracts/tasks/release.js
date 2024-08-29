@@ -34,7 +34,7 @@ task('release', 'Release a new version of the contract')
         `${flattenPath}:${contractName}`
       )
       const instance = await Contract.deploy()
-      await instance.deployed()
+      // await instance.deployed()
 
       // get version number
       const version =
