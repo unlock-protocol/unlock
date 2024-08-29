@@ -12,6 +12,20 @@ interface EtherscanParams {
   chainId: string | number | bigint
 }
 
+// get etherscan API URLs and keys
+const getCredentials = (chainId) => {
+  const { apiKey: apiKeys, customChains } = etherscan
+  const chains = [...builtinChains, ...customChains]
+
+  const { urls, network } = chains.find((chain) => chain.chainId == chainId)
+  const apiKey = apiKeys[network]
+
+  return {
+    apiKey,
+    apiURL: urls.apiURL,
+  }
+}
+
 async function fetchEtherscan({
   params,
   chainId,
@@ -19,19 +33,10 @@ async function fetchEtherscan({
   params: URLSearchParams
   chainId: string | number | bigint
 }) {
-  // get etherscan API URLs and keys
-  const { apiKey: apiKeys, customChains } = etherscan
-  const chains = [...builtinChains, ...customChains]
-
-  const { urls, network } = chains.find((chain) => chain.chainId == chainId)
-  console.log(urls)
-  const apiKey = apiKeys[network]
-
+  const { apiKey, apiURL } = getCredentials(chainId)
   params.append('apikey', apiKey)
-  const url = new URL(urls.apiURL)
+  const url = new URL(apiURL)
   url.search = params.toString()
-
-  console.log(url.toString())
   // fetch contract status
   try {
     const response = await fetch(url, { method: 'GET' })
@@ -104,4 +109,72 @@ export const getCreationTx = async ({
 
 export function wait(milliseconds) {
   return new Promise((resolve) => setTimeout(resolve, milliseconds))
+}
+
+export const getContractSourceCode = async ({ contractAddress, chainId }) => {
+  // parse URL
+  const params = new URLSearchParams({
+    action: 'getsourcecode',
+    address: contractAddress,
+    module: 'contract',
+  })
+
+  const res = await fetchEtherscan({ chainId, params })
+  return res
+  // const { status, result, message } = res
+  // const isVerified = status === '1'
+  // return { isVerified, message, result, status }
+}
+
+// /api?module=contract&action=getsourcecode&address=0xBB9bc244D798123fDe783fCc1C72d3Bb8C189413&apikey=YourApiKeyToken
+
+export const verifyContract = async ({
+  chainId,
+  contractAddress,
+  contractName = 'Unlock',
+  compilerversion = 'v0.8.21+commit.d9974bed',
+  source,
+}) => {
+  const { apiKey, apiURL } = getCredentials(chainId)
+
+  const params = {
+    action: 'verifysourcecode',
+    apikey: apiKey,
+    codeformat: 'solidity-single-file',
+    compilerversion,
+    contractaddress: contractAddress,
+    contractname: contractName,
+    module: 'contract',
+    optimizationUsed: '1',
+    runs: '80',
+    sourceCode: source,
+  }
+
+  const url = new URL(apiURL)
+  // fetch contract status
+  try {
+    const response = await fetch(url.toString(), {
+      body: new URLSearchParams(params),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      method: 'POST',
+    })
+    const json = await response.json()
+    if (!isSuccessStatusCode(response.status)) {
+      throw new Error(
+        `Failed to request etherscan
+  (${response.status}) ${url.toString()},
+  ${JSON.stringify(json)}`
+      )
+    }
+    return json
+  } catch (e) {
+    console.error(`Failed contract verification API call`, e)
+    // Sentry.captureException(e)
+  }
+
+  // const res = await fetchEtherscan({ chainId, params })
+  // console.log(res)
 }

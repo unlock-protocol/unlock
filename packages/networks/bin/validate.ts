@@ -5,7 +5,7 @@ import {
   validateKeys,
   validateTypes,
   validateERC20,
-  validateBytecode,
+  validateContractSource,
   getCreationTx,
   checkSubgraphHealth,
   getAllAddresses,
@@ -28,23 +28,23 @@ const run = async () => {
     // import file
     const { default: network } = await import(resolvedPath)
 
-    // TODO: validate Unlock + template bytecode
-    // check the contract creation tx
-    // unlockCreationBytecode
-    const contractName = 'UnlockV13'
+    // check that Unlock contract code is identical
+    // TODO: check template bytecode
     try {
-      const isUnlockValid = await validateBytecode({
+      const isUnlockValid = await validateContractSource({
         chainId: network.id,
         contractAddress: network.unlockAddress,
-        contractName,
+        contractName: 'Unlock',
+        contractVersion: 13,
         providerURL: network.provider,
       })
       if (!isUnlockValid) {
         networkErrors.push(
-          `❌ Unlock bytecode at ${network.unlockAddress} does not match ${contractName}`
+          `❌ Unlock bytecode at ${network.unlockAddress} does not match UnlockV13`
         )
       }
     } catch (error) {
+      console.log(error)
       networkErrors.push(
         `❌ Could not fetch Unlock bytecode, ${error.messageText}`
       )
