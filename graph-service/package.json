@@ -1,0 +1,16 @@
+{
+  "name": "graph-service",
+  "dependencies": {
+    "@cloudflare/workers-types": "4.20240821.1",
+    "wrangler": "3.67.1"
+  },
+  "devDependencies": {
+    "vitest": "^0.34.6"
+  },
+  "scripts": {
+    "dev": "yarn wrangler dev",
+    "deploy": "yarn wrangler deploy",
+    "set-graph-urls": "op run --env-file=.op.env -- ./src/scripts/set-graph-urls.sh",
+    "test": "vitest"
+  }
+}
