@@ -33,7 +33,6 @@
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js",
     "@vercel/og": "0.6.2",
     "@vercel/speed-insights": "1.0.12",
-    "@walletconnect/client": "1.8.0",
     "@walletconnect/ethereum-provider": "2.14.0",
     "@walletconnect/modal": "2.6.2",
     "@xstate/react": "4.1.1",
