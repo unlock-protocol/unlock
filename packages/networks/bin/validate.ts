@@ -92,7 +92,6 @@ const run = async () => {
     // check that template source code is indetical
     try {
       const publicLockAddress = addresses['PublicLockLatest']
-      console.log(publicLockAddress)
       const isPublicLockValid = await validateContractSource({
         chainId: network.id,
         contractAddress: publicLockAddress,
