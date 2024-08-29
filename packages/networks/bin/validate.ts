@@ -28,33 +28,10 @@ const run = async () => {
     // import file
     const { default: network } = await import(resolvedPath)
 
-    // check that Unlock contract code is identical
-    // TODO: check template bytecode
-    try {
-      const isUnlockValid = await validateContractSource({
-        chainId: network.id,
-        contractAddress: network.unlockAddress,
-        contractName: 'Unlock',
-        contractVersion: 13,
-        providerURL: network.provider,
-      })
-      if (!isUnlockValid) {
-        networkErrors.push(
-          `❌ Unlock bytecode at ${network.unlockAddress} does not match UnlockV13`
-        )
-      }
-    } catch (error) {
-      console.log(error)
-      networkErrors.push(
-        `❌ Could not fetch Unlock bytecode, ${error.messageText}`
-      )
-    }
-
-    /*
-    // make sure the contracts are verified on Etherscan.
+    // get all addresses to check
     const addresses = await getAllAddresses({ network })
 
-    // api calls
+    // make sure the contracts are verified on Etherscan.
     for (const contractName in addresses) {
       const contractAddress = addresses[contractName]
       await wait(100)
@@ -72,9 +49,54 @@ const run = async () => {
       } catch (error) {
         networkErrors.push(
           `❌ Failed to check verification for contract ${contractName} at ${contractAddress}
-(did you add block explorer verification and API in \`@unlock-protocol/hardhat-helpers\` package ?)`
+    (did you add block explorer verification and API in \`@unlock-protocol/hardhat-helpers\` package ?)`
         )
       }
+    }
+
+    // check that Unlock contract code is identical
+    try {
+      const isUnlockValid = await validateContractSource({
+        chainId: network.id,
+        contractAddress: network.unlockAddress,
+        contractName: 'Unlock',
+        // TODO: fetch version automatically
+        contractVersion: 13,
+        providerURL: network.provider,
+      })
+      if (!isUnlockValid) {
+        networkErrors.push(
+          `❌ Unlock source code at ${network.unlockAddress} does not match packaged UnlockV13`
+        )
+      }
+    } catch (error) {
+      console.log(error)
+      networkErrors.push(
+        `❌ Could not fetch Unlock bytecode, ${error.messageText}`
+      )
+    }
+
+    // check that template source code is indetical
+    try {
+      const publicLockAddress = addresses['PublicLockLatest']
+      const isUnlockValid = await validateContractSource({
+        chainId: network.id,
+        contractAddress: publicLockAddress,
+        contractName: 'PublicLock',
+        // TODO: fetch version automatically
+        contractVersion: 14,
+        providerURL: network.provider,
+      })
+      if (!isUnlockValid) {
+        networkErrors.push(
+          `❌ PublicLock source code at ${publicLockAddress} does not match packaged PublicLockV13`
+        )
+      }
+    } catch (error) {
+      console.log(error)
+      networkErrors.push(
+        `❌ Could not fetch PublicLock source code , ${error.messageText}`
+      )
     }
 
     // check subgraph endpoint status
@@ -101,8 +123,7 @@ const run = async () => {
     // TODO: check other missing keys
     // const missingKeys = await validateKeys(path.resolve(filePath))
     // warnings = [...errors, ...missingKeys]
-    
-    */
+
     // store network prefix
     const networkName = `${filePath}`
     errors[networkName] = networkErrors
