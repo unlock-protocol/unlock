@@ -46,7 +46,7 @@ jobs:
         env: 
           ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
-          yarn workspace @unlock-protocol/networks validate 2> err.txt 1> std.txt
+          yarn workspace @unlock-protocol/networks validate > results.txt
         shell: bash
       
       - name: Add PR Comment
@@ -54,6 +54,6 @@ jobs:
         uses: mshick/add-pr-comment@v2.8.2
         with:
           preformatted: true
-          message-id: errors
-          message-path: err.txt
+          message-id: results
+          message-path: results.txt
 
