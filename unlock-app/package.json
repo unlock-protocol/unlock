@@ -44,7 +44,7 @@
     "dayjs": "1.11.12",
     "deep-object-diff": "1.1.9",
     "dotenv": "16.4.5",
-    "eslint": "8.57.0",
+    "eslint": "9.9.1",
     "ethers": "6.13.2",
     "file-saver": "2.0.5",
     "frames.js": "0.18.1",

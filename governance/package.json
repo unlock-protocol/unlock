@@ -24,7 +24,7 @@
     "@unlock-protocol/hardhat-plugin": "workspace:^",
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "arb-shared-dependencies": "1.0.0",
-    "eslint": "8.57.0",
+    "eslint": "9.9.1",
     "ethers": "6.13.2",
     "ethers-multisend": "3.1.0",
     "ethers5": "npm:ethers@5.7.2",
