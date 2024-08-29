@@ -35,5 +35,5 @@
     ],
     "strictNullChecks": true
   },
-  "include": ["./src/**/*", ".next/types/**/*.ts"]
+  "include": ["./src/**/*", ".next/types/**/*.ts", "./app/**/*tsx"]
 }

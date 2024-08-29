@@ -98,7 +98,7 @@ export const StakeRefund = ({ event, checkoutConfig }: StakeRefundProps) => {
       </p>
       <Button
         loading={approveRefundsMutation.isPending}
-        onClick={() => approveRefundsMutation.mutate()}
+        onClick={() => approveRefundsMutation.mutateAsync()}
       >
         Prepare Refunds
       </Button>
