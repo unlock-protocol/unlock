@@ -1,7 +1,6 @@
 'use client'
-import React, { useEffect } from 'react'
-import Head from 'next/head'
-import { pageTitle } from '../../constants'
+import React, { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import KeyDetails from '../interface/keychain/KeyDetails'
 import { AppLayout } from '../interface/layouts/AppLayout'
 import { TbWorld as WorldIcon } from 'react-icons/tb'
@@ -9,21 +8,21 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { OpenSeaIcon } from '../icons'
 import { Tooltip } from '@unlock-protocol/ui'
 import networks from '@unlock-protocol/networks'
-import { useRouter } from 'next/router'
 import OwnerSocials from '../interface/keychain/OwnerSocials'
 
 export const KeychainContent = () => {
   const { account } = useAuth()
-  const { query } = useRouter()
-  const [owner, setOwner] = React.useState<string | null>(null)
+  const searchParams = useSearchParams()
+  const [owner, setOwner] = useState<string | null>(null)
 
   useEffect(() => {
-    if (query.owner) {
-      setOwner(query.owner as string)
+    const ownerParam = searchParams.get('owner')
+    if (ownerParam) {
+      setOwner(ownerParam)
     } else if (account) {
       setOwner(account)
     }
-  }, [account, query])
+  }, [account, searchParams])
 
   const networkConfig = networks[1]
 
@@ -38,7 +37,7 @@ export const KeychainContent = () => {
               {networkConfig.blockScan && networkConfig.blockScan.url && (
                 <Tooltip tip="Show Blockscan" label="Show Blockscan">
                   <a
-                    href={networkConfig.blockScan.url(owner!)}
+                    href={networkConfig.blockScan.url(owner)}
                     target="_blank"
                     rel="noreferrer"
                     className="hover:text-brand-ui-primary"
@@ -54,7 +53,7 @@ export const KeychainContent = () => {
                   label="View Opensea Profile"
                 >
                   <a
-                    href={networkConfig.opensea!.profileUrl(owner!) ?? '#'}
+                    href={networkConfig.opensea.profileUrl(owner) ?? '#'}
                     rel="noreferrer"
                     target="_blank"
                     className="hover:text-brand-ui-primary"
@@ -68,12 +67,9 @@ export const KeychainContent = () => {
         </div>
       }
     >
-      <Head>
-        <title>{pageTitle('Member Keychain')}</title>
-      </Head>
-
       {owner && <KeyDetails owner={owner} />}
     </AppLayout>
   )
 }
+
 export default KeychainContent

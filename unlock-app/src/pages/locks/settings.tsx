@@ -3,7 +3,7 @@ import type { NextPage } from 'next'
 import BrowserOnly from '~/components/helpers/BrowserOnly'
 import LockSettingsPage from '~/components/interface/locks/Settings'
 import { AppLayout } from '~/components/interface/layouts/AppLayout'
-import { useRouter } from 'next/router'
+import { useSearchParams } from 'next/navigation'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { Picker } from '~/components/interface/Picker'
 
@@ -19,7 +19,7 @@ export type SettingTab =
   | 'referrals'
 
 const Settings: NextPage = () => {
-  const { query } = useRouter()
+  const searchParams = useSearchParams()
   const { account: owner } = useAuth()
 
   const [network, setNetwork] = useState<string>()
@@ -27,12 +27,12 @@ const Settings: NextPage = () => {
   const [defaultTab, setDefaultTab] = useState<SettingTab>('general')
 
   useEffect(() => {
-    setNetwork(query?.network as string)
-    setLockAddress(query?.address as string)
-    setDefaultTab((query?.defaultTab as SettingTab) ?? 'general')
-  }, [query?.network, query?.address, query.defaultTab])
+    setNetwork(searchParams.get('network') || undefined)
+    setLockAddress(searchParams.get('address') || undefined)
+    setDefaultTab((searchParams.get('defaultTab') as SettingTab) ?? 'general')
+  }, [searchParams])
 
-  const withoutParams = !query?.address || !query.network
+  const withoutParams = !lockAddress || !network
 
   const onLockPick = (lockAddress?: string, network?: string | number) => {
     if (lockAddress && network) {

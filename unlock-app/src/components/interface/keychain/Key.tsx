@@ -49,7 +49,7 @@ import { Key as HookKey } from '~/hooks/useKeys'
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
 import { useGetReceiptsPageUrl } from '~/hooks/useReceipts'
 import { AddToPhoneWallet } from './AddToPhoneWallet'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { Platform } from '~/services/passService'
 
 export const MenuButton = tw.button(

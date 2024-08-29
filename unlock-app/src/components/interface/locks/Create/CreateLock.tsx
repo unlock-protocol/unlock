@@ -1,6 +1,6 @@
 import { networks } from '@unlock-protocol/networks'
 import { Button } from '@unlock-protocol/ui'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import {
@@ -12,7 +12,7 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { CreateLockForm, LockFormProps } from './elements/CreateLockForm'
 import { CreateLockFormSummary } from './elements/CreateLockFormSummary'
 import { BsArrowLeft as ArrowBack } from 'react-icons/bs'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
 export type Step = 'data' | 'summary' | 'deploy'
@@ -122,7 +122,7 @@ export const CreateLockSteps = () => {
 
   const onBack = () => {
     if (!backUrl) {
-      router?.back()
+      router.back()
     } else {
       setStep(backUrl)
     }

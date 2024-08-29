@@ -1,11 +1,13 @@
 import type { PostsIndexType } from '../../../utils/posts'
 import { Link } from '../../helpers/Link'
-import { useRouter } from 'next/router'
+import { useSearchParams } from 'next/navigation'
 
 export type Props = PostsIndexType
 
 export function PostsIndex({ posts, next, prev, total }: Props) {
-  const router = useRouter()
+  const searchParams = useSearchParams()
+  const currentPath = searchParams.get('path') || ''
+
   return (
     <main className="max-w-3xl p-6 mx-auto">
       <header className="space-y-2">
@@ -48,7 +50,7 @@ export function PostsIndex({ posts, next, prev, total }: Props) {
         </div>
         <div className="flex justify-between gap-4 text-sm sm:text-base">
           <div className="space-x-2">
-            {!['/blog/1', '/blog'].includes(router.pathname) && (
+            {!['/blog/1', '/blog'].includes(currentPath) && (
               <Link href="/blog"> {'<--'} First </Link>
             )}
 

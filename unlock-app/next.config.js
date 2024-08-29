@@ -1,7 +1,6 @@
 const dotenv = require('dotenv')
 const path = require('path')
 const { withSentryConfig } = require('@sentry/nextjs')
-const withTM = require('next-transpile-modules')(['@tw-classed/react'])
 
 const unlockEnv = process.env.NEXT_PUBLIC_UNLOCK_ENV || 'dev'
 
@@ -28,6 +27,7 @@ for (const [key, value] of Object.entries(requiredEnvs)) {
   }
 }
 
+/** @type {import('next').NextConfig} */
 const config = {
   productionBrowserSourceMaps: true,
   sentry: {
@@ -35,6 +35,7 @@ const config = {
     disableClientWebpackPlugin: true,
     hideSourceMaps: true,
   },
+  transpilePackages: ['@tw-classed/react'],
   images: {
     unoptimized: true,
   },
@@ -45,4 +46,4 @@ const config = {
   },
 }
 
-module.exports = withSentryConfig(withTM(config))
+module.exports = withSentryConfig(config)

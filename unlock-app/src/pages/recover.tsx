@@ -1,10 +1,10 @@
 import React from 'react'
-import { useRouter } from 'next/router'
+import { useSearchParams } from 'next/navigation'
 import RecoverContent from '../components/content/RecoverContent'
 
 const Recover = () => {
-  const { query } = useRouter()
-  return <RecoverContent query={query} />
+  const searchParams = useSearchParams()
+  return <RecoverContent query={searchParams} />
 }
 
 export default Recover

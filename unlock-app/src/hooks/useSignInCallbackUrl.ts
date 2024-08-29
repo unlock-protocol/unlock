@@ -1,19 +1,15 @@
 import { useSelector } from '@xstate/react'
-import { useRouter } from 'next/router'
+import { useSearchParams } from 'next/navigation'
 import { CheckoutService } from '~/components/interface/checkout/main/checkoutMachine'
 
 const useSignInCallbackUrl = (
   shoudOpenConnectModal: boolean,
   checkoutService?: CheckoutService
 ) => {
-  const router = useRouter()
-
+  const searchParams = useSearchParams()
   const context = useSelector(checkoutService, (state) => state?.context)
 
-  const url = new URL(
-    `${window.location.protocol}//${window.location.host}${router.asPath}`
-  )
-  const params = new URLSearchParams(url.search)
+  const params = new URLSearchParams(searchParams.toString())
   params.append(
     'shouldOpenConnectModal',
     encodeURIComponent(shoudOpenConnectModal.toString())
@@ -21,6 +17,8 @@ const useSignInCallbackUrl = (
   if (context?.lock) {
     params.set('lock', encodeURIComponent(context.lock.address))
   }
+
+  const url = new URL(window.location.origin)
   url.search = params.toString()
 
   return url.toString()

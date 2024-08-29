@@ -1,22 +1,26 @@
-import { useRouter } from 'next/router'
+import { useSearchParams, useRouter } from 'next/navigation'
 import React from 'react'
 import { ReceiptBox } from './elements/ReceiptBox'
 import { CloseReceiptButton } from './elements/CloseReceiptButton'
 import { Button } from '@unlock-protocol/ui'
 
 export const ReceiptsPage = () => {
+  const searchParams = useSearchParams()
   const router = useRouter()
 
   const hasParams =
-    router.query.network && router.query.address && router.query.hash
-  const network = Number(router.query.network)
-  const lockAddress = router.query!.address as string
+    searchParams.get('network') &&
+    searchParams.get('address') &&
+    searchParams.get('hash')
+  const network = Number(searchParams.get('network'))
+  const lockAddress = searchParams.get('address') as string
 
   let hashes: string[] = []
-  if (typeof router.query.hash === 'string') {
-    hashes.push(router.query.hash)
-  } else if (typeof router.query.hash?.length && router.query.hash) {
-    hashes = router.query.hash
+  const hashParam = searchParams.get('hash')
+  if (typeof hashParam === 'string') {
+    hashes.push(hashParam)
+  } else if (Array.isArray(searchParams.getAll('hash'))) {
+    hashes = searchParams.getAll('hash')
   }
 
   return (
