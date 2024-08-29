@@ -11,18 +11,24 @@ import {
 } from './utils'
 
 const run = async () => {
-  const errors = {}
+  const results = {}
 
   const fileList = process.env.ALL_CHANGED_FILES
     ? process.env.ALL_CHANGED_FILES.split(' ')
     : []
 
   for (const filePath of fileList) {
-    let networkErrors: string[] = []
+    let errors: string[] = []
+    const successes: string[] = []
+    const failures: string[] = []
+
     // check mandatory keys using ts
     const resolvedPath = path.resolve('..', '..', filePath)
     const typeErrors = await validateTypes(resolvedPath)
-    networkErrors = [...networkErrors, ...typeErrors]
+    errors = [...errors, ...typeErrors]
+    if (!errors.length) {
+      successes.push(`✅ all mandatory keys are present`)
+    }
 
     // import file
     const { default: network } = await import(resolvedPath)
@@ -41,12 +47,16 @@ const run = async () => {
         })
         // log results
         if (!verified?.isVerified) {
-          networkErrors.push(
+          errors.push(
             `❌ Contract ${contractName} at ${contractAddress} is not verified`
+          )
+        } else {
+          successes.push(
+            `✅ Contract ${contractName} at ${contractAddress} is verified`
           )
         }
       } catch (error) {
-        networkErrors.push(
+        failures.push(
           `❌ Failed to check verification for contract ${contractName} at ${contractAddress}
     (did you add block explorer verification and API in \`@unlock-protocol/hardhat-helpers\` package ?)`
         )
@@ -64,21 +74,24 @@ const run = async () => {
         providerURL: network.provider,
       })
       if (!isUnlockValid) {
-        networkErrors.push(
+        errors.push(
           `❌ Unlock source code at ${network.unlockAddress} does not match packaged UnlockV13`
+        )
+      } else {
+        successes.push(
+          `✅ Unlock source code at ${network.unlockAddress} matches packaged UnlockV13`
         )
       }
     } catch (error) {
-      console.log(error)
-      networkErrors.push(
-        `❌ Could not fetch Unlock bytecode, ${error.messageText}`
+      failures.push(
+        `❌ Could not fetch Unlock source code from block explorer, ${error.messageText}`
       )
     }
 
     // check that template source code is indetical
     try {
       const publicLockAddress = addresses['PublicLockLatest']
-      const isUnlockValid = await validateContractSource({
+      const isPublicLockValid = await validateContractSource({
         chainId: network.id,
         contractAddress: publicLockAddress,
         contractName: 'PublicLock',
@@ -86,15 +99,18 @@ const run = async () => {
         contractVersion: 14,
         providerURL: network.provider,
       })
-      if (!isUnlockValid) {
-        networkErrors.push(
-          `❌ PublicLock source code at ${publicLockAddress} does not match packaged PublicLockV13`
+      if (!isPublicLockValid) {
+        errors.push(
+          `❌ PublicLock source code at ${publicLockAddress} does not match packaged PublicLockV14`
+        )
+      } else {
+        successes.push(
+          `✅ PublicLock source code at ${publicLockAddress} matches packaged PublicLockV14`
         )
       }
     } catch (error) {
-      console.log(error)
-      networkErrors.push(
-        `❌ Could not fetch PublicLock source code , ${error.messageText}`
+      failures.push(
+        `❌ Could not fetch PublicLock source code from block explorer, ${error}`
       )
     }
 
@@ -104,15 +120,18 @@ const run = async () => {
       const subgraphErrors = await checkSubgraphHealth(
         network.subgraph?.endpoint
       )
-      networkErrors = [...networkErrors, ...subgraphErrors]
+      errors = [...errors, ...subgraphErrors]
+      if (!subgraphErrors.length) {
+        successes.push(`✅ Subgraph up and running`)
+      }
     }
 
     // validate tokens
     if (network.tokens) {
       for (const token of network.tokens) {
         const tokenErrors = await validateERC20({ network, token })
-        networkErrors = [
-          ...networkErrors,
+        errors = [
+          ...errors,
           ...tokenErrors.errors,
           // ...tokenErrors.warnings,
         ]
@@ -125,30 +144,43 @@ const run = async () => {
 
     // store network prefix
     const networkName = `${filePath}`
-    errors[networkName] = networkErrors
+    results[networkName] = {
+      errors,
+      failures,
+      successes,
+    }
   }
 
-  return { errors }
+  return { results }
 }
 
-const parseGithubComment = (errors) => {
-  console.error(`We have found the followig errors :\n`)
-  Object.keys(errors).forEach((networkName) =>
-    console.error(
-      `
+const parseGithubComment = ({ networkName, errors, failures, successes }) => `
 ### ${networkName}
 
-${errors[networkName].map((error) => `- ${error}`).join('\n')}`
-    )
-  )
-}
+${successes.length ? `The setup is successful :\n` : ''}
+${successes.map((success) => `- ${success}`).join('\n')}
+
+${errors.length ? `We have found the followig errors :\n` : ''}
+${errors.map((error) => `- ${error}`).join('\n')}
+
+${failures.length ? `Some verification calls have failed  :\n` : ''}
+${failures.map((failure) => `- ${failure}`).join('\n')}
+`
 
 run()
-  .then(({ errors }) => {
-    if (Object.keys(errors).length > 0) {
-      parseGithubComment(errors)
-      // Exit with error code so CI fails
-      process.exit(1)
+  .then(({ results }) => {
+    if (Object.keys(results).length > 0) {
+      Object.keys(results).forEach((networkName) =>
+        console.log(
+          parseGithubComment({ networkName, ...results[networkName] })
+        )
+      )
+      const errored = Object.keys(results)
+        .map((networkName) => results[networkName].errors.length)
+        .some((d) => d > 0)
+
+      // Exit with error code in case so CI fails
+      process.exit(errored ? 1 : 0)
     }
     console.log('Everything looks fine.')
   })
