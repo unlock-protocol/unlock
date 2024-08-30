@@ -1,6 +1,7 @@
 const assert = require('assert')
 const { ethers } = require('hardhat')
 const { deployContracts, reverts, getBalance } = require('../helpers')
+const { ZeroAddress } = require('ethers')
 
 const oneEth = ethers.parseEther('1')
 
@@ -57,5 +58,21 @@ describe('Unlock / recordConsumedDiscount', () => {
 
   it('revert if caller is not registered lock', async () => {
     await reverts(unlock.recordConsumedDiscount(0, 0), 'ONLY_LOCKS')
+  })
+})
+
+describe('Unlock / computeAvailableDiscountFor', () => {
+  let unlock, signer
+
+  before(async () => {
+    ;[signer] = await ethers.getSigners()
+    ;({ unlock } = await deployContracts())
+  })
+
+  it('check if it returns dummy data', async () => {
+    const result = await unlock.computeAvailableDiscountFor(ZeroAddress, '0')
+    console.log(result)
+    assert.equal(result.discount, 0)
+    assert.equal(result.tokens, 0)
   })
 })
