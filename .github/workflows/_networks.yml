@@ -30,7 +30,7 @@ jobs:
         with:
           files: |
             packages/networks/src/networks/**
-      
+
       - name: List all changed files
         env:
           ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
@@ -39,20 +39,30 @@ jobs:
           for file in ${ALL_CHANGED_FILES}; do
             echo "$file was changed"
           done
-      
+
       - name: Validate networks
         id: validate
-        if: steps.changed-files.outputs.any_changed == 'true'  
-        env: 
+        if: steps.changed-files.outputs.any_changed == 'true'
+        env:
           ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
           yarn workspace @unlock-protocol/networks validate 1> results.txt
         shell: bash
-      
+
+      - name: Log Results
+        id: log-results
+        if: steps.changed-files.outputs.any_changed == 'true'
+        env:
+          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+        run: |
+          cat results.txt
+        shell: bash
+
       - name: Add PR Comment
-        if: ${{ always() && steps.changed-files.outputs.any_changed == 'true' }}  
+        if: ${{ always() && steps.changed-files.outputs.any_changed == 'true' }}
         uses: mshick/add-pr-comment@v2.8.2
         with:
           preformatted: true
           message-path: results.txt
-
+          update-only: true
+          refresh-message-position: true
