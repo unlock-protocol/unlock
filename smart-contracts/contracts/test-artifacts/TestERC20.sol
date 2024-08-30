@@ -10,3 +10,26 @@ contract TestERC20 is ERC20 {
     _mint(holder, amount);
   }
 }
+
+contract TestERC20WithResultControl is TestERC20 {
+  bool reuslt;
+
+  function setResult(bool _result) external {
+    reuslt = _result;
+  }
+
+  function transfer(
+    address recipient,
+    uint256 amount
+  ) public override returns (bool) {
+    return reuslt;
+  }
+
+  function transferFrom(
+    address sender,
+    address recipient,
+    uint256 amount
+  ) public override returns (bool) {
+    return reuslt;
+  }
+}

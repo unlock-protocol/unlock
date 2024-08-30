@@ -271,3 +271,64 @@ describe('Swapper UP / UDT', () => {
     })
   })
 })
+
+describe('Swapper UP / UDT with failing', () => {
+  let owner, udtMinter, spender, recipient, random
+  let up, udt, swap
+
+  before(async () => {
+    ;[owner, udtMinter, spender, recipient, random] = await ethers.getSigners()
+
+    const MockERC20 = await ethers.getContractFactory(
+      'TestERC20WithResultControl'
+    )
+    udt = await MockERC20.deploy()
+    up = await MockERC20.deploy()
+
+    const UPSwap = await ethers.getContractFactory('UPSwap')
+    swap = await upgrades.deployProxy(UPSwap, [
+      await udt.getAddress(),
+      await up.getAddress(),
+      await owner.getAddress(),
+    ])
+  })
+
+  it('UDT transfer failed on swapUDTForUP', async () => {
+    await reverts(
+      swap.swapUDTForUP(1, await recipient.getAddress()),
+      'TransferFailed'
+    )
+  })
+
+  it('UP transfer failed on swapUDTForUP', async () => {
+    await udt.setResult(true)
+    await reverts(
+      swap.swapUDTForUP(1, await recipient.getAddress()),
+      'TransferFailed'
+    )
+  })
+
+  it('swapUPForUDT failed because of insufficient balance', async () => {
+    await reverts(
+      swap.swapUPForUDT(10000, await recipient.getAddress()),
+      'BalanceTooLow'
+    )
+  })
+
+  it('UP transfer failed on swapUPForUDT', async () => {
+    await udt.mint(await swap.getAddress(), 10000)
+    await reverts(
+      swap.swapUPForUDT(1, await recipient.getAddress()),
+      'TransferFailed'
+    )
+  })
+
+  it('UDT transfer failed on swapUPForUDT', async () => {
+    await up.setResult(true)
+    await udt.setResult(false)
+    await reverts(
+      swap.swapUPForUDT(1, await recipient.getAddress()),
+      'TransferFailed'
+    )
+  })
+})
