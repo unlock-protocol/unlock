@@ -264,6 +264,40 @@ describe('UPToken Governor & Timelock', () => {
       })
     })
 
+    describe('Cancel', () => {
+      it('should be properly cancelled', async () => {
+        const votingDelay = 10000n
+        const encoded = gov.interface.encodeFunctionData('setVotingDelay', [
+          votingDelay,
+        ])
+
+        const proposal = [
+          [await gov.getAddress()],
+          ['1'],
+          [encoded],
+          '<proposal description for delay>',
+        ]
+        const proposalTx = await gov.propose(...proposal)
+
+        const receipt = await proposalTx.wait()
+        const evt = await getEvent(receipt, 'ProposalCreated')
+        const { proposalId } = evt.args
+
+        // proposal exists but does not accept votes yet
+        assert.equal(await gov.state(proposalId), 0) // Pending
+
+        // get params
+        const descriptionHash = ethers.keccak256(
+          ethers.toUtf8Bytes(proposal.slice(-1).find(Boolean))
+        )
+        const [targets, values, calldatas] = proposal
+
+        await gov.cancel(targets, values, calldatas, descriptionHash)
+
+        assert.equal(await gov.state(proposalId), 2) // Canceled
+      })
+    })
+
     afterEach(async () => {
       // reset to original state after tests
       const { timestamp } = await ethers.provider.getBlock()
