@@ -41,7 +41,7 @@ export const spark: NetworkConfig = {
 
   publicProvider: 'https://rpc.fusespark.io/',
 
-  startBlock: 0,
+  startBlock: 17872016,
   subgraph: {
     endpoint: '<>', // this is given to you by the graph after deploying
     networkName: 'spark', // the graph name of the network see https://thegraph.com/docs/en/developing/supported-networks/
@@ -64,7 +64,7 @@ export const spark: NetworkConfig = {
       symbol: 'USDC',
     },
   ],
-  unlockAddress: '',
+  unlockAddress: '0x9f98C7eBFbF558Bc7Ff339c75001b6EDefE19254',
   unlockDaoToken: {
     address: '',
   },
