@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router'
+import { useSearchParams } from 'next/navigation'
 import { CreateLockForm } from '../Create/elements/CreateLockForm'
 import { useCallback, useEffect, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -17,30 +17,33 @@ import { Placeholder } from '@unlock-protocol/ui'
 import { Deployed } from './Deployed'
 
 export const Deploy: React.FC = () => {
-  const { query } = useRouter()
+  const searchParams = useSearchParams()
   const { getWalletService, account } = useAuth()
   const [lockAddress, setLockAddress] = useState<string | undefined>(undefined)
 
   const { mutateAsync: updateConfig } = useCheckoutConfigUpdate()
 
   const { data: locks, isPending: isLoadingLocks } = useQuery({
-    queryKey: ['locks', account, query.chainId],
+    queryKey: ['locks', account, searchParams.get('chainId')],
     queryFn: async () => {
       const locks = await subgraph.locks(
         {
           first: 100,
           where: {
             lockManagers_contains: [account?.toLowerCase()],
-            tokenAddress: query.address?.toString().toLowerCase(),
+            tokenAddress: searchParams.get('address')?.toString().toLowerCase(),
           },
         },
         {
-          networks: [Number(query.chainId)],
+          networks: [Number(searchParams.get('chainId'))],
         }
       )
       return locks
     },
-    enabled: !!query.chainId && !!account && !!query.address,
+    enabled:
+      !!searchParams.get('chainId') &&
+      !!account &&
+      !!searchParams.get('address'),
   })
 
   useEffect(() => {
@@ -59,14 +62,14 @@ export const Deploy: React.FC = () => {
     }) => {
       await locksmith.updateLockMetadata(network, lockAddress, {
         metadata: {
-          image: query.mediaUri?.toString(),
+          image: searchParams.get('mediaUri')?.toString(),
         },
       })
       await updateConfig({
         name: `Checkout Config for P00ls Membership for ${lockAddress}`,
         config: {
           title: `Buy a membership NFT!`,
-          image: query.mediaUri?.toString(),
+          image: searchParams.get('mediaUri')?.toString(),
           locks: {
             [lockAddress]: {
               network,
@@ -76,7 +79,7 @@ export const Deploy: React.FC = () => {
       })
       setLockAddress(lockAddress)
     },
-    [updateConfig, query.mediaUri]
+    [updateConfig]
   )
 
   const deployLock = useCallback(
@@ -158,12 +161,14 @@ export const Deploy: React.FC = () => {
               onSubmit={onSubmitMutation.mutate}
               hideFields={['network', 'currency', 'quantity']}
               defaultValues={{
-                currencyContractAddress: query.address?.toString(),
+                currencyContractAddress: searchParams
+                  .get('address')
+                  ?.toString(),
                 name: 'P00ls Membership',
                 unlimitedQuantity: true,
                 unlimitedDuration: false,
                 isFree: false,
-                network: Number(query.chainId?.toString()),
+                network: Number(searchParams.get('chainId')?.toString()),
               }}
               isLoading={onSubmitMutation.isPending}
             />
@@ -171,7 +176,7 @@ export const Deploy: React.FC = () => {
           {lockAddress && (
             <Deployed
               lockAddress={lockAddress}
-              network={Number(query.chainId?.toString())}
+              network={Number(searchParams.get('chainId')?.toString())}
             />
           )}
         </div>
