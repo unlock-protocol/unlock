@@ -41,7 +41,7 @@ export const fuse: NetworkConfig = {
 
   publicProvider: 'https://rpc.fuse.io/',
 
-  startBlock: 0,
+  startBlock: 31355828,
   subgraph: {
     endpoint: '<>', // this is given to you by the graph after deploying
     networkName: 'fuse', // the graph name of the network see https://thegraph.com/docs/en/developing/supported-networks/
@@ -63,7 +63,7 @@ export const fuse: NetworkConfig = {
       symbol: 'USDC',
     },
   ],
-  unlockAddress: '',
+  unlockAddress: '0xbf36B2a6dd0019555A33602Bf04e2882b0cEc843',
   unlockDaoToken: {
     address: '',
   },
