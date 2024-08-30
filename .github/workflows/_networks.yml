@@ -46,7 +46,7 @@ jobs:
         env: 
           ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
-          yarn workspace @unlock-protocol/networks validate > results.txt
+          yarn workspace @unlock-protocol/networks validate 1> results.txt 2> /dev/null
         shell: bash
       
       - name: Add PR Comment

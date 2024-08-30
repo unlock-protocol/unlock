@@ -155,8 +155,12 @@ const run = async () => {
   return { results }
 }
 
-const parseGithubComment = ({ networkName, errors, failures, successes }) => `
-### ${networkName}
+const parseGithubComment = ({
+  networkName,
+  errors,
+  failures,
+  successes,
+}) => `### ${networkName}
 
 ${successes.length ? `The setup is successful :\n` : ''}
 ${successes.map((success) => `- ${success}`).join('\n')}
@@ -187,6 +191,6 @@ run()
   })
   .catch((err) => {
     console.log(err)
-    console.error(`Could not process the file: ${err.message}`)
+    console.log(`Could not process the file: ${err.message}`)
     process.exit(1)
   })
