@@ -19,6 +19,7 @@ const etherscan = {
     linea: 'S66J314Q7PICPB4RP2G117KDFQRBEUYIFX',
     polygonZkEVM: '8H4ZB9SQBMQ7WA1TCIXFQVCHTVX8DXTY9Y',
     scroll: 'BZEXNPN6KKKJQ8VIMNXZDZNEX7QQZWZQ3P',
+    spark: 'cdd2f757-cbfa-49c4-a811-e16be2b3f28d',
   },
   // TODO : generate from networks package!
   customChains: [
@@ -60,6 +61,14 @@ const etherscan = {
       urls: {
         apiURL: 'https://api.scrollscan.com/api',
         browserURL: 'https://scrollscan.com/',
+      },
+    },
+    {
+      network: 'spark',
+      chainId: 123,
+      urls: {
+        apiURL: 'https://explorer.fusespark.io/api',
+        browserURL: 'https://explorer.fusespark.io/',
       },
     },
   ],
