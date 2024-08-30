@@ -52,7 +52,7 @@
     "test": "hardhat test",
     "clean": "rm -rf artifacts",
     "lint:contracts": "solhint 'contracts/**/*.sol'",
-    "lint:code": "eslint --resolve-plugins-relative-to ../packages/eslint-config .",
+    "lint:code": "eslint .",
     "lint": "yarn lint:contracts && yarn lint:code",
     "lintFix": "yarn lint:contracts --fix --noPrompt && yarn lint:code --fix",
     "coverage": "IS_COVERAGE=1 yarn hardhat coverage",

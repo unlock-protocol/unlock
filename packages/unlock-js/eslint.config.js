@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
 const rulesToIgnore = [
   'import/no-extraneous-dependencies',
   'no-underscore-dangle',
@@ -22,7 +21,11 @@ const rulesToIgnore = [
 ]
 
 const unlockProtocolConfig = require('@unlock-protocol/eslint-config')
+/** @typedef {import('eslint').Linter.Config} ESLintConfig */
 
+/**
+ * @type {ESLintConfig}
+ */
 module.exports = [
   ...unlockProtocolConfig,
   {
@@ -31,7 +34,8 @@ module.exports = [
         return { ...obj, [rule]: 'off' }
       }, {}),
     },
-    files: ['.tsx', '.ts', '.js'],
-    ignores: ['dist/*', '@generated/*'],
+  },
+  {
+    ignores: ['src/@generated/'],
   },
 ]

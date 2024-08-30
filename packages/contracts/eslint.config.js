@@ -19,4 +19,7 @@ module.exports = [
       },
     },
   },
+  {
+    ignores: ['src/index.ts'],
+  },
 ]

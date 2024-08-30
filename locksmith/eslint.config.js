@@ -1,3 +1,4 @@
+const unlockProtocolConfig = require('@unlock-protocol/eslint-config')
 const rulesToIgnore = [
   'eqeqeq',
   'no-use-before-define',
@@ -21,12 +22,13 @@ const rulesToIgnore = [
   'no-promise-executor-return',
   'prefer-regex-literals',
 ]
-
-module.exports = {
-  extends: ['@unlock-protocol/eslint-config'],
-  rules: {
-    ...rulesToIgnore.reduce((obj, rule) => {
-      return { ...obj, [rule]: 'off' }
-    }, {}),
+module.exports = [
+  ...unlockProtocolConfig,
+  {
+    rules: {
+      ...rulesToIgnore.reduce((obj, rule) => {
+        return { ...obj, [rule]: 'off' }
+      }, {}),
+    },
   },
-}
+]

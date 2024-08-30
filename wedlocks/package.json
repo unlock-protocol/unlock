@@ -26,7 +26,7 @@
     "build": "netlify build",
     "dev": "UNLOCK_ENV=dev netlify functions:serve",
     "test": "UNLOCK_ENV=test vitest run --coverage --environment=node",
-    "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/",
+    "lint": "eslint src/",
     "ci": "yarn test && yarn lint",
     "deploy-netlify": "./scripts/deploy-netlify.sh"
   },
