@@ -3,7 +3,7 @@ import '../src/type-extensions'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import { assert } from 'chai'
 import path from 'path'
-/* eslint-disable @typescript-eslint/no-require-imports */
+
 import { resetHardhatContext } from 'hardhat/plugins-testing'
 
 declare module 'mocha' {
