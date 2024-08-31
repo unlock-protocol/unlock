@@ -27,10 +27,11 @@ export const fuse: NetworkConfig = {
   multisig: '',
   name: 'Fuse Mainnet',
   nativeCurrency: {
-    coingecko: 'ethereum',
+    coingecko: 'fuse',
     decimals: 18,
     name: 'FUSE',
     symbol: 'FUSE',
+    wrapped: '0x0BE9e53fd7EDaC9F859882AfdDa116645287C629',
   },
 
   previousDeploys: [],
