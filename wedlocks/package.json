@@ -4,7 +4,7 @@
   "description": "The email server for Unlock",
   "main": "src/server.js",
   "dependencies": {
-    "@babel/cli": "7.24.8",
+    "@babel/cli": "7.25.6",
     "@babel/core": "7.25.2",
     "@babel/node": "7.25.0",
     "@babel/preset-env": "7.25.3",
@@ -20,7 +20,7 @@
     "nodemailer": "6.9.14",
     "prettier": "3.3.3",
     "typescript": "5.5.4",
-    "winston": "3.13.1"
+    "winston": "3.14.2"
   },
   "scripts": {
     "build": "netlify build",
@@ -33,7 +33,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@babel/plugin-transform-runtime": "7.24.7",
+    "@babel/plugin-transform-runtime": "7.25.4",
     "regenerator-runtime": "0.14.1",
     "vitest": "1.6.0"
   }
