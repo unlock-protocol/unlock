@@ -18368,13 +18368,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:18.3.3":
-  version: 18.3.3
-  resolution: "@types/react@npm:18.3.3"
+"@types/react@npm:18.3.5":
+  version: 18.3.5
+  resolution: "@types/react@npm:18.3.5"
   dependencies:
     "@types/prop-types": "npm:*"
     csstype: "npm:^3.0.2"
-  checksum: 10/68e203b7f1f91d6cf21f33fc7af9d6d228035a26c83f514981e54aa3da695d0ec6af10c277c6336de1dd76c4adbe9563f3a21f80c4462000f41e5f370b46e96c
+  checksum: 10/ba0477c5ad4a762157c6262a199af6ccf9e24576877a26a7f516d5a9ba35374a6ac7f8686a10e5e8030513214f02bcb66e8363e43905afb7cd313deaf673de05
   languageName: node
   linkType: hard
 
@@ -19035,7 +19035,7 @@ __metadata:
     "@storybook/addon-links": "npm:8.2.9"
     "@storybook/react": "npm:8.2.9"
     "@storybook/react-vite": "npm:8.2.9"
-    "@types/react": "npm:18.3.3"
+    "@types/react": "npm:18.3.5"
     "@types/react-dom": "npm:18.3.0"
     "@vitejs/plugin-react": "npm:4.3.1"
     react: "npm:18.3.1"
@@ -19444,7 +19444,7 @@ __metadata:
     "@tailwindcss/typography": "npm:0.5.13"
     "@tanstack/react-query": "npm:5.51.24"
     "@tw-classed/react": "npm:1.7.0"
-    "@types/react": "npm:18.3.3"
+    "@types/react": "npm:18.3.5"
     "@types/react-dom": "npm:18.3.0"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
@@ -19504,7 +19504,7 @@ __metadata:
     "@types/file-saver": "npm:2.0.7"
     "@types/postmate": "npm:1.5.4"
     "@types/qrcode.react": "npm:1.0.5"
-    "@types/react": "npm:18.3.3"
+    "@types/react": "npm:18.3.5"
     "@types/react-google-recaptcha": "npm:2.1.9"
     "@types/react-gtm-module": "npm:2.0.3"
     "@types/remove-markdown": "npm:0.3.4"
@@ -19635,7 +19635,7 @@ __metadata:
     "@tanstack/react-query": "npm:5.51.24"
     "@testing-library/react": "npm:16.0.0"
     "@types/node": "npm:20.14.13"
-    "@types/react": "npm:18.3.3"
+    "@types/react": "npm:18.3.5"
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/ui": "workspace:./packages/ui"
