@@ -44,7 +44,8 @@ export const fuse: NetworkConfig = {
 
   startBlock: 31355828,
   subgraph: {
-    endpoint: '<>', // this is given to you by the graph after deploying
+    endpoint:
+      'https://api.studio.thegraph.com/query/87693/unlock-protocol-fuse/version/lastest', // this is given to you by the graph after deploying
     networkName: 'fuse', // the graph name of the network see https://thegraph.com/docs/en/developing/supported-networks/
     studioName: 'unlock-protocol-fuse', // the name of the graph
   },
