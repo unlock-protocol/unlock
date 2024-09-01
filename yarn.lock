@@ -19339,7 +19339,7 @@ __metadata:
     postmate: "npm:1.5.2"
     tsup: "npm:8.2.4"
     typescript: "npm:5.5.4"
-    vite: "npm:5.3.5"
+    vite: "npm:5.4.2"
     vite-plugin-css-injected-by-js: "npm:3.5.1"
     vite-plugin-node-polyfills: "npm:0.22.0"
     vitest: "npm:1.6.0"
@@ -51195,7 +51195,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^3.0.0 || ^4.0.0 || ^5.0.0-0, vite@npm:^3.1.0 || ^4.0.0 || ^5.0.0-0":
+"vite@npm:5.4.2, vite@npm:^3.0.0 || ^4.0.0 || ^5.0.0-0, vite@npm:^3.1.0 || ^4.0.0 || ^5.0.0-0":
   version: 5.4.2
   resolution: "vite@npm:5.4.2"
   dependencies:
