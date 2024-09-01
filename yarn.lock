@@ -19044,7 +19044,7 @@ __metadata:
     tsup: "npm:8.2.3"
     tsx: "npm:4.16.5"
     typescript: "npm:5.5.4"
-    vite: "npm:5.3.5"
+    vite: "npm:5.4.2"
     vite-plugin-svgr: "npm:4.2.0"
     vite-tsconfig-paths: "npm:4.3.2"
   peerDependencies:
@@ -51195,7 +51195,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^3.0.0 || ^4.0.0 || ^5.0.0-0, vite@npm:^3.1.0 || ^4.0.0 || ^5.0.0-0":
+"vite@npm:5.4.2, vite@npm:^3.0.0 || ^4.0.0 || ^5.0.0-0, vite@npm:^3.1.0 || ^4.0.0 || ^5.0.0-0":
   version: 5.4.2
   resolution: "vite@npm:5.4.2"
   dependencies:
