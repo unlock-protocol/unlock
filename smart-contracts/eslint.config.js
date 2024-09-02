@@ -21,11 +21,13 @@ const rulesToIgnore = [
 module.exports = [
   ...unlockConfig,
   {
-    ignorePatterns: ['coverage'],
     rules: {
       ...rulesToIgnore.reduce((obj, rule) => {
         return { ...obj, [rule]: 'off' }
       }, {}),
     },
+  },
+  {
+    ignores: ['coverage'],
   },
 ]
