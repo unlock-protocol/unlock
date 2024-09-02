@@ -7,7 +7,7 @@
 module.exports = [
   require('./base.js'),
   require('prettier'),
-  require('next/core-web-vitals'),
+  // require('next/core-web-vitals'),
   {
     rules: {
       '@next/next/no-img-element': 0,
