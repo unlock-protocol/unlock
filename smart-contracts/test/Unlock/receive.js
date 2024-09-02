@@ -71,7 +71,6 @@ describe('Unlock / computeAvailableDiscountFor', () => {
 
   it('check if it returns dummy data', async () => {
     const result = await unlock.computeAvailableDiscountFor(ZeroAddress, '0')
-    console.log(result)
     assert.equal(result.discount, 0)
     assert.equal(result.tokens, 0)
   })
