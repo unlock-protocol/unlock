@@ -18,6 +18,7 @@ export interface AddressProps {
   minified?: boolean
 }
 
+// Address component
 export const Address: React.FC<AddressProps> = ({
   address,
   showExternalLink = false,
@@ -33,6 +34,7 @@ export const Address: React.FC<AddressProps> = ({
       : minified
         ? minifyAddress(address)
         : address
+
   const [isCopied, setCopy] = useClipboard(address)
 
   useEffect(() => {
@@ -43,10 +45,12 @@ export const Address: React.FC<AddressProps> = ({
   return (
     <div className="flex items-center space-x-2">
       {resolvedName === undefined ? (
+        // Show a placeholder if the resolved name is not available
         <Placeholder.Root inline={true} spaced="sm">
           <Placeholder.Line width="md" size="sm" />
         </Placeholder.Root>
       ) : (
+        // Display the address or ENS name
         <span
           className={`${className} ${resolvedName === address ? 'font-mono' : ''}`}
         >
@@ -54,6 +58,7 @@ export const Address: React.FC<AddressProps> = ({
         </span>
       )}
       {showExternalLink && (
+        // External link to Etherscan for the address
         <a
           href={`https://etherscan.io/address/${address}`}
           target="_blank"

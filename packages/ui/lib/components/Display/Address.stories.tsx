@@ -27,6 +27,7 @@ export default {
 
 const Template: StoryFn<AddressProps> = (args) => <Address {...args} />
 
+// Default Address render
 export const Default = Template.bind({})
 Default.args = {
   address: '0xf5c28ce24acf47849988f147d5c75787c0103534',
@@ -35,6 +36,7 @@ Default.args = {
   minified: true,
 }
 
+// Address without external link
 export const WithoutExternalLink = Template.bind({})
 WithoutExternalLink.args = {
   address: '0xf5c28ce24acf47849988f147d5c75787c0103534',
@@ -43,6 +45,7 @@ WithoutExternalLink.args = {
   minified: true,
 }
 
+// Address without copy icon
 export const WithoutCopyIcon = Template.bind({})
 WithoutCopyIcon.args = {
   address: '0xf5c28ce24acf47849988f147d5c75787c0103534',
@@ -51,6 +54,7 @@ WithoutCopyIcon.args = {
   minified: true,
 }
 
+// Address only
 export const AddressOnly = Template.bind({})
 AddressOnly.args = {
   address: '0xf5c28ce24acf47849988f147d5c75787c0103534',
@@ -60,6 +64,7 @@ AddressOnly.args = {
   minified: true,
 }
 
+// Full address
 export const FullAddress = Template.bind({})
 FullAddress.args = {
   address: '0xf5c28ce24acf47849988f147d5c75787c0103534',
@@ -69,6 +74,7 @@ FullAddress.args = {
   minified: false,
 }
 
+// Minified address
 export const MinifiedAddress = Template.bind({})
 MinifiedAddress.args = {
   address: '0xf5c28ce24acf47849988f147d5c75787c0103534',
