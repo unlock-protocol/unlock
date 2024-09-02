@@ -32,6 +32,6 @@ module.exports = [
     },
   },
   {
-    ignore: ['.cache', 'models', 'migrations', 'node_modules', 'build'],
+    ignores: ['.cache', 'models', 'migrations', 'node_modules', 'build'],
   },
 ]
