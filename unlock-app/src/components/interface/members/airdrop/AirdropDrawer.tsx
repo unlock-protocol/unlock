@@ -190,7 +190,9 @@ export const AirdropFormForLock = ({ lock }: { lock: Lock }) => {
           throw new Error('We were unable to airdrop these memberships.')
         })
         .finally(() => {
-          setIsConfirming(false)
+          if (setIsConfirming) {
+            setIsConfirming(false)
+          }
         })
     }
 
