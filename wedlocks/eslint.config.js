@@ -1,2 +1,7 @@
 const unlockConfig = require('@unlock-protocol/eslint-config')
-module.exports = [...unlockConfig]
+module.exports = [
+  ...unlockConfig,
+  {
+    ignore: ['build'],
+  },
+]

@@ -31,4 +31,7 @@ module.exports = [
       }, {}),
     },
   },
+  {
+    ignore: ['.cache', 'models', 'migrations', 'node_modules', 'build'],
+  },
 ]
