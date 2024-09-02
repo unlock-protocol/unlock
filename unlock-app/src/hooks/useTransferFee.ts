@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
@@ -27,5 +28,29 @@ export const useTransferFee = ({ lockAddress, network }: TransferFeeProps) => {
   return {
     updateTransferFee,
     getTransferFeeBasisPoints,
+  }
+}
+
+export const useFetchTransferFee = ({
+  lockAddress,
+  network,
+}: TransferFeeProps) => {
+  const web3service = useWeb3Service()
+
+  async function fetchTransferFees() {
+    let result = await web3service.transferFeeBasisPoints(lockAddress, network)
+    result = Number(result)
+    return result
+  }
+
+  const { isLoading, error, data } = useQuery({
+    queryKey: ['transferFees', lockAddress, network],
+    queryFn: fetchTransferFees,
+  })
+
+  return {
+    isLoading,
+    error,
+    data,
   }
 }

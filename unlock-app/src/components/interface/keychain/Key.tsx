@@ -53,6 +53,8 @@ import { AddToPhoneWallet } from './AddToPhoneWallet'
 import { useRouter } from 'next/router'
 import { Platform } from '~/services/passService'
 import { TransferModal } from './TransferModal'
+import { isKeyTransferable } from '~/utils/key'
+import { useFetchTransferFee } from '~/hooks/useTransferFee'
 
 export const MenuButton = tw.button(
   'group flex gap-2 w-full font-semibold items-center rounded-md px-2 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed',
@@ -99,6 +101,19 @@ function Key({ ownedKey, owner, network }: Props) {
   const [_, setCopied] = useClipboard(lock.address, {
     successDuration: 2000,
   })
+
+  let isTransferable
+  const {
+    isLoading: transferFeeLoading,
+    error: transferfeeError,
+    data: transferFee,
+  } = useFetchTransferFee({
+    lockAddress: lock.address,
+    network: network,
+  })
+  if (!transferFeeLoading && !transferfeeError) {
+    isTransferable = isKeyTransferable(transferFee)
+  }
 
   const handleQRCodeSignature: MouseEventHandler<HTMLButtonElement> = async (
     event
@@ -434,7 +449,12 @@ function Key({ ownedKey, owner, network }: Props) {
                       )}
                     </Menu.Item>
                   )}
-                  <Menu.Item disabled={isKeyExpired}>
+                  <Menu.Item
+                    disabled={
+                      isKeyExpired ||
+                      (typeof isTransferable === 'boolean' && !isTransferable)
+                    }
+                  >
                     {({ active, disabled }) => (
                       <MenuButton
                         disabled={disabled}
