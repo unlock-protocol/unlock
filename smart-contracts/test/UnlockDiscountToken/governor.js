@@ -37,9 +37,6 @@ describe('UnlockProtocol Governor & Timelock', () => {
     // vote
     await gov.connect(voter).castVote(proposalId, 1)
 
-    const hasVoted = await gov.hasVoted(proposalId, await voter.getAddress())
-    console.log('hasVoted', hasVoted)
-
     // wait until voting delay is over
     const deadline = await gov.proposalDeadline(proposalId)
     const clock2 = await gov.clock()
@@ -180,6 +177,29 @@ describe('UnlockProtocol Governor & Timelock', () => {
       })
     })
 
+    describe('setQuorum', () => {
+      it('should be properly updated through voting', async () => {
+        const quorum = SIX_HUNDRED_BLOCKS / 2
+        const encoded = gov.interface.encodeFunctionData('setQuorum', [quorum])
+
+        const proposal = [
+          [await gov.getAddress()],
+          ['0'],
+          [encoded],
+          '<proposal description>',
+        ]
+
+        const execReceipt = await launchVotingProcess(voter, proposal)
+        const changed = await gov.quorum(0)
+        assert.equal(changed == quorum, true)
+
+        // make sure event has been fired
+        const { args } = await getEvent(execReceipt, 'QuorumUpdated')
+        const { newQuorum } = args
+        assert.equal(newQuorum, quorum)
+      })
+    })
+
     describe('Cancel', () => {
       it('should be properly cancelled', async () => {
         const votingDelay = 10000n
@@ -211,6 +231,20 @@ describe('UnlockProtocol Governor & Timelock', () => {
         await gov.cancel(targets, values, calldatas, descriptionHash)
 
         assert.equal(await gov.state(proposalId), 2) // Canceled
+      })
+    })
+
+    describe('supportsInterface', async () => {
+      it('should support id for IERC1155ReceiverUpgradeable', async () => {
+        const interfaceId = '0x4e2312e0' // Interface Id of IERC1155ReceiverUpgradeable.sol
+        const supportsGovernor = await gov.supportsInterface(interfaceId)
+        assert.equal(supportsGovernor, true)
+      })
+
+      it('should not support random interface', async function () {
+        const randomInterfaceId = '0x12345678'
+        const supportsRandom = await gov.supportsInterface(randomInterfaceId)
+        assert.equal(supportsRandom, false)
       })
     })
   })
