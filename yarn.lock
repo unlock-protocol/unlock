@@ -19573,7 +19573,7 @@ __metadata:
     ethers: "npm:6.13.2"
     fs-extra: "npm:11.2.0"
     tsup: "npm:8.2.3"
-    tsx: "npm:4.16.5"
+    tsx: "npm:4.19.0"
     typescript: "npm:5.5.4"
   languageName: unknown
   linkType: soft
