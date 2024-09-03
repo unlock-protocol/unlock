@@ -19394,7 +19394,7 @@ __metadata:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     eslint: "npm:8.57.0"
-    tsup: "npm:8.2.3"
+    tsup: "npm:8.2.4"
     typescript: "npm:5.5.4"
     vitest: "npm:1.6.0"
   peerDependencies:
@@ -19418,7 +19418,7 @@ __metadata:
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
     storybook: "npm:8.2.9"
-    tsup: "npm:8.2.3"
+    tsup: "npm:8.2.4"
     tsx: "npm:4.19.0"
     typescript: "npm:5.5.4"
     vite: "npm:5.4.2"
@@ -19540,7 +19540,7 @@ __metadata:
     copyfiles: "npm:2.4.1"
     ethers: "npm:6.13.2"
     hardhat: "npm:2.22.9"
-    tsup: "npm:8.2.3"
+    tsup: "npm:8.2.4"
     typescript: "npm:5.5.4"
     zksync-ethers: "npm:6.11.2"
   languageName: unknown
@@ -19681,7 +19681,7 @@ __metadata:
     eslint-plugin-sort-keys-fix: "npm:1.1.2"
     ethers: "npm:6.13.2"
     fs-extra: "npm:11.2.0"
-    tsup: "npm:8.2.3"
+    tsup: "npm:8.2.4"
     tsx: "npm:4.19.0"
     typescript: "npm:5.5.4"
   languageName: unknown
@@ -19992,7 +19992,7 @@ __metadata:
     hardhat: "npm:2.22.9"
     prettier: "npm:3.3.3"
     siwe: "npm:2.3.2"
-    tsup: "npm:8.2.3"
+    tsup: "npm:8.2.4"
     typescript: "npm:5.5.4"
     vitest: "npm:1.6.0"
   peerDependencies:
@@ -50195,47 +50195,6 @@ __metadata:
   version: 0.0.1
   resolution: "tsort@npm:0.0.1"
   checksum: 10/5f15ca0e91142a72d2acb6e9798a0297b754ce402c8f8bbb63457ee17f062272f3ccdf39f4c3155f0568337cb3b5422410b40cfeed72fe75fbb9a71f016cdcf9
-  languageName: node
-  linkType: hard
-
-"tsup@npm:8.2.3":
-  version: 8.2.3
-  resolution: "tsup@npm:8.2.3"
-  dependencies:
-    bundle-require: "npm:^5.0.0"
-    cac: "npm:^6.7.14"
-    chokidar: "npm:^3.6.0"
-    consola: "npm:^3.2.3"
-    debug: "npm:^4.3.5"
-    esbuild: "npm:^0.23.0"
-    execa: "npm:^5.1.1"
-    globby: "npm:^11.1.0"
-    joycon: "npm:^3.1.1"
-    picocolors: "npm:^1.0.1"
-    postcss-load-config: "npm:^6.0.1"
-    resolve-from: "npm:^5.0.0"
-    rollup: "npm:^4.19.0"
-    source-map: "npm:0.8.0-beta.0"
-    sucrase: "npm:^3.35.0"
-    tree-kill: "npm:^1.2.2"
-  peerDependencies:
-    "@microsoft/api-extractor": ^7.36.0
-    "@swc/core": ^1
-    postcss: ^8.4.12
-    typescript: ">=4.5.0"
-  peerDependenciesMeta:
-    "@microsoft/api-extractor":
-      optional: true
-    "@swc/core":
-      optional: true
-    postcss:
-      optional: true
-    typescript:
-      optional: true
-  bin:
-    tsup: dist/cli-default.js
-    tsup-node: dist/cli-node.js
-  checksum: 10/2523611f5879fe408e8cb6d1fbae18d9e7617d2ef47258f6be8c11323c6d5d6aad296f6004d3fa6dc94e5f5b4c70b3eae677ac3d5ce0e9e1e4925715ee8b69b9
   languageName: node
   linkType: hard
 
