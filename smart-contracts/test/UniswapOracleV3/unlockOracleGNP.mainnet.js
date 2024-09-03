@@ -23,10 +23,10 @@ describe('Unlock GNP conversion', () => {
   let WETH, USDC
 
   before(async function () {
-    // if (!process.env.RUN_FORK) {
-    //   // all suite will be skipped
-    //   this.skip()
-    // }
+    if (!process.env.RUN_FORK) {
+      // all suite will be skipped
+      this.skip()
+    }
 
     // get token addresses
     const { tokens } = await getNetwork(1)
