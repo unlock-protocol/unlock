@@ -9245,23 +9245,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@guildxyz/sdk@npm:2.6.0":
-  version: 2.6.0
-  resolution: "@guildxyz/sdk@npm:2.6.0"
+"@guildxyz/sdk@npm:2.6.8":
+  version: 2.6.8
+  resolution: "@guildxyz/sdk@npm:2.6.8"
   dependencies:
-    "@guildxyz/types": "npm:^1.9.27"
+    "@guildxyz/types": "npm:^1.9.42"
     ethers: "npm:^6.7.1"
     randombytes: "npm:^2.1.0"
-  checksum: 10/323e62fa1311d98e249348431a23e83d8030dadab8212b3a6ab5c71f09d5343e458e9dbb1991421b1e5ef61f675585a6ce3b331a2c08f67d9d0d6ff998af4b14
+  checksum: 10/65222896c27c4e44d969c43093318e951acd28d2d7d438b659769b54c08bc91c2fb43dda9b3445d30718f10926321bb5912a89f31b8dd73a4fa81e546e03032e
   languageName: node
   linkType: hard
 
-"@guildxyz/types@npm:^1.9.27":
-  version: 1.9.31
-  resolution: "@guildxyz/types@npm:1.9.31"
+"@guildxyz/types@npm:^1.9.42":
+  version: 1.10.0
+  resolution: "@guildxyz/types@npm:1.10.0"
   dependencies:
     zod: "npm:^3.22.4"
-  checksum: 10/e4259a8a3ae5590f5c6a0a7212fd613b78ac1a0957005a48a03168ab730f81ef2b72256c4990c53abbbb01ce4442d0aef7022ab3a28b0b5ca9e4a565ffb1de6d
+  checksum: 10/26af702142851bdb72a517cfc8ec567b1562fa386654b007b5c15020b885c92b7768f919134dee4212ed3594cbdbf6b3e81840111e950ccb4fee1035e583c4f1
   languageName: node
   linkType: hard
 
@@ -19735,7 +19735,7 @@ __metadata:
     "@crossmint/client-sdk-react-ui": "npm:1.2.2"
     "@decent.xyz/box-common": "npm:3.1.1"
     "@enzoferey/ethers-error-parser": "npm:0.2.3"
-    "@guildxyz/sdk": "npm:2.6.0"
+    "@guildxyz/sdk": "npm:2.6.8"
     "@headlessui/react": "npm:1.7.19"
     "@hookform/error-message": "npm:2.0.1"
     "@hookform/resolvers": "npm:3.9.0"
