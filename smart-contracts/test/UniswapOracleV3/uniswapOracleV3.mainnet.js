@@ -79,10 +79,10 @@ describe(`oracle`, () => {
     it('DAI and USDC has roughly the same value', async () => {
       assert.equal(
         round(
-          await oracle.consult(WETH, ethers.parseEther('1'), USDC).toString()
+          (await oracle.consult(WETH, ethers.parseEther('1'), USDC)).toString()
         ),
         round(
-          await oracle.consult(WETH, ethers.parseEther('1'), DAI).toString()
+          (await oracle.consult(WETH, ethers.parseEther('1'), DAI)).toString()
         )
       )
     })
