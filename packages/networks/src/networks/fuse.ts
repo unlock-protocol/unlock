@@ -1,11 +1,8 @@
 import { NetworkConfig } from '@unlock-protocol/types'
 
 export const fuse: NetworkConfig = {
-  blockScan: {
-    url: (address: string) => `https://blockscan.com/address/${address}`,
-  },
   chain: 'fuse',
-  description: 'A public testnet for Fuse.',
+  description: 'Fuse is an EVM-compatible Layer-1 blockchain.',
   explorer: {
     name: 'Fuse Explorer',
     urls: {
@@ -18,12 +15,12 @@ export const fuse: NetworkConfig = {
     },
   },
   featured: false,
-  fullySubsidizedGas: true,
+  fullySubsidizedGas: false,
   hooks: {},
   id: 122,
   isTestNetwork: false,
   keyManagerAddress: '',
-  maxFreeClaimCost: 1000,
+  maxFreeClaimCost: 0,
   multisig: '',
   name: 'Fuse Mainnet',
   nativeCurrency: {
