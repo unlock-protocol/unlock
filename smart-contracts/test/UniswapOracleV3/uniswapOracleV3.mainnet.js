@@ -54,7 +54,7 @@ describe(`oracle`, () => {
             ethers.parseEther('1'),
             token1
           )
-          assert.equal(converted.constructor.name, 'BigNumber')
+          assert.equal(converted.constructor.name, 'BigInt')
           assert.equal(
             round(
               await oracle.consult(token0, ethers.parseEther('0.1'), token1)
@@ -74,8 +74,12 @@ describe(`oracle`, () => {
 
     it('DAI and USDC has roughly the same value', async () => {
       assert.equal(
-        round(await oracle.consult(WETH, ethers.parseEther('1'), USDC)),
-        round(await oracle.consult(WETH, ethers.parseEther('1'), DAI))
+        round(
+          await oracle.consult(WETH, ethers.parseEther('1'), USDC).toString()
+        ),
+        round(
+          await oracle.consult(WETH, ethers.parseEther('1'), DAI).toString()
+        )
       )
     })
     it('throws if pair doesnt exist', async () => {

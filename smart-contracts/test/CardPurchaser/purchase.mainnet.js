@@ -1,13 +1,11 @@
 const { ethers } = require('hardhat')
 const assert = require('assert')
-const {
-  deployLock,
-  getUnlockAddress,
-  reverts,
-  addSomeETH,
-  addSomeUSDC,
-} = require('../helpers')
+const { deployLock, reverts } = require('../helpers')
 
+const {
+  addSomeUSDC,
+  getUnlockAddress,
+} = require('@unlock-protocol/hardhat-helpers')
 const USDC_ABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/USDC.json')
 const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
 
@@ -115,8 +113,6 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
     }
     ;[signer] = await ethers.getSigners()
 
-    await addSomeETH(await signer.getAddress())
-
     // get Unlock contract
     unlockAddress = await getUnlockAddress()
     unlock = await ethers.getContractAt('Unlock', unlockAddress)
@@ -205,7 +201,7 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
   })
 
   it('should fail if the payer is not the sender', async () => {
-    const notSender = new ethers.Wallet.createRandom()
+    const notSender = ethers.Wallet.createRandom()
     const transfer = await signUSDCTransfer({
       chainId,
       signer,
@@ -226,12 +222,12 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
         purchase.signature,
         await purchaseCallData(lock, await signer.getAddress())
       ),
-      'PURCHASER_DOES_NOT_MATCH_PAYER()'
+      'PURCHASER_DOES_NOT_MATCH_PAYER'
     )
   })
 
   it('should fail if the signature of the purchaseMessage does not match', async () => {
-    const notSigner = new ethers.Wallet.createRandom()
+    const notSigner = ethers.Wallet.createRandom()
     const transfer = await signUSDCTransfer({
       chainId,
       signer,
@@ -253,7 +249,7 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
         purchase.signature,
         await purchaseCallData(lock, await signer.getAddress())
       ),
-      'SIGNER_DOES_NOT_MATCH()'
+      'SIGNER_DOES_NOT_MATCH'
     )
   })
 
@@ -285,7 +281,7 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
 
   it('should fail if the transfer of tokens fails because the recipient is not correct!', async () => {
     await addSomeUSDC(USDC, await signer.getAddress(), keyPrice)
-    const notCardPurchaser = new ethers.Wallet.createRandom()
+    const notCardPurchaser = ethers.Wallet.createRandom()
 
     const transfer = await signUSDCTransfer({
       chainId,

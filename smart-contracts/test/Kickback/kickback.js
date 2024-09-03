@@ -17,9 +17,6 @@ describe('Kickback contract', () => {
   before(async () => {
     const [deployer] = await ethers.getSigners()
 
-    // deploy unlock
-    const { unlock } = await deployContracts()
-
     // create a new lock
     lock = await deployLock()
     const result = await purchaseKeys(lock, 5)

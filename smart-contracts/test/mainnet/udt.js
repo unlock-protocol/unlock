@@ -4,15 +4,12 @@ const {
   reverts,
   ADDRESS_ZERO,
   getProxyAddress,
+  resetNodeState,
   advanceBlock,
 } = require('../helpers')
 const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
-const {
-  resetNodeState,
-  impersonate,
-  MULTISIG_ADDRESS_OWNER,
-} = require('../helpers')
+const { impersonate, MULTISIG_ADDRESS_OWNER } = require('../helpers')
 
 describe('UnlockDiscountToken on mainnet', () => {
   let udt

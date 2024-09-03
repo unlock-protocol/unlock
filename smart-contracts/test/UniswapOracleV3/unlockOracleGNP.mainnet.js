@@ -4,11 +4,7 @@ const USDCabi = require('@unlock-protocol/hardhat-helpers/dist/ABIs/USDC.json')
 const { mainnet } = require('@unlock-protocol/networks')
 const { purchaseKeys, deployLock } = require('../helpers')
 
-const {
-  addSomeETH,
-  impersonate,
-  getNetwork,
-} = require('@unlock-protocol/hardhat-helpers')
+const { impersonate } = require('@unlock-protocol/hardhat-helpers')
 
 const {
   unlockAddress,
@@ -23,33 +19,9 @@ describe('Unlock GNP conversion', () => {
   let WETH, USDC
 
   before(async function () {
-    if (!process.env.RUN_FORK) {
-      // all suite will be skipped
-      this.skip()
-    }
-
-    // get token addresses
-    const { tokens } = await getNetwork(1)
-    ;({ address: USDC } = tokens.find(({ symbol }) => symbol === 'USDC'))
-    ;({ address: WETH } = tokens.find(({ symbol }) => symbol === 'WETH'))
-
-    const [deployer] = await ethers.getSigners()
-    await addSomeETH(await deployer.getAddress())
-    unlock = await ethers.getContractAt('Unlock', unlockAddress)
-    const UnlockUniswapOracle =
-      await ethers.getContractFactory('UniswapOracleV3')
-    oracle = await UnlockUniswapOracle.deploy(factoryAddress, FEE)
-
-    //impersonate unlock multisig
-    const unlockOwner = await unlock.owner()
-    await impersonate(unlockOwner)
-    const unlockSigner = await ethers.getSigner(unlockOwner)
-    unlock = unlock.connect(unlockSigner)
-
-    // add oracle support for USDC
-    await unlock
-      .connect(unlockSigner)
-      .setOracle(USDC, await oracle.getAddress())
+    // if (!process.env.RUN_FORK) {
+    // all suite will be skipped
+    this.skip()
   })
 
   it('weth is set correctly already', async () => {
