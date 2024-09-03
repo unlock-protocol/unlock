@@ -13,7 +13,7 @@
     "@mdx-js/react": "3.0.1",
     "@mui/material": "5.16.7",
     "@mui/x-charts": "7.15.0",
-    "@tanstack/react-query": "5.51.18",
+    "@tanstack/react-query": "5.53.3",
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "clsx": "2.1.1",
     "docusaurus-gtm-plugin": "0.0.2",
