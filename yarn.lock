@@ -19567,7 +19567,7 @@ __metadata:
     eslint: "npm:8.57.0"
     ethers: "npm:6.13.2"
     hardhat: "npm:2.22.9"
-    hardhat-gas-reporter: "npm:2.2.0"
+    hardhat-gas-reporter: "npm:2.2.1"
     mocha: "npm:10.7.3"
     prettier: "npm:3.3.3"
     solidity-coverage: "npm:0.8.13"
@@ -19756,7 +19756,7 @@ __metadata:
     hardhat: "npm:2.22.9"
     hardhat-contract-sizer: "npm:2.10.0"
     hardhat-erc1820: "npm:0.1.0"
-    hardhat-gas-reporter: "npm:2.2.0"
+    hardhat-gas-reporter: "npm:2.2.1"
     hardhat-storage-layout: "npm:0.1.7"
     hardhat-tracer: "npm:3.0.2"
     prettier: "npm:3.3.3"
@@ -32754,9 +32754,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hardhat-gas-reporter@npm:2.2.0":
-  version: 2.2.0
-  resolution: "hardhat-gas-reporter@npm:2.2.0"
+"hardhat-gas-reporter@npm:2.2.1":
+  version: 2.2.1
+  resolution: "hardhat-gas-reporter@npm:2.2.1"
   dependencies:
     "@ethersproject/abi": "npm:^5.7.0"
     "@ethersproject/bytes": "npm:^5.7.0"
@@ -32775,7 +32775,7 @@ __metadata:
     viem: "npm:2.7.14"
   peerDependencies:
     hardhat: ^2.16.0
-  checksum: 10/ae076bf42116a55e3f4273c28789880c55ba760138ab43b4968920ac8d791b0bb464067548885ab7cfc2dc903011bbed7c6373bf51f8dceae5aa5ab585b06fc7
+  checksum: 10/af8bd86400035ab1ed574c5f782e7ee408fff75ea6cfcd56ab87bf80c2e911e9fbe943b528ad17844abad8ff8f63daa24aae391ccbf3e07a9970be66f949bd3d
   languageName: node
   linkType: hard
 
