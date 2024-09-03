@@ -419,7 +419,7 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
         cardPurchaser
           .connect(user)
           .withdraw(USDC, await signer.getAddress(), 0),
-        'Ownable: caller is not the owner'
+        'OwnableUnauthorizedAccount'
       )
     })
 
