@@ -19260,7 +19260,7 @@ __metadata:
     react-dom: "npm:18.3.1"
     storybook: "npm:8.2.9"
     tsup: "npm:8.2.3"
-    tsx: "npm:4.16.5"
+    tsx: "npm:4.19.0"
     typescript: "npm:5.5.4"
     vite: "npm:5.4.2"
     vite-plugin-svgr: "npm:4.2.0"
