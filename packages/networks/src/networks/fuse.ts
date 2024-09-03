@@ -21,7 +21,7 @@ export const fuse: NetworkConfig = {
   isTestNetwork: false,
   keyManagerAddress: '',
   maxFreeClaimCost: 0,
-  multisig: '',
+  multisig: '0x5ED353B723847E0317a59aE224613C399a4D0d8c',
   name: 'Fuse Mainnet',
   nativeCurrency: {
     coingecko: 'fuse',
