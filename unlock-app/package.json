@@ -11,7 +11,7 @@
     "@coinbase/waas-sdk-web": "3.3.2",
     "@coinbase/wallet-sdk": "4.0.4",
     "@crossmint/client-sdk-react-ui": "1.2.2",
-    "@decent.xyz/box-common": "3.1.1",
+    "@decent.xyz/box-common": "3.1.15",
     "@enzoferey/ethers-error-parser": "0.2.3",
     "@guildxyz/sdk": "2.6.8",
     "@headlessui/react": "1.7.19",
