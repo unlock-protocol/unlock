@@ -5,7 +5,7 @@
     "wrangler": "3.67.1"
   },
   "devDependencies": {
-    "vitest": "^0.34.6"
+    "vitest": "0.34.6"
   },
   "scripts": {
     "dev": "yarn wrangler dev",
