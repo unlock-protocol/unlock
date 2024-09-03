@@ -4,7 +4,11 @@ const USDCabi = require('@unlock-protocol/hardhat-helpers/dist/ABIs/USDC.json')
 const { mainnet } = require('@unlock-protocol/networks')
 const { purchaseKeys, deployLock } = require('../helpers')
 
-const { impersonate } = require('@unlock-protocol/hardhat-helpers')
+const {
+  impersonate,
+  getNetwork,
+  addSomeETH,
+} = require('@unlock-protocol/hardhat-helpers')
 
 const {
   unlockAddress,
@@ -20,8 +24,32 @@ describe('Unlock GNP conversion', () => {
 
   before(async function () {
     // if (!process.env.RUN_FORK) {
-    // all suite will be skipped
-    this.skip()
+    //   // all suite will be skipped
+    //   this.skip()
+    // }
+
+    // get token addresses
+    const { tokens } = await getNetwork(1)
+    ;({ address: USDC } = tokens.find(({ symbol }) => symbol === 'USDC'))
+    ;({ address: WETH } = tokens.find(({ symbol }) => symbol === 'WETH'))
+
+    const [deployer] = await ethers.getSigners()
+    await addSomeETH(await deployer.getAddress())
+    unlock = await ethers.getContractAt('Unlock', unlockAddress)
+    const UnlockUniswapOracle =
+      await ethers.getContractFactory('UniswapOracleV3')
+    oracle = await UnlockUniswapOracle.deploy(factoryAddress, FEE)
+
+    //impersonate unlock multisig
+    const unlockOwner = await unlock.owner()
+    await impersonate(unlockOwner)
+    const unlockSigner = await ethers.getSigner(unlockOwner)
+    unlock = unlock.connect(unlockSigner)
+
+    // add oracle support for USDC
+    await unlock
+      .connect(unlockSigner)
+      .setOracle(USDC, await oracle.getAddress())
   })
 
   it('weth is set correctly already', async () => {
@@ -66,13 +94,14 @@ describe('Unlock GNP conversion', () => {
         .connect(minter)
         .configureMinter(await signer.getAddress(), totalPrice)
       await usdc.mint(await signer.getAddress(), totalPrice)
+      await usdc.mint(await payer.getAddress(), totalPrice)
 
       // approve purchase
       await usdc.approve(await lock.getAddress(), totalPrice)
+      await usdc.connect(payer).approve(await lock.getAddress(), totalPrice)
 
       // consult our oracle independently for 1 USDC
       const rate = await oracle.consult(USDC, ethers.parseUnits('1', 6), WETH)
-      console.log({ rate })
       // purchase some keys
       const [, payer] = await ethers.getSigners()
       await purchaseKeys(lock, NUMBER_OF_KEYS, true, payer)

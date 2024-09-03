@@ -7,6 +7,5 @@ module.exports = {
     'UnlockDiscountTokenV3',
     'UnlockProtocolGovernor',
     'utils',
-    'CardPurchaser.sol',
   ],
 }
