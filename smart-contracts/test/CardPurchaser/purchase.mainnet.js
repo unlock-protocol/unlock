@@ -1,6 +1,6 @@
 const { ethers } = require('hardhat')
 const assert = require('assert')
-const { deployLock, reverts } = require('../helpers')
+const { deployLock, reverts, ADDRESS_ZERO } = require('../helpers')
 
 const {
   addSomeUSDC,
@@ -105,13 +105,13 @@ const signLockPurchase = async ({
 }
 
 describe(`CardPurchaser / purchase (mainnet only)`, function () {
-  let chainId, unlock, cardPurchaser, signer, lock, unlockAddress
+  let chainId, unlock, cardPurchaser, signer, user, lock, unlockAddress
   before(async function () {
     if (!process.env.RUN_FORK) {
       // all suite will be skipped
       this.skip()
     }
-    ;[signer] = await ethers.getSigners()
+    ;[signer, user] = await ethers.getSigners()
 
     // get Unlock contract
     unlockAddress = await getUnlockAddress()
@@ -411,5 +411,49 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
       ),
       0
     )
+  })
+
+  describe('withdraw', () => {
+    it('only owner should be able to withdraw', async () => {
+      await reverts(
+        cardPurchaser
+          .connect(user)
+          .withdraw(USDC, await signer.getAddress(), 0),
+        'Ownable: caller is not the owner'
+      )
+    })
+
+    it('owner should be able to withdraw USDC from CardPurchaser', async () => {
+      const usdcContract = new ethers.Contract(USDC, USDC_ABI, signer)
+      const balanceBefore = await usdcContract.balanceOf(
+        await cardPurchaser.getAddress()
+      )
+      console.log('balanceBefore =======', balanceBefore)
+      await cardPurchaser.withdraw(
+        USDC,
+        await signer.getAddress(),
+        balanceBefore
+      )
+      assert.equal(
+        await usdcContract.balanceOf(await cardPurchaser.getAddress()),
+        0
+      )
+    })
+
+    it('owner should be able to withdraw ETH from CardPurchaser', async () => {
+      const balanceBefore = await ethers.provider.getBalance(
+        await cardPurchaser.getAddress()
+      )
+      console.log('balanceBefore =======', balanceBefore)
+      await cardPurchaser.withdraw(
+        ADDRESS_ZERO,
+        await signer.getAddress(),
+        balanceBefore
+      )
+      assert.equal(
+        await ethers.provider.getBalance(await cardPurchaser.getAddress()),
+        0
+      )
+    })
   })
 })

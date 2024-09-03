@@ -18,18 +18,25 @@ const { ethers } = require('hardhat')
 const assert = require('assert')
 
 const {
-  getNetwork,
-  impersonate,
   deployLock,
   purchaseKey,
   confirmMultisigTx,
-  getSafe,
   reverts,
 } = require('../helpers')
-const { addSomeETH } = require('@unlock-protocol/hardhat-helpers')
+const {
+  addSomeETH,
+  impersonate,
+  getNetwork,
+} = require('@unlock-protocol/hardhat-helpers')
 const { submitTx } = require('@unlock-protocol/governance/scripts/multisig')
+const multisigOldABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/multisig.json')
 
 const NEW_UNLOCK_ADDRESS = '0xe79B93f8E22676774F2A8dAd469175ebd00029FA'
+
+const getSafe = ({ safeAddress, signer }) => {
+  const safe = new ethers.Contract(safeAddress, multisigOldABI, signer)
+  return safe
+}
 
 let unlock,
   publicLock,
@@ -64,8 +71,10 @@ describe(`Unlock migration`, function () {
 
     // impersonate one of the multisig owner
 
+    console.log('multisig =====', multisig)
+    const safeContract = getSafe({ safeAddress: multisig, signer })
     const multisigSigner = await impersonate(
-      await (await getSafe(multisig)).owner()
+      (await safeContract.getOwners())[0]
     )
 
     // deploy new template

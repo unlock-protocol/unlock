@@ -12,7 +12,9 @@ const {
   purchaseKey,
   purchaseKeys,
 } = require('../helpers')
-const { deployUniswapV3Oracle } = require('../../../governance/helpers/uniswap')
+const {
+  deployUniswapV3Oracle,
+} = require('@unlock-protocol/governance/helpers/uniswap')
 const { impersonate } = require('@unlock-protocol/hardhat-helpers')
 
 const { unlockAddress } = mainnet
