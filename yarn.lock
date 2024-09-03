@@ -12322,15 +12322,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openapitools/openapi-generator-cli@npm:2.13.4":
-  version: 2.13.4
-  resolution: "@openapitools/openapi-generator-cli@npm:2.13.4"
+"@openapitools/openapi-generator-cli@npm:2.13.5":
+  version: 2.13.5
+  resolution: "@openapitools/openapi-generator-cli@npm:2.13.5"
   dependencies:
     "@nestjs/axios": "npm:3.0.2"
     "@nestjs/common": "npm:10.3.0"
     "@nestjs/core": "npm:10.3.0"
     "@nuxtjs/opencollective": "npm:0.3.2"
-    axios: "npm:1.6.8"
+    axios: "npm:1.7.4"
     chalk: "npm:4.1.2"
     commander: "npm:8.3.0"
     compare-versions: "npm:4.1.4"
@@ -12346,7 +12346,7 @@ __metadata:
     tslib: "npm:2.6.2"
   bin:
     openapi-generator-cli: main.js
-  checksum: 10/87efe136d4c223ff71ba8a31569623ed16de28b839ad50b01340c55ebebf6a7c82ce1caa79c8491ed090477f7928357b483f62e2f362c0311e7c1efcbf9b1307
+  checksum: 10/e51145a0b5e36b30e64d1324710d0ef24eebc1dc8c29af5e41fee6c7435d16961be8bad1daae4e6bdea6e684ad0e4dcf55ef3c6f59fd46b4a7f9e736c36e224b
   languageName: node
   linkType: hard
 
@@ -19821,7 +19821,7 @@ __metadata:
     "@graphql-codegen/typescript-graphql-request": "npm:6.2.0"
     "@graphql-codegen/typescript-operations": "npm:4.2.3"
     "@nomicfoundation/hardhat-ethers": "npm:3.0.6"
-    "@openapitools/openapi-generator-cli": "npm:2.13.4"
+    "@openapitools/openapi-generator-cli": "npm:2.13.5"
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:./packages/networks"
@@ -22348,17 +22348,6 @@ __metadata:
   version: 4.7.0
   resolution: "axe-core@npm:4.7.0"
   checksum: 10/615c0f7722c3c9fcf353dbd70b00e2ceae234d4c17cbc839dd85c01d16797c4e4da45f8d27c6118e9e6b033fb06efd196106e13651a1b2f3a10e0f11c7b2f660
-  languageName: node
-  linkType: hard
-
-"axios@npm:1.6.8":
-  version: 1.6.8
-  resolution: "axios@npm:1.6.8"
-  dependencies:
-    follow-redirects: "npm:^1.15.6"
-    form-data: "npm:^4.0.0"
-    proxy-from-env: "npm:^1.1.0"
-  checksum: 10/3f9a79eaf1d159544fca9576261ff867cbbff64ed30017848e4210e49f3b01e97cf416390150e6fdf6633f336cd43dc1151f890bbd09c3c01ad60bb0891eee63
   languageName: node
   linkType: hard
 
