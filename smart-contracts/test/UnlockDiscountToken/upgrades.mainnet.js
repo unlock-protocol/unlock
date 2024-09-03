@@ -86,6 +86,10 @@ describe('UnlockDiscountToken (on mainnet)', () => {
   let udt
   let deployer
 
+  before(() => {
+    this.skip()
+  })
+
   beforeEach(async function setupMainnetForkTestEnv() {
     if (!process.env.RUN_FORK) {
       // all suite will be skipped

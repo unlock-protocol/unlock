@@ -28,7 +28,7 @@ describe('UnlockDiscountToken on mainnet', () => {
     this.timeout(200000)
 
     const [, minter] = await ethers.getSigners()
-    udt = await getUdt().connect(minter)
+    udt = (await getUdt()).connect(minter)
 
     unlockAddress = await getUnlockAddress()
   })

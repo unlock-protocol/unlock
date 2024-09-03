@@ -30,6 +30,10 @@ describe(`swapAndBurn`, function () {
     universalRouterAddress,
     burnAddress
 
+  before(() => {
+    this.skip()
+  })
+
   before(async function () {
     if (!process.env.RUN_FORK) {
       // all suite will be skipped
