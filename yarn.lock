@@ -19938,7 +19938,7 @@ __metadata:
     remark-html: "npm:16.0.1"
     rss: "npm:1.2.2"
     showdown-highlight: "npm:3.1.0"
-    tailwind-merge: "npm:2.4.0"
+    tailwind-merge: "npm:2.5.2"
     tailwindcss: "npm:3.4.7"
     typescript: "npm:5.5.4"
     use-local-storage: "npm:3.0.0"
