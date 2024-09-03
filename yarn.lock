@@ -19223,7 +19223,7 @@ __metadata:
     copyfiles: "npm:2.4.1"
     eslint: "npm:8.57.0"
     fs-extra: "npm:11.2.0"
-    hardhat: "npm:2.22.8"
+    hardhat: "npm:2.22.9"
     typescript: "npm:5.5.4"
   languageName: unknown
   linkType: soft
@@ -19359,7 +19359,7 @@ __metadata:
     ethers-multisend: "npm:3.1.0"
     ethers5: "npm:ethers@5.7.2"
     fs-extra: "npm:11.2.0"
-    hardhat: "npm:2.22.8"
+    hardhat: "npm:2.22.9"
     zksync-ethers: "npm:6.11.2"
   languageName: unknown
   linkType: soft
@@ -19380,7 +19380,7 @@ __metadata:
     "@unlock-protocol/types": "workspace:^"
     copyfiles: "npm:2.4.1"
     ethers: "npm:6.13.2"
-    hardhat: "npm:2.22.8"
+    hardhat: "npm:2.22.9"
     tsup: "npm:8.2.3"
     typescript: "npm:5.5.4"
     zksync-ethers: "npm:6.11.2"
@@ -19407,7 +19407,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:^"
     eslint: "npm:8.57.0"
     ethers: "npm:6.13.2"
-    hardhat: "npm:2.22.8"
+    hardhat: "npm:2.22.9"
     hardhat-gas-reporter: "npm:2.2.0"
     mocha: "npm:10.7.0"
     prettier: "npm:3.3.3"
@@ -19594,7 +19594,7 @@ __metadata:
     eth-gas-reporter: "npm:0.2.27"
     ethers: "npm:6.13.2"
     fs-extra: "npm:11.2.0"
-    hardhat: "npm:2.22.8"
+    hardhat: "npm:2.22.9"
     hardhat-contract-sizer: "npm:2.10.0"
     hardhat-erc1820: "npm:0.1.0"
     hardhat-gas-reporter: "npm:2.2.0"
@@ -19830,7 +19830,7 @@ __metadata:
     ethers: "npm:6.13.2"
     graphql: "npm:16.9.0"
     graphql-request: "npm:6.1.0"
-    hardhat: "npm:2.22.8"
+    hardhat: "npm:2.22.9"
     prettier: "npm:3.3.3"
     siwe: "npm:2.3.2"
     tsup: "npm:8.2.3"
@@ -32671,9 +32671,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hardhat@npm:2.22.8":
-  version: 2.22.8
-  resolution: "hardhat@npm:2.22.8"
+"hardhat@npm:2.22.9":
+  version: 2.22.9
+  resolution: "hardhat@npm:2.22.9"
   dependencies:
     "@ethersproject/abi": "npm:^5.1.2"
     "@metamask/eth-sig-util": "npm:^4.0.0"
@@ -32728,7 +32728,7 @@ __metadata:
       optional: true
   bin:
     hardhat: internal/cli/bootstrap.js
-  checksum: 10/a8bf2f817f6ccad6ad400668756ac8e15d4d24c3b11ba3f566cc1062c32866cf678f4d8955ae0687422b7f871ca60e8f257d2192a726c2125d7aef82a6320bb3
+  checksum: 10/16a169e2d74f1cf8ce3c84462d168a3545cd9846f4799051b0149af5af746749e5422c055350fc73fe192aa94af79dd40abc94102ddcfce183cf2be0ce9afe26
   languageName: node
   linkType: hard
 
