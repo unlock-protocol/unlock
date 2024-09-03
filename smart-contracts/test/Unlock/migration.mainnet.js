@@ -22,12 +22,11 @@ const {
   impersonate,
   deployLock,
   purchaseKey,
-  addSomeETH,
   confirmMultisigTx,
   getSafe,
   reverts,
 } = require('../helpers')
-
+const { addSomeETH } = require('@unlock-protocol/hardhat-helpers')
 const { submitTx } = require('@unlock-protocol/governance/scripts/multisig')
 
 const NEW_UNLOCK_ADDRESS = '0xe79B93f8E22676774F2A8dAd469175ebd00029FA'

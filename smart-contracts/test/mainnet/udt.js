@@ -1,13 +1,12 @@
 const assert = require('assert')
 const { ethers } = require('hardhat')
+const { reverts, ADDRESS_ZERO, advanceBlock } = require('../helpers')
 const {
-  reverts,
-  ADDRESS_ZERO,
-  getProxyAddress,
+  getEvent,
   resetNodeState,
-  advanceBlock,
-} = require('../helpers')
-const { getEvent } = require('@unlock-protocol/hardhat-helpers')
+  getUnlockAddress,
+  getUdt,
+} = require('@unlock-protocol/hardhat-helpers')
 
 const { impersonate, MULTISIG_ADDRESS_OWNER } = require('../helpers')
 
@@ -25,21 +24,13 @@ describe('UnlockDiscountToken on mainnet', () => {
     // reset fork
     await resetNodeState()
 
-    // prepare proxy info
-    const proxyAddress = getProxyAddress(chainId, 'UnlockDiscountTokenV3')
-    // const proxyAdmin = getProxyAdminAddress({ network })
-    // await impersonate(proxyAdmin)
-
     // mocha settings
     this.timeout(200000)
 
-    const UnlockDiscountToken = await ethers.getContractFactory(
-      'UnlockDiscountTokenV3'
-    )
     const [, minter] = await ethers.getSigners()
-    udt = await UnlockDiscountToken.attach(proxyAddress).connect(minter)
+    udt = await getUdt().connect(minter)
 
-    unlockAddress = getProxyAddress(chainId, 'Unlock')
+    unlockAddress = await getUnlockAddress()
   })
 
   describe('ERC20 details', () => {

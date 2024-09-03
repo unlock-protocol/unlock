@@ -2,21 +2,18 @@ const assert = require('assert')
 const { ethers } = require('hardhat')
 const { mainnet } = require('@unlock-protocol/networks')
 
-const ShibaInuAbi = require('@unlock-protocol/hardhat-helpers/dist/ABIs/erc20.json')
+const DAIAbi = require('@unlock-protocol/hardhat-helpers/dist/ABIs/erc20.json')
 const USDCabi = require('@unlock-protocol/hardhat-helpers/dist/ABIs/USDC.json')
 
 const {
   ADDRESS_ZERO,
   deployLock,
   deployERC20,
-  SHIBA_INU,
-  WETH,
-  USDC,
-  impersonate,
   purchaseKey,
   purchaseKeys,
-  deployUniswapV3Oracle,
 } = require('../helpers')
+const { deployUniswapV3Oracle } = require('../../../governance/helpers/uniswap')
+const { impersonate } = require('@unlock-protocol/hardhat-helpers')
 
 const { unlockAddress } = mainnet
 const keyPrice = ethers.parseUnits('0.01', 'ether')
@@ -25,6 +22,10 @@ const totalPrice = keyPrice * 5n
 // USDC (only 6 decimals)
 const keyPriceUSDC = ethers.parseUnits('50', 6)
 const totalPriceUSDC = keyPriceUSDC * 5n
+
+const WETH = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'
+const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
+const DAI = '0x6B175474E89094C44Da98b954EedeAC495271d0F'
 
 describe('Unlock / uniswapValue', () => {
   let lock
@@ -160,37 +161,38 @@ describe('Unlock / uniswapValue', () => {
     })
   })
 
-  describe('A supported token (SHIBA_INU)', () => {
-    let shibaInu
+  describe('A supported token (DAI)', () => {
+    let Dai_Token
     before(async () => {
       // mint some usdc
-      shibaInu = await ethers.getContractAt(ShibaInuAbi, SHIBA_INU)
+      Dai_Token = await ethers.getContractAt(DAIAbi, DAI)
 
       // transfer from the contract itself
-      await impersonate(SHIBA_INU)
-      const shibaInuOwner = await ethers.getSigner(SHIBA_INU)
-      await shibaInu
-        .connect(shibaInuOwner)
-        .transfer(await signer.getAddress(), totalPrice)
+      await impersonate(DAI)
+      const daiOwner = await ethers.getSigner(DAI)
+      await Dai_Token.connect(daiOwner).transfer(
+        await signer.getAddress(),
+        totalPrice
+      )
 
-      // add oracle support for SHIBA_INU
-      await unlock.setOracle(SHIBA_INU, await oracle.getAddress())
+      // add oracle support for DAI
+      await unlock.setOracle(DAI, await oracle.getAddress())
 
-      // create a SHIBA_INU lock
+      // create a DAI lock
       lock = await deployLock({
         unlock,
-        tokenAddress: SHIBA_INU,
+        tokenAddress: DAI,
         keyPrice,
       })
     })
 
     it('sets oracle address correctly', async () => {
-      assert.equal(oracleAddress, await unlock.uniswapOracles(SHIBA_INU))
+      assert.equal(oracleAddress, await unlock.uniswapOracles(DAI))
     })
 
     it('pricing is set correctly', async () => {
       // make sure price is correct
-      assert.equal(await lock.tokenAddress(), SHIBA_INU)
+      assert.equal(await lock.tokenAddress(), DAI)
       assert.equal(await lock.keyPrice(), keyPrice)
     })
 
@@ -202,26 +204,27 @@ describe('Unlock / uniswapValue', () => {
       before(async () => {
         gnpBefore = await unlock.grossNetworkProduct()
         // approve purchase
-        await shibaInu
-          .connect(signer)
-          .approve(await lock.getAddress(), totalPrice)
+        await Dai_Token.connect(signer).approve(
+          await lock.getAddress(),
+          totalPrice
+        )
         ;({ blockNumber } = await purchaseKeys(lock, 5, true))
 
-        // consult our oracle independently for 1 SHIBA_INU
-        rate = await oracle.consult(SHIBA_INU, ethers.parseUnits('1', 6), WETH)
+        // consult our oracle independently for 1 DAI
+        rate = await oracle.consult(DAI, ethers.parseUnits('1', 6), WETH)
       })
 
       it('GDP went up by the expected ETH value', async () => {
         const GNP = await unlock.grossNetworkProduct()
         assert.notEqual(GNP, gnpBefore)
 
-        // 5 keys at 50 SHIBA_INU at oracle rate
+        // 5 keys at 50 DAI at oracle rate
         const priceConverted = rate * 250
         const diff = GNP.sub(gnpBefore.add(priceConverted))
         assert.equal(diff <= 1000, true) // price variation
 
         // show approx value in ETH for reference
-        console.log(`250 SHIBA_INU =~ ${ethers.formatUnits(GNP)} ETH`)
+        console.log(`250 DAI =~ ${ethers.formatUnits(GNP)} ETH`)
       })
 
       it('a GDP tracking event has been emitted', async () => {
@@ -242,10 +245,10 @@ describe('Unlock / uniswapValue', () => {
             },
             i
           ) => {
-            assert.equal(tokenAddress, SHIBA_INU)
+            assert.equal(tokenAddress, DAI)
             assert.equal(lockAddress, lock.address)
             assert.equal(value, keyPrice)
-            // rate * 0.01 SHIBA_INU per key
+            // rate * 0.01 DAI per key
             console.log(_valueInETH)
             assert.equal(_valueInETH, rate * (0.01).div(1000))
             assert.equal(

@@ -57,16 +57,20 @@ describe(`oracle`, () => {
           assert.equal(converted.constructor.name, 'BigInt')
           assert.equal(
             round(
-              await oracle.consult(token0, ethers.parseEther('0.1'), token1)
+              (
+                await oracle.consult(token0, ethers.parseEther('0.1'), token1)
+              ).toString()
             ),
-            round(converted / 10)
+            round((converted / 10n).toString())
           )
 
           assert.equal(
             round(
-              await oracle.consult(token0, ethers.parseEther('10'), token1)
+              (
+                await oracle.consult(token0, ethers.parseEther('10'), token1)
+              ).toString()
             ),
-            round(converted * 10)
+            round((converted * 10n).toString())
           )
         })
       )

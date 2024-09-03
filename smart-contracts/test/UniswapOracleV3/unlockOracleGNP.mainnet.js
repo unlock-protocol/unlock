@@ -89,7 +89,7 @@ describe('Unlock GNP conversion', () => {
       const masterMinter = await usdc.masterMinter()
       await impersonate(masterMinter)
       const minter = await ethers.getSigner(masterMinter)
-      const [signer] = await ethers.getSigners()
+      const [signer, payer] = await ethers.getSigners()
       await usdc
         .connect(minter)
         .configureMinter(await signer.getAddress(), totalPrice)
@@ -103,7 +103,6 @@ describe('Unlock GNP conversion', () => {
       // consult our oracle independently for 1 USDC
       const rate = await oracle.consult(USDC, ethers.parseUnits('1', 6), WETH)
       // purchase some keys
-      const [, payer] = await ethers.getSigners()
       await purchaseKeys(lock, NUMBER_OF_KEYS, true, payer)
 
       // check GNP

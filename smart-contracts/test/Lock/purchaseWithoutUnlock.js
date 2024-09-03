@@ -23,7 +23,7 @@ const fixUnlock = async (unlockAddress) => {
   })
 }
 
-describe('Lock / purchaseWithoutUnlock', () => {
+describe('Lock / purchaseWithoutUnlock (Unlock Address is set)', () => {
   let unlock
   let lock
 
@@ -128,6 +128,51 @@ describe('Lock / purchaseWithoutUnlock', () => {
       // event has been fired
       const missing = await getEvent(receipt, 'UnlockCallFailed')
       assert.equal(missing.args.unlockAddress, await unlock.getAddress())
+      assert.equal(missing.args.lockAddress, await lock.getAddress())
+    })
+  })
+})
+
+describe('Lock / purchaseWithoutUnlock (Unlock Address is not set)', () => {
+  describe('purchase with a lock while Unlock is broken', () => {
+    it('should fire an event to notify Unlock is not set', async () => {
+      const [signer, buyer] = await ethers.getSigners()
+      const LOCK = await ethers.getContractFactory(
+        'contracts/PublicLock.sol:PublicLock'
+      )
+      const lock = await upgrades.deployProxy(
+        LOCK,
+        [
+          await signer.getAddress(),
+          60 * 60 * 24 * 30,
+          ADDRESS_ZERO,
+          keyPrice,
+          100,
+          'Test lock',
+        ],
+        { initializer: 'initialize(address,uint,address,uint,uint,string)' }
+      )
+      const tx = await lock
+        .connect(buyer)
+        .purchase(
+          [keyPrice],
+          [await buyer.getAddress()],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
+          ['0x'],
+          {
+            value: keyPrice,
+          }
+        )
+      const receipt = await tx.wait()
+
+      // make sure transfer happened
+      const transfer = await getEvent(receipt, 'Transfer')
+      assert.equal(transfer.args.to, await buyer.getAddress())
+      assert.equal(transfer.args.tokenId == 1, true)
+
+      const missing = await getEvent(receipt, 'UnlockCallFailed')
+      assert.equal(missing.args.unlockAddress, await signer.getAddress())
       assert.equal(missing.args.lockAddress, await lock.getAddress())
     })
   })
