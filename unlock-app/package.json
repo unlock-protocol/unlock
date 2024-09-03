@@ -95,7 +95,7 @@
     "@types/remove-markdown": "0.3.4",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "@vitejs/plugin-react": "4.3.1",
-    "autoprefixer": "10.4.19",
+    "autoprefixer": "10.4.20",
     "jsdom": "24.1.1",
     "postcss": "8.4.40",
     "react-test-renderer": "18.3.1",
