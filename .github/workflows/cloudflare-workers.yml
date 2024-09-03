@@ -19,7 +19,7 @@ jobs:
       matrix:
         service: [provider, graph-service]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
@@ -42,7 +42,7 @@ jobs:
       matrix:
         service: [provider, graph-service]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
