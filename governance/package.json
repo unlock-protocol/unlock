@@ -9,7 +9,7 @@
     "@matterlabs/hardhat-zksync-solc": "1.2.3",
     "@matterlabs/hardhat-zksync-upgradable": "1.5.2",
     "@matterlabs/hardhat-zksync-verify": "1.6.0",
-    "@nomicfoundation/hardhat-ethers": "3.0.6",
+    "@nomicfoundation/hardhat-ethers": "3.0.8",
     "@nomicfoundation/hardhat-network-helpers": "1.0.11",
     "@nomicfoundation/hardhat-verify": "2.0.9",
     "@nomiclabs/hardhat-ethers": "2.2.3",
