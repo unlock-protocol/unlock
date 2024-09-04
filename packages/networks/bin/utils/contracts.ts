@@ -116,7 +116,7 @@ export const checkOwnership = async ({
 }) => {
   const provider = new ethers.JsonRpcProvider(providerURL)
 
-  const ownableAbi = [`function owner() external view returns (address owner);`]
+  const ownableAbi = [`function owner() external view returns (address owner)`]
   const contract = new ethers.Contract(contractAddress, ownableAbi, provider)
 
   return expectedOwner.toLowerCase() === (await contract.owner()).toLowerCase()
@@ -133,7 +133,7 @@ export const checkProxyAdminOwnership = async ({
 }) => {
   // get proxy admin address
   const provider = new ethers.JsonRpcProvider(providerURL)
-  const unlockAbi = [`function getAdmin() external view returns (address);`]
+  const unlockAbi = [`function getAdmin() external view returns (address)`]
   const unlock = new ethers.Contract(contractAddress, unlockAbi, provider)
   const proxyAdminAddress = await unlock.getAdmin()
   return await checkOwnership({

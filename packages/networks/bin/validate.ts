@@ -4,6 +4,7 @@ import {
   isVerified,
   checkMultisig,
   checkOwnership,
+  checkProxyAdminOwnership,
   validateTypes,
   validateERC20,
   validateContractSource,
@@ -142,35 +143,47 @@ const run = async () => {
 
     // multisig
     if (!network.multisig) {
-      errors = [...errors, 'Multisig is missing.']
+      errors = [...errors, '❌ Multisig is missing.']
     } else {
-      // check multisig params
-      const multisigErrors = await checkMultisig({
-        providerURL: network.provider,
-        safeAddress: network.multisig,
-      })
-      if (!multisigErrors) {
-        successes.push(`✅ Multisig set properly`)
-      } else {
-        errors = [...errors, ...multisigErrors]
-      }
+      try {
+        // check multisig params
+        const multisigErrors = await checkMultisig({
+          providerURL: network.provider,
+          safeAddress: network.multisig,
+        })
+        if (!multisigErrors) {
+          successes.push(`✅ Multisig set properly`)
+        } else {
+          errors = [...errors, ...multisigErrors]
+        }
 
-      // check contracts ownership
-      const unlockOwner = await checkOwnership({
-        contractAddress: network.unlockAddress,
-        expectedOwner: network.multisig,
-        providerURL: network.provider,
-      })
-      if (!unlockOwner) {
-        errors.push(`❌ Unlock owner is not the multisig`)
+        // check contracts ownership
+        const unlockOwner = await checkOwnership({
+          contractAddress: network.unlockAddress,
+          expectedOwner: network.multisig,
+          providerURL: network.provider,
+        })
+        if (!unlockOwner) {
+          errors.push(`❌ Unlock owner is not set to the multisig`)
+        }
+        const unlockProxyAdminOwner = await checkProxyAdminOwnership({
+          contractAddress: network.unlockAddress,
+          expectedOwner: network.multisig,
+          providerURL: network.provider,
+        })
+        if (!unlockProxyAdminOwner) {
+          errors.push(`❌ Unlock Proxy Admin owner is not set to the multisig`)
+        }
+
+        if (unlockOwner && unlockProxyAdminOwner) {
+          successes.push(`✅ Unlock ownership correctly set to the multisig`)
+        }
+
+        // TODO: check upgradeable hooks ownership
+      } catch (error) {
+        failures.push(`❌ Could not fetch multisig / ownership info, ${error}`)
       }
-      const unlockProxyAdminOwner = await checkProxyAdminOwnership({
-        contractAddress: network.unlockAddress,
-        expectedOwner: network.multisig,
-        providerURL: network.provider,
-      })
     }
-    // TODO: check that owner is correct
 
     // TODO: check other missing keys
     // const missingKeys = await validateKeys(path.resolve(filePath))
