@@ -3,57 +3,77 @@ import {
   FiCopy as CopyIcon,
   FiExternalLink as ExternalLinkIcon,
 } from 'react-icons/fi'
-import useEns from '../../../../../unlock-app/src/hooks/useEns'
 import { Placeholder } from '../Placeholder'
 import useClipboard from 'react-use-clipboard'
-import { ToastHelper } from '../../../../../unlock-app/src/components/helpers/toast.helper'
 import { minifyAddress } from '~/utils'
 
+// Define the props for the Address component
 export interface AddressProps {
-  address: string
-  showExternalLink?: boolean
-  showCopyIcon?: boolean
-  showENSName?: boolean
-  className?: string
-  minified?: boolean
+  address: string // The Ethereum address to display
+  resolvedName?: string // Optional resolved name for the address
+  showExternalLink?: boolean // Flag to show external link to Etherscan
+  showCopyIcon?: boolean // Flag to show copy icon for clipboard functionality
+  showResolvedName?: boolean // Flag to show the resolved name if available
+  className?: string // Additional CSS classes for styling
+  minified?: boolean // Flag to determine if the address should be minified
+  useName?: (address: string) => Promise<string | undefined> // Function to resolve name from address
+  onCopied?: () => void // Callback function to execute when the address is copied
 }
 
-// Address component
+// Functional component to display an Ethereum address with optional features
 export const Address: React.FC<AddressProps> = ({
   address,
+  resolvedName,
   showExternalLink = false,
   showCopyIcon = false,
-  showENSName = true,
+  showResolvedName = true,
   className = '',
   minified = true,
+  useName,
+  onCopied,
 }) => {
-  const resolvedName = useEns(address)
-  const displayName =
-    showENSName && resolvedName !== address
-      ? resolvedName
-      : minified
-        ? minifyAddress(address)
-        : address
-
+  // manage clipboard copy status
   const [isCopied, setCopy] = useClipboard(address)
+  //state to hold the resolved name, initialized with the resolvedName prop
+  const [name, setName] = React.useState<string | undefined>(resolvedName)
 
+  // fetch the name associated with the address if `useName` is provided
   useEffect(() => {
-    if (!isCopied) return
-    ToastHelper.success('Address copied')
-  }, [isCopied])
+    const fetchName = async () => {
+      if (useName) {
+        const resolvedName = await useName(address)
+        setName(resolvedName)
+      }
+    }
+
+    fetchName()
+  }, [address, useName])
+
+  // trigger the onCopied callback when the address is copied
+  useEffect(() => {
+    if (isCopied && onCopied) {
+      onCopied()
+    }
+  }, [isCopied, onCopied])
+
+  // Determine the display name based on the props and state
+  const displayName =
+    showResolvedName && name && name !== address
+      ? name // Show the resolved name if available and different from address
+      : minified
+        ? minifyAddress(address) // Minify the address if the minified flag is true
+        : address // Default to showing the full address
 
   return (
     <div className="flex items-center space-x-2">
-      {resolvedName === undefined ? (
-        // Show a placeholder if the resolved name is not available
+      {name === undefined && useName ? (
+        // Show a placeholder while the name is being resolved
         <Placeholder.Root inline={true} spaced="sm">
           <Placeholder.Line width="md" size="sm" />
         </Placeholder.Root>
       ) : (
-        // Display the address or ENS name
-        <span
-          className={`${className} ${resolvedName === address ? 'font-mono' : ''}`}
-        >
+        // Display the resolved name or minified address
+        <span className={`${className} ${name === address ? 'font-mono' : ''}`}>
           {displayName}
         </span>
       )}
@@ -69,6 +89,7 @@ export const Address: React.FC<AddressProps> = ({
         </a>
       )}
       {showCopyIcon && (
+        // Button to copy the address to clipboard
         <button onClick={() => setCopy()}>
           <CopyIcon />
         </button>
