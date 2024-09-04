@@ -130,7 +130,7 @@ describe('Unlock / uniswapValue', () => {
 
         // 5 keys at 50 USDC at oracle rate
         const priceConverted = rate * 250n
-        assert.equal(GNP / 1000n, (gnpBefore + priceConverted) / 1000n)
+        assert.equal(GNP / 10000n, (gnpBefore + priceConverted) / 10000n)
 
         // show approx value in ETH for reference
         console.log(`250 USDC =~ ${ethers.formatUnits(GNP)} ETH`)

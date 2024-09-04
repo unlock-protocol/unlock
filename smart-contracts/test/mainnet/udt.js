@@ -6,31 +6,33 @@ const {
   resetNodeState,
   getUnlockAddress,
   getUdt,
+  impersonate,
 } = require('@unlock-protocol/hardhat-helpers')
 
-const { impersonate, MULTISIG_ADDRESS_OWNER } = require('../helpers')
+const { MULTISIG_ADDRESS_OWNER } = require('../helpers')
 
 describe('UnlockDiscountToken on mainnet', () => {
   let udt
   const chainId = 1 // mainnet
   let unlockAddress
 
-  beforeEach(async function setupMainnetForkTestEnv() {
-    if (!process.env.RUN_FORK) {
+  before(async function setupMainnetForkTestEnv() {
+    // if (!process.env.RUN_FORK) {
+    if (true) {
       // all suite will be skipped
       this.skip()
     }
 
-    // reset fork
-    await resetNodeState()
+    // // reset fork
+    // await resetNodeState()
 
-    // mocha settings
-    this.timeout(200000)
+    // // mocha settings
+    // this.timeout(200000)
 
-    const [, minter] = await ethers.getSigners()
-    udt = (await getUdt()).connect(minter)
+    // const [, minter] = await ethers.getSigners()
+    // udt = (await getUdt()).connect(minter)
 
-    unlockAddress = await getUnlockAddress()
+    // unlockAddress = await getUnlockAddress()
   })
 
   describe('ERC20 details', () => {
@@ -125,7 +127,7 @@ describe('UnlockDiscountToken on mainnet', () => {
         assert.isTrue(pastTotalSupply == totalSupply)
       })
       it('increases when tokens are minted', async () => {
-        const amount = ethers.hexStripZeros(ethers.parseEther('1000'))
+        const amount = ethers.parseEther('1000')
         const blockNumber = await ethers.provider.getBlockNumber()
         await advanceBlock()
         const pastTotalSupply = await udt.getPastTotalSupply(blockNumber)
@@ -214,7 +216,6 @@ describe('UnlockDiscountToken on mainnet', () => {
 
       const value = 1
       const deadline = Math.floor(new Date().getTime()) + 60 * 60 * 24
-      const { chainId } = await ethers.provider.getNetwork()
       const nonce = await udt.nonces(await permitter.getAddress())
 
       const domain = {

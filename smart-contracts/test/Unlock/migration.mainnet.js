@@ -48,9 +48,6 @@ let unlock,
   multisig
 
 describe(`Unlock migration`, function () {
-  before(() => {
-    this.skip()
-  })
   before(async function () {
     if (true) {
       // if (!process.env.RUN_FORK) {
