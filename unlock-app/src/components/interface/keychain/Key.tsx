@@ -111,7 +111,11 @@ function Key({ ownedKey, owner, network }: Props) {
     lockAddress: lock.address,
     network: network,
   })
-  if (!transferFeeLoading && !transferfeeError) {
+  if (
+    !transferFeeLoading &&
+    !transferfeeError &&
+    typeof transferFee === 'number'
+  ) {
     isTransferable = isKeyTransferable(transferFee)
   }
 
