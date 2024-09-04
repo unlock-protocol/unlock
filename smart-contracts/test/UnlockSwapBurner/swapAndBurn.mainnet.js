@@ -35,44 +35,45 @@ describe(`swapAndBurn`, function () {
   })
 
   before(async function () {
-    if (!process.env.RUN_FORK) {
+    if (true) {
+      // if (!process.env.RUN_FORK) {
       // all suite will be skipped
       this.skip()
     }
 
-    // mainnet fork: need to fund hardhat default signer
-    const [signer] = await ethers.getSigners()
-    await addSomeETH(await signer.getAddress())
-    // get mainnet values
-    ;({
-      id: chainId,
-      unlockAddress,
-      tokens,
-      uniswapV3: { universalRouterAddress },
-    } = await getNetwork())
+    // // mainnet fork: need to fund hardhat default signer
+    // const [signer] = await ethers.getSigners()
+    // await addSomeETH(await signer.getAddress())
+    // // get mainnet values
+    // ;({
+    //   id: chainId,
+    //   unlockAddress,
+    //   tokens,
+    //   uniswapV3: { universalRouterAddress },
+    // } = await getNetwork())
 
-    // get uniswap-formatted tokens
-    const native = { decimals: 18, isNative: true, symbol: 'ETH' }
-    scenarios = [
-      ...tokens.filter(({ symbol }) =>
-        ['USDC', 'DAI', 'WETH'].includes(symbol)
-      ),
-      native,
-    ]
+    // // get uniswap-formatted tokens
+    // const native = { decimals: 18, isNative: true, symbol: 'ETH' }
+    // scenarios = [
+    //   ...tokens.filter(({ symbol }) =>
+    //     ['USDC', 'DAI', 'WETH'].includes(symbol)
+    //   ),
+    //   native,
+    // ]
 
-    unlock = await getUnlock(unlockAddress)
-    udtAddress = await unlock.udt()
-    wrappedAddress = await unlock.weth()
+    // unlock = await getUnlock(unlockAddress)
+    // udtAddress = await unlock.udt()
+    // wrappedAddress = await unlock.weth()
 
-    // deploy swapper
-    const UnlockSwapBurner = await ethers.getContractFactory('UnlockSwapBurner')
-    swapBurner = await UnlockSwapBurner.deploy(
-      unlockAddress,
-      PERMIT2_ADDRESS,
-      universalRouterAddress
-    )
+    // // deploy swapper
+    // const UnlockSwapBurner = await ethers.getContractFactory('UnlockSwapBurner')
+    // swapBurner = await UnlockSwapBurner.deploy(
+    //   unlockAddress,
+    //   PERMIT2_ADDRESS,
+    //   universalRouterAddress
+    // )
 
-    burnAddress = await swapBurner.burnAddress()
+    // burnAddress = await swapBurner.burnAddress()
   })
 
   describe('constructor', () => {

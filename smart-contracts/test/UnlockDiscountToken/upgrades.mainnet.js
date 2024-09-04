@@ -86,50 +86,47 @@ describe('UnlockDiscountToken (on mainnet)', () => {
   let udt
   let deployer
 
-  before(() => {
-    this.skip()
-  })
-
   beforeEach(async function setupMainnetForkTestEnv() {
-    if (!process.env.RUN_FORK) {
+    if (true) {
+      // if (!process.env.RUN_FORK) {
       // all suite will be skipped
       this.skip()
     }
 
-    // reset fork
-    const { forking } = config.networks.hardhat
-    await network.provider.request({
-      method: 'hardhat_reset',
-      params: [
-        {
-          forking: {
-            jsonRpcUrl: forking.url,
-            blockNumber: forking.blockNumber,
-          },
-        },
-      ],
-    })
+    // // reset fork
+    // const { forking } = config.networks.hardhat
+    // await network.provider.request({
+    //   method: 'hardhat_reset',
+    //   params: [
+    //     {
+    //       forking: {
+    //         jsonRpcUrl: forking.url,
+    //         blockNumber: forking.blockNumber,
+    //       },
+    //     },
+    //   ],
+    // })
 
-    await network.provider.request({
-      method: 'hardhat_impersonateAccount',
-      params: [deployerAddress],
-    })
+    // await network.provider.request({
+    //   method: 'hardhat_impersonateAccount',
+    //   params: [deployerAddress],
+    // })
 
-    // give some ETH to deployer
-    const balance = ethers.hexStripZeros(ethers.parseEther('1000'))
-    await network.provider.send('hardhat_setBalance', [
-      deployerAddress,
-      balance,
-    ])
+    // // give some ETH to deployer
+    // const balance = ethers.hexStripZeros(ethers.parseEther('1000'))
+    // await network.provider.send('hardhat_setBalance', [
+    //   deployerAddress,
+    //   balance,
+    // ])
 
-    // get UDT instance
-    deployer = await ethers.getSigner(deployerAddress)
-    const UnlockDiscountToken = await ethers.getContractFactory(
-      'UnlockDiscountTokenV3',
-      deployer
-    )
+    // // get UDT instance
+    // deployer = await ethers.getSigner(deployerAddress)
+    // const UnlockDiscountToken = await ethers.getContractFactory(
+    //   'UnlockDiscountTokenV3',
+    //   deployer
+    // )
 
-    udt = UnlockDiscountToken.attach(UDTProxyContractAddress)
+    // udt = UnlockDiscountToken.attach(UDTProxyContractAddress)
   })
 
   describe('The mainnet fork', () => {

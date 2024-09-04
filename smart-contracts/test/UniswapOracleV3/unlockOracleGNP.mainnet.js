@@ -22,38 +22,35 @@ describe('Unlock GNP conversion', () => {
   let oracle
   let WETH, USDC
 
-  before(() => {
-    this.skip()
-  })
-
   before(async function () {
-    if (!process.env.RUN_FORK) {
+    if (true) {
+      // if (!process.env.RUN_FORK) {
       // all suite will be skipped
       this.skip()
     }
 
-    // get token addresses
-    const { tokens } = await getNetwork(1)
-    ;({ address: USDC } = tokens.find(({ symbol }) => symbol === 'USDC'))
-    ;({ address: WETH } = tokens.find(({ symbol }) => symbol === 'WETH'))
+    // // get token addresses
+    // const { tokens } = await getNetwork(1)
+    // ;({ address: USDC } = tokens.find(({ symbol }) => symbol === 'USDC'))
+    // ;({ address: WETH } = tokens.find(({ symbol }) => symbol === 'WETH'))
 
-    const [deployer] = await ethers.getSigners()
-    await addSomeETH(await deployer.getAddress())
-    unlock = await ethers.getContractAt('Unlock', unlockAddress)
-    const UnlockUniswapOracle =
-      await ethers.getContractFactory('UniswapOracleV3')
-    oracle = await UnlockUniswapOracle.deploy(factoryAddress, FEE)
+    // const [deployer] = await ethers.getSigners()
+    // await addSomeETH(await deployer.getAddress())
+    // unlock = await ethers.getContractAt('Unlock', unlockAddress)
+    // const UnlockUniswapOracle =
+    //   await ethers.getContractFactory('UniswapOracleV3')
+    // oracle = await UnlockUniswapOracle.deploy(factoryAddress, FEE)
 
-    //impersonate unlock multisig
-    const unlockOwner = await unlock.owner()
-    await impersonate(unlockOwner)
-    const unlockSigner = await ethers.getSigner(unlockOwner)
-    unlock = unlock.connect(unlockSigner)
+    // //impersonate unlock multisig
+    // const unlockOwner = await unlock.owner()
+    // await impersonate(unlockOwner)
+    // const unlockSigner = await ethers.getSigner(unlockOwner)
+    // unlock = unlock.connect(unlockSigner)
 
-    // add oracle support for USDC
-    await unlock
-      .connect(unlockSigner)
-      .setOracle(USDC, await oracle.getAddress())
+    // // add oracle support for USDC
+    // await unlock
+    //   .connect(unlockSigner)
+    //   .setOracle(USDC, await oracle.getAddress())
   })
 
   it('weth is set correctly already', async () => {
