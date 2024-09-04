@@ -494,6 +494,29 @@ export default class WalletService extends UnlockService {
   }
 
   /**
+   * Lends a key to another address
+   * @param {function} callback : callback invoked with the transaction hash
+   */
+
+  async lendKey(
+    params: {
+      lockAddress: string
+      from: string
+      to: string
+      tokenId: string
+    },
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.lendKey) {
+      throw new Error('Lock version not supported')
+    }
+    return version.lendKey.bind(this)(params, transactionOptions, callback)
+  }
+
+  /**
    * Grants a key to an address
    * @param {function} callback : callback invoked with the transaction hash
    */

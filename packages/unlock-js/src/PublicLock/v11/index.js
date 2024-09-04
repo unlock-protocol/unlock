@@ -5,6 +5,7 @@ import totalKeys from './totalKeys'
 import setEventHooks from './setEventHooks'
 import setReferrerFee from './setReferrerFee'
 import getTokenIdForOwner from './getTokenIdForOwner'
+import lendKey from './lendKey'
 
 export default {
   ...v10,
@@ -13,6 +14,7 @@ export default {
   setEventHooks,
   setReferrerFee,
   getTokenIdForOwner,
+  lendKey,
   version: 'v11',
   PublicLock: abis.PublicLock.v11,
 }
