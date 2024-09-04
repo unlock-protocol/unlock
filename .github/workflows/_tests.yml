@@ -52,7 +52,6 @@ jobs:
     env:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
-      YARN_ENABLE_IMMUTABLE_INSTALLS: false
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
