@@ -155,7 +155,6 @@ export const CancellationForm = ({
   }, [penaltyError])
 
   useEffect(() => {
-    console.log(freeTrialLength)
     const allowTrial = freeTrialLength > 0
 
     setAllowTrial(freeTrialLength > 0)
