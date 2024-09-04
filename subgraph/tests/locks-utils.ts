@@ -214,3 +214,30 @@ export function createRoleRevokedKeyGranterRemovedEvent(
 
   return newRoleRevokedEvent
 }
+
+export function createRoleRevokedLockManagerRemovedEvent(
+  lockManager: Address
+): RoleRevoked {
+  const newLockManagerRevoked = changetype<RoleRevoked>(newMockEvent())
+
+  // set existing lock address
+  newLockManagerRevoked.address = Address.fromString(lockAddress)
+
+  newLockManagerRevoked.parameters = []
+  newLockManagerRevoked.parameters.push(
+    new ethereum.EventParam(
+      'role',
+      ethereum.Value.fromBytes(Bytes.fromHexString(LOCK_MANAGER))
+    )
+  )
+
+  newLockManagerRevoked.parameters.push(
+    new ethereum.EventParam('account', ethereum.Value.fromAddress(lockManager))
+  )
+
+  newLockManagerRevoked.parameters.push(
+    new ethereum.EventParam('sender', ethereum.Value.fromString(lockAddress))
+  )
+
+  return newLockManagerRevoked
+}

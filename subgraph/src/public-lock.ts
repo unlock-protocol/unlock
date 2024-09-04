@@ -283,7 +283,7 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
   createReceipt(event)
 }
 
-// we use OpenZeppelin native `RoleGranted` event.
+// we use OpenZeppelin native `RoleGranted` event since v9
 export function handleRoleGranted(event: RoleGrantedEvent): void {
   if (
     event.params.role.toHexString() ==
@@ -301,6 +301,7 @@ export function handleRoleGranted(event: RoleGrantedEvent): void {
         lock.lockManagers = [event.params.account]
       }
       lock.save()
+      log.debug('New lock manager', [event.params.account.toHexString()])
     }
   } else if (
     event.params.role.toHexString() ==
@@ -339,13 +340,29 @@ export function handleRoleRevoked(event: RoleRevokedEvent): void {
       lock.keyGranters = newKeyGranters
       lock.save()
     }
+  } else if (
+    event.params.role.toHexString() ==
+    Bytes.fromHexString(LOCK_MANAGER).toHexString()
+  ) {
+    const lock = Lock.load(event.address.toHexString())
+    if (lock && lock.lockManagers) {
+      const newManagers: Bytes[] = []
+      for (let i = 0; i < lock.lockManagers.length; i++) {
+        const managerAddress = lock.lockManagers[i]
+        if (managerAddress != event.params.account) {
+          newManagers.push(managerAddress)
+        }
+      }
+      lock.lockManagers = newManagers
+      lock.save()
+    }
   }
 }
 
 export function handleKeyGranterAdded(event: KeyGranterAddedEvent): void {
   const lock = Lock.load(event.address.toHexString())
-
-  if (lock && lock.keyGranters) {
+  // custom events used only for version prior to v8
+  if (lock && lock.version.le(BigInt.fromI32(8)) && lock.keyGranters) {
     const keyGranters = lock.keyGranters
     keyGranters.push(event.params.account)
     lock.keyGranters = keyGranters
@@ -359,7 +376,8 @@ export function handleKeyGranterAdded(event: KeyGranterAddedEvent): void {
 
 export function handleKeyGranterRemoved(event: KeyGranterRemovedEvent): void {
   const lock = Lock.load(event.address.toHexString())
-  if (lock && lock.keyGranters) {
+  // custom events used only for version prior to v8
+  if (lock && lock.version.le(BigInt.fromI32(8)) && lock.keyGranters) {
     const newKeyGranters: Bytes[] = []
     for (let i = 0; i < lock.keyGranters.length; i++) {
       const keyGranterAddress = lock.keyGranters[i]
@@ -390,7 +408,7 @@ export function handleLockManagerAdded(event: LockManagerAddedEvent): void {
 
 export function handleLockManagerRemoved(event: LockManagerRemovedEvent): void {
   const lock = Lock.load(event.address.toHexString())
-  if (lock && lock.lockManagers) {
+  if (lock && lock.lockManagers && lock.version.le(BigInt.fromI32(8))) {
     const newManagers: Bytes[] = []
     for (let i = 0; i < lock.lockManagers.length; i++) {
       const managerAddress = lock.lockManagers[i]

@@ -183,7 +183,7 @@ createMockedFunction(
   'name():(string)'
 )
   .withArgs([])
-  .returns([ethereum.Value.fromString('My lock V9')])
+  .returns([ethereum.Value.fromString('My lock v9')])
 
 createMockedFunction(
   Address.fromString(lockAddressV9),
