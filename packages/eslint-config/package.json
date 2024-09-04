@@ -18,10 +18,11 @@
   },
   "dependencies": {
     "@babel/eslint-parser": "7.25.1",
+    "@eslint/compat": "1.1.1",
     "@typescript-eslint/eslint-plugin": "7.18.0",
     "@typescript-eslint/parser": "7.18.0",
     "eslint": "9.9.1",
-    "eslint-config-next": "14.2.5",
+    "eslint-config-next": "14.2.7",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-evm-address-to-checksummed": "0.0.6",
     "eslint-plugin-json": "4.0.1",

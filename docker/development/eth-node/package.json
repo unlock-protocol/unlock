@@ -11,14 +11,14 @@
     "start": "hardhat node"
   },
   "dependencies": {
-    "@nomicfoundation/hardhat-ethers": "3.0.6",
+    "@nomicfoundation/hardhat-ethers": "3.0.8",
     "@unlock-protocol/contracts": "latest",
     "@unlock-protocol/hardhat-plugin": "latest",
     "@unlock-protocol/networks": "latest",
     "eslint": "9.9.1",
     "ethers": "6.13.2",
     "fs-extra": "11.2.0",
-    "hardhat": "2.22.8",
+    "hardhat": "2.22.9",
     "hardhat-erc1820": "0.1.0",
     "ts-node": "10.9.2",
     "typescript": "5.5.4"
