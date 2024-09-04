@@ -1,4 +1,3 @@
-// eslint-disable @typescript-eslint/no-require-imports
 import { isLocalhost } from './localhost'
 import zkSync from './zkSync'
 const getContractFactory = async (

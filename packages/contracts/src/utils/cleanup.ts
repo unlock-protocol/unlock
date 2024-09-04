@@ -1,5 +1,5 @@
 import { ContractAbi } from '@unlock-protocol/types'
-// @ts-expect-error:next-line
+// @ts-expect-error:next-line due to the fact that fs-extra is not typed
 import fs from 'fs-extra'
 import { getAbiPaths } from './files'
 /**

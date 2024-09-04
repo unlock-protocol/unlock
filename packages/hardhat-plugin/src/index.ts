@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import '@nomicfoundation/hardhat-ethers'
 import './type-extensions'
 

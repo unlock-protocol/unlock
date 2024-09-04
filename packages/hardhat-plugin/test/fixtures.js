@@ -1,4 +1,3 @@
-// eslint-disable @typescript-eslint/no-require-imports
 const { ethers } = require('ethers')
 const publicLock = {
   expirationDuration: 60 * 60 * 24 * 30, // 30 days

@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 const eslint = require('@eslint/js')
-const tseslint = require('typescript-eslint')
+const typescriptEslint = require('typescript-eslint')
 const vitestPlugin = require('eslint-plugin-vitest')
 const prettierPlugin = require('eslint-plugin-prettier')
 const mochaPlugin = require('eslint-plugin-mocha')
 const evmAddressPlugin = require('eslint-plugin-evm-address-to-checksummed')
 const jsonPlugin = require('eslint-plugin-json')
 const globals = require('globals')
+
 /** @typedef {import('eslint').Linter.Config} ESLintConfig */
 
 /**
@@ -14,12 +15,12 @@ const globals = require('globals')
  */
 module.exports = [
   eslint.configs.recommended,
-  ...tseslint.configs.recommended,
+  ...typescriptEslint.configs.recommended,
   {
     languageOptions: {
       ecmaVersion: 2020,
       sourceType: 'module',
-      parser: tseslint.parser,
+      parser: typescriptEslint.parser,
       parserOptions: {
         // project: true,
       },
@@ -27,24 +28,15 @@ module.exports = [
         ...globals.es2020,
         ...globals.node,
         ...globals.browser,
-        abi: 'readonly',
-        after: 'readonly',
-        afterEach: 'readonly',
-        artifacts: 'readonly',
-        assert: 'readonly',
-        before: 'readonly',
-        beforeEach: 'readonly',
-        contract: 'readonly',
-        describe: 'readonly',
-        it: 'readonly',
-        web3: 'readonly',
+        ...globals.jest,
+        ...globals.mocha,
       },
     },
     linterOptions: {
       reportUnusedDisableDirectives: true,
     },
     plugins: {
-      '@typescript-eslint': tseslint.plugin,
+      '@typescript-eslint': typescriptEslint.plugin,
       vitest: vitestPlugin,
       prettier: prettierPlugin,
       mocha: mochaPlugin,
