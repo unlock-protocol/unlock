@@ -457,14 +457,11 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
     })
 
     it('transfer too much ETH from cardpurchaser should fail', async () => {
-      const balanceBefore = await ethers.provider.getBalance(
-        await cardPurchaser.getAddress()
-      )
       await reverts(
         cardPurchaser.withdraw(
           ADDRESS_ZERO,
           await signer.getAddress(),
-          balanceBefore * 2n
+          ethers.parseEther('1')
         ),
         'WITHDRAW_FAILED'
       )
