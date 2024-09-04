@@ -5,8 +5,9 @@ const getProxyAdminAddress = async ({ network, chainId }) => {
   const manifest = network
     ? await Manifest(network.provider)
     : new Manifest(chainId)
+  console.log(manifest)
   const manifestAdmin = await manifest.getAdmin()
-  const proxyAdminAddress = manifestAdmin.address
+  const proxyAdminAddress = await manifestAdmin.getAddress()
   if (proxyAdminAddress === undefined) {
     throw new Error('No ProxyAdmin was found in the network manifest')
   }

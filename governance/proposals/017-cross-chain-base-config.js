@@ -1,17 +1,26 @@
 const { ethers } = require('hardhat')
-const {
-  getNetwork,
-  getProxyAdminAddress,
-} = require('@unlock-protocol/hardhat-helpers')
+const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const { targetChains, ConnextMod } = require('../helpers/bridge')
 const { parseSafeMulticall } = require('../helpers/multisig')
 const { parseBridgeCall } = require('../helpers/crossChain')
 
 const BASE_TIMELOCK = '0xB34567C4cA697b39F72e1a8478f285329A98ed1b'
 
+const getProxyAdminAddress = async (providerURL, contractAddress) => {
+  const provider = new ethers.JsonRpcProvider(providerURL)
+
+  const hex = await provider.getStorage(
+    contractAddress,
+    '0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103'
+  )
+
+  const adminAddress = ethers.stripZerosLeft(hex)
+  return adminAddress
+}
+
 module.exports = async () => {
   const mainnet = await getNetwork(1)
-  const base = await getNetwork(8543)
+  const base = await getNetwork(8453)
 
   // mainnet owmership
   const ownable = new ethers.Interface([
@@ -21,12 +30,19 @@ module.exports = async () => {
     // 1. transfer unlock mainnet to multisig
     {
       contractAddress: mainnet.unlockAddress,
-      calldata: ownable.encodeFunctionData('approve', [mainnet.multisig]),
+      calldata: ownable.encodeFunctionData('transferOwnership', [
+        mainnet.multisig,
+      ]),
     },
     // 2. transfer unlock mainnet proxyAdmin to multisig
     {
-      contractAddress: await getProxyAdminAddress(mainnet.unlockAddress),
-      calldata: ownable.encodeFunctionData('approve', [mainnet.multisig]),
+      contractAddress: await getProxyAdminAddress(
+        mainnet.provider,
+        mainnet.unlockAddress
+      ),
+      calldata: ownable.encodeFunctionData('transferOwnership', [
+        mainnet.multisig,
+      ]),
     },
   ]
 
@@ -42,6 +58,7 @@ module.exports = async () => {
 
       const connextModInterface = new ethers.Interface(ConnextMod)
 
+      console.log(base)
       // parse calls for bridge
       const destCalls = [
         // set origin chain as base
