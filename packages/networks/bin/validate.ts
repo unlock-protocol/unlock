@@ -211,7 +211,7 @@ const parseGithubComment = ({
 ${successes.length ? `The setup is successful :\n` : ''}
 ${successes.map((success) => `- ${success}`).join('\n')}
 
-${errors.length ? `We have found the followig errors :\n` : ''}
+${errors.length ? `We have found the following errors :\n` : ''}
 ${errors.map((error) => `- ${error}`).join('\n')}
 
 ${failures.length ? `Some verification calls have failed  :\n` : ''}
