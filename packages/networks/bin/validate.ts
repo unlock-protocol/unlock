@@ -2,7 +2,8 @@ import path from 'path'
 import {
   wait,
   isVerified,
-  validateKeys,
+  checkMultisig,
+  checkOwnership,
   validateTypes,
   validateERC20,
   validateContractSource,
@@ -138,6 +139,38 @@ const run = async () => {
         ]
       }
     }
+
+    // multisig
+    if (!network.multisig) {
+      errors = [...errors, 'Multisig is missing.']
+    } else {
+      // check multisig params
+      const multisigErrors = await checkMultisig({
+        providerURL: network.provider,
+        safeAddress: network.multisig,
+      })
+      if (!multisigErrors) {
+        successes.push(`✅ Multisig set properly`)
+      } else {
+        errors = [...errors, ...multisigErrors]
+      }
+
+      // check contracts ownership
+      const unlockOwner = await checkOwnership({
+        contractAddress: network.unlockAddress,
+        expectedOwner: network.multisig,
+        providerURL: network.provider,
+      })
+      if (!unlockOwner) {
+        errors.push(`❌ Unlock owner is not the multisig`)
+      }
+      const unlockProxyAdminOwner = await checkProxyAdminOwnership({
+        contractAddress: network.unlockAddress,
+        expectedOwner: network.multisig,
+        providerURL: network.provider,
+      })
+    }
+    // TODO: check that owner is correct
 
     // TODO: check other missing keys
     // const missingKeys = await validateKeys(path.resolve(filePath))
