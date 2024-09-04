@@ -7,7 +7,8 @@ const { fixupConfigRules } = require('@eslint/compat')
 const path = require('node:path')
 const js = require('@eslint/js')
 const { fileURLToPath } = require('node:url')
-// https://blog.linotte.dev/eslint-9-next-js-935c2b6d0371 describes how The nextjs core vitals rule was added
+
+// https://blog.linotte.dev/eslint-9-next-js-935c2b6d0371 describes how the nextjs core vitals rule was added
 const compat = new FlatCompat({
   baseDirectory: __dirname,
   recommendedConfig: js.configs.recommended,
@@ -20,8 +21,8 @@ const patchedConfig = fixupConfigRules([
  * @type {ESLintConfig}
  */
 module.exports = [
-  ...baseConfig,
   ...patchedConfig,
+  ...baseConfig,
   eslintPluginPrettierRecommended,
   {
     rules: {
