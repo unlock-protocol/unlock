@@ -7,6 +7,14 @@ interface TransferFeeProps {
   network: number
 }
 
+const getTransferFeeBasisPoints = async (
+  lockAddress: string,
+  network: number,
+  web3Service: any
+) => {
+  return await web3Service.transferFeeBasisPoints(lockAddress, network)
+}
+
 export const useTransferFee = ({ lockAddress, network }: TransferFeeProps) => {
   const { getWalletService } = useAuth()
   const web3Service = useWeb3Service()
@@ -21,13 +29,10 @@ export const useTransferFee = ({ lockAddress, network }: TransferFeeProps) => {
     })
   }
 
-  const getTransferFeeBasisPoints = async () => {
-    return await web3Service.transferFeeBasisPoints(lockAddress, network)
-  }
-
   return {
     updateTransferFee,
-    getTransferFeeBasisPoints,
+    getTransferFeeBasisPoints: () =>
+      getTransferFeeBasisPoints(lockAddress, network, web3Service),
   }
 }
 
@@ -38,9 +43,13 @@ export const useFetchTransferFee = ({
   const web3service = useWeb3Service()
 
   async function fetchTransferFees() {
-    let result = await web3service.transferFeeBasisPoints(lockAddress, network)
-    result = Number(result)
-    return result
+    const result = await getTransferFeeBasisPoints(
+      lockAddress,
+      network,
+      web3service
+    )
+    const transferFees = Number(result)
+    return transferFees
   }
 
   const { isLoading, error, data } = useQuery({
