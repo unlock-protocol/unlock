@@ -122,7 +122,6 @@ export const EventBannerlessLayout = ({
           <div>
             {event.description && (
               <div className="mt-4 markdown">
-                {/* eslint disable react/no-children-prop */}
                 <ReactMarkdown children={event.description} />
               </div>
             )}

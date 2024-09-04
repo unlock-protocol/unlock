@@ -13,4 +13,9 @@ module.exports = [
       'src/**/*.typegen.ts',
     ],
   },
+  {
+    rules: {
+      'react/no-children-prop': 'off',
+    },
+  },
 ]
