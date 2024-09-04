@@ -16,6 +16,7 @@ module.exports = [
   {
     rules: {
       'react/no-children-prop': 'off',
+      'no-constant-binary-expression': 'warn',
     },
   },
 ]
