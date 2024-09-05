@@ -1,4 +1,9 @@
-export const queryGraph = async (subgraphEndpoint, query) => {
+const THE_GRAPH_URL = `https://api.thegraph.com/index-node/graphql`
+
+export const queryGraph = async ({
+  subgraphEndpoint = THE_GRAPH_URL,
+  query,
+}) => {
   if (!subgraphEndpoint) {
     throw new Error(
       'Missing subGraphURI for this network. Can not fetch from The Graph'
@@ -31,7 +36,7 @@ const getLatestSubgraphDeployment = async (subgraphEndpoint) => {
       deployment
     }
   }`
-  const { data } = await queryGraph(subgraphEndpoint, query)
+  const { data } = await queryGraph({ query, subgraphEndpoint })
   // TODO: handle missing data
   if (!data._meta) console.log(data, subgraphEndpoint)
   const { deployment } = data._meta
@@ -73,7 +78,7 @@ export const checkSubgraphHealth = async (subgraphEndpoint: string) => {
 
     const {
       data: { indexingStatuses },
-    } = await queryGraph(subgraphEndpoint, query)
+    } = await queryGraph({ query })
     ;[status] = indexingStatuses
   }
 

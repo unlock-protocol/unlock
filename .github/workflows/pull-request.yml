@@ -42,6 +42,10 @@ jobs:
     with:
       service: smart-contracts
 
+  # the check for changes in network files is included within the workflow itself
+  networks-changed:
+    uses: ./.github/workflows/_networks.yml
+
   # Netlify Deployments (run as drafts, unpublished to main URL)
   deploy-unlock-protocol-com:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }} # make sure we dont deploy from forks
