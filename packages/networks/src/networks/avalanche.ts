@@ -4,7 +4,7 @@ export const avalanche: NetworkConfig = {
   blockScan: {
     url: (address: string) => `https://blockscan.com/address/${address}`,
   },
-  chain: 'avalanche',
+  chain: 'avax',
   description:
     'Avalanche is an open, programmable smart contracts platform for decentralized applications.',
   explorer: {
