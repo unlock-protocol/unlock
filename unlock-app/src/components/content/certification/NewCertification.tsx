@@ -43,6 +43,7 @@ export const NewCertification = () => {
           formData?.lock?.expirationDuration * 60 * 60 * 24 ||
           UNLIMITED_KEYS_DURATION,
       }
+      console.log(lockParams, formData)
       lockAddress = await walletService.createLock(
         lockParams,
         {} /** transactionParams */,

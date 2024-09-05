@@ -48,7 +48,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
   const moreNetworkOption = useAvailableNetworks(true)
   const network = networkOptions[0]?.value
 
-  const [unlimitedQuantity, setUnlimitedQuantity] = useState(true)
+  const [unlimitedQuantity, setUnlimitedQuantity] = useState(false)
   const [allowPurchase, setAllowPurchase] = useState(false)
   const [forever, setForever] = useState(true)
   const [isCurrencyModalOpen, setCurrencyModalOpen] = useState(false)
@@ -62,11 +62,11 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
     shouldUnregister: false,
     defaultValues: {
       network,
-      unlimitedQuantity: true,
+      unlimitedQuantity: false,
       lock: {
         name: 'My Certification',
         expirationDuration: undefined,
-        maxNumberOfKeys: undefined,
+        maxNumberOfKeys: 0,
         currencyContractAddress: null,
         keyPrice: '0',
       },
@@ -159,7 +159,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <ImageUpload
-                  description="This illustration will be used for the NFT certificate. Use 512 by 512 pixels for best results."
+                  description="This illustration will be used for the NFT Certification. Use 512 by 512 pixels for best results."
                   isUploading={isUploading}
                   preview={metadataImage!}
                   onChange={async (fileOrFileUrl: any) => {
@@ -197,7 +197,8 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                   {...register('metadata.description', {
                     required: {
                       value: true,
-                      message: 'Please add a description for your certificate',
+                      message:
+                        'Please add a description for your Certification',
                     },
                   })}
                   label="Description"

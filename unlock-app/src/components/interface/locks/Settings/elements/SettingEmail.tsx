@@ -38,15 +38,15 @@ const TemplateByLockType: Record<keyof LockType, TemplateProps[]> = {
   ],
   isCertification: [
     {
-      label: 'Certificate key purchased',
+      label: 'Certification key purchased',
       description:
-        'Customize the content of the email sent when a certificate is purchased. Emails are only sent when email is present.',
+        'Customize the content of the email sent when a Certification is purchased. Emails are only sent when email is present.',
       templateId: 'certificationKeyMined',
     },
     {
-      label: 'Certificate key airdropped',
+      label: 'Certification key airdropped',
       description:
-        'Customize the content of the email sent when a certificate is airdropped.',
+        'Customize the content of the email sent when a Certification is airdropped.',
       templateId: 'certificationKeyAirdropped',
     },
   ],

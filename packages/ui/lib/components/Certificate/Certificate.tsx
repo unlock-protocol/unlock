@@ -172,7 +172,7 @@ export const Certificate = ({
               textTransform: 'uppercase',
             }}
           >
-            Certificate
+            Certification
           </h2>
           <div
             style={{
