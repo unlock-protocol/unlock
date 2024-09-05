@@ -58,7 +58,6 @@ module.exports = async () => {
 
       const connextModInterface = new ethers.Interface(ConnextMod)
 
-      console.log(base)
       // parse calls for bridge
       const destCalls = [
         // set origin chain as base
@@ -94,7 +93,7 @@ module.exports = async () => {
       )
 
       const bridgeCall = await parseBridgeCall({
-        chainId: destChainId,
+        destChainId,
         moduleData,
       })
       return bridgeCall
