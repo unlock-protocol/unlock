@@ -1,8 +1,14 @@
+import { Toucan } from 'toucan-js'
 import { getSubgraphUrl } from './networks'
 import { Env, GraphQLRequest } from './types'
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
+    const sentry = new Toucan({
+      dsn: env.SENTRY_DSN,
+      request,
+    })
+
     const url = new URL(request.url)
     const matched = url.pathname.match(/\/([0-9]+)/)
     if (!matched || !matched[1]) {
@@ -58,6 +64,7 @@ export default {
       })
     } catch (error) {
       // Catch any errors that occur during processing
+      sentry.captureException(error)
       console.error('Error processing request:', error)
       return new Response('Internal Server Error', { status: 500 })
     }
