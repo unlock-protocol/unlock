@@ -7,7 +7,7 @@ import { Button } from '@unlock-protocol/ui'
 export const ReceiptsPage = () => {
   const router = useRouter()
 
-  const hasParams = router.query.network && router.query.address
+  const hasParams = router.query.network && router.query.address && router.query.hash
   const isMultipleReceiptBox = !router.query.hash
   const network = Number(router.query.network)
   const lockAddress = router.query!.address as string
@@ -26,25 +26,19 @@ export const ReceiptsPage = () => {
         <>
           <div className="flex flex-col items-center">
             <CloseReceiptButton lockAddress={lockAddress} network={network} />
-            <h1 className="mb-10 text-4xl font-bold">
-              {name ? `${name} receipts` : 'Receipt details'}
-            </h1>
-            {isMultipleReceiptBox ? (
-              <ReceiptBox lockAddress={lockAddress} network={network} />
-            ) : (
-              <div className="flex flex-col items-center w-full gap-4">
-                {hashes?.map((hash) => {
-                  return (
-                    <ReceiptBox
-                      key={hash}
-                      lockAddress={lockAddress}
-                      network={network}
-                      hash={hash}
-                    />
-                  )
-                })}
-              </div>
-            )}
+            <h1 className="mb-10 text-4xl font-bold">Receipt details</h1>
+            <div className="flex flex-col items-center w-full gap-4">
+              {hashes?.map((hash) => {
+                return (
+                  <ReceiptBox
+                    key={hash}
+                    lockAddress={lockAddress}
+                    network={network}
+                    hash={hash}
+                  />
+                )
+              })}
+            </div>
           </div>
         </>
       ) : (

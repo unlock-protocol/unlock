@@ -21,7 +21,6 @@ import { PriceFormatter } from '@unlock-protocol/ui'
 interface LockDetailCardProps {
   network: number
   lockAddress: string
-  setName: (name: string) => void
 }
 
 interface LockInfoCardProps {
@@ -103,7 +102,6 @@ const LockInfoCard = ({
 export const LockDetailCard = ({
   lockAddress,
   network,
-  setName,
 }: LockDetailCardProps) => {
   const { networks } = useConfig()
   const web3Service = useWeb3Service()
@@ -165,7 +163,6 @@ export const LockDetailCard = ({
     queryKey: ['lockMetadata', lockAddress, network],
     queryFn: async () => {
       const response = await locksmith.lockMetadata(network, lockAddress)
-      setName(response.data.name)
       return response.data
     },
     retry: 2,

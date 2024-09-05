@@ -51,7 +51,6 @@ interface ActionBarProps {
   setIsOpen: (open: boolean) => void
   isOpen: boolean
   page: number
-  name?: string
 }
 
 interface TopActionBarProps {
@@ -628,7 +627,6 @@ export const ManageLockPage = () => {
                 <LockDetailCard
                   lockAddress={lockAddress}
                   network={lockNetwork!}
-                  setName={setName}
                 />
               </div>
               <div className="flex flex-col gap-6 lg:col-span-9">
@@ -653,7 +651,6 @@ export const ManageLockPage = () => {
                   network={lockNetwork!}
                   isOpen={airdropKeys}
                   setIsOpen={setAirdropKeys}
-                  name={name}
                 />
                 <FilterBar
                   filters={filters}
