@@ -17,7 +17,7 @@
   "scripts": {
     "build": "tsup src/index.ts --format=esm,cjs --dts",
     "test": "UNLOCK_ENV=test vitest run --coverage --environment=node",
-    "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/",
+    "lint": "eslint src/",
     "ci": "yarn test && yarn lint && yarn build"
   },
   "devDependencies": {
@@ -31,6 +31,6 @@
   },
   "dependencies": {
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
-    "eslint": "8.57.0"
+    "eslint": "9.9.1"
   }
 }

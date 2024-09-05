@@ -16,7 +16,7 @@
   ],
   "scripts": {
     "lint:fix": "yarn lint --fix",
-    "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/ test/",
+    "lint": "eslint src/ test/",
     "test": "ts-mocha --exit --recursive 'test/**/*.ts'",
     "ci": "yarn build && yarn lint && yarn test",
     "build": "tsc",
@@ -48,7 +48,7 @@
     "@unlock-protocol/eslint-config": "workspace:^",
     "@unlock-protocol/networks": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:^",
-    "eslint": "8.57.0",
+    "eslint": "9.9.1",
     "ethers": "6.13.2",
     "hardhat": "2.22.9",
     "mocha": "10.7.3",
