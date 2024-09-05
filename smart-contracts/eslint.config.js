@@ -1,3 +1,4 @@
+const unlockConfig = require('@unlock-protocol/eslint-config')
 const rulesToIgnore = [
   'no-underscore-dangle',
   'no-param-reassign',
@@ -17,12 +18,16 @@ const rulesToIgnore = [
   'import/extensions',
 ]
 
-module.exports = {
-  extends: ['@unlock-protocol/eslint-config'],
-  ignorePatterns: ['coverage'],
-  rules: {
-    ...rulesToIgnore.reduce((obj, rule) => {
-      return { ...obj, [rule]: 'off' }
-    }, {}),
+module.exports = [
+  ...unlockConfig,
+  {
+    rules: {
+      ...rulesToIgnore.reduce((obj, rule) => {
+        return { ...obj, [rule]: 'off' }
+      }, {}),
+    },
   },
-}
+  {
+    ignores: ['coverage'],
+  },
+]

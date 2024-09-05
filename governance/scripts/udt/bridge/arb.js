@@ -96,14 +96,15 @@ async function main({
   )
   const depositRec = await depositTx.wait()
   const l2Result = await depositRec.waitForL2(l2Provider)
-  l2Result.complete
-    ? console.log(
-        `L2 message successful: status: ${L1ToL2MessageStatus[l2Result.status]}`
-      )
-    : console.log(
-        `L2 message failed: status ${L1ToL2MessageStatus[l2Result.status]}`
-      )
-
+  if (l2Result.complete) {
+    console.log(
+      `L2 message successful: status: ${L1ToL2MessageStatus[l2Result.status]}`
+    )
+  } else {
+    console.log(
+      `L2 message failed: status ${L1ToL2MessageStatus[l2Result.status]}`
+    )
+  }
   // now fetch the token address created on l2
   if (!l2TokenAddress) {
     console.log('Get address on L2...')
