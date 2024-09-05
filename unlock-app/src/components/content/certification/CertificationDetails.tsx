@@ -368,7 +368,6 @@ export const CertificationDetails = ({
             name={certificationData.name}
             description={
               <>
-                {/* eslint-disable-next-line react/no-children-prop */}
                 <ReactMarkdown>
                   {certificationData?.description as string}
                 </ReactMarkdown>

@@ -21,7 +21,7 @@
     "dayjs": "1.11.13",
     "dotenv": "16.4.5",
     "embla-carousel-react": "8.2.0",
-    "eslint": "8.57.0",
+    "eslint": "9.9.1",
     "ethers": "6.13.2",
     "next": "14.2.7",
     "next-seo": "6.6.0",
@@ -62,7 +62,7 @@
     "deploy-fleek": "./scripts/deploy-fleek.sh",
     "start": "yarn build && NODE_ENV=production next start",
     "test": "vitest run",
-    "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js src/",
+    "lint": "eslint src/",
     "ci": "yarn test && yarn lint && yarn build"
   },
   "browserslist": [

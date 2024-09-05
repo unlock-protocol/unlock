@@ -1,6 +1,5 @@
-import zkSync from './zkSync'
 import { isLocalhost } from './localhost'
-
+import zkSync from './zkSync'
 const getContractFactory = async (
   contractNameOrFullyQualifiedNameOrEthersFactory
 ) => {

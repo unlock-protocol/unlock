@@ -1,6 +1,6 @@
+import { ADDRESS_ZERO } from './constants'
 import erc20Abi from './ABIs/erc20.json'
 import { getTokenInfo } from './uniswap'
-import { ADDRESS_ZERO } from './constants'
 async function getBalance(account: string, tokenAddress: string) {
   const { ethers } = require('hardhat')
   let balance

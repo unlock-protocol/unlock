@@ -40,8 +40,8 @@ describe('TokenUriHook', function () {
       const [manager] = await ethers.getSigners()
       await hook
         .connect(manager)
-        .setBaseURI(await lock.getAddress(), 'http://example.com'),
-        'Only lock manager can set base URI'
+        .setBaseURI(await lock.getAddress(), 'http://example.com')
+
       expect(await hook.baseURIs(await lock.getAddress())).to.equal(
         'http://example.com'
       )

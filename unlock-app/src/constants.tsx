@@ -1,4 +1,3 @@
-/* eslint import/prefer-default-export: 0 */ // This file does not have a default export
 import { ethers } from 'ethers'
 
 export const EMAIL_SUBSCRIPTION_FORM = {

@@ -1,5 +1,4 @@
 const { ethers } = require('ethers')
-
 const publicLock = {
   expirationDuration: 60 * 60 * 24 * 30, // 30 days
   currencyContractAddress: ethers.ZeroAddress,

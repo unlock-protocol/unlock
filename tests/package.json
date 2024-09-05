@@ -28,7 +28,7 @@
     "@unlock-protocol/networks": "workspace:^",
     "apollo-link-http": "1.5.17",
     "chai": "4.2.0",
-    "eslint": "8.46.0",
+    "eslint": "9.9.1",
     "ethers": "6.12.1",
     "graphql": "16.6.0",
     "hardhat": "2.20.1",

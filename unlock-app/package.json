@@ -43,7 +43,7 @@
     "dayjs": "1.11.13",
     "deep-object-diff": "1.1.9",
     "dotenv": "16.4.5",
-    "eslint": "8.57.0",
+    "eslint": "9.9.1",
     "ethers": "6.13.2",
     "file-saver": "2.0.5",
     "frames.js": "0.18.1",
@@ -113,7 +113,7 @@
     "deploy-fleek": "./scripts/deploy-fleek.sh",
     "start": "yarn build && NODE_ENV=production next start",
     "test": "UNLOCK_ENV=test vitest run --coverage --environment=jsdom",
-    "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js src/",
+    "lint": "eslint src/",
     "ci": "yarn test && yarn lint && yarn build"
   },
   "browserslist": [

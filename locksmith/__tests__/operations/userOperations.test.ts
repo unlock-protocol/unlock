@@ -1,10 +1,12 @@
-import { Op } from 'sequelize'
-import UserOperations from '../../src/operations/userOperations'
-import RecoveryPhrase from '../../src/utils/recoveryPhrase'
 import * as models from '../../src/models'
+
 import { afterAll, beforeAll, expect, vi } from 'vitest'
-import { UserAccountType } from '../../src/controllers/userController'
+
+import { Op } from 'sequelize'
+import RecoveryPhrase from '../../src/utils/recoveryPhrase'
 import { UserAccount } from '../../src/models/userAccount'
+import { UserAccountType } from '../../src/controllers/userController'
+import UserOperations from '../../src/operations/userOperations'
 
 // TODO: remove this hack with proper mocking
 const { User, UserReference } = models as any
@@ -133,7 +135,7 @@ describe('Private Key Lookup', () => {
         }
       })
       .mockImplementationOnce(() => {
-        null
+        return null
       })
   })
 
@@ -170,7 +172,7 @@ describe('Recovery Phrase Lookup', () => {
         }
       })
       .mockImplementationOnce(() => {
-        null
+        return null
       })
   })
 

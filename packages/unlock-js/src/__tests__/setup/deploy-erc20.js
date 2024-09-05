@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const path = require('path')
 const { ethers } = require('hardhat')
 let fs = require('fs-extra')

@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const { ethers } = require('hardhat')
 const { WalletService } = require('../../../dist/')
 

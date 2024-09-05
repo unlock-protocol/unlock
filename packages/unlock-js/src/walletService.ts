@@ -126,7 +126,7 @@ export default class WalletService extends UnlockService {
    * @param {string} the Unlock protocol transaction type
    * @param {Function} a standard node callback that accepts the transaction hash
    */
-  // eslint-disable-next-line no-underscore-dangle
+
   // TODO: Do we need this???
   async _handleMethodCall(methodCall: any) {
     const transaction = await methodCall

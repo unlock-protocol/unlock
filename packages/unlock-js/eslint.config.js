@@ -17,13 +17,25 @@ const rulesToIgnore = [
   'default-param-last',
   'prefer-promise-reject-errors',
   'prefer-const',
+  '@typescript-eslint/no-require-imports',
 ]
 
-module.exports = {
-  extends: ['@unlock-protocol/eslint-config'],
-  rules: {
-    ...rulesToIgnore.reduce((obj, rule) => {
-      return { ...obj, [rule]: 'off' }
-    }, {}),
+const unlockProtocolConfig = require('@unlock-protocol/eslint-config')
+/** @typedef {import('eslint').Linter.Config} ESLintConfig */
+
+/**
+ * @type {ESLintConfig}
+ */
+module.exports = [
+  ...unlockProtocolConfig,
+  {
+    rules: {
+      ...rulesToIgnore.reduce((obj, rule) => {
+        return { ...obj, [rule]: 'off' }
+      }, {}),
+    },
   },
-}
+  {
+    ignores: ['src/@generated/'],
+  },
+]
