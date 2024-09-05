@@ -158,9 +158,13 @@ export const CancellationForm = ({
     const allowTrial = freeTrialLength > 0
 
     setAllowTrial(freeTrialLength > 0)
-    setValue('freeTrialLength', allowTrial ? (freeTrialLength ?? 0) : 0, {
-      shouldValidate: true,
-    })
+    setValue(
+      'freeTrialLength',
+      allowTrial ? (Number(freeTrialLength) ?? 0) : 0,
+      {
+        shouldValidate: true,
+      }
+    )
   }, [freeTrialLength])
 
   useEffect(() => {
