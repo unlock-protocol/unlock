@@ -39,8 +39,8 @@ import './mocks'
 
 const keyIDV8 = `${lockAddressV8}-${tokenId}`
 
-describe('Key transfers (v8)', () => {
-  test('Creation of a new key (v8)', () => {
+describe('Key transfers (V8)', () => {
+  test('Creation of a new key (V8)', () => {
     mockDataSourceV8()
     const newTransferEvent = createTransferEvent(
       Address.fromString(nullAddress),
@@ -67,7 +67,7 @@ describe('Key transfers (v8)', () => {
 })
 
 describe('Change in expiration timestamp', () => {
-  test('should increase key timestamp (v8)', () => {
+  test('should increase key timestamp (V8)', () => {
     mockDataSourceV8()
     // create a key
     const newTransferEvent = createTransferEvent(
@@ -92,7 +92,7 @@ describe('Change in expiration timestamp', () => {
 })
 
 describe('Key is expired by lock manager', () => {
-  test('should update the key expiration (v8)', () => {
+  test('should update the key expiration (V8)', () => {
     mockDataSourceV8()
     // create a key
     const newTransferEvent = createTransferEvent(
@@ -115,7 +115,7 @@ describe('Key is expired by lock manager', () => {
 describe('Key managers', () => {
   const newKeyManagerAddress = '0x0000000000000000000000000000000000000132'
 
-  test('key manager changed (v8)', () => {
+  test('key manager changed (V8)', () => {
     mockDataSourceV8()
 
     // create a key
@@ -138,7 +138,7 @@ describe('Key managers', () => {
 })
 
 describe('RenewKeyPurchase (lock <v10)', () => {
-  test('extend a key by the correct time (v8)', () => {
+  test('extend a key by the correct time (V8)', () => {
     mockDataSourceV8()
 
     // create a key
