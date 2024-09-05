@@ -38,6 +38,12 @@ import { useMetadata } from '~/hooks/metadata'
 import { getLockTypeByMetadata } from '@unlock-protocol/core'
 import { ImageBar } from './elements/ImageBar'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import axios from 'axios'
+import { useReceiptsStatus } from '~/hooks/useReceipts'
+import { config } from '~/config/app'
+import { SubgraphService } from '@unlock-protocol/unlock-js'
+import { getFormattedTimestamp } from '~/utils/dayjs'
+import { getAccessToken } from '~/utils/session'
 
 interface ActionBarProps {
   lockAddress: string
@@ -59,6 +65,22 @@ interface DownloadOptions {
   metadata: any[]
 }
 
+const WithTransition = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <Transition
+      as={Fragment}
+      enter="transition ease-out duration-200"
+      enterFrom="opacity-0 translate-y-1"
+      enterTo="opacity-100 translate-y-0"
+      leave="transition ease-in duration-150"
+      leaveFrom="opacity-100 translate-y-0"
+      leaveTo="opacity-0 translate-y-1"
+    >
+      {children}
+    </Transition>
+  )
+}
+
 export function downloadAsCSV({
   cols,
   metadata,
@@ -72,7 +94,7 @@ export function downloadAsCSV({
   FileSaver.saveAs(blob, fileName)
 }
 
-export const ActionBar = ({ lockAddress, network, name }: ActionBarProps) => {
+export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
   const { isPending: isLoadingMetadata, data: metadata } = useMetadata({
     lockAddress,
     network,
@@ -81,7 +103,8 @@ export const ActionBar = ({ lockAddress, network, name }: ActionBarProps) => {
   const { isEvent } = getLockTypeByMetadata(metadata)
   const [keysJobId, setKeysJobId] = useState<string | null>(null)
   const [isKeysJobLoading, setIsKeysJobLoading] = useState<boolean>(false)
-  const router = useRouter()
+  const [shouldRefetch, setShouldRefetch] = useState(false)
+  const [isExportDisabled, setIsExportDisabled] = useState(false)
 
   const onDownloadCsvMutation = useMutation({
     mutationFn: async () => {
@@ -110,14 +133,6 @@ export const ActionBar = ({ lockAddress, network, name }: ActionBarProps) => {
       setIsKeysJobLoading(false)
     },
   })
-
-  const viewReceipts = () => {
-    const route =
-      name && name.length > 0
-        ? `/receipts?address=${lockAddress}&network=${network}&name=${name}`
-        : `/receipts?address=${lockAddress}&network=${network}`
-    router.push(route)
-  }
 
   useEffect(() => {
     let intervalId: any = null
@@ -165,6 +180,125 @@ export const ActionBar = ({ lockAddress, network, name }: ActionBarProps) => {
     network,
   })
 
+  const { data: jobs, isLoading, error } = useReceiptsStatus(network, lockAddress, shouldRefetch)
+
+  let isPending = false
+  let lastExportDate = null
+  let downloadText = null
+
+  if (!isLoading && !error && jobs) {
+    if (jobs.length === 0) {
+      downloadText = <p>No previous exports.</p>
+    }
+    else if (jobs.length === 1) {
+      const job = jobs[0]
+      if (job.payload.status === 'pending') {
+        isPending = true
+        downloadText = <p>Export pending. Please wait a few moments.</p>
+      }
+      else {
+        lastExportDate = job.updatedAt
+        lastExportDate = lastExportDate && getFormattedTimestamp(lastExportDate)
+        downloadText = <>
+          <p>Download previously exported receipts. Last exported on {lastExportDate}</p>
+          <Button onClick={downloadZip}>Download</Button>
+        </>
+      }
+    }
+    else if (jobs.length === 2) {
+      // there is either 2 successful jobs or 1 successful 1 pending, either way it's safe to download
+      if (jobs[0].payload.status === 'pending') {
+        isPending = true
+        lastExportDate = jobs[1].updatedAt
+      }
+      else {
+        lastExportDate = jobs[0].updatedAt
+      }
+      lastExportDate = lastExportDate && getFormattedTimestamp(lastExportDate)
+      downloadText = <>
+        <p>Download previously exported receipts. Last exported on <strong>{lastExportDate}</strong>.</p>
+        <Button onClick={downloadZip}>Download</Button>
+      </>
+    }
+  }
+
+  const subgraphservice = new SubgraphService()
+  async function checkExportPossible() {
+    try {
+      const receipts = await subgraphservice.receipts(
+        {
+          where: {
+            lockAddress: lockAddress.toLowerCase().trim(),
+          }
+        }, {
+        networks: [network]
+      })
+
+      if (!receipts.length) {
+        setIsExportDisabled(true)
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  useEffect(() => {
+    checkExportPossible()
+  }, [lockAddress, network])
+
+
+  useEffect(() => {
+    if (jobs && isPending) {
+      setShouldRefetch(true)
+    } else {
+      setShouldRefetch(false)
+    }
+  }, [jobs])
+
+  async function handleExport() {
+    try {
+      const { data } = await locksmith.createDownloadReceiptsRequest(network, lockAddress)
+      if (data.status === 'pending') {
+        ToastHelper.success('Export started!')
+        setShouldRefetch(true)
+      }
+    } catch (error) {
+      ToastHelper.error('Could not start export')
+    }
+  }
+
+  async function downloadZip() {
+    const accessToken = getAccessToken()
+    if (!accessToken) {
+      return
+    }
+
+    const locksmithURI = config.locksmithHost
+    const downloadUrl = `${locksmithURI}/v2/receipts/download/${network}/${lockAddress}`
+
+    try {
+      const response = await axios.get(downloadUrl, {
+        responseType: 'blob',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        }
+      })
+
+      const url = window.URL.createObjectURL(new Blob([response.data]))
+      const a = document.createElement('a')
+      a.style.display = 'none'
+      a.href = url
+      a.download = 'receipts.zip'
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      window.URL.revokeObjectURL(url)
+      ToastHelper.success('Download successful!')
+    } catch (error) {
+      ToastHelper.error('Could not download receipts')
+    }
+  }
+
   return (
     <div className="flex items-center justify-between">
       <span className="text-xl font-bold text-brand-ui-primary">
@@ -182,14 +316,29 @@ export const ActionBar = ({ lockAddress, network, name }: ActionBarProps) => {
           >
             Download {isEvent ? 'attendee' : 'member'} list
           </Button>
-          <Button
-            variant="outlined-primary"
-            size="small"
-            onClick={viewReceipts}
-            iconLeft={<ReceiptIcon />}
-          >
-            View Receipts
-          </Button>
+          <Popover className="relative">
+            <Popover.Button>
+              <Button
+                variant="outlined-primary"
+                size="small"
+                disabled={isExportDisabled}
+                iconLeft={<ReceiptIcon />}
+              >
+                Export Receipts
+              </Button>
+            </Popover.Button>
+
+            <WithTransition>
+              <Popover.Panel className="absolute z-10 bg-white shadow-lg rounded mt-2 w-[200%] -translate-x-[50%]">
+                <div className="p-4 flex flex-col gap-4">
+                  <p>Export all of this lock&apos;s receipts into a zip file and download below. This may take a few seconds.</p>
+                  <Button onClick={handleExport} loading={isPending}>Export receipts</Button>
+                  <hr />
+                  {downloadText}
+                </div>
+              </Popover.Panel>
+            </WithTransition>
+          </Popover>
         </div>
       )}
     </div>
@@ -264,15 +413,7 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
                 </div>
               </Button>
             </Popover.Button>
-            <Transition
-              as={Fragment}
-              enter="transition ease-out duration-200"
-              enterFrom="opacity-0 translate-y-1"
-              enterTo="opacity-100 translate-y-0"
-              leave="transition ease-in duration-150"
-              leaveFrom="opacity-100 translate-y-0"
-              leaveTo="opacity-0 translate-y-1"
-            >
+            <WithTransition>
               <Popover.Panel className="absolute right-0 z-10 max-w-sm px-4 mt-3 transform w-80">
                 <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                   <div className="relative grid gap-8 bg-white p-7">
@@ -310,7 +451,7 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
                   </div>
                 </div>
               </Popover.Panel>
-            </Transition>
+            </WithTransition>
           </>
         </Popover>
       </div>

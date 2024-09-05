@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { ethers } from 'ethers'
+import { useEffect, useState } from 'react'
 import { locksmith } from '~/config/locksmith'
 
 interface ReceiptProps {
@@ -19,6 +20,17 @@ interface ReceiptsUrlProps {
   network: number
   lockAddress: string
   tokenId: string
+}
+
+type Job = {
+  id: string
+  payload: {
+    status: 'pending' | 'success'
+    key: string
+    result: string[]
+  }
+  createdAt: string
+  updatedAt: string
 }
 
 export const useGetReceiptsPageUrl = ({
@@ -153,5 +165,35 @@ export const useUpdateReceiptsBase = ({
       )
       return supplierResponse.data
     },
+  })
+}
+
+const fetchReceiptsStatus = async ({ queryKey }: any) => {
+  const [, network, lockAddress] = queryKey
+  const { data: jobs } = await locksmith.getReceiptsStatus(network, lockAddress)
+  return jobs
+}
+
+export const useReceiptsStatus = (network: number, lockAddress: string, condition = true) => {
+  const [timeoutReached, setTimeoutReached] = useState(false)
+  const timeout = 5 * 60 * 1000
+  const refetchInterval = 3000
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout
+    if(condition) {
+      timer = setTimeout(() => {
+        setTimeoutReached(true)
+      }, timeout)
+    }
+
+    return () => timer && clearTimeout(timer)
+  }, [condition])
+
+  return useQuery<Job | any>({
+    queryKey: ['receiptsStatus', network, lockAddress],
+    queryFn: fetchReceiptsStatus,
+    enabled: !timeoutReached,
+    refetchInterval: condition && !timeoutReached ? refetchInterval : false,
   })
 }
