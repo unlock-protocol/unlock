@@ -1,7 +1,7 @@
 import { MdOutlineTipsAndUpdates } from 'react-icons/md'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { Button, Icon } from '@unlock-protocol/ui'
-import { useRouter } from 'next/router'
+import { useRouter, useSearchParams } from 'next/navigation'
 import React, { Fragment, useEffect, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ConnectWalletModal } from '../../ConnectWalletModal'
@@ -512,13 +512,13 @@ const NotManagerBanner = () => {
 
 export const ManageLockPage = () => {
   const { account: owner } = useAuth()
-  const { query } = useRouter()
+  const searchParams = useSearchParams()
   const [loading, setLoading] = useState(false)
   const [network, setNetwork] = useState<string>(
-    (query?.network as string) ?? ''
+    (searchParams.get('network') as string) ?? ''
   )
   const [lockAddress, setLockAddress] = useState<string>(
-    (query?.address as string) ?? ''
+    (searchParams.get('address') as string) ?? ''
   )
   const [airdropKeys, setAirdropKeys] = useState(false)
   const [name, setName] = useState('')
@@ -526,7 +526,9 @@ export const ManageLockPage = () => {
   const lockNetwork = network ? parseInt(network as string) : undefined
 
   const withoutParams =
-    !query?.lockAddress && !query.network && !(lockAddress && network)
+    !searchParams.get('lockAddress') &&
+    !searchParams.get('network') &&
+    !(lockAddress && network)
 
   const { isManager, isPending: isLoadingLockManager } = useLockManager({
     lockAddress,
@@ -569,8 +571,8 @@ export const ManageLockPage = () => {
     }
 
     const hasQuery =
-      (query?.address as string)?.length > 0 &&
-      (query?.network as string)?.length > 0
+      (searchParams.get('address') as string)?.length > 0 &&
+      (searchParams.get('network') as string)?.length > 0
 
     return (
       <div>

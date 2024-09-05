@@ -94,6 +94,7 @@ export const saveEventDetails: RequestHandler = async (request, response) => {
 export const getAllEvents: RequestHandler = async (request, response) => {
   const page = request.query.page ? Number(request.query.page) : 1
   const events = await EventData.findAll({
+    order: [['createdAt', 'DESC']],
     limit: 10,
     offset: (page - 1) * 10,
     include: [{ model: CheckoutConfig, as: 'checkoutConfig' }],

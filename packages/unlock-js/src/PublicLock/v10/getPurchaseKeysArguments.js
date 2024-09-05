@@ -1,4 +1,4 @@
-import { ZERO } from '../../constants'
+import { MAX_UINT, ZERO } from '../../constants'
 import utils from '../../utils'
 import formatKeyPrice from '../utils/formatKeyPrice'
 
@@ -77,12 +77,26 @@ export default async function getPurchaseKeysArguments({
   let totalAmountToApprove = totalApproval
 
   if (!totalAmountToApprove) {
-    // total amount to approve
-    totalAmountToApprove = recurringPayments
-      ? keyPrices // for reccuring payments
-          .map((kp, i) => kp * recurringPayments.map(BigInt)[i])
-          .reduce((total, approval) => total + approval, BigInt(0))
-      : totalPrice
+    totalAmountToApprove = keyPrices
+      .map((keyPrice, i) => {
+        if (keyPrice > 0) {
+          const recurringPayment = recurringPayments && recurringPayments[i]
+          if (!recurringPayment) {
+            return keyPrice
+          } else if (recurringPayment === Infinity) {
+            return MAX_UINT
+          } else {
+            return keyPrice * BigInt(recurringPayments)
+          }
+        }
+        return BigInt(0)
+      })
+      .reduce((total, approval) => {
+        if (total === MAX_UINT || approval === MAX_UINT) {
+          return MAX_UINT
+        }
+        return total + approval
+      }, BigInt(0))
   }
 
   return {

@@ -1,5 +1,5 @@
 import { Button } from '@unlock-protocol/ui'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { IoMdClose as CloseIcon } from 'react-icons/io'
 import { useLockManager } from '~/hooks/useLockManager'
 
@@ -21,9 +21,9 @@ export const CloseReceiptButton = ({
 
   const closeReceipts = () => {
     if (isManager) {
-      router.push(`locks/lock?address=${lockAddress}&network=${network}`)
+      router.push(`/locks/lock?address=${lockAddress}&network=${network}`)
     } else {
-      router.push('keychain')
+      router.push('/keychain')
     }
   }
 

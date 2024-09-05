@@ -1,6 +1,6 @@
 import { Input, Button, Placeholder } from '@unlock-protocol/ui'
 import { KeyManager, TransferObject } from '@unlock-protocol/unlock-js'
-import { useRouter } from 'next/router'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { MouseEventHandler, useMemo, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTransferCode, useTransferDone } from '~/hooks/useTransfer'
@@ -220,17 +220,20 @@ export const ConfirmTransferForm = ({ transferObject, network }: Props) => {
 }
 
 export const useQueryTransfer = () => {
-  const router = useRouter()
+  const searchParams = useSearchParams()
   const result = useMemo(() => {
-    const { lockAddress, keyId, network, transfer } = router.query
+    const lockAddress = searchParams.get('lockAddress')
+    const keyId = searchParams.get('keyId')
+    const network = searchParams.get('network')
+    const transfer = searchParams.get('transfer')
     return {
       lockAddress: lockAddress?.toString(),
       keyId: keyId?.toString(),
       network: Number(network?.toString()),
-      transfer: transfer ? JSON.parse(transfer.toString()) : undefined,
+      transfer: transfer ? JSON.parse(transfer) : undefined,
       isReady: !!lockAddress && !!keyId && !!network,
     }
-  }, [router.query])
+  }, [searchParams])
   return result
 }
 
