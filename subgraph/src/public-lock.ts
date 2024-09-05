@@ -301,7 +301,6 @@ export function handleRoleGranted(event: RoleGrantedEvent): void {
         lock.lockManagers = [event.params.account]
       }
       lock.save()
-      log.debug('New lock manager', [event.params.account.toHexString()])
     }
   } else if (
     event.params.role.toHexString() ==
