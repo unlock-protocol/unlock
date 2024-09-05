@@ -54,6 +54,7 @@ export const addJob = async (jobName: string, payload: any, opts = {}) => {
   // Default priority for tasks is 0, we do not want to make clients wait
   return quickAddJob(
     {
+      // @ts-expect-error - type is not defined properly
       pgPool: new Pool({
         connectionString: config.databaseUrl,
         // @ts-expect-error - type is not defined properly
@@ -75,6 +76,7 @@ export async function startWorker() {
 
   // Create worker utils for scheduling tasks
   const workerUtils = await makeWorkerUtils({
+    // @ts-expect-error - type is not defined properly
     pgPool,
   })
 
@@ -82,6 +84,7 @@ export async function startWorker() {
   await workerUtils.addJob('checkBalances', {})
 
   const runner = await run({
+    // @ts-expect-error - type is not defined properly
     pgPool,
     crontab,
     concurrency: 5,
