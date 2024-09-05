@@ -58,6 +58,7 @@ export const useCertification = ({
         if (key) {
           return key
         }
+        throw new Error('No valid certification for this token')
       } else if (account) {
         // Get the certification for the current user
         const key = await subgraph.key(
@@ -75,7 +76,7 @@ export const useCertification = ({
           return key
         }
       }
-      throw new Error('No valid certification')
+      return placeholderData
     },
     enabled: !!lockAddress && !!network,
     placeholderData,
