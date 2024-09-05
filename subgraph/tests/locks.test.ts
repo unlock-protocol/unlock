@@ -328,7 +328,7 @@ describe('Describe Locks events (v8)', () => {
     assert.entityCount('Lock', 1)
     assert.fieldEquals('Lock', lockAddressV8, 'address', lockAddressV8)
     assert.fieldEquals('Lock', lockAddressV8, 'createdAtBlock', '1')
-    assert.fieldEquals('Lock', lockAddressV8, 'version', '8')
+    assert.fieldEquals('Lock', lockAddressV8, 'version', '9')
     assert.fieldEquals('Lock', lockAddressV8, 'price', '1000')
     assert.fieldEquals('Lock', lockAddressV8, 'name', 'My lock v8')
     assert.fieldEquals(
