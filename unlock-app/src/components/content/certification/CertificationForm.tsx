@@ -408,7 +408,6 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                         enabled={unlimitedQuantity}
                         setEnabled={setUnlimitedQuantity}
                         onChange={(enable: boolean) => {
-                          console.log('HAAH!', enable)
                           if (enable) {
                             setValue('lock.maxNumberOfKeys', undefined)
                           }
