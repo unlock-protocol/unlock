@@ -143,7 +143,7 @@ createMockedFunction(
   .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromU32(tokenId))])
 
 /**
- * Mocks function for V8 locks
+ * Mocks function for v8 locks
  */
 createMockedFunction(
   Address.fromString(lockAddressV8),
@@ -151,7 +151,7 @@ createMockedFunction(
   'publicLockVersion():(uint16)'
 )
   .withArgs([])
-  .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromString('9'))])
+  .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromString('8'))])
 
 createMockedFunction(
   Address.fromString(lockAddressV8),
@@ -159,7 +159,7 @@ createMockedFunction(
   'publicLockVersion():(uint256)'
 )
   .withArgs([])
-  .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromString('9'))])
+  .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromString('8'))])
 
 createMockedFunction(
   Address.fromString(lockAddressV8),

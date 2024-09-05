@@ -42,12 +42,12 @@ import { newCancelKeyTransactionReceipt } from './mockTxReceipt'
 import { KEY_GRANTER } from '../src/helpers'
 
 export function mockDataSourceV8(): void {
-  const V8context = new DataSourceContext()
-  V8context.set(
+  const v8Context = new DataSourceContext()
+  v8Context.set(
     'lockAddress',
     Value.fromAddress(Address.fromString(lockAddressV8))
   )
-  dataSourceMock.setReturnValues(lockAddressV8, 'rinkeby', V8context)
+  dataSourceMock.setReturnValues(lockAddressV8, 'rinkeby', v8Context)
 }
 
 export function mockDataSourceV11(): void {

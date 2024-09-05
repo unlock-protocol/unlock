@@ -21,12 +21,12 @@ import { KEY_GRANTER, LOCK_MANAGER } from '../src/helpers'
 import { PricingChanged } from '../generated/templates/PublicLock/PublicLock'
 
 export function mockDataSourceV8(): void {
-  const V8context = new DataSourceContext()
-  V8context.set(
+  const v8Context = new DataSourceContext()
+  v8Context.set(
     'lockAddress',
     Value.fromAddress(Address.fromString(lockAddressV8))
   )
-  dataSourceMock.setReturnValues(lockAddressV8, 'rinkeby', V8context)
+  dataSourceMock.setReturnValues(lockAddressV8, 'rinkeby', v8Context)
 }
 
 export function createNewLockEvent(
