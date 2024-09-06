@@ -1,21 +1,22 @@
-import { Drawer, Placeholder } from '@unlock-protocol/ui'
-import { Tab } from '@headlessui/react'
-import { AirdropManualForm } from './AirdropManualForm'
 import { AirdropBulkForm, MAX_SIZE } from './AirdropBulkForm'
+import { Drawer, Placeholder } from '@unlock-protocol/ui'
+
+import { AirdropManualForm } from './AirdropManualForm'
 import { AirdropMember } from './AirdropElements'
-import { useAuth } from '~/contexts/AuthenticationContext'
+import { Lock } from '~/unlockTypes'
 import { MAX_UINT } from '~/constants'
-import { formatDate } from '~/utils/lock'
-import dayjs from 'dayjs'
-import customParseFormat from 'dayjs/plugin/customParseFormat'
-import { ToastHelper } from '~/components/helpers/toast.helper'
-import { omit } from 'lodash'
-import { useMultipleLockData } from '~/hooks/useLockData'
-import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 import { PaywallLocksConfigType } from '@unlock-protocol/core'
 import { Select } from '@unlock-protocol/ui'
+import { Tab } from '@headlessui/react'
+import { ToastHelper } from '~/components/helpers/toast.helper'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+import dayjs from 'dayjs'
+import { formatDate } from '~/utils/lock'
+import { omit } from 'lodash'
+import { useAuth } from '~/contexts/AuthenticationContext'
+import { useMultipleLockData } from '~/hooks/useLockData'
 import { useState } from 'react'
-import { Lock } from '~/unlockTypes'
+import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 
 dayjs.extend(customParseFormat)
 
@@ -189,7 +190,9 @@ export const AirdropFormForLock = ({ lock }: { lock: Lock }) => {
           throw new Error('We were unable to airdrop these memberships.')
         })
         .finally(() => {
-          setIsConfirming && setIsConfirming(false)
+          if (setIsConfirming) {
+            setIsConfirming(false)
+          }
         })
     }
 

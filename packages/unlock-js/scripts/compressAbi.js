@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /**
  * This file generates the files src/abis.js, src/__tests__/helpers/bytecode.js and src/deployableBytecode.js
  * by extracting them from the packages below.

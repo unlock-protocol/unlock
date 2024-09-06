@@ -2,10 +2,12 @@
   "name": "graph-service",
   "dependencies": {
     "@cloudflare/workers-types": "4.20240821.1",
+    "@sentry/node": "8.27.0",
+    "toucan-js": "4.0.0",
     "wrangler": "3.67.1"
   },
   "devDependencies": {
-    "vitest": "^0.34.6"
+    "vitest": "0.34.6"
   },
   "scripts": {
     "dev": "yarn wrangler dev",

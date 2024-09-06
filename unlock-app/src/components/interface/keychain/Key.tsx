@@ -22,6 +22,7 @@ import {
   RiErrorWarningFill as DangerIcon,
   RiArrowGoForwardFill as ExtendMembershipIcon,
 } from 'react-icons/ri'
+import { BiTransfer as TransferIcon } from 'react-icons/bi'
 import { Badge, Button, Card, minifyAddress } from '@unlock-protocol/ui'
 import { networks } from '@unlock-protocol/networks'
 import QRModal from './QRModal'
@@ -49,8 +50,11 @@ import { Key as HookKey } from '~/hooks/useKeys'
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
 import { useGetReceiptsPageUrl } from '~/hooks/useReceipts'
 import { AddToPhoneWallet } from './AddToPhoneWallet'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { Platform } from '~/services/passService'
+import { TransferModal } from './TransferModal'
+import { isKeyTransferable } from '~/utils/key'
+import { useFetchTransferFee } from '~/hooks/useTransferFee'
 
 export const MenuButton = tw.button(
   'group flex gap-2 w-full font-semibold items-center rounded-md px-2 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed',
@@ -82,6 +86,7 @@ function Key({ ownedKey, owner, network }: Props) {
   const [showCancelModal, setShowCancelModal] = useState(false)
   const [expireAndRefunded, setExpireAndRefunded] = useState(false)
   const [showExtendMembershipModal, setShowExtendMembership] = useState(false)
+  const [showTransferModal, setShowTransferModal] = useState(false)
   const videoRef = useRef(null)
   const [canPlayImageAsVideo, setCanPlayImageAsVideo] = useState(false)
   const isKeyExpired = isExpired || expireAndRefunded
@@ -96,6 +101,23 @@ function Key({ ownedKey, owner, network }: Props) {
   const [_, setCopied] = useClipboard(lock.address, {
     successDuration: 2000,
   })
+
+  let isTransferable
+  const {
+    isLoading: transferFeeLoading,
+    error: transferfeeError,
+    data: transferFee,
+  } = useFetchTransferFee({
+    lockAddress: lock.address,
+    network: network,
+  })
+  if (
+    !transferFeeLoading &&
+    !transferfeeError &&
+    typeof transferFee === 'number'
+  ) {
+    isTransferable = isKeyTransferable(transferFee)
+  }
 
   const handleQRCodeSignature: MouseEventHandler<HTMLButtonElement> = async (
     event
@@ -165,6 +187,7 @@ function Key({ ownedKey, owner, network }: Props) {
   const { opensea } = networks[network] ?? {}
 
   const isAvailableOnOpenSea =
+    // eslint-disable-next-line no-constant-binary-expression
     opensea?.tokenUrl(lock.address, tokenId) !== null ?? false
 
   const baseSymbol = config.networks[network].nativeCurrency.symbol!
@@ -249,6 +272,15 @@ function Key({ ownedKey, owner, network }: Props) {
         currency={symbol}
         network={network}
         ownedKey={ownedKey}
+      />
+      <TransferModal
+        isOpen={showTransferModal}
+        setIsOpen={setShowTransferModal}
+        lock={lock}
+        network={network}
+        owner={owner}
+        tokenId={tokenId}
+        expiration={expiration}
       />
       <div className="flex items-center justify-between">
         <div>
@@ -422,6 +454,26 @@ function Key({ ownedKey, owner, network }: Props) {
                       )}
                     </Menu.Item>
                   )}
+                  <Menu.Item
+                    disabled={
+                      isKeyExpired ||
+                      (typeof isTransferable === 'boolean' && !isTransferable)
+                    }
+                  >
+                    {({ active, disabled }) => (
+                      <MenuButton
+                        disabled={disabled}
+                        active={active}
+                        onClick={(event) => {
+                          event.preventDefault()
+                          setShowTransferModal(true)
+                        }}
+                      >
+                        <TransferIcon />
+                        Transfer membership
+                      </MenuButton>
+                    )}
+                  </Menu.Item>
                 </div>
                 {owner == account && !isUnlockAccount && (
                   <div className="p-1">

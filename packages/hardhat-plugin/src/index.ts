@@ -1,25 +1,23 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import '@nomicfoundation/hardhat-ethers'
-import { task, extendEnvironment, extendConfig, types } from 'hardhat/config'
-import { HardhatConfig, HardhatUserConfig } from 'hardhat/types'
-import { lazyObject } from 'hardhat/plugins'
 import './type-extensions'
 
-import { TASK_CREATE_LOCK } from './constants'
-
-import { deployLockTask } from './tasks'
-import { networks as defaultNetworks } from '@unlock-protocol/networks'
-
-// types
-import { UnlockNetworkConfigs } from './types'
-import type { CreateLockFunction } from './createLock'
 import type {
-  DeployProtocolFunction,
   DeployAndSetTemplate,
+  DeployProtocolFunction,
 } from './deployProtocol'
+import { HardhatConfig, HardhatUserConfig } from 'hardhat/types'
+import { extendConfig, extendEnvironment, task, types } from 'hardhat/config'
+
+import type { CreateLockFunction } from './createLock'
+import type { GetLockContractFunction } from './getLockContract'
 import type { GetLockVersionFunction } from './getLockVersion'
 import type { GetUnlockContractFunction } from './getUnlockContract'
-import type { GetLockContractFunction } from './getLockContract'
+import { TASK_CREATE_LOCK } from './constants'
+// types
+import { UnlockNetworkConfigs } from './types'
+import { networks as defaultNetworks } from '@unlock-protocol/networks'
+import { deployLockTask } from './tasks'
+import { lazyObject } from 'hardhat/plugins'
 
 export interface HardhatUnlockPlugin {
   createLock: CreateLockFunction
