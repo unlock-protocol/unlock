@@ -240,7 +240,7 @@ describe('Describe Locks events', () => {
     // assert.fieldEquals('Lock', lockAddress, 'baseTokenURI', `12`)
   })
 
-  describe('[Deprecation] Custom events replaced by OZ native role events in v8', () => {
+  describe('[Deprecation] Custom events replaced by OZ native role events in v9', () => {
     // event should be ignored in v11 as we use `RoleGranted` instead
     test('The `KeyGranterAdded` event does not create a record', () => {
       assert.fieldEquals(

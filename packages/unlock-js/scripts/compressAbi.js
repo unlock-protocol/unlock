@@ -11,7 +11,7 @@ const path = require('path')
 const abis = require('@unlock-protocol/contracts')
 
 const unlockVersions = ['v11', 'v12', 'v13']
-const publicLockVersions = ['v8', 'v9', 'v10', 'v11', 'v12', 'v13', 'v14']
+const publicLockVersions = ['v9', 'v10', 'v11', 'v12', 'v13', 'v14']
 
 const data = {
   PublicLock: publicLockVersions.reduce(

@@ -16,17 +16,17 @@ import {
   LockMetadata,
   RoleRevoked,
 } from '../generated/templates/PublicLock/PublicLock'
-import { lockAddress, lockAddressV8 } from './constants'
+import { lockAddress, lockAddressV9 } from './constants'
 import { KEY_GRANTER, LOCK_MANAGER } from '../src/helpers'
 import { PricingChanged } from '../generated/templates/PublicLock/PublicLock'
 
-export function mockDataSourceV8(): void {
-  const v8Context = new DataSourceContext()
-  v8Context.set(
+export function mockDataSourceV9(): void {
+  const V9context = new DataSourceContext()
+  V9context.set(
     'lockAddress',
-    Value.fromAddress(Address.fromString(lockAddressV8))
+    Value.fromAddress(Address.fromString(lockAddressV9))
   )
-  dataSourceMock.setReturnValues(lockAddressV8, 'rinkeby', v8Context)
+  dataSourceMock.setReturnValues(lockAddressV9, 'rinkeby', V9context)
 }
 
 export function createNewLockEvent(

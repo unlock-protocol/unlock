@@ -283,7 +283,7 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
   createReceipt(event)
 }
 
-// we use OpenZeppelin native `RoleGranted` event since v8
+// we use OpenZeppelin native `RoleGranted` event since v9
 export function handleRoleGranted(event: RoleGrantedEvent): void {
   if (
     event.params.role.toHexString() ==
