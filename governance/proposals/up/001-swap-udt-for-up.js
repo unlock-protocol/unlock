@@ -8,30 +8,18 @@ const {
 } = require('@unlock-protocol/hardhat-helpers')
 const ERC20_ABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/erc20.json')
 
-const swapAddresses = {
-  8453: '0x12be7322070cFA75E2f001C6B3d6Ac8C2efEF5Ea',
-  84532: '0xaeb12decF602B21815B71B3Fac97975Ca27C9C00',
-}
-
 // gov base sepolia: 0xfdbe81e89fcaa4e7b47d62a25636cc158f07aa0d
-const timelocks = {
-  8453: '0xB34567C4cA697b39F72e1a8478f285329A98ed1b',
-  84532: '0xC50610a02C9EbF71aBe0Ec943Bc085EfaAc1099d',
-}
-
-module.exports = async () => {
+module.exports = async ({
+  swapAddress = '0x12be7322070cFA75E2f001C6B3d6Ac8C2efEF5Ea',
+  timelockAddress = '0xB34567C4cA697b39F72e1a8478f285329A98ed1b',
+}) => {
   const {
-    id: chainId,
     unlockDaoToken: { address: udtAddress },
   } = await getNetwork()
 
-  // addresses
-  const swapAddress = swapAddresses[chainId]
-  const timelockAddress = timelocks[chainId]
-
   // get amount
   const udt = await getERC20Contract(udtAddress)
-  const udtAmount = await udt.balanceOf(timelocks[chainId])
+  const udtAmount = await udt.balanceOf(timelockAddress)
 
   // parse proposal
   const proposalName = `Swap UDT for UP`
