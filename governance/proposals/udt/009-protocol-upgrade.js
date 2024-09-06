@@ -5,7 +5,7 @@
 const { ethers } = require('hardhat')
 const { UnlockV13 } = require('@unlock-protocol/contracts')
 const { networks } = require('@unlock-protocol/networks')
-const { IConnext, targetChains } = require('../helpers/bridge')
+const { IConnext, targetChains } = require('../../helpers/bridge')
 
 const {
   getProxyAdminAddress,
@@ -16,7 +16,7 @@ const {
   abi: proxyAdminABI,
 } = require('@unlock-protocol/hardhat-helpers/dist/ABIs/ProxyAdmin.json')
 
-const { parseSafeMulticall } = require('../helpers/multisig')
+const { parseSafeMulticall } = require('../../helpers/multisig')
 
 // addresses
 const deployedContracts = {

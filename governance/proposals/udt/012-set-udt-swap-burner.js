@@ -4,10 +4,10 @@
  */
 const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const { Unlock } = require('@unlock-protocol/contracts')
-const { parseSafeMulticall, getProvider } = require('../helpers/multisig')
+const { parseSafeMulticall, getProvider } = require('../../helpers/multisig')
 const { ethers } = require('hardhat')
 const { Contract } = require('ethers')
-const { parseBridgeCall } = require('../helpers/crossChain')
+const { parseBridgeCall } = require('../../helpers/crossChain')
 
 const targetChainsIds = [
   42161, // Arbitrum

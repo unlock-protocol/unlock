@@ -4,11 +4,11 @@
  */
 const { ADDRESS_ZERO, getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const { Unlock } = require('@unlock-protocol/contracts')
-const { targetChains } = require('../helpers/bridge')
-const { parseSafeMulticall } = require('../helpers/multisig')
-const getOracles = require('../scripts/uniswap/checkOracles')
+const { targetChains } = require('../../helpers/bridge')
+const { parseSafeMulticall } = require('../../helpers/multisig')
+const getOracles = require('../../scripts/uniswap/checkOracles')
 const { ethers } = require('hardhat')
-const { parseBridgeCall } = require('../helpers/crossChain')
+const { parseBridgeCall } = require('../../helpers/crossChain')
 
 const parseSetOracleCalls = async (destChainId) => {
   const {
