@@ -21,7 +21,6 @@ async function main({ proposal, proposalId, govAddress, txId }) {
 
   // lower voting period on mainnet
   if (chainId === 31337 || process.env.RUN_FORK) {
-    // eslint-disable-next-line no-console
     console.log(`GOV (dev) > gov contract: ${govAddress}`)
 
     // NB: this has to be done *before* proposal submission's block height so votes get accounted for
@@ -37,11 +36,12 @@ async function main({ proposal, proposalId, govAddress, txId }) {
 
     // delegate 30k to voter
     const tx = await udt.delegate(signer.address)
-
     const receipt = await tx.wait()
-    const { event, hash } = await getEvent(receipt, 'DelegateVotesChanged')
+    const { event } = await getEvent(
+      receipt,
+      chainId === 8453n ? 'DelegateChanged' : 'DelegateVotesChanged'
+    )
     if (event) {
-      // eslint-disable-next-line no-console
       console.log(
         `GOV VOTE (dev) > ${signer.address} delegated quorum to ${signer.address}`,
         `(total votes: ${ethers.formatEther(
