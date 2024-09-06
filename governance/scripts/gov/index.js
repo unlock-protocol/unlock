@@ -4,13 +4,25 @@ const { getQuorum, getGovTokenAddress } = require('../../helpers/gov')
 const { parseXCalledEvents } = require('../../helpers/bridge')
 const { simulateDestCalls } = require('../../helpers/crossChain')
 const { addUDT, getEvent } = require('@unlock-protocol/hardhat-helpers')
-const { UnlockDiscountTokenV2 } = require('@unlock-protocol/contracts')
+const { UnlockDiscountTokenV2, UPSwap } = require('@unlock-protocol/contracts')
 
 // workflow
 const submit = require('./submit')
 const vote = require('./vote')
 const queue = require('./queue')
 const execute = require('./execute')
+
+// parse logs
+const parseLogs = (logs, abi = UPSwap.abi) => {
+  const interface = new ethers.Interface(abi)
+
+  // parse logs
+  const parsedLogs = logs.map((log) => {
+    const parsed = interface.parseLog(log)
+    return parsed || log
+  })
+  return parsedLogs
+}
 
 async function main({ proposal, proposalId, govAddress, txId }) {
   const [signer] = await ethers.getSigners()
@@ -80,7 +92,7 @@ async function main({ proposal, proposalId, govAddress, txId }) {
   const { logs } = await execute({ proposalId, txId, proposal, govAddress })
 
   // log all events
-  console.log(logs)
+  console.log(parseLogs(logs))
 
   // simulate bridge calls
   const xCalled = await parseXCalledEvents(logs)
