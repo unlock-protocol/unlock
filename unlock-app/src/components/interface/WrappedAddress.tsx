@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { Address } from '@unlock-protocol/ui'
-import { useEns } from '~/hooks/useEns'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import useClipboard from 'react-use-clipboard'
+import { useNameResolver } from '~/hooks/useNameResolver'
 
 /**
  * @typedef {Object} WrappedAddressProps
@@ -12,7 +11,6 @@ import useClipboard from 'react-use-clipboard'
  * @property {boolean} [showResolvedName] - Whether to show the resolved name (e.g., ENS, Base names).
  * @property {string} [className] - Additional CSS classes.
  * @property {boolean} [minified] - Whether to show a minified version of the address.
- * @property {boolean} [showToast] - Whether to show a toast notification on copy.
  * @property {'ens' | 'multiple'} [preferredResolver] - The preferred name resolution method.
  */
 interface WrappedAddressProps {
@@ -22,8 +20,7 @@ interface WrappedAddressProps {
   showResolvedName?: boolean
   className?: string
   minified?: boolean
-  showToast?: boolean
-  preferredResolver?: 'ens' | 'multiple'
+  preferredResolver?: 'ens' | 'base' | 'multiple'
 }
 
 /**
@@ -41,7 +38,6 @@ const normalizeAddress = (address: string | `0x${string}`): `0x${string}` => {
  */
 export const WrappedAddress: React.FC<WrappedAddressProps> = ({
   address,
-  showToast = true,
   preferredResolver = 'multiple',
   showCopyIcon = true,
   showExternalLink = true,
@@ -50,40 +46,41 @@ export const WrappedAddress: React.FC<WrappedAddressProps> = ({
   // normalize the address to always start with 0x
   const normalizedAddress = normalizeAddress(address)
 
-  const [isCopied, setCopied] = useClipboard(normalizedAddress)
+  // Fetch names for the address
+  const { ensName, baseName } = useNameResolver(normalizedAddress)
 
-  // Fetch ENS name for the address
-  const ensName = useEns(normalizedAddress)
-
-  // Display a toast notification when the address is copied
-  React.useEffect(() => {
-    if (isCopied && showToast) {
-      ToastHelper.success('Address copied to clipboard')
-    }
-  }, [isCopied, showToast])
+  // Display a toast when the address is copied
+  const handleCopy = useCallback(() => {
+    ToastHelper.success('Address copied to clipboard')
+  }, [])
 
   /**
    * Resolves names based on the preferred resolver.
    * @param {string} addr - The address to resolve.
    * @returns {Promise<string | undefined>} The resolved name or undefined.
    */
-  const resolveNames = React.useCallback(
+  const resolveNames = useCallback(
     async (addr: string): Promise<string> => {
-      if (preferredResolver === 'ens' || preferredResolver === 'multiple') {
-        return ensName !== addr ? ensName : addr
+      if (preferredResolver === 'ens') {
+        return ensName || baseName || addr
+      } else if (preferredResolver === 'base') {
+        return baseName || ensName || addr
+      } else if (preferredResolver === 'multiple') {
+        // Prioritize ENS, then Base name, then fall back to address
+        return ensName || baseName || addr
       }
       return addr
     },
-    [preferredResolver, ensName]
+    [preferredResolver, ensName, baseName]
   )
 
   /**
-   * Wrapper function for resolving multiple names (currently only ENS).
+   * Wrapper function for resolving multiple names (currently only ENS and Base names ).
    * This function is designed to be extensible for future name resolution methods.
    * @param {string} address - The address to resolve.
    * @returns {Promise<string | undefined>} The resolved name or undefined.
    */
-  const resolveMultipleNames = React.useCallback(
+  const resolveMultipleNames = useCallback(
     async (address: string): Promise<string | undefined> => {
       return resolveNames(address)
     },
@@ -94,7 +91,7 @@ export const WrappedAddress: React.FC<WrappedAddressProps> = ({
     <Address
       address={address}
       useName={resolveMultipleNames}
-      onCopied={setCopied}
+      onCopied={handleCopy}
       showCopyIcon={showCopyIcon}
       showExternalLink={showExternalLink}
       {...props}
