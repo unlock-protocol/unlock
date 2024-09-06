@@ -51,7 +51,7 @@ jobs:
 
       - name: Log Results
         id: log-results
-        if: steps.changed-files.outputs.any_changed == 'true'
+        if: always() && steps.changed-files.outputs.any_changed == 'true'
         env:
           ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
