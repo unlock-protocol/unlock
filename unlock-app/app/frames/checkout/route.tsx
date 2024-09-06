@@ -4,8 +4,10 @@ import { Button } from 'frames.js/next'
 import { locksmith } from '../../../src/config/locksmith'
 import { frames } from './frames'
 import { defaultFrame } from './components/defaultFrame'
+import { Web3Service } from '@unlock-protocol/unlock-js'
+import networks from '@unlock-protocol/networks'
 
-const handler = frames(async (ctx) => {
+const getHandler = frames(async (ctx) => {
   const id = ctx.searchParams.id
   const state = ctx.state
 
@@ -20,20 +22,30 @@ const handler = frames(async (ctx) => {
   const { data } = await locksmith.lockMetadata(network, lockAddress)
   const { image, description } = data
 
-  const lock = { name, address: lockAddress, network, image, description }
+  const web3Service = new Web3Service(networks)
+  const res = await web3Service.getLock(lockAddress, network)
+  const price = `${res.keyPrice} ${res.currencySymbol}`
+
+  const lock = {
+    name,
+    address: lockAddress,
+    network,
+    image,
+    description,
+    price,
+  }
   state.lock = lock
 
-  return defaultFrame({ name, description, image, state })
+  return defaultFrame(state)
 })
 
 const postHandler = frames(async (ctx) => {
   const state = ctx.state
-  const { image, name, description } = ctx.state.lock!
   const success = ctx.searchParams.success
 
   if (success === 'true') {
     return {
-      image: image,
+      image: defaultFrame(state),
       buttons: [
         <Button action="link" target="https://app.unlock-protocol.com/keychain">
           Success! View on keychain
@@ -46,8 +58,8 @@ const postHandler = frames(async (ctx) => {
     }
   }
 
-  return defaultFrame({ name, description, image, state })
+  return defaultFrame(state)
 })
 
-export const GET = handler
+export const GET = getHandler
 export const POST = postHandler

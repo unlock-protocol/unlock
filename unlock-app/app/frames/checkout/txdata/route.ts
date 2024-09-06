@@ -32,8 +32,6 @@ export const POST = frames(async (ctx) => {
 
   const keyPrice = await getKeyPrice()
 
-  console.log('price\n', keyPrice, 'add', lockAddress, network)
-
   const calldata = encodeFunctionData({
     abi,
     functionName: 'purchase',

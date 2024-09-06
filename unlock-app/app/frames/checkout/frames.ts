@@ -6,6 +6,7 @@ type Lock = {
   network: string
   image: string
   description: string
+  price: string
 }
 
 export type State = {
