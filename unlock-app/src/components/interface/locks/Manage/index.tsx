@@ -348,7 +348,7 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
                     Export all of this lock&apos;s receipts into a zip file and
                     download below. This may take a few seconds.
                   </p>
-                  <Button onClick={handleExport} loading={isPending}>
+                  <Button onClick={handleExport} loading={shouldRefetch}>
                     Export receipts
                   </Button>
                   <hr />
