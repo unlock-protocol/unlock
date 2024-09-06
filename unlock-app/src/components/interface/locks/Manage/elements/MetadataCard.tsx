@@ -31,6 +31,7 @@ import { FiInfo as InfoIcon } from 'react-icons/fi'
 import { TransferKeyDrawer } from '~/components/interface/keychain/TransferKeyDrawer'
 import { useMarkAsCheckInMutation } from '~/hooks/useMarkAsCheckImMutation'
 import { getCheckInTime } from '~/utils/getCheckInTime'
+import { WrappedAddress } from '~/components/interface/WrappedAddress'
 
 interface MetadataCardProps {
   metadata: any
@@ -503,11 +504,22 @@ export const MetadataCard = ({
                         >
                           {/* show full address on desktop */}
                           <div className="text-base font-semibold text-black break-words">
-                            <span className="hidden md:block">{owner}</span>
+                            <div className="hidden md:block">
+                              <WrappedAddress
+                                address={owner}
+                                showCopyIcon={false}
+                                showExternalLink={false}
+                              />
+                            </div>
                             {/* show minified address on mobile */}
-                            <span className="block md:hidden">
-                              {addressMinify(owner)}
-                            </span>
+                            <div className="block md:hidden">
+                              <WrappedAddress
+                                address={owner}
+                                minified
+                                showCopyIcon={false}
+                                showExternalLink={false}
+                              />
+                            </div>
                           </div>
                         </Link>
                       </div>

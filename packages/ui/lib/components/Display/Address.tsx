@@ -1,17 +1,17 @@
-import React, { useEffect } from 'react'
-import {
-  FiCopy as CopyIcon,
-  FiExternalLink as ExternalLinkIcon,
-} from 'react-icons/fi'
+import React, { useCallback, useEffect } from 'react'
+import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
+import { BiCopy as CopyIcon } from 'react-icons/bi'
 import { Placeholder } from '../Placeholder'
 import useClipboard from 'react-use-clipboard'
 import { minifyAddress } from '~/utils'
+import { Button } from '../Button/Button'
 
 // Define the props for the Address component
 export interface AddressProps {
   address: string // The Ethereum address to display
   resolvedName?: string // Optional resolved name for the address
   showExternalLink?: boolean // Flag to show external link to Etherscan
+  externalLinkUrl?: string // custom external link URL
   showCopyIcon?: boolean // Flag to show copy icon for clipboard functionality
   showResolvedName?: boolean // Flag to show the resolved name if available
   className?: string // Additional CSS classes for styling
@@ -25,6 +25,7 @@ export const Address: React.FC<AddressProps> = ({
   address,
   resolvedName,
   showExternalLink = false,
+  externalLinkUrl,
   showCopyIcon = false,
   showResolvedName = true,
   className = '',
@@ -33,7 +34,9 @@ export const Address: React.FC<AddressProps> = ({
   onCopied,
 }) => {
   // manage clipboard copy status
-  const [isCopied, setCopy] = useClipboard(address)
+  const [isCopied, setCopied] = useClipboard(address, {
+    successDuration: 0,
+  })
   //state to hold the resolved name, initialized with the resolvedName prop
   const [name, setName] = React.useState<string | undefined>(resolvedName)
 
@@ -50,11 +53,12 @@ export const Address: React.FC<AddressProps> = ({
   }, [address, useName])
 
   // trigger the onCopied callback when the address is copied
-  useEffect(() => {
-    if (isCopied && onCopied) {
+  const handleCopy = useCallback(() => {
+    setCopied()
+    if (onCopied) {
       onCopied()
     }
-  }, [isCopied, onCopied])
+  }, [setCopied, onCopied])
 
   // Determine the display name based on the props and state
   const displayName =
@@ -73,26 +77,26 @@ export const Address: React.FC<AddressProps> = ({
         </Placeholder.Root>
       ) : (
         // Display the resolved name or minified address
-        <span className={`${className} ${name === address ? 'font-mono' : ''}`}>
-          {displayName}
-        </span>
+        <span className={`${className}`}>{displayName}</span>
+      )}
+      {showCopyIcon && (
+        // Button to copy the address to clipboard
+        <Button variant="borderless" onClick={handleCopy} aria-label="copy">
+          <CopyIcon size={20} />
+        </Button>
       )}
       {showExternalLink && (
-        // External link to Etherscan for the address
+        // External link to the custom URL for the address or Etherscan
         <a
-          href={`https://etherscan.io/address/${address}`}
+          href={externalLinkUrl || `https://etherscan.io/address/${address}`}
           target="_blank"
           rel="noopener noreferrer"
           className="text-blue-500 hover:text-blue-700"
         >
-          <ExternalLinkIcon size={20} className="text-brand-ui-primary" />
+          <Button variant="borderless" aria-label="external link">
+            <ExternalLinkIcon size={20} className="text-brand-ui-primary" />
+          </Button>
         </a>
-      )}
-      {showCopyIcon && (
-        // Button to copy the address to clipboard
-        <button onClick={() => setCopy()}>
-          <CopyIcon />
-        </button>
       )}
     </div>
   )
