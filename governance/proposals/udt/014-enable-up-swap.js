@@ -3,7 +3,7 @@ const {
   getNetwork,
   copyAndBuildContractsAtVersion,
 } = require('@unlock-protocol/hardhat-helpers')
-const { parseBridgeCall } = require('../helpers/crossChain')
+const { parseBridgeCall } = require('../../helpers/crossChain')
 const {
   abi: proxyAdminABI,
 } = require('@unlock-protocol/hardhat-helpers/dist/ABIs/ProxyAdmin.json')
