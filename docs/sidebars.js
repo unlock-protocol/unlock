@@ -169,7 +169,7 @@ const sidebars = {
       ],
     },
     {
-      label: "Governance",
+      label: "Unlock DAO",
       type: "category",
       link: {
         type: "doc",

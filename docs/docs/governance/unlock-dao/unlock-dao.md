@@ -1,5 +1,5 @@
 ---
-title: Unlock DAO
+title: Governance & Voting
 description: >-
   The Unlock Protocol is a public good aimed at being governed by a DAO of its
   users and developers.
