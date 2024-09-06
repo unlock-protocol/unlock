@@ -1,10 +1,5 @@
-import { addressMinify } from '~/utils/strings'
-import { BiCopy as CopyIcon } from 'react-icons/bi'
-import { HiOutlineExternalLink as ExternalLinkIcon } from 'react-icons/hi'
-import { Button, Detail, Placeholder, Tooltip } from '@unlock-protocol/ui'
-import useClipboard from 'react-use-clipboard'
-import React, { useEffect, useState } from 'react'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { Detail, Placeholder, Tooltip } from '@unlock-protocol/ui'
+import { useEffect, useState } from 'react'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQuery } from '@tanstack/react-query'
 import { UNLIMITED_KEYS_COUNT, UNLIMITED_KEYS_DURATION } from '~/constants'
@@ -17,6 +12,7 @@ import { locksmith } from '~/config/locksmith'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useLockManager } from '~/hooks/useLockManager'
 import { PriceFormatter } from '@unlock-protocol/ui'
+import { WrappedAddress } from '~/components/interface/WrappedAddress'
 
 interface LockDetailCardProps {
   network: number
@@ -38,20 +34,6 @@ const LockInfoCard = ({
   loading,
   version,
 }: LockInfoCardProps) => {
-  const { networks } = useConfig()
-  const [isCopied, setCopied] = useClipboard(lockAddress, {
-    successDuration: 2000,
-  })
-
-  useEffect(() => {
-    if (!isCopied) return
-    ToastHelper.success(`Address copied`)
-  }, [isCopied])
-
-  const { explorer } = networks?.[network] ?? {}
-
-  const explorerUrl = explorer?.urls?.address(lockAddress) || '#'
-
   if (loading)
     return (
       <>
@@ -81,19 +63,11 @@ const LockInfoCard = ({
           </Tooltip>
         </div>
 
-        <span className="text-base">{addressMinify(lockAddress)}</span>
-        <Button variant="borderless" onClick={setCopied} aria-label="copy">
-          <CopyIcon size={20} />
-        </Button>
-        <a href={explorerUrl} target="_blank" rel="noreferrer">
-          <Button
-            variant="transparent"
-            className="p-0 m-0"
-            aria-label="external link"
-          >
-            <ExternalLinkIcon size={20} className="text-brand-ui-primary" />
-          </Button>
-        </a>
+        <WrappedAddress
+          address={lockAddress}
+          network={network}
+          addressType="lock"
+        />
       </div>
     </>
   )

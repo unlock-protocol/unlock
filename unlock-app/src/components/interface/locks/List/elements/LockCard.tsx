@@ -1,5 +1,5 @@
 import { useConfig } from '~/utils/withConfig'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { FiArrowRight as ArrowRightIcon } from 'react-icons/fi'
 import { AiOutlineTag as TagIcon } from 'react-icons/ai'
 import { IoMdTime as TimeIcon } from 'react-icons/io'
@@ -11,7 +11,6 @@ import Duration from '~/components/helpers/Duration'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQueries } from '@tanstack/react-query'
 import { ethers } from 'ethers'
-import { AddressLink } from '~/components/interface/AddressLink'
 import { Card, Detail, Icon } from '@unlock-protocol/ui'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { PriceFormatter } from '@unlock-protocol/ui'
@@ -20,6 +19,7 @@ import {
   FaStar as UnfavoriteStar,
 } from 'react-icons/fa'
 import { FavoriteLocks } from './LockList'
+import { WrappedAddress } from '~/components/interface/WrappedAddress'
 
 interface LockCardProps {
   lock: any
@@ -153,7 +153,12 @@ export const LockCard = ({
                   )}
                 </button>
               </div>
-              <AddressLink address={lock.address} network={network} />
+              <WrappedAddress
+                className="text-brand-dark"
+                address={lock.address}
+                network={network}
+                addressType="lock"
+              />
             </div>
           </div>
 
