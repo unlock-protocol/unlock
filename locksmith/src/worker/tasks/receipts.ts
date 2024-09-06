@@ -8,7 +8,10 @@ import {
 } from '@unlock-protocol/unlock-js'
 import { Payload } from '../../models/payload'
 import normalizer from '../../utils/normalizer'
-import { getReceiptsZipName, zipReceiptsAndSendtos3 } from '../../utils/receipts'
+import {
+  getReceiptsZipName,
+  zipReceiptsAndSendtos3,
+} from '../../utils/receipts'
 
 const TaskPayload = z.object({
   lockAddress: z

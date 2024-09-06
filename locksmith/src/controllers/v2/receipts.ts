@@ -51,8 +51,8 @@ export const allReceipts: RequestHandler = async (request, response) => {
           receiptBaseData?.addressLine1 && receiptBaseData?.addressLine2
             ? `${receiptBaseData?.addressLine1}\n${receiptBaseData}`
             : receiptBaseData?.addressLine1 ||
-            receiptBaseData?.addressLine2 ||
-            '',
+              receiptBaseData?.addressLine2 ||
+              '',
       }
     })
     .sort((a, b) => {
@@ -78,7 +78,7 @@ export const createDownloadReceiptsRequest: RequestHandler = async (
     },
   })
 
-  if(unfinishedJob) {
+  if (unfinishedJob) {
     return response.json({ status: 'pending' })
   }
 
@@ -109,11 +109,11 @@ export const getReceiptsStatus: RequestHandler = async (request, response) => {
   const network = Number(request.params.network || 1)
 
   const key = getReceiptsZipName(lockAddress, network)
-  const result = await Payload.findAll({ 
-      where: { payload: { key } },
-      order: [['createdAt', 'DESC']],
-      limit: 2
-    })
+  const result = await Payload.findAll({
+    where: { payload: { key } },
+    order: [['createdAt', 'DESC']],
+    limit: 2,
+  })
   if (!result) {
     response.sendStatus(404)
     return
@@ -126,9 +126,10 @@ export const downloadReceipts: RequestHandler = async (request, response) => {
   const network = Number(request.params.network || 1)
 
   const key = getReceiptsZipName(lockAddress, network)
-  const result = await Payload.findOne(
-    { where: { payload: { key, status: 'success' } }, order: [['createdAt', 'DESC']] },
-  )
+  const result = await Payload.findOne({
+    where: { payload: { key, status: 'success' } },
+    order: [['createdAt', 'DESC']],
+  })
   if (result) {
     const bucketName = config.storage.bucket
 
@@ -136,7 +137,10 @@ export const downloadReceipts: RequestHandler = async (request, response) => {
       const fileStream = await downloadFileFromS3(bucketName, key)
 
       response.setHeader('Content-Type', 'application/zip')
-      response.setHeader('Content-Disposition', `attachment; filename=receipts.zip`)
+      response.setHeader(
+        'Content-Disposition',
+        `attachment; filename=receipts.zip`
+      )
 
       fileStream.pipe(response)
 
@@ -154,8 +158,7 @@ export const downloadReceipts: RequestHandler = async (request, response) => {
         response.status(400).send('Failed to download file')
       }
     }
-  }
-  else {
+  } else {
     response.sendStatus(404)
   }
 }

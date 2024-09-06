@@ -16,9 +16,24 @@ const router = express.Router({ mergeParams: true })
 const receiptController = new ReceiptController()
 
 router
-.get('/all/:network/:lockAddress', authenticatedMiddleware, lockManagerMiddleware, getReceiptsStatus)
-.post('/all/:network/:lockAddress',authenticatedMiddleware, lockManagerMiddleware, createDownloadReceiptsRequest)
-.get('/download/:network/:lockAddress', authenticatedMiddleware, lockManagerMiddleware, downloadReceipts)
+  .get(
+    '/all/:network/:lockAddress',
+    authenticatedMiddleware,
+    lockManagerMiddleware,
+    getReceiptsStatus
+  )
+  .post(
+    '/all/:network/:lockAddress',
+    authenticatedMiddleware,
+    lockManagerMiddleware,
+    createDownloadReceiptsRequest
+  )
+  .get(
+    '/download/:network/:lockAddress',
+    authenticatedMiddleware,
+    lockManagerMiddleware,
+    downloadReceipts
+  )
 
 router.get(
   '/:network/:lockAddress/all',

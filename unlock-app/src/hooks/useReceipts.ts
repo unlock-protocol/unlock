@@ -174,14 +174,18 @@ const fetchReceiptsStatus = async ({ queryKey }: any) => {
   return jobs
 }
 
-export const useReceiptsStatus = (network: number, lockAddress: string, condition = true) => {
+export const useReceiptsStatus = (
+  network: number,
+  lockAddress: string,
+  condition = true
+) => {
   const [timeoutReached, setTimeoutReached] = useState(false)
   const timeout = 5 * 60 * 1000
   const refetchInterval = 3000
 
   useEffect(() => {
     let timer: NodeJS.Timeout
-    if(condition) {
+    if (condition) {
       timer = setTimeout(() => {
         setTimeoutReached(true)
       }, timeout)

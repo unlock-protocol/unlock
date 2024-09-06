@@ -179,7 +179,11 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
     network,
   })
 
-  const { data: jobs, isLoading, error } = useReceiptsStatus(network, lockAddress, shouldRefetch)
+  const {
+    data: jobs,
+    isLoading,
+    error,
+  } = useReceiptsStatus(network, lockAddress, shouldRefetch)
 
   let isPending = false
   let lastExportDate = null
@@ -188,36 +192,42 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
   if (!isLoading && !error && jobs) {
     if (jobs.length === 0) {
       downloadText = <p>No previous exports.</p>
-    }
-    else if (jobs.length === 1) {
+    } else if (jobs.length === 1) {
       const job = jobs[0]
       if (job.payload.status === 'pending') {
         isPending = true
         downloadText = <p>Export pending. Please wait a few moments.</p>
-      }
-      else {
+      } else {
         lastExportDate = job.updatedAt
         lastExportDate = lastExportDate && getFormattedTimestamp(lastExportDate)
-        downloadText = <>
-          <p>Download previously exported receipts. Last exported on {lastExportDate}</p>
-          <Button onClick={downloadZip}>Download</Button>
-        </>
+        downloadText = (
+          <>
+            <p>
+              Download previously exported receipts. Last exported on{' '}
+              {lastExportDate}
+            </p>
+            <Button onClick={downloadZip}>Download</Button>
+          </>
+        )
       }
-    }
-    else if (jobs.length === 2) {
+    } else if (jobs.length === 2) {
       // there is either 2 successful jobs or 1 successful 1 pending, either way it's safe to download
       if (jobs[0].payload.status === 'pending') {
         isPending = true
         lastExportDate = jobs[1].updatedAt
-      }
-      else {
+      } else {
         lastExportDate = jobs[0].updatedAt
       }
       lastExportDate = lastExportDate && getFormattedTimestamp(lastExportDate)
-      downloadText = <>
-        <p>Download previously exported receipts. Last exported on <strong>{lastExportDate}</strong>.</p>
-        <Button onClick={downloadZip}>Download</Button>
-      </>
+      downloadText = (
+        <>
+          <p>
+            Download previously exported receipts. Last exported on{' '}
+            <strong>{lastExportDate}</strong>.
+          </p>
+          <Button onClick={downloadZip}>Download</Button>
+        </>
+      )
     }
   }
 
@@ -228,10 +238,12 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
         {
           where: {
             lockAddress: lockAddress.toLowerCase().trim(),
-          }
-        }, {
-        networks: [network]
-      })
+          },
+        },
+        {
+          networks: [network],
+        }
+      )
 
       if (!receipts.length) {
         setIsExportDisabled(true)
@@ -245,7 +257,6 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
     checkExportPossible()
   }, [lockAddress, network])
 
-
   useEffect(() => {
     if (jobs && isPending) {
       setShouldRefetch(true)
@@ -256,7 +267,10 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
 
   async function handleExport() {
     try {
-      const { data } = await locksmith.createDownloadReceiptsRequest(network, lockAddress)
+      const { data } = await locksmith.createDownloadReceiptsRequest(
+        network,
+        lockAddress
+      )
       if (data.status === 'pending') {
         ToastHelper.success('Export started!')
         setShouldRefetch(true)
@@ -280,7 +294,7 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
         responseType: 'blob',
         headers: {
           Authorization: `Bearer ${accessToken}`,
-        }
+        },
       })
 
       const url = window.URL.createObjectURL(new Blob([response.data]))
@@ -330,8 +344,13 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
             <WithTransition>
               <Popover.Panel className="absolute z-10 bg-white shadow-lg rounded mt-2 w-[200%] -translate-x-[50%]">
                 <div className="p-4 flex flex-col gap-4">
-                  <p>Export all of this lock&apos;s receipts into a zip file and download below. This may take a few seconds.</p>
-                  <Button onClick={handleExport} loading={isPending}>Export receipts</Button>
+                  <p>
+                    Export all of this lock&apos;s receipts into a zip file and
+                    download below. This may take a few seconds.
+                  </p>
+                  <Button onClick={handleExport} loading={isPending}>
+                    Export receipts
+                  </Button>
                   <hr />
                   {downloadText}
                 </div>

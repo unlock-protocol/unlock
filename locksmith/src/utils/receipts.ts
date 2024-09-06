@@ -42,16 +42,21 @@ export const getReceiptsZipName = (lockAddress: string, network: number) => {
   return `receipts-${network}-${lockAddress}.zip`
 }
 
-export const zipReceiptsAndSendtos3 = async (lockAddress: string, network: number): Promise<boolean> => {
+export const zipReceiptsAndSendtos3 = async (
+  lockAddress: string,
+  network: number
+): Promise<boolean> => {
   const subgraphservice = new SubgraphService()
   const receipts = await subgraphservice.receipts(
     {
       where: {
         lockAddress: lockAddress.toLowerCase().trim(),
-      }
-    }, {
-    networks: [network]
-  })
+      },
+    },
+    {
+      networks: [network],
+    }
+  )
 
   if (!receipts.length) {
     return false
@@ -61,7 +66,7 @@ export const zipReceiptsAndSendtos3 = async (lockAddress: string, network: numbe
   const lock = await web3Service.getLock(lockAddress, network)
 
   const createPDFBuffer = (data: any) => {
-    const amount = `${Number(data.amountTransferred) / (Math.pow(10, lock.currencyDecimals))} ${lock.currencySymbol}`
+    const amount = `${Number(data.amountTransferred) / Math.pow(10, lock.currencyDecimals)} ${lock.currencySymbol}`
 
     return new Promise((resolve, reject) => {
       const doc = new PDFDocument()
@@ -80,7 +85,9 @@ export const zipReceiptsAndSendtos3 = async (lockAddress: string, network: numbe
 
       doc.text('Transaction Date')
       doc.moveDown(0.5)
-      doc.font('Helvetica-Bold').text(`${new Date(data.timestamp * 1000).toDateString()}`)
+      doc
+        .font('Helvetica-Bold')
+        .text(`${new Date(data.timestamp * 1000).toDateString()}`)
       doc.font('Helvetica').fillColor('black')
       doc.moveDown()
 
@@ -89,20 +96,20 @@ export const zipReceiptsAndSendtos3 = async (lockAddress: string, network: numbe
       doc.font('Helvetica-Bold').text(`${data.id}`)
       doc.moveDown()
 
-      doc.fontSize(14).fillColor("#603DEB").text('Bill to')
+      doc.fontSize(14).fillColor('#603DEB').text('Bill to')
       doc.fillColor('black')
       doc.moveDown(0.5)
       doc.font('Helvetica')
       doc.text(`Wallet: ${data.payer}`)
       doc.moveDown()
 
-      doc.font('Helvetica-Bold').fillColor("#603DEB").text('Service Performed')
+      doc.font('Helvetica-Bold').fillColor('#603DEB').text('Service Performed')
       doc.font('Helvetica').fillColor('black')
       doc.moveDown(0.5)
       doc.text('NFT membership')
       doc.moveDown()
 
-      doc.font('Helvetica-Bold').fillColor("#603DEB").text('Amount')
+      doc.font('Helvetica-Bold').fillColor('#603DEB').text('Amount')
       doc.font('Helvetica').fillColor('black')
       doc.moveDown(0.5)
       doc.text('TOTAL', { align: 'left', continued: true })
@@ -127,9 +134,9 @@ export const zipReceiptsAndSendtos3 = async (lockAddress: string, network: numbe
       const archive = archiver('zip', { zlib: { level: 9 } })
       const zipBuffer: Buffer[] = []
 
-      archive.on('data', chunk => zipBuffer.push(chunk))
+      archive.on('data', (chunk) => zipBuffer.push(chunk))
       archive.on('end', () => resolve(Buffer.concat(zipBuffer)))
-      archive.on('error', err => reject(err))
+      archive.on('error', (err) => reject(err))
 
       for (const receipt of receiptsToZip) {
         try {
@@ -148,13 +155,9 @@ export const zipReceiptsAndSendtos3 = async (lockAddress: string, network: numbe
   const zipBuffer = await generateZipBuffer(receipts)
   const key = `receipts-${network}-${lockAddress}.zip`
   let isUploaded = false
-  await uploadZipToS3(
-    config.storage.bucket,
-    key,
-    zipBuffer as Buffer,
-  )
-    .then(() => isUploaded = true)
-    .catch(() => isUploaded = false)
+  await uploadZipToS3(config.storage.bucket, key, zipBuffer as Buffer)
+    .then(() => (isUploaded = true))
+    .catch(() => (isUploaded = false))
 
   return isUploaded
 }
