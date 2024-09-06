@@ -21,12 +21,12 @@ import { KEY_GRANTER, LOCK_MANAGER } from '../src/helpers'
 import { PricingChanged } from '../generated/templates/PublicLock/PublicLock'
 
 export function mockDataSourceV8(): void {
-  const v8context = new DataSourceContext()
-  v8context.set(
+  const v8Context = new DataSourceContext()
+  v8Context.set(
     'lockAddress',
     Value.fromAddress(Address.fromString(lockAddressV8))
   )
-  dataSourceMock.setReturnValues(lockAddressV8, 'rinkeby', v8context)
+  dataSourceMock.setReturnValues(lockAddressV8, 'rinkeby', v8Context)
 }
 
 export function createNewLockEvent(
@@ -213,4 +213,31 @@ export function createRoleRevokedKeyGranterRemovedEvent(
   )
 
   return newRoleRevokedEvent
+}
+
+export function createRoleRevokedLockManagerRemovedEvent(
+  lockManager: Address
+): RoleRevoked {
+  const newLockManagerRevoked = changetype<RoleRevoked>(newMockEvent())
+
+  // set existing lock address
+  newLockManagerRevoked.address = Address.fromString(lockAddress)
+
+  newLockManagerRevoked.parameters = []
+  newLockManagerRevoked.parameters.push(
+    new ethereum.EventParam(
+      'role',
+      ethereum.Value.fromBytes(Bytes.fromHexString(LOCK_MANAGER))
+    )
+  )
+
+  newLockManagerRevoked.parameters.push(
+    new ethereum.EventParam('account', ethereum.Value.fromAddress(lockManager))
+  )
+
+  newLockManagerRevoked.parameters.push(
+    new ethereum.EventParam('sender', ethereum.Value.fromString(lockAddress))
+  )
+
+  return newLockManagerRevoked
 }
