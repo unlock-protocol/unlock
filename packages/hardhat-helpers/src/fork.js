@@ -44,6 +44,19 @@ async function getWhales(chainId = 1) {
   }
 }
 
+// https://hardhat.org/hardhat-network/docs/guides/forking-other-networks#using-a-custom-hardfork-history
+const baseHardforkHistory = {
+  byzantium: 4370000,
+  constantinople: 7280000,
+  istanbul: 9069000,
+  muirGlacier: 9200000,
+  berlin: 12244000,
+  london: 12965000,
+  arrowGlacier: 13773000,
+  grayGlacier: 15050000,
+  shanghai: 17034870,
+}
+
 // parse mainnet fork
 const parseForkUrl = (networks) => {
   const chainId = getChainId()
@@ -58,6 +71,10 @@ const parseForkUrl = (networks) => {
     forking: {
       url,
     },
+    chains:
+      chainId === 8453
+        ? { 8453: { hardforkHistory: baseHardforkHistory } }
+        : {},
     name: `${name} (forked locally)`,
     accounts: process.env.DEPLOYER_PRIVATE_KEY
       ? [
