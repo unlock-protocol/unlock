@@ -219,7 +219,7 @@ export const zipReceiptsAndSendtos3 = async (
         reject(err)
       })
       ;(async () => {
-        for (let receipt of receiptsToZip) {
+        for (const receipt of receiptsToZip) {
           const pdfBuffer = await createPDFBuffer(receipt)
           archive.append(pdfBuffer as Buffer, {
             name: `receipt_${receipt.receiptNumber}.pdf`,
