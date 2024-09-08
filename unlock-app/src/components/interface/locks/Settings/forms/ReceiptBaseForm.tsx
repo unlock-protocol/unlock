@@ -3,12 +3,19 @@ import { Input, Button } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useGetReceiptsBase, useUpdateReceiptsBase } from '~/hooks/useReceipts'
+import {
+  useGetReceiptsBase,
+  useReceiptsStatus,
+  useUpdateReceiptsBase,
+} from '~/hooks/useReceipts'
 import { z } from 'zod'
-import { useMutation } from '@tanstack/react-query'
-import { downloadAsCSV } from '../../Manage'
 import { locksmith } from '~/config/locksmith'
-import { FaFileCsv as CsvIcon } from 'react-icons/fa'
+import { getAccessToken } from '~/utils/session'
+import { getFormattedTimestamp } from '~/utils/dayjs'
+import { SubgraphService } from '@unlock-protocol/unlock-js'
+import { config } from '~/config/app'
+import axios from 'axios'
+import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
 
 const SupplierSchema = z.object({
   prefix: z.string().optional(),
@@ -50,6 +57,157 @@ const ReceiptBaseFormPlaceholder = () => {
   )
 }
 
+const DownloadReceiptsButton = ({
+  network,
+  lockAddress,
+}: {
+  network: number
+  lockAddress: string
+}) => {
+  const [shouldRefetch, setShouldRefetch] = useState(false)
+  const [isExportDisabled, setIsExportDisabled] = useState(false)
+
+  const {
+    data: jobs,
+    isLoading,
+    error,
+  } = useReceiptsStatus(network, lockAddress, shouldRefetch)
+
+  let isPending = false
+  let lastExportDate = null
+  let downloadLink = null
+
+  if (!isLoading && !error && jobs) {
+    if (jobs.length === 1) {
+      const job = jobs[0]
+      if (job.payload.status === 'pending') {
+        isPending = true
+      } else {
+        lastExportDate = job.updatedAt
+        lastExportDate = lastExportDate && getFormattedTimestamp(lastExportDate)
+      }
+    } else if (jobs.length === 2) {
+      // there is either 2 successful jobs or 1 successful 1 pending, either way it's safe to download
+      if (jobs[0].payload.status === 'pending') {
+        isPending = true
+        lastExportDate = jobs[1].updatedAt
+      } else {
+        lastExportDate = jobs[0].updatedAt
+      }
+      lastExportDate = lastExportDate && getFormattedTimestamp(lastExportDate)
+    }
+    downloadLink = lastExportDate && (
+      <p>
+        Last export:{' '}
+        <a
+          onClick={downloadZip}
+          className="font-bold underline text-[#603DEB] hover:cursor-pointer"
+        >
+          {lastExportDate}
+        </a>
+      </p>
+    )
+  }
+
+  const subgraphservice = new SubgraphService()
+  async function checkExportPossible() {
+    try {
+      const receipts = await subgraphservice.receipts(
+        {
+          where: {
+            lockAddress: lockAddress.toLowerCase().trim(),
+          },
+        },
+        {
+          networks: [network],
+        }
+      )
+
+      if (!receipts.length) {
+        setIsExportDisabled(true)
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  useEffect(() => {
+    checkExportPossible()
+  }, [lockAddress, network])
+
+  useEffect(() => {
+    if (jobs && isPending) {
+      setShouldRefetch(true)
+    } else {
+      setShouldRefetch(false)
+    }
+  }, [jobs])
+
+  async function handleExport() {
+    try {
+      const { data } = await locksmith.createDownloadReceiptsRequest(
+        network,
+        lockAddress
+      )
+      if (data.status === 'pending') {
+        ToastHelper.success('Export started!')
+        setShouldRefetch(true)
+      }
+    } catch (error) {
+      ToastHelper.error('Could not start export')
+    }
+  }
+
+  async function downloadZip() {
+    const accessToken = getAccessToken()
+    if (!accessToken) {
+      return
+    }
+
+    const locksmithURI = config.locksmithHost
+    const downloadUrl = `${locksmithURI}/v2/receipts/download/${network}/${lockAddress}`
+
+    try {
+      const response = await axios.get(downloadUrl, {
+        responseType: 'blob',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+
+      const url = window.URL.createObjectURL(new Blob([response.data]))
+      const a = document.createElement('a')
+      a.style.display = 'none'
+      a.href = url
+      a.download = 'receipts.zip'
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      window.URL.revokeObjectURL(url)
+
+      ToastHelper.success('Download successful!')
+    } catch (error) {
+      ToastHelper.error('Could not download receipts')
+    }
+  }
+
+  return (
+    <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+      <Button
+        variant="outlined-primary"
+        size="small"
+        onClick={handleExport}
+        loading={shouldRefetch}
+        disabled={isExportDisabled}
+        iconLeft={<ReceiptIcon />}
+      >
+        Export Receipts
+      </Button>
+      {downloadLink}
+    </div>
+  )
+}
+
 export const ReceiptBaseForm = ({
   lockAddress,
   isManager,
@@ -84,26 +242,6 @@ export const ReceiptBaseForm = ({
     isManager,
   })
 
-  const onDownloadReceiptsMutation = useMutation({
-    mutationFn: async () => {
-      const response = await locksmith.getReceipts(network, lockAddress)
-      const cols: string[] = []
-      response?.data?.items?.map((item) => {
-        Object.keys(item).map((key: string) => {
-          if (!cols.includes(key)) {
-            cols.push(key) // add key once only if not present in list
-          }
-        })
-      })
-      downloadAsCSV({
-        cols,
-        metadata: response?.data?.items || [],
-        fileName: 'receipts.csv',
-      })
-    },
-    mutationKey: ['downloadReceipts', lockAddress, network],
-  })
-
   const onHandleSubmit = async (data: SupplierBodyProps) => {
     if (isValid) {
       await ToastHelper.promise(receiptBaseMutation(data), {
@@ -134,15 +272,7 @@ export const ReceiptBaseForm = ({
   return (
     <div className="space-y-2">
       <div className="flex items-center">
-        <Button
-          variant="outlined-primary"
-          size="small"
-          loading={onDownloadReceiptsMutation.isPending}
-          iconLeft={<CsvIcon className="text-brand-ui-primary" size={16} />}
-          onClick={() => onDownloadReceiptsMutation.mutate()}
-        >
-          Download Receipts
-        </Button>
+        <DownloadReceiptsButton network={network} lockAddress={lockAddress} />
       </div>
       <form
         className="grid grid-cols-1 gap-6 pt-6 text-left"
