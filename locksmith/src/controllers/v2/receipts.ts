@@ -9,6 +9,7 @@ import { Payload } from '../../models/payload'
 import { addJob } from '../../worker/worker'
 import config from '../../config/config'
 import { downloadFileFromS3 } from '../../utils/s3'
+import logger from '../../logger'
 
 export const allReceipts: RequestHandler = async (request, response) => {
   const network = Number(request.params.network)
@@ -94,23 +95,29 @@ export const downloadReceipts: RequestHandler = async (request, response) => {
     try {
       const fileStream = await downloadFileFromS3(bucketName, key)
 
-      response.setHeader('Content-Type', 'application/zip')
-      response.setHeader(
-        'Content-Disposition',
-        `attachment; filename=receipts.zip`
-      )
+      if (fileStream) {
+        const readableStream = fileStream as NodeJS.ReadableStream
 
-      fileStream.pipe(response)
+        response.setHeader('Content-Type', 'application/zip')
+        response.setHeader(
+          'Content-Disposition',
+          `attachment; filename=receipts.zip`
+        )
 
-      fileStream.on('error', () => {
-        if (!response.headersSent) {
-          response.status(400).send('Failed to download file')
-        }
-      })
+        readableStream.pipe(response)
 
-      response.on('finish', () => {
-        console.log('File downloaded successfully')
-      })
+        readableStream.on('error', () => {
+          if (!response.headersSent) {
+            response.status(400).send('Failed to download file')
+          }
+        })
+
+        response.on('finish', () => {
+          logger.info('File downloaded successfully')
+        })
+      } else {
+        response.status(400).send('Failed to download file')
+      }
     } catch (error) {
       if (!response.headersSent) {
         response.status(400).send('Failed to download file')
