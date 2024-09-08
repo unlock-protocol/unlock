@@ -170,8 +170,8 @@ export const useUpdateReceiptsBase = ({
 
 const fetchReceiptsStatus = async ({ queryKey }: any) => {
   const [, network, lockAddress] = queryKey
-  const { data: jobs } = await locksmith.getReceiptsStatus(network, lockAddress)
-  return jobs
+  const { data } = await locksmith.getReceiptsStatus(network, lockAddress)
+  return data
 }
 
 export const useReceiptsStatus = (

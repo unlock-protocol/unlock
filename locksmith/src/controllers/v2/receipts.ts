@@ -1,7 +1,9 @@
 import { ethers } from 'ethers'
 import { RequestHandler } from 'express'
-import { getAllReceipts, getReceiptsZipName } from '../../utils/receipts'
-import { Receipt, ReceiptBase } from '../../models'
+import {
+  getAllReceiptsWithSupplierData,
+  getReceiptsZipName,
+} from '../../utils/receipts'
 import normalizer from '../../utils/normalizer'
 import { Payload } from '../../models/payload'
 import { addJob } from '../../worker/worker'
@@ -11,53 +13,9 @@ import { downloadFileFromS3 } from '../../utils/s3'
 export const allReceipts: RequestHandler = async (request, response) => {
   const network = Number(request.params.network)
   const lockAddress = ethers.getAddress(request.params.lockAddress)
-  const [receipts, receiptsData, receiptBaseData] = await Promise.all([
-    getAllReceipts({
-      network,
-      lockAddress,
-    }),
-    Receipt.findAll({
-      where: {
-        lockAddress,
-        network,
-      },
-    }),
-    ReceiptBase.findOne({
-      where: {
-        lockAddress,
-        network,
-      },
-    }),
-  ])
 
-  const receiptsDataMap = receiptsData.reduce<Record<string, Receipt>>(
-    (map, receiptData) => {
-      map[receiptData.id] = receiptData
-      return map
-    },
-    {}
-  )
+  const items = await getAllReceiptsWithSupplierData(network, lockAddress)
 
-  const items = receipts
-    .map((item) => {
-      const receiptData = receiptsDataMap[item.id]
-      return {
-        ...item,
-        fullName: receiptData?.fullname,
-        vat: receiptBaseData?.vat,
-        service: receiptBaseData?.servicePerformed,
-        supplier: receiptBaseData?.supplierName,
-        supplierAddress:
-          receiptBaseData?.addressLine1 && receiptBaseData?.addressLine2
-            ? `${receiptBaseData?.addressLine1}\n${receiptBaseData}`
-            : receiptBaseData?.addressLine1 ||
-              receiptBaseData?.addressLine2 ||
-              '',
-      }
-    })
-    .sort((a, b) => {
-      return Number(a.timestamp) - Number(b.timestamp)
-    })
   return response.json({ items })
 }
 

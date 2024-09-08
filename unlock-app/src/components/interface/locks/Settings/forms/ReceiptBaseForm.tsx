@@ -57,7 +57,7 @@ const ReceiptBaseFormPlaceholder = () => {
   )
 }
 
-const DownloadReceiptsButton = ({
+const ExportReceipts = ({
   network,
   lockAddress,
 }: {
@@ -115,7 +115,7 @@ const DownloadReceiptsButton = ({
       const receipts = await subgraphservice.receipts(
         {
           where: {
-            lockAddress: lockAddress.toLowerCase().trim(),
+            lockAddress,
           },
         },
         {
@@ -272,7 +272,7 @@ export const ReceiptBaseForm = ({
   return (
     <div className="space-y-2">
       <div className="flex items-center">
-        <DownloadReceiptsButton network={network} lockAddress={lockAddress} />
+        <ExportReceipts network={network} lockAddress={lockAddress} />
       </div>
       <form
         className="grid grid-cols-1 gap-6 pt-6 text-left"
