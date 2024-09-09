@@ -36,13 +36,12 @@ const getLatestDeployment = async (url) => {
   return deployment
 }
 
-const parseSubgraphType = ({ endpoint, endpointv2, studioEndpoint }) => {
+const parseSubgraphType = ({ endpoint, studioEndpoint }) => {
   // custom if not the graph
   if (!endpoint.includes('thegraph')) return 'custom'
   if (
     // studioEndpoint ||
-    (endpoint || '').includes('studio') ||
-    (endpointv2 || '').includes('studio')
+    (endpoint || '').includes('studio')
   )
     return 'studio'
   return 'hosted'
@@ -59,14 +58,13 @@ const checkHealth = async ({ id, name, subgraph }) => {
     return
   }
 
-  const actualEndpoint = subgraph.endpointV2 || subgraph.endpoint
   // get latest deployment id
   let deploymentId
   try {
-    deploymentId = await getLatestDeployment(actualEndpoint)
+    deploymentId = await getLatestDeployment(subgraph.endpoint)
   } catch (error) {
     errors.push(
-      `❌ failed to fetch latest deployment from The Graph (${actualEndpoint})!`
+      `❌ failed to fetch latest deployment from The Graph (${subgraph.endpoint})!`
     )
     errors.push(error)
   }

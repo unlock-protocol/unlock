@@ -11,22 +11,22 @@
     "deploy-fleek": "./scripts/deploy-fleek.sh",
     "start": "next start",
     "test": "echo 'no tests'",
-    "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js src/",
+    "lint": "eslint src/",
     "ci": "yarn test && yarn lint && yarn build"
   },
   "dependencies": {
     "@unlock-protocol/paywall": "workspace:./packages/paywall",
-    "next": "14.2.5",
+    "next": "14.2.7",
     "vite-plugin-node-polyfills": "0.22.0"
   },
   "license": "MIT",
   "devDependencies": {
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
-    "eslint": "8.57.0",
+    "eslint": "9.9.1",
     "prettier": "3.3.3",
     "typescript": "5.5.4",
-    "vite": "5.3.5"
+    "vite": "5.4.2"
   },
   "browserslist": [
     "defaults",

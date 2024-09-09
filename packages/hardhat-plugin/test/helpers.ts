@@ -1,11 +1,10 @@
-/* eslint-disable prefer-arrow-callback, func-names */
-import { resetHardhatContext } from 'hardhat/plugins-testing'
+import '../src/type-extensions'
+
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import { assert } from 'chai'
-
 import path from 'path'
 
-import '../src/type-extensions'
+import { resetHardhatContext } from 'hardhat/plugins-testing'
 
 declare module 'mocha' {
   interface Context {
@@ -40,7 +39,7 @@ export async function expectThrowsAsync<T>(
 export function useEnvironment(fixtureProjectName: string) {
   beforeEach(function () {
     process.chdir(path.join(__dirname, 'fixture-projects', fixtureProjectName))
-    // eslint-disable-next-line global-require
+
     this.hre = require('hardhat')
   })
 
