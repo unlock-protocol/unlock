@@ -1,5 +1,5 @@
 const { ethers, ZeroAddress } = require('ethers')
-const { parseSafeMulticall } = require('../helpers/multisig')
+const { parseSafeMulticall } = require('../../helpers/multisig')
 const { UnlockV12 } = require('@unlock-protocol/contracts')
 const {
   getNetwork,

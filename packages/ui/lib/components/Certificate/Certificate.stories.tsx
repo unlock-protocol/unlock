@@ -3,7 +3,7 @@ import { Meta, StoryObj } from '@storybook/react'
 
 const meta = {
   component: Certificate,
-  title: 'Certificate',
+  title: 'Certification',
 } satisfies Meta<typeof Certificate>
 
 export default meta

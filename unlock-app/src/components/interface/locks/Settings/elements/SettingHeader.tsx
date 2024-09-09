@@ -3,7 +3,7 @@ import { IoMdClose as CloseIcon } from 'react-icons/io'
 import { useConfig } from '~/utils/withConfig'
 import { Lock } from '@unlock-protocol/types'
 import Link from 'next/link'
-import { AddressLink } from '~/components/interface/AddressLink'
+import { WrappedAddress } from '~/components/interface/WrappedAddress'
 
 interface SettingHeaderProps {
   lockAddress: string
@@ -53,7 +53,11 @@ export const SettingHeader = ({
             </span>
             <div className="flex gap-4">
               <div className="px-4 py-1 bg-lime-200 rounded-2xl">{version}</div>
-              <AddressLink address={lock.address} network={network} />
+              <WrappedAddress
+                address={lock.address}
+                network={network}
+                addressType="lock"
+              />
             </div>
           </div>
         </div>
