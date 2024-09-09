@@ -1,13 +1,12 @@
 import { createFrames } from 'frames.js/next'
 
-type Lock = {
+export type Lock = {
   name: string
   address: string
   network: string
   image: string
   description: string
   price: string
-  defaultImage: any
 }
 
 export type State = {

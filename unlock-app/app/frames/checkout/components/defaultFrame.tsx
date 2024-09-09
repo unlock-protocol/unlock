@@ -2,21 +2,13 @@
 import React from 'react'
 import { Button } from 'frames.js/next'
 import { State } from '../frames'
+import { DefaultImage } from './DefaultImage'
 
-export function defaultFrame(state: State) {
-  const { name, description, defaultImage, price } = state.lock!
+export function getDefaultFrame(state: State) {
+  const lock = state.lock!
 
   return {
-    image: (
-      <div tw="flex w-full h-full bg-gray-200 p-2">
-        {defaultImage}
-        <div tw="flex-1 flex flex-col justify-center ml-4">
-          <p tw="text-6xl">{name}</p>
-          <p>{description}</p>
-          <p>{price}</p>
-        </div>
-      </div>
-    ),
+    image: <DefaultImage lock={lock} />,
     imageOptions: {
       dynamic: true,
       headers: {

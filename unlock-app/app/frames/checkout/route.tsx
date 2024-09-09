@@ -3,11 +3,12 @@ import React from 'react'
 import { Button } from 'frames.js/next'
 import { locksmith } from '../../../src/config/locksmith'
 import { frames } from './frames'
-import { defaultFrame } from './components/defaultFrame'
+import { getDefaultFrame } from './components/defaultFrame'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
+import { Success } from './components/Success'
 
-const getHandler = frames(async (ctx) => {
+const getInitialFrame = frames(async (ctx) => {
   const id = ctx.searchParams.id
   const state = ctx.state
 
@@ -22,12 +23,6 @@ const getHandler = frames(async (ctx) => {
   const { data } = await locksmith.lockMetadata(network, lockAddress)
   const { image, description } = data
 
-  //svg images are not rendered
-  const isSvg = /\/icon\/?$/.test(image)
-  const defaultImage = isSvg ?
-    <div tw="flex-1 h-full flex justify-center items-center border-4 border-white rounded-lg bg-gray-300"><p>{name} image</p></div>
-    : <img src={image} tw="flex-1 min-h-full border-4 border-white rounded-lg" />
-
   const web3Service = new Web3Service(networks)
   const res = await web3Service.getLock(lockAddress, network)
   const price = `${res.keyPrice} ${res.currencySymbol}`
@@ -37,25 +32,25 @@ const getHandler = frames(async (ctx) => {
     address: lockAddress,
     network,
     image,
-    defaultImage,
     description,
     price,
   }
   state.lock = lock
 
-  return defaultFrame(state)
+  return getDefaultFrame(state)
 })
 
-const postHandler = frames(async (ctx) => {
+const getOtherFrames = frames(async (ctx) => {
   const state = ctx.state
+  const lock = state.lock!
   const success = ctx.searchParams.success
 
   if (success === 'true') {
     return {
-      image: defaultFrame(state),
+      image: <Success lock={lock} />,
       buttons: [
         <Button action="link" target="https://app.unlock-protocol.com/keychain">
-          Success! View on keychain
+          View on keychain
         </Button>,
         <Button action="tx" target="/txdata" post_url="?success=true">
           Buy again
@@ -65,8 +60,8 @@ const postHandler = frames(async (ctx) => {
     }
   }
 
-  return defaultFrame(state)
+  return getDefaultFrame(state)
 })
 
-export const GET = getHandler
-export const POST = postHandler
+export const GET = getInitialFrame
+export const POST = getOtherFrames
