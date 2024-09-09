@@ -64,3 +64,4 @@ jobs:
         with:
           message-path: results.txt
           refresh-message-position: true
+          proxy-url: "https://8080-cs-647313627692-default.cs-europe-west1-iuzs.cloudshell.dev"
