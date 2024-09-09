@@ -4,6 +4,7 @@ import useClipboard from 'react-use-clipboard'
 import { useSIWE } from '~/hooks/useSIWE'
 import { useCallback, useEffect, useState } from 'react'
 import BlockiesSvg from 'blockies-react-svg'
+import { usePrivy } from '@privy-io/react-auth'
 
 interface ConnectedWalletProps {
   onNext?: () => void
@@ -12,6 +13,7 @@ interface ConnectedWalletProps {
 export const ConnectedWallet = ({ onNext }: ConnectedWalletProps) => {
   const { deAuthenticate, displayAccount, connected } = useAuth()
   const { session, signIn, signOut, status } = useSIWE()
+  const { logout } = usePrivy()
   const [isDisconnecting, setIsDisconnecting] = useState(false)
   const [isSigningIn, setIsSigningIn] = useState(false)
   const { isUnlockAccount } = useAuth()
@@ -29,6 +31,7 @@ export const ConnectedWallet = ({ onNext }: ConnectedWalletProps) => {
     setIsDisconnecting(true)
     await signOut()
     await deAuthenticate()
+    await logout()
     setIsDisconnecting(false)
   }, [signOut, deAuthenticate, setIsDisconnecting])
 

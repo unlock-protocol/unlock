@@ -17,6 +17,7 @@
     "@headlessui/react": "1.7.19",
     "@hookform/error-message": "2.0.1",
     "@hookform/resolvers": "3.9.0",
+    "@privy-io/react-auth": "1.82.0",
     "@radix-ui/react-avatar": "1.1.0",
     "@rehooks/local-storage": "2.4.5",
     "@sentry/nextjs": "7.118.0",

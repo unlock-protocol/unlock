@@ -2,6 +2,7 @@ import {
   RECENTLY_USED_PROVIDER,
   useAuthenticate,
 } from '~/hooks/useAuthenticate'
+import { LoginModal, usePrivy, useWallets } from '@privy-io/react-auth'
 import SvgComponents from '../svg'
 import { ConnectButton } from './Custom'
 import { useLocalStorage } from '@rehooks/local-storage'
@@ -14,6 +15,7 @@ import { CheckoutService } from '../checkout/main/checkoutMachine'
 import { useQuery } from '@tanstack/react-query'
 import { locksmith } from '~/config/locksmith'
 import { UserAccountType } from '~/utils/userAccountType'
+import { G } from '@decent.xyz/box-common/dist/index-D1n-mmTU'
 
 interface ConnectWalletProps {
   injectedProvider?: unknown
@@ -98,10 +100,13 @@ export const ConnectViaEmail = ({
 }
 
 export const ConnectWallet = ({
-  injectedProvider,
   shoudOpenConnectModal = false,
   checkoutService,
 }: ConnectWalletProps) => {
+  // https://docs.privy.io/guide/react/wallets/external/#connect-or-create
+  const { connectOrCreateWallet, authenticated } = usePrivy()
+  const { wallets } = useWallets()
+
   const { email } = useAuth()
   const [userEmail, setUserEmail] = useState<string | undefined>(
     email || undefined
@@ -121,25 +126,7 @@ export const ConnectWallet = ({
     enabled: !!userEmail,
   })
 
-  const { authenticateWithProvider } = useAuthenticate({ injectedProvider })
-  const [recentlyUsedProvider] = useLocalStorage(RECENTLY_USED_PROVIDER, null)
-  const [isConnecting, setIsConnecting] = useState('')
-
-  const createOnConnectHandler = (provider: any) => {
-    const handler: MouseEventHandler<HTMLButtonElement> = async (event) => {
-      event.preventDefault()
-      setIsConnecting(provider)
-      await authenticateWithProvider(provider)
-      setIsConnecting('')
-    }
-    return handler
-  }
-
-  const verifyAndSetEmail = async (email: string) => {
-    if (email) {
-      setUserEmail(email)
-    }
-  }
+  const { authenticate } = useAuth()
 
   useEffect(() => {
     if (!email) {
@@ -147,67 +134,17 @@ export const ConnectWallet = ({
     }
   }, [email])
 
-  return (
-    <div className="space-y-4">
-      {(!userEmail || isEmailLoading) && (
-        <>
-          <div className="grid gap-4 px-6">
-            <div className=" text-sm text-gray-600">
-              If you have a wallet, connect it now:
-            </div>
-            {window.ethereum && (
-              <ConnectButton
-                icon={<SvgComponents.Metamask width={40} height={40} />}
-                highlight={recentlyUsedProvider === 'METAMASK'}
-                loading={isConnecting === 'METAMASK'}
-                onClick={createOnConnectHandler('METAMASK')}
-              >
-                Metamask
-              </ConnectButton>
-            )}
+  useEffect(() => {
+    connectOrCreateWallet()
+  }, [connectOrCreateWallet])
 
-            <ConnectButton
-              icon={<SvgComponents.WalletConnect width={40} height={40} />}
-              highlight={recentlyUsedProvider === 'WALLET_CONNECT'}
-              loading={isConnecting === 'WALLET_CONNECT'}
-              onClick={createOnConnectHandler('WALLET_CONNECT')}
-            >
-              WalletConnect
-            </ConnectButton>
+  useEffect(() => {
+    const connectWalletProvider = async () => {
+      const provider = await wallets[0].getEthereumProvider()
+      authenticate(provider)
+    }
+    connectWalletProvider()
+  }, [wallets, authenticate])
 
-            <ConnectButton
-              icon={<SvgComponents.CoinbaseWallet width={40} height={40} />}
-              highlight={recentlyUsedProvider === 'COINBASE'}
-              loading={isConnecting === 'COINBASE'}
-              onClick={createOnConnectHandler('COINBASE')}
-            >
-              Coinbase Wallet
-            </ConnectButton>
-          </div>
-          <div className="grid gap-4 pt-2 px-6">
-            <div className="text-sm text-gray-600">
-              Otherwise, enter your email address:
-            </div>
-            <ConnectViaEmail
-              email={userEmail}
-              isLoadingUserExists={isEmailLoading}
-              onUnlockAccount={(email: string) => {
-                verifyAndSetEmail(email)
-              }}
-            />
-          </div>
-        </>
-      )}
-      {userEmail && !isEmailLoading && (
-        <ConnectUnlockAccount
-          email={userEmail}
-          setEmail={setUserEmail}
-          accountType={userType || []}
-          useIcon={false}
-          shoudOpenConnectModal={shoudOpenConnectModal}
-          checkoutService={checkoutService}
-        />
-      )}
-    </div>
-  )
+  return <LoginModal open={true} />
 }
