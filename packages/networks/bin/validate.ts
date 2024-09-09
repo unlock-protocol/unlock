@@ -16,7 +16,9 @@ const run = async () => {
   const results = {}
 
   const fileList = process.env.ALL_CHANGED_FILES
-    ? process.env.ALL_CHANGED_FILES.split(' ')
+    ? process.env.ALL_CHANGED_FILES.split(' ').filter(
+        (f) => !f.includes(`networks/index.ts`)
+      )
     : []
 
   for (const filePath of fileList) {
