@@ -22,6 +22,12 @@ const getHandler = frames(async (ctx) => {
   const { data } = await locksmith.lockMetadata(network, lockAddress)
   const { image, description } = data
 
+  //svg images are not rendered
+  const isSvg = /\/icon\/?$/.test(image)
+  const defaultImage = isSvg ?
+    <div tw="flex-1 h-full flex justify-center items-center border-4 border-white rounded-lg bg-gray-300"><p>{name} image</p></div>
+    : <img src={image} tw="flex-1 min-h-full border-4 border-white rounded-lg" />
+
   const web3Service = new Web3Service(networks)
   const res = await web3Service.getLock(lockAddress, network)
   const price = `${res.keyPrice} ${res.currencySymbol}`
@@ -31,6 +37,7 @@ const getHandler = frames(async (ctx) => {
     address: lockAddress,
     network,
     image,
+    defaultImage,
     description,
     price,
   }

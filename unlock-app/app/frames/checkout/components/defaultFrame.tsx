@@ -4,16 +4,12 @@ import { Button } from 'frames.js/next'
 import { State } from '../frames'
 
 export function defaultFrame(state: State) {
-  const { name, description, image, price } = state.lock!
-  // <div tw="flex-1 h-full border-4 border-white rounded-lg bg-gray-300">{name}</div>
+  const { name, description, defaultImage, price } = state.lock!
 
   return {
     image: (
       <div tw="flex w-full h-full bg-gray-200 p-2">
-        <div tw="flex-1 h-full border-4 border-white rounded-lg bg-gray-300">
-          {name}
-        </div>
-        {/* <img src={image} tw="flex-1 h-full border-4 border-white rounded-lg" /> */}
+        {defaultImage}
         <div tw="flex-1 flex flex-col justify-center ml-4">
           <p tw="text-6xl">{name}</p>
           <p>{description}</p>

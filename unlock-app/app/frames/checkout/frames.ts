@@ -7,6 +7,7 @@ type Lock = {
   image: string
   description: string
   price: string
+  defaultImage: any
 }
 
 export type State = {
