@@ -124,8 +124,8 @@ export const SIWEProvider = ({ children }: Props) => {
 
       let domain = window.location.host
       // If we are using the parent's provider, then we MUST use the parent's domain
-      if (provider?.provider?.parentOrigin) {
-        domain = new URL(provider.provider.parentOrigin()).host
+      if (provider?.parentOrigin) {
+        domain = new URL(provider.parentOrigin()).host
       }
 
       const siwe = new SiweMessage({
