@@ -4,43 +4,68 @@ import { Env, GraphQLRequest } from './types'
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
+    // Initialize Sentry for error tracking
     const sentry = new Toucan({
       dsn: env.SENTRY_DSN,
       request,
     })
 
+    // Define CORS headers to allow cross-origin requests
+    const corsHeaders = {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+    }
+
+    // Handle preflight requests (OPTIONS)
+    if (request.method === 'OPTIONS') {
+      return new Response(null, {
+        status: 204,
+        headers: corsHeaders,
+      })
+    }
+
+    // Parse the request URL to extract the network ID
     const url = new URL(request.url)
     const matched = url.pathname.match(/\/([0-9]+)/)
     if (!matched || !matched[1]) {
-      return new Response('Bad Request, missing chain id', { status: 400 })
+      return new Response('Bad Request, missing chain id', {
+        status: 400,
+        headers: corsHeaders,
+      })
     }
     const networkId = matched[1]
 
-    // Validate the network by retrieving the corresponding subgraph ID
+    // Retrieve the subgraph URL based on the network ID
     const subgraphUrl = getSubgraphUrl(networkId, env)
     if (!subgraphUrl) {
       return new Response(`Unsupported network ID: ${networkId}`, {
         status: 400,
+        headers: corsHeaders,
       })
     }
 
-    // Ensure that only POST requests are allowed for this endpoint
+    // Ensure the request method is POST
     if (request.method !== 'POST') {
-      // Check if the request method is not POST
-      return new Response('Method Not Allowed', { status: 405 }) // 405 Method Not Allowed
+      return new Response('Method Not Allowed', {
+        status: 405,
+        headers: corsHeaders,
+      })
     }
 
     try {
-      // Parse the incoming request body to extract the GraphQL query and variables
+      // Parse the incoming JSON request body
       const { query, variables }: GraphQLRequest = await request.json()
 
-      // Validate that the query is provided in the request
+      // Validate that a query is provided
       if (!query) {
-        // If the query is missing
-        return new Response('Bad Request: query is required', { status: 400 }) // 400 Bad Request
+        return new Response('Bad Request: query is required', {
+          status: 400,
+          headers: corsHeaders,
+        })
       }
 
-      // Forward the request with the constructed URL
+      // Forward the GraphQL request to the subgraph
       const graphResponse = await fetch(subgraphUrl, {
         method: 'POST',
         headers: {
@@ -49,24 +74,28 @@ export default {
         body: JSON.stringify({ query, variables }),
       })
 
-      // Process the response
-      // Get the response data as text
+      // Extract response data and headers
       const responseData = await graphResponse.text()
-      // Create a new Headers object from the response headers
       const responseHeaders = new Headers(graphResponse.headers)
-      // Allow CORS for all origins
-      responseHeaders.set('Access-Control-Allow-Origin', '*')
 
-      // Return the response data along with the status and headers
+      // Append CORS headers to the response
+      Object.entries(corsHeaders).forEach(([key, value]) => {
+        responseHeaders.set(key, value)
+      })
+
+      // Return the response from the subgraph
       return new Response(responseData, {
         status: graphResponse.status,
         headers: responseHeaders,
       })
     } catch (error) {
-      // Catch any errors that occur during processing
+      // Capture and log any errors that occur during processing
       sentry.captureException(error)
       console.error('Error processing request:', error)
-      return new Response('Internal Server Error', { status: 500 })
+      return new Response('Internal Server Error', {
+        status: 500,
+        headers: corsHeaders,
+      })
     }
   },
 }
