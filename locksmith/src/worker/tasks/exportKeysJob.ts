@@ -2,7 +2,7 @@ import { Task } from 'graphile-worker'
 import { z } from 'zod'
 import * as keysOperations from '../../operations/keysOperations'
 import { PAGE_SIZE } from '../../utils/constants'
-import { uploadJsonToS3 } from '../../utils/uploadJsonToS3'
+import { uploadJsonToS3 } from '../../utils/s3'
 import config from '../../config/config'
 
 export const ExportKeysJobPayload = z.object({

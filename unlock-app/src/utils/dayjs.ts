@@ -9,4 +9,8 @@ dayjs.extend(timezone)
 dayjs.extend(relative)
 dayjs.extend(duration)
 
+export function getFormattedTimestamp(timestamp: Date) {
+  return dayjs(timestamp).format('ddd D MMMM YYYY h:mma')
+}
+
 export default dayjs
