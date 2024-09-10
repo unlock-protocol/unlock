@@ -22,7 +22,6 @@ import { addressMinify } from '~/utils/strings'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { onResolveName } from '~/utils/resolvers'
 import { useMetadata } from '~/hooks/metadata'
-import { LockType, getLockTypeByMetadata } from '@unlock-protocol/core'
 import { FiInfo as InfoIcon } from 'react-icons/fi'
 import { TransferKeyDrawer } from '~/components/interface/keychain/TransferKeyDrawer'
 import { WrappedAddress } from '~/components/interface/WrappedAddress'
@@ -254,10 +253,6 @@ export const MetadataCard = ({
     lockAddress: metadata.lockAddress,
     network,
   })
-
-  const types = getLockTypeByMetadata(lockMetadata)
-  const [eventType] =
-    Object.entries(types ?? {}).find(([, value]) => value === true) ?? []
 
   const { lockAddress, token: tokenId } = data ?? {}
 
@@ -526,10 +521,4 @@ export const MetadataCard = ({
       </div>
     </>
   )
-}
-
-const SendEmailMapping: Record<keyof LockType, string> = {
-  isCertification: 'Send Certificate by email',
-  isEvent: 'Send QR-code by email',
-  isStamp: 'Send Stamp by email',
 }
