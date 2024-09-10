@@ -17,7 +17,7 @@ export function DefaultImage({ lock, rightSideContent }: DefaultImageProps) {
     </div>
   )
 
-  // //svg images are not rendered
+  //svg images are not rendered
   const isSvg = /\/icon\/?$/.test(image)
   const leftImage = isSvg ? (
     <div tw="flex-1 h-full flex justify-center items-center border-4 border-white rounded-lg bg-gray-300">
