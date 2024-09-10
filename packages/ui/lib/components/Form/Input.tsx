@@ -95,7 +95,7 @@ export const Input = forwardRef(
       >
         <div
           className={twMerge(
-            'relative flex items-center w-full box-border rounded-lg transition-all shadow-sm border border-gray-400 hover:border-gray-500 focus-within:ring-gray-500 focus-within:border-gray-500',
+            'relative flex items-center w-full box-border rounded-lg transition-all shadow-sm border border-gray-400 hover:border-gray-500 focus-within:ring-gray-500 focus-within:border-gray-500 overflow-hidden',
             inputStateStyles
           )}
         >
@@ -114,8 +114,8 @@ export const Input = forwardRef(
             ref={ref}
             title={value ? value.toString() : undefined}
             className={twMerge(
-              'flex-grow min-w-0 bg-transparent border-none focus:ring-0 focus:outline-none transition-all duration-200',
-              'truncate focus:overflow-visible focus:whitespace-normal',
+              'flex-grow min-w-0 bg-white border-none focus:ring-0 focus:outline-none transition-all duration-200',
+              'truncate focus:overflow-visible focus:whitespace-normal rounded-lg',
               inputSizeStyle,
               icon ? 'pl-10' : ''
             )}
