@@ -1,4 +1,3 @@
-/* eslint-disable no-await-in-loop */
 /**
  * Returns the first tokenId for the user valid if any, or first if none is valid
  * @return Promise<Lock>

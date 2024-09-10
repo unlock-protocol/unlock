@@ -143,47 +143,6 @@ describe('Describe Locks events', () => {
     )
   })
 
-  // event should be ignored in v11 as we use `RoleGranted` instead
-  test('Lock manager added (using `LockManagerAdded`)', () => {
-    assert.fieldEquals(
-      'Lock',
-      lockAddress,
-      'lockManagers',
-      `[${lockManagers[0]}, ${lockManagers[1]}, ${lockManagers[2]}]`
-    )
-    const newLockManagerAdded = createLockManagerAddedEvent(
-      Address.fromString(lockManagers[1])
-    )
-    handleLockManagerAdded(newLockManagerAdded)
-    assert.fieldEquals(
-      'Lock',
-      lockAddress,
-      'lockManagers',
-      `[${lockManagers[0]}, ${lockManagers[1]}, ${lockManagers[2]}]`
-    )
-  })
-
-  test('Lock manager removed', () => {
-    assert.fieldEquals(
-      'Lock',
-      lockAddress,
-      'lockManagers',
-      `[${lockManagers[0]}, ${lockManagers[1]}, ${lockManagers[2]}]`
-    )
-
-    const newLockManagerRemoved = createLockManagerRemovedEvent(
-      Address.fromString(lockManagers[0])
-    )
-    handleLockManagerRemoved(newLockManagerRemoved)
-
-    assert.fieldEquals(
-      'Lock',
-      lockAddress,
-      'lockManagers',
-      `[${lockManagers[1]}, ${lockManagers[2]}]`
-    )
-  })
-
   test('key granter added (using `RoleGranted`)', () => {
     assert.fieldEquals('Lock', lockAddress, 'keyGranters', `[]`)
     const newKeyGranterAdded = createRoleGrantedKeyGranterAddedEvent(
@@ -223,54 +182,12 @@ describe('Describe Locks events', () => {
     )
   })
 
-  // event should be ignored in v11 as we use `RoleGranted` instead
-  test('Key granter added (using `KeyGranterAdded`)', () => {
-    assert.fieldEquals(
-      'Lock',
-      lockAddress,
-      'keyGranters',
-      `[${keyGranters[0]}, ${keyGranters[1]}, ${keyGranters[2]}]`
-    )
-    const newKeyGranterAdded = createKeyGranterAddedEvent(
-      Address.fromString(keyOwnerAddress)
-    )
-
-    handleKeyGranterAdded(newKeyGranterAdded)
-    assert.fieldEquals(
-      'Lock',
-      lockAddress,
-      'keyGranters',
-      `[${keyGranters[0]}, ${keyGranters[1]}, ${keyGranters[2]}]`
-    )
-  })
-
-  test('Key granter removed', () => {
-    assert.fieldEquals(
-      'Lock',
-      lockAddress,
-      'keyGranters',
-      `[${keyGranters[0]}, ${keyGranters[1]}, ${keyGranters[2]}]`
-    )
-
-    const newKeyGranterRemoved = createKeyGranterRemovedEvent(
-      Address.fromString(keyGranters[0])
-    )
-    handleKeyGranterRemoved(newKeyGranterRemoved)
-
-    assert.fieldEquals(
-      'Lock',
-      lockAddress,
-      'keyGranters',
-      `[${keyGranters[1]}, ${keyGranters[2]}]`
-    )
-  })
-
   test('key granter removed (using `RoleRevoked`)', () => {
     assert.fieldEquals(
       'Lock',
       lockAddress,
       'keyGranters',
-      `[${keyGranters[1]}, ${keyGranters[2]}]`
+      `[${keyGranters[0]}, ${keyGranters[1]}, ${keyGranters[2]}]`
     )
 
     handleRoleRevoked(
@@ -282,7 +199,7 @@ describe('Describe Locks events', () => {
       'Lock',
       lockAddress,
       'keyGranters',
-      `[${keyGranters[2]}]`
+      `[${keyGranters[0]}, ${keyGranters[2]}]`
     )
   })
 
@@ -321,5 +238,90 @@ describe('Describe Locks events', () => {
     assert.fieldEquals('Lock', lockAddress, 'name', name)
     assert.fieldEquals('Lock', lockAddress, 'symbol', symbol)
     // assert.fieldEquals('Lock', lockAddress, 'baseTokenURI', `12`)
+  })
+
+  describe('[Deprecation] Custom events replaced by OZ native role events in v9', () => {
+    // event should be ignored in v11 as we use `RoleGranted` instead
+    test('The `KeyGranterAdded` event does not create a record', () => {
+      assert.fieldEquals(
+        'Lock',
+        lockAddress,
+        'keyGranters',
+        `[${keyGranters[0]}, ${keyGranters[2]}]`
+      )
+      const newKeyGranterAdded = createKeyGranterAddedEvent(
+        Address.fromString(keyOwnerAddress)
+      )
+
+      handleKeyGranterAdded(newKeyGranterAdded)
+      assert.fieldEquals(
+        'Lock',
+        lockAddress,
+        'keyGranters',
+        `[${keyGranters[0]}, ${keyGranters[2]}]`
+      )
+    })
+
+    test('The `KeyGranterRemoved` event does not create a record', () => {
+      assert.fieldEquals(
+        'Lock',
+        lockAddress,
+        'keyGranters',
+        `[${keyGranters[0]}, ${keyGranters[2]}]`
+      )
+
+      const newKeyGranterRemoved = createKeyGranterRemovedEvent(
+        Address.fromString(keyGranters[0])
+      )
+      handleKeyGranterRemoved(newKeyGranterRemoved)
+
+      assert.fieldEquals(
+        'Lock',
+        lockAddress,
+        'keyGranters',
+        `[${keyGranters[0]}, ${keyGranters[2]}]`
+      )
+    })
+
+    // event should be ignored in v11 as we use `RoleGranted` instead
+    test('The `LockManagerAdded` does not create a record', () => {
+      assert.fieldEquals(
+        'Lock',
+        lockAddress,
+        'lockManagers',
+        `[${lockManagers[0]}, ${lockManagers[1]}, ${lockManagers[2]}]`
+      )
+      const newLockManagerAdded = createLockManagerAddedEvent(
+        Address.fromString(lockManagers[1])
+      )
+      handleLockManagerAdded(newLockManagerAdded)
+      assert.fieldEquals(
+        'Lock',
+        lockAddress,
+        'lockManagers',
+        `[${lockManagers[0]}, ${lockManagers[1]}, ${lockManagers[2]}]`
+      )
+    })
+
+    test('the `LockManagerRemoved` does not affect existing records', () => {
+      assert.fieldEquals(
+        'Lock',
+        lockAddress,
+        'lockManagers',
+        `[${lockManagers[0]}, ${lockManagers[1]}, ${lockManagers[2]}]`
+      )
+
+      const newLockManagerRemoved = createLockManagerRemovedEvent(
+        Address.fromString(lockManagers[0])
+      )
+      handleLockManagerRemoved(newLockManagerRemoved)
+
+      assert.fieldEquals(
+        'Lock',
+        lockAddress,
+        'lockManagers',
+        `[${lockManagers[0]}, ${lockManagers[1]}, ${lockManagers[2]}]`
+      )
+    })
   })
 })

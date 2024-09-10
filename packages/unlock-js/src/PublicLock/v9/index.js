@@ -1,77 +1,73 @@
 import abis from '../../abis'
+import addKeyGranter from './addKeyGranter'
+import addLockManager from './addLockManager'
+import approveBeneficiary from './approveBeneficiary'
+import cancelAndRefund from './cancelAndRefund'
+import expireAndRefundFor from './expireAndRefundFor'
+import getCancelAndRefundValueFor from './getCancelAndRefundValueFor'
+import getKeyExpirationByLockForOwner from './getKeyExpirationByLockForOwner'
+import getLock from './getLock'
+import getTokenIdForOwner from './getTokenIdForOwner'
+import grantKey from './grantKey'
+import grantKeys from './grantKeys'
+import initializeTemplate from './initializeTemplate'
+import isKeyGranter from './isKeyGranter'
+import isLockManager from './isLockManager'
+import keyManagerOf from './keyManagerOf'
 import purchaseKey from './purchaseKey'
 import purchaseKeys from './purchaseKeys'
-import setMaxNumberOfKeys from './setMaxNumberOfKeys'
-import setExpirationDuration from './setExpirationDuration'
+import renounceLockManager from './renounceLockManager'
+import setBaseTokenURI from './setBaseTokenURI'
 import setEventHooks from './setEventHooks'
-import transferFrom from './transferFrom'
+import setExpirationDuration from './setExpirationDuration'
 import setGasRefundValue from './setGasRefundValue'
-import v8 from '../v8'
-
-const {
-  grantKey,
-  grantKeys,
-  updateKeyPrice,
-  withdrawFromLock,
-  initializeTemplate,
-  isLockManager,
-  isKeyGranter,
-  addKeyGranter,
-  expireAndRefundFor,
-  cancelAndRefund,
-  shareKey,
-  getLock,
-  keyManagerOf,
-  getCancelAndRefundValueFor,
-  getTokenIdForOwner,
-  getKeyExpirationByLockForOwner,
-  approveBeneficiary,
-  totalKeys,
-  updateLockName,
-  updateLockSymbol,
-  setBaseTokenURI,
-  addLockManager,
-  renounceLockManager,
-  updateRefundPenalty,
-  updateTransferFee,
-  setKeyManagerOf,
-} = v8
+import setKeyManagerOf from './setKeyManagerOf'
+import setMaxNumberOfKeys from './setMaxNumberOfKeys'
+import shareKey from './shareKey'
+import totalKeys from './totalKeys'
+import transferFrom from './transferFrom'
+import updateKeyPrice from './updateKeyPrice'
+import updateLockName from './updateLockName'
+import updateLockSymbol from './updateLockSymbol'
+import updateRefundPenalty from './updateRefundPenalty'
+import updateTransferFee from './updateTransferFee'
+import withdrawFromLock from './withdrawFromLock'
 
 export default {
   version: 'v9',
   Unlock: abis.Unlock.v9,
   PublicLock: abis.PublicLock.v9,
+  addKeyGranter,
+  addLockManager,
+  approveBeneficiary,
+  cancelAndRefund,
+  expireAndRefundFor,
+  getCancelAndRefundValueFor,
+  getKeyExpirationByLockForOwner,
+  getLock,
+  getTokenIdForOwner,
   grantKey,
   grantKeys,
-  updateKeyPrice,
-  withdrawFromLock,
   initializeTemplate,
-  isLockManager,
   isKeyGranter,
-  addKeyGranter,
-  expireAndRefundFor,
-  cancelAndRefund,
-  shareKey,
-  getLock,
+  isLockManager,
+  keyManagerOf,
   purchaseKey,
   purchaseKeys,
-  keyManagerOf,
-  setMaxNumberOfKeys,
+  renounceLockManager,
+  setBaseTokenURI,
+  setEventHooks,
   setExpirationDuration,
-  getCancelAndRefundValueFor,
-  getTokenIdForOwner,
-  getKeyExpirationByLockForOwner,
-  approveBeneficiary,
+  setGasRefundValue,
+  setKeyManagerOf,
+  setMaxNumberOfKeys,
+  shareKey,
   totalKeys,
+  transferFrom,
+  updateKeyPrice,
   updateLockName,
   updateLockSymbol,
-  setBaseTokenURI,
-  addLockManager,
-  renounceLockManager,
   updateRefundPenalty,
-  setEventHooks,
   updateTransferFee,
-  setKeyManagerOf,
-  transferFrom,
-  setGasRefundValue,
+  withdrawFromLock,
 }

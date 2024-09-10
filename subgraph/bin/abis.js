@@ -12,7 +12,7 @@ const getVersions = (contractName) =>
     .filter((n) => n.includes(`${contractName}V`))
     .map((n) => parseInt(n.slice(contractName.length + 1, n.length)))
     .sort((a, b) => a - b)
-    .filter((n) => n >= 7)
+    .filter((n) => n >= 9)
     .map((n) => `v${n}`)
 
 const unlockVersions = ['v11']

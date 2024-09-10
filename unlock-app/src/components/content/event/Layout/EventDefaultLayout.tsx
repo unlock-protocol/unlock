@@ -132,7 +132,6 @@ export const EventDefaultLayout = ({
             <div className="mt-10">
               {event.description && (
                 <div className="mt-4 markdown">
-                  {/* eslint-disable-next-line react/no-children-prop */}
                   <ReactMarkdown children={event.description} />
                 </div>
               )}
