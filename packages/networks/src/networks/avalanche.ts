@@ -73,8 +73,7 @@ export const avalanche: NetworkConfig = {
   publicProvider: 'https://api.avax.network/ext/bc/C/rpc',
   startBlock: 17188332,
   subgraph: {
-    endpoint:
-      'https://api.studio.thegraph.com/query/65299/unlock-protocol-avalanche/version/latest',
+    endpoint: 'https://subgraph.unlock-protocol.com/43114',
     studioName: 'unlock-protocol-avalanche',
   },
   tokens: [

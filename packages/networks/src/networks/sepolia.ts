@@ -111,8 +111,7 @@ export const sepolia: NetworkConfig = {
   publicProvider: 'https://rpc2.sepolia.org/',
   startBlock: 4381710,
   subgraph: {
-    endpoint:
-      'https://api.studio.thegraph.com/query/65299/unlock-protocol-sepolia/version/latest',
+    endpoint: 'https://subgraph.unlock-protocol.com/11155111',
     networkName: 'sepolia',
     studioName: 'unlock-protocol-sepolia',
   },
