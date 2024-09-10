@@ -72,11 +72,15 @@ export const shouldSkip = ({ lock, paywallConfig }: Options) => {
   const skipQuantity = !(hasMaxRecipients || hasMinRecipients)
 
   const skip = lock?.skipRecipient || paywallConfig?.skipRecipient
+
+  const metadataInputs = lock?.metadataInputs || paywallConfig?.metadataInputs
+
+  const hasMetadataInputs =
+    metadataInputs &&
+    metadataInputs.filter((input) => input.type !== 'hidden').length > 0
+
   const collectsMetadadata =
-    lock?.metadataInputs ||
-    paywallConfig?.metadataInputs ||
-    paywallConfig?.emailRequired ||
-    lock?.emailRequired
+    hasMetadataInputs || paywallConfig?.emailRequired || lock?.emailRequired
   const skipRecipient = Boolean(skip && !collectsMetadadata)
 
   return {

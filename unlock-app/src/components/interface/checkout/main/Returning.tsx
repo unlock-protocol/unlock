@@ -16,6 +16,7 @@ import { ReturningButton } from '../ReturningButton'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
 import { Platform } from '~/services/passService'
+import { shouldSkip } from './utils'
 
 interface Props {
   checkoutService: CheckoutService
@@ -156,16 +157,17 @@ export function Returning({ checkoutService, onClose, communication }: Props) {
                 returnLabel="Return"
                 checkoutService={checkoutService}
               />
-              {!lock?.isSoldOut && !paywallConfig.skipRecipient && (
-                <Button
-                  className="w-full"
-                  onClick={() =>
-                    checkoutService.send({ type: 'MAKE_ANOTHER_PURCHASE' })
-                  }
-                >
-                  Buy more
-                </Button>
-              )}
+              {!lock?.isSoldOut &&
+                !shouldSkip({ paywallConfig, lock }).skipRecipient && (
+                  <Button
+                    className="w-full"
+                    onClick={() =>
+                      checkoutService.send({ type: 'MAKE_ANOTHER_PURCHASE' })
+                    }
+                  >
+                    Buy more
+                  </Button>
+                )}
             </div>
           )}
         </div>

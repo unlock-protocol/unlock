@@ -35,6 +35,7 @@ import {
 } from '@unlock-protocol/core'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 import Disconnect from './Disconnect'
+import { shouldSkip } from './utils'
 
 interface Props {
   checkoutService: CheckoutService
@@ -116,7 +117,7 @@ export const MetadataInputs = ({
   )
 
   const recipient = recipientFromConfig(paywallConfig, lock) || account
-  const hideRecipient = shouldHideRecipient(paywallConfig, lock)
+  const hideRecipient = shouldSkip({ paywallConfig, lock }).skipRecipient
 
   return (
     <div className="grid gap-2">
@@ -467,13 +468,4 @@ const recipientFromConfig = (
     return lockRecipient
   }
   return ''
-}
-
-const shouldHideRecipient = (
-  paywall: PaywallConfigType,
-  lock: Lock | LockState | undefined
-): boolean => {
-  return !!(
-    paywall.skipRecipient || paywall?.locks[lock!.address].skipRecipient
-  )
 }
