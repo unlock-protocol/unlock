@@ -44,9 +44,9 @@ const {
 const { ContractAddresses } = require('@gnosis.pm/zodiac')
 const { ethers, network } = require('hardhat')
 
-const owner = '0x246A13358Fb27523642D86367a51C2aEB137Ac6C'
-const daoTimelockAddress = '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B'
-const daoChainId = 1
+// temporary owner
+const daoTimelockAddress = '0xB34567C4cA697b39F72e1a8478f285329A98ed1b'
+const daoChainId = 8453
 
 // console.log(ContractAddresses)
 // in seconds
@@ -86,7 +86,7 @@ const deployDelay = async () => {
   const setupArgs = {
     types: ['address', 'address', 'address', 'uint256', 'uint256'],
     values: [
-      owner, // owner
+      multisig, // owner
       multisig, // avatar
       multisig, // target
       ONE_DAY * 2, // cooldown 2 days
@@ -145,7 +145,7 @@ async function main() {
       '--sender',
       daoTimelockAddress,
       '--owner',
-      owner,
+      multisig,
       '--target',
       delayModAddress,
     ]
@@ -160,7 +160,7 @@ async function main() {
 
           4. verify the contract 
             
-            yarn hardhat verify ${owner} ${multisig} ${delayModAddress} ${daoTimelockAddress} ${daoDomainId} ${governanceBridge.connext} --network ${name} <module-address>
+            yarn hardhat verify ${multisig} ${multisig} ${delayModAddress} ${daoTimelockAddress} ${daoDomainId} ${governanceBridge.connext} --network ${name} <module-address>
           `)
   } else {
     console.log(`Connext mod at ${governanceBridge.modules.connextMod}`)
