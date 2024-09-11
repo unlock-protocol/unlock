@@ -1,5 +1,6 @@
 import React from 'react'
 import { Lock } from '../frames'
+import { config } from '~/config/app'
 
 interface DefaultImageProps {
   lock: Lock
@@ -17,14 +18,13 @@ export function DefaultImage({ lock, rightSideContent }: DefaultImageProps) {
     </div>
   )
 
-  //svg images are not rendered
+  //svg images are not rendered, convert to png first
   const isSvg = /\/icon\/?$/.test(image)
-  const leftImage = isSvg ? (
-    <div tw="flex-1 h-full flex justify-center items-center border-4 border-white rounded-lg bg-gray-300">
-      <p>{name} image</p>
-    </div>
-  ) : (
-    <img src={image} tw="flex-1 min-h-full border-4 border-white rounded-lg" />
+  const imgurl = !isSvg
+    ? image
+    : `${config.unlockApp}/api/svg-to-png?url=${encodeURIComponent(image)}`
+  const leftImage = (
+    <img src={imgurl} tw="flex-1 min-h-full border-4 border-white rounded-lg" />
   )
 
   return (
