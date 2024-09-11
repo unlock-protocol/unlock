@@ -37,8 +37,8 @@ const defaultConfig = isProduction ? prodConfig : stagingConfig
 
 interface DefenderRelayCredentials {
   [network: number]: {
-    apiKey: string
-    apiSecret: string
+    relayerApiKey: string
+    relayerApiSecret: string
   }
 }
 
@@ -51,8 +51,8 @@ interface GoogleWalletCredentials {
 const defenderRelayCredentials: DefenderRelayCredentials = {}
 Object.values(networks).forEach((network) => {
   defenderRelayCredentials[network.id] = {
-    apiKey: process.env[`DEFENDER_RELAY_KEY_${network.id}`] || '',
-    apiSecret: process.env[`DEFENDER_RELAY_SECRET_${network.id}`] || '',
+    relayerApiKey: process.env[`DEFENDER_RELAY_KEY_${network.id}`] || '',
+    relayerApiSecret: process.env[`DEFENDER_RELAY_SECRET_${network.id}`] || '',
   }
 })
 

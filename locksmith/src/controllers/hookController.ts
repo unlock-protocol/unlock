@@ -22,7 +22,6 @@ interface HookControllerOptions {
   }
 }
 export class HookController {
-  // eslint-disable-next-line
   constructor(public options: HookControllerOptions) {}
 
   async handle(request: SubscribeRequest, response: Response) {
@@ -61,7 +60,7 @@ export class HookController {
         return
       } catch (error) {
         logger.error(error.message)
-        // eslint-disable-next-line
+
         return
       }
     }
