@@ -22,6 +22,7 @@ export const UpdateEmailModal = ({
   hasEmail: boolean
   setIsOpen: (status: boolean) => void
   onEmailChange: (values: FieldValues) => void
+  extraDataItems?: [string, string | number][]
 }) => {
   const [loading, setLoading] = useState(false)
   const { register, handleSubmit, reset } = useForm({

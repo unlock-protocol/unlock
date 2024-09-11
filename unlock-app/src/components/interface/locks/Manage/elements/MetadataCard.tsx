@@ -6,10 +6,15 @@ import {
   isAddressOrEns,
   Tooltip,
 } from '@unlock-protocol/ui'
+
 import { useEffect, useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+
+import { Controller, FieldValues, useForm } from 'react-hook-form'
+
 import { useMutation, useQuery } from '@tanstack/react-query'
+
 import { ToastHelper } from '~/components/helpers/toast.helper'
+
 import { useLockManager } from '~/hooks/useLockManager'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import { ADDRESS_ZERO, MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
@@ -17,14 +22,25 @@ import { durationAsText } from '~/utils/durations'
 import { locksmith } from '~/config/locksmith'
 import { useGetReceiptsPageUrl } from '~/hooks/useReceipts'
 import Link from 'next/link'
+
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
+
 import { addressMinify } from '~/utils/strings'
+
 import { useAuth } from '~/contexts/AuthenticationContext'
+
 import { onResolveName } from '~/utils/resolvers'
+
 import { useMetadata } from '~/hooks/metadata'
+
+import { LockType, getLockTypeByMetadata } from '@unlock-protocol/core'
+
 import { FiInfo as InfoIcon } from 'react-icons/fi'
+
 import { TransferKeyDrawer } from '~/components/interface/keychain/TransferKeyDrawer'
+
 import { WrappedAddress } from '~/components/interface/WrappedAddress'
+import { UpdateEmailModal } from '~/components/content/event/attendees/UpdateEmailModal'
 
 interface MetadataCardProps {
   metadata: any
@@ -237,13 +253,22 @@ const ChangeManagerModal = ({
 }
 export const MetadataCard = ({
   metadata,
+
   owner,
+
   network,
+
   expirationDuration,
+
+  lockSettings,
+
   isExpired,
 }: MetadataCardProps) => {
   const [showTransferKey, setShowTransferKey] = useState(false)
+
   const [data, setData] = useState(metadata)
+
+  const [addEmailModalOpen, setAddEmailModalOpen] = useState(false)
 
   const items = Object.entries(data || {}).filter(([key]) => {
     return !keysToIgnore.includes(key)
@@ -251,8 +276,14 @@ export const MetadataCard = ({
 
   const { data: lockMetadata } = useMetadata({
     lockAddress: metadata.lockAddress,
+
     network,
   })
+
+  const types = getLockTypeByMetadata(lockMetadata)
+
+  const [eventType] =
+    Object.entries(types ?? {}).find(([, value]) => value === true) ?? []
 
   const { lockAddress, token: tokenId } = data ?? {}
 
@@ -283,9 +314,44 @@ export const MetadataCard = ({
     },
   })
 
+  const sendEmail = async () => {
+    return locksmith.emailTicket(network, lockAddress, tokenId)
+  }
+
+  const sendEmailMutation = useMutation({
+    mutationFn: sendEmail,
+  })
+
+  const onSendQrCode = async () => {
+    if (!network) return
+
+    ToastHelper.promise(sendEmailMutation.mutateAsync(), {
+      success: 'Email sent',
+
+      loading: 'Sending email...',
+
+      error: 'We could not send email.',
+    })
+  }
+
+  const hasEmail = Object.entries(data || {})
+
+    .map(([key]) => key.toLowerCase())
+
+    .includes('email')
+
+  const onEmailChange = (values: FieldValues) => {
+    setData({
+      ...data,
+
+      ...values,
+    })
+  }
+
   const metadataPageUrl = `/locks/metadata?lockAddress=${lockAddress}&network=${network}&keyId=${tokenId}`
 
   const ownerIsManager = owner?.toLowerCase() === manager?.toLowerCase()
+
   const showManager = !ownerIsManager && manager !== ADDRESS_ZERO
 
   return (
@@ -299,6 +365,19 @@ export const MetadataCard = ({
         lockName={lockMetadata?.name}
         owner={data?.keyholderAddress}
       />
+
+      <UpdateEmailModal
+        isOpen={addEmailModalOpen ?? false}
+        setIsOpen={setAddEmailModalOpen}
+        isLockManager={isLockManager ?? false}
+        userAddress={owner}
+        lockAddress={lockAddress}
+        network={network!}
+        hasEmail={hasEmail}
+        extraDataItems={items as any}
+        onEmailChange={onEmailChange}
+      />
+
       <div className="flex flex-col gap-3 md:flex-row">
         <Button variant="outlined-primary" size="small">
           <Link href={metadataPageUrl}>Edit token properties</Link>
@@ -320,9 +399,65 @@ export const MetadataCard = ({
           </Button>
         )}
       </div>
+
       <div className="pt-6">
         <div className="mt-6">
           <div className="flex flex-col divide-y divide-gray-400">
+            <Detail
+              className="py-2"
+              label={
+                <div className="flex flex-col w-full gap-2 md:items-center md:flex-row">
+                  <span>Email:</span>
+
+                  {hasEmail ? (
+                    <div className="flex flex-col w-full gap-3 md:flex-row">
+                      <span className="block text-base font-semibold text-black">
+                        {data?.email}
+                      </span>
+
+                      <Button
+                        size="tiny"
+                        variant="outlined-primary"
+                        onClick={() => setAddEmailModalOpen(true)}
+                      >
+                        Edit email
+                      </Button>
+
+                      {lockSettings?.sendEmail ? (
+                        SendEmailMapping[eventType as keyof LockType] && (
+                          <Button
+                            size="tiny"
+                            variant="outlined-primary"
+                            onClick={onSendQrCode}
+                            disabled={
+                              sendEmailMutation.isPending ||
+                              sendEmailMutation.isSuccess
+                            }
+                          >
+                            {sendEmailMutation.isSuccess
+                              ? 'Email sent'
+                              : SendEmailMapping[eventType as keyof LockType]}
+                          </Button>
+                        )
+                      ) : (
+                        <Button size="tiny" variant="outlined-primary" disabled>
+                          Email are disabled
+                        </Button>
+                      )}
+                    </div>
+                  ) : (
+                    <Button
+                      variant="outlined-primary"
+                      size="tiny"
+                      onClick={() => setAddEmailModalOpen(true)}
+                    >
+                      Add email
+                    </Button>
+                  )}
+                </div>
+              }
+            />
+
             {items?.map(([key, value]: any, index) => {
               return (
                 <Detail
@@ -521,4 +656,12 @@ export const MetadataCard = ({
       </div>
     </>
   )
+}
+
+const SendEmailMapping: Record<keyof LockType, string> = {
+  isCertification: 'Send Certificate by email',
+
+  isEvent: 'Send QR-code by email',
+
+  isStamp: 'Send Stamp by email',
 }
