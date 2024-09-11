@@ -56,11 +56,6 @@ async function main() {
     await connextMod.transferOwnership(multisig)
   }
 
-  if (!(await delayMod.isModuleEnabled(connextModAddress))) {
-    const tx = await delayMod.enableModule(connextModAddress)
-    console.log(tx)
-  }
-
   // NB: we use the delayMod abi as the `enableModule` function is identical to the one in SAFE
   const { interface } = delayMod
   const calls = [
