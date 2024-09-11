@@ -16,7 +16,7 @@
  *
  * 3. add required network in `hardhat.config.ts` with the following pattern
  * `
- * base: {
+ * <network name>: {
  *     url: "https://rpc.unlock-protocol.com/<network id>",
  *     accounts: [process.env.DEPLOYER_PRIVATE_KEY],
  *   },
@@ -116,26 +116,26 @@ const deployDelay = async () => {
 // if any network is present this array, only these will be executed
 
 async function main() {
-  const { governanceBridge, multisig, name } = await getNetwork(
+  const { governanceBridge, multisig, chain } = await getNetwork(
     network.config.chainId
   )
   console.log('\n', network.config.name, '\n')
 
-  let delayModAddress, connextModAddress
+  let delayModAddress
   if (!governanceBridge.modules || !governanceBridge.modules.delayMod) {
     delayModAddress = await deployDelay()
   } else {
     delayModAddress = governanceBridge.modules.delayMod
   }
-  console.log(`Delay mod at ${delayModAddress}`)
   if (delayModAddress) {
+    console.log(`Delay mod at ${delayModAddress}`)
     const {
       governanceBridge: { domainId: daoDomainId },
     } = await getNetwork(daoChainId)
 
     const argsConnext = [
       '--network',
-      name,
+      chain,
       '--avatar',
       multisig,
       '--connext',
@@ -160,9 +160,10 @@ async function main() {
 
           4. verify the contract 
             
-            yarn hardhat verify ${multisig} ${multisig} ${delayModAddress} ${daoTimelockAddress} ${daoDomainId} ${governanceBridge.connext} --network ${name} <module-address>
+            yarn hardhat verify ${multisig} ${multisig} ${delayModAddress} ${daoTimelockAddress} ${daoDomainId} ${governanceBridge.connext} --network ${chain} <module-address>
           `)
-  } else {
+  }
+  if (governanceBridge.modules && governanceBridge.modules.connextMod) {
     console.log(`Connext mod at ${governanceBridge.modules.connextMod}`)
   }
 }
