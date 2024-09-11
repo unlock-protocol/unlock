@@ -27,14 +27,12 @@ export const getUserGuilds = async ({ account }: { account?: string }) => {
 
 export const useUserGuilds = () => {
   const { account } = useAuth()
-  return useQuery(
-    ['userGuilds', account],
-    async () =>
+  return useQuery({
+    queryKey: ['userGuilds', account],
+    queryFn: async () =>
       getUserGuilds({
         account,
       }),
-    {
-      enabled: !!account,
-    }
-  )
+    enabled: !!account,
+  })
 }

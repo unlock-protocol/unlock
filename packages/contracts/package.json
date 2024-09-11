@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/contracts",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "main": "dist/index.js",
   "scripts": {
     "clean": "rm -rf dist docs src/index.ts",
@@ -9,11 +9,13 @@
     "build": "yarn clean && yarn build:index && yarn build:dist",
     "build:dist": "yarn contracts:copy",
     "build:docs": "yarn docs && yarn docs:copy",
-    "build:index": "tsc && node dist/parser.js > src/index.ts && tsc",
+    "build:index": "tsc && yarn copyutils && node dist/parser.js > src/index.ts && tsc && yarn copyindex",
     "ci": "yarn test",
-    "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .ts,.js src/",
+    "lint": "eslint src/",
     "contracts:copy": "copyfiles --verbose -u 2 src/**/*.sol dist",
     "copyfiles": "copyfiles",
+    "copyutils": "cp dist/src/utils/* dist",
+    "copyindex": "cp dist/src/index.js dist && cp -r dist/src/abis dist",
     "docs": "sh ./bin/build_docs.sh",
     "docs:copy": "copyfiles --verbose docs/**/*.json docs/**/*.md  dist",
     "prepublish": "yarn clean && yarn build && yarn build:docs",
@@ -25,15 +27,14 @@
     "directory": "packages/contracts"
   },
   "devDependencies": {
-    "@nomiclabs/hardhat-etherscan": "3.1.8",
     "@primitivefi/hardhat-dodoc": "0.2.3",
     "@unlock-protocol/networks": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "@unlock-protocol/types": "workspace:^",
     "copyfiles": "2.4.1",
-    "eslint": "8.57.0",
+    "eslint": "9.9.0",
     "fs-extra": "11.2.0",
-    "hardhat": "2.22.6",
+    "hardhat": "2.22.9",
     "typescript": "5.5.4"
   },
   "files": [

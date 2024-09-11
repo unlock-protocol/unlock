@@ -3,12 +3,11 @@ import { CheckoutService } from './../checkoutMachine'
 import { useQuery } from '@tanstack/react-query'
 import { useConfig } from '~/utils/withConfig'
 import { Button } from '@unlock-protocol/ui'
-import { Fragment, useRef, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { useSelector } from '@xstate/react'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { MAX_UINT } from '~/constants'
 import { Pricing } from '../../Lock'
 import { getReferrer, lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { Lock } from '~/unlockTypes'
@@ -21,6 +20,7 @@ import { formatNumber } from '~/utils/formatter'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { PricingData } from './PricingData'
 import Disconnect from '../Disconnect'
+import { getNumberOfRecurringPayments } from '../utils'
 
 interface Props {
   checkoutService: CheckoutService
@@ -53,24 +53,14 @@ export function ConfirmCrypto({
 
   const currencyContractAddress = lock?.currencyContractAddress
 
-  const recurringPayment =
-    paywallConfig?.recurringPayments ||
-    paywallConfig?.locks[lockAddress]?.recurringPayments
+  const numberOfRecurringPayments = getNumberOfRecurringPayments(
+    paywallConfig?.locks[lockAddress]?.recurringPayments ||
+      paywallConfig?.recurringPayments
+  )
 
-  const totalApproval =
-    typeof recurringPayment === 'string' &&
-    recurringPayment.toLowerCase() === 'forever' &&
-    payment.method === 'crypto'
-      ? MAX_UINT
-      : undefined
-
-  const recurringPaymentAmount = recurringPayment
-    ? Math.abs(Math.floor(Number(recurringPayment)))
-    : undefined
-
-  const recurringPayments: number[] | undefined = recurringPaymentAmount
-    ? new Array(recipients.length).fill(recurringPaymentAmount)
-    : undefined
+  const recurringPayments: number[] = new Array(recipients.length).fill(
+    numberOfRecurringPayments
+  )
 
   const { data: creditCardEnabled } = useCreditCardEnabled({
     lockAddress,
@@ -79,18 +69,21 @@ export function ConfirmCrypto({
 
   const { mutateAsync: updateUsersMetadata } = useUpdateUsersMetadata()
 
-  const { isInitialLoading: isInitialDataLoading, data: purchaseData } =
-    usePurchaseData({
-      lockAddress: lock!.address,
-      network: lock!.network,
-      paywallConfig,
-      recipients,
-      data,
-    })
+  const {
+    isLoading: isInitialDataLoading,
+    data: purchaseData,
+    error,
+  } = usePurchaseData({
+    lockAddress: lock!.address,
+    network: lock!.network,
+    paywallConfig,
+    recipients,
+    data,
+  })
 
   const {
     data: pricingData,
-    isInitialLoading: isPricingDataLoading,
+    isLoading: isPricingDataLoading,
     isError: isPricingDataError,
   } = usePricing({
     lockAddress: lock!.address,
@@ -110,9 +103,9 @@ export function ConfirmCrypto({
     !isPricingDataLoading && !isPricingDataError && !!pricingData
 
   // TODO: run full estimate so we can catch all errors, rather just check balances
-  const { data: isPayable, isInitialLoading: isPayableLoading } = useQuery(
-    ['canAfford', account, lock, pricingData],
-    async () => {
+  const { data: isPayable, isLoading: isPayableLoading } = useQuery({
+    queryKey: ['canAfford', account, lock, pricingData],
+    queryFn: async () => {
       const [balance, networkBalance] = await Promise.all([
         getAccountTokenBalance(
           web3Service,
@@ -133,10 +126,8 @@ export function ConfirmCrypto({
         isGasPayable,
       }
     },
-    {
-      enabled: isPricingDataAvailable,
-    }
-  )
+    enabled: isPricingDataAvailable,
+  })
 
   // By default, until fully loaded we assume payable.
   const canAfford =
@@ -183,7 +174,6 @@ export function ConfirmCrypto({
             recurringPayment: recurringPayments
               ? recurringPayments[0]
               : undefined,
-            totalApproval,
           },
           {} /** Transaction params */,
           onErrorCallback
@@ -198,7 +188,6 @@ export function ConfirmCrypto({
             keyManagers: keyManagers?.length ? keyManagers : undefined,
             recurringPayments,
             referrers,
-            totalApproval,
           },
           {} /** Transaction params */,
           onErrorCallback
@@ -243,6 +232,12 @@ export function ConfirmCrypto({
       buttonLabel = 'Pay using crypto'
     }
   }
+
+  useEffect(() => {
+    if (error) {
+      console.error(error)
+    }
+  }, [error])
 
   return (
     <Fragment>

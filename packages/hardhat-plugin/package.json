@@ -16,7 +16,7 @@
   ],
   "scripts": {
     "lint:fix": "yarn lint --fix",
-    "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/ test/",
+    "lint": "eslint src/ test/",
     "test": "ts-mocha --exit --recursive 'test/**/*.ts'",
     "ci": "yarn build && yarn lint && yarn test",
     "build": "tsc",
@@ -43,21 +43,18 @@
     "@typechain/ethers-v6": "0.5.1",
     "@typechain/hardhat": "9.1.0",
     "@types/mocha": "10.0.7",
-    "@types/node": "20.14.9",
+    "@types/node": "20.16.2",
     "@unlock-protocol/contracts": "workspace:^",
     "@unlock-protocol/eslint-config": "workspace:^",
     "@unlock-protocol/networks": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:^",
-    "eslint": "8.57.0",
-    "ethers": "6.13.0",
-    "hardhat": "2.22.6",
-    "mocha": "10.5.2",
-    "prettier": "3.3.2",
+    "eslint": "9.9.1",
+    "ethers": "6.13.2",
+    "hardhat": "2.22.9",
+    "mocha": "10.7.3",
+    "prettier": "3.3.3",
     "ts-mocha": "10.0.0",
     "ts-node": "10.9.2",
-    "tslint": "6.1.3",
-    "tslint-config-prettier": "1.18.0",
-    "tslint-plugin-prettier": "2.3.0",
     "typechain": "8.3.2",
     "typescript": "5.5.4"
   },
@@ -67,8 +64,8 @@
     "ethers": "6"
   },
   "dependencies": {
-    "@nomicfoundation/hardhat-ethers": "3.0.6",
-    "hardhat-gas-reporter": "2.2.0",
-    "solidity-coverage": "0.8.12"
+    "@nomicfoundation/hardhat-ethers": "3.0.8",
+    "hardhat-gas-reporter": "2.2.1",
+    "solidity-coverage": "0.8.13"
   }
 }

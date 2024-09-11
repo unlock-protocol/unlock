@@ -26,7 +26,7 @@ export function SendCustomEmail({
     subject: '',
     content: '',
   })
-  const { mutateAsync: sendCustomEmail, isLoading: isSendingCustomEmail } =
+  const { mutateAsync: sendCustomEmail, isPending: isSendingCustomEmail } =
     useCustomEmailSend()
   const onSubmit = (data: SendCustomEmailData) => {
     setCustomEmailData(data)

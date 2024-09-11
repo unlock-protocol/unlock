@@ -1,5 +1,18 @@
 # Changes
 
+## 0.49.0
+
+- Remove support for deprecated versions of `Unlock` (prior to v10)
+- Remove support for deprecated versions of `PublicLock` (prior to v7)
+
+# 0.48.0
+
+- update `peerDependencies` to require `ethers` v6.
+
+# 0.47.0
+
+- using `purchasePriceFor` when possible in `getPurchaseKeysArguments`
+
 # 0.45.0
 
 - adding support for a password hook with caps and multiple passwords per lock

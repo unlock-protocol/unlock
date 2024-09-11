@@ -16,7 +16,7 @@ set -e
 source ./scripts/start/envs.sh
 
 # bring containers down
-docker-compose $COMPOSE_CONFIG down
+docker compose $COMPOSE_CONFIG down
 
 # delete locksmith db
 locksmith_postgres_instance=$(docker ps -a --no-trunc -q --filter name=^/locksmith-postgres)

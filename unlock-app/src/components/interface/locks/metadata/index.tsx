@@ -64,7 +64,7 @@ export const Form = ({
     })
   }, [defaultValues, methods, image])
 
-  const { mutateAsync: updateMetadata, isLoading: isMetadataUpdating } =
+  const { mutateAsync: updateMetadata, isPending: isMetadataUpdating } =
     useUpdateMetadata({
       lockAddress,
       network,
@@ -139,7 +139,7 @@ export function UpdateMetadataForm({ lockAddress, network, keyId }: Props) {
     keyId,
   })
 
-  const { data: metadata, isInitialLoading: isMetadataLoading } = useMetadata({
+  const { data: metadata, isLoading: isMetadataLoading } = useMetadata({
     lockAddress: selected.lockAddress,
     network: selected.network,
     keyId: selected.keyId,
@@ -153,23 +153,21 @@ export function UpdateMetadataForm({ lockAddress, network, keyId }: Props) {
 
   const {
     data: tokenURI,
-    isInitialLoading: isTokenURILoading,
+    isLoading: isTokenURILoading,
     refetch,
-  } = useQuery(
-    ['baseTokenURI', selected.network, selected.lockAddress],
-    async () => {
+  } = useQuery({
+    queryKey: ['baseTokenURI', selected.network, selected.lockAddress],
+    queryFn: async () => {
       const tokenURI = await web3Service.getBaseTokenURI({
         network: selected.network!,
         lockAddress: selected.lockAddress!,
       })
       return tokenURI
     },
-    {
-      enabled: !!(selected.network && selected.lockAddress),
-    }
-  )
+    enabled: !!(selected.network && selected.lockAddress),
+  })
 
-  const { mutateAsync: update, isLoading: isUpdatingBaseTokenURI } =
+  const { mutateAsync: update, isPending: isUpdatingBaseTokenURI } =
     useMutation({
       mutationKey: [
         'updateBaseTokenURI',
@@ -202,7 +200,7 @@ export function UpdateMetadataForm({ lockAddress, network, keyId }: Props) {
       return false
     }
     try {
-      const tokenURL = new URL(tokenURI!)
+      const tokenURL = new URL(tokenURI)
       const locksmithURL = new URL(config.locksmithHost)
       return tokenURL.hostname === locksmithURL.hostname
     } catch {

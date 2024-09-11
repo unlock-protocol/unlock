@@ -72,7 +72,9 @@ export const CancellationForm = ({
     })
   }
 
-  const updateRefundPenaltyMutation = useMutation(updateRefundPenalty)
+  const updateRefundPenaltyMutation = useMutation({
+    mutationFn: updateRefundPenalty,
+  })
 
   const onUpdateRefundPenalty = async (fields: FormProps) => {
     if (isValid) {
@@ -105,15 +107,20 @@ export const CancellationForm = ({
   }
 
   const [
-    { isLoading: isLoadingFreeTrial, data: freeTrialLength = 0 },
-    { isLoading: isLoadingPenalty, data: refundPenaltyBasisPoints = 0 },
+    {
+      isLoading: isLoadingFreeTrial,
+      data: freeTrialLength = 0,
+      error: freeTrialError,
+    },
+    {
+      isLoading: isLoadingPenalty,
+      data: refundPenaltyBasisPoints = 0,
+      error: penaltyError,
+    },
   ] = useQueries({
     queries: [
       {
-        queryFn: async () => getFreeTrialLength(),
-        onError: () => {
-          ToastHelper.error('Impossible to retrieve freeTrialLength value.')
-        },
+        queryFn: getFreeTrialLength,
         queryKey: [
           'getFreeTrialLength',
           lockAddress,
@@ -122,12 +129,7 @@ export const CancellationForm = ({
         ],
       },
       {
-        queryFn: async () => getRefundPenaltyBasisPoints(),
-        onError: () => {
-          ToastHelper.error(
-            'Impossible to retrieve refundPenaltyBasisPoints value.'
-          )
-        },
+        queryFn: getRefundPenaltyBasisPoints,
         queryKey: [
           'refundPenaltyBasisPoints',
           lockAddress,
@@ -139,12 +141,30 @@ export const CancellationForm = ({
   })
 
   useEffect(() => {
+    if (freeTrialError) {
+      ToastHelper.error('Impossible to retrieve freeTrialLength value.')
+    }
+  }, [freeTrialError])
+
+  useEffect(() => {
+    if (penaltyError) {
+      ToastHelper.error(
+        'Impossible to retrieve refundPenaltyBasisPoints value.'
+      )
+    }
+  }, [penaltyError])
+
+  useEffect(() => {
     const allowTrial = freeTrialLength > 0
 
     setAllowTrial(freeTrialLength > 0)
-    setValue('freeTrialLength', allowTrial ? freeTrialLength ?? 0 : 0, {
-      shouldValidate: true,
-    })
+    setValue(
+      'freeTrialLength',
+      allowTrial ? (Number(freeTrialLength) ?? 0) : 0,
+      {
+        shouldValidate: true,
+      }
+    )
   }, [freeTrialLength])
 
   useEffect(() => {
@@ -164,7 +184,7 @@ export const CancellationForm = ({
 
   const isLoading = isLoadingPenalty || isLoadingFreeTrial
 
-  const disabledInput = updateRefundPenaltyMutation.isLoading || disabled
+  const disabledInput = updateRefundPenaltyMutation.isPending || disabled
 
   if (isLoading) return <CancellationFormPlaceholder />
 
@@ -236,7 +256,7 @@ export const CancellationForm = ({
         <Button
           className="w-full md:w-1/3"
           type="submit"
-          loading={updateRefundPenaltyMutation.isLoading}
+          loading={updateRefundPenaltyMutation.isPending}
           disabled={disabledInput}
         >
           Apply

@@ -7,11 +7,13 @@ export const createEventIcs = async ({
   description,
   startDate,
   endDate,
+  location,
 }: {
   title: string
   description: string
   startDate: Date | null
   endDate?: Date | null
+  location?: string
 }) => {
   let file: Buffer | undefined = undefined
 
@@ -31,6 +33,7 @@ export const createEventIcs = async ({
         start.minute(),
       ],
       end: [end.year(), end.month() + 1, end.date(), end.hour(), end.minute()],
+      location,
     }
 
     const { error, value } = createEvent(event)

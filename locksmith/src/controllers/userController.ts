@@ -11,10 +11,7 @@ import { verifyNextAuthToken } from '../utils/verifyNextAuthToken'
 import { z } from 'zod'
 import { generateVerificationCode } from '../utils/generateVerificationCode'
 import VerificationCodes from '../models/verificationCodes'
-import {
-  emailTemplate,
-  sendSimpleEmail,
-} from '../operations/wedlocksOperations'
+import { sendEmail } from '../operations/wedlocksOperations'
 
 // Decoy users are cached for 15 minutes
 const cacheDuration = 60 * 15
@@ -160,7 +157,9 @@ export const retrieveWaasUuid = async (
     token
   )
   if (!isTokenValid) {
-    return res.status(401).json({ message: 'Verification token is not valid' })
+    return res.status(401).json({
+      message: 'There was an error verifying the token or it is not valid',
+    })
   }
 
   let userUUID
@@ -189,6 +188,11 @@ export const retrieveWaasUuid = async (
       selectedProvider as UserAccountType
     )
     userUUID = newUserUUID
+
+    await sendEmail({
+      template: 'welcome',
+      recipient: emailAddress,
+    })
   }
 
   try {
@@ -459,8 +463,12 @@ export const sendVerificationCode = async (
       }
     }
 
-    sendSimpleEmail(emailTemplate.verificationCode, emailAddress, {
-      code: verificationEntry.code,
+    await sendEmail({
+      template: 'nextAuthCode',
+      recipient: emailAddress,
+      params: {
+        code: verificationEntry.code,
+      },
     })
 
     return response.status(200).json({

@@ -77,7 +77,6 @@ export const saveEventDetails: RequestHandler = async (request, response) => {
     await sendEmail({
       template: 'eventDeployed',
       recipient: event.data.replyTo,
-      // @ts-expect-error object incomplete
       params: {
         eventName: event!.name,
         eventDate: event!.data.ticket.event_start_date,
@@ -95,6 +94,7 @@ export const saveEventDetails: RequestHandler = async (request, response) => {
 export const getAllEvents: RequestHandler = async (request, response) => {
   const page = request.query.page ? Number(request.query.page) : 1
   const events = await EventData.findAll({
+    order: [['createdAt', 'DESC']],
     limit: 10,
     offset: (page - 1) * 10,
     include: [{ model: CheckoutConfig, as: 'checkoutConfig' }],

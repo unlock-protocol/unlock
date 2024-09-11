@@ -1,7 +1,7 @@
 import { MdOutlineTipsAndUpdates } from 'react-icons/md'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import { Button, Icon } from '@unlock-protocol/ui'
-import { useRouter } from 'next/router'
+import { useRouter, useSearchParams } from 'next/navigation'
 import React, { Fragment, useEffect, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ConnectWalletModal } from '../../ConnectWalletModal'
@@ -11,7 +11,6 @@ import { TotalBar } from './elements/TotalBar'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 import { AirdropKeysDrawer } from '~/components/interface/members/airdrop/AirdropDrawer'
 import { NetworkWarning } from '~/components/interface/locks/Create/elements/NetworkWarning'
-import { useMutation } from '@tanstack/react-query'
 import {
   ApprovalStatus,
   ExpirationStatus,
@@ -73,7 +72,7 @@ export function downloadAsCSV({
 }
 
 export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
-  const { isLoading: isLoadingMetadata, data: metadata } = useMetadata({
+  const { isPending: isLoadingMetadata, data: metadata } = useMetadata({
     lockAddress,
     network,
   })
@@ -82,8 +81,8 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
   const [keysJobId, setKeysJobId] = useState<string | null>(null)
   const [isKeysJobLoading, setIsKeysJobLoading] = useState<boolean>(false)
 
-  const onDownloadCsvMutation = useMutation(
-    async () => {
+  const onDownloadCsvMutation = useMutation({
+    mutationFn: async () => {
       ToastHelper.success(
         `It may take a few minutes for the file to be generated. Please do not close this page`
       )
@@ -103,17 +102,12 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
         ToastHelper.error(`Failed to start download job: ${response}`)
       }
     },
-    {
-      meta: {
-        errorMessage: 'Failed to download members list',
-      },
-      onError: (error) => {
-        ToastHelper.error(`Failed to download members list: ${error}`)
-        console.error('Failed to download members list', error)
-        setIsKeysJobLoading(false)
-      },
-    }
-  )
+    onError: (error) => {
+      ToastHelper.error(`Failed to download members list: ${error}`)
+      console.error('Failed to download members list', error)
+      setIsKeysJobLoading(false)
+    },
+  })
 
   useEffect(() => {
     let intervalId: any = null
@@ -172,7 +166,7 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
             variant="outlined-primary"
             size="small"
             disabled={isLoadingMetadata || isKeysJobLoading}
-            loading={onDownloadCsvMutation.isLoading || isKeysJobLoading}
+            loading={onDownloadCsvMutation.isPending || isKeysJobLoading}
             iconLeft={<CsvIcon className="text-brand-ui-primary" size={16} />}
             onClick={() => onDownloadCsvMutation.mutate()}
           >
@@ -360,22 +354,24 @@ const NotManagerBanner = () => {
 
 export const ManageLockPage = () => {
   const { account: owner } = useAuth()
-  const { query } = useRouter()
+  const searchParams = useSearchParams()
   const [loading, setLoading] = useState(false)
   const [network, setNetwork] = useState<string>(
-    (query?.network as string) ?? ''
+    (searchParams.get('network') as string) ?? ''
   )
   const [lockAddress, setLockAddress] = useState<string>(
-    (query?.address as string) ?? ''
+    (searchParams.get('address') as string) ?? ''
   )
   const [airdropKeys, setAirdropKeys] = useState(false)
 
   const lockNetwork = network ? parseInt(network as string) : undefined
 
   const withoutParams =
-    !query?.lockAddress && !query.network && !(lockAddress && network)
+    !searchParams.get('lockAddress') &&
+    !searchParams.get('network') &&
+    !(lockAddress && network)
 
-  const { isManager, isLoading: isLoadingLockManager } = useLockManager({
+  const { isManager, isPending: isLoadingLockManager } = useLockManager({
     lockAddress,
     network: lockNetwork!,
   })
@@ -390,16 +386,16 @@ export const ManageLockPage = () => {
   })
   const [page, setPage] = useState(1)
 
-  const { data: eventData } = useQuery(
-    ['getEventForLock', lockAddress, network],
-    async () => {
+  const { data: eventData } = useQuery({
+    queryKey: ['getEventForLock', lockAddress, network],
+    queryFn: async () => {
       const { data: eventDetails } = await locksmith.getEventDetails(
         Number(network),
         lockAddress
       )
       return eventDetails
-    }
-  )
+    },
+  })
 
   if (!owner) {
     return <ConnectWalletModal isOpen={true} setIsOpen={() => void 0} />
@@ -416,8 +412,8 @@ export const ManageLockPage = () => {
     }
 
     const hasQuery =
-      (query?.address as string)?.length > 0 &&
-      (query?.network as string)?.length > 0
+      (searchParams.get('address') as string)?.length > 0 &&
+      (searchParams.get('network') as string)?.length > 0
 
     return (
       <div>

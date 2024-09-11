@@ -1,4 +1,3 @@
-/* eslint-disable prefer-arrow-callback, func-names */
 // tslint:disable-next-line no-implicit-dependencies
 import { assert } from 'chai'
 import type { Contract } from 'ethers'
