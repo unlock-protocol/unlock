@@ -13756,6 +13756,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@openzeppelin/defender-relay-client@npm:1.54.6":
+  version: 1.54.6
+  resolution: "@openzeppelin/defender-relay-client@npm:1.54.6"
+  dependencies:
+    "@openzeppelin/defender-base-client": "npm:1.54.6"
+    amazon-cognito-identity-js: "npm:^6.0.1"
+    axios: "npm:^1.4.0"
+    lodash: "npm:^4.17.19"
+    node-fetch: "npm:^2.6.0"
+  peerDependencies:
+    "@ethersproject/abstract-provider": ^5.6.1
+    "@ethersproject/abstract-signer": ^5.6.2
+    "@ethersproject/hash": ^5.6.1
+    "@ethersproject/providers": ^5.6.8
+    "@ethersproject/transactions": ^5.6.2
+    web3-core: ^1.8.2
+    web3-core-helpers: ^1.8.2
+  checksum: 10/fe21b14ef318572d260f2fa1cf7b8ff5665a18864abbf7636d456cc5e7bb10a36e8ce5c4f292d5812af950d529851d068b3775ffc88c5778e9113e313db7cf6b
+  languageName: node
+  linkType: hard
+
 "@openzeppelin/defender-sdk-account-client@npm:1.14.3":
   version: 1.14.3
   resolution: "@openzeppelin/defender-sdk-account-client@npm:1.14.3"
@@ -20463,6 +20484,7 @@ __metadata:
     "@logtail/node": "npm:0.4.21"
     "@logtail/winston": "npm:0.4.21"
     "@nuintun/qrcode": "npm:4.1.5"
+    "@openzeppelin/defender-relay-client": "npm:1.54.6"
     "@openzeppelin/defender-sdk": "npm:1.14.3"
     "@openzeppelin/merkle-tree": "npm:1.0.7"
     "@resvg/resvg-js": "npm:2.6.2"

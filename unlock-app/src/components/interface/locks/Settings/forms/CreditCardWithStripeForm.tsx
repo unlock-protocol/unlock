@@ -17,6 +17,7 @@ import { useUSDPricing } from '~/hooks/useUSDPricing'
 import { useLockData } from '~/hooks/useLockData'
 import CreditCardCustomPrice from './CreditCardCustomPrice'
 import CreditCardUnlockFee from './CreditCardUnlockFee'
+import useKeyGranter from '~/hooks/useKeyGranter'
 
 enum ConnectStatus {
   CONNECTED = 1,
@@ -140,7 +141,7 @@ const ConnectStripe = ({
   const onGrantKeyRole = async () => {
     const keyGrantPromise = grantKeyGrantorRoleMutation.mutateAsync()
     await ToastHelper.promise(keyGrantPromise, {
-      error: `Can't grant role, please try again.`,
+      error: "Can't grant role, please try again.",
       success: 'Key granted',
       loading: 'Allow key granting',
     })
@@ -170,12 +171,6 @@ const ConnectStripe = ({
                 Unlock Labs processes non-crypto payments via our Stripe
                 integration and includes fees that are applied on top of your
                 lock's key price.`}
-            </span>
-            <span>
-              If you enable credit card payments for your lock, your members
-              will usually be charged a higher amount than the amount for your
-              lock. The Unlock Labs fee is 10%, which must be added to the
-              Stripe fees and gas costs.
             </span>
             <span>
               For more details see{' '}
@@ -309,20 +304,10 @@ export const CreditCardWithStripeForm = ({
     network,
   })
 
-  const { isPending: isLoadingKeyGranter, data: keyGranter } = useQuery({
-    queryKey: ['getKeyGranter', lockAddress, network],
-    queryFn: () => {
-      return getKeyGranter()
-    },
-  })
   const stripeConnectionState = stripeConnectionDetails?.connected ?? 0
   const connectedStripeAccount = stripeConnectionDetails?.account
   const supportedCurrencies =
     stripeConnectionDetails?.countrySpec?.supported_payment_currencies ?? []
-
-  const getKeyGranter = async () => {
-    return (await locksmith.balance()).data[network].address
-  }
 
   const disconnectStipeMutation = useStripeDisconnect({
     lockAddress,
@@ -348,6 +333,10 @@ export const CreditCardWithStripeForm = ({
   })
 
   const isPricingLow = (fiatPricing?.usd?.amount ?? 0) < 0.5
+
+  const { data: keyGranter, isPending: isLoadingKeyGranter } = useKeyGranter({
+    network,
+  })
 
   const loading = isPending || isLoadingKeyGranter || isLoadingPricing
 
@@ -380,6 +369,8 @@ export const CreditCardWithStripeForm = ({
       }
     )
   }
+
+  console.log({ keyGranter })
 
   const Status = () => {
     if (ConnectStatus.NO_ACCOUNT === stripeConnectionState) {

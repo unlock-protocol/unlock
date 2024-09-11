@@ -41,6 +41,7 @@
     "@logtail/node": "0.4.21",
     "@logtail/winston": "0.4.21",
     "@nuintun/qrcode": "4.1.5",
+    "@openzeppelin/defender-relay-client": "1.54.6",
     "@openzeppelin/defender-sdk": "1.14.3",
     "@openzeppelin/merkle-tree": "1.0.7",
     "@resvg/resvg-js": "2.6.2",

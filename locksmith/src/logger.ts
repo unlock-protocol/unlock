@@ -14,10 +14,10 @@ export const logger = winston.createLogger({
 // No output in tests
 logger.add(
   new winston.transports.Console({
-    silent: !!(
-      process.env?.NODE_ENV &&
-      ['test', 'production'].indexOf(process.env?.NODE_ENV) > -1
-    ),
+    // silent: !!(
+    //   process.env?.NODE_ENV &&
+    //   ['test', 'production'].indexOf(process.env?.NODE_ENV) > -1
+    // ),
     format: simple(),
   })
 )

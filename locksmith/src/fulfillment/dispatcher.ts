@@ -1,4 +1,5 @@
 import { Defender } from '@openzeppelin/defender-sdk'
+import { RelayClient } from '@openzeppelin/defender-relay-client'
 
 import {
   KeyManager,
@@ -60,14 +61,20 @@ export const getPurchaser = async function ({
   network = 1,
   address = undefined,
 }: PurchaserArgs): Promise<ethers.Signer> {
+  console.log({ network, address })
   // If we have a provider, we need to fetch that one... or yield an error!
   const defenderRelayCredential = config.defenderRelayCredentials[network]
   if (defenderRelayCredential?.apiKey && defenderRelayCredential?.apiSecret) {
     const defender = new Defender(defenderRelayCredential)
+    console.log(defender)
+    console.log('_____')
+    const provider = DefenderRelayProvider
     const provider = defender.relaySigner.getProvider()
+    console.log('GOT PORVIDER')
     const wallet = await defender.relaySigner.getSigner(provider, {
       speed: 'fast',
     })
+    console.log('GOT PORVIDER')
     if (!address || address === (await wallet.getAddress())) {
       const relayerStatus = await defender.relaySigner.getRelayerStatus()
       if (!relayerStatus.paused) {
@@ -205,44 +212,44 @@ export default class Dispatcher {
       Object.values(networks)
         .filter((network) => network.name !== 'localhost')
         .map(async (network: any) => {
-          try {
-            const [provider, wallet] = await Promise.all([
-              getProviderForNetwork(network.id),
-              getPurchaser({ network: network.id }),
+          // try {
+          const [provider, wallet] = await Promise.all([
+            getProviderForNetwork(network.id),
+            getPurchaser({ network: network.id }),
+          ])
+          const address = await wallet.getAddress()
+          let timeout
+          const balance: ethers.BigNumberish =
+            await Promise.race<ethers.BigNumberish>([
+              new Promise(
+                (resolve) =>
+                  (timeout = setTimeout(() => {
+                    logger.error(
+                      `Timeout while retrieving balance on network ${network.name} (${network.id})`
+                    )
+                    resolve(0)
+                  }, 3000))
+              ),
+              provider.getBalance(address),
             ])
-            const address = await wallet.getAddress()
-            let timeout
-            const balance: ethers.BigNumberish =
-              await Promise.race<ethers.BigNumberish>([
-                new Promise(
-                  (resolve) =>
-                    (timeout = setTimeout(() => {
-                      logger.error(
-                        `Timeout while retrieving balance on network ${network.name} (${network.id})`
-                      )
-                      resolve(0)
-                    }, 3000))
-                ),
-                provider.getBalance(address),
-              ])
-            clearTimeout(timeout) // clears timeout
-            return [
-              network.id,
-              {
-                address,
-                name: network.name,
-                balance: ethers.formatEther(balance),
-              },
-            ]
-          } catch (error) {
-            logger.error(
-              `Could not retrieve balance on network ${network.name} (${network.id}) `,
-              {
-                error,
-              }
-            )
-            return [network.id, {}]
-          }
+          clearTimeout(timeout) // clears timeout
+          return [
+            network.id,
+            {
+              address,
+              name: network.name,
+              balance: ethers.formatEther(balance),
+            },
+          ]
+          // } catch (error) {
+          //   logger.error(
+          //     `Could not retrieve balance on network ${network.name} (${network.id}) `,
+          //     {
+          //       error,
+          //     }
+          //   )
+          //   return [network.id, {}]
+          // }
         })
     )
     // @ts-expect-error - map type
