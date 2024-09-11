@@ -27,6 +27,7 @@ interface MintingScreenProps {
   network: number
   states?: Record<string, { text: string }>
   pessimistic?: boolean
+  isCompact?: boolean
 }
 
 const DEFAULT_STATES = {
@@ -48,6 +49,7 @@ export const MintingScreen = ({
   network,
   states = DEFAULT_STATES,
   pessimistic = false,
+  isCompact = false,
 }: MintingScreenProps) => {
   const config = useConfig()
   const transactionNetwork = mint.network || network
@@ -76,7 +78,11 @@ export const MintingScreen = ({
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
         >
-          <p className="text-lg font-bold text-brand-ui-primary inline-flex items-center gap-2">
+          <p
+            className={`text-lg font-bold text-brand-ui-primary inline-flex items-center gap-2 ${
+              isCompact ? 'text-base text-center' : 'text-lg'
+            }`}
+          >
             {/* 
             This is not ideal realization, at least it works
             mint.status === 'FINISHED' before the transaction is confirmed on chan
