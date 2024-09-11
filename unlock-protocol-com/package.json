@@ -62,7 +62,7 @@
     "deploy-fleek": "./scripts/deploy-fleek.sh",
     "start": "yarn build && NODE_ENV=production next start",
     "test": "vitest run",
-    "lint": "eslint src/",
+    "lint": "eslint",
     "ci": "yarn test && yarn lint && yarn build"
   },
   "browserslist": [
