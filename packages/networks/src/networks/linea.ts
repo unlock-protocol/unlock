@@ -19,6 +19,10 @@ export const linea: NetworkConfig = {
     },
   },
   featured: false,
+  governanceBridge: {
+    connext: '0xa05eF29e9aC8C75c530c2795Fa6A800e188dE0a9',
+    domainId: 1818848877,
+  },
   hooks: {
     onKeyPurchaseHook: [
       {
