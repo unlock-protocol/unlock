@@ -1,4 +1,5 @@
 import * as Base64 from '../../src/utils/base64'
+
 import { generateTypedSignature } from '../../src/utils/signature'
 
 const args = require('yargs').argv
@@ -57,6 +58,7 @@ async function main(
   inputFile: string,
   host: string
 ) {
+  /* eslint evm-address-to-checksummed/evm-address-to-checksummed: "warn" */
   const userAddress = '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a'
   const endpoint = `${host}/api/key/${lockAddress}/user/${userAddress}`
   const contents = fs.readFileSync(resolve(inputFile), 'utf8')
