@@ -82,4 +82,14 @@ module.exports = [
     files: ['**/*.json'],
     ...jsonPlugin.configs.recommended,
   },
+  {
+    ignores: [
+      'node_modules',
+      'build',
+      'coverage',
+      'dist',
+      'out',
+      'src/@generated/',
+    ],
+  },
 ]
