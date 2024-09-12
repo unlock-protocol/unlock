@@ -1,3 +1,5 @@
+'use client'
+
 import useTermsOfService from '~/hooks/useTermsOfService'
 import { useConfig } from '~/utils/withConfig'
 import { Button, Footer, HeaderNav, Modal } from '@unlock-protocol/ui'
