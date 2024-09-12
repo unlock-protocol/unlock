@@ -52,7 +52,7 @@ export default class UnlockService {
       throw new Error(`Missing config for ${network}`)
     }
 
-    let opCode = await (
+    const opCode = await (
       this.providerForNetwork(network) as ethers.Provider
     ).getCode(this.networks[network].unlockAddress!)
     return opCode !== '0x'

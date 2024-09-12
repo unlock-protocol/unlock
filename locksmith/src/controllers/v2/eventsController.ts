@@ -24,7 +24,7 @@ import { isVerifierOrManagerForLock } from '../../utils/middlewares/isVerifierMi
 import { sendEmail } from '../../operations/wedlocksOperations'
 import { getEventUrl } from '../../utils/eventHelpers'
 import { Web3Service, getErc20Decimals } from '@unlock-protocol/unlock-js'
-import { uploadJsonToS3 } from '../../utils/uploadJsonToS3'
+import { uploadJsonToS3 } from '../../utils/s3'
 import config from '../../config/config'
 import { downloadJsonFromS3 } from '../../utils/downloadJsonFromS3'
 import logger from '../../logger'

@@ -25,7 +25,7 @@ const findLatest = (exports: contractVersion[], contract: string) => {
 
 async function main() {
   const paths = await getAbiPaths()
-  const exports: contractVersion[] = paths.flat().map((abiPath) => {
+  const exports: contractVersion[] = paths.flat().map((abiPath: string) => {
     let contractName, fileName, versionNumber
     if (abiPath.includes('/utils/')) {
       ;[, , , fileName] = abiPath.split('/')

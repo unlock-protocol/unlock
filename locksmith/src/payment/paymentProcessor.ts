@@ -23,7 +23,6 @@ export class PaymentProcessor {
     this.keyPricer = new KeyPricer()
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async findUserByPublicKey(publicKey: ethereumAddress) {
     const normalizedEthereumAddress = Normalizer.ethereumAddress(publicKey)
 
