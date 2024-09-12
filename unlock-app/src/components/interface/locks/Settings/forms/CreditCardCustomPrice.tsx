@@ -150,16 +150,14 @@ export default function CreditCardCustomPrice({
     CREDIT_CARD_MIN_PRICE_BY_CURRENCY?.[currency?.toUpperCase()] ||
     CREDIT_CARD_MIN_USD_PRICE
 
-  console.log({ fiatPricing })
   return (
     <div className="grid gap-2 text-sm">
       <SettingCardDetail
         title={'Price for card payments'}
         description={
-          hasPriceConversion ? (
+          hasPriceConversion && fiatPricing!.usd!.amount ? (
             <span>
-              {`Your members will be charged ${fiatPricing?.usd?.amount} based on the current exchange rate
-          for ${symbol}.`}
+              {`Your members will be charged around ${fiatPricing!.usd!.amount.toFixed(2)}, but the conversion rate for ${symbol} may vary. `}
             </span>
           ) : (
             <p className="text-sm font-semibold text-red-600">

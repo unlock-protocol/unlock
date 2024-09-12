@@ -184,11 +184,11 @@ describe('pricingOperations', () => {
     })
   })
 
-  describe('getDefaultUsdPricing', () => {
+  describe('getDefaultFiatPricing', () => {
     it('returns default usd pricing', async () => {
       expect.assertions(4)
 
-      const pricing = await pricingOperations.getDefaultUsdPricing({
+      const pricing = await pricingOperations.getDefaultFiatPricing({
         lockAddress: lockAddressErc20,
         network,
       })
@@ -202,7 +202,7 @@ describe('pricingOperations', () => {
     it('returns USD pricing with "creditCard" settings price', async () => {
       expect.assertions(5)
 
-      const pricing = await pricingOperations.getDefaultUsdPricing({
+      const pricing = await pricingOperations.getDefaultFiatPricing({
         lockAddress: lockAddressWithSettings,
         network,
       })
@@ -217,7 +217,7 @@ describe('pricingOperations', () => {
     it('returns EUR pricing with "creditCard" settings price', async () => {
       expect.assertions(5)
 
-      const pricing = await pricingOperations.getDefaultUsdPricing({
+      const pricing = await pricingOperations.getDefaultFiatPricing({
         lockAddress: lockWithEurCurrency,
         network,
       })
@@ -232,7 +232,7 @@ describe('pricingOperations', () => {
     it('returns default usd pricing when "creditCard" settings price is not set', async () => {
       expect.assertions(4)
 
-      const pricing = await pricingOperations.getDefaultUsdPricing({
+      const pricing = await pricingOperations.getDefaultFiatPricing({
         lockAddress: lockAddressWithoutSettings,
         network,
       })
@@ -244,13 +244,13 @@ describe('pricingOperations', () => {
     })
   })
 
-  describe('getUsdPricingForRecipient', () => {
+  describe('getFiatPricingForRecipient', () => {
     it('returns default usd pricing when "creditCard" settings price is not set', async () => {
       expect.assertions(4)
       const userAddress = await ethers.Wallet.createRandom().getAddress()
       const referrer = await ethers.Wallet.createRandom().getAddress()
 
-      const pricing = await pricingOperations.getUsdPricingForRecipient({
+      const pricing = await pricingOperations.getFiatPricingForRecipient({
         lockAddress: lockAddressWithoutSettings,
         network,
         userAddress,
@@ -268,7 +268,7 @@ describe('pricingOperations', () => {
       const userAddress = await ethers.Wallet.createRandom().getAddress()
       const referrer = await ethers.Wallet.createRandom().getAddress()
 
-      const pricing = await pricingOperations.getUsdPricingForRecipient({
+      const pricing = await pricingOperations.getFiatPricingForRecipient({
         lockAddress: lockAddressWithSettings,
         network,
         userAddress,
@@ -288,7 +288,7 @@ describe('pricingOperations', () => {
       const userAddress = await ethers.Wallet.createRandom().getAddress()
       const referrer = await ethers.Wallet.createRandom().getAddress()
 
-      const pricing = await pricingOperations.getUsdPricingForRecipient({
+      const pricing = await pricingOperations.getFiatPricingForRecipient({
         lockAddress: lockWithEurCurrency,
         network,
         userAddress,

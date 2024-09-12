@@ -10,8 +10,8 @@ import {
   MIN_PAYMENT_STRIPE_CREDIT_CARD,
 } from './constants'
 import {
-  getDefaultUsdPricing,
-  getUsdPricingForRecipient,
+  getDefaultFiatPricing,
+  getFiatPricingForRecipient,
   getDefiLammaPrice,
   KeyPricing,
 } from '../operations/pricingOperations'
@@ -59,7 +59,7 @@ export const getKeyPricingInUSD = async ({
   data: dataArray,
   referrers,
 }: KeyPricingOptions): Promise<KeyPricing[]> => {
-  const defaultPricing = await getDefaultUsdPricing({
+  const defaultPricing = await getDefaultFiatPricing({
     lockAddress,
     network,
   })
@@ -78,7 +78,7 @@ export const getKeyPricingInUSD = async ({
       }
 
       try {
-        const pricingForRecipient = await getUsdPricingForRecipient({
+        const pricingForRecipient = await getFiatPricingForRecipient({
           lockAddress,
           network,
           userAddress,

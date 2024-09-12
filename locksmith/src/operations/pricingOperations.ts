@@ -291,7 +291,7 @@ export async function getLockKeyPricing({
 }
 
 /** Get default pricing for a specific lock */
-export const getDefaultUsdPricing = async ({
+export const getDefaultFiatPricing = async ({
   lockAddress,
   network,
 }: DefaultPricingProps): Promise<KeyPricingPrice> => {
@@ -331,7 +331,7 @@ export const getDefaultUsdPricing = async ({
 }
 
 /** Get usd pricing for a specific recipient */
-export const getUsdPricingForRecipient = async ({
+export const getFiatPricingForRecipient = async ({
   lockAddress,
   network,
   userAddress,
