@@ -18,7 +18,7 @@
   "scripts": {
     "build:tsc": "tsc",
     "build": "vite build && tsup ./src/index.ts --dts-only",
-    "lint": "eslint src",
+    "lint": "eslint",
     "test": "NODE_ENV=test vitest run --coverage",
     "clean": "rm -rf build dist coverage",
     "ci": "yarn test && yarn build"

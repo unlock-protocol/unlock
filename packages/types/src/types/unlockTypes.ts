@@ -3,16 +3,14 @@
 
 // A bug in eslint causes it to think that this exported enum is "unused". So
 // disable eslint for that declaration until they fix it. TODO: follow up on this.
-/* eslint-disable no-unused-vars */
+
 export enum TransactionType {
   LOCK_CREATION = 'LOCK_CREATION',
   KEY_PURCHASE = 'KEY_PURCHASE',
   WITHDRAWAL = 'WITHDRAWAL',
   UPDATE_KEY_PRICE = 'UPDATE_KEY_PRICE',
 }
-/* eslint-enable no-unused-vars */
 
-/* eslint-disable no-unused-vars */
 export enum TransactionStatus {
   SUBMITTED = 'submitted',
   PENDING = 'pending',
@@ -21,7 +19,6 @@ export enum TransactionStatus {
   FAILED = 'failed',
   NONE = '', // for testing purposes
 }
-/* eslint-enable no-unused-vars */
 
 export interface NetworkDeploy {
   unlockAddress: string
@@ -171,6 +168,7 @@ export interface NetworkConfigs {
 
 export interface ContractAbi {
   contractName: string
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   abi: Array<{}>
   bytecode: string
   deployedBytecode: string
