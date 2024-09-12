@@ -66,4 +66,4 @@ jobs:
           refresh-message-position: true
           # We rely on a deployment of a proxy service to post comment from forked PRs
           # see https://github.com/mshick/add-pr-comment-proxy for more info
-          proxy-url: "https://8080-cs-647313627692-default.cs-europe-west1-iuzs.cloudshell.dev"
+          proxy-url: "https://add-pr-comment-proxy-801850414021.us-central1.run.app"
