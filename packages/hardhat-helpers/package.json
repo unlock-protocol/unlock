@@ -10,7 +10,7 @@
     "build:ts": "tsup src/index.ts --dts --format esm,cjs",
     "copyABIs": "copyfiles --verbose -u 2 src/ABIs/*.json ./dist/ABIs",
     "start": "tsc --watch",
-    "lint": "eslint"
+    "lint": "eslint src/"
   },
   "dependencies": {
     "@matterlabs/hardhat-zksync-deploy": "1.5.0",
@@ -30,7 +30,6 @@
   },
   "devDependencies": {
     "copyfiles": "2.4.1",
-    "eslint": "9.9.1",
     "tsup": "8.2.4"
   },
   "repository": {

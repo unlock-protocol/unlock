@@ -20409,7 +20409,6 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:^"
     "@unlock-protocol/types": "workspace:^"
     copyfiles: "npm:2.4.1"
-    eslint: "npm:9.9.1"
     ethers: "npm:6.13.2"
     hardhat: "npm:2.22.9"
     tsup: "npm:8.2.4"
@@ -20673,7 +20672,6 @@ __metadata:
   resolution: "@unlock-protocol/types@workspace:packages/types"
   dependencies:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
-    eslint: "npm:9.9.1"
     typescript: "npm:5.5.4"
   languageName: unknown
   linkType: soft

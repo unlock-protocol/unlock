@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 const eslint = require('@eslint/js')
 const typescriptEslint = require('typescript-eslint')
 const vitestPlugin = require('eslint-plugin-vitest')
@@ -80,15 +81,5 @@ module.exports = [
   {
     files: ['**/*.json'],
     ...jsonPlugin.configs.recommended,
-  },
-  {
-    ignores: [
-      'node_modules',
-      'build',
-      'coverage',
-      'dist',
-      'out',
-      'src/@generated/',
-    ],
   },
 ]
