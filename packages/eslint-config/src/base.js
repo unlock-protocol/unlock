@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
 const eslint = require('@eslint/js')
 const typescriptEslint = require('typescript-eslint')
 const vitestPlugin = require('eslint-plugin-vitest')
