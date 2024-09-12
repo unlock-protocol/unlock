@@ -1,5 +1,5 @@
 import { Response } from 'express'
-import { ethers, utils } from 'ethers'
+import { ethers } from 'ethers'
 import { SiweMessage, SiweErrorType } from 'siwe'
 import { SignedRequest } from '../types'
 import logger from '../logger'
@@ -58,16 +58,14 @@ export const authorize = async (
   }
 
   try {
-    const decoded = utils.base64.decode(code)
-    const message = JSON.parse(ethers.utils.toUtf8String(decoded))
+    const decoded = ethers.decodeBase64(code)
+    const message = JSON.parse(ethers.toUtf8String(decoded))
     const siweMessage = new SiweMessage(message.d)
 
     const networkConfig = networks[message.chainId || 1]
     let provider
     if (networkConfig) {
-      provider = new ethers.providers.JsonRpcProvider(
-        networkConfig.publicProvider
-      )
+      provider = new ethers.JsonRpcProvider(networkConfig.publicProvider)
     }
     const { data: fields } = await siweMessage.verify(
       { signature: message.s },

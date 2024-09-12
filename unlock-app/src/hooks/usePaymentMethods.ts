@@ -1,32 +1,28 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { useAuth } from '~/contexts/AuthenticationContext'
 
 export const useRemovePaymentMethods = () => {
   const { account } = useAuth()
-  return useMutation(
-    ['removePaymentMethods', account],
-    async () => {
-      const response = await storage.removePaymentMethods()
+  return useMutation({
+    mutationKey: ['removePaymentMethods', account],
+    mutationFn: async () => {
+      const response = await locksmith.removePaymentMethods()
       return response.data.success
     },
-    {
-      retry: 2,
-    }
-  )
+    retry: 2,
+  })
 }
 
 export const usePaymentMethodList = () => {
   const { account } = useAuth()
-  return useQuery(
-    ['listPaymentMethods', account],
-    async () => {
-      const response = await storage.listPaymentMethods()
+  return useQuery({
+    queryKey: ['listPaymentMethods', account],
+    queryFn: async () => {
+      const response = await locksmith.listPaymentMethods()
       return response.data.methods || []
     },
-    {
-      retry: 2,
-      enabled: !!account,
-    }
-  )
+    retry: 2,
+    enabled: !!account,
+  })
 }

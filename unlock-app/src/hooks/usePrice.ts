@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { getErc20Decimals } from '@unlock-protocol/unlock-js'
 import { ethers } from 'ethers'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
@@ -22,28 +22,31 @@ export const useGetPrice = ({
   const web3Service = useWeb3Service()
   const provider = web3Service.providerForNetwork(network)
 
-  return useQuery(['getPrice', network, hash], async (): Promise<any> => {
-    const tokenAddress =
-      currencyContractAddress === DEFAULT_USER_ACCOUNT_ADDRESS
-        ? undefined
-        : currencyContractAddress
+  return useQuery({
+    queryKey: ['getPrice', network, hash],
+    queryFn: async (): Promise<any> => {
+      const tokenAddress =
+        currencyContractAddress === DEFAULT_USER_ACCOUNT_ADDRESS
+          ? undefined
+          : currencyContractAddress
 
-    const decimals = await getErc20Decimals(tokenAddress ?? '', provider)
-    const total = ethers.utils.formatUnits(`${amount}`, decimals)
+      const decimals = await getErc20Decimals(tokenAddress ?? '', provider)
+      const total = ethers.formatUnits(`${amount}`, decimals)
 
-    const response = await storage.price(
-      network,
-      parseFloat(total),
-      tokenAddress
-    )
+      const response = await locksmith.price(
+        network,
+        parseFloat(total),
+        tokenAddress
+      )
 
-    return {
-      usd:
-        parseFloat(
-          (response?.data?.result?.priceInAmount ?? 0)?.toString()
-        ).toFixed(2) || 0,
-      total,
-    }
+      return {
+        usd:
+          parseFloat(
+            (response?.data?.result?.priceInAmount ?? 0)?.toString()
+          ).toFixed(2) || 0,
+        total,
+      }
+    },
   })
 }
 
@@ -61,10 +64,10 @@ export const useGetTotalCharges = ({
   recipients,
   enabled = true,
 }: GetTotalChargesProps) => {
-  return useQuery(
-    ['getTotalChargesForLock', lockAddress, network],
-    async () => {
-      const pricing = await storage.getChargesForLock(
+  return useQuery({
+    queryKey: ['getTotalChargesForLock', lockAddress, network],
+    queryFn: async () => {
+      const pricing = await locksmith.getChargesForLock(
         network,
         lockAddress,
         purchaseData,
@@ -73,8 +76,6 @@ export const useGetTotalCharges = ({
 
       return pricing.data
     },
-    {
-      enabled,
-    }
-  )
+    enabled,
+  })
 }

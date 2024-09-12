@@ -9,9 +9,9 @@ interface UpdateVersionFormProps {
   network: number
   isManager: boolean
   disabled: boolean
-  version: number
+  version: bigint
   isLastVersion: boolean
-  onUpdatedVersion: (version: number) => void
+  onUpdatedVersion: (version: bigint) => void
 }
 
 const UpgradeHooksAlert = () => {
@@ -37,7 +37,7 @@ export const UpdateVersionForm = ({
   network,
   onUpdatedVersion,
 }: UpdateVersionFormProps) => {
-  const nextVersion = version + 1
+  const nextVersion = version + BigInt(1)
   const { getWalletService } = useAuth()
   const upgradeLockVersion = async () => {
     const walletService = await getWalletService(network)
@@ -47,7 +47,9 @@ export const UpdateVersionForm = ({
     })
   }
 
-  const upgradeLockVersionMutation = useMutation(upgradeLockVersion)
+  const upgradeLockVersionMutation = useMutation({
+    mutationFn: upgradeLockVersion,
+  })
 
   const onUpgradeLockVersion = async () => {
     const upgradeLockVersionPromise = upgradeLockVersionMutation.mutateAsync()
@@ -62,7 +64,7 @@ export const UpdateVersionForm = ({
     onUpdatedVersion(upgradedVersion || version)
   }
 
-  const disabledInput = disabled || upgradeLockVersionMutation.isLoading
+  const disabledInput = disabled || upgradeLockVersionMutation.isPending
 
   if (isLastVersion) return null
 
@@ -74,7 +76,7 @@ export const UpdateVersionForm = ({
           <Button
             className="w-full md:w-1/3"
             disabled={disabledInput}
-            loading={upgradeLockVersionMutation.isLoading}
+            loading={upgradeLockVersionMutation.isPending}
             onClick={() => {
               onUpgradeLockVersion()
             }}

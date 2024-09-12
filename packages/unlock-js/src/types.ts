@@ -1,4 +1,4 @@
-import type { ethers, providers } from 'ethers'
+import type { ethers } from 'ethers'
 
 export interface PurchaseKeyParams {
   lockAddress: string
@@ -43,7 +43,7 @@ export interface KeyPayload {
   expiration: number
 }
 
-export type Web3Provider = string | providers.Web3Provider
+export type Web3Provider = string | ethers.BrowserProvider
 
 export type WalletServiceCallback = (
   _error: Error | null,

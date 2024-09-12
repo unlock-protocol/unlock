@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo } from 'react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { checkoutMachine } from './checkoutMachine'
-import { Select } from './Select'
 import { Quantity } from './Quantity'
 import { Metadata } from './Metadata'
 import { Confirm } from './Confirm'
@@ -9,7 +8,6 @@ import { MessageToSign } from './MessageToSign'
 import { Minting } from './Minting'
 import { CardPayment } from './CardPayment'
 import { useMachine } from '@xstate/react'
-import { UnlockAccountSignIn } from './UnlockAccountSignIn'
 import { Captcha } from './Captcha'
 import { Returning } from './Returning'
 import { Payment } from './Payment'
@@ -21,21 +19,23 @@ import { CheckoutHead, TopNavigation } from '../Shell'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { Guild } from './Guild'
 import { Gitcoin } from './Gitcoin'
+import { isInIframe } from '~/utils/iframe'
+import { useRouter } from 'next/router'
+import { Select } from './Select'
 import { Connected } from '../Connected'
+
 interface Props {
-  injectedProvider: any
   paywallConfig: PaywallConfigType
-  communication?: ReturnType<typeof useCheckoutCommunication>
   redirectURI?: URL
   handleClose?: (params: Record<string, string>) => void
+  communication?: ReturnType<typeof useCheckoutCommunication>
 }
 
 export function Checkout({
   paywallConfig,
-  injectedProvider,
-  communication,
   redirectURI,
   handleClose,
+  communication,
 }: Props) {
   // @ts-expect-error - The types returned by 'resolveState(...)' are incompatible between these types
   const [state, send, checkoutService] = useMachine(checkoutMachine, {
@@ -52,6 +52,8 @@ export function Checkout({
     state.context.paywallConfig
   )
 
+  const router = useRouter()
+
   useEffect(() => {
     console.debug('Unlock paywall config', paywallConfig)
   }, [paywallConfig])
@@ -67,7 +69,7 @@ export function Checkout({
 
   useEffect(() => {
     const user = account ? { address: account } : {}
-    if (communication?.insideIframe) {
+    if (isInIframe() && communication) {
       communication.emitUserInfo(user)
     }
   }, [account, communication])
@@ -96,7 +98,7 @@ export function Checkout({
           redirect.searchParams.append(key, value)
         }
         return window.location.assign(redirect)
-      } else if (!communication?.insideIframe) {
+      } else if (!isInIframe() || !communication) {
         window.history.back()
       } else {
         communication.emitCloseModal()
@@ -104,8 +106,8 @@ export function Checkout({
     },
     [
       handleClose,
-      communication,
       redirectURI,
+      communication,
       mint,
       messageToSign,
       paywallConfig.messageToSign,
@@ -127,6 +129,21 @@ export function Checkout({
     }
     return undefined
   }, [state, checkoutService])
+
+  useEffect(() => {
+    if (matched !== 'SELECT' && matched != 'CONNECT' && router.query.lock) {
+      // Remove the lock from the query string
+      const { lock, ...otherQueryParams } = router.query
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: otherQueryParams,
+        },
+        undefined,
+        { shallow: true }
+      )
+    }
+  }, [router])
 
   const Content = useCallback(() => {
     switch (matched) {
@@ -173,9 +190,6 @@ export function Checkout({
           />
         )
       }
-      case 'UNLOCK_ACCOUNT': {
-        return <UnlockAccountSignIn checkoutService={checkoutService} />
-      }
       case 'CAPTCHA': {
         return <Captcha checkoutService={checkoutService} />
       }
@@ -185,7 +199,6 @@ export function Checkout({
       case 'PASSWORD': {
         return <Password checkoutService={checkoutService} />
       }
-
       case 'PROMO': {
         return <Promo checkoutService={checkoutService} />
       }
@@ -195,8 +208,8 @@ export function Checkout({
       case 'RETURNING': {
         return (
           <Returning
-            communication={communication}
             onClose={onClose}
+            communication={communication}
             checkoutService={checkoutService}
           />
         )
@@ -205,7 +218,7 @@ export function Checkout({
         return null
       }
     }
-  }, [injectedProvider, onClose, checkoutService, matched, communication])
+  }, [matched])
 
   return (
     <div className="bg-white z-10  shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem]">

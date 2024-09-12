@@ -1,4 +1,3 @@
-/* eslint import/prefer-default-export: 0 */ // This file does not have a default export
 import { ethers } from 'ethers'
 
 export const EMAIL_SUBSCRIPTION_FORM = {
@@ -6,7 +5,7 @@ export const EMAIL_SUBSCRIPTION_FORM = {
   formGuid: '868101be-ae3e-422e-bc86-356c96939187',
 }
 
-export const ADDRESS_ZERO = ethers.constants.AddressZero.toString()
+export const ADDRESS_ZERO = ethers.ZeroAddress.toString()
 /**
  * Returns a page title to be used within HTML <title> tags.
  * @param title

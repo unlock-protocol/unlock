@@ -1,5 +1,5 @@
 import { Button, Modal, Tabs } from '@unlock-protocol/ui'
-import { useRouter } from 'next/router'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { CheckoutConfig, PaywallConfigType } from '@unlock-protocol/core'
 import {
@@ -21,6 +21,7 @@ import { ChooseConfiguration } from './ChooseConfiguration'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDebounce } from 'react-use'
 import { getCheckoutUrl } from '~/components/content/event/utils'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 export type Configuration = 'new' | 'existing'
 interface ConfigurationFormProps {
@@ -41,7 +42,8 @@ const Header = () => {
 
 export const CheckoutUrlPage = () => {
   const router = useRouter()
-  const query = router.query
+  const searchParams = useSearchParams()
+  const { account } = useAuth()
   const [checkoutUrl, setCheckoutUrl] = useState('')
   const [isDeleteConfirmation, setDeleteConfirmation] = useState(false)
   const [configuration, setConfiguration] = useState<Configuration>('new')
@@ -59,10 +61,11 @@ export const CheckoutUrlPage = () => {
       id: null,
       config: {
         locks: {},
+        referrer: account,
         icon: '',
       },
     }),
-    []
+    [account]
   ) as CheckoutConfig
 
   const [checkoutConfig, setCheckoutConfig] = useState(DEFAULT_CONFIG)
@@ -73,10 +76,10 @@ export const CheckoutUrlPage = () => {
     refetch: refetchConfigList,
   } = useCheckoutConfigsByUser()
 
-  const { mutateAsync: updateConfig, isLoading: isConfigUpdating } =
+  const { mutateAsync: updateConfig, isPending: isConfigUpdating } =
     useCheckoutConfigUpdate()
 
-  const { mutateAsync: removeConfig, isLoading: isConfigRemoving } =
+  const { mutateAsync: removeConfig, isPending: isConfigRemoving } =
     useCheckoutConfigRemove()
 
   useEffect(() => {
@@ -151,34 +154,47 @@ export const CheckoutUrlPage = () => {
         ...rest,
         config: config || DEFAULT_CONFIG,
       }
+
       setCheckoutConfig(option)
+
       if (!option.id) {
-        const response = await updateConfig(option)
-        setCheckoutConfig({
-          id: response.id!,
-          config: response.config as PaywallConfigType,
-          name: response.name,
-        })
-        setValue('configName', '') // reset field after new configuration is set
-        await refetchConfigList()
+        try {
+          const response = await updateConfig(option)
+
+          setCheckoutConfig({
+            id: response.id!,
+            config: response.config as PaywallConfigType,
+            name: response.name,
+          })
+          setValue('configName', '') // reset field after new configuration is set
+          await refetchConfigList()
+        } catch (error) {
+          // Pass error to the form to block skip to next step
+          console.error("Couldn't create new configuration: ", error)
+          throw error
+        }
       }
     },
     [DEFAULT_CONFIG, refetchConfigList, setValue, updateConfig]
   )
 
   useEffect(() => {
-    if (checkoutConfigList?.length && !!query.id) {
-      const config = checkoutConfigList.find((c) => c.id === query.id)
+    if (checkoutConfigList?.length && !!searchParams.get('id')) {
+      const config = checkoutConfigList.find(
+        (c) => c.id === searchParams.get('id')
+      )
       if (config) {
-        // @ts-expect-error somethinf
+        // @ts-expect-error something
         handleSetConfiguration(config)
       } else {
         // TODO: handle the case where the user is a lock manager but the config was not created by them
       }
     }
-  }, [checkoutConfigList, query.id, handleSetConfiguration])
+  }, [checkoutConfigList, searchParams, handleSetConfiguration])
 
-  const handleSetConfigurationMutation = useMutation(handleSetConfiguration)
+  const handleSetConfigurationMutation = useMutation({
+    mutationFn: handleSetConfiguration,
+  })
 
   const isNewConfiguration = configuration === 'new'
 
@@ -187,22 +203,31 @@ export const CheckoutUrlPage = () => {
     if (!isValid) return Promise.reject() // pass rejected promise to block skip to next step
 
     if (isNewConfiguration) {
-      // this is a new config, let's pass an empty config
-      await handleSetConfiguration({
-        id: null,
-        name: configName,
-        config: DEFAULT_CONFIG.config,
-      })
-    }
-
-    if (!checkoutConfig?.id) {
-      ToastHelper.error('Please select a configuration or create a new one.')
-      return Promise.reject() // no config selected, prevent skip to next step
+      try {
+        // this is a new config, let's pass an empty config
+        await handleSetConfiguration({
+          id: null,
+          name: configName,
+          config: DEFAULT_CONFIG.config,
+        })
+      } catch (error) {
+        ToastHelper.error('A configuration with that name already exists.')
+        return Promise.reject()
+      }
+    } else {
+      if (!checkoutConfig?.id) {
+        ToastHelper.error('Please select a configuration or create a new one.')
+        return Promise.reject() // no config selected, prevent skip to next step
+      }
     }
   }
 
-  const submitConfigurationMutation = useMutation(onSubmitConfiguration)
-  const deleteConfigurationMutation = useMutation(onConfigRemove)
+  const submitConfigurationMutation = useMutation({
+    mutationFn: onSubmitConfiguration,
+  })
+  const deleteConfigurationMutation = useMutation({
+    mutationFn: onConfigRemove,
+  })
 
   const hasSelectedConfig =
     configuration === 'existing' && checkoutConfig?.id !== undefined
@@ -220,11 +245,11 @@ export const CheckoutUrlPage = () => {
         id: checkoutConfig.id,
       })
     },
-    2000, // 2 seconds of delay after edit's to trigger auto-save
+    2000, // 2 seconds of delay after edits to trigger auto-save
     [checkoutConfig, updateConfig, refetchConfigList]
   )
   const loading =
-    isLoadingConfigList || handleSetConfigurationMutation.isLoading
+    isLoadingConfigList || handleSetConfigurationMutation.isPending
 
   return (
     <>
@@ -273,8 +298,8 @@ export const CheckoutUrlPage = () => {
                         <ChooseConfiguration
                           loading={
                             isLoadingConfigList ||
-                            submitConfigurationMutation.isLoading ||
-                            deleteConfigurationMutation.isLoading
+                            submitConfigurationMutation.isPending ||
+                            deleteConfigurationMutation.isPending
                           }
                           name="configName"
                           control={control}

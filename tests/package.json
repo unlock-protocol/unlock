@@ -28,7 +28,7 @@
     "@unlock-protocol/networks": "workspace:^",
     "apollo-link-http": "1.5.17",
     "chai": "4.2.0",
-    "eslint": "8.46.0",
+    "eslint": "9.9.1",
     "ethers": "6.12.1",
     "graphql": "16.6.0",
     "hardhat": "2.20.1",
@@ -37,6 +37,6 @@
     "solidity-coverage": "0.8.2",
     "ts-node": "8.0.0",
     "typechain": "8.1.0",
-    "typescript": "5.3.3"
+    "typescript": "5.5.4"
   }
 }

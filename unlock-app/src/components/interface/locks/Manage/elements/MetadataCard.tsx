@@ -15,11 +15,9 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useLockManager } from '~/hooks/useLockManager'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
-import { ethers } from 'ethers'
 import { ADDRESS_ZERO, MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
 import { durationAsText } from '~/utils/durations'
-import { storage } from '~/config/storage'
-import { AxiosError } from 'axios'
+import { locksmith } from '~/config/locksmith'
 import { useGetReceiptsPageUrl } from '~/hooks/useReceipts'
 import Link from 'next/link'
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
@@ -31,6 +29,9 @@ import { useMetadata } from '~/hooks/metadata'
 import { LockType, getLockTypeByMetadata } from '@unlock-protocol/core'
 import { FiInfo as InfoIcon } from 'react-icons/fi'
 import { TransferKeyDrawer } from '~/components/interface/keychain/TransferKeyDrawer'
+import { useMarkAsCheckInMutation } from '~/hooks/useMarkAsCheckImMutation'
+import { getCheckInTime } from '~/utils/getCheckInTime'
+import { WrappedAddress } from '~/components/interface/WrappedAddress'
 
 interface MetadataCardProps {
   metadata: any
@@ -65,10 +66,10 @@ const MembershipRenewal = ({
   approvedRenewals,
   balance,
 }: KeyRenewalProps) => {
-  const possible = ethers.BigNumber.from(possibleRenewals)
-  const approved = ethers.BigNumber.from(approvedRenewals)
+  const possible = BigInt(possibleRenewals)
+  const approved = BigInt(approvedRenewals)
 
-  if (possible.lte(0)) {
+  if (possible >= 0) {
     return (
       <Detail className="py-2" label="Renewals:" inline justify={false}>
         User balance of {balance.amount} {balance.symbol} is too low to renew
@@ -76,7 +77,7 @@ const MembershipRenewal = ({
     )
   }
 
-  if (approved.lte(0)) {
+  if (approved >= 0) {
     return (
       <Detail className="py-2" label="Renewals" inline justify={false}>
         No renewals approved
@@ -84,7 +85,7 @@ const MembershipRenewal = ({
     )
   }
 
-  if (approved.gt(0) && approved.lte(UNLIMITED_RENEWAL_LIMIT)) {
+  if (approved > 0 && approved >= UNLIMITED_RENEWAL_LIMIT) {
     return (
       <Detail className="py-2" label="Renewals" inline justify={false}>
         {approved.toString()} times
@@ -92,7 +93,7 @@ const MembershipRenewal = ({
     )
   }
 
-  if (approved.gt(UNLIMITED_RENEWAL_LIMIT)) {
+  if (approved > UNLIMITED_RENEWAL_LIMIT) {
     return (
       <Detail className="py-2" label="Renewals" inline justify={false}>
         Renews unlimited times
@@ -150,7 +151,8 @@ const ChangeManagerModal = ({
     })
   }
 
-  const changeManagerMutation = useMutation(setKeyManagerForKey, {
+  const changeManagerMutation = useMutation({
+    mutationFn: setKeyManagerForKey,
     onSuccess: () => {
       if (typeof onChange === 'function') {
         onChange(newManager)
@@ -167,7 +169,7 @@ const ChangeManagerModal = ({
   const managerUnchanged = newManager?.toLowerCase() === manager?.toLowerCase()
 
   const fieldDisabled =
-    managerUnchanged || changeManagerMutation.isLoading || !isValid
+    managerUnchanged || changeManagerMutation.isPending || !isValid
 
   useEffect(() => {
     if (isOpen) {
@@ -201,7 +203,7 @@ const ChangeManagerModal = ({
                     <AddressInput
                       label="New Manager"
                       value={newManager}
-                      disabled={changeManagerMutation.isLoading}
+                      disabled={changeManagerMutation.isPending}
                       onChange={(value: any) => {
                         setValue('newManager', value, {
                           shouldValidate: true,
@@ -223,7 +225,7 @@ const ChangeManagerModal = ({
             <Button
               disabled={fieldDisabled}
               type="submit"
-              loading={changeManagerMutation.isLoading}
+              loading={changeManagerMutation.isPending}
             >
               Update
             </Button>
@@ -278,56 +280,32 @@ export const MetadataCard = ({
   // defaults to the owner when the manager is not set
   const manager = data?.keyManager ?? data?.keyholderAddress
 
-  const { isLoading: isLoadingUrl, data: receiptsPageUrl } =
+  const { isPending: isLoadingUrl, data: receiptsPageUrl } =
     useGetReceiptsPageUrl({
       lockAddress,
       network,
       tokenId: metadata.token,
     })
 
-  const getCheckInTime = () => {
-    if (checkInTimestamp) {
-      // checked in from this UI
-      return checkInTimestamp
-    }
-    // Check the metadata
-    const [_, checkInTimeValue] =
-      Object.entries(metadata)?.find(([key]) => key === 'checkedInAt') ?? []
-    if (!checkInTimeValue) {
-      return null
-    }
-    if (Array.isArray(checkInTimeValue)) {
-      // Multiple check ins
-      return new Date(
-        checkInTimeValue[checkInTimeValue.length - 1] as number
-      ).toLocaleString()
-    }
-    // single checkin
-    return new Date(checkInTimeValue as number).toLocaleString()
-  }
-
-  const { data: subscription, isLoading: isSubscriptionLoading } = useQuery(
-    ['subscription', lockAddress, tokenId, network],
-    async () => {
-      const response = await storage.getSubscription(
+  const { data: subscription, isPending: isSubscriptionLoading } = useQuery({
+    queryKey: ['subscription', lockAddress, tokenId, network],
+    queryFn: async () => {
+      const response = await locksmith.getSubscription(
         network,
         lockAddress,
         tokenId
       )
       return response.data.subscriptions?.[0] ?? null
     },
-    {
-      onError(error: any) {
-        console.error(error)
-      },
-    }
-  )
+  })
 
   const sendEmail = async () => {
-    return storage.emailTicket(network, lockAddress, tokenId)
+    return locksmith.emailTicket(network, lockAddress, tokenId)
   }
 
-  const sendEmailMutation = useMutation(sendEmail)
+  const sendEmailMutation = useMutation({
+    mutationFn: sendEmail,
+  })
 
   const onSendQrCode = async () => {
     if (!network) return
@@ -338,7 +316,10 @@ export const MetadataCard = ({
     })
   }
 
-  const isCheckedIn = typeof getCheckInTime() === 'string' || !!checkInTimestamp
+  const isCheckedIn =
+    typeof getCheckInTime(checkInTimestamp, metadata) === 'string' ||
+    !!checkInTimestamp
+
   const hasEmail = Object.entries(data || {})
     .map(([key]) => key.toLowerCase())
     .includes('email')
@@ -352,25 +333,10 @@ export const MetadataCard = ({
 
   const metadataPageUrl = `/locks/metadata?lockAddress=${lockAddress}&network=${network}&keyId=${tokenId}`
 
-  const onMarkAsCheckIn = async () => {
-    const { lockAddress, token: keyId } = data
-    return storage.checkTicket(network, lockAddress, keyId)
-  }
-
-  const markAsCheckInMutation = useMutation(onMarkAsCheckIn, {
-    onSuccess: () => {
-      setCheckedInTimestamp(new Date().toLocaleString())
-      ToastHelper.success('Successfully marked ticket as checked-in')
-    },
-    onError: (error) => {
-      if (error instanceof AxiosError) {
-        if (error.response?.status === 409) {
-          ToastHelper.error('Ticket already checked-in')
-          return
-        }
-      }
-      ToastHelper.error('Error on marking ticket as checked-in')
-    },
+  const markAsCheckInMutation = useMarkAsCheckInMutation({
+    network,
+    data,
+    setCheckedInTimestamp,
   })
 
   const ownerIsManager = owner?.toLowerCase() === manager?.toLowerCase()
@@ -408,8 +374,8 @@ export const MetadataCard = ({
             variant="outlined-primary"
             size="small"
             onClick={() => markAsCheckInMutation.mutate()}
-            disabled={markAsCheckInMutation.isLoading}
-            loading={markAsCheckInMutation.isLoading}
+            disabled={markAsCheckInMutation.isPending}
+            loading={markAsCheckInMutation.isPending}
           >
             Mark as checked-in
           </Button>
@@ -452,7 +418,7 @@ export const MetadataCard = ({
                 justify={false}
                 label="Checked-in at:"
               >
-                {getCheckInTime()}
+                {getCheckInTime(checkInTimestamp, metadata)}
               </Detail>
             )}
             <Detail
@@ -479,7 +445,7 @@ export const MetadataCard = ({
                             variant="outlined-primary"
                             onClick={onSendQrCode}
                             disabled={
-                              sendEmailMutation.isLoading ||
+                              sendEmailMutation.isPending ||
                               sendEmailMutation.isSuccess
                             }
                           >
@@ -538,11 +504,22 @@ export const MetadataCard = ({
                         >
                           {/* show full address on desktop */}
                           <div className="text-base font-semibold text-black break-words">
-                            <span className="hidden md:block">{owner}</span>
+                            <div className="hidden md:block">
+                              <WrappedAddress
+                                address={owner}
+                                showCopyIcon={false}
+                                showExternalLink={false}
+                              />
+                            </div>
                             {/* show minified address on mobile */}
-                            <span className="block md:hidden">
-                              {addressMinify(owner)}
-                            </span>
+                            <div className="block md:hidden">
+                              <WrappedAddress
+                                address={owner}
+                                minified
+                                showCopyIcon={false}
+                                showExternalLink={false}
+                              />
+                            </div>
                           </div>
                         </Link>
                       </div>

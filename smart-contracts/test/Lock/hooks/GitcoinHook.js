@@ -1,4 +1,4 @@
-const { expect } = require('chai')
+const assert = require('assert')
 const { ethers } = require('hardhat')
 const { reverts, deployLock } = require('../../helpers')
 
@@ -43,7 +43,7 @@ describe('GitcoinHook', function () {
     )
 
     // Health check!
-    expect(
+    assert(
       ethers.verifyMessage(
         (await user.getAddress()).toLowerCase(),
         signedMessage
@@ -94,13 +94,13 @@ describe('GitcoinHook', function () {
 
     // Add a signer
     await hook.addSigner(await signer.getAddress())
-    expect(await hook.signers(await signer.getAddress())).to.equal(true)
-    expect(await hook.owner()).to.equal(await user.getAddress())
+    assert.equal(await hook.signers(await signer.getAddress()), true)
+    assert.equal(await hook.owner(), await user.getAddress())
     const previousOwner = await hook.owner()
 
     // Transfer ownership
     await hook.transferOwnership(await anotherUser.getAddress())
-    expect(await hook.owner()).to.equal(await anotherUser.getAddress())
+    assert.equal(await hook.owner(), await anotherUser.getAddress())
 
     // Add a signer again from previous owner
     const anotherSigner = ethers.Wallet.createRandom()
@@ -108,14 +108,14 @@ describe('GitcoinHook', function () {
       hook.addSigner(await anotherSigner.getAddress()),
       `OwnableUnauthorizedAccount("${previousOwner}")`
     )
-    expect(await hook.signers(await anotherSigner.getAddress())).to.equal(false)
+    assert.equal(await hook.signers(await anotherSigner.getAddress()), false)
 
     // Add a signer from new owner
     await hook.connect(anotherUser).addSigner(await anotherSigner.getAddress())
-    expect(await hook.signers(await anotherSigner.getAddress())).to.equal(true)
+    assert.equal(await hook.signers(await anotherSigner.getAddress()), true)
 
     // Remove signer from new owner
     await hook.connect(anotherUser).removeSigner(await signer.getAddress())
-    expect(await hook.signers(await signer.getAddress())).to.equal(false)
+    assert.equal(await hook.signers(await signer.getAddress()), false)
   })
 })

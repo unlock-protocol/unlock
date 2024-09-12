@@ -1,4 +1,4 @@
-const { expect } = require('chai')
+const assert = require('assert')
 const { setup } = require('./setup')
 const { ethers } = require('hardhat')
 const { reverts } = require('../helpers')
@@ -12,33 +12,33 @@ describe('KeyManager / locksmiths', () => {
   })
 
   it('should let the owner add signer', async () => {
-    expect(await keyManager.locksmiths(someAccount)).to.equal(false)
+    assert.equal(await keyManager.locksmiths(someAccount), false)
     await keyManager.addLocksmith(someAccount)
-    expect(await keyManager.locksmiths(someAccount)).to.equal(true)
+    assert.equal(await keyManager.locksmiths(someAccount), true)
   })
 
   it('should not let someone who is not owner add a signer', async () => {
     const [, newOwner] = await ethers.getSigners()
-    expect(await keyManager.locksmiths(someAccount)).to.equal(false)
+    assert.equal(await keyManager.locksmiths(someAccount), false)
 
     await reverts(
       keyManager.connect(newOwner).addLocksmith(await newOwner.getAddress()),
       `Ownable: caller is not the owner`
     )
 
-    expect(await keyManager.locksmiths(someAccount)).to.equal(false)
+    assert.equal(await keyManager.locksmiths(someAccount), false)
   })
 
   it('should let the owner remove signer', async () => {
     await keyManager.addLocksmith(someAccount)
-    expect(await keyManager.locksmiths(someAccount)).to.equal(true)
+    assert.equal(await keyManager.locksmiths(someAccount), true)
     await keyManager.removeLocksmith(someAccount)
-    expect(await keyManager.locksmiths(someAccount)).to.equal(false)
+    assert.equal(await keyManager.locksmiths(someAccount), false)
   })
 
   it('should not let someone who is not owner remove a signer', async () => {
     await keyManager.addLocksmith(someAccount)
-    expect(await keyManager.locksmiths(someAccount)).to.equal(true)
+    assert.equal(await keyManager.locksmiths(someAccount), true)
 
     const [, newOwner] = await ethers.getSigners()
     await reverts(
@@ -46,6 +46,6 @@ describe('KeyManager / locksmiths', () => {
       `Ownable: caller is not the owner`
     )
 
-    expect(await keyManager.locksmiths(someAccount)).to.equal(true)
+    assert.equal(await keyManager.locksmiths(someAccount), true)
   })
 })

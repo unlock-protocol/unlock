@@ -10,6 +10,7 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { SelectCurrencyModal } from '../../Create/modals/SelectCurrencyModal'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { ZeroAddress } from 'ethers'
 
 interface EditFormProps {
   keyPrice?: string
@@ -61,13 +62,10 @@ export const UpdatePriceForm = ({
     },
   })
 
-  const getLock = async () => {
-    return await web3Service.getLock(lockAddress, network)
-  }
-
-  const { data: lock } = useQuery(['getLock', lockAddress, network], async () =>
-    getLock()
-  )
+  const { data: lock } = useQuery({
+    queryKey: ['getLock', lockAddress, network],
+    queryFn: async () => web3Service.getLock(lockAddress, network),
+  })
 
   const updatePrice = async ({
     keyPrice = '',
@@ -85,7 +83,9 @@ export const UpdatePriceForm = ({
     } as any)
   }
 
-  const updatePriceMutation = useMutation(updatePrice)
+  const updatePriceMutation = useMutation({
+    mutationFn: updatePrice,
+  })
 
   const onHandleSubmit = async (fields: EditFormProps) => {
     if (isValid) {
@@ -102,7 +102,10 @@ export const UpdatePriceForm = ({
 
   const onSelectToken = (token: Token) => {
     setSelectedToken(token)
-    setValue('currencyContractAddress', token.address)
+    setValue(
+      'currencyContractAddress',
+      token.address ? token.address : ZeroAddress
+    )
     setValue('symbol', token.symbol)
   }
 
@@ -114,7 +117,7 @@ export const UpdatePriceForm = ({
 
   const symbol = lockTickerSymbol(networks[network!], selectedCurrency)
 
-  const disabledInput = disabled || updatePriceMutation.isLoading
+  const disabledInput = disabled || updatePriceMutation.isPending
 
   return (
     <>
@@ -195,7 +198,7 @@ export const UpdatePriceForm = ({
           <Button
             className="w-full md:w-1/3"
             type="submit"
-            loading={updatePriceMutation.isLoading}
+            loading={updatePriceMutation.isPending}
             disabled={disabledInput}
           >
             Update

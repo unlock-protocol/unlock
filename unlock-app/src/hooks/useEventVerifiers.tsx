@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 
 interface useEventVerifiersProps {
   event: any
@@ -11,13 +11,13 @@ interface useEventVerifiersProps {
 export const useEventVerifiers = ({ event }: useEventVerifiersProps) => {
   const { account } = useAuth()
 
-  return useQuery(
-    ['getEventVerifiers', event.slug, account],
-    async () => {
+  return useQuery({
+    queryKey: ['getEventVerifiers', event.slug, account],
+    queryFn: async () => {
       if (!account) {
         return false
       }
-      const response = await storage.eventVerifiers(event.slug)
+      const response = await locksmith.eventVerifiers(event.slug)
       let isVerifier = false
       response.data.results?.forEach((item) => {
         if (item.address.toLowerCase() === account.toLowerCase()) {
@@ -27,13 +27,5 @@ export const useEventVerifiers = ({ event }: useEventVerifiersProps) => {
       })
       return isVerifier
     },
-    {
-      onError: (err: any) => {
-        console.error(
-          err?.error ??
-            'We could not load the list of verifiers for your lock. Please reload to to try again.'
-        )
-      },
-    }
-  )
+  })
 }

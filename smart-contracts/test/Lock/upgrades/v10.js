@@ -1,4 +1,4 @@
-const { assert } = require('chai')
+const assert = require('assert')
 const { ethers, upgrades } = require('hardhat')
 const { reverts } = require('../../helpers/errors')
 const path = require('path')
@@ -69,24 +69,22 @@ describe('PublicLock upgrade  v9 > v10', () => {
       const signers = await ethers.getSigners()
       buyers = signers.slice(1, 11)
 
-      // purchase many keys
-      await Promise.all(
-        buyers.map(async (keyOwner) => {
-          await lock
-            .connect(keyOwner)
-            .purchase(
-              0,
-              await keyOwner.getAddress(),
-              ADDRESS_ZERO,
-              ADDRESS_ZERO,
-              '0x',
-              {
-                value: keyPrice,
-              }
-            )
-        })
-      )
-
+      // purchase many keys (in the correct order to make sure we can check them later)
+      for (let i = 0; i < buyers.length; i++) {
+        const keyOwner = buyers[i]
+        await lock
+          .connect(keyOwner)
+          .purchase(
+            0,
+            await keyOwner.getAddress(),
+            ADDRESS_ZERO,
+            ADDRESS_ZERO,
+            '0x',
+            {
+              value: keyPrice,
+            }
+          )
+      }
       tokenIds = await Promise.all(
         buyers.map(async (b) => lock.getTokenIdFor(await b.getAddress()))
       )
@@ -230,9 +228,8 @@ describe('PublicLock upgrade  v9 > v10', () => {
         )
         const receipt = await tx.wait()
         const { events } = await getEvents(receipt, 'Transfer')
-        tokenIds = events.map(({ args }) => args.tokenId)
-
-        assert.equal(tokenIds.length, buyers.length)
+        const purchasedTokenIds = events.map(({ args }) => args.tokenId)
+        assert.equal(purchasedTokenIds.length, buyers.length)
       })
 
       it('grantKeys should now work ', async () => {
@@ -243,9 +240,8 @@ describe('PublicLock upgrade  v9 > v10', () => {
         )
         const receipt = await tx.wait()
         const { events } = await getEvents(receipt, 'Transfer')
-        tokenIds = events.map(({ args }) => args.tokenId)
-
-        assert.equal(tokenIds.length, buyers.length)
+        const grantedTokenIds = events.map(({ args }) => args.tokenId)
+        assert.equal(grantedTokenIds.length, buyers.length)
       })
 
       it('extend should now work ', async () => {

@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import { Button, Modal, Placeholder, TextBox } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import * as z from 'zod'
 import React from 'react'
@@ -71,27 +71,27 @@ export const EmailTemplatePreview = ({
     }
   }, [customContent, setValue])
 
-  const onSaveCustomContent = async () => {
-    const customContent = getValues('customContent')
-    const saveEmailPromise = storage.saveCustomEmailContent(
-      network,
-      lockAddress,
-      templateId,
-      {
-        data: {
-          content: customContent,
-        },
-      }
-    )
-    await refetchCustomContent()
-    await ToastHelper.promise(saveEmailPromise, {
-      loading: 'Updating the custom section of the email.',
-      error: 'We could not update the custom section of the email.',
-      success: 'The custom section of the email was updated successfully!',
-    })
-  }
-
-  const saveCustomContent = useMutation(onSaveCustomContent)
+  const saveCustomContent = useMutation({
+    mutationFn: async () => {
+      const customContent = getValues('customContent')
+      const saveEmailPromise = locksmith.saveCustomEmailContent(
+        network,
+        lockAddress,
+        templateId,
+        {
+          data: {
+            content: customContent,
+          },
+        }
+      )
+      await refetchCustomContent()
+      await ToastHelper.promise(saveEmailPromise, {
+        loading: 'Updating the custom section of the email.',
+        error: 'We could not update the custom section of the email.',
+        success: 'The custom section of the email was updated successfully!',
+      })
+    },
+  })
 
   if (isLoadingCustomContent) {
     return (
@@ -129,19 +129,15 @@ export const EmailTemplatePreview = ({
           <div className="flex gap-2 ml-auto">
             <Button
               size="small"
-              onClick={async () => {
-                await saveCustomContent.mutateAsync()
-              }}
-              loading={saveCustomContent.isLoading}
+              onClick={() => saveCustomContent.mutateAsync()}
+              loading={saveCustomContent.isPending}
             >
               Save
             </Button>
             <Button
               size="small"
               variant="outlined-primary"
-              onClick={async () => {
-                setShowPreview(true)
-              }}
+              onClick={() => setShowPreview(true)}
             >
               Show email preview
             </Button>

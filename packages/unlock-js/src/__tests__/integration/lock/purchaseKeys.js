@@ -68,15 +68,9 @@ export default ({ publicLockVersion }) =>
         }
       )
 
-      const items = transactionHashes
-        .map((hash) => {
-          return web3Service.getTokenIdsFromTx({
-            params: {
-              network: chainId,
-              lockAddress,
-              hash,
-            },
-          })
+      const items = keyOwners
+        .map((owner) => {
+          return web3Service.getTokenIdForOwner(lockAddress, owner, chainId)
         })
         .flat()
 
@@ -168,7 +162,7 @@ export default ({ publicLockVersion }) =>
         tokenIds[0],
         chainId
       )
-      expect(owner).toBe(keyOwners[0])
+      expect(owner.toLowerCase()).toBe(keyOwners[0])
 
       // 2nd key
       expect(keys[1].owner).toEqual(keyOwners[1])
@@ -177,7 +171,7 @@ export default ({ publicLockVersion }) =>
         tokenIds[1],
         chainId
       )
-      expect(owner2).toEqual(keyOwners[1])
+      expect(owner2.toLowerCase()).toEqual(keyOwners[1])
     })
 
     it('should have assigned the key to the right lock', async () => {

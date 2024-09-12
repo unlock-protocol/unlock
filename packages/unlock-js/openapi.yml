@@ -1093,6 +1093,113 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
+  /v2/events/{slug}/approve-refunds:
+    post:
+      operationId: approveRefunds
+      security:
+        - User: ['lockManager']
+      description: Approves refunds for an event.
+      parameters:
+        - $ref: '#/components/parameters/Slug'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - amount
+                - network
+              properties:
+                amount:
+                  type: number
+                  nullable: false
+                currency:
+                  type: string
+                  nullable: true
+                network:
+                  type: number
+                  nullable: false
+
+      responses:
+        201:
+          description: Approves refunds for an event.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - format
+                  - tree
+                  - values
+                properties:
+                  format:
+                    type: string
+                    nullable: false
+                  values:
+                    type: array
+                    items:
+                      type: object
+                  tree:
+                    type: array
+                    items:
+                      type: string
+
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/events/approved-refunds/{slug}:
+    get:
+      operationId: approvedRefunds
+      description: Returns the merkle proof of an approved refund.
+      parameters:
+        - $ref: '#/components/parameters/Slug'
+      responses:
+        200:
+          description: The merkle proof of an approved refund.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - format
+                  - tree
+                  - values
+                properties:
+                  format:
+                    type: string
+                    enum: ['standard-v1']
+                    nullable: false
+                  leafEncoding:
+                    type: array
+                    items:
+                      type: string
+                    nullable: false
+                  values:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        value:
+                          type: array
+                          items: {}
+                          nullable: false
+                        treeIndex:
+                          type: number
+                  tree:
+                    type: array
+                    items:
+                      type: string
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
   /v2/api/ticket/{network}/{lockAddress}/{keyId}/sign:
     get:
       operationId: signTicket
@@ -1537,6 +1644,32 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
+    get:
+      operationId: getUserMetadata
+      security:
+        - User: ['user']
+
+      description: get user metadata for a lock.
+      parameters:
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/UserAddress'
+      responses:
+        200:
+          description: Returns user metadata if authenticated for a lock.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserMetadata'
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
   /v2/api/metadata/users:
     put:
       operationId: updateUsersMetadata
@@ -1583,6 +1716,360 @@ paths:
         404:
           $ref: '#/components/responses/404.NotFound'
 
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/users/{emailAddress}/{selectedProvider}/waas:
+    post:
+      operationId: getWaasToken
+      description: Gets Coinbase WAAS token for user by email and selected provider.
+      parameters:
+        - name: captcha
+          in: header
+          required: true
+          description: Recaptcha value to pass.
+          schema:
+            type: string
+        - name: emailAddress
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: selectedProvider
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        description: JSON object containing sign in token
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        400:
+          $ref: '#/components/responses/400.BadRequest'
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+        404:
+          $ref: '#/components/responses/404.NotFound'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/users/{emailAddress}/existNextAuth:
+    get:
+      operationId: getUserAccountType
+      description: Gets User account type by email.
+      parameters:
+        - name: emailAddress
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userAccountType:
+                    type: array
+                    items:
+                      type: string
+                      enum:
+                        [
+                          'UNLOCK_ACCOUNT',
+                          'GOOGLE_ACCOUNT',
+                          'PASSKEY_ACCOUNT',
+                          'EMAIL_CODE',
+                        ]
+        400:
+          $ref: '#/components/responses/400.BadRequest'
+        404:
+          $ref: '#/components/responses/404.NotFound'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/users/{emailAddress}/send-verification-code:
+    get:
+      operationId: sendVerificationCode
+      description: Sends a verification code to the user's email if the current code is expired or does not exist.
+      parameters:
+        - name: captcha
+          in: header
+          required: true
+          description: Recaptcha value to pass.
+          schema:
+            type: string
+        - name: emailAddress
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Email code sent successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        400:
+          $ref: '#/components/responses/400.BadRequest'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/users/{emailAddress}/verify-email-code:
+    post:
+      operationId: verifyEmailCode
+      description: Verifies the email code sent to the users email address.
+      parameters:
+        - name: emailAddress
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+      responses:
+        200:
+          description: Verification successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  token:
+                    type: string
+        400:
+          description: Missing parameters or invalid/expired verification code.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        404:
+          description: Verification code not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /users/{emailAddress}/passwordEncryptedPrivateKey:
+    put:
+      operationId: updateUserEncryptedPrivateKey
+      security:
+        - User: []
+      description: Updates a user's private key, using their email address as key. In the case of failure a rejected promise is returned to the caller.
+      parameters:
+        - name: emailAddress
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: string
+                token:
+                  type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  emailAddress:
+                    type: string
+                  user:
+                    type: string
+        400:
+          $ref: '#/components/responses/400.BadRequest'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /users/{emailAddress}/privatekey:
+    get:
+      operationId: getUserPrivateKey
+      security:
+        - User: []
+      description: Given a user's email address, retrieves their private key. In the case of failure a rejected promise is returned to the caller.
+      parameters:
+        - name: emailAddress
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  passwordEncryptedPrivateKey:
+                    type: string
+        400:
+          $ref: '#/components/responses/400.BadRequest'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /users/{emailAddress}/recoveryphrase:
+    get:
+      operationId: getUserRecoveryPhrase
+      security:
+        - User: []
+      description: Given a user's email address, retrieves their recovery phrase. In the case of failure a rejected promise is returned to the caller.
+      parameters:
+        - name: emailAddress
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  emailAddress:
+                    type: string
+                  recoveryPhrase:
+                    type: string
+        400:
+          $ref: '#/components/responses/400.BadRequest'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /users/{publicKey}/eject:
+    post:
+      operationId: ejectUser
+      security:
+        - User: []
+      description: Ejects a user given their public key. In the case of failure, a rejected promise is returned to the caller.
+      parameters:
+        - name: publicKey
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Structured data used to generate the signature
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  publicKey:
+                    type: string
+        400:
+          $ref: '#/components/responses/400.BadRequest'
+        401:
+          $ref: '#/components/responses/401.Unauthorized'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /api/captcha:
+    get:
+      operationId: getDataForRecipientsAndCaptcha
+      security:
+        - User: []
+      description: Retrieves data for recipients and captcha.
+      parameters:
+        - name: recipients[]
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: captchaValue
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: lockAddress
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: network
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  messages:
+                    type: array
+                    items:
+                      type: string
+                  signer:
+                    type: string
+                  signatures:
+                    type: array
+                    items:
+                      type: string
+        400:
+          $ref: '#/components/responses/400.BadRequest'
         500:
           $ref: '#/components/responses/500.InternalError'
 
@@ -2511,6 +2998,147 @@ paths:
                     type: string
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
+  
+  /v2/receipts/all/{network}/{lockAddress}:
+    get:
+      operationId: getReceiptsStatus
+      security:
+        - User: []
+      description: Retrieve the status of receipt generation for a lock.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+      responses:
+        200:
+          description: Successfully retrieved receipt generation status.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - result
+                  - createdAt
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        payload:
+                          type: object
+                          properties:
+                            status:
+                              type: string
+                              enum: ['pending', 'success', 'failed']
+                            key:
+                              type: string
+                            result:
+                              type: array
+                              items:
+                                type: string
+                        createdAt:
+                          type: string
+                          format: date-time
+                        updatedAt:
+                          type: string
+                          format: date-time
+        400:
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                properties:
+                  message:
+                    type: string
+        404:
+          description: No receipt generation status found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                properties:
+                  message:
+                    type: string
+
+    post:
+      operationId: createDownloadReceiptsRequest
+      security:
+        - User: []
+      description: Request the creation of a ZIP file containing all receipts for a lock.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+      responses:
+        200:
+          description: Receipt generation initiated or already pending.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - status
+                properties:
+                  status:
+                    type: string
+                    enum: ['pending']
+        400:
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                properties:
+                  message:
+                    type: string
+
+  /v2/receipts/download/{network}/{lockAddress}:
+    get:
+      operationId: downloadReceipts
+      security:
+        - User: []
+      description: Download the ZIP file containing all receipts for a lock.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+      responses:
+        200:
+          description: Successfully downloaded the ZIP file.
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+        400:
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                properties:
+                  message:
+                    type: string
+        404:
+          description: ZIP file not found or not generated.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                properties:
+                  message:
+                    type: string
 
   /v2/receipts/{network}/{lockAddress}/all:
     get:
@@ -4116,5 +4744,50 @@ paths:
         400:
           $ref: '#/components/responses/400.Invalid'
 
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/pass/{network}/{lockAddress}/{keyId}/ios:
+    get:
+      operationId: generateAppleWalletPass
+      security:
+        - User: ['keyOwner']
+      description: Generate and return an Apple Wallet pass for a specified key associated with a lock.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+      responses:
+        200:
+          description: Returns the streamable generated Apple Wallet pass file.
+          content:
+            application/vnd.apple.pkpass:
+              schema:
+                type: string
+                format: binary
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/pass/{network}/{lockAddress}/{keyId}/android:
+    get:
+      operationId: generateGoogleWalletPass
+      security:
+        - User: ['keyOwner']
+      description: Generate and return a Google Wallet pass for a specified key associated with a lock.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+      responses:
+        200:
+          description: Returns the URL to the created wallet pass object.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  passObjectUrl:
+                    type: string
+                    nullable: false
         500:
           $ref: '#/components/responses/500.InternalError'

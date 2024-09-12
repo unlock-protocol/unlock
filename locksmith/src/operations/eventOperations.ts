@@ -1,3 +1,5 @@
+import { SubgraphService } from '@unlock-protocol/unlock-js'
+
 import dayjs from '../config/dayjs'
 import { kebabCase, defaultsDeep } from 'lodash'
 import * as metadataOperations from './metadataOperations'
@@ -6,7 +8,7 @@ import {
   getLockTypeByMetadata,
   toFormData,
 } from '@unlock-protocol/core'
-import { CheckoutConfig, EventData } from '../models'
+import { CheckoutConfig, EventData, KeyMetadata } from '../models'
 import { saveCheckoutConfig } from './checkoutConfigOperations'
 import { EventBodyType } from '../controllers/v2/eventsController'
 import { Op } from 'sequelize'
@@ -22,6 +24,8 @@ export interface EventProps {
   eventTime: string
   eventDate: string
   eventAddress: string
+  eventLocation: string
+  eventIsInPerson: boolean
   eventName: string
   startDate: Date | null
   endDate: Date | null
@@ -118,6 +122,9 @@ export const getEventMetadataForLock = async (
       ) ?? (startDate ? dayjs(startDate).add(1, 'hour').toDate() : null)
 
     const eventAddress = getAttribute('event_address') ?? ''
+    const eventLocation = getAttribute('event_location') ?? ''
+
+    const eventIsInPerson = getAttribute('event_is_in_person') === 'true'
 
     const isSameDay = dayjs(startDate).isSame(endDate, 'day')
 
@@ -160,6 +167,8 @@ export const getEventMetadataForLock = async (
       eventDate,
       eventTime,
       eventAddress,
+      eventLocation,
+      eventIsInPerson,
       startDate,
       eventUrl: lockMetadata?.external_url,
       endDate,
@@ -256,4 +265,51 @@ export const saveEvent = async (
   }
 
   return [savedEvent, !parsed.data.slug]
+}
+
+export const getCheckedInAttendees = async (slug: string) => {
+  // get the event, get the locks, get the KeyMetadata, get the owners for each of these
+  // this can take a while? We need to use the subgraph!
+  const event = await getEventBySlug(slug, false /** includeProtected */)
+  if (!event || !event.checkoutConfigId) {
+    return []
+  }
+  const checkout = await CheckoutConfig.findByPk(event.checkoutConfigId)
+  if (!checkout) {
+    return []
+  }
+  const locks = Object.keys(checkout.config.locks)
+  const allKeys = await KeyMetadata.findAll({
+    where: {
+      address: locks,
+    },
+  })
+  const filteredKeys = allKeys.filter((key) => !!key.data.metadata?.checkedInAt)
+  // And now filter out the ones that have been checked in!
+
+  const networks: number[] = checkout.config.network
+    ? [checkout.config.network]
+    : ([] as number[])
+  for (let i = 0; i < locks.length; i++) {
+    const network = checkout.config.locks[locks[i]].network
+    if (network && networks.indexOf(network) === -1) {
+      networks.push(network)
+    }
+  }
+  const subgraph = new SubgraphService()
+
+  // And finally let's get their owners!
+  const keys = await subgraph.keys(
+    {
+      first: 1000, // How do we handle when there is more than 1000 atten
+      where: {
+        lock_in: locks.map((lock) => lock.toLowerCase()), // Subgraph are lowercase..
+        tokenId_in: filteredKeys.map((key) => key.id),
+      },
+    },
+    {
+      networks,
+    }
+  )
+  return keys.map((key) => key.owner)
 }

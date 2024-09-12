@@ -3,7 +3,7 @@ import { ForwardedRef, useState, useEffect } from 'react'
 import { forwardRef } from 'react'
 import { FaWallet, FaSpinner } from 'react-icons/fa'
 import { IconBaseProps } from 'react-icons'
-import { isAddress, isEns, minifyAddress } from '../../utils'
+import { isAddress, isValidEnsName } from '../../utils'
 import {
   useMutation,
   QueryClient,
@@ -15,7 +15,7 @@ import { Input, Props as InputProps } from './Input'
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 60 * 10,
+      staleTime: 60 * 10 * 1000,
       refetchInterval: false,
       refetchOnReconnect: false,
       refetchOnWindowFocus: false,
@@ -36,7 +36,7 @@ const queryClient = new QueryClient({
 export interface Props extends InputProps {
   withIcon?: boolean
   isTruncated?: boolean
-  onResolveName: (address: string) => any
+  onResolveName: (address: string) => Promise<any>
 }
 
 const WalletIcon = (props: IconBaseProps) => (
@@ -54,58 +54,85 @@ export const WrappedAddressInput = ({
   description,
   label,
   withIcon = true,
-  isTruncated = false, // address not truncated by default
+  isTruncated = false,
   onChange,
   onResolveName,
   error,
   ...inputProps
 }: Props) => {
-  const [errorMessage, setErrorMessage] = useState<any>('')
-  const [success, setSuccess] = useState('')
+  const [errorMessage, setErrorMessage] = useState<string>('')
+  const [success, setSuccess] = useState<string>('')
   const [addressOrEns, setAddressOrEns] = useState<string>(
-    (value as string) || (defaultValue as string)
+    (value as string) || (defaultValue as string) || ''
   )
-  const onReset = () => {
-    setErrorMessage('')
-    setSuccess('')
-  }
+  const [debouncedValue, setDebouncedValue] = useState<string>(addressOrEns)
+  const [originalInput, setOriginalInput] = useState<string>('')
+  const [isEnsInput, setIsEnsInput] = useState<boolean>(false)
 
-  const resolveNameMutation = useMutation(onResolveName)
+  const resolveNameMutation = useMutation({
+    mutationFn: onResolveName,
+  })
 
+  // handle the resolution of ENS names or addresses.
   const handleResolver = async (address: string) => {
     try {
       const res: any = await resolveNameMutation.mutateAsync(address)
       if (res) {
         const isError = res?.type === 'error'
+        setErrorMessage(
+          isError ? `This is not a valid ENS name or address` : ''
+        )
 
-        setErrorMessage(isError ? `It's not a valid ens name or address` : '') // set error when is error
-
-        if (res && (res?.type || '')?.length > 0) {
-          if (res.type === 'address') {
-            setSuccess(res.name)
+        if (res?.type && !isError) {
+          // Update the success message only if the original input was an ENS name
+          if (isEnsInput) {
+            setSuccess(`Successfully resolved from: ${originalInput}`)
           }
-
-          if (res.type === 'name') {
-            setSuccess(res.address)
-          }
+          return res.address
         }
-        return res.address
       }
       return ''
     } catch (err) {
-      onReset()
-      setErrorMessage(`It's not a valid ens name or address`)
+      setErrorMessage(`This is not a valid ENS name or address`)
       return ''
     }
   }
 
+  // Use a debounce effect to limit the frequency of updates to the resolved address,
+  // allowing for a smoother user experience by reducing the number of resolution attempts.
   useEffect(() => {
-    if (typeof value === 'string' && value !== addressOrEns) {
-      // Keeping in sync!
-      setAddressOrEns(value)
-      onReset()
+    const timer = setTimeout(() => {
+      setDebouncedValue(addressOrEns)
+    }, 500)
+    return () => clearTimeout(timer)
+  }, [addressOrEns])
+
+  /*
+  Check the debounced value to determine if it is a valid ENS name
+  or a regular Ethereum address. If valid, attempt to resolve the address.
+  If the input is invalid, set an appropriate error message.
+  */
+  useEffect(() => {
+    const resolveAddress = async () => {
+      if (isValidEnsName(debouncedValue)) {
+        setIsEnsInput(true) // Set flag true if input is an ENS name
+        const resolvedAddress = await handleResolver(debouncedValue)
+        if (resolvedAddress) {
+          setAddressOrEns(resolvedAddress)
+          if (typeof onChange === 'function') {
+            onChange(resolvedAddress)
+          }
+        }
+      } else {
+        setIsEnsInput(false) // Set flag false if input is not an ENS name
+        if (debouncedValue && !isAddress(debouncedValue)) {
+          setErrorMessage(`This is not a valid ENS name or address`)
+        }
+      }
     }
-  }, [defaultValue, value])
+
+    resolveAddress()
+  }, [debouncedValue])
 
   return (
     <Input
@@ -115,36 +142,17 @@ export const WrappedAddressInput = ({
       label={label}
       size={size}
       error={error || errorMessage}
-      success={isTruncated ? minifyAddress(success) : success}
+      success={success}
       description={description}
-      iconClass={resolveNameMutation.isLoading ? 'animate-spin' : ''}
-      icon={resolveNameMutation.isLoading ? LoadingIcon : WalletIcon}
-      onChange={async (e) => {
+      iconClass={resolveNameMutation.isPending ? 'animate-spin' : ''}
+      icon={resolveNameMutation.isPending ? LoadingIcon : WalletIcon}
+      onChange={(e) => {
         const value: string = e.target.value
-        await resolveNameMutation.reset() // reset mutation
+        resolveNameMutation.reset() // Reset the mutation to handle new input values.
         setAddressOrEns(value)
-        onReset() // restore state when typing
-
-        if (isAddress(value)) {
-          setSuccess(value)
-          if (typeof onChange === 'function') {
-            onChange(value as any)
-          }
-        } else if (isEns(value)) {
-          try {
-            const res = await handleResolver(value)
-            if (typeof onChange === 'function' && res) {
-              onChange(res)
-            }
-          } catch (_err) {}
-        } else {
-          if (value.length !== 0) {
-            setErrorMessage(`It's not a valid ens name or address`)
-          }
-          if (typeof onChange === 'function') {
-            onChange('' as any)
-          }
-        }
+        setOriginalInput(value) // Update original input to current value.
+        setErrorMessage('') // Clear any previous error messages.
+        setSuccess('') // Clear any previous success messages.
       }}
     />
   )

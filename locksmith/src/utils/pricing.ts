@@ -41,8 +41,7 @@ export const getLockKeyPricing = async ({
     lockContract.tokenAddress(),
   ])
   const decimals =
-    currencyContractAddress &&
-    currencyContractAddress !== ethers.constants.AddressZero
+    currencyContractAddress && currencyContractAddress !== ethers.ZeroAddress
       ? await getErc20Decimals(currencyContractAddress, provider)
       : networks[network].nativeCurrency?.decimals || 18
 
@@ -199,11 +198,17 @@ export const getFees = async (
   )
 
   const feePaidByUser = unlockFeeChargedToUser ? unlockServiceFee : 0
+  let total = feePaidByUser + creditCardProcessingFee + subtotal + gasCost
+
+  if (total < MIN_PAYMENT_STRIPE_CREDIT_CARD) {
+    total = MIN_PAYMENT_STRIPE_CREDIT_CARD
+  }
+
   return {
     unlockServiceFee,
     creditCardProcessingFee,
     gasCost,
-    total: feePaidByUser + creditCardProcessingFee + subtotal + gasCost,
+    total,
   }
 }
 

@@ -1,6 +1,12 @@
-import React, { useState, useContext, Fragment, MouseEventHandler } from 'react'
+import {
+  useState,
+  useContext,
+  Fragment,
+  MouseEventHandler,
+  useRef,
+  useCallback,
+} from 'react'
 import useClipboard from 'react-use-clipboard'
-import { isEthPassSupported, Platform } from '../../../services/ethpass'
 import {
   AvatarImage,
   Root as Avatar,
@@ -16,6 +22,7 @@ import {
   RiErrorWarningFill as DangerIcon,
   RiArrowGoForwardFill as ExtendMembershipIcon,
 } from 'react-icons/ri'
+import { BiTransfer as TransferIcon } from 'react-icons/bi'
 import { Badge, Button, Card, minifyAddress } from '@unlock-protocol/ui'
 import { networks } from '@unlock-protocol/networks'
 import QRModal from './QRModal'
@@ -42,10 +49,12 @@ import { ExtendMembershipModal } from './Extend'
 import { Key as HookKey } from '~/hooks/useKeys'
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
 import { useGetReceiptsPageUrl } from '~/hooks/useReceipts'
-import { AddToDeviceWallet, ApplePassModal } from './AddToPhoneWallet'
-import { isIOS } from 'react-device-detect'
-import Image from 'next/image'
-import { useRouter } from 'next/router'
+import { AddToPhoneWallet } from './AddToPhoneWallet'
+import { useRouter } from 'next/navigation'
+import { Platform } from '~/services/passService'
+import { TransferModal } from './TransferModal'
+import { isKeyTransferable } from '~/utils/key'
+import { useFetchTransferFee } from '~/hooks/useTransferFee'
 
 export const MenuButton = tw.button(
   'group flex gap-2 w-full font-semibold items-center rounded-md px-2 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed',
@@ -77,20 +86,38 @@ function Key({ ownedKey, owner, network }: Props) {
   const [showCancelModal, setShowCancelModal] = useState(false)
   const [expireAndRefunded, setExpireAndRefunded] = useState(false)
   const [showExtendMembershipModal, setShowExtendMembership] = useState(false)
-  const [showApplePassModal, setShowApplePassModal] = useState(false)
-  const [applePassUrl, setPassUrl] = useState<string>()
+  const [showTransferModal, setShowTransferModal] = useState(false)
+  const videoRef = useRef(null)
+  const [canPlayImageAsVideo, setCanPlayImageAsVideo] = useState(false)
   const isKeyExpired = isExpired || expireAndRefunded
 
-  const { data: lockData, isLoading: isLockDataLoading } = useQuery(
-    ['lock', lock.address, network],
-    () => {
+  const { data: lockData, isPending: isLockDataLoading } = useQuery({
+    queryKey: ['lock', lock.address, network],
+    queryFn: () => {
       return web3Service.getLock(lock.address, network)
-    }
-  )
+    },
+  })
   const metadata = useMetadata(lock.address, tokenId, network)
   const [_, setCopied] = useClipboard(lock.address, {
     successDuration: 2000,
   })
+
+  let isTransferable
+  const {
+    isLoading: transferFeeLoading,
+    error: transferfeeError,
+    data: transferFee,
+  } = useFetchTransferFee({
+    lockAddress: lock.address,
+    network: network,
+  })
+  if (
+    !transferFeeLoading &&
+    !transferfeeError &&
+    typeof transferFee === 'number'
+  ) {
+    isTransferable = isKeyTransferable(transferFee)
+  }
 
   const handleQRCodeSignature: MouseEventHandler<HTMLButtonElement> = async (
     event
@@ -160,6 +187,7 @@ function Key({ ownedKey, owner, network }: Props) {
   const { opensea } = networks[network] ?? {}
 
   const isAvailableOnOpenSea =
+    // eslint-disable-next-line no-constant-binary-expression
     opensea?.tokenUrl(lock.address, tokenId) !== null ?? false
 
   const baseSymbol = config.networks[network].nativeCurrency.symbol!
@@ -172,7 +200,7 @@ function Key({ ownedKey, owner, network }: Props) {
 
   const networkName = networks[ownedKey.network]?.name
 
-  const { isLoading: isLoadingUrl, data: receiptsPageUrl } =
+  const { isPending: isLoadingUrl, data: receiptsPageUrl } =
     useGetReceiptsPageUrl({
       lockAddress: lock.address,
       network,
@@ -186,6 +214,24 @@ function Key({ ownedKey, owner, network }: Props) {
 
     router.push(receiptsPageUrl)
   }
+
+  const checkIfImageUrlIsVideo = async () => {
+    const video = videoRef.current
+    if (video) {
+      try {
+        await (video as HTMLVideoElement).play()
+        setCanPlayImageAsVideo(true)
+      } catch (error) {
+        setCanPlayImageAsVideo(false)
+      }
+    }
+  }
+
+  const onLoadingStatusChangeOfImage = useCallback((status: string) => {
+    if (status === 'error') {
+      checkIfImageUrlIsVideo()
+    }
+  }, [])
 
   return (
     <Card className="grid gap-6" shadow="lg" padding="xs">
@@ -227,10 +273,14 @@ function Key({ ownedKey, owner, network }: Props) {
         network={network}
         ownedKey={ownedKey}
       />
-      <ApplePassModal
-        isOpen={showApplePassModal}
-        setIsOpen={setShowApplePassModal}
-        applePassUrl={applePassUrl}
+      <TransferModal
+        isOpen={showTransferModal}
+        setIsOpen={setShowTransferModal}
+        lock={lock}
+        network={network}
+        owner={owner}
+        tokenId={tokenId}
+        expiration={expiration}
       />
       <div className="flex items-center justify-between">
         <div>
@@ -322,69 +372,39 @@ function Key({ ownedKey, owner, network }: Props) {
                       )}
                     </Menu.Item>
                   )}
-                  {owner == account &&
-                    tokenId &&
-                    isEthPassSupported(network) && (
-                      <>
-                        <Menu.Item>
-                          {({ active, disabled }) => (
-                            <AddToDeviceWallet
-                              platform={Platform.GOOGLE}
-                              disabled={disabled}
-                              active={active}
-                              as={MenuButton}
-                              network={network}
-                              lockAddress={lock.address}
-                              tokenId={tokenId}
-                              name={metadata.name}
-                              handlePassUrl={(url: string) => {
-                                window.location.assign(url)
-                              }}
-                            >
-                              <Image
-                                width="16"
-                                height="16"
-                                alt="Google Wallet"
-                                src={`/images/illustrations/google-wallet.svg`}
-                              />
-                              Add to my Google Wallet
-                            </AddToDeviceWallet>
-                          )}
-                        </Menu.Item>
-                        <Menu.Item>
-                          {({ active, disabled }) => (
-                            <AddToDeviceWallet
-                              platform={Platform.APPLE}
-                              disabled={disabled}
-                              active={active}
-                              as={MenuButton}
-                              network={network}
-                              lockAddress={lock.address}
-                              tokenId={tokenId}
-                              name={metadata.name}
-                              handlePassUrl={(url: string) => {
-                                if (isIOS) {
-                                  // Download
-                                  window.location.assign(url)
-                                } else if (setPassUrl) {
-                                  // Show the modal
-                                  setPassUrl(url)
-                                  setShowApplePassModal(true)
-                                }
-                              }}
-                            >
-                              <Image
-                                width="16"
-                                height="16"
-                                alt="Apple Wallet"
-                                src={`/images/illustrations/apple-wallet.svg`}
-                              />
-                              Add to my Apple Wallet
-                            </AddToDeviceWallet>
-                          )}
-                        </Menu.Item>
-                      </>
-                    )}
+                  {owner == account && tokenId && (
+                    <>
+                      <Menu.Item>
+                        {({ active, disabled }) => (
+                          <AddToPhoneWallet
+                            platform={Platform.GOOGLE}
+                            disabled={disabled}
+                            active={active}
+                            as={MenuButton}
+                            network={network}
+                            lockAddress={lock.address}
+                            tokenId={tokenId}
+                            handlePassUrl={(url: string) => {
+                              window.location.assign(url)
+                            }}
+                          />
+                        )}
+                      </Menu.Item>
+                      <Menu.Item>
+                        {({ active, disabled }) => (
+                          <AddToPhoneWallet
+                            platform={Platform.APPLE}
+                            disabled={disabled}
+                            active={active}
+                            as={MenuButton}
+                            network={network}
+                            lockAddress={lock.address}
+                            tokenId={tokenId}
+                          />
+                        )}
+                      </Menu.Item>
+                    </>
+                  )}
                   <Menu.Item>
                     {({ active, disabled }) => (
                       <MenuButton
@@ -434,6 +454,26 @@ function Key({ ownedKey, owner, network }: Props) {
                       )}
                     </Menu.Item>
                   )}
+                  <Menu.Item
+                    disabled={
+                      isKeyExpired ||
+                      (typeof isTransferable === 'boolean' && !isTransferable)
+                    }
+                  >
+                    {({ active, disabled }) => (
+                      <MenuButton
+                        disabled={disabled}
+                        active={active}
+                        onClick={(event) => {
+                          event.preventDefault()
+                          setShowTransferModal(true)
+                        }}
+                      >
+                        <TransferIcon />
+                        Transfer membership
+                      </MenuButton>
+                    )}
+                  </Menu.Item>
                 </div>
                 {owner == account && !isUnlockAccount && (
                   <div className="p-1">
@@ -473,12 +513,21 @@ function Key({ ownedKey, owner, network }: Props) {
             src={metadata.image}
             width={250}
             height={250}
+            onLoadingStatusChange={onLoadingStatusChangeOfImage}
           />
           <AvatarFallback
             className="flex flex-col items-center justify-center text-3xl font-bold uppercase rounded-xl aspect-1 h-72 w-72"
             delayMs={100}
           >
-            {lock?.name?.slice(0, 2)}
+            {!canPlayImageAsVideo && <>{lock?.name?.slice(0, 2)}</>}
+            <video
+              className="w-full h-full rounded-xl aspect-1 max-h-72 max-w-72"
+              muted
+              playsInline
+              src={metadata.image}
+              ref={videoRef}
+              style={{ display: canPlayImageAsVideo ? 'block' : 'none' }}
+            />
           </AvatarFallback>
         </Avatar>
         <div className="flex items-center justify-between text-sm">

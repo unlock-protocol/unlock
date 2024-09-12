@@ -56,7 +56,6 @@ export const guildHook: RequestHandler = async (request, response) => {
     recipients.map(async (recipient: string) => {
       const { user: userClient } = guildClient
       const userMemberships = await userClient.getMemberships(recipient)
-      console.log(userMemberships)
       const hasAtLeastOne = userMemberships.some(
         (role) => role.guildId === hookGuildId
       )
@@ -64,8 +63,8 @@ export const guildHook: RequestHandler = async (request, response) => {
         return ''
       }
       const message = recipient.toLowerCase()
-      const messageHash = ethers.utils.solidityKeccak256(['string'], [message])
-      return wallet.signMessage(ethers.utils.arrayify(messageHash))
+      const messageHash = ethers.solidityPackedKeccak256(['string'], [message])
+      return wallet.signMessage(ethers.getBytes(messageHash))
     })
   )
 
@@ -189,13 +188,11 @@ export const gitcoinHook: RequestHandler = async (request, response) => {
       // only sign recipients who have a score that meets the specified threshold in the lock settings
       if (recipient && recipient.score >= requiredScore) {
         const message = recipient.address.toLowerCase()
-        const messageHash = ethers.utils.solidityKeccak256(
+        const messageHash = ethers.solidityPackedKeccak256(
           ['string'],
           [message]
         )
-        const signature = await wallet.signMessage(
-          ethers.utils.arrayify(messageHash)
-        )
+        const signature = await wallet.signMessage(ethers.getBytes(messageHash))
         return signature
       } else {
         return ''

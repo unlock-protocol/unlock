@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
-import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface CertificationProps {
@@ -22,17 +21,28 @@ export const useCertification = ({
     owner: `{Recipient's wallet address, or ENS}`,
     expiration: '{Expiration date}',
     createdAtBlock: undefined,
+    createdAt: new Date().getTime(),
     transactionsHash: ['{Transaction hash}'],
-    lock: {} as any,
+    lock: {
+      id: lockAddress,
+      address: lockAddress,
+      name: 'Placeholder Lock',
+      expirationDuration: null,
+      tokenAddress: null,
+      price: '0',
+      lockManagers: [],
+      version: 1,
+      totalKeys: '0',
+    },
   }
   const { account } = useAuth()
 
-  return useQuery(
-    ['getCertification', lockAddress, network, tokenId, account],
-    async () => {
+  return useQuery({
+    queryKey: ['getCertification', lockAddress, network, tokenId, account],
+    queryFn: async () => {
       const subgraph = new SubgraphService()
       if (tokenId) {
-        // Get ths certification matching the token id
+        // Get the certification matching the token id
         const key = await subgraph.key(
           {
             where: {
@@ -48,6 +58,7 @@ export const useCertification = ({
         if (key) {
           return key
         }
+        throw new Error('No valid certification for this token')
       } else if (account) {
         // Get the certification for the current user
         const key = await subgraph.key(
@@ -67,13 +78,8 @@ export const useCertification = ({
       }
       return placeholderData
     },
-    {
-      enabled: !!lockAddress && !!network,
-      placeholderData,
-      onError: (error) => {
-        console.error(error)
-        ToastHelper.error('No valid certification')
-      },
-    }
-  )
+    enabled: !!lockAddress && !!network,
+    placeholderData,
+    retry: false, // Disable retries for this query
+  })
 }

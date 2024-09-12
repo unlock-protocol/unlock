@@ -1,7 +1,5 @@
 import React, { useContext, useMemo, useEffect } from 'react'
 import { Web3Service } from '@unlock-protocol/unlock-js'
-import { StorageServiceContext } from '../../utils/withStorageService'
-import { StorageService } from '../../services/storageService'
 import { Web3ServiceContext } from '../../utils/withWeb3Service'
 import { WalletServiceContext } from '../../utils/withWalletService'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
@@ -9,11 +7,8 @@ import { useProvider } from '../../hooks/useProvider'
 import { ConfigContext } from '../../utils/withConfig'
 import { useAutoLogin } from '../../hooks/useAutoLogin'
 import { SIWEProvider } from '~/hooks/useSIWE'
-import { ConnectModal } from './connect'
-import { config } from '~/config/app'
 import { networks } from '@unlock-protocol/networks'
 
-const StorageServiceProvider = StorageServiceContext.Provider
 const Web3ServiceProvider = Web3ServiceContext.Provider
 
 interface ProvidersProps {
@@ -24,11 +19,6 @@ interface ProvidersProps {
  * @returns
  */
 const Providers = ({ children }: ProvidersProps) => {
-  const storageService = useMemo(
-    () => new StorageService(config.services.storage.host),
-    []
-  )
-
   // TODO: remove this and the Web3ServiceProvider
   const web3Service = useMemo(() => {
     return new Web3Service(networks)
@@ -41,11 +31,9 @@ const Providers = ({ children }: ProvidersProps) => {
   }, [])
 
   return (
-    <StorageServiceProvider value={storageService}>
-      <Web3ServiceProvider value={web3Service}>
-        {web3Service && <>{children}</>}
-      </Web3ServiceProvider>
-    </StorageServiceProvider>
+    <Web3ServiceProvider value={web3Service}>
+      {web3Service && <>{children}</>}
+    </Web3ServiceProvider>
   )
 }
 
@@ -108,10 +96,7 @@ export const Authenticate = ({
     >
       <WalletServiceContext.Provider value={walletService}>
         <Providers>
-          <SIWEProvider>
-            {children}
-            <ConnectModal />
-          </SIWEProvider>
+          <SIWEProvider>{children}</SIWEProvider>
         </Providers>
       </WalletServiceContext.Provider>
     </AuthenticationContext.Provider>

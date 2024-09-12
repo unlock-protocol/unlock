@@ -1,10 +1,5 @@
-import { addressMinify } from '~/utils/strings'
-import { BiCopy as CopyIcon } from 'react-icons/bi'
-import { HiOutlineExternalLink as ExternalLinkIcon } from 'react-icons/hi'
-import { Button, Detail, Placeholder, Tooltip } from '@unlock-protocol/ui'
-import useClipboard from 'react-use-clipboard'
-import React, { useEffect, useState } from 'react'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { Detail, Placeholder, Tooltip } from '@unlock-protocol/ui'
+import { useEffect, useState } from 'react'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQuery } from '@tanstack/react-query'
 import { UNLIMITED_KEYS_COUNT, UNLIMITED_KEYS_DURATION } from '~/constants'
@@ -13,10 +8,11 @@ import { LockIcon } from './LockIcon'
 import Duration from '~/components/helpers/Duration'
 import useLock from '~/hooks/useLock'
 import Link from 'next/link'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useLockManager } from '~/hooks/useLockManager'
 import { PriceFormatter } from '@unlock-protocol/ui'
+import { WrappedAddress } from '~/components/interface/WrappedAddress'
 
 interface LockDetailCardProps {
   network: number
@@ -38,20 +34,6 @@ const LockInfoCard = ({
   loading,
   version,
 }: LockInfoCardProps) => {
-  const { networks } = useConfig()
-  const [isCopied, setCopied] = useClipboard(lockAddress, {
-    successDuration: 2000,
-  })
-
-  useEffect(() => {
-    if (!isCopied) return
-    ToastHelper.success(`Address copied`)
-  }, [isCopied])
-
-  const { explorer } = networks?.[network] ?? {}
-
-  const explorerUrl = explorer?.urls?.address(lockAddress) || '#'
-
   if (loading)
     return (
       <>
@@ -81,19 +63,11 @@ const LockInfoCard = ({
           </Tooltip>
         </div>
 
-        <span className="text-base">{addressMinify(lockAddress)}</span>
-        <Button variant="borderless" onClick={setCopied} aria-label="copy">
-          <CopyIcon size={20} />
-        </Button>
-        <a href={explorerUrl} target="_blank" rel="noreferrer">
-          <Button
-            variant="transparent"
-            className="p-0 m-0"
-            aria-label="external link"
-          >
-            <ExternalLinkIcon size={20} className="text-brand-ui-primary" />
-          </Button>
-        </a>
+        <WrappedAddress
+          address={lockAddress}
+          network={network}
+          addressType="lock"
+        />
       </div>
     </>
   )
@@ -119,17 +93,15 @@ export const LockDetailCard = ({
     return web3Service.getLock(lockAddress, network)
   }
 
-  const { isLoading, data: lock } = useQuery(
-    ['getLock', lockAddress, network],
-    async () => getLock()
-  )
+  const { isPending, data: lock } = useQuery({
+    queryKey: ['getLock', lockAddress, network],
+    queryFn: getLock,
+  })
 
-  const { isLoading: isLoadingStripe, data: isConnected = 0 } = useQuery(
-    [],
-    async () => {
-      return isStripeConnected()
-    }
-  )
+  const { isPending: isPendingStripe, data: isConnected = 0 } = useQuery({
+    queryKey: ['isStripeConnected', lockAddress, network],
+    queryFn: isStripeConnected,
+  })
 
   const recurringPossible =
     lock?.expirationDuration != -1 &&
@@ -156,26 +128,20 @@ export const LockDetailCard = ({
       <Duration seconds={expirationDuration} />
     )
 
-  const loading = isLoading || isLoadingStripe
+  const loading = isPending || isPendingStripe
 
   const symbol = lock?.currencySymbol || nativeCurrency?.symbol
   const priceLabel = keyPrice == 0 ? 'FREE' : keyPrice?.toString()
 
-  const { data: lockMetadata, isInitialLoading: isLockMetadataLoading } =
-    useQuery<Record<string, any>>(
-      ['lockMetadata', lockAddress, network],
-      async () => {
-        const response = await storage.lockMetadata(network, lockAddress)
-        return response.data
-      },
-      {
-        onError(error) {
-          console.error(error)
-        },
-        retry: 2,
-        initialData: {},
-      }
-    )
+  const { data: lockMetadata, isLoading: isLockMetadataLoading } = useQuery({
+    queryKey: ['lockMetadata', lockAddress, network],
+    queryFn: async () => {
+      const response = await locksmith.lockMetadata(network, lockAddress)
+      return response.data
+    },
+    retry: 2,
+    initialData: {},
+  })
 
   const settingsPageUrl = `/locks/settings?address=${lockAddress}&network=${network}`
   const metadataPageUrl = `/locks/metadata?lockAddress=${lockAddress}&network=${network}`
@@ -248,6 +214,7 @@ export const LockDetailCard = ({
                   <span>
                     <PriceFormatter price={priceLabel} precision={4} />
                   </span>
+                  {keyPrice != 0 ? symbol : ''}
                 </div>
               </Detail>
             </div>

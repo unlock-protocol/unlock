@@ -1,108 +1,92 @@
-const { ethers, upgrades } = require('hardhat')
-const { networks } = require('@unlock-protocol/networks')
-const ZERO_ADDRESS = ethers.constants.AddressZero
+const { ethers } = require('hardhat')
+const {
+  copyAndBuildContractsAtVersion,
+  deployUpgradeableContract,
+  getNetwork,
+  ADDRESS_ZERO,
+} = require('@unlock-protocol/hardhat-helpers')
 
 const TIMELOCK_ADMIN_ROLE = ethers.keccak256(
   ethers.toUtf8Bytes('TIMELOCK_ADMIN_ROLE')
 )
 const PROPOSER_ROLE = ethers.keccak256(ethers.toUtf8Bytes('PROPOSER_ROLE'))
 
-async function main({ udtAddress, timelockAddress, testing } = {}) {
-  const [unlockOwner] = await ethers.getSigners()
+async function main({ upAddress, timelockAddress } = {}) {
+  const [deployer] = await ethers.getSigners()
+  const deployerAddress = await deployer.getAddress()
 
   // fetch chain info
-  const chainId = await unlockOwner.getChainId()
-  const networkName = networks[chainId].name
-
-  // eslint-disable-next-line no-console
+  const { id, name, isTestNetwork } = await getNetwork()
   console.log(
-    `Deploying Governor on ${networkName} with the account: ${unlockOwner.address}...`
+    `Deploying Governor on ${name} (${id}) with the account ${deployerAddress}...`
   )
 
-  let timelock
+  // get timelock factory
+  const [timelockQualifiedPath] = await copyAndBuildContractsAtVersion(
+    __dirname,
+    [{ contractName: 'UPTimelock', subfolder: 'UP' }]
+  )
+  const UPTimelock = await ethers.getContractFactory(timelockQualifiedPath)
+
   if (!timelockAddress) {
-    // deploying Unlock Protocol with a proxy
-    const UnlockProtocolTimelock = await ethers.getContractFactory(
-      'UnlockProtocolTimelock'
-    )
-    // time lock in seconds
+    // time lock delay in seconds
     const oneWeekInSeconds = 60 * 60 * 24 * 7
-    const MINDELAY = testing ? 30 : oneWeekInSeconds
+    const MINDELAY = isTestNetwork ? 30 : oneWeekInSeconds
 
-    timelock = await upgrades.deployProxy(UnlockProtocolTimelock, [
-      MINDELAY,
-      [], // proposers list is empty at deployment
-      [ZERO_ADDRESS], // allow any address to execute a proposal once the timelock has expired
-    ])
-    await timelock.deployed()
-
-    // eslint-disable-next-line no-console
-    console.log(
-      '> Timelock w proxy deployed at:',
-      timelock.address,
-      ` (tx: ${timelock.deployTransaction.hash})`
-    )
-  } else {
-    timelock = await ethers.getContractAt(
-      'UnlockProtocolTimelock',
-      timelockAddress
-    )
+    // deploying timelock with a proxy
+    ;({ address: timelockAddress } = await deployUpgradeableContract(
+      UPTimelock,
+      [
+        MINDELAY,
+        [], // proposers list is empty as anyone can propose
+        [ADDRESS_ZERO], // allow any address to execute a proposal once the timelock has expired
+        deployerAddress, // tmp timelock admin (removed in next step)
+      ]
+    ))
   }
 
-  // deploying Unlock Protocol with a proxy
-  const UnlockProtocolGovernor = await ethers.getContractFactory(
-    'UnlockProtocolGovernor'
-  )
+  // get governor factory
+  const [govQualifiedPath] = await copyAndBuildContractsAtVersion(__dirname, [
+    { contractName: 'UPGovernor', subfolder: 'UP' },
+  ])
+  const UPGovernor = await ethers.getContractFactory(govQualifiedPath)
 
   // get UDT token address
-  if (!udtAddress) {
-    throw new Error('Missing UDT address.')
+  if (!upAddress) {
+    throw new Error('Missing UP address.')
   }
   console.log(`Using :
-   - UDT: ${udtAddress}
-   - timelock: ${timelock.address}`)
+   - UDT: ${upAddress}
+   - timelock: ${timelockAddress}`)
 
   // deploy governor proxy
-  const votingPeriod = testing ? 20 : 45818 // 1 week
-  const votingDelay = testing ? 20 : 45818 // 1 week
-  const quorum = ethers.parseEther('15000') // 15k UDT as default
-  const governor = await upgrades.deployProxy(UnlockProtocolGovernor, [
-    udtAddress,
-    votingPeriod,
-    votingDelay,
-    quorum,
-    timelock.address,
+  const { address: govAddress } = await deployUpgradeableContract(UPGovernor, [
+    upAddress,
+    timelockAddress,
   ])
-  await governor.deployed()
-
-  // eslint-disable-next-line no-console
-  console.log(
-    '> Governor deployed (w proxy) at:',
-    governor.address,
-    ` (tx: ${governor.deployTransaction.hash})`
-  )
 
   // governor should be the only proposer
-  await timelock.grantRole(PROPOSER_ROLE, governor.address)
+  const timelock = await UPTimelock.attach(timelockAddress)
+  await timelock.grantRole(PROPOSER_ROLE, govAddress)
 
   // eslint-disable-next-line no-console
   console.log(
     '> Governor added to Timelock as sole proposer. ',
-    `${governor.address} is Proposer: ${await timelock.hasRole(
+    `${govAddress} is Proposer: ${await timelock.hasRole(
       PROPOSER_ROLE,
-      governor.address
+      govAddress
     )} `
   )
 
-  // deployer should renounced the Admin role after setup (leaving only Timelock as Admin)
-  await timelock.renounceRole(TIMELOCK_ADMIN_ROLE, unlockOwner.address)
+  // deployer should renounced the Admin role after setup (leaving only Timelock as admin of itself)
+  await timelock.renounceRole(TIMELOCK_ADMIN_ROLE, deployerAddress)
 
   // eslint-disable-next-line no-console
   console.log(
     '> Unlock Owner recounced Admin Role. ',
-    `${unlockOwner.address} isAdmin: ${await timelock.hasRole(
+    `${deployerAddress} isAdmin: ${await timelock.hasRole(
       TIMELOCK_ADMIN_ROLE,
-      unlockOwner.address
+      deployerAddress
     )} `
   )
 }

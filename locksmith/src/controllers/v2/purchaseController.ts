@@ -95,7 +95,7 @@ export const createPaymentIntent: RequestHandler = async (
 
   const soldOut = await isSoldOut(lockAddress, network, recipients.length)
   if (soldOut) {
-    throw new Error('Lock is sold out.')
+    return response.status(400).send({ message: 'Lock is sold out.' })
   }
 
   const { stripeEnabled, stripeAccount } = await getStripeConnectForLock(
@@ -137,19 +137,26 @@ export const createPaymentIntent: RequestHandler = async (
     })
   }
   const processor = new PaymentProcessor()
-  const paymentIntentDetails = await processor.createPaymentIntent(
-    userAddress,
-    recipients,
-    stripeCustomerId,
-    lockAddress,
-    pricing,
-    network,
-    stripeConnectApiKey,
-    recurring,
-    data,
-    referrers
-  )
-  return response.send(paymentIntentDetails)
+  try {
+    const paymentIntentDetails = await processor.createPaymentIntent(
+      userAddress,
+      recipients,
+      stripeCustomerId,
+      lockAddress,
+      pricing,
+      network,
+      stripeConnectApiKey,
+      recurring,
+      data,
+      referrers
+    )
+    return response.send(paymentIntentDetails)
+  } catch (error) {
+    logger.error(error.message)
+    return response.status(500).send({
+      error: `We could not capture the payment. ${error.message}`,
+    })
+  }
 }
 
 export const removePaymentMethods: RequestHandler = async (
@@ -227,12 +234,12 @@ export const createOnRampSession: RequestHandler = async (
   }
 
   const providerUrl = networks[network].provider
-  const provider = new ethers.providers.JsonRpcBatchProvider(providerUrl)
+  const provider = new ethers.JsonRpcProvider(providerUrl)
 
   const recovered = await recoverTransferAuthorization(
     usdcContractAddress,
     transferMessage,
-    network,
+    BigInt(network),
     transferSignature,
     provider
   )
@@ -252,10 +259,7 @@ export const createOnRampSession: RequestHandler = async (
   })
 
   // Value is in 6 decimals (USDC)
-  const amount = ethers.utils.formatUnits(
-    ethers.BigNumber.from(transferMessage.value),
-    6
-  )
+  const amount = ethers.formatUnits(BigInt(transferMessage.value), 6)
 
   const session = await new OnrampSessionResource(stripe).create({
     transaction_details: {

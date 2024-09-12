@@ -18,7 +18,7 @@ export const EventContent = () => {
     network,
     isLoading: isLoadingQuery,
   } = useRouterQueryForLockAddressAndNetworks()
-  const { data: metadata, isInitialLoading: isMetadataLoading } = useMetadata({
+  const { data: metadata, isLoading: isMetadataLoading } = useMetadata({
     lockAddress,
     network,
   })

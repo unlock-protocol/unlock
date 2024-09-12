@@ -102,7 +102,7 @@ As of January 2024, the Unlock ecosystem consists of the following:
 
 - PublicLock new features:
   - Multiple memberships: the ability for an address to own multiple memberships ✅
-  - Automatically recurring memberships: the contracts support the ability for users to subscribe and have their memberships be automatically renewed by network participants who are ecomomically incentivized to do so. ✅
+  - Automatically recurring memberships: the contracts support the ability for users to subscribe and have their memberships be automatically renewed by network participants who are economically incentivized to do so. ✅
   - Ownable: the PublicLock lock managers can set an "owner" on the contract ✅
 - Unlock Contract's GDP updates triggers and event ✅
 - Audits ✅

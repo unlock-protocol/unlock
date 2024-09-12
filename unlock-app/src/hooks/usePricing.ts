@@ -44,7 +44,7 @@ export const purchasePriceFor = async (
         data: data?.[index] || '0x',
       }
       const price = await web3Service.purchasePriceFor(options)
-      const amount = parseFloat(ethers.utils.formatUnits(price, decimals))
+      const amount = parseFloat(ethers.formatUnits(price, decimals))
       return {
         symbol,
         userAddress,
@@ -68,9 +68,9 @@ export const usePricing = ({
   payment,
 }: Options) => {
   const web3Service = useWeb3Service()
-  return useQuery(
-    ['purchasePriceFor', network, lockAddress, recipients, data],
-    async () => {
+  return useQuery({
+    queryKey: ['purchasePriceFor', network, lockAddress, recipients, data],
+    queryFn: async () => {
       const prices = await purchasePriceFor(web3Service, {
         lockAddress,
         network,
@@ -86,7 +86,7 @@ export const usePricing = ({
       if (payment?.route?.quote) {
         total = payment.route!.quote.toFixed()
       } else if (payment?.route?.tx.value) {
-        total = Number(ethers.utils.formatEther(payment.route!.tx.value))
+        total = Number(ethers.formatEther(payment.route!.tx.value))
       }
       const item = {
         prices,
@@ -94,10 +94,8 @@ export const usePricing = ({
       }
       return item
     },
-    {
-      retry: false,
-      refetchInterval: 1000 * 60 * 5,
-      enabled,
-    }
-  )
+    retry: false,
+    refetchInterval: 1000 * 60 * 5,
+    enabled,
+  })
 }

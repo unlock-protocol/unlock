@@ -20,7 +20,7 @@ import {
 } from '@unlock-protocol/core'
 import { useEvent } from '~/hooks/useEvent'
 import { SettingEmail } from '~/components/interface/locks/Settings/elements/SettingEmail'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { FaUsers } from 'react-icons/fa'
 import { TbSettings } from 'react-icons/tb'
 import { config } from '~/config/app'
@@ -68,9 +68,20 @@ export const EventDetails = ({
 
   const { data: organizers } = useEventOrganizers({
     checkoutConfig,
-  })
+  }) as { data: string[] | undefined }
 
-  const { data: verifier } = useEventVerifiers({ event: eventProp })
+  const {
+    data: verifier,
+    isError,
+    error,
+  } = useEventVerifiers({ event: eventProp })
+
+  if (isError) {
+    console.error(
+      error ??
+        'We could not load the list of verifiers for your lock. Please reload to try again.'
+    )
+  }
 
   // Migrate legacy event and/or redirect
   // TODO: remove by June 1st 2024
@@ -80,7 +91,7 @@ export const EventDetails = ({
         if (event.slug) {
           router.push(eventUrl)
         } else {
-          const { data: savedEvent } = await storage.saveEventData({
+          const { data: savedEvent } = await locksmith.saveEventData({
             data: formDataToMetadata(event),
             // @ts-expect-error Property ''name'' is missing in type
             checkoutConfig,
@@ -96,7 +107,7 @@ export const EventDetails = ({
       }
     }
     migrateAndRedirect()
-  }, [router, event, eventUrl])
+  }, [router, event, eventUrl, checkoutConfig])
 
   const eventDate = getEventDate(event.ticket) // Full date + time of event
   const eventEndDate = getEventEndDate(event.ticket)

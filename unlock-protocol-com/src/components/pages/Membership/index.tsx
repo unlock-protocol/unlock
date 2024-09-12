@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react'
-import { useRouter } from 'next/router'
+import { useSearchParams, useRouter } from 'next/navigation'
 import { useMembership } from '../../../hooks/useMembership'
 
 export function Membership() {
   const { becomeMember, isMember } = useMembership()
   const router = useRouter()
+  const searchParams = useSearchParams()
 
   useEffect(() => {
     const redirect = () => {
-      const location = router.query.redirect?.toString() ?? '/'
+      const location = searchParams.get('redirect') ?? '/'
       location.startsWith('/') && location.startsWith('#')
         ? router.push(location)
         : window.location.assign(location)
@@ -16,7 +17,7 @@ export function Membership() {
     window.addEventListener('unlockProtocol.closeModal', redirect)
     return () =>
       window.removeEventListener('unlockProtocol.closeModal', redirect)
-  }, [router])
+  }, [router, searchParams])
 
   useEffect(() => {
     if (isMember === 'yes') {
@@ -24,7 +25,7 @@ export function Membership() {
         const iframe = document.querySelector('iframe.unlock-protocol-checkout')
         if (!iframe?.classList?.contains('show')) {
           const location =
-            router.query.redirect?.toString() ?? 'https://unlock-protocol.com'
+            searchParams.get('redirect') ?? 'https://unlock-protocol.com'
           window.location.assign(location)
         }
       }, 300)
@@ -33,7 +34,7 @@ export function Membership() {
     } else {
       return () => becomeMember()
     }
-  }, [becomeMember, isMember, router])
+  }, [becomeMember, isMember, searchParams])
 
   return <p />
 }

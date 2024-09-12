@@ -4,13 +4,13 @@ This is our "factory" contract **(Unlock.sol)** and has several roles.
 
 **Deploying Locks**: Locks are deployed through the Unlock smart contract. This is important because the Locks will actually invoke the Unlock smart contract when keys are sold and the Unlock smart contract will check that the invoking lock has been deployed through it.
 
-**Keeping Track of the Unlock Discount Tokens**. [Unlock Discount Tokens](../../governance/unlock-dao-tokens) are ERC20 tokens that implement the Unlock network referral program to let users of the protocol govern it. The Discount Tokens are granted when keys (NFTs) are purchased.
+**Distribute Governance Tokens**. [Unlock DAO Tokens](../../governance/unlock-dao-tokens) are ERC20 tokens that let users of the protocol govern it. The Governance Tokens are granted when membership tokens (NFTs) are purchased, renewed or extended.
 
 ### Contract Ownership
 
-As of summer 2021, the unlock contract is **owned** by a multi-sig wallet managed by Unlock Inc. Our goal is to move toward decentralization by transferring ownership of the Unlock contact to [the Unlock DAO](../../governance/unlock-dao/).
+As of summer 2024, on the most active networks, the Unlock contract is **owned** by [the Unlock Protocol DAO](../../governance/unlock-dao/).
 
-This contract is upgradable using OpenZeppelin's upgradability framework. As of now, the ProxyAdmin is **owned** by a multi-sig wallet managed by Unlock Inc. Our goal is to move toward decentralization by transferring ownership of the Unlock contact to the [Unlock DAO](../../governance/unlock-dao/). Each implementation is versioned. The method `unlockVersion()` will yield the current version.
+The `Unlock.sol` contract is upgradable using OpenZeppelin's upgradability framework. Each implementation is versioned. The method `unlockVersion()` will yield the current version.
 
 # Changelog
 
@@ -18,7 +18,7 @@ This contract is upgradable using OpenZeppelin's upgradability framework. As of 
 
 **Released**: Feb 2024
 
-The main novelty in the version 13 of Unlock is a “swap and burn” feature that allow fees collected by the protocol to directly decrease the supply of UDT in circulation.
+The main novelty in version 13 of Unlock is a “swap and burn” feature that allows fees collected by the protocol to directly decrease the supply of UDT in circulation.
 
 ### **How it works**
 

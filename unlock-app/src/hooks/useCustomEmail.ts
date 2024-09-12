@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 
 interface Options {
   lockAddress: string
@@ -9,14 +9,14 @@ interface Options {
 }
 
 export const useCustomEmailSend = () => {
-  const mutation = useMutation(
-    async ({ network, lockAddress, content, subject }: Options) => {
-      const response = await storage.sendCustomEmail(network, lockAddress, {
+  const mutation = useMutation({
+    mutationFn: async ({ network, lockAddress, content, subject }: Options) => {
+      const response = await locksmith.sendCustomEmail(network, lockAddress, {
         content,
         subject,
       })
       return response.data.sent
-    }
-  )
+    },
+  })
   return mutation
 }

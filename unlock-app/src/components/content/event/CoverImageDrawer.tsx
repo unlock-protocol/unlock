@@ -7,7 +7,7 @@ import {
 import { useState } from 'react'
 import { useImageUpload } from '~/hooks/useImageUpload'
 import { useEventOrganizer } from '~/hooks/useEventOrganizer'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 
 interface CoverImageDrawerProps {
   image: string
@@ -33,13 +33,13 @@ export const CoverImageDrawer = ({
     checkoutConfig,
   })
 
-  const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
+  const { mutateAsync: uploadImage, isPending: isUploading } = useImageUpload()
 
   const coverImage = event.ticket.event_cover_image
 
   const onSubmit = async () => {
     event.ticket.event_cover_image = image
-    await storage.saveEventData({
+    await locksmith.saveEventData({
       data: formDataToMetadata(event),
       // @ts-expect-error
       checkoutConfig,

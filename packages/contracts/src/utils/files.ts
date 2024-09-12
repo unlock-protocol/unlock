@@ -1,5 +1,6 @@
-const fs = require('fs-extra')
-const path = require('path')
+// @ts-expect-error:next-line
+import fs from 'fs-extra'
+import path from 'path'
 
 export const listFiles = async (folderName: string) => {
   const folderPath = path.resolve('src', folderName)
@@ -35,6 +36,7 @@ export const getAbiPaths = async () => {
     'abis/PublicLock',
     'abis/Unlock',
     'abis/UnlockDiscountToken',
+    'abis/UP',
     'abis/Governor',
     'abis/utils',
   ]

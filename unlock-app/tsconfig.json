@@ -25,9 +25,6 @@
     "baseUrl": ".",
     "paths": {
       "~/*": ["./src/*"],
-      "@uniswap/smart-order-router": [
-        "../packages/unlock-js/node_modules/@uniswap/smart-order-router"
-      ],
       "react": ["./node_modules/@types/react"],
       "react-dom": ["./node_modules/@types/react-dom"]
     },
@@ -38,5 +35,5 @@
     ],
     "strictNullChecks": true
   },
-  "include": ["./src/**/*", ".next/types/**/*.ts"]
+  "include": ["./src/**/*", ".next/types/**/*.ts", "./app/**/*tsx"]
 }

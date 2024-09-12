@@ -3,6 +3,9 @@
 tmp_site/
 node_modules/
 
+# ignore all contracts 
+contracts
+
 # ZeppelinOS
 zos.dev-*.json
 .zos.session
@@ -40,3 +43,10 @@ yarn-error.log
 
 # log files
 nohup.out
+
+#locksmith
+locksmith/uploads
+
+# blog importer cache
+.github/actions/blog/.yarn
+.github/actions/blog/.yarn/install-state.gz

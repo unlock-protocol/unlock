@@ -9,8 +9,8 @@ interface SettingMiscProps {
   network: number
   isManager: boolean
   isLoading: boolean
-  publicLockVersion?: number
-  publicLockLatestVersion?: number
+  publicLockVersion?: bigint
+  publicLockLatestVersion?: bigint
 }
 
 const UpgradeCard = ({ isLastVersion }: { isLastVersion: boolean }) => {
@@ -103,7 +103,7 @@ export const SettingMisc = ({
             network={network}
             isManager={isManager}
             disabled={!isManager}
-            version={updatedVersion ?? 0}
+            version={updatedVersion ?? BigInt(0)}
             isLastVersion={isLastVersion}
             onUpdatedVersion={setUpdatedVersion}
           />

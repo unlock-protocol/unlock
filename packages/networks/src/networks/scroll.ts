@@ -35,11 +35,17 @@ export const scroll: NetworkConfig = {
   publicProvider: 'https://rpc.scroll.io',
   startBlock: 2937779,
   subgraph: {
-    endpoint:
-      'https://api.studio.thegraph.com/query/65299/unlock-protocol-scroll/version/latest',
+    endpoint: 'https://subgraph.unlock-protocol.com/534352',
     studioName: 'unlock-protocol-scroll',
   },
   tokens: [
+    {
+      address: '0x06eFdBFf2a14a7c8E15944D1F4A48F9F95F663A4',
+      decimals: 6,
+      featured: true,
+      name: 'USD Coin',
+      symbol: 'USDC',
+    },
     {
       address: '0x5300000000000000000000000000000000000004',
       decimals: 18,
@@ -54,13 +60,7 @@ export const scroll: NetworkConfig = {
       name: 'Dai Stablecoin',
       symbol: 'DAI',
     },
-    {
-      address: '0x06eFdBFf2a14a7c8E15944D1F4A48F9F95F663A4',
-      decimals: 6,
-      featured: true,
-      name: 'USD Coin',
-      symbol: 'USDC',
-    },
+
     {
       address: '0xf55BEC9cafDbE8730f096Aa55dad6D22d44099Df',
       decimals: 6,

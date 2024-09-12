@@ -77,14 +77,9 @@ export const Input = forwardRef(
     }
 
     const inputButtonClass = twMerge(
-      'px-2 py-0.5 border border-gray-300 flex items-center gap-2 hover:border-gray-400 text-gray-600 hover:text-black shadow-sm rounded-lg',
+      'flex items-center justify-center gap-2 text-gray-600 hover:text-black',
+      'min-w-[80px]',
       INPUT_BUTTON_SIZE[size]
-    )
-    const inputClass = twMerge(
-      'block w-full box-border rounded-lg transition-all shadow-sm border border-gray-400 hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none flex-1 disabled:bg-gray-100',
-      inputSizeStyle,
-      inputStateStyles,
-      icon ? 'pl-10' : iconRight ? 'pr-10' : undefined
     )
 
     return (
@@ -98,7 +93,12 @@ export const Input = forwardRef(
         description={description}
         hidden={inputProps.type === 'hidden'}
       >
-        <div className="relative">
+        <div
+          className={twMerge(
+            'relative flex items-center w-full box-border rounded-lg transition-all shadow-sm border border-gray-400 hover:border-gray-500 focus-within:ring-gray-500 focus-within:border-gray-500 overflow-hidden',
+            inputStateStyles
+          )}
+        >
           {icon && (
             <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
               <div className={iconClass}>
@@ -112,7 +112,13 @@ export const Input = forwardRef(
             id={label}
             value={value}
             ref={ref}
-            className={inputClass}
+            title={value ? value.toString() : undefined}
+            className={twMerge(
+              'flex-grow min-w-0 bg-white border-none focus:ring-0 focus:outline-none transition-all duration-200',
+              'truncate focus:overflow-visible focus:whitespace-normal rounded-lg',
+              inputSizeStyle,
+              icon ? 'pl-10' : ''
+            )}
           />
           {iconRight && (
             <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
@@ -121,7 +127,7 @@ export const Input = forwardRef(
               </div>
             </span>
           )}
-          <div className="absolute inset-y-0 right-0 flex items-center pl-4 pr-1">
+          <div className="flex items-center space-x-2 flex-shrink-0 pr-2">
             {copy && !hidden && (
               <button onClick={() => setCopy()} className={inputButtonClass}>
                 <CopyIcon /> {isCopied ? 'Copied' : 'Copy'}

@@ -1,6 +1,5 @@
 const { ethers } = require('hardhat')
-
-const { expect } = require('chai')
+const assert = require('assert')
 const USDCabi = require('@unlock-protocol/hardhat-helpers/dist/ABIs/USDC.json')
 const { mainnet } = require('@unlock-protocol/networks')
 const { purchaseKeys, deployLock } = require('../helpers')
@@ -8,17 +7,16 @@ const { purchaseKeys, deployLock } = require('../helpers')
 const {
   addSomeETH,
   impersonate,
-  getUniswapTokens,
+  getNetwork,
 } = require('@unlock-protocol/hardhat-helpers')
-
-// get unlock address on mainnet
 
 const {
   unlockAddress,
   uniswapV3: { factoryAddress },
 } = mainnet
 const keyPriceUSDC = ethers.parseUnits('50', 6)
-const FEE = 500
+const FEE = 300n
+
 describe('Unlock GNP conversion', () => {
   let unlock
   let oracle
@@ -31,10 +29,9 @@ describe('Unlock GNP conversion', () => {
     }
 
     // get token addresses
-    ;({
-      usdc: { address: USDC },
-      weth: { address: WETH },
-    } = await getUniswapTokens(1))
+    const { tokens } = await getNetwork(1)
+    ;({ address: USDC } = tokens.find(({ symbol }) => symbol === 'USDC'))
+    ;({ address: WETH } = tokens.find(({ symbol }) => symbol === 'WETH'))
 
     const [deployer] = await ethers.getSigners()
     await addSomeETH(await deployer.getAddress())
@@ -56,11 +53,11 @@ describe('Unlock GNP conversion', () => {
   })
 
   it('weth is set correctly already', async () => {
-    expect(await unlock.weth()).to.equals(WETH)
+    assert.equal(await unlock.weth(), WETH)
   })
 
   it('sets oracle address correctly', async () => {
-    expect(await unlock.uniswapOracles[USDC]).to.equals(oracle.adress)
+    assert.equal(await unlock.uniswapOracles[USDC], oracle.adress)
   })
 
   describe('USDC conversion in GNP', () => {
@@ -68,7 +65,7 @@ describe('Unlock GNP conversion', () => {
     before(async () => {
       // reset GNP to zero
       await unlock.resetTrackedValue(0, 0)
-      expect(await unlock.grossNetworkProduct()).to.equals(0)
+      assert.equal(await unlock.grossNetworkProduct(), 0)
 
       // create a USDC lock
       lock = await deployLock({
@@ -79,11 +76,11 @@ describe('Unlock GNP conversion', () => {
     })
     it('pricing is set correctly', async () => {
       // make sure price is correct
-      expect(await lock.tokenAddress()).to.equals(USDC)
-      expect(await lock.keyPrice()).to.equals(keyPriceUSDC)
+      assert.equal(await lock.tokenAddress(), USDC)
+      assert.equal(await lock.keyPrice(), keyPriceUSDC)
     })
     it('updates GNP correctly a value correctly ', async () => {
-      const NUMBER_OF_KEYS = 5
+      const NUMBER_OF_KEYS = 5n
       const totalPrice = keyPriceUSDC * NUMBER_OF_KEYS
 
       const usdc = await ethers.getContractAt(USDCabi, USDC)
@@ -103,15 +100,16 @@ describe('Unlock GNP conversion', () => {
 
       // consult our oracle independently for 1 USDC
       const rate = await oracle.consult(USDC, ethers.parseUnits('1', 6), WETH)
-
+      console.log({ rate })
       // purchase some keys
-      await purchaseKeys(lock, NUMBER_OF_KEYS, keyPriceUSDC, true)
+      const [, payer] = await ethers.getSigners()
+      await purchaseKeys(lock, NUMBER_OF_KEYS, true, payer)
 
       // check GNP
       const GNP = await unlock.grossNetworkProduct()
-      expect(GNP).to.not.equals('0')
+      assert.notEqual(GNP, 0n)
       // 5 keys at 50 USDC at oracle rate
-      expect(GNP / 1000).to.equals((rate * 250) / 1000)
+      assert.equal(GNP / 1000n, (rate * 250n) / 1000n)
 
       // show value in ETH to approx
       console.log(`250 USDC =~ ${ethers.formatUnits(GNP)} ETH`)

@@ -9,10 +9,10 @@ import { EventDetail } from '../EventDetail'
 import { EventLocation } from '../EventLocation'
 import ReactMarkdown from 'react-markdown'
 import { RegistrationCard } from '../Registration/RegistrationCard'
-import { Card } from '@unlock-protocol/ui'
-import { MdAssignmentLate } from 'react-icons/md'
 import { AttendeeCues } from '../Registration/AttendeeCues'
 import { AiOutlineCalendar as CalendarIcon } from 'react-icons/ai'
+import { AttendeeStaking } from '../Registration/SingleLock/AttendeeStaking'
+import PastEvent from './PastEvent'
 
 type EventBannerlessProps = {
   event: Event
@@ -74,19 +74,19 @@ export const EventBannerlessLayout = ({
           </li>
         </ul>
         {!hasPassed && (
-          <RegistrationCard
-            requiresApproval={event.requiresApproval}
-            checkoutConfig={checkoutConfig}
-            hideRemaining={!!event.hideRemaining}
-          />
+          <>
+            <RegistrationCard
+              requiresApproval={event.requiresApproval}
+              checkoutConfig={checkoutConfig}
+              hideRemaining={!!event.hideRemaining}
+            />
+            {event.attendeeRefund && (
+              <AttendeeStaking attendeeRefund={event.attendeeRefund} />
+            )}
+          </>
         )}
         {hasPassed && (
-          <Card className="grid gap-4 mt-5 md:mt-0">
-            <p className="text-lg">
-              <MdAssignmentLate />
-              This event is over. It is not possible to register for it anymore.
-            </p>
-          </Card>
+          <PastEvent event={event} checkoutConfig={checkoutConfig} />
         )}
         <AttendeeCues checkoutConfig={checkoutConfig} />
       </section>
@@ -122,7 +122,6 @@ export const EventBannerlessLayout = ({
           <div>
             {event.description && (
               <div className="mt-4 markdown">
-                {/* eslint-disable-next-line react/no-children-prop */}
                 <ReactMarkdown children={event.description} />
               </div>
             )}

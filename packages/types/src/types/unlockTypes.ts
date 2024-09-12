@@ -38,6 +38,7 @@ export interface Token {
   mainnetAddress?: string
   wrapped?: string
   featured?: boolean
+  faucet?: Faucet
 }
 
 export enum HookType {
@@ -82,6 +83,11 @@ export interface NetworkBridgeConfig {
   }
 }
 
+export interface Faucet {
+  name: string
+  url: string
+}
+
 export interface NetworkConfig {
   id: number
   featured: boolean
@@ -92,6 +98,7 @@ export interface NetworkConfig {
   unlockAddress: string
   multisig?: string
   keyManagerAddress?: string
+  kickbackAddress?: string
   universalCard?: {
     cardPurchaserAddress: string
     stripeDestinationNetwork: string
@@ -117,7 +124,6 @@ export interface NetworkConfig {
     universalRouterAddress: string
     positionManager: string
   }>
-  swapPurchaser?: string
   unlockOwner?: string
   unlockDaoToken?: {
     address: string
@@ -153,7 +159,7 @@ export interface NetworkConfig {
   previousDeploys?: NetworkDeploy[]
   description: string
   url?: string
-  faucet?: string
+  faucets?: Faucet[]
   tokens?: Token[]
   hooks?: Partial<Record<HookName, Hook[]>>
   fullySubsidizedGas?: boolean
@@ -294,18 +300,6 @@ export interface UserMetadata {
   protectedData?: {
     [key: string]: string
   }
-}
-
-export interface UnlockUniswapRoute {
-  swapCalldata?: string
-  value: string
-  amountInMax: any
-  swapRouter: string
-  quote: any
-  trade: any
-  convertToQuoteToken: any
-  quoteGasAdjusted: any
-  estimatedGasUsedUSD: any
 }
 
 export type UnlockNetworks = number

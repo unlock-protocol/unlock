@@ -1,4 +1,4 @@
-import { ethers, Wallet, Contract, constants } from 'ethers'
+import { ethers, Wallet, Contract } from 'ethers'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 
@@ -29,13 +29,13 @@ interface RenewKeyReturned {
 
 interface ShouldRenew {
   shouldRenew: boolean
-  gasLimit?: ethers.BigNumber
+  gasLimit?: bigint
   gasRefund?: string
   error?: string
 }
 
 // Calculate price of gas in USD cents
-const getGasFee = async (network: number, gasCost: number) => {
+const getGasFee = async (network: number, gasCost: bigint) => {
   const gasPrice = new GasPrice()
   const gasCostUSD = await gasPrice.gasPriceUSD(network, gasCost)
   return gasCostUSD * BASE_POINT_ACCURACY
@@ -57,9 +57,7 @@ export const isWorthRenewing = async (
   keyId: string
 ): Promise<ShouldRenew> => {
   const web3Service = new Web3Service(networks)
-  const provider = new ethers.providers.JsonRpcBatchProvider(
-    networks[network].provider
-  )
+  const provider = new ethers.JsonRpcProvider(networks[network].provider)
 
   // locks for which renewals are disabled
   // TODO: move to database
@@ -84,7 +82,7 @@ export const isWorthRenewing = async (
     const lock = await web3Service.getLockContract(lockAddress, provider)
     let isRenewable = false
     try {
-      isRenewable = await lock.isRenewable(keyId, constants.AddressZero)
+      isRenewable = await lock.isRenewable(keyId, ethers.ZeroAddress)
     } catch (error) {
       logger.info(
         `Key ${keyId} on ${lockAddress} from network ${network} is not renewable: ${error.message}`
@@ -111,28 +109,29 @@ export const isWorthRenewing = async (
 
     // if gas refund is set, we use a a random signer to get estimate to prevent
     // tx to reverts with msg.sender `ERC20: transfer to address zero`
-    let estimateGas
-    if (gasRefund.toNumber() !== 0) {
-      const randomWallet = await Wallet.createRandom().connect(provider)
-      estimateGas = lock.connect(randomWallet).estimateGas
+    let gasEstimate
+    if (gasRefund !== BigInt(0)) {
+      const randomWallet = await Wallet.createRandom(provider)
+      gasEstimate = await lock
+        .connect(randomWallet)
+        .getFunction('renewMembershipFor')
+        .estimateGas(keyId, ethers.ZeroAddress)
     } else {
-      estimateGas = lock.estimateGas
+      gasEstimate = await lock
+        .getFunction('renewMembershipFor')
+        .estimateGas(keyId, ethers.ZeroAddress)
     }
 
     // estimate gas for the renewMembership function (check if reverts).
     // we bump by 20%, just to cover temporary changes
-    const gasLimit = (
-      await estimateGas.renewMembershipFor(keyId, constants.AddressZero)
-    )
-      .mul(10)
-      .div(8)
+    const gasLimit = (gasEstimate / BigInt(8)) * BigInt(10)
 
     // find costs in USD cents
-    const costToRenew = await getGasFee(network, gasLimit.toNumber())
+    const costToRenew = await getGasFee(network, gasLimit)
 
     const costRefunded = await getRefundAmountInUSD(
       network,
-      ethers.utils.formatUnits(gasRefund, decimals)
+      ethers.formatUnits(gasRefund, decimals)
     )
 
     const shouldRenew =
@@ -141,7 +140,7 @@ export const isWorthRenewing = async (
     return {
       shouldRenew,
       gasLimit,
-      gasRefund: gasRefund.toNumber(),
+      gasRefund,
     }
   } catch (error) {
     logger.error(error)

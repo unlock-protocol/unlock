@@ -21,7 +21,11 @@ import {
   TiArrowSortedUp as UpIcon,
   TiArrowSortedDown as DownIcon,
 } from 'react-icons/ti'
-import { FiTrash as DeleteIcon, FiPlus as PlusIcon } from 'react-icons/fi'
+import {
+  FiTrash as DeleteIcon,
+  FiPlus as PlusIcon,
+  FiEdit as EditIcon,
+} from 'react-icons/fi'
 import { BiCog as CogICon } from 'react-icons/bi'
 import { RiArrowGoBackLine as GoBackLineIcon } from 'react-icons/ri'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -106,12 +110,6 @@ export const BasicConfigForm: React.FC<Props> = ({
         {...register('dataBuilder')}
       />
       <Checkbox
-        label="Skip Recipient"
-        description={PaywallLockConfig.shape.skipRecipient?.description}
-        error={errors.skipRecipient?.message}
-        {...register('skipRecipient')}
-      />
-      <Checkbox
         label="Collect Email"
         description={PaywallLockConfig.shape.emailRequired?.description}
         error={errors.emailRequired?.message}
@@ -168,15 +166,19 @@ type RecurringByLock = Record<
   }
 >
 
+type MetadataInput = Omit<z.infer<typeof MetadataInput>, 'defaultValue'>
+
 interface LockMetadataProps {
-  onSubmit(data: Omit<z.infer<typeof MetadataInput>, 'defaultValue'>): void
+  onSubmit(data: MetadataInput): void
+  metadata?: MetadataInput
 }
 
-export const LockMetadataForm = ({ onSubmit }: LockMetadataProps) => {
+export const LockMetadataForm = ({ onSubmit, metadata }: LockMetadataProps) => {
   const {
     register,
     formState: { errors },
     handleSubmit,
+    setValue,
   } = useForm<Omit<z.infer<typeof MetadataInput>, 'defaultValue'>>({
     resolver: zodResolver(
       MetadataInput.omit({
@@ -184,6 +186,12 @@ export const LockMetadataForm = ({ onSubmit }: LockMetadataProps) => {
       })
     ),
   })
+
+  if (metadata) {
+    for (const [key, value] of Object.entries(metadata)) {
+      setValue(key as keyof MetadataInput, value)
+    }
+  }
 
   return (
     <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)}>
@@ -276,6 +284,8 @@ export const LocksForm = ({
   const [recurring, setRecurring] = useState<string | number>('')
   const [recurringUnlimited, setRecurringUnlimited] = useState(false)
   const [lockRecurring, setLockRecurring] = useState<RecurringByLock>({})
+  const [isEditing, setIsEditing] = useState(false)
+  const [editIndex, setEditIndex] = useState<number>(-1)
 
   const { getIsRecurringPossible } = useLockSettings()
 
@@ -324,17 +334,15 @@ export const LocksForm = ({
   }
 
   const { isLoading: isLoadingLocksByNetwork, data: locksByNetwork = [] } =
-    useQuery(
-      [network, account],
-      async () =>
+    useQuery({
+      queryKey: ['locksByNetwork', network, account],
+      queryFn: async () =>
         getLocksByNetwork({
           account,
           network,
         }),
-      {
-        enabled: !!account,
-      }
-    )
+      enabled: !!account,
+    })
 
   const onReorderInList = (lockAddress: string, order: number) => {
     const lock = locks[lockAddress]
@@ -387,7 +395,22 @@ export const LocksForm = ({
     onChange(newObj)
   }
 
-  const hasMinValue = network && lockAddress && lockAddress?.length > 0
+  const handleEdit = (index: number) => {
+    setEditIndex(index)
+    setIsEditing(true)
+  }
+
+  const handleSubmit = (e: z.infer<typeof MetadataInput>) => {
+    const lock = locks[lockAddress]
+    lock.metadataInputs![editIndex] = e
+
+    const lockWithMetadata = {
+      ...locks,
+      [lockAddress]: lock,
+    }
+    setLocks(lockWithMetadata)
+    setIsEditing(false)
+  }
 
   const MetadataList = () => {
     if (!locks[lockAddress]?.metadataInputs) {
@@ -396,7 +419,13 @@ export const LocksForm = ({
     return (
       <div className="flex flex-col gap-3">
         {locks[lockAddress]?.metadataInputs?.map((metadata, index) => {
-          return (
+          return isEditing && editIndex === index ? (
+            <LockMetadataForm
+              key={index}
+              onSubmit={handleSubmit}
+              metadata={metadata}
+            />
+          ) : (
             <div
               key={index}
               className="flex items-center justify-between w-full p-4 text-sm bg-white rounded-lg shadow"
@@ -413,14 +442,24 @@ export const LocksForm = ({
                     value={metadata?.required ? 'YES' : 'NO'}
                   />
                 </div>
-                <button
-                  type="button"
-                  onClick={() => onRemoveMetadata(metadata?.name)}
-                  aria-label="Remove metadata"
-                  className="mt-1 text-gray-500"
-                >
-                  <DeleteIcon size={20} />
-                </button>
+                <div className="flex justify-around items-center gap-2 w-1/5">
+                  <button
+                    type="button"
+                    onClick={() => onRemoveMetadata(metadata?.name)}
+                    aria-label="Remove metadata"
+                    className="mt-1 text-gray-500"
+                  >
+                    <DeleteIcon size={20} />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleEdit(index)}
+                    aria-label="Edit"
+                    className="mt-1 text-gray-500"
+                  >
+                    <EditIcon size={20} />
+                  </button>
+                </div>
               </div>
             </div>
           )
@@ -490,9 +529,16 @@ export const LocksForm = ({
     setLocks(locksByAddress)
     onChange(locksByAddress)
     setAddMetadata(false)
+    setLockAddress(lockAddress)
+    setNetwork(network)
+    setDefaultValue({})
+    setAddLock(false)
   }
 
-  const addLockMutation = useMutation(onAddLock)
+  const addLockMutation = useMutation({
+    mutationFn: onAddLock,
+  })
+
   const onAddMetadata = (fields: MetadataInputType) => {
     const lock = locks[lockAddress]
     const metadata = lock?.metadataInputs || []
@@ -531,15 +577,19 @@ export const LocksForm = ({
     onChange(lockWithMetadata)
   }
 
+  // Called when editing a lock
   const onEditLock = (address: string) => {
     const [, config] =
       Object.entries(locks).find(
         ([lockAddress]) => lockAddress?.toLowerCase() === address?.toLowerCase()
       ) ?? []
-    setLockAddress(address)
-    setNetwork(config?.network)
-    setDefaultValue(config ?? {})
-    setAddLock(false)
+    if (config) {
+      setLockAddress(address)
+      setNetwork(config.network)
+      setDefaultValue(config)
+    } else {
+      // if no config is found, do not set the lock to be edited
+    }
   }
 
   const onRecurringChange = ({ recurringPayments }: any) => {
@@ -680,45 +730,42 @@ export const LocksForm = ({
                             />
                           </div>
                         </div>
-                        {hasMinValue && (
-                          <div className="flex flex-col gap-4 p-6 bg-gray-100">
-                            <div className="flex items-center justify-between">
-                              <div className="flex flex-col gap-2">
-                                <div className="flex items-start justify-between">
-                                  <h2 className="text-lg font-bold text-brand-ui-primary">
-                                    Metadata
-                                  </h2>
-                                  {!addMetadata && (
-                                    <Button
-                                      variant="outlined-primary"
-                                      size="small"
-                                      onClick={() => setAddMetadata(true)}
-                                    >
-                                      Add
-                                    </Button>
-                                  )}
-                                </div>
-                                <span className="text-xs text-gray-600">
-                                  (Optional) Collect additional information from
-                                  your members during the checkout process.
-                                  <br />
-                                  Note: if you have checked{' '}
-                                  <code>Collect email address</code> above,
-                                  there is no need to enter email address again
-                                  here.
-                                </span>
+                        <div className="flex flex-col gap-4 p-6 bg-gray-100">
+                          <div className="flex items-center justify-between">
+                            <div className="flex flex-col gap-2">
+                              <div className="flex items-start justify-between">
+                                <h2 className="text-lg font-bold text-brand-ui-primary">
+                                  Metadata
+                                </h2>
+                                {!addMetadata && (
+                                  <Button
+                                    variant="outlined-primary"
+                                    size="small"
+                                    onClick={() => setAddMetadata(true)}
+                                  >
+                                    Add
+                                  </Button>
+                                )}
                               </div>
+                              <span className="text-xs text-gray-600">
+                                (Optional) Collect additional information from
+                                your members during the checkout process.
+                                <br />
+                                Note: if you have checked{' '}
+                                <code>Collect email address</code> above, there
+                                is no need to enter email address again here.
+                              </span>
                             </div>
-                            {!addMetadata ? (
-                              <MetadataList />
-                            ) : (
-                              <div className="grid items-center grid-cols-1 gap-2 mt-2 rounded-xl">
-                                <LockMetadataForm onSubmit={onAddMetadata} />
-                              </div>
-                            )}
-                            <Button onClick={() => reset()}>Done</Button>
                           </div>
-                        )}
+                          {!addMetadata ? (
+                            <MetadataList />
+                          ) : (
+                            <div className="grid items-center grid-cols-1 gap-2 mt-2 rounded-xl">
+                              <LockMetadataForm onSubmit={onAddMetadata} />
+                            </div>
+                          )}
+                          <Button onClick={() => reset()}>Done</Button>
+                        </div>
                       </div>
                     )}
                   </div>
@@ -727,7 +774,7 @@ export const LocksForm = ({
             )}
         </div>
       </div>
-      {addLockMutation?.isLoading && (
+      {addLockMutation?.isPending && (
         <Placeholder.Root className="mt-4">
           <Placeholder.Line size="xl" className="py-8" />
         </Placeholder.Root>
