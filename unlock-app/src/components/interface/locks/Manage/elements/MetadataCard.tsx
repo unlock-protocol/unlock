@@ -1,18 +1,20 @@
 import {
   Button,
-  Badge,
-  Input,
   Modal,
   Detail,
   AddressInput,
   isAddressOrEns,
   Tooltip,
 } from '@unlock-protocol/ui'
+
 import { useEffect, useState } from 'react'
+
 import { Controller, FieldValues, useForm } from 'react-hook-form'
-import { FaCheckCircle as CheckIcon } from 'react-icons/fa'
+
 import { useMutation, useQuery } from '@tanstack/react-query'
+
 import { ToastHelper } from '~/components/helpers/toast.helper'
+
 import { useLockManager } from '~/hooks/useLockManager'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import { ADDRESS_ZERO, MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
@@ -20,18 +22,25 @@ import { durationAsText } from '~/utils/durations'
 import { locksmith } from '~/config/locksmith'
 import { useGetReceiptsPageUrl } from '~/hooks/useReceipts'
 import Link from 'next/link'
+
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
+
 import { addressMinify } from '~/utils/strings'
+
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { useUpdateUserMetadata } from '~/hooks/useUserMetadata'
+
 import { onResolveName } from '~/utils/resolvers'
+
 import { useMetadata } from '~/hooks/metadata'
+
 import { LockType, getLockTypeByMetadata } from '@unlock-protocol/core'
+
 import { FiInfo as InfoIcon } from 'react-icons/fi'
+
 import { TransferKeyDrawer } from '~/components/interface/keychain/TransferKeyDrawer'
-import { useMarkAsCheckInMutation } from '~/hooks/useMarkAsCheckImMutation'
-import { getCheckInTime } from '~/utils/getCheckInTime'
+
 import { WrappedAddress } from '~/components/interface/WrappedAddress'
+import { UpdateEmailModal } from '~/components/content/event/attendees/UpdateEmailModal'
 
 interface MetadataCardProps {
   metadata: any
@@ -244,18 +253,22 @@ const ChangeManagerModal = ({
 }
 export const MetadataCard = ({
   metadata,
+
   owner,
+
   network,
+
   expirationDuration,
+
   lockSettings,
+
   isExpired,
 }: MetadataCardProps) => {
   const [showTransferKey, setShowTransferKey] = useState(false)
+
   const [data, setData] = useState(metadata)
+
   const [addEmailModalOpen, setAddEmailModalOpen] = useState(false)
-  const [checkInTimestamp, setCheckedInTimestamp] = useState<string | null>(
-    null
-  )
 
   const items = Object.entries(data || {}).filter(([key]) => {
     return !keysToIgnore.includes(key)
@@ -263,10 +276,12 @@ export const MetadataCard = ({
 
   const { data: lockMetadata } = useMetadata({
     lockAddress: metadata.lockAddress,
+
     network,
   })
 
   const types = getLockTypeByMetadata(lockMetadata)
+
   const [eventType] =
     Object.entries(types ?? {}).find(([, value]) => value === true) ?? []
 
@@ -309,37 +324,34 @@ export const MetadataCard = ({
 
   const onSendQrCode = async () => {
     if (!network) return
+
     ToastHelper.promise(sendEmailMutation.mutateAsync(), {
       success: 'Email sent',
+
       loading: 'Sending email...',
+
       error: 'We could not send email.',
     })
   }
 
-  const isCheckedIn =
-    typeof getCheckInTime(checkInTimestamp, metadata) === 'string' ||
-    !!checkInTimestamp
-
   const hasEmail = Object.entries(data || {})
+
     .map(([key]) => key.toLowerCase())
+
     .includes('email')
 
   const onEmailChange = (values: FieldValues) => {
     setData({
       ...data,
+
       ...values,
     })
   }
 
   const metadataPageUrl = `/locks/metadata?lockAddress=${lockAddress}&network=${network}&keyId=${tokenId}`
 
-  const markAsCheckInMutation = useMarkAsCheckInMutation({
-    network,
-    data,
-    setCheckedInTimestamp,
-  })
-
   const ownerIsManager = owner?.toLowerCase() === manager?.toLowerCase()
+
   const showManager = !ownerIsManager && manager !== ADDRESS_ZERO
 
   return (
@@ -353,6 +365,7 @@ export const MetadataCard = ({
         lockName={lockMetadata?.name}
         owner={data?.keyholderAddress}
       />
+
       <UpdateEmailModal
         isOpen={addEmailModalOpen ?? false}
         setIsOpen={setAddEmailModalOpen}
@@ -364,22 +377,11 @@ export const MetadataCard = ({
         extraDataItems={items as any}
         onEmailChange={onEmailChange}
       />
+
       <div className="flex flex-col gap-3 md:flex-row">
         <Button variant="outlined-primary" size="small">
           <Link href={metadataPageUrl}>Edit token properties</Link>
         </Button>
-
-        {!isCheckedIn && (
-          <Button
-            variant="outlined-primary"
-            size="small"
-            onClick={() => markAsCheckInMutation.mutate()}
-            disabled={markAsCheckInMutation.isPending}
-            loading={markAsCheckInMutation.isPending}
-          >
-            Mark as checked-in
-          </Button>
-        )}
 
         {receiptsPageUrl?.length && (
           <Button
@@ -400,37 +402,19 @@ export const MetadataCard = ({
 
       <div className="pt-6">
         <div className="mt-6">
-          {isCheckedIn && (
-            <Badge
-              size="tiny"
-              variant="green"
-              iconRight={<CheckIcon size={11} />}
-              className="mb-4"
-            >
-              <span className="text-sm font-semibold">Checked-in</span>
-            </Badge>
-          )}
           <div className="flex flex-col divide-y divide-gray-400">
-            {isCheckedIn && (
-              <Detail
-                className="py-2"
-                inline
-                justify={false}
-                label="Checked-in at:"
-              >
-                {getCheckInTime(checkInTimestamp, metadata)}
-              </Detail>
-            )}
             <Detail
               className="py-2"
               label={
                 <div className="flex flex-col w-full gap-2 md:items-center md:flex-row">
                   <span>Email:</span>
+
                   {hasEmail ? (
                     <div className="flex flex-col w-full gap-3 md:flex-row">
                       <span className="block text-base font-semibold text-black">
                         {data?.email}
                       </span>
+
                       <Button
                         size="tiny"
                         variant="outlined-primary"
@@ -438,6 +422,7 @@ export const MetadataCard = ({
                       >
                         Edit email
                       </Button>
+
                       {lockSettings?.sendEmail ? (
                         SendEmailMapping[eventType as keyof LockType] && (
                           <Button
@@ -472,6 +457,7 @@ export const MetadataCard = ({
                 </div>
               }
             />
+
             {items?.map(([key, value]: any, index) => {
               return (
                 <Detail
@@ -674,113 +660,8 @@ export const MetadataCard = ({
 
 const SendEmailMapping: Record<keyof LockType, string> = {
   isCertification: 'Send Certificate by email',
+
   isEvent: 'Send QR-code by email',
+
   isStamp: 'Send Stamp by email',
-}
-const UpdateEmailModal = ({
-  isOpen,
-  setIsOpen,
-  isLockManager,
-  userAddress,
-  lockAddress,
-  network,
-  hasEmail,
-  onEmailChange,
-}: {
-  isOpen: boolean
-  isLockManager: boolean
-  userAddress: string
-  lockAddress: string
-  network: number
-  hasEmail: boolean
-  extraDataItems: [string, string | number][]
-  setIsOpen: (status: boolean) => void
-  onEmailChange: (values: FieldValues) => void
-}) => {
-  const [loading, setLoading] = useState(false)
-  const { register, handleSubmit, reset } = useForm({
-    defaultValues: {
-      email: '',
-    },
-  })
-  const { mutateAsync: updateUserMetadata } = useUpdateUserMetadata({
-    lockAddress,
-    userAddress,
-    network,
-  })
-
-  const updateData = (formFields: FieldValues) => {
-    reset() // reset form state
-    setLoading(false)
-    setIsOpen(false)
-    if (typeof onEmailChange === 'function') {
-      onEmailChange(formFields)
-    }
-  }
-
-  const updateMetadata = async (params: any, callback?: () => void) => {
-    const updateMetadataPromise = updateUserMetadata(params)
-    await ToastHelper.promise(updateMetadataPromise, {
-      loading: 'Updating email address',
-      success: 'Email successfully added to member',
-      error: `Can't update the email address.`,
-    })
-    if (typeof callback === 'function') {
-      callback()
-    }
-  }
-  /**
-   * Update metadata or create a new set when not exists
-   * @param {formFields} formFields - useForm data set, all data present in form will be saved as metadata
-   */
-  const onUpdateValue = async (formFields: FieldValues) => {
-    if (!isLockManager) return
-    try {
-      setLoading(true)
-
-      updateMetadata(
-        {
-          protected: {
-            email: formFields.email,
-          },
-          public: {},
-        },
-        () => {
-          updateData(formFields)
-        }
-      )
-    } catch (err) {
-      ToastHelper.error('There is some unexpected issue, please try again')
-    }
-  }
-
-  return (
-    <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-      <div className="flex flex-col gap-3">
-        <span className="mr-0 font-semibold text-md">
-          {hasEmail ? 'Update email address' : 'Add email address to metadata'}
-        </span>
-        <form onSubmit={handleSubmit(onUpdateValue)}>
-          <Input
-            type="email"
-            {...register('email', {
-              required: true,
-            })}
-          />
-          <div className="flex items-center justify-end gap-2">
-            <Button
-              variant="secondary"
-              onClick={() => setIsOpen(false)}
-              disabled={loading}
-            >
-              Abort
-            </Button>
-            <Button type="submit" disabled={loading}>
-              {hasEmail ? 'Update email' : 'Add email'}
-            </Button>
-          </div>
-        </form>
-      </div>
-    </Modal>
-  )
 }
