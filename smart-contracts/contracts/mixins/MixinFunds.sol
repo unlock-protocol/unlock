@@ -27,7 +27,7 @@ contract MixinFunds is MixinErrors {
   function _isValidToken(address _tokenAddress) internal view {
     if (
       _tokenAddress != address(0) &&
-      IERC20Upgradeable(_tokenAddress).totalSupply() < 0
+      IERC20Upgradeable(_tokenAddress).totalSupply() <= 0
     ) {
       revert INVALID_TOKEN();
     }
