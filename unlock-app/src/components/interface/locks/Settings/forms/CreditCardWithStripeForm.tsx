@@ -153,9 +153,9 @@ const ConnectStripe = ({
   if (isLoading) {
     return (
       <Placeholder.Root>
-        <Placeholder.Line width="sm" />
-        <Placeholder.Line width="sm" />
-        <Placeholder.Line size="xl" width="sm" />
+        <Placeholder.Line />
+        <Placeholder.Line />
+        <Placeholder.Line size="xl" />
       </Placeholder.Root>
     )
   }
@@ -163,7 +163,7 @@ const ConnectStripe = ({
   return (
     <div className="flex flex-col gap-4">
       <SettingCardDetail
-        title="Enable Contract to Accept Credit Card"
+        title="Enable offchain payments"
         description={
           <div className="flex flex-col gap-2">
             <span>
@@ -187,6 +187,7 @@ const ConnectStripe = ({
           </div>
         }
       />
+
       {isManager && (
         <div className="flex flex-col gap-3">
           {isGranted ? (
@@ -370,8 +371,6 @@ export const CreditCardWithStripeForm = ({
     )
   }
 
-  console.log({ keyGranter })
-
   const Status = () => {
     if (ConnectStatus.NO_ACCOUNT === stripeConnectionState) {
       return (
@@ -411,10 +410,11 @@ export const CreditCardWithStripeForm = ({
             disabled={disabled || disconnectStipeMutation.isPending}
           />
           {connectedStripeAccount && (
-            <span>
+            <p className="text-sm text-gray-700">
               You will receive payments on your Stripe account{' '}
-              <code>{connectedStripeAccount.id}</code>
-            </span>
+              <code className="text-gray-600">{connectedStripeAccount.id}</code>
+              .
+            </p>
           )}
 
           {isManager && (
@@ -443,9 +443,9 @@ export const CreditCardWithStripeForm = ({
   if (loading)
     return (
       <Placeholder.Root>
-        <Placeholder.Line width="sm" />
-        <Placeholder.Line width="sm" />
-        <Placeholder.Line size="xl" width="sm" />
+        <Placeholder.Line />
+        <Placeholder.Line />
+        <Placeholder.Line size="xl" />
       </Placeholder.Root>
     )
 
