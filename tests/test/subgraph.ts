@@ -1,12 +1,11 @@
-import * as subgraph from './helpers/subgraph'
-
-import { Contract, getAddress } from 'ethers'
-import { ethers, unlock } from 'hardhat'
-import { purchaseKey, purchaseKeys } from './helpers/keys'
-
-import ERC20ABI from './helpers/ERC20.abi.json'
 import { expect } from 'chai'
+import { Contract, getAddress } from 'ethers'
+import { unlock, ethers } from 'hardhat'
+
 import { lockParams } from './helpers/fixtures'
+import * as subgraph from './helpers/subgraph'
+import { purchaseKeys, purchaseKey } from './helpers/keys'
+import ERC20ABI from './helpers/ERC20.abi.json'
 
 const awaitTimeout = (delay: number) =>
   new Promise((resolve) => setTimeout(resolve, delay))
@@ -155,20 +154,20 @@ describe('key cancellation', function () {
   it('deletes item correctly from subgraph', async () => {
     await awaitTimeout(3000)
     const keyInGraph = await subgraph.getKey(lockAddress, tokenIds[1])
-    expect(keyInGraph).to.not.equal(null)
-    expect(keyInGraph.cancelled).to.equal(false)
+    expect(keyInGraph).to.not.be.null
+    expect(keyInGraph.cancelled).to.be.false
 
     // cancel the 2nd one
     const keyOwner = await ethers.getSigner(keyOwners[1])
     await lock.connect(keyOwner).getFunction('cancelAndRefund')(tokenIds[1])
-    expect(await lock.isValidKey(tokenIds[1])).to.equal(false)
+    expect(await lock.isValidKey(tokenIds[1])).to.be.false
 
     await awaitTimeout(3000)
     const keyInGraphAfterCancellation = await subgraph.getKey(
       lockAddress,
       tokenIds[1]
     )
-    expect(keyInGraphAfterCancellation.cancelled).to.equal(true)
+    expect(keyInGraphAfterCancellation.cancelled).to.be.true
   })
 })
 

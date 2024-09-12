@@ -14,7 +14,7 @@
   "scripts": {
     "start": "tsc --watch",
     "lint:fix": "yarn lint --fix",
-    "lint": "eslint",
+    "lint": "eslint src/",
     "build": "tsup src/index.ts --dts --format esm,cjs",
     "check:keys": "tsx ./bin/check-keys",
     "check:tokens": "tsx ./bin/check-tokens",
