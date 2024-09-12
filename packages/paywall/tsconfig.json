@@ -6,7 +6,7 @@
     ],
     "outDir": "build",
     "moduleResolution": "node",
-    "noImplicitAny": false
+    "noImplicitAny": false,
   },
   "exclude": [
     "build",

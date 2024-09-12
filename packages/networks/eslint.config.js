@@ -1,5 +1,8 @@
-const unlockProtocolConfig = require('@unlock-protocol/eslint-config')
+/* eslint-disable @typescript-eslint/no-require-imports */
 const sortKeysFix = require('eslint-plugin-sort-keys-fix')
+
+const unlockProtocolConfig = require('@unlock-protocol/eslint-config')
+
 module.exports = [
   ...unlockProtocolConfig,
   {

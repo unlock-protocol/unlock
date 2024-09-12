@@ -21,12 +21,10 @@
   },
   "scripts": {
     "build": "tsc",
-    "clean": "rm -rf dist",
-    "lint": "eslint"
+    "clean": "rm -rf dist"
   },
   "devDependencies": {
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
-    "eslint": "9.9.1",
     "typescript": "5.5.4"
   }
 }

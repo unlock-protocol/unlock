@@ -11,7 +11,7 @@
     "deploy-fleek": "./scripts/deploy-fleek.sh",
     "start": "next start",
     "test": "echo 'no tests'",
-    "lint": "eslint",
+    "lint": "eslint src/",
     "ci": "yarn test && yarn lint && yarn build"
   },
   "dependencies": {
