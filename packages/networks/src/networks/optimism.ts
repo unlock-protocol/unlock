@@ -99,8 +99,7 @@ export const optimism: NetworkConfig = {
   publicProvider: 'https://mainnet.optimism.io',
   startBlock: 302400,
   subgraph: {
-    endpoint:
-      'https://api.studio.thegraph.com/query/65299/unlock-protocol-optimism/version/latest',
+    endpoint: 'https://subgraph.unlock-protocol.com/10',
     studioName: 'unlock-protocol-optimism',
   },
   tokens: [

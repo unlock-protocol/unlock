@@ -396,9 +396,10 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
                 {isInPerson && (
                   <GoogleMapsAutoComplete
                     defaultValue={event.ticket.event_location}
-                    onChange={(address, location) => {
+                    onChange={(address, location, timezone) => {
                       setValue('ticket.event_address', address)
                       setValue('ticket.event_location', location)
+                      setValue('ticket.event_timezone', timezone)
                       setMapAddress(getValues('ticket.event_address'))
                     }}
                   />
