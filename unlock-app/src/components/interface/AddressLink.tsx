@@ -20,7 +20,7 @@ export const AddressLink = ({ address, network }: AddressLinkProps) => {
 
   useEffect(() => {
     if (!isCopied) return
-    ToastHelper.success(`Lock address copied`)
+    ToastHelper.success('Lock address copied')
   }, [isCopied])
 
   return (

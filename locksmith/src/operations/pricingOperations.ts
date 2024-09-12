@@ -7,6 +7,7 @@ import * as lockSettingOperations from './lockSettingOperations'
 import { Currencies } from '@unlock-protocol/core'
 import normalizer from '../utils/normalizer'
 import { MemoryCache } from 'memory-cache-node'
+import { cp } from 'node:fs'
 
 interface DefiLamaResponse {
   price?: number
@@ -191,6 +192,7 @@ export async function getDefiLammaPriceNoCache({
 
   return {
     ...item,
+    symbol: '$', // defilama always returns USD
   }
 }
 
@@ -224,7 +226,8 @@ export async function getDefiLammaPrice({
 }
 
 /**
- * Get lock total charges with fees
+ * Get the total charges for an amount of tokens on a network.
+ * The result is always in $.
  * @returns
  */
 export const getTotalCharges = async ({
@@ -243,6 +246,7 @@ export const getTotalCharges = async ({
 
   if (pricing.priceInAmount === undefined) {
     return {
+      symbol: '$',
       total: 0,
       subtotal: 0,
       gasCost,
@@ -258,6 +262,7 @@ export const getTotalCharges = async ({
   })
   const result = {
     ...fees,
+    symbol: '$',
     subtotal,
     isCreditCardPurchasable: fees.total > MIN_PAYMENT_STRIPE_CREDIT_CARD,
   }

@@ -2998,7 +2998,7 @@ paths:
                     type: string
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
-  
+
   /v2/receipts/all/{network}/{lockAddress}:
     get:
       operationId: getReceiptsStatus
@@ -4060,7 +4060,7 @@ paths:
 
   /v2/api/purchase/total:
     get:
-      description: Get the total price for a purchase (including fees)
+      description: Get the total price for a purchase (including fees). The result is always in USD.
       operationId: getTotalPrice
       parameters:
         - in: query
