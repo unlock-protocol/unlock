@@ -26,6 +26,7 @@ describe('Lock / withdraw', () => {
         ;[owner, attacker] = await ethers.getSigners()
 
         testToken = await deployERC20(owner.addres)
+        await testToken.mint(await owner.getAddress(), someTokens)
         tokenAddress = isErc20 ? await testToken.getAddress() : ADDRESS_ZERO
 
         lock = await deployLock({ tokenAddress })
