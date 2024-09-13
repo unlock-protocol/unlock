@@ -65,7 +65,13 @@ export const useGetTotalCharges = ({
   enabled = true,
 }: GetTotalChargesProps) => {
   return useQuery({
-    queryKey: ['getTotalChargesForLock', lockAddress, network],
+    queryKey: [
+      'getTotalChargesForLock',
+      lockAddress,
+      network,
+      recipients,
+      purchaseData,
+    ],
     queryFn: async () => {
       const pricing = await locksmith.getChargesForLock(
         network,
