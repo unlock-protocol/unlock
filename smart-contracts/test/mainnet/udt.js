@@ -17,22 +17,19 @@ describe('UnlockDiscountToken on mainnet', () => {
   let unlockAddress
 
   before(async function setupMainnetForkTestEnv() {
-    // if (!process.env.RUN_FORK) {
-    if (true) {
-      // all suite will be skipped
-      this.skip()
-    }
+    // all suite will be skipped
+    this.skip()
 
-    // // reset fork
-    // await resetNodeState()
+    // reset fork
+    await resetNodeState()
 
-    // // mocha settings
-    // this.timeout(200000)
+    // mocha settings
+    this.timeout(200000)
 
-    // const [, minter] = await ethers.getSigners()
-    // udt = (await getUdt()).connect(minter)
+    const [, minter] = await ethers.getSigners()
+    udt = (await getUdt()).connect(minter)
 
-    // unlockAddress = await getUnlockAddress()
+    unlockAddress = await getUnlockAddress()
   })
 
   describe('ERC20 details', () => {

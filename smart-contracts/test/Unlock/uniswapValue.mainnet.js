@@ -2,7 +2,7 @@ const assert = require('assert')
 const { ethers } = require('hardhat')
 const { mainnet } = require('@unlock-protocol/networks')
 
-const DAIAbi = require('@unlock-protocol/hardhat-helpers/dist/ABIs/erc20.json')
+const ERC20ABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/erc20.json')
 const USDCabi = require('@unlock-protocol/hardhat-helpers/dist/ABIs/USDC.json')
 
 const {
@@ -15,6 +15,10 @@ const {
 
 const { impersonate } = require('@unlock-protocol/hardhat-helpers')
 
+const {
+  mainnet: { tokens },
+} = require('@unlock-protocol/networks')
+
 const { unlockAddress } = mainnet
 const keyPrice = ethers.parseUnits('0.01', 'ether')
 const totalPrice = keyPrice * 5n
@@ -23,9 +27,9 @@ const totalPrice = keyPrice * 5n
 const keyPriceUSDC = ethers.parseUnits('50', 6)
 const totalPriceUSDC = keyPriceUSDC * 5n
 
-const WETH = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'
-const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
-const DAI = '0x6B175474E89094C44Da98b954EedeAC495271d0F'
+const WETH = tokens.find((token) => token.symbol === 'WETH').address
+const USDC = tokens.find((token) => token.symbol === 'USDC').address
+const DAI = tokens.find((token) => token.symbol === 'DAI').address
 
 const FEE = 500
 const deployUniswapV3Oracle = async function () {
@@ -175,7 +179,7 @@ describe('Unlock / uniswapValue', () => {
     let Dai_Token
     before(async () => {
       // mint some usdc
-      Dai_Token = await ethers.getContractAt(DAIAbi, DAI)
+      Dai_Token = await ethers.getContractAt(ERC20ABI, DAI)
 
       // transfer from the contract itself
       await impersonate(DAI)
