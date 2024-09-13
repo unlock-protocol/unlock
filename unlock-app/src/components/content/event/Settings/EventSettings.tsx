@@ -5,7 +5,6 @@ import { SettingsContext } from '~/components/interface/locks/Settings'
 import { Tab } from '@headlessui/react'
 
 import { ReactNode, useState } from 'react'
-import { SettingTab } from '~/pages/locks/settings'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { General } from './General'
 import { Referrals } from './Referrals'
@@ -13,6 +12,7 @@ import { Emails } from './Emails'
 import { Verifiers } from './Verifiers'
 import Link from 'next/link'
 import { useEvent } from '~/hooks/useEvent'
+import { SettingTab } from '../../lock/LocksSettingsContent'
 
 interface EventSettingsProps {
   slug: string
