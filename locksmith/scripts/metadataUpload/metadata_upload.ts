@@ -109,6 +109,5 @@ const scope = args.scope
 if (preflightCheck(privateKey, lockAddress, inputFile, host)) {
   main(privateKey, lockAddress, inputFile, host, scope)
 } else {
-  /* eslint-disable no-console */
   console.log('Currently missing required data, please review input')
 }
