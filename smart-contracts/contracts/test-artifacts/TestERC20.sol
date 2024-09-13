@@ -14,7 +14,7 @@ contract TestERC20 is ERC20 {
 contract TestERC20WithResultControl is TestERC20 {
   bool reuslt;
 
-  function setResult(bool _result) external {
+  function setResult(bool _result) public {
     reuslt = _result;
   }
 
