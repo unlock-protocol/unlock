@@ -8,7 +8,7 @@ import {
 } from '../components/pages/UpcomingEvents'
 import { getEvents } from '../utils/calendar'
 
-const MembershipPage: NextPage = (props: any) => {
+const UpcomingEventsPage: NextPage = (props: any) => {
   return (
     <Layout>
       <NextSeo
@@ -35,4 +35,4 @@ export const getStaticProps: GetStaticProps<UpcomingEventsProps> = async () => {
   }
 }
 
-export default MembershipPage
+export default UpcomingEventsPage
