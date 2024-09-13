@@ -1,13 +1,10 @@
 import networks from '@unlock-protocol/networks'
-import { getFees, getGasCost } from '../utils/pricing'
-import { MIN_PAYMENT_STRIPE_CREDIT_CARD } from '../utils/constants'
 import { ethers } from 'ethers'
 import { Web3Service, getErc20Decimals } from '@unlock-protocol/unlock-js'
 import * as lockSettingOperations from './lockSettingOperations'
 import { Currencies } from '@unlock-protocol/core'
 import normalizer from '../utils/normalizer'
 import { MemoryCache } from 'memory-cache-node'
-import { cp } from 'node:fs'
 
 interface DefiLamaResponse {
   price?: number
@@ -223,50 +220,6 @@ export async function getDefiLammaPrice({
     }
   }
   return pricing
-}
-
-/**
- * Get the total charges for an amount of tokens on a network.
- * The result is always in $.
- * @returns
- */
-export const getTotalCharges = async ({
-  amount,
-  network,
-  erc20Address,
-}: Options) => {
-  const [pricing, gasCost] = await Promise.all([
-    getDefiLammaPrice({
-      network,
-      amount,
-      erc20Address,
-    }),
-    getGasCost({ network }),
-  ])
-
-  if (pricing.priceInAmount === undefined) {
-    return {
-      symbol: '$',
-      total: 0,
-      subtotal: 0,
-      gasCost,
-      unlockServiceFee: 0,
-      creditCardProcessingFee: 0,
-      isCreditCardPurchasable: false,
-    }
-  }
-  const subtotal = Math.round(pricing.priceInAmount * 100)
-  const fees = await getFees({
-    subtotal,
-    gasCost,
-  })
-  const result = {
-    ...fees,
-    symbol: '$',
-    subtotal,
-    isCreditCardPurchasable: fees.total > MIN_PAYMENT_STRIPE_CREDIT_CARD,
-  }
-  return result
 }
 
 export async function getLockKeyPricing({
