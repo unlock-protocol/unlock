@@ -1,4 +1,5 @@
 import path from 'path'
+import { ZeroAddress } from 'ethers'
 import {
   wait,
   isVerified,
@@ -24,6 +25,7 @@ const run = async () => {
   for (const filePath of fileList) {
     let errors: string[] = []
     const successes: string[] = []
+    const warnings: string[] = []
     const failures: string[] = []
 
     // check mandatory keys using ts
@@ -43,6 +45,9 @@ const run = async () => {
     // make sure the contracts are verified on Etherscan.
     for (const contractName in addresses) {
       const contractAddress = addresses[contractName]
+      if (!contractAddress || contractAddress === ZeroAddress) {
+        warnings.push(`⚠️ Contract ${contractName} is missing`)
+      }
       await wait(100)
       try {
         const verified = await isVerified({
@@ -197,6 +202,7 @@ const run = async () => {
       errors,
       failures,
       successes,
+      warnings,
     }
   }
 
@@ -208,6 +214,7 @@ const parseGithubComment = ({
   errors,
   failures,
   successes,
+  warnings,
 }) => `### ${networkName}
 
 ${successes.length ? `The setup is successful :\n` : ''}
@@ -218,6 +225,9 @@ ${errors.map((error) => `- ${error}`).join('\n')}
 
 ${failures.length ? `Some verification calls have failed  :\n` : ''}
 ${failures.map((failure) => `- ${failure}`).join('\n')}
+
+${warnings.length ? `Some additonal warnings  :\n` : ''}
+${warnings.map((warning) => `- ${warning}`).join('\n')}
 `
 
 run()
