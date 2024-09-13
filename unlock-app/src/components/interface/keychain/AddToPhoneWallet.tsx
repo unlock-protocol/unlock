@@ -36,14 +36,14 @@ export const AddToPhoneWallet = ({
   const walletConfig = {
     [Platform.APPLE]: {
       generatePass: generateAppleWalletPass,
-      imgSrc: `/images/illustrations/apple-wallet.svg`,
+      imgSrc: '/images/illustrations/apple-wallet.svg',
       altText: 'Apple Wallet',
       loadingMessage:
         'Generating your Apple Wallet pass. This takes a few seconds.',
     },
     [Platform.GOOGLE]: {
       generatePass: generateGoogleWalletPass,
-      imgSrc: `/images/illustrations/google-wallet.svg`,
+      imgSrc: '/images/illustrations/google-wallet.svg',
       altText: 'Google Wallet',
       loadingMessage:
         'Generating your Google Wallet pass. This takes a few seconds.',

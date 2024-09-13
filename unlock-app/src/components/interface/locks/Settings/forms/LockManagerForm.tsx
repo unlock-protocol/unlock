@@ -166,7 +166,7 @@ const LockManagerCard = ({
   const onRenounce = async () => {
     const renounceLockManagerPromise = renounceLockManagerMutation.mutateAsync()
     await ToastHelper.promise(renounceLockManagerPromise, {
-      loading: `Removing Lock Manager status.`,
+      loading: 'Removing Lock Manager status.',
       success: `Lock manager renounced for ${minifyAddress(manager)}.`,
       error: `Can't renounce Lock manager for ${minifyAddress(manager)}`,
     })
@@ -194,7 +194,7 @@ const LockManagerCard = ({
           </span>
           {isLoggedUser && (
             <span className="text-sm font-semibold text-brand-ui-primary">
-              {`That's you`}
+              {"That's you"}
             </span>
           )}
         </div>

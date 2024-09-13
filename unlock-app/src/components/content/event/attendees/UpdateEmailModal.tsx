@@ -50,7 +50,7 @@ export const UpdateEmailModal = ({
     await ToastHelper.promise(updateMetadataPromise, {
       loading: 'Updating email address',
       success: 'Email successfully added to member',
-      error: `Can't update the email address.`,
+      error: "Can't update the email address.",
     })
     if (typeof callback === 'function') {
       callback()

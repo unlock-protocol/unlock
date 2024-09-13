@@ -73,7 +73,7 @@ interface NavigationProps {
 }
 
 export function TopNavigation({ onClose }: NavigationProps) {
-  const navigationClass = `flex items-center p-6 justify-end`
+  const navigationClass = 'flex items-center p-6 justify-end'
   return (
     <div className={navigationClass}>
       {onClose && <CloseButton onClick={() => onClose()} />}
@@ -82,7 +82,7 @@ export function TopNavigation({ onClose }: NavigationProps) {
 }
 
 export function TransactionAnimation({ status }: Partial<Transaction>) {
-  const animationClass = `w-28 sm:w-36 h-28 sm:h-36`
+  const animationClass = 'w-28 sm:w-36 h-28 sm:h-36'
   switch (status) {
     case 'PROCESSING':
       return (

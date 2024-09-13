@@ -299,7 +299,7 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
                 >
                   <Link href={transactionUrl}>
                     <div className="flex items-center gap-2">
-                      <span>{`Transaction Hash:`} </span>
+                      <span>{'Transaction Hash:'} </span>
                       <span className="font-semibold text-brand-ui-primary">
                         {addressMinify(hash)}
                       </span>

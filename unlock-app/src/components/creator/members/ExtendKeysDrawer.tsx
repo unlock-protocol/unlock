@@ -127,7 +127,7 @@ const ExtendKeyDurationForm = ({
       }
 
       if (typeof extendDuration === 'number' && extendDuration < 0) {
-        return ToastHelper.error(`The expiration date can't be pulled back.`)
+        return ToastHelper.error("The expiration date can't be pulled back.")
       }
 
       if (
@@ -147,7 +147,7 @@ const ExtendKeyDurationForm = ({
         onComplete()
         reset(defaultValues)
       } else {
-        ToastHelper.error(`Expiration date can't be in the past`)
+        ToastHelper.error("Expiration date can't be in the past")
       }
     }
   }

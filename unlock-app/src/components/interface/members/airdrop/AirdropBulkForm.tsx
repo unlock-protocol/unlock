@@ -103,7 +103,7 @@ export function AirdropBulkForm({ lock, onConfirm, emailRequired }: Props) {
               }
             } catch (error) {
               linesWithError.push(line + 2) // index starts at 0, lines at 1 and we have the header row
-              console.error(`Failed to add `, item, error)
+              console.error('Failed to add ', item, error)
               return
             }
           })
@@ -132,14 +132,14 @@ export function AirdropBulkForm({ lock, onConfirm, emailRequired }: Props) {
               Number(existingBalance) + alreadyToBeAdded + toBeAdded >
               (lock.maxKeysPerAddress || 1)
             ) {
-              console.warn(`Discarded duplicate`, member)
+              console.warn('Discarded duplicate', member)
               duplicates.push(member)
               discarded.push(member)
               return filtered
             }
 
             if (noEmail && emailRequired) {
-              console.warn(`Email required and missing`, member)
+              console.warn('Email required and missing', member)
               missingEmail.push(member)
               return filtered
             }

@@ -19,7 +19,7 @@ export const Step = ({
   children = 1,
 }: IconProps & { children?: ReactNode }) => {
   const stepIconClass = twMerge(
-    `flex items-center justify-center font-medium border-gray-300 box-border border w-5 text-xs h-5 rounded-full cursor-default`,
+    'flex items-center justify-center font-medium border-gray-300 box-border border w-5 text-xs h-5 rounded-full cursor-default',
     active && 'bg-ui-main-500 text-white border-none'
   )
   return <div className={stepIconClass}>{children}</div>
@@ -27,7 +27,7 @@ export const Step = ({
 
 export const StepFinish = ({ active }: IconProps) => {
   const finishIconClass = twMerge(
-    `font-medium box-border border p-0.5 w-5 text-xs h-5 rounded-full cursor-default`,
+    'font-medium box-border border p-0.5 w-5 text-xs h-5 rounded-full cursor-default',
     active && 'bg-ui-main-500 text-white fill-white border-none'
   )
   return <FinishIcon size={20} className={finishIconClass} />
@@ -35,7 +35,7 @@ export const StepFinish = ({ active }: IconProps) => {
 
 export const StepFinished = ({ active }: IconProps) => {
   const finishedIconClass = twMerge(
-    `font-medium box-border border w-5 p-0.5 text-xs h-5 rounded-full cursor-default`,
+    'font-medium box-border border w-5 p-0.5 text-xs h-5 rounded-full cursor-default',
     active && 'bg-ui-main-500 text-white fill-white border-none'
   )
   return <RocketIcon size={20} className={finishedIconClass} />
@@ -53,7 +53,7 @@ export const StepButton = ({
   label,
 }: StepButtonProps) => {
   const stepIconClass = twMerge(
-    `flex items-center justify-center font-medium border-gray-300 box-border border w-5 text-xs h-5 rounded-full hover:bg-gray-50`
+    'flex items-center justify-center font-medium border-gray-300 box-border border w-5 text-xs h-5 rounded-full hover:bg-gray-50'
   )
   return (
     <Tooltip side="top" delay={0} label={label} tip={label}>

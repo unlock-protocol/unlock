@@ -59,7 +59,7 @@ const DEPLOY_STATUS_MAPPING: Record<DeployStatus, DeployStatusProps> = {
 }
 
 export function AnimationContent({ status }: { status: DeployStatus }) {
-  const animationClass = `h-60 md:h-96`
+  const animationClass = 'h-60 md:h-96'
   switch (status) {
     case 'progress':
       return (

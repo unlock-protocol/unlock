@@ -36,25 +36,28 @@ export const EventSettings = ({ slug, checkoutConfig }: EventSettingsProps) => {
     {
       id: 'general',
       label: 'General',
-      description: `Update your event's public information such as its location, date and more!`,
+      description:
+        "Update your event's public information such as its location, date and more!",
       children: <General event={event} checkoutConfig={checkoutConfig} />,
     },
     {
       id: 'referrals',
       label: 'Referrals',
-      description: `Create referral links to share with your community and reward them.`,
+      description:
+        'Create referral links to share with your community and reward them.',
       children: <Referrals event={event} checkoutConfig={checkoutConfig} />,
     },
     {
       id: 'emails',
       label: 'Emails',
-      description: `Configure and send emails to the attendees of your event.`,
+      description: 'Configure and send emails to the attendees of your event.',
       children: <Emails event={event} checkoutConfig={checkoutConfig} />,
     },
     {
       id: 'verifiers',
       label: 'Verifiers',
-      description: `Verify ticket validity and handle attendees who have checked-in`,
+      description:
+        'Verify ticket validity and handle attendees who have checked-in',
       children: <Verifiers event={event} checkoutConfig={checkoutConfig} />,
     },
     // {

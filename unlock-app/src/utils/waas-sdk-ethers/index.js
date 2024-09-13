@@ -28,7 +28,7 @@ export class WaasEthersSigner extends JsonRpcSigner {
       const hashToSign = ethers.keccak256(serializedTx)
       res = await this.waasAddress.sign(hashToSign.slice(2))
     } catch (exc) {
-      throw new Error(`MPC Engine failed to sign.`, { cause: exc })
+      throw new Error('MPC Engine failed to sign.', { cause: exc })
     }
     return Transaction.from(baseTx, {
       v: BigInt('0x' + res.v),
@@ -42,7 +42,7 @@ export class WaasEthersSigner extends JsonRpcSigner {
     try {
       res = await this.waasAddress.sign(hashToSign)
     } catch (exc) {
-      throw new Error(`MPC Engine failed to sign.`, { cause: exc })
+      throw new Error('MPC Engine failed to sign.', { cause: exc })
     }
     const recoveryCode = res.v
     const v = BigInt(recoveryCode) + 27n
@@ -57,7 +57,7 @@ export class WaasEthersSigner extends JsonRpcSigner {
     try {
       res = await this.waasAddress.sign(hashToSign)
     } catch (exc) {
-      throw new Error(`MPC Engine failed to sign.`, { cause: exc })
+      throw new Error('MPC Engine failed to sign.', { cause: exc })
     }
     const recoveryCode = res.v
     const v = BigInt(recoveryCode) + 27n

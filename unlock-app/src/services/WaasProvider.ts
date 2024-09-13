@@ -151,7 +151,7 @@ export default class WaasProvider extends ethers.JsonRpcProvider {
    * @param {string} _ the address to sign it with -- ignored because
    * we use the address in this class.
    */
-  // eslint-disable-next-line no-unused-vars
+
   async personal_sign([data, _]: any[]) {
     try {
       const content = ethers.getBytes(data)

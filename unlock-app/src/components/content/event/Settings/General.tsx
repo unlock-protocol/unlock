@@ -108,7 +108,7 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
         success: 'Event saved!',
         error:
           'We could not save your event. Please try again and report if the issue persists.',
-        loading: `Updating your event's properties.`,
+        loading: "Updating your event's properties.",
       }
     )
   }
