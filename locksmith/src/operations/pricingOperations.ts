@@ -189,7 +189,6 @@ export async function getDefiLammaPriceNoCache({
 
   return {
     ...item,
-    symbol: '$', // defilama always returns USD
   }
 }
 
