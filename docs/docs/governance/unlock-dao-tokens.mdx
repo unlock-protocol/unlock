@@ -7,14 +7,14 @@ tags: [UP, UP token, UDT, Governance, Tokenomics]
 
 # Unlock Protocol Token (UP)
 
-The Unlock Protocol governance Tokens, also known as UP tokens, are the governance tokens for the Unlock Protocol. Holders of UP tokens collectively form the [Unlock DAO](./unlock-dao).
+The Unlock Protocol governance tokens, also known as UP tokens, are the governance tokens for the Unlock Protocol. Holders of UP tokens collectively form the [Unlock DAO](./unlock-dao).
 
 UP tokens were previously known as Unlock Discount Tokens (UDT).
 
 UDT tokens were initially created on Ethereum, and have been bridged to multiple side-chains and networks including Base, Polygon, Gnosis Chain, Optimism, Arbitrum and others.
 
 In July 2024, the Unlock DAO approved a migration to the Base network. In order to effectively vote on the Base network, a new token was introduced: UP (Unlock Protocol Token).
-UDT holders can exchange their UDT for UP on the Base network. The migration is a 1:1000 swap and can be conveniently achieved through a [migration website](https://up-swap.unlock-protocol.com/) in 4 steps:
+UDT holders can exchange their UDT for UP on the Base network. The migration is a 1-to-1000 swap and can be conveniently achieved through a [migration website](https://up-swap.unlock-protocol.com/) in 4 steps:
 
 - Bridging UDT to Base (from any network)
 - Delegating votes on the Unlock DAO on Base
@@ -29,7 +29,7 @@ The Unlock Foundation is offering a token incentive to perform the migration to 
 
 The UP token has been deployed on Base at the following address: [0xac27fa800955849d6d17cc8952ba9dd6eaa66187](https://basescan.org/token/0xac27fa800955849d6d17cc8952ba9dd6eaa66187). It is using OpenZeppelin's ERC20 implementation and is an upgradable contract. The proxy admin is the Timelock contract on Base, which means that it can be upgraded by the Unlock DAO only.
 
-## UP & UDT Addresses
+## UDT Contract Addresses
 
 Note: UP and UDT can always be swapped to and from each other on the Base Network.
 
@@ -49,21 +49,21 @@ import { networks } from '@unlock-protocol/networks'
     return <TokenNetwork network={network} />
   })}
 </table>
-- 
+ 
 
 ## Earning UP Token Rewards
 
-The protocol aims at being governed by its implementers and users. As such, it automatically distributes UP (or UDT, depending on network) tokens on every _purchase_ of a paid membership, on applicable networks. 
+Unlock Protocol is governed by its implementers and users. As such, the protocol automatically distributes UP (or UDT, depending on network) tokens as a reward on every _purchase_ of a paid membership, on applicable networks. 
 
 When facilitating a purchase, the application sending the transaction can optionally add a `referrer` address to its transaction. This referrer address will receive the reward tokens, if applicable.
 
-> Example: Alice has deployed a membership contract. Bob wants to purchase a membership. Bob uses an application created by Carol. The application will prompt Bob to submit a transaction through their wallet. This transaction has been constructed by Carol's application and Carol includes her own address as the `referrer`. After the transaction, Alice will receive the price of the membership paid by Bob, Bob will receive a membership NFT from Alice's contract and Carol will receive UP tokens to join the protocol's governance, via the referrer rewards.
+> Example: Alice has deployed a membership contract. Bob wants to purchase a membership. Bob uses an application created by Carol. The application will prompt Bob to submit a transaction through their wallet. This transaction has been constructed by Carol's application and Carol includes her own address as the `referrer`. After the transaction, Alice will receive the price of the membership paid by Bob, Bob will receive a membership NFT from Alice's contract and Carol will receive a referrer reward of UP tokens which Carol can use to participate in the protocol's governance.
 
 ### Referrer Reward Details
 
 The Unlock contract holds a portion of the governance tokens to be used as referrer rewards on a number of [networks where the Unlock Protocol](../core-protocol/unlock/networks) has been deployed. These tokens are the ones that are distributed as referrer rewards on each paid transaction that uses the Unlock Protocol.
 
-The amount of reward tokens to be distributed on each paid transaction is calculated in real time by the Unlock contract based on several factors, including the gas consumed by the purchase transaction and the contribution to the Gross Network Product of Unlock Protocol. The Gross Network Product (GNP) is the sum of the value of all transactions sent to the network. Since memberships, subscriptions, and tickets can be priced in any ERC20, the Unlock contract consults local oracles (using Uniswap) and converts the ERC20 price into the networks's native currency to calculate the GNP.
+The amount of reward tokens to be distributed on each paid transaction is calculated in real time by the Unlock contract based on several factors, including the gas consumed by the purchase transaction and the contribution of that particular transaction to the Gross Network Product of Unlock Protocol. The Gross Network Product (GNP) is the sum of the value of all transactions sent to the network. Since memberships, subscriptions, and tickets can be priced in any ERC20, the Unlock contract consults local oracles (using Uniswap) and converts the ERC20 price into the networks's native currency to calculate the GNP.
 
 On each purchase or renewal transaction, the membership contract will invoke the Unlock contract. The Unlock contract will then consider the _value_ of the transaction (using an onchain oracle if needed) relative to the sum of the values of all previous transactions (the Gross Network Product). The Unlock contract also considers its own balance of tokens to determine exactly how many tokens should be distributed to the `referrer` address.
 
@@ -71,7 +71,7 @@ On each purchase or renewal transaction, the membership contract will invoke the
 Formula: If `N` is the amount of tokens owned by the Unlock contract. For a GNP growth of `𝝙`, the reward is `N * 𝝙/(2*(1+𝝙))`. This number is between 0 and 0.5 for any `𝝙` between `0` and `Infinity`, which means that even if the GNP were to grow by an infinite amount, the Unlock contract would only distribute _half_ of its tokens.
 :::
 
-> Example: if the Unlock contract owns 10,000 tokens, and if the previously recorded Gross Network Product is 1,000,000, and the value of the transaction is 10, then, `𝝙` is 1/100,000 and the amount of reward tokens distributed is about `0.05`.
+> Example: If the Unlock contract owns 10,000 tokens, and if the previously recorded Gross Network Product is 1,000,000, and the value of the transaction is 10, then, `𝝙` is 1/100,000 and the amount of reward tokens distributed is about `0.05`.
 
 One of the risks of this approach is that a malicious actor could create a membership with a very high value and purchase memberships for themselves, yielding large rewards of UP tokens. In order to mitigate this risk, the amount of UP paid by the Unlock contract is also **capped** by the gas spent by the transaction (the Unlock contract uses an oracle to determine the price of UP tokens).
 
@@ -93,7 +93,7 @@ When the fee switch is set to any value larger than 0%, on every transaction for
 
 Current, the protocol fees collected by way of the fee switch can be "swapped and burned" by calling the `swapAndBurn` function on the Unlock contract. This function will swap the collected fees for UP (or UDT) tokens on a decentralized exchange and then burn them.
 
-### How do you bridge UDT from mainnet to Base in order to exchange the UDT for the Unlock Protocol UP token?
+## Bridging UDT from Mainnet to Base and Exchanging the UDT for the Unlock Protocol UP Token
 
 In essence, the UP token on Base is an analogous version of the UDT token on mainnet. (In order to eliminate potential confusion between the two tokens, a different name — UP — was chosen on Base.)
 
@@ -194,7 +194,7 @@ There is a Uniswap V3 liquidity pool for Base ETH/UP pairs at [https://app.unisw
 UP token transactions are faster and have significantly lower transaction (gas) fees than UDT transactions. This is as a result of the UP token being on Base, rather than on Ethereum mainnet.
 
 ### Are UP tokens required?
-UP (and UDT, its predecessor) are perfectly _optional_. Creators can deploy locks without knowledge of UP and their members can similarly purchase membership without knowing about these tokens.
+UP (and UDT, its predecessor) are perfectly _optional_. Creators can deploy smart contracts without knowledge of UP and their members can similarly purchase memberships without knowing about these tokens.
 
 ### Graphic assets for the Unlock Protocol UP token
 
