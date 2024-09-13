@@ -73,7 +73,7 @@
     "react-use-clipboard": "1.0.9",
     "remark-html": "16.0.1",
     "remark-parse": "11.0.0",
-    "remove-markdown": "0.5.2",
+    "remove-markdown": "0.5.5",
     "sharp": "0.33.5",
     "siwe": "2.3.2",
     "tailwind-merge": "2.4.0",
