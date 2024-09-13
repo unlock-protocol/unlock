@@ -1,4 +1,4 @@
-const { assert } = require('chai')
+const assert = require('assert')
 const { ethers } = require('hardhat')
 const { ADDRESS_ZERO } = require('../../helpers')
 const { getBalance } = require('../../helpers')
@@ -14,13 +14,13 @@ module.exports.getBalanceBehavior = (options) => {
 
     it('ETH tip balance appears', async () => {
       const balance = await getBalance(lock)
-      assert.equal(balance.toString(), 42)
+      assert.equal(balance, 42)
     })
 
     it('can withdraw ETH', async () => {
       await lock.withdraw(ADDRESS_ZERO)
       const balance = await getBalance(lock)
-      assert.equal(balance.toString(), 0)
+      assert.equal(balance, 0)
     })
   })
 }

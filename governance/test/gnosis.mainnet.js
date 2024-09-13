@@ -11,7 +11,7 @@ const {
 
 const { submitTx, getSafeAddress, getOwners } = require('../scripts/multisig')
 
-const { assert } = require('chai')
+const assert = require('assert')
 const { unlockAddress, multisig } = networks[1]
 
 const getSafe = async ({ safeAddress, signer }) => {
@@ -173,9 +173,8 @@ describe('scripts / gnosis', () => {
     it('submit the tx correctly to the mutisig', async () => {
       const { interface } = unlock
       // this is actually previous index (length - 1) + 1
-      let [destination, value, data, executed] = await safe.transactions(
-        previousTxCount
-      )
+      let [destination, value, data, executed] =
+        await safe.transactions(previousTxCount)
       assert.equal(destination, unlock.address)
       assert.equal(value, 0)
       assert.equal(

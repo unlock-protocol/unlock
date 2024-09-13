@@ -1,5 +1,5 @@
 import { Button } from '@unlock-protocol/ui'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import BrowserOnly from '~/components/helpers/BrowserOnly'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
 import { AppLayout } from '~/components/interface/layouts/AppLayout'
@@ -18,7 +18,10 @@ import { Event, PaywallConfigType } from '@unlock-protocol/core'
 import { MemberCard } from '~/components/interface/locks/Manage/elements/MemberCard'
 import { AttendeeInfo } from './AttendeeInfo'
 import { ApplicantInfo } from './ApplicantInfo'
-import { Detail } from '@unlock-protocol/ui'
+import { AttendeesActionsWrapper } from './AttendeesActions'
+import { ApproveAttendeeModal } from './ApproveAttendeeModal'
+import { DenyAttendeeModal } from './DenyAttendeeModal'
+import MetadataCard from './MetadataCard'
 
 interface AttendeesProps {
   event: Event
@@ -31,12 +34,19 @@ interface AttendeesProps {
 export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
   const [airdropKeys, setAirdropKeys] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [selected, setSelected] = useState<{ [key: string]: boolean }>({})
+  const [allSelected, setAllSelected] = useState(false)
+  const [approvedAttendees, setApprovedAttendees] = useState<any[]>([])
+  const [deniedAttendees, setDeniedAttendees] = useState<any[]>([])
+
   const router = useRouter()
   const [lockAddress, setLockAddress] = useState(
-    checkoutConfig.config.locks
-      ? Object.keys(checkoutConfig.config.locks)[0]
-      : null
+    Object.keys(checkoutConfig.config.locks)[0]
   )
+
+  const network =
+    checkoutConfig.config.locks[lockAddress]?.network ||
+    checkoutConfig.config.network
 
   const { data: isOrganizer, isLoading: isLoadingLockManager } =
     useEventOrganizer({
@@ -55,6 +65,12 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
   })
   const [page, setPage] = useState(1)
 
+  // Reset selected keys when changing page
+  useEffect(() => {
+    setAllSelected(false)
+    setSelected({})
+  }, [page, filters])
+
   // Placeholders
   const lockNetwork = lockAddress
     ? checkoutConfig.config.locks[lockAddress].network
@@ -68,6 +84,31 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
     return null
   }
 
+  const toggleAll = (keys: any) => {
+    setAllSelected(!allSelected)
+    if (allSelected) {
+      setSelected({})
+    } else {
+      setSelected(
+        keys.reduce((acc: any, key: any) => {
+          return { ...acc, [key.keyholderAddress]: true }
+        }, {})
+      )
+    }
+  }
+
+  const bulkApprove = (keys: any) => {
+    setApprovedAttendees(
+      keys.filter((key: any) => selected[key.keyholderAddress])
+    )
+  }
+
+  const bulkDeny = (keys: any) => {
+    setDeniedAttendees(
+      keys.filter((key: any) => selected[key.keyholderAddress])
+    )
+  }
+
   return (
     <BrowserOnly>
       <AppLayout authRequired={true} showHeader={false}>
@@ -79,6 +120,21 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
           isOpen={airdropKeys}
           setIsOpen={setAirdropKeys}
           locks={checkoutConfig.config.locks}
+        />
+        <ApproveAttendeeModal
+          network={network!}
+          isOpen={approvedAttendees.length > 0}
+          setIsOpen={() => setApprovedAttendees([])}
+          lockAddress={lockAddress}
+          attendees={approvedAttendees}
+        />
+
+        <DenyAttendeeModal
+          network={network!}
+          isOpen={deniedAttendees.length > 0}
+          setIsOpen={() => setDeniedAttendees([])}
+          lockAddress={lockAddress}
+          attendees={deniedAttendees}
         />
         <div className="min-h-screen bg-ui-secondary-200 pb-60 flex flex-col gap-4">
           <div className="flex flex-row-reverse gap-2">
@@ -96,7 +152,7 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
             />
             <FilterBar
               hideExpirationFilter={true}
-              hideApprovalFilter={false}
+              hideApprovalFilter={false} // We could hide this if the event doesn't require approval AND the maxNumberOfKeys > 0
               locks={checkoutConfig.config.locks}
               lockAddress={lockAddress}
               filters={filters}
@@ -137,29 +193,11 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
                     expirationDuration={expirationDuration}
                     lockSettings={lockSettings}
                     MetadataCard={
-                      <div className="flex flex-col divide-y divide-gray-400">
-                        {Object.entries(metadata || {})
-                          .filter(([key]) => {
-                            return ![
-                              'keyholderAddress',
-                              'keyManager',
-                              'lockAddress',
-                            ].includes(key)
-                          })
-                          .map(([key, value]: any, index: number) => {
-                            return (
-                              <Detail
-                                className="py-2"
-                                key={`${key}-${index}`}
-                                label={`${key}: `}
-                                inline
-                                justify={false}
-                              >
-                                {value || null}
-                              </Detail>
-                            )
-                          })}
-                      </div>
+                      <MetadataCard
+                        metadata={metadata}
+                        network={network}
+                        data={{ lockAddress, token }}
+                      />
                     }
                     MemberInfo={() => {
                       if (!token) {
@@ -169,6 +207,13 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
                             lockAddress={lockAddress}
                             owner={owner}
                             metadata={metadata}
+                            isSelected={selected[owner]}
+                            setIsSelected={() => {
+                              setSelected({
+                                ...selected,
+                                [owner]: !selected[owner],
+                              })
+                            }}
                           />
                         )
                       }
@@ -191,6 +236,13 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
               NoMemberWithFilter={() => {
                 return <p>No ticket matches your filter.</p>
               }}
+              MembersActions={AttendeesActionsWrapper({
+                toggleAll,
+                selected,
+                bulkApprove,
+                bulkDeny,
+                allSelected,
+              })}
             />
           </div>
         </div>

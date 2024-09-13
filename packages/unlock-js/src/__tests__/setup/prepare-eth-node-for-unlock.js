@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const { ethers } = require('hardhat')
 const { WalletService } = require('../../../dist/')
 
@@ -23,17 +22,17 @@ async function main() {
     walletService.provider,
     await walletService.provider.getSigner(3)
   )
-  const erc20Address = erc20.address
+  const erc20Address = await erc20.getAddress()
 
   // We then transfer some ERC20 tokens to some users
   const users = await ethers.getSigners()
   await Promise.all(
-    users.slice(0, 3).map(async ({ address: userAddress }) => {
+    users.slice(0, 3).map(async (user) => {
       await Erc20.transfer(
         walletService.provider,
         await walletService.provider.getSigner(3),
         erc20Address,
-        userAddress,
+        await user.getAddress(),
         '500'
       )
       return Promise.resolve()

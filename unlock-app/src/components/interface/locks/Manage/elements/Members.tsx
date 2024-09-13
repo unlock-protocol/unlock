@@ -4,12 +4,12 @@ import { ImageBar } from './ImageBar'
 import { MemberCard as DefaultMemberCard, MemberCardProps } from './MemberCard'
 import { paginate } from '~/utils/pagination'
 import { PaginationBar } from './PaginationBar'
-import React from 'react'
 import { ApprovalStatus, ExpirationStatus } from './FilterBar'
 import { subgraph } from '~/config/subgraph'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { Placeholder } from '@unlock-protocol/ui'
 import { PAGE_SIZE } from '@unlock-protocol/core'
+import { useEffect } from 'react'
 
 const DefaultNoMemberNoFilter = () => {
   return (
@@ -41,6 +41,7 @@ interface MembersProps {
   MemberCard?: React.FC<MemberCardProps>
   NoMemberNoFilter?: React.FC
   NoMemberWithFilter?: React.FC
+  MembersActions?: React.FC<{ keys: any; filters: FilterProps }>
 }
 
 export interface FilterProps {
@@ -65,10 +66,11 @@ export const Members = ({
   MemberCard = DefaultMemberCard,
   NoMemberWithFilter = DefaultNoMemberWithFilter,
   NoMemberNoFilter = DefaultNoMemberNoFilter,
+  MembersActions,
 }: MembersProps) => {
   const getMembers = async () => {
     const { query, filterKey, expiration, approval } = filters
-    const response = await storage.keysByPage(
+    const response = await locksmith.keysByPage(
       network,
       lockAddress,
       query,
@@ -82,22 +84,22 @@ export const Members = ({
   }
 
   const getLockSettings = async () => {
-    return await storage.getLockSettings(network, lockAddress)
+    return await locksmith.getLockSettings(network, lockAddress)
   }
 
   const [
-    { isLoading, data: { keys = [], meta = {} } = { keys: [] } },
-    { isLoading: isLockLoading, data: lock, isError: hasLockLoadingError },
-    { isLoading: isLoadingSettings, data: { data: lockSettings = {} } = {} },
+    {
+      isPending,
+      data: { keys = [], meta = {} } = { keys: [] },
+      error: membersError,
+    },
+    { isPending: isLockLoading, data: lock, error: lockError },
+    { isPending: isLoadingSettings, data: { data: lockSettings = {} } = {} },
   ] = useQueries({
     queries: [
       {
         queryFn: getMembers,
         queryKey: ['getMembers', page, lockAddress, network, filters],
-        onError: () => {
-          ToastHelper.error(`Can't load members, please try again`)
-        },
-        refetchOnWindowFocus: true,
       },
       {
         queryFn: () => {
@@ -111,11 +113,6 @@ export const Members = ({
           )
         },
         queryKey: ['getSubgraphLock', lockAddress, network],
-        onError: () => {
-          ToastHelper.error(
-            `Unable to fetch lock ${lockAddress} from subgraph on network ${network}`
-          )
-        },
       },
       {
         queryKey: ['getLockSettings', lockAddress, network],
@@ -124,8 +121,22 @@ export const Members = ({
     ],
   })
 
+  useEffect(() => {
+    if (membersError) {
+      ToastHelper.error(`Can't load members, please try again`)
+    }
+  }, [membersError])
+
+  useEffect(() => {
+    if (lockError) {
+      ToastHelper.error(
+        `Unable to fetch lock ${lockAddress} from subgraph on network ${network}`
+      )
+    }
+  }, [lockError, lockAddress, network])
+
   const loading =
-    isLockLoading || isLoading || loadingFilters || isLoadingSettings
+    isLockLoading || isPending || loadingFilters || isLoadingSettings
 
   const noItems = keys?.length === 0 && !loading
 
@@ -147,7 +158,7 @@ export const Members = ({
     )
   }
 
-  if (hasLockLoadingError) {
+  if (lockError) {
     return (
       <ImageBar
         alt="Fetch error"
@@ -182,11 +193,13 @@ export const Members = ({
 
   return (
     <div className="flex flex-col  gap-6">
+      {MembersActions ? <MembersActions filters={filters} keys={keys} /> : null}
+
       {(keys || [])?.map((metadata: any) => {
         const { token, keyholderAddress: owner, expiration } = metadata ?? {}
         return (
           <MemberCard
-            key={metadata.token}
+            key={metadata.token || owner}
             token={token}
             owner={owner}
             expiration={expiration}

@@ -1,6 +1,7 @@
-const { assert } = require('chai')
+const assert = require('assert')
 const { ethers } = require('hardhat')
 const { ADDRESS_ZERO, deployLock, reverts } = require('../helpers')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 let lock
 let lockSingleKey
@@ -20,41 +21,44 @@ describe('Lock / unlendKey', () => {
 
     const tx = await lock.purchase(
       [],
-      [keyOwner.address],
+      [await keyOwner.getAddress()],
       [ADDRESS_ZERO],
       [ADDRESS_ZERO],
-      [[]],
+      ['0x'],
       {
         value: await lock.keyPrice(),
       }
     )
 
-    const { events } = await tx.wait()
-    ;[tokenId] = events
-      .filter((v) => v.event === 'Transfer')
-      .map(({ args }) => args.tokenId)
+    const receipt = await tx.wait()
+    ;({
+      args: { tokenId },
+    } = await getEvent(receipt, 'Transfer'))
 
     // lend a key to someone
     await lock
       .connect(keyOwner)
-      .lendKey(keyOwner.address, someone.address, tokenId)
+      .lendKey(await keyOwner.getAddress(), await someone.getAddress(), tokenId)
   })
 
   describe('failures', () => {
     it('should abort when there is no key to lend', async () => {
-      await reverts(lock.unlendKey(receiver.address, 999), 'UNAUTHORIZED')
+      await reverts(
+        lock.unlendKey(await receiver.getAddress(), 999),
+        'UNAUTHORIZED'
+      )
     })
 
     it('should abort when caller is not a key manager', async () => {
       await reverts(
-        lock.connect(random).unlendKey(receiver.address, tokenId),
+        lock.connect(random).unlendKey(await receiver.getAddress(), tokenId),
         'UNAUTHORIZED'
       )
     })
 
     it('should abort when caller is the account that currently owns the key', async () => {
       await reverts(
-        lock.connect(receiver).unlendKey(receiver.address, tokenId),
+        lock.connect(receiver).unlendKey(await receiver.getAddress(), tokenId),
         'UNAUTHORIZED'
       )
     })
@@ -62,20 +66,25 @@ describe('Lock / unlendKey', () => {
 
   describe('when caller is the key manager', () => {
     beforeEach(async () => {
-      await lock.connect(keyOwner).unlendKey(receiver.address, tokenId)
+      await lock
+        .connect(keyOwner)
+        .unlendKey(await receiver.getAddress(), tokenId)
     })
 
     it('transfer ownership back to the specified recipient', async () => {
-      assert.equal(await lock.ownerOf(tokenId), receiver.address)
+      assert.equal(await lock.ownerOf(tokenId), await receiver.getAddress())
     })
 
     it('update key validity properly', async () => {
-      assert.equal(await lock.getHasValidKey(someone.address), false)
-      assert.equal(await lock.getHasValidKey(receiver.address), true)
+      assert.equal(await lock.getHasValidKey(await someone.getAddress()), false)
+      assert.equal(await lock.getHasValidKey(await receiver.getAddress()), true)
     })
 
     it('retains the correct key manager', async () => {
-      assert.equal(await lock.keyManagerOf(tokenId), keyOwner.address)
+      assert.equal(
+        await lock.keyManagerOf(tokenId),
+        await keyOwner.getAddress()
+      )
     })
   })
 })

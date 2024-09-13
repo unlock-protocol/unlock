@@ -82,7 +82,6 @@ export const rsvp = async (request: Request, response: Response) => {
     template: 'eventRsvpSubmitted',
     failoverTemplate: 'eventRsvpSubmitted',
     recipient: data.email,
-    // @ts-expect-error object incomplete
     params: {
       lockAddress: lockAddress,
       eventName: eventDetail?.eventName,
@@ -114,5 +113,36 @@ export const update = (approval: 'approved' | 'denied') => {
     rsvp.approval = approval
     await rsvp.save()
     return response.status(200).send(rsvp.toJSON())
+  }
+}
+
+const RsvpUpdateBody = z.object({
+  recipients: z.array(
+    z.string().transform((item) => normalizer.ethereumAddress(item))
+  ),
+})
+
+export const updateBulk = (approval: 'approved' | 'denied') => {
+  return async (request: Request, response: Response) => {
+    const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
+    const network = Number(request.params.network)
+    const { recipients } = await RsvpUpdateBody.parseAsync(request.body)
+
+    const [_, rsvps] = await Rsvp.update(
+      {
+        approval: approval,
+      },
+      {
+        where: {
+          network,
+          userAddress: recipients,
+          lockAddress,
+        },
+        returning: true,
+      }
+    )
+    return response.status(200).send({
+      results: rsvps.map((rsvp) => rsvp.toJSON()),
+    })
   }
 }

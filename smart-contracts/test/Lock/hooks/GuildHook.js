@@ -1,69 +1,62 @@
-const { expect } = require('chai')
-const { ethers, unlock } = require('hardhat')
-const { reverts } = require('../../helpers')
+const assert = require('assert')
+const { ethers } = require('hardhat')
+const { reverts, deployLock } = require('../../helpers')
 
 describe('GuildHook', function () {
   it('should work as a hook', async function () {
     const [user, another, aThird] = await ethers.getSigners()
     const signer = ethers.Wallet.createRandom()
 
-    await unlock.deployProtocol()
-    const expirationDuration = 60 * 60 * 24 * 7
-    const maxNumberOfKeys = 100
-    const keyPrice = 0
-
-    const { lock } = await unlock.createLock({
-      expirationDuration,
-      maxNumberOfKeys,
-      keyPrice,
-      name: 'ticket',
+    const lock = await deployLock({
+      name: 'FREE',
     })
     const GuildHook = await ethers.getContractFactory('GuildHook')
     const hook = await GuildHook.deploy()
-    await hook.deployed()
-    await hook.addSigner(signer.address)
+
+    await hook.addSigner(await signer.getAddress())
 
     // Set the hook on avatar
     await (
       await lock.setEventHooks(
-        hook.address,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero
+        await hook.getAddress(),
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress
       )
     ).wait()
 
-    const messageHash = ethers.utils.solidityKeccak256(
+    const messageHash = ethers.solidityPackedKeccak256(
       ['string'],
-      [user.address.toLowerCase()]
+      [(await user.getAddress()).toLowerCase()]
     )
-    const signedMessage = await signer.signMessage(
-      ethers.utils.arrayify(messageHash)
-    )
+    const signedMessage = await signer.signMessage(ethers.getBytes(messageHash))
 
-    const anotherMessageHash = ethers.utils.solidityKeccak256(
+    const anotherMessageHash = ethers.solidityPackedKeccak256(
       ['string'],
-      [another.address.toLowerCase()]
+      [(await another.getAddress()).toLowerCase()]
     )
     const anotherSignedMessage = await signer.signMessage(
-      ethers.utils.arrayify(anotherMessageHash)
+      ethers.getBytes(anotherMessageHash)
     )
 
     // Health check!
-    expect(
-      ethers.utils.verifyMessage(user.address.toLowerCase(), signedMessage),
-      signer.address
+    assert(
+      ethers.verifyMessage(
+        (await user.getAddress()).toLowerCase(),
+        signedMessage
+      ),
+      await signer.getAddress()
     )
 
     // Let's now purchase a key!
     const tx = await lock.purchase(
       [0],
-      [user.address, another.address],
-      [user.address, another.address],
-      [user.address, another.address],
+      [await user.getAddress(), await another.getAddress()],
+      [await user.getAddress(), await another.getAddress()],
+      [await user.getAddress(), await another.getAddress()],
       [signedMessage, anotherSignedMessage]
     )
     await tx.wait()
@@ -72,9 +65,9 @@ describe('GuildHook', function () {
     await reverts(
       lock.purchase(
         [0],
-        [aThird.address],
-        [aThird.address],
-        [aThird.address],
+        [await aThird.getAddress()],
+        [await aThird.getAddress()],
+        [await aThird.getAddress()],
         [signedMessage]
       ),
       'WRONG_SIGNATURE'
@@ -84,12 +77,12 @@ describe('GuildHook', function () {
     await reverts(
       lock.purchase(
         [0],
-        [aThird.address],
-        [aThird.address],
-        [aThird.address],
-        [[]]
+        [await aThird.getAddress()],
+        [await aThird.getAddress()],
+        [await aThird.getAddress()],
+        ['0x']
       ),
-      'ECDSA: invalid signature length'
+      'ECDSAInvalidSignatureLength'
     )
   })
 
@@ -98,31 +91,30 @@ describe('GuildHook', function () {
     const signer = ethers.Wallet.createRandom()
     const GuildHook = await ethers.getContractFactory('GuildHook')
     const hook = await GuildHook.deploy()
-    await hook.deployed()
 
     // Add a signer
-    await hook.addSigner(signer.address)
-    expect(await hook.signers(signer.address)).to.equal(true)
-    expect(await hook.owner()).to.equal(user.address)
+    await hook.addSigner(await signer.getAddress())
+    assert.equal(await hook.signers(await signer.getAddress()), true)
+    assert.equal(await hook.owner(), await user.getAddress())
 
     // Transfer ownership
-    expect(hook.transferOwnership(anotherUser.address))
-    expect(await hook.owner()).to.equal(anotherUser.address)
+    await hook.transferOwnership(await anotherUser.getAddress())
+    assert.equal(await hook.owner(), await anotherUser.getAddress())
 
     // Add a signer again from previous owner
     const anotherSigner = ethers.Wallet.createRandom()
     await reverts(
-      hook.addSigner(anotherSigner.address),
-      'Ownable: caller is not the owner'
+      hook.addSigner(await anotherSigner.getAddress()),
+      'OwnableUnauthorizedAccount'
     )
-    expect(await hook.signers(anotherSigner.address)).to.equal(false)
+    assert.equal(await hook.signers(await anotherSigner.getAddress()), false)
 
     // Add a signer from new owner
-    await hook.connect(anotherUser).addSigner(anotherSigner.address)
-    expect(await hook.signers(anotherSigner.address)).to.equal(true)
+    await hook.connect(anotherUser).addSigner(await anotherSigner.getAddress())
+    assert.equal(await hook.signers(await anotherSigner.getAddress()), true)
 
     // Remove signer from new owner
-    await hook.connect(anotherUser).removeSigner(signer.address)
-    expect(await hook.signers(signer.address)).to.equal(false)
+    await hook.connect(anotherUser).removeSigner(await signer.getAddress())
+    assert.equal(await hook.signers(await signer.getAddress()), false)
   })
 })

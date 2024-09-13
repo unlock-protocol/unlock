@@ -1,4 +1,4 @@
-const { assert } = require('chai')
+const assert = require('assert')
 const { ethers } = require('hardhat')
 const {
   deployLock,
@@ -19,36 +19,42 @@ describe('Permissions / KeyGranter', () => {
   describe('default permissions on a new lock', () => {
     it('should add the lock creator to the keyGranter role', async () => {
       assert.equal(
-        await lock.hasRole(KEY_GRANTER_ROLE, lockCreator.address),
+        await lock.hasRole(KEY_GRANTER_ROLE, await lockCreator.getAddress()),
         true
       )
       // lock creator is also added to the LockManager role by default
       assert.equal(
-        await lock.hasRole(LOCK_MANAGER_ROLE, lockCreator.address),
+        await lock.hasRole(LOCK_MANAGER_ROLE, await lockCreator.getAddress()),
         true
       )
     })
   })
   describe('modifying permissions on an existing lock', () => {
     it('should allow a lockManager to add a KeyGranter', async () => {
-      assert.equal(await lock.isLockManager(lockCreator.address), true)
       assert.equal(
-        await lock.hasRole(KEY_GRANTER_ROLE, newKeyGranter.address),
+        await lock.isLockManager(await lockCreator.getAddress()),
+        true
+      )
+      assert.equal(
+        await lock.hasRole(KEY_GRANTER_ROLE, await newKeyGranter.getAddress()),
         false
       )
-      await lock.grantRole(KEY_GRANTER_ROLE, newKeyGranter.address)
+      await lock.grantRole(KEY_GRANTER_ROLE, await newKeyGranter.getAddress())
       assert.equal(
-        await lock.hasRole(KEY_GRANTER_ROLE, newKeyGranter.address),
+        await lock.hasRole(KEY_GRANTER_ROLE, await newKeyGranter.getAddress()),
         true
       )
     })
 
     it('should not allow anyone else to add a KeyGranter', async () => {
-      assert.equal(await lock.isLockManager(notAuthorized.address), false)
+      assert.equal(
+        await lock.isLockManager(await notAuthorized.getAddress()),
+        false
+      )
       await reverts(
         lock
           .connect(notAuthorized)
-          .grantRole(KEY_GRANTER_ROLE, newKeyGranter.address),
+          .grantRole(KEY_GRANTER_ROLE, await newKeyGranter.getAddress()),
         `is missing role ${LOCK_MANAGER_ROLE}`
       )
     })
@@ -57,12 +63,12 @@ describe('Permissions / KeyGranter', () => {
       await reverts(
         lock
           .connect(notAuthorized)
-          .revokeRole(KEY_GRANTER_ROLE, newKeyGranter.address),
+          .revokeRole(KEY_GRANTER_ROLE, await newKeyGranter.getAddress()),
         `is missing role ${LOCK_MANAGER_ROLE}`
       )
-      await lock.revokeRole(KEY_GRANTER_ROLE, newKeyGranter.address)
+      await lock.revokeRole(KEY_GRANTER_ROLE, await newKeyGranter.getAddress())
       assert.equal(
-        await lock.hasRole(KEY_GRANTER_ROLE, newKeyGranter.address),
+        await lock.hasRole(KEY_GRANTER_ROLE, await newKeyGranter.getAddress()),
         false
       )
     })

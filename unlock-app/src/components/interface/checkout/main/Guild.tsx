@@ -1,6 +1,5 @@
 import { TfiReload } from 'react-icons/tfi'
 import { CheckoutService } from './checkoutMachine'
-import { Connected } from '../Connected'
 import { Button, Placeholder, minifyAddress } from '@unlock-protocol/ui'
 import { Fragment } from 'react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
@@ -12,13 +11,13 @@ import { useDataForGuild } from '~/hooks/useDataForGuild'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import LoadingIcon from '../../Loading'
 import { useSelector } from '@xstate/react'
+import Disconnect from './Disconnect'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
 }
 
-export function Guild({ injectedProvider, checkoutService }: Props) {
+export function Guild({ checkoutService }: Props) {
   const { account } = useAuth()
   const { recipients, lock } = useSelector(
     checkoutService,
@@ -55,16 +54,6 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
   const isLoading = isLoadingGuild || isLoadingGuildData || isFetchingGuildData
   const disabled = !data || data.some((d) => !d)
 
-  const isFarCon =
-    guild &&
-    [
-      '0x238b522Fa4d04bFe0B9B875e9CcEa6d3f98d51d2',
-      '0x27fB25e111d2540B195a4A0C6e471a5E7e8Cd6Ec',
-      '0x456CC03543d41Eb1c9a7cA9FA86e9383B404f50d',
-    ]
-      .map((address) => address.toLowerCase())
-      .indexOf(lock!.address.toLowerCase()) > -1
-
   return (
     <Fragment>
       <Stepper service={checkoutService} />
@@ -81,46 +70,7 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
             <Placeholder.Line size="lg" />
           </Placeholder.Root>
         )}
-        {isFarCon && (
-          <div className="">
-            {disabled && (
-              <>
-                <p className="my-2">
-                  ❌ Your wallet address ({minifyAddress(users[0])}) is not on
-                  the list of approved attendees for this{' '}
-                  <Link
-                    className="underline text-brand-ui-primary"
-                    target="_blank"
-                    rel="noreferrer"
-                    href="https://farcon.xyz/"
-                  >
-                    FarCon
-                  </Link>{' '}
-                  class of tickets.
-                </p>
-                <p className="my-2">
-                  Please check that you have been approved and use the address
-                  linked to your Farcaster account.{' '}
-                </p>
-                <Button
-                  loading={isLoading}
-                  onClick={() => {
-                    console.log('refetch')
-                    refetch()
-                  }}
-                  iconLeft={<TfiReload />}
-                  size="tiny"
-                >
-                  Check again
-                </Button>
-              </>
-            )}
-            {!disabled && !isLoading && (
-              <p>✅ Your wallet is on the list of approved attendees!</p>
-            )}
-          </div>
-        )}
-        {guild && !isFarCon && (
+        {guild && (
           <>
             <p>
               Memberships to this lock are restricted to addresses that belong
@@ -234,20 +184,16 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
+        <Button
+          type="submit"
+          className="w-full"
+          disabled={isLoadingGuildData || disabled}
+          loading={isLoading}
+          onClick={onSubmit}
         >
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={isLoadingGuildData || disabled}
-            loading={isLoading}
-            onClick={onSubmit}
-          >
-            Continue
-          </Button>
-        </Connected>
+          Continue
+        </Button>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

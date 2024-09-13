@@ -16,9 +16,3 @@ By leveraging an external contract powered by Uniswap, Swap & Purchase in Unlock
 [Try it out now](https://app.unlock-protocol.com/checkout?id=bb4a2ae0-2fca-4bdf-bd40-f0c41cde2510)
 
 In Swap & Purchase, the Unlock interface will show options to buy the NFT membership in alternative tokens to users automatically on the payment screen. Currently, we will display stable-coin as options such as USDC or USDT. In future, we might open up to checking more routes and enabling more arbitrary swaps.
-
-### How does this work?
-
-We created a new `UnlockSwapPurchaser` contract which facilitates exchanging tokens and purchasing NFTs on behalf of users in a single transaction. This contract has been deployed on all the [networks supported by Unlock](https://docs.unlock-protocol.com/core-protocol/unlock/networks). When a user loads the checkout UI, we immediately check what other currencies they have in their wallets and see if any could be used to perform the purchase. We encode the Lock contract function with parameters as `callData` and pass it to the `swapAndCall` function on the `UnlockSwapPurchaser` contract. This then does the swap, and uses `callData` to call the function with parameters on the PublicLock contract.
-
-This allows us to make the currency swap work with any function on our PublicLock contract if it requires a payment.

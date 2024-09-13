@@ -1,4 +1,4 @@
-const { assert } = require('chai')
+const assert = require('assert')
 const { ethers } = require('hardhat')
 const { reverts, deployLock, purchaseKey } = require('../helpers')
 
@@ -25,17 +25,21 @@ describe('Lock / lendKey', () => {
     ] = await ethers.getSigners()
     lock = await deployLock()
     await lock.updateTransferFee(0) // disable the lend fee for this test
-    ;({ tokenId } = await purchaseKey(lock, keyOwner.address))
+    ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))
     ;({ tokenId: anotherTokenId } = await purchaseKey(
       lock,
-      anotherKeyOwner.address
+      await anotherKeyOwner.getAddress()
     ))
   })
 
   describe('failures', () => {
     it('should abort when there is no key to lend', async () => {
       await reverts(
-        lock.lendKey(keyOwner.address, random.address, 999),
+        lock.lendKey(
+          await keyOwner.getAddress(),
+          await random.getAddress(),
+          999
+        ),
         'UNAUTHORIZED'
       )
     })
@@ -45,14 +49,22 @@ describe('Lock / lendKey', () => {
       await reverts(
         lock
           .connect(keyOwner)
-          .lendKey(keyOwner.address, random.address, anotherTokenId),
+          .lendKey(
+            await keyOwner.getAddress(),
+            await random.getAddress(),
+            anotherTokenId
+          ),
         'UNAUTHORIZED'
       )
       // testing a mismatched _from address
       await reverts(
         lock
           .connect(anotherKeyOwner)
-          .lendKey(keyOwner.address, random.address, tokenId),
+          .lendKey(
+            await keyOwner.getAddress(),
+            await random.getAddress(),
+            tokenId
+          ),
         'UNAUTHORIZED'
       )
     })
@@ -63,17 +75,27 @@ describe('Lock / lendKey', () => {
       await reverts(
         lock
           .connect(keyOwner)
-          .lendKey(keyOwner.address, random.address, tokenId),
+          .lendKey(
+            await keyOwner.getAddress(),
+            await random.getAddress(),
+            tokenId
+          ),
         'KEY_NOT_VALID'
       )
     })
 
     it('should fail if the sender has been approved for that key', async () => {
-      await lock.connect(keyOwner).approve(accountApproved.address, tokenId)
+      await lock
+        .connect(keyOwner)
+        .approve(await accountApproved.getAddress(), tokenId)
       await reverts(
         lock
           .connect(accountApproved)
-          .lendKey(keyOwner.address, random.address, tokenId),
+          .lendKey(
+            await keyOwner.getAddress(),
+            await random.getAddress(),
+            tokenId
+          ),
         'UNAUTHORIZED'
       )
     })
@@ -81,15 +103,22 @@ describe('Lock / lendKey', () => {
     it('should fail if the sender has been approved for all owner keys', async () => {
       await lock
         .connect(keyOwner)
-        .setApprovalForAll(accountApproved.address, true)
+        .setApprovalForAll(await accountApproved.getAddress(), true)
       assert.equal(
-        await lock.isApprovedForAll(keyOwner.address, accountApproved.address),
+        await lock.isApprovedForAll(
+          await keyOwner.getAddress(),
+          await accountApproved.getAddress()
+        ),
         true
       )
       await reverts(
         lock
           .connect(accountApproved)
-          .lendKey(keyOwner.address, random.address, tokenId),
+          .lendKey(
+            await keyOwner.getAddress(),
+            await random.getAddress(),
+            tokenId
+          ),
         'UNAUTHORIZED'
       )
     })
@@ -100,25 +129,35 @@ describe('Lock / lendKey', () => {
       beforeEach(async () => {
         await lock
           .connect(keyOwner)
-          .lendKey(keyOwner.address, random.address, tokenId)
+          .lendKey(
+            await keyOwner.getAddress(),
+            await random.getAddress(),
+            tokenId
+          )
       })
 
       it('should lend ownership correctly', async () => {
-        assert.equal(await lock.ownerOf(tokenId), random.address)
+        assert.equal(await lock.ownerOf(tokenId), await random.getAddress())
       })
 
       it('update balances properly', async () => {
-        assert.equal(await lock.balanceOf(random.address), 1)
-        assert.equal(await lock.balanceOf(keyOwner.address), 0)
+        assert.equal(await lock.balanceOf(await random.getAddress()), 1)
+        assert.equal(await lock.balanceOf(await keyOwner.getAddress()), 0)
       })
 
       it('update key validity properly', async () => {
-        assert.equal(await lock.getHasValidKey(random.address), true)
-        assert.equal(await lock.getHasValidKey(keyOwner.address), false)
+        assert.equal(await lock.getHasValidKey(await random.getAddress()), true)
+        assert.equal(
+          await lock.getHasValidKey(await keyOwner.getAddress()),
+          false
+        )
       })
 
       it('should set previous owner as key manager', async () => {
-        assert.equal(await lock.keyManagerOf(tokenId), keyOwner.address)
+        assert.equal(
+          await lock.keyManagerOf(tokenId),
+          await keyOwner.getAddress()
+        )
       })
     })
 
@@ -126,14 +165,18 @@ describe('Lock / lendKey', () => {
       beforeEach(async () => {
         await lock
           .connect(keyOwner)
-          .setKeyManagerOf(tokenId, keyManager.address)
+          .setKeyManagerOf(tokenId, await keyManager.getAddress())
       })
 
       it('should prevent from lending a key', async () => {
         await reverts(
           lock
             .connect(keyOwner)
-            .lendKey(keyOwner.address, random.address, tokenId),
+            .lendKey(
+              await keyOwner.getAddress(),
+              await random.getAddress(),
+              tokenId
+            ),
           'UNAUTHORIZED'
         )
       })
@@ -142,28 +185,40 @@ describe('Lock / lendKey', () => {
 
   describe('when the sender is a key manager', async () => {
     beforeEach(async () => {
-      await lock.connect(keyOwner).setKeyManagerOf(tokenId, keyManager.address)
+      await lock
+        .connect(keyOwner)
+        .setKeyManagerOf(tokenId, await keyManager.getAddress())
       await lock
         .connect(keyManager)
-        .lendKey(keyOwner.address, random.address, tokenId)
+        .lendKey(
+          await keyOwner.getAddress(),
+          await random.getAddress(),
+          tokenId
+        )
     })
 
     it('should lend ownership correctly', async () => {
-      assert.equal(await lock.ownerOf(tokenId), random.address)
+      assert.equal(await lock.ownerOf(tokenId), await random.getAddress())
     })
 
     it('update balances properly', async () => {
-      assert.equal(await lock.balanceOf(random.address), 1)
-      assert.equal(await lock.balanceOf(keyOwner.address), 0)
+      assert.equal(await lock.balanceOf(await random.getAddress()), 1)
+      assert.equal(await lock.balanceOf(await keyOwner.getAddress()), 0)
     })
 
     it('update key validity properly', async () => {
-      assert.equal(await lock.getHasValidKey(random.address), true)
-      assert.equal(await lock.getHasValidKey(keyOwner.address), false)
+      assert.equal(await lock.getHasValidKey(await random.getAddress()), true)
+      assert.equal(
+        await lock.getHasValidKey(await keyOwner.getAddress()),
+        false
+      )
     })
 
     it('retains the correct key manager', async () => {
-      assert.equal(await lock.keyManagerOf(tokenId), keyManager.address)
+      assert.equal(
+        await lock.keyManagerOf(tokenId),
+        await keyManager.getAddress()
+      )
     })
   })
 
@@ -173,21 +228,34 @@ describe('Lock / lendKey', () => {
       const lockSingleKey = await deployLock({ name: 'SINGLE KEY' })
       const { tokenId: singleTokenId } = await purchaseKey(
         lockSingleKey,
-        keyOwner.address
+        await keyOwner.getAddress()
       )
 
       // confirm that the lock is sold out
-      await reverts(purchaseKey(lockSingleKey, random.address), 'LOCK_SOLD_OUT')
+      await reverts(
+        purchaseKey(lockSingleKey, await random.getAddress()),
+        'LOCK_SOLD_OUT'
+      )
 
       // check ownership
-      assert.equal(await lockSingleKey.ownerOf(singleTokenId), keyOwner.address)
+      assert.equal(
+        await lockSingleKey.ownerOf(singleTokenId),
+        await keyOwner.getAddress()
+      )
 
       // lend
       await lockSingleKey
         .connect(keyOwner)
-        .lendKey(keyOwner.address, random.address, singleTokenId)
+        .lendKey(
+          await keyOwner.getAddress(),
+          await random.getAddress(),
+          singleTokenId
+        )
 
-      assert.equal(await lockSingleKey.ownerOf(singleTokenId), random.address)
+      assert.equal(
+        await lockSingleKey.ownerOf(singleTokenId),
+        await random.getAddress()
+      )
     })
   })
 
@@ -195,27 +263,43 @@ describe('Lock / lendKey', () => {
     const lockFree = await deployLock({ name: 'FREE' })
     const { tokenId: freeTokenId } = await purchaseKey(
       lockFree,
-      keyOwner.address
+      await keyOwner.getAddress()
     )
 
     await lockFree
       .connect(keyOwner)
-      .lendKey(keyOwner.address, receiver.address, freeTokenId)
+      .lendKey(
+        await keyOwner.getAddress(),
+        await receiver.getAddress(),
+        freeTokenId
+      )
 
-    assert.equal(await lockFree.ownerOf(freeTokenId), receiver.address)
-    assert.equal(await lockFree.keyManagerOf(freeTokenId), keyOwner.address)
+    assert.equal(
+      await lockFree.ownerOf(freeTokenId),
+      await receiver.getAddress()
+    )
+    assert.equal(
+      await lockFree.keyManagerOf(freeTokenId),
+      await keyOwner.getAddress()
+    )
   })
 
   describe('approvals with lent key', () => {
     beforeEach(async () => {
       await lock
         .connect(keyOwner)
-        .lendKey(keyOwner.address, receiver.address, tokenId)
+        .lendKey(
+          await keyOwner.getAddress(),
+          await receiver.getAddress(),
+          tokenId
+        )
     })
 
     it('can not approve another account to lend the key', async () => {
       await reverts(
-        lock.connect(receiver).approve(accountApproved.address, tokenId),
+        lock
+          .connect(receiver)
+          .approve(await accountApproved.getAddress(), tokenId),
         'ONLY_KEY_MANAGER_OR_APPROVED'
       )
     })
@@ -223,11 +307,15 @@ describe('Lock / lendKey', () => {
     it('can not used an "approved for all" account to transfer the key', async () => {
       await lock
         .connect(receiver)
-        .setApprovalForAll(accountApproved.address, true)
+        .setApprovalForAll(await accountApproved.getAddress(), true)
       await reverts(
         lock
           .connect(receiver)
-          .transferFrom(receiver.address, random.address, tokenId),
+          .transferFrom(
+            await receiver.getAddress(),
+            await random.getAddress(),
+            tokenId
+          ),
         'ONLY_KEY_MANAGER_OR_APPROVED'
       )
     })
@@ -235,20 +323,31 @@ describe('Lock / lendKey', () => {
 
   describe('a lent key', () => {
     beforeEach(async () => {
-      ;({ tokenId } = await purchaseKey(lock, keyOwner.address))
+      ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))
       await lock
         .connect(keyOwner)
-        .lendKey(keyOwner.address, receiver.address, tokenId)
+        .lendKey(
+          await keyOwner.getAddress(),
+          await receiver.getAddress(),
+          tokenId
+        )
     })
     it('has correct ownership', async () => {
-      assert.equal(await lock.ownerOf(tokenId), receiver.address)
-      assert.equal(await lock.keyManagerOf(tokenId), keyOwner.address)
+      assert.equal(await lock.ownerOf(tokenId), await receiver.getAddress())
+      assert.equal(
+        await lock.keyManagerOf(tokenId),
+        await keyOwner.getAddress()
+      )
     })
     it('can not be lent by owner', async () => {
       await reverts(
         lock
           .connect(receiver)
-          .lendKey(receiver.address, random.address, tokenId),
+          .lendKey(
+            await receiver.getAddress(),
+            await random.getAddress(),
+            tokenId
+          ),
         'UNAUTHORIZED'
       )
     })
@@ -256,7 +355,11 @@ describe('Lock / lendKey', () => {
       await reverts(
         lock
           .connect(receiver)
-          .transferFrom(receiver.address, random.address, tokenId),
+          .transferFrom(
+            await receiver.getAddress(),
+            await random.getAddress(),
+            tokenId
+          ),
         'ONLY_KEY_MANAGER_OR_APPROVED'
       )
     })

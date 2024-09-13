@@ -1,5 +1,4 @@
 import { RequestHandler } from 'express'
-import { guild } from '@guildxyz/sdk'
 import * as z from 'zod'
 import normalizer from '../../utils/normalizer'
 import { getSettings } from '../../operations/lockSettingOperations'
@@ -10,6 +9,7 @@ import {
   submitAddressForScoring,
 } from '../../operations/gitcoinVerification'
 import logger from '../../logger'
+import guildClient from '../../config/guild'
 
 const guildHookQuery = z.object({
   network: z.preprocess((a) => parseInt(z.string().parse(a), 10), z.number()),
@@ -29,13 +29,16 @@ export const guildHook: RequestHandler = async (request, response) => {
   const { network, recipients, lockAddress } = await guildHookQuery.parseAsync(
     request.query
   )
+
   const settings = await getSettings({
     lockAddress,
     network,
   })
+
   if (!settings?.hookGuildId) {
     return response.status(401)
   }
+
   const hookGuildId = settings.hookGuildId
 
   const wallet = await getSignerFromOnKeyPurchaserHookOnLock({
@@ -51,16 +54,20 @@ export const guildHook: RequestHandler = async (request, response) => {
 
   const accesses = await Promise.all(
     recipients.map(async (recipient: string) => {
-      const roles = await guild.getUserAccess(hookGuildId, recipient)
-      const hasAtLeastOne = roles.some((role) => role.access)
+      const { user: userClient } = guildClient
+      const userMemberships = await userClient.getMemberships(recipient)
+      const hasAtLeastOne = userMemberships.some(
+        (role) => role.guildId === hookGuildId
+      )
       if (!hasAtLeastOne) {
         return ''
       }
       const message = recipient.toLowerCase()
-      const messageHash = ethers.utils.solidityKeccak256(['string'], [message])
-      return wallet.signMessage(ethers.utils.arrayify(messageHash))
+      const messageHash = ethers.solidityPackedKeccak256(['string'], [message])
+      return wallet.signMessage(ethers.getBytes(messageHash))
     })
   )
+
   return response.status(200).send({
     result: accesses,
   })
@@ -181,13 +188,11 @@ export const gitcoinHook: RequestHandler = async (request, response) => {
       // only sign recipients who have a score that meets the specified threshold in the lock settings
       if (recipient && recipient.score >= requiredScore) {
         const message = recipient.address.toLowerCase()
-        const messageHash = ethers.utils.solidityKeccak256(
+        const messageHash = ethers.solidityPackedKeccak256(
           ['string'],
           [message]
         )
-        const signature = await wallet.signMessage(
-          ethers.utils.arrayify(messageHash)
-        )
+        const signature = await wallet.signMessage(ethers.getBytes(messageHash))
         return signature
       } else {
         return ''

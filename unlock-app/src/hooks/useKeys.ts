@@ -5,8 +5,7 @@ import {
   SubgraphService,
 } from '@unlock-protocol/unlock-js'
 import dayjs from 'dayjs'
-import { ethers } from 'ethers'
-import { MAX_UINT } from '~/constants'
+import { ADDRESS_ZERO, MAX_UINT } from '~/constants'
 
 interface Options {
   lockAddress?: string
@@ -19,9 +18,9 @@ export type Key = NonNullable<ReturnType<typeof useKeys>['keys']>[0]
 
 export const useKeys = ({ networks, lockAddress, owner }: Options) => {
   const subgraph = new SubgraphService()
-  const { data: keys, isLoading: isKeysLoading } = useQuery(
-    ['keys', owner, networks, lockAddress],
-    async () => {
+  const { data: keys, isPending: isKeysLoading } = useQuery({
+    queryKey: ['keys', owner, networks, lockAddress],
+    queryFn: async () => {
       const keys = await subgraph.keys(
         {
           first: 500,
@@ -42,8 +41,7 @@ export const useKeys = ({ networks, lockAddress, owner }: Options) => {
             ? dayjs.unix(parseInt(item.expiration)).isBefore(dayjs())
             : false
         const isERC20 =
-          item.lock.tokenAddress &&
-          item.lock.tokenAddress !== ethers.constants.AddressZero
+          item.lock.tokenAddress && item.lock.tokenAddress !== ADDRESS_ZERO
 
         const isExtendable =
           item.lock.version >= 11 && item.expiration !== MAX_UINT
@@ -60,8 +58,8 @@ export const useKeys = ({ networks, lockAddress, owner }: Options) => {
         }
       })
       return items
-    }
-  )
+    },
+  })
 
   return {
     isKeysLoading,

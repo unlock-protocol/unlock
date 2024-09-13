@@ -1,14 +1,14 @@
 const { ethers } = require('hardhat')
 const { networks } = require('@unlock-protocol/networks')
-const { getNetwork, ADDRESS_ZERO } = require('@unlock-protocol/hardhat-helpers')
+const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const multisigABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/multisig2.json')
 const multisigOldABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/multisig.json')
 const SafeApiKit = require('@safe-global/api-kit').default
-const {
-  EthersAdapter,
-  encodeMultiSendData,
-} = require('@safe-global/protocol-kit')
 const Safe = require('@safe-global/protocol-kit').default
+const { decodeMulti, encodeMulti } = require('ethers-multisend')
+
+// sentry
+const { log } = require('./logger')
 
 // custom services URL for network not supported by Safe
 const safeServiceURLs = {
@@ -43,7 +43,7 @@ const getExpectedSigners = async (chainId) => {
 }
 
 const logError = (name, chainId, multisig, msg) =>
-  console.log(`[${name} (${chainId})]: ${multisig} ${msg}`)
+  log(`[Multisig]: on ${name} (${chainId}) ${multisig}  ${msg}`, 'error')
 
 const getSafeService = async (chainId) => {
   const txServiceUrl = safeServiceURLs[chainId] || null
@@ -207,11 +207,9 @@ const parseSafeMulticall = async ({ calls, chainId, options }) => {
   )
 
   // init safe lib with correct provider
-  const { provider } = await getProvider(chainId)
-  const { multisig } = await getNetwork(chainId)
-  const ethAdapter = new EthersAdapter({ ethers, signerOrProvider: provider })
-  const safe = await Safe.create({
-    ethAdapter,
+  const { multisig, provider } = await getNetwork(chainId)
+  const safe = await Safe.init({
+    provider,
     safeAddress: multisig,
   })
 
@@ -220,16 +218,38 @@ const parseSafeMulticall = async ({ calls, chainId, options }) => {
     (total, { value }) => (value || 0n) + total,
     0n
   )
-  const { data } = await safe.createTransaction({
+  const onlyCalls = totalValue === 0n
+  const {
+    data: { data, to, operation, value },
+  } = await safe.createTransaction({
     transactions,
     options,
-    callsOnly: totalValue === 0,
+    onlyCalls,
   })
 
+  let calldata
+  if (onlyCalls) {
+    const calls = await decodeMulti(data)
+    // remove delegatecall are they are not supported by `MultiSendCallOnly`
+    ;({ data: calldata } = await encodeMulti(
+      calls.map((call) => ({ ...call, operation: 0 })),
+      to
+    ))
+  } else {
+    calldata = data
+  }
+
   // parse calls correcly for our multisig/dao helpers
-  data.calldata = data.data
-  data.contractAddress = data.to
-  return data
+  data.calldata = calldata
+  data.contractAddress = to
+  return {
+    data: calldata,
+    contractAddress: to,
+    calldata,
+    to,
+    operation,
+    value,
+  }
 }
 
 module.exports = {

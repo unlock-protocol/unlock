@@ -1,4 +1,4 @@
-const { assert } = require('chai')
+const assert = require('assert')
 const { ethers } = require('hardhat')
 const {
   ADDRESS_ZERO,
@@ -11,11 +11,10 @@ describe('Lock / interface', () => {
   let lockInterface
 
   before(async () => {
-    ;({ interface: lockContract } = await ethers.getContractFactory(
-      'PublicLock'
-    ))
+    ;({ interface: lockContract } =
+      await ethers.getContractFactory('PublicLock'))
     ;({ interface: lockInterface } = await ethers.getContractAt(
-      'IPublicLock',
+      'contracts/interfaces/IPublicLock.sol:IPublicLock',
       ADDRESS_ZERO
     ))
   })

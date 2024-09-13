@@ -84,7 +84,9 @@ export const PromoCodeHook = ({
     return
   }
 
-  const setPromoCodeMutation = useMutation(savePromoCode)
+  const setPromoCodeMutation = useMutation({
+    mutationFn: savePromoCode,
+  })
 
   const onSubmit = async ({ promo, ...hooks }: any) => {
     await setEventsHooksMutation.mutateAsync(hooks)
@@ -148,8 +150,8 @@ export const PromoCodeHook = ({
                 disabled={!isValid}
                 size="small"
                 loading={
-                  setPromoCodeMutation.isLoading ||
-                  setEventsHooksMutation.isLoading
+                  setPromoCodeMutation.isPending ||
+                  setEventsHooksMutation.isPending
                 }
               >
                 Add
@@ -228,9 +230,9 @@ export const PromoCode = ({
   return (
     <tr>
       <td className="pl-2">{code}</td>
-      <td className="pl-2">{promoCodeDetails.discount / 100}%</td>
+      <td className="pl-2">{Number(promoCodeDetails.discount) / 100}%</td>
       <td className="pl-2">
-        {promoCodeDetails.count}/{promoCodeDetails.cap}
+        {Number(promoCodeDetails.count)}/{Number(promoCodeDetails.cap)}
       </td>
       <td className="pl-2 flex flex-col items-center">
         {loading && <LoadingIcon size={24} />}

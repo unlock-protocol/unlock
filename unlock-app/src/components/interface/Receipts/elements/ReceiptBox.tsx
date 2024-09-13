@@ -82,7 +82,7 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
     network,
   })
 
-  const { isLoading: isUpdatingReceipt } = useUpdateReceipt({
+  const { isPending: isUpdatingReceipt } = useUpdateReceipt({
     lockAddress,
     hash,
     network,
@@ -90,18 +90,16 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
 
   const { purchaser, supplier, receipt: receiptDetails } = receipt ?? {}
 
-  const { data: tokenSymbol } = useQuery(
-    ['getContractTokenSymbol', lockAddress, network],
-    async () => {
+  const { data: tokenSymbol } = useQuery({
+    queryKey: ['getContractTokenSymbol', lockAddress, network],
+    queryFn: async () => {
       return await web3Service.getTokenSymbol(
         receiptDetails?.tokenAddress,
         network
       )
     },
-    {
-      enabled: receiptDetails?.tokenAddress?.length > 0,
-    }
-  )
+    enabled: receiptDetails?.tokenAddress?.length > 0,
+  })
 
   // enable edit of purchaser only if purchaser match the account
   const isPurchaser =
@@ -229,8 +227,8 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
                 ? addressMinify(receiptDetails?.recipient)
                 : ''
               : receiptDetails?.payer?.length > 0
-              ? addressMinify(receiptDetails?.payer)
-              : ''}
+                ? addressMinify(receiptDetails?.payer)
+                : ''}
           </span>
           <span className="text-base">{purchaser?.fullname}</span>
           <Address {...purchaser} />

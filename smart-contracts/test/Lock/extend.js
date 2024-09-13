@@ -1,6 +1,7 @@
 const { reverts } = require('../helpers')
-const { assert } = require('chai')
+const assert = require('assert')
 const { ethers } = require('hardhat')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 const {
   deployERC20,
@@ -12,8 +13,8 @@ const {
 
 const scenarios = [false, true]
 let testToken
-const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
-const someTokens = ethers.utils.parseUnits('10', 'ether')
+const keyPrice = ethers.parseUnits('0.01', 'ether')
+const someTokens = ethers.parseUnits('10', 'ether')
 
 describe('Lock / extend keys', () => {
   scenarios.forEach((isErc20) => {
@@ -28,11 +29,11 @@ describe('Lock / extend keys', () => {
       beforeEach(async () => {
         ;[lockOwner, keyOwner, nonExpiringKeyOwner, anotherAccount] =
           await ethers.getSigners()
-        testToken = await deployERC20(lockOwner.address, true)
-        tokenAddress = isErc20 ? testToken.address : ADDRESS_ZERO
+        testToken = await deployERC20(await lockOwner.getAddress(), true)
+        tokenAddress = isErc20 ? await testToken.getAddress() : ADDRESS_ZERO
 
         // Mint some tokens for testing
-        await testToken.mint(keyOwner.address, someTokens)
+        await testToken.mint(await keyOwner.getAddress(), someTokens)
 
         lock = await deployLock({ tokenAddress, isEthers: true })
         nonExpiringLock = await deployLock({
@@ -45,17 +46,23 @@ describe('Lock / extend keys', () => {
       describe('common lock', () => {
         beforeEach(async () => {
           // Approve spending
-          await testToken.connect(keyOwner).approve(lock.address, someTokens)
+          await testToken
+            .connect(keyOwner)
+            .approve(await lock.getAddress(), someTokens)
 
           // purchase a key
-          ;({ tokenId } = await purchaseKey(lock, keyOwner.address, isErc20))
+          ;({ tokenId } = await purchaseKey(
+            lock,
+            await keyOwner.getAddress(),
+            isErc20
+          ))
         })
 
         it('prevent extend a non-existing key', async () => {
           await reverts(
             lock
               .connect(anotherAccount)
-              .extend(isErc20 ? keyPrice : 0, 1245, ADDRESS_ZERO, [], {
+              .extend(isErc20 ? keyPrice : 0, 1245, ADDRESS_ZERO, '0x', {
                 value: isErc20 ? 0 : keyPrice,
               }),
             'NO_SUCH_KEY'
@@ -63,11 +70,11 @@ describe('Lock / extend keys', () => {
         })
 
         it('reverts with insufficient value', async () => {
-          const belowPrice = ethers.utils.parseUnits('0.005', 'ether')
+          const belowPrice = ethers.parseUnits('0.005', 'ether')
           await reverts(
             lock
               .connect(anotherAccount)
-              .extend(isErc20 ? belowPrice : 0, tokenId, ADDRESS_ZERO, [], {
+              .extend(isErc20 ? belowPrice : 0, tokenId, ADDRESS_ZERO, '0x', {
                 value: isErc20 ? 0 : belowPrice,
               }),
             isErc20 ? 'INSUFFICIENT_ERC20_VALUE' : 'INSUFFICIENT_VALUE'
@@ -83,11 +90,11 @@ describe('Lock / extend keys', () => {
             // extend
             const tx = await lock
               .connect(keyOwner)
-              .extend(isErc20 ? keyPrice : 0, tokenId, ADDRESS_ZERO, [], {
+              .extend(isErc20 ? keyPrice : 0, tokenId, ADDRESS_ZERO, '0x', {
                 value: isErc20 ? 0 : keyPrice,
               })
-            const { events } = await tx.wait()
-            ;({ args } = events.find((v) => v.event === 'KeyExtended'))
+            const receipt = await tx.wait()
+            ;({ args } = await getEvent(receipt, 'KeyExtended'))
           })
 
           it('key should stay valid', async () => {
@@ -97,16 +104,13 @@ describe('Lock / extend keys', () => {
           it('duration has been extended accordingly', async () => {
             const expirationDuration = await lock.expirationDuration()
             const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
-            assert.equal(
-              tsBefore.add(expirationDuration).toString(),
-              tsAfter.toString()
-            )
+            assert.equal(tsBefore + expirationDuration, tsAfter)
           })
 
           it('should emit a KeyExtended event', async () => {
             const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
-            assert.equal(args.tokenId.toString(), tokenId.toString())
-            assert.equal(args.newTimestamp.toString(), tsAfter.toString())
+            assert.equal(args.tokenId, tokenId)
+            assert.equal(args.newTimestamp, tsAfter)
           })
         })
 
@@ -119,7 +123,7 @@ describe('Lock / extend keys', () => {
             // extend
             await lock
               .connect(keyOwner)
-              .extend(isErc20 ? keyPrice : 0, tokenId, ADDRESS_ZERO, [], {
+              .extend(isErc20 ? keyPrice : 0, tokenId, ADDRESS_ZERO, '0x', {
                 value: isErc20 ? 0 : keyPrice,
               })
           })
@@ -134,8 +138,8 @@ describe('Lock / extend keys', () => {
             const blockNumber = await ethers.provider.getBlockNumber()
             const latestBlock = await ethers.provider.getBlock(blockNumber)
             assert.equal(
-              expirationDuration.add(latestBlock.timestamp).toString(),
-              tsAfter.toString()
+              expirationDuration + BigInt(latestBlock.timestamp),
+              tsAfter
             )
           })
         })
@@ -144,17 +148,20 @@ describe('Lock / extend keys', () => {
       describe('non-expiring lock', () => {
         beforeEach(async () => {
           // mint some tokens
-          await testToken.mint(nonExpiringKeyOwner.address, someTokens)
+          await testToken.mint(
+            await nonExpiringKeyOwner.getAddress(),
+            someTokens
+          )
 
           // approve ERC20 spending
           await testToken
             .connect(nonExpiringKeyOwner)
-            .approve(nonExpiringLock.address, someTokens)
+            .approve(await nonExpiringLock.getAddress(), someTokens)
 
           // purchase a key for non-expiring
           ;({ tokenId } = await purchaseKey(
             nonExpiringLock,
-            nonExpiringKeyOwner.address,
+            await nonExpiringKeyOwner.getAddress(),
             isErc20
           ))
         })
@@ -163,7 +170,7 @@ describe('Lock / extend keys', () => {
           await reverts(
             nonExpiringLock
               .connect(nonExpiringKeyOwner)
-              .extend(isErc20 ? keyPrice : 0, tokenId, ADDRESS_ZERO, [], {
+              .extend(isErc20 ? keyPrice : 0, tokenId, ADDRESS_ZERO, '0x', {
                 value: isErc20 ? 0 : keyPrice,
               }),
             'CANT_EXTEND_NON_EXPIRING_KEY'
@@ -178,7 +185,7 @@ describe('Lock / extend keys', () => {
           // extend
           await nonExpiringLock
             .connect(nonExpiringKeyOwner)
-            .extend(isErc20 ? keyPrice : 0, tokenId, ADDRESS_ZERO, [], {
+            .extend(isErc20 ? keyPrice : 0, tokenId, ADDRESS_ZERO, '0x', {
               value: isErc20 ? 0 : keyPrice,
             })
 

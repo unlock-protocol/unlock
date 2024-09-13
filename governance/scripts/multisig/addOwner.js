@@ -1,11 +1,10 @@
 const { ethers } = require('hardhat')
 const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const Safe = require('@safe-global/protocol-kit').default
-const { EthersAdapter } = require('@safe-global/protocol-kit')
 const SafeApiKit = require('@safe-global/api-kit').default
 
 async function main({ newOwner, safeAddress, threshold } = {}) {
-  const { id, multisig, name } = await getNetwork()
+  const { id, multisig, name, provider } = await getNetwork()
   let [signer] = await ethers.getSigners()
 
   if (!safeAddress) {
@@ -23,12 +22,16 @@ async function main({ newOwner, safeAddress, threshold } = {}) {
   `)
 
   // Use Safe v1+ with SDK
-  const ethAdapter = new EthersAdapter({
-    ethers,
-    signerOrProvider: signer,
+  if (!process.env.DEPLOYER_PRIVATE_KEY) {
+    throw new Error(
+      `The DEPLOYER_PRIVATE_KEY needs to be exported to shell to add a new owner`
+    )
+  }
+  const safeSdk = await Safe.init({
+    provider,
+    signer: process.env.DEPLOYER_PRIVATE_KEY,
+    safeAddress,
   })
-
-  const safeSdk = await Safe.create({ ethAdapter, safeAddress })
   const safeService = new SafeApiKit({
     chainId: id,
   })
@@ -48,7 +51,7 @@ async function main({ newOwner, safeAddress, threshold } = {}) {
   console.log(`submitting tx with  hash : ${safeTransactionHash} ...`)
 
   // get signature
-  const senderSignature = await safeSdk.signTransactionHash(safeTransactionHash)
+  const senderSignature = await safeSdk.signHash(safeTransactionHash)
 
   // Propose the transaction
   const txParams = {
@@ -60,9 +63,8 @@ async function main({ newOwner, safeAddress, threshold } = {}) {
   }
 
   await safeService.proposeTransaction(txParams)
-  const { nonce: actualNonce } = await safeService.getTransaction(
-    safeTransactionHash
-  )
+  const { nonce: actualNonce } =
+    await safeService.getTransaction(safeTransactionHash)
   console.log(`tx submitted - nonce: [${actualNonce}].`)
 }
 

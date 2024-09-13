@@ -1,6 +1,7 @@
-const { assert } = require('chai')
+const assert = require('assert')
 const { ethers } = require('hardhat')
 const metadata = require('../fixtures/metadata')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 const { deployLock, reverts } = require('../helpers')
 
@@ -28,8 +29,8 @@ describe('Lock / setLockMetadata', () => {
   })
 
   it('emit an event correctly', async () => {
-    const { events } = await tx.wait()
-    const { args } = events.find(({ event }) => event === 'LockMetadata')
+    const receipt = await tx.wait()
+    const { args } = await getEvent(receipt, 'LockMetadata')
     assert.equal(args.name, metadata.name)
     assert.equal(args.symbol, metadata.symbol)
     assert.equal(args.baseTokenURI, metadata.baseTokenURI)

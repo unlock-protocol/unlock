@@ -14,18 +14,19 @@ import {
   RoleGranted,
   LockManagerRemoved,
   LockMetadata,
+  RoleRevoked,
 } from '../generated/templates/PublicLock/PublicLock'
-import { lockAddress, lockAddressV8 } from './constants'
-import { LOCK_MANAGER } from '../src/helpers'
+import { lockAddress, lockAddressV9 } from './constants'
+import { KEY_GRANTER, LOCK_MANAGER } from '../src/helpers'
 import { PricingChanged } from '../generated/templates/PublicLock/PublicLock'
 
-export function mockDataSourceV8(): void {
-  const v8context = new DataSourceContext()
-  v8context.set(
+export function mockDataSourceV9(): void {
+  const V9context = new DataSourceContext()
+  V9context.set(
     'lockAddress',
-    Value.fromAddress(Address.fromString(lockAddressV8))
+    Value.fromAddress(Address.fromString(lockAddressV9))
   )
-  dataSourceMock.setReturnValues(lockAddressV8, 'rinkeby', v8context)
+  dataSourceMock.setReturnValues(lockAddressV9, 'rinkeby', V9context)
 }
 
 export function createNewLockEvent(
@@ -185,4 +186,58 @@ export function createLockMetadata(
   )
 
   return LockMetadataEvent
+}
+
+export function createRoleRevokedKeyGranterRemovedEvent(
+  keyGranter: Address
+): RoleRevoked {
+  const newRoleRevokedEvent = changetype<RoleRevoked>(newMockEvent())
+
+  // set existing lock address
+  newRoleRevokedEvent.address = Address.fromString(lockAddress)
+
+  newRoleRevokedEvent.parameters = []
+  newRoleRevokedEvent.parameters.push(
+    new ethereum.EventParam(
+      'role',
+      ethereum.Value.fromBytes(Bytes.fromHexString(KEY_GRANTER))
+    )
+  )
+
+  newRoleRevokedEvent.parameters.push(
+    new ethereum.EventParam('account', ethereum.Value.fromAddress(keyGranter))
+  )
+
+  newRoleRevokedEvent.parameters.push(
+    new ethereum.EventParam('sender', ethereum.Value.fromString(lockAddress))
+  )
+
+  return newRoleRevokedEvent
+}
+
+export function createRoleRevokedLockManagerRemovedEvent(
+  lockManager: Address
+): RoleRevoked {
+  const newLockManagerRevoked = changetype<RoleRevoked>(newMockEvent())
+
+  // set existing lock address
+  newLockManagerRevoked.address = Address.fromString(lockAddress)
+
+  newLockManagerRevoked.parameters = []
+  newLockManagerRevoked.parameters.push(
+    new ethereum.EventParam(
+      'role',
+      ethereum.Value.fromBytes(Bytes.fromHexString(LOCK_MANAGER))
+    )
+  )
+
+  newLockManagerRevoked.parameters.push(
+    new ethereum.EventParam('account', ethereum.Value.fromAddress(lockManager))
+  )
+
+  newLockManagerRevoked.parameters.push(
+    new ethereum.EventParam('sender', ethereum.Value.fromString(lockAddress))
+  )
+
+  return newLockManagerRevoked
 }

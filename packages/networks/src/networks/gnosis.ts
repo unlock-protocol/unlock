@@ -18,7 +18,6 @@ export const gnosis: NetworkConfig = {
       transaction: (hash) => `https://gnosisscan.io/tx/${hash}`,
     },
   },
-  faucet: 'https://gnosisfaucet.com/',
   featured: true,
   governanceBridge: {
     connext: '0x5bB83e95f63217CDa6aE3D181BA580Ef377D2109',
@@ -72,6 +71,7 @@ export const gnosis: NetworkConfig = {
   id: 100,
   isTestNetwork: false,
   keyManagerAddress: '0xBa81C9379AC1221BF8C100800dD0B0b0b048ba14',
+  kickbackAddress: '0x247a38358c4d99A29091C1cEadfb8a54B783D438',
   maxFreeClaimCost: 100,
   multisig: '0xfAC611a5b5a578628C28F77cEBDDB8C6159Ae79D',
   name: 'Gnosis Chain',
@@ -89,13 +89,12 @@ export const gnosis: NetworkConfig = {
     },
   ],
   provider: 'https://rpc.unlock-protocol.com/100',
-  publicLockVersionToDeploy: 13,
+  publicLockVersionToDeploy: 14,
   publicProvider: 'https://rpc.gnosischain.com',
   startBlock: 19338700,
   // This is used in llama pricing API so can't rename.
   subgraph: {
-    endpoint:
-      'https://api.studio.thegraph.com/query/65299/unlock-protocol-gnosis/version/latest',
+    endpoint: 'https://subgraph.unlock-protocol.com/100',
     networkName: 'gnosis',
     studioName: 'unlock-protocol-gnosis',
   },

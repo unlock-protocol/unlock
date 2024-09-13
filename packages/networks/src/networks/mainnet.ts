@@ -5,8 +5,7 @@ export const mainnet: NetworkConfig = {
     url: (address: string) => `https://blockscan.com/address/${address}`,
   },
   chain: 'ethereum',
-  description:
-    'The original and most secure EVM network. Gas fees are expensive on this network.',
+  description: 'The original and most secure EVM network. ',
   explorer: {
     name: 'Etherscan',
     urls: {
@@ -67,15 +66,21 @@ export const mainnet: NetworkConfig = {
     },
   ],
   provider: 'https://rpc.unlock-protocol.com/1',
-  publicLockVersionToDeploy: 13,
+  publicLockVersionToDeploy: 14,
   publicProvider: 'https://cloudflare-eth.com/v1/mainnet',
   startBlock: 16989000,
   subgraph: {
-    endpoint:
-      'https://api.studio.thegraph.com/query/65299/unlock-protocol-mainnet/version/latest',
+    endpoint: 'https://subgraph.unlock-protocol.com/1',
     studioName: 'unlock-protocol-mainnet',
   },
   tokens: [
+    {
+      address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+      decimals: 6,
+      featured: true,
+      name: 'USD Coin',
+      symbol: 'USDC',
+    },
     {
       address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
       decimals: 18,
@@ -89,13 +94,6 @@ export const mainnet: NetworkConfig = {
       featured: true,
       name: 'Dai Stablecoin',
       symbol: 'DAI',
-    },
-    {
-      address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-      decimals: 6,
-      featured: true,
-      name: 'USD Coin',
-      symbol: 'USDC',
     },
     {
       address: '0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0',

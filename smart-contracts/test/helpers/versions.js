@@ -17,8 +17,8 @@ function getUnlockVersionNumbers() {
     Array(LATEST_UNLOCK_VERSION)
       .fill(0)
       .map((_, i) => i)
-      // skip the contracts before v6
-      .filter((v) => v > 5)
+      // skip the contracts before v11
+      .filter((v) => v > 11)
   )
 }
 
@@ -64,7 +64,6 @@ async function deployUpgreadableContract(
 ) {
   // deploy implementation
   const impl = await Factory.deploy()
-  await impl.deployTransaction.wait()
 
   // encode initializer data
   const fragment = impl.interface.getFunction(initializer)
@@ -76,7 +75,6 @@ async function deployUpgreadableContract(
     proxyAdminBytecode
   )
   const proxyAdmin = await ProxyAdmin.deploy()
-  await proxyAdmin.deployTransaction.wait()
 
   // deploy proxy
   const TransparentUpgradeableProxy = await ethers.getContractFactory(
@@ -84,17 +82,13 @@ async function deployUpgreadableContract(
     proxyBytecode
   )
   const proxy = await TransparentUpgradeableProxy.deploy(
-    impl.address,
-    proxyAdmin.address,
+    await impl.getAddress(),
+    await proxyAdmin.getAddress(),
     data
   )
-  await proxy.deployTransaction.wait()
 
   // wait for proxy deployment
-  const contract = await ethers.getContractAt(
-    Factory.interface.format(ethers.utils.FormatTypes.full),
-    proxy.address
-  )
+  const contract = await Factory.attach(await proxy.getAddress())
   return {
     proxyAdmin,
     contract,
@@ -108,7 +102,6 @@ async function upgradeUpgreadableContract(
 ) {
   // deploy implementation
   const impl = await Factory.deploy()
-  await impl.deployTransaction.wait()
 
   // get proxyAdmin
   const proxyAdmin = await ethers.getContractAt(
@@ -117,12 +110,9 @@ async function upgradeUpgreadableContract(
   )
 
   // do the upgrade
-  await proxyAdmin.upgrade(proxyAddress, impl.address)
+  await proxyAdmin.upgrade(proxyAddress, await impl.getAddress())
 
-  const upgraded = await ethers.getContractAt(
-    Factory.interface.format(ethers.utils.FormatTypes.full),
-    proxyAddress
-  )
+  const upgraded = await Factory.attach(proxyAddress)
   return upgraded
 }
 

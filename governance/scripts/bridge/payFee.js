@@ -2,46 +2,35 @@
  * Pay fees to the bridge for all calls in a cross-call DAO tx after execution
  *
  * Usage:
+ * export PROPOSAL_EXECUTION_TX=<0x ...>
  * yarn hardhat run scripts/bridge/bump.js --network mainnet
  *
- * TODO:
- * - make cli task to pass txIx as args
  *
  */
 const { ethers } = require('hardhat')
 const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const submitTx = require('../multisig/submitTx')
-const { getXCalledEvents } = require('../../helpers/bridge')
-
-const fetchRelayerFee = async ({ originDomain, destinationDomain }) => {
-  const res = await fetch(
-    'https://sdk-server.mainnet.connext.ninja/estimateRelayerFee',
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        originDomain: originDomain.toString(),
-        destinationDomain: destinationDomain.toString(),
-      }),
-    }
-  )
-  const { hex } = await res.json()
-  return BigInt(hex)
-}
+const { getXCalledEventsFromTx } = require('../../helpers/bridge')
+const { fetchRelayerFee } = require('../../helpers/crossChain')
 
 async function main({
-  // TODO: pass this hash via cli
-  txId = '0x12d380bb7f995930872122033988524727a9f847687eede0b4e1fb2dcb8fce68',
+  // if of the tx from the DAO proposal execution
+  txId = process.env.PROPOSAL_EXECUTION_TX,
   // default to DAO executor multisig
   multisig = '0xEFF26E4Cf0a0e71B3c406A763dacB8875469cbb2',
 } = {}) {
+  if (!txId) {
+    throw Error(
+      `Missing txId. Please export PROPOSAL_EXECUTION_TX in your shell`
+    )
+  }
   const {
     governanceBridge: { connext: bridgeAddress },
   } = await getNetwork()
 
   console.log(`Using multisig: ${multisig}`)
 
-  const xCalls = await getXCalledEvents(txId)
+  const xCalls = await getXCalledEventsFromTx(txId)
   const transferIds = xCalls.map(({ transferId }) => transferId)
 
   console.log(`Transfers to bump: ${transferIds.length}
@@ -75,7 +64,7 @@ ${transferIds.map((transferId) => `- ${transferId}`).join('\n')}`)
     functionArgs: [transferId],
     calldata: interface.encodeFunctionData('bumpTransfer', [transferId]),
     contractAddress: bridgeAddress,
-    value: fees[i],
+    value: fees[i].toString(),
   }))
 
   // submit the calls to the multisig

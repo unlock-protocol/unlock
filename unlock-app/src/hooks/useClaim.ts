@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 
 interface ClaimOption {
   data?: string
@@ -13,12 +13,19 @@ interface Options {
   lockAddress: string
   network: number
 }
+
 export const useClaim = ({ lockAddress, network }: Options) => {
-  return useMutation(
-    ['claim', network, lockAddress],
-    async ({ data, recipient, captcha, email, metadata }: ClaimOption) => {
+  return useMutation({
+    mutationKey: ['claim', network, lockAddress],
+    mutationFn: async ({
+      data,
+      recipient,
+      captcha,
+      email,
+      metadata,
+    }: ClaimOption) => {
       try {
-        const response = await storage.claim(network, lockAddress, captcha, {
+        const response = await locksmith.claim(network, lockAddress, captcha, {
           recipient,
           data,
           email,
@@ -29,14 +36,12 @@ export const useClaim = ({ lockAddress, network }: Options) => {
           owner: response.data.owner,
         }
       } catch (error: any) {
-        if (error.response.data?.message) {
+        if (error.response?.data?.message) {
           return error.response.data
         }
         throw error
       }
     },
-    {
-      retry: 2,
-    }
-  )
+    retry: 2,
+  })
 }

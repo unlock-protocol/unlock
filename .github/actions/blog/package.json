@@ -1,0 +1,16 @@
+{
+  "name": "blog-importer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "rss_feed.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "feedparser-promised": "2.0.1",
+    "fs-extra": "11.2.0",
+    "node-fetch": "3.3.2"
+  }
+}

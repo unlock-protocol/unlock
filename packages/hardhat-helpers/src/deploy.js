@@ -1,10 +1,7 @@
-import zkSync from './zkSync'
 import { isLocalhost } from './localhost'
-
-export const deployContract = async (
-  contractNameOrFullyQualifiedNameOrEthersFactory,
-  deployArgs = [],
-  deployOptions = { wait: 1 }
+import zkSync from './zkSync'
+const getContractFactory = async (
+  contractNameOrFullyQualifiedNameOrEthersFactory
 ) => {
   let Factory
   if (typeof contractNameOrFullyQualifiedNameOrEthersFactory === 'string') {
@@ -15,12 +12,21 @@ export const deployContract = async (
   } else {
     Factory = contractNameOrFullyQualifiedNameOrEthersFactory
   }
+  return Factory
+}
+
+export const deployContract = async (
+  contractNameOrFullyQualifiedNameOrEthersFactory,
+  deployArgs = [],
+  deployOptions = { wait: 1 }
+) => {
+  const Factory = await getContractFactory(
+    contractNameOrFullyQualifiedNameOrEthersFactory
+  )
   const contract = await Factory.deploy(...deployArgs)
   await contract.waitForDeployment(deployOptions.wait)
   const { hash } = await contract.deploymentTransaction()
   const address = await contract.getAddress()
-  console.log(address)
-
   console.log(` > contract deployed at : ${address} (tx: ${hash})`)
 
   if (!(await isLocalhost())) {
@@ -45,13 +51,13 @@ export const deployContract = async (
 }
 
 export const deployUpgradeableContract = async (
-  contractNameOrFullyQualifiedName,
+  contractNameOrFullyQualifiedNameOrEthersFactory,
   deployArgs = [],
   deployOptions = {}
 ) => {
   const { ethers, upgrades } = require('hardhat')
-  const Factory = await ethers.getContractFactory(
-    contractNameOrFullyQualifiedName
+  const Factory = await getContractFactory(
+    contractNameOrFullyQualifiedNameOrEthersFactory
   )
   const contract = await upgrades.deployProxy(
     Factory,
@@ -63,13 +69,13 @@ export const deployUpgradeableContract = async (
 
   // get addresses
   const address = await contract.getAddress()
-  const implementation = await upgrades.erc1967.getImplementationAddress(
-    address
-  )
+  const implementation =
+    await upgrades.erc1967.getImplementationAddress(address)
 
   if (!(await isLocalhost())) {
     await verify({ address, deployArgs })
   }
+  console.log(` > contract deployed w proxy at : ${address} (tx: ${hash})`)
 
   return {
     contract,

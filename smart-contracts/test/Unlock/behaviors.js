@@ -1,8 +1,9 @@
-const { assert } = require('chai')
+const assert = require('assert')
 const { ethers } = require('hardhat')
 
 const {
   ADDRESS_ZERO,
+  getEvent,
   createLockCalldata,
 } = require('@unlock-protocol/hardhat-helpers')
 
@@ -23,19 +24,18 @@ describe('Unlock / UnlockProxy', () => {
       'contracts/PublicLock.sol:PublicLock'
     )
     const template = await PublicLock.deploy()
-    await template.deployed()
 
     await unlock.addLockTemplate(
-      template.address,
-      (await unlock.publicLockLatestVersion()) + 1
+      await template.getAddress(),
+      (await unlock.publicLockLatestVersion()) + 1n
     )
-    await unlock.setLockTemplate(template.address)
+    await unlock.setLockTemplate(await template.getAddress())
   })
 
   describe('initialization', () => {
     it('should have an owner', async () => {
       const owner = await unlock.owner()
-      assert.equal(owner, unlockOwner.address)
+      assert.equal(owner, await unlockOwner.getAddress())
     })
 
     it('should have initialized grossNetworkProduct', async () => {
@@ -54,17 +54,17 @@ describe('Unlock / UnlockProxy', () => {
       const args = [
         60 * 60 * 24 * 30, // expirationDuration: 30 days
         ADDRESS_ZERO,
-        ethers.utils.parseUnits('1', 'ether').toString(), // keyPrice: in wei
+        ethers.parseUnits('1', 'ether'), // keyPrice: in wei
         100, // maxNumberOfKeys
         'New Lock',
       ]
       const calldata = await createLockCalldata({
         args,
-        from: unlockOwner.address,
+        from: await unlockOwner.getAddress(),
       })
       const tx = await unlock.createUpgradeableLock(calldata)
-      const { events } = await tx.wait()
-      ;({ args: newLockArgs } = events.find((v) => v.event === 'NewLock'))
+      const receipt = await tx.wait()
+      ;({ args: newLockArgs } = await getEvent(receipt, 'NewLock'))
     })
 
     it('should have kept track of the Lock inside Unlock with the right balances', async () => {
@@ -73,15 +73,15 @@ describe('Unlock / UnlockProxy', () => {
         newLockArgs.newLockAddress
       )
       // This is a bit of a dumb test because when the lock is missing, the value are 0 anyway...
-      let results = await unlock.locks(publicLock.address)
+      let results = await unlock.locks(await publicLock.getAddress())
       assert.equal(results.totalSales, 0)
       assert.equal(results.yieldedDiscountTokens, 0)
     })
 
-    it('should trigger the NewLock event', () => {
+    it('should trigger the NewLock event', async () => {
       assert.equal(
-        ethers.utils.getAddress(newLockArgs.lockOwner),
-        ethers.utils.getAddress(unlockOwner.address)
+        ethers.getAddress(newLockArgs.lockOwner),
+        ethers.getAddress(await unlockOwner.getAddress())
       )
       assert(newLockArgs.newLockAddress)
     })
@@ -93,8 +93,8 @@ describe('Unlock / UnlockProxy', () => {
       )
       let unlockProtocol = await publicLock.unlockProtocol()
       assert.equal(
-        ethers.utils.getAddress(unlockProtocol),
-        ethers.utils.getAddress(unlock.address)
+        ethers.getAddress(unlockProtocol),
+        ethers.getAddress(await unlock.getAddress())
       )
     })
   })

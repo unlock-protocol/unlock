@@ -86,8 +86,6 @@ UDT rewards are granted upon each key purchase transaction. The rewards are base
 - The gas consumed by the key purchase transaction.
 - The actual value added to the protocol’s Gross Network Product (total value exchanged in the network).
 
-To sustain the work creating and maintaining Unlock Protocol, each reward is split between the creator (80%) and Unlock Labs (20%). This feature is optional and may be adjusted by the [Unlock DAO](../../governance/unlock-dao/).
-
 ## What can you do with Unlock Protocol?
 
 Unlock is a protocol for *memberships*. Our goal is for Unlock to support multiple kinds of memberships, enable easy integration of these memberships into any application, and share the protocol’s ownership with its adopters.
@@ -341,7 +339,7 @@ As noted above, [UDT](../../governance/unlock-dao-tokens/) is the native governa
 
 A single mechanism — key purchases — creates new [UDT](../../governance/unlock-dao-tokens/). Developer rewards are calculated using a logarithmic curve based on the gas consumed by a purchase transaction and the actual value added to the protocol’s Gross Network Product (GNP) during each key purchase.
 
-Unlock Labs [created UDT](https://etherscan.io/tx/0xfacea4358297b0a9f8536b8dd25dd29b412deb9f8737b43c0ddaaf89b9f525d2) and pre-mined a total of 1,000,000 UDT tokens. These tokens are held in [Unlock Labs's multi-sig wallet](https://etherscan.io/address/0xa39b44c4affbb56b76a1bf1d19eb93a5dfc2eba9). Our goal is to allocate 800,000 tokens to foster the adoption of the protocol. Unlock Labs plans to keep 200,000 tokens to sustain the work of the team creating and maintaining Unlock Protocol. As of this writing, [Unlock Labs has distributed over 300,000 UDT](https://etherscan.io/token/0x90de74265a416e1393a450752175aed98fe11517#balances) as rewards to contributors of the Unlock Protocol.
+Unlock Labs [created UDT](https://etherscan.io/tx/0xfacea4358297b0a9f8536b8dd25dd29b412deb9f8737b43c0ddaaf89b9f525d2) and pre-mined a total of 1,000,000 UDT tokens. These tokens are held in [Unlock Labs's multi-sig wallet](https://etherscan.io/address/0xa39b44c4affbb56b76a1bf1d19eb93a5dfc2eba9). Our goal is to allocate most tokens to foster the adoption of the protocol. Unlock Labs plans to eventually keep at least 20% of the tokens to sustain the work of the team creating and maintaining Unlock Protocol. As of this writing, [Unlock Labs has distributed over 300,000 UDT](https://etherscan.io/token/0x90de74265a416e1393a450752175aed98fe11517#balances) as rewards to contributors of the Unlock Protocol.
 
 ### Proposals
 

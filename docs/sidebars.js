@@ -73,11 +73,10 @@ const sidebars = {
           items: [
             "tools/checkout/configuration",
             "tools/checkout/collecting-metadata",
+            "tools/checkout/paywall",
           ],
         },
         "tools/unlock.js",
-        "tools/paywall",
-
         {
           type: "category",
           label: "Locksmith",
@@ -170,7 +169,7 @@ const sidebars = {
       ],
     },
     {
-      label: "Governance",
+      label: "Unlock DAO",
       type: "category",
       link: {
         type: "doc",

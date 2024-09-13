@@ -18,7 +18,6 @@ import {
 import { Button, Input, Placeholder } from '@unlock-protocol/ui'
 import { twMerge } from 'tailwind-merge'
 import { getAddressForName } from '~/hooks/useEns'
-import { Connected } from '../Connected'
 import { formResultToMetadata } from '~/utils/userMetadata'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useSelector } from '@xstate/react'
@@ -35,9 +34,10 @@ import {
   PaywallConfigType,
 } from '@unlock-protocol/core'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
+import Disconnect from './Disconnect'
+import { shouldSkip } from './utils'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
 }
 
@@ -117,7 +117,7 @@ export const MetadataInputs = ({
   )
 
   const recipient = recipientFromConfig(paywallConfig, lock) || account
-  const hideRecipient = shouldHideRecipient(paywallConfig, lock)
+  const hideRecipient = shouldSkip({ paywallConfig, lock }).skipRecipient
 
   return (
     <div className="grid gap-2">
@@ -267,7 +267,7 @@ export const emailInput: MetadataInput = {
   placeholder: 'your@email.com',
 }
 
-export function Metadata({ checkoutService, injectedProvider }: Props) {
+export function Metadata({ checkoutService }: Props) {
   const { lock, paywallConfig, quantity } = useSelector(
     checkoutService,
     (state) => state.context
@@ -278,13 +278,23 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
   const isEmailRequired =
     locksConfig.emailRequired || paywallConfig.emailRequired
   const metadataInputs = useMemo(() => {
-    const inputs =
+    let inputs =
       locksConfig.metadataInputs || paywallConfig.metadataInputs || []
+
     if (isEmailRequired) {
+      /** Filter out any input fields of type 'email', to avoid duplicating
+          email input fields in the UI.
+       */
+      inputs = inputs.filter((input) => input.type.toLowerCase() !== 'email')
+
+      /** Prepend the default email input to the start of the array.
+          this prioritization ensures that the default email input appears
+          first in the form.
+       */
       return [emailInput, ...inputs]
-    } else {
-      return inputs
     }
+
+    return inputs
   }, [
     locksConfig.metadataInputs,
     paywallConfig.metadataInputs,
@@ -311,9 +321,9 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
 
   const recipient = recipientFromConfig(paywallConfig, lock) || account || ''
 
-  const { isInitialLoading: isMemberLoading, data: isMember } = useQuery(
-    ['isMember', recipient, lock],
-    async () => {
+  const { isLoading: isMemberLoading, data: isMember } = useQuery({
+    queryKey: ['isMember', recipient, lock],
+    queryFn: async () => {
       const total = await web3Service.totalKeys(
         lock!.address,
         recipient!,
@@ -321,10 +331,8 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
       )
       return total > 0
     },
-    {
-      enabled: !!recipient,
-    }
-  )
+    enabled: !!recipient,
+  })
 
   useEffect(() => {
     if (recipient && quantity > fields.length && !isMemberLoading) {
@@ -396,9 +404,9 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
   return (
     <Fragment>
       <Stepper service={checkoutService} />
-      <main className="h-full px-6 py-2 overflow-auto">
+      <main className="h-full px-6 overflow-auto">
         {isMemberLoading ? (
-          <Placeholder.Root>
+          <Placeholder.Root className="py-6">
             <Placeholder.Line />
             <Placeholder.Line />
             <Placeholder.Line />
@@ -432,19 +440,15 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
+        <Button
+          loading={isLoading}
+          disabled={isLoading || isMemberLoading}
+          className="w-full"
+          form="metadata"
         >
-          <Button
-            loading={isLoading}
-            disabled={isLoading || isMemberLoading}
-            className="w-full"
-            form="metadata"
-          >
-            {isLoading ? 'Continuing' : 'Next'}
-          </Button>
-        </Connected>
+          {isLoading ? 'Continuing' : 'Next'}
+        </Button>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>
@@ -464,13 +468,4 @@ const recipientFromConfig = (
     return lockRecipient
   }
   return ''
-}
-
-const shouldHideRecipient = (
-  paywall: PaywallConfigType,
-  lock: Lock | LockState | undefined
-): boolean => {
-  return !!(
-    paywall.skipRecipient || paywall?.locks[lock!.address].skipRecipient
-  )
 }

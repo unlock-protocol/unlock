@@ -1,5 +1,7 @@
+import { MdOutlineTipsAndUpdates } from 'react-icons/md'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import { Button, Icon } from '@unlock-protocol/ui'
-import { useRouter } from 'next/router'
+import { useRouter, useSearchParams } from 'next/navigation'
 import React, { Fragment, useEffect, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ConnectWalletModal } from '../../ConnectWalletModal'
@@ -9,7 +11,6 @@ import { TotalBar } from './elements/TotalBar'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 import { AirdropKeysDrawer } from '~/components/interface/members/airdrop/AirdropDrawer'
 import { NetworkWarning } from '~/components/interface/locks/Create/elements/NetworkWarning'
-import { useMutation } from '@tanstack/react-query'
 import {
   ApprovalStatus,
   ExpirationStatus,
@@ -31,9 +32,8 @@ import { FaRegEdit as EditIcon } from 'react-icons/fa'
 import { BiRightArrow as RightArrowIcon } from 'react-icons/bi'
 import { TbPlant as PlantIcon } from 'react-icons/tb'
 import { IconType } from 'react-icons'
-import { BiQrScan as ScanIcon } from 'react-icons/bi'
 import { Picker } from '../../Picker'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { useMetadata } from '~/hooks/metadata'
 import { getLockTypeByMetadata } from '@unlock-protocol/core'
 import { ImageBar } from './elements/ImageBar'
@@ -72,7 +72,7 @@ export function downloadAsCSV({
 }
 
 export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
-  const { isLoading: isLoadingMetadata, data: metadata } = useMetadata({
+  const { isPending: isLoadingMetadata, data: metadata } = useMetadata({
     lockAddress,
     network,
   })
@@ -81,12 +81,12 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
   const [keysJobId, setKeysJobId] = useState<string | null>(null)
   const [isKeysJobLoading, setIsKeysJobLoading] = useState<boolean>(false)
 
-  const onDownloadCsvMutation = useMutation(
-    async () => {
+  const onDownloadCsvMutation = useMutation({
+    mutationFn: async () => {
       ToastHelper.success(
         `It may take a few minutes for the file to be generated. Please do not close this page`
       )
-      const response = await storage.exportKeys(
+      const response = await locksmith.exportKeys(
         network,
         lockAddress,
         '',
@@ -102,17 +102,12 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
         ToastHelper.error(`Failed to start download job: ${response}`)
       }
     },
-    {
-      meta: {
-        errorMessage: 'Failed to download members list',
-      },
-      onError: (error) => {
-        ToastHelper.error(`Failed to download members list: ${error}`)
-        console.error('Failed to download members list', error)
-        setIsKeysJobLoading(false)
-      },
-    }
-  )
+    onError: (error) => {
+      ToastHelper.error(`Failed to download members list: ${error}`)
+      console.error('Failed to download members list', error)
+      setIsKeysJobLoading(false)
+    },
+  })
 
   useEffect(() => {
     let intervalId: any = null
@@ -120,7 +115,7 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
     const fetchKeysJob = async () => {
       if (!keysJobId) return
 
-      const response = await storage.getExportedKeys(
+      const response = await locksmith.getExportedKeys(
         network,
         lockAddress,
         keysJobId
@@ -133,9 +128,17 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
       setIsKeysJobLoading(false)
 
       const members = response.data
-      const cols = members.keys ? Object.keys(members.keys[0]) : []
+      const cols: { [key: string]: boolean } = { token: true, data: false }
+      if (members.keys) {
+        for (let i = 0; i < members.keys.length; i++) {
+          Object.keys(members.keys[i]).forEach((key) => {
+            cols[key] = true
+          })
+        }
+      }
+      delete cols.data
       downloadAsCSV({
-        cols,
+        cols: Object.keys(cols),
         metadata: members.keys as any[],
       })
     }
@@ -153,27 +156,25 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
   })
 
   return (
-    <>
-      <div className="flex items-center justify-between">
-        <span className="text-xl font-bold text-brand-ui-primary">
-          {isEvent ? 'Attendees' : 'Members'}
-        </span>
-        {isManager && (
-          <div className="flex gap-2">
-            <Button
-              variant="outlined-primary"
-              size="small"
-              disabled={isLoadingMetadata || isKeysJobLoading}
-              loading={onDownloadCsvMutation.isLoading || isKeysJobLoading}
-              iconLeft={<CsvIcon className="text-brand-ui-primary" size={16} />}
-              onClick={() => onDownloadCsvMutation.mutate()}
-            >
-              Download {isEvent ? 'attendee' : 'member'} list
-            </Button>
-          </div>
-        )}
-      </div>
-    </>
+    <div className="flex items-center justify-between">
+      <span className="text-xl font-bold text-brand-ui-primary">
+        {isEvent ? 'Attendees' : 'Members'}
+      </span>
+      {isManager && (
+        <div className="flex gap-2">
+          <Button
+            variant="outlined-primary"
+            size="small"
+            disabled={isLoadingMetadata || isKeysJobLoading}
+            loading={onDownloadCsvMutation.isPending || isKeysJobLoading}
+            iconLeft={<CsvIcon className="text-brand-ui-primary" size={16} />}
+            onClick={() => onDownloadCsvMutation.mutate()}
+          >
+            Download {isEvent ? 'attendee' : 'member'} list
+          </Button>
+        </div>
+      )}
+    </div>
   )
 }
 
@@ -215,8 +216,7 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
   const [airdropKeys, setAirdropKeys] = useState(false)
   const DEMO_URL = `/demo?network=${network}&lock=${lockAddress}`
   const metadataPageUrl = `/locks/metadata?lockAddress=${lockAddress}&network=${network}`
-  const checkoutLink = `/locks/checkout-url?lock=${lockAddress}&network=${network}`
-  const verificationLink = `/verification`
+  const checkoutLink = `/locks/checkout-url`
 
   const { isManager } = useLockManager({
     lockAddress,
@@ -267,7 +267,7 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
                     </a>
                     <Link href={checkoutLink} className="text-left">
                       <PopoverItem
-                        label="Create Checkout URL"
+                        label="Checkout URLs"
                         description="Customize your member's purchase journey"
                         icon={RightArrowIcon}
                       />
@@ -289,13 +289,6 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
                         </Link>
                       </>
                     )}
-                    <Link href={verificationLink} className="text-left">
-                      <PopoverItem
-                        label="Verification"
-                        description="Scan and verify the authentication of tickets for your events"
-                        icon={ScanIcon}
-                      />
-                    </Link>
                   </div>
                 </div>
               </Popover.Panel>
@@ -361,22 +354,24 @@ const NotManagerBanner = () => {
 
 export const ManageLockPage = () => {
   const { account: owner } = useAuth()
-  const { query } = useRouter()
+  const searchParams = useSearchParams()
   const [loading, setLoading] = useState(false)
   const [network, setNetwork] = useState<string>(
-    (query?.network as string) ?? ''
+    (searchParams.get('network') as string) ?? ''
   )
   const [lockAddress, setLockAddress] = useState<string>(
-    (query?.address as string) ?? ''
+    (searchParams.get('address') as string) ?? ''
   )
   const [airdropKeys, setAirdropKeys] = useState(false)
 
   const lockNetwork = network ? parseInt(network as string) : undefined
 
   const withoutParams =
-    !query?.lockAddress && !query.network && !(lockAddress && network)
+    !searchParams.get('lockAddress') &&
+    !searchParams.get('network') &&
+    !(lockAddress && network)
 
-  const { isManager, isLoading: isLoadingLockManager } = useLockManager({
+  const { isManager, isPending: isLoadingLockManager } = useLockManager({
     lockAddress,
     network: lockNetwork!,
   })
@@ -390,6 +385,17 @@ export const ManageLockPage = () => {
     approval: ApprovalStatus.MINTED,
   })
   const [page, setPage] = useState(1)
+
+  const { data: eventData } = useQuery({
+    queryKey: ['getEventForLock', lockAddress, network],
+    queryFn: async () => {
+      const { data: eventDetails } = await locksmith.getEventDetails(
+        Number(network),
+        lockAddress
+      )
+      return eventDetails
+    },
+  })
 
   if (!owner) {
     return <ConnectWalletModal isOpen={true} setIsOpen={() => void 0} />
@@ -406,8 +412,8 @@ export const ManageLockPage = () => {
     }
 
     const hasQuery =
-      (query?.address as string)?.length > 0 &&
-      (query?.network as string)?.length > 0
+      (searchParams.get('address') as string)?.length > 0 &&
+      (searchParams.get('network') as string)?.length > 0
 
     return (
       <div>
@@ -468,6 +474,20 @@ export const ManageLockPage = () => {
               </div>
               <div className="flex flex-col gap-6 lg:col-span-9">
                 <TotalBar lockAddress={lockAddress} network={lockNetwork!} />
+                {eventData?.eventUrl && (
+                  <div className="p-2 text-base text-center flex gap-2 items-center border rounded-xl">
+                    <MdOutlineTipsAndUpdates size="24" />
+                    <p>
+                      This lock is used to sell {eventData.eventName}. You can
+                      update this event&apos;s{' '}
+                      <Link href={eventData.eventUrl} className="underline">
+                        settings directly
+                      </Link>
+                      .
+                    </p>
+                  </div>
+                )}
+
                 <ActionBar
                   page={page}
                   lockAddress={lockAddress}
@@ -490,7 +510,7 @@ export const ManageLockPage = () => {
                   setPage={setPage}
                   page={page}
                   NoMemberNoFilter={() => {
-                    const checkoutLink = `/locks/checkout-url?lock=${lockAddress}&network=${network}`
+                    const checkoutLink = `/locks/checkout-url`
                     return (
                       <ImageBar
                         src="/images/illustrations/no-member.svg"

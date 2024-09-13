@@ -1,18 +1,45 @@
 import { vi } from 'vitest'
 
-import { CheckoutConfig, EventData } from '../../src/models'
+import { CheckoutConfig, EventData, KeyMetadata } from '../../src/models'
 import { getEventFixture } from '../../__tests__/fixtures/events'
 
 import {
   createEventSlug,
   getEventBySlug,
   saveEvent,
+  getCheckedInAttendees,
 } from '../../src/operations/eventOperations'
+
+vi.mock('../../src/operations/wedlocksOperations', () => {
+  return {
+    sendEmail: vi.fn().mockResolvedValue(true),
+  }
+})
+
+vi.mock('@unlock-protocol/unlock-js', () => {
+  return {
+    SubgraphService: vi.fn().mockImplementation(() => {
+      return {
+        keys: (filter: any, opts: any) => {
+          return [
+            {
+              owner: '0x123',
+            },
+            {
+              owner: '0x456',
+            },
+          ]
+        },
+      }
+    }),
+  }
+})
 
 describe('eventOperations', () => {
   beforeEach(async () => {
     await EventData.truncate()
     await CheckoutConfig.truncate()
+    await KeyMetadata.truncate()
   })
   describe('createEventSlug', () => {
     it('should create the event with the correct slug', async () => {
@@ -67,6 +94,51 @@ describe('eventOperations', () => {
         '0x123'
       )
       expect(sameEvent.slug).toEqual(event.slug)
+    })
+
+    it('should not override previously set event data', async () => {
+      expect.assertions(6)
+      const eventParams = getEventFixture({
+        data: {
+          name: 'my party',
+          requiresApproval: true,
+          emailSender: 'Julien Genestoux',
+          ticket: {
+            event_address: '29 Little W 12th St, New York, NY 10014, USA',
+            event_end_date: '2024-05-22',
+            event_end_time: '14:00',
+            event_timezone: 'America/New_York',
+            event_start_date: '2024-05-22',
+            event_start_time: '08:30',
+          },
+        },
+        checkoutConfig: { config: { locks: {} } },
+      })
+      const [event] = await saveEvent(eventParams, '0x123')
+      expect(event.data.ticket.event_end_date).toEqual('2024-05-22')
+      expect(event.data.ticket.event_address).toEqual(
+        '29 Little W 12th St, New York, NY 10014, USA'
+      )
+
+      const [sameEvent] = await saveEvent(
+        {
+          data: {
+            slug: event.slug,
+            name: 'name changed!',
+            ticket: {
+              event_address: 'Central Park, New York, NY 10014, USA',
+            },
+          },
+          checkoutConfig: { config: { locks: {} } },
+        },
+        '0x123'
+      )
+      expect(sameEvent.slug).toEqual(event.slug)
+      expect(sameEvent.name).toEqual('name changed!')
+      expect(sameEvent.data.ticket.event_end_date).toEqual('2024-05-22') // unchanged
+      expect(sameEvent.data.ticket.event_address).toEqual(
+        'Central Park, New York, NY 10014, USA'
+      )
     })
 
     it('should save requiresAppoval when applicable', async () => {
@@ -153,6 +225,64 @@ describe('eventOperations', () => {
 
       const savedEventWithoutProtectedData = await getEventBySlug(slug, false)
       expect(savedEventWithoutProtectedData?.data.replyTo).toEqual(undefined)
+    })
+  })
+
+  describe('getCheckedInAttendees', () => {
+    let slug
+    beforeEach(async () => {
+      const network = 11155111
+      const lock = '0xF174cc512D9aac892cc53330F829028046d0fF6B'
+      const eventParams = getEventFixture({
+        checkoutConfig: {
+          config: {
+            locks: {
+              [lock]: {
+                network,
+              },
+            },
+          },
+        },
+      })
+      const [event] = await saveEvent(eventParams, '0x123')
+      slug = event.slug
+      // And now check in a few attendees, but not all!
+      for (let i = 0; i < 10; i++) {
+        const metadata: { checkedInAt?: any } = {}
+        if (i === 0) {
+          metadata.checkedInAt = new Date().toISOString()
+        } else if (i === 3) {
+          metadata.checkedInAt = [new Date().toISOString()]
+        } else if (i === 5) {
+          metadata.checkedInAt = [
+            { at: new Date().toISOString(), verifierName: 'Verifier A' },
+          ]
+        } else if (i === 7) {
+          metadata.checkedInAt = [
+            new Date().toISOString(),
+            { at: new Date().toISOString(), verifierName: 'Verifier A' },
+          ]
+        }
+
+        await KeyMetadata.upsert(
+          {
+            chain: network,
+            address: lock,
+            id: (i + 1).toString(),
+            data: {
+              metadata,
+            },
+          },
+          {
+            conflictFields: ['address', 'id'],
+          }
+        )
+      }
+    })
+    it('should return the list of checked in attendees', async () => {
+      const list = await getCheckedInAttendees(slug)
+
+      expect(list).toEqual(['0x123', '0x456'])
     })
   })
 })

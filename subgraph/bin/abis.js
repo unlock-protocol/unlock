@@ -12,7 +12,7 @@ const getVersions = (contractName) =>
     .filter((n) => n.includes(`${contractName}V`))
     .map((n) => parseInt(n.slice(contractName.length + 1, n.length)))
     .sort((a, b) => a - b)
-    .filter((n) => n >= 7)
+    .filter((n) => n >= 9)
     .map((n) => `v${n}`)
 
 const unlockVersions = ['v11']
@@ -38,9 +38,7 @@ function parseEventsSig(contractName, version) {
   const versionName = `${contractName}${version.toUpperCase()}`
   const { abi } = abis[versionName]
 
-  const iface = new ethers.utils.Interface(
-    abi.filter(({ type }) => type === 'event')
-  )
+  const iface = new ethers.Interface(abi.filter(({ type }) => type === 'event'))
   return iface.format(ethers.utils.FormatTypes.minimal).map((d) => [version, d])
 }
 
@@ -89,9 +87,7 @@ function mergeAbi(contractName) {
   const deduped = merged
     .map((item) => ({
       ...item,
-      sig: new ethers.utils.Interface([item]).format(
-        ethers.utils.FormatTypes.minimal
-      )[0],
+      sig: new ethers.Interface([item]).format('minimal')[0],
     }))
     .filter((v, i, a) => a.findIndex((v2) => v2.sig === v.sig) === i)
 

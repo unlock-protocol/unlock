@@ -1,15 +1,13 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './../checkoutMachine'
-import { Connected } from '../../Connected'
 import { useQuery } from '@tanstack/react-query'
 import { useConfig } from '~/utils/withConfig'
 import { Button } from '@unlock-protocol/ui'
-import { Fragment, useRef, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { useSelector } from '@xstate/react'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { MAX_UINT } from '~/constants'
 import { Pricing } from '../../Lock'
 import { getReferrer, lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { Lock } from '~/unlockTypes'
@@ -21,16 +19,16 @@ import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { formatNumber } from '~/utils/formatter'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { PricingData } from './PricingData'
+import Disconnect from '../Disconnect'
+import { getNumberOfRecurringPayments } from '../utils'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
-  onConfirmed: (lock: string, hash?: string) => void
+  onConfirmed: (lock: string, network: number, hash?: string) => void
   onError: (message: string) => void
 }
 
 export function ConfirmCrypto({
-  injectedProvider,
   checkoutService,
   onConfirmed,
   onError,
@@ -55,24 +53,14 @@ export function ConfirmCrypto({
 
   const currencyContractAddress = lock?.currencyContractAddress
 
-  const recurringPayment =
-    paywallConfig?.recurringPayments ||
-    paywallConfig?.locks[lockAddress]?.recurringPayments
+  const numberOfRecurringPayments = getNumberOfRecurringPayments(
+    paywallConfig?.locks[lockAddress]?.recurringPayments ||
+      paywallConfig?.recurringPayments
+  )
 
-  const totalApproval =
-    typeof recurringPayment === 'string' &&
-    recurringPayment.toLowerCase() === 'forever' &&
-    payment.method === 'crypto'
-      ? MAX_UINT
-      : undefined
-
-  const recurringPaymentAmount = recurringPayment
-    ? Math.abs(Math.floor(Number(recurringPayment)))
-    : undefined
-
-  const recurringPayments: number[] | undefined = recurringPaymentAmount
-    ? new Array(recipients.length).fill(recurringPaymentAmount)
-    : undefined
+  const recurringPayments: number[] = new Array(recipients.length).fill(
+    numberOfRecurringPayments
+  )
 
   const { data: creditCardEnabled } = useCreditCardEnabled({
     lockAddress,
@@ -81,18 +69,21 @@ export function ConfirmCrypto({
 
   const { mutateAsync: updateUsersMetadata } = useUpdateUsersMetadata()
 
-  const { isInitialLoading: isInitialDataLoading, data: purchaseData } =
-    usePurchaseData({
-      lockAddress: lock!.address,
-      network: lock!.network,
-      paywallConfig,
-      recipients,
-      data,
-    })
+  const {
+    isLoading: isInitialDataLoading,
+    data: purchaseData,
+    error,
+  } = usePurchaseData({
+    lockAddress: lock!.address,
+    network: lock!.network,
+    paywallConfig,
+    recipients,
+    data,
+  })
 
   const {
     data: pricingData,
-    isInitialLoading: isPricingDataLoading,
+    isLoading: isPricingDataLoading,
     isError: isPricingDataError,
   } = usePricing({
     lockAddress: lock!.address,
@@ -112,9 +103,9 @@ export function ConfirmCrypto({
     !isPricingDataLoading && !isPricingDataError && !!pricingData
 
   // TODO: run full estimate so we can catch all errors, rather just check balances
-  const { data: isPayable, isInitialLoading: isPayableLoading } = useQuery(
-    ['canAfford', account, lock, pricingData],
-    async () => {
+  const { data: isPayable, isLoading: isPayableLoading } = useQuery({
+    queryKey: ['canAfford', account, lock, pricingData],
+    queryFn: async () => {
       const [balance, networkBalance] = await Promise.all([
         getAccountTokenBalance(
           web3Service,
@@ -135,10 +126,8 @@ export function ConfirmCrypto({
         isGasPayable,
       }
     },
-    {
-      enabled: isPricingDataAvailable,
-    }
-  )
+    enabled: isPricingDataAvailable,
+  })
 
   // By default, until fully loaded we assume payable.
   const canAfford =
@@ -170,7 +159,7 @@ export function ConfirmCrypto({
             transactionHash: hash!,
           })
         } else if (hash) {
-          onConfirmed(lockAddress, hash)
+          onConfirmed(lockAddress, lockNetwork, hash)
         }
       }
 
@@ -182,6 +171,9 @@ export function ConfirmCrypto({
             owner: recipients?.[0],
             referrer: getReferrer(account!, paywallConfig, lockAddress),
             data: purchaseData?.[0],
+            recurringPayment: recurringPayments
+              ? recurringPayments[0]
+              : undefined,
           },
           {} /** Transaction params */,
           onErrorCallback
@@ -196,7 +188,6 @@ export function ConfirmCrypto({
             keyManagers: keyManagers?.length ? keyManagers : undefined,
             recurringPayments,
             referrers,
-            totalApproval,
           },
           {} /** Transaction params */,
           onErrorCallback
@@ -210,6 +201,12 @@ export function ConfirmCrypto({
         case 4001:
         case 'ACTION_REJECTED':
           onError('Transaction rejected.')
+          break
+        case 'INSUFFICIENT_FUNDS':
+          onError('Insufficient funds.')
+          break
+        case 'CALL_EXCEPTION':
+          onError('Transaction failed.')
           break
         default:
           onError(error?.error?.message || error.message)
@@ -235,6 +232,12 @@ export function ConfirmCrypto({
       buttonLabel = 'Pay using crypto'
     }
   }
+
+  useEffect(() => {
+    if (error) {
+      console.error(error)
+    }
+  }, [error])
 
   return (
     <Fragment>
@@ -291,44 +294,40 @@ export function ConfirmCrypto({
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
-        >
-          <div className="grid">
-            <Button
-              loading={isConfirming}
-              disabled={
-                isConfirming || isLoading || !canAfford || isPricingDataError
+        <div className="grid">
+          <Button
+            loading={isConfirming}
+            disabled={
+              isConfirming || isLoading || !canAfford || isPricingDataError
+            }
+            onClick={async (event) => {
+              event.preventDefault()
+              if (metadata) {
+                await updateUsersMetadata(metadata)
               }
-              onClick={async (event) => {
-                event.preventDefault()
-                if (metadata) {
-                  await updateUsersMetadata(metadata)
-                }
-                onConfirmCrypto()
-              }}
-            >
-              {buttonLabel}
-            </Button>
-            {!isLoading && !isPricingDataError && isPayable && (
-              <>
-                {!isPayable?.isTokenPayable && (
-                  <small className="text-center text-red-500">
-                    You do not have enough {symbol} to complete this purchase.
-                  </small>
-                )}
-                {isPayable?.isTokenPayable && !isPayable?.isGasPayable && (
-                  <small className="text-center text-red-500">
-                    You do not have enough{' '}
-                    {config.networks[lock!.network].nativeCurrency.symbol} to
-                    pay transaction fees (gas).
-                  </small>
-                )}
-              </>
-            )}
-          </div>
-        </Connected>
+              onConfirmCrypto()
+            }}
+          >
+            {buttonLabel}
+          </Button>
+          {!isLoading && !isPricingDataError && isPayable && (
+            <>
+              {!isPayable?.isTokenPayable && (
+                <small className="text-center text-red-500">
+                  You do not have enough {symbol} to complete this purchase.
+                </small>
+              )}
+              {isPayable?.isTokenPayable && !isPayable?.isGasPayable && (
+                <small className="text-center text-red-500">
+                  You do not have enough{' '}
+                  {config.networks[lock!.network].nativeCurrency.symbol} to pay
+                  transaction fees (gas).
+                </small>
+              )}
+            </>
+          )}
+        </div>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

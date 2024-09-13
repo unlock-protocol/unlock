@@ -1,4 +1,4 @@
-const { assert } = require('chai')
+const assert = require('assert')
 const { deployLock, ADDRESS_ZERO, purchaseKey } = require('../helpers')
 
 const { ethers } = require('hardhat')
@@ -11,7 +11,7 @@ describe('Lock / onValidKeyHook', () => {
   let lock
   let tokenId
   let testEventHooks
-  let events
+  let receipt
   let keyOwner
 
   before(async () => {
@@ -24,13 +24,13 @@ describe('Lock / onValidKeyHook', () => {
     const tx = await lock.setEventHooks(
       ADDRESS_ZERO,
       ADDRESS_ZERO,
-      testEventHooks.address,
+      await testEventHooks.getAddress(),
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO
     )
-    ;({ events } = await tx.wait())
+    receipt = await tx.wait()
   })
 
   it('hasValidKey should returns a custom value', async () => {
@@ -43,15 +43,15 @@ describe('Lock / onValidKeyHook', () => {
     assert.equal(await lock.balanceOf(keyOwner), 0)
 
     // set custom value in hook
-    await testEventHooks.setSpecialMember(lock.address, keyOwner)
+    await testEventHooks.setSpecialMember(await lock.getAddress(), keyOwner)
     assert.equal(await lock.getHasValidKey(keyOwner), true)
   })
 
   it('emit the correct event', async () => {
     await emitHookUpdatedEvent({
-      events,
+      receipt,
       hookName: 'onValidKeyHook',
-      hookAddress: testEventHooks.address,
+      hookAddress: await testEventHooks.getAddress(),
     })
   })
 

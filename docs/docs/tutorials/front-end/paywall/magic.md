@@ -34,8 +34,8 @@ Let's now add a button to our UI. In the `dashboard.js` file we replace the rend
 ```javascript
 const checkout = async () => {
   // TODO: complete me
-  return false;
-};
+  return false
+}
 
 return (
   <>
@@ -51,7 +51,7 @@ return (
       </>
     )}
   </>
-);
+)
 ```
 
 When the user clicks the `Checkout` button, the `checkout` function will be called.
@@ -61,8 +61,8 @@ When the user clicks the `Checkout` button, the `checkout` function will be call
 At that point, we want to instantiate the paywall object and open it. First let's import the library:
 
 ```javascript
-import { Paywall } from "@unlock-protocol/paywall";
-import networks from "@unlock-protocol/networks";
+import { Paywall } from '@unlock-protocol/paywall'
+import networks from '@unlock-protocol/networks'
 ```
 
 And then, let's replace the `checkout` function with the following.
@@ -71,27 +71,27 @@ And then, let's replace the `checkout` function with the following.
 const checkout = async () => {
   const paywallConfig = {
     locks: {
-      "0xbf49ca4bf09d4b720fe5fcaecce0fe5d5b1becb9": {
+      '0xbf49ca4bf09d4b720fe5fcaecce0fe5d5b1becb9': {
         network: 137,
       },
     },
     skipRecipient: true,
-    title: "My Membership",
-  };
-  const paywall = new Paywall(paywallConfig, networks, magic.rpcProvider);
-  paywall.loadCheckoutModal();
-  return false;
-};
+    title: 'My Membership',
+  }
+  const paywall = new Paywall(paywallConfig, networks, magic.rpcProvider)
+  paywall.loadCheckoutModal()
+  return false
+}
 ```
 
-There is a little bit going on here. First, we create a [paywall config object](../../../tools/paywall.md). This is a JSON object that lets us configure the Paywall application. You can build that object manually or use the `Download JSON` from the [Checkout builder](https://app.unlock-protocol.com/locks/checkout-url) on the Unlock dashboard.
+There is a little bit going on here. First, we create a [paywall config object](../../../tools/checkout/paywall.md). This is a JSON object that lets us configure the Paywall application. You can build that object manually or use the `Download JSON` from the [Checkout builder](https://app.unlock-protocol.com/locks/checkout-url) on the Unlock dashboard.
 
 The one we use here is a pretty basic. We use a single lock at the address `0xbf49ca4bf09d4b720fe5fcaecce0fe5d5b1becb9`. We skip the step where users can change the recipient of the NFT they are purchasing and just use `My Membership` as the title on the modal.
 
 The critical part here is this line:
 
 ```javascript
-const paywall = new Paywall(paywallConfig, networks, magic.rpcProvider);
+const paywall = new Paywall(paywallConfig, networks, magic.rpcProvider)
 ```
 
 As you can see, we instantiate the paywall object with the following:

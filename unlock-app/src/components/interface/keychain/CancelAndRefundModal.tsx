@@ -1,9 +1,14 @@
 import { Button, Modal, Placeholder, PriceFormatter } from '@unlock-protocol/ui'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { BiCopy as CopyIcon } from 'react-icons/bi'
+
 import { ToastHelper } from '../../helpers/toast.helper'
 import { useKeychain } from '~/hooks/useKeychain'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { useWeb3Service } from '~/utils/withWeb3Service'
+import { addressMinify } from '~/utils/strings'
+import useClipboard from 'react-use-clipboard'
 
 export interface CancelAndRefundProps {
   isOpen: boolean
@@ -39,21 +44,27 @@ export const CancelAndRefundModal = ({
     tokenAddress,
   })
 
-  const { isInitialLoading: isLoading, data } = useQuery(
-    ['getAmounts', lockAddress],
-    getAmounts,
-    {
-      enabled: isOpen, // execute query only when the modal is open
-      refetchInterval: false,
-      meta: {
-        errorMessage:
-          'We could not retrieve the refund amount for this membership.',
-      },
-    }
-  )
+  const { isLoading, data } = useQuery({
+    queryKey: ['getAmounts', lockAddress],
+    queryFn: getAmounts,
+    enabled: isOpen, // execute query only when the modal is open
+    refetchInterval: false,
+    meta: {
+      errorMessage:
+        'We could not retrieve the refund amount for this membership.',
+    },
+  })
+
+  const web3Service = useWeb3Service()
+  const { data: keyManager, isPending: isLoadingKeykManager } = useQuery({
+    queryKey: ['keyManagerOf', lockAddress, tokenId, network],
+    queryFn: async () => {
+      return await web3Service.keyManagerOf(lockAddress, tokenId, network)
+    },
+  })
 
   const { refundAmount = 0, transferFee = 0, lockBalance = 0 } = data ?? {}
-
+  const isNotOwnerOftheKey = owner !== keyManager
   const cancelAndRefund = async () => {
     const params = {
       lockAddress,
@@ -68,7 +79,8 @@ export const CancelAndRefundModal = ({
     )
   }
 
-  const cancelRefundMutation = useMutation(cancelAndRefund, {
+  const cancelRefundMutation = useMutation({
+    mutationFn: cancelAndRefund,
     onSuccess: () => {
       ToastHelper.success('Key cancelled and successfully refunded.')
       setIsOpen(false)
@@ -91,10 +103,22 @@ export const CancelAndRefundModal = ({
     !hasMaxCancellationFee && refundAmount <= Number(lockBalance)
 
   const buttonDisabled =
-    isLoading || !isRefundable || cancelRefundMutation?.isLoading
+    isLoading ||
+    !isRefundable ||
+    cancelRefundMutation.isPending ||
+    isLoadingKeykManager ||
+    isNotOwnerOftheKey
+
+  const [isCopied, setCopied] = useClipboard(keyManager, {
+    successDuration: 2000,
+  })
+
+  useEffect(() => {
+    if (!isCopied) return
+    ToastHelper.success(`Key manager address copied`)
+  }, [isCopied])
 
   if (!lock) return <span>No lock selected</span>
-
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       {isLoading ? (
@@ -112,7 +136,20 @@ export const CancelAndRefundModal = ({
                 Cancel and Refund
               </h3>
               <p className="mt-2 text-md">
-                {hasMaxCancellationFee ? (
+                {isNotOwnerOftheKey ? (
+                  <span>
+                    You cannot cancel this membership, because you are not its
+                    manager. The manager is {addressMinify(keyManager)}
+                    <Button
+                      variant="borderless"
+                      className="inline-flex items-center px-1"
+                      style={{ verticalAlign: 'sub' }}
+                      onClick={setCopied}
+                    >
+                      <CopyIcon size={20} />
+                    </Button>
+                  </span>
+                ) : hasMaxCancellationFee ? (
                   <span>This key is not refundable.</span>
                 ) : isRefundable ? (
                   <>
@@ -134,9 +171,9 @@ export const CancelAndRefundModal = ({
               type="button"
               onClick={() => cancelRefundMutation.mutate()}
               disabled={buttonDisabled}
-              loading={cancelRefundMutation.isLoading}
+              loading={cancelRefundMutation.isPending}
             >
-              {cancelRefundMutation.isLoading ? 'Refunding...' : 'Confirm'}
+              {cancelRefundMutation.isPending ? 'Refunding...' : 'Confirm'}
             </Button>
           </div>
         )

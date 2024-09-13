@@ -1,8 +1,8 @@
 {
   "name": "@unlock-protocol/types",
   "version": "0.0.8",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "description": "Unlock's base Typescript config",
   "files": [
     "tsconfig.json"
@@ -25,9 +25,6 @@
   },
   "devDependencies": {
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
-    "typescript": "5.3.3"
-  },
-  "dependencies": {
-    "ethers": "5.7.2"
+    "typescript": "5.5.4"
   }
 }

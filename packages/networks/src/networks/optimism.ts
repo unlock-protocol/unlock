@@ -76,6 +76,7 @@ export const optimism: NetworkConfig = {
   id: 10,
   isTestNetwork: false,
   keyManagerAddress: '0x8c5D54B2CAA4C2D08B0DDF82a1e6D2641779B8EC',
+  kickbackAddress: '0x981e0Ac8ABde773a72FeD793c1BEF99a53fAC342',
   maxFreeClaimCost: 100,
   multisig: '0x6E78b4447e34e751EC181DCBed63633aA753e145',
   name: 'Optimism',
@@ -94,26 +95,24 @@ export const optimism: NetworkConfig = {
   },
   previousDeploys: [],
   provider: 'https://rpc.unlock-protocol.com/10',
-  publicLockVersionToDeploy: 13,
+  publicLockVersionToDeploy: 14,
   publicProvider: 'https://mainnet.optimism.io',
   startBlock: 302400,
   subgraph: {
-    endpoint:
-      'https://api.studio.thegraph.com/query/65299/unlock-protocol-optimism/version/latest',
+    endpoint: 'https://subgraph.unlock-protocol.com/10',
     studioName: 'unlock-protocol-optimism',
   },
-  swapPurchaser: '0x1bd356194d97297F77e081fFFAB97b57297E93e4',
   tokens: [
-    {
-      address: '0x7F5c764cBc14f9669B88837ca1490cCa17c31607',
-      decimals: 6,
-      name: 'USD Coin',
-      symbol: 'USDC',
-    },
     {
       address: '0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85',
       decimals: 6,
       featured: true,
+      name: 'USD Coin',
+      symbol: 'USDC',
+    },
+    {
+      address: '0x7F5c764cBc14f9669B88837ca1490cCa17c31607',
+      decimals: 6,
       name: 'USD Coin',
       symbol: 'USDC',
     },
@@ -159,6 +158,8 @@ export const optimism: NetworkConfig = {
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
     oracle: {
+      100: '0xa55F8Ba16C5Bb580967f7dD94f927B21d0acF86c',
+      3000: '0x1dA6c13515362B42ACb1Ad24a713f74f925F3AEB',
       500: '0xafF14D23630d5A4BF5e36e52847bE593F0f87672',
     },
     positionManager: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',

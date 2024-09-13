@@ -39,12 +39,17 @@ export const zksync: NetworkConfig = {
   publicProvider: 'https://mainnet.era.zksync.io',
   startBlock: 25905168,
   subgraph: {
-    endpoint:
-      'https://api.studio.thegraph.com/query/65299/unlock-protocol-zksync/version/latest',
+    endpoint: 'https://subgraph.unlock-protocol.com/324',
     networkName: 'zksync-era',
     studioName: 'unlock-protocol-zksync',
   },
   tokens: [
+    {
+      address: '0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4',
+      decimals: 6,
+      name: 'USD Coin',
+      symbol: 'USDC',
+    },
     {
       address: '0x000000000000000000000000000000000000800A',
       decimals: 18,
@@ -57,18 +62,11 @@ export const zksync: NetworkConfig = {
       name: 'Dai Stablecoin',
       symbol: 'DAI',
     },
-
     {
       address: '0x493257fD37EDB34451f62EDf8D2a0C418852bA4C',
       decimals: 6,
       name: 'Tether USD',
       symbol: 'USDT',
-    },
-    {
-      address: '0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4',
-      decimals: 6,
-      name: 'USD Coin',
-      symbol: 'USDC',
     },
     {
       address: '0xBBeB516fb02a01611cBBE0453Fe3c580D7281011',

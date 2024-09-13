@@ -1,6 +1,5 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './../checkoutMachine'
-import { Connected } from '../../Connected'
 import { useConfig } from '~/utils/withConfig'
 import { Button } from '@unlock-protocol/ui'
 import { Fragment, useRef, useState } from 'react'
@@ -17,22 +16,25 @@ import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { formatNumber } from '~/utils/formatter'
 import { PricingData } from './PricingData'
+import Disconnect from '../Disconnect'
+import { ethers } from 'ethers'
+import { toBigInt } from '~/hooks/useCrossChainRoutes'
+import { approveTransfer, getAllowance } from '@unlock-protocol/unlock-js'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
-  onConfirmed: (lock: string, hash?: string, network?: number) => void
+  onConfirmed: (lock: string, network: number, hash?: string) => void
   onError: (message: string) => void
 }
 
 export function ConfirmCrossChainPurchase({
-  injectedProvider,
   checkoutService,
   onConfirmed,
 }: Props) {
+  const [buttonLabel, setButtonLabel] = useState('Pay using crypto')
   const { lock, recipients, payment, paywallConfig, metadata, data } =
     useSelector(checkoutService, (state) => state.context)
-  const { getWalletService } = useAuth()
+  const { getWalletService, account } = useAuth()
   const config = useConfig()
   const recaptchaRef = useRef<any>()
   const [isConfirming, setIsConfirming] = useState(false)
@@ -75,6 +77,10 @@ export function ConfirmCrossChainPurchase({
   const isPricingDataAvailable =
     !isPricingDataLoading && !isPricingDataError && !!pricingData
 
+  const symbol = route.tokenPayment.isNative
+    ? route.currency
+    : route.tokenPayment.symbol
+
   const isLoading = isPricingDataLoading || isInitialDataLoading
 
   const onError = (error: any, message?: string) => {
@@ -84,6 +90,9 @@ export function ConfirmCrossChainPurchase({
       case 4001:
       case 'ACTION_REJECTED':
         ToastHelper.error('Transaction rejected.')
+        break
+      case 'INSUFFICIENT_FUNDS':
+        ToastHelper.error('Insufficient funds.')
         break
       default:
         ToastHelper.error(message || error?.error?.message || error.message)
@@ -97,19 +106,40 @@ export function ConfirmCrossChainPurchase({
     try {
       setIsConfirming(true)
       const walletService = await getWalletService(route.network)
+      if (!route.tokenPayment.isNative) {
+        const requiredAllowance = BigInt(toBigInt(route.tokenPayment.amount))
+        const allowance = await getAllowance(
+          route.tokenPayment.tokenAddress,
+          route.tx.to,
+          walletService.provider,
+          account!
+        )
+        if (requiredAllowance > allowance) {
+          setButtonLabel(`Approving ${symbol}...`)
+          // If it's an ERC20 we need to approve first!
+          const approveTx = await approveTransfer(
+            route.tokenPayment.tokenAddress,
+            route.tx.to,
+            requiredAllowance,
+            walletService.provider,
+            walletService.signer
+          )
+          await approveTx.wait()
+        }
+      }
+      setButtonLabel(`Purchasing...`)
+
+      // delete unwanted gas values
+      delete route.tx.gasLimit
+      delete route.tx.maxFeePerGas
+      delete route.tx.maxPriorityFeePerGas
+
       const tx = await walletService.signer.sendTransaction(route.tx)
-      onConfirmed(lockAddress, tx.hash, route.network)
+      onConfirmed(lockAddress, route.network, tx.hash)
     } catch (error: any) {
       setIsConfirming(false)
       onError(error)
     }
-  }
-
-  let buttonLabel = ''
-  if (isConfirming) {
-    buttonLabel = 'Paying using crypto'
-  } else {
-    buttonLabel = 'Pay using crypto'
   }
 
   return (
@@ -157,37 +187,34 @@ export function ConfirmCrossChainPurchase({
         {pricingData && (
           <Pricing
             isCardEnabled={false}
-            keyPrice={
-              pricingData.total <= 0
-                ? 'FREE'
-                : `${formatNumber(pricingData.total).toLocaleString()} ${
-                    route.symbol
-                  }`
-            }
+            keyPrice={`${formatNumber(
+              Number(
+                ethers.formatUnits(
+                  toBigInt(route.tokenPayment.amount),
+                  route.tokenPayment.decimals
+                )
+              )
+            )} ${symbol}`}
           />
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
-        >
-          <div className="grid">
-            <Button
-              loading={isConfirming}
-              disabled={isConfirming || isLoading || isPricingDataError}
-              onClick={async (event) => {
-                event.preventDefault()
-                if (metadata) {
-                  await updateUsersMetadata(metadata)
-                }
-                onConfirm()
-              }}
-            >
-              {buttonLabel}
-            </Button>
-          </div>
-        </Connected>
+        <div className="grid">
+          <Button
+            loading={isConfirming}
+            disabled={isConfirming || isLoading || isPricingDataError}
+            onClick={async (event) => {
+              event.preventDefault()
+              if (metadata) {
+                await updateUsersMetadata(metadata)
+              }
+              onConfirm()
+            }}
+          >
+            {buttonLabel}
+          </Button>
+        </div>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

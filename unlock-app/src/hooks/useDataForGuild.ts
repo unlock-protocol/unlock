@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 
 const getDataForGuild = async (
@@ -8,19 +8,18 @@ const getDataForGuild = async (
   recipients: string[]
 ) => {
   try {
-    const response = await storage.getDataForRecipientsAndGuild(
+    const response = await locksmith.getDataForRecipientsAndGuild(
       network,
       lockAddress,
       recipients
     )
     return response.data.result
   } catch (error: any) {
-    if (error.response.data.error) {
+    if (error.response?.data?.error) {
       throw new Error(error.response.data.error)
     }
     return recipients.map(() => '')
   }
-  return recipients.map(() => '')
 }
 
 interface UseDataForGuildProps {
@@ -34,18 +33,16 @@ export function useDataForGuild({
   network,
   recipients,
 }: UseDataForGuildProps) {
-  return useQuery(
-    ['getDataForGuild', lockAddress, network],
-    async () => {
+  return useQuery({
+    queryKey: ['getDataForGuild', lockAddress, network],
+    queryFn: async () => {
       try {
-        return getDataForGuild(network, lockAddress, recipients)
+        return await getDataForGuild(network, lockAddress, recipients)
       } catch (error: any) {
         ToastHelper.error(error.message)
         return recipients.map(() => '') // Return empty values by default
       }
     },
-    {
-      retry: false,
-    }
-  )
+    retry: false,
+  })
 }

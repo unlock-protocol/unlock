@@ -17,8 +17,6 @@
     "@nomicfoundation/hardhat-network-helpers": "1.0.10",
     "@nomicfoundation/hardhat-toolbox": "4.0.0",
     "@nomicfoundation/hardhat-verify": "2.0.4",
-    "@nomiclabs/hardhat-ethers": "2.2.3",
-    "@nomiclabs/hardhat-etherscan": "3.1.8",
     "@typechain/ethers-v5": "10.1.0",
     "@typechain/ethers-v6": "0.5.1",
     "@typechain/hardhat": "6.1.2",
@@ -30,8 +28,8 @@
     "@unlock-protocol/networks": "workspace:^",
     "apollo-link-http": "1.5.17",
     "chai": "4.2.0",
-    "eslint": "8.46.0",
-    "ethers": "5.7.2",
+    "eslint": "9.9.1",
+    "ethers": "6.12.1",
     "graphql": "16.6.0",
     "hardhat": "2.20.1",
     "hardhat-gas-reporter": "1.0.8",
@@ -39,6 +37,6 @@
     "solidity-coverage": "0.8.2",
     "ts-node": "8.0.0",
     "typechain": "8.1.0",
-    "typescript": "5.3.3"
+    "typescript": "5.5.4"
   }
 }

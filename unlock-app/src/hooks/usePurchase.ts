@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 
 interface Options {
   lockAddress: string
@@ -14,9 +14,9 @@ interface PurchaseOptions {
   referrers?: string[]
 }
 export const usePurchase = ({ lockAddress, network }: Options) => {
-  return useMutation(
-    ['purchase', network, lockAddress],
-    async ({
+  return useMutation({
+    mutationKey: ['purchase', network, lockAddress],
+    mutationFn: async ({
       pricing,
       recipients,
       recurring = 0,
@@ -24,7 +24,7 @@ export const usePurchase = ({ lockAddress, network }: Options) => {
       data,
       referrers,
     }: PurchaseOptions) => {
-      const response = await storage.purchase(network, lockAddress, {
+      const response = await locksmith.purchase(network, lockAddress, {
         stripeTokenId,
         pricing,
         recipients,
@@ -34,8 +34,6 @@ export const usePurchase = ({ lockAddress, network }: Options) => {
       })
       return response.data
     },
-    {
-      retry: 2,
-    }
-  )
+    retry: 2,
+  })
 }

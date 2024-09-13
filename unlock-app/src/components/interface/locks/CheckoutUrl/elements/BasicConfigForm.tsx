@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form'
 import {
   Input,
   Checkbox,
-  TextBox,
   Button,
   ImageUpload,
   Modal,
@@ -17,7 +16,7 @@ interface Props {
   defaultValues?: z.infer<typeof BasicPaywallConfigSchema>
 }
 export const BasicConfigForm = ({ onChange, defaultValues }: Props) => {
-  const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
+  const { mutateAsync: uploadImage, isPending: isUploading } = useImageUpload()
   const [isOpen, setIsOpen] = useState(false)
 
   const {
@@ -85,6 +84,15 @@ export const BasicConfigForm = ({ onChange, defaultValues }: Props) => {
         })}
         error={errors.title?.message}
       />
+
+      <Input
+        label="Referrer Address"
+        size="small"
+        description={BasicPaywallConfigSchema.shape.referrer.description}
+        error={errors.referrer?.message}
+        {...register('referrer', {})}
+      />
+
       <Input
         label="Redirect URL"
         size="small"
@@ -105,14 +113,9 @@ export const BasicConfigForm = ({ onChange, defaultValues }: Props) => {
         })}
         error={errors.endingCallToAction?.message}
       />
-      <Input
-        label="Referrer Address"
-        size="small"
-        description={BasicPaywallConfigSchema.shape.referrer.description}
-        error={errors.referrer?.message}
-        {...register('referrer', {})}
-      />
-      <TextBox
+
+      {/* Deprecated, replaced by SIWE */}
+      {/* <TextBox
         label="Message to Sign"
         size="small"
         description={BasicPaywallConfigSchema.shape.messageToSign.description}
@@ -120,7 +123,7 @@ export const BasicConfigForm = ({ onChange, defaultValues }: Props) => {
           required: "Message to Sign can't be empty",
         })}
         error={errors.messageToSign?.message}
-      />
+      /> */}
       <Checkbox
         label="Persistent Checkout"
         description={

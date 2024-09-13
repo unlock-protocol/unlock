@@ -59,10 +59,12 @@ interface PastEventsByManagerProps {
 }
 
 export const PastEventsByManager = ({ manager }: PastEventsByManagerProps) => {
-  const { isLoading, data: events } = useQuery(['events', manager], () =>
-    getPastEventsByManager(manager)
-  )
-  if (isLoading) {
+  const { isPending, data: events } = useQuery({
+    queryKey: ['events', manager],
+    queryFn: () => getPastEventsByManager(manager),
+  })
+
+  if (isPending) {
     return null
   }
 

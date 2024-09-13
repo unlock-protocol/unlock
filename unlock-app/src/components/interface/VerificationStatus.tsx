@@ -9,15 +9,18 @@ import { MembershipVerificationConfig } from '~/utils/verification'
 import { invalidMembership } from './verification/invalidMembership'
 import { Button } from '@unlock-protocol/ui'
 import { isSignatureValidForAddress } from '~/utils/signatures'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { AxiosError } from 'axios'
-import { useLocksmithGranterAddress, useTicket } from '~/hooks/useTicket'
+import { useEventTicket, useLocksmithGranterAddress } from '~/hooks/useTicket'
 import { Dialog, Transition } from '@headlessui/react'
 import { MAX_UINT } from '~/constants'
 import { config as AppConfig } from '~/config/app'
 import { useConnectModal } from '~/hooks/useConnectModal'
+import { Event, PaywallConfigType } from '@unlock-protocol/core'
 
 interface Props {
+  checkoutConfig?: PaywallConfigType
+  eventProp?: Event
   config: MembershipVerificationConfig
   onVerified: () => void
   onClose?: () => void
@@ -100,7 +103,13 @@ const WarningDialog = ({
  * React components which given data, signature will verify the validity of a key
  * and display the right status
  */
-export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
+export const VerificationStatus = ({
+  checkoutConfig,
+  eventProp,
+  config,
+  onVerified,
+  onClose,
+}: Props) => {
   const { data, sig, raw } = config
   const { lockAddress, timestamp, network, tokenId, account } = data
   const { account: viewer } = useAuth()
@@ -115,16 +124,26 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
     isLoading: isTicketLoading,
     data: ticket,
     refetch: refetchTicket,
-  } = useTicket({
+  } = useEventTicket({
     lockAddress,
     keyId: tokenId!,
     network,
+    eventProp,
   })
 
   const onCheckIn = async () => {
     try {
       setIsCheckingIn(true)
-      await storage.checkTicket(network, lockAddress, tokenId!)
+      if (eventProp) {
+        await locksmith.checkEventTicket(
+          eventProp.slug,
+          network,
+          lockAddress,
+          tokenId!
+        )
+      } else {
+        await locksmith.checkTicket(network, lockAddress, tokenId!)
+      }
       await refetchTicket()
       setIsCheckingIn(false)
       setShowWarning(false)
@@ -162,6 +181,7 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
 
   const invalid = ticket
     ? invalidMembership({
+        locks: checkoutConfig ? checkoutConfig?.locks : null,
         network,
         manager: ticket!.manager,
         keyId: ticket!.keyId,
@@ -173,12 +193,22 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
       })
     : 'Invalid QR code'
 
+  const isTicketVerifiable =
+    Object.keys(checkoutConfig?.locks ?? {}).some(
+      (address) => address.toLowerCase() === ticket!.lockAddress.toLowerCase()
+    ) || !checkoutConfig
+
   const checkedInAt = ticket?.checkedInAt
 
   const disableActions = !ticket?.isVerifier || isCheckingIn || !!invalid
 
   const onClickVerified = () => {
-    if (!checkedInAt && ticket!.isVerifier && !showWarning) {
+    if (
+      !checkedInAt &&
+      ticket!.isVerifier &&
+      !showWarning &&
+      isTicketVerifiable
+    ) {
       setShowWarning(true)
     } else if (typeof onVerified === 'function') {
       onVerified()
@@ -188,7 +218,7 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
   const CardActions = () => (
     <div className="grid w-full gap-2">
       {viewer ? (
-        ticket!.isVerifier ? (
+        isTicketVerifiable && ticket!.isVerifier ? (
           <Button
             loading={isCheckingIn}
             disabled={disableActions}

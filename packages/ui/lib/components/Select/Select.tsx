@@ -1,5 +1,5 @@
 import { Listbox } from '@headlessui/react'
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect, useMemo, useState } from 'react'
 import { BsCheck as CheckIcon } from 'react-icons/bs'
 import { MdOutlineKeyboardArrowDown as ArrowDownIcon } from 'react-icons/md'
 import { twMerge } from 'tailwind-merge'
@@ -19,6 +19,10 @@ export interface Option {
   disabled?: boolean
 }
 
+export interface MoreOptions {
+  showMoreAfter: number
+}
+
 export interface SelectProps<T> {
   label?: string
   description?: ReactNode
@@ -27,9 +31,11 @@ export interface SelectProps<T> {
   size?: Size
   onChange?: (value: string | number | any, isCustom?: boolean) => void
   defaultValue?: T
+  value?: T
   customOption?: boolean // show custom option that will show a custom input
   disabled?: boolean
   loading?: boolean
+  moreOptions?: Option[]
 }
 
 const SIZE_STYLES: SizeStyleProp = {
@@ -102,15 +108,39 @@ export const Select = <T extends unknown>({
   customOption = false,
   disabled: fieldDisabled = false,
   loading = false,
+  moreOptions = [],
+  value,
 }: SelectProps<T>) => {
   const [selected, setSelected] = useState<Option | null>(null)
   const [custom, setCustom] = useState<boolean>(false) // value that enables/disable custom field
   const [customValue, setCustomValue] = useState('')
   const [enableCustomConfirm, setEnableCustomConfirm] = useState(false)
 
+  const [isOtherSelected, setIsOtherSelected] = useState(false)
+
+  const visibleOptions = useMemo(() => {
+    if (!isOtherSelected) {
+      return options
+    }
+
+    return options
+      .concat(moreOptions)
+      .filter(
+        (option, index, self) =>
+          index ===
+          self.findIndex(
+            (t) => t.value === option.value && t.label === option.label
+          )
+      )
+  }, [options, moreOptions, isOtherSelected])
+
   const onChangeOption = (value: Option['value']) => {
-    if (CUSTOM_VALUE !== value) {
-      const currentItem = options?.find((option) => option.value == value)
+    if (value === 'other') {
+      setIsOtherSelected(true)
+    } else if (CUSTOM_VALUE !== value) {
+      const currentItem = visibleOptions?.find(
+        (option) => option.value == value
+      )
       setSelected(currentItem || null)
       if (currentItem && typeof onChange === 'function') {
         onChange(currentItem?.value, false)
@@ -151,6 +181,12 @@ export const Select = <T extends unknown>({
     if (!defaultValue || selected?.value) return
     onChangeOption(defaultValue as string)
   }, [defaultValue, loading, selected])
+
+  useEffect(() => {
+    if (value && value !== selected?.value) {
+      onChangeOption(value as string)
+    }
+  }, [value])
 
   const disableConfirm = customValue?.length === 0 || !enableCustomConfirm
 
@@ -224,7 +260,7 @@ export const Select = <T extends unknown>({
                 </div>
               </Listbox.Button>
               <Listbox.Options className="absolute z-10 mt-1 overflow-scroll bg-white border border-gray-400 rounded-xl max-h-[300px] outline-none">
-                {options?.map((option: Option) => {
+                {visibleOptions?.map((option: Option) => {
                   const hasAnyAppend = options?.some((option) => option.append)
                   const hasAnyPrepend = options?.some(
                     (option) => option.prepend
@@ -263,6 +299,17 @@ export const Select = <T extends unknown>({
                       disabled={fieldDisabled}
                     />
                   </Listbox.Option>
+                )}
+                {!isOtherSelected && moreOptions.length > 0 && (
+                  <button
+                    className="w-full italic"
+                    type="button"
+                    onClick={() => setIsOtherSelected(true)}
+                  >
+                    <SelectOption
+                      option={{ label: 'Show more...', value: CUSTOM_VALUE }}
+                    />
+                  </button>
                 )}
               </Listbox.Options>
             </>

@@ -249,27 +249,59 @@ Read the explanations and follow the template in [`./proposals/006-cross-bridge-
 
 To make sure all calls can be executed properly, you can use Tenderly forks to test execution of calls on each destination chains.
 
-### After proposal execution
+There is test DAO deployed with the entire cross-chain pipeline configured between Gnosis chain and Polygon mainnet - available at [0x530ff2daed410ca7d70c25f18dc770f106201151](https://www.tally.xyz/gov/unlock-cross-chain-test-dao-on-gnosis/proposals). The address of the multisig on destination (Polygon) is [0x6ff837695B120A8f533498584249131F1c6fC4a8](https://app.safe.global/transactions/history?safe=matic:0x6ff837695B120A8f533498584249131F1c6fC4a8)
+
+A test version of the Unlock factory contract is deployed on Polygon at [0x2411336105D4451713d23B5156038A48569EcE3a](https://polygonscan.com/address/0x2411336105d4451713d23b5156038a48569ece3a) and can be used for testing cross-chain proposals execution.
+
+### Execute a cross-chain DAO proposal
+
+Once the proposal has been through the timelock embargo period and has been executed on the DAO, there are still a few steps for all calls to cross the bridges and get executed properly on all destination chains. These steps can be executed by anyone.
+
+1. pay the Connext bridge fee for all the calls
+2. wait for the calls to cross the bridge (usually ~2-5h)
+3. wait for the safe (multisig) cooldown period (2 days)
+4. execute the calls on each chain
+
+#### Get the execution tx id
+
+To execute these commands, you will need the hash from the transaction that executed the proposal on the DAO. The transaction contains the IDs of the bridge calls that will be used by the scripts to fetch information.
+
+NB: On [Tally.xyz](://www.tally.xyz/gov/unlock), a etherscan link containing the hash can be found on the upper left button next to _Proposal Executed_.
+
+```
+export PROPOSAL_EXECUTION_TX=<0x....>
+```
 
 #### Pay bridge fees
 
-Each transaction contained in the proposal is sent separately to the bridge. For each tx, the bridge fee needs to be paid on origin chain (mainnet) for the txs to proceed. To pay all fees for the bridge, use the following script:
+Calls for each chains are sent from the proposal separately to the bridge of the destination chain. A bridge fee needs to be paid on origin chain for the txs to proceed and cross to the other side.
+
+Instead of having to pay each fee separately, we batch all fee payments in a single multicall executed by a Safe. To create the batched call in a multisig, you can use the script below. Then you need to go the multisig and execute it.
 
 ```
-# update the txId accordingly
+# set the execution tx id
+export PROPOSAL_EXECUTION_TX=<0x....>
+
+# create a batched multisig tx to pay the bridge fees
 yarn hardhat run scripts/bridge/payFee.js --network mainnet
 ```
 
 #### Check status of the calls
 
-You can check the status of all calls on various chains manually with the [Connext explorer](https://connextscan.io/) or directly parse calls from the execution tx using the following script:
+You can check the status of all calls on various chains manually with the [Connext explorer](https://connextscan.io/) or directly parse calls from the execution tx using the script below. You will need [an API key from The Graph](https://thegraph.com/studio/apikeys/) to query the Connext bridge subgraph and get the status of all transactions.
 
 ```
-# update the txId accordingly
+# set the execution tx id
+export PROPOSAL_EXECUTION_TX=<0x....>
+
+# export the subgraph api key
+export SUBGRAPH_QUERY_API_KEY=<...>
+
+# check the status of the calls on all bridges
 yarn hardhat run scripts/bridge/status.js --network mainnet
 ```
 
-NB: This will create a temporary JSON file named `xcalled.json.tmp` with the info and statuses of all tx.
+NB: This will create a temporary JSON file named `xcalled.tmp.json` with the info and statuses of all tx.
 
 ### Execute all tx on destination chains
 

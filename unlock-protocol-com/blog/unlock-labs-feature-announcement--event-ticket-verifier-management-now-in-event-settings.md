@@ -1,0 +1,12 @@
+---
+title: "Unlock Labs Feature Announcement: Event Ticket Verifier Management Now in Event Settings"
+subtitle: ""
+authorName: "Unlock Labs team"
+publishDate: "Tue Jun 04 2024 04:05:17 GMT+0000 (Coordinated Universal Time)"
+description: "Adding event verifiers for checking tickets in at events has been integrated into the event settings page of an event itself."
+image: "/images/blog/unlock-labs-feature-announcement--event-ticket-verifier-management-now-in-event-settings/412ff11cbae1c9c2429a6ceee9475d76.jpg"
+---
+
+![Unlock Labs Feature Announcement: Event Ticket Verifier Management Now in Event Settings](https://storage.googleapis.com/papyrus_images/412ff11cbae1c9c2429a6ceee9475d76.jpg)
+
+<p>Adding event verifiers for checking tickets in at events has been integrated into the event settings page of an event itself. This simplifies the experience for event organizers who are adding additional individuals who can check in tickets at their events.</p><p>Adding event verifiers now can be done by selecting "Verifiers" from the Settings menu for an event, and multiple individuals can be added as verifiers.</p><figure float="none" data-type="figure" class="img-center" style="max-width: null;"><img src="/images/blog/unlock-labs-feature-announcement--event-ticket-verifier-management-now-in-event-settings/7966112f4a333b4bb399d4ea48c3250d.png" blurdataurl="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAATCAIAAAB+9pigAAAACXBIWXMAAAsTAAALEwEAmpwYAAACj0lEQVR4nK2U70/TQBjH75/zlYnE+M5IUN/7bxhDVIL8iAEVJDEmvpKQKDgyI0qQgF1XfnQ5ui1z2K10a2mv1zvurj1DO4vgNrLIN59cnlwu/V6/z9OCOA7nZmcW5mcFQ/6xhf0W9ltZwan3nwApGUi0urr0cnb67Zv5169mFt+/0zS1bOhXYCAY2trY2CkU4phw5kUiQL69/i2/sry0vfmVYOd/DfxjS1G22m2TUzfNxDwsj9y5ff/uyNTE0yswwH5L+fG9VoWCofRxBDshdgnxY8E49U9h6BzUp8RLOO4c6IkHMGqXDRhiN90i2I1EcKCba3ndcTwuGPlHjDF5prgXQghOEXBb9YUXE/vF9RPcDJxa4NQFQzs7+7mVL6qqatquqqqKomSrqqq6rhNCMA4JIbK3oiimxAcE2fWy5lgVipoJDc6QbdvlimEYhq7rEMJ0hRBWq1X9jwzDgBD2MZBSnr4Bp14kQs6CvyIKy5VKrVaTUgohstPivKLoNIT+6hhw6iakfXc5Q6bZUFUNQqPtOLbdalpHptlAKMA4HIjM4AyCHcEC02xsbm4rSrGgakVt17LspmVTyjkXGf3DORfRBYNIhAdG6fBXBQVt1ztCQbvrwLDLROlJd4M4DnMfi08eLs+Mf34+lp8eyz8bzU0+Xp0czaWMP/o0N7WGMbncg/gXDTBqx3H44N4CANcAuAnAEAA3ALgFwHBSDCVcB2DYPkLpLA4WUYoQREomJe8Bk5JxFvbnhIaUeF17EJT2Dj8sKkWlgnGAMUaJ0gJjHEVx/4t3rs9Fzymq/6wrSlFRCvt7exBCLVGpVNI0DUJ46fhn6tKDDgxFAqcIFkQizIrkkxzkb9p1l2CnDwMZ/Aa985BKRWK6lAAAAABJRU5ErkJggg==" nextheight="1818" nextwidth="3142" class="image-node embed"><figcaption htmlattributes="[object Object]" class="hide-figcaption"></figcaption></figure><p></p>

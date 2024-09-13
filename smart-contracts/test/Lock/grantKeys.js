@@ -1,6 +1,7 @@
-const { assert } = require('chai')
+const assert = require('assert')
 const { ethers } = require('hardhat')
 const { reverts, deployLock, ADDRESS_ZERO } = require('../helpers')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 let lock
 let tx
@@ -8,6 +9,7 @@ let tx
 describe('Lock / grantKeys', () => {
   let keyOwner, attacker, signers
   let validExpirationTimestamp
+  let keyOwnerList
 
   before(async () => {
     ;[, keyOwner, attacker, ...signers] = await ethers.getSigners()
@@ -15,6 +17,7 @@ describe('Lock / grantKeys', () => {
     const latestBlock = await ethers.provider.getBlock(blockNumber)
     validExpirationTimestamp = Math.round(latestBlock.timestamp + 600)
     lock = await deployLock()
+    keyOwnerList = signers.map(({ address }) => address).splice(4, 6)
   })
 
   describe('can grant key(s)', () => {
@@ -23,35 +26,35 @@ describe('Lock / grantKeys', () => {
       before(async () => {
         // the lock creator is assigned the KeyGranter role by default
         tx = await lock.grantKeys(
-          [keyOwner.address],
+          [await keyOwner.getAddress()],
           [validExpirationTimestamp],
           [ADDRESS_ZERO]
         )
-        const { events } = await tx.wait()
-        ;({ args } = events.find(({ event }) => event === 'Transfer'))
+        const receipt = await tx.wait()
+        ;({ args } = await getEvent(receipt, 'Transfer'))
       })
 
       it('should log Transfer event', async () => {
         assert.equal(args.from, 0)
-        assert.equal(args.to, keyOwner.address)
+        assert.equal(args.to, await keyOwner.getAddress())
       })
 
       it('should acknowledge that user owns key', async () => {
-        assert.equal(await lock.ownerOf(args.tokenId), keyOwner.address)
+        assert.equal(
+          await lock.ownerOf(args.tokenId),
+          await keyOwner.getAddress()
+        )
       })
 
       it('getHasValidKey is true', async () => {
-        assert.equal(await lock.getHasValidKey(keyOwner.address), true)
+        assert.equal(
+          await lock.getHasValidKey(await keyOwner.getAddress()),
+          true
+        )
       })
     })
 
     describe('bulk grant keys', () => {
-      let keyOwnerList
-
-      before(async () => {
-        keyOwnerList = signers.map(({ address }) => address).splice(4, 6)
-      })
-
       it('should fail to grant keys when expiration dates are missing', async () => {
         await reverts(
           lock.grantKeys(
@@ -67,25 +70,15 @@ describe('Lock / grantKeys', () => {
         const expirationDates = keyOwnerList.map(
           (k, i) => validExpirationTimestamp + i * 3
         )
-
-        before(async () => {
-          tx = await lock.methods['grantKeys(uint256[],uint256[])'](
-            keyOwnerList,
-            expirationDates
-          )
-        })
-
-        it('should acknowledge that user owns key', async () => {
-          for (let i = 0; i < keyOwnerList.length; i++) {
-            assert.equal(await lock.balanceOf(keyOwnerList[i]), 1)
-          }
-        })
-
-        it('getHasValidKey is true', async () => {
-          for (let i = 0; i < keyOwnerList.length; i++) {
-            assert.equal(await lock.getHasValidKey(keyOwnerList[i]), true)
-          }
-        })
+        tx = await lock.grantKeys(
+          keyOwnerList,
+          expirationDates,
+          keyOwnerList.map(() => ADDRESS_ZERO)
+        )
+        for (let i = 0; i < keyOwnerList.length; i++) {
+          assert.equal(await lock.balanceOf(keyOwnerList[i]), 1)
+          assert.equal(await lock.getHasValidKey(keyOwnerList[i]), true)
+        }
       })
     })
   })
@@ -108,7 +101,7 @@ describe('Lock / grantKeys', () => {
         lock
           .connect(attacker)
           .grantKeys(
-            [keyOwner.address],
+            [await keyOwner.getAddress()],
             [validExpirationTimestamp],
             [ADDRESS_ZERO]
           ),

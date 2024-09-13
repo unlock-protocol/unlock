@@ -33,10 +33,6 @@ const settings = {
 module.exports = {
   solidity: {
     compilers: [
-      { version: '0.4.24', settings },
-      { version: '0.4.25', settings },
-      { version: '0.5.0', settings },
-      { version: '0.5.12', settings },
       { version: '0.5.17', settings },
       { version: '0.5.14', settings },
       { version: '0.5.7', settings },
@@ -61,13 +57,7 @@ module.exports = {
     // debugMode: true,
     keepFileStructure: true,
     include: contractsToDocument,
-    exclude: [
-      'IERC165',
-      'IERC721',
-      'IERC721Enumerable',
-      'Initializable',
-      'IPublicLockV8Sol5',
-    ],
+    exclude: ['IERC165', 'IERC721', 'IERC721Enumerable', 'Initializable'],
   },
   paths: {
     sources: contractsPath,

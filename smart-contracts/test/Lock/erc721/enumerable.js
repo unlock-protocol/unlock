@@ -1,4 +1,4 @@
-const { assert } = require('chai')
+const assert = require('assert')
 const { reverts } = require('../../helpers/errors')
 const { deployLock, purchaseKeys, compareBigNumbers } = require('../../helpers')
 
@@ -17,7 +17,7 @@ describe('Lock / erc721 / enumerable', () => {
   it('tokenByIndex is a no-op', async () => {
     for (let i = 0; i < keyOwners.length; i++) {
       const id = await lock.tokenByIndex(i)
-      assert.equal(id.toString(), i)
+      assert.equal(id, i)
     }
   })
 

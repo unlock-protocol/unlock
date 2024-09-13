@@ -135,8 +135,8 @@ describe('Receipt v2', () => {
     expect(receiptResponse.body.supplier).toBeDefined()
     expect(receiptResponse.body.purchaser).toBeDefined()
 
-    expect(receiptResponse.body.supplier).toContain(supplier)
-    expect(receiptResponse.body.purchaser).toContain(purchaser)
+    expect(receiptResponse.body.supplier).toMatchObject(supplier)
+    expect(receiptResponse.body.purchaser).toMatchObject(purchaser)
   })
 
   it('Get receipt fails when user is not lock manager', async () => {

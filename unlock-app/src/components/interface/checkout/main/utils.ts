@@ -58,6 +58,7 @@ export function formatFiatPriceFromCents(priceInCents: number, currency = '$') {
   })
   return `${formatted} ${currency}`
 }
+
 interface Options {
   paywallConfig?: PaywallConfigType
   lock?: PaywallLockConfigType
@@ -71,11 +72,15 @@ export const shouldSkip = ({ lock, paywallConfig }: Options) => {
   const skipQuantity = !(hasMaxRecipients || hasMinRecipients)
 
   const skip = lock?.skipRecipient || paywallConfig?.skipRecipient
+
+  const metadataInputs = lock?.metadataInputs || paywallConfig?.metadataInputs
+
+  const hasMetadataInputs =
+    metadataInputs &&
+    metadataInputs.filter((input) => input.type !== 'hidden').length > 0
+
   const collectsMetadadata =
-    lock?.metadataInputs ||
-    paywallConfig?.metadataInputs ||
-    paywallConfig?.emailRequired ||
-    lock?.emailRequired
+    hasMetadataInputs || paywallConfig?.emailRequired || lock?.emailRequired
   const skipRecipient = Boolean(skip && !collectsMetadadata)
 
   return {
@@ -90,4 +95,16 @@ export const validateEmail = (email: string) => {
     .match(
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     )
+}
+
+export const getNumberOfRecurringPayments = (
+  renewals: number | string | undefined
+): number => {
+  if (!renewals) {
+    return 0
+  }
+  if (typeof renewals === 'string' && renewals.toLowerCase() === 'forever') {
+    return Infinity
+  }
+  return Math.abs(Math.floor(Number(renewals)))
 }

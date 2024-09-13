@@ -63,15 +63,13 @@ export const celo: NetworkConfig = {
   },
   previousDeploys: [],
   provider: 'https://rpc.unlock-protocol.com/42220',
-  publicLockVersionToDeploy: 13,
+  publicLockVersionToDeploy: 14,
   publicProvider: 'https://forno.celo.org',
   startBlock: 13994123,
   subgraph: {
-    endpoint:
-      'https://api.studio.thegraph.com/query/65299/unlock-protocol-celo/version/latest',
+    endpoint: 'https://subgraph.unlock-protocol.com/42220',
     studioName: 'unlock-protocol-celo',
   },
-  swapPurchaser: '0x440d9D4E66d39bb28FB58729Cb4D3ead2A595591',
   tokens: [
     {
       address: '0xef4229c8c3250C675F21BCefa42f58EfbfF6002a',

@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
-import { ZERO } from '~/components/interface/locks/Create/modals/SelectCurrencyModal'
 import { HookMapping } from '~/components/interface/locks/Settings/forms/UpdateHooksForm'
+import { ADDRESS_ZERO } from '~/constants'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface GetHookValuesProps {
   lockAddress: string
   network: number
-  version?: number
+  version?: bigint
 }
 
 export function useCustomHook({
@@ -22,7 +22,7 @@ export function useCustomHook({
       ...Object.entries(HookMapping).map(
         async ([fieldName, { hookName, fromPublicLockVersion = 0 }]) => {
           const hasRequiredVersion: boolean =
-            (version ?? 0) >= fromPublicLockVersion ?? false
+            (version ?? 0) >= fromPublicLockVersion
           if (hasRequiredVersion) {
             const hookValue = await web3Service[hookName]({
               lockAddress,
@@ -30,7 +30,7 @@ export function useCustomHook({
             })
             values = {
               ...values,
-              [fieldName]: hookValue || ZERO,
+              [fieldName]: hookValue || ADDRESS_ZERO,
             }
           }
         }
@@ -41,18 +41,16 @@ export function useCustomHook({
 
   const {
     data: values,
-    isLoading,
+    isPending,
     refetch,
-  } = useQuery(
-    ['getHookValues', lockAddress, network],
-    async () => await getHookValues(),
-    {
-      enabled: lockAddress?.length > 0,
-    }
-  )
+  } = useQuery({
+    queryKey: ['getHookValues', lockAddress, network],
+    queryFn: getHookValues,
+    enabled: lockAddress?.length > 0,
+  })
 
   return {
-    isLoading,
+    isPending,
     refetch,
     values,
     getHookValues,

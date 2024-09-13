@@ -45,8 +45,8 @@ export const PasswordCappedContractHook = ({
       if (settings?.passwords) {
         const passwordDetails = await Promise.all(
           settings.passwords.map(async (password) => {
-            const signerAddress = await getEthersWalletFromPassword(password)
-              .address
+            const signerAddress =
+              await getEthersWalletFromPassword(password).address
             const details = await web3Service.getPasswordHookWithCapValues({
               lockAddress,
               signerAddress,
@@ -101,10 +101,11 @@ export const PasswordCappedContractHook = ({
       }
     )
     await reloadSettings()
-    return
   }
 
-  const setPasswordMutation = useMutation(savePassword)
+  const setPasswordMutation = useMutation({
+    mutationFn: savePassword,
+  })
 
   const onSubmit = async ({ password, ...hooks }: any) => {
     await setEventsHooksMutation.mutateAsync(hooks)
@@ -155,8 +156,8 @@ export const PasswordCappedContractHook = ({
                 disabled={!isValid}
                 size="small"
                 loading={
-                  setPasswordMutation.isLoading ||
-                  setEventsHooksMutation.isLoading
+                  setPasswordMutation.isPending ||
+                  setEventsHooksMutation.isPending
                 }
               >
                 Add
@@ -209,7 +210,7 @@ export const Password = ({
     <tr>
       <td className="pl-2">{password}</td>
       <td className="pl-2">
-        {count}/{cap}
+        {Number(count)}/{Number(cap)}
       </td>
       <td className="pl-2 flex flex-col items-center">
         <TrashIcon

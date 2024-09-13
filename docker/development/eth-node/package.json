@@ -3,20 +3,25 @@
   "description": "Simple ETH node for development purposes",
   "private": true,
   "scripts": {
+    "build": "",
     "lint:fix": "yarn lint --fix",
-    "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js scripts/",
+    "lint": "eslint scripts/",
+    "packages": "yarn workspaces foreach --recursive --from '{@unlock-protocol/types,@unlock-protocol/core,@unlock-protocol/eslint-config,@unlock-protocol/hardhat-helpers,@unlock-protocol/express,@unlock-protocol/contracts,@unlock-protocol/networks,@unlock-protocol/paywall,@unlock-protocol/unlock-js,@unlock-protocol/crypto-icon,@unlock-protocol/ui,@unlock-protocol/hardhat-plugin,@unlock-protocol/email-templates}'",
     "provision": "hardhat run scripts/provision.ts",
     "start": "hardhat node"
   },
   "dependencies": {
-    "@nomiclabs/hardhat-ethers": "2.2.3",
+    "@nomicfoundation/hardhat-ethers": "3.0.8",
     "@unlock-protocol/contracts": "latest",
     "@unlock-protocol/hardhat-plugin": "latest",
-    "eslint": "8.57.0",
-    "ethers": "5.7.2",
-    "hardhat": "2.20.1",
+    "@unlock-protocol/networks": "latest",
+    "eslint": "9.9.1",
+    "ethers": "6.13.2",
+    "fs-extra": "11.2.0",
+    "hardhat": "2.22.9",
     "hardhat-erc1820": "0.1.0",
     "ts-node": "10.9.2",
-    "typescript": "5.4.5"
-  }
+    "typescript": "5.5.4"
+  },
+  "packageManager": "yarn@4.3.1"
 }

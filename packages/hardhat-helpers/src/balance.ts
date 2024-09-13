@@ -1,13 +1,11 @@
+import { ADDRESS_ZERO } from './constants'
 import erc20Abi from './ABIs/erc20.json'
 import { getTokenInfo } from './uniswap'
-
 async function getBalance(account: string, tokenAddress: string) {
   const { ethers } = require('hardhat')
-  const { AddressZero } = ethers.constants
-
   let balance
   // ETH balance
-  if (!tokenAddress || tokenAddress === AddressZero) {
+  if (!tokenAddress || tokenAddress === ADDRESS_ZERO) {
     balance = await ethers.provider.getBalance(account)
   } else {
     // erc20 balance

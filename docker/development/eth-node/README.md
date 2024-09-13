@@ -1,20 +1,25 @@
-# Hardhat docker node
+# Unlock EVM Node
 
-Creates a standalone hardhat node,intended for development purposes
-
-## Prepare for Unlock dev
+A standalone hardhat node, fully provisioned for Unlock local development and integration testing
 
 ### Start an ETH node
 
 ```
+yarn
+yarn build
 yarn start
 ```
 
 ### Deploy contracts and sample locks
 
+From a second shell
+
 ```
 yarn provision --network localhost
 ```
+
+NB: This will create a `networks.json` file that contains the address to Unlock factory contract
+that can be used to locally deploy a subgraph for instance (see `yarn start` at repo root).
 
 ## Dockerize
 

@@ -62,7 +62,7 @@ describe("updating a user's password encrypted private key", () => {
 
       await UserOperations.createUser(userCreationDetails)
 
-      const sig = await wallet._signTypedData(domain, types, message['user'])
+      const sig = await wallet.signTypedData(domain, types, message['user'])
 
       const response = await request(app)
         .put(
@@ -76,8 +76,9 @@ describe("updating a user's password encrypted private key", () => {
         where: { publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2' },
       })
 
-      expect(user?.passwordEncryptedPrivateKey).toEqual(
-        '{"data" : "New Encrypted Password"}'
+      // Serialize the object to JSON string before comparison
+      expect(JSON.stringify(user?.passwordEncryptedPrivateKey)).toEqual(
+        '{"data":"New Encrypted Password"}'
       )
       expect(response.status).toBe(202)
     })
@@ -103,7 +104,7 @@ describe("updating a user's password encrypted private key", () => {
       const typedData = generateTypedData(message, 'user')
 
       const { domain, types } = typedData
-      const sig = await wallet._signTypedData(domain, types, message['user'])
+      const sig = await wallet.signTypedData(domain, types, message['user'])
 
       const response = await request(app)
         .put(`/users/${user.publicKey}/passwordEncryptedPrivateKey`)

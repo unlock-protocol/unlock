@@ -1,15 +1,14 @@
+'use client'
+
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
-import { ConnectWallet } from './Wallet'
-import { ConnectUnlockAccount } from './UnlockAccount'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { ConnectedWallet } from './ConnectedWallet'
 import { useConnectModal } from '~/hooks/useConnectModal'
+import ConnectWalletComponent from './ConnectWalletComponent'
 
 export const ConnectModal = () => {
-  const { status, openConnectModal, closeConnectModal, open } =
-    useConnectModal()
+  const { status, closeConnectModal, open } = useConnectModal()
   const { connected } = useAuth()
 
   const useUnlockAccount = status === 'unlock_account'
@@ -43,7 +42,7 @@ export const ConnectModal = () => {
             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
-            <div className="z-10 w-full max-w-sm bg-white rounded-2xl">
+            <div className="z-10 w-full max-w-sm bg-white rounded-2xl py-4">
               <header className="p-6">
                 <div className="flex px-1">
                   <div className="flex-1 font-bold ">
@@ -51,8 +50,8 @@ export const ConnectModal = () => {
                       {!connected
                         ? 'Connect Account'
                         : useUnlockAccount
-                        ? 'Unlock Account'
-                        : 'Connected Wallet'}
+                          ? 'Unlock Account'
+                          : 'Connected Wallet'}
                     </h1>
                   </div>
                   <div>
@@ -69,21 +68,7 @@ export const ConnectModal = () => {
                   </div>
                 </div>
               </header>
-              {!useUnlockAccount && !connected && (
-                <ConnectWallet
-                  onUnlockAccount={() => {
-                    openConnectModal('unlock_account')
-                  }}
-                />
-              )}
-              {useUnlockAccount && !connected && (
-                <ConnectUnlockAccount
-                  onExit={() => {
-                    openConnectModal('crypto')
-                  }}
-                />
-              )}
-              {connected && <ConnectedWallet />}
+              <ConnectWalletComponent shoudOpenConnectModal={true} />
             </div>
           </Transition.Child>
         </div>

@@ -1,12 +1,10 @@
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
-import { selectProvider, useAuthenticate } from '~/hooks/useAuthenticate'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { getPaywallConfigFromQuery } from '~/utils/paywallConfig'
 import getOauthConfigFromQuery from '~/utils/oauth'
-import { useConfig } from '~/utils/withConfig'
 import { Checkout } from './main'
-import { Connect } from './Connect'
 import { Container } from './Container'
 import { CloseButton } from './Shell'
 import { PoweredByUnlock } from './PoweredByUnlock'
@@ -14,10 +12,11 @@ import { CgSpinner as LoadingIcon } from 'react-icons/cg'
 import { useCheckoutConfig } from '~/hooks/useCheckoutConfig'
 import { ethers } from 'ethers'
 import { PaywallConfigType } from '@unlock-protocol/core'
+import { Connect } from './Connect'
+import { isInIframe } from '~/utils/iframe'
 
 export function CheckoutPage() {
   const { query } = useRouter()
-  const config = useConfig()
   const { authenticateWithProvider } = useAuthenticate({})
 
   // Fetch config from parent in iframe context
@@ -38,11 +37,7 @@ export function CheckoutPage() {
     paywallConfigFromQuery
 
   // If the referrer address is valid, override the paywall config referrer with it.
-  if (
-    referrerAddress &&
-    paywallConfig &&
-    ethers.utils.isAddress(referrerAddress)
-  ) {
+  if (referrerAddress && paywallConfig && ethers.isAddress(referrerAddress)) {
     paywallConfig.referrer = referrerAddress
   }
 
@@ -55,10 +50,6 @@ export function CheckoutPage() {
       )
     }
   }, [authenticateWithProvider, communication.providerAdapter])
-
-  // TODO: do we need to pass it down?
-  const injectedProvider =
-    communication.providerAdapter || selectProvider(config)
 
   const checkoutRedirectURI =
     paywallConfig?.redirectUri ||
@@ -88,11 +79,7 @@ export function CheckoutPage() {
   if (oauthConfig) {
     return (
       <Container>
-        <Connect
-          injectedProvider={injectedProvider}
-          communication={communication}
-          oauthConfig={oauthConfig}
-        />
+        <Connect paywallConfig={paywallConfig} oauthConfig={oauthConfig} />
       </Container>
     )
   }
@@ -100,12 +87,11 @@ export function CheckoutPage() {
     return (
       <Container>
         <Checkout
-          injectedProvider={injectedProvider}
-          communication={communication}
           paywallConfig={paywallConfig}
           redirectURI={
             checkoutRedirectURI ? new URL(checkoutRedirectURI) : undefined
           }
+          communication={communication}
         />
       </Container>
     )
@@ -116,7 +102,7 @@ export function CheckoutPage() {
         <div className="flex items-center justify-end mx-4 mt-4">
           <CloseButton
             onClick={() => {
-              if (!communication.insideIframe) {
+              if (!isInIframe()) {
                 window.history.back()
               } else {
                 communication.emitCloseModal()

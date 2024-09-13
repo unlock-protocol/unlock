@@ -1,8 +1,4 @@
-import {
-  DefenderRelaySigner,
-  DefenderRelayProvider,
-} from '@openzeppelin/defender-relay-client/lib/ethers'
-import { Relayer } from '@openzeppelin/defender-relay-client'
+import { Defender } from '@openzeppelin/defender-sdk'
 
 import {
   KeyManager,
@@ -30,7 +26,7 @@ interface KeyToGrant {
  * @returns
  */
 export const getProviderForNetwork = async function (network = 1) {
-  return new ethers.providers.JsonRpcProvider(networks[network].provider)
+  return new ethers.JsonRpcProvider(networks[network].provider)
 }
 
 /**
@@ -40,7 +36,7 @@ export const getProviderForNetwork = async function (network = 1) {
  * @returns
  */
 export const getPublicProviderForNetwork = async function (network = 1) {
-  return new ethers.providers.JsonRpcProvider(networks[network].publicProvider)
+  return new ethers.JsonRpcProvider(networks[network].publicProvider)
 }
 
 interface PurchaserArgs {
@@ -63,19 +59,22 @@ export const getLocalPurchaser = async function ({ network = 1 }) {
 export const getPurchaser = async function ({
   network = 1,
   address = undefined,
-}: PurchaserArgs) {
+}: PurchaserArgs): Promise<ethers.Signer> {
   // If we have a provider, we need to fetch that one... or yield an error!
   const defenderRelayCredential = config.defenderRelayCredentials[network]
-  if (defenderRelayCredential?.apiKey && defenderRelayCredential?.apiSecret) {
-    const provider = new DefenderRelayProvider(defenderRelayCredential)
-    const wallet = new DefenderRelaySigner(defenderRelayCredential, provider, {
+  if (
+    defenderRelayCredential?.relayerApiKey &&
+    defenderRelayCredential?.relayerApiSecret
+  ) {
+    const defender = new Defender(defenderRelayCredential)
+    const provider = defender.relaySigner.getProvider()
+    const wallet = await defender.relaySigner.getSigner(provider, {
       speed: 'fast',
     })
     if (!address || address === (await wallet.getAddress())) {
-      const relayer = new Relayer(defenderRelayCredential)
-      const relayerStatus = await relayer.getRelayerStatus()
+      const relayerStatus = await defender.relaySigner.getRelayerStatus()
       if (!relayerStatus.paused) {
-        return wallet
+        return wallet as ethers.Signer
       } else {
         logger.warn(
           `The OpenZeppelin Relayer purchaser at ${address} is paused! We will use the local purchaser instead.`
@@ -86,7 +85,7 @@ export const getPurchaser = async function ({
   const provider = await getPublicProviderForNetwork(network)
   const wallet = new ethers.Wallet(config.purchaserCredentials, provider)
   if (!address || address === (await wallet.getAddress())) {
-    return wallet
+    return wallet as ethers.Signer
   }
   throw new Error(`The purchaser at ${address} is unavailable!`)
 }
@@ -101,9 +100,13 @@ export const getAllPurchasers = async function ({
 }: PurchaserArgs) {
   const purchasers = []
   const defenderRelayCredential = config.defenderRelayCredentials[network]
-  if (defenderRelayCredential?.apiKey && defenderRelayCredential?.apiSecret) {
-    const provider = new DefenderRelayProvider(defenderRelayCredential)
-    const wallet = new DefenderRelaySigner(defenderRelayCredential, provider, {
+  if (
+    defenderRelayCredential?.relayerApiKey &&
+    defenderRelayCredential?.relayerApiSecret
+  ) {
+    const defender = new Defender(defenderRelayCredential)
+    const provider = defender.relaySigner.getProvider()
+    const wallet = await defender.relaySigner.getSigner(provider, {
       speed: 'fast',
     })
     purchasers.push(wallet)
@@ -234,7 +237,7 @@ export default class Dispatcher {
               {
                 address,
                 name: network.name,
-                balance: ethers.utils.formatEther(balance),
+                balance: ethers.formatEther(balance),
               },
             ]
           } catch (error) {
@@ -267,17 +270,17 @@ export default class Dispatcher {
       getPurchaser({ network, address: purchaser }),
     ])
     const address = await wallet.getAddress()
-    const [gasPrice, balance] = await Promise.all([
-      provider.getGasPrice(),
+    const [feeData, balance] = await Promise.all([
+      provider.getFeeData(),
       provider.getBalance(address),
     ])
-    if (balance.lt(gasPrice.mul(GAS_COST))) {
+    if (balance < (feeData.gasPrice || BigInt(0)) * GAS_COST) {
       logger.warn(
-        `Purchaser ${address} does not have enough coins (${ethers.utils.formatUnits(
+        `Purchaser ${address} does not have enough coins (${ethers.formatUnits(
           balance,
           '18'
-        )}) to pay for gas (${ethers.utils.formatUnits(
-          gasPrice.mul(GAS_COST)
+        )}) to pay for gas (${ethers.formatUnits(
+          (feeData.gasPrice || BigInt(0)) * GAS_COST
         )}) on ${network}`
       )
       return false
@@ -338,7 +341,9 @@ export default class Dispatcher {
         return null
       })
     )
-    const signer = signers.find((purchaser) => purchaser !== null)
+    const signer = signers.find(
+      (purchaser) => purchaser !== null
+    ) as ethers.Signer
 
     if (!signer) {
       throw new Error(
@@ -440,7 +445,7 @@ export default class Dispatcher {
       getPurchaser({ network }),
     ])
 
-    await walletService.connect(provider, wallet)
+    await walletService.connect(provider, wallet as ethers.Signer)
 
     const referrer = networks[network]?.multisig
 
@@ -473,10 +478,10 @@ export default class Dispatcher {
     const walletService = new WalletService(networks)
 
     // Get a purchaser that is a key granter!
-    const wallet = await getSignerWhoIsKeyGranterOnLock({
+    const wallet = (await getSignerWhoIsKeyGranterOnLock({
       lockAddress,
       network,
-    })
+    })) as ethers.Signer
     if (!wallet) {
       throw new Error('No signer set as key granter on this lock!')
     }
@@ -516,7 +521,7 @@ export default class Dispatcher {
       getProviderForNetwork(network),
       getPurchaser({ network }),
     ])
-    await walletService.connect(provider, wallet)
+    await walletService.connect(provider, wallet as ethers.Signer)
     return executeAndRetry(
       walletService.extendKey(
         {
@@ -542,10 +547,10 @@ export default class Dispatcher {
     const walletService = new WalletService(networks)
 
     // Get a purchaser that is a key granter
-    const wallet = await getSignerWhoIsKeyGranterOnLock({
+    const wallet = (await getSignerWhoIsKeyGranterOnLock({
       lockAddress,
       network,
-    })
+    })) as ethers.Signer
     if (!wallet) {
       throw new Error('No signer set as key granter on this lock!')
     }
@@ -597,7 +602,7 @@ export default class Dispatcher {
       getPurchaser({ network }),
     ])
     const walletService = new WalletService(networks)
-    await walletService.connect(provider, wallet)
+    await walletService.connect(provider, wallet as ethers.Signer)
     const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
 
     return executeAndRetry(
@@ -633,7 +638,7 @@ export default class Dispatcher {
       getProviderForNetwork(network),
       getPurchaser({ network }),
     ])
-    await walletService.connect(provider, wallet)
+    await walletService.connect(provider, wallet as ethers.Signer)
 
     const referrer = networks[network]?.multisig
     const teamMultisig = networks[network]?.multisig
@@ -651,7 +656,7 @@ export default class Dispatcher {
       })
     )
 
-    const transaction = await lockContract.populateTransaction.purchase(
+    const transaction = await lockContract.purchase.populateTransaction(
       keyPrices,
       recipients,
       recipients.map(() => referrer),

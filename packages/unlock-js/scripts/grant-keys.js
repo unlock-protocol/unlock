@@ -12,9 +12,7 @@ const grantKeys = async (networkId, lockAddress, rawRecipients) => {
     throw new Error('Please set a PRIVATE_KEY environment variable')
   }
 
-  const provider = new ethers.providers.JsonRpcBatchProvider(
-    network.publicProvider
-  )
+  const provider = new ethers.JsonRpcProvider(network.publicProvider)
   const wallet = new ethers.Wallet(process.env.PRIVATE_KEY)
 
   const signer = wallet.connect(provider)
@@ -25,17 +23,19 @@ const grantKeys = async (networkId, lockAddress, rawRecipients) => {
 
   const isKeyGranter = await web3Service.isKeyGranter(
     lockAddress,
-    signer.address,
+    await signer.getAddress(),
     networkId
   )
 
   const isLockManager = await web3Service.isLockManager(
     lockAddress,
-    signer.address,
+    await signer.getAddress(),
     networkId
   )
   if (!isKeyGranter && !isLockManager) {
-    throw new Error(`${signer.address} is not a lock manager or a key granter`)
+    throw new Error(
+      `${await signer.getAddress()} is not a lock manager or a key granter`
+    )
   }
 
   const recipients = []
@@ -43,15 +43,15 @@ const grantKeys = async (networkId, lockAddress, rawRecipients) => {
   const managers = []
 
   const now = Math.floor(new Date().getTime() / 1000)
-  let defaultExpiration = ethers.constants.MaxUint256
-  if (lock.expirationDuration < ethers.constants.MaxUint256) {
+  let defaultExpiration = ethers.MaxUint256
+  if (lock.expirationDuration < ethers.MaxUint256) {
     defaultExpiration = now + lock.expirationDuration
   }
   for (let i = 0; i < rawRecipients.length; i++) {
     try {
       const [recipient, expiration, manager] = rawRecipients[i].split(',')
 
-      const address = await new ethers.providers.JsonRpcBatchProvider(
+      const address = await new ethers.JsonRpcProvider(
         networks.mainnet.publicProvider
       ).resolveName(recipient)
 
@@ -68,7 +68,7 @@ const grantKeys = async (networkId, lockAddress, rawRecipients) => {
       if (manager) {
         managers.push(manager)
       } else {
-        managers.push(wallet.address)
+        managers.push(await wallet.getAddress())
       }
     } catch (error) {
       console.error(error)

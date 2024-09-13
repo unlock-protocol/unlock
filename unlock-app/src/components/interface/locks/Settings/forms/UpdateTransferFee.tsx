@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Input, ToggleSwitch } from '@unlock-protocol/ui'
+import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -43,7 +44,9 @@ export const UpdateTransferFee = ({
     network,
   })
 
-  const updateTransferFeeMutation = useMutation(updateTransferFee)
+  const updateTransferFeeMutation = useMutation({
+    mutationFn: updateTransferFee,
+  })
 
   const onSubmit = async (fields: FormProps) => {
     if (isValid) {
@@ -61,17 +64,18 @@ export const UpdateTransferFee = ({
     }
   }
 
-  const { isLoading, data: transferFeeBasisPoints } = useQuery(
-    [
+  const { isPending, data: transferFeeBasisPoints } = useQuery({
+    queryKey: [
       'getTransferFeeBasisPoints',
       lockAddress,
       network,
       updateTransferFeeMutation.isSuccess,
     ],
-    async () => getTransferFeeBasisPoints()
-  )
+    queryFn: async () => getTransferFeeBasisPoints(),
+  })
 
-  const transferFeePercentage = (transferFeeBasisPoints ?? 0) / 100
+  const transferFeePercentage =
+    ethers.toNumber(transferFeeBasisPoints ?? 0) / 100
   const isTransferAllowed = transferFeePercentage < 100
 
   useEffect(() => {
@@ -79,18 +83,18 @@ export const UpdateTransferFee = ({
     setAllowTransfer(isTransferAllowed)
   }, [isTransferAllowed, setValue, transferFeePercentage])
 
-  if (isLoading) {
+  if (isPending) {
     return <LoadingIcon />
   }
 
   const disabledInput =
-    disabled || isLoading || updateTransferFeeMutation.isLoading
+    disabled || isPending || updateTransferFeeMutation.isPending
 
   return (
     <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
       <ToggleSwitch
         enabled={allowTransfer}
-        setEnabled={(enabled) => {
+        setEnabled={(enabled: boolean) => {
           setAllowTransfer(enabled)
           setValue('transferFeePercentage', 0)
         }}

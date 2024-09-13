@@ -1,3 +1,16 @@
-cache
-.yarn
+# local deps
 networks.json
+
+# contracts
+cache
+
+# yarn
+.yarn/*
+.yarn/install-state.gz
+.pnp.js
+# !.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

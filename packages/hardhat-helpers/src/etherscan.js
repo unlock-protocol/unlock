@@ -67,7 +67,6 @@ const etherscan = {
 
 if (process.env.ETHERSCAN_API_KEY) {
   ;['mainnet', 'sepolia'].forEach(
-    // eslint-disable-next-line no-return-assign
     (netName) => (etherscan.apiKey[netName] = process.env.ETHERSCAN_API_KEY)
   )
 }

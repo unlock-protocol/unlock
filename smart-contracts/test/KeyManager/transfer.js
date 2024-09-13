@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat')
 const { setup } = require('./setup')
 const { reverts } = require('../helpers')
-const { assert } = require('chai')
+const assert = require('assert')
 
 let lock
 let keyManager, locksmith, grantee, attacker, realUser
@@ -23,31 +23,31 @@ describe('KeyManager', () => {
   beforeEach(async () => {
     ;[keyManager, lock] = await setup()
     ;[, locksmith, grantee, attacker, realUser] = await ethers.getSigners()
-    // Let's now aidrop a key to an address and set the keyManager as... keyManager!
-    await keyManager.addLocksmith(locksmith.address)
+    // Let's now aidrop a key to an address and set the keyManager as.. keyManager!
+    await keyManager.addLocksmith(await locksmith.getAddress())
     await lock.grantKeys(
-      [grantee.address],
+      [await grantee.getAddress()],
       [OneMonthFromNow],
-      [keyManager.address]
+      [await keyManager.getAddress()]
     )
     const { chainId } = await ethers.provider.getNetwork()
     domain = {
       name: 'KeyManager',
       version: '1',
       chainId,
-      verifyingContract: keyManager.address,
+      verifyingContract: await keyManager.getAddress(),
     }
   })
 
   it('should fail transfers if they have expired', async () => {
     const transfer = {
-      lock: lock.address,
+      lock: await lock.getAddress(),
       token: 1,
-      owner: grantee.address,
+      owner: await grantee.getAddress(),
       deadline: OneDayAgo,
     }
-    const locksmithSigner = await ethers.getSigner(locksmith.address)
-    const signature = await locksmithSigner._signTypedData(
+    const locksmithSigner = await ethers.getSigner(await locksmith.getAddress())
+    const signature = await locksmithSigner.signTypedData(
       domain,
       types,
       transfer
@@ -66,13 +66,13 @@ describe('KeyManager', () => {
 
   it('should fail transfers if they were not signed by the signer', async () => {
     const transfer = {
-      lock: lock.address,
+      lock: await lock.getAddress(),
       token: 1,
-      owner: grantee.address,
+      owner: await grantee.getAddress(),
       deadline: OneHourFromNow,
     }
-    const attackerSigner = await ethers.getSigner(attacker.address)
-    const signature = await attackerSigner._signTypedData(
+    const attackerSigner = await ethers.getSigner(await attacker.getAddress())
+    const signature = await attackerSigner.signTypedData(
       domain,
       types,
       transfer
@@ -91,23 +91,23 @@ describe('KeyManager', () => {
 
   it('should lend the key to the sender if the signature matches', async () => {
     const transfer = {
-      lock: lock.address,
+      lock: await lock.getAddress(),
       token: 1,
-      owner: grantee.address,
+      owner: await grantee.getAddress(),
       deadline: OneHourFromNow,
     }
-    assert.notEqual(await lock.ownerOf(1), realUser.address)
-    const locksmithSigner = await ethers.getSigner(locksmith.address)
-    const signature = await locksmithSigner._signTypedData(
+    assert.notEqual(await lock.ownerOf(1), await realUser.getAddress())
+    const locksmithSigner = await ethers.getSigner(await locksmith.getAddress())
+    const signature = await locksmithSigner.signTypedData(
       domain,
       types,
       transfer
     )
     assert.equal(
-      ethers.utils.verifyTypedData(domain, types, transfer, signature),
-      locksmith.address
+      ethers.verifyTypedData(domain, types, transfer, signature),
+      await locksmith.getAddress()
     )
-    const realUserSigner = await ethers.getSigner(realUser.address)
+    const realUserSigner = await ethers.getSigner(await realUser.getAddress())
     await keyManager
       .connect(realUserSigner)
       .transfer(
@@ -117,7 +117,7 @@ describe('KeyManager', () => {
         transfer.deadline,
         signature
       )
-    assert.equal(await lock.ownerOf(1), realUser.address)
-    assert.equal(await lock.keyManagerOf(1), keyManager.address)
+    assert.equal(await lock.ownerOf(1), await realUser.getAddress())
+    assert.equal(await lock.keyManagerOf(1), await keyManager.getAddress())
   })
 })

@@ -63,7 +63,8 @@ export const UpdateDurationForm = ({
     } as any)
   }
 
-  const updateDurationMutation = useMutation(updateDuration, {
+  const updateDurationMutation = useMutation({
+    mutationFn: updateDuration,
     onSuccess: () => {
       const { unlimitedDuration, expirationDuration } = getValues()
       setValue('expirationDuration', expirationDuration)
@@ -84,7 +85,7 @@ export const UpdateDurationForm = ({
     }
   }
 
-  const disabledInput = updateDurationMutation.isLoading || disabled
+  const disabledInput = updateDurationMutation.isPending || disabled
   return (
     <form
       className="flex flex-col gap-6 text-left"
@@ -122,7 +123,7 @@ export const UpdateDurationForm = ({
               required: !unlimitedDuration,
               min: 0,
             })}
-            placeholder="Enter duration"
+            placeholder="In days"
             type="number"
             error={errors?.expirationDuration && 'Please enter amount of days.'}
           />
@@ -134,7 +135,7 @@ export const UpdateDurationForm = ({
           type="submit"
           className="w-full md:w-1/3"
           disabled={disabledInput}
-          loading={updateDurationMutation.isLoading}
+          loading={updateDurationMutation.isPending}
         >
           Update
         </Button>

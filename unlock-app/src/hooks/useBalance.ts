@@ -16,26 +16,36 @@ export const useBalance = ({
   requiredAmount = 0,
 }: Options) => {
   const web3Service = useWeb3Service()
-  return useQuery(['balance', account], async () => {
-    const [balance, networkBalance] = await Promise.all([
-      getAccountTokenBalance(
-        web3Service,
-        account!,
-        currencyContractAddress,
-        network
-      ),
-      getAccountTokenBalance(web3Service, account!, null, network),
-    ])
+  return useQuery({
+    queryKey: [
+      'balance',
+      account,
+      network,
+      currencyContractAddress,
+      requiredAmount,
+    ],
+    queryFn: async () => {
+      const [balance, networkBalance] = await Promise.all([
+        getAccountTokenBalance(
+          web3Service,
+          account!,
+          currencyContractAddress,
+          network
+        ),
+        getAccountTokenBalance(web3Service, account!, null, network),
+      ])
 
-    const isGasPayable = parseFloat(networkBalance) > 0 // TODO: improve actual calculation
+      const isGasPayable = parseFloat(networkBalance) > 0 // TODO: improve actual calculation
 
-    const options = {
-      balance,
-      networkBalance,
-      isGasPayable,
-      isPayable: parseFloat(balance) >= requiredAmount,
-    }
+      const options = {
+        balance,
+        networkBalance,
+        isGasPayable,
+        isPayable: parseFloat(balance) >= requiredAmount,
+      }
 
-    return options
+      return options
+    },
+    staleTime: 30000,
   })
 }

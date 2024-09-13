@@ -83,7 +83,6 @@ export const setupUnlockProtocolVariable = (properties: {
       },
     })
   } catch (e) {
-    // eslint-disable-next-line no-console
     console.warn('WARNING: unlockProtocol already defined, cannot re-define it')
   }
 }

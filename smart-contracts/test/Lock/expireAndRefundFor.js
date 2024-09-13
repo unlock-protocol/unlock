@@ -1,14 +1,15 @@
-const { assert } = require('chai')
+const assert = require('assert')
 const { ethers } = require('hardhat')
 const { deployLock, getBalance, purchaseKeys, reverts } = require('../helpers')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 describe('Lock / expireAndRefundFor', () => {
   let lock
   let tokenIds
   let lockCreator
   let keyOwners
-  const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
-  const refundAmount = ethers.utils.parseUnits('0.01', 'ether')
+  const keyPrice = ethers.parseUnits('0.01', 'ether')
+  const refundAmount = ethers.parseUnits('0.01', 'ether')
 
   before(async () => {
     let signers
@@ -26,49 +27,44 @@ describe('Lock / expireAndRefundFor', () => {
     let txFee
 
     before(async () => {
-      initialLockBalance = await getBalance(lock.address)
-      initialKeyOwnerBalance = await getBalance(keyOwners[0].address)
+      initialLockBalance = await getBalance(await lock.getAddress())
+      initialKeyOwnerBalance = await getBalance(await keyOwners[0].getAddress())
 
       const tx = await lock.expireAndRefundFor(tokenIds[0], refundAmount)
-      const { events, gasUsed } = await tx.wait()
+      const receipt = await tx.wait()
       ;({
         event,
         args: { refund },
-      } = events.find(({ event }) => event === 'CancelKey'))
+      } = await getEvent(receipt, 'CancelKey'))
       // estimate tx gas cost
-      txFee = tx.gasPrice.mul(gasUsed)
+      txFee = tx.gasPrice * receipt.gasUsed
     })
 
     it('should emit a CancelKey event', async () => {
-      assert.equal(event, 'CancelKey')
+      assert.equal(event.fragment.name, 'CancelKey')
     })
 
     it('the amount of refund should be the key price', async () => {
-      assert.equal(refund.toString(), keyPrice.toString())
+      assert.equal(refund, keyPrice)
     })
 
-    it('should make the key no longer valid (i.e. expired)', async () => {
-      const isValid = await lock.getHasValidKey(keyOwners[0].address)
+    it('should make the key no longer valid (i.e expired)', async () => {
+      const isValid = await lock.getHasValidKey(await keyOwners[0].getAddress())
       assert.equal(isValid, false)
     })
 
     it("should increase the owner's balance with the amount of funds refunded from the lock", async () => {
-      const finalOwnerBalance = await getBalance(keyOwners[0].address)
-      assert(
-        finalOwnerBalance.toString(),
-        initialKeyOwnerBalance.add(keyPrice).sub(txFee).toString()
+      const finalOwnerBalance = await getBalance(
+        await keyOwners[0].getAddress()
       )
+      assert(finalOwnerBalance, initialKeyOwnerBalance + keyPrice - txFee)
     })
 
     it("should increase the lock's balance by the keyPrice", async () => {
-      const finalLockBalance = (await getBalance(lock.address)).sub(
-        initialLockBalance
-      )
+      const finalLockBalance =
+        (await getBalance(await lock.getAddress())) - initialLockBalance
 
-      assert(
-        finalLockBalance.toString(),
-        initialLockBalance.sub(keyPrice).toString()
-      )
+      assert(finalLockBalance, initialLockBalance - keyPrice)
     })
   })
 
@@ -92,7 +88,11 @@ describe('Lock / expireAndRefundFor', () => {
     })
 
     it('the Lock owner withdraws too much funds', async () => {
-      await lock.withdraw(await lock.tokenAddress(), lockCreator.address, 0)
+      await lock.withdraw(
+        await lock.tokenAddress(),
+        await lockCreator.getAddress(),
+        0
+      )
       await reverts(lock.expireAndRefundFor(tokenIds[3], refundAmount), '')
     })
 

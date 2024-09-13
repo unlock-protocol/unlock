@@ -10,7 +10,10 @@ import { KeyMetadata } from '../../models/keyMetadata'
 import { createTicket } from '../../utils/ticket'
 import { generateKeyMetadata } from '../../operations/metadataOperations'
 import config from '../../config/config'
-import { getVerifiersList } from '../../operations/verifierOperations'
+import {
+  getEventVerifiers,
+  getVerifiersListForLock,
+} from '../../operations/verifierOperations'
 import { Verifier } from '../../models/verifier'
 import { getEventForLock } from '../../operations/eventOperations'
 import { notify } from '../../worker/helpers'
@@ -53,13 +56,22 @@ export class TicketsController {
       const network = Number(request.params.network)
       const id = request.params.keyId.toLowerCase()
       const address = Normalizer.ethereumAddress(request.user!.walletAddress!)
-      const verifier = await Verifier.findOne({
-        where: {
-          lockAddress,
-          address,
-          network,
-        },
-      })
+      // event slug is used by /:network/lock/:lockAddress/:eventSlug/key/:keyId/check' route
+      const eventSlug = request.params.eventSlug
+      const verifier = eventSlug
+        ? await Verifier.findOne({
+            where: {
+              address,
+              slug: eventSlug,
+            },
+          })
+        : await Verifier.findOne({
+            where: {
+              address,
+              lockAddress,
+              network,
+            },
+          })
 
       const keyMetadata = await KeyMetadata.findOne({
         where: {
@@ -311,6 +323,7 @@ export const generateTicket: RequestHandler = async (request, response) => {
 export const getTicket: RequestHandler = async (request, response) => {
   const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
   const network = Number(request.params.network)
+  const eventSlug = request.params.eventSlug
   const tokenId = request.params.keyId.toLowerCase().trim()
   const userAddress = request.user?.walletAddress
   const subgraph = new SubgraphService()
@@ -327,7 +340,9 @@ export const getTicket: RequestHandler = async (request, response) => {
         network,
       }
     ),
-    getVerifiersList(lockAddress, network),
+    eventSlug
+      ? getEventVerifiers(eventSlug)
+      : getVerifiersListForLock(lockAddress, network),
   ])
 
   if (!key) {

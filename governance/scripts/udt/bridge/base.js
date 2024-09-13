@@ -3,7 +3,7 @@
  *
  */
 const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
-const l1BridgeAbi = require('./abi/l1standardbridge.json')
+const l1BridgeAbi = require('../../../helpers/abi/l1standardbridge.json')
 const ethers = require('ethers5')
 const abiERC20 = require('@unlock-protocol/hardhat-helpers/dist/ABIs/erc20.json')
 

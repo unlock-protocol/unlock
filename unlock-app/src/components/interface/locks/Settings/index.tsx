@@ -57,7 +57,7 @@ const LockSettingsPage = ({
   defaultTab,
 }: LockSettingsPageProps) => {
   const [selectedIndex, setSelectedIndex] = useState(0)
-  const { isManager, isLoading: isLoadingManager } = useLockManager({
+  const { isManager, isPending: isLoadingManager } = useLockManager({
     lockAddress,
     network,
   })
@@ -68,26 +68,22 @@ const LockSettingsPage = ({
     return web3Service.getLock(lockAddress, network)
   }
 
-  const { isLoading: isLoadingLock, data: lock } = useQuery(
-    ['getLock', lockAddress, network],
-    async () => await getLock(),
-    {
-      enabled: lockAddress?.length > 0 && network !== undefined,
-    }
-  )
+  const { isPending: isLoadingLock, data: lock } = useQuery({
+    queryKey: ['getLock', lockAddress, network],
+    queryFn: getLock,
+    enabled: !!lockAddress && !!network,
+  })
 
   const [{ data: publicLockLatestVersion }, { data: publicLockVersion }] =
     useQueries({
       queries: [
         {
           queryKey: ['publicLockLatestVersion', network],
-          queryFn: async () =>
-            await web3Service.publicLockLatestVersion(network),
+          queryFn: () => web3Service.publicLockLatestVersion(network),
         },
         {
           queryKey: ['publicLockVersion', lockAddress, network],
-          queryFn: async () =>
-            await web3Service.publicLockVersion(lockAddress, network),
+          queryFn: () => web3Service.publicLockVersion(lockAddress, network),
         },
       ],
     })
@@ -166,7 +162,7 @@ const LockSettingsPage = ({
           isLoading={isLoading}
         />
       ),
-      description: `Your Lock includes multiple roles, such as "Lock Manager", or "Verifiers". Here you can configure which addresses are assigned which roles.`,
+      description: `Your Lock includes multiple roles, such as "Lock Manager". Here you can configure which addresses are assigned which roles.`,
     },
     {
       id: 'emails',

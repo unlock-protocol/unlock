@@ -2,7 +2,7 @@ import { ReactNode, createContext, useContext, useState } from 'react'
 import { useSession } from './useSession'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { SiweMessage } from 'siwe'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { useQueryClient } from '@tanstack/react-query'
 import {
   getAccessToken,
@@ -11,8 +11,10 @@ import {
 } from '~/utils/session'
 import { config } from '~/config/app'
 import ProviderContext from '~/contexts/ProviderContext'
+import { isInIframe } from '~/utils/iframe'
+import { signOut as nextSignOut } from 'next-auth/react'
 
-type Status = 'loading' | 'error' | 'success' | 'rejected' | 'idle'
+export type Status = 'loading' | 'error' | 'success' | 'rejected' | 'idle'
 
 export interface SIWEContextType {
   session?: string | null
@@ -33,7 +35,7 @@ const signOutToken = async () => {
   const session = getAccessToken()
   if (session) {
     // First, revoke the session on the server with the token
-    await storage.revoke().catch(console.error)
+    await locksmith.revoke().catch(console.error)
     // Then remove token locally
     return removeAccessToken()
   }
@@ -84,6 +86,8 @@ export const SIWEProvider = ({ children }: Props) => {
   const signOut = async () => {
     try {
       setStatus('loading')
+      // Before signing out, we need to revoke the token
+      await nextSignOut({ redirect: false })
       await signOutToken()
       await Promise.all([queryClient.invalidateQueries(), refetchSession()])
       setStatus('idle')
@@ -102,10 +106,9 @@ export const SIWEProvider = ({ children }: Props) => {
     try {
       const walletService = await getWalletService()
       const address = await walletService.signer.getAddress()
-      const insideIframe = window !== window.parent
 
       const parent = new URL(
-        insideIframe ? config.unlockApp : window.location.href
+        isInIframe() ? config.unlockApp : window.location.href
       )
 
       // We can't have an empty resources array... because the siwe library does not parse that correctly
@@ -121,8 +124,8 @@ export const SIWEProvider = ({ children }: Props) => {
 
       let domain = window.location.host
       // If we are using the parent's provider, then we MUST use the parent's domain
-      if (provider?.provider?.parentOrigin) {
-        domain = new URL(provider.provider.parentOrigin()).host
+      if (provider?.parentOrigin) {
+        domain = new URL(provider.parentOrigin()).host
       }
 
       const siwe = new SiweMessage({
@@ -156,13 +159,13 @@ export const SIWEProvider = ({ children }: Props) => {
         throw new Error('No wallet connected.')
       }
 
-      const { data: nonce } = await storage.nonce()
+      const { data: nonce } = await locksmith.nonce()
       const siweResult = await siweSign(nonce, '')
 
       if (siweResult) {
         setSiweResult(siweResult)
         const { message, signature } = siweResult
-        const response = await storage.login({
+        const response = await locksmith.login({
           message,
           signature,
         })

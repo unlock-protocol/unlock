@@ -1,79 +1,67 @@
 'use client'
-import React, { useEffect } from 'react'
-import Head from 'next/head'
-import { pageTitle } from '../../constants'
+import { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import KeyDetails from '../interface/keychain/KeyDetails'
-import { AppLayout } from '../interface/layouts/AppLayout'
-import { TbWorld as WorldIcon } from 'react-icons/tb'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { OpenSeaIcon } from '../icons'
-import { Tooltip } from '@unlock-protocol/ui'
 import networks from '@unlock-protocol/networks'
-import { useRouter } from 'next/router'
 import OwnerSocials from '../interface/keychain/OwnerSocials'
+import { Tooltip } from '@unlock-protocol/ui'
+import { TbWorld as WorldIcon } from 'react-icons/tb'
+import { OpenSeaIcon } from '../icons'
 
 export const KeychainContent = () => {
   const { account } = useAuth()
-  const { query } = useRouter()
-  const [owner, setOwner] = React.useState<string | null>(null)
+  const searchParams = useSearchParams()
+  const [owner, setOwner] = useState<string | null>(null)
 
   useEffect(() => {
-    if (query.owner) {
-      setOwner(query.owner as string)
+    const ownerParam = searchParams.get('owner')
+    if (ownerParam) {
+      setOwner(ownerParam)
     } else if (account) {
       setOwner(account)
     }
-  }, [account, query])
+  }, [account, searchParams])
 
   const networkConfig = networks[1]
 
   return (
-    <AppLayout
-      authRequired={!owner}
-      title={
-        <div className="flex justify-between gap-8">
-          {owner && <OwnerSocials owner={owner} />}
-          {networkConfig && owner && (
-            <div className="flex gap-3">
-              {networkConfig.blockScan && networkConfig.blockScan.url && (
-                <Tooltip tip="Show Blockscan" label="Show Blockscan">
-                  <a
-                    href={networkConfig.blockScan.url(owner!)}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-brand-ui-primary"
-                  >
-                    <WorldIcon size={25} />
-                  </a>
-                </Tooltip>
-              )}
-
-              {networkConfig.opensea && networkConfig.opensea.profileUrl && (
-                <Tooltip
-                  tip="View Opensea Profile"
-                  label="View Opensea Profile"
+    <div className="flex flex-col gap-4">
+      <div className="flex justify-between gap-8">
+        {owner && <OwnerSocials owner={owner} />}
+        {networkConfig && owner && (
+          <div className="flex gap-3">
+            {networkConfig.blockScan && networkConfig.blockScan.url && (
+              <Tooltip tip="Show Blockscan" label="Show Blockscan">
+                <a
+                  href={networkConfig.blockScan.url(owner)}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:text-brand-ui-primary"
                 >
-                  <a
-                    href={networkConfig.opensea!.profileUrl(owner!) ?? '#'}
-                    rel="noreferrer"
-                    target="_blank"
-                    className="hover:text-brand-ui-primary"
-                  >
-                    <OpenSeaIcon size={23} />
-                  </a>
-                </Tooltip>
-              )}
-            </div>
-          )}
-        </div>
-      }
-    >
-      <Head>
-        <title>{pageTitle('Member Keychain')}</title>
-      </Head>
+                  <WorldIcon size={25} />
+                </a>
+              </Tooltip>
+            )}
 
+            {networkConfig.opensea && networkConfig.opensea.profileUrl && (
+              <Tooltip tip="View Opensea Profile" label="View Opensea Profile">
+                <a
+                  href={networkConfig.opensea.profileUrl(owner) ?? '#'}
+                  rel="noreferrer"
+                  target="_blank"
+                  className="hover:text-brand-ui-primary"
+                >
+                  <OpenSeaIcon size={23} />
+                </a>
+              </Tooltip>
+            )}
+          </div>
+        )}
+      </div>
       {owner && <KeyDetails owner={owner} />}
-    </AppLayout>
+    </div>
   )
 }
+
 export default KeychainContent

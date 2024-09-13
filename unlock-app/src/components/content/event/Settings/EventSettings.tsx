@@ -10,6 +10,7 @@ import { PaywallConfigType } from '@unlock-protocol/core'
 import { General } from './General'
 import { Referrals } from './Referrals'
 import { Emails } from './Emails'
+import { Verifiers } from './Verifiers'
 import Link from 'next/link'
 import { useEvent } from '~/hooks/useEvent'
 
@@ -49,6 +50,12 @@ export const EventSettings = ({ slug, checkoutConfig }: EventSettingsProps) => {
       label: 'Emails',
       description: `Configure and send emails to the attendees of your event.`,
       children: <Emails event={event} checkoutConfig={checkoutConfig} />,
+    },
+    {
+      id: 'verifiers',
+      label: 'Verifiers',
+      description: `Verify ticket validity and handle attendees who have checked-in`,
+      children: <Verifiers event={event} checkoutConfig={checkoutConfig} />,
     },
     // {
     //   id: 'checkout',

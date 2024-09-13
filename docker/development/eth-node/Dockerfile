@@ -1,4 +1,4 @@
-FROM node:20.12.2-alpine as unlock-eth-node
+FROM node:20.16.0-alpine as unlock-eth-node
 LABEL Unlock <ops@unlock-protocol.com>
 
 USER root
@@ -11,10 +11,13 @@ WORKDIR /app
 # install deps
 COPY --chown=node package.json package.json
 COPY --chown=node yarn.lock yarn.lock
-RUN yarn install --pure-lockfile
+COPY --chown=node .yarn .yarn
+COPY --chown=node .yarnrc.yml .yarnrc.yml
 
 # add files
 COPY --chown=node . .
 
+RUN yarn
+
 EXPOSE 8545
-CMD [  "yarn", "hardhat", "node", "--hostname", "0.0.0.0" ]
+CMD [ "yarn", "hardhat", "node", "--hostname", "0.0.0.0" ]

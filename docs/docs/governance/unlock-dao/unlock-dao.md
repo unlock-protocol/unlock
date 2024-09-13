@@ -1,12 +1,12 @@
 ---
-title: Unlock DAO
+title: Governance & Voting
 description: >-
   The Unlock Protocol is a public good aimed at being governed by a DAO of its
   users and developers.
 sidebar_position: 1
 ---
 
-Collectively, [UDT holders](../unlock-dao-tokens.mdx) are members of the Unlock DAO. The Unlock DAO aims at governing the Unlock Protocol. In order to facilitate decision making, the Unlock DAO uses OpenZeppelin's [Governor Contracts](https://blog.openzeppelin.com/governor-smart-contract/) which can be found at these addresses on the [Ethereum network](https://ethereum.org/en/):
+Collectively, [Unlock Protocol Governance Token holders](../unlock-dao-tokens.mdx) are members of the Unlock DAO. The Unlock DAO aims at governing the Unlock Protocol. In order to facilitate decision making, the Unlock DAO uses OpenZeppelin's [Governor Contracts](https://blog.openzeppelin.com/governor-smart-contract/) which can be found at these addresses on the [Ethereum network](https://ethereum.org/en/):
 
 - [Governor Contract](https://etherscan.io/address/0x440d9D4E66d39bb28FB58729Cb4D3ead2A595591) \(`0x440d9D4E66d39bb28FB58729Cb4D3ead2A595591`\): where proposals and votes are handled,
 - [TimeLock Contract](https://etherscan.io/address/0x17eedfb0a6e6e06e95b3a1f928dc4024240bc76b) \(`0x17eedfb0a6e6e06e95b3a1f928dc4024240bc76b`\): where proposals are executed and funds are managed.
@@ -35,7 +35,7 @@ In June 2023, the Governor contract was upgraded from `0x7757f7f21f5fa9b1fd16864
 
 ### Voting
 
-The Governor can execute any transaction as long as the transaction was approved by token holders. These transactions range from transfering some if its own tokens as grants, to upgrading the core protocol, or even changing its own governance parameters.
+The Governor can execute any transaction as long as the transaction was approved by token holders. These transactions range from transferring some if its own tokens as grants, to upgrading the core protocol, or even changing its own governance parameters.
 
 #### Making a proposal
 

@@ -56,20 +56,19 @@ const Pages = ({ maxNumbersOfPage, page, setPage }: PaginationBarProps) => {
   }
 
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-1">
       {pagesToShow.map((currentPage, index) => {
         const showDots = pagesToShow[index - 1] < currentPage - 1
         if (currentPage > 0 && currentPage <= maxNumbersOfPage) {
           return (
-            <>
+            <div className="whitespace-nowrap flex gap-1" key={currentPage}>
               {showDots && <span>...</span>}
               <Page
-                key={index}
                 page={currentPage}
                 active={currentPage === page}
                 setPage={setPage}
               />
-            </>
+            </div>
           )
         }
       })}

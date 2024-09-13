@@ -3,7 +3,7 @@ import { ethers } from 'ethers'
 import { networks as networkConfigs } from '@unlock-protocol/networks'
 import { CardPurchaserABI } from './abis/CardPurchaserABI'
 
-type Signer = ethers.Wallet | ethers.providers.JsonRpcSigner
+type Signer = ethers.Wallet | ethers.JsonRpcSigner
 
 export interface GetContractOptions {
   network: number
@@ -29,10 +29,7 @@ export class CardPurchaser {
     if (!this.networks[network]) {
       throw new Error(`Missing config for ${network}`)
     }
-    return new ethers.providers.JsonRpcBatchProvider(
-      this.networks[network].provider,
-      network
-    )
+    return new ethers.JsonRpcProvider(this.networks[network].provider, network)
   }
 
   /**
@@ -62,15 +59,15 @@ export class CardPurchaser {
   async getDomain(network: number) {
     const contract = this.getContract({ network })
     const [name, version] = await Promise.all([
-      contract.name(),
-      contract.version(),
+      contract.getFunction('name')(),
+      contract.getFunction('version')(),
     ])
 
     return {
       name,
       version,
       chainId: network,
-      verifyingContract: contract.address,
+      verifyingContract: await contract.getAddress(),
     }
   }
 
@@ -104,12 +101,7 @@ export class CardPurchaser {
       expiration: now + 60 * 60, // 1 hour!
     }
 
-    // @ts-expect-error Property '_signTypedData' does not exist on type 'Signer'.ts(2339)
-    const signature = await signer._signTypedData(
-      domain,
-      PurchaseTypes,
-      message
-    )
+    const signature = await signer.signTypedData(domain, PurchaseTypes, message)
     return { signature, message }
   }
 

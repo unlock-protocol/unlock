@@ -19,9 +19,9 @@ export const useEventOrganizer = ({
   const web3Service = useWeb3Service()
   const { account } = useAuth()
 
-  return useQuery(
-    ['eventOrganizer', checkoutConfig, account],
-    async (): Promise<boolean> => {
+  return useQuery({
+    queryKey: ['eventOrganizer', checkoutConfig, account],
+    queryFn: async (): Promise<boolean> => {
       if (!account) {
         return false
       }
@@ -36,6 +36,6 @@ export const useEventOrganizer = ({
         )
       )
       return !!isManagerByLock.find((isManager) => !!isManager)
-    }
-  )
+    },
+  })
 }

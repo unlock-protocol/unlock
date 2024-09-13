@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react'
 import { Transition, Dialog } from '@headlessui/react'
 import { onResolveName } from '~/utils/resolvers'
 import useEns from '~/hooks/useEns'
+import { useAddLockManager } from '~/hooks/useAddLockManager'
 interface LockManagerFormProps {
   lockAddress: string
   network: number
@@ -105,7 +106,7 @@ const RenounceModal = ({
                       <span className="text-base text-brand-dark">
                         You are about to permanently renounce yourself as Lock
                         manager. You will not be able to revert this action.
-                        Please type “renounce” to confirm.
+                        Please type &ldquo;renounce&rdquo; to confirm.
                       </span>
                     </div>
                     <Input
@@ -158,7 +159,9 @@ const LockManagerCard = ({
     })
   }
 
-  const renounceLockManagerMutation = useMutation(renounceLockManager)
+  const renounceLockManagerMutation = useMutation({
+    mutationFn: renounceLockManager,
+  })
 
   const onRenounce = async () => {
     const renounceLockManagerPromise = renounceLockManagerMutation.mutateAsync()
@@ -214,7 +217,6 @@ export const LockManagerForm = ({
   const localForm = useForm<{ manager: string }>()
 
   const { handleSubmit, control, setValue } = localForm
-  const { getWalletService } = useAuth()
 
   const { manager } = useWatch({
     control,
@@ -234,53 +236,36 @@ export const LockManagerForm = ({
     )
   }
 
-  const addLockManager = async (address: string) => {
-    const managerAddress = minifyAddress(address)
-    const walletService = await getWalletService(network)
-    const addManagerPromise = walletService.addLockManager({
-      lockAddress,
-      userAddress: address,
-    })
-    await ToastHelper.promise(addManagerPromise, {
-      loading: `Adding ${managerAddress} as Lock Manager.`,
-      success: `${managerAddress} added as Lock Manager.`,
-      error: ` Impossible to add ${managerAddress} as Lock Manager, please try again.`,
-    })
-  }
+  const addLockManagerMutation = useAddLockManager(lockAddress, network)
 
-  const addLockManagerMutation = useMutation(addLockManager, {
-    onSuccess: () => {
-      setValue('manager', '')
-    },
-  })
-
-  const { isLoading, data: lockSubgraph } = useQuery(
-    [
+  const { isPending, data: lockSubgraph } = useQuery({
+    queryKey: [
       'getLockManagerForm',
       lockAddress,
       network,
       addLockManagerMutation.isSuccess,
     ],
-    async () => getLock(),
-    {
-      refetchInterval: 2000,
-    }
-  )
+    queryFn: getLock,
+    refetchInterval: 1000,
+  })
 
   const onAddLockManager = async ({ manager = '' }: any) => {
-    if (manager !== '') await addLockManagerMutation.mutateAsync(manager)
+    if (manager !== '') {
+      await addLockManagerMutation.mutateAsync(manager)
+      setValue('manager', '')
+    }
   }
 
   const managers = lockSubgraph?.lockManagers ?? []
 
   const noManagers = managers?.length === 0
 
-  const disableInput = disabled || isLoading || addLockManagerMutation.isLoading
+  const disableInput = disabled || isPending || addLockManagerMutation.isPending
 
   return (
     <div className="relative">
       <div className="flex flex-col gap-4">
-        {noManagers && !isLoading && (
+        {noManagers && !isPending && (
           <span className="text-red-500">
             This lock does not have any Lock Manager.
           </span>
@@ -301,7 +286,7 @@ export const LockManagerForm = ({
             </div>
           </div>
         )}
-        {(isLoading || addLockManagerMutation.isLoading) && (
+        {(isPending || addLockManagerMutation.isPending) && (
           <Placeholder.Line size="xl" />
         )}
       </div>
@@ -341,7 +326,7 @@ export const LockManagerForm = ({
             className="w-full md:w-1/2"
             type="submit"
             disabled={disableInput}
-            loading={addLockManagerMutation.isLoading}
+            loading={addLockManagerMutation.isPending}
           >
             Add
           </Button>

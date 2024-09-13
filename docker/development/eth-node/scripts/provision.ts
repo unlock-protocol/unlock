@@ -11,12 +11,10 @@ import { ethers, unlock } from 'hardhat'
 import { deployErc20, outputSubgraphNetworkConf } from '../lib'
 import locksArgs from '../lib/locks'
 
-const { AddressZero } = ethers.constants
-
 const locksmithHost = process.env.LOCKSMITH_HOST || '127.0.0.1'
 const locksmithPort = process.env.LOCKSMITH_PORT || 3000
 
-const users = []
+const users: string[] = []
 
 if (process.env.LOCKSMITH_PURCHASER_ADDRESS) {
   users.push(process.env.LOCKSMITH_PURCHASER_ADDRESS)
@@ -26,7 +24,7 @@ if (process.env.ETHEREUM_ADDRESS) {
   users.push(process.env.ETHEREUM_ADDRESS)
 }
 
-const log = (message) => {
+const log = (message: string) => {
   console.log(`ETH NODE SETUP > ${message}`)
 }
 
@@ -43,7 +41,7 @@ async function main() {
     users.map((user) =>
       deployer.sendTransaction({
         to: user,
-        value: ethers.utils.parseEther('5.0'),
+        value: ethers.parseEther('5.0'),
       })
     )
   )
@@ -52,17 +50,15 @@ async function main() {
 
   // Deploy an ERC20
   const erc20 = await deployErc20()
-  log(`ERC20 CONTRACT DEPLOYED AT ${erc20.address}`)
+  const erc20Address = await erc20.getAddress()
+  log(`ERC20 CONTRACT DEPLOYED AT ${erc20Address}`)
   const decimals = await erc20.decimals()
 
   // We then transfer some ERC20 tokens to some users
   await Promise.all(
     users.map(async (user) => {
-      const mintTx = await erc20.mint(
-        user,
-        ethers.utils.parseUnits('500', decimals)
-      )
-      log(`TRANSFERED 500 ERC20 (${erc20.address}) to ${user}`)
+      const mintTx = await erc20.mint(user, ethers.parseUnits('500', decimals))
+      log(`TRANSFERED 500 ERC20 (${erc20Address}) to ${user}`)
       return await mintTx.wait()
     })
   )
@@ -71,7 +67,7 @@ async function main() {
    * 2. Deploy UDT
    */
   const udt = await deployErc20()
-  log(`UDT DEPLOYED AT ${udt.address}`)
+  log(`UDT DEPLOYED AT ${await udt.getAddress()}`)
 
   // mint some tokens
   await udt.mint(holder.address, 200)
@@ -80,17 +76,23 @@ async function main() {
    * 3. Deploy UNLOCK contracts
    */
   const { unlock: unlockContract } = await unlock.deployProtocol()
-  log('UNLOCK PROTOCOL DEPLOYED')
+  const [publicLockVersion, unlockVersion] = await Promise.all([
+    await unlockContract.publicLockLatestVersion(),
+    await unlockContract.unlockVersion(),
+  ])
+  log(
+    `UNLOCK PROTOCOL DEPLOYED : Unlock v${unlockVersion}, PublicLock v${publicLockVersion}`
+  )
 
   // grant Unlock minting permissions
-  await udt.addMinter(unlockContract.address)
+  await udt.addMinter(await unlockContract.getAddress())
 
   // TODO: deploy Wrapped Eth for unlock!
 
   // Configure Unlock
   await unlockContract.configUnlock(
-    udt.address,
-    AddressZero, // wrappedEth
+    await udt.getAddress(),
+    ethers.ZeroAddress, // wrappedEth
     16000,
     'DEVKEY',
     `http://${locksmithHost}:${locksmithPort}/api/key/`,
@@ -103,10 +105,11 @@ async function main() {
    */
   // Finally, deploy locks and for each of them, if it's an ERC20, approve it for locksmith purchases
   await Promise.all(
-    locksArgs(erc20.address).map(async (lockParams) => {
-      const { lock } = await unlock.createLock(lockParams)
-
-      log(`LOCK "${await lockParams.name}" DEPLOYED TO ${lock.address}`)
+    locksArgs(erc20Address).map(async (lockParams) => {
+      const { lock } = await unlock.createLock({ ...lockParams })
+      log(
+        `LOCK "${await lockParams.name}" DEPLOYED TO ${await lock.getAddress()}`
+      )
 
       if (
         lockParams.currencyContractAddress &&
@@ -115,9 +118,10 @@ async function main() {
         const purchaser = await ethers.getSigner(
           process.env.LOCKSMITH_PURCHASER_ADDRESS
         )
-        const approveTx = await erc20
-          .connect(purchaser)
-          .approve(lock.address, ethers.utils.parseUnits('500', decimals))
+        const approveTx = await erc20.connect(purchaser).getFunction('approve')(
+          await lock.getAddress(),
+          ethers.utils.parseUnits('500', decimals)
+        )
         await approveTx.wait()
       }
       return lock
@@ -125,7 +129,7 @@ async function main() {
   )
 
   // replace subraph conf
-  await outputSubgraphNetworkConf(unlockContract.address)
+  await outputSubgraphNetworkConf(await unlockContract.getAddress())
 
   // Mark the node as ready by sending 1 WEI to the address 0xa3056617a6f63478ca68a890c0d28b42f4135ae4 which is KECCAK256(UNLOCKREADY)
   // This way, any test or application which requires the node to be completely set can just wait for the balance of 0xa3056617a6f63478ca68a890c0d28b42f4135ae4 to be >0.

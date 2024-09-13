@@ -1,5 +1,5 @@
 import { NextPage } from 'next'
-import { useRouter } from 'next/router'
+import { useSearchParams } from 'next/navigation'
 import { AppLayout } from '~/components/interface/layouts/AppLayout'
 import {
   useEmailListReSubscribe,
@@ -24,14 +24,14 @@ interface SubscriptionProps {
   network: number
 }
 export const Subscription = ({ lockAddress, network }: SubscriptionProps) => {
-  const { mutateAsync: resubscribe, isLoading: isResubscribing } =
+  const { mutateAsync: resubscribe, isPending: isResubscribing } =
     useEmailListReSubscribe({
       lockAddress,
       network,
     })
   const {
     mutateAsync: unsubscribe,
-    isLoading: isUnsubscribing,
+    isPending: isUnsubscribing,
     status,
   } = useEmailListUnSubscribe({
     lockAddress,
@@ -70,9 +70,9 @@ export const Subscription = ({ lockAddress, network }: SubscriptionProps) => {
 }
 
 const UnsubscribePage: NextPage = () => {
-  const router = useRouter()
-  const lockAddress = router.query?.lockAddress?.toString()
-  const network = Number(router.query?.network)
+  const searchParams = useSearchParams()
+  const lockAddress = searchParams.get('lockAddress')?.toString()
+  const network = Number(searchParams.get('network'))
   const validParams = lockAddress && network
   return validParams ? (
     <Subscription lockAddress={lockAddress} network={network} />

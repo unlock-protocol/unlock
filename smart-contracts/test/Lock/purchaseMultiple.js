@@ -1,4 +1,4 @@
-const { assert } = require('chai')
+const assert = require('assert')
 const {
   reverts,
   deployERC20,
@@ -12,7 +12,7 @@ const { ethers } = require('hardhat')
 const scenarios = [false, true]
 
 let testToken
-const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
+const keyPrice = ethers.parseUnits('0.01', 'ether')
 const allowance = '100000000000000000000'
 
 describe('Lock / purchase multiple keys at once', () => {
@@ -28,13 +28,17 @@ describe('Lock / purchase multiple keys at once', () => {
         testToken = await deployERC20(deployer)
 
         // Mint some tokens for testing
-        await testToken.connect(deployer).mint(holder.address, allowance)
+        await testToken
+          .connect(deployer)
+          .mint(await holder.getAddress(), allowance)
 
-        tokenAddress = isErc20 ? testToken.address : ADDRESS_ZERO
+        tokenAddress = isErc20 ? await testToken.getAddress() : ADDRESS_ZERO
         lock = await deployLock({ tokenAddress })
 
         // Approve spending
-        await testToken.connect(holder).approve(lock.address, allowance)
+        await testToken
+          .connect(holder)
+          .approve(await lock.getAddress(), allowance)
       })
 
       describe('purchase with exact value specified', () => {
@@ -44,19 +48,19 @@ describe('Lock / purchase multiple keys at once', () => {
             keyOwners.map(({ address }) => address),
             keyOwners.map(() => ADDRESS_ZERO),
             keyOwners.map(() => ADDRESS_ZERO),
-            keyOwners.map(() => []),
+            keyOwners.map(() => '0x'),
             {
-              value: isErc20 ? 0 : keyPrice.mul(keyOwners.length),
+              value: isErc20 ? 0 : keyPrice * BigInt(keyOwners.length),
             }
           )
         })
 
         it('user sent correct token amounts to the contract', async () => {
           const balance = await getBalance(
-            lock.address,
-            isErc20 ? testToken.address : null
+            await lock.getAddress(),
+            isErc20 ? await testToken.getAddress() : null
           )
-          compareBigNumbers(balance, keyPrice.mul(keyOwners.length))
+          compareBigNumbers(balance, keyPrice * BigInt(keyOwners.length))
         })
 
         it('users should have valid keys', async () => {
@@ -72,15 +76,15 @@ describe('Lock / purchase multiple keys at once', () => {
           await reverts(
             lock.connect(keyOwners[1]).purchase(
               isErc20
-                ? keyOwners.map(() => ethers.utils.parseUnits('0.005', 'ether'))
+                ? keyOwners.map(() => ethers.parseUnits('0.005', 'ether'))
                 : [],
               keyOwners.map(({ address }) => address),
 
               keyOwners.map(() => ADDRESS_ZERO),
               keyOwners.map(() => ADDRESS_ZERO),
-              keyOwners.map(() => []),
+              keyOwners.map(() => '0x'),
               {
-                value: isErc20 ? 0 : keyPrice.mul(keyOwners.length - 2),
+                value: isErc20 ? 0 : keyPrice * BigInt(keyOwners.length - 2),
               }
             ),
             isErc20 ? 'INSUFFICIENT_ERC20_VALUE' : 'INSUFFICIENT_VALUE'

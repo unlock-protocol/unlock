@@ -2,7 +2,6 @@ import { Button, Icon } from '@unlock-protocol/ui'
 import Lottie from 'lottie-react'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { CheckoutService } from './checkoutMachine'
-import { Connected } from '../Connected'
 import unlockedAnimation from '~/animations/unlocked.json'
 import { useConfig } from '~/utils/withConfig'
 import { Stepper } from '../Stepper'
@@ -11,27 +10,21 @@ import { Fragment, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { AddToDeviceWallet } from '../../keychain/AddToPhoneWallet'
-import Image from 'next/image'
+import { AddToPhoneWallet } from '../../keychain/AddToPhoneWallet'
 import { isAndroid, isIOS } from 'react-device-detect'
-import { isEthPassSupported, Platform } from '~/services/ethpass'
 import { ReturningButton } from '../ReturningButton'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
+import { Platform } from '~/services/passService'
+import { shouldSkip } from './utils'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
   onClose(params?: Record<string, string>): void
   communication?: ReturnType<typeof useCheckoutCommunication>
 }
 
-export function Returning({
-  checkoutService,
-  injectedProvider,
-  communication,
-  onClose,
-}: Props) {
+export function Returning({ checkoutService, onClose, communication }: Props) {
   const config = useConfig()
   const {
     paywallConfig,
@@ -103,63 +96,37 @@ export function Returning({
             See in the block explorer
             <Icon key="external-link" icon={ExternalLinkIcon} size="small" />
           </a>
-          {tokenId && isEthPassSupported(lock!.network) && (
-            <ul className="grid h-12 grid-cols-2 gap-3 pt-4">
+          {tokenId && (
+            <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-4">
               {!isIOS && tokenId && (
-                <li className="">
-                  <AddToDeviceWallet
-                    className="w-full px-2 h-8 text-xs grid grid-cols-[20px_1fr] rounded-md bg-black text-white"
-                    iconLeft={
-                      <Image
-                        width="20"
-                        height="20"
-                        alt="Google Wallet"
-                        src={`/images/illustrations/google-wallet.svg`}
-                      />
-                    }
+                <li>
+                  <AddToPhoneWallet
+                    platform={Platform.GOOGLE}
+                    className="w-full px-2 py-2 text-xs flex items-center justify-center gap-2 rounded-md bg-black text-white"
                     size="small"
                     variant="secondary"
-                    platform={Platform.GOOGLE}
-                    as={Button}
+                    as="button"
                     network={lock!.network}
                     lockAddress={lock!.address}
                     tokenId={tokenId}
-                    name={lock!.name}
                     handlePassUrl={(url: string) => {
                       window.location.assign(url)
                     }}
-                  >
-                    Add to Google Wallet
-                  </AddToDeviceWallet>
+                  />
                 </li>
               )}
               {!isAndroid && tokenId && (
-                <li className="">
-                  <AddToDeviceWallet
-                    className="w-full px-2 h-8 text-xs grid grid-cols-[20px_1fr] rounded-md bg-black text-white"
+                <li>
+                  <AddToPhoneWallet
                     platform={Platform.APPLE}
+                    className="w-full px-2 py-2 text-xs flex items-center justify-center gap-2 rounded-md bg-black text-white"
                     size="small"
                     variant="secondary"
-                    as={Button}
-                    iconLeft={
-                      <Image
-                        className="justify-self-left"
-                        width="20"
-                        height="20"
-                        alt="Apple Wallet"
-                        src={`/images/illustrations/apple-wallet.svg`}
-                      />
-                    }
+                    as="button"
                     network={lock!.network}
                     lockAddress={lock!.address}
                     tokenId={tokenId}
-                    name={lock!.name}
-                    handlePassUrl={(url: string) => {
-                      window.location.assign(url)
-                    }}
-                  >
-                    Add to Apple Wallet
-                  </AddToDeviceWallet>
+                  />
                 </li>
               )}
             </ul>
@@ -167,34 +134,31 @@ export function Returning({
         </div>
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
-        >
-          <div>
-            {hasMessageToSign ? (
-              <Button
-                disabled={isSigningMessage}
-                loading={isSigningMessage}
-                onClick={onSign}
-                className="w-full"
-              >
-                Sign message
-              </Button>
-            ) : (
-              <div
-                className={`gap-4 ${
-                  paywallConfig?.endingCallToAction
-                    ? 'grid grid-cols-1'
-                    : 'flex justify-between '
-                }`}
-              >
-                <ReturningButton
-                  onClick={() => onClose()}
-                  returnLabel="Return"
-                  checkoutService={checkoutService}
-                />
-                {!lock?.isSoldOut && (
+        <div>
+          {hasMessageToSign ? (
+            <Button
+              disabled={isSigningMessage}
+              loading={isSigningMessage}
+              onClick={onSign}
+              className="w-full"
+            >
+              Sign message
+            </Button>
+          ) : (
+            <div
+              className={`gap-4 ${
+                paywallConfig?.endingCallToAction
+                  ? 'grid grid-cols-1'
+                  : 'flex justify-between '
+              }`}
+            >
+              <ReturningButton
+                onClick={() => onClose()}
+                returnLabel="Return"
+                checkoutService={checkoutService}
+              />
+              {!lock?.isSoldOut &&
+                !shouldSkip({ paywallConfig, lock }).skipRecipient && (
                   <Button
                     className="w-full"
                     onClick={() =>
@@ -204,10 +168,9 @@ export function Returning({
                     Buy more
                   </Button>
                 )}
-              </div>
-            )}
-          </div>
-        </Connected>
+            </div>
+          )}
+        </div>
         <PoweredByUnlock />
       </footer>
     </Fragment>

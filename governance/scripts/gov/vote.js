@@ -9,8 +9,8 @@ const vote = async (gov, voter, proposalId) => {
 
   console.log(
     'GOV VOTE >',
-    `voter ${voter.address}: power ${ethers.formatUnits(
-      await gov.getVotes(voter.address, currentBlock - 1),
+    `voter ${await voter.getAddress()}: power ${ethers.formatUnits(
+      await gov.getVotes(await voter.getAddress(), currentBlock - 1),
       18
     )} `,
     `(quorum ${ethers.formatUnits(await gov.quorum(currentBlock - 1), 18)})`
@@ -27,7 +27,7 @@ const vote = async (gov, voter, proposalId) => {
   if (!event || !hasVotedAfter) {
     throw new Error('GOV VOTE > Vote not casted.')
   }
-  // eslint-disable-next-line no-console
+
   console.log(
     `GOV VOTE > vote casted: ${
       voter.address
@@ -51,7 +51,7 @@ async function main({ voterAddress, proposalId, govAddress, proposalBlock }) {
   if (isDev) {
     if (!voter) {
       // No voter equals to authoritarian mode: a single voter win!
-      if (process.env.RUN_FORK === '1') {
+      if (process.env.RUN_FORK === '1' || process.env.RUN_FORK === '8453') {
         if (!voterAddress) {
           ;[voter] = await getDelegates()
         } else {
@@ -82,11 +82,14 @@ async function main({ voterAddress, proposalId, govAddress, proposalBlock }) {
     voter = await ethers.getSigner(voterAddress)
   }
 
+  if (!voter) {
+    ;[voter] = await ethers.getSigners()
+  }
+
   const state = await getProposalState(proposalId, govAddress)
   if (state === 'Active') {
-    const hasVoted = await gov.hasVoted(proposalId, voter.address)
+    const hasVoted = await gov.hasVoted(proposalId, await voter.getAddress())
     if (hasVoted) {
-      // eslint-disable-next-line no-console
       console.log('GOV VOTE > voter already voted')
       return
     }

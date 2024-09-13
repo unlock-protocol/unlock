@@ -1,23 +1,23 @@
 /* eslint strict: 0, global-require: 0 */
-const { expect } = require('chai')
+const assert = require('assert')
 
 describe('main exports', () => {
   it('entry point parse correctly', () => {
-    expect(() => require('../dist')).not.to.throw
+    assert.doesNotThrow(() => require('../dist'))
   })
 
   it('contains valid exports', () => {
     const contracts = require('../dist')
-    expect(Object.keys(contracts).length).not.to.equal(0)
+    assert.notEqual(Object.keys(contracts).length, 0)
 
-    const v0 = require('../dist/abis/Unlock/UnlockV0.json')
-    expect(v0.contractName).to.equal('Unlock')
-    expect(Object.keys(v0)).to.contain('abi')
-    expect(Object.keys(v0)).to.contain('bytecode')
+    const V12 = require('../dist/abis/Unlock/UnlockV12.json')
+    assert.equal(V12.contractName, 'Unlock')
+    assert(Object.keys(V12).includes('abi'))
+    assert(Object.keys(V12).includes('bytecode'))
 
-    const { UnlockV0 } = require('../dist')
-    expect(UnlockV0.contractName).to.equal('Unlock')
-    expect(Object.keys(UnlockV0)).to.contain('abi')
-    expect(Object.keys(UnlockV0)).to.contain('bytecode')
+    const { UnlockV12 } = require('../dist')
+    assert.equal(UnlockV12.contractName, 'Unlock')
+    assert(Object.keys(UnlockV12).includes('abi'))
+    assert(Object.keys(UnlockV12).includes('bytecode'))
   })
 })

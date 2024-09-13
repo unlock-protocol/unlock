@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import { Placeholder, ToggleSwitch } from '@unlock-protocol/ui'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { useSaveLockSettings } from '~/hooks/useLockSettings'
 
 interface CreditCardUnlockFeeProps {
@@ -19,17 +19,18 @@ export default function CreditCardUnlockFee({
   const [unlockFeePaidByLockManager, setUnlockFeePaidByLockManager] =
     useState(false)
 
-  const { isLoading } = useQuery(
-    ['getLockSettings', lockAddress, network],
-    async () => {
-      return (await storage.getLockSettings(network, lockAddress)).data
+  const { data: lockSettings, isPending } = useQuery({
+    queryKey: ['getLockSettings', lockAddress, network],
+    queryFn: async () => {
+      return (await locksmith.getLockSettings(network, lockAddress)).data
     },
-    {
-      onSuccess: ({ unlockFeeChargedToUser }) => {
-        setUnlockFeePaidByLockManager(!unlockFeeChargedToUser)
-      },
+  })
+
+  useEffect(() => {
+    if (lockSettings) {
+      setUnlockFeePaidByLockManager(!lockSettings.unlockFeeChargedToUser)
     }
-  )
+  }, [lockSettings])
 
   const saveSettingMutation = useSaveLockSettings()
 
@@ -42,7 +43,7 @@ export default function CreditCardUnlockFee({
     ToastHelper.success('Option successfully changed.')
   }
 
-  if (isLoading) {
+  if (isPending) {
     return (
       <Placeholder.Root>
         <Placeholder.Line />
@@ -59,7 +60,7 @@ export default function CreditCardUnlockFee({
             Fees paid by lock manager
           </span>
           <ToggleSwitch
-            disabled={disabled || saveSettingMutation.isLoading}
+            disabled={disabled || saveSettingMutation.isPending}
             enabled={unlockFeePaidByLockManager}
             setEnabled={setUnlockFeePaidByLockManager}
             onChange={(feePaidByLockManager: boolean) => {

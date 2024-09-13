@@ -1,3 +1,5 @@
+import { Event, PaywallConfigType } from '@unlock-protocol/core'
+
 import { useMutation, useQuery } from '@tanstack/react-query'
 import {
   AddressInput,
@@ -11,33 +13,23 @@ import { Controller, useForm, useWatch } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import useEns, { getAddressForName } from '~/hooks/useEns'
-import { useState } from 'react'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { onResolveName } from '~/utils/resolvers'
-import { useLockManager } from '~/hooks/useLockManager'
+import { Verifier } from '@unlock-protocol/unlock-js'
+import { useEffect } from 'react'
 
-interface VerifierProps {
-  address: string
-  createdAt: string
-  updatedAt: string
-  lockAddress: string
-  lockManager: string
-  network: number
-  name?: string
-  id: number
-}
-
-interface VerifierFormProps {
-  lockAddress: string
-  network: number
-  disabled: boolean
+export interface VerifierFormProps {
+  event: Event
+  checkoutConfig: {
+    id?: string
+    config: PaywallConfigType
+  }
 }
 
 interface VerifierCardProps {
-  verifier: VerifierProps
+  verifier: Verifier
   onDeleteVerifier: (address: string) => Promise<any>
   isLoading?: boolean
-  disabled: boolean
 }
 
 interface VerifierFormDataProps {
@@ -49,7 +41,6 @@ const VerifierCard = ({
   verifier,
   onDeleteVerifier,
   isLoading,
-  disabled,
 }: VerifierCardProps) => {
   const { account } = useAuth()
 
@@ -73,44 +64,25 @@ const VerifierCard = ({
           </span>
         )}
       </div>
-      {isCurrentAccount && (
-        <Button
-          size="small"
-          variant="outlined-primary"
-          onClick={() => onDeleteVerifier(address)}
-          disabled={isLoading || disabled}
-        >
-          Remove
-        </Button>
-      )}
+      <Button
+        size="tiny"
+        variant="outlined-primary"
+        onClick={() => onDeleteVerifier(verifier.address)}
+        disabled={isLoading}
+      >
+        Remove
+      </Button>
     </div>
   )
 }
 
-export const VerifierForm = ({
-  lockAddress,
-  network,
-  disabled,
-}: VerifierFormProps) => {
-  const [verifiers, setVerifiers] = useState<VerifierProps[]>([])
-
+export const VerifierForm = ({ event }: VerifierFormProps) => {
   const localForm = useForm<VerifierFormDataProps>()
-
-  const { isManager } = useLockManager({
-    lockAddress,
-    network,
-  })
-
   const { handleSubmit, control, setValue, register } = localForm
 
   const { verifier } = useWatch({
     control,
   })
-
-  const getVerifiers = async () => {
-    const response = await storage.verifiers(network, lockAddress)
-    return response.data.results || []
-  }
 
   const addVerifier = async ({
     address,
@@ -121,9 +93,8 @@ export const VerifierForm = ({
   }) => {
     const resolvedAddress = await getAddressForName(address)
 
-    const response = await storage.createVerifier(
-      network,
-      lockAddress,
+    const response = await locksmith.addEventVerifier(
+      event.slug,
       resolvedAddress,
       {
         verifierName: name,
@@ -133,65 +104,70 @@ export const VerifierForm = ({
     return response.data
   }
 
-  const deleteVerifier = async (address: string) => {
-    const response = await storage.deleteVerifier(network, lockAddress, address)
-    return response.data.results
-  }
+  const addEventVerifierMutation = useMutation({
+    mutationFn: addVerifier,
+  })
 
-  const addVerifierMutation = useMutation(addVerifier, {
-    onSuccess: (res: any) => {
-      if (res?.message) {
-        ToastHelper.error(res?.message)
-      } else {
-        ToastHelper.success(`Verifier added to list`)
-        setValue('verifier', '')
-        setValue('name', '')
-      }
-    },
-    onError: (err: any) => {
+  useEffect(() => {
+    if (addEventVerifierMutation.isSuccess) {
+      ToastHelper.success(`Verifier added to list`)
+      setValue('verifier', '')
+      setValue('name', '')
+      refetchList()
+    }
+    if (addEventVerifierMutation.isError) {
       ToastHelper.error(
-        err?.error ??
+        (addEventVerifierMutation.error as any)?.error ??
           'There was a problem adding the verifier address, please re-load and try again'
       )
-    },
-  })
-
-  const deleteVerifierMutation = useMutation(deleteVerifier, {
-    onSuccess: (res: any, verifier: string) => {
-      if (res?.message) {
-        ToastHelper.error(res?.message)
-      } else {
-        ToastHelper.success(`${minifyAddress(verifier)} deleted from list`)
-      }
-    },
-  })
-
-  const { isLoading: isLoadingItems } = useQuery(
-    [
-      'getVerifiers',
-      lockAddress,
-      network,
-      addVerifierMutation.isSuccess,
-      deleteVerifierMutation.isSuccess,
-    ],
-    async () => await getVerifiers(),
-    {
-      enabled: isManager,
-      refetchInterval: false,
-      onSuccess: (verifiers: VerifierProps[]) => {
-        setVerifiers(verifiers)
-      },
-      onError: (err: any) => {
-        ToastHelper.error(
-          err?.error ??
-            'We could not load the list of verifiers for your lock. Please reload to to try again.'
-        )
-      },
     }
-  )
+  }, [addEventVerifierMutation.isSuccess, addEventVerifierMutation.isError])
+
+  const deleteVerifierMutation = useMutation({
+    mutationFn: async (address: string) => {
+      locksmith.deleteEventVerifier(event.slug, address)
+    },
+  })
+
+  useEffect(() => {
+    if (deleteVerifierMutation.isSuccess) {
+      ToastHelper.success(
+        `${minifyAddress(deleteVerifierMutation.variables as string)} deleted from list`
+      )
+      refetchList()
+    }
+    if (deleteVerifierMutation.isError) {
+      ToastHelper.error(
+        (deleteVerifierMutation.error as any)?.message ??
+          'Failed to delete verifier'
+      )
+    }
+  }, [deleteVerifierMutation.isSuccess, deleteVerifierMutation.isError])
+
+  const {
+    isLoading: isLoadingItems,
+    refetch: refetchList,
+    data: verifiers,
+    error: verifiersError,
+  } = useQuery({
+    queryKey: ['eventVerifiers', event.slug],
+    queryFn: async () => {
+      const response = await locksmith.eventVerifiers(event.slug)
+      return response.data.results || []
+    },
+  })
+
+  useEffect(() => {
+    if (verifiersError) {
+      ToastHelper.error(
+        (verifiersError as any)?.error ??
+          'We could not load the list of verifiers for your lock. Please reload to to try again.'
+      )
+    }
+  }, [verifiersError])
 
   const onAddVerifier = async ({ verifier, name }: VerifierFormDataProps) => {
-    await addVerifierMutation.mutateAsync({ address: verifier, name })
+    await addEventVerifierMutation.mutateAsync({ address: verifier, name })
   }
 
   const onDeleteVerifier = async (address: string) => {
@@ -200,8 +176,8 @@ export const VerifierForm = ({
 
   const isLoading =
     isLoadingItems ||
-    addVerifierMutation.isLoading ||
-    deleteVerifierMutation.isLoading
+    addEventVerifierMutation.isPending ||
+    deleteVerifierMutation.isPending
 
   const noVerifiers = verifiers?.length === 0
 
@@ -210,85 +186,79 @@ export const VerifierForm = ({
       <div className="flex flex-col gap-4">
         {noVerifiers && !isLoading && (
           <span>
-            {isManager
-              ? 'This lock currently does not have any verifier.'
-              : 'Only lock manager can access verifiers list.'}
+            This event currently does not have any verifier. You can add some
+            using the form below.
           </span>
         )}
         {!noVerifiers && !isLoading && (
           <div className="grid gap-1">
             <span className="font-semibold">Verifiers</span>
             <div className="grid gap-2">
-              {(verifiers ?? [])?.map((verifier: VerifierProps) => (
+              {verifiers?.map((verifier: Verifier) => (
                 <VerifierCard
                   verifier={verifier}
-                  key={verifier.id}
+                  key={verifier.address}
                   onDeleteVerifier={onDeleteVerifier}
-                  isLoading={deleteVerifierMutation.isLoading}
-                  disabled={disabled}
+                  isLoading={deleteVerifierMutation.isPending}
                 />
               ))}
             </div>
           </div>
         )}
 
-        {(isLoadingItems || addVerifierMutation.isLoading) &&
-          !deleteVerifierMutation.isLoading && <Placeholder.Line size="xl" />}
+        {(isLoadingItems || addEventVerifierMutation.isPending) &&
+          !deleteVerifierMutation.isPending && <Placeholder.Line size="xl" />}
       </div>
-      {isManager && (
-        <form
-          className="flex flex-col gap-6 mt-8"
-          onSubmit={handleSubmit(onAddVerifier)}
-        >
-          <div className="flex flex-col gap-2">
-            <Input
-              type="text"
-              placeholder="Verifier name"
-              label="Name"
-              disabled={disabled}
-              autoComplete="off"
-              description="Set an optional name to easily check who verified."
-              {...register('name')}
-            />
-          </div>
+      <form
+        className="flex flex-col gap-6 mt-8"
+        onSubmit={handleSubmit(onAddVerifier)}
+      >
+        <div className="flex flex-col gap-2">
+          <Input
+            type="text"
+            placeholder="Verifier name"
+            label="Name"
+            autoComplete="off"
+            description="Set an optional name to easily check who verified."
+            {...register('name')}
+          />
+        </div>
 
-          <div className="flex flex-col gap-2">
-            <Controller
-              name="verifier"
-              control={control}
-              rules={{
-                required: true,
-                validate: isAddressOrEns,
-              }}
-              render={() => {
-                return (
-                  <>
-                    <AddressInput
-                      withIcon
-                      value={verifier}
-                      disabled={disabled}
-                      label="To add a verifier, please enter their wallet address or ENS name"
-                      autoComplete="off"
-                      onChange={(value: any) => {
-                        setValue('verifier', value)
-                      }}
-                      onResolveName={onResolveName}
-                    />
-                  </>
-                )
-              }}
-            />
-          </div>
-          <Button
-            type="submit"
-            className="w-full md:w-1/2"
-            disabled={isLoading || disabled}
-            loading={addVerifierMutation.isLoading}
-          >
-            Add
-          </Button>
-        </form>
-      )}
+        <div className="flex flex-col gap-2">
+          <Controller
+            name="verifier"
+            control={control}
+            rules={{
+              required: true,
+              validate: isAddressOrEns,
+            }}
+            render={() => {
+              return (
+                <>
+                  <AddressInput
+                    withIcon
+                    value={verifier}
+                    label="Wallet address or ENS name"
+                    autoComplete="off"
+                    onChange={(value: any) => {
+                      setValue('verifier', value)
+                    }}
+                    onResolveName={onResolveName}
+                  />
+                </>
+              )
+            }}
+          />
+        </div>
+        <Button
+          type="submit"
+          className="w-full md:w-1/2"
+          disabled={isLoading}
+          loading={addEventVerifierMutation.isPending}
+        >
+          Add
+        </Button>
+      </form>
     </div>
   )
 }

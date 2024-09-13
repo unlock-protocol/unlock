@@ -1,7 +1,6 @@
-import { MdAssignmentLate } from 'react-icons/md'
-import { useEffect, useState } from 'react'
+import { BiQrScan as ScanIcon } from 'react-icons/bi'
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 import { NextSeo } from 'next-seo'
 import {
   Button,
@@ -10,35 +9,27 @@ import {
   Icon,
   minifyAddress,
 } from '@unlock-protocol/ui'
-import AddToCalendarButton from './AddToCalendarButton'
-import { TweetItButton } from './TweetItButton'
-import { CastItButton } from './CastItButton'
-import { CopyUrlButton } from './CopyUrlButton'
 import { getEventDate, getEventEndDate, getEventUrl } from './utils'
 import { useEventOrganizer } from '~/hooks/useEventOrganizer'
 import { useEventOrganizers } from '~/hooks/useEventOrganizers'
-import { VerifierForm } from '~/components/interface/locks/Settings/forms/VerifierForm'
 import dayjs from 'dayjs'
-import { AiOutlineCalendar as CalendarIcon } from 'react-icons/ai'
 import {
   Event,
   PaywallConfigType,
   formDataToMetadata,
 } from '@unlock-protocol/core'
-import { CoverImageDrawer } from './CoverImageDrawer'
-import { EventDetail } from './EventDetail'
-import { EventLocation } from './EventLocation'
-import { RegistrationCard } from './Registration/RegistrationCard'
 import { useEvent } from '~/hooks/useEvent'
 import { SettingEmail } from '~/components/interface/locks/Settings/elements/SettingEmail'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { FaUsers } from 'react-icons/fa'
 import { TbSettings } from 'react-icons/tb'
 import { config } from '~/config/app'
-import Hosts from './Hosts'
 import removeMd from 'remove-markdown'
 import { truncateString } from '~/utils/truncateString'
-import { AttendeeCues } from './Registration/AttendeeCues'
+import { useEventVerifiers } from '~/hooks/useEventVerifiers'
+import { EventDefaultLayout } from './Layout/EventDefaultLayout'
+import { EventBannerlessLayout } from './Layout/EventBannerlessLayout'
+import { EventsLayout } from './Layout/constants'
 
 interface EventDetailsProps {
   event: Event
@@ -59,7 +50,6 @@ export const EventDetails = ({
   event: eventProp,
   checkoutConfig,
 }: EventDetailsProps) => {
-  const [image, setImage] = useState('')
   const router = useRouter()
 
   // Check if the user is one of the lock manager
@@ -78,7 +68,20 @@ export const EventDetails = ({
 
   const { data: organizers } = useEventOrganizers({
     checkoutConfig,
-  })
+  }) as { data: string[] | undefined }
+
+  const {
+    data: verifier,
+    isError,
+    error,
+  } = useEventVerifiers({ event: eventProp })
+
+  if (isError) {
+    console.error(
+      error ??
+        'We could not load the list of verifiers for your lock. Please reload to try again.'
+    )
+  }
 
   // Migrate legacy event and/or redirect
   // TODO: remove by June 1st 2024
@@ -88,7 +91,7 @@ export const EventDetails = ({
         if (event.slug) {
           router.push(eventUrl)
         } else {
-          const { data: savedEvent } = await storage.saveEventData({
+          const { data: savedEvent } = await locksmith.saveEventData({
             data: formDataToMetadata(event),
             // @ts-expect-error Property ''name'' is missing in type
             checkoutConfig,
@@ -104,7 +107,7 @@ export const EventDetails = ({
       }
     }
     migrateAndRedirect()
-  }, [router, event, eventUrl])
+  }, [router, event, eventUrl, checkoutConfig])
 
   const eventDate = getEventDate(event.ticket) // Full date + time of event
   const eventEndDate = getEventEndDate(event.ticket)
@@ -159,6 +162,31 @@ export const EventDetails = ({
   const hasDate = startDate || startTime || endDate || endTime
 
   const coverImage = event.ticket.event_cover_image
+
+  const layoutProps = {
+    event,
+    checkoutConfig,
+    hasLocation,
+    hasDate,
+    startDate,
+    startTime,
+    endDate,
+    endTime,
+    eventUrl,
+    hasPassed,
+    organizers,
+    coverImage,
+    refetch,
+  }
+
+  const renderEventLayout = () => {
+    switch (event.layout) {
+      case EventsLayout.Bannerless:
+        return <EventBannerlessLayout {...layoutProps} />
+      default:
+        return <EventDefaultLayout {...layoutProps} />
+    }
+  }
 
   return (
     <div>
@@ -220,139 +248,49 @@ export const EventDetails = ({
         ]}
       />
       <div className="flex flex-col gap-4">
-        {isOrganizer && (
-          <div className="flex flex-row-reverse gap-2 ">
-            <Button
-              onClick={() => {
-                router.push(`/event/${eventProp.slug}/settings`)
-              }}
-            >
-              <div className="flex items-center gap-2">
-                <Icon icon={TbSettings} size={20} />
-                <span>Settings</span>
-              </div>
-            </Button>
-            <Button
-              onClick={() => {
-                router.push(`/event/${eventProp.slug}/attendees`)
-              }}
-            >
-              <div className="flex items-center gap-2">
-                <Icon icon={FaUsers} size={20} />
-                <span>Attendees</span>
-              </div>
-            </Button>
-          </div>
-        )}
+        <div className="flex flex-col-reverse px-4 md:px-0 md:flex-row-reverse gap-2 ">
+          {isOrganizer && (
+            <>
+              <Button
+                onClick={() => {
+                  router.push(`/event/${eventProp.slug}/settings`)
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <Icon icon={TbSettings} size={20} />
+                  <span>Settings</span>
+                </div>
+              </Button>
+              <Button
+                onClick={() => {
+                  router.push(`/event/${eventProp.slug}/attendees`)
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <Icon icon={FaUsers} size={20} />
+                  <span>Attendees</span>
+                </div>
+              </Button>
+            </>
+          )}
 
-        <div className="relative">
-          <div className="w-full hidden sm:block sm:overflow-hidden bg-slate-200 max-h-80 sm:rounded-3xl">
-            <img
-              className="object-cover w-full h-full"
-              src={coverImage || event.image}
-              alt="Cover image"
-            />
-          </div>
-
-          <CoverImageDrawer
-            image={image}
-            setImage={setImage}
-            checkoutConfig={checkoutConfig}
-            event={event}
-            handleClose={() => {
-              refetch()
-            }}
-          />
-
-          <div className="sm:absolute flex sm:flex-col w-full gap-6 px-4 sm:px-10 -bottom-12">
-            <section className="flex justify-between flex-col sm:flex-row">
-              <div className="flex p-1 bg-white sm:p-2 sm:w-48 sm:h-48 sm:rounded-3xl rounded-xl border">
-                <img
-                  alt={event.title}
-                  className="object-cover w-full m-auto aspect-1 sm:rounded-2xl rounded-lg"
-                  src={event.image}
-                />
-              </div>
-              <ul className="flex items-center justify-center gap-0 mt-auto md:gap-2">
-                <li>
-                  <AddToCalendarButton event={event} eventUrl={eventUrl} />
-                </li>
-                <li>
-                  <TweetItButton event={event} eventUrl={eventUrl} />
-                </li>
-                <li>
-                  <CastItButton event={event} eventUrl={eventUrl} />
-                </li>
-                <li>
-                  <CopyUrlButton url={eventUrl} />
-                </li>
-              </ul>
-            </section>
-          </div>
+          {(verifier || isOrganizer) && (
+            <>
+              <Button
+                onClick={() => {
+                  router.push(`/event/${eventProp.slug}/verification`)
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <Icon icon={ScanIcon} size={20} />
+                  <span>Verification</span>
+                </div>
+              </Button>
+            </>
+          )}
         </div>
-
-        <section className="grid items-start grid-cols-1 md:gap-4 md:grid-cols-3 md:mt-16 mt-8">
-          <div className="flex flex-col col-span-3 gap-4 md:col-span-2">
-            <h1 className="mt-4 text-3xl font-bold md:text-6xl">
-              {event.name}
-            </h1>
-            <section className="flex flex-col gap-4">
-              {organizers && organizers.length > 0 && (
-                <Hosts organizers={organizers} />
-              )}
-              <div className="grid grid-cols-1 gap-6 md:p-6 md:grid-cols-2 rounded-xl">
-                {hasDate && (
-                  <EventDetail label="Date" icon={CalendarIcon}>
-                    <div
-                      style={{ color: `#${event.background_color}` }}
-                      className="flex flex-col text-lg font-normal text-brand-dark"
-                    >
-                      {(startDate || endDate) && (
-                        <span>
-                          {startDate} {endDate && <>to {endDate}</>}
-                        </span>
-                      )}
-                      {startTime && endTime && (
-                        <span>
-                          {startTime} {endTime && <>to {endTime}</>}
-                        </span>
-                      )}
-                    </div>
-                  </EventDetail>
-                )}
-                {hasLocation && <EventLocation event={event} />}
-              </div>
-              <div className="mt-10">
-                {event.description && (
-                  <div className="mt-4 markdown">
-                    {/* eslint-disable-next-line react/no-children-prop */}
-                    <ReactMarkdown children={event.description} />
-                  </div>
-                )}
-              </div>
-            </section>
-          </div>
-          <div className="flex flex-col gap-4">
-            {!hasPassed && (
-              <RegistrationCard
-                requiresApproval={event.requiresApproval}
-                checkoutConfig={checkoutConfig}
-              />
-            )}
-            {hasPassed && (
-              <Card className="grid gap-4 mt-10 md:mt-0">
-                <p className="text-lg">
-                  <MdAssignmentLate />
-                  This event is over. It is not possible to register for it
-                  anymore.
-                </p>
-              </Card>
-            )}
-            <AttendeeCues checkoutConfig={checkoutConfig} />
-          </div>
-        </section>
       </div>
-
+      {renderEventLayout()}
       <section className="flex flex-col">
         {isOrganizer && (
           <div className="grid gap-6 mt-12">
@@ -400,47 +338,6 @@ export const EventDetails = ({
                   )}
                 </div>
               </Disclosure>
-
-              <Disclosure
-                label="Verifiers"
-                description="Add and manage trusted users at the event to help check-in attendees as they arrive."
-              >
-                <div className="grid gap-2">
-                  {Object.keys(checkoutConfig.config.locks).map(
-                    (lockAddress: string) => {
-                      const network =
-                        checkoutConfig.config.locks[lockAddress].network ||
-                        checkoutConfig.config.network
-                      if (Object.keys(checkoutConfig.config.locks).length > 1) {
-                        return (
-                          <Disclosure
-                            label={`Verifiers for ${minifyAddress(
-                              lockAddress
-                            )}`}
-                            key={lockAddress}
-                          >
-                            <VerifierForm
-                              lockAddress={lockAddress}
-                              network={network!}
-                              disabled={!isOrganizer}
-                            />
-                          </Disclosure>
-                        )
-                      } else {
-                        return (
-                          <VerifierForm
-                            key={lockAddress}
-                            lockAddress={lockAddress}
-                            network={network!}
-                            disabled={!isOrganizer}
-                          />
-                        )
-                      }
-                    }
-                  )}
-                </div>
-              </Disclosure>
-
               {/* Put that only if the event requires the checkout? */}
               <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
                 <div className="md:col-span-2">

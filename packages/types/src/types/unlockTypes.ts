@@ -1,6 +1,5 @@
 // This file contains type definitions for the various kinds of data that we use
 // throughout unlock-app.
-import type { BigNumber } from 'ethers'
 
 // A bug in eslint causes it to think that this exported enum is "unused". So
 // disable eslint for that declaration until they fix it. TODO: follow up on this.
@@ -39,6 +38,7 @@ export interface Token {
   mainnetAddress?: string
   wrapped?: string
   featured?: boolean
+  faucet?: Faucet
 }
 
 export enum HookType {
@@ -83,6 +83,11 @@ export interface NetworkBridgeConfig {
   }
 }
 
+export interface Faucet {
+  name: string
+  url: string
+}
+
 export interface NetworkConfig {
   id: number
   featured: boolean
@@ -93,6 +98,7 @@ export interface NetworkConfig {
   unlockAddress: string
   multisig?: string
   keyManagerAddress?: string
+  kickbackAddress?: string
   universalCard?: {
     cardPurchaserAddress: string
     stripeDestinationNetwork: string
@@ -118,7 +124,6 @@ export interface NetworkConfig {
     universalRouterAddress: string
     positionManager: string
   }>
-  swapPurchaser?: string
   unlockOwner?: string
   unlockDaoToken?: {
     address: string
@@ -154,7 +159,7 @@ export interface NetworkConfig {
   previousDeploys?: NetworkDeploy[]
   description: string
   url?: string
-  faucet?: string
+  faucets?: Faucet[]
   tokens?: Token[]
   hooks?: Partial<Record<HookName, Hook[]>>
   fullySubsidizedGas?: boolean
@@ -295,18 +300,6 @@ export interface UserMetadata {
   protectedData?: {
     [key: string]: string
   }
-}
-
-export interface UnlockUniswapRoute {
-  swapCalldata?: string
-  value: string
-  amountInMax: BigNumber
-  swapRouter: string
-  quote: any
-  trade: any
-  convertToQuoteToken: any
-  quoteGasAdjusted: any
-  estimatedGasUsedUSD: any
 }
 
 export type UnlockNetworks = number

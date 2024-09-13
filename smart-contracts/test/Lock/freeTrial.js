@@ -1,4 +1,4 @@
-const { assert } = require('chai')
+const assert = require('assert')
 const { ethers } = require('hardhat')
 const {
   deployLock,
@@ -7,7 +7,7 @@ const {
   compareBigNumbers,
 } = require('../helpers')
 
-const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
+const keyPrice = ethers.parseUnits('0.01', 'ether')
 
 describe('Lock / freeTrial', () => {
   let lock
@@ -17,7 +17,7 @@ describe('Lock / freeTrial', () => {
   beforeEach(async () => {
     lock = await deployLock()
     ;[keyOwner] = await ethers.getSigners()
-    ;({ tokenId } = await purchaseKey(lock, keyOwner.address))
+    ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))
   })
 
   it('No free trial by default', async () => {
@@ -29,7 +29,7 @@ describe('Lock / freeTrial', () => {
 
     beforeEach(async () => {
       await lock.updateRefundPenalty(5, 2000)
-      initialLockBalance = await getBalance(lock.address)
+      initialLockBalance = await getBalance(await lock.getAddress())
     })
 
     describe('should cancel and provide a full refund when enough time remains', () => {
@@ -38,9 +38,8 @@ describe('Lock / freeTrial', () => {
       })
 
       it('should provide a full refund', async () => {
-        const refundAmount = initialLockBalance.sub(
-          await getBalance(lock.address)
-        )
+        const refundAmount =
+          initialLockBalance - (await getBalance(await lock.getAddress()))
         compareBigNumbers(refundAmount, keyPrice)
       })
     })
@@ -52,11 +51,10 @@ describe('Lock / freeTrial', () => {
       })
 
       it('should provide less than a full refund', async () => {
-        const refundAmount = initialLockBalance.sub(
-          await getBalance(lock.address)
-        )
-        assert.notEqual(refundAmount.toString(), keyPrice.toString())
-        assert(refundAmount.lt(keyPrice.toString()))
+        const refundAmount =
+          initialLockBalance - (await getBalance(await lock.getAddress()))
+        assert.notEqual(refundAmount, keyPrice)
+        assert(refundAmount < keyPrice)
       })
     })
   })

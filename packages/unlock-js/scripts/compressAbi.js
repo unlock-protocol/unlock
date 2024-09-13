@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /**
  * This file generates the files src/abis.js, src/__tests__/helpers/bytecode.js and src/deployableBytecode.js
  * by extracting them from the packages below.
@@ -11,29 +10,8 @@ const fs = require('fs')
 const path = require('path')
 const abis = require('@unlock-protocol/contracts')
 
-const unlockVersions = [
-  'v4',
-  'v6',
-  'v7',
-  'v8',
-  'v9',
-  'v10',
-  'v11',
-  'v12',
-  'v13',
-]
-const publicLockVersions = [
-  'v4',
-  'v6',
-  'v7',
-  'v8',
-  'v9',
-  'v10',
-  'v11',
-  'v12',
-  'v13',
-  'v14',
-]
+const unlockVersions = ['v11', 'v12', 'v13']
+const publicLockVersions = ['v9', 'v10', 'v11', 'v12', 'v13', 'v14']
 
 const data = {
   PublicLock: publicLockVersions.reduce(
@@ -124,7 +102,7 @@ const parsedAbis = parseData(
   ({ contractName, signatures, deployedBytecode }) => ({
     contractName,
     abi: signatures,
-    bytecodeHash: ethers.utils.sha256(deployedBytecode),
+    bytecodeHash: ethers.sha256(deployedBytecode),
   })
 )
 

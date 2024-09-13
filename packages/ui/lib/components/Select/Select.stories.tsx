@@ -46,6 +46,43 @@ export const SelectComponent = {
         value: 3,
         disabled: true,
       },
+      {
+        label: 'Test 4',
+        value: 3,
+        disabled: true,
+      },
+    ],
+    moreOptions: [
+      {
+        label: 'Test 5',
+        value: 3,
+        disabled: true,
+      },
+      {
+        label: 'Test 6',
+        value: 3,
+        disabled: true,
+      },
+      {
+        label: 'Test 7',
+        value: 3,
+        disabled: true,
+      },
+      {
+        label: 'Test 8',
+        value: 3,
+        disabled: true,
+      },
+      {
+        label: 'Test 9',
+        value: 3,
+        disabled: true,
+      },
+      {
+        label: 'Test 10',
+        value: 3,
+        disabled: true,
+      },
     ],
   },
 } satisfies Story

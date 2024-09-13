@@ -3,7 +3,7 @@ import { ethers } from 'ethers'
 
 import ReCaptcha from 'react-google-recaptcha'
 
-import { Button, Input, AddressInput, Modal } from '@unlock-protocol/ui'
+import { Button, Input, AddressInput } from '@unlock-protocol/ui'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { Controller, useForm } from 'react-hook-form'
 import { useEffect, useState } from 'react'
@@ -12,10 +12,8 @@ import { MintingScreen } from '~/components/interface/checkout/main/Minting'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { TransactionStatus } from '~/components/interface/checkout/main/checkoutMachine'
 import { onResolveName } from '~/utils/resolvers'
-import { RiCloseLine as CloseIcon } from 'react-icons/ri'
 import { MetadataInputType } from '@unlock-protocol/core'
 import { useRsvp } from '~/hooks/useRsvp'
-import { IoWarningOutline } from 'react-icons/io5'
 import { useCaptcha } from '~/hooks/useCaptcha'
 import { useMutation } from '@tanstack/react-query'
 
@@ -52,7 +50,7 @@ const WalletlessRegistrationClaiming = ({
       return
     }
     const waitForConfirmation = async () => {
-      const provider = new ethers.providers.JsonRpcBatchProvider(
+      const provider = new ethers.JsonRpcProvider(
         config.networks[network].provider
       )
 
@@ -61,34 +59,24 @@ const WalletlessRegistrationClaiming = ({
         2
       )
 
-      if (transaction.status !== 1) {
+      if (!transaction || transaction.status !== 1) {
         setTransactionStatus('ERROR')
       } else {
         setTransactionStatus('FINISHED')
+        ToastHelper.success('🎉 You have been added to the attendees list!')
       }
     }
     waitForConfirmation()
   }, [transactionStatus, network, claimResult?.hash, config.networks])
 
   return (
-    <div className="bg-white z-10 shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[35rem] max-h-[42rem] p-4">
-      <div className="flex">
-        {transactionStatus === 'FINISHED' && (
-          <p className="mt-10 text-lg font-bold text-center">
-            🎉 You have been added to the attendees list!
-          </p>
-        )}
-        <CloseIcon
-          className="ml-auto cursor-pointer fill-black group-hover:fill-brand-ui-primary hover:text-brand-ui-primary"
-          size={24}
-          onClick={() => handleClose()}
-        />
-      </div>
-
+    <div className="flex flex-col items-center justify-center h-full">
       {claimResult && transactionStatus && (
-        <div className="m-auto mt-20 h-72 mb-36">
+        <div className="w-full">
           <MintingScreen
+            isCompact={true}
             mint={{
+              network: network,
               status: transactionStatus,
               transactionHash: claimResult.hash,
             }}
@@ -101,7 +89,7 @@ const WalletlessRegistrationClaiming = ({
                 text: 'Creating your ticket...',
               },
               FINISHED: {
-                text: 'Successfully created your ticket!',
+                text: '🎉 You have been added to the attendees list!',
               },
               ERROR: {
                 text: 'Failed to create the ticket.',
@@ -109,6 +97,11 @@ const WalletlessRegistrationClaiming = ({
             }}
           />
         </div>
+      )}
+      {transactionStatus === 'FINISHED' && (
+        <Button onClick={handleClose} className="mt-4" size="small">
+          Close
+        </Button>
       )}
     </div>
   )
@@ -121,7 +114,7 @@ export const WalletlessRegistrationClaim = ({
   refresh,
 }: FormProps) => {
   const [claimResult, setClaimResult] = useState<any>()
-  const [isClaimOpen, setClaimOpen] = useState(false)
+  const [isClaiming, setIsClaiming] = useState(false)
   const { mutateAsync: claim } = useClaim({
     lockAddress,
     network,
@@ -136,38 +129,49 @@ export const WalletlessRegistrationClaim = ({
     data: any
     captcha: string
   }) => {
-    const { hash, owner, message } = await claim({
-      recipient,
-      metadata: data,
-      captcha,
-    })
-    if (message) {
-      ToastHelper.error(message)
+    try {
+      const { hash, owner, message } = await claim({
+        recipient,
+        metadata: data,
+        captcha,
+      })
+      if (message) {
+        ToastHelper.error(message)
+        return
+      }
+      if (hash && owner) {
+        setClaimResult({ hash, owner })
+        setIsClaiming(true)
+        ToastHelper.success('Transaction successfully sent!')
+      }
+    } catch (error) {
+      ToastHelper.error('Failed to send transaction. Please try again.')
     }
-    if (hash && owner) {
-      setClaimResult({ hash, owner })
-      setClaimOpen(true)
-      ToastHelper.success('Transaction successfully sent!')
+  }
+
+  const handleClose = () => {
+    setIsClaiming(false)
+    setClaimResult(undefined)
+    if (refresh) {
+      refresh()
     }
   }
 
   return (
-    <>
-      <Modal isOpen={isClaimOpen} setIsOpen={setClaimOpen} empty={true}>
-        <WalletlessRegistrationClaiming
-          lockAddress={lockAddress}
-          network={network}
-          handleClose={() => {
-            setClaimOpen(false)
-            if (refresh) {
-              refresh()
-            }
-          }}
-          claimResult={claimResult}
-        />
-      </Modal>
-      <RegistrationForm metadataInputs={metadataInputs} onRSVP={onRSVP} />
-    </>
+    <div className="relative">
+      {isClaiming ? (
+        <div className="bg-white rounded-xl flex flex-col w-full p-4">
+          <WalletlessRegistrationClaiming
+            lockAddress={lockAddress}
+            network={network}
+            handleClose={handleClose}
+            claimResult={claimResult}
+          />
+        </div>
+      ) : (
+        <RegistrationForm metadataInputs={metadataInputs} onRSVP={onRSVP} />
+      )}
+    </div>
   )
 }
 
@@ -203,18 +207,7 @@ export const WalletlessRegistrationApply = ({
     )
   }
 
-  return (
-    <>
-      <div className="flex rounded-md bg-[#FFF7E8] p-2">
-        <IoWarningOutline size="32" className="w-24" />
-        <p>
-          This event requires approval, once approved you will receive an email
-          with your ticket and location details!{' '}
-        </p>
-      </div>
-      <RegistrationForm metadataInputs={metadataInputs} onRSVP={onRSVP} />
-    </>
-  )
+  return <RegistrationForm metadataInputs={metadataInputs} onRSVP={onRSVP} />
 }
 
 export const RegistrationForm = ({
@@ -235,7 +228,16 @@ export const RegistrationForm = ({
   const config = useConfig()
   const { recaptchaRef, getCaptchaValue } = useCaptcha()
   const [loading, setLoading] = useState<boolean>(false)
-  const { account } = useAuth()
+  const { account, email } = useAuth()
+
+  // If there is an email, we pre-fill the email field
+  if (email) {
+    metadataInputs?.map((input) => {
+      if (input.name === 'email') {
+        input.defaultValue = email
+      }
+    })
+  }
 
   const localForm = useForm<any>({
     mode: 'onChange',
@@ -251,7 +253,9 @@ export const RegistrationForm = ({
     reset,
   } = localForm
 
-  const handleResolve = useMutation(onResolveName)
+  const handleResolve = useMutation({
+    mutationFn: onResolveName,
+  })
 
   const onSubmit = async ({ recipient, ...data }: any) => {
     setLoading(true)
@@ -272,7 +276,7 @@ export const RegistrationForm = ({
     setLoading(false)
   }
 
-  const isLoading = loading || handleResolve.isLoading
+  const isLoading = loading || handleResolve.isPending
 
   return (
     <form

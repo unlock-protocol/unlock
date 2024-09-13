@@ -5,7 +5,7 @@ import {
   useGetLockSettings,
   useSaveLockSettings,
 } from '~/hooks/useLockSettings'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import Link from 'next/link'
 import { useMetadata } from '~/hooks/metadata'
 import { useRouter } from 'next/router'
@@ -45,7 +45,7 @@ export const EventCheckoutUrl = ({
     network,
   })
 
-  const checkoutUrl = `/locks/checkout-url?lock=${lockAddress}&network=${network}`
+  const checkoutUrl = `/locks/checkout-url`
 
   const hasCustomUrl = !!settings?.slug
   const hasConfigList = !!checkoutConfigList?.length
@@ -74,7 +74,7 @@ export const EventCheckoutUrl = ({
   const onSubmit = async ({ slug, checkoutConfigId }: FormProps) => {
     // add custom URL as part of the metadata
     if (!hasCustomUrl) {
-      await storage.updateLockMetadata(network, lockAddress, {
+      await locksmith.updateLockMetadata(network, lockAddress, {
         metadata: {
           ...metadata,
           slug,

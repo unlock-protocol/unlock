@@ -1,6 +1,5 @@
 import { CheckoutService, LockState } from './checkoutMachine'
 import { useConfig } from '~/utils/withConfig'
-import { Connected } from '../Connected'
 import { LockOptionPlaceholder, Pricing } from '../Lock'
 import { useSelector } from '@xstate/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -29,8 +28,12 @@ import { getLockUsdPrice } from '~/hooks/useUSDPricing'
 import { shouldSkip } from './utils'
 import { AiFillWarning as WarningIcon } from 'react-icons/ai'
 import { useGetLockProps } from '~/hooks/useGetLockProps'
+import Disconnect from './Disconnect'
+import { useSIWE } from '~/hooks/useSIWE'
+import { useMembership } from '~/hooks/useMembership'
+import { useRouter } from 'next/router'
+import { ethers } from 'ethers'
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
 }
 
@@ -52,6 +55,14 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
       lock: lock,
       baseCurrencySymbol: config.networks[lock.network].nativeCurrency.symbol,
     })
+
+  const showRenewalLabel =
+    lock.recurringPayments === 'forever' ||
+    !isNaN(Number(lock.recurringPayments))
+
+  const numberOfRenewals = !isNaN(Number(lock.recurringPayments))
+    ? `${lock.recurringPayments} times`
+    : ''
 
   return (
     <RadioGroup.Option
@@ -111,31 +122,38 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
                         icon={DurationIcon}
                         value={formattedData?.formattedDuration}
                       />
-                      {!!lock.recurringPayments &&
-                        parseInt(lock.recurringPayments.toString()) > 1 && (
-                          <LabeledItem
-                            label="Renew"
-                            icon={RecurringIcon}
-                            value={
-                              typeof lock.recurringPayments === 'number'
-                                ? `${lock.recurringPayments} times`
-                                : lock.recurringPayments
-                            }
-                          />
-                        )}
+                      {showRenewalLabel && (
+                        <LabeledItem
+                          label="Auto-renew"
+                          icon={RecurringIcon}
+                          value={numberOfRenewals}
+                        />
+                      )}
                     </>
                   )}
-                  {formattedData?.formattedKeysAvailable !== 'Unlimited' && (
+                  {formattedData?.formattedKeysAvailable === '0' && (
                     <LabeledItem
-                      label="Left"
                       icon={QuantityIcon}
-                      value={
-                        formattedData?.isSoldOut
-                          ? 'Sold out'
-                          : formattedData?.formattedKeysAvailable
-                      }
+                      label="Coming soon"
+                      value={''}
                     />
                   )}
+                  {formattedData?.formattedKeysAvailable !== '0' &&
+                    formattedData?.isSoldOut && (
+                      <LabeledItem
+                        icon={QuantityIcon}
+                        label="Sold out"
+                        value={''}
+                      />
+                    )}
+                  {formattedData?.formattedKeysAvailable !== 'Unlimited' &&
+                    !formattedData?.isSoldOut && (
+                      <LabeledItem
+                        label="Left"
+                        icon={QuantityIcon}
+                        value={formattedData?.formattedKeysAvailable}
+                      />
+                    )}
                 </div>
                 <div>
                   {checked ? (
@@ -182,16 +200,21 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
   )
 }
 
-export function Select({ checkoutService, injectedProvider }: Props) {
+export function Select({ checkoutService }: Props) {
   const { paywallConfig, lock: selectedLock } = useSelector(
     checkoutService,
     (state) => state.context
   )
   const [lock, setLock] = useState<LockState | undefined>(selectedLock)
+  const [autoSelectedLock, setAutoSelectedLock] = useState<
+    LockState | undefined
+  >(undefined)
 
-  const { isLoading: isLocksLoading, data: locks } = useQuery(
-    ['locks', JSON.stringify(paywallConfig)],
-    async () => {
+  const router = useRouter()
+
+  const { isPending: isLocksLoading, data: locks } = useQuery({
+    queryKey: ['locks', JSON.stringify(paywallConfig)],
+    queryFn: async () => {
       const items = await Promise.all(
         Object.entries(paywallConfig.locks)
           .sort(([, l], [, m]) => {
@@ -202,15 +225,41 @@ export function Select({ checkoutService, injectedProvider }: Props) {
               props.network || paywallConfig.network || 1
 
             const lockData = await web3Service.getLock(lock, networkId)
+
+            let price
+
+            if (account) {
+              try {
+                price = await web3Service.purchasePriceFor({
+                  lockAddress: lock,
+                  userAddress: account,
+                  referrer: account,
+                  network: networkId,
+                  // We do not have the data
+                  data: '0x',
+                })
+
+                price = parseFloat(
+                  ethers.formatUnits(price, lockData.currencyDecimals)
+                )
+              } catch (e) {
+                console.error(e)
+                price = Number(lockData.keyPrice)
+              }
+            } else {
+              price = Number(lockData.keyPrice)
+            }
+
             const fiatPricing = await getLockUsdPrice({
               network: networkId,
               currencyContractAddress: lockData?.currencyContractAddress,
-              amount: Number(lockData.keyPrice),
+              amount: price,
             })
 
             return {
               ...props,
               ...lockData,
+              keyPrice: price,
               name: props.name || lockData.name,
               network: networkId,
               address: lock,
@@ -225,8 +274,48 @@ export function Select({ checkoutService, injectedProvider }: Props) {
       )
 
       return locks
+    },
+  })
+
+  // This should be executed only if router is defined
+  useEffect(() => {
+    if (locks && router.query.lock) {
+      const autoSelectedLock = locks?.find(
+        (lock) => lock.address === router.query.lock
+      )
+
+      // Remove the lock from the query string
+      const { lock, ...otherQueryParams } = router.query
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: otherQueryParams,
+        },
+        undefined,
+        { shallow: true }
+      )
+
+      setAutoSelectedLock(autoSelectedLock)
     }
-  )
+  }, [router, locks])
+
+  useEffect(() => {
+    if (!autoSelectedLock) {
+      console.log('No lock to auto select')
+      return
+    }
+
+    checkoutService.send({
+      type: 'CONNECT',
+      lock,
+      existingMember: autoSelectedLock.isMember,
+      expiredMember: autoSelectedLock.isExpired,
+      skipQuantity,
+      skipRecipient,
+      recipients: account ? [account] : [],
+      hook: hookType,
+    })
+  }, [autoSelectedLock])
 
   const locksGroupedByNetwork = useMemo(
     () =>
@@ -263,7 +352,7 @@ export function Select({ checkoutService, injectedProvider }: Props) {
 
   const skipSelect = useMemo(() => {
     const skip = paywallConfig.skipSelect
-    return skip && Object.keys(paywallConfig.locks).length === 1
+    return skip === true && Object.keys(paywallConfig.locks).length === 1
   }, [paywallConfig])
 
   const config = useConfig()
@@ -277,35 +366,11 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     expectedAddress.toLowerCase() !== account.toLowerCase()
   )
 
-  const { isInitialLoading: isMembershipsLoading, data: memberships } =
-    useQuery(
-      ['memberships', account, JSON.stringify(paywallConfig)],
-      async () => {
-        const memberships = await Promise.all(
-          Object.entries(paywallConfig.locks).map(
-            async ([lockAddress, props]) => {
-              const lockNetwork = props.network || paywallConfig.network || 1
-              const [member, total] = await Promise.all([
-                web3Service.getHasValidKey(lockAddress, account!, lockNetwork),
-                web3Service.totalKeys(lockAddress, account!, lockNetwork),
-              ])
-              // if not member but total is above 0
-              const expired = !member && total > 0
-              return {
-                lock: lockAddress,
-                expired,
-                member,
-                network: lockNetwork,
-              }
-            }
-          )
-        )
-        return memberships
-      },
-      {
-        enabled: !!account,
-      }
-    )
+  const { isLoading: isMembershipsLoading, data: memberships } = useMembership({
+    account,
+    paywallConfig: paywallConfig,
+    web3Service,
+  })
 
   const membership = memberships?.find((item) => item.lock === lock?.address)
   const { isLoading: isLoadingHook, lockHookMapping } =
@@ -319,6 +384,12 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     return hook
   }, [lockHookMapping, lock])
 
+  const [isSigning, setSigning] = useState(false)
+
+  const { connected } = useAuth()
+  const { signIn, isSignedIn } = useSIWE()
+  const useDelegatedProvider = paywallConfig?.useDelegatedProvider
+
   const isDisabled =
     isLocksLoading ||
     isMembershipsLoading ||
@@ -326,7 +397,8 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     // if locks are sold out and the user is not an existing member of the lock
     (lock?.isSoldOut && !(membership?.member || membership?.expired)) ||
     isNotExpectedAddress ||
-    isLoadingHook
+    isLoadingHook ||
+    (isSigning && !isSignedIn)
 
   useEffect(() => {
     if (locks?.length) {
@@ -339,12 +411,20 @@ export function Select({ checkoutService, injectedProvider }: Props) {
   const isLoading = isLocksLoading || isLoadingHook || isMembershipsLoading
 
   useEffect(() => {
+    const signToSignIn = async () => {
+      await signIn()
+    }
+
+    if (!connected && useDelegatedProvider) {
+      signToSignIn()
+    }
+
     if (!(lock && skipSelect && account && !isLoading)) {
       return
     }
 
     checkoutService.send({
-      type: 'SELECT_LOCK',
+      type: 'CONNECT',
       lock,
       existingMember: !!membership?.member,
       skipQuantity,
@@ -366,6 +446,36 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     skipSelect,
     isLoading,
   ])
+
+  const selectLock = async (event: any) => {
+    event.preventDefault()
+
+    if (!lock) {
+      return
+    }
+
+    // TODO: Change state before signing and on CONNECT place loader
+
+    if (!isSignedIn && useDelegatedProvider) {
+      setSigning(true)
+
+      await signIn()
+
+      setSigning(false)
+      return
+    }
+
+    checkoutService.send({
+      type: 'CONNECT',
+      lock,
+      existingMember: lock.isMember,
+      expiredMember: lock.isExpired,
+      skipQuantity,
+      skipRecipient,
+      recipients: account ? [account] : [],
+      hook: hookType,
+    })
+  }
 
   return (
     <Fragment>
@@ -431,42 +541,18 @@ export function Select({ checkoutService, injectedProvider }: Props) {
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          service={checkoutService}
-          injectedProvider={injectedProvider}
-        >
-          <div className="grid">
-            {isNotExpectedAddress && (
-              <p className="mb-2 text-sm text-center">
-                Switch to wallet address {minifyAddress(expectedAddress)} to
-                continue.
-              </p>
-            )}
-            <Button
-              disabled={isDisabled}
-              onClick={async (event) => {
-                event.preventDefault()
-
-                if (!lock) {
-                  return
-                }
-
-                checkoutService.send({
-                  type: 'SELECT_LOCK',
-                  lock,
-                  existingMember: lock.isMember,
-                  expiredMember: lock.isExpired,
-                  skipQuantity,
-                  skipRecipient,
-                  recipients: account ? [account] : [],
-                  hook: hookType,
-                })
-              }}
-            >
-              Next
-            </Button>
-          </div>
-        </Connected>
+        <div className="grid">
+          {isNotExpectedAddress && (
+            <p className="mb-2 text-sm text-center">
+              Switch to wallet address {minifyAddress(expectedAddress)} to
+              continue.
+            </p>
+          )}
+          <Button disabled={isDisabled} onClick={selectLock}>
+            {!isSignedIn && useDelegatedProvider ? 'Confirm' : 'Next'}
+          </Button>
+        </div>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

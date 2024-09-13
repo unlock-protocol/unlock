@@ -3,7 +3,6 @@ import {
   useCrossmintEvents,
 } from '@crossmint/client-sdk-react-ui'
 import { CheckoutService } from './../checkoutMachine'
-import { Connected } from '../../Connected'
 import { Fragment, useCallback, useState } from 'react'
 import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
@@ -19,11 +18,11 @@ import { useCrossmintEnabled } from '~/hooks/useCrossmintEnabled'
 import { TransactionAnimation } from '../../Shell'
 import { config } from '~/config/app'
 import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
+import Disconnect from '../Disconnect'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
-  onConfirmed: (lock: string, hash?: string) => void
+  onConfirmed: (lock: string, network: number, hash?: string) => void
   onError: (message: string) => void
 }
 
@@ -36,7 +35,6 @@ interface CrossmintQuote {
 }
 
 export function ConfirmCrossmint({
-  injectedProvider,
   onConfirmed,
   // onError,
   checkoutService,
@@ -94,7 +92,7 @@ export function ConfirmCrossmint({
         setIsConfirming(true)
         listenToMintingEvents(paymentEvent.payload, (mintingEvent) => {
           if (mintingEvent.type === 'transaction:fulfillment.succeeded') {
-            onConfirmed(lock!.address, mintingEvent.payload.txId)
+            onConfirmed(lock!.address, lock!.network, mintingEvent.payload.txId)
           }
         })
       }
@@ -141,7 +139,7 @@ export function ConfirmCrossmint({
 
   const values = pricingData
     ? [
-        ethers.utils.parseUnits(
+        ethers.parseUnits(
           pricingData.prices[0].amount.toString(),
           pricingData.prices[0].decimals
         ),
@@ -261,8 +259,9 @@ export function ConfirmCrossmint({
             )}
             {quote?.totalPrice && (
               <Pricing
-                keyPrice={`${quote?.totalPrice
-                  .amount} ${quote?.totalPrice.currency.toUpperCase()}`}
+                keyPrice={`${
+                  quote?.totalPrice.amount
+                } ${quote?.totalPrice.currency.toUpperCase()}`}
                 isCardEnabled={false}
               />
             )}
@@ -284,10 +283,7 @@ export function ConfirmCrossmint({
       </main>
 
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
-        ></Connected>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>
