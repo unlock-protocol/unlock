@@ -1,10 +1,11 @@
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { locksmith } from '../../../../src/config/locksmith'
 import networks from '@unlock-protocol/networks'
+import { config as appConfig } from '~/config/app'
 
 export async function getLockDataFromCheckout(id: string) {
   const { config } = await fetch(
-    `https://locksmith.unlock-protocol.com/v2/checkout/${id}`
+    `${appConfig.locksmithHost}/v2/checkout/${id}`
   ).then((res) => res.json())
 
   const locks = config.locks
