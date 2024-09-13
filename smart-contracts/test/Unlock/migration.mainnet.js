@@ -49,80 +49,77 @@ let unlock,
 
 describe(`Unlock migration`, function () {
   before(async function () {
-    if (true) {
-      // if (!process.env.RUN_FORK) {
-      // all suite will be skipped
-      this.skip()
+    // all suite will be skipped
+    this.skip()
+
+    // fund signers
+    ;[signer, keyOwner] = await ethers.getSigners()
+    await addSomeETH(await signer.getAddress())
+    await addSomeETH(await keyOwner.getAddress())
+
+    // get original Unlock contract
+    ;({ multisig, unlockAddress } = await getNetwork())
+    unlock = await ethers.getContractAt('Unlock', unlockAddress)
+
+    // create a (v12) lock
+    lock = await deployLock({ unlock, isEthers: true })
+
+    // purchase a key
+    await purchaseKey(lock, await keyOwner.getAddress())
+
+    // impersonate one of the multisig owner
+
+    console.log('multisig =====', multisig)
+    const safeContract = getSafe({ safeAddress: multisig, signer })
+    const multisigSigner = await impersonate(
+      (await safeContract.getOwners())[0]
+    )
+
+    // deploy new template
+    const PublicLockV13 = await ethers.getContractFactory(
+      'contracts/PublicLock.sol:PublicLock'
+    )
+    publicLock = await PublicLockV13.deploy()
+
+    console.log(`PublicLockV13 > deployed at ${await publicLock.getAddress()}`)
+
+    // submit the new tempalte in old unlock (using multisig)
+    const addLockTemplateTx = {
+      contractName: 'Unlock',
+      contractAddress: unlockAddress,
+      functionName: 'addLockTemplate',
+      functionArgs: [await publicLock.getAddress(), 13],
     }
 
-    // // fund signers
-    // ;[signer, keyOwner] = await ethers.getSigners()
-    // await addSomeETH(await signer.getAddress())
-    // await addSomeETH(await keyOwner.getAddress())
+    const txIdv13 = await submitTx({
+      tx: addLockTemplateTx,
+      safeAddress: multisig,
+      signer: multisigSigner,
+    })
 
-    // // get original Unlock contract
-    // ;({ multisig, unlockAddress } = await getNetwork())
-    // unlock = await ethers.getContractAt('Unlock', unlockAddress)
+    await confirmMultisigTx({ transactionId: txIdv13 })
 
-    // // create a (v12) lock
-    // lock = await deployLock({ unlock, isEthers: true })
+    // set the new v13 template as default in old unlock (using multisig)
+    const setLockTemplateTx = {
+      contractName: 'Unlock',
+      contractAddress: unlockAddress,
+      functionName: 'setLockTemplate',
+      functionArgs: [await publicLock.getAddress()],
+    }
+    const txId2 = await submitTx({
+      tx: setLockTemplateTx,
+      safeAddress: multisig,
+      signer: multisigSigner,
+    })
 
-    // // purchase a key
-    // await purchaseKey(lock, await keyOwner.getAddress())
+    await confirmMultisigTx({ transactionId: txId2 })
 
-    // // impersonate one of the multisig owner
+    console.log(
+      `UNLOCK (old) > upgraded template to ${await unlock.publicLockLatestVersion()}`
+    )
 
-    // console.log('multisig =====', multisig)
-    // const safeContract = getSafe({ safeAddress: multisig, signer })
-    // const multisigSigner = await impersonate(
-    //   (await safeContract.getOwners())[0]
-    // )
-
-    // // deploy new template
-    // const PublicLockV13 = await ethers.getContractFactory(
-    //   'contracts/PublicLock.sol:PublicLock'
-    // )
-    // publicLock = await PublicLockV13.deploy()
-
-    // console.log(`PublicLockV13 > deployed at ${await publicLock.getAddress()}`)
-
-    // // submit the new tempalte in old unlock (using multisig)
-    // const addLockTemplateTx = {
-    //   contractName: 'Unlock',
-    //   contractAddress: unlockAddress,
-    //   functionName: 'addLockTemplate',
-    //   functionArgs: [await publicLock.getAddress(), 13],
-    // }
-
-    // const txIdv13 = await submitTx({
-    //   tx: addLockTemplateTx,
-    //   safeAddress: multisig,
-    //   signer: multisigSigner,
-    // })
-
-    // await confirmMultisigTx({ transactionId: txIdv13 })
-
-    // // set the new v13 template as default in old unlock (using multisig)
-    // const setLockTemplateTx = {
-    //   contractName: 'Unlock',
-    //   contractAddress: unlockAddress,
-    //   functionName: 'setLockTemplate',
-    //   functionArgs: [await publicLock.getAddress()],
-    // }
-    // const txId2 = await submitTx({
-    //   tx: setLockTemplateTx,
-    //   safeAddress: multisig,
-    //   signer: multisigSigner,
-    // })
-
-    // await confirmMultisigTx({ transactionId: txId2 })
-
-    // console.log(
-    //   `UNLOCK (old) > upgraded template to ${await unlock.publicLockLatestVersion()}`
-    // )
-
-    // // get freshly redeployed new Unlock
-    // unlockModified = await ethers.getContractAt('Unlock', NEW_UNLOCK_ADDRESS)
+    // get freshly redeployed new Unlock
+    unlockModified = await ethers.getContractAt('Unlock', NEW_UNLOCK_ADDRESS)
   })
 
   describe('Unlock (old) settings', () => {
