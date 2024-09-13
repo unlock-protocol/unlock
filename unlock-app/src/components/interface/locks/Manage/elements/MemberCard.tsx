@@ -1,17 +1,13 @@
 import { Button, Collapse, Detail } from '@unlock-protocol/ui'
-import React, { useState, useEffect } from 'react'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import React, { useState } from 'react'
 import { MAX_UINT } from '~/constants'
 import { KeyMetadata } from '~/unlockTypes'
 import { expirationAsDate } from '~/utils/durations'
 import { MetadataCard as MetadataCardDefault } from './MetadataCard'
-import useClipboard from 'react-use-clipboard'
-import { BiCopy as CopyIcon } from 'react-icons/bi'
 import { ExpireAndRefundModal } from '~/components/interface/ExpireAndRefundModal'
 import ExtendKeysDrawer from '~/components/creator/members/ExtendKeysDrawer'
 import { useLockManager } from '~/hooks/useLockManager'
-import useEns from '~/hooks/useEns'
-import { addressMinify } from '~/utils/strings'
+import { WrappedAddress } from '~/components/interface/WrappedAddress'
 
 export interface MemberCardProps {
   token: string
@@ -47,25 +43,10 @@ export const MemberCard = ({
   const [expireAndRefundOpen, setExpireAndRefundOpen] = useState(false)
   const [extendKeysOpen, setExtendKeysOpen] = useState(false)
 
-  const addressToEns = useEns(owner)
-
-  const resolvedAddress =
-    addressToEns === owner ? addressMinify(owner) : addressToEns
-
-  const addressToCopy = addressToEns === owner ? owner : addressToEns
-  const [isCopied, setCopied] = useClipboard(addressToCopy, {
-    successDuration: 2000,
-  })
-
   const { isManager } = useLockManager({
     lockAddress,
     network,
   })
-
-  useEffect(() => {
-    if (!isCopied) return
-    ToastHelper.success('Address copied')
-  }, [isCopied])
 
   const isKeyValid = (timestamp: KeyMetadata['expiration']) => {
     const now = new Date().getTime() / 1000
@@ -115,18 +96,11 @@ export const MemberCard = ({
           </Detail>
 
           <Detail label="Owner" valueSize="medium" className="grow md:w-1/4">
-            <div className="flex self-start gap-2">
-              <div>{resolvedAddress}</div>
-              <div className="mt-auto">
-                <Button
-                  variant="borderless"
-                  onClick={setCopied}
-                  aria-label="copy"
-                >
-                  <CopyIcon size={20} />
-                </Button>
-              </div>
-            </div>
+            <WrappedAddress
+              address={owner}
+              showCopyIcon={true}
+              showExternalLink={false}
+            />
           </Detail>
 
           {showExpiration && (

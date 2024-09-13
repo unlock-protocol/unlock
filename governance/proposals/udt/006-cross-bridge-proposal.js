@@ -3,7 +3,7 @@
  * on the other side of the network.
  */
 const { ADDRESS_ZERO, getUnlock } = require('@unlock-protocol/hardhat-helpers')
-const { IConnext, targetChains } = require('../helpers/bridge')
+const { IConnext, targetChains } = require('../../helpers/bridge')
 const { ethers } = require('ethers')
 const { networks } = require('@unlock-protocol/networks')
 

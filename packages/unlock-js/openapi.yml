@@ -2999,6 +2999,147 @@ paths:
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
 
+  /v2/receipts/all/{network}/{lockAddress}:
+    get:
+      operationId: getReceiptsStatus
+      security:
+        - User: []
+      description: Retrieve the status of receipt generation for a lock.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+      responses:
+        200:
+          description: Successfully retrieved receipt generation status.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - result
+                  - createdAt
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        payload:
+                          type: object
+                          properties:
+                            status:
+                              type: string
+                              enum: ['pending', 'success', 'failed']
+                            key:
+                              type: string
+                            result:
+                              type: array
+                              items:
+                                type: string
+                        createdAt:
+                          type: string
+                          format: date-time
+                        updatedAt:
+                          type: string
+                          format: date-time
+        400:
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                properties:
+                  message:
+                    type: string
+        404:
+          description: No receipt generation status found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                properties:
+                  message:
+                    type: string
+
+    post:
+      operationId: createDownloadReceiptsRequest
+      security:
+        - User: []
+      description: Request the creation of a ZIP file containing all receipts for a lock.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+      responses:
+        200:
+          description: Receipt generation initiated or already pending.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - status
+                properties:
+                  status:
+                    type: string
+                    enum: ['pending']
+        400:
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                properties:
+                  message:
+                    type: string
+
+  /v2/receipts/download/{network}/{lockAddress}:
+    get:
+      operationId: downloadReceipts
+      security:
+        - User: []
+      description: Download the ZIP file containing all receipts for a lock.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+      responses:
+        200:
+          description: Successfully downloaded the ZIP file.
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+        400:
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                properties:
+                  message:
+                    type: string
+        404:
+          description: ZIP file not found or not generated.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                properties:
+                  message:
+                    type: string
+
   /v2/receipts/{network}/{lockAddress}/all:
     get:
       operationId: getReceipts
@@ -4030,178 +4171,6 @@ paths:
                           type: string
                         symbol:
                           type: string
-
-  /v2/api/price/{network}/{lockAddress}/card:
-    get:
-      description: Get the price breakdown for universal credit card
-      operationId: getUniversalCardPrice
-      parameters:
-        - $ref: '#/components/parameters/Network'
-        - $ref: '#/components/parameters/LockAddress'
-        - name: purchaseData[]
-          description: The purchase data passed to the purchase function
-          in: query
-          required: true
-          schema:
-            type: array
-            items:
-              type: string
-        - name: recipients[]
-          description: The recipients passed to the purchase function
-          in: query
-          required: true
-          schema:
-            type: array
-            items:
-              type: string
-
-      responses:
-        200:
-          description: Successfully got card pricing for universal cards
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - total
-                  - unlockServiceFee
-                  - gasCost
-                properties:
-                  total:
-                    type: number
-                  creditCardProcessingFee:
-                    type: number
-                  unlockServiceFee:
-                    type: number
-                  gasCost:
-                    type: number
-                  prices:
-                    type: array
-                    items:
-                      type: object
-                      required:
-                        - userAddress
-                        - amount
-                        - symbol
-                      properties:
-                        userAddress:
-                          type: string
-                        amount:
-                          type: string
-                        symbol:
-                          type: string
-
-  /v2/purchase/onramp/{network}/locks/{lockAddress}:
-    post:
-      operationId: createOnRampSession
-      security:
-        - User: []
-      description: Setup an onramp session for the user.
-      parameters:
-        - $ref: '#/components/parameters/Network'
-        - $ref: '#/components/parameters/LockAddress'
-
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                transferSignature:
-                  type: string
-                transferMessage:
-                  type: object
-                  properties:
-                    from:
-                      type: string
-                    nonce:
-                      type: string
-                    to:
-                      type: string
-                    validAfter:
-                      type: number
-                    validBefore:
-                      type: number
-                    value:
-                      type: string
-                  required:
-                    - from
-                    - nonce
-                    - to
-                    - validAfter
-                    - validBefore
-                    - value
-                purchaseSignature:
-                  type: string
-                purchaseMessage:
-                  type: object
-                  properties:
-                    lock:
-                      type: string
-                    sender:
-                      type: string
-                    expiration:
-                      type: number
-                  required:
-                    - lock
-                    - sender
-                    - expiration
-                recipients:
-                  type: array
-                  items:
-                    type: string
-                purchaseData:
-                  type: array
-                  items:
-                    type: string
-      responses:
-        200:
-          description: Created onramp session.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  clientSecret:
-                    type: string
-
-        401:
-          $ref: '#/components/responses/401.NotAuthenticated'
-
-  /v2/purchase/onramp/{session}/capture:
-    post:
-      operationId: captureOnRampSession
-      security:
-        - User: []
-      description: Setup an onramp session for the user.
-      parameters:
-        - name: session
-          in: path
-          required: true
-          schema:
-            type: string
-          description: The id of the onramp session
-        - in: query
-          name: transactionHash
-          required: true
-          description: The transacttion hash for the deposit
-          schema:
-            type: string
-
-      responses:
-        200:
-          description: Successfully sent purchase transaction
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  hash:
-                    type: string
-
-        401:
-          $ref: '#/components/responses/401.NotAuthenticated'
 
   /claim/{network}/locks/{lockAddress}:
     post:

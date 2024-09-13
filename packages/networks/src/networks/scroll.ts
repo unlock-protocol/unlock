@@ -35,8 +35,7 @@ export const scroll: NetworkConfig = {
   publicProvider: 'https://rpc.scroll.io',
   startBlock: 2937779,
   subgraph: {
-    endpoint:
-      'https://api.studio.thegraph.com/query/65299/unlock-protocol-scroll/version/latest',
+    endpoint: 'https://subgraph.unlock-protocol.com/534352',
     studioName: 'unlock-protocol-scroll',
   },
   tokens: [

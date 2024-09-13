@@ -92,8 +92,7 @@ export const polygon: NetworkConfig = {
   publicProvider: 'https://polygon-rpc.com/',
   startBlock: 21986688,
   subgraph: {
-    endpoint:
-      'https://api.studio.thegraph.com/query/65299/unlock-protocol-polygon/version/latest',
+    endpoint: 'https://subgraph.unlock-protocol.com/137',
     networkName: 'matic',
     studioName: 'unlock-protocol-polygon',
   },

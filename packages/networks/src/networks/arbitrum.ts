@@ -94,8 +94,7 @@ export const arbitrum: NetworkConfig = {
   publicProvider: 'https://arb1.arbitrum.io/rpc',
   startBlock: 17429533,
   subgraph: {
-    endpoint:
-      'https://api.studio.thegraph.com/query/65299/unlock-protocol-arbitrum/version/latest',
+    endpoint: 'https://subgraph.unlock-protocol.com/42161',
     networkName: 'arbitrum-one',
     studioName: 'unlock-protocol-arbitrum',
   },
