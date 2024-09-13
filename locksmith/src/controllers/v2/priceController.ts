@@ -24,23 +24,6 @@ export const amount: RequestHandler = async (request, response) => {
   })
 }
 
-export const total: RequestHandler = async (request, response) => {
-  const network = Number(request.query.network?.toString() || 1)
-  const amount = parseFloat(request.query.amount?.toString() || '1')
-  const currencyContractAddress = request.query.address?.toString()
-  const erc20Address = ethers.isAddress(currencyContractAddress || '')
-    ? currencyContractAddress
-    : undefined
-
-  const charge = await pricingOperations.getTotalCharges({
-    network,
-    amount,
-    erc20Address,
-  })
-
-  return response.send(charge)
-}
-
 export const isCardPaymentEnabledForLock: RequestHandler = async (
   request,
   response
