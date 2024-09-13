@@ -47,28 +47,29 @@ const run = async () => {
       const contractAddress = addresses[contractName]
       if (!contractAddress || contractAddress === ZeroAddress) {
         warnings.push(`⚠️ Contract ${contractName} is missing`)
-      }
-      await wait(100)
-      try {
-        const verified = await isVerified({
-          chainId: network.id,
-          contractAddress,
-        })
-        // log results
-        if (!verified?.isVerified) {
-          errors.push(
-            `❌ Contract ${contractName} at ${contractAddress} is not verified`
-          )
-        } else {
-          successes.push(
-            `✅ Contract ${contractName} at ${contractAddress} is verified`
+      } else {
+        await wait(100)
+        try {
+          const verified = await isVerified({
+            chainId: network.id,
+            contractAddress,
+          })
+          // log results
+          if (!verified?.isVerified) {
+            errors.push(
+              `❌ Contract ${contractName} at ${contractAddress} is not verified`
+            )
+          } else {
+            successes.push(
+              `✅ Contract ${contractName} at ${contractAddress} is verified`
+            )
+          }
+        } catch (error) {
+          failures.push(
+            `❌ Failed to check verification for contract ${contractName} at ${contractAddress}
+      (did you add block explorer verification and API in \`@unlock-protocol/hardhat-helpers\` package ?)`
           )
         }
-      } catch (error) {
-        failures.push(
-          `❌ Failed to check verification for contract ${contractName} at ${contractAddress}
-    (did you add block explorer verification and API in \`@unlock-protocol/hardhat-helpers\` package ?)`
-        )
       }
     }
 
