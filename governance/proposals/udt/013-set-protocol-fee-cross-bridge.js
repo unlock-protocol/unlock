@@ -4,9 +4,9 @@
  */
 const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const { Unlock } = require('@unlock-protocol/contracts')
-const { targetChains } = require('../helpers/bridge')
+const { targetChains } = require('../../helpers/bridge')
 const { ethers } = require('hardhat')
-const { parseBridgeCall } = require('../helpers/crossChain')
+const { parseBridgeCall } = require('../../helpers/crossChain')
 const PROTOCOL_FEE_IN_BASIS_POINTS = '100' // 1% in basis points
 
 const parseSetProtocolFeeCalls = async (destChainId) => {

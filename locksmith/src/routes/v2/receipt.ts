@@ -7,12 +7,33 @@ import {
   allReceipts,
   createDownloadReceiptsRequest,
   downloadReceipts,
+  getReceiptsStatus,
 } from '../../controllers/v2/receipts'
 import { lockManagerMiddleware } from '../../utils/middlewares/lockManager'
 
 const router = express.Router({ mergeParams: true })
 
 const receiptController = new ReceiptController()
+
+router
+  .get(
+    '/all/:network/:lockAddress',
+    authenticatedMiddleware,
+    lockManagerMiddleware,
+    getReceiptsStatus
+  )
+  .post(
+    '/all/:network/:lockAddress',
+    authenticatedMiddleware,
+    lockManagerMiddleware,
+    createDownloadReceiptsRequest
+  )
+  .get(
+    '/download/:network/:lockAddress',
+    authenticatedMiddleware,
+    lockManagerMiddleware,
+    downloadReceipts
+  )
 
 router.get(
   '/:network/:lockAddress/all',
@@ -34,10 +55,5 @@ router.post(
   lockManagerOrPayerMiddleware,
   (req, res) => receiptController.savePurchaser(req, res)
 )
-
-router
-  .use(authenticatedMiddleware, lockManagerMiddleware)
-  .get('/all/:network/:lockAddress', createDownloadReceiptsRequest)
-  .get('/all/:id', downloadReceipts)
 
 export default router

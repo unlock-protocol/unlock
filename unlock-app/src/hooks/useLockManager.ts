@@ -35,7 +35,7 @@ export const useLockManager = ({
       return web3Service.isLockManager(lockAddress, addressToCheck, network)
     },
     staleTime: 1000 * 60,
-    enabled: !!addressToCheck && !!lockAddress && !!network,
+    enabled: !!lockAddress && !!network,
   }) // Cached for 1 minute!
 
   return {

@@ -31,6 +31,7 @@ export interface SelectProps<T> {
   size?: Size
   onChange?: (value: string | number | any, isCustom?: boolean) => void
   defaultValue?: T
+  value?: T
   customOption?: boolean // show custom option that will show a custom input
   disabled?: boolean
   loading?: boolean
@@ -108,6 +109,7 @@ export const Select = <T extends unknown>({
   disabled: fieldDisabled = false,
   loading = false,
   moreOptions = [],
+  value,
 }: SelectProps<T>) => {
   const [selected, setSelected] = useState<Option | null>(null)
   const [custom, setCustom] = useState<boolean>(false) // value that enables/disable custom field
@@ -179,6 +181,12 @@ export const Select = <T extends unknown>({
     if (!defaultValue || selected?.value) return
     onChangeOption(defaultValue as string)
   }, [defaultValue, loading, selected])
+
+  useEffect(() => {
+    if (value && value !== selected?.value) {
+      onChangeOption(value as string)
+    }
+  }, [value])
 
   const disableConfirm = customValue?.length === 0 || !enableCustomConfirm
 
