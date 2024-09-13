@@ -1,4 +1,3 @@
-/* eslint-disable no-await-in-loop */
 const ethers = require('ethers')
 const networks = require('@unlock-protocol/networks')
 const { WalletService, Web3Service } = require('../dist/index.js')

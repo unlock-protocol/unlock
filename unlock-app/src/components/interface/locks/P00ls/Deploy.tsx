@@ -68,7 +68,7 @@ export const Deploy: React.FC = () => {
       await updateConfig({
         name: `Checkout Config for P00ls Membership for ${lockAddress}`,
         config: {
-          title: `Buy a membership NFT!`,
+          title: 'Buy a membership NFT!',
           image: searchParams.get('mediaUri')?.toString(),
           locks: {
             [lockAddress]: {

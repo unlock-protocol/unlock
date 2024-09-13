@@ -613,7 +613,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                 autoComplete="off"
                 placeholder="your@email.com"
                 error={errors.metadata?.replyTo?.message as string}
-                description={`Used when users respond to automated emails.`}
+                description={'Used when users respond to automated emails.'}
               />
             </div>
           </Disclosure>

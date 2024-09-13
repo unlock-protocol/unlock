@@ -79,6 +79,5 @@ const inputFile = args.inputFile
 if (preflightCheck(privateKey, lockAddress, inputFile, host)) {
   main(privateKey, lockAddress, inputFile, host)
 } else {
-  /* eslint-disable no-console */
   console.log('Currently missing required data, please review input')
 }
