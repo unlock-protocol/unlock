@@ -82,78 +82,17 @@ This reward design mechanism achieves the following characteristics:
 
 Another way to earn UP and join the DAO is to [apply for grants](./grants-bounties).
 
-
 ## Protocol Fee
 
-As of Unlock version 13, the protocol includes a "fee switch" and the fee was initially set to be 0%. This value has been changed by [DAO members](./unlock-dao) through an [onchain proposal](https://www.tally.xyz/gov/unlock/proposal/72110981722145472193202862106710876303006911465748904597113931014096574827698) and approved through votes to 1% in May 2024.
+Unlock Protocol includes a "fee switch” that is currently set to 1%. This value was set by the Unlock [DAO](./unlock-dao) through an [onchain proposal](https://www.tally.xyz/gov/unlock/proposal/72110981722145472193202862106710876303006911465748904597113931014096574827698) and approved in May 2024.
 
-If the fee amount is larger than 0%, on every transaction for which there is a payment ([`purchase`](/core-protocol/smart-contracts-api/PublicLock#purchase), [`extend`](/core-protocol/smart-contracts-api/PublicLock#extend) or [`renewMembershipFor`](/core-protocol/smart-contracts-api/PublicLock#renewmembershipfor)), the lock contract will send a portion of the payment to the Unlock contract.
+When the fee switch is set to any value larger than 0%, on every transaction for which there is a payment ([`purchase`](/core-protocol/smart-contracts-api/PublicLock#purchase), [`extend`](/core-protocol/smart-contracts-api/PublicLock#extend) or [`renewMembershipFor`](/core-protocol/smart-contracts-api/PublicLock#renewmembershipfor)), the lock contract will send a portion of the payment to the Unlock contract on that network. These fees are used to help sustain the decentralized protocol.
 
 ### Swap and Burn
 
-At that point, the collected fees can be "swapped and burned" by calling the `swapAndBurn` function on the Unlock contract. This function will swap the collected fees for UP (or UDT) tokens on a decentralized exchange and then burn them.
+Current, the protocol fees collected by way of the fee switch can be "swapped and burned" by calling the `swapAndBurn` function on the Unlock contract. This function will swap the collected fees for UP (or UDT) tokens on a decentralized exchange and then burn them.
 
-### Swapping UDT for UP
-
-If you have earn UDT on any network, you can swap them for UP. In order to do so, you first need to "bring" the UDT back to Base (using a bridge like [Superbridge](https://superbridge.app/base)), and then swap them for UP. The migration is a 1:1000 swap and can be conveniently achieved through a [migration website](https://up-swap.unlock-protocol.com/).
-
-## What is the Unlock Protocol UP token (UP)?
-
-The **UP token** (Unlock Protocol Token) is the native governance token of the Unlock Protocol.
-
-## What is the Unlock Protocol UP token used for?
-
-The UP token serves several key functions:
-
-1. **Incentives**: The UP token is used to reward developers and creators who build on or integrate the Unlock Protocol. For example, developers who deploy smart contracts on the platform may earn UP tokens as rewards.
-2. **Governance**: UP token holders can participate in the governance of the protocol by voting on proposals or protocol changes.
-
-## How do you get the Unlock Protocol UP token?
-
-There are multiple ways for individuals to get the UP token.
-
-- **Swap UDT for UP** — Holders of UDT can swap UDT for UP
-- **Purchase UP directly** — The Unlock Protocol UP token may be acquired on decentralized exchanges such as Uniswap
-- **Receive UP as grants from the Unlock DAO** — The Unlock DAO has a grants program, where builders can request grants of UP for projects built using Unlock Protocol
-- **Protocol rewards** — Transactions that use Unlock Protocol that contain a financial component can include a referrer fee, paid in the Unlock Protocol UP token
-
-## What blockchain network is the Unlock Protocol UP token issued on?
-
-The UP token is on the [Base](https://base.org) blockchain network.
-
-## What is the contract address of the Unlock Protocol UP token?
-
-The contract for the UP token is [https://basescan.org/token/0xac27fa800955849d6d17cc8952ba9dd6eaa66187#code](https://basescan.org/token/0xac27fa800955849d6d17cc8952ba9dd6eaa66187#code)
-
-## What is the supply of the Unlock Protocol UP token?
-
-The UP token on Base has a supply of 1,000,000,000 (one billion) tokens.
-
-## What are the tokenomics of the UP token?
-
-Holdings of the UP token are distributed across a number of different groups in the Unlock Protocol ecosystem, including:
-
-- Unlock Labs
-- Community
-- DAO
-- Liquidity Pools
-- Airdrops & Campaigns
-
-TO DO: PUT PIE CHART HERE
-
-## Will the supply of UP change over time?
-
-The maximum supply of the Unlock Protocol UP token is fixed at the upper bound of 1,000,000,000 tokens. Over time, the Unlock Protocol does collect a protocol fee on financial transactions that use the protocol. These fees are can be used as component of a buyback-and-burn mechanism, that may reduce the total supply of UP tokens over time.
-
-## Are there liquidity pools for the Unlock Protocol UP token?
-
-There is a Uniswap V3 liquidity pool for Base ETH/UP pairs at [https://app.uniswap.org/explore/pools/base/0x9EF81F4E2F2f15Ff1c0C3f8c9ECc636580025242](https://app.uniswap.org/explore/pools/base/0x9EF81F4E2F2f15Ff1c0C3f8c9ECc636580025242)
-
-## What is the difference between the Unlock Protocol UP token (UP) and the Unlock DAO Token (UDT)
-
-UP token transactions are faster and have significantly lower transaction (gas) fees than UDT transactions. This is as a result of the UP token being on Base, rather than on Ethereum mainnet.
-
-## How do you bridge UDT from mainnet to Base in order to exchange the UDT for the Unlock Protocol UP token?
+### How do you bridge UDT from mainnet to Base in order to exchange the UDT for the Unlock Protocol UP token?
 
 In essence, the UP token on Base is an analogous version of the UDT token on mainnet. (In order to eliminate potential confusion between the two tokens, a different name — UP — was chosen on Base.)
 
@@ -172,15 +111,97 @@ The Unlock Labs team has created a website at [https://up-swap.unlock-protocol.c
 
 You can read more about bridging UDT on mainnet to Base and exchanging bridged UDT to UP on Base [here](https://paragraph.xyz/@unlockprotocol/bridge-earn).
 
-## Short description of the Unlock Protocol UP token
+## Frequently Asked Questions
+
+### What is the Unlock Protocol UP token (UP)? [One Sentence]
+
+The **UP token** (Unlock Protocol Token) is the native governance token of the Unlock Protocol.
+
+### What is the Unlock Protocol UP token (UP)? [One Paragraph]
 
 The Unlock Protocol UP token (UP) is the governance token of the Unlock Protocol, used for rewarding developers and creators, as well as for participating in governance through voting on proposals. It can be acquired by swapping UDT, purchasing it on decentralized exchanges, or earning it via protocol rewards and grants, with a fixed supply of 1 billion tokens on the Base blockchain.
 
-## Graphic assets for the Unlock Protocol UP token
+### What is the Unlock Protocol UP token used for?
+
+The UP token serves several key functions:
+
+1. **Incentives**: The UP token is used to reward developers and creators who build on or integrate the Unlock Protocol. For example, developers who deploy smart contracts on the platform may earn UP tokens as rewards.
+2. **Governance**: UP token holders can participate in the governance of the protocol by voting on proposals or protocol changes.
+
+### How do you get the Unlock Protocol UP token?
+
+There are multiple ways for individuals to get the UP token.
+
+- **Swap UDT for UP** — Holders of UDT can swap UDT for UP
+- **Purchase UP directly** — The Unlock Protocol UP token may be acquired on decentralized exchanges such as Uniswap
+- **Receive UP as grants from the Unlock DAO** — The Unlock DAO has a grants program, where builders can request grants of UP for projects built using Unlock Protocol
+- **Protocol rewards** — Transactions that use Unlock Protocol that contain a financial component can include a referrer fee, paid in the Unlock Protocol UP token
+
+### What blockchain network is the Unlock Protocol UP token issued on?
+
+The UP token is on the [Base](https://base.org) blockchain network.
+
+### What is the contract address of the Unlock Protocol UP token?
+
+The contract for the UP token is [https://basescan.org/token/0xac27fa800955849d6d17cc8952ba9dd6eaa66187#code](https://basescan.org/token/0xac27fa800955849d6d17cc8952ba9dd6eaa66187#code)
+
+### What is the supply of the Unlock Protocol UP token?
+
+The UP token on Base has a supply of 1,000,000,000 (one billion) tokens.
+
+### What are the tokenomics of the UP token?
+
+Holdings of the UP token are distributed across a number of different groups in the Unlock Protocol ecosystem, including:
+
+- Unlock Labs
+- Community
+- DAO
+- Liquidity Pools
+- Airdrops & Campaigns
+
+import { PieChart } from '@mui/x-charts/PieChart'
+
+<PieChart
+  series={[
+    {
+      data: [
+        {
+          value: 300000000,
+          label: 'Unlock Labs (locked)',
+        },
+        { value: 150000000, label: 'Community (float)' },
+        { value: 100000000, label: 'DAO' },
+        { value: 200000000, label: 'Liquidity Pool' },
+        { value: 250000000, label: 'Airdrops & Campaigns' },
+      ],
+    },
+  ]}
+  width={800}
+  height={300}
+/>
+
+### Will the supply of UP change over time?
+
+The maximum supply of the Unlock Protocol UP token is fixed at the upper bound of 1,000,000,000 tokens. Over time, the Unlock Protocol does collect a protocol fee on financial transactions that use the protocol. These fees are can be used as component of a buyback-and-burn mechanism, that may reduce the total supply of UP tokens over time.
+
+### Are there liquidity pools for the Unlock Protocol UP token?
+
+There is a Uniswap V3 liquidity pool for Base ETH/UP pairs at [https://app.uniswap.org/explore/pools/base/0x9EF81F4E2F2f15Ff1c0C3f8c9ECc636580025242](https://app.uniswap.org/explore/pools/base/0x9EF81F4E2F2f15Ff1c0C3f8c9ECc636580025242)
+
+### What is the difference between the Unlock Protocol UP token (UP) and the Unlock DAO Token (UDT)
+
+UP token transactions are faster and have significantly lower transaction (gas) fees than UDT transactions. This is as a result of the UP token being on Base, rather than on Ethereum mainnet.
+
+### Are UP tokens required?
+UP (and UDT, its predecessor) are perfectly _optional_. Creators can deploy locks without knowledge of UP and their members can similarly purchase membership without knowing about these tokens.
+
+### Graphic assets for the Unlock Protocol UP token
 
 - Square image
 - Round image
 
-## What is the Unlock Protocol Foundation?
+### What is the Unlock Protocol Foundation?
 
 The role of the Unlock Protocol Foundation is to promote and encourage adoption of the Unlock Protocol.
+
+
