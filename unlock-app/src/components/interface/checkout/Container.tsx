@@ -10,7 +10,6 @@ interface Props {
 export function Container({ children }: Props) {
   const { query } = useRouter()
   const id = query.id
-  const url = `${config.unlockApp}/og/checkout?id=${id}`
 
   return (
     <>
@@ -21,7 +20,7 @@ export function Container({ children }: Props) {
           images: [
             {
               alt: 'Checkout',
-              url,
+              url: `${config.unlockApp}/og/checkout?id=${id}`,
             },
           ],
         }}
@@ -32,7 +31,7 @@ export function Container({ children }: Props) {
           },
           {
             name: 'fc:frame:image',
-            content: url,
+            content: `${config.unlockApp}/frames/checkout?id=${id}`,
           },
           {
             name: 'fc:frame:button:1',
@@ -40,7 +39,7 @@ export function Container({ children }: Props) {
           },
           {
             name: 'fc:frame:button:1:target',
-            content: '/txdata',
+            content: `${config.unlockApp}/frames/checkout/txdata`,
           },
           {
             name: 'fc:frame:button:1:action',
@@ -48,7 +47,7 @@ export function Container({ children }: Props) {
           },
           {
             name: 'fc:frame:button:1:post_url',
-            content: '?success=true',
+            content: `${config.unlockApp}/frames/checkout?success=true`,
           },
         ]}
       />

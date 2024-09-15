@@ -10,7 +10,7 @@ export async function GET(request: Request) {
   const lock = await getLockDataFromCheckout(id!)
 
   return new ImageResponse(<DefaultImage lock={lock} />, {
-    width: 1200,
+    width: 1146,
     height: 600,
   })
 }
