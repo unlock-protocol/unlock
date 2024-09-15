@@ -36,7 +36,8 @@ const features = [
   {
     image: '/images/illustrations/certifications/img-validation.svg',
     name: 'Validate certifications online and onchain',
-    description: `Verify certifications and credentials through third parties or directly on the blockchain. Since certifications can't be transferred and can be set to expire (if required), you know the certification is valid.`,
+    description:
+      "Verify certifications and credentials through third parties or directly on the blockchain. Since certifications can't be transferred and can be set to expire (if required), you know the certification is valid.",
   },
   {
     image: '/images/illustrations/certifications/img-sharelinkedin.svg',

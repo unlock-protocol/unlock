@@ -84,7 +84,7 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
   const onDownloadCsvMutation = useMutation({
     mutationFn: async () => {
       ToastHelper.success(
-        `It may take a few minutes for the file to be generated. Please do not close this page`
+        'It may take a few minutes for the file to be generated. Please do not close this page'
       )
       const response = await locksmith.exportKeys(
         network,
@@ -216,7 +216,7 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
   const [airdropKeys, setAirdropKeys] = useState(false)
   const DEMO_URL = `/demo?network=${network}&lock=${lockAddress}`
   const metadataPageUrl = `/locks/metadata?lockAddress=${lockAddress}&network=${network}`
-  const checkoutLink = `/locks/checkout-url`
+  const checkoutLink = '/locks/checkout-url'
 
   const { isManager } = useLockManager({
     lockAddress,
@@ -510,7 +510,7 @@ export const ManageLockPage = () => {
                   setPage={setPage}
                   page={page}
                   NoMemberNoFilter={() => {
-                    const checkoutLink = `/locks/checkout-url`
+                    const checkoutLink = '/locks/checkout-url'
                     return (
                       <ImageBar
                         src="/images/illustrations/no-member.svg"

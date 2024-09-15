@@ -41,7 +41,7 @@ export function AirdropListItem({
           {count} {count > 1 ? 'keys' : 'key'}{' '}
           {expiration &&
             `valid until ${new Date(expiration).toLocaleDateString()}`}
-          {neverExpire && `never expires`}
+          {neverExpire && 'never expires'}
         </span>
       </div>
       <IconButton
