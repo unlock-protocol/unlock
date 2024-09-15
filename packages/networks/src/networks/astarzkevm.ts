@@ -28,6 +28,7 @@ export const astarzkevm: NetworkConfig = {
   },
   id: 3776,
   isTestNetwork: false,
+  multisig: '0xAf82C931A1a7c751eA8AB2c983619A27b87F8470',
   name: 'Astar zkEVM',
   nativeCurrency: {
     decimals: 18,
@@ -44,7 +45,6 @@ export const astarzkevm: NetworkConfig = {
     networkName: '',
     studioName: '',
   },
-
   unlockAddress: '0xeBec66d1f006FEC42633B6fa30b0397de8a4D965',
 }
 
