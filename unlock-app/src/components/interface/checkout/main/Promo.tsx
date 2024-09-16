@@ -13,7 +13,7 @@ import { getEthersWalletFromPassword } from '~/utils/strings'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useDebounce } from 'react-use'
 import LoadingIcon from '../../Loading'
-import { useRouter, usePathname, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import Disconnect from './Disconnect'
 interface Props {
   checkoutService: CheckoutService
