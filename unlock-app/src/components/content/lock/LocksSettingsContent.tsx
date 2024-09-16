@@ -20,7 +20,7 @@ export type SettingTab =
   | 'checkout'
   | 'referrals'
 
-const Settings: NextPage = () => {
+const LocksSettingsContent = () => {
   const searchParams = useSearchParams()
   const { account: owner } = useAuth()
 
@@ -81,4 +81,4 @@ const Settings: NextPage = () => {
   )
 }
 
-export default Settings
+export default LocksSettingsContent

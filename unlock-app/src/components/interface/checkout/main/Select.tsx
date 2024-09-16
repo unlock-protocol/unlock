@@ -211,8 +211,8 @@ export function Select({ checkoutService }: Props) {
   >(undefined)
 
   const router = useRouter()
-  const pathname = usePathname()
   const searchParams = useSearchParams()
+  const pathname = usePathname()
 
   const { isPending: isLocksLoading, data: locks } = useQuery({
     queryKey: ['locks', JSON.stringify(paywallConfig)],
@@ -281,19 +281,17 @@ export function Select({ checkoutService }: Props) {
 
   // This should be executed only if router is defined
   useEffect(() => {
-    const lockParam = searchParams.get('lock')
+    if (locks && searchParams.get('lock')) {
+      const autoSelectedLock = locks?.find(
+        (lock) => lock.address === searchParams.get('lock')
+      )
 
-    if (locks && lockParam) {
-      const autoSelectedLock = locks?.find((lock) => lock.address === lockParam)
-
-      // Remove the lock from the search params
-      const queryParams = Object.fromEntries(searchParams.entries())
-      const { lock, ...otherQueryParams } = queryParams
-      const newSearchParams = new URLSearchParams(otherQueryParams)
-      const newUrl = `${pathname}?${newSearchParams.toString()}`
-
-      // Replace the current URL
-      router.replace(newUrl)
+      // Remove the lock from the query string
+      const newSearchParams = new URLSearchParams(searchParams.toString())
+      newSearchParams.delete('lock')
+      router.replace(`${pathname}?${newSearchParams.toString()}`, {
+        scroll: false,
+      })
 
       setAutoSelectedLock(autoSelectedLock)
     }

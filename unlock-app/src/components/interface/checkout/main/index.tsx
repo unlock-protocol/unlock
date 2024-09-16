@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useCallback, useEffect, useMemo } from 'react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { checkoutMachine } from './checkoutMachine'
@@ -20,7 +22,7 @@ import { PaywallConfigType } from '@unlock-protocol/core'
 import { Guild } from './Guild'
 import { Gitcoin } from './Gitcoin'
 import { isInIframe } from '~/utils/iframe'
-import { useRouter, usePathname, useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { Select } from './Select'
 import { Connected } from '../Connected'
 
@@ -53,8 +55,8 @@ export function Checkout({
   )
 
   const router = useRouter()
-  const pathname = usePathname()
   const searchParams = useSearchParams()
+  const pathname = usePathname()
 
   useEffect(() => {
     console.debug('Unlock paywall config', paywallConfig)
@@ -136,20 +138,16 @@ export function Checkout({
     if (
       matched !== 'SELECT' &&
       matched != 'CONNECT' &&
-      searchParams.has('lock')
+      searchParams.get('lock')
     ) {
       // Remove the lock from the query string
-      const queryParams = Object.fromEntries(searchParams.entries())
-      const { lock, ...otherQueryParams } = queryParams
-
-      // Construct new search params without 'lock'
-      const newSearchParams = new URLSearchParams(otherQueryParams)
-      const newUrl = `${pathname}?${newSearchParams.toString()}`
-
-      // Replace the current URL
-      router.replace(newUrl)
+      const newSearchParams = new URLSearchParams(searchParams.toString())
+      newSearchParams.delete('lock')
+      router.replace(`${pathname}?${newSearchParams.toString()}`, {
+        scroll: false,
+      })
     }
-  }, [router])
+  }, [router, searchParams, matched, pathname])
 
   const Content = useCallback(() => {
     switch (matched) {
