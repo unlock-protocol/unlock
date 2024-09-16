@@ -26,14 +26,25 @@ export const validateContractSource = async ({
   const fullPath = `@unlock-protocol/contracts/dist/${contractName}/${contractName}V${contractVersion}.sol`
   const localSource = await fs.readFile(require.resolve(fullPath), 'utf8')
 
-  // get source code from Etherscan
-  const etherscanRes = await getContractSourceCode({ chainId, contractAddress })
-  const { SourceCode } = etherscanRes.result[0]
-  const { sources } = JSON.parse(SourceCode.substring(1, SourceCode.length - 1))
+  // get source code from block explorer
+  const blockExplorerRes = await getContractSourceCode({
+    chainId,
+    contractAddress,
+  })
+  const { SourceCode } = blockExplorerRes.result[0]
 
-  // use naming pattern identical to the one in govenance folder deployment
-  const submittedContractPath = `contracts/past-versions/${contractName}V${contractVersion}.sol`
-  const distSource = sources[submittedContractPath]
+  // Blockscout returns the contract code while Etherscan returns the contract manifest
+  let distSource
+  if (typeof SourceCode === 'string') {
+    distSource = SourceCode
+  } else {
+    const { sources } = JSON.parse(
+      SourceCode.substring(1, SourceCode.length - 1)
+    )
+    // use naming pattern identical to the one in govenance folder deployment
+    const submittedContractPath = `contracts/past-versions/${contractName}V${contractVersion}.sol`
+    ;({ content: distSource } = sources[submittedContractPath])
+  }
 
-  return localSource === distSource.content
+  return localSource === distSource
 }
