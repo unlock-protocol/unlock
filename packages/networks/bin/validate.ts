@@ -1,3 +1,10 @@
+/**
+ * Usage>
+ *
+ * export ALL_CHANGED_FILES="packages/networks/src/networks/mainnet.ts"
+ * yarn validate
+ *
+ */
 import path from 'path'
 import { ZeroAddress } from 'ethers'
 import {
