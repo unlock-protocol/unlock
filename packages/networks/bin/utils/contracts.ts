@@ -1,5 +1,6 @@
 import { ethers } from 'ethers'
 import { queryGraph } from './subgraph'
+import { HookType } from '@unlock-protocol/types'
 
 export const getAllAddresses = async ({ network }) => {
   const {
@@ -44,18 +45,8 @@ export const getAllAddresses = async ({ network }) => {
     addresses[`UnlockOwner`] = unlockDaoToken.address
   }
 
-  // TODO: get hooks from type file
-  const requiredHooks = [
-    'CUSTOM_CONTRACT',
-    'PASSWORD',
-    'PROMOCODE',
-    'PROMO_CODE_CAPPED',
-    'PASSWORD_CAPPED',
-    'CAPTCHA',
-    'GUILD',
-    'GITCOIN',
-    'ADVANCED_TOKEN_URI',
-  ]
+  // get hooks from type file
+  const requiredHooks = Object.values(HookType)
 
   // check hooks addresses
   requiredHooks.map((hookId) => {
