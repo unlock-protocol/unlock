@@ -164,7 +164,6 @@ export function ConfirmCrypto({
       }
 
       const walletService = await getWalletService(lockNetwork)
-      console.log({ renew })
       if (renew) {
         await walletService.extendKey(
           {

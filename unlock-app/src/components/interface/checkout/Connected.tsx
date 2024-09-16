@@ -21,8 +21,6 @@ export function Connected({ service }: ConnectedCheckoutProps) {
   const lockAddress = lock?.address
   const lockNetwork = lock?.network || paywallConfig.network
 
-  console.log({ lockAddress, account })
-
   useEffect(() => {
     const checkMemberships = async (
       lockAddress: string,
