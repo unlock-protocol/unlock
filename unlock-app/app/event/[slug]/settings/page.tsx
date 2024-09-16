@@ -1,7 +1,8 @@
 import { PaywallConfigType } from '@unlock-protocol/core'
-import { EventPageProps, fetchEventMetadata } from '../page'
+import { EventPageProps } from '../page'
 import { notFound } from 'next/navigation'
 import { EventSettings } from '~/components/content/event/Settings/EventSettings'
+import { fetchEventMetadata } from '~/utils/eventMetadata'
 
 const SettingsPage = async ({ params }: EventPageProps) => {
   const { slug } = params

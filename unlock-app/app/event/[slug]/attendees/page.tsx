@@ -1,8 +1,9 @@
 import Attendees from '~/components/content/event/attendees/Attendees'
 import { Event, PaywallConfigType } from '@unlock-protocol/core'
-import { EventPageProps, fetchEventMetadata } from '../page'
+import { EventPageProps } from '../page'
 import { toFormData } from 'axios'
 import { notFound } from 'next/navigation'
+import { fetchEventMetadata } from '~/utils/eventMetadata'
 
 const AttendeesPage = async ({ params }: EventPageProps) => {
   const { slug } = params
