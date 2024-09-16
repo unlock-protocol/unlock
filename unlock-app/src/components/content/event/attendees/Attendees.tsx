@@ -1,8 +1,6 @@
 'use client'
-
 import { Button } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
-import BrowserOnly from '~/components/helpers/BrowserOnly'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
 import { AppLayout } from '~/components/interface/layouts/AppLayout'
 import { useRouter } from 'next/navigation'
