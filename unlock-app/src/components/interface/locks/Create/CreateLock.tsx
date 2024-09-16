@@ -1,3 +1,5 @@
+'use client'
+
 import { networks } from '@unlock-protocol/networks'
 import { Button } from '@unlock-protocol/ui'
 import { useState } from 'react'

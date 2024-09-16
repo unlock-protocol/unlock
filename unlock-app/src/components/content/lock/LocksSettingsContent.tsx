@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import type { NextPage } from 'next'
+'use client'
+import { useEffect, useState } from 'react'
 import BrowserOnly from '~/components/helpers/BrowserOnly'
 import LockSettingsPage from '~/components/interface/locks/Settings'
 import { AppLayout } from '~/components/interface/layouts/AppLayout'
@@ -18,7 +18,7 @@ export type SettingTab =
   | 'checkout'
   | 'referrals'
 
-const Settings: NextPage = () => {
+const LocksSettingsContent = () => {
   const searchParams = useSearchParams()
   const { account: owner } = useAuth()
 
@@ -79,4 +79,4 @@ const Settings: NextPage = () => {
   )
 }
 
-export default Settings
+export default LocksSettingsContent
