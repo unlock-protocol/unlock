@@ -1,12 +1,13 @@
-import React from 'react'
-import type { NextPage } from 'next'
-import LocksListPage from '~/components/interface/locks/List'
-import { AppLayout } from '~/components/interface/layouts/AppLayout'
-import { Button } from '@unlock-protocol/ui'
-import { useAuth } from '~/contexts/AuthenticationContext'
-import { Launcher } from '~/components/interface/Launcher'
+'use client'
 
-const Locks: NextPage = () => {
+import React from 'react'
+import { useAuth } from '~/contexts/AuthenticationContext'
+
+import { Button } from '@unlock-protocol/ui'
+import { Launcher } from '~/components/interface/Launcher'
+import LocksListPage from '~/components/interface/locks/List'
+
+export default function LocksContent() {
   const { account } = useAuth()
   const [showLauncher, setShowLauncher] = React.useState(false)
 
@@ -30,17 +31,18 @@ const Locks: NextPage = () => {
     )
   }
   if (showLauncher) {
-    return (
-      <AppLayout authRequired={false} showLinks={false}>
-        <Launcher />
-      </AppLayout>
-    )
+    return <Launcher />
   }
+
   return (
-    <AppLayout title="Locks" description={<Description />}>
+    <>
+      <div className="flex flex-col gap-4">
+        <h1 className="text-3xl font-bold">Locks</h1>
+        <div className="w-full text-base text-gray-700">
+          <Description />
+        </div>
+      </div>
       <LocksListPage />
-    </AppLayout>
+    </>
   )
 }
-
-export default Locks

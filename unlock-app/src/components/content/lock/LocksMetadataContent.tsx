@@ -1,20 +1,20 @@
-import { NextPage } from 'next'
+'use client'
+
 import { useSearchParams } from 'next/navigation'
-import { AppLayout } from '~/components/interface/layouts/AppLayout'
-import { UpdateMetadataForm } from '../../components/interface/locks/metadata'
 import { BsArrowLeft as BackIcon } from 'react-icons/bs'
 import { Button } from '@unlock-protocol/ui'
+import { UpdateMetadataForm } from '~/components/interface/locks/metadata'
 
-const Metadata: NextPage = () => {
+const LocksMetadataContent = () => {
   const searchParams = useSearchParams()
-  const lockAddress = searchParams.get('lockAddress')?.toLowerCase()
+  const lockAddress = searchParams.get('address')?.toLowerCase()
   const network = searchParams.get('network')
     ? Number(searchParams.get('network'))
     : undefined
   const keyId = searchParams.get('keyId')?.toLowerCase()
 
   return (
-    <AppLayout>
+    <div className="flex flex-col items-start">
       <Button
         variant="borderless"
         aria-label="arrow back"
@@ -28,8 +28,8 @@ const Metadata: NextPage = () => {
         network={network!}
         keyId={keyId}
       />
-    </AppLayout>
+    </div>
   )
 }
 
-export default Metadata
+export default LocksMetadataContent
