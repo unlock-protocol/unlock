@@ -62,7 +62,10 @@ export const getPurchaser = async function ({
 }: PurchaserArgs): Promise<ethers.Signer> {
   // If we have a provider, we need to fetch that one... or yield an error!
   const defenderRelayCredential = config.defenderRelayCredentials[network]
-  if (defenderRelayCredential?.apiKey && defenderRelayCredential?.apiSecret) {
+  if (
+    defenderRelayCredential?.relayerApiKey &&
+    defenderRelayCredential?.relayerApiSecret
+  ) {
     const defender = new Defender(defenderRelayCredential)
     const provider = defender.relaySigner.getProvider()
     const wallet = await defender.relaySigner.getSigner(provider, {
@@ -97,7 +100,10 @@ export const getAllPurchasers = async function ({
 }: PurchaserArgs) {
   const purchasers = []
   const defenderRelayCredential = config.defenderRelayCredentials[network]
-  if (defenderRelayCredential?.apiKey && defenderRelayCredential?.apiSecret) {
+  if (
+    defenderRelayCredential?.relayerApiKey &&
+    defenderRelayCredential?.relayerApiSecret
+  ) {
     const defender = new Defender(defenderRelayCredential)
     const provider = defender.relaySigner.getProvider()
     const wallet = await defender.relaySigner.getSigner(provider, {

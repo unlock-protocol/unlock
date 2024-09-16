@@ -111,10 +111,10 @@ export const WithdrawFundModal = ({
   const onWithDraw = async (form: WithdrawFormProps) => {
     await withdrawMutation.mutateAsync(form, {
       onSuccess: () => {
-        ToastHelper.success(`Withdraw done`)
+        ToastHelper.success('Withdraw done')
       },
       onError: () => {
-        ToastHelper.error(`Withdraw can't be processed, please try again`)
+        ToastHelper.error("Withdraw can't be processed, please try again")
       },
     })
   }

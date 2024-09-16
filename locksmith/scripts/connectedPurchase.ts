@@ -1,4 +1,5 @@
 import * as Base64 from '../src/utils/base64'
+
 import { generateTypedSignature } from '../src/utils/signature'
 
 function generatePurchasePayload(message: any, messageKey: string) {
@@ -21,7 +22,7 @@ function generatePurchasePayload(message: any, messageKey: string) {
   }
 }
 
-const recipient = '0xd8fdbf2302b13d4cf00bac1a25efb786759c7788'
+const recipient = '0xD8fDbF2302b13d4CF00BAC1a25EFb786759c7788'
 const pk = '0x00a7bd3ec661f15214f8a48dce017e27dd8e1b4b779aaf823d8eb74d8c960b95'
 const lock = '0xEE9FE39966DF737eECa5920ABa975c283784Faf8'
 

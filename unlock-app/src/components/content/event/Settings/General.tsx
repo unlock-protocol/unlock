@@ -108,7 +108,7 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
         success: 'Event saved!',
         error:
           'We could not save your event. Please try again and report if the issue persists.',
-        loading: `Updating your event's properties.`,
+        loading: "Updating your event's properties.",
       }
     )
   }
@@ -396,9 +396,10 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
                 {isInPerson && (
                   <GoogleMapsAutoComplete
                     defaultValue={event.ticket.event_location}
-                    onChange={(address, location) => {
+                    onChange={(address, location, timezone) => {
                       setValue('ticket.event_address', address)
                       setValue('ticket.event_location', location)
+                      setValue('ticket.event_timezone', timezone)
                       setMapAddress(getValues('ticket.event_address'))
                     }}
                   />

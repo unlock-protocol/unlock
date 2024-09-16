@@ -1,4 +1,5 @@
 import path from 'path'
+import { ZeroAddress } from 'ethers'
 import {
   wait,
   isVerified,
@@ -16,12 +17,15 @@ const run = async () => {
   const results = {}
 
   const fileList = process.env.ALL_CHANGED_FILES
-    ? process.env.ALL_CHANGED_FILES.split(' ')
+    ? process.env.ALL_CHANGED_FILES.split(' ').filter(
+        (f) => !f.includes(`networks/index.ts`)
+      )
     : []
 
   for (const filePath of fileList) {
     let errors: string[] = []
     const successes: string[] = []
+    const warnings: string[] = []
     const failures: string[] = []
 
     // check mandatory keys using ts
@@ -41,27 +45,31 @@ const run = async () => {
     // make sure the contracts are verified on Etherscan.
     for (const contractName in addresses) {
       const contractAddress = addresses[contractName]
-      await wait(100)
-      try {
-        const verified = await isVerified({
-          chainId: network.id,
-          contractAddress,
-        })
-        // log results
-        if (!verified?.isVerified) {
-          errors.push(
-            `❌ Contract ${contractName} at ${contractAddress} is not verified`
-          )
-        } else {
-          successes.push(
-            `✅ Contract ${contractName} at ${contractAddress} is verified`
+      if (!contractAddress || contractAddress === ZeroAddress) {
+        warnings.push(`⚠️ Contract ${contractName} is missing`)
+      } else {
+        await wait(100)
+        try {
+          const verified = await isVerified({
+            chainId: network.id,
+            contractAddress,
+          })
+          // log results
+          if (!verified?.isVerified) {
+            errors.push(
+              `❌ Contract ${contractName} at ${contractAddress} is not verified`
+            )
+          } else {
+            successes.push(
+              `✅ Contract ${contractName} at ${contractAddress} is verified`
+            )
+          }
+        } catch (error) {
+          failures.push(
+            `❌ Failed to check verification for contract ${contractName} at ${contractAddress}
+      (did you add block explorer verification and API in \`@unlock-protocol/hardhat-helpers\` package ?)`
           )
         }
-      } catch (error) {
-        failures.push(
-          `❌ Failed to check verification for contract ${contractName} at ${contractAddress}
-    (did you add block explorer verification and API in \`@unlock-protocol/hardhat-helpers\` package ?)`
-        )
       }
     }
 
@@ -195,6 +203,7 @@ const run = async () => {
       errors,
       failures,
       successes,
+      warnings,
     }
   }
 
@@ -206,6 +215,7 @@ const parseGithubComment = ({
   errors,
   failures,
   successes,
+  warnings,
 }) => `### ${networkName}
 
 ${successes.length ? `The setup is successful :\n` : ''}
@@ -216,6 +226,9 @@ ${errors.map((error) => `- ${error}`).join('\n')}
 
 ${failures.length ? `Some verification calls have failed  :\n` : ''}
 ${failures.map((failure) => `- ${failure}`).join('\n')}
+
+${warnings.length ? `Some additonal warnings  :\n` : ''}
+${warnings.map((warning) => `- ${warning}`).join('\n')}
 `
 
 run()

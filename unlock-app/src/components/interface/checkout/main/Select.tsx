@@ -72,7 +72,7 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
       className={({ checked, disabled }) =>
         `flex flex-col p-2 w-full gap-2 items-center border border-gray-200 rounded-xl cursor-pointer relative ${
           checked && 'border-ui-main-100 bg-gray-100'
-        } ${disabled && `opacity-80 bg-gray-100 cursor-not-allowed`}`
+        } ${disabled && 'opacity-80 bg-gray-100 cursor-not-allowed'}`
       }
     >
       {({ checked }) => {

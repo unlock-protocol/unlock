@@ -163,7 +163,7 @@ export const UpdateReferralFee = ({
                   width="20"
                   height="20"
                   alt="Apple Wallet"
-                  src={`/images/illustrations/refresh.svg`}
+                  src={'/images/illustrations/refresh.svg'}
                 />
               }
             >

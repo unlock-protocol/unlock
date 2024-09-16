@@ -162,7 +162,8 @@ const LockSettingsPage = ({
           isLoading={isLoading}
         />
       ),
-      description: `Your Lock includes multiple roles, such as "Lock Manager". Here you can configure which addresses are assigned which roles.`,
+      description:
+        'Your Lock includes multiple roles, such as "Lock Manager". Here you can configure which addresses are assigned which roles.',
     },
     {
       id: 'emails',
