@@ -44,14 +44,24 @@ export const getAllAddresses = async ({ network }) => {
     addresses[`UnlockOwner`] = unlockDaoToken.address
   }
 
-  // TODO: get all hooks
-  if (hooks) {
-    if (hooks.onKeyPurchaseHook) {
-      hooks.onKeyPurchaseHook.map(({ address, id }) => {
-        addresses[`onKeyPurchaseHook_${id}`] = address
-      })
-    }
-  }
+  // TODO: get hooks from type file
+  const requiredHooks = [
+    'CUSTOM_CONTRACT',
+    'PASSWORD',
+    'PROMOCODE',
+    'PROMO_CODE_CAPPED',
+    'PASSWORD_CAPPED',
+    'CAPTCHA',
+    'GUILD',
+    'GITCOIN',
+    'ADVANCED_TOKEN_URI',
+  ]
+
+  // check hooks addresses
+  requiredHooks.map((hookId) => {
+    const hook = hooks?.onKeyPurchaseHook?.find(({ id }) => hookId === id)
+    addresses[`onKeyPurchaseHook_${hookId}`] = hook?.address
+  })
 
   return addresses
 }
