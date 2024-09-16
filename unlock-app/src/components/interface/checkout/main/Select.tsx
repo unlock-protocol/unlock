@@ -31,7 +31,7 @@ import { useGetLockProps } from '~/hooks/useGetLockProps'
 import Disconnect from './Disconnect'
 import { useSIWE } from '~/hooks/useSIWE'
 
-import { useMemberships } from '~/hooks/useMembership
+import { useMemberships } from '~/hooks/useMemberships'
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { ethers } from 'ethers'
 

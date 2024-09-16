@@ -1,7 +1,6 @@
 import { useSelector } from '@xstate/react'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { useSIWE } from '~/hooks/useSIWE'
 import { CheckoutService } from './main/checkoutMachine'
 import { Stepper } from './Stepper'
 import { ConnectPage } from './main/ConnectPage'
