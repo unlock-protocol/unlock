@@ -33,17 +33,17 @@ export const validateContractSource = async ({
   })
   const { SourceCode } = blockExplorerRes.result[0]
 
-  // Blockscout returns the contract code while Etherscan returns the contract manifest
   let distSource
-  if (typeof SourceCode === 'string') {
-    distSource = SourceCode
-  } else {
+  // Blockscout returns the contract code while Etherscan returns a JSON contract manifest as string
+  try {
     const { sources } = JSON.parse(
       SourceCode.substring(1, SourceCode.length - 1)
     )
     // use naming pattern identical to the one in govenance folder deployment
     const submittedContractPath = `contracts/past-versions/${contractName}V${contractVersion}.sol`
     ;({ content: distSource } = sources[submittedContractPath])
+  } catch (e) {
+    distSource = SourceCode
   }
 
   return localSource === distSource
