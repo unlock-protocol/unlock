@@ -1,10 +1,9 @@
-import React from 'react'
 import { Event, PaywallConfigType } from '@unlock-protocol/core'
 import { EventContentWithProps } from '~/components/content/EventContent'
 import { toFormData } from '~/components/interface/locks/metadata/utils'
-import { locksmith } from '~/config/locksmith'
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
+import { fetchEventMetadata } from '~/utils/eventMetadata'
 
 export interface EventPageProps {
   params: {
@@ -12,21 +11,8 @@ export interface EventPageProps {
   }
 }
 
-// Function to fetch event metadata and return it or handle errors
-export async function fetchEventMetadata(slug: string) {
-  try {
-    const { data: eventMetadata } = await locksmith.getEvent(slug)
-    return eventMetadata
-  } catch (error) {
-    console.error(error)
-    return null
-  }
-}
-
-// generate metadata for the event page dynamically based on the event slug
-export async function generateMetadata({
-  params,
-}: EventPageProps): Promise<Metadata> {
+// @ts-ignore
+async function generateMetadata({ params }: EventPageProps): Promise<Metadata> {
   const { slug } = params
 
   // Fetch the event metadata using the shared function
