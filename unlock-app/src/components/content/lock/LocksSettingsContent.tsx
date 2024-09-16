@@ -1,6 +1,5 @@
 'use client'
 import { useEffect, useState } from 'react'
-import BrowserOnly from '~/components/helpers/BrowserOnly'
 import LockSettingsPage from '~/components/interface/locks/Settings'
 import { AppLayout } from '~/components/interface/layouts/AppLayout'
 import { useSearchParams } from 'next/navigation'
