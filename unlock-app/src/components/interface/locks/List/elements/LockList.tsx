@@ -1,3 +1,5 @@
+'use client'
+
 import { Disclosure } from '@headlessui/react'
 import { Lock } from '~/unlockTypes'
 import { useConfig } from '~/utils/withConfig'
@@ -19,7 +21,7 @@ export const NoItems = () => {
       src="/images/illustrations/no-locks.svg"
       description={
         <>
-          <span>You have not create any membership contract yet. </span>
+          <span>You have not created any locks yet. </span>
         </>
       }
     />

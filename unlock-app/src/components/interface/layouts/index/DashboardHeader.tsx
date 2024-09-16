@@ -11,7 +11,7 @@ const MENU = {
     mobile: 'bg-ui-secondary-200 px-6',
   },
   showSocialIcons: false,
-  logo: { url: 'logoRedirectUri', src: 'logoSrc' },
+  logo: { url: '/', src: '/images/svg/unlock-logo.svg' },
   menuSections: [
     {
       title: 'Locks',

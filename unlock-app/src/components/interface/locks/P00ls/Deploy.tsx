@@ -1,3 +1,5 @@
+'use client'
+
 import { useSearchParams } from 'next/navigation'
 import { CreateLockForm } from '../Create/elements/CreateLockForm'
 import { useCallback, useEffect, useState } from 'react'

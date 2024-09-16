@@ -1,3 +1,5 @@
+'use client'
+
 import { useSearchParams } from 'next/navigation'
 import React from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'

@@ -1,3 +1,5 @@
+'use client'
+
 import { MdOutlineTipsAndUpdates } from 'react-icons/md'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { Button, Icon } from '@unlock-protocol/ui'
@@ -352,7 +354,7 @@ const NotManagerBanner = () => {
   )
 }
 
-export const ManageLockPage = () => {
+export const ManageLockContent = () => {
   const { account: owner } = useAuth()
   const searchParams = useSearchParams()
   const [loading, setLoading] = useState(false)
@@ -546,4 +548,4 @@ export const ManageLockPage = () => {
   )
 }
 
-export default ManageLockPage
+export default ManageLockContent

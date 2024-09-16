@@ -1,5 +1,5 @@
-import { useRouter } from 'next/router'
-import React, { useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
+import { useEffect } from 'react'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { getPaywallConfigFromQuery } from '~/utils/paywallConfig'
@@ -16,19 +16,19 @@ import { Connect } from './Connect'
 import { isInIframe } from '~/utils/iframe'
 
 export function CheckoutPage() {
-  const { query } = useRouter()
+  const searchParams = useSearchParams()
   const { authenticateWithProvider } = useAuthenticate({})
 
   // Fetch config from parent in iframe context
   const communication = useCheckoutCommunication()
   const { isInitialLoading, data: checkout } = useCheckoutConfig({
-    id: query.id?.toString(),
+    id: searchParams.get('id')?.toString(),
   })
 
-  const referrerAddress = query?.referrerAddress?.toString()
+  const referrerAddress = searchParams.get('referrerAddress')?.toString()
   // Get paywallConfig or oauthConfig from the query parameters.
-  const paywallConfigFromQuery = getPaywallConfigFromQuery(query)
-  const oauthConfigFromQuery = getOauthConfigFromQuery(query)
+  const paywallConfigFromQuery = getPaywallConfigFromQuery(searchParams)
+  const oauthConfigFromQuery = getOauthConfigFromQuery(searchParams)
 
   const oauthConfig = communication.oauthConfig || oauthConfigFromQuery
   const paywallConfig =
@@ -53,7 +53,7 @@ export function CheckoutPage() {
 
   const checkoutRedirectURI =
     paywallConfig?.redirectUri ||
-    Object.entries(query)
+    Object.entries(Object.fromEntries(searchParams))
       .find(([key]) => {
         return [
           'redirecturi',
