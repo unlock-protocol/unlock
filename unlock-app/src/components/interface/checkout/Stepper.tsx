@@ -8,11 +8,7 @@ import { useStepperItems } from './main/useStepperItems'
 import { useSIWE } from '~/hooks/useSIWE'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useSelector } from '@xstate/react'
-<<<<<<< HEAD
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-=======
-import { useRouter, useSearchParams, usePathname } from 'next/navigation'
->>>>>>> upstream/master
 
 interface IconProps {
   active?: boolean
@@ -125,13 +121,8 @@ export const Stepper = ({
   const { deAuthenticate } = useAuth()
 
   const router = useRouter()
-<<<<<<< HEAD
   const pathname = usePathname()
   const searchParams = useSearchParams()
-=======
-  const searchParams = useSearchParams()
-  const pathname = usePathname()
->>>>>>> upstream/master
 
   return (
     <div className="flex items-center justify-between w-full gap-2 p-2 px-6 border-b">
@@ -147,7 +138,6 @@ export const Stepper = ({
                   deAuthenticate()
                 }
 
-<<<<<<< HEAD
                 // Convert search params to an object
                 const queryParams = Object.fromEntries(searchParams.entries())
                 const { lock, ...otherQueryParams } = queryParams
@@ -158,18 +148,6 @@ export const Stepper = ({
 
                 // Replace the current URL
                 router.replace(newUrl)
-=======
-                // Remove the lock from the query string
-                const newSearchParams = new URLSearchParams(
-                  searchParams.toString()
-                )
-                newSearchParams.delete('lock')
-                // Wait until replaced then change state
-                await router.replace(
-                  `${pathname}?${newSearchParams.toString()}`,
-                  { scroll: false }
-                )
->>>>>>> upstream/master
 
                 service.send({ type: item.to as any })
               }}
