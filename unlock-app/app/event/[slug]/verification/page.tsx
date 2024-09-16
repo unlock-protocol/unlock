@@ -25,7 +25,12 @@ const VerificationPage = async ({ params }: EventPageProps) => {
     config: PaywallConfigType
   }
 
-  return <EventVerification slug={event.slug} checkoutConfig={checkoutConfig} />
+  return (
+    <EventVerification
+      slug={eventMetadata.slug!}
+      checkoutConfig={checkoutConfig}
+    />
+  )
 }
 
 export default VerificationPage
