@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
 import BrowserOnly from '~/components/helpers/BrowserOnly'
