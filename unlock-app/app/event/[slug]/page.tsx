@@ -11,8 +11,9 @@ export interface EventPageProps {
   }
 }
 
-// @ts-ignore
-async function generateMetadata({ params }: EventPageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: EventPageProps): Promise<Metadata> {
   const { slug } = params
 
   // Fetch the event metadata using the shared function
