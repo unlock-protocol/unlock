@@ -31,7 +31,7 @@ import { useGetLockProps } from '~/hooks/useGetLockProps'
 import Disconnect from './Disconnect'
 import { useSIWE } from '~/hooks/useSIWE'
 import { useMembership } from '~/hooks/useMembership'
-import { useRouter } from 'next/router'
+import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import { ethers } from 'ethers'
 interface Props {
   checkoutService: CheckoutService
@@ -211,6 +211,8 @@ export function Select({ checkoutService }: Props) {
   >(undefined)
 
   const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
 
   const { isPending: isLocksLoading, data: locks } = useQuery({
     queryKey: ['locks', JSON.stringify(paywallConfig)],
@@ -279,25 +281,23 @@ export function Select({ checkoutService }: Props) {
 
   // This should be executed only if router is defined
   useEffect(() => {
-    if (locks && router.query.lock) {
-      const autoSelectedLock = locks?.find(
-        (lock) => lock.address === router.query.lock
-      )
+    const lockParam = searchParams.get('lock')
 
-      // Remove the lock from the query string
-      const { lock, ...otherQueryParams } = router.query
-      router.replace(
-        {
-          pathname: router.pathname,
-          query: otherQueryParams,
-        },
-        undefined,
-        { shallow: true }
-      )
+    if (locks && lockParam) {
+      const autoSelectedLock = locks?.find((lock) => lock.address === lockParam)
+
+      // Remove the lock from the search params
+      const queryParams = Object.fromEntries(searchParams.entries())
+      const { lock, ...otherQueryParams } = queryParams
+      const newSearchParams = new URLSearchParams(otherQueryParams)
+      const newUrl = `${pathname}?${newSearchParams.toString()}`
+
+      // Replace the current URL
+      router.replace(newUrl)
 
       setAutoSelectedLock(autoSelectedLock)
     }
-  }, [router, locks])
+  }, [locks, searchParams, pathname, router])
 
   useEffect(() => {
     if (!autoSelectedLock) {
