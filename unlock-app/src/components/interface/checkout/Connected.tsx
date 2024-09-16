@@ -14,9 +14,7 @@ interface ConnectedCheckoutProps {
 export function Connected({ service }: ConnectedCheckoutProps) {
   const { paywallConfig, lock } = useSelector(service, (state) => state.context)
 
-  const { account, isUnlockAccount, connected } = useAuth()
-  const [signing, _] = useState(false)
-  const { isSignedIn } = useSIWE()
+  const { account } = useAuth()
 
   const lockAddress = lock?.address
   const lockNetwork = lock?.network || paywallConfig.network
@@ -32,25 +30,13 @@ export function Connected({ service }: ConnectedCheckoutProps) {
       service.send({
         type: 'SELECT_LOCK',
         existingMember: !!membership?.member,
-        expiredMember: isUnlockAccount ? false : !!membership?.expired,
+        expiredMember: !!membership?.expired,
       })
     }
-    if (!lockAddress || !lockNetwork) {
-      console.log('No lock selected yet!')
-    } else {
-      if (account) {
-        checkMemberships(lockAddress, account!, lockNetwork)
-      }
+    if (lockAddress && lockNetwork && account) {
+      checkMemberships(lockAddress, account!, lockNetwork)
     }
-  }, [
-    account,
-    connected,
-    isUnlockAccount,
-    signing,
-    isSignedIn,
-    lockAddress,
-    lockNetwork,
-  ])
+  }, [account, lockAddress, lockNetwork])
 
   // Debugging details!
   useEffect(() => {
