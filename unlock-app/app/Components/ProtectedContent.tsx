@@ -4,11 +4,11 @@ import { ReactNode } from 'react'
 import { WalletNotConnected } from '~/components/interface/layouts/index/WalletNotConnected'
 import { useAuth } from '~/contexts/AuthenticationContext'
 
-interface ProtectedContentProps {
+interface AuthRequiredProps {
   children: ReactNode
 }
 
-export function ProtectedContent({ children }: ProtectedContentProps) {
+export function AuthRequired({ children }: AuthRequiredProps) {
   const { account } = useAuth()
 
   if (!account) {

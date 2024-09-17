@@ -1,4 +1,4 @@
-import { ProtectedContent } from 'app/Components/ProtectedContent'
+import { AuthRequired } from 'app/Components/ProtectedContent'
 import { Metadata } from 'next'
 import React from 'react'
 import NewEventContent from '~/components/content/event/NewEvent'
@@ -11,9 +11,9 @@ export const metadata: Metadata = {
 
 const NewEventPage: React.FC = () => {
   return (
-    <ProtectedContent>
+    <AuthRequired>
       <NewEventContent />
-    </ProtectedContent>
+    </AuthRequired>
   )
 }
 
