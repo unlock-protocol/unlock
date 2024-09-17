@@ -25,15 +25,10 @@ export const LocksListPage = () => {
     return (
       <Placeholder.Root>
         <Placeholder.Card />
-
         <Placeholder.Card />
-
         <Placeholder.Card />
-
         <Placeholder.Card />
-
         <Placeholder.Card />
-
         <Placeholder.Card />
       </Placeholder.Root>
     )
