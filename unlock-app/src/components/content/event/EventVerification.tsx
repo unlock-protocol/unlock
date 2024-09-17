@@ -19,32 +19,34 @@ export const EventVerification = ({
 }: EventVerificationProps) => {
   const { data: event } = useEvent({ slug: slug })
 
+  if (!event) {
+    return null
+  }
+
   return (
-    event && (
-      <div>
-        <div className="flex flex-row gap-4 align-center items-center">
-          <Link href={`/event/${event.slug}`}>
-            <ArrowBackIcon size={20} />
-          </Link>
-          <div className="w-16 h-16 overflow-hidden bg-cover rounded-2xl">
-            <img
-              className="object-cover w-full m-auto aspect-1 rounded-2xl"
-              src={event.image}
-              alt={event.name}
-            />
-          </div>
-          <div>
-            <span className="text-xl font-bold text-brand-dark">
-              {event.name} /
-            </span>{' '}
-            <span className="text-xl text-gray-600">Verification</span>
-          </div>
+    <div>
+      <div className="flex flex-row gap-4 align-center items-center">
+        <Link href={`/event/${event.slug}`}>
+          <ArrowBackIcon size={20} />
+        </Link>
+        <div className="w-16 h-16 overflow-hidden bg-cover rounded-2xl">
+          <img
+            className="object-cover w-full m-auto aspect-1 rounded-2xl"
+            src={event.image}
+            alt={event.name}
+          />
         </div>
-        <div className="pt-10">
-          <Scanner checkoutConfig={checkoutConfig.config} eventProp={event} />
+        <div>
+          <span className="text-xl font-bold text-brand-dark">
+            {event.name} /
+          </span>{' '}
+          <span className="text-xl text-gray-600">Verification</span>
         </div>
       </div>
-    )
+      <div className="pt-10">
+        <Scanner checkoutConfig={checkoutConfig.config} eventProp={event} />
+      </div>
+    </div>
   )
 }
 
