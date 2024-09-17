@@ -140,7 +140,7 @@ const ConnectStripe = ({
   const onGrantKeyRole = async () => {
     const keyGrantPromise = grantKeyGrantorRoleMutation.mutateAsync()
     await ToastHelper.promise(keyGrantPromise, {
-      error: `Can't grant role, please try again.`,
+      error: "Can't grant role, please try again.",
       success: 'Key granted',
       loading: 'Allow key granting',
     })

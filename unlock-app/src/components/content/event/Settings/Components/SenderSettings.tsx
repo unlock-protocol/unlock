@@ -35,7 +35,7 @@ export const SenderSettings = ({ checkoutConfig, event }: EmailsProps) => {
         success: 'Settings saved!',
         error:
           'We could not save. Please try again and report if the issue persists.',
-        loading: `Updating your event's properties.`,
+        loading: "Updating your event's properties.",
       }
     )
   }
@@ -71,7 +71,7 @@ export const SenderSettings = ({ checkoutConfig, event }: EmailsProps) => {
           autoComplete="off"
           placeholder="your@email.com"
           error={errors.replyTo?.message as string}
-          description={`Used when users respond to automated emails.`}
+          description={'Used when users respond to automated emails.'}
         />
       </div>
       <div className="flex flex-end w-full pt-8 flex-row-reverse">

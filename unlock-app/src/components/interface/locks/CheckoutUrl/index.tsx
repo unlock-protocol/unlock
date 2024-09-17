@@ -1,3 +1,5 @@
+'use client'
+
 import { Button, Modal, Tabs } from '@unlock-protocol/ui'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -40,7 +42,7 @@ const Header = () => {
   )
 }
 
-export const CheckoutUrlPage = () => {
+export const CheckoutUrlContent = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { account } = useAuth()

@@ -66,7 +66,7 @@ export const SaveRootForRefunds = ({
           success: 'Refunds have been approved.',
           error:
             'We could not save your event. Please try again and report if the issue persists.',
-          loading: `Saving the list of attendees who can claim a refund.`,
+          loading: 'Saving the list of attendees who can claim a refund.',
         }
       )
     },
