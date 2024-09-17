@@ -81,8 +81,10 @@ describe('Unlock (on mainnet)', async () => {
   before(async function setupMainnetForkTestEnv() {
     this.timeout(2000000)
 
-    // all suite will be skipped
-    this.skip()
+    if (!process.env.RUN_FORK) {
+      // all suite will be skipped
+      this.skip()
+    }
 
     // reset fork
     const { forking } = config.networks.hardhat

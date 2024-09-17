@@ -31,8 +31,10 @@ describe(`swapAndBurn`, function () {
     burnAddress
 
   before(async function () {
-    // all suite will be skipped
-    this.skip()
+    if (!process.env.RUN_FORK) {
+      // all suite will be skipped
+      this.skip()
+    }
 
     // mainnet fork: need to fund hardhat default signer
     const [signer] = await ethers.getSigners()

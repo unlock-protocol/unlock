@@ -50,7 +50,10 @@ let unlock,
 describe(`Unlock migration`, function () {
   before(async function () {
     // all suite will be skipped
-    this.skip()
+    if (!process.env.RUN_FORK) {
+      // all suite will be skipped
+      this.skip()
+    }
 
     // fund signers
     ;[signer, keyOwner] = await ethers.getSigners()

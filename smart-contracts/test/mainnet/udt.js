@@ -17,8 +17,10 @@ describe('UnlockDiscountToken on mainnet', () => {
   let unlockAddress
 
   before(async function setupMainnetForkTestEnv() {
-    // all suite will be skipped
-    this.skip()
+    if (!process.env.RUN_FORK) {
+      // all suite will be skipped
+      this.skip()
+    }
 
     // reset fork
     await resetNodeState()

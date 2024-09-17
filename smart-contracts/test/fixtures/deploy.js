@@ -5,9 +5,9 @@ module.exports = async () => {
   // when running a mainnet fork
   if (process.env.RUN_FORK) {
     // copy .oppenzeppelin mainnet network manifest
-    // copySync('.openzeppelin/mainnet.json', '.openzeppelin/unknown-31337.json')
+    copySync('.openzeppelin/mainnet.json', '.openzeppelin/unknown-31337.json')
     // skip contracts setup
-    // return
+    return
   }
 
   // setup accounts

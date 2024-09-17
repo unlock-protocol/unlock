@@ -24,7 +24,10 @@ describe('Unlock GNP conversion', () => {
 
   before(async function () {
     // all suite will be skipped
-    this.skip()
+    if (!process.env.RUN_FORK) {
+      // all suite will be skipped
+      this.skip()
+    }
 
     // get token addresses
     const { tokens } = await getNetwork(1)
