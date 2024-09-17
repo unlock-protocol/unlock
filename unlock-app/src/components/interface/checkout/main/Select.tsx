@@ -30,9 +30,10 @@ import { AiFillWarning as WarningIcon } from 'react-icons/ai'
 import { useGetLockProps } from '~/hooks/useGetLockProps'
 import Disconnect from './Disconnect'
 import { useSIWE } from '~/hooks/useSIWE'
-import { useMembership } from '~/hooks/useMembership'
-import { useRouter, usePathname, useSearchParams } from 'next/navigation'
+import { useMemberships } from '~/hooks/useMemberships'
+import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { ethers } from 'ethers'
+
 interface Props {
   checkoutService: CheckoutService
 }
@@ -364,11 +365,12 @@ export function Select({ checkoutService }: Props) {
     expectedAddress.toLowerCase() !== account.toLowerCase()
   )
 
-  const { isLoading: isMembershipsLoading, data: memberships } = useMembership({
-    account,
-    paywallConfig: paywallConfig,
-    web3Service,
-  })
+  const { isLoading: isMembershipsLoading, data: memberships } = useMemberships(
+    {
+      account,
+      paywallConfig: paywallConfig,
+    }
+  )
 
   const membership = memberships?.find((item) => item.lock === lock?.address)
   const { isLoading: isLoadingHook, lockHookMapping } =
@@ -409,18 +411,15 @@ export function Select({ checkoutService }: Props) {
   const isLoading = isLocksLoading || isLoadingHook || isMembershipsLoading
 
   useEffect(() => {
-    const signToSignIn = async () => {
-      await signIn()
-    }
-
     if (!connected && useDelegatedProvider) {
-      signToSignIn()
+      signIn()
     }
 
     if (!(lock && skipSelect && account && !isLoading)) {
       return
     }
 
+    // Connected account, lock selected, move on!
     checkoutService.send({
       type: 'CONNECT',
       lock,
@@ -452,13 +451,9 @@ export function Select({ checkoutService }: Props) {
       return
     }
 
-    // TODO: Change state before signing and on CONNECT place loader
-
     if (!isSignedIn && useDelegatedProvider) {
       setSigning(true)
-
       await signIn()
-
       setSigning(false)
       return
     }
