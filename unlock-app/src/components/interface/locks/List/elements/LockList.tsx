@@ -2,6 +2,7 @@
 import { Disclosure } from '@headlessui/react'
 import { Lock } from '~/unlockTypes'
 import { useConfig } from '~/utils/withConfig'
+import { config } from '~/config/app'
 import { LockCard } from './LockCard'
 import {
   RiArrowDropUpLine as UpIcon,
@@ -101,7 +102,6 @@ export interface FavoriteLocks {
 }
 
 export const LockList = ({ owner }: LockListProps) => {
-  const config = useConfig()
   const { networks, defaultNetwork } = config
   const { getStorage, setStorage } = useAppStorage()
 
