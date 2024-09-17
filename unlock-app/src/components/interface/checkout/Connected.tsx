@@ -1,74 +1,43 @@
 import { useSelector } from '@xstate/react'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { useSIWE } from '~/hooks/useSIWE'
 import { CheckoutService } from './main/checkoutMachine'
 import { Stepper } from './Stepper'
 import { ConnectPage } from './main/ConnectPage'
-import { useWeb3Service } from '~/utils/withWeb3Service'
-import { useMembership } from '~/hooks/useMembership'
+import { getMembership } from '~/hooks/useMemberships'
 
 interface ConnectedCheckoutProps {
   service: CheckoutService
 }
 
 export function Connected({ service }: ConnectedCheckoutProps) {
-  const state = useSelector(service, (state) => state)
-  const { account, isUnlockAccount, connected } = useAuth()
-  const [signing, _] = useState(false)
-  const { isSignedIn } = useSIWE()
+  const { paywallConfig, lock } = useSelector(service, (state) => state.context)
 
-  const web3Service = useWeb3Service()
+  const { account } = useAuth()
 
-  const useDelegatedProvider =
-    state.context?.paywallConfig?.useDelegatedProvider
-
-  const { data: memberships } = useMembership({
-    account,
-    paywallConfig: state.context.paywallConfig,
-    web3Service,
-  })
-
-  const membership = memberships?.find(
-    (item) => item.lock === state.context.lock?.address
-  )
+  const lockAddress = lock?.address
+  const lockNetwork = lock?.network || paywallConfig.network
 
   useEffect(() => {
-    // Skip Connect if already signed in
-    const autoSignIn = async () => {
-      const isConnectedAsUnlockAccount =
-        isSignedIn && !signing && isUnlockAccount && !useDelegatedProvider
-
-      const isConnectedWithWallet =
-        isSignedIn && !signing && !isUnlockAccount && !useDelegatedProvider
-
-      const isConectedWithOtherMethod = account && connected
-
-      if (
-        isConnectedWithWallet ||
-        isConnectedAsUnlockAccount ||
-        isConectedWithOtherMethod
-      ) {
-        service.send({
-          type: 'SELECT_LOCK',
-          existingMember: !!membership?.member,
-          expiredMember: isUnlockAccount ? false : !!membership?.expired,
-        })
-      }
+    const checkMemberships = async (
+      lockAddress: string,
+      account: string,
+      lockNetwork: number
+    ) => {
+      // Get the membership!
+      const membership = await getMembership(lockAddress, account!, lockNetwork)
+      service.send({
+        type: 'SELECT_LOCK',
+        existingMember: !!membership?.member,
+        expiredMember: !!membership?.expired,
+      })
     }
-    if (memberships) {
-      autoSignIn()
+    if (lockAddress && lockNetwork && account) {
+      checkMemberships(lockAddress, account!, lockNetwork)
     }
-    // adding signIn creates an inifnite loop for some reason
-  }, [
-    connected,
-    useDelegatedProvider,
-    isUnlockAccount,
-    signing,
-    isSignedIn,
-    memberships,
-  ])
+  }, [account, lockAddress, lockNetwork])
 
+  // Debugging details!
   useEffect(() => {
     if (!account) {
       console.debug('Not connected')

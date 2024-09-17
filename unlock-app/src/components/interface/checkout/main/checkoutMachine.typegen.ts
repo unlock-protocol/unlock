@@ -17,6 +17,7 @@ export interface Typegen0 {
     disconnect: 'DISCONNECT' | 'RESET_CHECKOUT'
     connect: 'CONNECT'
     selectPaymentMethod: 'SELECT_PAYMENT_METHOD'
+    lockSelected: 'LOCK_SELECTED'
     selectQuantity: 'SELECT_QUANTITY'
     selectRecipients: 'SELECT_RECIPIENTS'
     signMessage: 'SIGN_MESSAGE'
