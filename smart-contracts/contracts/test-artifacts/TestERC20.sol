@@ -12,17 +12,17 @@ contract TestERC20 is ERC20 {
 }
 
 contract TestERC20WithResultControl is TestERC20 {
-  bool reuslt;
+  bool result;
 
   function setResult(bool _result) public {
-    reuslt = _result;
+    result = _result;
   }
 
   function transfer(
     address recipient,
     uint256 amount
   ) public override returns (bool) {
-    return reuslt;
+    return result;
   }
 
   function transferFrom(
@@ -30,6 +30,6 @@ contract TestERC20WithResultControl is TestERC20 {
     address recipient,
     uint256 amount
   ) public override returns (bool) {
-    return reuslt;
+    return result;
   }
 }
