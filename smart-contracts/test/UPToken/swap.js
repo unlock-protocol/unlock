@@ -272,7 +272,7 @@ describe('Swapper UP / UDT', () => {
   })
 })
 
-describe('Swapper UP / UDT with failing', () => {
+describe('Swapper UP / UDT with failing transfer ERC20', () => {
   let owner, udtMinter, spender, recipient, random
   let up, udt, swap
 
