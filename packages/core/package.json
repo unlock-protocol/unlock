@@ -17,7 +17,7 @@
   "scripts": {
     "build": "tsup src/index.ts --format=esm,cjs --dts",
     "test": "UNLOCK_ENV=test vitest run --coverage --environment=node",
-    "lint": "eslint src/",
+    "lint": "eslint",
     "ci": "yarn test && yarn lint && yarn build"
   },
   "devDependencies": {

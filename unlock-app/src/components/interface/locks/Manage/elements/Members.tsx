@@ -123,7 +123,7 @@ export const Members = ({
 
   useEffect(() => {
     if (membersError) {
-      ToastHelper.error(`Can't load members, please try again`)
+      ToastHelper.error("Can't load members, please try again")
     }
   }, [membersError])
 

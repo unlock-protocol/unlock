@@ -61,7 +61,7 @@ export const NewCertification = () => {
       ) // Deploy the lock! and show the "waiting" screen + mention to *not* close!
     } catch (error) {
       console.error(error)
-      ToastHelper.error(`The contract could not be deployed. Please try again.`)
+      ToastHelper.error('The contract could not be deployed. Please try again.')
     }
 
     if (lockAddress) {
