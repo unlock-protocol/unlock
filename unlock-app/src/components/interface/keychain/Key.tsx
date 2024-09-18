@@ -466,7 +466,7 @@ function Key({ ownedKey, owner, network }: Props) {
                 {owner == account && tokenId && (
                   <div className="p-1">
                     <Menu.Item>
-                      {({}) => (
+                      {() => (
                         <div className="flex flex-row gap-1">
                           <AddToPhoneWallet
                             platform={Platform.GOOGLE}
