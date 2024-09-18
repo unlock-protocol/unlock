@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { useRouter } from 'next/router'
+import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useState } from 'react'
 import { getMembershipVerificationConfig } from '~/utils/verification'
 import { pageTitle } from '../../constants'
@@ -9,13 +9,13 @@ import { Scanner } from '../interface/verification/Scanner'
 import VerificationStatus from '../interface/VerificationStatus'
 
 export const VerificationContent: React.FC<unknown> = () => {
-  const { query } = useRouter()
-  const [locks, setLocks] = useState({})
+  const searchParams = useSearchParams()
   const router = useRouter()
+  const [locks, setLocks] = useState({})
 
   const membershipVerificationConfig = getMembershipVerificationConfig({
-    data: query.data?.toString(),
-    sig: query.sig?.toString(),
+    data: searchParams.get('data'),
+    sig: searchParams.get('sig'),
   })
 
   if (!membershipVerificationConfig) {

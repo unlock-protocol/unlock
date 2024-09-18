@@ -1,3 +1,5 @@
+'use client'
+
 import { SettingCard } from '~/components/interface/locks/Settings/elements/SettingCard'
 import { Controller, useForm } from 'react-hook-form'
 import { BiLogoZoom as ZoomIcon } from 'react-icons/bi'

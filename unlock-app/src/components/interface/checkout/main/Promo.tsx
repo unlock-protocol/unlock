@@ -13,7 +13,7 @@ import { getEthersWalletFromPassword } from '~/utils/strings'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useDebounce } from 'react-use'
 import LoadingIcon from '../../Loading'
-import { useRouter } from 'next/router'
+import { useSearchParams } from 'next/navigation'
 import Disconnect from './Disconnect'
 interface Props {
   checkoutService: CheckoutService
@@ -189,11 +189,12 @@ export function Promo({ checkoutService }: PromoProps) {
     checkoutService,
     (state) => state.context
   )
-  const { query } = useRouter()
+
+  const searchParams = useSearchParams()
 
   let promoCode = ''
-  if (query?.promo) {
-    promoCode = query?.promo.toString()
+  if (searchParams?.get('promo')) {
+    promoCode = searchParams?.get('promo') as string
   } else if (typeof paywallConfig.locks[lock!.address].promo === 'string') {
     promoCode = paywallConfig.locks[lock!.address].promo as string
   }
