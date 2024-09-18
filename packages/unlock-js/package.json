@@ -14,7 +14,7 @@
     "test": "yarn clean && yarn build:abis && yarn build:lib && vitest",
     "test:single": "cd src/__tests__/integration && cp single.js single.test.js && yarn vitest single",
     "check": "tsc --noEmit",
-    "lint": "yarn run eslint src/",
+    "lint": "eslint",
     "build:lib": "tsup src/index.ts --dts --format esm,cjs ",
     "build:abis": "node ./scripts/compressAbi.js",
     "build": "yarn clean && yarn generate && yarn build:abis && yarn build:lib",

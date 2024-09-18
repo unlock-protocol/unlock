@@ -5,7 +5,6 @@ import { SettingsContext } from '~/components/interface/locks/Settings'
 import { Tab } from '@headlessui/react'
 
 import { ReactNode, useState } from 'react'
-import { SettingTab } from '~/pages/locks/settings'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { General } from './General'
 import { Referrals } from './Referrals'
@@ -13,6 +12,7 @@ import { Emails } from './Emails'
 import { Verifiers } from './Verifiers'
 import Link from 'next/link'
 import { useEvent } from '~/hooks/useEvent'
+import { SettingTab } from '../../lock/LocksSettingsContent'
 
 interface EventSettingsProps {
   slug: string
@@ -36,25 +36,28 @@ export const EventSettings = ({ slug, checkoutConfig }: EventSettingsProps) => {
     {
       id: 'general',
       label: 'General',
-      description: `Update your event's public information such as its location, date and more!`,
+      description:
+        "Update your event's public information such as its location, date and more!",
       children: <General event={event} checkoutConfig={checkoutConfig} />,
     },
     {
       id: 'referrals',
       label: 'Referrals',
-      description: `Create referral links to share with your community and reward them.`,
+      description:
+        'Create referral links to share with your community and reward them.',
       children: <Referrals event={event} checkoutConfig={checkoutConfig} />,
     },
     {
       id: 'emails',
       label: 'Emails',
-      description: `Configure and send emails to the attendees of your event.`,
+      description: 'Configure and send emails to the attendees of your event.',
       children: <Emails event={event} checkoutConfig={checkoutConfig} />,
     },
     {
       id: 'verifiers',
       label: 'Verifiers',
-      description: `Verify ticket validity and handle attendees who have checked-in`,
+      description:
+        'Verify ticket validity and handle attendees who have checked-in',
       children: <Verifiers event={event} checkoutConfig={checkoutConfig} />,
     },
     // {

@@ -18,7 +18,7 @@ export const useCertification = ({
     id: '1',
     network,
     tokenId: '#', // sets isPlaceholderData
-    owner: `{Recipient's wallet address, or ENS}`,
+    owner: "{Recipient's wallet address, or ENS}",
     expiration: '{Expiration date}',
     createdAtBlock: undefined,
     createdAt: new Date().getTime(),

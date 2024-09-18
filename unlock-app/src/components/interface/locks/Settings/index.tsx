@@ -18,8 +18,8 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { SettingGeneral } from './elements/SettingGeneral'
 import { SettingMisc } from './elements/SettingMisc'
 import { SettingPayments } from './elements/SettingPayments'
-import { SettingTab } from '~/pages/locks/settings'
 import { SettingEmail } from './elements/SettingEmail'
+import { SettingTab } from '~/components/content/lock/LocksSettingsContent'
 
 interface LockSettingsPageProps {
   lockAddress: string
@@ -162,7 +162,8 @@ const LockSettingsPage = ({
           isLoading={isLoading}
         />
       ),
-      description: `Your Lock includes multiple roles, such as "Lock Manager". Here you can configure which addresses are assigned which roles.`,
+      description:
+        'Your Lock includes multiple roles, such as "Lock Manager". Here you can configure which addresses are assigned which roles.',
     },
     {
       id: 'emails',

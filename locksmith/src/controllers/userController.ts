@@ -117,7 +117,7 @@ export const retrieveEncryptedPrivatekey = async (
         {
           scrypt: {
             // web3 used 1 << 5, ethers default is 1 << 18. We want speedy encryption here since this is not a real account anyway.
-            // eslint-disable-next-line no-bitwise
+
             N: 1 << 5,
           },
         }

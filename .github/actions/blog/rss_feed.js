@@ -1,10 +1,9 @@
 const fs = require('fs-extra')
 const path = require('path')
-const fetch = require('node-fetch')
 const feedparser = require('feedparser-promised')
 
 function escapeMarkdown(str) {
-  return str.replace(/(["\\])/g, '\\$1');
+  return str.replace(/(["\\])/g, '\\$1')
 }
 
 // Fetch the RSS feed
@@ -70,7 +69,6 @@ feedparser
       if (!imageUrl) {
         const enclosuresImage = entry.enclosures.find((enclosure) => {
           return enclosure.type.startsWith('image')
-
         })
         if (enclosuresImage) {
           imageUrl = enclosuresImage.url
@@ -115,9 +113,7 @@ subtitle: "${escapeMarkdown(subtitle)}"
 authorName: "${escapeMarkdown(authorName)}"
 publishDate: "${publishDate}"
 description: "${escapeMarkdown(description)}"
-image: "/images/blog/${slug}/${path.basename(
-            imageUrl
-          )}"
+image: "/images/blog/${slug}/${path.basename(imageUrl)}"
 ---
 
 ![${title}](${imageUrl})

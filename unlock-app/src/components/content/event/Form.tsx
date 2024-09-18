@@ -44,7 +44,7 @@ export interface NewEventForm {
 }
 
 interface GoogleMapsAutoCompleteProps {
-  onChange: (address: string, location: string) => void
+  onChange: (address: string, location: string, timezone: string) => void
   defaultValue?: string
 }
 
@@ -52,18 +52,32 @@ export const GoogleMapsAutoComplete = ({
   onChange,
   defaultValue,
 }: GoogleMapsAutoCompleteProps) => {
+  const onPlaceSelected = async (place: any, inputRef: any) => {
+    const lat = place.geometry?.location?.lat()
+    const lng = place.geometry?.location?.lng()
+
+    //  We use a dedicated API key because this Timezone API  does not support restricting by referrers as of Sept 2024
+    const timezoneInfo = await fetch(
+      `https://maps.googleapis.com/maps/api/timezone/json?location=${lat}%2C${lng}&timestamp=${Math.floor(new Date().getTime() / 1000)}&key=AIzaSyB7AMd20omjPeJRS2rDBbq8HKZIoRZQD_o`
+    ).then((response) => response.json())
+
+    if (place.formatted_address) {
+      return onChange(
+        inputRef.value,
+        place.formatted_address,
+        timezoneInfo.timeZoneId
+      )
+    }
+    return onChange(inputRef.value, inputRef.value, timezoneInfo.timeZoneId)
+  }
+
   const { ref } = usePlacesWidget({
     options: {
       types: [],
     },
     apiKey: config.googleMapsApiKey,
-    onPlaceSelected: (place, inputRef) => {
-      if (place.formatted_address) {
-        // @ts-expect-error Property 'value' does not exist on type 'RefObject<HTMLInputElement>'.ts(2339)
-        return onChange(inputRef.value, place.formatted_address)
-      }
-      // @ts-expect-error Property 'value' does not exist on type 'RefObject<HTMLInputElement>'.ts(2339)
-      return onChange(inputRef.value, inputRef.value)
+    onPlaceSelected: (place: any, inputRef: any) => {
+      onPlaceSelected(place, inputRef)
     },
   })
 
@@ -377,113 +391,9 @@ export const Form = ({ onSubmit }: FormProps) => {
                     )}
                   </div>
                 </div>
-                <div className="flex flex-col self-start gap-2 justify-top">
-                  <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
-                    <Input
-                      {...register('metadata.ticket.event_start_date', {
-                        required: {
-                          value: true,
-                          message: 'Add a start date to your event',
-                        },
-                      })}
-                      onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-                        if (
-                          !details.metadata?.ticket?.event_end_date ||
-                          new Date(details.metadata?.ticket?.event_end_date) <
-                            new Date(evt.target.value)
-                        ) {
-                          setValue(
-                            'metadata.ticket.event_end_date',
-                            evt.target.value
-                          )
-                          setValue('metadata.ticket.event_start_time', '12:00')
-                        }
-                      }}
-                      min={today}
-                      type="date"
-                      label="Start date"
-                      error={
-                        // @ts-expect-error Property 'event_start_date' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
-                        errors.metadata?.ticket?.event_start_date?.message || ''
-                      }
-                    />
-                    <Input
-                      {...register('metadata.ticket.event_start_time', {})}
-                      type="time"
-                      label="Start time"
-                      error={
-                        // @ts-expect-error Property 'event_start_time' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
-                        errors.metadata?.ticket?.event_start_time?.message || ''
-                      }
-                      onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-                        if (!details.metadata?.ticket?.event_end_time) {
-                          setValue(
-                            'metadata.ticket.event_end_time',
-                            evt.target.value
-                          )
-                        }
-                      }}
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
-                    <Input
-                      {...register('metadata.ticket.event_end_date', {
-                        required: {
-                          value: true,
-                          message: 'Add a end date to your event',
-                        },
-                      })}
-                      type="date"
-                      min={minEndDate}
-                      label="End date"
-                      error={
-                        // @ts-expect-error Property 'event_start_date' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
-                        errors.metadata?.ticket?.event_end_date?.message || ''
-                      }
-                    />
-                    <Input
-                      {...register('metadata.ticket.event_end_time', {})}
-                      type="time"
-                      min={minEndTime}
-                      label="End time"
-                      error={
-                        // @ts-expect-error Property 'event_end_time' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
-                        errors.metadata?.ticket?.event_end_time?.message || ''
-                      }
-                    />
-                  </div>
-
-                  <Controller
-                    name="metadata.ticket.event_timezone"
-                    control={control}
-                    render={({ field: { onChange, value } }) => {
-                      return (
-                        <Select
-                          onChange={(newValue) => {
-                            onChange({
-                              target: {
-                                value: newValue,
-                              },
-                            })
-                          }}
-                          // @ts-expect-error supportedValuesOf
-                          options={Intl.supportedValuesOf('timeZone').map(
-                            (tz: string) => {
-                              return {
-                                value: tz,
-                                label: tz,
-                              }
-                            }
-                          )}
-                          label="Timezone"
-                          defaultValue={value}
-                        />
-                      )
-                    }}
-                  />
-
-                  <div className="mt-6">
+                <div className="flex flex-col gap-4 self-start">
+                  {/* Location */}
+                  <div className="flex flex-col gap-0">
                     <div className="flex items-center justify-between">
                       <label className="px-1 mb-2 text-base" htmlFor="">
                         Location
@@ -543,10 +453,130 @@ export const Form = ({ onSubmit }: FormProps) => {
                     {isInPerson && (
                       <GoogleMapsAutoComplete
                         defaultValue={mapAddress}
-                        onChange={(address, location) => {
+                        onChange={(address, location, timezone) => {
                           setValue('metadata.ticket.event_address', address)
                           setValue('metadata.ticket.event_location', location)
+                          setValue('metadata.ticket.event_timezone', timezone)
                           setMapAddress(address)
+                        }}
+                      />
+                    )}
+                  </div>
+
+                  {/* Date */}
+                  <div className="flex flex-col gap-2">
+                    <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
+                      <Input
+                        {...register('metadata.ticket.event_start_date', {
+                          required: {
+                            value: true,
+                            message: 'Add a start date to your event',
+                          },
+                        })}
+                        onChange={(
+                          evt: React.ChangeEvent<HTMLInputElement>
+                        ) => {
+                          if (
+                            !details.metadata?.ticket?.event_end_date ||
+                            new Date(details.metadata?.ticket?.event_end_date) <
+                              new Date(evt.target.value)
+                          ) {
+                            setValue(
+                              'metadata.ticket.event_end_date',
+                              evt.target.value
+                            )
+                            setValue(
+                              'metadata.ticket.event_start_time',
+                              '12:00'
+                            )
+                          }
+                        }}
+                        min={today}
+                        type="date"
+                        label="Start date"
+                        error={
+                          // @ts-expect-error Property 'event_start_date' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
+                          errors.metadata?.ticket?.event_start_date?.message ||
+                          ''
+                        }
+                      />
+                      <Input
+                        {...register('metadata.ticket.event_start_time', {})}
+                        type="time"
+                        label="Start time"
+                        error={
+                          // @ts-expect-error Property 'event_start_time' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
+                          errors.metadata?.ticket?.event_start_time?.message ||
+                          ''
+                        }
+                        onChange={(
+                          evt: React.ChangeEvent<HTMLInputElement>
+                        ) => {
+                          if (!details.metadata?.ticket?.event_end_time) {
+                            setValue(
+                              'metadata.ticket.event_end_time',
+                              evt.target.value
+                            )
+                          }
+                        }}
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
+                      <Input
+                        {...register('metadata.ticket.event_end_date', {
+                          required: {
+                            value: true,
+                            message: 'Add a end date to your event',
+                          },
+                        })}
+                        type="date"
+                        min={minEndDate}
+                        label="End date"
+                        error={
+                          // @ts-expect-error Property 'event_start_date' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
+                          errors.metadata?.ticket?.event_end_date?.message || ''
+                        }
+                      />
+                      <Input
+                        {...register('metadata.ticket.event_end_time', {})}
+                        type="time"
+                        min={minEndTime}
+                        label="End time"
+                        error={
+                          // @ts-expect-error Property 'event_end_time' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
+                          errors.metadata?.ticket?.event_end_time?.message || ''
+                        }
+                      />
+                    </div>
+
+                    {!isInPerson && (
+                      <Controller
+                        name="metadata.ticket.event_timezone"
+                        control={control}
+                        render={({ field: { onChange, value } }) => {
+                          return (
+                            <Select
+                              onChange={(newValue) => {
+                                onChange({
+                                  target: {
+                                    value: newValue,
+                                  },
+                                })
+                              }}
+                              // @ts-expect-error supportedValuesOf
+                              options={Intl.supportedValuesOf('timeZone').map(
+                                (tz: string) => {
+                                  return {
+                                    value: tz,
+                                    label: tz,
+                                  }
+                                }
+                              )}
+                              label="Timezone"
+                              defaultValue={value}
+                            />
+                          )
                         }}
                       />
                     )}
@@ -583,7 +613,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                 autoComplete="off"
                 placeholder="your@email.com"
                 error={errors.metadata?.replyTo?.message as string}
-                description={`Used when users respond to automated emails.`}
+                description={'Used when users respond to automated emails.'}
               />
             </div>
           </Disclosure>
