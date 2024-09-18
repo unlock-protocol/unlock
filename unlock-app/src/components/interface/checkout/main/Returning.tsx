@@ -17,6 +17,7 @@ import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
 import { Platform } from '~/services/passService'
 import { shouldSkip } from './utils'
+import { AddToWallet } from '../../keychain/AddToWallet'
 
 interface Props {
   checkoutService: CheckoutService
@@ -77,60 +78,32 @@ export function Returning({ checkoutService, onClose, communication }: Props) {
     <Fragment>
       <Stepper service={checkoutService} />
       <main className="h-full px-6 py-2 overflow-auto">
-        <div className="flex flex-col items-center justify-center h-full space-y-2">
-          <Lottie
-            className={'w-28 sm:w-36 h-28 sm:h-36'}
-            animationData={unlockedAnimation}
-          />
-          <p className="text-lg font-bold text-brand-ui-primary">
-            Voila! This is unlocked!
-          </p>
-          <a
-            href={config.networks[lock!.network].explorer.urls.address(
-              lock!.address
-            )}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
-          >
-            See in the block explorer
-            <Icon key="external-link" icon={ExternalLinkIcon} size="small" />
-          </a>
-          {tokenId && (
-            <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-4">
-              {!isIOS && tokenId && (
-                <li>
-                  <AddToPhoneWallet
-                    platform={Platform.GOOGLE}
-                    className="w-full px-2 py-2 text-xs flex items-center justify-center gap-2 rounded-md bg-black text-white"
-                    size="small"
-                    variant="secondary"
-                    as="button"
-                    network={lock!.network}
-                    lockAddress={lock!.address}
-                    tokenId={tokenId}
-                    handlePassUrl={(url: string) => {
-                      window.location.assign(url)
-                    }}
-                  />
-                </li>
+        <div className="flex flex-col items-center justify-center h-full gap-2">
+          <div className="flex flex-col items-center justify-center h-full gap-1">
+            <Lottie
+              className={'w-28 sm:w-36 h-28 sm:h-36'}
+              animationData={unlockedAnimation}
+            />
+            <p className="text-lg font-bold text-brand-ui-primary">
+              Voila! This is unlocked!
+            </p>
+            <a
+              href={config.networks[lock!.network].explorer.urls.address(
+                lock!.address
               )}
-              {!isAndroid && tokenId && (
-                <li>
-                  <AddToPhoneWallet
-                    platform={Platform.APPLE}
-                    className="w-full px-2 py-2 text-xs flex items-center justify-center gap-2 rounded-md bg-black text-white"
-                    size="small"
-                    variant="secondary"
-                    as="button"
-                    network={lock!.network}
-                    lockAddress={lock!.address}
-                    tokenId={tokenId}
-                  />
-                </li>
-              )}
-            </ul>
-          )}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
+            >
+              See in the block explorer
+              <Icon key="external-link" icon={ExternalLinkIcon} size="small" />
+            </a>
+          </div>
+          <AddToWallet
+            lockAddress={lock!.address}
+            network={lock!.network}
+            tokenId={tokenId}
+          />{' '}
         </div>
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
