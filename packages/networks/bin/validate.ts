@@ -67,15 +67,9 @@ const run = async () => {
           })
           // log results
           if (!verified?.isVerified) {
-            if (verified.result.includes('Error')) {
-              errors.push(
-                `❌ Verification failed for ${contractName} at ${contractAddress}: ${verified.result}`
-              )
-            } else {
-              errors.push(
-                `❌ Contract ${contractName} at ${contractAddress} is not verified`
-              )
-            }
+            errors.push(
+              `❌ Verification failed for ${contractName} at ${contractAddress}: ${verified.result}`
+            )
           } else {
             successes.push(
               `✅ Contract ${contractName} at ${contractAddress} is verified`
