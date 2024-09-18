@@ -22,3 +22,6 @@ export * from './UnsubscribeList'
 export * from './Rsvp'
 export * from './role'
 export * from './Event'
+
+// define associations
+import './associations'
