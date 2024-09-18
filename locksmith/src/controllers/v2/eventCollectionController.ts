@@ -4,6 +4,10 @@ import { EventCollection } from '../../models/EventCollection'
 import { createSlug } from '../../utils/createSlug'
 import '../../models/associations'
 import { EventData } from '../../models'
+import {
+  addEventToCollectionOperation,
+  getEventsInCollectionOperation,
+} from '../../operations/eventCollectionOperations'
 
 // schema for the event collection body
 const EventCollectionBody = z.object({
@@ -19,6 +23,11 @@ const EventCollectionBody = z.object({
     )
     .optional(),
   managerAddresses: z.array(z.string()),
+})
+
+// schema for adding an event to a collection
+const AddEventToCollectionBody = z.object({
+  eventSlug: z.string(),
 })
 
 /**
@@ -122,4 +131,81 @@ export const updateEventCollection: RequestHandler = async (req, res) => {
 
   // Respond with the updated event collection
   return res.json(eventCollection)
+}
+
+/**
+ * Adds an event to a specified event collection.
+ * @param req - The request object containing the event slug and collection slug.
+ * @param res - The response object used to send the response.
+ */
+export const addEventToCollection: RequestHandler = async (req, res) => {
+  const { slug: collectionSlug } = req.params
+
+  // Validate the request body
+  const parsedBody = await AddEventToCollectionBody.safeParseAsync(req.body)
+  if (!parsedBody.success) {
+    return res.status(400).json({
+      error: 'Invalid request body',
+      details: parsedBody.error.errors,
+    })
+  }
+  const { eventSlug } = parsedBody.data
+
+  // Fetch the event collection by its slug
+  const collection = await EventCollection.findByPk(collectionSlug)
+  if (!collection) {
+    return res.status(404).json({ error: 'Collection not found' })
+  }
+
+  // Check if the user is a manager of the collection
+  const isManager = collection.managerAddresses.includes(
+    req.user?.walletAddress || ''
+  )
+
+  try {
+    // Attempt to add the event to the collection
+    const association = await addEventToCollectionOperation(
+      collectionSlug,
+      eventSlug,
+      isManager
+    )
+    const status = association.isApproved
+      ? 'approved and added'
+      : 'submitted for approval'
+    return res.status(200).json({ message: `Event ${status}`, association })
+  } catch (error) {
+    return res.status(400).json({ error: (error as Error).message })
+  }
+}
+
+/**
+ * Retrieves events associated with a specific event collection.
+ * @param req - The request object containing the collection slug and pagination parameters.
+ * @param res - The response object used to send the response.
+ */
+export const getEventsInCollection: RequestHandler = async (req, res) => {
+  const { slug: collectionSlug } = req.params
+  const page = parseInt(req.query.page as string) || 1
+  const pageSize = parseInt(req.query.pageSize as string) || 10
+
+  // Fetch the event collection to check its existence
+  const collection = await EventCollection.findByPk(collectionSlug)
+  if (!collection) {
+    return res.status(404).json({ error: 'Collection not found' })
+  }
+
+  // Determine if the user is a manager to include unapproved events
+  const isManager = collection.managerAddresses.includes(
+    req.user?.walletAddress || ''
+  )
+  const includeUnapproved = isManager
+
+  // Retrieve events in the collection with pagination
+  const result = await getEventsInCollectionOperation(
+    collectionSlug,
+    page,
+    pageSize,
+    includeUnapproved
+  )
+  return res.json(result)
 }
