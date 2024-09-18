@@ -1,7 +1,7 @@
 'use client'
+
 import { useEffect, useState } from 'react'
 import LockSettingsPage from '~/components/interface/locks/Settings'
-import { AppLayout } from '~/components/interface/layouts/AppLayout'
 import { useSearchParams } from 'next/navigation'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { Picker } from '~/components/interface/Picker'
@@ -46,7 +46,7 @@ const LocksSettingsContent = () => {
         {withoutParams && (
           <>
             <h2 className="mb-2 text-lg font-bold text-brand-ui-primary">
-              Select a lock to start manage it
+              Select a lock to manage it
             </h2>
             <div className="w-1/2">
               <Picker
@@ -63,7 +63,7 @@ const LocksSettingsContent = () => {
   }
 
   return (
-    <AppLayout authRequired={true} showHeader={false}>
+    <>
       <LockSelection />
       {!withoutParams && lockAddress && network && (
         <LockSettingsPage
@@ -72,7 +72,7 @@ const LocksSettingsContent = () => {
           defaultTab={defaultTab}
         />
       )}
-    </AppLayout>
+    </>
   )
 }
 

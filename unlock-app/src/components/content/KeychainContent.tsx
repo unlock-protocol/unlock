@@ -1,4 +1,5 @@
 'use client'
+
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import KeyDetails from '../interface/keychain/KeyDetails'
@@ -8,6 +9,7 @@ import OwnerSocials from '../interface/keychain/OwnerSocials'
 import { Tooltip } from '@unlock-protocol/ui'
 import { TbWorld as WorldIcon } from 'react-icons/tb'
 import { OpenSeaIcon } from '../icons'
+import { WalletNotConnected } from '../interface/layouts/index/WalletNotConnected'
 
 export const KeychainContent = () => {
   const { account } = useAuth()
@@ -24,6 +26,10 @@ export const KeychainContent = () => {
   }, [account, searchParams])
 
   const networkConfig = networks[1]
+
+  if (!owner) {
+    return <WalletNotConnected />
+  }
 
   return (
     <div className="flex flex-col gap-4">
