@@ -4,20 +4,22 @@ title: Subgraph
 description: >-
   Querying smart contracts directly from your application is always an option,
   but, when your application needs to retrieve large collections or multiple
-  elements from a contract, use our subgraph!
+  elements from a contract, use a subgraph!
 ---
 
 import { networks } from '@unlock-protocol/networks'
 
 # Unlock Subgraph Introduction
 
-Unlock has a GraphQL API Endpoint hosted by [The Graph](https://thegraph.com/docs/about/introduction#what-the-graph-is) called a subgraph for indexing and organizing data from the Unlock smart contracts.
+Unlock Labs leverages the [Graph Protocol](https://thegraph.com) to simplify the process of building rich applications that leverage the Unlock Smart Contracts and associated data.
 
-Unlock leverages the [Graph Protocol](https://thegraph.com) to simplify the process of making meaningful applications leveraging the Unlock Smart Contracts and associated data.
+The Unlock Labs team has deployed subgraphs for each of the Unlock Protocol networks. These subgraphs index and organize data from the Unlock smart contracts, making it easy to query and retrieve data from the Unlock Protocol.
 
 ### Endpoints
 
-The links below provide a rudimentary tool to build and test your queries.
+The Unlock Labs hosts a Subgraph service similar to our [RPC provider](../rpc-provider.md) at the address `https://subgraph.unlock-protocol.com/<chainId>`. Please use that for development purposes only. For production, you should use any of the subgraphs deployed on the Graph Protocol's decentralized network.
+
+[The Graph Explorer](https://thegraph.com/explorer?search=Unlock%252BProtocol) includes additional tools, such as a Playground to build and debug your own GraphQL queries.
 
 #### Production Networks
 
@@ -28,7 +30,11 @@ The links below provide a rudimentary tool to build and test your queries.
       const subgraph = networks[network].subgraph
       return (
         <li>
-          <a href={subgraph.endpoint}>{name}</a>
+          <a
+            href={`https://thegraph.com/explorer/subgraphs/${subgraph.graphId}?view=Query`}
+          >
+            {name}
+          </a>
         </li>
       )
     }
@@ -44,7 +50,11 @@ The links below provide a rudimentary tool to build and test your queries.
       const subgraph = networks[network].subgraph
       return (
         <li>
-          <a href={subgraph.endpoint}>{name}</a>
+          <a
+            href={`https://thegraph.com/explorer/subgraphs/${subgraph.graphId}?view=Query`}
+          >
+            {name}
+          </a>
         </li>
       )
     }

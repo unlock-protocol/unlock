@@ -40,6 +40,7 @@ export const zksync: NetworkConfig = {
   startBlock: 25905168,
   subgraph: {
     endpoint: 'https://subgraph.unlock-protocol.com/324',
+    graphId: 'Bqo6hTg28TRmzksb6Eg8EPefD4sXBra1ad1WD4oz6c88',
     networkName: 'zksync-era',
     studioName: 'unlock-protocol-zksync',
   },
