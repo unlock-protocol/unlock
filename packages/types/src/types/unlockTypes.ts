@@ -104,9 +104,9 @@ export interface NetworkConfig {
   publicLockVersionToDeploy: number
   subgraph: {
     endpoint: string
-    // refers to thegraph services list : https://thegraph.com/docs/en/developing/supported-networks/
     networkName?: string // network slug used by the graph
     studioName?: string
+    graphId: string
   }
   uniswapV3?: Partial<{
     subgraph: string

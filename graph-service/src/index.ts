@@ -1,6 +1,7 @@
 import { Toucan } from 'toucan-js'
 import { getSubgraphUrl } from './networks'
 import { Env, GraphQLRequest } from './types'
+import networks from '@unlock-protocol/networks'
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
@@ -35,6 +36,17 @@ export default {
       })
     }
     const networkId = matched[1]
+
+    const { graphId } = networks[networkId].subgraph
+
+    if (request.method === 'GET' && graphId) {
+      return new Response(JSON.stringify({ graphId }), {
+        status: 307,
+        headers: {
+          location: `https://thegraph.com/explorer/subgraphs/${graphId}?view=Query`,
+        },
+      })
+    }
 
     // Retrieve the subgraph URL based on the network ID
     const subgraphUrl = getSubgraphUrl(networkId, env)
