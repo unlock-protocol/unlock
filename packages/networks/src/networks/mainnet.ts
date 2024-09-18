@@ -173,7 +173,6 @@ export const mainnet: NetworkConfig = {
   unlockDaoToken: {
     address: '0x90DE74265a416e1393A450752175AED98fe11517',
   },
-
   url: 'https://ethereum.org/en/',
 }
 
