@@ -37,7 +37,7 @@ export const zkevm: NetworkConfig = {
   startBlock: 0,
   subgraph: {
     endpoint: 'https://subgraph.unlock-protocol.com/1101',
-    graphId: 'TODO',
+    graphId: '4crwbsig953XR6tpAva9PEshjM7qNujM2jDjqRX2YoWP',
     networkName: 'polygon-zkevm',
     studioName: 'unlock-protocol-zkevm',
   },

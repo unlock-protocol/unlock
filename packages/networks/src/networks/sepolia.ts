@@ -112,7 +112,7 @@ export const sepolia: NetworkConfig = {
   startBlock: 4381710,
   subgraph: {
     endpoint: 'https://subgraph.unlock-protocol.com/11155111',
-    graphId: 'TODO',
+    graphId: '5ZjqtfMTQJTCsHVmY9eXirW5B9SEJnRW7ipg5SzTP29k',
     networkName: 'sepolia',
     studioName: 'unlock-protocol-sepolia',
   },

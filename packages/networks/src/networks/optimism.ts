@@ -100,7 +100,7 @@ export const optimism: NetworkConfig = {
   startBlock: 302400,
   subgraph: {
     endpoint: 'https://subgraph.unlock-protocol.com/10',
-    graphId: 'TODO',
+    graphId: '8heasZLjiLcTWtLTb7aFdWFe5yYZTgzLZfW76wrnTwrt',
     studioName: 'unlock-protocol-optimism',
   },
   tokens: [

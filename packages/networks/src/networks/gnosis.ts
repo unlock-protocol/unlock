@@ -95,7 +95,7 @@ export const gnosis: NetworkConfig = {
   // This is used in llama pricing API so can't rename.
   subgraph: {
     endpoint: 'https://subgraph.unlock-protocol.com/100',
-    graphId: 'TODO',
+    graphId: '2Pr7V4721iZj5hRgLmuganYCTRee6fqqfftLCFCd72wG',
     networkName: 'gnosis',
     studioName: 'unlock-protocol-gnosis',
   },

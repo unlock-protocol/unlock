@@ -78,7 +78,7 @@ export const linea: NetworkConfig = {
   startBlock: 560908,
   subgraph: {
     endpoint: 'https://subgraph.unlock-protocol.com/59144',
-    graphId: 'TODO',
+    graphId: '3G85noAfEa4jYGPmrvzzBTY55abu2kVgXnfWwRq3absq',
     studioName: 'unlock-protocol-linea',
   },
   tokens: [

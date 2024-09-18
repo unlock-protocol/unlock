@@ -36,7 +36,7 @@ export const scroll: NetworkConfig = {
   startBlock: 2937779,
   subgraph: {
     endpoint: 'https://subgraph.unlock-protocol.com/534352',
-    graphId: 'TODO',
+    graphId: '49qmkjKjv9qfvgkCQTbZcG5gYPhwybmMfRhNc8brKf4F',
     studioName: 'unlock-protocol-scroll',
   },
   tokens: [

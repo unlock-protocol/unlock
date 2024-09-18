@@ -68,7 +68,7 @@ export const celo: NetworkConfig = {
   startBlock: 13994123,
   subgraph: {
     endpoint: 'https://subgraph.unlock-protocol.com/42220',
-    graphId: 'TODO',
+    graphId: '7WoP8r47dyfYvQv7tk5wxSYyszENqXz2EATjUT8x7gRm',
     studioName: 'unlock-protocol-celo',
   },
   tokens: [
