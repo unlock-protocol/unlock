@@ -1,3 +1,10 @@
+/**
+ * Usage>
+ *
+ * export ALL_CHANGED_FILES="packages/networks/src/networks/mainnet.ts"
+ * yarn validate
+ *
+ */
 import path from 'path'
 import { ZeroAddress } from 'ethers'
 import {
@@ -12,6 +19,9 @@ import {
   checkSubgraphHealth,
   getAllAddresses,
 } from './utils'
+
+const DAO_CHAIN_ID = 1 // mainnet for now
+const DAO_TIMELOCK_ADDRESS = '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B' // mainnet for now
 
 const run = async () => {
   const results = {}
@@ -152,6 +162,28 @@ const run = async () => {
     // multisig
     if (!network.multisig) {
       errors = [...errors, '❌ Multisig is missing.']
+    } else if (network.id === DAO_CHAIN_ID) {
+      // check contracts ownership
+      const unlockOwner = await checkOwnership({
+        contractAddress: network.unlockAddress,
+        expectedOwner: DAO_TIMELOCK_ADDRESS,
+        providerURL: network.provider,
+      })
+      if (!unlockOwner) {
+        errors.push(`❌ Unlock is not owned by the DAO`)
+      }
+      const unlockProxyAdminOwner = await checkProxyAdminOwnership({
+        contractAddress: network.unlockAddress,
+        expectedOwner: DAO_TIMELOCK_ADDRESS,
+        providerURL: network.provider,
+      })
+      if (!unlockProxyAdminOwner) {
+        errors.push(`❌ Unlock Proxy Admin is not owned by the DAO`)
+      }
+
+      if (unlockOwner && unlockProxyAdminOwner) {
+        successes.push(`✅ Unlock ownership correctly set to the DAO`)
+      }
     } else {
       try {
         // check multisig params
