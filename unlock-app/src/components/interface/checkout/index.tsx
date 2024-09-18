@@ -21,7 +21,7 @@ export function CheckoutPage() {
 
   // Fetch config from parent in iframe context
   const communication = useCheckoutCommunication()
-  const { isInitialLoading, data: checkout } = useCheckoutConfig({
+  const { isLoading, data: checkout } = useCheckoutConfig({
     id: searchParams.get('id')?.toString(),
   })
 
@@ -53,7 +53,7 @@ export function CheckoutPage() {
 
   const checkoutRedirectURI =
     paywallConfig?.redirectUri ||
-    Object.entries(Object.fromEntries(searchParams))
+    Array.from(searchParams.entries())
       .find(([key]) => {
         return [
           'redirecturi',
@@ -68,7 +68,7 @@ export function CheckoutPage() {
     document.querySelector('body')?.classList.add('bg-transparent')
   }, [])
 
-  if (!(paywallConfig || oauthConfig) || isInitialLoading) {
+  if (!(paywallConfig || oauthConfig) || isLoading) {
     return (
       <Container>
         <LoadingIcon size={20} className="animate-spin" />

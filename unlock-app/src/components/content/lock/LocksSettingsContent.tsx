@@ -1,6 +1,5 @@
 'use client'
 import { useEffect, useState } from 'react'
-import BrowserOnly from '~/components/helpers/BrowserOnly'
 import LockSettingsPage from '~/components/interface/locks/Settings'
 import { AppLayout } from '~/components/interface/layouts/AppLayout'
 import { useSearchParams } from 'next/navigation'
@@ -64,18 +63,16 @@ const LocksSettingsContent = () => {
   }
 
   return (
-    <BrowserOnly>
-      <AppLayout authRequired={true} showHeader={false}>
-        <LockSelection />
-        {!withoutParams && lockAddress && network && (
-          <LockSettingsPage
-            lockAddress={lockAddress}
-            network={parseInt(network, 10)}
-            defaultTab={defaultTab}
-          />
-        )}
-      </AppLayout>
-    </BrowserOnly>
+    <AppLayout authRequired={true} showHeader={false}>
+      <LockSelection />
+      {!withoutParams && lockAddress && network && (
+        <LockSettingsPage
+          lockAddress={lockAddress}
+          network={parseInt(network, 10)}
+          defaultTab={defaultTab}
+        />
+      )}
+    </AppLayout>
   )
 }
 
