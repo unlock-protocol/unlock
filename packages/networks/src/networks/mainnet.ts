@@ -71,6 +71,7 @@ export const mainnet: NetworkConfig = {
   startBlock: 16989000,
   subgraph: {
     endpoint: 'https://subgraph.unlock-protocol.com/1',
+    graphId: 'TODO',
     studioName: 'unlock-protocol-mainnet',
   },
   tokens: [

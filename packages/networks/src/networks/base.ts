@@ -101,6 +101,7 @@ export const base: NetworkConfig = {
   startBlock: 1750000,
   subgraph: {
     endpoint: 'https://subgraph.unlock-protocol.com/8453',
+    graphId: 'TODO',
     networkName: 'base',
     studioName: 'unlock-protocol-base',
   },

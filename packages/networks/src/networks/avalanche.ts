@@ -74,6 +74,7 @@ export const avalanche: NetworkConfig = {
   startBlock: 17188332,
   subgraph: {
     endpoint: 'https://subgraph.unlock-protocol.com/43114',
+    graphId: 'TODO',
     studioName: 'unlock-protocol-avalanche',
   },
   tokens: [

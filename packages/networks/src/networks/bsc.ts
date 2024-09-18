@@ -104,6 +104,7 @@ export const bsc: NetworkConfig = {
 
   subgraph: {
     endpoint: 'https://subgraph.unlock-protocol.com/56',
+    graphId: 'TODO',
     studioName: 'unlock-protocol-bsc',
   },
 

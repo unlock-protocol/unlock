@@ -93,6 +93,7 @@ export const polygon: NetworkConfig = {
   startBlock: 21986688,
   subgraph: {
     endpoint: 'https://subgraph.unlock-protocol.com/137',
+    graphId: 'TODO',
     networkName: 'matic',
     studioName: 'unlock-protocol-polygon',
   },
