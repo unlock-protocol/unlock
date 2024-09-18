@@ -8639,6 +8639,48 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@gnosis-guild/zodiac-core@npm:2.0.3":
+  version: 2.0.3
+  resolution: "@gnosis-guild/zodiac-core@npm:2.0.3"
+  dependencies:
+    "@gnosis.pm/safe-contracts": "npm:1.3.0"
+    "@openzeppelin/contracts": "npm:5.0.2"
+    "@openzeppelin/contracts-upgradeable": "npm:5.0.2"
+    ethers: "npm:^6.13.2"
+    semver: "npm:^7.6.3"
+  checksum: 10/62742e7234468066279e603f554f48a392cb4267a875d95f0abdd964b3716468a802e47838c4056fbeedaea6b2619ade895f62dafa956e9abd0a720deffce642
+  languageName: node
+  linkType: hard
+
+"@gnosis.pm/mock-contract@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "@gnosis.pm/mock-contract@npm:4.0.0"
+  checksum: 10/2d3c2b8261571324b14d17bbdc7de9d29c2b7a2e562af2e51a5cabddc6789b1f5d0e1fa5610592fbf210c1c1f7cd5089834c17ee79554540939c5ec531899072
+  languageName: node
+  linkType: hard
+
+"@gnosis.pm/safe-contracts@npm:1.3.0":
+  version: 1.3.0
+  resolution: "@gnosis.pm/safe-contracts@npm:1.3.0"
+  peerDependencies:
+    ethers: ^5.1.4
+  checksum: 10/0a99495d1624bd382b71bf43632b377dbf895466e253b6470e9742caba90dbf5918ad39b4fd05f40e801e1bc9b4863305b6d58cbcf8826bbfc78636f8b50652c
+  languageName: node
+  linkType: hard
+
+"@gnosis.pm/zodiac@npm:4.0.3":
+  version: 4.0.3
+  resolution: "@gnosis.pm/zodiac@npm:4.0.3"
+  dependencies:
+    "@gnosis.pm/mock-contract": "npm:^4.0.0"
+    "@gnosis.pm/safe-contracts": "npm:1.3.0"
+    "@openzeppelin/contracts": "npm:^5.0.0"
+    "@openzeppelin/contracts-upgradeable": "npm:^5.0.0"
+    ethers: "npm:^6.9.2"
+  checksum: 10/7225015e5f1d09607f0b6ff43eb156d1aa1d797bdeedb81dbe855bfac95abb1b9e492decfc70e72e02ed667a70af63df6582a0aa503b699c318caeb7ca419d04
+  languageName: node
+  linkType: hard
+
 "@graphile/logger@npm:^0.2.0":
   version: 0.2.0
   resolution: "@graphile/logger@npm:0.2.0"
@@ -13700,7 +13742,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/contracts-upgradeable5@npm:@openzeppelin/contracts-upgradeable@5.0.2":
+"@openzeppelin/contracts-upgradeable5@npm:@openzeppelin/contracts-upgradeable@5.0.2, @openzeppelin/contracts-upgradeable@npm:5.0.2, @openzeppelin/contracts-upgradeable@npm:^5.0.0":
   version: 5.0.2
   resolution: "@openzeppelin/contracts-upgradeable@npm:5.0.2"
   peerDependencies:
@@ -13716,7 +13758,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/contracts5@npm:@openzeppelin/contracts@5.0.2, @openzeppelin/contracts@npm:5.0.2":
+"@openzeppelin/contracts5@npm:@openzeppelin/contracts@5.0.2, @openzeppelin/contracts@npm:5.0.2, @openzeppelin/contracts@npm:^5.0.0":
   version: 5.0.2
   resolution: "@openzeppelin/contracts@npm:5.0.2"
   checksum: 10/938ebffbdade7dc59ea3df5b562c0e457bbefde9d82be8fa2acfd11da887df11653ac07922f41746b80cdbc106430e1e6978ce244fe99b00a7d9dc1418fc7670
@@ -20365,6 +20407,8 @@ __metadata:
   dependencies:
     "@arbitrum/sdk": "npm:3.7.0"
     "@eth-optimism/sdk": "npm:3.3.2"
+    "@gnosis-guild/zodiac-core": "npm:2.0.3"
+    "@gnosis.pm/zodiac": "npm:4.0.3"
     "@matterlabs/hardhat-zksync-deploy": "npm:1.5.0"
     "@matterlabs/hardhat-zksync-solc": "npm:1.2.3"
     "@matterlabs/hardhat-zksync-upgradable": "npm:1.5.2"
@@ -30918,7 +30962,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:6.13.2, ethers@npm:^6.9.0":
+"ethers@npm:6.13.2, ethers@npm:^6.13.2, ethers@npm:^6.9.0, ethers@npm:^6.9.2":
   version: 6.13.2
   resolution: "ethers@npm:6.13.2"
   dependencies:
@@ -47823,6 +47867,15 @@ __metadata:
   bin:
     semver: bin/semver.js
   checksum: 10/296b17d027f57a87ef645e9c725bff4865a38dfc9caf29b26aa084b85820972fbe7372caea1ba6857162fa990702c6d9c1d82297cecb72d56c78ab29070d2ca2
+  languageName: node
+  linkType: hard
+
+"semver@npm:^7.6.3":
+  version: 7.6.3
+  resolution: "semver@npm:7.6.3"
+  bin:
+    semver: bin/semver.js
+  checksum: 10/36b1fbe1a2b6f873559cd57b238f1094a053dbfd997ceeb8757d79d1d2089c56d1321b9f1069ce263dc64cfa922fa1d2ad566b39426fe1ac6c723c1487589e10
   languageName: node
   linkType: hard
 

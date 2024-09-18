@@ -3,7 +3,7 @@ const {
   getNetwork,
   getERC20Contract,
 } = require('@unlock-protocol/hardhat-helpers')
-const l1BridgeAbi = require('../helpers/abi/l1standardbridge.json')
+const l1BridgeAbi = require('../../helpers/abi/l1standardbridge.json')
 
 // chains
 const srcChainId = 1 // mainnet

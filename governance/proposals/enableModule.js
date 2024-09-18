@@ -10,7 +10,7 @@ const { ethers } = require('hardhat')
 const {
   DelayMod: delayModAbi,
   ConnextMod: connextModAbi,
-} = require('../../helpers/bridge')
+} = require('../helpers/bridge')
 
 async function main() {
   const { chainId } = await ethers.provider.getNetwork()
@@ -46,12 +46,6 @@ async function main() {
     `)
   }
 
-  // enable Connext as a sub-module of Delay
-  if (!(await delayMod.isModuleEnabled(connextModAddress))) {
-    const tx = await delayMod.enableModule(connextModAddress)
-    console.log(tx)
-  }
-
   // make sure ownership of the modules has been transferred to the safe
   if ((await delayMod.owner()) != multisig) {
     console.log('Transferring ownership of Delay module to SAFE.')
@@ -62,20 +56,20 @@ async function main() {
     await connextMod.transferOwnership(multisig)
   }
 
-  // parse call to enable the Delay module on multisig
-  // NB: we use the delayMod `enableModule` ABI as it is identical to the one in SAFE
-  const functionName = 'enableModule'
-  const functionArgs = [delayModAddress]
-  const calldata = delayMod.interface.encodeFunctionData('enableModule', [
-    delayModAddress,
-  ])
-
+  // NB: we use the delayMod abi as the `enableModule` function is identical to the one in SAFE
+  const { interface } = delayMod
   const calls = [
+    // parse call to enable the Connext module as a sub-module of Delay
     {
-      functionName,
-      functionArgs,
+      contractAddress: delayModAddress,
+      calldata: delayMod.interface.encodeFunctionData('enableModule', [
+        connextModAddress,
+      ]),
+    },
+    {
+      // parse call to enable the Delay module on multisig
       contractAddress: multisig,
-      calldata,
+      calldata: interface.encodeFunctionData('enableModule', [delayModAddress]),
     },
   ]
 
