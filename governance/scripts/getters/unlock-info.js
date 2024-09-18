@@ -4,6 +4,10 @@ const { log } = require('../../helpers/logger')
 const {
   abi: proxyAdminABI,
 } = require('@unlock-protocol/hardhat-helpers/dist/ABIs/ProxyAdmin.json')
+const {
+  PUBLICLOCK_LATEST_VERSION,
+  UNLOCK_LATEST_VERSION,
+} = require('@unlock-protocol/contracts')
 
 const getOwners = require('../multisig/owners')
 
@@ -46,12 +50,27 @@ async function main({ unlockAddress, quiet = false }) {
     errorLog(`Multisig in networks package does not match with Unlock owner`)
   }
 
+  const unlockVersion = await unlock.unlockVersion()
+  const publicLockVersion = await unlock.publicLockLatestVersion()
+
+  if (unlockVersion != UNLOCK_LATEST_VERSION) {
+    errorLog(
+      `Wrong Unlock version ${unlockVersion} (expected ${UNLOCK_LATEST_VERSION})`
+    )
+  }
+
+  if (publicLockVersion != PUBLICLOCK_LATEST_VERSION) {
+    errorLog(
+      `Wrong PublicLock version ${publicLockVersion} (expected ${PUBLICLOCK_LATEST_VERSION})`
+    )
+  }
+
   if (!quiet) {
     console.log(
       `Unlock deployed on ${name} \n`,
       `-  address: ${unlockAddress} \n`,
-      `-  unlockVersion: ${await unlock.unlockVersion()} \n`,
-      `-  publicLockVersion: ${await unlock.publicLockLatestVersion()} \n`,
+      `-  unlockVersion: ${unlockVersion} \n`,
+      `-  publicLockVersion: ${publicLockVersion} \n`,
       `-  owner: ${unlockOwner} ${nbOwners ? `(${nbOwners} owners)` : ''}\n`,
       `-  proxyAdminAddress: ${proxyAdminAddress} \n`,
       `-  multisig: ${safeAddress} \n`
