@@ -212,8 +212,10 @@ export const getFees = async (
   }
 }
 
+// Returns pricing for recipients + total charges with fees
 export const createPricingForPurchase = async (options: KeyPricingOptions) => {
   const recipients = await getKeyPricingInUSD(options)
+  console.log(recipients)
   const subtotal = recipients.reduce(
     (sum, item) => sum + (item.price?.amountInCents || 0),
     0

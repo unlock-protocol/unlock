@@ -82,8 +82,8 @@ export const getTotalChargesForLock: RequestHandler = async (
       ...pricing.recipients.map((recipient) => {
         return {
           userAddress: recipient.address,
-          amount: recipient.price.amount,
-          symbol: recipient.price.symbol,
+          amount: recipient.price.amountInFiat,
+          symbol: '$', // Fix?
         }
       }),
     ],

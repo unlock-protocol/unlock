@@ -17,6 +17,10 @@ import { SettingCardDetail } from '../elements/SettingCard'
 import { formatNumber } from '~/utils/formatter'
 import { locksmith } from '~/config/locksmith'
 import { useUSDPricing } from '~/hooks/useUSDPricing'
+import { useGetTotalCharges } from '~/hooks/usePrice'
+import { PricingData } from '~/components/interface/checkout/main/Confirm/PricingData'
+import { CreditCardPricingBreakdown } from '~/components/interface/checkout/main/Confirm/ConfirmCard'
+import { FaHeartPulse } from 'react-icons/fa6'
 
 interface CreditCardFormSchema {
   creditCardPrice?: string | number | null
@@ -86,6 +90,7 @@ export default function CreditCardCustomPrice({
   } = useSaveLockSettings()
 
   const { keyPrice, currencyContractAddress } = lock
+  // THIS SHOULD GO AWAY!
   const { data: fiatPricing, isLoading } = useUSDPricing({
     lockAddress,
     network,
@@ -97,6 +102,13 @@ export default function CreditCardCustomPrice({
     const pricing = fiatPricing?.usd?.amount || 0
     setHasPriceConversion(pricing > 0)
   }, [fiatPricing?.usd?.amount])
+
+  const { data: totalCharges } = useGetTotalCharges({
+    lockAddress,
+    network,
+  })
+
+  console.log({ totalCharges })
 
   const onSaveCreditCardPrice = async ({
     creditCardPrice,
@@ -151,7 +163,60 @@ export default function CreditCardCustomPrice({
     CREDIT_CARD_MIN_USD_PRICE
 
   return (
-    <div className="grid gap-2 text-sm">
+    <div className="grid gap-2">
+      {totalCharges && (
+        <Pricing
+          keyPrice={
+            pricingData.total <= 0
+              ? 'FREE'
+              : `${formatNumber(pricingData.total).toLocaleString()} ${symbol}`
+          }
+          usdPrice={
+            usdTotalPricing
+              ? `${formatNumber(
+                  usdTotalPricing
+                ).toLocaleString()} ${creditCardCurrencySymbol}`
+              : ''
+          }
+          isCardEnabled={!!creditCardEnabled}
+          extra={
+            !isError &&
+            pricingData && (
+              <CreditCardPricingBreakdown
+                loading={
+                  isTotalPricingDataLoading || !isTotalPricingDataFetched
+                }
+                total={totalCharges?.total ?? 0}
+                creditCardProcessingFee={totalCharges?.creditCardProcessingFee}
+                unlockServiceFee={totalCharges?.unlockServiceFee ?? 0}
+                gasCosts={totalCharges?.gasCost}
+                symbol={creditCardCurrencySymbol}
+                unlockFeeChargedToUser={unlockFeeChargedToUser}
+              />
+            )
+          }
+        />
+
+        // <>
+        //   <PricingData
+        //     network={network}
+        //     lock={lock!}
+        //     pricingData={totalCharges}
+        //   />
+
+        //   <CreditCardPricingBreakdown
+        //     loading={false}
+        //     total={totalCharges?.total ?? 0}
+        //     creditCardProcessingFee={totalCharges?.creditCardProcessingFee}
+        //     unlockServiceFee={totalCharges?.unlockServiceFee ?? 0}
+        //     gasCosts={totalCharges?.gasCost}
+        //     symbol={'$'}
+        //     unlockFeeChargedToUser={true}
+        //   />
+        //   {totalCharges?.total}
+        // </>
+      )}
+
       <SettingCardDetail
         title={'Price for card payments'}
         description={

@@ -46,7 +46,7 @@ interface KeyPricingPrice {
   amount: number
   decimals: number
   symbol: string | undefined
-  amountInUSD: number | undefined
+  amountInFiat: number | undefined
   amountInCents: number | undefined
 }
 
@@ -85,7 +85,7 @@ export function getCurrencySymbol(currency?: string) {
 }
 
 /** Helper to return usd pricing object */
-export const toUsdPricing = ({
+export const toFiatPricing = ({
   amount,
   usdPricing,
   decimals,
@@ -99,7 +99,7 @@ export const toUsdPricing = ({
     amount,
     decimals,
     symbol,
-    amountInUSD: price ? amount * price : undefined,
+    amountInFiat: price ? amount * price : undefined,
     amountInCents: price ? Math.round(amount * price * 100) : 0,
   }
 }
@@ -126,15 +126,15 @@ export const getPricingFromSettings = async ({
     const keysToPurchase = recipients?.length || 1
 
     const amountInCents = creditCardPrice * keysToPurchase // this total is in basisPoints
-    const amountInUSD = amountInCents / 100 // get total price in USD
+    const amountInFiat = amountInCents / 100 // get total price in USD
 
     const symbol = getCurrencySymbol(creditCardCurrency)
 
     return {
-      amount: amountInUSD, // amount is usd for the single key
+      amount: amountInFiat, // amount is usd for the single key
       decimals: 18,
       symbol,
-      amountInUSD,
+      amountInFiat,
       amountInCents,
     }
   }
@@ -279,7 +279,7 @@ export const getDefaultFiatPricing = async ({
 
   const defaultPrice = fromDecimal(keyPrice, decimals)
 
-  const defaultPricing = toUsdPricing({
+  const defaultPricing = toFiatPricing({
     amount: defaultPrice,
     usdPricing,
     decimals,
@@ -332,7 +332,7 @@ export const getFiatPricingForRecipient = async ({
 
   const amount = fromDecimal(purchasePrice, decimals)
 
-  const price = toUsdPricing({
+  const price = toFiatPricing({
     amount,
     usdPricing,
     decimals,

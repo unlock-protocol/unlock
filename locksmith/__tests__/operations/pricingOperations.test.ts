@@ -100,7 +100,7 @@ describe('pricingOperations', () => {
       expect(symbol).toBe('$')
     })
   })
-  describe('toUsdPricing', () => {
+  describe('toFiatPricing', () => {
     it('returns usd pricing object', () => {
       expect.assertions(5)
 
@@ -108,7 +108,7 @@ describe('pricingOperations', () => {
         price: 12.4,
         symbol: 'USDT',
       }
-      const res = pricingOperations.toUsdPricing({
+      const res = pricingOperations.toFiatPricing({
         amount: 6,
         usdPricing: usdPricing1,
         decimals,
@@ -128,7 +128,7 @@ describe('pricingOperations', () => {
         price: 4.45,
         symbol: 'UDT',
       }
-      const res2 = pricingOperations.toUsdPricing({
+      const res2 = pricingOperations.toFiatPricing({
         amount: 1,
         usdPricing,
         decimals,
