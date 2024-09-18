@@ -167,7 +167,7 @@ export function ConfirmCrossChainPurchase({
             <PricingData
               network={lockNetwork}
               lock={lock!}
-              prices={pricingData.prices}
+              pricingData={pricingData}
               payment={payment}
             />
           )}

@@ -17,7 +17,6 @@ import { useUSDPricing } from '~/hooks/useUSDPricing'
 import { useLockData } from '~/hooks/useLockData'
 import CreditCardCustomPrice from './CreditCardCustomPrice'
 import CreditCardUnlockFee from './CreditCardUnlockFee'
-import useKeyGranter from '~/hooks/useKeyGranter'
 
 enum ConnectStatus {
   CONNECTED = 1,
@@ -153,9 +152,9 @@ const ConnectStripe = ({
   if (isLoading) {
     return (
       <Placeholder.Root>
-        <Placeholder.Line />
-        <Placeholder.Line />
-        <Placeholder.Line size="xl" />
+        <Placeholder.Line width="sm" />
+        <Placeholder.Line width="sm" />
+        <Placeholder.Line size="xl" width="sm" />
       </Placeholder.Root>
     )
   }
@@ -163,7 +162,7 @@ const ConnectStripe = ({
   return (
     <div className="flex flex-col gap-4">
       <SettingCardDetail
-        title="Enable offchain payments"
+        title="Enable Contract to Accept Credit Card"
         description={
           <div className="flex flex-col gap-2">
             <span>
@@ -171,6 +170,12 @@ const ConnectStripe = ({
                 Unlock Labs processes non-crypto payments via our Stripe
                 integration and includes fees that are applied on top of your
                 lock's key price.`}
+            </span>
+            <span>
+              If you enable credit card payments for your lock, your members
+              will usually be charged a higher amount than the amount for your
+              lock. The Unlock Labs fee is 10%, which must be added to the
+              Stripe fees and gas costs.
             </span>
             <span>
               For more details see{' '}
@@ -187,7 +192,6 @@ const ConnectStripe = ({
           </div>
         }
       />
-
       {isManager && (
         <div className="flex flex-col gap-3">
           {isGranted ? (
@@ -305,10 +309,20 @@ export const CreditCardWithStripeForm = ({
     network,
   })
 
+  const { isPending: isLoadingKeyGranter, data: keyGranter } = useQuery({
+    queryKey: ['getKeyGranter', lockAddress, network],
+    queryFn: () => {
+      return getKeyGranter()
+    },
+  })
   const stripeConnectionState = stripeConnectionDetails?.connected ?? 0
   const connectedStripeAccount = stripeConnectionDetails?.account
   const supportedCurrencies =
     stripeConnectionDetails?.countrySpec?.supported_payment_currencies ?? []
+
+  const getKeyGranter = async () => {
+    return (await locksmith.balance()).data[network].address
+  }
 
   const disconnectStipeMutation = useStripeDisconnect({
     lockAddress,
@@ -334,10 +348,6 @@ export const CreditCardWithStripeForm = ({
   })
 
   const isPricingLow = (fiatPricing?.usd?.amount ?? 0) < 0.5
-
-  const { data: keyGranter, isPending: isLoadingKeyGranter } = useKeyGranter({
-    network,
-  })
 
   const loading = isPending || isLoadingKeyGranter || isLoadingPricing
 
@@ -410,11 +420,10 @@ export const CreditCardWithStripeForm = ({
             disabled={disabled || disconnectStipeMutation.isPending}
           />
           {connectedStripeAccount && (
-            <p className="text-sm text-gray-700">
+            <span>
               You will receive payments on your Stripe account{' '}
-              <code className="text-gray-600">{connectedStripeAccount.id}</code>
-              .
-            </p>
+              <code>{connectedStripeAccount.id}</code>
+            </span>
           )}
 
           {isManager && (
@@ -443,9 +452,9 @@ export const CreditCardWithStripeForm = ({
   if (loading)
     return (
       <Placeholder.Root>
-        <Placeholder.Line />
-        <Placeholder.Line />
-        <Placeholder.Line size="xl" />
+        <Placeholder.Line width="sm" />
+        <Placeholder.Line width="sm" />
+        <Placeholder.Line size="xl" width="sm" />
       </Placeholder.Root>
     )
 

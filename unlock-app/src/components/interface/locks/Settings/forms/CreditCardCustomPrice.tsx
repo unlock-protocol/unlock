@@ -12,15 +12,14 @@ import {
   CREDIT_CARD_MIN_PRICE_BY_CURRENCY,
   CREDIT_CARD_MIN_USD_PRICE,
 } from '~/constants'
-import { useSaveLockSettings } from '~/hooks/useLockSettings'
+import {
+  useGetLockSettings,
+  useSaveLockSettings,
+} from '~/hooks/useLockSettings'
 import { SettingCardDetail } from '../elements/SettingCard'
 import { formatNumber } from '~/utils/formatter'
 import { locksmith } from '~/config/locksmith'
 import { useUSDPricing } from '~/hooks/useUSDPricing'
-import { useGetTotalCharges } from '~/hooks/usePrice'
-import { PricingData } from '~/components/interface/checkout/main/Confirm/PricingData'
-import { CreditCardPricingBreakdown } from '~/components/interface/checkout/main/Confirm/ConfirmCard'
-import { FaHeartPulse } from 'react-icons/fa6'
 
 interface CreditCardFormSchema {
   creditCardPrice?: string | number | null
@@ -49,6 +48,11 @@ export default function CreditCardCustomPrice({
   const [currency, setCurrency] = useState(
     connectedStripeAccount.default_currency
   )
+
+  const {
+    isLoading: isLoadingSettings,
+    data: { creditCardCurrency = connectedStripeAccount.default_currency } = {},
+  } = useGetLockSettings({ lockAddress, network })
 
   const getDefaultValues = async (): Promise<CreditCardFormSchema> => {
     const settings = (await locksmith.getLockSettings(network, lockAddress))
@@ -90,7 +94,6 @@ export default function CreditCardCustomPrice({
   } = useSaveLockSettings()
 
   const { keyPrice, currencyContractAddress } = lock
-  // THIS SHOULD GO AWAY!
   const { data: fiatPricing, isLoading } = useUSDPricing({
     lockAddress,
     network,
@@ -102,13 +105,6 @@ export default function CreditCardCustomPrice({
     const pricing = fiatPricing?.usd?.amount || 0
     setHasPriceConversion(pricing > 0)
   }, [fiatPricing?.usd?.amount])
-
-  const { data: totalCharges } = useGetTotalCharges({
-    lockAddress,
-    network,
-  })
-
-  console.log({ totalCharges })
 
   const onSaveCreditCardPrice = async ({
     creditCardPrice,
@@ -136,7 +132,7 @@ export default function CreditCardCustomPrice({
     onSaveCreditCardPrice(fields)
   }
 
-  if (isLoading || isLoadingForm) {
+  if (isLoading || isLoadingSettings || isLoadingForm) {
     return (
       <Placeholder.Root>
         <Placeholder.Card />
@@ -164,137 +160,85 @@ export default function CreditCardCustomPrice({
 
   return (
     <div className="grid gap-2">
-      {totalCharges && (
-        <Pricing
-          keyPrice={
-            pricingData.total <= 0
-              ? 'FREE'
-              : `${formatNumber(pricingData.total).toLocaleString()} ${symbol}`
-          }
-          usdPrice={
-            usdTotalPricing
-              ? `${formatNumber(
-                  usdTotalPricing
-                ).toLocaleString()} ${creditCardCurrencySymbol}`
-              : ''
-          }
-          isCardEnabled={!!creditCardEnabled}
-          extra={
-            !isError &&
-            pricingData && (
-              <CreditCardPricingBreakdown
-                loading={
-                  isTotalPricingDataLoading || !isTotalPricingDataFetched
-                }
-                total={totalCharges?.total ?? 0}
-                creditCardProcessingFee={totalCharges?.creditCardProcessingFee}
-                unlockServiceFee={totalCharges?.unlockServiceFee ?? 0}
-                gasCosts={totalCharges?.gasCost}
-                symbol={creditCardCurrencySymbol}
-                unlockFeeChargedToUser={unlockFeeChargedToUser}
-              />
-            )
-          }
-        />
-
-        // <>
-        //   <PricingData
-        //     network={network}
-        //     lock={lock!}
-        //     pricingData={totalCharges}
-        //   />
-
-        //   <CreditCardPricingBreakdown
-        //     loading={false}
-        //     total={totalCharges?.total ?? 0}
-        //     creditCardProcessingFee={totalCharges?.creditCardProcessingFee}
-        //     unlockServiceFee={totalCharges?.unlockServiceFee ?? 0}
-        //     gasCosts={totalCharges?.gasCost}
-        //     symbol={'$'}
-        //     unlockFeeChargedToUser={true}
-        //   />
-        //   {totalCharges?.total}
-        // </>
-      )}
-
       <SettingCardDetail
-        title={'Price for card payments'}
+        title={`Set fixed price in ${creditCardCurrency?.toUpperCase()}`}
         description={
-          hasPriceConversion && fiatPricing!.usd!.amount ? (
-            <span>
-              {`Your members will be charged around ${fiatPricing!.usd!.amount.toFixed(2)}, but the conversion rate for ${symbol} may vary. `}
-            </span>
-          ) : (
-            <p className="text-sm font-semibold text-red-600">
-              {`We are not able to convert ${symbol} to a fiat currency. Please set the price and currency you want to charge for card payments.`}
-            </p>
-          )
+          <span className="text-sm">
+            {`If you set a custom price for card payments, we will use that one (+ fees) instead of converting the price of ${symbol} to USD.`}
+          </span>
         }
       />
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="grid items-center gap-3"
-      >
-        <ToggleSwitch
-          title="Use fixed price"
-          enabled={toggleActive}
-          disabled={!hasPriceConversion}
-          setEnabled={setUseCustomPrice}
-          onChange={(enabled) => {
-            if (!enabled) {
-              setValue('creditCardPrice', null, {
-                shouldValidate: true,
-                shouldDirty: true,
-              })
-            }
-          }}
-        />
-        {toggleActive && (
-          <div className="grid gap-2 md:grid-cols-2">
-            <div className="flex flex-col gap-1">
-              <span>Price</span>
-              <Input
-                type="number"
-                step="any"
-                disabled={disabled}
-                description="Set a fixed price in fiat currency that is charged for card payments."
-                error={errors?.creditCardPrice?.message}
-                {...register('creditCardPrice', {
-                  valueAsNumber: true,
-                  required: {
-                    value: toggleActive,
-                    message: 'This field is required.',
-                  },
-                  min: {
-                    value: minPriceByCurrency,
-                    message: `Price is too low for us to process credit cards. It needs to be at least ${parseFloat(
-                      `${minPriceByCurrency}`
-                    ).toFixed(2)}. `,
-                  },
-                })}
-              />
+      <div className="grid grid-cols-1 gap-1 p-4 bg-gray-100 rounded-lg">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="grid items-center gap-3"
+        >
+          <ToggleSwitch
+            title="Use fixed price"
+            enabled={toggleActive}
+            disabled={!hasPriceConversion}
+            setEnabled={setUseCustomPrice}
+            onChange={(enabled) => {
+              if (!enabled) {
+                setValue('creditCardPrice', null, {
+                  shouldValidate: true,
+                  shouldDirty: true,
+                })
+              }
+            }}
+          />
+          {toggleActive && (
+            <div className="grid gap-2 md:grid-cols-2">
+              <div className="flex flex-col gap-1">
+                <span>Price</span>
+                <Input
+                  type="number"
+                  step="any"
+                  disabled={disabled}
+                  description="Set a fixed price in fiat currency that is charged for card payments."
+                  error={errors?.creditCardPrice?.message}
+                  {...register('creditCardPrice', {
+                    valueAsNumber: true,
+                    required: {
+                      value: toggleActive,
+                      message: 'This field is required.',
+                    },
+                    min: {
+                      value: minPriceByCurrency,
+                      message: `Price is too low for us to process credit cards. It needs to be at least ${parseFloat(
+                        `${minPriceByCurrency}`
+                      ).toFixed(2)}. `,
+                    },
+                  })}
+                />
+              </div>
+              <div className="flex flex-col gap-1">
+                <span>Currency</span>
+                <Select
+                  description="The selected currency will be used for credit card payments. (the currency is automatically updated when the selection is changed)"
+                  options={currencyOptions}
+                  disabled={disabled}
+                  defaultValue={currency}
+                  onChange={(currency) => {
+                    setCurrency(`${currency}`)
+                    setValue('creditCardCurrency', `${currency}`)
+                  }}
+                />
+              </div>
             </div>
-            <div className="flex flex-col gap-1">
-              <span>Currency</span>
-              <Select
-                description="The selected currency will be used for credit card payments. (the currency is automatically updated when the selection is changed)"
-                options={currencyOptions}
-                disabled={disabled}
-                defaultValue={currency}
-                onChange={(currency) => {
-                  setCurrency(`${currency}`)
-                  setValue('creditCardCurrency', `${currency}`)
-                }}
-              />
-            </div>
+          )}
+          <div className="w-full md:w-1/3">
+            <Button className="w-full" size="small" disabled={saveDisabled}>
+              Apply
+            </Button>
           </div>
-        )}
-        <div className="w-full md:w-1/3">
-          <Button className="w-full" size="small" disabled={saveDisabled}>
-            Apply
-          </Button>
-        </div>
-      </form>
+        </form>
+      </div>
+      {!hasPriceConversion && (
+        <span className="text-sm font-semibold text-red-600">
+          {`We are not able to convert ${symbol} to USD. Please set a fixed price you want to charge for card payments.`}
+        </span>
+      )}
     </div>
   )
 }

@@ -15,7 +15,7 @@ import {
 } from '@unlock-protocol/ui'
 import { useConfig } from '~/utils/withConfig'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { NetworkDescription } from '~/components/interface/locks/Create/elements/CreateLockForm'
+import { networkDescription } from '~/components/interface/locks/Create/elements/CreateLockForm'
 import { SelectCurrencyModal } from '~/components/interface/locks/Create/modals/SelectCurrencyModal'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useImageUpload } from '~/hooks/useImageUpload'
@@ -27,7 +27,6 @@ import { useRouter } from 'next/router'
 import { useAvailableNetworks } from '~/utils/networks'
 import Link from 'next/link'
 import { BalanceWarning } from '~/components/interface/locks/Create/elements/BalanceWarning'
-import { ProtocolFee } from '~/components/interface/locks/Create/elements/ProtocolFee'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewCertificationForm {
@@ -125,6 +124,14 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
   })
 
   const noBalance = balance && parseFloat(balance) === 0 && !isLoadingBalance
+
+  const NetworkDescription = () => {
+    return (
+      <div className="flex flex-col gap-2">
+        <p>{details.network && <>{networkDescription(details.network)}</>}</p>
+      </div>
+    )
+  }
 
   const metadataImage = watch('metadata.image')
 
@@ -285,10 +292,9 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                 moreOptions={moreNetworkOption}
                 label="Network"
                 defaultValue={network}
-                description={<NetworkDescription network={details.network!} />}
+                description={<NetworkDescription />}
               />
               <NetworkWarning network={details.network} />
-
               {noBalance && (
                 <div className="mb-4">
                   <BalanceWarning
@@ -385,7 +391,9 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                           )}
                         </div>
                       </div>
-                      <ProtocolFee network={selectedNetwork} />
+                      <CurrencyHint
+                        network={networks[selectedNetwork as number].name}
+                      />
                     </div>
                   </div>
 

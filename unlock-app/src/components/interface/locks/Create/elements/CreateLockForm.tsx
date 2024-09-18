@@ -19,8 +19,6 @@ import Link from 'next/link'
 import { networks } from '@unlock-protocol/networks'
 import { useAvailableNetworks } from '~/utils/networks'
 import { SelectToken } from './SelectToken'
-import { useProtocolFee } from '~/hooks/useProtocolFee'
-import { ProtocolFee } from './ProtocolFee'
 
 export interface LockFormProps {
   name: string
@@ -43,18 +41,17 @@ interface CreateLockFormProps {
   defaultOptions?: any
 }
 
-export const NetworkDescription = ({ network }: { network: number }) => {
-  const { description, url, faucets, nativeCurrency, name } = networks[network!]
+export const networkDescription = (network: number) => {
+  const { description, url, faucets, nativeCurrency } = networks[network!]
   return (
     <div>
       {description}{' '}
       {url && (
         <>
-          (
           <Link className="underline" href={url} target="_blank">
             Learn more
           </Link>
-          ).{' '}
+          .
         </>
       )}
       {network === 1 && (
@@ -211,7 +208,7 @@ export const CreateLockForm = ({
                 defaultValue={selectedNetwork}
                 options={mainNetworkOptions}
                 onChange={onChangeNetwork}
-                description={<NetworkDescription network={selectedNetwork!} />}
+                description={networkDescription(selectedNetwork!)}
                 moreOptions={additionalNetworkOptions}
               />
             )}
@@ -381,7 +378,23 @@ export const CreateLockForm = ({
                   </span>
                 )}
               </div>
-              <ProtocolFee network={selectedNetwork!} />
+              <CurrencyHint network={currencyNetwork as string} />
+              {token &&
+                token.faucet &&
+                token.address === currencyContractAddress && (
+                  <span className="text-sm text-gray-600">
+                    Need some {token.name} for the lock? Try this faucet:{' '}
+                    <>
+                      <Link
+                        className="underline"
+                        href={token.faucet.url}
+                        target="_blank"
+                      >
+                        {token.faucet.name}
+                      </Link>
+                    </>
+                  </span>
+                )}
             </div>
             <Button
               className="mt-8 md:mt-0"

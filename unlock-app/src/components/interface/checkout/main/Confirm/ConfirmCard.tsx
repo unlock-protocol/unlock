@@ -12,6 +12,7 @@ import { Lock } from '~/unlockTypes'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
 import { usePurchase } from '~/hooks/usePurchase'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
+import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { useCapturePayment } from '~/hooks/useCapturePayment'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
@@ -157,10 +158,30 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
       data,
     })
 
+  const {
+    data: pricingData,
+    isInitialLoading: isPricingDataLoading,
+    isError: isPricingDataError,
+  } = usePricing({
+    lockAddress: lock!.address,
+    network: lock!.network,
+    recipients,
+    currencyContractAddress: lock?.currencyContractAddress,
+    data: purchaseData!,
+    paywallConfig,
+    enabled: !isInitialDataLoading,
+    symbol: lockTickerSymbol(
+      lock as Lock,
+      config.networks[lock!.network].nativeCurrency.symbol
+    ),
+  })
   const { data: { unlockFeeChargedToUser } = {} } = useGetLockSettings({
     network: lock!.network,
     lockAddress: lock!.address,
   })
+
+  const isPricingDataAvailable =
+    !isPricingDataLoading && !isPricingDataError && !!pricingData
 
   const { data: { creditCardCurrency = 'usd ' } = {} } = useGetLockSettings({
     lockAddress,
@@ -172,7 +193,6 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
   const {
     data: totalPricing,
     isInitialLoading: isTotalPricingDataLoading,
-    isError: isTotalPricingDataError,
     isFetched: isTotalPricingDataFetched,
   } = useGetTotalCharges({
     recipients,
@@ -192,7 +212,8 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
     purchaseType: renew ? 'extend' : 'purchase',
   })
 
-  const isLoading = isInitialDataLoading || isTotalPricingDataLoading
+  const isLoading =
+    isPricingDataLoading || isInitialDataLoading || isTotalPricingDataLoading
 
   const baseCurrencySymbol = config.networks[lockNetwork].nativeCurrency.symbol
   const symbol = lockTickerSymbol(lock as Lock, baseCurrencySymbol)
@@ -262,6 +283,8 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
     setIsConfirming(false)
   }
 
+  const isError = isPricingDataError
+
   const usdTotalPricing = totalPricing?.total
     ? totalPricing?.total / 100
     : undefined
@@ -272,7 +295,7 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
         <div className="grid gap-y-2">
           <h4 className="text-xl font-bold"> {lock!.name}</h4>
 
-          {isTotalPricingDataError && (
+          {isError && (
             // TODO: use actual error from simulation
             <div>
               <p className="text-sm font-bold">
@@ -283,11 +306,11 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
           )}
 
           {/* Breakdown of each keys */}
-          {!isLoading && totalPricing && (
+          {!isLoading && isPricingDataAvailable && (
             <PricingData
               network={lockNetwork}
               lock={lock!}
-              prices={totalPricing.prices}
+              pricingData={totalPricing}
               payment={payment}
             />
           )}
@@ -304,13 +327,13 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
           </div>
         )}
 
-        {!isTotalPricingDataError && totalPricing && (
+        {pricingData && !isError && (
           <Pricing
             keyPrice={
-              totalPricing.total <= 0
+              pricingData.total <= 0
                 ? 'FREE'
                 : `${formatNumber(
-                    totalPricing.total
+                    pricingData.total
                   ).toLocaleString()} ${symbol}`
             }
             usdPrice={
@@ -322,8 +345,8 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
             }
             isCardEnabled={!!creditCardEnabled}
             extra={
-              !isTotalPricingDataError &&
-              totalPricing && (
+              !isError &&
+              pricingData && (
                 <CreditCardPricingBreakdown
                   loading={
                     isTotalPricingDataLoading || !isTotalPricingDataFetched
@@ -346,7 +369,7 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
         <div className="grid">
           <Button
             loading={isConfirming}
-            disabled={isConfirming || isLoading || isTotalPricingDataError}
+            disabled={isConfirming || isLoading || isError}
             onClick={async (event) => {
               event.preventDefault()
               if (metadata) {

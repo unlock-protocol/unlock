@@ -5,13 +5,13 @@ import { useMetadata } from '~/hooks/metadata'
 import { getLockTypeByMetadata } from '@unlock-protocol/core'
 
 interface PricingDataProps {
-  prices: any
+  pricingData: any
   lock: Lock
   network: number
   payment?: any
 }
 
-export function PricingData({ prices, lock, payment }: PricingDataProps) {
+export function PricingData({ pricingData, lock, payment }: PricingDataProps) {
   const { data: metadata } = useMetadata({
     lockAddress: lock.address,
     network: lock.network,
@@ -22,8 +22,8 @@ export function PricingData({ prices, lock, payment }: PricingDataProps) {
 
   return (
     <div>
-      {!!prices?.length &&
-        prices.map((item: any, index: number) => {
+      {!!pricingData?.prices?.length &&
+        pricingData.prices.map((item: any, index: number) => {
           const first = index <= 0
 
           const discount =
@@ -58,15 +58,17 @@ export function PricingData({ prices, lock, payment }: PricingDataProps) {
               </div>
 
               {/* We hide the unit prices since we don't have them when using swap and pay */}
-              {!payment.route && item.amount && (
+              {!payment.route && (
                 <span className="font-bold whitespace-nowrap">
-                  {payment?.route
-                    ? `${formatNumber(
-                        payment.route
-                          .convertToQuoteToken(item.amount.toString())
-                          .toFixed()
-                      ).toLocaleString()} ${symbol}`
-                    : `${formatNumber(item.amount).toLocaleString()} ${symbol}`}
+                  {item.amount <= 0
+                    ? 'FREE'
+                    : payment?.route
+                      ? `${formatNumber(
+                          payment.route
+                            .convertToQuoteToken(item.amount.toString())
+                            .toFixed()
+                        ).toLocaleString()} ${symbol}`
+                      : `${formatNumber(item.amount).toLocaleString()} ${symbol}`}
                 </span>
               )}
             </div>
