@@ -95,6 +95,7 @@ export const arbitrum: NetworkConfig = {
   startBlock: 17429533,
   subgraph: {
     endpoint: 'https://subgraph.unlock-protocol.com/42161',
+    graphId: '9DNHi5TyZkxrAcnmmefRRTDHXDAwKQk7BifVY2FeTTFp',
     networkName: 'arbitrum-one',
     studioName: 'unlock-protocol-arbitrum',
   },
