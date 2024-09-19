@@ -67,8 +67,7 @@ jobs:
         uses: mshick/add-pr-comment@v2.8.2
         with:
           message-path: results.txt
-          refresh-message-position: true
-          message-id: 'network-checks-results'
+          refresh-message-position: false
           # We rely on a deployment of a proxy service to post comment from forked PRs
           # see https://github.com/mshick/add-pr-comment-proxy for more info
           proxy-url: 'https://pr-comment-bot-79b971aa34fe.herokuapp.com/'
