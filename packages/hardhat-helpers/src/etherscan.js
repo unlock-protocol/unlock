@@ -62,15 +62,6 @@ const etherscan = {
         browserURL: 'https://scrollscan.com/',
       },
     },
-    {
-      url: 'https://mainnet.era.zksync.io',
-      network: 'zksync',
-      chainId: 324,
-      urls: {
-        apiURL: 'https://block-explorer-api.mainnet.zksync.io/',
-        browserURL: 'https://era.zksync.network/',
-      },
-    },
   ],
 }
 
