@@ -1,3 +1,5 @@
+'use client'
+
 import { FaTrash as TrashIcon } from 'react-icons/fa'
 import {
   Button,
