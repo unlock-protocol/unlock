@@ -53,7 +53,7 @@
     "lint": "yarn lint:contracts && yarn lint:code",
     "lintFix": "yarn lint:contracts --fix --noPrompt && yarn lint:code --fix",
     "coverage": "IS_COVERAGE=1 yarn hardhat coverage",
-    "coverage_fork": "IS_COVERAGE=1 RUN_FORK=1 yarn hardhat coverage",
+    "coverage_fork": "IS_COVERAGE=1 RUN_FORK=1 yarn hardhat coverage --testfiles *.mainnet.js",
     "dev": "yarn lint && yarn build && yarn test",
     "size": "yarn hardhat size-contracts",
     "ci": "yarn lint && yarn test",
