@@ -83,7 +83,7 @@ const deployDelay = async () => {
   return address
 }
 
-const deployConnext = async () => {
+const deployConnext = async (delayModAddress) => {
   const { multisig, id } = await getNetwork()
   console.log(`Deploying Zodiac Delay module...`)
   const [signer] = await ethers.getSigners()
@@ -104,7 +104,7 @@ const deployConnext = async () => {
     values: [
       multisig, // owner
       multisig, // avatar
-      multisig, // target
+      delayModAddress, // target
       daoTimelockAddress, // _originSender
       daoDomainId, // _origin
       connext, // _connext
@@ -146,7 +146,7 @@ async function main() {
   }
   if (delayModAddress) {
     console.log(`Delay mod at ${delayModAddress}`)
-    connextModAddress = await deployConnext()
+    connextModAddress = await deployConnext(delayModAddress)
   }
   if (governanceBridge.modules && governanceBridge.modules.connextMod) {
     connextModAddress = governanceBridge.modules.connextMod
