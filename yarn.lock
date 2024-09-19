@@ -6084,9 +6084,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@coinbase/waas-sdk-web@npm:3.3.2":
-  version: 3.3.2
-  resolution: "@coinbase/waas-sdk-web@npm:3.3.2"
+"@coinbase/waas-sdk-web@npm:3.3.3":
+  version: 3.3.3
+  resolution: "@coinbase/waas-sdk-web@npm:3.3.3"
   dependencies:
     "@bugsnag/js": "npm:^7.22.3"
     "@coinbase/cbpay-js": "npm:^1.10.0"
@@ -6096,7 +6096,7 @@ __metadata:
   dependenciesMeta:
     "@coinbase/cbpay-js":
       optional: true
-  checksum: 10/3f4252a273be5d84d0302810c33ca7cad106e0e2ad4dd98bb14a753a7e2499659d63363f829ed2d2b71b270cc5b62738bf1bde02ac7bce549d549a7529ce07ca
+  checksum: 10/28a7bef2eb0e0dcf13fd7e46625d2bd689484adc872da929f49cc8ecc7fd95526dfd63f3a18b105657e09fb06249a524064cff4b65d60d45bf5586c631ece07d
   languageName: node
   linkType: hard
 
@@ -20648,7 +20648,7 @@ __metadata:
   resolution: "@unlock-protocol/unlock-app@workspace:unlock-app"
   dependencies:
     "@airstack/airstack-react": "npm:0.6.4"
-    "@coinbase/waas-sdk-web": "npm:3.3.2"
+    "@coinbase/waas-sdk-web": "npm:3.3.3"
     "@coinbase/wallet-sdk": "npm:4.0.4"
     "@crossmint/client-sdk-react-ui": "npm:1.2.2"
     "@decent.xyz/box-common": "npm:3.1.15"
