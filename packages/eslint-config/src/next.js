@@ -29,4 +29,7 @@ module.exports = [
       '@typescript-eslint/no-unused-expressions': 'warn',
     },
   },
+  {
+    ignores: ['.next'],
+  },
 ]

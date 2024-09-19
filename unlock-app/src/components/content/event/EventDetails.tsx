@@ -1,6 +1,8 @@
+'use client'
+
 import { BiQrScan as ScanIcon } from 'react-icons/bi'
 import { useEffect } from 'react'
-import { useRouter } from 'next/router'
+import { useRouter, usePathname } from 'next/navigation'
 import { NextSeo } from 'next-seo'
 import {
   Button,
@@ -51,6 +53,7 @@ export const EventDetails = ({
   checkoutConfig,
 }: EventDetailsProps) => {
   const router = useRouter()
+  const pathname = usePathname()
 
   // Check if the user is one of the lock manager
   const { data: isOrganizer } = useEventOrganizer({
@@ -87,7 +90,7 @@ export const EventDetails = ({
   // TODO: remove by June 1st 2024
   useEffect(() => {
     const migrateAndRedirect = async () => {
-      if (router.pathname === '/event') {
+      if (pathname === '/event') {
         if (event.slug) {
           router.push(eventUrl)
         } else {
@@ -107,7 +110,7 @@ export const EventDetails = ({
       }
     }
     migrateAndRedirect()
-  }, [router, event, eventUrl, checkoutConfig])
+  }, [router, event, eventUrl, checkoutConfig, pathname])
 
   const eventDate = getEventDate(event.ticket) // Full date + time of event
   const eventEndDate = getEventEndDate(event.ticket)
