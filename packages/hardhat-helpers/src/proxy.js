@@ -1,11 +1,9 @@
 const { Manifest } = require('@openzeppelin/upgrades-core')
 
-const getProxyAdminAddress = async ({ network, chainId }) => {
+const getProxyAdminAddress = async ({ chainId }) => {
   // get proxy admin address from OZ manifest
-  const manifest = network
-    ? await Manifest(network.provider)
-    : new Manifest(chainId)
-  console.log(manifest)
+
+  const manifest = new Manifest(chainId)
   const manifestAdmin = await manifest.getAdmin()
   const proxyAdminAddress = await manifestAdmin.getAddress()
   if (proxyAdminAddress === undefined) {

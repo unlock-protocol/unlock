@@ -8,7 +8,7 @@ import { useStepperItems } from './main/useStepperItems'
 import { useSIWE } from '~/hooks/useSIWE'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useSelector } from '@xstate/react'
-import { useRouter } from 'next/router'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 interface IconProps {
   active?: boolean
@@ -121,6 +121,8 @@ export const Stepper = ({
   const { deAuthenticate } = useAuth()
 
   const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
 
   return (
     <div className="flex items-center justify-between w-full gap-2 p-2 px-6 border-b">
@@ -129,24 +131,23 @@ export const Stepper = ({
           item.to && !disabled ? (
             <StepButton
               key={idx}
-              onClick={async () => {
+              onClick={() => {
                 if (item.to === 'CONNECT') {
                   if (useDelegatedProvider) return
                   signOut()
                   deAuthenticate()
                 }
 
-                // Remove the lock from the query string
-                const { lock, ...otherQueryParams } = router.query
-                // Wait until replaced then change state
-                await router.replace(
-                  {
-                    pathname: router.pathname,
-                    query: otherQueryParams,
-                  },
-                  undefined,
-                  { shallow: true }
-                )
+                // Convert search params to an object
+                const queryParams = Object.fromEntries(searchParams.entries())
+                const { lock, ...otherQueryParams } = queryParams
+
+                // Construct new search params without 'lock'
+                const newSearchParams = new URLSearchParams(otherQueryParams)
+                const newUrl = `${pathname}?${newSearchParams.toString()}`
+
+                // Replace the current URL
+                router.replace(newUrl)
 
                 service.send({ type: item.to as any })
               }}
