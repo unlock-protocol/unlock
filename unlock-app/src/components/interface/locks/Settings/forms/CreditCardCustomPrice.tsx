@@ -164,7 +164,7 @@ export default function CreditCardCustomPrice({
 
   return (
     <div className="grid gap-2">
-      {totalCharges && (
+      {/* {totalCharges && (
         <Pricing
           keyPrice={
             pricingData.total <= 0
@@ -215,7 +215,7 @@ export default function CreditCardCustomPrice({
         //   />
         //   {totalCharges?.total}
         // </>
-      )}
+      )} */}
 
       <SettingCardDetail
         title={'Price for card payments'}

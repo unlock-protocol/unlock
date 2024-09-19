@@ -52,7 +52,8 @@ export const getLockKeyPricing = async ({
   }
 }
 
-export const getKeyPricingInUSD = async ({
+// Returns the pricing in fiat
+export const getKeyPricingInFiat = async ({
   recipients,
   network,
   lockAddress,
@@ -214,8 +215,7 @@ export const getFees = async (
 
 // Returns pricing for recipients + total charges with fees
 export const createPricingForPurchase = async (options: KeyPricingOptions) => {
-  const recipients = await getKeyPricingInUSD(options)
-  console.log(recipients)
+  const recipients = await getKeyPricingInFiat(options)
   const subtotal = recipients.reduce(
     (sum, item) => sum + (item.price?.amountInCents || 0),
     0

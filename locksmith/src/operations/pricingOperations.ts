@@ -45,7 +45,7 @@ export type PriceResults = Partial<
 interface KeyPricingPrice {
   amount: number
   decimals: number
-  symbol: string | undefined
+  currency: string
   amountInFiat: number | undefined
   amountInCents: number | undefined
 }
@@ -84,26 +84,6 @@ export function getCurrencySymbol(currency?: string) {
   )
 }
 
-/** Helper to return usd pricing object */
-export const toFiatPricing = ({
-  amount,
-  usdPricing,
-  decimals,
-}: {
-  amount: number
-  decimals: number
-  usdPricing: PriceResults
-}): KeyPricingPrice => {
-  const { symbol, price } = usdPricing ?? {}
-  return {
-    amount,
-    decimals,
-    symbol,
-    amountInFiat: price ? amount * price : undefined,
-    amountInCents: price ? Math.round(amount * price * 100) : 0,
-  }
-}
-
 interface GetPriceProps {
   lockAddress: string
   network: number
@@ -128,12 +108,10 @@ export const getPricingFromSettings = async ({
     const amountInCents = creditCardPrice * keysToPurchase // this total is in basisPoints
     const amountInFiat = amountInCents / 100 // get total price in USD
 
-    const symbol = getCurrencySymbol(creditCardCurrency)
-
     return {
+      currency: creditCardCurrency,
       amount: amountInFiat, // amount is usd for the single key
       decimals: 18,
-      symbol,
       amountInFiat,
       amountInCents,
     }
@@ -222,6 +200,7 @@ export async function getDefiLammaPrice({
   return pricing
 }
 
+// Returns the default keyPrice fron the lock (not specific to any recipient!)
 export async function getLockKeyPricing({
   lockAddress,
   network,
@@ -253,7 +232,8 @@ export const getDefaultFiatPricing = async ({
   lockAddress,
   network,
 }: DefaultPricingProps): Promise<KeyPricingPrice> => {
-  // retrieve pricing
+  // retrieve pricing, either from the chain or from the settings, if set
+  // If using the default pricing fron the chain, we will use USD.
   const [lockKeyPricing, pricingFromSettings] = await Promise.all([
     getLockKeyPricing({
       lockAddress,
@@ -267,6 +247,7 @@ export const getDefaultFiatPricing = async ({
     return pricingFromSettings
   }
 
+  // If none is set, we will use the default pricing from the chain, and use USD
   const { keyPrice, decimals, currencyContractAddress } = lockKeyPricing
 
   const usdPricing = await getDefiLammaPrice({
@@ -280,6 +261,7 @@ export const getDefaultFiatPricing = async ({
   const defaultPrice = fromDecimal(keyPrice, decimals)
 
   const defaultPricing = toFiatPricing({
+    currency: 'USD',
     amount: defaultPrice,
     usdPricing,
     decimals,

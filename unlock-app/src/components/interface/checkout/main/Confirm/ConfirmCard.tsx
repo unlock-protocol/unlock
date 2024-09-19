@@ -141,14 +141,9 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
     network: lockNetwork,
   })
 
-  const { data: creditCardEnabled } = useCreditCardEnabled({
-    lockAddress,
-    network: lockNetwork,
-  })
-
   const { mutateAsync: updateUsersMetadata } = useUpdateUsersMetadata()
 
-  const { isInitialLoading: isInitialDataLoading, data: purchaseData } =
+  const { isLoading: isInitialDataLoading, data: purchaseData } =
     usePurchaseData({
       lockAddress: lock!.address,
       network: lock!.network,
@@ -171,7 +166,7 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
 
   const {
     data: totalPricing,
-    isInitialLoading: isTotalPricingDataLoading,
+    isLoading: isTotalPricingDataLoading,
     isError: isTotalPricingDataError,
     isFetched: isTotalPricingDataFetched,
   } = useGetTotalCharges({
@@ -266,6 +261,8 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
     ? totalPricing?.total / 100
     : undefined
 
+  console.log(totalPricing)
+
   return (
     <Fragment>
       <main className="h-full p-6 space-y-2 overflow-auto">
@@ -291,56 +288,57 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
               payment={payment}
             />
           )}
-        </div>
-        {/* Totals */}
-        {isLoading && (
-          <div className="flex flex-col items-center gap-2">
-            {recipients.map((user) => (
-              <div
-                key={user}
-                className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"
-              />
-            ))}
-          </div>
-        )}
 
-        {!isTotalPricingDataError && totalPricing && (
-          <Pricing
-            keyPrice={
-              totalPricing.total <= 0
-                ? 'FREE'
-                : `${formatNumber(
-                    totalPricing.total
-                  ).toLocaleString()} ${symbol}`
-            }
-            usdPrice={
-              usdTotalPricing
-                ? `${formatNumber(
-                    usdTotalPricing
-                  ).toLocaleString()} ${creditCardCurrencySymbol}`
-                : ''
-            }
-            isCardEnabled={!!creditCardEnabled}
-            extra={
-              !isTotalPricingDataError &&
-              totalPricing && (
-                <CreditCardPricingBreakdown
-                  loading={
-                    isTotalPricingDataLoading || !isTotalPricingDataFetched
-                  }
-                  total={totalPricing?.total ?? 0}
-                  creditCardProcessingFee={
-                    totalPricing?.creditCardProcessingFee
-                  }
-                  unlockServiceFee={totalPricing?.unlockServiceFee ?? 0}
-                  gasCosts={totalPricing?.gasCost}
-                  symbol={creditCardCurrencySymbol}
-                  unlockFeeChargedToUser={unlockFeeChargedToUser}
+          {/* Totals */}
+          {isLoading && (
+            <div className="flex flex-col items-center gap-2">
+              {recipients.map((user) => (
+                <div
+                  key={user}
+                  className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"
                 />
-              )
-            }
-          />
-        )}
+              ))}
+            </div>
+          )}
+
+          {!isTotalPricingDataError && totalPricing && (
+            <Pricing
+              keyPrice={
+                totalPricing.total <= 0
+                  ? 'FREE'
+                  : `${formatNumber(
+                      totalPricing.total
+                    ).toLocaleString()} ${symbol}`
+              }
+              usdPrice={
+                usdTotalPricing
+                  ? `${formatNumber(
+                      usdTotalPricing
+                    ).toLocaleString()} ${creditCardCurrencySymbol}`
+                  : ''
+              }
+              isCardEnabled={true}
+              extra={
+                !isTotalPricingDataError &&
+                totalPricing && (
+                  <CreditCardPricingBreakdown
+                    loading={
+                      isTotalPricingDataLoading || !isTotalPricingDataFetched
+                    }
+                    total={totalPricing?.total ?? 0}
+                    creditCardProcessingFee={
+                      totalPricing?.creditCardProcessingFee
+                    }
+                    unlockServiceFee={totalPricing?.unlockServiceFee ?? 0}
+                    gasCosts={totalPricing?.gasCost}
+                    symbol={creditCardCurrencySymbol}
+                    unlockFeeChargedToUser={unlockFeeChargedToUser}
+                  />
+                )
+              }
+            />
+          )}
+        </div>
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
         <div className="grid">
