@@ -23,7 +23,7 @@ export const linea: NetworkConfig = {
     connext: '0xa05eF29e9aC8C75c530c2795Fa6A800e188dE0a9',
     domainId: 1818848877,
     modules: {
-      connextMod: '0xa4E2Dd1F495FfBbf6BA0F1a5aE8752D3fD52B7b9',
+      connextMod: '0x1b6ED52be06Cef3b9eD234114843BE79971e51f3.',
       delayMod: '0x2D4123dB5A4d3bAA2DbeA4cB10333a9E3271292a',
     },
   },
