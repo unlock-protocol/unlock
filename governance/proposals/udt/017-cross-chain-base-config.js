@@ -102,10 +102,17 @@ module.exports = async () => {
 
   const proposalName = `Transfer cross-chain governance to the Base DAO
 
-**How it works**
+This proposal transfers the control of the cross-chain governance to the DAO on Base.
 
-1. transfer ownership of Unlock contract + proxy admin on mainnet to the mainnet multisig 
-2. change the “authority source” of the multisig/connext plugin on all destination chains to the DAO timelock on Base 
+It contains two main actions:
+
+1. transfer ownership of Unlock contract + proxy admin on mainnet to a relay multisig (that can recevie instructions from Base)
+
+2. set the “authority source” of all multisig on destination chains to the DAO timelock on Base
+
+After executing this proposal, any cross-chain governance proposals will have to 
+originate from the DAO on Base. The DAO on mainnet will have effectively handle 
+control of the main Unlock contracts to the DAO on Base.
 `
 
   return {
