@@ -1,17 +1,126 @@
 import { EventCollection } from '../models/EventCollection'
 import { EventData } from '../models/Event'
 import { EventCollectionAssociation } from '../models/EventCollectionAssociation'
+import { z } from 'zod'
+import { createSlug } from '../utils/createSlug'
+
+// event collection body schema
+const EventCollectionBody = z.object({
+  title: z.string(),
+  description: z.string(),
+  banner: z.string().optional(),
+  links: z
+    .array(
+      z.object({
+        name: z.string(),
+        url: z.string(),
+      })
+    )
+    .optional(),
+  managerAddresses: z.array(z.string()),
+})
+
+/**
+ * Creates a new event collection.
+ * This operation generates a unique slug for the collection based on the title,
+ * and associates the creator's address as a manager if no other addresses are provided.
+ *
+ * @param parsedBody - The parsed body containing event collection details.
+ * @param creatorAddress - The wallet address of the user creating the collection.
+ * @returns A promise that resolves to the created event collection object.
+ */
+export const createEventCollectionOperation = async (
+  parsedBody: z.infer<typeof EventCollectionBody>,
+  creatorAddress: string
+) => {
+  const slug = await createSlug(parsedBody.title)
+  const managerAddresses = parsedBody.managerAddresses || [creatorAddress]
+  const linksObject = parsedBody.links?.reduce(
+    (acc, link) => {
+      acc[link.name] = link.url
+      return acc
+    },
+    {} as Record<string, string>
+  )
+
+  const eventCollection = await EventCollection.create({
+    ...parsedBody,
+    links: linksObject,
+    slug,
+    managerAddresses,
+  })
+
+  eventCollection.events = []
+  return eventCollection
+}
+
+/**
+ * Retrieves an event collection by its slug.
+ * It fetches the event collection from the database
+ * and includes associated events in the response.
+ *
+ * @param slug - The unique identifier (slug) of the event collection.
+ * @returns A promise that resolves to the event collection object.
+ * @throws An error if the event collection is not found.
+ */
+export const getEventCollectionOperation = async (slug: string) => {
+  const eventCollection = await EventCollection.findByPk(slug, {
+    include: [
+      {
+        model: EventData,
+        as: 'events',
+        through: {
+          attributes: [],
+        },
+      },
+    ],
+  })
+
+  if (!eventCollection) {
+    throw new Error('Event collection not found')
+  }
+
+  return eventCollection
+}
+
+/**
+ * Updates an existing event collection.
+ * It checks if the event collection exists and if the user is authorized
+ * to make updates. If authorized, it updates the collection with the provided data.
+ *
+ * @param slug - The unique identifier (slug) of the event collection to update.
+ * @param parsedBody - The parsed body containing updated event collection details.
+ * @param userAddress - The wallet address of the user attempting to update the collection.
+ * @returns A promise that resolves to the updated event collection object.
+ * @throws An error if the collection is not found or the user is not authorized.
+ */
+export const updateEventCollectionOperation = async (
+  slug: string,
+  parsedBody: z.infer<typeof EventCollectionBody>,
+  userAddress: string
+) => {
+  const eventCollection = await EventCollection.findByPk(slug)
+  if (!eventCollection) {
+    throw new Error('Event collection not found')
+  }
+
+  if (!eventCollection.managerAddresses.includes(userAddress)) {
+    throw new Error('Not authorized to update this collection')
+  }
+
+  await eventCollection.update(parsedBody)
+  return eventCollection
+}
 
 /**
  * Adds an event to a specified event collection.
- * This operation checks for the existence of both the collection and the event
+ * It checks for the existence of both the collection and the event
  * before creating an association between them. If the user is a manager,
  * they can approve the association if it was previously unapproved.
  *
  * @param collectionSlug - The unique identifier (slug) of the event collection
  * @param eventSlug - The unique identifier (slug) of the event
- * @param isManager - A boolean flag indicating whether the user has manager
- *                    privileges, which allows them to approve the association.
+ * @param userAddress - The wallet address of the user attempting to add the event.
  * @returns A promise that resolves to the event collection association object,
  *          which includes details about the event and its approval status.
  * @throws An error if the specified collection or event cannot be found.
@@ -19,21 +128,20 @@ import { EventCollectionAssociation } from '../models/EventCollectionAssociation
 export const addEventToCollectionOperation = async (
   collectionSlug: string,
   eventSlug: string,
-  isManager: boolean
-) => {
-  // Fetch the event collection by its slug
+  userAddress: string
+): Promise<{ association: EventCollectionAssociation; status: string }> => {
   const collection = await EventCollection.findByPk(collectionSlug)
   if (!collection) {
-    throw new Error('Collection not found') // Ensure collection exists before proceeding
+    throw new Error('Collection not found')
   }
 
-  // Fetch the event by its slug
   const event = await EventData.findOne({ where: { slug: eventSlug } })
   if (!event) {
-    throw new Error('Event not found') // Ensure event exists before proceeding
+    throw new Error('Event not found')
   }
 
-  // Attempt to find or create an association between the event and the collection
+  const isManager = collection.managerAddresses.includes(userAddress)
+
   const [association, created] = await EventCollectionAssociation.findOrCreate({
     where: {
       eventSlug: event.slug,
@@ -42,42 +150,51 @@ export const addEventToCollectionOperation = async (
     defaults: {
       eventSlug: event.slug,
       collectionSlug: collection.slug,
-      isApproved: isManager, // Set initial approval status based on manager privileges
+      isApproved: isManager,
     },
   })
 
-  // If the association already exists and is not approved, and the user is a manager, approve it
   if (!created && !association.isApproved && isManager) {
-    await association.update({ isApproved: true }) // Update approval status
+    await association.update({ isApproved: true })
   }
 
-  return association
+  return {
+    association,
+    status: association.isApproved
+      ? 'approved and added'
+      : 'submitted for approval',
+  }
 }
 
 /**
  * Retrieves events associated with a specific event collection.
- * This operation supports pagination and can optionally include unapproved
- * events based on the provided flag. It returns a structured response
- * containing the events and pagination details.
+ * It supports pagination and can optionally include unapproved
+ * events based on the provided flag.
  *
  * @param collectionSlug - The unique identifier (slug) of the event collection
  * @param page - The current page number for pagination (default is 1).
  * @param pageSize - The number of events to return per page (default is 10).
- * @param includeUnapproved - A boolean flag indicating whether to include
- *                            unapproved events in the response (default is false).
+ * @param userAddress - The wallet address of the user requesting the events.
  * @returns A promise that resolves to an object containing the events,
  *          total count, current page, and total pages for pagination.
+ * @throws An error if the specified collection cannot be found.
  */
 export const getEventsInCollectionOperation = async (
   collectionSlug: string,
   page = 1,
   pageSize = 10,
-  includeUnapproved = false
+  userAddress?: string
 ) => {
-  // Calculate the offset for pagination
+  const collection = await EventCollection.findByPk(collectionSlug)
+  if (!collection) {
+    throw new Error('Collection not found')
+  }
+
+  const isManager = collection.managerAddresses.includes(userAddress || '')
+  const includeUnapproved = isManager
+
   const offset = (page - 1) * pageSize
 
-  // Fetch events associated with the specified collection, applying pagination and approval filters
   const { count, rows } = await EventData.findAndCountAll({
     include: [
       {
@@ -86,7 +203,6 @@ export const getEventsInCollectionOperation = async (
         where: { slug: collectionSlug },
         through: {
           attributes: [],
-          // If includeUnapproved is true, return all events, otherwise return only approved events
           where: includeUnapproved ? {} : { isApproved: true },
         },
       },
@@ -102,5 +218,6 @@ export const getEventsInCollectionOperation = async (
     totalCount: count,
     currentPage: page,
     totalPages: Math.ceil(count / pageSize),
+    isManager,
   }
 }
