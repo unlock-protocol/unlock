@@ -34,7 +34,6 @@ async function main() {
           chainId,
           contractAddress,
         })
-        console.log({ chainId, contractAddress, contractName })
 
         // log results
         if (!verified?.isVerified) {
