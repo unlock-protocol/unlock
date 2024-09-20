@@ -1,16 +1,16 @@
 import { RequestHandler } from 'express'
 import { z } from 'zod'
-import { EventCollection } from '../../models/EventCollection'
-import { createSlug } from '../../utils/createSlug'
 import '../../models/associations'
-import { EventData } from '../../models'
 import {
   addEventToCollectionOperation,
+  createEventCollectionOperation,
+  getEventCollectionOperation,
   getEventsInCollectionOperation,
+  updateEventCollectionOperation,
 } from '../../operations/eventCollectionOperations'
 
 // schema for the event collection body
-const EventCollectionBody = z.object({
+export const EventCollectionBody = z.object({
   title: z.string(),
   description: z.string(),
   banner: z.string().optional(),
@@ -36,39 +36,16 @@ const AddEventToCollectionBody = z.object({
  * @param res - The response object used to send the response.
  */
 export const createEventCollection: RequestHandler = async (req, res) => {
-  // Parse and validate the request body against the defined schema
   const parsedBody = await EventCollectionBody.parseAsync(req.body)
-
-  // Generate a unique slug for the event collection based on the title
-  const slug = await createSlug(parsedBody.title)
-
-  // Use the provided manager addresses or fallback to the user's wallet address
-  const managerAddresses = parsedBody.managerAddresses || [
-    req.user!.walletAddress,
-  ]
-
-  // Transform the links array into an object for easier access
-  const linksObject = parsedBody.links?.reduce(
-    (acc, link) => {
-      acc[link.name] = link.url
-      return acc
-    },
-    {} as Record<string, string>
-  )
-
-  // Create the event collection in the database
-  const eventCollection = await EventCollection.create({
-    ...parsedBody,
-    links: linksObject,
-    slug,
-    managerAddresses,
-  })
-
-  // Initialize the events array to an empty array
-  eventCollection.events = []
-
-  // Respond with the created event collection and a 201 status code
-  return res.status(201).json(eventCollection)
+  try {
+    const eventCollection = await createEventCollectionOperation(
+      parsedBody,
+      req.user!.walletAddress
+    )
+    return res.status(201).json(eventCollection)
+  } catch (error) {
+    return res.status(400).json({ error: (error as Error).message })
+  }
 }
 
 /**
@@ -79,26 +56,15 @@ export const createEventCollection: RequestHandler = async (req, res) => {
 export const getEventCollection: RequestHandler = async (req, res) => {
   const { slug } = req.params
 
-  // Fetch the event collection from the database, including associated events
-  const eventCollection = await EventCollection.findByPk(slug, {
-    include: [
-      {
-        model: EventData,
-        as: 'events',
-        through: {
-          attributes: [],
-        },
-      },
-    ],
-  })
-
-  // If the event collection is not found, return a 404 error
-  if (!eventCollection) {
-    return res.status(404).json({ error: 'Event collection not found' })
+  try {
+    const eventCollection = await getEventCollectionOperation(slug)
+    return res.json(eventCollection)
+  } catch (error) {
+    if (error.message === 'Event collection not found') {
+      return res.status(404).json({ error: error.message })
+    }
+    return res.status(400).json({ error: (error as Error).message })
   }
-
-  // Respond with the found event collection
-  return res.json(eventCollection)
 }
 
 /**
@@ -108,29 +74,23 @@ export const getEventCollection: RequestHandler = async (req, res) => {
  */
 export const updateEventCollection: RequestHandler = async (req, res) => {
   const { slug } = req.params
-  // Parse and validate the request body against the defined schema
   const parsedBody = await EventCollectionBody.parseAsync(req.body)
-
-  // Fetch the event collection from the database
-  const eventCollection = await EventCollection.findByPk(slug)
-
-  // If the event collection is not found, return a 404 error
-  if (!eventCollection) {
-    return res.status(404).json({ error: 'Event collection not found' })
+  try {
+    const eventCollection = await updateEventCollectionOperation(
+      slug,
+      parsedBody,
+      req.user!.walletAddress
+    )
+    return res.json(eventCollection)
+  } catch (error) {
+    if (error.message === 'Event collection not found') {
+      return res.status(404).json({ error: error.message })
+    }
+    if (error.message === 'Not authorized to update this collection') {
+      return res.status(403).json({ error: error.message })
+    }
+    return res.status(400).json({ error: error.message })
   }
-
-  // Check if the user is authorized to update the collection
-  if (!eventCollection.managerAddresses.includes(req.user!.walletAddress)) {
-    return res
-      .status(403)
-      .json({ error: 'Not authorized to update this collection' })
-  }
-
-  // Update the event collection with the new data
-  await eventCollection.update(parsedBody)
-
-  // Respond with the updated event collection
-  return res.json(eventCollection)
 }
 
 /**
@@ -140,8 +100,6 @@ export const updateEventCollection: RequestHandler = async (req, res) => {
  */
 export const addEventToCollection: RequestHandler = async (req, res) => {
   const { slug: collectionSlug } = req.params
-
-  // Validate the request body
   const parsedBody = await AddEventToCollectionBody.safeParseAsync(req.body)
   if (!parsedBody.success) {
     return res.status(400).json({
@@ -151,28 +109,16 @@ export const addEventToCollection: RequestHandler = async (req, res) => {
   }
   const { eventSlug } = parsedBody.data
 
-  // Fetch the event collection by its slug
-  const collection = await EventCollection.findByPk(collectionSlug)
-  if (!collection) {
-    return res.status(404).json({ error: 'Collection not found' })
-  }
-
-  // Check if the user is a manager of the collection
-  const isManager = collection.managerAddresses.includes(
-    req.user?.walletAddress || ''
-  )
-
   try {
-    // Attempt to add the event to the collection
-    const association = await addEventToCollectionOperation(
+    const result = await addEventToCollectionOperation(
       collectionSlug,
       eventSlug,
-      isManager
+      req.user?.walletAddress || ''
     )
-    const status = association.isApproved
-      ? 'approved and added'
-      : 'submitted for approval'
-    return res.status(200).json({ message: `Event ${status}`, association })
+    return res.status(200).json({
+      message: `Event ${result.status}`,
+      association: result.association,
+    })
   } catch (error) {
     return res.status(400).json({ error: (error as Error).message })
   }
@@ -183,29 +129,23 @@ export const addEventToCollection: RequestHandler = async (req, res) => {
  * @param req - The request object containing the collection slug and pagination parameters.
  * @param res - The response object used to send the response.
  */
-export const getEventsInCollection: RequestHandler = async (req, res) => {
+export const getEventsInCollection: RequestHandler = async (req, res, next) => {
   const { slug: collectionSlug } = req.params
   const page = parseInt(req.query.page as string) || 1
   const pageSize = parseInt(req.query.pageSize as string) || 10
 
-  // Fetch the event collection to check its existence
-  const collection = await EventCollection.findByPk(collectionSlug)
-  if (!collection) {
-    return res.status(404).json({ error: 'Collection not found' })
+  try {
+    const result = await getEventsInCollectionOperation(
+      collectionSlug,
+      page,
+      pageSize,
+      req.user?.walletAddress
+    )
+    return res.json(result)
+  } catch (error) {
+    if (error.message === 'Collection not found') {
+      return res.status(404).json({ error: error.message })
+    }
+    return res.status(400).json({ error: (error as Error).message })
   }
-
-  // Determine if the user is a manager to include unapproved events
-  const isManager = collection.managerAddresses.includes(
-    req.user?.walletAddress || ''
-  )
-  const includeUnapproved = isManager
-
-  // Retrieve events in the collection with pagination
-  const result = await getEventsInCollectionOperation(
-    collectionSlug,
-    page,
-    pageSize,
-    includeUnapproved
-  )
-  return res.json(result)
 }
