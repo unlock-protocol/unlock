@@ -63,7 +63,9 @@ export const createEventCollectionOperation = async (
   creatorAddress: string
 ) => {
   const slug = await createEventCollectionSlug(parsedBody.title)
-  const managerAddresses = parsedBody.managerAddresses || [creatorAddress]
+  const managerAddresses = [
+    ...new Set([...parsedBody.managerAddresses, creatorAddress]),
+  ]
 
   const linksObject = parsedBody.links?.reduce(
     (acc, link) => {

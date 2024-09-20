@@ -73,7 +73,7 @@ describe('eventCollectionOperations', () => {
     })
 
     // Verify the behavior when manager addresses are provided vs. when they are not
-    it('should use provided manager addresses if available', async () => {
+    it('should use provided manager addresses and include creator address', async () => {
       const mockSlug = 'test-collection'
       vi.spyOn(EventCollection, 'findByPk').mockResolvedValueOnce(null)
       vi.spyOn(EventCollection, 'create').mockResolvedValueOnce({
@@ -97,7 +97,7 @@ describe('eventCollectionOperations', () => {
       expect(EventCollection.create).toHaveBeenCalledWith(
         expect.objectContaining({
           slug: 'test-collection',
-          managerAddresses: ['0x456', '0x789', '0x123'],
+          managerAddresses: expect.arrayContaining(['0x456', '0x789', '0x123']),
           banner: 'https://example.com/banner.jpg',
           links: { website: 'https://example.com' },
         })
