@@ -70,7 +70,7 @@ const getBalances = async (provider, nativeCurrency, tokens, ownerAddress) => {
       const contract = new Contract(token.address, ERC20_ABI, provider)
       return {
         token,
-        balance: await contract.balanceOf(ownerAddress),
+        balance: await contract.balanceOf(ownerAddress).catch(() => 0),
       }
     }),
     {
@@ -78,20 +78,32 @@ const getBalances = async (provider, nativeCurrency, tokens, ownerAddress) => {
         symbol: nativeCurrency.symbol,
         decimals: nativeCurrency.decimals,
       },
-      balance: await provider.getBalance(ownerAddress),
+      balance: await provider.getBalance(ownerAddress).catch(() => 0),
     },
   ])
   return balances.filter(({ balance }) => balance > 0)
 }
 
-const BurnableTokens = ({ network }) => {
-  const provider = new JsonRpcProvider(
-    network.publicProvider,
-    network.chainId,
-    {
-      batchMaxCount: 10,
-    }
+const BurnableToken = ({ token, balance }) => {
+  const onClick = () => {
+    console.log('burn', token, balance)
+    console.log('connect (with privy')
+    console.log('switch network')
+    console.log('send tx!')
+  }
+
+  return (
+    <li>
+      {Number(formatUnits(balance, token.decimals)).toFixed(2)} {token.symbol}{' '}
+      <button onClick={onClick}>Burn</button>
+    </li>
   )
+}
+
+const BurnableTokens = ({ network }) => {
+  const provider = new JsonRpcProvider(network.provider, network.chainId, {
+    batchMaxCount: 10,
+  })
 
   const { data: balances } = useQuery({
     queryKey: ['getBalances', network.tokens, network.unlockAddress],
@@ -110,17 +122,53 @@ const BurnableTokens = ({ network }) => {
   return (
     <li>
       <a href="/governance/unlock-dao-tokens#swap-and-burn">Burnable tokens</a>:{' '}
-      {balances
-        .map(({ token, balance }) => {
-          return `${Number(formatUnits(balance, token.decimals)).toFixed(2)} ${token.symbol}`
-        })
-        .join(', ')}
+      <ul>
+        {balances.map(({ token, balance }) => {
+          return (
+            <BurnableToken
+              key={token.address}
+              token={token}
+              balance={balance}
+            />
+          )
+        })}
+      </ul>
+    </li>
+  )
+}
+
+const BurnedTokens = ({ network }) => {
+  const provider = new JsonRpcProvider(network.provider)
+  const { data: burnedTokens } = useQuery({
+    queryKey: [
+      'getBalance',
+      network.unlockDaoToken?.address,
+      '0x000000000000000000000000000000000000dEaD',
+    ],
+    queryFn: () => {
+      return getBalance(
+        provider,
+        network.unlockDaoToken?.address,
+        '0x000000000000000000000000000000000000dEaD'
+      )
+    },
+    enabled: !!network.unlockDaoToken?.address,
+  })
+  if (!burnedTokens) {
+    return null
+  }
+  return (
+    <li>
+      <a href="/governance/unlock-dao-tokens#swap-and-burn">
+        Burned Governance Tokens
+      </a>
+      : {burnedTokens}
     </li>
   )
 }
 
 export const SupportedNetwork = ({ network }) => {
-  const provider = new JsonRpcProvider(network.publicProvider)
+  const provider = new JsonRpcProvider(network.provider)
   const { data: udtBalance } = useQuery({
     queryKey: [
       'getBalance',
@@ -167,6 +215,7 @@ export const SupportedNetwork = ({ network }) => {
             ? `✅ ${udtBalance} to be distributed`
             : '❌'}
         </li>
+        <BurnedTokens network={network} />
         <li>Protocol Fee: {protocolFee}</li>
         <BurnableTokens network={network} />
       </ul>
@@ -175,7 +224,7 @@ export const SupportedNetwork = ({ network }) => {
 }
 
 export const TokenNetwork = ({ network }) => {
-  const provider = new JsonRpcProvider(network.publicProvider)
+  const provider = new JsonRpcProvider(network.provider)
   const { data: udt } = useQuery({
     queryKey: ['getUdt', network.unlockAddress],
     queryFn: async () => {
@@ -183,7 +232,6 @@ export const TokenNetwork = ({ network }) => {
     },
     enabled: !!network.unlockAddress,
   })
-  console.log(udt)
 
   const { data: symbol } = useQuery({
     queryKey: ['getSymbol', network.unlockAddress, udt],
