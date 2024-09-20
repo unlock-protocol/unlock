@@ -1,8 +1,8 @@
 const { ethers } = require('hardhat')
 const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
-const { targetChains, ConnextMod } = require('../helpers/bridge')
-const { parseSafeMulticall } = require('../helpers/multisig')
-const { parseBridgeCall } = require('../helpers/crossChain')
+const { targetChains, ConnextMod } = require('../../helpers/bridge')
+const { parseSafeMulticall } = require('../../helpers/multisig')
+const { parseBridgeCall } = require('../../helpers/crossChain')
 
 const BASE_TIMELOCK = '0xB34567C4cA697b39F72e1a8478f285329A98ed1b'
 
