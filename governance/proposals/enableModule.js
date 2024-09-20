@@ -41,8 +41,8 @@ async function main() {
     (await connextMod.getFunction('target')()) != delayModAddress
   ) {
     throw Error(`Config error in SAFE modules. Should be:
-    - delayMod target : ${multisig}
-    - connextMod target ${delayModAddress}
+    - delayMod target : ${multisig} (currently: ${await delayMod.getFunction('target')()})
+    - connextMod target ${delayModAddress} (currently: ${await connextMod.getFunction('target')()})
     `)
   }
 
