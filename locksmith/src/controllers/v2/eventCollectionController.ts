@@ -1,4 +1,4 @@
-import { RequestHandler } from 'express'
+import { RequestHandler, Request, Response } from 'express'
 import { z } from 'zod'
 import '../../models/associations'
 import {
@@ -35,7 +35,10 @@ const AddEventToCollectionBody = z.object({
  * @param req - The request object containing the event collection data.
  * @param res - The response object used to send the response.
  */
-export const createEventCollection: RequestHandler = async (req, res) => {
+export const createEventCollection: RequestHandler = async (
+  req: Request,
+  res: Response
+) => {
   const parsedBody = await EventCollectionBody.parseAsync(req.body)
   try {
     const eventCollection = await createEventCollectionOperation(
@@ -53,7 +56,10 @@ export const createEventCollection: RequestHandler = async (req, res) => {
  * @param req - The request object containing the slug parameter.
  * @param res - The response object used to send the response.
  */
-export const getEventCollection: RequestHandler = async (req, res) => {
+export const getEventCollection: RequestHandler = async (
+  req: Request,
+  res: Response
+) => {
   const { slug } = req.params
 
   try {
@@ -72,7 +78,10 @@ export const getEventCollection: RequestHandler = async (req, res) => {
  * @param req - The request object containing the slug parameter and updated data.
  * @param res - The response object used to send the response.
  */
-export const updateEventCollection: RequestHandler = async (req, res) => {
+export const updateEventCollection: RequestHandler = async (
+  req: Request,
+  res: Response
+) => {
   const { slug } = req.params
   const parsedBody = await EventCollectionBody.parseAsync(req.body)
   try {
@@ -98,7 +107,10 @@ export const updateEventCollection: RequestHandler = async (req, res) => {
  * @param req - The request object containing the event slug and collection slug.
  * @param res - The response object used to send the response.
  */
-export const addEventToCollection: RequestHandler = async (req, res) => {
+export const addEventToCollection: RequestHandler = async (
+  req: Request,
+  res: Response
+) => {
   const { slug: collectionSlug } = req.params
   const parsedBody = await AddEventToCollectionBody.safeParseAsync(req.body)
   if (!parsedBody.success) {
@@ -129,7 +141,10 @@ export const addEventToCollection: RequestHandler = async (req, res) => {
  * @param req - The request object containing the collection slug and pagination parameters.
  * @param res - The response object used to send the response.
  */
-export const getEventsInCollection: RequestHandler = async (req, res, next) => {
+export const getEventsInCollection: RequestHandler = async (
+  req: Request,
+  res: Response
+) => {
   const { slug: collectionSlug } = req.params
   const page = parseInt(req.query.page as string) || 1
   const pageSize = parseInt(req.query.pageSize as string) || 10
