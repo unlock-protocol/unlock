@@ -8,6 +8,7 @@ import { kebabCase } from 'lodash'
 const EventCollectionBody = z.object({
   title: z.string(),
   description: z.string(),
+  coverImage: z.string().optional(),
   banner: z.string().optional(),
   links: z
     .array(
