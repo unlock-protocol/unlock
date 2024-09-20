@@ -13,7 +13,6 @@ export default function EventCollectionCreationContent() {
       }
 
       ToastHelper.success('Event collection created')
-      console.log('Event collection created:', response.data)
       // TODO: add logic to redirect the user
     } catch (err) {
       ToastHelper.error('An error occurred while creating the event collection')

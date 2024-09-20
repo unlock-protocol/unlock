@@ -102,11 +102,6 @@ export const EventCollectionForm = ({ onSubmit }: FormProps) => {
     setIsAccountManager(false)
   }
 
-  // Determine button labels
-  const addManagerLabel =
-    managerFields.length > 0 ? 'Add another Manager' : 'Add Manager'
-  const addLinkLabel = linkFields.length > 0 ? 'Add another Link' : 'Add Link'
-
   // Check if the last manager field is filled
   const isLastManagerFilled =
     managerFields.length === 0 ||
@@ -117,11 +112,6 @@ export const EventCollectionForm = ({ onSubmit }: FormProps) => {
     linkFields.length === 0 ||
     (links[linkFields.length - 1].type &&
       links[linkFields.length - 1].url.trim() !== '')
-
-  console.log('managerAddresses', managerAddresses)
-
-  console.log('managerFields', managerFields)
-  console.log('linkFields', linkFields)
 
   return (
     <FormProvider {...methods}>
