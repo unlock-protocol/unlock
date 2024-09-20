@@ -9,16 +9,28 @@ import {
   updateEventCollectionOperation,
 } from '../../operations/eventCollectionOperations'
 
-// schema for the event collection body
+// event collection body schema
 export const EventCollectionBody = z.object({
   title: z.string(),
   description: z.string(),
+  coverImage: z.string().optional(),
   banner: z.string().optional(),
   links: z
     .array(
       z.object({
-        name: z.string(),
-        url: z.string(),
+        type: z.enum(['farcaster', 'website', 'x', 'github', 'youtube']),
+        url: z.string().refine(
+          (val) => {
+            const type = val.split('://')[0]
+            if (type === 'website') {
+              return /^https?:\/\/.+\..+/.test(val)
+            }
+            return true
+          },
+          {
+            message: 'Invalid URL format for the selected link type',
+          }
+        ),
       })
     )
     .optional(),
