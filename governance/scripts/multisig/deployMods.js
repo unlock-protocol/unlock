@@ -4,36 +4,6 @@
  * deploy SAFE modules used by cross-chain governance.
  *
  * Usage: yarn hardhat run scripts/multisig/deployMods.js --network <network_name>
- *
- * ### Instructions how to deploy the Zodiac Connext module
- *
- * 1. get the modules code
- * git clone git@github.com:gnosisguild/zodiac-module-connext.git
- *
- * 2. prepare repo
- * yarn
- * yarn build
- *
- * 3. add required network in `hardhat.config.ts` with the following pattern
- * `
- * <network name>: {
- *     url: "https://rpc.unlock-protocol.com/<network id>",
- *     accounts: [process.env.DEPLOYER_PRIVATE_KEY],
- *   },
- * `
- * and block explorer api key
- *
- * `
- * etherscan: {
- *    apiKey: {
- *      base: '<your-api-key>',
- *    }
- * },
- * `
- *
- * 4. export DEPLOYER_PRIVATE_KEY to env
- * 5. run this script to get the commands
- *
  */
 
 const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
@@ -41,10 +11,10 @@ const {
   deployProxy,
   predictProxyAddress,
 } = require('@gnosis-guild/zodiac-core')
-const { ContractAddresses } = require('@gnosis.pm/zodiac')
+const { ContractAddresses } = require('@gnosis-guild/zodiac')
 const { ethers, network } = require('hardhat')
 
-// temporary owner
+// DAO coordinates
 const daoTimelockAddress = '0xB34567C4cA697b39F72e1a8478f285329A98ed1b'
 const daoChainId = 8453
 
@@ -113,59 +83,87 @@ const deployDelay = async () => {
   return address
 }
 
+const deployConnext = async (delayModAddress) => {
+  const { multisig, id } = await getNetwork()
+  console.log(`Deploying Zodiac Delay module...`)
+  const [signer] = await ethers.getSigners()
+  const { provider } = network
+
+  const saltNonce = 1
+  const { connext: mastercopy } = ContractAddresses[id]
+
+  const {
+    governanceBridge: { connext },
+  } = await getNetwork()
+  const {
+    governanceBridge: { domainId: daoDomainId },
+  } = await getNetwork(daoChainId)
+
+  const setupArgs = {
+    types: ['address', 'address', 'address', 'address', 'uint256', 'address'],
+    values: [
+      multisig, // owner
+      multisig, // avatar
+      delayModAddress, // target
+      daoTimelockAddress, // _originSender
+      daoDomainId, // _origin
+      connext, // _connext
+    ],
+  }
+
+  // compute deterministic address
+  const expectedAddress = predictProxyAddress({
+    mastercopy,
+    setupArgs,
+    saltNonce,
+  })
+  console.log(`Deployment expected at ${expectedAddress}`)
+
+  // deploy actual contract
+  const { address } = await deployProxy({
+    mastercopy, // the mastercopy address
+    setupArgs,
+    saltNonce, // an integer, used to salt proxy deployment
+    provider: wrapEIP1193Provider(provider, signer), // an EIP1193 compliant provider
+  })
+  console.log(`Done. Module deployed at ${address}.`)
+  return address
+}
+
 // if any network is present this array, only these will be executed
 
 async function main() {
-  const { governanceBridge, multisig, chain } = await getNetwork(
-    network.config.chainId
-  )
+  const { governanceBridge } = await getNetwork(network.config.chainId)
   console.log('\n', network.config.name, '\n')
 
   let delayModAddress
+  let connextModAddress
+
   if (!governanceBridge.modules || !governanceBridge.modules.delayMod) {
     delayModAddress = await deployDelay()
   } else {
     delayModAddress = governanceBridge.modules.delayMod
   }
-  if (delayModAddress) {
-    console.log(`Delay mod at ${delayModAddress}`)
-    const {
-      governanceBridge: { domainId: daoDomainId },
-    } = await getNetwork(daoChainId)
-
-    const argsConnext = [
-      '--network',
-      chain,
-      '--avatar',
-      multisig,
-      '--connext',
-      governanceBridge.connext,
-      '--origin',
-      daoDomainId,
-      '--sender',
-      daoTimelockAddress,
-      '--owner',
-      multisig,
-      '--target',
-      delayModAddress,
-    ]
-
-    console.log(`To deploy Zodiac Connext Module, please run the following sequence
-
-          1. git clone git@github.com:gnosisguild/zodiac-module-connext.git
-          2. adjust network provider in hardhat config (see this script file for more info)
-          3. Run the following from the cloned repo
-            
-            yarn hardhat setup ${argsConnext.join(' ')}
-
-          4. verify the contract 
-            
-            yarn hardhat verify ${multisig} ${multisig} ${delayModAddress} ${daoTimelockAddress} ${daoDomainId} ${governanceBridge.connext} --network ${chain} <module-address>
-          `)
-  }
   if (governanceBridge.modules && governanceBridge.modules.connextMod) {
-    console.log(`Connext mod at ${governanceBridge.modules.connextMod}`)
+    connextModAddress = governanceBridge.modules.connextMod
+    console.log(
+      `Connext already deployed at ${governanceBridge.modules.connextMod}`
+    )
   }
+  if (delayModAddress && !connextModAddress) {
+    console.log(`Delay mod at ${delayModAddress}`)
+    connextModAddress = await deployConnext(delayModAddress)
+  }
+
+  console.log(`
+Please update the \`governanceBridge\` section of the networks package with the following:
+
+  modules: {
+    delayMod: ${delayModAddress},
+    connextMod: ${connextModAddress}
+  }
+
+`)
 }
 
 // execute as standalone
