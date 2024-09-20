@@ -31,6 +31,7 @@ describe('eventCollectionOperations', () => {
         slug: mockSlug,
         title: 'Test Collection',
         description: 'A test collection',
+        coverImage: 'https://example.com/cover.jpg',
         banner: 'https://example.com/banner.jpg',
         links: { website: 'https://example.com' },
         managerAddresses: ['0x123'],
@@ -42,6 +43,7 @@ describe('eventCollectionOperations', () => {
         {
           title: 'Test Collection',
           description: 'A test collection',
+          coverImage: 'https://example.com/cover.jpg',
           banner: 'https://example.com/banner.jpg',
           links: [{ name: 'website', url: 'https://example.com' }],
           managerAddresses: [],
@@ -56,6 +58,7 @@ describe('eventCollectionOperations', () => {
           slug: 'test-collection',
           title: 'Test Collection',
           description: 'A test collection',
+          coverImage: 'https://example.com/cover.jpg',
           banner: 'https://example.com/banner.jpg',
           links: { website: 'https://example.com' },
           managerAddresses: ['0x123'],
@@ -65,6 +68,7 @@ describe('eventCollectionOperations', () => {
         slug: mockSlug,
         title: 'Test Collection',
         description: 'A test collection',
+        coverImage: 'https://example.com/cover.jpg',
         banner: 'https://example.com/banner.jpg',
         links: { website: 'https://example.com' },
         managerAddresses: ['0x123'],
@@ -86,6 +90,7 @@ describe('eventCollectionOperations', () => {
         {
           title: 'Test Collection',
           description: 'A test collection',
+          coverImage: 'https://example.com/cover.jpg',
           banner: 'https://example.com/banner.jpg',
           links: [{ name: 'website', url: 'https://example.com' }],
           managerAddresses: ['0x456', '0x789'],
@@ -98,6 +103,7 @@ describe('eventCollectionOperations', () => {
         expect.objectContaining({
           slug: 'test-collection',
           managerAddresses: expect.arrayContaining(['0x456', '0x789', '0x123']),
+          coverImage: 'https://example.com/cover.jpg',
           banner: 'https://example.com/banner.jpg',
           links: { website: 'https://example.com' },
         })
@@ -184,6 +190,7 @@ describe('eventCollectionOperations', () => {
         slug: mockSlug,
         title: 'Old Title',
         description: 'Old Description',
+        coverImage: 'https://example.com/old-cover.jpg',
         banner: 'https://example.com/old-banner.jpg',
         links: [{ name: 'website', url: 'https://example.com/old' }],
         managerAddresses: ['0x123'],

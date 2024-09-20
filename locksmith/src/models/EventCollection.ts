@@ -15,6 +15,7 @@ export class EventCollection extends Model<
   declare slug: string
   declare title: string
   declare description: string
+  declare coverImage: CreationOptional<string>
   declare banner: CreationOptional<string>
   declare links: CreationOptional<object>
   declare managerAddresses: string[]
@@ -38,6 +39,10 @@ EventCollection.init(
     title: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    coverImage: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     description: {
       type: DataTypes.TEXT,
