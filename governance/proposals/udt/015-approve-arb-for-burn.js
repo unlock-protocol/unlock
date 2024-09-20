@@ -1,7 +1,5 @@
-const ethers = require('ethers5')
-const {
-  L1ToL2MessageGasEstimator,
-} = require('@arbitrum/sdk/dist/lib/message/L1ToL2MessageGasEstimator')
+const ethers = require('ethers')
+const { ParentToChildMessageGasEstimator } = require('@arbitrum/sdk')
 const { EthBridger, getL2Network } = require('@arbitrum/sdk')
 const { getBaseFee } = require('@arbitrum/sdk/dist/lib/utils/lib')
 const { mainnet, arbitrum } = require('@unlock-protocol/networks')
@@ -76,8 +74,8 @@ const INBOX_ABI = [
  * Set up: instantiate L1 / L2 wallets connected to providers
  */
 
-const l1Provider = new ethers.providers.StaticJsonRpcProvider(mainnet.provider)
-const l2Provider = new ethers.providers.StaticJsonRpcProvider(arbitrum.provider)
+const l1Provider = new ethers.JsonRpcProvider(mainnet.provider)
+const l2Provider = new ethers.JsonRpcProvider(arbitrum.provider)
 const amount = '23000'
 
 module.exports = async ({
@@ -119,7 +117,9 @@ module.exports = async ({
   /**
    * Now we can query the required gas params using the estimateAll method in Arbitrum SDK
    */
-  const l1ToL2MessageGasEstimate = new L1ToL2MessageGasEstimator(l2Provider)
+  const l1ToL2MessageGasEstimate = new ParentToChildMessageGasEstimator(
+    l2Provider
+  )
 
   const estimateAllParams = {
     from: fromL1,
