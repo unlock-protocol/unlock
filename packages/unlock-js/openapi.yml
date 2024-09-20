@@ -514,6 +514,103 @@ components:
         email:
           type: string
 
+    EventCollectionBody:
+      type: object
+      required:
+        - title
+        - description
+        - managerAddresses
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        banner:
+          type: string
+        links:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              url:
+                type: string
+        managerAddresses:
+          type: array
+          items:
+            type: string
+
+    EventCollection:
+      type: object
+      properties:
+        slug:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        banner:
+          type: string
+        links:
+          type: object
+          additionalProperties:
+            type: string
+        managerAddresses:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'
+
+    AddEventToCollectionBody:
+      type: object
+      required:
+        - eventSlug
+      properties:
+        eventSlug:
+          type: string
+
+    EventCollectionAssociation:
+      type: object
+      properties:
+        id:
+          type: integer
+        eventSlug:
+          type: string
+        collectionSlug:
+          type: string
+        isApproved:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    EventsInCollection:
+      type: object
+      properties:
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'
+        totalCount:
+          type: integer
+        currentPage:
+          type: integer
+        totalPages:
+          type: integer
+
   parameters:
     Network:
       in: path
@@ -4563,5 +4660,143 @@ paths:
                   passObjectUrl:
                     type: string
                     nullable: false
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/event-collection:
+    post:
+      operationId: createEventCollection
+      security:
+        - User: []
+      description: Create a new event collection
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventCollectionBody'
+      responses:
+        201:
+          description: Successfully created event collection
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventCollection'
+        400:
+          $ref: '#/components/responses/400.Invalid'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/event-collection/{slug}:
+    get:
+      operationId: getEventCollection
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      description: Get details of an event collection
+      responses:
+        200:
+          description: Successfully retrieved event collection
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventCollection'
+        404:
+          $ref: '#/components/responses/404.NotFound'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+    put:
+      operationId: updateEventCollection
+      security:
+        - User: []
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      description: Update an existing event collection
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventCollectionBody'
+      responses:
+        200:
+          description: Successfully updated event collection
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventCollection'
+        403:
+          $ref: '#/components/responses/403.Forbidden'
+        404:
+          $ref: '#/components/responses/404.NotFound'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/event-collection/{slug}/events:
+    post:
+      operationId: addEventToCollection
+      security:
+        - User: []
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      description: Add an event to a collection
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddEventToCollectionBody'
+      responses:
+        200:
+          description: Successfully added event to collection
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventCollectionAssociation'
+        400:
+          $ref: '#/components/responses/400.Invalid'
+        404:
+          $ref: '#/components/responses/404.NotFound'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+    get:
+      operationId: getEventsInCollection
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: pageSize
+          in: query
+          schema:
+            type: integer
+            default: 10
+      description: Get events in a collection
+      responses:
+        200:
+          description: Successfully retrieved events in collection
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventsInCollection'
+        404:
+          $ref: '#/components/responses/404.NotFound'
         500:
           $ref: '#/components/responses/500.InternalError'
