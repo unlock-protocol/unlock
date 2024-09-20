@@ -20431,7 +20431,6 @@ __metadata:
     eslint: "npm:9.9.1"
     ethers: "npm:6.13.2"
     ethers-multisend: "npm:3.1.0"
-    ethers5: "npm:ethers@5.7.2"
     fs-extra: "npm:11.2.0"
     hardhat: "npm:2.22.9"
     zksync-ethers: "npm:6.12.0"
@@ -30909,7 +30908,37 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers5@npm:ethers@5.7.2, ethers@npm:^5.1.0, ethers@npm:^5.6.1, ethers@npm:^5.6.5, ethers@npm:^5.7.0, ethers@npm:^5.7.2":
+"ethers@npm:6.12.1":
+  version: 6.12.1
+  resolution: "ethers@npm:6.12.1"
+  dependencies:
+    "@adraffy/ens-normalize": "npm:1.10.1"
+    "@noble/curves": "npm:1.2.0"
+    "@noble/hashes": "npm:1.3.2"
+    "@types/node": "npm:18.15.13"
+    aes-js: "npm:4.0.0-beta.5"
+    tslib: "npm:2.4.0"
+    ws: "npm:8.5.0"
+  checksum: 10/2995766164292b531499764d319d753b1f4e1cd7ddb4f26c6557a26e42947d5642a4b3bbeace0b8bb398b909dc22fafa4f52d5190a9bb8180bebf2dd3d4d48a9
+  languageName: node
+  linkType: hard
+
+"ethers@npm:6.13.2, ethers@npm:^6.13.2, ethers@npm:^6.9.0, ethers@npm:^6.9.2":
+  version: 6.13.2
+  resolution: "ethers@npm:6.13.2"
+  dependencies:
+    "@adraffy/ens-normalize": "npm:1.10.1"
+    "@noble/curves": "npm:1.2.0"
+    "@noble/hashes": "npm:1.3.2"
+    "@types/node": "npm:18.15.13"
+    aes-js: "npm:4.0.0-beta.5"
+    tslib: "npm:2.4.0"
+    ws: "npm:8.17.1"
+  checksum: 10/e611c2e2c5340982dfd1f004895f55abda11748a7edec9e6315226dec42d58aa61b827dd389ec904db5f9a244c475ae795e528da579251fdf62e914bde12809e
+  languageName: node
+  linkType: hard
+
+"ethers@npm:^5.1.0, ethers@npm:^5.6.1, ethers@npm:^5.6.5, ethers@npm:^5.7.0, ethers@npm:^5.7.2":
   version: 5.7.2
   resolution: "ethers@npm:5.7.2"
   dependencies:
@@ -30944,36 +30973,6 @@ __metadata:
     "@ethersproject/web": "npm:5.7.1"
     "@ethersproject/wordlists": "npm:5.7.0"
   checksum: 10/227dfa88a2547c799c0c3c9e92e5e246dd11342f4b495198b3ae7c942d5bf81d3970fcef3fbac974a9125d62939b2d94f3c0458464e702209b839a8e6e615028
-  languageName: node
-  linkType: hard
-
-"ethers@npm:6.12.1":
-  version: 6.12.1
-  resolution: "ethers@npm:6.12.1"
-  dependencies:
-    "@adraffy/ens-normalize": "npm:1.10.1"
-    "@noble/curves": "npm:1.2.0"
-    "@noble/hashes": "npm:1.3.2"
-    "@types/node": "npm:18.15.13"
-    aes-js: "npm:4.0.0-beta.5"
-    tslib: "npm:2.4.0"
-    ws: "npm:8.5.0"
-  checksum: 10/2995766164292b531499764d319d753b1f4e1cd7ddb4f26c6557a26e42947d5642a4b3bbeace0b8bb398b909dc22fafa4f52d5190a9bb8180bebf2dd3d4d48a9
-  languageName: node
-  linkType: hard
-
-"ethers@npm:6.13.2, ethers@npm:^6.13.2, ethers@npm:^6.9.0, ethers@npm:^6.9.2":
-  version: 6.13.2
-  resolution: "ethers@npm:6.13.2"
-  dependencies:
-    "@adraffy/ens-normalize": "npm:1.10.1"
-    "@noble/curves": "npm:1.2.0"
-    "@noble/hashes": "npm:1.3.2"
-    "@types/node": "npm:18.15.13"
-    aes-js: "npm:4.0.0-beta.5"
-    tslib: "npm:2.4.0"
-    ws: "npm:8.17.1"
-  checksum: 10/e611c2e2c5340982dfd1f004895f55abda11748a7edec9e6315226dec42d58aa61b827dd389ec904db5f9a244c475ae795e528da579251fdf62e914bde12809e
   languageName: node
   linkType: hard
 
