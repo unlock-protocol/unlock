@@ -41,7 +41,7 @@ import magicEdenRouter from './v2/magicEden'
 import rsvpRouter from './v2/rsvp'
 import passRouter from './v2/pass'
 import newUserRouter from './v2/user'
-import eventCollectionsRouter from './v2/eventCollections'
+import eventCollectionRouter from './v2/eventCollection'
 
 const router = express.Router({ mergeParams: true })
 
@@ -113,7 +113,7 @@ router.use('/v2/magic-eden', magicEdenRouter)
 router.use('/v2/rsvp', rsvpRouter)
 router.use('/v2/pass', passRouter)
 router.use('/v2/api/users', newUserRouter)
-router.use('/v2/event-collections', eventCollectionsRouter)
+router.use('/v2/event-collection', eventCollectionRouter)
 
 router.use('/', (_, res) => {
   res.send('<a href="https://unlock-protocol.com/">Unlock Protocol</a>')
