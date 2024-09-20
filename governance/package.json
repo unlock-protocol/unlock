@@ -3,7 +3,7 @@
   "description": "Scripts for the management of the Unlock Protocol",
   "private": true,
   "dependencies": {
-    "@arbitrum/sdk": "3.7.0",
+    "@arbitrum/sdk": "4.0.1",
     "@eth-optimism/sdk": "3.3.2",
     "@gnosis-guild/zodiac-core": "2.0.3",
     "@gnosis.pm/zodiac": "4.0.3",
