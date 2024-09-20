@@ -14,6 +14,7 @@ import {
   getFiatPricingForRecipient,
   getDefiLammaPrice,
   KeyPricing,
+  KeyFiatPricingPrice,
 } from '../operations/pricingOperations'
 import { getSettings as getLockSettings } from '../operations/lockSettingOperations'
 import normalizer from './normalizer'
@@ -52,20 +53,23 @@ export const getLockKeyPricing = async ({
   }
 }
 
-// Returns the pricing in fiat
+// Returns the pricing in fiat, either the default, or if a custom
+// on is set for the recipient.
 export const getKeyPricingInFiat = async ({
   recipients,
   network,
   lockAddress,
   data: dataArray,
   referrers,
-}: KeyPricingOptions): Promise<KeyPricing[]> => {
+}: KeyPricingOptions): Promise<
+  { address?: string; price: KeyFiatPricingPrice }[]
+> => {
   const defaultPricing = await getDefaultFiatPricing({
     lockAddress,
     network,
   })
 
-  const result = await Promise.all(
+  return Promise.all(
     recipients.map(async (userAddress, index) => {
       const data = dataArray?.[index] ?? '0x'
       const referrer = referrers?.[index] ?? userAddress!
@@ -77,30 +81,28 @@ export const getKeyPricingInFiat = async ({
           },
         }
       }
-
+      let fiatPricingForRecipient = {
+        address: userAddress,
+        price: { ...defaultPricing },
+      }
       try {
-        const pricingForRecipient = await getFiatPricingForRecipient({
+        fiatPricingForRecipient = await getFiatPricingForRecipient({
           lockAddress,
           network,
           userAddress,
           referrer,
           data,
         })
-        return pricingForRecipient
       } catch (error) {
+        logger.error('There was an error fetching pricing for recipient')
         logger.error(error)
-        return {
-          address: userAddress,
-          price: {
-            ...defaultPricing,
-          },
-        }
       }
+      return fiatPricingForRecipient
     })
   )
-  return result
 }
 
+// Returns the gas cost, in usd... (not in cents, but with 2 decimals), always!
 export const getGasCost = async ({ network }: Record<'network', number>) => {
   const gas = new GasPrice()
   const amount = await gas.gasPriceETH(network, GAS_COST)
@@ -108,7 +110,7 @@ export const getGasCost = async ({ network }: Record<'network', number>) => {
     network,
     amount,
   })
-  return Math.round((price.priceInAmount || 0) * 100)
+  return price.priceInAmount || 0
 }
 
 // Fee denominated in cents
@@ -118,7 +120,7 @@ export const getCreditCardProcessingFee = (
 ) => {
   const total = subtotal + serviceFee
   // This is rounded up to an integer number of cents.
-  const percentageFee = Math.ceil(total * stripePercentage)
+  const percentageFee = total * stripePercentage
   return baseStripeFee + percentageFee
 }
 
@@ -138,7 +140,7 @@ export const getUnlockServiceFee = (
       '0x3EbE147eCd6970f49fde34b5042996e140f63c22'
   ) {
     // For LexDAO, we take 3% only
-    return Math.ceil(cost * 0.03)
+    return cost * 0.03
   }
 
   if (
@@ -146,7 +148,7 @@ export const getUnlockServiceFee = (
     '0x456CC03543d41Eb1c9a7cA9FA86e9383B404f50d'
   ) {
     // For FarCon Summit, we take 2.5% only
-    return Math.ceil(cost * 0.025)
+    return cost * 0.025
   }
 
   if (
@@ -154,7 +156,7 @@ export const getUnlockServiceFee = (
     '0x68445fE0f063f60B3C2Ec460f13E17b7FCb868b9'
   ) {
     // For Best Dish Ever Sous Chef, we take 4% only
-    return Math.ceil(cost * 0.04)
+    return cost * 0.04
   }
 
   if (
@@ -162,10 +164,10 @@ export const getUnlockServiceFee = (
     '0x1a84dEf3EC4d03E3c509E4708890dF9D4428f9fb'
   ) {
     // For Best Dish Ever OWNER CHEF MEMBER, we take 2% only
-    return Math.ceil(cost * 0.02)
+    return cost * 0.02
   }
 
-  return Math.ceil(cost * 0.1) // Unlock charges 10% of transaction.
+  return cost * 0.1 // Unlock charges 10% of transaction.
 }
 
 export const getFees = async (
@@ -190,7 +192,7 @@ export const getFees = async (
     '0x45aCCac0E5C953009cDa713a3b722F87F2907F86'.toLowerCase()
   ) {
     // For CabinDAO, we cap the fee at 20 USDC
-    unlockServiceFee = 2000
+    unlockServiceFee = 20
   }
 
   const creditCardProcessingFee = getCreditCardProcessingFee(
@@ -216,10 +218,15 @@ export const getFees = async (
 // Returns pricing for recipients + total charges with fees
 export const createPricingForPurchase = async (options: KeyPricingOptions) => {
   const recipients = await getKeyPricingInFiat(options)
-  const subtotal = recipients.reduce(
-    (sum, item) => sum + (item.price?.amountInCents || 0),
-    0
-  )
+  // subtotal is in the lock's fiat currency (defaults to usd)
+  const subtotal = recipients.reduce((sum, item) => {
+    if (item.price) {
+      return sum + (item.price.amount * Math.pow(10, item.price.decimals) || 0)
+    }
+    return sum
+  }, 0)
+  const currency = recipients[0]?.price.currency
+
   const gasCost = await getGasCost(options)
   const fees = await getFees(
     {
@@ -228,9 +235,9 @@ export const createPricingForPurchase = async (options: KeyPricingOptions) => {
     },
     options
   )
-
   return {
     ...fees,
+    currency,
     recipients,
     subtotal,
     gasCost,

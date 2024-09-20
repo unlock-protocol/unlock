@@ -83,6 +83,7 @@ export const getTotalChargesForLock: RequestHandler = async (
 
   return response.status(200).send({
     currency,
+    symbol: pricingOperations.getCurrencySymbol(currency),
     creditCardProcessingFee,
     unlockServiceFee,
     gasCost,
@@ -91,8 +92,8 @@ export const getTotalChargesForLock: RequestHandler = async (
       ...pricing.recipients.map((recipient) => {
         return {
           userAddress: recipient.address,
-          amount: recipient.price.amountInFiat,
-          currency,
+          amount: recipient.price.amount,
+          symbol: pricingOperations.getCurrencySymbol(currency),
         }
       }),
     ],
