@@ -2,7 +2,7 @@ import { EventCollection } from '../models/EventCollection'
 import { EventData } from '../models/Event'
 import { EventCollectionAssociation } from '../models/EventCollectionAssociation'
 import { z } from 'zod'
-import { createSlug } from '../utils/createSlug'
+import { kebabCase } from 'lodash'
 
 // event collection body schema
 const EventCollectionBody = z.object({
@@ -21,6 +21,35 @@ const EventCollectionBody = z.object({
 })
 
 /**
+ * Creates a unique slug for an event collection based on the title.
+ * It handles special characters, removes diacritics, and ensures uniqueness.
+ *
+ * @param title - The title of the event collection.
+ * @param index - The current index for uniqueness (used recursively).
+ * @returns A unique slug string.
+ */
+export async function createEventCollectionSlug(
+  title: string,
+  index: number | undefined = undefined
+): Promise<string> {
+  // Normalize the title to NFD form and remove diacritics
+  const normalizedTitle = title.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  const cleanTitle = normalizedTitle.replace(/[^\w\s-]/g, '').trim()
+
+  const baseSlug = kebabCase(cleanTitle)
+  const slug = index ? `${baseSlug}-${index}` : baseSlug
+
+  // Check if the slug already exists
+  const existingCollection = await EventCollection.findByPk(slug)
+  if (existingCollection) {
+    // If the slug already exists, increment the index and try again
+    return createEventCollectionSlug(title, index ? index + 1 : 1)
+  }
+
+  return slug
+}
+
+/**
  * Creates a new event collection.
  * This operation generates a unique slug for the collection based on the title,
  * and associates the creator's address as a manager if no other addresses are provided.
@@ -33,8 +62,9 @@ export const createEventCollectionOperation = async (
   parsedBody: z.infer<typeof EventCollectionBody>,
   creatorAddress: string
 ) => {
-  const slug = await createSlug(parsedBody.title)
+  const slug = await createEventCollectionSlug(parsedBody.title)
   const managerAddresses = parsedBody.managerAddresses || [creatorAddress]
+
   const linksObject = parsedBody.links?.reduce(
     (acc, link) => {
       acc[link.name] = link.url
@@ -108,7 +138,9 @@ export const updateEventCollectionOperation = async (
     throw new Error('Not authorized to update this collection')
   }
 
-  await eventCollection.update(parsedBody)
+  await eventCollection.update({
+    ...parsedBody,
+  })
   return eventCollection
 }
 
