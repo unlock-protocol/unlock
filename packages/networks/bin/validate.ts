@@ -58,7 +58,8 @@ const run = async () => {
       if (!contractAddress || contractAddress === ZeroAddress) {
         warnings.push(`⚠️ Contract ${contractName} is missing`)
       } else {
-        await wait(100)
+        // make sure we dont reach max etherscan rate (5/sec)
+        await wait(250)
         try {
           const verified = await isVerified({
             chainId: network.id,
@@ -66,15 +67,9 @@ const run = async () => {
           })
           // log results
           if (!verified?.isVerified) {
-            if (verified.result.includes('Error')) {
-              errors.push(
-                `❌ Verification failed for ${contractName} at ${contractAddress}: ${verified.result}`
-              )
-            } else {
-              errors.push(
-                `❌ Contract ${contractName} at ${contractAddress} is not verified`
-              )
-            }
+            errors.push(
+              `❌ Verification failed for ${contractName} at ${contractAddress}: ${verified.result}`
+            )
           } else {
             successes.push(
               `✅ Contract ${contractName} at ${contractAddress} is verified`
