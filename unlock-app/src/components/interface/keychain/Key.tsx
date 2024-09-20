@@ -372,39 +372,6 @@ function Key({ ownedKey, owner, network }: Props) {
                       )}
                     </Menu.Item>
                   )}
-                  {owner == account && tokenId && (
-                    <>
-                      <Menu.Item>
-                        {({ active, disabled }) => (
-                          <AddToPhoneWallet
-                            platform={Platform.GOOGLE}
-                            disabled={disabled}
-                            active={active}
-                            as={MenuButton}
-                            network={network}
-                            lockAddress={lock.address}
-                            tokenId={tokenId}
-                            handlePassUrl={(url: string) => {
-                              window.location.assign(url)
-                            }}
-                          />
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active, disabled }) => (
-                          <AddToPhoneWallet
-                            platform={Platform.APPLE}
-                            disabled={disabled}
-                            active={active}
-                            as={MenuButton}
-                            network={network}
-                            lockAddress={lock.address}
-                            tokenId={tokenId}
-                          />
-                        )}
-                      </Menu.Item>
-                    </>
-                  )}
                   <Menu.Item>
                     {({ active, disabled }) => (
                       <MenuButton
@@ -490,6 +457,35 @@ function Key({ ownedKey, owner, network }: Props) {
                           <CancelIcon />
                           Cancel and refund
                         </MenuButton>
+                      )}
+                    </Menu.Item>
+                  </div>
+                )}
+
+                {/* Add to wallet buttons */}
+                {owner == account && tokenId && (
+                  <div className="p-1">
+                    <Menu.Item>
+                      {() => (
+                        <div className="flex flex-row gap-1">
+                          <AddToPhoneWallet
+                            platform={Platform.GOOGLE}
+                            as={MenuButton}
+                            network={network}
+                            lockAddress={lock.address}
+                            tokenId={tokenId}
+                            handlePassUrl={(url: string) => {
+                              window.location.assign(url)
+                            }}
+                          />
+                          <AddToPhoneWallet
+                            platform={Platform.APPLE}
+                            as={MenuButton}
+                            network={network}
+                            lockAddress={lock.address}
+                            tokenId={tokenId}
+                          />
+                        </div>
                       )}
                     </Menu.Item>
                   </div>
