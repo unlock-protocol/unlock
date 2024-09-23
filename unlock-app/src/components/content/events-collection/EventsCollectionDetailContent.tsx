@@ -3,10 +3,9 @@ import { Button, Icon, Placeholder } from '@unlock-protocol/ui'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useMemo, useState } from 'react'
 
-import { TbSettings } from 'react-icons/tb'
+import { TbPlus, TbSettings } from 'react-icons/tb'
 import { EventCollection } from '@unlock-protocol/unlock-js'
 import { useRouter } from 'next/navigation'
-import { EventOverviewCard } from './EventOverviewCard'
 import { ImageBar } from '~/components/interface/locks/Manage/elements/ImageBar'
 import { FaGithub, FaYoutube, FaGlobe, FaTwitter } from 'react-icons/fa'
 import Link from 'next/link'
@@ -42,6 +41,7 @@ export interface EventData {
 }
 
 export interface Event {
+  eventUrl: string
   name: string
   data: EventData
   createdBy: string
@@ -61,9 +61,8 @@ export default function EventsCollectionDetailContent({
   const { account } = useAuth()
   const router = useRouter()
 
-  // Event detail drawer
+  // event detail drawer
   const [isEventDetailDrawerOpen, setIsEventDetailDrawerOpen] = useState(false)
-  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
 
   const hasValidEvents = useMemo(() => {
     return (
@@ -72,16 +71,10 @@ export default function EventsCollectionDetailContent({
       ) ?? false
     )
   }, [eventCollection.events])
-
   const isManager = useMemo(() => {
     if (!account) return false
     return eventCollection.managerAddresses?.includes(account)
   }, [account, eventCollection.managerAddresses])
-
-  const handleEventDetailClick = (event: Event) => {
-    setSelectedEvent(event)
-    setIsEventDetailDrawerOpen(true)
-  }
 
   const getLinkIcon = (type: string) => {
     switch (type) {
@@ -115,7 +108,14 @@ export default function EventsCollectionDetailContent({
             </div>
           </Button>
         )}
-        <div className="md:hidden items-center justify-end gap-0 mt-auto md:gap-2 w-full sm:w-auto"></div>
+        <div className="md:hidden items-center justify-end gap-0 mt-auto md:gap-2 w-full sm:w-auto">
+          <Button className="w-full sm:w-auto" disabled={!account}>
+            <div className="flex items-center gap-2">
+              <Icon icon={TbPlus} size={20} />
+              {isManager ? 'Add Event' : 'Submit Event'}
+            </div>
+          </Button>
+        </div>
       </div>
       <div className="pt-4">
         <div className="relative">
@@ -129,39 +129,46 @@ export default function EventsCollectionDetailContent({
               alt="Cover image"
             />
           </div>
-        </div>
-        <div className="sm:absolute flex sm:flex-col w-full gap-6 sm:pl-10 -bottom-12">
-          <section className="flex justify-between flex-col sm:flex-row w-full">
-            <div className="flex p-1 bg-white sm:p-2 sm:w-48 sm:h-48 sm:rounded-3xl rounded-xl border mb-4 sm:mb-0">
-              <img
-                alt={eventCollection.title}
-                className="object-cover w-full m-auto aspect-1 sm:rounded-2xl rounded-lg"
-                src={
-                  eventCollection.coverImage ||
-                  'https://avatars.githubusercontent.com/u/46839250?v=4'
-                }
-              />
-            </div>
 
-            <div className="hidden md:flex items-center justify-end gap-0 mt-auto md:gap-2 w-full sm:w-auto"></div>
-          </section>
-        </div>
-      </div>
+          <div className="sm:absolute flex sm:flex-col w-full gap-6 sm:pl-10 -bottom-12">
+            <section className="flex justify-between flex-col sm:flex-row w-full">
+              <div className="flex p-1 bg-white sm:p-2 sm:w-48 sm:h-48 sm:rounded-3xl rounded-xl border mb-4 sm:mb-0">
+                <img
+                  alt={eventCollection.title}
+                  className="object-cover w-full m-auto aspect-1 sm:rounded-2xl rounded-lg"
+                  src={
+                    eventCollection.coverImage ||
+                    'https://avatars.githubusercontent.com/u/46839250?v=4'
+                  }
+                />
+              </div>
 
-      <section className="grid items-start grid-cols-1 md:gap-4 md:grid-cols-3 md:mt-16 mt-8">
-        <div className="flex flex-col col-span-3 gap-4 md:col-span-2">
-          <h1 className="text-3xl font-bold md:text-6xl">
-            {eventCollection.title}
-          </h1>
-          <p className="text-sm md:text-base">{eventCollection.description}</p>
-          <div className="flex space-x-6">
-            {eventCollection.links &&
-              Array.isArray(eventCollection.links) &&
-              eventCollection.links.map(
-                (link: { type: string; url: string }, index: number) => (
+              <div className="hidden md:flex items-center justify-end gap-0 mt-auto md:gap-2 w-full sm:w-auto">
+                <Button className="w-full sm:w-auto" disabled={!account}>
+                  <div className="flex items-center gap-2">
+                    <Icon icon={TbPlus} size={20} />
+                    {isManager ? 'Add Event' : 'Submit Event'}
+                  </div>
+                </Button>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <section className="grid items-start grid-cols-1 md:gap-4 md:grid-cols-3 md:mt-16 mt-8">
+          <div className="flex flex-col col-span-3 gap-4 md:col-span-2">
+            <h1 className="text-3xl font-bold md:text-6xl">
+              {eventCollection.title}
+            </h1>
+            <p className="text-sm md:text-base">
+              {eventCollection.description}
+            </p>
+            <div className="flex space-x-6">
+              {eventCollection.links?.map(
+                (link: { url?: string; type: string }, index: number) => (
                   <Link
                     key={index}
-                    href={link.url}
+                    href={link.url || '#'}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -169,47 +176,47 @@ export default function EventsCollectionDetailContent({
                   </Link>
                 )
               )}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* List of Events */}
-      <section className="mt-16">
-        <h2 className="text-3xl font-bold">Events</h2>
-        <div className="flex flex-col lg:grid lg:grid-cols-12 gap-14 mt-5">
-          <div className="flex flex-col gap-6 lg:col-span-8">
-            {hasValidEvents ? (
-              <div className="">
-                <div className="space-y-6">
-                  {eventCollection.events?.map((eventItem: any) => (
-                    <EventOverviewCard
-                      key={eventItem.slug}
-                      event={eventItem}
-                      onClick={handleEventDetailClick}
-                    />
-                  ))}
+        {/* list of events */}
+        <section className="mt-16">
+          <h2 className="text-3xl font-bold">Events</h2>
+          <div className="flex flex-col lg:grid lg:grid-cols-12 gap-14 mt-5">
+            <div className="flex flex-col gap-6 lg:col-span-8">
+              {hasValidEvents ? (
+                <div className="">
+                  <div className="space-y-6"></div>
                 </div>
-              </div>
-            ) : (
-              <ImageBar
-                src="/images/illustrations/no-locks.svg"
-                description={<p>No events have been added yet.</p>}
-              />
-            )}
+              ) : (
+                <ImageBar
+                  src="/images/illustrations/no-locks.svg"
+                  description={
+                    <p>
+                      No events have been added yet.{' '}
+                      <span className="text-brand-ui-primary cursor-pointer">
+                        {isManager ? 'Add an event' : 'Submit an event'}
+                      </span>
+                    </p>
+                  }
+                />
+              )}
+            </div>
+            <div className="lg:col-span-4">
+              <Placeholder.Root>
+                <Placeholder.Card size="xl" />
+              </Placeholder.Root>
+            </div>
           </div>
-          <div className="lg:col-span-4">
-            <Placeholder.Root>
-              <Placeholder.Card size="xl" />
-            </Placeholder.Root>
-          </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
       {/* Event Detail Drawer */}
       <EventDetailDrawer
         isOpen={isEventDetailDrawerOpen}
         setIsOpen={setIsEventDetailDrawerOpen}
-        event={selectedEvent}
+        event={null}
       />
     </div>
   )
