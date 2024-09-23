@@ -16,14 +16,6 @@ interface EventOverviewCardProps {
   onClick: (event: Event) => void
 }
 
-const formatDate = (dateString: string) => {
-  return dayjs(dateString).format('D MMM YYYY')
-}
-
-const formatTime = (timeString: string) => {
-  return dayjs(timeString, 'HH:mm').format('h:mm A')
-}
-
 export const EventOverviewCard: React.FC<EventOverviewCardProps> = ({
   event,
   onClick,
@@ -51,13 +43,6 @@ export const EventOverviewCard: React.FC<EventOverviewCardProps> = ({
   const eventStartTime = getEventAttribute('event_start_time')
   const eventEndTime = getEventAttribute('event_end_time')
   const eventLocation = ticket.event_location
-
-  const eventStartDateFormatted = formatDate(eventStartDate)
-  const eventEndDateFormatted = formatDate(eventEndDate)
-  const eventStartTimeFormatted = eventStartTime
-    ? formatTime(eventStartTime)
-    : ''
-  const eventEndTimeFormatted = eventEndTime ? formatTime(eventEndTime) : ''
 
   const isUserEvent = account && createdBy === account
 
@@ -97,7 +82,7 @@ export const EventOverviewCard: React.FC<EventOverviewCardProps> = ({
                 className="h-5 w-5 flex-shrink-0 text-gray-300"
                 aria-hidden="true"
               />
-              <span>{eventStartDateFormatted}</span>
+              <span>{dayjs(eventStartDate).format('D MMM YYYY')}</span>
             </p>
           )}
           {eventEndDate && (
@@ -106,7 +91,7 @@ export const EventOverviewCard: React.FC<EventOverviewCardProps> = ({
                 className="h-5 w-5 flex-shrink-0 text-gray-300"
                 aria-hidden="true"
               />
-              <span>{eventEndDateFormatted}</span>
+              <span>{dayjs(eventEndDate).format('D MMM YYYY')}</span>
             </p>
           )}
           {eventStartTime && (
@@ -115,7 +100,7 @@ export const EventOverviewCard: React.FC<EventOverviewCardProps> = ({
                 className="h-5 w-5 flex-shrink-0 text-gray-300"
                 aria-hidden="true"
               />
-              <span>{eventStartTimeFormatted}</span>
+              <span>{dayjs(eventStartTime, 'HH:mm').format('h:mm A')}</span>
             </p>
           )}
           {eventEndTime && (
@@ -124,7 +109,7 @@ export const EventOverviewCard: React.FC<EventOverviewCardProps> = ({
                 className="h-5 w-5 flex-shrink-0 text-gray-300"
                 aria-hidden="true"
               />
-              <span>{eventEndTimeFormatted}</span>
+              <span>{dayjs(eventEndTime, 'HH:mm').format('h:mm A')}</span>
             </p>
           )}
           {eventLocation && (
