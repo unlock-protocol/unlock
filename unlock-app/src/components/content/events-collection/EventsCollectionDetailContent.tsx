@@ -1,6 +1,5 @@
 'use client'
 import { Button, Icon, Placeholder } from '@unlock-protocol/ui'
-import { BannerEditDrawer } from './BannerEditDrawer'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useMemo, useState } from 'react'
 
@@ -73,8 +72,7 @@ export default function EventsCollectionDetailContent({
   const hasValidEvents = useMemo(() => {
     return (
       eventCollection.events?.some(
-        (event) =>
-          event.name !== null && event.slug !== null && event.eventUrl !== null
+        (event) => event.name !== null && event.slug !== null
       ) ?? false
     )
   }, [eventCollection.events])
@@ -152,8 +150,6 @@ export default function EventsCollectionDetailContent({
             />
           </div>
 
-          <BannerEditDrawer image={eventCollection.banner || ''} />
-
           <div className="sm:absolute flex sm:flex-col w-full gap-6 sm:pl-10 -bottom-12">
             <section className="flex justify-between flex-col sm:flex-row w-full">
               <div className="flex p-1 bg-white sm:p-2 sm:w-48 sm:h-48 sm:rounded-3xl rounded-xl border mb-4 sm:mb-0">
@@ -189,16 +185,17 @@ export default function EventsCollectionDetailContent({
               {eventCollection.description}
             </p>
             <div className="flex space-x-6">
-              {eventCollection.links?.map((link, index) => (
-                <Link
-                  key={index}
-                  href={link.url!}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {getLinkIcon(link.type)}
-                </Link>
-              ))}
+              {Array.isArray(eventCollection.links) &&
+                eventCollection.links.map((link, index) => (
+                  <Link
+                    key={index}
+                    href={link.url!}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {getLinkIcon(link.type)}
+                  </Link>
+                ))}
             </div>
           </div>
         </section>
