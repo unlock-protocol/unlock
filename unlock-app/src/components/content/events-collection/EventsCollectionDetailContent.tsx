@@ -1,6 +1,5 @@
 'use client'
 import { Button, Icon, Placeholder } from '@unlock-protocol/ui'
-import { BannerEditDrawer } from './BannerEditDrawer'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useMemo, useState } from 'react'
 
@@ -131,13 +130,6 @@ export default function EventsCollectionDetailContent({
               alt="Cover image"
             />
           </div>
-
-          <BannerEditDrawer
-            image={
-              eventCollection.banner ||
-              'https://avatars.githubusercontent.com/u/46839250?v=4'
-            }
-          />
 
           <div className="sm:absolute flex sm:flex-col w-full gap-6 sm:pl-10 -bottom-12">
             <section className="flex justify-between flex-col sm:flex-row w-full">
