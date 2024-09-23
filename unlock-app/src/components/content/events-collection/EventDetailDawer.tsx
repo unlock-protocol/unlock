@@ -3,6 +3,7 @@ import { Event } from './EventsCollectionDetailContent'
 import { Drawer, Placeholder } from '@unlock-protocol/ui'
 import { AiOutlineCalendar as CalendarIcon } from 'react-icons/ai'
 import { AiOutlineGlobal as GlobeIcon } from 'react-icons/ai'
+import { AiOutlineClockCircle as ClockIcon } from 'react-icons/ai'
 import { useCheckoutConfig } from '~/hooks/useCheckoutConfig'
 import { RegistrationCard } from '../event/Registration/RegistrationCard'
 import { useEventOrganizers } from '~/hooks/useEventOrganizers'
@@ -17,66 +18,15 @@ interface EventDetailDrawerProps {
   event: Event | null
 }
 
-// Helper function to get ordinal suffix for a given day
-const getOrdinalSuffix = (day: number): string => {
-  if (day > 3 && day < 21) return 'th'
-  switch (day % 10) {
-    case 1:
-      return 'st'
-    case 2:
-      return 'nd'
-    case 3:
-      return 'rd'
-    default:
-      return 'th'
-  }
-}
-
-// util to format date range
-const formatDateRange = (startDateStr: string, endDateStr?: string): string => {
-  const startDate = dayjs(startDateStr)
-  const endDate = endDateStr ? dayjs(endDateStr) : null
-
-  const startDay = startDate.date()
-  const startSuffix = getOrdinalSuffix(startDay)
-  const startMonth = startDate.format('MMM')
-  const startYear = startDate.year()
-
-  if (endDate) {
-    const endDay = endDate.date()
-    const endSuffix = getOrdinalSuffix(endDay)
-    const endMonth = endDate.format('MMM')
-    const endYear = endDate.year()
-
-    // If start and end are in the same month and year
-    if (
-      startDate.isSame(endDate, 'month') &&
-      startDate.isSame(endDate, 'year')
-    ) {
-      return `${startDay}${startSuffix} ${startMonth} to ${endDay}${endSuffix} ${endMonth}, ${startYear}`
-    }
-
-    // If start and end are in different months but same year
-    if (startDate.isSame(endDate, 'year')) {
-      return `${startDay}${startSuffix} ${startMonth} to ${endDay}${endSuffix} ${endMonth}, ${startYear}`
-    }
-
-    // If start and end are in different years
-    return `${startDay}${startSuffix} ${startMonth}, ${startYear} to ${endDay}${endSuffix} ${endMonth}, ${endYear}`
-  }
-
-  // If only start date is available
-  return `${startDay}${startSuffix} ${startMonth}, ${startYear}`
-}
-
 export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
   isOpen,
   setIsOpen,
   event,
 }) => {
-  const { data: checkoutConfig, isPending } = useCheckoutConfig({
-    id: event?.checkoutConfigId,
-  })
+  const { data: checkoutConfig, isPending: isCheckoutConfigPending } =
+    useCheckoutConfig({
+      id: event?.checkoutConfigId,
+    })
   const { data: organizers } = useEventOrganizers({
     checkoutConfig: checkoutConfig!,
   }) as { data: string[] | undefined }
@@ -93,7 +43,7 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
         <img
           src={image}
           alt={name}
-          className="w-full h-full object-cover rounded-2xl"
+          className="w-full h-[500px] object-cover rounded-2xl"
         />
 
         {/* Event Information */}
@@ -106,7 +56,7 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
             <Hosts organizers={organizers} />
           )}
 
-          {/* Date Details */}
+          {/* Date */}
           <EventDetail compact label="Date" icon={CalendarIcon}>
             <div
               // @ts-expect-error property 'background_color' does not exist on type 'Event'
@@ -115,30 +65,50 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
             >
               {ticket.event_start_date && (
                 <span>
-                  {formatDateRange(
-                    ticket.event_start_date,
-                    ticket.event_end_date
-                  )}
+                  {dayjs(ticket.event_start_date).format('dddd D MMM YYYY')}
+                  {ticket.event_end_date &&
+                    ` to ${dayjs(ticket.event_end_date).format('dddd D MMM YYYY')}`}
                 </span>
               )}
             </div>
           </EventDetail>
 
-          {/* Timezone */}
-          <EventDetail compact label="Timezone" icon={GlobeIcon}>
-            <div
-              // @ts-expect-error property 'background_color' does not exist on type 'Event'
-              style={{ color: `#${event.background_color}` }}
-              className="flex flex-col text-sm font-normal text-brand-dark"
-            >
-              {ticket.event_timezone && <span>{ticket.event_timezone}</span>}
-            </div>
-          </EventDetail>
+          {/* Time */}
+          {ticket.event_start_time && ticket.event_end_time && (
+            <EventDetail compact label="Time" icon={ClockIcon}>
+              <div className="flex flex-col text-sm font-normal text-brand-dark">
+                <span>
+                  {ticket.event_start_time}
+                  {ticket.event_end_time && ` to ${ticket.event_end_time}`}
+                </span>
+              </div>
+            </EventDetail>
+          )}
 
-          {ticket.event_location && <EventLocation event={event} />}
+          {/* Timezone */}
+          {ticket.event_timezone && (
+            <EventDetail compact label="Timezone" icon={GlobeIcon}>
+              <div
+                // @ts-expect-error property 'background_color' does not exist on type 'Event'
+                style={{ color: `#${event.background_color}` }}
+                className="flex flex-col text-sm font-normal text-brand-dark"
+              >
+                <span>{ticket.event_timezone}</span>
+              </div>
+            </EventDetail>
+          )}
+
+          {ticket.event_location && (
+            <EventLocation
+              inPerson={ticket.event_is_in_person}
+              eventLocation={ticket.event_location}
+              eventAddress={ticket.event_address}
+              compact={true}
+            />
+          )}
 
           {/* Registration Card */}
-          {isPending ? (
+          {isCheckoutConfigPending ? (
             <Placeholder.Root>
               <Placeholder.Card />
             </Placeholder.Root>
