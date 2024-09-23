@@ -11,6 +11,22 @@ import {
   updateEventCollectionOperation,
 } from '../../src/operations/eventCollectionOperations'
 
+// interface for link types
+interface Link {
+  type: 'website' | 'farcaster' | 'x' | 'github' | 'youtube'
+  url: string
+}
+
+// interface for the updated event collection data
+interface UpdatedEventCollectionData {
+  title: string
+  description: string
+  coverImage?: string
+  banner?: string
+  links?: Link[]
+  managerAddresses: string[]
+}
+
 // Mocks necessary models and utilities
 vi.mock('../../src/models/EventCollection')
 vi.mock('../../src/models/Event')
@@ -33,7 +49,7 @@ describe('eventCollectionOperations', () => {
         description: 'A test collection',
         coverImage: 'https://example.com/cover.jpg',
         banner: 'https://example.com/banner.jpg',
-        links: { website: 'https://example.com' },
+        links: [{ type: 'website', url: 'https://example.com' }],
         managerAddresses: ['0x123'],
         events: [],
       } as any)
@@ -45,7 +61,7 @@ describe('eventCollectionOperations', () => {
           description: 'A test collection',
           coverImage: 'https://example.com/cover.jpg',
           banner: 'https://example.com/banner.jpg',
-          links: [{ name: 'website', url: 'https://example.com' }],
+          links: [{ type: 'website', url: 'https://example.com' }],
           managerAddresses: [],
         },
         creatorAddress
@@ -60,7 +76,7 @@ describe('eventCollectionOperations', () => {
           description: 'A test collection',
           coverImage: 'https://example.com/cover.jpg',
           banner: 'https://example.com/banner.jpg',
-          links: { website: 'https://example.com' },
+          links: [{ type: 'website', url: 'https://example.com' }],
           managerAddresses: ['0x123'],
         })
       )
@@ -70,7 +86,7 @@ describe('eventCollectionOperations', () => {
         description: 'A test collection',
         coverImage: 'https://example.com/cover.jpg',
         banner: 'https://example.com/banner.jpg',
-        links: { website: 'https://example.com' },
+        links: [{ type: 'website', url: 'https://example.com' }],
         managerAddresses: ['0x123'],
         events: [],
       })
@@ -92,7 +108,7 @@ describe('eventCollectionOperations', () => {
           description: 'A test collection',
           coverImage: 'https://example.com/cover.jpg',
           banner: 'https://example.com/banner.jpg',
-          links: [{ name: 'website', url: 'https://example.com' }],
+          links: [{ type: 'website', url: 'https://example.com' }],
           managerAddresses: ['0x456', '0x789'],
         },
         creatorAddress
@@ -105,7 +121,7 @@ describe('eventCollectionOperations', () => {
           managerAddresses: expect.arrayContaining(['0x456', '0x789', '0x123']),
           coverImage: 'https://example.com/cover.jpg',
           banner: 'https://example.com/banner.jpg',
-          links: { website: 'https://example.com' },
+          links: [{ type: 'website', url: 'https://example.com' }],
         })
       )
       expect(result.managerAddresses).toEqual(['0x456', '0x789', '0x123'])
@@ -192,7 +208,7 @@ describe('eventCollectionOperations', () => {
         description: 'Old Description',
         coverImage: 'https://example.com/old-cover.jpg',
         banner: 'https://example.com/old-banner.jpg',
-        links: [{ name: 'website', url: 'https://example.com/old' }],
+        links: [{ type: 'website', url: 'https://example.com/old' }],
         managerAddresses: ['0x123'],
         update: vi.fn(),
       }
@@ -201,11 +217,12 @@ describe('eventCollectionOperations', () => {
         mockEventCollection as any
       )
 
-      const updatedData = {
+      const updatedData: UpdatedEventCollectionData = {
         title: 'New Title',
         description: 'New Description',
+        coverImage: 'https://example.com/new-cover.jpg',
         banner: 'https://example.com/new-banner.jpg',
-        links: [{ name: 'website', url: 'https://example.com/new' }],
+        links: [{ type: 'website', url: 'https://example.com/new' }],
         managerAddresses: ['0x123', '0x456'],
       }
 
@@ -221,7 +238,11 @@ describe('eventCollectionOperations', () => {
       vi.spyOn(EventCollection, 'findByPk').mockResolvedValue(null)
 
       await expect(
-        updateEventCollectionOperation('non-existent', {} as any, '0x123')
+        updateEventCollectionOperation(
+          'non-existent',
+          {} as UpdatedEventCollectionData,
+          '0x123'
+        )
       ).rejects.toThrow('Event collection not found')
     })
 
@@ -237,7 +258,11 @@ describe('eventCollectionOperations', () => {
       )
 
       await expect(
-        updateEventCollectionOperation('test-collection', {}, '0x456')
+        updateEventCollectionOperation(
+          'test-collection',
+          {} as UpdatedEventCollectionData,
+          '0x456'
+        )
       ).rejects.toThrow('Not authorized to update this collection')
     })
   })
