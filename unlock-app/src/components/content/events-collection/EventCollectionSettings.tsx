@@ -9,7 +9,6 @@ import Link from 'next/link'
 import { EventCollection } from '@unlock-protocol/unlock-js'
 import { General } from './settings/General'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { ManageEvents } from './settings/Management'
 
 interface EventCollectionSettingsProps {
   eventCollection: EventCollection
@@ -55,9 +54,7 @@ export const EventCollectionSettings = ({
       id: 'management',
       label: 'Management',
       description: 'Manage events in your collection.',
-      children: eventCollection ? (
-        <ManageEvents eventCollection={eventCollection} />
-      ) : null,
+      children: eventCollection ? <h3>Management</h3> : null,
     },
   ]
 
