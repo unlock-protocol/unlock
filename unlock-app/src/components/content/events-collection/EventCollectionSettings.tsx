@@ -7,10 +7,7 @@ import { ReactNode, useState } from 'react'
 
 import Link from 'next/link'
 import { EventCollection } from '@unlock-protocol/unlock-js'
-import { General } from './settings/General'
-import { Managers } from './settings/Managers'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { Approvals } from './settings/Approvals'
 import { ManageEvents } from './settings/Management'
 
 interface EventCollectionSettingsProps {
@@ -32,31 +29,6 @@ export const EventCollectionSettings = ({
     id: 'general' | 'managers' | 'approvals' | 'management'
     children: ReactNode
   }[] = [
-    {
-      id: 'general',
-      label: 'General',
-      description:
-        "Update your event collection's public information such as its location, date and more!",
-      children: eventCollection ? (
-        <General eventCollection={eventCollection} />
-      ) : null,
-    },
-    {
-      id: 'managers',
-      label: 'Managers',
-      description: 'Add or remove managers to/from your event collection.',
-      children: eventCollection ? (
-        <Managers eventCollection={eventCollection} />
-      ) : null,
-    },
-    {
-      id: 'approvals',
-      label: 'Approvals',
-      description: 'Review and approve events submitted to your collection.',
-      children: eventCollection ? (
-        <Approvals eventCollection={eventCollection} />
-      ) : null,
-    },
     {
       id: 'management',
       label: 'Management',
