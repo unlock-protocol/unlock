@@ -27,16 +27,12 @@ interface Link {
   url: string
 }
 
-interface ManagerAddress {
-  address: string
-}
-
 export interface NewEventCollectionForm {
   title: string
   description: string
   coverImage: string
   banner: string
-  managerAddresses: ManagerAddress[]
+  managerAddresses: string[]
   links: Link[]
 }
 
@@ -61,7 +57,7 @@ export const EventCollectionForm = ({
       description: '',
       coverImage: '',
       banner: '',
-      managerAddresses: account ? [{ address: account }] : [],
+      managerAddresses: account ? [account] : [],
       links: [{ type: 'website', url: '' }],
     },
   })
@@ -94,18 +90,20 @@ export const EventCollectionForm = ({
     remove: removeManager,
   } = useFieldArray<NewEventCollectionForm>({
     control,
+    // @ts-ignore
     name: 'managerAddresses',
   })
 
   useEffect(() => {
     if (account && managerFields.length === 0) {
-      appendManager({ address: account })
+      // @ts-ignore
+      appendManager(account)
     }
   }, [account, appendManager, managerFields.length])
 
   const handleManagerChange = (index: number, value: string) => {
     if (value) {
-      setValue(`managerAddresses.${index}`, { address: value })
+      setValue(`managerAddresses.${index}`, value)
     }
   }
 
@@ -117,7 +115,7 @@ export const EventCollectionForm = ({
   // Check if the last manager field is filled
   const isLastManagerFilled =
     managerFields.length === 0 ||
-    managerAddresses[managerFields.length - 1].address.trim() !== ''
+    managerAddresses[managerFields.length - 1].trim() !== ''
 
   // Check if the last link field is filled
   const isLastLinkFilled =
@@ -270,7 +268,7 @@ export const EventCollectionForm = ({
                     <div className="flex-grow">
                       <Controller
                         control={control}
-                        name={`managerAddresses.${index}.address`}
+                        name={`managerAddresses.${index}`}
                         rules={{ required: 'Manager address is required' }}
                         render={({ field }) => (
                           <AddressInput
@@ -287,7 +285,7 @@ export const EventCollectionForm = ({
                         )}
                       />
                       {errors.managerAddresses &&
-                        errors.managerAddresses[index]?.message && (
+                        errors.managerAddresses[index] && (
                           <p className="text-red-500 text-sm">
                             {errors.managerAddresses[index].message}
                           </p>
@@ -312,7 +310,8 @@ export const EventCollectionForm = ({
                 aria-label="Add manager"
                 className="flex items-center gap-2 w-full"
                 type="button"
-                onClick={() => appendManager({ address: '' })}
+                // @ts-ignore
+                onClick={() => appendManager('')}
                 disabled={!isLastManagerFilled}
               >
                 {managerFields.length > 0
