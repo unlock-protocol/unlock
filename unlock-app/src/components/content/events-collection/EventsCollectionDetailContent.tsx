@@ -10,8 +10,8 @@ import { EventOverviewCard } from './EventOverviewCard'
 import { ImageBar } from '~/components/interface/locks/Manage/elements/ImageBar'
 import EventDetailDrawer from './EventDetailDawer'
 import { FaGithub, FaYoutube, FaGlobe, FaTwitter } from 'react-icons/fa'
+import { SiFarcaster as FarcasterIcon } from 'react-icons/si'
 import Link from 'next/link'
-import FarcasterIcon from './icons/FarcasterIcon'
 
 export interface EventTicket {
   event_address: string
