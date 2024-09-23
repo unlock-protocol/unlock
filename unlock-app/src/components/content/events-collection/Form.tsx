@@ -1,6 +1,11 @@
 'use client'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
-import { FormProvider, useFieldArray, useForm } from 'react-hook-form'
+import {
+  FormProvider,
+  useFieldArray,
+  useForm,
+  Controller,
+} from 'react-hook-form'
 import {
   Button,
   Disclosure,
@@ -13,7 +18,7 @@ import { useImageUpload } from '~/hooks/useImageUpload'
 import { useRouter } from 'next/navigation'
 import { FiTrash as TrashIcon } from 'react-icons/fi'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { onResolveName } from '~/utils/resolvers'
 import LinkField from './LinkField'
 
@@ -22,12 +27,16 @@ interface Link {
   url: string
 }
 
+interface ManagerAddress {
+  address: string
+}
+
 export interface NewEventCollectionForm {
   title: string
   description: string
   coverImage: string
   banner: string
-  managerAddresses: string[]
+  managerAddresses: ManagerAddress[]
   links: Link[]
 }
 
@@ -52,8 +61,8 @@ export const EventCollectionForm = ({
       description: '',
       coverImage: '',
       banner: '',
-      managerAddresses: account ? [account] : [],
-      links: [],
+      managerAddresses: account ? [{ address: account }] : [],
+      links: [{ type: 'website', url: '' }],
     },
   })
 
@@ -74,7 +83,7 @@ export const EventCollectionForm = ({
     fields: linkFields,
     append: appendLink,
     remove: removeLink,
-  } = useFieldArray({
+  } = useFieldArray<NewEventCollectionForm>({
     control,
     name: 'links',
   })
@@ -83,25 +92,24 @@ export const EventCollectionForm = ({
     fields: managerFields,
     append: appendManager,
     remove: removeManager,
-  } = useFieldArray({
+  } = useFieldArray<NewEventCollectionForm>({
     control,
     name: 'managerAddresses',
   })
 
   useEffect(() => {
     if (account && managerFields.length === 0) {
-      appendManager(account)
+      appendManager({ address: account })
     }
   }, [account, appendManager, managerFields.length])
 
   const handleManagerChange = (index: number, value: string) => {
     if (value) {
-      setValue(`managerAddresses.${index}`, value)
+      setValue(`managerAddresses.${index}`, { address: value })
     }
   }
 
   const handleAccountChange = () => {
-    // Remove the account from managerAddresses
     removeManager(0)
     setIsAccountManager(false)
   }
@@ -109,7 +117,7 @@ export const EventCollectionForm = ({
   // Check if the last manager field is filled
   const isLastManagerFilled =
     managerFields.length === 0 ||
-    managerAddresses[managerFields.length - 1].trim() !== ''
+    managerAddresses[managerFields.length - 1].address.trim() !== ''
 
   // Check if the last link field is filled
   const isLastLinkFilled =
@@ -143,7 +151,9 @@ export const EventCollectionForm = ({
             </p>
 
             <div
-              className={`grid ${compact ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'} gap-6`}
+              className={`grid ${
+                compact ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'
+              } gap-6`}
             >
               <div className={`${compact ? 'order-2' : 'order-2 md:order-1'}`}>
                 <ImageUpload
@@ -169,24 +179,46 @@ export const EventCollectionForm = ({
                 )}
               </div>
               <div
-                className={`grid ${compact ? 'order-1' : 'order-1 md:order-2'} ${compact ? 'gap-2' : 'md:gap-4 gap-2'}`}
+                className={`grid ${
+                  compact ? 'order-1' : 'order-1 md:order-2'
+                } ${compact ? 'gap-2' : 'md:gap-4 gap-2'}`}
               >
                 <Input
-                  {...register('title')}
+                  {...register('title', {
+                    required: 'Title is required',
+                    minLength: {
+                      value: 3,
+                      message: 'Title must be at least 3 characters',
+                    },
+                  })}
                   type="text"
                   className="p-0"
                   placeholder="Title"
                   label="Collection Title"
                   description="Enter the title of your event collection."
                 />
+                {errors.title && (
+                  <p className="text-red-500 text-sm">{errors.title.message}</p>
+                )}
 
                 <TextBox
-                  {...register('description')}
+                  {...register('description', {
+                    required: 'Description is required',
+                    minLength: {
+                      value: 10,
+                      message: 'Description must be at least 10 characters',
+                    },
+                  })}
                   label="Description"
                   placeholder="Write description here."
                   description="Enter a description for your event collection."
                   rows={10}
                 />
+                {errors.description && (
+                  <p className="text-red-500 text-sm">
+                    {errors.description.message}
+                  </p>
+                )}
               </div>
             </div>
           </Disclosure>
@@ -236,17 +268,23 @@ export const EventCollectionForm = ({
                     </div>
                   ) : (
                     <div className="flex-grow">
-                      <AddressInput
-                        withIcon
-                        {...register(`managerAddresses.${index}`, {
-                          required: 'Manager address is required',
-                        })}
-                        placeholder="0x..."
-                        onChange={(value: string) =>
-                          handleManagerChange(index, value)
-                        }
-                        required
-                        onResolveName={onResolveName}
+                      <Controller
+                        control={control}
+                        name={`managerAddresses.${index}.address`}
+                        rules={{ required: 'Manager address is required' }}
+                        render={({ field }) => (
+                          <AddressInput
+                            {...field}
+                            withIcon
+                            placeholder="0x..."
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                              field.onChange(e)
+                              handleManagerChange(index, e?.target?.value)
+                            }}
+                            required
+                            onResolveName={onResolveName}
+                          />
+                        )}
                       />
                       {errors.managerAddresses &&
                         errors.managerAddresses[index]?.message && (
@@ -274,7 +312,7 @@ export const EventCollectionForm = ({
                 aria-label="Add manager"
                 className="flex items-center gap-2 w-full"
                 type="button"
-                onClick={() => appendManager('')}
+                onClick={() => appendManager({ address: '' })}
                 disabled={!isLastManagerFilled}
               >
                 {managerFields.length > 0
@@ -287,13 +325,9 @@ export const EventCollectionForm = ({
           {/* Links */}
           <Disclosure label="Links" defaultOpen>
             <div className="space-y-4 w-full">
-              {linkFields.length === 0 ? (
-                <LinkField key="default" index={0} remove={() => {}} />
-              ) : (
-                linkFields.map((field, index) => (
-                  <LinkField key={field.id} index={index} remove={removeLink} />
-                ))
-              )}
+              {linkFields.map((field, index) => (
+                <LinkField key={field.id} index={index} remove={removeLink} />
+              ))}
               <Button
                 className="flex items-center gap-2 w-full"
                 type="button"
@@ -307,8 +341,12 @@ export const EventCollectionForm = ({
 
           {/* Submit Button */}
           <div className="flex flex-col justify-center gap-6">
-            <Button type="submit" className="w-full" disabled={!isValid}>
-              Create your event collection
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={!isValid || isUploading}
+            >
+              {isUploading ? 'Uploading...' : 'Create your event collection'}
             </Button>
           </div>
         </div>
