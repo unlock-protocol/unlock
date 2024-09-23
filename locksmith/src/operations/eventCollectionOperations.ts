@@ -13,8 +13,8 @@ const EventCollectionBody = z.object({
   links: z
     .array(
       z.object({
-        name: z.string(),
-        url: z.string(),
+        type: z.enum(['farcaster', 'website', 'x', 'github', 'youtube']),
+        url: z.string().url(),
       })
     )
     .optional(),
@@ -68,17 +68,8 @@ export const createEventCollectionOperation = async (
     ...new Set([...parsedBody.managerAddresses, creatorAddress]),
   ]
 
-  const linksObject = parsedBody.links?.reduce(
-    (acc, link) => {
-      acc[link.name] = link.url
-      return acc
-    },
-    {} as Record<string, string>
-  )
-
   const eventCollection = await EventCollection.create({
     ...parsedBody,
-    links: linksObject,
     slug,
     managerAddresses,
   })
