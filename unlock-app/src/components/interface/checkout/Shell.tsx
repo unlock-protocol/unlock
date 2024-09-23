@@ -1,12 +1,15 @@
-import React, { MouseEventHandler, forwardRef } from 'react'
+'use client'
+
+import { MouseEventHandler, forwardRef, lazy, Suspense } from 'react'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
 import * as Avatar from '@radix-ui/react-avatar'
 import SvgComponents from '../svg'
 import mintingAnimation from '~/animations/minting.json'
 import mintedAnimation from '~/animations/minted.json'
 import errorAnimation from '~/animations/error.json'
-import Lottie from 'lottie-react'
 import { Transaction } from './main/checkoutMachine'
+
+const Lottie = lazy(() => import('lottie-react'))
 
 interface ButtonProps {
   onClick: MouseEventHandler<HTMLButtonElement>
@@ -86,19 +89,25 @@ export function TransactionAnimation({ status }: Partial<Transaction>) {
   switch (status) {
     case 'PROCESSING':
       return (
-        <Lottie
-          className={animationClass}
-          loop
-          animationData={mintingAnimation}
-        />
+        <Suspense fallback={<div className={animationClass} />}>
+          <Lottie
+            className={animationClass}
+            loop
+            animationData={mintingAnimation}
+          />
+        </Suspense>
       )
     case 'FINISHED':
       return (
-        <Lottie className={animationClass} animationData={mintedAnimation} />
+        <Suspense fallback={<div className={animationClass} />}>
+          <Lottie className={animationClass} animationData={mintedAnimation} />
+        </Suspense>
       )
     case 'ERROR': {
       return (
-        <Lottie className={animationClass} animationData={errorAnimation} />
+        <Suspense fallback={<div className={animationClass} />}>
+          <Lottie className={animationClass} animationData={errorAnimation} />
+        </Suspense>
       )
     }
     default:
