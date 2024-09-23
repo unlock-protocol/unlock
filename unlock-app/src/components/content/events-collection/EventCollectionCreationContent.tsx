@@ -1,28 +1,32 @@
 'use client'
-import { ToastHelper } from '~/components/helpers/toast.helper'
-import { locksmith } from '~/config/locksmith'
+
+import { useState } from 'react'
 import { EventCollectionForm } from './Form'
+import { useCreateEventCollection } from '~/hooks/useEventCollection'
+import { CollectionCreationStatus } from './CollectionCreationStatus'
 
 export default function EventCollectionCreationContent() {
+  const { createEventCollection, isCreatingEventCollection, success } =
+    useCreateEventCollection()
+  const [createdSlug, setCreatedSlug] = useState<string | null>(null)
+
   const onSubmit = async (data: any) => {
-    try {
-      const response = await locksmith.createEventCollection(data)
-
-      if (response.status !== 201) {
-        throw new Error('Failed to create event collection')
-      }
-
-      ToastHelper.success('Event collection created')
-      // TODO: add logic to redirect the user
-    } catch (err) {
-      ToastHelper.error('An error occurred while creating the event collection')
-      console.error('Error creating event collection:', err)
+    const result = await createEventCollection(data)
+    if (result?.slug) {
+      setCreatedSlug(result.slug)
     }
   }
 
   return (
     <div className="grid max-w-3xl gap-6 pb-24 mx-auto">
-      <EventCollectionForm onSubmit={onSubmit} />
+      <CollectionCreationStatus
+        isCreating={isCreatingEventCollection}
+        success={success}
+        createdSlug={createdSlug}
+      />
+      {!isCreatingEventCollection && !success && (
+        <EventCollectionForm onSubmit={onSubmit} />
+      )}
     </div>
   )
 }
