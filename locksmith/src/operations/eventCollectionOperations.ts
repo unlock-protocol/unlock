@@ -5,7 +5,7 @@ import { z } from 'zod'
 import { kebabCase } from 'lodash'
 
 // event collection body schema
-const EventCollectionBody = z.object({
+export const EventCollectionBody = z.object({
   title: z.string(),
   description: z.string(),
   coverImage: z.string().optional(),
@@ -13,8 +13,19 @@ const EventCollectionBody = z.object({
   links: z
     .array(
       z.object({
-        name: z.string(),
-        url: z.string(),
+        type: z.enum(['farcaster', 'website', 'x', 'github', 'youtube']),
+        url: z.string().refine(
+          (val) => {
+            const type = val.split('://')[0]
+            if (type === 'website') {
+              return /^https?:\/\/.+\..+/.test(val)
+            }
+            return true
+          },
+          {
+            message: 'Invalid URL format for the selected link type',
+          }
+        ),
       })
     )
     .optional(),
@@ -68,17 +79,15 @@ export const createEventCollectionOperation = async (
     ...new Set([...parsedBody.managerAddresses, creatorAddress]),
   ]
 
-  const linksObject = parsedBody.links?.reduce(
-    (acc, link) => {
-      acc[link.name] = link.url
-      return acc
-    },
-    {} as Record<string, string>
-  )
+  const links =
+    parsedBody.links?.map((link) => ({
+      type: link.type,
+      url: link.url,
+    })) || []
 
   const eventCollection = await EventCollection.create({
     ...parsedBody,
-    links: linksObject,
+    links,
     slug,
     managerAddresses,
   })
@@ -141,8 +150,15 @@ export const updateEventCollectionOperation = async (
     throw new Error('Not authorized to update this collection')
   }
 
+  const links =
+    parsedBody.links?.map((link) => ({
+      type: link.type,
+      url: link.url,
+    })) || []
+
   await eventCollection.update({
     ...parsedBody,
+    links,
   })
   return eventCollection
 }
