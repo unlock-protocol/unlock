@@ -11,13 +11,6 @@ interface LinkFieldProps {
   remove: (index: number) => void
 }
 
-interface LinkFormValues {
-  links: {
-    type: string
-    url: string
-  }[]
-}
-
 const linkTypes = [
   { value: 'website', label: 'Website' },
   { value: 'farcaster', label: 'Farcaster' },
@@ -32,6 +25,7 @@ const LinkField: React.FC<LinkFieldProps> = ({ index, remove }) => {
     watch,
     formState: { errors },
   } = useFormContext<NewEventCollectionForm>()
+
   const linkType = watch(`links.${index}.type`)
 
   return (
@@ -52,10 +46,7 @@ const LinkField: React.FC<LinkFieldProps> = ({ index, remove }) => {
         />
         {errors.links && errors.links[index]?.type && (
           <p className="text-red-500 text-sm mt-1">
-            {typeof errors.links[index].type === 'object' &&
-            'message' in errors.links[index].type
-              ? errors.links[index].type.message
-              : 'Invalid link type'}
+            {errors.links[index]?.message || 'Invalid link type'}
           </p>
         )}
       </div>
@@ -90,16 +81,13 @@ const LinkField: React.FC<LinkFieldProps> = ({ index, remove }) => {
         />
         {errors.links && errors.links[index]?.url && (
           <p className="text-red-500 text-sm mt-1">
-            {typeof errors.links[index].url === 'object' &&
-            'message' in errors.links[index].url
-              ? errors.links[index].url.message
-              : 'Invalid URL'}
+            {errors.links[index].url?.message || 'Invalid URL'}
           </p>
         )}
       </div>
 
-      {/* Remove Link Button */}
-      <div className="flex-none">
+      {/* Remove Button */}
+      <div className="flex items-center">
         <Button
           variant="borderless"
           aria-label="Remove link"
@@ -116,7 +104,7 @@ export const EditLinkField: React.FC<LinkFieldProps> = ({ index, remove }) => {
   const {
     control,
     formState: { errors },
-  } = useFormContext<LinkFormValues>()
+  } = useFormContext<NewEventCollectionForm>()
 
   return (
     <div className="flex flex-col md:flex-row items-start md:items-center gap-4 w-full">
