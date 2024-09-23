@@ -20,6 +20,10 @@ const formatDate = (dateString: string) => {
   return dayjs(dateString).format('D MMM YYYY')
 }
 
+const formatTime = (timeString: string) => {
+  return dayjs(timeString, 'HH:mm').format('h:mm A')
+}
+
 export const EventOverviewCard: React.FC<EventOverviewCardProps> = ({
   event,
   onClick,
@@ -37,19 +41,23 @@ export const EventOverviewCard: React.FC<EventOverviewCardProps> = ({
 
   const { image, ticket, attributes } = data
 
-  const getAttribute = (type: string) => {
+  const getEventAttribute = (type: string) => {
     const attr = attributes.find((attribute) => attribute.trait_type === type)
     return attr ? attr.value : ''
   }
 
-  const eventStartDate = getAttribute('event_start_date')
-  const eventEndDate = getAttribute('event_end_date')
-  const eventStartTime = getAttribute('event_start_time')
-  const eventEndTime = getAttribute('event_end_time')
+  const eventStartDate = getEventAttribute('event_start_date')
+  const eventEndDate = getEventAttribute('event_end_date')
+  const eventStartTime = getEventAttribute('event_start_time')
+  const eventEndTime = getEventAttribute('event_end_time')
   const eventLocation = ticket.event_location
 
   const eventStartDateFormatted = formatDate(eventStartDate)
   const eventEndDateFormatted = formatDate(eventEndDate)
+  const eventStartTimeFormatted = eventStartTime
+    ? formatTime(eventStartTime)
+    : ''
+  const eventEndTimeFormatted = eventEndTime ? formatTime(eventEndTime) : ''
 
   const isUserEvent = account && createdBy === account
 
@@ -107,7 +115,7 @@ export const EventOverviewCard: React.FC<EventOverviewCardProps> = ({
                 className="h-5 w-5 flex-shrink-0 text-gray-300"
                 aria-hidden="true"
               />
-              <span>{eventStartTime}</span>
+              <span>{eventStartTimeFormatted}</span>
             </p>
           )}
           {eventEndTime && (
@@ -116,7 +124,7 @@ export const EventOverviewCard: React.FC<EventOverviewCardProps> = ({
                 className="h-5 w-5 flex-shrink-0 text-gray-300"
                 aria-hidden="true"
               />
-              <span>{eventEndTime}</span>
+              <span>{eventEndTimeFormatted}</span>
             </p>
           )}
           {eventLocation && (
