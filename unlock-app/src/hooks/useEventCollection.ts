@@ -24,6 +24,9 @@ export const useCreateEventCollection = () => {
         await locksmith.createEventCollection(data)
       return createdCollection
     },
+    onMutate: () => {
+      ToastHelper.success('Creating your event collection...')
+    },
     onSuccess: () => {
       ToastHelper.success('Event collection created successfully.')
       queryClient.invalidateQueries({
@@ -40,7 +43,7 @@ export const useCreateEventCollection = () => {
   return {
     createEventCollection: createEventCollectionMutation.mutateAsync,
     isCreatingEventCollection: createEventCollectionMutation.isPending,
-    success: createEventCollectionMutation.isSuccess,
+    creationSuccess: createEventCollectionMutation.isSuccess,
   }
 }
 
