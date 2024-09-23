@@ -192,7 +192,7 @@ export default function EventsCollectionDetailContent({
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {getLinkIcon(link.type)}
+                    {getLinkIcon(link.type!)}
                   </Link>
                 ))}
             </div>
