@@ -14,6 +14,7 @@ import { FaGithub, FaYoutube, FaGlobe, FaTwitter } from 'react-icons/fa'
 import Link from 'next/link'
 import FarcasterIcon from './icons/FarcasterIcon'
 
+
 export interface EventTicket {
   event_address: string
   event_end_date: string
@@ -62,7 +63,7 @@ export default function EventsCollectionDetailContent({
 }: EventsCollectionDetailContentProps) {
   const { account } = useAuth()
   const router = useRouter()
-
+  
   const [isAddEventDrawerOpen, setIsAddEventDrawerOpen] = useState(false)
 
   // event detail drawer
@@ -84,7 +85,6 @@ export default function EventsCollectionDetailContent({
   const handleAddEvent = () => {
     setIsAddEventDrawerOpen(true)
   }
-
   const handleEventDetailClick = (event: Event) => {
     setSelectedEvent(event)
     setIsEventDetailDrawerOpen(true)
@@ -95,6 +95,7 @@ export default function EventsCollectionDetailContent({
     return eventCollection.events?.map((event) => event.slug) || []
   }, [eventCollection.events])
 
+  
   const getLinkIcon = (type: string) => {
     switch (type) {
       case 'github':
@@ -251,7 +252,6 @@ export default function EventsCollectionDetailContent({
         isManager={isManager!}
         existingEventSlugs={existingEventSlugs}
       />
-
       {/* Event Detail Drawer */}
       <EventDetailDrawer
         isOpen={isEventDetailDrawerOpen}
