@@ -6,11 +6,12 @@ import { useMemo, useState } from 'react'
 import { TbPlus, TbSettings } from 'react-icons/tb'
 import { EventCollection } from '@unlock-protocol/unlock-js'
 import { useRouter } from 'next/navigation'
+import { EventOverviewCard } from './EventOverviewCard'
 import { ImageBar } from '~/components/interface/locks/Manage/elements/ImageBar'
+import EventDetailDrawer from './EventDetailDawer'
 import { FaGithub, FaYoutube, FaGlobe, FaTwitter } from 'react-icons/fa'
 import Link from 'next/link'
 import FarcasterIcon from './icons/FarcasterIcon'
-import EventDetailDrawer from './EventDetailDawer'
 
 export interface EventTicket {
   event_address: string
@@ -63,6 +64,7 @@ export default function EventsCollectionDetailContent({
 
   // event detail drawer
   const [isEventDetailDrawerOpen, setIsEventDetailDrawerOpen] = useState(false)
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
 
   const hasValidEvents = useMemo(() => {
     return (
@@ -75,6 +77,11 @@ export default function EventsCollectionDetailContent({
     if (!account) return false
     return eventCollection.managerAddresses?.includes(account)
   }, [account, eventCollection.managerAddresses])
+
+  const handleEventDetailClick = (event: Event) => {
+    setSelectedEvent(event)
+    setIsEventDetailDrawerOpen(true)
+  }
 
   const getLinkIcon = (type: string) => {
     switch (type) {
@@ -122,10 +129,7 @@ export default function EventsCollectionDetailContent({
           <div className="w-full hidden sm:block sm:overflow-hidden bg-slate-200 max-h-80 sm:rounded-3xl">
             <img
               className="object-cover w-full h-full"
-              src={
-                eventCollection.banner ||
-                'https://avatars.githubusercontent.com/u/46839250?v=4'
-              }
+              src={eventCollection.banner || ''}
               alt="Cover image"
             />
           </div>
@@ -136,10 +140,7 @@ export default function EventsCollectionDetailContent({
                 <img
                   alt={eventCollection.title}
                   className="object-cover w-full m-auto aspect-1 sm:rounded-2xl rounded-lg"
-                  src={
-                    eventCollection.coverImage ||
-                    'https://avatars.githubusercontent.com/u/46839250?v=4'
-                  }
+                  src={eventCollection.coverImage || ''}
                 />
               </div>
 
@@ -164,18 +165,17 @@ export default function EventsCollectionDetailContent({
               {eventCollection.description}
             </p>
             <div className="flex space-x-6">
-              {eventCollection.links?.map(
-                (link: { url?: string; type: string }, index: number) => (
+              {Array.isArray(eventCollection.links) &&
+                eventCollection.links.map((link, index) => (
                   <Link
                     key={index}
-                    href={link.url || '#'}
+                    href={link.url!}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     {getLinkIcon(link.type)}
                   </Link>
-                )
-              )}
+                ))}
             </div>
           </div>
         </section>
@@ -187,7 +187,15 @@ export default function EventsCollectionDetailContent({
             <div className="flex flex-col gap-6 lg:col-span-8">
               {hasValidEvents ? (
                 <div className="">
-                  <div className="space-y-6"></div>
+                  <div className="space-y-6">
+                    {eventCollection.events?.map((eventItem: any) => (
+                      <EventOverviewCard
+                        key={eventItem.slug}
+                        event={eventItem}
+                        onClick={handleEventDetailClick}
+                      />
+                    ))}
+                  </div>
                 </div>
               ) : (
                 <ImageBar
@@ -216,7 +224,7 @@ export default function EventsCollectionDetailContent({
       <EventDetailDrawer
         isOpen={isEventDetailDrawerOpen}
         setIsOpen={setIsEventDetailDrawerOpen}
-        event={null}
+        event={selectedEvent}
       />
     </div>
   )
