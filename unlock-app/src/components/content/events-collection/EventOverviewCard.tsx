@@ -8,8 +8,10 @@ import {
 import React from 'react'
 import { Event } from './EventsCollectionDetailContent'
 import dayjs from 'dayjs'
-import { Badge } from '@unlock-protocol/ui'
+import { Badge, Placeholder } from '@unlock-protocol/ui'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { useCheckoutConfig } from '~/hooks/useCheckoutConfig'
+import { AttendeeCues } from '../event/Registration/AttendeeCues'
 
 interface EventOverviewCardProps {
   event: Event
@@ -21,6 +23,11 @@ export const EventOverviewCard: React.FC<EventOverviewCardProps> = ({
   onClick,
 }) => {
   const { account } = useAuth()
+  const { data: checkoutConfig, isPending: isCheckoutConfigPending } =
+    useCheckoutConfig({
+      id: event?.checkoutConfigId,
+    })
+
   const { name, data, createdBy } = event
 
   if (!data) {
@@ -41,7 +48,6 @@ export const EventOverviewCard: React.FC<EventOverviewCardProps> = ({
   const eventStartDate = getEventAttribute('event_start_date')
   const eventEndDate = getEventAttribute('event_end_date')
   const eventStartTime = getEventAttribute('event_start_time')
-  const eventEndTime = getEventAttribute('event_end_time')
   const eventLocation = ticket.event_location
 
   const isUserEvent = account && createdBy === account
@@ -51,7 +57,7 @@ export const EventOverviewCard: React.FC<EventOverviewCardProps> = ({
       className="flex flex-col sm:flex-row bg-white border cursor-pointer border-gray-200 rounded-2xl p-4 hover:bg-gray-50"
       onClick={() => onClick(event)}
     >
-      <div className="flex-shrink-0 mb-4 sm:mb-0">
+      <div className="flex-shrink-0 mb-4 sm:mb-0 sm:flex sm:items-center">
         <img
           src={image}
           alt={name}
@@ -63,7 +69,7 @@ export const EventOverviewCard: React.FC<EventOverviewCardProps> = ({
       <div className="sm:ml-6 flex flex-1 flex-col justify-between">
         <div>
           <div className="flex flex-col sm:flex-row sm:justify-between">
-            <h4 className="text-xl font-bold text-brand-ui-primary mb-2 sm:mb-0">
+            <h4 className="text-2xl font-bold text-brand-ui-primary mb-2 sm:mb-0">
               {name}
             </h4>
             {isUserEvent && (
@@ -72,50 +78,44 @@ export const EventOverviewCard: React.FC<EventOverviewCardProps> = ({
               </Badge>
             )}
           </div>
-          <p className="mt-2 text-sm text-gray-500">{data.description}</p>
+          <p className="mt-2 text-base text-gray-500">{data.description}</p>
         </div>
 
-        <div className="mt-4 flex flex-wrap gap-4">
-          {eventStartDate && (
-            <p className="flex items-center space-x-2 text-sm text-gray-700">
+        {/* Attendee Cues */}
+        {isCheckoutConfigPending ? (
+          <Placeholder.Root>
+            <Placeholder.Line />
+          </Placeholder.Root>
+        ) : (
+          <div>
+            <AttendeeCues checkoutConfig={checkoutConfig!} />
+          </div>
+        )}
+
+        <div className="mt-4 flex flex-wrap space-x-3 gap-4">
+          {eventStartDate && eventEndDate && (
+            <p className="flex items-center space-x-2 font-bold text-base text-gray-700">
               <DateIcon
-                className="h-5 w-5 flex-shrink-0 text-gray-300"
+                className="h-4 w-4 mr-2 flex-shrink-0 text-gray-400"
                 aria-hidden="true"
               />
-              <span>{dayjs(eventStartDate).format('D MMM YYYY')}</span>
+              {dayjs(eventStartDate).format('D MMM YYYY')}
             </p>
           )}
-          {eventEndDate && (
-            <p className="flex items-center space-x-2 text-sm text-gray-700">
-              <DateIcon
-                className="h-5 w-5 flex-shrink-0 text-gray-300"
-                aria-hidden="true"
-              />
-              <span>{dayjs(eventEndDate).format('D MMM YYYY')}</span>
-            </p>
-          )}
+
           {eventStartTime && (
-            <p className="flex items-center space-x-2 text-sm text-gray-700">
+            <p className="flex items-center space-x-2 font-bold text-base text-gray-700">
               <TimeIcon
-                className="h-5 w-5 flex-shrink-0 text-gray-300"
+                className="h-4 w-4 mr-2 flex-shrink-0 text-gray-400"
                 aria-hidden="true"
               />
               <span>{dayjs(eventStartTime, 'HH:mm').format('h:mm A')}</span>
             </p>
           )}
-          {eventEndTime && (
-            <p className="flex items-center space-x-2 text-sm text-gray-700">
-              <TimeIcon
-                className="h-5 w-5 flex-shrink-0 text-gray-300"
-                aria-hidden="true"
-              />
-              <span>{dayjs(eventEndTime, 'HH:mm').format('h:mm A')}</span>
-            </p>
-          )}
           {eventLocation && (
-            <p className="flex items-center space-x-2 text-sm text-gray-700">
+            <p className="flex items-center space-x-2 font-bold text-base text-gray-700">
               <LocationIcon
-                className="h-5 w-5 flex-shrink-0 text-gray-300"
+                className="h-4 w-4 mr-2 flex-shrink-0 text-gray-400"
                 aria-hidden="true"
               />
               <span>{eventLocation}</span>
