@@ -9,6 +9,7 @@ import { useEventOrganizers } from '~/hooks/useEventOrganizers'
 import Hosts from '../event/Hosts'
 import { EventDetail } from '../event/EventDetail'
 import { EventLocation } from '../event/EventLocation'
+import dayjs from 'dayjs'
 
 interface EventDetailDrawerProps {
   isOpen: boolean
@@ -33,31 +34,30 @@ const getOrdinalSuffix = (day: number): string => {
 
 // util to format date range
 const formatDateRange = (startDateStr: string, endDateStr?: string): string => {
-  const startDate = new Date(startDateStr)
-  const endDate = endDateStr ? new Date(endDateStr) : null
+  const startDate = dayjs(startDateStr)
+  const endDate = endDateStr ? dayjs(endDateStr) : null
 
-  const startDay = startDate.getDate()
+  const startDay = startDate.date()
   const startSuffix = getOrdinalSuffix(startDay)
-  const startMonth = new Intl.DateTimeFormat('en-US', {
-    month: 'short',
-  }).format(startDate)
-  const startYear = startDate.getFullYear()
+  const startMonth = startDate.format('MMM')
+  const startYear = startDate.year()
 
   if (endDate) {
-    const endDay = endDate.getDate()
+    const endDay = endDate.date()
     const endSuffix = getOrdinalSuffix(endDay)
-    const endMonth = new Intl.DateTimeFormat('en-US', {
-      month: 'short',
-    }).format(endDate)
-    const endYear = endDate.getFullYear()
+    const endMonth = endDate.format('MMM')
+    const endYear = endDate.year()
 
     // If start and end are in the same month and year
-    if (startMonth === endMonth && startYear === endYear) {
+    if (
+      startDate.isSame(endDate, 'month') &&
+      startDate.isSame(endDate, 'year')
+    ) {
       return `${startDay}${startSuffix} ${startMonth} to ${endDay}${endSuffix} ${endMonth}, ${startYear}`
     }
 
     // If start and end are in different months but same year
-    if (startYear === endYear) {
+    if (startDate.isSame(endDate, 'year')) {
       return `${startDay}${startSuffix} ${startMonth} to ${endDay}${endSuffix} ${endMonth}, ${startYear}`
     }
 
