@@ -97,12 +97,10 @@ export const createEventCollectionOperation = async (
 }
 
 /**
- * Retrieves an event collection by its slug.
- * It fetches the event collection from the database
- * and includes associated events in the response.
+ * Retrieves an event collection by its slug, including all associated approved events.
  *
  * @param slug - The unique identifier (slug) of the event collection.
- * @returns A promise that resolves to the event collection object.
+ * @returns A promise that resolves to the event collection object with events.
  * @throws An error if the event collection is not found.
  */
 export const getEventCollectionOperation = async (slug: string) => {
@@ -113,6 +111,9 @@ export const getEventCollectionOperation = async (slug: string) => {
         as: 'events',
         through: {
           attributes: [],
+          where: {
+            isApproved: true,
+          },
         },
       },
     ],
@@ -186,7 +187,9 @@ export const addEventToCollectionOperation = async (
     throw new Error('Collection not found')
   }
 
-  const event = await EventData.findOne({ where: { slug: eventSlug } })
+  const event = await EventData.scope('withoutId').findOne({
+    where: { slug: eventSlug },
+  })
   if (!event) {
     throw new Error('Event not found')
   }
@@ -218,57 +221,39 @@ export const addEventToCollectionOperation = async (
 }
 
 /**
- * Retrieves events associated with a specific event collection.
- * It supports pagination and can optionally include unapproved
- * events based on the provided flag.
+ * Removes a single event from a collection.
  *
- * @param collectionSlug - The unique identifier (slug) of the event collection
- * @param page - The current page number for pagination (default is 1).
- * @param pageSize - The number of events to return per page (default is 10).
- * @param userAddress - The wallet address of the user requesting the events.
- * @returns A promise that resolves to an object containing the events,
- *          total count, current page, and total pages for pagination.
- * @throws An error if the specified collection cannot be found.
+ * @param collectionSlug - The slug of the event collection.
+ * @param eventSlug - The slug of the event to remove.
+ * @param userAddress - The address of the user performing the operation.
+ * @returns The updated event collection.
  */
-export const getEventsInCollectionOperation = async (
+export const removeEventFromCollectionOperation = async (
   collectionSlug: string,
-  page = 1,
-  pageSize = 10,
-  userAddress?: string
-) => {
+  eventSlug: string,
+  userAddress: string
+): Promise<EventCollection> => {
   const collection = await EventCollection.findByPk(collectionSlug)
   if (!collection) {
     throw new Error('Collection not found')
   }
 
-  const isManager = collection.managerAddresses.includes(userAddress || '')
-  const includeUnapproved = isManager
+  if (!collection.managerAddresses.includes(userAddress)) {
+    throw new Error('Not authorized to remove events from this collection')
+  }
 
-  const offset = (page - 1) * pageSize
-
-  const { count, rows } = await EventData.findAndCountAll({
-    include: [
-      {
-        model: EventCollection,
-        as: 'collections',
-        where: { slug: collectionSlug },
-        through: {
-          attributes: [],
-          where: includeUnapproved ? {} : { isApproved: true },
-        },
-      },
-    ],
-    limit: pageSize,
-    offset,
-    order: [['createdAt', 'DESC']],
-    distinct: true,
+  const association = await EventCollectionAssociation.findOne({
+    where: { collectionSlug, eventSlug },
   })
 
-  return {
-    events: rows,
-    totalCount: count,
-    currentPage: page,
-    totalPages: Math.ceil(count / pageSize),
-    isManager,
+  if (!association) {
+    throw new Error('Event is not part of the collection')
   }
+
+  await association.destroy()
+
+  // fetch and return the updated collection
+  return (await EventCollection.findByPk(collectionSlug, {
+    include: [{ model: EventData, as: 'events' }],
+  })) as EventCollection
 }
