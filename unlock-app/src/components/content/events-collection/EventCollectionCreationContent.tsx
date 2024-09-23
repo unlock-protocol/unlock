@@ -1,32 +1,52 @@
 'use client'
 
 import { useState } from 'react'
-import { EventCollectionForm } from './Form'
+import { EventCollectionForm, NewEventCollectionForm } from './Form'
 import { useCreateEventCollection } from '~/hooks/useEventCollection'
-import { CollectionCreationStatus } from './CollectionCreationStatus'
+import { Button } from '@unlock-protocol/ui'
+import { useRouter } from 'next/navigation'
+import { AnimationContent } from '~/components/interface/locks/Create/elements/CreateLockFormSummary'
 
 export default function EventCollectionCreationContent() {
-  const { createEventCollection, isCreatingEventCollection, success } =
+  const { createEventCollection, isCreatingEventCollection, creationSuccess } =
     useCreateEventCollection()
   const [createdSlug, setCreatedSlug] = useState<string | null>(null)
+  const router = useRouter()
 
-  const onSubmit = async (data: any) => {
-    const result = await createEventCollection(data)
-    if (result?.slug) {
-      setCreatedSlug(result.slug)
+  const onSubmit = async (data: NewEventCollectionForm) => {
+    try {
+      const response = await createEventCollection(data)
+      setCreatedSlug(response.slug!)
+    } catch (error) {
+      console.error('Error creating event collection:', error)
     }
+  }
+
+  if (creationSuccess && createdSlug) {
+    return (
+      <div className="grid max-w-3xl gap-6 pb-24 mx-auto">
+        <div className="flex flex-col items-center text-center">
+          <AnimationContent status="deployed" />
+          <p className="mt-4 text-2xl font-semibold">
+            Collection created successfully!
+          </p>
+          <Button
+            className="mt-4"
+            onClick={() => router.push(`/events/${createdSlug}`)}
+          >
+            Visit Your New Collection
+          </Button>
+        </div>
+      </div>
+    )
   }
 
   return (
     <div className="grid max-w-3xl gap-6 pb-24 mx-auto">
-      <CollectionCreationStatus
-        isCreating={isCreatingEventCollection}
-        success={success}
-        createdSlug={createdSlug}
+      <EventCollectionForm
+        onSubmit={onSubmit}
+        disabled={isCreatingEventCollection}
       />
-      {!isCreatingEventCollection && !success && (
-        <EventCollectionForm onSubmit={onSubmit} />
-      )}
     </div>
   )
 }
