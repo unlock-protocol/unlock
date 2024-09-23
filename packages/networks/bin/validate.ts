@@ -1,4 +1,12 @@
+/**
+ * Usage>
+ *
+ * export ALL_CHANGED_FILES="packages/networks/src/networks/mainnet.ts"
+ * yarn validate
+ *
+ */
 import path from 'path'
+import { ZeroAddress } from 'ethers'
 import {
   wait,
   isVerified,
@@ -12,16 +20,22 @@ import {
   getAllAddresses,
 } from './utils'
 
+const DAO_CHAIN_ID = 1 // mainnet for now
+const DAO_TIMELOCK_ADDRESS = '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B' // mainnet for now
+
 const run = async () => {
   const results = {}
 
   const fileList = process.env.ALL_CHANGED_FILES
-    ? process.env.ALL_CHANGED_FILES.split(' ')
+    ? process.env.ALL_CHANGED_FILES.split(' ').filter(
+        (f) => !f.includes(`networks/index.ts`)
+      )
     : []
 
   for (const filePath of fileList) {
     let errors: string[] = []
     const successes: string[] = []
+    const warnings: string[] = []
     const failures: string[] = []
 
     // check mandatory keys using ts
@@ -41,27 +55,32 @@ const run = async () => {
     // make sure the contracts are verified on Etherscan.
     for (const contractName in addresses) {
       const contractAddress = addresses[contractName]
-      await wait(100)
-      try {
-        const verified = await isVerified({
-          chainId: network.id,
-          contractAddress,
-        })
-        // log results
-        if (!verified?.isVerified) {
-          errors.push(
-            `❌ Contract ${contractName} at ${contractAddress} is not verified`
-          )
-        } else {
-          successes.push(
-            `✅ Contract ${contractName} at ${contractAddress} is verified`
+      if (!contractAddress || contractAddress === ZeroAddress) {
+        warnings.push(`⚠️ Contract ${contractName} is missing`)
+      } else {
+        // make sure we dont reach max etherscan rate (5/sec)
+        await wait(250)
+        try {
+          const verified = await isVerified({
+            chainId: network.id,
+            contractAddress,
+          })
+          // log results
+          if (!verified?.isVerified) {
+            errors.push(
+              `❌ Verification failed for ${contractName} at ${contractAddress}: ${verified.result}`
+            )
+          } else {
+            successes.push(
+              `✅ Contract ${contractName} at ${contractAddress} is verified`
+            )
+          }
+        } catch (error) {
+          failures.push(
+            `❌ Failed to check verification for contract ${contractName} at ${contractAddress}
+      (did you add block explorer verification and API in \`@unlock-protocol/hardhat-helpers\` package ?)`
           )
         }
-      } catch (error) {
-        failures.push(
-          `❌ Failed to check verification for contract ${contractName} at ${contractAddress}
-    (did you add block explorer verification and API in \`@unlock-protocol/hardhat-helpers\` package ?)`
-        )
       }
     }
 
@@ -144,6 +163,28 @@ const run = async () => {
     // multisig
     if (!network.multisig) {
       errors = [...errors, '❌ Multisig is missing.']
+    } else if (network.id === DAO_CHAIN_ID) {
+      // check contracts ownership
+      const unlockOwner = await checkOwnership({
+        contractAddress: network.unlockAddress,
+        expectedOwner: DAO_TIMELOCK_ADDRESS,
+        providerURL: network.provider,
+      })
+      if (!unlockOwner) {
+        errors.push(`❌ Unlock is not owned by the DAO`)
+      }
+      const unlockProxyAdminOwner = await checkProxyAdminOwnership({
+        contractAddress: network.unlockAddress,
+        expectedOwner: DAO_TIMELOCK_ADDRESS,
+        providerURL: network.provider,
+      })
+      if (!unlockProxyAdminOwner) {
+        errors.push(`❌ Unlock Proxy Admin is not owned by the DAO`)
+      }
+
+      if (unlockOwner && unlockProxyAdminOwner) {
+        successes.push(`✅ Unlock ownership correctly set to the DAO`)
+      }
     } else {
       try {
         // check multisig params
@@ -195,6 +236,7 @@ const run = async () => {
       errors,
       failures,
       successes,
+      warnings,
     }
   }
 
@@ -206,6 +248,7 @@ const parseGithubComment = ({
   errors,
   failures,
   successes,
+  warnings,
 }) => `### ${networkName}
 
 ${successes.length ? `The setup is successful :\n` : ''}
@@ -216,6 +259,9 @@ ${errors.map((error) => `- ${error}`).join('\n')}
 
 ${failures.length ? `Some verification calls have failed  :\n` : ''}
 ${failures.map((failure) => `- ${failure}`).join('\n')}
+
+${warnings.length ? `Some additonal warnings  :\n` : ''}
+${warnings.map((warning) => `- ${warning}`).join('\n')}
 `
 
 run()

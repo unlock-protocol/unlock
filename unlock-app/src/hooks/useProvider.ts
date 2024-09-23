@@ -58,6 +58,15 @@ export const useProvider = (config: any) => {
 
   const displayAccount = email || connected
 
+  const createBrowserProvider = (provider: any): ethers.BrowserProvider => {
+    const browserProvider = new ethers.BrowserProvider(provider)
+    if (provider.parentOrigin) {
+      // @ts-expect-error Property 'parentOrigin' does not exist on type 'BrowserProvider'.
+      browserProvider.parentOrigin = provider.parentOrigin
+    }
+    return browserProvider
+  }
+
   const switchBrowserProviderNetwork = async (id: number) => {
     try {
       await provider.send(
@@ -98,9 +107,9 @@ export const useProvider = (config: any) => {
       } else {
         await switchBrowserProviderNetwork(networkId)
         if (getStorage('provider') === 'WALLET_CONNECT') {
-          walletServiceProvider = new ethers.BrowserProvider(eip1193)
+          walletServiceProvider = createBrowserProvider(eip1193)
         } else {
-          walletServiceProvider = new ethers.BrowserProvider(window.ethereum!)
+          walletServiceProvider = createBrowserProvider(window.ethereum!)
         }
       }
     }
@@ -183,15 +192,15 @@ export const useProvider = (config: any) => {
 
       if (eip1193Provider.on) {
         eip1193Provider.on('accountsChanged', async () => {
-          await resetProvider(new ethers.BrowserProvider(eip1193Provider))
+          await resetProvider(createBrowserProvider(eip1193Provider))
         })
 
         eip1193Provider.on('chainChanged', async () => {
-          await resetProvider(new ethers.BrowserProvider(eip1193Provider))
+          await resetProvider(createBrowserProvider(eip1193Provider))
         })
       }
 
-      auth = await resetProvider(new ethers.BrowserProvider(eip1193Provider))
+      auth = await resetProvider(createBrowserProvider(eip1193Provider))
     }
 
     setLoading(false)

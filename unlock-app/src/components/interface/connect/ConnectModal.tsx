@@ -1,15 +1,14 @@
+'use client'
+
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useConnectModal } from '~/hooks/useConnectModal'
 import ConnectWalletComponent from './ConnectWalletComponent'
 
 export const ConnectModal = () => {
-  const { status, closeConnectModal, open } = useConnectModal()
-  const { connected } = useAuth()
+  const { closeConnectModal, open } = useConnectModal()
 
-  const useUnlockAccount = status === 'unlock_account'
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
@@ -53,7 +52,7 @@ export const ConnectModal = () => {
                   <CloseIcon size={22} />
                 </button>
               </header>
-              <ConnectWalletComponent shoudOpenConnectModal={true} />
+              <ConnectWalletComponent />
             </div>
           </Transition.Child>
         </div>

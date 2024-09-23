@@ -16,7 +16,6 @@ interface AddToWalletProps {
   handlePassUrl?: (url: string) => void
   disabled?: boolean
   active?: boolean
-  minimised?: boolean
   iconLeft?: JSX.Element
   size?: Size
   variant?: string
@@ -30,20 +29,19 @@ export const AddToPhoneWallet = ({
   network,
   handlePassUrl,
   platform,
-  minimised,
   ...rest
 }: AddToWalletProps) => {
   const walletConfig = {
     [Platform.APPLE]: {
       generatePass: generateAppleWalletPass,
-      imgSrc: `/images/illustrations/apple-wallet.svg`,
+      imgSrc: '/images/illustrations/apple-wallet.svg',
       altText: 'Apple Wallet',
       loadingMessage:
         'Generating your Apple Wallet pass. This takes a few seconds.',
     },
     [Platform.GOOGLE]: {
       generatePass: generateGoogleWalletPass,
-      imgSrc: `/images/illustrations/google-wallet.svg`,
+      imgSrc: '/images/illustrations/google-wallet.svg',
       altText: 'Google Wallet',
       loadingMessage:
         'Generating your Google Wallet pass. This takes a few seconds.',
@@ -66,11 +64,9 @@ export const AddToPhoneWallet = ({
       error: `Failed to generate your ${config.altText} pass. Please try again.`,
     })
   }
-
   return (
     <Box as={as} {...rest} onClick={handleClick}>
-      <Image width="16" height="16" alt={config.altText} src={config.imgSrc} />
-      {!minimised && `Add to my ${config.altText}`}
+      <Image width="200" height="16" alt={config.altText} src={config.imgSrc} />
     </Box>
   )
 }

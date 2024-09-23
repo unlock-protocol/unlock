@@ -39,8 +39,8 @@ export const zksync: NetworkConfig = {
   publicProvider: 'https://mainnet.era.zksync.io',
   startBlock: 25905168,
   subgraph: {
-    endpoint:
-      'https://api.studio.thegraph.com/query/65299/unlock-protocol-zksync/version/latest',
+    endpoint: 'https://subgraph.unlock-protocol.com/324',
+    graphId: 'Bqo6hTg28TRmzksb6Eg8EPefD4sXBra1ad1WD4oz6c88',
     networkName: 'zksync-era',
     studioName: 'unlock-protocol-zksync',
   },

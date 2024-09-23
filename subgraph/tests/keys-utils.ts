@@ -32,7 +32,7 @@ import { GNPChanged } from '../generated/Unlock/Unlock'
 import {
   now,
   lockAddress,
-  lockAddressV8,
+  lockAddressV9,
   tokenId,
   keyOwnerAddress,
   lockOwner,
@@ -41,13 +41,13 @@ import {
 import { newCancelKeyTransactionReceipt } from './mockTxReceipt'
 import { KEY_GRANTER } from '../src/helpers'
 
-export function mockDataSourceV8(): void {
-  const v8context = new DataSourceContext()
-  v8context.set(
+export function mockDataSourceV9(): void {
+  const V9context = new DataSourceContext()
+  V9context.set(
     'lockAddress',
-    Value.fromAddress(Address.fromString(lockAddressV8))
+    Value.fromAddress(Address.fromString(lockAddressV9))
   )
-  dataSourceMock.setReturnValues(lockAddressV8, 'rinkeby', v8context)
+  dataSourceMock.setReturnValues(lockAddressV9, 'rinkeby', V9context)
 }
 
 export function mockDataSourceV11(): void {
@@ -165,9 +165,9 @@ export function updateExpiration(exp: BigInt = BigInt.fromU64(now)): void {
     .returns([ethereum.Value.fromUnsignedBigInt(exp)])
 }
 
-export function updateExpirationV8(exp: BigInt = BigInt.fromU64(now)): void {
+export function updateExpirationV9(exp: BigInt = BigInt.fromU64(now)): void {
   createMockedFunction(
-    Address.fromString(lockAddressV8),
+    Address.fromString(lockAddressV9),
     'keyExpirationTimestampFor',
     'keyExpirationTimestampFor(address):(uint256)'
   )

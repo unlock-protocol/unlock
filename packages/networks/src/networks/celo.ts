@@ -67,8 +67,8 @@ export const celo: NetworkConfig = {
   publicProvider: 'https://forno.celo.org',
   startBlock: 13994123,
   subgraph: {
-    endpoint:
-      'https://api.studio.thegraph.com/query/65299/unlock-protocol-celo/version/latest',
+    endpoint: 'https://subgraph.unlock-protocol.com/42220',
+    graphId: '7WoP8r47dyfYvQv7tk5wxSYyszENqXz2EATjUT8x7gRm',
     studioName: 'unlock-protocol-celo',
   },
   tokens: [
