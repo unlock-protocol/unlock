@@ -33,9 +33,13 @@ export interface NewEventCollectionForm {
 
 interface FormProps {
   onSubmit: (data: NewEventCollectionForm) => void
+  compact?: boolean
 }
 
-export const EventCollectionForm = ({ onSubmit }: FormProps) => {
+export const EventCollectionForm = ({
+  onSubmit,
+  compact = false,
+}: FormProps) => {
   const { mutateAsync: uploadImage, isPending: isUploading } = useImageUpload()
   const router = useRouter()
   const { account } = useAuth()
@@ -115,18 +119,20 @@ export const EventCollectionForm = ({ onSubmit }: FormProps) => {
 
   return (
     <FormProvider {...methods}>
-      <div className="grid grid-cols-[50px_1fr_50px] items-center mb-4">
-        <Button variant="borderless" aria-label="arrow back">
-          <ArrowBackIcon
-            size={20}
-            className="cursor-pointer"
-            onClick={() => router.back()}
-          />
-        </Button>
-        <h1 className="text-xl font-bold text-center text-brand-dark">
-          Create an Event Collection
-        </h1>
-      </div>
+      {!compact && (
+        <div className="grid grid-cols-[50px_1fr_50px] items-center mb-4">
+          <Button variant="borderless" aria-label="arrow back">
+            <ArrowBackIcon
+              size={20}
+              className="cursor-pointer"
+              onClick={() => router.back()}
+            />
+          </Button>
+          <h1 className="text-xl font-bold text-center text-brand-dark">
+            Create an Event Collection
+          </h1>
+        </div>
+      )}
 
       <form className="mb-6" onSubmit={methods.handleSubmit(onSubmit)}>
         <div className="grid gap-6">
@@ -136,8 +142,10 @@ export const EventCollectionForm = ({ onSubmit }: FormProps) => {
               All of these fields can also be adjusted later.
             </p>
 
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <div className="order-2 md:order-1">
+            <div
+              className={`grid ${compact ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'} gap-6`}
+            >
+              <div className={`${compact ? 'order-2' : 'order-2 md:order-1'}`}>
                 <ImageUpload
                   description="This image will be used as the cover for your event collection. Use 512 by 512 pixels for best results."
                   isUploading={isUploading}
@@ -160,7 +168,9 @@ export const EventCollectionForm = ({ onSubmit }: FormProps) => {
                   </p>
                 )}
               </div>
-              <div className="grid order-1 md:order-2 md:gap-[10rem] gap-2">
+              <div
+                className={`grid ${compact ? 'order-1' : 'order-1 md:order-2'} ${compact ? 'gap-2' : 'md:gap-4 gap-2'}`}
+              >
                 <Input
                   {...register('title')}
                   type="text"
@@ -175,7 +185,7 @@ export const EventCollectionForm = ({ onSubmit }: FormProps) => {
                   label="Description"
                   placeholder="Write description here."
                   description="Enter a description for your event collection."
-                  rows={4}
+                  rows={10}
                 />
               </div>
             </div>
