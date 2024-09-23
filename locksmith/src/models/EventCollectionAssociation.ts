@@ -29,10 +29,18 @@ EventCollectionAssociation.init(
     eventSlug: {
       type: DataTypes.STRING,
       allowNull: false,
+      references: {
+        model: 'EventData',
+        key: 'slug',
+      },
     },
     collectionSlug: {
       type: DataTypes.STRING,
       allowNull: false,
+      references: {
+        model: 'EventCollections',
+        key: 'slug',
+      },
     },
     isApproved: {
       type: DataTypes.BOOLEAN,
