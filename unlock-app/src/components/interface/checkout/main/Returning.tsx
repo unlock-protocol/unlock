@@ -1,12 +1,11 @@
 import { Button, Icon } from '@unlock-protocol/ui'
-import Lottie from 'lottie-react'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { CheckoutService } from './checkoutMachine'
 import unlockedAnimation from '~/animations/unlocked.json'
 import { useConfig } from '~/utils/withConfig'
 import { Stepper } from '../Stepper'
 import { useSelector } from '@xstate/react'
-import { Fragment, useState } from 'react'
+import { Fragment, useState, lazy, Suspense } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { PoweredByUnlock } from '../PoweredByUnlock'
@@ -15,6 +14,8 @@ import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
 import { shouldSkip } from './utils'
 import { AddToWallet } from '../../keychain/AddToWallet'
+
+const Lottie = lazy(() => import('lottie-react'))
 
 interface Props {
   checkoutService: CheckoutService
@@ -77,10 +78,12 @@ export function Returning({ checkoutService, onClose, communication }: Props) {
       <main className="h-full px-6 py-2 overflow-auto">
         <div className="flex flex-col items-center justify-center h-full gap-2">
           <div className="flex flex-col items-center justify-center h-full gap-1">
-            <Lottie
-              className={'w-28 sm:w-36 h-28 sm:h-36'}
-              animationData={unlockedAnimation}
-            />
+            <Suspense fallback={<div className="w-28 sm:w-36 h-28 sm:h-36" />}>
+              <Lottie
+                className={'w-28 sm:w-36 h-28 sm:h-36'}
+                animationData={unlockedAnimation}
+              />
+            </Suspense>
             <p className="text-lg font-bold text-brand-ui-primary">
               Voila! This is unlocked!
             </p>
