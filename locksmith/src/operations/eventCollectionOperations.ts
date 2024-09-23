@@ -5,7 +5,7 @@ import { z } from 'zod'
 import { kebabCase } from 'lodash'
 
 // event collection body schema
-export const EventCollectionBody = z.object({
+const EventCollectionBody = z.object({
   title: z.string(),
   description: z.string(),
   coverImage: z.string().optional(),
@@ -14,18 +14,7 @@ export const EventCollectionBody = z.object({
     .array(
       z.object({
         type: z.enum(['farcaster', 'website', 'x', 'github', 'youtube']),
-        url: z.string().refine(
-          (val) => {
-            const type = val.split('://')[0]
-            if (type === 'website') {
-              return /^https?:\/\/.+\..+/.test(val)
-            }
-            return true
-          },
-          {
-            message: 'Invalid URL format for the selected link type',
-          }
-        ),
+        url: z.string().url(),
       })
     )
     .optional(),
@@ -79,15 +68,8 @@ export const createEventCollectionOperation = async (
     ...new Set([...parsedBody.managerAddresses, creatorAddress]),
   ]
 
-  const links =
-    parsedBody.links?.map((link) => ({
-      type: link.type,
-      url: link.url,
-    })) || []
-
   const eventCollection = await EventCollection.create({
     ...parsedBody,
-    links,
     slug,
     managerAddresses,
   })
@@ -127,6 +109,38 @@ export const getEventCollectionOperation = async (slug: string) => {
 }
 
 /**
+ * Retrieves unapproved events for a specific event collection.
+ *
+ * @param slug - The unique identifier (slug) of the event collection.
+ * @returns A promise that resolves to an array of unapproved events.
+ * @throws An error if the event collection is not found.
+ */
+export const getUnapprovedEventsForCollectionOperation = async (
+  slug: string
+) => {
+  const eventCollection = await EventCollection.findByPk(slug, {
+    include: [
+      {
+        model: EventData,
+        as: 'events',
+        through: {
+          attributes: [],
+          where: {
+            isApproved: false,
+          },
+        },
+      },
+    ],
+  })
+
+  if (!eventCollection) {
+    throw new Error('Event collection not found')
+  }
+
+  return eventCollection.events
+}
+
+/**
  * Updates an existing event collection.
  * It checks if the event collection exists and if the user is authorized
  * to make updates. If authorized, it updates the collection with the provided data.
@@ -151,16 +165,85 @@ export const updateEventCollectionOperation = async (
     throw new Error('Not authorized to update this collection')
   }
 
-  const links =
-    parsedBody.links?.map((link) => ({
-      type: link.type,
-      url: link.url,
-    })) || []
-
   await eventCollection.update({
     ...parsedBody,
-    links,
   })
+  return eventCollection
+}
+
+/**
+ * Adds a new manager address to an existing event collection.
+ *
+ * @param slug - The unique identifier (slug) of the event collection.
+ * @param newManagerAddress - The wallet address to be added as a manager.
+ * @param requesterAddress - The wallet address of the user attempting the operation.
+ * @returns A promise that resolves to the updated event collection object.
+ * @throws An error if the collection is not found or the user is not authorized.
+ */
+export const addManagerAddressOperation = async (
+  slug: string,
+  newManagerAddress: string,
+  requesterAddress: string
+): Promise<EventCollection> => {
+  const eventCollection = await EventCollection.findByPk(slug)
+  if (!eventCollection) {
+    throw new Error('Event collection not found')
+  }
+
+  if (!eventCollection.managerAddresses.includes(requesterAddress)) {
+    throw new Error('Not authorized to add managers to this collection')
+  }
+
+  if (eventCollection.managerAddresses.includes(newManagerAddress)) {
+    throw new Error('Address is already a manager')
+  }
+
+  eventCollection.managerAddresses = [
+    ...eventCollection.managerAddresses,
+    newManagerAddress,
+  ]
+
+  await eventCollection.save()
+  return eventCollection
+}
+
+/**
+ * Removes an existing manager address from an event collection.
+ *
+ * @param slug - The unique identifier (slug) of the event collection.
+ * @param managerAddressToRemove - The wallet address to be removed from managers.
+ * @param requesterAddress - The wallet address of the user attempting the operation.
+ * @returns A promise that resolves to the updated event collection object.
+ * @throws An error if the collection is not found, the user is not authorized, or the address is not a manager.
+ */
+export const removeManagerAddressOperation = async (
+  slug: string,
+  managerAddressToRemove: string,
+  requesterAddress: string
+): Promise<EventCollection> => {
+  const eventCollection = await EventCollection.findByPk(slug)
+  if (!eventCollection) {
+    throw new Error('Event collection not found')
+  }
+
+  if (!eventCollection.managerAddresses.includes(requesterAddress)) {
+    throw new Error('Not authorized to remove managers from this collection')
+  }
+
+  if (!eventCollection.managerAddresses.includes(managerAddressToRemove)) {
+    throw new Error('Address is not a manager')
+  }
+
+  // Prevent removing the last manager
+  if (eventCollection.managerAddresses.length === 1) {
+    throw new Error('Cannot remove the last manager of the collection')
+  }
+
+  eventCollection.managerAddresses = eventCollection.managerAddresses.filter(
+    (address) => address !== managerAddressToRemove
+  )
+
+  await eventCollection.save()
   return eventCollection
 }
 
@@ -221,6 +304,46 @@ export const addEventToCollectionOperation = async (
 }
 
 /**
+ * Approves a single event in a collection.
+ *
+ * @param collectionSlug - The slug of the event collection.
+ * @param eventSlug - The slug of the event to approve.
+ * @param userAddress - The address of the user performing the operation.
+ * @returns The updated association object.
+ */
+export const approveEventOperation = async (
+  collectionSlug: string,
+  eventSlug: string,
+  userAddress: string
+): Promise<EventCollectionAssociation> => {
+  const collection = await EventCollection.findByPk(collectionSlug)
+  if (!collection) {
+    throw new Error('Collection not found')
+  }
+
+  if (!collection.managerAddresses.includes(userAddress)) {
+    throw new Error('Not authorized to approve events in this collection')
+  }
+
+  const association = await EventCollectionAssociation.findOne({
+    where: { collectionSlug, eventSlug },
+  })
+
+  if (!association) {
+    throw new Error('Event is not part of the collection')
+  }
+
+  if (association.isApproved) {
+    throw new Error('Event is already approved')
+  }
+
+  association.isApproved = true
+  await association.save()
+
+  return association
+}
+
+/**
  * Removes a single event from a collection.
  *
  * @param collectionSlug - The slug of the event collection.
@@ -252,7 +375,92 @@ export const removeEventFromCollectionOperation = async (
 
   await association.destroy()
 
-  // fetch and return the updated collection
+  // Optionally, you can fetch and return the updated collection
+  return (await EventCollection.findByPk(collectionSlug, {
+    include: [{ model: EventData, as: 'events' }],
+  })) as EventCollection
+}
+
+/**
+ * Bulk approves multiple events in a collection.
+ *
+ * @param collectionSlug - The slug of the event collection.
+ * @param eventSlugs - An array of event slugs to approve.
+ * @param userAddress - The address of the user performing the operation.
+ * @returns An array of updated association objects.
+ */
+export const bulkApproveEventsOperation = async (
+  collectionSlug: string,
+  eventSlugs: string[],
+  userAddress: string
+): Promise<EventCollectionAssociation[]> => {
+  const collection = await EventCollection.findByPk(collectionSlug)
+  if (!collection) {
+    throw new Error('Collection not found')
+  }
+
+  if (!collection.managerAddresses.includes(userAddress)) {
+    throw new Error('Not authorized to approve events in this collection')
+  }
+
+  const associations = await EventCollectionAssociation.findAll({
+    where: {
+      collectionSlug,
+      eventSlug: eventSlugs,
+      isApproved: false,
+    },
+  })
+
+  if (associations.length === 0) {
+    throw new Error('No events to approve')
+  }
+
+  for (const association of associations) {
+    association.isApproved = true
+    await association.save()
+  }
+
+  return associations
+}
+
+/**
+ * Bulk removes multiple events from a collection.
+ *
+ * @param collectionSlug - The slug of the event collection.
+ * @param eventSlugs - An array of event slugs to remove.
+ * @param userAddress - The address of the user performing the operation.
+ * @returns The updated event collection.
+ */
+export const bulkRemoveEventsOperation = async (
+  collectionSlug: string,
+  eventSlugs: string[],
+  userAddress: string
+): Promise<EventCollection> => {
+  const collection = await EventCollection.findByPk(collectionSlug)
+  if (!collection) {
+    throw new Error('Collection not found')
+  }
+
+  if (!collection.managerAddresses.includes(userAddress)) {
+    throw new Error('Not authorized to remove events from this collection')
+  }
+
+  const associations = await EventCollectionAssociation.findAll({
+    where: {
+      collectionSlug,
+      eventSlug: eventSlugs,
+    },
+  })
+
+  if (associations.length === 0) {
+    throw new Error('No events to remove')
+  }
+
+  for (const association of associations) {
+    await association.destroy()
+  }
+
+  // Optionally, fetch and return the updated collection
   return (await EventCollection.findByPk(collectionSlug, {
     include: [{ model: EventData, as: 'events' }],
   })) as EventCollection
