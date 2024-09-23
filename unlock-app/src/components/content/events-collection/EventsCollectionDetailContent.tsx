@@ -11,9 +11,8 @@ import { ImageBar } from '~/components/interface/locks/Manage/elements/ImageBar'
 import AddEventsToCollectionDrawer from './AddEventsToCollectionDawer'
 import EventDetailDrawer from './EventDetailDawer'
 import { FaGithub, FaYoutube, FaGlobe, FaTwitter } from 'react-icons/fa'
+import { SiFarcaster as FarcasterIcon } from 'react-icons/si'
 import Link from 'next/link'
-import FarcasterIcon from './icons/FarcasterIcon'
-
 
 export interface EventTicket {
   event_address: string
@@ -63,7 +62,7 @@ export default function EventsCollectionDetailContent({
 }: EventsCollectionDetailContentProps) {
   const { account } = useAuth()
   const router = useRouter()
-  
+
   const [isAddEventDrawerOpen, setIsAddEventDrawerOpen] = useState(false)
 
   // event detail drawer
@@ -95,7 +94,6 @@ export default function EventsCollectionDetailContent({
     return eventCollection.events?.map((event) => event.slug) || []
   }, [eventCollection.events])
 
-  
   const getLinkIcon = (type: string) => {
     switch (type) {
       case 'github':
