@@ -514,6 +514,24 @@ components:
         email:
           type: string
 
+    EventCollectionAssociation:
+      type: object
+      properties:
+        id:
+          type: integer
+        eventSlug:
+          type: string
+        collectionSlug:
+          type: string
+        isApproved:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
     EventCollectionBody:
       type: object
       required:
@@ -525,6 +543,8 @@ components:
           type: string
         description:
           type: string
+        coverImage:
+          type: string
         banner:
           type: string
         links:
@@ -532,7 +552,7 @@ components:
           items:
             type: object
             properties:
-              name:
+              type:
                 type: string
               url:
                 type: string
@@ -549,6 +569,8 @@ components:
         title:
           type: string
         description:
+          type: string
+        coverImage:
           type: string
         banner:
           type: string
@@ -571,6 +593,22 @@ components:
           items:
             $ref: '#/components/schemas/Event'
 
+    AddManagerBody:
+      type: object
+      required:
+        - newManagerAddress
+      properties:
+        newManagerAddress:
+          type: string
+
+    RemoveManagerBody:
+      type: object
+      required:
+        - managerAddressToRemove
+      properties:
+        managerAddressToRemove:
+          type: string
+
     AddEventToCollectionBody:
       type: object
       required:
@@ -578,24 +616,6 @@ components:
       properties:
         eventSlug:
           type: string
-
-    EventCollectionAssociation:
-      type: object
-      properties:
-        id:
-          type: integer
-        eventSlug:
-          type: string
-        collectionSlug:
-          type: string
-        isApproved:
-          type: boolean
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
 
     EventsInCollection:
       type: object
@@ -610,6 +630,46 @@ components:
           type: integer
         totalPages:
           type: integer
+
+    ApproveEventBody:
+      type: object
+      required:
+        - eventSlug
+      properties:
+        eventSlug:
+          type: string
+          description: Slug of the event to approve.
+
+    BulkApproveEventsBody:
+      type: object
+      required:
+        - eventSlugs
+      properties:
+        eventSlugs:
+          type: array
+          description: Array of event slugs to approve.
+          items:
+            type: string
+
+    RemoveEventBody:
+      type: object
+      required:
+        - eventSlug
+      properties:
+        eventSlug:
+          type: string
+          description: Slug of the event to remove.
+
+    BulkRemoveEventsBody:
+      type: object
+      required:
+        - eventSlugs
+      properties:
+        eventSlugs:
+          type: array
+          description: Array of event slugs to remove.
+          items:
+            type: string
 
   parameters:
     Network:
@@ -4796,6 +4856,247 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EventsInCollection'
+        404:
+          $ref: '#/components/responses/404.NotFound'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+    delete:
+      operationId: removeEventFromCollection
+      security:
+        - User: []
+      description: Remove a single event from an event collection.
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Slug of the event collection.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveEventBody'
+      responses:
+        200:
+          description: Successfully removed the event from the collection.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventCollection'
+        400:
+          $ref: '#/components/responses/400.Invalid'
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+        404:
+          $ref: '#/components/responses/404.NotFound'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/event-collection/{slug}/managers:
+    post:
+      operationId: addManagerToEventCollection
+      security:
+        - User: []
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      description: Add a new manager address to an event collection
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddManagerBody'
+      responses:
+        200:
+          description: Successfully added manager address
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventCollection'
+        400:
+          $ref: '#/components/responses/400.Invalid'
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+        403:
+          $ref: '#/components/responses/403.NotAuthorized'
+        404:
+          $ref: '#/components/responses/404.NotFound'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+    delete:
+      operationId: removeManagerFromEventCollection
+      security:
+        - User: []
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      description: Remove a manager address from an event collection
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveManagerBody'
+      responses:
+        200:
+          description: Successfully removed manager address
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventCollection'
+        400:
+          $ref: '#/components/responses/400.Invalid'
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+        403:
+          $ref: '#/components/responses/403.NotAuthorized'
+        404:
+          $ref: '#/components/responses/404.NotFound'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/event-collection/{slug}/unapproved-events:
+    get:
+      operationId: getUnapprovedEventsForCollection
+      security:
+        - User: []
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      description: Get unapproved events for a collection
+      responses:
+        200:
+          description: Successfully retrieved unapproved events
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        400:
+          $ref: '#/components/responses/400.Invalid'
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+        403:
+          $ref: '#/components/responses/403.NotAuthorized'
+        404:
+          $ref: '#/components/responses/404.NotFound'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/event-collection/{slug}/events/approve:
+    post:
+      operationId: approveEvent
+      security:
+        - User: []
+      description: Approve a single event within an event collection.
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Slug of the event collection.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApproveEventBody'
+      responses:
+        200:
+          description: Successfully approved the event.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventCollectionAssociation'
+        400:
+          $ref: '#/components/responses/400.Invalid'
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+        404:
+          $ref: '#/components/responses/404.NotFound'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/event-collection/{slug}/events/bulk-approve:
+    post:
+      operationId: bulkApproveEvents
+      security:
+        - User: []
+      description: Bulk approve multiple events within an event collection.
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Slug of the event collection.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkApproveEventsBody'
+      responses:
+        200:
+          description: Successfully approved the selected events.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EventCollectionAssociation'
+        400:
+          $ref: '#/components/responses/400.Invalid'
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+        404:
+          $ref: '#/components/responses/404.NotFound'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/event-collection/{slug}/events/bulk-remove:
+    delete:
+      operationId: bulkRemoveEvents
+      security:
+        - User: []
+      description: Bulk remove multiple events from an event collection.
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Slug of the event collection.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkRemoveEventsBody'
+      responses:
+        200:
+          description: Successfully removed the selected events from the collection.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventCollection'
+        400:
+          $ref: '#/components/responses/400.Invalid'
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
         404:
           $ref: '#/components/responses/404.NotFound'
         500:
