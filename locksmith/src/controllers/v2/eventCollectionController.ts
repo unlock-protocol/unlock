@@ -23,7 +23,7 @@ export const EventCollectionBody = z.object({
   links: z
     .array(
       z.object({
-        name: z.string(),
+        type: z.enum(['farcaster', 'website', 'x', 'github', 'youtube']),
         url: z.string(),
       })
     )
