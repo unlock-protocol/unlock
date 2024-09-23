@@ -5,7 +5,7 @@ import {
   addEventToCollectionOperation,
   createEventCollectionOperation,
   getEventCollectionOperation,
-  getEventsInCollectionOperation,
+  removeEventFromCollectionOperation,
   updateEventCollectionOperation,
 } from '../../operations/eventCollectionOperations'
 
@@ -52,7 +52,7 @@ export const createEventCollection: RequestHandler = async (
 }
 
 /**
- * Retrieves an event collection by its slug.
+ * Retrieves an event collection by its slug, including all associated events.
  * @param req - The request object containing the slug parameter.
  * @param res - The response object used to send the response.
  */
@@ -137,30 +137,36 @@ export const addEventToCollection: RequestHandler = async (
 }
 
 /**
- * Retrieves events associated with a specific event collection.
- * @param req - The request object containing the collection slug and pagination parameters.
+ * Removes a single event from a collection.
+ * @param req - The request object containing collection and event slugs.
  * @param res - The response object used to send the response.
  */
-export const getEventsInCollection: RequestHandler = async (
+export const removeEventFromCollection: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
   const { slug: collectionSlug } = req.params
-  const page = parseInt(req.query.page as string) || 1
-  const pageSize = parseInt(req.query.pageSize as string) || 10
+  const { eventSlug } = req.body
+
+  if (!eventSlug) {
+    return res.status(400).json({ error: 'eventSlug is required' })
+  }
 
   try {
-    const result = await getEventsInCollectionOperation(
+    const updatedCollection = await removeEventFromCollectionOperation(
       collectionSlug,
-      page,
-      pageSize,
-      req.user?.walletAddress
+      eventSlug,
+      req.user!.walletAddress
     )
-    return res.json(result)
+    return res.status(200).json(updatedCollection)
   } catch (error) {
-    if (error.message === 'Collection not found') {
-      return res.status(404).json({ error: error.message })
+    const errorMessage = (error as Error).message
+    let statusCode = 400
+    if (errorMessage.includes('not authorized')) {
+      statusCode = 403
+    } else if (errorMessage.includes('not found')) {
+      statusCode = 404
     }
-    return res.status(400).json({ error: (error as Error).message })
+    return res.status(statusCode).json({ error: errorMessage })
   }
 }
