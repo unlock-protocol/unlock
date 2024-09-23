@@ -28,7 +28,6 @@ export const useCreateEventCollection = () => {
       ToastHelper.success('Creating your event collection...')
     },
     onSuccess: () => {
-      ToastHelper.success('Event collection created successfully.')
       queryClient.invalidateQueries({
         queryKey: ['createEventCollection'],
       })
