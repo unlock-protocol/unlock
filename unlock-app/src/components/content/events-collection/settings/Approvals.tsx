@@ -45,7 +45,12 @@ export const Approvals = ({ eventCollection }: ApprovalsProps) => {
     )
   }
 
-  if (!unapprovedEvents || unapprovedEvents.length === 0) {
+  // Guard clause to ensure unapprovedEvents is an array with at least one element
+  if (
+    !unapprovedEvents ||
+    !Array.isArray(unapprovedEvents) ||
+    unapprovedEvents.length === 0
+  ) {
     return (
       <p className="text-center text-gray-500">No event submissions yet.</p>
     )
