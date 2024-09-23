@@ -23,7 +23,8 @@ export const ManageEvents = ({ eventCollection }: ManageEventsProps) => {
     )
   }
 
-  if (!collectionEvents?.length) {
+  // Guard clause to ensure collectionEvents is an array with at least one element
+  if (!Array.isArray(collectionEvents) || collectionEvents.length === 0) {
     return (
       <p className="text-center text-gray-500">
         You are yet to add any events.
