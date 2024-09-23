@@ -72,7 +72,13 @@ export default function AddEventsToCollectionDrawer({
       ToastHelper.error('No event selected')
       return
     }
-    await addToEventCollection({ collectionSlug, eventSlug })
+    try {
+      await addToEventCollection({ collectionSlug, eventSlug })
+      setIsOpen(false)
+    } catch (error) {
+      console.error('Error adding event to collection:', error)
+      ToastHelper.error('Failed to add event to the collection.')
+    }
   }
 
   const checkEventUrlValidity = () => {
@@ -159,7 +165,7 @@ export default function AddEventsToCollectionDrawer({
             value={eventUrl}
             onChange={(e) => {
               setEventUrl(e.target.value)
-              setIsUrlValid(false) // Reset URL validity on change
+              setIsUrlValid(false)
               setIsDuplicate(false)
               setEventSlug('')
             }}
