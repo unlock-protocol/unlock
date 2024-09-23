@@ -4,12 +4,11 @@ import { BannerEditDrawer } from './BannerEditDrawer'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useMemo, useState } from 'react'
 
-import { TbPlus, TbSettings } from 'react-icons/tb'
+import { TbSettings } from 'react-icons/tb'
 import { EventCollection } from '@unlock-protocol/unlock-js'
 import { useRouter } from 'next/navigation'
 import { EventOverviewCard } from './EventOverviewCard'
 import { ImageBar } from '~/components/interface/locks/Manage/elements/ImageBar'
-import AddEventsToCollectionDrawer from './AddEventsToCollectionDawer'
 import EventDetailDrawer from './EventDetailDawer'
 import { FaGithub, FaYoutube, FaGlobe, FaTwitter } from 'react-icons/fa'
 import Link from 'next/link'
@@ -64,8 +63,6 @@ export default function EventsCollectionDetailContent({
   const { account } = useAuth()
   const router = useRouter()
 
-  const [isAddEventDrawerOpen, setIsAddEventDrawerOpen] = useState(false)
-
   // event detail drawer
   const [isEventDetailDrawerOpen, setIsEventDetailDrawerOpen] = useState(false)
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
@@ -83,19 +80,10 @@ export default function EventsCollectionDetailContent({
     return eventCollection.managerAddresses?.includes(account)
   }, [account, eventCollection.managerAddresses])
 
-  const handleAddEvent = () => {
-    setIsAddEventDrawerOpen(true)
-  }
-
   const handleEventDetailClick = (event: Event) => {
     setSelectedEvent(event)
     setIsEventDetailDrawerOpen(true)
   }
-
-  // Extract existing event slugs
-  const existingEventSlugs = useMemo(() => {
-    return eventCollection.events?.map((event) => event.slug) || []
-  }, [eventCollection.events])
 
   const getLinkIcon = (type: string) => {
     switch (type) {
@@ -129,18 +117,7 @@ export default function EventsCollectionDetailContent({
             </div>
           </Button>
         )}
-        <div className="md:hidden items-center justify-end gap-0 mt-auto md:gap-2 w-full sm:w-auto">
-          <Button
-            onClick={handleAddEvent}
-            className="w-full sm:w-auto"
-            disabled={!account}
-          >
-            <div className="flex items-center gap-2">
-              <Icon icon={TbPlus} size={20} />
-              {isManager ? 'Add Event' : 'Submit Event'}
-            </div>
-          </Button>
-        </div>
+        <div className="md:hidden items-center justify-end gap-0 mt-auto md:gap-2 w-full sm:w-auto"></div>
       </div>
       <div className="pt-4">
         <div className="relative">
@@ -175,18 +152,7 @@ export default function EventsCollectionDetailContent({
                 />
               </div>
 
-              <div className="hidden md:flex items-center justify-end gap-0 mt-auto md:gap-2 w-full sm:w-auto">
-                <Button
-                  onClick={handleAddEvent}
-                  className="w-full sm:w-auto"
-                  disabled={!account}
-                >
-                  <div className="flex items-center gap-2">
-                    <Icon icon={TbPlus} size={20} />
-                    {isManager ? 'Add Event' : 'Submit Event'}
-                  </div>
-                </Button>
-              </div>
+              <div className="hidden md:flex items-center justify-end gap-0 mt-auto md:gap-2 w-full sm:w-auto"></div>
             </section>
           </div>
         </div>
@@ -234,17 +200,7 @@ export default function EventsCollectionDetailContent({
               ) : (
                 <ImageBar
                   src="/images/illustrations/no-locks.svg"
-                  description={
-                    <p>
-                      No events have been added yet.{' '}
-                      <span
-                        onClick={handleAddEvent}
-                        className="text-brand-ui-primary cursor-pointer"
-                      >
-                        {isManager ? 'Add an event' : 'Submit an event'}
-                      </span>
-                    </p>
-                  }
+                  description={<p>No events have been added yet.</p>}
                 />
               )}
             </div>
@@ -256,15 +212,6 @@ export default function EventsCollectionDetailContent({
           </div>
         </section>
       </div>
-
-      {/* Add Event Drawer */}
-      <AddEventsToCollectionDrawer
-        collectionSlug={eventCollection.slug!}
-        isOpen={isAddEventDrawerOpen}
-        setIsOpen={setIsAddEventDrawerOpen}
-        isManager={isManager!}
-        existingEventSlugs={existingEventSlugs}
-      />
 
       {/* Event Detail Drawer */}
       <EventDetailDrawer
