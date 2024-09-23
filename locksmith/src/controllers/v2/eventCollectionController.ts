@@ -16,15 +16,16 @@ import {
 } from '../../operations/eventCollectionOperations'
 
 // schema for the event collection body
-export const EventCollectionBody = z.object({
+const EventCollectionBody = z.object({
   title: z.string(),
   description: z.string(),
+  coverImage: z.string().optional(),
   banner: z.string().optional(),
   links: z
     .array(
       z.object({
         type: z.enum(['farcaster', 'website', 'x', 'github', 'youtube']),
-        url: z.string(),
+        url: z.string().url(),
       })
     )
     .optional(),
