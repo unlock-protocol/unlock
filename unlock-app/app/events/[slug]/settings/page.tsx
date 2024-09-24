@@ -5,7 +5,7 @@ import { EventCollectionSettings } from '~/components/content/events-collection/
 import { getEventCollection } from '~/utils/eventCollections'
 
 export const metadata: Metadata = {
-  title: 'Event Settings',
+  title: 'Events Collection Settings',
   description: 'Manage your event settings.',
 }
 
