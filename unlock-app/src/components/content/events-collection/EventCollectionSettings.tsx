@@ -8,7 +8,10 @@ import { ReactNode, useState } from 'react'
 import Link from 'next/link'
 import { EventCollection } from '@unlock-protocol/unlock-js'
 import { Managers } from './settings/Managers'
+import { General } from './settings/General'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { isCollectionManager } from '~/utils/eventCollections'
+
 
 interface EventCollectionSettingsProps {
   eventCollection: EventCollection
@@ -19,16 +22,27 @@ export const EventCollectionSettings = ({
 }: EventCollectionSettingsProps) => {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const { account } = useAuth()
-
-  const isManager =
-    eventCollection.managerAddresses?.includes(account!) || false
-
+ 
+  const isManager = isCollectionManager(
+    eventCollection.managerAddresses,
+    account!
+  )
+  
   const tabs: {
     label: string
     description?: string
     id: 'general' | 'managers' | 'approvals' | 'management'
     children: ReactNode
   }[] = [
+    {
+      id: 'general',
+      label: 'General',
+      description:
+        "Update your event collection's public information such as its location, date and more!",
+      children: eventCollection ? (
+        <General eventCollection={eventCollection} />
+      ) : null,
+    },
     {
       id: 'managers',
       label: 'Managers',
