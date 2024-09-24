@@ -76,7 +76,6 @@ export default function AddEventsToCollectionDrawer({
     }
     try {
       await addToEventCollection({ collectionSlug, eventSlug })
-      ToastHelper.success('Event added successfully!')
       setIsOpen(false)
     } catch (error) {
       console.error('Error adding event to collection:', error)
