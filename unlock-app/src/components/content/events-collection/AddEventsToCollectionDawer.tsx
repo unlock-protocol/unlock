@@ -118,7 +118,9 @@ export default function AddEventsToCollectionDrawer({
         <Button
           onClick={() => setAddMethod('existing')}
           className="w-full"
-          disabled={userEvents?.length === 0}
+          disabled={
+            userEvents?.length === 0 || filteredUserEvents?.length === 0
+          }
         >
           Select from Existing Events
         </Button>
@@ -133,6 +135,20 @@ export default function AddEventsToCollectionDrawer({
             .
           </p>
         )}
+        {userEvents &&
+          userEvents.length > 0 &&
+          filteredUserEvents?.length === 0 && (
+            <p className="text-sm text-center text-gray-500">
+              All your existing events already exist in this collection.{' '}
+              <span
+                className="cursor-pointer text-brand-ui-primary"
+                onClick={() => setAddMethod('form')}
+              >
+                Create one
+              </span>
+              .
+            </p>
+          )}
       </div>
       <Button onClick={() => setAddMethod('form')} className="w-full">
         Create a New Event
