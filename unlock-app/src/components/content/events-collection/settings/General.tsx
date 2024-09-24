@@ -15,6 +15,7 @@ import { EventCollection } from '@unlock-protocol/unlock-js'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { locksmith } from '~/config/locksmith'
 import { EditLinkField } from '../LinkField'
+import { useEffect, useCallback, useRef } from 'react'
 
 interface GeneralProps {
   eventCollection: EventCollection
@@ -30,11 +31,10 @@ interface FormValues {
     url?: string
   }[]
 }
-
 export const General = ({ eventCollection }: GeneralProps) => {
   const methods = useForm<FormValues>({
-    mode: 'onSubmit',
-    reValidateMode: 'onSubmit',
+    mode: 'onChange',
+    reValidateMode: 'onChange',
     defaultValues: {
       title: eventCollection.title || '',
       description: eventCollection.description || '',
@@ -61,21 +61,52 @@ export const General = ({ eventCollection }: GeneralProps) => {
   const { mutateAsync: uploadImage, isPending: isUploading } = useImageUpload()
   const links = methods.watch('links')
 
-  const save: SubmitHandler<FormValues> = async (values) => {
-    try {
-      await locksmith.updateEventCollection(eventCollection.slug!, {
-        title: values.title,
-        description: values.description,
-        coverImage: values.coverImage,
-        banner: values.banner,
-        links: values.links,
-        managerAddresses: eventCollection.managerAddresses!,
-      })
-      ToastHelper.success('Event Collection info saved successfully!')
-    } catch (error) {
-      ToastHelper.error('Failed to save event collection details.')
+  const isSubmittingRef = useRef(false)
+
+  const save: SubmitHandler<FormValues> = useCallback(
+    async (values) => {
+      if (isSubmittingRef.current) return
+      isSubmittingRef.current = true
+      try {
+        await locksmith.updateEventCollection(eventCollection.slug!, {
+          title: values.title,
+          description: values.description,
+          coverImage: values.coverImage,
+          banner: values.banner,
+          links: values.links,
+          managerAddresses: eventCollection.managerAddresses!,
+        })
+        ToastHelper.success('Event Collection info saved successfully!')
+      } catch (error) {
+        ToastHelper.error('Failed to save event collection details.')
+      } finally {
+        isSubmittingRef.current = false
+      }
+    },
+    [eventCollection.slug, eventCollection.managerAddresses]
+  )
+
+  // Debounce save to prevent multiple rapid submissions
+  const debounceTimeout = useRef<NodeJS.Timeout | null>(null)
+
+  useEffect(() => {
+    const subscription = methods.watch((_, { name, type }) => {
+      if (name?.startsWith('links') && type === 'change') {
+        if (debounceTimeout.current) {
+          clearTimeout(debounceTimeout.current)
+        }
+        debounceTimeout.current = setTimeout(() => {
+          methods.handleSubmit(save)()
+        }, 500)
+      }
+    })
+    return () => {
+      subscription.unsubscribe()
+      if (debounceTimeout.current) {
+        clearTimeout(debounceTimeout.current)
+      }
     }
-  }
+  }, [methods, save])
 
   return (
     <FormProvider {...methods}>
@@ -241,16 +272,6 @@ export const General = ({ eventCollection }: GeneralProps) => {
                 {methods.formState.errors.links.message}
               </p>
             )}
-          {/* Save button for Links */}
-          <div className="flex flex-end w-full pt-8 flex-row-reverse">
-            <Button
-              loading={methods.formState.isSubmitting}
-              type="submit"
-              className="w-48"
-            >
-              Save Links
-            </Button>
-          </div>
         </SettingCard>
       </form>
     </FormProvider>
