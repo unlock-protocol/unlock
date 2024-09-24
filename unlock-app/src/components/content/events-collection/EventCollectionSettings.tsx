@@ -9,6 +9,7 @@ import Link from 'next/link'
 import { EventCollection } from '@unlock-protocol/unlock-js'
 import { General } from './settings/General'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { isCollectionManager } from '~/utils/eventCollections'
 
 interface EventCollectionSettingsProps {
   eventCollection: EventCollection
@@ -20,8 +21,10 @@ export const EventCollectionSettings = ({
   const [selectedIndex, setSelectedIndex] = useState(0)
   const { account } = useAuth()
 
-  const isManager =
-    eventCollection.managerAddresses?.includes(account!) || false
+  const isManager = isCollectionManager(
+    eventCollection.managerAddresses,
+    account!
+  )
 
   const tabs: {
     label: string
