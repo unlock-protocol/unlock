@@ -5,36 +5,58 @@ import { EventDetail } from './EventDetail'
 import { FiMapPin as MapPinIcon } from 'react-icons/fi'
 import { BiLogoZoom as ZoomIcon } from 'react-icons/bi'
 
-export const EventLocation = ({ event }: { event: Partial<Metadata> }) => {
-  const inPerson = event.ticket?.event_is_in_person
+interface EventLocationProps {
+  event?: Partial<Metadata>
+  inPerson?: boolean
+  eventLocation?: string
+  eventAddress?: string
+  backgroundColor?: string
+  compact?: boolean
+}
+
+export const EventLocation = ({
+  event,
+  inPerson,
+  eventLocation,
+  eventAddress,
+  backgroundColor,
+  compact = false,
+}: EventLocationProps) => {
+  const isInPerson = inPerson ?? event?.ticket?.event_is_in_person
+  const location = eventLocation ?? event?.ticket?.event_location
+  const address = eventAddress ?? event?.ticket?.event_address
+  const bgColor = backgroundColor ?? event?.background_color
 
   return (
-    <EventDetail label="Location" icon={inPerson ? MapPinIcon : ZoomIcon}>
-      <div
-        style={{ color: `#${event.background_color}` }}
-        className="flex flex-col gap-0.5"
-      >
-        {inPerson && (
+    <EventDetail
+      label="Location"
+      icon={isInPerson ? MapPinIcon : ZoomIcon}
+      compact={compact}
+    >
+      <div style={{ color: `#${bgColor}` }} className="flex flex-col gap-0.5">
+        {isInPerson && (
           <>
-            <span className="text-lg font-normal capitalize text-brand-dark">
-              {event.ticket?.event_location
-                ? event.ticket.event_location
-                : event.ticket?.event_address}
-            </span>
-            <Link
-              target="_blank"
-              className="text-base font-bold"
-              href={`https://www.google.com/maps/search/?api=1&query=${event.ticket?.event_address}`}
+            <span
+              className={`${compact ? 'text-sm' : 'text-lg'} font-normal capitalize text-brand-dark`}
             >
-              Show map
-            </Link>
+              {location || address}
+            </span>
+            {address && (
+              <Link
+                target="_blank"
+                className={`${compact ? 'text-xs' : 'text-base'} font-bold`}
+                href={`https://www.google.com/maps/search/?api=1&query=${address}`}
+              >
+                Show map
+              </Link>
+            )}
           </>
         )}
-        {!inPerson && (
+        {!isInPerson && address && (
           <Link
             target="_blank"
-            className="text-base flex items-center gap-2 hover:text-brand-ui-primary"
-            href={event.ticket?.event_address}
+            className={`${compact ? 'text-xs' : 'text-base'} flex items-center gap-2 hover:text-brand-ui-primary`}
+            href={address}
           >
             Open video-conference <ExternalLinkIcon />
           </Link>
