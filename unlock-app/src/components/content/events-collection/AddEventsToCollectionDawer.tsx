@@ -39,6 +39,7 @@ export default function AddEventsToCollectionDrawer({
   const { data: userEvents, isPending: isLoadingUserEvents } = useUserEvents(
     account!
   )
+
   const [eventUrl, setEventUrl] = useState('')
   const [eventSlug, setEventSlug] = useState('')
   const { data: event, isLoading: isLoadingEvent } = useEvent({
@@ -91,7 +92,6 @@ export default function AddEventsToCollectionDrawer({
       setEventSlug('')
     }
   }
-
   // Filter the user's events to exclude existing event slugs
   const filteredUserEvents = userEvents?.filter(
     (userEvent) => !existingEventSlugs.includes(userEvent.slug!)
@@ -100,8 +100,10 @@ export default function AddEventsToCollectionDrawer({
   const userEventsOptions =
     filteredUserEvents?.map((eventOption) => {
       return {
-        label: eventOption.name || '',
-        value: eventOption.slug || '',
+        label: eventOption?.name
+          ? eventOption.name.replace(/^ticket for\s+/i, '')
+          : '',
+        value: eventOption?.slug || '',
       }
     }) || []
 
@@ -161,7 +163,7 @@ export default function AddEventsToCollectionDrawer({
             autoComplete="on"
             placeholder="https://app.unlock-protocol.com/event/your-event-slug"
             label="Event URL"
-            description="Enter the URL of your existing event."
+            description="Enter the URL of your Unlock event."
             value={eventUrl}
             onChange={(e) => {
               setEventUrl(e.target.value)
