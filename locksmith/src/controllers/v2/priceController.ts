@@ -5,6 +5,7 @@ import { getCreditCardEnabledStatus } from '../../operations/creditCardOperation
 import * as Normalizer from '../../utils/normalizer'
 import * as pricingOperations from '../../operations/pricingOperations'
 import logger from '../../logger'
+import { symbol } from 'zod'
 
 export const amount: RequestHandler = async (request, response) => {
   const network = Number(request.params.network || 1)
@@ -62,7 +63,8 @@ export const getTotalChargesForLock: RequestHandler = async (
     ? purchaseData.map((x) => x.toString())
     : [purchaseData.toString()]
 
-  // `createPricingForPurchase` already includes the logic to returns credit custom credit card price when set
+  // `createPricingForPurchase` already includes the logic to returns credit custom credit card price when set,
+  // as well as the currency.
   const pricing = await createPricingForPurchase({
     lockAddress,
     network,
@@ -71,9 +73,23 @@ export const getTotalChargesForLock: RequestHandler = async (
     data,
   })
 
-  const { creditCardProcessingFee, unlockServiceFee, gasCost, total } = pricing
+  if (!pricing) {
+    return response
+      .status(400)
+      .send({ error: 'Pricing could not be computed.' })
+  }
+
+  const {
+    creditCardProcessingFee,
+    unlockServiceFee,
+    gasCost,
+    total,
+    currency,
+  } = pricing
 
   return response.status(200).send({
+    currency,
+    symbol: pricingOperations.getCurrencySymbol(currency),
     creditCardProcessingFee,
     unlockServiceFee,
     gasCost,
@@ -82,8 +98,8 @@ export const getTotalChargesForLock: RequestHandler = async (
       ...pricing.recipients.map((recipient) => {
         return {
           userAddress: recipient.address,
-          amount: recipient.price.amountInFiat,
-          symbol: '$', // Fix?
+          amount: recipient.price.amount,
+          symbol: pricingOperations.getCurrencySymbol(currency),
         }
       }),
     ],
