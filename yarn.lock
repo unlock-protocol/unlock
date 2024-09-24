@@ -292,16 +292,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@arbitrum/sdk@npm:3.7.0":
-  version: 3.7.0
-  resolution: "@arbitrum/sdk@npm:3.7.0"
+"@arbitrum/sdk@npm:4.0.1":
+  version: 4.0.1
+  resolution: "@arbitrum/sdk@npm:4.0.1"
   dependencies:
     "@ethersproject/address": "npm:^5.0.8"
     "@ethersproject/bignumber": "npm:^5.1.1"
     "@ethersproject/bytes": "npm:^5.0.8"
     async-mutex: "npm:^0.4.0"
     ethers: "npm:^5.1.0"
-  checksum: 10/917aea2040e79ab99f1618bccd7829e505a6379843e5fc9e9717969b98c80ff2f9f79f522d9b1d783599b3342628ea94a0224c492f8b53823334888a780d2e81
+  checksum: 10/3d81f8645022f723f36dd8711493f8bddd5f4306e7ed2d1a31b34091492f0be972bae03d3abef5dbf6b230e01e1693c826e6e624ae831f3bfe6cf42166f14350
   languageName: node
   linkType: hard
 
@@ -6084,9 +6084,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@coinbase/waas-sdk-web@npm:3.3.2":
-  version: 3.3.2
-  resolution: "@coinbase/waas-sdk-web@npm:3.3.2"
+"@coinbase/waas-sdk-web@npm:3.3.3":
+  version: 3.3.3
+  resolution: "@coinbase/waas-sdk-web@npm:3.3.3"
   dependencies:
     "@bugsnag/js": "npm:^7.22.3"
     "@coinbase/cbpay-js": "npm:^1.10.0"
@@ -6096,7 +6096,7 @@ __metadata:
   dependenciesMeta:
     "@coinbase/cbpay-js":
       optional: true
-  checksum: 10/3f4252a273be5d84d0302810c33ca7cad106e0e2ad4dd98bb14a753a7e2499659d63363f829ed2d2b71b270cc5b62738bf1bde02ac7bce549d549a7529ce07ca
+  checksum: 10/28a7bef2eb0e0dcf13fd7e46625d2bd689484adc872da929f49cc8ecc7fd95526dfd63f3a18b105657e09fb06249a524064cff4b65d60d45bf5586c631ece07d
   languageName: node
   linkType: hard
 
@@ -20405,7 +20405,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/governance@workspace:governance"
   dependencies:
-    "@arbitrum/sdk": "npm:3.7.0"
+    "@arbitrum/sdk": "npm:4.0.1"
     "@eth-optimism/sdk": "npm:3.3.2"
     "@gnosis-guild/zodiac-core": "npm:2.0.3"
     "@gnosis.pm/zodiac": "npm:4.0.3"
@@ -20431,7 +20431,6 @@ __metadata:
     eslint: "npm:9.9.1"
     ethers: "npm:6.13.2"
     ethers-multisend: "npm:3.1.0"
-    ethers5: "npm:ethers@5.7.2"
     fs-extra: "npm:11.2.0"
     hardhat: "npm:2.22.9"
     zksync-ethers: "npm:6.12.0"
@@ -20780,7 +20779,7 @@ __metadata:
   resolution: "@unlock-protocol/unlock-app@workspace:unlock-app"
   dependencies:
     "@airstack/airstack-react": "npm:0.6.4"
-    "@coinbase/waas-sdk-web": "npm:3.3.2"
+    "@coinbase/waas-sdk-web": "npm:3.3.3"
     "@coinbase/wallet-sdk": "npm:4.0.4"
     "@crossmint/client-sdk-react-ui": "npm:1.2.2"
     "@decent.xyz/box-common": "npm:3.1.15"
@@ -30909,7 +30908,37 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers5@npm:ethers@5.7.2, ethers@npm:^5.1.0, ethers@npm:^5.6.1, ethers@npm:^5.6.5, ethers@npm:^5.7.0, ethers@npm:^5.7.2":
+"ethers@npm:6.12.1":
+  version: 6.12.1
+  resolution: "ethers@npm:6.12.1"
+  dependencies:
+    "@adraffy/ens-normalize": "npm:1.10.1"
+    "@noble/curves": "npm:1.2.0"
+    "@noble/hashes": "npm:1.3.2"
+    "@types/node": "npm:18.15.13"
+    aes-js: "npm:4.0.0-beta.5"
+    tslib: "npm:2.4.0"
+    ws: "npm:8.5.0"
+  checksum: 10/2995766164292b531499764d319d753b1f4e1cd7ddb4f26c6557a26e42947d5642a4b3bbeace0b8bb398b909dc22fafa4f52d5190a9bb8180bebf2dd3d4d48a9
+  languageName: node
+  linkType: hard
+
+"ethers@npm:6.13.2, ethers@npm:^6.13.2, ethers@npm:^6.9.0, ethers@npm:^6.9.2":
+  version: 6.13.2
+  resolution: "ethers@npm:6.13.2"
+  dependencies:
+    "@adraffy/ens-normalize": "npm:1.10.1"
+    "@noble/curves": "npm:1.2.0"
+    "@noble/hashes": "npm:1.3.2"
+    "@types/node": "npm:18.15.13"
+    aes-js: "npm:4.0.0-beta.5"
+    tslib: "npm:2.4.0"
+    ws: "npm:8.17.1"
+  checksum: 10/e611c2e2c5340982dfd1f004895f55abda11748a7edec9e6315226dec42d58aa61b827dd389ec904db5f9a244c475ae795e528da579251fdf62e914bde12809e
+  languageName: node
+  linkType: hard
+
+"ethers@npm:^5.1.0, ethers@npm:^5.6.1, ethers@npm:^5.6.5, ethers@npm:^5.7.0, ethers@npm:^5.7.2":
   version: 5.7.2
   resolution: "ethers@npm:5.7.2"
   dependencies:
@@ -30944,36 +30973,6 @@ __metadata:
     "@ethersproject/web": "npm:5.7.1"
     "@ethersproject/wordlists": "npm:5.7.0"
   checksum: 10/227dfa88a2547c799c0c3c9e92e5e246dd11342f4b495198b3ae7c942d5bf81d3970fcef3fbac974a9125d62939b2d94f3c0458464e702209b839a8e6e615028
-  languageName: node
-  linkType: hard
-
-"ethers@npm:6.12.1":
-  version: 6.12.1
-  resolution: "ethers@npm:6.12.1"
-  dependencies:
-    "@adraffy/ens-normalize": "npm:1.10.1"
-    "@noble/curves": "npm:1.2.0"
-    "@noble/hashes": "npm:1.3.2"
-    "@types/node": "npm:18.15.13"
-    aes-js: "npm:4.0.0-beta.5"
-    tslib: "npm:2.4.0"
-    ws: "npm:8.5.0"
-  checksum: 10/2995766164292b531499764d319d753b1f4e1cd7ddb4f26c6557a26e42947d5642a4b3bbeace0b8bb398b909dc22fafa4f52d5190a9bb8180bebf2dd3d4d48a9
-  languageName: node
-  linkType: hard
-
-"ethers@npm:6.13.2, ethers@npm:^6.13.2, ethers@npm:^6.9.0, ethers@npm:^6.9.2":
-  version: 6.13.2
-  resolution: "ethers@npm:6.13.2"
-  dependencies:
-    "@adraffy/ens-normalize": "npm:1.10.1"
-    "@noble/curves": "npm:1.2.0"
-    "@noble/hashes": "npm:1.3.2"
-    "@types/node": "npm:18.15.13"
-    aes-js: "npm:4.0.0-beta.5"
-    tslib: "npm:2.4.0"
-    ws: "npm:8.17.1"
-  checksum: 10/e611c2e2c5340982dfd1f004895f55abda11748a7edec9e6315226dec42d58aa61b827dd389ec904db5f9a244c475ae795e528da579251fdf62e914bde12809e
   languageName: node
   linkType: hard
 
