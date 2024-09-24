@@ -105,8 +105,8 @@ export const getKeyPricingFromSettings = async ({
   if (creditCardPrice) {
     return {
       currency: creditCardCurrency || 'usd', // defaults to usd
-      amount: creditCardPrice, // the amount stored in the db is in cents!
-      decimals: 2,
+      amount: creditCardPrice / 100.0, // the amount stored in the db is in cents!
+      decimals: 0,
     }
   }
 

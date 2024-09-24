@@ -14,13 +14,9 @@ import { usePurchase } from '~/hooks/usePurchase'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { useCapturePayment } from '~/hooks/useCapturePayment'
-import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { PricingData } from './PricingData'
 import { formatNumber } from '~/utils/formatter'
-import {
-  formatFiatPriceFromCents,
-  getNumberOfRecurringPayments,
-} from '../utils'
+import { formatFiatPrice, getNumberOfRecurringPayments } from '../utils'
 import { useGetTotalCharges } from '~/hooks/usePrice'
 import { useGetLockSettings } from '~/hooks/useLockSettings'
 import { getCurrencySymbol } from '~/utils/currency'
@@ -65,18 +61,18 @@ export function CreditCardPricingBreakdown({
           <span>Learn more</span> <ExternalLinkIcon className="inline" />
         </a>
       </h3>
-      <div className="border-b">
+      <div>
         {unlockFeeChargedToUser && !loading && (
           <Detail
             loading={loading}
-            className="flex justify-between w-full py-1 text-xs border-t border-gray-300"
+            className="flex justify-between w-full py-1 text-xs border-gray-300"
             label="Service Fee"
             labelSize="tiny"
             valueSize="tiny"
             inline
           >
             <div className="font-normal">
-              {formatFiatPriceFromCents(unlockServiceFee, symbol)}
+              {formatFiatPrice(unlockServiceFee, symbol)}
             </div>
           </Detail>
         )}
@@ -90,7 +86,7 @@ export function CreditCardPricingBreakdown({
             inline
           >
             <div className="font-normal">
-              {formatFiatPriceFromCents(creditCardProcessingFee, symbol)}
+              {formatFiatPrice(creditCardProcessingFee, symbol)}
             </div>
           </Detail>
         )}
@@ -104,11 +100,11 @@ export function CreditCardPricingBreakdown({
             inline
           >
             <div className="font-normal">
-              {formatFiatPriceFromCents(gasCosts, symbol)}
+              {formatFiatPrice(gasCosts, symbol)}
             </div>
           </Detail>
         )}
-        {total == 50 && (
+        {total <= 0.5 && (
           <Detail
             loading={loading}
             className="flex justify-between w-full py-1"
@@ -200,7 +196,7 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
       })
 
       const stripeIntent = await createPurchaseIntent({
-        pricing: totalPricing!.total,
+        pricing: totalPricing!.total * 100, //
         // @ts-expect-error - generated types don't narrow down to the right type
         stripeTokenId: payment.cardId!,
         recipients,
@@ -257,12 +253,6 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
     setIsConfirming(false)
   }
 
-  const usdTotalPricing = totalPricing?.total
-    ? totalPricing?.total / 100
-    : undefined
-
-  console.log(totalPricing)
-
   return (
     <Fragment>
       <main className="h-full p-6 space-y-2 overflow-auto">
@@ -310,30 +300,29 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
                       totalPricing.total
                     ).toLocaleString()} ${symbol}`
               }
-              usdPrice={
-                usdTotalPricing
-                  ? `${formatNumber(
-                      usdTotalPricing
-                    ).toLocaleString()} ${creditCardCurrencySymbol}`
-                  : ''
-              }
+              usdPrice={formatFiatPrice(
+                totalPricing!.total,
+                creditCardCurrencySymbol
+              )}
               isCardEnabled={true}
               extra={
                 !isTotalPricingDataError &&
                 totalPricing && (
-                  <CreditCardPricingBreakdown
-                    loading={
-                      isTotalPricingDataLoading || !isTotalPricingDataFetched
-                    }
-                    total={totalPricing?.total ?? 0}
-                    creditCardProcessingFee={
-                      totalPricing?.creditCardProcessingFee
-                    }
-                    unlockServiceFee={totalPricing?.unlockServiceFee ?? 0}
-                    gasCosts={totalPricing?.gasCost}
-                    symbol={creditCardCurrencySymbol}
-                    unlockFeeChargedToUser={unlockFeeChargedToUser}
-                  />
+                  <div className="border-b">
+                    <CreditCardPricingBreakdown
+                      loading={
+                        isTotalPricingDataLoading || !isTotalPricingDataFetched
+                      }
+                      total={totalPricing?.total ?? 0}
+                      creditCardProcessingFee={
+                        totalPricing?.creditCardProcessingFee
+                      }
+                      unlockServiceFee={totalPricing?.unlockServiceFee ?? 0}
+                      gasCosts={totalPricing?.gasCost}
+                      symbol={creditCardCurrencySymbol}
+                      unlockFeeChargedToUser={unlockFeeChargedToUser}
+                    />
+                  </div>
                 )
               }
             />

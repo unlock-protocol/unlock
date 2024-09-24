@@ -69,6 +69,9 @@ export const getKeyPricingInFiat = async ({
     network,
   })
 
+  if (!defaultPricing) {
+    return null
+  }
   return Promise.all(
     recipients.map(async (userAddress, index) => {
       const data = dataArray?.[index] ?? '0x'
@@ -218,6 +221,8 @@ export const getFees = async (
 // Returns pricing for recipients + total charges with fees
 export const createPricingForPurchase = async (options: KeyPricingOptions) => {
   const recipients = await getKeyPricingInFiat(options)
+
+  console.log(recipients)
   // subtotal is in the lock's fiat currency (defaults to usd)
   const subtotal = recipients.reduce((sum, item) => {
     if (item.price) {

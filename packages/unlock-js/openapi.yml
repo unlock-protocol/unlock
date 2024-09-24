@@ -4096,6 +4096,8 @@ paths:
                 properties:
                   total:
                     type: number
+                  symbol:
+                    type: string
                   creditCardProcessingFee:
                     type: number
                   unlockServiceFee:

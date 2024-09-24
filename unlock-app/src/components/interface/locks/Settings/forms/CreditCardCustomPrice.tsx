@@ -18,9 +18,9 @@ import { formatNumber } from '~/utils/formatter'
 import { locksmith } from '~/config/locksmith'
 import { useUSDPricing } from '~/hooks/useUSDPricing'
 import { useGetTotalCharges } from '~/hooks/usePrice'
-import { PricingData } from '~/components/interface/checkout/main/Confirm/PricingData'
+import { formatFiatPrice } from '~/components/interface/checkout/main/utils'
 import { CreditCardPricingBreakdown } from '~/components/interface/checkout/main/Confirm/ConfirmCard'
-import { FaHeartPulse } from 'react-icons/fa6'
+import networks from '@unlock-protocol/networks'
 
 interface CreditCardFormSchema {
   creditCardPrice?: string | number | null
@@ -45,7 +45,6 @@ export default function CreditCardCustomPrice({
   connectedStripeAccount,
 }: CreditCardCustomPriceProps) {
   const [useCustomPrice, setUseCustomPrice] = useState(false)
-  const [hasPriceConversion, setHasPriceConversion] = useState(false)
   const [currency, setCurrency] = useState(
     connectedStripeAccount.default_currency
   )
@@ -84,31 +83,22 @@ export default function CreditCardCustomPrice({
     defaultValues: async () => await getDefaultValues(),
   })
 
+  // TODO
+  const hasPriceConversion = true
+
   const {
     mutateAsync: saveSettingMutation,
     isPending: isSaveLockSettingLoading,
   } = useSaveLockSettings()
 
-  const { keyPrice, currencyContractAddress } = lock
-  // THIS SHOULD GO AWAY!
-  const { data: fiatPricing, isLoading } = useUSDPricing({
-    lockAddress,
-    network,
-    currencyContractAddress,
-    amount: parseFloat(keyPrice),
-  })
-
-  useEffect(() => {
-    const pricing = fiatPricing?.usd?.amount || 0
-    setHasPriceConversion(pricing > 0)
-  }, [fiatPricing?.usd?.amount])
-
-  const { data: totalCharges } = useGetTotalCharges({
+  const {
+    data: totalCharges,
+    isLoading: isLoadingTotalCharges,
+    refetch: refetchFees,
+  } = useGetTotalCharges({
     lockAddress,
     network,
   })
-
-  console.log({ totalCharges })
 
   const onSaveCreditCardPrice = async ({
     creditCardPrice,
@@ -132,11 +122,12 @@ export default function CreditCardCustomPrice({
     })
   }
 
-  const onSubmit = (fields: CreditCardFormSchema) => {
-    onSaveCreditCardPrice(fields)
+  const onSubmit = async (fields: CreditCardFormSchema) => {
+    await onSaveCreditCardPrice(fields)
+    refetchFees()
   }
 
-  if (isLoading || isLoadingForm) {
+  if (isLoadingForm || isLoadingTotalCharges) {
     return (
       <Placeholder.Root>
         <Placeholder.Card />
@@ -162,80 +153,47 @@ export default function CreditCardCustomPrice({
     CREDIT_CARD_MIN_PRICE_BY_CURRENCY?.[currency?.toUpperCase()] ||
     CREDIT_CARD_MIN_USD_PRICE
 
+  console.log({ totalCharges })
+
   return (
     <div className="grid gap-2">
-      {/* {totalCharges && (
-        <Pricing
-          keyPrice={
-            pricingData.total <= 0
-              ? 'FREE'
-              : `${formatNumber(pricingData.total).toLocaleString()} ${symbol}`
-          }
-          usdPrice={
-            usdTotalPricing
-              ? `${formatNumber(
-                  usdTotalPricing
-                ).toLocaleString()} ${creditCardCurrencySymbol}`
-              : ''
-          }
-          isCardEnabled={!!creditCardEnabled}
-          extra={
-            !isError &&
-            pricingData && (
-              <CreditCardPricingBreakdown
-                loading={
-                  isTotalPricingDataLoading || !isTotalPricingDataFetched
-                }
-                total={totalCharges?.total ?? 0}
-                creditCardProcessingFee={totalCharges?.creditCardProcessingFee}
-                unlockServiceFee={totalCharges?.unlockServiceFee ?? 0}
-                gasCosts={totalCharges?.gasCost}
-                symbol={creditCardCurrencySymbol}
-                unlockFeeChargedToUser={unlockFeeChargedToUser}
-              />
+      {totalCharges && (
+        <SettingCardDetail
+          title={'Price for card payments'}
+          description={
+            hasPriceConversion ? (
+              <>
+                <p>
+                  Your members will be charged around{' '}
+                  {formatFiatPrice(totalCharges!.total, totalCharges.symbol)},
+                  but the conversion rate for {symbol} and gas prices may vary.
+                </p>
+                <CreditCardPricingBreakdown
+                  loading={isLoadingTotalCharges}
+                  total={totalCharges.total}
+                  creditCardProcessingFee={totalCharges.creditCardProcessingFee}
+                  unlockServiceFee={totalCharges.unlockServiceFee}
+                  gasCosts={totalCharges.gasCost}
+                  symbol={totalCharges.symbol}
+                  unlockFeeChargedToUser={true}
+                />
+              </>
+            ) : (
+              <p className="text-sm font-semibold text-red-600">
+                We are not able to convert {symbol} to a fiat currency on{' '}
+                {networks[network].name}. Please set the price and currency you
+                want to charge for card payments.
+              </p>
             )
           }
         />
-
-        // <>
-        //   <PricingData
-        //     network={network}
-        //     lock={lock!}
-        //     pricingData={totalCharges}
-        //   />
-
-        //   <CreditCardPricingBreakdown
-        //     loading={false}
-        //     total={totalCharges?.total ?? 0}
-        //     creditCardProcessingFee={totalCharges?.creditCardProcessingFee}
-        //     unlockServiceFee={totalCharges?.unlockServiceFee ?? 0}
-        //     gasCosts={totalCharges?.gasCost}
-        //     symbol={'$'}
-        //     unlockFeeChargedToUser={true}
-        //   />
-        //   {totalCharges?.total}
-        // </>
-      )} */}
-
-      <SettingCardDetail
-        title={'Price for card payments'}
-        description={
-          hasPriceConversion && fiatPricing!.usd!.amount ? (
-            <span>
-              {`Your members will be charged around ${fiatPricing!.usd!.amount.toFixed(2)}, but the conversion rate for ${symbol} may vary. `}
-            </span>
-          ) : (
-            <p className="text-sm font-semibold text-red-600">
-              {`We are not able to convert ${symbol} to a fiat currency. Please set the price and currency you want to charge for card payments.`}
-            </p>
-          )
-        }
-      />
+      )}
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="grid items-center gap-3"
+        className="grid items-center gap-3 text-sm"
       >
         <ToggleSwitch
+          size="small"
           title="Use fixed price"
           enabled={toggleActive}
           disabled={!hasPriceConversion}
@@ -254,6 +212,7 @@ export default function CreditCardCustomPrice({
             <div className="flex flex-col gap-1">
               <span>Price</span>
               <Input
+                size="small"
                 type="number"
                 step="any"
                 disabled={disabled}
@@ -277,6 +236,7 @@ export default function CreditCardCustomPrice({
             <div className="flex flex-col gap-1">
               <span>Currency</span>
               <Select
+                size="small"
                 description="The selected currency will be used for credit card payments. (the currency is automatically updated when the selection is changed)"
                 options={currencyOptions}
                 disabled={disabled}

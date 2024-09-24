@@ -427,11 +427,12 @@ export const CreditCardWithStripeForm = ({
                 currencies={supportedCurrencies}
                 connectedStripeAccount={connectedStripeAccount}
               />
-              <CreditCardUnlockFee
+              {/* Disabled for now */}
+              {/* <CreditCardUnlockFee
                 lockAddress={lockAddress}
                 network={network}
                 disabled={disabled}
-              />
+              /> */}
             </>
           )}
         </div>
