@@ -223,6 +223,10 @@ export const createPricingForPurchase = async (options: KeyPricingOptions) => {
   const recipients = await getKeyPricingInFiat(options)
 
   console.log(recipients)
+  if (!recipients) {
+    // No route!
+    return null
+  }
   // subtotal is in the lock's fiat currency (defaults to usd)
   const subtotal = recipients.reduce((sum, item) => {
     if (item.price) {

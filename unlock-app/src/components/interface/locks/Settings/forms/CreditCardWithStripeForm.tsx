@@ -67,7 +67,7 @@ const DisconnectStripe = ({
       <div className="flex flex-col items-center gap-4 md:gap-8 md:flex-row">
         <Badge variant="green" className="justify-center w-full md:w-1/3">
           <div className="flex items-center gap-2">
-            <span>Card payments enabled</span>
+            <span className="whitespace-nowrap">Card payments enabled</span>
             <CheckCircleIcon />
           </div>
         </Badge>
@@ -409,6 +409,7 @@ export const CreditCardWithStripeForm = ({
             onDisconnect={onDisconnectStripe}
             disabled={disabled || disconnectStipeMutation.isPending}
           />
+
           {connectedStripeAccount && (
             <p className="text-sm text-gray-700">
               You will receive payments on your Stripe account{' '}
@@ -417,24 +418,20 @@ export const CreditCardWithStripeForm = ({
             </p>
           )}
 
-          {isManager && (
-            <>
-              <CreditCardCustomPrice
-                lockAddress={lockAddress}
-                network={network}
-                disabled={disabled}
-                lock={lock}
-                currencies={supportedCurrencies}
-                connectedStripeAccount={connectedStripeAccount}
-              />
-              {/* Disabled for now */}
-              {/* <CreditCardUnlockFee
+          <CreditCardCustomPrice
+            lockAddress={lockAddress}
+            network={network}
+            disabled={disabled}
+            lock={lock}
+            currencies={supportedCurrencies}
+            connectedStripeAccount={connectedStripeAccount}
+          />
+          {/* Disabled for now */}
+          {/* <CreditCardUnlockFee
                 lockAddress={lockAddress}
                 network={network}
                 disabled={disabled}
               /> */}
-            </>
-          )}
         </div>
       )
     }

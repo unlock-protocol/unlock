@@ -83,9 +83,6 @@ export default function CreditCardCustomPrice({
     defaultValues: async () => await getDefaultValues(),
   })
 
-  // TODO
-  const hasPriceConversion = true
-
   const {
     mutateAsync: saveSettingMutation,
     isPending: isSaveLockSettingLoading,
@@ -99,6 +96,8 @@ export default function CreditCardCustomPrice({
     lockAddress,
     network,
   })
+
+  const hasPriceConversion = !!totalCharges
 
   const onSaveCreditCardPrice = async ({
     creditCardPrice,
@@ -153,38 +152,28 @@ export default function CreditCardCustomPrice({
     CREDIT_CARD_MIN_PRICE_BY_CURRENCY?.[currency?.toUpperCase()] ||
     CREDIT_CARD_MIN_USD_PRICE
 
-  console.log({ totalCharges })
-
   return (
     <div className="grid gap-2">
       {totalCharges && (
         <SettingCardDetail
           title={'Price for card payments'}
           description={
-            hasPriceConversion ? (
-              <>
-                <p>
-                  Your members will be charged around{' '}
-                  {formatFiatPrice(totalCharges!.total, totalCharges.symbol)},
-                  but the conversion rate for {symbol} and gas prices may vary.
-                </p>
-                <CreditCardPricingBreakdown
-                  loading={isLoadingTotalCharges}
-                  total={totalCharges.total}
-                  creditCardProcessingFee={totalCharges.creditCardProcessingFee}
-                  unlockServiceFee={totalCharges.unlockServiceFee}
-                  gasCosts={totalCharges.gasCost}
-                  symbol={totalCharges.symbol}
-                  unlockFeeChargedToUser={true}
-                />
-              </>
-            ) : (
-              <p className="text-sm font-semibold text-red-600">
-                We are not able to convert {symbol} to a fiat currency on{' '}
-                {networks[network].name}. Please set the price and currency you
-                want to charge for card payments.
+            <>
+              <p>
+                Your members will be charged around{' '}
+                {formatFiatPrice(totalCharges!.total, totalCharges.symbol)}, but
+                the conversion rate for {symbol} and gas prices may vary.
               </p>
-            )
+              <CreditCardPricingBreakdown
+                loading={isLoadingTotalCharges}
+                total={totalCharges.total}
+                creditCardProcessingFee={totalCharges.creditCardProcessingFee}
+                unlockServiceFee={totalCharges.unlockServiceFee}
+                gasCosts={totalCharges.gasCost}
+                symbol={totalCharges.symbol}
+                unlockFeeChargedToUser={true}
+              />
+            </>
           }
         />
       )}
@@ -192,6 +181,13 @@ export default function CreditCardCustomPrice({
         onSubmit={handleSubmit(onSubmit)}
         className="grid items-center gap-3 text-sm"
       >
+        {!hasPriceConversion && (
+          <p className="text-sm font-semibold text-red-600">
+            We are not able to convert {symbol} to a fiat currency on{' '}
+            {networks[network].name}. Please set the price and currency you want
+            to charge for card payments.
+          </p>
+        )}
         <ToggleSwitch
           size="small"
           title="Use fixed price"

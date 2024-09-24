@@ -73,6 +73,12 @@ export const getTotalChargesForLock: RequestHandler = async (
     data,
   })
 
+  if (!pricing) {
+    return response
+      .status(400)
+      .send({ error: 'Pricing could not be computed.' })
+  }
+
   const {
     creditCardProcessingFee,
     unlockServiceFee,

@@ -79,12 +79,17 @@ export const useGetTotalCharges = ({
         recipients = [ethers.Wallet.createRandom().address]
         purchaseData = ['']
       }
-      const pricing = await locksmith.getChargesForLock(
-        network,
-        lockAddress,
-        purchaseData,
-        recipients
-      )
+      if (!purchaseData) {
+        purchaseData = recipients.map(() => '')
+      }
+      const pricing = await locksmith
+        .getChargesForLock(network, lockAddress, purchaseData, recipients)
+        .catch((e) => {
+          if (e.response.status === 400) {
+            return { data: null }
+          }
+          throw e
+        })
 
       return pricing.data
     },
