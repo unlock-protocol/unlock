@@ -7,7 +7,6 @@ import { ReactNode, useState } from 'react'
 
 import Link from 'next/link'
 import { EventCollection } from '@unlock-protocol/unlock-js'
-
 import { Managers } from './settings/Managers'
 import { useAuth } from '~/contexts/AuthenticationContext'
 
