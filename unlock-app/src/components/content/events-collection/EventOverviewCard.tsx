@@ -38,7 +38,7 @@ export const EventOverviewCard: React.FC<EventOverviewCardProps> = ({
     )
   }
 
-  const { image, ticket, attributes } = data
+  const { image, attributes } = data
 
   const getEventAttribute = (type: string) => {
     const attr = attributes.find((attribute) => attribute.trait_type === type)
@@ -48,7 +48,7 @@ export const EventOverviewCard: React.FC<EventOverviewCardProps> = ({
   const eventStartDate = getEventAttribute('event_start_date')
   const eventEndDate = getEventAttribute('event_end_date')
   const eventStartTime = getEventAttribute('event_start_time')
-  const eventLocation = ticket.event_location
+  const eventLocation = getEventAttribute('event_address')
 
   const isUserEvent = account && createdBy === account
 

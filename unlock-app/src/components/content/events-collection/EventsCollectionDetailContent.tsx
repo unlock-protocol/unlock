@@ -9,10 +9,10 @@ import { useRouter } from 'next/navigation'
 import { EventOverviewCard } from './EventOverviewCard'
 import { ImageBar } from '~/components/interface/locks/Manage/elements/ImageBar'
 import AddEventsToCollectionDrawer from './AddEventsToCollectionDawer'
-import EventDetailDrawer from './EventDetailDawer'
 import { FaGithub, FaYoutube, FaGlobe, FaTwitter } from 'react-icons/fa'
 import { SiFarcaster as FarcasterIcon } from 'react-icons/si'
 import Link from 'next/link'
+import { EventDetailDrawer } from './EventDetailDawer'
 
 export interface EventTicket {
   event_address: string
@@ -67,7 +67,7 @@ export default function EventsCollectionDetailContent({
 
   // event detail drawer
   const [isEventDetailDrawerOpen, setIsEventDetailDrawerOpen] = useState(false)
-  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
+  const [selectedEvent, setSelectedEvent] = useState<any | null>(null)
 
   const hasValidEvents = useMemo(() => {
     return (

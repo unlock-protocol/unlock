@@ -2,7 +2,6 @@ import React from 'react'
 import { Event } from './EventsCollectionDetailContent'
 import { Drawer, Placeholder } from '@unlock-protocol/ui'
 import { AiOutlineCalendar as CalendarIcon } from 'react-icons/ai'
-import { AiOutlineGlobal as GlobeIcon } from 'react-icons/ai'
 import { AiOutlineClockCircle as ClockIcon } from 'react-icons/ai'
 import { useCheckoutConfig } from '~/hooks/useCheckoutConfig'
 import { RegistrationCard } from '../event/Registration/RegistrationCard'
@@ -27,6 +26,7 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
     useCheckoutConfig({
       id: event?.checkoutConfigId,
     })
+
   const { data: organizers } = useEventOrganizers({
     checkoutConfig: checkoutConfig!,
   }) as { data: string[] | undefined }
@@ -34,7 +34,21 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
   if (!event) return null
 
   const { name, data } = event
-  const { image, ticket, description, requiresApproval } = data
+  const { image, description, requiresApproval } = data
+
+  const getEventAttribute = (type: string) => {
+    const attr = data.attributes?.find(
+      (attribute) => attribute.trait_type === type
+    )
+    return attr ? attr.value : ''
+  }
+
+  const eventStartDate = getEventAttribute('event_start_date')
+  const eventEndDate = getEventAttribute('event_end_date')
+  const eventStartTime = getEventAttribute('event_start_time')
+  const eventEndTime = getEventAttribute('event_end_time')
+  const eventLocation = getEventAttribute('event_address')
+  const eventIsInPerson = getEventAttribute('event_is_in_person')
 
   return (
     <Drawer isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -63,46 +77,27 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
               style={{ color: `#${event.background_color}` }}
               className="flex flex-col text-sm font-normal text-brand-dark"
             >
-              {ticket.event_start_date && (
-                <span>
-                  {dayjs(ticket.event_start_date).format('dddd D MMM YYYY')}
-                  {ticket.event_end_date &&
-                    ` to ${dayjs(ticket.event_end_date).format('dddd D MMM YYYY')}`}
-                </span>
+              {eventStartDate && eventEndDate && (
+                <span>{dayjs(eventStartDate).format('dddd D MMM YYYY')}</span>
               )}
             </div>
           </EventDetail>
 
           {/* Time */}
-          {ticket.event_start_time && ticket.event_end_time && (
+          {eventStartTime && eventEndTime && (
             <EventDetail compact label="Time" icon={ClockIcon}>
               <div className="flex flex-col text-sm font-normal text-brand-dark">
-                <span>
-                  {ticket.event_start_time}
-                  {ticket.event_end_time && ` to ${ticket.event_end_time}`}
-                </span>
+                <span>{dayjs(eventStartTime, 'HH:mm').format('h:mm A')}</span>
               </div>
             </EventDetail>
           )}
 
-          {/* Timezone */}
-          {ticket.event_timezone && (
-            <EventDetail compact label="Timezone" icon={GlobeIcon}>
-              <div
-                // @ts-expect-error property 'background_color' does not exist on type 'Event'
-                style={{ color: `#${event.background_color}` }}
-                className="flex flex-col text-sm font-normal text-brand-dark"
-              >
-                <span>{ticket.event_timezone}</span>
-              </div>
-            </EventDetail>
-          )}
-
-          {ticket.event_location && (
+          {/* Location */}
+          {eventLocation && (
             <EventLocation
-              inPerson={ticket.event_is_in_person}
-              eventLocation={ticket.event_location}
-              eventAddress={ticket.event_address}
+              inPerson={eventIsInPerson === 'true'}
+              eventLocation={eventLocation}
+              eventAddress={eventLocation}
               compact={true}
             />
           )}
@@ -133,5 +128,3 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
     </Drawer>
   )
 }
-
-export default EventDetailDrawer

@@ -40,8 +40,8 @@ export default function AddEventsToCollectionDrawer({
     account!
   )
 
-  const [eventUrl, setEventUrl] = useState('')
-  const [eventSlug, setEventSlug] = useState('')
+  const [eventUrl, setEventUrl] = useState<string>('')
+  const [eventSlug, setEventSlug] = useState<string>('')
   const { data: event, isLoading: isLoadingEvent } = useEvent({
     slug: eventSlug,
   })
@@ -49,9 +49,10 @@ export default function AddEventsToCollectionDrawer({
   const [isUrlValid, setIsUrlValid] = useState(false)
   const [isEventSelected, setIsEventSelected] = useState(false)
   const [isDuplicate, setIsDuplicate] = useState(false)
+  const [hasCheckedUrl, setHasCheckedUrl] = useState<boolean>(false) // New state
 
   useEffect(() => {
-    if (eventSlug && event) {
+    if (eventSlug.trim() !== '' && event) {
       // Check for duplication
       if (existingEventSlugs.includes(eventSlug)) {
         setIsDuplicate(true)
@@ -69,12 +70,13 @@ export default function AddEventsToCollectionDrawer({
   }, [eventSlug, event, existingEventSlugs])
 
   const handleSubmit = async () => {
-    if (!eventSlug) {
+    if (!eventSlug.trim()) {
       ToastHelper.error('No event selected')
       return
     }
     try {
       await addToEventCollection({ collectionSlug, eventSlug })
+      ToastHelper.success('Event added successfully!')
       setIsOpen(false)
     } catch (error) {
       console.error('Error adding event to collection:', error)
@@ -83,15 +85,19 @@ export default function AddEventsToCollectionDrawer({
   }
 
   const checkEventUrlValidity = () => {
-    const slugMatch = eventUrl.match(/\/event\/([^/]+)/)
+    setHasCheckedUrl(true) // Indicate that validity has been checked
+    const slugMatch = eventUrl.match(
+      /https:\/\/(?:app|staging-app)\.unlock-protocol\.com\/event\/([^/?#]+)/
+    )
     if (slugMatch && slugMatch[1]) {
       setEventSlug(slugMatch[1])
     } else {
       setIsUrlValid(false)
       setIsDuplicate(false)
-      setEventSlug('')
+      setEventSlug('') // Ensure eventSlug is set to a string
     }
   }
+
   // Filter the user's events to exclude existing event slugs
   const filteredUserEvents = userEvents?.filter(
     (userEvent) => !existingEventSlugs.includes(userEvent.slug!)
@@ -115,16 +121,18 @@ export default function AddEventsToCollectionDrawer({
         Add via URL
       </Button>
       <div className="space-y-1">
-        <Button
-          onClick={() => setAddMethod('existing')}
-          className="w-full"
-          disabled={
-            userEvents?.length === 0 || filteredUserEvents?.length === 0
-          }
-        >
-          Select from Existing Events
-        </Button>
-        {userEvents?.length === 0 && (
+        {filteredUserEvents && filteredUserEvents?.length > 0 && (
+          <Button
+            onClick={() => setAddMethod('existing')}
+            className="w-full"
+            disabled={
+              userEvents?.length === 0 || filteredUserEvents?.length === 0
+            }
+          >
+            Select from Existing Events
+          </Button>
+        )}
+        {userEvents?.length === 0 && !filteredUserEvents && (
           <p className="text-sm text-center text-gray-500">
             You haven&apos;t created any events yet.{' '}
             <span className="cursor-pointer text-brand-ui-primary">
@@ -135,20 +143,6 @@ export default function AddEventsToCollectionDrawer({
             .
           </p>
         )}
-        {userEvents &&
-          userEvents.length > 0 &&
-          filteredUserEvents?.length === 0 && (
-            <p className="text-sm text-center text-gray-500">
-              All your existing events already exist in this collection.{' '}
-              <span
-                className="cursor-pointer text-brand-ui-primary"
-                onClick={() => setAddMethod('form')}
-              >
-                Create one
-              </span>
-              .
-            </p>
-          )}
       </div>
       <Button onClick={() => setAddMethod('form')} className="w-full">
         Create a New Event
@@ -167,6 +161,7 @@ export default function AddEventsToCollectionDrawer({
           setIsUrlValid(false)
           setEventSlug('')
           setIsDuplicate(false)
+          setHasCheckedUrl(false) // Reset the check flag
         }}
         className="self-start"
       >
@@ -185,7 +180,12 @@ export default function AddEventsToCollectionDrawer({
               setEventUrl(e.target.value)
               setIsUrlValid(false)
               setIsDuplicate(false)
-              setEventSlug('')
+              setEventSlug('') // Reset slug when URL changes
+              setHasCheckedUrl(false) // Reset the check flag
+            }}
+            onBlur={() => {
+              // Optional: Uncomment if you want to check on blur
+              // checkEventUrlValidity()
             }}
           />
           <Button
@@ -194,7 +194,7 @@ export default function AddEventsToCollectionDrawer({
           >
             {isLoadingEvent ? 'Checking...' : 'Check Validity'}
           </Button>
-          {eventUrl && (
+          {eventUrl && hasCheckedUrl && (
             <p
               className={`text-sm ${
                 isUrlValid
@@ -208,7 +208,7 @@ export default function AddEventsToCollectionDrawer({
                 ? 'Valid URL'
                 : isDuplicate
                   ? 'This event already exists in the collection.'
-                  : 'Invalid URL'}
+                  : 'Invalid URL. Please use a URL from https://staging-app.unlock-protocol.com/event/ or https://app.unlock-protocol.com/event/'}
             </p>
           )}
         </div>
@@ -298,10 +298,10 @@ export default function AddEventsToCollectionDrawer({
         <div className="flex flex-col gap-4">
           <EventCreationForm
             compact={true}
-            onSubmit={(data) => {
-              // TODO: Create the event first and then add it to the collection
-              console.log('Form Data:', data)
-            }}
+            onSubmit={
+              // TODO: Create event and add to collection on submission
+              () => console.log('submit')
+            }
           />
         </div>
       </Disclosure>
