@@ -78,7 +78,9 @@ export const EventOverviewCard: React.FC<EventOverviewCardProps> = ({
               </Badge>
             )}
           </div>
-          <p className="mt-2 text-base text-gray-500">{data.description}</p>
+          <p className="mt-2 text-base text-gray-500 line-clamp-3">
+            {data.description}
+          </p>
         </div>
 
         {/* Attendee Cues */}
