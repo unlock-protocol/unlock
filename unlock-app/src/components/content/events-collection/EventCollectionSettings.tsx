@@ -21,10 +21,12 @@ export const EventCollectionSettings = ({
 }: EventCollectionSettingsProps) => {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const { account } = useAuth()
-
-  const isManager =
-    eventCollection.managerAddresses?.includes(account!) || false
-
+ 
+  const isManager = isCollectionManager(
+    eventCollection.managerAddresses,
+    account!
+  )
+  
   const tabs: {
     label: string
     description?: string
