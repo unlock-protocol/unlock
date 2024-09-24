@@ -95,9 +95,10 @@ export const GoogleMapsAutoComplete = ({
 
 interface FormProps {
   onSubmit: (data: NewEventForm) => void
+  compact?: boolean
 }
 
-export const Form = ({ onSubmit }: FormProps) => {
+export const Form = ({ onSubmit, compact = false }: FormProps) => {
   const [oldMaxNumberOfKeys, setOldMaxNumberOfKeys] = useState<number>(0)
   const { networks } = useConfig()
   const { account } = useAuth()
@@ -232,18 +233,22 @@ export const Form = ({ onSubmit }: FormProps) => {
 
   return (
     <FormProvider {...methods}>
-      <div className="grid grid-cols-[50px_1fr_50px] items-center mb-4">
-        <Button variant="borderless" aria-label="arrow back">
-          <ArrowBackIcon
-            size={20}
-            className="cursor-pointer"
-            onClick={() => router.back()}
-          />
-        </Button>
-        <h1 className="text-xl font-bold text-center text-brand-dark">
-          Creating your Event
-        </h1>
-      </div>
+      {!compact && (
+        <div
+          className={`grid ${compact ? '' : 'grid-cols-[50px_1fr_50px]'} items-center mb-4`}
+        >
+          <Button variant="borderless" aria-label="arrow back">
+            <ArrowBackIcon
+              size={20}
+              className="cursor-pointer"
+              onClick={() => router.back()}
+            />
+          </Button>
+          <h1 className="text-xl font-bold text-center text-brand-dark">
+            Creating your Event
+          </h1>
+        </div>
+      )}
 
       <form className="mb-6" onSubmit={methods.handleSubmit(processAndSubmit)}>
         <div className="grid gap-6">
@@ -252,8 +257,10 @@ export const Form = ({ onSubmit }: FormProps) => {
               All of these fields can also be adjusted later.
             </p>
 
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <div className="order-2 md:order-1">
+            <div
+              className={`grid grid-cols-1 gap-4 ${compact ? '' : 'md:grid-cols-2'}`}
+            >
+              <div className={`order-2 ${compact ? '' : 'md:order-1'}`}>
                 <ImageUpload
                   description="This illustration will be used for your event page, as well as the NFT tickets by default. Use 512 by 512 pixels for best results."
                   isUploading={isUploading}
@@ -274,7 +281,9 @@ export const Form = ({ onSubmit }: FormProps) => {
                   error={errors.metadata?.image?.message as string}
                 />
               </div>
-              <div className="grid order-1 gap-4 md:order-2">
+              <div
+                className={`grid order-1 gap-4 ${compact ? '' : 'md:order-2'}`}
+              >
                 <Input
                   {...register('lock.name', {
                     required: {
@@ -372,7 +381,9 @@ export const Form = ({ onSubmit }: FormProps) => {
                 This information will be public and included on each of the NFT
                 tickets. Again, it can be adjusted later.
               </p>
-              <div className="grid items-center gap-4 align-top sm:grid-cols-2">
+              <div
+                className={`grid items-center gap-4 align-top ${compact ? '' : 'sm:grid-cols-2'}`}
+              >
                 <div className="flex flex-col self-start gap-4 justify-top">
                   <div className="h-80">
                     {isInPerson && (
@@ -465,7 +476,9 @@ export const Form = ({ onSubmit }: FormProps) => {
 
                   {/* Date */}
                   <div className="flex flex-col gap-2">
-                    <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
+                    <div
+                      className={`grid grid-cols-1 gap-2 ${compact ? '' : 'lg:grid-cols-2'}`}
+                    >
                       <Input
                         {...register('metadata.ticket.event_start_date', {
                           required: {
@@ -522,7 +535,9 @@ export const Form = ({ onSubmit }: FormProps) => {
                       />
                     </div>
 
-                    <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
+                    <div
+                      className={`grid grid-cols-1 gap-2 ${compact ? '' : 'lg:grid-cols-2'}`}
+                    >
                       <Input
                         {...register('metadata.ticket.event_end_date', {
                           required: {
@@ -587,7 +602,9 @@ export const Form = ({ onSubmit }: FormProps) => {
           </Disclosure>
 
           <Disclosure label="Organizer" defaultOpen>
-            <div className="grid md:grid-cols-2 gap-2 justify-items-stretch">
+            <div
+              className={`grid ${compact ? '' : 'md:grid-cols-2'} gap-2 justify-items-stretch`}
+            >
               <Input
                 {...register('metadata.emailSender', {
                   required: {
