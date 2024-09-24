@@ -6,7 +6,7 @@ import { getEventCollection } from '~/utils/eventCollections'
 
 export const metadata: Metadata = {
   title: 'Events Collection Settings',
-  description: 'Manage your event settings.',
+  description: 'Manage your collection settings.',
 }
 
 const EventCollectionSettingsPage = async ({
