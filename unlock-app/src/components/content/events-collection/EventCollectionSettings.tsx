@@ -9,6 +9,7 @@ import Link from 'next/link'
 import { EventCollection } from '@unlock-protocol/unlock-js'
 import { Managers } from './settings/Managers'
 import { General } from './settings/General'
+import { Approvals } from './settings/Approvals'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { isCollectionManager } from '~/utils/eventCollections'
 
@@ -48,6 +49,14 @@ export const EventCollectionSettings = ({
       description: 'Add or remove managers to/from your event collection.',
       children: eventCollection ? (
         <Managers eventCollection={eventCollection} />
+      ) : null,
+    },
+    {
+      id: 'approvals',
+      label: 'Approvals',
+      description: 'Review and approve events submitted to your collection.',
+      children: eventCollection ? (
+        <Approvals eventCollection={eventCollection} />
       ) : null,
     },
   ]

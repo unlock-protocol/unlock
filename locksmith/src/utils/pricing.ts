@@ -10,10 +10,10 @@ import {
   MIN_PAYMENT_STRIPE_CREDIT_CARD,
 } from './constants'
 import {
-  getDefaultUsdPricing,
-  getUsdPricingForRecipient,
-  getDefiLammaPrice,
-  KeyPricing,
+  getDefaultFiatPricing,
+  getFiatPricingForRecipient,
+  getDefiLlamaPrice,
+  KeyFiatPricingPrice,
 } from '../operations/pricingOperations'
 import { getSettings as getLockSettings } from '../operations/lockSettingOperations'
 import normalizer from './normalizer'
@@ -52,19 +52,26 @@ export const getLockKeyPricing = async ({
   }
 }
 
-export const getKeyPricingInUSD = async ({
+// Returns the pricing in fiat, either the default, or if a custom
+// onchain key price is set for the recipient (via a hook for example)
+export const getKeyPricingInFiat = async ({
   recipients,
   network,
   lockAddress,
   data: dataArray,
   referrers,
-}: KeyPricingOptions): Promise<KeyPricing[]> => {
-  const defaultPricing = await getDefaultUsdPricing({
+}: KeyPricingOptions): Promise<
+  { address?: string; price: KeyFiatPricingPrice }[]
+> => {
+  const defaultPricing = await getDefaultFiatPricing({
     lockAddress,
     network,
   })
 
-  const result = await Promise.all(
+  if (!defaultPricing) {
+    return []
+  }
+  return Promise.all(
     recipients.map(async (userAddress, index) => {
       const data = dataArray?.[index] ?? '0x'
       const referrer = referrers?.[index] ?? userAddress!
@@ -76,38 +83,38 @@ export const getKeyPricingInUSD = async ({
           },
         }
       }
-
       try {
-        const pricingForRecipient = await getUsdPricingForRecipient({
+        const fiatPricingForRecipient = await getFiatPricingForRecipient({
           lockAddress,
           network,
           userAddress,
           referrer,
           data,
         })
-        return pricingForRecipient
-      } catch (error) {
-        logger.error(error)
-        return {
-          address: userAddress,
-          price: {
-            ...defaultPricing,
-          },
+        if (fiatPricingForRecipient) {
+          return fiatPricingForRecipient
         }
+      } catch (error) {
+        logger.error('There was an error fetching pricing for recipient')
+        logger.error(error)
+      }
+      return {
+        address: userAddress,
+        price: { ...defaultPricing },
       }
     })
   )
-  return result
 }
 
+// Returns the gas cost, in usd... (not in cents, but with 2 decimals), always!
 export const getGasCost = async ({ network }: Record<'network', number>) => {
   const gas = new GasPrice()
   const amount = await gas.gasPriceETH(network, GAS_COST)
-  const price = await getDefiLammaPrice({
+  const price = await getDefiLlamaPrice({
     network,
     amount,
   })
-  return Math.round((price.priceInAmount || 0) * 100)
+  return price.priceInAmount || 0
 }
 
 // Fee denominated in cents
@@ -204,7 +211,6 @@ export const getFees = async (
     })
     unlockFeeChargedToUser = data?.unlockFeeChargedToUser ?? true
   }
-
   const creditCardProcessingFee = getCreditCardProcessingFee(
     subtotal + gasCost,
     unlockServiceFee
@@ -225,12 +231,23 @@ export const getFees = async (
   }
 }
 
+// Returns pricing for recipients + total charges with fees
 export const createPricingForPurchase = async (options: KeyPricingOptions) => {
-  const recipients = await getKeyPricingInUSD(options)
-  const subtotal = recipients.reduce(
-    (sum, item) => sum + (item.price?.amountInCents || 0),
-    0
-  )
+  const recipients = await getKeyPricingInFiat(options)
+
+  if (!recipients || recipients.length === 0) {
+    // No route!
+    return null
+  }
+  // subtotal is in the lock's fiat currency (defaults to usd)
+  const subtotal = recipients.reduce((sum, item) => {
+    if (item.price) {
+      return sum + (item.price.amount * Math.pow(10, item.price.decimals) || 0)
+    }
+    return sum
+  }, 0)
+  const currency = recipients[0]?.price.currency
+
   const gasCost = await getGasCost(options)
   const fees = await getFees(
     {
@@ -239,9 +256,9 @@ export const createPricingForPurchase = async (options: KeyPricingOptions) => {
     },
     options
   )
-
   return {
     ...fees,
+    currency,
     recipients,
     subtotal,
     gasCost,
