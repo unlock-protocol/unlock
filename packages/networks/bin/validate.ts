@@ -189,6 +189,7 @@ const run = async () => {
       try {
         // check multisig params
         const multisigErrors = await checkMultisig({
+          isTestNetwork: network.isTestNetwork,
           providerURL: network.provider,
           safeAddress: network.multisig,
         })
