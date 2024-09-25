@@ -3,6 +3,11 @@ import { EventCollection } from '@unlock-protocol/unlock-js'
 import { locksmith } from '~/config/locksmith'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 
+interface RemoveEventInput {
+  collectionSlug: string
+  eventSlug: string
+}
+
 /**
  * Hook to create an event collection.
  *
@@ -114,19 +119,42 @@ export const useAddToEventCollection = () => {
 }
 
 /**
- * Hook to fetch unapproved events for an event collection via its slug.
- * Automatically caches the data and handles re-fetching as needed.
+ * Hook to remove an event from an existing event collection.
  *
- * @param slug - The unique identifier for the event collection.
+ * This hook provides functionality to:
+ * 1. Remove a specified event from a given collection
+ * 2. Handle success and error cases during the removal process
+ * 3. Invalidate relevant queries upon successful removal
+ *
+ * @returns A mutation object for removing an event from a collection.
  */
-export const useEventCollectionUnapprovedEvents = (slug: string) => {
-  return useQuery<EventCollection, Error>({
-    queryKey: ['eventCollectionUnapprovedEvents', slug],
-    queryFn: async (): Promise<any> => {
-      const { data } = await locksmith.getUnapprovedEventsForCollection(slug)
-      return data
+export const useRemoveEventFromCollection = (collectionSlug: string) => {
+  const queryClient = useQueryClient()
+
+  const removeEventMutation = useMutation({
+    mutationFn: async ({ eventSlug }: RemoveEventInput) => {
+      const response = await locksmith.removeEventFromCollection(
+        collectionSlug,
+        {
+          eventSlug,
+        }
+      )
+      return response
     },
-    enabled: !!slug,
-    staleTime: 5 * 60 * 1000,
+    onSuccess: (_data) => {
+      queryClient.invalidateQueries({
+        queryKey: ['eventCollectionEvents', collectionSlug],
+      })
+      ToastHelper.success('Event removed successfully!')
+    },
+    onError: (error: any) => {
+      ToastHelper.error(`Error removing event: ${error.message}`)
+    },
   })
+
+  return {
+    removeEventFromCollection: removeEventMutation.mutateAsync,
+    isRemovingEventFromCollection: removeEventMutation.isPending,
+    success: removeEventMutation.isSuccess,
+  }
 }

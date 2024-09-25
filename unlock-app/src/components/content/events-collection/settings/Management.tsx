@@ -1,10 +1,13 @@
+import { useState } from 'react'
 import { Button, Placeholder } from '@unlock-protocol/ui'
 import { EventCollection } from '@unlock-protocol/unlock-js'
 import Link from 'next/link'
 import { WrappedAddress } from '~/components/interface/WrappedAddress'
 import Image from 'next/image'
-import { useEventCollectionApprovals } from '~/hooks/useEventCollectionApprovals'
-import { useEventCollectionEvents } from '~/hooks/useEventCollection'
+import {
+  useEventCollectionEvents,
+  useRemoveEventFromCollection,
+} from '~/hooks/useEventCollection'
 
 interface ManageEventsProps {
   eventCollection: EventCollection
@@ -13,7 +16,13 @@ interface ManageEventsProps {
 export const ManageEvents = ({ eventCollection }: ManageEventsProps) => {
   const { data: collectionEvents, isPending: isCollectionEventsPending } =
     useEventCollectionEvents(eventCollection.slug!)
-  const { removeEvent, isRemovingEvent } = useEventCollectionApprovals()
+
+  const { removeEventFromCollection } = useRemoveEventFromCollection(
+    eventCollection.slug!
+  )
+
+  // track loading for remove actions
+  const [removingEvents, setRemovingEvents] = useState<string[]>([])
 
   if (isCollectionEventsPending) {
     return (
@@ -30,6 +39,18 @@ export const ManageEvents = ({ eventCollection }: ManageEventsProps) => {
         You are yet to add any events.
       </p>
     )
+  }
+
+  const handleRemove = async (eventSlug: string) => {
+    setRemovingEvents((prev) => [...prev, eventSlug])
+    try {
+      await removeEventFromCollection({
+        collectionSlug: eventCollection.slug!,
+        eventSlug: eventSlug,
+      })
+    } finally {
+      setRemovingEvents((prev) => prev.filter((slug) => slug !== eventSlug))
+    }
   }
 
   return (
@@ -110,15 +131,13 @@ export const ManageEvents = ({ eventCollection }: ManageEventsProps) => {
 
                     <Button
                       size="small"
-                      loading={isRemovingEvent}
-                      onClick={() =>
-                        removeEvent({
-                          slug: eventCollection.slug!,
-                          eventSlug: event.slug,
-                        })
-                      }
+                      loading={removingEvents.includes(event.slug)}
+                      onClick={() => handleRemove(event.slug)}
+                      variant="outlined-primary"
+                      className="border-red-300 text-red-400 hover:border-red-400 hover:text-red-500 hover:bg-red-100"
                     >
-                      Remove<span className="sr-only">, {event.name}</span>
+                      Remove
+                      <span className="sr-only">, {event.name}</span>
                     </Button>
                   </div>
                 </td>
