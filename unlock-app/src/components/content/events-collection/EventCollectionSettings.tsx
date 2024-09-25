@@ -9,6 +9,7 @@ import Link from 'next/link'
 import { EventCollection } from '@unlock-protocol/unlock-js'
 import { Managers } from './settings/Managers'
 import { General } from './settings/General'
+import { Approvals } from './settings/Approvals'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { isCollectionManager } from '~/utils/eventCollections'
 
