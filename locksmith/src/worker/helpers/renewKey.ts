@@ -6,7 +6,7 @@ import { KeyRenewal } from '../../models'
 import GasPrice from '../../utils/gasPrice'
 import Dispatcher from '../../fulfillment/dispatcher'
 import logger from '../../logger'
-import { getDefiLlamaPrice } from '../../operations/pricingOperations'
+import { getDefiLammaPrice } from '../../operations/pricingOperations'
 
 // multiply factor to increase precision for gas calculations
 const BASE_POINT_ACCURACY = 1000
@@ -43,7 +43,7 @@ const getGasFee = async (network: number, gasCost: bigint) => {
 
 // calculate price of any ERC20 to USD cents
 export const getRefundAmountInUSD = async (network: number, amount: string) => {
-  const { priceInAmount: priceUSD } = await getDefiLlamaPrice({
+  const { priceInAmount: priceUSD } = await getDefiLammaPrice({
     network,
     amount: parseFloat(amount) * BASE_POINT_ACCURACY,
   })
