@@ -53,7 +53,6 @@ export const LinkField: React.FC<LinkFieldProps> = ({
 
       {/* Link URL Input */}
       <div className="flex-grow min-h-[4rem]">
-        {' '}
         {/* Added min-h for consistency */}
         <Controller
           control={control}
