@@ -9,6 +9,7 @@ import { NewEventCollectionForm } from './Form'
 interface LinkFieldProps {
   index: number
   remove: (index: number) => void
+  showRemove?: boolean
 }
 
 const linkTypes = [
@@ -19,7 +20,11 @@ const linkTypes = [
   { value: 'github', label: 'GitHub' },
 ]
 
-const LinkField: React.FC<LinkFieldProps> = ({ index, remove }) => {
+const LinkField: React.FC<LinkFieldProps> = ({
+  index,
+  remove,
+  showRemove = true,
+}) => {
   const {
     control,
     watch,
@@ -29,7 +34,7 @@ const LinkField: React.FC<LinkFieldProps> = ({ index, remove }) => {
   const linkType = watch(`links.${index}.type`)
 
   return (
-    <div className="flex flex-col md:flex-row items-start md:items-center gap-4 w-full">
+    <div className="flex flex-col md:flex-row items-start gap-4 w-full">
       {/* Link Type Selector */}
       <div className="flex-grow md:flex-grow-0 md:w-1/4">
         <Controller
@@ -44,15 +49,12 @@ const LinkField: React.FC<LinkFieldProps> = ({ index, remove }) => {
             />
           )}
         />
-        {errors.links && errors.links[index]?.type && (
-          <p className="text-red-500 text-sm mt-1">
-            {errors.links[index]?.message || 'Invalid link type'}
-          </p>
-        )}
       </div>
 
       {/* Link URL Input */}
-      <div className="flex-grow">
+      <div className="flex-grow min-h-[4rem]">
+        {' '}
+        {/* Added min-h for consistency */}
         <Controller
           control={control}
           name={`links.${index}.url`}
@@ -71,6 +73,7 @@ const LinkField: React.FC<LinkFieldProps> = ({ index, remove }) => {
               {...field}
               type="text"
               className="w-full"
+              error={errors.links && errors.links[index]?.url?.message}
               placeholder={
                 linkType === 'website'
                   ? 'https://example.com'
@@ -79,91 +82,20 @@ const LinkField: React.FC<LinkFieldProps> = ({ index, remove }) => {
             />
           )}
         />
-        {errors.links && errors.links[index]?.url && (
-          <p className="text-red-500 text-sm mt-1">
-            {errors.links[index].url?.message || 'Invalid URL'}
-          </p>
-        )}
       </div>
 
       {/* Remove Button */}
-      <div className="flex items-center">
-        <Button
-          variant="borderless"
-          aria-label="Remove link"
-          onClick={() => remove(index)}
-        >
-          <TrashIcon />
-        </Button>
-      </div>
-    </div>
-  )
-}
-
-export const EditLinkField: React.FC<LinkFieldProps> = ({ index, remove }) => {
-  const {
-    control,
-    formState: { errors },
-  } = useFormContext<NewEventCollectionForm>()
-
-  return (
-    <div className="flex flex-col md:flex-row items-start md:items-center gap-4 w-full">
-      {/* Link Type Selector */}
-      <div className="flex-grow md:flex-grow-0 md:w-1/4">
-        <Controller
-          name={`links.${index}.type`}
-          control={control}
-          rules={{ required: 'Link type is required' }}
-          render={({ field: { onChange, value } }) => (
-            <Select onChange={onChange} value={value} options={linkTypes} />
-          )}
-        />
-        {errors.links && errors.links[index]?.type && (
-          <span className="text-red-500 text-sm mt-1">
-            {errors.links[index]?.message}
-          </span>
-        )}
-      </div>
-
-      {/* Link URL Input */}
-      <div className="flex-grow">
-        <Controller
-          name={`links.${index}.url`}
-          control={control}
-          rules={{
-            required: 'URL is required',
-            pattern: {
-              value: /^(https?:\/\/)/i,
-              message: 'Invalid URL format',
-            },
-          }}
-          render={({ field: { onChange, value } }) => (
-            <Input
-              onChange={onChange}
-              value={value}
-              type="text"
-              placeholder="URL"
-              className="w-full"
-            />
-          )}
-        />
-        {errors.links && errors.links[index]?.url && (
-          <span className="text-red-500 text-sm mt-1">
-            {errors.links[index]?.url?.message}
-          </span>
-        )}
-      </div>
-
-      {/* Remove Link Button */}
-      <div className="flex-none">
-        <Button
-          variant="borderless"
-          aria-label="Remove link"
-          onClick={() => remove(index)}
-        >
-          <TrashIcon />
-        </Button>
-      </div>
+      {showRemove && (
+        <div className="flex items-center">
+          <Button
+            variant="borderless"
+            aria-label="Remove link"
+            onClick={() => remove(index)}
+          >
+            <TrashIcon />
+          </Button>
+        </div>
+      )}
     </div>
   )
 }
