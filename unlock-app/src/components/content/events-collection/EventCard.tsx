@@ -38,15 +38,23 @@ export interface EventCardProps {
     slug: string
     checkoutConfigId: string
   }
-  onRemove: (eventSlug: string) => void
-  isRemoving: boolean
+  onRemove?: (eventSlug: string) => void
+  onApprove?: (eventSlug: string) => void
+  onReject?: (eventSlug: string) => void
+  isRemoving?: boolean
+  isApproving?: boolean
+  isRejecting?: boolean
 }
 
 export const EventCard = ({
   index,
   event,
   onRemove,
-  isRemoving,
+  onApprove,
+  onReject,
+  isRemoving = false,
+  isApproving = false,
+  isRejecting = false,
 }: EventCardProps) => {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -83,16 +91,46 @@ export const EventCard = ({
             </Link>
           </Button>
 
-          <Button
-            size="small"
-            variant="outlined-primary"
-            className="border-red-300 text-red-400 hover:border-red-400 hover:text-red-500 hover:bg-red-100"
-            onClick={() => onRemove(slug)}
-            loading={isRemoving}
-          >
-            Remove
-            <span className="sr-only">, {name}</span>
-          </Button>
+          {/* Conditionally render Remove button if onRemove is provided */}
+          {onRemove && (
+            <Button
+              size="small"
+              variant="outlined-primary"
+              className="border-red-300 text-red-400 hover:border-red-400 hover:text-red-500 hover:bg-red-100"
+              onClick={() => onRemove(slug)}
+              loading={isRemoving}
+            >
+              Remove
+              <span className="sr-only">, {name}</span>
+            </Button>
+          )}
+
+          {/* Conditionally render Reject button if onReject is provided */}
+          {onReject && (
+            <Button
+              size="small"
+              variant="outlined-primary"
+              className="border-red-300 text-red-400 hover:border-red-400 hover:text-red-500 hover:bg-red-100"
+              onClick={() => onReject(slug)}
+              loading={isRejecting}
+            >
+              Reject
+              <span className="sr-only">, {name}</span>
+            </Button>
+          )}
+
+          {/* Conditionally render Approve button if onApprove is provided */}
+          {onApprove && (
+            <Button
+              size="small"
+              variant="outlined-primary"
+              onClick={() => onApprove(slug)}
+              loading={isApproving}
+            >
+              Approve
+              <span className="sr-only">, {name}</span>
+            </Button>
+          )}
         </div>
       </div>
     )
@@ -114,7 +152,7 @@ export const EventCard = ({
                 {replyTo}
               </span>
               <Button size="tiny" variant="outlined-primary" disabled>
-                Edit email
+                Send email
               </Button>
             </div>
           }
