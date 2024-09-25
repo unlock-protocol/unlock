@@ -112,21 +112,3 @@ export const useAddToEventCollection = () => {
     success: addToEventCollectionMutation.isSuccess,
   }
 }
-
-/**
- * Hook to fetch unapproved events for an event collection via its slug.
- * Automatically caches the data and handles re-fetching as needed.
- *
- * @param slug - The unique identifier for the event collection.
- */
-export const useEventCollectionUnapprovedEvents = (slug: string) => {
-  return useQuery<EventCollection, Error>({
-    queryKey: ['eventCollectionUnapprovedEvents', slug],
-    queryFn: async (): Promise<any> => {
-      const { data } = await locksmith.getUnapprovedEventsForCollection(slug)
-      return data
-    },
-    enabled: !!slug,
-    staleTime: 5 * 60 * 1000,
-  })
-}
