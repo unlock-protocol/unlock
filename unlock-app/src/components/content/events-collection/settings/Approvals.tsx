@@ -1,25 +1,46 @@
-import { Button, Placeholder } from '@unlock-protocol/ui'
-import { EventCollection } from '@unlock-protocol/unlock-js'
-import Link from 'next/link'
-import { WrappedAddress } from '~/components/interface/WrappedAddress'
-import Image from 'next/image'
-import { useEventCollectionApprovals } from '~/hooks/useEventCollectionApprovals'
 import { useState } from 'react'
+import { Placeholder } from '@unlock-protocol/ui'
+import { EventCollection } from '@unlock-protocol/unlock-js'
+import { useEventCollectionApprovals } from '~/hooks/useEventCollectionApprovals'
+import { PaginationBar } from '~/components/interface/locks/Manage/elements/PaginationBar'
+import { EventCard } from '../EventCard'
 
 interface ApprovalsProps {
   eventCollection: EventCollection
 }
 
 interface UnapprovedEvent {
-  slug: string
+  eventUrl: string
+  id: number
   name: string
-  createdBy: string
-  data?: {
-    image?: string
-    ticket?: {
+  data: {
+    name: string
+    slug: string
+    image: string
+    ticket: {
+      event_address: string
+      event_end_date: string
+      event_end_time: string
+      event_location: string
+      event_timezone: string
+      event_start_date: string
+      event_start_time: string
       event_is_in_person: boolean
     }
+    replyTo: string
+    attributes: Array<{
+      value: string
+      trait_type: string
+    }>
+    description: string
+    emailSender: string
+    requiresApproval: boolean
   }
+  createdBy: string
+  createdAt: string
+  updatedAt: string
+  slug: string
+  checkoutConfigId: string
 }
 
 export const Approvals = ({ eventCollection }: ApprovalsProps) => {
@@ -30,9 +51,14 @@ export const Approvals = ({ eventCollection }: ApprovalsProps) => {
     rejectEvent,
   } = useEventCollectionApprovals(eventCollection.slug!)
 
-  // track loading for approve and remove actions
+  // Pagination state
+  const [page, setPage] = useState(1)
+  const itemsPerPage = 10
+  const startIndex = (page - 1) * itemsPerPage
+
+  // Track loading for approve and reject actions
   const [approvingEvents, setApprovingEvents] = useState<string[]>([])
-  const [removingEvents, setRemovingEvents] = useState<string[]>([])
+  const [rejectingEvents, setRejectingEvents] = useState<string[]>([])
 
   // Guard clause to ensure eventCollection and slug are defined
   if (!eventCollection || !eventCollection.slug) {
@@ -67,139 +93,40 @@ export const Approvals = ({ eventCollection }: ApprovalsProps) => {
     }
   }
 
-  const handleRemove = async (eventSlug: string) => {
-    setRemovingEvents((prev) => [...prev, eventSlug])
+  const handleReject = async (eventSlug: string) => {
+    setRejectingEvents((prev) => [...prev, eventSlug])
     try {
       await rejectEvent({ collectionSlug: eventCollection.slug!, eventSlug })
     } finally {
-      setRemovingEvents((prev) => prev.filter((slug) => slug !== eventSlug))
+      setRejectingEvents((prev) => prev.filter((slug) => slug !== eventSlug))
     }
   }
 
+  const paginatedEvents = unapprovedEvents.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  )
+
   return (
     <div className="space-y-6">
-      <div className="overflow-x-auto shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
-        <table className="min-w-full divide-y divide-gray-300">
-          <thead className="bg-gray-50">
-            <tr>
-              {/* Table Headers */}
-              <th
-                scope="col"
-                className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
-              ></th>
-              <th
-                scope="col"
-                className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
-              >
-                Name
-              </th>
-              <th
-                scope="col"
-                className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-              >
-                Organizer
-              </th>
-              <th
-                scope="col"
-                className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-              >
-                Location
-              </th>
-              <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                <span className="sr-only">Actions</span>
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200 bg-white">
-            {unapprovedEvents.map((event: UnapprovedEvent) => (
-              <tr key={event.slug}>
-                <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                  {event.data?.image ? (
-                    <Image
-                      src={event.data.image}
-                      alt={event.name || 'Event image'}
-                      width={50}
-                      height={50}
-                      className="object-cover rounded"
-                    />
-                  ) : (
-                    <div className="w-12 h-12 bg-gray-200 rounded"></div>
-                  )}
-                </td>
-                <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                  <span className="font-bold text-base">{event.name}</span>
-                </td>
-                <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                  {event.createdBy ? (
-                    <WrappedAddress
-                      address={event.createdBy}
-                      showExternalLink={false}
-                    />
-                  ) : (
-                    <span className="text-gray-400">Unknown</span>
-                  )}
-                </td>
-                <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                  {event.data?.ticket?.event_is_in_person
-                    ? 'In-Person'
-                    : 'Virtual'}
-                </td>
-                <td className="whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                  <div className="flex justify-end space-x-2">
-                    <Link
-                      href={`/event/${event.slug}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Button size="small" variant="outlined-primary">
-                        View Event
-                      </Button>
-                    </Link>
-                    <Button
-                      size="small"
-                      variant="outlined-primary"
-                      className="border-red-300 text-red-400 hover:border-red-400 hover:text-red-500 hover:bg-red-100"
-                      loading={removingEvents.includes(event.slug)}
-                      onClick={() => handleRemove(event.slug)}
-                    >
-                      Reject<span className="sr-only">, {event.name}</span>
-                    </Button>
-                    <Button
-                      size="small"
-                      loading={approvingEvents.includes(event.slug)}
-                      onClick={() => handleApprove(event.slug)}
-                    >
-                      Approve<span className="sr-only">, {event.name}</span>
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {/* Pagination Section */}
-        <nav
-          className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6"
-          aria-label="Pagination"
-        >
-          <div className="hidden sm:block">
-            <p className="text-sm text-gray-700">
-              Showing <span className="font-medium">1</span> to{' '}
-              <span className="font-medium">{unapprovedEvents.length}</span> of{' '}
-              <span className="font-medium">{unapprovedEvents.length}</span>{' '}
-              {unapprovedEvents.length > 1 ? 'results' : 'result'}
-            </p>
-          </div>
-          <div className="flex flex-1 justify-between sm:justify-end space-x-2">
-            <Button variant="outlined-primary" size="tiny" disabled>
-              Previous
-            </Button>
-            <Button variant="outlined-primary" size="tiny" disabled>
-              Next
-            </Button>
-          </div>
-        </nav>
-      </div>
+      {paginatedEvents.map((event: UnapprovedEvent, index: number) => (
+        <EventCard
+          key={event.slug}
+          event={event}
+          index={startIndex + index + 1}
+          onApprove={handleApprove}
+          onReject={handleReject}
+          isApproving={approvingEvents.includes(event.slug)}
+          isRejecting={rejectingEvents.includes(event.slug)}
+        />
+      ))}
+
+      {/* Pagination */}
+      <PaginationBar
+        maxNumbersOfPage={Math.ceil(unapprovedEvents.length / itemsPerPage)}
+        setPage={setPage}
+        page={page}
+      />
     </div>
   )
 }
