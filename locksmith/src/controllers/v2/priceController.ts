@@ -5,7 +5,6 @@ import { getCreditCardEnabledStatus } from '../../operations/creditCardOperation
 import * as Normalizer from '../../utils/normalizer'
 import * as pricingOperations from '../../operations/pricingOperations'
 import logger from '../../logger'
-import { symbol } from 'zod'
 
 export const amount: RequestHandler = async (request, response) => {
   const network = Number(request.params.network || 1)
