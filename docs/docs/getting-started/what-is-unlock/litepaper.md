@@ -27,6 +27,13 @@ In contrast to the attention-based business model for the web, a membership-base
 
 Organizations including The New York Times, Netflix, Patreon, and others have successfully embraced membership-based business models. Unfortunately, the historic infrastructure to implement memberships has been ad hoc and has been implemented across the web by way of a series of silos, most of which are incompatible with each other.
 
+The concept of a “membership” is a fundamental part of business interactions, and underpins a number of business models. For example:
+
+* Subscription business models — A subscription is a recurring, time-based membership
+* Ticketing — A ticket is a membership that enables access to a particular place for a particular period of time on a particular day
+* Certifications — A certification is a membership to the group of individuals who have completed a course or passed an exam
+
+
 **We believe there is a way to make memberships better and, as a result, we believe there is a way to make _the web_ better.**
 
 Unlock is a protocol developers, creators, and platforms can use to create memberships. Unlock’s goal is to ease implementation and increase conversion from “users” to “members,” creating a much healthier monetization environment for the web.
