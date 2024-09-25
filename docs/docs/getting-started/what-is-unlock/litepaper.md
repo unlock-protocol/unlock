@@ -11,6 +11,12 @@ description: >-
 
 _(Prefer to read this offline? [Click here to download.](https://19942922.fs1.hubspotusercontent-na1.net/hubfs/19942922/Unlock%20Protocol%20Litepaper%20rev07112022.pdf))_
 
+## Changelog
+
+09192024: Update to add information about UP token and DAO migration to Base
+
+07112022: Initial Litepaper publication
+
 ## Introduction
 
 The internet has evolved to be the operating system for humanity, providing the underlying architecture upon which we communicate, travel, collaborate, teach, learn, transact and even have feelings.
