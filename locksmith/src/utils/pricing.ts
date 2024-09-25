@@ -53,7 +53,7 @@ export const getLockKeyPricing = async ({
 }
 
 // Returns the pricing in fiat, either the default, or if a custom
-// on is set for the recipient.
+// onchain key price is set for the recipient (via a hook for example)
 export const getKeyPricingInFiat = async ({
   recipients,
   network,

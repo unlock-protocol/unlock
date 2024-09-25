@@ -221,13 +221,14 @@ export async function getLockKeyPricingFromContract({
   }
 }
 
-/** Get default pricing for a specific lock */
+/** Get the pricing that applies to any recipient for a specific lock,
+ * either because a price is set in the settings, or by getting the price
+ * from the `keyPrice` method on the lock. */
 export const getDefaultFiatPricing = async ({
   lockAddress,
   network,
 }: DefaultPricingProps): Promise<KeyFiatPricingPrice | undefined> => {
-  // retrieve pricing, either from the chain or from the settings, if set
-  // If using the default pricing fron the chain, we will use USD.
+  // retrieve pricings, both from the chain and from the settings, if set
   const [lockKeyPricing, pricingFromSettings] = await Promise.all([
     getLockKeyPricingFromContract({
       lockAddress,
