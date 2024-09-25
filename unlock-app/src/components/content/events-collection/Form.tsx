@@ -21,6 +21,7 @@ import { ChangeEvent, useEffect, useState } from 'react'
 import { onResolveName } from '~/utils/resolvers'
 import { WrappedAddress } from '~/components/interface/WrappedAddress'
 import { LinkField } from './LinkField'
+import { FiTrash as TrashIcon } from 'react-icons/fi'
 
 interface Link {
   type: 'farcaster' | 'x' | 'website' | 'youtube' | 'github'
@@ -50,7 +51,7 @@ export const EventCollectionForm = ({
   const { account } = useAuth()
   const [isAccountManager, setIsAccountManager] = useState<boolean>(true)
 
-  // State to track if adding a manager or link is in progress
+  // track if adding a manager or link is in progress
   const [isAddingManager, setIsAddingManager] = useState<boolean>(false)
   const [isAddingLink, setIsAddingLink] = useState<boolean>(false)
 
@@ -108,13 +109,23 @@ export const EventCollectionForm = ({
   const handleManagerChange = (index: number, value: string) => {
     if (value) {
       setValue(`managerAddresses.${index}`, value)
+      console.log(`handleManagerChange - Manager ${index} set to:`, value)
+
+      // Check if the current index is the last one
+      if (index === managerFields.length - 1) {
+        if (value.trim() !== '') {
+          console.log(
+            'handleManagerChange - Resetting isAddingManager to false'
+          )
+          setIsAddingManager(false)
+        }
+      }
     }
   }
 
   const handleAccountChange = () => {
     removeManager(0)
     setIsAccountManager(false)
-    // Reset adding manager state
     setIsAddingManager(false)
   }
 
@@ -131,7 +142,7 @@ export const EventCollectionForm = ({
 
   // Handlers for adding/canceling managers
   const handleAddOrCancelManager = () => {
-    if (isAddingManager) {
+    if (isAddingManager && !isLastManagerFilled) {
       // Cancel adding: remove the last manager field
       removeManager(managerFields.length - 1)
       setIsAddingManager(false)
@@ -156,14 +167,19 @@ export const EventCollectionForm = ({
     }
   }
 
-  // Effect to reset isAddingManager when a manager is successfully added
+  // reset isAddingManager when a manager is successfully added
   useEffect(() => {
-    if (isAddingManager && managerAddresses[managerFields.length - 1]) {
-      setIsAddingManager(false)
+    if (isAddingManager) {
+      const lastManagerAddress = managerAddresses[managerAddresses.length - 1]
+      console.log('useEffect - Last Manager Address:', lastManagerAddress)
+      if (lastManagerAddress && lastManagerAddress.trim() !== '') {
+        console.log('useEffect - Resetting isAddingManager to false')
+        setIsAddingManager(false)
+      }
     }
-  }, [managerAddresses, managerFields.length, isAddingManager])
+  }, [managerAddresses, isAddingManager])
 
-  // Effect to reset isAddingLink when a link is successfully added
+  // reset isAddingLink when a link is successfully added
   useEffect(() => {
     if (isAddingLink && links[linkFields.length - 1]?.url.trim()) {
       setIsAddingLink(false)
@@ -305,13 +321,20 @@ export const EventCollectionForm = ({
                         </div>
                       ) : (
                         <div className="flex-grow w-full">
-                          {/* Display WrappedAddress instead of AddressInput if address is resolved */}
                           {managerAddresses[index] ? (
-                            <WrappedAddress
-                              className="pl-4"
-                              address={managerAddresses[index]}
-                              showExternalLink={false}
-                            />
+                            <div className="flex items-center justify-between px-4">
+                              <WrappedAddress
+                                address={managerAddresses[index]}
+                                showExternalLink={false}
+                              />
+                              <Button
+                                variant="borderless"
+                                aria-label="Remove manager"
+                                onClick={() => removeManager(index)}
+                              >
+                                <TrashIcon />
+                              </Button>
+                            </div>
                           ) : (
                             <Controller
                               control={control}
@@ -350,7 +373,9 @@ export const EventCollectionForm = ({
                   onClick={handleAddOrCancelManager}
                   disabled={isAddingManager ? false : !isLastManagerFilled}
                 >
-                  {isAddingManager ? 'Cancel' : 'Add Manager'}
+                  {isAddingManager && !isLastManagerFilled
+                    ? 'Cancel'
+                    : 'Add Manager'}
                 </Button>
               </div>
             </Disclosure>
