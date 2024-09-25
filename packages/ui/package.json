@@ -73,7 +73,7 @@
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js",
     "@vitejs/plugin-react": "4.3.1",
     "autoprefixer": "10.4.20",
-    "postcss": "8.4.40",
+    "postcss": "8.4.41",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "storybook": "8.2.9",
