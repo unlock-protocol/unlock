@@ -7,8 +7,11 @@ import {
   SubgraphService,
 } from '@unlock-protocol/unlock-js'
 import { Payload } from '../../models/payload'
-import { Receipt, ReceiptBase } from '../../models'
 import normalizer from '../../utils/normalizer'
+import {
+  getReceiptsZipName,
+  zipReceiptsAndSendtos3,
+} from '../../utils/receipts'
 
 const TaskPayload = z.object({
   lockAddress: z
@@ -61,58 +64,21 @@ export const allKeys = async ({ lockAddress, network }: AllKeysOptions) => {
 
 export const downloadReceipts: Task = async (payload) => {
   const { lockAddress, network, id } = await TaskPayload.parseAsync(payload)
-  const [keys, receipts, base] = await Promise.all([
-    allKeys({
-      lockAddress,
-      network,
-    }),
-    Receipt.findAll({
-      where: {
-        lockAddress,
-        network,
-      },
-    }),
-    ReceiptBase.findOne({
-      where: {
-        lockAddress,
-        network,
-      },
-    }),
-  ])
+  const uploaded = await zipReceiptsAndSendtos3(lockAddress, network)
+  const key = getReceiptsZipName(lockAddress, network)
 
-  const receiptsDataMap = receipts.reduce<Record<string, Receipt>>(
-    (map, receiptData) => {
-      map[receiptData.id] = receiptData
-      return map
-    },
-    {}
-  )
-
-  const items = keys.map((item) => {
-    const receiptData = receiptsDataMap[item.tokenId]
-    return {
-      ...item,
-      fullName: receiptData?.fullname,
-      vat: base?.vat,
-      service: base?.servicePerformed,
-      supplier: base?.supplierName,
-      supplierAddress:
-        base?.addressLine1 && base?.addressLine2
-          ? `${base?.addressLine1}\n${base}`
-          : base?.addressLine1 || base?.addressLine2 || '',
-    } as any
-  })
-
-  await Payload.upsert(
-    {
-      id,
-      payload: {
-        status: 'success',
-        result: items,
+  if (uploaded) {
+    await Payload.upsert(
+      {
+        id,
+        payload: {
+          status: 'success',
+          key,
+        },
       },
-    },
-    {
-      conflictFields: ['id'],
-    }
-  )
+      {
+        conflictFields: ['id'],
+      }
+    )
+  }
 }

@@ -21,7 +21,6 @@ export default class UnlockProvider extends ethers.JsonRpcProvider {
 
   public isUnlock: boolean;
 
-  // eslint-disable-next-line no-undef
   [key: string]: any
 
   constructor({ provider, id }: UnlockProviderOptions) {
@@ -86,7 +85,7 @@ export default class UnlockProvider extends ethers.JsonRpcProvider {
    * @param {string} _ the address to sign it with -- ignored because
    * we use the address in this class.
    */
-  // eslint-disable-next-line no-unused-vars
+
   async personal_sign([data, _]: any[]) {
     const content = ethers.getBytes(data)
     const signature = await this.wallet?.signMessage(content)

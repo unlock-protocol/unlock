@@ -127,7 +127,7 @@ export function ConfirmCrossChainPurchase({
           await approveTx.wait()
         }
       }
-      setButtonLabel(`Purchasing...`)
+      setButtonLabel('Purchasing...')
 
       // delete unwanted gas values
       delete route.tx.gasLimit

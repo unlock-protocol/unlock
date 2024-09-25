@@ -64,7 +64,7 @@ vi.mock('../../../src/operations/wedlocksOperations', () => {
 
 describe('tickets endpoint', () => {
   beforeAll(async () => {
-    await EventData.truncate()
+    await EventData.truncate({ cascade: true })
     await CheckoutConfig.truncate()
     fetchMock.enableMocks()
     // create an event

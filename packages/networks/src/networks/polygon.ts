@@ -50,7 +50,7 @@ export const polygon: NetworkConfig = {
         name: 'Discount code',
       },
       {
-        address: '0xa10a55EF6E41dE1267cA8A98010B58a7b6B21418',
+        address: '0x25Ec032F38b87295bA43C825993B9F4E1F4065c9',
         id: HookType.PROMO_CODE_CAPPED,
         name: 'Discount code with caps',
       },
@@ -92,8 +92,8 @@ export const polygon: NetworkConfig = {
   publicProvider: 'https://polygon-rpc.com/',
   startBlock: 21986688,
   subgraph: {
-    endpoint:
-      'https://api.studio.thegraph.com/query/65299/unlock-protocol-polygon/version/latest',
+    endpoint: 'https://subgraph.unlock-protocol.com/137',
+    graphId: '6UrwdJt18yfk4PGzxyeYdH9hUM8PzWvuLbUTKa3T17PD',
     networkName: 'matic',
     studioName: 'unlock-protocol-polygon',
   },

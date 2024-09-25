@@ -21,12 +21,12 @@ export const celo: NetworkConfig = {
   hooks: {
     onKeyPurchaseHook: [
       {
-        address: '0x1Bc951F8ed90F6c135F01Fe62CA348F4c3F43D00',
+        address: '0xdc230F9A08918FaA5ae48B8E13647789A8B6dD46',
         id: HookType.CAPTCHA,
         name: 'Captcha',
       },
       {
-        address: '0xdd753E08BB09F22593537f29100F0eD98AfA57FA',
+        address: '0xe49f5FD63cD7ec130B07dad30f068CC08F201e1e',
         id: HookType.GUILD,
         name: 'Guild',
       },
@@ -67,8 +67,8 @@ export const celo: NetworkConfig = {
   publicProvider: 'https://forno.celo.org',
   startBlock: 13994123,
   subgraph: {
-    endpoint:
-      'https://api.studio.thegraph.com/query/65299/unlock-protocol-celo/version/latest',
+    endpoint: 'https://subgraph.unlock-protocol.com/42220',
+    graphId: '7WoP8r47dyfYvQv7tk5wxSYyszENqXz2EATjUT8x7gRm',
     studioName: 'unlock-protocol-celo',
   },
   tokens: [
