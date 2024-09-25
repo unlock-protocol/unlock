@@ -27,7 +27,7 @@ export const Approvals = ({ eventCollection }: ApprovalsProps) => {
     unapprovedEvents,
     isLoadingUnapprovedEvents,
     approveEvent,
-    removeEvent,
+    rejectEvent,
   } = useEventCollectionApprovals(eventCollection.slug!)
 
   // track loading for approve and remove actions
@@ -61,7 +61,7 @@ export const Approvals = ({ eventCollection }: ApprovalsProps) => {
   const handleApprove = async (eventSlug: string) => {
     setApprovingEvents((prev) => [...prev, eventSlug])
     try {
-      await approveEvent({ eventSlug })
+      await approveEvent({ collectionSlug: eventCollection.slug!, eventSlug })
     } finally {
       setApprovingEvents((prev) => prev.filter((slug) => slug !== eventSlug))
     }
@@ -70,7 +70,7 @@ export const Approvals = ({ eventCollection }: ApprovalsProps) => {
   const handleRemove = async (eventSlug: string) => {
     setRemovingEvents((prev) => [...prev, eventSlug])
     try {
-      await removeEvent({ eventSlug })
+      await rejectEvent({ collectionSlug: eventCollection.slug!, eventSlug })
     } finally {
       setRemovingEvents((prev) => prev.filter((slug) => slug !== eventSlug))
     }

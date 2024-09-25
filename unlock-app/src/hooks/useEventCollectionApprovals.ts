@@ -4,22 +4,22 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { EventCollection } from '@unlock-protocol/unlock-js'
 
 interface ApproveEventInput {
-  slug: string
+  collectionSlug: string
   eventSlug: string
 }
 
 interface BulkApproveEventsInput {
-  slug: string
+  collectionSlug: string
   eventSlugs: string[]
 }
 
-interface RemoveEventInput {
-  slug: string
+interface RejectEventInput {
+  collectionSlug: string
   eventSlug: string
 }
 
-interface BulkRemoveEventsInput {
-  slug: string
+interface BulkRejectEventsInput {
+  collectionSlug: string
   eventSlugs: string[]
 }
 
@@ -90,9 +90,9 @@ export const useEventCollectionApprovals = (eventCollectionSlug: string) => {
     },
   })
 
-  // Remove an event
-  const removeEventMutation = useMutation({
-    mutationFn: async ({ eventSlug }: Omit<RemoveEventInput, 'slug'>) => {
+  // Reject an event
+  const rejectEventMutation = useMutation({
+    mutationFn: async ({ eventSlug }: Omit<RejectEventInput, 'slug'>) => {
       const response = await locksmith.removeEventFromCollection(
         eventCollectionSlug,
         {
@@ -102,32 +102,32 @@ export const useEventCollectionApprovals = (eventCollectionSlug: string) => {
       return response
     },
     onSuccess: () => {
-      ToastHelper.success('Event removed successfully!')
+      ToastHelper.success('Event rejected successfully!')
       queryClient.invalidateQueries({
         queryKey: ['eventCollectionUnapprovedEvents', eventCollectionSlug],
       })
     },
     onError: (error: any) => {
-      ToastHelper.error(`Error removing event: ${error.message}`)
+      ToastHelper.error(`Error rejecting event: ${error.message}`)
     },
   })
 
-  // Bulk remove events
-  const bulkRemoveEventsMutation = useMutation({
-    mutationFn: async ({ eventSlugs }: Omit<BulkRemoveEventsInput, 'slug'>) => {
+  // Bulk reject events
+  const bulkRejectEventsMutation = useMutation({
+    mutationFn: async ({ eventSlugs }: Omit<BulkRejectEventsInput, 'slug'>) => {
       const response = await locksmith.bulkRemoveEvents(eventCollectionSlug, {
         eventSlugs,
       })
       return response
     },
     onSuccess: () => {
-      ToastHelper.success('Events removed successfully!')
+      ToastHelper.success('Events rejected successfully!')
       queryClient.invalidateQueries({
         queryKey: ['eventCollectionUnapprovedEvents', eventCollectionSlug],
       })
     },
     onError: (error: any) => {
-      ToastHelper.error(`Error removing events: ${error.message}`)
+      ToastHelper.error(`Error rejecting events: ${error.message}`)
     },
   })
 
@@ -141,9 +141,9 @@ export const useEventCollectionApprovals = (eventCollectionSlug: string) => {
     isApprovingEvent: approveEventMutation.isPending,
     bulkApproveEvents: bulkApproveEventsMutation.mutateAsync,
     isBulkApprovingEvents: bulkApproveEventsMutation.isPending,
-    removeEvent: removeEventMutation.mutateAsync,
-    isRemovingEvent: removeEventMutation.isPending,
-    bulkRemoveEvents: bulkRemoveEventsMutation.mutateAsync,
-    isBulkRemovingEvents: bulkRemoveEventsMutation.isPending,
+    rejectEvent: rejectEventMutation.mutateAsync,
+    isRejectingEvent: rejectEventMutation.isPending,
+    bulkRejectEvents: bulkRejectEventsMutation.mutateAsync,
+    isBulkRejectingEvents: bulkRejectEventsMutation.isPending,
   }
 }
