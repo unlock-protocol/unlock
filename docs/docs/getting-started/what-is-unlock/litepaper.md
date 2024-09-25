@@ -29,9 +29,9 @@ Organizations including The New York Times, Netflix, Patreon, and others have su
 
 The concept of a “membership” is a fundamental part of business interactions, and underpins a number of business models. For example:
 
-* Subscription business models — A subscription is a recurring, time-based membership
-* Ticketing — A ticket is a membership that enables access to a particular place for a particular period of time on a particular day
-* Certifications — A certification is a membership to the group of individuals who have completed a course or passed an exam
+* **Subscription business models** — A subscription is a recurring, time-based membership
+* **Ticketing** — A ticket is a membership that enables access to a particular place for a particular period of time on a particular day
+* **Certifications** — A certification is a membership to the group of individuals who have completed a course or passed an exam
 
 
 **We believe there is a way to make memberships better and, as a result, we believe there is a way to make _the web_ better.**
