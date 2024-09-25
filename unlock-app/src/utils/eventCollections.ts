@@ -22,3 +22,11 @@ export async function getEventCollection(slug: string) {
 
   return response.data
 }
+
+// Utility function to check if the user is a collection manager
+export const isCollectionManager = (
+  managerAddresses: string[] | undefined,
+  account: string | null
+) => {
+  return managerAddresses?.includes(account!) || false
+}

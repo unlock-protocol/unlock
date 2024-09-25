@@ -2,7 +2,7 @@ import React from 'react'
 import { Event } from './EventsCollectionDetailContent'
 import { Drawer, Placeholder } from '@unlock-protocol/ui'
 import { AiOutlineCalendar as CalendarIcon } from 'react-icons/ai'
-import { AiOutlineGlobal as GlobeIcon } from 'react-icons/ai'
+import { AiOutlineClockCircle as ClockIcon } from 'react-icons/ai'
 import { useCheckoutConfig } from '~/hooks/useCheckoutConfig'
 import { RegistrationCard } from '../event/Registration/RegistrationCard'
 import { useEventOrganizers } from '~/hooks/useEventOrganizers'
@@ -17,66 +17,16 @@ interface EventDetailDrawerProps {
   event: Event | null
 }
 
-// Helper function to get ordinal suffix for a given day
-const getOrdinalSuffix = (day: number): string => {
-  if (day > 3 && day < 21) return 'th'
-  switch (day % 10) {
-    case 1:
-      return 'st'
-    case 2:
-      return 'nd'
-    case 3:
-      return 'rd'
-    default:
-      return 'th'
-  }
-}
-
-// util to format date range
-const formatDateRange = (startDateStr: string, endDateStr?: string): string => {
-  const startDate = dayjs(startDateStr)
-  const endDate = endDateStr ? dayjs(endDateStr) : null
-
-  const startDay = startDate.date()
-  const startSuffix = getOrdinalSuffix(startDay)
-  const startMonth = startDate.format('MMM')
-  const startYear = startDate.year()
-
-  if (endDate) {
-    const endDay = endDate.date()
-    const endSuffix = getOrdinalSuffix(endDay)
-    const endMonth = endDate.format('MMM')
-    const endYear = endDate.year()
-
-    // If start and end are in the same month and year
-    if (
-      startDate.isSame(endDate, 'month') &&
-      startDate.isSame(endDate, 'year')
-    ) {
-      return `${startDay}${startSuffix} ${startMonth} to ${endDay}${endSuffix} ${endMonth}, ${startYear}`
-    }
-
-    // If start and end are in different months but same year
-    if (startDate.isSame(endDate, 'year')) {
-      return `${startDay}${startSuffix} ${startMonth} to ${endDay}${endSuffix} ${endMonth}, ${startYear}`
-    }
-
-    // If start and end are in different years
-    return `${startDay}${startSuffix} ${startMonth}, ${startYear} to ${endDay}${endSuffix} ${endMonth}, ${endYear}`
-  }
-
-  // If only start date is available
-  return `${startDay}${startSuffix} ${startMonth}, ${startYear}`
-}
-
 export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
   isOpen,
   setIsOpen,
   event,
 }) => {
-  const { data: checkoutConfig, isPending } = useCheckoutConfig({
-    id: event?.checkoutConfigId,
-  })
+  const { data: checkoutConfig, isPending: isCheckoutConfigPending } =
+    useCheckoutConfig({
+      id: event?.checkoutConfigId,
+    })
+
   const { data: organizers } = useEventOrganizers({
     checkoutConfig: checkoutConfig!,
   }) as { data: string[] | undefined }
@@ -84,7 +34,21 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
   if (!event) return null
 
   const { name, data } = event
-  const { image, ticket, description, requiresApproval } = data
+  const { image, description, requiresApproval } = data
+
+  const getEventAttribute = (type: string) => {
+    const attr = data.attributes?.find(
+      (attribute) => attribute.trait_type === type
+    )
+    return attr ? attr.value : ''
+  }
+
+  const eventStartDate = getEventAttribute('event_start_date')
+  const eventEndDate = getEventAttribute('event_end_date')
+  const eventStartTime = getEventAttribute('event_start_time')
+  const eventEndTime = getEventAttribute('event_end_time')
+  const eventLocation = getEventAttribute('event_address')
+  const eventIsInPerson = getEventAttribute('event_is_in_person')
 
   return (
     <Drawer isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -93,7 +57,7 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
         <img
           src={image}
           alt={name}
-          className="w-full h-full object-cover rounded-2xl"
+          className="w-full h-[500px] object-cover rounded-2xl"
         />
 
         {/* Event Information */}
@@ -106,39 +70,40 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
             <Hosts organizers={organizers} />
           )}
 
-          {/* Date Details */}
+          {/* Date */}
           <EventDetail compact label="Date" icon={CalendarIcon}>
             <div
               // @ts-expect-error property 'background_color' does not exist on type 'Event'
               style={{ color: `#${event.background_color}` }}
               className="flex flex-col text-sm font-normal text-brand-dark"
             >
-              {ticket.event_start_date && (
-                <span>
-                  {formatDateRange(
-                    ticket.event_start_date,
-                    ticket.event_end_date
-                  )}
-                </span>
+              {eventStartDate && eventEndDate && (
+                <span>{dayjs(eventStartDate).format('dddd D MMM YYYY')}</span>
               )}
             </div>
           </EventDetail>
 
-          {/* Timezone */}
-          <EventDetail compact label="Timezone" icon={GlobeIcon}>
-            <div
-              // @ts-expect-error property 'background_color' does not exist on type 'Event'
-              style={{ color: `#${event.background_color}` }}
-              className="flex flex-col text-sm font-normal text-brand-dark"
-            >
-              {ticket.event_timezone && <span>{ticket.event_timezone}</span>}
-            </div>
-          </EventDetail>
+          {/* Time */}
+          {eventStartTime && eventEndTime && (
+            <EventDetail compact label="Time" icon={ClockIcon}>
+              <div className="flex flex-col text-sm font-normal text-brand-dark">
+                <span>{dayjs(eventStartTime, 'HH:mm').format('h:mm A')}</span>
+              </div>
+            </EventDetail>
+          )}
 
-          {ticket.event_location && <EventLocation event={event} />}
+          {/* Location */}
+          {eventLocation && (
+            <EventLocation
+              inPerson={eventIsInPerson === 'true'}
+              eventLocation={eventLocation}
+              eventAddress={eventLocation}
+              compact={true}
+            />
+          )}
 
           {/* Registration Card */}
-          {isPending ? (
+          {isCheckoutConfigPending ? (
             <Placeholder.Root>
               <Placeholder.Card />
             </Placeholder.Root>
@@ -163,5 +128,3 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
     </Drawer>
   )
 }
-
-export default EventDetailDrawer
