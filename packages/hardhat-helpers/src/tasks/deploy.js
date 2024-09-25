@@ -4,7 +4,7 @@ const path = require('path')
 
 const initializeDeployTask = () =>
   task('deploy:contract', 'Deploy any contract by name')
-    .addFlag('proxied', 'deploy using OZ Transparent Proxy')
+    .addFlag('proxied', 'deploy using OZ Transparent Proxy', false)
     .addParam('contract', 'the path of the contract to deploy')
     .addOptionalParam(
       'constructorArgs',
@@ -15,20 +15,24 @@ const initializeDeployTask = () =>
       'List of deployment args to pass to the constructor'
     )
     .setAction(async ({ contract, params, proxied, constructorArgs }) => {
-      const contractName = path
-        .basename(contract)
-        .replace('.sol', '')
-        .split('V')[0]
-      const qualified = `${contract}:${contractName}`
+      let qualified
+      if (contract.includes(':')) {
+        qualified = contract
+      } else {
+        const contractName = path
+          .basename(contract)
+          .replace('.sol', '')
+          .split('V')[0]
+        qualified = `${contract}:${contractName}`
+      }
 
       let address, hash
-
       if (constructorArgs) {
         params = require(`${constructorArgs}`)
         console.log(params)
       }
 
-      if (proxied) {
+      if (!proxied) {
         ;({ address, hash } = await deployContract(qualified, params))
       } else {
         console.log(`Deploying using a Transparent proxy:`)
