@@ -1,6 +1,7 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query'
 import { locksmith } from '~/config/locksmith'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { EventCollection } from '@unlock-protocol/unlock-js'
 
 interface ApproveEventInput {
   slug: string
@@ -23,19 +24,45 @@ interface BulkRemoveEventsInput {
 }
 
 /**
- * Utility hook for event collection approvals and manager addresses.
+ * Utility hook for event collection approvals, unapproved events, and manager addresses.
  *
- * @returns An object containing mutation functions and their states for event collection approvals and manager addresses.
+ * @param slug - The unique identifier for the event collection.
+ * @returns An object containing mutation functions, their states, and unapproved events data for event collection approvals.
  */
-export const useEventCollectionApprovals = () => {
+export const useEventCollectionApprovals = (eventCollectionSlug: string) => {
+  const queryClient = useQueryClient()
+
+  // Query to fetch unapproved events
+  const {
+    data: unapprovedEvents,
+    isLoading: isLoadingUnapprovedEvents,
+    isError: isErrorUnapprovedEvents,
+    error: errorUnapprovedEvents,
+    refetch: refetchUnapprovedEvents,
+  } = useQuery<EventCollection, Error>({
+    queryKey: ['eventCollectionUnapprovedEvents', eventCollectionSlug],
+    queryFn: async (): Promise<any> => {
+      const { data } =
+        await locksmith.getUnapprovedEventsForCollection(eventCollectionSlug)
+      return data
+    },
+    enabled: !!eventCollectionSlug,
+    staleTime: 5 * 60 * 1000,
+  })
+
   // Approve an event
   const approveEventMutation = useMutation({
-    mutationFn: async ({ slug, eventSlug }: ApproveEventInput) => {
-      const response = await locksmith.approveEvent(slug, { eventSlug })
+    mutationFn: async ({ eventSlug }: Omit<ApproveEventInput, 'slug'>) => {
+      const response = await locksmith.approveEvent(eventCollectionSlug, {
+        eventSlug,
+      })
       return response
     },
-    onSuccess: (_data) => {
+    onSuccess: () => {
       ToastHelper.success('Event approved successfully!')
+      queryClient.invalidateQueries({
+        queryKey: ['eventCollectionUnapprovedEvents', eventCollectionSlug],
+      })
     },
     onError: (error: any) => {
       ToastHelper.error(`Error approving event: ${error.message}`)
@@ -44,12 +71,19 @@ export const useEventCollectionApprovals = () => {
 
   // Bulk approve events
   const bulkApproveEventsMutation = useMutation({
-    mutationFn: async ({ slug, eventSlugs }: BulkApproveEventsInput) => {
-      const response = await locksmith.bulkApproveEvents(slug, { eventSlugs })
+    mutationFn: async ({
+      eventSlugs,
+    }: Omit<BulkApproveEventsInput, 'slug'>) => {
+      const response = await locksmith.bulkApproveEvents(eventCollectionSlug, {
+        eventSlugs,
+      })
       return response
     },
     onSuccess: () => {
       ToastHelper.success('Events approved successfully!')
+      queryClient.invalidateQueries({
+        queryKey: ['eventCollectionUnapprovedEvents', eventCollectionSlug],
+      })
     },
     onError: (error: any) => {
       ToastHelper.error(`Error approving events: ${error.message}`)
@@ -58,14 +92,20 @@ export const useEventCollectionApprovals = () => {
 
   // Remove an event
   const removeEventMutation = useMutation({
-    mutationFn: async ({ slug, eventSlug }: RemoveEventInput) => {
-      const response = await locksmith.removeEventFromCollection(slug, {
-        eventSlug,
-      })
+    mutationFn: async ({ eventSlug }: Omit<RemoveEventInput, 'slug'>) => {
+      const response = await locksmith.removeEventFromCollection(
+        eventCollectionSlug,
+        {
+          eventSlug,
+        }
+      )
       return response
     },
-    onSuccess: (_data) => {
+    onSuccess: () => {
       ToastHelper.success('Event removed successfully!')
+      queryClient.invalidateQueries({
+        queryKey: ['eventCollectionUnapprovedEvents', eventCollectionSlug],
+      })
     },
     onError: (error: any) => {
       ToastHelper.error(`Error removing event: ${error.message}`)
@@ -74,12 +114,17 @@ export const useEventCollectionApprovals = () => {
 
   // Bulk remove events
   const bulkRemoveEventsMutation = useMutation({
-    mutationFn: async ({ slug, eventSlugs }: BulkRemoveEventsInput) => {
-      const response = await locksmith.bulkRemoveEvents(slug, { eventSlugs })
+    mutationFn: async ({ eventSlugs }: Omit<BulkRemoveEventsInput, 'slug'>) => {
+      const response = await locksmith.bulkRemoveEvents(eventCollectionSlug, {
+        eventSlugs,
+      })
       return response
     },
     onSuccess: () => {
       ToastHelper.success('Events removed successfully!')
+      queryClient.invalidateQueries({
+        queryKey: ['eventCollectionUnapprovedEvents', eventCollectionSlug],
+      })
     },
     onError: (error: any) => {
       ToastHelper.error(`Error removing events: ${error.message}`)
@@ -87,13 +132,18 @@ export const useEventCollectionApprovals = () => {
   })
 
   return {
-    approveEvent: approveEventMutation.mutate,
+    unapprovedEvents,
+    isLoadingUnapprovedEvents,
+    isErrorUnapprovedEvents,
+    errorUnapprovedEvents,
+    refetchUnapprovedEvents,
+    approveEvent: approveEventMutation.mutateAsync,
     isApprovingEvent: approveEventMutation.isPending,
-    bulkApproveEvents: bulkApproveEventsMutation.mutate,
+    bulkApproveEvents: bulkApproveEventsMutation.mutateAsync,
     isBulkApprovingEvents: bulkApproveEventsMutation.isPending,
-    removeEvent: removeEventMutation.mutate,
+    removeEvent: removeEventMutation.mutateAsync,
     isRemovingEvent: removeEventMutation.isPending,
-    bulkRemoveEvents: bulkRemoveEventsMutation.mutate,
+    bulkRemoveEvents: bulkRemoveEventsMutation.mutateAsync,
     isBulkRemovingEvents: bulkRemoveEventsMutation.isPending,
   }
 }
