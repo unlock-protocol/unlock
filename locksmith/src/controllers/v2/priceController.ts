@@ -62,8 +62,7 @@ export const getTotalChargesForLock: RequestHandler = async (
     ? purchaseData.map((x) => x.toString())
     : [purchaseData.toString()]
 
-  // `createPricingForPurchase` already includes the logic to returns credit custom credit card price when set,
-  // as well as the currency.
+  // `createPricingForPurchase` already includes the logic to returns credit custom credit card price when set
   const pricing = await createPricingForPurchase({
     lockAddress,
     network,
@@ -72,23 +71,9 @@ export const getTotalChargesForLock: RequestHandler = async (
     data,
   })
 
-  if (!pricing) {
-    return response
-      .status(400)
-      .send({ error: 'Pricing could not be computed.' })
-  }
-
-  const {
-    creditCardProcessingFee,
-    unlockServiceFee,
-    gasCost,
-    total,
-    currency,
-  } = pricing
+  const { creditCardProcessingFee, unlockServiceFee, gasCost, total } = pricing
 
   return response.status(200).send({
-    currency,
-    symbol: pricingOperations.getCurrencySymbol(currency),
     creditCardProcessingFee,
     unlockServiceFee,
     gasCost,
@@ -98,7 +83,7 @@ export const getTotalChargesForLock: RequestHandler = async (
         return {
           userAddress: recipient.address,
           amount: recipient.price.amount,
-          symbol: pricingOperations.getCurrencySymbol(currency),
+          symbol: recipient.price.symbol,
         }
       }),
     ],
