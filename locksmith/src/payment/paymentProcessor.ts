@@ -92,6 +92,9 @@ export class PaymentProcessor {
       referrers: referrers || [],
       data: data || [],
     })
+    if (!pricing) {
+      throw new Error('We could not compute the pricing.')
+    }
 
     if (Math.abs(pricing.total - maxPrice) > 0.03 * maxPrice) {
       // if price diverged by more than 3%, we fail!
@@ -294,6 +297,9 @@ export class PaymentProcessor {
       referrers,
       data,
     })
+    if (!pricing) {
+      throw new Error('Could not compute the pricing.')
+    }
 
     const totalPriceInCents = pricing.total
 

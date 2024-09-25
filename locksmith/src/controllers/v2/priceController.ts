@@ -14,7 +14,7 @@ export const amount: RequestHandler = async (request, response) => {
     ? currencyContractAddress
     : undefined
 
-  const result = await pricingOperations.getDefiLammaPrice({
+  const result = await pricingOperations.getDefiLlamaPrice({
     network,
     amount,
     erc20Address,
@@ -62,7 +62,8 @@ export const getTotalChargesForLock: RequestHandler = async (
     ? purchaseData.map((x) => x.toString())
     : [purchaseData.toString()]
 
-  // `createPricingForPurchase` already includes the logic to returns credit custom credit card price when set
+  // `createPricingForPurchase` already includes the logic to returns credit custom credit card price when set,
+  // as well as the currency.
   const pricing = await createPricingForPurchase({
     lockAddress,
     network,
@@ -71,9 +72,23 @@ export const getTotalChargesForLock: RequestHandler = async (
     data,
   })
 
-  const { creditCardProcessingFee, unlockServiceFee, gasCost, total } = pricing
+  if (!pricing) {
+    return response
+      .status(400)
+      .send({ error: 'Pricing could not be computed.' })
+  }
+
+  const {
+    creditCardProcessingFee,
+    unlockServiceFee,
+    gasCost,
+    total,
+    currency,
+  } = pricing
 
   return response.status(200).send({
+    currency,
+    symbol: pricingOperations.getCurrencySymbol(currency),
     creditCardProcessingFee,
     unlockServiceFee,
     gasCost,
@@ -83,7 +98,7 @@ export const getTotalChargesForLock: RequestHandler = async (
         return {
           userAddress: recipient.address,
           amount: recipient.price.amount,
-          symbol: recipient.price.symbol,
+          symbol: pricingOperations.getCurrencySymbol(currency),
         }
       }),
     ],
