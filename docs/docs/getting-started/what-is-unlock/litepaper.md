@@ -45,8 +45,9 @@ There are a number of interdependent components of Unlock. These are:
 - **Unlock Labs:** The core team that created and currently maintains Unlock Protocol.
 - **Unlock Protocol:** A suite of upgradable smart contracts that create memberships as NFTs.
 - **The Unlock Ecosystem:** A community of creators, distributors, and consumers who share ownership of Unlock Protocol through their contributions using the protocol.
-- **[Unlock DAO](../../governance/unlock-dao/)**: A decentralized organization of token holders who govern and control Unlock Protocol.
+- **[Unlock DAO](../../governance/unlock-dao/):** A decentralized organization of token holders who govern and control Unlock Protocol.
 - **Unlock Tools**: Front-end convenience applications built by Unlock Labs to further sustainable innovation on Unlock Protocol.
+- **The Unlock Protocol Foundation:** The role of the Unlock Protocol Foundation is to promote and encourage adoption of the Unlock Protocol.
 
 Unlock Labs created Unlock Protocol to provide an open, shared infrastructure for memberships that removes friction, increases conversion, enables scale, reduces costs, and evolves the web from a business model built on attention toward one based on membership.
 
