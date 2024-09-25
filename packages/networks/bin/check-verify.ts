@@ -20,6 +20,7 @@ export const logError = ({
 async function main() {
   // ignore zksync bcz of their custom veriffier
   const networks = await getAllNetworks({ exclude: [324] })
+
   for (const { network } of networks) {
     const { id: chainId, name } = network
     const addresses = await getAllAddresses({ network })
@@ -27,7 +28,7 @@ async function main() {
     for (const contractName in addresses) {
       const contractAddress = addresses[contractName]
       // dont log missing contracts
-      if (contractAddress && contractAddress === ZeroAddress) {
+      if (contractAddress && contractAddress !== ZeroAddress) {
         await wait(250)
         const verified = await isVerified({
           chainId,
