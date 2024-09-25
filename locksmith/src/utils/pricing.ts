@@ -12,7 +12,7 @@ import {
 import {
   getDefaultFiatPricing,
   getFiatPricingForRecipient,
-  getDefiLammaPrice,
+  getDefiLlamaPrice,
   KeyFiatPricingPrice,
 } from '../operations/pricingOperations'
 import { getSettings as getLockSettings } from '../operations/lockSettingOperations'
@@ -110,7 +110,7 @@ export const getKeyPricingInFiat = async ({
 export const getGasCost = async ({ network }: Record<'network', number>) => {
   const gas = new GasPrice()
   const amount = await gas.gasPriceETH(network, GAS_COST)
-  const price = await getDefiLammaPrice({
+  const price = await getDefiLlamaPrice({
     network,
     amount,
   })

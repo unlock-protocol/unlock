@@ -114,7 +114,7 @@ export const getKeyPricingFromSettings = async ({
   return null
 }
 
-export async function getDefiLammaPriceNoCache({
+export async function getDefiLlamaPriceNoCache({
   network,
   erc20Address,
 }: Options): Promise<PriceResults> {
@@ -165,7 +165,7 @@ export async function getDefiLammaPriceNoCache({
   }
 }
 
-export async function getDefiLammaPrice({
+export async function getDefiLlamaPrice({
   network,
   erc20Address,
   amount = 1,
@@ -174,7 +174,7 @@ export async function getDefiLammaPrice({
     `${erc20Address}@${network}`
   )
   if (!pricing) {
-    pricing = await getDefiLammaPriceNoCache({
+    pricing = await getDefiLlamaPriceNoCache({
       network,
       erc20Address,
       amount,
@@ -246,7 +246,7 @@ export const getDefaultFiatPricing = async ({
   const { keyPrice, decimals, currencyContractAddress } = lockKeyPricing
 
   const amountInCrypto = fromDecimal(keyPrice, decimals)
-  const usdExchangeRate = await getDefiLammaPrice({
+  const usdExchangeRate = await getDefiLlamaPrice({
     network,
     erc20Address:
       !currencyContractAddress || currencyContractAddress === ethers.ZeroAddress
@@ -305,7 +305,7 @@ export const getFiatPricingForRecipient = async ({
   })
   const amount = fromDecimal(purchasePrice, decimals)
 
-  const usdPricingForRecipient = await getDefiLammaPrice({
+  const usdPricingForRecipient = await getDefiLlamaPrice({
     network,
     erc20Address:
       !currencyContractAddress || currencyContractAddress === ethers.ZeroAddress

@@ -14,7 +14,7 @@ export const amount: RequestHandler = async (request, response) => {
     ? currencyContractAddress
     : undefined
 
-  const result = await pricingOperations.getDefiLammaPrice({
+  const result = await pricingOperations.getDefiLlamaPrice({
     network,
     amount,
     erc20Address,
