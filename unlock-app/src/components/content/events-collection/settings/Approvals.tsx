@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { WrappedAddress } from '~/components/interface/WrappedAddress'
 import Image from 'next/image'
 import { useEventCollectionApprovals } from '~/hooks/useEventCollectionApprovals'
-import { useEventCollectionUnapprovedEvents } from '~/hooks/useEventCollection'
+import { useState } from 'react'
 
 interface ApprovalsProps {
   eventCollection: EventCollection
@@ -24,20 +24,22 @@ interface UnapprovedEvent {
 
 export const Approvals = ({ eventCollection }: ApprovalsProps) => {
   const {
-    data: unapprovedEvents,
-    isPending,
-    isLoading,
-  } = useEventCollectionUnapprovedEvents(eventCollection.slug!)
+    unapprovedEvents,
+    isLoadingUnapprovedEvents,
+    approveEvent,
+    removeEvent,
+  } = useEventCollectionApprovals(eventCollection.slug!)
 
-  const { approveEvent, isApprovingEvent, removeEvent, isRemovingEvent } =
-    useEventCollectionApprovals()
+  // track loading for approve and remove actions
+  const [approvingEvents, setApprovingEvents] = useState<string[]>([])
+  const [removingEvents, setRemovingEvents] = useState<string[]>([])
 
   // Guard clause to ensure eventCollection and slug are defined
   if (!eventCollection || !eventCollection.slug) {
     return <p className="text-center text-red-500">Invalid event collection.</p>
   }
 
-  if (isPending || isLoading) {
+  if (isLoadingUnapprovedEvents) {
     return (
       <Placeholder.Root>
         <Placeholder.Card />
@@ -54,6 +56,24 @@ export const Approvals = ({ eventCollection }: ApprovalsProps) => {
     return (
       <p className="text-center text-gray-500">No event submissions yet.</p>
     )
+  }
+
+  const handleApprove = async (eventSlug: string) => {
+    setApprovingEvents((prev) => [...prev, eventSlug])
+    try {
+      await approveEvent({ eventSlug })
+    } finally {
+      setApprovingEvents((prev) => prev.filter((slug) => slug !== eventSlug))
+    }
+  }
+
+  const handleRemove = async (eventSlug: string) => {
+    setRemovingEvents((prev) => [...prev, eventSlug])
+    try {
+      await removeEvent({ eventSlug })
+    } finally {
+      setRemovingEvents((prev) => prev.filter((slug) => slug !== eventSlug))
+    }
   }
 
   return (
@@ -139,25 +159,15 @@ export const Approvals = ({ eventCollection }: ApprovalsProps) => {
                       size="small"
                       variant="outlined-primary"
                       className="border-red-300 text-red-400 hover:border-red-400 hover:text-red-500 hover:bg-red-100"
-                      loading={isRemovingEvent}
-                      onClick={() =>
-                        removeEvent({
-                          slug: eventCollection.slug!,
-                          eventSlug: event.slug,
-                        })
-                      }
+                      loading={removingEvents.includes(event.slug)}
+                      onClick={() => handleRemove(event.slug)}
                     >
                       Reject<span className="sr-only">, {event.name}</span>
                     </Button>
                     <Button
                       size="small"
-                      loading={isApprovingEvent}
-                      onClick={() =>
-                        approveEvent({
-                          slug: eventCollection.slug!,
-                          eventSlug: event.slug,
-                        })
-                      }
+                      loading={approvingEvents.includes(event.slug)}
+                      onClick={() => handleApprove(event.slug)}
                     >
                       Approve<span className="sr-only">, {event.name}</span>
                     </Button>
