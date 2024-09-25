@@ -1,11 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import {
-  Button,
-  Input,
-  Select,
-  ToggleSwitch,
-  CurrencyHint,
-} from '@unlock-protocol/ui'
+import { Button, Input, Select, ToggleSwitch } from '@unlock-protocol/ui'
 import { Token } from '@unlock-protocol/types'
 import { useForm, useWatch } from 'react-hook-form'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -19,7 +13,6 @@ import Link from 'next/link'
 import { networks } from '@unlock-protocol/networks'
 import { useAvailableNetworks } from '~/utils/networks'
 import { SelectToken } from './SelectToken'
-import { useProtocolFee } from '~/hooks/useProtocolFee'
 import { ProtocolFee } from './ProtocolFee'
 
 export interface LockFormProps {
@@ -44,7 +37,7 @@ interface CreateLockFormProps {
 }
 
 export const NetworkDescription = ({ network }: { network: number }) => {
-  const { description, url, faucets, nativeCurrency, name } = networks[network!]
+  const { description, url, faucets, nativeCurrency } = networks[network!]
   return (
     <div>
       {description}{' '}
@@ -106,8 +99,6 @@ export const CreateLockForm = ({
   )
   const [isFree, setIsFree] = useState(defaultValues?.isFree ?? false)
 
-  const [currencyNetwork, setCurrencyNetwork] = useState<string>()
-
   const {
     register,
     handleSubmit,
@@ -159,18 +150,9 @@ export const CreateLockForm = ({
   const noBalance = balance === 0 && !isLoadingBalance
   const submitDisabled = isLoadingBalance || noBalance
 
-  const { tokens } = networks[selectedNetwork as number]
-
-  const token = tokens.find((token: Token) => {
-    return (
-      token.address.toLowerCase() === currencyContractAddress?.toLowerCase()
-    )
-  })
-
   const onChangeNetwork = useCallback(
     (network: number | string) => {
       setValue('network', parseInt(`${network}`))
-      setCurrencyNetwork(networks[network].name)
     },
     [setValue]
   )

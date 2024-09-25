@@ -16,7 +16,6 @@ import { locksmith } from '~/config/locksmith'
 import { useUSDPricing } from '~/hooks/useUSDPricing'
 import { useLockData } from '~/hooks/useLockData'
 import CreditCardCustomPrice from './CreditCardCustomPrice'
-import CreditCardUnlockFee from './CreditCardUnlockFee'
 import useKeyGranter from '~/hooks/useKeyGranter'
 
 enum ConnectStatus {

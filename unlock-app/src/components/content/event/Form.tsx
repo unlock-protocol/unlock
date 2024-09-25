@@ -16,7 +16,6 @@ import {
   ToggleSwitch,
   ImageUpload,
   Checkbox,
-  CurrencyHint,
 } from '@unlock-protocol/ui'
 import { useConfig } from '~/utils/withConfig'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -723,7 +722,7 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
                     </div>
                   </div>
 
-                  <ProtocolFee network={currencyNetwork} />
+                  <ProtocolFee network={Number(details.network)} />
 
                   <div className="text-sm mt-2 flex items-center justify-between">
                     <Checkbox

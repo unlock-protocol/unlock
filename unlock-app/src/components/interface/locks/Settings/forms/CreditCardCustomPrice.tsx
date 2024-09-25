@@ -5,7 +5,7 @@ import {
   Button,
   Select,
 } from '@unlock-protocol/ui'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import {
@@ -16,7 +16,6 @@ import { useSaveLockSettings } from '~/hooks/useLockSettings'
 import { SettingCardDetail } from '../elements/SettingCard'
 import { formatNumber } from '~/utils/formatter'
 import { locksmith } from '~/config/locksmith'
-import { useUSDPricing } from '~/hooks/useUSDPricing'
 import { useGetTotalCharges } from '~/hooks/usePrice'
 import { formatFiatPrice } from '~/components/interface/checkout/main/utils'
 import { CreditCardPricingBreakdown } from '~/components/interface/checkout/main/Confirm/ConfirmCard'

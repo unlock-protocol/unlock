@@ -11,7 +11,6 @@ import {
   ToggleSwitch,
   ImageUpload,
   Select,
-  CurrencyHint,
 } from '@unlock-protocol/ui'
 import { useConfig } from '~/utils/withConfig'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -385,7 +384,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                           )}
                         </div>
                       </div>
-                      <ProtocolFee network={selectedNetwork} />
+                      <ProtocolFee network={selectedNetwork!} />
                     </div>
                   </div>
 
