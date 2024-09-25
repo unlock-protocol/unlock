@@ -100,7 +100,7 @@ const getTotalPriceToChargeInCentsForLock = async ({
   })
 
   // get lock's settings and convert price to $
-  const defiLammaPricing = await pricingOperations.getDefiLlamaPrice({
+  const defiLammaPricing = await pricingOperations.getDefiLammaPrice({
     network,
     erc20Address: lock.currencyContractAddress,
     amount: Number(`${lock.keyPrice}`),
