@@ -379,7 +379,40 @@ describe('pricing', () => {
       )
       expect(fees.unlockServiceFee).not.toBe(0)
     })
-    it('should include unlockFees', async () => {
+
+    it('should include unlockFees of 5%', async () => {
+      expect.assertions(1)
+      const fees = await getFees(
+        {
+          subtotal: 52,
+          gasCost: 0.12,
+        },
+        {
+          lockAddress,
+          network: 5,
+          recipients: ['0x'],
+        }
+      )
+      expect(fees.unlockServiceFee).toBe(2.6)
+    })
+
+    it('should include unlockFees of at least at 1$', async () => {
+      expect.assertions(1)
+      const fees = await getFees(
+        {
+          subtotal: 1,
+          gasCost: 0.12,
+        },
+        {
+          lockAddress,
+          network: 5,
+          recipients: ['0x'],
+        }
+      )
+      expect(fees.unlockServiceFee).toBe(1)
+    })
+
+    it('should include unlockFees capped at 10$', async () => {
       expect.assertions(1)
       const fees = await getFees(
         {
@@ -392,7 +425,7 @@ describe('pricing', () => {
           recipients: ['0x'],
         }
       )
-      expect(fees.unlockServiceFee).toBe(143)
+      expect(fees.unlockServiceFee).toBe(10)
     })
 
     it('should return cabinDao unlockFess', async () => {
@@ -410,7 +443,7 @@ describe('pricing', () => {
         }
       )
 
-      expect(fees.unlockServiceFee).toBe(2000) // should not be zero
+      expect(fees.unlockServiceFee).toBe(20) // should not be zero
 
       const pricingForPurchase = await createPricingForPurchase({
         lockAddress: cabinDaoLock,
