@@ -109,14 +109,10 @@ export const EventCollectionForm = ({
   const handleManagerChange = (index: number, value: string) => {
     if (value) {
       setValue(`managerAddresses.${index}`, value)
-      console.log(`handleManagerChange - Manager ${index} set to:`, value)
 
       // Check if the current index is the last one
       if (index === managerFields.length - 1) {
         if (value.trim() !== '') {
-          console.log(
-            'handleManagerChange - Resetting isAddingManager to false'
-          )
           setIsAddingManager(false)
         }
       }
@@ -171,9 +167,7 @@ export const EventCollectionForm = ({
   useEffect(() => {
     if (isAddingManager) {
       const lastManagerAddress = managerAddresses[managerAddresses.length - 1]
-      console.log('useEffect - Last Manager Address:', lastManagerAddress)
       if (lastManagerAddress && lastManagerAddress.trim() !== '') {
-        console.log('useEffect - Resetting isAddingManager to false')
         setIsAddingManager(false)
       }
     }
