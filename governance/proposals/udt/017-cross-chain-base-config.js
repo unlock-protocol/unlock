@@ -110,9 +110,7 @@ It contains two main actions:
 
 2. set the “authority source” of all multisig on destination chains to the DAO timelock on Base
 
-After executing this proposal, any cross-chain governance proposals will have to 
-originate from the DAO on Base. The DAO on mainnet will have effectively handle 
-control of the main Unlock contracts to the DAO on Base.
+After executing this proposal, the DAO on mainnet will have transferred control of the main Unlock contracts to the DAO on Base. Going forward, any cross-chain governance proposals will need to originate from the DAO on Base. 
 `
 
   return {
