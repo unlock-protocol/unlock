@@ -20,7 +20,7 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { onResolveName } from '~/utils/resolvers'
 import { WrappedAddress } from '~/components/interface/WrappedAddress'
-import LinkField from './LinkField'
+import { LinkField } from './LinkField'
 
 interface Link {
   type: 'farcaster' | 'x' | 'website' | 'youtube' | 'github'
