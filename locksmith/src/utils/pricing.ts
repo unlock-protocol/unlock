@@ -13,7 +13,6 @@ import {
   getDefaultFiatPricing,
   getFiatPricingForRecipient,
   getDefiLammaPrice,
-  KeyPricing,
   KeyFiatPricingPrice,
 } from '../operations/pricingOperations'
 import { getSettings as getLockSettings } from '../operations/lockSettingOperations'
@@ -70,7 +69,7 @@ export const getKeyPricingInFiat = async ({
   })
 
   if (!defaultPricing) {
-    return null
+    return []
   }
   return Promise.all(
     recipients.map(async (userAddress, index) => {
@@ -84,23 +83,25 @@ export const getKeyPricingInFiat = async ({
           },
         }
       }
-      let fiatPricingForRecipient = {
-        address: userAddress,
-        price: { ...defaultPricing },
-      }
       try {
-        fiatPricingForRecipient = await getFiatPricingForRecipient({
+        const fiatPricingForRecipient = await getFiatPricingForRecipient({
           lockAddress,
           network,
           userAddress,
           referrer,
           data,
         })
+        if (fiatPricingForRecipient) {
+          return fiatPricingForRecipient
+        }
       } catch (error) {
         logger.error('There was an error fetching pricing for recipient')
         logger.error(error)
       }
-      return fiatPricingForRecipient
+      return {
+        address: userAddress,
+        price: { ...defaultPricing },
+      }
     })
   )
 }
@@ -222,8 +223,7 @@ export const getFees = async (
 export const createPricingForPurchase = async (options: KeyPricingOptions) => {
   const recipients = await getKeyPricingInFiat(options)
 
-  console.log(recipients)
-  if (!recipients) {
+  if (!recipients || recipients.length === 0) {
     // No route!
     return null
   }

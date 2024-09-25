@@ -150,6 +150,7 @@ export async function getDefiLammaPriceNoCache({
   }
 
   const json: Record<'coins', Record<string, Price>> = await response.json()
+
   const item = Object.values(json.coins).filter(
     (item) => item.confidence > 0.95
   )[0]
@@ -260,6 +261,8 @@ export const getDefaultFiatPricing = async ({
       decimals: 0, // The API returns prices in $, so no decimals
     }
   }
+
+  return undefined
 }
 
 /** Get usd pricing for a specific recipient */
@@ -269,25 +272,20 @@ export const getFiatPricingForRecipient = async ({
   userAddress,
   data,
   referrer,
-}: PricingForRecipientProps): Promise<KeyPricing> => {
+}: PricingForRecipientProps): Promise<any> => {
   const web3Service = new Web3Service(networks)
-  const { decimals, currencyContractAddress } =
-    await getLockKeyPricingFromContract({
-      lockAddress,
-      network,
-    })
 
-  const [usdPricing, pricingFromSettings] = await Promise.all([
-    getDefiLammaPrice({
-      network,
-      erc20Address:
-        !currencyContractAddress ||
-        currencyContractAddress === ethers.ZeroAddress
-          ? undefined
-          : currencyContractAddress,
-    }),
-    getKeyPricingFromSettings({ lockAddress, network }),
-  ])
+  const [{ decimals, currencyContractAddress }, pricingFromSettings] =
+    await Promise.all([
+      getLockKeyPricingFromContract({
+        lockAddress,
+        network,
+      }),
+      getKeyPricingFromSettings({
+        lockAddress,
+        network,
+      }),
+    ])
 
   // priority to pricing from settings if present
   if (pricingFromSettings) {
@@ -304,17 +302,23 @@ export const getFiatPricingForRecipient = async ({
     network,
     referrer: referrer || networks[network]?.multisig || userAddress,
   })
-
   const amount = fromDecimal(purchasePrice, decimals)
 
-  const price = toFiatPricing({
+  const usdPricingForRecipient = await getDefiLammaPrice({
+    network,
+    erc20Address:
+      !currencyContractAddress || currencyContractAddress === ethers.ZeroAddress
+        ? undefined
+        : currencyContractAddress,
     amount,
-    usdPricing,
-    decimals,
   })
 
   return {
     address: userAddress,
-    price,
+    price: {
+      amount: usdPricingForRecipient.priceInAmount!,
+      decimals: 0,
+      currency: 'usd',
+    },
   }
 }
