@@ -29,16 +29,18 @@ export const checkMultisig = async ({
   isTestNetwork: boolean
 }) => {
   const errors: string[] = []
+
+  const expectedSigners = !isTestNetwork ? prodSigners : testnetSigners
+  const expectedPolicy = !isTestNetwork ? 4 : 2
   const provider = new ethers.JsonRpcProvider(providerURL)
 
   const safe = new ethers.Contract(safeAddress, multisigABI, provider)
   const owners = await safe.getOwners()
   const policy = await safe.getThreshold()
 
-  const expectedSigners = !isTestNetwork ? prodSigners : testnetSigners
-  if (policy < 4) {
+  if (policy < expectedPolicy) {
     errors.push(
-      `❌ Unexpected policy: ${policy}/${owners.length} for 4/${expectedSigners.length} expected`
+      `❌ Unexpected policy: ${policy}/${owners.length} for ${expectedPolicy}/${expectedSigners.length} expected`
     )
   }
 
