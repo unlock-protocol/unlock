@@ -345,7 +345,7 @@ UP has a fixed supply of 1,000,000,000 tokens on Base.
 
 ### Proposals
 
-Proposals are onchain-executable transactions**.** As code**,** a proposal can only trigger onchain actions. For example, a proposal could be _"The [Unlock DAO](../../governance/unlock-dao/) pays x tokens to example.eth"_ or _"Change parameter p of this smart contract to be k."_
+Proposals are onchain-executable transactions. As code, a proposal can only trigger onchain actions. For example, a proposal could be _"The [Unlock DAO](../../governance/unlock-dao/) pays x tokens to example.eth"_ or _"Change parameter p of this smart contract to be k."_
 
 A proposal cannot be _"The Unlock Labs team needs to travel to conference y,"_ or _"John Doe needs to purchase UP tokens on the Coinbase exchange,”_ since these proposals would require off-chain actions that are not governable or executable by code.
 
