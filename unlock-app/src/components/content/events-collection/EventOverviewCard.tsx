@@ -59,28 +59,31 @@ export const EventOverviewCard: React.FC<EventOverviewCardProps> = ({
       className="flex flex-col sm:flex-row bg-white border cursor-pointer border-gray-200 rounded-2xl p-4 hover:bg-gray-50"
       onClick={() => onClick(event)}
     >
-      <div className="flex-shrink-0 mb-4 sm:mb-0 sm:flex sm:items-center">
+      <div className="flex-shrink-0 mb-4 sm:mb-0 sm:mr-6">
         <img
           src={image}
           alt={name}
-          className="w-32 h-32 sm:w-40 sm:h-40 rounded-md object-cover object-center"
+          className="w-full sm:w-40 h-40 rounded-md object-cover object-center"
           style={{ aspectRatio: '1 / 1' }}
         />
       </div>
 
-      <div className="sm:ml-6 flex flex-1 flex-col justify-between">
+      <div className="flex flex-1 flex-col justify-between">
         <div>
-          <div className="flex flex-col sm:flex-row sm:justify-between">
-            <h4 className="text-2xl font-bold text-brand-ui-primary mb-2 sm:mb-0">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+            <h4 className="text-xl sm:text-2xl font-bold text-brand-ui-primary truncate">
               {name}
             </h4>
             {isUserEvent && (
-              <Badge variant="green" className="self-start sm:self-auto">
-                Your Event
+              <Badge
+                variant="green"
+                className="mt-1 sm:mt-0 self-start sm:self-auto"
+              >
+                Organizer
               </Badge>
             )}
           </div>
-          <p className="mt-2 text-base text-gray-500 line-clamp-3">
+          <p className="mt-1 text-sm sm:text-base text-gray-500 line-clamp-2">
             {data.description}
           </p>
         </div>
@@ -91,16 +94,16 @@ export const EventOverviewCard: React.FC<EventOverviewCardProps> = ({
             <Placeholder.Line />
           </Placeholder.Root>
         ) : (
-          <div>
+          <div className="mt-3">
             <AttendeeCues checkoutConfig={checkoutConfig!} />
           </div>
         )}
 
-        <div className="mt-4 flex flex-wrap space-x-3 gap-4">
+        <div className="mt-3 flex flex-wrap gap-3 text-sm sm:text-base">
           {eventStartDate && eventEndDate && (
-            <p className="flex items-center space-x-2 font-bold text-base text-gray-700">
+            <p className="flex items-center font-medium text-gray-700">
               <DateIcon
-                className="h-4 w-4 mr-2 flex-shrink-0 text-gray-400"
+                className="h-4 w-4 mr-1 flex-shrink-0 text-gray-400"
                 aria-hidden="true"
               />
               {dayjs(eventStartDate).format('D MMM YYYY')}
@@ -108,21 +111,21 @@ export const EventOverviewCard: React.FC<EventOverviewCardProps> = ({
           )}
 
           {eventStartTime && (
-            <p className="flex items-center space-x-2 font-bold text-base text-gray-700">
+            <p className="flex items-center font-medium text-gray-700">
               <TimeIcon
-                className="h-4 w-4 mr-2 flex-shrink-0 text-gray-400"
+                className="h-4 w-4 mr-1 flex-shrink-0 text-gray-400"
                 aria-hidden="true"
               />
               <span>{dayjs(eventStartTime, 'HH:mm').format('h:mm A')}</span>
             </p>
           )}
           {eventLocation && (
-            <p className="flex items-center space-x-2 font-bold text-base text-gray-700">
+            <p className="flex items-center font-medium text-gray-700">
               <LocationIcon
-                className="h-4 w-4 mr-2 flex-shrink-0 text-gray-400"
+                className="h-4 w-4 mr-1 flex-shrink-0 text-gray-400"
                 aria-hidden="true"
               />
-              <span>{eventLocation}</span>
+              <span className="truncate max-w-[200px]">{eventLocation}</span>
             </p>
           )}
         </div>
