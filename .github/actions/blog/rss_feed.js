@@ -1,6 +1,8 @@
 const fs = require('fs-extra')
 const path = require('path')
 const feedparser = require('feedparser-promised')
+const { Readable } = require('node:stream')
+const { writeFile } = require('node:fs/promises')
 
 function escapeMarkdown(str) {
   return str.replace(/(["\\])/g, '\\$1')
@@ -27,8 +29,7 @@ fs.readdirSync(blogDir).forEach((filename) => {
 
 const downloadImage = (url, filepath) => {
   return fetch(url)
-    .then((res) => res.buffer())
-    .then((buffer) => fs.writeFile(filepath, buffer))
+    .then((response) => writeFile(filepath, Readable.fromWeb(response.body)))
     .catch((error) => console.error(`Error downloading image ${url}:`, error))
 }
 

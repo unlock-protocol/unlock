@@ -7,7 +7,6 @@ export const DefaultLayoutSkeleton = ({
   selectedLayout,
   handleSelect,
 }: DefaultLayoutSkeletonProps) => {
-  console.log('DefaultLayoutSkeleton', selectedLayout)
   return (
     <div className="flex flex-col">
       <p>Default</p>

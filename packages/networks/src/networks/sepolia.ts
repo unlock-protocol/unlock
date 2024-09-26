@@ -6,7 +6,7 @@ export const sepolia: NetworkConfig = {
   },
   chain: 'sepolia',
   description:
-    'Sepolia is the primary testnet recommended by the Ethereum community for dapp development.',
+    'Sepolia is the primary testnet recommended by the Ethereum community for dapp development',
   explorer: {
     name: 'Sepolia Etherscan',
     urls: {
