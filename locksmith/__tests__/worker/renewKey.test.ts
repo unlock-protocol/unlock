@@ -109,7 +109,7 @@ vi.mock('@unlock-protocol/unlock-js', () => ({
 
 vi.mock('../../src/operations/pricingOperations', () => {
   return {
-    getDefiLlamaPrice: () => Promise.resolve({ priceInAmount: 1 }),
+    getDefiLammaPrice: () => Promise.resolve({ priceInAmount: 1 }),
   }
 })
 

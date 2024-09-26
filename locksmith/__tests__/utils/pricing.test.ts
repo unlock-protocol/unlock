@@ -2,7 +2,7 @@ import { expect, describe, beforeEach, it, vi } from 'vitest'
 import {
   createPricingForPurchase,
   getFees,
-  getKeyPricingInFiat,
+  getKeyPricingInUSD,
 } from '../../src/utils/pricing'
 import { DEFAULT_LOCK_SETTINGS } from '../../src/controllers/v2/lockSettingController'
 
@@ -35,7 +35,7 @@ vi.mock('../../src/operations/lockSettingOperations', () => {
       if ([lockWithEurCurrency].includes(lock)) {
         return Promise.resolve({
           sendEmail: true,
-          creditCardPrice: 5812, // 55.32$ in basis points
+          creditCardPrice: 5532, // 55.32$ in basis points
           creditCardCurrency: 'eur',
         })
       }
@@ -115,10 +115,10 @@ describe('pricing', () => {
     )
   })
 
-  describe('getKeyPricingInFiat', () => {
+  describe('getKeyPricingInUSD', () => {
     it('returns key pricing for recipients', async () => {
       expect.assertions(2)
-      const fiatPricing = await getKeyPricingInFiat({
+      const usdPricing = await getKeyPricingInUSD({
         lockAddress,
         network,
         recipients,
@@ -126,20 +126,24 @@ describe('pricing', () => {
         referrers: [],
       })
 
-      expect(fiatPricing.length).toBe(2)
-      expect(fiatPricing).toMatchObject([
+      expect(usdPricing.length).toBe(2)
+      expect(usdPricing).toMatchObject([
         {
           address: '0x6f59999AE79Bc593549918179454A47980a800E5',
           price: {
             amount: 0.009,
-            decimals: 0,
+            decimals: 18,
+            symbol: 'ETH',
+            amountInUSD: 0.009,
           },
         },
         {
           address: '0x9aBa7eeb134Fa94dfe735205DdA6aC6447d76F9b',
           price: {
             amount: 0.009,
-            decimals: 0,
+            decimals: 18,
+            symbol: 'ETH',
+            amountInUSD: 0.009,
           },
         },
       ])
@@ -147,7 +151,7 @@ describe('pricing', () => {
 
     it('returns USD key pricing for recipients with "creditCard" lock setting price', async () => {
       expect.assertions(2)
-      const fiatPricing = await getKeyPricingInFiat({
+      const usdPricing = await getKeyPricingInUSD({
         lockAddress: lockAddressWithSettings,
         network,
         recipients,
@@ -155,22 +159,26 @@ describe('pricing', () => {
         referrers: [],
       })
 
-      expect(fiatPricing.length).toBe(2)
-      expect(fiatPricing).toMatchObject([
+      expect(usdPricing.length).toBe(2)
+      expect(usdPricing).toMatchObject([
         {
           address: '0x6f59999AE79Bc593549918179454A47980a800E5',
           price: {
             amount: 55.32,
-            decimals: 0,
-            currency: 'usd',
+            decimals: 18,
+            symbol: '$',
+            amountInUSD: 55.32,
+            amountInCents: 5532,
           },
         },
         {
           address: '0x9aBa7eeb134Fa94dfe735205DdA6aC6447d76F9b',
           price: {
             amount: 55.32,
-            decimals: 0,
-            currency: 'usd',
+            decimals: 18,
+            symbol: '$',
+            amountInUSD: 55.32,
+            amountInCents: 5532,
           },
         },
       ])
@@ -178,7 +186,7 @@ describe('pricing', () => {
 
     it('returns EUR key pricing for recipients with "creditCard" lock setting price', async () => {
       expect.assertions(2)
-      const fiatPricing = await getKeyPricingInFiat({
+      const usdPricing = await getKeyPricingInUSD({
         lockAddress: lockWithEurCurrency,
         network,
         recipients,
@@ -186,22 +194,26 @@ describe('pricing', () => {
         referrers: [],
       })
 
-      expect(fiatPricing.length).toBe(2)
-      expect(fiatPricing).toMatchObject([
+      expect(usdPricing.length).toBe(2)
+      expect(usdPricing).toMatchObject([
         {
           address: '0x6f59999AE79Bc593549918179454A47980a800E5',
           price: {
-            amount: 58.12,
-            decimals: 0,
-            currency: 'eur',
+            amount: 55.32,
+            decimals: 18,
+            symbol: '€',
+            amountInUSD: 55.32,
+            amountInCents: 5532,
           },
         },
         {
           address: '0x9aBa7eeb134Fa94dfe735205DdA6aC6447d76F9b',
           price: {
-            amount: 58.12,
-            decimals: 0,
-            currency: 'eur',
+            amount: 55.32,
+            decimals: 18,
+            symbol: '€',
+            amountInUSD: 55.32,
+            amountInCents: 5532,
           },
         },
       ])
@@ -225,23 +237,25 @@ describe('pricing', () => {
           address: '0x6f59999AE79Bc593549918179454A47980a800E5',
           price: {
             amount: 0.009,
-            decimals: 0,
-            currency: 'usd',
+            decimals: 18,
+            symbol: 'ETH',
+            amountInUSD: 0.009,
           },
         },
         {
           address: '0x9aBa7eeb134Fa94dfe735205DdA6aC6447d76F9b',
           price: {
             amount: 0.009,
-            decimals: 0,
-            currency: 'usd',
+            decimals: 18,
+            symbol: 'ETH',
+            amountInUSD: 0.009,
           },
         },
       ])
     })
 
     it('returns USD purchase price with "creditCard" setting price', async () => {
-      expect.assertions(9)
+      expect.assertions(2)
       const pricingForPurchase = await createPricingForPurchase({
         lockAddress: lockAddressWithSettings,
         network,
@@ -250,24 +264,27 @@ describe('pricing', () => {
         data,
       })
 
-      expect(pricingForPurchase?.unlockServiceFee).toBe(11.064)
-      expect(pricingForPurchase?.creditCardProcessingFee).toBe(
-        4.1890160000000005
-      )
-      expect(pricingForPurchase?.gasCost).toBe(12.4)
-      expect(pricingForPurchase?.gasCost).toBe(12.4)
-      expect(pricingForPurchase?.currency).toBe('usd')
-      expect(pricingForPurchase?.subtotal).toBe(110.64)
-      expect(pricingForPurchase?.isCreditCardPurchasable).toBe(true)
-      expect(pricingForPurchase?.recipients.length).toBe(2)
-      expect(pricingForPurchase?.recipients).toMatchObject([
+      expect(pricingForPurchase.recipients.length).toBe(2)
+      expect(pricingForPurchase.recipients).toMatchObject([
         {
           address: '0x6f59999AE79Bc593549918179454A47980a800E5',
-          price: { currency: 'usd', amount: 55.32, decimals: 0 },
+          price: {
+            amount: 55.32,
+            decimals: 18,
+            symbol: '$',
+            amountInUSD: 55.32,
+            amountInCents: 5532,
+          },
         },
         {
           address: '0x9aBa7eeb134Fa94dfe735205DdA6aC6447d76F9b',
-          price: { currency: 'usd', amount: 55.32, decimals: 0 },
+          price: {
+            amount: 55.32,
+            decimals: 18,
+            symbol: '$',
+            amountInUSD: 55.32,
+            amountInCents: 5532,
+          },
         },
       ])
     })
@@ -287,17 +304,21 @@ describe('pricing', () => {
         {
           address: '0x6f59999AE79Bc593549918179454A47980a800E5',
           price: {
-            amount: 58.12,
-            decimals: 0,
-            currency: 'eur',
+            amount: 55.32,
+            decimals: 18,
+            symbol: '€',
+            amountInUSD: 55.32,
+            amountInCents: 5532,
           },
         },
         {
           address: '0x9aBa7eeb134Fa94dfe735205DdA6aC6447d76F9b',
           price: {
-            amount: 58.12,
-            decimals: 0,
-            currency: 'eur',
+            amount: 55.32,
+            decimals: 18,
+            symbol: '€',
+            amountInUSD: 55.32,
+            amountInCents: 5532,
           },
         },
       ])
@@ -422,7 +443,7 @@ describe('pricing', () => {
         }
       )
 
-      expect(fees.unlockServiceFee).toBe(20) // should not be zero
+      expect(fees.unlockServiceFee).toBe(2000) // should not be zero
 
       const pricingForPurchase = await createPricingForPurchase({
         lockAddress: cabinDaoLock,

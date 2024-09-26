@@ -1,3 +1,8 @@
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from '@tanstack/react-query'
 import { Event } from '@unlock-protocol/unlock-js'
 import EventsCollectionDetailContent from '~/components/content/events-collection/EventsCollectionDetailContent'
 import { getEventCollection } from '~/utils/eventCollections'
@@ -30,11 +35,19 @@ const EventCollectionDetailPage = async ({
   params,
 }: EventCollectionDetailPageProps) => {
   const { slug } = params
+  const queryClient = new QueryClient()
 
-  // Fetch the event collection details
-  const eventCollection = await getEventCollection(slug)
+  // prefetch the event collection details
+  await queryClient.prefetchQuery({
+    queryKey: ['eventCollectionDetails', slug],
+    queryFn: () => getEventCollection(slug),
+  })
 
-  return <EventsCollectionDetailContent eventCollection={eventCollection!} />
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <EventsCollectionDetailContent slug={slug} />
+    </HydrationBoundary>
+  )
 }
 
 export default EventCollectionDetailPage
