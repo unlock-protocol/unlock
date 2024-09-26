@@ -5,6 +5,7 @@ export type Lock = {
   address: string
   network: string
   image: string
+  defaultImage?: string
   description: string
   price: string
 }

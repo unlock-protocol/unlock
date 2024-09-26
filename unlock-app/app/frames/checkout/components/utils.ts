@@ -15,6 +15,25 @@ export async function getLockDataFromCheckout(id: string) {
   const { data } = await locksmith.lockMetadata(network, lockAddress)
   const { image, description } = data
 
+  let defaultImage
+  ;(async function setDefaultImage() {
+    const isSvg = /\/icon\/?$/.test(image)
+
+    if (isSvg) {
+      await fetch(image)
+        .then((res) => res.text())
+        .then((svgText) => {
+          const base64EncodedSVG = btoa(svgText)
+          const base64DataUrl = `data:image/svg+xml;base64,${base64EncodedSVG}`
+
+          defaultImage = base64DataUrl
+        })
+        .catch((error) => {
+          console.error('Error fetching or converting svg:', error)
+        })
+    }
+  })()
+
   const web3Service = new Web3Service(networks)
   const res = await web3Service.getLock(lockAddress, network)
   const price = `${res.keyPrice} ${res.currencySymbol}`
@@ -24,6 +43,7 @@ export async function getLockDataFromCheckout(id: string) {
     address: lockAddress,
     network,
     image,
+    defaultImage,
     description,
     price,
   }

@@ -3,7 +3,7 @@ import React from 'react'
 import { Button } from 'frames.js/next'
 import { frames } from './frames'
 import { getDefaultFrame } from './components/defaultFrame'
-import { Success } from './components/Success'
+import { TransactionSuccess } from './components/TransactionSuccess'
 import { getLockDataFromCheckout } from './components/utils'
 
 const getInitialFrame = frames(async (ctx) => {
@@ -23,7 +23,7 @@ const getOtherFrames = frames(async (ctx) => {
 
   if (success === 'true') {
     return {
-      image: <Success lock={lock} />,
+      image: <TransactionSuccess lock={lock} />,
       buttons: [
         <Button action="link" target="https://app.unlock-protocol.com/keychain">
           View on keychain
