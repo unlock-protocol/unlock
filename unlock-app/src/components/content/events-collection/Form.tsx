@@ -152,7 +152,7 @@ export const EventCollectionForm = ({
 
   // Handlers for adding/canceling links
   const handleAddOrCancelLink = () => {
-    if (isAddingLink) {
+    if (isAddingLink && !isLastLinkFilled) {
       // Cancel adding: remove the last link field
       removeLink(linkFields.length - 1)
       setIsAddingLink(false)
@@ -175,10 +175,16 @@ export const EventCollectionForm = ({
 
   // reset isAddingLink when a link is successfully added
   useEffect(() => {
-    if (isAddingLink && links[linkFields.length - 1]?.url.trim()) {
-      setIsAddingLink(false)
+    if (isAddingLink) {
+      const lastLink = links[links.length - 1]
+      if (lastLink && lastLink.type && lastLink.url.trim() !== '') {
+        setIsAddingLink(false)
+      }
     }
-  }, [links, linkFields.length, isAddingLink])
+  }, [links, isAddingLink])
+
+  console.log('links', links)
+  console.log('managerAddresses', managerAddresses)
 
   return (
     <FormProvider {...methods}>
@@ -392,7 +398,7 @@ export const EventCollectionForm = ({
                   disabled={isAddingLink ? false : !isLastLinkFilled}
                   aria-label={isAddingLink ? 'Cancel adding link' : 'Add link'}
                 >
-                  {isAddingLink ? 'Cancel' : 'Add Link'}
+                  {isAddingLink && !isLastLinkFilled ? 'Cancel' : 'Add Link'}
                 </Button>
               </div>
             </Disclosure>
