@@ -177,7 +177,7 @@ More troublesome is the fact that those first-generation memberships are also _p
 
 These legacy “perpetual” membership approaches are especially ill-suited for situations where the membership requires an explicit expiration date (e.g. in the case of professional credentials that expire after a period of time).
 
-Unlock Protocol is fundamentally different in that Unlock-based membership NFTs have a time component to them. When a lock manager deploys a membership contract, the lock manager chooses a “duration” for all memberships. This duration can be for a month, a year, a day, ten years, or even a second. This membership expiry information is stored on-chain.
+Unlock Protocol is fundamentally different in that Unlock-based membership NFTs have a time component to them. When a lock manager deploys a membership contract, the lock manager chooses a “duration” for all memberships. This duration can be for a month, a year, a day, ten years, or even a second. This membership expiry information is stored onchain.
 
 In the creator case, time-bound membership enables an ongoing, two-way exchange of value between creator and fan-as-member. In other use cases, this time-bound aspect of Unlock ensures that members need to have regular renewals of their memberships as appropriate.
 
@@ -275,7 +275,7 @@ Secondly, a “one-person, one-membership, one-vote” mechanism can be set up, 
 
 ### [Certifications and credentials](https://unlock-protocol.com/blog/cdaa-unlock-case-study)
 
-Since NFTs can be set to be non-transferrable and can be granted to particular individuals, using NFTs for online credentialing and certification is a common use case as well. Once someone shows mastery of a topic by completing an exam or exhibiting skills using another mechanism, a time-based NFT can be issued to verify that skill on-chain.
+Since NFTs can be set to be non-transferrable and can be granted to particular individuals, using NFTs for online credentialing and certification is a common use case as well. Once someone shows mastery of a topic by completing an exam or exhibiting skills using another mechanism, a time-based NFT can be issued to verify that skill onchain.
 
 These certifications or credentials can be time-bound, if the situation requires it, expiring after one year, two years, or whatever length of time is appropriate. This is most important where the certification is part of an industry that either is evolving rapidly (e.g. financial services) or has continuing education requirements that necessitate ongoing training (e.g. certain professional fields).
 
