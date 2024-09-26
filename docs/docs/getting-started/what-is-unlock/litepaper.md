@@ -305,7 +305,7 @@ Unlock Protocol’s documentation is organized into the following categories.
 - **[Core Protocol:](https://docs.unlock-protocol.com/core-protocol/)** An overview of the two smart contracts that make up the protocol and a complete interface reference generated from the smart contracts themselves.
 - **[Tools:](https://docs.unlock-protocol.com/tools/)** All the information you need about the tooling provided by Unlock Labs for protocol implementation.
 - **[Tutorials:](https://docs.unlock-protocol.com/tutorials/)** In-depth articles on specific use cases and implementations.
-- **[Governance:](https://docs.unlock-protocol.com/governance/)** Everything you need to know about becoming a DAO member, [UDT](../../governance/unlock-dao-tokens/) governance tokens, and voting.
+- **[Governance:](https://docs.unlock-protocol.com/governance/)** Everything you need to know about becoming a DAO member, [UP](../../governance/unlock-dao-tokens/) governance tokens, and voting.
 
 The Unlock Protocol developer docs can be found at [https://docs.unlock-protocol.com](https://docs.unlock-protocol.com).
 
