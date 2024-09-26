@@ -17,6 +17,10 @@ import { SiFarcaster as FarcasterIcon } from 'react-icons/si'
 import AddEventsToCollectionDrawer from './AddEventsToCollectionDawer'
 import { EventDetailDrawer } from './EventDetailDawer'
 import { Metadata } from '@unlock-protocol/core'
+import CopyUrlButton from '../event/CopyUrlButton'
+import TweetItButton from '../event/TweetItButton'
+import { config } from '~/config/app'
+import CastItButton from '../event/CastItButton'
 
 export interface EventTicket {
   event_address: string
@@ -126,18 +130,6 @@ export default function EventsCollectionDetailContent({
             </div>
           </Button>
         )}
-        <div className="md:hidden items-center justify-end gap-0 mt-auto md:gap-2 w-full sm:w-auto">
-          <Button
-            onClick={handleAddEvent}
-            className="w-full sm:w-auto"
-            disabled={!account}
-          >
-            <div className="flex items-center gap-2">
-              <Icon icon={TbPlus} size={20} />
-              {isManager ? 'Add Event' : 'Submit Event'}
-            </div>
-          </Button>
-        </div>
       </div>
       <div className="pt-4">
         <div className="relative">
@@ -159,17 +151,22 @@ export default function EventsCollectionDetailContent({
                 />
               </div>
 
-              <div className="hidden md:flex items-center justify-end gap-0 mt-auto md:gap-2 w-full sm:w-auto">
-                <Button
-                  onClick={handleAddEvent}
-                  className="w-full sm:w-auto"
-                  disabled={!account}
-                >
-                  <div className="flex items-center gap-2">
-                    <Icon icon={TbPlus} size={20} />
-                    {isManager ? 'Add Event' : 'Submit Event'}
-                  </div>
-                </Button>
+              <div className="flex items-center justify-center gap-0 mt-auto md:gap-2 w-full sm:w-auto">
+                {eventCollection && (
+                  <ul className="flex items-center justify-center gap-0 mt-auto md:gap-2">
+                    <li>
+                      <TweetItButton eventCollection={eventCollection!} />
+                    </li>
+                    <li>
+                      <CastItButton eventCollection={eventCollection} />
+                    </li>
+                    <li>
+                      <CopyUrlButton
+                        url={`${config.unlockApp}/events/${eventCollection.slug}`}
+                      />
+                    </li>
+                  </ul>
+                )}
               </div>
             </section>
           </div>
@@ -204,7 +201,19 @@ export default function EventsCollectionDetailContent({
           <div className="flex flex-col lg:grid lg:grid-cols-12 gap-14 mt-5">
             <div className="lg:col-span-1"></div>
             <div className="flex flex-col gap-6 lg:col-span-10">
-              <h2 className="text-3xl font-bold">Events</h2>
+              <div className="flex flex-col sm:flex-row items-center space-y-2 justify-between mt-5">
+                <h2 className="text-3xl font-bold">Events</h2>
+                <Button
+                  onClick={handleAddEvent}
+                  className="w-full sm:w-auto"
+                  disabled={!account}
+                >
+                  <div className="flex items-center gap-2">
+                    <Icon icon={TbPlus} size={20} />
+                    {isManager ? 'Add Event' : 'Submit Event'}
+                  </div>
+                </Button>
+              </div>
               {hasValidEvents ? (
                 <div className="">
                   <div className="space-y-6">
