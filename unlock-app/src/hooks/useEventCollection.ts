@@ -47,6 +47,24 @@ export const useCreateEventCollection = () => {
 }
 
 /**
+ * Hook to fetch details of a given event collection.
+ * Automatically caches the data and handles re-fetching as needed.
+ *
+ * @param slug - The unique identifier for the event collection.
+ */
+export const useEventCollectionDetails = (slug: string) => {
+  return useQuery<EventCollection, Error>({
+    queryKey: ['eventCollectionDetails', slug],
+    queryFn: async (): Promise<any> => {
+      const { data } = await locksmith.getEventCollection(slug)
+      return data
+    },
+    enabled: !!slug,
+    staleTime: 5 * 60 * 1000,
+  })
+}
+
+/**
  * Hook to fetch events for a given event collection.
  * Automatically caches the data and handles re-fetching as needed.
  *
@@ -74,7 +92,7 @@ export const useEventCollectionEvents = (slug: string) => {
  *
  * @returns A mutation object for adding an event to a collection.
  */
-export const useAddToEventCollection = () => {
+export const useAddToEventCollection = (collectionSlug: string) => {
   const queryClient = useQueryClient()
 
   const addToEventCollectionMutation = useMutation({
@@ -96,7 +114,7 @@ export const useAddToEventCollection = () => {
         ToastHelper.success('Your event has been successfully submitted.')
       }
       queryClient.invalidateQueries({
-        queryKey: ['addEventToCollection'],
+        queryKey: ['eventCollectionDetails', collectionSlug],
       })
     },
     onError: (error: any) => {

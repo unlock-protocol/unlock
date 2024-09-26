@@ -22,7 +22,7 @@ interface AddEventsToCollectionDrawerProps {
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
   isManager: boolean
-  collectionSlug: string
+  collectionSlug: string | undefined
   existingEventSlugs: string[]
 }
 
@@ -35,7 +35,7 @@ export default function AddEventsToCollectionDrawer({
 }: AddEventsToCollectionDrawerProps) {
   const { account } = useAuth()
   const { addToEventCollection, isAddingToEventCollection } =
-    useAddToEventCollection()
+    useAddToEventCollection(collectionSlug!)
   const { data: userEvents, isPending: isLoadingUserEvents } = useUserEvents(
     account!
   )
@@ -75,7 +75,10 @@ export default function AddEventsToCollectionDrawer({
       return
     }
     try {
-      await addToEventCollection({ collectionSlug, eventSlug })
+      await addToEventCollection({
+        collectionSlug: collectionSlug!,
+        eventSlug,
+      })
       setIsOpen(false)
     } catch (error) {
       console.error('Error adding event to collection:', error)
@@ -84,7 +87,8 @@ export default function AddEventsToCollectionDrawer({
   }
 
   const checkEventUrlValidity = () => {
-    setHasCheckedUrl(true) // Indicate that validity has been checked
+    // Indicate that the url's validity has been checked
+    setHasCheckedUrl(true)
     const slugMatch = eventUrl.match(
       /https:\/\/(?:app|staging-app)\.unlock-protocol\.com\/event\/([^/?#]+)/
     )
@@ -93,7 +97,7 @@ export default function AddEventsToCollectionDrawer({
     } else {
       setIsUrlValid(false)
       setIsDuplicate(false)
-      setEventSlug('') // Ensure eventSlug is set to a string
+      setEventSlug('')
     }
   }
 
@@ -128,7 +132,7 @@ export default function AddEventsToCollectionDrawer({
               userEvents?.length === 0 || filteredUserEvents?.length === 0
             }
           >
-            Select from Existing Events
+            Select events I organized
           </Button>
         )}
         {userEvents?.length === 0 && !filteredUserEvents && (
@@ -144,7 +148,7 @@ export default function AddEventsToCollectionDrawer({
         )}
       </div>
       <Button onClick={() => setAddMethod('form')} className="w-full">
-        Create a New Event
+        Create a new event
       </Button>
     </div>
   )
@@ -160,7 +164,7 @@ export default function AddEventsToCollectionDrawer({
           setIsUrlValid(false)
           setEventSlug('')
           setIsDuplicate(false)
-          setHasCheckedUrl(false) // Reset the check flag
+          setHasCheckedUrl(false)
         }}
         className="self-start"
       >
@@ -179,12 +183,8 @@ export default function AddEventsToCollectionDrawer({
               setEventUrl(e.target.value)
               setIsUrlValid(false)
               setIsDuplicate(false)
-              setEventSlug('') // Reset slug when URL changes
-              setHasCheckedUrl(false) // Reset the check flag
-            }}
-            onBlur={() => {
-              // Optional: Uncomment if you want to check on blur
-              // checkEventUrlValidity()
+              setEventSlug('')
+              setHasCheckedUrl(false)
             }}
           />
           <Button
@@ -293,17 +293,16 @@ export default function AddEventsToCollectionDrawer({
       >
         Back
       </Button>
-      <Disclosure label="Create a new event" defaultOpen>
-        <div className="flex flex-col gap-4">
-          <EventCreationForm
-            compact={true}
-            onSubmit={
-              // TODO: Create event and add to collection on submission
-              () => console.log('submit')
-            }
-          />
-        </div>
-      </Disclosure>
+
+      <div className="flex flex-col gap-4">
+        <EventCreationForm
+          compact={true}
+          onSubmit={
+            // TODO: Create event and add to collection on submission
+            () => console.log('submit')
+          }
+        />
+      </div>
     </div>
   )
 
