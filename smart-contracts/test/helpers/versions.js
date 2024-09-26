@@ -37,6 +37,7 @@ function getMatchingLockVersion(unlockVersion) {
   publicLockVersions[11] = 11
   publicLockVersions[12] = 12
   publicLockVersions[13] = 14
+  publicLockVersions[14] = 14
 
   return publicLockVersions[unlockVersion]
 }
