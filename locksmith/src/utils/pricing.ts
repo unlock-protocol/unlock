@@ -211,7 +211,7 @@ export const getFees = async (
     })
     unlockFeeChargedToUser = data?.unlockFeeChargedToUser ?? true
   }
-  
+
   const creditCardProcessingFee = getCreditCardProcessingFee(
     subtotal + gasCost,
     unlockServiceFee
