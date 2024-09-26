@@ -19,7 +19,14 @@ export const ConnectWallet = () => {
     console.log('render connectOrCreateWallet')
     const connectWalletProvider = async () => {
       const provider = await wallets[0].getEthereumProvider()
-      console.log(await wallets[0].sign('Please sign!'))
+      const signature = await wallets[0].sign('Please sign!')
+      console.log({ signature })
+      const message = 'I hereby vote for foobar'
+      const signature2 = await provider.request({
+        method: 'personal_sign',
+        params: [message, wallets[0].address],
+      })
+      console.log(signature2)
       authenticate(provider)
     }
     connectWalletProvider()
