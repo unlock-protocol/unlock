@@ -413,7 +413,7 @@ Definitions of terms used in this document.
 
 - **[Unlock DAO:](../../governance/unlock-dao/)** A decentralized organization of token holders who govern and control Unlock Protocol
 
-- **[Unlock Discount Token:]** Unlock Protocol’s deprecated governance token on Ethereum mainnet, also referred to as UDT, and replaced by UP (the Unlock Protocol Token) on Base
+- **Unlock Discount Token:** Unlock Protocol’s deprecated governance token on Ethereum mainnet, also referred to as UDT, and replaced by UP (the Unlock Protocol Token) on Base
 
 - **[Unlock Protocol Token:](../../governance/unlock-dao-tokens/)** Unlock Protocol's current governance token on Base, alse referred to as UP
 
