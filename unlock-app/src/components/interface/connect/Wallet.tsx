@@ -4,27 +4,26 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 
 export const ConnectWallet = () => {
   // https://docs.privy.io/guide/react/wallets/external/#connect-or-create
-  const { login, logout, ready, ...rest } = usePrivy()
+  const { connectOrCreateWallet } = usePrivy()
   const { wallets } = useWallets()
   const { authenticate } = useAuth()
 
-  console.log(rest)
+  console.log(wallets)
+
   useEffect(() => {
-    const loginWithPrivy = async () => {
-      await logout()
-      await login()
-    }
-    loginWithPrivy()
+    console.log('render connectOrCreateWallet')
+    connectOrCreateWallet()
   }, [])
 
   useEffect(() => {
-    // const connectWalletProvider = async () => {
-    //   console.log(wallets[0])
-    //   const provider = await wallets[0].getEthereumProvider()
-    //   authenticate(provider)
-    // }
-    // connectWalletProvider()
-  }, [wallets, authenticate])
+    console.log('render connectOrCreateWallet')
+    const connectWalletProvider = async () => {
+      const provider = await wallets[0].getEthereumProvider()
+      console.log(await wallets[0].sign('Please sign!'))
+      authenticate(provider)
+    }
+    connectWalletProvider()
+  }, [])
 
-  return <LoginModal open={ready} />
+  return <LoginModal open={true} />
 }

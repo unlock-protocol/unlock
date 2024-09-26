@@ -153,6 +153,7 @@ export const SIWEProvider = ({ children }: Props) => {
   }
 
   const signIn = async () => {
+    console.log('in sinIng')
     setStatus('loading')
     try {
       if (!connected) {

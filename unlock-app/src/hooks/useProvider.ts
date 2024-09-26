@@ -174,6 +174,7 @@ export const useProvider = (config: any) => {
   }
 
   const connectProvider = async (eip1193Provider: any) => {
+    console.log('connectProvider')
     setLoading(true)
     setEip1193(eip1193Provider)
     let auth
