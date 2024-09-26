@@ -183,9 +183,6 @@ export const EventCollectionForm = ({
     }
   }, [links, isAddingLink])
 
-  console.log('links', links)
-  console.log('managerAddresses', managerAddresses)
-
   return (
     <FormProvider {...methods}>
       <div className="relative p-5">
