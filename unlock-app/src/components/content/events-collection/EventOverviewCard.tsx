@@ -41,7 +41,9 @@ export const EventOverviewCard: React.FC<EventOverviewCardProps> = ({
   const { image, attributes } = data
 
   const getEventAttribute = (type: string) => {
-    const attr = attributes.find((attribute) => attribute.trait_type === type)
+    const attr = attributes.find(
+      (attribute: any) => attribute.trait_type === type
+    )
     return attr ? attr.value : ''
   }
 
