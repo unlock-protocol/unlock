@@ -3,7 +3,7 @@ import { vi, expect } from 'vitest'
 
 vi.mock('../../src/operations/pricingOperations', () => {
   return {
-    getDefiLammaPrice: ({ network, erc20Address, amount = 1 }) => {
+    getDefiLlamaPrice: ({ network, erc20Address, amount = 1 }) => {
       return Promise.resolve({
         priceInAmount: amount * 420000, // Keeping tests simple
         decimals: 5,

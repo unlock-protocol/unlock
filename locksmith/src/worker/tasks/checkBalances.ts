@@ -4,7 +4,7 @@ import {
   getAllPurchasers,
   getProviderForNetwork,
 } from '../../fulfillment/dispatcher'
-import { getDefiLammaPrice } from '../../operations/pricingOperations'
+import { getDefiLlamaPrice } from '../../operations/pricingOperations'
 import networks from '@unlock-protocol/networks'
 import logger from '../../logger'
 import { ethers } from 'ethers'
@@ -27,7 +27,7 @@ export const checkBalances: Task = async () => {
       const purchaser = purchasers[j]
       const address = await purchaser.getAddress()
       const balance = ethers.formatEther(await provider.getBalance(address))
-      const usdPricing = await getDefiLammaPrice({
+      const usdPricing = await getDefiLlamaPrice({
         network: network.id,
       })
       if (!usdPricing.price) {

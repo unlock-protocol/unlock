@@ -1,6 +1,6 @@
 import { ethers } from 'ethers'
 import networks from '@unlock-protocol/networks'
-import { getDefiLammaPrice } from '../operations/pricingOperations'
+import { getDefiLlamaPrice } from '../operations/pricingOperations'
 
 export default class GasPrice {
   // gasCost is expressed in gas, returns cost in base currency (ether on mainnet...)
@@ -30,7 +30,7 @@ export default class GasPrice {
     }
 
     const gasPrice = await this.gasPriceETH(network, gasCost)
-    const price = await getDefiLammaPrice({
+    const price = await getDefiLlamaPrice({
       network,
       amount: gasPrice,
     })
