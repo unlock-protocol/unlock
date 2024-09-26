@@ -39,17 +39,18 @@ const getUnlockEvents = async (): Promise<CalendarItem[]> => {
 
   const recurringEvents = {}
 
-  const singleEvents = calendar?.items?.filter((event: CalendarItem) => {
-    const startDate = event?.start?.date || event?.start?.dateTime
-    // For future recurriung events, only show a single instance
-    if (event.recurringEventId && dayjs().isBefore(startDate)) {
-      if (recurringEvents[event.recurringEventId]) {
-        return false
+  const singleEvents =
+    calendar?.items?.filter((event: CalendarItem) => {
+      const startDate = event?.start?.date || event?.start?.dateTime
+      // For future recurriung events, only show a single instance
+      if (event.recurringEventId && dayjs().isBefore(startDate)) {
+        if (recurringEvents[event.recurringEventId]) {
+          return false
+        }
+        recurringEvents[event.recurringEventId] = true
       }
-      recurringEvents[event.recurringEventId] = true
-    }
-    return true
-  })
+      return true
+    }) || []
 
   // Sort events by date
   return singleEvents.sort(function (eventA, eventB) {

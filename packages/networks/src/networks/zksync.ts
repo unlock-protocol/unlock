@@ -39,8 +39,8 @@ export const zksync: NetworkConfig = {
   publicProvider: 'https://mainnet.era.zksync.io',
   startBlock: 25905168,
   subgraph: {
-    endpoint:
-      'https://api.studio.thegraph.com/query/65299/unlock-protocol-zksync/version/latest',
+    endpoint: 'https://subgraph.unlock-protocol.com/324',
+    graphId: 'Bqo6hTg28TRmzksb6Eg8EPefD4sXBra1ad1WD4oz6c88',
     networkName: 'zksync-era',
     studioName: 'unlock-protocol-zksync',
   },
@@ -48,8 +48,8 @@ export const zksync: NetworkConfig = {
     {
       address: '0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4',
       decimals: 6,
-      name: 'USD Coin',
-      symbol: 'USDC',
+      name: 'Bridged USDC (zkSync)',
+      symbol: 'USDC.e',
     },
     {
       address: '0x000000000000000000000000000000000000800A',

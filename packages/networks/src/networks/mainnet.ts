@@ -20,6 +20,10 @@ export const mainnet: NetworkConfig = {
   governanceBridge: {
     connext: '0x8898B472C54c31894e3B9bb83cEA802a5d0e63C6',
     domainId: 6648936,
+    modules: {
+      connextMod: '0xAB6A5080e569A269D8cB54fdD00312A2c4c3a3aa',
+      delayMod: '0x8f05058d05C8167132f07aAA5130Ed3F0D78d5aE',
+    },
   },
   hooks: {
     onKeyPurchaseHook: [
@@ -70,8 +74,8 @@ export const mainnet: NetworkConfig = {
   publicProvider: 'https://cloudflare-eth.com/v1/mainnet',
   startBlock: 16989000,
   subgraph: {
-    endpoint:
-      'https://api.studio.thegraph.com/query/65299/unlock-protocol-mainnet/version/latest',
+    endpoint: 'https://subgraph.unlock-protocol.com/1',
+    graphId: 'CTj3qyHTnQuTD16RkmV1BK6UmYPADwUD7WNNLEvQuTv9',
     studioName: 'unlock-protocol-mainnet',
   },
   tokens: [

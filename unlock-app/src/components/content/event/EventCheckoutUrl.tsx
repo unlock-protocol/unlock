@@ -8,7 +8,7 @@ import {
 import { locksmith } from '~/config/locksmith'
 import Link from 'next/link'
 import { useMetadata } from '~/hooks/metadata'
-import { useRouter } from 'next/router'
+import { useSearchParams } from 'next/navigation'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useEffect, useState } from 'react'
 
@@ -32,7 +32,7 @@ export const EventCheckoutUrl = ({
   isManager,
   onCheckoutChange,
 }: EventCheckoutUrlProps) => {
-  const router = useRouter()
+  const searchParams = useSearchParams()
   const [useCheckoutURL, setUseCheckoutURL] = useState(false)
   const { isLoading: isLoadingConfigList, data: checkoutConfigList } =
     useCheckoutConfigsByUser()
@@ -45,7 +45,7 @@ export const EventCheckoutUrl = ({
     network,
   })
 
-  const checkoutUrl = `/locks/checkout-url`
+  const checkoutUrl = '/locks/checkout-url'
 
   const hasCustomUrl = !!settings?.slug
   const hasConfigList = !!checkoutConfigList?.length
@@ -98,7 +98,9 @@ export const EventCheckoutUrl = ({
     await onCheckoutChange()
 
     if (!hasCustomUrl) {
-      router.push(`event?s=${slug}`)
+      const newSearchParams = new URLSearchParams(searchParams.toString())
+      newSearchParams.set('s', slug || '')
+      window.history.pushState({}, '', `event?${newSearchParams.toString()}`)
     }
   }
 
