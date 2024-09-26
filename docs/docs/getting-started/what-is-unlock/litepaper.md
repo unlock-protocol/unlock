@@ -353,7 +353,7 @@ Proposals start as discussions and conversations. These conversations can be ini
 
 ### Voting
 
-Voting for the [Unlock DAO](../../governance/unlock-dao/) happens onchain through the governor contract. To send transactions, delegates can use any front-end application that supports the OpenZeppelin Governor contracts, such as [Tally](https://www.tally.xuz/gov/unlock-protocol/).
+Voting for the [Unlock DAO](../../governance/unlock-dao/) happens onchain through the governor contract. To send transactions, delegates can use any front-end application that supports the OpenZeppelin Governor contracts, such as [Tally](https://www.tally.xyz/gov/unlock-protocol/).
 
 Voting on a proposal is only available to delegates with the balance of tokens they held at the time of the proposal’s submission.
 
