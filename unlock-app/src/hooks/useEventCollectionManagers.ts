@@ -37,7 +37,7 @@ export function useEventCollectionManagers(slug: string) {
     onSuccess: () => {
       ToastHelper.success('Manager added successfully.')
       queryClient.invalidateQueries({
-        queryKey: ['addManagerToEventCollection', slug],
+        queryKey: ['eventCollectionManagerAddresses', slug],
       })
     },
     onError: (error: any) => {
@@ -57,7 +57,7 @@ export function useEventCollectionManagers(slug: string) {
         `Collection manager renounced for ${minifyAddress(managerAddressToRemove)}.`
       )
       queryClient.invalidateQueries({
-        queryKey: ['removeManagerFromEventCollection', slug],
+        queryKey: ['eventCollectionManagerAddresses', slug],
       })
     },
     onError: (error: any, managerAddressToRemove) => {
