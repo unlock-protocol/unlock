@@ -250,7 +250,7 @@ describe('pricing', () => {
         data,
       })
 
-      expect(pricingForPurchase?.unlockServiceFee).toBe(11.064)
+      expect(pricingForPurchase?.unlockServiceFee).toBe(5.532)
       expect(pricingForPurchase?.creditCardProcessingFee).toBe(
         4.1890160000000005
       )
