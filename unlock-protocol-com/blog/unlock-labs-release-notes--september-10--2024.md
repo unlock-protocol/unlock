@@ -1,10 +1,10 @@
 ---
-title: "Unlock Labs Release Notes: September 10, 2024"
-subtitle: ""
-authorName: "Unlock Protocol"
-publishDate: "Tue Sep 10 2024 17:26:43 GMT+0000 (Coordinated Universal Time)"
-description: "Unlock Labs app release notes"
-image: "/images/blog/unlock-labs-release-notes--september-10--2024/8f93034a990c73ef27d2557cfbf980ec.jpg"
+title: 'Unlock Labs Release Notes: September 10, 2024'
+subtitle: ''
+authorName: 'Unlock Protocol'
+publishDate: 'Tue Sep 10 2024 13:26:43 GMT-0400 (Eastern Daylight Time)'
+description: 'Unlock Labs app release notes'
+image: '/images/blog/unlock-labs-release-notes--september-10--2024/8f93034a990c73ef27d2557cfbf980ec.jpg'
 ---
 
 ![Unlock Labs Release Notes: September 10, 2024](https://storage.googleapis.com/papyrus_images/8f93034a990c73ef27d2557cfbf980ec.jpg)
