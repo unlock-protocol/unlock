@@ -48,8 +48,8 @@ export const zksync: NetworkConfig = {
     {
       address: '0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4',
       decimals: 6,
-      name: 'USD Coin',
-      symbol: 'USDC',
+      name: 'Bridged USDC (zkSync)',
+      symbol: 'USDC.e',
     },
     {
       address: '0x000000000000000000000000000000000000800A',
