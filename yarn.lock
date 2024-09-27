@@ -20983,7 +20983,7 @@ __metadata:
     postmate: "npm:1.5.2"
     prettier: "npm:3.3.3"
     qr-scanner: "npm:1.4.2"
-    qrcode.react: "npm:3.2.0"
+    qrcode.react: "npm:4.0.1"
     react-device-detect: "npm:2.2.3"
     react-dropzone: "npm:14.2.3"
     react-google-autocomplete: "npm:2.7.3"
@@ -45320,12 +45320,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qrcode.react@npm:3.2.0":
-  version: 3.2.0
-  resolution: "qrcode.react@npm:3.2.0"
+"qrcode.react@npm:4.0.1":
+  version: 4.0.1
+  resolution: "qrcode.react@npm:4.0.1"
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 10/00d3625f9be5333ff18b638b6bb4b2839ddddf79b71be9a8054bac5e30d78dc36ec3d77247a365ea4aaabd5c8b97f810e6ee28173523156879194079371e41b5
+  checksum: 10/786cf24511940079247f0c640daa7760f65b244ada465b54647d35cf666ca2d9efc78082339893cd4dc70711fdaef436306c9310c9c12c719fe823e585f82d4e
   languageName: node
   linkType: hard
 

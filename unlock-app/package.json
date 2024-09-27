@@ -57,7 +57,7 @@
     "postmate": "1.5.2",
     "prettier": "3.3.3",
     "qr-scanner": "1.4.2",
-    "qrcode.react": "3.2.0",
+    "qrcode.react": "4.0.1",
     "react-device-detect": "2.2.3",
     "react-dropzone": "14.2.3",
     "react-google-autocomplete": "2.7.3",
