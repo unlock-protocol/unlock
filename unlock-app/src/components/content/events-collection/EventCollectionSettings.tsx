@@ -10,6 +10,7 @@ import { EventCollection } from '@unlock-protocol/unlock-js'
 import { Managers } from './settings/Managers'
 import { General } from './settings/General'
 import { Approvals } from './settings/Approvals'
+import { ManageEvents } from './settings/Management'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { isCollectionManager } from '~/utils/eventCollections'
 
@@ -57,6 +58,14 @@ export const EventCollectionSettings = ({
       description: 'Review and approve events submitted to your collection.',
       children: eventCollection ? (
         <Approvals eventCollection={eventCollection} />
+      ) : null,
+    },
+    {
+      id: 'management',
+      label: 'Management',
+      description: 'Manage events in your collection.',
+      children: eventCollection ? (
+        <ManageEvents eventCollection={eventCollection} />
       ) : null,
     },
   ]
