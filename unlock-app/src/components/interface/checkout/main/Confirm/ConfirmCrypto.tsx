@@ -263,7 +263,7 @@ export function ConfirmCrypto({
             <PricingData
               network={lockNetwork}
               lock={lock!}
-              pricingData={pricingData}
+              prices={pricingData.prices}
               payment={payment}
             />
           )}
