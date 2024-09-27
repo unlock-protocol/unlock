@@ -20960,7 +20960,7 @@ __metadata:
     vitest: "npm:1.6.0"
     vitest-fetch-mock: "npm:0.3.0"
     vitest-localstorage-mock: "npm:0.1.2"
-    xstate: "npm:5.18.2"
+    xstate: "npm:5.14.0"
     zod: "npm:3.23.8"
     zod-to-json-schema: "npm:3.23.2"
   peerDependencies:
@@ -54398,10 +54398,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"xstate@npm:5.18.2":
-  version: 5.18.2
-  resolution: "xstate@npm:5.18.2"
-  checksum: 10/f0e0c68c35d14996eabee00a6485844f29d5bdb8407d6ec1be707e60b0f06952e7a765081ee338b0d5ac18a984c4debb6b08d6b2c5fefb1d44376930a1cc3c98
+"xstate@npm:5.14.0":
+  version: 5.14.0
+  resolution: "xstate@npm:5.14.0"
+  checksum: 10/5dbf04dfe7dd29a20deb470a09ae3f2ed510e4df52d2f7263f7b4f75a9be584ec05ca1e0460fe19977def1158c26f4659464c80efe94c31b9185dd38adc922ef
   languageName: node
   linkType: hard
 
