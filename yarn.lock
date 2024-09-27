@@ -6044,17 +6044,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloudflare/workers-types@npm:4.20240729.0":
-  version: 4.20240729.0
-  resolution: "@cloudflare/workers-types@npm:4.20240729.0"
-  checksum: 10/a0f5a8f71dfa9f9c928b88e54548541be1edd6809bc50bd659186077f6feaa86cea5ae3a811c22b579908232ce0d0cdf8eb0d8f633f2a44e9dba3edd7d8e83a3
-  languageName: node
-  linkType: hard
-
-"@cloudflare/workers-types@npm:4.20240821.1":
-  version: 4.20240821.1
-  resolution: "@cloudflare/workers-types@npm:4.20240821.1"
-  checksum: 10/981e86ba1b0899f5e1f58087f39ec3720202df9513263704efc9558038c590d67ae9b75b489250c6687ff2dde28b6652cf64d6a6442c6dfef54be3d4d7a70442
+"@cloudflare/workers-types@npm:4.20240925.0":
+  version: 4.20240925.0
+  resolution: "@cloudflare/workers-types@npm:4.20240925.0"
+  checksum: 10/caac1d2f638cd01bcfa44bf7effbf22e96cbe8f58ad4fb8472721ccd05a64a8b3ed2da45c90270ee52bf3fdf3275cd3460f2175f4f1d5a5e3420918e0ee87527
   languageName: node
   linkType: hard
 
@@ -33568,7 +33561,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "graph-service@workspace:graph-service"
   dependencies:
-    "@cloudflare/workers-types": "npm:4.20240821.1"
+    "@cloudflare/workers-types": "npm:4.20240925.0"
     "@sentry/node": "npm:8.27.0"
     toucan-js: "npm:4.0.0"
     vitest: "npm:2.1.1"
@@ -45136,7 +45129,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "provider@workspace:provider"
   dependencies:
-    "@cloudflare/workers-types": "npm:4.20240729.0"
+    "@cloudflare/workers-types": "npm:4.20240925.0"
     "@types/node": "npm:20.14.13"
     "@unlock-protocol/networks": "workspace:^"
     ethers: "npm:6.13.2"
