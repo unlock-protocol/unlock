@@ -1,4 +1,5 @@
 'use client'
+
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 import {
   FormProvider,
@@ -20,8 +21,16 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { onResolveName } from '~/utils/resolvers'
 import { WrappedAddress } from '~/components/interface/WrappedAddress'
-import { LinkField } from './LinkField'
 import { FiTrash as TrashIcon } from 'react-icons/fi'
+import { LinksField } from './LinksField'
+
+interface Links {
+  farcaster?: string
+  x?: string
+  website?: string
+  youtube?: string
+  github?: string
+}
 
 interface Link {
   type: 'farcaster' | 'x' | 'website' | 'youtube' | 'github'
@@ -34,7 +43,7 @@ export interface NewEventCollectionForm {
   coverImage: string
   banner: string
   managerAddresses: string[]
-  links: Link[]
+  links: Links
 }
 
 interface FormProps {
@@ -51,9 +60,8 @@ export const EventCollectionForm = ({
   const { account } = useAuth()
   const [isAccountManager, setIsAccountManager] = useState<boolean>(true)
 
-  // track if adding a manager or link is in progress
+  // Track if adding a manager is in progress
   const [isAddingManager, setIsAddingManager] = useState<boolean>(false)
-  const [isAddingLink, setIsAddingLink] = useState<boolean>(false)
 
   const methods = useForm<NewEventCollectionForm>({
     mode: 'onChange',
@@ -63,7 +71,7 @@ export const EventCollectionForm = ({
       coverImage: '',
       banner: '',
       managerAddresses: account ? [account] : [],
-      links: [{ type: 'website', url: '' }],
+      links: {},
     },
   })
 
@@ -79,15 +87,6 @@ export const EventCollectionForm = ({
   const banner = watch('banner')
   const managerAddresses = watch('managerAddresses')
   const links = watch('links')
-
-  const {
-    fields: linkFields,
-    append: appendLink,
-    remove: removeLink,
-  } = useFieldArray<NewEventCollectionForm>({
-    control,
-    name: 'links',
-  })
 
   const {
     fields: managerFields,
@@ -130,12 +129,6 @@ export const EventCollectionForm = ({
     managerFields.length === 0 ||
     managerAddresses[managerFields.length - 1].trim() !== ''
 
-  // Check if the last link field is filled
-  const isLastLinkFilled =
-    linkFields.length === 0 ||
-    (links[linkFields.length - 1].type &&
-      links[linkFields.length - 1].url.trim() !== '')
-
   // Handlers for adding/canceling managers
   const handleAddOrCancelManager = () => {
     if (isAddingManager && !isLastManagerFilled) {
@@ -150,19 +143,6 @@ export const EventCollectionForm = ({
     }
   }
 
-  // Handlers for adding/canceling links
-  const handleAddOrCancelLink = () => {
-    if (isAddingLink) {
-      // Cancel adding: remove the last link field
-      removeLink(linkFields.length - 1)
-      setIsAddingLink(false)
-    } else {
-      // Start adding a new link
-      appendLink({ type: 'website', url: '' })
-      setIsAddingLink(true)
-    }
-  }
-
   // reset isAddingManager when a manager is successfully added
   useEffect(() => {
     if (isAddingManager) {
@@ -173,12 +153,20 @@ export const EventCollectionForm = ({
     }
   }, [managerAddresses, isAddingManager])
 
-  // reset isAddingLink when a link is successfully added
-  useEffect(() => {
-    if (isAddingLink && links[linkFields.length - 1]?.url.trim()) {
-      setIsAddingLink(false)
+  // transform links to the correct format
+  const handleSubmit = (data: NewEventCollectionForm) => {
+    const { links, ...rest } = data
+    const transformedLinks: Link[] = Object.entries(links)
+      .filter(([_, url]) => url && url.trim() !== '')
+      .map(([type, url]) => ({ type: type as Link['type'], url }))
+
+    const finalData: NewEventCollectionForm = {
+      ...rest,
+      links: transformedLinks as unknown as Links,
     }
-  }, [links, linkFields.length, isAddingLink])
+
+    onSubmit(finalData)
+  }
 
   return (
     <FormProvider {...methods}>
@@ -200,7 +188,7 @@ export const EventCollectionForm = ({
           </h1>
         </div>
 
-        <form className="mb-6" onSubmit={methods.handleSubmit(onSubmit)}>
+        <form className="mb-6" onSubmit={methods.handleSubmit(handleSubmit)}>
           <div className="grid gap-6">
             {/* Basic Information */}
             <Disclosure label="Basic Information" defaultOpen>
@@ -376,25 +364,7 @@ export const EventCollectionForm = ({
 
             {/* Links */}
             <Disclosure label="Links" defaultOpen>
-              <div className="space-y-4 w-full">
-                {linkFields.map((field, index) => (
-                  <LinkField
-                    key={field.id}
-                    index={index}
-                    remove={removeLink}
-                    showRemove={false}
-                  />
-                ))}
-                <Button
-                  className="flex items-center gap-2 w-full"
-                  type="button"
-                  onClick={handleAddOrCancelLink}
-                  disabled={isAddingLink ? false : !isLastLinkFilled}
-                  aria-label={isAddingLink ? 'Cancel adding link' : 'Add link'}
-                >
-                  {isAddingLink ? 'Cancel' : 'Add Link'}
-                </Button>
-              </div>
+              <LinksField />
             </Disclosure>
 
             {/* Submit Button */}
