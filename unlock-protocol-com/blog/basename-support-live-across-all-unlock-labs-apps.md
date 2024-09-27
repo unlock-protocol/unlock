@@ -1,10 +1,10 @@
 ---
-title: "Basename Support Live Across All Unlock Labs Apps"
-subtitle: ""
-authorName: "Unlock Protocol"
-publishDate: "Tue Sep 10 2024 22:58:42 GMT+0000 (Coordinated Universal Time)"
-description: "Basenames serve as a user-friendly naming system for onchain addresses on the Base network."
-image: "/images/blog/basename-support-live-across-all-unlock-labs-apps/55eaa459c2393b91a8c59937e53cf5a6.jpg"
+title: 'Basename Support Live Across All Unlock Labs Apps'
+subtitle: ''
+authorName: 'Unlock Protocol'
+publishDate: 'Tue Sep 10 2024 22:58:42 GMT+0000 (Coordinated Universal Time)'
+description: 'Basenames serve as a user-friendly naming system for onchain addresses on the Base network.'
+image: '/images/blog/basename-support-live-across-all-unlock-labs-apps/55eaa459c2393b91a8c59937e53cf5a6.jpg'
 ---
 
 ![Basename Support Live Across All Unlock Labs Apps](https://storage.googleapis.com/papyrus_images/55eaa459c2393b91a8c59937e53cf5a6.jpg)
