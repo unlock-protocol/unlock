@@ -25,19 +25,13 @@ function getUnlockVersionNumbers() {
 // returns the latest PublicLock version number corresponding to a version of Unlock
 function getMatchingLockVersion(unlockVersion) {
   // before Unlock v10, unlock version equals lock version
-  const publicLockVersions = getUnlockVersionNumbers().reduce(
-    (acc, v) => ({
-      ...acc,
-      [v]: v,
-    }),
-    {}
-  )
-  // after v10, they start decoupling
-  publicLockVersions[10] = 9
-  publicLockVersions[11] = 11
-  publicLockVersions[12] = 12
-  publicLockVersions[13] = 14
-  publicLockVersions[14] = 14
+  const publicLockVersions = {
+    // after v10, they start decoupling
+    11: 11,
+    12: 12,
+    13: 14,
+    14: 14,
+  }
 
   return publicLockVersions[unlockVersion]
 }
