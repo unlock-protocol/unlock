@@ -24,6 +24,7 @@ jobs:
         with:
           export-env: true
         env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           SUBGRAPH_STUDIO_DEPLOY_KEY: op://secrets/subgraph/studio-deploy-key
       - name: Deploying the subgraphs
         run: yarn workspace @unlock-protocol/subgraph deploy-all
