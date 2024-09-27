@@ -136,7 +136,6 @@ export const useAddToEventCollection = (collectionSlug: string) => {
   }
 }
 
-
 /**
  * Hook to remove an event from an existing event collection.
  *
