@@ -357,7 +357,7 @@ export const EventCollectionForm = ({
                 >
                   {isAddingManager && !isLastManagerFilled
                     ? 'Cancel'
-                    : 'Add Manager'}
+                    : 'Add manager'}
                 </Button>
               </div>
             </Disclosure>
