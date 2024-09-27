@@ -69,9 +69,9 @@ export default function CreditCardUnlockFee({
           />
         </div>
         <div className="text-sm text-gray-700">
-          {
-            "By default, the Unlock fee is applied on top of the lock's price. As a lock manager you can also chose to cover these fees on behalf of your users. In that case, your Stripe payments will be reduced."
-          }
+          By default, the Unlock fee is applied on top of the lock&apos;s price.
+          As a lock manager you can also chose to cover these fees on behalf of
+          your users. In that case, your Stripe payments will be reduced.
         </div>
       </div>
     </form>
