@@ -52,7 +52,7 @@ describe('Swapper UP / UDT', () => {
       assert.equal(await swap.up(), await up.getAddress())
     })
     it('up is properly set', async () => {
-      assert.equal(await swap.udt(), await udt.getAddress())
+      assert.equal(await swap.governanceToken(), await udt.getAddress())
     })
   })
 

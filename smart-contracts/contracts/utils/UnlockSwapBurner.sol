@@ -82,7 +82,7 @@ contract UnlockSwapBurner {
     uint24 poolFee
   ) public payable returns (uint amount) {
     // get info from unlock
-    address udtAddress = IUnlock(unlockAddress).udt();
+    address udtAddress = IUnlock(unlockAddress).governanceToken();
     address wrappedAddress = IUnlock(unlockAddress).weth();
 
     // get total balance of token to swap

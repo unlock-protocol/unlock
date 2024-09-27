@@ -81,8 +81,8 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   // The WETH token address, used for value calculations
   address public weth;
 
-  // The UDT token address, used to mint tokens on referral
-  address public udt;
+  // The governance token address, used to mint tokens on referral
+  address public governanceToken;
 
   // The approx amount of gas required to purchase a key
   uint public estimatedGasForPurchase;
@@ -122,7 +122,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   event LockUpgraded(address lockAddress, uint16 version);
 
   event ConfigUnlock(
-    address udt,
+    address governanceToken,
     address weth,
     uint estimatedGasForPurchase,
     string globalTokenSymbol,
@@ -426,12 +426,20 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
         _referrer != address(0) &&
         IPublicLock(msg.sender).publicLockVersion() >= 13
       ) {
-        IUniswapOracleV3 udtOracle = uniswapOracles[udt];
-        if (address(udtOracle) != address(0)) {
+        IUniswapOracleV3 governanceTokenOracle = uniswapOracles[
+          governanceToken
+        ];
+        if (address(governanceTokenOracle) != address(0)) {
           // Get the value of 1 UDT (w/ 18 decimals) in ETH
-          uint udtPrice = udtOracle.updateAndConsult(udt, 10 ** 18, weth);
+          uint governanceTokenPrice = governanceTokenOracle.updateAndConsult(
+            governanceToken,
+            10 ** 18,
+            weth
+          );
 
-          uint balance = IMintableERC20(udt).balanceOf(address(this));
+          uint balance = IMintableERC20(governanceToken).balanceOf(
+            address(this)
+          );
 
           // base fee default to 100 GWEI for chains that does
           uint baseFee;
@@ -449,7 +457,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
           // tokensToDistribute is either == to the gas cost
           uint tokensToDistribute = ((estimatedGasForPurchase * baseFee) *
-            (10 ** 18)) / udtPrice;
+            (10 ** 18)) / governanceTokenPrice;
 
           // or tokensToDistribute is capped by network GDP growth
           // we distribute tokens using asymptotic curve between 0 and 0.5
@@ -465,7 +473,10 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
           if (tokensToDistribute > 0) {
             if (balance > tokensToDistribute) {
               // Only distribute if there are enough tokens
-              IMintableERC20(udt).transfer(_referrer, tokensToDistribute);
+              IMintableERC20(governanceToken).transfer(
+                _referrer,
+                tokensToDistribute
+              );
             }
           }
         }
@@ -533,14 +544,14 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    * @notice Allows the owner to update configuration variables
    */
   function configUnlock(
-    address _udt,
+    address _governanceToken,
     address _weth,
     uint _estimatedGasForPurchase,
     string calldata _symbol,
     string calldata _URI,
     uint _chainId
   ) external onlyOwner {
-    udt = _udt;
+    governanceToken = _governanceToken;
     weth = _weth;
     estimatedGasForPurchase = _estimatedGasForPurchase;
 
@@ -550,7 +561,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     chainId = _chainId;
 
     emit ConfigUnlock(
-      _udt,
+      _governanceToken,
       _weth,
       _estimatedGasForPurchase,
       _symbol,
@@ -687,7 +698,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    * @param amount the amount of tokens to swap and burn
    */
   function swapAndBurn(address token, uint256 amount, uint24 poolFee) public {
-    if (token == udt) {
+    if (token == governanceToken) {
       revert Unlock__INVALID_TOKEN();
     }
     _transfer(token, swapBurnerAddress, amount);
