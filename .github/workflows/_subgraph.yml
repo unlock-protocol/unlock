@@ -2,6 +2,9 @@ name: Subgraphs deployment
 
 on:
   workflow_call:
+    secrets:
+      OP_SERVICE_ACCOUNT_TOKEN:
+        required: true
 
 jobs:
   coverage:
