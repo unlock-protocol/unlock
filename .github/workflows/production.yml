@@ -9,6 +9,8 @@ jobs:
   deploy-all-subgraphs:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
     uses: ./.github/workflows/_subgraph.yml
+    secrets:
+      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
   deploy-locksmith-production:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
