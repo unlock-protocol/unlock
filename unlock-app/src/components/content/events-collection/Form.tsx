@@ -86,7 +86,6 @@ export const EventCollectionForm = ({
   const coverImage = watch('coverImage')
   const banner = watch('banner')
   const managerAddresses = watch('managerAddresses')
-  const links = watch('links')
 
   const {
     fields: managerFields,
