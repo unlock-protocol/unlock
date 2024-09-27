@@ -4,7 +4,6 @@ import { SettingCard } from '~/components/interface/locks/Settings/elements/Sett
 import {
   Controller,
   FormProvider,
-  useFieldArray,
   useForm,
   SubmitHandler,
 } from 'react-hook-form'
@@ -14,11 +13,19 @@ import { useImageUpload } from '~/hooks/useImageUpload'
 import { EventCollection } from '@unlock-protocol/unlock-js'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { locksmith } from '~/config/locksmith'
-import { EditLinkField } from '../LinkField'
-import { useEffect, useCallback, useRef } from 'react'
+import { useCallback, useRef } from 'react'
+import { LinksField } from '../LinksField'
 
 interface GeneralProps {
   eventCollection: EventCollection
+}
+
+interface Links {
+  farcaster?: string
+  x?: string
+  website?: string
+  youtube?: string
+  github?: string
 }
 
 interface FormValues {
@@ -26,11 +33,9 @@ interface FormValues {
   description: string
   coverImage: string
   banner: string
-  links: {
-    type?: string
-    url?: string
-  }[]
+  links: Links
 }
+
 export const General = ({ eventCollection }: GeneralProps) => {
   const methods = useForm<FormValues>({
     mode: 'onChange',
@@ -41,25 +46,23 @@ export const General = ({ eventCollection }: GeneralProps) => {
       coverImage: eventCollection.coverImage || '',
       banner: eventCollection.banner || '',
       links: Array.isArray(eventCollection.links)
-        ? eventCollection.links.map((link) => ({
-            type: link?.type || '',
-            url: link?.url || '',
-          }))
-        : [],
+        ? eventCollection.links.reduce((acc, link) => {
+            if (link.type && link.url) {
+              acc[link.type as keyof Links] = link.url
+            }
+            return acc
+          }, {} as Links)
+        : {
+            farcaster: '',
+            x: '',
+            website: '',
+            youtube: '',
+            github: '',
+          },
     },
   })
 
-  const {
-    fields: linkFields,
-    append,
-    remove,
-  } = useFieldArray({
-    control: methods.control,
-    name: 'links',
-  })
-
   const { mutateAsync: uploadImage, isPending: isUploading } = useImageUpload()
-  const links = methods.watch('links')
 
   const isSubmittingRef = useRef(false)
 
@@ -68,12 +71,16 @@ export const General = ({ eventCollection }: GeneralProps) => {
       if (isSubmittingRef.current) return
       isSubmittingRef.current = true
       try {
+        const transformedLinks = Object.entries(values.links)
+          .filter(([_, url]) => url && url.trim() !== '')
+          .map(([type, url]) => ({ type, url }))
+
         await locksmith.updateEventCollection(eventCollection.slug!, {
           title: values.title,
           description: values.description,
           coverImage: values.coverImage,
           banner: values.banner,
-          links: values.links,
+          links: transformedLinks,
           managerAddresses: eventCollection.managerAddresses!,
         })
         ToastHelper.success('Event Collection info saved successfully!')
@@ -85,28 +92,6 @@ export const General = ({ eventCollection }: GeneralProps) => {
     },
     [eventCollection.slug, eventCollection.managerAddresses]
   )
-
-  // Debounce save to prevent multiple rapid submissions
-  const debounceTimeout = useRef<NodeJS.Timeout | null>(null)
-
-  useEffect(() => {
-    const subscription = methods.watch((_, { name, type }) => {
-      if (name?.startsWith('links') && type === 'change') {
-        if (debounceTimeout.current) {
-          clearTimeout(debounceTimeout.current)
-        }
-        debounceTimeout.current = setTimeout(() => {
-          methods.handleSubmit(save)()
-        }, 500)
-      }
-    })
-    return () => {
-      subscription.unsubscribe()
-      if (debounceTimeout.current) {
-        clearTimeout(debounceTimeout.current)
-      }
-    }
-  }, [methods, save])
 
   return (
     <FormProvider {...methods}>
@@ -249,29 +234,16 @@ export const General = ({ eventCollection }: GeneralProps) => {
           label="Links"
           description="Update the links of your event collection."
         >
-          {linkFields.map((field, index) => (
-            <EditLinkField key={field.id} index={index} remove={remove} />
-          ))}
-          <div className="flex justify-end">
+          <LinksField />
+          <div className="flex flex-col sm:flex-row-reverse w-full pt-8">
             <Button
-              type="button"
-              onClick={() => append({ type: 'website', url: '' })}
-              disabled={
-                linkFields.length > 0
-                  ? !links[linkFields.length - 1]?.type ||
-                    !links[linkFields.length - 1]?.url
-                  : false
-              }
+              loading={methods.formState.isSubmitting}
+              type="submit"
+              className="w-full sm:w-48"
             >
-              Add Link
+              Save
             </Button>
           </div>
-          {methods.formState.errors.links &&
-            typeof methods.formState.errors.links.message === 'string' && (
-              <p className="text-red-500 text-sm">
-                {methods.formState.errors.links.message}
-              </p>
-            )}
         </SettingCard>
       </form>
     </FormProvider>
