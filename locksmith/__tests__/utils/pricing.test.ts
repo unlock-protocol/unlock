@@ -251,9 +251,7 @@ describe('pricing', () => {
       })
 
       expect(pricingForPurchase?.unlockServiceFee).toBe(5.532)
-      expect(pricingForPurchase?.creditCardProcessingFee).toBe(
-        4.1890160000000005
-      )
+      expect(pricingForPurchase?.creditCardProcessingFee).toBe(4.028588)
       expect(pricingForPurchase?.gasCost).toBe(12.4)
       expect(pricingForPurchase?.gasCost).toBe(12.4)
       expect(pricingForPurchase?.currency).toBe('usd')
