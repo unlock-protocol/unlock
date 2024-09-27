@@ -250,10 +250,8 @@ describe('pricing', () => {
         data,
       })
 
-      expect(pricingForPurchase?.unlockServiceFee).toBe(11.064)
-      expect(pricingForPurchase?.creditCardProcessingFee).toBe(
-        4.1890160000000005
-      )
+      expect(pricingForPurchase?.unlockServiceFee).toBe(5.532)
+      expect(pricingForPurchase?.creditCardProcessingFee).toBe(4.028588)
       expect(pricingForPurchase?.gasCost).toBe(12.4)
       expect(pricingForPurchase?.gasCost).toBe(12.4)
       expect(pricingForPurchase?.currency).toBe('usd')
@@ -358,7 +356,40 @@ describe('pricing', () => {
       )
       expect(fees.unlockServiceFee).not.toBe(0)
     })
-    it('should include unlockFees', async () => {
+
+    it('should include unlockFees of 5%', async () => {
+      expect.assertions(1)
+      const fees = await getFees(
+        {
+          subtotal: 52,
+          gasCost: 0.12,
+        },
+        {
+          lockAddress,
+          network: 5,
+          recipients: ['0x'],
+        }
+      )
+      expect(fees.unlockServiceFee).toBe(2.6)
+    })
+
+    it('should include unlockFees of at least at 1$', async () => {
+      expect.assertions(1)
+      const fees = await getFees(
+        {
+          subtotal: 1,
+          gasCost: 0.12,
+        },
+        {
+          lockAddress,
+          network: 5,
+          recipients: ['0x'],
+        }
+      )
+      expect(fees.unlockServiceFee).toBe(1)
+    })
+
+    it('should include unlockFees capped at 10$', async () => {
       expect.assertions(1)
       const fees = await getFees(
         {
@@ -371,7 +402,7 @@ describe('pricing', () => {
           recipients: ['0x'],
         }
       )
-      expect(fees.unlockServiceFee).toBe(143)
+      expect(fees.unlockServiceFee).toBe(10)
     })
 
     it('should return cabinDao unlockFess', async () => {

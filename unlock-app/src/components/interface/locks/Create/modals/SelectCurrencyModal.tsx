@@ -1,6 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Token } from '@unlock-protocol/types'
-import { Button, Input } from '@unlock-protocol/ui'
+import { Button, CurrencyHint, Input } from '@unlock-protocol/ui'
 import { Fragment, useEffect, useState } from 'react'
 import { useDebounce } from 'react-use'
 import { ethers } from 'ethers'
@@ -175,14 +175,15 @@ export const SelectCurrencyModal = ({
               <Dialog.Panel className="w-full max-w-md">
                 <div className="px-6 text-left rounded-lg bg-ui-secondary-200 py-7">
                   <Input
-                    label="Select a token as currency"
-                    placeholder="Search or paste contract address"
+                    label="Select a token as currency or enter its address:"
+                    placeholder="Paste contract address"
                     className="bg-transparent"
                     autoComplete="off"
                     {...register('query', {
                       onChange: (e) => setQuery(e.target.value),
                     })}
                   />
+                  <CurrencyHint network={networks[network as number].name} />
 
                   {isValidAddress && (
                     <div className="flex items-center justify-between mt-3">

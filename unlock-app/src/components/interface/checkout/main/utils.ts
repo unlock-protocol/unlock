@@ -51,8 +51,8 @@ export async function fetchRecipientsData(
   }
 }
 
-export function formatFiatPriceFromCents(priceInCents: number, currency = '$') {
-  const formatted = (priceInCents / 100).toLocaleString(undefined, {
+export function formatFiatPrice(price: number, currency = '$') {
+  const formatted = price.toLocaleString(undefined, {
     maximumFractionDigits: 2,
     minimumFractionDigits: 2,
   })

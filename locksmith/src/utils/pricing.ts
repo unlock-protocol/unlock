@@ -135,6 +135,14 @@ export const getUnlockServiceFee = (
 ) => {
   if (
     normalizer.ethereumAddress(options?.lockAddress) ===
+    '0x45aCCac0E5C953009cDa713a3b722F87F2907F86'
+  ) {
+    // For CabinDAO, fee is $20
+    return 20
+  }
+
+  if (
+    normalizer.ethereumAddress(options?.lockAddress) ===
       '0xB9d79698599B3efa025c654B4c6f2c760c15d0d0' ||
     normalizer.ethereumAddress(options?.lockAddress) ===
       '0xc94b031cE1837277dDABaFE2d993e0A9a2FC4E92' ||
@@ -171,7 +179,20 @@ export const getUnlockServiceFee = (
     return cost * 0.02
   }
 
-  return cost * 0.1 // Unlock charges 10% of transaction.
+  // Defaults to 5%
+  const fee = cost * 0.05
+
+  // At least $1
+  if (fee < 1) {
+    return 1
+  }
+
+  // At most $10
+  if (fee > 10) {
+    return 10
+  }
+
+  return fee
 }
 
 export const getFees = async (
@@ -179,7 +200,7 @@ export const getFees = async (
   options?: KeyPricingOptions
 ) => {
   const { lockAddress, network } = options ?? {}
-  let unlockServiceFee = getUnlockServiceFee(subtotal, options)
+  const unlockServiceFee = getUnlockServiceFee(subtotal, options)
   let unlockFeeChargedToUser = true
 
   // fees can be ignored if disabled by lockManager
@@ -189,14 +210,6 @@ export const getFees = async (
       network,
     })
     unlockFeeChargedToUser = data?.unlockFeeChargedToUser ?? true
-  }
-
-  if (
-    options?.lockAddress.toLowerCase() ===
-    '0x45aCCac0E5C953009cDa713a3b722F87F2907F86'.toLowerCase()
-  ) {
-    // For CabinDAO, we cap the fee at 20 USDC
-    unlockServiceFee = 20
   }
 
   const creditCardProcessingFee = getCreditCardProcessingFee(
