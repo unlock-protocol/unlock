@@ -1,10 +1,10 @@
 ---
-title: 'Unlock Protocol DAO Completes Migration to Base'
-subtitle: ''
-authorName: 'Unlock Protocol'
-publishDate: 'Mon Sep 23 2024 11:36:54 GMT-0400 (Eastern Daylight Time)'
-description: 'The Unlock Protocol DAO has successfully completed its migration to Base, marking a significant milestone in its journey towards enhancing participation and member experience for members of the Unlock DAO.'
-image: '/images/blog/unlock-protocol-dao-completes-migration-to-base/5e87ca231fbe5e554a849aab22499921.jpg'
+title: "Unlock Protocol DAO Completes Migration to Base"
+subtitle: ""
+authorName: "Unlock Protocol"
+publishDate: "Mon Sep 23 2024 15:36:54 GMT+0000 (Coordinated Universal Time)"
+description: "The Unlock Protocol DAO has successfully completed its migration to Base, marking a significant milestone in its journey towards enhancing participation and member experience for members of the Unlock DAO."
+image: "/images/blog/unlock-protocol-dao-completes-migration-to-base/5e87ca231fbe5e554a849aab22499921.jpg"
 ---
 
 ![Unlock Protocol DAO Completes Migration to Base](https://storage.googleapis.com/papyrus_images/5e87ca231fbe5e554a849aab22499921.jpg)
