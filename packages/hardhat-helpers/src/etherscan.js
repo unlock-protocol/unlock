@@ -19,6 +19,7 @@ const etherscan = {
     linea: 'S66J314Q7PICPB4RP2G117KDFQRBEUYIFX',
     polygonZkEVM: '8H4ZB9SQBMQ7WA1TCIXFQVCHTVX8DXTY9Y',
     scroll: 'BZEXNPN6KKKJQ8VIMNXZDZNEX7QQZWZQ3P',
+    fuse: '20777d49-374c-4501-83c8-cbcb565d4cd4',
   },
   // TODO : generate from networks package!
   customChains: [
@@ -60,6 +61,14 @@ const etherscan = {
       urls: {
         apiURL: 'https://api.scrollscan.com/api',
         browserURL: 'https://scrollscan.com/',
+      },
+    },
+    {
+      network: 'fuse',
+      chainId: 122,
+      urls: {
+        apiURL: 'https://explorer.fuse.io/api',
+        browserURL: 'https://explorer.fuse.io/',
       },
     },
   ],
