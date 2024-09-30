@@ -17,9 +17,7 @@ interface GlobalWrapperProps {
 export const GlobalWrapper = ({ children }: GlobalWrapperProps) => {
   const [provider, setProvider] = useState<any>(null)
   useEffect(() => {
-    /* eslint-disable no-console */
     console.info(UNLOCK_CONSOLE_MESSAGE)
-    /* eslint-enable no-console */
   }, [])
 
   return (

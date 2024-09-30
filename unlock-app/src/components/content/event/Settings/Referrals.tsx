@@ -1,3 +1,5 @@
+'use client'
+
 import { FaTrash as TrashIcon } from 'react-icons/fa'
 import {
   Button,
@@ -143,7 +145,7 @@ export const ReferralsForLock = ({
     )
   }
   return (
-    <SettingCard label={lock.name} description={``}>
+    <SettingCard label={lock.name} description={''}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col md:flex-row gap-2">
           <span className="grow">

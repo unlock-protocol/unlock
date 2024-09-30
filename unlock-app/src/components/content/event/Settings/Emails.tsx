@@ -1,3 +1,5 @@
+'use client'
+
 import { Event, PaywallConfigType } from '@unlock-protocol/core'
 
 import { SettingCard } from '~/components/interface/locks/Settings/elements/SettingCard'

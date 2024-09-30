@@ -11,7 +11,7 @@ const devConfig: Config = {
   appURL:
     process.env.NEXT_PUBLIC_UNLOCK_APP_URI ??
     'https://staging-app.unlock-protocol.com',
-  gApiKey: 'AIzaSyBqLebWxCpOw_HO4k0KhYkWhkrS__O3XME',
+  gApiKey: 'AIzaSyBg3KvAA34I6CRGA7YkhjbkKPcMgfJVzas',
 }
 
 const stagingConfig: Config = {
@@ -19,7 +19,7 @@ const stagingConfig: Config = {
   gaTmId: '',
   baseURL: 'https://staging.unlock-protocol.com',
   appURL: 'https://staging-app.unlock-protocol.com',
-  gApiKey: 'AIzaSyBqLebWxCpOw_HO4k0KhYkWhkrS__O3XME',
+  gApiKey: 'AIzaSyBg3KvAA34I6CRGA7YkhjbkKPcMgfJVzas',
 }
 
 const productionConfig: Config = {
@@ -27,7 +27,7 @@ const productionConfig: Config = {
   gaTmId: 'GTM-ND2KDWB',
   baseURL: 'https://unlock-protocol.com',
   appURL: 'https://app.unlock-protocol.com',
-  gApiKey: 'AIzaSyBqLebWxCpOw_HO4k0KhYkWhkrS__O3XME',
+  gApiKey: 'AIzaSyBg3KvAA34I6CRGA7YkhjbkKPcMgfJVzas',
 }
 
 function getUnlockConfig(environment?: string) {

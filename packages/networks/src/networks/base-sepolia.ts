@@ -5,7 +5,7 @@ export const baseSepolia: NetworkConfig = {
     url: (address: string) => `https://blockscan.com/address/${address}`,
   },
   chain: 'base-sepolia',
-  description: 'A public testnet for Base.',
+  description: 'A public testnet for Base',
   explorer: {
     name: 'Base Sepolia Etherscan',
     urls: {
@@ -74,6 +74,7 @@ export const baseSepolia: NetworkConfig = {
   startBlock: 7889118,
   subgraph: {
     endpoint: 'https://subgraph.unlock-protocol.com/84532',
+    graphId: 'FxGJ2eFse3yhWpUMrBc4VzMqAgYamn49y1JQjZNugzZf',
     networkName: 'base-sepolia',
     studioName: 'unlock-protocol-base-sepolia',
   },

@@ -1,6 +1,7 @@
 name = "graph-service"
 main = "src/index.ts"
 compatibility_date = "2024-07-29"
+tail_consumers = [{service = "graph-service-tail"}]
 
 [vars]
 SENTRY_DSN="https://5f60928f69cd6e060f6bed5bfd5b4a2c@o555569.ingest.us.sentry.io/4507855281979392"

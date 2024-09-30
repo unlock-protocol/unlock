@@ -1,20 +1,21 @@
 import { Button, Modal } from '@unlock-protocol/ui'
 import { Checkout } from '~/components/interface/checkout/main'
 import { useMemo, useState } from 'react'
-import { useRouter } from 'next/router'
+import { useSearchParams } from 'next/navigation'
 
 export const EmbeddedCheckout = ({ checkoutConfig, refresh }: any) => {
   const [isCheckoutOpen, setCheckoutOpen] = useState(false)
-  const { query } = useRouter()
+  const searchParams = useSearchParams()
   const paywallConfig = useMemo(() => {
-    if (query.referrer) {
+    const referrer = searchParams.get('referrer')
+    if (referrer) {
       return {
         ...checkoutConfig.config,
-        referrer: query.referrer,
+        referrer,
       }
     }
     return checkoutConfig.config
-  }, [checkoutConfig, query])
+  }, [checkoutConfig, searchParams])
 
   return (
     <>

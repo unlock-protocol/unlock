@@ -1,7 +1,7 @@
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { Card } from '@unlock-protocol/ui'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
+import { useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 
 export interface HasTicketProps {
@@ -13,13 +13,15 @@ export interface HasTicketProps {
 }
 
 export const HasTicket = ({ hasRefreshed, checkoutConfig }: HasTicketProps) => {
-  const router = useRouter()
+  const searchParams = useSearchParams()
 
   useEffect(() => {
-    if (checkoutConfig.config.redirectUri && hasRefreshed) {
-      router.push(checkoutConfig.config.redirectUri)
+    const redirectUri =
+      checkoutConfig.config.redirectUri || searchParams.get('redirectUri')
+    if (redirectUri && hasRefreshed) {
+      window.location.href = redirectUri
     }
-  }, [checkoutConfig, hasRefreshed, router])
+  }, [checkoutConfig, hasRefreshed, searchParams])
 
   return (
     <Card className="grid gap-4 mt-10 lg:mt-0">

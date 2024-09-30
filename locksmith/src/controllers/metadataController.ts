@@ -1,6 +1,3 @@
-/* eslint-disable no-shadow */
-/* eslint-disable no-use-before-define */
-
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import { Response } from 'express'

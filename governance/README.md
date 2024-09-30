@@ -312,3 +312,14 @@ yarn hardhat run scripts/bridge/execTx.js --network optimism
 ```
 
 NB: The tmp file with all txs statuses is required, so you need to first run the "Check status" step above
+
+### Add a new network to the cross-chain governance
+
+As the Connext bridge supports more networks, they need to added to the cross chain gov process (see [supported networks](https://docs.connext.network/resources/deployments) on Connext docs).
+
+The process is as follow:
+
+- [ ] deploy the delayMod and connextMod for the Safe multisig by running `yarn hardhat run scripts/multisig/deployMods.js --network <network_name>`
+- [ ] add both modules addresses to the `governanceBridge` section in the networks package file (see an [example](https://github.com/unlock-protocol/unlock/blob/15c396ea583dc9fa2d6901d68c478a6a3f93b077/packages/networks/src/networks/optimism.ts#L22C2-L29C5))
+- [ ] setup modules correctly in network SAFE by running the command
+      `yarn hardhat safe:submit --proposal proposals/enableModule.js --network <xxx>`

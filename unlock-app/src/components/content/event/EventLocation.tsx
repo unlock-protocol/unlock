@@ -5,25 +5,37 @@ import { EventDetail } from './EventDetail'
 import { FiMapPin as MapPinIcon } from 'react-icons/fi'
 import { BiLogoZoom as ZoomIcon } from 'react-icons/bi'
 
-export const EventLocation = ({ event }: { event: Partial<Metadata> }) => {
+export const EventLocation = ({
+  event,
+  compact,
+}: {
+  event: Partial<Metadata>
+  compact?: boolean
+}) => {
   const inPerson = event.ticket?.event_is_in_person
 
   return (
-    <EventDetail label="Location" icon={inPerson ? MapPinIcon : ZoomIcon}>
+    <EventDetail
+      label="Location"
+      icon={inPerson ? MapPinIcon : ZoomIcon}
+      compact={compact}
+    >
       <div
         style={{ color: `#${event.background_color}` }}
         className="flex flex-col gap-0.5"
       >
         {inPerson && (
           <>
-            <span className="text-lg font-normal capitalize text-brand-dark">
+            <span
+              className={`font-normal capitalize text-brand-dark ${compact ? 'text-base' : 'text-lg'}`}
+            >
               {event.ticket?.event_location
                 ? event.ticket.event_location
                 : event.ticket?.event_address}
             </span>
             <Link
               target="_blank"
-              className="text-base font-bold"
+              className={`font-bold ${compact ? 'text-sm text-brand-ui-primary' : 'text-base'}`}
               href={`https://www.google.com/maps/search/?api=1&query=${event.ticket?.event_address}`}
             >
               Show map
@@ -33,7 +45,7 @@ export const EventLocation = ({ event }: { event: Partial<Metadata> }) => {
         {!inPerson && (
           <Link
             target="_blank"
-            className="text-base flex items-center gap-2 hover:text-brand-ui-primary"
+            className={`flex items-center gap-2 hover:text-brand-ui-primary ${compact ? 'text-sm' : 'text-base'}`}
             href={event.ticket?.event_address}
           >
             Open video-conference <ExternalLinkIcon />

@@ -61,7 +61,7 @@ export const UpdateMaxKeysPerAddress = ({
       await ToastHelper.promise(updateMaxKeysPerAddressMutation.mutateAsync(), {
         loading: 'Updating max keys per address...',
         success: 'Maximum number of keys per address successfully updated',
-        error: `We could not update the max keys per address for this lock.`,
+        error: 'We could not update the max keys per address for this lock.',
       })
     } else {
       ToastHelper.error('Form is not valid')

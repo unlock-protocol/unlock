@@ -115,7 +115,7 @@ export const CancelAndRefundModal = ({
 
   useEffect(() => {
     if (!isCopied) return
-    ToastHelper.success(`Key manager address copied`)
+    ToastHelper.success('Key manager address copied')
   }, [isCopied])
 
   if (!lock) return <span>No lock selected</span>
@@ -157,7 +157,7 @@ export const CancelAndRefundModal = ({
                       {currency}{' '}
                       <PriceFormatter price={refundAmount.toString()} />{' '}
                     </span>
-                    {` will be refunded, Do you want to proceed?`}
+                    {' will be refunded, Do you want to proceed?'}
                   </>
                 ) : (
                   <span>

@@ -8,7 +8,7 @@ import { useStepperItems } from './main/useStepperItems'
 import { useSIWE } from '~/hooks/useSIWE'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useSelector } from '@xstate/react'
-import { useRouter } from 'next/router'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 interface IconProps {
   active?: boolean
@@ -19,7 +19,7 @@ export const Step = ({
   children = 1,
 }: IconProps & { children?: ReactNode }) => {
   const stepIconClass = twMerge(
-    `flex items-center justify-center font-medium border-gray-300 box-border border w-5 text-xs h-5 rounded-full cursor-default`,
+    'flex items-center justify-center font-medium border-gray-300 box-border border w-5 text-xs h-5 rounded-full cursor-default',
     active && 'bg-ui-main-500 text-white border-none'
   )
   return <div className={stepIconClass}>{children}</div>
@@ -27,7 +27,7 @@ export const Step = ({
 
 export const StepFinish = ({ active }: IconProps) => {
   const finishIconClass = twMerge(
-    `font-medium box-border border p-0.5 w-5 text-xs h-5 rounded-full cursor-default`,
+    'font-medium box-border border p-0.5 w-5 text-xs h-5 rounded-full cursor-default',
     active && 'bg-ui-main-500 text-white fill-white border-none'
   )
   return <FinishIcon size={20} className={finishIconClass} />
@@ -35,7 +35,7 @@ export const StepFinish = ({ active }: IconProps) => {
 
 export const StepFinished = ({ active }: IconProps) => {
   const finishedIconClass = twMerge(
-    `font-medium box-border border w-5 p-0.5 text-xs h-5 rounded-full cursor-default`,
+    'font-medium box-border border w-5 p-0.5 text-xs h-5 rounded-full cursor-default',
     active && 'bg-ui-main-500 text-white fill-white border-none'
   )
   return <RocketIcon size={20} className={finishedIconClass} />
@@ -53,7 +53,7 @@ export const StepButton = ({
   label,
 }: StepButtonProps) => {
   const stepIconClass = twMerge(
-    `flex items-center justify-center font-medium border-gray-300 box-border border w-5 text-xs h-5 rounded-full hover:bg-gray-50`
+    'flex items-center justify-center font-medium border-gray-300 box-border border w-5 text-xs h-5 rounded-full hover:bg-gray-50'
   )
   return (
     <Tooltip side="top" delay={0} label={label} tip={label}>
@@ -121,6 +121,8 @@ export const Stepper = ({
   const { deAuthenticate } = useAuth()
 
   const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
 
   return (
     <div className="flex items-center justify-between w-full gap-2 p-2 px-6 border-b">
@@ -129,24 +131,23 @@ export const Stepper = ({
           item.to && !disabled ? (
             <StepButton
               key={idx}
-              onClick={async () => {
+              onClick={() => {
                 if (item.to === 'CONNECT') {
                   if (useDelegatedProvider) return
                   signOut()
                   deAuthenticate()
                 }
 
-                // Remove the lock from the query string
-                const { lock, ...otherQueryParams } = router.query
-                // Wait until replaced then change state
-                await router.replace(
-                  {
-                    pathname: router.pathname,
-                    query: otherQueryParams,
-                  },
-                  undefined,
-                  { shallow: true }
-                )
+                // Convert search params to an object
+                const queryParams = Object.fromEntries(searchParams.entries())
+                const { lock, ...otherQueryParams } = queryParams
+
+                // Construct new search params without 'lock'
+                const newSearchParams = new URLSearchParams(otherQueryParams)
+                const newUrl = `${pathname}?${newSearchParams.toString()}`
+
+                // Replace the current URL
+                router.replace(newUrl)
 
                 service.send({ type: item.to as any })
               }}

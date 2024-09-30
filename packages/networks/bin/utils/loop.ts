@@ -21,5 +21,5 @@ export const getAllNetworks = async ({
         }
       })
   )
-  return networks.filter((network) => !exclude.includes(network.id))
+  return networks.filter(({ network }) => !exclude.includes(network.id))
 }

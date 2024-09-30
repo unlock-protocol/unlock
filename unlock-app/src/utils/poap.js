@@ -26,7 +26,7 @@ export const pingPoap = (key, owner, signature, timestamp) => {
     }
   } catch (e) {
     // Fail silently. Our POAP integration is best effort.
-    // eslint-disable-next-line no-console
+
     console.error(e)
   }
 }

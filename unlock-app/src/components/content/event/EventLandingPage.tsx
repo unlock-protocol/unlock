@@ -1,3 +1,5 @@
+'use client'
+
 import { Button } from '@unlock-protocol/ui'
 import Link from 'next/link'
 import { LockTypeLandingPage } from '~/components/interface/LockTypeLandingPage'
@@ -74,17 +76,20 @@ const problems = [
   {
     image: '/images/illustrations/events/img-stuck.svg',
     name: 'No-code smart contract deployment',
-    description: `Your web3 or crypto event isn't walking the walk, and is using a legacy ticketing solution like Eventbrite, Meetup or Luma instead of embracing the very technology your attendees expect you to champion.`,
+    description:
+      "Your web3 or crypto event isn't walking the walk, and is using a legacy ticketing solution like Eventbrite, Meetup or Luma instead of embracing the very technology your attendees expect you to champion.",
   },
   {
     image: '/images/illustrations/events/img-wallet.svg',
     name: 'QR codes and proof of purchase ticketing',
-    description: `You're losing money on ticket sales because of upsells, hidden fees, and slow payouts from your existing ticketing provider.`,
+    description:
+      "You're losing money on ticket sales because of upsells, hidden fees, and slow payouts from your existing ticketing provider.",
   },
   {
     image: '/images/illustrations/events/img-goodvibe.svg',
     name: 'Check-ins at the venue are a breeze',
-    description: `Your attendees stop engaging the moment the event is over, and are not continuing conversations as an ongoing, connected community.`,
+    description:
+      'Your attendees stop engaging the moment the event is over, and are not continuing conversations as an ongoing, connected community.',
   },
 ]
 
@@ -103,7 +108,9 @@ const faqs = [
           <Link
             className="underline"
             target="_blank"
-            href={`https://docs.unlock-protocol.com/core-protocol/unlock/networks`}
+            href={
+              'https://docs.unlock-protocol.com/core-protocol/unlock/networks'
+            }
           >
             all the networks on which the Unlock Protocol
           </Link>{' '}
@@ -211,7 +218,8 @@ export const EventLandingPage = ({ handleCreateEvent }: LandingPageProps) => {
         features={features}
         problemSection={{
           title: 'The Problem',
-          subtitle: `Legacy ticketing solutions don't meet the needs of web3 and crypto event organizers`,
+          subtitle:
+            "Legacy ticketing solutions don't meet the needs of web3 and crypto event organizers",
           items: problems,
         }}
         callToAction={{

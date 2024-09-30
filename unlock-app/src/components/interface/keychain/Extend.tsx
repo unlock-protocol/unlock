@@ -216,7 +216,7 @@ export const ExtendMembershipModal = ({
                   const amount = parseInt(event.target.value)
                   setRenewalAmount(BigInt(amount))
                 }}
-                label={`Number of renewals`}
+                label={'Number of renewals'}
               />
               {!unlimited && !!renewalAmount && (
                 <div className="text-sm text-gray-600">

@@ -7,11 +7,11 @@
 const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 
 const {
-  getL2Network,
+  getArbitrumNetwork,
   Erc20Bridger,
   L1ToL2MessageStatus,
 } = require('@arbitrum/sdk')
-const ethers = require('ethers5')
+const ethers = require('ethers')
 const abiERC20 = require('@unlock-protocol/hardhat-helpers/dist/ABIs/erc20.json')
 
 const L1_CHAIN_ID = 1 // mainnet (Sepolia 11155111)
@@ -38,25 +38,26 @@ async function main({
   )
 
   // get wallets and providers
-  const l1Provider = new ethers.providers.StaticJsonRpcProvider(l1.provider)
+  const l1Provider = new ethers.JsonRpcProvider(l1.provider)
   const l1Wallet = new ethers.Wallet(DEPLOYER_PRIVATE_KEY, l1Provider)
-  // const l2Provider = await getProvider(l2ChainId)
-  const l2Provider = new ethers.providers.StaticJsonRpcProvider(l2.provider)
+  const l2Provider = new ethers.JsonRpcProvider(l2.provider)
 
   // token contract instance
-  const l1Token = new ethers.Contract(abiERC20, l1TokenAddress, l1Wallet)
+  const l1Token = new ethers.Contract(l1TokenAddress, abiERC20, l1Wallet)
 
   // use arb sdk
-  const l2Network = await getL2Network(l2Provider)
+  const l2Network = await getArbitrumNetwork(l2_CHAIN_ID)
   const erc20Bridger = new Erc20Bridger(l2Network)
-  const l2TokenAddress = await erc20Bridger.getL2ERC20Address(
+
+  // get bridged token address
+  const l2TokenAddress = await erc20Bridger.getChildErc20Address(
     l1TokenAddress,
     l1Provider
   )
   console.log(`L2 ERC20 bridged token contract at ${l2TokenAddress}`)
 
   // get arb gateway address
-  const expectedL1GatewayAddress = await erc20Bridger.getL1GatewayAddress(
+  const expectedL1GatewayAddress = await erc20Bridger.getParentGatewayAddress(
     l1TokenAddress,
     l1Provider
   )
@@ -74,8 +75,8 @@ async function main({
 
   console.log('Approving the Bridge to spend token...')
   const approveTx = await erc20Bridger.approveToken({
-    l1Signer: l1Wallet,
-    erc20L1Address: l1TokenAddress,
+    parentSigner: l1Wallet,
+    erc20ParentAddress: l1TokenAddress,
   })
   const approveRec = await approveTx.wait()
   console.log(
@@ -85,9 +86,9 @@ async function main({
   console.log(`Depositing ${amount} to L2 via the Gateway bridge contract...`)
   const depositTx = await erc20Bridger.deposit({
     amount,
-    erc20L1Address: l1TokenAddress,
-    l1Signer: l1Wallet,
-    l2Provider: l2Provider,
+    erc20ParentAddress: l1TokenAddress,
+    parentSigner: l1Wallet,
+    childProvider: l2Provider,
   })
 
   // Now we wait for L1 and L2 side of transactions to be confirmed

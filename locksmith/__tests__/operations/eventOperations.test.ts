@@ -37,7 +37,7 @@ vi.mock('@unlock-protocol/unlock-js', () => {
 
 describe('eventOperations', () => {
   beforeEach(async () => {
-    await EventData.truncate()
+    await EventData.truncate({ cascade: true })
     await CheckoutConfig.truncate()
     await KeyMetadata.truncate()
   })

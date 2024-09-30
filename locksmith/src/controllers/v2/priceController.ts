@@ -4,7 +4,6 @@ import { ethers } from 'ethers'
 import { getCreditCardEnabledStatus } from '../../operations/creditCardOperations'
 import * as Normalizer from '../../utils/normalizer'
 import * as pricingOperations from '../../operations/pricingOperations'
-import { MIN_PAYMENT_STRIPE_ONRAMP } from '../../utils/constants'
 import logger from '../../logger'
 
 export const amount: RequestHandler = async (request, response) => {
@@ -15,83 +14,13 @@ export const amount: RequestHandler = async (request, response) => {
     ? currencyContractAddress
     : undefined
 
-  const result = await pricingOperations.getDefiLammaPrice({
+  const result = await pricingOperations.getDefiLlamaPrice({
     network,
     amount,
     erc20Address,
   })
   return response.status(200).send({
     result,
-  })
-}
-
-export const total: RequestHandler = async (request, response) => {
-  const network = Number(request.query.network?.toString() || 1)
-  const amount = parseFloat(request.query.amount?.toString() || '1')
-  const currencyContractAddress = request.query.address?.toString()
-  const erc20Address = ethers.isAddress(currencyContractAddress || '')
-    ? currencyContractAddress
-    : undefined
-
-  const charge = await pricingOperations.getTotalCharges({
-    network,
-    amount,
-    erc20Address,
-  })
-
-  return response.send(charge)
-}
-
-/**
- * Gets the pricing for the universal card payment method
- * TODO: support swap and purchase to get the route in USDC if the lock is not USDC
- * @param request
- * @param response
- * @returns
- */
-export const universalCard: RequestHandler = async (request, response) => {
-  const network = Number(request.params.network)
-  const lockAddress = request.params.lock
-  const { recipients: recipientQ = [], purchaseData = [] } = request.query
-
-  // Setup values
-  const recipients: string[] = Array.isArray(recipientQ)
-    ? recipientQ.map((x) => x.toString())
-    : [recipientQ.toString()]
-  const data: string[] = Array.isArray(purchaseData)
-    ? purchaseData.map((x) => x.toString())
-    : [purchaseData.toString()]
-
-  // Ok so now we use the pricing API to get the price for each recipient!
-  const pricing = await createPricingForPurchase({
-    lockAddress,
-    recipients,
-    network,
-    referrers: Array.from({ length: recipients.length }).map(() => ''),
-    data,
-  })
-
-  const total = pricing.total - pricing.creditCardProcessingFee
-
-  // For universal card, the creditCardProcessingFee fee is applied by Stripe directly
-  // Stripe minimum payment is 1$ (100 cents)
-  const creditCardProcessingFee =
-    total < MIN_PAYMENT_STRIPE_ONRAMP ? MIN_PAYMENT_STRIPE_ONRAMP - total : 0
-
-  return response.send({
-    creditCardProcessingFee,
-    unlockServiceFee: pricing.unlockServiceFee,
-    gasCost: pricing.gasCost,
-    total: total + creditCardProcessingFee,
-    prices: [
-      ...pricing.recipients.map((recipient) => {
-        return {
-          userAddress: recipient.address,
-          amount: recipient.price.amount,
-          symbol: '$',
-        }
-      }),
-    ],
   })
 }
 
@@ -133,7 +62,8 @@ export const getTotalChargesForLock: RequestHandler = async (
     ? purchaseData.map((x) => x.toString())
     : [purchaseData.toString()]
 
-  // `createPricingForPurchase` already includes the logic to returns credit custom credit card price when set
+  // `createPricingForPurchase` already includes the logic to returns credit custom credit card price when set,
+  // as well as the currency.
   const pricing = await createPricingForPurchase({
     lockAddress,
     network,
@@ -142,9 +72,23 @@ export const getTotalChargesForLock: RequestHandler = async (
     data,
   })
 
-  const { creditCardProcessingFee, unlockServiceFee, gasCost, total } = pricing
+  if (!pricing) {
+    return response
+      .status(400)
+      .send({ error: 'Pricing could not be computed.' })
+  }
+
+  const {
+    creditCardProcessingFee,
+    unlockServiceFee,
+    gasCost,
+    total,
+    currency,
+  } = pricing
 
   return response.status(200).send({
+    currency,
+    symbol: pricingOperations.getCurrencySymbol(currency),
     creditCardProcessingFee,
     unlockServiceFee,
     gasCost,
@@ -154,7 +98,7 @@ export const getTotalChargesForLock: RequestHandler = async (
         return {
           userAddress: recipient.address,
           amount: recipient.price.amount,
-          symbol: recipient.price.symbol,
+          symbol: pricingOperations.getCurrencySymbol(currency),
         }
       }),
     ],

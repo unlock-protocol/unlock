@@ -208,7 +208,7 @@ export function UpdateMetadataForm({ lockAddress, network, keyId }: Props) {
     }
   }, [tokenURI, isTokenURILoading])
 
-  let title = `Edit default properties`
+  let title = 'Edit default properties'
   let description = (
     <>
       You are editing the default properties for all the tokens from the

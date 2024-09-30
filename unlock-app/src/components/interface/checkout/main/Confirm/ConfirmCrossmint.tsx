@@ -235,7 +235,9 @@ export function ConfirmCrossmint({
                         </div>
                         {item.gasFee && (
                           <div
-                            className={`flex items-center justify-between px-0 py-2`}
+                            className={
+                              'flex items-center justify-between px-0 py-2'
+                            }
                           >
                             <div>Gas fee</div>
                             <div>{item.gasFee?.amount} USD </div>

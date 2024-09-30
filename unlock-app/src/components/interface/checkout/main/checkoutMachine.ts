@@ -269,15 +269,18 @@ export const checkoutMachine = createMachine(
         on: {
           SELECT_LOCK: [
             {
+              actions: ['lockSelected'],
               target: 'RETURNING',
               guard: ({ event }) => event.existingMember,
             },
             {
+              actions: ['lockSelected'],
               target: 'QUANTITY',
               guard: ({ context, event }) =>
                 !context.skipQuantity && !event.expiredMember,
             },
             {
+              actions: ['lockSelected'],
               target: 'METADATA',
               guard: ({ context, event }) => {
                 // For expired memberships we do not offer the ability
@@ -286,40 +289,47 @@ export const checkoutMachine = createMachine(
               },
             },
             {
+              actions: ['lockSelected'],
               guard: 'requireMessageToSign',
               target: 'MESSAGE_TO_SIGN',
             },
             {
+              actions: ['lockSelected'],
               target: 'PASSWORD',
               guard: ({ context }) => {
                 return context.hook === 'password'
               },
             },
             {
+              actions: ['lockSelected'],
               target: 'PROMO',
               guard: ({ context }) => {
                 return context.hook === 'promocode'
               },
             },
             {
+              actions: ['lockSelected'],
               target: 'GUILD',
               guard: ({ context }) => {
                 return context.hook === 'guild'
               },
             },
             {
+              actions: ['lockSelected'],
               target: 'CAPTCHA',
               guard: ({ context }) => {
                 return context.hook === 'captcha'
               },
             },
             {
+              actions: ['lockSelected'],
               target: 'GITCOIN',
               guard: ({ context }) => {
                 return context.hook === 'gitcoin'
               },
             },
             {
+              actions: ['lockSelected'],
               target: 'PAYMENT',
             },
           ],
@@ -694,9 +704,17 @@ export const checkoutMachine = createMachine(
         }
       }),
 
+      lockSelected: assign({
+        existingMember: ({ event }: { event: SelectLockEvent }) =>
+          event.existingMember as boolean,
+        expiredMember: ({ event }: { event: SelectLockEvent }) =>
+          event.expiredMember as boolean,
+        renew: ({ event }: { event: SelectLockEvent }) =>
+          event.expiredMember as boolean,
+      }),
+
       connect: assign({
         lock: ({ event }) => event.lock,
-        renew: ({ event }) => event.expiredMember as boolean,
         // Handle undefined case by providing a default value of a boolean
         skipQuantity: ({ event }) => !!event.skipQuantity || false,
         // Explicitly type the assignment to boolean
@@ -705,6 +723,7 @@ export const checkoutMachine = createMachine(
         recipients: ({ event }) => event.recipients || [],
         keyManagers: ({ event }) => event.keyManagers,
         hook: ({ event }) => event.hook,
+        renew: ({ event }) => event.expiredMember as boolean,
         existingMember: ({ event }) => event.existingMember as boolean,
         expiredMember: ({ event }) => event.expiredMember as boolean,
       }),
@@ -714,11 +733,13 @@ export const checkoutMachine = createMachine(
           return event.quantity
         },
       }),
+
       selectPaymentMethod: assign({
         payment: ({ event }) => {
           return event.payment
         },
       }),
+
       selectRecipients: assign({
         recipients: ({ event }) => {
           return event.recipients
@@ -730,6 +751,7 @@ export const checkoutMachine = createMachine(
           return event.metadata
         },
       }),
+
       signMessage: assign({
         messageToSign: ({ event }) => {
           return {
@@ -748,12 +770,14 @@ export const checkoutMachine = createMachine(
           } as const
         },
       }),
+
       updatePaywallConfig: assign(({ event }) => {
         return {
           ...DEFAULT_CONTEXT,
           paywallConfig: event.config,
         } as CheckoutMachineContext
       }),
+
       submitData: assign({
         data: ({ event }) => {
           return event.data

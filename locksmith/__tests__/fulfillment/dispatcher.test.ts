@@ -1,4 +1,3 @@
-// eslint-disable-next-line max-classes-per-file
 import { EventEmitter } from 'events'
 import { BigNumber, Wallet } from 'ethers'
 import Dispatcher from '../../src/fulfillment/dispatcher'

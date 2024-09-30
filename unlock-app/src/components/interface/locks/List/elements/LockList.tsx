@@ -1,6 +1,8 @@
+'use client'
 import { Disclosure } from '@headlessui/react'
 import { Lock } from '~/unlockTypes'
 import { useConfig } from '~/utils/withConfig'
+import { config } from '~/config/app'
 import { LockCard } from './LockCard'
 import {
   RiArrowDropUpLine as UpIcon,
@@ -8,9 +10,8 @@ import {
 } from 'react-icons/ri'
 import { Placeholder } from '@unlock-protocol/ui'
 import useLocksByManagerOnNetworks from '~/hooks/useLocksByManager'
-import { config } from '~/config/app'
 import { ImageBar } from '../../Manage/elements/ImageBar'
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useAppStorage } from '~/hooks/useAppStorage'
 
 export const NoItems = () => {
@@ -19,7 +20,7 @@ export const NoItems = () => {
       src="/images/illustrations/no-locks.svg"
       description={
         <>
-          <span>You have not create any membership contract yet. </span>
+          <span>You have not created any locks yet. </span>
         </>
       }
     />
@@ -102,29 +103,24 @@ export interface FavoriteLocks {
 
 export const LockList = ({ owner }: LockListProps) => {
   const { networks, defaultNetwork } = config
-  const networkEntries = Object.entries(networks)
-  // Sort networks so that default and preferred networks are first.
-  const networkItems = [
-    ...networkEntries.filter(([network]) =>
-      [defaultNetwork.toString()].includes(network)
-    ),
-    ...networkEntries.filter(
-      ([network]) =>
-        network && !['31337', defaultNetwork.toString()].includes(network)
-    ),
-  ]
+  const { getStorage, setStorage } = useAppStorage()
+
+  const networkItems = useMemo(() => {
+    if (!networks) return []
+    const networkEntries = Object.entries(networks)
+    // Sort networks so that default and preferred networks are first.
+    return [
+      ...networkEntries.filter(([network]) =>
+        [defaultNetwork.toString()].includes(network)
+      ),
+      ...networkEntries.filter(
+        ([network]) =>
+          network && !['31337', defaultNetwork.toString()].includes(network)
+      ),
+    ]
+  }, [networks, defaultNetwork])
 
   const results = useLocksByManagerOnNetworks(owner, networkItems)
-  const isEmpty = results.reduce((previous: boolean, current: any) => {
-    return !!(
-      previous &&
-      !current.isLoading &&
-      current.data &&
-      current.data.length === 0
-    )
-  }, true)
-
-  const { getStorage, setStorage } = useAppStorage()
 
   const [favoriteLocks, setFavoriteLocks] = useState<FavoriteLocks>(
     getStorage('favoriteLocks')
@@ -136,6 +132,25 @@ export const LockList = ({ owner }: LockListProps) => {
     setFavoriteLocks(favoriteLocks)
     setStorage('favoriteLocks', favoriteLocks)
   }
+
+  if (!networks || !owner) {
+    return (
+      <Placeholder.Root>
+        <Placeholder.Card />
+        <Placeholder.Card />
+        <Placeholder.Card />
+      </Placeholder.Root>
+    )
+  }
+
+  const isEmpty = results.reduce((previous: boolean, current: any) => {
+    return !!(
+      previous &&
+      !current.isLoading &&
+      current.data &&
+      current.data.length === 0
+    )
+  }, true)
 
   return (
     <div className="grid gap-20 mb-20">

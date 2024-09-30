@@ -35,7 +35,7 @@ vi.mock('@unlock-protocol/unlock-js', () => {
 describe('Email Controller v2', () => {
   beforeEach(async () => {
     vi.clearAllMocks()
-    await EventData.truncate()
+    await EventData.truncate({ cascade: true })
   })
   it('Save custom email throws an error when is not authenticated', async () => {
     expect.assertions(2)

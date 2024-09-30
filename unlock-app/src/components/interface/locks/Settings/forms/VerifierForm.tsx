@@ -55,7 +55,7 @@ const VerifierCard = ({
         <span className="text-base text-brand-dark">{address}</span>
         {isCurrentAccount && (
           <span className="text-sm font-semibold text-brand-ui-primary">
-            {`That's you`}
+            {"That's you"}
           </span>
         )}
         {verifier?.name && (
@@ -110,7 +110,7 @@ export const VerifierForm = ({ event }: VerifierFormProps) => {
 
   useEffect(() => {
     if (addEventVerifierMutation.isSuccess) {
-      ToastHelper.success(`Verifier added to list`)
+      ToastHelper.success('Verifier added to list')
       setValue('verifier', '')
       setValue('name', '')
       refetchList()

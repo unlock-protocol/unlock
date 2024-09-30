@@ -28,12 +28,10 @@ task(
         ;({ unlockAddress } = networks[chainId])
       }
 
-      // eslint-disable-next-line no-console
       console.log(`Deploying new implementation of Unlock on ${chainId}.`)
 
       // deploy upgrade
       if (!impl) {
-        // eslint-disable-next-line global-require
         const prepareUpgrade = require('../scripts/upgrade/prepare')
         impl = await prepareUpgrade({
           proxyAddress: unlockAddress,
@@ -43,10 +41,9 @@ task(
       }
 
       if (!proxyAdminAddress) {
-        proxyAdminAddress = await getProxyAdminAddress({ network })
+        proxyAdminAddress = await getProxyAdminAddress({ chainId })
       }
 
-      // eslint-disable-next-line global-require
       const proposeUpgrade = require('../scripts/upgrade/propose')
       await proposeUpgrade({
         proxyAddress: unlockAddress,
@@ -70,7 +67,6 @@ task('unlock:prepare', 'Deploy an implementaton of the Unlock contract')
       ;({ unlockAddress } = networks[chainId])
     }
 
-    // eslint-disable-next-line no-console
     console.log(`Deploying new implementation of Unlock on ${chainId}.`)
 
     const prepareUpgrade = require('../scripts/upgrade/prepare')
@@ -86,7 +82,6 @@ task('unlock:info', 'Show the owner of the Unlock contract')
   .addOptionalParam('unlockAddress', 'The address of the Unlock contract')
   .addFlag('quiet', 'Show only errors')
   .setAction(async ({ unlockAddress, quiet }) => {
-    // eslint-disable-next-line global-require
     const unlockInfo = require('../scripts/getters/unlock-info')
     await unlockInfo({ unlockAddress, quiet })
   })

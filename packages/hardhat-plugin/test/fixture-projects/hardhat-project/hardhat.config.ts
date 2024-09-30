@@ -23,6 +23,7 @@ const config: HardhatUserConfig = {
       name: 'Custom Localhost Name',
       subgraph: {
         endpoint: 'here goes a subgraph URI',
+        graphId: 'here goes a graph ID',
       },
     },
     1: {

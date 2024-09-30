@@ -114,7 +114,7 @@ export function ConfirmClaim({ checkoutService, onConfirmed, onError }: Props) {
             <PricingData
               network={lockNetwork}
               lock={lock!}
-              pricingData={pricingData}
+              prices={pricingData.prices}
               payment={payment}
             />
           )}

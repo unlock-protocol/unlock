@@ -112,7 +112,7 @@ describe('Verifier v2 endpoints for locksmith', () => {
 
   describe('Verifiers for events', () => {
     beforeAll(async () => {
-      await EventData.truncate()
+      await EventData.truncate({ cascade: true })
       await CheckoutConfig.truncate()
       await Verifier.truncate()
     })

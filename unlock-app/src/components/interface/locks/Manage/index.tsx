@@ -1,3 +1,5 @@
+'use client'
+
 import { MdOutlineTipsAndUpdates } from 'react-icons/md'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { Button, Icon } from '@unlock-protocol/ui'
@@ -84,7 +86,7 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
   const onDownloadCsvMutation = useMutation({
     mutationFn: async () => {
       ToastHelper.success(
-        `It may take a few minutes for the file to be generated. Please do not close this page`
+        'It may take a few minutes for the file to be generated. Please do not close this page'
       )
       const response = await locksmith.exportKeys(
         network,
@@ -216,7 +218,7 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
   const [airdropKeys, setAirdropKeys] = useState(false)
   const DEMO_URL = `/demo?network=${network}&lock=${lockAddress}`
   const metadataPageUrl = `/locks/metadata?lockAddress=${lockAddress}&network=${network}`
-  const checkoutLink = `/locks/checkout-url`
+  const checkoutLink = '/locks/checkout-url'
 
   const { isManager } = useLockManager({
     lockAddress,
@@ -352,7 +354,7 @@ const NotManagerBanner = () => {
   )
 }
 
-export const ManageLockPage = () => {
+export const ManageLockContent = () => {
   const { account: owner } = useAuth()
   const searchParams = useSearchParams()
   const [loading, setLoading] = useState(false)
@@ -510,7 +512,7 @@ export const ManageLockPage = () => {
                   setPage={setPage}
                   page={page}
                   NoMemberNoFilter={() => {
-                    const checkoutLink = `/locks/checkout-url`
+                    const checkoutLink = '/locks/checkout-url'
                     return (
                       <ImageBar
                         src="/images/illustrations/no-member.svg"
@@ -546,4 +548,4 @@ export const ManageLockPage = () => {
   )
 }
 
-export default ManageLockPage
+export default ManageLockContent

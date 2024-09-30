@@ -1,3 +1,5 @@
+'use client'
+
 import { useSearchParams } from 'next/navigation'
 import { CreateLockForm } from '../Create/elements/CreateLockForm'
 import { useCallback, useEffect, useState } from 'react'
@@ -68,7 +70,7 @@ export const Deploy: React.FC = () => {
       await updateConfig({
         name: `Checkout Config for P00ls Membership for ${lockAddress}`,
         config: {
-          title: `Buy a membership NFT!`,
+          title: 'Buy a membership NFT!',
           image: searchParams.get('mediaUri')?.toString(),
           locks: {
             [lockAddress]: {

@@ -1,5 +1,6 @@
 import { ethers } from 'ethers'
 import { queryGraph } from './subgraph'
+import { HookType } from '@unlock-protocol/types'
 
 export const getAllAddresses = async ({ network }) => {
   const {
@@ -44,14 +45,14 @@ export const getAllAddresses = async ({ network }) => {
     addresses[`UnlockOwner`] = unlockDaoToken.address
   }
 
-  // TODO: get all hooks
-  if (hooks) {
-    if (hooks.onKeyPurchaseHook) {
-      hooks.onKeyPurchaseHook.map(({ address, id }) => {
-        addresses[`onKeyPurchaseHook_${id}`] = address
-      })
-    }
-  }
+  // get hooks from type file
+  const requiredHooks = Object.values(HookType)
+
+  // check hooks addresses
+  requiredHooks.map((hookId) => {
+    const hook = hooks?.onKeyPurchaseHook?.find(({ id }) => hookId === id)
+    addresses[`onKeyPurchaseHook_${hookId}`] = hook?.address
+  })
 
   return addresses
 }

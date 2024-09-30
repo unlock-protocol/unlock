@@ -4,7 +4,7 @@
  */
 const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const l1BridgeAbi = require('../../../helpers/abi/l1standardbridge.json')
-const ethers = require('ethers5')
+const ethers = require('ethers')
 const abiERC20 = require('@unlock-protocol/hardhat-helpers/dist/ABIs/erc20.json')
 
 // tweak these params
@@ -45,7 +45,7 @@ async function main({
   )
 
   // Create the RPC providers and wallets
-  const l1Provider = new ethers.providers.StaticJsonRpcProvider(l1.provider)
+  const l1Provider = new ethers.JsonRpcProvider(l1.provider)
   const l1Wallet = new ethers.Wallet(DEPLOYER_PRIVATE_KEY, l1Provider)
 
   const bridgeContract = new ethers.Contract(
@@ -92,9 +92,7 @@ async function main({
   )
   const { baseFeePerGas } = await l1Provider.getBlock('latest')
   const gasCostEstimate = baseFeePerGas.mul(gasEstimate)
-  console.log(
-    `Gas cost estimate: ${ethers.utils.formatEther(gasCostEstimate)} ETH`
-  )
+  console.log(`Gas cost estimate: ${ethers.formatEther(gasCostEstimate)} ETH`)
   // deposit to bridge
   if (!SIMULATION) {
     try {

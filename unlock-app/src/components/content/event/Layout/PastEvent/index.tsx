@@ -49,7 +49,7 @@ export const ClaimRefund = ({
         {
           success: 'Your refund has been issued!',
           error: 'We could not issue your refund. Please try again later.',
-          loading: `Issuing refund...`,
+          loading: 'Issuing refund...',
         }
       )
     },

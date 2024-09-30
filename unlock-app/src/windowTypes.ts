@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { PaywallConfigType } from '@unlock-protocol/core'
 
 // window sub-types

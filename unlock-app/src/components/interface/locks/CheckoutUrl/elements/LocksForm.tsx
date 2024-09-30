@@ -380,7 +380,9 @@ export const LocksForm = ({
       .sort(([, l], [, m]) => {
         return (l.order || 0) - (m.order || 0)
       })
-      .filter(([address]) => address.toLowerCase() !== lockAddress)
+      .filter(
+        ([address]) => address.toLowerCase() !== lockAddress.toLowerCase()
+      )
       .map(([lockAddress, fields], order) => {
         newObj = {
           ...newObj,

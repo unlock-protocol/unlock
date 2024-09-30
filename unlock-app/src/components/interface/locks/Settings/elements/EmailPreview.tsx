@@ -55,7 +55,7 @@ export const EmailPreview = ({
     await ToastHelper.promise(promise, {
       loading: 'Sending email preview...',
       success: 'Email preview sent.',
-      error: `Can't send email preview`,
+      error: "Can't send email preview",
     })
   }
 
