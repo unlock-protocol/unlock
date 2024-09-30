@@ -30,3 +30,11 @@ export const isCollectionManager = (
 ) => {
   return managerAddresses?.includes(account!) || false
 }
+
+// Utility function to get the language of the user
+export const language = () => {
+  if (typeof navigator === 'undefined') {
+    return 'en-US'
+  }
+  return navigator?.language || 'en-US'
+}
