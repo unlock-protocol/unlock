@@ -1,10 +1,11 @@
 const fs = require('fs-extra')
 const path = require('path')
-const fetch = require('node-fetch')
 const feedparser = require('feedparser-promised')
+const { Readable } = require('node:stream')
+const { writeFile } = require('node:fs/promises')
 
 function escapeMarkdown(str) {
-  return str.replace(/(["\\])/g, '\\$1');
+  return str.replace(/(["\\])/g, '\\$1')
 }
 
 // Fetch the RSS feed
@@ -28,8 +29,7 @@ fs.readdirSync(blogDir).forEach((filename) => {
 
 const downloadImage = (url, filepath) => {
   return fetch(url)
-    .then((res) => res.buffer())
-    .then((buffer) => fs.writeFile(filepath, buffer))
+    .then((response) => writeFile(filepath, Readable.fromWeb(response.body)))
     .catch((error) => console.error(`Error downloading image ${url}:`, error))
 }
 
@@ -70,7 +70,6 @@ feedparser
       if (!imageUrl) {
         const enclosuresImage = entry.enclosures.find((enclosure) => {
           return enclosure.type.startsWith('image')
-
         })
         if (enclosuresImage) {
           imageUrl = enclosuresImage.url
@@ -115,9 +114,7 @@ subtitle: "${escapeMarkdown(subtitle)}"
 authorName: "${escapeMarkdown(authorName)}"
 publishDate: "${publishDate}"
 description: "${escapeMarkdown(description)}"
-image: "/images/blog/${slug}/${path.basename(
-            imageUrl
-          )}"
+image: "/images/blog/${slug}/${path.basename(imageUrl)}"
 ---
 
 ![${title}](${imageUrl})

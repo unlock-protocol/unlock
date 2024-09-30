@@ -1,5 +1,7 @@
-import { useRouter } from 'next/router'
-import React, { useEffect } from 'react'
+'use client'
+
+import { useSearchParams } from 'next/navigation'
+import { useEffect } from 'react'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { getPaywallConfigFromQuery } from '~/utils/paywallConfig'
@@ -16,19 +18,19 @@ import { Connect } from './Connect'
 import { isInIframe } from '~/utils/iframe'
 
 export function CheckoutPage() {
-  const { query } = useRouter()
+  const searchParams = useSearchParams()
   const { authenticateWithProvider } = useAuthenticate({})
 
   // Fetch config from parent in iframe context
   const communication = useCheckoutCommunication()
-  const { isInitialLoading, data: checkout } = useCheckoutConfig({
-    id: query.id?.toString(),
+  const { isLoading, data: checkout } = useCheckoutConfig({
+    id: searchParams.get('id')?.toString(),
   })
 
-  const referrerAddress = query?.referrerAddress?.toString()
+  const referrerAddress = searchParams.get('referrerAddress')?.toString()
   // Get paywallConfig or oauthConfig from the query parameters.
-  const paywallConfigFromQuery = getPaywallConfigFromQuery(query)
-  const oauthConfigFromQuery = getOauthConfigFromQuery(query)
+  const paywallConfigFromQuery = getPaywallConfigFromQuery(searchParams)
+  const oauthConfigFromQuery = getOauthConfigFromQuery(searchParams)
 
   const oauthConfig = communication.oauthConfig || oauthConfigFromQuery
   const paywallConfig =
@@ -53,7 +55,7 @@ export function CheckoutPage() {
 
   const checkoutRedirectURI =
     paywallConfig?.redirectUri ||
-    Object.entries(query)
+    Array.from(searchParams.entries())
       .find(([key]) => {
         return [
           'redirecturi',
@@ -68,7 +70,7 @@ export function CheckoutPage() {
     document.querySelector('body')?.classList.add('bg-transparent')
   }, [])
 
-  if (!(paywallConfig || oauthConfig) || isInitialLoading) {
+  if (!(paywallConfig || oauthConfig) || isLoading) {
     return (
       <Container>
         <LoadingIcon size={20} className="animate-spin" />

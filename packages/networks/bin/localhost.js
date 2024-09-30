@@ -21,6 +21,7 @@ const defaultLocalhost = {
   publicProvider: 'http://127.0.0.1:8545',
   subgraph: {
     endpoint: '',
+    graphId: 'graphId',
   },
 }
 
@@ -32,6 +33,7 @@ const generateLocalhostNetworkFile = ({
     ...defaultLocalhost,
     subgraph: {
       endpoint: subgraphEnpoint,
+      graphId: 'graphId',
     },
     unlockAddress,
   }

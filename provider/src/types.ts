@@ -1,5 +1,4 @@
 export interface Env {
-  SENTRY_DSN: string
   ARBITRUM_PROVIDER: string
   AVALANCHE_PROVIDER: string
   BSC_PROVIDER: string

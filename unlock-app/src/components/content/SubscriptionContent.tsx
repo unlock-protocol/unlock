@@ -1,9 +1,8 @@
-import React from 'react'
 import Head from 'next/head'
 import { pageTitle } from '../../constants'
 import { AppLayout, FOOTER } from '../interface/layouts/AppLayout'
 import { SubscriptionLandingPage } from './subscription/SubscriptionLandingPage'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 
 export const SubscriptionContent = () => {
   const router = useRouter()

@@ -18,7 +18,7 @@
   "scripts": {
     "build:tsc": "tsc",
     "build": "vite build && tsup ./src/index.ts --dts-only",
-    "lint": "eslint src",
+    "lint": "eslint",
     "test": "NODE_ENV=test vitest run --coverage",
     "clean": "rm -rf build dist coverage",
     "ci": "yarn test && yarn build"
@@ -36,10 +36,10 @@
     "eslint": "9.9.1",
     "tsup": "8.2.4",
     "typescript": "5.5.4",
-    "vite": "5.4.2",
+    "vite": "5.4.6",
     "vite-plugin-css-injected-by-js": "3.5.1",
     "vite-plugin-node-polyfills": "0.22.0",
-    "vitest": "1.6.0",
+    "vitest": "2.1.1",
     "vitest-fetch-mock": "0.3.0"
   },
   "dependencies": {

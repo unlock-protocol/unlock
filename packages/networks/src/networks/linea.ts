@@ -42,7 +42,7 @@ export const linea: NetworkConfig = {
         name: 'Discount code',
       },
       {
-        address: '0x4Bf912519549DF750002814a2DcE7184b3971F06',
+        address: '0x04664b4290fa1F4001ED25d9576f7C2d980aC64d',
         id: HookType.PROMO_CODE_CAPPED,
         name: 'Discount code with caps',
       },
@@ -78,6 +78,7 @@ export const linea: NetworkConfig = {
   startBlock: 560908,
   subgraph: {
     endpoint: 'https://subgraph.unlock-protocol.com/59144',
+    graphId: '3G85noAfEa4jYGPmrvzzBTY55abu2kVgXnfWwRq3absq',
     studioName: 'unlock-protocol-linea',
   },
   tokens: [

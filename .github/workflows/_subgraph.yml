@@ -3,7 +3,7 @@ name: Subgraphs deployment
 on:
   workflow_call:
     secrets:
-      SUBGRAPH_STUDIO_DEPLOY_KEY:
+      OP_SERVICE_ACCOUNT_TOKEN:
         required: true
 
 jobs:
@@ -13,7 +13,6 @@ jobs:
     env:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
-      SUBGRAPH_STUDIO_DEPLOY_KEY: ${{ secrets.SUBGRAPH_STUDIO_DEPLOY_KEY }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -23,6 +22,13 @@ jobs:
       - run: yarn build
       - name: Prepare the network files
         run: yarn workspace @unlock-protocol/subgraph prepare
+      - name: Load secrets from 1Password
+        uses: 1Password/load-secrets-action@v2.0.0
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          SUBGRAPH_STUDIO_DEPLOY_KEY: op://secrets/subgraph/studio-deploy-key
       - name: Deploying the subgraphs
         run: yarn workspace @unlock-protocol/subgraph deploy-all
         shell: bash
