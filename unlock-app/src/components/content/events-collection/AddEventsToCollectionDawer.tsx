@@ -49,7 +49,7 @@ export default function AddEventsToCollectionDrawer({
   const [isUrlValid, setIsUrlValid] = useState(false)
   const [isEventSelected, setIsEventSelected] = useState(false)
   const [isDuplicate, setIsDuplicate] = useState(false)
-  const [hasCheckedUrl, setHasCheckedUrl] = useState<boolean>(false) // New state
+  const [hasCheckedUrl, setHasCheckedUrl] = useState<boolean>(false)
 
   useEffect(() => {
     if (eventSlug.trim() !== '' && event) {
@@ -147,9 +147,11 @@ export default function AddEventsToCollectionDrawer({
           </p>
         )}
       </div>
-      <Button onClick={() => setAddMethod('form')} className="w-full">
-        Create a new event
-      </Button>
+      {isManager && (
+        <Button onClick={() => setAddMethod('form')} className="w-full">
+          Create a new event
+        </Button>
+      )}
     </div>
   )
 
