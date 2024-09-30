@@ -9,8 +9,8 @@ const {
   bytecode: proxyAdminBytecode,
 } = require('@unlock-protocol/hardhat-helpers/dist/ABIs/ProxyAdmin.json')
 
-const LATEST_UNLOCK_VERSION = 13
-const LATEST_PUBLIC_LOCK_VERSION = 14
+const LATEST_UNLOCK_VERSION = 14
+const LATEST_PUBLIC_LOCK_VERSION = 15
 
 function getUnlockVersionNumbers() {
   return (
@@ -24,12 +24,14 @@ function getUnlockVersionNumbers() {
 
 // returns the latest PublicLock version number corresponding to a version of Unlock
 function getMatchingLockVersion(unlockVersion) {
+  // before Unlock v10, unlock version equals lock version
   const publicLockVersions = {
+    // after v10, they start decoupling
     11: 11,
     12: 12,
     13: 14,
+    14: 15,
   }
-
   return publicLockVersions[unlockVersion]
 }
 
