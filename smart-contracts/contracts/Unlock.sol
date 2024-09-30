@@ -247,6 +247,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   }
 
   // The governance token address, used to mint tokens on referral
+  // NB: the storage is done on a variable called `udt` for legacy reasons
   function governanceToken() public view returns (address) {
     return udt;
   }
