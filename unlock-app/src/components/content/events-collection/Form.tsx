@@ -1,4 +1,5 @@
 'use client'
+
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 import {
   FormProvider,
@@ -16,11 +17,20 @@ import {
 } from '@unlock-protocol/ui'
 import { useImageUpload } from '~/hooks/useImageUpload'
 import { useRouter } from 'next/navigation'
-import { FiTrash as TrashIcon } from 'react-icons/fi'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { onResolveName } from '~/utils/resolvers'
-import LinkField from './LinkField'
+import { WrappedAddress } from '~/components/interface/WrappedAddress'
+import { FiTrash as TrashIcon } from 'react-icons/fi'
+import { LinksField } from './LinksField'
+
+interface Links {
+  farcaster?: string
+  x?: string
+  website?: string
+  youtube?: string
+  github?: string
+}
 
 interface Link {
   type: 'farcaster' | 'x' | 'website' | 'youtube' | 'github'
@@ -33,24 +43,25 @@ export interface NewEventCollectionForm {
   coverImage: string
   banner: string
   managerAddresses: string[]
-  links: Link[]
+  links: Links
 }
 
 interface FormProps {
   onSubmit: (data: NewEventCollectionForm) => void
-  compact?: boolean
   disabled?: boolean
 }
 
 export const EventCollectionForm = ({
   onSubmit,
-  compact = false,
   disabled = false,
 }: FormProps) => {
   const { mutateAsync: uploadImage, isPending: isUploading } = useImageUpload()
   const router = useRouter()
   const { account } = useAuth()
   const [isAccountManager, setIsAccountManager] = useState<boolean>(true)
+
+  // Track if adding a manager is in progress
+  const [isAddingManager, setIsAddingManager] = useState<boolean>(false)
 
   const methods = useForm<NewEventCollectionForm>({
     mode: 'onChange',
@@ -60,7 +71,7 @@ export const EventCollectionForm = ({
       coverImage: '',
       banner: '',
       managerAddresses: account ? [account] : [],
-      links: [{ type: 'website', url: '' }],
+      links: {},
     },
   })
 
@@ -75,16 +86,6 @@ export const EventCollectionForm = ({
   const coverImage = watch('coverImage')
   const banner = watch('banner')
   const managerAddresses = watch('managerAddresses')
-  const links = watch('links')
-
-  const {
-    fields: linkFields,
-    append: appendLink,
-    remove: removeLink,
-  } = useFieldArray<NewEventCollectionForm>({
-    control,
-    name: 'links',
-  })
 
   const {
     fields: managerFields,
@@ -106,12 +107,20 @@ export const EventCollectionForm = ({
   const handleManagerChange = (index: number, value: string) => {
     if (value) {
       setValue(`managerAddresses.${index}`, value)
+
+      // Check if the current index is the last one
+      if (index === managerFields.length - 1) {
+        if (value.trim() !== '') {
+          setIsAddingManager(false)
+        }
+      }
     }
   }
 
   const handleAccountChange = () => {
     removeManager(0)
     setIsAccountManager(false)
+    setIsAddingManager(false)
   }
 
   // Check if the last manager field is filled
@@ -119,11 +128,44 @@ export const EventCollectionForm = ({
     managerFields.length === 0 ||
     managerAddresses[managerFields.length - 1].trim() !== ''
 
-  // Check if the last link field is filled
-  const isLastLinkFilled =
-    linkFields.length === 0 ||
-    (links[linkFields.length - 1].type &&
-      links[linkFields.length - 1].url.trim() !== '')
+  // Handlers for adding/canceling managers
+  const handleAddOrCancelManager = () => {
+    if (isAddingManager && !isLastManagerFilled) {
+      // Cancel adding: remove the last manager field
+      removeManager(managerFields.length - 1)
+      setIsAddingManager(false)
+    } else {
+      // @ts-ignore
+      // Start adding a new manager
+      appendManager('')
+      setIsAddingManager(true)
+    }
+  }
+
+  // reset isAddingManager when a manager is successfully added
+  useEffect(() => {
+    if (isAddingManager) {
+      const lastManagerAddress = managerAddresses[managerAddresses.length - 1]
+      if (lastManagerAddress && lastManagerAddress.trim() !== '') {
+        setIsAddingManager(false)
+      }
+    }
+  }, [managerAddresses, isAddingManager])
+
+  // transform links to the correct format
+  const handleSubmit = (data: NewEventCollectionForm) => {
+    const { links, ...rest } = data
+    const transformedLinks: Link[] = Object.entries(links)
+      .filter(([_, url]) => url && url.trim() !== '')
+      .map(([type, url]) => ({ type: type as Link['type'], url }))
+
+    const finalData: NewEventCollectionForm = {
+      ...rest,
+      links: transformedLinks as unknown as Links,
+    }
+
+    onSubmit(finalData)
+  }
 
   return (
     <FormProvider {...methods}>
@@ -131,22 +173,21 @@ export const EventCollectionForm = ({
         {disabled && (
           <div className="absolute inset-0 bg-gray-200 opacity-50 z-10 p-5 rounded-2xl"></div>
         )}
-        {!compact && (
-          <div className="grid grid-cols-[50px_1fr_50px] items-center mb-4">
-            <Button variant="borderless" aria-label="arrow back">
-              <ArrowBackIcon
-                size={20}
-                className="cursor-pointer"
-                onClick={() => router.back()}
-              />
-            </Button>
-            <h1 className="text-xl font-bold text-center text-brand-dark">
-              Create an Event Collection
-            </h1>
-          </div>
-        )}
+        {/* Header Section */}
+        <div className="grid grid-cols-[50px_1fr_50px] items-center mb-4">
+          <Button variant="borderless" aria-label="arrow back">
+            <ArrowBackIcon
+              size={20}
+              className="cursor-pointer"
+              onClick={() => router.back()}
+            />
+          </Button>
+          <h1 className="text-xl font-bold text-center text-brand-dark">
+            Create an Event Collection
+          </h1>
+        </div>
 
-        <form className="mb-6" onSubmit={methods.handleSubmit(onSubmit)}>
+        <form className="mb-6" onSubmit={methods.handleSubmit(handleSubmit)}>
           <div className="grid gap-6">
             {/* Basic Information */}
             <Disclosure label="Basic Information" defaultOpen>
@@ -154,18 +195,14 @@ export const EventCollectionForm = ({
                 All of these fields can also be adjusted later.
               </p>
 
-              <div
-                className={`grid ${
-                  compact ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'
-                } gap-6`}
-              >
-                <div
-                  className={`${compact ? 'order-2' : 'order-2 md:order-1'}`}
-                >
+              <div className="flex flex-col-reverse md:flex-row md:space-x-6 space-y-6 md:space-y-0">
+                {/* Cover Image */}
+                <div className="flex-shrink-0 md:w-1/2 mt-2 md:mt-0">
                   <ImageUpload
                     description="This image will be used as the cover for your event collection. Use 512 by 512 pixels for best results."
                     isUploading={isUploading}
                     preview={coverImage}
+                    error={errors.coverImage?.message}
                     onChange={async (fileOrFileUrl: any) => {
                       if (typeof fileOrFileUrl === 'string') {
                         setValue('coverImage', fileOrFileUrl)
@@ -178,17 +215,10 @@ export const EventCollectionForm = ({
                       }
                     }}
                   />
-                  {errors.coverImage && (
-                    <p className="text-red-500 text-sm">
-                      {errors.coverImage.message}
-                    </p>
-                  )}
                 </div>
-                <div
-                  className={`grid ${
-                    compact ? 'order-1' : 'order-1 md:order-2'
-                  } ${compact ? 'gap-2' : 'md:gap-4 gap-2'}`}
-                >
+
+                {/* Title and Description */}
+                <div className="flex flex-col md:w-1/2 space-y-6">
                   <Input
                     {...register('title', {
                       required: 'Title is required',
@@ -202,13 +232,8 @@ export const EventCollectionForm = ({
                     placeholder="Title"
                     label="Collection Title"
                     description="Enter the title of your event collection."
+                    error={errors.title?.message}
                   />
-                  {errors.title && (
-                    <p className="text-red-500 text-sm">
-                      {errors.title.message}
-                    </p>
-                  )}
-
                   <TextBox
                     {...register('description', {
                       required: 'Description is required',
@@ -221,12 +246,8 @@ export const EventCollectionForm = ({
                     placeholder="Write description here."
                     description="Enter a description for your event collection."
                     rows={10}
+                    error={errors.description?.message}
                   />
-                  {errors.description && (
-                    <p className="text-red-500 text-sm">
-                      {errors.description.message}
-                    </p>
-                  )}
                 </div>
               </div>
             </Disclosure>
@@ -240,6 +261,7 @@ export const EventCollectionForm = ({
                   size="full"
                   imageRatio="cover"
                   preview={banner}
+                  error={errors.banner?.message}
                   onChange={async (fileOrFileUrl: any) => {
                     if (typeof fileOrFileUrl === 'string') {
                       setValue('banner', fileOrFileUrl)
@@ -252,11 +274,6 @@ export const EventCollectionForm = ({
                     }
                   }}
                 />
-                {errors.banner && (
-                  <p className="text-red-500 text-sm">
-                    {errors.banner.message}
-                  </p>
-                )}
               </div>
             </Disclosure>
 
@@ -264,93 +281,89 @@ export const EventCollectionForm = ({
             <Disclosure label="Collection Creators/Managers" defaultOpen>
               <div className="space-y-4">
                 {managerFields.map((field, index) => (
-                  <div
-                    key={field.id}
-                    className="flex items-center gap-4 w-full"
-                  >
-                    {index === 0 && isAccountManager ? (
-                      <div className="flex items-center pl-4 pr-2 py-4 justify-between bg-gray-200 rounded-md w-full">
-                        <div className="w-32 text-sm truncate">{account}</div>
-                        <Button
-                          type="button"
-                          size="tiny"
-                          onClick={handleAccountChange}
-                        >
-                          Change
-                        </Button>
-                      </div>
-                    ) : (
-                      <div className="flex-grow">
-                        <Controller
-                          control={control}
-                          name={`managerAddresses.${index}`}
-                          rules={{ required: 'Manager address is required' }}
-                          render={({ field }) => (
-                            <AddressInput
-                              {...field}
-                              withIcon
-                              placeholder="0x..."
-                              onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                                field.onChange(e)
-                                handleManagerChange(index, e?.target?.value)
+                  <div key={field.id} className="flex flex-col w-full">
+                    <div className="flex items-center gap-4 w-full">
+                      {index === 0 && isAccountManager ? (
+                        <div className="flex items-center pl-4 pr-2 py-2 justify-between bg-gray-200 rounded-md w-full">
+                          <div className="flex-grow text-sm truncate">
+                            <WrappedAddress
+                              address={account!}
+                              showCopyIcon={false}
+                              showExternalLink={false}
+                            />
+                          </div>
+                          <Button
+                            type="button"
+                            size="tiny"
+                            onClick={handleAccountChange}
+                          >
+                            Change
+                          </Button>
+                        </div>
+                      ) : (
+                        <div className="flex-grow w-full">
+                          {managerAddresses[index] ? (
+                            <div className="flex items-center justify-between px-4">
+                              <WrappedAddress
+                                address={managerAddresses[index]}
+                                showExternalLink={false}
+                              />
+                              <Button
+                                variant="borderless"
+                                aria-label="Remove manager"
+                                onClick={() => removeManager(index)}
+                              >
+                                <TrashIcon />
+                              </Button>
+                            </div>
+                          ) : (
+                            <Controller
+                              control={control}
+                              name={`managerAddresses.${index}`}
+                              rules={{
+                                required: 'Manager address is required',
                               }}
-                              required
-                              onResolveName={onResolveName}
+                              render={({ field }) => (
+                                <AddressInput
+                                  {...field}
+                                  withIcon
+                                  placeholder="0x..."
+                                  onChange={(
+                                    e: ChangeEvent<HTMLInputElement>
+                                  ) => {
+                                    field.onChange(e)
+                                    handleManagerChange(index, e?.target?.value)
+                                  }}
+                                  required
+                                  onResolveName={onResolveName}
+                                />
+                              )}
                             />
                           )}
-                        />
-                        {errors.managerAddresses &&
-                          errors.managerAddresses[index] && (
-                            <p className="text-red-500 text-sm">
-                              {errors.managerAddresses[index].message}
-                            </p>
-                          )}
-                      </div>
-                    )}
-                    {/* Show trash icon only if it's not the first account manager */}
-                    {!(index === 0 && account) && (
-                      <div className="flex items-center">
-                        <Button
-                          variant="borderless"
-                          aria-label="Remove manager"
-                          onClick={() => removeManager(index)}
-                        >
-                          <TrashIcon />
-                        </Button>
-                      </div>
-                    )}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 ))}
                 <Button
-                  aria-label="Add manager"
+                  aria-label={
+                    isAddingManager ? 'Cancel adding manager' : 'Add manager'
+                  }
                   className="flex items-center gap-2 w-full"
                   type="button"
-                  // @ts-ignore
-                  onClick={() => appendManager('')}
-                  disabled={!isLastManagerFilled}
+                  onClick={handleAddOrCancelManager}
+                  disabled={isAddingManager ? false : !isLastManagerFilled}
                 >
-                  {managerFields.length > 0
-                    ? 'Add another Manager'
-                    : 'Add Manager'}
+                  {isAddingManager && !isLastManagerFilled
+                    ? 'Cancel'
+                    : 'Add manager'}
                 </Button>
               </div>
             </Disclosure>
 
             {/* Links */}
             <Disclosure label="Links" defaultOpen>
-              <div className="space-y-4 w-full">
-                {linkFields.map((field, index) => (
-                  <LinkField key={field.id} index={index} remove={removeLink} />
-                ))}
-                <Button
-                  className="flex items-center gap-2 w-full"
-                  type="button"
-                  onClick={() => appendLink({ type: 'website', url: '' })}
-                  disabled={!isLastLinkFilled}
-                >
-                  {linkFields.length > 0 ? 'Add another Link' : 'Add Link'}
-                </Button>
-              </div>
+              <LinksField />
             </Disclosure>
 
             {/* Submit Button */}
