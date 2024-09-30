@@ -15,18 +15,13 @@ import { toFormData } from '~/components/interface/locks/metadata/utils'
 import AddToCalendarButton from '../event/AddToCalendarButton'
 import { FaExternalLinkAlt } from 'react-icons/fa'
 import Link from 'next/link'
+import PastEvent from '../event/Layout/PastEvent'
+import { language } from '~/utils/eventCollections'
 
 interface EventDetailDrawerProps {
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
   event: Event | null
-}
-
-export const language = () => {
-  if (typeof navigator === 'undefined') {
-    return 'en-US'
-  }
-  return navigator?.language || 'en-US'
 }
 
 export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
@@ -46,7 +41,7 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
   if (!event) return null
 
   const { name, data } = event
-  const { image, description, requiresApproval } = data
+  const { image, description } = data
 
   const parsedEvent = toFormData({
     ...event.data,
@@ -54,6 +49,10 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
   })
   const eventDate = getEventDate(parsedEvent?.ticket)
   const eventEndDate = getEventEndDate(parsedEvent?.ticket)
+
+  const hasPassed = eventEndDate
+    ? dayjs().isAfter(eventEndDate)
+    : dayjs().isAfter(eventDate)
 
   const isSameDay = dayjs(eventDate).isSame(eventEndDate, 'day')
 
@@ -134,7 +133,7 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
           )}
 
           {/* Date */}
-          {hasDate && (
+          {hasDate && startTime && (
             <EventDetail compact label="Date" icon={CalendarIcon}>
               <div
                 style={{ color: `#${event.background_color}` }}
@@ -159,17 +158,19 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
           {/* Location */}
           {hasLocation && <EventLocation event={parsedEvent} compact />}
 
-          {/* Registration Card */}
           {isCheckoutConfigPending ? (
             <Placeholder.Root>
               <Placeholder.Card />
             </Placeholder.Root>
-          ) : (
+          ) : !hasPassed ? (
             <RegistrationCard
+              requiresApproval={event.requiresApproval}
               checkoutConfig={checkoutConfig!}
-              requiresApproval={requiresApproval}
-              hideRemaining={false}
+              hideRemaining={!!event.hideRemaining}
             />
+          ) : (
+            // @ts-ignore
+            <PastEvent event={parsedEvent!} checkoutConfig={checkoutConfig!} />
           )}
 
           {/* Event Details */}
