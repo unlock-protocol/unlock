@@ -57,7 +57,7 @@ describe(`swapAndBurn`, function () {
     ]
 
     unlock = await getUnlock(unlockAddress)
-    udtAddress = await unlock.governanceToken()
+    udtAddress = await unlock.udt()
     wrappedAddress = await unlock.weth()
 
     // deploy swapper
