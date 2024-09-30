@@ -81,8 +81,10 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   // The WETH token address, used for value calculations
   address public weth;
 
-  // The governance token address, used to mint tokens on referral
-  address public governanceToken;
+  // DEPRECATED: for backward-compatibility reasons we keep the variable
+  // as the main storage for governance token address
+  // however, the `governanceToken` getter is now preferred
+  address public udt;
 
   // The approx amount of gas required to purchase a key
   uint public estimatedGasForPurchase;
@@ -242,6 +244,11 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     );
 
     return createUpgradeableLock(data);
+  }
+
+  // The governance token address, used to mint tokens on referral
+  function governanceToken() public view returns (address) {
+    return udt;
   }
 
   /**
@@ -426,20 +433,16 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
         _referrer != address(0) &&
         IPublicLock(msg.sender).publicLockVersion() >= 13
       ) {
-        IUniswapOracleV3 governanceTokenOracle = uniswapOracles[
-          governanceToken
-        ];
+        IUniswapOracleV3 governanceTokenOracle = uniswapOracles[udt];
         if (address(governanceTokenOracle) != address(0)) {
           // Get the value of 1 UDT (w/ 18 decimals) in ETH
           uint governanceTokenPrice = governanceTokenOracle.updateAndConsult(
-            governanceToken,
+            udt,
             10 ** 18,
             weth
           );
 
-          uint balance = IMintableERC20(governanceToken).balanceOf(
-            address(this)
-          );
+          uint balance = IMintableERC20(udt).balanceOf(address(this));
 
           // base fee default to 100 GWEI for chains that does
           uint baseFee;
@@ -473,10 +476,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
           if (tokensToDistribute > 0) {
             if (balance > tokensToDistribute) {
               // Only distribute if there are enough tokens
-              IMintableERC20(governanceToken).transfer(
-                _referrer,
-                tokensToDistribute
-              );
+              IMintableERC20(udt).transfer(_referrer, tokensToDistribute);
             }
           }
         }
@@ -551,7 +551,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     string calldata _URI,
     uint _chainId
   ) external onlyOwner {
-    governanceToken = _governanceToken;
+    udt = _governanceToken;
     weth = _weth;
     estimatedGasForPurchase = _estimatedGasForPurchase;
 
@@ -698,7 +698,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    * @param amount the amount of tokens to swap and burn
    */
   function swapAndBurn(address token, uint256 amount, uint24 poolFee) public {
-    if (token == governanceToken) {
+    if (token == udt) {
       revert Unlock__INVALID_TOKEN();
     }
     _transfer(token, swapBurnerAddress, amount);
