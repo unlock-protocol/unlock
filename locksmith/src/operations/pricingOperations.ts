@@ -143,6 +143,7 @@ export async function getDefiLlamaPriceNoCache({
   }
 
   const endpoint = `https://coins.llama.fi/prices/current/${items.join(',')}`
+
   const response = await fetch(endpoint)
 
   if (!response.ok) {
