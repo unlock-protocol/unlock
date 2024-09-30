@@ -1,4 +1,5 @@
 'use client'
+
 import {
   Button,
   Disclosure,
@@ -9,12 +10,20 @@ import {
 } from '@unlock-protocol/ui'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useUserEvents } from '~/hooks/useUserEvents'
-import { Form as EventCreationForm } from '../event/Form'
+import { Form as EventCreationForm, NewEventForm } from '../event/Form'
 import { useEvent } from '~/hooks/useEvent'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useAddToEventCollection } from '~/hooks/useEventCollection'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import {
+  defaultEventCheckoutConfigForLockOnNetwork,
+  TransactionDetails,
+} from '../event/NewEvent'
+import { locksmith } from '~/config/locksmith'
+import { formDataToMetadata } from '~/components/interface/locks/metadata/utils'
+import { networks } from '@unlock-protocol/networks'
+import { LockDeploying } from '../event/LockDeploying'
 
 type AddMethod = 'url' | 'existing' | 'form' | null
 
@@ -33,7 +42,13 @@ export default function AddEventsToCollectionDrawer({
   collectionSlug,
   existingEventSlugs,
 }: AddEventsToCollectionDrawerProps) {
-  const { account } = useAuth()
+  const { account, getWalletService } = useAuth()
+  const [newEventSlug, setNewEventSlug] = useState<string | undefined>(
+    undefined
+  )
+  const [lockAddress, setLockAddress] = useState<string>()
+  const [transactionDetails, setTransactionDetails] =
+    useState<TransactionDetails>()
   const { addToEventCollection, isAddingToEventCollection } =
     useAddToEventCollection(collectionSlug!)
   const { data: userEvents, isPending: isLoadingUserEvents } = useUserEvents(
@@ -50,6 +65,8 @@ export default function AddEventsToCollectionDrawer({
   const [isEventSelected, setIsEventSelected] = useState(false)
   const [isDuplicate, setIsDuplicate] = useState(false)
   const [hasCheckedUrl, setHasCheckedUrl] = useState<boolean>(false)
+
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
 
   useEffect(() => {
     if (eventSlug.trim() !== '' && event) {
@@ -75,6 +92,7 @@ export default function AddEventsToCollectionDrawer({
       return
     }
     try {
+      setIsSubmitting(true)
       await addToEventCollection({
         collectionSlug: collectionSlug!,
         eventSlug,
@@ -83,6 +101,8 @@ export default function AddEventsToCollectionDrawer({
     } catch (error) {
       console.error('Error adding event to collection:', error)
       ToastHelper.error('Failed to add event to the collection.')
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -117,6 +137,13 @@ export default function AddEventsToCollectionDrawer({
     }) || []
 
   const isUrlButtonDisabled = eventUrl.trim() === ''
+
+  // override setIsOpen to prevent closing during submission
+  const handleSetIsOpen = (open: boolean) => {
+    if (!isSubmitting) {
+      setIsOpen(open)
+    }
+  }
 
   const renderInitialOptions = () => (
     <div className="flex flex-col gap-4">
@@ -169,6 +196,7 @@ export default function AddEventsToCollectionDrawer({
           setHasCheckedUrl(false)
         }}
         className="self-start"
+        disabled={isSubmitting}
       >
         Back
       </Button>
@@ -188,10 +216,11 @@ export default function AddEventsToCollectionDrawer({
               setEventSlug('')
               setHasCheckedUrl(false)
             }}
+            disabled={isSubmitting}
           />
           <Button
             onClick={checkEventUrlValidity}
-            disabled={isUrlButtonDisabled || isLoadingEvent}
+            disabled={isUrlButtonDisabled || isLoadingEvent || isSubmitting}
           >
             {isLoadingEvent ? 'Checking...' : 'Check Validity'}
           </Button>
@@ -220,9 +249,13 @@ export default function AddEventsToCollectionDrawer({
         <div className="mt-4">
           <Button
             onClick={handleSubmit}
-            disabled={!isUrlValid || isAddingToEventCollection}
+            disabled={!isUrlValid || isAddingToEventCollection || isSubmitting}
           >
-            {isManager ? 'Add Event' : 'Submit Event'}
+            {isSubmitting
+              ? 'Submitting...'
+              : isManager
+                ? 'Add Event'
+                : 'Submit Event'}
           </Button>
         </div>
       )}
@@ -240,6 +273,7 @@ export default function AddEventsToCollectionDrawer({
           setIsEventSelected(false)
         }}
         className="self-start"
+        disabled={isSubmitting}
       >
         Back
       </Button>
@@ -262,6 +296,7 @@ export default function AddEventsToCollectionDrawer({
                   userEventsOptions.length > 0 ? userEventsOptions[0].value : ''
                 }
                 description="Select an event from your existing events."
+                disabled={isSubmitting}
               />
             ) : (
               <p className="text-sm text-gray-500">
@@ -276,9 +311,15 @@ export default function AddEventsToCollectionDrawer({
         <div className="mt-4">
           <Button
             onClick={handleSubmit}
-            disabled={!isEventSelected || isAddingToEventCollection}
+            disabled={
+              !isEventSelected || isAddingToEventCollection || isSubmitting
+            }
           >
-            {isManager ? 'Add Event' : 'Submit Event'}
+            {isSubmitting
+              ? 'Submitting...'
+              : isManager
+                ? 'Add Event'
+                : 'Submit Event'}
           </Button>
         </div>
       )}
@@ -292,26 +333,115 @@ export default function AddEventsToCollectionDrawer({
         size="small"
         onClick={() => setAddMethod(null)}
         className="self-start"
+        disabled={isSubmitting}
       >
         Back
       </Button>
 
       <div className="flex flex-col gap-4">
-        <EventCreationForm
-          compact={true}
-          onSubmit={
-            // TODO: Create event and add to collection on submission
-            () => console.log('submit')
-          }
-        />
+        {transactionDetails && (
+          <LockDeploying
+            compact={true}
+            transactionDetails={transactionDetails}
+            lockAddress={lockAddress}
+            slug={newEventSlug}
+          />
+        )}
+        {!transactionDetails && (
+          <EventCreationForm
+            compact={true}
+            onSubmit={handleEventCreationAndAddition}
+          />
+        )}
       </div>
     </div>
   )
 
+  const handleEventCreationAndAddition = async (eventData: NewEventForm) => {
+    setIsSubmitting(true)
+    let lockAddress
+    const walletService = await getWalletService(eventData.network)
+    try {
+      lockAddress = await walletService.createLock(
+        {
+          ...eventData.lock,
+          name: eventData.lock.name,
+          publicLockVersion:
+            networks[eventData.network].publicLockVersionToDeploy,
+        },
+        {},
+        async (createLockError, transactionHash) => {
+          if (createLockError) {
+            throw createLockError
+          }
+          if (transactionHash) {
+            setTransactionDetails({
+              hash: transactionHash,
+              network: eventData.network,
+            })
+          }
+        }
+      )
+    } catch (error) {
+      console.error(error)
+      ToastHelper.error('The contract could not be deployed. Please try again.')
+      setIsSubmitting(false)
+      return
+    }
+    if (lockAddress) {
+      try {
+        await locksmith.updateLockMetadata(eventData.network, lockAddress, {
+          metadata: {
+            name: `Ticket for ${eventData.lock.name}`,
+            image: eventData.metadata.image,
+          },
+        })
+        const { data: newEvent } = await locksmith.saveEventData({
+          data: {
+            ...formDataToMetadata({
+              name: eventData.lock.name,
+              ...eventData.metadata,
+            }),
+            ...eventData.metadata,
+          },
+          checkoutConfig: {
+            name: `Checkout config for ${eventData.lock.name}`,
+            config: defaultEventCheckoutConfigForLockOnNetwork(
+              lockAddress,
+              eventData.network
+            ),
+          },
+        })
+
+        // Save slug for URL if present
+        setNewEventSlug(newEvent.slug)
+
+        // add newly created event to collection
+        await addToEventCollection({
+          collectionSlug: collectionSlug!,
+          eventSlug: newEvent.slug!,
+        })
+
+        // Finally
+        setLockAddress(lockAddress)
+
+        // Close the drawer upon success
+        setIsOpen(false)
+      } catch (error) {
+        console.error('Error creating or adding event:', error)
+        ToastHelper.error('Failed to create or add event to the collection.')
+      } finally {
+        setIsSubmitting(false)
+      }
+    } else {
+      setIsSubmitting(false)
+    }
+  }
+
   return (
     <Drawer
       isOpen={isOpen}
-      setIsOpen={setIsOpen}
+      setIsOpen={handleSetIsOpen}
       title={addMethod ? 'Add Event' : 'Choose Add Method'}
     >
       <div className="flex flex-col h-full gap-10 mt-10">
