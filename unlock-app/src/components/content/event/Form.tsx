@@ -16,11 +16,10 @@ import {
   ToggleSwitch,
   ImageUpload,
   Checkbox,
-  CurrencyHint,
 } from '@unlock-protocol/ui'
 import { useConfig } from '~/utils/withConfig'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { networkDescription } from '~/components/interface/locks/Create/elements/CreateLockForm'
+import { NetworkDescription } from '~/components/interface/locks/Create/elements/CreateLockForm'
 import { useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { BalanceWarning } from '~/components/interface/locks/Create/elements/BalanceWarning'
@@ -34,6 +33,7 @@ import { useRouter } from 'next/navigation'
 import { useAvailableNetworks } from '~/utils/networks'
 import Link from 'next/link'
 import { regexUrlPattern } from '~/utils/regexUrlPattern'
+import { ProtocolFee } from '~/components/interface/locks/Create/elements/ProtocolFee'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewEventForm {
@@ -342,11 +342,9 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
                   defaultValue={network}
                   description={
                     <div className="flex flex-col gap-2">
-                      <p>
-                        {details.network && (
-                          <>{networkDescription(details.network)}</>
-                        )}
-                      </p>
+                      {details.network && (
+                        <NetworkDescription network={details.network} />
+                      )}
                       <p>
                         This is the network on which your ticketing contract
                         will be deployed.{' '}
@@ -363,6 +361,7 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
                   }
                 />
                 <NetworkWarning network={details.network} />
+
                 <div className="mb-4">
                   {noBalance && (
                     <BalanceWarning
@@ -723,7 +722,7 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
                     </div>
                   </div>
 
-                  <CurrencyHint network={currencyNetwork as string} />
+                  <ProtocolFee network={Number(details.network)} />
 
                   <div className="text-sm mt-2 flex items-center justify-between">
                     <Checkbox

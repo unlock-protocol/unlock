@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import QRCode from 'qrcode.react'
+import { QRCodeSVG } from 'qrcode.react'
 import { Button, Input, Icon, Modal } from '@unlock-protocol/ui'
 import { FaEnvelope } from 'react-icons/fa'
 import { Key } from '~/hooks/useKeys'
@@ -51,7 +51,7 @@ export const QRModal = ({
     >
       <div className="flex flex-col gap-3">
         <div className="mx-auto">
-          {QRUrl && <QRCode value={QRUrl} size={256} includeMargin />}
+          {QRUrl && <QRCodeSVG value={QRUrl} size={256} includeMargin />}
         </div>
         <Input
           className="my-4 w-90"

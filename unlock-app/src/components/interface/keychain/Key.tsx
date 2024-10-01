@@ -186,9 +186,7 @@ function Key({ ownedKey, owner, network }: Props) {
 
   const { opensea } = networks[network] ?? {}
 
-  const isAvailableOnOpenSea =
-    // eslint-disable-next-line no-constant-binary-expression
-    opensea?.tokenUrl(lock.address, tokenId) !== null ?? false
+  const isAvailableOnOpenSea = !!opensea?.tokenUrl(lock.address, tokenId)
 
   const baseSymbol = config.networks[network].nativeCurrency.symbol!
   const symbol =

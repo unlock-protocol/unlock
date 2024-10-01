@@ -42,16 +42,15 @@ export type PriceResults = Partial<
   }
 >
 
-interface KeyPricingPrice {
+// Represent the price for a single key, in fiat
+export interface KeyFiatPricingPrice {
   amount: number
   decimals: number
-  symbol: string | undefined
-  amountInUSD: number | undefined
-  amountInCents: number | undefined
+  currency: string
 }
 
 export interface KeyPricing {
-  price: KeyPricingPrice
+  price: KeyFiatPricingPrice
   address?: string
 }
 
@@ -84,37 +83,18 @@ export function getCurrencySymbol(currency?: string) {
   )
 }
 
-/** Helper to return usd pricing object */
-export const toUsdPricing = ({
-  amount,
-  usdPricing,
-  decimals,
-}: {
-  amount: number
-  decimals: number
-  usdPricing: PriceResults
-}): KeyPricingPrice => {
-  const { symbol, price } = usdPricing ?? {}
-  return {
-    amount,
-    decimals,
-    symbol,
-    amountInUSD: price ? amount * price : undefined,
-    amountInCents: price ? Math.round(amount * price * 100) : 0,
-  }
-}
-
 interface GetPriceProps {
   lockAddress: string
   network: number
   recipients?: string[]
 }
+
 /** Get pricing from settings  */
-export const getPricingFromSettings = async ({
+// Returns {currency, amount, decimals} if a custom price is set
+export const getKeyPricingFromSettings = async ({
   lockAddress,
   network,
-  recipients = [],
-}: GetPriceProps): Promise<KeyPricingPrice | null> => {
+}: GetPriceProps): Promise<KeyFiatPricingPrice | null> => {
   const { creditCardPrice, creditCardCurrency } =
     await lockSettingOperations.getSettings({
       lockAddress,
@@ -123,19 +103,10 @@ export const getPricingFromSettings = async ({
 
   // return pricing object using the price from the settings
   if (creditCardPrice) {
-    const keysToPurchase = recipients?.length || 1
-
-    const amountInCents = creditCardPrice * keysToPurchase // this total is in basisPoints
-    const amountInUSD = amountInCents / 100 // get total price in USD
-
-    const symbol = getCurrencySymbol(creditCardCurrency)
-
     return {
-      amount: amountInUSD, // amount is usd for the single key
-      decimals: 18,
-      symbol,
-      amountInUSD,
-      amountInCents,
+      currency: creditCardCurrency || 'usd', // defaults to usd
+      amount: creditCardPrice / 100.0, // the amount stored in the db is in cents!
+      decimals: 0,
     }
   }
 
@@ -143,7 +114,7 @@ export const getPricingFromSettings = async ({
   return null
 }
 
-export async function getDefiLammaPriceNoCache({
+export async function getDefiLlamaPriceNoCache({
   network,
   erc20Address,
 }: Options): Promise<PriceResults> {
@@ -172,6 +143,7 @@ export async function getDefiLammaPriceNoCache({
   }
 
   const endpoint = `https://coins.llama.fi/prices/current/${items.join(',')}`
+
   const response = await fetch(endpoint)
 
   if (!response.ok) {
@@ -179,6 +151,7 @@ export async function getDefiLammaPriceNoCache({
   }
 
   const json: Record<'coins', Record<string, Price>> = await response.json()
+
   const item = Object.values(json.coins).filter(
     (item) => item.confidence > 0.95
   )[0]
@@ -189,10 +162,11 @@ export async function getDefiLammaPriceNoCache({
 
   return {
     ...item,
+    symbol: '$', // defilama always returns USD
   }
 }
 
-export async function getDefiLammaPrice({
+export async function getDefiLlamaPrice({
   network,
   erc20Address,
   amount = 1,
@@ -201,7 +175,7 @@ export async function getDefiLammaPrice({
     `${erc20Address}@${network}`
   )
   if (!pricing) {
-    pricing = await getDefiLammaPriceNoCache({
+    pricing = await getDefiLlamaPriceNoCache({
       network,
       erc20Address,
       amount,
@@ -221,7 +195,8 @@ export async function getDefiLammaPrice({
   return pricing
 }
 
-export async function getLockKeyPricing({
+// Returns the default keyPrice fron the lock (not specific to any recipient!)
+export async function getLockKeyPricingFromContract({
   lockAddress,
   network,
 }: {
@@ -247,18 +222,20 @@ export async function getLockKeyPricing({
   }
 }
 
-/** Get default pricing for a specific lock */
-export const getDefaultUsdPricing = async ({
+/** Get the pricing that applies to any recipient for a specific lock,
+ * either because a price is set in the settings, or by getting the price
+ * from the `keyPrice` method on the lock. */
+export const getDefaultFiatPricing = async ({
   lockAddress,
   network,
-}: DefaultPricingProps): Promise<KeyPricingPrice> => {
-  // retrieve pricing
+}: DefaultPricingProps): Promise<KeyFiatPricingPrice | undefined> => {
+  // retrieve pricings, both from the chain and from the settings, if set
   const [lockKeyPricing, pricingFromSettings] = await Promise.all([
-    getLockKeyPricing({
+    getLockKeyPricingFromContract({
       lockAddress,
       network,
     }),
-    getPricingFromSettings({ lockAddress, network }),
+    getKeyPricingFromSettings({ lockAddress, network }),
   ])
 
   // priority to pricing from settings if present
@@ -266,52 +243,51 @@ export const getDefaultUsdPricing = async ({
     return pricingFromSettings
   }
 
+  // If none is set, we will use the default pricing from the chain, and convert to USD
   const { keyPrice, decimals, currencyContractAddress } = lockKeyPricing
 
-  const usdPricing = await getDefiLammaPrice({
+  const amountInCrypto = fromDecimal(keyPrice, decimals)
+  const usdExchangeRate = await getDefiLlamaPrice({
     network,
     erc20Address:
       !currencyContractAddress || currencyContractAddress === ethers.ZeroAddress
         ? undefined
         : currencyContractAddress,
+    amount: amountInCrypto,
   })
 
-  const defaultPrice = fromDecimal(keyPrice, decimals)
+  if (usdExchangeRate.priceInAmount) {
+    return {
+      currency: 'usd',
+      amount: usdExchangeRate.priceInAmount,
+      decimals: 0, // The API returns prices in $, so no decimals
+    }
+  }
 
-  const defaultPricing = toUsdPricing({
-    amount: defaultPrice,
-    usdPricing,
-    decimals,
-  })
-
-  return defaultPricing
+  return undefined
 }
 
 /** Get usd pricing for a specific recipient */
-export const getUsdPricingForRecipient = async ({
+export const getFiatPricingForRecipient = async ({
   lockAddress,
   network,
   userAddress,
   data,
   referrer,
-}: PricingForRecipientProps): Promise<KeyPricing> => {
+}: PricingForRecipientProps): Promise<any> => {
   const web3Service = new Web3Service(networks)
-  const { decimals, currencyContractAddress } = await getLockKeyPricing({
-    lockAddress,
-    network,
-  })
 
-  const [usdPricing, pricingFromSettings] = await Promise.all([
-    getDefiLammaPrice({
-      network,
-      erc20Address:
-        !currencyContractAddress ||
-        currencyContractAddress === ethers.ZeroAddress
-          ? undefined
-          : currencyContractAddress,
-    }),
-    getPricingFromSettings({ lockAddress, network }),
-  ])
+  const [{ decimals, currencyContractAddress }, pricingFromSettings] =
+    await Promise.all([
+      getLockKeyPricingFromContract({
+        lockAddress,
+        network,
+      }),
+      getKeyPricingFromSettings({
+        lockAddress,
+        network,
+      }),
+    ])
 
   // priority to pricing from settings if present
   if (pricingFromSettings) {
@@ -328,17 +304,23 @@ export const getUsdPricingForRecipient = async ({
     network,
     referrer: referrer || networks[network]?.multisig || userAddress,
   })
-
   const amount = fromDecimal(purchasePrice, decimals)
 
-  const price = toUsdPricing({
+  const usdPricingForRecipient = await getDefiLlamaPrice({
+    network,
+    erc20Address:
+      !currencyContractAddress || currencyContractAddress === ethers.ZeroAddress
+        ? undefined
+        : currencyContractAddress,
     amount,
-    usdPricing,
-    decimals,
   })
 
   return {
     address: userAddress,
-    price,
+    price: {
+      amount: usdPricingForRecipient.priceInAmount!,
+      decimals: 0,
+      currency: 'usd',
+    },
   }
 }
