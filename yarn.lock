@@ -6194,15 +6194,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@decent.xyz/box-common@npm:3.3.5":
-  version: 3.3.5
-  resolution: "@decent.xyz/box-common@npm:3.3.5"
+"@decent.xyz/box-common@npm:3.3.6":
+  version: 3.3.6
+  resolution: "@decent.xyz/box-common@npm:3.3.6"
   peerDependencies:
     "@wagmi/core": 2.x
     react: ^18.0.0
     viem: 2.x
     wagmi: 2.x
-  checksum: 10/714f2d91ac762cfc2a2c4d89d6ae27d72daf56772aa77e357d36119de48771426c9fc3a112b12a298ba801984c80ba46fa43bb685f868fcd3522315f45bac353
+  checksum: 10/d0adb7aa15d7871ede8aa54b787357d6cc068a2d123088f0b8d1d89ac661a1230c35924f17a8e597096ed68ec5cf8b207ab82c00a4ae3f1a4a33b07aa898f68d
   languageName: node
   linkType: hard
 
@@ -7851,17 +7851,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/config-array@npm:^0.17.1":
-  version: 0.17.1
-  resolution: "@eslint/config-array@npm:0.17.1"
-  dependencies:
-    "@eslint/object-schema": "npm:^2.1.4"
-    debug: "npm:^4.3.1"
-    minimatch: "npm:^3.1.2"
-  checksum: 10/d837852445d3cfc62da5e0d94ab036aa4393751cf2ee71676df61ec77bffabaa73f87207bfa200b8d0e7e95b556704f29f35f2f22d63d1ce2e285db4a325a2df
-  languageName: node
-  linkType: hard
-
 "@eslint/config-array@npm:^0.18.0":
   version: 0.18.0
   resolution: "@eslint/config-array@npm:0.18.0"
@@ -7901,13 +7890,6 @@ __metadata:
   version: 9.11.1
   resolution: "@eslint/js@npm:9.11.1"
   checksum: 10/77b9c744bdf24e2ca1f99f671139767d6c31cb10d732cf22a85ef28f1f95f2a621cf204f572fd9fee67da6193ff2597a5d236cef3b557b07624230b622612339
-  languageName: node
-  linkType: hard
-
-"@eslint/js@npm:9.9.0":
-  version: 9.9.0
-  resolution: "@eslint/js@npm:9.9.0"
-  checksum: 10/9d6e94d0334aecaa7e5c78e654297d9b11679f56c8ec1b64db122cbecf64b5a04138617e901d0c79727d03abce8a898cce4288259435bde78460ebdab202998f
   languageName: node
   linkType: hard
 
@@ -8653,16 +8635,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gnosis-guild/zodiac-core@npm:2.0.3":
-  version: 2.0.3
-  resolution: "@gnosis-guild/zodiac-core@npm:2.0.3"
+"@gnosis-guild/zodiac-core@npm:2.0.4":
+  version: 2.0.4
+  resolution: "@gnosis-guild/zodiac-core@npm:2.0.4"
   dependencies:
     "@gnosis.pm/safe-contracts": "npm:1.3.0"
     "@openzeppelin/contracts": "npm:5.0.2"
     "@openzeppelin/contracts-upgradeable": "npm:5.0.2"
     ethers: "npm:^6.13.2"
     semver: "npm:^7.6.3"
-  checksum: 10/62742e7234468066279e603f554f48a392cb4267a875d95f0abdd964b3716468a802e47838c4056fbeedaea6b2619ade895f62dafa956e9abd0a720deffce642
+  checksum: 10/f6ab4afad18aea6873c7b5f8a4e2a23f703cffe725834b71d1bd2c8bc4f4c38303d2a8b085aaeda1386d9341a7d51e1bfb5ebb36db077e708175da417f0e09e2
   languageName: node
   linkType: hard
 
@@ -9989,9 +9971,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@matterlabs/hardhat-zksync-solc@npm:1.2.3":
-  version: 1.2.3
-  resolution: "@matterlabs/hardhat-zksync-solc@npm:1.2.3"
+"@matterlabs/hardhat-zksync-solc@npm:1.2.5":
+  version: 1.2.5
+  resolution: "@matterlabs/hardhat-zksync-solc@npm:1.2.5"
   dependencies:
     "@nomiclabs/hardhat-docker": "npm:^2.0.2"
     chai: "npm:^4.3.4"
@@ -10006,7 +9988,7 @@ __metadata:
     undici: "npm:^6.18.2"
   peerDependencies:
     hardhat: ^2.22.5
-  checksum: 10/87118d46702887725cc190368053b64813b5807162ff8fa8fc69925d2d0ef8043d178debb2413524d6edeaef686ab10b6c89e77a1e25603dd7a8da69b2eed355
+  checksum: 10/0452ad5504258fad2f2d10be40cc79bb0e65d3470af75f70f60e4a94bb92f238031a13587cda51a0dfd77ef1cb028145088e2628a02db6d7a5ac721bf2816bf0
   languageName: node
   linkType: hard
 
@@ -11911,9 +11893,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomicfoundation/hardhat-chai-matchers@npm:2.0.7":
-  version: 2.0.7
-  resolution: "@nomicfoundation/hardhat-chai-matchers@npm:2.0.7"
+"@nomicfoundation/hardhat-chai-matchers@npm:2.0.8":
+  version: 2.0.8
+  resolution: "@nomicfoundation/hardhat-chai-matchers@npm:2.0.8"
   dependencies:
     "@types/chai-as-promised": "npm:^7.1.3"
     chai-as-promised: "npm:^7.1.1"
@@ -11924,7 +11906,7 @@ __metadata:
     chai: ^4.2.0
     ethers: ^6.1.0
     hardhat: ^2.9.4
-  checksum: 10/7bc8d6e5fce13d9672c4d49cc90f7ca94ada3c177eb85167e5258bdaf3acf493603512aac08658ac6eb5dc3fb7a3164183abaaa4798484bb79a7ec9db2b775bd
+  checksum: 10/1e40d2ae1627d9c62c90e85f60d38a24768198b3f525659f958c44d395d751876be13198e20ffd2b3336b8650225652610f0c36f0e376c8ee6b0854bcd0f6bb0
   languageName: node
   linkType: hard
 
@@ -11954,16 +11936,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomicfoundation/hardhat-ignition-ethers@npm:0.15.5":
-  version: 0.15.5
-  resolution: "@nomicfoundation/hardhat-ignition-ethers@npm:0.15.5"
+"@nomicfoundation/hardhat-ignition-ethers@npm:0.15.6":
+  version: 0.15.6
+  resolution: "@nomicfoundation/hardhat-ignition-ethers@npm:0.15.6"
   peerDependencies:
     "@nomicfoundation/hardhat-ethers": ^3.0.4
-    "@nomicfoundation/hardhat-ignition": ^0.15.5
-    "@nomicfoundation/ignition-core": ^0.15.5
+    "@nomicfoundation/hardhat-ignition": ^0.15.6
+    "@nomicfoundation/ignition-core": ^0.15.6
     ethers: ^6.7.0
     hardhat: ^2.18.0
-  checksum: 10/af60b4e06796dbe69c3af6a30cc7dc388e8009c441eeaa2d98262aec0c29dec2d6a521314f1d396994b840b9caf78f2c47af505c48692fe98e2bfefb02373933
+  checksum: 10/f1008a69c27dde393b6d467ca4c77b1e85e51d90a039eb643e30a231c5de54a5174af80b3f1103ec5d3be385fc41be86da06f2d09479bc213372ac522835a5dc
   languageName: node
   linkType: hard
 
@@ -11995,14 +11977,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomicfoundation/hardhat-network-helpers@npm:1.0.11":
-  version: 1.0.11
-  resolution: "@nomicfoundation/hardhat-network-helpers@npm:1.0.11"
+"@nomicfoundation/hardhat-network-helpers@npm:1.0.12":
+  version: 1.0.12
+  resolution: "@nomicfoundation/hardhat-network-helpers@npm:1.0.12"
   dependencies:
     ethereumjs-util: "npm:^7.1.4"
   peerDependencies:
     hardhat: ^2.9.5
-  checksum: 10/ebf11dc9f6e2c1059eb9e3e5f6c78dd2e78e0b7364521dd492576cad5be1855934246d4b1e4945faf98f456299ff2f704b61eead8ab62d9376eeb098da4e2fe1
+  checksum: 10/6774bdaa76b6792b408dbdf9b4ff5c19315fa9d5be53e53d6b68cd56aba82d18cfa2548a71a2ced41542989bddd3ab4d11e009579d34678202e26f11c43c2a44
   languageName: node
   linkType: hard
 
@@ -12114,7 +12096,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomicfoundation/ignition-core@npm:0.15.5, @nomicfoundation/ignition-core@npm:^0.15.5":
+"@nomicfoundation/ignition-core@npm:0.15.6":
+  version: 0.15.6
+  resolution: "@nomicfoundation/ignition-core@npm:0.15.6"
+  dependencies:
+    "@ethersproject/address": "npm:5.6.1"
+    "@nomicfoundation/solidity-analyzer": "npm:^0.1.1"
+    cbor: "npm:^9.0.0"
+    debug: "npm:^4.3.2"
+    ethers: "npm:^6.7.0"
+    fs-extra: "npm:^10.0.0"
+    immer: "npm:10.0.2"
+    lodash: "npm:4.17.21"
+    ndjson: "npm:2.0.0"
+  checksum: 10/87c3302684d999361099132a568ceaa5eb8ba873fe416ca201027f1589e096576291fdbf53b9801aa6394dc88b374194aa9df14bf0422918dc4db316f62ce59f
+  languageName: node
+  linkType: hard
+
+"@nomicfoundation/ignition-core@npm:^0.15.5":
   version: 0.15.5
   resolution: "@nomicfoundation/ignition-core@npm:0.15.5"
   dependencies:
@@ -13812,40 +13811,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk-account-client@npm:1.14.3":
-  version: 1.14.3
-  resolution: "@openzeppelin/defender-sdk-account-client@npm:1.14.3"
+"@openzeppelin/defender-sdk-account-client@npm:^1.14.4":
+  version: 1.14.4
+  resolution: "@openzeppelin/defender-sdk-account-client@npm:1.14.4"
   dependencies:
-    "@openzeppelin/defender-sdk-base-client": "npm:1.14.3"
+    "@openzeppelin/defender-sdk-base-client": "npm:^1.14.4"
     axios: "npm:^1.7.2"
     lodash: "npm:^4.17.21"
-  checksum: 10/301058f52375ed6373d763ec37a8b8ff188853a96059852047ae0887334683964db71802c3e31cf33f022747e12131cba6e0252e3743a2fb9ee94c11f329f540
+  checksum: 10/510b1d0326511d5edb33aba3ea8ebcf238d0f3af076977a5b4642ff0ec8ee0812700f2439c9dbcde7e61ffcf2d5ae4a69f9fcc3a6ed0604ea12c8a8d58e3412a
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk-action-client@npm:1.14.3":
-  version: 1.14.3
-  resolution: "@openzeppelin/defender-sdk-action-client@npm:1.14.3"
+"@openzeppelin/defender-sdk-action-client@npm:^1.14.4":
+  version: 1.14.4
+  resolution: "@openzeppelin/defender-sdk-action-client@npm:1.14.4"
   dependencies:
-    "@openzeppelin/defender-sdk-base-client": "npm:1.14.3"
+    "@openzeppelin/defender-sdk-base-client": "npm:^1.14.4"
     axios: "npm:^1.7.2"
     dotenv: "npm:^16.3.1"
-    glob: "npm:^7.1.6"
+    glob: "npm:^11.0.0"
     jszip: "npm:^3.10.1"
     lodash: "npm:^4.17.21"
   bin:
     defender-action: lib/bin.js
-  checksum: 10/de64a6f4ff983ce9c28812eee8b2fd19f541015a4a6e95130a466b4e67918a13de715f1938174ef4b7b80b910843646561c77d8b461d6629a7ef551093716706
-  languageName: node
-  linkType: hard
-
-"@openzeppelin/defender-sdk-base-client@npm:1.14.3":
-  version: 1.14.3
-  resolution: "@openzeppelin/defender-sdk-base-client@npm:1.14.3"
-  dependencies:
-    amazon-cognito-identity-js: "npm:^6.3.6"
-    async-retry: "npm:^1.3.3"
-  checksum: 10/a926f2c716637473bbb70a51072ec4bb703f97838c9b48c5e1fcf6178e24ae5ccc2ca70ad4cc69043619432b7d53187ea131282b98a14113b605c9c1756b13eb
+  checksum: 10/4fbc8df7c79f1687a55585cfa3c4a96f521e11b9a6334ca190390119f0fdebcfc873409dd9a9c5fd7b8d06b2d361612a3a73e90f40657d62555ec5e4e43f49bf
   languageName: node
   linkType: hard
 
@@ -13866,17 +13855,6 @@ __metadata:
     amazon-cognito-identity-js: "npm:^6.3.6"
     async-retry: "npm:^1.3.3"
   checksum: 10/0f8e265f9f2ccaa87e35a6973b5ac481900be1939e0ed351b5c63b23cc23d322c04e540a3787746929f49a53009bd0a1ad835f9d834126fc5c606e1513564bd6
-  languageName: node
-  linkType: hard
-
-"@openzeppelin/defender-sdk-deploy-client@npm:1.14.3":
-  version: 1.14.3
-  resolution: "@openzeppelin/defender-sdk-deploy-client@npm:1.14.3"
-  dependencies:
-    "@openzeppelin/defender-sdk-base-client": "npm:1.14.3"
-    axios: "npm:^1.7.2"
-    lodash: "npm:^4.17.21"
-  checksum: 10/707339609d04ac7eca760c435f013a23f1246efae0ea370de079995ddb19a6e37e560272dd94cdd15d0bfcdb0758d4619e6fa1fd7de2262b5dfded330d3e9ae6
   languageName: node
   linkType: hard
 
@@ -13902,26 +13880,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk-monitor-client@npm:1.14.3":
-  version: 1.14.3
-  resolution: "@openzeppelin/defender-sdk-monitor-client@npm:1.14.3"
+"@openzeppelin/defender-sdk-key-value-store-client@npm:^1.14.4":
+  version: 1.14.4
+  resolution: "@openzeppelin/defender-sdk-key-value-store-client@npm:1.14.4"
   dependencies:
-    "@openzeppelin/defender-sdk-base-client": "npm:1.14.3"
+    "@openzeppelin/defender-sdk-base-client": "npm:^1.14.4"
     axios: "npm:^1.7.2"
-    ethers: "npm:^6.9.0"
+    fs-extra: "npm:^11.2.0"
     lodash: "npm:^4.17.21"
-  checksum: 10/38fae2fcf81dae50859523b8ab67e801c527b14a75cfe5bae1f91ab048a139bb0735b08ca208d27155c31f10e6350d1c2e2bf2234dd4c5a343d66f2486e81c94
+  checksum: 10/6ab869f7cbf89f1bfbf43c915ceacfb3cb25db0833c84e8bf767a035dc3f67c17f1a41b8b0804be5318a71173dde35bf28f361a344dad45ed2d323b35aace1fd
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk-network-client@npm:1.14.3":
-  version: 1.14.3
-  resolution: "@openzeppelin/defender-sdk-network-client@npm:1.14.3"
+"@openzeppelin/defender-sdk-monitor-client@npm:^1.14.4":
+  version: 1.14.4
+  resolution: "@openzeppelin/defender-sdk-monitor-client@npm:1.14.4"
   dependencies:
-    "@openzeppelin/defender-sdk-base-client": "npm:1.14.3"
+    "@openzeppelin/defender-sdk-base-client": "npm:^1.14.4"
     axios: "npm:^1.7.2"
+    ethers: "npm:^6.9.0"
     lodash: "npm:^4.17.21"
-  checksum: 10/a9607fe0827bf45ced483bf9dbd24f92d7854c1bbd12efa1d49d057faac4db90e6420918a18a9e5b3c5a667d5974720cf80a0f13b3a42f60d2e84e995a791e1e
+  checksum: 10/08abe8c3dcc441f5f98b021cf3631911b1af9b97140913a1141768b6e0c1550fa1eeab3551e5ab61d2986261fb8b18bfbc6cb5cc16c352f801c36e46b9fbada4
   languageName: node
   linkType: hard
 
@@ -13947,79 +13926,81 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk-notification-channel-client@npm:1.14.3":
-  version: 1.14.3
-  resolution: "@openzeppelin/defender-sdk-notification-channel-client@npm:1.14.3"
+"@openzeppelin/defender-sdk-notification-channel-client@npm:^1.14.4":
+  version: 1.14.4
+  resolution: "@openzeppelin/defender-sdk-notification-channel-client@npm:1.14.4"
   dependencies:
-    "@openzeppelin/defender-sdk-base-client": "npm:1.14.3"
+    "@openzeppelin/defender-sdk-base-client": "npm:^1.14.4"
     axios: "npm:^1.7.2"
     lodash: "npm:^4.17.21"
-  checksum: 10/e2ff9b9312feed7b81f6d1ed840fb7957cc1aa5b2b7ea4bdd386c5a4249743250a4771aec24e4be48b46656119c28f1ea6dd1af0f95e46123e4fcb98b82e9d9d
+  checksum: 10/6356d920dfaf3cf77e37de0113a55bad65c8047d8038c39d8bb369dc329e26ebbddca500d69865ca31db18f8e6f7da87283822f1a8700f31ab0180b43804c936
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk-proposal-client@npm:1.14.3":
-  version: 1.14.3
-  resolution: "@openzeppelin/defender-sdk-proposal-client@npm:1.14.3"
+"@openzeppelin/defender-sdk-proposal-client@npm:^1.14.4":
+  version: 1.14.4
+  resolution: "@openzeppelin/defender-sdk-proposal-client@npm:1.14.4"
   dependencies:
-    "@openzeppelin/defender-sdk-base-client": "npm:1.14.3"
+    "@openzeppelin/defender-sdk-base-client": "npm:^1.14.4"
     axios: "npm:^1.7.2"
     ethers: "npm:^6.9.0"
     lodash: "npm:^4.17.21"
-  checksum: 10/0a7c3f35e844a3f22ac1f90acddc56077af9fa27ad042692dcfca958de6ad5745a7286d2e59f68d720e18a12f476d9a2fde8c796b7f9330c320e22b99f157ced
+  checksum: 10/4528554190d92f2c5d133964aaf9bd80372650e6a82e481d30f82471a3e2b43f6215202c86169fea42b209c5ceffd1475a1f14f4d9b17e33754d0bfc72e4f3bf
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk-relay-client@npm:1.14.3":
-  version: 1.14.3
-  resolution: "@openzeppelin/defender-sdk-relay-client@npm:1.14.3"
+"@openzeppelin/defender-sdk-relay-client@npm:^1.14.4":
+  version: 1.14.4
+  resolution: "@openzeppelin/defender-sdk-relay-client@npm:1.14.4"
   dependencies:
-    "@openzeppelin/defender-sdk-base-client": "npm:1.14.3"
+    "@openzeppelin/defender-sdk-base-client": "npm:^1.14.4"
     axios: "npm:^1.7.2"
     lodash: "npm:^4.17.21"
-  checksum: 10/722e91a35739001846a601ab587fc85ce878bcb24bb2e639e51df50baf8082891c46448a9de481210e720a83c4d0919700ae92b736315243242578e98e6bd003
+  checksum: 10/b430fbc3aab1ce659e3ce70c70f0630f38937f4597020331108bd5761517ad5a393c8109931cfd247bd43fb9ceed2e385f67ab3b12d848a43313e87f9217d15c
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk-relay-signer-client@npm:1.14.3":
-  version: 1.14.3
-  resolution: "@openzeppelin/defender-sdk-relay-signer-client@npm:1.14.3"
+"@openzeppelin/defender-sdk-relay-signer-client@npm:^1.14.4":
+  version: 1.14.4
+  resolution: "@openzeppelin/defender-sdk-relay-signer-client@npm:1.14.4"
   dependencies:
     "@ethersproject/bignumber": "npm:^5.7.0"
     "@ethersproject/bytes": "npm:^5.7.0"
     "@ethersproject/logger": "npm:^5.7.0"
     "@ethersproject/networks": "npm:^5.7.1"
     "@ethersproject/properties": "npm:^5.7.0"
+    "@ethersproject/providers": "npm:^5.7.2"
     "@ethersproject/strings": "npm:^5.7.0"
-    "@openzeppelin/defender-sdk-base-client": "npm:1.14.3"
+    "@openzeppelin/defender-sdk-base-client": "npm:^1.14.4"
     amazon-cognito-identity-js: "npm:^6.3.6"
     axios: "npm:^1.7.2"
     ethers: "npm:^6.9.0"
     lodash: "npm:^4.17.21"
   peerDependencies:
     web3: ^1.10.0
-    web3-core: ^1.10.3
+    web3-core: ^1.10.4
     web3-core-helpers: ^1.10.0
     web3-utils: ^1.10.0
-  checksum: 10/787926115eda7fedebc07e3a0ae86ebb50334854fa4e6b6de1f4e0ff025f5b69ba140066dc32f4b05209673fd9f9d8d25e583d23c5c093310b56c672c2f42fa5
+  checksum: 10/4360d187146494b907e2e5e25f4251b172cb53b2f2fedd1c25efa0a1b94853db24dc90808d7fcef2d5d7d48bc3c882ef261f9b62c6b0af6620737f802ca318e2
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk@npm:1.14.3":
-  version: 1.14.3
-  resolution: "@openzeppelin/defender-sdk@npm:1.14.3"
+"@openzeppelin/defender-sdk@npm:1.14.4":
+  version: 1.14.4
+  resolution: "@openzeppelin/defender-sdk@npm:1.14.4"
   dependencies:
-    "@openzeppelin/defender-sdk-account-client": "npm:1.14.3"
-    "@openzeppelin/defender-sdk-action-client": "npm:1.14.3"
-    "@openzeppelin/defender-sdk-base-client": "npm:1.14.3"
-    "@openzeppelin/defender-sdk-deploy-client": "npm:1.14.3"
-    "@openzeppelin/defender-sdk-monitor-client": "npm:1.14.3"
-    "@openzeppelin/defender-sdk-network-client": "npm:1.14.3"
-    "@openzeppelin/defender-sdk-notification-channel-client": "npm:1.14.3"
-    "@openzeppelin/defender-sdk-proposal-client": "npm:1.14.3"
-    "@openzeppelin/defender-sdk-relay-client": "npm:1.14.3"
-    "@openzeppelin/defender-sdk-relay-signer-client": "npm:1.14.3"
-  checksum: 10/e13322c23210b192b4dc201e227a33e25dc1c6844a6f2b6703c9da24c4aded488bf78e0f81d7d007830be7bfded491bec844be2e7904e9e9b55e58a74d46a336
+    "@openzeppelin/defender-sdk-account-client": "npm:^1.14.4"
+    "@openzeppelin/defender-sdk-action-client": "npm:^1.14.4"
+    "@openzeppelin/defender-sdk-base-client": "npm:^1.14.4"
+    "@openzeppelin/defender-sdk-deploy-client": "npm:^1.14.4"
+    "@openzeppelin/defender-sdk-key-value-store-client": "npm:^1.14.4"
+    "@openzeppelin/defender-sdk-monitor-client": "npm:^1.14.4"
+    "@openzeppelin/defender-sdk-network-client": "npm:^1.14.4"
+    "@openzeppelin/defender-sdk-notification-channel-client": "npm:^1.14.4"
+    "@openzeppelin/defender-sdk-proposal-client": "npm:^1.14.4"
+    "@openzeppelin/defender-sdk-relay-client": "npm:^1.14.4"
+    "@openzeppelin/defender-sdk-relay-signer-client": "npm:^1.14.4"
+  checksum: 10/64d12b1e453971f9bcc3f7ebbb6c97d7f5e2c78242f3d7da5f9e447ac94bb15af61843f8a257759e1d903933b91a024081fe7bbed85310784f0ae17b119b7fbf
   languageName: node
   linkType: hard
 
@@ -14115,26 +14096,6 @@ __metadata:
     "@ethersproject/constants": "npm:^5.7.0"
     "@ethersproject/keccak256": "npm:^5.7.0"
   checksum: 10/f90bb5ac243ff3340a3be7a0583c054dc263089cad2187b976d9148633e373336efa400458d8037897e0716daa88f273bed7b822359f37f42b43309698f7692b
-  languageName: node
-  linkType: hard
-
-"@openzeppelin/upgrades-core@npm:1.37.0":
-  version: 1.37.0
-  resolution: "@openzeppelin/upgrades-core@npm:1.37.0"
-  dependencies:
-    "@nomicfoundation/slang": "npm:^0.17.0"
-    cbor: "npm:^9.0.0"
-    chalk: "npm:^4.1.0"
-    compare-versions: "npm:^6.0.0"
-    debug: "npm:^4.1.1"
-    ethereumjs-util: "npm:^7.0.3"
-    minimatch: "npm:^9.0.5"
-    minimist: "npm:^1.2.7"
-    proper-lockfile: "npm:^4.1.1"
-    solidity-ast: "npm:^0.4.51"
-  bin:
-    openzeppelin-upgrades-core: dist/cli/cli.js
-  checksum: 10/abcd99124c67f8ddf1c26073caca2acf99bfc5fa1e8c847f568a9f9c9c235b20c7d73fd14bd42ab121c217561be087dc7e47560cc4076f7d8a030af46cbf45c5
   languageName: node
   linkType: hard
 
@@ -15577,23 +15538,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/protocol-kit@npm:4.1.0":
-  version: 4.1.0
-  resolution: "@safe-global/protocol-kit@npm:4.1.0"
-  dependencies:
-    "@noble/hashes": "npm:^1.3.3"
-    "@safe-global/safe-core-sdk-types": "npm:^5.1.0"
-    "@safe-global/safe-deployments": "npm:^1.37.3"
-    "@safe-global/safe-modules-deployments": "npm:^2.2.1"
-    abitype: "npm:^1.0.2"
-    ethereumjs-util: "npm:^7.1.5"
-    ethers: "npm:^6.13.1"
-    semver: "npm:^7.6.2"
-  checksum: 10/60d1d4870847f8ddb292998dd53304bdcdbfb1e780b9f06ddbe9c4633957038e36fafb11f2e9348d3f1ad1bc0fcf60fdabadd1f114e58c3d10f91ae84b1576d3
-  languageName: node
-  linkType: hard
-
-"@safe-global/protocol-kit@npm:^4.1.1":
+"@safe-global/protocol-kit@npm:4.1.1, @safe-global/protocol-kit@npm:^4.1.1":
   version: 4.1.1
   resolution: "@safe-global/protocol-kit@npm:4.1.1"
   dependencies:
@@ -15615,15 +15560,6 @@ __metadata:
   dependencies:
     abitype: "npm:^1.0.2"
   checksum: 10/2ad129abe2367084c75b906dfa06bc4c2b43413fc00048164168b9fd9336a4ea7494b624d61282963062a20e6c6fe45ac28cd9c16c8b787f26ce19f0d8d054e9
-  languageName: node
-  linkType: hard
-
-"@safe-global/safe-deployments@npm:^1.37.3":
-  version: 1.37.3
-  resolution: "@safe-global/safe-deployments@npm:1.37.3"
-  dependencies:
-    semver: "npm:^7.6.2"
-  checksum: 10/3d1fcaac850a1d1100eaa5ff753c88c9bb889c678bb09248323c6b0c9d6228225a88be47973a89bb32829fe2d13ed17c21f854b9fdc29cc1b3c734021761f15c
   languageName: node
   linkType: hard
 
@@ -19236,10 +19172,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/mocha@npm:10.0.7":
-  version: 10.0.7
-  resolution: "@types/mocha@npm:10.0.7"
-  checksum: 10/4494871e8a867633d818b00d6f29d47379f9e23655b89ca728166ff2f0a406b97d376fcc3e7a570a3840f72abb03c886c5e66f50ae0f018376e4dc10ed179564
+"@types/mocha@npm:10.0.8":
+  version: 10.0.8
+  resolution: "@types/mocha@npm:10.0.8"
+  checksum: 10/c9ba73a6c444085193a84da4bfb8d2af64cb1baf6f678ed5a40b782171092dc0e4aebeaf4eba00fc48f22d328b3e3075a566ca15f8da1e0765cc3cf7657621d2
   languageName: node
   linkType: hard
 
@@ -20393,10 +20329,10 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/types": "workspace:^"
     copyfiles: "npm:2.4.1"
-    eslint: "npm:9.9.0"
+    eslint: "npm:9.11.1"
     fs-extra: "npm:11.2.0"
     hardhat: "npm:2.22.9"
-    typescript: "npm:5.5.4"
+    typescript: "npm:5.6.2"
   languageName: unknown
   linkType: soft
 
@@ -20509,20 +20445,20 @@ __metadata:
   dependencies:
     "@arbitrum/sdk": "npm:4.0.1"
     "@eth-optimism/sdk": "npm:3.3.2"
-    "@gnosis-guild/zodiac-core": "npm:2.0.3"
+    "@gnosis-guild/zodiac-core": "npm:2.0.4"
     "@gnosis.pm/zodiac": "npm:4.0.3"
     "@matterlabs/hardhat-zksync-deploy": "npm:1.5.0"
-    "@matterlabs/hardhat-zksync-solc": "npm:1.2.3"
+    "@matterlabs/hardhat-zksync-solc": "npm:1.2.5"
     "@matterlabs/hardhat-zksync-upgradable": "npm:1.5.2"
     "@matterlabs/hardhat-zksync-verify": "npm:1.6.0"
     "@nomicfoundation/hardhat-ethers": "npm:3.0.8"
-    "@nomicfoundation/hardhat-network-helpers": "npm:1.0.11"
+    "@nomicfoundation/hardhat-network-helpers": "npm:1.0.12"
     "@nomicfoundation/hardhat-verify": "npm:2.0.9"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@openzeppelin/hardhat-upgrades": "npm:3.2.1"
-    "@openzeppelin/upgrades-core": "npm:1.37.0"
+    "@openzeppelin/upgrades-core": "npm:1.38.0"
     "@safe-global/api-kit": "npm:2.4.6"
-    "@safe-global/protocol-kit": "npm:4.1.0"
+    "@safe-global/protocol-kit": "npm:4.1.1"
     "@tenderly/hardhat-tenderly": "npm:2.3.0"
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
@@ -20535,7 +20471,7 @@ __metadata:
     ethers-multisend: "npm:3.1.0"
     fs-extra: "npm:11.2.0"
     hardhat: "npm:2.22.9"
-    zksync-ethers: "npm:6.12.0"
+    zksync-ethers: "npm:6.13.0"
   languageName: unknown
   linkType: soft
 
@@ -20544,7 +20480,7 @@ __metadata:
   resolution: "@unlock-protocol/hardhat-helpers@workspace:packages/hardhat-helpers"
   dependencies:
     "@matterlabs/hardhat-zksync-deploy": "npm:1.5.0"
-    "@matterlabs/hardhat-zksync-solc": "npm:1.2.3"
+    "@matterlabs/hardhat-zksync-solc": "npm:1.2.5"
     "@matterlabs/hardhat-zksync-upgradable": "npm:1.5.2"
     "@matterlabs/hardhat-zksync-verify": "npm:1.6.0"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
@@ -20560,7 +20496,7 @@ __metadata:
     hardhat: "npm:2.22.9"
     tsup: "npm:8.2.4"
     typescript: "npm:5.5.4"
-    zksync-ethers: "npm:6.12.0"
+    zksync-ethers: "npm:6.13.0"
   languageName: unknown
   linkType: soft
 
@@ -20568,15 +20504,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/hardhat-plugin@workspace:packages/hardhat-plugin"
   dependencies:
-    "@nomicfoundation/hardhat-chai-matchers": "npm:2.0.7"
+    "@nomicfoundation/hardhat-chai-matchers": "npm:2.0.8"
     "@nomicfoundation/hardhat-ethers": "npm:3.0.8"
     "@nomicfoundation/hardhat-ignition": "npm:0.15.5"
-    "@nomicfoundation/hardhat-ignition-ethers": "npm:0.15.5"
+    "@nomicfoundation/hardhat-ignition-ethers": "npm:0.15.6"
     "@nomicfoundation/hardhat-toolbox": "npm:5.0.0"
-    "@nomicfoundation/ignition-core": "npm:0.15.5"
+    "@nomicfoundation/ignition-core": "npm:0.15.6"
     "@typechain/ethers-v6": "npm:0.5.1"
     "@typechain/hardhat": "npm:9.1.0"
-    "@types/mocha": "npm:10.0.7"
+    "@types/mocha": "npm:10.0.8"
     "@types/node": "npm:20.16.2"
     "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/eslint-config": "workspace:^"
@@ -20610,7 +20546,7 @@ __metadata:
     "@logtail/node": "npm:0.4.21"
     "@logtail/winston": "npm:0.4.21"
     "@nuintun/qrcode": "npm:4.1.5"
-    "@openzeppelin/defender-sdk": "npm:1.14.3"
+    "@openzeppelin/defender-sdk": "npm:1.14.4"
     "@openzeppelin/merkle-tree": "npm:1.0.7"
     "@resvg/resvg-js": "npm:2.6.2"
     "@sentry/node": "npm:7.118.0"
@@ -20699,13 +20635,13 @@ __metadata:
   dependencies:
     "@unlock-protocol/tsconfig": "workspace:^"
     "@unlock-protocol/types": "workspace:^"
-    eslint: "npm:9.9.1"
+    eslint: "npm:9.11.1"
     eslint-plugin-sort-keys-fix: "npm:1.1.2"
     ethers: "npm:6.13.2"
     fs-extra: "npm:11.2.0"
-    tsup: "npm:8.2.4"
+    tsup: "npm:8.3.0"
     tsx: "npm:4.19.0"
-    typescript: "npm:5.5.4"
+    typescript: "npm:5.6.2"
   languageName: unknown
   linkType: soft
 
@@ -20752,7 +20688,7 @@ __metadata:
   dependencies:
     "@connext/interfaces": "npm:2.0.5"
     "@nomicfoundation/hardhat-ethers": "npm:3.0.8"
-    "@nomicfoundation/hardhat-network-helpers": "npm:1.0.11"
+    "@nomicfoundation/hardhat-network-helpers": "npm:1.0.12"
     "@nomicfoundation/hardhat-verify": "npm:2.0.9"
     "@openzeppelin/contracts": "npm:5.0.2"
     "@openzeppelin/contracts-upgradeable": "npm:4.9.6"
@@ -20885,7 +20821,7 @@ __metadata:
     "@coinbase/waas-sdk-web": "npm:3.3.3"
     "@coinbase/wallet-sdk": "npm:4.1.0"
     "@crossmint/client-sdk-react-ui": "npm:1.2.2"
-    "@decent.xyz/box-common": "npm:3.3.5"
+    "@decent.xyz/box-common": "npm:3.3.6"
     "@enzoferey/ethers-error-parser": "npm:0.2.3"
     "@guildxyz/sdk": "npm:2.6.8"
     "@headlessui/react": "npm:1.7.19"
@@ -20974,7 +20910,7 @@ __metadata:
     vitest-localstorage-mock: "npm:0.1.2"
     xstate: "npm:5.14.0"
     zod: "npm:3.23.8"
-    zod-to-json-schema: "npm:3.23.2"
+    zod-to-json-schema: "npm:3.23.3"
   peerDependencies:
     react: 18.3.1
     react-dom: 18.3.1
@@ -21008,15 +20944,15 @@ __metadata:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/types": "workspace:./packages/types"
-    eslint: "npm:9.9.1"
+    eslint: "npm:9.11.1"
     ethers: "npm:6.13.2"
     graphql: "npm:16.9.0"
     graphql-request: "npm:6.1.0"
     hardhat: "npm:2.22.9"
     prettier: "npm:3.3.3"
     siwe: "npm:2.3.2"
-    tsup: "npm:8.2.4"
-    typescript: "npm:5.5.4"
+    tsup: "npm:8.3.0"
+    typescript: "npm:5.6.2"
     vitest: "npm:2.1.1"
   peerDependencies:
     axios: 1.7.4
@@ -30695,55 +30631,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:9.9.0":
-  version: 9.9.0
-  resolution: "eslint@npm:9.9.0"
-  dependencies:
-    "@eslint-community/eslint-utils": "npm:^4.2.0"
-    "@eslint-community/regexpp": "npm:^4.11.0"
-    "@eslint/config-array": "npm:^0.17.1"
-    "@eslint/eslintrc": "npm:^3.1.0"
-    "@eslint/js": "npm:9.9.0"
-    "@humanwhocodes/module-importer": "npm:^1.0.1"
-    "@humanwhocodes/retry": "npm:^0.3.0"
-    "@nodelib/fs.walk": "npm:^1.2.8"
-    ajv: "npm:^6.12.4"
-    chalk: "npm:^4.0.0"
-    cross-spawn: "npm:^7.0.2"
-    debug: "npm:^4.3.2"
-    escape-string-regexp: "npm:^4.0.0"
-    eslint-scope: "npm:^8.0.2"
-    eslint-visitor-keys: "npm:^4.0.0"
-    espree: "npm:^10.1.0"
-    esquery: "npm:^1.5.0"
-    esutils: "npm:^2.0.2"
-    fast-deep-equal: "npm:^3.1.3"
-    file-entry-cache: "npm:^8.0.0"
-    find-up: "npm:^5.0.0"
-    glob-parent: "npm:^6.0.2"
-    ignore: "npm:^5.2.0"
-    imurmurhash: "npm:^0.1.4"
-    is-glob: "npm:^4.0.0"
-    is-path-inside: "npm:^3.0.3"
-    json-stable-stringify-without-jsonify: "npm:^1.0.1"
-    levn: "npm:^0.4.1"
-    lodash.merge: "npm:^4.6.2"
-    minimatch: "npm:^3.1.2"
-    natural-compare: "npm:^1.4.0"
-    optionator: "npm:^0.9.3"
-    strip-ansi: "npm:^6.0.1"
-    text-table: "npm:^0.2.0"
-  peerDependencies:
-    jiti: "*"
-  peerDependenciesMeta:
-    jiti:
-      optional: true
-  bin:
-    eslint: bin/eslint.js
-  checksum: 10/88616421c9cb873d8f116d1ef6aa665cc898d35361351739c8041f11c30fe004bcfa641a2b6074655393eac7e7e5f9a661675dd1c01a24cf1e65cc6b556e06b3
-  languageName: node
-  linkType: hard
-
 "eslint@npm:9.9.1":
   version: 9.9.1
   resolution: "eslint@npm:9.9.1"
@@ -32034,6 +31921,18 @@ __metadata:
     picomatch:
       optional: true
   checksum: 10/fabde9004433983ba22fac2578c0b2835a498e66518df9d7994b1564a5f3f015ac974efaff02975b56966e01a684f600fe4cce0bb2f146aedec4dcf35d6c5906
+  languageName: node
+  linkType: hard
+
+"fdir@npm:^6.4.0":
+  version: 6.4.0
+  resolution: "fdir@npm:6.4.0"
+  peerDependencies:
+    picomatch: ^3 || ^4
+  peerDependenciesMeta:
+    picomatch:
+      optional: true
+  checksum: 10/e45d7c5d349ef4a4835c788944dae7ac5de7aab159511bc3ce8bc62164d4a25cb915c6d2f400886a9ed6f9d9cf38de394b71cb73935408c90eeafa0a8f6cc377
   languageName: node
   linkType: hard
 
@@ -33376,6 +33275,22 @@ __metadata:
   bin:
     glob: dist/esm/bin.mjs
   checksum: 10/e412776b5952a818eba790c830bea161c9a56813fd767d8c4c49f855603b1fb962b3e73f1f627a47298a57d2992b9f0f2fe15cf93e74ecaaa63fb45d63fdd090
+  languageName: node
+  linkType: hard
+
+"glob@npm:^11.0.0":
+  version: 11.0.0
+  resolution: "glob@npm:11.0.0"
+  dependencies:
+    foreground-child: "npm:^3.1.0"
+    jackspeak: "npm:^4.0.1"
+    minimatch: "npm:^10.0.0"
+    minipass: "npm:^7.1.2"
+    package-json-from-dist: "npm:^1.0.0"
+    path-scurry: "npm:^2.0.0"
+  bin:
+    glob: dist/esm/bin.mjs
+  checksum: 10/e66939201d11ae30fe97e3364ac2be5c59d6c9bfce18ac633edfad473eb6b46a7553f6f73658f67caaf6cccc1df1ae336298a45e9021fa5695fd78754cc1603e
   languageName: node
   linkType: hard
 
@@ -35204,12 +35119,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"husky@npm:9.1.5":
-  version: 9.1.5
-  resolution: "husky@npm:9.1.5"
+"husky@npm:9.1.6":
+  version: 9.1.6
+  resolution: "husky@npm:9.1.6"
   bin:
     husky: bin.js
-  checksum: 10/21a3036dd03141c41347693bde301c62502b4e3bffb87310e7e42b3011c2e55691af2e4a9a5f39bd94e6b1d69e3cfc26ec636d8e164e19737b26f11c556caf10
+  checksum: 10/421ccd8850378231aaefd70dbe9e4f1549b84ffe3a6897f93a202242bbc04e48bd498169aef43849411105d9fcf7c192b757d42661e28d06b934a609a4eb8771
   languageName: node
   linkType: hard
 
@@ -36973,6 +36888,15 @@ __metadata:
     "@pkgjs/parseargs":
       optional: true
   checksum: 10/5032c43c0c1fb92e72846ce496df559214253bc6870c90399cbd7858571c53169d9494b7c152df04abcb75f2fb5e9cffe65651c67d573380adf3a482b150d84b
+  languageName: node
+  linkType: hard
+
+"jackspeak@npm:^4.0.1":
+  version: 4.0.2
+  resolution: "jackspeak@npm:4.0.2"
+  dependencies:
+    "@isaacs/cliui": "npm:^8.0.2"
+  checksum: 10/d9722f0e55f6c322c57aedf094c405f4201b834204629817187953988075521cfddb23df83e2a7b845723ca7eb0555068c5ce1556732e9c275d32a531881efa8
   languageName: node
   linkType: hard
 
@@ -38901,6 +38825,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lru-cache@npm:^11.0.0":
+  version: 11.0.1
+  resolution: "lru-cache@npm:11.0.1"
+  checksum: 10/26688a1b2a4d7fb97e9ea1ffb15348f1ab21b7110496814f5ce9190d50258fbba8c1444ae7232876deae1fc54adb230aa63dd1efc5bd47f240620ba8bf218041
+  languageName: node
+  linkType: hard
+
 "lru-cache@npm:^5.1.1":
   version: 5.1.1
   resolution: "lru-cache@npm:5.1.1"
@@ -40485,6 +40416,15 @@ __metadata:
   dependencies:
     brace-expansion: "npm:^2.0.1"
   checksum: 10/c81b47d28153e77521877649f4bab48348d10938df9e8147a58111fe00ef89559a2938de9f6632910c4f7bf7bb5cd81191a546167e58d357f0cfb1e18cecc1c5
+  languageName: node
+  linkType: hard
+
+"minimatch@npm:^10.0.0":
+  version: 10.0.1
+  resolution: "minimatch@npm:10.0.1"
+  dependencies:
+    brace-expansion: "npm:^2.0.1"
+  checksum: 10/082e7ccbc090d5f8c4e4e029255d5a1d1e3af37bda837da2b8b0085b1503a1210c91ac90d9ebfe741d8a5f286ece820a1abb4f61dc1f82ce602a055d461d93f3
   languageName: node
   linkType: hard
 
@@ -43428,6 +43368,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"path-scurry@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "path-scurry@npm:2.0.0"
+  dependencies:
+    lru-cache: "npm:^11.0.0"
+    minipass: "npm:^7.1.2"
+  checksum: 10/285ae0c2d6c34ae91dc1d5378ede21981c9a2f6de1ea9ca5a88b5a270ce9763b83dbadc7a324d512211d8d36b0c540427d3d0817030849d97a60fa840a2c59ec
+  languageName: node
+  linkType: hard
+
 "path-to-regexp@npm:0.1.10":
   version: 0.1.10
   resolution: "path-to-regexp@npm:0.1.10"
@@ -43740,6 +43690,13 @@ __metadata:
   version: 2.3.1
   resolution: "picomatch@npm:2.3.1"
   checksum: 10/60c2595003b05e4535394d1da94850f5372c9427ca4413b71210f437f7b2ca091dbd611c45e8b37d10036fa8eade25c1b8951654f9d3973bfa66a2ff4d3b08bc
+  languageName: node
+  linkType: hard
+
+"picomatch@npm:^4.0.2":
+  version: 4.0.2
+  resolution: "picomatch@npm:4.0.2"
+  checksum: 10/ce617b8da36797d09c0baacb96ca8a44460452c89362d7cb8f70ca46b4158ba8bc3606912de7c818eb4a939f7f9015cef3c766ec8a0c6bfc725fdc078e39c717
   languageName: node
   linkType: hard
 
@@ -50921,6 +50878,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tinyglobby@npm:^0.2.1":
+  version: 0.2.9
+  resolution: "tinyglobby@npm:0.2.9"
+  dependencies:
+    fdir: "npm:^6.4.0"
+    picomatch: "npm:^4.0.2"
+  checksum: 10/4570dacefa7f7371f49e52c8e4b7c4638d2cab9ee2903e1142c3eff4cfe71d1b8ab6cc55f65590a3232c27f8c0bcec794e4c2f02a4370fc79f3f4f026b5d84e7
+  languageName: node
+  linkType: hard
+
 "tinypool@npm:^1.0.0":
   version: 1.0.1
   resolution: "tinypool@npm:1.0.1"
@@ -51520,6 +51487,47 @@ __metadata:
     tsup: dist/cli-default.js
     tsup-node: dist/cli-node.js
   checksum: 10/89613c3490797f7e107c55f961e2681d455b45a3acfe567dd3825d7ccd14b91f3cf8462f389b6e5ed7e9dd96266adc60830256d52f1bd5d443a1db504c9a7912
+  languageName: node
+  linkType: hard
+
+"tsup@npm:8.3.0":
+  version: 8.3.0
+  resolution: "tsup@npm:8.3.0"
+  dependencies:
+    bundle-require: "npm:^5.0.0"
+    cac: "npm:^6.7.14"
+    chokidar: "npm:^3.6.0"
+    consola: "npm:^3.2.3"
+    debug: "npm:^4.3.5"
+    esbuild: "npm:^0.23.0"
+    execa: "npm:^5.1.1"
+    joycon: "npm:^3.1.1"
+    picocolors: "npm:^1.0.1"
+    postcss-load-config: "npm:^6.0.1"
+    resolve-from: "npm:^5.0.0"
+    rollup: "npm:^4.19.0"
+    source-map: "npm:0.8.0-beta.0"
+    sucrase: "npm:^3.35.0"
+    tinyglobby: "npm:^0.2.1"
+    tree-kill: "npm:^1.2.2"
+  peerDependencies:
+    "@microsoft/api-extractor": ^7.36.0
+    "@swc/core": ^1
+    postcss: ^8.4.12
+    typescript: ">=4.5.0"
+  peerDependenciesMeta:
+    "@microsoft/api-extractor":
+      optional: true
+    "@swc/core":
+      optional: true
+    postcss:
+      optional: true
+    typescript:
+      optional: true
+  bin:
+    tsup: dist/cli-default.js
+    tsup-node: dist/cli-node.js
+  checksum: 10/e69571253d436c822219b4dcbde927b1c083a9b21d50aef463742c5d4bb0e69bd6ea8515a439d08ab0fb0a982126b83b7068e5d150d3c1be86d752a1b730f8f1
   languageName: node
   linkType: hard
 
@@ -52373,7 +52381,7 @@ __metadata:
     eslint-plugin-prettier: "npm:5.2.1"
     eslint-plugin-sort-keys-fix: "npm:1.1.2"
     eslint-plugin-vitest: "npm:0.5.4"
-    husky: "npm:9.1.5"
+    husky: "npm:9.1.6"
     lint-staged: "npm:15.2.9"
     node-gyp: "npm:10.2.0"
     prettier: "npm:3.3.3"
@@ -54716,12 +54724,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zksync-ethers@npm:6.12.0":
-  version: 6.12.0
-  resolution: "zksync-ethers@npm:6.12.0"
+"zksync-ethers@npm:6.13.0":
+  version: 6.13.0
+  resolution: "zksync-ethers@npm:6.13.0"
   peerDependencies:
     ethers: ^6.7.1
-  checksum: 10/06421c5ace5640b308f6ac89dfce973e50ee887c06fa87ed41d8eda44cb6f164be9730933b30542c826409695585f9a39b8308f5a10a6aaec8e49d56697720d6
+  checksum: 10/2538a62be4879be60db7e38395fab50339f83ef67ac9f531c8b724470ba3cc078621f152b094553a27bcd1509878a1934ddc8ceed74da40d961b5d7e53dbd76e
   languageName: node
   linkType: hard
 
@@ -54743,12 +54751,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod-to-json-schema@npm:3.23.2":
-  version: 3.23.2
-  resolution: "zod-to-json-schema@npm:3.23.2"
+"zod-to-json-schema@npm:3.23.3":
+  version: 3.23.3
+  resolution: "zod-to-json-schema@npm:3.23.3"
   peerDependencies:
     zod: ^3.23.3
-  checksum: 10/316fc539013fdbfbafa50dd26ad9c25a2375ca9e9ac7c340b3e5d6c041549210dce339d17a293649b8e31c83b1d34e93dd44827740f19799752de3ba0414158d
+  checksum: 10/09f783a2325606b88ecd17f8753f47d945e9e1290a0d81a68484f677ff16151c126b07419ee61720ddec4f10ad0c08688569d265feefb709d60c2164f055b87d
   languageName: node
   linkType: hard
 
