@@ -266,6 +266,7 @@ export default function EventsCollectionDetailContent({
           isOpen={isEventDetailDrawerOpen}
           setIsOpen={setIsEventDetailDrawerOpen}
           event={selectedEvent}
+          isManager={isManager}
         />
       )}
     </div>
