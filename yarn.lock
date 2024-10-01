@@ -20739,7 +20739,7 @@ __metadata:
     tsup: "npm:8.2.4"
     typescript: "npm:5.5.4"
     vite: "npm:5.4.6"
-    vite-plugin-css-injected-by-js: "npm:3.5.1"
+    vite-plugin-css-injected-by-js: "npm:3.5.2"
     vite-plugin-node-polyfills: "npm:0.22.0"
     vitest: "npm:2.1.1"
     vitest-fetch-mock: "npm:0.3.0"
@@ -52986,12 +52986,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-css-injected-by-js@npm:3.5.1":
-  version: 3.5.1
-  resolution: "vite-plugin-css-injected-by-js@npm:3.5.1"
+"vite-plugin-css-injected-by-js@npm:3.5.2":
+  version: 3.5.2
+  resolution: "vite-plugin-css-injected-by-js@npm:3.5.2"
   peerDependencies:
     vite: ">2.0.0-0"
-  checksum: 10/0715aa477247f2fbea960b4b3a67aa22ed7be7c6136cccf8a9a7be0368187d71e12cb4d289526d1a4ded1235098460f9af85c4412b3864cfbcdb005f3f7bd4aa
+  checksum: 10/be1ca1c71c31042dbca49d78ed58c88d3ffbbcf84024120f72d1daeebd489ad0ec4a0f1179adfeb196052d52b09226bff7d0979e0ef0be3e87e47b15eb728270
   languageName: node
   linkType: hard
 
