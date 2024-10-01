@@ -9989,9 +9989,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@matterlabs/hardhat-zksync-solc@npm:1.2.3":
-  version: 1.2.3
-  resolution: "@matterlabs/hardhat-zksync-solc@npm:1.2.3"
+"@matterlabs/hardhat-zksync-solc@npm:1.2.5":
+  version: 1.2.5
+  resolution: "@matterlabs/hardhat-zksync-solc@npm:1.2.5"
   dependencies:
     "@nomiclabs/hardhat-docker": "npm:^2.0.2"
     chai: "npm:^4.3.4"
@@ -10006,7 +10006,7 @@ __metadata:
     undici: "npm:^6.18.2"
   peerDependencies:
     hardhat: ^2.22.5
-  checksum: 10/87118d46702887725cc190368053b64813b5807162ff8fa8fc69925d2d0ef8043d178debb2413524d6edeaef686ab10b6c89e77a1e25603dd7a8da69b2eed355
+  checksum: 10/0452ad5504258fad2f2d10be40cc79bb0e65d3470af75f70f60e4a94bb92f238031a13587cda51a0dfd77ef1cb028145088e2628a02db6d7a5ac721bf2816bf0
   languageName: node
   linkType: hard
 
@@ -20512,7 +20512,7 @@ __metadata:
     "@gnosis-guild/zodiac-core": "npm:2.0.3"
     "@gnosis.pm/zodiac": "npm:4.0.3"
     "@matterlabs/hardhat-zksync-deploy": "npm:1.5.0"
-    "@matterlabs/hardhat-zksync-solc": "npm:1.2.3"
+    "@matterlabs/hardhat-zksync-solc": "npm:1.2.5"
     "@matterlabs/hardhat-zksync-upgradable": "npm:1.5.2"
     "@matterlabs/hardhat-zksync-verify": "npm:1.6.0"
     "@nomicfoundation/hardhat-ethers": "npm:3.0.8"
@@ -20544,7 +20544,7 @@ __metadata:
   resolution: "@unlock-protocol/hardhat-helpers@workspace:packages/hardhat-helpers"
   dependencies:
     "@matterlabs/hardhat-zksync-deploy": "npm:1.5.0"
-    "@matterlabs/hardhat-zksync-solc": "npm:1.2.3"
+    "@matterlabs/hardhat-zksync-solc": "npm:1.2.5"
     "@matterlabs/hardhat-zksync-upgradable": "npm:1.5.2"
     "@matterlabs/hardhat-zksync-verify": "npm:1.6.0"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
