@@ -36,15 +36,14 @@ module.exports = async () => {
   await unlock.connect(unlockOwner).addLockTemplate(publicLockAddress, version)
   await unlock.connect(unlockOwner).setLockTemplate(publicLockAddress)
 
-  // 5 deploy UDT (v3)
-  const UDTv3 = await ethers.getContractFactory('UnlockDiscountTokenV3')
-  const udt = await upgrades.deployProxy(UDTv3, [await minter.getAddress()], {
-    initializer: 'initialize(address)',
-  })
+  // 5 deploy UP ERC20 Governance Token
+  const UPToken = await ethers.getContractFactory('UPToken')
+  const up = await upgrades.deployProxy(UPToken, [await minter.getAddress()])
 
   return {
     unlock,
     publicLock,
-    udt,
+    up,
+    udt: up, // keeping UDT as exported variable for legacy
   }
 }
