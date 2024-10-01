@@ -59,9 +59,7 @@ export interface EventData {
 
 export interface Event extends Metadata {
   eventUrl: string
-  data: {
-    ticket: EventTicket
-  }
+  ticket: EventTicket
 }
 
 interface EventsCollectionDetailContentProps {
