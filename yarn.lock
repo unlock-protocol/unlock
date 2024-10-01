@@ -18263,14 +18263,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tailwindcss/forms@npm:0.5.8":
-  version: 0.5.8
-  resolution: "@tailwindcss/forms@npm:0.5.8"
+"@tailwindcss/forms@npm:0.5.9":
+  version: 0.5.9
+  resolution: "@tailwindcss/forms@npm:0.5.9"
   dependencies:
     mini-svg-data-uri: "npm:^1.2.3"
   peerDependencies:
     tailwindcss: ">=3.0.0 || >= 3.0.0-alpha.1 || >= 4.0.0-alpha.20"
-  checksum: 10/339d3a1634cfbead4a78410be839ba206d973145be44024d8bd5fa6f5ef99b19647ee96b68d22f53438c5496184d023d29eb8ec5b752ddbe630b3de20358d074
+  checksum: 10/bea740d9c92fc7771ac6891531f7bc76dfb1444c8da87071ec15c155b773eaf32a32ae5ea2c5bba228dcda25aacc3979f9f036765c8bd20c9743dab214ee09f4
   languageName: node
   linkType: hard
 
@@ -20839,7 +20839,7 @@ __metadata:
     "@storybook/react": "npm:8.2.9"
     "@storybook/react-vite": "npm:8.2.9"
     "@tailwindcss/aspect-ratio": "npm:0.4.2"
-    "@tailwindcss/forms": "npm:0.5.8"
+    "@tailwindcss/forms": "npm:0.5.9"
     "@tailwindcss/line-clamp": "npm:0.4.4"
     "@tailwindcss/typography": "npm:0.5.15"
     "@tanstack/react-query": "npm:5.53.3"
