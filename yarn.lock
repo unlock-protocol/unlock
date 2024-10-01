@@ -11911,9 +11911,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomicfoundation/hardhat-chai-matchers@npm:2.0.7":
-  version: 2.0.7
-  resolution: "@nomicfoundation/hardhat-chai-matchers@npm:2.0.7"
+"@nomicfoundation/hardhat-chai-matchers@npm:2.0.8":
+  version: 2.0.8
+  resolution: "@nomicfoundation/hardhat-chai-matchers@npm:2.0.8"
   dependencies:
     "@types/chai-as-promised": "npm:^7.1.3"
     chai-as-promised: "npm:^7.1.1"
@@ -11924,7 +11924,7 @@ __metadata:
     chai: ^4.2.0
     ethers: ^6.1.0
     hardhat: ^2.9.4
-  checksum: 10/7bc8d6e5fce13d9672c4d49cc90f7ca94ada3c177eb85167e5258bdaf3acf493603512aac08658ac6eb5dc3fb7a3164183abaaa4798484bb79a7ec9db2b775bd
+  checksum: 10/1e40d2ae1627d9c62c90e85f60d38a24768198b3f525659f958c44d395d751876be13198e20ffd2b3336b8650225652610f0c36f0e376c8ee6b0854bcd0f6bb0
   languageName: node
   linkType: hard
 
@@ -20568,7 +20568,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/hardhat-plugin@workspace:packages/hardhat-plugin"
   dependencies:
-    "@nomicfoundation/hardhat-chai-matchers": "npm:2.0.7"
+    "@nomicfoundation/hardhat-chai-matchers": "npm:2.0.8"
     "@nomicfoundation/hardhat-ethers": "npm:3.0.8"
     "@nomicfoundation/hardhat-ignition": "npm:0.15.5"
     "@nomicfoundation/hardhat-ignition-ethers": "npm:0.15.5"
