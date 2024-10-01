@@ -20962,15 +20962,15 @@ __metadata:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/types": "workspace:./packages/types"
-    eslint: "npm:9.9.1"
+    eslint: "npm:9.11.1"
     ethers: "npm:6.13.2"
     graphql: "npm:16.9.0"
     graphql-request: "npm:6.1.0"
     hardhat: "npm:2.22.9"
     prettier: "npm:3.3.3"
     siwe: "npm:2.3.2"
-    tsup: "npm:8.2.4"
-    typescript: "npm:5.5.4"
+    tsup: "npm:8.3.0"
+    typescript: "npm:5.6.2"
     vitest: "npm:2.1.1"
   peerDependencies:
     axios: 1.7.4
