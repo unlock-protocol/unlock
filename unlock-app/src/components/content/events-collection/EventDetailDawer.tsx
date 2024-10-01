@@ -1,5 +1,6 @@
 import React from 'react'
 import { Event } from './EventsCollectionDetailContent'
+import ReactMarkdown from 'react-markdown'
 import { Button, Drawer, Placeholder } from '@unlock-protocol/ui'
 import { AiOutlineCalendar as CalendarIcon } from 'react-icons/ai'
 import { AiOutlineClockCircle as ClockIcon } from 'react-icons/ai'
@@ -105,84 +106,94 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
 
   return (
     <Drawer isOpen={isOpen} setIsOpen={setIsOpen}>
-      <div className="space-y-4">
-        {/* Event Image */}
-        <img
-          src={image}
-          alt={name}
-          className="w-full h-[500px] object-cover rounded-2xl"
-        />
-
-        <div className="flex items-center justify-end gap-0 mt-auto md:gap-2">
-          <AddToCalendarButton event={parsedEvent} eventUrl={event.eventUrl} />
-          <Button variant="borderless-primary">
-            <Link href={event.eventUrl} target="_blank">
-              <FaExternalLinkAlt size={20} width={1} className="mr-2" />
-            </Link>
-          </Button>
-        </div>
-
-        {/* Event Information */}
+      {event && (
         <div className="space-y-4">
-          <h3 className="text-xl text-brand-ui-primary font-semibold">
-            {name}
-          </h3>
+          {/* Event Image */}
+          <img
+            src={image}
+            alt={name}
+            className="w-full h-[500px] object-cover rounded-2xl"
+          />
 
-          {organizers && organizers.length > 0 && (
-            <Hosts organizers={organizers} />
-          )}
-
-          {/* Date */}
-          {hasDate && startTime && (
-            <EventDetail compact label="Date" icon={CalendarIcon}>
-              <div
-                style={{ color: `#${event.background_color}` }}
-                className="flex flex-col text-sm font-normal text-brand-dark"
-              >
-                {startDate && endDate && (
-                  <span>{dayjs(startDate).format('dddd D MMM YYYY')}</span>
-                )}
-              </div>
-            </EventDetail>
-          )}
-
-          {/* Time */}
-          {startTime && (
-            <EventDetail compact label="Time" icon={ClockIcon}>
-              <div className="flex flex-col text-sm font-normal text-brand-dark">
-                <span>{startTime}</span>
-              </div>
-            </EventDetail>
-          )}
-
-          {/* Location */}
-          {hasLocation && <EventLocation event={parsedEvent} compact />}
-
-          {isCheckoutConfigPending ? (
-            <Placeholder.Root>
-              <Placeholder.Card />
-            </Placeholder.Root>
-          ) : !hasPassed ? (
-            <RegistrationCard
-              requiresApproval={event.requiresApproval}
-              checkoutConfig={checkoutConfig!}
-              hideRemaining={!!event.hideRemaining}
+          <div className="flex items-center justify-end gap-0 mt-auto md:gap-2">
+            <AddToCalendarButton
+              event={parsedEvent}
+              eventUrl={event.eventUrl}
             />
-          ) : (
-            // @ts-ignore
-            <PastEvent event={parsedEvent!} checkoutConfig={checkoutConfig!} />
-          )}
+            <Button variant="borderless-primary">
+              <Link href={event.eventUrl} target="_blank">
+                <FaExternalLinkAlt size={20} width={1} className="mr-2" />
+              </Link>
+            </Button>
+          </div>
 
-          {/* Event Details */}
-          <div className="mt-10">
-            <h3 className="text-base font-bold text-brand-ui-primary">
-              About Event
+          {/* Event Information */}
+          <div className="space-y-4">
+            <h3 className="text-xl text-brand-ui-primary font-semibold">
+              {name}
             </h3>
-            <hr className="my-2" />
-            <p>{description}</p>
+
+            {organizers && organizers.length > 0 && (
+              <Hosts organizers={organizers} />
+            )}
+
+            {/* Date */}
+            {hasDate && startTime && (
+              <EventDetail compact label="Date" icon={CalendarIcon}>
+                <div
+                  style={{ color: `#${event.background_color}` }}
+                  className="flex flex-col text-sm font-normal text-brand-dark"
+                >
+                  {startDate && endDate && (
+                    <span>{dayjs(startDate).format('dddd D MMM YYYY')}</span>
+                  )}
+                </div>
+              </EventDetail>
+            )}
+
+            {/* Time */}
+            {startTime && (
+              <EventDetail compact label="Time" icon={ClockIcon}>
+                <div className="flex flex-col text-sm font-normal text-brand-dark">
+                  <span>{startTime}</span>
+                </div>
+              </EventDetail>
+            )}
+
+            {/* Location */}
+            {hasLocation && <EventLocation event={parsedEvent} compact />}
+
+            {isCheckoutConfigPending ? (
+              <Placeholder.Root>
+                <Placeholder.Card />
+              </Placeholder.Root>
+            ) : !hasPassed ? (
+              <RegistrationCard
+                requiresApproval={event.requiresApproval}
+                checkoutConfig={checkoutConfig!}
+                hideRemaining={!!event.hideRemaining}
+              />
+            ) : (
+              <PastEvent
+                // @ts-ignore
+                event={parsedEvent!}
+                checkoutConfig={checkoutConfig!}
+              />
+            )}
+
+            {/* Event Details */}
+            <div className="mt-10">
+              <h3 className="text-base font-bold text-brand-ui-primary">
+                About Event
+              </h3>
+              <hr className="my-2" />
+              <div className="mt-4 markdown">
+                <ReactMarkdown children={description} />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </Drawer>
   )
 }
