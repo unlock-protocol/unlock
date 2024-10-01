@@ -18,17 +18,22 @@ import { FaExternalLinkAlt } from 'react-icons/fa'
 import Link from 'next/link'
 import PastEvent from '../event/Layout/PastEvent'
 import { language } from '~/utils/eventCollections'
+import RemoveFromCollectionButton from './RemoveFromCollectionButton'
 
 interface EventDetailDrawerProps {
+  collectionSlug: string | undefined
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
   event: Event | null
+  isManager: boolean
 }
 
 export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
+  collectionSlug,
   isOpen,
   setIsOpen,
   event,
+  isManager,
 }) => {
   const { data: checkoutConfig, isPending: isCheckoutConfigPending } =
     useCheckoutConfig({
@@ -104,10 +109,25 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
   const hasLocation = (parsedEvent?.ticket?.event_address || '')?.length > 0
   const hasDate = startDate || startTime || endDate || endTime
 
+  // close drawer when the event is removed
+  const handleEventRemove = () => {
+    setIsOpen(false)
+  }
+
   return (
     <Drawer isOpen={isOpen} setIsOpen={setIsOpen}>
       {event && (
         <div className="space-y-4">
+          {isManager && (
+            <div className="flex justify-end">
+              <RemoveFromCollectionButton
+                collectionSlug={collectionSlug}
+                eventSlug={event.slug!}
+                onRemove={handleEventRemove}
+              />
+            </div>
+          )}
+
           {/* Event Image */}
           <img
             src={image}

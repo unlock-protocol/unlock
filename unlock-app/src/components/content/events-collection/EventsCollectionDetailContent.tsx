@@ -16,7 +16,7 @@ import { isCollectionManager } from '~/utils/eventCollections'
 import { FaGithub, FaGlobe, FaTwitter, FaYoutube } from 'react-icons/fa'
 import { SiFarcaster as FarcasterIcon } from 'react-icons/si'
 import AddEventsToCollectionDrawer from './AddEventsToCollectionDawer'
-import { EventDetailDrawer } from './EventDetailDawer'
+import { EventDetailDrawer } from './EventDetailDrawer'
 import { Metadata } from '@unlock-protocol/core'
 import CopyUrlButton from '../event/CopyUrlButton'
 import TweetItButton from '../event/TweetItButton'
@@ -260,11 +260,15 @@ export default function EventsCollectionDetailContent({
         existingEventSlugs={existingEventSlugs}
       />
       {/* Event Detail Drawer */}
-      <EventDetailDrawer
-        isOpen={isEventDetailDrawerOpen}
-        setIsOpen={setIsEventDetailDrawerOpen}
-        event={selectedEvent}
-      />
+      {eventCollection?.slug && (
+        <EventDetailDrawer
+          collectionSlug={eventCollection?.slug}
+          isOpen={isEventDetailDrawerOpen}
+          setIsOpen={setIsEventDetailDrawerOpen}
+          event={selectedEvent}
+          isManager={isManager}
+        />
+      )}
     </div>
   )
 }
