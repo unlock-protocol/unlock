@@ -157,8 +157,16 @@ export function AirdropInternalForm({
                   <span className="text-base">No wallet address?</span>
                   <Toggle
                     size="small"
+                    disabled={!networkConfig.keyManagerAddress}
                     value={useEmail}
                     onChange={(value: boolean) => {
+                      if (value && !networkConfig.keyManagerAddress) {
+                        ToastHelper.error(
+                          'Email airdrops are disabled for this network.'
+                        )
+                        return
+                      }
+
                       resetField('email')
                       resetField('wallet')
                       setUseEmail(value)
@@ -171,11 +179,11 @@ export function AirdropInternalForm({
                   placeholder={placeholder}
                   name={label}
                   type="email"
+                  ref={ref}
+                  onBlur={onBlur}
                   onChange={(event) => {
                     onChange(onWalletChange(event))
                   }}
-                  ref={ref}
-                  onBlur={onBlur}
                 />
               ) : (
                 <Controller

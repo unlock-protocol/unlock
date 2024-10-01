@@ -47,6 +47,9 @@ const SendTransferForm = ({
                 'Too many requests. Please wait a few minutes before trying again.'
               )
             }
+            return toast.error(
+              'There was en error while trying to send an authorization code. Please try again!'
+            )
           }
         },
         onSuccess(transferObject) {
