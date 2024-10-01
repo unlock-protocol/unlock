@@ -4,6 +4,7 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { useMemo, useState } from 'react'
 
 import { TbPlus, TbSettings } from 'react-icons/tb'
+import ReactMarkdown from 'react-markdown'
 import { useRouter } from 'next/navigation'
 import { EventOverviewCard } from './EventOverviewCard'
 import { ImageBar } from '~/components/interface/locks/Manage/elements/ImageBar'
@@ -177,9 +178,11 @@ export default function EventsCollectionDetailContent({
             <h1 className="text-3xl font-bold md:text-6xl">
               {eventCollection?.title}
             </h1>
-            <p className="text-sm md:text-base">
-              {eventCollection?.description}
-            </p>
+            <ReactMarkdown
+              children={eventCollection?.description}
+              className="text-sm md:text-base"
+            />
+
             <div className="flex space-x-6">
               {Array.isArray(eventCollection?.links) &&
                 eventCollection?.links.map((link, index) => (

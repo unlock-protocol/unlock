@@ -12,6 +12,7 @@ import { Badge, Placeholder } from '@unlock-protocol/ui'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useCheckoutConfig } from '~/hooks/useCheckoutConfig'
 import { AttendeeCues } from '../event/Registration/AttendeeCues'
+import ReactMarkdown from 'react-markdown'
 
 interface EventOverviewCardProps {
   event: Event
@@ -83,9 +84,10 @@ export const EventOverviewCard: React.FC<EventOverviewCardProps> = ({
               </Badge>
             )}
           </div>
-          <p className="mt-1 text-sm sm:text-base text-gray-500 line-clamp-2">
-            {data.description}
-          </p>
+          <ReactMarkdown
+            children={data.description}
+            className="mt-1 text-sm sm:text-base text-gray-500 line-clamp-2"
+          />
         </div>
 
         {/* Attendee Cues */}
