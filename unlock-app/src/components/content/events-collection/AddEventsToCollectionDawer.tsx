@@ -24,6 +24,7 @@ import { locksmith } from '~/config/locksmith'
 import { formDataToMetadata } from '~/components/interface/locks/metadata/utils'
 import { networks } from '@unlock-protocol/networks'
 import { LockDeploying } from '../event/LockDeploying'
+import { config } from '~/config/app'
 
 type AddMethod = 'url' | 'existing' | 'form' | null
 
@@ -57,16 +58,79 @@ export default function AddEventsToCollectionDrawer({
 
   const [eventUrl, setEventUrl] = useState<string>('')
   const [eventSlug, setEventSlug] = useState<string>('')
-  const { data: event, isLoading: isLoadingEvent } = useEvent({
+  const {
+    data: event,
+    isLoading: isLoadingEvent,
+    error: eventDetailsError,
+  } = useEvent({
     slug: eventSlug,
   })
   const [addMethod, setAddMethod] = useState<AddMethod>(null)
   const [isUrlValid, setIsUrlValid] = useState(false)
   const [isEventSelected, setIsEventSelected] = useState(false)
   const [isDuplicate, setIsDuplicate] = useState(false)
-  const [hasCheckedUrl, setHasCheckedUrl] = useState<boolean>(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
+
+  const [debouncedEventUrl, setDebouncedEventUrl] = useState(eventUrl)
+
+  const validateUrl = (url: string) => {
+    const baseUrl = `${config.unlockApp}/event/`
+    let validUrl = url
+    let slug = ''
+
+    if (url.startsWith('/')) {
+      // If the input starts with a slash, treat it as a slug
+      slug = url.slice(1)
+      validUrl = `${baseUrl}${slug}`
+    } else if (url.startsWith(baseUrl)) {
+      slug = url.slice(baseUrl.length)
+    } else if (!url.includes('://')) {
+      validUrl = `${baseUrl}${url}`
+      slug = url
+    } else {
+      // If it's a full URL but doesn't match our baseUrl, it's invalid
+      setIsUrlValid(false)
+      setErrorMessage(
+        'Invalid URL. Please use a valid Unlock event URL or slug.'
+      )
+      return
+    }
+
+    if (!slug) {
+      setIsUrlValid(false)
+      setErrorMessage(
+        'Invalid URL. Please use a valid Unlock event URL or slug.'
+      )
+      return
+    }
+
+    if (existingEventSlugs.includes(slug)) {
+      setIsUrlValid(false)
+      setIsDuplicate(true)
+      setErrorMessage('This event already exists in the collection.')
+      return
+    }
+
+    setEventUrl(validUrl)
+    setEventSlug(slug)
+    setIsUrlValid(true)
+    setIsDuplicate(false)
+    setErrorMessage(null)
+  }
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedEventUrl(eventUrl)
+    }, 600)
+
+    return () => clearTimeout(timer)
+  }, [eventUrl])
+
+  useEffect(() => {
+    validateUrl(debouncedEventUrl)
+  }, [debouncedEventUrl])
 
   useEffect(() => {
     if (eventSlug.trim() !== '' && event) {
@@ -85,6 +149,13 @@ export default function AddEventsToCollectionDrawer({
       setIsDuplicate(false)
     }
   }, [eventSlug, event, existingEventSlugs])
+
+  useEffect(() => {
+    if (eventDetailsError?.message) {
+      setErrorMessage(eventDetailsError?.message)
+      setIsUrlValid(false)
+    }
+  }, [eventDetailsError, setErrorMessage])
 
   const handleSubmit = async () => {
     if (!eventSlug.trim()) {
@@ -106,21 +177,6 @@ export default function AddEventsToCollectionDrawer({
     }
   }
 
-  const checkEventUrlValidity = () => {
-    // Indicate that the url's validity has been checked
-    setHasCheckedUrl(true)
-    const slugMatch = eventUrl.match(
-      /https:\/\/(?:app|staging-app)\.unlock-protocol\.com\/event\/([^/?#]+)/
-    )
-    if (slugMatch && slugMatch[1]) {
-      setEventSlug(slugMatch[1])
-    } else {
-      setIsUrlValid(false)
-      setIsDuplicate(false)
-      setEventSlug('')
-    }
-  }
-
   // Filter the user's events to exclude existing event slugs
   const filteredUserEvents = userEvents?.filter(
     (userEvent) => !existingEventSlugs.includes(userEvent.slug!)
@@ -135,8 +191,6 @@ export default function AddEventsToCollectionDrawer({
         value: eventOption?.slug || '',
       }
     }) || []
-
-  const isUrlButtonDisabled = eventUrl.trim() === ''
 
   // override setIsOpen to prevent closing during submission
   const handleSetIsOpen = (open: boolean) => {
@@ -182,85 +236,79 @@ export default function AddEventsToCollectionDrawer({
     </div>
   )
 
-  const renderAddViaUrl = () => (
-    <div className="flex flex-col gap-8">
-      <Button
-        variant="outlined-primary"
-        size="small"
-        onClick={() => {
-          setAddMethod(null)
-          setEventUrl('')
-          setIsUrlValid(false)
-          setEventSlug('')
-          setIsDuplicate(false)
-          setHasCheckedUrl(false)
-        }}
-        className="self-start"
-        disabled={isSubmitting}
-      >
-        Back
-      </Button>
-      <Disclosure label="Add via URL" defaultOpen>
-        <div className="flex flex-col gap-4">
-          <Input
-            type="text"
-            autoComplete="on"
-            placeholder="https://app.unlock-protocol.com/event/your-event-slug"
-            label="Event URL"
-            description="Enter the URL of your Unlock event."
-            value={eventUrl}
-            onChange={(e) => {
-              setEventUrl(e.target.value)
-              setIsUrlValid(false)
-              setIsDuplicate(false)
-              setEventSlug('')
-              setHasCheckedUrl(false)
-            }}
-            disabled={isSubmitting}
-          />
-          <Button
-            onClick={checkEventUrlValidity}
-            disabled={isUrlButtonDisabled || isLoadingEvent || isSubmitting}
-          >
-            {isLoadingEvent ? 'Checking...' : 'Check Validity'}
-          </Button>
-          {eventUrl && hasCheckedUrl && (
-            <p
-              className={`text-sm ${
-                isUrlValid
-                  ? 'text-green-500'
-                  : isDuplicate
-                    ? 'text-red-500'
-                    : 'text-red-500'
-              }`}
-            >
-              {isUrlValid
-                ? 'Valid URL'
-                : isDuplicate
-                  ? 'This event already exists in the collection.'
-                  : 'Invalid URL. Please use a URL from https://staging-app.unlock-protocol.com/event/ or https://app.unlock-protocol.com/event/'}
-            </p>
-          )}
-        </div>
-      </Disclosure>
+  const renderAddViaUrl = () => {
+    return (
+      <div className="flex flex-col gap-8">
+        <Button
+          variant="outlined-primary"
+          size="small"
+          onClick={() => {
+            setAddMethod(null)
+            setEventUrl('')
+            setIsUrlValid(false)
+            setEventSlug('')
+            setIsDuplicate(false)
+            setErrorMessage(null)
+          }}
+          className="self-start"
+          disabled={isSubmitting}
+        >
+          Back
+        </Button>
+        <Disclosure label="Add via URL" defaultOpen>
+          <div className="flex flex-col gap-4">
+            <Input
+              type="text"
+              autoComplete="off"
+              placeholder="https://app.unlock-protocol.com/event/your-event-slug"
+              label="Event URL or Slug"
+              description="Enter the URL or slug of your Unlock event. You can start with a '/' for slugs."
+              value={eventUrl}
+              onChange={(e) => {
+                const inputValue = e.target.value
+                setEventUrl(inputValue)
+              }}
+              disabled={isSubmitting}
+            />
+            {debouncedEventUrl && (
+              <>
+                {errorMessage && (
+                  <p className="text-sm text-red-500">{errorMessage}</p>
+                )}
+                {isUrlValid && !isDuplicate && (
+                  <p className="text-sm text-green-500">Valid URL</p>
+                )}
+              </>
+            )}
+          </div>
+        </Disclosure>
 
-      {/* Add Event Button */}
-      {isUrlValid && !isDuplicate && (
         <div className="mt-4">
           <Button
             onClick={handleSubmit}
-            disabled={!isUrlValid || isAddingToEventCollection || isSubmitting}
+            disabled={
+              !isUrlValid ||
+              isDuplicate ||
+              !event ||
+              isAddingToEventCollection ||
+              isSubmitting ||
+              isLoadingEvent
+            }
           >
             {isSubmitting
               ? 'Submitting...'
-              : isManager
-                ? 'Add Event'
-                : 'Submit Event'}
+              : isLoadingEvent
+                ? 'Fetching event details...'
+                : eventDetailsError
+                  ? 'Event not found'
+                  : isManager
+                    ? 'Add Event'
+                    : 'Submit Event'}
           </Button>
         </div>
-      )}
-    </div>
-  )
+      </div>
+    )
+  }
 
   const renderSelectExisting = () => (
     <div className="flex flex-col gap-8">
