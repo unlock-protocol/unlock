@@ -22,6 +22,12 @@ import CopyUrlButton from '../event/CopyUrlButton'
 import TweetItButton from '../event/TweetItButton'
 import { config } from '~/config/app'
 import CastItButton from '../event/CastItButton'
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 export interface EventTicket {
   event_address: string
@@ -81,6 +87,7 @@ export default function EventsCollectionDetailContent({
       ) ?? false
     )
   }, [eventCollection?.events])
+
   const isManager = isCollectionManager(
     eventCollection?.managerAddresses,
     account!
@@ -97,6 +104,55 @@ export default function EventsCollectionDetailContent({
   // Extract existing event slugs
   const existingEventSlugs = useMemo(() => {
     return eventCollection?.events?.map((event) => event.slug) || []
+  }, [eventCollection?.events])
+
+  // util to parse event date and time with timezone
+  const parseEventDateTime = (event: Event): dayjs.Dayjs | null => {
+    const ticket = event.data?.ticket
+    if (!ticket) return null
+
+    const { event_start_date, event_start_time, event_timezone } = ticket
+    // Combine date and time, default to "00:00" if time is missing
+    const dateTimeString = `${event_start_date}T${event_start_time || '00:00'}:00`
+    // Parse with Day.js considering the timezone
+    return dayjs.tz(dateTimeString, event_timezone)
+  }
+
+  // Sort and categorize events into upcoming and past
+  const { upcomingEvents, pastEvents } = useMemo(() => {
+    if (!eventCollection?.events) return { upcomingEvents: [], pastEvents: [] }
+
+    const now = dayjs()
+
+    const upcoming: Event[] = []
+    const past: Event[] = []
+
+    eventCollection.events.forEach((event: any) => {
+      const eventStartDate = parseEventDateTime(event)
+      if (eventStartDate && eventStartDate.isAfter(now)) {
+        upcoming.push(event)
+      } else {
+        past.push(event)
+      }
+    })
+
+    // Sort upcoming events in chronological order (soonest first)
+    upcoming.sort((a, b) => {
+      const aDate = parseEventDateTime(a)
+      const bDate = parseEventDateTime(b)
+      if (!aDate || !bDate) return 0
+      return aDate.valueOf() - bDate.valueOf()
+    })
+
+    // Sort past events in reverse chronological order (most recent first)
+    past.sort((a, b) => {
+      const aDate = parseEventDateTime(a)
+      const bDate = parseEventDateTime(b)
+      if (!aDate || !bDate) return 0
+      return bDate.valueOf() - aDate.valueOf()
+    })
+
+    return { upcomingEvents: upcoming, pastEvents: past }
   }, [eventCollection?.events])
 
   const getLinkIcon = (type: string) => {
@@ -203,8 +259,9 @@ export default function EventsCollectionDetailContent({
         <section className="mt-16">
           <div className="flex flex-col lg:grid lg:grid-cols-12 gap-14 mt-5">
             <div className="lg:col-span-1"></div>
+
             <div className="flex flex-col gap-6 lg:col-span-10">
-              <div className="flex flex-col sm:flex-row items-center space-y-2 justify-between mt-5">
+              <div className="flex flex-col sm:flex-row items-center space-y-2 justify-between my-5">
                 <h2 className="text-3xl font-bold">Events</h2>
                 <Button
                   onClick={handleAddEvent}
@@ -218,17 +275,43 @@ export default function EventsCollectionDetailContent({
                 </Button>
               </div>
               {hasValidEvents ? (
-                <div className="">
-                  <div className="space-y-6">
-                    {eventCollection?.events?.map((eventItem: any) => (
-                      <EventOverviewCard
-                        key={eventItem.slug}
-                        event={eventItem}
-                        onClick={handleEventDetailClick}
-                      />
-                    ))}
-                  </div>
-                </div>
+                <>
+                  {/* Upcoming Events */}
+                  {upcomingEvents.length > 0 && (
+                    <div className="mb-7 md:mb-10">
+                      <h3 className="text-2xl font-semibold mb-6">
+                        Upcoming Events
+                      </h3>
+                      <div className="space-y-6">
+                        {upcomingEvents.map((eventItem: Event) => (
+                          <EventOverviewCard
+                            key={eventItem.slug}
+                            event={eventItem}
+                            onClick={handleEventDetailClick}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Past Events */}
+                  {pastEvents.length > 0 && (
+                    <div>
+                      <h3 className="text-2xl font-semibold mb-6">
+                        Past Events
+                      </h3>
+                      <div className="space-y-6">
+                        {pastEvents.map((eventItem: Event) => (
+                          <EventOverviewCard
+                            key={eventItem.slug}
+                            event={eventItem}
+                            onClick={handleEventDetailClick}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </>
               ) : (
                 <ImageBar
                   src="/images/illustrations/no-locks.svg"
