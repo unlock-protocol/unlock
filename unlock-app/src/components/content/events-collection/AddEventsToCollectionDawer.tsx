@@ -24,6 +24,7 @@ import { locksmith } from '~/config/locksmith'
 import { formDataToMetadata } from '~/components/interface/locks/metadata/utils'
 import { networks } from '@unlock-protocol/networks'
 import { LockDeploying } from '../event/LockDeploying'
+import { config } from '~/config/app'
 
 type AddMethod = 'url' | 'existing' | 'form' | null
 
@@ -75,29 +76,26 @@ export default function AddEventsToCollectionDrawer({
   const [debouncedEventUrl, setDebouncedEventUrl] = useState(eventUrl)
 
   const validateUrl = (url: string) => {
-    const baseUrls = [
-      'https://staging-app.unlock-protocol.com/event/',
-      'https://app.unlock-protocol.com/event/',
-    ]
+    const baseUrl = `${config.unlockApp}/event/`
     let validUrl = url
     let slug = ''
 
     if (url.startsWith('/')) {
       // If the input starts with a slash, treat it as a slug
       slug = url.slice(1)
-      // Use production URL by default
-      validUrl = `${baseUrls[1]}${slug}`
+      validUrl = `${baseUrl}${slug}`
+    } else if (url.startsWith(baseUrl)) {
+      slug = url.slice(baseUrl.length)
+    } else if (!url.includes('://')) {
+      validUrl = `${baseUrl}${url}`
+      slug = url
     } else {
-      for (const baseUrl of baseUrls) {
-        if (url.startsWith(baseUrl)) {
-          slug = url.slice(baseUrl.length)
-          break
-        } else if (!url.includes('://')) {
-          validUrl = `${baseUrl}${url}`
-          slug = url
-          break
-        }
-      }
+      // If it's a full URL but doesn't match our baseUrl, it's invalid
+      setIsUrlValid(false)
+      setErrorMessage(
+        'Invalid URL. Please use a valid Unlock event URL or slug.'
+      )
+      return
     }
 
     if (!slug) {
@@ -157,7 +155,7 @@ export default function AddEventsToCollectionDrawer({
       setErrorMessage(eventDetailsError?.message)
       setIsUrlValid(false)
     }
-  }, [eventDetailsError])
+  }, [eventDetailsError, setErrorMessage])
 
   const handleSubmit = async () => {
     if (!eventSlug.trim()) {
