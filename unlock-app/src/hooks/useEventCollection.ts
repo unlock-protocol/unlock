@@ -3,6 +3,11 @@ import { EventCollection } from '@unlock-protocol/unlock-js'
 import { locksmith } from '~/config/locksmith'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 
+interface RemoveEventInput {
+  collectionSlug: string
+  eventSlug: string
+}
+
 /**
  * Hook to create an event collection.
  *
@@ -128,5 +133,49 @@ export const useAddToEventCollection = (collectionSlug: string) => {
     addToEventCollection: addToEventCollectionMutation.mutateAsync,
     isAddingToEventCollection: addToEventCollectionMutation.isPending,
     success: addToEventCollectionMutation.isSuccess,
+  }
+}
+
+/**
+ * Hook to remove an event from an existing event collection.
+ *
+ * This hook provides functionality to:
+ * 1. Remove a specified event from a given collection
+ * 2. Handle success and error cases during the removal process
+ * 3. Invalidate relevant queries upon successful removal
+ *
+ * @returns A mutation object for removing an event from a collection.
+ */
+export const useRemoveEventFromCollection = (collectionSlug: string) => {
+  const queryClient = useQueryClient()
+
+  const removeEventMutation = useMutation({
+    mutationFn: async ({ eventSlug }: RemoveEventInput) => {
+      const response = await locksmith.removeEventFromCollection(
+        collectionSlug,
+        {
+          eventSlug,
+        }
+      )
+      return response
+    },
+    onSuccess: (_data) => {
+      queryClient.invalidateQueries({
+        queryKey: ['eventCollectionDetails', collectionSlug],
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['eventCollectionEvents', collectionSlug],
+      })
+      ToastHelper.success('Event removed successfully!')
+    },
+    onError: (error: any) => {
+      ToastHelper.error(`Error removing event: ${error.message}`)
+    },
+  })
+
+  return {
+    removeEventFromCollection: removeEventMutation.mutateAsync,
+    isRemovingEventFromCollection: removeEventMutation.isPending,
+    success: removeEventMutation.isSuccess,
   }
 }
