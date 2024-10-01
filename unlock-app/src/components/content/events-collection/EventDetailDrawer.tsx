@@ -25,6 +25,7 @@ interface EventDetailDrawerProps {
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
   event: Event | null
+  isManager: boolean
 }
 
 export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
@@ -32,6 +33,7 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
   isOpen,
   setIsOpen,
   event,
+  isManager,
 }) => {
   const { data: checkoutConfig, isPending: isCheckoutConfigPending } =
     useCheckoutConfig({
@@ -116,13 +118,16 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
     <Drawer isOpen={isOpen} setIsOpen={setIsOpen}>
       {event && (
         <div className="space-y-4">
-          <div className="flex justify-end">
-            <RemoveFromCollectionButton
-              collectionSlug={collectionSlug}
-              eventSlug={event.slug!}
-              onRemove={handleEventRemove}
-            />
-          </div>
+          {isManager && (
+            <div className="flex justify-end">
+              <RemoveFromCollectionButton
+                collectionSlug={collectionSlug}
+                eventSlug={event.slug!}
+                onRemove={handleEventRemove}
+              />
+            </div>
+          )}
+
           {/* Event Image */}
           <img
             src={image}
