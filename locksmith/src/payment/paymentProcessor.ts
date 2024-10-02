@@ -200,7 +200,7 @@ export class PaymentProcessor {
     })
 
     const paymentIntentParams: any = {
-      amount: pricing.total * 100,
+      amount: Number((pricing.total * 100).toFixed(2)),
       currency: creditCardCurrency,
       customer: connectedCustomer.id,
       payment_method: method.id,
