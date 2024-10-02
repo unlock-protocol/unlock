@@ -29,9 +29,9 @@ All of these settings can be changed by the Unlock DAO community through an onch
 
 As part of the launch of the DAO, Unlock Inc. originally allocated the following to the Timelock contract on Ethereum mainnet:
 
-* 100,000 UDT that the DAO used to pay bounties, grants or perform retro-active funding.  
+* 100,000 UDT that the DAO used to pay bounties, grants or perform retro-active funding  
 * 170.23 Uniswap Liquidity Provider tokens from the UDT/ETH pool  
-* Unlock Inc. subsequently transferred the remainder of the first community airdrop to the DAO.
+* Unlock Inc. subsequently transferred the remainder of the first community airdrop to the DAO
 
 In June 2023, the legacy Governor contract was upgraded from `0x7757f7f21f5fa9b1fd168642b79416051cd0bb94` to `0x440d9D4E66d39bb28FB58729Cb4D3ead2A595591` via a [DAO proposal that the community approved and executed onchain](https://www.tally.xyz/gov/unlock-old/proposal/36208249270120864100503453462134662510103434369621143761091232235939585571890). This upgrade is the result of a vulnerability in the OpenZeppelin library and the new Governor contract is now upgradable. The above information is included for historical reference.
 
