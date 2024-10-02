@@ -12,7 +12,10 @@ import { ImageBar } from '~/components/interface/locks/Manage/elements/ImageBar'
 import Link from 'next/link'
 
 import { useEventCollectionDetails } from '~/hooks/useEventCollection'
-import { isCollectionManager } from '~/utils/eventCollections'
+import {
+  getEventAttributes,
+  isCollectionManager,
+} from '~/utils/eventCollections'
 import { FaGithub, FaGlobe, FaTwitter, FaYoutube } from 'react-icons/fa'
 import { SiFarcaster as FarcasterIcon } from 'react-icons/si'
 import AddEventsToCollectionDrawer from './AddEventsToCollectionDawer'
@@ -115,14 +118,14 @@ export default function EventsCollectionDetailContent({
 
   // util to parse event date and time with timezone
   const parseEventDateTime = (event: Event): dayjs.Dayjs | null => {
-    const ticket = event.data?.ticket
-    if (!ticket) return null
+    const { startDate, startTime, timezone } = getEventAttributes(event)
 
-    const { event_start_date, event_start_time, event_timezone } = ticket
+    if (!startDate) return null
+
     // Combine date and time, default to "00:00" if time is missing
-    const dateTimeString = `${event_start_date}T${event_start_time || '00:00'}:00`
+    const dateTimeString = `${startDate}T${startTime || '00:00'}:00`
     // Parse with Day.js considering the timezone
-    return dayjs.tz(dateTimeString, event_timezone)
+    return dayjs.tz(dateTimeString, timezone || 'UTC')
   }
 
   // Sort and categorize events into upcoming and past
