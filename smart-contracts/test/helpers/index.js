@@ -8,7 +8,7 @@ const deployLocks = require('./deployLocks')
 const deployContracts = require('../fixtures/deploy.js')
 const time = require('./time')
 const interface = require('./interface')
-const uniswapV2 = require('./uniswapV2')
+const uniswap = require('./uniswap.js')
 const math = require('./math')
 const roles = require('./roles')
 const upgrades = require('./upgrades')
@@ -28,7 +28,7 @@ module.exports = {
   ...multisig,
   ...time,
   ...interface,
-  ...uniswapV2,
+  ...uniswap,
   ...math,
   ...roles,
   ...upgrades,
