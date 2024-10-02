@@ -63,4 +63,4 @@ When a delegation is submitted, the "weight" of each address's vote is based on 
 
 ### Cross-chain Governance
 
-The Unlock contract has been deployed on multiple networks. In 2023, the Unlock Labs team introduced a mechanism for the DAO on Ethereum mainnet to control the Unlock contract deployed on each of these networks, [enabling cross-chain governance](https://docs.unlock-protocol.com/governance/unlock-dao/cross-chain-governance). 
+The Unlock contract has been deployed on multiple networks. In 2023, the Unlock Labs team introduced a mechanism for the DAO to control the Unlock contract deployed on each of these networks, [enabling cross-chain governance](https://docs.unlock-protocol.com/governance/unlock-dao/cross-chain-governance). 
