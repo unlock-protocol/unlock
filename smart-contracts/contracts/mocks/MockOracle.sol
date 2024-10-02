@@ -3,9 +3,9 @@ pragma solidity 0.8.21;
 
 import "../interfaces/IUniswapOracleV3.sol";
 
-contract MockOracle {
-  uint FEE;
-  uint PERIOD = 3600;
+contract MockOracle is IUniswapOracleV3 {
+  uint public FEE;
+  uint public override PERIOD = 3600;
 
   // store rates
   struct Rate {
@@ -24,6 +24,11 @@ contract MockOracle {
     }
   }
 
+  // needed for interface
+  function factory() external pure override returns (address) {
+    return address(0);
+  }
+
   function _addRate(Rate memory _rate) internal {
     rates[_rate.tokenIn][_rate.tokenOut] = _rate.rate;
   }
@@ -37,18 +42,20 @@ contract MockOracle {
     if (rate == 0) {
       revert MissingTokenPair(_tokenIn, _tokenOut);
     }
-    return rate * _amountIn;
+    return (rate * _amountIn);
   }
 
   function addRate(Rate memory _rate) public {
     _addRate(_rate);
   }
 
+  function update(address tokenIn, address tokenOut) public override {}
+
   function consult(
     address _tokenIn,
     uint256 _amountIn,
     address _tokenOut
-  ) external view returns (uint256 _amountOut) {
+  ) external view override returns (uint256 _amountOut) {
     return _consult(_tokenIn, _amountIn, _tokenOut);
   }
 
@@ -56,7 +63,7 @@ contract MockOracle {
     address _tokenIn,
     uint256 _amountIn,
     address _tokenOut
-  ) external view returns (uint256 _amountOut) {
+  ) external view override returns (uint256 _amountOut) {
     return _consult(_tokenIn, _amountIn, _tokenOut);
   }
 }
