@@ -326,7 +326,7 @@ The Unlock Protocol Discord server can be found via a link at [https://discord.u
 
 The [Unlock DAO](../../governance/unlock-dao/) is the community of [Unlock Protocol Token (UP)](../../governance/unlock-dao-tokens/) holders governing Unlock Protocol.
 
-Governance happens at multiple levels, and the [Unlock DAO](../../governance/unlock-dao/) is encouraged to create their own decision-making processes. Currently, onchain governance through the DAO contract and non-binding off-chain governance through forum discussions and Snapshots are being used. Collaborative work is encouraged along the Unlock [DAO Culture guide](https://opensea.io/assets/base/0xb6bd8fc42df6153f79eea941a2b4c86f8e5f7b1d/1) and via the [Unlock DAO Charmverse space](https://app.charmverse.io/join?domain=unlock-dao).
+Governance happens at multiple levels, and the [Unlock DAO](../../governance/unlock-dao/) is encouraged to create their own decision-making processes. Currently, onchain governance through the DAO contract and non-binding off-chain governance through forum discussions and Snapshots are being used. Collaborative work is encouraged through the Unlock [DAO Culture guide](https://opensea.io/assets/base/0xb6bd8fc42df6153f79eea941a2b4c86f8e5f7b1d/1) and via the [Unlock DAO Charmverse space](https://app.charmverse.io/join?domain=unlock-dao).
 
 The [Unlock DAO](../../governance/unlock-dao/) has full control over the tokens in its treasury, and Unlock Labs does not have a mechanism to bypass the governance process.
 
