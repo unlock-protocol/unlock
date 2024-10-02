@@ -44,7 +44,7 @@ There are a number of interdependent components of Unlock. These are:
 - **Unlock Labs:** The core team that created and currently maintains Unlock Protocol.
 - **Unlock Protocol:** A suite of upgradable smart contracts that create memberships as NFTs.
 - **The Unlock Ecosystem:** A community of creators, distributors, and consumers who share ownership of Unlock Protocol through their contributions using the protocol.
-- **[Unlock DAO](../../governance/unlock-dao/):** A decentralized organization of token holders who govern and control Unlock Protocol.
+- **[Unlock DAO](../../governance/unlock-dao/):** A decentralized organization of token holders who govern and control Unlock Protocol. The Unlock DAO's stated mission is "The Unlock DAO is a global community of developers, creators, and organizations dedicated to decentralized access and distribution. We act in full service of Unlock Protocol by guiding individuals and groups to empowerment. We provide education, grants, collective governance, enhanced tools, and guidance for building on top of the protocol."
 - **Unlock Tools**: Front-end convenience applications built by Unlock Labs to further sustainable innovation on Unlock Protocol.
 - **The Unlock Protocol Foundation:** The role of the Unlock Protocol Foundation is to promote and encourage adoption of the Unlock Protocol.
 
@@ -270,7 +270,7 @@ This solves the two key problems of ERC-20 based membership qualification for DA
 
 Secondly, a “one-person, one-membership, one-vote” mechanism can be set up, if desired by the DAO itself, in order to avoid the problem of a whale skewing DAO votes based solely on the size of their holdings of the DAO’s ERC-20 treasury.
 
-**Examples of DAO memberships:** Cabin
+**Examples of DAO memberships:** [Cabin](https://cabin.city/)
 
 ### [Certifications and credentials](https://unlock-protocol.com/blog/cdaa-unlock-case-study)
 
@@ -326,7 +326,7 @@ The Unlock Protocol Discord server can be found via a link at [https://discord.u
 
 The [Unlock DAO](../../governance/unlock-dao/) is the community of [Unlock Protocol Token (UP)](../../governance/unlock-dao-tokens/) holders governing Unlock Protocol.
 
-Governance happens at multiple levels, and the [Unlock DAO](../../governance/unlock-dao/) is encouraged to create their own decision-making processes. Currently, onchain governance through the DAO contract and non-binding off-chain governance through forum discussions and Snapshots are being used.
+Governance happens at multiple levels, and the [Unlock DAO](../../governance/unlock-dao/) is encouraged to create their own decision-making processes. Currently, onchain governance through the DAO contract and non-binding off-chain governance through forum discussions and Snapshots are being used. Collaborative work is encouraged along the Unlock [DAO Culture guide](https://opensea.io/assets/base/0xb6bd8fc42df6153f79eea941a2b4c86f8e5f7b1d/1) and via the [Unlock DAO Charmverse space](https://app.charmverse.io/join?domain=unlock-dao).
 
 The [Unlock DAO](../../governance/unlock-dao/) has full control over the tokens in its treasury, and Unlock Labs does not have a mechanism to bypass the governance process.
 
