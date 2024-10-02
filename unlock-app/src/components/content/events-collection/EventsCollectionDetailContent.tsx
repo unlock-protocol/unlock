@@ -25,7 +25,6 @@ import CastItButton from '../event/CastItButton'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
-import { useConnectModal } from '~/hooks/useConnectModal'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -74,7 +73,6 @@ export default function EventsCollectionDetailContent({
 
   const { account } = useAuth()
   const router = useRouter()
-  const { openConnectModal } = useConnectModal()
 
   const [isAddEventDrawerOpen, setIsAddEventDrawerOpen] = useState(false)
 
@@ -96,13 +94,8 @@ export default function EventsCollectionDetailContent({
   )
 
   const handleAddEvent = () => {
-    if (!account) {
-      openConnectModal()
-    } else {
-      setIsAddEventDrawerOpen(true)
-    }
+    setIsAddEventDrawerOpen(true)
   }
-
   const handleEventDetailClick = (event: Event) => {
     setSelectedEvent(event)
     setIsEventDetailDrawerOpen(true)
@@ -270,7 +263,11 @@ export default function EventsCollectionDetailContent({
             <div className="flex flex-col gap-6 lg:col-span-10">
               <div className="flex flex-col sm:flex-row items-center space-y-2 justify-between my-5">
                 <h2 className="text-3xl font-bold">Events</h2>
-                <Button onClick={handleAddEvent} className="w-full sm:w-auto">
+                <Button
+                  onClick={handleAddEvent}
+                  className="w-full sm:w-auto"
+                  disabled={!account}
+                >
                   <div className="flex items-center gap-2">
                     <Icon icon={TbPlus} size={20} />
                     {isManager ? 'Add Event' : 'Submit Event'}
