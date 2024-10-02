@@ -35,7 +35,7 @@ As part of the launch of the DAO, Unlock Inc. originally allocated the following
 
 In June 2023, the legacy Governor contract was upgraded from `0x7757f7f21f5fa9b1fd168642b79416051cd0bb94` to `0x440d9D4E66d39bb28FB58729Cb4D3ead2A595591` via a [DAO proposal that the community approved and executed onchain](https://www.tally.xyz/gov/unlock-old/proposal/36208249270120864100503453462134662510103434369621143761091232235939585571890). This upgrade is the result of a vulnerability in the OpenZeppelin library and the new Governor contract is now upgradable. The above information is included for historical reference.
 
-In September 2024, a new Governor contract was instantiated on Base as part of the [migration of the Unlock DAO to Base](https://paragraph.xyz/@unlockprotocol/up-dao-migration-complete). The UDT in the original Ethereum mainnet Time Lock was migrated to Base and was [swapped for UP](https://www.tally.xyz/gov/unlock-protocol/proposal/63269785253077722766136849401328655272413685934436217551731159324075983360350), the Unlock Protocol governance token on Base. 
+In September 2024, a new Governor contract was instantiated on Base as part of the [migration of the Unlock DAO to Base](https://paragraph.xyz/@unlockprotocol/up-dao-migration-complete). The UDT in the original Ethereum mainnet Timelock was migrated to Base and was [swapped for UP](https://www.tally.xyz/gov/unlock-protocol/proposal/63269785253077722766136849401328655272413685934436217551731159324075983360350), the Unlock Protocol governance token on Base. 
 
 ### Voting
 
