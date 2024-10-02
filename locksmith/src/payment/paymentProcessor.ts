@@ -221,7 +221,7 @@ export class PaymentProcessor {
       application_fee_amount: !applicationFeeNotSupportedCountries.includes(
         account.country?.trim() || ''
       )
-        ? pricing.unlockServiceFee + pricing.gasCost
+        ? Math.ceil(pricing.unlockServiceFee + pricing.gasCost)
         : undefined,
     }
     if (connectedCustomer.email) {
