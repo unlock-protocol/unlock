@@ -122,6 +122,7 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
     receiptDetails?.receiptNumber || '',
     isCancelReceipt ? 'REFUND' : '',
   ]
+
     .filter((z: string) => !!z)
     .join('-')
 
@@ -151,6 +152,12 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
       (multiplier * (receiptPrice?.total ?? 0)) / (1 + vatRatePercentage / 100)
     const vatTotalInAmount = Number((subtotal * vatRatePercentage) / 100)
 
+    const LoadingPlaceholder = () => (
+      <Placeholder.Root>
+        <Placeholder.Line />
+      </Placeholder.Root>
+    )
+
     return (
       <div className="grid gap-2 mt-4">
         <div className="flex flex-col gap-4">
@@ -171,20 +178,24 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
                 {vatRatePercentage > 0 && (
                   <>
                     <Detail label="Subtotal" inline>
-                      {isPriceLoading
-                        ? 'Loading...'
-                        : `${subtotal.toFixed(2)} ${symbol}`}
+                      {isPriceLoading ? (
+                        <LoadingPlaceholder />
+                      ) : (
+                        `${subtotal.toFixed(2)} ${symbol}`
+                      )}
                     </Detail>
                     <Detail label={`VAT (${vatRatePercentage}%)`} inline>
-                      {isPriceLoading
-                        ? 'Loading...'
-                        : `${vatTotalInAmount.toFixed(2)} ${symbol}`}
+                      {isPriceLoading ? (
+                        <LoadingPlaceholder />
+                      ) : (
+                        `${vatTotalInAmount.toFixed(2)} ${symbol}`
+                      )}
                     </Detail>
                   </>
                 )}
                 <Detail label="TOTAL" labelSize="medium" inline>
                   {isPriceLoading ? (
-                    'Loading...'
+                    <LoadingPlaceholder />
                   ) : (
                     <>
                       <PriceFormatter
