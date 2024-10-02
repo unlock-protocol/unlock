@@ -9,11 +9,11 @@ sidebar_position: 1
 Collectively, [Unlock Protocol Governance Token holders](https://docs.unlock-protocol.com/governance/unlock-dao-tokens) are members of the Unlock DAO. The Unlock DAO governs the Unlock Protocol. In order to facilitate decision-making, the Unlock DAO uses OpenZeppelin's [Governor Contracts](https://blog.openzeppelin.com/governor-smart-contract/) which can be found at these addresses on [Base](https://base.org):
 
 * [Governor Contract](https://basescan.org/address/0x65bA0624403Fc5Ca2b20479e9F626eD4D78E0aD9) (`0x65bA0624403Fc5Ca2b20479e9F626eD4D78E0aD9`): where proposals and votes are handled,  
-* [TimeLock Contract](https://basescan.org/address/0xB34567C4cA697b39F72e1a8478f285329A98ed1b) (0xB34567C4cA697b39F72e1a8478f285329A98ed1b): where proposals are executed and funds are managed.
+* [Timelock Contract](https://basescan.org/address/0xB34567C4cA697b39F72e1a8478f285329A98ed1b) (0xB34567C4cA697b39F72e1a8478f285329A98ed1b): where proposals are executed and funds are managed.
 
 Prior to being on Base, the Governor and Timelock contracts were on the Ethereum network. [The Unlock DAO migrated from Ethereum to Base in 2024](https://paragraph.xyz/@unlockprotocol/up-dao-migration-complete).
 
-### **Initial settings[​](https://docs.unlock-protocol.com/governance/unlock-dao/#initial-settings)**
+### Initial settings
 
 The governor contract has been configured with the following initial characteristics:
 
@@ -25,7 +25,7 @@ The governor contract has been configured with the following initial characteris
 
 All of these settings can be changed by the Unlock DAO community through an onchain proposal.
 
-### **Allocated funds[​](https://docs.unlock-protocol.com/governance/unlock-dao/#allocated-funds)**
+### Allocated funds
 
 As part of the launch of the DAO, Unlock Inc. originally allocated the following to the Time Lock contract on Ethereum mainnet:
 
@@ -37,11 +37,11 @@ In June 2023, the legacy Governor contract was upgraded from `0x7757f7f21f5fa9b1
 
 In September 2024, a new Governor contract was instantiated on Base as part of the [migration of the Unlock DAO to Base](https://paragraph.xyz/@unlockprotocol/up-dao-migration-complete). The UDT in the original Ethereum mainnet Time Lock was migrated to Base and was [swapped for UP](https://www.tally.xyz/gov/unlock-protocol/proposal/63269785253077722766136849401328655272413685934436217551731159324075983360350), the Unlock Protocol governance token on Base. 
 
-### **Voting[​](https://docs.unlock-protocol.com/governance/unlock-dao/#voting)**
+### Voting
 
 The Governor can execute any transaction as long as the transaction was approved by token holders. These transactions range from transferring some of its own tokens as grants, to upgrading the core protocol, or even changing its own governance parameters.
 
-#### **Making a proposal[​](https://docs.unlock-protocol.com/governance/unlock-dao/#making-a-proposal)**
+#### Making a proposal
 
 A proposal is code that will be executed by the Timelock smart contract if it has been approved. A proposal can then only include *onchain* actions, such as "transfer X to tokens to address A", or "upgrade contract to be using implementation X"... etc.
 
@@ -53,7 +53,7 @@ Finally, in the interest of transparency, you should consider submitting a Pull 
 
 Once the proposal has been submitted on chain, the [delegates (see below)](https://docs.unlock-protocol.com/governance/unlock-dao/#delegating) have a period to express their preferences, between voting in "favor", "against" or "abstain". Proposals have to be carefully tested by each delegate to assert what impact they will actually have, and if they are indeed desirable for the protocol. Given their *unstoppable* nature, and the fact that a rogue or buggy proposal could not be reverted, it is absolutely critical that every single vote is done thoughtfully. Additionally, some delegates might want to consult the token holders who have delegated to them before making a final decision.
 
-#### **Delegating[​](https://docs.unlock-protocol.com/governance/unlock-dao/#delegating)**
+#### Delegating
 
 We expect the DAO to make frequent decisions. Voting onchain has a gas cost associated with it, although this gas cost is minimal on Base. In order to encourage active participation, the DAO has a *delegation* mechanism and only delegates are actually voting. Every token holder is invited to delegate their tokens, and only tokens that are delegated are eligible to vote. Token holders can delegate to themselves or to another address. If they delegate to themselves, they will then be expected to vote. **Note:** Self-delegation is required if you want to vote your own tokens.
 
@@ -61,6 +61,6 @@ Delegation is done *by address*, which means that there is no need to delegate a
 
 When a delegation is submitted, the "weight" of each address's vote is based on how many tokens have been delegated to them, at the time of the proposal submission.
 
-### **Cross-chain Governance[​](https://docs.unlock-protocol.com/governance/unlock-dao/#cross-chain-governance)**
+### Cross-chain Governance
 
 The Unlock contract has been deployed on multiple networks. In 2023, the Unlock Labs team introduced a mechanism for the DAO on Ethereum mainnet to control the Unlock contract deployed on each of these networks, [enabling cross-chain governance](https://docs.unlock-protocol.com/governance/unlock-dao/cross-chain-governance). 
