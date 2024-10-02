@@ -138,7 +138,7 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
   const ReceiptDetails = () => {
     const symbol = tokenSymbol || networks[network]?.nativeCurrency?.symbol
 
-    const { data: receiptPrice } = useGetPrice({
+    const { data: receiptPrice, isLoading: isPriceLoading } = useGetPrice({
       network,
       amount: receiptDetails?.amountTransferred || 0,
       currencyContractAddress: receiptDetails?.tokenAddress,
@@ -148,7 +148,7 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
 
     const vatRatePercentage = (supplier?.vatBasisPointsRate ?? 0) / 100
     const subtotal =
-      (multiplier * receiptPrice?.total) / (1 + vatRatePercentage / 100)
+      (multiplier * (receiptPrice?.total ?? 0)) / (1 + vatRatePercentage / 100)
     const vatTotalInAmount = Number((subtotal * vatRatePercentage) / 100)
 
     return (
@@ -171,20 +171,30 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
                 {vatRatePercentage > 0 && (
                   <>
                     <Detail label="Subtotal" inline>
-                      {`${subtotal.toFixed(2)} ${symbol}`}
+                      {isPriceLoading
+                        ? 'Loading...'
+                        : `${subtotal.toFixed(2)} ${symbol}`}
                     </Detail>
                     <Detail label={`VAT (${vatRatePercentage}%)`} inline>
-                      {vatTotalInAmount.toFixed(2)} {symbol}
+                      {isPriceLoading
+                        ? 'Loading...'
+                        : `${vatTotalInAmount.toFixed(2)} ${symbol}`}
                     </Detail>
                   </>
                 )}
                 <Detail label="TOTAL" labelSize="medium" inline>
-                  <PriceFormatter
-                    price={(
-                      multiplier * parseFloat(receiptPrice?.total)
-                    ).toString()}
-                  />{' '}
-                  {symbol}
+                  {isPriceLoading ? (
+                    'Loading...'
+                  ) : (
+                    <>
+                      <PriceFormatter
+                        price={(
+                          multiplier * parseFloat(receiptPrice?.total ?? '0')
+                        ).toString()}
+                      />{' '}
+                      {symbol}
+                    </>
+                  )}
                 </Detail>
               </div>
             </div>
@@ -254,7 +264,15 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
   const componentRef = useRef<any>()
 
   const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
+    documentTitle: `Receipt-${receiptNumber}`,
+    contentRef: componentRef,
+  })
+
+  const { data: receiptPrice, isLoading: isPriceLoading } = useGetPrice({
+    network,
+    amount: receiptDetails?.amountTransferred || 0,
+    currencyContractAddress: receiptDetails?.tokenAddress,
+    hash,
   })
 
   if (isLoading) {
@@ -332,7 +350,11 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
               </div>
             </div>
             <div className="flex justify-end w-full">
-              <Button size="small" onClick={handlePrint}>
+              <Button
+                size="small"
+                onClick={() => handlePrint()}
+                disabled={isPriceLoading || !receiptPrice?.total}
+              >
                 Print PDF
               </Button>
             </div>
