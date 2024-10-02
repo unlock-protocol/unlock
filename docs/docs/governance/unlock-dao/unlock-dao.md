@@ -15,7 +15,7 @@ Prior to being on Base, the Governor and Timelock contracts were on the Ethereum
 
 ### Initial settings
 
-The governor contract has been configured with the following initial characteristics:
+The governor contract has been configured with the following characteristics:
 
 * Anyone can submit a proposal (no ownership threshold)  
 * Proposal Delay: 6 days  
