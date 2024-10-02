@@ -200,7 +200,7 @@ export class PaymentProcessor {
     })
 
     const paymentIntentParams: any = {
-      amount: Math.ceil(pricing.total),
+      amount: Math.ceil(pricing.total * 100),
       currency: creditCardCurrency,
       customer: connectedCustomer.id,
       payment_method: method.id,
@@ -221,7 +221,7 @@ export class PaymentProcessor {
       application_fee_amount: !applicationFeeNotSupportedCountries.includes(
         account.country?.trim() || ''
       )
-        ? Math.ceil(pricing.unlockServiceFee + pricing.gasCost)
+        ? Math.ceil(pricing.unlockServiceFee * 100 + pricing.gasCost * 100)
         : undefined,
     }
     if (connectedCustomer.email) {
