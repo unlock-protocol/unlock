@@ -12,7 +12,7 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { useUserEvents } from '~/hooks/useUserEvents'
 import { Form as EventCreationForm, NewEventForm } from '../event/Form'
 import { useEvent } from '~/hooks/useEvent'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { useAddToEventCollection } from '~/hooks/useEventCollection'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -157,6 +157,25 @@ export default function AddEventsToCollectionDrawer({
     }
   }, [eventDetailsError, setErrorMessage])
 
+  const resetFormState = useCallback(() => {
+    setEventUrl('')
+    setEventSlug('')
+    setIsUrlValid(false)
+    setIsDuplicate(false)
+    setErrorMessage(null)
+    setAddMethod(null)
+    setIsEventSelected(false)
+    setNewEventSlug(undefined)
+    setLockAddress(undefined)
+    setTransactionDetails(undefined)
+  }, [])
+
+  useEffect(() => {
+    if (!isOpen) {
+      resetFormState()
+    }
+  }, [isOpen, resetFormState])
+
   const handleSubmit = async () => {
     if (!eventSlug.trim()) {
       ToastHelper.error('No event selected')
@@ -168,6 +187,7 @@ export default function AddEventsToCollectionDrawer({
         collectionSlug: collectionSlug!,
         eventSlug,
       })
+      resetFormState()
       setIsOpen(false)
     } catch (error) {
       console.error('Error adding event to collection:', error)
@@ -191,13 +211,6 @@ export default function AddEventsToCollectionDrawer({
         value: eventOption?.slug || '',
       }
     }) || []
-
-  // override setIsOpen to prevent closing during submission
-  const handleSetIsOpen = (open: boolean) => {
-    if (!isSubmitting) {
-      setIsOpen(open)
-    }
-  }
 
   const renderInitialOptions = () => (
     <div className="flex flex-col gap-4">
@@ -430,6 +443,8 @@ export default function AddEventsToCollectionDrawer({
           }
         }
       )
+      // Reset form state
+      resetFormState()
     } catch (error) {
       console.error(error)
       ToastHelper.error('The contract could not be deployed. Please try again.')
@@ -489,7 +504,14 @@ export default function AddEventsToCollectionDrawer({
   return (
     <Drawer
       isOpen={isOpen}
-      setIsOpen={handleSetIsOpen}
+      setIsOpen={(open) => {
+        if (!isSubmitting) {
+          setIsOpen(open)
+          if (!open) {
+            resetFormState()
+          }
+        }
+      }}
       title={addMethod ? 'Add Event' : 'Choose Add Method'}
     >
       <div className="flex flex-col h-full gap-10 mt-10">
