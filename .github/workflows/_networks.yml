@@ -16,7 +16,7 @@ jobs:
           fetch-depth: 0
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v44
+        uses: tj-actions/changed-files@v45
         with:
           files: |
             packages/networks/src/networks/**
@@ -67,6 +67,7 @@ jobs:
         uses: mshick/add-pr-comment@v2.8.2
         with:
           message-path: results.txt
+          message-id: networks-check
           refresh-message-position: true
           # We rely on a deployment of a proxy service to post comment from forked PRs
           # see https://github.com/mshick/add-pr-comment-proxy for more info

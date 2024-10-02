@@ -39,9 +39,12 @@ describe('PublicLock upgrade v13 > v14', () => {
     ])
 
     PublicLockPast = await ethers.getContractFactory(pathPublicLockPast)
-    PublicLockLatest = await ethers.getContractFactory(
-      'contracts/PublicLock.sol:PublicLock'
+
+    const [pathPublicLockLatest] = await copyAndBuildContractsAtVersion(
+      dirname,
+      [{ contractName: 'PublicLock', version: nextVersionNumber }]
     )
+    PublicLockLatest = await ethers.getContractFactory(pathPublicLockLatest)
 
     // deploy latest version
 
