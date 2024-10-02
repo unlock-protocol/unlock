@@ -27,7 +27,7 @@ All of these settings can be changed by the Unlock DAO community through an onch
 
 ### Allocated funds
 
-As part of the launch of the DAO, Unlock Inc. originally allocated the following to the Time Lock contract on Ethereum mainnet:
+As part of the launch of the DAO, Unlock Inc. originally allocated the following to the Timelock contract on Ethereum mainnet:
 
 * 100,000 UDT that the DAO used to pay bounties, grants or perform retro-active funding.  
 * 170.23 Uniswap Liquidity Provider tokens from the UDT/ETH pool  
