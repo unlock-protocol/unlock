@@ -6,7 +6,7 @@ import {
   PriceFormatter,
 } from '@unlock-protocol/ui'
 import { useReactToPrint } from 'react-to-print'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { PoweredByUnlock } from '../../checkout/PoweredByUnlock'
 import { addressMinify } from '~/utils/strings'
 import { UpdatePurchaserDrawer } from './UpdatePurchaserDrawer'
@@ -66,6 +66,7 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
   const { account } = useAuth()
 
   const [purchaserDrawer, setPurchaserDrawer] = useState(false)
+  const [receiptNumber, setReceiptNumber] = useState('')
   const web3Service = useWeb3Service()
   const { isManager } = useLockManager({
     lockAddress,
@@ -117,14 +118,16 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
       ? dayjs.unix(receiptDetails.timestamp).format('D MMM YYYY') // example: 20 Jan 1977
       : ''
 
-  const receiptNumber = [
-    supplier?.prefix,
-    receiptDetails?.receiptNumber || '',
-    isCancelReceipt ? 'REFUND' : '',
-  ]
-
-    .filter((z: string) => !!z)
-    .join('-')
+  useEffect(() => {
+    const number = [
+      supplier?.prefix,
+      receiptDetails?.receiptNumber || '',
+      isCancelReceipt ? 'REFUND' : '',
+    ]
+      .filter((z: string) => !!z)
+      .join('-')
+    setReceiptNumber(number)
+  }, [supplier, receiptDetails, isCancelReceipt])
 
   const PurchaseDetails = () => {
     return (
