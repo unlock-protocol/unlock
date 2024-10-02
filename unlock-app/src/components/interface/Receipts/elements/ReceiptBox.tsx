@@ -5,7 +5,7 @@ import {
   Detail,
   PriceFormatter,
 } from '@unlock-protocol/ui'
-import ReactToPrint from 'react-to-print'
+import { useReactToPrint } from 'react-to-print'
 import { useRef, useState } from 'react'
 import { PoweredByUnlock } from '../../checkout/PoweredByUnlock'
 import { addressMinify } from '~/utils/strings'
@@ -253,6 +253,10 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
 
   const componentRef = useRef<any>()
 
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  })
+
   if (isLoading) {
     return (
       <Placeholder.Root>
@@ -327,14 +331,11 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
                 <PoweredByUnlock />
               </div>
             </div>
-            <ReactToPrint
-              trigger={() => (
-                <div className="flex justify-end w-full">
-                  <Button size="small">Print PDF</Button>
-                </div>
-              )}
-              content={() => componentRef.current}
-            />
+            <div className="flex justify-end w-full">
+              <Button size="small" onClick={handlePrint}>
+                Print PDF
+              </Button>
+            </div>
           </Disclosure>
         </div>
       </div>
