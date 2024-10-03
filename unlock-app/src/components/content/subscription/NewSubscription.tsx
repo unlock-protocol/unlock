@@ -30,8 +30,9 @@ export const Deploy: React.FC = () => {
     }) => {
       setFormData(values)
       const walletService = await getWalletService(values.network)
-      const expirationInSeconds =
+      const expirationInSeconds = Math.ceil(
         (values.expirationDuration as number) * ONE_DAY_IN_SECONDS
+      )
 
       const lockAddress = await walletService.createLock(
         {

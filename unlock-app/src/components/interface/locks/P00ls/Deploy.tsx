@@ -94,7 +94,9 @@ export const Deploy: React.FC = () => {
       keyPrice: string
     }) => {
       const walletService = await getWalletService(values.network)
-      const expirationInSeconds = values.expirationDuration * ONE_DAY_IN_SECONDS
+      const expirationInSeconds = Math.ceil(
+        values.expirationDuration * ONE_DAY_IN_SECONDS
+      )
       const lockAddress = await walletService.createLock(
         {
           name: values.name,
