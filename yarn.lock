@@ -20376,7 +20376,7 @@ __metadata:
     "@unlock-protocol/eslint-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
-    eslint: "npm:9.9.1"
+    eslint: "npm:9.11.1"
     ethers: "npm:6.13.2"
     hardhat: "npm:2.22.9"
     hardhat-gas-reporter: "npm:2.2.1"
@@ -20386,7 +20386,7 @@ __metadata:
     ts-mocha: "npm:10.0.0"
     ts-node: "npm:10.9.2"
     typechain: "npm:8.3.2"
-    typescript: "npm:5.5.4"
+    typescript: "npm:5.6.2"
   peerDependencies:
     "@unlock-protocol/contracts": "*"
     "@unlock-protocol/networks": "*"
