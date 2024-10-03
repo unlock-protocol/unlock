@@ -12,7 +12,10 @@ import { ImageBar } from '~/components/interface/locks/Manage/elements/ImageBar'
 import Link from 'next/link'
 
 import { useEventCollectionDetails } from '~/hooks/useEventCollection'
-import { isCollectionManager } from '~/utils/eventCollections'
+import {
+  getEventAttributes,
+  isCollectionManager,
+} from '~/utils/eventCollections'
 import { FaGithub, FaGlobe, FaTwitter, FaYoutube } from 'react-icons/fa'
 import { SiFarcaster as FarcasterIcon } from 'react-icons/si'
 import AddEventsToCollectionDrawer from './AddEventsToCollectionDawer'
@@ -25,6 +28,7 @@ import CastItButton from '../event/CastItButton'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
+import { useConnectModal } from '~/hooks/useConnectModal'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -73,6 +77,7 @@ export default function EventsCollectionDetailContent({
 
   const { account } = useAuth()
   const router = useRouter()
+  const { openConnectModal } = useConnectModal()
 
   const [isAddEventDrawerOpen, setIsAddEventDrawerOpen] = useState(false)
 
@@ -94,8 +99,13 @@ export default function EventsCollectionDetailContent({
   )
 
   const handleAddEvent = () => {
-    setIsAddEventDrawerOpen(true)
+    if (!account) {
+      openConnectModal()
+    } else {
+      setIsAddEventDrawerOpen(true)
+    }
   }
+
   const handleEventDetailClick = (event: Event) => {
     setSelectedEvent(event)
     setIsEventDetailDrawerOpen(true)
@@ -108,14 +118,14 @@ export default function EventsCollectionDetailContent({
 
   // util to parse event date and time with timezone
   const parseEventDateTime = (event: Event): dayjs.Dayjs | null => {
-    const ticket = event.data?.ticket
-    if (!ticket) return null
+    const { startDate, startTime, timezone } = getEventAttributes(event)
 
-    const { event_start_date, event_start_time, event_timezone } = ticket
+    if (!startDate) return null
+
     // Combine date and time, default to "00:00" if time is missing
-    const dateTimeString = `${event_start_date}T${event_start_time || '00:00'}:00`
+    const dateTimeString = `${startDate}T${startTime || '00:00'}:00`
     // Parse with Day.js considering the timezone
-    return dayjs.tz(dateTimeString, event_timezone)
+    return dayjs.tz(dateTimeString, timezone || 'UTC')
   }
 
   // Sort and categorize events into upcoming and past
@@ -263,11 +273,7 @@ export default function EventsCollectionDetailContent({
             <div className="flex flex-col gap-6 lg:col-span-10">
               <div className="flex flex-col sm:flex-row items-center space-y-2 justify-between my-5">
                 <h2 className="text-3xl font-bold">Events</h2>
-                <Button
-                  onClick={handleAddEvent}
-                  className="w-full sm:w-auto"
-                  disabled={!account}
-                >
+                <Button onClick={handleAddEvent} className="w-full sm:w-auto">
                   <div className="flex items-center gap-2">
                     <Icon icon={TbPlus} size={20} />
                     {isManager ? 'Add Event' : 'Submit Event'}

@@ -13957,6 +13957,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@openzeppelin/upgrades-core@npm:1.39.0":
+  version: 1.39.0
+  resolution: "@openzeppelin/upgrades-core@npm:1.39.0"
+  dependencies:
+    "@nomicfoundation/slang": "npm:^0.17.0"
+    cbor: "npm:^9.0.0"
+    chalk: "npm:^4.1.0"
+    compare-versions: "npm:^6.0.0"
+    debug: "npm:^4.1.1"
+    ethereumjs-util: "npm:^7.0.3"
+    minimatch: "npm:^9.0.5"
+    minimist: "npm:^1.2.7"
+    proper-lockfile: "npm:^4.1.1"
+    solidity-ast: "npm:^0.4.51"
+  bin:
+    openzeppelin-upgrades-core: dist/cli/cli.js
+  checksum: 10/7779ce35966a6ee054eb4f167ef98f0d95dd4e5e5f309b89a59b6eaf0de8d0395205eb3b19957aea09c74c92754073a4c12f7728f86e072208694361aeb6c201
+  languageName: node
+  linkType: hard
+
 "@openzeppelin/upgrades-core@npm:^1.31.3":
   version: 1.32.4
   resolution: "@openzeppelin/upgrades-core@npm:1.32.4"
@@ -20534,7 +20554,7 @@ __metadata:
     "@openzeppelin/contracts5": "npm:@openzeppelin/contracts@5.0.2"
     "@openzeppelin/hardhat-upgrades": "npm:3.4.0"
     "@openzeppelin/merkle-tree": "npm:1.0.7"
-    "@openzeppelin/upgrades-core": "npm:1.38.0"
+    "@openzeppelin/upgrades-core": "npm:1.39.0"
     "@uniswap/v2-core": "npm:1.0.1"
     "@uniswap/v2-periphery": "npm:1.1.0-beta.0"
     "@uniswap/v3-core": "npm:1.0.1"
@@ -20731,7 +20751,7 @@ __metadata:
     react-jwt: "npm:1.2.2"
     react-markdown: "npm:9.0.1"
     react-test-renderer: "npm:18.3.1"
-    react-to-print: "npm:2.15.1"
+    react-to-print: "npm:3.0.1"
     react-use: "npm:17.5.1"
     react-use-clipboard: "npm:1.0.9"
     remark-html: "npm:16.0.1"
@@ -45911,13 +45931,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-to-print@npm:2.15.1":
-  version: 2.15.1
-  resolution: "react-to-print@npm:2.15.1"
+"react-to-print@npm:3.0.1":
+  version: 3.0.1
+  resolution: "react-to-print@npm:3.0.1"
   peerDependencies:
-    react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
-    react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
-  checksum: 10/0786fd5dd055b5b50f9a0dba99f0ccb30b9407b8e77748f5fc2557446ed0d0c65759e927cc2cdaa9e34f286838bbb230d3b0ba03d20b9754d0469fc4dac7c529
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ~19
+  checksum: 10/22296c354f24b00403590c0dbecc6eab6660382be744e470e23abec8aa448dbdfcbf9d50c8f2d435e7a733619bae55155f2c2270fffe44ddae8f129d57c4b420
   languageName: node
   linkType: hard
 
