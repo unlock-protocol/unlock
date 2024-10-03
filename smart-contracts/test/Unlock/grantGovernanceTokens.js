@@ -23,7 +23,8 @@ const UP_WETH_RATE = ethers.parseEther('0.00000042')
 const UDT_WETH_RATE = UP_WETH_RATE / 1000n
 
 // arbitrarly decided
-const ERC20_RATE = ethers.parseEther('0.02')
+const UP_ERC20_RATE = ethers.parseEther('0.02')
+const UDT_ERC20_RATE = ethers.parseEther('0.02') / 1000n
 
 // 1% in basis points
 const PROTOCOL_FEE = 100n
@@ -53,13 +54,12 @@ describe('UnlockGovernanceToken / granting Tokens', () => {
   governanceTokenTestCases.forEach((symbol) => {
     let governanceToken
     let governanceTokenRate
-    let rate
+    let lockTokenRate
 
     describe(`behaviour with ${symbol}`, () => {
       before(async function () {
         // gov token settings
         governanceToken = symbol === 'UP' ? up : udt
-        governanceTokenRate = symbol === 'UP' ? UP_WETH_RATE : UDT_WETH_RATE
 
         // config unlock
         await unlock.configUnlock(
@@ -74,16 +74,16 @@ describe('UnlockGovernanceToken / granting Tokens', () => {
         // deploy the oracle with a fixed rate
         oracle = await createMockOracle({
           rates: [
-            // ERC20 <> WETH rate
+            // ERC20 <> UDT/UP rate
             {
               tokenIn: await token.getAddress(),
-              rate: ERC20_RATE,
-              tokenOut: await weth.getAddress(),
+              rate: symbol === 'UP' ? UP_ERC20_RATE : UDT_ERC20_RATE,
+              tokenOut: await governanceToken.getAddress(),
             },
             // UDT <> WETH rate
             {
               tokenIn: await governanceToken.getAddress(),
-              rate: governanceTokenRate,
+              rate: symbol === 'UP' ? UP_WETH_RATE : UDT_WETH_RATE,
               tokenOut: await weth.getAddress(),
             },
           ],
@@ -113,11 +113,16 @@ describe('UnlockGovernanceToken / granting Tokens', () => {
           await oracle.getAddress()
         )
 
-        // get the gov token rate from oracle
-        rate = await oracle.consult(
+        // get rates from oracle
+        governanceTokenRate = await oracle.consult(
           await governanceToken.getAddress(),
           ethers.parseUnits('1', 'ether'),
           await weth.getAddress()
+        )
+        lockTokenRate = await oracle.consult(
+          await token.getAddress(),
+          ethers.parseUnits('1', 'ether'),
+          await governanceToken.getAddress()
         )
 
         // mint token
@@ -134,10 +139,6 @@ describe('UnlockGovernanceToken / granting Tokens', () => {
             .connect(minter)
             .mint(await unlock.getAddress(), initialAmount)
         }
-      })
-
-      it('exchange rate is set', async () => {
-        assert.equal(rate / 10n ** 18n, governanceTokenRate)
       })
 
       it(`referrer has 0 ${symbol} to start`, async () => {
@@ -161,6 +162,15 @@ describe('UnlockGovernanceToken / granting Tokens', () => {
         )
       })
 
+      describe('rates', () => {
+        it(`exchange rate for ${symbol} is set`, async () => {
+          assert.equal(
+            governanceTokenRate / 10n ** 18n,
+            symbol === 'UP' ? UP_WETH_RATE : UDT_WETH_RATE
+          )
+        })
+      })
+
       describe(`grant rewards in ${symbol} based on protocol fee`, () => {
         let balanceReferrerBefore, unlockBalanceBefore
         before(async () => {
@@ -171,9 +181,7 @@ describe('UnlockGovernanceToken / granting Tokens', () => {
             await referrer.getAddress()
           )
 
-          unlockBalanceBefore = await token.balanceOf(
-            await referrer.getAddress()
-          )
+          unlockBalanceBefore = await token.balanceOf(await unlock.getAddress())
 
           // purchase a key with refferer
           await lock
