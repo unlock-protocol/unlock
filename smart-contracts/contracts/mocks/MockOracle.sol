@@ -42,7 +42,7 @@ contract MockOracle is IUniswapOracleV3 {
     if (rate == 0) {
       revert MissingTokenPair(_tokenIn, _tokenOut);
     }
-    return (rate * _amountIn);
+    return (rate * _amountIn) / 1e18;
   }
 
   function addRate(Rate memory _rate) public {

@@ -23,8 +23,7 @@ const UP_WETH_RATE = ethers.parseEther('0.00000042')
 const UDT_WETH_RATE = UP_WETH_RATE / 1000n
 
 // arbitrarly decided
-const UP_ERC20_RATE = ethers.parseEther('0.02')
-const UDT_ERC20_RATE = ethers.parseEther('0.02') / 1000n
+const ERC20_RATE = ethers.parseEther('0.02')
 
 // 1% in basis points
 const PROTOCOL_FEE = 100n
@@ -74,11 +73,11 @@ describe('UnlockGovernanceToken / granting Tokens', () => {
         // deploy the oracle with a fixed rate
         oracle = await createMockOracle({
           rates: [
-            // ERC20 <> UDT/UP rate
+            // ERC20 <> WETH rate
             {
               tokenIn: await token.getAddress(),
-              rate: symbol === 'UP' ? UP_ERC20_RATE : UDT_ERC20_RATE,
-              tokenOut: await governanceToken.getAddress(),
+              rate: ERC20_RATE,
+              tokenOut: await weth.getAddress(),
             },
             // UDT <> WETH rate
             {
@@ -118,11 +117,6 @@ describe('UnlockGovernanceToken / granting Tokens', () => {
           await governanceToken.getAddress(),
           ethers.parseUnits('1', 'ether'),
           await weth.getAddress()
-        )
-        lockTokenRate = await oracle.consult(
-          await token.getAddress(),
-          ethers.parseUnits('1', 'ether'),
-          await governanceToken.getAddress()
         )
 
         // mint token
@@ -165,8 +159,18 @@ describe('UnlockGovernanceToken / granting Tokens', () => {
       describe('rates', () => {
         it(`exchange rate for ${symbol} is set`, async () => {
           assert.equal(
-            governanceTokenRate / 10n ** 18n,
+            governanceTokenRate,
             symbol === 'UP' ? UP_WETH_RATE : UDT_WETH_RATE
+          )
+        })
+        it(`exchange rate for ERC20 is set`, async () => {
+          assert.equal(
+            await oracle.consult(
+              await token.getAddress(),
+              ethers.parseUnits('1', 'ether'),
+              await weth.getAddress()
+            ),
+            ERC20_RATE
           )
         })
       })
@@ -211,7 +215,14 @@ describe('UnlockGovernanceToken / granting Tokens', () => {
             (await governanceToken.balanceOf(await referrer.getAddress())) -
             balanceReferrerBefore
           assert.notEqual(balanceReferrer, 0n)
-          assert.equal(balanceReferrer, 0n)
+
+          const protocolFee = (keyPrice * PROTOCOL_FEE) / BASIS_POINTS_DEN
+          const protocolFeeInWETH = (protocolFee * ERC20_RATE) / 10n ** 18n
+          const rate = symbol === 'UP' ? UP_WETH_RATE : UDT_WETH_RATE
+          assert.equal(
+            balanceReferrer,
+            ((protocolFeeInWETH / 2n) * rate) / 10n ** 18n
+          )
         })
       })
     })

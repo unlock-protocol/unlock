@@ -436,20 +436,17 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       ) {
         // get price for a single governance token
         IUniswapOracleV3 govTokenOracle = uniswapOracles[udt];
+
         if (address(govTokenOracle) != address(0)) {
-          // Get the value of 1 governance token in ETH
+          // Get the paid value in governance token
           uint govTokenPrice = govTokenOracle.updateAndConsult(
             udt,
-            10 ** 18,
+            valueInNativeTokens,
             weth
           );
 
-          // amount of tokens to distribute is equal to half the protocol fee
-          uint tokensToDistribute = ((valueInNativeTokens *
-            govTokenPrice *
-            protocolFee) /
-            10000 /
-            2); // in basis points
+          // amount of tokens to distribute is equal to half the protocol fee in basis points)
+          uint tokensToDistribute = ((govTokenPrice * protocolFee) / 10000 / 2);
 
           if (tokensToDistribute > 0) {
             // make sure we have governance tokens
