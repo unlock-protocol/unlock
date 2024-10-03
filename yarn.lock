@@ -21278,7 +21278,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/ui": "workspace:./packages/ui"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
-    "@vercel/og": "npm:0.6.2"
+    "@vercel/og": "npm:0.6.3"
     "@vercel/speed-insights": "npm:1.0.12"
     "@vitejs/plugin-react": "npm:4.3.1"
     "@walletconnect/ethereum-provider": "npm:2.16.2"
@@ -21512,18 +21512,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vercel/og@npm:0.6.2":
-  version: 0.6.2
-  resolution: "@vercel/og@npm:0.6.2"
-  dependencies:
-    "@resvg/resvg-wasm": "npm:2.4.0"
-    satori: "npm:0.10.9"
-    yoga-wasm-web: "npm:0.3.3"
-  checksum: 10/7844d692b7e6c78b99d3ce2baf8d7e95c0f3c9f5637dbd43862f01187b649a6bc4566e7c4cf0dcffab89f1b6651195df02cb5d83cd4692fb71b430aa2e77992b
-  languageName: node
-  linkType: hard
-
-"@vercel/og@npm:^0.6.3":
+"@vercel/og@npm:0.6.3, @vercel/og@npm:^0.6.3":
   version: 0.6.3
   resolution: "@vercel/og@npm:0.6.3"
   dependencies:
