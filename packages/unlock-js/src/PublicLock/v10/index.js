@@ -56,6 +56,7 @@ export default {
   isLockManager,
   isKeyGranter,
   addKeyGranter,
+  removeKeyGranter,
   expireAndRefundFor,
   cancelAndRefund,
   shareKey,
