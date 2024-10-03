@@ -60,7 +60,8 @@ export const AttendeeCuesInternal = ({
             })}
         </ul>
         <p>
-          {featuredAttendees.join(', ')} and {andOthers} others are going.
+          {featuredAttendees.join(', ')}{' '}
+          {andOthers > 1 && `and ${andOthers} others`} are going.
         </p>
       </div>
     )
