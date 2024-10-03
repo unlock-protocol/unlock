@@ -3,7 +3,7 @@ import { AiOutlineTag as TagIcon } from 'react-icons/ai'
 import { IoMdTime as TimeIcon } from 'react-icons/io'
 import { TbUsers as AttendeesIcon } from 'react-icons/tb'
 import Link from 'next/link'
-import { Card, Detail, Icon, Placeholder } from '@unlock-protocol/ui'
+import { Card, Detail, Icon } from '@unlock-protocol/ui'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { PriceFormatter } from '@unlock-protocol/ui'
 import { WrappedAddress } from '~/components/interface/WrappedAddress'
@@ -28,12 +28,6 @@ interface EventCardProps {
 interface EventImageProps {
   imageUrl: string
 }
-
-const LoadingPlaceholder = () => (
-  <Placeholder.Root inline>
-    <Placeholder.Line size="lg" />
-  </Placeholder.Root>
-)
 
 const EventImage = ({ imageUrl }: EventImageProps) => {
   return (
@@ -61,11 +55,6 @@ export const EventCard = ({ event }: EventCardProps) => {
   })
 
   const eventDate = dayjs(ticket.event_start_date).format('D MMM YYYY')
-
-  console.log('checkoutConfig', checkoutConfig)
-  console.log('eventAttendees', eventAttendees)
-  console.log('lockData', lockData)
-  console.log('symbol', lockData?.symbol)
 
   return (
     <Card variant="simple" shadow="lg" padding="md">
@@ -96,30 +85,21 @@ export const EventCard = ({ event }: EventCardProps) => {
                   <span>Price</span>
                 </div>
               }
-              loading={false}
+              loading={isLockDataLoading}
               labelSize="tiny"
               valueSize="small"
               truncate
             >
               <div className="flex items-center gap-2">
-                {isLockDataLoading ? (
-                  <LoadingPlaceholder />
-                ) : (
-                  <>
-                    <CryptoIcon symbol={lockData?.currencySymbol} />
-                    <span className="overflow-auto text-ellipsis">
-                      {typeof lockData?.keyPrice !== 'string' ||
-                      parseFloat(lockData?.keyPrice) <= 0 ? (
-                        '0'
-                      ) : (
-                        <PriceFormatter
-                          price={lockData?.keyPrice}
-                          precision={2}
-                        />
-                      )}
-                    </span>
-                  </>
-                )}
+                <CryptoIcon symbol={lockData?.currencySymbol} />
+                <span className="overflow-auto text-ellipsis">
+                  {typeof lockData?.keyPrice !== 'string' ||
+                  parseFloat(lockData?.keyPrice) <= 0 ? (
+                    '0'
+                  ) : (
+                    <PriceFormatter price={lockData?.keyPrice} precision={2} />
+                  )}
+                </span>
               </div>
             </Detail>
 
@@ -143,15 +123,12 @@ export const EventCard = ({ event }: EventCardProps) => {
                   <span>Attendees</span>
                 </div>
               }
+              loading={isEventAttendeesLoading}
               labelSize="tiny"
               valueSize="small"
               truncate
             >
-              {isEventAttendeesLoading ? (
-                <LoadingPlaceholder />
-              ) : (
-                eventAttendees?.length
-              )}
+              {eventAttendees?.length}
             </Detail>
           </div>
         </div>
