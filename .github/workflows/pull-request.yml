@@ -74,7 +74,7 @@ jobs:
       - check-changes
       - run-tests
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository && needs.check-changes.outputs.changed != '[]' && contains(fromJson(needs.check-changes.outputs.changed), 'unlock-app')  }}
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with:
