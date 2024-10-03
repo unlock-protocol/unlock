@@ -1,6 +1,6 @@
 const eslint = require('@eslint/js')
 const typescriptEslint = require('typescript-eslint')
-const vitestPlugin = require('eslint-plugin-vitest')
+const vitestPlugin = require('@vitest/eslint-plugin')
 const prettierPlugin = require('eslint-plugin-prettier')
 const mochaPlugin = require('eslint-plugin-mocha')
 const evmAddressPlugin = require('eslint-plugin-evm-address-to-checksummed')
