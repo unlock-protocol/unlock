@@ -31,7 +31,7 @@ export const SettingRoles = ({
       </SettingCard>
       <SettingCard
         label="Key Granter"
-        description="By default, the creator of a Lock is the first key granter. Unlock Key Granters are used to facilitate credit card purchases."
+        description="By default, any lock manager can grant keys, but you can also assign the key granter role to specific addresses and they can only grant (or extend) keys."
         isLoading={isLoading}
       >
         <KeyGranterForm

@@ -59,7 +59,7 @@ export const useRemoveKeyGranter = (lockAddress: string, network: number) => {
     })
 
     await ToastHelper.promise(removeKeyGranterPromise, {
-      loading: `Removing Key Granter status for ${minifyAddress(keyGranter)}`,
+      loading: `Removing the key granter role for ${minifyAddress(keyGranter)}`,
       success: `Key Granter role removed for ${minifyAddress(keyGranter)}.`,
       error: `Could not remove Key Granter role for ${minifyAddress(keyGranter)}`,
     })
