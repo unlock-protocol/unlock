@@ -50,7 +50,7 @@ export async function createLock(
 
   const { chainId } = await hre.ethers.provider.getNetwork()
 
-  if (!unlockAddress) {
+  if (!unlockAddress && networks[Number(chainId)]) {
     unlockAddress = networks[Number(chainId)].unlockAddress
   }
 
