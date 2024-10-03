@@ -61,18 +61,16 @@ export const RemoveFromCollectionButton = ({
         tip="Remove from Collection"
         side="bottom"
       >
-        <div className="flex flex-col-reverse px-4 md:px-0 md:flex-row-reverse gap-2">
-          <Button
-            onClick={() => setOpen(true)}
-            size="small"
-            variant="outlined-primary"
-          >
-            <div className="flex items-center gap-2">
-              <FiTrash />
-              <span>Remove</span>
-            </div>
-          </Button>
-        </div>
+        <Button
+          onClick={() => setOpen(true)}
+          size="small"
+          variant="outlined-primary"
+        >
+          <div className="flex items-center gap-2">
+            <FiTrash />
+            <span>Remove</span>
+          </div>
+        </Button>
       </Tooltip>
     </>
   )
