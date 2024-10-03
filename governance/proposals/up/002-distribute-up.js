@@ -4,15 +4,17 @@
 const { ethers } = require('hardhat')
 const { Unlock } = require('@unlock-protocol/contracts')
 const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
+const { parseSafeMulticall } = require('../../helpers/multisig')
 
 const upTokenAddress = '0xaC27fa800955849d6D17cC8952Ba9dD6EAA66187'
 
 module.exports = async () => {
   const proposalName = `Distribute UP through Unlock contracts
   
-Switching from distributing UDT to UP when using referrers.`
+This proposal enables change from distributing UDT to UPToken when using referrers. This requires to also setup the Uniswap oracle 
+in Unlock to support price discovery for UPToken.`
 
-  const { unlockAddress, multisig } = await getNetwork()
+  const { unlockAddress, uniswap, id } = await getNetwork()
 
   // parse config args from existing settings
   const unlock = await ethers.getContractAt(Unlock.abi, unlockAddress)
@@ -25,25 +27,26 @@ Switching from distributing UDT to UP when using referrers.`
     await unlock.chainId(),
   ]
 
-  // encode instructions to be executed by the SAFE
-  const abiCoder = ethers.AbiCoder.defaultAbiCoder()
-  const moduleData = await abiCoder.encode(
-    ['address', 'uint256', 'bytes', 'bool'],
-    [
-      unlockAddress, // to
-      0, // value
-      unlock.interface.encodeFunctionData('configUnlock', configUnlockArgs), // data
-      0, // operation: 0 for CALL, 1 for DELEGATECALL
-    ]
-  )
+  const calls = [
+    {
+      contractAddress: unlockAddress,
+      calldata: unlock.interface.encodeFunctionData('setOracle', [
+        upTokenAddress,
+        uniswap.oracle['3000'], // uniswap UP pool is 0.3%
+      ]),
+    },
+    {
+      contractAddress: unlockAddress,
+      calldata: unlock.interface.encodeFunctionData(
+        'configUnlock',
+        configUnlockArgs
+      ),
+    },
+  ]
+  const packedCalls = await parseSafeMulticall({ chainId: id, calls })
 
   return {
     proposalName,
-    calls: [
-      {
-        contractAddress: multisig,
-        calldata: moduleData,
-      },
-    ],
+    calls: packedCalls,
   }
 }
