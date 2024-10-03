@@ -16,6 +16,7 @@ const versions = require('./versions')
 const bridge = require('./bridge')
 const events = require('./events')
 const bigNumber = require('./bigNumber')
+const up = require('./up')
 
 module.exports = {
   deployContracts,
@@ -36,4 +37,5 @@ module.exports = {
   ...bridge,
   ...events,
   ...bigNumber,
+  ...up,
 }

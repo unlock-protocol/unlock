@@ -1,222 +1,209 @@
-// TODO: cleanup this test
-// ignoring that rule is needed when using the `describeOrskip` workaround
-
 const assert = require('assert')
-const { ethers, network } = require('hardhat')
+const { ethers } = require('hardhat')
 const {
   deployContracts,
   deployLock,
   ADDRESS_ZERO,
-  createUniswapV2Exchange,
+  createMockOracle,
   compareBigNumbers,
-  increaseTime,
+  deployWETH,
+  deployERC20,
+  getUp,
 } = require('../helpers')
 
-let unlock, up, lock, oracle, weth
-let protocolOwner, minter, referrer, keyBuyer
-
-// skip on coverage until solidity-coverage supports EIP-1559
-const describeOrSkip = process.env.IS_COVERAGE ? describe.skip : describe
+let unlock, up, udt, swap, lock, oracle, weth, token
+let deployer, minter, referrer, keyBuyer
+let keyPrice
 
 const estimateGas = BigInt(252166 * 2)
+const initialAmount = ethers.parseUnits('100', 'ether')
 
-// test with various chainIds
-const scenarios = [
-  1, // mainnet
-  100, // xdai gnosis
-  137, // polygon
-]
+// 1 UP is worth ~0.00000042 ETH
+const UP_WETH_RATE = ethers.parseEther('0.00000042')
+const UDT_WETH_RATE = UP_WETH_RATE / 1000n
 
-const mintAmount = ethers.parseUnits('1000000', 'ether')
+// arbitrarly decided
+const ERC20_RATE = ethers.parseEther('0.02')
 
-const round = (bn) => {
-  const [integral, decimals] = bn.toString().split('.')
-  const remainer = Math.round(`0.${decimals.slice(0, 4)}`)
-  return BigInt(integral) + BigInt(remainer)
-}
+// 1% in basis points
+const PROTOCOL_FEE = 100n
+const BASIS_POINTS_DEN = 10000n
+
+//
+const governanceTokenTestCases = ['UDT', 'UP']
 
 describe('UnlockGovernanceToken / granting Tokens', () => {
-  let rate
-
   before(async function () {
-    ;[protocolOwner, minter, referrer, keyBuyer] = await ethers.getSigners()
-    ;({ unlock, up } = await deployContracts())
-    lock = await deployLock({ unlock })
+    ;[deployer, minter, keyBuyer, referrer] = await ethers.getSigners()
+    ;({ unlock, up, udt, swap } = await deployContracts())
+    weth = await deployWETH(deployer)
+    token = await deployERC20(deployer)
 
-    // Deploy the exchange
-    ;({ oracle, weth } = await createUniswapV2Exchange({
-      protocolOwner,
-      minter,
-      tokenAddress: await up.getAddress(),
-    }))
+    // setup lock
+    lock = await deployLock({ unlock, tokenAddress: await token.getAddress() })
+    keyPrice = await lock.keyPrice()
 
-    // default config Unlock oracle
-    await unlock.configUnlock(
-      await up.getAddress(),
-      await weth.getAddress(),
-      estimateGas,
-      await unlock.globalTokenSymbol(),
-      await unlock.globalBaseTokenURI(),
-      1
-    )
-
-    await unlock.setOracle(await up.getAddress(), await oracle.getAddress())
-
-    // Advance time so 1 full period has past and then update again so we have data point to read
-    await increaseTime(30 * 3600)
-    await oracle.update(await weth.getAddress(), await up.getAddress())
-
-    // Purchase a valid key for the referrer
-    await lock.purchase(
-      [],
-      [await referrer.getAddress()],
-      [ADDRESS_ZERO],
-      [ADDRESS_ZERO],
-      ['0x'],
-      {
-        value: await lock.keyPrice(),
-      }
-    )
-
-    rate = await oracle.consult(
-      await up.getAddress(),
-      ethers.parseUnits('1', 'ether'),
-      await weth.getAddress()
-    )
-
-    // Mint another 1000000
-    await up.connect(minter).mint(await unlock.getAddress(), mintAmount)
+    // get buyer some tokens to purchase keys
+    await token.mint(await keyBuyer.getAddress(), initialAmount)
+    await token
+      .connect(keyBuyer)
+      .approve(await lock.getAddress(), initialAmount)
   })
 
-  it('exchange rate is > 0', async () => {
-    assert.notEqual(ethers.formatUnits(rate), 0)
-    // 1 UDT is worth ~0.000042 ETH
-    assert.equal(Math.floor(ethers.formatUnits(rate, 12)), 42)
-  })
+  governanceTokenTestCases.forEach((symbol) => {
+    let governanceToken
+    let governanceTokenRate
+    let rate
 
-  it('referrer has 0 UDT to start', async () => {
-    const actual = await up.balanceOf(await referrer.getAddress())
-    compareBigNumbers(actual, '0')
-  })
+    describe(`behaviour with ${symbol}`, () => {
+      before(async function () {
+        // gov token settings
+        governanceToken = symbol === 'UP' ? up : udt
+        governanceTokenRate = symbol === 'UP' ? UP_WETH_RATE : UDT_WETH_RATE
 
-  it('owner starts with 0 UDT', async () => {
-    compareBigNumbers(await up.balanceOf(await unlock.owner()), '0')
-  })
-
-  it('unlock has some 0 UDT', async () => {
-    compareBigNumbers(
-      await up.balanceOf(await await unlock.getAddress()),
-      mintAmount
-    )
-  })
-
-  scenarios.forEach((chainId) => {
-    let balanceReferrer
-
-    describe(`behaviour on chain with ${chainId}`, () => {
-      before(async () => {
+        // config unlock
         await unlock.configUnlock(
-          await up.getAddress(),
+          await governanceToken.getAddress(),
           await weth.getAddress(),
           estimateGas,
           await unlock.globalTokenSymbol(),
           await unlock.globalBaseTokenURI(),
-          chainId
+          31337 // chainId
+        )
+
+        // deploy the oracle with a fixed rate
+        oracle = await createMockOracle({
+          rates: [
+            // ERC20 <> WETH rate
+            {
+              tokenIn: await token.getAddress(),
+              rate: ERC20_RATE,
+              tokenOut: await weth.getAddress(),
+            },
+            // UDT <> WETH rate
+            {
+              tokenIn: await governanceToken.getAddress(),
+              rate: governanceTokenRate,
+              tokenOut: await weth.getAddress(),
+            },
+          ],
+        })
+
+        // Purchase a valid key for the referrer
+        await lock
+          .connect(keyBuyer)
+          .purchase(
+            [keyPrice],
+            [await referrer.getAddress()],
+            [ADDRESS_ZERO],
+            [ADDRESS_ZERO],
+            ['0x'],
+            {
+              value: await lock.keyPrice(),
+            }
+          )
+
+        // set oracles in Unlock
+        await unlock.setOracle(
+          await governanceToken.getAddress(),
+          await oracle.getAddress()
+        )
+        await unlock.setOracle(
+          await token.getAddress(),
+          await oracle.getAddress()
+        )
+
+        // get the gov token rate from oracle
+        rate = await oracle.consult(
+          await governanceToken.getAddress(),
+          ethers.parseUnits('1', 'ether'),
+          await weth.getAddress()
+        )
+
+        // mint token
+        if (symbol === 'UP') {
+          await getUp({
+            udt,
+            swap,
+            spender: minter,
+            recipient: unlock,
+            amount: initialAmount,
+          })
+        } else {
+          await udt
+            .connect(minter)
+            .mint(await unlock.getAddress(), initialAmount)
+        }
+      })
+
+      it('exchange rate is set', async () => {
+        assert.equal(rate / 10n ** 18n, governanceTokenRate)
+      })
+
+      it(`referrer has 0 ${symbol} to start`, async () => {
+        const actual = await governanceToken.balanceOf(
+          await referrer.getAddress()
+        )
+        compareBigNumbers(actual, '0')
+      })
+
+      it(`owner starts with 0 ${symbol}`, async () => {
+        compareBigNumbers(
+          await governanceToken.balanceOf(await unlock.owner()),
+          '0'
         )
       })
 
-      describeOrSkip('grant by gas price', () => {
-        let gasSpent
-
-        before(async () => {
-          // Let's set GDP to be very low (1 wei) so that we know that growth of supply is cap by gas
-          await unlock.resetTrackedValue(ethers.parseUnits('1', 'wei'), 0)
-
-          const balanceReferrerBefore = await up.balanceOf(
-            await referrer.getAddress()
-          )
-          const { blockNumber } = await lock
-            .connect(keyBuyer)
-            .purchase(
-              [],
-              [await keyBuyer.getAddress()],
-              [await referrer.getAddress()],
-              [ADDRESS_ZERO],
-              ['0x'],
-              {
-                value: await lock.keyPrice(),
-              }
-            )
-
-          const { baseFeePerGas } = await ethers.provider.getBlock(blockNumber)
-
-          // using estimatedGas instead of the actual gas used so this test does
-          // not regress as other features are implemented
-          gasSpent = baseFeePerGas * estimateGas
-
-          balanceReferrer =
-            (await up.balanceOf(await referrer.getAddress())) -
-            balanceReferrerBefore
-        })
-
-        it('referrer has received some UDT now', async () => {
-          assert.notEqual(balanceReferrer, '0')
-        })
-
-        it('amount granted for referrer ~= gas spent', async () => {
-          // 120 UDT granted * 0.000042 ETH/UDT == 0.005 ETH spent
-          compareBigNumbers(
-            gasSpent,
-            round(ethers.formatEther(balanceReferrer * rate))
-          )
-        })
+      it(`unlock has ${symbol}`, async () => {
+        assert.equal(
+          await governanceToken.balanceOf(await await unlock.getAddress()),
+          symbol === 'UP' ? initialAmount * 1000n : initialAmount
+        )
       })
 
-      describeOrSkip('grant capped by % growth', () => {
+      describe(`grant rewards in ${symbol} based on protocol fee`, () => {
+        let balanceReferrerBefore, unlockBalanceBefore
         before(async () => {
-          // Goal: distribution is 10 UDT (8 for referrer, 2 for dev reward)
-          // With 1,000,000 to distribute, that is 0.00001% supply
-          // which translates in a gdp growth of 0.002%
-          // So we need a GDP of 500 eth
-          // Example: ETH = 2000 USD
-          // Total value exchanged = 1M USD
-          // Key purchase 0.01 ETH = 20 USD
-          // user earns 10UDT or
-          await unlock.resetTrackedValue(ethers.parseUnits('500', 'ether'), 0)
+          // set protocol fee to 1%
+          await unlock.setProtocolFee(PROTOCOL_FEE)
 
-          const baseFeePerGas = 1000000000n // in gwei
-          await network.provider.send('hardhat_setNextBlockBaseFeePerGas', [
-            `0x${baseFeePerGas.toString(16)}`,
-          ])
-
-          const balanceReferrerBefore = await up.balanceOf(
+          balanceReferrerBefore = await governanceToken.balanceOf(
             await referrer.getAddress()
           )
+
+          unlockBalanceBefore = await token.balanceOf(
+            await referrer.getAddress()
+          )
+
+          // purchase a key with refferer
           await lock
             .connect(keyBuyer)
             .purchase(
-              [],
+              [keyPrice],
               [await keyBuyer.getAddress()],
               [await referrer.getAddress()],
               [ADDRESS_ZERO],
               ['0x'],
               {
-                value: await lock.keyPrice(),
-                gasPrice: `0x${(baseFeePerGas * 2n).toString(16)}`,
+                value: keyPrice,
               }
             )
+        })
 
-          balanceReferrer =
-            (await up.balanceOf(await referrer.getAddress())) -
+        it('unlock has received protocol fee in ERC20', async () => {
+          assert.equal(
+            (await token.balanceOf(await unlock.getAddress())) -
+              unlockBalanceBefore,
+            (keyPrice * PROTOCOL_FEE) / BASIS_POINTS_DEN
+          )
+        })
+
+        it(`referrer has received ${symbol} based on protocol fee`, async () => {
+          const balanceReferrer =
+            (await governanceToken.balanceOf(await referrer.getAddress())) -
             balanceReferrerBefore
-        })
-
-        it('referrer has some UDT now', async () => {
-          assert.notEqual(balanceReferrer, 0)
-        })
-
-        it('amount granted for referrer ~= 10 UDT', async () => {
-          assert.equal(Math.round(ethers.formatEther(balanceReferrer)), '10')
+          assert.notEqual(balanceReferrer, 0n)
+          assert.equal(balanceReferrer, 0n)
         })
       })
     })

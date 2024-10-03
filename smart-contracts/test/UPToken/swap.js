@@ -1,16 +1,10 @@
 const { assert } = require('chai')
 const { ethers, upgrades } = require('hardhat')
-const { reverts, deployERC20 } = require('../helpers')
+const { reverts, deployERC20, parseLogs } = require('../helpers')
 const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 const amountUDT = ethers.parseEther('1')
 const amountUP = ethers.parseEther('1000')
-
-const parseLogs = (logs, interface) =>
-  logs.map((log) => {
-    const parsed = interface.parseLog(log)
-    return parsed ? parsed : log
-  })
 
 describe('Swapper UP / UDT', () => {
   let owner, udtMinter, spender, recipient, random
