@@ -36,6 +36,7 @@ interface KeyGranterCardProps {
 interface RemoveKeyGranterModalProps {
   isOpen: boolean
   isCreditCardGranter: boolean
+  isLoading: boolean
   setIsOpen: (open: boolean) => void
   onConfirm: () => Promise<any>
 }
@@ -43,10 +44,11 @@ interface RemoveKeyGranterModalProps {
 const RemoveKeyGranterModal = ({
   isOpen,
   isCreditCardGranter,
+  isLoading,
   setIsOpen,
   onConfirm,
 }: RemoveKeyGranterModalProps) => {
-  const onRenounce = async () => {
+  const onRemoveKeyGranter = async () => {
     await onConfirm()
     setIsOpen(false)
   }
@@ -92,10 +94,15 @@ const RemoveKeyGranterModal = ({
                     className="w-full"
                     variant="outlined-primary"
                     onClick={() => setIsOpen(false)}
+                    disabled={isLoading}
                   >
                     Cancel
                   </Button>
-                  <Button className="w-full" onClick={onRenounce}>
+                  <Button
+                    className="w-full"
+                    onClick={onRemoveKeyGranter}
+                    disabled={isLoading}
+                  >
                     Confirm
                   </Button>
                 </div>
@@ -137,6 +144,7 @@ const KeyGranterCard = ({
       <RemoveKeyGranterModal
         isOpen={modalOpen}
         isCreditCardGranter={isCreditCardGranter}
+        isLoading={removeKeyGranterMutation.isPending}
         setIsOpen={setModalOpen}
         onConfirm={removeKeyGranter}
       />
