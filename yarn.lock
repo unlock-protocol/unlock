@@ -21126,7 +21126,7 @@ __metadata:
     jsdom: "npm:24.1.3"
     lottie-react: "npm:2.4.0"
     next: "npm:14.2.10"
-    next-auth: "npm:4.24.7"
+    next-auth: "npm:4.24.8"
     next-seo: "npm:6.6.0"
     node-forge: "npm:1.3.1"
     postcss: "npm:8.4.40"
@@ -41617,9 +41617,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next-auth@npm:4.24.7":
-  version: 4.24.7
-  resolution: "next-auth@npm:4.24.7"
+"next-auth@npm:4.24.8":
+  version: 4.24.8
+  resolution: "next-auth@npm:4.24.8"
   dependencies:
     "@babel/runtime": "npm:^7.20.13"
     "@panva/hkdf": "npm:^1.0.2"
@@ -41631,14 +41631,17 @@ __metadata:
     preact-render-to-string: "npm:^5.1.19"
     uuid: "npm:^8.3.2"
   peerDependencies:
+    "@auth/core": 0.34.2
     next: ^12.2.5 || ^13 || ^14
     nodemailer: ^6.6.5
     react: ^17.0.2 || ^18
     react-dom: ^17.0.2 || ^18
   peerDependenciesMeta:
+    "@auth/core":
+      optional: true
     nodemailer:
       optional: true
-  checksum: 10/f226254dac02e31dc28589344ca077fc975261242cc8484f2d9b7c5916f29f29877d75a213168403fbf75d0c84b324c19d68c5a3283cbc683d720a6ea6f3872d
+  checksum: 10/70350fc5204243b9a7961090d5529eb072899e4c3f2ec1d7fe1c306684a7e2e11a6322111cb77c316eaeaf8adb01736c2f69cfc462c674d793f77b59a0368d7c
   languageName: node
   linkType: hard
 
