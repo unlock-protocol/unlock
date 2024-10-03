@@ -1,3 +1,4 @@
+import { KeyGranterForm } from '../forms/KeyGranterForm'
 import { LockManagerForm } from '../forms/LockManagerForm'
 import { SettingCard } from './SettingCard'
 
@@ -22,6 +23,18 @@ export const SettingRoles = ({
         isLoading={isLoading}
       >
         <LockManagerForm
+          lockAddress={lockAddress}
+          network={network}
+          isManager={isManager}
+          disabled={!isManager}
+        />
+      </SettingCard>
+      <SettingCard
+        label="Key Granter"
+        description="By default, the creator of a Lock is the first key granter. Unlock Key Granters are used to facilitate credit card purchases."
+        isLoading={isLoading}
+      >
+        <KeyGranterForm
           lockAddress={lockAddress}
           network={network}
           isManager={isManager}
