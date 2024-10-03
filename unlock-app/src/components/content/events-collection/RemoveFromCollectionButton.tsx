@@ -66,7 +66,7 @@ export const RemoveFromCollectionButton = ({
           size="small"
           variant="outlined-primary"
         >
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 justify-center">
             <FiTrash />
             <span>Remove</span>
           </div>

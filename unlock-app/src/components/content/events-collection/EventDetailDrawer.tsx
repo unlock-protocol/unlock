@@ -99,11 +99,15 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
     <Drawer isOpen={isOpen} setIsOpen={setIsOpen}>
       {event && (
         <div className="space-y-4">
-          <div className="flex flex-col-reverse px-4 md:px-0 md:flex-row-reverse gap-2">
+          <div className="flex flex-col md:flex-row md:justify-end gap-2 md:gap-4 px-4 md:px-0">
             {isEventOrganizer && (
-              <Link target="_blank" href={`/event/${event.slug}/settings`}>
-                <Button variant="primary">
-                  <div className="flex items-center gap-2">
+              <Link
+                target="_blank"
+                href={`/event/${event.slug}/settings`}
+                className="w-full md:w-auto"
+              >
+                <Button variant="primary" className="w-full">
+                  <div className="flex items-center gap-2 justify-center">
                     <TbSettings />
                     <span>Settings</span>
                   </div>
