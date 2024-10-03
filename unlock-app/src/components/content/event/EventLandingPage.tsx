@@ -3,8 +3,6 @@
 import { Button } from '@unlock-protocol/ui'
 import Link from 'next/link'
 import { LockTypeLandingPage } from '~/components/interface/LockTypeLandingPage'
-import { useAuth } from '~/contexts/AuthenticationContext'
-import { PastEventsByManager } from './PastEventsByManager'
 import { NextSeo } from 'next-seo'
 import Image from 'next/image'
 
@@ -133,29 +131,15 @@ const faqs = [
 
 interface EventLandingPageCallToActionProps {
   handleCreateEvent: () => void
-  showManagerEvents?: boolean
 }
 
 export const EventLandingPageCallToAction = ({
   handleCreateEvent,
-  showManagerEvents = false,
 }: EventLandingPageCallToActionProps) => {
-  const { account } = useAuth()
-
-  if (!account) {
-    return (
-      <Button onClick={handleCreateEvent} className="my-8">
-        Get started for free
-      </Button>
-    )
-  }
   return (
-    <div className="flex flex-col">
-      {showManagerEvents && <PastEventsByManager manager={account} />}
-      <Button onClick={handleCreateEvent} className="my-8">
-        Get started for free
-      </Button>
-    </div>
+    <Button onClick={handleCreateEvent} className="my-8">
+      Get started for free
+    </Button>
   )
 }
 
@@ -190,10 +174,7 @@ export const EventLandingPage = ({ handleCreateEvent }: LandingPageProps) => {
           </h1>
         }
         actions={
-          <EventLandingPageCallToAction
-            handleCreateEvent={handleCreateEvent}
-            showManagerEvents={true}
-          />
+          <EventLandingPageCallToAction handleCreateEvent={handleCreateEvent} />
         }
         illustration={
           <Image

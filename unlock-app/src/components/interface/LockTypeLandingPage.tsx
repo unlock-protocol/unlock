@@ -95,7 +95,7 @@ export const LockTypeLandingPage = ({
 }: LockTypeLandingPageProps) => {
   return (
     <div className="w-full mt-8 flex flex-col gap-12 md:gap-24">
-      <section className="gap-2 flex flex-row">
+      <section className="gap-4 gap-x-5 flex flex-row">
         {/* masthead */}
         <div className="md:w-2/3  md:flex md:flex-col">
           {title}
