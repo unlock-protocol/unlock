@@ -16,6 +16,8 @@ import Link from 'next/link'
 import PastEvent from '../event/Layout/PastEvent'
 import RemoveFromCollectionButton from './RemoveFromCollectionButton'
 import { getEventAttributes } from '~/utils/eventCollections'
+import { useEventOrganizer } from '~/hooks/useEventOrganizer'
+import { TbSettings } from 'react-icons/tb'
 
 interface EventDetailDrawerProps {
   collectionSlug: string | undefined
@@ -36,6 +38,10 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
     useCheckoutConfig({
       id: event?.checkoutConfigId,
     })
+
+  const { data: isEventOrganizer } = useEventOrganizer({
+    checkoutConfig: checkoutConfig!,
+  })
 
   const { data: organizers } = useEventOrganizers({
     checkoutConfig: checkoutConfig!,
@@ -93,15 +99,29 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
     <Drawer isOpen={isOpen} setIsOpen={setIsOpen}>
       {event && (
         <div className="space-y-4">
-          {isManager && (
-            <div className="flex justify-end">
+          <div className="flex flex-col md:flex-row md:justify-end gap-2 md:gap-4 px-4 md:px-0">
+            {isEventOrganizer && (
+              <Link
+                target="_blank"
+                href={`/event/${event.slug}/settings`}
+                className="w-full md:w-auto"
+              >
+                <Button variant="primary" className="w-full">
+                  <div className="flex items-center gap-2 justify-center">
+                    <TbSettings />
+                    <span>Settings</span>
+                  </div>
+                </Button>
+              </Link>
+            )}
+            {isManager && (
               <RemoveFromCollectionButton
                 collectionSlug={collectionSlug}
                 eventSlug={event.slug!}
                 onRemove={handleEventRemove}
               />
-            </div>
-          )}
+            )}
+          </div>
 
           {/* Event Image */}
           <img
@@ -115,11 +135,11 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
               event={parsedEvent}
               eventUrl={event.eventUrl}
             />
-            <Button variant="borderless-primary">
-              <Link href={event.eventUrl} target="_blank">
+            <Link href={event.eventUrl} target="_blank">
+              <Button variant="borderless-primary">
                 <FaExternalLinkAlt size={20} width={1} className="mr-2" />
-              </Link>
-            </Button>
+              </Button>
+            </Link>
           </div>
 
           {/* Event Information */}
