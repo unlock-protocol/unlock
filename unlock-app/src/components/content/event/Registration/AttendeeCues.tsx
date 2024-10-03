@@ -26,6 +26,13 @@ export const AttendeeCuesInternal = ({
     )
   }
 
+  const featuredAttendees = Object.values(socials)
+    .filter((social) => social.profileDisplayName)
+    .slice(0, 5)
+    .map((social) => social.profileDisplayName)
+
+  const andOthers = totalTickets - featuredAttendees.length
+
   if (totalTickets > 5 && Object.values(socials).length > 0) {
     return (
       <div className="flex flex-col gap-2">
@@ -53,12 +60,8 @@ export const AttendeeCuesInternal = ({
             })}
         </ul>
         <p>
-          {Object.values(socials)
-            .filter((social) => social.profileDisplayName)
-            .slice(0, 5)
-            .map((social) => social.profileDisplayName)
-            .join(', ')}{' '}
-          and {totalTickets} others are going.
+          {featuredAttendees.join(', ')}{' '}
+          {andOthers > 1 && `and ${andOthers} others`} are going.
         </p>
       </div>
     )
