@@ -23,6 +23,7 @@ const {
   isLockManager,
   isKeyGranter,
   addKeyGranter,
+  removeKeyGranter,
   cancelAndRefund,
   keyManagerOf,
   setMaxNumberOfKeys,
