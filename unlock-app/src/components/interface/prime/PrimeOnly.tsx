@@ -17,6 +17,7 @@ export const PrimeOnly = ({ children }: { children: ReactNode }) => {
           network: 8453,
         },
       },
+      pessimistic: true,
     })
   }
 
