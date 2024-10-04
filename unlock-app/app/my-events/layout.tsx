@@ -7,7 +7,7 @@ import EventHeader from '~/components/interface/layouts/event/EventHeader'
 import EventFooter from '~/components/interface/layouts/event/EventFooter'
 import { AuthRequired } from 'app/Components/ProtectedContent'
 
-export default function DashboardLayout({ children }: { children: ReactNode }) {
+export default function MyEventsLayout({ children }: { children: ReactNode }) {
   return (
     <div className="overflow-hidden bg-ui-secondary-200">
       <TermsOfServiceModal />
