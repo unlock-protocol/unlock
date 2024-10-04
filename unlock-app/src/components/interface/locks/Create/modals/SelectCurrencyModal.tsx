@@ -1,4 +1,9 @@
-import { Dialog, Transition } from '@headlessui/react'
+import {
+  Dialog,
+  DialogPanel,
+  Transition,
+  TransitionChild,
+} from '@headlessui/react'
 import { Token } from '@unlock-protocol/types'
 import { Button, CurrencyHint, Input } from '@unlock-protocol/ui'
 import { Fragment, useEffect, useState } from 'react'
@@ -161,7 +166,7 @@ export const SelectCurrencyModal = ({
         open
       >
         <div className="fixed inset-0 bg-opacity-25 backdrop-filter backdrop-blur-sm bg-zinc-500" />
-        <Transition.Child
+        <TransitionChild
           as={Fragment}
           enter="transition ease-out duration-300"
           enterFrom="opacity-0 translate-y-1"
@@ -172,7 +177,7 @@ export const SelectCurrencyModal = ({
         >
           <div className="fixed inset-0 p-6 overflow-y-auto">
             <div className="flex items-center justify-center min-h-full">
-              <Dialog.Panel className="w-full max-w-md">
+              <DialogPanel className="w-full max-w-md">
                 <div className="px-6 text-left rounded-lg bg-ui-secondary-200 py-7">
                   <Input
                     label="Select a token as currency or enter its address:"
@@ -225,10 +230,10 @@ export const SelectCurrencyModal = ({
                     })}
                   </div>
                 </div>
-              </Dialog.Panel>
+              </DialogPanel>
             </div>
           </div>
-        </Transition.Child>
+        </TransitionChild>
       </Dialog>
     </Transition>
   )

@@ -1,7 +1,12 @@
 'use client'
 
 import { Fragment, useState, useEffect, useRef } from 'react'
-import { Transition, Dialog } from '@headlessui/react'
+import {
+  Transition,
+  Dialog,
+  TransitionChild,
+  DialogPanel,
+} from '@headlessui/react'
 import {
   getMembershipVerificationConfig,
   MembershipVerificationConfig,
@@ -164,7 +169,7 @@ export function Scanner({ checkoutConfig, eventProp }: ScannerProps) {
             open
           >
             <div className="fixed inset-0 bg-opacity-25 backdrop-filter backdrop-blur-sm bg-zinc-500" />
-            <Transition.Child
+            <TransitionChild
               as={Fragment}
               enter="transition ease-out duration-300"
               enterFrom="opacity-0 translate-y-1"
@@ -175,7 +180,7 @@ export function Scanner({ checkoutConfig, eventProp }: ScannerProps) {
             >
               <div className="fixed inset-0 p-6 overflow-y-auto">
                 <div className="flex items-center justify-center min-h-full">
-                  <Dialog.Panel className="w-full max-w-sm">
+                  <DialogPanel className="w-full max-w-sm">
                     <VerificationStatus
                       checkoutConfig={checkoutConfig}
                       eventProp={eventProp}
@@ -183,10 +188,10 @@ export function Scanner({ checkoutConfig, eventProp }: ScannerProps) {
                       onVerified={() => setMembershipVerificationConfig(null)}
                       config={membershipVerificationConfig}
                     />
-                  </Dialog.Panel>
+                  </DialogPanel>
                 </div>
               </div>
-            </Transition.Child>
+            </TransitionChild>
           </Dialog>
         </Transition>
       )}
