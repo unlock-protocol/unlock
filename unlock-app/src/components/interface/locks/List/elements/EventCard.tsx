@@ -1,25 +1,22 @@
 import { FiArrowRight as ArrowRightIcon } from 'react-icons/fi'
-import { AiOutlineTag as TagIcon } from 'react-icons/ai'
 import { IoMdTime as TimeIcon } from 'react-icons/io'
 import { TbUsers as AttendeesIcon } from 'react-icons/tb'
+import { BsTicket as TicketIcon } from 'react-icons/bs'
 import Link from 'next/link'
 import { Card, Detail, Icon } from '@unlock-protocol/ui'
-import { CryptoIcon } from '@unlock-protocol/crypto-icon'
-import { PriceFormatter } from '@unlock-protocol/ui'
-import { WrappedAddress } from '~/components/interface/WrappedAddress'
 import dayjs from 'dayjs'
-import { useCheckoutConfigsByUserAndLock } from '~/hooks/useCheckoutConfig'
 import { useEventAttendees } from '~/hooks/useEventAttendees'
-import { useLockData } from '~/hooks/useLockData'
+import { useEventRSVP } from '~/hooks/useRsvp'
+import { WrappedAddress } from '~/components/interface/WrappedAddress'
 
 interface EventCardProps {
   event: {
     name: string
-    lockAddress: string
-    network: number
+    checkoutConfig: any
     slug: string
     ticket: {
       event_start_date: string
+      event_end_date: string
     }
     image: string
   }
@@ -38,23 +35,22 @@ const EventImage = ({ imageUrl }: EventImageProps) => {
 }
 
 export const EventCard = ({ event }: EventCardProps) => {
-  const { name, lockAddress, network, slug, ticket, image: imageUrl } = event
-  const { data: checkoutConfig } = useCheckoutConfigsByUserAndLock({
-    lockAddress,
-  })
+  const { name, checkoutConfig, slug, ticket, image: imageUrl } = event
+  const lockAddress = Object.keys(checkoutConfig.config.locks)[0]
+  const network = checkoutConfig.config.locks[lockAddress].network
+  const eventDate = dayjs(ticket.event_start_date).format('D MMM YYYY')
+  const eventEndDate = dayjs(ticket.event_end_date).format('D MMM YYYY')
 
   const { data: eventAttendees, isPending: isEventAttendeesLoading } =
     useEventAttendees({
-      // @ts-ignore
-      checkoutConfig: checkoutConfig?.[0],
+      checkoutConfig,
     })
 
-  const { lock: lockData, isLockLoading: isLockDataLoading } = useLockData({
+  const { data: eventRSVP, isPending: isEventRSVPLoading } = useEventRSVP({
     lockAddress,
     network,
+    eventEndDate,
   })
-
-  const eventDate = dayjs(ticket.event_start_date).format('D MMM YYYY')
 
   return (
     <Card variant="simple" shadow="lg" padding="md">
@@ -81,31 +77,6 @@ export const EventCard = ({ event }: EventCardProps) => {
             <Detail
               label={
                 <div className="flex items-center gap-1">
-                  <Icon size={10} icon={TagIcon} />
-                  <span>Price</span>
-                </div>
-              }
-              loading={isLockDataLoading}
-              labelSize="tiny"
-              valueSize="small"
-              truncate
-            >
-              <div className="flex items-center gap-2">
-                <CryptoIcon symbol={lockData?.currencySymbol} />
-                <span className="overflow-auto text-ellipsis">
-                  {typeof lockData?.keyPrice !== 'string' ||
-                  parseFloat(lockData?.keyPrice) <= 0 ? (
-                    '0'
-                  ) : (
-                    <PriceFormatter price={lockData?.keyPrice} precision={2} />
-                  )}
-                </span>
-              </div>
-            </Detail>
-
-            <Detail
-              label={
-                <div className="flex items-center gap-1">
                   <Icon size={10} icon={TimeIcon} />
                   <span>Event Date</span>
                 </div>
@@ -115,6 +86,22 @@ export const EventCard = ({ event }: EventCardProps) => {
               truncate
             >
               {eventDate}
+            </Detail>
+            <Detail
+              label={
+                <div className="flex items-center gap-1">
+                  <Icon size={10} icon={TicketIcon} />
+                  <span>
+                    {eventRSVP?.isExpired ? 'Total RSVPs' : 'Active RSVPs'}
+                  </span>
+                </div>
+              }
+              loading={isEventRSVPLoading}
+              labelSize="tiny"
+              valueSize="small"
+              truncate
+            >
+              {eventRSVP?.rsvpCount}
             </Detail>
             <Detail
               label={
