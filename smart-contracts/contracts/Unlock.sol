@@ -81,9 +81,8 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   // The WETH token address, used for value calculations
   address public weth;
 
-  // DEPRECATED: for backward-compatibility reasons we keep the variable
-  // as the main storage for governance token address
-  // however, the `governanceToken` getter is now preferred
+  // DEPRECATED: udt was the name of the first governance token. 
+  // Kept for backward compatibility; however, the `governanceToken` getter is now preferred.
   address public udt;
 
   // The approx amount of gas required to purchase a key
