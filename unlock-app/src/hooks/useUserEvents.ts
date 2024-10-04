@@ -4,6 +4,7 @@ import { getMetadata } from '~/hooks/metadata'
 import { getLocksByNetwork } from '~/hooks/useLocksByManager'
 import { toFormData } from '~/components/interface/locks/metadata/utils'
 import { useQuery } from '@tanstack/react-query'
+import { locksmith } from '~/config/locksmith'
 
 const getPastEventsByManager = async (account: string) => {
   const events: Partial<Metadata>[] = []
@@ -22,10 +23,13 @@ const getPastEventsByManager = async (account: string) => {
                 const { isEvent } = await getLockTypeByMetadata(metadata)
                 if (isEvent) {
                   const eventData = toFormData(metadata!)
+                  // Fetch the checkout config for this event
+                  const eventDetails = await locksmith.getEvent(eventData.slug!)
                   events.push({
                     ...eventData,
                     lockAddress: lock.address,
                     network: lock.network,
+                    checkoutConfig: eventDetails.data.checkoutConfig,
                   })
                 }
               } catch (error) {
