@@ -20598,7 +20598,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     eslint: "npm:9.11.1"
     tsup: "npm:8.3.0"
-    typescript: "npm:5.5.4"
+    typescript: "npm:5.6.2"
     vitest: "npm:2.1.1"
   peerDependencies:
     zod: 3.23.8
@@ -20623,7 +20623,7 @@ __metadata:
     storybook: "npm:8.2.9"
     tsup: "npm:8.3.0"
     tsx: "npm:4.19.1"
-    typescript: "npm:5.5.4"
+    typescript: "npm:5.6.2"
     vite: "npm:5.4.8"
     vite-plugin-svgr: "npm:4.2.0"
     vite-tsconfig-paths: "npm:4.3.2"
@@ -20666,7 +20666,7 @@ __metadata:
   resolution: "@unlock-protocol/email-templates@workspace:packages/email-templates"
   dependencies:
     handlebars: "npm:4.7.8"
-    typescript: "npm:5.5.4"
+    typescript: "npm:5.6.2"
     vitest: "npm:2.1.1"
   languageName: unknown
   linkType: soft
@@ -20749,7 +20749,7 @@ __metadata:
     ethers: "npm:6.13.2"
     hardhat: "npm:2.22.9"
     tsup: "npm:8.3.0"
-    typescript: "npm:5.5.4"
+    typescript: "npm:5.6.2"
     zksync-ethers: "npm:6.13.0"
   languageName: unknown
   linkType: soft
@@ -21262,7 +21262,7 @@ __metadata:
     showdown-highlight: "npm:3.1.0"
     tailwind-merge: "npm:2.5.2"
     tailwindcss: "npm:3.4.13"
-    typescript: "npm:5.5.4"
+    typescript: "npm:5.6.2"
     use-local-storage: "npm:3.0.0"
     vitest: "npm:2.1.1"
     yaml-front-matter: "npm:4.1.1"
@@ -45440,7 +45440,7 @@ __metadata:
     "@types/node": "npm:20.14.13"
     "@unlock-protocol/networks": "workspace:^"
     ethers: "npm:6.13.2"
-    typescript: "npm:5.5.4"
+    typescript: "npm:5.6.2"
     vitest: "npm:2.1.1"
     wrangler: "npm:3.67.1"
   languageName: unknown
@@ -52589,7 +52589,7 @@ __metadata:
     node-gyp: "npm:10.2.0"
     prettier: "npm:3.3.3"
     prettier-plugin-solidity: "npm:1.4.1"
-    typescript: "npm:5.5.4"
+    typescript: "npm:5.6.2"
     typescript-eslint: "npm:8.8.0"
     vitest: "npm:2.1.1"
   languageName: unknown
