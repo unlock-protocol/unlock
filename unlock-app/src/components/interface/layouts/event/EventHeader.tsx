@@ -12,7 +12,12 @@ const MENU = {
   },
   showSocialIcons: false,
   logo: { url: '/event', src: '/images/svg/logo-unlock-events.svg' },
-  menuSections: [],
+  menuSections: [
+    {
+      title: 'Events',
+      url: '/my-events',
+    },
+  ],
 }
 
 export default function EventHeader() {

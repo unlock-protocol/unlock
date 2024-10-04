@@ -30,7 +30,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
-    "@headlessui/react": "1.7.19",
+    "@headlessui/react": "2.1.9",
     "@radix-ui/react-tooltip": "1.1.2",
     "@tailwindcss/aspect-ratio": "0.4.2",
     "@tailwindcss/forms": "0.5.9",
@@ -49,7 +49,7 @@
     "tailwindcss": "3.4.13"
   },
   "peerDependencies": {
-    "@headlessui/react": "1.7.19",
+    "@headlessui/react": "2.1.9",
     "react": "18.3.1",
     "react-dom": "18.3.1"
   },
@@ -59,7 +59,7 @@
     "directory": "packages/ui"
   },
   "devDependencies": {
-    "@headlessui/react": "1.7.19",
+    "@headlessui/react": "2.1.9",
     "@mdx-js/preact": "3.0.1",
     "@mdx-js/react": "3.0.1",
     "@storybook/addon-actions": "8.3.4",
@@ -68,7 +68,7 @@
     "@storybook/addon-links": "8.3.4",
     "@storybook/react": "8.3.4",
     "@storybook/react-vite": "8.3.4",
-    "@types/react": "18.3.5",
+    "@types/react": "18.3.11",
     "@types/react-dom": "18.3.0",
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js",
     "@vitejs/plugin-react": "4.3.2",
