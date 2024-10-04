@@ -47,8 +47,7 @@ export const EventCard = ({ event }: EventCardProps) => {
     })
 
   const { data: eventRSVP, isPending: isEventRSVPLoading } = useEventRSVP({
-    lockAddress,
-    network,
+    checkoutConfig,
     eventEndDate,
   })
 
