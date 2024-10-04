@@ -216,6 +216,9 @@ interface IUnlock {
   // The WETH token address, used for value calculations
   function weth() external view returns (address);
 
+  // DEPRECATED: An helper function to fetch the governance token address (previously called UDT)
+  function udt() external view returns (address);
+
   // The governance token address, used to mint tokens on referral
   function governanceToken() external view returns (address);
 
