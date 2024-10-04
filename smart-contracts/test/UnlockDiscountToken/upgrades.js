@@ -3,11 +3,7 @@ const path = require('path')
 const fs = require('fs-extra')
 const { ethers, upgrades, network, run } = require('hardhat')
 const { ADDRESS_ZERO } = require('../helpers')
-const {
-  createUniswapV2Exchange,
-  increaseTime,
-  almostEqual,
-} = require('../helpers')
+const { createMockOracle, deployWETH, almostEqual } = require('../helpers')
 const deployContracts = require('../fixtures/deploy')
 
 const {
@@ -20,6 +16,9 @@ const {
 const describeOrSkip = process.env.IS_COVERAGE ? describe.skip : describe
 
 const estimateGas = BigInt(252166 * 2)
+
+// 1 UDT is worth ~0.00000042 ETH
+const UDT_WETH_RATE = ethers.parseEther('0.00000042')
 
 // files path
 const contractsPath = path.resolve(
@@ -183,11 +182,18 @@ describe('UnlockDiscountToken upgrade', async () => {
       )
       lock = await PublicLock.attach(evt.args.newLockAddress)
 
+      const weth = await deployWETH(deployer)
+
       // Deploy the exchange
-      const { oracle, weth } = await createUniswapV2Exchange({
-        protocolOwner: deployer,
-        minter: deployer,
-        udtAddress: await udt.getAddress(),
+      const oracle = await createMockOracle({
+        rates: [
+          // UDT <> WETH rate
+          {
+            tokenIn: await udt.getAddress(),
+            rate: UDT_WETH_RATE,
+            tokenOut: await weth.getAddress(),
+          },
+        ],
       })
 
       // Config in Unlock
@@ -199,11 +205,9 @@ describe('UnlockDiscountToken upgrade', async () => {
         await unlock.globalBaseTokenURI(),
         1 // mainnet
       )
-      await unlock.setOracle(await udt.getAddress(), await oracle.getAddress())
 
-      // Advance time so 1 full period has past and then update again so we have data point to read
-      await increaseTime(30 * 3600)
-      await oracle.update(await weth.getAddress(), await udt.getAddress())
+      // set value in oracle
+      await unlock.setOracle(await udt.getAddress(), await oracle.getAddress())
 
       // Purchase a valid key for the referrers
       await lock
@@ -241,10 +245,9 @@ describe('UnlockDiscountToken upgrade', async () => {
       )
     })
 
-    it('exchange rate is > 0', async () => {
-      assert.notEqual(ethers.formatUnits(rate), 0)
+    it('exchange rate is correct', async () => {
       // 1 UDT is worth ~0.000042 ETH
-      assert.equal(Math.floor(ethers.formatUnits(rate, 12)), 42)
+      assert.equal(rate, UDT_WETH_RATE)
     })
 
     it('referrer has 0 UDT to start', async () => {
@@ -253,8 +256,13 @@ describe('UnlockDiscountToken upgrade', async () => {
     })
 
     describeOrSkip('mint by gas price', () => {
-      let gasSpent
+      let balanceReferrerBefore
       before(async () => {
+        balanceReferrerBefore = await udt.balanceOf(await referrer.getAddress())
+
+        // set 1% protocol fee
+        await unlock.setProtocolFee(100)
+
         // buy a key
         lock.connect(keyBuyer)
         const { blockNumber } = await lock.purchase(
@@ -269,65 +277,17 @@ describe('UnlockDiscountToken upgrade', async () => {
         )
 
         assert.equal(await lock.balanceOf(await keyBuyer.getAddress()), '1')
-
-        // using estimatedGas instead of the actual gas used so this test does not regress as other features are implemented
-        const { baseFeePerGas } = await ethers.provider.getBlock(blockNumber)
-        gasSpent = baseFeePerGas * estimateGas
       })
 
       it('referrer has some UDT now', async () => {
+        // referrer got sth
         const actual = await udt.balanceOf(await referrer.getAddress())
-        assert.notEqual(actual, '0')
-      })
+        assert.notEqual(actual, 0n)
 
-      it('amount minted for referrer ~= gas spent', async () => {
-        // 120 UDT minted * 0.000042 ETH/UDT == 0.005 ETH spent
-        assert(
-          almostEqual(
-            ((await udt.balanceOf(await referrer.getAddress())) *
-              BigInt(rate)) /
-              10n ** 18n,
-            gasSpent
-          )
-        )
-      })
-    })
-
-    describeOrSkip('mint capped by % growth', () => {
-      before(async () => {
-        // 1,000,000 UDT minted thus far
-        // Test goal: 10 UDT minted for the referrer (less than the gas cost equivalent of ~120 UDT)
-        // keyPrice / GNP / 2 = 10 * 1.25 / 1,000,000 == 40,000 * keyPrice
-        const initialGdp = (await lock.keyPrice()) * 40000n
-        await unlock.resetTrackedValue(initialGdp, 0)
-
-        const baseFeePerGas = 1000000000n // in gwei
-        await network.provider.send('hardhat_setNextBlockBaseFeePerGas', [
-          `0x${BigInt(baseFeePerGas).toString(16)}`,
-        ])
-
-        lock.connect(keyBuyer)
-        await lock.purchase(
-          [],
-          [await keyBuyer.getAddress()],
-          [await referrer2.getAddress()],
-          [ADDRESS_ZERO],
-          ['0x'],
-          {
-            value: (await lock.keyPrice()) * 2n,
-            gasPrice: `0x${(baseFeePerGas * 2n).toString(16)}`,
-          }
-        )
-      })
-
-      it('referrer has some more UDT now ', async () => {
-        const actual = await udt.balanceOf(await referrer2.getAddress())
-        assert.notEqual(actual, 0)
-      })
-
-      it('amount minted for referrer ~= 12 UDT', async () => {
-        const balance = await udt.balanceOf(await referrer2.getAddress())
-        assert.equal(ethers.formatEther(balance).startsWith('12.'), true)
+        // amount of UDT earned should be equal to half of the fee
+        const amountEarned = actual - balanceReferrerBefore
+        const fee = ((await lock.keyPrice()) * 100n) / 10000n
+        assert.equal(amountEarned, ((fee / 2n) * rate) / 10n ** 18n)
       })
     })
   })
