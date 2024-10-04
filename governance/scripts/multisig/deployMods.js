@@ -144,15 +144,15 @@ async function main() {
   } else {
     delayModAddress = governanceBridge.modules.delayMod
   }
-  if (delayModAddress) {
-    console.log(`Delay mod at ${delayModAddress}`)
-    connextModAddress = await deployConnext(delayModAddress)
-  }
   if (governanceBridge.modules && governanceBridge.modules.connextMod) {
     connextModAddress = governanceBridge.modules.connextMod
     console.log(
       `Connext already deployed at ${governanceBridge.modules.connextMod}`
     )
+  }
+  if (delayModAddress && !connextModAddress) {
+    console.log(`Delay mod at ${delayModAddress}`)
+    connextModAddress = await deployConnext(delayModAddress)
   }
 
   console.log(`
