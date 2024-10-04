@@ -44,7 +44,7 @@
     "@openzeppelin/defender-sdk": "1.14.4",
     "@openzeppelin/merkle-tree": "1.0.7",
     "@resvg/resvg-js": "2.6.2",
-    "@sentry/node": "7.118.0",
+    "@sentry/node": "8.33.1",
     "@sentry/tracing": "7.114.0",
     "@types/archiver": "6.0.2",
     "@types/connect-timeout": "0.0.39",
