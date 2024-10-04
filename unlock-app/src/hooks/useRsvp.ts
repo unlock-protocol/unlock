@@ -11,8 +11,15 @@ interface RsvpOption {
 }
 
 interface UseEventRSVPProps {
-  lockAddress: string
-  network: number
+  checkoutConfig: {
+    config: {
+      locks: {
+        [lockAddress: string]: {
+          network: number
+        }
+      }
+    }
+  }
   eventEndDate: string
 }
 
@@ -52,32 +59,42 @@ export const useRsvp = ({ lockAddress, network }: Options) => {
 
 // fetch the number of RSVPs for an event
 export const useEventRSVP = ({
-  lockAddress,
-  network,
+  checkoutConfig,
   eventEndDate,
 }: UseEventRSVPProps) => {
   return useQuery({
-    queryKey: ['eventRSVP', lockAddress, network, eventEndDate],
+    queryKey: ['eventRSVP', checkoutConfig, eventEndDate],
     queryFn: async () => {
       const service = new SubgraphService()
       const currentTime = Math.floor(Date.now() / 1000)
       const isEventExpired = dayjs(eventEndDate).isBefore(dayjs())
 
-      const keysQuery: KeysQuery = {
-        where: {
-          lock: lockAddress.toLowerCase(),
-        },
-      }
+      let totalRSVPCount = 0
 
-      // If the event is not expired, only count non-expired keys
-      if (!isEventExpired) {
-        keysQuery.where.expiration_gt = currentTime
-      }
+      await Promise.all(
+        Object.entries(checkoutConfig.config.locks).map(
+          async ([lockAddress, lockConfig]) => {
+            const keysQuery: KeysQuery = {
+              where: {
+                lock: lockAddress.toLowerCase(),
+              },
+            }
 
-      const keys = await service.keys(keysQuery, { networks: [network] })
+            // If the event is not expired, only count non-expired keys
+            if (!isEventExpired) {
+              keysQuery.where.expiration_gt = currentTime
+            }
+
+            const keys = await service.keys(keysQuery, {
+              networks: [lockConfig.network],
+            })
+            totalRSVPCount += keys.length
+          }
+        )
+      )
 
       return {
-        rsvpCount: keys.length,
+        rsvpCount: totalRSVPCount,
         isExpired: isEventExpired,
       }
     },
