@@ -20839,7 +20839,7 @@ __metadata:
     express: "npm:5.0.0-beta.3"
     express-winston: "npm:4.2.0"
     fuse.js: "npm:7.0.0"
-    geoip-country: "npm:4.2.138"
+    geoip-country: "npm:5.0.202410012341"
     google-auth-library: "npm:9.11.0"
     graphile-worker: "npm:0.16.6"
     graphql: "npm:16.9.0"
@@ -27105,6 +27105,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"countries-list@npm:^3.1.1":
+  version: 3.1.1
+  resolution: "countries-list@npm:3.1.1"
+  checksum: 10/4519de861c55b4424a089d5335a0094ddca47086ca98a910eac0f4682a582a52fb4453ed067beb4b81fcf7c62e93ea41919d6ad290f36b7e5cb777b84b9e4b9b
+  languageName: node
+  linkType: hard
+
 "cp-file@npm:^10.0.0":
   version: 10.0.0
   resolution: "cp-file@npm:10.0.0"
@@ -33097,16 +33104,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"geoip-country@npm:4.2.138":
-  version: 4.2.138
-  resolution: "geoip-country@npm:4.2.138"
+"geoip-country@npm:5.0.202410012341":
+  version: 5.0.202410012341
+  resolution: "geoip-country@npm:5.0.202410012341"
   dependencies:
     async: "npm:^2.6.4"
-    iconv-lite: "npm:^0.5.2"
-    ip-address: "npm:^6.3.0"
-    lazy: "npm:^1.0.11"
+    countries-list: "npm:^3.1.1"
+    ip-address: "npm:^6.4.0"
     yauzl: "npm:^2.10.0"
-  checksum: 10/0b5c071eb77eae9a0a3883b4e17cd1c2a6a2c8e289b2007276d30b21aa5be355cdc262d8131d41d58b6822644d59569072329091a3783711d8acdce92a5072db
+  checksum: 10/41a47283199052970143bc1ee6815f1d1d84718a2f9619e9cf9f3507c3e9d6a82b051ee8274818c9bea3c7cabdf393267c3680a74bc160deab34835a8c6e04ae
   languageName: node
   linkType: hard
 
@@ -35386,7 +35392,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"iconv-lite@npm:0.5.2, iconv-lite@npm:^0.5.2":
+"iconv-lite@npm:0.5.2":
   version: 0.5.2
   resolution: "iconv-lite@npm:0.5.2"
   dependencies:
@@ -35817,7 +35823,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ip-address@npm:^6.3.0":
+"ip-address@npm:^6.4.0":
   version: 6.4.0
   resolution: "ip-address@npm:6.4.0"
   dependencies:
@@ -38125,13 +38131,6 @@ __metadata:
     picocolors: "npm:^1.0.0"
     shell-quote: "npm:^1.8.1"
   checksum: 10/6eabdcfcea15b1f1ce2f2a1da3902974ccc19465a24656326a95517366e2caeb4c9977d1664708223b6a2fd93487eb55f0178fa6c902bcd969af348cb6ec8d63
-  languageName: node
-  linkType: hard
-
-"lazy@npm:^1.0.11":
-  version: 1.0.11
-  resolution: "lazy@npm:1.0.11"
-  checksum: 10/12ebb4db919a7cab3d780fdc1eada2985cd07f7cef0df18b8f40f23ceb9dcb2684d924d768f8c1cf603c641df7305f5b77ca9039716e235043e4f25bdba3e886
   languageName: node
   linkType: hard
 
