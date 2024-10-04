@@ -29,7 +29,7 @@
   "author": "Unlock Inc",
   "license": "MIT",
   "peerDependencies": {
-    "axios": "1.7.4",
+    "axios": "1.7.7",
     "ethers": "^6.13.0"
   },
   "devDependencies": {
@@ -38,7 +38,7 @@
     "@graphql-codegen/typescript-graphql-request": "6.2.0",
     "@graphql-codegen/typescript-operations": "4.2.3",
     "@nomicfoundation/hardhat-ethers": "3.0.8",
-    "@openapitools/openapi-generator-cli": "2.13.5",
+    "@openapitools/openapi-generator-cli": "2.13.12",
     "@unlock-protocol/contracts": "workspace:./packages/contracts",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/networks": "workspace:./packages/networks",
