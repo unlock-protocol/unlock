@@ -33,7 +33,7 @@ export const garnet: NetworkConfig = {
   provider: 'https://rpc.garnetchain.com',
   publicLockVersionToDeploy: 14,
   publicProvider: 'https://rpc.garnetchain.com',
-  startBlock: 19338700,
+  startBlock: 7854281,
   // This is used in llama pricing API so can't rename.
   subgraph: {
     endpoint: '<>',
@@ -57,7 +57,7 @@ export const garnet: NetworkConfig = {
       symbol: 'EVE',
     },
   ],
-  unlockAddress: '0x1bc53f4303c711cc693F6Ec3477B83703DcB317f',
+  unlockAddress: '0x839fdccb5bf005cbdd84dd2700fbd9B64bd94772',
   url: 'https://garnetchain.com/',
 }
 export default garnet
