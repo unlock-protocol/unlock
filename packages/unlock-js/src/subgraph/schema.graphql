@@ -21,6 +21,7 @@ query allLocks(
     symbol
     price
     lockManagers
+    keyGranters
     version
     maxNumberOfKeys
     maxKeysPerAddress
@@ -58,6 +59,7 @@ query AllKeys(
       symbol
       price
       lockManagers
+      keyGranters
       version
       maxNumberOfKeys
       maxKeysPerAddress
@@ -121,6 +123,7 @@ query allLocksWithKeys(
     symbol
     price
     lockManagers
+    keyGranters
     version
     maxNumberOfKeys
     maxKeysPerAddress
