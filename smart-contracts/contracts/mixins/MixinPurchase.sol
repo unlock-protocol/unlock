@@ -240,6 +240,13 @@ contract MixinPurchase is
     }
   }
 
+  function _lockPurchaseIsPossible(uint nbOfKeysToPurchase) internal view {
+    _lockIsUpToDate();
+    if (_totalSupply + nbOfKeysToPurchase > maxNumberOfKeys) {
+      revert LOCK_SOLD_OUT();
+    }
+  }
+
   function _purchaseKey(
     uint _value,
     address _recipient,
@@ -270,6 +277,9 @@ contract MixinPurchase is
     // store in unlock
     _recordKeyPurchase(pricePaid, _referrer);
 
+    // send what is due to referrers
+    _payReferrer(_referrer);
+
     // fire hook
     if (address(onKeyPurchaseHook) != address(0)) {
       onKeyPurchaseHook.onKeyPurchase(
@@ -284,11 +294,37 @@ contract MixinPurchase is
     }
   }
 
-  // function purchase(
-  //   PurchaseArgs[] memory purchaseArgs
-  // ) external payable returns (uint256[] memory tokenIds) {
-  //   //go
-  // }
+  function purchase(
+    PurchaseArgs[] memory purchaseArgs
+  ) external payable returns (uint[] memory) {
+    _lockPurchaseIsPossible(purchaseArgs.length);
+
+    uint totalPriceToPay;
+    uint[] memory tokenIds = new uint[](purchaseArgs.length);
+
+    for (uint256 i = 0; i < purchaseArgs.length; i++) {
+      (uint tokenId, uint pricePaid) = _purchaseKey(
+        purchaseArgs[i].value,
+        purchaseArgs[i].recipient,
+        purchaseArgs[i].keyManager,
+        purchaseArgs[i].referrer,
+        purchaseArgs[i].data
+      );
+      totalPriceToPay = totalPriceToPay + pricePaid;
+      tokenIds[i] = tokenId;
+    }
+
+    // transfer the ERC20 tokens
+    _transferValue(msg.sender, totalPriceToPay);
+
+    // pay protocol
+    _payProtocol(totalPriceToPay);
+
+    // refund gas
+    _refundGas();
+
+    return tokenIds;
+  }
 
   /**
    * @dev Purchase function
@@ -310,10 +346,9 @@ contract MixinPurchase is
     address[] memory _keyManagers,
     bytes[] calldata _data
   ) external payable returns (uint[] memory) {
-    _lockIsUpToDate();
-    if (_totalSupply + _recipients.length > maxNumberOfKeys) {
-      revert LOCK_SOLD_OUT();
-    }
+    _lockPurchaseIsPossible(_recipients.length);
+
+    // check for array mismatch
     if (
       (_recipients.length != _referrers.length) ||
       (_recipients.length != _keyManagers.length)
@@ -344,11 +379,6 @@ contract MixinPurchase is
 
     // refund gas
     _refundGas();
-
-    // send what is due to referrers
-    for (uint256 i = 0; i < _referrers.length; i++) {
-      _payReferrer(_referrers[i]);
-    }
 
     return tokenIds;
   }
