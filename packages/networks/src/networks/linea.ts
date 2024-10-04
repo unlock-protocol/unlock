@@ -19,6 +19,14 @@ export const linea: NetworkConfig = {
     },
   },
   featured: false,
+  governanceBridge: {
+    connext: '0xa05eF29e9aC8C75c530c2795Fa6A800e188dE0a9',
+    domainId: 1818848877,
+    modules: {
+      connextMod: '0x1b6ED52be06Cef3b9eD234114843BE79971e51f3',
+      delayMod: '0x2D4123dB5A4d3bAA2DbeA4cB10333a9E3271292a',
+    },
+  },
   hooks: {
     onKeyPurchaseHook: [
       {
@@ -72,7 +80,7 @@ export const linea: NetworkConfig = {
     symbol: 'ETH',
   },
   previousDeploys: [],
-  provider: 'https://rpc.unlock-protocol.com/59144',
+  provider: 'https://rpc.linea.build/',
   publicLockVersionToDeploy: 14,
   publicProvider: 'https://rpc.linea.build/',
   startBlock: 560908,
