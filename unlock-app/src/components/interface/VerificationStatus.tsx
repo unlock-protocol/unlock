@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import { Fragment, useState } from 'react'
 import { useAuth } from '../../contexts/AuthenticationContext'
 import {
   MembershipCard,
@@ -12,7 +12,12 @@ import { isSignatureValidForAddress } from '~/utils/signatures'
 import { locksmith } from '~/config/locksmith'
 import { AxiosError } from 'axios'
 import { useEventTicket, useLocksmithGranterAddress } from '~/hooks/useTicket'
-import { Dialog, Transition } from '@headlessui/react'
+import {
+  Dialog,
+  DialogPanel,
+  Transition,
+  TransitionChild,
+} from '@headlessui/react'
 import { MAX_UINT } from '~/constants'
 import { config as AppConfig } from '~/config/app'
 import { useConnectModal } from '~/hooks/useConnectModal'
@@ -47,7 +52,7 @@ const WarningDialog = ({
       open={isOpen}
     >
       <div className="fixed inset-0 bg-opacity-25 backdrop-filter backdrop-blur-sm bg-zinc-500" />
-      <Transition.Child
+      <TransitionChild
         as={Fragment}
         enter="transition ease-out duration-300"
         enterFrom="opacity-0 translate-y-1"
@@ -58,7 +63,7 @@ const WarningDialog = ({
       >
         <div className="fixed inset-0 p-6 overflow-y-auto">
           <div className="flex items-center justify-center min-h-full">
-            <Dialog.Panel className="w-full max-w-sm">
+            <DialogPanel className="w-full max-w-sm">
               <div className="w-full max-w-sm bg-white rounded-xl">
                 <div className="flex flex-col gap-3">
                   <div className="p-2 text-center bg-amber-300 rounded-t-xl">
@@ -91,10 +96,10 @@ const WarningDialog = ({
                   </div>
                 </div>
               </div>
-            </Dialog.Panel>
+            </DialogPanel>
           </div>
         </div>
-      </Transition.Child>
+      </TransitionChild>
     </Dialog>
   </Transition>
 )

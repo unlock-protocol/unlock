@@ -1,5 +1,10 @@
 import React, { ReactNode } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
+import {
+  Dialog,
+  DialogPanel,
+  Transition,
+  TransitionChild,
+} from '@headlessui/react'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
 export interface Props {
   isOpen: boolean
@@ -37,14 +42,14 @@ export function Modal({ isOpen, setIsOpen, children, empty }: Props) {
   }
 
   return (
-    <Transition.Root show={isOpen} as={React.Fragment}>
+    <Transition show={isOpen} as={React.Fragment}>
       <Dialog
         as="div"
         className="fixed inset-0 z-10 overflow-y-auto"
         onClose={setIsOpen}
       >
         <div className="flex flex-col items-center justify-center min-h-screen p-6">
-          <Transition.Child
+          <TransitionChild
             as={React.Fragment}
             enter="ease-out duration-300"
             enterFrom="opacity-0"
@@ -53,10 +58,10 @@ export function Modal({ isOpen, setIsOpen, children, empty }: Props) {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Dialog.Overlay className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50 backdrop-blur" />
-          </Transition.Child>
+            <DialogPanel className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50 backdrop-blur" />
+          </TransitionChild>
 
-          <Transition.Child
+          <TransitionChild
             as={React.Fragment}
             enter="ease-out duration-300"
             enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
@@ -66,10 +71,10 @@ export function Modal({ isOpen, setIsOpen, children, empty }: Props) {
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
             {content}
-          </Transition.Child>
+          </TransitionChild>
         </div>
       </Dialog>
-    </Transition.Root>
+    </Transition>
   )
 }
 
