@@ -81,8 +81,9 @@ export const CreateLockSteps = () => {
       network,
     }: LockFormProps) => {
       const walletService = await getWalletService(network)
-      const expirationInSeconds =
+      const expirationInSeconds = Math.ceil(
         (expirationDuration as number) * ONE_DAY_IN_SECONDS
+      )
       const lockAddress = await walletService.createLock(
         {
           name,
