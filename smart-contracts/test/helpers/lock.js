@@ -32,7 +32,7 @@ const purchaseKey = async (
     data: '0x',
   }
 
-  const tx = await lock.connect(keyOwner).purchase(purchaseArgs, {
+  const tx = await lock.connect(keyOwner).purchase([purchaseArgs], {
     value: isErc20 ? 0 : keyPrice,
   })
 
