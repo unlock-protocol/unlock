@@ -56,6 +56,11 @@ export function Combobox({
           return option.label.toLowerCase().includes(query.toLowerCase())
         })
 
+  const uniqueFilteredOptions = filteredOptions.filter(
+    (option, index, self) =>
+      index === self.findIndex((t) => t.value === option.value)
+  )
+
   /**
    * Handles the selection of an option.
    * Updates the selected state, invokes the onSelect callback,
@@ -203,8 +208,8 @@ export function Combobox({
                   />
                 </div>
                 <ul className="max-h-60 overflow-auto py-1" role="listbox">
-                  {filteredOptions.length > 0 ? (
-                    filteredOptions.map((option, index) => (
+                  {uniqueFilteredOptions.length > 0 ? (
+                    uniqueFilteredOptions.map((option, index) => (
                       <li
                         key={`${option.value}-${index}`}
                         ref={(el) => (optionsRef.current[index] = el)}
