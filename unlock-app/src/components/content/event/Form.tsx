@@ -34,6 +34,7 @@ import { useAvailableNetworks } from '~/utils/networks'
 import Link from 'next/link'
 import { regexUrlPattern } from '~/utils/regexUrlPattern'
 import { ProtocolFee } from '~/components/interface/locks/Create/elements/ProtocolFee'
+import { Combobox } from '@unlock-protocol/ui'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewEventForm {
@@ -112,8 +113,7 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
   const web3Service = useWeb3Service()
 
   const today = dayjs().format('YYYY-MM-DD')
-  const networkOptions = useAvailableNetworks()
-  const moreNetworkOptions = useAvailableNetworks(true)
+  const networkOptions = useAvailableNetworks(true)
   const network = networkOptions[0]?.value
 
   const methods = useForm<NewEventForm>({
@@ -325,8 +325,14 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
                   error={errors.metadata?.description?.message as string}
                 />
 
-                <Select
-                  onChange={(newValue) => {
+                <Combobox
+                  label="Network"
+                  options={networkOptions}
+                  initialSelected={networkOptions.find(
+                    (option) => option.value === network
+                  )}
+                  onSelect={(selected) => {
+                    const newValue = selected.value
                     setValue('network', Number(newValue))
                     setValue('lock.currencyContractAddress', null)
                     setValue(
@@ -336,10 +342,8 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
                     setCurrencyNetwork(networks[newValue].name)
                     setKickBackSupported(!!networks[newValue].kickbackAddress)
                   }}
-                  options={networkOptions}
-                  moreOptions={moreNetworkOptions}
-                  label="Network"
-                  defaultValue={network}
+                  placeholder="Select a network"
+                  searchPlaceholder="Search networks..."
                   description={
                     <div className="flex flex-col gap-2">
                       {details.network && (
@@ -360,6 +364,7 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
                     </div>
                   }
                 />
+
                 <NetworkWarning network={details.network} />
 
                 <div className="mb-4">
