@@ -277,9 +277,6 @@ contract MixinPurchase is
     // store in unlock
     _recordKeyPurchase(pricePaid, _referrer);
 
-    // send what is due to referrers
-    _payReferrer(_referrer);
-
     // fire hook
     if (address(onKeyPurchaseHook) != address(0)) {
       onKeyPurchaseHook.onKeyPurchase(
@@ -322,6 +319,11 @@ contract MixinPurchase is
 
     // refund gas
     _refundGas();
+
+    // send what is due to referrers
+    for (uint256 i = 0; i < purchaseArgs.length; i++) {
+      _payReferrer(purchaseArgs[i].referrer);
+    }
 
     return tokenIds;
   }
@@ -379,6 +381,11 @@ contract MixinPurchase is
 
     // refund gas
     _refundGas();
+
+    // send what is due to referrers
+    for (uint256 i = 0; i < _referrers.length; i++) {
+      _payReferrer(_referrers[i]);
+    }
 
     return tokenIds;
   }

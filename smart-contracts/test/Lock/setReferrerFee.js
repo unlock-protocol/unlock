@@ -38,18 +38,20 @@ describe('Lock / setReferrerFee', () => {
     const { args: eventArgs } = await getEvent(receipt, 'ReferrerFee')
     const balanceBefore = await getBalance(referrerAddress, tokenAddress)
 
-    await lock
-      .connect(keyOwner)
-      .purchase(
-        isErc20 ? [keyPrice] : [],
-        [await keyOwner.getAddress()],
-        [referrerAddress],
-        [ADDRESS_ZERO],
-        ['0x'],
+    await lock.connect(keyOwner).purchase(
+      [
         {
-          value: isErc20 ? 0 : keyPrice,
-        }
-      )
+          value: isErc20 ? keyPrice : 0,
+          recipient: await keyOwner.getAddress(),
+          referrer: referrerAddress,
+          keyManager: ADDRESS_ZERO,
+          data: '0x',
+        },
+      ],
+      {
+        value: isErc20 ? 0 : keyPrice,
+      }
+    )
     return {
       balanceBefore,
       eventArgs,
