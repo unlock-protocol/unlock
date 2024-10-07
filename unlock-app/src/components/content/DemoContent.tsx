@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react'
-import Head from 'next/head'
+'use client'
+
+import { useState, useEffect, useContext } from 'react'
 import Loading from '../interface/Loading'
 import { ConfigContext } from '../../utils/withConfig'
 
@@ -111,9 +112,6 @@ export const DemoContent = () => {
   return (
     <div>
       <Fonts />
-      <Head>
-        <title>Unlock Demo Example - Unlock Times</title>
-      </Head>
       <div className="flex min-w-[500] max-w-[800px] mx-auto font-[SourceSerifPro]">
         <div className="mx-auto">
           <h1 className="text-4xl font-bold text-gray-600 font-[UnifrakturCook] mb-12">
