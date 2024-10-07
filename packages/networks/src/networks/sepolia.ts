@@ -139,6 +139,12 @@ export const sepolia: NetworkConfig = {
       name: 'Uniswap',
       symbol: 'UNI',
     },
+    {
+      address: '0x447B1492C5038203f1927eB2a374F5Fcdc25999d',
+      decimals: 18,
+      name: 'Unlock Discount Token',
+      symbol: 'UDT',
+    },
   ],
   uniswapV3: {
     factoryAddress: '0x0227628f3F023bb0B980b67D528571c95c6DaC1c',

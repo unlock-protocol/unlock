@@ -138,6 +138,18 @@ export const base: NetworkConfig = {
       name: 'Degen',
       symbol: 'DEGEN',
     },
+    {
+      address: '0xaC27fa800955849d6D17cC8952Ba9dD6EAA66187',
+      decimals: 18,
+      name: 'UnlockProtocolToken',
+      symbol: 'UP',
+    },
+    {
+      address: '0xD7eA82D19f1f59FF1aE95F1945Ee6E6d86A25B96',
+      decimals: 18,
+      name: 'Unlock Discount Token',
+      symbol: 'UDT',
+    },
   ],
   uniswapV3: {
     factoryAddress: '0x33128a8fC17869897dcE68Ed026d694621f6FDfD',

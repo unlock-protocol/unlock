@@ -147,6 +147,12 @@ export const arbitrum: NetworkConfig = {
       name: 'Arbitrum',
       symbol: 'ARB',
     },
+    {
+      address: '0xd5d3aA404D7562d09a848F96a8a8d5D65977bF90',
+      decimals: 18,
+      name: 'Unlock Discount Token',
+      symbol: 'UDT',
+    },
   ],
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
