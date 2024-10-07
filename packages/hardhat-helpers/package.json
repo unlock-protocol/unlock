@@ -26,12 +26,12 @@
     "@unlock-protocol/types": "workspace:^",
     "ethers": "6.13.2",
     "hardhat": "2.22.9",
-    "typescript": "5.5.4",
+    "typescript": "5.6.2",
     "zksync-ethers": "6.13.0"
   },
   "devDependencies": {
     "copyfiles": "2.4.1",
-    "eslint": "9.9.1",
+    "eslint": "9.11.1",
     "tsup": "8.3.0"
   },
   "repository": {
