@@ -44,7 +44,7 @@
     "deep-object-diff": "1.1.9",
     "dotenv": "16.4.5",
     "eslint": "9.11.1",
-    "ethers": "6.13.2",
+    "ethers": "6.13.3",
     "file-saver": "2.0.5",
     "frames.js": "0.19.3",
     "from-exponential": "1.1.1",
