@@ -22,16 +22,26 @@ const getOtherFrames = frames(async (ctx) => {
   const success = ctx.searchParams.success
 
   if (success === 'true') {
+    const keychainButton = (
+      <Button action="link" target="https://app.unlock-protocol.com/keychain">
+        View on keychain
+      </Button>
+    )
+    const redirectText = lock.redirectText
+      ? lock.redirectText
+      : lock.redirectUri
+    const buttons = lock.redirectUri
+      ? [
+          keychainButton,
+          <Button action="link" target={lock.redirectUri!}>
+            {redirectText!}
+          </Button>,
+        ]
+      : [keychainButton]
+
     return {
       image: <TransactionSuccess lock={lock} />,
-      buttons: [
-        <Button action="link" target="https://app.unlock-protocol.com/keychain">
-          View on keychain
-        </Button>,
-        <Button action="tx" target="/txdata" post_url="?success=true">
-          Buy again
-        </Button>,
-      ],
+      buttons,
       state,
     }
   }

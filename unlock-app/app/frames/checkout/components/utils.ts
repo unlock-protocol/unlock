@@ -38,6 +38,9 @@ export async function getLockDataFromCheckout(id: string) {
   const res = await web3Service.getLock(lockAddress, network)
   const price = `${res.keyPrice} ${res.currencySymbol}`
 
+  const redirectUri = config.redirectUri
+  const redirectText = config.endingCallToAction
+
   const lock = {
     name,
     address: lockAddress,
@@ -46,6 +49,8 @@ export async function getLockDataFromCheckout(id: string) {
     defaultImage,
     description,
     price,
+    redirectUri,
+    redirectText,
   }
 
   return lock

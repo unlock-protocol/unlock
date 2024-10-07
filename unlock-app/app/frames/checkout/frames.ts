@@ -8,6 +8,8 @@ export type Lock = {
   defaultImage?: string
   description: string
   price: string
+  redirectUri?: string
+  redirectText?: string
 }
 
 export type State = {
