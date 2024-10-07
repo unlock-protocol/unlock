@@ -17,7 +17,7 @@
     "@headlessui/react": "2.1.9",
     "@hookform/error-message": "2.0.1",
     "@hookform/resolvers": "3.9.0",
-    "@radix-ui/react-avatar": "1.1.0",
+    "@radix-ui/react-avatar": "1.1.1",
     "@rehooks/local-storage": "2.4.5",
     "@sentry/nextjs": "7.119.0",
     "@stripe/react-stripe-js": "2.8.0",
