@@ -34,6 +34,21 @@ export default ({ publicLockVersion }) => {
         )
         expect(isKeyManager).toBe(true)
       })
+
+      it('should be able to revoke the keyGranter role', async () => {
+        expect.assertions(2)
+        const hasRevokedKeyGranter = await walletService.removeKeyGranter({
+          lockAddress,
+          keyGranter,
+        })
+        expect(hasRevokedKeyGranter).toBe(true)
+        const isKeyManager = await web3Service.isKeyGranter(
+          lockAddress,
+          keyGranter,
+          chainId
+        )
+        expect(isKeyManager).toBe(false)
+      })
     })
   }
 }
