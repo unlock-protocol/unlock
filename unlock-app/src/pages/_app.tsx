@@ -16,7 +16,6 @@ import { SessionProvider as NextAuthSessionProvider } from 'next-auth/react'
 import '~/utils/bigint'
 import { Inter } from 'next/font/google'
 import ShouldOpenConnectModal from '~/components/interface/connect/ShouldOpenConnectModal'
-import { PrivyProvider } from '@privy-io/react-auth'
 import { ConnectModalProvider } from '~/hooks/useConnectModal'
 import Privy from '~/config/PrivyProvider'
 
