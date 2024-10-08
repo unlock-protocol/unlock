@@ -40,5 +40,7 @@ export const useUnlockPrime = () => {
     rest.refetch() // Refetch, in case there was a purchase!
   }, [])
 
+  console.log({ isPrime })
+
   return { isPrime, ...rest, joinPrime }
 }

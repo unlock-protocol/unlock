@@ -4,15 +4,43 @@ import { useUnlockPrime } from '~/hooks/useUnlockPrime'
 import Link from 'next/link'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 
-export const PrimeOnly = ({ children }: { children: ReactNode }) => {
-  const { isPrime, joinPrime } = useUnlockPrime()
-
-  if (isPrime) {
-    return <>{children}</>
-  }
+// Small Prime card
+export const SmallPrimeCard = () => {
+  const { joinPrime } = useUnlockPrime()
 
   return (
-    <Card className="flex flex-col gap-4">
+    <div className="flex flex-col items-center gap-2 bg-white rounded-md w-3/4 p-4 shadow-md text-sm	">
+      <p>
+        Unlock Prime members only.{' '}
+        <Link
+          target="_blank"
+          className="underline text-brand-ui-primary"
+          href="https://unlock-protocol.com/prime"
+        >
+          Learn more
+        </Link>
+      </p>
+      <div>
+        <Button
+          onClick={() => {
+            joinPrime()
+            return false
+          }}
+          size="small"
+        >
+          Join now!
+        </Button>
+      </div>
+    </div>
+  )
+}
+
+// Prime Card
+export const PrimeCard = () => {
+  const { joinPrime } = useUnlockPrime()
+
+  return (
+    <Card className="flex flex-col gap-4" shadow="lg">
       <p>
         🪄 An Unlock Prime Membership is required to access this feature.{' '}
         <Link
@@ -32,6 +60,16 @@ export const PrimeOnly = ({ children }: { children: ReactNode }) => {
       </div>
     </Card>
   )
+}
+
+export const PrimeOnly = ({ children }: { children: ReactNode }) => {
+  const { isPrime } = useUnlockPrime()
+
+  if (isPrime) {
+    return <>{children}</>
+  }
+
+  return <PrimeCard />
 }
 
 export default PrimeOnly
