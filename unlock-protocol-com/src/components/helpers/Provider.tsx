@@ -6,7 +6,7 @@ import tagManager from 'react-gtm-module'
 import { unlockConfig } from '../../config/unlock'
 import { paywallConfig } from '../../config/paywallConfig'
 import { Provider as MembershipProvider } from '../../hooks/useMembership'
-import { useRouter, usePathname, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/router'
 
 interface Props {
   children: ReactNode
@@ -25,8 +25,6 @@ export function Provider({ children }: Props) {
   const [enableAnalytics] = useLocalStorage('enable_analytics', null)
   const [isMember, setIsMember] = useState('is_member')
   const router = useRouter()
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
 
   useEffect(() => {
     console.info(UNLOCK_CONSOLE_MESSAGE)
@@ -41,11 +39,16 @@ export function Provider({ children }: Props) {
   }, [enableAnalytics])
 
   useEffect(() => {
-    if (enableAnalytics) {
-      const url = `${pathname}${searchParams.toString() ? `?${searchParams.toString()}` : ''}`
-      reactGa.pageview(url)
+    const routeChange = (url: URL) => {
+      reactGa.pageview(url.toString())
     }
-  }, [pathname, searchParams, enableAnalytics])
+    if (enableAnalytics) {
+      router.events.on('routeChangeComplete', routeChange)
+    }
+    return () => {
+      router.events.off('routeChangeComplete', routeChange)
+    }
+  }, [router, enableAnalytics])
 
   function becomeMember() {
     return window.unlockProtocol && window.unlockProtocol.loadCheckoutModal()
