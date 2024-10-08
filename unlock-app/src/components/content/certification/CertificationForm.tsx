@@ -22,7 +22,7 @@ import { NetworkWarning } from '~/components/interface/locks/Create/elements/Net
 import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useQuery } from '@tanstack/react-query'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useAvailableNetworks } from '~/utils/networks'
 import Link from 'next/link'
 import { BalanceWarning } from '~/components/interface/locks/Create/elements/BalanceWarning'
