@@ -1,6 +1,6 @@
 import { NextSeo } from 'next-seo'
-import { useRouter } from 'next/router'
-import React, { ReactNode } from 'react'
+import { useSearchParams } from 'next/navigation'
+import { ReactNode } from 'react'
 import { config } from '~/config/app'
 
 interface Props {
@@ -8,8 +8,8 @@ interface Props {
 }
 
 export function Container({ children }: Props) {
-  const { query } = useRouter()
-  const id = query.id
+  const searchParams = useSearchParams()
+  const id = searchParams.get('id')
 
   return (
     <>
