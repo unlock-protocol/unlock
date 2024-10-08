@@ -16,12 +16,14 @@ interface LockDeployingProps {
   transactionDetails: TransactionDetails
   lockAddress?: string
   slug?: string
+  compact?: boolean
 }
 
 export const LockDeploying = ({
   transactionDetails,
   lockAddress,
   slug,
+  compact = false,
 }: LockDeployingProps) => {
   const config = useConfig()
   const router = useRouter()
@@ -30,7 +32,9 @@ export const LockDeploying = ({
 
   let status: DeployStatus = 'progress'
   let title = 'Waiting for your transaction to be mined'
-  let message = 'Please do not close this window'
+  let message = compact
+    ? 'Please do not close this drawer'
+    : 'Please do not close this window'
 
   useEffect(() => {
     window?.scrollTo(0, 0) // force scroll start of page
@@ -64,8 +68,10 @@ export const LockDeploying = ({
         <AnimationContent status={status} />
         <div className="grid grid-cols-1 lg:grid-cols-2">
           <div className="flex flex-col">
-            <span className="text-base">Status</span>
-            <span className="text-lg font-bold">
+            <span className={`text-base ${compact ? 'text-sm' : ''}`}>
+              Status
+            </span>
+            <span className={`font-bold ${compact ? 'text-base' : 'text-lg'}`}>
               {status === 'progress' ? 'In progress...' : 'Deployed'}
             </span>
           </div>
@@ -73,21 +79,27 @@ export const LockDeploying = ({
             <Link
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 mt-3 text-lg font-bold lg:mt-auto lg:ml-auto text-brand-ui-primary"
+              className={`inline-flex items-center gap-3 mt-3 font-bold lg:mt-auto lg:ml-auto text-brand-ui-primary ${compact ? 'text-base' : 'text-lg'}`}
               href={config.networks[network].explorer.urls.transaction(
                 transactionHash
               )}
             >
               View on block explorer
-              <ExternalLinkIcon size={20} />
+              <ExternalLinkIcon size={compact ? 16 : 20} />
             </Link>
           )}
         </div>
       </div>
       <div className="flex flex-col items-center my-12 text-center">
-        <h3 className="block mb-4 text-2xl font-bold md:text-4xl">{title}</h3>
-        <span className="mb-4 font-base">{message}</span>
-        {status === 'deployed' && (
+        <h3
+          className={`block mb-4 font-bold ${compact ? 'text-xl md:text-2xl' : 'text-2xl md:text-4xl'}`}
+        >
+          {title}
+        </h3>
+        <span className={`mb-4 font-base ${compact ? 'text-sm' : ''}`}>
+          {message}
+        </span>
+        {status === 'deployed' && !compact && (
           <div className="flex flex-col items-center content-center text-center">
             <p>We made a page for your event! Go check it out!</p>
             <Button

@@ -96,7 +96,7 @@ export class PaymentProcessor {
       throw new Error('We could not compute the pricing.')
     }
 
-    if (Math.abs(pricing.total - maxPrice) > 0.03 * maxPrice) {
+    if (Math.abs(pricing.total * 100 - maxPrice) > 0.03 * maxPrice) {
       // if price diverged by more than 3%, we fail!
       throw new Error('Price diverged by more than 3%. Aborting')
     }
@@ -133,7 +133,7 @@ export class PaymentProcessor {
           clientSecret: stripeIntent.client_secret,
           stripeAccount,
           pricing,
-          totalPriceInCents: pricing.total,
+          totalPriceInCents: pricing.total * 100,
         }
       }
     }
@@ -200,7 +200,7 @@ export class PaymentProcessor {
     })
 
     const paymentIntentParams: any = {
-      amount: pricing.total,
+      amount: Math.ceil(pricing.total * 100),
       currency: creditCardCurrency,
       customer: connectedCustomer.id,
       payment_method: method.id,
@@ -221,7 +221,7 @@ export class PaymentProcessor {
       application_fee_amount: !applicationFeeNotSupportedCountries.includes(
         account.country?.trim() || ''
       )
-        ? pricing.unlockServiceFee + pricing.gasCost
+        ? Math.ceil(pricing.unlockServiceFee * 100 + pricing.gasCost * 100)
         : undefined,
     }
     if (connectedCustomer.email) {
@@ -250,7 +250,7 @@ export class PaymentProcessor {
     return {
       clientSecret: intent.client_secret,
       stripeAccount,
-      totalPriceInCents: pricing.total,
+      totalPriceInCents: pricing.total * 100,
       pricing,
     }
   }
@@ -301,7 +301,7 @@ export class PaymentProcessor {
       throw new Error('Could not compute the pricing.')
     }
 
-    const totalPriceInCents = pricing.total
+    const totalPriceInCents = pricing.total * 100
 
     const paymentIntentRecord = await PaymentIntent.findOne({
       where: { intentId: paymentIntentId },

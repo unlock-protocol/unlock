@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import { useMetadata } from '~/hooks/metadata'
 import { toFormData } from '~/components/interface/locks/metadata/utils'
@@ -11,7 +13,7 @@ import {
   minifyAddress,
   Card,
 } from '@unlock-protocol/ui'
-import router from 'next/router'
+import { useRouter } from 'next/navigation'
 import ReactMarkdown from 'react-markdown'
 import { useLockManager } from '~/hooks/useLockManager'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
@@ -128,6 +130,7 @@ export const CertificationDetails = ({
 }: CertificationDetailsProps) => {
   const { account } = useAuth()
   const [isCheckoutOpen, setCheckoutOpen] = useState(false)
+  const router = useRouter()
 
   const { lock, isLockLoading: isLockDataLoading } = useLockData({
     lockAddress,
@@ -141,9 +144,7 @@ export const CertificationDetails = ({
   })
 
   const onEdit = () => {
-    return router.push(
-      `/locks/metadata?lockAddress=${lockAddress}&network=${network}`
-    )
+    router.push(`/locks/metadata?lockAddress=${lockAddress}&network=${network}`)
   }
 
   const { data: key } = useCertification({
