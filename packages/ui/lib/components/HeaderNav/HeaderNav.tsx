@@ -11,6 +11,7 @@ import {
   FiMenu as MenuIcon,
   FiPlus as PlusIcon,
   FiMinus as MinusIcon,
+  FiChevronDown as ChevronDownIcon,
 } from 'react-icons/fi'
 import { CgClose as CloseIcon } from 'react-icons/cg'
 import { Size, SizeStyleProp } from '~/types'
@@ -83,8 +84,8 @@ export interface NavbarProps {
 }
 
 const POPOVER_CLASSES: SizeStyleProp = {
-  small: 'w-52 -ml-16 pt-4 lg:pt-9 sm:px-0',
-  medium: 'w-full pt-4 transform -translate-x-1/2 lg:pt-9 left-1/2 sm:px-0',
+  small: 'w-52 pt-4 lg:pt-2 sm:px-0',
+  medium: 'w-full pt-4 lg:pt-9 sm:px-0',
 }
 
 const NavSectionTitle = ({
@@ -223,11 +224,12 @@ const NavSectionDesktop = (section: MenuSectionProps) => {
 
     return (
       <span
-        className={`text-lg duration-200  hover:text-brand-ui-primary md:p-4 ${
+        className={`text-lg duration-200 hover:text-brand-ui-primary md:p-4 ${
           open || isActive ? 'text-brand-ui-primary' : 'text-gray-700'
-        }`}
+        } flex items-center`}
       >
         {title}
+        {options.length > 0 && <ChevronDownIcon className="ml-1" size={20} />}
       </span>
     )
   }
@@ -258,13 +260,7 @@ const NavSectionDesktop = (section: MenuSectionProps) => {
         {({ open }) => (
           <>
             <Popover.Button className="outline-none">
-              <span
-                className={`text-lg duration-200 md:p-4 hover:text-brand-ui-primary ${
-                  open ? 'text-brand-ui-primary' : 'text-gray-700'
-                }`}
-              >
-                {title}
-              </span>
+              <Title title={title} open={open} />
             </Popover.Button>
             <Transition
               as={Fragment}
@@ -441,13 +437,16 @@ export const HeaderNav = ({
                   <img
                     src={logoImageSrc}
                     alt="logo"
-                    className=""
+                    className="w-auto h-8"
                     style={{
-                      height: logo.size ? `${logo.size}px` : undefined,
+                      height: logo.size
+                        ? `${Math.min(logo.size, 32)}px`
+                        : undefined,
                     }}
                   />
                   {logo?.domain && (
-                    <span className="pl-1 text-sm font-semibold md:pl-2 md:text-xl">
+                    <span className="pl-1 text-xs font-semibold md:pl-2 md:text-base">
+                      {' '}
                       {logo.domain}
                     </span>
                   )}
