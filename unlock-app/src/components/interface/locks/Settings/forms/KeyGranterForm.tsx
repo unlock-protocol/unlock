@@ -86,7 +86,7 @@ const RemoveKeyGranterModal = ({
                   <span className="text-base text-brand-dark p-6">
                     {isCreditCardGranter
                       ? 'If you remove this key granter, credit card purchases for your contracts will be disabled'
-                      : `Please confirm you want to remove this key granter`}
+                      : 'Please confirm you want to remove this key granter'}
                   </span>
                 </div>
                 <div className="flex gap-4">

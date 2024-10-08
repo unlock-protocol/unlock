@@ -16,7 +16,7 @@ const staging = {
   coinbaseProjectId: '4e90fd0f-bb62-4e1c-91a4-f08c76d1b09e',
   prime: {
     network: 84532,
-    contract: '0xcAdc0e0A9E555e6c058915C09E3F23255a399999',
+    contract: '0xB37D532429940f3C59DA0aed4D0692bFfa9AF316',
   },
 }
 
@@ -33,7 +33,7 @@ const dev = {
     process.env.NEXT_PUBLIC_COINBASE_PROJECT_ID || staging.coinbaseProjectId,
   prime: {
     network: 84532,
-    contract: '0xcAdc0e0A9E555e6c058915C09E3F23255a399999',
+    contract: '0xB37D532429940f3C59DA0aed4D0692bFfa9AF316',
   },
 }
 

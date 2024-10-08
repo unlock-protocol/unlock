@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import networks from '@unlock-protocol/networks'
+import Paywall from '@unlock-protocol/paywall'
 import { Web3Service } from '@unlock-protocol/unlock-js'
+import { useCallback } from 'react'
 import { config } from '~/config/app'
 import { useAuth } from '~/contexts/AuthenticationContext'
 
@@ -21,5 +23,22 @@ export const useUnlockPrime = () => {
     enabled: !!account,
   })
 
-  return { isPrime, ...rest }
+  const joinPrime = useCallback(async () => {
+    const paywall = new Paywall(networks)
+    await paywall.loadCheckoutModal({
+      title: '🪄 Join Unlock Prime!',
+      locks: {
+        [config.prime.contract]: {
+          network: config.prime.network,
+          skipRecipient: true,
+          recurringPayments: 'forever',
+        },
+      },
+      skipRecipient: true,
+      pessimistic: true,
+    })
+    rest.refetch() // Refetch, in case there was a purchase!
+  }, [])
+
+  return { isPrime, ...rest, joinPrime }
 }
