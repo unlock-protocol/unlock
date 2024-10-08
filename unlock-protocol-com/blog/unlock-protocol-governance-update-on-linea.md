@@ -1,10 +1,10 @@
 ---
-title: 'Unlock Protocol Governance Update on Linea'
-subtitle: ''
-authorName: 'Unlock Protocol'
-publishDate: 'Fri Sep 27 2024 13:13:13 GMT+0000 (Coordinated Universal Time)'
-description: 'The Unlock Protocol implementation on the Linea blockchain has now been added to the Unlock Protocol DAO’s cross-chain governance process.'
-image: '/images/blog/unlock-protocol-governance-update-on-linea/52a65a45ff367e8ea6ae99eefd9d3e8e.jpg'
+title: "Unlock Protocol Governance Update on Linea"
+subtitle: ""
+authorName: "Unlock Protocol"
+publishDate: "Fri Sep 27 2024 13:13:13 GMT+0000 (Coordinated Universal Time)"
+description: "The Unlock Protocol implementation on the Linea blockchain has now been added to the Unlock Protocol DAO’s cross-chain governance process."
+image: "/images/blog/unlock-protocol-governance-update-on-linea/52a65a45ff367e8ea6ae99eefd9d3e8e.jpg"
 ---
 
 ![Unlock Protocol Governance Update on Linea](https://storage.googleapis.com/papyrus_images/52a65a45ff367e8ea6ae99eefd9d3e8e.jpg)

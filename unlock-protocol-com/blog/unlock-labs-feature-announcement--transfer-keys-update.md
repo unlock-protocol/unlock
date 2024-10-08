@@ -1,10 +1,10 @@
 ---
-title: 'Unlock Labs Feature Announcement: Transfer Keys Update'
-subtitle: ''
-authorName: 'Unlock Protocol'
-publishDate: 'Wed Sep 18 2024 22:31:38 GMT+0000 (Coordinated Universal Time)'
-description: 'This new feature makes the transfer key capability easier to access from the Unlock Labs dashboard app.'
-image: '/images/blog/unlock-labs-feature-announcement--transfer-keys-update/2792f06785aaf42234779e886a5bba93.jpg'
+title: "Unlock Labs Feature Announcement: Transfer Keys Update"
+subtitle: ""
+authorName: "Unlock Protocol"
+publishDate: "Wed Sep 18 2024 22:31:38 GMT+0000 (Coordinated Universal Time)"
+description: "This new feature makes the transfer key capability easier to access from the Unlock Labs dashboard app."
+image: "/images/blog/unlock-labs-feature-announcement--transfer-keys-update/2792f06785aaf42234779e886a5bba93.jpg"
 ---
 
 ![Unlock Labs Feature Announcement: Transfer Keys Update](https://storage.googleapis.com/papyrus_images/2792f06785aaf42234779e886a5bba93.jpg)

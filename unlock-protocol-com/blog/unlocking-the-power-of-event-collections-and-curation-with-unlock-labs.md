@@ -1,10 +1,10 @@
 ---
-title: 'Unlocking the Power of Event Collections and Curation with Unlock Labs'
-subtitle: ''
-authorName: 'Unlock Protocol'
-publishDate: 'Wed Oct 02 2024 15:03:59 GMT+0000 (Coordinated Universal Time)'
-description: 'The Event Collection feature makes it easier to showcase and organize events in one cohesive place that you can share and highlight for your community.'
-image: '/images/blog/unlocking-the-power-of-event-collections-and-curation-with-unlock-labs/1730986962147cc6f374a9324caaf008.jpg'
+title: "Unlocking the Power of Event Collections and Curation with Unlock Labs"
+subtitle: ""
+authorName: "Unlock Protocol"
+publishDate: "Wed Oct 02 2024 15:03:59 GMT+0000 (Coordinated Universal Time)"
+description: "The Event Collection feature makes it easier to showcase and organize events in one cohesive place that you can share and highlight for your community."
+image: "/images/blog/unlocking-the-power-of-event-collections-and-curation-with-unlock-labs/1730986962147cc6f374a9324caaf008.jpg"
 ---
 
 ![Unlocking the Power of Event Collections and Curation with Unlock Labs](https://storage.googleapis.com/papyrus_images/1730986962147cc6f374a9324caaf008.jpg)
