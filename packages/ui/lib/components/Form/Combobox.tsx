@@ -8,6 +8,7 @@ import {
 import {
   FaCheck as CheckIcon,
   FaChevronDown as ChevronDownIcon,
+  FaEllipsisH as MoreIcon,
 } from 'react-icons/fa'
 import clsx from 'clsx'
 import { FieldLayout } from './FieldLayout'
@@ -45,6 +46,7 @@ export function Combobox({
   const [query, setQuery] = useState('')
   const [selected, setSelected] = useState<Option | undefined>(initialSelected)
   const [focusedIndex, setFocusedIndex] = useState(-1)
+  const [showAllOptions, setShowAllOptions] = useState(false)
   const comboboxRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const optionsRef = useRef<(HTMLLIElement | null)[]>([])
@@ -61,6 +63,10 @@ export function Combobox({
       index === self.findIndex((t) => t.value === option.value)
   )
 
+  const displayedOptions = showAllOptions
+    ? uniqueFilteredOptions
+    : uniqueFilteredOptions.slice(0, 7)
+
   /**
    * Handles the selection of an option.
    * Updates the selected state, invokes the onSelect callback,
@@ -74,6 +80,12 @@ export function Combobox({
     setIsOpen(false)
     setQuery('')
     setFocusedIndex(-1)
+    setShowAllOptions(false)
+  }
+
+  const handleShowMore = () => {
+    setShowAllOptions(true)
+    setFocusedIndex(7)
   }
 
   /**
@@ -88,6 +100,7 @@ export function Combobox({
       ) {
         setIsOpen(false)
         setFocusedIndex(-1)
+        setShowAllOptions(false)
       }
     }
 
@@ -111,10 +124,10 @@ export function Combobox({
    * Ensures the focused option is scrolled into view and focused.
    */
   useEffect(() => {
-    if (focusedIndex >= 0 && focusedIndex < filteredOptions.length) {
+    if (focusedIndex >= 0 && focusedIndex < displayedOptions.length) {
       optionsRef.current[focusedIndex]?.focus()
     }
-  }, [focusedIndex, filteredOptions])
+  }, [focusedIndex, displayedOptions])
 
   /**
    * Handles keyboard events for accessibility and navigation.
@@ -130,7 +143,11 @@ export function Combobox({
           setIsOpen(true)
           setFocusedIndex(0)
         } else if (focusedIndex >= 0) {
-          handleSelect(filteredOptions[focusedIndex])
+          if (focusedIndex === 7 && !showAllOptions) {
+            handleShowMore()
+          } else {
+            handleSelect(displayedOptions[focusedIndex])
+          }
         }
         break
       case 'ArrowDown':
@@ -139,7 +156,7 @@ export function Combobox({
           setIsOpen(true)
         }
         setFocusedIndex((prevIndex) =>
-          Math.min(prevIndex + 1, filteredOptions.length - 1)
+          Math.min(prevIndex + 1, displayedOptions.length - 1)
         )
         break
       case 'ArrowUp':
@@ -151,11 +168,13 @@ export function Combobox({
           event.preventDefault()
           setIsOpen(false)
           setFocusedIndex(-1)
+          setShowAllOptions(false)
         }
         break
       case 'Escape':
         setIsOpen(false)
         setFocusedIndex(-1)
+        setShowAllOptions(false)
         break
     }
   }
@@ -208,39 +227,65 @@ export function Combobox({
                   />
                 </div>
                 <ul className="max-h-60 overflow-auto py-1" role="listbox">
-                  {uniqueFilteredOptions.length > 0 ? (
-                    uniqueFilteredOptions.map((option, index) => (
-                      <li
-                        key={`${option.value}-${index}`}
-                        ref={(el) => (optionsRef.current[index] = el)}
-                        className={clsx(
-                          'flex cursor-pointer mx-2 rounded-sm items-center gap-2 py-2 px-3 text-base',
-                          'hover:bg-ui-main-50',
-                          focusedIndex === index && 'bg-ui-main-50'
-                        )}
-                        onClick={() => handleSelect(option)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
-                            handleSelect(option)
-                          } else {
-                            handleKeyDown(e)
-                          }
-                        }}
-                        role="option"
-                        tabIndex={focusedIndex === index ? 0 : -1}
-                        aria-selected={selected?.value === option.value}
-                      >
-                        <CheckIcon
+                  {displayedOptions.length > 0 ? (
+                    <>
+                      {displayedOptions.map((option, index) => (
+                        <li
+                          key={`${option.value}-${index}`}
+                          ref={(el) => (optionsRef.current[index] = el)}
                           className={clsx(
-                            'size-3 text-brand-ui-primary',
-                            selected?.value === option.value
-                              ? 'visible'
-                              : 'invisible'
+                            'flex cursor-pointer mx-2 rounded-sm items-center gap-2 py-2 px-3 text-base',
+                            'hover:bg-ui-main-50',
+                            focusedIndex === index && 'bg-ui-main-50'
                           )}
-                        />
-                        {option.label}
-                      </li>
-                    ))
+                          onClick={() => handleSelect(option)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              handleSelect(option)
+                            } else {
+                              handleKeyDown(e)
+                            }
+                          }}
+                          role="option"
+                          tabIndex={focusedIndex === index ? 0 : -1}
+                          aria-selected={selected?.value === option.value}
+                        >
+                          <CheckIcon
+                            className={clsx(
+                              'size-3 text-brand-ui-primary',
+                              selected?.value === option.value
+                                ? 'visible'
+                                : 'invisible'
+                            )}
+                          />
+                          {option.label}
+                        </li>
+                      ))}
+                      {!showAllOptions && uniqueFilteredOptions.length > 7 && (
+                        <li
+                          ref={(el) => (optionsRef.current[7] = el)}
+                          className={clsx(
+                            'flex cursor-pointer mx-2 rounded-sm items-center justify-center gap-2 py-3 px-3 text-base font-semibold',
+                            'hover:bg-ui-main-50 text-brand-ui-primary',
+                            'border-t border-gray-200',
+                            focusedIndex === 7 && 'bg-ui-main-50'
+                          )}
+                          onClick={handleShowMore}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              handleShowMore()
+                            } else {
+                              handleKeyDown(e)
+                            }
+                          }}
+                          role="option"
+                          tabIndex={focusedIndex === 7 ? 0 : -1}
+                        >
+                          <MoreIcon className="size-4" />
+                          More options
+                        </li>
+                      )}
+                    </>
                   ) : (
                     <li className="px-3 py-2 text-base text-gray-500">
                       No options found.
