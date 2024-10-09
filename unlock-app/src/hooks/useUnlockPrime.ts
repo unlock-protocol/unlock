@@ -5,6 +5,8 @@ import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useCallback } from 'react'
 import { config } from '~/config/app'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { getEventOrganizers } from './useEventOrganizers'
+import { PaywallConfigType } from '@unlock-protocol/core'
 
 // This hook will return the status of the user's prime key
 export const useUnlockPrime = () => {
@@ -40,7 +42,34 @@ export const useUnlockPrime = () => {
     rest.refetch() // Refetch, in case there was a purchase!
   }, [])
 
-  console.log({ isPrime })
-
   return { isPrime, ...rest, joinPrime }
+}
+
+// this hook will be used to return the "prime" status of an event, based on whether one of its organizers has prime.
+export const useUnlockPrimeEvent = ({
+  checkoutConfig,
+}: {
+  checkoutConfig: {
+    id?: string
+    config: PaywallConfigType
+  }
+}) => {
+  const { data: isPrime, ...rest } = useQuery({
+    queryKey: ['usePrimeEvent', JSON.stringify(checkoutConfig)],
+    queryFn: async () => {
+      const organizers = await getEventOrganizers(checkoutConfig)
+      const web3Service = new Web3Service(networks)
+      const arePrime = await Promise.all(
+        organizers.map(async (organizer) =>
+          web3Service.getHasValidKey(
+            config.prime.contract,
+            organizer,
+            config.prime.network
+          )
+        )
+      )
+      return arePrime.some((isPrime) => isPrime)
+    },
+  })
+  return { isPrime, ...rest }
 }

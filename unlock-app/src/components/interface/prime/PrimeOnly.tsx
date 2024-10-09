@@ -1,8 +1,9 @@
 import { Button, Card } from '@unlock-protocol/ui'
 import { ReactNode } from 'react'
-import { useUnlockPrime } from '~/hooks/useUnlockPrime'
+import { useUnlockPrime, useUnlockPrimeEvent } from '~/hooks/useUnlockPrime'
 import Link from 'next/link'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
+import { PaywallConfigType } from '@unlock-protocol/core'
 
 // Small Prime card
 export const SmallPrimeCard = () => {
@@ -65,6 +66,26 @@ export const PrimeCard = () => {
 export const PrimeOnly = ({ children }: { children: ReactNode }) => {
   const { isPrime } = useUnlockPrime()
 
+  if (isPrime) {
+    return <>{children}</>
+  }
+
+  return <PrimeCard />
+}
+
+export const PrimeEventOnly = ({
+  children,
+  checkoutConfig,
+}: {
+  children: ReactNode
+  checkoutConfig: {
+    id?: string
+    config: PaywallConfigType
+  }
+}) => {
+  const { isPrime } = useUnlockPrimeEvent({
+    checkoutConfig,
+  })
   if (isPrime) {
     return <>{children}</>
   }
