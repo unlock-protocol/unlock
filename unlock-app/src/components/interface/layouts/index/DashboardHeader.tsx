@@ -1,10 +1,8 @@
 'use client'
 import { Button, HeaderNav } from '@unlock-protocol/ui'
 import { useConnectModal } from '~/hooks/useConnectModal'
-import useEns from '~/hooks/useEns'
-import { addressMinify } from '~/utils/strings'
-import { MdExitToApp as DisconnectIcon } from 'react-icons/md'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { UserMenu } from '../../connect/UserMenu'
 
 const MENU = {
   extraClass: {
@@ -14,6 +12,10 @@ const MENU = {
   logo: { url: '/', src: '/images/svg/unlock-logo.svg' },
   menuSections: [
     {
+      title: 'Events',
+      url: '/my-events',
+    },
+    {
       title: 'Locks',
       url: '/locks',
     },
@@ -21,17 +23,12 @@ const MENU = {
       title: 'Keys',
       url: '/keychain',
     },
-    {
-      title: 'Settings',
-      url: '/settings',
-    },
   ],
 }
 
 export default function DashboardHeader() {
-  const { account, email } = useAuth()
+  const { account } = useAuth()
   const { openConnectModal } = useConnectModal()
-  const userEns = useEns(account || '')
 
   return (
     <HeaderNav
@@ -39,25 +36,7 @@ export default function DashboardHeader() {
       actions={[
         {
           content: account ? (
-            <div className="flex gap-2">
-              <button
-                onClick={(event) => {
-                  event.preventDefault()
-                  openConnectModal()
-                }}
-              >
-                <div className="flex items-center gap-2">
-                  <span className="text-brand-ui-primary text-right">
-                    {userEns === account
-                      ? email
-                        ? email
-                        : addressMinify(userEns)
-                      : userEns}
-                  </span>
-                  <DisconnectIcon className="text-brand-ui-primary" size={20} />
-                </div>
-              </button>
-            </div>
+            <UserMenu />
           ) : (
             <Button
               onClick={(event) => {
