@@ -2,7 +2,6 @@ const assert = require('assert')
 const { ethers } = require('hardhat')
 const {
   deployLock,
-  purchaseKey,
   purchaseKeys,
   ADDRESS_ZERO,
   compareBigNumbers,
