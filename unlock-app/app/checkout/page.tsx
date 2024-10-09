@@ -17,7 +17,7 @@ export async function generateMetadata({
   const config = await getConfig(id as string)
 
   return {
-    title: config.title || '',
+    title: config.title || 'Checkout | Unlock Protocol',
     openGraph: {
       images: [`/og/checkout?id=${id}`],
     },
