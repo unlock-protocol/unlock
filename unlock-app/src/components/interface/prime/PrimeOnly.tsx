@@ -15,7 +15,7 @@ export const SmallPrimeCard = () => {
         <Link
           target="_blank"
           className="underline text-brand-ui-primary"
-          href="https://unlock-protocol.com/prime"
+          href="/prime"
         >
           Learn more
         </Link>
@@ -46,7 +46,7 @@ export const PrimeCard = () => {
         <Link
           target="_blank"
           className="underline text-brand-ui-primary"
-          href="https://unlock-protocol.com/prime"
+          href="/prime"
         >
           Learn more{' '}
           <ExternalLinkIcon

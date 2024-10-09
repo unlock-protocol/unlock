@@ -53,7 +53,7 @@ export const PrimeContent = () => {
             other benefits.
           </p>
           <section className="flex mt-8 md:mt-8 gap-8 md:justify-center items-center md:items-stretch flex-col md:flex-row">
-            <div className="w-96 flex flex-col gap-2 border p-4 rounded-lg">
+            <div className="w-96 flex flex-col gap-2 border p-4 rounded-lg bg-white">
               <h2 className="text-3xl font-semibold">Unlock Basic</h2>
               <h3 className="">Free</h3>
               <Button
@@ -95,7 +95,7 @@ export const PrimeContent = () => {
                 </li>
               </ul>
             </div>
-            <div className="w-96 flex flex-col gap-2 border p-4 rounded-lg">
+            <div className="w-96 flex flex-col gap-2 border p-4 rounded-lg bg-white">
               <h2 className="text-3xl font-semibold">Unlock Prime</h2>
               <h3 className="">
                 {!lock ? (
