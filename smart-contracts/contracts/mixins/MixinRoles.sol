@@ -6,6 +6,7 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "./MixinErrors.sol";
+import "../interfaces/hooks/ILockHasRoleHook.sol";
 
 contract MixinRoles is AccessControlUpgradeable, MixinErrors {
   // roles
@@ -17,6 +18,9 @@ contract MixinRoles is AccessControlUpgradeable, MixinErrors {
   event LockManagerRemoved(address indexed account);
   event KeyGranterAdded(address indexed account);
   event KeyGranterRemoved(address indexed account);
+
+  // one more hook (added to v15)
+  ILockHasRoleHook public onHasRoleHook;
 
   // initializer
   function _initializeMixinRoles(address sender) internal {
@@ -32,6 +36,16 @@ contract MixinRoles is AccessControlUpgradeable, MixinErrors {
     if (!hasRole(KEY_GRANTER_ROLE, sender)) {
       _setupRole(KEY_GRANTER_ROLE, sender);
     }
+  }
+
+  function hasRole(
+    bytes32 role,
+    address account
+  ) public view override returns (bool) {
+    if (address(onHasRoleHook) != address(0)) {
+      return onHasRoleHook.hasRole(LOCK_MANAGER_ROLE, account);
+    }
+    return super.hasRole(role, account);
   }
 
   // modifiers
