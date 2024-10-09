@@ -23,7 +23,7 @@ describe('Lock / owners', () => {
 
   before(async () => {
     // Purchase keys!
-    ;({ tokenIds, keyOwners } = await purchaseKeys(lock, 5))
+    ;({ tokenIds, keyOwners } = await purchaseKeys(lock, 6))
     keyOwners = await Promise.all(
       await keyOwners.map((k) => ethers.getSigner(k))
     )
@@ -42,11 +42,9 @@ describe('Lock / owners', () => {
   describe('ignore the null address', () => {
     it('doesnt increase count when a key is transferred to null address', async () => {
       const numberOfOwners = await lock.numberOfOwners()
-      const recipient = (await ethers.getSigners())[8]
-      const { tokenId } = await purchaseKey(lock, await recipient.getAddress())
       await lock
-        .connect(recipient)
-        .transferFrom(await recipient.getAddress(), ZeroAddress, tokenId)
+        .connect(keyOwners[6])
+        .transferFrom(await keyOwners[6].getAddress(), ZeroAddress, tokenIds[6])
       assert.equal(numberOfOwners, await lock.numberOfOwners())
     })
   })
