@@ -228,7 +228,9 @@ contract MixinTransfer is
 
     // ignore null address from owners count
     if (_recipient == address(0)) {
-      numberOfOwners--;
+      unchecked {
+        numberOfOwners--;
+      }
     }
 
     // clear any previous approvals
