@@ -42,8 +42,8 @@ describe('Lock / owners', () => {
     it('doesnt increase count when a key is transferred to null address', async () => {
       const numberOfOwners = await lock.numberOfOwners()
       await lock
-        .connect(keyOwners[6])
-        .transferFrom(await keyOwners[6].getAddress(), ZeroAddress, tokenIds[6])
+        .connect(keyOwners[5])
+        .transferFrom(await keyOwners[5].getAddress(), ZeroAddress, tokenIds[5])
       assert.equal(numberOfOwners, await lock.numberOfOwners())
     })
   })
