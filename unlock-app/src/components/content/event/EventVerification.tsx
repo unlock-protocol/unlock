@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { useEvent } from '~/hooks/useEvent'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 import { Scanner } from '~/components/interface/verification/Scanner'
-import { useUnlockPrime, useUnlockPrimeEvent } from '~/hooks/useUnlockPrime'
 import { PrimeEventOnly } from '~/components/interface/prime/PrimeOnly'
 
 interface EventVerificationProps {
