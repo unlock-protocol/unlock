@@ -226,6 +226,11 @@ contract MixinTransfer is
     // record new owner
     _createOwnershipRecord(_tokenId, _recipient);
 
+    // ignore null address from owners count
+    if (_recipient == address(0)) {
+      numberOfOwners--;
+    }
+
     // clear any previous approvals
     _clearApproval(_tokenId);
 

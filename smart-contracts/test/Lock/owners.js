@@ -2,10 +2,12 @@ const assert = require('assert')
 const { ethers } = require('hardhat')
 const {
   deployLock,
+  purchaseKey,
   purchaseKeys,
   ADDRESS_ZERO,
   compareBigNumbers,
 } = require('../helpers')
+const { ZeroAddress } = require('ethers')
 
 let lock
 let tokenIds
@@ -35,6 +37,18 @@ describe('Lock / owners', () => {
   it('should have the right number of owners', async () => {
     const numberOfOwners = await lock.numberOfOwners()
     compareBigNumbers(numberOfOwners, keyOwners.length)
+  })
+
+  describe('ignore the null address', () => {
+    it('doesnt increase count when a key is transferred to null address', async () => {
+      const numberOfOwners = await lock.numberOfOwners()
+      const recipient = (await ethers.getSigners())[8]
+      const { tokenId } = await purchaseKey(lock, await recipient.getAddress())
+      await lock
+        .connect(recipient)
+        .transferFrom(await recipient.getAddress(), ZeroAddress, tokenId)
+      assert.equal(numberOfOwners, await lock.numberOfOwners())
+    })
   })
 
   describe('after a transfer to a new address', () => {
