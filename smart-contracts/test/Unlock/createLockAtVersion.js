@@ -4,7 +4,15 @@ const {
   createLockCalldata,
   getEvent,
 } = require('@unlock-protocol/hardhat-helpers')
-const { ADDRESS_ZERO, reverts } = require('../helpers')
+const {
+  ADDRESS_ZERO,
+  reverts,
+  upgradeUpgreadableContract,
+  deployUpgreadableContract,
+  getContractFactoryAtVersion,
+  decodeError,
+} = require('../helpers')
+const { ZeroAddress } = require('ethers')
 // lock args
 const args = [
   60 * 60 * 24 * 30, // expirationDuration: 30 days

@@ -17,6 +17,28 @@ describe('Lock / disableTransfers', () => {
     await lock.updateTransferFee(10000)
   })
 
+  it('unauthorized user cannot transfer NFT', async () => {
+    await reverts(
+      lock.transferFrom(
+        await accountWithNoKey.getAddress(),
+        await accountWithNoKey.getAddress(),
+        tokenId
+      ),
+      'UNAUTHORIZED'
+    )
+  })
+
+  it('transfer NFT to the same address is not allowed', async () => {
+    await reverts(
+      lock.transferFrom(
+        await keyOwner.getAddress(),
+        await keyOwner.getAddress(),
+        tokenId
+      ),
+      'TRANSFER_TO_SELF'
+    )
+  })
+
   describe('setting fee to 100%', () => {
     describe('disabling transferFrom', () => {
       it('should prevent key transfers by reverting', async () => {
