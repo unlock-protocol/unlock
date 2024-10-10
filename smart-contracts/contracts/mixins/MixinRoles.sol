@@ -72,5 +72,6 @@ contract MixinRoles is AccessControlUpgradeable, MixinErrors {
     emit LockManagerRemoved(msg.sender);
   }
 
-  uint256[1000] private __safe_upgrade_gap;
+  // added -1 slot for the onRoleHook address in v15
+  uint256[999] private __safe_upgrade_gap;
 }
