@@ -4,6 +4,7 @@ import "../interfaces/hooks/ILockKeyPurchaseHook.sol";
 import "../interfaces/hooks/ILockKeyCancelHook.sol";
 import "../interfaces/hooks/ILockTokenURIHook.sol";
 import "../interfaces/IPublicLock.sol";
+import "../interfaces/IWETH.sol";
 import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
 
 /**
@@ -54,8 +55,11 @@ contract TestEventHooks is
     uint expiration
   );
 
+  event OnHasRole(bytes32 role, address account);
+
   uint public discount;
   bool public isPurchaseSupported;
+  address public roleERC20;
 
   function configure(bool _isPurchaseSupported, uint _discount) public {
     isPurchaseSupported = _isPurchaseSupported;
@@ -105,6 +109,28 @@ contract TestEventHooks is
     } else {
       minKeyPrice = 0;
     }
+  }
+
+  // hasRole logic
+  function setupERC20Role(address _erc20Contract) external {
+    roleERC20 = _erc20Contract;
+  }
+
+  bytes32 internal constant LOCK_MANAGER_ROLE = keccak256("LOCK_MANAGER");
+  bytes32 internal constant KEY_GRANTER_ROLE = keccak256("KEY_GRANTER");
+
+  // requires at least 10 to be lock manager, and at least 20 to be key granter
+  function hasRole(bytes32 role, address account) external returns (bool) {
+    // emit OnHasRole(role, account);
+    if (roleERC20 != address(0)) {
+      uint balance = IWETH(roleERC20).balanceOf(account);
+      if (role == LOCK_MANAGER_ROLE) {
+        return balance > 10e18;
+      } else if (role == KEY_GRANTER_ROLE) {
+        return balance > 20e18;
+      }
+    }
+    return false;
   }
 
   function onKeyCancel(address _operator, address _to, uint _refund) external {
