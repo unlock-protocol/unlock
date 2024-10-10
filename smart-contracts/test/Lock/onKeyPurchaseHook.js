@@ -34,6 +34,7 @@ describe('Lock / onKeyPurchaseHook', () => {
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
+      ADDRESS_ZERO,
       ADDRESS_ZERO
     )
     keyPrice = await lock.keyPrice()

@@ -5,10 +5,11 @@ const {
   deployERC20,
   deployLock,
   purchaseKey,
-  reverts,
   almostEqual,
   increaseTimeTo,
 } = require('../helpers')
+
+const { canNotSetNonContractAddress } = require('./behaviors/hooks.js')
 
 const keyPrice = ethers.parseUnits('0.01', 'ether')
 const someTokens = ethers.parseUnits('10', 'ether')
@@ -49,6 +50,7 @@ describe('Lock / onKeyExtendHook', () => {
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       await testEventHooks.getAddress(),
+      ADDRESS_ZERO,
       ADDRESS_ZERO
     )
     expirationDuration = await lock.expirationDuration()
@@ -131,17 +133,6 @@ describe('Lock / onKeyExtendHook', () => {
   })
 
   it('cannot set the hook to a non-contract address', async () => {
-    await reverts(
-      lock.setEventHooks(
-        ADDRESS_ZERO,
-        ADDRESS_ZERO,
-        ADDRESS_ZERO,
-        ADDRESS_ZERO,
-        ADDRESS_ZERO,
-        await keyOwner.getAddress(),
-        ADDRESS_ZERO
-      ),
-      'INVALID_HOOK(5)'
-    )
+    await canNotSetNonContractAddress({ lock, index: 5 })
   })
 })

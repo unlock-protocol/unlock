@@ -24,6 +24,7 @@ describe('GuildHook', function () {
         ethers.ZeroAddress,
         ethers.ZeroAddress,
         ethers.ZeroAddress,
+        ethers.ZeroAddress,
         ethers.ZeroAddress
       )
     ).wait()

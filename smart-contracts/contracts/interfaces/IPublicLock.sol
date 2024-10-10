@@ -130,6 +130,7 @@ interface IPublicLock {
    * @param _onKeyTransferHook Hook called when a key is transfered
    * @param _onKeyExtendHook Hook called when a key is extended or renewed
    * @param _onKeyGrantHook Hook called when a key is granted
+   * @param _onHasRoleHook Hook called when checking if an address as a specific role
    */
   function setEventHooks(
     address _onKeyPurchaseHook,
@@ -138,7 +139,8 @@ interface IPublicLock {
     address _onTokenURIHook,
     address _onKeyTransferHook,
     address _onKeyExtendHook,
-    address _onKeyGrantHook
+    address _onKeyGrantHook,
+    address _onHasRoleHook
   ) external;
 
   /**
@@ -365,6 +367,15 @@ interface IPublicLock {
    */
   function onKeyGrantHook() external view returns (address hookAddress);
 
+  /**
+   * Returns the address of the `onHasRoleHook` hook.
+   * @return hookAddress the address ok the hook
+   */
+  function onHasRoleHook() external view returns (address hookAddress);
+
+  /**
+   * Native function from OpenZeppelin Roles library
+   */
   function renounceLockManager() external;
 
   /**
