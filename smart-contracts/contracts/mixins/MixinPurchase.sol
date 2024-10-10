@@ -33,6 +33,15 @@ contract MixinPurchase is
 
   event ReferrerPaid(address tokenAddress, address referrer, uint fee);
 
+  event PurchaseReceipt(
+    uint tokenId,
+    address recipient,
+    address payer,
+    uint value,
+    address referrer,
+    uint totalPaid
+  );
+
   // default to 0
   uint256 internal _gasRefundValue;
 
@@ -289,6 +298,15 @@ contract MixinPurchase is
         tokenAddress == address(0) ? msg.value : _value
       );
     }
+
+    emit PurchaseReceipt(
+      tokenId,
+      _recipient,
+      msg.sender, // payer
+      pricePaid,
+      _referrer,
+      0 // TODO: uint totalPaid
+    );
   }
 
   function purchase(
