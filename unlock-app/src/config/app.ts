@@ -14,6 +14,10 @@ const staging = {
     '801850414021-kk4m4gqm7imtggonhl57tfsj512on6s6.apps.googleusercontent.com',
   // https://portal.cdp.coinbase.com/projects
   coinbaseProjectId: '4e90fd0f-bb62-4e1c-91a4-f08c76d1b09e',
+  prime: {
+    network: 84532,
+    contract: '0xB37D532429940f3C59DA0aed4D0692bFfa9AF316',
+  },
 }
 
 const dev = {
@@ -27,6 +31,10 @@ const dev = {
     process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || staging.googleClientId,
   coinbaseProjectId:
     process.env.NEXT_PUBLIC_COINBASE_PROJECT_ID || staging.coinbaseProjectId,
+  prime: {
+    network: 84532,
+    contract: '0xB37D532429940f3C59DA0aed4D0692bFfa9AF316',
+  },
 }
 
 const production = {
@@ -40,6 +48,10 @@ const production = {
     '801850414021-sonqmfqhulumuoj4oab1it3e15ntsk04.apps.googleusercontent.com',
   // https://portal.cdp.coinbase.com/projects
   coinbaseProjectId: '4e90fd0f-bb62-4e1c-91a4-f08c76d1b09e',
+  prime: {
+    network: 8453,
+    contract: '0x01D8412eE898A74cE44187F4877Bf9303E3C16e5',
+  },
 }
 
 function getAppConfig(environment?: string) {

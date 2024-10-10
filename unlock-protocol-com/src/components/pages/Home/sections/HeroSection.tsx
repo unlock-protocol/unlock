@@ -11,7 +11,7 @@ interface HeroSectionProps {
 const HeroSectionDetails: HeroSectionProps = {
   subhead: 'Open source and purpose built',
   title:
-    ' Smart contracts built specifically for memberships and subscription NFT',
+    'Smart contracts built specifically for memberships and subscription NFT',
   description:
     'The only smart contracts that let you add time constraints, update pricing, and handle recurring payments.',
 }
