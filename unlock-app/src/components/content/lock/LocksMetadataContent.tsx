@@ -7,7 +7,7 @@ import { UpdateMetadataForm } from '~/components/interface/locks/metadata'
 
 const LocksMetadataContent = () => {
   const searchParams = useSearchParams()
-  const lockAddress = searchParams.get('address')?.toLowerCase()
+  const lockAddress = searchParams.get('lockAddress')?.toLowerCase()
   const network = searchParams.get('network')
     ? Number(searchParams.get('network'))
     : undefined
