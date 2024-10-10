@@ -18,7 +18,6 @@ export const UserMenu = () => {
   const { signOut } = useSIWE()
   const [isDisconnecting, setIsDisconnecting] = useState(false)
 
-  console.log({ isPrime })
   const onSignOut = useCallback(async () => {
     setIsDisconnecting(true)
     await signOut()
