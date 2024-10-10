@@ -29,7 +29,6 @@ require('hardhat-gas-reporter')
 // test coverage
 require('solidity-coverage')
 
-// eslint-disable-next-line global-require
 require('@nomicfoundation/hardhat-verify')
 
 // check contract size
