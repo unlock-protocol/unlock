@@ -3,11 +3,13 @@
 // type so that it at least includes as optional all possible
 // properties on a lock. These are all compatible with RawLock insofar
 
+import { PaywallConfigType } from '@unlock-protocol/core'
+import { isEns } from '@unlock-protocol/ui'
+
 import { Lock } from '~/unlockTypes'
 import { isAccount } from '../utils/checkoutValidators'
 import { locksmith } from '~/config/locksmith'
 import { getCurrencySymbol } from './currency'
-import { PaywallConfigType } from '@unlock-protocol/core'
 import { onResolveName } from './resolvers'
 
 // as they only extend it with properties that may be undefined.
@@ -165,13 +167,6 @@ export const shouldReferrerResolveForENS = (
   return false
 }
 
-/**
- * Helper function that returns a valid referrer addresses
- * @param recipients
- * @param paywallConfig
- * @param lockAddress
- * @returns
- */
 export const getReferrers = async (
   recipients: string[],
   paywallConfig?: PaywallConfigType,
