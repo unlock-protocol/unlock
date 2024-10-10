@@ -3,25 +3,13 @@
  */
 
 // to build contract docs
-require('@primitivefi/hardhat-dodoc')
+// require('@primitivefi/hardhat-dodoc')
+require('solidity-docgen')
 
 const fs = require('fs-extra')
 require('./task/exportAbis')
 
 const contractsPath = './src/contracts'
-
-// list all interfaces to document
-const contractsToDocument = fs
-  .readdirSync(contractsPath)
-  .map((contractName) =>
-    fs.readdirSync(`${contractsPath}/${contractName}`).filter(
-      (n) =>
-        n.startsWith('I') && // only interfaces
-        !n.includes('Sol') && // exclude various solc versions
-        !n.startsWith('IUnlockDiscountToken') // exclude UDT
-    )
-  )
-  .flat()
 
 const settings = {
   optimizer: {
@@ -53,11 +41,18 @@ module.exports = {
       },
     ],
   },
-  dodoc: {
-    // debugMode: true,
-    keepFileStructure: true,
-    include: contractsToDocument,
-    exclude: ['IERC165', 'IERC721', 'IERC721Enumerable', 'Initializable'],
+  docgen: {
+    pages: 'files',
+    exclude: [
+      'IERC165',
+      'IERC721',
+      'IERC721Enumerable',
+      'Initializable',
+      'UP',
+      'utils',
+      'Governor',
+      'UnlockDiscountToken',
+    ],
   },
   paths: {
     sources: contractsPath,

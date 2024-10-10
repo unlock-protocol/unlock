@@ -14368,18 +14368,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@primitivefi/hardhat-dodoc@npm:0.2.3":
-  version: 0.2.3
-  resolution: "@primitivefi/hardhat-dodoc@npm:0.2.3"
-  dependencies:
-    squirrelly: "npm:^8.0.8"
-  peerDependencies:
-    hardhat: ^2.6.4
-    squirrelly: ^8.0.8
-  checksum: 10/0db4f31bf0fbcf3dbce5a58e5570e5bb915247d9fafecc0239bfeb50fda20d6fd76c16bae704b092714d81a42ee378f63b50a51c06423638d536325e5be2f1a9
-  languageName: node
-  linkType: hard
-
 "@prisma/instrumentation@npm:5.19.1":
   version: 5.19.1
   resolution: "@prisma/instrumentation@npm:5.19.1"
@@ -20527,7 +20515,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/contracts@workspace:packages/contracts"
   dependencies:
-    "@primitivefi/hardhat-dodoc": "npm:0.2.3"
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/types": "workspace:^"
@@ -20535,6 +20522,7 @@ __metadata:
     eslint: "npm:9.11.1"
     fs-extra: "npm:11.2.0"
     hardhat: "npm:2.22.9"
+    solidity-docgen: "npm:0.6.0-beta.36"
     typescript: "npm:5.6.2"
   languageName: unknown
   linkType: soft
@@ -33982,7 +33970,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"handlebars@npm:4.7.8":
+"handlebars@npm:4.7.8, handlebars@npm:^4.7.7":
   version: 4.7.8
   resolution: "handlebars@npm:4.7.8"
   dependencies:
@@ -49019,6 +49007,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"solidity-ast@npm:^0.4.38":
+  version: 0.4.59
+  resolution: "solidity-ast@npm:0.4.59"
+  checksum: 10/95172fcc3b4ea183c328c36b72b1b861c2e1a2c0f8334f5375f05c1f7a11e13b10f126818dd1a65bb672b4bca87278faaa2bae5c25d2433e162bc86a47d43daa
+  languageName: node
+  linkType: hard
+
 "solidity-ast@npm:^0.4.51, solidity-ast@npm:^0.4.56":
   version: 0.4.56
   resolution: "solidity-ast@npm:0.4.56"
@@ -49088,6 +49083,18 @@ __metadata:
   bin:
     solidity-coverage: plugins/bin.js
   checksum: 10/8fab639ccbc57fe0e9d6403c8d33ab68cb5e14a36f393b87dce4131d6bf16cb4a0935f75d1268173c4f8d3eb2438435de6d1d35f6b20d64025883ab98d7629cf
+  languageName: node
+  linkType: hard
+
+"solidity-docgen@npm:0.6.0-beta.36":
+  version: 0.6.0-beta.36
+  resolution: "solidity-docgen@npm:0.6.0-beta.36"
+  dependencies:
+    handlebars: "npm:^4.7.7"
+    solidity-ast: "npm:^0.4.38"
+  peerDependencies:
+    hardhat: ^2.8.0
+  checksum: 10/7c055101f5801d9eb812c0275551de59f0bdd0ec886ab23af1cd25dc33322947205f298a78b9389ba155aee9338718b5d93933fb303c00144b556178808d6656
   languageName: node
   linkType: hard
 
@@ -49406,13 +49413,6 @@ __metadata:
   version: 1.0.3
   resolution: "sprintf-js@npm:1.0.3"
   checksum: 10/c34828732ab8509c2741e5fd1af6b767c3daf2c642f267788f933a65b1614943c282e74c4284f4fa749c264b18ee016a0d37a3e5b73aee446da46277d3a85daa
-  languageName: node
-  linkType: hard
-
-"squirrelly@npm:^8.0.8":
-  version: 8.0.8
-  resolution: "squirrelly@npm:8.0.8"
-  checksum: 10/b07f7456b9f7709cdfd5b04d9756304838384fd7f932fb76fab0d1489a85158fd3e78cc22cb2c93e8b92156003a2f5f12fd614c202b72d538f293a5dc25f505b
   languageName: node
   linkType: hard
 
