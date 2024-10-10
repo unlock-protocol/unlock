@@ -81,7 +81,8 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   // The WETH token address, used for value calculations
   address public weth;
 
-  // The UDT token address, used to mint tokens on referral
+  // DEPRECATED: udt was the name of the first governance token. 
+  // Kept for backward compatibility; however, the `governanceToken` getter is now preferred.
   address public udt;
 
   // The approx amount of gas required to purchase a key
@@ -122,7 +123,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   event LockUpgraded(address lockAddress, uint16 version);
 
   event ConfigUnlock(
-    address udt,
+    address governanceToken,
     address weth,
     uint estimatedGasForPurchase,
     string globalTokenSymbol,
@@ -242,6 +243,12 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     );
 
     return createUpgradeableLock(data);
+  }
+
+  // The governance token address, used to mint tokens on referral
+  // NB: the storage is done on a variable called `udt` for legacy reasons
+  function governanceToken() public view returns (address) {
+    return udt;
   }
 
   /**
@@ -426,10 +433,14 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
         _referrer != address(0) &&
         IPublicLock(msg.sender).publicLockVersion() >= 13
       ) {
-        IUniswapOracleV3 udtOracle = uniswapOracles[udt];
-        if (address(udtOracle) != address(0)) {
+        IUniswapOracleV3 governanceTokenOracle = uniswapOracles[udt];
+        if (address(governanceTokenOracle) != address(0)) {
           // Get the value of 1 UDT (w/ 18 decimals) in ETH
-          uint udtPrice = udtOracle.updateAndConsult(udt, 10 ** 18, weth);
+          uint governanceTokenPrice = governanceTokenOracle.updateAndConsult(
+            udt,
+            10 ** 18,
+            weth
+          );
 
           uint balance = IMintableERC20(udt).balanceOf(address(this));
 
@@ -449,7 +460,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
           // tokensToDistribute is either == to the gas cost
           uint tokensToDistribute = ((estimatedGasForPurchase * baseFee) *
-            (10 ** 18)) / udtPrice;
+            (10 ** 18)) / governanceTokenPrice;
 
           // or tokensToDistribute is capped by network GDP growth
           // we distribute tokens using asymptotic curve between 0 and 0.5
@@ -533,14 +544,14 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    * @notice Allows the owner to update configuration variables
    */
   function configUnlock(
-    address _udt,
+    address _governanceToken,
     address _weth,
     uint _estimatedGasForPurchase,
     string calldata _symbol,
     string calldata _URI,
     uint _chainId
   ) external onlyOwner {
-    udt = _udt;
+    udt = _governanceToken;
     weth = _weth;
     estimatedGasForPurchase = _estimatedGasForPurchase;
 
@@ -550,7 +561,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     chainId = _chainId;
 
     emit ConfigUnlock(
-      _udt,
+      _governanceToken,
       _weth,
       _estimatedGasForPurchase,
       _symbol,
