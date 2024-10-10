@@ -228,7 +228,6 @@ export function Select({ checkoutService }: Props) {
               props.network || paywallConfig.network || 1
 
             const lockData = await web3Service.getLock(lock, networkId)
-
             let price
 
             if (account) {
