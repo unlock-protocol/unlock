@@ -6,6 +6,7 @@ const {
   ADDRESS_ZERO,
   compareBigNumbers,
 } = require('../helpers')
+const { ZeroAddress } = require('ethers')
 
 let lock
 let tokenIds
@@ -21,7 +22,7 @@ describe('Lock / owners', () => {
 
   before(async () => {
     // Purchase keys!
-    ;({ tokenIds, keyOwners } = await purchaseKeys(lock, 5))
+    ;({ tokenIds, keyOwners } = await purchaseKeys(lock, 6))
     keyOwners = await Promise.all(
       await keyOwners.map((k) => ethers.getSigner(k))
     )
@@ -35,6 +36,16 @@ describe('Lock / owners', () => {
   it('should have the right number of owners', async () => {
     const numberOfOwners = await lock.numberOfOwners()
     compareBigNumbers(numberOfOwners, keyOwners.length)
+  })
+
+  describe('ignore the null address', () => {
+    it('doesnt increase count when a key is transferred to null address', async () => {
+      const numberOfOwners = await lock.numberOfOwners()
+      await lock
+        .connect(keyOwners[5])
+        .transferFrom(await keyOwners[5].getAddress(), ZeroAddress, tokenIds[5])
+      assert.equal(numberOfOwners, await lock.numberOfOwners())
+    })
   })
 
   describe('after a transfer to a new address', () => {
