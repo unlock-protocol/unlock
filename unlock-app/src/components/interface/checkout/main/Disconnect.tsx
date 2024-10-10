@@ -22,7 +22,7 @@ const Disconnect = ({ service }: DisconnectProps) => {
 
   if (email) {
     userText = `User: ${email}`
-    signOutText = 'Sign out'
+    signOutText = 'Sign out now'
   } else {
     userText = `Wallet: ${addressMinify(account!)}`
     signOutText = 'Disconnect'

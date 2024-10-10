@@ -8,15 +8,12 @@ import {
 } from '@headlessui/react'
 import { Fragment } from 'react'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useConnectModal } from '~/hooks/useConnectModal'
 import ConnectWalletComponent from './ConnectWalletComponent'
 
 export const ConnectModal = () => {
-  const { status, closeConnectModal, open } = useConnectModal()
-  const { connected } = useAuth()
+  const { closeConnectModal, open } = useConnectModal()
 
-  const useUnlockAccount = status === 'unlock_account'
   return (
     <Transition show={open} as={Fragment}>
       <Dialog
@@ -48,32 +45,19 @@ export const ConnectModal = () => {
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
             <div className="z-10 w-full max-w-sm bg-white rounded-2xl py-4">
-              <header className="p-6">
-                <div className="flex px-1">
-                  <div className="flex-1 font-bold ">
-                    <h1 className="text-center">
-                      {!connected
-                        ? 'Connect Account'
-                        : useUnlockAccount
-                          ? 'Unlock Account'
-                          : 'Connected Wallet'}
-                    </h1>
-                  </div>
-                  <div>
-                    <button
-                      aria-label="close"
-                      onClick={(event) => {
-                        event.preventDefault()
-                        closeConnectModal()
-                      }}
-                      className="p-1 rounded-full hover:bg-gray-50"
-                    >
-                      <CloseIcon size={22} />
-                    </button>
-                  </div>
-                </div>
+              <header className="p-2 flex px-4 flex-row-reverse	">
+                <button
+                  aria-label="close"
+                  onClick={(event) => {
+                    event.preventDefault()
+                    closeConnectModal()
+                  }}
+                  className="p-1 rounded-full hover:bg-gray-50"
+                >
+                  <CloseIcon size={22} />
+                </button>
               </header>
-              <ConnectWalletComponent shoudOpenConnectModal={true} />
+              <ConnectWalletComponent />
             </div>
           </TransitionChild>
         </div>

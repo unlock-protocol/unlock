@@ -4,6 +4,7 @@ import useClipboard from 'react-use-clipboard'
 import { useSIWE } from '~/hooks/useSIWE'
 import { useCallback, useEffect, useState } from 'react'
 import BlockiesSvg from 'blockies-react-svg'
+import { usePrivy } from '@privy-io/react-auth'
 
 interface ConnectedWalletProps {
   onNext?: () => void
@@ -13,6 +14,7 @@ export const ConnectedWallet = ({ onNext }: ConnectedWalletProps) => {
   const { deAuthenticate, displayAccount, connected } = useAuth()
   const { session, signIn, signOut, status } = useSIWE()
   const [isDisconnecting, setIsDisconnecting] = useState(false)
+  const { logout } = usePrivy()
   const [isSigningIn, setIsSigningIn] = useState(false)
   const { isUnlockAccount } = useAuth()
   const [_, copy] = useClipboard(displayAccount!, {
@@ -29,8 +31,9 @@ export const ConnectedWallet = ({ onNext }: ConnectedWalletProps) => {
     setIsDisconnecting(true)
     await signOut()
     await deAuthenticate()
+    await logout()
     setIsDisconnecting(false)
-  }, [signOut, deAuthenticate, setIsDisconnecting])
+  }, [signOut, deAuthenticate, setIsDisconnecting, logout])
 
   useEffect(() => {
     if (connected && !session && isUnlockAccount) {
@@ -93,7 +96,7 @@ export const ConnectedWallet = ({ onNext }: ConnectedWalletProps) => {
             onClick={onSignOut}
             className="hover:text-ui-main-600 underline"
           >
-            Sign out
+            Sign out please
           </button>
         </div>
       </div>

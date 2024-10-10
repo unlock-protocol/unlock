@@ -59,7 +59,6 @@ export const useProvider = (config: any) => {
   const displayAccount = email || connected
 
   const createBrowserProvider = (provider: any): ethers.BrowserProvider => {
-    console.log('ready:', { provider })
     const browserProvider = new ethers.BrowserProvider(provider)
     if (provider.parentOrigin) {
       // @ts-expect-error Property 'parentOrigin' does not exist on type 'BrowserProvider'.
@@ -175,6 +174,7 @@ export const useProvider = (config: any) => {
   }
 
   const connectProvider = async (eip1193Provider: any) => {
+    console.log('connectProvider')
     setLoading(true)
     setEip1193(eip1193Provider)
     let auth
