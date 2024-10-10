@@ -3,6 +3,7 @@ const {
   deployLock,
   deployERC20,
   ADDRESS_ZERO,
+  LOCK_MANAGER_ROLE,
   KEY_GRANTER_ROLE,
 } = require('../helpers')
 
@@ -21,7 +22,7 @@ describe('Lock / onHasRoleHook', () => {
 
   before(async () => {
     ;[deployer, lockManager, keyGranter, tokenOwner] = await ethers.getSigners()
-    lock = await deployLock({ isEthers: true })
+    lock = await deployLock()
     assert.equal(await lock.isLockManager(await deployer.getAddress()), true)
 
     // add a lock manager
@@ -43,23 +44,48 @@ describe('Lock / onHasRoleHook', () => {
       await hook.getAddress()
     )
     receipt = await tx.wait()
-
-    // make sure default returns false
-    assert.equal(
-      await lock.isLockManager(await lockManager.getAddress()),
-      false
-    )
-
-    // setup ERC20 in hook
-    token = await deployERC20(deployer)
-    await hook.setupERC20Role(await token.getAddress())
   })
 
-  it('hook is set correctly', async () => {
-    assert.equal(await lock.onHasRoleHook(), await hook.getAddress())
+  it('emit the correct event', async () => {
+    await emitHookUpdatedEvent({
+      receipt,
+      hookName: 'onHasRoleHook',
+      hookAddress: await hook.getAddress(),
+    })
+  })
+
+  it('cannot set the hook to a non-contract address', async () => {
+    await canNotSetNonContractAddress({
+      lock,
+      index: 7,
+    })
+  })
+
+  describe('original roles still accessible', () => {
+    it('roles are preserved when no ERC20 is set', async () => {
+      assert.equal(await lock.isLockManager(await deployer.getAddress()), true)
+      assert.equal(
+        await lock.hasRole(LOCK_MANAGER_ROLE, await deployer.getAddress()),
+        true
+      )
+      assert.equal(
+        await lock.hasRole(LOCK_MANAGER_ROLE, await lockManager.getAddress()),
+        true
+      )
+    })
   })
 
   describe('returns a custom value based on ERC20 balance', () => {
+    before(async () => {
+      // setup ERC20 in hook
+      token = await deployERC20(deployer)
+      await hook.setupERC20Role(await token.getAddress())
+    })
+
+    it('hook is set correctly', async () => {
+      assert.equal(await lock.onHasRoleHook(), await hook.getAddress())
+    })
+
     it('default to false if no ERC20 token', async () => {
       // make sure default returns false
       assert.equal(
@@ -80,10 +106,6 @@ describe('Lock / onHasRoleHook', () => {
       )
       assert.equal(
         await lock.hasRole(KEY_GRANTER_ROLE, await tokenOwner.getAddress()),
-        await hook.hasRole(KEY_GRANTER_ROLE, await tokenOwner.getAddress())
-      )
-      assert.equal(
-        await lock.hasRole(KEY_GRANTER_ROLE, await tokenOwner.getAddress()),
         false
       )
     })
@@ -98,21 +120,6 @@ describe('Lock / onHasRoleHook', () => {
         await lock.hasRole(KEY_GRANTER_ROLE, await tokenOwner.getAddress()),
         true
       )
-    })
-
-    it('emit the correct event', async () => {
-      await emitHookUpdatedEvent({
-        receipt,
-        hookName: 'onHasRoleHook',
-        hookAddress: await hook.getAddress(),
-      })
-    })
-
-    it('cannot set the hook to a non-contract address', async () => {
-      await canNotSetNonContractAddress({
-        lock,
-        index: 7,
-      })
     })
   })
 })

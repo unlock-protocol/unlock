@@ -120,7 +120,11 @@ contract TestEventHooks is
   bytes32 internal constant KEY_GRANTER_ROLE = keccak256("KEY_GRANTER");
 
   // requires at least 10 to be lock manager, and at least 20 to be key granter
-  function hasRole(bytes32 role, address account) external view returns (bool) {
+  function hasRole(
+    bytes32 role,
+    address account,
+    bool nativeRole
+  ) external view returns (bool) {
     // emit OnHasRole(role, account);
     if (roleERC20 != address(0)) {
       uint balance = IERC20(roleERC20).balanceOf(account);
@@ -129,8 +133,10 @@ contract TestEventHooks is
       } else if (role == KEY_GRANTER_ROLE) {
         return balance > 20e18;
       }
+      return false;
+    } else {
+      return nativeRole;
     }
-    return false;
   }
 
   function onKeyCancel(address _operator, address _to, uint _refund) external {

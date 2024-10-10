@@ -10,6 +10,11 @@ interface ILockHasRoleHook {
    * @notice Check if a role is attributed to a specific address
    * @param role keccak of the role
    * @param account the address to check the role for
+   * @param nativeRole existing tole inthe hook
    */
-  function hasRole(bytes32 role, address account) external view returns (bool);
+  function hasRole(
+    bytes32 role,
+    address account,
+    bool nativeRole
+  ) external view returns (bool);
 }
