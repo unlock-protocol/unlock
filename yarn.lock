@@ -9578,9 +9578,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@headlessui/react@npm:2.1.9":
-  version: 2.1.9
-  resolution: "@headlessui/react@npm:2.1.9"
+"@headlessui/react@npm:2.1.10":
+  version: 2.1.10
+  resolution: "@headlessui/react@npm:2.1.10"
   dependencies:
     "@floating-ui/react": "npm:^0.26.16"
     "@react-aria/focus": "npm:^3.17.1"
@@ -9589,7 +9589,7 @@ __metadata:
   peerDependencies:
     react: ^18
     react-dom: ^18
-  checksum: 10/efaa4d55f23b27814f05cdfb92f76531dbe7099356b3283c2c9ef43d4be8ce67f1fa63935c62d1eddaf3a1bf44a6325a70e494a6dd55de552f48a0416c00d130
+  checksum: 10/cf0d85252fdf74b3ff8dd1e00900c6c4518042fcf3fd4afe655fdd0458c5229f81e70810ac59a4235412799b0f5219079f979e40d22f6c3e9f5a824709f4d4d0
   languageName: node
   linkType: hard
 
@@ -20955,7 +20955,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/ui@workspace:packages/ui"
   dependencies:
-    "@headlessui/react": "npm:2.1.9"
+    "@headlessui/react": "npm:2.1.10"
     "@mdx-js/preact": "npm:3.0.1"
     "@mdx-js/react": "npm:3.0.1"
     "@radix-ui/react-tooltip": "npm:1.1.3"
@@ -20998,7 +20998,7 @@ __metadata:
     vite-plugin-svgr: "npm:4.2.0"
     vite-tsconfig-paths: "npm:4.3.2"
   peerDependencies:
-    "@headlessui/react": 2.1.9
+    "@headlessui/react": 2.1.10
     react: 18.3.1
     react-dom: 18.3.1
   languageName: unknown
@@ -21015,7 +21015,7 @@ __metadata:
     "@decent.xyz/box-common": "npm:3.3.6"
     "@enzoferey/ethers-error-parser": "npm:0.2.3"
     "@guildxyz/sdk": "npm:2.6.8"
-    "@headlessui/react": "npm:2.1.9"
+    "@headlessui/react": "npm:2.1.10"
     "@hookform/error-message": "npm:2.0.1"
     "@hookform/resolvers": "npm:3.9.0"
     "@radix-ui/react-avatar": "npm:1.1.1"
@@ -21156,7 +21156,7 @@ __metadata:
   resolution: "@unlock-protocol/unlock-protocol-com@workspace:unlock-protocol-com"
   dependencies:
     "@babel/core": "npm:7.25.2"
-    "@headlessui/react": "npm:2.1.9"
+    "@headlessui/react": "npm:2.1.10"
     "@observablehq/plot": "npm:0.6.16"
     "@radix-ui/react-avatar": "npm:1.1.1"
     "@tanstack/react-query": "npm:5.56.2"
