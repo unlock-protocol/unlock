@@ -7,7 +7,7 @@ import { loadStripe } from '@stripe/stripe-js'
 import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { Pricing } from '../../Lock'
-import { getReferrer, lockTickerSymbol } from '~/utils/checkoutLockUtils'
+import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { Lock } from '~/unlockTypes'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
 import { usePurchase } from '~/hooks/usePurchase'
@@ -22,6 +22,7 @@ import { useGetLockSettings } from '~/hooks/useLockSettings'
 import { getCurrencySymbol } from '~/utils/currency'
 import Disconnect from '../Disconnect'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { useGetReferrers } from '~/hooks/useGetReferrers'
 
 interface Props {
   checkoutService: CheckoutService
@@ -171,6 +172,11 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
     network: lock!.network,
     purchaseData: purchaseData || [],
   })
+  const { data: referrers } = useGetReferrers(
+    recipients,
+    paywallConfig,
+    lockAddress
+  )
 
   const { mutateAsync: capturePayment } = useCapturePayment({
     network: lock!.network,
@@ -191,10 +197,6 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
   const onConfirmCard = async () => {
     setIsConfirming(true)
     try {
-      const referrers: string[] = recipients.map((recipient) => {
-        return getReferrer(recipient, paywallConfig, lockAddress)
-      })
-
       const stripeIntent = await createPurchaseIntent({
         pricing: totalPricing!.total * 100, //
         // @ts-expect-error - generated types don't narrow down to the right type

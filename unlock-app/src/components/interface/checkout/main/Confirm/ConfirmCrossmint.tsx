@@ -7,7 +7,7 @@ import { Fragment, useCallback, useState } from 'react'
 import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { Pricing } from '../../Lock'
-import { getReferrer, lockTickerSymbol } from '~/utils/checkoutLockUtils'
+import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { Lock } from '~/unlockTypes'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
 import { usePricing } from '~/hooks/usePricing'
@@ -19,6 +19,7 @@ import { TransactionAnimation } from '../../Shell'
 import { config } from '~/config/app'
 import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
 import Disconnect from '../Disconnect'
+import { useGetReferrers } from '~/hooks/useGetReferrers'
 
 interface Props {
   checkoutService: CheckoutService
@@ -46,7 +47,6 @@ export function ConfirmCrossmint({
     useSelector(checkoutService, (state) => state.context)
   const [isConfirming, setIsConfirming] = useState(false)
   const [quote, setQuote] = useState<CrossmintQuote | null>(null)
-
   const crossmintEnv = config.env === 'prod' ? 'production' : 'staging'
 
   const {
@@ -72,6 +72,12 @@ export function ConfirmCrossmint({
   const { listenToMintingEvents } = useCrossmintEvents({
     environment: crossmintEnv,
   })
+
+  const { data: referrers } = useGetReferrers(
+    recipients,
+    paywallConfig,
+    lock!.address
+  )
 
   // Handling payment events
   const onCrossmintPaymentEvent = useCallback(
@@ -133,10 +139,6 @@ export function ConfirmCrossmint({
       crossmintLoading ||
       (!tokenId && renew))
 
-  const referrers: string[] = recipients.map((recipient) => {
-    return getReferrer(recipient, paywallConfig, lock!.address)
-  })
-
   const values = pricingData
     ? [
         ethers.parseUnits(
@@ -170,7 +172,7 @@ export function ConfirmCrossmint({
     crossmintConfig.mintConfig = {
       totalPrice: pricingData?.total.toString(),
       _values: values,
-      _referrers: referrers,
+      _referrers: referrers?.[0],
       _keyManagers: keyManagers || recipients,
       _data: purchaseData,
     }
@@ -180,7 +182,7 @@ export function ConfirmCrossmint({
       totalPrice: pricingData?.total.toString(),
       _tokenId: tokenId,
       _value: values[0],
-      _referrer: referrers[0],
+      _referrer: referrers?.[0],
       _data: purchaseData ? purchaseData[0] : '',
     }
   }

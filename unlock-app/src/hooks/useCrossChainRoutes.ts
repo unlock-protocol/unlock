@@ -4,7 +4,7 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Lock } from '~/unlockTypes'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { purchasePriceFor } from './usePricing'
-import { getReferrer } from '~/utils/checkoutLockUtils'
+import { getReferrers } from '~/utils/checkoutLockUtils'
 import { CrossChainRoute, getCrossChainRoute } from '~/utils/theBox'
 import { networks } from '@unlock-protocol/networks'
 import { BoxEvmChains } from '@decent.xyz/box-common'
@@ -150,15 +150,18 @@ export const useCrossChainRoutes = ({
             ) {
               return null
             }
+            const referrers = await getReferrers(
+              [account!],
+              paywallConfig,
+              lock.address
+            )
             const route = await getCrossChainRoute({
               sender: account!,
               lock,
               prices,
               recipients,
               keyManagers: keyManagers || recipients,
-              referrers: recipients.map(() =>
-                getReferrer(account!, paywallConfig, lock.address)
-              ),
+              referrers: recipients.map(() => referrers[0]),
               purchaseData: purchaseData || recipients.map(() => '0x'),
               srcToken: token.address,
               srcChainId: network,
