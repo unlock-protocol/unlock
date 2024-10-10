@@ -31,6 +31,7 @@ describe('Lock / onHasRoleHook', () => {
     // setup hook
     const TestEventHooks = await ethers.getContractFactory('TestEventHooks')
     hook = await TestEventHooks.deploy()
+
     const tx = await lock.setEventHooks(
       ADDRESS_ZERO,
       ADDRESS_ZERO,
@@ -109,7 +110,7 @@ describe('Lock / onHasRoleHook', () => {
 
     it('cannot set the hook to a non-contract address', async () => {
       await canNotSetNonContractAddress({
-        lock: lock.connect(lockManager),
+        lock,
         index: 7,
       })
     })

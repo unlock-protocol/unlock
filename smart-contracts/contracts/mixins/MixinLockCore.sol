@@ -235,7 +235,7 @@ contract MixinLockCore is MixinRoles, MixinFunds, MixinDisable {
       revert INVALID_HOOK(6);
     }
     if (_onHasRoleHook != address(0) && !_onHasRoleHook.isContract()) {
-      revert INVALID_HOOK(6);
+      revert INVALID_HOOK(7);
     }
 
     onKeyPurchaseHook = ILockKeyPurchaseHook(_onKeyPurchaseHook);
