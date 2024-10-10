@@ -51,7 +51,6 @@ module.exports = {
       'UP',
       'utils',
       'Governor',
-      'Hooks',
       'UnlockDiscountToken',
     ],
   },
