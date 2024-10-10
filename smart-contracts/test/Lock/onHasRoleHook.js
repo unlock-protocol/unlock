@@ -14,7 +14,7 @@ const {
 
 describe('Lock / onHasRoleHook', () => {
   let lock
-  let testEventHooks
+  let hook
   let receipt
   let deployer, lockManager, keyGranter, tokenOwner
   let token
@@ -30,7 +30,7 @@ describe('Lock / onHasRoleHook', () => {
 
     // setup hook
     const TestEventHooks = await ethers.getContractFactory('TestEventHooks')
-    testEventHooks = await TestEventHooks.deploy()
+    hook = await TestEventHooks.deploy()
     const tx = await lock.setEventHooks(
       ADDRESS_ZERO,
       ADDRESS_ZERO,
@@ -39,7 +39,7 @@ describe('Lock / onHasRoleHook', () => {
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
-      await testEventHooks.getAddress()
+      await hook.getAddress()
     )
     receipt = await tx.wait()
 
@@ -51,7 +51,11 @@ describe('Lock / onHasRoleHook', () => {
 
     // setup ERC20 in hook
     token = await deployERC20(deployer)
-    await testEventHooks.setupERC20Role(await token.getAddress())
+    await hook.setupERC20Role(await token.getAddress())
+  })
+
+  it('hook is set correctly', async () => {
+    assert.equal(await lock.onHasRoleHook(), await hook.getAddress())
   })
 
   describe('returns a custom value based on ERC20 balance', () => {
@@ -75,6 +79,10 @@ describe('Lock / onHasRoleHook', () => {
       )
       assert.equal(
         await lock.hasRole(KEY_GRANTER_ROLE, await tokenOwner.getAddress()),
+        await hook.hasRole(KEY_GRANTER_ROLE, await tokenOwner.getAddress())
+      )
+      assert.equal(
+        await lock.hasRole(KEY_GRANTER_ROLE, await tokenOwner.getAddress()),
         false
       )
     })
@@ -95,12 +103,15 @@ describe('Lock / onHasRoleHook', () => {
       await emitHookUpdatedEvent({
         receipt,
         hookName: 'onHasRoleHook',
-        hookAddress: await testEventHooks.getAddress(),
+        hookAddress: await hook.getAddress(),
       })
     })
 
     it('cannot set the hook to a non-contract address', async () => {
-      await canNotSetNonContractAddress({ lock, index: 7 })
+      await canNotSetNonContractAddress({
+        lock: lock.connect(lockManager),
+        index: 7,
+      })
     })
   })
 })

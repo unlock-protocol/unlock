@@ -43,7 +43,7 @@ contract MixinRoles is AccessControlUpgradeable, MixinErrors {
     address account
   ) public view override returns (bool) {
     if (address(onHasRoleHook) != address(0)) {
-      return onHasRoleHook.hasRole(LOCK_MANAGER_ROLE, account);
+      return onHasRoleHook.hasRole(role, account);
     }
     return super.hasRole(role, account);
   }

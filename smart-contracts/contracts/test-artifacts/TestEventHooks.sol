@@ -4,7 +4,7 @@ import "../interfaces/hooks/ILockKeyPurchaseHook.sol";
 import "../interfaces/hooks/ILockKeyCancelHook.sol";
 import "../interfaces/hooks/ILockTokenURIHook.sol";
 import "../interfaces/IPublicLock.sol";
-import "../interfaces/IWETH.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
 
 /**
@@ -120,10 +120,10 @@ contract TestEventHooks is
   bytes32 internal constant KEY_GRANTER_ROLE = keccak256("KEY_GRANTER");
 
   // requires at least 10 to be lock manager, and at least 20 to be key granter
-  function hasRole(bytes32 role, address account) external returns (bool) {
+  function hasRole(bytes32 role, address account) external view returns (bool) {
     // emit OnHasRole(role, account);
     if (roleERC20 != address(0)) {
-      uint balance = IWETH(roleERC20).balanceOf(account);
+      uint balance = IERC20(roleERC20).balanceOf(account);
       if (role == LOCK_MANAGER_ROLE) {
         return balance > 10e18;
       } else if (role == KEY_GRANTER_ROLE) {
