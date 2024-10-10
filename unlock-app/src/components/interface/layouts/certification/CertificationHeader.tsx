@@ -9,16 +9,14 @@ const MENU = {
     mobile: 'bg-ui-secondary-200 px-6',
   },
   showSocialIcons: false,
-  logo: { url: '/event', src: '/images/svg/logo-unlock-events.svg' },
-  menuSections: [
-    {
-      title: 'Events',
-      url: '/my-events',
-    },
-  ],
+  logo: {
+    url: '/certification',
+    src: '/images/svg/logo-unlock-certificate.svg',
+  },
+  menuSections: [],
 }
 
-export default function EventHeader() {
+export default function CertificationHeader() {
   const { account } = useAuth()
   const { openConnectModal } = useConnectModal()
 
