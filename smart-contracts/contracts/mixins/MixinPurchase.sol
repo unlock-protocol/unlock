@@ -31,6 +31,8 @@ contract MixinPurchase is
 
   event GasRefundValueChanged(uint refundValue);
 
+  event ReferrerPaid(address tokenAddress, address referrer, uint fee);
+
   // default to 0
   uint256 internal _gasRefundValue;
 
@@ -93,11 +95,9 @@ contract MixinPurchase is
 
       // pay the referrer if necessary
       if (basisPointsToPay != 0) {
-        _transfer(
-          tokenAddress,
-          payable(_referrer),
-          (keyPrice * basisPointsToPay) / BASIS_POINTS_DEN
-        );
+        uint amount = (keyPrice * basisPointsToPay) / BASIS_POINTS_DEN;
+        emit ReferrerPaid(tokenAddress, _referrer, amount);
+        _transfer(tokenAddress, payable(_referrer), amount);
       }
     }
   }
