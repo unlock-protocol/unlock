@@ -182,9 +182,7 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
     network: lock!.network,
     lockAddress: lock!.address,
     data: purchaseData,
-    referrers: recipients.map((recipient: string) =>
-      getReferrer(recipient, paywallConfig, lockAddress)
-    ),
+    referrers,
     recipients,
     purchaseType: renew ? 'extend' : 'purchase',
   })
