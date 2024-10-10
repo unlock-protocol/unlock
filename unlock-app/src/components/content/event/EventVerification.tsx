@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useEvent } from '~/hooks/useEvent'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 import { Scanner } from '~/components/interface/verification/Scanner'
+import { PrimeEventOnly } from '~/components/interface/prime/PrimeOnly'
 
 interface EventVerificationProps {
   slug: string
@@ -44,7 +45,9 @@ export const EventVerification = ({
         </div>
       </div>
       <div className="pt-10">
-        <Scanner checkoutConfig={checkoutConfig.config} eventProp={event} />
+        <PrimeEventOnly checkoutConfig={checkoutConfig}>
+          <Scanner checkoutConfig={checkoutConfig.config} eventProp={event} />
+        </PrimeEventOnly>
       </div>
     </div>
   )
