@@ -1,10 +1,4 @@
-import {
-  ReactNode,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from 'react'
+import { ReactNode, createContext, useContext, useState } from 'react'
 import { useSession } from './useSession'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { SiweMessage } from 'siwe'
@@ -16,6 +10,7 @@ import ProviderContext from '~/contexts/ProviderContext'
 import { isInIframe } from '~/utils/iframe'
 import { signOut as nextSignOut } from 'next-auth/react'
 import { usePrivy } from '@privy-io/react-auth'
+import { useCookies } from 'react-cookie'
 
 export type Status = 'loading' | 'error' | 'success' | 'rejected' | 'idle'
 
@@ -70,17 +65,7 @@ export const SIWEProvider = ({ children }: Props) => {
   const { session, refetchSession } = useSession()
   const [status, setStatus] = useState<Status>('idle')
   const queryClient = useQueryClient()
-  const [privyAccessToken, setPrivyAccessToken] = useState<string | null>(null)
-
-  useEffect(() => {
-    const fetchAccessToken = async () => {
-      if (connected) {
-        const token = await privyGetAccessToken()
-        setPrivyAccessToken(token)
-      }
-    }
-    fetchAccessToken()
-  }, [connected, privyGetAccessToken])
+  const [cookies] = useCookies()
 
   const onError = (error: any) => {
     console.error(error)
@@ -171,12 +156,13 @@ export const SIWEProvider = ({ children }: Props) => {
       if (!connected) {
         throw new Error('No wallet connected.')
       }
-
-      if (privyAccessToken) {
-        const response = await locksmith.loginWithPrivy({
-          accessToken: privyAccessToken,
-        })
-      }
+      const accessToken = await privyGetAccessToken()
+      const identityToken = cookies['privy-id-token']
+      const response = await locksmith.loginWithPrivy({
+        accessToken,
+        identityToken,
+      })
+      console.log(response)
     } catch (error) {
       console.error(error)
       onError(error)

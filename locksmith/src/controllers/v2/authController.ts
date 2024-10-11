@@ -123,10 +123,14 @@ export const login: RequestHandler = async (request, response) => {
 
 export const loginWithPrivy: RequestHandler = async (request, response) => {
   try {
-    const { accessToken } = request.body
+    const { accessToken, identityToken } = request.body
 
     if (!accessToken) {
       return response.status(400).json({ error: 'Access token is required' })
+    }
+
+    if (!identityToken) {
+      return response.status(400).json({ error: 'Identity token is required' })
     }
 
     // Verify the access token using Privy
@@ -135,15 +139,19 @@ export const loginWithPrivy: RequestHandler = async (request, response) => {
     // Get the user's data using the identity token
     // the identity token needs to be gotten from the cookie
     // https://docs.privy.io/guide/react/users/identity-token
-    const user = await privy.getUser({ idToken: userAuthClaims.userId })
+    const user = await privy.getUser({ idToken: identityToken })
 
-    if (!user.wallet?.address) {
+    const wallet = user.linkedAccounts.find(
+      (account) => account.type === 'wallet'
+    )
+
+    if (!wallet?.address) {
       return response
         .status(400)
         .json({ error: 'User does not have a wallet address' })
     }
 
-    const walletAddress = normalizer.ethereumAddress(user.wallet.address)
+    const walletAddress = normalizer.ethereumAddress(wallet.address)
 
     // Create a new session
     const expireAt = dayjs().add(config.sessionDuration, 'seconds').toDate()
