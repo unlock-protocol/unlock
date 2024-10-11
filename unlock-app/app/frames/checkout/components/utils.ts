@@ -3,11 +3,15 @@ import { locksmith } from '../../../../src/config/locksmith'
 import networks from '@unlock-protocol/networks'
 import { config as appConfig } from '~/config/app'
 
-export async function getLockDataFromCheckout(id: string) {
+export async function getConfig(id: string) {
   const { config } = await fetch(
     `${appConfig.locksmithHost}/v2/checkout/${id}`
   ).then((res) => res.json())
+  return config
+}
 
+export async function getLockDataFromCheckout(id: string) {
+  const config = await getConfig(id)
   const locks = config.locks
   const lockAddress = Object.keys(locks)[0]
   const { name, network } = locks[lockAddress]
