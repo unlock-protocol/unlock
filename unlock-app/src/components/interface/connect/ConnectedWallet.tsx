@@ -6,16 +6,16 @@ interface ConnectedWalletProps {
   onNext?: () => void
 }
 
+// I don't think we need this component anymore!
 export const ConnectedWallet = ({ onNext }: ConnectedWalletProps) => {
   const { connected } = useAuth()
-  const { session, signIn } = useSIWE()
+  const { signIn } = useSIWE()
 
   const onSignIn = useCallback(async () => {
     await signIn()
   }, [signIn])
 
   useEffect(() => {
-    console.log('connected', connected)
     if (connected) {
       onSignIn()
     }

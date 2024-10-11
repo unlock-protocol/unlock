@@ -4,7 +4,11 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { SiweMessage } from 'siwe'
 import { locksmith } from '~/config/locksmith'
 import { useQueryClient } from '@tanstack/react-query'
-import { getAccessToken, removeAccessToken } from '~/utils/session'
+import {
+  getAccessToken,
+  removeAccessToken,
+  saveAccessToken,
+} from '~/utils/session'
 import { config } from '~/config/app'
 import ProviderContext from '~/contexts/ProviderContext'
 import { isInIframe } from '~/utils/iframe'
@@ -156,13 +160,19 @@ export const SIWEProvider = ({ children }: Props) => {
       if (!connected) {
         throw new Error('No wallet connected.')
       }
-      const accessToken = await privyGetAccessToken()
-      const identityToken = cookies['privy-id-token']
       const response = await locksmith.loginWithPrivy({
-        accessToken,
-        identityToken,
+        accessToken: await privyGetAccessToken(),
+        identityToken: cookies['privy-id-token'],
       })
-      console.log(response)
+      const { accessToken, walletAddress } = response.data
+      if (accessToken && walletAddress) {
+        saveAccessToken({
+          accessToken,
+          walletAddress,
+        })
+      }
+      await queryClient.refetchQueries()
+      await refetchSession()
     } catch (error) {
       console.error(error)
       onError(error)
