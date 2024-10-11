@@ -63,12 +63,9 @@ interface Props {
 }
 
 export const SIWEProvider = ({ children }: Props) => {
-  const [siweResult, setSiweResult] = useState<{
-    message: string
-    signature: string
-  } | null>(null)
   const { connected, getWalletService, network } = useAuth()
-  const { getAccessToken: privyGetAccessToken } = usePrivy()
+  const { getAccessToken: privyGetAccessToken, logout: privyLogout } =
+    usePrivy()
   const { provider } = useContext(ProviderContext)
   const { session, refetchSession } = useSession()
   const [status, setStatus] = useState<Status>('idle')
@@ -101,7 +98,7 @@ export const SIWEProvider = ({ children }: Props) => {
   const signOut = async () => {
     try {
       setStatus('loading')
-      // Before signing out, we need to revoke the token
+      await privyLogout()
       await nextSignOut({ redirect: false })
       await signOutToken()
       await Promise.all([queryClient.invalidateQueries(), refetchSession()])
@@ -198,8 +195,6 @@ export const SIWEProvider = ({ children }: Props) => {
         status,
         signOut,
         isSignedIn,
-        signature: siweResult?.signature,
-        message: siweResult?.message,
       }}
     >
       {children}
