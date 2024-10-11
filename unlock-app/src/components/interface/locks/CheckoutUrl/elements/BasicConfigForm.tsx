@@ -1,15 +1,17 @@
 import { BasicPaywallConfigSchema } from '~/unlockTypes'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm, useWatch } from 'react-hook-form'
 import {
   Input,
   Checkbox,
   Button,
   ImageUpload,
   Modal,
+  AddressInput,
 } from '@unlock-protocol/ui'
 import { z } from 'zod'
 import { useState } from 'react'
 import { useImageUpload } from '~/hooks/useImageUpload'
+import { onResolveName } from '~/utils/resolvers'
 
 interface Props {
   onChange: (values: z.infer<typeof BasicPaywallConfigSchema>) => void
@@ -24,6 +26,7 @@ export const BasicConfigForm = ({ onChange, defaultValues }: Props) => {
     watch,
     setValue,
     formState: { errors },
+    control,
   } = useForm<z.infer<typeof BasicPaywallConfigSchema>>({
     reValidateMode: 'onChange',
     defaultValues: defaultValues as any,
@@ -35,6 +38,10 @@ export const BasicConfigForm = ({ onChange, defaultValues }: Props) => {
     const updatedValues = watch() // Get all form values
     onChange(updatedValues) // Call the onChange prop with updated values
   }
+
+  const { referrer = '' } = useWatch({
+    control,
+  })
 
   return (
     <form
@@ -85,12 +92,25 @@ export const BasicConfigForm = ({ onChange, defaultValues }: Props) => {
         error={errors.title?.message}
       />
 
-      <Input
-        label="Referrer Address"
-        size="small"
-        description={BasicPaywallConfigSchema.shape.referrer.description}
-        error={errors.referrer?.message}
-        {...register('referrer', {})}
+      <Controller
+        name="referrer"
+        control={control}
+        render={() => {
+          return (
+            <AddressInput
+              withIcon={false}
+              placeholder="0x..."
+              label="Referrer Address Or ENS"
+              description={BasicPaywallConfigSchema.shape.referrer.description}
+              onResolveName={onResolveName}
+              error={errors.referrer?.message}
+              value={referrer}
+              onChange={(value: any) => {
+                setValue('referrer', value)
+              }}
+            />
+          )
+        }}
       />
 
       <Input

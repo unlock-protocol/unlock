@@ -1,14 +1,17 @@
+import { PaywallConfigType } from '@unlock-protocol/core'
 import {
   lockKeysAvailable,
   lockTickerSymbol,
   userCanAffordKey,
   formattedKeyPrice,
   convertedKeyPrice,
+  getReferrers,
 } from '../../utils/checkoutLockUtils'
-import { it, describe, expect } from 'vitest'
+import { it, describe, expect, vi } from 'vitest'
 
 const lockAddress = '0x2B24bE6c9d5b70Ad53203AdB780681cd70603660'
 const network = 5
+
 describe('Checkout Lock Utils', () => {
   describe('lockKeysAvailable', () => {
     it('returns Unlimited if it has unlimited keys', () => {
@@ -226,6 +229,113 @@ describe('Checkout Lock Utils', () => {
       expect(await convertedKeyPrice(lock, numbersOfRecipients)).toEqual(
         '~$121.32'
       )
+    })
+  })
+
+  describe('getReferrers', () => {
+    const recipients = [
+      '0x2B24bE6c9d5b70Ad53203AdB780681cd70603660',
+      '0x1234567890123456789012345678901234567891',
+    ]
+    const lockAddress = '0x87dA72DC59674A17AD2154a25699246c51E25a57'
+    let paywallConfig: PaywallConfigType
+
+    beforeEach(() => {
+      paywallConfig = {
+        locks: {
+          '0x87dA72DC59674A17AD2154a25699246c51E25a57': {
+            referrer: '0x1234567890123456789012345678901234567890',
+            network: 11155111,
+          },
+        },
+        referrer: '0xE5Cd62AC8d2Ca2A62a04958f07Dd239c1Ffe1a9E',
+      }
+      vi.resetModules()
+    })
+
+    it('should return paywallConfig locks referrer', async () => {
+      expect.assertions(1)
+      expect(
+        await getReferrers(recipients, paywallConfig, lockAddress)
+      ).toEqual([
+        '0x1234567890123456789012345678901234567890',
+        '0x1234567890123456789012345678901234567890',
+      ])
+    })
+
+    it('should return paywallConfig referrer', async () => {
+      expect.assertions(1)
+      paywallConfig = {
+        ...paywallConfig,
+        locks: {
+          '0x87dA72DC59674A17AD2154a25699246c51E25a57': {
+            referrer: '0x1234567890123',
+          },
+        },
+      }
+
+      expect(
+        await getReferrers(recipients, paywallConfig, lockAddress)
+      ).toEqual([
+        '0xE5Cd62AC8d2Ca2A62a04958f07Dd239c1Ffe1a9E',
+        '0xE5Cd62AC8d2Ca2A62a04958f07Dd239c1Ffe1a9E',
+      ])
+    })
+
+    it('should return recipients if referrers are not addresses', async () => {
+      expect.assertions(1)
+      paywallConfig = {
+        ...paywallConfig,
+        locks: {
+          '0x87dA72DC59674A17AD2154a25699246c51E25a57': {
+            referrer: '0x1234567890123',
+          },
+        },
+        referrer: '0x62CcB13A72E6F991',
+      }
+
+      expect(
+        await getReferrers(recipients, paywallConfig, lockAddress)
+      ).toEqual([
+        '0x2B24bE6c9d5b70Ad53203AdB780681cd70603660',
+        '0x1234567890123456789012345678901234567891',
+      ])
+    })
+
+    it('should resolve for ens if the referrer is an ens address', async () => {
+      vi.doMock('../../utils/resolvers', () => {
+        return {
+          onResolveName: () =>
+            Promise.resolve({
+              address: 'ensAddressMock',
+            }),
+        }
+      })
+
+      vi.doMock('@unlock-protocol/ui', () => {
+        return {
+          isEns: () => Promise.resolve(true),
+        }
+      })
+
+      const { getReferrers } = await import('../../utils/checkoutLockUtils')
+      expect.assertions(1)
+      paywallConfig = {
+        ...paywallConfig,
+        locks: {
+          '0x87dA72DC59674A17AD2154a25699246c51E25a57': {
+            referrer: '0x1234567890123',
+          },
+        },
+        referrer: 'test.eth',
+      }
+
+      expect(
+        await getReferrers(recipients, paywallConfig, lockAddress)
+      ).toEqual(['ensAddressMock', 'ensAddressMock'])
+
+      vi.unmock('../../utils/resolvers')
+      vi.unmock('@unlock-protocol/ui')
     })
   })
 })
