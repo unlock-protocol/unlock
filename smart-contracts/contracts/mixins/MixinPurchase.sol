@@ -307,6 +307,7 @@ contract MixinPurchase is
       _referrer,
       0 // TODO: uint totalPaid
     );
+
   }
 
   function purchase(
