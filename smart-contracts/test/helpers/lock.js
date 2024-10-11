@@ -65,7 +65,7 @@ const purchaseKeys = async (lock, nbOfKeys = 1n, isErc20 = false, signer) => {
   const keyPrice = await lock.keyPrice()
 
   const purchaseArgs = keyOwners.map((signer) => ({
-    value: isErc20 ? () => keyPrice : 0,
+    value: isErc20 ? keyPrice : 0n,
     recipient: signer.getAddress(),
     keyManager: ADDRESS_ZERO,
     referrer: ADDRESS_ZERO,
