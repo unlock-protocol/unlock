@@ -74,6 +74,7 @@ export const authenticateWithApiKey = async (req: any, token: string) => {
 }
 
 export const authMiddleware: RequestHandler = async (req, _, next) => {
+  // TODO: accept privy access tokens
   try {
     const apiKey = req.query['api-key']
     if (apiKey) {
@@ -94,6 +95,7 @@ export const authMiddleware: RequestHandler = async (req, _, next) => {
       return next()
     }
     if (tokenType === 'bearer') {
+      // TODO: accept privy access tokens too
       const session = await Session.findOne({
         where: {
           id: token,

@@ -14656,6 +14656,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@privy-io/server-auth@npm:1.14.2":
+  version: 1.14.2
+  resolution: "@privy-io/server-auth@npm:1.14.2"
+  dependencies:
+    dotenv: "npm:^16.0.3"
+    jose: "npm:^4.10.4"
+    node-fetch-native: "npm:^1.4.0"
+    redaxios: "npm:^0.5.1"
+    svix: "npm:^1.29.0"
+    ts-case-convert: "npm:^2.0.2"
+    type-fest: "npm:^3.6.1"
+  checksum: 10/f58a99e145e9f5022f5e5262bd2070073a94f2605966965158d0e254e1098fbad5056f6ecc75001e8fce6a1858a9e0129d9fa1e5e37a6567b25a75921ed42ce1
+  languageName: node
+  linkType: hard
+
 "@protobufjs/aspromise@npm:^1.1.1, @protobufjs/aspromise@npm:^1.1.2":
   version: 1.1.2
   resolution: "@protobufjs/aspromise@npm:1.1.2"
@@ -17736,6 +17751,13 @@ __metadata:
   version: 1.0.1
   resolution: "@stablelib/aead@npm:1.0.1"
   checksum: 10/1a6f68d138f105d17dd65349751515bd252ab0498c77255b8555478d28415600dde493f909eb718245047a993f838dfae546071e1687566ffb7b8c3e10c918d9
+  languageName: node
+  linkType: hard
+
+"@stablelib/base64@npm:^1.0.0":
+  version: 1.0.1
+  resolution: "@stablelib/base64@npm:1.0.1"
+  checksum: 10/93f3edb05d5a828a775d23ebde49884abeb456b8946942acbe6a0815630e769c59c06c7275983031c8707bdcefc1c62917aaa99522ff1ec5f457704c83b686da
   languageName: node
   linkType: hard
 
@@ -21068,6 +21090,7 @@ __metadata:
     "@nuintun/qrcode": "npm:4.1.5"
     "@openzeppelin/defender-sdk": "npm:1.14.4"
     "@openzeppelin/merkle-tree": "npm:1.0.7"
+    "@privy-io/server-auth": "npm:1.14.2"
     "@resvg/resvg-js": "npm:2.6.2"
     "@sentry/node": "npm:7.118.0"
     "@sentry/tracing": "npm:7.114.0"
@@ -30368,7 +30391,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"es6-promise@npm:^4.0.3, es6-promise@npm:^4.2.8":
+"es6-promise@npm:^4.0.3, es6-promise@npm:^4.2.4, es6-promise@npm:^4.2.8":
   version: 4.2.8
   resolution: "es6-promise@npm:4.2.8"
   checksum: 10/b250c55523c496c43c9216c2646e58ec182b819e036fe5eb8d83fa16f044ecc6b8dcefc88ace2097be3d3c4d02b6aa8eeae1a66deeaf13e7bee905ebabb350a3
@@ -32406,6 +32429,13 @@ __metadata:
   version: 2.1.1
   resolution: "fast-safe-stringify@npm:2.1.1"
   checksum: 10/dc1f063c2c6ac9533aee14d406441f86783a8984b2ca09b19c2fe281f9ff59d315298bc7bc22fd1f83d26fe19ef2f20e2ddb68e96b15040292e555c5ced0c1e4
+  languageName: node
+  linkType: hard
+
+"fast-sha256@npm:^1.3.0":
+  version: 1.3.0
+  resolution: "fast-sha256@npm:1.3.0"
+  checksum: 10/3bef0491f10a254348ec11dcddb26e4d951cfd3b4c0662ea5843ad1be3fe184ed74d640df68565fcc60f6437548cddf49e3ac886f88a69e05b5142e862840bf9
   languageName: node
   linkType: hard
 
@@ -37755,6 +37785,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jose@npm:^4.10.4":
+  version: 4.15.9
+  resolution: "jose@npm:4.15.9"
+  checksum: 10/256234b6f85cdc080b1331f2d475bd58c8ccf459cb20f70ac5e4200b271bce10002b1c2f8e5b96dd975d83065ae5a586d52cdf89d28471d56de5d297992f9905
+  languageName: node
+  linkType: hard
+
 "jose@npm:^4.15.5":
   version: 4.15.5
   resolution: "jose@npm:4.15.5"
@@ -42376,7 +42413,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch-native@npm:^1.6.1, node-fetch-native@npm:^1.6.2, node-fetch-native@npm:^1.6.3, node-fetch-native@npm:^1.6.4":
+"node-fetch-native@npm:^1.4.0, node-fetch-native@npm:^1.6.1, node-fetch-native@npm:^1.6.2, node-fetch-native@npm:^1.6.3, node-fetch-native@npm:^1.6.4":
   version: 1.6.4
   resolution: "node-fetch-native@npm:1.6.4"
   checksum: 10/39c4c6d0c2a4bed1444943e1647ad0d79eb6638cf159bc37dffeafd22cffcf6a998e006aa1f3dd1d9d2258db7d78dee96b44bee4ba0bbaf0440ed348794f2543
@@ -46171,6 +46208,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"querystringify@npm:^2.1.1":
+  version: 2.2.0
+  resolution: "querystringify@npm:2.2.0"
+  checksum: 10/46ab16f252fd892fc29d6af60966d338cdfeea68a231e9457631ffd22d67cec1e00141e0a5236a2eb16c0d7d74175d9ec1d6f963660c6f2b1c2fc85b194c5680
+  languageName: node
+  linkType: hard
+
 "queue-microtask@npm:^1.2.2":
   version: 1.2.3
   resolution: "queue-microtask@npm:1.2.3"
@@ -47125,6 +47169,13 @@ __metadata:
   dependencies:
     minimatch: "npm:^3.0.5"
   checksum: 10/19298852b0b87810aed5f2c81a73bfaaeb9ade7c9bf363f350fc1443f2cc3df66ecade5e102dfbb153fcd9df20342c301848e11e149e5f78759c1d55aa2c9c39
+  languageName: node
+  linkType: hard
+
+"redaxios@npm:^0.5.1":
+  version: 0.5.1
+  resolution: "redaxios@npm:0.5.1"
+  checksum: 10/1110a74e6ca56336083191f8bfe9af9f1b7a092aa70ed5b546964222595c53934f5df3dc02c282a7268434e17492fa438d995bb56246075e1c7c1cea26005c98
   languageName: node
   linkType: hard
 
@@ -50978,6 +51029,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"svix-fetch@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "svix-fetch@npm:3.0.0"
+  dependencies:
+    node-fetch: "npm:^2.6.1"
+    whatwg-fetch: "npm:^3.4.1"
+  checksum: 10/3ace3a5fe7481a07a05f7c8ddbc497351349fe92f7188076262c226becd38041816496626633cfee028cd13c7e922e85fc1812ef527ee8ec1b35f1d9a0ee8c0a
+  languageName: node
+  linkType: hard
+
+"svix@npm:^1.29.0":
+  version: 1.37.0
+  resolution: "svix@npm:1.37.0"
+  dependencies:
+    "@stablelib/base64": "npm:^1.0.0"
+    es6-promise: "npm:^4.2.4"
+    fast-sha256: "npm:^1.3.0"
+    svix-fetch: "npm:^3.0.0"
+    url-parse: "npm:^1.4.3"
+  checksum: 10/6d3072ac7c0510fb38a18dd18ba293c9c273eb413a8a15af0b49ef5be5e1e7bca16badd702da9e92ee779aa414a5306ab84797920ebc9e1d36124518323109c2
+  languageName: node
+  linkType: hard
+
 "swap-case@npm:^2.0.2":
   version: 2.0.2
   resolution: "swap-case@npm:2.0.2"
@@ -52025,6 +52099,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ts-case-convert@npm:^2.0.2":
+  version: 2.1.0
+  resolution: "ts-case-convert@npm:2.1.0"
+  checksum: 10/99d6eb3ae53b85996aa816c47e64f71e25018c10008ca8935efcdc96fe5177cd1cedc236e3f6c11a277d322b36c513661e2d7648421fde0971b5d800de6a10b5
+  languageName: node
+  linkType: hard
+
 "ts-command-line-args@npm:^2.2.0":
   version: 2.5.1
   resolution: "ts-command-line-args@npm:2.5.1"
@@ -52466,7 +52547,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-fest@npm:^3.0.0":
+"type-fest@npm:^3.0.0, type-fest@npm:^3.6.1":
   version: 3.13.1
   resolution: "type-fest@npm:3.13.1"
   checksum: 10/9a8a2359ada34c9b3affcaf3a8f73ee14c52779e89950db337ce66fb74c3399776c697c99f2532e9b16e10e61cfdba3b1c19daffb93b338b742f0acd0117ce12
@@ -53409,6 +53490,16 @@ __metadata:
     file-loader:
       optional: true
   checksum: 10/f7e7258156f607bdd74469d22868a3522177bd895bb0eb1919363e32116ad7ed0c666b076d32dd700f1681c53d2edf046382bd9f6d9e77a19d4dd8ea36511da2
+  languageName: node
+  linkType: hard
+
+"url-parse@npm:^1.4.3":
+  version: 1.5.10
+  resolution: "url-parse@npm:1.5.10"
+  dependencies:
+    querystringify: "npm:^2.1.1"
+    requires-port: "npm:^1.0.0"
+  checksum: 10/c9e96bc8c5b34e9f05ddfeffc12f6aadecbb0d971b3cc26015b58d5b44676a99f50d5aeb1e5c9e61fa4d49961ae3ab1ae997369ed44da51b2f5ac010d188e6ad
   languageName: node
   linkType: hard
 

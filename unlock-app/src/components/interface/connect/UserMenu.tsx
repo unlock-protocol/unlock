@@ -7,23 +7,27 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import useEns from '~/hooks/useEns'
 import { addressMinify } from '~/utils/strings'
 import { useCallback, useState } from 'react'
-import { useSIWE } from '~/hooks/useSIWE'
 import { useUnlockPrime } from '~/hooks/useUnlockPrime'
+import { useSIWE } from '~/hooks/useSIWE'
 
 export const UserMenu = () => {
   const { isPrime } = useUnlockPrime()
 
-  const { account, email, deAuthenticate } = useAuth()
+  const { account, email } = useAuth()
   const userEns = useEns(account || '')
-  const { signOut } = useSIWE()
   const [isDisconnecting, setIsDisconnecting] = useState(false)
+  const { signOut } = useSIWE()
 
-  const onSignOut = useCallback(async () => {
+  const handleLogout = useCallback(async () => {
     setIsDisconnecting(true)
-    await signOut()
-    await deAuthenticate()
-    setIsDisconnecting(false)
-  }, [signOut, deAuthenticate])
+    try {
+      await signOut()
+    } catch (error) {
+      console.error('Error during logout:', error)
+    } finally {
+      setIsDisconnecting(false)
+    }
+  }, [signOut])
 
   return (
     <Menu as="div" className="relative inline-block text-left z-40">
@@ -99,7 +103,7 @@ export const UserMenu = () => {
           <MenuItem>
             {({ active }) => (
               <button
-                onClick={onSignOut}
+                onClick={handleLogout}
                 disabled={isDisconnecting}
                 className={`${
                   active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'

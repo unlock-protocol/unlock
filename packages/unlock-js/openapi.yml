@@ -855,6 +855,39 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
+  /v2/auth/privy:
+    post:
+      operationId: loginWithPrivy
+      description: Verify an access token using Privy's library and authenticate the user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                accessToken:
+                  type: string
+                  description: The Privy access token to verify
+              required:
+                - accessToken
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResult'
+
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
   /v2/auth/logout:
     post:
       operationId: logout
