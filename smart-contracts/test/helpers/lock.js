@@ -10,7 +10,7 @@ const purchaseKey = async (
   lock,
   keyOwnerAddress,
   isErc20 = false,
-  keyPrice = DEFAULT_KEY_PRICE
+  keyPrice
 ) => {
   // make sure we got ethers lock
   lock = await ethers.getContractAt(
@@ -18,16 +18,21 @@ const purchaseKey = async (
     await lock.getAddress()
   )
 
+  if (!keyPrice) {
+    keyPrice = await lock.keyPrice()
+  }
+
   // get ethers signer
   const keyOwner = await ethers.getSigner(keyOwnerAddress)
-  const purchaseArgs = [
-    isErc20 ? [keyPrice] : [],
-    [keyOwnerAddress],
-    [ADDRESS_ZERO],
-    [ADDRESS_ZERO],
-    ['0x'],
-  ]
-  const tx = await lock.connect(keyOwner).purchase(...purchaseArgs, {
+  const purchaseArgs = {
+    value: isErc20 ? keyPrice : 0,
+    recipient: keyOwnerAddress,
+    keyManager: ADDRESS_ZERO,
+    referrer: ADDRESS_ZERO,
+    data: '0x',
+  }
+
+  const tx = await lock.connect(keyOwner).purchase([purchaseArgs], {
     value: isErc20 ? 0 : keyPrice,
   })
 
@@ -57,16 +62,20 @@ const purchaseKeys = async (lock, nbOfKeys = 1n, isErc20 = false, signer) => {
   if (signer) {
     lock = lock.connect(signer)
   }
-  const purchaseArgs = [
-    isErc20 ? keyOwners.map(() => DEFAULT_KEY_PRICE) : [],
-    await Promise.all(keyOwners.map((keyOwner) => keyOwner.getAddress())),
-    keyOwners.map(() => ADDRESS_ZERO),
-    keyOwners.map(() => ADDRESS_ZERO),
-    keyOwners.map(() => '0x'),
-  ]
-  const tx = await lock.purchase(...purchaseArgs, {
-    value: isErc20 ? 0 : DEFAULT_KEY_PRICE * BigInt(nbOfKeys),
+  const keyPrice = await lock.keyPrice()
+
+  const purchaseArgs = keyOwners.map((signer) => ({
+    value: isErc20 ? keyPrice : 0n,
+    recipient: signer.getAddress(),
+    keyManager: ADDRESS_ZERO,
+    referrer: ADDRESS_ZERO,
+    data: '0x',
+  }))
+
+  const tx = await lock.purchase(purchaseArgs, {
+    value: isErc20 ? 0 : keyPrice * BigInt(nbOfKeys),
   })
+
   // get token ids
   const receipt = await tx.wait()
   const { events, blockNumber } = await getEvents(receipt, 'Transfer')

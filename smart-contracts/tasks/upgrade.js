@@ -20,7 +20,6 @@ task(
     const proxyAdminAddress = await getProxyAdminAddress({ network })
     console.log(`proxyAdminAddress: ${proxyAdminAddress}`)
 
-    // eslint-disable-next-line global-require
     const simpleUpgrade = require(`../scripts/upgrade/simple`)
     await simpleUpgrade({
       proxyAddress: proxy,
@@ -42,10 +41,8 @@ task('upgrade:prepare', 'Deploy the implementation of an upgradeable contract')
     const { chainId } = await ethers.provider.getNetwork()
     const networkName = networks[chainId].name
 
-    // eslint-disable-next-line no-console
     console.log(`Deploying new implementation ${contract} on ${networkName}.`)
 
-    // eslint-disable-next-line global-require
     const prepareUpgrade = require('../scripts/upgrade/prepare')
     const contractName = contract.split('/')[1].replace('.sol', '')
 
@@ -66,10 +63,8 @@ task('upgrade:import', 'Import a missing impl manifest from a proxy contract')
     const { chainId } = await ethers.provider.getNetwork()
     const networkName = networks[chainId].name
 
-    // eslint-disable-next-line no-console
     console.log(`Importing implementations from ${contract} on ${networkName}.`)
 
-    // eslint-disable-next-line global-require
     const prepareUpgrade = require('../scripts/upgrade/import')
     const contractName = contract.split('/')[1].replace('.sol', '')
     await prepareUpgrade({
@@ -92,7 +87,6 @@ task('upgrade:propose', 'Send an upgrade implementation proposal to multisig')
   .setAction(async ({ proxyAddress, implementation }, { network }) => {
     const proxyAdminAddress = await getProxyAdminAddress({ network })
 
-    // eslint-disable-next-line global-require
     const proposeUpgrade = require('../scripts/upgrade/propose')
     await proposeUpgrade({
       proxyAddress,
@@ -119,7 +113,6 @@ task(
       unlockAddress,
       addOnly,
     }) => {
-      // eslint-disable-next-line global-require
       const submitLockVersion = require('../scripts/upgrade/submitLockVersion')
       await submitLockVersion({
         publicLockAddress,
@@ -137,7 +130,6 @@ task('proxy-admin', 'Retrieve the proxy admin address')
     'Specify the template version to deploy (from contracts package)'
   )
   .setAction(async (_, { ethers, network }) => {
-    // eslint-disable-next-line global-require
     const { getProxyAdminAddress } = require('../helpers/deployments')
     const proxyAdminAddress = await getProxyAdminAddress({ network })
     const proxyAdmin = await ethers.getContractAt(
