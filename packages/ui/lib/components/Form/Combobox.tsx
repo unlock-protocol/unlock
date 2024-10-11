@@ -53,6 +53,7 @@ export function Combobox({
   const inputRef = useRef<HTMLInputElement>(null)
   const optionsRef = useRef<(HTMLLIElement | null)[]>([])
 
+  // Combine and deduplicate options
   const allOptions = useMemo(() => {
     const uniqueOptions = new Map<string | number, Option>()
     initialOptions.forEach((option) => uniqueOptions.set(option.value, option))
@@ -64,6 +65,7 @@ export function Combobox({
     return Array.from(uniqueOptions.values())
   }, [initialOptions, moreOptions])
 
+  // Filter options based on search query
   const filteredOptions = useMemo(
     () =>
       query === ''
@@ -74,6 +76,7 @@ export function Combobox({
     [query, allOptions]
   )
 
+  // Determine which options to display based on showMoreOptions state
   const displayedOptions = useMemo(() => {
     if (showMoreOptions) {
       return filteredOptions
@@ -99,6 +102,7 @@ export function Combobox({
     setFocusedIndex(displayedOptions.length)
   }
 
+  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -117,18 +121,21 @@ export function Combobox({
     }
   }, [])
 
+  // Focus input when dropdown opens
   useEffect(() => {
     if (isOpen && inputRef.current) {
       inputRef.current.focus()
     }
   }, [isOpen])
 
+  // Focus the currently selected option
   useEffect(() => {
     if (focusedIndex >= 0 && focusedIndex < displayedOptions.length) {
       optionsRef.current[focusedIndex]?.focus()
     }
   }, [focusedIndex, displayedOptions])
 
+  // Handle keyboard navigation
   const handleKeyDown = (event: React.KeyboardEvent) => {
     switch (event.key) {
       case 'Enter':
@@ -255,6 +262,7 @@ export function Combobox({
                           {option.label}
                         </li>
                       ))}
+                      {/* Show "More options" button if there are more options available */}
                       {!showMoreOptions && moreOptions.length > 0 && (
                         <li
                           ref={(el) =>

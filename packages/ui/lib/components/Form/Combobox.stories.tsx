@@ -12,6 +12,7 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+// Define all possible options for the Combobox
 const allOptions = [
   { value: 1, label: 'Ethereum Mainnet' },
   { value: 84532, label: 'Base' },
@@ -28,11 +29,13 @@ interface Option {
   label: string
 }
 
+// Helper function to get a random subset of items from an array
 const getRandomItems = (array: Option[], count: number): Option[] => {
   const shuffled = [...array].sort(() => 0.5 - Math.random())
   return shuffled.slice(0, count)
 }
 
+// Default story with a mix of initial and more options
 export const Default = {
   args: {
     initialOptions: getRandomItems(allOptions, 5),
@@ -44,6 +47,7 @@ export const Default = {
   },
 } satisfies Story
 
+// Story with a pre-selected option
 export const WithInitialSelected = {
   args: {
     initialOptions: getRandomItems(allOptions, 5),
@@ -55,8 +59,10 @@ export const WithInitialSelected = {
   },
 } satisfies Story
 
+// Story with a large number of options to test scrolling behavior
 export const WithLongList = {
   args: {
+    // Generate 10 initial options
     initialOptions: getRandomItems(
       Array.from({ length: 50 }, (_, index) => ({
         value: index + 1,
@@ -64,6 +70,7 @@ export const WithLongList = {
       })),
       10
     ),
+    // Generate 40 more options
     moreOptions: getRandomItems(
       Array.from({ length: 50 }, (_, index) => ({
         value: index + 51,
@@ -77,6 +84,7 @@ export const WithLongList = {
   },
 } satisfies Story
 
+// Story without any additional options in the "More options" section
 export const WithoutMoreOptions = {
   args: {
     initialOptions: getRandomItems(allOptions, allOptions.length),
@@ -86,9 +94,11 @@ export const WithoutMoreOptions = {
   },
 } satisfies Story
 
+// Story with duplicate options to test handling of non-unique values
 export const WithDuplicates = {
   args: {
     initialOptions: getRandomItems(allOptions, 5),
+    // Duplicate the options array
     moreOptions: getRandomItems([...allOptions, ...allOptions], 5),
     onSelect: (selected) => {
       console.log('selected', selected)
