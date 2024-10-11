@@ -154,7 +154,6 @@ export const SIWEProvider = ({ children }: Props) => {
   }
 
   const signIn = async () => {
-    console.log('signing in with privy')
     setStatus('loading')
     try {
       if (!connected) {

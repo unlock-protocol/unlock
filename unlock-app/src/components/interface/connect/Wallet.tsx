@@ -17,22 +17,5 @@ export const ConnectWallet = () => {
     }
   }, [authenticated, signIn])
 
-  // useEffect(() => {
-  //   console.log('render connectOrCreateWallet')
-  //   const connectWalletProvider = async () => {
-  //     const provider = await wallets[0].getEthereumProvider()
-  //     const signature = await wallets[0].sign('Please sign!')
-  //     console.log({ signature })
-  //     const message = 'I hereby vote for foobar'
-  //     const signature2 = await provider.request({
-  //       method: 'personal_sign',
-  //       params: [message, wallets[0].address],
-  //     })
-  //     console.log(signature2)
-  //     authenticate(provider)
-  //   }
-  //   connectWalletProvider()
-  // }, [])
-
   return <LoginModal open={true} />
 }
