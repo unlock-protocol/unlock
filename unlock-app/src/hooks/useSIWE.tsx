@@ -1,18 +1,21 @@
-import { ReactNode, createContext, useContext, useState } from 'react'
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
 import { useSession } from './useSession'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { SiweMessage } from 'siwe'
 import { locksmith } from '~/config/locksmith'
 import { useQueryClient } from '@tanstack/react-query'
-import {
-  getAccessToken,
-  removeAccessToken,
-  saveAccessToken,
-} from '~/utils/session'
+import { getAccessToken, removeAccessToken } from '~/utils/session'
 import { config } from '~/config/app'
 import ProviderContext from '~/contexts/ProviderContext'
 import { isInIframe } from '~/utils/iframe'
 import { signOut as nextSignOut } from 'next-auth/react'
+import { usePrivy } from '@privy-io/react-auth'
 
 export type Status = 'loading' | 'error' | 'success' | 'rejected' | 'idle'
 
@@ -65,10 +68,22 @@ export const SIWEProvider = ({ children }: Props) => {
     signature: string
   } | null>(null)
   const { connected, getWalletService, network } = useAuth()
+  const { getAccessToken: privyGetAccessToken } = usePrivy()
   const { provider } = useContext(ProviderContext)
   const { session, refetchSession } = useSession()
   const [status, setStatus] = useState<Status>('idle')
   const queryClient = useQueryClient()
+  const [privyAccessToken, setPrivyAccessToken] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchAccessToken = async () => {
+      if (connected) {
+        const token = await privyGetAccessToken()
+        setPrivyAccessToken(token)
+      }
+    }
+    fetchAccessToken()
+  }, [connected, privyGetAccessToken])
 
   const onError = (error: any) => {
     console.error(error)
@@ -153,32 +168,17 @@ export const SIWEProvider = ({ children }: Props) => {
   }
 
   const signIn = async () => {
-    console.log('in sinIng')
+    console.log('signing in with privy')
     setStatus('loading')
     try {
       if (!connected) {
         throw new Error('No wallet connected.')
       }
 
-      const { data: nonce } = await locksmith.nonce()
-      const siweResult = await siweSign(nonce, '')
-
-      if (siweResult) {
-        setSiweResult(siweResult)
-        const { message, signature } = siweResult
-        const response = await locksmith.login({
-          message,
-          signature,
+      if (privyAccessToken) {
+        const response = await locksmith.loginWithPrivy({
+          accessToken: privyAccessToken,
         })
-        const { accessToken, walletAddress } = response.data
-        if (accessToken && walletAddress) {
-          saveAccessToken({
-            accessToken,
-            walletAddress,
-          })
-        }
-        await queryClient.refetchQueries()
-        await refetchSession()
       }
     } catch (error) {
       console.error(error)
