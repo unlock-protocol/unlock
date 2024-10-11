@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import {
   Dialog,
-  DialogPanel,
+  DialogBackdrop,
   Transition,
   TransitionChild,
 } from '@headlessui/react'
@@ -48,19 +48,8 @@ export function Modal({ isOpen, setIsOpen, children, empty }: Props) {
         className="fixed inset-0 z-10 overflow-y-auto"
         onClose={setIsOpen}
       >
+        <DialogBackdrop className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50 backdrop-blur" />
         <div className="flex flex-col items-center justify-center min-h-screen p-6">
-          <TransitionChild
-            as={React.Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <DialogPanel className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50 backdrop-blur" />
-          </TransitionChild>
-
           <TransitionChild
             as={React.Fragment}
             enter="ease-out duration-300"
