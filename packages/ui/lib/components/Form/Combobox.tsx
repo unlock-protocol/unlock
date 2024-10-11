@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, ReactNode } from 'react'
+import { useState, useRef, useEffect, ReactNode, useMemo } from 'react'
 import {
   Popover,
   PopoverButton,
@@ -22,7 +22,8 @@ interface Option {
 }
 
 interface ComboboxProps {
-  options: Option[]
+  initialOptions: Option[]
+  moreOptions?: Option[]
   initialSelected?: Option
   onSelect: (selected: Option) => void
   placeholder?: string
@@ -33,7 +34,8 @@ interface ComboboxProps {
 }
 
 export function Combobox({
-  options,
+  initialOptions,
+  moreOptions = [],
   initialSelected,
   onSelect,
   placeholder = 'Select an option...',
@@ -46,52 +48,57 @@ export function Combobox({
   const [query, setQuery] = useState('')
   const [selected, setSelected] = useState<Option | undefined>(initialSelected)
   const [focusedIndex, setFocusedIndex] = useState(-1)
-  const [showAllOptions, setShowAllOptions] = useState(false)
+  const [showMoreOptions, setShowMoreOptions] = useState(false)
   const comboboxRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const optionsRef = useRef<(HTMLLIElement | null)[]>([])
 
-  const filteredOptions =
-    query === ''
-      ? options
-      : options.filter((option) => {
-          return option.label.toLowerCase().includes(query.toLowerCase())
-        })
+  const allOptions = useMemo(() => {
+    const uniqueOptions = new Map<string | number, Option>()
+    initialOptions.forEach((option) => uniqueOptions.set(option.value, option))
+    moreOptions.forEach((option) => {
+      if (!uniqueOptions.has(option.value)) {
+        uniqueOptions.set(option.value, option)
+      }
+    })
+    return Array.from(uniqueOptions.values())
+  }, [initialOptions, moreOptions])
 
-  const uniqueFilteredOptions = filteredOptions.filter(
-    (option, index, self) =>
-      index === self.findIndex((t) => t.value === option.value)
+  const filteredOptions = useMemo(
+    () =>
+      query === ''
+        ? allOptions
+        : allOptions.filter((option) =>
+            option.label.toLowerCase().includes(query.toLowerCase())
+          ),
+    [query, allOptions]
   )
 
-  const displayedOptions = showAllOptions
-    ? uniqueFilteredOptions
-    : uniqueFilteredOptions.slice(0, 7)
+  const displayedOptions = useMemo(() => {
+    if (showMoreOptions) {
+      return filteredOptions
+    }
+    return filteredOptions.filter((option) =>
+      initialOptions.some(
+        (initialOption) => initialOption.value === option.value
+      )
+    )
+  }, [filteredOptions, showMoreOptions, initialOptions])
 
-  /**
-   * Handles the selection of an option.
-   * Updates the selected state, invokes the onSelect callback,
-   * closes the dropdown, and resets the search query and focused index.
-   *
-   * @param value - The option that was selected
-   */
   const handleSelect = (value: Option) => {
     setSelected(value)
     onSelect(value)
     setIsOpen(false)
     setQuery('')
     setFocusedIndex(-1)
-    setShowAllOptions(false)
+    setShowMoreOptions(false)
   }
 
   const handleShowMore = () => {
-    setShowAllOptions(true)
-    setFocusedIndex(7)
+    setShowMoreOptions(true)
+    setFocusedIndex(displayedOptions.length)
   }
 
-  /**
-   * Effect to handle clicks outside the combobox.
-   * Closes the dropdown if a click occurs outside the combobox container.
-   */
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -100,7 +107,7 @@ export function Combobox({
       ) {
         setIsOpen(false)
         setFocusedIndex(-1)
-        setShowAllOptions(false)
+        setShowMoreOptions(false)
       }
     }
 
@@ -110,31 +117,18 @@ export function Combobox({
     }
   }, [])
 
-  /**
-   * Effect to focus the search input when the dropdown is opened.
-   */
   useEffect(() => {
     if (isOpen && inputRef.current) {
       inputRef.current.focus()
     }
   }, [isOpen])
 
-  /**
-   * Effect to manage focus on options during keyboard navigation.
-   * Ensures the focused option is scrolled into view and focused.
-   */
   useEffect(() => {
     if (focusedIndex >= 0 && focusedIndex < displayedOptions.length) {
       optionsRef.current[focusedIndex]?.focus()
     }
   }, [focusedIndex, displayedOptions])
 
-  /**
-   * Handles keyboard events for accessibility and navigation.
-   * Supports Enter, ArrowDown, ArrowUp, Tab, and Escape keys.
-   *
-   * @param event - The keyboard event
-   */
   const handleKeyDown = (event: React.KeyboardEvent) => {
     switch (event.key) {
       case 'Enter':
@@ -143,7 +137,7 @@ export function Combobox({
           setIsOpen(true)
           setFocusedIndex(0)
         } else if (focusedIndex >= 0) {
-          if (focusedIndex === 7 && !showAllOptions) {
+          if (focusedIndex === displayedOptions.length && !showMoreOptions) {
             handleShowMore()
           } else {
             handleSelect(displayedOptions[focusedIndex])
@@ -168,13 +162,13 @@ export function Combobox({
           event.preventDefault()
           setIsOpen(false)
           setFocusedIndex(-1)
-          setShowAllOptions(false)
+          setShowMoreOptions(false)
         }
         break
       case 'Escape':
         setIsOpen(false)
         setFocusedIndex(-1)
-        setShowAllOptions(false)
+        setShowMoreOptions(false)
         break
     }
   }
@@ -261,14 +255,17 @@ export function Combobox({
                           {option.label}
                         </li>
                       ))}
-                      {!showAllOptions && uniqueFilteredOptions.length > 7 && (
+                      {!showMoreOptions && moreOptions.length > 0 && (
                         <li
-                          ref={(el) => (optionsRef.current[7] = el)}
+                          ref={(el) =>
+                            (optionsRef.current[displayedOptions.length] = el)
+                          }
                           className={clsx(
                             'flex cursor-pointer mx-2 rounded-sm items-center justify-center gap-2 py-3 px-3 text-base font-semibold',
                             'hover:bg-ui-main-50 text-brand-ui-primary',
                             'border-t border-gray-200',
-                            focusedIndex === 7 && 'bg-ui-main-50'
+                            focusedIndex === displayedOptions.length &&
+                              'bg-ui-main-50'
                           )}
                           onClick={handleShowMore}
                           onKeyDown={(e) => {
@@ -279,7 +276,9 @@ export function Combobox({
                             }
                           }}
                           role="option"
-                          tabIndex={focusedIndex === 7 ? 0 : -1}
+                          tabIndex={
+                            focusedIndex === displayedOptions.length ? 0 : -1
+                          }
                         >
                           <MoreIcon className="size-4" />
                           More options
