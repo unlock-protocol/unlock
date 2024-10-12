@@ -7,6 +7,24 @@ pragma experimental ABIEncoderV2;
  */
 
 interface IPublicLock {
+  /**
+   * @dev PurchaseArgs struct
+   * @param value (ERC20 only) value of the key
+   * @param recipient address of the recipient
+   * @param referrer the referrer that will be granted the governance tokens
+   * @param keyManager the manager of the key (can cancel, transfer, burn the key)
+   * @param data additional data to be used by jooks or other 3rd part contracts
+   * @return tokenIds the ids of the created tokens
+   */
+
+  struct PurchaseArgs {
+    uint value;
+    address recipient;
+    address referrer;
+    address keyManager;
+    bytes data;
+  }
+
   /// Functions
   function initialize(
     address _lockCreator,
@@ -167,6 +185,15 @@ interface IPublicLock {
 
   /**
    * @dev Purchase function
+   * @param purchaseArgs array of PurchaseArg
+   * @return tokenIds the ids of the created tokens
+   */
+  function purchase(
+    PurchaseArgs[] memory purchaseArgs
+  ) external payable returns (uint256[] memory tokenIds);
+
+  /**
+   * @dev Purchase function (legacy)
    * @param _values array of tokens amount to pay for this purchase >= the current keyPrice - any applicable discount
    * (_values is ignored when using ETH)
    * @param _recipients array of addresses of the recipients of the purchased key
