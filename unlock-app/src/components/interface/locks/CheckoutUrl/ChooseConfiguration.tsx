@@ -1,14 +1,14 @@
 import { classed } from '@tw-classed/react'
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState, useCallback } from 'react'
 import { RadioGroup } from '@headlessui/react'
 import { Input, Placeholder, Select } from '@unlock-protocol/ui'
 import { useController, useFormContext } from 'react-hook-form'
-import { Configuration } from '.'
 import { CheckoutConfig } from '@unlock-protocol/core'
 import { useCheckoutConfig } from '~/hooks/useCheckoutConfig'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useLockManager } from '~/hooks/useLockManager'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { Configuration } from '.'
 
 const RadioContentWrapper = classed.div('grid grid-cols-[24px_1fr] gap-2', {
   variants: {
@@ -24,11 +24,12 @@ interface ConfigurationOptions {
   disabled?: boolean
   children?: ReactNode
 }
+
 interface ChooseConfigurationProps {
   items: CheckoutConfig[]
   onChange(config: CheckoutConfig): void
   configuration: Configuration
-  setConfiguration: (config: any) => void
+  setConfiguration: (config: Configuration) => void
   value: CheckoutConfig
   disabled?: boolean
   control: any
@@ -36,7 +37,7 @@ interface ChooseConfigurationProps {
   loading?: boolean
 }
 
-const Radio = ({ checked }: any) => {
+const Radio = ({ checked }: { checked: boolean }) => {
   return (
     <div className="flex items-center justify-center w-5 h-5 border-2 rounded-full border-brand-ui-primary">
       {checked && (
@@ -61,9 +62,13 @@ const ChooseConfigurationPlaceholder = () => {
   )
 }
 
-export const ConnectForm = ({ children }: any) => {
+export const ConnectForm = ({
+  children,
+}: {
+  children: (props: any) => ReactNode
+}) => {
   const methods = useFormContext()
-  return children({ ...methods })
+  return <>{children({ ...methods })}</>
 }
 
 export function ChooseConfiguration({
@@ -93,36 +98,26 @@ export function ChooseConfiguration({
   const [selectedConfig, setSelectedConfig] = useState<
     CheckoutConfig | undefined
   >(undefined)
-
-  const [defaultValue, setDefaultValue] = useState<string | null>(
-    selectedConfig?.id || value?.id
-  )
-
   const [customConfigId, setCustomConfigId] = useState<string | null>(null)
-
-  const { account } = useAuth()
   const [isCheckingPermissions, setIsCheckingPermissions] = useState(false)
   const [locksToCheck, setLocksToCheck] = useState<
     Array<{ address: string; network: number }>
   >([])
 
+  const { account } = useAuth()
+
+  // fetch the configuratoin's details when customConfigId changes
   const { data: configDetails, isLoading: isLoadingConfig } = useCheckoutConfig(
     { id: customConfigId! }
   )
 
+  // check if user is a manager for the current lock
   const { isManager, isPending: isCheckingLockManager } = useLockManager({
     lockAddress: locksToCheck[0]?.address,
     network: locksToCheck[0]?.network,
   })
 
-  // Reset state when customConfigId or value changes
-  useEffect(() => {
-    setIsCheckingPermissions(false)
-    setLocksToCheck([])
-    setSelectedConfig(undefined)
-  }, [customConfigId, value])
-
-  // Populate locks to check when config details are available
+  // initialize the lock checks when configDetails are available
   useEffect(() => {
     if (configDetails && account) {
       const locks = Object.entries(configDetails.config.locks).map(
@@ -136,76 +131,118 @@ export function ChooseConfiguration({
     }
   }, [configDetails, account])
 
+  // reset the state when customConfigId or value changes
   useEffect(() => {
-    if (!value?.id) return
-    setDefaultValue(value?.id)
-  }, [value?.id, value?.name])
+    setIsCheckingPermissions(false)
+    setLocksToCheck([])
+    setSelectedConfig(undefined)
+  }, [customConfigId, value])
 
-  const configOptions = items?.map((config) => {
-    return {
-      label: config.name,
-      value: `${config.id}`,
+  // Set default value based on existing value prop
+  useEffect(() => {
+    if (value?.id) {
+      setSelectedConfig(value)
     }
-  })
+  }, [value])
 
-  const onSelectConfig = (configId: string | number) => {
-    const config = items.find((item) => item.id === configId)
-    if (config) {
-      setSelectedConfig(config)
-      onChange(config)
-    }
-  }
-
+  /**
+   * Handler to process lock manager permissions.
+   * If user is a manager for any lock, grant access and stop further checks.
+   * If not, continue checking the next lock.
+   */
   useEffect(() => {
     if (isCheckingPermissions && !isCheckingLockManager) {
       if (isManager) {
-        // If user is a manager, check next lock or finish checking
-        if (locksToCheck.length > 1) {
-          setLocksToCheck((prev) => prev.slice(1))
-        } else {
-          setIsCheckingPermissions(false)
-          if (configDetails?.id) {
-            onSelectConfig(configDetails.id)
-          }
+        // User is a manager for the current lock
+        setIsCheckingPermissions(false)
+        if (configDetails?.id) {
+          onSelectConfig(configDetails.id)
         }
       } else {
-        // If user is not a manager, check next lock or show error
+        // User is not a manager for the current lock, check next
         if (locksToCheck.length > 1) {
           setLocksToCheck((prev) => prev.slice(1))
         } else {
+          // No more locks to check and user is not a manager for any
           setIsCheckingPermissions(false)
           ToastHelper.error(
             'You do not have permission to use this configuration.'
           )
+          setCustomConfigId(null) // Reset customConfigId
         }
       }
     }
-  }, [isManager, isCheckingLockManager, locksToCheck, configDetails])
+  }, [
+    isManager,
+    isCheckingLockManager,
+    isCheckingPermissions,
+    locksToCheck,
+    configDetails,
+    onChange,
+  ])
 
+  /**
+   * Memoized Handler to Select a Configuration
+   */
+  const onSelectConfig = useCallback(
+    (configId: string | number) => {
+      const config = items.find((item) => item.id === configId)
+      if (config) {
+        setSelectedConfig(config)
+        onChange(config)
+      }
+    },
+    [items, onChange]
+  )
+
+  // prepare the select options
+  const configOptions: { label: string; value: string }[] =
+    items
+      ?.filter((config) => config.id != null)
+      .map((config) => ({
+        label: config.name,
+        value: config.id as string,
+      })) || []
+
+  const handleSelectChange = (value: string | number, isCustom?: boolean) => {
+    if (isCustom) {
+      // User chose to enter a custom config ID
+      setCustomConfigId(value.toString())
+      setSelectedConfig(undefined)
+      setIsCheckingPermissions(false)
+      setLocksToCheck([])
+    } else {
+      // User selected an existing config
+      onSelectConfig(value.toString())
+    }
+  }
+
+  // Show Loading Placeholder when loading
   if (loading) {
     return <ChooseConfigurationPlaceholder />
   }
 
+  console.log('configOptions', configOptions)
+
+  // Define Configuration Options for RadioGroup
   const configs: ConfigurationOptions[] = [
     {
       key: 'new',
       label: 'Create a new one',
       children: (
         <ConnectForm>
-          {({ register }: any) => {
-            return (
-              <Input
-                placeholder="Enter name"
-                type="text"
-                {...register('configName')}
-                error={error?.message}
-                onKeyDown={(e) => {
-                  // Prevent the `RadioGroup` itself from "eating" characters
-                  e.stopPropagation()
-                }}
-              />
-            )
-          }}
+          {({ register }: any) => (
+            <Input
+              placeholder="Enter name"
+              type="text"
+              {...register('configName')}
+              error={error?.message}
+              onKeyDown={(e) => {
+                // Prevent the `RadioGroup` from "eating" characters
+                e.stopPropagation()
+              }}
+            />
+          )}
         </ConnectForm>
       ),
     },
@@ -216,19 +253,8 @@ export function ChooseConfiguration({
         <Select
           disabled={items?.length === 0}
           options={configOptions}
-          onChange={(value, isCustom) => {
-            if (isCustom) {
-              // Handle custom input
-              setCustomConfigId(value?.toString())
-              setIsCheckingPermissions(false)
-              setLocksToCheck([])
-              setSelectedConfig(undefined)
-            } else {
-              // Handle selection from existing options
-              onSelectConfig(value?.toString())
-            }
-          }}
-          defaultValue={defaultValue}
+          onChange={handleSelectChange}
+          defaultValue={selectedConfig?.id || value?.id || ''}
           customOption={true}
         />
       ),
@@ -252,7 +278,7 @@ export function ChooseConfiguration({
         }}
         disabled={disabled}
       >
-        {configs?.map(({ key: value, label, children, disabled }) => {
+        {configs.map(({ key: value, label, children, disabled }) => {
           const isSelected = configuration === value
 
           return (
@@ -265,7 +291,8 @@ export function ChooseConfiguration({
                         <RadioContentWrapper
                           className={`${
                             disabled ? '' : 'cursor-pointer'
-                          } items-center `}
+                          } items-center`}
+                          disabled={disabled}
                         >
                           <Radio checked={checked} />
                           <span>{label}</span>
@@ -278,7 +305,7 @@ export function ChooseConfiguration({
               <RadioContentWrapper className="mt-2" disabled={!isSelected}>
                 <div className="col-start-2">
                   {children}
-                  {/* Show loading indicator when checking permissions for existing config */}
+                  {/* Show status indicator when checking permissions for existing config */}
                   {value === 'existing' &&
                     (isLoadingConfig || isCheckingPermissions) && (
                       <div className="mt-2 text-sm">
