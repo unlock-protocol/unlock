@@ -48,7 +48,7 @@ describe('Lock / erc721 / tokenURI', () => {
       let configUnlockEvent
       beforeEach(async () => {
         const tx = await unlock.connect(lockManager).configUnlock(
-          await unlock.udt(),
+          await unlock.governanceToken(),
           await unlock.weth(),
           0,
           await unlock.globalTokenSymbol(),
@@ -78,7 +78,7 @@ describe('Lock / erc721 / tokenURI', () => {
     it('should fail if someone other than the owner tries to set the URI', async () => {
       await reverts(
         unlock.connect(someAccount).configUnlock(
-          await unlock.udt(),
+          await unlock.governanceToken(),
           await unlock.weth(),
           0,
           await unlock.globalTokenSymbol(),

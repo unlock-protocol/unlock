@@ -18,20 +18,70 @@ const MENU = {
   },
   menuSections: [
     {
-      title: 'Docs',
-      url: 'https://docs.unlock-protocol.com/',
+      title: 'Developers',
+      small: true,
+      options: [
+        {
+          title: '',
+          options: [
+            {
+              title: 'Docs',
+              url: 'https://docs.unlock-protocol.com/',
+            },
+            {
+              title: 'Libraries and Tools',
+              url: 'https://docs.unlock-protocol.com/libraries-and-sdks/',
+            },
+            {
+              title: 'Code Examples',
+              url: 'https://docs.unlock-protocol.com/examples/',
+            },
+            {
+              title: 'Video Tutorials',
+              url: 'https://www.youtube.com/unlock-protocol/',
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      title: 'Products By Unlock Labs',
+      small: true,
+      options: [
+        {
+          title: '',
+          options: [
+            {
+              title: 'Events',
+              url: 'https://events.unlock-protocol.com/',
+            },
+            {
+              title: 'Certifications',
+              url: 'https://certifications.unlock-protocol.com/',
+            },
+            {
+              title: 'Subscriptions',
+              url: 'https://subscriptions.unlock-protocol.com/',
+            },
+            {
+              title: 'Unlock Prime',
+              url: 'https://app.unlock-protocol.com/prime',
+              customStyle: {
+                className: 'font-extrabold text-transparent bg-clip-text',
+                style: {
+                  backgroundImage:
+                    'linear-gradient(85.7deg, #603DEB 3.25%, #F19077 90.24%)',
+                },
+              },
+            },
+          ],
+        },
+      ],
     },
     {
-      title: 'Libraries & Tools',
-      url: 'https://docs.unlock-protocol.com/tools/',
-    },
-    {
-      title: 'Code Examples',
-      url: 'https://docs.unlock-protocol.com/tutorials',
-    },
-    {
-      title: 'Video Tutorials',
-      url: ' https://www.youtube.com/watch?v=ppYLt2GTeKA',
+      title: 'Governance',
+      url: 'https://docs.unlock-protocol.com/governance/',
     },
     {
       title: 'Blog',

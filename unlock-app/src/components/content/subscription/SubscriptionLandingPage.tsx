@@ -1,3 +1,5 @@
+'use client'
+
 import { Button } from '@unlock-protocol/ui'
 import { LockTypeLandingPage } from '~/components/interface/LockTypeLandingPage'
 import { NextSeo } from 'next-seo'

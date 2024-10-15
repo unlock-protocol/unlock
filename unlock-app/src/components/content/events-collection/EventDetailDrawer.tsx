@@ -3,7 +3,6 @@ import { Event } from './EventsCollectionDetailContent'
 import ReactMarkdown from 'react-markdown'
 import { Button, Drawer, Placeholder } from '@unlock-protocol/ui'
 import { AiOutlineCalendar as CalendarIcon } from 'react-icons/ai'
-import { AiOutlineClockCircle as ClockIcon } from 'react-icons/ai'
 import { useCheckoutConfig } from '~/hooks/useCheckoutConfig'
 import { RegistrationCard } from '../event/Registration/RegistrationCard'
 import { useEventOrganizers } from '~/hooks/useEventOrganizers'
@@ -11,14 +10,14 @@ import Hosts from '../event/Hosts'
 import { EventDetail } from '../event/EventDetail'
 import { EventLocation } from '../event/EventLocation'
 import dayjs from 'dayjs'
-import { getEventDate, getEventEndDate } from '../event/utils'
-import { toFormData } from '~/components/interface/locks/metadata/utils'
 import AddToCalendarButton from '../event/AddToCalendarButton'
 import { FaExternalLinkAlt } from 'react-icons/fa'
 import Link from 'next/link'
 import PastEvent from '../event/Layout/PastEvent'
-import { language } from '~/utils/eventCollections'
 import RemoveFromCollectionButton from './RemoveFromCollectionButton'
+import { getEventAttributes } from '~/utils/eventCollections'
+import { useEventOrganizer } from '~/hooks/useEventOrganizer'
+import { TbSettings } from 'react-icons/tb'
 
 interface EventDetailDrawerProps {
   collectionSlug: string | undefined
@@ -40,6 +39,10 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
       id: event?.checkoutConfigId,
     })
 
+  const { data: isEventOrganizer } = useEventOrganizer({
+    checkoutConfig: checkoutConfig!,
+  })
+
   const { data: organizers } = useEventOrganizers({
     checkoutConfig: checkoutConfig!,
   }) as { data: string[] | undefined }
@@ -49,65 +52,43 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
   const { name, data } = event
   const { image, description } = data
 
-  const parsedEvent = toFormData({
+  const {
+    startDate: eventStartDate,
+    startTime: eventStartTime,
+    endDate: eventEndDate,
+    endTime,
+    timezone,
+    address,
+  } = getEventAttributes(event)
+
+  const parsedEvent = {
     ...event.data,
     slug: event.slug!,
-  })
-  const eventDate = getEventDate(parsedEvent?.ticket)
-  const eventEndDate = getEventEndDate(parsedEvent?.ticket)
+    ticket: {
+      event_start_date: eventStartDate,
+      event_end_date: eventEndDate,
+      event_start_time: eventStartTime,
+      event_end_time: endTime,
+      event_timezone: timezone,
+      event_address: address,
+    },
+  }
 
-  const hasPassed = eventEndDate
-    ? dayjs().isAfter(eventEndDate)
-    : dayjs().isAfter(eventDate)
+  const eventDate = dayjs.tz(`${eventStartDate} ${eventStartTime}`, timezone)
+  const eventEndDateObj = dayjs.tz(`${eventEndDate} ${endTime}`, timezone)
 
-  const isSameDay = dayjs(eventDate).isSame(eventEndDate, 'day')
+  const hasPassed = dayjs().isAfter(eventEndDateObj)
 
-  const startDate = eventDate
-    ? eventDate.toLocaleDateString(undefined, {
-        timeZone: parsedEvent?.ticket?.event_timezone,
-        weekday: 'long',
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      })
+  const isSameDay = eventDate.isSame(eventEndDateObj, 'day')
+
+  const startDate = eventDate.format('dddd, MMMM D, YYYY')
+
+  const endDate = !isSameDay
+    ? eventEndDateObj.format('dddd, MMMM D, YYYY')
     : null
 
-  const startTime =
-    eventDate && parsedEvent?.ticket?.event_start_time
-      ? eventDate.toLocaleTimeString(language(), {
-          timeZone: parsedEvent?.ticket?.event_timezone,
-          hour: '2-digit',
-          minute: '2-digit',
-          timeZoneName: 'short',
-        })
-      : undefined
-
-  const endDate =
-    eventEndDate && eventEndDate && !isSameDay
-      ? eventEndDate.toLocaleDateString(undefined, {
-          timeZone: parsedEvent?.ticket?.event_timezone,
-          weekday: 'long',
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-        })
-      : null
-
-  const endTime =
-    eventDate &&
-    parsedEvent?.ticket?.event_end_time &&
-    eventEndDate &&
-    isSameDay
-      ? eventEndDate.toLocaleTimeString(language(), {
-          timeZone: parsedEvent?.ticket?.event_timezone,
-          hour: '2-digit',
-          minute: '2-digit',
-          timeZoneName: 'short',
-        })
-      : null
-
-  const hasLocation = (parsedEvent?.ticket?.event_address || '')?.length > 0
-  const hasDate = startDate || startTime || endDate || endTime
+  const hasLocation = address?.length > 0
+  const hasDate = startDate || endDate
 
   // close drawer when the event is removed
   const handleEventRemove = () => {
@@ -118,15 +99,29 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
     <Drawer isOpen={isOpen} setIsOpen={setIsOpen}>
       {event && (
         <div className="space-y-4">
-          {isManager && (
-            <div className="flex justify-end">
+          <div className="flex flex-col md:flex-row md:justify-end gap-2 md:gap-4 px-4 md:px-0">
+            {isEventOrganizer && (
+              <Link
+                target="_blank"
+                href={`/event/${event.slug}/settings`}
+                className="w-full md:w-auto"
+              >
+                <Button variant="primary" className="w-full">
+                  <div className="flex items-center gap-2 justify-center">
+                    <TbSettings />
+                    <span>Settings</span>
+                  </div>
+                </Button>
+              </Link>
+            )}
+            {isManager && (
               <RemoveFromCollectionButton
                 collectionSlug={collectionSlug}
                 eventSlug={event.slug!}
                 onRemove={handleEventRemove}
               />
-            </div>
-          )}
+            )}
+          </div>
 
           {/* Event Image */}
           <img
@@ -140,11 +135,11 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
               event={parsedEvent}
               eventUrl={event.eventUrl}
             />
-            <Button variant="borderless-primary">
-              <Link href={event.eventUrl} target="_blank">
+            <Link href={event.eventUrl} target="_blank">
+              <Button variant="borderless-primary">
                 <FaExternalLinkAlt size={20} width={1} className="mr-2" />
-              </Link>
-            </Button>
+              </Button>
+            </Link>
           </div>
 
           {/* Event Information */}
@@ -158,7 +153,7 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
             )}
 
             {/* Date */}
-            {hasDate && startTime && (
+            {hasDate && (
               <EventDetail compact label="Date" icon={CalendarIcon}>
                 <div
                   style={{ color: `#${event.background_color}` }}
@@ -171,17 +166,8 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
               </EventDetail>
             )}
 
-            {/* Time */}
-            {startTime && (
-              <EventDetail compact label="Time" icon={ClockIcon}>
-                <div className="flex flex-col text-sm font-normal text-brand-dark">
-                  <span>{startTime}</span>
-                </div>
-              </EventDetail>
-            )}
-
             {/* Location */}
-            {hasLocation && <EventLocation event={parsedEvent} compact />}
+            {hasLocation && <EventLocation event={event.data} compact />}
 
             {isCheckoutConfigPending ? (
               <Placeholder.Root>
