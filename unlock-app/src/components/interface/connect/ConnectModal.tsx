@@ -13,8 +13,8 @@ export const ConnectModal = () => {
 
   return (
     <Modal isOpen={open} setIsOpen={closeConnectModal}>
-      <div className="z-10 w-full max-w-sm bg-white rounded-2xl py-4">
-        <header className="p-6">
+      <div className="z-10 space-y-6 w-full max-w-sm bg-white rounded-2xl py-4">
+        <header>
           <div className="flex px-1">
             <div className="flex-1 font-bold ">
               <h1 className="text-center">

@@ -49,7 +49,7 @@ export function Modal({ isOpen, setIsOpen, children, empty }: Props) {
         onClose={setIsOpen}
       >
         <DialogBackdrop className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50 backdrop-blur" />
-        <div className="flex flex-col items-center justify-center min-h-screen p-6">
+        <div className="flex flex-col items-center justify-center min-h-screen">
           <TransitionChild
             as={React.Fragment}
             enter="ease-out duration-300"
