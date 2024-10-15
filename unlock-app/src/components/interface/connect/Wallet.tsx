@@ -3,12 +3,14 @@ import { useEffect } from 'react'
 import { useCookies } from 'react-cookie'
 import { locksmith } from '~/config/locksmith'
 import { queryClient } from '~/config/queryClient'
+import { useAppStorage } from '~/hooks/useAppStorage'
 import { useSession } from '~/hooks/useSession'
 import { saveAccessToken } from '~/utils/session'
 
 export const ConnectWallet = () => {
   const [cookies] = useCookies()
   const { refetchSession } = useSession()
+  const { setStorage } = useAppStorage()
 
   const { getAccessToken: privyGetAccessToken } = usePrivy()
   // https://docs.privy.io/guide/react/wallets/external/#connect-or-create
@@ -41,6 +43,8 @@ export const ConnectWallet = () => {
             walletAddress,
           })
         }
+        setStorage('account', walletAddress)
+
         await queryClient.refetchQueries()
         await refetchSession()
       } catch (error) {
