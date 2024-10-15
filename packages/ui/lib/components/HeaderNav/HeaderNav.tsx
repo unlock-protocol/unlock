@@ -18,7 +18,7 @@ import { Size, SizeStyleProp } from '~/types'
 
 export interface NavbarMenuProps {
   title: string
-  options: { title: string; url: string }[]
+  options: NavLinkProps[]
 }
 
 export interface NavbarImageProps {
@@ -33,6 +33,10 @@ interface NavLinkProps {
   title: string
   url: string
   description?: string
+  customStyle?: {
+    className?: string
+    style?: React.CSSProperties
+  }
 }
 
 export interface NavEmbedProps {
@@ -154,12 +158,17 @@ const NavMenuSection = ({ title, options }: NavbarMenuProps) => {
     <div className="flex flex-col gap-4">
       <NavSectionTitle title={title} />
       <div className="flex flex-col gap-4">
-        {options?.map(({ title, url }, index) => {
+        {options?.map(({ title, url, customStyle }, index) => {
           return (
             <Link
               key={index}
               href={url}
-              className="duration-200 hover:text-brand-ui-primary"
+              className={`${
+                customStyle
+                  ? customStyle.className
+                  : 'duration-200 hover:text-brand-ui-primary'
+              }`}
+              style={customStyle?.style}
             >
               {title}
             </Link>
@@ -358,17 +367,23 @@ const NavSectionMobile = ({
                   <SectionTitle />
                   <div className="flex flex-col gap-4">
                     {'options' in option &&
-                      option.options?.map(({ title, url }, index) => {
-                        return (
-                          <Link
-                            key={index}
-                            href={url}
-                            className="duration-200 hover:text-brand-ui-primary"
-                          >
-                            {title}
-                          </Link>
-                        )
-                      })}
+                      option.options?.map(
+                        ({ title, url, customStyle }, index) => {
+                          return (
+                            <Link
+                              key={index}
+                              href={url}
+                              className={
+                                customStyle?.className ||
+                                'duration-200 hover:text-brand-ui-primary'
+                              }
+                              style={customStyle?.style}
+                            >
+                              {title}
+                            </Link>
+                          )
+                        }
+                      )}
                   </div>
                 </div>
               )
