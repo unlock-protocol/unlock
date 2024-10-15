@@ -1,10 +1,14 @@
 import { classed } from '@tw-classed/react'
-import React, { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { RadioGroup } from '@headlessui/react'
 import { Input, Placeholder, Select } from '@unlock-protocol/ui'
 import { useController, useFormContext } from 'react-hook-form'
 import { Configuration } from '.'
 import { CheckoutConfig } from '@unlock-protocol/core'
+import { useCheckoutConfig } from '~/hooks/useCheckoutConfig'
+import { useAuth } from '~/contexts/AuthenticationContext'
+import { useLockManager } from '~/hooks/useLockManager'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 const RadioContentWrapper = classed.div('grid grid-cols-[24px_1fr] gap-2', {
   variants: {
@@ -94,6 +98,44 @@ export function ChooseConfiguration({
     selectedConfig?.id || value?.id
   )
 
+  const [customConfigId, setCustomConfigId] = useState<string | null>(null)
+
+  const { account } = useAuth()
+  const [isCheckingPermissions, setIsCheckingPermissions] = useState(false)
+  const [locksToCheck, setLocksToCheck] = useState<
+    Array<{ address: string; network: number }>
+  >([])
+
+  const { data: configDetails, isLoading: isLoadingConfig } = useCheckoutConfig(
+    { id: customConfigId! }
+  )
+
+  const { isManager, isPending: isCheckingLockManager } = useLockManager({
+    lockAddress: locksToCheck[0]?.address,
+    network: locksToCheck[0]?.network,
+  })
+
+  // Reset state when customConfigId or value changes
+  useEffect(() => {
+    setIsCheckingPermissions(false)
+    setLocksToCheck([])
+    setSelectedConfig(undefined)
+  }, [customConfigId, value])
+
+  // Populate locks to check when config details are available
+  useEffect(() => {
+    if (configDetails && account) {
+      const locks = Object.entries(configDetails.config.locks).map(
+        ([address, lockConfig]: [string, any]) => ({
+          address,
+          network: lockConfig.network,
+        })
+      )
+      setLocksToCheck(locks)
+      setIsCheckingPermissions(true)
+    }
+  }, [configDetails, account])
+
   useEffect(() => {
     if (!value?.id) return
     setDefaultValue(value?.id)
@@ -108,12 +150,37 @@ export function ChooseConfiguration({
 
   const onSelectConfig = (configId: string | number) => {
     const config = items.find((item) => item.id === configId)
-    setSelectedConfig(config)
-
     if (config) {
+      setSelectedConfig(config)
       onChange(config)
     }
   }
+
+  useEffect(() => {
+    if (isCheckingPermissions && !isCheckingLockManager) {
+      if (isManager) {
+        // If user is a manager, check next lock or finish checking
+        if (locksToCheck.length > 1) {
+          setLocksToCheck((prev) => prev.slice(1))
+        } else {
+          setIsCheckingPermissions(false)
+          if (configDetails?.id) {
+            onSelectConfig(configDetails.id)
+          }
+        }
+      } else {
+        // If user is not a manager, check next lock or show error
+        if (locksToCheck.length > 1) {
+          setLocksToCheck((prev) => prev.slice(1))
+        } else {
+          setIsCheckingPermissions(false)
+          ToastHelper.error(
+            'You do not have permission to use this configuration.'
+          )
+        }
+      }
+    }
+  }, [isManager, isCheckingLockManager, locksToCheck, configDetails])
 
   if (loading) {
     return <ChooseConfigurationPlaceholder />
@@ -149,10 +216,20 @@ export function ChooseConfiguration({
         <Select
           disabled={items?.length === 0}
           options={configOptions}
-          onChange={(value) => {
-            onSelectConfig(value?.toString())
+          onChange={(value, isCustom) => {
+            if (isCustom) {
+              // Handle custom input
+              setCustomConfigId(value?.toString())
+              setIsCheckingPermissions(false)
+              setLocksToCheck([])
+              setSelectedConfig(undefined)
+            } else {
+              // Handle selection from existing options
+              onSelectConfig(value?.toString())
+            }
           }}
           defaultValue={defaultValue}
+          customOption={true}
         />
       ),
     },
@@ -168,11 +245,16 @@ export function ChooseConfiguration({
           if (config === 'new') {
             setSelectedConfig(undefined)
           }
+          // Reset states when configuration changes
+          setCustomConfigId(null)
+          setIsCheckingPermissions(false)
+          setLocksToCheck([])
         }}
         disabled={disabled}
       >
         {configs?.map(({ key: value, label, children, disabled }) => {
           const isSelected = configuration === value
+
           return (
             <div className="w-full" key={value}>
               <RadioGroup.Option value={value} disabled={disabled}>
@@ -194,7 +276,16 @@ export function ChooseConfiguration({
                 )}
               </RadioGroup.Option>
               <RadioContentWrapper className="mt-2" disabled={!isSelected}>
-                <div className="col-start-2">{children}</div>
+                <div className="col-start-2">
+                  {children}
+                  {/* Show loading indicator when checking permissions for existing config */}
+                  {value === 'existing' &&
+                    (isLoadingConfig || isCheckingPermissions) && (
+                      <div className="mt-2 text-sm">
+                        Checking permissions...
+                      </div>
+                    )}
+                </div>
               </RadioContentWrapper>
             </div>
           )
