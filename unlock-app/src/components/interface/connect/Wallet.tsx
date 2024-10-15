@@ -1,21 +1,64 @@
-import { LoginModal, usePrivy, useWallets } from '@privy-io/react-auth'
+import { LoginModal, useLogin, usePrivy } from '@privy-io/react-auth'
 import { useEffect } from 'react'
-import { useSIWE } from '~/hooks/useSIWE'
+import { useCookies } from 'react-cookie'
+import { locksmith } from '~/config/locksmith'
+import { queryClient } from '~/config/queryClient'
+import { useSession } from '~/hooks/useSession'
+import { saveAccessToken } from '~/utils/session'
 
 export const ConnectWallet = () => {
+  const [cookies] = useCookies()
+  const { refetchSession } = useSession()
+
+  const { getAccessToken: privyGetAccessToken } = usePrivy()
   // https://docs.privy.io/guide/react/wallets/external/#connect-or-create
-  const { login, authenticated } = usePrivy()
-  const { signIn } = useSIWE()
+  const { login } = useLogin({
+    onComplete: async (
+      user,
+      isNewUser,
+      wasAlreadyAuthenticated,
+      loginMethod,
+      linkedAccount
+    ) => {
+      console.log(
+        user,
+        isNewUser,
+        wasAlreadyAuthenticated,
+        loginMethod,
+        linkedAccount
+      )
+
+      try {
+        const response = await locksmith.loginWithPrivy({
+          accessToken: await privyGetAccessToken(),
+          identityToken: cookies['privy-id-token'],
+        })
+        console.log(response.data)
+        const { accessToken, walletAddress } = response.data
+        if (accessToken && walletAddress) {
+          saveAccessToken({
+            accessToken,
+            walletAddress,
+          })
+        }
+        await queryClient.refetchQueries()
+        await refetchSession()
+      } catch (error) {
+        console.error(error)
+        return null
+      }
+      // Any logic you'd like to execute if the user is/becomes authenticated while this
+      // component is mounted
+    },
+    onError: (error) => {
+      console.log(error)
+      // Any logic you'd like to execute after a user exits the login flow or there is an error
+    },
+  })
 
   useEffect(() => {
     login()
   }, [])
-
-  useEffect(() => {
-    if (authenticated) {
-      signIn()
-    }
-  }, [authenticated, signIn])
 
   return <LoginModal open={true} />
 }

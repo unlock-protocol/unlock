@@ -1,4 +1,11 @@
-import { ReactNode, createContext, useContext, useState } from 'react'
+import {
+  ReactNode,
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
 import { useSession } from './useSession'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { SiweMessage } from 'siwe'
@@ -63,8 +70,11 @@ interface Props {
 
 export const SIWEProvider = ({ children }: Props) => {
   const { connected, getWalletService, network } = useAuth()
-  const { getAccessToken: privyGetAccessToken, logout: privyLogout } =
-    usePrivy()
+  const {
+    getAccessToken: privyGetAccessToken,
+    logout: privyLogout,
+    authenticated: privyAuthenticated,
+  } = usePrivy()
   const { provider } = useContext(ProviderContext)
   const { session, refetchSession } = useSession()
   const [status, setStatus] = useState<Status>('idle')
@@ -153,32 +163,36 @@ export const SIWEProvider = ({ children }: Props) => {
     }
   }
 
-  const signIn = async () => {
+  const signIn = useCallback(async () => {
     setStatus('loading')
-    try {
-      if (!connected) {
-        throw new Error('No wallet connected.')
-      }
-      const response = await locksmith.loginWithPrivy({
-        accessToken: await privyGetAccessToken(),
-        identityToken: cookies['privy-id-token'],
-      })
-      const { accessToken, walletAddress } = response.data
-      if (accessToken && walletAddress) {
-        saveAccessToken({
-          accessToken,
-          walletAddress,
-        })
-      }
-      await queryClient.refetchQueries()
-      await refetchSession()
-    } catch (error) {
-      console.error(error)
-      onError(error)
-      return null
-    }
+    // try {
+    //   const response = await locksmith.loginWithPrivy({
+    //     accessToken: await privyGetAccessToken(),
+    //     identityToken: cookies['privy-id-token'],
+    //   })
+    //   console.log(response.data)
+    //   const { accessToken, walletAddress } = response.data
+    //   if (accessToken && walletAddress) {
+    //     saveAccessToken({
+    //       accessToken,
+    //       walletAddress,
+    //     })
+    //   }
+    //   await queryClient.refetchQueries()
+    //   await refetchSession()
+    // } catch (error) {
+    //   console.error(error)
+    //   onError(error)
+    //   return null
+    // }
     setStatus('idle')
-  }
+  }, [privyGetAccessToken, queryClient, refetchSession, cookies])
+
+  useEffect(() => {
+    if (privyAuthenticated) {
+      signIn()
+    }
+  }, [privyAuthenticated, signIn])
 
   const isSignedIn = !!session
   return (
