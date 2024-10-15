@@ -133,6 +133,12 @@ export const loginWithPrivy: RequestHandler = async (request, response) => {
       return response.status(400).json({ error: 'Identity token is required' })
     }
 
+    if (!privy) {
+      return response
+        .status(500)
+        .json({ error: 'Privy client is not initialized' })
+    }
+
     // Verify the access token using Privy
     const userAuthClaims = await privy.verifyAuthToken(accessToken)
 
@@ -161,7 +167,7 @@ export const loginWithPrivy: RequestHandler = async (request, response) => {
       expireAt,
     })
 
-    response.setHeader('Authorization', `Bearer ${id}`).send({
+    return response.setHeader('Authorization', `Bearer ${id}`).send({
       walletAddress,
       accessToken: id,
     })
