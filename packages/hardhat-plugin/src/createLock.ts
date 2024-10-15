@@ -4,6 +4,7 @@ import { PUBLIC_LOCK_LATEST_VERSION } from './constants'
 import { getUnlockContract } from './getUnlockContract'
 import { getLockContract } from './getLockContract'
 import { getContractAbi } from './utils'
+import networks from '@unlock-protocol/networks'
 
 export interface CreateLockArgs {
   name: string
@@ -46,6 +47,12 @@ export async function createLock(
   // send tx
   const [signer] = await hre.ethers.getSigners()
   if (!beneficiary) beneficiary = signer.address
+
+  const { chainId } = await hre.ethers.provider.getNetwork()
+
+  if (!unlockAddress && networks[Number(chainId)]) {
+    unlockAddress = networks[Number(chainId)].unlockAddress
+  }
 
   // create call data
   const { abi } = getContractAbi('PublicLock', version)

@@ -12,7 +12,12 @@ import { Controller, useForm, useWatch } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useEffect, useState } from 'react'
-import { Transition, Dialog } from '@headlessui/react'
+import {
+  Transition,
+  Dialog,
+  DialogPanel,
+  TransitionChild,
+} from '@headlessui/react'
 import { onResolveName } from '~/utils/resolvers'
 import useEns from '~/hooks/useEns'
 import { useAddLockManager } from '~/hooks/useAddLockManager'
@@ -77,7 +82,7 @@ const RenounceModal = ({
           open
         >
           <div className="fixed inset-0 bg-opacity-25 backdrop-filter backdrop-blur-sm bg-zinc-500" />
-          <Transition.Child
+          <TransitionChild
             enter="transition ease-out duration-300"
             enterFrom="opacity-0 translate-y-1"
             enterTo="opacity-100"
@@ -87,7 +92,7 @@ const RenounceModal = ({
           >
             <div className="fixed inset-0 p-6 overflow-y-auto">
               <div className="flex items-center justify-center min-h-full">
-                <Dialog.Panel className="w-full max-w-md p-8 bg-white rounded-2xl">
+                <DialogPanel className="w-full max-w-md p-8 bg-white rounded-2xl">
                   <form
                     onSubmit={handleSubmit(onRenounce)}
                     className="flex flex-col gap-6 text-center"
@@ -131,10 +136,10 @@ const RenounceModal = ({
                       </Button>
                     </div>
                   </form>
-                </Dialog.Panel>
+                </DialogPanel>
               </div>
             </div>
-          </Transition.Child>
+          </TransitionChild>
         </Dialog>
       </Transition>
     </>

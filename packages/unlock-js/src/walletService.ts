@@ -411,6 +411,32 @@ export default class WalletService extends UnlockService {
   }
 
   /**
+   * Revokes permission to grant keys to an address
+   * @param {*} params
+   * @param {*} callback
+   */
+  async removeKeyGranter(
+    params: {
+      lockAddress: string
+      keyGranter: string
+    },
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    if (!params.keyGranter) throw new Error('Missing account')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.removeKeyGranter) {
+      throw new Error('Lock version not supported')
+    }
+    return version.removeKeyGranter.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
+  }
+
+  /**
    * Expire and refunds (optional) a key by lock manager
    * @param {*} params
    * @param {*} callback

@@ -1,6 +1,7 @@
+'use client'
+
 import { networks } from '@unlock-protocol/networks'
 import { useState } from 'react'
-import { AppLayout } from '~/components/interface/layouts/AppLayout'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 
 import { formDataToMetadata } from '~/components/interface/locks/metadata/utils'
@@ -40,10 +41,9 @@ export const NewCertification = () => {
           ? UNLIMITED_KEYS_COUNT
           : formData?.lock?.maxNumberOfKeys,
         expirationDuration:
-          formData?.lock?.expirationDuration * 60 * 60 * 24 ||
+          Math.ceil(formData?.lock?.expirationDuration * 60 * 60 * 24) ||
           UNLIMITED_KEYS_DURATION,
       }
-      console.log(lockParams, formData)
       lockAddress = await walletService.createLock(
         lockParams,
         {} /** transactionParams */,
@@ -91,18 +91,16 @@ export const NewCertification = () => {
   }
 
   return (
-    <AppLayout showLinks={false} authRequired={true}>
-      <div className="grid max-w-3xl gap-6 pb-24 mx-auto">
-        {transactionDetails && (
-          <CertificationDeploying
-            transactionDetails={transactionDetails}
-            lockAddress={lockAddress}
-            slug={slug}
-          />
-        )}
-        {!transactionDetails && <CertificationForm onSubmit={onSubmit} />}
-      </div>
-    </AppLayout>
+    <div className="grid max-w-3xl gap-6 pb-24 mx-auto">
+      {transactionDetails && (
+        <CertificationDeploying
+          transactionDetails={transactionDetails}
+          lockAddress={lockAddress}
+          slug={slug}
+        />
+      )}
+      {!transactionDetails && <CertificationForm onSubmit={onSubmit} />}
+    </div>
   )
 }
 

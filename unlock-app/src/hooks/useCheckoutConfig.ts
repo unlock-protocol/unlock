@@ -31,7 +31,7 @@ export const useCheckoutConfigsByUserAndLock = ({
 }) => {
   const { account } = useAuth()
   return useQuery({
-    queryKey: ['checkoutConfigsByUser', account!],
+    queryKey: ['checkoutConfigsByUserAndLock', account!, lockAddress],
     queryFn: async () => {
       const response = await locksmith.listCheckoutConfigs()
       const locks = response.data.results?.filter((config) => {

@@ -6,7 +6,6 @@ async function main() {
   const hook = await ERC20BalanceOfHook.deploy()
   await hook.deployed()
 
-  // eslint-disable-next-line no-console
   console.log(
     `HOOK (ERC20 BalanceOf)  > deployed to : ${hook.address} (tx: ${hook.deployTransaction.hash})`
   )
