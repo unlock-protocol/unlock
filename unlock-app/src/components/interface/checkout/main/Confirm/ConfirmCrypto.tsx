@@ -9,7 +9,7 @@ import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { useSelector } from '@xstate/react'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Pricing } from '../../Lock'
-import { getReferrer, lockTickerSymbol } from '~/utils/checkoutLockUtils'
+import { getReferrers, lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { Lock } from '~/unlockTypes'
 import ReCaptcha from 'react-google-recaptcha'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
@@ -146,10 +146,6 @@ export function ConfirmCrypto({
         pricingData?.prices.map((item) => item.amount.toString()) ||
         new Array(recipients!.length).fill(keyPrice)
 
-      const referrers: string[] = recipients.map((recipient) => {
-        return getReferrer(recipient, paywallConfig, lockAddress)
-      })
-
       const onErrorCallback = (error: Error | null, hash: string | null) => {
         setIsConfirming(false)
         if (error) {
@@ -165,11 +161,16 @@ export function ConfirmCrypto({
 
       const walletService = await getWalletService(lockNetwork)
       if (renew) {
+        const referrers = await getReferrers(
+          [account!],
+          paywallConfig,
+          lockAddress
+        )
         await walletService.extendKey(
           {
             lockAddress,
             owner: recipients?.[0],
-            referrer: getReferrer(account!, paywallConfig, lockAddress),
+            referrer: referrers[0],
             data: purchaseData?.[0],
             recurringPayment: recurringPayments
               ? recurringPayments[0]
@@ -179,6 +180,11 @@ export function ConfirmCrypto({
           onErrorCallback
         )
       } else {
+        const referrers = await getReferrers(
+          recipients,
+          paywallConfig,
+          lockAddress
+        )
         await walletService.purchaseKeys(
           {
             lockAddress,

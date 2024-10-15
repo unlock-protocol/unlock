@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { networks } from '@unlock-protocol/networks'
 import { ethers } from 'ethers'
-import { getReferrer } from '~/utils/checkoutLockUtils'
+import { getReferrers } from '~/utils/checkoutLockUtils'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface Options {
@@ -33,14 +33,14 @@ export const purchasePriceFor = async (
     ? await web3Service.getTokenDecimals(currencyContractAddress!, network)
     : networks[network].nativeCurrency?.decimals || 18
 
+  const referrers = await getReferrers(recipients, paywallConfig, lockAddress)
   const prices = await Promise.all(
     recipients.map(async (userAddress, index) => {
-      const referrer = getReferrer(userAddress, paywallConfig, lockAddress)
       const options = {
         lockAddress,
         network,
         userAddress,
-        referrer,
+        referrer: referrers[index],
         data: data?.[index] || '0x',
       }
       const price = await web3Service.purchasePriceFor(options)

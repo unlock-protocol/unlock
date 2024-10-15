@@ -19,7 +19,7 @@ import { config } from '~/config/app'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Placeholder } from '@unlock-protocol/ui'
 import { Key } from '~/hooks/useKeys'
-import { getReferrer } from '~/utils/checkoutLockUtils'
+import { getReferrers } from '~/utils/checkoutLockUtils'
 
 const ExtendMembershipPlaceholder = () => {
   return (
@@ -121,10 +121,11 @@ export const ExtendMembershipModal = ({
         walletService.signer
       )
     } else {
+      const referrers = await getReferrers([account!])
       await walletService.extendKey({
         lockAddress: lock?.address,
         tokenId: ownedKey.tokenId,
-        referrer: getReferrer(account!),
+        referrer: referrers[0],
         recurringPayment: renewal ? renewal : undefined,
         totalApproval: unlimited ? MAX_UINT : undefined,
       })

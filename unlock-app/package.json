@@ -113,6 +113,7 @@
     "deploy-fleek": "./scripts/deploy-fleek.sh",
     "start": "yarn build && NODE_ENV=production next start",
     "test": "UNLOCK_ENV=test vitest run --coverage --environment=jsdom",
+    "test:watch": "UNLOCK_ENV=test vitest --coverage --environment=jsdom -w",
     "lint": "eslint",
     "ci": "yarn test && yarn lint && yarn build"
   },
