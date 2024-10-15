@@ -1,3 +1,5 @@
+'use client'
+
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useConnectModal } from '~/hooks/useConnectModal'
 import ConnectWalletComponent from './ConnectWalletComponent'
