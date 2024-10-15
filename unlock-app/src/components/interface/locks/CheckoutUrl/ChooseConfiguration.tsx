@@ -222,8 +222,6 @@ export function ChooseConfiguration({
     return <ChooseConfigurationPlaceholder />
   }
 
-  console.log('configOptions', configOptions)
-
   // Define Configuration Options for RadioGroup
   const configs: ConfigurationOptions[] = [
     {
