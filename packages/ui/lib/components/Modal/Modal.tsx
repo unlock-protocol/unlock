@@ -23,7 +23,7 @@ export function Modal({ isOpen, setIsOpen, children, empty }: Props) {
     )
   } else {
     content = (
-      <div className="block p-4 overflow-hidden transition-all transform bg-white border border-gray-100 rounded-lg shadow-xl sm:max-w-lg sm:w-full">
+      <div className="inline-block p-5 overflow-hidden transition-all transform bg-white border border-gray-100 rounded-lg shadow-xl">
         <div className="flex items-center justify-end">
           <button
             className="hover:fill-brand-ui-primary"
