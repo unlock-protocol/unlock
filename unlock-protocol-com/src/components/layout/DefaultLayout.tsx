@@ -64,6 +64,17 @@ const MENU = {
               title: 'Subscriptions',
               url: 'https://subscriptions.unlock-protocol.com/',
             },
+            {
+              title: 'Unlock Prime',
+              url: 'https://app.unlock-protocol.com/prime',
+              customStyle: {
+                className: 'font-extrabold text-transparent bg-clip-text',
+                style: {
+                  backgroundImage:
+                    'linear-gradient(85.7deg, #603DEB 3.25%, #F19077 90.24%)',
+                },
+              },
+            },
           ],
         },
       ],
