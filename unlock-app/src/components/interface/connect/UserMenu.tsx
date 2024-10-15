@@ -26,7 +26,7 @@ export const UserMenu = () => {
   }, [signOut, deAuthenticate])
 
   return (
-    <Menu as="div" className="relative inline-block text-left z-40">
+    <Menu as="div" className="relative inline-block text-left">
       <MenuButton className="flex items-center gap-2">
         <span className="text-brand-ui-primary text-right">
           {userEns === account
