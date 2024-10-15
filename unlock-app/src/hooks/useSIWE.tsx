@@ -1,11 +1,4 @@
-import {
-  ReactNode,
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react'
+import { ReactNode, createContext, useContext, useState } from 'react'
 import { useSession } from './useSession'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { SiweMessage } from 'siwe'
@@ -20,8 +13,6 @@ import { config } from '~/config/app'
 import ProviderContext from '~/contexts/ProviderContext'
 import { isInIframe } from '~/utils/iframe'
 import { signOut as nextSignOut } from 'next-auth/react'
-import { usePrivy } from '@privy-io/react-auth'
-import { useCookies } from 'react-cookie'
 
 export type Status = 'loading' | 'error' | 'success' | 'rejected' | 'idle'
 
@@ -69,17 +60,15 @@ interface Props {
 }
 
 export const SIWEProvider = ({ children }: Props) => {
+  const [siweResult, setSiweResult] = useState<{
+    message: string
+    signature: string
+  } | null>(null)
   const { connected, getWalletService, network } = useAuth()
-  const {
-    getAccessToken: privyGetAccessToken,
-    logout: privyLogout,
-    authenticated: privyAuthenticated,
-  } = usePrivy()
   const { provider } = useContext(ProviderContext)
   const { session, refetchSession } = useSession()
   const [status, setStatus] = useState<Status>('idle')
   const queryClient = useQueryClient()
-  const [cookies] = useCookies()
 
   const onError = (error: any) => {
     console.error(error)
@@ -97,7 +86,7 @@ export const SIWEProvider = ({ children }: Props) => {
   const signOut = async () => {
     try {
       setStatus('loading')
-      await privyLogout()
+      // Before signing out, we need to revoke the token
       await nextSignOut({ redirect: false })
       await signOutToken()
       await Promise.all([queryClient.invalidateQueries(), refetchSession()])
@@ -163,36 +152,40 @@ export const SIWEProvider = ({ children }: Props) => {
     }
   }
 
-  const signIn = useCallback(async () => {
+  const signIn = async () => {
     setStatus('loading')
-    // try {
-    //   const response = await locksmith.loginWithPrivy({
-    //     accessToken: await privyGetAccessToken(),
-    //     identityToken: cookies['privy-id-token'],
-    //   })
-    //   console.log(response.data)
-    //   const { accessToken, walletAddress } = response.data
-    //   if (accessToken && walletAddress) {
-    //     saveAccessToken({
-    //       accessToken,
-    //       walletAddress,
-    //     })
-    //   }
-    //   await queryClient.refetchQueries()
-    //   await refetchSession()
-    // } catch (error) {
-    //   console.error(error)
-    //   onError(error)
-    //   return null
-    // }
-    setStatus('idle')
-  }, [privyGetAccessToken, queryClient, refetchSession, cookies])
+    try {
+      if (!connected) {
+        throw new Error('No wallet connected.')
+      }
 
-  useEffect(() => {
-    if (privyAuthenticated) {
-      signIn()
+      const { data: nonce } = await locksmith.nonce()
+      const siweResult = await siweSign(nonce, '')
+
+      if (siweResult) {
+        setSiweResult(siweResult)
+        const { message, signature } = siweResult
+        const response = await locksmith.login({
+          message,
+          signature,
+        })
+        const { accessToken, walletAddress } = response.data
+        if (accessToken && walletAddress) {
+          saveAccessToken({
+            accessToken,
+            walletAddress,
+          })
+        }
+        await queryClient.refetchQueries()
+        await refetchSession()
+      }
+    } catch (error) {
+      console.error(error)
+      onError(error)
+      return null
     }
-  }, [privyAuthenticated, signIn])
+    setStatus('idle')
+  }
 
   const isSignedIn = !!session
   return (
@@ -204,6 +197,8 @@ export const SIWEProvider = ({ children }: Props) => {
         status,
         signOut,
         isSignedIn,
+        signature: siweResult?.signature,
+        message: siweResult?.message,
       }}
     >
       {children}

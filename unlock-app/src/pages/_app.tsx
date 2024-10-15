@@ -1,4 +1,3 @@
-import { CookiesProvider } from 'react-cookie'
 import { AirstackProvider } from '@airstack/airstack-react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import React, { useEffect } from 'react'
@@ -13,12 +12,11 @@ import { ErrorBoundary } from '@sentry/nextjs'
 import { ErrorFallback } from '~/components/interface/ErrorFallback'
 import { queryClient } from '~/config/queryClient'
 import { SessionProvider } from '~/hooks/useSession'
+import { ConnectModalProvider } from '~/hooks/useConnectModal'
 import { SessionProvider as NextAuthSessionProvider } from 'next-auth/react'
 import '~/utils/bigint'
 import { Inter } from 'next/font/google'
 import ShouldOpenConnectModal from '~/components/interface/connect/ShouldOpenConnectModal'
-import { ConnectModalProvider } from '~/hooks/useConnectModal'
-import Privy from '~/config/PrivyProvider'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -42,29 +40,25 @@ const UnlockApp = ({
   return (
     <div className={inter.className}>
       <QueryClientProvider client={queryClient}>
-        <CookiesProvider defaultSetOptions={{ path: '/' }}>
-          <Privy>
-            <SessionProvider>
-              <NextAuthSessionProvider>
-                <ConnectModalProvider>
-                  <GlobalWrapper>
-                    <ErrorBoundary
-                      fallback={(props) => <ErrorFallback {...props} />}
-                    >
-                      <ShouldOpenConnectModal />
-                      <AirstackProvider
-                        apiKey={'162b7c4dda5c44afdb0857b6b04454f99'}
-                      >
-                        <Component pageProps={pageProps} />
-                      </AirstackProvider>
-                    </ErrorBoundary>
-                    <Toaster />
-                  </GlobalWrapper>
-                </ConnectModalProvider>
-              </NextAuthSessionProvider>
-            </SessionProvider>
-          </Privy>
-        </CookiesProvider>
+        <SessionProvider>
+          <NextAuthSessionProvider>
+            <ConnectModalProvider>
+              <GlobalWrapper>
+                <ErrorBoundary
+                  fallback={(props) => <ErrorFallback {...props} />}
+                >
+                  <ShouldOpenConnectModal />
+                  <AirstackProvider
+                    apiKey={'162b7c4dda5c44afdb0857b6b04454f99'}
+                  >
+                    <Component pageProps={pageProps} />
+                  </AirstackProvider>
+                </ErrorBoundary>
+                <Toaster />
+              </GlobalWrapper>
+            </ConnectModalProvider>
+          </NextAuthSessionProvider>
+        </SessionProvider>
       </QueryClientProvider>
       <SpeedInsights />
     </div>

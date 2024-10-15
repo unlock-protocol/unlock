@@ -59,6 +59,7 @@ export const useProvider = (config: any) => {
   const displayAccount = email || connected
 
   const createBrowserProvider = (provider: any): ethers.BrowserProvider => {
+    console.log('ready:', { provider })
     const browserProvider = new ethers.BrowserProvider(provider)
     if (provider.parentOrigin) {
       // @ts-expect-error Property 'parentOrigin' does not exist on type 'BrowserProvider'.
@@ -117,10 +118,9 @@ export const useProvider = (config: any) => {
   }
 
   const getWalletService = async (networkId?: number) => {
-    const provider = wallets[0].getEthersProvider()
-    // const networkProvider = await getNetworkProvider(networkId)
+    const networkProvider = await getNetworkProvider(networkId)
     const { walletService: _walletService } =
-      await createWalletService(provider)
+      await createWalletService(networkProvider)
     return _walletService
   }
 
