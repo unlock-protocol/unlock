@@ -6,37 +6,53 @@ import {
   TransitionChild,
 } from '@headlessui/react'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
+
 export interface Props {
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
   children?: ReactNode
   empty?: boolean
+  size?: 'small' | 'medium' | 'large'
 }
 
-export function Modal({ isOpen, setIsOpen, children, empty }: Props) {
+const sizeClasses = {
+  small: 'max-w-sm',
+  medium: 'max-w-lg',
+  large: 'max-w-4xl',
+}
+
+export function Modal({
+  isOpen,
+  setIsOpen,
+  children,
+  empty,
+  size = 'medium',
+}: Props) {
+  const sizeClass = sizeClasses[size]
+
   let content
   if (empty) {
     content = (
-      <div className="flex flex-col items-center justify-center min-w-full min-h-screen overflow-auto">
+      <div className="flex flex-col items-center justify-center w-full h-full overflow-auto">
         {children}
       </div>
     )
   } else {
     content = (
-      <div className="inline-block p-5 overflow-hidden transition-all transform bg-white border border-gray-100 rounded-lg shadow-xl">
-        <div className="flex items-center justify-end">
-          <button
-            className="hover:fill-brand-ui-primary"
-            aria-label="close"
-            onClick={(event) => {
-              event.preventDefault()
-              setIsOpen(false)
-            }}
-          >
-            <CloseIcon className="fill-inherit" size={24} />
-          </button>
-        </div>
-        {children}
+      <div
+        className={`relative w-full ${sizeClass} mx-auto overflow-hidden transition-all transform bg-white border border-gray-100 rounded-lg shadow-xl`}
+      >
+        <button
+          className="absolute top-4 right-4 hover:fill-brand-ui-primary"
+          aria-label="close"
+          onClick={(event) => {
+            event.preventDefault()
+            setIsOpen(false)
+          }}
+        >
+          <CloseIcon className="fill-inherit" size={24} />
+        </button>
+        <div className="p-6">{children}</div>
       </div>
     )
   }
@@ -49,7 +65,7 @@ export function Modal({ isOpen, setIsOpen, children, empty }: Props) {
         onClose={setIsOpen}
       >
         <DialogBackdrop className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50 backdrop-blur" />
-        <div className="flex flex-col items-center justify-center min-h-screen">
+        <div className="flex items-center justify-center min-h-screen px-4 py-6 text-center sm:p-0">
           <TransitionChild
             as={React.Fragment}
             enter="ease-out duration-300"
