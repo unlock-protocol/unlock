@@ -103,7 +103,7 @@ contract MixinLockCore is MixinRoles, MixinFunds, MixinDisable {
   ILockTokenURIHook public onTokenURIHook;
 
   // use to check data version (added to v10)
-  uint public schemaVersion;
+  uint internal schemaVersion;
 
   // keep track of how many key a single address can use (added to v10)
   uint internal _maxKeysPerAddress;
