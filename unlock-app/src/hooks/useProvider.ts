@@ -46,6 +46,15 @@ export const useProvider = (config: any) => {
   const email = provider?.emailAddress || getStorage('email')
   const encryptedPrivateKey = provider?.passwordEncryptedPrivateKey
 
+  /**
+   * Initializes a `WalletService` instance with the provided provider.
+   * This helps setup the connection to the blockchain
+   * and retrieving essential information like the network and account.
+   *
+   * @param provider - The Ethereum provider to connect with
+   * @returns An object containing the initialized WalletService, provider, network, and account
+   *
+   */
   const createWalletService = async (provider: any) => {
     const _walletService = new WalletService(config.networks)
     const _network = await _walletService.connect(provider)
@@ -117,12 +126,48 @@ export const useProvider = (config: any) => {
     }
     return walletServiceProvider
   }
-
+  /**
+   * Retrieves or initializes a `WalletService` for a specific network.
+   * It does the following:
+   * 1. Retrieves the current Ethereum provider from the wallet.
+   * 2. Checks the current network and compares it with the requested network.
+   * 3. If necessary, prompts the user to switch to the requested network.
+   * 4. Creates and returns a `WalletService` instance for the appropriate network.
+   *
+   * @param networkId - Optional network ID to connect to. If not provided, uses the current network.
+   * @returns An initialized `WalletService` instance for the specified or current network.
+   * @throws an error if there's an issue during the process, such as failed network switching.
+   */
   const getWalletService = async (networkId?: number) => {
-    const provider = await wallets[0].getEthersProvider()
-    const { walletService: _walletService } =
-      await createWalletService(provider)
-    return _walletService
+    try {
+      const provider = await wallets[0].getEthersProvider()
+
+      // Get the current network
+      const network = await provider.getNetwork()
+      const currentChainId = network.chainId
+
+      // compare the networkId with the current chainId
+      if (networkId && networkId !== currentChainId) {
+        // Prompt user to switch to the requested network
+        await wallets[0].switchChain(networkId)
+
+        // After switching, get the updated provider
+        const updatedProvider = await wallets[0].getEthersProvider()
+
+        // instantiate the wallet service with the updated provider
+        const { walletService: _walletService } =
+          await createWalletService(updatedProvider)
+        return _walletService
+      }
+
+      // if no network switch was needed, instantiate the wallet service with the current provider
+      const { walletService: _walletService } =
+        await createWalletService(provider)
+      return _walletService
+    } catch (error) {
+      console.error('Error in getWalletService:', error)
+      throw error
+    }
   }
 
   const resetProvider = async (provider: ethers.AbstractProvider) => {
