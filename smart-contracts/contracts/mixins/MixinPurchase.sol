@@ -55,6 +55,7 @@ contract MixinPurchase is
     address referrer;
     address keyManager;
     bytes data;
+    uint periods;
   }
 
   /**
@@ -252,7 +253,8 @@ contract MixinPurchase is
     address _recipient,
     address _keyManager,
     address _referrer,
-    bytes memory _data
+    bytes memory _data,
+    uint periods
   ) internal returns (uint tokenId, uint pricePaid) {
     // create a new key, check for a non-expiring key
     tokenId = _createNewKey(
@@ -260,11 +262,11 @@ contract MixinPurchase is
       _keyManager,
       expirationDuration == type(uint).max
         ? type(uint).max
-        : block.timestamp + expirationDuration
+        : block.timestamp + (expirationDuration * periods)
     );
 
     // price
-    pricePaid = purchasePriceFor(_recipient, _referrer, _data);
+    pricePaid = purchasePriceFor(_recipient, _referrer, _data) * periods;
 
     // store values at purchase time
     _recordTokenTerms(tokenId, pricePaid);
@@ -305,7 +307,8 @@ contract MixinPurchase is
         purchaseArgs[i].recipient,
         purchaseArgs[i].keyManager,
         purchaseArgs[i].referrer,
-        purchaseArgs[i].data
+        purchaseArgs[i].data,
+        purchaseArgs[i].periods
       );
       totalPriceToPay = totalPriceToPay + pricePaid;
       tokenIds[i] = tokenId;
@@ -367,7 +370,8 @@ contract MixinPurchase is
         _recipients[i],
         _keyManagers[i],
         _referrers[i],
-        _data[i]
+        _data[i],
+        1 // default to one single period
       );
       totalPriceToPay = totalPriceToPay + pricePaid;
       tokenIds[i] = tokenId;
