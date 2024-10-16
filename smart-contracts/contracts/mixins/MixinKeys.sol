@@ -135,18 +135,6 @@ contract MixinKeys is MixinErrors, MixinLockCore {
       "SCHEMA_VERSION_NOT_CORRECT"
     );
 
-    // only for mainnet
-    if (block.chainid == 1) {
-      // Hardcoded address for the redeployed Unlock contract on mainnet
-      address newUnlockAddress = 0xe79B93f8E22676774F2A8dAd469175ebd00029FA;
-
-      // trigger migration from the new Unlock
-      IUnlock(newUnlockAddress).postLockUpgrade();
-
-      // update unlock ref in this lock
-      unlockProtocol = IUnlock(newUnlockAddress);
-    }
-
     // update data version
     schemaVersion = publicLockVersion();
   }
@@ -155,7 +143,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
    * Set the schema version to the latest
    * @notice only lock manager call call this
    */
-  function updateSchemaVersion() public {
+  function updateSchemaVersion() internal {
     _onlyLockManager();
     schemaVersion = publicLockVersion();
   }
