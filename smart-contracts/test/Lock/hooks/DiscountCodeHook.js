@@ -1,6 +1,7 @@
 const assert = require('assert')
 const { ethers } = require('hardhat')
-const { deployLock } = require('../../helpers')
+const { deployLock, reverts } = require('../../helpers')
+const { ZeroAddress } = require('ethers')
 
 /**
  * Helper function
@@ -44,6 +45,35 @@ describe('DiscountHook', function () {
     assert.equal(
       await hook.getSigner(recipient.toLowerCase(), data),
       signerAddress
+    )
+  })
+
+  it("setSigner shouldn't work if discount is too big", async function () {
+    const DiscountHook = await ethers.getContractFactory('DiscountHook')
+    const hook = await DiscountHook.deploy()
+
+    await reverts(hook.setSigner(ZeroAddress, ZeroAddress, 20000, 1), 'TOO_BIG')
+  })
+
+  it("setSigner shouldn't work if msgSender is not manager", async function () {
+    const [user, sender] = await ethers.getSigners()
+
+    const keyPrice = ethers.parseEther('0.1')
+    const lock = await deployLock({
+      keyPrice,
+    })
+    const DiscountHook = await ethers.getContractFactory('DiscountHook')
+    const hook = await DiscountHook.deploy()
+
+    const code = 'PROMOCODE'
+    const discount = 3000
+    const cap = 10
+
+    await reverts(
+      hook
+        .connect(sender)
+        .setSigner(await lock.getAddress(), ZeroAddress, discount, cap),
+      'NOT_AUTHORIZED'
     )
   })
 
@@ -245,5 +275,30 @@ describe('DiscountHook', function () {
       dataOther
     )
     assert.equal(ethers.formatEther(priceOther), '0.1')
+  })
+
+  it('toString - number', async () => {
+    const DiscountHook = await ethers.getContractFactory('DiscountHook')
+    const hook = await DiscountHook.deploy()
+
+    const toStringFunction = hook.getFunction(
+      'function toString(uint256) public pure returns (string memory)'
+    )
+    const value = 123
+    const result = await toStringFunction(value)
+    assert.equal(result.includes(value.toString(16)), true)
+  })
+
+  it('toString - string', async () => {
+    const DiscountHook = await ethers.getContractFactory('DiscountHook')
+    const hook = await DiscountHook.deploy()
+
+    const value = `0x${ethers.parseEther('10').toString(16)}`
+    const hexString = ethers.hexlify(ethers.zeroPadValue(value, 32))
+    const toStringFunction = hook.getFunction(
+      'function toString(bytes32) public pure returns (string memory)'
+    )
+    const result = await toStringFunction(hexString)
+    assert.equal(result, hexString)
   })
 })

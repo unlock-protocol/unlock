@@ -1,25 +1,22 @@
 const assert = require('assert')
 const { ethers } = require('hardhat')
+const { reverts, ADDRESS_ZERO, advanceBlock } = require('../helpers')
 const {
-  reverts,
-  ADDRESS_ZERO,
-  getProxyAddress,
-  advanceBlock,
-} = require('../helpers')
-const { getEvent } = require('@unlock-protocol/hardhat-helpers')
-
-const {
+  getEvent,
   resetNodeState,
+  getUnlockAddress,
+  getUdt,
   impersonate,
-  MULTISIG_ADDRESS_OWNER,
-} = require('../helpers')
+} = require('@unlock-protocol/hardhat-helpers')
 
-describe('UnlockDiscountToken on mainnet', async () => {
+const { MULTISIG_ADDRESS_OWNER } = require('../helpers')
+
+describe('UnlockDiscountToken on mainnet', () => {
   let udt
   const chainId = 1 // mainnet
   let unlockAddress
 
-  beforeEach(async function setupMainnetForkTestEnv() {
+  before(async function setupMainnetForkTestEnv() {
     if (!process.env.RUN_FORK) {
       // all suite will be skipped
       this.skip()
@@ -28,21 +25,13 @@ describe('UnlockDiscountToken on mainnet', async () => {
     // reset fork
     await resetNodeState()
 
-    // prepare proxy info
-    const proxyAddress = getProxyAddress(chainId, 'UnlockDiscountTokenV3')
-    // const proxyAdmin = getProxyAdminAddress({ network })
-    // await impersonate(proxyAdmin)
-
     // mocha settings
     this.timeout(200000)
 
-    const UnlockDiscountToken = await ethers.getContractFactory(
-      'UnlockDiscountTokenV3'
-    )
     const [, minter] = await ethers.getSigners()
-    udt = await UnlockDiscountToken.attach(proxyAddress).connect(minter)
+    udt = (await getUdt()).connect(minter)
 
-    unlockAddress = getProxyAddress(chainId, 'Unlock')
+    unlockAddress = await getUnlockAddress()
   })
 
   describe('ERC20 details', () => {
@@ -63,7 +52,9 @@ describe('UnlockDiscountToken on mainnet', async () => {
   })
 
   describe('mint', () => {
-    const amount = ethers.hexStripZeros(ethers.parseEther('1000'))
+    const amount = ethers.stripZerosLeft(
+      ethers.toBeHex(ethers.parseEther('1000'))
+    )
 
     it('minters can not be added anymore', async () => {
       const [, minter] = await ethers.getSigners()
@@ -135,7 +126,7 @@ describe('UnlockDiscountToken on mainnet', async () => {
         assert.isTrue(pastTotalSupply == totalSupply)
       })
       it('increases when tokens are minted', async () => {
-        const amount = ethers.hexStripZeros(ethers.parseEther('1000'))
+        const amount = ethers.parseEther('1000')
         const blockNumber = await ethers.provider.getBlockNumber()
         await advanceBlock()
         const pastTotalSupply = await udt.getPastTotalSupply(blockNumber)
@@ -224,7 +215,6 @@ describe('UnlockDiscountToken on mainnet', async () => {
 
       const value = 1
       const deadline = Math.floor(new Date().getTime()) + 60 * 60 * 24
-      const { chainId } = await ethers.provider.getNetwork()
       const nonce = await udt.nonces(await permitter.getAddress())
 
       const domain = {

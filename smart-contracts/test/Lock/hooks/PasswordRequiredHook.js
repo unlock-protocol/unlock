@@ -1,6 +1,7 @@
 const assert = require('assert')
 const { ethers } = require('hardhat')
 const { reverts, deployLock } = require('../../helpers')
+const { ZeroAddress } = require('ethers')
 
 /**
  * Helper function
@@ -49,6 +50,27 @@ describe('PasswordRequiredHook', function () {
     assert.equal(
       await hook.getSigner(recipient.toLowerCase(), data),
       signerAddress
+    )
+  })
+
+  it("setSigner shouldn't work if msgSender is not manager", async function () {
+    const [user, sender] = await ethers.getSigners()
+
+    const keyPrice = ethers.parseEther('0.1')
+    const lock = await deployLock({
+      keyPrice,
+    })
+    const PasswordRequiredHook = await ethers.getContractFactory(
+      'PasswordRequiredHook'
+    )
+    const hook = await PasswordRequiredHook.deploy()
+
+    const usages = 10n
+    await reverts(
+      hook
+        .connect(sender)
+        .setSigner(await lock.getAddress(), ZeroAddress, usages),
+      'NOT_AUTHORIZED'
     )
   })
 
