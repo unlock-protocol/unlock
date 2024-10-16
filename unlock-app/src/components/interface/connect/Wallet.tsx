@@ -15,31 +15,20 @@ export const ConnectWallet = () => {
   const { getAccessToken: privyGetAccessToken } = usePrivy()
   // https://docs.privy.io/guide/react/wallets/external/#connect-or-create
   const { login } = useLogin({
-    onComplete: async (
-      user,
-      isNewUser,
-      wasAlreadyAuthenticated,
-      loginMethod,
-      linkedAccount
-    ) => {
-      console.log(
-        user,
-        isNewUser,
-        wasAlreadyAuthenticated,
-        loginMethod,
-        linkedAccount
-      )
-
+    onComplete: async () => {
       try {
+        const accessToken = await privyGetAccessToken()
+        const identityToken = cookies['privy-id-token']
         const response = await locksmith.loginWithPrivy({
-          accessToken: await privyGetAccessToken(),
-          identityToken: cookies['privy-id-token'],
+          accessToken: accessToken!,
+          identityToken: identityToken!,
         })
-        console.log(response.data)
-        const { accessToken, walletAddress } = response.data
-        if (accessToken && walletAddress) {
+
+        const { accessToken: locksmithAccessToken, walletAddress } =
+          response.data
+        if (locksmithAccessToken && walletAddress) {
           saveAccessToken({
-            accessToken,
+            accessToken: locksmithAccessToken,
             walletAddress,
           })
         }
@@ -51,12 +40,9 @@ export const ConnectWallet = () => {
         console.error(error)
         return null
       }
-      // Any logic you'd like to execute if the user is/becomes authenticated while this
-      // component is mounted
     },
     onError: (error) => {
-      console.log(error)
-      // Any logic you'd like to execute after a user exits the login flow or there is an error
+      console.error(error)
     },
   })
 
