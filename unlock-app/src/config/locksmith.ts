@@ -15,7 +15,6 @@ locksmithClient.interceptors.request.use((request) => {
     return request
   }
   const accessToken = getAccessToken(currentAccountAddress)
-  console.log({ accessToken })
   if (!accessToken) {
     return request
   }
