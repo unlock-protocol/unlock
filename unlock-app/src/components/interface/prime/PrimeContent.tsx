@@ -132,8 +132,8 @@ export const PrimeContent = () => {
         </div>
       </section>
       <small>
-        † ETH reward currently 110% of what you paid that month, up to 10 ETH
-        per month, while supplies last.
+        † The ETH reward is currently 110% of your monthly payment, drawn from a
+        pool of up to 10 ETH each month, available while supplies last.
       </small>
     </main>
   )
