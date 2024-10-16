@@ -262,11 +262,11 @@ contract MixinPurchase is
       _keyManager,
       expirationDuration == type(uint).max
         ? type(uint).max
-        : block.timestamp + (expirationDuration * periods)
+        : block.timestamp + expirationDuration
     );
 
     // price
-    pricePaid = purchasePriceFor(_recipient, _referrer, _data) * periods;
+    pricePaid = purchasePriceFor(_recipient, _referrer, _data);
 
     // store values at purchase time
     _recordTokenTerms(tokenId, pricePaid);

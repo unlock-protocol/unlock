@@ -24,7 +24,7 @@ describe('Lock / erc721 / tokenSymbol', () => {
     describe('set the global symbol', () => {
       beforeEach(async () => {
         await unlock.connect(lockManager).configUnlock(
-          await unlock.udt(),
+          await unlock.governanceToken(),
           await unlock.weth(),
           0,
           'KEY',
@@ -48,7 +48,7 @@ describe('Lock / erc721 / tokenSymbol', () => {
     it('should fail if someone other than the owner tries to set the symbol', async () => {
       await reverts(
         unlock.connect(someAccount).configUnlock(
-          await unlock.udt(),
+          await unlock.governanceToken(),
           await unlock.weth(),
           0,
           'BTC',
