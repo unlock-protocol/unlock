@@ -25,7 +25,6 @@ export const getCurrentNetwork = () => {
 export const getAccessToken = (
   address: string | undefined = getCurrentAccount()
 ) => {
-  console.log('Get access token for ', address)
   if (!address) {
     return null
   }
@@ -47,7 +46,6 @@ export const saveAccessToken = ({
   walletAddress,
   accessToken,
 }: Record<'walletAddress' | 'accessToken', string>) => {
-  console.log({ walletAddress, accessToken })
   const ACCESS_TOKEN_KEY = getSessionKey(walletAddress)
   localStorage.setItem(ACCESS_TOKEN_KEY, accessToken)
   return accessToken

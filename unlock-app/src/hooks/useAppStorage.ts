@@ -10,7 +10,6 @@ export function useAppStorage() {
   }, [])
 
   const setStorage = useCallback((key: string, value: any) => {
-    console.log({ key, value })
     try {
       localStorage.setItem(
         getKey(key),
