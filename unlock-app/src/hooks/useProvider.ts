@@ -9,6 +9,7 @@ import { ToastHelper } from '../components/helpers/toast.helper'
 import { useSession } from './useSession'
 import { getCurrentNetwork } from '~/utils/session'
 import { useConnectModal } from './useConnectModal'
+import { useWallets } from '@privy-io/react-auth'
 
 export interface EthereumWindow extends Window {
   web3: any
@@ -38,6 +39,7 @@ export const useProvider = (config: any) => {
   const { setStorage, clearStorage, getStorage } = useAppStorage()
   const { addNetworkToWallet } = useAddToNetwork(connected)
   const { session: account, refetchSession } = useSession()
+  const { wallets } = useWallets()
 
   const isUnlockAccount =
     !!provider?.isUnlock || (!provider && getStorage('provider') === 'UNLOCK')
@@ -117,8 +119,7 @@ export const useProvider = (config: any) => {
   }
 
   const getWalletService = async (networkId?: number) => {
-    const provider = wallets[0].getEthersProvider()
-    // const networkProvider = await getNetworkProvider(networkId)
+    const provider = await wallets[0].getEthersProvider()
     const { walletService: _walletService } =
       await createWalletService(provider)
     return _walletService
