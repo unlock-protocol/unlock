@@ -10,7 +10,6 @@ import ProviderContext from '~/contexts/ProviderContext'
 import { isInIframe } from '~/utils/iframe'
 import { signOut as nextSignOut } from 'next-auth/react'
 import { usePrivy } from '@privy-io/react-auth'
-import { useCookies } from 'react-cookie'
 
 export type Status = 'loading' | 'error' | 'success' | 'rejected' | 'idle'
 
@@ -54,17 +53,12 @@ interface Props {
 }
 
 export const SIWEProvider = ({ children }: Props) => {
-  const { connected, getWalletService, network } = useAuth()
-  const {
-    getAccessToken: privyGetAccessToken,
-    logout: privyLogout,
-    authenticated: privyAuthenticated,
-  } = usePrivy()
+  const { getWalletService, network } = useAuth()
+  const { logout: privyLogout } = usePrivy()
   const { provider } = useContext(ProviderContext)
   const { session, refetchSession } = useSession()
   const [status, setStatus] = useState<Status>('idle')
   const queryClient = useQueryClient()
-  const [cookies] = useCookies()
 
   const onError = (error: any) => {
     console.error(error)
@@ -79,6 +73,7 @@ export const SIWEProvider = ({ children }: Props) => {
     }
   }
 
+  // currently used to sign out in the dashboard's `UserMenu`
   const signOut = async () => {
     try {
       setStatus('loading')
