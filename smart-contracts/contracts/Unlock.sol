@@ -81,7 +81,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   // The WETH token address, used for value calculations
   address public weth;
 
-  // DEPRECATED: udt was the name of the first governance token. 
+  // DEPRECATED: udt was the name of the first governance token.
   // Kept for backward compatibility; however, the `governanceToken` getter is now preferred.
   address public udt;
 
@@ -200,7 +200,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     // claim the template so that no-one else could
     try IPublicLock(impl).initialize(address(this), 0, address(0), 0, 0, "") {
       // renounce the lock manager role that was added during initialization
-      IPublicLock(impl).renounceLockManager();
+      IPublicLock(impl).renounceRole(keccak256("LOCK_MANAGER"), msg.sender);
     } catch {
       // failure means that the template is already initialized
     }

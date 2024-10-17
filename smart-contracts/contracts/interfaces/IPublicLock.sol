@@ -346,53 +346,22 @@ interface IPublicLock {
     uint _tokenId
   ) external view returns (uint refund);
 
-  function addLockManager(address account) external;
-
   function isLockManager(address account) external view returns (bool);
 
   /**
-   * Returns the address of the `onKeyPurchaseHook` hook.
-   * @return hookAddress address of the hook
+   * Returns the addresses of all the hooks
+   *
+   * @return hook addresses in the following order
+   *  `onKeyPurchaseHook`
+   *  `onKeyPurchaseHook`
+   *  `onKeyCancelHook`
+   *  `onValidKeyHook`
+   *  `onTokenURIHook`
+   *  `onKeyTransferHook`
+   *  `onKeyExtendHook`
+   *  `onKeyGrantHook`
    */
-  function onKeyPurchaseHook() external view returns (address hookAddress);
-
-  /**
-   * Returns the address of the `onKeyCancelHook` hook.
-   * @return hookAddress address of the hook
-   */
-  function onKeyCancelHook() external view returns (address hookAddress);
-
-  /**
-   * Returns the address of the `onValidKeyHook` hook.
-   * @return hookAddress address of the hook
-   */
-  function onValidKeyHook() external view returns (address hookAddress);
-
-  /**
-   * Returns the address of the `onTokenURIHook` hook.
-   * @return hookAddress address of the hook
-   */
-  function onTokenURIHook() external view returns (address hookAddress);
-
-  /**
-   * Returns the address of the `onKeyTransferHook` hook.
-   * @return hookAddress address of the hook
-   */
-  function onKeyTransferHook() external view returns (address hookAddress);
-
-  /**
-   * Returns the address of the `onKeyExtendHook` hook.
-   * @return hookAddress the address ok the hook
-   */
-  function onKeyExtendHook() external view returns (address hookAddress);
-
-  /**
-   * Returns the address of the `onKeyGrantHook` hook.
-   * @return hookAddress the address ok the hook
-   */
-  function onKeyGrantHook() external view returns (address hookAddress);
-
-  function renounceLockManager() external;
+  function hooks() external view returns (address[7] memory);
 
   /**
    * @return the maximum number of key allowed for a single address
@@ -487,7 +456,7 @@ interface IPublicLock {
    * - `from`, `to` cannot be zero.
    * - `tokenId` must be owned by `from`.
    * - If the caller is not `from`, it must be have been allowed to move this
-   * NFT by either `approve` or `setApprovalForAll`.
+   * `approve`
    */
   function safeTransferFrom(address from, address to, uint256 tokenId) external;
 
@@ -504,7 +473,7 @@ interface IPublicLock {
    * @param to the address that will receive the token
    * @param tokenId the id of the token
    * @dev Requirements: if the caller is not `from`, it must be approved to move this token by
-   * either `approve` or `setApprovalForAll`.
+   * `approve`
    * The key manager will be reset to address zero after the transfer
    */
   function transferFrom(address from, address to, uint256 tokenId) external;
@@ -540,26 +509,6 @@ interface IPublicLock {
   function getApproved(
     uint256 _tokenId
   ) external view returns (address operator);
-
-  /**
-   * @dev Sets or unsets the approval of a given operator
-   * An operator is allowed to transfer all tokens of the sender on their behalf
-   * @param _operator operator address to set the approval
-   * @param _approved representing the status of the approval to be set
-   * @notice disabled when transfers are disabled
-   */
-  function setApprovalForAll(address _operator, bool _approved) external;
-
-  /**
-   * @dev Tells whether an operator is approved by a given keyManager
-   * @param _owner owner address which you want to query the approval of
-   * @param _operator operator address which you want to query the approval of
-   * @return bool whether the given operator is approved by the given owner
-   */
-  function isApprovedForAll(
-    address _owner,
-    address _operator
-  ) external view returns (bool);
 
   /**
    * Returns the total number of keys, including non-valid ones
