@@ -8,6 +8,20 @@ import {
 } from '../../hooks/useCheckoutCommunication'
 import { vi, expect, beforeEach, it, describe } from 'vitest'
 
+// mock useWallets
+vi.mock('@privy-io/react-auth', () => ({
+  useWallets: () => ({
+    wallets: [
+      {
+        getEthersProvider: vi.fn().mockResolvedValue({
+          getNetwork: vi.fn().mockResolvedValue({ chainId: 1 }),
+        }),
+        switchChain: vi.fn(),
+      },
+    ],
+  }),
+}))
+
 let emit = vi.fn()
 
 vi.mock('~/utils/iframe', async () => {

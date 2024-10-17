@@ -869,8 +869,12 @@ paths:
                 accessToken:
                   type: string
                   description: The Privy access token to verify
+                identityToken:
+                  type: string
+                  description: The Privy id token (from cookies)
               required:
                 - accessToken
+                - identityToken
       responses:
         200:
           description: OK

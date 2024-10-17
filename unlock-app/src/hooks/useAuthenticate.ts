@@ -9,7 +9,7 @@ import { useCallback } from 'react'
 import networks from '@unlock-protocol/networks'
 
 export interface EthereumWindow extends Window {
-  ethereum: any
+  ethereum?: any
 }
 
 interface RpcType {
@@ -31,7 +31,7 @@ export const selectProvider = (config: any) => {
   if (config?.isServer) {
     return null
   }
-  const ethereumWindow: EthereumWindow = window
+  const ethereumWindow = window as EthereumWindow
 
   if (config?.env === 'test') {
     // We set the provider to be the provider by the local eth node

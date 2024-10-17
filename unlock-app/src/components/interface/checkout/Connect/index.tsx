@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import type { OAuthConfig } from '~/unlockTypes'
 
@@ -8,9 +8,7 @@ import { ConnectPage } from '../main/ConnectPage'
 import { TopNavigation } from '../Shell'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { PaywallConfigType } from '@unlock-protocol/core'
-import { useSIWE } from '~/hooks/useSIWE'
-import { signOut, useSession } from 'next-auth/react'
-import ConnectingWaas from '../../connect/ConnectingWaas'
+import { signOut } from 'next-auth/react'
 import { isInIframe } from '~/utils/iframe'
 
 interface Props {
@@ -96,12 +94,6 @@ export function Connect({ oauthConfig, communication }: Props) {
     }
   }, [account])
 
-  const { connected } = useAuth()
-  const { isSignedIn } = useSIWE()
-
-  const { data: session } = useSession()
-  const isLoadingWaas = session && (!connected || !isSignedIn || account === '')
-
   return (
     <div className="bg-white z-10 shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem]">
       <TopNavigation onClose={onClose} />
@@ -110,22 +102,14 @@ export function Connect({ oauthConfig, communication }: Props) {
           <Stepper state={state} />
         </div>
       </div>
-      {isLoadingWaas ? (
-        <div className="pt-6">
-          <ConnectingWaas openConnectModalWindow={false} />
-        </div>
-      ) : (
-        <>
-          {!account && <ConnectPage style="h-full mt-4 space-y-5" />}
-          {account && (
-            <ConfirmConnect
-              className="h-full mt-4 space-y-5"
-              communication={communication}
-              onClose={onClose}
-              oauthConfig={oauthConfig}
-            />
-          )}
-        </>
+      {!account && <ConnectPage style="h-full mt-4 space-y-5" />}
+      {account && (
+        <ConfirmConnect
+          className="h-full mt-4 space-y-5"
+          communication={communication}
+          onClose={onClose}
+          oauthConfig={oauthConfig}
+        />
       )}
     </div>
   )
