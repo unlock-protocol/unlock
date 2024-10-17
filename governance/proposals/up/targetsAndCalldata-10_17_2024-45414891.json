@@ -1,0 +1,25 @@
+{
+  "ODGovernor_Address": "0x65bA0624403Fc5Ca2b20479e9F626eD4D78E0aD9",
+  "arrayLength": "1",
+  "calldatas": [
+    "0xece40cc1000000000000000000000000000000000000000000000a968163f0a57b400000"
+  ],
+  "chainid": 8453,
+  "description": "Increase propoosal threshold to 50k UP\n\n## Details\n\n- Current: 0 UP\n- Proposed: 50k UP\n\nThis is an urgent proposal, due to the security risk of having a 0 UP threshold. Consensus was reached to use 50k UP as the new threshold to prevent spam proposals, while not limiting access.\n\n## Discussion\n\n- Discussion: See Unlock DAO General channel on Discord October, 2024\n\n## Smart Contract execution\n\ncast calldata \"setProposalThreshold(uint256)\" 50000000000000000000000\n",
+  "descriptionHash": "0xa6a3c8da852ebc6e8a80e7c4019f02f7f3db047f851c9f0502b64f039a00cb9b",
+  "network": "base",
+  "objectArray": [
+    {
+      "target": "0x65bA0624403Fc5Ca2b20479e9F626eD4D78E0aD9",
+      "calldata": "0xece40cc1000000000000000000000000000000000000000000000a968163f0a57b400000"
+    }
+  ],
+  "proposalId": "45414891213833779063588702094892680454020345710993679160752514821387403030060",
+  "proposalType": "TargetsAndCalldata",
+  "targets": [
+    "0x65bA0624403Fc5Ca2b20479e9F626eD4D78E0aD9"
+  ],
+  "values": [
+    0
+  ]
+}
