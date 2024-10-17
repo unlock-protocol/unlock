@@ -1,21 +1,10 @@
-import {
-  ReactNode,
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react'
+import { ReactNode, createContext, useContext, useState } from 'react'
 import { useSession } from './useSession'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { SiweMessage } from 'siwe'
 import { locksmith } from '~/config/locksmith'
 import { useQueryClient } from '@tanstack/react-query'
-import {
-  getAccessToken,
-  removeAccessToken,
-  saveAccessToken,
-} from '~/utils/session'
+import { getAccessToken, removeAccessToken } from '~/utils/session'
 import { config } from '~/config/app'
 import ProviderContext from '~/contexts/ProviderContext'
 import { isInIframe } from '~/utils/iframe'
@@ -27,7 +16,6 @@ export type Status = 'loading' | 'error' | 'success' | 'rejected' | 'idle'
 
 export interface SIWEContextType {
   session?: string | null
-  signIn: () => Promise<unknown> | unknown
   siweSign: (
     nonce: string,
     statement: string,
@@ -52,9 +40,6 @@ const signOutToken = async () => {
 
 const SIWEContext = createContext<SIWEContextType>({
   siweSign: (_nonce: string, _statement: string) => {
-    throw new Error('No SIWE provider found')
-  },
-  signIn: () => {
     throw new Error('No SIWE provider found')
   },
   signature: undefined,
@@ -163,43 +148,11 @@ export const SIWEProvider = ({ children }: Props) => {
     }
   }
 
-  const signIn = useCallback(async () => {
-    setStatus('loading')
-    // try {
-    //   const response = await locksmith.loginWithPrivy({
-    //     accessToken: await privyGetAccessToken(),
-    //     identityToken: cookies['privy-id-token'],
-    //   })
-    //   console.log(response.data)
-    //   const { accessToken, walletAddress } = response.data
-    //   if (accessToken && walletAddress) {
-    //     saveAccessToken({
-    //       accessToken,
-    //       walletAddress,
-    //     })
-    //   }
-    //   await queryClient.refetchQueries()
-    //   await refetchSession()
-    // } catch (error) {
-    //   console.error(error)
-    //   onError(error)
-    //   return null
-    // }
-    setStatus('idle')
-  }, [privyGetAccessToken, queryClient, refetchSession, cookies])
-
-  useEffect(() => {
-    if (privyAuthenticated) {
-      signIn()
-    }
-  }, [privyAuthenticated, signIn])
-
   const isSignedIn = !!session
   return (
     <SIWEContext.Provider
       value={{
         session,
-        signIn,
         siweSign,
         status,
         signOut,
