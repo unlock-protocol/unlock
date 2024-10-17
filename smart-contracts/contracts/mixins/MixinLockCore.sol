@@ -196,6 +196,12 @@ contract MixinLockCore is MixinRoles, MixinFunds, MixinDisable {
     emit PricingChanged(oldKeyPrice, keyPrice, oldTokenAddress, tokenAddress);
   }
 
+  function _isValidHook(address hookAddress, uint8 index) private view {
+    if (hookAddress != address(0) && !hookAddress.isContract()) {
+      revert INVALID_HOOK(index);
+    }
+  }
+
   /**
    * @notice Allows a lock manager to add or remove an event hook
    */
@@ -210,27 +216,14 @@ contract MixinLockCore is MixinRoles, MixinFunds, MixinDisable {
   ) external {
     _onlyLockManager();
 
-    if (_onKeyPurchaseHook != address(0) && !_onKeyPurchaseHook.isContract()) {
-      revert INVALID_HOOK(0);
-    }
-    if (_onKeyCancelHook != address(0) && !_onKeyCancelHook.isContract()) {
-      revert INVALID_HOOK(1);
-    }
-    if (_onValidKeyHook != address(0) && !_onValidKeyHook.isContract()) {
-      revert INVALID_HOOK(2);
-    }
-    if (_onTokenURIHook != address(0) && !_onTokenURIHook.isContract()) {
-      revert INVALID_HOOK(3);
-    }
-    if (_onKeyTransferHook != address(0) && !_onKeyTransferHook.isContract()) {
-      revert INVALID_HOOK(4);
-    }
-    if (_onKeyExtendHook != address(0) && !_onKeyExtendHook.isContract()) {
-      revert INVALID_HOOK(5);
-    }
-    if (_onKeyGrantHook != address(0) && !_onKeyGrantHook.isContract()) {
-      revert INVALID_HOOK(6);
-    }
+    // validate hooks
+    _isValidHook(_onKeyPurchaseHook, 0);
+    _isValidHook(_onKeyCancelHook, 1);
+    _isValidHook(_onValidKeyHook, 2);
+    _isValidHook(_onTokenURIHook, 3);
+    _isValidHook(_onKeyTransferHook, 4);
+    _isValidHook(_onKeyExtendHook, 5);
+    _isValidHook(_onKeyGrantHook, 6);
 
     onKeyPurchaseHook = ILockKeyPurchaseHook(_onKeyPurchaseHook);
     onKeyCancelHook = ILockKeyCancelHook(_onKeyCancelHook);
