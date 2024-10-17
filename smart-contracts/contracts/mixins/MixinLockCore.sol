@@ -65,15 +65,6 @@ contract MixinLockCore is MixinRoles, MixinFunds, MixinDisable {
     address onKeyGrantHook
   );
 
-  /**
-   * @dev Emitted when `owner` enables or disables (`approved`) `operator` to manage all of its assets.
-   */
-  event ApprovalForAll(
-    address indexed owner,
-    address indexed operator,
-    bool approved
-  );
-
   // Unlock Protocol address
   IUnlock public unlockProtocol;
 

@@ -91,14 +91,10 @@ contract MixinKeys is MixinErrors, MixinLockCore {
    * @dev This is a modifier
    */
   function _onlyKeyManagerOrApproved(uint _tokenId) internal view {
-    address realKeyManager = keyManagerOf[_tokenId] == address(0)
-      ? _ownerOf[_tokenId]
-      : keyManagerOf[_tokenId];
     if (
       !isLockManager(msg.sender) &&
       !_isKeyManager(_tokenId, msg.sender) &&
-      approved[_tokenId] != msg.sender &&
-      !isApprovedForAll(realKeyManager, msg.sender)
+      approved[_tokenId] != msg.sender
     ) {
       revert ONLY_KEY_MANAGER_OR_APPROVED();
     }
@@ -480,19 +476,6 @@ contract MixinKeys is MixinErrors, MixinLockCore {
     _isKey(_tokenId);
     address approvedRecipient = approved[_tokenId];
     return approvedRecipient;
-  }
-
-  /**
-   * @dev Tells whether an operator is approved by a given keyManager
-   * @param _owner owner address which you want to query the approval of
-   * @param _operator operator address which you want to query the approval of
-   * @return bool whether the given operator is approved by the given owner
-   */
-  function isApprovedForAll(
-    address _owner,
-    address _operator
-  ) public view returns (bool) {
-    return managerToOperatorApproved[_owner][_operator];
   }
 
   /**
