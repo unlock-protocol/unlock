@@ -3,12 +3,10 @@ import { useState, useContext } from 'react'
 import { WalletService } from '@unlock-protocol/unlock-js'
 import { useAddToNetwork } from './useAddToNetwork'
 import ProviderContext from '../contexts/ProviderContext'
-import UnlockProvider from '../services/unlockProvider'
 import { useAppStorage } from './useAppStorage'
 import { ToastHelper } from '../components/helpers/toast.helper'
 import { useSession } from './useSession'
 import { getCurrentNetwork } from '~/utils/session'
-import { useConnectModal } from './useConnectModal'
 import { useWallets } from '@privy-io/react-auth'
 
 export interface EthereumWindow extends Window {
@@ -28,15 +26,13 @@ interface WatchAssetInterface {
  */
 export const useProvider = (config: any) => {
   const { setProvider, provider } = useContext(ProviderContext)
-  const { openConnectModalAsync, closeConnectModal } = useConnectModal()
   const [loading, setLoading] = useState(false)
   const [walletService, setWalletService] = useState<any>()
   const [network, setNetwork] = useState<number | undefined>(
     getCurrentNetwork() || 1
   )
   const [connected, setConnected] = useState<string | undefined>()
-  const [eip1193, setEip1193] = useState<any | undefined>()
-  const { setStorage, clearStorage, getStorage } = useAppStorage()
+  const { setStorage, getStorage } = useAppStorage()
   const { addNetworkToWallet } = useAddToNetwork(connected)
   const { session: account, refetchSession } = useSession()
   const { wallets } = useWallets()
@@ -98,34 +94,6 @@ export const useProvider = (config: any) => {
     }
   }
 
-  const getNetworkProvider = async (networkId?: number) => {
-    const currentNetworkId = Number(network)
-    let existingBrowserProvider = provider
-    // If the user is not connected, we open the connect modal
-    if (!connected) {
-      const response = await openConnectModalAsync()
-      await closeConnectModal()
-      existingBrowserProvider = response?.provider
-    }
-    let walletServiceProvider: ethers.BrowserProvider = existingBrowserProvider
-    if (networkId && networkId !== currentNetworkId) {
-      const networkConfig = config.networks[networkId]
-      if (existingBrowserProvider.isUnlock) {
-        walletServiceProvider = (await UnlockProvider.reconnect(
-          existingBrowserProvider,
-          networkConfig
-        )) as unknown as ethers.BrowserProvider
-      } else {
-        await switchBrowserProviderNetwork(networkId)
-        if (getStorage('provider') === 'WALLET_CONNECT') {
-          walletServiceProvider = createBrowserProvider(eip1193)
-        } else {
-          walletServiceProvider = createBrowserProvider(window.ethereum!)
-        }
-      }
-    }
-    return walletServiceProvider
-  }
   /**
    * Retrieves or initializes a `WalletService` for a specific network.
    * It does the following:
@@ -223,7 +191,6 @@ export const useProvider = (config: any) => {
 
   const connectProvider = async (eip1193Provider: any) => {
     setLoading(true)
-    setEip1193(eip1193Provider)
     let auth
     if (eip1193Provider instanceof ethers.AbstractProvider) {
       auth = await resetProvider(eip1193Provider)
