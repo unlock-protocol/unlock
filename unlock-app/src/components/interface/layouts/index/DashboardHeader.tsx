@@ -26,13 +26,21 @@ const MENU = {
   ],
 }
 
-export default function DashboardHeader() {
+interface DashboardHeaderProps {
+  showMenu?: boolean
+}
+
+export default function DashboardHeader({
+  showMenu = true,
+}: DashboardHeaderProps) {
   const { account } = useAuth()
   const { openConnectModal } = useConnectModal()
 
+  const menuProps = showMenu ? MENU : { ...MENU, menuSections: [] }
+
   return (
     <HeaderNav
-      {...MENU}
+      {...menuProps}
       actions={[
         {
           content: account ? (
