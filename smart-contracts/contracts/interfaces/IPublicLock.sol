@@ -346,53 +346,22 @@ interface IPublicLock {
     uint _tokenId
   ) external view returns (uint refund);
 
-  function addLockManager(address account) external;
-
   function isLockManager(address account) external view returns (bool);
 
   /**
-   * Returns the address of the `onKeyPurchaseHook` hook.
-   * @return hookAddress address of the hook
+   * Returns the addresses of all the hooks
+   *
+   * @return hook addresses in the following order
+   *  `onKeyPurchaseHook`
+   *  `onKeyPurchaseHook`
+   *  `onKeyCancelHook`
+   *  `onValidKeyHook`
+   *  `onTokenURIHook`
+   *  `onKeyTransferHook`
+   *  `onKeyExtendHook`
+   *  `onKeyGrantHook`
    */
-  function onKeyPurchaseHook() external view returns (address hookAddress);
-
-  /**
-   * Returns the address of the `onKeyCancelHook` hook.
-   * @return hookAddress address of the hook
-   */
-  function onKeyCancelHook() external view returns (address hookAddress);
-
-  /**
-   * Returns the address of the `onValidKeyHook` hook.
-   * @return hookAddress address of the hook
-   */
-  function onValidKeyHook() external view returns (address hookAddress);
-
-  /**
-   * Returns the address of the `onTokenURIHook` hook.
-   * @return hookAddress address of the hook
-   */
-  function onTokenURIHook() external view returns (address hookAddress);
-
-  /**
-   * Returns the address of the `onKeyTransferHook` hook.
-   * @return hookAddress address of the hook
-   */
-  function onKeyTransferHook() external view returns (address hookAddress);
-
-  /**
-   * Returns the address of the `onKeyExtendHook` hook.
-   * @return hookAddress the address ok the hook
-   */
-  function onKeyExtendHook() external view returns (address hookAddress);
-
-  /**
-   * Returns the address of the `onKeyGrantHook` hook.
-   * @return hookAddress the address ok the hook
-   */
-  function onKeyGrantHook() external view returns (address hookAddress);
-
-  function renounceLockManager() external;
+  function hooks() external view returns (address[7] memory);
 
   /**
    * @return the maximum number of key allowed for a single address
