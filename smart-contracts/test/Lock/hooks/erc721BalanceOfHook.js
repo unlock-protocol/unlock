@@ -40,6 +40,7 @@ describe('ERC721BalanceOfHook', () => {
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
+      ADDRESS_ZERO,
       ADDRESS_ZERO
     )
   })
