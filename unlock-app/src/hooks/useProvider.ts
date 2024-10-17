@@ -255,40 +255,6 @@ export const useProvider = (config: any) => {
     return auth
   }
 
-  const disconnectProvider = async () => {
-    setLoading(true)
-    const _walletService = new WalletService(config.networks)
-    setWalletService(_walletService)
-    setNetwork(undefined)
-    setConnected(undefined)
-
-    clearStorage(
-      ['provider', 'network', 'account', `$session_${account}`, 'email'],
-      true
-    )
-    try {
-      if (provider && provider?.isWaas) {
-        localStorage.removeItem('nextAuthProvider')
-        await provider.disconnect()
-      }
-      // unlock provider does not support removing listeners or closing.
-      else if (provider && !provider?.isUnlock) {
-        provider.provider.removeAllListeners()
-        // metamask does not support disconnect
-        if (provider?.connection?.url !== 'metamask') {
-          await provider.provider.close()
-        }
-      }
-    } catch (error) {
-      console.error(
-        'We could not disconnect provider properly using provider.disconnect()'
-      )
-      console.error(error)
-    }
-    setProvider(null)
-    setLoading(false)
-  }
-
   // More info https://docs.metamask.io/wallet/reference/wallet_watchasset/
   const watchAsset = async ({
     address,
@@ -319,7 +285,6 @@ export const useProvider = (config: any) => {
     encryptedPrivateKey,
     walletService,
     connectProvider,
-    disconnectProvider,
     watchAsset,
     providerSend,
     connected,
