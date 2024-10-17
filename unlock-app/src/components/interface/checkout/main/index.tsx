@@ -78,6 +78,9 @@ export function Checkout({
     }
   }, [account, communication])
 
+  const messageToSignSignature = messageToSign?.signature
+  const messageToSignSigner = messageToSign?.address
+
   const onClose = useCallback(
     (params: Record<string, string> = {}) => {
       // Reset the Paywall State!
@@ -90,14 +93,17 @@ export function Checkout({
           redirect.searchParams.append('error', 'access-denied')
         }
 
-        if (paywallConfig.messageToSign && !messageToSign) {
-          redirect.searchParams.append('error', 'user did not sign message')
+        if (!params.signature) {
+          if (paywallConfig.messageToSign && !messageToSignSignature) {
+            redirect.searchParams.append('error', 'user did not sign message')
+          }
+
+          if (messageToSignSignature) {
+            redirect.searchParams.append('signature', messageToSignSignature)
+            redirect.searchParams.append('address', messageToSignSigner)
+          }
         }
 
-        if (messageToSign) {
-          redirect.searchParams.append('signature', messageToSign.signature)
-          redirect.searchParams.append('address', messageToSign.address)
-        }
         for (const [key, value] of Object.entries(params)) {
           redirect.searchParams.append(key, value)
         }
@@ -109,13 +115,14 @@ export function Checkout({
       }
     },
     [
+      checkoutService,
       handleClose,
       redirectURI,
       communication,
       mint,
-      messageToSign,
       paywallConfig.messageToSign,
-      checkoutService,
+      messageToSignSignature,
+      messageToSignSigner,
     ]
   )
 
