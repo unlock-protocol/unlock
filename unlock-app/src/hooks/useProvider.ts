@@ -164,7 +164,8 @@ export const useProvider = (config: any) => {
       const { walletService: _walletService } =
         await createWalletService(provider)
       return _walletService
-    } catch (error) {
+    } catch (error: any) {
+      ToastHelper.error(`Error while getting wallet service: ${error}`)
       console.error('Error in getWalletService:', error)
       throw error
     }
