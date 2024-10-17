@@ -1,6 +1,7 @@
 import { LoginModal, useLogin, usePrivy } from '@privy-io/react-auth'
 import { useEffect } from 'react'
 import { useCookies } from 'react-cookie'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 import { locksmith } from '~/config/locksmith'
 import { queryClient } from '~/config/queryClient'
 import { useAppStorage } from '~/hooks/useAppStorage'
@@ -42,6 +43,7 @@ export const ConnectWallet = () => {
       }
     },
     onError: (error) => {
+      ToastHelper.error(`Error while logging in: ${error}`)
       console.error(error)
     },
   })
