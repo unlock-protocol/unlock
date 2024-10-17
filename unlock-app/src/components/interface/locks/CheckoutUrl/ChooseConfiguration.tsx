@@ -6,7 +6,7 @@ import { useController, useFormContext } from 'react-hook-form'
 import { CheckoutConfig } from '@unlock-protocol/core'
 import { useCheckoutConfig } from '~/hooks/useCheckoutConfig'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { useLockManager } from '~/hooks/useLockManager'
+import { useMultipleLockManagers } from '~/hooks/useLockManager'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { Configuration } from '.'
 
@@ -106,18 +106,18 @@ export function ChooseConfiguration({
 
   const { account } = useAuth()
 
-  // fetch the configuratoin's details when customConfigId changes
+  // Fetch the configuration's details when customConfigId changes
   const { data: configDetails, isLoading: isLoadingConfig } = useCheckoutConfig(
     { id: customConfigId! }
   )
 
-  // check if user is a manager for the current lock
-  const { isManager, isPending: isCheckingLockManager } = useLockManager({
-    lockAddress: locksToCheck[0]?.address,
-    network: locksToCheck[0]?.network,
-  })
+  // check if the user is a manager for the locks in the configuration
+  const { isManager, isPending: isCheckingLockManager } =
+    useMultipleLockManagers({
+      locks: locksToCheck,
+    })
 
-  // initialize the lock checks when configDetails are available
+  // Initialize the lock checks when configDetails are available
   useEffect(() => {
     if (configDetails && account) {
       const locks = Object.entries(configDetails.config.locks).map(
@@ -131,7 +131,7 @@ export function ChooseConfiguration({
     }
   }, [configDetails, account])
 
-  // reset the state when customConfigId or value changes
+  // Reset the state when customConfigId or value changes
   useEffect(() => {
     setIsCheckingPermissions(false)
     setLocksToCheck([])
@@ -147,36 +147,29 @@ export function ChooseConfiguration({
 
   /**
    * Handler to process lock manager permissions.
-   * If user is a manager for any lock, grant access and stop further checks.
-   * If not, continue checking the next lock.
+   * Check if user is a manager for at least one lock.
    */
   useEffect(() => {
     if (isCheckingPermissions && !isCheckingLockManager) {
       if (isManager) {
-        // User is a manager for the current lock
+        // User is a manager for at least one lock
         setIsCheckingPermissions(false)
         if (configDetails?.id) {
           onSelectConfig(configDetails.id)
         }
       } else {
-        // User is not a manager for the current lock, check next
-        if (locksToCheck.length > 1) {
-          setLocksToCheck((prev) => prev.slice(1))
-        } else {
-          // No more locks to check and user is not a manager for any
-          setIsCheckingPermissions(false)
-          ToastHelper.error(
-            'You do not have permission to use this configuration.'
-          )
-          setCustomConfigId(null) // Reset customConfigId
-        }
+        // User is not a manager for any lock
+        setIsCheckingPermissions(false)
+        ToastHelper.error(
+          'You do not have permission to use this configuration.'
+        )
+        setCustomConfigId(null)
       }
     }
   }, [
     isManager,
     isCheckingLockManager,
     isCheckingPermissions,
-    locksToCheck,
     configDetails,
     onChange,
   ])
@@ -195,7 +188,7 @@ export function ChooseConfiguration({
     [items, onChange]
   )
 
-  // prepare the select options
+  // Prepare the select options
   const configOptions: { label: string; value: string }[] =
     items
       ?.filter((config) => config.id != null)
