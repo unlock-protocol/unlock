@@ -200,7 +200,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     // claim the template so that no-one else could
     try IPublicLock(impl).initialize(address(this), 0, address(0), 0, 0, "") {
       // renounce the lock manager role that was added during initialization
-      IPublicLock(impl).renounceRole(keccak256("LOCK_MANAGER"), msg.sender);
+      IPublicLock(impl).revokeRole(keccak256("LOCK_MANAGER"), msg.sender);
     } catch {
       // failure means that the template is already initialized
     }
