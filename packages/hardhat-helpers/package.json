@@ -25,7 +25,7 @@
     "@unlock-protocol/tsconfig": "workspace:^",
     "@unlock-protocol/types": "workspace:^",
     "ethers": "6.13.2",
-    "hardhat": "2.22.9",
+    "hardhat": "2.22.13",
     "typescript": "5.6.2",
     "zksync-ethers": "6.13.0"
   },
