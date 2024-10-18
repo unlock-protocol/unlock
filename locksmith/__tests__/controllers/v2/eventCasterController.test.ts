@@ -2,10 +2,17 @@ import request from 'supertest'
 import { vi, describe, expect } from 'vitest'
 import app from '../../app'
 
+const lockAddress = '0xce332211f030567bd301507443AD9240e0b13644'
+const tokenId = 1337
+const owner = '0xCEEd9585854F12F81A0103861b83b995A64AD915'
+
 const mockWalletService = {
   connect: vi.fn(),
   createLock: async () => {
-    return '0xce332211f030567bd301507443AD9240e0b13644'
+    return lockAddress
+  },
+  grantKey: async () => {
+    return { id: tokenId, owner }
   },
 }
 
@@ -18,6 +25,10 @@ vi.mock('@unlock-protocol/unlock-js', () => ({
 
 // https://events.xyz/api/v1/event?event_id=195ede7f
 const eventCasterEvent = {
+  contract: {
+    network: 84532,
+    address: lockAddress,
+  },
   id: '195ede7f-3795-4403-8f8a-6a73b8f20937',
   title: 'BuilderDAO bimonthly meeting Oct 17',
   image_url:
@@ -49,7 +60,7 @@ const eventCasterEvent = {
       'BuilderDAO is dedicated to the creation and development of free and accessible DAO infrastructure as a public good. This channel is for discussion about BuilderDAO, Nouns Builder and DAOs built on Nouns.Build.  discord: https://discord.gg/DGZWbWbE6r',
     follower_count: 3850,
     member_count: 35,
-    pinned_cast_hash: '0x7b51a2953f0135c8dbf819f297299357e5b98768',
+    pinned_cast_hash: '0x7b51a2953f0135C8dBF819F297299357E5b98768',
     created_at: 1687284741,
     parent_url:
       'chain://eip155:1/erc721:0xdf9b7d26c8fc806b1ae6273684556761ff02d422',
@@ -57,7 +68,7 @@ const eventCasterEvent = {
     lead: {
       object: 'user',
       fid: 4167,
-      custody_address: '0xbb54a63ad8241710eba3a98af224080b611ff8e9',
+      custody_address: '0xBb54a63aD8241710ebA3A98af224080B611FF8e9',
       username: 'nounishprof',
       display_name: 'Nounish Prof ⌐◧-◧🎩',
       pfp_url: 'https://i.imgur.com/fXhGSf4.jpg',
@@ -68,9 +79,9 @@ const eventCasterEvent = {
       },
       follower_count: 66380,
       following_count: 2730,
-      verifications: ['0xceed9585854f12f81a0103861b83b995a64ad915'],
+      verifications: ['0xCEEd9585854F12F81A0103861b83b995A64AD915'],
       verified_addresses: {
-        eth_addresses: ['0xceed9585854f12f81a0103861b83b995a64ad915'],
+        eth_addresses: ['0xCEEd9585854F12F81A0103861b83b995A64AD915'],
         sol_addresses: [],
       },
       active_status: 'inactive',
@@ -81,7 +92,7 @@ const eventCasterEvent = {
     {
       object: 'user',
       fid: 13870,
-      custody_address: '0x8fb18d6eadac23568c83dff23179b99d43b46450',
+      custody_address: '0x8fb18d6EADAc23568c83DFF23179b99D43b46450',
       username: '0xsatori',
       display_name: 'Satori',
       pfp_url:
@@ -90,15 +101,15 @@ const eventCasterEvent = {
       follower_count: 4928,
       following_count: 998,
       verifications: [
-        '0xdcf37d8aa17142f053aaa7dc56025ab00d897a19',
-        '0x05e189e1bbaf77f1654f0983872fd938ae592edd',
-        '0x70abdcd7a5a8ff9cdef1cca9ea15a5d315780986',
+        '0xdcf37d8Aa17142f053AAA7dc56025aB00D897a19',
+        '0x05e189E1BbaF77f1654F0983872fd938AE592eDD',
+        '0x70abdCd7A5A8Ff9cDef1ccA9eA15a5d315780986',
       ],
       verified_addresses: {
         eth_addresses: [
-          '0xdcf37d8aa17142f053aaa7dc56025ab00d897a19',
-          '0x05e189e1bbaf77f1654f0983872fd938ae592edd',
-          '0x70abdcd7a5a8ff9cdef1cca9ea15a5d315780986',
+          '0xdcf37d8Aa17142f053AAA7dc56025aB00D897a19',
+          '0x05e189E1BbaF77f1654F0983872fd938AE592eDD',
+          '0x70abdCd7A5A8Ff9cDef1ccA9eA15a5d315780986',
         ],
         sol_addresses: ['DU3LVi19cTAqjv7czqVPTns3Rgv155DwiHtdzVpmCmMi'],
       },
@@ -108,7 +119,7 @@ const eventCasterEvent = {
     {
       object: 'user',
       fid: 4167,
-      custody_address: '0xbb54a63ad8241710eba3a98af224080b611ff8e9',
+      custody_address: '0xBb54a63aD8241710ebA3A98af224080B611FF8e9',
       username: 'nounishprof',
       display_name: 'Nounish Prof ⌐◧-◧🎩',
       pfp_url: 'https://i.imgur.com/fXhGSf4.jpg',
@@ -119,9 +130,9 @@ const eventCasterEvent = {
       },
       follower_count: 66380,
       following_count: 2730,
-      verifications: ['0xceed9585854f12f81a0103861b83b995a64ad915'],
+      verifications: ['0xCEEd9585854F12F81A0103861b83b995A64AD915'],
       verified_addresses: {
-        eth_addresses: ['0xceed9585854f12f81a0103861b83b995a64ad915'],
+        eth_addresses: ['0xCEEd9585854F12F81A0103861b83b995A64AD915'],
         sol_addresses: [],
       },
       active_status: 'inactive',
@@ -135,7 +146,7 @@ const eventCasterEvent = {
       name: 'Builder',
       image_url:
         'https://lh3.googleusercontent.com/w3pcimLpCLH6zzNRiFriid57argDTpYUyk7eBgTh2OUqc4Ohi95oL-QoSPiZuxXDzJem2ROxv_FWoiVYs-JU-voryPR7yhabew',
-      address: '0xe8af882f2f5c79580230710ac0e2344070099432',
+      address: '0xe8aF882f2f5C79580230710Ac0E2344070099432',
       chain: 'base',
     },
   ],
@@ -147,6 +158,45 @@ const eventCasterEvent = {
   is_admin: false,
 }
 
+const eventCasterRsvp = {
+  user: {
+    object: 'user',
+    fid: 287173,
+    custody_address: '0xC5D8D60040C755214580D806209B8797A4aD5527',
+    username: 'nameddoki',
+    display_name: 'Doki 🎩🔵',
+    pfp_url:
+      'https://ipfs.decentralized-content.com/ipfs/QmQ9sQo3ghumyqHFpWoXuzQCdPeHe7WbEc2ar8io4gqmjH',
+    profile: {
+      bio: {
+        text: ' || Town Planner 🌉🌆🌁 || WEB 3.0 🌐|| DeFi🫂Over CEX🏦 ||\nDigital Asset Researcher 🔍|| Reply guy',
+      },
+    },
+    follower_count: 797,
+    following_count: 2294,
+    verifications: ['0xA66fD186bB39c15ec8830948c9CaD52b83d8f84c'],
+    verified_addresses: {
+      eth_addresses: ['0xA66fD186bB39c15ec8830948c9CaD52b83d8f84c'],
+      sol_addresses: ['9bRHMKMyeApGePJWX937HjSbSFNUHRgg1f4SGsEcmwak'],
+    },
+    verified_accounts: [
+      {
+        platform: 'x',
+        username: 'jeromedok',
+      },
+    ],
+    active_status: 'inactive',
+    power_badge: false,
+    viewer_context: {
+      following: false,
+      followed_by: false,
+      blocking: false,
+      blocked_by: false,
+    },
+  },
+  timestamp: 1729197029821,
+}
+
 describe('eventcaster endpoints', () => {
   describe('create-event endpoint', () => {
     it('creates the contract and returns its address', async () => {
@@ -156,16 +206,25 @@ describe('eventcaster endpoints', () => {
         .send(eventCasterEvent)
 
       expect(response.status).toBe(201)
+      expect(response.body.contract).toBe(lockAddress)
     })
   })
   describe('rsvp-for-event endpoint', () => {
     it('mints the token and returns its id', async () => {
+      fetchMock.mockResponseOnce(
+        JSON.stringify({ success: true, event: eventCasterEvent })
+      )
+
       const response = await request(app)
-        .post(`/v2/eventcaster/create-event`)
+        .post(`/v2/eventcaster/${eventCasterEvent.id}/rsvp`)
         .set('Accept', 'json')
-        .send(eventCasterEvent)
+        .send(eventCasterRsvp)
 
       expect(response.status).toBe(201)
+      expect(response.body.id).toBe(tokenId)
+      expect(response.body.owner).toBe(owner)
+      expect(response.body.network).toBe(eventCasterEvent.contract.network)
+      expect(response.body.contract).toBe(eventCasterEvent.contract.address)
     })
   })
 })
