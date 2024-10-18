@@ -66,6 +66,7 @@ describe('CaptchaHook', function () {
         ethers.ZeroAddress,
         ethers.ZeroAddress,
         ethers.ZeroAddress,
+        ethers.ZeroAddress,
         ethers.ZeroAddress
       )
     ).wait()

@@ -65,6 +65,7 @@ describe('DiscountHook', function () {
         ethers.ZeroAddress,
         ethers.ZeroAddress,
         ethers.ZeroAddress,
+        ethers.ZeroAddress,
         ethers.ZeroAddress
       )
     ).wait()
@@ -132,6 +133,7 @@ describe('DiscountHook', function () {
         ethers.ZeroAddress,
         ethers.ZeroAddress,
         ethers.ZeroAddress,
+        ethers.ZeroAddress,
         ethers.ZeroAddress
       )
     ).wait()
@@ -181,6 +183,7 @@ describe('DiscountHook', function () {
     await (
       await lock.setEventHooks(
         await hook.getAddress(),
+        ethers.ZeroAddress,
         ethers.ZeroAddress,
         ethers.ZeroAddress,
         ethers.ZeroAddress,
