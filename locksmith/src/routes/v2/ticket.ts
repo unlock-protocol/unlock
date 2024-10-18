@@ -1,5 +1,4 @@
 import express from 'express'
-import networks from '@unlock-protocol/networks'
 import {
   TicketsController,
   generateTicket,
