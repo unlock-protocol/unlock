@@ -12,13 +12,12 @@ import {
 import { config } from '~/config/app'
 import ProviderContext from '~/contexts/ProviderContext'
 import { isInIframe } from '~/utils/iframe'
-import { signOut as nextSignOut } from 'next-auth/react'
+import { usePrivy } from '@privy-io/react-auth'
 
 export type Status = 'loading' | 'error' | 'success' | 'rejected' | 'idle'
 
 export interface SIWEContextType {
   session?: string | null
-  signIn: () => Promise<unknown> | unknown
   siweSign: (
     nonce: string,
     statement: string,
@@ -29,6 +28,7 @@ export interface SIWEContextType {
   isSignedIn: boolean
   signature?: string
   message?: string
+  signInWithSIWE: () => Promise<void> | unknown
 }
 
 const signOutToken = async () => {
@@ -45,7 +45,7 @@ const SIWEContext = createContext<SIWEContextType>({
   siweSign: (_nonce: string, _statement: string) => {
     throw new Error('No SIWE provider found')
   },
-  signIn: () => {
+  signInWithSIWE: () => {
     throw new Error('No SIWE provider found')
   },
   signature: undefined,
@@ -65,6 +65,7 @@ export const SIWEProvider = ({ children }: Props) => {
     signature: string
   } | null>(null)
   const { connected, getWalletService, network } = useAuth()
+  const { logout: privyLogout } = usePrivy()
   const { provider } = useContext(ProviderContext)
   const { session, refetchSession } = useSession()
   const [status, setStatus] = useState<Status>('idle')
@@ -83,11 +84,11 @@ export const SIWEProvider = ({ children }: Props) => {
     }
   }
 
+  // currently used to sign out in the dashboard's `UserMenu`
   const signOut = async () => {
     try {
       setStatus('loading')
-      // Before signing out, we need to revoke the token
-      await nextSignOut({ redirect: false })
+      await privyLogout()
       await signOutToken()
       await Promise.all([queryClient.invalidateQueries(), refetchSession()])
       setStatus('idle')
@@ -152,7 +153,7 @@ export const SIWEProvider = ({ children }: Props) => {
     }
   }
 
-  const signIn = async () => {
+  const signInWithSIWE = async () => {
     setStatus('loading')
     try {
       if (!connected) {
@@ -192,8 +193,8 @@ export const SIWEProvider = ({ children }: Props) => {
     <SIWEContext.Provider
       value={{
         session,
-        signIn,
         siweSign,
+        signInWithSIWE,
         status,
         signOut,
         isSignedIn,

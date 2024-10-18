@@ -1,6 +1,7 @@
 import networks from '@unlock-protocol/networks'
 import { WalletService } from '@unlock-protocol/unlock-js'
 import { createContext, useContext } from 'react'
+import { usePrivy } from '@privy-io/react-auth'
 
 interface AuthenticationContextType {
   authenticate(provider: any): void
@@ -9,7 +10,7 @@ interface AuthenticationContextType {
   account?: string
   network?: number
   email?: string
-  connected?: string
+  connected?: boolean | string | undefined
   encryptedPrivateKey?: any
   isUnlockAccount?: boolean
   getWalletService(network?: number): Promise<WalletService>
@@ -29,7 +30,14 @@ export const AuthenticationContext =
   createContext<AuthenticationContextType>(defaultValues)
 
 export const useAuth = () => {
-  return useContext(AuthenticationContext)
+  const context = useContext(AuthenticationContext)
+  const { authenticated, user } = usePrivy()
+
+  return {
+    ...context,
+    connected: authenticated,
+    account: user?.wallet?.address || context.account,
+  }
 }
 
 export default AuthenticationContext

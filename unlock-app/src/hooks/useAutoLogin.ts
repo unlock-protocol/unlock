@@ -1,13 +1,11 @@
 import { useCallback, useState } from 'react'
 import { useAppStorage } from './useAppStorage'
 import { useAuthenticate, WalletProvider } from './useAuthenticate'
-import { useSIWE } from '~/hooks/useSIWE'
 
 export function useAutoLogin() {
   const [isLoading, setLoading] = useState(false)
   const { getStorage } = useAppStorage()
   const { authenticateWithProvider } = useAuthenticate()
-  const { signOut } = useSIWE()
 
   const getAutoLoginData = useCallback(() => {
     const storedProvider: WalletProvider | null = getStorage(
@@ -35,14 +33,10 @@ export function useAutoLogin() {
       } catch (error: any) {
         console.error('Autologin failed.')
         console.error(error)
-        await signOut()
       }
     }
-    if (!canAutoLogin && storedProvider === 'DELEGATED_PROVIDER') {
-      await signOut()
-    }
     setLoading(false)
-  }, [authenticateWithProvider, getAutoLoginData, signOut])
+  }, [authenticateWithProvider, getAutoLoginData])
 
   return {
     tryAutoLogin,

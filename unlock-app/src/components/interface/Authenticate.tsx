@@ -6,7 +6,7 @@ import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 import { useProvider } from '../../hooks/useProvider'
 import { ConfigContext } from '../../utils/withConfig'
 import { useAutoLogin } from '../../hooks/useAutoLogin'
-import { SIWEProvider } from '~/hooks/useSIWE'
+import { SIWEProvider, useSIWE } from '~/hooks/useSIWE'
 import { networks } from '@unlock-protocol/networks'
 
 const Web3ServiceProvider = Web3ServiceContext.Provider
@@ -55,7 +55,6 @@ export const Authenticate = ({
     encryptedPrivateKey,
     walletService,
     connectProvider,
-    disconnectProvider,
     isUnlockAccount,
     watchAsset,
     providerSend,
@@ -63,6 +62,8 @@ export const Authenticate = ({
     connected,
     displayAccount,
   } = useProvider(config)
+
+  const { signOut } = useSIWE()
 
   const authenticate = async (provider: any) => {
     if (!provider) {
@@ -74,7 +75,7 @@ export const Authenticate = ({
   }
 
   const deAuthenticate = () => {
-    return disconnectProvider()
+    return signOut()
   }
 
   return (

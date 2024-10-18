@@ -5,6 +5,7 @@ import DashboardFooter from '~/components/interface/layouts/index/DashboardFoote
 import TermsOfServiceModal from '~/components/interface/layouts/index/TermsOfServiceModal'
 import { Container } from '~/components/interface/Container'
 import { ConnectModal } from '~/components/interface/connect/ConnectModal'
+import { AuthRequired } from 'app/Components/ProtectedContent'
 
 export default function SettingsLayout({ children }: { children: ReactNode }) {
   return (
@@ -15,7 +16,9 @@ export default function SettingsLayout({ children }: { children: ReactNode }) {
 
         <DashboardHeader />
 
-        <div className="flex flex-col gap-10 min-h-screen">{children}</div>
+        <div className="flex flex-col gap-10 min-h-screen">
+          <AuthRequired>{children}</AuthRequired>
+        </div>
 
         <DashboardFooter />
       </Container>

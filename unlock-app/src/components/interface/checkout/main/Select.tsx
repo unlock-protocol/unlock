@@ -300,7 +300,6 @@ export function Select({ checkoutService }: Props) {
 
   useEffect(() => {
     if (!autoSelectedLock) {
-      console.log('No lock to auto select')
       return
     }
 
@@ -385,9 +384,8 @@ export function Select({ checkoutService }: Props) {
   }, [lockHookMapping, lock])
 
   const [isSigning, setSigning] = useState(false)
-
   const { connected } = useAuth()
-  const { signIn, isSignedIn } = useSIWE()
+  const { signInWithSIWE, isSignedIn } = useSIWE()
   const useDelegatedProvider = paywallConfig?.useDelegatedProvider
 
   const isDisabled =
@@ -412,7 +410,7 @@ export function Select({ checkoutService }: Props) {
 
   useEffect(() => {
     if (!connected && useDelegatedProvider) {
-      signIn()
+      signInWithSIWE()
     }
 
     if (!(lock && skipSelect && account && !isLoading)) {
@@ -453,7 +451,7 @@ export function Select({ checkoutService }: Props) {
 
     if (!isSignedIn && useDelegatedProvider) {
       setSigning(true)
-      await signIn()
+      await signInWithSIWE()
       setSigning(false)
       return
     }
