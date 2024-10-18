@@ -12,7 +12,6 @@ import {
 import { config } from '~/config/app'
 import ProviderContext from '~/contexts/ProviderContext'
 import { isInIframe } from '~/utils/iframe'
-import { signOut as nextSignOut } from 'next-auth/react'
 import { usePrivy } from '@privy-io/react-auth'
 
 export type Status = 'loading' | 'error' | 'success' | 'rejected' | 'idle'
@@ -90,7 +89,6 @@ export const SIWEProvider = ({ children }: Props) => {
     try {
       setStatus('loading')
       await privyLogout()
-      await nextSignOut({ redirect: false })
       await signOutToken()
       await Promise.all([queryClient.invalidateQueries(), refetchSession()])
       setStatus('idle')
