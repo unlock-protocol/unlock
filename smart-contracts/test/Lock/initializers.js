@@ -7,6 +7,7 @@ const {
   deployLock,
   deployContracts,
   parseInterface,
+  LOCK_MANAGER_ROLE,
 } = require('../helpers')
 
 describe('Lock / initializers', () => {
@@ -50,7 +51,7 @@ describe('Lock / initializers', () => {
       const template = await PublicLock.deploy()
       await template.initialize(callerAddress, 0, ADDRESS_ZERO, 0, 0, '')
       await assert.equal(await template.isLockManager(callerAddress), true)
-      await template.connect(caller).renounceLockManager()
+      await template.connect(caller).renounceRole(LOCK_MANAGER_ROLE)
       await assert.equal(await template.isLockManager(callerAddress), false)
     })
   })
@@ -101,7 +102,7 @@ describe('Lock / initializers', () => {
         0,
         ''
       )
-      await template.connect(caller).renounceLockManager()
+      await template.connect(caller).renounceRole(LOCK_MANAGER_ROLE)
       await assert.equal(
         await template.isLockManager(await caller.getAddress()),
         false
