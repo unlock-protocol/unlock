@@ -2,6 +2,20 @@ import request from 'supertest'
 import { vi, describe, expect } from 'vitest'
 import app from '../../app'
 
+const mockWalletService = {
+  connect: vi.fn(),
+  createLock: async () => {
+    return '0xce332211f030567bd301507443AD9240e0b13644'
+  },
+}
+
+vi.mock('@unlock-protocol/unlock-js', () => ({
+  // Web3Service: function Web3Service() {},
+  WalletService: function WalletService() {
+    return mockWalletService
+  },
+}))
+
 // https://events.xyz/api/v1/event?event_id=195ede7f
 const eventCasterEvent = {
   id: '195ede7f-3795-4403-8f8a-6a73b8f20937',
