@@ -48,7 +48,7 @@ export const createEvent: RequestHandler = async (request, response) => {
 
   return response
     .status(201)
-    .json({ contract: lockAddress, network: DEFAULT_NETWORK })
+    .json({ address: lockAddress, network: DEFAULT_NETWORK })
 }
 
 // This is the API endpoint used by EventCaster to mint RSVP tokens
@@ -94,7 +94,7 @@ export const rsvpForEvent: RequestHandler = async (request, response) => {
 
   return response.status(201).json({
     network: event.contract.network,
-    contract: event.contract.address,
+    address: event.contract.address,
     ...token,
   })
 }

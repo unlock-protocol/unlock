@@ -206,7 +206,7 @@ describe('eventcaster endpoints', () => {
         .send(eventCasterEvent)
 
       expect(response.status).toBe(201)
-      expect(response.body.contract).toBe(lockAddress)
+      expect(response.body.address).toBe(lockAddress)
     })
   })
   describe('rsvp-for-event endpoint', () => {
@@ -224,7 +224,7 @@ describe('eventcaster endpoints', () => {
       expect(response.body.id).toBe(tokenId)
       expect(response.body.owner).toBe(owner)
       expect(response.body.network).toBe(eventCasterEvent.contract.network)
-      expect(response.body.contract).toBe(eventCasterEvent.contract.address)
+      expect(response.body.address).toBe(eventCasterEvent.contract.address)
     })
   })
 })
