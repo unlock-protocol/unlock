@@ -44,14 +44,21 @@ describe('Lock / purchase multiple keys at once', () => {
       describe('purchase with exact value specified', () => {
         beforeEach(async () => {
           await lock.purchase(
-            isErc20 ? keyOwners.map(() => keyPrice) : [],
-            keyOwners.map(({ address }) => address),
-            keyOwners.map(() => ADDRESS_ZERO),
-            keyOwners.map(() => ADDRESS_ZERO),
-            keyOwners.map(() => '0x'),
-            {
-              value: isErc20 ? 0 : keyPrice * BigInt(keyOwners.length),
-            }
+            keyOwners.map(
+              async (keyOwner) => [
+                {
+                  value: isErc20 ? keyPrice : 0n,
+                  recipient: await keyOwner.getAddress(),
+                  keyOwner: ADDRESS_ZERO,
+                  referrer: ADDRESS_ZERO,
+                  data: '0x',
+                  periods: 1,
+                },
+              ],
+              {
+                value: isErc20 ? 0 : keyPrice * BigInt(keyOwners.length),
+              }
+            )
           )
         })
 
@@ -75,14 +82,16 @@ describe('Lock / purchase multiple keys at once', () => {
         it('reverts when wrong amounts are specified', async () => {
           await reverts(
             lock.connect(keyOwners[1]).purchase(
-              isErc20
-                ? keyOwners.map(() => ethers.parseUnits('0.005', 'ether'))
-                : [],
-              keyOwners.map(({ address }) => address),
-
-              keyOwners.map(() => ADDRESS_ZERO),
-              keyOwners.map(() => ADDRESS_ZERO),
-              keyOwners.map(() => '0x'),
+              keyOwners.map((keyOwner) => [
+                {
+                  value: isErc20 ? ethers.parseUnits('0.005', 'ether') : 0n,
+                  recipient: keyOwner.getAddress(),
+                  keyOwner: ADDRESS_ZERO,
+                  referrer: ADDRESS_ZERO,
+                  data: '0x',
+                  periods: 1,
+                },
+              ]),
               {
                 value: isErc20 ? 0 : keyPrice * BigInt(keyOwners.length - 2),
               }
