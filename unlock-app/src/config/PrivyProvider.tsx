@@ -9,6 +9,9 @@ export const Privy = ({ children }: { children: ReactNode }) => {
         embeddedWallets: {
           createOnLogin: 'users-without-wallets', // defaults to 'off'
         },
+        appearance: {
+          landingHeader: '',
+        },
         // @ts-expect-error internal api
         _render: {
           standalone: true,

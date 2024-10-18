@@ -384,10 +384,7 @@ export function Select({ checkoutService }: Props) {
     return hook
   }, [lockHookMapping, lock])
 
-  const [isSigning, setSigning] = useState(false)
-
-  const { connected } = useAuth()
-  const { signIn, isSignedIn } = useSIWE()
+  const { isSignedIn } = useSIWE()
   const useDelegatedProvider = paywallConfig?.useDelegatedProvider
 
   const isDisabled =
@@ -397,8 +394,7 @@ export function Select({ checkoutService }: Props) {
     // if locks are sold out and the user is not an existing member of the lock
     (lock?.isSoldOut && !(membership?.member || membership?.expired)) ||
     isNotExpectedAddress ||
-    isLoadingHook ||
-    (isSigning && !isSignedIn)
+    isLoadingHook
 
   useEffect(() => {
     if (locks?.length) {
@@ -411,10 +407,6 @@ export function Select({ checkoutService }: Props) {
   const isLoading = isLocksLoading || isLoadingHook || isMembershipsLoading
 
   useEffect(() => {
-    if (!connected && useDelegatedProvider) {
-      signIn()
-    }
-
     if (!(lock && skipSelect && account && !isLoading)) {
       return
     }
@@ -448,13 +440,6 @@ export function Select({ checkoutService }: Props) {
     event.preventDefault()
 
     if (!lock) {
-      return
-    }
-
-    if (!isSignedIn && useDelegatedProvider) {
-      setSigning(true)
-      await signIn()
-      setSigning(false)
       return
     }
 
