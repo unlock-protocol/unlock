@@ -25,12 +25,12 @@ interface Props {
 
 export function Returning({ checkoutService, onClose, communication }: Props) {
   const config = useConfig()
-  const {
-    paywallConfig,
-    lock,
-    messageToSign: signedMessage,
-  } = useSelector(checkoutService, (state) => state.context)
+  const { paywallConfig, lock, messageToSign } = useSelector(
+    checkoutService,
+    (state) => state.context
+  )
   const { account, getWalletService } = useAuth()
+  const [signedMessage, setSignedMessage] = useState(messageToSign)
   const [hasMessageToSign, setHasMessageToSign] = useState(
     !signedMessage && paywallConfig.messageToSign
   )
@@ -46,6 +46,7 @@ export function Returning({ checkoutService, onClose, communication }: Props) {
         'personal_sign'
       )
       setIsSigningMessage(false)
+      setSignedMessage({ address: account!, signature })
       checkoutService.send({
         type: 'SIGN_MESSAGE',
         signature,
@@ -126,7 +127,7 @@ export function Returning({ checkoutService, onClose, communication }: Props) {
               }`}
             >
               <ReturningButton
-                onClick={() => onClose()}
+                onClick={() => onClose(signedMessage)}
                 returnLabel="Return"
                 checkoutService={checkoutService}
               />
