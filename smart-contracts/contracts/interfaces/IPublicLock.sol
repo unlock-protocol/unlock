@@ -346,8 +346,6 @@ interface IPublicLock {
     uint _tokenId
   ) external view returns (uint refund);
 
-  function addLockManager(address account) external;
-
   function isLockManager(address account) external view returns (bool);
 
   /**
@@ -391,8 +389,6 @@ interface IPublicLock {
    * @return hookAddress the address ok the hook
    */
   function onKeyGrantHook() external view returns (address hookAddress);
-
-  function renounceLockManager() external;
 
   /**
    * @return the maximum number of key allowed for a single address
