@@ -1,13 +1,11 @@
 const { ethers } = require('hardhat')
 const assert = require('assert')
-const {
-  deployLock,
-  getUnlockAddress,
-  reverts,
-  addSomeETH,
-  addSomeUSDC,
-} = require('../helpers')
+const { deployLock, reverts, ADDRESS_ZERO } = require('../helpers')
 
+const {
+  addSomeUSDC,
+  getUnlockAddress,
+} = require('@unlock-protocol/hardhat-helpers')
 const USDC_ABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/USDC.json')
 const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
 
@@ -107,15 +105,13 @@ const signLockPurchase = async ({
 }
 
 describe(`CardPurchaser / purchase (mainnet only)`, function () {
-  let chainId, unlock, cardPurchaser, signer, lock, unlockAddress
+  let chainId, unlock, cardPurchaser, signer, user, lock, unlockAddress
   before(async function () {
     if (!process.env.RUN_FORK) {
       // all suite will be skipped
       this.skip()
     }
-    ;[signer] = await ethers.getSigners()
-
-    await addSomeETH(await signer.getAddress())
+    ;[signer, user] = await ethers.getSigners()
 
     // get Unlock contract
     unlockAddress = await getUnlockAddress()
@@ -205,7 +201,7 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
   })
 
   it('should fail if the payer is not the sender', async () => {
-    const notSender = new ethers.Wallet.createRandom()
+    const notSender = ethers.Wallet.createRandom()
     const transfer = await signUSDCTransfer({
       chainId,
       signer,
@@ -226,12 +222,12 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
         purchase.signature,
         await purchaseCallData(lock, await signer.getAddress())
       ),
-      'PURCHASER_DOES_NOT_MATCH_PAYER()'
+      'PURCHASER_DOES_NOT_MATCH_PAYER'
     )
   })
 
   it('should fail if the signature of the purchaseMessage does not match', async () => {
-    const notSigner = new ethers.Wallet.createRandom()
+    const notSigner = ethers.Wallet.createRandom()
     const transfer = await signUSDCTransfer({
       chainId,
       signer,
@@ -253,7 +249,7 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
         purchase.signature,
         await purchaseCallData(lock, await signer.getAddress())
       ),
-      'SIGNER_DOES_NOT_MATCH()'
+      'SIGNER_DOES_NOT_MATCH'
     )
   })
 
@@ -285,7 +281,7 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
 
   it('should fail if the transfer of tokens fails because the recipient is not correct!', async () => {
     await addSomeUSDC(USDC, await signer.getAddress(), keyPrice)
-    const notCardPurchaser = new ethers.Wallet.createRandom()
+    const notCardPurchaser = ethers.Wallet.createRandom()
 
     const transfer = await signUSDCTransfer({
       chainId,
@@ -415,5 +411,60 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
       ),
       0
     )
+  })
+
+  describe('withdraw', () => {
+    it('only owner should be able to withdraw', async () => {
+      await reverts(
+        cardPurchaser
+          .connect(user)
+          .withdraw(USDC, await signer.getAddress(), 0),
+        'OwnableUnauthorizedAccount'
+      )
+    })
+
+    it('owner should be able to withdraw USDC from CardPurchaser', async () => {
+      const usdcContract = new ethers.Contract(USDC, USDC_ABI, signer)
+      const balanceBefore = await usdcContract.balanceOf(
+        await cardPurchaser.getAddress()
+      )
+      console.log('balanceBefore =======', balanceBefore)
+      await cardPurchaser.withdraw(
+        USDC,
+        await signer.getAddress(),
+        balanceBefore
+      )
+      assert.equal(
+        await usdcContract.balanceOf(await cardPurchaser.getAddress()),
+        0
+      )
+    })
+
+    it('owner should be able to withdraw ETH from CardPurchaser', async () => {
+      const balanceBefore = await ethers.provider.getBalance(
+        await cardPurchaser.getAddress()
+      )
+      console.log('balanceBefore =======', balanceBefore)
+      await cardPurchaser.withdraw(
+        ADDRESS_ZERO,
+        await signer.getAddress(),
+        balanceBefore
+      )
+      assert.equal(
+        await ethers.provider.getBalance(await cardPurchaser.getAddress()),
+        0
+      )
+    })
+
+    it('transfer too much ETH from cardpurchaser should fail', async () => {
+      await reverts(
+        cardPurchaser.withdraw(
+          ADDRESS_ZERO,
+          await signer.getAddress(),
+          ethers.parseEther('1')
+        ),
+        'WITHDRAW_FAILED'
+      )
+    })
   })
 })

@@ -82,11 +82,11 @@ const upgradeContract = async () => {
   return UnlockDiscountTokenV3.attach(UDTProxyContractAddress)
 }
 
-describe('UnlockDiscountToken (on mainnet)', async () => {
+describe('UnlockDiscountToken (on mainnet)', () => {
   let udt
   let deployer
 
-  beforeEach(async function setupMainnetForkTestEnv() {
+  before(async function () {
     if (!process.env.RUN_FORK) {
       // all suite will be skipped
       this.skip()
