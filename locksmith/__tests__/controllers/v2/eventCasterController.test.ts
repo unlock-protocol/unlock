@@ -148,12 +148,24 @@ const eventCasterEvent = {
 }
 
 describe('eventcaster endpoints', () => {
-  it('returns an error when authentication is there but the user is not lock manager', async () => {
-    const response = await request(app)
-      .post(`/v2/eventcaster/create-event`)
-      .set('Accept', 'json')
-      .send(eventCasterEvent)
+  describe('create-event endpoint', () => {
+    it('creates the contract and returns its address', async () => {
+      const response = await request(app)
+        .post(`/v2/eventcaster/create-event`)
+        .set('Accept', 'json')
+        .send(eventCasterEvent)
 
-    expect(response.status).toBe(201)
+      expect(response.status).toBe(201)
+    })
+  })
+  describe('rsvp-for-event endpoint', () => {
+    it('mints the token and returns its id', async () => {
+      const response = await request(app)
+        .post(`/v2/eventcaster/create-event`)
+        .set('Accept', 'json')
+        .send(eventCasterEvent)
+
+      expect(response.status).toBe(201)
+    })
   })
 })

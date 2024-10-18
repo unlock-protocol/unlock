@@ -17,10 +17,7 @@ const CreateEventBody = z.object({
 })
 
 export const createEvent: RequestHandler = async (request, response) => {
-  // We should cerate the corresponding Unlock Event (why not?)
-  // We should deploy the lock!
-  const { title, id } = await CreateEventBody.parseAsync(request.body)
-  console.log({ title, id })
+  const { title } = await CreateEventBody.parseAsync(request.body)
   const lockParams = {
     name: title,
     expirationDuration: -1, // Never expire
@@ -32,47 +29,17 @@ export const createEvent: RequestHandler = async (request, response) => {
     getPurchaser({ network: DEFAULT_NETWORK }),
   ])
 
-  console.log('_______')
-  console.log(provider)
-  console.log('_______')
-  console.log(wallet)
-  console.log('_______')
   const walletService = new WalletService(networks)
   await walletService.connect(provider, wallet)
   const lockAddress = await walletService.createLock(lockParams)
-  console.log(lockAddress)
 
-  //   if (lockAddress) {
-  //     await locksmith.updateLockMetadata(formData.network, lockAddress, {
-  //       metadata: {
-  //         name: `Ticket for ${formData.lock.name}`,
-  //         image: formData.metadata.image,
-  //       },
-  //     })
-  //     const { data: event } = await locksmith.saveEventData({
-  //       data: {
-  //         ...formDataToMetadata({
-  //           name: formData.lock.name,
-  //           ...formData.metadata,
-  //         }),
-  //         ...formData.metadata,
-  //       },
-  //       checkoutConfig: {
-  //         name: `Checkout config for ${formData.lock.name}`,
-  //         config: defaultEventCheckoutConfigForLockOnNetwork(
-  //           lockAddress,
-  //           formData.network
-  //         ),
-  //       },
-  //     })
-  //     // Save slug for URL if present
-  //     setSlug(event.slug)
+  // TODO: add managers
+  // TODO: set transfers?
+  // TODO: set metadata for event
 
-  //     // Finally
-  //     setLockAddress(lockAddress)
-  //   }
-  // }
-  return response.status(201).json({ message: 'Event created!' })
+  return response
+    .status(201)
+    .json({ contract: lockAddress, network: DEFAULT_NETWORK })
 }
 
 export const rsvpForEvent: RequestHandler = (request, response) => {
