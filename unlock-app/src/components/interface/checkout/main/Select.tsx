@@ -394,8 +394,7 @@ export function Select({ checkoutService }: Props) {
     // if locks are sold out and the user is not an existing member of the lock
     (lock?.isSoldOut && !(membership?.member || membership?.expired)) ||
     isNotExpectedAddress ||
-    isLoadingHook ||
-    !isSignedIn
+    isLoadingHook
 
   useEffect(() => {
     if (locks?.length) {
