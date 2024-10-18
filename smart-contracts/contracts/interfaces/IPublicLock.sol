@@ -586,20 +586,6 @@ interface IPublicLock {
   function migrate(bytes calldata _calldata) external;
 
   /**
-   * Returns the version number of the data schema currently used by the lock
-   * @notice if this is different from `publicLockVersion`, then the ability to purchase, grant
-   * or extend keys is disabled.
-   * @dev will return 0 if no ;igration has ever been run
-   */
-  function schemaVersion() external view returns (uint);
-
-  /**
-   * Set the schema version to the latest
-   * @notice only lock manager call call this
-   */
-  function updateSchemaVersion() external;
-
-  /**
    * Renew a given token
    * @notice only works for non-free, expiring, ERC20 locks
    * @param _tokenId the ID fo the token to renew
