@@ -1,3 +1,5 @@
+'use client'
+
 import { Input, Button, Placeholder } from '@unlock-protocol/ui'
 import { KeyManager, TransferObject } from '@unlock-protocol/unlock-js'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -231,7 +233,7 @@ export const ConfirmTransferForm = ({
 
 export const useQueryTransfer = () => {
   const searchParams = useSearchParams()
-  const result = useMemo(() => {
+  return useMemo(() => {
     const lockAddress = searchParams.get('lockAddress')
     const keyId = searchParams.get('keyId')
     const network = searchParams.get('network')
@@ -244,7 +246,6 @@ export const useQueryTransfer = () => {
       isReady: !!lockAddress && !!keyId && !!network,
     }
   }, [searchParams])
-  return result
 }
 
 export const Transfer = () => {
