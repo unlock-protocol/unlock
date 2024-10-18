@@ -88,10 +88,10 @@ contract MixinLockCore is MixinRoles, MixinFunds, MixinDisable {
   uint internal constant BASIS_POINTS_DEN = 10000;
 
   // lock hooks
-  ILockKeyPurchaseHook internal onKeyPurchaseHook;
-  ILockKeyCancelHook internal onKeyCancelHook;
-  ILockValidKeyHook internal onValidKeyHook;
-  ILockTokenURIHook internal onTokenURIHook;
+  ILockKeyPurchaseHook public onKeyPurchaseHook;
+  ILockKeyCancelHook public onKeyCancelHook;
+  ILockValidKeyHook public onValidKeyHook;
+  ILockTokenURIHook public onTokenURIHook;
 
   // use to check data version (added to v10)
   uint internal schemaVersion;
@@ -100,11 +100,11 @@ contract MixinLockCore is MixinRoles, MixinFunds, MixinDisable {
   uint internal _maxKeysPerAddress;
 
   // one more hook (added to v11)
-  ILockKeyTransferHook internal onKeyTransferHook;
+  ILockKeyTransferHook public onKeyTransferHook;
 
   // two more hooks (added to v12)
-  ILockKeyExtendHook internal onKeyExtendHook;
-  ILockKeyGrantHook internal onKeyGrantHook;
+  ILockKeyExtendHook public onKeyExtendHook;
+  ILockKeyGrantHook public onKeyGrantHook;
 
   // modifier to check if data has been upgraded
   function _lockIsUpToDate() internal view {
@@ -191,18 +191,6 @@ contract MixinLockCore is MixinRoles, MixinFunds, MixinDisable {
     if (hookAddress != address(0) && !hookAddress.isContract()) {
       revert INVALID_HOOK(index);
     }
-  }
-
-  function hooks() public view returns (address[7] memory) {
-    return [
-      address(onKeyPurchaseHook),
-      address(onKeyCancelHook),
-      address(onValidKeyHook),
-      address(onTokenURIHook),
-      address(onKeyTransferHook),
-      address(onKeyExtendHook),
-      address(onKeyGrantHook)
-    ];
   }
 
   /**
