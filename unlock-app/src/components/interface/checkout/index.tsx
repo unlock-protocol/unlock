@@ -19,7 +19,7 @@ import { isInIframe } from '~/utils/iframe'
 
 export function CheckoutPage() {
   const searchParams = useSearchParams()
-  const { authenticateWithProvider } = useAuthenticate({})
+  const { authenticateWithProvider } = useAuthenticate()
 
   // Fetch config from parent in iframe context
   const communication = useCheckoutCommunication()

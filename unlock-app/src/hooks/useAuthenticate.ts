@@ -57,92 +57,10 @@ export enum WALLET_PROVIDER {
 
 export type WalletProvider = keyof typeof WALLET_PROVIDER
 
-export function useAuthenticate(options: AuthenticateProps = {}) {
-  const { injectedProvider } = options
-  const config = useConfig()
+export function useAuthenticate() {
   const { authenticate } = useAuth()
   const { setStorage, removeKey } = useAppStorage()
   const { send } = useConnectModal()
-
-  const injectedOrDefaultProvider = injectedProvider || selectProvider(config)
-
-  const handleInjectProvider = useCallback(async () => {
-    return authenticate(injectedOrDefaultProvider)
-  }, [authenticate, injectedOrDefaultProvider])
-
-  const handleUnlockProvider = useCallback(
-    async (provider: any) => {
-      return authenticate(provider)
-    },
-    [authenticate]
-  )
-
-  const handleWaasProvider = useCallback(
-    async (provider: any) => {
-      return authenticate(provider)
-    },
-    [authenticate]
-  )
-
-  const handleDelegatedProvider = useCallback(
-    async (provider: any) => {
-      return authenticate(provider)
-    },
-    [authenticate]
-  )
-
-  const chains = Object.keys(networks).map((network: string) => {
-    return Number(networks[network].id)
-  })
-
-  const handleWalletConnectProvider = useCallback(async () => {
-    // requires @walletconnect/modal for showQrModal:true
-    // @ts-expect-error Property '0' is missing in type 'number[]' but required in type '{ 0: number; }'.ts(2345)
-    const client = await EthereumProvider.init({
-      projectId: config.walletConnectApiKey,
-      showQrModal: true, // if set to false, we could try displaying the QR code ourslves with on('display_uri')
-      qrModalOptions: {
-        themeMode: 'light',
-      },
-      optionalChains: chains,
-      metadata: {
-        name: 'Unlock Protocol App',
-        description:
-          'Unlock is a protocol for memberships, used for tickets, subscriptions, and more!',
-        url: 'https://unlock-protocol.com',
-        icons: ['https://app.unlock-protocol.com/images/svg/unlock-logo.svg'],
-      },
-    })
-
-    // Todo" consider handling this in our modal directly
-    // client.on('display_uri', (uri: string) => {
-    //   console.log(uri)
-    // })
-
-    await client.connect()
-    return authenticate(client)
-  }, [authenticate, config])
-
-  const handleCoinbaseWalletProvider = useCallback(async () => {
-    const walletLink = new WalletLink({
-      appName: 'Unlock',
-      appLogoUrl: '/static/images/svg/default-lock-logo.svg',
-    })
-
-    const ethereum = walletLink.makeWeb3Provider(config.networks[1].provider)
-    return authenticate(ethereum)
-  }, [authenticate, config])
-
-  const walletHandlers: {
-    [key in WalletProvider]: (provider?: any) => Promise<any | void>
-  } = {
-    DELEGATED_PROVIDER: handleDelegatedProvider,
-    METAMASK: handleInjectProvider,
-    WALLET_CONNECT: handleWalletConnectProvider,
-    COINBASE: handleCoinbaseWalletProvider,
-    UNLOCK: handleUnlockProvider,
-    WAAS: handleWaasProvider,
-  }
 
   const authenticateWithProvider = useCallback(
     async (providerType: WalletProvider, provider?: any) => {
@@ -174,11 +92,6 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
   )
 
   return {
-    handleUnlockProvider,
-    handleInjectProvider,
-    handleWalletConnectProvider,
-    handleCoinbaseWalletProvider,
-    injectedOrDefaultProvider,
     authenticate,
     authenticateWithProvider,
   }
