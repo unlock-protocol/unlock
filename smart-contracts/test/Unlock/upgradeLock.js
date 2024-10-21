@@ -1,11 +1,18 @@
 const assert = require('assert')
 const { ethers, upgrades } = require('hardhat')
 const contracts = require('@unlock-protocol/contracts')
-const { ADDRESS_ZERO, reverts } = require('../helpers')
+const {
+  ADDRESS_ZERO,
+  reverts,
+  getContractFactoryAtVersion,
+  deployUpgreadableContract,
+  upgradeUpgreadableContract,
+} = require('../helpers')
 const {
   createLockCalldata,
   getEvent,
 } = require('@unlock-protocol/hardhat-helpers')
+const { ZeroAddress } = require('ethers')
 
 describe('upgradeLock (deploy template with Proxy)', () => {
   let unlock

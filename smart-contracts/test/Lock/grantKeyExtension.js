@@ -40,6 +40,11 @@ describe('Lock / grantKeyExtension', () => {
     ;({ tokenId } = args)
   })
 
+  it('schemaVersion has been updated', async () => {
+    await lock.updateSchemaVersion()
+    assert.equal(await lock.schemaVersion(), await lock.publicLockVersion())
+  })
+
   describe('extend a valid key without a specific duration', () => {
     let tsBefore, args
     before(async () => {
