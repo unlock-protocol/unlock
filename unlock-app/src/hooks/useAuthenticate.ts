@@ -71,7 +71,7 @@ export function useAuthenticate() {
     }
   }
 
-  // currently used to sign out in the dashboard's `UserMenu`
+  // Signs the user out (removes the session)
   const signOut = async () => {
     try {
       await privyLogout()

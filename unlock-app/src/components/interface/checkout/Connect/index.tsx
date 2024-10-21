@@ -8,8 +8,8 @@ import { ConnectPage } from '../main/ConnectPage'
 import { TopNavigation } from '../Shell'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { PaywallConfigType } from '@unlock-protocol/core'
-import { signOut } from 'next-auth/react'
 import { isInIframe } from '~/utils/iframe'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface Props {
   oauthConfig: OAuthConfig
@@ -23,7 +23,7 @@ interface StepperProps {
 
 export const Stepper = ({ state }: StepperProps) => {
   const steps = ['connect', 'confirm']
-  const { deAuthenticate } = useAuth()
+  const { signOut } = useAuthenticate()
 
   const [currentState, setCurentState] = useState(steps.indexOf(state))
 
@@ -48,7 +48,7 @@ export const Stepper = ({ state }: StepperProps) => {
               key={idx}
               onClick={() => {
                 setCurentState(idx)
-                deAuthenticate()
+                signOut()
               }}
             >
               {idx + 1}
@@ -74,8 +74,6 @@ export function Connect({ oauthConfig, communication }: Props) {
         for (const [key, value] of Object.entries(params)) {
           redirectURI.searchParams.append(key, value)
         }
-        // Sign Out NexthAuth session and prevent page reload
-        signOut({ redirect: false })
         return window.location.assign(redirectURI)
       } else if (!isInIframe() || !communication) {
         window.history.back()

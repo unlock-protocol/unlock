@@ -29,7 +29,6 @@ import { shouldSkip } from './utils'
 import { AiFillWarning as WarningIcon } from 'react-icons/ai'
 import { useGetLockProps } from '~/hooks/useGetLockProps'
 import Disconnect from './Disconnect'
-import { useSIWE } from '~/hooks/useSIWE'
 import { useMemberships } from '~/hooks/useMemberships'
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { ethers } from 'ethers'
@@ -385,7 +384,6 @@ export function Select({ checkoutService }: Props) {
 
   const [isSigning, setSigning] = useState(false)
   const { connected } = useAuth()
-  const { signInWithSIWE, isSignedIn } = useSIWE()
   const useDelegatedProvider = paywallConfig?.useDelegatedProvider
 
   const isDisabled =

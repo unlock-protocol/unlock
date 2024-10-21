@@ -8,7 +8,7 @@ import useEns from '~/hooks/useEns'
 import { addressMinify } from '~/utils/strings'
 import { useCallback, useState } from 'react'
 import { useUnlockPrime } from '~/hooks/useUnlockPrime'
-import { useSIWE } from '~/hooks/useSIWE'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 export const UserMenu = () => {
   const { isPrime } = useUnlockPrime()
@@ -16,7 +16,7 @@ export const UserMenu = () => {
   const { account, email } = useAuth()
   const userEns = useEns(account || '')
   const [isDisconnecting, setIsDisconnecting] = useState(false)
-  const { signOut } = useSIWE()
+  const { signOut } = useAuthenticate()
 
   const handleLogout = useCallback(async () => {
     setIsDisconnecting(true)

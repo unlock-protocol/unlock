@@ -63,8 +63,6 @@ export const Authenticate = ({
     displayAccount,
   } = useProvider(config)
 
-  const { signOut } = useSIWE()
-
   const authenticate = async (provider: any) => {
     if (!provider) {
       if (providerAdapter) {
@@ -72,10 +70,6 @@ export const Authenticate = ({
       }
     }
     return connectProvider(provider)
-  }
-
-  const deAuthenticate = () => {
-    return signOut()
   }
 
   return (
@@ -88,7 +82,6 @@ export const Authenticate = ({
         encryptedPrivateKey,
         authenticate,
         isUnlockAccount,
-        deAuthenticate,
         watchAsset,
         getWalletService,
         connected,

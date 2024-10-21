@@ -1,10 +1,10 @@
 import { Button, Tooltip } from '@unlock-protocol/ui'
 import React, { useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { useSIWE } from '~/hooks/useSIWE'
 import { addressMinify } from '~/utils/strings'
 import { CheckoutService } from './checkoutMachine'
 import { useSelector } from '@xstate/react'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface DisconnectProps {
   service: CheckoutService
@@ -12,8 +12,8 @@ interface DisconnectProps {
 
 const Disconnect = ({ service }: DisconnectProps) => {
   const state = useSelector(service, (state) => state)
-  const { account, isUnlockAccount, deAuthenticate, email } = useAuth()
-  const { signOut } = useSIWE()
+  const { account, isUnlockAccount, email } = useAuth()
+  const { signOut } = useAuthenticate()
 
   const [isDisconnecting, setIsDisconnecting] = useState(false)
 
@@ -31,7 +31,6 @@ const Disconnect = ({ service }: DisconnectProps) => {
   const onDisconnect = async () => {
     setIsDisconnecting(true)
     await signOut()
-    await deAuthenticate()
     service.send({ type: 'DISCONNECT' })
     setIsDisconnecting(false)
   }

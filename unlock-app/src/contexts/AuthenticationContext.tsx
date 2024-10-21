@@ -5,7 +5,6 @@ import { usePrivy } from '@privy-io/react-auth'
 
 interface AuthenticationContextType {
   authenticate(provider: any): void
-  deAuthenticate(): void
   watchAsset(asset: any): void
   account?: string
   network?: number
@@ -20,7 +19,6 @@ interface AuthenticationContextType {
 
 export const defaultValues = {
   authenticate: () => {},
-  deAuthenticate: () => {},
   watchAsset: () => {},
   providerSend: (_method: string, _params: string[]) => {},
   getWalletService: async (_network?: number) => new WalletService(networks),
