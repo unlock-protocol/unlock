@@ -23,7 +23,7 @@ export const useProvider = () => {
   const { session: account } = useSession()
 
   const createBrowserProvider = (provider: any): ethers.BrowserProvider => {
-    const browserProvider = new ethers.BrowserProvider(provider)
+    const browserProvider = new ethers.BrowserProvider(provider, 'any')
     if (provider.parentOrigin) {
       // @ts-expect-error Property 'parentOrigin' does not exist on type 'BrowserProvider'.
       browserProvider.parentOrigin = provider.parentOrigin
@@ -91,17 +91,11 @@ export const useProvider = () => {
       if (networkId && networkId !== currentChainId) {
         // Prompt user to switch to the requested network
         await switchProviderNetwork(networkId)
-
-        // TOFIX: After switching, get the updated provider
-        const updatedProvider = provider // await wallets[0].getEthersProvider()
-
-        // instantiate the wallet service with the updated provider
-        const { walletService: _walletService } =
-          await createWalletService(updatedProvider)
-        return _walletService
+        // Add a 1 second delay after switching provider network
+        await new Promise((resolve) => setTimeout(resolve, 1000))
       }
 
-      // if no network switch was needed, instantiate the wallet service with the current provider
+      // instantiate the wallet service with the current provider
       const { walletService: _walletService } =
         await createWalletService(provider)
       return _walletService
