@@ -1,0 +1,39 @@
+{
+  "ODGovernor_Address": "0x65bA0624403Fc5Ca2b20479e9F626eD4D78E0aD9",
+  "arrayLength": "3",
+  "calldatas": [
+    "0x095ea7b3000000000000000000000000c168131217226cb863d620c0a575b84f7dffb98600000000000000000000000000000000000000000001d692e560bb3d79780000",
+    "0x2378bea6000000000000000000000000ac27fa800955849d6d17cc8952ba9dd6eaa66187000000000000000000000000000000000000000000000000000000000049d400",
+    "0xb66503cf000000000000000000000000ac27fa800955849d6d17cc8952ba9dd6eaa6618700000000000000000000000000000000000000000001d692e560bb3d79780000"
+  ],
+  "chainid": 8453,
+  "description": "Add 2,222,222 UP for Incentives on Uniswap + Gamma\n\n## Details\n\n- Uniswap UP/WETH Pool: https://app.uniswap.org/explore/pools/base/0x9EF81F4E2F2f15Ff1c0C3f8c9ECc636580025242\n- Gamma wide position: https://app.gamma.xyz/vault/uni/base/details/weth-up-3000-wide\n- Using an initial price of UP of $0.0072\n- $8,000 / $0.0072 = 1,111,111 UP rewards per month\n- Total 2,222,222 UP (0.22% of supply) for a two month period\n- Incentives will begin immediately upon execution of this proposal. \n\n## Discussion\n\n- Discussion: See \"DEX selection\" thread in Discord\n- Passing snapshot: https://snapshot.org/#/unlock-dao.eth/proposal/0xfced5da7b05d9b723700b4105bd22a3073fe0bbd66a4a9e2251ed7180729ab14\n\n## Smart Contract execution\n\nSteps:\n\n1. Approve the rewarder contract to spend 2,222,222 UP. `\"approve(address,uint256)\" 0xc168131217226cb863d620c0a575b84f7dffb986  2222222000000000000000000`\n2. Set the reward time to 8 weeks (in seconds). `\"setRewardsDuration(address, uint256)\" 0xaC27fa800955849d6D17cC8952Ba9dD6EAA66187 4838400`\n3. Call notifyRewardAmount to start incentives. `\"notifyRewardAmount(address, uint256)\"  0xaC27fa800955849d6D17cC8952Ba9dD6EAA66187 2222222000000000000000000`",
+  "descriptionHash": "0xb167110d3d1a50267253db9e8851beaa069162ce616a0b0fed9bbd275cf4300f",
+  "network": "base",
+  "objectArray": [
+    {
+      "target": "0xaC27fa800955849d6D17cC8952Ba9dD6EAA66187",
+      "calldata": "0x095ea7b3000000000000000000000000c168131217226cb863d620c0a575b84f7dffb98600000000000000000000000000000000000000000001d692e560bb3d79780000"
+    },
+    {
+      "target": "0xc168131217226cb863d620c0a575b84f7dffb986",
+      "calldata": "0x2378bea6000000000000000000000000ac27fa800955849d6d17cc8952ba9dd6eaa66187000000000000000000000000000000000000000000000000000000000049d400"
+    },
+    {
+      "target": "0xc168131217226cb863d620c0a575b84f7dffb986",
+      "calldata": "0xb66503cf000000000000000000000000ac27fa800955849d6d17cc8952ba9dd6eaa6618700000000000000000000000000000000000000000001d692e560bb3d79780000"
+    }
+  ],
+  "proposalId": "71822073045506370758233385922596244307976389795390542682016570087635285593334",
+  "proposalType": "TargetsAndCalldata",
+  "targets": [
+    "0xaC27fa800955849d6D17cC8952Ba9dD6EAA66187",
+    "0xC168131217226cb863D620C0a575b84F7dFfB986",
+    "0xC168131217226cb863D620C0a575b84F7dFfB986"
+  ],
+  "values": [
+    0,
+    0,
+    0
+  ]
+}
