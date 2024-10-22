@@ -123,11 +123,11 @@ export function useAuthenticate() {
         // Use the existing access token to log in
         const response = await locksmith.user()
         const { walletAddress } = response.data
-        console.log('loggin')
         if (walletAddress) {
           setStorage('account', walletAddress)
           await queryClient.refetchQueries()
           await refetchSession()
+          setAccount(walletAddress)
           return
         }
       } catch (error) {
