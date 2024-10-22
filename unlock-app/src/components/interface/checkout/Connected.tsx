@@ -23,7 +23,6 @@ export function Connected({ service }: ConnectedCheckoutProps) {
       account: string,
       lockNetwork: number
     ) => {
-      console.log('check memberships!')
       // Get the membership!
       const membership = await getMembership(lockAddress, account!, lockNetwork)
       service.send({
