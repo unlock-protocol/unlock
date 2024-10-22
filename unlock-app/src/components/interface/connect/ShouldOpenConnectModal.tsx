@@ -22,7 +22,7 @@ const ShouldOpenConnectModal = () => {
       const newPathname = `${pathname}?${newSearchParams.toString()}`
       router.replace(newPathname)
     }
-  }, [searchParams, pathname, router, connected, account, openConnectModal])
+  }, [searchParams, pathname, router, account, openConnectModal])
 
   return null
 }
