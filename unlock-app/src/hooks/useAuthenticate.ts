@@ -1,6 +1,6 @@
 import { useLogin, usePrivy, useWallets } from '@privy-io/react-auth'
 import { useAppStorage } from './useAppStorage'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import {
   getAccessToken,
   removeAccessToken,
@@ -13,12 +13,15 @@ import { useSIWE } from './useSIWE'
 import { useCookies } from 'react-cookie'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useProvider } from './useProvider'
+import AuthenticationContext from '~/contexts/AuthenticationContext'
 
 // This hook includes *all* signIn and signOut methods
 // TODO: consider adding useSession() stuff here too?
-
 export function useAuthenticate() {
-  const [account, setAccount] = useState<string | undefined>(undefined)
+  const { account, setAccount } = useContext<{
+    account: string | undefined
+    setAccount: (account: string) => void
+  }>(AuthenticationContext)
   const { setProvider } = useProvider()
   const [cookies] = useCookies()
   const { refetchSession } = useSession()
