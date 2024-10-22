@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import Key from './Key'
 import { ImageBar } from '../locks/Manage/elements/ImageBar'
 import { useKeys } from '~/hooks/useKeys'

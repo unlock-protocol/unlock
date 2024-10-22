@@ -78,7 +78,7 @@ function Key({ ownedKey, owner, network }: Props) {
   const { lock, expiration, tokenId, isExpired, isExtendable, isRenewable } =
     ownedKey
   const { account } = useAuthenticate()
-  const { getWalletService } = useProvider()
+  const { getWalletService, watchAsset } = useProvider()
   const wedlockService = useContext(WedlockServiceContext)
   const web3Service = useWeb3Service()
   const config = useConfig()
