@@ -258,10 +258,6 @@ export const useCheckoutCommunication = () => {
     paywallConfig?.useDelegatedProvider || oauthConfig?.useDelegatedProvider
 
   if (useDelegatedProvider && !providerAdapter) {
-    console.log(
-      'Setting provider adapter from useCheckoutCommunication',
-      setProviderAdapter
-    )
     setProviderAdapter({
       parentOrigin: () => {
         // @ts-expect-error Property 'parentOrigin' does not exist on type 'ChildAPI'.ts(2339)
