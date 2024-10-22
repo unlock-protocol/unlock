@@ -13,10 +13,11 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 import dayjs from 'dayjs'
 import { formatDate } from '~/utils/lock'
 import { omit } from 'lodash'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useMultipleLockData } from '~/hooks/useLockData'
 import { useState } from 'react'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
+import { useProvider } from '~/hooks/useProvider'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 dayjs.extend(customParseFormat)
 
@@ -69,7 +70,8 @@ export const AirdropForm = ({ locks }: { locks: PaywallLocksConfigType }) => {
 }
 
 export const AirdropFormForLock = ({ lock }: { lock: Lock }) => {
-  const { account, getWalletService } = useAuth()
+  const { account } = useAuthenticate()
+  const { getWalletService } = useProvider()
   const { mutateAsync: updateUsersMetadata } = useUpdateUsersMetadata()
 
   const handleConfirm = async (
