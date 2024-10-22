@@ -48,7 +48,6 @@ export const Stepper = ({ state }: StepperProps) => {
               key={idx}
               onClick={() => {
                 setCurentState(idx)
-                signOut()
               }}
             >
               {idx + 1}

@@ -140,7 +140,7 @@ export const MetadataInputs = ({
                 </Button>
               </div>
               <p className="text-xs text-gray-600">
-                {'The wallet address that will receive the pass'}
+                The wallet address that will receive the pass.
               </p>
             </div>
           ) : (
@@ -224,13 +224,12 @@ export const MetadataInputs = ({
         .map((metadataInputItem) => {
           const { name, label, placeholder, required, value } =
             metadataInputItem ?? {}
-          const { defaultValue } = metadataInputItem ?? {}
-          let { type } = metadataInputItem ?? {}
-          if (name === 'email') {
-            // We pre-fill it with the user's email!
-            // defaultValue = email
-            type = 'hidden'
-          }
+          const { defaultValue, type } = metadataInputItem ?? {}
+          // if (name === 'email') {
+          // We pre-fill it with the user's email!
+          // defaultValue = email
+          // type = 'hidden'
+          // }
           const inputLabel = label || name
           return (
             <Input
@@ -272,6 +271,7 @@ export function Metadata({ checkoutService }: Props) {
   const locksConfig = paywallConfig.locks[lock!.address]
   const isEmailRequired =
     locksConfig.emailRequired || paywallConfig.emailRequired
+
   const metadataInputs = useMemo(() => {
     let inputs =
       locksConfig.metadataInputs || paywallConfig.metadataInputs || []

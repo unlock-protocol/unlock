@@ -129,10 +129,11 @@ export const Stepper = ({
           item.to && !disabled ? (
             <StepButton
               key={idx}
-              onClick={() => {
+              onClick={async () => {
                 if (item.to === 'CONNECT') {
+                  // Can't disconnect the delegated provider!
                   if (useDelegatedProvider) return
-                  signOut()
+                  await signOut()
                 }
 
                 // Convert search params to an object
