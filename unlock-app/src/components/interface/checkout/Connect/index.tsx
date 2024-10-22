@@ -9,7 +9,6 @@ import { TopNavigation } from '../Shell'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { isInIframe } from '~/utils/iframe'
-import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface Props {
   oauthConfig: OAuthConfig
@@ -23,7 +22,6 @@ interface StepperProps {
 
 export const Stepper = ({ state }: StepperProps) => {
   const steps = ['connect', 'confirm']
-  const { signOut } = useAuthenticate()
 
   const [currentState, setCurentState] = useState(steps.indexOf(state))
 
