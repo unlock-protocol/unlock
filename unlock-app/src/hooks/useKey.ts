@@ -1,7 +1,7 @@
 import { useQueries, useQuery } from '@tanstack/react-query'
 import { PaywallLocksConfigType } from '@unlock-protocol/core'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
+import { useAuthenticate } from './useAuthenticate'
 
 interface ValidKeyProps {
   lockAddress: string
@@ -9,7 +9,7 @@ interface ValidKeyProps {
 }
 
 export const useValidKey = ({ lockAddress, network }: ValidKeyProps) => {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
 
   const web3Service = useWeb3Service()
   return useQuery({
@@ -26,7 +26,7 @@ export const useValidKey = ({ lockAddress, network }: ValidKeyProps) => {
 
 /** Check if there is a valid keys from a list of Locks */
 export const useValidKeyBulk = (locks: PaywallLocksConfigType) => {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
 
   const web3Service = useWeb3Service()
 

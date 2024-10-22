@@ -1,14 +1,14 @@
 'use client'
 
 import React from 'react'
-import { useAuth } from '~/contexts/AuthenticationContext'
 
 import { Button } from '@unlock-protocol/ui'
 import { Launcher } from '~/components/interface/Launcher'
 import LocksListPage from '~/components/interface/locks/List'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 export default function LocksContent() {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const [showLauncher, setShowLauncher] = React.useState(false)
 
   const Description = () => {

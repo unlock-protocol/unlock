@@ -3,7 +3,7 @@ import { Input, Button } from '@unlock-protocol/ui'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useAuth } from '~/contexts/AuthenticationContext'
+import { useProvider } from '~/hooks/useProvider'
 
 interface UpdateMaxKeysPerAddressProps {
   lockAddress: string
@@ -27,7 +27,7 @@ export const UpdateMaxKeysPerAddress = ({
   publicLockVersion,
   maxKeysPerAddress: maxKeysPerAddressValue = DEFAULT_KEYS_PER_ADDRESS,
 }: UpdateMaxKeysPerAddressProps) => {
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
 
   const {
     register,

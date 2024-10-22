@@ -4,7 +4,6 @@ import useTermsOfService from '~/hooks/useTermsOfService'
 import { useConfig } from '~/utils/withConfig'
 import { Button, Footer, HeaderNav, Modal } from '@unlock-protocol/ui'
 import { Container } from '../Container'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import React, { ReactNode } from 'react'
 import { ImageBar } from '../locks/Manage/elements/ImageBar'
 import { EMAIL_SUBSCRIPTION_FORM } from '~/constants'
@@ -14,6 +13,7 @@ import { MdExitToApp as DisconnectIcon } from 'react-icons/md'
 import { useConnectModal } from '~/hooks/useConnectModal'
 import useEns from '~/hooks/useEns'
 import { ConnectModal } from '../connect/ConnectModal'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 export interface DashboardLayoutProps {
   title?: ReactNode
@@ -151,7 +151,7 @@ export const AppLayout = ({
   logoImageUrl, // replace default logo
   logoRedirectUrl, // replace default redirect logo url
 }: DashboardLayoutProps) => {
-  const { account, email } = useAuth()
+  const { account } = useAuthenticate()
   const { termsAccepted, saveTermsAccepted, termsLoading } = useTermsOfService()
   const config = useConfig()
   const { openConnectModal } = useConnectModal()
@@ -239,9 +239,7 @@ export const AppLayout = ({
                       <div className="flex items-center gap-2">
                         <span className="text-brand-ui-primary text-right">
                           {userEns === account
-                            ? email
-                              ? email
-                              : addressMinify(userEns)
+                            ? addressMinify(userEns)
                             : userEns}
                         </span>
                         <DisconnectIcon

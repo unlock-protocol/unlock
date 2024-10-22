@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
-import { useAuth } from '~/contexts/AuthenticationContext'
+import { useProvider } from './useProvider'
 
 interface ReferrerFeeProps {
   lockAddress: string
@@ -13,7 +13,7 @@ interface SetReferrerParams {
 }
 
 export const useReferrerFee = ({ lockAddress, network }: ReferrerFeeProps) => {
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
 
   const setReferrerFeeForLock = async (params: SetReferrerParams) => {
     const walletService = await getWalletService(network)

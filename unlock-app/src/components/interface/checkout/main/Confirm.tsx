@@ -8,8 +8,8 @@ import { ConfirmClaim } from './Confirm/ConfirmClaim'
 import { ConfirmCrypto } from './Confirm/ConfirmCrypto'
 import { ConfirmCard } from './Confirm/ConfirmCard'
 import { ConfirmCrossmint } from './Confirm/ConfirmCrossmint'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { ConfirmCrossChainPurchase } from './Confirm/ConfirmCrossChainPurchase'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface Props {
   checkoutService: CheckoutService
@@ -21,7 +21,7 @@ export function Confirm({ checkoutService, communication }: Props) {
     checkoutService,
     (state) => state.context
   )
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
 
   const onError = (message: string) => {
     ToastHelper.error(message)

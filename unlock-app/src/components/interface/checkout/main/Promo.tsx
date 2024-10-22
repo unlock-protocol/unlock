@@ -8,13 +8,13 @@ import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { ethers } from 'ethers'
 import { useForm } from 'react-hook-form'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { getEthersWalletFromPassword } from '~/utils/strings'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useDebounce } from 'react-use'
 import LoadingIcon from '../../Loading'
 import { useSearchParams } from 'next/navigation'
 import Disconnect from './Disconnect'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 interface Props {
   checkoutService: CheckoutService
   recipients: string[]
@@ -48,7 +48,7 @@ export function PromoContent({
   promoCode,
   checkoutService,
 }: Props) {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const [hookAddress, setHookAddress] = useState<string>()
   const [code, setCode] = useState<string | undefined>(promoCode)
   const [promoCodeLoading, setPromoCodeLoading] = useState<boolean>(false)

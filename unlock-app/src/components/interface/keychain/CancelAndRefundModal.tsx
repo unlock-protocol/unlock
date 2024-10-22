@@ -5,10 +5,10 @@ import { BiCopy as CopyIcon } from 'react-icons/bi'
 
 import { ToastHelper } from '../../helpers/toast.helper'
 import { useKeychain } from '~/hooks/useKeychain'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { addressMinify } from '~/utils/strings'
 import useClipboard from 'react-use-clipboard'
+import { useProvider } from '~/hooks/useProvider'
 
 export interface CancelAndRefundProps {
   isOpen: boolean
@@ -33,7 +33,7 @@ export const CancelAndRefundModal = ({
   network,
   onExpireAndRefund,
 }: CancelAndRefundProps) => {
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
   const { address: lockAddress, tokenAddress } = lock ?? {}
 
   const { getAmounts } = useKeychain({

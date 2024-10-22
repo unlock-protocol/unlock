@@ -7,7 +7,6 @@ import LocksContext from '../../contexts/LocksContext'
 import { Web3ServiceContext } from '../../utils/withWeb3Service'
 import { WalletServiceContext } from '../../utils/withWalletService'
 import { ConfigContext } from '../../utils/withConfig'
-import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 import { vi } from 'vitest'
 const config = configure()
 const networkId = 31337
@@ -29,10 +28,7 @@ describe('useLock', () => {
     vi.clearAllMocks()
     vi.spyOn(React, 'useContext').mockImplementation((context) => {
       if (context === LocksContext) {
-        return { locks: {}, addLock: () => {} }
-      }
-      if (context === AuthenticationContext) {
-        return { network: networkId }
+        return { locks: {}, addLock: () => { } }
       }
       if (context === Web3ServiceContext) {
         return mockWeb3Service
@@ -58,8 +54,8 @@ describe('useLock', () => {
       address: propsLock.address,
     }
     const newKeyPrice = '123'
-    const setLock = vi.fn(() => {})
-    const callback = vi.fn(() => {})
+    const setLock = vi.fn(() => { })
+    const callback = vi.fn(() => { })
     const hash = '0xtransaction'
 
     beforeEach(() => {

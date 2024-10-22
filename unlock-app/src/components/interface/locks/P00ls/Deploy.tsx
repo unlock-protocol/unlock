@@ -3,7 +3,6 @@
 import { useSearchParams } from 'next/navigation'
 import { CreateLockForm } from '../Create/elements/CreateLockForm'
 import { useCallback, useEffect, useState } from 'react'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import {
   ONE_DAY_IN_SECONDS,
   UNLIMITED_KEYS_COUNT,
@@ -17,10 +16,13 @@ import { subgraph } from '~/config/subgraph'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Placeholder } from '@unlock-protocol/ui'
 import { Deployed } from './Deployed'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { useProvider } from '~/hooks/useProvider'
 
 export const Deploy: React.FC = () => {
   const searchParams = useSearchParams()
-  const { getWalletService, account } = useAuth()
+  const { getWalletService } = useProvider()
+  const { account } = useAuthenticate()
   const [lockAddress, setLockAddress] = useState<string | undefined>(undefined)
 
   const { mutateAsync: updateConfig } = useCheckoutConfigUpdate()

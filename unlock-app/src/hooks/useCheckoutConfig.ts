@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { locksmith } from '~/config/locksmith'
-import { useAuth } from '~/contexts/AuthenticationContext'
+import { useAuthenticate } from './useAuthenticate'
 
 interface CheckoutConfigOptions {
   id?: string
@@ -29,7 +29,7 @@ export const useCheckoutConfigsByUserAndLock = ({
 }: {
   lockAddress: string
 }) => {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   return useQuery({
     queryKey: ['checkoutConfigsByUserAndLock', account!, lockAddress],
     queryFn: async () => {
@@ -48,7 +48,7 @@ export const useCheckoutConfigsByUserAndLock = ({
 }
 
 export const useCheckoutConfigsByUser = () => {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   return useQuery({
     queryKey: ['checkoutConfigsByUser', account!],
     queryFn: async () => {

@@ -6,7 +6,6 @@ import { useConfig } from '~/utils/withConfig'
 import { Stepper } from '../Stepper'
 import { useSelector } from '@xstate/react'
 import { Fragment, useState, lazy, Suspense } from 'react'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { ReturningButton } from '../ReturningButton'
@@ -14,6 +13,8 @@ import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
 import { shouldSkip } from './utils'
 import { AddToWallet } from '../../keychain/AddToWallet'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { useProvider } from '~/hooks/useProvider'
 
 const Lottie = lazy(() => import('lottie-react'))
 
@@ -29,7 +30,8 @@ export function Returning({ checkoutService, onClose, communication }: Props) {
     checkoutService,
     (state) => state.context
   )
-  const { account, getWalletService } = useAuth()
+  const { account } = useAuthenticate()
+  const { getWalletService } = useProvider()
   const [signedMessage, setSignedMessage] = useState(messageToSign)
   const [hasMessageToSign, setHasMessageToSign] = useState(
     !signedMessage && paywallConfig.messageToSign

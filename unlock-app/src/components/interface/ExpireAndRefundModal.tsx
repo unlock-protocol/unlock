@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { ToastHelper } from '../helpers/toast.helper'
 import { Button, Input, Modal } from '@unlock-protocol/ui'
-import { useAuth } from '~/contexts/AuthenticationContext'
+import { useProvider } from '~/hooks/useProvider'
 
 interface ExpireAndRefundProps {
   isOpen: boolean
@@ -20,7 +20,7 @@ export const ExpireAndRefundModal: React.FC<ExpireAndRefundProps> = ({
   setIsOpen,
   network,
 }) => {
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
   const [refundAmount, setRefundAmount] = useState(0)
   const [loading, setLoading] = useState(false)
 

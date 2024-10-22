@@ -1,8 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { minifyAddress } from '@unlock-protocol/ui'
 import { locksmith } from '~/config/locksmith'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { useProvider } from './useProvider'
 
 export const useKeyGranter = ({ network }: { network: number }) => {
   const getKeyGranter = async () => {
@@ -19,7 +19,7 @@ export const useKeyGranter = ({ network }: { network: number }) => {
 }
 
 export const useAddKeyGranter = (lockAddress: string, network: number) => {
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
   const queryClient = useQueryClient()
 
   const addKeyGranter = async (address: string) => {
@@ -48,7 +48,7 @@ export const useAddKeyGranter = (lockAddress: string, network: number) => {
 }
 
 export const useRemoveKeyGranter = (lockAddress: string, network: number) => {
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
   const queryClient = useQueryClient()
 
   const removeKeyGranter = async (keyGranter: string) => {

@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import AccountInfo from '../interface/user-account/AccountInfo'
-import EjectAccount from '../interface/user-account/EjectAccount'
+// import EjectAccount from '../interface/user-account/EjectAccount'
 import { loadStripe } from '@stripe/stripe-js'
 import { useConfig } from '~/utils/withConfig'
 import { Card } from '../interface/checkout/Card'
@@ -87,7 +87,7 @@ export const SettingsContent = () => {
     <>
       <AccountInfo />
       <PaymentSettings />
-      <EjectAccount />
+      {/* <EjectAccount /> */}
     </>
   )
 }

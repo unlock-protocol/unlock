@@ -1,8 +1,8 @@
 'use client'
 import { Button, HeaderNav } from '@unlock-protocol/ui'
 import { useConnectModal } from '~/hooks/useConnectModal'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { UserMenu } from '../../connect/UserMenu'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 const MENU = {
   extraClass: {
@@ -17,7 +17,7 @@ const MENU = {
 }
 
 export default function CertificationHeader() {
-  const { account } = useAuth()
+  const { account, ready } = useAuthenticate()
   const { openConnectModal } = useConnectModal()
 
   return (
@@ -29,6 +29,7 @@ export default function CertificationHeader() {
             <UserMenu />
           ) : (
             <Button
+              disabled={!ready}
               onClick={(event) => {
                 event.preventDefault()
                 openConnectModal()

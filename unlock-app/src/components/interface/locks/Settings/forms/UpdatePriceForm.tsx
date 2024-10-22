@@ -9,8 +9,8 @@ import { useConfig } from '~/utils/withConfig'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { SelectCurrencyModal } from '../../Create/modals/SelectCurrencyModal'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { ZeroAddress } from 'ethers'
+import { useProvider } from '~/hooks/useProvider'
 
 interface EditFormProps {
   keyPrice?: string
@@ -40,7 +40,7 @@ export const UpdatePriceForm = ({
 
   const [isFree, setIsFree] = useState(isFreeKey)
   const { networks } = useConfig()
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
   const web3Service = useWeb3Service()
   const [changeCurrencyOpen, setChangeCurrencyModal] = useState(false)
   const [selectedToken, setSelectedToken] = useState<Token | null>(null)

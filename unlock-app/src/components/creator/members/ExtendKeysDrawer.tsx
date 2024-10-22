@@ -7,7 +7,7 @@ import useEns from '~/hooks/useEns'
 import { useForm } from 'react-hook-form'
 import { MAX_UINT } from '~/constants'
 import dayjs from 'dayjs'
-import { useAuth } from '~/contexts/AuthenticationContext'
+import { useProvider } from '~/hooks/useProvider'
 
 interface ExtendKeyDrawerProps {
   isOpen: boolean
@@ -56,7 +56,7 @@ const ExtendKeyDurationForm = ({
   currentExpiration,
   network,
 }: ExtendKeyDurationProps) => {
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
   const defaultValues = {
     // expiration date as default
     expiration: formatDate(

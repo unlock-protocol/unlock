@@ -1,9 +1,9 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { locksmith } from '~/config/locksmith'
-import { useAuth } from '~/contexts/AuthenticationContext'
+import { useAuthenticate } from './useAuthenticate'
 
 export const useRemovePaymentMethods = () => {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   return useMutation({
     mutationKey: ['removePaymentMethods', account],
     mutationFn: async () => {
@@ -15,7 +15,7 @@ export const useRemovePaymentMethods = () => {
 }
 
 export const usePaymentMethodList = () => {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   return useQuery({
     queryKey: ['listPaymentMethods', account],
     queryFn: async () => {

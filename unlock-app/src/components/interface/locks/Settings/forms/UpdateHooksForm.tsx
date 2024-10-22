@@ -3,7 +3,6 @@ import { Select } from '@unlock-protocol/ui'
 import { useRef, useState } from 'react'
 import { FormProvider, useForm, useFormContext } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { Hook, HookName, HookType } from '@unlock-protocol/types'
 import { CustomContractHook } from './hooksComponents/CustomContractHook'
 import { PasswordCappedContractHook } from './hooksComponents/PasswordCappedContractHook'
@@ -14,6 +13,7 @@ import { GuildContractHook } from './hooksComponents/GuildContractHook'
 import { PromoCodeHook } from './hooksComponents/PromoCodeHook'
 import { useCustomHook } from '~/hooks/useCustomHooks'
 import { GitcoinContractHook } from './hooksComponents/GitcoinContractHook'
+import { useProvider } from '~/hooks/useProvider'
 
 interface UpdateHooksFormProps {
   lockAddress: string
@@ -264,7 +264,7 @@ export const UpdateHooksForm = ({
   disabled,
   version,
 }: UpdateHooksFormProps) => {
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
   const [defaultValues, setDefaultValues] = useState<HooksFormProps>()
 
   const { isPending, refetch, getHookValues } = useCustomHook({

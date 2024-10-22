@@ -3,37 +3,35 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { MdExitToApp as DisconnectIcon } from 'react-icons/md'
 import Link from 'next/link'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import useEns from '~/hooks/useEns'
 import { addressMinify } from '~/utils/strings'
 import { useCallback, useState } from 'react'
-import { useSIWE } from '~/hooks/useSIWE'
 import { useUnlockPrime } from '~/hooks/useUnlockPrime'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 export const UserMenu = () => {
   const { isPrime } = useUnlockPrime()
-
-  const { account, email, deAuthenticate } = useAuth()
+  const { account } = useAuthenticate()
   const userEns = useEns(account || '')
-  const { signOut } = useSIWE()
   const [isDisconnecting, setIsDisconnecting] = useState(false)
+  const { signOut } = useAuthenticate()
 
-  const onSignOut = useCallback(async () => {
+  const handleLogout = useCallback(async () => {
     setIsDisconnecting(true)
-    await signOut()
-    await deAuthenticate()
-    setIsDisconnecting(false)
-  }, [signOut, deAuthenticate])
+    try {
+      await signOut()
+    } catch (error) {
+      console.error('Error during logout:', error)
+    } finally {
+      setIsDisconnecting(false)
+    }
+  }, [signOut])
 
   return (
     <Menu as="div" className="relative inline-block text-left">
       <MenuButton className="flex items-center gap-2">
         <span className="text-brand-ui-primary text-right">
-          {userEns === account
-            ? email
-              ? email
-              : addressMinify(userEns)
-            : userEns}
+          {userEns === account ? addressMinify(userEns) : userEns}
         </span>
         <DisconnectIcon className="text-brand-ui-primary" size={20} />
       </MenuButton>
@@ -99,7 +97,7 @@ export const UserMenu = () => {
           <MenuItem>
             {({ active }) => (
               <button
-                onClick={onSignOut}
+                onClick={handleLogout}
                 disabled={isDisconnecting}
                 className={`${
                   active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'

@@ -10,7 +10,6 @@ import {
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { BsCreditCard as CreditCardIcon } from 'react-icons/bs'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { onResolveName } from '~/utils/resolvers'
 import useEns from '~/hooks/useEns'
 import {
@@ -18,6 +17,7 @@ import {
   useRemoveKeyGranter,
   useKeyGranter,
 } from '~/hooks/useKeyGranter'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface KeyGranterFormProps {
   lockAddress: string
@@ -123,7 +123,7 @@ const KeyGranterCard = ({
 }: KeyGranterCardProps) => {
   const [modalOpen, setModalOpen] = useState(false)
 
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
 
   const keyGranterEnsOrAddress = useEns(keyGranter)
   const isLoggedUser = account?.toLowerCase() === keyGranter?.toLowerCase()

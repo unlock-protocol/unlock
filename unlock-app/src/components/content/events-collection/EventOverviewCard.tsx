@@ -9,10 +9,10 @@ import React from 'react'
 import { Event } from './EventsCollectionDetailContent'
 import dayjs from 'dayjs'
 import { Badge, Placeholder } from '@unlock-protocol/ui'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useCheckoutConfig } from '~/hooks/useCheckoutConfig'
 import { AttendeeCues } from '../event/Registration/AttendeeCues'
 import ReactMarkdown from 'react-markdown'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface EventOverviewCardProps {
   event: Event
@@ -23,7 +23,7 @@ export const EventOverviewCard: React.FC<EventOverviewCardProps> = ({
   event,
   onClick,
 }) => {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const { data: checkoutConfig, isPending: isCheckoutConfigPending } =
     useCheckoutConfig({
       id: event?.checkoutConfigId,

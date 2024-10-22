@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { MAX_UINT } from '~/constants'
-import { useAuth } from '~/contexts/AuthenticationContext'
+import { useProvider } from '~/hooks/useProvider'
 import { onResolveName } from '~/utils/resolvers'
 
 interface TransferModalProps {
@@ -34,7 +34,7 @@ export function TransferModal({
 }: TransferModalProps) {
   const hasNoExpiry = expiration === MAX_UINT
 
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
 
   const [isLoading, setIsLoading] = useState(false)
   const [option, setOption] = useState<TransferOption>(undefined)

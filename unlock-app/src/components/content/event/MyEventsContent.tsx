@@ -1,13 +1,12 @@
 'use client'
 
-import { useAuth } from '~/contexts/AuthenticationContext'
-
 import { Button } from '@unlock-protocol/ui'
 import Link from 'next/link'
 import EventList from '~/components/interface/locks/List/elements/EventList'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 export default function MyEventsContent() {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
 
   const SectionHeader = () => {
     return (

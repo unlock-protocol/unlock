@@ -23,7 +23,7 @@ import { ChooseConfiguration } from './ChooseConfiguration'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDebounce } from 'react-use'
 import { getCheckoutUrl } from '~/components/content/event/utils'
-import { useAuth } from '~/contexts/AuthenticationContext'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 export type Configuration = 'new' | 'existing'
 interface ConfigurationFormProps {
@@ -45,7 +45,7 @@ const Header = () => {
 export const CheckoutUrlContent = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const [checkoutUrl, setCheckoutUrl] = useState('')
   const [isDeleteConfirmation, setDeleteConfirmation] = useState(false)
   const [configuration, setConfiguration] = useState<Configuration>('new')

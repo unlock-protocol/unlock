@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
+import { useProvider } from './useProvider'
 
 interface TransferFeeProps {
   lockAddress: string
@@ -16,7 +16,7 @@ const getTransferFeeBasisPoints = async (
 }
 
 export const useTransferFee = ({ lockAddress, network }: TransferFeeProps) => {
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
   const web3Service = useWeb3Service()
 
   const updateTransferFee = async (transferFeePercentage: number) => {

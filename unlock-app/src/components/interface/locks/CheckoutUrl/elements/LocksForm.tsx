@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import {
   MetadataInput,
   PaywallLockConfig,
@@ -35,6 +34,7 @@ import { useLockSettings } from '~/hooks/useLockSettings'
 import { getLocksByNetwork } from '~/hooks/useLocksByManager'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface LockListItemProps {
   position: number
@@ -276,7 +276,7 @@ export const LocksForm = ({
   onChange,
   locks: locksDefault = {},
 }: LocksFormProps) => {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const [network, setNetwork] = useState<string | number>()
   const [lockAddress, setLockAddress] = useState<string>('')
   const [addLock, setAddLock] = useState(false)

@@ -6,9 +6,8 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
+
 import { SessionProvider } from '~/hooks/useSession'
-import { SessionProvider as NextAuthSessionProvider } from 'next-auth/react'
-import { ConnectModalProvider } from '~/hooks/useConnectModal'
 import { AirstackProvider } from '@airstack/airstack-react'
 import { ErrorBoundary } from '@sentry/nextjs'
 import { ErrorFallback } from '~/components/interface/ErrorFallback'
@@ -16,6 +15,8 @@ import LoadingIcon from '~/components/interface/Loading'
 import { Toaster } from 'react-hot-toast'
 import ShouldOpenConnectModal from '~/components/interface/connect/ShouldOpenConnectModal'
 import GlobalWrapper from '~/components/interface/GlobalWrapper'
+import { ConnectModalProvider } from '~/hooks/useConnectModal'
+import Privy from '~/config/PrivyProvider'
 
 function makeQueryClient() {
   return new QueryClient({
@@ -46,23 +47,25 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <SessionProvider>
-        <NextAuthSessionProvider>
-          <ConnectModalProvider>
-            <ErrorBoundary
-              fallback={(props: any) => <ErrorFallback {...props} />}
-            >
-              <Suspense fallback={<LoadingIcon />}>
-                <ShouldOpenConnectModal />
+      <GlobalWrapper>
+        <Privy>
+          <SessionProvider>
+            <ConnectModalProvider>
+              <ErrorBoundary
+                fallback={(props: any) => <ErrorFallback {...props} />}
+              >
                 <AirstackProvider apiKey={'162b7c4dda5c44afdb0857b6b04454f99'}>
-                  <GlobalWrapper>{children}</GlobalWrapper>
+                  <Suspense fallback={<LoadingIcon />}>
+                    <ShouldOpenConnectModal />
+                    {children}
+                  </Suspense>
                 </AirstackProvider>
-              </Suspense>
-            </ErrorBoundary>
+              </ErrorBoundary>
+            </ConnectModalProvider>
             <Toaster />
-          </ConnectModalProvider>
-        </NextAuthSessionProvider>
-      </SessionProvider>
+          </SessionProvider>
+        </Privy>
+      </GlobalWrapper>
     </QueryClientProvider>
   )
 }

@@ -8,7 +8,6 @@ import {
   Placeholder,
   Select,
 } from '@unlock-protocol/ui'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useUserEvents } from '~/hooks/useUserEvents'
 import { Form as EventCreationForm, NewEventForm } from '../event/Form'
 import { useEvent } from '~/hooks/useEvent'
@@ -25,6 +24,8 @@ import { formDataToMetadata } from '~/components/interface/locks/metadata/utils'
 import { networks } from '@unlock-protocol/networks'
 import { LockDeploying } from '../event/LockDeploying'
 import { config } from '~/config/app'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { useProvider } from '~/hooks/useProvider'
 
 type AddMethod = 'url' | 'existing' | 'form' | null
 
@@ -43,7 +44,8 @@ export default function AddEventsToCollectionDrawer({
   collectionSlug,
   existingEventSlugs,
 }: AddEventsToCollectionDrawerProps) {
-  const { account, getWalletService } = useAuth()
+  const { account } = useAuthenticate()
+  const { getWalletService } = useProvider()
   const [newEventSlug, setNewEventSlug] = useState<string | undefined>(
     undefined
   )

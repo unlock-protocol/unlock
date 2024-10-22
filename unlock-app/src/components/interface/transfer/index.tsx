@@ -10,11 +10,11 @@ import { useConfig } from '~/utils/withConfig'
 import ReCaptcha from 'react-google-recaptcha'
 import { toast } from 'react-hot-toast'
 import { AxiosError } from 'axios'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useLockData } from '~/hooks/useLockData'
 import { useTransferFee } from '~/hooks/useTransferFee'
 import { useQuery } from '@tanstack/react-query'
+import { useProvider } from '~/hooks/useProvider'
 
 interface SendTransferFormProps {
   createTransferCode: ReturnType<typeof useTransferCode>['createTransferCode']
@@ -106,7 +106,7 @@ export const ConfirmTransferForm = ({
   const router = useRouter()
   const web3Service = useWeb3Service()
   const manager = new KeyManager(config.networks)
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
   const {
     handleSubmit,
     register,

@@ -11,8 +11,8 @@ import { Managers } from './settings/Managers'
 import { General } from './settings/General'
 import { Approvals } from './settings/Approvals'
 import { ManageEvents } from './settings/Management'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { isCollectionManager } from '~/utils/eventCollections'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface EventCollectionSettingsProps {
   eventCollection: EventCollection
@@ -22,7 +22,7 @@ export const EventCollectionSettings = ({
   eventCollection,
 }: EventCollectionSettingsProps) => {
   const [selectedIndex, setSelectedIndex] = useState(0)
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
 
   const isManager = isCollectionManager(
     eventCollection.managerAddresses,

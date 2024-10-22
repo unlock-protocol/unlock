@@ -2,10 +2,10 @@
 
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import Loading from '../interface/Loading'
 import { Launcher } from '../interface/Launcher'
 import { useSession } from '~/hooks/useSession'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { Container } from '../interface/Container'
 import DashboardHeader from '../interface/layouts/index/DashboardHeader'
 import { ConnectModal } from '../interface/connect/ConnectModal'
@@ -13,7 +13,7 @@ import { ConnectModal } from '../interface/connect/ConnectModal'
 export const HomeContent = () => {
   const { isLoading } = useSession()
   const router = useRouter()
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
 
   useEffect(() => {
     if (account) {

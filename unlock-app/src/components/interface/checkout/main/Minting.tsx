@@ -15,9 +15,9 @@ import type { Transaction } from './checkoutMachine'
 import { ReturningButton } from '../ReturningButton'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { networks } from '@unlock-protocol/networks'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { AddToWallet } from '../../keychain/AddToWallet'
 import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface MintingScreenProps {
   lockName: string
@@ -127,7 +127,7 @@ export function Minting({
   checkoutService,
   communication,
 }: MintingProps) {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const { mint, lock, messageToSign, metadata, recipients, paywallConfig } =
     useSelector(checkoutService, (state) => state.context)
 

@@ -6,15 +6,10 @@ import {
   isAddressOrEns,
   Tooltip,
 } from '@unlock-protocol/ui'
-
 import { useEffect, useState } from 'react'
-
 import { Controller, FieldValues, useForm } from 'react-hook-form'
-
 import { useMutation, useQuery } from '@tanstack/react-query'
-
 import { ToastHelper } from '~/components/helpers/toast.helper'
-
 import { useLockManager } from '~/hooks/useLockManager'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import { ADDRESS_ZERO, MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
@@ -22,25 +17,16 @@ import { durationAsText } from '~/utils/durations'
 import { locksmith } from '~/config/locksmith'
 import { useGetReceiptsPageUrl } from '~/hooks/useReceipts'
 import Link from 'next/link'
-
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
-
 import { addressMinify } from '~/utils/strings'
-
-import { useAuth } from '~/contexts/AuthenticationContext'
-
 import { onResolveName } from '~/utils/resolvers'
-
 import { useMetadata } from '~/hooks/metadata'
-
 import { LockType, getLockTypeByMetadata } from '@unlock-protocol/core'
-
 import { FiInfo as InfoIcon } from 'react-icons/fi'
-
 import { TransferKeyDrawer } from '~/components/interface/keychain/TransferKeyDrawer'
-
 import { WrappedAddress } from '~/components/interface/WrappedAddress'
 import { UpdateEmailModal } from '~/components/content/event/attendees/UpdateEmailModal'
+import { useProvider } from '~/hooks/useProvider'
 
 interface MetadataCardProps {
   metadata: any
@@ -132,7 +118,7 @@ const ChangeManagerModal = ({
   tokenId: string
   onChange?: (keyManager: string) => void
 }) => {
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
   const [isOpen, setIsOpen] = useState(false)
 
   const {

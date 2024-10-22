@@ -10,7 +10,6 @@ import {
   approveTransfer,
 } from '@unlock-protocol/unlock-js'
 import { ethers } from 'ethers'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { ADDRESS_ZERO, MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
 import { ToggleSwitch } from '@unlock-protocol/ui'
 import { durationAsText } from '~/utils/durations'
@@ -20,6 +19,8 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Placeholder } from '@unlock-protocol/ui'
 import { Key } from '~/hooks/useKeys'
 import { getReferrer } from '~/utils/checkoutLockUtils'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { useProvider } from '~/hooks/useProvider'
 
 const ExtendMembershipPlaceholder = () => {
   return (
@@ -57,7 +58,8 @@ export const ExtendMembershipModal = ({
 }: Props) => {
   const web3Service = useWeb3Service()
   const provider = web3Service.providerForNetwork(network)
-  const { account, getWalletService } = useAuth()
+  const { account } = useAuthenticate()
+  const { getWalletService } = useProvider()
   const { address: lockAddress, tokenAddress } = lock ?? {}
   const [renewalAmount, setRenewalAmount] = useState(BigInt(0))
   const [unlimited, setUnlimited] = useState(false)

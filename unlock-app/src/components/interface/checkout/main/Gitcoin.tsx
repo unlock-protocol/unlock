@@ -1,7 +1,6 @@
 import { Fragment } from 'react'
 import { useSelector } from '@xstate/react'
 import { Button, minifyAddress } from '@unlock-protocol/ui'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './checkoutMachine'
 import {
   FaCheckCircle as CheckIcon,
@@ -12,6 +11,7 @@ import { Stepper } from '../Stepper'
 import LoadingIcon from '../../Loading'
 import { useDataForGitcoinPassport } from '~/hooks/useDataForGitcoinPassport'
 import Disconnect from './Disconnect'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface Props {
   checkoutService: CheckoutService
@@ -28,7 +28,7 @@ export function Gitcoin({ checkoutService }: Props) {
     checkoutService,
     (state) => state.context
   )
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
 
   const users = recipients.length > 0 ? recipients : [account!]
 
