@@ -26,8 +26,11 @@ export function useAuthenticate() {
   const [cookies] = useCookies()
   const { refetchSession } = useSession()
   const { setStorage } = useAppStorage()
-  const { logout: privyLogout, getAccessToken: privyGetAccessToken } =
-    usePrivy()
+  const {
+    logout: privyLogout,
+    getAccessToken: privyGetAccessToken,
+    ready,
+  } = usePrivy()
   const queryClient = useQueryClient()
   const { siweSign } = useSIWE()
   const { wallets } = useWallets()
@@ -155,5 +158,6 @@ export function useAuthenticate() {
     signInWithSIWE,
     signInWithPrivy,
     signOut,
+    ready,
   }
 }

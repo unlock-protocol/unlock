@@ -17,7 +17,7 @@ const MENU = {
 }
 
 export default function SubscriptionHeader() {
-  const { account } = useAuthenticate()
+  const { account, ready } = useAuthenticate()
   const { openConnectModal } = useConnectModal()
 
   return (
@@ -29,6 +29,7 @@ export default function SubscriptionHeader() {
             <UserMenu />
           ) : (
             <Button
+              disabled={!ready}
               onClick={(event) => {
                 event.preventDefault()
                 openConnectModal()

@@ -17,7 +17,7 @@ const MENU = {
 }
 
 export default function CertificationHeader() {
-  const { account } = useAuthenticate()
+  const { account, ready } = useAuthenticate()
   const { openConnectModal } = useConnectModal()
 
   return (
@@ -29,6 +29,7 @@ export default function CertificationHeader() {
             <UserMenu />
           ) : (
             <Button
+              disabled={!ready}
               onClick={(event) => {
                 event.preventDefault()
                 openConnectModal()
