@@ -52,7 +52,11 @@ export function useAuthenticate() {
       }
     },
     onError: (error) => {
-      ToastHelper.error(`Error while logging in: ${error}`)
+      if (error !== 'generic_connect_wallet_error') {
+        ToastHelper.error(`Error while logging in: ${error}`)
+      } else {
+        ToastHelper.error('Error while logging in. Please retry!')
+      }
       console.error(error)
     },
   })
