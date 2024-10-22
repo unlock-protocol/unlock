@@ -1,10 +1,10 @@
-import React, { useContext } from 'react'
 import { Item } from './styles'
-import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
+import { useAuth } from '../../../contexts/AuthenticationContext'
 import useEns from '../../../hooks/useEns'
 
 export const AccountInfo = () => {
-  const { account } = useContext(AuthenticationContext)
+  const { account } = useAuth()
+
   const name = useEns(account || '')
 
   return (
