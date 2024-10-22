@@ -117,7 +117,25 @@ export function useAuthenticate() {
   }
 
   const signInWithPrivy = async () => {
-    privyLogin()
+    const existingAccessToken = getAccessToken()
+    if (existingAccessToken) {
+      try {
+        // Use the existing access token to log in
+        const response = await locksmith.user()
+        const { walletAddress } = response.data
+        console.log('loggin')
+        if (walletAddress) {
+          setStorage('account', walletAddress)
+          await queryClient.refetchQueries()
+          await refetchSession()
+          return
+        }
+      } catch (error) {
+        console.error('Error using existing access token:', error)
+      }
+    } else {
+      privyLogin()
+    }
   }
 
   useEffect(() => {
