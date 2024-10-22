@@ -20,7 +20,7 @@ import AuthenticationContext from '~/contexts/AuthenticationContext'
 export function useAuthenticate() {
   const { account, setAccount } = useContext<{
     account: string | undefined
-    setAccount: (account: string) => void
+    setAccount: (account: string | undefined) => void
   }>(AuthenticationContext)
   const { setProvider } = useProvider()
   const [cookies] = useCookies()
@@ -85,6 +85,7 @@ export function useAuthenticate() {
   // Signs the user out (removes the session)
   const signOut = async () => {
     try {
+      setAccount(undefined)
       await privyLogout()
       await signOutToken()
       await Promise.all([queryClient.invalidateQueries(), refetchSession()])
