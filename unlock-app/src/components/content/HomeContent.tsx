@@ -1,14 +1,15 @@
+'use client'
+
 import { useEffect } from 'react'
-import Head from 'next/head'
-import { pageTitle } from '../../constants'
-import { TwitterTags } from '../page/TwitterTags'
-import { OpenGraphTags } from '../page/OpenGraphTags'
-import { AppLayout } from '../interface/layouts/AppLayout'
 import { useRouter } from 'next/navigation'
 import Loading from '../interface/Loading'
 import { Launcher } from '../interface/Launcher'
 import { useSession } from '~/hooks/useSession'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { Container } from '../interface/Container'
+import DashboardHeader from '../interface/layouts/index/DashboardHeader'
+import { ConnectModal } from '../interface/connect/ConnectModal'
+
 
 export const HomeContent = () => {
   const { isLoading } = useSession()
@@ -22,14 +23,11 @@ export const HomeContent = () => {
   }, [account, router])
 
   return (
-    <AppLayout authRequired={false} showLinks={false}>
-      <Head>
-        <title>{pageTitle()}</title>
-        <TwitterTags />
-        <OpenGraphTags />
-      </Head>
+    <Container>
+      <ConnectModal />
+      <DashboardHeader />
       {account && <Loading />}
       {!account && !isLoading && <Launcher />}
-    </AppLayout>
+    </Container>
   )
 }
