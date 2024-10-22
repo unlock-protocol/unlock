@@ -9,13 +9,11 @@ const ShouldOpenConnectModal = () => {
   const searchParams = useSearchParams()
   const pathname = usePathname()
   const router = useRouter()
-
-  const { account, connected } = useAuthenticate()
-
+  const { account } = useAuthenticate()
   const { openConnectModal } = useConnectModal()
 
   useEffect(() => {
-    if (searchParams.get('shouldOpenConnectModal') && !connected && !account) {
+    if (searchParams.get('shouldOpenConnectModal') && !account) {
       openConnectModal()
 
       // Remove the shouldOpenConnectModal from the query string
