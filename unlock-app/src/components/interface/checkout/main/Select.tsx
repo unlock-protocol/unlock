@@ -441,7 +441,6 @@ export function Select({ checkoutService }: Props) {
       return
     }
 
-    console.log('TODO: SHOULD WE AUTHENTICATE? ', communication.providerAdapter)
     if (communication.providerAdapter) {
       await signInWithSIWE(communication.providerAdapter)
     }

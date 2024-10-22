@@ -47,23 +47,25 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Privy>
-        <SessionProvider>
-          <ConnectModalProvider>
-            <ErrorBoundary
-              fallback={(props: any) => <ErrorFallback {...props} />}
-            >
-              <Suspense fallback={<LoadingIcon />}>
-                <ShouldOpenConnectModal />
+      <GlobalWrapper>
+        <Privy>
+          <SessionProvider>
+            <ConnectModalProvider>
+              <ErrorBoundary
+                fallback={(props: any) => <ErrorFallback {...props} />}
+              >
                 <AirstackProvider apiKey={'162b7c4dda5c44afdb0857b6b04454f99'}>
-                  <GlobalWrapper>{children}</GlobalWrapper>
+                  <Suspense fallback={<LoadingIcon />}>
+                    <ShouldOpenConnectModal />
+                    {children}
+                  </Suspense>
                 </AirstackProvider>
-              </Suspense>
-            </ErrorBoundary>
-          </ConnectModalProvider>
-          <Toaster />
-        </SessionProvider>
-      </Privy>
+              </ErrorBoundary>
+            </ConnectModalProvider>
+            <Toaster />
+          </SessionProvider>
+        </Privy>
+      </GlobalWrapper>
     </QueryClientProvider>
   )
 }

@@ -23,7 +23,6 @@ export const useProvider = () => {
   const { session: account } = useSession()
 
   const createBrowserProvider = (provider: any): ethers.BrowserProvider => {
-    console.log('ready:', { provider })
     const browserProvider = new ethers.BrowserProvider(provider)
     if (provider.parentOrigin) {
       // @ts-expect-error Property 'parentOrigin' does not exist on type 'BrowserProvider'.
@@ -84,7 +83,6 @@ export const useProvider = () => {
    */
   const getWalletService = async (networkId?: number) => {
     try {
-      console.log('getWalletService')
       // Get the current network
       const network = await provider.getNetwork()
       const currentChainId = network.chainId

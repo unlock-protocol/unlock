@@ -4,7 +4,7 @@ import { PaywallConfigType } from '@unlock-protocol/core'
 import { OAuthConfig } from '~/unlockTypes'
 import { useProvider } from './useProvider'
 import { isInIframe } from '~/utils/iframe'
-import { ProviderAdpaterContext } from '~/components/interface/checkout'
+import { ProviderAdpaterContext } from '~/components/interface/checkout/CheckoutContainer'
 
 export interface UserInfo {
   address?: string
