@@ -5,13 +5,13 @@ import { useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 
 import { formDataToMetadata } from '~/components/interface/locks/metadata/utils'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { CertificationForm, NewCertificationForm } from './CertificationForm'
 import { CertificationDeploying } from './CertificationDeploying'
 import { UNLIMITED_KEYS_COUNT, UNLIMITED_KEYS_DURATION } from '~/constants'
 import { useSaveLockSettings } from '~/hooks/useLockSettings'
 import { getSlugForName } from '~/utils/slugs'
 import { locksmith } from '~/config/locksmith'
+import { useProvider } from '~/hooks/useProvider'
 
 export interface TransactionDetails {
   hash: string
@@ -22,7 +22,7 @@ export const NewCertification = () => {
   const [transactionDetails, setTransactionDetails] =
     useState<TransactionDetails>()
   const [lockAddress, setLockAddress] = useState<string>()
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
   const [slug, setSlug] = useState<string | undefined>(undefined)
 
   const { mutateAsync: saveSettingsMutation } = useSaveLockSettings()

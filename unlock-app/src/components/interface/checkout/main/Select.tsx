@@ -2,7 +2,6 @@ import { CheckoutService, LockState } from './checkoutMachine'
 import { useConfig } from '~/utils/withConfig'
 import { LockOptionPlaceholder, Pricing } from '../Lock'
 import { useSelector } from '@xstate/react'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
@@ -357,7 +356,7 @@ export function Select({ checkoutService }: Props) {
   }, [paywallConfig])
 
   const config = useConfig()
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const web3Service = useWeb3Service()
   const expectedAddress = paywallConfig.expectedAddress
 

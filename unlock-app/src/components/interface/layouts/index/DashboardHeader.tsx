@@ -1,8 +1,8 @@
 'use client'
 import { Button, HeaderNav } from '@unlock-protocol/ui'
 import { useConnectModal } from '~/hooks/useConnectModal'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { UserMenu } from '../../connect/UserMenu'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 const MENU = {
   extraClass: {
@@ -33,7 +33,7 @@ interface DashboardHeaderProps {
 export default function DashboardHeader({
   showMenu = true,
 }: DashboardHeaderProps) {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const { openConnectModal } = useConnectModal()
 
   const menuProps = showMenu ? MENU : { ...MENU, menuSections: [] }

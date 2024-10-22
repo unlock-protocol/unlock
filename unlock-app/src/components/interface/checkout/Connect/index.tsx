@@ -6,9 +6,9 @@ import { ConfirmConnect } from './ConfirmConnect'
 import { Step, StepButton, StepTitle } from '../Stepper'
 import { ConnectPage } from '../main/ConnectPage'
 import { TopNavigation } from '../Shell'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { isInIframe } from '~/utils/iframe'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface Props {
   oauthConfig: OAuthConfig
@@ -60,7 +60,7 @@ export const Stepper = ({ state }: StepperProps) => {
 }
 
 export function Connect({ oauthConfig, communication }: Props) {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const [state, setState] = useState('connect')
 
   const onClose = useCallback(

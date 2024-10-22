@@ -1,8 +1,8 @@
 'use client'
 import { Button, HeaderNav } from '@unlock-protocol/ui'
 import { useConnectModal } from '~/hooks/useConnectModal'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { UserMenu } from '../../connect/UserMenu'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 const MENU = {
   extraClass: {
@@ -17,7 +17,7 @@ const MENU = {
 }
 
 export default function SubscriptionHeader() {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const { openConnectModal } = useConnectModal()
 
   return (

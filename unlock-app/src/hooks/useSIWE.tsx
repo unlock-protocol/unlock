@@ -1,9 +1,9 @@
 import { ReactNode, createContext, useContext, useState } from 'react'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { SiweMessage } from 'siwe'
 import { config } from '~/config/app'
 import ProviderContext from '~/contexts/ProviderContext'
 import { isInIframe } from '~/utils/iframe'
+import { useProvider } from './useProvider'
 
 export type Status = 'loading' | 'error' | 'success' | 'rejected' | 'idle'
 
@@ -35,7 +35,7 @@ export const SIWEProvider = ({ children }: Props) => {
     message: string
     signature: string
   } | null>(null)
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
   const { provider } = useContext(ProviderContext)
   const [status, setStatus] = useState<Status>('idle')
 

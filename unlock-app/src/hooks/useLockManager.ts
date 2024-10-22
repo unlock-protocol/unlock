@@ -1,7 +1,7 @@
 import { useQueries, useQuery } from '@tanstack/react-query'
 import networks from '@unlock-protocol/networks'
 import { Web3Service } from '@unlock-protocol/unlock-js'
-import { useAuth } from '~/contexts/AuthenticationContext'
+import { useAuthenticate } from './useAuthenticate'
 
 interface UseLocKManagerProps {
   lockAddress: string
@@ -25,7 +25,7 @@ export const useLockManager = ({
   network,
   lockManagerAddress,
 }: UseLocKManagerProps) => {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const addressToCheck = lockManagerAddress || account
   const {
     data: isManager = false,
@@ -60,7 +60,7 @@ export const useMultipleLockManagers = ({
   locks,
   lockManagerAddress,
 }: UseMultipleLockManagersProps) => {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const addressToCheck = lockManagerAddress || account
 
   const groupedLocks = locks.reduce(

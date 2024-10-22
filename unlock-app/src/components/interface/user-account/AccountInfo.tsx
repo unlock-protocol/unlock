@@ -1,9 +1,9 @@
 import { Item } from './styles'
-import { useAuth } from '../../../contexts/AuthenticationContext'
 import useEns from '../../../hooks/useEns'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 export const AccountInfo = () => {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
 
   const name = useEns(account || '')
 

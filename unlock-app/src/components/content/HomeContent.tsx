@@ -5,15 +5,15 @@ import { TwitterTags } from '../page/TwitterTags'
 import { OpenGraphTags } from '../page/OpenGraphTags'
 import { AppLayout } from '../interface/layouts/AppLayout'
 import { useRouter } from 'next/navigation'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import Loading from '../interface/Loading'
 import { Launcher } from '../interface/Launcher'
 import { useSession } from '~/hooks/useSession'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 export const HomeContent = () => {
   const { isLoading } = useSession()
   const router = useRouter()
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
 
   useEffect(() => {
     if (account) {

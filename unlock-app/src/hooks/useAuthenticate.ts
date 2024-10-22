@@ -1,6 +1,6 @@
 import { useLogin, usePrivy, useWallets } from '@privy-io/react-auth'
 import { useAppStorage } from './useAppStorage'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import {
   getAccessToken,
   removeAccessToken,
@@ -15,15 +15,20 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useProvider } from './useProvider'
 
 // This hook includes *all* signIn and signOut methods
-// TODO: consider adding useSession() and useAuth() stuff here too?
+// TODO: consider adding useSession() stuff here too?
 
 export function useAuthenticate() {
+  const [account, setAccount] = useState<string | undefined>(undefined)
   const { setProvider } = useProvider()
   const [cookies] = useCookies()
   const { refetchSession } = useSession()
   const { setStorage } = useAppStorage()
   const { logout: privyLogout, getAccessToken: privyGetAccessToken } =
     usePrivy()
+  const queryClient = useQueryClient()
+  const { siweSign } = useSIWE()
+  const { wallets } = useWallets()
+
   const { login: privyLogin } = useLogin({
     onComplete: async () => {
       try {
@@ -43,9 +48,9 @@ export function useAuthenticate() {
           })
         }
         setStorage('account', walletAddress)
-
         await queryClient.refetchQueries()
         await refetchSession()
+        setAccount(walletAddress)
       } catch (error) {
         console.error(error)
         return null
@@ -60,9 +65,6 @@ export function useAuthenticate() {
       console.error(error)
     },
   })
-  const queryClient = useQueryClient()
-  const { siweSign } = useSIWE()
-  const { wallets } = useWallets()
 
   const signOutToken = async () => {
     const session = getAccessToken()
@@ -87,7 +89,6 @@ export function useAuthenticate() {
 
   const signInWithSIWE = async (provider: any) => {
     try {
-      // TODO: connect Provider first!
       setProvider(provider)
       const { data: nonce } = await locksmith.nonce()
       const siweResult = await siweSign(nonce, '')
@@ -107,6 +108,7 @@ export function useAuthenticate() {
         }
         await queryClient.refetchQueries()
         await refetchSession()
+        setAccount(walletAddress)
       }
     } catch (error) {
       console.error(error)
@@ -119,15 +121,16 @@ export function useAuthenticate() {
   }
 
   useEffect(() => {
-    const userProviderFromPrivy = async () => {
+    const setProviderFromPrivy = async () => {
       if (wallets[0]) {
         setProvider(await wallets[0].getEthereumProvider())
       }
     }
-    userProviderFromPrivy()
+    setProviderFromPrivy()
   }, [wallets])
 
   return {
+    account,
     signInWithSIWE,
     signInWithPrivy,
     signOut,

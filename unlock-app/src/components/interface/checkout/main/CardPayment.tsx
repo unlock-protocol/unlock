@@ -24,7 +24,6 @@ import {
   usePaymentMethodList,
   useRemovePaymentMethods,
 } from '~/hooks/usePaymentMethods'
-// import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface Props {
   checkoutService: CheckoutService

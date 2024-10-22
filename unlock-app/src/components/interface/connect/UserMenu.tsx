@@ -3,7 +3,6 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { MdExitToApp as DisconnectIcon } from 'react-icons/md'
 import Link from 'next/link'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import useEns from '~/hooks/useEns'
 import { addressMinify } from '~/utils/strings'
 import { useCallback, useState } from 'react'
@@ -12,8 +11,7 @@ import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 export const UserMenu = () => {
   const { isPrime } = useUnlockPrime()
-
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const userEns = useEns(account || '')
   const [isDisconnecting, setIsDisconnecting] = useState(false)
   const { signOut } = useAuthenticate()

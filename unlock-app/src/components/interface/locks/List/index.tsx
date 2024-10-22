@@ -1,17 +1,13 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation'
-
-import { useAuth } from '~/contexts/AuthenticationContext'
-
 import { WalletNotConnected } from '../../layouts/AppLayout'
-
 import { LockList } from './elements/LockList'
-
 import { Placeholder } from '@unlock-protocol/ui'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 export const LocksListPage = () => {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
 
   const searchParams = useSearchParams()
 

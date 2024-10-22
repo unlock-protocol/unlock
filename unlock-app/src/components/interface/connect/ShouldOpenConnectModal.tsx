@@ -2,7 +2,7 @@
 
 import { useSearchParams, usePathname, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
-import { useAuth } from '~/contexts/AuthenticationContext'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useConnectModal } from '~/hooks/useConnectModal'
 
 const ShouldOpenConnectModal = () => {
@@ -10,7 +10,7 @@ const ShouldOpenConnectModal = () => {
   const pathname = usePathname()
   const router = useRouter()
 
-  const { account, connected } = useAuth()
+  const { account, connected } = useAuthenticate()
 
   const { openConnectModal } = useConnectModal()
 

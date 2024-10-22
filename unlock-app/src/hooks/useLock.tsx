@@ -2,9 +2,9 @@ import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useReducer, useState } from 'react'
 import { useConfig } from '~/utils/withConfig'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { useAuth } from '../contexts/AuthenticationContext'
 import { Lock } from '../unlockTypes'
 import { getCardConnected } from './useCards'
+import { useProvider } from './useProvider'
 
 /**
  * Event handler
@@ -257,7 +257,7 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
     }
   )
   const web3Service = useWeb3Service()
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
   const config = useConfig()
   const [error] = useState<string | null>(null)
 

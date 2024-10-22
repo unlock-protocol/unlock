@@ -1,6 +1,5 @@
 import { Button, Tooltip } from '@unlock-protocol/ui'
 import React, { useState } from 'react'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { addressMinify } from '~/utils/strings'
 import { CheckoutService } from './checkoutMachine'
 import { useSelector } from '@xstate/react'
@@ -12,8 +11,7 @@ interface DisconnectProps {
 
 const Disconnect = ({ service }: DisconnectProps) => {
   const state = useSelector(service, (state) => state)
-  const { account } = useAuth()
-  const { signOut } = useAuthenticate()
+  const { account, signOut } = useAuthenticate()
 
   const [isDisconnecting, setIsDisconnecting] = useState(false)
 

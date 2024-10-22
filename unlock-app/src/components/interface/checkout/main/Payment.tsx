@@ -4,7 +4,6 @@ import { CheckoutService } from './checkoutMachine'
 
 import { useConfig } from '~/utils/withConfig'
 import { useSelector } from '@xstate/react'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { RiArrowRightLine as RightArrowIcon } from 'react-icons/ri'
@@ -27,6 +26,7 @@ import { usePricing } from '~/hooks/usePricing'
 import Link from 'next/link'
 import Disconnect from './Disconnect'
 import { TransactionPreparationError } from './TransactionPreparationError'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface Props {
   checkoutService: CheckoutService
@@ -62,7 +62,7 @@ export function Payment({ checkoutService }: Props) {
   const config = useConfig()
   const { recipients } = state.context
   const lock = state.context.lock!
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const networkConfig = config.networks[lock.network]
   const baseSymbol = networkConfig.nativeCurrency.symbol
   const symbol = lockTickerSymbol(lock, baseSymbol)

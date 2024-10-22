@@ -1,4 +1,3 @@
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService, LockState } from './checkoutMachine'
 import {
   Controller,
@@ -36,6 +35,7 @@ import {
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 import Disconnect from './Disconnect'
 import { shouldSkip } from './utils'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface Props {
   checkoutService: CheckoutService
@@ -69,7 +69,7 @@ export const MetadataInputs = ({
   const [hideRecipientAddress, setHideRecipientAddress] = useState<boolean>(
     hideFirstRecipient || false
   )
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const config = useConfig()
   const [useEmail, setUseEmail] = useState(false)
   const web3Service = useWeb3Service()
@@ -266,7 +266,7 @@ export function Metadata({ checkoutService }: Props) {
     checkoutService,
     (state) => state.context
   )
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const web3Service = useWeb3Service()
   const locksConfig = paywallConfig.locks[lock!.address]
   const isEmailRequired =

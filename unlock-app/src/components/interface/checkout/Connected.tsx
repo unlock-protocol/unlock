@@ -1,10 +1,10 @@
 import { useSelector } from '@xstate/react'
 import { useEffect } from 'react'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './main/checkoutMachine'
 import { Stepper } from './Stepper'
 import { ConnectPage } from './main/ConnectPage'
 import { getMembership } from '~/hooks/useMemberships'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface ConnectedCheckoutProps {
   service: CheckoutService
@@ -12,8 +12,7 @@ interface ConnectedCheckoutProps {
 
 export function Connected({ service }: ConnectedCheckoutProps) {
   const { paywallConfig, lock } = useSelector(service, (state) => state.context)
-
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
 
   const lockAddress = lock?.address
   const lockNetwork = lock?.network || paywallConfig.network
@@ -24,6 +23,7 @@ export function Connected({ service }: ConnectedCheckoutProps) {
       account: string,
       lockNetwork: number
     ) => {
+      console.log('check memberships!')
       // Get the membership!
       const membership = await getMembership(lockAddress, account!, lockNetwork)
       service.send({
@@ -32,19 +32,15 @@ export function Connected({ service }: ConnectedCheckoutProps) {
         expiredMember: !!membership?.expired,
       })
     }
-    if (lockAddress && lockNetwork && account) {
-      checkMemberships(lockAddress, account!, lockNetwork)
-    }
-  }, [account, lockAddress, lockNetwork])
-
-  // Debugging details!
-  useEffect(() => {
     if (!account) {
       console.debug('Not connected')
     } else {
       console.debug(`Connected as ${account}`)
+      if (lockAddress && lockNetwork) {
+        checkMemberships(lockAddress, account!, lockNetwork)
+      }
     }
-  }, [account])
+  }, [account, lockAddress, lockNetwork])
 
   return (
     <>

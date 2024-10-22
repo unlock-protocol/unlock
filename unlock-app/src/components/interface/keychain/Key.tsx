@@ -28,7 +28,6 @@ import { networks } from '@unlock-protocol/networks'
 import QRModal from './QRModal'
 import useMetadata from '../../../hooks/useMetadata'
 import WedlockServiceContext from '../../../contexts/WedlocksContext'
-import { useAuth } from '../../../contexts/AuthenticationContext'
 import { useConfig } from '../../../utils/withConfig'
 import { OpenSeaIcon } from '../../icons'
 import { CancelAndRefundModal } from './CancelAndRefundModal'
@@ -55,6 +54,8 @@ import { Platform } from '~/services/passService'
 import { TransferModal } from './TransferModal'
 import { isKeyTransferable } from '~/utils/key'
 import { useFetchTransferFee } from '~/hooks/useTransferFee'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { useProvider } from '~/hooks/useProvider'
 
 export const MenuButton = tw.button(
   'group flex gap-2 w-full font-semibold items-center rounded-md px-2 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed',
@@ -76,7 +77,8 @@ export interface Props {
 function Key({ ownedKey, owner, network }: Props) {
   const { lock, expiration, tokenId, isExpired, isExtendable, isRenewable } =
     ownedKey
-  const { getWalletService, watchAsset, account } = useAuth()
+  const { account } = useAuthenticate()
+  const { getWalletService } = useProvider()
   const wedlockService = useContext(WedlockServiceContext)
   const web3Service = useWeb3Service()
   const config = useConfig()
