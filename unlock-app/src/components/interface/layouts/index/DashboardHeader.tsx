@@ -5,7 +5,6 @@ import { UserMenu } from '../../connect/UserMenu'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { usePathname } from 'next/navigation'
 
-
 const MENU = {
   extraClass: {
     mobile: 'bg-ui-secondary-200 px-6',

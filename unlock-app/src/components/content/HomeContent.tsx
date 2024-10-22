@@ -10,7 +10,6 @@ import { Container } from '../interface/Container'
 import DashboardHeader from '../interface/layouts/index/DashboardHeader'
 import { ConnectModal } from '../interface/connect/ConnectModal'
 
-
 export const HomeContent = () => {
   const { isLoading } = useSession()
   const router = useRouter()
