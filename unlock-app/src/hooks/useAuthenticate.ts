@@ -46,11 +46,11 @@ export function useAuthenticate() {
             accessToken: locksmithAccessToken,
             walletAddress,
           })
+          setStorage('account', walletAddress)
+          await queryClient.refetchQueries()
+          await refetchSession()
+          setAccount(walletAddress)
         }
-        setStorage('account', walletAddress)
-        await queryClient.refetchQueries()
-        await refetchSession()
-        setAccount(walletAddress)
       } catch (error) {
         console.error(error)
         return null
@@ -105,10 +105,10 @@ export function useAuthenticate() {
             accessToken,
             walletAddress,
           })
+          await queryClient.refetchQueries()
+          await refetchSession()
+          setAccount(walletAddress)
         }
-        await queryClient.refetchQueries()
-        await refetchSession()
-        setAccount(walletAddress)
       }
     } catch (error) {
       console.error(error)
