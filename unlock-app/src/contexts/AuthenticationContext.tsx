@@ -19,12 +19,14 @@ export const AuthenticationContext =
 
 export const useAuth = () => {
   const context = useContext(AuthenticationContext)
-  const { authenticated, user } = usePrivy()
+  const { ready, authenticated, user } = usePrivy()
+
+  const account = ready && authenticated ? user?.wallet?.address : undefined
 
   return {
     ...context,
     connected: authenticated,
-    account: user?.wallet?.address || context.account,
+    account,
   }
 }
 
