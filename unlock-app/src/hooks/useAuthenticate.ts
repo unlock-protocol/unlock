@@ -1,8 +1,6 @@
-import { useLogin, usePrivy } from '@privy-io/react-auth'
-import { useAuth } from '../contexts/AuthenticationContext'
+import { useLogin, usePrivy, useWallets } from '@privy-io/react-auth'
 import { useAppStorage } from './useAppStorage'
-import { useConnectModal } from './useConnectModal'
-import { useCallback } from 'react'
+import { useEffect } from 'react'
 import {
   getAccessToken,
   removeAccessToken,
@@ -14,16 +12,16 @@ import { useSession } from './useSession'
 import { useSIWE } from './useSIWE'
 import { useCookies } from 'react-cookie'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { useProvider } from './useProvider'
 
 // This hook includes *all* signIn and signOut methods
 // TODO: consider adding useSession() and useAuth() stuff here too?
 
 export function useAuthenticate() {
+  const { setProvider } = useProvider()
   const [cookies] = useCookies()
-  const { authenticate } = useAuth()
   const { refetchSession } = useSession()
-  const { setStorage, removeKey } = useAppStorage()
-  const { send } = useConnectModal()
+  const { setStorage } = useAppStorage()
   const { logout: privyLogout, getAccessToken: privyGetAccessToken } =
     usePrivy()
   const { login: privyLogin } = useLogin({
@@ -60,6 +58,7 @@ export function useAuthenticate() {
   })
   const queryClient = useQueryClient()
   const { siweSign } = useSIWE()
+  const { wallets } = useWallets()
 
   const signOutToken = async () => {
     const session = getAccessToken()
@@ -82,37 +81,10 @@ export function useAuthenticate() {
     }
   }
 
-  const authenticateWithProvider = useCallback(
-    async (providerType: WalletProvider, provider?: any) => {
-      try {
-        if (!walletHandlers[providerType]) {
-          removeKey('provider')
-        }
-        const connectedProvider = walletHandlers[providerType](provider)
-
-        const p = await connectedProvider
-        if (!p?.account) {
-          return console.error('Unable to get provider')
-        }
-        if (p?.provider?.isUnlock && p?.provider?.emailAddress) {
-          setStorage('email', p?.provider?.emailAddress)
-        } else {
-          removeKey('email')
-        }
-        setStorage('provider', providerType)
-        send(connectedProvider)
-        return connectedProvider
-      } catch (error) {
-        console.error('We could not connect to the provider', error)
-        return null
-      }
-    },
-    [setStorage, removeKey, send]
-  )
-
-  const signInWithSIWE = async () => {
+  const signInWithSIWE = async (provider: any) => {
     try {
       // TODO: connect Provider first!
+      setProvider(provider)
       const { data: nonce } = await locksmith.nonce()
       const siweResult = await siweSign(nonce, '')
 
@@ -142,11 +114,18 @@ export function useAuthenticate() {
     privyLogin()
   }
 
+  useEffect(() => {
+    const userProviderFromPrivy = async () => {
+      if (wallets[0]) {
+        setProvider(await wallets[0].getEthereumProvider())
+      }
+    }
+    userProviderFromPrivy()
+  }, [wallets])
+
   return {
-    authenticate,
     signInWithSIWE,
     signInWithPrivy,
     signOut,
-    authenticateWithProvider,
   }
 }

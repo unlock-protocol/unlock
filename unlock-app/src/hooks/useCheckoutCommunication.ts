@@ -1,10 +1,10 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useContext } from 'react'
 import { usePostmateParent } from './usePostmateParent'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { OAuthConfig } from '~/unlockTypes'
 import { useProvider } from './useProvider'
-import { config as AppConfig } from '~/config/app'
 import { isInIframe } from '~/utils/iframe'
+import { ProviderAdpaterContext } from '~/components/interface/checkout'
 
 export interface UserInfo {
   address?: string
@@ -113,9 +113,9 @@ export const resolveOnEvent = (name: string) => {
 // all the buffered events are emitted and future events are emitted
 // directly.
 export const useCheckoutCommunication = () => {
-  const [providerAdapter, setProviderAdapter] = useState<
-    AsyncSendable | undefined
-  >(undefined)
+  const { providerAdapter, setProviderAdapter } = useContext(
+    ProviderAdpaterContext
+  )
   const [outgoingBuffer, setOutgoingBuffer] = useState([] as BufferedEvent[])
   const [incomingBuffer, setIncomingBuffer] = useState([] as MethodCall[])
   const [paywallConfig, setPaywallConfig] = useState<
@@ -124,7 +124,7 @@ export const useCheckoutCommunication = () => {
   const [oauthConfig, setOauthConfig] = useState<OAuthConfig | undefined>(
     undefined
   )
-  const { provider } = useProvider(AppConfig)
+  const { provider } = useProvider()
   const [user, setUser] = useState<string | undefined>(undefined)
 
   const pushOrEmit = (kind: CheckoutEvents, payload?: Payload) => {
@@ -258,6 +258,10 @@ export const useCheckoutCommunication = () => {
     paywallConfig?.useDelegatedProvider || oauthConfig?.useDelegatedProvider
 
   if (useDelegatedProvider && !providerAdapter) {
+    console.log(
+      'Setting provider adapter from useCheckoutCommunication',
+      setProviderAdapter
+    )
     setProviderAdapter({
       parentOrigin: () => {
         // @ts-expect-error Property 'parentOrigin' does not exist on type 'ChildAPI'.ts(2339)

@@ -8,7 +8,6 @@ import {
 } from '@tanstack/react-query'
 
 import { SessionProvider } from '~/hooks/useSession'
-import { SessionProvider as NextAuthSessionProvider } from 'next-auth/react'
 import { AirstackProvider } from '@airstack/airstack-react'
 import { ErrorBoundary } from '@sentry/nextjs'
 import { ErrorFallback } from '~/components/interface/ErrorFallback'
@@ -50,23 +49,19 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <Privy>
         <SessionProvider>
-          <NextAuthSessionProvider>
-            <ConnectModalProvider>
-              <ErrorBoundary
-                fallback={(props: any) => <ErrorFallback {...props} />}
-              >
-                <Suspense fallback={<LoadingIcon />}>
-                  <ShouldOpenConnectModal />
-                  <AirstackProvider
-                    apiKey={'162b7c4dda5c44afdb0857b6b04454f99'}
-                  >
-                    <GlobalWrapper>{children}</GlobalWrapper>
-                  </AirstackProvider>
-                </Suspense>
-              </ErrorBoundary>
-            </ConnectModalProvider>
-            <Toaster />
-          </NextAuthSessionProvider>
+          <ConnectModalProvider>
+            <ErrorBoundary
+              fallback={(props: any) => <ErrorFallback {...props} />}
+            >
+              <Suspense fallback={<LoadingIcon />}>
+                <ShouldOpenConnectModal />
+                <AirstackProvider apiKey={'162b7c4dda5c44afdb0857b6b04454f99'}>
+                  <GlobalWrapper>{children}</GlobalWrapper>
+                </AirstackProvider>
+              </Suspense>
+            </ErrorBoundary>
+          </ConnectModalProvider>
+          <Toaster />
         </SessionProvider>
       </Privy>
     </QueryClientProvider>

@@ -13,7 +13,7 @@ import { useAuthenticate } from '~/hooks/useAuthenticate'
 export const UserMenu = () => {
   const { isPrime } = useUnlockPrime()
 
-  const { account, email } = useAuth()
+  const { account } = useAuth()
   const userEns = useEns(account || '')
   const [isDisconnecting, setIsDisconnecting] = useState(false)
   const { signOut } = useAuthenticate()
@@ -33,11 +33,7 @@ export const UserMenu = () => {
     <Menu as="div" className="relative inline-block text-left">
       <MenuButton className="flex items-center gap-2">
         <span className="text-brand-ui-primary text-right">
-          {userEns === account
-            ? email
-              ? email
-              : addressMinify(userEns)
-            : userEns}
+          {userEns === account ? addressMinify(userEns) : userEns}
         </span>
         <DisconnectIcon className="text-brand-ui-primary" size={20} />
       </MenuButton>

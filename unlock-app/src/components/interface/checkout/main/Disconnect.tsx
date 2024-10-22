@@ -12,21 +12,13 @@ interface DisconnectProps {
 
 const Disconnect = ({ service }: DisconnectProps) => {
   const state = useSelector(service, (state) => state)
-  const { account, isUnlockAccount, email } = useAuth()
+  const { account } = useAuth()
   const { signOut } = useAuthenticate()
 
   const [isDisconnecting, setIsDisconnecting] = useState(false)
 
-  let userText: string
-  let signOutText: string
-
-  if (email) {
-    userText = `User: ${email}`
-    signOutText = 'Sign out'
-  } else {
-    userText = `Wallet: ${addressMinify(account!)}`
-    signOutText = 'Disconnect'
-  }
+  const userText = `Wallet: ${addressMinify(account!)}`
+  const signOutText = 'Disconnect'
 
   const onDisconnect = async () => {
     setIsDisconnecting(true)
@@ -42,12 +34,7 @@ const Disconnect = ({ service }: DisconnectProps) => {
   return (
     <div className="flex items-center justify-between text-sm mt-2">
       <p>{userText}</p>
-      <Tooltip
-        side="top"
-        tip={`${
-          isUnlockAccount ? 'Signing out' : 'Disconnecting'
-        } will reset the checkout`}
-      >
+      <Tooltip side="top" tip={`${'Signing out'} will reset the checkout`}>
         <Button
           variant="borderless"
           size="small"

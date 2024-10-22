@@ -1,9 +1,11 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation'
-import { useEffect } from 'react'
-import { useAuthenticate } from '~/hooks/useAuthenticate'
-import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
+import { createContext, useEffect, useState } from 'react'
+import {
+  AsyncSendable,
+  useCheckoutCommunication,
+} from '~/hooks/useCheckoutCommunication'
 import { getPaywallConfigFromQuery } from '~/utils/paywallConfig'
 import getOauthConfigFromQuery from '~/utils/oauth'
 import { Checkout } from './main'
@@ -17,9 +19,25 @@ import { PaywallConfigType } from '@unlock-protocol/core'
 import { Connect } from './Connect'
 import { isInIframe } from '~/utils/iframe'
 
+export const ProviderAdpaterContext = createContext<{
+  providerAdapter?: AsyncSendable | null
+  setProviderAdapter: (provider: AsyncSendable) => void
+}>({
+  providerAdapter: null,
+  setProviderAdapter: () => {
+    console.error('setProviderAdapter is not ready')
+  },
+})
+
 export function CheckoutPage() {
   const searchParams = useSearchParams()
-  const { authenticateWithProvider } = useAuthenticate()
+
+  const [providerAdapter, setProviderAdapter] = useState<AsyncSendable | null>(
+    null
+  )
+
+  console.log('READY!')
+  console.log({ providerAdapter })
 
   // Fetch config from parent in iframe context
   const communication = useCheckoutCommunication()
@@ -42,16 +60,6 @@ export function CheckoutPage() {
   if (referrerAddress && paywallConfig && ethers.isAddress(referrerAddress)) {
     paywallConfig.referrer = referrerAddress
   }
-
-  // Autoconnect, provider might change (we could receive the provider from the parent with a delay!)
-  useEffect(() => {
-    if (communication.providerAdapter) {
-      authenticateWithProvider(
-        'DELEGATED_PROVIDER',
-        communication.providerAdapter
-      )
-    }
-  }, [authenticateWithProvider, communication.providerAdapter])
 
   const checkoutRedirectURI =
     paywallConfig?.redirectUri ||
@@ -88,13 +96,23 @@ export function CheckoutPage() {
   if (paywallConfig) {
     return (
       <Container>
-        <Checkout
-          paywallConfig={paywallConfig}
-          redirectURI={
-            checkoutRedirectURI ? new URL(checkoutRedirectURI) : undefined
-          }
-          communication={communication}
-        />
+        <ProviderAdpaterContext.Provider
+          value={{
+            providerAdapter,
+            setProviderAdapter: (provider: AsyncSendable) => {
+              console.log('Setting providerAdapter')
+              setProviderAdapter(provider)
+            },
+          }}
+        >
+          <Checkout
+            paywallConfig={paywallConfig}
+            redirectURI={
+              checkoutRedirectURI ? new URL(checkoutRedirectURI) : undefined
+            }
+            communication={communication}
+          />
+        </ProviderAdpaterContext.Provider>
       </Container>
     )
   }

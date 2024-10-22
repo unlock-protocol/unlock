@@ -16,6 +16,7 @@ interface GlobalWrapperProps {
 
 export const GlobalWrapper = ({ children }: GlobalWrapperProps) => {
   const [provider, setProvider] = useState<any>(null)
+
   useEffect(() => {
     console.info(UNLOCK_CONSOLE_MESSAGE)
   }, [])
@@ -25,7 +26,7 @@ export const GlobalWrapper = ({ children }: GlobalWrapperProps) => {
       <ConfigContext.Provider value={config}>
         <WedlockServiceContext.Provider value={wedlockService}>
           <ProviderContext.Provider value={{ provider, setProvider }}>
-            <Authenticate providerAdapter={provider}>{children}</Authenticate>
+            <Authenticate>{children}</Authenticate>
           </ProviderContext.Provider>
         </WedlockServiceContext.Provider>
       </ConfigContext.Provider>

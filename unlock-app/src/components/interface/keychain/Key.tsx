@@ -76,7 +76,7 @@ export interface Props {
 function Key({ ownedKey, owner, network }: Props) {
   const { lock, expiration, tokenId, isExpired, isExtendable, isRenewable } =
     ownedKey
-  const { getWalletService, isUnlockAccount, watchAsset, account } = useAuth()
+  const { getWalletService, watchAsset, account } = useAuth()
   const wedlockService = useContext(WedlockServiceContext)
   const web3Service = useWeb3Service()
   const config = useConfig()
@@ -356,7 +356,7 @@ function Key({ ownedKey, owner, network }: Props) {
                       </MenuButton>
                     )}
                   </Menu.Item>
-                  {owner == account && !isUnlockAccount && (
+                  {owner == account && (
                     <Menu.Item>
                       {({ active, disabled }) => (
                         <MenuButton
@@ -440,7 +440,7 @@ function Key({ ownedKey, owner, network }: Props) {
                     )}
                   </Menu.Item>
                 </div>
-                {owner == account && !isUnlockAccount && (
+                {owner == account && (
                   <div className="p-1">
                     <Menu.Item disabled={!isRefundable}>
                       {({ active, disabled }) => (

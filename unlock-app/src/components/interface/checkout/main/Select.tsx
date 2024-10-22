@@ -32,6 +32,8 @@ import Disconnect from './Disconnect'
 import { useMemberships } from '~/hooks/useMemberships'
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { ethers } from 'ethers'
+import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface Props {
   checkoutService: CheckoutService
@@ -201,6 +203,9 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
 }
 
 export function Select({ checkoutService }: Props) {
+  const communication = useCheckoutCommunication()
+  const { signInWithSIWE } = useAuthenticate()
+
   const { paywallConfig, lock: selectedLock } = useSelector(
     checkoutService,
     (state) => state.context
@@ -227,7 +232,6 @@ export function Select({ checkoutService }: Props) {
               props.network || paywallConfig.network || 1
 
             const lockData = await web3Service.getLock(lock, networkId)
-
             let price
 
             if (account) {
@@ -353,7 +357,7 @@ export function Select({ checkoutService }: Props) {
   }, [paywallConfig])
 
   const config = useConfig()
-  const { account, isUnlockAccount } = useAuth()
+  const { account } = useAuth()
   const web3Service = useWeb3Service()
   const expectedAddress = paywallConfig.expectedAddress
 
@@ -382,10 +386,6 @@ export function Select({ checkoutService }: Props) {
     return hook
   }, [lockHookMapping, lock])
 
-  const [isSigning, setSigning] = useState(false)
-  const { connected } = useAuth()
-  const useDelegatedProvider = paywallConfig?.useDelegatedProvider
-
   const isDisabled =
     isLocksLoading ||
     isMembershipsLoading ||
@@ -393,8 +393,7 @@ export function Select({ checkoutService }: Props) {
     // if locks are sold out and the user is not an existing member of the lock
     (lock?.isSoldOut && !(membership?.member || membership?.expired)) ||
     isNotExpectedAddress ||
-    isLoadingHook ||
-    (isSigning && !isSignedIn)
+    isLoadingHook
 
   useEffect(() => {
     if (locks?.length) {
@@ -407,10 +406,6 @@ export function Select({ checkoutService }: Props) {
   const isLoading = isLocksLoading || isLoadingHook || isMembershipsLoading
 
   useEffect(() => {
-    if (!connected && useDelegatedProvider) {
-      signInWithSIWE()
-    }
-
     if (!(lock && skipSelect && account && !isLoading)) {
       return
     }
@@ -423,7 +418,7 @@ export function Select({ checkoutService }: Props) {
       skipQuantity,
       skipRecipient,
       // unlock account are unable to renew : wut?
-      expiredMember: isUnlockAccount ? false : !!membership?.expired,
+      expiredMember: !!membership?.expired,
       recipients: account ? [account] : [],
       hook: hookType,
     })
@@ -434,7 +429,6 @@ export function Select({ checkoutService }: Props) {
     hookType,
     skipQuantity,
     skipRecipient,
-    isUnlockAccount,
     checkoutService,
     skipSelect,
     isLoading,
@@ -447,11 +441,9 @@ export function Select({ checkoutService }: Props) {
       return
     }
 
-    if (!isSignedIn && useDelegatedProvider) {
-      setSigning(true)
-      await signInWithSIWE()
-      setSigning(false)
-      return
+    console.log('TODO: SHOULD WE AUTHENTICATE? ', communication.providerAdapter)
+    if (communication.providerAdapter) {
+      await signInWithSIWE(communication.providerAdapter)
     }
 
     checkoutService.send({
@@ -538,7 +530,7 @@ export function Select({ checkoutService }: Props) {
             </p>
           )}
           <Button disabled={isDisabled} onClick={selectLock}>
-            {!isSignedIn && useDelegatedProvider ? 'Confirm' : 'Next'}
+            Next
           </Button>
         </div>
         <Disconnect service={checkoutService} />

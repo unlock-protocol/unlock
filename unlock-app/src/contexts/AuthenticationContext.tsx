@@ -4,23 +4,13 @@ import { createContext, useContext } from 'react'
 import { usePrivy } from '@privy-io/react-auth'
 
 interface AuthenticationContextType {
-  authenticate(provider: any): void
   watchAsset(asset: any): void
   account?: string
-  network?: number
-  email?: string
-  connected?: boolean | string | undefined
-  encryptedPrivateKey?: any
-  isUnlockAccount?: boolean
   getWalletService(network?: number): Promise<WalletService>
-  providerSend(method: string, params: string[]): void
-  displayAccount?: string
 }
 
 export const defaultValues = {
-  authenticate: () => {},
   watchAsset: () => {},
-  providerSend: (_method: string, _params: string[]) => {},
   getWalletService: async (_network?: number) => new WalletService(networks),
 }
 

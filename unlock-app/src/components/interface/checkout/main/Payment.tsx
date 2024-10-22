@@ -2,7 +2,6 @@ import Image from 'next/image'
 import { ethers } from 'ethers'
 import { CheckoutService } from './checkoutMachine'
 
-import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useConfig } from '~/utils/withConfig'
 import { useSelector } from '@xstate/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -63,7 +62,7 @@ export function Payment({ checkoutService }: Props) {
   const config = useConfig()
   const { recipients } = state.context
   const lock = state.context.lock!
-  const { account, isUnlockAccount } = useAuth()
+  const { account } = useAuth()
   const networkConfig = config.networks[lock.network]
   const baseSymbol = networkConfig.nativeCurrency.symbol
   const symbol = lockTickerSymbol(lock, baseSymbol)
@@ -151,7 +150,7 @@ export function Payment({ checkoutService }: Props) {
     recipients.length <= 1 &&
     recipients[0]?.toLowerCase() === account?.toLowerCase()
 
-  const enableCrypto = !isUnlockAccount
+  const enableCrypto = true
 
   const enableClaim: boolean = !!(
     canClaim &&
@@ -423,23 +422,6 @@ export function Payment({ checkoutService }: Props) {
                   Credit card payments have not been enabled for this
                   membership.
                 </p>
-                {isUnlockAccount && (
-                  <>
-                    <p className="mb-4">
-                      Ready to get your own wallet to purchase this membership
-                      with cryptocurrency?{' '}
-                      <a
-                        href="https://ethereum.org/en/wallets/find-wallet/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-sm text-gray-500 underline"
-                      >
-                        <span>Click here</span>
-                        <ExternalLinkIcon />
-                      </a>
-                    </p>
-                  </>
-                )}
               </div>
             )}
           </div>

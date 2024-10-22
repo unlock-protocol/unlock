@@ -13,7 +13,6 @@ import { ErrorBoundary } from '@sentry/nextjs'
 import { ErrorFallback } from '~/components/interface/ErrorFallback'
 import { queryClient } from '~/config/queryClient'
 import { SessionProvider } from '~/hooks/useSession'
-import { SessionProvider as NextAuthSessionProvider } from 'next-auth/react'
 import '~/utils/bigint'
 import { Inter } from 'next/font/google'
 import ShouldOpenConnectModal from '~/components/interface/connect/ShouldOpenConnectModal'
@@ -45,23 +44,21 @@ const UnlockApp = ({
         <CookiesProvider defaultSetOptions={{ path: '/' }}>
           <Privy>
             <SessionProvider>
-              <NextAuthSessionProvider>
-                <ConnectModalProvider>
-                  <GlobalWrapper>
-                    <ErrorBoundary
-                      fallback={(props) => <ErrorFallback {...props} />}
+              <ConnectModalProvider>
+                <GlobalWrapper>
+                  <ErrorBoundary
+                    fallback={(props) => <ErrorFallback {...props} />}
+                  >
+                    <ShouldOpenConnectModal />
+                    <AirstackProvider
+                      apiKey={'162b7c4dda5c44afdb0857b6b04454f99'}
                     >
-                      <ShouldOpenConnectModal />
-                      <AirstackProvider
-                        apiKey={'162b7c4dda5c44afdb0857b6b04454f99'}
-                      >
-                        <Component pageProps={pageProps} />
-                      </AirstackProvider>
-                    </ErrorBoundary>
-                    <Toaster />
-                  </GlobalWrapper>
-                </ConnectModalProvider>
-              </NextAuthSessionProvider>
+                      <Component pageProps={pageProps} />
+                    </AirstackProvider>
+                  </ErrorBoundary>
+                  <Toaster />
+                </GlobalWrapper>
+              </ConnectModalProvider>
             </SessionProvider>
           </Privy>
         </CookiesProvider>

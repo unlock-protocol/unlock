@@ -35,7 +35,7 @@ export const SIWEProvider = ({ children }: Props) => {
     message: string
     signature: string
   } | null>(null)
-  const { getWalletService, network } = useAuth()
+  const { getWalletService } = useAuth()
   const { provider } = useContext(ProviderContext)
   const [status, setStatus] = useState<Status>('idle')
 
@@ -62,6 +62,9 @@ export const SIWEProvider = ({ children }: Props) => {
     try {
       const walletService = await getWalletService()
       const address = await walletService.signer.getAddress()
+
+      const { chainId: network } =
+        await walletService.signer.provider.getNetwork()
 
       const parent = new URL(
         isInIframe() ? config.unlockApp : window.location.href

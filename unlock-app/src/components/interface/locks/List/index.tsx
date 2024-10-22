@@ -11,7 +11,7 @@ import { LockList } from './elements/LockList'
 import { Placeholder } from '@unlock-protocol/ui'
 
 export const LocksListPage = () => {
-  const { network, account } = useAuth()
+  const { account } = useAuth()
 
   const searchParams = useSearchParams()
 
@@ -21,7 +21,7 @@ export const LocksListPage = () => {
 
   const locksOwner = manager ?? account
 
-  if (!network || !locksOwner) {
+  if (!locksOwner) {
     return (
       <Placeholder.Root>
         <Placeholder.Card />
@@ -36,7 +36,7 @@ export const LocksListPage = () => {
 
   return (
     <>
-      {!network ? (
+      {!locksOwner ? (
         <WalletNotConnected />
       ) : (
         <LockList owner={locksOwner as string} />

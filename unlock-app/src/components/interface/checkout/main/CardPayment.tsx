@@ -24,7 +24,7 @@ import {
   usePaymentMethodList,
   useRemovePaymentMethods,
 } from '~/hooks/usePaymentMethods'
-import { useAuth } from '~/contexts/AuthenticationContext'
+// import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface Props {
   checkoutService: CheckoutService
@@ -184,7 +184,8 @@ export function PaymentForm({
   const {
     register,
     formState: { errors, isSubmitting },
-    setValue,
+    // setValue,
+    getValues,
     handleSubmit,
   } = useForm<{
     name: string
@@ -194,17 +195,16 @@ export function PaymentForm({
       email: '',
     },
   })
-  const { email } = useAuth()
   // state to check if the email field should be filled with the user's email address
-  const [fillUnlockEmail, setFillUnlockEmail] = useState<boolean>(!!email)
+  const [fillUnlockEmail, setFillUnlockEmail] = useState<boolean>(false)
 
-  useEffect(() => {
-    // this effect ensures that the form default value updates when the authentication context changes
-    if (email) {
-      setValue('email', email)
-      setFillUnlockEmail(!!email)
-    }
-  }, [email, setValue])
+  // useEffect(() => {
+  //   // this effect ensures that the form default value updates when the authentication context changes
+  //   if (email) {
+  //     setValue('email', email)
+  //     setFillUnlockEmail(!!email)
+  //   }
+  // }, [email, setValue])
 
   const onHandleSubmit = async ({
     name,
@@ -268,7 +268,7 @@ export function PaymentForm({
 
         {fillUnlockEmail ? (
           <div className="flex items-center pl-4 pr-2 py-2 justify-between bg-gray-200 rounded-md">
-            <div className="w-32 text-sm truncate">{email}</div>
+            <div className="w-32 text-sm truncate">{getValues('email')}</div>
             <Button
               type="button"
               onClick={(event) => {
@@ -289,7 +289,7 @@ export function PaymentForm({
             }`}
             type="email"
             {...register('email', {
-              value: email || undefined,
+              value: getValues('email') || undefined,
               required: 'Email address is required',
             })}
           />

@@ -41,7 +41,7 @@ export function ConfirmCrossmint({
 }: Props) {
   const [error, setError] = useState<string | null>(null)
   const [crossmintLoading, setCrossmintLoading] = useState(true)
-  const { email, account } = useAuth()
+  const { account } = useAuth()
   const { lock, recipients, paywallConfig, data, keyManagers, renew } =
     useSelector(checkoutService, (state) => state.context)
   const [isConfirming, setIsConfirming] = useState(false)
@@ -152,10 +152,9 @@ export function ConfirmCrossmint({
   // crossmint config
   const crossmintConfig = {
     emailInputOptions: {
-      show: !email,
+      show: true,
     },
     recipient: {
-      email,
       wallet: recipients[0], // Crossmint only supports a single recipient for now!
     },
     environment: crossmintEnv,
