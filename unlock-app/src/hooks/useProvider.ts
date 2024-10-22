@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useCallback, useContext } from 'react'
 import { WalletService } from '@unlock-protocol/unlock-js'
 import { useAddToNetwork } from './useAddToNetwork'
 import ProviderContext from '../contexts/ProviderContext'
@@ -81,30 +81,33 @@ export const useProvider = () => {
    * @returns An initialized `WalletService` instance for the specified or current network.
    * @throws an error if there's an issue during the process, such as failed network switching.
    */
-  const getWalletService = async (networkId?: number) => {
-    try {
-      // Get the current network
-      const network = await provider.getNetwork()
-      const currentChainId = network.chainId
+  const getWalletService = useCallback(
+    async (networkId?: number) => {
+      try {
+        // Get the current network
+        const network = await provider.getNetwork()
+        const currentChainId = network.chainId
 
-      // compare the networkId with the current chainId
-      if (networkId && networkId !== currentChainId) {
-        // Prompt user to switch to the requested network
-        await switchProviderNetwork(networkId)
-        // Add a 1 second delay after switching provider network
-        await new Promise((resolve) => setTimeout(resolve, 1000))
+        // compare the networkId with the current chainId
+        if (networkId && networkId !== currentChainId) {
+          // Prompt user to switch to the requested network
+          await switchProviderNetwork(networkId)
+          // Add a 1 second delay after switching provider network
+          await new Promise((resolve) => setTimeout(resolve, 1000))
+        }
+
+        // instantiate the wallet service with the current provider
+        const { walletService: _walletService } =
+          await createWalletService(provider)
+        return _walletService
+      } catch (error: any) {
+        ToastHelper.error(`Error while getting wallet service: ${error}`)
+        console.error('Error in getWalletService:', error)
+        throw error
       }
-
-      // instantiate the wallet service with the current provider
-      const { walletService: _walletService } =
-        await createWalletService(provider)
-      return _walletService
-    } catch (error: any) {
-      ToastHelper.error(`Error while getting wallet service: ${error}`)
-      console.error('Error in getWalletService:', error)
-      throw error
-    }
-  }
+    },
+    [provider]
+  )
 
   // More info https://docs.metamask.io/wallet/reference/wallet_watchasset/
   const watchAsset = async ({

@@ -128,7 +128,7 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
         currencyContractAddress: null,
         keyPrice: '0',
       },
-      currencySymbol: networks[network!].nativeCurrency.symbol,
+      currencySymbol: networks[network].nativeCurrency.symbol,
       metadata: {
         description: '',
         ticket: {
