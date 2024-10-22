@@ -1,6 +1,6 @@
 import { useLogin, usePrivy, useWallets } from '@privy-io/react-auth'
 import { useAppStorage } from './useAppStorage'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect } from 'react'
 import {
   getAccessToken,
   removeAccessToken,
