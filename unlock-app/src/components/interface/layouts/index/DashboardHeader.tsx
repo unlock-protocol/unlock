@@ -3,6 +3,7 @@ import { Button, HeaderNav } from '@unlock-protocol/ui'
 import { useConnectModal } from '~/hooks/useConnectModal'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { UserMenu } from '../../connect/UserMenu'
+import { usePathname } from 'next/navigation'
 
 const MENU = {
   extraClass: {
@@ -35,8 +36,10 @@ export default function DashboardHeader({
 }: DashboardHeaderProps) {
   const { account } = useAuth()
   const { openConnectModal } = useConnectModal()
+  const pathname = usePathname()
 
-  const menuProps = showMenu ? MENU : { ...MENU, menuSections: [] }
+  const menuProps =
+    showMenu && pathname !== '/' ? MENU : { ...MENU, menuSections: [] }
 
   return (
     <HeaderNav
