@@ -35,33 +35,36 @@ export function useAuthenticate() {
   const { siweSign } = useSIWE()
   const { wallets } = useWallets()
 
-  const { login: privyLogin } = useLogin({
-    onComplete: async () => {
-      try {
-        const accessToken = await privyGetAccessToken()
-        const identityToken = cookies['privy-id-token']
-        const response = await locksmith.loginWithPrivy({
-          accessToken: accessToken!,
-          identityToken: identityToken!,
-        })
+  // This method is meant to be called when the user is signed in with Privy,
+  // BUT NOT yet signed in with Locksmith and hence does not have an access token.
+  const onSignedInWithPrivy = async () => {
+    try {
+      const accessToken = await privyGetAccessToken()
+      const identityToken = cookies['privy-id-token']
+      const response = await locksmith.loginWithPrivy({
+        accessToken: accessToken!,
+        identityToken: identityToken!,
+      })
 
-        const { accessToken: locksmithAccessToken, walletAddress } =
-          response.data
-        if (locksmithAccessToken && walletAddress) {
-          saveAccessToken({
-            accessToken: locksmithAccessToken,
-            walletAddress,
-          })
-          setStorage('account', walletAddress)
-          await queryClient.refetchQueries()
-          await refetchSession()
-          setAccount(walletAddress)
-        }
-      } catch (error) {
-        console.error(error)
-        return null
+      const { accessToken: locksmithAccessToken, walletAddress } = response.data
+      if (locksmithAccessToken && walletAddress) {
+        saveAccessToken({
+          accessToken: locksmithAccessToken,
+          walletAddress,
+        })
+        setStorage('account', walletAddress)
+        await queryClient.refetchQueries()
+        await refetchSession()
+        setAccount(walletAddress)
       }
-    },
+    } catch (error) {
+      console.error(error)
+      return null
+    }
+  }
+
+  const { login: privyLogin } = useLogin({
+    // onComplete: onSignedInWithPrivy,
     onError: (error) => {
       if (error !== 'generic_connect_wallet_error') {
         ToastHelper.error(`Error while logging in: ${error}`)
@@ -160,5 +163,6 @@ export function useAuthenticate() {
     signInWithPrivy,
     signOut,
     ready,
+    onSignedInWithPrivy,
   }
 }
