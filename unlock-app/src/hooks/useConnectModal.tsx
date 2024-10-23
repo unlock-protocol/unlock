@@ -1,15 +1,8 @@
-import { WalletService } from '@unlock-protocol/unlock-js'
 import { createContext, useContext, useState } from 'react'
+import { useAuthenticate } from './useAuthenticate'
 
-interface AuthResult {
-  walletService: WalletService
-  provider: any
-}
 const ConnectModalContext = createContext({
   openConnectModal: () => {},
-  openConnectModalAsync: async () => {
-    return {} as AuthResult
-  },
   closeConnectModal: () => {},
   open: false as boolean,
   send: (_detail: any) => {},
@@ -31,17 +24,11 @@ export const connection = new EventTarget()
 
 export const ConnectModalProvider = (props: Props) => {
   const [open, setOpen] = useState(false)
+  const { signInWithPrivy } = useAuthenticate()
 
-  const openConnectModal = () => {
-    setOpen(true)
-  }
-
-  const openConnectModalAsync = async (): Promise<AuthResult> => {
-    return new Promise((resolve) => {
-      connection.addEventListener('connected', (event: any) => {
-        resolve(event.detail)
-      })
-    })
+  const openConnectModal = async () => {
+    const needsToOpen = await signInWithPrivy()
+    setOpen(needsToOpen)
   }
 
   const closeConnectModal = () => {
@@ -54,7 +41,6 @@ export const ConnectModalProvider = (props: Props) => {
         open,
         closeConnectModal,
         openConnectModal,
-        openConnectModalAsync,
         send,
         connection,
       }}

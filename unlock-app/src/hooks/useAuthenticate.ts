@@ -29,7 +29,8 @@ export function useAuthenticate() {
   const {
     logout: privyLogout,
     getAccessToken: privyGetAccessToken,
-    ready,
+    ready: privyReady,
+    authenticated: privyAuthenticated,
   } = usePrivy()
   const queryClient = useQueryClient()
   const { siweSign } = useSIWE()
@@ -64,7 +65,7 @@ export function useAuthenticate() {
   }
 
   const { login: privyLogin } = useLogin({
-    // onComplete: onSignedInWithPrivy,
+    onComplete: onSignedInWithPrivy,
     onError: (error) => {
       if (error !== 'generic_connect_wallet_error') {
         ToastHelper.error(`Error while logging in: ${error}`)
@@ -126,7 +127,9 @@ export function useAuthenticate() {
     }
   }
 
-  const signInWithPrivy = async () => {
+  // Tries to login the user with Privy
+  // Returns true if the modal needs to be shown.
+  const signInWithPrivy = async (): Promise<boolean> => {
     const existingAccessToken = getAccessToken()
     if (existingAccessToken) {
       try {
@@ -144,8 +147,14 @@ export function useAuthenticate() {
         console.error('Error using existing access token:', error)
       }
     } else {
-      privyLogin()
+      if (privyAuthenticated) {
+        onSignedInWithPrivy()
+      } else {
+        privyLogin()
+        return true
+      }
     }
+    return false
   }
 
   useEffect(() => {
@@ -154,15 +163,18 @@ export function useAuthenticate() {
         setProvider(await wallets[0].getEthereumProvider())
       }
     }
-    setProviderFromPrivy()
-  }, [wallets])
+    if (account) {
+      setProviderFromPrivy()
+    } else {
+      setProvider(null)
+    }
+  }, [wallets, account])
 
   return {
     account,
     signInWithSIWE,
     signInWithPrivy,
     signOut,
-    ready,
-    onSignedInWithPrivy,
+    privyReady,
   }
 }

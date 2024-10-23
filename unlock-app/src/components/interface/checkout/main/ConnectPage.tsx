@@ -1,5 +1,5 @@
 import { CheckoutService } from './checkoutMachine'
-import { ConnectWallet } from '../../connect/Wallet'
+import { LoginModal } from '@privy-io/react-auth'
 
 interface ConnectPageProps {
   style: string
@@ -10,7 +10,7 @@ interface ConnectPageProps {
 export const ConnectPage = ({ style }: ConnectPageProps) => {
   return (
     <main className={style}>
-      <ConnectWallet />
+      <LoginModal open={true} />
     </main>
   )
 }
