@@ -31,7 +31,6 @@ import Disconnect from './Disconnect'
 import { useMemberships } from '~/hooks/useMemberships'
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { ethers } from 'ethers'
-import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface Props {
@@ -202,7 +201,6 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
 }
 
 export function Select({ checkoutService }: Props) {
-  const communication = useCheckoutCommunication()
   const { signInWithSIWE } = useAuthenticate()
 
   const { paywallConfig, lock: selectedLock } = useSelector(
@@ -440,8 +438,8 @@ export function Select({ checkoutService }: Props) {
       return
     }
 
-    if (communication.providerAdapter) {
-      await signInWithSIWE(communication.providerAdapter)
+    if (paywallConfig.useDelegatedProvider) {
+      await signInWithSIWE()
     }
 
     checkoutService.send({

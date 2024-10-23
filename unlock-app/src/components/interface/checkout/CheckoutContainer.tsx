@@ -1,11 +1,7 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation'
-import { createContext } from 'react'
-import {
-  AsyncSendable,
-  useCheckoutCommunication,
-} from '~/hooks/useCheckoutCommunication'
+import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { getPaywallConfigFromQuery } from '~/utils/paywallConfig'
 import getOauthConfigFromQuery from '~/utils/oauth'
 import { Checkout } from './main'
@@ -17,16 +13,6 @@ import { ethers } from 'ethers'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { Connect } from './Connect'
 import { isInIframe } from '~/utils/iframe'
-
-export const ProviderAdpaterContext = createContext<{
-  providerAdapter?: AsyncSendable | null
-  setProviderAdapter: (provider: AsyncSendable) => void
-}>({
-  providerAdapter: null,
-  setProviderAdapter: () => {
-    console.error('setProviderAdapter is not ready')
-  },
-})
 
 export function CheckoutContainer() {
   const searchParams = useSearchParams()
