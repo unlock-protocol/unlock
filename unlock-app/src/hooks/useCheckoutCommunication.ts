@@ -1,10 +1,9 @@
-import { useState, useEffect, useCallback, useContext } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { usePostmateParent } from './usePostmateParent'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { OAuthConfig } from '~/unlockTypes'
 import { useProvider } from './useProvider'
 import { isInIframe } from '~/utils/iframe'
-import { ProviderAdpaterContext } from '~/components/interface/checkout/CheckoutContainer'
 
 export interface UserInfo {
   address?: string
@@ -113,9 +112,7 @@ export const resolveOnEvent = (name: string) => {
 // all the buffered events are emitted and future events are emitted
 // directly.
 export const useCheckoutCommunication = () => {
-  const { providerAdapter, setProviderAdapter } = useContext(
-    ProviderAdpaterContext
-  )
+  const { setProvider } = useProvider()
   const [outgoingBuffer, setOutgoingBuffer] = useState([] as BufferedEvent[])
   const [incomingBuffer, setIncomingBuffer] = useState([] as MethodCall[])
   const [paywallConfig, setPaywallConfig] = useState<
@@ -257,54 +254,56 @@ export const useCheckoutCommunication = () => {
   const useDelegatedProvider =
     paywallConfig?.useDelegatedProvider || oauthConfig?.useDelegatedProvider
 
-  if (useDelegatedProvider && !providerAdapter) {
-    setProviderAdapter({
-      parentOrigin: () => {
-        // @ts-expect-error Property 'parentOrigin' does not exist on type 'ChildAPI'.ts(2339)
-        return parent?.parentOrigin
-      },
-      enable: () => {
-        return new Promise((resolve) => {
-          enabled = resolve
-          emitEnable()
-        })
-      },
-      sendAsync: (request: MethodCall, callback) => {
-        if (!request.id) {
-          request.id = window.crypto.randomUUID()
-        }
-        waitingMethodCalls[request.id] = (error: any, response: any) => {
-          callback(error, response)
-        }
-        emitMethodCall(request)
-      },
-      request: async (request: MethodCall) => {
-        if (!request.id) {
-          // Assigning an id because they may be returned in a different order
-          try {
+  useEffect(() => {
+    if (useDelegatedProvider) {
+      setProvider({
+        parentOrigin: () => {
+          // @ts-expect-error Property 'parentOrigin' does not exist on type 'ChildAPI'.ts(2339)
+          return parent?.parentOrigin
+        },
+        enable: () => {
+          return new Promise((resolve) => {
+            enabled = resolve
+            emitEnable()
+          })
+        },
+        sendAsync: (request: MethodCall, callback: any) => {
+          if (!request.id) {
             request.id = window.crypto.randomUUID()
-          } catch (error) {
-            console.error(error)
-            request.id = Math.floor(Math.random() * 100000000).toString() // fallback
           }
-        }
-        return new Promise((resolve, reject) => {
           waitingMethodCalls[request.id] = (error: any, response: any) => {
-            if (error) {
-              reject(error)
-            } else {
-              resolve(response)
-            }
+            callback(error, response)
           }
           emitMethodCall(request)
-        })
-      },
-      on: (event: string, callback: any) => {
-        eventHandlers[event] = callback
-        emitOnEvent(event)
-      },
-    })
-  }
+        },
+        request: async (request: MethodCall) => {
+          if (!request.id) {
+            // Assigning an id because they may be returned in a different order
+            try {
+              request.id = window.crypto.randomUUID()
+            } catch (error) {
+              console.error(error)
+              request.id = Math.floor(Math.random() * 100000000).toString() // fallback
+            }
+          }
+          return new Promise((resolve, reject) => {
+            waitingMethodCalls[request.id] = (error: any, response: any) => {
+              if (error) {
+                reject(error)
+              } else {
+                resolve(response)
+              }
+            }
+            emitMethodCall(request)
+          })
+        },
+        on: (event: string, callback: any) => {
+          eventHandlers[event] = callback
+          emitOnEvent(event)
+        },
+      })
+    }
+  }, [useDelegatedProvider])
 
   return {
     emitUserInfo,
@@ -314,7 +313,6 @@ export const useCheckoutCommunication = () => {
     emitMethodCall,
     paywallConfig,
     oauthConfig,
-    providerAdapter,
     // `ready` is primarily provided as an aid for testing the buffer
     // implementation.
     ready: !!parent,

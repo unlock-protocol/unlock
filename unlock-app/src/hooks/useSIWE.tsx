@@ -1,7 +1,6 @@
 import { ReactNode, createContext, useContext, useState } from 'react'
 import { SiweMessage } from 'siwe'
 import { config } from '~/config/app'
-import ProviderContext from '~/contexts/ProviderContext'
 import { isInIframe } from '~/utils/iframe'
 import { useProvider } from './useProvider'
 
@@ -35,8 +34,7 @@ export const SIWEProvider = ({ children }: Props) => {
     message: string
     signature: string
   } | null>(null)
-  const { getWalletService } = useProvider()
-  const { provider } = useContext(ProviderContext)
+  const { getWalletService, provider } = useProvider()
   const [status, setStatus] = useState<Status>('idle')
 
   const onError = (error: any) => {

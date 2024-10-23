@@ -7,12 +7,12 @@ import Loading from '../interface/Loading'
 import { reEncryptPrivateKey } from '../../utils/accounts'
 import { ConfigContext } from '../../utils/withConfig'
 import UnlockProvider from '../../services/unlockProvider'
-import ProviderContext from '../../contexts/ProviderContext'
 
 import {} from '../interface/Authenticate'
 import { Badge } from '@unlock-protocol/ui'
 import { AppLayout } from '../interface/layouts/AppLayout'
 import { locksmith } from '~/config/locksmith'
+import { useProvider } from '~/hooks/useProvider'
 
 interface RestoreAccountProps {
   config: any
@@ -26,7 +26,7 @@ export const RestoreAccount = ({
   email,
   recoveryKey,
 }: RestoreAccountProps) => {
-  const { setProvider, provider } = useContext(ProviderContext)
+  const { setProvider, provider } = useProvider()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [recoveryPhrase, setRecoveryPhrase] = useState('')

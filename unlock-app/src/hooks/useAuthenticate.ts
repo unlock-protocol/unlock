@@ -96,9 +96,25 @@ export function useAuthenticate() {
     }
   }
 
-  const signInWithSIWE = async (provider: any) => {
+  const signInWithSIWE = async () => {
+    const existingAccessToken = getAccessToken()
+    if (existingAccessToken) {
+      try {
+        // Use the existing access token to log in
+        const response = await locksmith.user()
+        const { walletAddress } = response.data
+        if (walletAddress) {
+          setStorage('account', walletAddress)
+          setAccount(walletAddress)
+          await Promise.all([queryClient.refetchQueries(), refetchSession()])
+        }
+        return
+      } catch (error) {
+        console.error('Error using existing access token:', error)
+      }
+    }
+
     try {
-      setProvider(provider)
       const { data: nonce } = await locksmith.nonce()
       const siweResult = await siweSign(nonce, '')
 
@@ -154,18 +170,18 @@ export function useAuthenticate() {
     }
   }
 
+  // TODO: do not set this has part of a hook that re-renders many times
+  const wallet = wallets[0]
   useEffect(() => {
     const setProviderFromPrivy = async () => {
-      if (wallets[0]) {
-        setProvider(await wallets[0].getEthereumProvider())
+      if (wallet) {
+        setProvider(await wallet.getEthereumProvider())
       }
     }
-    if (account) {
+    if (account && privyAuthenticated) {
       setProviderFromPrivy()
-    } else {
-      setProvider(null)
     }
-  }, [wallets, account])
+  }, [wallet?.address, account])
 
   return {
     account,

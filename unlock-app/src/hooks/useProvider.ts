@@ -1,11 +1,11 @@
-import { useCallback, useContext } from 'react'
+import { useContext } from 'react'
 import { WalletService } from '@unlock-protocol/unlock-js'
-import { useAddToNetwork } from './useAddToNetwork'
 import ProviderContext from '../contexts/ProviderContext'
 import { ToastHelper } from '../components/helpers/toast.helper'
 import { useSession } from './useSession'
 import { config } from '~/config/app'
 import { ethers } from 'ethers'
+import networks from '@unlock-protocol/networks'
 
 interface WatchAssetInterface {
   address: string
@@ -13,13 +13,8 @@ interface WatchAssetInterface {
   tokenId: string
 }
 
-/**
- * Initializes a provider passed
- * @param providerAdapter
- */
 export const useProvider = () => {
   const { setProvider, provider } = useContext(ProviderContext)
-  const { addNetworkToWallet } = useAddToNetwork()
   const { session: account } = useSession()
 
   const createBrowserProvider = (
@@ -57,6 +52,26 @@ export const useProvider = () => {
     }
   }
 
+  const addNetworkToWallet = async (networkId: number) => {
+    const {
+      id,
+      name: chainName,
+      publicProvider,
+      nativeCurrency,
+      explorer,
+    } = networks[networkId] as any
+
+    const params = {
+      chainId: `0x${id.toString(16)}`,
+      rpcUrls: [publicProvider],
+      chainName,
+      nativeCurrency,
+      blockExplorerUrls: [explorer.urls.base],
+    }
+
+    return provider.send('wallet_addEthereumChain', [params], account)
+  }
+
   const switchProviderNetwork = async (id: number) => {
     try {
       await provider.send('wallet_switchEthereumChain', [
@@ -86,37 +101,34 @@ export const useProvider = () => {
    * @returns An initialized `WalletService` instance for the specified or current network.
    * @throws an error if there's an issue during the process, such as failed network switching.
    */
-  const getWalletService = useCallback(
-    async (networkId?: number) => {
-      if (!provider) {
-        ToastHelper.error('Please make sure your wallet is connected.')
-        throw new Error('Wallet not connected!')
-      }
-      try {
-        // Get the current network
-        const network = await provider.getNetwork()
-        const currentChainId = network.chainId
+  const getWalletService = async (networkId?: number) => {
+    if (!provider) {
+      ToastHelper.error('Please make sure your wallet is connected.')
+      throw new Error('Wallet not connected!')
+    }
+    try {
+      // Get the current network
+      const network = await provider.getNetwork()
+      const currentChainId = network.chainId
 
-        // compare the networkId with the current chainId
-        if (networkId && networkId !== currentChainId) {
-          // Prompt user to switch to the requested network
-          await switchProviderNetwork(networkId)
-          // Add a 1 second delay after switching provider network
-          await new Promise((resolve) => setTimeout(resolve, 1000))
-        }
-
-        // instantiate the wallet service with the current provider
-        const { walletService: _walletService } =
-          await createWalletService(provider)
-        return _walletService
-      } catch (error: any) {
-        ToastHelper.error(`Error while getting wallet service: ${error}`)
-        console.error('Error in getWalletService:', error)
-        throw error
+      // compare the networkId with the current chainId
+      if (networkId && networkId !== currentChainId) {
+        // Prompt user to switch to the requested network
+        await switchProviderNetwork(networkId)
+        // Add a 1 second delay after switching provider network
+        await new Promise((resolve) => setTimeout(resolve, 1000))
       }
-    },
-    [provider]
-  )
+
+      // instantiate the wallet service with the current provider
+      const { walletService: _walletService } =
+        await createWalletService(provider)
+      return _walletService
+    } catch (error: any) {
+      ToastHelper.error(`Error while getting wallet service: ${error}`)
+      console.error('Error in getWalletService:', error)
+      throw error
+    }
+  }
 
   // More info https://docs.metamask.io/wallet/reference/wallet_watchasset/
   const watchAsset = async ({
