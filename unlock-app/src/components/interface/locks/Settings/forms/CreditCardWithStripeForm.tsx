@@ -114,10 +114,6 @@ const ConnectStripe = ({
     },
   })
 
-  const checkIsKeyGranter = async (keyGranter: string) => {
-    return await web3Service.isKeyGranter(lockAddress, keyGranter, network)
-  }
-
   const {
     isPending: isLoadingCheckGrantedStatus,
     data: isGranted,
@@ -125,7 +121,7 @@ const ConnectStripe = ({
   } = useQuery({
     queryKey: ['checkIsKeyGranter', lockAddress, network, keyGranter],
     queryFn: async () => {
-      return checkIsKeyGranter(keyGranter)
+      return web3Service.isKeyGranter(lockAddress, keyGranter, network)
     },
   })
 
@@ -189,57 +185,55 @@ const ConnectStripe = ({
         }
       />
 
-      {isManager && (
-        <div className="flex flex-col gap-3">
-          {isGranted ? (
-            <form
-              className="grid gap-4"
-              onSubmit={(e) => {
-                e.preventDefault()
-                onConnectStripe(stripeAccount)
-              }}
-            >
-              {(stripeConnections ?? [])?.length > 0 && (
-                <Select
-                  defaultValue={stripeAccount}
-                  onChange={(value: any) => {
-                    setStripeAccount(value.toString())
-                  }}
-                  options={(stripeConnections ?? [])
-                    ?.map((connection: any) => {
-                      return {
-                        label: connection.settings.dashboard.display_name,
-                        value: connection.id,
-                      }
-                    })
-                    .concat({
-                      label: 'Connect a new Stripe account',
-                      value: '',
-                    })}
-                  label="Use a Stripe account you previously connected to another contract:"
-                />
-              )}
-              <Button
-                className="w-full md:w-1/3"
-                type="submit"
-                disabled={disabled}
-              >
-                Connect Stripe
-              </Button>
-            </form>
-          ) : (
+      <div className="flex flex-col gap-3">
+        {isGranted ? (
+          <form
+            className="grid gap-4"
+            onSubmit={(e) => {
+              e.preventDefault()
+              onConnectStripe(stripeAccount)
+            }}
+          >
+            {(stripeConnections ?? [])?.length > 0 && (
+              <Select
+                defaultValue={stripeAccount}
+                onChange={(value: any) => {
+                  setStripeAccount(value.toString())
+                }}
+                options={(stripeConnections ?? [])
+                  ?.map((connection: any) => {
+                    return {
+                      label: connection.settings.dashboard.display_name,
+                      value: connection.id,
+                    }
+                  })
+                  .concat({
+                    label: 'Connect a new Stripe account',
+                    value: '',
+                  })}
+                label="Use a Stripe account you previously connected to another contract:"
+              />
+            )}
             <Button
-              size="small"
-              variant="outlined-primary"
               className="w-full md:w-1/3"
-              onClick={onGrantKeyRole}
-              disabled={grantKeyGrantorRoleMutation.isPending}
+              type="submit"
+              disabled={disabled}
             >
-              Accept
+              Connect Stripe
             </Button>
-          )}
-        </div>
-      )}
+          </form>
+        ) : (
+          <Button
+            size="small"
+            variant="outlined-primary"
+            className="w-full md:w-1/3"
+            onClick={onGrantKeyRole}
+            disabled={grantKeyGrantorRoleMutation.isPending}
+          >
+            Accept
+          </Button>
+        )}
+      </div>
     </div>
   )
 }
