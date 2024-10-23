@@ -90,6 +90,10 @@ export const useProvider = () => {
     async (networkId?: number) => {
       try {
         // Get the current network
+        if (!provider) {
+          ToastHelper.error('Please make sure your wallet is connected.')
+          return
+        }
         const network = await provider.getNetwork()
         const currentChainId = network.chainId
 
