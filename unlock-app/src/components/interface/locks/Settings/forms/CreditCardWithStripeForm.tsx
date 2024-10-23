@@ -2,7 +2,6 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Badge, Select, Placeholder } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { BsCheckCircle as CheckCircleIcon } from 'react-icons/bs'
 import { SettingCardDetail } from '../elements/SettingCard'
@@ -17,6 +16,8 @@ import { useUSDPricing } from '~/hooks/useUSDPricing'
 import { useLockData } from '~/hooks/useLockData'
 import CreditCardCustomPrice from './CreditCardCustomPrice'
 import useKeyGranter from '~/hooks/useKeyGranter'
+import { useProvider } from '~/hooks/useProvider'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 enum ConnectStatus {
   CONNECTED = 1,
@@ -95,7 +96,8 @@ const ConnectStripe = ({
   onConnectStripe,
 }: ConnectStripeProps & Pick<ConnectStripe, 'onConnectStripe'>) => {
   const [stripeAccount, setStripeAccount] = useState<string>()
-  const { getWalletService, account } = useAuth()
+  const { account } = useAuthenticate()
+  const { getWalletService } = useProvider()
   const web3Service = useWeb3Service()
 
   const {

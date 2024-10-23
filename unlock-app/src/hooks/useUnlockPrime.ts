@@ -4,13 +4,13 @@ import Paywall from '@unlock-protocol/paywall'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useCallback } from 'react'
 import { config } from '~/config/app'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { getEventOrganizers } from './useEventOrganizers'
 import { PaywallConfigType } from '@unlock-protocol/core'
+import { useAuthenticate } from './useAuthenticate'
 
 // This hook will return the status of the user's prime key
 export const useUnlockPrime = () => {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
 
   const { data: isPrime, ...rest } = useQuery({
     queryKey: ['usePrime', account],
