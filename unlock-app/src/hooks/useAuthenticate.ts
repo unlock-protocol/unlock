@@ -46,7 +46,6 @@ export function useAuthenticate() {
         accessToken: accessToken!,
         identityToken: identityToken!,
       })
-
       const { accessToken: locksmithAccessToken, walletAddress } = response.data
       if (locksmithAccessToken && walletAddress) {
         saveAccessToken({
@@ -54,9 +53,8 @@ export function useAuthenticate() {
           walletAddress,
         })
         setStorage('account', walletAddress)
-        await queryClient.refetchQueries()
-        await refetchSession()
         setAccount(walletAddress)
+        await Promise.all([queryClient.refetchQueries(), refetchSession()])
       }
     } catch (error) {
       console.error(error)
@@ -116,9 +114,8 @@ export function useAuthenticate() {
             accessToken,
             walletAddress,
           })
-          await queryClient.refetchQueries()
-          await refetchSession()
           setAccount(walletAddress)
+          await Promise.all([queryClient.refetchQueries(), refetchSession()])
         }
       }
     } catch (error) {
@@ -129,7 +126,7 @@ export function useAuthenticate() {
 
   // Tries to login the user with Privy
   // Returns true if the modal needs to be shown.
-  const signInWithPrivy = async (): Promise<boolean> => {
+  const signInWithPrivy = async ({ onshowUI }: { onshowUI: () => void }) => {
     const existingAccessToken = getAccessToken()
     if (existingAccessToken) {
       try {
@@ -138,25 +135,23 @@ export function useAuthenticate() {
         const { walletAddress } = response.data
         if (walletAddress) {
           setStorage('account', walletAddress)
-          await queryClient.refetchQueries()
-          await refetchSession()
           setAccount(walletAddress)
-          return
+          await Promise.all([queryClient.refetchQueries(), refetchSession()])
         }
       } catch (error) {
         console.error('Error using existing access token:', error)
         // Fallback to Privy login if the access token is invalid or expired
         privyLogin()
+        onshowUI()
       }
     } else {
       if (privyAuthenticated) {
         onSignedInWithPrivy()
       } else {
         privyLogin()
-        return true
+        onshowUI()
       }
     }
-    return false
   }
 
   useEffect(() => {

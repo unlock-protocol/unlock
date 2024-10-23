@@ -3,14 +3,14 @@ import { LoginModal } from '@privy-io/react-auth'
 
 interface ConnectPageProps {
   style: string
-  onNext?: () => void
   checkoutService?: CheckoutService
+  showPrivyModal: boolean
 }
 
-export const ConnectPage = ({ style }: ConnectPageProps) => {
+export const ConnectPage = ({ style, showPrivyModal }: ConnectPageProps) => {
   return (
     <main className={style}>
-      <LoginModal open={true} />
+      <LoginModal open={showPrivyModal} />
     </main>
   )
 }

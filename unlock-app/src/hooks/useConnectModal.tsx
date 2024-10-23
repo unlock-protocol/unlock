@@ -27,8 +27,11 @@ export const ConnectModalProvider = (props: Props) => {
   const { signInWithPrivy } = useAuthenticate()
 
   const openConnectModal = async () => {
-    const needsToOpen = await signInWithPrivy()
-    setOpen(needsToOpen)
+    signInWithPrivy({
+      onshowUI: () => {
+        setOpen(true)
+      },
+    })
   }
 
   const closeConnectModal = () => {
