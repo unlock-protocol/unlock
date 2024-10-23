@@ -1,12 +1,12 @@
 import React, { Fragment, useState } from 'react'
 import { OAuthConfig } from '~/unlockTypes'
 import { PaywallConfigType } from '@unlock-protocol/core'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { useSIWE } from '~/hooks/useSIWE'
 import { generateNonce } from 'siwe'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Button } from '@unlock-protocol/ui'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface Props {
   className: string
@@ -24,7 +24,7 @@ export function ConfirmConnect({
   communication,
 }: Props) {
   const { siweSign, signature, message } = useSIWE()
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
 
   const [isLoading, setIsLoading] = useState(false)
 

@@ -11,12 +11,12 @@ import {
 } from '@unlock-protocol/ui'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import useEns, { getAddressForName } from '~/hooks/useEns'
 import { locksmith } from '~/config/locksmith'
 import { onResolveName } from '~/utils/resolvers'
 import { Verifier } from '@unlock-protocol/unlock-js'
 import { useEffect } from 'react'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 export interface VerifierFormProps {
   event: Event
@@ -42,7 +42,7 @@ const VerifierCard = ({
   onDeleteVerifier,
   isLoading,
 }: VerifierCardProps) => {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
 
   const isCurrentAccount =
     account?.toLowerCase() === verifier?.address?.toLowerCase()

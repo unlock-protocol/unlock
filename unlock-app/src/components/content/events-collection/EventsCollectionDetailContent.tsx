@@ -1,8 +1,6 @@
 'use client'
 import { Button, Icon } from '@unlock-protocol/ui'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useMemo, useState } from 'react'
-
 import { TbPlus, TbSettings } from 'react-icons/tb'
 import ReactMarkdown from 'react-markdown'
 import { useRouter } from 'next/navigation'
@@ -29,6 +27,7 @@ import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 import { useConnectModal } from '~/hooks/useConnectModal'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -75,7 +74,7 @@ export default function EventsCollectionDetailContent({
 }: EventsCollectionDetailContentProps) {
   const { data: eventCollection } = useEventCollectionDetails(slug)
 
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const router = useRouter()
   const { openConnectModal } = useConnectModal()
 

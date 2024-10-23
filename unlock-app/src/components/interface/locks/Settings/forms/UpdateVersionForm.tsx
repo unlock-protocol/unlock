@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import { Button, Icon } from '@unlock-protocol/ui'
 import { AiOutlineAlert as AlertIcon } from 'react-icons/ai'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useAuth } from '~/contexts/AuthenticationContext'
+import { useProvider } from '~/hooks/useProvider'
 
 interface UpdateVersionFormProps {
   lockAddress: string
@@ -38,7 +38,7 @@ export const UpdateVersionForm = ({
   onUpdatedVersion,
 }: UpdateVersionFormProps) => {
   const nextVersion = version + BigInt(1)
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
   const upgradeLockVersion = async () => {
     const walletService = await getWalletService(network)
     return await walletService.upgradeLock({
