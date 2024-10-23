@@ -29,39 +29,41 @@ export function useAuthenticate() {
   const {
     logout: privyLogout,
     getAccessToken: privyGetAccessToken,
-    ready,
+    ready: privyReady,
+    authenticated: privyAuthenticated,
   } = usePrivy()
   const queryClient = useQueryClient()
   const { siweSign } = useSIWE()
   const { wallets } = useWallets()
 
-  const { login: privyLogin } = useLogin({
-    onComplete: async () => {
-      try {
-        const accessToken = await privyGetAccessToken()
-        const identityToken = cookies['privy-id-token']
-        const response = await locksmith.loginWithPrivy({
-          accessToken: accessToken!,
-          identityToken: identityToken!,
+  // This method is meant to be called when the user is signed in with Privy,
+  // BUT NOT yet signed in with Locksmith and hence does not have an access token.
+  const onSignedInWithPrivy = async () => {
+    try {
+      const accessToken = await privyGetAccessToken()
+      const identityToken = cookies['privy-id-token']
+      const response = await locksmith.loginWithPrivy({
+        accessToken: accessToken!,
+        identityToken: identityToken!,
+      })
+      const { accessToken: locksmithAccessToken, walletAddress } = response.data
+      if (locksmithAccessToken && walletAddress) {
+        saveAccessToken({
+          accessToken: locksmithAccessToken,
+          walletAddress,
         })
-
-        const { accessToken: locksmithAccessToken, walletAddress } =
-          response.data
-        if (locksmithAccessToken && walletAddress) {
-          saveAccessToken({
-            accessToken: locksmithAccessToken,
-            walletAddress,
-          })
-          setStorage('account', walletAddress)
-          await queryClient.refetchQueries()
-          await refetchSession()
-          setAccount(walletAddress)
-        }
-      } catch (error) {
-        console.error(error)
-        return null
+        setStorage('account', walletAddress)
+        setAccount(walletAddress)
+        await Promise.all([queryClient.refetchQueries(), refetchSession()])
       }
-    },
+    } catch (error) {
+      console.error(error)
+      return null
+    }
+  }
+
+  const { login: privyLogin } = useLogin({
+    onComplete: onSignedInWithPrivy,
     onError: (error) => {
       if (error !== 'generic_connect_wallet_error') {
         ToastHelper.error(`Error while logging in: ${error}`)
@@ -112,9 +114,8 @@ export function useAuthenticate() {
             accessToken,
             walletAddress,
           })
-          await queryClient.refetchQueries()
-          await refetchSession()
           setAccount(walletAddress)
+          await Promise.all([queryClient.refetchQueries(), refetchSession()])
         }
       }
     } catch (error) {
@@ -123,7 +124,9 @@ export function useAuthenticate() {
     }
   }
 
-  const signInWithPrivy = async () => {
+  // Tries to login the user with Privy
+  // Returns true if the modal needs to be shown.
+  const signInWithPrivy = async ({ onshowUI }: { onshowUI: () => void }) => {
     const existingAccessToken = getAccessToken()
     if (existingAccessToken) {
       try {
@@ -132,19 +135,22 @@ export function useAuthenticate() {
         const { walletAddress } = response.data
         if (walletAddress) {
           setStorage('account', walletAddress)
-          await queryClient.refetchQueries()
-          await refetchSession()
           setAccount(walletAddress)
-          return
+          await Promise.all([queryClient.refetchQueries(), refetchSession()])
         }
       } catch (error) {
         console.error('Error using existing access token:', error)
         // Fallback to Privy login if the access token is invalid or expired
         privyLogin()
+        onshowUI()
       }
     } else {
-      // No existing access token, proceed with Privy login
-      privyLogin()
+      if (privyAuthenticated) {
+        onSignedInWithPrivy()
+      } else {
+        privyLogin()
+        onshowUI()
+      }
     }
   }
 
@@ -154,14 +160,18 @@ export function useAuthenticate() {
         setProvider(await wallets[0].getEthereumProvider())
       }
     }
-    setProviderFromPrivy()
-  }, [wallets])
+    if (account) {
+      setProviderFromPrivy()
+    } else {
+      setProvider(null)
+    }
+  }, [wallets, account])
 
   return {
     account,
     signInWithSIWE,
     signInWithPrivy,
     signOut,
-    ready,
+    privyReady,
   }
 }
