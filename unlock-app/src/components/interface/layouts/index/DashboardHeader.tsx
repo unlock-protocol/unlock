@@ -34,7 +34,7 @@ interface DashboardHeaderProps {
 export default function DashboardHeader({
   showMenu = true,
 }: DashboardHeaderProps) {
-  const { account, ready } = useAuthenticate()
+  const { account, privyReady } = useAuthenticate()
   const { openConnectModal } = useConnectModal()
   const pathname = usePathname()
 
@@ -50,7 +50,7 @@ export default function DashboardHeader({
             <UserMenu />
           ) : (
             <Button
-              disabled={!ready}
+              disabled={!privyReady}
               onClick={(event) => {
                 event.preventDefault()
                 openConnectModal()

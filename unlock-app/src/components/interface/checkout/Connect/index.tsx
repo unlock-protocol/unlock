@@ -97,7 +97,9 @@ export function Connect({ oauthConfig, communication }: Props) {
           <Stepper state={state} />
         </div>
       </div>
-      {!account && <ConnectPage style="h-full mt-4 space-y-5" />}
+      {!account && (
+        <ConnectPage showPrivyModal={true} style="h-full mt-4 space-y-5" />
+      )}
       {account && (
         <ConfirmConnect
           className="h-full mt-4 space-y-5"

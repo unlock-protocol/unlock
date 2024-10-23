@@ -1,5 +1,5 @@
 import { useSelector } from '@xstate/react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { CheckoutService } from './main/checkoutMachine'
 import { Stepper } from './Stepper'
 import { ConnectPage } from './main/ConnectPage'
@@ -11,8 +11,9 @@ interface ConnectedCheckoutProps {
 }
 
 export function Connected({ service }: ConnectedCheckoutProps) {
+  const [showPrivyModal, setShowPrivyModal] = useState(true)
   const { paywallConfig, lock } = useSelector(service, (state) => state.context)
-  const { account } = useAuthenticate()
+  const { account, signInWithPrivy } = useAuthenticate()
 
   const lockAddress = lock?.address
   const lockNetwork = lock?.network || paywallConfig.network
@@ -33,6 +34,11 @@ export function Connected({ service }: ConnectedCheckoutProps) {
     }
     if (!account) {
       console.debug('Not connected')
+      signInWithPrivy({
+        onshowUI: () => {
+          setShowPrivyModal(true)
+        },
+      })
     } else {
       console.debug(`Connected as ${account}`)
       if (lockAddress && lockNetwork) {
@@ -44,7 +50,11 @@ export function Connected({ service }: ConnectedCheckoutProps) {
   return (
     <>
       <Stepper service={service} />
-      <ConnectPage style="h-full mt-4 space-y-4" checkoutService={service} />
+      <ConnectPage
+        showPrivyModal={showPrivyModal}
+        style="h-full space-y-4"
+        checkoutService={service}
+      />
     </>
   )
 }

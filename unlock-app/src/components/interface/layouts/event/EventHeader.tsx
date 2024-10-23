@@ -19,7 +19,7 @@ const MENU = {
 }
 
 export default function EventHeader() {
-  const { account, ready } = useAuthenticate()
+  const { account, privyReady } = useAuthenticate()
   const { openConnectModal } = useConnectModal()
 
   return (
@@ -31,7 +31,7 @@ export default function EventHeader() {
             <UserMenu />
           ) : (
             <Button
-              disabled={!ready}
+              disabled={!privyReady}
               onClick={(event) => {
                 event.preventDefault()
                 openConnectModal()

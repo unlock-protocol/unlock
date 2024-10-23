@@ -1,16 +1,16 @@
 import { CheckoutService } from './checkoutMachine'
-import { ConnectWallet } from '../../connect/Wallet'
+import { LoginModal } from '@privy-io/react-auth'
 
 interface ConnectPageProps {
   style: string
-  onNext?: () => void
   checkoutService?: CheckoutService
+  showPrivyModal: boolean
 }
 
-export const ConnectPage = ({ style }: ConnectPageProps) => {
+export const ConnectPage = ({ style, showPrivyModal }: ConnectPageProps) => {
   return (
     <main className={style}>
-      <ConnectWallet />
+      <LoginModal open={showPrivyModal} />
     </main>
   )
 }
