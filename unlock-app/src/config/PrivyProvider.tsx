@@ -5,7 +5,7 @@ export const Privy = ({ children }: { children: ReactNode }) => {
   return (
     <PrivyProvider
       config={{
-        loginMethods: ['email', 'wallet', 'google', 'apple', 'farcaster'],
+        loginMethods: ['wallet', 'email', 'google', 'farcaster'],
         embeddedWallets: {
           createOnLogin: 'users-without-wallets', // defaults to 'off'
         },
