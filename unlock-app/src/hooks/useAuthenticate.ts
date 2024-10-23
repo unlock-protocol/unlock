@@ -145,6 +145,8 @@ export function useAuthenticate() {
         }
       } catch (error) {
         console.error('Error using existing access token:', error)
+        // Fallback to Privy login if the access token is invalid or expired
+        privyLogin()
       }
     } else {
       if (privyAuthenticated) {
