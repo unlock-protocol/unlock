@@ -91,7 +91,6 @@ const ConnectStripe = ({
   lockAddress,
   network,
   keyGranter,
-  isManager,
   disabled,
   onConnectStripe,
 }: ConnectStripeProps & Pick<ConnectStripe, 'onConnectStripe'>) => {
