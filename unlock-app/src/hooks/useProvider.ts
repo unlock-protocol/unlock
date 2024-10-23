@@ -88,12 +88,12 @@ export const useProvider = () => {
    */
   const getWalletService = useCallback(
     async (networkId?: number) => {
+      if (!provider) {
+        ToastHelper.error('Please make sure your wallet is connected.')
+        throw new Error('Wallet not connected!')
+      }
       try {
         // Get the current network
-        if (!provider) {
-          ToastHelper.error('Please make sure your wallet is connected.')
-          return
-        }
         const network = await provider.getNetwork()
         const currentChainId = network.chainId
 
