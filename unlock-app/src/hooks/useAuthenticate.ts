@@ -87,10 +87,10 @@ export function useAuthenticate() {
   // Signs the user out (removes the session)
   const signOut = async () => {
     try {
-      setAccount(undefined)
       await privyLogout()
       await signOutToken()
       await Promise.all([queryClient.invalidateQueries(), refetchSession()])
+      setAccount(undefined)
     } catch (error) {
       console.error(error)
     }
@@ -155,12 +155,14 @@ export function useAuthenticate() {
           await Promise.all([queryClient.refetchQueries(), refetchSession()])
         }
       } catch (error) {
+        setAccount(undefined)
         console.error('Error using existing access token:', error)
         // Fallback to Privy login if the access token is invalid or expired
         privyLogin()
         onshowUI()
       }
     } else {
+      setAccount(undefined)
       if (privyAuthenticated) {
         onSignedInWithPrivy()
       } else {

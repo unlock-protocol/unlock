@@ -1,6 +1,6 @@
 import { OAuthConfig } from '../unlockTypes'
 
-export default function getConfigFromSearch(
+export default function getOauthConfigFromQuery(
   search: any
 ): OAuthConfig | undefined {
   const clientId = search.get('client_id')
