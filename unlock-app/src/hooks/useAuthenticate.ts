@@ -105,9 +105,9 @@ export function useAuthenticate() {
       const session = getAccessToken()
       if (session) {
         // First, revoke the session on the server with the token
-        await locksmith.revoke().catch(console.error)
+        locksmith.revoke().catch(console.error)
         // Then remove token locally
-        return removeAccessToken()
+        removeAccessToken()
       }
       setAccount(undefined)
       await Promise.all([queryClient.invalidateQueries(), refetchSession()])
