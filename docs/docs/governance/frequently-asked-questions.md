@@ -22,9 +22,9 @@ Proposals start as discussions and conversations. We suggest using [Discord](htt
 
 Once a relative consensus has been reached in the community, a community member will submit the proposal for votes, in the form of executable code.
 
-At that stage, every delegate can vote in favor or against the proposal for 8 days.
+At that stage, every delegate can vote in favor or against the proposal.
 
-If the proposal gets approved by a majority and if a quorum of at least 15,000 votes has been reached, then the proposal will get executed after a time lock of 3 hours.
+If the proposal gets approved by a majority and if a quorum has been reached, then the proposal will get executed after a time lock period.
 
 ## Where do governance discussions take place?
 
