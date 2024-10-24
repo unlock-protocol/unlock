@@ -1,7 +1,6 @@
 'use client'
 import { Button } from '@unlock-protocol/ui'
 import { useEffect, useState, useCallback, useMemo } from 'react'
-import { useRouter } from 'next/navigation'
 import { ActionBar } from '~/components/interface/locks/Manage'
 import {
   ApprovalStatus,
@@ -36,7 +35,6 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
   const [allSelected, setAllSelected] = useState(false)
   const [approvedAttendees, setApprovedAttendees] = useState<any[]>([])
   const [deniedAttendees, setDeniedAttendees] = useState<any[]>([])
-  const router = useRouter()
 
   const initialLockAddress = useMemo(() => {
     const keys = Object.keys(checkoutConfig.config.locks)
