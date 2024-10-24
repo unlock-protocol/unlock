@@ -109,15 +109,15 @@ export function useAuthenticate() {
         // Then remove token locally
         return removeAccessToken()
       }
-      await Promise.all([queryClient.invalidateQueries(), refetchSession()])
       setAccount(undefined)
+      await Promise.all([queryClient.invalidateQueries(), refetchSession()])
     } catch (error) {
       console.error(error)
     }
   }
 
   const signInWithSIWE = async () => {
-    if (!signInWithExistingSession()) {
+    if (!(await signInWithExistingSession())) {
       try {
         const { data: nonce } = await locksmith.nonce()
         const siweResult = await siweSign(nonce, '')
@@ -154,7 +154,7 @@ export function useAuthenticate() {
   // Tries to login the user with Privy
   // Returns true if the modal needs to be shown.
   const signInWithPrivy = async ({ onshowUI }: { onshowUI: () => void }) => {
-    if (!signInWithExistingSession()) {
+    if (!(await signInWithExistingSession())) {
       setAccount(undefined)
       if (privyAuthenticated) {
         onSignedInWithPrivy()
