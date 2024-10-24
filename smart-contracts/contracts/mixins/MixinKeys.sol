@@ -91,14 +91,10 @@ contract MixinKeys is MixinErrors, MixinLockCore {
    * @dev This is a modifier
    */
   function _onlyKeyManagerOrApproved(uint _tokenId) internal view {
-    address realKeyManager = keyManagerOf[_tokenId] == address(0)
-      ? _ownerOf[_tokenId]
-      : keyManagerOf[_tokenId];
     if (
       !isLockManager(msg.sender) &&
       !_isKeyManager(_tokenId, msg.sender) &&
-      approved[_tokenId] != msg.sender &&
-      !isApprovedForAll(realKeyManager, msg.sender)
+      approved[_tokenId] != msg.sender
     ) {
       revert ONLY_KEY_MANAGER_OR_APPROVED();
     }
@@ -135,18 +131,6 @@ contract MixinKeys is MixinErrors, MixinLockCore {
       "SCHEMA_VERSION_NOT_CORRECT"
     );
 
-    // only for mainnet
-    if (block.chainid == 1) {
-      // Hardcoded address for the redeployed Unlock contract on mainnet
-      address newUnlockAddress = 0xe79B93f8E22676774F2A8dAd469175ebd00029FA;
-
-      // trigger migration from the new Unlock
-      IUnlock(newUnlockAddress).postLockUpgrade();
-
-      // update unlock ref in this lock
-      unlockProtocol = IUnlock(newUnlockAddress);
-    }
-
     // update data version
     schemaVersion = publicLockVersion();
   }
@@ -155,7 +139,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
    * Set the schema version to the latest
    * @notice only lock manager call call this
    */
-  function updateSchemaVersion() public {
+  function updateSchemaVersion() internal {
     _onlyLockManager();
     schemaVersion = publicLockVersion();
   }
@@ -492,19 +476,6 @@ contract MixinKeys is MixinErrors, MixinLockCore {
     _isKey(_tokenId);
     address approvedRecipient = approved[_tokenId];
     return approvedRecipient;
-  }
-
-  /**
-   * @dev Tells whether an operator is approved by a given keyManager
-   * @param _owner owner address which you want to query the approval of
-   * @param _operator operator address which you want to query the approval of
-   * @return bool whether the given operator is approved by the given owner
-   */
-  function isApprovedForAll(
-    address _owner,
-    address _operator
-  ) public view returns (bool) {
-    return managerToOperatorApproved[_owner][_operator];
   }
 
   /**
