@@ -2,7 +2,6 @@ import { StandardMerkleTree } from '@openzeppelin/merkle-tree'
 import { Button, Card, Placeholder } from '@unlock-protocol/ui'
 import { Event, PaywallConfigType } from '@unlock-protocol/core'
 import { MdAssignmentLate } from 'react-icons/md'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useHasClaimedRefund } from '~/hooks/useHasClaimedRefund'
 import { useMutation } from '@tanstack/react-query'
 import { ethers } from 'ethers'
@@ -12,6 +11,8 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useGetApprovedRefunds } from '~/hooks/useGetApprovedRefunds'
 import { useMemo } from 'react'
 import { EventLocksExplorerLinks } from './EventLocksExplorerLinks'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { useProvider } from '~/hooks/useProvider'
 
 export const ClaimRefund = ({
   refundProofAndValue,
@@ -25,7 +26,7 @@ export const ClaimRefund = ({
   network: number
 }) => {
   // TODO: Check if balance on lock is enough, show error if not!
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
   const { kickbackAddress } = config.networks[network]
 
   const claimRefund = useMutation({
@@ -83,7 +84,7 @@ export const ClaimRefundInfo = ({
   const network = (checkoutConfig.config.locks[lockAddress].network ||
     checkoutConfig.config.network)!
 
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const {
     data: hasClaimedRefund,
     isLoading: isLoadingHasClaimedRefund,
