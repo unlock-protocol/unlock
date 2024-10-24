@@ -8,7 +8,7 @@ sidebar_position: 6
 
 ## What is the Unlock DAO?
 
-The [Unlock DAO](./unlock-dao/) is the decentralized organization of ɄDT token holders that govern and control the Unlock Protocol. Unlock Inc. is _one_ of the stakeholders on the DAO, and we expect other organizations to emerge and eventually lead some efforts independently of Unlock Inc.
+The [Unlock DAO](./unlock-dao/) is the decentralized organization of token holders that govern and control the Unlock Protocol. Unlock Inc. is _one_ of the stakeholders on the DAO, and we expect other organizations to emerge and eventually lead some efforts independently of Unlock Inc.
 
 Governance happens through _proposals_.
 
