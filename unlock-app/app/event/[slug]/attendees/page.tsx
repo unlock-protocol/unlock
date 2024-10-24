@@ -4,6 +4,7 @@ import { EventPageProps } from '../page'
 import { toFormData } from 'axios'
 import { notFound } from 'next/navigation'
 import { fetchEventMetadata } from '~/utils/eventMetadata'
+import { AuthRequired } from 'app/Components/ProtectedContent'
 
 const AttendeesPage = async ({ params }: EventPageProps) => {
   const { slug } = params
@@ -27,10 +28,12 @@ const AttendeesPage = async ({ params }: EventPageProps) => {
   }
 
   return (
-    <Attendees
-      event={JSON.parse(JSON.stringify(event))}
-      checkoutConfig={JSON.parse(JSON.stringify(checkoutConfig))}
-    />
+    <AuthRequired>
+      <Attendees
+        event={JSON.parse(JSON.stringify(event))}
+        checkoutConfig={JSON.parse(JSON.stringify(checkoutConfig))}
+      />
+    </AuthRequired>
   )
 }
 
