@@ -1,7 +1,6 @@
 'use client'
 import { Button } from '@unlock-protocol/ui'
 import { useEffect, useState, useCallback, useMemo } from 'react'
-import { RiCloseLine as CloseIcon } from 'react-icons/ri'
 import { useRouter } from 'next/navigation'
 import { ActionBar } from '~/components/interface/locks/Manage'
 import {
@@ -136,10 +135,6 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
       {/* Render the main content only if the user is a manager and lockAddress & lockNetwork are available */}
       {!showNotManagerBanner && lockAddress && lockNetwork && (
         <>
-          <Button variant="borderless" onClick={() => router.back()}>
-            <CloseIcon size={20} />
-          </Button>
-
           <AirdropKeysDrawer
             isOpen={airdropKeys}
             setIsOpen={setAirdropKeys}
