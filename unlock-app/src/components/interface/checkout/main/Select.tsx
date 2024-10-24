@@ -440,7 +440,7 @@ export function Select({ checkoutService }: Props) {
     if (
       selectedLock &&
       privyOAuthState &&
-      privyOAuthProvider === 'google' &&
+      privyOAuthProvider &&
       privyOAuthCode
     ) {
       const lock = locks?.find((l) => l.address === selectedLock)
