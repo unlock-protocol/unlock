@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Badge, Select, Placeholder } from '@unlock-protocol/ui'
-import { useState } from 'react'
+import { useState, useCallback, useMemo } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { BsCheckCircle as CheckCircleIcon } from 'react-icons/bs'
@@ -113,15 +113,20 @@ const ConnectStripe = ({
     },
   })
 
+  const checkIsKeyGranter = useCallback(
+    async (keyGranter: string) => {
+      return await web3Service.isKeyGranter(lockAddress, keyGranter, network)
+    },
+    [web3Service, lockAddress, network]
+  )
+
   const {
     isPending: isLoadingCheckGrantedStatus,
     data: isGranted,
     refetch: refetchCheckKeyGranter,
   } = useQuery({
     queryKey: ['checkIsKeyGranter', lockAddress, network, keyGranter],
-    queryFn: async () => {
-      return web3Service.isKeyGranter(lockAddress, keyGranter, network)
-    },
+    queryFn: () => checkIsKeyGranter(keyGranter),
   })
 
   const grantKeyGrantorRoleMutation = useMutation({
@@ -301,8 +306,6 @@ export const CreditCardWithStripeForm = ({
 
   const stripeConnectionState = stripeConnectionDetails?.connected ?? 0
   const connectedStripeAccount = stripeConnectionDetails?.account
-  const supportedCurrencies =
-    stripeConnectionDetails?.countrySpec?.supported_payment_currencies ?? []
 
   const disconnectStipeMutation = useStripeDisconnect({
     lockAddress,
@@ -327,7 +330,10 @@ export const CreditCardWithStripeForm = ({
     enabled: !!lock?.address,
   })
 
-  const isPricingLow = (fiatPricing?.usd?.amount ?? 0) < 0.5
+  const isPricingLow = useMemo(
+    () => (fiatPricing?.usd?.amount ?? 0) < 0.5,
+    [fiatPricing]
+  )
 
   const { data: keyGranter, isPending: isLoadingKeyGranter } = useKeyGranter({
     network,
@@ -335,37 +341,46 @@ export const CreditCardWithStripeForm = ({
 
   const loading = isPending || isLoadingKeyGranter || isLoadingPricing
 
-  const onDisconnectStripe = async (event: any) => {
-    event.preventDefault()
-    const disconnectStripePromise = disconnectStipeMutation.mutateAsync()
-    await ToastHelper.promise(disconnectStripePromise, {
-      error: 'Stripe disconnection failed.',
-      success: 'Stripe disconnected.',
-      loading: 'Disconnecting Stripe.',
-    })
-    await refetchStripeConnectionDetails()
-  }
+  const onDisconnectStripe = useCallback(
+    async (event: any) => {
+      event.preventDefault()
+      const disconnectStripePromise = disconnectStipeMutation.mutateAsync()
+      await ToastHelper.promise(disconnectStripePromise, {
+        error: 'Stripe disconnection failed.',
+        success: 'Stripe disconnected.',
+        loading: 'Disconnecting Stripe.',
+      })
+      await refetchStripeConnectionDetails()
+    },
+    [disconnectStipeMutation, refetchStripeConnectionDetails]
+  )
 
-  const onConnectStripe = (stripeAccount?: string) => {
-    connectStripeMutation.mutate(
-      { stripeAccount },
-      {
-        onSuccess: (connect: any) => {
-          if (connect?.url) {
-            window.location.assign(connect.url)
-          } else {
-            ToastHelper.success('Stripe connection succeeded!')
-            refetchStripeConnectionDetails()
-          }
-        },
-        onError: () => {
-          ToastHelper.error('Stripe connection failed')
-        },
-      }
-    )
-  }
+  const onConnectStripe = useCallback(
+    (stripeAccount?: string) => {
+      connectStripeMutation.mutate(
+        { stripeAccount },
+        {
+          onSuccess: (connect: any) => {
+            if (connect?.url) {
+              window.location.assign(connect.url)
+            } else {
+              ToastHelper.success('Stripe connection succeeded!')
+              refetchStripeConnectionDetails()
+            }
+          },
+          onError: () => {
+            ToastHelper.error('Stripe connection failed')
+          },
+        }
+      )
+    },
+    [connectStripeMutation, refetchStripeConnectionDetails]
+  )
 
-  const Status = () => {
+  const StatusComponent = useMemo(() => {
+    const supportedCurrencies =
+      stripeConnectionDetails?.countrySpec?.supported_payment_currencies ?? []
+
     if (ConnectStatus.NO_ACCOUNT === stripeConnectionState) {
       return (
         <ConnectStripe
@@ -420,17 +435,25 @@ export const CreditCardWithStripeForm = ({
             currencies={supportedCurrencies}
             connectedStripeAccount={connectedStripeAccount}
           />
-          {/* Disabled for now */}
-          {/* <CreditCardUnlockFee
-                lockAddress={lockAddress}
-                network={network}
-                disabled={disabled}
-              /> */}
         </div>
       )
     }
     return null
-  }
+  }, [
+    stripeConnectionState,
+    onConnectStripe,
+    lockAddress,
+    network,
+    isManager,
+    keyGranter,
+    disabled,
+    connectStripeMutation.isPending,
+    onDisconnectStripe,
+    connectedStripeAccount,
+    disconnectStipeMutation.isPending,
+    lock,
+    stripeConnectionDetails,
+  ])
 
   if (loading)
     return (
@@ -443,7 +466,7 @@ export const CreditCardWithStripeForm = ({
 
   return (
     <div className="flex flex-col gap-2">
-      <Status />
+      {StatusComponent}
       {isPricingLow && (
         <span className="text-sm text-red-600">
           Your current price is too low for us to process credit cards. It needs
