@@ -50,19 +50,19 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       <GlobalWrapper>
         <Privy>
           <SessionProvider>
-            <ConnectModalProvider>
-              <ErrorBoundary
-                fallback={(props: any) => <ErrorFallback {...props} />}
-              >
+            <Suspense fallback={<LoadingIcon />}>
+              <ConnectModalProvider>
                 <AirstackProvider apiKey={'162b7c4dda5c44afdb0857b6b04454f99'}>
-                  <Suspense fallback={<LoadingIcon />}>
+                  <ErrorBoundary
+                    fallback={(props: any) => <ErrorFallback {...props} />}
+                  >
                     <ShouldOpenConnectModal />
                     {children}
-                  </Suspense>
+                  </ErrorBoundary>
                 </AirstackProvider>
-              </ErrorBoundary>
-            </ConnectModalProvider>
-            <Toaster />
+              </ConnectModalProvider>
+              <Toaster />
+            </Suspense>
           </SessionProvider>
         </Privy>
       </GlobalWrapper>

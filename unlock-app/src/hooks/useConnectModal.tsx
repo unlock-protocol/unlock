@@ -1,5 +1,6 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { useAuthenticate } from './useAuthenticate'
+import { useSearchParams } from 'next/navigation'
 
 const ConnectModalContext = createContext({
   openConnectModal: () => {},
@@ -25,6 +26,19 @@ export const connection = new EventTarget()
 export const ConnectModalProvider = (props: Props) => {
   const [open, setOpen] = useState(false)
   const { signInWithPrivy } = useAuthenticate()
+  const searchParams = useSearchParams()
+
+  const privy_oauth_state = searchParams.get('privy_oauth_state')
+
+  useEffect(() => {
+    if (privy_oauth_state) {
+      signInWithPrivy({
+        onshowUI: () => {
+          setOpen(true)
+        },
+      })
+    }
+  }, [privy_oauth_state])
 
   const openConnectModal = async () => {
     signInWithPrivy({
