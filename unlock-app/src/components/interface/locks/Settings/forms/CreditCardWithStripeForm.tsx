@@ -306,8 +306,6 @@ export const CreditCardWithStripeForm = ({
 
   const stripeConnectionState = stripeConnectionDetails?.connected ?? 0
   const connectedStripeAccount = stripeConnectionDetails?.account
-  const supportedCurrencies =
-    stripeConnectionDetails?.countrySpec?.supported_payment_currencies ?? []
 
   const disconnectStipeMutation = useStripeDisconnect({
     lockAddress,
@@ -380,6 +378,9 @@ export const CreditCardWithStripeForm = ({
   )
 
   const StatusComponent = useMemo(() => {
+    const supportedCurrencies =
+      stripeConnectionDetails?.countrySpec?.supported_payment_currencies ?? []
+
     if (ConnectStatus.NO_ACCOUNT === stripeConnectionState) {
       return (
         <ConnectStripe
@@ -451,7 +452,7 @@ export const CreditCardWithStripeForm = ({
     connectedStripeAccount,
     disconnectStipeMutation.isPending,
     lock,
-    supportedCurrencies,
+    stripeConnectionDetails,
   ])
 
   if (loading)
