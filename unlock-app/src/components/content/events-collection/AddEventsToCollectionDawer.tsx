@@ -2,11 +2,11 @@
 
 import {
   Button,
+  Combobox,
   Disclosure,
   Drawer,
   Input,
   Placeholder,
-  Select,
 } from '@unlock-protocol/ui'
 import { useUserEvents } from '~/hooks/useUserEvents'
 import { Form as EventCreationForm, NewEventForm } from '../event/Form'
@@ -348,16 +348,15 @@ export default function AddEventsToCollectionDrawer({
                 <Placeholder.Card />
               </Placeholder.Root>
             ) : filteredUserEvents && filteredUserEvents.length > 0 ? (
-              <Select
-                onChange={(newValue) => {
-                  setEventSlug(newValue?.toString() || '')
-                  setIsEventSelected(newValue !== undefined && newValue !== '')
-                }}
+              <Combobox
                 options={userEventsOptions}
+                onSelect={(selected) => {
+                  setEventSlug(selected.value.toString())
+                  setIsEventSelected(true)
+                }}
+                placeholder="Select an event"
+                searchPlaceholder="Search events..."
                 label="Your Existing Events"
-                defaultValue={
-                  userEventsOptions.length > 0 ? userEventsOptions[0].value : ''
-                }
                 description="Select an event from your existing events."
                 disabled={isSubmitting}
               />
