@@ -7,6 +7,7 @@ import Providers from './providers'
 
 import TagManagerScript from '../src/components/TagManagerScript'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import { PromptEmailLink } from '~/components/interface/PromptEmailLink'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -23,7 +24,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.className}>
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+          <PromptEmailLink />
+        </Providers>
         <TagManagerScript />
         <SpeedInsights />
       </body>
