@@ -52,14 +52,38 @@ export function useAuthenticate() {
           accessToken: locksmithAccessToken,
           walletAddress,
         })
-        setStorage('account', walletAddress)
-        setAccount(walletAddress)
-        await Promise.all([queryClient.refetchQueries(), refetchSession()])
+        onSignedIn(walletAddress)
       }
     } catch (error) {
       console.error(error)
       return null
     }
+  }
+
+  // When a user is logged in, this method is called to set the account and refetch the session
+  const onSignedIn = async (walletAddress: string) => {
+    setStorage('account', walletAddress)
+    setAccount(walletAddress)
+    await Promise.all([queryClient.refetchQueries(), refetchSession()])
+  }
+
+  // Method that tries to sign in with an existing session
+  const signInWithExistingSession = async () => {
+    const existingAccessToken = getAccessToken()
+    // Use the existing access token to log in
+    if (existingAccessToken) {
+      try {
+        const response = await locksmith.user()
+        const { walletAddress } = response.data
+        if (walletAddress) {
+          await onSignedIn(walletAddress)
+          return true
+        }
+      } catch (error) {
+        console.error('Error using existing access token:', error)
+      }
+    }
+    return false
   }
 
   const { login: privyLogin } = useLogin({
@@ -74,94 +98,63 @@ export function useAuthenticate() {
     },
   })
 
-  const signOutToken = async () => {
-    const session = getAccessToken()
-    if (session) {
-      // First, revoke the session on the server with the token
-      await locksmith.revoke().catch(console.error)
-      // Then remove token locally
-      return removeAccessToken()
-    }
-  }
-
   // Signs the user out (removes the session)
   const signOut = async () => {
     try {
       await privyLogout()
-      await signOutToken()
-      await Promise.all([queryClient.invalidateQueries(), refetchSession()])
+      const session = getAccessToken()
+      if (session) {
+        // First, revoke the session on the server with the token
+        await locksmith.revoke().catch(console.error)
+        // Then remove token locally
+        return removeAccessToken()
+      }
       setAccount(undefined)
+      await Promise.all([queryClient.invalidateQueries(), refetchSession()])
     } catch (error) {
       console.error(error)
     }
   }
 
   const signInWithSIWE = async () => {
-    const existingAccessToken = getAccessToken()
-    if (existingAccessToken) {
+    if (!(await signInWithExistingSession())) {
       try {
-        // Use the existing access token to log in
-        const response = await locksmith.user()
-        const { walletAddress } = response.data
-        if (walletAddress) {
-          setStorage('account', walletAddress)
-          setAccount(walletAddress)
-          await Promise.all([queryClient.refetchQueries(), refetchSession()])
-        }
-        return
-      } catch (error) {
-        console.error('Error using existing access token:', error)
-      }
-    }
+        const { data: nonce } = await locksmith.nonce()
+        const siweResult = await siweSign(nonce, '')
 
-    try {
-      const { data: nonce } = await locksmith.nonce()
-      const siweResult = await siweSign(nonce, '')
-
-      if (siweResult) {
-        const { message, signature } = siweResult
-        const response = await locksmith.login({
-          message,
-          signature,
-        })
-        const { accessToken, walletAddress } = response.data
-        if (accessToken && walletAddress) {
-          saveAccessToken({
-            accessToken,
-            walletAddress,
+        if (siweResult) {
+          const { message, signature } = siweResult
+          const response = await locksmith.login({
+            message,
+            signature,
           })
-          setAccount(walletAddress)
-          await Promise.all([queryClient.refetchQueries(), refetchSession()])
+          const { accessToken, walletAddress } = response.data
+          if (accessToken && walletAddress) {
+            saveAccessToken({
+              accessToken,
+              walletAddress,
+            })
+            await onSignedIn(walletAddress)
+          } else {
+            console.error('Error logging in with SIWE:', response)
+            ToastHelper.error(
+              'We could not authenticate you. Please refresh and try again.'
+            )
+          }
         }
+      } catch (error) {
+        console.error(error)
+        ToastHelper.error(
+          'There was an authentication error. Please refresh and try again.'
+        )
       }
-    } catch (error) {
-      console.error(error)
-      return null
     }
   }
 
   // Tries to login the user with Privy
   // Returns true if the modal needs to be shown.
   const signInWithPrivy = async ({ onshowUI }: { onshowUI: () => void }) => {
-    const existingAccessToken = getAccessToken()
-    if (existingAccessToken) {
-      try {
-        // Use the existing access token to log in
-        const response = await locksmith.user()
-        const { walletAddress } = response.data
-        if (walletAddress) {
-          setStorage('account', walletAddress)
-          setAccount(walletAddress)
-          await Promise.all([queryClient.refetchQueries(), refetchSession()])
-        }
-      } catch (error) {
-        setAccount(undefined)
-        console.error('Error using existing access token:', error)
-        // Fallback to Privy login if the access token is invalid or expired
-        privyLogin()
-        onshowUI()
-      }
-    } else {
+    if (!(await signInWithExistingSession())) {
       setAccount(undefined)
       if (privyAuthenticated) {
         onSignedInWithPrivy()
