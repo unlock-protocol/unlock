@@ -117,37 +117,35 @@ export function useAuthenticate() {
   }
 
   const signInWithSIWE = async () => {
-    if (!(await signInWithExistingSession())) {
-      try {
-        const { data: nonce } = await locksmith.nonce()
-        const siweResult = await siweSign(nonce, '')
+    try {
+      const { data: nonce } = await locksmith.nonce()
+      const siweResult = await siweSign(nonce, '')
 
-        if (siweResult) {
-          const { message, signature } = siweResult
-          const response = await locksmith.login({
-            message,
-            signature,
+      if (siweResult) {
+        const { message, signature } = siweResult
+        const response = await locksmith.login({
+          message,
+          signature,
+        })
+        const { accessToken, walletAddress } = response.data
+        if (accessToken && walletAddress) {
+          saveAccessToken({
+            accessToken,
+            walletAddress,
           })
-          const { accessToken, walletAddress } = response.data
-          if (accessToken && walletAddress) {
-            saveAccessToken({
-              accessToken,
-              walletAddress,
-            })
-            await onSignedIn(walletAddress)
-          } else {
-            console.error('Error logging in with SIWE:', response)
-            ToastHelper.error(
-              'We could not authenticate you. Please refresh and try again.'
-            )
-          }
+          await onSignedIn(walletAddress)
+        } else {
+          console.error('Error logging in with SIWE:', response)
+          ToastHelper.error(
+            'We could not authenticate you. Please refresh and try again.'
+          )
         }
-      } catch (error) {
-        console.error(error)
-        ToastHelper.error(
-          'There was an authentication error. Please refresh and try again.'
-        )
       }
+    } catch (error) {
+      console.error(error)
+      ToastHelper.error(
+        'There was an authentication error. Please refresh and try again.'
+      )
     }
   }
 
