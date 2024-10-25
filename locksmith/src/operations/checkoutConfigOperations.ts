@@ -78,7 +78,7 @@ const isUserAuthorized = async (
 /**
  * Creates or updates a checkout configuration
  * @param args - The SaveCheckoutConfigArgs object
- * @returns The created or updated checkout configuration
+ * @returns The created or updated checkout configuration or null if not authorized
  */
 export const saveCheckoutConfig = async ({
   id,
@@ -93,6 +93,17 @@ export const saveCheckoutConfig = async ({
   // Ensure referrer is set to the creator
   if (!checkoutConfigData.referrer) {
     checkoutConfigData.referrer = createdBy
+  }
+
+  // Check if the user is authorized to save/update the config
+  if (id) {
+    const existingConfig = await CheckoutConfig.findOne({ where: { id } })
+    if (
+      existingConfig &&
+      !(await isUserAuthorized(createdBy, existingConfig))
+    ) {
+      return null
+    }
   }
 
   const [createdConfig] = await CheckoutConfig.upsert(
@@ -131,27 +142,6 @@ export const getCheckoutConfigById = async (id: string) => {
     }
   }
   return null
-}
-
-/**
- * Checks if a user is authorized to manage a specific checkout config
- * @param userAddress - The address of the user
- * @param configId - The ID of the checkout configuration
- * @returns A boolean indicating whether the user is authorized
- */
-export const isAuthorizedToManageConfig = async (
-  userAddress: string,
-  configId: string
-): Promise<boolean> => {
-  const checkoutConfig = await CheckoutConfig.findOne({
-    where: {
-      id: configId,
-    },
-  })
-  if (!checkoutConfig) {
-    return false
-  }
-  return isUserAuthorized(userAddress, checkoutConfig)
 }
 
 export const getCheckoutConfigsByUserOperation = async (
