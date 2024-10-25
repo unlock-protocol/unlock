@@ -34,6 +34,13 @@ export const createOrUpdateCheckoutConfig: RequestHandler = async (
       createdBy: request.user!.walletAddress,
     })
 
+    if (!createdConfig) {
+      return response.status(403).send({
+        message:
+          'Unauthorized: You do not have permission to create or update this configuration.',
+      })
+    }
+
     return response.status(200).send({
       id: createdConfig?.id,
       by: createdConfig?.createdBy,
@@ -113,9 +120,8 @@ export const deleteCheckoutConfig: RequestHandler = async (
   const deleted = await deleteCheckoutConfigOperation(userAddress, id)
 
   if (!deleted) {
-    return response.status(403).send({
-      message:
-        'Unauthorized: You do not have permission to delete this configuration.',
+    return response.status(404).send({
+      message: 'Config not found or you do not have permission to delete it.',
     })
   }
 
