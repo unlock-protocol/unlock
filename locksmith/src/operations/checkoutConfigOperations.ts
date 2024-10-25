@@ -148,31 +148,15 @@ export const isAuthorizedToManageConfig = async (
   return isUserAuthorized(userAddress, checkoutConfig)
 }
 
-/**
- * Retrieves all checkout configurations a user is authorized to manage
- * @param userAddress - The address of the user
- * @returns An array of authorized checkout configurations
- */
-export const getAuthorizedCheckoutConfigs = async (userAddress: string) => {
-  const allConfigs = await CheckoutConfig.findAll({
+export const getCheckoutConfigsByUserOperation = async (
+  userAddress: string
+) => {
+  return await CheckoutConfig.findAll({
+    where: {
+      createdBy: userAddress,
+    },
     order: [['updatedAt', 'DESC']],
   })
-
-  const authorizedConfigs = []
-  for (const config of allConfigs) {
-    if (await isUserAuthorized(userAddress, config)) {
-      authorizedConfigs.push({
-        id: config.id,
-        name: config.name,
-        by: config.createdBy,
-        config: config.config,
-        updatedAt: config.updatedAt.toISOString(),
-        createdAt: config.createdAt.toISOString(),
-      })
-    }
-  }
-
-  return authorizedConfigs
 }
 
 /**
