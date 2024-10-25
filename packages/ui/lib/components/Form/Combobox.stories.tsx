@@ -38,7 +38,7 @@ const getRandomItems = (array: Option[], count: number): Option[] => {
 // Default story with a mix of initial and more options
 export const Default = {
   args: {
-    initialOptions: getRandomItems(allOptions, 5),
+    options: getRandomItems(allOptions, 5),
     moreOptions: getRandomItems(allOptions, 3),
     initialSelected: { value: 1, label: 'Ethereum Mainnet' },
     onSelect: (selected) => {
@@ -50,7 +50,7 @@ export const Default = {
 // Story with a pre-selected option
 export const WithInitialSelected = {
   args: {
-    initialOptions: getRandomItems(allOptions, 5),
+    options: getRandomItems(allOptions, 5),
     moreOptions: getRandomItems(allOptions, 3),
     initialSelected: { value: 84532, label: 'Base' },
     onSelect: (selected) => {
@@ -63,7 +63,7 @@ export const WithInitialSelected = {
 export const WithLongList = {
   args: {
     // Generate 10 initial options
-    initialOptions: getRandomItems(
+    options: getRandomItems(
       Array.from({ length: 50 }, (_, index) => ({
         value: index + 1,
         label: `Network #${index + 1}`,
@@ -87,7 +87,7 @@ export const WithLongList = {
 // Story without any additional options in the "More options" section
 export const WithoutMoreOptions = {
   args: {
-    initialOptions: getRandomItems(allOptions, allOptions.length),
+    options: getRandomItems(allOptions, allOptions.length),
     onSelect: (selected) => {
       console.log('selected', selected)
     },
@@ -97,7 +97,7 @@ export const WithoutMoreOptions = {
 // Story with duplicate options to test handling of non-unique values
 export const WithDuplicates = {
   args: {
-    initialOptions: getRandomItems(allOptions, 5),
+    options: getRandomItems(allOptions, 5),
     // Duplicate the options array
     moreOptions: getRandomItems([...allOptions, ...allOptions], 5),
     onSelect: (selected) => {
