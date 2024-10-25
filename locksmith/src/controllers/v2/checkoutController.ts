@@ -1,10 +1,9 @@
 import { RequestHandler } from 'express'
 import {
-  getAuthorizedCheckoutConfigs,
   getCheckoutConfigById,
-  isAuthorizedToManageConfig,
   saveCheckoutConfig,
   deleteCheckoutConfigOperation,
+  getCheckoutConfigsByUserOperation,
 } from '../../operations/checkoutConfigOperations'
 
 /**
@@ -20,7 +19,6 @@ export const createOrUpdateCheckoutConfig: RequestHandler = async (
 ) => {
   const id: string | undefined = request.params.id
   const { config, name } = request.body
-  const userAddress = request.user!.walletAddress
 
   if (!(config && name)) {
     return response.status(400).send({
@@ -28,22 +26,12 @@ export const createOrUpdateCheckoutConfig: RequestHandler = async (
     })
   }
 
-  if (id) {
-    const authorized = await isAuthorizedToManageConfig(userAddress, id)
-    if (!authorized) {
-      return response.status(403).send({
-        message:
-          'Unauthorized: You must be a Lock Manager of at least one associated lock or the creator.',
-      })
-    }
-  }
-
   try {
     const createdConfig = await saveCheckoutConfig({
       id,
       name,
       config,
-      createdBy: userAddress,
+      createdBy: request.user!.walletAddress,
     })
 
     return response.status(200).send({
@@ -65,19 +53,10 @@ export const createOrUpdateCheckoutConfig: RequestHandler = async (
 /**
  * Retrieve a specific checkout configuration.
  *
- * This endpoint performs an authorization check before returning the requested config.
- * It ensures that only authorized users can access a given configuration.
+ * This endpoint fetches the requested config without performing an authorization check.
  */
 export const getCheckoutConfig: RequestHandler = async (request, response) => {
   const id = request.params.id
-  const userAddress = request.user!.walletAddress
-
-  const authorized = await isAuthorizedToManageConfig(userAddress, id)
-  if (!authorized) {
-    return response.status(403).send({
-      message: 'Unauthorized: You do not have access to this configuration.',
-    })
-  }
 
   const checkoutConfig = await getCheckoutConfigById(id)
   if (!checkoutConfig) {
@@ -100,10 +79,19 @@ export const getCheckoutConfigsByUser: RequestHandler = async (
   response
 ) => {
   const userAddress = request.user!.walletAddress
-  const authorizedConfigs = await getAuthorizedCheckoutConfigs(userAddress)
+  const checkoutConfigs = await getCheckoutConfigsByUserOperation(userAddress)
 
   return response.status(200).send({
-    results: authorizedConfigs,
+    results: checkoutConfigs.map((config) => {
+      return {
+        id: config.id,
+        name: config.name,
+        by: config.createdBy,
+        config: config.config,
+        updatedAt: config.updatedAt.toISOString(),
+        createdAt: config.createdAt.toISOString(),
+      }
+    }),
   })
 }
 
