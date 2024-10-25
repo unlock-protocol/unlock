@@ -31,7 +31,7 @@ export const createOrUpdateCheckoutConfig: RequestHandler = async (
       id,
       name,
       config,
-      createdBy: request.user!.walletAddress,
+      user: request.user!.walletAddress,
     })
 
     if (!createdConfig) {
@@ -117,11 +117,19 @@ export const deleteCheckoutConfig: RequestHandler = async (
   const id = request.params.id
   const userAddress = request.user!.walletAddress
 
+  const existingConfig = await getCheckoutConfigById(id)
+
+  if (!existingConfig) {
+    return response.status(404).send({
+      message: 'Config not found.',
+    })
+  }
+
   const deleted = await deleteCheckoutConfigOperation(userAddress, id)
 
   if (!deleted) {
-    return response.status(404).send({
-      message: 'Config not found or you do not have permission to delete it.',
+    return response.status(403).send({
+      message: 'You do not have permission to delete this configuration.',
     })
   }
 

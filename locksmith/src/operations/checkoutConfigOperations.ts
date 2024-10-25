@@ -7,7 +7,7 @@ import networks from '@unlock-protocol/networks'
 interface SaveCheckoutConfigArgs {
   id?: string
   name: string
-  createdBy: string
+  user: string
   config: any // TODO: TYPE
 }
 
@@ -82,25 +82,22 @@ const isUserAuthorized = async (
 export const saveCheckoutConfig = async ({
   id,
   name,
-  createdBy,
+  user,
   config,
 }: SaveCheckoutConfigArgs): Promise<CheckoutConfig | null> => {
   const generatedId = id || randomUUID()
 
   const checkoutConfigData = await PaywallConfig.strip().parseAsync(config)
 
-  // Ensure referrer is set to the creator
+  // Ensure referrer is set to the user
   if (!checkoutConfigData.referrer) {
-    checkoutConfigData.referrer = createdBy
+    checkoutConfigData.referrer = user
   }
 
   // Check if the user is authorized to save/update the config
   if (id) {
     const existingConfig = await CheckoutConfig.findOne({ where: { id } })
-    if (
-      existingConfig &&
-      !(await isUserAuthorized(createdBy, existingConfig))
-    ) {
+    if (existingConfig && !(await isUserAuthorized(user, existingConfig))) {
       return null
     }
   }
@@ -110,7 +107,7 @@ export const saveCheckoutConfig = async ({
       id: generatedId,
       name,
       config: checkoutConfigData,
-      createdBy,
+      createdBy: user,
     },
     {
       conflictFields: ['id'],
