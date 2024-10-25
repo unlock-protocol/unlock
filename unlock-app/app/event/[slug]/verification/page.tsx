@@ -3,6 +3,7 @@ import { EventPageProps } from '../page'
 import { notFound } from 'next/navigation'
 import EventVerification from '~/components/content/event/EventVerification'
 import { fetchEventMetadata } from '~/utils/eventMetadata'
+import { AuthRequired } from 'app/Components/ProtectedContent'
 
 const VerificationPage = async ({ params }: EventPageProps) => {
   const { slug } = params
@@ -20,10 +21,12 @@ const VerificationPage = async ({ params }: EventPageProps) => {
   }
 
   return (
-    <EventVerification
-      slug={eventMetadata.slug!}
-      checkoutConfig={checkoutConfig}
-    />
+    <AuthRequired>
+      <EventVerification
+        slug={eventMetadata.slug!}
+        checkoutConfig={checkoutConfig}
+      />
+    </AuthRequired>
   )
 }
 

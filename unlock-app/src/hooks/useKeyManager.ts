@@ -5,7 +5,7 @@ import {
   EthersError,
   getParsedEthersError,
 } from '@enzoferey/ethers-error-parser'
-import { useAuth } from '~/contexts/AuthenticationContext'
+import { useProvider } from './useProvider'
 interface Options {
   transferObject: TransferObject
   transferSignature: string
@@ -20,7 +20,7 @@ export const useTransferPossible = ({
   network,
   enabled = true,
 }: Options) => {
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
   const config = useConfig()
   const keyManager = new KeyManager(config.networks)
   const {
