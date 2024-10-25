@@ -22,7 +22,7 @@ interface Option {
 }
 
 interface ComboboxProps {
-  initialOptions: Option[]
+  options: Option[]
   moreOptions?: Option[]
   initialSelected?: Option
   onSelect: (selected: Option) => void
@@ -34,7 +34,7 @@ interface ComboboxProps {
 }
 
 export function Combobox({
-  initialOptions,
+  options,
   moreOptions = [],
   initialSelected,
   onSelect,
@@ -56,14 +56,14 @@ export function Combobox({
   // Combine and deduplicate options
   const allOptions = useMemo(() => {
     const uniqueOptions = new Map<string | number, Option>()
-    initialOptions.forEach((option) => uniqueOptions.set(option.value, option))
+    options.forEach((option) => uniqueOptions.set(option.value, option))
     moreOptions.forEach((option) => {
       if (!uniqueOptions.has(option.value)) {
         uniqueOptions.set(option.value, option)
       }
     })
     return Array.from(uniqueOptions.values())
-  }, [initialOptions, moreOptions])
+  }, [options, moreOptions])
 
   // Filter options based on search query
   const filteredOptions = useMemo(
@@ -82,11 +82,9 @@ export function Combobox({
       return filteredOptions
     }
     return filteredOptions.filter((option) =>
-      initialOptions.some(
-        (initialOption) => initialOption.value === option.value
-      )
+      options.some((initialOption) => initialOption.value === option.value)
     )
-  }, [filteredOptions, showMoreOptions, initialOptions])
+  }, [filteredOptions, showMoreOptions, options])
 
   const handleSelect = (value: Option) => {
     setSelected(value)
