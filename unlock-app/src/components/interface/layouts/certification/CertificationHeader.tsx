@@ -1,10 +1,8 @@
 'use client'
 import { Button, HeaderNav } from '@unlock-protocol/ui'
 import { useConnectModal } from '~/hooks/useConnectModal'
-import useEns from '~/hooks/useEns'
-import { addressMinify } from '~/utils/strings'
-import { MdExitToApp as DisconnectIcon } from 'react-icons/md'
-import { useAuth } from '~/contexts/AuthenticationContext'
+import { UserMenu } from '../../connect/UserMenu'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 const MENU = {
   extraClass: {
@@ -19,9 +17,8 @@ const MENU = {
 }
 
 export default function CertificationHeader() {
-  const { account, email } = useAuth()
+  const { account, privyReady } = useAuthenticate()
   const { openConnectModal } = useConnectModal()
-  const userEns = useEns(account || '')
 
   return (
     <HeaderNav
@@ -29,27 +26,10 @@ export default function CertificationHeader() {
       actions={[
         {
           content: account ? (
-            <div className="flex gap-2">
-              <button
-                onClick={(event) => {
-                  event.preventDefault()
-                  openConnectModal()
-                }}
-              >
-                <div className="flex items-center gap-2">
-                  <span className="text-brand-ui-primary text-right">
-                    {userEns === account
-                      ? email
-                        ? email
-                        : addressMinify(userEns)
-                      : userEns}
-                  </span>
-                  <DisconnectIcon className="text-brand-ui-primary" size={20} />
-                </div>
-              </button>
-            </div>
+            <UserMenu />
           ) : (
             <Button
+              disabled={!privyReady}
               onClick={(event) => {
                 event.preventDefault()
                 openConnectModal()

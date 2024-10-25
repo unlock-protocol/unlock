@@ -1,4 +1,3 @@
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService, LockState } from './checkoutMachine'
 import {
   Controller,
@@ -36,6 +35,7 @@ import {
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 import Disconnect from './Disconnect'
 import { shouldSkip } from './utils'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface Props {
   checkoutService: CheckoutService
@@ -69,7 +69,7 @@ export const MetadataInputs = ({
   const [hideRecipientAddress, setHideRecipientAddress] = useState<boolean>(
     hideFirstRecipient || false
   )
-  const { account, isUnlockAccount, email } = useAuth()
+  const { account } = useAuthenticate()
   const config = useConfig()
   const [useEmail, setUseEmail] = useState(false)
   const web3Service = useWeb3Service()
@@ -125,13 +125,9 @@ export const MetadataInputs = ({
         <>
           {hideRecipientAddress ? (
             <div className="space-y-1">
-              <div className="ml-1 text-sm">
-                {isUnlockAccount ? 'Email' : label}:
-              </div>
+              <div className="ml-1 text-sm">{label}</div>
               <div className="flex items-center pl-4 pr-2 py-1.5 justify-between bg-gray-200 rounded-lg">
-                <div className="w-32 text-sm truncate">
-                  {isUnlockAccount ? email : recipient}
-                </div>
+                <div className="w-32 text-sm truncate">{recipient}</div>
                 <Button
                   type="button"
                   onClick={(event) => {
@@ -144,9 +140,7 @@ export const MetadataInputs = ({
                 </Button>
               </div>
               <p className="text-xs text-gray-600">
-                {isUnlockAccount
-                  ? 'The email address that will receive the pass'
-                  : 'The wallet address that will receive the pass'}
+                The wallet address that will receive the pass.
               </p>
             </div>
           ) : (
@@ -230,12 +224,12 @@ export const MetadataInputs = ({
         .map((metadataInputItem) => {
           const { name, label, placeholder, required, value } =
             metadataInputItem ?? {}
-          let { defaultValue, type } = metadataInputItem ?? {}
-          if (email && name === 'email') {
-            // We pre-fill it with the user's email!
-            defaultValue = email
-            type = 'hidden'
-          }
+          const { defaultValue, type } = metadataInputItem ?? {}
+          // if (name === 'email') {
+          // We pre-fill it with the user's email!
+          // defaultValue = email
+          // type = 'hidden'
+          // }
           const inputLabel = label || name
           return (
             <Input
@@ -272,11 +266,12 @@ export function Metadata({ checkoutService }: Props) {
     checkoutService,
     (state) => state.context
   )
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const web3Service = useWeb3Service()
   const locksConfig = paywallConfig.locks[lock!.address]
   const isEmailRequired =
     locksConfig.emailRequired || paywallConfig.emailRequired
+
   const metadataInputs = useMemo(() => {
     let inputs =
       locksConfig.metadataInputs || paywallConfig.metadataInputs || []
