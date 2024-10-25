@@ -60,14 +60,19 @@ const isUserAuthorized = async (
   userAddress: string,
   checkoutConfig: CheckoutConfig
 ): Promise<boolean> => {
+  // first check if user is the creator
+  if (checkoutConfig.createdBy === userAddress) {
+    return true
+  }
+
   const lockInfo = extractLockInfo(checkoutConfig.config)
   for (const { address, network } of lockInfo) {
     if (await isLockManager(address, userAddress, network)) {
       return true
     }
   }
-  // Fallback: check if user is the creator
-  return checkoutConfig.createdBy === userAddress
+
+  return false
 }
 
 /**
