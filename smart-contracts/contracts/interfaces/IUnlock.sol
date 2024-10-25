@@ -76,11 +76,14 @@ interface IUnlock {
 
   /**
    * Create an upgradeable lock using a specific PublicLock version, and execute
-   * transaction on the created lock.
+   * transaction(s) on the created lock.
    * @param data bytes containing the call to initialize the lock template
-   * (refer to createUpgradeableLock for more details)
+   * (refer to createUpgradeableLock for more details).
+   * Importantly, the initial lock manager needs to be set to this contract.
    * @param lockVersion the version of the lock to use
-   * @param transactions an array of transactions to be executed on the newly created lock.
+   * @param transactions an array of transactions to be executed on the newly
+   * created lock. It is recommended to include a transaction to renounce the
+   * lock manager as the last transaction.
    */
   function createUpgradeableLockAtVersion(
     bytes memory data,

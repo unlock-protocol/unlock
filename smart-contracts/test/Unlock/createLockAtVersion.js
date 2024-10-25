@@ -128,18 +128,16 @@ describe('Unlock / createUpgradeableLockAtVersion', () => {
 
       const addLockManager = await publicLock.interface.encodeFunctionData(
         'addLockManager(address)',
-        [lockManager]
+        [await lockManager.getAddress()]
       )
 
       const renounceLockManager = await publicLock.interface.encodeFunctionData(
         'renounceLockManager()'
       )
 
-      const tx = await unlock.createUpgradeableLockAtVersion(calldata, 1, [
-        setLockMetadata,
-        addLockManager,
-        renounceLockManager,
-      ])
+      const tx = await unlock[
+        'createUpgradeableLockAtVersion(bytes,uint16,bytes[])'
+      ](calldata, 1, [setLockMetadata, addLockManager, renounceLockManager])
       const receipt = await tx.wait()
 
       const {
@@ -160,14 +158,17 @@ describe('Unlock / createUpgradeableLockAtVersion', () => {
       // Extra transactions!
       assert.equal(await lock.name(), 'A brand new name')
       expect(
-        await lock.hasRole(keccak256(toUtf8Bytes('LOCK_MANAGER')), lockManager)
+        await lock.hasRole(
+          keccak256(toUtf8Bytes('LOCK_MANAGER')),
+          await lockManager.getAddress()
+        )
       ).to.equal(true)
       expect(
         await lock.hasRole(
           keccak256(toUtf8Bytes('LOCK_MANAGER')),
           await unlock.getAddress()
         )
-      ).to.equal(true)
+      ).to.equal(false)
     })
   })
 })
