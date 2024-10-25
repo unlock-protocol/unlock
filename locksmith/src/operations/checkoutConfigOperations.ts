@@ -4,8 +4,6 @@ import { PaywallConfig } from '@unlock-protocol/core'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 
-const web3Service = new Web3Service(networks)
-
 interface SaveCheckoutConfigArgs {
   id?: string
   name: string
@@ -42,6 +40,7 @@ const isLockManager = async (
   userAddress: string,
   network: number
 ): Promise<boolean> => {
+  const web3Service = new Web3Service(networks)
   try {
     return await web3Service.isLockManager(lockAddress, userAddress, network)
   } catch (error) {
