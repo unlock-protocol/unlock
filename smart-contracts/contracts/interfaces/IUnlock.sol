@@ -67,11 +67,25 @@ interface IUnlock {
    * Create an upgradeable lock using a specific PublicLock version
    * @param data bytes containing the call to initialize the lock template
    * (refer to createUpgradeableLock for more details)
-   * @param _lockVersion the version of the lock to use
+   * @param lockVersion the version of the lock to use
    */
   function createUpgradeableLockAtVersion(
     bytes memory data,
-    uint16 _lockVersion
+    uint16 lockVersion
+  ) external returns (address);
+
+  /**
+   * Create an upgradeable lock using a specific PublicLock version, and execute
+   * transaction on the created lock.
+   * @param data bytes containing the call to initialize the lock template
+   * (refer to createUpgradeableLock for more details)
+   * @param lockVersion the version of the lock to use
+   * @param transactions an array of transactions to be executed on the newly created lock.
+   */
+  function createUpgradeableLockAtVersion(
+    bytes memory data,
+    uint16 lockVersion,
+    bytes[] calldata transactions
   ) external returns (address);
 
   /**
