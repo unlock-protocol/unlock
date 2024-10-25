@@ -12,7 +12,7 @@ import { Button, Modal } from '@unlock-protocol/ui'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 
 export const AccountInfo = () => {
-  const { account, ready } = useAuthenticate()
+  const { account, privyReady } = useAuthenticate()
   const { user } = usePrivy()
   const [showEmailModal, setShowEmailModal] = useState(false)
   const name = useEns(account || '')
@@ -68,12 +68,16 @@ export const AccountInfo = () => {
               <Button
                 size="small"
                 onClick={handleUpdateEmail}
-                disabled={!ready}
+                disabled={!privyReady}
               >
                 Update Email
               </Button>
             ) : (
-              <Button size="small" onClick={handleLinkEmail} disabled={!ready}>
+              <Button
+                size="small"
+                onClick={handleLinkEmail}
+                disabled={!privyReady}
+              >
                 Link Email
               </Button>
             )}
