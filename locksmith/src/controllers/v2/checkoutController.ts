@@ -42,12 +42,12 @@ export const createOrUpdateCheckoutConfig: RequestHandler = async (
     }
 
     return response.status(200).send({
-      id: createdConfig?.id,
-      by: createdConfig?.createdBy,
-      name: createdConfig?.name,
-      config: createdConfig?.config,
-      updatedAt: createdConfig?.updatedAt.toISOString(),
-      createdAt: createdConfig?.createdAt.toISOString(),
+      id: createdConfig.id,
+      by: createdConfig.createdBy,
+      name: createdConfig.name,
+      config: createdConfig.config,
+      updatedAt: createdConfig.updatedAt.toISOString(),
+      createdAt: createdConfig.createdAt.toISOString(),
     })
   } catch (error) {
     console.error('Error creating/updating checkout config:', error)

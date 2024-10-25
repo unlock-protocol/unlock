@@ -84,7 +84,7 @@ export const saveCheckoutConfig = async ({
   name,
   createdBy,
   config,
-}: SaveCheckoutConfigArgs) => {
+}: SaveCheckoutConfigArgs): Promise<CheckoutConfig | null> => {
   const generatedId = id || randomUUID()
 
   const checkoutConfigData = await PaywallConfig.strip().parseAsync(config)
@@ -116,6 +116,12 @@ export const saveCheckoutConfig = async ({
       conflictFields: ['id'],
     }
   )
+
+  // Ensure createdConfig is not null before returning
+  if (!createdConfig) {
+    throw new Error('Failed to create or update checkout config')
+  }
+
   return createdConfig
 }
 
