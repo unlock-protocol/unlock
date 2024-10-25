@@ -3,8 +3,8 @@ import { authenticatedMiddleware } from '../../utils/middlewares/auth'
 import {
   getCheckoutConfig,
   createOrUpdateCheckoutConfig,
-  getCheckoutConfigsByUser,
   deleteCheckoutConfig,
+  getCheckoutConfigsByUser,
 } from '../../controllers/v2/checkoutController'
 const router = express.Router({ mergeParams: true })
 
