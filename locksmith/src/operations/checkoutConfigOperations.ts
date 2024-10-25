@@ -21,10 +21,11 @@ interface SaveCheckoutConfigArgs {
 const extractLockInfo = (
   config: any
 ): { address: string; network: number }[] => {
+  const defaultNetwork = config.network
   return Object.entries(config.locks).map(
     ([address, lockConfig]: [string, any]) => ({
       address,
-      network: lockConfig.network,
+      network: lockConfig.network || defaultNetwork,
     })
   )
 }
