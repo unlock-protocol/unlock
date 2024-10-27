@@ -10,7 +10,6 @@ import { SettingTerms } from './elements/SettingTerms'
 
 import { SettingRoles } from './elements/SettingRoles'
 import { useLockManager } from '~/hooks/useLockManager'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { addressMinify } from '~/utils/strings'
 import { SettingHeader } from './elements/SettingHeader'
 import { useQueries, useQuery } from '@tanstack/react-query'
@@ -18,8 +17,9 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { SettingGeneral } from './elements/SettingGeneral'
 import { SettingMisc } from './elements/SettingMisc'
 import { SettingPayments } from './elements/SettingPayments'
-import { SettingTab } from '~/pages/locks/settings'
 import { SettingEmail } from './elements/SettingEmail'
+import { SettingTab } from '~/components/content/lock/LocksSettingsContent'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface LockSettingsPageProps {
   lockAddress: string
@@ -28,7 +28,7 @@ interface LockSettingsPageProps {
 }
 
 export const NotManagerBanner = () => {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
 
   return (
     <div className="p-2 text-base text-center text-red-700 bg-red-100 border border-red-700 rounded-xl">

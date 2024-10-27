@@ -1,16 +1,19 @@
 import { OAuthConfig } from '../unlockTypes'
 
-export default function getConfigFromSearch(
+export default function getOauthConfigFromQuery(
   search: any
 ): OAuthConfig | undefined {
-  const { client_id, redirect_uri, response_type, state } = search
-  if (!client_id) {
+  const clientId = search.get('client_id')
+  const redirectUri = search.get('redirect_uri')
+  const responseType = search.get('response_type')
+  const state = search.get('state')
+  if (!clientId) {
     // No client id, no OAuth
     return undefined
   }
 
-  const redirectUrl = new URL(redirect_uri)
-  if (redirectUrl.host !== client_id) {
+  const redirectUrl = new URL(redirectUri)
+  if (redirectUrl.host !== clientId) {
     console.error(
       "We require clientId to match the redirectUri's host for privacy reasons"
     )
@@ -18,9 +21,9 @@ export default function getConfigFromSearch(
   }
 
   return {
-    redirectUri: redirect_uri,
-    clientId: client_id,
-    responseType: response_type,
+    redirectUri,
+    clientId,
+    responseType,
     state,
   }
 }

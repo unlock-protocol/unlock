@@ -11,11 +11,9 @@ import {
   ToggleSwitch,
   ImageUpload,
   Select,
-  CurrencyHint,
 } from '@unlock-protocol/ui'
 import { useConfig } from '~/utils/withConfig'
-import { useAuth } from '~/contexts/AuthenticationContext'
-import { networkDescription } from '~/components/interface/locks/Create/elements/CreateLockForm'
+import { NetworkDescription } from '~/components/interface/locks/Create/elements/CreateLockForm'
 import { SelectCurrencyModal } from '~/components/interface/locks/Create/modals/SelectCurrencyModal'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useImageUpload } from '~/hooks/useImageUpload'
@@ -23,10 +21,12 @@ import { NetworkWarning } from '~/components/interface/locks/Create/elements/Net
 import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useQuery } from '@tanstack/react-query'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useAvailableNetworks } from '~/utils/networks'
 import Link from 'next/link'
 import { BalanceWarning } from '~/components/interface/locks/Create/elements/BalanceWarning'
+import { ProtocolFee } from '~/components/interface/locks/Create/elements/ProtocolFee'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewCertificationForm {
@@ -43,7 +43,7 @@ interface FormProps {
 
 export const CertificationForm = ({ onSubmit }: FormProps) => {
   const { networks } = useConfig()
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const networkOptions = useAvailableNetworks()
   const moreNetworkOption = useAvailableNetworks(true)
   const network = networkOptions[0]?.value
@@ -124,14 +124,6 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
   })
 
   const noBalance = balance && parseFloat(balance) === 0 && !isLoadingBalance
-
-  const NetworkDescription = () => {
-    return (
-      <div className="flex flex-col gap-2">
-        <p>{details.network && <>{networkDescription(details.network)}</>}</p>
-      </div>
-    )
-  }
 
   const metadataImage = watch('metadata.image')
 
@@ -292,9 +284,10 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                 moreOptions={moreNetworkOption}
                 label="Network"
                 defaultValue={network}
-                description={<NetworkDescription />}
+                description={<NetworkDescription network={details.network!} />}
               />
               <NetworkWarning network={details.network} />
+
               {noBalance && (
                 <div className="mb-4">
                   <BalanceWarning
@@ -391,9 +384,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                           )}
                         </div>
                       </div>
-                      <CurrencyHint
-                        network={networks[selectedNetwork as number].name}
-                      />
+                      <ProtocolFee network={selectedNetwork!} />
                     </div>
                   </div>
 

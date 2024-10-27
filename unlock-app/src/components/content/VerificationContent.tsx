@@ -1,33 +1,27 @@
-import Head from 'next/head'
-import { useRouter } from 'next/router'
+'use client'
+
+import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useState } from 'react'
 import { getMembershipVerificationConfig } from '~/utils/verification'
-import { pageTitle } from '../../constants'
 import LocksContext from '../../contexts/LocksContext'
-import { AppLayout } from '../interface/layouts/AppLayout'
 import { Scanner } from '../interface/verification/Scanner'
 import VerificationStatus from '../interface/VerificationStatus'
 
 export const VerificationContent: React.FC<unknown> = () => {
-  const { query } = useRouter()
-  const [locks, setLocks] = useState({})
+  const searchParams = useSearchParams()
   const router = useRouter()
+  const [locks, setLocks] = useState({})
 
   const membershipVerificationConfig = getMembershipVerificationConfig({
-    data: query.data?.toString(),
-    sig: query.sig?.toString(),
+    data: searchParams.get('data'),
+    sig: searchParams.get('sig'),
   })
 
   if (!membershipVerificationConfig) {
     return (
-      <AppLayout title="Verification" showLinks={false} authRequired={false}>
-        <Head>
-          <title>{pageTitle('Verification')}</title>
-        </Head>
-        <main>
-          <Scanner />
-        </main>
-      </AppLayout>
+      <main>
+        <Scanner />
+      </main>
     )
   }
 
@@ -39,24 +33,19 @@ export const VerificationContent: React.FC<unknown> = () => {
   }
 
   return (
-    <AppLayout title="Verification" showLinks={false} authRequired={false}>
-      <Head>
-        <title>{pageTitle('Verification')}</title>
-      </Head>
-      <LocksContext.Provider
-        value={{
-          locks,
-          addLock,
+    <LocksContext.Provider
+      value={{
+        locks,
+        addLock,
+      }}
+    >
+      <VerificationStatus
+        config={membershipVerificationConfig}
+        onVerified={() => {
+          router.push('/verification')
         }}
-      >
-        <VerificationStatus
-          config={membershipVerificationConfig}
-          onVerified={() => {
-            router.push('/verification')
-          }}
-        />
-      </LocksContext.Provider>
-    </AppLayout>
+      />
+    </LocksContext.Provider>
   )
 }
 

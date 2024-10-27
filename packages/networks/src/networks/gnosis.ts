@@ -95,6 +95,7 @@ export const gnosis: NetworkConfig = {
   // This is used in llama pricing API so can't rename.
   subgraph: {
     endpoint: 'https://subgraph.unlock-protocol.com/100',
+    graphId: '2Pr7V4721iZj5hRgLmuganYCTRee6fqqfftLCFCd72wG',
     networkName: 'gnosis',
     studioName: 'unlock-protocol-gnosis',
   },
@@ -112,6 +113,12 @@ export const gnosis: NetworkConfig = {
       featured: true,
       name: 'Tether USD on xDai',
       symbol: 'USDT',
+    },
+    {
+      address: '0x8C84142c4a716a16a89d0e61707164d6107A9811',
+      decimals: 18,
+      name: 'UDT from Ethereum',
+      symbol: 'UDT',
     },
   ],
   unlockAddress: '0x1bc53f4303c711cc693F6Ec3477B83703DcB317f',

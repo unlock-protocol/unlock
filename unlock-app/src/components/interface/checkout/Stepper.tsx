@@ -5,10 +5,9 @@ import { ReactNode } from 'react'
 import { IoIosRocket as RocketIcon } from 'react-icons/io'
 import { CheckoutHookType, CheckoutService } from './main/checkoutMachine'
 import { useStepperItems } from './main/useStepperItems'
-import { useSIWE } from '~/hooks/useSIWE'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useSelector } from '@xstate/react'
-import { useRouter } from 'next/router'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface IconProps {
   active?: boolean
@@ -117,10 +116,11 @@ export const Stepper = ({
   const base = items.slice(0, index).filter((item) => !item?.skip)
   const rest = items.slice(index + 1).filter((item) => !item?.skip)
 
-  const { signOut } = useSIWE()
-  const { deAuthenticate } = useAuth()
+  const { signOut } = useAuthenticate()
 
   const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
 
   return (
     <div className="flex items-center justify-between w-full gap-2 p-2 px-6 border-b">
@@ -131,22 +131,21 @@ export const Stepper = ({
               key={idx}
               onClick={async () => {
                 if (item.to === 'CONNECT') {
+                  // Can't disconnect the delegated provider!
                   if (useDelegatedProvider) return
-                  signOut()
-                  deAuthenticate()
+                  await signOut()
                 }
 
-                // Remove the lock from the query string
-                const { lock, ...otherQueryParams } = router.query
-                // Wait until replaced then change state
-                await router.replace(
-                  {
-                    pathname: router.pathname,
-                    query: otherQueryParams,
-                  },
-                  undefined,
-                  { shallow: true }
-                )
+                // Convert search params to an object
+                const queryParams = Object.fromEntries(searchParams.entries())
+                const { lock, ...otherQueryParams } = queryParams
+
+                // Construct new search params without 'lock'
+                const newSearchParams = new URLSearchParams(otherQueryParams)
+                const newUrl = `${pathname}?${newSearchParams.toString()}`
+
+                // Replace the current URL
+                router.replace(newUrl)
 
                 service.send({ type: item.to as any })
               }}

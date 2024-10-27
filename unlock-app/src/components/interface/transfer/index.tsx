@@ -1,3 +1,5 @@
+'use client'
+
 import { Input, Button, Placeholder } from '@unlock-protocol/ui'
 import { KeyManager, TransferObject } from '@unlock-protocol/unlock-js'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -8,11 +10,11 @@ import { useConfig } from '~/utils/withConfig'
 import ReCaptcha from 'react-google-recaptcha'
 import { toast } from 'react-hot-toast'
 import { AxiosError } from 'axios'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useLockData } from '~/hooks/useLockData'
 import { useTransferFee } from '~/hooks/useTransferFee'
 import { useQuery } from '@tanstack/react-query'
+import { useProvider } from '~/hooks/useProvider'
 
 interface SendTransferFormProps {
   createTransferCode: ReturnType<typeof useTransferCode>['createTransferCode']
@@ -28,7 +30,6 @@ const SendTransferForm = ({
   onTransferCodeReceived,
 }: SendTransferFormProps) => {
   const config = useConfig()
-
   const recaptchaRef = useRef<any>()
 
   const onTransfer: MouseEventHandler = async (event) => {
@@ -47,6 +48,9 @@ const SendTransferForm = ({
                 'Too many requests. Please wait a few minutes before trying again.'
               )
             }
+            return toast.error(
+              'There was en error while trying to send an authorization code. Please try again!'
+            )
           }
         },
         onSuccess(transferObject) {
@@ -90,14 +94,19 @@ interface Props {
     transferCode: string
   }
   network: number
+  onCancel: () => void
 }
 
-export const ConfirmTransferForm = ({ transferObject, network }: Props) => {
+export const ConfirmTransferForm = ({
+  transferObject,
+  network,
+  onCancel,
+}: Props) => {
   const config = useConfig()
   const router = useRouter()
   const web3Service = useWeb3Service()
   const manager = new KeyManager(config.networks)
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
   const {
     handleSubmit,
     register,
@@ -209,7 +218,10 @@ export const ConfirmTransferForm = ({ transferObject, network }: Props) => {
           label="Transfer Code"
           disabled={isSubmitting}
         />
-        <div className="flex items-center justify-end">
+        <div className="flex items-center justify-end gap-2">
+          <Button variant="outlined-primary" onClick={onCancel}>
+            Cancel
+          </Button>
           <Button loading={isSubmitting} disabled={!isValid} type="submit">
             Confirm Transfer
           </Button>
@@ -221,7 +233,7 @@ export const ConfirmTransferForm = ({ transferObject, network }: Props) => {
 
 export const useQueryTransfer = () => {
   const searchParams = useSearchParams()
-  const result = useMemo(() => {
+  return useMemo(() => {
     const lockAddress = searchParams.get('lockAddress')
     const keyId = searchParams.get('keyId')
     const network = searchParams.get('network')
@@ -234,7 +246,6 @@ export const useQueryTransfer = () => {
       isReady: !!lockAddress && !!keyId && !!network,
     }
   }, [searchParams])
-  return result
 }
 
 export const Transfer = () => {
@@ -277,7 +288,7 @@ export const Transfer = () => {
       </header>
       <main className="grid gap-6">
         {!isReady && <div> Invalid transfer URL </div>}
-        {isLoading && (
+        {isLoadingTransferFeeBasisPoints && (
           <Placeholder.Root className="p-6 bg-white border rounded-lg">
             <Placeholder.Line size="lg" />
             <Placeholder.Line size="lg" />
@@ -285,21 +296,24 @@ export const Transfer = () => {
             <Placeholder.Line size="lg" />
           </Placeholder.Root>
         )}
-        {!isLoading && isReady && (
+        {isReady && !isLoadingTransferFeeBasisPoints && (
           <>
             {transferEnabled && (
               <>
-                <SendTransferForm
-                  isLoading={isLoading}
-                  createTransferCode={createTransferCode}
-                  onTransferCodeReceived={(obj) => {
-                    setTransferObject(obj)
-                  }}
-                />
-                {transferObject && !isLoading && (
+                {!transferObject && (
+                  <SendTransferForm
+                    isLoading={isLoading}
+                    createTransferCode={createTransferCode}
+                    onTransferCodeReceived={(obj) => {
+                      setTransferObject(obj)
+                    }}
+                  />
+                )}
+                {transferObject && (
                   <ConfirmTransferForm
                     network={props.network}
                     transferObject={transferObject}
+                    onCancel={() => setTransferObject(undefined)}
                   />
                 )}
               </>

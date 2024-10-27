@@ -1,15 +1,13 @@
-import React from 'react'
+'use client'
+
 import { useState } from 'react'
-import Head from 'next/head'
-import { pageTitle } from '../../constants'
 import AccountInfo from '../interface/user-account/AccountInfo'
-import EjectAccount from '../interface/user-account/EjectAccount'
+// import EjectAccount from '../interface/user-account/EjectAccount'
 import { loadStripe } from '@stripe/stripe-js'
 import { useConfig } from '~/utils/withConfig'
 import { Card } from '../interface/checkout/Card'
 import { SetupForm } from '../interface/checkout/main/CardPayment'
 import { Button } from '@unlock-protocol/ui'
-import { AppLayout } from '../interface/layouts/AppLayout'
 import {
   usePaymentMethodList,
   useRemovePaymentMethods,
@@ -22,7 +20,7 @@ export const PaymentSettings = () => {
   const { mutateAsync: removePaymentMethods } = useRemovePaymentMethods()
   const {
     data: methods,
-    isInitialLoading: isMethodLoading,
+    isLoading: isMethodLoading,
     refetch: refetchPaymentMethodList,
   } = usePaymentMethodList()
 
@@ -86,14 +84,11 @@ export const PaymentSettings = () => {
 
 export const SettingsContent = () => {
   return (
-    <AppLayout title="Account Settings">
-      <Head>
-        <title>{pageTitle('Account Settings')}</title>
-      </Head>
+    <>
       <AccountInfo />
       <PaymentSettings />
-      <EjectAccount />
-    </AppLayout>
+      {/* <EjectAccount /> */}
+    </>
   )
 }
 

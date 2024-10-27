@@ -1,4 +1,3 @@
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './../checkoutMachine'
 import { useConfig } from '~/utils/withConfig'
 import { Button } from '@unlock-protocol/ui'
@@ -20,6 +19,8 @@ import Disconnect from '../Disconnect'
 import { ethers } from 'ethers'
 import { toBigInt } from '~/hooks/useCrossChainRoutes'
 import { approveTransfer, getAllowance } from '@unlock-protocol/unlock-js'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { useProvider } from '~/hooks/useProvider'
 
 interface Props {
   checkoutService: CheckoutService
@@ -34,7 +35,8 @@ export function ConfirmCrossChainPurchase({
   const [buttonLabel, setButtonLabel] = useState('Pay using crypto')
   const { lock, recipients, payment, paywallConfig, metadata, data } =
     useSelector(checkoutService, (state) => state.context)
-  const { getWalletService, account } = useAuth()
+  const { account } = useAuthenticate()
+  const { getWalletService } = useProvider()
   const config = useConfig()
   const recaptchaRef = useRef<any>()
   const [isConfirming, setIsConfirming] = useState(false)
@@ -167,7 +169,7 @@ export function ConfirmCrossChainPurchase({
             <PricingData
               network={lockNetwork}
               lock={lock!}
-              pricingData={pricingData}
+              prices={pricingData.prices}
               payment={payment}
             />
           )}

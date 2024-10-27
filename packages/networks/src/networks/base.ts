@@ -101,6 +101,7 @@ export const base: NetworkConfig = {
   startBlock: 1750000,
   subgraph: {
     endpoint: 'https://subgraph.unlock-protocol.com/8453',
+    graphId: 'ECQhJQV8KWMfAAgWf8WV5duy1si9TnZpL4f194oGLrWW',
     networkName: 'base',
     studioName: 'unlock-protocol-base',
   },
@@ -136,6 +137,18 @@ export const base: NetworkConfig = {
       decimals: 18,
       name: 'Degen',
       symbol: 'DEGEN',
+    },
+    {
+      address: '0xaC27fa800955849d6D17cC8952Ba9dD6EAA66187',
+      decimals: 18,
+      name: 'UnlockProtocolToken',
+      symbol: 'UP',
+    },
+    {
+      address: '0xD7eA82D19f1f59FF1aE95F1945Ee6E6d86A25B96',
+      decimals: 18,
+      name: 'Unlock Discount Token',
+      symbol: 'UDT',
     },
   ],
   uniswapV3: {

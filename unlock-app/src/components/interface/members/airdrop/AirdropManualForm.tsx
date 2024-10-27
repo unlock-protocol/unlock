@@ -11,7 +11,6 @@ import { AirdropMember } from './AirdropElements'
 import { useList } from 'react-use'
 import { AirdropListItem } from './AirdropElements'
 import { Lock } from '~/unlockTypes'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { formatDate } from '~/utils/lock'
 import { ChangeEvent, useCallback, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -19,6 +18,7 @@ import { KeyManager } from '@unlock-protocol/unlock-js'
 import { useConfig } from '~/utils/withConfig'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { onResolveName } from '~/utils/resolvers'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 export interface Props {
   add(member: AirdropMember): void
@@ -157,8 +157,16 @@ export function AirdropInternalForm({
                   <span className="text-base">No wallet address?</span>
                   <Toggle
                     size="small"
+                    disabled={!networkConfig.keyManagerAddress}
                     value={useEmail}
                     onChange={(value: boolean) => {
+                      if (value && !networkConfig.keyManagerAddress) {
+                        ToastHelper.error(
+                          'Email airdrops are disabled for this network.'
+                        )
+                        return
+                      }
+
                       resetField('email')
                       resetField('wallet')
                       setUseEmail(value)
@@ -171,11 +179,11 @@ export function AirdropInternalForm({
                   placeholder={placeholder}
                   name={label}
                   type="email"
+                  ref={ref}
+                  onBlur={onBlur}
                   onChange={(event) => {
                     onChange(onWalletChange(event))
                   }}
-                  ref={ref}
-                  onBlur={onBlur}
                 />
               ) : (
                 <Controller
@@ -304,7 +312,7 @@ export function AirdropManualForm({
   emailRequired = false,
 }: AirdropManualFormProps) {
   const [list, { push, removeAt, clear }] = useList<AirdropMember>([])
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const expiration =
     lock.expirationDuration > 0
       ? new Date(formatDate(lock.expirationDuration || 0))

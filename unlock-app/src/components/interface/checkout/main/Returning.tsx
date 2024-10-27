@@ -1,22 +1,22 @@
 import { Button, Icon } from '@unlock-protocol/ui'
-import Lottie from 'lottie-react'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { CheckoutService } from './checkoutMachine'
 import unlockedAnimation from '~/animations/unlocked.json'
 import { useConfig } from '~/utils/withConfig'
 import { Stepper } from '../Stepper'
 import { useSelector } from '@xstate/react'
-import { Fragment, useState } from 'react'
-import { useAuth } from '~/contexts/AuthenticationContext'
+import { Fragment, useState, lazy, Suspense } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { AddToPhoneWallet } from '../../keychain/AddToPhoneWallet'
-import { isAndroid, isIOS } from 'react-device-detect'
 import { ReturningButton } from '../ReturningButton'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
-import { Platform } from '~/services/passService'
 import { shouldSkip } from './utils'
+import { AddToWallet } from '../../keychain/AddToWallet'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { useProvider } from '~/hooks/useProvider'
+
+const Lottie = lazy(() => import('lottie-react'))
 
 interface Props {
   checkoutService: CheckoutService
@@ -26,12 +26,13 @@ interface Props {
 
 export function Returning({ checkoutService, onClose, communication }: Props) {
   const config = useConfig()
-  const {
-    paywallConfig,
-    lock,
-    messageToSign: signedMessage,
-  } = useSelector(checkoutService, (state) => state.context)
-  const { account, getWalletService } = useAuth()
+  const { paywallConfig, lock, messageToSign } = useSelector(
+    checkoutService,
+    (state) => state.context
+  )
+  const { account } = useAuthenticate()
+  const { getWalletService } = useProvider()
+  const [signedMessage, setSignedMessage] = useState(messageToSign)
   const [hasMessageToSign, setHasMessageToSign] = useState(
     !signedMessage && paywallConfig.messageToSign
   )
@@ -47,6 +48,7 @@ export function Returning({ checkoutService, onClose, communication }: Props) {
         'personal_sign'
       )
       setIsSigningMessage(false)
+      setSignedMessage({ address: account!, signature })
       checkoutService.send({
         type: 'SIGN_MESSAGE',
         signature,
@@ -77,60 +79,34 @@ export function Returning({ checkoutService, onClose, communication }: Props) {
     <Fragment>
       <Stepper service={checkoutService} />
       <main className="h-full px-6 py-2 overflow-auto">
-        <div className="flex flex-col items-center justify-center h-full space-y-2">
-          <Lottie
-            className={'w-28 sm:w-36 h-28 sm:h-36'}
-            animationData={unlockedAnimation}
-          />
-          <p className="text-lg font-bold text-brand-ui-primary">
-            Voila! This is unlocked!
-          </p>
-          <a
-            href={config.networks[lock!.network].explorer.urls.address(
-              lock!.address
-            )}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
-          >
-            See in the block explorer
-            <Icon key="external-link" icon={ExternalLinkIcon} size="small" />
-          </a>
-          {tokenId && (
-            <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-4">
-              {!isIOS && tokenId && (
-                <li>
-                  <AddToPhoneWallet
-                    platform={Platform.GOOGLE}
-                    className="w-full px-2 py-2 text-xs flex items-center justify-center gap-2 rounded-md bg-black text-white"
-                    size="small"
-                    variant="secondary"
-                    as="button"
-                    network={lock!.network}
-                    lockAddress={lock!.address}
-                    tokenId={tokenId}
-                    handlePassUrl={(url: string) => {
-                      window.location.assign(url)
-                    }}
-                  />
-                </li>
+        <div className="flex flex-col items-center justify-center h-full gap-2">
+          <div className="flex flex-col items-center justify-center h-full gap-1">
+            <Suspense fallback={<div className="w-28 sm:w-36 h-28 sm:h-36" />}>
+              <Lottie
+                className={'w-28 sm:w-36 h-28 sm:h-36'}
+                animationData={unlockedAnimation}
+              />
+            </Suspense>
+            <p className="text-lg font-bold text-brand-ui-primary">
+              Voila! This is unlocked!
+            </p>
+            <a
+              href={config.networks[lock!.network].explorer.urls.address(
+                lock!.address
               )}
-              {!isAndroid && tokenId && (
-                <li>
-                  <AddToPhoneWallet
-                    platform={Platform.APPLE}
-                    className="w-full px-2 py-2 text-xs flex items-center justify-center gap-2 rounded-md bg-black text-white"
-                    size="small"
-                    variant="secondary"
-                    as="button"
-                    network={lock!.network}
-                    lockAddress={lock!.address}
-                    tokenId={tokenId}
-                  />
-                </li>
-              )}
-            </ul>
-          )}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
+            >
+              See in the block explorer
+              <Icon key="external-link" icon={ExternalLinkIcon} size="small" />
+            </a>
+          </div>
+          <AddToWallet
+            lockAddress={lock!.address}
+            network={lock!.network}
+            tokenId={tokenId}
+          />{' '}
         </div>
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
@@ -153,7 +129,7 @@ export function Returning({ checkoutService, onClose, communication }: Props) {
               }`}
             >
               <ReturningButton
-                onClick={() => onClose()}
+                onClick={() => onClose(signedMessage)}
                 returnLabel="Return"
                 checkoutService={checkoutService}
               />

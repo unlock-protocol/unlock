@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useCallback, useEffect, useMemo } from 'react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { checkoutMachine } from './checkoutMachine'
@@ -13,16 +15,16 @@ import { Returning } from './Returning'
 import { Payment } from './Payment'
 import { Password } from './Password'
 import { Promo } from './Promo'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { isEqual } from 'lodash'
 import { CheckoutHead, TopNavigation } from '../Shell'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { Guild } from './Guild'
 import { Gitcoin } from './Gitcoin'
 import { isInIframe } from '~/utils/iframe'
-import { useRouter } from 'next/router'
+import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { Select } from './Select'
 import { Connected } from '../Connected'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface Props {
   paywallConfig: PaywallConfigType
@@ -43,7 +45,7 @@ export function Checkout({
       paywallConfig,
     },
   })
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
 
   const { mint, messageToSign } = state.context
   const matched = state.value.toString()
@@ -53,6 +55,8 @@ export function Checkout({
   )
 
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const pathname = usePathname()
 
   useEffect(() => {
     console.debug('Unlock paywall config', paywallConfig)
@@ -74,6 +78,9 @@ export function Checkout({
     }
   }, [account, communication])
 
+  const messageToSignSignature = messageToSign?.signature
+  const messageToSignSigner = messageToSign?.address
+
   const onClose = useCallback(
     (params: Record<string, string> = {}) => {
       // Reset the Paywall State!
@@ -86,14 +93,17 @@ export function Checkout({
           redirect.searchParams.append('error', 'access-denied')
         }
 
-        if (paywallConfig.messageToSign && !messageToSign) {
-          redirect.searchParams.append('error', 'user did not sign message')
+        if (!params.signature) {
+          if (paywallConfig.messageToSign && !messageToSignSignature) {
+            redirect.searchParams.append('error', 'user did not sign message')
+          }
+
+          if (messageToSignSignature) {
+            redirect.searchParams.append('signature', messageToSignSignature)
+            redirect.searchParams.append('address', messageToSignSigner)
+          }
         }
 
-        if (messageToSign) {
-          redirect.searchParams.append('signature', messageToSign.signature)
-          redirect.searchParams.append('address', messageToSign.address)
-        }
         for (const [key, value] of Object.entries(params)) {
           redirect.searchParams.append(key, value)
         }
@@ -105,13 +115,14 @@ export function Checkout({
       }
     },
     [
+      checkoutService,
       handleClose,
       redirectURI,
       communication,
       mint,
-      messageToSign,
       paywallConfig.messageToSign,
-      checkoutService,
+      messageToSignSignature,
+      messageToSignSigner,
     ]
   )
 
@@ -131,19 +142,19 @@ export function Checkout({
   }, [state, checkoutService])
 
   useEffect(() => {
-    if (matched !== 'SELECT' && matched != 'CONNECT' && router.query.lock) {
+    if (
+      matched !== 'SELECT' &&
+      matched != 'CONNECT' &&
+      searchParams.get('lock')
+    ) {
       // Remove the lock from the query string
-      const { lock, ...otherQueryParams } = router.query
-      router.replace(
-        {
-          pathname: router.pathname,
-          query: otherQueryParams,
-        },
-        undefined,
-        { shallow: true }
-      )
+      const newSearchParams = new URLSearchParams(searchParams.toString())
+      newSearchParams.delete('lock')
+      router.replace(`${pathname}?${newSearchParams.toString()}`, {
+        scroll: false,
+      })
     }
-  }, [router])
+  }, [router, searchParams, matched, pathname])
 
   const Content = useCallback(() => {
     switch (matched) {

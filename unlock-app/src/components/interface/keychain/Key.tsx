@@ -28,7 +28,6 @@ import { networks } from '@unlock-protocol/networks'
 import QRModal from './QRModal'
 import useMetadata from '../../../hooks/useMetadata'
 import WedlockServiceContext from '../../../contexts/WedlocksContext'
-import { useAuth } from '../../../contexts/AuthenticationContext'
 import { useConfig } from '../../../utils/withConfig'
 import { OpenSeaIcon } from '../../icons'
 import { CancelAndRefundModal } from './CancelAndRefundModal'
@@ -55,6 +54,8 @@ import { Platform } from '~/services/passService'
 import { TransferModal } from './TransferModal'
 import { isKeyTransferable } from '~/utils/key'
 import { useFetchTransferFee } from '~/hooks/useTransferFee'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { useProvider } from '~/hooks/useProvider'
 
 export const MenuButton = tw.button(
   'group flex gap-2 w-full font-semibold items-center rounded-md px-2 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed',
@@ -76,7 +77,8 @@ export interface Props {
 function Key({ ownedKey, owner, network }: Props) {
   const { lock, expiration, tokenId, isExpired, isExtendable, isRenewable } =
     ownedKey
-  const { getWalletService, isUnlockAccount, watchAsset, account } = useAuth()
+  const { account } = useAuthenticate()
+  const { getWalletService, watchAsset } = useProvider()
   const wedlockService = useContext(WedlockServiceContext)
   const web3Service = useWeb3Service()
   const config = useConfig()
@@ -186,9 +188,7 @@ function Key({ ownedKey, owner, network }: Props) {
 
   const { opensea } = networks[network] ?? {}
 
-  const isAvailableOnOpenSea =
-    // eslint-disable-next-line no-constant-binary-expression
-    opensea?.tokenUrl(lock.address, tokenId) !== null ?? false
+  const isAvailableOnOpenSea = !!opensea?.tokenUrl(lock.address, tokenId)
 
   const baseSymbol = config.networks[network].nativeCurrency.symbol!
   const symbol =
@@ -358,7 +358,7 @@ function Key({ ownedKey, owner, network }: Props) {
                       </MenuButton>
                     )}
                   </Menu.Item>
-                  {owner == account && !isUnlockAccount && (
+                  {owner == account && (
                     <Menu.Item>
                       {({ active, disabled }) => (
                         <MenuButton
@@ -371,39 +371,6 @@ function Key({ ownedKey, owner, network }: Props) {
                         </MenuButton>
                       )}
                     </Menu.Item>
-                  )}
-                  {owner == account && tokenId && (
-                    <>
-                      <Menu.Item>
-                        {({ active, disabled }) => (
-                          <AddToPhoneWallet
-                            platform={Platform.GOOGLE}
-                            disabled={disabled}
-                            active={active}
-                            as={MenuButton}
-                            network={network}
-                            lockAddress={lock.address}
-                            tokenId={tokenId}
-                            handlePassUrl={(url: string) => {
-                              window.location.assign(url)
-                            }}
-                          />
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active, disabled }) => (
-                          <AddToPhoneWallet
-                            platform={Platform.APPLE}
-                            disabled={disabled}
-                            active={active}
-                            as={MenuButton}
-                            network={network}
-                            lockAddress={lock.address}
-                            tokenId={tokenId}
-                          />
-                        )}
-                      </Menu.Item>
-                    </>
                   )}
                   <Menu.Item>
                     {({ active, disabled }) => (
@@ -475,7 +442,7 @@ function Key({ ownedKey, owner, network }: Props) {
                     )}
                   </Menu.Item>
                 </div>
-                {owner == account && !isUnlockAccount && (
+                {owner == account && (
                   <div className="p-1">
                     <Menu.Item disabled={!isRefundable}>
                       {({ active, disabled }) => (
@@ -490,6 +457,35 @@ function Key({ ownedKey, owner, network }: Props) {
                           <CancelIcon />
                           Cancel and refund
                         </MenuButton>
+                      )}
+                    </Menu.Item>
+                  </div>
+                )}
+
+                {/* Add to wallet buttons */}
+                {owner == account && tokenId && (
+                  <div className="p-1">
+                    <Menu.Item>
+                      {() => (
+                        <div className="flex flex-row gap-1">
+                          <AddToPhoneWallet
+                            platform={Platform.GOOGLE}
+                            as={MenuButton}
+                            network={network}
+                            lockAddress={lock.address}
+                            tokenId={tokenId}
+                            handlePassUrl={(url: string) => {
+                              window.location.assign(url)
+                            }}
+                          />
+                          <AddToPhoneWallet
+                            platform={Platform.APPLE}
+                            as={MenuButton}
+                            network={network}
+                            lockAddress={lock.address}
+                            tokenId={tokenId}
+                          />
+                        </div>
                       )}
                     </Menu.Item>
                   </div>

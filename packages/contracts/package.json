@@ -17,6 +17,7 @@
     "copyutils": "cp dist/src/utils/* dist",
     "copyindex": "cp dist/src/index.js dist && cp -r dist/src/abis dist",
     "docs": "sh ./bin/build_docs.sh",
+    "docs:docgen": "yarn hardhat docgen",
     "docs:copy": "copyfiles --verbose docs/**/*.json docs/**/*.md  dist",
     "prepublish": "yarn clean && yarn build && yarn build:docs",
     "publish:npm": "yarn prepublish && npm publish"
@@ -27,15 +28,15 @@
     "directory": "packages/contracts"
   },
   "devDependencies": {
-    "@primitivefi/hardhat-dodoc": "0.2.3",
     "@unlock-protocol/networks": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "@unlock-protocol/types": "workspace:^",
     "copyfiles": "2.4.1",
-    "eslint": "9.9.0",
+    "eslint": "9.11.1",
     "fs-extra": "11.2.0",
-    "hardhat": "2.22.9",
-    "typescript": "5.5.4"
+    "hardhat": "2.22.13",
+    "solidity-docgen": "0.6.0-beta.36",
+    "typescript": "5.6.2"
   },
   "files": [
     "dist"

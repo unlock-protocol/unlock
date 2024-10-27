@@ -32,9 +32,9 @@ describe('Unlock / upgrades', () => {
   after(async () => await cleanupContractVersions(__dirname))
 
   for (let i = 0; i < unlockVersions.length; i++) {
-    const versionNumber = unlockVersions[i]
+    const unlockVersion = unlockVersions[i]
 
-    describe(`Testing version ${versionNumber}`, () => {
+    describe(`Testing Unlock upgrade v${unlockVersion} > v${LATEST_UNLOCK_VERSION}`, () => {
       let unlock
       let Unlock
       let UnlockLatest
@@ -52,16 +52,17 @@ describe('Unlock / upgrades', () => {
         // make sure mocha doesnt time out
         this.timeout(200000)
 
-        Unlock = await getContractFactoryAtVersion('Unlock', versionNumber)
-        PublicLock = await getContractFactoryAtVersion(
-          'PublicLock',
-          getMatchingLockVersion(versionNumber)
-        )
-
+        // unlock versions
+        Unlock = await getContractFactoryAtVersion('Unlock', unlockVersion)
         UnlockLatest = await ethers.getContractFactory(
           'contracts/Unlock.sol:Unlock'
         )
 
+        // template versions
+        PublicLock = await getContractFactoryAtVersion(
+          'PublicLock',
+          getMatchingLockVersion(unlockVersion)
+        )
         PublicLockLatest = await ethers.getContractFactory(
           'contracts/PublicLock.sol:PublicLock'
         )
@@ -76,26 +77,17 @@ describe('Unlock / upgrades', () => {
 
         // complete PublicLock configuration
         publicLock = await PublicLock.deploy()
-
         const publicLockVersion = await publicLock.publicLockVersion()
-        if (versionNumber < 7) {
-          await unlock.configUnlock(await publicLock.getAddress(), '', '')
-          // Version 7 moved setLockTemplate to its own function
-        } else {
-          if (publicLockVersion >= 11) {
-            await unlock.addLockTemplate(
-              await publicLock.getAddress(),
-              publicLockVersion
-            )
-          }
-          await unlock.setLockTemplate(await publicLock.getAddress())
-        }
+        await unlock.addLockTemplate(
+          await publicLock.getAddress(),
+          publicLockVersion
+        )
+        await unlock.setLockTemplate(await publicLock.getAddress())
       })
 
       it('Unlock version is set', async () => {
-        // Version numbers were introduced to Unlock with v2
         const version = await unlock.unlockVersion()
-        assert.equal(version, versionNumber)
+        assert.equal(version, unlockVersion)
       })
 
       it('this version and latest version have different Unlock bytecode', async () => {
@@ -105,10 +97,6 @@ describe('Unlock / upgrades', () => {
       it('Unlock has an owner', async () => {
         const owner = await unlock.owner()
         assert.equal(owner, await unlockOwner.getAddress())
-      })
-
-      it('this PublicLock version and latest PublicLock version have different bytecode', async () => {
-        assert.notEqual(PublicLockLatest.bytecode, PublicLock.bytecode)
       })
 
       describe('Create a lock for testing', async () => {
@@ -121,52 +109,18 @@ describe('Unlock / upgrades', () => {
         beforeEach(async () => {
           // Create Lock
           let lockTx
-          if (versionNumber >= 11) {
-            const args = [
-              60 * 60 * 24, // expirationDuration 1 day
-              ADDRESS_ZERO, // token address
-              keyPrice,
-              5, // maxNumberOfKeys
-              `UpgradeTestingLock ${versionNumber}`,
-            ]
-            const calldata = await createLockCalldata({ args })
-            lockTx = await unlock
-              .connect(lockOwner)
-              .createUpgradeableLock(calldata)
-          } else if (versionNumber >= 5) {
-            // Version 5 introduced `create2`, requiring a salt
-            lockTx = await unlock.connect(lockOwner).createLock(
-              60 * 60 * 24, // expirationDuration 1 day
-              ADDRESS_ZERO, // token address
-              keyPrice,
-              5, // maxNumberOfKeys
-              `UpgradeTestingLock ${versionNumber}`,
-              ethers.hexlify(ethers.randomBytes(12))
-            )
-          } else if (versionNumber >= 3) {
-            // Version 3 added a lock name
-            lockTx = await unlock.connect(lockOwner).createLock(
-              60 * 60 * 24, // expirationDuration 1 day
-              ADDRESS_ZERO, // token address
-              keyPrice,
-              5, // maxNumberOfKeys
-              `UpgradeTestingLock ${versionNumber}`
-            )
-          } else if (versionNumber >= 1) {
-            // Version 1 added ERC-20 support, requiring a tokenAddress
-            lockTx = await unlock.connect(lockOwner).createLock(
-              60 * 60 * 24, // expirationDuration 1 day
-              ADDRESS_ZERO, // token address
-              keyPrice,
-              5 // maxNumberOfKeys
-            )
-          } else {
-            lockTx = await unlock.connect(lockOwner).createLock(
-              60 * 60 * 24, // expirationDuration 1 day
-              keyPrice,
-              5 // maxNumberOfKeys
-            )
-          }
+
+          const args = [
+            60 * 60 * 24, // expirationDuration 1 day
+            ADDRESS_ZERO, // token address
+            keyPrice,
+            5, // maxNumberOfKeys
+            `UpgradeTestingLock ${unlockVersion}`,
+          ]
+          const calldata = await createLockCalldata({ args })
+          lockTx = await unlock
+            .connect(lockOwner)
+            .createUpgradeableLock(calldata)
 
           const receipt = await lockTx.wait()
           const evt = await getEvent(receipt, 'NewLock')
@@ -177,21 +131,13 @@ describe('Unlock / upgrades', () => {
           lockMaxNumberOfKeys = await lock.maxNumberOfKeys()
         })
 
-        it('PublicLock version is set', async () => {
-          if (versionNumber >= 1) {
-            // Version numbers were introduced to PublicLock with v1
-            const templateVersion = await lock.publicLockVersion()
-            const version =
-              typeof templateVersion !== 'number'
-                ? templateVersion.toString()
-                : templateVersion
-
-            assert.equal(
-              version,
-              // see - decouple contracts versions after v10
-              versionNumber === 10 ? 9 : versionNumber
-            )
-          }
+        it('lock tempalte version is correct', async () => {
+          const template = await PublicLock.attach(
+            await unlock.publicLockAddress()
+          )
+          const lockVersion = await lock.publicLockVersion()
+          const templateVersion = await template.publicLockVersion()
+          assert.equal(lockVersion, templateVersion)
         })
 
         describe('Purchase a key', () => {
@@ -204,35 +150,16 @@ describe('Unlock / upgrades', () => {
           })
 
           it('Key has an ID', async () => {
-            let id
-            if (versionNumber >= 1) {
-              // Version numbers were introduced to PublicLock with v1
-              if ((await lock.publicLockVersion()) >= 10) {
-                id = await lock.tokenOfOwnerByIndex(
-                  await keyOwner.getAddress(),
-                  0
-                )
-              } else {
-                id = await lock.getTokenIdFor(await keyOwner.getAddress())
-              }
-              assert.equal(id, 1)
-            }
+            const id = await lock.tokenOfOwnerByIndex(
+              await keyOwner.getAddress(),
+              0
+            )
+            assert.equal(id, 1)
           })
 
           it('Key is owned', async () => {
-            if (versionNumber >= 9) {
-              // isKeyOwner was remove in unlock v10
-              const isOwned = await lock.balanceOf(await keyOwner.getAddress())
-              assert.equal(isOwned > 0, true)
-            } else if (versionNumber >= 1) {
-              // isKeyOwner was introduced in v1
-              const id = await lock.getTokenIdFor(await keyOwner.getAddress())
-              const isOwned = await lock.isKeyOwner(
-                id,
-                await keyOwner.getAddress()
-              )
-              assert.equal(isOwned, true)
-            }
+            const isOwned = await lock.balanceOf(await keyOwner.getAddress())
+            assert.equal(isOwned > 0, true)
           })
 
           describe('Upgrade Unlock and PublicLock to latest version', () => {
@@ -263,7 +190,7 @@ describe('Unlock / upgrades', () => {
 
             it('this version and latest version have different Unlock version numbers', async () => {
               const version = await unlock.unlockVersion()
-              assert.notEqual(version, versionNumber)
+              assert.notEqual(version, unlockVersion)
             })
 
             it('latest version number is correct', async () => {
@@ -272,53 +199,27 @@ describe('Unlock / upgrades', () => {
             })
 
             it('Key id still set', async () => {
-              let id
-              if ((await lock.publicLockVersion()) >= 10) {
-                id = await lock.tokenOfOwnerByIndex(
-                  await keyOwner.getAddress(),
-                  0
-                )
-              } else {
-                id = await lock.getTokenIdFor(await keyOwner.getAddress())
-              }
+              const id = await lock.tokenOfOwnerByIndex(
+                await keyOwner.getAddress(),
+                0
+              )
               assert.notEqual(id, 0)
             })
 
             it('Key is still owned', async () => {
-              if (versionNumber >= 9) {
-                // isKeyOwner was remove in unlock v10
-                const isOwned = await lock.balanceOf(
-                  await keyOwner.getAddress()
-                )
-                assert.equal(isOwned > 0, true)
-              } else if (versionNumber >= 1) {
-                const id = await lock.getTokenIdFor(await keyOwner.getAddress())
-                // isKeyOwner was introduced in v1
-                const isOwned = await lock.isKeyOwner(
-                  id,
-                  await keyOwner.getAddress()
-                )
-                assert.equal(isOwned, true)
-              }
+              const isOwned = await lock.balanceOf(await keyOwner.getAddress())
+              assert.equal(isOwned > 0, true)
             })
 
             it('New keys may still be purchased', async () => {
-              if (versionNumber >= 1) {
-                // version 0 purchases no longer work due to a change in Unlock.sol
-                await purchaseKey(lock)
-              }
+              await purchaseKey(lock)
             })
 
             it('Keys may still be transferred', async () => {
-              let id
-              if ((await lock.publicLockVersion()) >= 10) {
-                id = await lock.tokenOfOwnerByIndex(
-                  await keyOwner.getAddress(),
-                  0
-                )
-              } else {
-                id = await lock.getTokenIdFor(await keyOwner.getAddress())
-              }
+              const id = await lock.tokenOfOwnerByIndex(
+                await keyOwner.getAddress(),
+                0
+              )
               const tx = await lock
                 .connect(keyOwner)
                 .transferFrom(
@@ -366,10 +267,7 @@ describe('Unlock / upgrades', () => {
             })
 
             it('tokenURI still works as expected', async () => {
-              if (versionNumber >= 3) {
-                // tokenURI was introduced with v3
-                await lock.tokenURI(1)
-              }
+              await lock.tokenURI(1)
             })
 
             describe('Using latest version after an upgrade', () => {
@@ -423,8 +321,7 @@ describe('Unlock / upgrades', () => {
               })
 
               it('Latest publicLock version is correct', async () => {
-                const publicLockVersion =
-                  await await lockLatest.publicLockVersion()
+                const publicLockVersion = await lockLatest.publicLockVersion()
                 assert.equal(publicLockVersion, LATEST_PUBLIC_LOCK_VERSION)
               })
             })
@@ -459,37 +356,6 @@ describe('Unlock / upgrades', () => {
                 value: keyPrice,
               }
             )
-        }
-        if (publicLockVersion >= 9) {
-          // Lock Version 9 (used by Unlock v10) added keyManager to purchase
-          return await lock
-            .connect(lockOwner)
-            .purchase(
-              0,
-              await keyOwner.getAddress(),
-              ADDRESS_ZERO,
-              ADDRESS_ZERO,
-              '0x',
-              {
-                value: keyPrice,
-              }
-            )
-        }
-        if (publicLockVersion >= 5) {
-          // Version 5 renamed to purchase, added keyPrice, referrer, and data
-          return await lock
-            .connect(lockOwner)
-            .purchase(0, await keyOwner.getAddress(), ADDRESS_ZERO, '0x', {
-              value: keyPrice,
-            })
-        }
-        if (publicLockVersion >= 1) {
-          // Version 1 removed the keyData field
-          return await lock
-            .connect(lockOwner)
-            .purchaseFor(await keyOwner.getAddress(), {
-              value: keyPrice,
-            })
         }
 
         return await lock

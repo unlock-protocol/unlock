@@ -6,7 +6,7 @@ export const sepolia: NetworkConfig = {
   },
   chain: 'sepolia',
   description:
-    'Sepolia is the primary testnet recommended by the Ethereum community for dapp development.',
+    'Sepolia is the primary testnet recommended by the Ethereum community for dapp development',
   explorer: {
     name: 'Sepolia Etherscan',
     urls: {
@@ -112,6 +112,7 @@ export const sepolia: NetworkConfig = {
   startBlock: 4381710,
   subgraph: {
     endpoint: 'https://subgraph.unlock-protocol.com/11155111',
+    graphId: '5ZjqtfMTQJTCsHVmY9eXirW5B9SEJnRW7ipg5SzTP29k',
     networkName: 'sepolia',
     studioName: 'unlock-protocol-sepolia',
   },
@@ -137,6 +138,12 @@ export const sepolia: NetworkConfig = {
       decimals: 18,
       name: 'Uniswap',
       symbol: 'UNI',
+    },
+    {
+      address: '0x447B1492C5038203f1927eB2a374F5Fcdc25999d',
+      decimals: 18,
+      name: 'Unlock Discount Token',
+      symbol: 'UDT',
     },
   ],
   uniswapV3: {

@@ -1,5 +1,6 @@
+'use client'
+
 import { useState } from 'react'
-import { AppLayout } from '~/components/interface/layouts/AppLayout'
 import { Form, NewEventForm } from './Form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { LockDeploying } from './LockDeploying'
@@ -7,8 +8,8 @@ import { locksmith } from '~/config/locksmith'
 import { networks } from '@unlock-protocol/networks'
 
 import { formDataToMetadata } from '~/components/interface/locks/metadata/utils'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { PaywallConfigType } from '@unlock-protocol/core'
+import { useProvider } from '~/hooks/useProvider'
 
 export interface TransactionDetails {
   hash: string
@@ -52,7 +53,7 @@ export const NewEvent = () => {
     useState<TransactionDetails>()
   const [slug, setSlug] = useState<string | undefined>(undefined)
   const [lockAddress, setLockAddress] = useState<string>()
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
 
   const onSubmit = async (formData: NewEventForm) => {
     let lockAddress
@@ -114,23 +115,16 @@ export const NewEvent = () => {
   }
 
   return (
-    <AppLayout
-      showLinks={false}
-      authRequired={true}
-      logoRedirectUrl="/event"
-      logoImageUrl="/images/svg/logo-unlock-events.svg"
-    >
-      <div className="grid max-w-3xl gap-6 pb-24 mx-auto">
-        {transactionDetails && (
-          <LockDeploying
-            transactionDetails={transactionDetails}
-            lockAddress={lockAddress}
-            slug={slug}
-          />
-        )}
-        {!transactionDetails && <Form onSubmit={onSubmit} />}
-      </div>
-    </AppLayout>
+    <div className="grid max-w-3xl gap-6 pb-24 mx-auto">
+      {transactionDetails && (
+        <LockDeploying
+          transactionDetails={transactionDetails}
+          lockAddress={lockAddress}
+          slug={slug}
+        />
+      )}
+      {!transactionDetails && <Form onSubmit={onSubmit} />}
+    </div>
   )
 }
 

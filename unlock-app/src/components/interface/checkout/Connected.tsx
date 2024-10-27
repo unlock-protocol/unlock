@@ -1,86 +1,60 @@
 import { useSelector } from '@xstate/react'
 import { useEffect, useState } from 'react'
-import { useAuth } from '~/contexts/AuthenticationContext'
-import { useSIWE } from '~/hooks/useSIWE'
 import { CheckoutService } from './main/checkoutMachine'
 import { Stepper } from './Stepper'
 import { ConnectPage } from './main/ConnectPage'
-import { useWeb3Service } from '~/utils/withWeb3Service'
-import { useMembership } from '~/hooks/useMembership'
+import { getMembership } from '~/hooks/useMemberships'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface ConnectedCheckoutProps {
   service: CheckoutService
 }
 
 export function Connected({ service }: ConnectedCheckoutProps) {
-  const state = useSelector(service, (state) => state)
-  const { account, isUnlockAccount, connected } = useAuth()
-  const [signing, _] = useState(false)
-  const { isSignedIn } = useSIWE()
+  const [showPrivyModal, setShowPrivyModal] = useState(true)
+  const { paywallConfig, lock } = useSelector(service, (state) => state.context)
+  const { account, signInWithPrivy } = useAuthenticate()
 
-  const web3Service = useWeb3Service()
-
-  const useDelegatedProvider =
-    state.context?.paywallConfig?.useDelegatedProvider
-
-  const { data: memberships } = useMembership({
-    account,
-    paywallConfig: state.context.paywallConfig,
-    web3Service,
-  })
-
-  const membership = memberships?.find(
-    (item) => item.lock === state.context.lock?.address
-  )
+  const lockAddress = lock?.address
+  const lockNetwork = lock?.network || paywallConfig.network
 
   useEffect(() => {
-    // Skip Connect if already signed in
-    const autoSignIn = async () => {
-      const isConnectedAsUnlockAccount =
-        isSignedIn && !signing && isUnlockAccount && !useDelegatedProvider
-
-      const isConnectedWithWallet =
-        isSignedIn && !signing && !isUnlockAccount && !useDelegatedProvider
-
-      const isConectedWithOtherMethod = account && connected
-
-      if (
-        isConnectedWithWallet ||
-        isConnectedAsUnlockAccount ||
-        isConectedWithOtherMethod
-      ) {
-        service.send({
-          type: 'SELECT_LOCK',
-          existingMember: !!membership?.member,
-          expiredMember: isUnlockAccount ? false : !!membership?.expired,
-        })
-      }
+    const checkMemberships = async (
+      lockAddress: string,
+      account: string,
+      lockNetwork: number
+    ) => {
+      // Get the membership!
+      const membership = await getMembership(lockAddress, account!, lockNetwork)
+      service.send({
+        type: 'SELECT_LOCK',
+        existingMember: !!membership?.member,
+        expiredMember: !!membership?.expired,
+      })
     }
-    if (memberships) {
-      autoSignIn()
-    }
-    // adding signIn creates an inifnite loop for some reason
-  }, [
-    connected,
-    useDelegatedProvider,
-    isUnlockAccount,
-    signing,
-    isSignedIn,
-    memberships,
-  ])
-
-  useEffect(() => {
     if (!account) {
       console.debug('Not connected')
+      signInWithPrivy({
+        onshowUI: () => {
+          setShowPrivyModal(true)
+        },
+      })
     } else {
       console.debug(`Connected as ${account}`)
+      if (lockAddress && lockNetwork) {
+        checkMemberships(lockAddress, account!, lockNetwork)
+      }
     }
-  }, [account])
+  }, [account, lockAddress, lockNetwork])
 
   return (
     <>
       <Stepper service={service} />
-      <ConnectPage style="h-full mt-4 space-y-4" checkoutService={service} />
+      <ConnectPage
+        showPrivyModal={showPrivyModal}
+        style="h-full space-y-4"
+        checkoutService={service}
+      />
     </>
   )
 }

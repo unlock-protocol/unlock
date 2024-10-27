@@ -20,6 +20,10 @@ export const mainnet: NetworkConfig = {
   governanceBridge: {
     connext: '0x8898B472C54c31894e3B9bb83cEA802a5d0e63C6',
     domainId: 6648936,
+    modules: {
+      connextMod: '0xAB6A5080e569A269D8cB54fdD00312A2c4c3a3aa',
+      delayMod: '0x8f05058d05C8167132f07aAA5130Ed3F0D78d5aE',
+    },
   },
   hooks: {
     onKeyPurchaseHook: [
@@ -71,6 +75,7 @@ export const mainnet: NetworkConfig = {
   startBlock: 16989000,
   subgraph: {
     endpoint: 'https://subgraph.unlock-protocol.com/1',
+    graphId: 'CTj3qyHTnQuTD16RkmV1BK6UmYPADwUD7WNNLEvQuTv9',
     studioName: 'unlock-protocol-mainnet',
   },
   tokens: [
@@ -156,6 +161,12 @@ export const mainnet: NetworkConfig = {
       name: 'BNB',
       symbol: 'BNB',
     },
+    {
+      address: '0x90DE74265a416e1393A450752175AED98fe11517',
+      decimals: 18,
+      name: 'Unlock Discount Token',
+      symbol: 'UDT',
+    },
   ],
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
@@ -173,7 +184,6 @@ export const mainnet: NetworkConfig = {
   unlockDaoToken: {
     address: '0x90DE74265a416e1393A450752175AED98fe11517',
   },
-
   url: 'https://ethereum.org/en/',
   // universalCard: {
   //   cardPurchaserAddress: '0x49814dd8a03594bE78a18455CC4Df3876ecFbD69',
