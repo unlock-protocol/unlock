@@ -170,5 +170,30 @@ describe('Unlock / createUpgradeableLockAtVersion', () => {
         )
       ).to.equal(false)
     })
+    it('fails to deploy if one of the transaction fails', async () => {
+      const calldata = await createLockCalldata({
+        args,
+        from: await unlock.getAddress(),
+      })
+
+      const setLockMetadata = await publicLock.interface.encodeFunctionData(
+        'setLockMetadata(string,string,string)',
+        ['A brand new name', 'HAHA', 'https://example.com']
+      )
+
+      const renounceLockManager = await publicLock.interface.encodeFunctionData(
+        'renounceLockManager()'
+      )
+
+      // Renouncing first will fail the 2nd call!
+      await reverts(
+        unlock['createUpgradeableLockAtVersion(bytes,uint16,bytes[])'](
+          calldata,
+          1,
+          [renounceLockManager, setLockMetadata]
+        ),
+        'FAILED_LOCK_CALL(1)'
+      )
+    })
   })
 })

@@ -1,5 +1,3 @@
-import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
-
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
@@ -118,6 +116,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   error Unlock__MISSING_LOCK(address lockAddress);
   error Unlock__INVALID_AMOUNT();
   error Unlock__INVALID_TOKEN();
+  error Unlock__FAILED_LOCK_CALL(uint callIndex);
 
   // Events
   event NewLock(address indexed lockOwner, address indexed newLockAddress);
@@ -338,12 +337,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     for (uint256 i = 0; i < transactions.length; i++) {
       (bool success, ) = newLock.call(transactions[i]);
       if (!success) {
-        revert(
-          string.concat(
-            "LockProxyDeployer: transaction failed",
-            Strings.toString(i)
-          )
-        );
+        revert Unlock__FAILED_LOCK_CALL(i);
       }
     }
   }
