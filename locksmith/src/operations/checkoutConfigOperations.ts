@@ -143,9 +143,7 @@ export const getCheckoutConfigById = async (id: string) => {
   return null
 }
 
-export const getCheckoutConfigsByUserOperation = async (
-  userAddress: string
-) => {
+export const getCheckoutConfigsByUser = async (userAddress: string) => {
   const configs = await CheckoutConfig.findAll({
     where: {
       createdBy: userAddress,
@@ -161,7 +159,7 @@ export const getCheckoutConfigsByUserOperation = async (
  * @param configId - The ID of the checkout configuration
  * @returns A boolean indicating whether the deletion was successful
  */
-export const deleteCheckoutConfigOperation = async (
+export const deleteCheckoutConfigById = async (
   userAddress: string,
   configId: string
 ): Promise<boolean> => {

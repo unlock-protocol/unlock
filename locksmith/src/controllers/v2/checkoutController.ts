@@ -2,8 +2,8 @@ import { RequestHandler } from 'express'
 import {
   getCheckoutConfigById,
   saveCheckoutConfig,
-  deleteCheckoutConfigOperation,
-  getCheckoutConfigsByUserOperation,
+  getCheckoutConfigsByUser,
+  deleteCheckoutConfigById,
 } from '../../operations/checkoutConfigOperations'
 import { PaywallConfig } from '@unlock-protocol/core'
 
@@ -65,12 +65,9 @@ export const getCheckoutConfig: RequestHandler = async (request, response) => {
  * This endpoint returns all configurations that a user is authorized to manage.
  * It's useful for populating user dashboards or configuration lists.
  */
-export const getCheckoutConfigsByUser: RequestHandler = async (
-  request,
-  response
-) => {
+export const getCheckoutConfigs: RequestHandler = async (request, response) => {
   const userAddress = request.user!.walletAddress
-  const checkoutConfigs = await getCheckoutConfigsByUserOperation(userAddress)
+  const checkoutConfigs = await getCheckoutConfigsByUser(userAddress)
 
   return response.status(200).send({
     results: checkoutConfigs.map((config) => {
@@ -109,7 +106,7 @@ export const deleteCheckoutConfig: RequestHandler = async (
     })
   }
 
-  const deleted = await deleteCheckoutConfigOperation(userAddress, id)
+  const deleted = await deleteCheckoutConfigById(userAddress, id)
 
   if (!deleted) {
     return response.status(403).send({
