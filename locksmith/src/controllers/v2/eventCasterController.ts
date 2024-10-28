@@ -36,7 +36,6 @@ export const createEvent: RequestHandler = async (request, response) => {
     id: eventId,
     hosts,
   } = await CreateEventBody.parseAsync(request.body)
-
   const { address, network } = await deployLockForEventCaster({
     title,
     hosts,
