@@ -163,7 +163,7 @@ describe('Lock / transferFee', () => {
     before(async () => {
       // Change the fee to 0.25%
       await lock.updateTransferFee(25)
-      await lock.addRole(LOCK_MANAGER_ROLE, await lockManager.getAddress())
+      await lock.grantRole(LOCK_MANAGER_ROLE, await lockManager.getAddress())
       ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))
     })
 

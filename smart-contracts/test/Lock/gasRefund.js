@@ -119,7 +119,10 @@ describe('Lock / GasRefund', () => {
         })
 
         it('can be set by lock manager', async () => {
-          await lock.addRole(LOCK_MANAGER_ROLE, await lockManager.getAddress())
+          await lock.grantRole(
+            LOCK_MANAGER_ROLE,
+            await lockManager.getAddress()
+          )
           await lock.connect(lockManager).setGasRefundValue(gasRefundAmount)
           compareBigNumbers(await lock.gasRefundValue(), gasRefundAmount)
         })
