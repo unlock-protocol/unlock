@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { ToastHelper } from '../helpers/toast.helper'
 import { Button, Input, Modal } from '@unlock-protocol/ui'
-import { useAuth } from '~/contexts/AuthenticationContext'
+import { useProvider } from '~/hooks/useProvider'
 
 interface ExpireAndRefundProps {
   isOpen: boolean
@@ -20,7 +20,7 @@ export const ExpireAndRefundModal: React.FC<ExpireAndRefundProps> = ({
   setIsOpen,
   network,
 }) => {
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
   const [refundAmount, setRefundAmount] = useState(0)
   const [loading, setLoading] = useState(false)
 
@@ -47,17 +47,17 @@ export const ExpireAndRefundModal: React.FC<ExpireAndRefundProps> = ({
       })
       onCloseCallback()
       ToastHelper.success('Key successfully refunded.')
-      // reload page to show updated list of keys
-      setTimeout(() => {
-        window.location.reload()
-      }, 2000)
     } catch (err: any) {
       onCloseCallback()
-      ToastHelper.error(
-        err?.error?.message ??
-          err?.message ??
-          'There was an error in refund process. Please try again.'
-      )
+      if (err?.code === 'ACTION_REJECTED') {
+        ToastHelper.error('You have rejected the transaction. ')
+      } else {
+        ToastHelper.error(
+          err?.error?.message ??
+            err?.message ??
+            'There was an error in refund process. Please try again.'
+        )
+      }
     }
   }
 

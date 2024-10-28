@@ -19,7 +19,6 @@ import {
   Combobox,
 } from '@unlock-protocol/ui'
 import { useConfig } from '~/utils/withConfig'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { NetworkDescription } from '~/components/interface/locks/Create/elements/CreateLockForm'
 import { useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
@@ -35,6 +34,7 @@ import { useAvailableNetworks } from '~/utils/networks'
 import Link from 'next/link'
 import { regexUrlPattern } from '~/utils/regexUrlPattern'
 import { ProtocolFee } from '~/components/interface/locks/Create/elements/ProtocolFee'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewEventForm {
@@ -101,7 +101,7 @@ interface FormProps {
 export const Form = ({ onSubmit, compact = false }: FormProps) => {
   const [oldMaxNumberOfKeys, setOldMaxNumberOfKeys] = useState<number>(0)
   const { networks } = useConfig()
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const [isInPerson, setIsInPerson] = useState(true)
   const [screeningEnabled, enableScreening] = useState(false)
   const [isUnlimitedCapacity, setIsUnlimitedCapacity] = useState(false)
@@ -129,7 +129,7 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
         currencyContractAddress: null,
         keyPrice: '0',
       },
-      currencySymbol: networks[network!].nativeCurrency.symbol,
+      currencySymbol: networks[network].nativeCurrency.symbol,
       metadata: {
         description: '',
         ticket: {

@@ -2,12 +2,19 @@
 SRC_DOCS_FOLDER="$(pwd)/docs"
 DEST_DOCS_FOLDER="$(pwd)/docs-reorg"
 
+#cleanup 
+rm -rf $SRC_DOCS_FOLDER
+
 # build docs
-yarn hardhat dodoc
+yarn hardhat docgen
 
 # delete existing folder
 rm -rf $DEST_DOCS_FOLDER
 mkdir -p $DEST_DOCS_FOLDER
+
+# delete all contracts than are NOT interfaces
+find  ./docs -type f -name 'PublicLock*' -exec rm {} \;
+find  ./docs -type f -name 'Unlock*' -exec rm {} \;
 
 # first archive all 
 cp -R $SRC_DOCS_FOLDER $DEST_DOCS_FOLDER
@@ -152,4 +159,7 @@ echo '{
 # replace docs
 rm -rf $SRC_DOCS_FOLDER
 mv $DEST_DOCS_FOLDER $SRC_DOCS_FOLDER
+
+# cleanup tmp files
+find  ./docs -type f -name '*.md-e' -exec rm {} \;
 

@@ -14,7 +14,6 @@ import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useUpdateMetadata, useMetadata } from '~/hooks/metadata'
 import LoadingIcon from '../../Loading'
 import { config } from '~/config/app'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { Picker, PickerState } from '../../Picker'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
@@ -24,6 +23,8 @@ import { CertificationMetadataForm } from './CertificationMetadataForm'
 import { useSaveLockSettings } from '~/hooks/useLockSettings'
 import { addressMinify } from '~/utils/strings'
 import { getLockTypeByMetadata } from '@unlock-protocol/core'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { useProvider } from '~/hooks/useProvider'
 interface Props {
   lockAddress?: string
   network?: number
@@ -130,7 +131,8 @@ export const Form = ({
 }
 
 export function UpdateMetadataForm({ lockAddress, network, keyId }: Props) {
-  const { account, getWalletService } = useAuth()
+  const { account } = useAuthenticate()
+  const { getWalletService } = useProvider()
   const web3Service = useWeb3Service()
 
   const [selected, setSelected] = useState<PickerState>({
