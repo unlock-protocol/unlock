@@ -51,13 +51,15 @@ describe('Lock / initializers', () => {
       const template = await PublicLock.deploy()
       await template.initialize(callerAddress, 0, ADDRESS_ZERO, 0, 0, '')
       await assert.equal(await template.isLockManager(callerAddress), true)
-      await template.connect(caller).renounceRole(LOCK_MANAGER_ROLE)
+      await template
+        .connect(caller)
+        .renounceRole(LOCK_MANAGER_ROLE, await caller.getAddress())
       await assert.equal(await template.isLockManager(callerAddress), false)
     })
   })
 
   describe('initializing when setting as Unlock template', () => {
-    it('admin role is revoked when adding a template', async () => {
+    it('admin role is not revoked automatically when adding a template', async () => {
       // deploy contracts
       const PublicLock = await ethers.getContractFactory(
         'contracts/PublicLock.sol:PublicLock'
@@ -71,10 +73,6 @@ describe('Lock / initializers', () => {
         await template.publicLockVersion()
       )
 
-      await assert.equal(
-        await template.isLockManager(await unlock.getAddress()),
-        false
-      )
       await reverts(
         template.initialize(
           await unlockOwner.getAddress(),
@@ -85,6 +83,11 @@ describe('Lock / initializers', () => {
           ''
         ),
         'Initializable: contract is already initialized'
+      )
+
+      await assert.equal(
+        await template.isLockManager(await unlockOwner.getAddress()),
+        false
       )
     })
 
@@ -102,7 +105,9 @@ describe('Lock / initializers', () => {
         0,
         ''
       )
-      await template.connect(caller).renounceRole(LOCK_MANAGER_ROLE)
+      await template
+        .connect(caller)
+        .renounceRole(LOCK_MANAGER_ROLE, await caller.getAddress())
       await assert.equal(
         await template.isLockManager(await caller.getAddress()),
         false
