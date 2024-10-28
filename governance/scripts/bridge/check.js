@@ -6,6 +6,9 @@ const {
 const { getProvider } = require('../../helpers/multisig')
 const { Contract } = require('ethers')
 
+const BASE_DAO_GOV_ADDRESS = '0x65bA0624403Fc5Ca2b20479e9F626eD4D78E0aD9'
+const BASE_DOMAIN_ID = '1650553709'
+
 const isExpired = async (delayMod, nonce) => {
   const createdAt = await delayMod.getFunction('getTxCreatedAt')(nonce)
   const expiration = await delayMod.getFunction('txExpiration')()
@@ -47,6 +50,13 @@ async function main() {
       log('Incorrect ownership of SAFE Delay module.')
     }
     if ((await connextMod.owner()) != multisig) {
+      console.log('Incorrect ownership of SAFE Connext module.')
+    }
+
+    if (
+      (await connextMod.originSender()) != BASE_DAO_GOV_ADDRESS ||
+      (await connextMod.origin()) != BASE_DOMAIN_ID
+    ) {
       console.log('Incorrect ownership of SAFE Connext module.')
     }
 
