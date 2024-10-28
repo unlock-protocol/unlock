@@ -5,6 +5,7 @@ import {
   deleteCheckoutConfigOperation,
   getCheckoutConfigsByUserOperation,
 } from '../../operations/checkoutConfigOperations'
+import { PaywallConfig } from '@unlock-protocol/core'
 
 /**
  * Create or update a checkout configuration.
@@ -19,44 +20,27 @@ export const createOrUpdateCheckoutConfig: RequestHandler = async (
 ) => {
   const id: string | undefined = request.params.id
   const { config, name } = request.body
-
   if (!(config && name)) {
     return response.status(400).send({
       message: 'Missing config or name',
     })
   }
-
-  try {
-    const createdConfig = await saveCheckoutConfig({
-      id,
-      name,
-      config,
-      user: request.user!.walletAddress,
-    })
-
-    if (!createdConfig) {
-      return response.status(403).send({
-        message:
-          'Unauthorized: You do not have permission to create or update this configuration.',
-      })
-    }
-
-    return response.status(200).send({
-      id: createdConfig.id,
-      by: createdConfig.createdBy,
-      name: createdConfig.name,
-      config: createdConfig.config,
-      updatedAt: createdConfig.updatedAt.toISOString(),
-      createdAt: createdConfig.createdAt.toISOString(),
-    })
-  } catch (error) {
-    console.error('Error creating/updating checkout config:', error)
-    return response.status(500).send({
-      message: 'An error occurred while processing your request.',
-    })
-  }
+  const checkoutConfig = await PaywallConfig.strip().parseAsync(config)
+  const storedConfig = await saveCheckoutConfig({
+    id,
+    name,
+    config: checkoutConfig,
+    user: request.user!.walletAddress,
+  })
+  return response.status(200).send({
+    id: storedConfig.id,
+    by: storedConfig.createdBy,
+    name: storedConfig.name,
+    config: storedConfig.config,
+    updatedAt: storedConfig.updatedAt.toISOString(),
+    createdAt: storedConfig.createdAt.toISOString(),
+  })
 }
-
 /**
  * Retrieve a specific checkout configuration.
  *
