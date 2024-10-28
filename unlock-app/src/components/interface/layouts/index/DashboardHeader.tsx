@@ -8,8 +8,8 @@ import { usePathname } from 'next/navigation'
 // Paths where menu should be hidden
 const HIDDEN_MENU_PATHS = ['/']
 
-// Default menu sections
-const DEFAULT_MENU_SECTIONS = [
+// Menu sections shown everywhere when logged in
+const MENU_SECTIONS = [
   { title: 'Events', url: '/my-events' },
   { title: 'Locks', url: '/locks' },
   { title: 'Keys', url: '/keychain' },
@@ -52,20 +52,6 @@ export default function DashboardHeader({
     }
   }
 
-  // Determine menu sections based on pathname
-  const getMenuSections = () => {
-    if (pathname?.includes('event')) {
-      return [{ title: 'Events', url: '/my-events' }]
-    }
-    if (
-      pathname?.includes('certification') ||
-      pathname?.includes('subscription')
-    ) {
-      return []
-    }
-    return DEFAULT_MENU_SECTIONS
-  }
-
   // Determine if menu should be shown
   const shouldShowMenu =
     showMenu && account && !HIDDEN_MENU_PATHS.includes(pathname || '')
@@ -76,7 +62,7 @@ export default function DashboardHeader({
     },
     showSocialIcons: false,
     logo: getLogo(),
-    menuSections: shouldShowMenu ? getMenuSections() : [],
+    menuSections: shouldShowMenu ? MENU_SECTIONS : [],
   }
 
   return (
