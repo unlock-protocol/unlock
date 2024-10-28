@@ -1,8 +1,8 @@
 'use client'
 import { Button, HeaderNav } from '@unlock-protocol/ui'
 import { useConnectModal } from '~/hooks/useConnectModal'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { UserMenu } from '../../connect/UserMenu'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 const MENU = {
   extraClass: {
@@ -19,7 +19,7 @@ const MENU = {
 }
 
 export default function EventHeader() {
-  const { account } = useAuth()
+  const { account, privyReady } = useAuthenticate()
   const { openConnectModal } = useConnectModal()
 
   return (
@@ -31,6 +31,7 @@ export default function EventHeader() {
             <UserMenu />
           ) : (
             <Button
+              disabled={!privyReady}
               onClick={(event) => {
                 event.preventDefault()
                 openConnectModal()

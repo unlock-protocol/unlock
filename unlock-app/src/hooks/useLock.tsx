@@ -1,14 +1,10 @@
 import { Web3Service } from '@unlock-protocol/unlock-js'
-import { useContext, useReducer, useState } from 'react'
+import { useReducer, useState } from 'react'
 import { useConfig } from '~/utils/withConfig'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import {
-  AuthenticationContext,
-  useAuth,
-} from '../contexts/AuthenticationContext'
-import { FATAL_WRONG_NETWORK } from '../errors'
 import { Lock } from '../unlockTypes'
 import { getCardConnected } from './useCards'
+import { useProvider } from './useProvider'
 
 /**
  * Event handler
@@ -260,46 +256,37 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
       network,
     }
   )
-  const { network: walletNetwork } = useContext(AuthenticationContext)
   const web3Service = useWeb3Service()
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
   const config = useConfig()
-  const [error, setError] = useState<string | null>(null)
+  const [error] = useState<string | null>(null)
 
   const updateKeyPrice = async (
     newKeyPrice: string,
     callback: (...args: any) => void
   ) => {
     const walletService = await getWalletService(network)
-    if (walletNetwork !== network) {
-      setError(FATAL_WRONG_NETWORK)
-    } else {
-      updateKeyPriceOnLock(
-        web3Service,
-        walletService,
-        config,
-        lock,
-        newKeyPrice,
-        setLock,
-        callback
-      )
-    }
+    updateKeyPriceOnLock(
+      web3Service,
+      walletService,
+      config,
+      lock,
+      newKeyPrice,
+      setLock,
+      callback
+    )
   }
 
   const withdraw = async (callback: (...args: any) => void) => {
     const walletService = await getWalletService(network)
-    if (walletNetwork !== network) {
-      setError(FATAL_WRONG_NETWORK)
-    } else {
-      withdrawFromLock(
-        web3Service,
-        walletService,
-        config,
-        lock,
-        setLock,
-        callback
-      )
-    }
+    withdrawFromLock(
+      web3Service,
+      walletService,
+      config,
+      lock,
+      setLock,
+      callback
+    )
   }
 
   const purchaseKey = async (
@@ -310,22 +297,18 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
     callback: (...args: any) => void
   ) => {
     const walletService = await getWalletService(network)
-    if (walletNetwork !== network) {
-      setError(FATAL_WRONG_NETWORK)
-    } else {
-      await purchaseKeyFromLock(
-        web3Service,
-        walletService,
-        config,
-        lock,
-        recipient,
-        referrer,
-        setLock,
-        data,
-        recurringPayments,
-        callback
-      )
-    }
+    await purchaseKeyFromLock(
+      web3Service,
+      walletService,
+      config,
+      lock,
+      recipient,
+      referrer,
+      setLock,
+      data,
+      recurringPayments,
+      callback
+    )
   }
 
   // Returns 1 if connected
@@ -367,19 +350,15 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
     callback: (...args: any) => void
   ) {
     const walletService = await getWalletService(network)
-    if (walletNetwork !== network) {
-      setError(FATAL_WRONG_NETWORK)
-    } else {
-      updateSelfAllowanceOnLock(
-        web3Service,
-        walletService,
-        config,
-        lock,
-        allowanceAmount,
-        setLock,
-        callback
-      )
-    }
+    updateSelfAllowanceOnLock(
+      web3Service,
+      walletService,
+      config,
+      lock,
+      allowanceAmount,
+      setLock,
+      callback
+    )
   }
 
   return {

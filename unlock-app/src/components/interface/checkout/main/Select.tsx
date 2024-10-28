@@ -2,7 +2,6 @@ import { CheckoutService, LockState } from './checkoutMachine'
 import { useConfig } from '~/utils/withConfig'
 import { LockOptionPlaceholder, Pricing } from '../Lock'
 import { useSelector } from '@xstate/react'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
@@ -29,10 +28,10 @@ import { shouldSkip } from './utils'
 import { AiFillWarning as WarningIcon } from 'react-icons/ai'
 import { useGetLockProps } from '~/hooks/useGetLockProps'
 import Disconnect from './Disconnect'
-import { useSIWE } from '~/hooks/useSIWE'
 import { useMemberships } from '~/hooks/useMemberships'
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { ethers } from 'ethers'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface Props {
   checkoutService: CheckoutService
@@ -202,6 +201,8 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
 }
 
 export function Select({ checkoutService }: Props) {
+  const { signInWithSIWE } = useAuthenticate()
+
   const { paywallConfig, lock: selectedLock } = useSelector(
     checkoutService,
     (state) => state.context
@@ -228,7 +229,6 @@ export function Select({ checkoutService }: Props) {
               props.network || paywallConfig.network || 1
 
             const lockData = await web3Service.getLock(lock, networkId)
-
             let price
 
             if (account) {
@@ -300,7 +300,6 @@ export function Select({ checkoutService }: Props) {
 
   useEffect(() => {
     if (!autoSelectedLock) {
-      console.log('No lock to auto select')
       return
     }
 
@@ -355,7 +354,7 @@ export function Select({ checkoutService }: Props) {
   }, [paywallConfig])
 
   const config = useConfig()
-  const { account, isUnlockAccount } = useAuth()
+  const { account } = useAuthenticate()
   const web3Service = useWeb3Service()
   const expectedAddress = paywallConfig.expectedAddress
 
@@ -384,12 +383,6 @@ export function Select({ checkoutService }: Props) {
     return hook
   }, [lockHookMapping, lock])
 
-  const [isSigning, setSigning] = useState(false)
-
-  const { connected } = useAuth()
-  const { signIn, isSignedIn } = useSIWE()
-  const useDelegatedProvider = paywallConfig?.useDelegatedProvider
-
   const isDisabled =
     isLocksLoading ||
     isMembershipsLoading ||
@@ -397,8 +390,7 @@ export function Select({ checkoutService }: Props) {
     // if locks are sold out and the user is not an existing member of the lock
     (lock?.isSoldOut && !(membership?.member || membership?.expired)) ||
     isNotExpectedAddress ||
-    isLoadingHook ||
-    (isSigning && !isSignedIn)
+    isLoadingHook
 
   useEffect(() => {
     if (locks?.length) {
@@ -411,10 +403,6 @@ export function Select({ checkoutService }: Props) {
   const isLoading = isLocksLoading || isLoadingHook || isMembershipsLoading
 
   useEffect(() => {
-    if (!connected && useDelegatedProvider) {
-      signIn()
-    }
-
     if (!(lock && skipSelect && account && !isLoading)) {
       return
     }
@@ -427,7 +415,7 @@ export function Select({ checkoutService }: Props) {
       skipQuantity,
       skipRecipient,
       // unlock account are unable to renew : wut?
-      expiredMember: isUnlockAccount ? false : !!membership?.expired,
+      expiredMember: !!membership?.expired,
       recipients: account ? [account] : [],
       hook: hookType,
     })
@@ -438,10 +426,57 @@ export function Select({ checkoutService }: Props) {
     hookType,
     skipQuantity,
     skipRecipient,
-    isUnlockAccount,
     checkoutService,
     skipSelect,
     isLoading,
+  ])
+
+  useEffect(() => {
+    const selectedLock = searchParams.get('selectedLock')
+    const privyOAuthState = searchParams.get('privy_oauth_state')
+    const privyOAuthProvider = searchParams.get('privy_oauth_provider')
+    const privyOAuthCode = searchParams.get('privy_oauth_code')
+
+    if (
+      selectedLock &&
+      privyOAuthState &&
+      privyOAuthProvider &&
+      privyOAuthCode
+    ) {
+      const lock = locks?.find((l) => l.address === selectedLock)
+      if (lock) {
+        checkoutService.send({
+          type: 'CONNECT',
+          lock,
+          existingMember: lock.isMember,
+          expiredMember: lock.isExpired,
+          skipQuantity,
+          skipRecipient,
+          recipients: account ? [account] : [],
+          hook: hookType,
+        })
+
+        // clean up urls
+        const newSearchParams = new URLSearchParams(searchParams.toString())
+        newSearchParams.delete('selectedLock')
+        newSearchParams.delete('privy_oauth_state')
+        newSearchParams.delete('privy_oauth_provider')
+        newSearchParams.delete('privy_oauth_code')
+        router.replace(`${pathname}?${newSearchParams.toString()}`, {
+          scroll: false,
+        })
+      }
+    }
+  }, [
+    searchParams,
+    account,
+    checkoutService,
+    locks,
+    hookType,
+    skipQuantity,
+    skipRecipient,
+    router,
+    pathname,
   ])
 
   const selectLock = async (event: any) => {
@@ -451,11 +486,15 @@ export function Select({ checkoutService }: Props) {
       return
     }
 
-    if (!isSignedIn && useDelegatedProvider) {
-      setSigning(true)
-      await signIn()
-      setSigning(false)
-      return
+    // add selectedLock to url
+    const newSearchParams = new URLSearchParams(searchParams.toString())
+    newSearchParams.set('selectedLock', lock.address)
+    router.replace(`${pathname}?${newSearchParams.toString()}`, {
+      scroll: false,
+    })
+
+    if (paywallConfig.useDelegatedProvider) {
+      await signInWithSIWE()
     }
 
     checkoutService.send({
@@ -542,7 +581,7 @@ export function Select({ checkoutService }: Props) {
             </p>
           )}
           <Button disabled={isDisabled} onClick={selectLock}>
-            {!isSignedIn && useDelegatedProvider ? 'Confirm' : 'Next'}
+            Next
           </Button>
         </div>
         <Disconnect service={checkoutService} />

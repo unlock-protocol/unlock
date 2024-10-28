@@ -2,9 +2,9 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Input } from '@unlock-protocol/ui'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useEffect } from 'react'
+import { useProvider } from '~/hooks/useProvider'
 
 interface UpdateSymbolFormProps {
   disabled: boolean
@@ -23,7 +23,7 @@ export const UpdateSymbolForm = ({
   lockAddress,
   network,
 }: UpdateSymbolFormProps) => {
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
   const web3Service = useWeb3Service()
   const {
     register,
