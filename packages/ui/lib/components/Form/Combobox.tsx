@@ -76,15 +76,20 @@ export function Combobox({
     [query, allOptions]
   )
 
-  // Determine which options to display based on showMoreOptions state
+  // Determine which options to display based on showMoreOptions state and search query
   const displayedOptions = useMemo(() => {
+    // When searching, show all filtered results
+    if (query !== '') {
+      return filteredOptions
+    }
+    // When not searching, respect showMoreOptions state
     if (showMoreOptions) {
       return filteredOptions
     }
     return filteredOptions.filter((option) =>
       options.some((initialOption) => initialOption.value === option.value)
     )
-  }, [filteredOptions, showMoreOptions, options])
+  }, [filteredOptions, showMoreOptions, options, query])
 
   const handleSelect = (value: Option) => {
     setSelected(value)
@@ -260,36 +265,38 @@ export function Combobox({
                           {option.label}
                         </li>
                       ))}
-                      {/* Show "More options" button if there are more options available */}
-                      {!showMoreOptions && moreOptions.length > 0 && (
-                        <li
-                          ref={(el) =>
-                            (optionsRef.current[displayedOptions.length] = el)
-                          }
-                          className={clsx(
-                            'flex cursor-pointer mx-2 rounded-sm items-center justify-center gap-2 py-3 px-3 text-base font-semibold',
-                            'hover:bg-ui-main-50 text-brand-ui-primary',
-                            'border-t border-gray-200',
-                            focusedIndex === displayedOptions.length &&
-                              'bg-ui-main-50'
-                          )}
-                          onClick={handleShowMore}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                              handleShowMore()
-                            } else {
-                              handleKeyDown(e)
+                      {/* Show "More options" button only when not searching and there are more options available */}
+                      {!showMoreOptions &&
+                        query === '' &&
+                        moreOptions.length > 0 && (
+                          <li
+                            ref={(el) =>
+                              (optionsRef.current[displayedOptions.length] = el)
                             }
-                          }}
-                          role="option"
-                          tabIndex={
-                            focusedIndex === displayedOptions.length ? 0 : -1
-                          }
-                        >
-                          <MoreIcon className="size-4" />
-                          More options
-                        </li>
-                      )}
+                            className={clsx(
+                              'flex cursor-pointer mx-2 rounded-sm items-center justify-center gap-2 py-3 px-3 text-base font-semibold',
+                              'hover:bg-ui-main-50 text-brand-ui-primary',
+                              'border-t border-gray-200',
+                              focusedIndex === displayedOptions.length &&
+                                'bg-ui-main-50'
+                            )}
+                            onClick={handleShowMore}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                handleShowMore()
+                              } else {
+                                handleKeyDown(e)
+                              }
+                            }}
+                            role="option"
+                            tabIndex={
+                              focusedIndex === displayedOptions.length ? 0 : -1
+                            }
+                          >
+                            <MoreIcon className="size-4" />
+                            More options
+                          </li>
+                        )}
                     </>
                   ) : (
                     <li className="px-3 py-2 text-base text-gray-500">

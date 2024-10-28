@@ -16,6 +16,7 @@ import {
   ToggleSwitch,
   ImageUpload,
   Checkbox,
+  Combobox,
 } from '@unlock-protocol/ui'
 import { useConfig } from '~/utils/withConfig'
 import { NetworkDescription } from '~/components/interface/locks/Create/elements/CreateLockForm'
@@ -325,40 +326,52 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
                   error={errors.metadata?.description?.message as string}
                 />
 
-                <Select
-                  onChange={(newValue) => {
-                    setValue('network', Number(newValue))
-                    setValue('lock.currencyContractAddress', null)
-                    setValue(
-                      'currencySymbol',
-                      networks[newValue].nativeCurrency.symbol
-                    )
-                    setCurrencyNetwork(networks[newValue].name)
-                    setKickBackSupported(!!networks[newValue].kickbackAddress)
-                  }}
-                  options={networkOptions}
-                  moreOptions={moreNetworkOptions}
-                  label="Network"
-                  defaultValue={network}
-                  description={
-                    <div className="flex flex-col gap-2">
-                      {details.network && (
-                        <NetworkDescription network={details.network} />
+                <Controller
+                  name="network"
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <Combobox
+                      options={networkOptions}
+                      moreOptions={moreNetworkOptions}
+                      initialSelected={networkOptions.find(
+                        (option) => option.value === value
                       )}
-                      <p>
-                        This is the network on which your ticketing contract
-                        will be deployed.{' '}
-                        <Link
-                          className="underline text-brand-ui-primary "
-                          target="_blank"
-                          href="https://unlock-protocol.com/guides/how-to-choose-a-network-for-your-smart-contract-deployment/"
-                        >
-                          Read our guide
-                        </Link>{' '}
-                        on how to chose the right network.
-                      </p>
-                    </div>
-                  }
+                      onSelect={(option) => {
+                        const newValue = Number(option.value)
+                        onChange(newValue)
+                        setValue('network', newValue)
+                        setValue('lock.currencyContractAddress', null)
+                        setValue(
+                          'currencySymbol',
+                          networks[newValue].nativeCurrency.symbol
+                        )
+                        setCurrencyNetwork(networks[newValue].name)
+                        setKickBackSupported(
+                          !!networks[newValue].kickbackAddress
+                        )
+                      }}
+                      label="Network"
+                      description={
+                        <div className="flex flex-col gap-2">
+                          {details.network && (
+                            <NetworkDescription network={details.network} />
+                          )}
+                          <p>
+                            This is the network on which your ticketing contract
+                            will be deployed.{' '}
+                            <Link
+                              className="underline text-brand-ui-primary "
+                              target="_blank"
+                              href="https://unlock-protocol.com/guides/how-to-choose-a-network-for-your-smart-contract-deployment/"
+                            >
+                              Read our guide
+                            </Link>{' '}
+                            on how to chose the right network.
+                          </p>
+                        </div>
+                      }
+                    />
+                  )}
                 />
                 <NetworkWarning network={details.network} />
 
