@@ -46,6 +46,7 @@ async function main() {
     `)
     }
 
+    // check ownership of the modules
     if ((await delayMod.owner()) != multisig) {
       log('Incorrect ownership of SAFE Delay module.')
     }
@@ -55,6 +56,7 @@ async function main() {
       )
     }
 
+    // make sure the connext bridge module is set correctly to DAO coordinates on Base
     if (
       (await connextMod.originSender()) != BASE_DAO_TIMELOCK_ADDRESS ||
       (await connextMod.origin()) != BASE_DOMAIN_ID
