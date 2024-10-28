@@ -1,6 +1,5 @@
 import { randomUUID } from 'crypto'
 import { CheckoutConfig } from '../models'
-import { PaywallConfig } from '@unlock-protocol/core'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 
@@ -10,7 +9,6 @@ interface SaveCheckoutConfigArgs {
   user: string
   config: any // TODO: TYPE
 }
-
 /**
  * Extracts lock addresses and network information from the config
  * @param config - The checkout configuration object
@@ -77,48 +75,47 @@ const isUserAuthorized = async (
 /**
  * Creates or updates a checkout configuration
  * @param args - The SaveCheckoutConfigArgs object
- * @returns The created or updated checkout configuration or null if not authorized
+ * @returns The created or updated checkout configuration
+ * @throws Error if user is not authorized to update the config
  */
+// Creates or updates a checkout config
 export const saveCheckoutConfig = async ({
   id,
   name,
   user,
   config,
-}: SaveCheckoutConfigArgs): Promise<CheckoutConfig | null> => {
-  const generatedId = id || randomUUID()
+}: SaveCheckoutConfigArgs) => {
+  const generatedId = randomUUID()
 
-  const checkoutConfigData = await PaywallConfig.strip().parseAsync(config)
-
-  // Ensure referrer is set to the user
-  if (!checkoutConfigData.referrer) {
-    checkoutConfigData.referrer = user
+  // check if user is authorized
+  if (id) {
+    const existingConfig = await CheckoutConfig.findOne({
+      where: { id },
+    })
+    if (existingConfig) {
+      const authorized = await isUserAuthorized(user, existingConfig)
+      if (!authorized) {
+        throw new Error('User not authorized to update this configuration')
+      }
+    }
   }
 
-  // Check if the user is authorized to save/update the config
-  if (id) {
-    const existingConfig = await CheckoutConfig.findOne({ where: { id } })
-    if (existingConfig && !(await isUserAuthorized(user, existingConfig))) {
-      return null
-    }
+  // Forcing the referrer to exist and be set to the creator of the config
+  if (!config.referrer) {
+    config.referrer = user
   }
 
   const [createdConfig] = await CheckoutConfig.upsert(
     {
-      id: generatedId,
       name,
-      config: checkoutConfigData,
+      id: id || generatedId,
+      config,
       createdBy: user,
     },
     {
-      conflictFields: ['id'],
+      conflictFields: ['id', 'createdBy'],
     }
   )
-
-  // Ensure createdConfig is not null before returning
-  if (!createdConfig) {
-    throw new Error('Failed to create or update checkout config')
-  }
-
   return createdConfig
 }
 
@@ -149,12 +146,13 @@ export const getCheckoutConfigById = async (id: string) => {
 export const getCheckoutConfigsByUserOperation = async (
   userAddress: string
 ) => {
-  return await CheckoutConfig.findAll({
+  const configs = await CheckoutConfig.findAll({
     where: {
       createdBy: userAddress,
     },
     order: [['updatedAt', 'DESC']],
   })
+  return configs
 }
 
 /**
