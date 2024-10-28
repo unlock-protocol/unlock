@@ -10,12 +10,12 @@ import {
   UNLIMITED_KEYS_COUNT,
   UNLIMITED_KEYS_DURATION,
 } from '~/constants'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { CreateLockForm, LockFormProps } from './elements/CreateLockForm'
 import { CreateLockFormSummary } from './elements/CreateLockFormSummary'
 import { BsArrowLeft as ArrowBack } from 'react-icons/bs'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { useProvider } from '~/hooks/useProvider'
 
 export type Step = 'data' | 'summary' | 'deploy'
 
@@ -50,7 +50,7 @@ const TITLE_BY_STATUS_MAPPING: Record<Step, StatusMappingProps> = {
 }
 
 export const CreateLockSteps = () => {
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
   const [step, setStep] = useState<Step>('data')
   const [values, setValues] = useState<LockFormProps | undefined>(undefined)
   const [lockAddress, setLockAddress] = useState<string | undefined>(undefined)

@@ -11,11 +11,12 @@ import { Controller, useForm, useWatch } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { z } from 'zod'
 import { useMutation, useQueries } from '@tanstack/react-query'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import networks from '@unlock-protocol/networks'
 import { useState } from 'react'
 import { onResolveName } from '~/utils/resolvers'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { useProvider } from '~/hooks/useProvider'
 
 interface WithdrawFundModalProps {
   isOpen: boolean
@@ -54,7 +55,8 @@ export const WithdrawFundModal = ({
   currencyContractAddress,
 }: WithdrawFundModalProps) => {
   const web3Service = useWeb3Service()
-  const { account, getWalletService } = useAuth()
+  const { account } = useAuthenticate()
+  const { getWalletService } = useProvider()
   const [preview, setPreview] = useState(false)
   const provider = web3Service.providerForNetwork(network)
 

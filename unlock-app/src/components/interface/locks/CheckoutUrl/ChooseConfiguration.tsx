@@ -5,10 +5,10 @@ import { Input, Placeholder, Select } from '@unlock-protocol/ui'
 import { useController, useFormContext } from 'react-hook-form'
 import { CheckoutConfig } from '@unlock-protocol/core'
 import { useCheckoutConfig } from '~/hooks/useCheckoutConfig'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useMultipleLockManagers } from '~/hooks/useLockManager'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { Configuration } from '.'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 const RadioContentWrapper = classed.div('grid grid-cols-[24px_1fr] gap-2', {
   variants: {
@@ -104,7 +104,7 @@ export function ChooseConfiguration({
     Array<{ address: string; network: number }>
   >([])
 
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
 
   // Fetch the configuration's details when customConfigId changes
   const { data: configDetails, isLoading: isLoadingConfig } = useCheckoutConfig(
