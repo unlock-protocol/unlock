@@ -1,24 +1,28 @@
 'use client'
 
-import { usePrivy } from '@privy-io/react-auth'
 import { Button, Modal } from '@unlock-protocol/ui'
 import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import Link from 'next/link'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { usePrivy } from '@privy-io/react-auth'
 
 export const PromptEmailLink = () => {
-  const { user, ready } = usePrivy()
+  const { authenticated } = usePrivy()
+  const { email, privyReady } = useAuthenticate()
   const pathname = usePathname()
   const [showModal, setShowModal] = useState(false)
 
+  const exemptPaths = useMemo(() => ['/settings', '/checkout'], [])
+
   useEffect(() => {
-    if (ready && user) {
-      const hasEmail = user.linkedAccounts.some(
-        (account) => account.type === 'email'
+    if (privyReady && authenticated) {
+      setShowModal(
+        (!email || email === undefined || email === null) &&
+          !exemptPaths.includes(pathname)
       )
-      setShowModal(!hasEmail && pathname !== '/settings')
     }
-  }, [ready, user, pathname])
+  }, [privyReady, authenticated, email, pathname, exemptPaths])
 
   return (
     <Modal isOpen={showModal} setIsOpen={() => {}} size="small">

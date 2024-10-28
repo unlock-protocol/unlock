@@ -24,6 +24,7 @@ import {
   usePaymentMethodList,
   useRemovePaymentMethods,
 } from '~/hooks/usePaymentMethods'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface Props {
   checkoutService: CheckoutService
@@ -183,7 +184,7 @@ export function PaymentForm({
   const {
     register,
     formState: { errors, isSubmitting },
-    // setValue,
+    setValue,
     getValues,
     handleSubmit,
   } = useForm<{
@@ -194,16 +195,17 @@ export function PaymentForm({
       email: '',
     },
   })
+  const { email } = useAuthenticate()
   // state to check if the email field should be filled with the user's email address
-  const [fillUnlockEmail, setFillUnlockEmail] = useState<boolean>(false)
+  const [fillUnlockEmail, setFillUnlockEmail] = useState<boolean>(!!email)
 
-  // useEffect(() => {
-  //   // this effect ensures that the form default value updates when the authentication context changes
-  //   if (email) {
-  //     setValue('email', email)
-  //     setFillUnlockEmail(!!email)
-  //   }
-  // }, [email, setValue])
+  useEffect(() => {
+    // this effect ensures that the form default value updates when the authentication context changes
+    if (email) {
+      setValue('email', email)
+      setFillUnlockEmail(!!email)
+    }
+  }, [email, setValue])
 
   const onHandleSubmit = async ({
     name,

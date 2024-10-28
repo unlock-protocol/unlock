@@ -31,6 +31,7 @@ export function useAuthenticate() {
     getAccessToken: privyGetAccessToken,
     ready: privyReady,
     authenticated: privyAuthenticated,
+    user,
   } = usePrivy()
   const queryClient = useQueryClient()
   const { siweSign } = useSIWE()
@@ -178,6 +179,7 @@ export function useAuthenticate() {
 
   return {
     account,
+    email: user?.email?.address,
     signInWithSIWE,
     signInWithPrivy,
     signOut,
