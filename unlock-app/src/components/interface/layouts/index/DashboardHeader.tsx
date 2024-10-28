@@ -51,7 +51,6 @@ export default function DashboardHeader({
       src: '/images/svg/unlock-logo.svg',
     }
   }
-  console.log('pathname', pathname)
 
   // Determine menu sections based on pathname
   const getMenuSections = () => {
