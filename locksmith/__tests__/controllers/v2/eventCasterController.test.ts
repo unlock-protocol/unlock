@@ -232,4 +232,28 @@ describe('eventcaster endpoints', () => {
       expect(response.body.address).toBe(eventCasterEvent.contract.address)
     })
   })
+  describe('delete-event endpoint', () => {
+    it('should be able to delete an event', async () => {
+      const response = await request(app)
+        .post(`/v2/eventcaster/delete-event`)
+        .set('Accept', 'json')
+        .send({ id: eventCasterEvent.id })
+
+      expect(response.status).toBe(200)
+    })
+  })
+  describe('unrsvp-for-event endpoint', () => {
+    it('burns the token', async () => {
+      fetchMock.mockResponseOnce(
+        JSON.stringify({ success: true, event: eventCasterEvent })
+      )
+
+      const response = await request(app)
+        .post(`/v2/eventcaster/${eventCasterEvent.id}/unrsvp`)
+        .set('Accept', 'json')
+        .send(eventCasterRsvp)
+
+      expect(response.status).toBe(200)
+    })
+  })
 })
