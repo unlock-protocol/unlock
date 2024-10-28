@@ -331,7 +331,7 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
                   control={control}
                   render={({ field: { onChange, value } }) => (
                     <Combobox
-                      initialOptions={networkOptions}
+                      options={networkOptions}
                       moreOptions={moreNetworkOptions}
                       initialSelected={networkOptions.find(
                         (option) => option.value === value
