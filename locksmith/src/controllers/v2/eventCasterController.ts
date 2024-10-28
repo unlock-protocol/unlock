@@ -98,7 +98,7 @@ export const deleteEvent: RequestHandler = async (_request, response) => {
 }
 
 // Removes the RSVP for an event (burns the ticket!)
-export const unrsvpForEvent: RequestHandler = async (request, response) => {
+export const unrsvpForEvent: RequestHandler = async (_request, response) => {
   // TODO: implement this
   return response.status(200).json({})
 }
