@@ -6,7 +6,7 @@ const {
 const { getProvider } = require('../../helpers/multisig')
 const { Contract } = require('ethers')
 
-const BASE_DAO_GOV_ADDRESS = '0x65bA0624403Fc5Ca2b20479e9F626eD4D78E0aD9'
+const BASE_DAO_TIMELOCK_ADDRESS = '0xB34567C4cA697b39F72e1a8478f285329A98ed1b'
 const BASE_DOMAIN_ID = '1650553709'
 
 const isExpired = async (delayMod, nonce) => {
@@ -50,14 +50,18 @@ async function main() {
       log('Incorrect ownership of SAFE Delay module.')
     }
     if ((await connextMod.owner()) != multisig) {
-      console.log('Incorrect ownership of SAFE Connext module.')
+      log(
+        `Incorrect ownership of SAFE Connext module. ${await connextMod.owner()}`
+      )
     }
 
     if (
-      (await connextMod.originSender()) != BASE_DAO_GOV_ADDRESS ||
+      (await connextMod.originSender()) != BASE_DAO_TIMELOCK_ADDRESS ||
       (await connextMod.origin()) != BASE_DOMAIN_ID
     ) {
-      console.log('Incorrect ownership of SAFE Connext module.')
+      log(
+        `Incorrect config for SAFE Connext module origin ${await connextMod.origin()} and origin sender ${await connextMod.originSender()}.`
+      )
     }
 
     // get nonces
