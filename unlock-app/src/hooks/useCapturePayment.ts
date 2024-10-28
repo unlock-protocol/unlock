@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { locksmith } from '~/config/locksmith'
-import { useAuth } from '~/contexts/AuthenticationContext'
+import { useAuthenticate } from './useAuthenticate'
 
 interface Options {
   network: number
@@ -19,7 +19,7 @@ export const useCapturePayment = ({
   recipients,
   purchaseType,
 }: Options) => {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   return useMutation({
     mutationKey: [
       'capturePayment',

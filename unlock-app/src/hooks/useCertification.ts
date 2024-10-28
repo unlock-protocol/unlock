@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
-import { useAuth } from '~/contexts/AuthenticationContext'
+import { useAuthenticate } from './useAuthenticate'
 
 interface CertificationProps {
   lockAddress: string
@@ -35,7 +35,7 @@ export const useCertification = ({
       totalKeys: '0',
     },
   }
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
 
   return useQuery({
     queryKey: ['getCertification', lockAddress, network, tokenId, account],
