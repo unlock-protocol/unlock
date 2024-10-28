@@ -57,18 +57,13 @@ const isUserAuthorized = async (
   userAddress: string,
   checkoutConfig: CheckoutConfig
 ): Promise<boolean> => {
-  // first check if user is the creator
-  if (checkoutConfig.createdBy === userAddress) {
-    return true
-  }
-
   const lockInfo = extractLockInfo(checkoutConfig.config)
+
   for (const { address, network } of lockInfo) {
     if (await isLockManager(address, userAddress, network)) {
       return true
     }
   }
-
   return false
 }
 
@@ -78,7 +73,6 @@ const isUserAuthorized = async (
  * @returns The created or updated checkout configuration
  * @throws Error if user is not authorized to update the config
  */
-// Creates or updates a checkout config
 export const saveCheckoutConfig = async ({
   id,
   name,
@@ -87,16 +81,12 @@ export const saveCheckoutConfig = async ({
 }: SaveCheckoutConfigArgs) => {
   const generatedId = randomUUID()
 
-  // check if user is authorized
   if (id) {
     const existingConfig = await CheckoutConfig.findOne({
       where: { id },
     })
-    if (existingConfig) {
-      const authorized = await isUserAuthorized(user, existingConfig)
-      if (!authorized) {
-        throw new Error('User not authorized to update this configuration')
-      }
+    if (existingConfig && !(await isUserAuthorized(user, existingConfig))) {
+      throw new Error('User not authorized to update this configuration')
     }
   }
 
