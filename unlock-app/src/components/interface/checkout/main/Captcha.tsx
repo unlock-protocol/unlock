@@ -7,9 +7,9 @@ import { useConfig } from '~/utils/withConfig'
 import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import Disconnect from './Disconnect'
 import { locksmith } from '~/config/locksmith'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface Props {
   checkoutService: CheckoutService
@@ -21,7 +21,7 @@ export function Captcha({ checkoutService }: Props) {
     (state) => state.context
   )
   const config = useConfig()
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
   const [isContinuing, setIsContinuing] = useState(false)
   const users = recipients.length > 0 ? recipients : [account!]

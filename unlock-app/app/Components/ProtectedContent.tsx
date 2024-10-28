@@ -2,14 +2,14 @@
 
 import { ReactNode } from 'react'
 import { WalletNotConnected } from '~/components/interface/layouts/index/WalletNotConnected'
-import { useAuth } from '~/contexts/AuthenticationContext'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface AuthRequiredProps {
   children: ReactNode
 }
 
 export function AuthRequired({ children }: AuthRequiredProps) {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
 
   if (!account) {
     return <WalletNotConnected />

@@ -15,7 +15,6 @@ import { Returning } from './Returning'
 import { Payment } from './Payment'
 import { Password } from './Password'
 import { Promo } from './Promo'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { isEqual } from 'lodash'
 import { CheckoutHead, TopNavigation } from '../Shell'
 import { PaywallConfigType } from '@unlock-protocol/core'
@@ -25,6 +24,7 @@ import { isInIframe } from '~/utils/iframe'
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { Select } from './Select'
 import { Connected } from '../Connected'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface Props {
   paywallConfig: PaywallConfigType
@@ -45,7 +45,7 @@ export function Checkout({
       paywallConfig,
     },
   })
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
 
   const { mint, messageToSign } = state.context
   const matched = state.value.toString()

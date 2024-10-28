@@ -1,4 +1,3 @@
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './../checkoutMachine'
 import { useQuery } from '@tanstack/react-query'
 import { useConfig } from '~/utils/withConfig'
@@ -21,6 +20,8 @@ import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { PricingData } from './PricingData'
 import Disconnect from '../Disconnect'
 import { getNumberOfRecurringPayments } from '../utils'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { useProvider } from '~/hooks/useProvider'
 
 interface Props {
   checkoutService: CheckoutService
@@ -43,7 +44,8 @@ export function ConfirmCrypto({
     data,
     renew,
   } = useSelector(checkoutService, (state) => state.context)
-  const { account, getWalletService } = useAuth()
+  const { account } = useAuthenticate()
+  const { getWalletService } = useProvider()
   const config = useConfig()
   const web3Service = useWeb3Service()
   const recaptchaRef = useRef<any>()

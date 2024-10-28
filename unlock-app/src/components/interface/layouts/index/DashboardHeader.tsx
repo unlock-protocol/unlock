@@ -1,8 +1,9 @@
 'use client'
 import { Button, HeaderNav } from '@unlock-protocol/ui'
 import { useConnectModal } from '~/hooks/useConnectModal'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { UserMenu } from '../../connect/UserMenu'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { usePathname } from 'next/navigation'
 
 const MENU = {
   extraClass: {
@@ -33,10 +34,12 @@ interface DashboardHeaderProps {
 export default function DashboardHeader({
   showMenu = true,
 }: DashboardHeaderProps) {
-  const { account } = useAuth()
+  const { account, privyReady } = useAuthenticate()
   const { openConnectModal } = useConnectModal()
+  const pathname = usePathname()
 
-  const menuProps = showMenu ? MENU : { ...MENU, menuSections: [] }
+  const menuProps =
+    showMenu && pathname !== '/' ? MENU : { ...MENU, menuSections: [] }
 
   return (
     <HeaderNav
@@ -47,6 +50,7 @@ export default function DashboardHeader({
             <UserMenu />
           ) : (
             <Button
+              disabled={!privyReady}
               onClick={(event) => {
                 event.preventDefault()
                 openConnectModal()
