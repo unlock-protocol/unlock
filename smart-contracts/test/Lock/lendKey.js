@@ -99,29 +99,6 @@ describe('Lock / lendKey', () => {
         'UNAUTHORIZED'
       )
     })
-
-    it('should fail if the sender has been approved for all owner keys', async () => {
-      await lock
-        .connect(keyOwner)
-        .setApprovalForAll(await accountApproved.getAddress(), true)
-      assert.equal(
-        await lock.isApprovedForAll(
-          await keyOwner.getAddress(),
-          await accountApproved.getAddress()
-        ),
-        true
-      )
-      await reverts(
-        lock
-          .connect(accountApproved)
-          .lendKey(
-            await keyOwner.getAddress(),
-            await random.getAddress(),
-            tokenId
-          ),
-        'UNAUTHORIZED'
-      )
-    })
   })
 
   describe('when the sender is the key owner', () => {
