@@ -5,9 +5,9 @@ const { mainnet } = require('@unlock-protocol/networks')
 const { purchaseKeys, deployLock } = require('../helpers')
 
 const {
-  addSomeETH,
   impersonate,
   getNetwork,
+  addSomeETH,
 } = require('@unlock-protocol/hardhat-helpers')
 
 const {
@@ -23,6 +23,7 @@ describe('Unlock GNP conversion', () => {
   let WETH, USDC
 
   before(async function () {
+    // all suite will be skipped
     if (!process.env.RUN_FORK) {
       // all suite will be skipped
       this.skip()
@@ -89,21 +90,21 @@ describe('Unlock GNP conversion', () => {
       const masterMinter = await usdc.masterMinter()
       await impersonate(masterMinter)
       const minter = await ethers.getSigner(masterMinter)
-      const [signer] = await ethers.getSigners()
+      const [signer, payer] = await ethers.getSigners()
       await usdc
         .connect(minter)
-        .configureMinter(await signer.getAddress(), totalPrice)
+        .configureMinter(await signer.getAddress(), totalPrice * 2n)
       await usdc.mint(await signer.getAddress(), totalPrice)
+      await usdc.mint(await payer.getAddress(), totalPrice)
 
       // approve purchase
       await usdc.approve(await lock.getAddress(), totalPrice)
+      await usdc.connect(payer).approve(await lock.getAddress(), totalPrice)
 
       // consult our oracle independently for 1 USDC
       const rate = await oracle.consult(USDC, ethers.parseUnits('1', 6), WETH)
-      console.log({ rate })
       // purchase some keys
-      const [, payer] = await ethers.getSigners()
-      await purchaseKeys(lock, NUMBER_OF_KEYS, true, payer)
+      await purchaseKeys(lock, NUMBER_OF_KEYS, true)
 
       // check GNP
       const GNP = await unlock.grossNetworkProduct()

@@ -2,6 +2,7 @@ const { assert } = require('chai')
 const { ethers, upgrades, network } = require('hardhat')
 const { reverts } = require('../helpers')
 const { getImplementationAddress } = require('@openzeppelin/upgrades-core')
+const { ZeroAddress } = require('ethers')
 
 describe('UPToken / initialization', () => {
   let owner
@@ -47,6 +48,18 @@ describe('UPToken / initialization', () => {
   describe('ownership', () => {
     it('is properly set', async () => {
       assert.equal(await owner.getAddress(), await up.owner())
+    })
+  })
+
+  describe('static', () => {
+    it('CLOCK_MODE', async () => {
+      const clockMode = await up.CLOCK_MODE()
+      assert.equal(clockMode, 'mode=timestamp')
+    })
+
+    it('nonces', async () => {
+      const nonces = await up.nonces(ZeroAddress)
+      assert.equal(nonces, 0)
     })
   })
 })
