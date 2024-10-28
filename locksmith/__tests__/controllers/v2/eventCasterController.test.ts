@@ -1,6 +1,9 @@
 import request from 'supertest'
 import { vi, describe, expect } from 'vitest'
 import app from '../../app'
+import { ethers } from 'ethers'
+import { Unlock } from '@unlock-protocol/contracts'
+import networks from '../../../../packages/networks/dist'
 
 const lockAddress = '0xce332211f030567bd301507443AD9240e0b13644'
 const tokenId = 1337
@@ -8,18 +11,20 @@ const owner = '0xCEEd9585854F12F81A0103861b83b995A64AD915'
 
 const mockWalletService = {
   connect: vi.fn(),
-  createLock: async () => {
-    return lockAddress
-  },
   grantKey: async () => {
     return { id: tokenId, owner }
   },
 }
 
 vi.mock('@unlock-protocol/unlock-js', () => ({
-  // Web3Service: function Web3Service() {},
   WalletService: function WalletService() {
     return mockWalletService
+  },
+}))
+
+vi.mock('../../../src/operations/eventCasterOperations', () => ({
+  deployLockForEventCaster: async () => {
+    return { address: lockAddress, network: 84532 }
   },
 }))
 
