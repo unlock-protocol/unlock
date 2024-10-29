@@ -46,7 +46,6 @@ const isLockManager = async (
     return false
   }
 }
-
 /**
  * Determines if a user is authorized to manage a checkout config
  * @param userAddress - The address of the user
@@ -57,19 +56,27 @@ const isUserAuthorized = async (
   userAddress: string,
   checkoutConfig: CheckoutConfig
 ): Promise<boolean> => {
-  const lockInfo = extractLockInfo(checkoutConfig.config)
+  // If user created the config, they are authorized
+  if (checkoutConfig.createdBy === userAddress) {
+    return true
+  }
 
+  // Otherwise check if they are a lock manager
+  const lockInfo = extractLockInfo(checkoutConfig.config)
   for (const { address, network } of lockInfo) {
     if (await isLockManager(address, userAddress, network)) {
       return true
     }
   }
+
   return false
 }
+
 /**
  * Creates or updates a checkout configuration
  * @param args - The SaveCheckoutConfigArgs object
  * @returns The created or updated checkout configuration
+ * @throws Error if user is not authorized to update existing config
  */
 export const saveCheckoutConfig = async ({
   id,
@@ -77,25 +84,61 @@ export const saveCheckoutConfig = async ({
   user,
   config,
 }: SaveCheckoutConfigArgs) => {
-  const generatedId = randomUUID()
-
-  // Forcing the referrer to exist and be set to the creator of the config
-  if (!config.referrer) {
-    config.referrer = user
+  // Validate user is provided
+  if (!user) {
+    throw new Error('User address is required')
   }
 
-  const [createdConfig] = await CheckoutConfig.upsert(
-    {
-      name,
-      id: id || generatedId,
-      config,
-      createdBy: user,
-    },
-    {
-      conflictFields: ['id', 'createdBy'],
+  // Check if config exists
+  const existingConfig = id
+    ? await CheckoutConfig.findOne({ where: { id } })
+    : null
+
+  if (existingConfig) {
+    // For updates, verify user is authorized
+    const isAuthorized = await isUserAuthorized(user, existingConfig)
+    if (!isAuthorized) {
+      throw new Error('User not authorized to update this configuration')
     }
-  )
-  return createdConfig
+
+    // Update existing config but preserve original createdBy
+    const [storedConfig] = await CheckoutConfig.upsert(
+      {
+        id: existingConfig.id,
+        name,
+        config,
+        createdBy: existingConfig.createdBy, // preserve original creator
+        updatedAt: new Date(),
+      },
+      {
+        returning: true,
+      }
+    )
+    return storedConfig
+  } else {
+    // For new configs, ensure createdBy is set to the requesting user
+    const newId = randomUUID()
+
+    // Forcing the referrer to exist and be set to the creator of the config
+    if (!config.referrer) {
+      config.referrer = user
+    }
+
+    const [storedConfig] = await CheckoutConfig.upsert(
+      {
+        id: newId,
+        name,
+        config,
+        createdBy: user,
+        updatedAt: new Date(),
+        createdAt: new Date(),
+      },
+      {
+        returning: true,
+      }
+    )
+    return storedConfig
+  }
 }
 
 /**
