@@ -2,7 +2,7 @@ import { ethers } from 'ethers'
 import request from 'supertest'
 import { loginRandomUser } from '../../test-helpers/utils'
 import app from '../../app'
-import { vi } from 'vitest'
+import { vi, beforeAll, expect } from 'vitest'
 import { getEventFixture } from '../../fixtures/events'
 import { CheckoutConfig, EventData } from '../../../src/models'
 import { saveEvent } from '../../../src/operations/eventOperations'
@@ -26,6 +26,10 @@ vi.mock('@unlock-protocol/unlock-js', () => {
 })
 
 describe('Verifier v2 endpoints for locksmith', () => {
+  beforeEach(() => {
+    fetchMock.resetMocks()
+  })
+
   describe('Verifiers for locks', () => {
     it('Get list items without authorization', async () => {
       expect.assertions(1)

@@ -3,7 +3,7 @@ import { loginRandomUser } from '../../test-helpers/utils'
 import * as z from 'zod'
 import logger from '../../../src/logger'
 import app from '../../app'
-import { vi } from 'vitest'
+import { expect, vi, beforeEach } from 'vitest'
 import { SupplierBody } from '../../../src/controllers/v2/receiptBaseController'
 import { PurchaserBody } from '../../../src/controllers/v2/receiptController'
 import { ethers } from 'ethers'
@@ -36,6 +36,8 @@ const supplier: z.infer<typeof SupplierBody> = {
   city: 'Sea',
   state: 'Red Line',
   zip: '00000',
+  prefix: 'INVOICE',
+  vatBasisPointsRate: null,
 }
 
 vi.mock('@unlock-protocol/unlock-js', () => {
@@ -83,6 +85,10 @@ vi.mock('@unlock-protocol/unlock-js', () => {
 })
 
 describe('Receipt v2', () => {
+  beforeEach(() => {
+    fetchMock.resetMocks()
+  })
+
   it('Save receipt throws an error when is not authenticated', async () => {
     expect.assertions(2)
     const { loginResponse } = await loginRandomUser(app)

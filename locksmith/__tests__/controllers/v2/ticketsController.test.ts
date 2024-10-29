@@ -2,7 +2,7 @@ import request from 'supertest'
 import { loginRandomUser, loginAsApplication } from '../../test-helpers/utils'
 import * as metadataOperations from '../../../src/operations/metadataOperations'
 import app from '../../app'
-import { beforeAll, vi } from 'vitest'
+import { beforeAll, afterEach, expect, vi } from 'vitest'
 import { saveEvent } from '../../../src/operations/eventOperations'
 import { getEventFixture } from '../../fixtures/events'
 import { CheckoutConfig, EventData } from '../../../src/models'
@@ -46,6 +46,8 @@ vi.mock('@unlock-protocol/unlock-js', () => {
             owner: owner,
             lock: {
               name: 'Test Lock',
+              address: lockAddress,
+              lockManagers: [owner],
             },
           }
         },
@@ -66,9 +68,11 @@ describe('tickets endpoint', () => {
   beforeAll(async () => {
     await EventData.truncate({ cascade: true })
     await CheckoutConfig.truncate()
-    fetchMock.enableMocks()
     // create an event
     const eventParams = getEventFixture({
+      data: {
+        notifyCheckInUrls: [notifyCheckInUrl],
+      },
       checkoutConfig: {
         config: {
           locks: {
@@ -79,8 +83,11 @@ describe('tickets endpoint', () => {
         },
       },
     })
-    eventParams.data.notifyCheckInUrls = [notifyCheckInUrl]
     await saveEvent(eventParams, owner)
+  })
+
+  afterEach(() => {
+    fetchMock.resetMocks()
   })
 
   it('returns an error when authentication is missing', async () => {
@@ -228,13 +235,15 @@ describe('tickets endpoint', () => {
       expect(loginResponse.status).toBe(200)
       const keyId = keyGen.next().value
 
+      fetchMock.mockResponseOnce(JSON.stringify({ success: true }))
+
       const response = await request(app)
         .put(`/v2/api/ticket/${network}/lock/${lockAddress}/key/${keyId}/check`)
         .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
       expect(response.status).toBe(202)
 
-      expect(fetch).toHaveBeenCalledWith(notifyCheckInUrl, {
+      expect(fetchMock).toHaveBeenCalledWith(notifyCheckInUrl, {
         body: JSON.stringify({
           ownerAddress: owner,
           lockAddress,
@@ -251,7 +260,7 @@ describe('tickets endpoint', () => {
     })
   })
 
-  it('does not send email when auhentication is not present', async () => {
+  it('does not send email when authentication is not present', async () => {
     expect.assertions(1)
     const response = await request(app).post(
       `/v2/api/ticket/${network}/${lockAddress}/${tokenId}/email`
@@ -259,7 +268,7 @@ describe('tickets endpoint', () => {
     expect(response.status).toBe(401)
   })
 
-  it('does not send email when auhentication is present but the user is not the key manager', async () => {
+  it('does not send email when authentication is present but the user is not the key manager', async () => {
     expect.assertions(2)
 
     const { loginResponse } = await loginRandomUser(app)

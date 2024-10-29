@@ -115,6 +115,10 @@ describe('pricing', () => {
     )
   })
 
+  afterEach(() => {
+    fetchMock.resetMocks()
+  })
+
   describe('getKeyPricingInFiat', () => {
     it('returns key pricing for recipients', async () => {
       expect.assertions(2)

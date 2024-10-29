@@ -1,5 +1,5 @@
 import request from 'supertest'
-import { vi, describe, expect, beforeAll } from 'vitest'
+import { vi, describe, expect, beforeAll, beforeEach } from 'vitest'
 import app from '../../app'
 import { Application } from '../../../src/models/application'
 import { EVENT_CASTER_ADDRESS } from '../../../src/utils/constants'
@@ -211,6 +211,11 @@ describe('eventcaster endpoints', () => {
   beforeAll(async () => {
     await eventCasterApplication.save()
   })
+
+  beforeEach(() => {
+    fetchMock.resetMocks()
+  })
+
   describe('create-event endpoint', () => {
     it('fails without authentication', async () => {
       const response = await request(app)
