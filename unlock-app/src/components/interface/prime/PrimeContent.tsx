@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Placeholder } from '@unlock-protocol/ui'
+import { Button, Modal, Placeholder } from '@unlock-protocol/ui'
 import { useQuery } from '@tanstack/react-query'
 import { config } from '~/config/app'
 import { Web3Service } from '@unlock-protocol/unlock-js'
@@ -10,34 +10,59 @@ import { useUnlockPrime } from '~/hooks/useUnlockPrime'
 import { usePrimeRefund } from '~/hooks/usePrimeRefund'
 import { ethers } from 'ethers'
 import dayjs from '../../../../src/utils/dayjs'
+import { useState } from 'react'
+
+export function ShareRefundModal({
+  isOpen,
+  setIsOpen,
+}: {
+  isOpen: boolean
+  setIsOpen: (isOpen: boolean) => void
+}) {
+  return (
+    <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+      <div className="flex flex-col justify-center gap-4 bg-white">TODO!</div>
+    </Modal>
+  )
+}
 
 export const ClaimableRefund = ({
   refund,
+  claimRefund,
 }: {
-  timestamp: number
-  amount: number
+  refund: {
+    timestamp: number
+    amount: number
+  }
+  claimRefund: any
 }) => {
   const refundDate = new Date(Number(refund.timestamp) * 1000)
   if (refundDate > new Date()) {
     return (
-      <p>
-        You have a refund of{' '}
-        {Number(ethers.formatEther(refund.amount)).toFixed(4)} ETH ! It will be
-        available on {dayjs().from(dayjs(refundDate), true)}.
-      </p>
+      <Button disabled={true} className="w-full">
+        Claim {Number(ethers.formatEther(refund.amount)).toFixed(5)} ETH{' '}
+        {dayjs(refundDate).fromNow()}
+      </Button>
     )
   }
   return (
-    <p>
-      You have a refund! {new Date(Number(refund.timestamp) * 1000).toString()}
-    </p>
+    <Button
+      onClick={() => {
+        claimRefund.mutate()
+      }}
+      className="w-full"
+      loading={claimRefund.isPending}
+    >
+      Claim {Number(ethers.formatEther(refund.amount)).toFixed(4)} ETH
+    </Button>
   )
 }
 
 export const PrimeContent = () => {
+  const [isShareRefundModalOpen, setIsShareRefundModalOpen] = useState(false)
   const router = useRouter()
   const { joinPrime, isPrime } = useUnlockPrime()
-  const { data: refund } = usePrimeRefund()
+  const { data: refund, claimRefund } = usePrimeRefund()
 
   const { data: lock } = useQuery({
     queryKey: ['prime'],
@@ -51,8 +76,18 @@ export const PrimeContent = () => {
     },
   })
 
+  // useEffect(() => {
+  //   if (claimRefund.isSuccess) {
+  //     setIsShareRefundModalOpen(true)
+  //   }
+  // }, [claimRefund.isSuccess])
+
   return (
     <main className="flex flex-col gap-4 text-center md:w-3/4 mx-auto">
+      <ShareRefundModal
+        isOpen={isShareRefundModalOpen}
+        setIsOpen={setIsShareRefundModalOpen}
+      />
       <h1
         className="text-5xl font-extrabold text-transparent uppercase md:text-7xl bg-clip-text"
         style={{
@@ -121,19 +156,21 @@ export const PrimeContent = () => {
               `${lock?.keyPrice} ${lock?.currencySymbol}/mo (~$6)`
             )}
           </h3>
-          {isPrime && refund && refund.amount > 0 ? (
-            <ClaimableRefund refund={refund} />
-          ) : (
-            <Button
-              disabled={isPrime}
-              className="m-2"
-              onClick={() => {
-                joinPrime()
-              }}
-            >
-              {isPrime ? '💫 You are a Prime Member!' : 'Get Unlock Prime'}
-            </Button>
-          )}
+          <div className="m-2 w-full">
+            {isPrime && refund && refund.amount > 0 ? (
+              <ClaimableRefund claimRefund={claimRefund} refund={refund} />
+            ) : (
+              <Button
+                className="w-full"
+                disabled={isPrime}
+                onClick={() => {
+                  joinPrime()
+                }}
+              >
+                {isPrime ? '💫 You are a Prime Member!' : 'Get Unlock Prime'}
+              </Button>
+            )}
+          </div>
           <ul className="flex flex-col pl-4 text-left gap-2">
             <li>
               <h4 className="text-lg font-semibold">
