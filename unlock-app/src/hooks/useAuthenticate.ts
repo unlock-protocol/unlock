@@ -164,6 +164,7 @@ export function useAuthenticate() {
     if (!(await signInWithExistingSession())) {
       setAccount(undefined)
       if (privyAuthenticated) {
+        console.log('I WAS HERE!')
         onSignedInWithPrivy()
       } else {
         privyLogin()

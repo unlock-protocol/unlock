@@ -7,10 +7,37 @@ import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import { useRouter } from 'next/navigation'
 import { useUnlockPrime } from '~/hooks/useUnlockPrime'
+import { usePrimeRefund } from '~/hooks/usePrimeRefund'
+import { ethers } from 'ethers'
+import dayjs from '../../../../src/utils/dayjs'
+
+export const ClaimableRefund = ({
+  refund,
+}: {
+  timestamp: number
+  amount: number
+}) => {
+  const refundDate = new Date(Number(refund.timestamp) * 1000)
+  if (refundDate > new Date()) {
+    return (
+      <p>
+        You have a refund of{' '}
+        {Number(ethers.formatEther(refund.amount)).toFixed(4)} ETH ! It will be
+        available on {dayjs().from(dayjs(refundDate), true)}.
+      </p>
+    )
+  }
+  return (
+    <p>
+      You have a refund! {new Date(Number(refund.timestamp) * 1000).toString()}
+    </p>
+  )
+}
 
 export const PrimeContent = () => {
   const router = useRouter()
   const { joinPrime, isPrime } = useUnlockPrime()
+  const { data: refund } = usePrimeRefund()
 
   const { data: lock } = useQuery({
     queryKey: ['prime'],
@@ -94,15 +121,19 @@ export const PrimeContent = () => {
               `${lock?.keyPrice} ${lock?.currencySymbol}/mo (~$6)`
             )}
           </h3>
-          <Button
-            disabled={isPrime}
-            className="m-2"
-            onClick={() => {
-              joinPrime()
-            }}
-          >
-            {isPrime ? '💫 You are a Prime Member!' : 'Get Unlock Prime'}
-          </Button>
+          {isPrime && refund && refund.amount > 0 ? (
+            <ClaimableRefund refund={refund} />
+          ) : (
+            <Button
+              disabled={isPrime}
+              className="m-2"
+              onClick={() => {
+                joinPrime()
+              }}
+            >
+              {isPrime ? '💫 You are a Prime Member!' : 'Get Unlock Prime'}
+            </Button>
+          )}
           <ul className="flex flex-col pl-4 text-left gap-2">
             <li>
               <h4 className="text-lg font-semibold">
