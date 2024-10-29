@@ -4,6 +4,7 @@ import { isProduction } from '../config/config'
 import { getProviderForNetwork, getPurchaser } from '../fulfillment/dispatcher'
 import networks from '@unlock-protocol/networks'
 import { WalletService } from '@unlock-protocol/unlock-js'
+import { EVENT_CASTER_ADDRESS } from '../utils/constants'
 
 const DEFAULT_NETWORK = isProduction ? 8453 : 84532 // Base or Base Sepolia
 
@@ -86,7 +87,7 @@ export const deployLockForEventCaster = async ({
 
   const addEventsXyzLockManager = lockInterface.encodeFunctionData(
     'addLockManager(address)',
-    ['0x2Eaf2c5E20E028a0A305801748294ba0015A6bea']
+    [EVENT_CASTER_ADDRESS]
   )
   transactions.push(addEventsXyzLockManager)
 
