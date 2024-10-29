@@ -255,7 +255,7 @@ describe('tickets endpoint', () => {
         }),
         headers: { 'Content-Type': 'application/json' },
         method: 'POST',
-        signal: expect.any(Object),
+        signal: expect.any(AbortSignal),
       })
     })
   })
