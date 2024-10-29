@@ -21287,7 +21287,7 @@ __metadata:
     p-retry: "npm:6.2.0"
     parse-data-uri: "npm:0.2.0"
     passkit-generator: "npm:3.1.11"
-    path-to-regexp: "npm:7.1.0"
+    path-to-regexp: "npm:8.0.0"
     pdfmake: "npm:0.2.13"
     pg: "npm:8.12.0"
     rate-limiter-flexible: "npm:5.0.3"
@@ -44403,10 +44403,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"path-to-regexp@npm:7.1.0":
-  version: 7.1.0
-  resolution: "path-to-regexp@npm:7.1.0"
-  checksum: 10/7d1714e80375354c24c9d3a0a4151cfa0f5ac98f29609bddf2dd31750b85f4cfaa4a7b6c030bab0d736d5c4cee2c3224227e610d0b48ca5c8e89778e057bcbd4
+"path-to-regexp@npm:8.0.0":
+  version: 8.0.0
+  resolution: "path-to-regexp@npm:8.0.0"
+  checksum: 10/64a5f946044475ee58c7e3f0875bc9fb3b758d9a5e8707a1dc3e053d8b11a3d20b5322490b3cd580644c226991115c1d10ce69143d2c76dcd3fed637834b8ee5
   languageName: node
   linkType: hard
 
