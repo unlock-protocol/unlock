@@ -6,7 +6,6 @@ import {
   deleteCheckoutConfigById,
 } from '../../operations/checkoutConfigOperations'
 import { PaywallConfig } from '@unlock-protocol/core'
-import logger from '../../logger'
 
 /**
  * Create or update a checkout configuration.
@@ -28,7 +27,6 @@ export const createOrUpdateCheckoutConfig: RequestHandler = async (
   }
   try {
     const checkoutConfig = await PaywallConfig.strip().parseAsync(config)
-    logger.info('user address', request.user!.walletAddress)
 
     const storedConfig = await saveCheckoutConfig({
       id,

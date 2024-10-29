@@ -66,12 +66,10 @@ const isUserAuthorized = async (
   }
   return false
 }
-
 /**
  * Creates or updates a checkout configuration
  * @param args - The SaveCheckoutConfigArgs object
  * @returns The created or updated checkout configuration
- * @throws Error if user is not authorized to update the config
  */
 export const saveCheckoutConfig = async ({
   id,
@@ -80,15 +78,6 @@ export const saveCheckoutConfig = async ({
   config,
 }: SaveCheckoutConfigArgs) => {
   const generatedId = randomUUID()
-
-  if (id) {
-    const existingConfig = await CheckoutConfig.findOne({
-      where: { id },
-    })
-    if (existingConfig && !(await isUserAuthorized(user, existingConfig))) {
-      throw new Error('User not authorized to update this configuration')
-    }
-  }
 
   // Forcing the referrer to exist and be set to the creator of the config
   if (!config.referrer) {
