@@ -1,6 +1,6 @@
 import { Tooltip } from '@unlock-protocol/ui'
 import Link from 'next/link'
-import { FiTwitter } from 'react-icons/fi'
+import { FiX } from 'react-icons/fi'
 import { Metadata } from '~/components/interface/locks/metadata/utils'
 import { getEventDate } from './utils'
 import { config } from '~/config/app'
@@ -56,18 +56,13 @@ export const TweetItButton = ({
   tweetIntent.searchParams.set('url', urlToShare)
 
   return (
-    <Tooltip
-      delay={0}
-      label="Share on Twitter"
-      tip="Share on Twitter"
-      side="bottom"
-    >
+    <Tooltip delay={0} label="Share on X" tip="Share on X" side="bottom">
       <Link
         target="_blank"
         href={tweetIntent.toString()}
         className="w-12 h-12 flex justify-center items-center"
       >
-        <FiTwitter className="w-6 h-6" />
+        <FiX className="w-6 h-6" />
       </Link>
     </Tooltip>
   )
