@@ -1,5 +1,6 @@
 import { PrivyProvider } from '@privy-io/react-auth'
 import { ReactNode } from 'react'
+import { config } from './app'
 
 export const Privy = ({ children }: { children: ReactNode }) => {
   return (
@@ -17,7 +18,7 @@ export const Privy = ({ children }: { children: ReactNode }) => {
           standalone: true,
         },
       }}
-      appId="cm0ptl8td04urb29fpotv9q9y"
+      appId={config.privyAppId}
     >
       {children}
     </PrivyProvider>

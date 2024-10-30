@@ -81,7 +81,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   // The WETH token address, used for value calculations
   address public weth;
 
-  // DEPRECATED: udt was the name of the first governance token. 
+  // DEPRECATED: udt was the name of the first governance token.
   // Kept for backward compatibility; however, the `governanceToken` getter is now preferred.
   address public udt;
 
@@ -116,6 +116,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   error Unlock__MISSING_LOCK(address lockAddress);
   error Unlock__INVALID_AMOUNT();
   error Unlock__INVALID_TOKEN();
+  error Unlock__FAILED_LOCK_CALL(uint callIndex);
 
   // Events
   event NewLock(address indexed lockOwner, address indexed newLockAddress);
@@ -199,8 +200,8 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     // if the template has not been initialized,
     // claim the template so that no-one else could
     try IPublicLock(impl).initialize(address(this), 0, address(0), 0, 0, "") {
-      // renounce the lock manager role that was added during initialization
-      IPublicLock(impl).renounceLockManager();
+      // renounce Unlock's lock manager role that was added during initialization
+      IPublicLock(impl).revokeRole(keccak256("LOCK_MANAGER"), address(this));
     } catch {
       // failure means that the template is already initialized
     }
@@ -279,18 +280,18 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    * Create an upgradeable lock using a specific PublicLock version
    * @param data bytes containing the call to initialize the lock template
    * (refer to createUpgradeableLock for more details)
-   * @param _lockVersion the version of the lock to use
+   * @param lockVersion the version of the lock to use
    */
   function createUpgradeableLockAtVersion(
     bytes memory data,
-    uint16 _lockVersion
+    uint16 lockVersion
   ) public returns (address) {
     if (proxyAdminAddress == address(0)) {
       revert Unlock__MISSING_PROXY_ADMIN();
     }
 
     // get lock version
-    address publicLockImpl = _publicLockImpls[_lockVersion];
+    address publicLockImpl = _publicLockImpls[lockVersion];
     if (publicLockImpl == address(0)) {
       revert Unlock__MISSING_LOCK_TEMPLATE();
     }
@@ -313,6 +314,32 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     // trigger event
     emit NewLock(msg.sender, newLock);
     return newLock;
+  }
+
+  /**
+   * Create an upgradeable lock using a specific PublicLock version, and execute
+   * transaction(s) on the created lock.
+   * @param data bytes containing the call to initialize the lock template
+   * (refer to createUpgradeableLock for more details).
+   * Importantly, the initial lock manager needs to be set to this contract.
+   * @param lockVersion the version of the lock to use
+   * @param transactions an array of transactions to be executed on the newly
+   * created lock. It is recommended to include a transaction to renounce the
+   * lock manager as the last transaction.
+   */
+  function createUpgradeableLockAtVersion(
+    bytes memory data,
+    uint16 lockVersion,
+    bytes[] calldata transactions
+  ) public returns (address newLock) {
+    newLock = createUpgradeableLockAtVersion(data, lockVersion);
+    // Execute all transactions
+    for (uint256 i = 0; i < transactions.length; i++) {
+      (bool success, ) = newLock.call(transactions[i]);
+      if (!success) {
+        revert Unlock__FAILED_LOCK_CALL(i);
+      }
+    }
   }
 
   /**

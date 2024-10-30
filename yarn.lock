@@ -9692,6 +9692,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@headlessui/react@npm:2.2.0":
+  version: 2.2.0
+  resolution: "@headlessui/react@npm:2.2.0"
+  dependencies:
+    "@floating-ui/react": "npm:^0.26.16"
+    "@react-aria/focus": "npm:^3.17.1"
+    "@react-aria/interactions": "npm:^3.21.3"
+    "@tanstack/react-virtual": "npm:^3.8.1"
+  peerDependencies:
+    react: ^18 || ^19 || ^19.0.0-rc
+    react-dom: ^18 || ^19 || ^19.0.0-rc
+  checksum: 10/baaa65f2cadf87d6ef5a15de5c8e532b79f491258166af6f3fe7b05a9196de4db9f3414b62192b4588c610786acb6623e3d775fc23d9001f6b31d13c4a5854c1
+  languageName: node
+  linkType: hard
+
 "@headlessui/react@npm:^1.7.18":
   version: 1.7.19
   resolution: "@headlessui/react@npm:1.7.19"
@@ -21287,7 +21302,7 @@ __metadata:
     p-retry: "npm:6.2.0"
     parse-data-uri: "npm:0.2.0"
     passkit-generator: "npm:3.1.11"
-    path-to-regexp: "npm:7.1.0"
+    path-to-regexp: "npm:8.2.0"
     pdfmake: "npm:0.2.13"
     pg: "npm:8.12.0"
     rate-limiter-flexible: "npm:5.0.3"
@@ -21299,7 +21314,7 @@ __metadata:
     sequelize: "npm:6.37.3"
     sequelize-cli: "npm:6.6.2"
     siwe: "npm:2.3.2"
-    stripe: "npm:16.2.0"
+    stripe: "npm:17.2.1"
     supertest: "npm:7.0.0"
     tsx: "npm:4.16.5"
     typescript: "npm:5.5.4"
@@ -21651,7 +21666,7 @@ __metadata:
   resolution: "@unlock-protocol/unlock-protocol-com@workspace:unlock-protocol-com"
   dependencies:
     "@babel/core": "npm:7.25.2"
-    "@headlessui/react": "npm:2.1.9"
+    "@headlessui/react": "npm:2.2.0"
     "@observablehq/plot": "npm:0.6.16"
     "@radix-ui/react-avatar": "npm:1.1.1"
     "@tanstack/react-query": "npm:5.56.2"
@@ -44403,10 +44418,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"path-to-regexp@npm:7.1.0":
-  version: 7.1.0
-  resolution: "path-to-regexp@npm:7.1.0"
-  checksum: 10/7d1714e80375354c24c9d3a0a4151cfa0f5ac98f29609bddf2dd31750b85f4cfaa4a7b6c030bab0d736d5c4cee2c3224227e610d0b48ca5c8e89778e057bcbd4
+"path-to-regexp@npm:8.2.0":
+  version: 8.2.0
+  resolution: "path-to-regexp@npm:8.2.0"
+  checksum: 10/23378276a172b8ba5f5fb824475d1818ca5ccee7bbdb4674701616470f23a14e536c1db11da9c9e6d82b82c556a817bbf4eee6e41b9ed20090ef9427cbb38e13
   languageName: node
   linkType: hard
 
@@ -50964,13 +50979,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stripe@npm:16.2.0":
-  version: 16.2.0
-  resolution: "stripe@npm:16.2.0"
+"stripe@npm:17.2.1":
+  version: 17.2.1
+  resolution: "stripe@npm:17.2.1"
   dependencies:
     "@types/node": "npm:>=8.1.0"
     qs: "npm:^6.11.0"
-  checksum: 10/4d23d60bdc7a6f6e52a4865c91602621e664eec7a7b347c2f4d15ef2128a729fe9e28ed2ce029016bdc4643798647499e7797bf6b546b74f9771c2648bf9c2e3
+  checksum: 10/596c79a03600f115bfde0c59336db7352d6e0d439a6dfceca44032fdb29c65dcfde9e60363263b08395166a0bf136de0ef21557b3675b9c391f253fc2bea3935
   languageName: node
   linkType: hard
 

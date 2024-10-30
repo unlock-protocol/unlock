@@ -431,12 +431,67 @@ export function Select({ checkoutService }: Props) {
     isLoading,
   ])
 
+  useEffect(() => {
+    const selectedLock = searchParams.get('selectedLock')
+    const privyOAuthState = searchParams.get('privy_oauth_state')
+    const privyOAuthProvider = searchParams.get('privy_oauth_provider')
+    const privyOAuthCode = searchParams.get('privy_oauth_code')
+
+    if (
+      selectedLock &&
+      privyOAuthState &&
+      privyOAuthProvider &&
+      privyOAuthCode
+    ) {
+      const lock = locks?.find((l) => l.address === selectedLock)
+      if (lock) {
+        checkoutService.send({
+          type: 'CONNECT',
+          lock,
+          existingMember: lock.isMember,
+          expiredMember: lock.isExpired,
+          skipQuantity,
+          skipRecipient,
+          recipients: account ? [account] : [],
+          hook: hookType,
+        })
+
+        // clean up urls
+        const newSearchParams = new URLSearchParams(searchParams.toString())
+        newSearchParams.delete('selectedLock')
+        newSearchParams.delete('privy_oauth_state')
+        newSearchParams.delete('privy_oauth_provider')
+        newSearchParams.delete('privy_oauth_code')
+        router.replace(`${pathname}?${newSearchParams.toString()}`, {
+          scroll: false,
+        })
+      }
+    }
+  }, [
+    searchParams,
+    account,
+    checkoutService,
+    locks,
+    hookType,
+    skipQuantity,
+    skipRecipient,
+    router,
+    pathname,
+  ])
+
   const selectLock = async (event: any) => {
     event.preventDefault()
 
     if (!lock) {
       return
     }
+
+    // add selectedLock to url
+    const newSearchParams = new URLSearchParams(searchParams.toString())
+    newSearchParams.set('selectedLock', lock.address)
+    router.replace(`${pathname}?${newSearchParams.toString()}`, {
+      scroll: false,
+    })
 
     if (paywallConfig.useDelegatedProvider) {
       await signInWithSIWE()

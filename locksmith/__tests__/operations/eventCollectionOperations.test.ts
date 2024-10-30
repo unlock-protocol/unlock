@@ -438,6 +438,7 @@ describe('eventCollectionOperations', () => {
           eventSlug: 'test-event',
           collectionSlug: 'test-collection',
           isApproved: true,
+          submitterAddress: '0x123',
         },
       })
       expect(result).toEqual({

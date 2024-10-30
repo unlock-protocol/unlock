@@ -6,14 +6,19 @@ import {
   getProviderForNetwork,
   getPurchaser,
 } from '../../fulfillment/dispatcher'
-import { isProduction } from '../../config/config'
-
-const DEFAULT_NETWORK = isProduction ? 8453 : 84532 // Base or Base Sepolia
+import { deployLockForEventCaster } from '../../operations/eventCasterOperations'
 
 // This is the API endpoint used by EventCaster to create events
 const CreateEventBody = z.object({
   id: z.string(),
   title: z.string(),
+  hosts: z.array(
+    z.object({
+      verified_addresses: z.object({
+        eth_addresses: z.array(z.string()),
+      }),
+    })
+  ),
 })
 
 // This is the API endpoint used by EventCaster to create events
@@ -26,29 +31,17 @@ const RsvpBody = z.object({
 })
 
 export const createEvent: RequestHandler = async (request, response) => {
-  const { title } = await CreateEventBody.parseAsync(request.body)
-  const lockParams = {
-    name: title,
-    expirationDuration: -1, // Never expire
-    maxNumberOfKeys: 0, // none for sale (only granted!)
-    keyPrice: 0, // free
-  }
-  const [provider, wallet] = await Promise.all([
-    getProviderForNetwork(DEFAULT_NETWORK),
-    getPurchaser({ network: DEFAULT_NETWORK }),
-  ])
-
-  const walletService = new WalletService(networks)
-  await walletService.connect(provider, wallet)
-  const lockAddress = await walletService.createLock(lockParams)
-
-  // TODO: add managers
-  // TODO: set transfers?
-  // TODO: set metadata for event
-
-  return response
-    .status(201)
-    .json({ address: lockAddress, network: DEFAULT_NETWORK })
+  const {
+    title,
+    id: eventId,
+    hosts,
+  } = await CreateEventBody.parseAsync(request.body)
+  const { address, network } = await deployLockForEventCaster({
+    title,
+    hosts,
+    eventId,
+  })
+  return response.status(201).json({ address, network })
 }
 
 // This is the API endpoint used by EventCaster to mint RSVP tokens
@@ -66,16 +59,11 @@ export const rsvpForEvent: RequestHandler = async (request, response) => {
     return response.status(422).json({ message: 'Could not retrieve event' })
   }
 
-  if (!event.contract) {
+  if (!(event.contract?.address && event.contract?.network)) {
     return response
       .status(422)
       .json({ message: 'This event does not have a contract attached.' })
   }
-
-  const [provider, wallet] = await Promise.all([
-    getProviderForNetwork(event.contract.network),
-    getPurchaser({ network: event.contract.network }),
-  ])
 
   // Get the recipient
   if (!user.verified_addresses.eth_addresses[0]) {
@@ -83,6 +71,11 @@ export const rsvpForEvent: RequestHandler = async (request, response) => {
       .status(422)
       .json({ message: 'User does not have a verified address.' })
   }
+
+  const [provider, wallet] = await Promise.all([
+    getProviderForNetwork(event.contract.network),
+    getPurchaser({ network: event.contract.network }),
+  ])
 
   const walletService = new WalletService(networks)
   await walletService.connect(provider, wallet)
@@ -97,4 +90,15 @@ export const rsvpForEvent: RequestHandler = async (request, response) => {
     address: event.contract.address,
     ...token,
   })
+}
+
+// Deletes an event. Unsure how to proceed here...
+export const deleteEvent: RequestHandler = async (_request, response) => {
+  return response.status(200).json({})
+}
+
+// Removes the RSVP for an event (burns the ticket!)
+export const unrsvpForEvent: RequestHandler = async (_request, response) => {
+  // TODO: implement this
+  return response.status(200).json({})
 }

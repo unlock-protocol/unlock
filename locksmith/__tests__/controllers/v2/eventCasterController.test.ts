@@ -1,6 +1,9 @@
 import request from 'supertest'
-import { vi, describe, expect } from 'vitest'
+import { vi, describe, expect, beforeAll, beforeEach } from 'vitest'
 import app from '../../app'
+import { Application } from '../../../src/models/application'
+import { EVENT_CASTER_ADDRESS } from '../../../src/utils/constants'
+import { ethers } from 'ethers'
 
 const lockAddress = '0xce332211f030567bd301507443AD9240e0b13644'
 const tokenId = 1337
@@ -8,18 +11,20 @@ const owner = '0xCEEd9585854F12F81A0103861b83b995A64AD915'
 
 const mockWalletService = {
   connect: vi.fn(),
-  createLock: async () => {
-    return lockAddress
-  },
   grantKey: async () => {
     return { id: tokenId, owner }
   },
 }
 
 vi.mock('@unlock-protocol/unlock-js', () => ({
-  // Web3Service: function Web3Service() {},
   WalletService: function WalletService() {
     return mockWalletService
+  },
+}))
+
+vi.mock('../../../src/operations/eventCasterOperations', () => ({
+  deployLockForEventCaster: async () => {
+    return { address: lockAddress, network: 84532 }
   },
 }))
 
@@ -197,12 +202,51 @@ const eventCasterRsvp = {
   timestamp: 1729197029821,
 }
 
+const eventCasterApplication = new Application()
+eventCasterApplication.name = 'EventCaster'
+eventCasterApplication.walletAddress = EVENT_CASTER_ADDRESS
+eventCasterApplication.key = Buffer.from(crypto.randomUUID()).toString('base64')
+
 describe('eventcaster endpoints', () => {
+  beforeAll(async () => {
+    await eventCasterApplication.save()
+  })
+
+  beforeEach(() => {
+    fetchMock.resetMocks()
+  })
+
   describe('create-event endpoint', () => {
+    it('fails without authentication', async () => {
+      const response = await request(app)
+        .post(`/v2/eventcaster/create-event`)
+        .set('Accept', 'json')
+        .send(eventCasterEvent)
+
+      expect(response.status).toBe(401)
+    })
+
+    it('fails with the wrong authentication', async () => {
+      const badApplication = new Application()
+      badApplication.name = 'Fake EventCaster'
+      badApplication.walletAddress = ethers.Wallet.createRandom().address
+      badApplication.key = Buffer.from(crypto.randomUUID()).toString('base64')
+      await badApplication.save()
+
+      const response = await request(app)
+        .post(`/v2/eventcaster/create-event`)
+        .set('Accept', 'json')
+        .set('Authorization', `Api-key ${badApplication.key}`)
+        .send(eventCasterEvent)
+
+      expect(response.status).toBe(403)
+    })
+
     it('creates the contract and returns its address', async () => {
       const response = await request(app)
         .post(`/v2/eventcaster/create-event`)
         .set('Accept', 'json')
+        .set('Authorization', `Api-key ${eventCasterApplication.key}`)
         .send(eventCasterEvent)
 
       expect(response.status).toBe(201)
@@ -218,6 +262,7 @@ describe('eventcaster endpoints', () => {
       const response = await request(app)
         .post(`/v2/eventcaster/${eventCasterEvent.id}/rsvp`)
         .set('Accept', 'json')
+        .set('Authorization', `Api-key ${eventCasterApplication.key}`)
         .send(eventCasterRsvp)
 
       expect(response.status).toBe(201)
@@ -225,6 +270,32 @@ describe('eventcaster endpoints', () => {
       expect(response.body.owner).toBe(owner)
       expect(response.body.network).toBe(eventCasterEvent.contract.network)
       expect(response.body.address).toBe(eventCasterEvent.contract.address)
+    })
+  })
+  describe('delete-event endpoint', () => {
+    it('should be able to delete an event', async () => {
+      const response = await request(app)
+        .post(`/v2/eventcaster/delete-event`)
+        .set('Accept', 'json')
+        .set('Authorization', `Api-key ${eventCasterApplication.key}`)
+        .send({ id: eventCasterEvent.id })
+
+      expect(response.status).toBe(200)
+    })
+  })
+  describe('unrsvp-for-event endpoint', () => {
+    it('burns the token', async () => {
+      fetchMock.mockResponseOnce(
+        JSON.stringify({ success: true, event: eventCasterEvent })
+      )
+
+      const response = await request(app)
+        .post(`/v2/eventcaster/${eventCasterEvent.id}/unrsvp`)
+        .set('Accept', 'json')
+        .set('Authorization', `Api-key ${eventCasterApplication.key}`)
+        .send(eventCasterRsvp)
+
+      expect(response.status).toBe(200)
     })
   })
 })
