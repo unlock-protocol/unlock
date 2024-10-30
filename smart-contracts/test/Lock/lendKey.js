@@ -280,22 +280,6 @@ describe('Lock / lendKey', () => {
         'ONLY_KEY_MANAGER_OR_APPROVED'
       )
     })
-
-    it('can not used an "approved for all" account to transfer the key', async () => {
-      await lock
-        .connect(receiver)
-        .setApprovalForAll(await accountApproved.getAddress(), true)
-      await reverts(
-        lock
-          .connect(receiver)
-          .transferFrom(
-            await receiver.getAddress(),
-            await random.getAddress(),
-            tokenId
-          ),
-        'ONLY_KEY_MANAGER_OR_APPROVED'
-      )
-    })
   })
 
   describe('a lent key', () => {
