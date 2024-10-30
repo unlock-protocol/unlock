@@ -41,11 +41,11 @@ export const getEventDetailsByLock: RequestHandler = async (
 }
 
 export const EventBody = z.object({
-  id: z.number().optional(),
+  id: z.number().nullish(),
   data: z.any(),
   checkoutConfig: z.object({
     config: PaywallConfig,
-    id: z.string().optional(),
+    id: z.string().nullish(),
   }),
 })
 export type EventBodyType = z.infer<typeof EventBody>

@@ -11,8 +11,8 @@ const Hub = z.object({
   topic: z.string().url(),
   callback: z.string().url(),
   mode: z.enum(['subscribe', 'unsubscribe']),
-  lease_seconds: z.number().positive().optional(),
-  secret: z.string().optional(),
+  lease_seconds: z.number().positive().nullish(),
+  secret: z.string().nullish(),
 })
 
 interface HookControllerOptions {
