@@ -23,7 +23,7 @@ const inter = Inter({
 })
 
 // paths that shouldn't be wrapped in the default layout
-const UNWRAPPED_PATHS = ['/checkout']
+const UNWRAPPED_PATHS = ['/checkout', '/demo']
 
 export default function RootLayout({
   children,
