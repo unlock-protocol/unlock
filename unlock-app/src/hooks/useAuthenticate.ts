@@ -15,6 +15,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useProvider } from './useProvider'
 import AuthenticationContext from '~/contexts/AuthenticationContext'
 
+let executingOnSignedInWithPrivy = false
 // This hook includes *all* signIn and signOut methods
 // TODO: consider adding useSession() stuff here too?
 export function useAuthenticate() {
@@ -31,6 +32,7 @@ export function useAuthenticate() {
     getAccessToken: privyGetAccessToken,
     ready: privyReady,
     authenticated: privyAuthenticated,
+    user,
   } = usePrivy()
   const queryClient = useQueryClient()
   const { siweSign } = useSIWE()
@@ -39,6 +41,12 @@ export function useAuthenticate() {
   // This method is meant to be called when the user is signed in with Privy,
   // BUT NOT yet signed in with Locksmith and hence does not have an access token.
   const onSignedInWithPrivy = async () => {
+    // Adding a poorman semaphore here because privy calls every
+    // time the hook is re-rendered
+    if (executingOnSignedInWithPrivy) {
+      return
+    }
+    executingOnSignedInWithPrivy = true
     try {
       const accessToken = await privyGetAccessToken()
       const identityToken = cookies['privy-id-token']
@@ -58,6 +66,7 @@ export function useAuthenticate() {
       console.error(error)
       return null
     }
+    executingOnSignedInWithPrivy = false
   }
 
   // When a user is logged in, this method is called to set the account and refetch the session
@@ -178,6 +187,7 @@ export function useAuthenticate() {
 
   return {
     account,
+    email: user?.email?.address,
     signInWithSIWE,
     signInWithPrivy,
     signOut,
