@@ -1,13 +1,13 @@
 'use client'
 
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { Placeholder } from '@unlock-protocol/ui'
 import { useUserEvents } from '~/hooks/useUserEvents'
 import { EventCard } from './EventCard'
 import { WalletNotConnected } from '~/components/interface/layouts/index/WalletNotConnected'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 export const EventList = () => {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const { data: userEvents, isPending: isLoadingUserEvents } = useUserEvents(
     account!
   )

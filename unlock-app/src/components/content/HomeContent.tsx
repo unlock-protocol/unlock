@@ -1,35 +1,29 @@
-import { useEffect } from 'react'
-import Head from 'next/head'
-import { pageTitle } from '../../constants'
-import { TwitterTags } from '../page/TwitterTags'
-import { OpenGraphTags } from '../page/OpenGraphTags'
-import { AppLayout } from '../interface/layouts/AppLayout'
-import { useRouter } from 'next/navigation'
-import { useAuth } from '~/contexts/AuthenticationContext'
-import Loading from '../interface/Loading'
+'use client'
+
 import { Launcher } from '../interface/Launcher'
 import { useSession } from '~/hooks/useSession'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
+import LocksContent from './lock/LocksContent'
+import { Placeholder } from '@unlock-protocol/ui'
 
 export const HomeContent = () => {
   const { isLoading } = useSession()
-  const router = useRouter()
-  const { account } = useAuth()
 
-  useEffect(() => {
-    if (account) {
-      router.push('/locks')
-    }
-  }, [account, router])
+  const { account } = useAuthenticate()
 
   return (
-    <AppLayout authRequired={false} showLinks={false}>
-      <Head>
-        <title>{pageTitle()}</title>
-        <TwitterTags />
-        <OpenGraphTags />
-      </Head>
-      {account && <Loading />}
+    <>
+      {isLoading && (
+        <Placeholder.Root>
+          <Placeholder.Card />
+        </Placeholder.Root>
+      )}
+      {account && (
+        <div className="flex flex-col gap-4">
+          <LocksContent />
+        </div>
+      )}
       {!account && !isLoading && <Launcher />}
-    </AppLayout>
+    </>
   )
 }

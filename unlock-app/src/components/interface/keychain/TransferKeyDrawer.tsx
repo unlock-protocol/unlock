@@ -14,7 +14,7 @@ import { addressMinify } from '~/utils/strings'
 import { useMutation } from '@tanstack/react-query'
 import { useLockData } from '~/hooks/useLockData'
 import { useEffect } from 'react'
-import { useAuth } from '~/contexts/AuthenticationContext'
+import { useProvider } from '~/hooks/useProvider'
 
 interface TransferKeyDrawerProps {
   isOpen: boolean
@@ -57,7 +57,7 @@ export const TransferKeyDrawer = ({
   })
 
   const web3Service = useWeb3Service()
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
   const newOwner = watch('newOwner', '')
 
   const { lock } = useLockData({

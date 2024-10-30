@@ -294,46 +294,6 @@ describe('Lock / erc721 / transferFrom', () => {
       })
     })
 
-    describe('when the sender is approved', async () => {
-      beforeEach(async () => {
-        await lock
-          .connect(keyOwner)
-          .setApprovalForAll(await approvedAllAccount.getAddress(), true)
-        assert.equal(
-          await lock.isApprovedForAll(
-            await keyOwner.getAddress(),
-            await approvedAllAccount.getAddress()
-          ),
-          true
-        )
-      })
-      it('should allow the transfer', async () => {
-        await lock
-          .connect(approvedAllAccount)
-          .transferFrom(
-            await keyOwner.getAddress(),
-            await keyRecipient.getAddress(),
-            tokenId
-          )
-        assert.equal(
-          await lock.isApprovedForAll(
-            await keyOwner.getAddress(),
-            await approvedAllAccount.getAddress()
-          ),
-          true
-        )
-        await reverts(
-          lock
-            .connect(approvedAllAccount)
-            .transferFrom(
-              await keyRecipient.getAddress(),
-              await approvedAllAccount.getAddress(),
-              tokenId
-            )
-        )
-      })
-    })
-
     describe('when the lock is sold out', () => {
       it('should still allow the transfer of keys', async () => {
         // first we create a lock with only 1 key

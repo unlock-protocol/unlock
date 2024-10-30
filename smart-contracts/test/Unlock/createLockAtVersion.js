@@ -4,7 +4,8 @@ const {
   createLockCalldata,
   getEvent,
 } = require('@unlock-protocol/hardhat-helpers')
-const { ADDRESS_ZERO, reverts } = require('../helpers')
+const { ADDRESS_ZERO, reverts, LOCK_MANAGER_ROLE } = require('../helpers')
+const { keccak256, toUtf8Bytes } = require('ethers')
 // lock args
 const args = [
   60 * 60 * 24 * 30, // expirationDuration: 30 days
@@ -109,5 +110,93 @@ describe('Unlock / createUpgradeableLockAtVersion', () => {
       unlock.createUpgradeableLockAtVersion(calldata, 3),
       'MISSING_LOCK_TEMPLATE'
     )
+  })
+
+  describe('with extra transactiions', () => {
+    it('executes the extra transactions', async () => {
+      const [deployer, lockManager] = await ethers.getSigners()
+
+      const calldata = await createLockCalldata({
+        args,
+        from: await unlock.getAddress(),
+      })
+
+      const setLockMetadata = await publicLock.interface.encodeFunctionData(
+        'setLockMetadata(string,string,string)',
+        ['A brand new name', 'HAHA', 'https://example.com']
+      )
+
+      const addLockManager = await publicLock.interface.encodeFunctionData(
+        'grantRole(bytes32, address)',
+        [LOCK_MANAGER_ROLE, await lockManager.getAddress()]
+      )
+
+      const renounceLockManager = await publicLock.interface.encodeFunctionData(
+        'renounceRole(bytes32, address)',
+        [LOCK_MANAGER_ROLE, await unlock.getAddress()]
+      )
+
+      const tx = await unlock[
+        'createUpgradeableLockAtVersion(bytes,uint16,bytes[])'
+      ](calldata, 1, [setLockMetadata, addLockManager, renounceLockManager])
+      const receipt = await tx.wait()
+
+      const {
+        args: { newLockAddress: lock1Address },
+      } = await getEvent(receipt, 'NewLock')
+
+      const lock = await ethers.getContractAt(
+        'contracts/PublicLock.sol:PublicLock',
+        lock1Address
+      )
+
+      // lock creation params
+      assert.equal(await lock.expirationDuration(), args[0])
+      assert.equal(await lock.tokenAddress(), args[1])
+      assert.equal(await lock.keyPrice(), args[2])
+      assert.equal(await lock.maxNumberOfKeys(), args[3])
+
+      // Extra transactions!
+      assert.equal(await lock.name(), 'A brand new name')
+      expect(
+        await lock.hasRole(
+          keccak256(toUtf8Bytes('LOCK_MANAGER')),
+          await lockManager.getAddress()
+        )
+      ).to.equal(true)
+      expect(
+        await lock.hasRole(
+          keccak256(toUtf8Bytes('LOCK_MANAGER')),
+          await unlock.getAddress()
+        )
+      ).to.equal(false)
+    })
+    it('fails to deploy if one of the transaction fails', async () => {
+      const [deployer] = await ethers.getSigners()
+      const calldata = await createLockCalldata({
+        args,
+        from: await unlock.getAddress(),
+      })
+
+      const setLockMetadata = await publicLock.interface.encodeFunctionData(
+        'setLockMetadata(string,string,string)',
+        ['A brand new name', 'HAHA', 'https://example.com']
+      )
+
+      const renounceLockManager = await publicLock.interface.encodeFunctionData(
+        'renounceRole(bytes32, address)',
+        [LOCK_MANAGER_ROLE, await unlock.getAddress()]
+      )
+
+      // Renouncing first will fail the 2nd call!
+      await reverts(
+        unlock['createUpgradeableLockAtVersion(bytes,uint16,bytes[])'](
+          calldata,
+          1,
+          [renounceLockManager, setLockMetadata]
+        ),
+        'FAILED_LOCK_CALL(1)'
+      )
+    })
   })
 })

@@ -4,20 +4,15 @@ import {
   AddressInput,
   isAddressOrEns,
   Placeholder,
+  Modal,
 } from '@unlock-protocol/ui'
 import { Controller, useForm, useWatch } from 'react-hook-form'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useEffect, useState } from 'react'
-import {
-  Transition,
-  Dialog,
-  DialogPanel,
-  TransitionChild,
-} from '@headlessui/react'
 import { onResolveName } from '~/utils/resolvers'
 import { EventCollection } from '@unlock-protocol/unlock-js'
 import { useEventCollectionManagers } from '~/hooks/useEventCollectionManagers'
 import { WrappedAddress } from '~/components/interface/WrappedAddress'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface CollectionManagerFormProps {
   eventCollection: EventCollection
@@ -71,74 +66,52 @@ const RenounceModal = ({
 
   return (
     <>
-      <Transition show={isOpen} appear>
-        <Dialog
-          as="div"
-          className="relative z-50"
-          onClose={() => setIsOpen(false)}
-          open
+      <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+        <form
+          onSubmit={handleSubmit(onRenounce)}
+          className="flex flex-col gap-6 text-center"
         >
-          <div className="fixed inset-0 bg-opacity-25 backdrop-filter backdrop-blur-sm bg-zinc-500" />
-          <TransitionChild
-            enter="transition ease-out duration-300"
-            enterFrom="opacity-0 translate-y-1"
-            enterTo="opacity-100"
-            leave="transition ease-in duration-150"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0 translate-y-1"
+          <form
+            onSubmit={handleSubmit(onRenounce)}
+            className="flex flex-col gap-6 text-center"
           >
-            <div className="fixed inset-0 p-6 overflow-y-auto">
-              <div className="flex items-center justify-center min-h-full">
-                <DialogPanel className="w-full max-w-md p-8 bg-white rounded-2xl">
-                  <form
-                    onSubmit={handleSubmit(onRenounce)}
-                    className="flex flex-col gap-6 text-center"
-                  >
-                    <div className="overflow-hidden bg-center rounded-lg">
-                      <img
-                        className="object-cover h-40"
-                        src="/images/illustrations/img-error.svg"
-                        alt="img error"
-                      />
-                    </div>
-                    <div className="flex flex-col gap-4">
-                      <h3 className="text-4xl font-bold text-brand-dark">
-                        Hold Your Horses
-                      </h3>
-                      <span className="text-base text-brand-dark">
-                        You are about to permanently renounce yourself as a
-                        Collection manager. You will not be able to revert this
-                        action. Please type &ldquo;renounce&rdquo; to confirm.
-                      </span>
-                    </div>
-                    <Input
-                      placeholder="renounce"
-                      {...register('confirm')}
-                      autoComplete="off"
-                    />
-                    <div className="flex gap-4">
-                      <Button
-                        className="w-full"
-                        variant="outlined-primary"
-                        onClick={() => setIsOpen(false)}
-                      >
-                        Cancel
-                      </Button>
-                      <Button
-                        className="w-full"
-                        type="submit"
-                        disabled={!confirmMatch}
-                      >
-                        Confirm
-                      </Button>
-                    </div>
-                  </form>
-                </DialogPanel>
-              </div>
+            <div className="overflow-hidden bg-center rounded-lg">
+              <img
+                className="object-cover h-40"
+                src="/images/illustrations/img-error.svg"
+                alt="img error"
+              />
             </div>
-          </TransitionChild>
-        </Dialog>
-      </Transition>
+            <div className="flex flex-col gap-4">
+              <h3 className="text-4xl font-bold text-brand-dark">
+                Hold Your Horses
+              </h3>
+              <span className="text-base text-brand-dark">
+                You are about to permanently renounce yourself as a Collection
+                manager. You will not be able to revert this action. Please type
+                &ldquo;renounce&rdquo; to confirm.
+              </span>
+            </div>
+            <Input
+              placeholder="renounce"
+              {...register('confirm')}
+              autoComplete="off"
+            />
+            <div className="flex gap-4">
+              <Button
+                className="w-full"
+                variant="outlined-primary"
+                onClick={() => setIsOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button className="w-full" type="submit" disabled={!confirmMatch}>
+                Confirm
+              </Button>
+            </div>
+          </form>
+        </form>
+      </Modal>
     </>
   )
 }
@@ -151,7 +124,7 @@ const CollectionManagerCard = ({
   isRemoving,
 }: CollectionManagerCardProps) => {
   const [renounceModal, setRenounceModal] = useState(false)
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const isLoggedUser = account === manager
   const isManager = collectionManagers.includes(manager)
 
