@@ -139,7 +139,7 @@ export const createPaymentIntent: RequestHandler = async (
       pricing,
       network,
       stripeConnectApiKey,
-      recurring,
+      recurring || 0,
       data,
       referrers
     )
