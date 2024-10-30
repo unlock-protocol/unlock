@@ -8,7 +8,6 @@ import Providers from './providers'
 
 import TagManagerScript from '../src/components/TagManagerScript'
 import { SpeedInsights } from '@vercel/speed-insights/next'
-import { PromptEmailLink } from '~/components/interface/PromptEmailLink'
 import TermsOfServiceModal from '~/components/interface/layouts/index/TermsOfServiceModal'
 import DashboardHeader from '~/components/interface/layouts/index/DashboardHeader'
 import { ConnectModal } from '~/components/interface/connect/ConnectModal'
@@ -57,7 +56,6 @@ export default function RootLayout({
               </Container>
             </div>
           )}
-          <PromptEmailLink />
         </Providers>
         <TagManagerScript />
         <SpeedInsights />
