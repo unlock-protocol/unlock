@@ -32,12 +32,15 @@ vi.mock('../../src/models/EventCollection', () => ({
   EventCollection: {
     findByPk: vi.fn(),
     create: vi.fn(),
+    belongsToMany: vi.fn(),
   },
 }))
 
 vi.mock('../../src/models/Event', () => ({
   EventData: {
     scope: vi.fn(),
+    belongsToMany: vi.fn(),
+    findOne: vi.fn(),
   },
 }))
 
@@ -46,6 +49,7 @@ vi.mock('../../src/models/EventCollectionAssociation', () => ({
     findOrCreate: vi.fn(),
     findOne: vi.fn(),
     findAll: vi.fn(),
+    belongsTo: vi.fn(),
   },
 }))
 
