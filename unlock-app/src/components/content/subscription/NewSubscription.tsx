@@ -1,7 +1,6 @@
 'use client'
 
 import { useCallback, useState } from 'react'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { ONE_DAY_IN_SECONDS, UNLIMITED_KEYS_COUNT } from '~/constants'
 import networks from '@unlock-protocol/networks'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -10,9 +9,10 @@ import { CreateLockForm } from '~/components/interface/locks/Create/elements/Cre
 import { CreateLockFormSummary } from '~/components/interface/locks/Create/elements/CreateLockFormSummary'
 import { BsArrowLeft as ArrowBack } from 'react-icons/bs'
 import { useRouter } from 'next/navigation'
+import { useProvider } from '~/hooks/useProvider'
 
 export const Deploy: React.FC = () => {
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
   const [formData, setFormData] = useState<any>(undefined)
   const [transactionHash, setTransactionHash] = useState<string | undefined>(
     undefined

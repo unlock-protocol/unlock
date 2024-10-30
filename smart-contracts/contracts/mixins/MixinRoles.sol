@@ -61,16 +61,6 @@ contract MixinRoles is AccessControlUpgradeable, MixinErrors {
     return hasRole(LOCK_MANAGER_ROLE, account);
   }
 
-  function addLockManager(address account) public {
-    _onlyLockManager();
-    grantRole(LOCK_MANAGER_ROLE, account);
-    emit LockManagerAdded(account);
-  }
-
-  function renounceLockManager() public {
-    renounceRole(LOCK_MANAGER_ROLE, msg.sender);
-    emit LockManagerRemoved(msg.sender);
-  }
 
   // added -1 slot for the onRoleHook address in v15
   uint256[999] private __safe_upgrade_gap;
