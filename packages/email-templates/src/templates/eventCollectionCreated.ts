@@ -1,9 +1,9 @@
 export default {
-  subject: 'Your Event Collection "{{collectionName}}" is Live!',
+  subject: 'Your event collection "{{collectionName}}" is live!',
   html: `<h1>Your Event Collection is Live!</h1>
 
   <p>
-    <strong>Congratulations!</strong> Your event collection "{{collectionName}}" has been successfully created. Start sharing it with your community and adding events.
+    <strong>Congratulations!</strong> Your event collection "{{collectionName}}" has been successfully created. Start by sharing it with your community and add events.
   </p>
 
   {{collectionDetailsLight
@@ -16,7 +16,7 @@ export default {
   </p>
 
   <ul>
-    <li><strong>Share Your Collection</strong><br>
+    <li><strong>Share your collection</strong><br>
     Use this link to share your collection: <a href="{{collectionUrl}}">{{collectionUrl}}</a></li>
 
     <li><strong>Customize Settings</strong><br>

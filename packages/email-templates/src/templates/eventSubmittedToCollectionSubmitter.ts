@@ -1,6 +1,6 @@
 export default {
   subject:
-    'Your Event "{{eventName}}" has been Submitted to "{{collectionName}}"',
+    'The event "{{eventName}}" has been submitted to "{{collectionName}}"',
   html: `<h1>Event Submission Received</h1>
 
   <p>

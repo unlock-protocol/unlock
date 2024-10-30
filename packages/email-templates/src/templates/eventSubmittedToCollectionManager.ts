@@ -1,5 +1,5 @@
 export default {
-  subject: 'New Event "{{eventName}}" Submitted to "{{collectionName}}"',
+  subject: 'New event "{{eventName}}" submitted to "{{collectionName}}"',
   html: `<h1>New Event Submitted</h1>
 
   <p>
@@ -17,7 +17,7 @@ export default {
   </p>
 
   <p>
-    <a href="{{collectionUrl}}">Go to Collection Dashboard</a>
+    <a href="{{collectionUrl}}">Go to the collection dashboard</a>
   </p>
 
   <p>
