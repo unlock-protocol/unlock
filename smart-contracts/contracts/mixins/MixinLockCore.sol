@@ -14,6 +14,7 @@ import "../interfaces/hooks/ILockKeyGrantHook.sol";
 import "../interfaces/hooks/ILockTokenURIHook.sol";
 import "../interfaces/hooks/ILockKeyTransferHook.sol";
 import "../interfaces/hooks/ILockKeyExtendHook.sol";
+import "../interfaces/hooks/ILockHasRoleHook.sol";
 
 /**
  * @title Mixin for core lock data and functions.
@@ -62,7 +63,8 @@ contract MixinLockCore is MixinRoles, MixinFunds, MixinDisable {
     address onTokenURIHook,
     address onKeyTransferHook,
     address onKeyExtendHook,
-    address onKeyGrantHook
+    address onKeyGrantHook,
+    address onHasRoleHook
   );
 
   // Unlock Protocol address
@@ -203,9 +205,15 @@ contract MixinLockCore is MixinRoles, MixinFunds, MixinDisable {
     address _onTokenURIHook,
     address _onKeyTransferHook,
     address _onKeyExtendHook,
-    address _onKeyGrantHook
+    address _onKeyGrantHook,
+    address _onHasRoleHook
   ) external {
     _onlyLockManager();
+
+
+    if (_onHasRoleHook != address(0) && !_onHasRoleHook.isContract()) {
+      revert INVALID_HOOK(7);
+    }
 
     // validate hooks
     _isValidHook(_onKeyPurchaseHook, 0);
@@ -215,6 +223,7 @@ contract MixinLockCore is MixinRoles, MixinFunds, MixinDisable {
     _isValidHook(_onKeyTransferHook, 4);
     _isValidHook(_onKeyExtendHook, 5);
     _isValidHook(_onKeyGrantHook, 6);
+    _isValidHook(_onHasRoleHook, 7);
 
     onKeyPurchaseHook = ILockKeyPurchaseHook(_onKeyPurchaseHook);
     onKeyCancelHook = ILockKeyCancelHook(_onKeyCancelHook);
@@ -223,6 +232,7 @@ contract MixinLockCore is MixinRoles, MixinFunds, MixinDisable {
     onKeyTransferHook = ILockKeyTransferHook(_onKeyTransferHook);
     onKeyExtendHook = ILockKeyExtendHook(_onKeyExtendHook);
     onKeyGrantHook = ILockKeyGrantHook(_onKeyGrantHook);
+    onHasRoleHook = ILockHasRoleHook(_onHasRoleHook);
 
     emit EventHooksUpdated(
       _onKeyPurchaseHook,
@@ -231,7 +241,8 @@ contract MixinLockCore is MixinRoles, MixinFunds, MixinDisable {
       _onTokenURIHook,
       _onKeyTransferHook,
       _onKeyExtendHook,
-      _onKeyGrantHook
+      _onKeyGrantHook,
+      _onHasRoleHook
     );
   }
 
