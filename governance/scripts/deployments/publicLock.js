@@ -40,9 +40,9 @@ async function main({ publicLockVersion }) {
   console.log(`PUBLIC LOCK > Template initialized (tx: ${txInitHash})`)
 
   // renounce the manager role that was added during initilization
-  const { hash: txRenounceHash } = await publicLock.renounceRole(
+  const { hash: txRenounceHash } = await publicLock.revokeRole(
     LOCK_MANAGER_ROLE,
-    await publicLock.getAddress()
+    await signer.getAddress()
   )
   console.log(`PUBLIC LOCK > manager role revoked (tx: ${txRenounceHash})`)
 

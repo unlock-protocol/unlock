@@ -11,9 +11,9 @@ const {
 } = require('../helpers')
 
 describe('Lock / initializers', () => {
-  let unlockOwner, caller
+  let deployer, lockOwner, caller
   before(async () => {
-    ;[unlockOwner, , , , , , , caller] = await ethers.getSigners()
+    ;[deployer, lockOwner, , , , , , caller] = await ethers.getSigners()
   })
 
   describe('initialize()', () => {
@@ -29,14 +29,7 @@ describe('Lock / initializers', () => {
     it('may not be called again after deploying a lock', async () => {
       const lock = await deployLock()
       await reverts(
-        lock.initialize(
-          await unlockOwner.getAddress(),
-          0,
-          ADDRESS_ZERO,
-          0,
-          0,
-          ''
-        ),
+        lock.initialize(await deployer.getAddress(), 0, ADDRESS_ZERO, 0, 0, ''),
         'Initializable: contract is already initialized'
       )
     })
@@ -59,7 +52,7 @@ describe('Lock / initializers', () => {
   })
 
   describe('initializing when setting as Unlock template', () => {
-    it('admin role is not revoked automatically when adding a template', async () => {
+    it('admin role is revoked when adding a template', async () => {
       // deploy contracts
       const PublicLock = await ethers.getContractFactory(
         'contracts/PublicLock.sol:PublicLock'
@@ -73,9 +66,15 @@ describe('Lock / initializers', () => {
         await template.publicLockVersion()
       )
 
+      // unlock should not be lock manager anymore
+      await assert.equal(
+        await template.isLockManager(await unlock.getAddress()),
+        false
+      )
+
       await reverts(
         template.initialize(
-          await unlockOwner.getAddress(),
+          await lockOwner.getAddress(),
           0,
           ADDRESS_ZERO,
           0,
@@ -83,11 +82,6 @@ describe('Lock / initializers', () => {
           ''
         ),
         'Initializable: contract is already initialized'
-      )
-
-      await assert.equal(
-        await template.isLockManager(await unlockOwner.getAddress()),
-        false
       )
     })
 
@@ -133,7 +127,7 @@ describe('Lock / initializers', () => {
       // cant be re-initialized
       await reverts(
         template.initialize(
-          await unlockOwner.getAddress(),
+          await deployer.getAddress(),
           0,
           ADDRESS_ZERO,
           0,
