@@ -14,7 +14,7 @@ import {
   getEventAttributes,
   isCollectionManager,
 } from '~/utils/eventCollections'
-import { FaGithub, FaGlobe, FaTwitter, FaYoutube } from 'react-icons/fa'
+import { FaGithub, FaGlobe, FaXTwitter, FaYoutube } from 'react-icons/fa6'
 import { SiFarcaster as FarcasterIcon } from 'react-icons/si'
 import AddEventsToCollectionDrawer from './AddEventsToCollectionDawer'
 import { EventDetailDrawer } from './EventDetailDrawer'
@@ -173,7 +173,7 @@ export default function EventsCollectionDetailContent({
       case 'website':
         return <FaGlobe size={20} className="text-brand-ui-primary" />
       case 'x':
-        return <FaTwitter size={20} className="text-brand-ui-primary" />
+        return <FaXTwitter size={20} className="text-brand-ui-primary" />
       case 'farcaster':
         return <FarcasterIcon size={20} className="text-brand-ui-primary" />
       default:
