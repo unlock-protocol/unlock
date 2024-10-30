@@ -11,6 +11,7 @@ import { usePrimeRefund } from '~/hooks/usePrimeRefund'
 import { ethers } from 'ethers'
 import dayjs from '../../../../src/utils/dayjs'
 import { useState } from 'react'
+import { SiFarcaster, SiX } from 'react-icons/si'
 
 export function ShareRefundModal({
   isOpen,
@@ -19,9 +20,51 @@ export function ShareRefundModal({
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
 }) {
+  const router = useRouter()
+
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-      <div className="flex flex-col justify-center gap-4 bg-white">TODO!</div>
+      <div className="flex flex-col justify-center gap-4 bg-white">
+        <h1 className="text-3xl">Congratulations!</h1>
+        <p>
+          🍾 You&apos;ve claimed your refund. Share the news with your friends
+          and followers.
+        </p>
+        <div className="flex gap-4 items-center">
+          <Button
+            iconLeft={<SiFarcaster />}
+            className="basis-1 grow"
+            onClick={() => {
+              const castIntent = new URL('https://warpcast.com/~/compose')
+              castIntent.searchParams.set(
+                'text',
+                'I just claimed my @unlock-protocol Prime ETH refund! Get a Prime Membership now and claim your ETH reward as well!\n\nhttps://app.unlock-protocol.com/prime'
+              )
+              router.push(castIntent.toString())
+            }}
+          >
+            Share on Farcaster
+          </Button>
+          <Button
+            iconLeft={<SiX />}
+            className="basis-1 grow"
+            onClick={() => {
+              const tweetIntent = new URL('https://twitter.com/intent/tweet')
+              tweetIntent.searchParams.set(
+                'text',
+                'I just claimed my @unlockProtocol Prime ETH refund! Get a Prime Membership now and claim your ETH reward as well!\n\n'
+              )
+              tweetIntent.searchParams.set(
+                'url',
+                'https://app.unlock-protocol.com/prime'
+              )
+              router.push(tweetIntent.toString())
+            }}
+          >
+            Share on X
+          </Button>
+        </div>
+      </div>
     </Modal>
   )
 }
