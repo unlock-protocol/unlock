@@ -13,13 +13,13 @@ import { UpdatePurchaserDrawer } from './UpdatePurchaserDrawer'
 import { useUpdateReceipt, useGetReceipt } from '~/hooks/useReceipts'
 import dayjs from 'dayjs'
 import networks from '@unlock-protocol/networks'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useLockManager } from '~/hooks/useLockManager'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQuery } from '@tanstack/react-query'
 import { useGetPrice } from '~/hooks/usePrice'
 import Link from 'next/link'
 import { HiOutlineExternalLink as ExternalLinkIcon } from 'react-icons/hi'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface ReceiptBoxProps {
   lockAddress: string
@@ -52,7 +52,7 @@ const Address = ({
 }
 
 const NotAuthorizedBar = () => {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   return (
     <div className="w-full max-w-lg p-2 mt-5 text-base text-center text-red-700 bg-red-100 border border-red-700 rounded-xl">
       You are connected as {addressMinify(account!)} and this address is not a
@@ -63,7 +63,7 @@ const NotAuthorizedBar = () => {
 }
 
 export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
 
   const [purchaserDrawer, setPurchaserDrawer] = useState(false)
   const [receiptNumber, setReceiptNumber] = useState('')

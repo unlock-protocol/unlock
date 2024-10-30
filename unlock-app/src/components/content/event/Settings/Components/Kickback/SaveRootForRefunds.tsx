@@ -2,11 +2,11 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { config } from '~/config/app'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { ethers } from 'ethers'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import KickbackAbi from './KickbackAbi'
 import { Button, Placeholder } from '@unlock-protocol/ui'
 import { Event } from '@unlock-protocol/core'
+import { useProvider } from '~/hooks/useProvider'
 
 interface SaveRootForRefundsProps {
   refundsToApprove: any
@@ -28,7 +28,7 @@ export const SaveRootForRefunds = ({
   const { kickbackAddress } = config.networks[event.attendeeRefund!.network]
   const web3Service = useWeb3Service()
   const provider = web3Service.providerForNetwork(network)
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
 
   const {
     data: proof,
