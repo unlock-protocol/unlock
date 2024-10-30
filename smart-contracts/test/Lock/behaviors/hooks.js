@@ -14,7 +14,7 @@ const emitHookUpdatedEvent = async ({ receipt, hookName, hookAddress }) => {
 
 const canNotSetNonContractAddress = async ({ lock, index }) => {
   const [, , , signer] = await ethers.getSigners()
-  const args = Array(7).fill(ADDRESS_ZERO)
+  const args = Array(8).fill(ADDRESS_ZERO)
   args[index] = await signer.getAddress()
   await reverts(lock.setEventHooks(...args), `INVALID_HOOK(${index})`)
 }

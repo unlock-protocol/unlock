@@ -26,6 +26,7 @@ describe('Lock / onTokenURIHook', () => {
       await testEventHooks.getAddress(),
       ADDRESS_ZERO,
       ADDRESS_ZERO,
+      ADDRESS_ZERO,
       ADDRESS_ZERO
     )
     ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))

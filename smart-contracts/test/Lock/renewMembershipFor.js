@@ -345,6 +345,7 @@ describe('Lock / Recurring memberships', () => {
         ADDRESS_ZERO,
         ADDRESS_ZERO,
         ADDRESS_ZERO,
+        ADDRESS_ZERO,
         ADDRESS_ZERO
       )
       await reverts(

@@ -28,6 +28,7 @@ describe('Lock / onValidKeyHook', () => {
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
+      ADDRESS_ZERO,
       ADDRESS_ZERO
     )
     receipt = await tx.wait()
