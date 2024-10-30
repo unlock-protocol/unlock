@@ -3,6 +3,10 @@ import { EventData } from '../models/Event'
 import { EventCollectionAssociation } from '../models/EventCollectionAssociation'
 import { z } from 'zod'
 import { kebabCase } from 'lodash'
+import { privy } from '../utils/privyClient'
+import { sendEmail } from './wedlocksOperations'
+import config from '../config/config'
+import logger from '../logger'
 
 // event collection body schema
 const EventCollectionBody = z.object({
@@ -290,6 +294,47 @@ export const addEventToCollectionOperation = async (
       isApproved: isManager,
     },
   })
+
+  // If this is a new submission (created) and the user is not a manager
+  if (created && !isManager) {
+    try {
+      // Send email to submitter
+      const submitterEmail = await privy?.getUserByWalletAddress(userAddress)
+      if (submitterEmail?.email) {
+        await sendEmail({
+          template: 'eventSubmittedToCollectionSubmitter',
+          recipient: submitterEmail.email.toString(),
+          params: {
+            eventName: event.name,
+            eventDate: event.data.startDate,
+            eventUrl: `${config.unlockApp}/event/${event.slug}`,
+            collectionName: collection.title,
+          },
+        })
+      }
+
+      // Send email to all managers
+      for (const managerAddress of collection.managerAddresses) {
+        const managerEmail = await privy?.getUserByWalletAddress(managerAddress)
+        if (managerEmail?.email) {
+          await sendEmail({
+            template: 'eventSubmittedToCollectionManager',
+            recipient: managerEmail.email.toString(),
+            params: {
+              eventName: event.name,
+              eventDate: event.data.startDate,
+              eventUrl: `${config.unlockApp}/event/${event.slug}`,
+              collectionName: collection.title,
+              collectionUrl: `${config.unlockApp}/events/${collection.slug}`,
+            },
+          })
+        }
+      }
+    } catch (error) {
+      // Log error but don't fail the operation if email sending fails
+      logger.error('Failed to send notification emails:', error)
+    }
+  }
 
   if (!created && !association.isApproved && isManager) {
     await association.update({ isApproved: true })
