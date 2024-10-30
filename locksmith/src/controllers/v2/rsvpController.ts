@@ -12,7 +12,7 @@ const RsvpBody = z.object({
   data: z.record(z.string(), z.string()),
   recipient: z
     .string()
-    .nullish()
+    .optional()
     .transform((item) => normalizer.ethereumAddress(item)),
 })
 

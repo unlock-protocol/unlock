@@ -6,16 +6,16 @@ import logger from '../../logger'
 import * as receiptBasesOperations from '../../../src/operations/receiptBasesOperations'
 
 export const SupplierBody = z.object({
-  supplierName: z.string().nullish().default(''),
-  prefix: z.string().nullish().default(''),
-  vat: z.string().nullish().default(''),
-  servicePerformed: z.string().nullish().default(''),
-  addressLine1: z.string().nullish().default(''),
-  addressLine2: z.string().nullish().default(''),
-  city: z.string().nullish().default(''),
-  state: z.string().nullish().default(''),
-  zip: z.string().nullish().default(''),
-  country: z.string().nullish().default(''),
+  supplierName: z.string().optional().default(''),
+  prefix: z.string().optional().default(''),
+  vat: z.string().optional().default(''),
+  servicePerformed: z.string().optional().default(''),
+  addressLine1: z.string().optional().default(''),
+  addressLine2: z.string().optional().default(''),
+  city: z.string().optional().default(''),
+  state: z.string().optional().default(''),
+  zip: z.string().optional().default(''),
+  country: z.string().optional().default(''),
   vatBasisPointsRate: z.number().min(0).max(10000).nullish().default(null),
 })
 export type SupplierBodyProps = z.infer<typeof SupplierBody>

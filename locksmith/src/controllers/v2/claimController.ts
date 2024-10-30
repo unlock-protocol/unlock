@@ -10,14 +10,14 @@ import { upsertUserMetadata } from '../../operations/userMetadataOperations'
 import { getTotalPurchasePriceInCrypto } from '../../utils/claim'
 
 const ClaimBody = z.object({
-  data: z.string().nullish(),
-  recipient: z.string().nullish(),
-  referrer: z.string().nullish(),
+  data: z.string().optional(),
+  recipient: z.string().optional(),
+  referrer: z.string().optional(),
   email: z
     .string()
     .email()
     .transform((value) => value.toLowerCase())
-    .nullish(),
+    .optional(),
 })
 
 export const LOCKS_WITH_DISABLED_CLAIMS = [

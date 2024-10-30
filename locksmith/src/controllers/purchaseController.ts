@@ -34,7 +34,7 @@ const PaymentCaptureBody = z.object({
   purchaseType: z
     .union([z.literal('extend'), z.literal('purchase')])
     .default('purchase')
-    .nullish(),
+    .optional(),
 })
 
 const CanClaimBody = z.object({

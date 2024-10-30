@@ -14,7 +14,7 @@ const CustomEmail = z.object({
     .string({
       description: 'Custom content of the email',
     })
-    .nullish()
+    .optional()
     .default(''),
 })
 
