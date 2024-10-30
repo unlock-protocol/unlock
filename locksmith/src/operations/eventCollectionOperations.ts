@@ -58,6 +58,7 @@ export async function createEventCollectionSlug(
  * Creates a new event collection.
  * This operation generates a unique slug for the collection based on the title,
  * and associates the creator's address as a manager if no other addresses are provided.
+ * It also sends email notifications to all managers.
  *
  * @param parsedBody - The parsed body containing event collection details.
  * @param creatorAddress - The wallet address of the user creating the collection.
@@ -77,6 +78,26 @@ export const createEventCollectionOperation = async (
     slug,
     managerAddresses,
   })
+
+  try {
+    // Send email to each manager
+    for (const manager of managerAddresses) {
+      const user = await privy?.getUserByWalletAddress(manager)
+      if (user?.email) {
+        await sendEmail({
+          template: 'eventCollectionCreated',
+          recipient: user.email.toString(),
+          params: {
+            collectionName: parsedBody.title,
+            collectionUrl: `${config.unlockApp}/events/${eventCollection.slug}`,
+          },
+        })
+      }
+    }
+  } catch (error) {
+    // Log error but don't fail the operation if email sending fails
+    logger.error('Failed to send notification emails:', error)
+  }
 
   eventCollection.events = []
   return eventCollection
