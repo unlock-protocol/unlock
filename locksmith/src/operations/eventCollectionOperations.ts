@@ -313,6 +313,7 @@ export const addEventToCollectionOperation = async (
       eventSlug: event.slug,
       collectionSlug: collection.slug,
       isApproved: isManager,
+      submitterAddress: userAddress,
     },
   })
 
@@ -388,23 +389,53 @@ export const approveEventOperation = async (
   }
 
   if (!collection.managerAddresses.includes(userAddress)) {
-    throw new Error('Not authorized to approve events in this collection')
+    throw new Error('Not authorized to approve events')
   }
 
   const association = await EventCollectionAssociation.findOne({
-    where: { collectionSlug, eventSlug },
+    where: {
+      eventSlug,
+      collectionSlug,
+    },
   })
 
   if (!association) {
-    throw new Error('Event is not part of the collection')
+    throw new Error('Event not found in collection')
   }
 
-  if (association.isApproved) {
-    throw new Error('Event is already approved')
-  }
+  // Update the approval status
+  await association.update({ isApproved: true })
 
-  association.isApproved = true
-  await association.save()
+  try {
+    // Get the event details for the email
+    const event = await EventData.findOne({
+      where: { slug: eventSlug },
+    })
+
+    if (event && association.submitterAddress) {
+      // Get submitter's email
+      const submitterEmail = await privy?.getUserByWalletAddress(
+        association.submitterAddress
+      )
+
+      if (submitterEmail?.email) {
+        await sendEmail({
+          template: 'eventApprovedInCollection',
+          recipient: submitterEmail.email.toString(),
+          params: {
+            eventName: event.name,
+            eventDate: event.data.startDate,
+            eventUrl: `${config.unlockApp}/event/${event.slug}`,
+            collectionName: collection.title,
+            collectionUrl: `${config.unlockApp}/events/${collection.slug}`,
+          },
+        })
+      }
+    }
+  } catch (error) {
+    // Log error but don't fail the operation if email sending fails
+    logger.error('Failed to send approval notification email:', error)
+  }
 
   return association
 }
