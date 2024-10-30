@@ -4,7 +4,7 @@ const {
   createLockCalldata,
   getEvent,
 } = require('@unlock-protocol/hardhat-helpers')
-const { ADDRESS_ZERO, reverts } = require('../helpers')
+const { ADDRESS_ZERO, reverts, LOCK_MANAGER_ROLE } = require('../helpers')
 const { keccak256, toUtf8Bytes } = require('ethers')
 // lock args
 const args = [
@@ -114,7 +114,7 @@ describe('Unlock / createUpgradeableLockAtVersion', () => {
 
   describe('with extra transactiions', () => {
     it('executes the extra transactions', async () => {
-      const [, lockManager] = await ethers.getSigners()
+      const [deployer, lockManager] = await ethers.getSigners()
 
       const calldata = await createLockCalldata({
         args,
@@ -127,12 +127,13 @@ describe('Unlock / createUpgradeableLockAtVersion', () => {
       )
 
       const addLockManager = await publicLock.interface.encodeFunctionData(
-        'addLockManager(address)',
-        [await lockManager.getAddress()]
+        'grantRole(bytes32, address)',
+        [LOCK_MANAGER_ROLE, await lockManager.getAddress()]
       )
 
       const renounceLockManager = await publicLock.interface.encodeFunctionData(
-        'renounceLockManager()'
+        'renounceRole(bytes32, address)',
+        [LOCK_MANAGER_ROLE, await unlock.getAddress()]
       )
 
       const tx = await unlock[
@@ -171,6 +172,7 @@ describe('Unlock / createUpgradeableLockAtVersion', () => {
       ).to.equal(false)
     })
     it('fails to deploy if one of the transaction fails', async () => {
+      const [deployer] = await ethers.getSigners()
       const calldata = await createLockCalldata({
         args,
         from: await unlock.getAddress(),
@@ -182,7 +184,8 @@ describe('Unlock / createUpgradeableLockAtVersion', () => {
       )
 
       const renounceLockManager = await publicLock.interface.encodeFunctionData(
-        'renounceLockManager()'
+        'renounceRole(bytes32, address)',
+        [LOCK_MANAGER_ROLE, await unlock.getAddress()]
       )
 
       // Renouncing first will fail the 2nd call!
