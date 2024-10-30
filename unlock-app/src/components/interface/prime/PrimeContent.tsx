@@ -10,7 +10,7 @@ import { useUnlockPrime } from '~/hooks/useUnlockPrime'
 import { usePrimeRefund } from '~/hooks/usePrimeRefund'
 import { ethers } from 'ethers'
 import dayjs from '../../../../src/utils/dayjs'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { SiFarcaster, SiX } from 'react-icons/si'
 
 export function ShareRefundModal({
@@ -119,11 +119,11 @@ export const PrimeContent = () => {
     },
   })
 
-  // useEffect(() => {
-  //   if (claimRefund.isSuccess) {
-  //     setIsShareRefundModalOpen(true)
-  //   }
-  // }, [claimRefund.isSuccess])
+  useEffect(() => {
+    if (claimRefund.isSuccess) {
+      setIsShareRefundModalOpen(true)
+    }
+  }, [claimRefund.isSuccess])
 
   return (
     <main className="flex flex-col gap-4 text-center md:w-3/4 mx-auto">
