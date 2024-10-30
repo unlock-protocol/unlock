@@ -27,6 +27,7 @@ describe('Lock / onKeyCancelHook', () => {
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
+      ADDRESS_ZERO,
       ADDRESS_ZERO
     )
     receipt = await tx.wait()
