@@ -81,7 +81,7 @@ export class PaymentProcessor {
     maxPrice: number,
     network: number,
     stripeAccount: string,
-    recurring = 0,
+    recurring: null | number = 0,
     data?: (string | null)[] | null,
     referrers?: (string | null)[] | null
   ) {
