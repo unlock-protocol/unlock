@@ -257,7 +257,7 @@ export const saveEvent = async (
     const createdConfig = await saveCheckoutConfig({
       name: `Checkout config for ${savedEvent.name} (${savedEvent.slug})`,
       config: checkoutConfig,
-      createdBy: walletAddress,
+      user: walletAddress,
     })
     // And now attach the id to the savedEvent
     savedEvent.checkoutConfigId = createdConfig.id
