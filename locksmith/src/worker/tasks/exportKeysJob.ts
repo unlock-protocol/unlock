@@ -9,7 +9,7 @@ export const ExportKeysJobPayload = z.object({
   jobId: z.string(),
   lockAddress: z.string(),
   network: z.number(),
-  query: z.string().nullish(),
+  query: z.string().optional(),
   filterKey: z.string(),
   expiration: z.string(),
   approval: z.string(),

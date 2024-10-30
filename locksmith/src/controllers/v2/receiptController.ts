@@ -6,14 +6,14 @@ import logger from '../../logger'
 import * as receiptOperations from '../../../src/operations/receiptOperations'
 
 export const PurchaserBody = z.object({
-  fullname: z.string().nullish().default(''),
-  businessName: z.string().nullish().default(''),
-  addressLine1: z.string().nullish().default(''),
-  addressLine2: z.string().nullish().default(''),
-  city: z.string().nullish().default(''),
-  state: z.string().nullish().default(''),
-  zip: z.string().nullish().default(''),
-  country: z.string().nullish().default(''),
+  fullname: z.string().optional().default(''),
+  businessName: z.string().optional().default(''),
+  addressLine1: z.string().optional().default(''),
+  addressLine2: z.string().optional().default(''),
+  city: z.string().optional().default(''),
+  state: z.string().optional().default(''),
+  zip: z.string().optional().default(''),
+  country: z.string().optional().default(''),
 })
 
 export type PurchaserBodyProps = z.infer<typeof PurchaserBody>

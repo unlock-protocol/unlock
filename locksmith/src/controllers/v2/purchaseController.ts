@@ -19,7 +19,7 @@ const createPaymentIntentBody = z.object({
     .transform((item) => item.map((item) => Normalizer.ethereumAddress(item))),
   stripeTokenId: z.string(),
   pricing: z.number(),
-  recurring: z.number().nullish(),
+  recurring: z.number().optional(),
   referrers: z
     .array(z.union([z.string(), z.null()]))
     .nullish()
@@ -83,7 +83,6 @@ export const createPaymentIntent: RequestHandler = async (
   const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
   const network = Number(request.params.network)
   const userAddress = Normalizer.ethereumAddress(request.user!.walletAddress)
-  console.log(request.body)
   const { recipients, recurring, stripeTokenId, pricing, data, referrers } =
     await createPaymentIntentBody.parseAsync(request.body)
 

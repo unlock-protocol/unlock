@@ -8,13 +8,13 @@ import Dispatcher from '../../fulfillment/dispatcher'
 const MAX_LIMIT = ethers.MaxUint256.toString()
 
 const LockContractOptions = z.object({
-  expirationDuration: z.string().nullish().default(MAX_LIMIT),
+  expirationDuration: z.string().optional().default(MAX_LIMIT),
   keyPrice: z.string(),
-  maxNumberOfKeys: z.string().nullish().default(MAX_LIMIT),
-  creator: z.string().nullish(),
+  maxNumberOfKeys: z.string().optional().default(MAX_LIMIT),
+  creator: z.string().optional(),
   name: z.string(),
-  currencyContractAddress: z.string().nullable().nullish().default(null),
-  publicLockVersion: z.number().nullish(),
+  currencyContractAddress: z.string().nullable().optional().default(null),
+  publicLockVersion: z.number().optional(),
 })
 
 export class ContractsController {
