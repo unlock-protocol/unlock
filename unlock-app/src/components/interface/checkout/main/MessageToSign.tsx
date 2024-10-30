@@ -1,4 +1,3 @@
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './checkoutMachine'
 import { Button } from '@unlock-protocol/ui'
 import { Fragment, useState } from 'react'
@@ -8,6 +7,8 @@ import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import Disconnect from './Disconnect'
+import { useProvider } from '~/hooks/useProvider'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface Props {
   checkoutService: CheckoutService
@@ -19,7 +20,8 @@ export function MessageToSign({ checkoutService, communication }: Props) {
     checkoutService,
     (state) => state.context.paywallConfig
   )
-  const { account, getWalletService } = useAuth()
+  const { account } = useAuthenticate()
+  const { getWalletService } = useProvider()
   const [isSigning, setIsSigning] = useState(false)
 
   const onSign = async () => {

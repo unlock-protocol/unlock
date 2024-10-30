@@ -7,6 +7,7 @@ const {
   deployERC20,
   ADDRESS_ZERO,
   compareBigNumbers,
+  LOCK_MANAGER_ROLE,
 } = require('../helpers')
 
 let lock
@@ -101,7 +102,7 @@ describe('Lock / updateKeyPricing', () => {
     it('should allow a lock manager who is not the owner to make changes', async () => {
       await lock
         .connect(lockCreator)
-        .addLockManager(await lockManager.getAddress())
+        .grantRole(LOCK_MANAGER_ROLE, await lockManager.getAddress())
       assert.notEqual(
         await lockManager.getAddress(),
         await lockCreator.getAddress()
@@ -125,7 +126,9 @@ describe('Lock / updateKeyPricing', () => {
     })
 
     it('should allow a lockManager to renounce their role', async () => {
-      await lock.connect(lockManager).renounceLockManager()
+      await lock
+        .connect(lockManager)
+        .renounceRole(LOCK_MANAGER_ROLE, await lockManager.getAddress())
       assert.equal(
         await lock.isLockManager(await lockManager.getAddress()),
         false

@@ -5,8 +5,8 @@ import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { SettingCardDetail } from '../elements/SettingCard'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { ethers } from 'ethers'
+import { useProvider } from '~/hooks/useProvider'
 
 interface CancellationFormProps {
   lockAddress: string
@@ -51,7 +51,7 @@ export const CancellationForm = ({
   const [allowTrial, setAllowTrial] = useState(false)
   const [cancelPenalty, setCancelPenalty] = useState(false)
   const web3Service = useWeb3Service()
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
   const {
     register,
     handleSubmit,
