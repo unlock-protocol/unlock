@@ -92,7 +92,7 @@
     "sequelize": "6.37.3",
     "sequelize-cli": "6.6.2",
     "siwe": "2.3.2",
-    "stripe": "16.2.0",
+    "stripe": "17.2.1",
     "unified": "11.0.5",
     "unlock-abi-1-1": "1.1.1",
     "vitest-fetch-mock": "0.3.0",
