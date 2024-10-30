@@ -26,7 +26,7 @@ describe('Lock / onHasRoleHook', () => {
     assert.equal(await lock.isLockManager(await deployer.getAddress()), true)
 
     // add a lock manager
-    await lock.addLockManager(await lockManager.getAddress())
+    await lock.grantRole(LOCK_MANAGER_ROLE, await lockManager.getAddress())
     assert.equal(await lock.isLockManager(await lockManager.getAddress()), true)
 
     // setup hook
