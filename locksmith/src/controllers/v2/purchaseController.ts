@@ -19,7 +19,7 @@ const createPaymentIntentBody = z.object({
     .transform((item) => item.map((item) => Normalizer.ethereumAddress(item))),
   stripeTokenId: z.string(),
   pricing: z.number(),
-  recurring: z.number().optional(),
+  recurring: z.number().nullish(),
   referrers: z
     .array(z.union([z.string(), z.null()]))
     .nullish()
