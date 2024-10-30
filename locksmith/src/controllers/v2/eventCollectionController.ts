@@ -19,8 +19,8 @@ import {
 const EventCollectionBody = z.object({
   title: z.string(),
   description: z.string(),
-  coverImage: z.string().optional(),
-  banner: z.string().optional(),
+  coverImage: z.string().nullish(),
+  banner: z.string().nullish(),
   links: z
     .array(
       z.object({
@@ -28,7 +28,7 @@ const EventCollectionBody = z.object({
         url: z.string().url(),
       })
     )
-    .optional(),
+    .nullish(),
   managerAddresses: z.array(z.string()),
 })
 

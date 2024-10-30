@@ -33,7 +33,7 @@ const LockSettingSchema = z.object({
     .string({
       description: 'Slug that will be used to retrieve the lock',
     })
-    .optional(),
+    .nullish(),
   checkoutConfigId: z
     .string({
       description: 'Checkout config URL id.',
@@ -44,7 +44,7 @@ const LockSettingSchema = z.object({
       description:
         'When enabled the Unlock fee will be included to the total cost for the user, otherwise the lock manager will absorb" that cost.',
     })
-    .optional(),
+    .nullish(),
   hookGuildId: z
     .preprocess(
       (a) => parseInt(z.string().parse(a), 10),
@@ -57,13 +57,13 @@ const LockSettingSchema = z.object({
     .string({
       description: 'Currency to use for credit card payment.',
     })
-    .optional(),
+    .nullish(),
   crossmintClientId: z
     .string({
       description: 'Client Id for Crossmint if cards are enabled.',
     })
-    .optional(),
-  promoCodes: z.array(z.string()).optional().optional(),
+    .nullish(),
+  promoCodes: z.array(z.string()).nullish(),
 
   requiredGitcoinPassportScore: z
     .preprocess(
@@ -73,7 +73,7 @@ const LockSettingSchema = z.object({
       })
     )
     .nullish(),
-  passwords: z.array(z.string()).optional().optional(),
+  passwords: z.array(z.string()).nullish(),
 })
 
 export type LockSettingProps = z.infer<typeof LockSettingSchema>
