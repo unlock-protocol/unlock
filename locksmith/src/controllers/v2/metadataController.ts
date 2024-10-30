@@ -17,8 +17,8 @@ import { networks } from '@unlock-protocol/networks'
 
 export const UserMetadata = z
   .object({
-    public: z.record(z.string(), z.any()).optional(),
-    protected: z.record(z.string(), z.any()).optional(),
+    public: z.record(z.string(), z.any()).nullish(),
+    protected: z.record(z.string(), z.any()).nullish(),
   })
   .strict()
   .partial()
