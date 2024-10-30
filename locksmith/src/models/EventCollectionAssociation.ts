@@ -15,6 +15,7 @@ export class EventCollectionAssociation extends Model<
   declare eventSlug: string
   declare collectionSlug: string
   declare isApproved: boolean
+  declare submitterAddress: string
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
 }
@@ -46,6 +47,10 @@ EventCollectionAssociation.init(
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,
+    },
+    submitterAddress: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,
