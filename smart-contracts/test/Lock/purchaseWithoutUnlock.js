@@ -103,6 +103,7 @@ describe('Lock / purchaseWithoutUnlock', () => {
         ADDRESS_ZERO,
         ADDRESS_ZERO,
         ADDRESS_ZERO,
+        ADDRESS_ZERO,
         ADDRESS_ZERO
       )
       // 50% discount

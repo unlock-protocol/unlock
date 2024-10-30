@@ -71,6 +71,7 @@ describe('PasswordRequiredHook', function () {
         ethers.ZeroAddress,
         ethers.ZeroAddress,
         ethers.ZeroAddress,
+        ethers.ZeroAddress,
         ethers.ZeroAddress
       )
     ).wait()
@@ -144,6 +145,7 @@ describe('PasswordRequiredHook', function () {
     await (
       await lock.setEventHooks(
         await hook.getAddress(),
+        ethers.ZeroAddress,
         ethers.ZeroAddress,
         ethers.ZeroAddress,
         ethers.ZeroAddress,
