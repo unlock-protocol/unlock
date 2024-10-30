@@ -42,17 +42,19 @@ export function Modal({
       <div
         className={`relative w-full ${sizeClass} mx-auto overflow-hidden transition-all transform bg-white border border-gray-100 rounded-lg shadow-xl`}
       >
-        <button
-          className="absolute top-4 right-4 hover:fill-brand-ui-primary"
-          aria-label="close"
-          onClick={(event) => {
-            event.preventDefault()
-            setIsOpen(false)
-          }}
-        >
-          <CloseIcon className="fill-inherit" size={24} />
-        </button>
-        <div className="p-6">{children}</div>
+        <div className="absolute top-4 right-4">
+          <button
+            className="hover:fill-brand-ui-primary"
+            aria-label="close"
+            onClick={(event) => {
+              event.preventDefault()
+              setIsOpen(false)
+            }}
+          >
+            <CloseIcon className="fill-inherit" size={24} />
+          </button>
+        </div>
+        <div className="p-6 mt-8">{children}</div>
       </div>
     )
   }
