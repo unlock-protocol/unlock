@@ -8,6 +8,7 @@ const {
   compareBigNumbers,
   purchaseKey,
   increaseTimeTo,
+  LOCK_MANAGER_ROLE,
 } = require('../helpers')
 const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
@@ -118,7 +119,10 @@ describe('Lock / GasRefund', () => {
         })
 
         it('can be set by lock manager', async () => {
-          await lock.addLockManager(await lockManager.getAddress())
+          await lock.grantRole(
+            LOCK_MANAGER_ROLE,
+            await lockManager.getAddress()
+          )
           await lock.connect(lockManager).setGasRefundValue(gasRefundAmount)
           compareBigNumbers(await lock.gasRefundValue(), gasRefundAmount)
         })

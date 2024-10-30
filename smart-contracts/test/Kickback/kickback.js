@@ -6,6 +6,7 @@ const {
   deployContracts,
   deployLock,
   purchaseKeys,
+  LOCK_MANAGER_ROLE,
 } = require('../helpers')
 
 describe('Kickback contract', () => {
@@ -49,7 +50,7 @@ describe('Kickback contract', () => {
     it('should fail if callers is not a lock manager', async () => {
       const [, _randomSigner] = await ethers.getSigners()
 
-      await lock.addLockManager(await kickback.getAddress())
+      await lock.grantRole(LOCK_MANAGER_ROLE, await kickback.getAddress())
       await reverts(
         kickback.connect(_randomSigner).approveRefunds(lock, tree.root),
         `VM Exception while processing transaction: reverted with reason string 'You must be a lock manager to approve refunds.'`
@@ -57,7 +58,7 @@ describe('Kickback contract', () => {
     })
     it('should store the root of the merkle tree', async () => {
       const lockAddress = (await lock.getAddress()).toLowerCase()
-      await lock.addLockManager(await kickback.getAddress())
+      await lock.grantRole(LOCK_MANAGER_ROLE, await kickback.getAddress())
       await kickback.approveRefunds(lockAddress, tree.root)
       assert.equal(await kickback.roots(lockAddress), tree.root)
     })
@@ -66,7 +67,7 @@ describe('Kickback contract', () => {
   describe('refund', () => {
     let proof
     beforeEach(async () => {
-      await lock.addLockManager(await kickback.getAddress())
+      await lock.grantRole(LOCK_MANAGER_ROLE, await kickback.getAddress())
       await kickback.approveRefunds(lock, tree.root)
       for (const [i, v] of tree.entries()) {
         if (v[0] === keyOwners[0]) {

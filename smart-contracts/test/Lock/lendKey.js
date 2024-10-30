@@ -99,29 +99,6 @@ describe('Lock / lendKey', () => {
         'UNAUTHORIZED'
       )
     })
-
-    it('should fail if the sender has been approved for all owner keys', async () => {
-      await lock
-        .connect(keyOwner)
-        .setApprovalForAll(await accountApproved.getAddress(), true)
-      assert.equal(
-        await lock.isApprovedForAll(
-          await keyOwner.getAddress(),
-          await accountApproved.getAddress()
-        ),
-        true
-      )
-      await reverts(
-        lock
-          .connect(accountApproved)
-          .lendKey(
-            await keyOwner.getAddress(),
-            await random.getAddress(),
-            tokenId
-          ),
-        'UNAUTHORIZED'
-      )
-    })
   })
 
   describe('when the sender is the key owner', () => {
@@ -300,22 +277,6 @@ describe('Lock / lendKey', () => {
         lock
           .connect(receiver)
           .approve(await accountApproved.getAddress(), tokenId),
-        'ONLY_KEY_MANAGER_OR_APPROVED'
-      )
-    })
-
-    it('can not used an "approved for all" account to transfer the key', async () => {
-      await lock
-        .connect(receiver)
-        .setApprovalForAll(await accountApproved.getAddress(), true)
-      await reverts(
-        lock
-          .connect(receiver)
-          .transferFrom(
-            await receiver.getAddress(),
-            await random.getAddress(),
-            tokenId
-          ),
         'ONLY_KEY_MANAGER_OR_APPROVED'
       )
     })

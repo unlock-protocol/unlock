@@ -51,18 +51,6 @@ describe('Lock / disableTransfers', () => {
       })
     })
 
-    describe('disabling setApprovalForAll', () => {
-      it('should prevent user from setting setApprovalForAll', async () => {
-        const [, , , , random] = await ethers.getSigners()
-        await reverts(
-          lock
-            .connect(keyOwner)
-            .setApprovalForAll(await random.getAddress(), true),
-          'KEY_TRANSFERS_DISABLED'
-        )
-      })
-    })
-
     describe('disabling shareKey', () => {
       it('should prevent key sharing by reverting', async () => {
         // check owner has a key

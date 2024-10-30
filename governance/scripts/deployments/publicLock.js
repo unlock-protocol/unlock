@@ -3,6 +3,7 @@ const {
   ADDRESS_ZERO,
   deployContract,
   copyAndBuildContractsAtVersion,
+  LOCK_MANAGER_ROLE,
 } = require('@unlock-protocol/hardhat-helpers')
 
 async function main({ publicLockVersion }) {
@@ -39,7 +40,10 @@ async function main({ publicLockVersion }) {
   console.log(`PUBLIC LOCK > Template initialized (tx: ${txInitHash})`)
 
   // renounce the manager role that was added during initilization
-  const { hash: txRenounceHash } = await publicLock.renounceLockManager()
+  const { hash: txRenounceHash } = await publicLock.revokeRole(
+    LOCK_MANAGER_ROLE,
+    await signer.getAddress()
+  )
   console.log(`PUBLIC LOCK > manager role revoked (tx: ${txRenounceHash})`)
 
   return publicLockAddress

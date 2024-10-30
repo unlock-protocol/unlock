@@ -113,7 +113,7 @@ contract MixinTransfer is
    * @param _recipient the address that will receive the token
    * @param _tokenId the id of the token
    * @dev Requirements: if the caller is not `from`, it must be approved to move this token by
-   * either `approve` or `setApprovalForAll`.
+   * `approve`
    * The key manager will be reset to address zero after the transfer
    */
   function transferFrom(
@@ -259,22 +259,6 @@ contract MixinTransfer is
    */
   function safeTransferFrom(address _from, address _to, uint _tokenId) public {
     safeTransferFrom(_from, _to, _tokenId, "");
-  }
-
-  /**
-   * @dev Sets or unsets the approval of a given operator
-   * An operator is allowed to transfer all tokens of the sender on their behalf
-   * @param _to operator address to set the approval
-   * @param _approved representing the status of the approval to be set
-   * @notice disabled when transfers are disabled
-   */
-  function setApprovalForAll(address _to, bool _approved) public {
-    _transferNotDisabled();
-    if (_to == msg.sender) {
-      revert CANNOT_APPROVE_SELF();
-    }
-    managerToOperatorApproved[msg.sender][_to] = _approved;
-    emit ApprovalForAll(msg.sender, _to, _approved);
   }
 
   /**
