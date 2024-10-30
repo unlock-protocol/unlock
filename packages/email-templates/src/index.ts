@@ -18,6 +18,11 @@ import LockTemplates from './templates/locks'
 import bases from './templates/base/index'
 import custom from './templates/custom'
 import nextAuthCode from './templates/nextAuthCode'
+import eventCollectionCreated from './templates/eventCollectionCreated'
+import eventApprovedInCollection from './templates/eventApprovedInCollection'
+import eventDeniedInCollection from './templates/eventDeniedInCollection'
+import eventSubmittedToCollectionManager from './templates/eventSubmittedToCollectionManager'
+import eventSubmittedToCollectionSubmitter from './templates/eventSubmittedToCollectionSubmitter'
 export interface EmailTemplateProps {
   nowrap?: boolean
   subject: string
@@ -43,6 +48,11 @@ type Template =
   | 'certificationKeyAirdropped'
   | 'custom'
   | 'nextAuthCode'
+  | 'eventCollectionCreated'
+  | 'eventApprovedInCollection'
+  | 'eventDeniedInCollection'
+  | 'eventSubmittedToCollectionManager'
+  | 'eventSubmittedToCollectionSubmitter'
 
 export const EmailTemplates: Record<string, EmailTemplateProps> = {
   confirmEmail,
@@ -63,6 +73,11 @@ export const EmailTemplates: Record<string, EmailTemplateProps> = {
   inviteEvent,
   eventDeployed,
   nextAuthCode,
+  eventCollectionCreated,
+  eventApprovedInCollection,
+  eventDeniedInCollection,
+  eventSubmittedToCollectionManager,
+  eventSubmittedToCollectionSubmitter,
 }
 
 const templates: Record<string, EmailTemplateProps> = {}
