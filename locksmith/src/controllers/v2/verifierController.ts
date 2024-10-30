@@ -7,9 +7,9 @@ import { z } from 'zod'
 
 const AddVerifierBody = z
   .object({
-    verifierName: z.string().nullish(),
+    verifierName: z.string().optional(),
   })
-  .nullish()
+  .optional()
 
 // Deprecated methods to add verifier to lock only.
 
