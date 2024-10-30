@@ -13,7 +13,7 @@ describe('Lock / configUnlock', () => {
   describe('configuring the Unlock contract', () => {
     it('should let the owner configure the Unlock contract', async () => {
       await unlock.connect(unlockOwner).configUnlock(
-        await unlock.udt(),
+        await unlock.governanceToken(),
         await unlock.weth(),
         0,
         '',
@@ -25,7 +25,7 @@ describe('Lock / configUnlock', () => {
     it('should revert if called by other than the owner', async () => {
       await reverts(
         unlock.connect(someAccount).configUnlock(
-          await unlock.udt(),
+          await unlock.governanceToken(),
           await unlock.weth(),
           0,
           '',

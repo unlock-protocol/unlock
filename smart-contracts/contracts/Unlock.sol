@@ -81,7 +81,8 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   // The WETH token address, used for value calculations
   address public weth;
 
-  // The UDT token address, used to mint tokens on referral
+  // DEPRECATED: udt was the name of the first governance token.
+  // Kept for backward compatibility; however, the `governanceToken` getter is now preferred.
   address public udt;
 
   // The approx amount of gas required to purchase a key
@@ -115,6 +116,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   error Unlock__MISSING_LOCK(address lockAddress);
   error Unlock__INVALID_AMOUNT();
   error Unlock__INVALID_TOKEN();
+  error Unlock__FAILED_LOCK_CALL(uint callIndex);
 
   // Events
   event NewLock(address indexed lockOwner, address indexed newLockAddress);
@@ -122,7 +124,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   event LockUpgraded(address lockAddress, uint16 version);
 
   event ConfigUnlock(
-    address udt,
+    address governanceToken,
     address weth,
     uint estimatedGasForPurchase,
     string globalTokenSymbol,
@@ -244,6 +246,12 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     return createUpgradeableLock(data);
   }
 
+  // The governance token address, used to mint tokens on referral
+  // NB: the storage is done on a variable called `udt` for legacy reasons
+  function governanceToken() public view returns (address) {
+    return udt;
+  }
+
   /**
    * @notice Create upgradeable lock
    * This deploys a lock for a creator. It also keeps track of the deployed lock.
@@ -272,18 +280,18 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    * Create an upgradeable lock using a specific PublicLock version
    * @param data bytes containing the call to initialize the lock template
    * (refer to createUpgradeableLock for more details)
-   * @param _lockVersion the version of the lock to use
+   * @param lockVersion the version of the lock to use
    */
   function createUpgradeableLockAtVersion(
     bytes memory data,
-    uint16 _lockVersion
+    uint16 lockVersion
   ) public returns (address) {
     if (proxyAdminAddress == address(0)) {
       revert Unlock__MISSING_PROXY_ADMIN();
     }
 
     // get lock version
-    address publicLockImpl = _publicLockImpls[_lockVersion];
+    address publicLockImpl = _publicLockImpls[lockVersion];
     if (publicLockImpl == address(0)) {
       revert Unlock__MISSING_LOCK_TEMPLATE();
     }
@@ -306,6 +314,32 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     // trigger event
     emit NewLock(msg.sender, newLock);
     return newLock;
+  }
+
+  /**
+   * Create an upgradeable lock using a specific PublicLock version, and execute
+   * transaction(s) on the created lock.
+   * @param data bytes containing the call to initialize the lock template
+   * (refer to createUpgradeableLock for more details).
+   * Importantly, the initial lock manager needs to be set to this contract.
+   * @param lockVersion the version of the lock to use
+   * @param transactions an array of transactions to be executed on the newly
+   * created lock. It is recommended to include a transaction to renounce the
+   * lock manager as the last transaction.
+   */
+  function createUpgradeableLockAtVersion(
+    bytes memory data,
+    uint16 lockVersion,
+    bytes[] calldata transactions
+  ) public returns (address newLock) {
+    newLock = createUpgradeableLockAtVersion(data, lockVersion);
+    // Execute all transactions
+    for (uint256 i = 0; i < transactions.length; i++) {
+      (bool success, ) = newLock.call(transactions[i]);
+      if (!success) {
+        revert Unlock__FAILED_LOCK_CALL(i);
+      }
+    }
   }
 
   /**
@@ -426,10 +460,14 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
         _referrer != address(0) &&
         IPublicLock(msg.sender).publicLockVersion() >= 13
       ) {
-        IUniswapOracleV3 udtOracle = uniswapOracles[udt];
-        if (address(udtOracle) != address(0)) {
+        IUniswapOracleV3 governanceTokenOracle = uniswapOracles[udt];
+        if (address(governanceTokenOracle) != address(0)) {
           // Get the value of 1 UDT (w/ 18 decimals) in ETH
-          uint udtPrice = udtOracle.updateAndConsult(udt, 10 ** 18, weth);
+          uint governanceTokenPrice = governanceTokenOracle.updateAndConsult(
+            udt,
+            10 ** 18,
+            weth
+          );
 
           uint balance = IMintableERC20(udt).balanceOf(address(this));
 
@@ -449,7 +487,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
           // tokensToDistribute is either == to the gas cost
           uint tokensToDistribute = ((estimatedGasForPurchase * baseFee) *
-            (10 ** 18)) / udtPrice;
+            (10 ** 18)) / governanceTokenPrice;
 
           // or tokensToDistribute is capped by network GDP growth
           // we distribute tokens using asymptotic curve between 0 and 0.5
@@ -533,14 +571,14 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    * @notice Allows the owner to update configuration variables
    */
   function configUnlock(
-    address _udt,
+    address _governanceToken,
     address _weth,
     uint _estimatedGasForPurchase,
     string calldata _symbol,
     string calldata _URI,
     uint _chainId
   ) external onlyOwner {
-    udt = _udt;
+    udt = _governanceToken;
     weth = _weth;
     estimatedGasForPurchase = _estimatedGasForPurchase;
 
@@ -550,7 +588,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     chainId = _chainId;
 
     emit ConfigUnlock(
-      _udt,
+      _governanceToken,
       _weth,
       _estimatedGasForPurchase,
       _symbol,

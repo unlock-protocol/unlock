@@ -155,6 +155,12 @@ export const optimism: NetworkConfig = {
       name: 'Wrapped BTC',
       symbol: 'WBTC',
     },
+    {
+      address: '0xc709c9116dBf29Da9c25041b13a07A0e68aC5d2D',
+      decimals: 18,
+      name: 'Unlock Discount Token',
+      symbol: 'UDT',
+    },
   ],
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',

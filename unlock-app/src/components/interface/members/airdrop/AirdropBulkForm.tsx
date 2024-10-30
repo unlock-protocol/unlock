@@ -9,9 +9,10 @@ import { getAddressForName } from '~/hooks/useEns'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { KeyManager } from '@unlock-protocol/unlock-js'
 import { useConfig } from '~/utils/withConfig'
+import PrimeOnly from '../../prime/PrimeOnly'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 export const MAX_SIZE = 50
 
@@ -29,7 +30,7 @@ export function AirdropBulkForm({ lock, onConfirm, emailRequired }: Props) {
   const [error, setError] = useState('')
   const config = useConfig()
   const web3Service = useWeb3Service()
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const [isConfirming, setIsConfirming] = useState(false)
   const [isLoadingMembers, setIsLoadingMembers] = useState(false)
   const { getRootProps, getInputProps } = useDropzone({
@@ -240,27 +241,29 @@ export function AirdropBulkForm({ lock, onConfirm, emailRequired }: Props) {
                   </a>
                 </div>
               </div>
-              {isConfirming ? (
-                <Button loading={isConfirming} disabled>
-                  Processing your transactions...
-                </Button>
-              ) : (
-                <div
-                  className="flex flex-col items-center justify-center bg-white border rounded cursor-pointer group aspect-1 group-hover:border-gray-300"
-                  {...getRootProps()}
-                >
-                  <input {...getInputProps()} />
-                  <div className="max-w-xs space-y-2 text-center">
-                    <h3 className="text-lg font-medium">
-                      Drop your CSV file here
-                    </h3>
-                    <p className="text-sm text-gray-600">
-                      Download the template file and fill out the values in the
-                      format.
-                    </p>
+              <PrimeOnly>
+                {isConfirming ? (
+                  <Button loading={isConfirming} disabled>
+                    Processing your transactions...
+                  </Button>
+                ) : (
+                  <div
+                    className="flex flex-col items-center justify-center bg-white border rounded cursor-pointer group aspect-1 group-hover:border-gray-300"
+                    {...getRootProps()}
+                  >
+                    <input {...getInputProps()} />
+                    <div className="max-w-xs space-y-2 text-center">
+                      <h3 className="text-lg font-medium">
+                        Drop your CSV file here
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        Download the template file and fill out the values in
+                        the format.
+                      </p>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </PrimeOnly>
             </div>
           )}
         </div>
