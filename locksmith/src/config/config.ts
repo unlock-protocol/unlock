@@ -83,7 +83,7 @@ const config = {
     logging: false,
     dialect: 'postgres',
   } as Options,
-  stripeSecret: process.env.STRIPE_SECRET,
+  stripeSecret: process.env.STRIPE_SECRET || 'stripeSecret',
   defaultNetwork: 1,
   purchaserCredentials:
     process.env.PURCHASER_CREDENTIALS ||

@@ -288,6 +288,7 @@ export const addEventToCollectionOperation = async (
       eventSlug: event.slug,
       collectionSlug: collection.slug,
       isApproved: isManager,
+      submitterAddress: userAddress,
     },
   })
 

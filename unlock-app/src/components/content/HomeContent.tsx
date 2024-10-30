@@ -3,9 +3,6 @@
 import { Launcher } from '../interface/Launcher'
 import { useSession } from '~/hooks/useSession'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
-import { Container } from '../interface/Container'
-import DashboardHeader from '../interface/layouts/index/DashboardHeader'
-import { ConnectModal } from '../interface/connect/ConnectModal'
 import LocksContent from './lock/LocksContent'
 import { Placeholder } from '@unlock-protocol/ui'
 
@@ -15,9 +12,7 @@ export const HomeContent = () => {
   const { account } = useAuthenticate()
 
   return (
-    <Container>
-      <ConnectModal />
-      <DashboardHeader />
+    <>
       {isLoading && (
         <Placeholder.Root>
           <Placeholder.Card />
@@ -29,6 +24,6 @@ export const HomeContent = () => {
         </div>
       )}
       {!account && !isLoading && <Launcher />}
-    </Container>
+    </>
   )
 }
