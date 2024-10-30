@@ -161,6 +161,12 @@ export const mainnet: NetworkConfig = {
       name: 'BNB',
       symbol: 'BNB',
     },
+    {
+      address: '0x90DE74265a416e1393A450752175AED98fe11517',
+      decimals: 18,
+      name: 'Unlock Discount Token',
+      symbol: 'UDT',
+    },
   ],
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',

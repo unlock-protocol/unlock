@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { UNLIMITED_KEYS_COUNT, MAX_UINT } from '~/constants'
-import { useAuth } from '~/contexts/AuthenticationContext'
+import { useProvider } from '~/hooks/useProvider'
 
 interface UpdateQuantityFormProps {
   maxNumberOfKeys: number
@@ -27,7 +27,7 @@ export const UpdateQuantityForm = ({
   network,
 }: UpdateQuantityFormProps) => {
   const [unlimitedQuantity, setUnlimitedQuantity] = useState(false)
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
 
   useEffect(() => {
     setUnlimitedQuantity(UNLIMITED_KEYS_COUNT === maxNumberOfKeys)

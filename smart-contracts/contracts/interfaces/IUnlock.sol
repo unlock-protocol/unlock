@@ -67,11 +67,28 @@ interface IUnlock {
    * Create an upgradeable lock using a specific PublicLock version
    * @param data bytes containing the call to initialize the lock template
    * (refer to createUpgradeableLock for more details)
-   * @param _lockVersion the version of the lock to use
+   * @param lockVersion the version of the lock to use
    */
   function createUpgradeableLockAtVersion(
     bytes memory data,
-    uint16 _lockVersion
+    uint16 lockVersion
+  ) external returns (address);
+
+  /**
+   * Create an upgradeable lock using a specific PublicLock version, and execute
+   * transaction(s) on the created lock.
+   * @param data bytes containing the call to initialize the lock template
+   * (refer to createUpgradeableLock for more details).
+   * Importantly, the initial lock manager needs to be set to this contract.
+   * @param lockVersion the version of the lock to use
+   * @param transactions an array of transactions to be executed on the newly
+   * created lock. It is recommended to include a transaction to renounce the
+   * lock manager as the last transaction.
+   */
+  function createUpgradeableLockAtVersion(
+    bytes memory data,
+    uint16 lockVersion,
+    bytes[] calldata transactions
   ) external returns (address);
 
   /**
@@ -216,8 +233,11 @@ interface IUnlock {
   // The WETH token address, used for value calculations
   function weth() external view returns (address);
 
-  // The UDT token address, used to mint tokens on referral
+  // DEPRECATED: An helper function to fetch the governance token address (previously called UDT)
   function udt() external view returns (address);
+
+  // The governance token address, used to mint tokens on referral
+  function governanceToken() external view returns (address);
 
   // The approx amount of gas required to purchase a key
   function estimatedGasForPurchase() external view returns (uint);
