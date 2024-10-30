@@ -228,16 +228,16 @@ export const RegistrationForm = ({
   const config = useConfig()
   const { recaptchaRef, getCaptchaValue } = useCaptcha()
   const [loading, setLoading] = useState<boolean>(false)
-  const { account } = useAuthenticate()
+  const { account, email } = useAuthenticate()
 
   // If there is an email, we pre-fill the email field
-  // if (email) {
-  //   metadataInputs?.map((input) => {
-  //     if (input.name === 'email') {
-  //       input.defaultValue = email
-  //     }
-  //   })
-  // }
+  if (email) {
+    metadataInputs?.map((input) => {
+      if (input.name === 'email') {
+        input.defaultValue = email
+      }
+    })
+  }
 
   const localForm = useForm<any>({
     mode: 'onChange',
