@@ -4,7 +4,7 @@ import { toFormData } from '~/components/interface/locks/metadata/utils'
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import { fetchEventMetadata } from '~/utils/eventMetadata'
-import { fetchMetadata } from 'frames.js/next'
+import { fetchMetadata as fetchFramesMetadata } from 'frames.js/next'
 import { config } from '~/config/app'
 
 export interface EventPageProps {
@@ -55,7 +55,7 @@ export async function generateMetadata({
       images: [event.image || '/default-event-image.png'],
     },
     other: {
-      ...(await fetchMetadata(
+      ...(await fetchFramesMetadata(
         new URL(`/frames/event/${event.slug}`, config.unlockApp)
       )),
     },
