@@ -81,7 +81,6 @@ export const VerificationStatus = ({
   eventProp,
   config,
   onVerified,
-  onClose,
 }: Props) => {
   const { data, sig, raw } = config
   const { lockAddress, timestamp, network, tokenId, account } = data
@@ -231,7 +230,6 @@ export const VerificationStatus = ({
       {ticket && (
         <MembershipCard
           image={ticket!.image}
-          onClose={onClose}
           keyId={tokenId!}
           owner={ticket!.owner}
           userMetadata={ticket!.userMetadata}

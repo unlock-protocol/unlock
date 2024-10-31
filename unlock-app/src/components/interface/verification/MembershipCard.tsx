@@ -11,8 +11,7 @@ import {
   RiCheckboxCircleFill as ValidIcon,
 } from 'react-icons/ri'
 import { ReactNode } from 'react'
-import { RiCloseLine as CloseIcon } from 'react-icons/ri'
-import { Button, Placeholder } from '@unlock-protocol/ui'
+import { Placeholder } from '@unlock-protocol/ui'
 import { AddressLink } from '../AddressLink'
 
 dayjs.extend(relativeTimePlugin)
@@ -29,7 +28,6 @@ interface Props {
   owner: string
   keyId: string
   children?: ReactNode
-  onClose?: () => void
   showWarning?: boolean
 }
 
@@ -44,7 +42,6 @@ export function MembershipCard({
   invalid,
   owner,
   keyId,
-  onClose,
   children = null,
 }: Props) {
   const timeSinceSigned = dayjs().from(timestamp, true)
@@ -68,25 +65,6 @@ export function MembershipCard({
               : 'bg-green-500'
         }   rounded-t-xl`}
       >
-        <div className="flex items-center justify-end">
-          {onClose && (
-            <Button
-              variant="borderless"
-              onClick={(event) => {
-                event.preventDefault()
-                onClose()
-              }}
-              className="flex items-center justify-center p-2 rounded group"
-              aria-label="Close"
-            >
-              <CloseIcon
-                className="fill-white group-hover:fill-brand-ui-primary"
-                size={24}
-                key="close"
-              />
-            </Button>
-          )}
-        </div>
         <div className="p-6 text-center">
           <div className="inline-flex items-center justify-center">
             {invalid ? (
