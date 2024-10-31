@@ -5,7 +5,7 @@ import EventContent from '~/components/content/EventContent'
 export const metadata: Metadata = {
   title: 'Unlock Events',
   description:
-    'Create event tickets and landing pages for your conference, event, or meetup in under five minutes with Unlock Protocol.',
+    'Unlock Protocol empowers everyone to create events the true web3 way. Deploy a contract, sell tickets as NFTs, and perform check-in with a dedicated QR code. We got it covered.',
 }
 
 const EventLandingPage: React.FC = () => {
