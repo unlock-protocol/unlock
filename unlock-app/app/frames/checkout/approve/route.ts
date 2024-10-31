@@ -1,12 +1,7 @@
 import { Abi, encodeFunctionData } from 'viem'
 import { frames } from '../frames'
 import { transaction } from 'frames.js/core'
-import { PublicLockV14 } from '@unlock-protocol/contracts'
-import { Web3Service } from '@unlock-protocol/unlock-js'
-import networks from '@unlock-protocol/networks'
-import { getKeyPrice } from '../components/utils'
-
-const abi = PublicLockV14.abi
+import { erc20Abi, getKeyPrice } from '../components/utils'
 
 export const POST = frames(async (ctx) => {
   if (!ctx?.message) {
@@ -24,19 +19,19 @@ export const POST = frames(async (ctx) => {
   })
 
   const calldata = encodeFunctionData({
-    abi,
-    functionName: 'purchase',
-    args: [[keyPrice], [userAddress], [userAddress], [userAddress], ['0x']],
+    abi: erc20Abi,
+    functionName: 'approve',
+    args: [lockAddress, keyPrice],
   })
 
   return transaction({
     chainId: `eip155:${network}`,
     method: 'eth_sendTransaction',
     params: {
-      abi: abi as Abi,
-      to: lockAddress as `0x${string}`,
+      abi: erc20Abi as Abi,
+      to: ctx.state.lock?.tokenAddress as `0x${string}`,
       data: calldata,
-      value: keyPrice.toString(),
+      value: '0x0',
     },
   })
 })

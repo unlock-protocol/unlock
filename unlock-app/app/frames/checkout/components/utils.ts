@@ -3,6 +3,37 @@ import { locksmith } from '../../../../src/config/locksmith'
 import networks from '@unlock-protocol/networks'
 import { config as appConfig } from '~/config/app'
 
+interface GetKeyPriceParams {
+  lockAddress: string
+  network: number
+  userAddress: string
+}
+
+export const erc20Abi = [
+  {
+    type: 'function',
+    name: 'approve',
+    constant: false,
+    inputs: [
+      {
+        name: 'spender',
+        type: 'address',
+      },
+      {
+        name: 'amount',
+        type: 'uint256',
+      },
+    ],
+    outputs: [
+      {
+        name: '',
+        type: 'bool',
+      },
+    ],
+    stateMutability: 'nonpayable',
+  },
+]
+
 export async function getConfig(id: string) {
   const { config } = await fetch(
     `${appConfig.locksmithHost}/v2/checkout/${id}`
@@ -42,6 +73,16 @@ export async function getLockDataFromCheckout(id: string) {
   const res = await web3Service.getLock(lockAddress, network)
   const price = `${res.keyPrice} ${res.currencySymbol}`
 
+  let tokenAddress
+  if (res.currencySymbol !== 'ETH') {
+    const tokens = networks[network].tokens
+    const matches = tokens!.filter(
+      (token) => token.symbol === res.currencySymbol
+    )
+    tokenAddress = matches.find((token) => token.featured) || matches[0] || null
+    tokenAddress = tokenAddress.address
+  }
+
   const redirectUri = config.redirectUri
   const redirectText = config.endingCallToAction
 
@@ -53,9 +94,28 @@ export async function getLockDataFromCheckout(id: string) {
     defaultImage,
     description,
     price,
+    tokenAddress,
     redirectUri,
     redirectText,
   }
 
   return lock
+}
+
+export async function getKeyPrice({
+  lockAddress,
+  network,
+  userAddress,
+}: GetKeyPriceParams) {
+  const web3Service = new Web3Service(networks)
+  const mydata = '0x'
+  let price = await web3Service.purchasePriceFor({
+    lockAddress,
+    userAddress: userAddress,
+    network,
+    data: mydata,
+    referrer: userAddress,
+  })
+  price = price.toString()
+  return price
 }

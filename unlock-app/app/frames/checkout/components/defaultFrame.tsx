@@ -1,11 +1,12 @@
 /* eslint-disable react/jsx-key */
 import React from 'react'
 import { Button } from 'frames.js/next'
-import { State } from '../frames'
 import { DefaultImage } from './DefaultImage'
 
-export function getDefaultFrame(state: State) {
-  const lock = state.lock!
+export function getDefaultFrame(ctx: any) {
+  const lock = ctx.state.lock!
+  const isErc20 = !!ctx.state.lock?.tokenAddress
+  const approved = ctx.searchParams.approved
 
   return {
     image: <DefaultImage lock={lock} />,
@@ -18,10 +19,14 @@ export function getDefaultFrame(state: State) {
       },
     },
     buttons: [
-      <Button action="tx" target="/txdata" post_url="?success=true">
+      <Button
+        action="tx"
+        target={!isErc20 || approved ? '/txdata' : '/approve'}
+        post_url={!isErc20 || approved ? '?success=true' : '?approved=true'}
+      >
         Purchase a key
       </Button>,
     ],
-    state,
+    state: ctx.state,
   }
 }
