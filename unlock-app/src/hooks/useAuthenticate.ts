@@ -1,4 +1,4 @@
-import { useLogin, usePrivy, useWallets } from '@privy-io/react-auth'
+import { usePrivy, useWallets } from '@privy-io/react-auth'
 import { useAppStorage } from './useAppStorage'
 import { useContext, useEffect } from 'react'
 import {
@@ -10,10 +10,10 @@ import { locksmith } from '~/config/locksmith'
 import { useQueryClient } from '@tanstack/react-query'
 import { useSession } from './useSession'
 import { useSIWE } from './useSIWE'
-import { useCookies } from 'react-cookie'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useProvider } from './useProvider'
 import AuthenticationContext from '~/contexts/AuthenticationContext'
+import { onSignedInWithPrivy } from '~/config/PrivyProvider'
 
 // This hook includes *all* signIn and signOut methods
 // TODO: consider adding useSession() stuff here too?
@@ -23,12 +23,10 @@ export function useAuthenticate() {
     setAccount: (account: string | undefined) => void
   }>(AuthenticationContext)
   const { setProvider } = useProvider()
-  const [cookies] = useCookies()
   const { refetchSession } = useSession()
   const { setStorage } = useAppStorage()
   const {
     logout: privyLogout,
-    getAccessToken: privyGetAccessToken,
     ready: privyReady,
     authenticated: privyAuthenticated,
     user,
@@ -41,9 +39,15 @@ export function useAuthenticate() {
   // When a user is logged in, this method is called to set the account and refetch the session
   const onSignedIn = async (walletAddress: string) => {
     setStorage('account', walletAddress)
-    setAccount(walletAddress)
     await Promise.all([queryClient.refetchQueries(), refetchSession()])
   }
+
+  // Detects when login was succesul via an event
+  useEffect(() => {
+    if (account) {
+      onSignedIn(account)
+    }
+  }, [account])
 
   // Method that tries to sign in with an existing session
   const signInWithExistingSession = async () => {

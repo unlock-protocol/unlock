@@ -19883,7 +19883,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/hoist-non-react-statics@npm:^3.3.0, @types/hoist-non-react-statics@npm:^3.3.5":
+"@types/hoist-non-react-statics@npm:^3.3.0":
   version: 3.3.5
   resolution: "@types/hoist-non-react-statics@npm:3.3.5"
   dependencies:
@@ -21555,7 +21555,6 @@ __metadata:
     prettier: "npm:3.3.3"
     qr-scanner: "npm:1.4.2"
     qrcode.react: "npm:4.0.1"
-    react-cookie: "npm:7.2.1"
     react-device-detect: "npm:2.2.3"
     react-dropzone: "npm:14.2.3"
     react-google-autocomplete: "npm:2.7.3"
@@ -21578,6 +21577,7 @@ __metadata:
     tailwindcss: "npm:3.4.13"
     typescript: "npm:5.6.2"
     unified: "npm:11.0.5"
+    universal-cookie: "npm:7.2.2"
     validator: "npm:13.12.0"
     vitest: "npm:2.1.1"
     vitest-fetch-mock: "npm:0.3.0"
@@ -46608,19 +46608,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-cookie@npm:7.2.1":
-  version: 7.2.1
-  resolution: "react-cookie@npm:7.2.1"
-  dependencies:
-    "@types/hoist-non-react-statics": "npm:^3.3.5"
-    hoist-non-react-statics: "npm:^3.3.2"
-    universal-cookie: "npm:^7.0.0"
-  peerDependencies:
-    react: ">= 16.3.0"
-  checksum: 10/b41544afa9799d256444f2749f9f06389b71aec03e85627cbfcc04a0c389220f5761c707ee669874981b81973e9e36140abd703d9e6a6525f400befeb4340ce0
-  languageName: node
-  linkType: hard
-
 "react-dev-utils@npm:^12.0.1":
   version: 12.0.1
   resolution: "react-dev-utils@npm:12.0.1"
@@ -53399,13 +53386,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"universal-cookie@npm:^7.0.0":
-  version: 7.2.1
-  resolution: "universal-cookie@npm:7.2.1"
+"universal-cookie@npm:7.2.2":
+  version: 7.2.2
+  resolution: "universal-cookie@npm:7.2.2"
   dependencies:
     "@types/cookie": "npm:^0.6.0"
     cookie: "npm:^0.7.2"
-  checksum: 10/82c208a5d4983a6c5d0fac59fe6d1ea2c0d6ce95652c8b61ed7118350b33f692b801003da898a9cdf2094280cee92b31bb02fa1536d7d446948b050389c39eb3
+  checksum: 10/0ff895dc031d925b2bd479010e750822cf2cfc966e704d822022b5075d1a4222ef839d05a3237b568c01c641051da31283dadbc138f712347ffbec002e2bc193
   languageName: node
   linkType: hard
 

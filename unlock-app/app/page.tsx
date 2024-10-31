@@ -9,7 +9,6 @@ export const metadata: Metadata = {
 }
 
 const HomePage: React.FC = () => {
-  console.log('HOME PAGE')
   return <HomeContent />
 }
 
