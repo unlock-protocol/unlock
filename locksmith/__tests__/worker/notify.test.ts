@@ -1,12 +1,17 @@
 import { notify } from '../../src/worker/helpers'
 import { Hook, HookEvent } from '../../src/models'
 import { vi, describe, it, expect } from 'vitest'
+import createFetchMock from 'vitest-fetch-mock'
+
+const fetchMock = createFetchMock(vi)
+fetchMock.enableMocks()
 
 const notifyHook = vi.fn()
 notifyHook.mockImplementation(() => new HookEvent())
 
 describe('Test notify helpers', () => {
   beforeEach(() => {
+    vi.clearAllMocks()
     fetchMock.resetMocks()
   })
 

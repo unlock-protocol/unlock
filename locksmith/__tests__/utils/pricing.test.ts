@@ -5,6 +5,10 @@ import {
   getKeyPricingInFiat,
 } from '../../src/utils/pricing'
 import { DEFAULT_LOCK_SETTINGS } from '../../src/controllers/v2/lockSettingController'
+import createFetchMock from 'vitest-fetch-mock'
+
+const fetchMock = createFetchMock(vi)
+fetchMock.enableMocks()
 
 const recipients = [
   '0x6f59999AE79Bc593549918179454A47980a800E5',
@@ -106,6 +110,8 @@ vi.mock('@unlock-protocol/unlock-js', () => ({
 
 describe('pricing', () => {
   beforeEach(() => {
+    vi.clearAllMocks()
+    fetchMock.resetMocks()
     // mock https://coins.llama.fi response
     fetchMock.mockIf(
       /^https?:\/\/coins.llama.fi\/prices\/current\/.*$/,
