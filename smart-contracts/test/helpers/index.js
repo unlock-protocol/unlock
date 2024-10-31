@@ -8,7 +8,7 @@ const deployLocks = require('./deployLocks')
 const deployContracts = require('../fixtures/deploy.js')
 const time = require('./time')
 const interface = require('./interface')
-const uniswapV2 = require('./uniswapV2')
+const uniswap = require('./uniswap.js')
 const math = require('./math')
 const roles = require('./roles')
 const upgrades = require('./upgrades')
@@ -16,6 +16,7 @@ const versions = require('./versions')
 const bridge = require('./bridge')
 const events = require('./events')
 const bigNumber = require('./bigNumber')
+const up = require('./up')
 
 module.exports = {
   deployContracts,
@@ -28,7 +29,7 @@ module.exports = {
   ...multisig,
   ...time,
   ...interface,
-  ...uniswapV2,
+  ...uniswap,
   ...math,
   ...roles,
   ...upgrades,
@@ -36,4 +37,5 @@ module.exports = {
   ...bridge,
   ...events,
   ...bigNumber,
+  ...up,
 }
