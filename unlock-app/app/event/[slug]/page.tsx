@@ -4,6 +4,8 @@ import { toFormData } from '~/components/interface/locks/metadata/utils'
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import { fetchEventMetadata } from '~/utils/eventMetadata'
+import { fetchMetadata as fetchFramesMetadata } from 'frames.js/next'
+import { config } from '~/config/app'
 
 export interface EventPageProps {
   params: {
@@ -33,6 +35,16 @@ export async function generateMetadata({
     slug: eventMetadata.slug,
   }) as Event
 
+  // Get frames metadata
+  const framesMetadata = await fetchFramesMetadata(
+    new URL(`/frames/event/${event.slug}/page`, config.unlockApp)
+  )
+
+  // Filter out any undefined values from frames metadata
+  const filteredFramesMetadata = Object.fromEntries(
+    Object.entries(framesMetadata).filter(([_, value]) => value !== undefined)
+  )
+
   // Construct and return the metadata object for the event page, including Open Graph and Twitter card info
   return {
     title: event.name || 'Event',
@@ -51,6 +63,19 @@ export async function generateMetadata({
       title: event.name || 'Event',
       description: event.description || '',
       images: [event.image || '/default-event-image.png'],
+    },
+    other: {
+      ...filteredFramesMetadata,
+      'fc:frame': 'vNext',
+      'fc:frame:image': `${config.unlockApp}/og/event/${event.slug}`,
+      'fc:frame:post_url': `${config.unlockApp}/frames/event?p=${encodeURIComponent(
+        `${config.unlockApp}/frames/event/${event.slug}`
+      )}&s=${encodeURIComponent('{"view":"default"}')}`,
+      'fc:frame:button:1': 'Register',
+      'fc:frame:button:1:target': `${config.unlockApp}/event/${event.slug}`,
+      'fc:frame:button:1:action': 'link',
+      'fc:frame:button:2': 'See description',
+      'fc:frame:button:2:action': 'post',
     },
   }
 }

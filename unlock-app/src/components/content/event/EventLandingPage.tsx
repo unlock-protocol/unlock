@@ -3,7 +3,6 @@
 import { Button } from '@unlock-protocol/ui'
 import Link from 'next/link'
 import { LockTypeLandingPage } from '~/components/interface/LockTypeLandingPage'
-import { NextSeo } from 'next-seo'
 import Image from 'next/image'
 
 const customers = [
@@ -149,18 +148,6 @@ interface LandingPageProps {
 export const EventLandingPage = ({ handleCreateEvent }: LandingPageProps) => {
   return (
     <>
-      <NextSeo
-        title="Unlock Events"
-        description="Unlock Protocol empowers everyone to create events the true web3 way. Deploy a contract, sell tickets as NFTs, and perform check-in with a dedicated QR code. We got it covered."
-        openGraph={{
-          images: [
-            {
-              alt: 'Event',
-              url: 'https://events.unlock-protocol.com/',
-            },
-          ],
-        }}
-      />
       <LockTypeLandingPage
         title={
           <h1
