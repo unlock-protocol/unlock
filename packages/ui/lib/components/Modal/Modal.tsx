@@ -13,6 +13,8 @@ export interface Props {
   children?: ReactNode
   empty?: boolean
   size?: 'small' | 'medium' | 'large'
+  spacing?: 'small' | 'medium' | 'large' | 'none'
+  closeIconStyle?: string
 }
 
 const sizeClasses = {
@@ -21,14 +23,24 @@ const sizeClasses = {
   large: 'max-w-4xl',
 }
 
+const spacingClasses = {
+  small: 'p-4 mt-6',
+  medium: 'p-6 mt-8',
+  large: 'p-8 mt-10',
+  none: '',
+}
+
 export function Modal({
   isOpen,
   setIsOpen,
   children,
   empty,
   size = 'medium',
+  spacing = 'small',
+  closeIconStyle = 'fill-inherit',
 }: Props) {
   const sizeClass = sizeClasses[size]
+  const spacingClass = spacingClasses[spacing]
 
   let content
   if (empty) {
@@ -40,19 +52,20 @@ export function Modal({
   } else {
     content = (
       <div
-        className={`relative w-full ${sizeClass} mx-auto overflow-hidden transition-all transform bg-white border border-gray-100 rounded-lg shadow-xl`}
+        className={`relative w-full ${sizeClass} mx-auto overflow-hidden transition-all transform bg-white border-none rounded-xl shadow-xl`}
       >
-        <button
-          className="absolute top-4 right-4 hover:fill-brand-ui-primary"
-          aria-label="close"
-          onClick={(event) => {
-            event.preventDefault()
-            setIsOpen(false)
-          }}
-        >
-          <CloseIcon className="fill-inherit" size={24} />
-        </button>
-        <div className="p-6">{children}</div>
+        <div className="absolute top-4 right-4">
+          <button
+            aria-label="close"
+            onClick={(event) => {
+              event.preventDefault()
+              setIsOpen(false)
+            }}
+          >
+            <CloseIcon className={closeIconStyle} size={24} />
+          </button>
+        </div>
+        <div className={spacingClass}>{children}</div>
       </div>
     )
   }
