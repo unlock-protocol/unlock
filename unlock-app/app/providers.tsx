@@ -46,9 +46,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   const queryClient = getQueryClient()
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <GlobalWrapper>
-        <Privy>
+    <Privy>
+      <QueryClientProvider client={queryClient}>
+        <GlobalWrapper>
           <SessionProvider>
             <Suspense fallback={<LoadingFallback />}>
               <ConnectModalProvider>
@@ -64,8 +64,8 @@ export default function Providers({ children }: { children: React.ReactNode }) {
               <Toaster />
             </Suspense>
           </SessionProvider>
-        </Privy>
-      </GlobalWrapper>
-    </QueryClientProvider>
+        </GlobalWrapper>
+      </QueryClientProvider>
+    </Privy>
   )
 }

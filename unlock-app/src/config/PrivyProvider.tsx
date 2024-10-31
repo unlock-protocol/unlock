@@ -1,8 +1,28 @@
-import { PrivyProvider } from '@privy-io/react-auth'
+import { PrivyProvider, useLogin } from '@privy-io/react-auth'
 import { ReactNode } from 'react'
 import { config } from './app'
+import { ToastHelper } from '~/components/helpers/toast.helper'
+
+export const PrivyChild = ({ children }: { children: ReactNode }) => {
+  useLogin({
+    // onComplete: onSignedInWithPrivy,
+    onComplete: () => {
+      console.log('onComplete')
+    },
+    onError: (error) => {
+      if (error !== 'generic_connect_wallet_error') {
+        ToastHelper.error(`Error while logging in: ${error}`)
+      } else {
+        ToastHelper.error('Error while logging in. Please retry!')
+      }
+      console.error(error)
+    },
+  })
+  return children
+}
 
 export const Privy = ({ children }: { children: ReactNode }) => {
+  console.log('PrivyProvider rendered')
   return (
     <PrivyProvider
       config={{
@@ -20,7 +40,7 @@ export const Privy = ({ children }: { children: ReactNode }) => {
       }}
       appId={config.privyAppId}
     >
-      {children}
+      <PrivyChild>{children}</PrivyChild>
     </PrivyProvider>
   )
 }
