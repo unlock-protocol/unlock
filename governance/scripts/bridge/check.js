@@ -3,11 +3,15 @@ const {
   DelayMod: delayModAbi,
   ConnextMod: connextModAbi,
 } = require('../../helpers/bridge')
+const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
+const { UPGovernor } = require('@unlock-protocol/contracts')
+
 const { getProvider } = require('../../helpers/multisig')
 const { Contract } = require('ethers')
 
-const BASE_DAO_TIMELOCK_ADDRESS = '0xB34567C4cA697b39F72e1a8478f285329A98ed1b'
-const BASE_DOMAIN_ID = '1650553709'
+// TODO: parse this from package
+const DAO_CHAIN_ID = 8453
+const DAO_GOVERNOR_ADDRESS = '0x65bA0624403Fc5Ca2b20479e9F626eD4D78E0aD9'
 
 const isExpired = async (delayMod, nonce) => {
   const createdAt = await delayMod.getFunction('getTxCreatedAt')(nonce)
@@ -18,6 +22,18 @@ const isExpired = async (delayMod, nonce) => {
 }
 
 async function main() {
+  // get timelock address
+  const {
+    governanceBridge: { domainId: daoDomainId },
+  } = await getNetwork(DAO_CHAIN_ID)
+  const daoChainProvider = await getProvider(DAO_CHAIN_ID)
+  const gov = new Contract(
+    DAO_GOVERNOR_ADDRESS,
+    UPGovernor.abi,
+    daoChainProvider
+  )
+  const daoTimelockAddress = await gov.timelock()
+
   for (let i in targetChains) {
     const {
       id,
@@ -58,8 +74,8 @@ async function main() {
 
     // make sure the connext bridge module is set correctly to DAO coordinates on Base
     if (
-      (await connextMod.originSender()) != BASE_DAO_TIMELOCK_ADDRESS ||
-      (await connextMod.origin()) != BASE_DOMAIN_ID
+      (await connextMod.originSender()) != daoTimelockAddress ||
+      (await connextMod.origin()) != daoDomainId
     ) {
       log(
         `Incorrect config for SAFE Connext module origin ${await connextMod.origin()} and origin sender ${await connextMod.originSender()}.`
