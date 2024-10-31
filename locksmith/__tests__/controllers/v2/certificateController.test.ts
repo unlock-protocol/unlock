@@ -2,6 +2,10 @@ import request from 'supertest'
 import { loginRandomUser } from '../../test-helpers/utils'
 import app from '../../app'
 import { vi, describe, expect } from 'vitest'
+import createFetchMock from 'vitest-fetch-mock'
+
+const fetchMock = createFetchMock(vi)
+fetchMock.enableMocks()
 
 const lockAddress = '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'
 const wrongLockAddress = '0x70997970C51812dc3A010C7d01b50e0d17dc79C8'
@@ -22,6 +26,11 @@ vi.mock('@unlock-protocol/unlock-js', () => {
 })
 
 describe('certification endpoints', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    fetchMock.resetMocks()
+  })
+
   it('returns an error when authentication is missing', async () => {
     expect.assertions(1)
 

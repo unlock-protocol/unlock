@@ -1,11 +1,15 @@
 import request from 'supertest'
 import { loginRandomUser } from '../../test-helpers/utils'
 import app from '../../app'
-import { vi, beforeAll } from 'vitest'
+import { vi, expect } from 'vitest'
 import { saveEvent } from '../../../src/operations/eventOperations'
 import { ethers } from 'ethers'
 import { sendEmail } from '../../../src/operations/wedlocksOperations'
 import { EventData } from '../../../src/models'
+import createFetchMock from 'vitest-fetch-mock'
+
+const fetchMock = createFetchMock(vi)
+fetchMock.enableMocks()
 
 let lockAddress = '0x62CcB13A72E6F991dE53b9B7AC42885151588Cd2'
 const anotherLockAddress = '0x62CcB13A72E6F991dE53b9B7AC42885151588Cd3'

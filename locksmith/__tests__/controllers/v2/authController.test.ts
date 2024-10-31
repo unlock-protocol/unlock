@@ -4,6 +4,10 @@ import app from '../../app'
 import { afterAll, beforeAll, expect, vi } from 'vitest'
 import config from '../../../src/config/config'
 import { privy } from '../../../src/utils/privyClient'
+import createFetchMock from 'vitest-fetch-mock'
+
+const fetchMock = createFetchMock(vi)
+fetchMock.enableMocks()
 
 vi.mock('../../../src/utils/privyClient', () => ({
   privy: {
@@ -21,6 +25,11 @@ afterAll(() => {
 })
 
 describe('Auth login endpoints for locksmith', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    fetchMock.resetMocks()
+  })
+
   it('Login with Privy returns tokens and walletAddress', async () => {
     expect.assertions(3)
 

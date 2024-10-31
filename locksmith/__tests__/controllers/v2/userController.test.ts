@@ -5,6 +5,10 @@ import { IssueUserTokenOptions } from '@coinbase/waas-server-auth'
 import { UserAccountType } from '../../../src/controllers/userController'
 import { UserAccount } from '../../../src/models/userAccount'
 import VerificationCodes from '../../../src/models/verificationCodes'
+import createFetchMock from 'vitest-fetch-mock'
+
+const fetchMock = createFetchMock(vi)
+fetchMock.enableMocks()
 
 const nextAuthToken = 'token'
 const token = crypto.randomUUID()
@@ -38,9 +42,6 @@ vi.mock('@coinbase/waas-server-auth', () => {
 
 vi.mock('../../../src/operations/wedlocksOperations', () => {
   return {
-    sendEmail: vi.fn().mockImplementation(() => {
-      return true
-    }),
     sendEmail: vi.fn().mockImplementation(() => {
       return true
     }),

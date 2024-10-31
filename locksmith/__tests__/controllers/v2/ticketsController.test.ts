@@ -6,6 +6,10 @@ import { beforeAll, afterEach, expect, vi } from 'vitest'
 import { saveEvent } from '../../../src/operations/eventOperations'
 import { getEventFixture } from '../../fixtures/events'
 import { CheckoutConfig, EventData } from '../../../src/models'
+import createFetchMock from 'vitest-fetch-mock'
+
+const fetchMock = createFetchMock(vi)
+fetchMock.enableMocks()
 
 function* keyIdGen() {
   const start = Date.now()
@@ -66,6 +70,7 @@ vi.mock('../../../src/operations/wedlocksOperations', () => {
 
 describe('tickets endpoint', () => {
   beforeAll(async () => {
+    fetchMock.resetMocks()
     await EventData.truncate({ cascade: true })
     await CheckoutConfig.truncate()
     // create an event

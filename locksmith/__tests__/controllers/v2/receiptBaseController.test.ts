@@ -5,6 +5,10 @@ import * as z from 'zod'
 import app from '../../app'
 import { vi, expect } from 'vitest'
 import { SupplierBody } from '../../../src/controllers/v2/receiptBaseController'
+import createFetchMock from 'vitest-fetch-mock'
+
+const fetchMock = createFetchMock(vi)
+fetchMock.enableMocks()
 
 const lockAddress = '0x62CcB13A72E6F991dE53b9B7AC42885151588Cd2'
 const network = 10
@@ -35,6 +39,11 @@ vi.mock('@unlock-protocol/unlock-js', () => {
 })
 
 describe('Receipt Base v2', () => {
+  beforeEach(() => {
+    vi.clearAllMocks() // Reset mocks before each test
+    fetchMock.resetMocks() // Reset fetch mocks before each test
+  })
+
   it('Save supplier throws an error when is not authenticated', async () => {
     expect.assertions(2)
     const { loginResponse } = await loginRandomUser(app)

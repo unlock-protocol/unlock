@@ -3,6 +3,10 @@ import { loginRandomUser } from '../../test-helpers/utils'
 import app from '../../app'
 import { expect, vi } from 'vitest'
 import { DEFAULT_LOCK_SETTINGS } from '../../../src/controllers/v2/lockSettingController'
+import createFetchMock from 'vitest-fetch-mock'
+
+const fetchMock = createFetchMock(vi)
+fetchMock.enableMocks()
 
 const network = 4
 const lockAddress = '0x62CcB13A72E6F991dE53b9B7AC42885151588Cd2'
@@ -55,6 +59,11 @@ vi.mock('@unlock-protocol/unlock-js', () => {
 })
 
 describe('LockSettings v2 endpoints for lock', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    fetchMock.resetMocks()
+  })
+
   it('should fail to save settings when authenticated and not lockManager', async () => {
     expect.assertions(2)
 

@@ -1,8 +1,12 @@
 import { ethers } from 'ethers'
 import request from 'supertest'
 import app from '../app'
-import { vi } from 'vitest'
+import { expect, vi } from 'vitest'
 import { Buffer } from 'buffer'
+import createFetchMock from 'vitest-fetch-mock'
+
+const fetchMock = createFetchMock(vi)
+fetchMock.enableMocks()
 
 vi.mock('../../src/payment/paymentProcessor', () => {
   const mockedPaymentProcessor = vi.fn().mockImplementation(() => {
@@ -61,6 +65,11 @@ function generateTypedData(message: any, messageKey: string) {
 }
 
 describe('Purchase Controller', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    fetchMock.resetMocks()
+  })
+
   describe('purchase in USD initiation', () => {
     describe('when the purchase request is appropriately signed and user has payment details', () => {
       const message = {

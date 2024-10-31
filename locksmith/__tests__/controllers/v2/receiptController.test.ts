@@ -7,6 +7,10 @@ import { expect, vi, beforeEach } from 'vitest'
 import { SupplierBody } from '../../../src/controllers/v2/receiptBaseController'
 import { PurchaserBody } from '../../../src/controllers/v2/receiptController'
 import { ethers } from 'ethers'
+import createFetchMock from 'vitest-fetch-mock'
+
+const fetchMock = createFetchMock(vi)
+fetchMock.enableMocks()
 
 const lockAddress = '0x62CcB13A72E6F991dE53b9B7AC42885151588Cd2'
 const lockManager = `0x00192fb10df37c9fb26829eb2cc623cd1bf599e8`

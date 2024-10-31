@@ -1,10 +1,13 @@
 import request from 'supertest'
 import { loginRandomUser } from '../../test-helpers/utils'
-import { KeyManager } from '@unlock-protocol/unlock-js'
 
 import app from '../../app'
 import { Rsvp } from '../../../src/models'
-import { vi } from 'vitest'
+import { vi, expect } from 'vitest'
+import createFetchMock from 'vitest-fetch-mock'
+
+const fetchMock = createFetchMock(vi)
+fetchMock.enableMocks()
 
 const lockAddress = '0x62CcB13A72E6F991dE53b9B7AC42885151588Cd2'
 const userAddress = '0x81Dd955D02D337DB81BA6c9C5F6213E647672052'
@@ -29,6 +32,8 @@ vi.mock('@unlock-protocol/unlock-js', () => ({
 
 describe('RSVP', () => {
   beforeEach(async () => {
+    vi.clearAllMocks()
+    fetchMock.resetMocks()
     await Rsvp.truncate()
   })
 

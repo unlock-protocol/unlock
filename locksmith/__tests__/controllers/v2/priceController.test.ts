@@ -1,8 +1,11 @@
 import request from 'supertest'
 import { networks } from '@unlock-protocol/networks'
-
+import createFetchMock from 'vitest-fetch-mock'
 import app from '../../app'
-import { expect, beforeEach } from 'vitest'
+import { expect, beforeEach, vi } from 'vitest'
+
+const fetchMock = createFetchMock(vi)
+fetchMock.enableMocks()
 
 const networkIds = Object.values(networks)
   .filter((network) => !!network.tokens)

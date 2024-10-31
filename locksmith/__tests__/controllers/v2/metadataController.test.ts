@@ -5,6 +5,10 @@ import verifierOperations from '../../../src/operations/verifierOperations'
 import logger from '../../../src/logger'
 import app from '../../app'
 import { vi, expect } from 'vitest'
+import createFetchMock from 'vitest-fetch-mock'
+
+const fetchMock = createFetchMock(vi)
+fetchMock.enableMocks()
 
 let owner = `0x00192fb10df37c9fb26829eb2cc623cd1bf599e8`
 let lockManager = `0x00192fb10df37c9fb26829eb2cc623cd1bf599e8`
@@ -57,6 +61,11 @@ const lockPayload = {
 }
 
 describe('Metadata v2 endpoints for locksmith', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    fetchMock.resetMocks()
+  })
+
   it('Add and get metadata to user', async () => {
     expect.assertions(4)
     const lockAddress = await ethers.Wallet.createRandom().getAddress()

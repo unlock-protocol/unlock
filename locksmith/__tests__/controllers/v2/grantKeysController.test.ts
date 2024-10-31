@@ -4,8 +4,12 @@ import {
   loginRandomUser,
   loginAsApplication,
 } from '../../test-helpers/utils'
-import { vi } from 'vitest'
+import { vi, expect } from 'vitest'
 import app from '../../app'
+import createFetchMock from 'vitest-fetch-mock'
+
+const fetchMock = createFetchMock(vi)
+fetchMock.enableMocks()
 
 const lockAddress = '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'
 const managedLock = '0xdCc44A9502239657578cB626C5afe9c2615733c0'
@@ -53,6 +57,11 @@ vi.mock('../../../src/fulfillment/dispatcher', () => {
 })
 
 describe('grantKeys endpoint', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    fetchMock.resetMocks()
+  })
+
   it('returns an error when authentication is missing', async () => {
     expect.assertions(1)
 

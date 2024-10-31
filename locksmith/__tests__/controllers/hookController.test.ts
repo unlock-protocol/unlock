@@ -3,8 +3,19 @@ import request from 'supertest'
 import { Hook } from '../../src/models'
 import { HookController } from '../../src/controllers/hookController'
 import app from '../app'
+import { expect } from 'vitest'
+import createFetchMock from 'vitest-fetch-mock'
 import { vi } from 'vitest'
+
+const fetchMock = createFetchMock(vi)
+fetchMock.enableMocks()
+
 describe('HookController', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    fetchMock.resetMocks()
+  })
+
   const controller = new HookController({
     leaseSeconds: {
       limit: 864000 * 9,

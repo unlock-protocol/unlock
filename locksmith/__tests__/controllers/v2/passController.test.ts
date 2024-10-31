@@ -3,6 +3,10 @@ import app from '../../app'
 import config from '../../../src/config/config'
 import { vi, expect } from 'vitest'
 import { createAppleWalletPass } from '../../../src/operations/generate-pass/ios/createAppleWalletPass'
+import createFetchMock from 'vitest-fetch-mock'
+
+const fetchMock = createFetchMock(vi)
+fetchMock.enableMocks()
 
 // Constants defining the parameters for the Google Wallet pass generation
 const network = 11155111
@@ -77,6 +81,11 @@ vi.mock(
 
 // test suite for Google Wallet pass generation
 describe("Generate a Google Wallet pass for a lock's key", () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    fetchMock.resetMocks()
+  })
+
   it('should return a response status of 200 and the URL to save the generated wallet pass', async () => {
     // number of assertions expected
     expect.assertions(2)
@@ -97,6 +106,11 @@ describe("Generate a Google Wallet pass for a lock's key", () => {
 
 // test suite for Apple Wallet pass generation
 describe("Generate an Apple Wallet pass for a lock's key", () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    fetchMock.resetMocks()
+  })
+
   it('should return a successful response with the correct headers for downloading the Apple Wallet pass', async () => {
     expect.assertions(3)
 

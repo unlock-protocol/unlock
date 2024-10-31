@@ -4,6 +4,10 @@ import app from '../../app'
 import { Application } from '../../../src/models/application'
 import { EVENT_CASTER_ADDRESS } from '../../../src/utils/constants'
 import { ethers } from 'ethers'
+import createFetchMock from 'vitest-fetch-mock'
+
+const fetchMock = createFetchMock(vi)
+fetchMock.enableMocks()
 
 const lockAddress = '0xce332211f030567bd301507443AD9240e0b13644'
 const tokenId = 1337

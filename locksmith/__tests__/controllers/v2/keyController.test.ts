@@ -2,6 +2,10 @@ import request from 'supertest'
 import { loginRandomUser } from '../../test-helpers/utils'
 import app from '../../app'
 import { vi, expect } from 'vitest'
+import createFetchMock from 'vitest-fetch-mock'
+
+const fetchMock = createFetchMock(vi)
+fetchMock.enableMocks()
 
 const lockAddress = '0x62CcB13A72E6F991dE53b9B7AC42885151588Cd2'
 const wrongLockAddress = '0x70997970C51812dc3A010C7d01b50e0d17dc79C8'
@@ -111,6 +115,11 @@ vi.mock('@unlock-protocol/unlock-js', () => {
 })
 
 describe('Keys v2 endpoints for lock', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    fetchMock.resetMocks()
+  })
+
   it('should throw an error when endpoint does not have query parameters', async () => {
     expect.assertions(2)
     const { loginResponse } = await loginRandomUser(app)

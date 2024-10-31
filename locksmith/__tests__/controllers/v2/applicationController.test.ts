@@ -1,6 +1,11 @@
 import request from 'supertest'
 import { getWalletInput } from '../../test-helpers/utils'
 import app from '../../app'
+import { beforeAll, expect, vi } from 'vitest'
+import createFetchMock from 'vitest-fetch-mock'
+
+const fetchMock = createFetchMock(vi)
+fetchMock.enableMocks()
 
 // eslint-disable-next-line
 var application: any
@@ -11,6 +16,11 @@ const APP_NAME = 'BANANA'
 const NEW_APP_NAME = 'UPDATED'
 
 describe('Application endpoint', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    fetchMock.resetMocks()
+  })
+
   beforeAll(async () => {
     const { message, signedMessage } = await getWalletInput()
     const loginResponse = await request(app).post('/v2/auth/login').send({

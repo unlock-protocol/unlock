@@ -2,8 +2,19 @@ import request from 'supertest'
 import { ethers } from 'ethers'
 import { generateNonce, SiweMessage } from 'siwe'
 import app from '../app'
+import { expect } from 'vitest'
+import createFetchMock from 'vitest-fetch-mock'
+import { vi } from 'vitest'
+
+const fetchMock = createFetchMock(vi)
+fetchMock.enableMocks()
 
 describe('Auth Endpoint', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    fetchMock.resetMocks()
+  })
+
   it('returns an error if redirect_uri is missing', async () => {
     expect.assertions(1)
     const response = await request(app)
