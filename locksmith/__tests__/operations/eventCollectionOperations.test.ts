@@ -10,6 +10,10 @@ import {
   removeManagerAddressOperation,
   updateEventCollectionOperation,
 } from '../../src/operations/eventCollectionOperations'
+import createFetchMock from 'vitest-fetch-mock'
+
+const fetchMock = createFetchMock(vi)
+fetchMock.enableMocks()
 
 // interface for link types
 interface Link {
@@ -66,7 +70,7 @@ describe('eventCollectionOperations', () => {
   let scopedEventData: any
 
   beforeEach(() => {
-    vi.resetAllMocks() // Reset mocks before each test
+    vi.resetAllMocks()
 
     // Mock the scoped EventData
     mockFindOne = vi.fn()

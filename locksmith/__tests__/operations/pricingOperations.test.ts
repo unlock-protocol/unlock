@@ -2,6 +2,10 @@ import { describe, it, expect, vi } from 'vitest'
 import * as pricingOperations from '../../src/operations/pricingOperations'
 import { DEFAULT_LOCK_SETTINGS } from '../../src/controllers/v2/lockSettingController'
 import { ethers } from 'ethers'
+import createFetchMock from 'vitest-fetch-mock'
+
+const fetchMock = createFetchMock(vi)
+fetchMock.enableMocks()
 
 const lockAddress = '0x551c6ecdf819Dc90c5287971072B4651119accD3'
 const lockAddressErc20 = '0x8D33b257bce083eE0c7504C7635D1840b3858AFD'
@@ -72,6 +76,10 @@ vi.mock('../../src/operations/lockSettingOperations', () => {
 
 describe('pricingOperations', () => {
   beforeEach(() => {
+    // Reset mocks to avoid interference between tests
+    vi.clearAllMocks()
+    fetchMock.resetMocks()
+
     // mock https://coins.llama.fi response
     fetchMock.mockIf(
       /^https?:\/\/coins.llama.fi\/prices\/current\/.*$/,

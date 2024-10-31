@@ -6,11 +6,15 @@ import {
   getTemplates,
   getAttachments,
 } from '../../src/operations/wedlocksOperations'
-import { vi, expect, afterAll } from 'vitest'
+import { vi, expect } from 'vitest'
 import app from '../app'
 import request from 'supertest'
 import { loginRandomUser } from '../test-helpers/utils'
 import config from '../../src/config/config'
+import createFetchMock from 'vitest-fetch-mock'
+
+const fetchMock = createFetchMock(vi)
+fetchMock.enableMocks()
 
 const lockAddressMock = '0x8D33b257bce083eE0c7504C7635D1840b3858AFD'
 const network = 8453
@@ -73,6 +77,7 @@ vi.mock('../../src/operations/userMetadataOperations', async () => {
 
 describe('Wedlocks operations', () => {
   beforeEach(() => {
+    vi.clearAllMocks()
     fetchMock.resetMocks()
     fetchMock.enableMocks()
   })

@@ -1,5 +1,6 @@
 import { ethers } from 'ethers'
 import request from 'supertest'
+import createFetchMock from 'vitest-fetch-mock'
 import { loginRandomUser } from '../../test-helpers/utils'
 import app from '../../app'
 import { vi, beforeAll, expect } from 'vitest'
@@ -12,6 +13,9 @@ const lockAddress = '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'
 const anotherLock = '0xBF0aa922AfdD7044037901f4f96B4585Ddd09ce7'
 const network = 10
 const owner = `0x00192fb10df37c9fb26829eb2cc623cd1bf599e8`
+
+const fetchMock = createFetchMock(vi)
+fetchMock.enableMocks()
 
 vi.mock('@unlock-protocol/unlock-js', () => {
   return {

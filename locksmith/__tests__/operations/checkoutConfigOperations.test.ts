@@ -8,6 +8,10 @@ import {
   saveCheckoutConfig,
 } from '../../src/operations/checkoutConfigOperations'
 import networks from '@unlock-protocol/networks'
+import createFetchMock from 'vitest-fetch-mock'
+
+const fetchMock = createFetchMock(vi)
+fetchMock.enableMocks()
 
 // Mock the models
 vi.mock('../../src/models', () => ({
