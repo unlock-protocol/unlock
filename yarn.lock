@@ -20960,13 +20960,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/lib@npm:1.1.1":
-  version: 1.1.1
-  resolution: "@uniswap/lib@npm:1.1.1"
-  checksum: 10/834f0c0dfbc9a2e385fab21b93d07801c7fca885ccb0a544b93ad52d90cdf00a7d5444b427704a94778884e9d0fe22963fa25d37ade9b3efffa732dc1d30c1b3
-  languageName: node
-  linkType: hard
-
 "@uniswap/lib@npm:^4.0.1-alpha":
   version: 4.0.1-alpha
   resolution: "@uniswap/lib@npm:4.0.1-alpha"
@@ -20974,27 +20967,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/v2-core@npm:1.0.0":
-  version: 1.0.0
-  resolution: "@uniswap/v2-core@npm:1.0.0"
-  checksum: 10/b875bc2e0d5ed3df11c4d480c5e84defbc786f7097d726e7e53feb6e830a605f77f4fbb4cc99d21aa4d70fd809be1778894faaf9345134802b2240d15993183d
-  languageName: node
-  linkType: hard
-
-"@uniswap/v2-core@npm:1.0.1, @uniswap/v2-core@npm:^1.0.1":
+"@uniswap/v2-core@npm:^1.0.1":
   version: 1.0.1
   resolution: "@uniswap/v2-core@npm:1.0.1"
   checksum: 10/a98cbafba613c088be4b439138e0a68f1d79c1f26c3bbe6ba20088832be4d8fa4a3f22569982e5d05f01a1d51586b58d83d64206f8f029c5bfb41282fcb8d62d
-  languageName: node
-  linkType: hard
-
-"@uniswap/v2-periphery@npm:1.1.0-beta.0":
-  version: 1.1.0-beta.0
-  resolution: "@uniswap/v2-periphery@npm:1.1.0-beta.0"
-  dependencies:
-    "@uniswap/lib": "npm:1.1.1"
-    "@uniswap/v2-core": "npm:1.0.0"
-  checksum: 10/dc72a1de8b7cd9e50a5c7ffb976922185c1be65c161fdd204c1d1b8eb3bb432cb33399c7f1def81145f1a711c9ccd91978d63d7d2e925a9632df3b1fb81c747c
   languageName: node
   linkType: hard
 
@@ -21396,8 +21372,6 @@ __metadata:
     "@openzeppelin/hardhat-upgrades": "npm:3.4.0"
     "@openzeppelin/merkle-tree": "npm:1.0.7"
     "@openzeppelin/upgrades-core": "npm:1.39.0"
-    "@uniswap/v2-core": "npm:1.0.1"
-    "@uniswap/v2-periphery": "npm:1.1.0-beta.0"
     "@uniswap/v3-core": "npm:1.0.1"
     "@uniswap/v3-periphery": "npm:1.4.4"
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
@@ -21575,7 +21549,6 @@ __metadata:
     lottie-react: "npm:2.4.0"
     next: "npm:14.2.14"
     next-auth: "npm:4.24.8"
-    next-seo: "npm:6.6.0"
     node-forge: "npm:1.3.1"
     postcss: "npm:8.4.47"
     postmate: "npm:1.5.2"
