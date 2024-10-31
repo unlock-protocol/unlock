@@ -11,8 +11,16 @@ export default defineConfig({
     },
     dir: '__tests__',
     include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-    setupFiles: ['./__tests__/setup.ts'],
     // 5 minute timeout
     testTimeout: 1000 * 60 * 5,
+    // run tests in parallel in isolated threads
+    pool: 'threads',
+    poolOptions: {
+      threads: {
+        singleThread: false,
+      },
+    },
+    // isolate test environment for each test
+    isolate: true,
   },
 })
