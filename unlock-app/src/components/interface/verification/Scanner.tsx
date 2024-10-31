@@ -155,6 +155,8 @@ export function Scanner({ checkoutConfig, eventProp }: ScannerProps) {
       {membershipVerificationConfig && (
         <Modal
           size="small"
+          spacing="none"
+          closeIconStyle="fill-white"
           isOpen={!!membershipVerificationConfig}
           setIsOpen={() => setMembershipVerificationConfig(null)}
         >

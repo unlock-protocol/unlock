@@ -174,11 +174,11 @@ export const retrieveWaasUuid = async (
   if (!user) {
     const userAccountType = selectedProvider as UserAccountType
     if (!userAccountType) {
-      console.error('No selectedProvider provided')
+      logger.error('No selectedProvider provided')
       return res.status(500).json({ message: 'No selectedProvider provided' })
     }
     if (userAccountType === UserAccountType.UnlockAccount) {
-      console.error('Creating a user with UnlockAccount type is not allowed')
+      logger.error('Creating a user with UnlockAccount type is not allowed')
       return res.status(500).json({
         message: 'Creating a user with UnlockAccount type is not allowed',
       })
@@ -203,7 +203,7 @@ export const retrieveWaasUuid = async (
     })
     res.json({ token })
   } catch (error) {
-    console.error(
+    logger.error(
       'Error issuing Coinbase WAAS token for user',
       userUUID,
       error.message
@@ -475,7 +475,7 @@ export const sendVerificationCode = async (
       message: 'Email code sent',
     })
   } catch (error) {
-    console.error('Error sending verification code:', error)
+    logger.error('Error sending verification code:', error)
     return response.status(500).send('Error sending verification code')
   }
 }
@@ -522,7 +522,7 @@ export const verifyEmailCode = async (request: Request, response: Response) => {
       return response.status(400).json({ message: 'Invalid verification code' })
     }
   } catch (error) {
-    console.error('Error verifying email code:', error)
+    logger.error('Error verifying email code:', error)
     return response.status(500).json({ message: 'Error verifying email code' })
   }
 }
