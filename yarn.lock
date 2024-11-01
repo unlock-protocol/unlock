@@ -6864,15 +6864,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@decent.xyz/box-common@npm:3.3.6":
-  version: 3.3.6
-  resolution: "@decent.xyz/box-common@npm:3.3.6"
+"@decent.xyz/box-common@npm:3.3.17":
+  version: 3.3.17
+  resolution: "@decent.xyz/box-common@npm:3.3.17"
   peerDependencies:
     "@wagmi/core": 2.x
     react: ^18.0.0
     viem: 2.x
     wagmi: 2.x
-  checksum: 10/d0adb7aa15d7871ede8aa54b787357d6cc068a2d123088f0b8d1d89ac661a1230c35924f17a8e597096ed68ec5cf8b207ab82c00a4ae3f1a4a33b07aa898f68d
+  checksum: 10/335928e49794a5418f7a5619fd6e8089793eacb8b155bfa5e6c1ed01aac350418d6eadc1e72b327e712bfe6d58eb8ccd424f6f6c745fc621fa6ce8a19d866323
   languageName: node
   linkType: hard
 
@@ -22496,7 +22496,7 @@ __metadata:
     "@coinbase/waas-sdk-web": "npm:3.3.3"
     "@coinbase/wallet-sdk": "npm:4.1.0"
     "@crossmint/client-sdk-react-ui": "npm:1.2.2"
-    "@decent.xyz/box-common": "npm:3.3.6"
+    "@decent.xyz/box-common": "npm:3.3.17"
     "@enzoferey/ethers-error-parser": "npm:0.2.3"
     "@guildxyz/sdk": "npm:2.6.9"
     "@headlessui/react": "npm:2.1.9"
