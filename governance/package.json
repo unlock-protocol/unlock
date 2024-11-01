@@ -17,7 +17,7 @@
     "@nomiclabs/hardhat-ethers": "2.2.3",
     "@openzeppelin/hardhat-upgrades": "3.5.0",
     "@openzeppelin/upgrades-core": "1.38.0",
-    "@safe-global/api-kit": "2.4.6",
+    "@safe-global/api-kit": "2.5.3",
     "@safe-global/protocol-kit": "4.1.1",
     "@tenderly/hardhat-tenderly": "2.4.0",
     "@unlock-protocol/contracts": "workspace:./packages/contracts",
