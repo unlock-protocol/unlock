@@ -16414,6 +16414,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rollup/pluginutils@npm:^5.1.3":
+  version: 5.1.3
+  resolution: "@rollup/pluginutils@npm:5.1.3"
+  dependencies:
+    "@types/estree": "npm:^1.0.0"
+    estree-walker: "npm:^2.0.2"
+    picomatch: "npm:^4.0.2"
+  peerDependencies:
+    rollup: ^1.20.0||^2.0.0||^3.0.0||^4.0.0
+  peerDependenciesMeta:
+    rollup:
+      optional: true
+  checksum: 10/da24956c4f7ec0aed63a2dd6c6dd64d8ad90155918056e69adda6fbb7b96c607300079805bc63f2e64e33ba256802367301a578d020a22262f408bde98ca3643
+  languageName: node
+  linkType: hard
+
 "@rollup/rollup-android-arm-eabi@npm:4.14.1":
   version: 4.14.1
   resolution: "@rollup/rollup-android-arm-eabi@npm:4.14.1"
@@ -22373,7 +22389,7 @@ __metadata:
     prism-react-renderer: "npm:2.4.0"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
-    react-dropzone: "npm:14.2.3"
+    react-dropzone: "npm:14.3.1"
     react-hook-form: "npm:7.53.0"
     react-icons: "npm:5.3.0"
     react-use-clipboard: "npm:1.0.9"
@@ -22386,7 +22402,7 @@ __metadata:
     url-loader: "npm:4.1.1"
     vite: "npm:5.4.8"
     vite-plugin-node-polyfills: "npm:0.22.0"
-    vite-plugin-svgr: "npm:4.2.0"
+    vite-plugin-svgr: "npm:4.3.0"
     vite-tsconfig-paths: "npm:4.3.2"
   peerDependencies:
     "@headlessui/react": 2.2.0
@@ -25149,6 +25165,13 @@ __metadata:
   version: 2.2.2
   resolution: "attr-accept@npm:2.2.2"
   checksum: 10/c867ed41ed749988ad2a6fc70eb2498b9c3c2d58aaad2a8d05422a383058f9d29e50c4bca363c5ee7433df738a7920cc95377bbce8678e817fb498299dd82010
+  languageName: node
+  linkType: hard
+
+"attr-accept@npm:^2.2.4":
+  version: 2.2.4
+  resolution: "attr-accept@npm:2.2.4"
+  checksum: 10/2839a5740c8bf8ea30f84d4da850b8a31d766be787fbaf45efb94b5a2292781abfa93d274f585c6c0e64dad0e9c0b5c53ae9849c7272f0cf1f2d643a75cc166e
   languageName: node
   linkType: hard
 
@@ -34089,6 +34112,15 @@ __metadata:
   dependencies:
     tslib: "npm:^2.4.0"
   checksum: 10/6add4098ae07fd1e9050b1e8d3fd9f128680c1d6648c0676af54ace4586e6e5bfcb8fdfa45b69e9131ffd8175bf630d54a445a5facf9be244f85b99ce309183e
+  languageName: node
+  linkType: hard
+
+"file-selector@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "file-selector@npm:1.2.0"
+  dependencies:
+    tslib: "npm:^2.7.0"
+  checksum: 10/4d5c8a655d0365113ad5b2a22cf9538e1012f5f480e657086607010eb32ca5afd6b84cc62afa8cdd401135bdae9b263940cbec40105191ddf8a811665f0868ee
   languageName: node
   linkType: hard
 
@@ -47936,6 +47968,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-dropzone@npm:14.3.1":
+  version: 14.3.1
+  resolution: "react-dropzone@npm:14.3.1"
+  dependencies:
+    attr-accept: "npm:^2.2.4"
+    file-selector: "npm:^1.2.0"
+    prop-types: "npm:^15.8.1"
+  peerDependencies:
+    react: ">= 16.8 || 18.0.0"
+  checksum: 10/5a182e30dffb069d489499861c92923792b6ef2fa85d2385d74f8c8921674b37de84f68aea9762e98ff94e2d21f9e8064467a30f288511573cd4aa6ba2089328
+  languageName: node
+  linkType: hard
+
 "react-element-to-jsx-string@npm:^15.0.0":
   version: 15.0.0
   resolution: "react-element-to-jsx-string@npm:15.0.0"
@@ -53831,7 +53876,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:2.8.1":
+"tslib@npm:2.8.1, tslib@npm:^2.7.0":
   version: 2.8.1
   resolution: "tslib@npm:2.8.1"
   checksum: 10/3e2e043d5c2316461cb54e5c7fe02c30ef6dccb3384717ca22ae5c6b5bc95232a6241df19c622d9c73b809bea33b187f6dbc73030963e29950c2141bc32a79f7
@@ -55447,6 +55492,19 @@ __metadata:
   peerDependencies:
     vite: ^2.6.0 || 3 || 4 || 5
   checksum: 10/c860e65836509a144cf838eabcf420d848f35aea4c83044e75c9f9d00947f878217470536ea4098dc4e78510cb5fb683ec564f33cddde4dab0459e3a87f5ff79
+  languageName: node
+  linkType: hard
+
+"vite-plugin-svgr@npm:4.3.0":
+  version: 4.3.0
+  resolution: "vite-plugin-svgr@npm:4.3.0"
+  dependencies:
+    "@rollup/pluginutils": "npm:^5.1.3"
+    "@svgr/core": "npm:^8.1.0"
+    "@svgr/plugin-jsx": "npm:^8.1.0"
+  peerDependencies:
+    vite: ">=2.6.0"
+  checksum: 10/9ade316f20dae881f4ee65e4f2a35be11cf75b22a411bfcdb55bd61382c0249395cb925775e06a49e0fdffe483e64d5a25068c3ddfc5823fb72013cf4d932d17
   languageName: node
   linkType: hard
 
