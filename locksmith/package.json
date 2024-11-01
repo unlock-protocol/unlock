@@ -47,7 +47,7 @@
     "@resvg/resvg-js": "2.6.2",
     "@sentry/node": "7.118.0",
     "@sentry/tracing": "7.114.0",
-    "@types/archiver": "6.0.2",
+    "@types/archiver": "6.0.3",
     "@types/connect-timeout": "0.0.39",
     "@unlock-protocol/contracts": "workspace:^",
     "@unlock-protocol/core": "workspace:./packages/core",
