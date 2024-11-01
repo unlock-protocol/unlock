@@ -33,7 +33,7 @@
     "@unlock-protocol/ui": "workspace:./packages/ui",
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js",
     "@vercel/og": "0.6.3",
-    "@vercel/speed-insights": "1.0.12",
+    "@vercel/speed-insights": "1.0.14",
     "@walletconnect/ethereum-provider": "2.16.2",
     "@walletconnect/modal": "2.6.2",
     "@xstate/react": "4.1.3",
