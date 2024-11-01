@@ -40,7 +40,7 @@
     "@coinbase/waas-server-auth": "3.1.2",
     "@logtail/node": "0.4.21",
     "@logtail/winston": "0.4.21",
-    "@nuintun/qrcode": "4.1.5",
+    "@nuintun/qrcode": "4.1.6",
     "@openzeppelin/defender-sdk": "1.14.4",
     "@openzeppelin/merkle-tree": "1.0.7",
     "@privy-io/server-auth": "1.14.2",
