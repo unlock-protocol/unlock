@@ -253,8 +253,7 @@ contract MixinPurchase is
     address _recipient,
     address _keyManager,
     address _referrer,
-    bytes memory _data,
-    uint periods
+    bytes memory _data
   ) internal returns (uint tokenId, uint pricePaid) {
     // create a new key, check for a non-expiring key
     tokenId = _createNewKey(
@@ -307,11 +306,27 @@ contract MixinPurchase is
         purchaseArgs[i].recipient,
         purchaseArgs[i].keyManager,
         purchaseArgs[i].referrer,
-        purchaseArgs[i].data,
-        purchaseArgs[i].periods
+        purchaseArgs[i].data
       );
       totalPriceToPay = totalPriceToPay + pricePaid;
       tokenIds[i] = tokenId;
+
+      // extend key as many times as specified in the period
+      for (uint256 p = 0; p < purchaseArgs[i].periods; p++) {
+        _extendKey(tokenId, 0);
+
+        // compute total price
+        totalPriceToPay = totalPriceToPay + pricePaid;
+
+        // process in unlock
+        _recordKeyPurchase(pricePaid, purchaseArgs[i].referrer);
+
+        // send what is due to referrer
+        _payReferrer(purchaseArgs[i].referrer);
+
+        // pay protocol
+        _payProtocol(pricePaid);
+      }
     }
 
     // transfer the ERC20 tokens
@@ -370,8 +385,7 @@ contract MixinPurchase is
         _recipients[i],
         _keyManagers[i],
         _referrers[i],
-        _data[i],
-        1 // default to one single period
+        _data[i]
       );
       totalPriceToPay = totalPriceToPay + pricePaid;
       tokenIds[i] = tokenId;
