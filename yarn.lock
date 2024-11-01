@@ -22378,7 +22378,7 @@ __metadata:
     react-icons: "npm:5.3.0"
     react-use-clipboard: "npm:1.0.9"
     storybook: "npm:8.4.0"
-    tailwind-merge: "npm:2.5.2"
+    tailwind-merge: "npm:2.5.4"
     tailwindcss: "npm:3.4.13"
     tsup: "npm:8.3.0"
     tsx: "npm:4.19.1"
@@ -22482,7 +22482,7 @@ __metadata:
     remark-parse: "npm:11.0.0"
     remove-markdown: "npm:0.5.5"
     siwe: "npm:2.3.2"
-    tailwind-merge: "npm:2.5.2"
+    tailwind-merge: "npm:2.5.4"
     tailwindcss: "npm:3.4.13"
     typescript: "npm:5.6.2"
     unified: "npm:11.0.5"
@@ -22589,7 +22589,7 @@ __metadata:
     remark-html: "npm:16.0.1"
     rss: "npm:1.2.2"
     showdown-highlight: "npm:3.1.0"
-    tailwind-merge: "npm:2.5.2"
+    tailwind-merge: "npm:2.5.4"
     tailwindcss: "npm:3.4.13"
     typescript: "npm:5.6.2"
     use-local-storage: "npm:3.0.0"
@@ -52656,10 +52656,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwind-merge@npm:2.5.2":
-  version: 2.5.2
-  resolution: "tailwind-merge@npm:2.5.2"
-  checksum: 10/9f51ae7277a0ba51d9bec774bc9013c1b8736129b52d97886098689ea51bc7a894f6c7e857217019d92925c935ca18a53f24b4b416be4be363ef16cfb2ce480d
+"tailwind-merge@npm:2.5.4":
+  version: 2.5.4
+  resolution: "tailwind-merge@npm:2.5.4"
+  checksum: 10/2bf6585a30c0ab2e4e8c4bfe0d0a14edbf8e1d88bb8ce68c79f7185e8a7e410893903a98f5819cf8843f1afbe87639e1989af28456cbb0240ddec3468f303727
   languageName: node
   linkType: hard
 
