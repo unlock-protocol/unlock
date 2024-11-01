@@ -47,7 +47,7 @@
     "eslint": "9.11.1",
     "ethers": "6.13.2",
     "file-saver": "2.0.5",
-    "frames.js": "0.19.3",
+    "frames.js": "0.19.5",
     "from-exponential": "1.1.1",
     "graphql": "16.9.0",
     "lottie-react": "2.4.0",
