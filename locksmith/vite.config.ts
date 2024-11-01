@@ -21,6 +21,5 @@ export default defineConfig({
       },
     },
     // isolate test environment for each test
-    isolate: true,
   },
 })
