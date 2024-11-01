@@ -257,7 +257,8 @@ contract MixinKeys is MixinErrors, MixinLockCore {
     uint length = totalKeys(_recipient);
 
     // make sure address does not have more keys than allowed
-    if (length >= _maxKeysPerAddress) {
+    // exception for zero address that can hold several keys
+    if (length >= _maxKeysPerAddress && _recipient != address(0)) {
       revert MAX_KEYS_REACHED();
     }
 
