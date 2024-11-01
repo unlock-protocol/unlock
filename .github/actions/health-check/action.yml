@@ -44,3 +44,7 @@ runs:
       run: |
         yarn workspace @unlock-protocol/governance check:multisig
       shell: bash
+    - name: Check bridge status
+      run: |
+        yarn workspace @unlock-protocol/governance check:cross-chain
+      shell: bash

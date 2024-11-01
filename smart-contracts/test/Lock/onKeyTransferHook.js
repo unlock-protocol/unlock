@@ -28,6 +28,7 @@ describe('Lock / onKeyTransfer hook', () => {
       ADDRESS_ZERO,
       await testEventHooks.getAddress(),
       ADDRESS_ZERO,
+      ADDRESS_ZERO,
       ADDRESS_ZERO
     )
     keyPrice = await lock.keyPrice()

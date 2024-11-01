@@ -2,6 +2,7 @@ import request from 'supertest'
 import { networks } from '@unlock-protocol/networks'
 
 import app from '../../app'
+import { expect, beforeEach } from 'vitest'
 
 const networkIds = Object.values(networks)
   .filter((network) => !!network.tokens)
@@ -9,6 +10,7 @@ const networkIds = Object.values(networks)
 
 describe.each(networkIds)('Test the price on each network', async (id) => {
   beforeEach(() => {
+    fetchMock.resetMocks()
     fetchMock.mockIf(
       /^https?:\/\/coins.llama.fi\/prices\/current\/.*$/,
       (req) => {

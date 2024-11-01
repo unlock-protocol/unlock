@@ -1,8 +1,6 @@
 'use client'
 import { Button, Icon } from '@unlock-protocol/ui'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useMemo, useState } from 'react'
-
 import { TbPlus, TbSettings } from 'react-icons/tb'
 import ReactMarkdown from 'react-markdown'
 import { useRouter } from 'next/navigation'
@@ -16,7 +14,7 @@ import {
   getEventAttributes,
   isCollectionManager,
 } from '~/utils/eventCollections'
-import { FaGithub, FaGlobe, FaTwitter, FaYoutube } from 'react-icons/fa'
+import { FaGithub, FaGlobe, FaXTwitter, FaYoutube } from 'react-icons/fa6'
 import { SiFarcaster as FarcasterIcon } from 'react-icons/si'
 import AddEventsToCollectionDrawer from './AddEventsToCollectionDawer'
 import { EventDetailDrawer } from './EventDetailDrawer'
@@ -29,6 +27,7 @@ import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 import { useConnectModal } from '~/hooks/useConnectModal'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -75,7 +74,7 @@ export default function EventsCollectionDetailContent({
 }: EventsCollectionDetailContentProps) {
   const { data: eventCollection } = useEventCollectionDetails(slug)
 
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const router = useRouter()
   const { openConnectModal } = useConnectModal()
 
@@ -174,7 +173,7 @@ export default function EventsCollectionDetailContent({
       case 'website':
         return <FaGlobe size={20} className="text-brand-ui-primary" />
       case 'x':
-        return <FaTwitter size={20} className="text-brand-ui-primary" />
+        return <FaXTwitter size={20} className="text-brand-ui-primary" />
       case 'farcaster':
         return <FarcasterIcon size={20} className="text-brand-ui-primary" />
       default:

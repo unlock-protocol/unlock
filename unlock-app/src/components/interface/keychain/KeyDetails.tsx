@@ -1,14 +1,14 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import Key from './Key'
 import { ImageBar } from '../locks/Manage/elements/ImageBar'
 import { useKeys } from '~/hooks/useKeys'
 import { minifyAddress, Placeholder } from '@unlock-protocol/ui'
-import AuthenticationContext from '~/contexts/AuthenticationContext'
 import networks from '@unlock-protocol/networks'
 import { NetworkConfig } from '@unlock-protocol/types'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 export const KeyDetails = ({ owner }: { owner: string }) => {
-  const { account } = useContext(AuthenticationContext)
+  const { account } = useAuthenticate()
   const { keys, isKeysLoading } = useKeys({
     owner,
     networks: Object.values(networks)

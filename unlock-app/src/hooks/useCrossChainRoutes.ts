@@ -2,13 +2,13 @@ import { useQueries, useQuery } from '@tanstack/react-query'
 import { ZeroAddress, ethers } from 'ethers'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Lock } from '~/unlockTypes'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { purchasePriceFor } from './usePricing'
 import { getReferrer } from '~/utils/checkoutLockUtils'
 import { CrossChainRoute, getCrossChainRoute } from '~/utils/theBox'
 import { networks } from '@unlock-protocol/networks'
 import { BoxEvmChains } from '@decent.xyz/box-common'
 import { Token } from '@unlock-protocol/types'
+import { useAuthenticate } from './useAuthenticate'
 
 interface CrossChainRouteWithBalance extends CrossChainRoute {
   resolvedAt: number
@@ -35,7 +35,7 @@ export const useCrossChainRoutes = ({
   // For each of the networks, check the balance of the user on the native token, and then check the balance with the token
   // and then list all the tokens
 
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const web3Service = useWeb3Service()
   const { recipients, paywallConfig, keyManagers, renew } = context
 

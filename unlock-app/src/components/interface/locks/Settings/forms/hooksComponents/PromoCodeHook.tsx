@@ -10,12 +10,12 @@ import {
   useGetLockSettings,
   useSaveLockSettings,
 } from '~/hooks/useLockSettings'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { getEthersWalletFromPassword } from '~/utils/strings'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useEffect, useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import LoadingIcon from '~/components/interface/Loading'
+import { useProvider } from '~/hooks/useProvider'
 
 export const PromoCodeHook = ({
   lockAddress,
@@ -28,7 +28,7 @@ export const PromoCodeHook = ({
     register,
     formState: { errors, isValid },
   } = useFormContext()
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
 
   const {
     isLoading: isLoading,

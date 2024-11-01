@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import guildClient from '~/config/guild'
-import { useAuth } from '~/contexts/AuthenticationContext'
+import { useAuthenticate } from './useAuthenticate'
 
 export const getUserGuilds = async ({ account }: { account?: string }) => {
   try {
@@ -26,7 +26,7 @@ export const getUserGuilds = async ({ account }: { account?: string }) => {
 }
 
 export const useUserGuilds = () => {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   return useQuery({
     queryKey: ['userGuilds', account],
     queryFn: async () =>
