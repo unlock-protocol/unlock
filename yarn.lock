@@ -15257,26 +15257,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/upgrades-core@npm:1.38.0, @openzeppelin/upgrades-core@npm:^1.38.0":
-  version: 1.38.0
-  resolution: "@openzeppelin/upgrades-core@npm:1.38.0"
-  dependencies:
-    "@nomicfoundation/slang": "npm:^0.17.0"
-    cbor: "npm:^9.0.0"
-    chalk: "npm:^4.1.0"
-    compare-versions: "npm:^6.0.0"
-    debug: "npm:^4.1.1"
-    ethereumjs-util: "npm:^7.0.3"
-    minimatch: "npm:^9.0.5"
-    minimist: "npm:^1.2.7"
-    proper-lockfile: "npm:^4.1.1"
-    solidity-ast: "npm:^0.4.51"
-  bin:
-    openzeppelin-upgrades-core: dist/cli/cli.js
-  checksum: 10/e197593aa097a528c75dc9c156d1a2881f3db99241919cebdc642bd99b8b069b55451f08b7cdf868c7f1182b9bffce781e6d824f8e94d514e3c24276e010069c
-  languageName: node
-  linkType: hard
-
 "@openzeppelin/upgrades-core@npm:1.39.0, @openzeppelin/upgrades-core@npm:^1.37.0":
   version: 1.39.0
   resolution: "@openzeppelin/upgrades-core@npm:1.39.0"
@@ -15294,6 +15274,26 @@ __metadata:
   bin:
     openzeppelin-upgrades-core: dist/cli/cli.js
   checksum: 10/7779ce35966a6ee054eb4f167ef98f0d95dd4e5e5f309b89a59b6eaf0de8d0395205eb3b19957aea09c74c92754073a4c12f7728f86e072208694361aeb6c201
+  languageName: node
+  linkType: hard
+
+"@openzeppelin/upgrades-core@npm:1.40.0, @openzeppelin/upgrades-core@npm:^1.40.0":
+  version: 1.40.0
+  resolution: "@openzeppelin/upgrades-core@npm:1.40.0"
+  dependencies:
+    "@nomicfoundation/slang": "npm:^0.17.0"
+    cbor: "npm:^9.0.0"
+    chalk: "npm:^4.1.0"
+    compare-versions: "npm:^6.0.0"
+    debug: "npm:^4.1.1"
+    ethereumjs-util: "npm:^7.0.3"
+    minimatch: "npm:^9.0.5"
+    minimist: "npm:^1.2.7"
+    proper-lockfile: "npm:^4.1.1"
+    solidity-ast: "npm:^0.4.51"
+  bin:
+    openzeppelin-upgrades-core: dist/cli/cli.js
+  checksum: 10/99e6d7b411450e8bfc865d98f6de705f0839b9d3aea7e221d880e0fa58bee5b9159d53ccbd6cb69e58d00fd5daf55b90be179eb58957a5b30e321f3e28945660
   languageName: node
   linkType: hard
 
@@ -15315,9 +15315,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/upgrades-core@npm:^1.40.0":
-  version: 1.40.0
-  resolution: "@openzeppelin/upgrades-core@npm:1.40.0"
+"@openzeppelin/upgrades-core@npm:^1.38.0":
+  version: 1.38.0
+  resolution: "@openzeppelin/upgrades-core@npm:1.38.0"
   dependencies:
     "@nomicfoundation/slang": "npm:^0.17.0"
     cbor: "npm:^9.0.0"
@@ -15331,7 +15331,7 @@ __metadata:
     solidity-ast: "npm:^0.4.51"
   bin:
     openzeppelin-upgrades-core: dist/cli/cli.js
-  checksum: 10/99e6d7b411450e8bfc865d98f6de705f0839b9d3aea7e221d880e0fa58bee5b9159d53ccbd6cb69e58d00fd5daf55b90be179eb58957a5b30e321f3e28945660
+  checksum: 10/e197593aa097a528c75dc9c156d1a2881f3db99241919cebdc642bd99b8b069b55451f08b7cdf868c7f1182b9bffce781e6d824f8e94d514e3c24276e010069c
   languageName: node
   linkType: hard
 
@@ -22229,7 +22229,7 @@ __metadata:
     "@nomicfoundation/hardhat-verify": "npm:2.0.11"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@openzeppelin/hardhat-upgrades": "npm:3.5.0"
-    "@openzeppelin/upgrades-core": "npm:1.38.0"
+    "@openzeppelin/upgrades-core": "npm:1.40.0"
     "@safe-global/api-kit": "npm:2.5.3"
     "@safe-global/protocol-kit": "npm:5.0.3"
     "@tenderly/hardhat-tenderly": "npm:2.4.0"
@@ -22258,7 +22258,7 @@ __metadata:
     "@matterlabs/hardhat-zksync-verify": "npm:1.6.0"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@nomiclabs/hardhat-waffle": "npm:2.0.6"
-    "@openzeppelin/upgrades-core": "npm:1.38.0"
+    "@openzeppelin/upgrades-core": "npm:1.40.0"
     "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
