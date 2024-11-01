@@ -22493,7 +22493,7 @@ __metadata:
     vitest-localstorage-mock: "npm:0.1.2"
     xstate: "npm:5.14.0"
     zod: "npm:3.23.8"
-    zod-to-json-schema: "npm:3.23.3"
+    zod-to-json-schema: "npm:3.23.5"
   peerDependencies:
     react: 18.3.1
     react-dom: 18.3.1
@@ -57317,12 +57317,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod-to-json-schema@npm:3.23.3":
-  version: 3.23.3
-  resolution: "zod-to-json-schema@npm:3.23.3"
+"zod-to-json-schema@npm:3.23.5":
+  version: 3.23.5
+  resolution: "zod-to-json-schema@npm:3.23.5"
   peerDependencies:
     zod: ^3.23.3
-  checksum: 10/09f783a2325606b88ecd17f8753f47d945e9e1290a0d81a68484f677ff16151c126b07419ee61720ddec4f10ad0c08688569d265feefb709d60c2164f055b87d
+  checksum: 10/53d07a419f0f194e0b96711dc11e7e6fa52a366b0ed5fceb405dc55f13252a1bf433712e4fb496c2a5fdc851018ee1acba7b39c2265c43d6fbb180e12c110c3b
   languageName: node
   linkType: hard
 
