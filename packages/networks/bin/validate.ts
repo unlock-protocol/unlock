@@ -52,90 +52,6 @@ const run = async () => {
     // get all addresses to check
     const addresses = await getAllAddresses({ network })
 
-    // make sure the contracts are verified on Etherscan.
-    for (const contractName in addresses) {
-      const contractAddress = addresses[contractName]
-      if (!contractAddress || contractAddress === ZeroAddress) {
-        warnings.push(`⚠️ Contract ${contractName} is missing`)
-      } else {
-        // make sure we dont reach max etherscan rate (5/sec)
-        await wait(250)
-        try {
-          const verified = await isVerified({
-            chainId: network.id,
-            contractAddress,
-          })
-          // log results
-          if (!verified?.isVerified) {
-            errors.push(
-              `❌ Verification failed for ${contractName} at ${contractAddress}: ${verified.result}`
-            )
-          } else {
-            successes.push(
-              `✅ Contract ${contractName} at ${contractAddress} is verified`
-            )
-          }
-        } catch (error) {
-          failures.push(
-            `❌ Failed to check verification for contract ${contractName} at ${contractAddress}
-      (did you add block explorer verification and API in \`@unlock-protocol/hardhat-helpers\` package ?)`
-          )
-        }
-      }
-    }
-
-    // check that Unlock contract code is identical
-    try {
-      const isUnlockValid = await validateContractSource({
-        chainId: network.id,
-        contractAddress: network.unlockAddress,
-        contractName: 'Unlock',
-        // TODO: fetch version automatically
-        contractVersion: 13,
-        isProxy: true,
-        providerURL: network.provider,
-      })
-      if (!isUnlockValid) {
-        errors.push(
-          `❌ Unlock source code at ${network.unlockAddress} does not match packaged UnlockV13`
-        )
-      } else {
-        successes.push(
-          `✅ Unlock source code at ${network.unlockAddress} matches packaged UnlockV13`
-        )
-      }
-    } catch (error) {
-      failures.push(
-        `❌ Could not fetch Unlock source code from block explorer, ${error.messageText}`
-      )
-    }
-
-    // check that template source code is indetical
-    try {
-      const publicLockAddress = addresses['PublicLockLatest']
-      const isPublicLockValid = await validateContractSource({
-        chainId: network.id,
-        contractAddress: publicLockAddress,
-        contractName: 'PublicLock',
-        // TODO: fetch version automatically
-        contractVersion: 14,
-        providerURL: network.provider,
-      })
-      if (!isPublicLockValid) {
-        errors.push(
-          `❌ PublicLock source code at ${publicLockAddress} does not match packaged PublicLockV14`
-        )
-      } else {
-        successes.push(
-          `✅ PublicLock source code at ${publicLockAddress} matches packaged PublicLockV14`
-        )
-      }
-    } catch (error) {
-      failures.push(
-        `❌ Could not fetch PublicLock source code from block explorer, ${error}`
-      )
-    }
-
     // check subgraph endpoint status
     if (network.subgraph?.endpoint) {
       // make test query
@@ -189,6 +105,7 @@ const run = async () => {
       try {
         // check multisig params
         const multisigErrors = await checkMultisig({
+          isTestNetwork: network.isTestNetwork,
           providerURL: network.provider,
           safeAddress: network.multisig,
         })
@@ -223,6 +140,96 @@ const run = async () => {
         // TODO: check upgradeable hooks ownership
       } catch (error) {
         failures.push(`❌ Could not fetch multisig / ownership info, ${error}`)
+      }
+    }
+
+    // below this point, all the checks relates to verification
+    // we skip zksync as they use a custom API for their block explorer
+    if (filePath.includes('zksync')) {
+      warnings.push(`⚠️ Skipping contract validation checks for ${filePath}`)
+    } else {
+      // make sure the contracts are verified on Etherscan.
+      for (const contractName in addresses) {
+        const contractAddress = addresses[contractName]
+        if (!contractAddress || contractAddress === ZeroAddress) {
+          warnings.push(`⚠️ Contract ${contractName} is missing`)
+        } else {
+          // make sure we dont reach max etherscan rate (5/sec)
+          await wait(250)
+          try {
+            const verified = await isVerified({
+              chainId: network.id,
+              contractAddress,
+            })
+            // log results
+            if (!verified?.isVerified) {
+              errors.push(
+                `❌ Verification failed for ${contractName} at ${contractAddress}: ${verified.result}`
+              )
+            } else {
+              successes.push(
+                `✅ Contract ${contractName} at ${contractAddress} is verified`
+              )
+            }
+          } catch (error) {
+            failures.push(
+              `❌ Failed to check verification for contract ${contractName} at ${contractAddress}
+      (did you add block explorer verification and API in \`@unlock-protocol/hardhat-helpers\` package ?)`
+            )
+          }
+        }
+      }
+
+      // check that Unlock contract code is identical
+      try {
+        const isUnlockValid = await validateContractSource({
+          chainId: network.id,
+          contractAddress: network.unlockAddress,
+          contractName: 'Unlock',
+          // TODO: fetch version automatically
+          contractVersion: 13,
+          isProxy: true,
+          providerURL: network.provider,
+        })
+        if (!isUnlockValid) {
+          errors.push(
+            `❌ Unlock source code at ${network.unlockAddress} does not match packaged UnlockV13`
+          )
+        } else {
+          successes.push(
+            `✅ Unlock source code at ${network.unlockAddress} matches packaged UnlockV13`
+          )
+        }
+      } catch (error) {
+        failures.push(
+          `❌ Could not fetch Unlock source code from block explorer, ${error.messageText}`
+        )
+      }
+
+      // check that template source code is indetical
+      try {
+        const publicLockAddress = addresses['PublicLockLatest']
+        const isPublicLockValid = await validateContractSource({
+          chainId: network.id,
+          contractAddress: publicLockAddress,
+          contractName: 'PublicLock',
+          // TODO: fetch version automatically
+          contractVersion: 14,
+          providerURL: network.provider,
+        })
+        if (!isPublicLockValid) {
+          errors.push(
+            `❌ PublicLock source code at ${publicLockAddress} does not match packaged PublicLockV14`
+          )
+        } else {
+          successes.push(
+            `✅ PublicLock source code at ${publicLockAddress} matches packaged PublicLockV14`
+          )
+        }
+      } catch (error) {
+        failures.push(
+          `❌ Could not fetch PublicLock source code from block explorer, ${error}`
+        )
       }
     }
 

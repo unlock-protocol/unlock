@@ -4,7 +4,6 @@ import { ethers } from 'ethers'
 import ReCaptcha from 'react-google-recaptcha'
 
 import { Button, Input, AddressInput } from '@unlock-protocol/ui'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { Controller, useForm } from 'react-hook-form'
 import { useEffect, useState } from 'react'
 import { useConfig } from '~/utils/withConfig'
@@ -16,6 +15,7 @@ import { MetadataInputType } from '@unlock-protocol/core'
 import { useRsvp } from '~/hooks/useRsvp'
 import { useCaptcha } from '~/hooks/useCaptcha'
 import { useMutation } from '@tanstack/react-query'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface WalletlessRegistrationProps {
   lockAddress: string
@@ -228,7 +228,7 @@ export const RegistrationForm = ({
   const config = useConfig()
   const { recaptchaRef, getCaptchaValue } = useCaptcha()
   const [loading, setLoading] = useState<boolean>(false)
-  const { account, email } = useAuth()
+  const { account, email } = useAuthenticate()
 
   // If there is an email, we pre-fill the email field
   if (email) {

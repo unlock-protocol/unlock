@@ -5,7 +5,7 @@ export const baseSepolia: NetworkConfig = {
     url: (address: string) => `https://blockscan.com/address/${address}`,
   },
   chain: 'base-sepolia',
-  description: 'A public testnet for Base.',
+  description: 'A public testnet for Base',
   explorer: {
     name: 'Base Sepolia Etherscan',
     urls: {

@@ -13,7 +13,6 @@ async function main({ lockAddress, tokenId, referrer }) {
   const tx = await lock.renewMembershipFor(tokenId, referrer)
   const receipt = await tx.wait()
 
-  // eslint-disable-next-line no-console
   console.log(receipt)
 }
 

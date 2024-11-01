@@ -1,3 +1,4 @@
+import { KeyGranterForm } from '../forms/KeyGranterForm'
 import { LockManagerForm } from '../forms/LockManagerForm'
 import { SettingCard } from './SettingCard'
 
@@ -22,6 +23,18 @@ export const SettingRoles = ({
         isLoading={isLoading}
       >
         <LockManagerForm
+          lockAddress={lockAddress}
+          network={network}
+          isManager={isManager}
+          disabled={!isManager}
+        />
+      </SettingCard>
+      <SettingCard
+        label="Key Granter"
+        description="By default, any lock manager can grant keys, but you can also assign the key granter role to specific addresses and they can only grant (or extend) keys."
+        isLoading={isLoading}
+      >
+        <KeyGranterForm
           lockAddress={lockAddress}
           network={network}
           isManager={isManager}

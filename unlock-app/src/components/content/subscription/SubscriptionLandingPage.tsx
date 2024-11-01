@@ -1,6 +1,7 @@
+'use client'
+
 import { Button } from '@unlock-protocol/ui'
 import { LockTypeLandingPage } from '~/components/interface/LockTypeLandingPage'
-import { NextSeo } from 'next-seo'
 import Image from 'next/image'
 
 const customers = [
@@ -117,18 +118,6 @@ export const SubscriptionLandingPage = ({
 }: LandingPageProps) => {
   return (
     <>
-      <NextSeo
-        title="Onchain Subscriptions"
-        description="SUBSCRIPTIONS by Unlock Labs is best way for fans to subscribe to writing, podcasts, music, digital art, and creativity onchain with automatically recurring payments."
-        openGraph={{
-          images: [
-            {
-              alt: 'Onchain subscriptions',
-              url: 'https://subscriptions.unlock-protocol.com/',
-            },
-          ],
-        }}
-      />
       <LockTypeLandingPage
         title={
           <h1

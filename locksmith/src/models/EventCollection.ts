@@ -8,6 +8,12 @@ import {
 import { sequelize } from './sequelize'
 import { EventData } from './Event'
 
+// Collection link structure
+interface Link {
+  type: 'farcaster' | 'website' | 'x' | 'github' | 'youtube'
+  url: string
+}
+
 export class EventCollection extends Model<
   InferAttributes<EventCollection>,
   InferCreationAttributes<EventCollection>
@@ -15,8 +21,9 @@ export class EventCollection extends Model<
   declare slug: string
   declare title: string
   declare description: string
+  declare coverImage: CreationOptional<string>
   declare banner: CreationOptional<string>
-  declare links: CreationOptional<object>
+  declare links: CreationOptional<Link[]>
   declare managerAddresses: string[]
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
@@ -39,6 +46,10 @@ EventCollection.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    coverImage: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     description: {
       type: DataTypes.TEXT,
       allowNull: false,
@@ -50,6 +61,28 @@ EventCollection.init(
     links: {
       type: DataTypes.JSONB,
       allowNull: true,
+      validate: {
+        isValidLinks(value: Link[]) {
+          if (!Array.isArray(value)) {
+            throw new Error('Links must be an array')
+          }
+          value.forEach((link) => {
+            const validTypes = [
+              'farcaster',
+              'website',
+              'x',
+              'github',
+              'youtube',
+            ]
+            if (!validTypes.includes(link.type)) {
+              throw new Error(`Invalid link type: ${link.type}`)
+            }
+            if (typeof link.url !== 'string' || link.url.trim() === '') {
+              throw new Error('Link URL must be a non-empty string')
+            }
+          })
+        },
+      },
     },
     managerAddresses: {
       type: DataTypes.ARRAY(DataTypes.STRING),

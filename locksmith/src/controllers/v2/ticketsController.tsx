@@ -19,11 +19,6 @@ import { getEventForLock } from '../../operations/eventOperations'
 import { notify } from '../../worker/helpers'
 
 export class TicketsController {
-  public web3Service: Web3Service
-  constructor({ web3Service }: { web3Service: Web3Service }) {
-    this.web3Service = web3Service
-  }
-
   /**
    * API to generate signatures that prove validity of a token
    * @param request

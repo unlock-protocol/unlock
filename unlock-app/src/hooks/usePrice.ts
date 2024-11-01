@@ -53,8 +53,8 @@ export const useGetPrice = ({
 interface GetTotalChargesProps {
   lockAddress: string
   network: number
-  recipients: string[]
-  purchaseData: string[]
+  recipients?: string[]
+  purchaseData?: string[]
   enabled?: boolean
 }
 export const useGetTotalCharges = ({
@@ -65,14 +65,31 @@ export const useGetTotalCharges = ({
   enabled = true,
 }: GetTotalChargesProps) => {
   return useQuery({
-    queryKey: ['getTotalChargesForLock', lockAddress, network],
+    queryKey: [
+      'getTotalChargesForLock',
+      lockAddress,
+      network,
+      recipients,
+      purchaseData,
+    ],
     queryFn: async () => {
-      const pricing = await locksmith.getChargesForLock(
-        network,
-        lockAddress,
-        purchaseData,
-        recipients
-      )
+      if (!recipients || recipients.length === 0) {
+        // Let's add a random recipient to check what would be the "theoretical price"
+        // TODO: this would break if the lock has a hook
+        recipients = [ethers.Wallet.createRandom().address]
+        purchaseData = ['']
+      }
+      if (!purchaseData) {
+        purchaseData = recipients.map(() => '')
+      }
+      const pricing = await locksmith
+        .getChargesForLock(network, lockAddress, purchaseData, recipients)
+        .catch((e) => {
+          if (e.response.status === 400) {
+            return { data: null }
+          }
+          throw e
+        })
 
       return pricing.data
     },

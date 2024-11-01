@@ -38,21 +38,30 @@ describe('Lock / setReferrerFee', () => {
     const { args: eventArgs } = await getEvent(receipt, 'ReferrerFee')
     const balanceBefore = await getBalance(referrerAddress, tokenAddress)
 
-    await lock
-      .connect(keyOwner)
-      .purchase(
-        isErc20 ? [keyPrice] : [],
-        [await keyOwner.getAddress()],
-        [referrerAddress],
-        [ADDRESS_ZERO],
-        ['0x'],
+    const txPurchase = await lock.connect(keyOwner).purchase(
+      [
         {
-          value: isErc20 ? 0 : keyPrice,
-        }
-      )
+          value: isErc20 ? keyPrice : 0,
+          recipient: await keyOwner.getAddress(),
+          referrer: referrerAddress,
+          keyManager: ADDRESS_ZERO,
+          data: '0x',
+        },
+      ],
+      {
+        value: isErc20 ? 0 : keyPrice,
+      }
+    )
+    const receiptPurchase = await txPurchase.wait()
+    const { args: purchaseEventArgs } = await getEvent(
+      receiptPurchase,
+      'ReferrerPaid'
+    )
+
     return {
       balanceBefore,
       eventArgs,
+      purchaseEventArgs,
     }
   }
 
@@ -61,8 +70,23 @@ describe('Lock / setReferrerFee', () => {
     compareBigNumbers(fee, referrerFee)
   }
 
-  const emitsCorrectEvent = async (eventArgs, referrerAddress, referrerFee) => {
+  const emitsCorrectReferrerFeeEvent = async (
+    eventArgs,
+    referrerAddress,
+    referrerFee
+  ) => {
     assert.equal(eventArgs.fee, referrerFee)
+    assert.equal(eventArgs.referrer, referrerAddress)
+  }
+
+  const emitsCorrectReferrerPaidEvent = async (
+    eventArgs,
+    tokenAddress,
+    referrerAddress,
+    referrerFee
+  ) => {
+    assert.equal(eventArgs.fee, referrerFee)
+    assert.equal(eventArgs.tokenAddress, tokenAddress)
     assert.equal(eventArgs.referrer, referrerAddress)
   }
 
@@ -112,87 +136,112 @@ describe('Lock / setReferrerFee', () => {
       describe('setting 5% fee for a specific address', () => {
         const referrerFee = 500n
         let balanceBefore
-        let eventArgs
+        let eventArgs, purchaseEventArgs
 
         before(async () => {
-          ;({ balanceBefore, eventArgs } = await setReferrerFeeAndPurchase({
-            isErc20,
-            lock,
-            referrerAddress: await referrer.getAddress(),
-            referrerFee,
-            keyOwner,
-          }))
+          ;({ balanceBefore, eventArgs, purchaseEventArgs } =
+            await setReferrerFeeAndPurchase({
+              isErc20,
+              lock,
+              referrerAddress: await referrer.getAddress(),
+              referrerFee,
+              keyOwner,
+            }))
         })
 
-        it('store fee correctly', async () => {
-          await storeFeeCorrectly(
-            lock,
-            await referrer.getAddress(),
-            referrerFee
-          )
+        describe('setting the fee', () => {
+          it('store fee correctly', async () => {
+            await storeFeeCorrectly(
+              lock,
+              await referrer.getAddress(),
+              referrerFee
+            )
+          })
+
+          it('emits an event', async () => {
+            await emitsCorrectReferrerFeeEvent(
+              eventArgs,
+              await referrer.getAddress(),
+              referrerFee
+            )
+          })
         })
 
-        it('emits an event', async () => {
-          await emitsCorrectEvent(
-            eventArgs,
-            await referrer.getAddress(),
-            referrerFee
-          )
-        })
-
-        it('transfer correctly 5% of the price', async () => {
-          await transferCorrectly(
-            balanceBefore,
-            referrerFee,
-            await referrer.getAddress(),
-            tokenAddress
-          )
+        describe('purchasing with referrer', () => {
+          it('transfer correctly 5% of the price', async () => {
+            await transferCorrectly(
+              balanceBefore,
+              referrerFee,
+              await referrer.getAddress(),
+              tokenAddress
+            )
+          })
+          it('emits an event when the referrer is paid', async () => {
+            await emitsCorrectReferrerPaidEvent(
+              purchaseEventArgs,
+              tokenAddress,
+              await referrer.getAddress(),
+              (keyPrice * referrerFee) / BASIS_POINT_DENOMINATOR
+            )
+          })
         })
       })
 
       describe('setting 20% fee for a specific address', () => {
         const referrerFee = 2000n
         let balanceBefore
-        let eventArgs
+        let eventArgs, purchaseEventArgs
 
         before(async () => {
-          ;({ balanceBefore, eventArgs } = await setReferrerFeeAndPurchase({
-            isErc20,
-            lock,
-            referrerAddress: await referrer.getAddress(),
-            referrerFee,
-            keyOwner,
-          }))
+          ;({ balanceBefore, eventArgs, purchaseEventArgs } =
+            await setReferrerFeeAndPurchase({
+              isErc20,
+              lock,
+              referrerAddress: await referrer.getAddress(),
+              referrerFee,
+              keyOwner,
+            }))
+        })
+        describe('setting the fee', () => {
+          it('store fee correctly', async () => {
+            await storeFeeCorrectly(
+              lock,
+              await referrer.getAddress(),
+              referrerFee
+            )
+          })
+
+          it('emits an event', async () => {
+            await emitsCorrectReferrerFeeEvent(
+              eventArgs,
+              await referrer.getAddress(),
+              referrerFee
+            )
+          })
         })
 
-        it('store fee correctly', async () => {
-          await storeFeeCorrectly(
-            lock,
-            await referrer.getAddress(),
-            referrerFee
-          )
-        })
-
-        it('emits an event', async () => {
-          await emitsCorrectEvent(
-            eventArgs,
-            await referrer.getAddress(),
-            referrerFee
-          )
-        })
-
-        it('transfer correctly 5% of the price', async () => {
-          await transferCorrectly(
-            balanceBefore,
-            referrerFee,
-            await referrer.getAddress(),
-            tokenAddress
-          )
+        describe('purchasing with referrer', () => {
+          it('transfer correctly 5% of the price', async () => {
+            await transferCorrectly(
+              balanceBefore,
+              referrerFee,
+              await referrer.getAddress(),
+              tokenAddress
+            )
+          })
+          it('emits an event when the referrer is paid', async () => {
+            await emitsCorrectReferrerPaidEvent(
+              purchaseEventArgs,
+              tokenAddress,
+              await referrer.getAddress(),
+              (keyPrice * referrerFee) / BASIS_POINT_DENOMINATOR
+            )
+          })
         })
       })
 
       describe('setting 20% general fee for all addresses', () => {
-        let balanceBefore, eventArgs
+        let balanceBefore, eventArgs, purchaseEventArgs
         const generalFee = 1000n
 
         before(async () => {
@@ -202,38 +251,58 @@ describe('Lock / setReferrerFee', () => {
           const receipt = await tx.wait()
           ;({ args: eventArgs } = await getEvent(receipt, 'ReferrerFee'))
         })
+        describe('setting the fee', () => {
+          it('store fee correctly', async () => {
+            await storeFeeCorrectly(lock, ADDRESS_ZERO, generalFee)
+          })
 
-        it('store fee correctly', async () => {
-          await storeFeeCorrectly(lock, ADDRESS_ZERO, generalFee)
+          it('emits an event', async () => {
+            await emitsCorrectReferrerFeeEvent(
+              eventArgs,
+              ADDRESS_ZERO,
+              generalFee
+            )
+          })
         })
-
-        it('emits an event', async () => {
-          await emitsCorrectEvent(eventArgs, ADDRESS_ZERO, generalFee)
-        })
-
-        it('transfer correctly 20% of the price', async () => {
-          balanceBefore = await getBalance(
-            await referrer.getAddress(),
-            tokenAddress
-          )
-
-          await lock
-            .connect(keyOwner)
-            .purchase(
-              isErc20 ? [keyPrice] : [],
-              [await keyOwner.getAddress()],
-              [await referrer.getAddress()],
-              [ADDRESS_ZERO],
-              ['0x'],
-              {
-                value: isErc20 ? 0 : keyPrice,
-              }
+        describe('purchasing with referrer', () => {
+          before(async () => {
+            balanceBefore = await getBalance(
+              await referrer.getAddress(),
+              tokenAddress
             )
 
-          compareBigNumbers(
-            await getBalance(await referrer.getAddress(), tokenAddress),
-            balanceBefore + (keyPrice * generalFee) / BASIS_POINT_DENOMINATOR
-          )
+            const txPurchase = await lock
+              .connect(keyOwner)
+              .purchase(
+                isErc20 ? [keyPrice] : [],
+                [await keyOwner.getAddress()],
+                [await referrer.getAddress()],
+                [ADDRESS_ZERO],
+                ['0x'],
+                {
+                  value: isErc20 ? 0 : keyPrice,
+                }
+              )
+            const receiptPurchase = await txPurchase.wait()
+            ;({ args: purchaseEventArgs } = await getEvent(
+              receiptPurchase,
+              'ReferrerPaid'
+            ))
+          })
+          it('transfer correctly 20% of the price', async () => {
+            compareBigNumbers(
+              await getBalance(await referrer.getAddress(), tokenAddress),
+              balanceBefore + (keyPrice * generalFee) / BASIS_POINT_DENOMINATOR
+            )
+          })
+          it('emits an event when the referrer is paid', async () => {
+            await emitsCorrectReferrerPaidEvent(
+              purchaseEventArgs,
+              tokenAddress,
+              await referrer.getAddress(),
+              (keyPrice * generalFee) / BASIS_POINT_DENOMINATOR
+            )
+          })
         })
       })
 

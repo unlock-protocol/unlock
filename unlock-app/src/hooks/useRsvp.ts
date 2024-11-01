@@ -1,4 +1,6 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { SubgraphService } from '@unlock-protocol/unlock-js'
+import dayjs from 'dayjs'
 import { locksmith } from '~/config/locksmith'
 
 interface RsvpOption {
@@ -8,10 +10,31 @@ interface RsvpOption {
   recipient?: string
 }
 
+interface UseEventRSVPProps {
+  checkoutConfig: {
+    config: {
+      locks: {
+        [lockAddress: string]: {
+          network: number
+        }
+      }
+    }
+  }
+  eventEndDate: string
+}
+
 interface Options {
   lockAddress: string
   network: number
 }
+
+interface KeysQuery {
+  where: {
+    lock: string
+    expiration_gt?: number
+  }
+}
+
 export const useRsvp = ({ lockAddress, network }: Options) => {
   return useMutation({
     mutationKey: ['rsvp', network, lockAddress],
@@ -31,5 +54,49 @@ export const useRsvp = ({ lockAddress, network }: Options) => {
       }
     },
     retry: 2,
+  })
+}
+
+// fetch the number of RSVPs for an event
+export const useEventRSVP = ({
+  checkoutConfig,
+  eventEndDate,
+}: UseEventRSVPProps) => {
+  return useQuery({
+    queryKey: ['eventRSVP', checkoutConfig, eventEndDate],
+    queryFn: async () => {
+      const service = new SubgraphService()
+      const currentTime = Math.floor(Date.now() / 1000)
+      const isEventExpired = dayjs(eventEndDate).isBefore(dayjs())
+
+      let totalRSVPCount = 0
+
+      await Promise.all(
+        Object.entries(checkoutConfig.config.locks).map(
+          async ([lockAddress, lockConfig]) => {
+            const keysQuery: KeysQuery = {
+              where: {
+                lock: lockAddress.toLowerCase(),
+              },
+            }
+
+            // If the event is not expired, only count non-expired keys
+            if (!isEventExpired) {
+              keysQuery.where.expiration_gt = currentTime
+            }
+
+            const keys = await service.keys(keysQuery, {
+              networks: [lockConfig.network],
+            })
+            totalRSVPCount += keys.length
+          }
+        )
+      )
+
+      return {
+        rsvpCount: totalRSVPCount,
+        isExpired: isEventExpired,
+      }
+    },
   })
 }

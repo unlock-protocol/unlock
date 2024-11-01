@@ -1,7 +1,6 @@
 'use client'
 
-import { Fragment, useState, useEffect, useRef } from 'react'
-import { Transition, Dialog } from '@headlessui/react'
+import { useState, useEffect, useRef } from 'react'
 import {
   getMembershipVerificationConfig,
   MembershipVerificationConfig,
@@ -12,7 +11,7 @@ import { useDropzone } from 'react-dropzone'
 import { getURL } from '~/utils/url'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { config as AppConfig } from '~/config/app'
-import { Button } from '@unlock-protocol/ui'
+import { Button, Modal } from '@unlock-protocol/ui'
 import { Event, PaywallConfigType } from '@unlock-protocol/core'
 
 const getVerificationConfigFromURL = async (content?: string) => {
@@ -154,41 +153,23 @@ export function Scanner({ checkoutConfig, eventProp }: ScannerProps) {
         </div>
       </div>
       {membershipVerificationConfig && (
-        <Transition show appear as={Fragment}>
-          <Dialog
-            as="div"
-            className="relative z-50"
-            onClose={() => {
-              setMembershipVerificationConfig(null)
-            }}
-            open
-          >
-            <div className="fixed inset-0 bg-opacity-25 backdrop-filter backdrop-blur-sm bg-zinc-500" />
-            <Transition.Child
-              as={Fragment}
-              enter="transition ease-out duration-300"
-              enterFrom="opacity-0 translate-y-1"
-              enterTo="opacity-100"
-              leave="transition ease-in duration-150"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0 translate-y-1"
-            >
-              <div className="fixed inset-0 p-6 overflow-y-auto">
-                <div className="flex items-center justify-center min-h-full">
-                  <Dialog.Panel className="w-full max-w-sm">
-                    <VerificationStatus
-                      checkoutConfig={checkoutConfig}
-                      eventProp={eventProp}
-                      onClose={() => setMembershipVerificationConfig(null)}
-                      onVerified={() => setMembershipVerificationConfig(null)}
-                      config={membershipVerificationConfig}
-                    />
-                  </Dialog.Panel>
-                </div>
-              </div>
-            </Transition.Child>
-          </Dialog>
-        </Transition>
+        <Modal
+          size="small"
+          spacing="none"
+          closeIconStyle="fill-white"
+          isOpen={!!membershipVerificationConfig}
+          setIsOpen={() => setMembershipVerificationConfig(null)}
+        >
+          <div className="w-full max-w-sm">
+            <VerificationStatus
+              checkoutConfig={checkoutConfig}
+              eventProp={eventProp}
+              onClose={() => setMembershipVerificationConfig(null)}
+              onVerified={() => setMembershipVerificationConfig(null)}
+              config={membershipVerificationConfig}
+            />
+          </div>
+        </Modal>
       )}
     </>
   )

@@ -9,27 +9,27 @@
   },
   "dependencies": {
     "@babel/core": "7.25.2",
-    "@typescript-eslint/eslint-plugin": "8.4.0",
-    "@typescript-eslint/parser": "8.4.0",
+    "@typescript-eslint/eslint-plugin": "8.8.0",
+    "@typescript-eslint/parser": "8.8.0",
     "babel-plugin-polyfill-corejs2": "0.4.11",
     "node-gyp": "10.2.0",
     "prettier-plugin-solidity": "1.4.1",
-    "typescript": "5.5.4"
+    "typescript": "5.6.2"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "1.6.0",
-    "eslint": "9.9.1",
+    "@vitest/coverage-v8": "2.1.1",
+    "@vitest/eslint-plugin": "1.1.5",
+    "eslint": "9.11.1",
     "eslint-plugin-evm-address-to-checksummed": "0.0.6",
     "eslint-plugin-json": "4.0.1",
     "eslint-plugin-mocha": "10.5.0",
     "eslint-plugin-prettier": "5.2.1",
     "eslint-plugin-sort-keys-fix": "1.1.2",
-    "eslint-plugin-vitest": "0.5.4",
-    "husky": "9.1.5",
-    "lint-staged": "15.2.9",
+    "husky": "9.1.6",
+    "lint-staged": "15.2.10",
     "prettier": "3.3.3",
-    "typescript-eslint": "8.2.0",
-    "vitest": "1.6.0"
+    "typescript-eslint": "8.8.0",
+    "vitest": "2.1.1"
   },
   "workspaces": [
     "packages/**",
@@ -91,7 +91,7 @@
   },
   "engineStrict": true,
   "homepage": "https://github.com/unlock-protocol/unlock#readme",
-  "packageManager": "yarn@4.4.1",
+  "packageManager": "yarn@4.5.0",
   "lint-staged": {
     "*.{js,ts,tsx}": "yarn run lint --fix",
     "*.{js,ts,tsx,sol,css,md}": "prettier --write --plugin=prettier-plugin-solidity",

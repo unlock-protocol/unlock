@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { Button, Modal } from '@unlock-protocol/ui'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { MAX_UINT } from '~/constants'
 import { locksmith } from '~/config/locksmith'
+import { useProvider } from '~/hooks/useProvider'
 
 interface ApproveAttendeeModalProps {
   isOpen: boolean
@@ -25,7 +25,7 @@ export const ApproveAttendeeModal: React.FC<ApproveAttendeeModalProps> = ({
   attendees,
 }) => {
   const web3Service = useWeb3Service()
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
   const [loading, setLoading] = useState(false)
   const onCloseCallback = () => {
     setIsOpen(false)

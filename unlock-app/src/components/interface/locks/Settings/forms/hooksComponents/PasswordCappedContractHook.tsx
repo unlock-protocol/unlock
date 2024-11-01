@@ -1,6 +1,5 @@
 import { Button, Input, Placeholder } from '@unlock-protocol/ui'
 import { CustomComponentProps } from '../UpdateHooksForm'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useMutation } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { FaTrash as TrashIcon } from 'react-icons/fa'
@@ -12,6 +11,7 @@ import {
 } from '~/hooks/useLockSettings'
 import { useEffect, useState } from 'react'
 import { useWeb3Service } from '~/utils/withWeb3Service'
+import { useProvider } from '~/hooks/useProvider'
 
 export const PasswordCappedContractHook = ({
   lockAddress,
@@ -26,7 +26,7 @@ export const PasswordCappedContractHook = ({
     reset,
     formState: { errors, isValid },
   } = useFormContext()
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
   const [passwords, setPasswords] = useState<
     { password: string; cap: number; count: number }[]
   >([])

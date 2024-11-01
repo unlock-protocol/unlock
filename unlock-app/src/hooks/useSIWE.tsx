@@ -1,58 +1,28 @@
 import { ReactNode, createContext, useContext, useState } from 'react'
-import { useSession } from './useSession'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { SiweMessage } from 'siwe'
-import { locksmith } from '~/config/locksmith'
-import { useQueryClient } from '@tanstack/react-query'
-import {
-  getAccessToken,
-  removeAccessToken,
-  saveAccessToken,
-} from '~/utils/session'
 import { config } from '~/config/app'
-import ProviderContext from '~/contexts/ProviderContext'
 import { isInIframe } from '~/utils/iframe'
-import { signOut as nextSignOut } from 'next-auth/react'
+import { useProvider } from './useProvider'
 
 export type Status = 'loading' | 'error' | 'success' | 'rejected' | 'idle'
 
 export interface SIWEContextType {
-  session?: string | null
-  signIn: () => Promise<unknown> | unknown
   siweSign: (
     nonce: string,
     statement: string,
     opts?: any
   ) => Promise<{ message: string; signature: string } | null> | null
-  signOut: () => Promise<unknown> | unknown
   status?: Status
-  isSignedIn: boolean
   signature?: string
   message?: string
-}
-
-const signOutToken = async () => {
-  const session = getAccessToken()
-  if (session) {
-    // First, revoke the session on the server with the token
-    await locksmith.revoke().catch(console.error)
-    // Then remove token locally
-    return removeAccessToken()
-  }
 }
 
 const SIWEContext = createContext<SIWEContextType>({
   siweSign: (_nonce: string, _statement: string) => {
     throw new Error('No SIWE provider found')
   },
-  signIn: () => {
-    throw new Error('No SIWE provider found')
-  },
   signature: undefined,
   message: undefined,
-  signOut: signOutToken,
-  session: undefined,
-  isSignedIn: false,
 })
 
 interface Props {
@@ -64,11 +34,8 @@ export const SIWEProvider = ({ children }: Props) => {
     message: string
     signature: string
   } | null>(null)
-  const { connected, getWalletService, network } = useAuth()
-  const { provider } = useContext(ProviderContext)
-  const { session, refetchSession } = useSession()
+  const { getWalletService, provider } = useProvider()
   const [status, setStatus] = useState<Status>('idle')
-  const queryClient = useQueryClient()
 
   const onError = (error: any) => {
     console.error(error)
@@ -83,19 +50,6 @@ export const SIWEProvider = ({ children }: Props) => {
     }
   }
 
-  const signOut = async () => {
-    try {
-      setStatus('loading')
-      // Before signing out, we need to revoke the token
-      await nextSignOut({ redirect: false })
-      await signOutToken()
-      await Promise.all([queryClient.invalidateQueries(), refetchSession()])
-      setStatus('idle')
-    } catch (error) {
-      onError(error)
-    }
-  }
-
   const siweSign = async (
     nonce: string,
     statement: string,
@@ -106,6 +60,9 @@ export const SIWEProvider = ({ children }: Props) => {
     try {
       const walletService = await getWalletService()
       const address = await walletService.signer.getAddress()
+
+      const { chainId: network } =
+        await walletService.signer.provider.getNetwork()
 
       const parent = new URL(
         isInIframe() ? config.unlockApp : window.location.href
@@ -144,7 +101,7 @@ export const SIWEProvider = ({ children }: Props) => {
         message,
         'personal_sign'
       )
-
+      setSiweResult({ message, signature })
       return { message, signature }
     } catch (error) {
       onError(error)
@@ -152,51 +109,11 @@ export const SIWEProvider = ({ children }: Props) => {
     }
   }
 
-  const signIn = async () => {
-    setStatus('loading')
-    try {
-      if (!connected) {
-        throw new Error('No wallet connected.')
-      }
-
-      const { data: nonce } = await locksmith.nonce()
-      const siweResult = await siweSign(nonce, '')
-
-      if (siweResult) {
-        setSiweResult(siweResult)
-        const { message, signature } = siweResult
-        const response = await locksmith.login({
-          message,
-          signature,
-        })
-        const { accessToken, walletAddress } = response.data
-        if (accessToken && walletAddress) {
-          saveAccessToken({
-            accessToken,
-            walletAddress,
-          })
-        }
-        await queryClient.refetchQueries()
-        await refetchSession()
-      }
-    } catch (error) {
-      console.error(error)
-      onError(error)
-      return null
-    }
-    setStatus('idle')
-  }
-
-  const isSignedIn = !!session
   return (
     <SIWEContext.Provider
       value={{
-        session,
-        signIn,
         siweSign,
         status,
-        signOut,
-        isSignedIn,
         signature: siweResult?.signature,
         message: siweResult?.message,
       }}

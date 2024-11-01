@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### 0.2.2
+
+- Using the default Unlock address when none is passed.
+
 ### 0.2.1
 
 - Upgrade to support ethers v6

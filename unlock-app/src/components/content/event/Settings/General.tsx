@@ -123,22 +123,37 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
       >
         <div className="flex gap-4 flex-col md:flex-row">
           <div className="order-2 md:order-1">
-            <ImageUpload
-              description="This illustration will be used for the event page. Use 512 by 512 pixels for best results."
-              isUploading={isUploading}
-              preview={getValues('image') || event.image}
-              onChange={async (fileOrFileUrl: any) => {
-                if (typeof fileOrFileUrl === 'string') {
-                  setValue('image', fileOrFileUrl)
-                } else {
-                  const items = await uploadImage(fileOrFileUrl[0])
-                  const image = items?.[0]?.publicUrl
-                  if (!image) {
-                    return
-                  }
-                  setValue('image', image)
-                }
+            <Controller
+              name="image"
+              control={control}
+              rules={{
+                required: 'Image is required',
+                validate: (value) => {
+                  if (!value) return 'Image is required'
+                  return true
+                },
               }}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <ImageUpload
+                  description="This illustration will be used for the event page. Use 512 by 512 pixels for best results."
+                  isUploading={isUploading}
+                  preview={value || event.image}
+                  onChange={async (fileOrFileUrl: any) => {
+                    if (typeof fileOrFileUrl === 'string') {
+                      onChange(fileOrFileUrl)
+                    } else {
+                      const items = await uploadImage(fileOrFileUrl[0])
+                      const image = items?.[0]?.publicUrl
+                      if (!image) return
+                      onChange(image)
+                    }
+                  }}
+                  error={error?.message}
+                />
+              )}
             />
           </div>
           <div className="flex flex-col order-1 gap-4 md:order-2 grow">

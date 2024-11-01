@@ -13,8 +13,19 @@ export const useEvent = ({ slug }: useEventProps, useQueryProps = {}) => {
   return useQuery({
     queryKey: ['useEvent', slug],
     queryFn: async (): Promise<any> => {
-      const { data } = await locksmith.getEvent(slug)
-      return toFormData(data.data!)
+      try {
+        const { data } = await locksmith.getEvent(slug)
+        if (!data || !data.data) {
+          throw new Error('Event not found')
+        }
+        return toFormData(data.data)
+      } catch (error: any) {
+        // Propagate the original error object
+        if (error.response && error.response.status === 404) {
+          error.message = 'Event not found'
+        }
+        throw error
+      }
     },
     ...useQueryProps,
   })

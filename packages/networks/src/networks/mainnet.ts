@@ -161,6 +161,12 @@ export const mainnet: NetworkConfig = {
       name: 'BNB',
       symbol: 'BNB',
     },
+    {
+      address: '0x90DE74265a416e1393A450752175AED98fe11517',
+      decimals: 18,
+      name: 'Unlock Discount Token',
+      symbol: 'UDT',
+    },
   ],
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
@@ -178,7 +184,6 @@ export const mainnet: NetworkConfig = {
   unlockDaoToken: {
     address: '0x90DE74265a416e1393A450752175AED98fe11517',
   },
-
   url: 'https://ethereum.org/en/',
   // universalCard: {
   //   cardPurchaserAddress: '0x49814dd8a03594bE78a18455CC4Df3876ecFbD69',

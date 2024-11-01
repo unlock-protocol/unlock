@@ -1,8 +1,8 @@
 import { useForm } from 'react-hook-form'
 import { Button, Input } from '@unlock-protocol/ui'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useCallback, useEffect } from 'react'
 import useGetGasRefund from '~/hooks/useGetGasRefund'
+import { useProvider } from '~/hooks/useProvider'
 
 interface Props {
   lockAddress: string
@@ -23,7 +23,7 @@ export function UpdateGasRefundForm({
   disabled,
   onChanged,
 }: Props) {
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
   const {
     register,
     handleSubmit,

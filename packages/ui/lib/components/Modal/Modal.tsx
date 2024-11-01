@@ -1,62 +1,85 @@
 import React, { ReactNode } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
+import {
+  Dialog,
+  DialogBackdrop,
+  Transition,
+  TransitionChild,
+} from '@headlessui/react'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
+
 export interface Props {
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
   children?: ReactNode
   empty?: boolean
+  size?: 'small' | 'medium' | 'large'
+  spacing?: 'small' | 'medium' | 'large' | 'none'
+  closeIconStyle?: string
 }
 
-export function Modal({ isOpen, setIsOpen, children, empty }: Props) {
+const sizeClasses = {
+  small: 'max-w-sm',
+  medium: 'max-w-lg',
+  large: 'max-w-4xl',
+}
+
+const spacingClasses = {
+  small: 'p-4 mt-6',
+  medium: 'p-6 mt-8',
+  large: 'p-8 mt-10',
+  none: '',
+}
+
+export function Modal({
+  isOpen,
+  setIsOpen,
+  children,
+  empty,
+  size = 'medium',
+  spacing = 'small',
+  closeIconStyle = 'fill-inherit',
+}: Props) {
+  const sizeClass = sizeClasses[size]
+  const spacingClass = spacingClasses[spacing]
+
   let content
   if (empty) {
     content = (
-      <div className="flex flex-col items-center justify-center min-w-full min-h-screen overflow-auto">
+      <div className="flex flex-col items-center justify-center w-full h-full overflow-auto">
         {children}
       </div>
     )
   } else {
     content = (
-      <div className="block p-4 overflow-hidden transition-all transform bg-white border border-gray-100 rounded-lg shadow-xl sm:max-w-lg sm:w-full">
-        <div className="flex items-center justify-end">
+      <div
+        className={`relative w-full ${sizeClass} mx-auto overflow-hidden transition-all transform bg-white border-none rounded-xl shadow-xl`}
+      >
+        <div className="absolute top-4 right-4">
           <button
-            className="hover:fill-brand-ui-primary"
             aria-label="close"
             onClick={(event) => {
               event.preventDefault()
               setIsOpen(false)
             }}
           >
-            <CloseIcon className="fill-inherit" size={24} />
+            <CloseIcon className={closeIconStyle} size={24} />
           </button>
         </div>
-        {children}
+        <div className={spacingClass}>{children}</div>
       </div>
     )
   }
 
   return (
-    <Transition.Root show={isOpen} as={React.Fragment}>
+    <Transition show={isOpen} as={React.Fragment}>
       <Dialog
         as="div"
         className="fixed inset-0 z-10 overflow-y-auto"
         onClose={setIsOpen}
       >
-        <div className="flex flex-col items-center justify-center min-h-screen p-6">
-          <Transition.Child
-            as={React.Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <Dialog.Overlay className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50 backdrop-blur" />
-          </Transition.Child>
-
-          <Transition.Child
+        <DialogBackdrop className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50 backdrop-blur" />
+        <div className="flex items-center justify-center min-h-screen px-4 py-6 text-center sm:p-0">
+          <TransitionChild
             as={React.Fragment}
             enter="ease-out duration-300"
             enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
@@ -66,10 +89,10 @@ export function Modal({ isOpen, setIsOpen, children, empty }: Props) {
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
             {content}
-          </Transition.Child>
+          </TransitionChild>
         </div>
       </Dialog>
-    </Transition.Root>
+    </Transition>
   )
 }
 

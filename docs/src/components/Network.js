@@ -226,7 +226,7 @@ export const SupportedNetwork = ({ network }) => {
 export const TokenNetwork = ({ network }) => {
   const provider = new JsonRpcProvider(network.provider)
   const { data: udt } = useQuery({
-    queryKey: ['getUdt', network.unlockAddress],
+    queryKey: ['getUdt', network.unlockAddress, network.id],
     queryFn: async () => {
       return getUdt(provider, network.unlockAddress)
     },

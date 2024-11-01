@@ -1,20 +1,10 @@
-import { WalletService } from '@unlock-protocol/unlock-js'
-import { createContext, useContext, useState } from 'react'
-import { getCurrentProvider } from '~/utils/session'
+import { createContext, useContext, useEffect, useState } from 'react'
+import { useAuthenticate } from './useAuthenticate'
+import { useSearchParams } from 'next/navigation'
 
-export type ConnectStatus = 'crypto' | 'unlock_account'
-
-interface AuthResult {
-  walletService: WalletService
-  provider: any
-}
 const ConnectModalContext = createContext({
-  openConnectModal: (_state?: ConnectStatus) => {},
-  openConnectModalAsync: async (_state?: ConnectStatus) => {
-    return {} as AuthResult
-  },
+  openConnectModal: () => {},
   closeConnectModal: () => {},
-  status: 'crypto' as ConnectStatus,
   open: false as boolean,
   send: (_detail: any) => {},
   connection: new EventTarget(),
@@ -34,25 +24,27 @@ interface Props {
 export const connection = new EventTarget()
 
 export const ConnectModalProvider = (props: Props) => {
-  const [status, setStatus] = useState<ConnectStatus>('crypto')
   const [open, setOpen] = useState(false)
+  const { signInWithPrivy } = useAuthenticate()
+  const searchParams = useSearchParams()
 
-  const openConnectModal = (_status?: ConnectStatus) => {
-    const provider = getCurrentProvider()
-    const newStatus =
-      provider?.toLowerCase()?.trim() === 'unlock' ? 'unlock_account' : 'crypto'
-    setStatus(_status ?? newStatus)
-    setOpen(true)
-  }
+  const privy_oauth_state = searchParams.get('privy_oauth_state')
 
-  const openConnectModalAsync = async (
-    _status?: ConnectStatus
-  ): Promise<AuthResult> => {
-    openConnectModal(_status)
-    return new Promise((resolve) => {
-      connection.addEventListener('connected', (event: any) => {
-        resolve(event.detail)
+  useEffect(() => {
+    if (privy_oauth_state) {
+      signInWithPrivy({
+        onshowUI: () => {
+          setOpen(true)
+        },
       })
+    }
+  }, [privy_oauth_state])
+
+  const openConnectModal = async () => {
+    signInWithPrivy({
+      onshowUI: () => {
+        setOpen(true)
+      },
     })
   }
 
@@ -64,10 +56,8 @@ export const ConnectModalProvider = (props: Props) => {
     <ConnectModalContext.Provider
       value={{
         open,
-        status,
         closeConnectModal,
         openConnectModal,
-        openConnectModalAsync,
         send,
         connection,
       }}

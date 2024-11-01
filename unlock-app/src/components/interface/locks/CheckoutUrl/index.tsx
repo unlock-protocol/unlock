@@ -23,7 +23,7 @@ import { ChooseConfiguration } from './ChooseConfiguration'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDebounce } from 'react-use'
 import { getCheckoutUrl } from '~/components/content/event/utils'
-import { useAuth } from '~/contexts/AuthenticationContext'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 export type Configuration = 'new' | 'existing'
 interface ConfigurationFormProps {
@@ -45,7 +45,7 @@ const Header = () => {
 export const CheckoutUrlContent = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const [checkoutUrl, setCheckoutUrl] = useState('')
   const [isDeleteConfirmation, setDeleteConfirmation] = useState(false)
   const [configuration, setConfiguration] = useState<Configuration>('new')
@@ -138,13 +138,15 @@ export const CheckoutUrlContent = () => {
 
   const TopBar = () => {
     return (
-      <Button variant="borderless" aria-label="arrow back">
-        <ArrowBackIcon
-          size={20}
-          className="cursor-pointer"
-          onClick={() => router.back()}
-        />
-      </Button>
+      <div className="flex justify-start">
+        <Button variant="borderless" aria-label="arrow back">
+          <ArrowBackIcon
+            size={20}
+            className="cursor-pointer"
+            onClick={() => router.back()}
+          />
+        </Button>
+      </div>
     )
   }
 
@@ -277,7 +279,7 @@ export const CheckoutUrlContent = () => {
         </div>
       </Modal>
       <TopBar />
-      <div className="z-[1] flex flex-col w-full min-h-screen gap-8 pt-10 pb-20 md:flex-row relative">
+      <div className="z-[1] flex flex-col w-full min-h-screen gap-8 pb-20 md:flex-row relative">
         <div className="z-0 order-2 md:w-1/2 md:order-1">
           <CheckoutPreview
             id={checkoutConfig.id}

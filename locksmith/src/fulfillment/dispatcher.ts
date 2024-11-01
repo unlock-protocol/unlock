@@ -71,6 +71,11 @@ export const getPurchaser = async function ({
     const wallet = await defender.relaySigner.getSigner(provider, {
       speed: 'fast',
     })
+    // @ts-expect-error - polyfill
+    if (!wallet.signTypedData) {
+      // @ts-expect-error - polyfill
+      wallet.signTypedData = wallet._signTypedData
+    }
     if (!address || address === (await wallet.getAddress())) {
       const relayerStatus = await defender.relaySigner.getRelayerStatus()
       if (!relayerStatus.paused) {
@@ -109,6 +114,11 @@ export const getAllPurchasers = async function ({
     const wallet = await defender.relaySigner.getSigner(provider, {
       speed: 'fast',
     })
+    // @ts-expect-error - polyfill
+    if (!wallet.signTypedData) {
+      // @ts-expect-error - polyfill
+      wallet.signTypedData = wallet._signTypedData
+    }
     purchasers.push(wallet)
   }
   const provider = await getPublicProviderForNetwork(network)

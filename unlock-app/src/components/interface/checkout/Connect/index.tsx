@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import type { OAuthConfig } from '~/unlockTypes'
 
@@ -6,12 +6,9 @@ import { ConfirmConnect } from './ConfirmConnect'
 import { Step, StepButton, StepTitle } from '../Stepper'
 import { ConnectPage } from '../main/ConnectPage'
 import { TopNavigation } from '../Shell'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { PaywallConfigType } from '@unlock-protocol/core'
-import { useSIWE } from '~/hooks/useSIWE'
-import { signOut, useSession } from 'next-auth/react'
-import ConnectingWaas from '../../connect/ConnectingWaas'
 import { isInIframe } from '~/utils/iframe'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface Props {
   oauthConfig: OAuthConfig
@@ -21,22 +18,16 @@ interface Props {
 
 interface StepperProps {
   state: string
+  onChange: (state: string) => void
 }
 
-export const Stepper = ({ state }: StepperProps) => {
+export const Stepper = ({ state, onChange }: StepperProps) => {
   const steps = ['connect', 'confirm']
-  const { deAuthenticate } = useAuth()
-
-  const [currentState, setCurentState] = useState(steps.indexOf(state))
-
-  useEffect(() => {
-    setCurentState(steps.indexOf(state))
-  }, [state, setCurentState])
 
   return (
     <div className="flex items-center gap-1.5">
       {steps.map((step: string, idx: number) => {
-        const isActive = step === steps[currentState]
+        const isActive = step === state
         if (isActive) {
           return (
             <>
@@ -44,13 +35,12 @@ export const Stepper = ({ state }: StepperProps) => {
               <StepTitle key={idx}>{steps[idx]}</StepTitle>
             </>
           )
-        } else if (currentState > idx) {
+        } else if (steps.indexOf(state) > idx) {
           return (
             <StepButton
               key={idx}
               onClick={() => {
-                setCurentState(idx)
-                deAuthenticate()
+                onChange(steps[idx])
               }}
             >
               {idx + 1}
@@ -65,7 +55,7 @@ export const Stepper = ({ state }: StepperProps) => {
 }
 
 export function Connect({ oauthConfig, communication }: Props) {
-  const { account } = useAuth()
+  const { account, signInWithPrivy, signOut } = useAuthenticate()
   const [state, setState] = useState('connect')
 
   const onClose = useCallback(
@@ -76,8 +66,6 @@ export function Connect({ oauthConfig, communication }: Props) {
         for (const [key, value] of Object.entries(params)) {
           redirectURI.searchParams.append(key, value)
         }
-        // Sign Out NexthAuth session and prevent page reload
-        signOut({ redirect: false })
         return window.location.assign(redirectURI)
       } else if (!isInIframe() || !communication) {
         window.history.back()
@@ -90,42 +78,42 @@ export function Connect({ oauthConfig, communication }: Props) {
 
   useEffect(() => {
     if (!account) {
-      return setState('connect')
+      signInWithPrivy({
+        onshowUI: () => {
+          setState('connect')
+        },
+      })
+      return
     } else {
       return setState('confirm')
     }
   }, [account])
 
-  const { connected } = useAuth()
-  const { isSignedIn } = useSIWE()
-
-  const { data: session } = useSession()
-  const isLoadingWaas = session && (!connected || !isSignedIn || account === '')
+  const changeState = async (state: string) => {
+    if (state === 'connect') {
+      await signOut()
+    }
+    setState(state)
+  }
 
   return (
     <div className="bg-white z-10 shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem]">
       <TopNavigation onClose={onClose} />
       <div className="flex items-center justify-between w-full gap-2 p-2 px-6 border-b">
         <div className="flex items-center gap-1.5">
-          <Stepper state={state} />
+          <Stepper onChange={changeState} state={state} />
         </div>
       </div>
-      {isLoadingWaas ? (
-        <div className="pt-6">
-          <ConnectingWaas openConnectModalWindow={false} />
-        </div>
-      ) : (
-        <>
-          {!account && <ConnectPage style="h-full mt-4 space-y-5" />}
-          {account && (
-            <ConfirmConnect
-              className="h-full mt-4 space-y-5"
-              communication={communication}
-              onClose={onClose}
-              oauthConfig={oauthConfig}
-            />
-          )}
-        </>
+      {!account && (
+        <ConnectPage showPrivyModal={true} style="h-full mt-4 space-y-5" />
+      )}
+      {account && (
+        <ConfirmConnect
+          className="h-full mt-4 space-y-5"
+          communication={communication}
+          onClose={onClose}
+          oauthConfig={oauthConfig}
+        />
       )}
     </div>
   )

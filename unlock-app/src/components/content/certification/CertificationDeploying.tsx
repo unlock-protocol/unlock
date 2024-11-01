@@ -1,6 +1,6 @@
 import { Button } from '@unlock-protocol/ui'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 
 import {

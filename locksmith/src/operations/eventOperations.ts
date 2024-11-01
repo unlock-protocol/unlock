@@ -63,7 +63,7 @@ export const getEventForLock = async (
 
   // If there are checkout configs, let's see if an even exists with them!
   // Let's now find any event that uses this checkout config!
-  const event = await EventData.findOne({
+  const event = await EventData.scope('withoutId').findOne({
     where: {
       checkoutConfigId: checkoutConfigs.map((record) => record.id),
     },
@@ -182,7 +182,7 @@ export const getEventBySlug = async (
   slug: string,
   includeProtected: boolean
 ) => {
-  const event = await EventData.findOne({
+  const event = await EventData.scope('withoutId').findOne({
     where: {
       slug,
     },
@@ -221,7 +221,7 @@ export const saveEvent = async (
   const slug = parsed.data.slug || (await createEventSlug(parsed.data.name))
 
   let data = {}
-  const previousEvent = await EventData.findOne({
+  const previousEvent = await EventData.scope('withoutId').findOne({
     where: { slug },
   })
   if (previousEvent) {
@@ -257,7 +257,7 @@ export const saveEvent = async (
     const createdConfig = await saveCheckoutConfig({
       name: `Checkout config for ${savedEvent.name} (${savedEvent.slug})`,
       config: checkoutConfig,
-      createdBy: walletAddress,
+      user: walletAddress,
     })
     // And now attach the id to the savedEvent
     savedEvent.checkoutConfigId = createdConfig.id

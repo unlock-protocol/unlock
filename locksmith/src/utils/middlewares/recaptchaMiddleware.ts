@@ -44,6 +44,7 @@ export const captchaMiddleware: RequestHandler = async (
   const json = await result.json()
 
   if (!json.success) {
+    console.log(json)
     return response.status(403).send({
       message: 'Invalid captcha value. Try again',
     })

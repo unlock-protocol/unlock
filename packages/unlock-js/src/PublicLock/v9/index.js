@@ -16,6 +16,7 @@ import isLockManager from './isLockManager'
 import keyManagerOf from './keyManagerOf'
 import purchaseKey from './purchaseKey'
 import purchaseKeys from './purchaseKeys'
+import removeKeyGranter from './removeKeyGranter'
 import renounceLockManager from './renounceLockManager'
 import setBaseTokenURI from './setBaseTokenURI'
 import setEventHooks from './setEventHooks'
@@ -54,6 +55,7 @@ export default {
   keyManagerOf,
   purchaseKey,
   purchaseKeys,
+  removeKeyGranter,
   renounceLockManager,
   setBaseTokenURI,
   setEventHooks,

@@ -1,8 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Badge, Select, Placeholder } from '@unlock-protocol/ui'
-import { useState } from 'react'
+import { useState, useCallback, useMemo } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { BsCheckCircle as CheckCircleIcon } from 'react-icons/bs'
 import { SettingCardDetail } from '../elements/SettingCard'
@@ -16,7 +15,9 @@ import { locksmith } from '~/config/locksmith'
 import { useUSDPricing } from '~/hooks/useUSDPricing'
 import { useLockData } from '~/hooks/useLockData'
 import CreditCardCustomPrice from './CreditCardCustomPrice'
-import CreditCardUnlockFee from './CreditCardUnlockFee'
+import useKeyGranter from '~/hooks/useKeyGranter'
+import { useProvider } from '~/hooks/useProvider'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 enum ConnectStatus {
   CONNECTED = 1,
@@ -66,7 +67,7 @@ const DisconnectStripe = ({
       <div className="flex flex-col items-center gap-4 md:gap-8 md:flex-row">
         <Badge variant="green" className="justify-center w-full md:w-1/3">
           <div className="flex items-center gap-2">
-            <span>Card payments enabled</span>
+            <span className="whitespace-nowrap">Card payments enabled</span>
             <CheckCircleIcon />
           </div>
         </Badge>
@@ -90,12 +91,12 @@ const ConnectStripe = ({
   lockAddress,
   network,
   keyGranter,
-  isManager,
   disabled,
   onConnectStripe,
 }: ConnectStripeProps & Pick<ConnectStripe, 'onConnectStripe'>) => {
   const [stripeAccount, setStripeAccount] = useState<string>()
-  const { getWalletService, account } = useAuth()
+  const { account } = useAuthenticate()
+  const { getWalletService } = useProvider()
   const web3Service = useWeb3Service()
 
   const {
@@ -112,9 +113,12 @@ const ConnectStripe = ({
     },
   })
 
-  const checkIsKeyGranter = async (keyGranter: string) => {
-    return await web3Service.isKeyGranter(lockAddress, keyGranter, network)
-  }
+  const checkIsKeyGranter = useCallback(
+    async (keyGranter: string) => {
+      return await web3Service.isKeyGranter(lockAddress, keyGranter, network)
+    },
+    [web3Service, lockAddress, network]
+  )
 
   const {
     isPending: isLoadingCheckGrantedStatus,
@@ -122,9 +126,7 @@ const ConnectStripe = ({
     refetch: refetchCheckKeyGranter,
   } = useQuery({
     queryKey: ['checkIsKeyGranter', lockAddress, network, keyGranter],
-    queryFn: async () => {
-      return checkIsKeyGranter(keyGranter)
-    },
+    queryFn: () => checkIsKeyGranter(keyGranter),
   })
 
   const grantKeyGrantorRoleMutation = useMutation({
@@ -152,9 +154,9 @@ const ConnectStripe = ({
   if (isLoading) {
     return (
       <Placeholder.Root>
-        <Placeholder.Line width="sm" />
-        <Placeholder.Line width="sm" />
-        <Placeholder.Line size="xl" width="sm" />
+        <Placeholder.Line />
+        <Placeholder.Line />
+        <Placeholder.Line size="xl" />
       </Placeholder.Root>
     )
   }
@@ -162,7 +164,7 @@ const ConnectStripe = ({
   return (
     <div className="flex flex-col gap-4">
       <SettingCardDetail
-        title="Enable Contract to Accept Credit Card"
+        title="Enable offchain payments"
         description={
           <div className="flex flex-col gap-2">
             <span>
@@ -170,12 +172,6 @@ const ConnectStripe = ({
                 Unlock Labs processes non-crypto payments via our Stripe
                 integration and includes fees that are applied on top of your
                 lock's key price.`}
-            </span>
-            <span>
-              If you enable credit card payments for your lock, your members
-              will usually be charged a higher amount than the amount for your
-              lock. The Unlock Labs fee is 10%, which must be added to the
-              Stripe fees and gas costs.
             </span>
             <span>
               For more details see{' '}
@@ -192,57 +188,56 @@ const ConnectStripe = ({
           </div>
         }
       />
-      {isManager && (
-        <div className="flex flex-col gap-3">
-          {isGranted ? (
-            <form
-              className="grid gap-4"
-              onSubmit={(e) => {
-                e.preventDefault()
-                onConnectStripe(stripeAccount)
-              }}
-            >
-              {(stripeConnections ?? [])?.length > 0 && (
-                <Select
-                  defaultValue={stripeAccount}
-                  onChange={(value: any) => {
-                    setStripeAccount(value.toString())
-                  }}
-                  options={(stripeConnections ?? [])
-                    ?.map((connection: any) => {
-                      return {
-                        label: connection.settings.dashboard.display_name,
-                        value: connection.id,
-                      }
-                    })
-                    .concat({
-                      label: 'Connect a new Stripe account',
-                      value: '',
-                    })}
-                  label="Use a Stripe account you previously connected to another contract:"
-                />
-              )}
-              <Button
-                className="w-full md:w-1/3"
-                type="submit"
-                disabled={disabled}
-              >
-                Connect Stripe
-              </Button>
-            </form>
-          ) : (
+
+      <div className="flex flex-col gap-3">
+        {isGranted ? (
+          <form
+            className="grid gap-4"
+            onSubmit={(e) => {
+              e.preventDefault()
+              onConnectStripe(stripeAccount)
+            }}
+          >
+            {(stripeConnections ?? [])?.length > 0 && (
+              <Select
+                defaultValue={stripeAccount}
+                onChange={(value: any) => {
+                  setStripeAccount(value.toString())
+                }}
+                options={(stripeConnections ?? [])
+                  ?.map((connection: any) => {
+                    return {
+                      label: connection.settings.dashboard.display_name,
+                      value: connection.id,
+                    }
+                  })
+                  .concat({
+                    label: 'Connect a new Stripe account',
+                    value: '',
+                  })}
+                label="Use a Stripe account you previously connected to another contract:"
+              />
+            )}
             <Button
-              size="small"
-              variant="outlined-primary"
               className="w-full md:w-1/3"
-              onClick={onGrantKeyRole}
-              disabled={grantKeyGrantorRoleMutation.isPending}
+              type="submit"
+              disabled={disabled}
             >
-              Accept
+              Connect Stripe
             </Button>
-          )}
-        </div>
-      )}
+          </form>
+        ) : (
+          <Button
+            size="small"
+            variant="outlined-primary"
+            className="w-full md:w-1/3"
+            onClick={onGrantKeyRole}
+            disabled={grantKeyGrantorRoleMutation.isPending}
+          >
+            Accept
+          </Button>
+        )}
+      </div>
     </div>
   )
 }
@@ -309,20 +304,8 @@ export const CreditCardWithStripeForm = ({
     network,
   })
 
-  const { isPending: isLoadingKeyGranter, data: keyGranter } = useQuery({
-    queryKey: ['getKeyGranter', lockAddress, network],
-    queryFn: () => {
-      return getKeyGranter()
-    },
-  })
   const stripeConnectionState = stripeConnectionDetails?.connected ?? 0
   const connectedStripeAccount = stripeConnectionDetails?.account
-  const supportedCurrencies =
-    stripeConnectionDetails?.countrySpec?.supported_payment_currencies ?? []
-
-  const getKeyGranter = async () => {
-    return (await locksmith.balance()).data[network].address
-  }
 
   const disconnectStipeMutation = useStripeDisconnect({
     lockAddress,
@@ -347,41 +330,57 @@ export const CreditCardWithStripeForm = ({
     enabled: !!lock?.address,
   })
 
-  const isPricingLow = (fiatPricing?.usd?.amount ?? 0) < 0.5
+  const isPricingLow = useMemo(
+    () => (fiatPricing?.usd?.amount ?? 0) < 0.5,
+    [fiatPricing]
+  )
+
+  const { data: keyGranter, isPending: isLoadingKeyGranter } = useKeyGranter({
+    network,
+  })
 
   const loading = isPending || isLoadingKeyGranter || isLoadingPricing
 
-  const onDisconnectStripe = async (event: any) => {
-    event.preventDefault()
-    const disconnectStripePromise = disconnectStipeMutation.mutateAsync()
-    await ToastHelper.promise(disconnectStripePromise, {
-      error: 'Stripe disconnection failed.',
-      success: 'Stripe disconnected.',
-      loading: 'Disconnecting Stripe.',
-    })
-    await refetchStripeConnectionDetails()
-  }
+  const onDisconnectStripe = useCallback(
+    async (event: any) => {
+      event.preventDefault()
+      const disconnectStripePromise = disconnectStipeMutation.mutateAsync()
+      await ToastHelper.promise(disconnectStripePromise, {
+        error: 'Stripe disconnection failed.',
+        success: 'Stripe disconnected.',
+        loading: 'Disconnecting Stripe.',
+      })
+      await refetchStripeConnectionDetails()
+    },
+    [disconnectStipeMutation, refetchStripeConnectionDetails]
+  )
 
-  const onConnectStripe = (stripeAccount?: string) => {
-    connectStripeMutation.mutate(
-      { stripeAccount },
-      {
-        onSuccess: (connect: any) => {
-          if (connect?.url) {
-            window.location.assign(connect.url)
-          } else {
-            ToastHelper.success('Stripe connection succeeded!')
-            refetchStripeConnectionDetails()
-          }
-        },
-        onError: () => {
-          ToastHelper.error('Stripe connection failed')
-        },
-      }
-    )
-  }
+  const onConnectStripe = useCallback(
+    (stripeAccount?: string) => {
+      connectStripeMutation.mutate(
+        { stripeAccount },
+        {
+          onSuccess: (connect: any) => {
+            if (connect?.url) {
+              window.location.assign(connect.url)
+            } else {
+              ToastHelper.success('Stripe connection succeeded!')
+              refetchStripeConnectionDetails()
+            }
+          },
+          onError: () => {
+            ToastHelper.error('Stripe connection failed')
+          },
+        }
+      )
+    },
+    [connectStripeMutation, refetchStripeConnectionDetails]
+  )
 
-  const Status = () => {
+  const StatusComponent = useMemo(() => {
+    const supportedCurrencies =
+      stripeConnectionDetails?.countrySpec?.supported_payment_currencies ?? []
+
     if (ConnectStatus.NO_ACCOUNT === stripeConnectionState) {
       return (
         <ConnectStripe
@@ -419,48 +418,55 @@ export const CreditCardWithStripeForm = ({
             onDisconnect={onDisconnectStripe}
             disabled={disabled || disconnectStipeMutation.isPending}
           />
+
           {connectedStripeAccount && (
-            <span>
+            <p className="text-sm text-gray-700">
               You will receive payments on your Stripe account{' '}
-              <code>{connectedStripeAccount.id}</code>
-            </span>
+              <code className="text-gray-600">{connectedStripeAccount.id}</code>
+              .
+            </p>
           )}
 
-          {isManager && (
-            <>
-              <CreditCardCustomPrice
-                lockAddress={lockAddress}
-                network={network}
-                disabled={disabled}
-                lock={lock}
-                currencies={supportedCurrencies}
-                connectedStripeAccount={connectedStripeAccount}
-              />
-              <CreditCardUnlockFee
-                lockAddress={lockAddress}
-                network={network}
-                disabled={disabled}
-              />
-            </>
-          )}
+          <CreditCardCustomPrice
+            lockAddress={lockAddress}
+            network={network}
+            disabled={disabled}
+            lock={lock}
+            currencies={supportedCurrencies}
+            connectedStripeAccount={connectedStripeAccount}
+          />
         </div>
       )
     }
     return null
-  }
+  }, [
+    stripeConnectionState,
+    onConnectStripe,
+    lockAddress,
+    network,
+    isManager,
+    keyGranter,
+    disabled,
+    connectStripeMutation.isPending,
+    onDisconnectStripe,
+    connectedStripeAccount,
+    disconnectStipeMutation.isPending,
+    lock,
+    stripeConnectionDetails,
+  ])
 
   if (loading)
     return (
       <Placeholder.Root>
-        <Placeholder.Line width="sm" />
-        <Placeholder.Line width="sm" />
-        <Placeholder.Line size="xl" width="sm" />
+        <Placeholder.Line />
+        <Placeholder.Line />
+        <Placeholder.Line size="xl" />
       </Placeholder.Root>
     )
 
   return (
     <div className="flex flex-col gap-2">
-      <Status />
+      {StatusComponent}
       {isPricingLow && (
         <span className="text-sm text-red-600">
           Your current price is too low for us to process credit cards. It needs

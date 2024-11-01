@@ -15,8 +15,6 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 try {
-  console.log(configPath)
-
   dotenv.config({
     path: configPath,
   })

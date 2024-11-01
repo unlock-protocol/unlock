@@ -12,16 +12,11 @@ import { Lock } from '~/unlockTypes'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
 import { usePurchase } from '~/hooks/usePurchase'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
-import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { useCapturePayment } from '~/hooks/useCapturePayment'
-import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { PricingData } from './PricingData'
 import { formatNumber } from '~/utils/formatter'
-import {
-  formatFiatPriceFromCents,
-  getNumberOfRecurringPayments,
-} from '../utils'
+import { formatFiatPrice, getNumberOfRecurringPayments } from '../utils'
 import { useGetTotalCharges } from '~/hooks/usePrice'
 import { useGetLockSettings } from '~/hooks/useLockSettings'
 import { getCurrencySymbol } from '~/utils/currency'
@@ -66,18 +61,18 @@ export function CreditCardPricingBreakdown({
           <span>Learn more</span> <ExternalLinkIcon className="inline" />
         </a>
       </h3>
-      <div className="border-b">
+      <div>
         {unlockFeeChargedToUser && !loading && (
           <Detail
             loading={loading}
-            className="flex justify-between w-full py-1 text-xs border-t border-gray-300"
+            className="flex justify-between w-full py-1 text-xs border-gray-300"
             label="Service Fee"
             labelSize="tiny"
             valueSize="tiny"
             inline
           >
             <div className="font-normal">
-              {formatFiatPriceFromCents(unlockServiceFee, symbol)}
+              {formatFiatPrice(unlockServiceFee, symbol)}
             </div>
           </Detail>
         )}
@@ -91,7 +86,7 @@ export function CreditCardPricingBreakdown({
             inline
           >
             <div className="font-normal">
-              {formatFiatPriceFromCents(creditCardProcessingFee, symbol)}
+              {formatFiatPrice(creditCardProcessingFee, symbol)}
             </div>
           </Detail>
         )}
@@ -105,11 +100,11 @@ export function CreditCardPricingBreakdown({
             inline
           >
             <div className="font-normal">
-              {formatFiatPriceFromCents(gasCosts, symbol)}
+              {formatFiatPrice(gasCosts, symbol)}
             </div>
           </Detail>
         )}
-        {total == 50 && (
+        {total <= 0.5 && (
           <Detail
             loading={loading}
             className="flex justify-between w-full py-1"
@@ -142,14 +137,9 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
     network: lockNetwork,
   })
 
-  const { data: creditCardEnabled } = useCreditCardEnabled({
-    lockAddress,
-    network: lockNetwork,
-  })
-
   const { mutateAsync: updateUsersMetadata } = useUpdateUsersMetadata()
 
-  const { isInitialLoading: isInitialDataLoading, data: purchaseData } =
+  const { isLoading: isInitialDataLoading, data: purchaseData } =
     usePurchaseData({
       lockAddress: lock!.address,
       network: lock!.network,
@@ -158,30 +148,10 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
       data,
     })
 
-  const {
-    data: pricingData,
-    isInitialLoading: isPricingDataLoading,
-    isError: isPricingDataError,
-  } = usePricing({
-    lockAddress: lock!.address,
-    network: lock!.network,
-    recipients,
-    currencyContractAddress: lock?.currencyContractAddress,
-    data: purchaseData!,
-    paywallConfig,
-    enabled: !isInitialDataLoading,
-    symbol: lockTickerSymbol(
-      lock as Lock,
-      config.networks[lock!.network].nativeCurrency.symbol
-    ),
-  })
   const { data: { unlockFeeChargedToUser } = {} } = useGetLockSettings({
     network: lock!.network,
     lockAddress: lock!.address,
   })
-
-  const isPricingDataAvailable =
-    !isPricingDataLoading && !isPricingDataError && !!pricingData
 
   const { data: { creditCardCurrency = 'usd ' } = {} } = useGetLockSettings({
     lockAddress,
@@ -192,7 +162,8 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
 
   const {
     data: totalPricing,
-    isInitialLoading: isTotalPricingDataLoading,
+    isLoading: isTotalPricingDataLoading,
+    isError: isTotalPricingDataError,
     isFetched: isTotalPricingDataFetched,
   } = useGetTotalCharges({
     recipients,
@@ -212,8 +183,7 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
     purchaseType: renew ? 'extend' : 'purchase',
   })
 
-  const isLoading =
-    isPricingDataLoading || isInitialDataLoading || isTotalPricingDataLoading
+  const isLoading = isInitialDataLoading || isTotalPricingDataLoading
 
   const baseCurrencySymbol = config.networks[lockNetwork].nativeCurrency.symbol
   const symbol = lockTickerSymbol(lock as Lock, baseCurrencySymbol)
@@ -226,7 +196,7 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
       })
 
       const stripeIntent = await createPurchaseIntent({
-        pricing: totalPricing!.total,
+        pricing: totalPricing!.total * 100, //
         // @ts-expect-error - generated types don't narrow down to the right type
         stripeTokenId: payment.cardId!,
         recipients,
@@ -283,19 +253,13 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
     setIsConfirming(false)
   }
 
-  const isError = isPricingDataError
-
-  const usdTotalPricing = totalPricing?.total
-    ? totalPricing?.total / 100
-    : undefined
-
   return (
     <Fragment>
       <main className="h-full p-6 space-y-2 overflow-auto">
         <div className="grid gap-y-2">
           <h4 className="text-xl font-bold"> {lock!.name}</h4>
 
-          {isError && (
+          {isTotalPricingDataError && (
             // TODO: use actual error from simulation
             <div>
               <p className="text-sm font-bold">
@@ -306,70 +270,70 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
           )}
 
           {/* Breakdown of each keys */}
-          {!isLoading && isPricingDataAvailable && (
+          {!isLoading && totalPricing && (
             <PricingData
               network={lockNetwork}
               lock={lock!}
-              pricingData={totalPricing}
+              prices={totalPricing.prices}
               payment={payment}
             />
           )}
-        </div>
-        {/* Totals */}
-        {isLoading && (
-          <div className="flex flex-col items-center gap-2">
-            {recipients.map((user) => (
-              <div
-                key={user}
-                className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"
-              />
-            ))}
-          </div>
-        )}
 
-        {pricingData && !isError && (
-          <Pricing
-            keyPrice={
-              pricingData.total <= 0
-                ? 'FREE'
-                : `${formatNumber(
-                    pricingData.total
-                  ).toLocaleString()} ${symbol}`
-            }
-            usdPrice={
-              usdTotalPricing
-                ? `${formatNumber(
-                    usdTotalPricing
-                  ).toLocaleString()} ${creditCardCurrencySymbol}`
-                : ''
-            }
-            isCardEnabled={!!creditCardEnabled}
-            extra={
-              !isError &&
-              pricingData && (
-                <CreditCardPricingBreakdown
-                  loading={
-                    isTotalPricingDataLoading || !isTotalPricingDataFetched
-                  }
-                  total={totalPricing?.total ?? 0}
-                  creditCardProcessingFee={
-                    totalPricing?.creditCardProcessingFee
-                  }
-                  unlockServiceFee={totalPricing?.unlockServiceFee ?? 0}
-                  gasCosts={totalPricing?.gasCost}
-                  symbol={creditCardCurrencySymbol}
-                  unlockFeeChargedToUser={unlockFeeChargedToUser}
+          {/* Totals */}
+          {isLoading && (
+            <div className="flex flex-col items-center gap-2">
+              {recipients.map((user) => (
+                <div
+                  key={user}
+                  className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"
                 />
-              )
-            }
-          />
-        )}
+              ))}
+            </div>
+          )}
+
+          {!isTotalPricingDataError && totalPricing && (
+            <Pricing
+              keyPrice={
+                totalPricing.total <= 0
+                  ? 'FREE'
+                  : `${formatNumber(
+                      totalPricing.total
+                    ).toLocaleString()} ${symbol}`
+              }
+              usdPrice={formatFiatPrice(
+                totalPricing!.total,
+                creditCardCurrencySymbol
+              )}
+              isCardEnabled={true}
+              extra={
+                !isTotalPricingDataError &&
+                totalPricing && (
+                  <div className="border-b">
+                    <CreditCardPricingBreakdown
+                      loading={
+                        isTotalPricingDataLoading || !isTotalPricingDataFetched
+                      }
+                      total={totalPricing?.total ?? 0}
+                      creditCardProcessingFee={
+                        totalPricing?.creditCardProcessingFee
+                      }
+                      unlockServiceFee={totalPricing?.unlockServiceFee ?? 0}
+                      gasCosts={totalPricing?.gasCost}
+                      symbol={creditCardCurrencySymbol}
+                      unlockFeeChargedToUser={unlockFeeChargedToUser}
+                    />
+                  </div>
+                )
+              }
+            />
+          )}
+        </div>
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
         <div className="grid">
           <Button
             loading={isConfirming}
-            disabled={isConfirming || isLoading || isError}
+            disabled={isConfirming || isLoading || isTotalPricingDataError}
             onClick={async (event) => {
               event.preventDefault()
               if (metadata) {

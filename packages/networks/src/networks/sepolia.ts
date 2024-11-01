@@ -6,7 +6,7 @@ export const sepolia: NetworkConfig = {
   },
   chain: 'sepolia',
   description:
-    'Sepolia is the primary testnet recommended by the Ethereum community for dapp development.',
+    'Sepolia is the primary testnet recommended by the Ethereum community for dapp development',
   explorer: {
     name: 'Sepolia Etherscan',
     urls: {
@@ -138,6 +138,12 @@ export const sepolia: NetworkConfig = {
       decimals: 18,
       name: 'Uniswap',
       symbol: 'UNI',
+    },
+    {
+      address: '0x447B1492C5038203f1927eB2a374F5Fcdc25999d',
+      decimals: 18,
+      name: 'Unlock Discount Token',
+      symbol: 'UDT',
     },
   ],
   uniswapV3: {

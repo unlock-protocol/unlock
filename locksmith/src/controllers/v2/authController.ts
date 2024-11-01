@@ -10,6 +10,7 @@ import { ethers } from 'ethers'
 import { networks } from '@unlock-protocol/networks'
 // Temporary since SIWE does not seem to support ERC-6492
 import { verifyMessage } from '@ambire/signature-validator'
+import { privy } from '../../utils/privyClient'
 
 export const login: RequestHandler = async (request, response) => {
   try {
@@ -117,6 +118,62 @@ export const login: RequestHandler = async (request, response) => {
   } catch (error) {
     logger.error(error.message)
     response.status(500).json({ message: error.message })
+  }
+}
+
+export const loginWithPrivy: RequestHandler = async (request, response) => {
+  try {
+    const { accessToken, identityToken } = request.body
+
+    if (!accessToken) {
+      return response.status(400).json({ error: 'Access token is required' })
+    }
+
+    if (!identityToken) {
+      return response.status(400).json({ error: 'Identity token is required' })
+    }
+
+    if (!privy) {
+      return response
+        .status(500)
+        .json({ error: 'Privy client is not initialized' })
+    }
+
+    // Verify the access token using Privy
+    const userAuthClaims = await privy.verifyAuthToken(accessToken)
+
+    // Get the user's data using the identity token
+    // the identity token needs to be gotten from the cookie
+    // https://docs.privy.io/guide/react/users/identity-token
+    const user = await privy.getUser({ idToken: identityToken })
+
+    const wallet = user.linkedAccounts.find(
+      (account) => account.type === 'wallet'
+    )
+
+    if (!wallet?.address) {
+      return response
+        .status(400)
+        .json({ error: 'User does not have a wallet address' })
+    }
+
+    const walletAddress = normalizer.ethereumAddress(wallet.address)
+
+    // Create a new session
+    const expireAt = dayjs().add(config.sessionDuration, 'seconds').toDate()
+    const { id } = await createAccessToken({
+      walletAddress,
+      nonce: userAuthClaims.userId,
+      expireAt,
+    })
+
+    return response.setHeader('Authorization', `Bearer ${id}`).send({
+      walletAddress,
+      accessToken: id,
+    })
+  } catch (error) {
+    console.error('Error in loginWithPrivy:', error)
+    return response.status(401).json({ error: 'Invalid access token' })
   }
 }
 

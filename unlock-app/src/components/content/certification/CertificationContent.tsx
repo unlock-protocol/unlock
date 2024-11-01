@@ -1,13 +1,13 @@
-import React from 'react'
-import Head from 'next/head'
-import { CertificationDetails } from './CertificationDetails'
-import { CertificationLanding } from './CertificationLanding'
-import { useRouter } from 'next/router'
+'use client'
+
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import LoadingIcon from '~/components/interface/Loading'
-import { AppLayout } from '~/components/interface/layouts/AppLayout'
 import { pageTitle } from '~/constants'
 import { useMetadata } from '~/hooks/metadata'
 import { useRouterQueryForLockAddressAndNetworks } from '~/hooks/useRouterQueryForLockAddressAndNetworks'
+import { CertificationDetails } from './CertificationDetails'
+import { CertificationLanding } from './CertificationLanding'
 
 export const CertificationContent = () => {
   const router = useRouter()
@@ -22,6 +22,12 @@ export const CertificationContent = () => {
 
   const showDetails = lockAddress && network
 
+  useEffect(() => {
+    document.title = metadata
+      ? pageTitle(`${metadata?.name} | Certification`)
+      : pageTitle('Certification')
+  }, [metadata])
+
   if (isLoading) {
     return <LoadingIcon />
   }
@@ -31,25 +37,13 @@ export const CertificationContent = () => {
   }
 
   return (
-    <AppLayout
-      showLinks={false}
-      authRequired={false}
-      logoRedirectUrl="/certification"
-      logoImageUrl="/images/svg/logo-unlock-certificate.svg"
-    >
-      <Head>
-        <title>
-          {metadata
-            ? pageTitle(`${metadata?.name} | 'Certification`)
-            : 'Certification'}
-        </title>
-        {metadata && (
-          <>
-            <meta property="og:title" content={metadata?.name} />
-            <meta property="og:image" content={metadata.image} />
-          </>
-        )}
-      </Head>
+    <>
+      {metadata && (
+        <>
+          <meta property="og:title" content={metadata?.name} />
+          <meta property="og:image" content={metadata.image} />
+        </>
+      )}
       {!showDetails && (
         <CertificationLanding
           handleCreateCertification={handleCreateCertification}
@@ -64,7 +58,7 @@ export const CertificationContent = () => {
           />
         </div>
       )}
-    </AppLayout>
+    </>
   )
 }
 

@@ -1,14 +1,7 @@
 import React, { useCallback, useState } from 'react'
-import {
-  Button,
-  Input,
-  Select,
-  ToggleSwitch,
-  CurrencyHint,
-} from '@unlock-protocol/ui'
+import { Button, Input, Select, ToggleSwitch } from '@unlock-protocol/ui'
 import { Token } from '@unlock-protocol/types'
 import { useForm, useWatch } from 'react-hook-form'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { BalanceWarning } from './BalanceWarning'
 import { useConfig } from '~/utils/withConfig'
@@ -19,6 +12,8 @@ import Link from 'next/link'
 import { networks } from '@unlock-protocol/networks'
 import { useAvailableNetworks } from '~/utils/networks'
 import { SelectToken } from './SelectToken'
+import { ProtocolFee } from './ProtocolFee'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 export interface LockFormProps {
   name: string
@@ -41,17 +36,18 @@ interface CreateLockFormProps {
   defaultOptions?: any
 }
 
-export const networkDescription = (network: number) => {
+export const NetworkDescription = ({ network }: { network: number }) => {
   const { description, url, faucets, nativeCurrency } = networks[network!]
   return (
     <div>
       {description}{' '}
       {url && (
         <>
+          (
           <Link className="underline" href={url} target="_blank">
             Learn more
           </Link>
-          .
+          ).{' '}
         </>
       )}
       {network === 1 && (
@@ -91,7 +87,7 @@ export const CreateLockForm = ({
 }: CreateLockFormProps) => {
   const { networks } = useConfig()
   const web3Service = useWeb3Service()
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const mainNetworkOptions = useAvailableNetworks()
   const additionalNetworkOptions = useAvailableNetworks(true)
 
@@ -102,8 +98,6 @@ export const CreateLockForm = ({
     defaultValues?.unlimitedQuantity
   )
   const [isFree, setIsFree] = useState(defaultValues?.isFree ?? false)
-
-  const [currencyNetwork, setCurrencyNetwork] = useState<string>()
 
   const {
     register,
@@ -156,18 +150,9 @@ export const CreateLockForm = ({
   const noBalance = balance === 0 && !isLoadingBalance
   const submitDisabled = isLoadingBalance || noBalance
 
-  const { tokens } = networks[selectedNetwork as number]
-
-  const token = tokens.find((token: Token) => {
-    return (
-      token.address.toLowerCase() === currencyContractAddress?.toLowerCase()
-    )
-  })
-
   const onChangeNetwork = useCallback(
     (network: number | string) => {
       setValue('network', parseInt(`${network}`))
-      setCurrencyNetwork(networks[network].name)
     },
     [setValue]
   )
@@ -208,7 +193,7 @@ export const CreateLockForm = ({
                 defaultValue={selectedNetwork}
                 options={mainNetworkOptions}
                 onChange={onChangeNetwork}
-                description={networkDescription(selectedNetwork!)}
+                description={<NetworkDescription network={selectedNetwork!} />}
                 moreOptions={additionalNetworkOptions}
               />
             )}
@@ -378,23 +363,7 @@ export const CreateLockForm = ({
                   </span>
                 )}
               </div>
-              <CurrencyHint network={currencyNetwork as string} />
-              {token &&
-                token.faucet &&
-                token.address === currencyContractAddress && (
-                  <span className="text-sm text-gray-600">
-                    Need some {token.name} for the lock? Try this faucet:{' '}
-                    <>
-                      <Link
-                        className="underline"
-                        href={token.faucet.url}
-                        target="_blank"
-                      >
-                        {token.faucet.name}
-                      </Link>
-                    </>
-                  </span>
-                )}
+              <ProtocolFee network={selectedNetwork!} />
             </div>
             <Button
               className="mt-8 md:mt-0"

@@ -1,3 +1,5 @@
+'use client'
+
 import { Button } from '@unlock-protocol/ui'
 import { useConfig } from '~/utils/withConfig'
 import { LockFormProps } from './CreateLockForm'
@@ -6,14 +8,15 @@ import Link from 'next/link'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQuery } from '@tanstack/react-query'
 import { KeyPrice } from '../../elements/KeyPrice'
-import Lottie from 'lottie-react'
+import dynamic from 'next/dynamic'
 import deployedAnimation from '~/animations/deployed.json'
 import deployingAnimation from '~/animations/deploying.json'
 import deployErrorAnimation from '~/animations/deploy-error.json'
 import { durationsAsTextFromSeconds } from '~/utils/durations'
 import { ONE_DAY_IN_SECONDS } from '~/constants'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { subgraph } from '~/config/subgraph'
+
+const Lottie = dynamic(() => import('lottie-react'), { ssr: false })
 
 interface DeployStatusProps {
   title: string
@@ -93,7 +96,6 @@ export const CreateLockFormSummary = ({
   transactionHash = '',
   lockAddress,
 }: CreateLockFormSummaryProps) => {
-  const { network } = useAuth()
   const requiredConfirmations = 2 // Required confirmations block to switch to 'deployed' status
   const web3Service = useWeb3Service()
   const { networks } = useConfig()
@@ -117,7 +119,7 @@ export const CreateLockFormSummary = ({
   }
 
   const { data, isError } = useQuery({
-    queryKey: ['getTransactionDetails', transactionHash, network],
+    queryKey: ['getTransactionDetails', transactionHash, formData.network],
     queryFn: () => getTransactionDetails(transactionHash!),
     enabled: !!transactionHash,
     refetchInterval: 5000,
@@ -136,7 +138,12 @@ export const CreateLockFormSummary = ({
     : null
 
   const { data: subgraphLock } = useQuery({
-    queryKey: ['getLockFromSubgraph', transactionHash, lockAddress, network],
+    queryKey: [
+      'getLockFromSubgraph',
+      transactionHash,
+      lockAddress,
+      formData.network,
+    ],
     queryFn: () => {
       return subgraph.lock(
         {
@@ -144,10 +151,10 @@ export const CreateLockFormSummary = ({
             address: lockAddress,
           },
         },
-        { network: network! }
+        { network: formData.network! }
       )
     },
-    enabled: !!lockAddress && !!network,
+    enabled: !!lockAddress && !!formData.network,
     refetchInterval: 1000,
   })
 
@@ -225,7 +232,7 @@ export const CreateLockFormSummary = ({
         <div className="flex flex-col items-center my-12 text-center">
           <h3 className="block mb-4 text-2xl font-bold md:text-4xl">{title}</h3>
           <span className="mb-4 font-base">{description}</span>
-          <Link href={nextUrl(lockAddress, network)}>
+          <Link href={nextUrl(lockAddress, formData.network)}>
             <Button className="w-full max-w-lg" variant="outlined-primary">
               {nextNext}
             </Button>
