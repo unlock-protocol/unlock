@@ -84,7 +84,7 @@
     "path-to-regexp": "8.2.0",
     "pdfmake": "0.2.13",
     "pg": "8.12.0",
-    "rate-limiter-flexible": "5.0.3",
+    "rate-limiter-flexible": "5.0.4",
     "react": "18.3.1",
     "remark-html": "16.0.1",
     "remark-parse": "11.0.0",
