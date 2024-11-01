@@ -10,7 +10,7 @@
     "@matterlabs/hardhat-zksync-deploy": "1.6.0",
     "@matterlabs/hardhat-zksync-solc": "1.2.5",
     "@matterlabs/hardhat-zksync-upgradable": "1.8.1",
-    "@matterlabs/hardhat-zksync-verify": "1.6.0",
+    "@matterlabs/hardhat-zksync-verify": "1.7.0",
     "@nomicfoundation/hardhat-ethers": "3.0.8",
     "@nomicfoundation/hardhat-network-helpers": "1.0.12",
     "@nomicfoundation/hardhat-verify": "2.0.11",
