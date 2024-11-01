@@ -11059,7 +11059,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@matterlabs/hardhat-zksync-deploy@npm:1.6.0":
+"@matterlabs/hardhat-zksync-deploy@npm:1.6.0, @matterlabs/hardhat-zksync-deploy@npm:^1.6.0":
   version: 1.6.0
   resolution: "@matterlabs/hardhat-zksync-deploy@npm:1.6.0"
   dependencies:
@@ -11098,27 +11098,6 @@ __metadata:
     hardhat: ^2.22.5
     zksync-ethers: ^6.8.0
   checksum: 10/26308c8efd58a7bb9d70050481002d6756d6a8142d4282ec36a7afe0ef6a52dc9f8790395d61a6ac206637d763c55ed15631e0a73f87d76156de9652e17fd6e2
-  languageName: node
-  linkType: hard
-
-"@matterlabs/hardhat-zksync-deploy@npm:^1.6.0":
-  version: 1.6.0
-  resolution: "@matterlabs/hardhat-zksync-deploy@npm:1.6.0"
-  dependencies:
-    "@matterlabs/hardhat-zksync-solc": "npm:^1.2.5"
-    chai: "npm:^4.3.4"
-    chalk: "npm:^4.1.2"
-    fs-extra: "npm:^11.2.0"
-    glob: "npm:^10.4.1"
-    lodash: "npm:^4.17.21"
-    sinon: "npm:^18.0.0"
-    sinon-chai: "npm:^3.7.0"
-    ts-morph: "npm:^22.0.0"
-  peerDependencies:
-    ethers: ^6.12.2
-    hardhat: ^2.22.5
-    zksync-ethers: ^6.11.2
-  checksum: 10/6e5a79d46b3506092eaa9ad4f57d4e98e41585a770bb1af303e3ba110327393eea95a596a27188abee986e0124c8f809b15a8d18004cbe342212ba739fcc1cb3
   languageName: node
   linkType: hard
 
@@ -22191,7 +22170,7 @@ __metadata:
     "@mdx-js/react": "npm:3.0.1"
     "@mui/material": "npm:6.1.6"
     "@mui/x-charts": "npm:7.22.1"
-    "@tanstack/react-query": "npm:5.56.2"
+    "@tanstack/react-query": "npm:5.59.16"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     clsx: "npm:2.1.1"
     docusaurus-gtm-plugin: "npm:0.0.2"
@@ -22766,7 +22745,7 @@ __metadata:
     "@headlessui/react": "npm:2.2.0"
     "@observablehq/plot": "npm:0.6.16"
     "@radix-ui/react-avatar": "npm:1.1.1"
-    "@tanstack/react-query": "npm:5.56.2"
+    "@tanstack/react-query": "npm:5.59.16"
     "@testing-library/react": "npm:16.0.1"
     "@types/node": "npm:20.14.13"
     "@types/react": "npm:18.3.12"
