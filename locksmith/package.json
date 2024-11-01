@@ -58,7 +58,7 @@
     "archiver": "7.0.1",
     "color-scheme": "1.0.1",
     "connect-timeout": "1.9.0",
-    "cookie-parser": "1.4.6",
+    "cookie-parser": "1.4.7",
     "cors": "2.8.5",
     "dayjs": "1.11.13",
     "dotenv": "16.4.5",
