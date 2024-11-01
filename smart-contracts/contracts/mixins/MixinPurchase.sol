@@ -55,7 +55,7 @@ contract MixinPurchase is
     address referrer;
     address keyManager;
     bytes data;
-    uint periods;
+    uint additionalPeriods;
   }
 
   /**
@@ -312,7 +312,7 @@ contract MixinPurchase is
       tokenIds[i] = tokenId;
 
       // extend key as many times as specified in the period
-      for (uint256 p = 0; p < purchaseArgs[i].periods; p++) {
+      for (uint256 p = 0; p < purchaseArgs[i].additionalPeriods; p++) {
         _extendKey(tokenId, 0);
 
         // compute total price

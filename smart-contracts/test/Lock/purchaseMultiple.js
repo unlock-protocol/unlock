@@ -20,6 +20,7 @@ describe('Lock / purchase multiple keys at once', () => {
     let lock
     let tokenAddress
     let keyOwners
+    let purchaseArgs
 
     describe(`Test ${isErc20 ? 'ERC20' : 'ETH'}`, () => {
       beforeEach(async () => {
@@ -39,27 +40,24 @@ describe('Lock / purchase multiple keys at once', () => {
         await testToken
           .connect(holder)
           .approve(await lock.getAddress(), allowance)
+
+        purchaseArgs = await Promise.all(
+          keyOwners.map(async (keyOwner) => ({
+            value: isErc20 ? keyPrice : 0n,
+            recipient: await keyOwner.getAddress(),
+            keyManager: ADDRESS_ZERO,
+            referrer: ADDRESS_ZERO,
+            data: '0x',
+            additionalPeriods: 0,
+          }))
+        )
       })
 
       describe('purchase with exact value specified', () => {
         beforeEach(async () => {
-          await lock.purchase(
-            keyOwners.map(
-              async (keyOwner) => [
-                {
-                  value: isErc20 ? keyPrice : 0n,
-                  recipient: await keyOwner.getAddress(),
-                  keyOwner: ADDRESS_ZERO,
-                  referrer: ADDRESS_ZERO,
-                  data: '0x',
-                  periods: 1,
-                },
-              ],
-              {
-                value: isErc20 ? 0 : keyPrice * BigInt(keyOwners.length),
-              }
-            )
-          )
+          await lock.purchase(purchaseArgs, {
+            value: isErc20 ? 0 : keyPrice * BigInt(purchaseArgs.length),
+          })
         })
 
         it('user sent correct token amounts to the contract', async () => {
@@ -82,16 +80,10 @@ describe('Lock / purchase multiple keys at once', () => {
         it('reverts when wrong amounts are specified', async () => {
           await reverts(
             lock.connect(keyOwners[1]).purchase(
-              keyOwners.map((keyOwner) => [
-                {
-                  value: isErc20 ? ethers.parseUnits('0.005', 'ether') : 0n,
-                  recipient: keyOwner.getAddress(),
-                  keyOwner: ADDRESS_ZERO,
-                  referrer: ADDRESS_ZERO,
-                  data: '0x',
-                  periods: 1,
-                },
-              ]),
+              purchaseArgs.map((p) => ({
+                ...p,
+                value: isErc20 ? ethers.parseUnits('0.005', 'ether') : 0n,
+              })),
               {
                 value: isErc20 ? 0 : keyPrice * BigInt(keyOwners.length - 2),
               }
