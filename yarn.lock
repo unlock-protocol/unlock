@@ -1677,9 +1677,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/cli@npm:7.25.6":
-  version: 7.25.6
-  resolution: "@babel/cli@npm:7.25.6"
+"@babel/cli@npm:7.25.9":
+  version: 7.25.9
+  resolution: "@babel/cli@npm:7.25.9"
   dependencies:
     "@jridgewell/trace-mapping": "npm:^0.3.25"
     "@nicolo-ribaudo/chokidar-2": "npm:2.1.8-no-fsevents.3"
@@ -1700,7 +1700,7 @@ __metadata:
   bin:
     babel: ./bin/babel.js
     babel-external-helpers: ./bin/babel-external-helpers.js
-  checksum: 10/b20d1b6cb8e5a4c5a19983f66f3526338b4c1cbbc6e3ff8b59d3f073499987a61ecbf76080c517ea88082f689a634ff1145a8f199ec469eea74b8b52294a622f
+  checksum: 10/0c331df5e42a53b793fd36d988d696dfb3d0322fa17a6ff7ccd682c85c32b896804fea308ebee6e2a03c9fb70164308bd50044b486d6e8c1f3f92435d37bbc6c
   languageName: node
   linkType: hard
 
@@ -1796,29 +1796,6 @@ __metadata:
   version: 7.26.2
   resolution: "@babel/compat-data@npm:7.26.2"
   checksum: 10/ed9eed6b62ce803ef4a320b1dac76b0302abbb29c49dddf96f3e3207d9717eb34e299a8651bb1582e9c3346ead74b6d595ffced5b3dae718afa08b18741f8402
-  languageName: node
-  linkType: hard
-
-"@babel/core@npm:7.25.2, @babel/core@npm:^7.25.2":
-  version: 7.25.2
-  resolution: "@babel/core@npm:7.25.2"
-  dependencies:
-    "@ampproject/remapping": "npm:^2.2.0"
-    "@babel/code-frame": "npm:^7.24.7"
-    "@babel/generator": "npm:^7.25.0"
-    "@babel/helper-compilation-targets": "npm:^7.25.2"
-    "@babel/helper-module-transforms": "npm:^7.25.2"
-    "@babel/helpers": "npm:^7.25.0"
-    "@babel/parser": "npm:^7.25.0"
-    "@babel/template": "npm:^7.25.0"
-    "@babel/traverse": "npm:^7.25.2"
-    "@babel/types": "npm:^7.25.2"
-    convert-source-map: "npm:^2.0.0"
-    debug: "npm:^4.1.0"
-    gensync: "npm:^1.0.0-beta.2"
-    json5: "npm:^2.2.3"
-    semver: "npm:^6.3.1"
-  checksum: 10/0d6ec10ff430df66f654c089d6f7ef1d9bed0c318ac257ad5f0dfa0caa45666011828ae75f998bcdb279763e892b091b2925d0bc483299e61649d2c7a2245e33
   languageName: node
   linkType: hard
 
@@ -1960,9 +1937,32 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/eslint-parser@npm:7.25.1":
-  version: 7.25.1
-  resolution: "@babel/eslint-parser@npm:7.25.1"
+"@babel/core@npm:^7.25.2":
+  version: 7.25.2
+  resolution: "@babel/core@npm:7.25.2"
+  dependencies:
+    "@ampproject/remapping": "npm:^2.2.0"
+    "@babel/code-frame": "npm:^7.24.7"
+    "@babel/generator": "npm:^7.25.0"
+    "@babel/helper-compilation-targets": "npm:^7.25.2"
+    "@babel/helper-module-transforms": "npm:^7.25.2"
+    "@babel/helpers": "npm:^7.25.0"
+    "@babel/parser": "npm:^7.25.0"
+    "@babel/template": "npm:^7.25.0"
+    "@babel/traverse": "npm:^7.25.2"
+    "@babel/types": "npm:^7.25.2"
+    convert-source-map: "npm:^2.0.0"
+    debug: "npm:^4.1.0"
+    gensync: "npm:^1.0.0-beta.2"
+    json5: "npm:^2.2.3"
+    semver: "npm:^6.3.1"
+  checksum: 10/0d6ec10ff430df66f654c089d6f7ef1d9bed0c318ac257ad5f0dfa0caa45666011828ae75f998bcdb279763e892b091b2925d0bc483299e61649d2c7a2245e33
+  languageName: node
+  linkType: hard
+
+"@babel/eslint-parser@npm:7.25.9":
+  version: 7.25.9
+  resolution: "@babel/eslint-parser@npm:7.25.9"
   dependencies:
     "@nicolo-ribaudo/eslint-scope-5-internals": "npm:5.1.1-v1"
     eslint-visitor-keys: "npm:^2.1.0"
@@ -1970,7 +1970,7 @@ __metadata:
   peerDependencies:
     "@babel/core": ^7.11.0
     eslint: ^7.5.0 || ^8.0.0 || ^9.0.0
-  checksum: 10/9a2ddab3accd391a1eb95cb1ea655daa8603515d0f17081c542db8621c6bbbc65aa3b9b96b779854eed80cc8664a8969d7ac54479e8738876c0be5d26fd66efa
+  checksum: 10/ebb68d80b1fa2b964ad1147cc610e0c69b224e620419a885ba5abc996740523bee636a0d447fc29a0d495dbce5fa0246737b25e9e679cca6c5797fdac5176378
   languageName: node
   linkType: hard
 
@@ -2665,13 +2665,6 @@ __metadata:
   version: 7.24.5
   resolution: "@babel/helper-plugin-utils@npm:7.24.5"
   checksum: 10/6e11ca5da73e6bd366848236568c311ac10e433fc2034a6fe6243af28419b07c93b4386f87bbc940aa058b7c83f370ef58f3b0fd598106be040d21a3d1c14276
-  languageName: node
-  linkType: hard
-
-"@babel/helper-plugin-utils@npm:^7.24.8":
-  version: 7.24.8
-  resolution: "@babel/helper-plugin-utils@npm:7.24.8"
-  checksum: 10/adbc9fc1142800a35a5eb0793296924ee8057fe35c61657774208670468a9fbfbb216f2d0bc46c680c5fefa785e5ff917cc1674b10bd75cdf9a6aa3444780630
   languageName: node
   linkType: hard
 
@@ -5392,19 +5385,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-runtime@npm:7.25.4":
-  version: 7.25.4
-  resolution: "@babel/plugin-transform-runtime@npm:7.25.4"
+"@babel/plugin-transform-runtime@npm:7.25.9":
+  version: 7.25.9
+  resolution: "@babel/plugin-transform-runtime@npm:7.25.9"
   dependencies:
-    "@babel/helper-module-imports": "npm:^7.24.7"
-    "@babel/helper-plugin-utils": "npm:^7.24.8"
+    "@babel/helper-module-imports": "npm:^7.25.9"
+    "@babel/helper-plugin-utils": "npm:^7.25.9"
     babel-plugin-polyfill-corejs2: "npm:^0.4.10"
     babel-plugin-polyfill-corejs3: "npm:^0.10.6"
     babel-plugin-polyfill-regenerator: "npm:^0.6.1"
     semver: "npm:^6.3.1"
   peerDependencies:
     "@babel/core": ^7.0.0-0
-  checksum: 10/081dcc4fb8ae86d80b6b261e7fe55d4876995aa28011813331a14de5b9ecd845c938b6bd688d95febacd72b3f446e1439582e81cee67447c73b78c514849ddde
+  checksum: 10/d8d4f04a47cfc1a6103ecee8604750ba2184cd947ee1696cdc363639f0d4a3848839e20f0ca63511af9ad6742f7dd813cca5b2640353f7b0816bbc17ff0e9e88
   languageName: node
   linkType: hard
 
@@ -22097,7 +22090,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/eslint-config@workspace:packages/eslint-config"
   dependencies:
-    "@babel/eslint-parser": "npm:7.25.1"
+    "@babel/eslint-parser": "npm:7.25.9"
     "@eslint/compat": "npm:1.2.2"
     "@typescript-eslint/eslint-plugin": "npm:8.12.2"
     "@typescript-eslint/parser": "npm:8.12.2"
@@ -22640,7 +22633,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/unlock-protocol-com@workspace:unlock-protocol-com"
   dependencies:
-    "@babel/core": "npm:7.25.2"
+    "@babel/core": "npm:7.26.0"
     "@headlessui/react": "npm:2.2.0"
     "@observablehq/plot": "npm:0.6.16"
     "@radix-ui/react-avatar": "npm:1.1.1"
@@ -22695,10 +22688,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/wedlocks@workspace:wedlocks"
   dependencies:
-    "@babel/cli": "npm:7.25.6"
+    "@babel/cli": "npm:7.25.9"
     "@babel/core": "npm:7.26.0"
     "@babel/node": "npm:7.26.0"
-    "@babel/plugin-transform-runtime": "npm:7.25.4"
+    "@babel/plugin-transform-runtime": "npm:7.25.9"
     "@babel/preset-env": "npm:7.26.0"
     "@typescript-eslint/parser": "npm:8.12.2"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
@@ -54948,7 +54941,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "unlock@workspace:."
   dependencies:
-    "@babel/core": "npm:7.25.2"
+    "@babel/core": "npm:7.26.0"
     "@typescript-eslint/eslint-plugin": "npm:8.8.0"
     "@typescript-eslint/parser": "npm:8.8.0"
     "@vitest/coverage-v8": "npm:2.1.1"
