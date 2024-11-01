@@ -56,7 +56,7 @@ export const PrivyChild = ({ children }: { children: ReactNode }) => {
     },
   })
 
-  // Detects when login was succesul via an event
+  // Detects when login was successful via an event
   // This should render only once!
   useEffect(() => {
     const onAuthenticated = async (event: any) => {
