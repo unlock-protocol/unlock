@@ -10478,14 +10478,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@guildxyz/sdk@npm:2.6.8":
-  version: 2.6.8
-  resolution: "@guildxyz/sdk@npm:2.6.8"
+"@guildxyz/sdk@npm:2.6.9":
+  version: 2.6.9
+  resolution: "@guildxyz/sdk@npm:2.6.9"
   dependencies:
     "@guildxyz/types": "npm:^1.9.42"
     ethers: "npm:^6.7.1"
     randombytes: "npm:^2.1.0"
-  checksum: 10/65222896c27c4e44d969c43093318e951acd28d2d7d438b659769b54c08bc91c2fb43dda9b3445d30718f10926321bb5912a89f31b8dd73a4fa81e546e03032e
+  checksum: 10/5329e4834f2bec2cdbfa4f37dd81895d182017e3448b66021d9cefaf0523222906ecdb69c8fa8ba59a42702f87c5ccb895cb700d4814f9f8fe099b096d0bd8e6
   languageName: node
   linkType: hard
 
@@ -22405,7 +22405,7 @@ __metadata:
     "@crossmint/client-sdk-react-ui": "npm:1.2.2"
     "@decent.xyz/box-common": "npm:3.3.6"
     "@enzoferey/ethers-error-parser": "npm:0.2.3"
-    "@guildxyz/sdk": "npm:2.6.8"
+    "@guildxyz/sdk": "npm:2.6.9"
     "@headlessui/react": "npm:2.1.9"
     "@hookform/error-message": "npm:2.0.1"
     "@hookform/resolvers": "npm:3.9.0"
