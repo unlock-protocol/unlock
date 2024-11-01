@@ -22550,7 +22550,7 @@ __metadata:
     jsdom: "npm:25.0.1"
     lottie-react: "npm:2.4.0"
     next: "npm:14.2.14"
-    next-auth: "npm:4.24.8"
+    next-auth: "npm:4.24.10"
     node-forge: "npm:1.3.1"
     postcss: "npm:8.4.47"
     postmate: "npm:1.5.2"
@@ -28508,7 +28508,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cookie@npm:^0.7.2":
+"cookie@npm:^0.7.0, cookie@npm:^0.7.2":
   version: 0.7.2
   resolution: "cookie@npm:0.7.2"
   checksum: 10/24b286c556420d4ba4e9bc09120c9d3db7d28ace2bd0f8ccee82422ce42322f73c8312441271e5eefafbead725980e5996cc02766dbb89a90ac7f5636ede608f
@@ -43671,13 +43671,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next-auth@npm:4.24.8":
-  version: 4.24.8
-  resolution: "next-auth@npm:4.24.8"
+"next-auth@npm:4.24.10":
+  version: 4.24.10
+  resolution: "next-auth@npm:4.24.10"
   dependencies:
     "@babel/runtime": "npm:^7.20.13"
     "@panva/hkdf": "npm:^1.0.2"
-    cookie: "npm:^0.5.0"
+    cookie: "npm:^0.7.0"
     jose: "npm:^4.15.5"
     oauth: "npm:^0.9.15"
     openid-client: "npm:^5.4.0"
@@ -43686,7 +43686,7 @@ __metadata:
     uuid: "npm:^8.3.2"
   peerDependencies:
     "@auth/core": 0.34.2
-    next: ^12.2.5 || ^13 || ^14
+    next: ^12.2.5 || ^13 || ^14 || ^15
     nodemailer: ^6.6.5
     react: ^17.0.2 || ^18
     react-dom: ^17.0.2 || ^18
@@ -43695,7 +43695,7 @@ __metadata:
       optional: true
     nodemailer:
       optional: true
-  checksum: 10/70350fc5204243b9a7961090d5529eb072899e4c3f2ec1d7fe1c306684a7e2e11a6322111cb77c316eaeaf8adb01736c2f69cfc462c674d793f77b59a0368d7c
+  checksum: 10/59ba0c7dc20caf4f0004aa29bae2c15421988a158421435d640b758ef3b27625d556b83b85d3e2a43e1e05bde90e41d84b516ef908423e1e2dfc4a6998c675cc
   languageName: node
   linkType: hard
 
