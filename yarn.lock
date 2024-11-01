@@ -22188,7 +22188,7 @@ __metadata:
     parse-data-uri: "npm:0.2.0"
     passkit-generator: "npm:3.1.11"
     path-to-regexp: "npm:8.2.0"
-    pdfmake: "npm:0.2.13"
+    pdfmake: "npm:0.2.14"
     pg: "npm:8.12.0"
     rate-limiter-flexible: "npm:5.0.3"
     react: "npm:18.3.1"
@@ -45688,15 +45688,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pdfmake@npm:0.2.13":
-  version: 0.2.13
-  resolution: "pdfmake@npm:0.2.13"
+"pdfmake@npm:0.2.14":
+  version: 0.2.14
+  resolution: "pdfmake@npm:0.2.14"
   dependencies:
     "@foliojs-fork/linebreak": "npm:^1.1.1"
     "@foliojs-fork/pdfkit": "npm:^0.14.0"
     iconv-lite: "npm:^0.6.3"
     xmldoc: "npm:^1.1.2"
-  checksum: 10/7d59e962f2be86763a6211deb9f4d938e5a4acdadbaac38054cbb52390a3aff8bbb06d15af133d8a6919e947a2029bc7abf079087c04c98bf25e77a253a1187f
+  checksum: 10/28cff311198fc464e25ff7110bc07ef5e990288fa2b3f2d1442a91d198eb2ea36d595c2a5d5c9a368c43106020c55899cb71d6bd418a5461206fab0a5768ed23
   languageName: node
   linkType: hard
 
