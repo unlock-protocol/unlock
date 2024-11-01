@@ -22544,7 +22544,7 @@ __metadata:
     eslint: "npm:9.11.1"
     ethers: "npm:6.13.2"
     file-saver: "npm:2.0.5"
-    frames.js: "npm:0.19.3"
+    frames.js: "npm:0.19.5"
     from-exponential: "npm:1.1.1"
     graphql: "npm:16.9.0"
     jsdom: "npm:25.0.1"
@@ -34757,9 +34757,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"frames.js@npm:0.19.3":
-  version: 0.19.3
-  resolution: "frames.js@npm:0.19.3"
+"frames.js@npm:0.19.5":
+  version: 0.19.5
+  resolution: "frames.js@npm:0.19.5"
   dependencies:
     "@vercel/og": "npm:^0.6.3"
     cheerio: "npm:^1.0.0-rc.12"
@@ -34773,7 +34773,7 @@ __metadata:
     next: ^14.1.0
     react: ^18.2.0
     react-dom: ^18.2.0
-  checksum: 10/5b48b0b6826459004cf835e00cbfaa1b1fc60316b396c0f28e3eca68e03111d58bbae322c9633623fc8611e7b77b50ed522638f033f6e71a1dd84b7e7061a4de
+  checksum: 10/f9c56c4037821ee08205053a556adecc1f562889edbaef3a579ea0a1159f2902ec31c4be128284d7e5ef72148fa4a876ba7ae36ef372f79c9554cd6ec46a294d
   languageName: node
   linkType: hard
 
