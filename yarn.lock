@@ -20268,12 +20268,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/archiver@npm:6.0.2":
-  version: 6.0.2
-  resolution: "@types/archiver@npm:6.0.2"
+"@types/archiver@npm:6.0.3":
+  version: 6.0.3
+  resolution: "@types/archiver@npm:6.0.3"
   dependencies:
     "@types/readdir-glob": "npm:*"
-  checksum: 10/bbeeacbb4c294adc9722a121e07653523cea7baf20f35d9c07a0910bf46c43d27e364f25030cec142e3c0c185dfdb45dd6d1980f31af196f809f907ad0184ccf
+  checksum: 10/c0ab3ca45b02baf2020b5ddb9f61452b5f9600db3a700ea365a46572f81baaaeb3b53ff5391b443df01af1492f470114006721e1850179da513b87cc5e6f441d
   languageName: node
   linkType: hard
 
@@ -22135,7 +22135,7 @@ __metadata:
     "@resvg/resvg-js": "npm:2.6.2"
     "@sentry/node": "npm:7.118.0"
     "@sentry/tracing": "npm:7.114.0"
-    "@types/archiver": "npm:6.0.2"
+    "@types/archiver": "npm:6.0.3"
     "@types/connect-timeout": "npm:0.0.39"
     "@types/cookie-parser": "npm:1.4.7"
     "@types/cors": "npm:2.8.17"
