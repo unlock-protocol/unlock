@@ -1,40 +1,51 @@
 'use client'
 
-import { Button, Modal } from '@unlock-protocol/ui'
-import { usePathname } from 'next/navigation'
-import { useEffect, useState, useMemo } from 'react'
-import Link from 'next/link'
-import { useAuthenticate } from '~/hooks/useAuthenticate'
-import { usePrivy } from '@privy-io/react-auth'
+import { Modal } from '@unlock-protocol/ui'
+import { useState } from 'react'
+import { LoginModal, useLinkAccount } from '@privy-io/react-auth'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 export const PromptEmailLink = () => {
-  const { authenticated } = usePrivy()
-  const { email, privyReady } = useAuthenticate()
-  const pathname = usePathname()
   const [showModal, setShowModal] = useState(false)
 
-  const exemptPaths = useMemo(() => ['/settings', '/checkout'], [])
+  // Handle email linking
+  const { linkEmail } = useLinkAccount({
+    onSuccess: () => {
+      setShowModal(false)
+      ToastHelper.success('Email added successfully')
+    },
+    onError: (error) => {
+      ToastHelper.error('Error linking email')
+      console.error('Error linking email:', error)
+    },
+  })
 
-  useEffect(() => {
-    if (privyReady && authenticated) {
-      setShowModal(
-        (!email || email === undefined || email === null) &&
-          !exemptPaths.includes(pathname)
-      )
-    }
-  }, [privyReady, authenticated, email, pathname, exemptPaths])
+  const handleLinkEmail = () => {
+    setShowModal(true)
+    linkEmail()
+  }
 
   return (
-    <Modal isOpen={showModal} setIsOpen={() => {}} size="small">
-      <div className="z-10 w-full max-w-sm bg-white rounded-2xl p-6">
-        <h2 className="text-xl font-bold mb-4">Email Required</h2>
-        <p className="mb-6">
-          To continue using the dashboard, please add your email address.
-        </p>
-        <Link href="/settings">
-          <Button className="w-full">Add Email</Button>
-        </Link>
+    <>
+      <div
+        onClick={(e) => {
+          e.preventDefault()
+          e.stopPropagation()
+          handleLinkEmail()
+        }}
+        className="flex flex-col gap-1 cursor-pointer"
+      >
+        <div className="font-medium">Email Address</div>
+        <div className="text-sm text-gray-500">
+          Add your email address to fully experience the Unlock platform.
+        </div>
       </div>
-    </Modal>
+
+      {showModal && (
+        <Modal isOpen={showModal} setIsOpen={setShowModal} size="small">
+          <LoginModal open={true} />
+        </Modal>
+      )}
+    </>
   )
 }

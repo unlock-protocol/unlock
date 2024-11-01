@@ -4,6 +4,7 @@ import { useConnectModal } from '~/hooks/useConnectModal'
 import { UserMenu } from '../../connect/UserMenu'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { usePathname } from 'next/navigation'
+import { NotificationsMenu } from './NotificationsMenu'
 
 // Paths where menu should be hidden
 const HIDDEN_MENU_PATHS = ['/']
@@ -69,6 +70,9 @@ export default function DashboardHeader({
     <HeaderNav
       {...menuProps}
       actions={[
+        {
+          content: <NotificationsMenu />,
+        },
         {
           content: account ? (
             <UserMenu />
