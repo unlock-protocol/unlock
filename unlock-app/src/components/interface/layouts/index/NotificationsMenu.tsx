@@ -30,6 +30,10 @@ export function NotificationsMenu() {
   const { account, email } = useAuthenticate()
   const pathname = usePathname()
 
+  if (!account) {
+    return null
+  }
+
   const notifications: NotificationProps[] = []
 
   /*
@@ -38,7 +42,7 @@ export function NotificationsMenu() {
     2. User doesn't have an email
     3. Not on checkout or demo pages
   */
-  if (account && !email && !['/checkout', '/demo'].includes(pathname)) {
+  if (!email && !['/checkout', '/demo'].includes(pathname)) {
     notifications.push({
       id: '1',
       content: <PromptEmailLink />,
@@ -78,7 +82,7 @@ export function NotificationsMenu() {
           >
             <MenuItems
               static
-              className="absolute right-1/2 translate-x-1/2 mt-2 w-80 h-96 origin-top rounded-md divide-y divide-gray-300 bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-y-auto"
+              className={`absolute right-1/2 translate-x-1/2 mt-2 w-80 ${notifications.length < 3 ? 'h-auto max-h-48' : 'h-96'} origin-top rounded-md divide-y divide-gray-300 bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-y-auto`}
             >
               <div className="p-2">
                 {notifications.length === 0 ? (
