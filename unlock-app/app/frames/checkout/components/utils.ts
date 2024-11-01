@@ -94,6 +94,7 @@ export async function getLockDataFromCheckout(id: string) {
     defaultImage,
     description,
     price,
+    currencySymbol: res.currencySymbol,
     tokenAddress,
     redirectUri,
     redirectText,

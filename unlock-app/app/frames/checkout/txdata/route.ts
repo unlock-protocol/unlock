@@ -2,8 +2,6 @@ import { Abi, encodeFunctionData } from 'viem'
 import { frames } from '../frames'
 import { transaction } from 'frames.js/core'
 import { PublicLockV14 } from '@unlock-protocol/contracts'
-import { Web3Service } from '@unlock-protocol/unlock-js'
-import networks from '@unlock-protocol/networks'
 import { getKeyPrice } from '../components/utils'
 
 const abi = PublicLockV14.abi

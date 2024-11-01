@@ -6,7 +6,10 @@ import { DefaultImage } from './DefaultImage'
 export function getDefaultFrame(ctx: any) {
   const lock = ctx.state.lock!
   const isErc20 = !!ctx.state.lock?.tokenAddress
-  const approved = ctx.searchParams.approved
+  const approved = ctx.searchParams.approved || !isErc20
+  const buttonText = approved
+    ? 'Purchase a key'
+    : `Approve ${lock.currencySymbol} spending`
 
   return {
     image: <DefaultImage lock={lock} />,
@@ -21,10 +24,10 @@ export function getDefaultFrame(ctx: any) {
     buttons: [
       <Button
         action="tx"
-        target={!isErc20 || approved ? '/txdata' : '/approve'}
-        post_url={!isErc20 || approved ? '?success=true' : '?approved=true'}
+        target={approved ? '/txdata' : '/approve'}
+        post_url={approved ? '?success=true' : '?approved=true'}
       >
-        Purchase a key
+        {buttonText}
       </Button>,
     ],
     state: ctx.state,
