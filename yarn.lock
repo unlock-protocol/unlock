@@ -22086,7 +22086,7 @@ __metadata:
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
     "@unlock-protocol/types": "workspace:^"
-    eslint: "npm:9.11.1"
+    eslint: "npm:9.13.0"
     postmate: "npm:1.5.2"
     tsup: "npm:8.3.0"
     typescript: "npm:5.6.2"
@@ -22094,7 +22094,7 @@ __metadata:
     vite-plugin-css-injected-by-js: "npm:3.5.2"
     vite-plugin-node-polyfills: "npm:0.22.0"
     vitest: "npm:2.1.1"
-    vitest-fetch-mock: "npm:0.3.0"
+    vitest-fetch-mock: "npm:0.4.1"
   languageName: unknown
   linkType: soft
 
@@ -55181,6 +55181,15 @@ __metadata:
   peerDependencies:
     vitest: ">=2.0.0"
   checksum: 10/4eadf2ca0836beb203ea3e6f1333d977204bcb7d8b89a23da186971d3716b58885eb7892d6dc5838d920249a73d556494edaf2b7975e6aa54707f7a56d101e3d
+  languageName: node
+  linkType: hard
+
+"vitest-fetch-mock@npm:0.4.1":
+  version: 0.4.1
+  resolution: "vitest-fetch-mock@npm:0.4.1"
+  peerDependencies:
+    vitest: ">=2.0.0"
+  checksum: 10/60d5ec96296705c2d4a2db4aa59b593e13b86bb6cc2203053434af2d4c12f834ab197bb1619ef4fa76092e0ff954c4ce96e7b2f0f9dd3db31c169009d63fc942
   languageName: node
   linkType: hard
 
