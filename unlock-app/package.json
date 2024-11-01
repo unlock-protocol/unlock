@@ -16,7 +16,7 @@
     "@guildxyz/sdk": "2.6.8",
     "@headlessui/react": "2.1.9",
     "@hookform/error-message": "2.0.1",
-    "@hookform/resolvers": "3.9.0",
+    "@hookform/resolvers": "3.9.1",
     "@privy-io/react-auth": "1.89.0",
     "@radix-ui/react-avatar": "1.1.1",
     "@rehooks/local-storage": "2.4.5",

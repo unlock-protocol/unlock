@@ -10645,12 +10645,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hookform/resolvers@npm:3.9.0":
-  version: 3.9.0
-  resolution: "@hookform/resolvers@npm:3.9.0"
+"@hookform/resolvers@npm:3.9.1":
+  version: 3.9.1
+  resolution: "@hookform/resolvers@npm:3.9.1"
   peerDependencies:
     react-hook-form: ^7.0.0
-  checksum: 10/b878e92cebc703106a70987437ab4add0e71a327a0bb9864f82ab480b5d9a38b0d639f6154b138c3c4828af0db00c1b413279c102715146b19edc76b9786f1c3
+  checksum: 10/4e7a24f79ead48db5c869c17b5f47412a7d628939f743bdc1248ea3a291b1a9dd777cd02f84326e91d258283a6351566f13bca5cb30f996e5a9db7ee490b5cc5
   languageName: node
   linkType: hard
 
@@ -22501,7 +22501,7 @@ __metadata:
     "@guildxyz/sdk": "npm:2.6.8"
     "@headlessui/react": "npm:2.1.9"
     "@hookform/error-message": "npm:2.0.1"
-    "@hookform/resolvers": "npm:3.9.0"
+    "@hookform/resolvers": "npm:3.9.1"
     "@privy-io/react-auth": "npm:1.89.0"
     "@radix-ui/react-avatar": "npm:1.1.1"
     "@rehooks/local-storage": "npm:2.4.5"
