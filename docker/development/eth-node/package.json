@@ -18,7 +18,7 @@
     "eslint": "9.9.1",
     "ethers": "6.13.2",
     "fs-extra": "11.2.0",
-    "hardhat": "2.22.13",
+    "hardhat": "2.22.15",
     "hardhat-erc1820": "0.1.0",
     "ts-node": "10.9.2",
     "typescript": "5.5.4"
