@@ -93,10 +93,14 @@ const deployConnext = async (delayModAddress) => {
   const { connext: mastercopy } = ContractAddresses[id]
 
   const {
-    governanceBridge: { connext },
+    dao: {
+      governanceBridge: { connext },
+    },
   } = await getNetwork()
   const {
-    governanceBridge: { domainId: daoDomainId },
+    dao: {
+      governanceBridge: { domainId: daoDomainId },
+    },
   } = await getNetwork(daoChainId)
 
   const setupArgs = {
@@ -133,21 +137,21 @@ const deployConnext = async (delayModAddress) => {
 // if any network is present this array, only these will be executed
 
 async function main() {
-  const { governanceBridge } = await getNetwork(network.config.chainId)
+  const { dao } = await getNetwork(network.config.chainId)
   console.log('\n', network.config.name, '\n')
 
   let delayModAddress
   let connextModAddress
 
-  if (!governanceBridge.modules || !governanceBridge.modules.delayMod) {
+  if (!dao.governanceBridge.modules || !dao.governanceBridge.modules.delayMod) {
     delayModAddress = await deployDelay()
   } else {
-    delayModAddress = governanceBridge.modules.delayMod
+    delayModAddress = dao.governanceBridge.modules.delayMod
   }
-  if (governanceBridge.modules && governanceBridge.modules.connextMod) {
-    connextModAddress = governanceBridge.modules.connextMod
+  if (dao.governanceBridge.modules && dao.governanceBridge.modules.connextMod) {
+    connextModAddress = dao.governanceBridge.modules.connextMod
     console.log(
-      `Connext already deployed at ${governanceBridge.modules.connextMod}`
+      `Connext already deployed at ${dao.governanceBridge.modules.connextMod}`
     )
   }
   if (delayModAddress && !connextModAddress) {
@@ -156,7 +160,7 @@ async function main() {
   }
 
   console.log(`
-Please update the \`governanceBridge\` section of the networks package with the following:
+Please update the \`dao.governanceBridge\` section of the networks package with the following:
 
   modules: {
     delayMod: ${delayModAddress},

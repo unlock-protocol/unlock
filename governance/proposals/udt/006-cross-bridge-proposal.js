@@ -34,26 +34,26 @@ module.exports = async () => {
   )
   const {
     governanceBridge: { connext: bridgeAddress },
-  } = networks[chainId]
+  } = networks[chainId].dao
 
   // dest info
   const explainers = []
   const parsedCalls = await Promise.all(
     targetChains.map(async (network) => {
+      // make sure we have bridge infor in networks package
+      if (!network.dao) return {}
+
       const {
-        governanceBridge,
+        dao,
         unlockAddress,
         id: destChainId,
         name: destChainName,
       } = network
 
-      // make sure we have bridge infor in networks package
-      if (!governanceBridge) return {}
-
       const {
         domainId: destDomainId,
         modules: { connextMod: destAddress },
-      } = governanceBridge
+      } = dao.governanceBridge
 
       if (!destDomainId || !destAddress) {
         throw Error('Missing bridge information')

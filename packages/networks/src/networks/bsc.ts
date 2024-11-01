@@ -5,6 +5,18 @@ export const bsc: NetworkConfig = {
     url: (address: string) => `https://blockscan.com/address/${address}`,
   },
   chain: 'bsc',
+  dao: {
+    chainId: 8453,
+    governanceBridge: {
+      connext: '0xCd401c10afa37d641d2F594852DA94C700e4F2CE',
+      domainId: 6450786,
+      modules: {
+        connextMod: '0x36b34e10295cCE69B652eEB5a8046041074515Da',
+        delayMod: '0xcf07c951C44731f82E548286C7ebeC576149a49e',
+      },
+    },
+    governor: '0x65bA0624403Fc5Ca2b20479e9F626eD4D78E0aD9',
+  },
   description:
     'The best-performing EVM compatible layer 1. Fully compatible tooling for EVM with up to 35 times of capacity.',
   explorer: {
@@ -18,14 +30,6 @@ export const bsc: NetworkConfig = {
     },
   },
   featured: false,
-  governanceBridge: {
-    connext: '0xCd401c10afa37d641d2F594852DA94C700e4F2CE',
-    domainId: 6450786,
-    modules: {
-      connextMod: '0x36b34e10295cCE69B652eEB5a8046041074515Da',
-      delayMod: '0xcf07c951C44731f82E548286C7ebeC576149a49e',
-    },
-  },
   hooks: {
     onKeyPurchaseHook: [
       {

@@ -16,8 +16,10 @@ async function main() {
   const { chainId } = await ethers.provider.getNetwork()
   console.log(`Sending on ${chainId}`)
   const {
-    governanceBridge: {
-      modules: { delayMod: delayModAddress, connextMod: connextModAddress },
+    dao: {
+      governanceBridge: {
+        modules: { delayMod: delayModAddress, connextMod: connextModAddress },
+      },
     },
     multisig,
   } = networks[chainId]

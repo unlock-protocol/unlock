@@ -25,7 +25,9 @@ async function main({
     )
   }
   const {
-    governanceBridge: { connext: bridgeAddress },
+    dao: {
+      governanceBridge: { connext: bridgeAddress },
+    },
   } = await getNetwork()
 
   console.log(`Using multisig: ${multisig}`)
@@ -83,7 +85,6 @@ ${transferIds.map((transferId) => `- ${transferId}`).join('\n')}`)
 main()
   .then(() => process.exit(0))
   .catch((error) => {
-    // eslint-disable-next-line no-console
     console.error(error)
     process.exit(1)
   })

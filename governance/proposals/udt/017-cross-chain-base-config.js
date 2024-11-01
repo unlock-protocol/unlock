@@ -50,8 +50,10 @@ module.exports = async () => {
   const bridgeCalls = await Promise.all(
     targetChains.map(async (network) => {
       const {
-        governanceBridge: {
-          modules: { connextMod },
+        dao: {
+          governanceBridge: {
+            modules: { connextMod },
+          },
         },
         id: destChainId,
       } = network
@@ -64,7 +66,7 @@ module.exports = async () => {
         {
           contractAddress: connextMod,
           calldata: connextModInterface.encodeFunctionData('setOrigin', [
-            base.governanceBridge.domainId,
+            base.dao.governanceBridge.domainId,
           ]),
         },
         {

@@ -88,6 +88,11 @@ export interface Faucet {
 export interface NetworkConfig {
   id: number
   featured: boolean
+  dao?: {
+    governor: string
+    chainId: number
+    governanceBridge: NetworkBridgeConfig
+  }
   name: string
   chain: string
   provider: string
@@ -144,7 +149,6 @@ export interface NetworkConfig {
   blockScan?: {
     url?: (address: string) => string
   }
-  governanceBridge?: NetworkBridgeConfig
   isTestNetwork?: boolean
   erc20?: {
     symbol: string
