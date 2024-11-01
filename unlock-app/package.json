@@ -13,7 +13,7 @@
     "@crossmint/client-sdk-react-ui": "1.2.2",
     "@decent.xyz/box-common": "3.3.6",
     "@enzoferey/ethers-error-parser": "0.2.3",
-    "@guildxyz/sdk": "2.6.8",
+    "@guildxyz/sdk": "2.6.9",
     "@headlessui/react": "2.1.9",
     "@hookform/error-message": "2.0.1",
     "@hookform/resolvers": "3.9.1",
