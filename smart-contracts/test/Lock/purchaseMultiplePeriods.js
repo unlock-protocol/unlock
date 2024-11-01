@@ -85,6 +85,9 @@ describe('Lock / purchase multiple periods at once', () => {
         })
       })
 
+      // TODO: test fees: protocol fee, referrer fee, record key purchase
+      // TODO: test events are fired properly
+
       describe('purchase with wrong amounts', () => {
         it('reverts when wrong amounts are specified', async () => {
           await reverts(
