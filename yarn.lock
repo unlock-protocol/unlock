@@ -13583,12 +13583,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuintun/qrcode@npm:4.1.5":
-  version: 4.1.5
-  resolution: "@nuintun/qrcode@npm:4.1.5"
+"@nuintun/qrcode@npm:4.1.6":
+  version: 4.1.6
+  resolution: "@nuintun/qrcode@npm:4.1.6"
   dependencies:
-    tslib: "npm:^2.6.3"
-  checksum: 10/b9e777f29a1dd3c7ba12295a125c110217476b37f7e22d8f3b1628053b750374dcd0f838668ffb7758fd2358c5b3a3ab4f77906ec3f930b6aed2c502d87ce01f
+    tslib: "npm:^2.8.1"
+  checksum: 10/4f3a9b9cb98bba47a19d9684086e515e48047c231ed1869858da8dae2079d2982ef75836a1f4d4bd405bbc2c5b11bf6912b1955b4997d2edba3c0c782e564ce7
   languageName: node
   linkType: hard
 
@@ -22221,7 +22221,7 @@ __metadata:
     "@coinbase/waas-server-auth": "npm:3.1.2"
     "@logtail/node": "npm:0.4.21"
     "@logtail/winston": "npm:0.4.21"
-    "@nuintun/qrcode": "npm:4.1.5"
+    "@nuintun/qrcode": "npm:4.1.6"
     "@openzeppelin/defender-sdk": "npm:1.14.4"
     "@openzeppelin/merkle-tree": "npm:1.0.7"
     "@privy-io/server-auth": "npm:1.14.2"
@@ -54031,14 +54031,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:2.8.1, tslib@npm:^2.7.0":
+"tslib@npm:2.8.1, tslib@npm:^2.7.0, tslib@npm:^2.8.1":
   version: 2.8.1
   resolution: "tslib@npm:2.8.1"
   checksum: 10/3e2e043d5c2316461cb54e5c7fe02c30ef6dccb3384717ca22ae5c6b5bc95232a6241df19c622d9c73b809bea33b187f6dbc73030963e29950c2141bc32a79f7
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.0, tslib@npm:^2.0.1, tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.3.0, tslib@npm:^2.3.1, tslib@npm:^2.4.0, tslib@npm:^2.5.0, tslib@npm:^2.6.0, tslib@npm:^2.6.1, tslib@npm:^2.6.2, tslib@npm:^2.6.3, tslib@npm:~2.6.0":
+"tslib@npm:^2.0.0, tslib@npm:^2.0.1, tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.3.0, tslib@npm:^2.3.1, tslib@npm:^2.4.0, tslib@npm:^2.5.0, tslib@npm:^2.6.0, tslib@npm:^2.6.1, tslib@npm:^2.6.2, tslib@npm:~2.6.0":
   version: 2.6.3
   resolution: "tslib@npm:2.6.3"
   checksum: 10/52109bb681f8133a2e58142f11a50e05476de4f075ca906d13b596ae5f7f12d30c482feb0bff167ae01cfc84c5803e575a307d47938999246f5a49d174fc558c
