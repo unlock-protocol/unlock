@@ -5,6 +5,7 @@ const {
   purchaseKeys,
   ADDRESS_ZERO,
   compareBigNumbers,
+  purchaseKey,
 } = require('../helpers')
 const { ZeroAddress } = require('ethers')
 
@@ -36,16 +37,6 @@ describe('Lock / owners', () => {
   it('should have the right number of owners', async () => {
     const numberOfOwners = await lock.numberOfOwners()
     compareBigNumbers(numberOfOwners, keyOwners.length)
-  })
-
-  describe('ignore the null address', () => {
-    it('doesnt increase count when a key is transferred to null address', async () => {
-      const numberOfOwners = await lock.numberOfOwners()
-      await lock
-        .connect(keyOwners[5])
-        .transferFrom(await keyOwners[5].getAddress(), ZeroAddress, tokenIds[5])
-      assert.equal(numberOfOwners, await lock.numberOfOwners())
-    })
   })
 
   describe('after a transfer to a new address', () => {
@@ -159,6 +150,47 @@ describe('Lock / owners', () => {
       // number of owners should be left unchanged
       const _numberOfOwners = await lock.numberOfOwners()
       compareBigNumbers(_numberOfOwners, numberOfOwners)
+    })
+  })
+
+  describe('ignore the null address', () => {
+    it('does not increase owners count when user still own a key', async () => {
+      const anotherSigner = (await ethers.getSigners())[8]
+      const numberOfOwnersBefore = await lock.numberOfOwners()
+
+      // purchase 1 key
+      await purchaseKey(lock, await anotherSigner.getAddress())
+      const numberOfOwners = await lock.numberOfOwners()
+      assert.equal(numberOfOwners, numberOfOwnersBefore + 1n)
+
+      // purchase a second key
+      const { tokenId: newTokenId } = await purchaseKey(
+        lock,
+        await anotherSigner.getAddress()
+      )
+      // owners count still unchanged
+      assert.equal(numberOfOwners, await lock.numberOfOwners())
+      assert.equal(await lock.balanceOf(await anotherSigner.getAddress()), 2)
+
+      // transfer the new key to null address
+      await lock
+        .connect(anotherSigner)
+        .transferFrom(await anotherSigner.getAddress(), ZeroAddress, newTokenId)
+
+      // owners count still unchanged
+      assert.equal(numberOfOwners, await lock.numberOfOwners())
+      assert.equal(await lock.balanceOf(await anotherSigner.getAddress()), 1)
+    })
+
+    it('does decrease the owners count when user has no key left', async () => {
+      const numberOfOwners = await lock.numberOfOwners()
+      assert.equal(await lock.balanceOf(await keyOwners[5].getAddress()), 1)
+      await lock
+        .connect(keyOwners[5])
+        .transferFrom(await keyOwners[5].getAddress(), ZeroAddress, tokenIds[5])
+      // expected count is actually -1 as transferring to zero address is equivalent to removing one owner
+      assert.equal(numberOfOwners - 1n, await lock.numberOfOwners())
+      assert.equal(await lock.balanceOf(await keyOwners[5].getAddress()), 0)
     })
   })
 })

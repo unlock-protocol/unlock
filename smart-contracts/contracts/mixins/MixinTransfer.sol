@@ -215,8 +215,8 @@ contract MixinTransfer is
     // update expiration
     key.expirationTimestamp = keyExpirationTimestampFor(_tokenId);
 
-    // increase total number of unique owners
-    if (totalKeys(_recipient) == 0) {
+    // increase total number of unique owners (zero address is ignored)
+    if (totalKeys(_recipient) == 0 && _recipient != address(0)) {
       numberOfOwners++;
     }
 
@@ -225,13 +225,6 @@ contract MixinTransfer is
 
     // record new owner
     _createOwnershipRecord(_tokenId, _recipient);
-
-    // ignore null address from owners count
-    if (_recipient == address(0)) {
-      unchecked {
-        numberOfOwners--;
-      }
-    }
 
     // clear any previous approvals
     _clearApproval(_tokenId);
