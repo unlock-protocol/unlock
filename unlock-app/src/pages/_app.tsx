@@ -1,4 +1,3 @@
-import { CookiesProvider } from 'react-cookie'
 import { AirstackProvider } from '@airstack/airstack-react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import React, { useEffect } from 'react'
@@ -41,27 +40,25 @@ const UnlockApp = ({
   return (
     <div className={inter.className}>
       <QueryClientProvider client={queryClient}>
-        <CookiesProvider defaultSetOptions={{ path: '/' }}>
-          <Privy>
-            <SessionProvider>
-              <ConnectModalProvider>
-                <GlobalWrapper>
-                  <ErrorBoundary
-                    fallback={(props) => <ErrorFallback {...props} />}
+        <Privy>
+          <SessionProvider>
+            <ConnectModalProvider>
+              <GlobalWrapper>
+                <ErrorBoundary
+                  fallback={(props) => <ErrorFallback {...props} />}
+                >
+                  <ShouldOpenConnectModal />
+                  <AirstackProvider
+                    apiKey={'162b7c4dda5c44afdb0857b6b04454f99'}
                   >
-                    <ShouldOpenConnectModal />
-                    <AirstackProvider
-                      apiKey={'162b7c4dda5c44afdb0857b6b04454f99'}
-                    >
-                      <Component pageProps={pageProps} />
-                    </AirstackProvider>
-                  </ErrorBoundary>
-                  <Toaster />
-                </GlobalWrapper>
-              </ConnectModalProvider>
-            </SessionProvider>
-          </Privy>
-        </CookiesProvider>
+                    <Component pageProps={pageProps} />
+                  </AirstackProvider>
+                </ErrorBoundary>
+                <Toaster />
+              </GlobalWrapper>
+            </ConnectModalProvider>
+          </SessionProvider>
+        </Privy>
       </QueryClientProvider>
       <SpeedInsights />
     </div>
