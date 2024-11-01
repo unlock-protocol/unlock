@@ -42,7 +42,7 @@ export function useAuthenticate() {
     await Promise.all([queryClient.refetchQueries(), refetchSession()])
   }
 
-  // Detects when login was succesul via an event
+  // Detects when login was successful via an event
   useEffect(() => {
     if (account) {
       onSignedIn(account)
