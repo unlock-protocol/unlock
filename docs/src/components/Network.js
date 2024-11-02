@@ -1,5 +1,14 @@
+import { usePrivy, useWallets } from '@privy-io/react-auth'
 import { useQuery } from '@tanstack/react-query'
-import { JsonRpcProvider, Contract, formatUnits, ZeroAddress } from 'ethers'
+import {
+  BrowserProvider,
+  JsonRpcProvider,
+  Contract,
+  formatUnits,
+  ZeroAddress,
+  ethers,
+} from 'ethers'
+import { useEffect, useState } from 'react'
 
 const ERC20_ABI = [
   'function balanceOf(address) view returns (uint256)',
@@ -84,18 +93,70 @@ const getBalances = async (provider, nativeCurrency, tokens, ownerAddress) => {
   return balances.filter(({ balance }) => balance > 0)
 }
 
-const BurnableToken = ({ token, balance }) => {
-  const onClick = () => {
-    console.log('burn', token, balance)
-    console.log('connect (with privy')
-    console.log('switch network')
-    console.log('send tx!')
+const BurnableToken = ({ network, token, balance }) => {
+  const [burning, setBurning] = useState(false)
+  const { ready, authenticated, user, login, logout } = usePrivy()
+  const { wallets } = useWallets()
+
+  const burn = async () => {
+    if (!authenticated) {
+      login()
+      setBurning(true)
+    } else {
+      // switch network
+      await wallets[0].switchChain(network.id)
+
+      const provider = await wallets[0].getEthersProvider()
+      // Send tx
+      const unlock = new Contract(
+        network.unlockAddress,
+        [
+          {
+            inputs: [
+              { internalType: 'address', name: 'token', type: 'address' },
+              { internalType: 'uint256', name: 'amount', type: 'uint256' },
+              { internalType: 'uint24', name: 'poolFee', type: 'uint24' },
+            ],
+            name: 'swapAndBurn',
+            outputs: [],
+            stateMutability: 'nonpayable',
+            type: 'function',
+          },
+          {
+            inputs: [],
+            name: 'swapBurnerAddress',
+            outputs: [{ internalType: 'address', name: '', type: 'address' }],
+            stateMutability: 'view',
+            type: 'function',
+          },
+        ],
+        provider
+      )
+      console.log(unlock)
+      console.log(await unlock.swapBurnerAddress())
+      console.log('GO!')
+      const tx = await unlock.swapAndBurn.populateTransaction(
+        token.address || ethers.ZeroAddress,
+        1, // burn 1 token
+        3000,
+        { value: 0 }
+      )
+      console.log(tx)
+      setBurning(false)
+    }
   }
+
+  useEffect(() => {
+    if (burning && authenticated) {
+      // resume burning!
+      burn()
+    }
+  }, [burning, authenticated])
 
   return (
     <li>
       {Number(formatUnits(balance, token.decimals)).toFixed(2)} {token.symbol}{' '}
-      <button onClick={onClick}>Burn</button>
+      <button onClick={burn}>Burn</button>
     </li>
   )
 }
@@ -124,8 +185,12 @@ const BurnableTokens = ({ network }) => {
       <a href="/governance/unlock-dao-tokens#swap-and-burn">Burnable tokens</a>:{' '}
       <ul>
         {balances.map(({ token, balance }) => {
+          if (token.symbol === 'UDT' || token.symbol === 'UP') {
+            return
+          }
           return (
             <BurnableToken
+              network={network}
               key={token.address}
               token={token}
               balance={balance}
