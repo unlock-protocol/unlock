@@ -3,7 +3,7 @@ import { PurchaseController } from '../controllers/purchaseController'
 import { SignedRequest } from '../types'
 
 const purchaseController = new PurchaseController()
-const router = express.Router({ mergeParams: true })
+const router: express.Router = express.Router({ mergeParams: true })
 
 router.get('/', (req, res) =>
   purchaseController.info(req as SignedRequest, res)

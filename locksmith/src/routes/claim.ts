@@ -3,7 +3,7 @@ import { PurchaseController } from '../controllers/purchaseController'
 import { createGeoRestriction } from '../utils/middlewares/geoRestriction'
 
 const purchaseController = new PurchaseController()
-const router = express.Router({ mergeParams: true })
+const router: express.Router = express.Router({ mergeParams: true })
 
 // Disallow claim due to spam and bot activity
 const geoRestriction = createGeoRestriction([])

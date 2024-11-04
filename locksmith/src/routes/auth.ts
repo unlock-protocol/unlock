@@ -1,7 +1,7 @@
 import express from 'express'
-
-const router = express.Router({ mergeParams: true })
 import AuthController from '../controllers/authController'
+
+const router: express.Router = express.Router({ mergeParams: true })
 
 router.post('/', AuthController.authorize)
 

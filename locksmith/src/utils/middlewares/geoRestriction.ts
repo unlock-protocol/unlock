@@ -2,7 +2,7 @@ import { RequestHandler } from 'express'
 import logger from '../../logger'
 import geoip from 'geoip-country'
 
-export const createGeoRestriction = (restricted: string[]) => {
+export const createGeoRestriction = (restricted: string[]): RequestHandler => {
   const geoRestriction: RequestHandler = async (request, response, next) => {
     try {
       const ip = request.headers['x-forwarded-for'] || request.ip

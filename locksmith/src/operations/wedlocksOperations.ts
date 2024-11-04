@@ -194,9 +194,7 @@ const getCustomContent = async (
     // parse markdown to HTML
     if (res) {
       const parsedContent = await unified()
-        // @ts-expect-error No overload matches this call.
         .use(remarkParse)
-        // @ts-expect-error No overload matches this call.
         .use(remarkHtml)
         .process(res?.content || '')
 

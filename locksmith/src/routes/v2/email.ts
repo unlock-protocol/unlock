@@ -9,7 +9,7 @@ import { eventOrganizerMiddleware } from '../../utils/middlewares/eventOrganizer
 import { authenticatedMiddleware } from '../../utils/middlewares/auth'
 import { lockManagerMiddleware } from '../../utils/middlewares/lockManager'
 
-const router = express.Router({ mergeParams: true })
+const router: express.Router = express.Router({ mergeParams: true })
 
 router.post(
   '/:network/locks/:lockAddress/custom/send',

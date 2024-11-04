@@ -14,7 +14,7 @@ import {
   updateEventCollection,
 } from '../../controllers/v2/eventCollectionController'
 
-const router = express.Router({ mergeParams: true })
+const router: express.Router = express.Router({ mergeParams: true })
 
 // Create a new event collection
 router.post('/', authenticatedMiddleware, createEventCollection)

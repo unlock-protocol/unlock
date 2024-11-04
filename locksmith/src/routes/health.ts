@@ -1,6 +1,6 @@
 import express from 'express'
 
-const router = express.Router({ mergeParams: true })
+const router: express.Router = express.Router({ mergeParams: true })
 
 router.get('/', (_, res) => {
   res.status(200).send('OK')

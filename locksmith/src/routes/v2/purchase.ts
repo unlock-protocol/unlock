@@ -10,7 +10,7 @@ import {
   userOnlyMiddleware,
 } from '../../utils/middlewares/auth'
 
-const router = express.Router({ mergeParams: true })
+const router: express.Router = express.Router({ mergeParams: true })
 
 router.use('/', authenticatedMiddleware, userOnlyMiddleware)
 router.post('/setup', createSetupIntent)

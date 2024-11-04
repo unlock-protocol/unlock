@@ -10,7 +10,9 @@ export interface Options {
   checkInterval: number
 }
 
-export const createCacheMiddleware = (option: Partial<Options> = {}) => {
+export const createCacheMiddleware = (
+  option: Partial<Options> = {}
+): RequestHandler => {
   const { checkInterval, ttl, maxItems } = Object.assign(option, {
     ttl: 300,
     maxItems: 5000,

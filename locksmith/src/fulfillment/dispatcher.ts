@@ -79,7 +79,7 @@ export const getPurchaser = async function ({
     if (!address || address === (await wallet.getAddress())) {
       const relayerStatus = await defender.relaySigner.getRelayerStatus()
       if (!relayerStatus.paused) {
-        return wallet as ethers.Signer
+        return wallet as unknown as ethers.Signer
       } else {
         logger.warn(
           `The OpenZeppelin Relayer purchaser at ${address} is paused! We will use the local purchaser instead.`

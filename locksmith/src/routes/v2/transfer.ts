@@ -6,7 +6,7 @@ import {
 import { createRateLimitMiddleware } from '../../utils/middlewares/rateLimit'
 import { captchaMiddleware } from '../../utils/middlewares/recaptchaMiddleware'
 import { authenticatedMiddleware } from '../../utils/middlewares/auth'
-const router = express.Router({ mergeParams: true })
+const router: express.Router = express.Router({ mergeParams: true })
 
 const rateLimiter = createRateLimitMiddleware({
   prefix: 'create_transfer_code',

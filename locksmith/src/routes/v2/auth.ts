@@ -12,7 +12,7 @@ import {
   userOnlyMiddleware,
 } from '../../utils/middlewares/auth'
 
-const router = express.Router({ mergeParams: true })
+const router: express.Router = express.Router({ mergeParams: true })
 
 router.get('/user', authenticatedMiddleware, user)
 router.get('/nonce', nonce)

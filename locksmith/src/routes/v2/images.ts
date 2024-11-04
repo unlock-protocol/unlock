@@ -9,7 +9,7 @@ import crypto from 'node:crypto'
 import config, { isProduction, isStaging } from '../../config/config'
 import { createRateLimitMiddleware } from '../../utils/middlewares/rateLimit'
 
-const router = express.Router()
+const router: express.Router = express.Router()
 
 const rateLimiter = createRateLimitMiddleware({
   prefix: 'upload_images',

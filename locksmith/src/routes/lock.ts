@@ -8,7 +8,7 @@ import { lockManagerMiddleware } from '../utils/middlewares/lockManager'
 import lockController from '../controllers/lockController'
 import { createCacheMiddleware } from '../utils/middlewares/cacheMiddleware'
 
-const router = express.Router({ mergeParams: true })
+const router: express.Router = express.Router({ mergeParams: true })
 
 const connectStripeConfiguration = {
   name: 'Connect Stripe',

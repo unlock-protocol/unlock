@@ -14,7 +14,7 @@ import {
   deleteEventVerifier,
   getEventVerifiers,
 } from '../../controllers/v2/verifierController'
-const router = express.Router({ mergeParams: true })
+const router: express.Router = express.Router({ mergeParams: true })
 
 router.get('/:slug/verifiers', getEventVerifiers)
 router.put(

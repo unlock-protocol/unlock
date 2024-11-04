@@ -11,7 +11,7 @@ import {
 } from '../../controllers/v2/receipts'
 import { lockManagerMiddleware } from '../../utils/middlewares/lockManager'
 
-const router = express.Router({ mergeParams: true })
+const router: express.Router = express.Router({ mergeParams: true })
 
 const receiptController = new ReceiptController()
 
