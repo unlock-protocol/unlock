@@ -3,15 +3,10 @@ const {
   DelayMod: delayModAbi,
   ConnextMod: connextModAbi,
 } = require('../../helpers/bridge')
-const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const { UPGovernor } = require('@unlock-protocol/contracts')
 
 const { getProvider } = require('../../helpers/multisig')
 const { Contract } = require('ethers')
-
-// TODO: parse this from package
-const DAO_CHAIN_ID = 8453
-const DAO_GOVERNOR_ADDRESS = '0x65bA0624403Fc5Ca2b20479e9F626eD4D78E0aD9'
 
 const isExpired = async (delayMod, nonce) => {
   const createdAt = await delayMod.getFunction('getTxCreatedAt')(nonce)
@@ -22,25 +17,14 @@ const isExpired = async (delayMod, nonce) => {
 }
 
 async function main() {
-  // get timelock address
-  const {
-    governanceBridge: { domainId: daoDomainId },
-  } = await getNetwork(DAO_CHAIN_ID)
-  const daoChainProvider = await getProvider(DAO_CHAIN_ID)
-  const gov = new Contract(
-    DAO_GOVERNOR_ADDRESS,
-    UPGovernor.abi,
-    daoChainProvider
-  )
-  const daoTimelockAddress = await gov.timelock()
-
   for (let i in targetChains) {
     const {
       id,
       name,
       multisig,
-      governanceBridge: {
       dao: {
+        chainId: daoChainId,
+        governor,
         governanceBridge: {
           modules: { delayMod: delayModAddress, connextMod: connextModAddress },
         },
@@ -48,6 +32,16 @@ async function main() {
     } = targetChains[i]
 
     const log = (msg) => console.log(`[${name} (${id})] ${msg}`)
+
+    // get domain ID for base
+    const { domainId: daoDomainId } = targetChains.find(
+      ({ id }) => id === daoChainId
+    ).dao.governanceBridge
+
+    // get timelock address
+    const daoChainProvider = await getProvider(daoChainId)
+    const gov = new Contract(governor, UPGovernor.abi, daoChainProvider)
+    const daoTimelockAddress = await gov.timelock()
 
     // parse Delay contract
     const provider = await getProvider(id)
