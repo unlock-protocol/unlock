@@ -422,7 +422,7 @@ export const ManageLockContent = () => {
         {withoutParams ? (
           <>
             <h2 className="mb-2 text-lg font-bold text-brand-ui-primary">
-              Select a lock to start manage it s
+              Select a lock to start managing it
             </h2>
             <div className="w-1/2">
               <Picker

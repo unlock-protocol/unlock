@@ -1,5 +1,11 @@
-import React, { useCallback, useState } from 'react'
-import { Button, Input, Select, ToggleSwitch } from '@unlock-protocol/ui'
+import { useCallback, useState } from 'react'
+import {
+  Button,
+  Combobox,
+  Input,
+  Select,
+  ToggleSwitch,
+} from '@unlock-protocol/ui'
 import { Token } from '@unlock-protocol/types'
 import { useForm, useWatch } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -171,7 +177,7 @@ export const CreateLockForm = ({
             onSubmit={handleSubmit(onHandleSubmit)}
           >
             {!hideFields.includes('network') && (
-              <Select
+              <Combobox
                 label="Network:"
                 tooltip={
                   <p className="py-2">
