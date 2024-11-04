@@ -38,8 +38,10 @@ export function useAuthenticate() {
 
   // When a user is logged in, this method is called to set the account and refetch the session
   const onSignedIn = async (walletAddress: string) => {
-    setStorage('account', walletAddress)
-    await Promise.all([queryClient.refetchQueries(), refetchSession()])
+    const changed = setStorage('account', walletAddress)
+    if (changed) {
+      await Promise.all([queryClient.refetchQueries(), refetchSession()])
+    }
   }
 
   // Detects when login was successful via an event

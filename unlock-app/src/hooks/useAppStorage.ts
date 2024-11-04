@@ -10,6 +10,8 @@ export function useAppStorage() {
   }, [])
 
   const setStorage = useCallback((key: string, value: any) => {
+    const currentValue = getStorage(key)
+    if (currentValue === value) return false
     try {
       localStorage.setItem(
         getKey(key),
@@ -18,6 +20,7 @@ export function useAppStorage() {
     } catch (error) {
       console.error(error)
     }
+    return value
   }, [])
 
   const removeKey = useCallback((key: string, withAppName = true) => {
