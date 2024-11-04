@@ -390,6 +390,29 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     return lockAddress;
   }
 
+  /**
+   * Disable a lock
+   * @dev Upgrade to an empty implementation
+   * @param lockAddress the address of the lock to be upgraded
+   * @custom:oz-upgrades-unsafe-allow-reachable delegatecall
+   */
+  function burnLock(address lockAddress) public {
+    if (proxyAdminAddress == address(0)) {
+      revert Unlock__MISSING_PROXY_ADMIN();
+    }
+
+    // check perms
+    if (_isLockManager(lockAddress, msg.sender) != true) {
+      revert Unlock__MANAGER_ONLY();
+    }
+
+    // upgrade to empty implementation
+    ITransparentUpgradeableProxy proxy = ITransparentUpgradeableProxy(
+      lockAddress
+    );
+    proxyAdmin.upgrade(proxy, address(0));
+  }
+
   function _isLockManager(
     address lockAddress,
     address _sender
