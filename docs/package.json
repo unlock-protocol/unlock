@@ -4,9 +4,9 @@
   "private": true,
   "dependencies": {
     "@babel/helper-get-function-arity": "7.16.7",
-    "@docusaurus/core": "3.4.0",
-    "@docusaurus/plugin-client-redirects": "3.4.0",
-    "@docusaurus/plugin-content-docs": "3.4.0",
+    "@docusaurus/core": "3.6.0",
+    "@docusaurus/plugin-client-redirects": "3.6.0",
+    "@docusaurus/plugin-content-docs": "3.6.0",
     "@emotion/react": "11.13.3",
     "@emotion/styled": "11.13.0",
     "@flockler/react-flockler-embed": "1.0.4",
