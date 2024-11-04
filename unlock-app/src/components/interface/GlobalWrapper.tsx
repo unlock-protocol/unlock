@@ -3,7 +3,6 @@ import { WedlockServiceContext } from '../../contexts/WedlocksContext'
 import WedlockService from '../../services/wedlockService'
 import { ConfigContext } from '../../utils/withConfig'
 import ProviderContext from '../../contexts/ProviderContext'
-import AuthenticationContext from '../../contexts/AuthenticationContext'
 import Authenticate from './Authenticate'
 import { config } from '~/config/app'
 import { UnlockUIProvider } from '@unlock-protocol/ui'
@@ -17,7 +16,6 @@ interface GlobalWrapperProps {
 
 export const GlobalWrapper = ({ children }: GlobalWrapperProps) => {
   const [provider, setProvider] = useState<any>(null)
-  const [account, setAccount] = useState<string | undefined>(undefined)
 
   useEffect(() => {
     console.info(UNLOCK_CONSOLE_MESSAGE)
@@ -27,11 +25,9 @@ export const GlobalWrapper = ({ children }: GlobalWrapperProps) => {
     <UnlockUIProvider Link={NextLink}>
       <ConfigContext.Provider value={config}>
         <WedlockServiceContext.Provider value={wedlockService}>
-          <AuthenticationContext.Provider value={{ account, setAccount }}>
-            <ProviderContext.Provider value={{ provider, setProvider }}>
-              <Authenticate>{children}</Authenticate>
-            </ProviderContext.Provider>
-          </AuthenticationContext.Provider>
+          <ProviderContext.Provider value={{ provider, setProvider }}>
+            <Authenticate>{children}</Authenticate>
+          </ProviderContext.Provider>
         </WedlockServiceContext.Provider>
       </ConfigContext.Provider>
     </UnlockUIProvider>
