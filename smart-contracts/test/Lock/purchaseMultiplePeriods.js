@@ -16,22 +16,23 @@ const { ethers } = require('hardhat')
 const scenarios = [false, true]
 
 let testToken
-const keyPrice = ethers.parseUnits('0.01', 'ether')
-const allowance = '100000000000000000000'
-
+const allowance = '1000000000000000000000'
+const BASIS_POINT_DENOMINATOR = 10000n
 describe('Lock / purchase multiple periods at once', () => {
   scenarios.forEach((isErc20) => {
     let unlock
     let lock
     let governanceToken
     let tokenAddress
-    let holder, deployer, keyOwner
+    let holder, deployer, keyOwner, referrer, otherReferrer
     let purchaseArgs
+    let keyPrice
     const nbPeriods = 3n
 
     describe(`Test ${isErc20 ? 'ERC20' : 'ETH'}`, () => {
-      beforeEach(async () => {
-        ;[holder, deployer, keyOwner] = await ethers.getSigners()
+      before(async () => {
+        ;[holder, deployer, keyOwner, referrer, otherReferrer] =
+          await ethers.getSigners()
         ;({ unlock } = await deployContracts())
         testToken = await deployERC20(deployer)
 
@@ -53,6 +54,10 @@ describe('Lock / purchase multiple periods at once', () => {
 
         tokenAddress = isErc20 ? await testToken.getAddress() : ADDRESS_ZERO
         lock = await deployLock({ tokenAddress, unlock })
+        keyPrice = await lock.keyPrice()
+
+        // allow for more keys to be minted
+        await lock.updateLockConfig(await lock.expirationDuration(), 1000, 50)
 
         // Approve spending
         await testToken
@@ -125,12 +130,13 @@ describe('Lock / purchase multiple periods at once', () => {
         it('is paid correctly', async () => {
           // set 1% protocol fee
           await unlock.setProtocolFee(100)
-          const expectedFee = ((keyPrice * 100n) / 10000n) * (nbPeriods + 1n)
+          const expectedFee =
+            (keyPrice * (nbPeriods + 1n) * 100n) / BASIS_POINT_DENOMINATOR
           const unlockBalanceBefore = await getBalance(
             await unlock.getAddress(),
             tokenAddress
           )
-          await lock.purchase(purchaseArgs, {
+          await lock.connect(holder).purchase(purchaseArgs, {
             value: isErc20 ? 0 : keyPrice * (nbPeriods + 1n),
           })
           assert.equal(
@@ -143,9 +149,86 @@ describe('Lock / purchase multiple periods at once', () => {
           await unlock.setProtocolFee(0)
         })
       })
-      describe('referrer fee', () => {})
 
-      // TODO: test events are fired properly
+      describe('referrer fee ', () => {
+        it('is paid correctly', async () => {
+          const referrerFee = 500n
+          const referrerAddress = await referrer.getAddress()
+          await lock.setReferrerFee(referrerAddress, referrerFee)
+          const expectedFee =
+            (keyPrice * (nbPeriods + 1n) * referrerFee) /
+            BASIS_POINT_DENOMINATOR
+          const referrerBalanceBefore = await getBalance(
+            referrerAddress,
+            tokenAddress
+          )
+          await lock.connect(holder).purchase(
+            purchaseArgs.map((p) => ({
+              ...p,
+              referrer: referrerAddress,
+            })),
+            {
+              value: isErc20 ? 0 : keyPrice * (nbPeriods + 1n),
+            }
+          )
+          assert.equal(
+            (await getBalance(referrerAddress, tokenAddress)) -
+              referrerBalanceBefore,
+            expectedFee
+          )
+        })
+      })
+
+      describe('works when purchasing multiple keys', async () => {
+        let receipt
+        beforeEach(async () => {
+          const tx = await lock
+            .connect(holder)
+            .purchase([...purchaseArgs, ...purchaseArgs], {
+              value: isErc20 ? 0 : keyPrice * (nbPeriods + 1n) * 2n,
+            })
+          receipt = await tx.wait()
+        })
+        it('keys are minted and extended properly', async () => {
+          const { events: transferEvents } = await getEvents(
+            receipt,
+            'Transfer'
+          )
+          const tokenIds = transferEvents.map(({ args }) => args.tokenId)
+          assert(await lock.isValidKey(tokenIds[0]))
+          assert(await lock.isValidKey(tokenIds[1]))
+
+          const { timestamp: tsBefore } = await ethers.provider.getBlock(
+            receipt.blockNumber
+          )
+          assert(
+            await lock.keyExpirationTimestampFor(tokenIds[0]),
+            BigInt(tsBefore) +
+              (await lock.expirationDuration()) * (nbPeriods + 1n)
+          )
+          assert(
+            await lock.keyExpirationTimestampFor(tokenIds[1]),
+            BigInt(tsBefore) +
+              (await lock.expirationDuration()) * (nbPeriods + 1n)
+          )
+        })
+        it('events are fired properly', async () => {
+          const { events: transferEvents } = await getEvents(
+            receipt,
+            'Transfer'
+          )
+          const { events: extendEvents } = await getEvents(
+            receipt,
+            'KeyExtended'
+          )
+          //
+          assert.equal(transferEvents.length, 2)
+          assert.equal(extendEvents.length, nbPeriods * 2n)
+        })
+
+        // ;({ tokenId } = args)
+        // ;({ timestamp: tsBefore } = await ethers.provider.getBlock(blockNumber))
+      })
 
       describe('purchase with wrong amounts', () => {
         it('reverts when wrong amounts are specified', async () => {

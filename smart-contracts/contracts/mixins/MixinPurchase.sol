@@ -323,9 +323,6 @@ contract MixinPurchase is
 
         // send what is due to referrer
         _payReferrer(purchaseArgs[i].referrer);
-
-        // pay protocol
-        _payProtocol(pricePaid);
       }
     }
 
