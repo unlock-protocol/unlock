@@ -445,26 +445,21 @@ contract MixinPurchase is
     _payProtocol(pricePaid);
   }
 
-  /**
-   * Renew a given token
-   * @notice only works for non-free, expiring, ERC20 locks
-   * @param _tokenId the ID fo the token to renew
-   */
-  function renewMembershipFor(uint _tokenId) public {
+  /*
+   * Internal logic for key renewal
+   **/
+  function _renewMembershipFor(uint _tokenId, address _referrer) internal {
     _lockIsUpToDate();
     _isKey(_tokenId);
 
-    // get referrer from what was set in the original purchase
-    address referrer = _renewalConditions[_tokenId].referrer;
-
     // check if key is ripe for renewal
-    isRenewable(_tokenId, referrer);
+    isRenewable(_tokenId, _referrer);
 
     // extend key duration
     _extendKey(_tokenId, 0);
 
     // store in unlock
-    _recordKeyPurchase(keyPrice, referrer);
+    _recordKeyPurchase(keyPrice, _referrer);
 
     // transfer the tokens
     _transferValue(ownerOf(_tokenId), keyPrice);
@@ -473,10 +468,31 @@ contract MixinPurchase is
     _refundGas();
 
     // send what is due to referrer
-    _payReferrer(referrer);
+    _payReferrer(_referrer);
 
     // pay protocol
     _payProtocol(keyPrice);
+  }
+
+  /**
+   * Renew a given token
+   * get referrer that was set during the original purchase
+   * @notice only works for non-free, expiring, ERC20 locks
+   * @param _tokenId the ID fo the token to renew
+   */
+  function renewMembershipFor(uint _tokenId) public {
+    _renewMembershipFor(_tokenId, _renewalConditions[_tokenId].referrer);
+  }
+
+  /**
+   * Renew a given token
+   * get referrer that was set during the original purchase
+   * @notice only works for non-free, expiring, ERC20 locks
+   * @param _tokenId the ID fo the token to renew
+   * @param _referrer the address of the referrer
+   */
+  function renewMembershipFor(uint _tokenId, address _referrer) public {
+    _renewMembershipFor(_tokenId, _referrer);
   }
 
   /**
