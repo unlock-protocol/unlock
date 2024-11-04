@@ -22542,7 +22542,7 @@ __metadata:
     prism-react-renderer: "npm:2.4.0"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
-    react-dropzone: "npm:14.3.1"
+    react-dropzone: "npm:14.3.4"
     react-hook-form: "npm:7.53.1"
     react-icons: "npm:5.3.0"
     react-use-clipboard: "npm:1.0.9"
@@ -34326,12 +34326,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"file-selector@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "file-selector@npm:1.2.0"
+"file-selector@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "file-selector@npm:2.1.0"
   dependencies:
     tslib: "npm:^2.7.0"
-  checksum: 10/4d5c8a655d0365113ad5b2a22cf9538e1012f5f480e657086607010eb32ca5afd6b84cc62afa8cdd401135bdae9b263940cbec40105191ddf8a811665f0868ee
+  checksum: 10/050c24a27b8582a9c5d010a3ea77b22ccbe3969733a044bcb210ba2f85454fb7a6d8b6f91de468517fe59998e94d5c9533447ad063b9e74a67161946474164d4
   languageName: node
   linkType: hard
 
@@ -48219,16 +48219,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dropzone@npm:14.3.1":
-  version: 14.3.1
-  resolution: "react-dropzone@npm:14.3.1"
+"react-dropzone@npm:14.3.4":
+  version: 14.3.4
+  resolution: "react-dropzone@npm:14.3.4"
   dependencies:
     attr-accept: "npm:^2.2.4"
-    file-selector: "npm:^1.2.0"
+    file-selector: "npm:^2.1.0"
     prop-types: "npm:^15.8.1"
   peerDependencies:
     react: ">= 16.8 || 18.0.0"
-  checksum: 10/5a182e30dffb069d489499861c92923792b6ef2fa85d2385d74f8c8921674b37de84f68aea9762e98ff94e2d21f9e8064467a30f288511573cd4aa6ba2089328
+  checksum: 10/11eae4f1c76e68deed2bba23f87c313fdccf7f8606beb9be6c809f3246632958f4894256b45448511ffc1a76a4fd3b03d1ab6a3eb7a4646a1659fa1f4e8bbf52
   languageName: node
   linkType: hard
 
