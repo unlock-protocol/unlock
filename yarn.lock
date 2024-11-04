@@ -20347,6 +20347,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:20.17.6":
+  version: 20.17.6
+  resolution: "@types/node@npm:20.17.6"
+  dependencies:
+    undici-types: "npm:~6.19.2"
+  checksum: 10/714b8b54951950cee662ce80492831ebc51f914a9adf88583cea777ea4d55b88827b2505ff2f53d2bb7753691aaab1b06c027a7b5c63eb153ad4acee1239690c
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:^10.0.3":
   version: 10.17.60
   resolution: "@types/node@npm:10.17.60"
@@ -21902,7 +21911,7 @@ __metadata:
     "@radix-ui/react-avatar": "npm:1.1.1"
     "@tanstack/react-query": "npm:5.59.16"
     "@testing-library/react": "npm:16.0.1"
-    "@types/node": "npm:20.14.13"
+    "@types/node": "npm:20.17.6"
     "@types/react": "npm:18.3.12"
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
@@ -46471,7 +46480,7 @@ __metadata:
   resolution: "provider@workspace:provider"
   dependencies:
     "@cloudflare/workers-types": "npm:4.20240925.0"
-    "@types/node": "npm:20.14.13"
+    "@types/node": "npm:20.17.6"
     "@unlock-protocol/networks": "workspace:^"
     ethers: "npm:6.13.2"
     typescript: "npm:5.6.3"
