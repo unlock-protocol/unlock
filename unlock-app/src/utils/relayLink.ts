@@ -20,13 +20,6 @@ export interface CrossChainRoute {
   currency: string
 }
 
-const bigintSerializer = (_key: string, value: unknown): unknown => {
-  if (typeof value === 'bigint') {
-    return value.toString() + 'n'
-  }
-  return value
-}
-
 interface getCrossChainRouteParams {
   sender: string
   lock: Lock
@@ -41,7 +34,7 @@ interface getCrossChainRouteParams {
 
 // Get a route for a given token and chain.
 export const getCrossChainRoute = async (
-  walletService,
+  lockContract,
   {
     sender,
     lock,
@@ -55,7 +48,6 @@ export const getCrossChainRoute = async (
   }: getCrossChainRouteParams
 ): Promise<CrossChainRoute | undefined> => {
   const network = networks[srcChainId]
-
   const totalPrice = prices
     .reduce(
       (acc, current) =>
@@ -66,20 +58,19 @@ export const getCrossChainRoute = async (
 
   const txs = []
 
-  const x = await walletService.purchaseKeys(
-    {
-      lockAddress: lock.address,
-      keyPrices: prices,
-      owners: recipients!,
-      data: purchaseData,
-      keyManagers: keyManagers?.length ? keyManagers : undefined,
-      recurringPayments: 0,
-      referrers,
-    },
-    { runEstimate: true }
-  )
-  // runEstimate
-  console.log(x)
+  const callData = lockContract.interface.encodeFunctionData('purchase', [
+    prices.map((price) => {
+      const priceParsed = ethers.parseUnits(
+        price.amount.toString(),
+        price.decimals
+      )
+      return priceParsed
+    }),
+    recipients,
+    referrers,
+    keyManagers,
+    purchaseData,
+  ])
 
   if (
     lock.currencyContractAddress &&
@@ -91,7 +82,7 @@ export const getCrossChainRoute = async (
     // Approval first!
     txs.push({
       to: lock.currencyContractAddress,
-      value: BigInt('0'),
+      value: 0,
       data: ERC20Interface.encodeFunctionData('approve', [
         lock.address,
         totalPrice,
@@ -101,86 +92,35 @@ export const getCrossChainRoute = async (
     txs.push({
       to: lock.address,
       value: 0,
-      data: '',
+      data: callData,
     })
   } else {
     // Add the purchase transaction only
     txs.push({
       to: lock.address,
       value: totalPrice,
-      data: '',
+      data: callData,
     })
   }
 
   const baseUrl = 'https://api.relay.link/quote'
-  const actionRequest: RelayBody = {
+  const request: RelayBody = {
     user: sender,
     originChainId: srcChainId,
     destinationChainId: lock.network,
     originCurrency: srcToken,
     destinationCurrency: lock.currencyContractAddress || ADDRESS_ZERO,
     amount: totalPrice,
-    transactionType: 'EXACT_OUTPUT',
-    txs: [],
-    // sender,
-    // srcToken,
-    // dstToken: lock.currencyContractAddress || ADDRESS_ZERO,
-    // srcChainId,
-    // dstChainId: lock.network,
-    // slippage: 1, // 1%
-    // actionType: 'evm-function',
-    // actionConfig: {
-    //   chainId: lock.network,
-    //   contractAddress: lock.address,
-    //   cost: {
-    //     isNative: true,
-    //     amount:
-    //       prices
-    //         .reduce(
-    //           (acc, current) =>
-    //             acc +
-    //             ethers.parseUnits(current.amount.toString(), current.decimals),
-    //           BigInt('0')
-    //         )
-    //         .toString() + 'n',
-    //   },
-    //   signature:
-    //     'function purchase(uint256[] _values,address[] _recipients,address[] _referrers,address[] _keyManagers,bytes[] _data) payable returns (uint256[])', // We need to get this from walletService!
-    //   args: [
-    //     prices.map((price) => {
-    //       const priceParsed = ethers.parseUnits(
-    //         price.amount.toString(),
-    //         price.decimals
-    //       )
-    //       return priceParsed
-    //     }),
-    //     recipients,
-    //     referrers,
-    //     keyManagers,
-    //     purchaseData,
-    //   ],
-    // },
+    tradeType: 'EXACT_OUTPUT',
+    txs,
   }
 
-  const query = JSON.stringify(
-    {
-      ...actionRequest,
-    },
-    bigintSerializer
-  )
-
-  const url = `${baseUrl}?arguments=${query}`
-  const response = await axios
-    .get(url, {
-      headers: {
-        'x-api-key': apiKey,
-      },
-    })
-    .catch(function (error) {
-      console.error(error)
-    })
+  const response = await axios.post(baseUrl, request).catch(function (error) {
+    console.error(error)
+  })
   if (response?.status === 200) {
     const { data } = response
+    console.log({ data })
     return {
       ...data,
       tx: {

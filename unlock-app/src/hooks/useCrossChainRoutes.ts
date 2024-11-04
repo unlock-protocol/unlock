@@ -9,7 +9,6 @@ import { networks } from '@unlock-protocol/networks'
 import { BoxEvmChains } from '@decent.xyz/box-common'
 import { Token } from '@unlock-protocol/types'
 import { useAuthenticate } from './useAuthenticate'
-import { useProvider } from './useProvider'
 
 interface CrossChainRouteWithBalance extends CrossChainRoute {
   resolvedAt: number
@@ -38,7 +37,6 @@ export const useCrossChainRoutes = ({
 
   const { account } = useAuthenticate()
   const web3Service = useWeb3Service()
-  const { getWalletService } = useProvider()
 
   const { recipients, paywallConfig, keyManagers, renew } = context
 
@@ -87,6 +85,16 @@ export const useCrossChainRoutes = ({
       staleTime: 1000 * 60 * 5, // 5 minutes
       enabled: enabled && hasPrices,
     })),
+  })
+
+  const { data: lockContract } = useQuery({
+    queryKey: ['lockContract', lock.address],
+    queryFn: async () => {
+      return web3Service.getLockContract(
+        lock.address,
+        web3Service.providerForNetwork(lock.network)
+      )
+    },
   })
 
   const routeResults = useQueries({
@@ -154,22 +162,19 @@ export const useCrossChainRoutes = ({
               ) {
                 return null
               }
-              const route = await getCrossChainRoute(
-                await getWalletService(network),
-                {
-                  sender: account!,
-                  lock,
-                  prices,
-                  recipients,
-                  keyManagers: keyManagers || recipients,
-                  referrers: recipients.map(() =>
-                    getReferrer(account!, paywallConfig, lock.address)
-                  ),
-                  purchaseData: purchaseData || recipients.map(() => '0x'),
-                  srcToken: token.address,
-                  srcChainId: network,
-                }
-              )
+              const route = await getCrossChainRoute(lockContract, {
+                sender: account!,
+                lock,
+                prices,
+                recipients,
+                keyManagers: keyManagers || recipients,
+                referrers: recipients.map(() =>
+                  getReferrer(account!, paywallConfig, lock.address)
+                ),
+                purchaseData: purchaseData || recipients.map(() => '0x'),
+                srcToken: token.address,
+                srcChainId: network,
+              })
               if (!route) {
                 console.info(
                   `No route found from ${network} and ${token.address} to ${lock.network} and ${lock.currencyContractAddress}`
@@ -205,7 +210,7 @@ export const useCrossChainRoutes = ({
               return null
             }
           },
-          enabled: enabled && hasPrices,
+          enabled: enabled && hasPrices && !!lockContract,
           staleTime: 1000 * 60 * 5, // 5 minutes
         })
       ),
