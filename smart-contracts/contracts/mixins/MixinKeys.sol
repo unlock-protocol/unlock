@@ -187,8 +187,8 @@ contract MixinKeys is MixinErrors, MixinLockCore {
     // create the key
     _keys[tokenId] = Key(tokenId, expirationTimestamp);
 
-    // increase total number of unique owners
-    if (totalKeys(_recipient) == 0) {
+    // increase total number of unique owners (except for zero address)
+    if (totalKeys(_recipient) == 0 && _recipient != address(0)) {
       unchecked {
         numberOfOwners++;
       }
@@ -257,7 +257,8 @@ contract MixinKeys is MixinErrors, MixinLockCore {
     uint length = totalKeys(_recipient);
 
     // make sure address does not have more keys than allowed
-    if (length >= _maxKeysPerAddress) {
+    // exception for zero address that can hold several keys
+    if (length >= _maxKeysPerAddress && _recipient != address(0)) {
       revert MAX_KEYS_REACHED();
     }
 

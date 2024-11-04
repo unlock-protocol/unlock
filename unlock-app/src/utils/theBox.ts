@@ -29,12 +29,12 @@ export interface CrossChainRoute {
   currency: string
 }
 
-// const bigintSerializer = (_key: string, value: unknown): unknown => {
-//   if (typeof value === 'bigint') {
-//     return value.toString() + 'n'
-//   }
-//   return value
-// }
+const bigintSerializer = (_key: string, value: unknown): unknown => {
+  if (typeof value === 'bigint') {
+    return value.toString() + 'n'
+  }
+  return value
+}
 
 interface getCrossChainRouteParams {
   sender: string
@@ -109,9 +109,12 @@ export const getCrossChainRoute = async ({
     },
   }
 
-  const query = JSON.stringify({
-    ...actionRequest,
-  })
+  const query = JSON.stringify(
+    {
+      ...actionRequest,
+    },
+    bigintSerializer
+  )
 
   const url = `${baseUrl}?arguments=${query}`
   const response = await axios

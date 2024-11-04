@@ -481,7 +481,7 @@ export const HeaderNav = ({
               <SocialIcons />
             </div>
           )}
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
             {actions?.map((action: ActionsProps, index) => {
               if ('title' in action) {
                 const { title, url, icon } = action
