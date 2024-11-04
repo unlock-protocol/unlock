@@ -15,8 +15,10 @@ async function main() {
     const {
       id,
       name,
-      governanceBridge: {
-        modules: { delayMod: delayModAddress },
+      dao: {
+        governanceBridge: {
+          modules: { delayMod: delayModAddress },
+        },
       },
     } = targetChains[i]
     const log = (msg) => console.log(`[${name} (${id})] ${msg}`)

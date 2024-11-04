@@ -1,7 +1,11 @@
 import { PublicLock } from '@unlock-protocol/contracts'
 import { ethers } from 'ethers'
 import { isProduction } from '../config/config'
-import { getProviderForNetwork, getPurchaser } from '../fulfillment/dispatcher'
+import {
+  getAllPurchasers,
+  getProviderForNetwork,
+  getPurchaser,
+} from '../fulfillment/dispatcher'
 import networks from '@unlock-protocol/networks'
 import { WalletService } from '@unlock-protocol/unlock-js'
 import { EVENT_CASTER_ADDRESS } from '../utils/constants'
@@ -90,6 +94,18 @@ export const deployLockForEventCaster = async ({
     [EVENT_CASTER_ADDRESS]
   )
   transactions.push(addEventsXyzLockManager)
+
+  const purchasers = await getAllPurchasers({ network: DEFAULT_NETWORK })
+  await Promise.all(
+    purchasers.map(async (purchaser) => {
+      transactions.push(
+        // Should we add as keyGranter?
+        lockInterface.encodeFunctionData('addLockManager(address)', [
+          await purchaser.getAddress(),
+        ])
+      )
+    })
+  )
 
   hosts.forEach((host) => {
     if (host.verified_addresses) {
