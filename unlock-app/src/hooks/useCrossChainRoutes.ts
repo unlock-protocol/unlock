@@ -4,9 +4,8 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Lock } from '~/unlockTypes'
 import { purchasePriceFor } from './usePricing'
 import { getReferrer } from '~/utils/checkoutLockUtils'
-import { CrossChainRoute, getCrossChainRoute } from '~/utils/theBox'
+import { CrossChainRoute, getCrossChainRoute } from '~/utils/relayLink'
 import { networks } from '@unlock-protocol/networks'
-import { BoxEvmChains } from '@decent.xyz/box-common'
 import { Token } from '@unlock-protocol/types'
 import { useAuthenticate } from './useAuthenticate'
 
@@ -37,6 +36,7 @@ export const useCrossChainRoutes = ({
 
   const { account } = useAuthenticate()
   const web3Service = useWeb3Service()
+
   const { recipients, paywallConfig, keyManagers, renew } = context
 
   const { data: prices, isPending: isLoadingPrices } = useQuery({
@@ -71,19 +71,36 @@ export const useCrossChainRoutes = ({
   const hasPrices = Array.isArray(prices) && prices.length > 0
 
   const balanceResults = useQueries({
-    queries: BoxEvmChains.filter((network) => {
-      return networks[network.id]
-    }).map((network) => ({
-      queryKey: ['balance', account, network.id],
-      queryFn: async () => {
-        return {
-          network: network.id,
-          balance: await web3Service.getAddressBalance(account!, network.id),
-        }
-      },
-      staleTime: 1000 * 60 * 5, // 5 minutes
-      enabled: enabled && hasPrices,
-    })),
+    queries: Object.values(networks)
+      .filter((network) => {
+        // Filter out networks that are not the same type as the lock
+        return (
+          network.isTestNetwork === networks[lock.network].isTestNetwork &&
+          [56, 42220, 100, 1].indexOf(network.id) > -1 &&
+          network.id === 8453
+        )
+      })
+      .map((network) => ({
+        queryKey: ['balance', account, network.id],
+        queryFn: async () => {
+          return {
+            network: network.id,
+            balance: await web3Service.getAddressBalance(account!, network.id),
+          }
+        },
+        staleTime: 1000 * 60 * 5, // 5 minutes
+        enabled: enabled,
+      })),
+  })
+
+  const { data: lockContract } = useQuery({
+    queryKey: ['lockContract', lock.address],
+    queryFn: async () => {
+      return web3Service.getLockContract(
+        lock.address,
+        web3Service.providerForNetwork(lock.network)
+      )
+    },
   })
 
   const routeResults = useQueries({
@@ -151,7 +168,7 @@ export const useCrossChainRoutes = ({
               ) {
                 return null
               }
-              const route = await getCrossChainRoute({
+              const route = await getCrossChainRoute(lockContract, {
                 sender: account!,
                 lock,
                 prices,
@@ -166,7 +183,7 @@ export const useCrossChainRoutes = ({
               })
               if (!route) {
                 console.info(
-                  `No route found from ${network} and ${token.address} to ${lock.network} and ${lock.currencyContractAddress}`
+                  `No route found from ${network} and ${token.symbol} to ${lock.network} and ${lock.currencySymbol}`
                 )
                 return null
               }
@@ -199,7 +216,7 @@ export const useCrossChainRoutes = ({
               return null
             }
           },
-          enabled: enabled && hasPrices,
+          enabled: enabled && hasPrices && !!lockContract,
           staleTime: 1000 * 60 * 5, // 5 minutes
         })
       ),
