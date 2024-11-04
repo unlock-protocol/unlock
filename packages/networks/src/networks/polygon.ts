@@ -5,6 +5,18 @@ export const polygon: NetworkConfig = {
     url: (address: string) => `https://blockscan.com/address/${address}`,
   },
   chain: 'polygon',
+  dao: {
+    chainId: 8453,
+    governanceBridge: {
+      connext: '0x11984dc4465481512eb5b777E44061C158CF2259',
+      domainId: 1886350457,
+      modules: {
+        connextMod: '0xa8E0FD3D023B1A253eF52B6169851Ee95eF257bE',
+        delayMod: '0x31B8bB0BC5ffEe8e476202e9D97b0b8c31aA767d',
+      },
+    },
+    governor: '0x65bA0624403Fc5Ca2b20479e9F626eD4D78E0aD9',
+  },
   description:
     "Polygon is a side-chain to build and scale your projects on Ethereum, the world's largest blockchain ecosystem.",
   explorer: {
@@ -19,14 +31,6 @@ export const polygon: NetworkConfig = {
     },
   },
   featured: true,
-  governanceBridge: {
-    connext: '0x11984dc4465481512eb5b777E44061C158CF2259',
-    domainId: 1886350457,
-    modules: {
-      connextMod: '0xa8E0FD3D023B1A253eF52B6169851Ee95eF257bE',
-      delayMod: '0x31B8bB0BC5ffEe8e476202e9D97b0b8c31aA767d',
-    },
-  },
   hooks: {
     onKeyPurchaseHook: [
       {

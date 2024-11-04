@@ -44,7 +44,7 @@ import newUserRouter from './v2/user'
 import eventCollectionRouter from './v2/eventCollection'
 import eventCasterRouter from './v2/eventCaster'
 
-const router = express.Router({ mergeParams: true })
+const router: express.Router = express.Router({ mergeParams: true })
 
 // Set the chain!
 router.use((request, _, next) => {

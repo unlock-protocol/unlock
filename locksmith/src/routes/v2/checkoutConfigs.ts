@@ -6,7 +6,7 @@ import {
   deleteCheckoutConfig,
   getCheckoutConfigs,
 } from '../../controllers/v2/checkoutController'
-const router = express.Router({ mergeParams: true })
+const router: express.Router = express.Router({ mergeParams: true })
 
 router.get('/list', authenticatedMiddleware, getCheckoutConfigs)
 router.put('/:id?', authenticatedMiddleware, createOrUpdateCheckoutConfig)

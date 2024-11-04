@@ -420,12 +420,10 @@ const delayABI = [
 
 const getDelayModule = async (delayModuleAddress) => {
   // fetch delayMod address from networks package
+  const network = await getNetwork()
+
   if (!delayModuleAddress) {
-    ;({
-      governanceBridge: {
-        modules: { delayMod: delayModuleAddress },
-      },
-    } = await getNetwork())
+    delayModuleAddress = network.dao.governanceBridge.modules.delayMod
   }
   const delayMod = await ethers.getContractAt(delayABI, delayModuleAddress)
 
