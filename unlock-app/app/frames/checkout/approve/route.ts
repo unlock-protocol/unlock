@@ -1,27 +1,19 @@
-import { Abi, encodeFunctionData } from 'viem'
+import { Abi, encodeFunctionData, erc20Abi } from 'viem'
 import { frames } from '../frames'
 import { transaction } from 'frames.js/core'
-import { erc20Abi, getKeyPrice } from '../components/utils'
 
 export const POST = frames(async (ctx) => {
   if (!ctx?.message) {
     throw new Error('Invalid frame message')
   }
 
-  const userAddress = ctx.message.address!
-  const network = Number(ctx.state.lock!.network)
-  const lockAddress = ctx.state.lock!.address
-
-  const keyPrice = await getKeyPrice({
-    lockAddress,
-    network,
-    userAddress,
-  })
+  const lock = ctx.state.lock!
+  const { address: lockAddress, network, priceForUser } = lock
 
   const calldata = encodeFunctionData({
     abi: erc20Abi,
     functionName: 'approve',
-    args: [lockAddress, keyPrice],
+    args: [lockAddress as `0x${string}`, BigInt(priceForUser!)],
   })
 
   return transaction({

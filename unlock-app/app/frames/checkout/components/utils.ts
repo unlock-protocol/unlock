@@ -2,37 +2,14 @@ import { Web3Service } from '@unlock-protocol/unlock-js'
 import { locksmith } from '../../../../src/config/locksmith'
 import networks from '@unlock-protocol/networks'
 import { config as appConfig } from '~/config/app'
+import { erc20Abi } from 'viem'
+import { ethers } from 'ethers'
 
 interface GetKeyPriceParams {
   lockAddress: string
   network: number
   userAddress: string
 }
-
-export const erc20Abi = [
-  {
-    type: 'function',
-    name: 'approve',
-    constant: false,
-    inputs: [
-      {
-        name: 'spender',
-        type: 'address',
-      },
-      {
-        name: 'amount',
-        type: 'uint256',
-      },
-    ],
-    outputs: [
-      {
-        name: '',
-        type: 'bool',
-      },
-    ],
-    stateMutability: 'nonpayable',
-  },
-]
 
 export async function getConfig(id: string) {
   const { config } = await fetch(
@@ -70,18 +47,13 @@ export async function getLockDataFromCheckout(id: string) {
   })()
 
   const web3Service = new Web3Service(networks)
+
   const res = await web3Service.getLock(lockAddress, network)
   const price = `${res.keyPrice} ${res.currencySymbol}`
+  const tokenAddress = res.currencyContractAddress
 
-  let tokenAddress
-  if (res.currencySymbol !== 'ETH') {
-    const tokens = networks[network].tokens
-    const matches = tokens!.filter(
-      (token) => token.symbol === res.currencySymbol
-    )
-    tokenAddress = matches.find((token) => token.featured) || matches[0] || null
-    tokenAddress = tokenAddress.address
-  }
+  const keysAvailable = await web3Service.keysAvailable(lockAddress, network)
+  const isSoldOut = Number(keysAvailable) < 1
 
   const redirectUri = config.redirectUri
   const redirectText = config.endingCallToAction
@@ -98,6 +70,7 @@ export async function getLockDataFromCheckout(id: string) {
     tokenAddress,
     redirectUri,
     redirectText,
+    isSoldOut,
   }
 
   return lock
@@ -119,4 +92,34 @@ export async function getKeyPrice({
   })
   price = price.toString()
   return price
+}
+
+export async function checkAllowance(
+  lockAddress: string,
+  network: number,
+  userAddress: string,
+  tokenAddress: string
+) {
+  const web3Service = new Web3Service(networks)
+  const contract = new ethers.Contract(
+    tokenAddress,
+    erc20Abi,
+    web3Service.providerForNetwork(network)
+  )
+  const allowance = await contract.allowance(userAddress, lockAddress)
+  return allowance
+}
+
+export async function isMember(
+  lockAddress: string,
+  network: number,
+  userAddress: string
+) {
+  const web3Service = new Web3Service(networks)
+  const isMember = await web3Service.getHasValidKey(
+    lockAddress,
+    userAddress,
+    network
+  )
+  return isMember
 }
