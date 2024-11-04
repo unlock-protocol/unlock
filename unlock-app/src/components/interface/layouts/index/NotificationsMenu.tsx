@@ -91,23 +91,16 @@ export function NotificationsMenu() {
                   </div>
                 ) : (
                   notifications.map((notification) => (
-                    <MenuItem key={notification.id}>
-                      {({ active }) => (
-                        <div
-                          className={`${
-                            active ? 'bg-gray-100' : ''
-                          } rounded-md px-4 py-3 cursor-pointer`}
-                          onClick={(e) => {
-                            e.preventDefault()
-                            e.stopPropagation()
-                            if (!isOpen) {
-                              setIsOpen(true)
-                            }
-                          }}
-                        >
-                          {notification.content}
-                        </div>
-                      )}
+                    <MenuItem key={notification.id} as="div">
+                      <div
+                        className="rounded-md px-4 py-3 cursor-pointer hover:bg-gray-100"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                        }}
+                      >
+                        {notification.content}
+                      </div>
                     </MenuItem>
                   ))
                 )}
