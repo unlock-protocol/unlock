@@ -3,7 +3,6 @@
 import { BiQrScan as ScanIcon } from 'react-icons/bi'
 import { useEffect } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
-import { NextSeo } from 'next-seo'
 import {
   Button,
   Card,
@@ -25,9 +24,6 @@ import { SettingEmail } from '~/components/interface/locks/Settings/elements/Set
 import { locksmith } from '~/config/locksmith'
 import { FaUsers } from 'react-icons/fa'
 import { TbSettings } from 'react-icons/tb'
-import { config } from '~/config/app'
-import removeMd from 'remove-markdown'
-import { truncateString } from '~/utils/truncateString'
 import { useEventVerifiers } from '~/hooks/useEventVerifiers'
 import { EventDefaultLayout } from './Layout/EventDefaultLayout'
 import { EventBannerlessLayout } from './Layout/EventBannerlessLayout'
@@ -193,63 +189,6 @@ export const EventDetails = ({
 
   return (
     <div>
-      <NextSeo
-        title={event.name}
-        description={`${truncateString(
-          removeMd(event.description, {
-            useImgAltText: false,
-          }),
-          650
-        )} 
-        Powered by Unlock Protocol`}
-        openGraph={{
-          title: event.title,
-          type: 'website',
-          url: eventUrl,
-          images: [
-            {
-              alt: event.title,
-              url: `${config.unlockApp}/og/event/${event.slug}`,
-            },
-          ],
-        }}
-        additionalMetaTags={[
-          {
-            property: 'fc:frame',
-            content: 'vNext',
-          },
-          {
-            name: 'fc:frame:image',
-            content: `${config.unlockApp}/og/event/${event.slug}`,
-          },
-          {
-            name: 'fc:frame:post_url',
-            content: `${config.unlockApp}/frames/event?p=${encodeURIComponent(
-              `${config.unlockApp}/frames/event/${event.slug}`
-            )}&s=${encodeURIComponent('{"view":"default"}')}`,
-          },
-          {
-            name: 'fc:frame:button:1',
-            content: 'Register',
-          },
-          {
-            name: 'fc:frame:button:1:target',
-            content: eventUrl,
-          },
-          {
-            name: 'fc:frame:button:1:action',
-            content: 'link',
-          },
-          {
-            name: 'fc:frame:button:2',
-            content: 'See description',
-          },
-          {
-            name: 'fc:frame:button:2:action',
-            content: 'post',
-          },
-        ]}
-      />
       <div className="flex flex-col gap-4">
         <div className="flex flex-col-reverse px-4 md:px-0 md:flex-row-reverse gap-2 ">
           {isOrganizer && (

@@ -40,7 +40,10 @@ async function main() {
       name,
       multisig,
       governanceBridge: {
-        modules: { delayMod: delayModAddress, connextMod: connextModAddress },
+      dao: {
+        governanceBridge: {
+          modules: { delayMod: delayModAddress, connextMod: connextModAddress },
+        },
       },
     } = targetChains[i]
 
