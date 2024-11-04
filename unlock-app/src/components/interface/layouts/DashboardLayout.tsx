@@ -6,7 +6,6 @@ import { ConnectModal } from '~/components/interface/connect/ConnectModal'
 import { Container } from '~/components/interface/Container'
 import DashboardFooter from '~/components/interface/layouts/index/DashboardFooter'
 import { usePathname } from 'next/navigation'
-import { PromptEmailLink } from '../PromptEmailLink'
 
 // Paths that shouldn't be wrapped in the default layout
 const UNWRAPPED_PATHS = ['/checkout', '/demo']
@@ -42,7 +41,6 @@ export default function DashboardLayout({
           </Container>
         </div>
       )}
-      <PromptEmailLink />
     </>
   )
 }
