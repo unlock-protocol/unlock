@@ -55,6 +55,7 @@ contract MixinPurchase is
     address referrer;
     address keyManager;
     bytes data;
+    uint additionalPeriods;
   }
 
   /**
@@ -309,6 +310,20 @@ contract MixinPurchase is
       );
       totalPriceToPay = totalPriceToPay + pricePaid;
       tokenIds[i] = tokenId;
+
+      // extend key as many times as specified in the period
+      for (uint256 p = 0; p < purchaseArgs[i].additionalPeriods; p++) {
+        _extendKey(tokenId, 0);
+
+        // compute total price
+        totalPriceToPay = totalPriceToPay + pricePaid;
+
+        // process in unlock
+        _recordKeyPurchase(pricePaid, purchaseArgs[i].referrer);
+
+        // send what is due to referrer
+        _payReferrer(purchaseArgs[i].referrer);
+      }
     }
 
     // transfer the ERC20 tokens

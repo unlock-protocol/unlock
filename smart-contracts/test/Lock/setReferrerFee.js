@@ -46,6 +46,7 @@ describe('Lock / setReferrerFee', () => {
           referrer: referrerAddress,
           keyManager: ADDRESS_ZERO,
           data: '0x',
+          additionalPeriods: 0,
         },
       ],
       {
