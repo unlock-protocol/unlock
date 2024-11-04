@@ -3,10 +3,10 @@ import { EventData } from '../models/Event'
 import { EventCollectionAssociation } from '../models/EventCollectionAssociation'
 import { z } from 'zod'
 import { kebabCase } from 'lodash'
-import { privy } from '../utils/privyClient'
 import { sendEmail } from './wedlocksOperations'
 import config from '../config/config'
 import logger from '../logger'
+import { getUserEmailFromPrivy } from '../utils/privyUtils'
 
 // event collection body schema
 const EventCollectionBody = z.object({
@@ -82,11 +82,11 @@ export const createEventCollectionOperation = async (
   try {
     // Send email to each manager
     for (const manager of managerAddresses) {
-      const user = await privy?.getUserByWalletAddress(manager)
-      if (user?.email) {
+      const emailAddress = await getUserEmailFromPrivy(manager)
+      if (emailAddress) {
         await sendEmail({
           template: 'eventCollectionCreated',
-          recipient: user.email.toString(),
+          recipient: emailAddress,
           params: {
             collectionName: parsedBody.title,
             collectionUrl: `${config.unlockApp}/events/${eventCollection.slug}`,
@@ -321,11 +321,11 @@ export const addEventToCollectionOperation = async (
   if (created && !isManager) {
     try {
       // Send email to submitter
-      const submitterEmail = await privy?.getUserByWalletAddress(userAddress)
-      if (submitterEmail?.email) {
+      const submitterEmailAddress = await getUserEmailFromPrivy(userAddress)
+      if (submitterEmailAddress) {
         await sendEmail({
           template: 'eventSubmittedToCollectionSubmitter',
-          recipient: submitterEmail.email.toString(),
+          recipient: submitterEmailAddress,
           params: {
             eventName: event.name,
             eventDate: event.data.startDate,
@@ -337,11 +337,11 @@ export const addEventToCollectionOperation = async (
 
       // Send email to all managers
       for (const managerAddress of collection.managerAddresses) {
-        const managerEmail = await privy?.getUserByWalletAddress(managerAddress)
-        if (managerEmail?.email) {
+        const managerEmailAddress = await getUserEmailFromPrivy(managerAddress)
+        if (managerEmailAddress) {
           await sendEmail({
             template: 'eventSubmittedToCollectionManager',
-            recipient: managerEmail.email.toString(),
+            recipient: managerEmailAddress,
             params: {
               eventName: event.name,
               eventDate: event.data.startDate,
@@ -414,14 +414,14 @@ export const approveEventOperation = async (
 
     if (event && association.submitterAddress) {
       // Get submitter's email
-      const submitterEmail = await privy?.getUserByWalletAddress(
+      const submitterEmailAddress = await getUserEmailFromPrivy(
         association.submitterAddress
       )
 
-      if (submitterEmail?.email) {
+      if (submitterEmailAddress) {
         await sendEmail({
           template: 'eventApprovedInCollection',
-          recipient: submitterEmail.email.toString(),
+          recipient: submitterEmailAddress,
           params: {
             eventName: event.name,
             eventDate: event.data.startDate,
@@ -482,14 +482,14 @@ export const removeEventFromCollectionOperation = async (
 
       if (event) {
         // Get submitter's email
-        const submitterEmail = await privy?.getUserByWalletAddress(
+        const submitterEmailAddress = await getUserEmailFromPrivy(
           association.submitterAddress
         )
 
-        if (submitterEmail?.email) {
+        if (submitterEmailAddress) {
           await sendEmail({
             template: 'eventDeniedInCollection',
-            recipient: submitterEmail.email.toString(),
+            recipient: submitterEmailAddress,
             params: {
               eventName: event.name,
               eventDate: event.data.startDate,
@@ -600,14 +600,14 @@ export const bulkRemoveEventsOperation = async (
 
         if (event) {
           // Get submitter's email
-          const submitterEmail = await privy?.getUserByWalletAddress(
+          const submitterEmailAddress = await getUserEmailFromPrivy(
             association.submitterAddress
           )
 
-          if (submitterEmail?.email) {
+          if (submitterEmailAddress) {
             await sendEmail({
               template: 'eventDeniedInCollection',
-              recipient: submitterEmail.email.toString(),
+              recipient: submitterEmailAddress,
               params: {
                 eventName: event.name,
                 eventDate: event.data.startDate,

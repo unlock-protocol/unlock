@@ -6,7 +6,7 @@ import {
 } from '../../controllers/v2/priceController'
 import { createCacheMiddleware } from '../../utils/middlewares/cacheMiddleware'
 
-const router = express.Router({ mergeParams: true })
+const router: express.Router = express.Router({ mergeParams: true })
 
 router.get('/charges/:network/locks/:lockAddress', getTotalChargesForLock)
 router.get('/:network/price', amount)
