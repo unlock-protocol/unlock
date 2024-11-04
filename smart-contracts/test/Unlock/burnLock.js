@@ -5,9 +5,7 @@ const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 describe('burnLock', () => {
   let lock, unlock
-  let deployer, spender, recipient
   beforeEach(async () => {
-    ;[deployer, spender, recipient] = await ethers.getSigners()
     ;({ unlock } = await deployContracts())
     lock = await deployLock({ unlock })
   })
@@ -20,5 +18,11 @@ describe('burnLock', () => {
       await reverts(lock.publicLockVersion())
     })
   })
-  describe('only lock manager allowed')
+  describe('only lock manager allowed', async () => {
+    const [, attacker] = await ethers.getSigners()
+    await reverts(
+      unlock.connect(attacker).burnLock(await lock.getAddress()),
+      'MANAGER_ONLY'
+    )
+  })
 })
