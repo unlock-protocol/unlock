@@ -37,7 +37,7 @@
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "2.0.8",
     "@nomicfoundation/hardhat-ignition": "0.15.6",
-    "@nomicfoundation/hardhat-ignition-ethers": "0.15.6",
+    "@nomicfoundation/hardhat-ignition-ethers": "0.15.7",
     "@nomicfoundation/hardhat-toolbox": "5.0.0",
     "@nomicfoundation/ignition-core": "0.15.6",
     "@typechain/ethers-v6": "0.5.1",
