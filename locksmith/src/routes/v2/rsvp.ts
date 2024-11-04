@@ -4,7 +4,7 @@ import { rsvp, update, updateBulk } from '../../controllers/v2/rsvpController'
 import { lockManagerMiddleware } from '../../utils/middlewares/lockManager'
 import { authenticatedMiddleware } from '../../utils/middlewares/auth'
 
-const router = express.Router({ mergeParams: true })
+const router: express.Router = express.Router({ mergeParams: true })
 
 router.post('/:network/:lockAddress', captchaMiddleware, rsvp)
 router.post(
