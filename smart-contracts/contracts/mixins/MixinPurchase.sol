@@ -36,16 +36,22 @@ contract MixinPurchase is
   // default to 0
   uint256 internal _gasRefundValue;
 
-  // Keep track of ERC20 price when purchased
+  // DEPREC: use of these is deprecated
   mapping(uint256 => uint256) internal _originalPrices;
-
-  // Keep track of duration when purchased
   mapping(uint256 => uint256) internal _originalDurations;
-
-  // keep track of token pricing when purchased
   mapping(uint256 => address) internal _originalTokens;
 
+  // keep track of referrer fees
   mapping(address => uint) public referrerFees;
+
+  // keep track of conditions of purchase for key renewals
+  struct RenewalCondition {
+    uint price;
+    uint duration;
+    address tokenAddress;
+    address referrer;
+  }
+  mapping(uint256 => RenewalCondition) public _renewalConditions;
 
   error TransferFailed();
 
@@ -164,16 +170,17 @@ contract MixinPurchase is
    * @notice stores values are used to prevent renewal if a key has settings
    * has changed
    */
-  function _recordTokenTerms(uint _tokenId, uint _keyPrice) internal {
-    if (_originalPrices[_tokenId] != _keyPrice) {
-      _originalPrices[_tokenId] = _keyPrice;
-    }
-    if (_originalDurations[_tokenId] != expirationDuration) {
-      _originalDurations[_tokenId] = expirationDuration;
-    }
-    if (_originalTokens[_tokenId] != tokenAddress) {
-      _originalTokens[_tokenId] = tokenAddress;
-    }
+  function _recordTokenTerms(
+    uint _tokenId,
+    uint _keyPrice,
+    address _referrer
+  ) internal {
+    _renewalConditions[_tokenId] = RenewalCondition(
+      _keyPrice,
+      expirationDuration,
+      tokenAddress,
+      _referrer
+    );
   }
 
   /**
@@ -186,7 +193,7 @@ contract MixinPurchase is
   ) public view returns (bool) {
     // check the lock
     if (
-      _originalDurations[_tokenId] == type(uint).max ||
+      _renewalConditions[_tokenId].duration == type(uint).max ||
       tokenAddress == address(0)
     ) {
       revert NON_RENEWABLE_LOCK();
@@ -194,10 +201,10 @@ contract MixinPurchase is
 
     // make sure key duration haven't decreased or price hasn't increase
     if (
-      _originalPrices[_tokenId] <
+      _renewalConditions[_tokenId].price <
       purchasePriceFor(ownerOf(_tokenId), _referrer, "") ||
-      _originalDurations[_tokenId] > expirationDuration ||
-      _originalTokens[_tokenId] != tokenAddress
+      _renewalConditions[_tokenId].duration > expirationDuration ||
+      _renewalConditions[_tokenId].tokenAddress != tokenAddress
     ) {
       revert LOCK_HAS_CHANGED();
     }
@@ -267,7 +274,7 @@ contract MixinPurchase is
     pricePaid = purchasePriceFor(_recipient, _referrer, _data);
 
     // store values at purchase time
-    _recordTokenTerms(tokenId, pricePaid);
+    _recordTokenTerms(tokenId, pricePaid, _referrer);
 
     // make sure erc20 price is correct
     if (tokenAddress != address(0)) {
@@ -426,7 +433,7 @@ contract MixinPurchase is
     _transferValue(msg.sender, pricePaid);
 
     // if key params have changed, then update them
-    _recordTokenTerms(_tokenId, pricePaid);
+    _recordTokenTerms(_tokenId, pricePaid, _referrer);
 
     // refund gas (if applicable)
     _refundGas();
@@ -442,20 +449,22 @@ contract MixinPurchase is
    * Renew a given token
    * @notice only works for non-free, expiring, ERC20 locks
    * @param _tokenId the ID fo the token to renew
-   * @param _referrer the address of the person to be granted UDT
    */
-  function renewMembershipFor(uint _tokenId, address _referrer) public {
+  function renewMembershipFor(uint _tokenId) public {
     _lockIsUpToDate();
     _isKey(_tokenId);
 
+    // get referrer from what was set in the original purchase
+    address referrer = _renewalConditions[_tokenId].referrer;
+
     // check if key is ripe for renewal
-    isRenewable(_tokenId, _referrer);
+    isRenewable(_tokenId, referrer);
 
     // extend key duration
     _extendKey(_tokenId, 0);
 
     // store in unlock
-    _recordKeyPurchase(keyPrice, _referrer);
+    _recordKeyPurchase(keyPrice, referrer);
 
     // transfer the tokens
     _transferValue(ownerOf(_tokenId), keyPrice);
@@ -464,7 +473,7 @@ contract MixinPurchase is
     _refundGas();
 
     // send what is due to referrer
-    _payReferrer(_referrer);
+    _payReferrer(referrer);
 
     // pay protocol
     _payProtocol(keyPrice);
