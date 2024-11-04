@@ -43,12 +43,12 @@
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "@unlock-protocol/types": "workspace:./packages/types",
-    "eslint": "9.13.0",
+    "eslint": "9.14.0",
     "ethers": "6.13.2",
     "hardhat": "2.22.15",
     "prettier": "3.3.3",
     "tsup": "8.3.0",
-    "typescript": "5.6.2",
+    "typescript": "5.6.3",
     "vitest": "2.1.4"
   },
   "dependencies": {
