@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "copyfiles": "2.4.1",
-    "eslint": "9.11.1",
+    "eslint": "9.14.0",
     "tsup": "8.3.0"
   },
   "repository": {
