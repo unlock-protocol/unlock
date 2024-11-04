@@ -36,7 +36,7 @@
   "devDependencies": {
     "@unlock-protocol/tsconfig": "workspace:^",
     "@unlock-protocol/types": "workspace:^",
-    "eslint": "9.11.1",
+    "eslint": "9.14.0",
     "fs-extra": "11.2.0",
     "tsup": "8.3.0",
     "typescript": "5.6.3"
