@@ -4,11 +4,12 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Lock } from '~/unlockTypes'
 import { purchasePriceFor } from './usePricing'
 import { getReferrer } from '~/utils/checkoutLockUtils'
-import { CrossChainRoute, getCrossChainRoute } from '~/utils/theBox'
+import { CrossChainRoute, getCrossChainRoute } from '~/utils/relayLink'
 import { networks } from '@unlock-protocol/networks'
 import { BoxEvmChains } from '@decent.xyz/box-common'
 import { Token } from '@unlock-protocol/types'
 import { useAuthenticate } from './useAuthenticate'
+import { useProvider } from './useProvider'
 
 interface CrossChainRouteWithBalance extends CrossChainRoute {
   resolvedAt: number
@@ -37,6 +38,8 @@ export const useCrossChainRoutes = ({
 
   const { account } = useAuthenticate()
   const web3Service = useWeb3Service()
+  const { getWalletService } = useProvider()
+
   const { recipients, paywallConfig, keyManagers, renew } = context
 
   const { data: prices, isPending: isLoadingPrices } = useQuery({
@@ -151,19 +154,22 @@ export const useCrossChainRoutes = ({
               ) {
                 return null
               }
-              const route = await getCrossChainRoute({
-                sender: account!,
-                lock,
-                prices,
-                recipients,
-                keyManagers: keyManagers || recipients,
-                referrers: recipients.map(() =>
-                  getReferrer(account!, paywallConfig, lock.address)
-                ),
-                purchaseData: purchaseData || recipients.map(() => '0x'),
-                srcToken: token.address,
-                srcChainId: network,
-              })
+              const route = await getCrossChainRoute(
+                await getWalletService(network),
+                {
+                  sender: account!,
+                  lock,
+                  prices,
+                  recipients,
+                  keyManagers: keyManagers || recipients,
+                  referrers: recipients.map(() =>
+                    getReferrer(account!, paywallConfig, lock.address)
+                  ),
+                  purchaseData: purchaseData || recipients.map(() => '0x'),
+                  srcToken: token.address,
+                  srcChainId: network,
+                }
+              )
               if (!route) {
                 console.info(
                   `No route found from ${network} and ${token.address} to ${lock.network} and ${lock.currencyContractAddress}`
