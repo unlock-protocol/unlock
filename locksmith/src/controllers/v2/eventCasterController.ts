@@ -1,5 +1,5 @@
 import networks from '@unlock-protocol/networks'
-import { WalletService } from '@unlock-protocol/unlock-js'
+import { WalletService, Web3Service } from '@unlock-protocol/unlock-js'
 import { RequestHandler } from 'express'
 import { z } from 'zod'
 import {
@@ -77,12 +77,30 @@ export const rsvpForEvent: RequestHandler = async (request, response) => {
     getPurchaser({ network: event.contract.network }),
   ])
 
+  const ownerAddress = user.verified_addresses.eth_addresses[0]
+  // Check first if the user has a key
+  const web3Service = new Web3Service(networks)
+  const existingKey = await web3Service.getKeyByLockForOwner(
+    event.contract.address,
+    ownerAddress,
+    event.contract.network
+  )
+
+  if (existingKey.tokenId > 0) {
+    return response.status(200).json({
+      network: event.contract.network,
+      address: event.contract.address,
+      id: Number(existingKey.tokenId),
+      owner: ownerAddress,
+    })
+  }
+
   const walletService = new WalletService(networks)
   await walletService.connect(provider, wallet)
 
   const token = await walletService.grantKey({
     lockAddress: event.contract.address,
-    recipient: user.verified_addresses.eth_addresses[0],
+    recipient: ownerAddress,
   })
 
   return response.status(201).json({
