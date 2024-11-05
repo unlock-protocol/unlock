@@ -1,6 +1,6 @@
 {
   "extends": [
-    "config:base",
+    "config:recommended",
     ":prHourlyLimitNone",
     ":prConcurrentLimitNone",
     ":pinAllExceptPeerDependencies",
@@ -13,117 +13,119 @@
       "minor": {
         "groupName": "packages/contracts"
       },
-      "matchPaths": ["packages/contracts/**"]
+      "matchFileNames": ["packages/contracts/**"]
     },
     {
       "minor": {
         "groupName": "packages/eslint-config"
       },
-      "matchPaths": ["packages/eslint-config/**"]
+      "matchFileNames": ["packages/eslint-config/**"]
     },
     {
       "minor": {
         "groupName": "packages/hardhat-plugin"
       },
-      "matchPaths": ["packages/hardhat-plugin/**"]
+      "matchFileNames": ["packages/hardhat-plugin/**"]
     },
     {
       "minor": {
         "groupName": "packages/networks"
       },
-      "matchPaths": ["packages/networks/**"]
+      "matchFileNames": ["packages/networks/**"]
     },
     {
       "minor": {
         "groupName": "packages/paywall"
       },
-      "matchPaths": ["packages/paywall/**"]
+      "matchFileNames": ["packages/paywall/**"]
     },
     {
       "minor": {
         "groupName": "packages/tsconfig"
       },
-      "matchPaths": ["packages/tsconfig/**"]
+      "matchFileNames": ["packages/tsconfig/**"]
     },
     {
       "minor": {
         "groupName": "packages/types"
       },
-      "matchPaths": ["packages/types/**"]
+      "matchFileNames": ["packages/types/**"]
     },
     {
       "minor": {
         "groupName": "packages/ui"
       },
-      "matchPaths": ["packages/ui/**"]
+      "matchFileNames": ["packages/ui/**"]
     },
     {
       "minor": {
         "groupName": "packages/unlock-express"
       },
-      "matchPaths": ["packages/unlock-express/**"]
+      "matchFileNames": ["packages/unlock-express/**"]
     },
     {
       "minor": {
         "groupName": "packages/unlock-js"
       },
-      "matchPaths": ["packages/unlock-js/**"]
+      "matchFileNames": ["packages/unlock-js/**"]
     },
     {
       "minor": {
         "groupName": "tests"
       },
-      "matchPaths": ["tests/**"]
+      "matchFileNames": ["tests/**"]
     },
     {
       "minor": {
         "groupName": "locksmith"
       },
-      "matchPaths": ["locksmith/**"]
+      "matchFileNames": ["locksmith/**"]
     },
     {
       "minor": {
         "groupName": "paywall-app"
       },
-      "matchPaths": ["paywall-app/**"]
+      "matchFileNames": ["paywall-app/**"]
     },
     {
       "minor": {
         "groupName": "smart-contracts"
       },
-      "matchPaths": ["smart-contracts/**"]
+      "matchFileNames": ["smart-contracts/**"]
     },
     {
       "minor": {
         "groupName": "unlock-app"
       },
-      "matchPaths": ["unlock-app/**"]
+      "matchFileNames": ["unlock-app/**"]
     },
     {
       "minor": {
         "groupName": "unlock-protocol.com"
       },
-      "matchPaths": ["unlock-protocol.com/**"]
+      "matchFileNames": ["unlock-protocol.com/**"]
     },
     {
       "minor": {
         "groupName": "wedlocks"
       },
-      "matchPaths": ["wedlocks/**"]
+      "matchFileNames": ["wedlocks/**"]
     },
     {
       "minor": {
         "groupName": "subgraph"
       },
-      "matchPaths": ["subgraph/**"]
+      "matchFileNames": ["subgraph/**"]
     },
     {
       "minor": {
         "groupName": "eth-node"
       },
-      "matchPaths": ["docker/development/eth-node/**"]
+      "matchFileNames": ["docker/development/eth-node/**"]
     }
   ],
   "rebaseWhen": "never",
-  "lockFileMaintenance": { "enabled": true }
+  "lockFileMaintenance": {
+    "enabled": true
+  }
 }
