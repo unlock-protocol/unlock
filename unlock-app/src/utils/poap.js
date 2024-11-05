@@ -5,11 +5,11 @@
  * @param {*} signature
  * @param {*} timestamp
  */
-export const pingPoap = (key, owner, signature, timestamp) => {
+export const pingPoap = async (key, owner, signature, timestamp) => {
   try {
     // Only on the web!
     if (typeof fetch !== 'undefined') {
-      fetch('https://api.poap.xyz/tasks/', {
+      await fetch('https://api.poap.xyz/tasks/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -26,7 +26,6 @@ export const pingPoap = (key, owner, signature, timestamp) => {
     }
   } catch (e) {
     // Fail silently. Our POAP integration is best effort.
-
     console.error(e)
   }
 }
