@@ -5,6 +5,18 @@ export const mainnet: NetworkConfig = {
     url: (address: string) => `https://blockscan.com/address/${address}`,
   },
   chain: 'ethereum',
+  dao: {
+    chainId: 8453,
+    governanceBridge: {
+      connext: '0x8898B472C54c31894e3B9bb83cEA802a5d0e63C6',
+      domainId: 6648936,
+      modules: {
+        connextMod: '0xAB6A5080e569A269D8cB54fdD00312A2c4c3a3aa',
+        delayMod: '0x8f05058d05C8167132f07aAA5130Ed3F0D78d5aE',
+      },
+    },
+    governor: '0x65bA0624403Fc5Ca2b20479e9F626eD4D78E0aD9',
+  },
   description: 'The original and most secure EVM network. ',
   explorer: {
     name: 'Etherscan',
@@ -17,14 +29,6 @@ export const mainnet: NetworkConfig = {
     },
   },
   featured: true,
-  governanceBridge: {
-    connext: '0x8898B472C54c31894e3B9bb83cEA802a5d0e63C6',
-    domainId: 6648936,
-    modules: {
-      connextMod: '0xAB6A5080e569A269D8cB54fdD00312A2c4c3a3aa',
-      delayMod: '0x8f05058d05C8167132f07aAA5130Ed3F0D78d5aE',
-    },
-  },
   hooks: {
     onKeyPurchaseHook: [
       {

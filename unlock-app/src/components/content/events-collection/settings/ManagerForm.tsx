@@ -7,12 +7,12 @@ import {
   Modal,
 } from '@unlock-protocol/ui'
 import { Controller, useForm, useWatch } from 'react-hook-form'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useEffect, useState } from 'react'
 import { onResolveName } from '~/utils/resolvers'
 import { EventCollection } from '@unlock-protocol/unlock-js'
 import { useEventCollectionManagers } from '~/hooks/useEventCollectionManagers'
 import { WrappedAddress } from '~/components/interface/WrappedAddress'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface CollectionManagerFormProps {
   eventCollection: EventCollection
@@ -124,7 +124,7 @@ const CollectionManagerCard = ({
   isRemoving,
 }: CollectionManagerCardProps) => {
   const [renounceModal, setRenounceModal] = useState(false)
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const isLoggedUser = account === manager
   const isManager = collectionManagers.includes(manager)
 

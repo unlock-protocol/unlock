@@ -9,7 +9,6 @@ import { ethers } from 'ethers'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import networks from '@unlock-protocol/networks'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
-import { useAuth } from '~/contexts/AuthenticationContext'
 
 export interface PickerState {
   network?: number
@@ -39,14 +38,13 @@ export function Picker({
   },
   customOption = false,
 }: Props) {
-  const { network: connectedNetwork } = useAuth()
   const [state, setState] = useState<Partial<PickerState>>({
     lockAddress,
     network,
     keyId,
   })
 
-  const currentNetwork = state.network || connectedNetwork || 1
+  const currentNetwork = state.network || 1
 
   const { data: locks, isPending: isLoadingLocks } = useQuery({
     queryKey: ['locks', userAddress, currentNetwork],

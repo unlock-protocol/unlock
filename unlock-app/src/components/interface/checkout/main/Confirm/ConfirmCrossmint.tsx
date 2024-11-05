@@ -12,13 +12,13 @@ import { Lock } from '~/unlockTypes'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
 import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { ethers } from 'ethers'
 import { useCrossmintEnabled } from '~/hooks/useCrossmintEnabled'
 import { TransactionAnimation } from '../../Shell'
 import { config } from '~/config/app'
 import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
 import Disconnect from '../Disconnect'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface Props {
   checkoutService: CheckoutService
@@ -41,7 +41,7 @@ export function ConfirmCrossmint({
 }: Props) {
   const [error, setError] = useState<string | null>(null)
   const [crossmintLoading, setCrossmintLoading] = useState(true)
-  const { email, account } = useAuth()
+  const { account } = useAuthenticate()
   const { lock, recipients, paywallConfig, data, keyManagers, renew } =
     useSelector(checkoutService, (state) => state.context)
   const [isConfirming, setIsConfirming] = useState(false)
@@ -152,10 +152,9 @@ export function ConfirmCrossmint({
   // crossmint config
   const crossmintConfig = {
     emailInputOptions: {
-      show: !email,
+      show: true,
     },
     recipient: {
-      email,
       wallet: recipients[0], // Crossmint only supports a single recipient for now!
     },
     environment: crossmintEnv,

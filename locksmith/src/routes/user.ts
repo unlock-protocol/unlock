@@ -1,9 +1,9 @@
 import express from 'express'
 import signatureValidationMiddleware from '../middlewares/signatureValidationMiddleware'
-
-const router = express.Router({ mergeParams: true })
 import userController from '../controllers/userController'
 import { SignedRequest } from '../types'
+
+const router: express.Router = express.Router({ mergeParams: true })
 
 const passwordEncryptedPrivateKeyPathRegex = new RegExp(
   '^/users/S+/passwordEncryptedPrivateKey/?$',

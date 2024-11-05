@@ -20,6 +20,7 @@ describe('TokenUriHook', function () {
         await hook.getAddress(),
         ethers.ZeroAddress,
         ethers.ZeroAddress,
+        ethers.ZeroAddress,
         ethers.ZeroAddress
       )
     ).wait()

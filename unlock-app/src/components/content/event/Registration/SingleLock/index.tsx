@@ -3,7 +3,6 @@ import {
   WalletlessRegistrationApply,
   WalletlessRegistrationClaim,
 } from '../WalletlessRegistration'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { LockPriceInternals } from '../LockPriceDetails'
 import { useGetLockCurrencySymbol } from '~/hooks/useSymbol'
 import { ADDRESS_ZERO, UNLIMITED_KEYS_COUNT } from '~/constants'
@@ -12,6 +11,7 @@ import { EmbeddedCheckout } from '../EmbeddedCheckout'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { emailInput } from '~/components/interface/checkout/main/Metadata'
 import { LoadingRegistrationCard } from '../LoadingRegistrationCard'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 export interface RegistrationCardSingleLockProps {
   checkoutConfig: {
@@ -38,7 +38,7 @@ export const RegistrationCardSingleLock = ({
     network,
   })
 
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
 
   const { isInitialLoading: isClaimableLoading, data: canClaim } = useCanClaim(
     {

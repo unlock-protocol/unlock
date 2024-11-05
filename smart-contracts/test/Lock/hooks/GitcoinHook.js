@@ -24,6 +24,7 @@ describe('GitcoinHook', function () {
         ethers.ZeroAddress,
         ethers.ZeroAddress,
         ethers.ZeroAddress,
+        ethers.ZeroAddress,
         ethers.ZeroAddress
       )
     ).wait()

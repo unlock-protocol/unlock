@@ -1,10 +1,10 @@
 import { useMutation } from '@tanstack/react-query'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { minifyAddress } from '@unlock-protocol/ui'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { useProvider } from './useProvider'
 
 export const useAddLockManager = (lockAddress: string, network: number) => {
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
 
   const addLockManager = async (address: string) => {
     const managerAddress = minifyAddress(address)

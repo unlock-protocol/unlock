@@ -2,7 +2,7 @@ import express from 'express'
 import KeyController from '../../controllers/v2/keyController'
 import { authenticatedMiddleware } from '../../utils/middlewares/auth'
 
-const router = express.Router({ mergeParams: true })
+const router: express.Router = express.Router({ mergeParams: true })
 
 const keyController = new KeyController()
 

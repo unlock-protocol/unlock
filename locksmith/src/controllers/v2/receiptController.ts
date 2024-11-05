@@ -33,12 +33,14 @@ export class ReceiptController {
       })
 
       // Returns receipts details
-      return response.status(200).json(receiptDetails)
+      response.status(200).json(receiptDetails)
+      return
     } catch (err: any) {
       logger.error(err.message)
-      return response.status(500).send({
+      response.status(500).send({
         message: 'Impossible to retrieve receipt details.',
       })
+      return
     }
   }
 
@@ -62,14 +64,16 @@ export class ReceiptController {
           returning: true,
         }
       )
-      return response.status(200).json({
+      response.status(200).json({
         ...dataValues,
       })
+      return
     } catch (err: any) {
       logger.error(err.message)
-      return response.status(500).json({
+      response.status(500).json({
         message: 'Failed to save purchaser details.',
       })
+      return
     }
   }
 }

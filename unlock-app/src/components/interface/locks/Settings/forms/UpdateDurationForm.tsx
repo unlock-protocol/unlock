@@ -8,7 +8,7 @@ import {
   ONE_DAY_IN_SECONDS,
   MAX_UINT,
 } from '~/constants'
-import { useAuth } from '~/contexts/AuthenticationContext'
+import { useProvider } from '~/hooks/useProvider'
 
 interface UpdateDurationFormProps {
   lockAddress: string
@@ -31,7 +31,7 @@ export const UpdateDurationForm = ({
     parseInt(`${duration ?? 0}`, 10) / ONE_DAY_IN_SECONDS
   )
 
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
 
   const {
     register,

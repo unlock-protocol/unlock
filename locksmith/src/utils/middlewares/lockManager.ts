@@ -11,15 +11,17 @@ export const lockManagerMiddleware: RequestHandler = async (req, res, next) => {
     const lockManager = Normalizer.ethereumAddress(req.user!.walletAddress!)
 
     if (!lockAddress) {
-      return res.status(404).send({
+      res.status(404).send({
         message: 'Missing lock Address',
       })
+      return
     }
 
     if (!network) {
-      return res.status(404).send({
+      res.status(404).send({
         message: 'Missing network',
       })
+      return
     }
 
     const web3Service = new Web3Service(networks)
@@ -31,15 +33,17 @@ export const lockManagerMiddleware: RequestHandler = async (req, res, next) => {
     )
 
     if (!isLockManager) {
-      return res.status(403).send({
+      res.status(403).send({
         message: `${lockManager} is not a lock manager for ${lockAddress} on ${network}`,
       })
+      return
     }
   } catch (err) {
     logger.error(err.message)
-    return res.status(422).send({
+    res.status(422).send({
       message: `There is some problem, please try again.`,
     })
+    return
   }
   return next()
 }

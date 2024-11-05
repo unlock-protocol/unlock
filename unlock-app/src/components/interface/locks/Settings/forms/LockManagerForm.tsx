@@ -11,11 +11,12 @@ import {
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useEffect, useState } from 'react'
 import { onResolveName } from '~/utils/resolvers'
 import useEns from '~/hooks/useEns'
 import { useAddLockManager } from '~/hooks/useAddLockManager'
+import { useProvider } from '~/hooks/useProvider'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 interface LockManagerFormProps {
   lockAddress: string
   network: number
@@ -117,7 +118,8 @@ const LockManagerCard = ({
   network,
 }: LockManagerCardProps) => {
   const [renounceModal, setRenounceModal] = useState(false)
-  const { account, getWalletService } = useAuth()
+  const { account } = useAuthenticate()
+  const { getWalletService } = useProvider()
   const managerEnsOrAddress = useEns(manager)
   const isLoggedUser = account?.toLowerCase() === manager?.toLowerCase()
 

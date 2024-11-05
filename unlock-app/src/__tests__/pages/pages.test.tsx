@@ -1,7 +1,6 @@
-import React from 'react'
 import * as rtl from '@testing-library/react'
 
-import Home from '../../pages/index'
+import Home from '../../../app/page'
 
 import { pageTitle } from '../../constants'
 import { ConfigContext } from '../../utils/withConfig'
