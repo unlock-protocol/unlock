@@ -18,6 +18,7 @@ const staging = {
     network: 84532,
     contract: '0xB37D532429940f3C59DA0aed4D0692bFfa9AF316',
   },
+  privyAppId: 'cm2oqudm203nny8z9ho6chvyv',
 }
 
 const dev = {
@@ -35,6 +36,7 @@ const dev = {
     network: 84532,
     contract: '0xB37D532429940f3C59DA0aed4D0692bFfa9AF316',
   },
+  privyAppId: process.env.NEXT_PUBLIC_PRIVY_APP_ID || staging.privyAppId,
 }
 
 const production = {
@@ -52,6 +54,7 @@ const production = {
     network: 8453,
     contract: '0x01D8412eE898A74cE44187F4877Bf9303E3C16e5',
   },
+  privyAppId: 'cm0ptl8td04urb29fpotv9q9y',
 }
 
 function getAppConfig(environment?: string) {

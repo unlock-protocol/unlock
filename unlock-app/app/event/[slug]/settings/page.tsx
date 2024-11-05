@@ -3,6 +3,7 @@ import { EventPageProps } from '../page'
 import { notFound } from 'next/navigation'
 import { EventSettings } from '~/components/content/event/Settings/EventSettings'
 import { fetchEventMetadata } from '~/utils/eventMetadata'
+import { AuthRequired } from 'app/Components/ProtectedContent'
 
 const SettingsPage = async ({ params }: EventPageProps) => {
   const { slug } = params
@@ -21,7 +22,12 @@ const SettingsPage = async ({ params }: EventPageProps) => {
 
   // we pass the slug to make sure we reload the settings as an authenticated user
   return (
-    <EventSettings slug={eventMetadata.slug!} checkoutConfig={checkoutConfig} />
+    <AuthRequired>
+      <EventSettings
+        slug={eventMetadata.slug!}
+        checkoutConfig={checkoutConfig}
+      />
+    </AuthRequired>
   )
 }
 

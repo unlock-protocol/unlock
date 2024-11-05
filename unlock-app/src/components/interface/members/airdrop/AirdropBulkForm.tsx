@@ -9,10 +9,10 @@ import { getAddressForName } from '~/hooks/useEns'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { KeyManager } from '@unlock-protocol/unlock-js'
 import { useConfig } from '~/utils/withConfig'
 import PrimeOnly from '../../prime/PrimeOnly'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 export const MAX_SIZE = 50
 
@@ -30,7 +30,7 @@ export function AirdropBulkForm({ lock, onConfirm, emailRequired }: Props) {
   const [error, setError] = useState('')
   const config = useConfig()
   const web3Service = useWeb3Service()
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const [isConfirming, setIsConfirming] = useState(false)
   const [isLoadingMembers, setIsLoadingMembers] = useState(false)
   const { getRootProps, getInputProps } = useDropzone({

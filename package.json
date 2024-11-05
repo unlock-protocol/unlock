@@ -8,18 +8,18 @@
     "doc": "docs"
   },
   "dependencies": {
-    "@babel/core": "7.25.2",
-    "@typescript-eslint/eslint-plugin": "8.8.0",
-    "@typescript-eslint/parser": "8.8.0",
+    "@babel/core": "7.26.0",
+    "@typescript-eslint/eslint-plugin": "8.12.2",
+    "@typescript-eslint/parser": "8.12.2",
     "babel-plugin-polyfill-corejs2": "0.4.11",
     "node-gyp": "10.2.0",
     "prettier-plugin-solidity": "1.4.1",
-    "typescript": "5.6.2"
+    "typescript": "5.6.3"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "2.1.1",
-    "@vitest/eslint-plugin": "1.1.5",
-    "eslint": "9.11.1",
+    "@vitest/coverage-v8": "2.1.4",
+    "@vitest/eslint-plugin": "1.1.7",
+    "eslint": "9.14.0",
     "eslint-plugin-evm-address-to-checksummed": "0.0.6",
     "eslint-plugin-json": "4.0.1",
     "eslint-plugin-mocha": "10.5.0",
@@ -28,8 +28,8 @@
     "husky": "9.1.6",
     "lint-staged": "15.2.10",
     "prettier": "3.3.3",
-    "typescript-eslint": "8.8.0",
-    "vitest": "2.1.1"
+    "typescript-eslint": "8.12.2",
+    "vitest": "2.1.4"
   },
   "workspaces": [
     "packages/**",
@@ -91,7 +91,7 @@
   },
   "engineStrict": true,
   "homepage": "https://github.com/unlock-protocol/unlock#readme",
-  "packageManager": "yarn@4.5.0",
+  "packageManager": "yarn@4.5.1",
   "lint-staged": {
     "*.{js,ts,tsx}": "yarn run lint --fix",
     "*.{js,ts,tsx,sol,css,md}": "prettier --write --plugin=prettier-plugin-solidity",

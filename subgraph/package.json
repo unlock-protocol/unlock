@@ -24,11 +24,11 @@
     "test": "graph test -v 0.5.2"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "0.79.2",
+    "@graphprotocol/graph-cli": "0.87.0",
     "@graphprotocol/graph-ts": "0.35.1",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/networks": "workspace:^",
-    "eslint": "9.9.1",
+    "eslint": "9.13.0",
     "fs-extra": "11.2.0",
     "handlebars": "4.7.8",
     "yargs": "17.7.2"
@@ -37,7 +37,7 @@
     "hoistingLimits": "workspaces"
   },
   "devDependencies": {
-    "ethers": "6.13.2",
+    "ethers": "6.13.4",
     "graphql": "16.9.0",
     "matchstick-as": "0.6.0",
     "mustache": "4.2.0"

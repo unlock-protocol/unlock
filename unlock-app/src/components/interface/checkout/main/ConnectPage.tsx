@@ -1,31 +1,16 @@
-import React, { Fragment } from 'react'
-import { PoweredByUnlock } from '../PoweredByUnlock'
-import ConnectWalletComponent from '../../connect/ConnectWalletComponent'
 import { CheckoutService } from './checkoutMachine'
+import { LoginModal } from '@privy-io/react-auth'
 
 interface ConnectPageProps {
   style: string
-  onNext?: () => void
   checkoutService?: CheckoutService
+  showPrivyModal: boolean
 }
 
-export const ConnectPage = ({
-  style,
-  onNext,
-  checkoutService,
-}: ConnectPageProps) => {
+export const ConnectPage = ({ style, showPrivyModal }: ConnectPageProps) => {
   return (
-    <Fragment>
-      <main className={style}>
-        <ConnectWalletComponent
-          onNext={onNext}
-          checkoutService={checkoutService}
-          shoudOpenConnectModal={false}
-        />
-      </main>
-      <footer className="grid items-center px-6 pt-2 border-t">
-        <PoweredByUnlock />
-      </footer>
-    </Fragment>
+    <main className={style}>
+      <LoginModal open={showPrivyModal} />
+    </main>
   )
 }

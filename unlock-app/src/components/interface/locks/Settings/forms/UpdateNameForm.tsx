@@ -3,7 +3,7 @@ import { Button, Input } from '@unlock-protocol/ui'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useAuth } from '~/contexts/AuthenticationContext'
+import { useProvider } from '~/hooks/useProvider'
 
 interface UpdateNameFormProps {
   disabled: boolean
@@ -24,7 +24,7 @@ export const UpdateNameForm = ({
   lockName,
   network,
 }: UpdateNameFormProps) => {
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
   const {
     register,
     handleSubmit,

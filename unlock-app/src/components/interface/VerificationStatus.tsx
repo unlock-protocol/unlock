@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useAuth } from '../../contexts/AuthenticationContext'
 import {
   MembershipCard,
   MembershipCardPlaceholder,
@@ -16,6 +15,7 @@ import { MAX_UINT } from '~/constants'
 import { config as AppConfig } from '~/config/app'
 import { useConnectModal } from '~/hooks/useConnectModal'
 import { Event, PaywallConfigType } from '@unlock-protocol/core'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface Props {
   checkoutConfig?: PaywallConfigType
@@ -81,11 +81,10 @@ export const VerificationStatus = ({
   eventProp,
   config,
   onVerified,
-  onClose,
 }: Props) => {
   const { data, sig, raw } = config
   const { lockAddress, timestamp, network, tokenId, account } = data
-  const { account: viewer } = useAuth()
+  const { account: viewer } = useAuthenticate()
   const { openConnectModal } = useConnectModal()
   const [isCheckingIn, setIsCheckingIn] = useState(false)
   const [showWarning, setShowWarning] = useState(false)
@@ -231,7 +230,6 @@ export const VerificationStatus = ({
       {ticket && (
         <MembershipCard
           image={ticket!.image}
-          onClose={onClose}
           keyId={tokenId!}
           owner={ticket!.owner}
           userMetadata={ticket!.userMetadata}

@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react'
 import LockSettingsPage from '~/components/interface/locks/Settings'
 import { useSearchParams } from 'next/navigation'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { Picker } from '~/components/interface/Picker'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 export type SettingTab =
   | 'general'
@@ -19,7 +19,7 @@ export type SettingTab =
 
 const LocksSettingsContent = () => {
   const searchParams = useSearchParams()
-  const { account: owner } = useAuth()
+  const { account: owner } = useAuthenticate()
 
   const [network, setNetwork] = useState<string>()
   const [lockAddress, setLockAddress] = useState<string>()

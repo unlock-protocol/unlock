@@ -679,6 +679,9 @@ export const checkoutMachine = createMachine(
       },
       RETURNING: {
         on: {
+          SIGN_MESSAGE: {
+            actions: ['signMessage'],
+          },
           MAKE_ANOTHER_PURCHASE: [
             {
               target: 'METADATA',

@@ -7,12 +7,13 @@ const {
   deployLock,
   deployContracts,
   parseInterface,
+  LOCK_MANAGER_ROLE,
 } = require('../helpers')
 
 describe('Lock / initializers', () => {
-  let unlockOwner, caller
+  let deployer, lockOwner, caller
   before(async () => {
-    ;[unlockOwner, , , , , , , caller] = await ethers.getSigners()
+    ;[deployer, lockOwner, , , , , , caller] = await ethers.getSigners()
   })
 
   describe('initialize()', () => {
@@ -28,14 +29,7 @@ describe('Lock / initializers', () => {
     it('may not be called again after deploying a lock', async () => {
       const lock = await deployLock()
       await reverts(
-        lock.initialize(
-          await unlockOwner.getAddress(),
-          0,
-          ADDRESS_ZERO,
-          0,
-          0,
-          ''
-        ),
+        lock.initialize(await deployer.getAddress(), 0, ADDRESS_ZERO, 0, 0, ''),
         'Initializable: contract is already initialized'
       )
     })
@@ -50,7 +44,9 @@ describe('Lock / initializers', () => {
       const template = await PublicLock.deploy()
       await template.initialize(callerAddress, 0, ADDRESS_ZERO, 0, 0, '')
       await assert.equal(await template.isLockManager(callerAddress), true)
-      await template.connect(caller).renounceLockManager()
+      await template
+        .connect(caller)
+        .renounceRole(LOCK_MANAGER_ROLE, await caller.getAddress())
       await assert.equal(await template.isLockManager(callerAddress), false)
     })
   })
@@ -70,13 +66,15 @@ describe('Lock / initializers', () => {
         await template.publicLockVersion()
       )
 
+      // unlock should not be lock manager anymore
       await assert.equal(
         await template.isLockManager(await unlock.getAddress()),
         false
       )
+
       await reverts(
         template.initialize(
-          await unlockOwner.getAddress(),
+          await lockOwner.getAddress(),
           0,
           ADDRESS_ZERO,
           0,
@@ -101,7 +99,9 @@ describe('Lock / initializers', () => {
         0,
         ''
       )
-      await template.connect(caller).renounceLockManager()
+      await template
+        .connect(caller)
+        .renounceRole(LOCK_MANAGER_ROLE, await caller.getAddress())
       await assert.equal(
         await template.isLockManager(await caller.getAddress()),
         false
@@ -127,7 +127,7 @@ describe('Lock / initializers', () => {
       // cant be re-initialized
       await reverts(
         template.initialize(
-          await unlockOwner.getAddress(),
+          await deployer.getAddress(),
           0,
           ADDRESS_ZERO,
           0,

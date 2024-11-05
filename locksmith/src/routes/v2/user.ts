@@ -2,7 +2,7 @@ import express from 'express'
 import { captchaMiddleware } from '../../utils/middlewares/recaptchaMiddleware'
 import userController from '../../controllers/userController'
 
-const router = express.Router({ mergeParams: true })
+const router: express.Router = express.Router({ mergeParams: true })
 
 router.post(
   '/:emailAddress/:selectedProvider/waas',

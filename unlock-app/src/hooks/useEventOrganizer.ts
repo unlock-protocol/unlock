@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { PaywallConfigType } from '@unlock-protocol/core'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
+import { useAuthenticate } from './useAuthenticate'
 
 interface useEventOrganizerProps {
   checkoutConfig: {
@@ -17,7 +17,7 @@ export const useEventOrganizer = ({
   checkoutConfig,
 }: useEventOrganizerProps) => {
   const web3Service = useWeb3Service()
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
 
   return useQuery({
     queryKey: ['eventOrganizer', checkoutConfig, account],

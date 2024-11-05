@@ -4,7 +4,7 @@ import { authenticatedMiddleware } from '../../utils/middlewares/auth'
 import { lockManagerMiddleware } from '../../utils/middlewares/lockManager'
 import { ReceiptBaseController } from '../../controllers/v2/receiptBaseController'
 
-const router = express.Router({ mergeParams: true })
+const router: express.Router = express.Router({ mergeParams: true })
 
 const receiptController = new ReceiptBaseController()
 

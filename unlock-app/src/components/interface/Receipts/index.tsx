@@ -1,10 +1,11 @@
+'use client'
+
 import { useSearchParams, useRouter } from 'next/navigation'
-import React from 'react'
 import { ReceiptBox } from './elements/ReceiptBox'
 import { CloseReceiptButton } from './elements/CloseReceiptButton'
 import { Button } from '@unlock-protocol/ui'
 
-export const ReceiptsPage = () => {
+export const ReceiptsContent = () => {
   const searchParams = useSearchParams()
   const router = useRouter()
 
@@ -59,4 +60,4 @@ export const ReceiptsPage = () => {
   )
 }
 
-export default ReceiptsPage
+export default ReceiptsContent

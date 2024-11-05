@@ -17,12 +17,12 @@ import {
 } from '@unlock-protocol/ui'
 import { useImageUpload } from '~/hooks/useImageUpload'
 import { useRouter } from 'next/navigation'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { onResolveName } from '~/utils/resolvers'
 import { WrappedAddress } from '~/components/interface/WrappedAddress'
 import { FiTrash as TrashIcon } from 'react-icons/fi'
 import { LinksField } from './LinksField'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface Links {
   farcaster?: string
@@ -57,7 +57,7 @@ export const EventCollectionForm = ({
 }: FormProps) => {
   const { mutateAsync: uploadImage, isPending: isUploading } = useImageUpload()
   const router = useRouter()
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const [isAccountManager, setIsAccountManager] = useState<boolean>(true)
 
   // Track if adding a manager is in progress

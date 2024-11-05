@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { locksmith } from '~/config/locksmith'
+import { useAuthenticate } from './useAuthenticate'
 
 interface useEventVerifiersProps {
   event: any
@@ -9,7 +9,7 @@ interface useEventVerifiersProps {
  * Checks if the current user is a verifier for the event
  */
 export const useEventVerifiers = ({ event }: useEventVerifiersProps) => {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
 
   return useQuery({
     queryKey: ['getEventVerifiers', event.slug, account],
