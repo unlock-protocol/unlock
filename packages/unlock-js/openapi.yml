@@ -770,6 +770,17 @@ components:
           schema:
             $ref: '#/components/schemas/GenericInvalidBodyError'
 
+    400.BadRequest:
+      description: Bad Request.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: 'Bad request due to invalid input.'
+
     401.NotAuthenticated:
       description: User is not authenticated.
       content:
@@ -777,7 +788,28 @@ components:
           schema:
             $ref: '#/components/schemas/GenericServerError'
 
+    401.Unauthorized:
+      description: User is not authorized to perform this action.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotAuthenticated'
+
     403.NotAuthenticatedOrAuthorized:
+      description: User is not authorized to perform this action.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotAuthenticated'
+
+    403.Forbidden:
+      description: User is not authorized to perform this action.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotAuthenticated'
+
+    403.NotAuthorized:
       description: User is not authorized to perform this action.
       content:
         application/json:

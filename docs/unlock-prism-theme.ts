@@ -1,4 +1,19 @@
-const UnlockPrismTheme = {
+interface StyleDefinition {
+  types: string[];
+  style: {
+    color: string;
+  };
+}
+
+interface PrismTheme {
+  plain: {
+    color: string;
+    backgroundColor: string;
+  };
+  styles: StyleDefinition[];
+}
+
+const UnlockPrismTheme: PrismTheme = {
   plain: {
     color: "#FFF7E8",
     backgroundColor: "#020207",
@@ -11,7 +26,7 @@ const UnlockPrismTheme = {
       },
     },
     {
-      types: ["inserted", "function"],
+      types: ["inserted", "function"], 
       style: {
         color: "rgb(80, 250, 123)",
       },
@@ -25,7 +40,7 @@ const UnlockPrismTheme = {
     {
       types: ["changed"],
       style: {
-        color: "rgb(255, 184, 108)",
+        color: "rgb(255, 184, 108)", 
       },
     },
     {
@@ -61,4 +76,4 @@ const UnlockPrismTheme = {
   ],
 };
 
-module.exports = UnlockPrismTheme;
+export default UnlockPrismTheme;
