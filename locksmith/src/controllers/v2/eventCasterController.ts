@@ -90,7 +90,7 @@ export const rsvpForEvent: RequestHandler = async (request, response) => {
     return response.status(200).json({
       network: event.contract.network,
       address: event.contract.address,
-      id: existingKey.tokenId,
+      id: Number(existingKey.tokenId),
       owner: ownerAddress,
     })
   }
