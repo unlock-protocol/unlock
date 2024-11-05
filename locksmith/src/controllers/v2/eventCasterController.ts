@@ -41,7 +41,8 @@ export const createEvent: RequestHandler = async (request, response) => {
     hosts,
     eventId,
   })
-  return response.status(201).json({ address, network })
+  response.status(201).json({ address, network })
+  return
 }
 
 // This is the API endpoint used by EventCaster to mint RSVP tokens
@@ -56,20 +57,23 @@ export const rsvpForEvent: RequestHandler = async (request, response) => {
   const { success, event } = await eventCasterResponse.json()
 
   if (!success) {
-    return response.status(422).json({ message: 'Could not retrieve event' })
+    response.status(422).json({ message: 'Could not retrieve event' })
+    return
   }
 
   if (!(event.contract?.address && event.contract?.network)) {
-    return response
+    response
       .status(422)
       .json({ message: 'This event does not have a contract attached.' })
+    return
   }
 
   // Get the recipient
   if (!user.verified_addresses.eth_addresses[0]) {
-    return response
+    response
       .status(422)
       .json({ message: 'User does not have a verified address.' })
+    return
   }
 
   const [provider, wallet] = await Promise.all([
@@ -87,12 +91,13 @@ export const rsvpForEvent: RequestHandler = async (request, response) => {
   )
 
   if (existingKey.tokenId > 0) {
-    return response.status(200).json({
+    response.status(200).json({
       network: event.contract.network,
       address: event.contract.address,
       id: Number(existingKey.tokenId),
       owner: ownerAddress,
     })
+    return
   }
 
   const walletService = new WalletService(networks)
@@ -103,20 +108,23 @@ export const rsvpForEvent: RequestHandler = async (request, response) => {
     recipient: ownerAddress,
   })
 
-  return response.status(201).json({
+  response.status(201).json({
     network: event.contract.network,
     address: event.contract.address,
     ...token,
   })
+  return
 }
 
 // Deletes an event. Unsure how to proceed here...
 export const deleteEvent: RequestHandler = async (_request, response) => {
-  return response.status(200).json({})
+  response.status(200).json({})
+  return
 }
 
 // Removes the RSVP for an event (burns the ticket!)
 export const unrsvpForEvent: RequestHandler = async (_request, response) => {
   // TODO: implement this
-  return response.status(200).json({})
+  response.status(200).json({})
+  return
 }

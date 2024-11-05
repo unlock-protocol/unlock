@@ -29,9 +29,10 @@ export class HookController {
     if (
       request.headers['content-type'] !== 'application/x-www-form-urlencoded'
     ) {
-      return response
+      response
         .status(415)
         .send('Only application/x-www-form-urlencoded request is accepted.')
+      return
     }
     const network = this.getNetwork(request.params.network!)
     const hub = {
@@ -45,11 +46,13 @@ export class HookController {
     }
 
     if (!network) {
-      return response.status(404).send('Unsupported Network')
+      response.status(404).send('Unsupported Network')
+      return
     }
     const result = await Hub.safeParseAsync(hub)
     if (!result.success) {
-      return response.status(400).send(result.error.flatten())
+      response.status(400).send(result.error.flatten())
+      return
     } else {
       // Send the accepted request to the subscriber and then validate the intent of the subscriber as well as persist the subscription.
       response.status(202).send('Accepted')

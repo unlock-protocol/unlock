@@ -25,9 +25,10 @@ export const createTransferCode: RequestHandler = async (request, response) => {
   )
 
   if (!key) {
-    return response.status(404).send({
+    response.status(404).send({
       message: 'No key found for this lock and keyId',
     })
+    return
   }
 
   const owner = normalizer.ethereumAddress(key.owner)
@@ -48,9 +49,10 @@ export const createTransferCode: RequestHandler = async (request, response) => {
   })?.[1] as string
 
   if (!recipient) {
-    return response.status(404).send({
+    response.status(404).send({
       message: 'No email address found for this user',
     })
+    return
   }
 
   const validPeriod = 60 * 60 * 15 // 15 minutes
@@ -95,7 +97,8 @@ export const createTransferCode: RequestHandler = async (request, response) => {
     transferCode: part2,
   }
 
-  return response.status(200).send(responseBody)
+  response.status(200).send(responseBody)
+  return
 }
 
 const TransferDoneBody = z.object({
@@ -125,9 +128,10 @@ export const transferDone: RequestHandler = async (request, response) => {
   )
 
   if (!isTransferSignedByLocksmith) {
-    return response.status(403).send({
+    response.status(403).send({
       message: 'Transfer signature is not valid',
     })
+    return
   }
 
   const keyOwnerMetadata = await UserTokenMetadata.findOne({
@@ -150,7 +154,8 @@ export const transferDone: RequestHandler = async (request, response) => {
     }
   )
 
-  return response.status(200).send({
+  response.status(200).send({
     message: 'Transfer done',
   })
+  return
 }

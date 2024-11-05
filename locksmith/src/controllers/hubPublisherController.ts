@@ -36,7 +36,8 @@ export const handlePublisher: RequestHandler<{
 }> = (request, response) => {
   const network = networks[request.params.network]
   if (!network) {
-    return response.status(404).send('Unsupported network')
+    response.status(404).send('Unsupported network')
+    return
   }
 
   const url = new URL(
@@ -60,5 +61,6 @@ export const handlePublisher: RequestHandler<{
     links.map((item) => `<${item.href}>; rel="${item.rel}"`)
   )
 
-  return response.send(template({ links }))
+  response.send(template({ links }))
+  return
 }
