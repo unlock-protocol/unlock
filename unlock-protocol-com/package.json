@@ -51,7 +51,7 @@
     "postcss": "8.4.47",
     "remark": "15.0.1",
     "remark-html": "16.0.1",
-    "tailwindcss": "3.4.13",
+    "tailwindcss": "3.4.14",
     "vitest": "2.1.4"
   },
   "scripts": {
