@@ -92,7 +92,7 @@
     "@types/qrcode.react": "1.0.5",
     "@types/react": "18.3.12",
     "@types/react-google-recaptcha": "2.1.9",
-    "@types/react-gtm-module": "2.0.3",
+    "@types/react-gtm-module": "2.0.4",
     "@types/remove-markdown": "0.3.4",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "@vitejs/plugin-react": "4.3.3",

@@ -15974,10 +15974,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-gtm-module@npm:2.0.3":
-  version: 2.0.3
-  resolution: "@types/react-gtm-module@npm:2.0.3"
-  checksum: 10/b4b892c9efe93f6f624a42ffe5de37ef7615139191eccc127f7dc2006a70b0540aacb0dc882e3452c344498fdc7f2d4eafc53fe3a33696c1e60fc6852ac650f5
+"@types/react-gtm-module@npm:2.0.4":
+  version: 2.0.4
+  resolution: "@types/react-gtm-module@npm:2.0.4"
+  checksum: 10/635699a2d85f958ba92126cda851f9a1b46df75d3846bdc89ce2345524f73d889a266110d00492f6c23e9e42e70ec2246449a93c9cc2c6367bd643a7d2f0e88a
   languageName: node
   linkType: hard
 
@@ -17139,7 +17139,7 @@ __metadata:
     "@types/qrcode.react": "npm:1.0.5"
     "@types/react": "npm:18.3.12"
     "@types/react-google-recaptcha": "npm:2.1.9"
-    "@types/react-gtm-module": "npm:2.0.3"
+    "@types/react-gtm-module": "npm:2.0.4"
     "@types/remove-markdown": "npm:0.3.4"
     "@unlock-protocol/core": "workspace:./packages/core"
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon"
