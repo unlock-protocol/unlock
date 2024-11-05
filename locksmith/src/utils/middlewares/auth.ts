@@ -115,9 +115,10 @@ export const authMiddleware: RequestHandler = async (req, _, next) => {
       }
       return next()
     }
-    return response.status(400).send({
+    response.status(400).send({
       message: 'Unsupported authorization type',
     })
+    return
   } catch (error) {
     logger.info(error.message)
     return next()
@@ -126,27 +127,30 @@ export const authMiddleware: RequestHandler = async (req, _, next) => {
 
 export const authenticatedMiddleware: RequestHandler = (req, res, next) => {
   if (!req.user?.walletAddress) {
-    return res.status(401).send({
+    res.status(401).send({
       message: 'You are not authenticated.',
     })
+    return
   }
   return next()
 }
 
 export const userOnlyMiddleware: RequestHandler = (req, res, next) => {
   if (req.user?.type === 'application') {
-    return res.status(403).send({
+    res.status(403).send({
       message: 'Applications are not authorized to use this endpoint.',
     })
+    return
   }
   return next()
 }
 
 export const applicationOnlyMiddleware: RequestHandler = (req, res, next) => {
   if (req.user?.type !== 'application') {
-    return res.status(403).send({
+    res.status(403).send({
       message: 'Only applications are authorized to use this endpoint.',
     })
+    return
   }
   return next()
 }

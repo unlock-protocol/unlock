@@ -36,7 +36,8 @@ export const guildHook: RequestHandler = async (request, response) => {
   })
 
   if (!settings?.hookGuildId) {
-    return response.status(401)
+    response.status(401)
+    return
   }
 
   const hookGuildId = settings.hookGuildId
@@ -47,9 +48,10 @@ export const guildHook: RequestHandler = async (request, response) => {
   })
 
   if (!wallet) {
-    return response.status(422).json({
+    response.status(422).json({
       error: 'This lock has a misconfigured Guild hook.',
     })
+    return
   }
 
   const accesses = await Promise.all(
@@ -68,9 +70,10 @@ export const guildHook: RequestHandler = async (request, response) => {
     })
   )
 
-  return response.status(200).send({
+  response.status(200).send({
     result: accesses,
   })
+  return
 }
 
 // schema for validating and parsing incoming request queries using Zod
@@ -134,9 +137,10 @@ export const gitcoinHook: RequestHandler = async (request, response) => {
     settings?.requiredGitcoinPassportScore === null
   ) {
     // if the check fails, respond with an appropriate error message
-    return response.status(400).json({
+    response.status(400).json({
       error: 'The required Gitcoin Passport score is not defined or invalid.',
     })
+    return
   }
 
   const requiredScore = settings.requiredGitcoinPassportScore
@@ -154,9 +158,10 @@ export const gitcoinHook: RequestHandler = async (request, response) => {
     })
 
     if (!wallet) {
-      return response.status(422).json({
+      response.status(422).json({
         error: 'This lock has a misconfigured Gitcoin Passport hook.',
       })
+      return
     }
 
     let attempts = 0
@@ -178,9 +183,10 @@ export const gitcoinHook: RequestHandler = async (request, response) => {
     }
 
     if (!scoresReady) {
-      return response.status(504).json({
+      response.status(504).json({
         error: 'Timeout: Unable to verify scores within expected time frame.',
       })
+      return
     }
 
     // generate signatures for recipients with valid scores
@@ -203,14 +209,14 @@ export const gitcoinHook: RequestHandler = async (request, response) => {
     const signatures = await Promise.all(generatedSignatures)
 
     // send the signatures
-    return response.status(200).send({
+    response.status(200).send({
       result: signatures,
     })
+    return
   } catch (error) {
     // log and send errors if encountered
     logger.error('Error in Gitcoin score verification:', error)
-    return response
-      .status(500)
-      .json({ error: 'Error verifying Gitcoin scores.' })
+    response.status(500).json({ error: 'Error verifying Gitcoin scores.' })
+    return
   }
 }

@@ -14,15 +14,17 @@ export const lockManagerOrKeyOwnerMiddleware: RequestHandler = async (
   const tokenId = req.params.keyId.toLowerCase()
 
   if (!lockAddress) {
-    return res.status(404).send({
+    res.status(404).send({
       message: 'Missing lock Address',
     })
+    return
   }
 
   if (!network) {
-    return res.status(404).send({
+    res.status(404).send({
       message: 'Missing network',
     })
+    return
   }
 
   const web3Service = new Web3Service(networks)
@@ -33,9 +35,10 @@ export const lockManagerOrKeyOwnerMiddleware: RequestHandler = async (
   ])
 
   if (!isLockManager && Normalizer.ethereumAddress(keyOwner) !== userAddress) {
-    return res.status(403).send({
+    res.status(403).send({
       message: `${userAddress} is not a lock manager or the key owner of ${tokenId} for ${lockAddress} on ${network}`,
     })
+    return
   }
   return next()
 }

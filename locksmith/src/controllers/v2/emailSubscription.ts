@@ -27,9 +27,10 @@ export const unsubscribeFromEmailList: RequestHandler = async (
       conflictFields: ['lockAddress', 'userAddress', 'network'],
     }
   )
-  return response.send({
+  response.send({
     success: true,
   })
+  return
 }
 
 export const reSubscribeToEmailList: RequestHandler = async (
@@ -55,7 +56,8 @@ export const reSubscribeToEmailList: RequestHandler = async (
     },
   })
 
-  return response.send({
+  response.send({
     success: true,
   })
+  return
 }

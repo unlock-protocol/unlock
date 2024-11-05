@@ -51,7 +51,8 @@ export class PurchaseController {
   // Provides info on the purchaser addresses. This is used for ticket verification as well to verify who signed the QR code.
   async info(_req: SignedRequest, res: Response) {
     const fulfillmentDispatcher = new Dispatcher()
-    return res.json(await fulfillmentDispatcher.balances())
+    res.json(await fulfillmentDispatcher.balances())
+    return
   }
 
   /*
@@ -79,16 +80,18 @@ export class PurchaseController {
     ])
 
     if (!hasEnoughToPayForGas) {
-      return response.status(400).send({
+      response.status(400).send({
         error: `Purchaser does not have enough to pay for gas on ${network}`,
       })
+      return
     }
 
     if (soldOut) {
       // TODO: Cancel authorization
-      return response.status(400).send({
+      response.status(400).send({
         error: 'Lock is sold out.',
       })
+      return
     }
 
     try {
@@ -223,7 +226,8 @@ export class PurchaseController {
         return
       }
       logger.error('There was an error when capturing payment', error)
-      return response.status(400).send({ error: error.message })
+      response.status(400).send({ error: error.message })
+      return
     }
   }
 
@@ -246,21 +250,24 @@ export class PurchaseController {
       ])
 
       if (soldOut) {
-        return response.status(400).send({
+        response.status(400).send({
           message: 'Lock is sold out',
         })
+        return
       }
 
       if (BigInt(totalAmount) > BigInt(0)) {
-        return response.status(400).send({
+        response.status(400).send({
           message: 'Lock is not free',
         })
+        return
       }
 
       if (LOCKS_WITH_DISABLED_CLAIMS.indexOf(lockAddress.toLowerCase()) > -1) {
-        return response.status(400).send({
+        response.status(400).send({
           message: 'Claim disabled for this lock',
         })
+        return
       }
 
       const [hasEnoughToPayForGas, canAffordGas] = await Promise.all([
@@ -269,26 +276,30 @@ export class PurchaseController {
       ])
 
       if (!canAffordGas.canAfford) {
-        return response.status(400).send({
+        response.status(400).send({
           message: canAffordGas.reason,
         })
+        return
       }
 
       if (!hasEnoughToPayForGas) {
-        return response.status(400).send({
+        response.status(400).send({
           message:
             'Purchaser does not have enough funds to allow claiming the membership',
         })
+        return
       }
 
-      return response.status(200).send({
+      response.status(200).send({
         canClaim: true,
       })
+      return
     } catch (error) {
       logger.error(error)
-      return response.status(500).send({
+      response.status(500).send({
         message: 'You cannot claim the membership',
       })
+      return
     }
   }
 }

@@ -17,9 +17,10 @@ export const generateCertificate: RequestHandler = async (
   })
 
   if (!certificate) {
-    return response.status(422).send({
+    response.status(422).send({
       message: `Certificate can't be generated for the provided tokenId`,
     })
+    return
   }
 
   response.writeHead(200, {
@@ -27,5 +28,6 @@ export const generateCertificate: RequestHandler = async (
     'Content-Length': certificate.length,
   })
 
-  return response.end(certificate)
+  response.end(certificate)
+  return
 }

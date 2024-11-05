@@ -17,7 +17,8 @@ export const allReceipts: RequestHandler = async (request, response) => {
 
   const items = await getAllReceiptsWithSupplierData(network, lockAddress)
 
-  return response.json({ items })
+  response.json({ items })
+  return
 }
 
 export const createDownloadReceiptsRequest: RequestHandler = async (
@@ -38,7 +39,8 @@ export const createDownloadReceiptsRequest: RequestHandler = async (
   })
 
   if (unfinishedJob) {
-    return response.json({ status: 'pending' })
+    response.json({ status: 'pending' })
+    return
   }
 
   const payload = new Payload()
@@ -60,7 +62,8 @@ export const createDownloadReceiptsRequest: RequestHandler = async (
       maxAttempts: 3,
     }
   )
-  return response.json({ status: 'pending' })
+  response.json({ status: 'pending' })
+  return
 }
 
 export const getReceiptsStatus: RequestHandler = async (request, response) => {

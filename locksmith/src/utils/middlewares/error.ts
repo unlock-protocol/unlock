@@ -11,13 +11,15 @@ export const errorHandler: ErrorRequestHandler = (
     return _next(error)
   }
   if (error instanceof ZodError) {
-    return response.status(400).send({
+    response.status(400).send({
       message: error.message,
       error: error.format(),
     })
+    return
   } else {
-    return response.status(500).send({
+    response.status(500).send({
       message: error.message,
     })
+    return
   }
 }

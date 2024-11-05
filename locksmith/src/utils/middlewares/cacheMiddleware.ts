@@ -45,16 +45,18 @@ export const createCacheMiddleware = (
     const key = (req.originalUrl || req.url).trim().toLowerCase()
     const cached = cache.retrieveItemValue(key)
     if (cached) {
-      return res
+      res
         .header({
           ...cached.headers,
           'locksmith-cache': 'HIT',
         })
         .send(cached.body)
+      return
     }
 
     const sendResponse = res.send.bind(res)
 
+    // @ts-expect-error Type '(body: string | Buffer) => void' is not assignable to type 'Send<any, Response<any, Record<string, any>, number>>'.
     res.send = function send(body: string | Buffer) {
       // Only cache 200 responses
       if ([200].includes(res.statusCode)) {
@@ -68,7 +70,7 @@ export const createCacheMiddleware = (
         )
       }
       res.setHeader('locksmith-cache', 'MISS')
-      return sendResponse(body)
+      sendResponse(body)
     }.bind(res)
     return next()
   }

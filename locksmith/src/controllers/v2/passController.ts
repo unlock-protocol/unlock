@@ -77,15 +77,17 @@ export const generateGoogleWalletPass: RequestHandler = async (
     )
 
     // Send the pass object URL in the response
-    return response.status(200).send({
+    response.status(200).send({
       passObjectUrl,
     })
+    return
   } catch (error) {
     // Log errors that occur and send a 500 Internal Server Error response
     logger.error('Error in generating android pass:', error)
-    return response.status(500).send({
+    response.status(500).send({
       message: 'Internal Server Error',
     })
+    return
   }
 }
 
@@ -157,8 +159,9 @@ export const generateAppleWalletPass: RequestHandler = async (
   } catch (error) {
     // Log errors that occur and send a 500 Internal Server Error response
     logger.error('Error in generating apple wallet pass:', error)
-    return response.status(500).send({
+    response.status(500).send({
       message: 'Error in generating apple wallet pass',
     })
+    return
   }
 }

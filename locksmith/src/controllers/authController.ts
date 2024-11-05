@@ -14,47 +14,52 @@ export const authorize = async (
   if (!redirect_uri) {
     const details = 'missing redirect_uri'
     logger.info(details)
-    return res.status(400).json({
+    res.status(400).json({
       error: 'invalid_request',
       details,
     })
+    return
   }
 
   if (!client_id) {
     const details = 'missing client_id'
     logger.info(details)
-    return res.status(400).json({
+    res.status(400).json({
       error: 'invalid_request',
       details,
     })
+    return
   }
 
   if (grant_type !== 'authorization_code') {
     const details = 'wrong grant_type'
     logger.info(details)
-    return res.status(400).json({
+    res.status(400).json({
       error: 'invalid_request',
       details,
     })
+    return
   }
 
   if (!code) {
     const details = 'missing code'
     logger.info(details)
-    return res.status(400).json({
+    res.status(400).json({
       error: 'invalid_request',
       details,
     })
+    return
   }
 
   const redirectUrl = new URL(redirect_uri)
   if (redirectUrl.host !== client_id) {
     const details = 'client_id does not match redirect_uri host'
     logger.info(details)
-    return res.status(400).json({
+    res.status(400).json({
       error: 'invalid_request',
       details,
     })
+    return
   }
 
   try {
@@ -73,9 +78,10 @@ export const authorize = async (
     )
 
     const recoveredAddress = fields.address
-    return res.json({
+    res.json({
       me: recoveredAddress,
     })
+    return
   } catch (error: any) {
     logger.error('Error verifying auth signature', { code })
     switch (error) {

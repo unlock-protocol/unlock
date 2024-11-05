@@ -82,7 +82,7 @@ router.post(
   // Upload upto 5 images at once
   upload.array('images', 5),
   (request, response) => {
-    return response.status(201).send({
+    response.status(201).send({
       results: Object.values(request.files || []).map((file: any) => {
         return {
           url: file.location,
@@ -103,6 +103,7 @@ router.post(
         }
       }),
     })
+    return
   }
 )
 

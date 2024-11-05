@@ -31,9 +31,10 @@ export const captchaMiddleware: RequestHandler = async (
 
   const captchaValue = request.headers['captcha']
   if (!captchaValue) {
-    return response.status(403).send({
+    response.status(403).send({
       message: 'You need to provide a valid captcha value in the headers.',
     })
+    return
   }
   const endpoint = `https://www.google.com/recaptcha/api/siteverify?secret=${config.recaptchaSecret}&response=${captchaValue}`
 
@@ -44,10 +45,10 @@ export const captchaMiddleware: RequestHandler = async (
   const json = await result.json()
 
   if (!json.success) {
-    console.log(json)
-    return response.status(403).send({
+    response.status(403).send({
       message: 'Invalid captcha value. Try again',
     })
+    return
   }
 
   return next()

@@ -150,14 +150,16 @@ export class TicketsController {
         }
       }
 
-      return response.status(202).send({
+      response.status(202).send({
         message: 'Ticket checked in',
       })
+      return
     } catch (error) {
       logger.error(error.message)
-      return response.status(500).send({
+      response.status(500).send({
         error: 'Could not mark ticket as checked in',
       })
+      return
     }
   }
 
@@ -186,9 +188,10 @@ export class TicketsController {
       )
 
       if (!key) {
-        return response.status(404).send({
+        response.status(404).send({
           message: 'No key found for this lock and keyId',
         })
+        return
       }
 
       const sent = await notifyNewKeyToWedlocks(
@@ -203,12 +206,14 @@ export class TicketsController {
         },
         network
       )
-      return response.status(200).send({
+      response.status(200).send({
         sent,
       })
+      return
     } catch (err) {
       logger.error(err.message)
-      return response.sendStatus(500)
+      response.sendStatus(500)
+      return
     }
   }
 
@@ -237,12 +242,14 @@ export class TicketsController {
       response.writeHead(200, {
         'Content-Type': 'image/gif',
       })
-      return response.end(img)
+      response.end(img)
+      return
     } catch (err) {
       logger.error(err)
-      return response.sendStatus(500).send({
+      response.sendStatus(500).send({
         message: 'Failed to generate QR code',
       })
+      return
     }
   }
 
@@ -264,14 +271,16 @@ export class TicketsController {
         tokenId,
       })
 
-      return response.status(200).send({
+      response.status(200).send({
         verificationUrl,
       })
+      return
     } catch (err) {
       logger.error(err)
-      return response.status(500).send({
+      response.status(500).send({
         message: 'Failed to generate QR code',
       })
+      return
     }
   }
 }
@@ -294,9 +303,10 @@ export const generateTicket: RequestHandler = async (request, response) => {
   )
 
   if (!key) {
-    return response.status(404).send({
+    response.status(404).send({
       message: 'Key not found',
     })
+    return
   }
 
   const ticket = await createTicket({
@@ -312,7 +322,8 @@ export const generateTicket: RequestHandler = async (request, response) => {
     'Content-Length': ticket.length,
   })
 
-  return response.end(ticket)
+  response.end(ticket)
+  return
 }
 
 export const getTicket: RequestHandler = async (request, response) => {
@@ -341,9 +352,10 @@ export const getTicket: RequestHandler = async (request, response) => {
   ])
 
   if (!key) {
-    return response.status(404).send({
+    response.status(404).send({
       message: 'Key not found',
     })
+    return
   }
 
   const baseTicket = {
@@ -362,7 +374,7 @@ export const getTicket: RequestHandler = async (request, response) => {
       config.services.locksmith,
       network
     )
-    return response.status(200).send({
+    response.status(200).send({
       ...baseTicket,
       name:
         keyData.name?.replace(/ +/, '')?.trim()?.toLowerCase() === 'unlockkey'
@@ -379,6 +391,7 @@ export const getTicket: RequestHandler = async (request, response) => {
       },
       isVerifier: false,
     })
+    return
   }
 
   const isManager = key.lock.lockManagers
@@ -409,7 +422,7 @@ export const getTicket: RequestHandler = async (request, response) => {
     network
   )
 
-  return response.status(200).send({
+  response.status(200).send({
     ...baseTicket,
     name:
       keyData.name?.replace(/ +/, '')?.trim()?.toLowerCase() === 'unlockkey'
@@ -427,4 +440,5 @@ export const getTicket: RequestHandler = async (request, response) => {
     isVerifier: isVerifier || isManager,
     verifierName: isVerifier ? verifier?.name : null,
   })
+  return
 }

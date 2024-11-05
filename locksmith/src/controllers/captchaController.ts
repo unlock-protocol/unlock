@@ -25,7 +25,8 @@ export const sign = async (req: SignedRequest, res: Response): Promise<any> => {
   const { recaptchaSecret } = config
 
   if (!recipients || !captchaValue || !Array.isArray(recipients)) {
-    return res.json({ error: 'Missing recipients or captchaValue' })
+    res.json({ error: 'Missing recipients or captchaValue' })
+    return
   }
 
   const url = `https://www.google.com/recaptcha/api/siteverify?secret=${recaptchaSecret}&response=${captchaValue}`
@@ -35,7 +36,8 @@ export const sign = async (req: SignedRequest, res: Response): Promise<any> => {
   }).then((response) => response.json())
 
   if (!response.success) {
-    return res.json({ error: response['error-codes'] })
+    res.json({ error: response['error-codes'] })
+    return
   }
 
   const wallet = await getSignerFromOnKeyPurchaserHookOnLock({
@@ -44,9 +46,10 @@ export const sign = async (req: SignedRequest, res: Response): Promise<any> => {
   })
 
   if (!wallet) {
-    return res.status(422).json({
+    res.status(422).json({
       error: 'This lock has a misconfigured Captcha hook.',
     })
+    return
   }
 
   const messages: string[] = []
@@ -61,11 +64,12 @@ export const sign = async (req: SignedRequest, res: Response): Promise<any> => {
     signatures.push(signature)
     i += 1
   }
-  return res.json({
+  res.json({
     messages,
     signer: await wallet.getAddress(),
     signatures,
   })
+  return
 }
 
 const CaptchaController = {

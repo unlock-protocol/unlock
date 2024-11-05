@@ -25,14 +25,16 @@ export class ApplicationController {
         }
       })
 
-      return response.status(200).json({
+      response.status(200).json({
         result,
       })
+      return
     } catch (error) {
       logger.error(error.message)
-      return response.status(500).json({
+      response.status(500).json({
         message: 'Failed to fetch list of applications',
       })
+      return
     }
   }
 
@@ -48,18 +50,21 @@ export class ApplicationController {
 
       const applicationData = await application.save()
 
-      return response.status(201).json(applicationData.toJSON())
+      response.status(201).json(applicationData.toJSON())
+      return
     } catch (error) {
       logger.error(error.message)
       if (error instanceof z.ZodError) {
-        return response.status(400).send({
+        response.status(400).send({
           message: 'Application data schema is invalid',
           error: error.format(),
         })
+        return
       }
-      return response.status(500).send({
+      response.status(500).send({
         message: 'Application could not be created',
       })
+      return
     }
   }
 
@@ -78,21 +83,24 @@ export class ApplicationController {
       })
 
       if (!application) {
-        return response.status(404).json({
+        response.status(404).json({
           message: 'Application not found or you do not have access to it.',
         })
+        return
       }
 
       await application.destroy()
 
-      return response.status(200).json({
+      response.status(200).json({
         message: 'Successfully deleted the application.',
       })
+      return
     } catch (error) {
       logger.error(error.message)
-      return response.status(500).json({
+      response.status(500).json({
         message: 'Application could not be deleted',
       })
+      return
     }
   }
 
@@ -113,29 +121,33 @@ export class ApplicationController {
       })
 
       if (!application) {
-        return response.status(404).json({
+        response.status(404).json({
           message: 'Application not found.',
         })
+        return
       }
 
       application.name = name
 
       const app = await application.save()
-      return response.status(200).json({
+      response.status(200).json({
         ...app.toJSON(),
         key: null,
       })
+      return
     } catch (error) {
       logger.error(error.message)
       if (error instanceof z.ZodError) {
-        return response.status(400).send({
+        response.status(400).send({
           message: 'Application data schema is invalid',
           error: error.format(),
         })
+        return
       }
-      return response.status(500).send({
+      response.status(500).send({
         message: 'Server error in updating the application',
       })
+      return
     }
   }
 }

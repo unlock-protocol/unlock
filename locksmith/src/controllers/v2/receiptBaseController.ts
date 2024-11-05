@@ -33,12 +33,14 @@ export class ReceiptBaseController {
 
     if (!receipt) {
       // no returning content
-      return response.sendStatus(204)
+      response.sendStatus(204)
+      return
     }
 
-    return response.status(200).json({
+    response.status(200).json({
       ...receipt?.dataValues,
     })
+    return
   }
 
   // Save Supplier details for Receipts
@@ -60,20 +62,23 @@ export class ReceiptBaseController {
             returning: true,
           }
         )
-        return response.status(200).json({
+        response.status(200).json({
           ...dataValues,
         })
+        return
       } catch (err: any) {
         logger.error(err.message)
-        return response.status(500).json({
+        response.status(500).json({
           message: 'Failed to save supplier details',
         })
+        return
       }
     } catch (err: any) {
       logger.error(err.message)
-      return response.status(500).json({
+      response.status(500).json({
         message: 'Failed to save supplier details',
       })
+      return
     }
   }
 }

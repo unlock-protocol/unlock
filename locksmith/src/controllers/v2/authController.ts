@@ -126,17 +126,18 @@ export const loginWithPrivy: RequestHandler = async (request, response) => {
     const { accessToken, identityToken } = request.body
 
     if (!accessToken) {
-      return response.status(400).json({ error: 'Access token is required' })
+      response.status(400).json({ error: 'Access token is required' })
+      return
     }
 
     if (!identityToken) {
-      return response.status(400).json({ error: 'Identity token is required' })
+      response.status(400).json({ error: 'Identity token is required' })
+      return
     }
 
     if (!privy) {
-      return response
-        .status(500)
-        .json({ error: 'Privy client is not initialized' })
+      response.status(500).json({ error: 'Privy client is not initialized' })
+      return
     }
 
     // Verify the access token using Privy
@@ -152,9 +153,10 @@ export const loginWithPrivy: RequestHandler = async (request, response) => {
     )
 
     if (!wallet?.address) {
-      return response
+      response
         .status(400)
         .json({ error: 'User does not have a wallet address' })
+      return
     }
 
     const walletAddress = normalizer.ethereumAddress(wallet.address)
@@ -167,29 +169,33 @@ export const loginWithPrivy: RequestHandler = async (request, response) => {
       expireAt,
     })
 
-    return response.setHeader('Authorization', `Bearer ${id}`).send({
+    response.setHeader('Authorization', `Bearer ${id}`).send({
       walletAddress,
       accessToken: id,
     })
+    return
   } catch (error) {
     console.error('Error in loginWithPrivy:', error)
-    return response.status(401).json({ error: 'Invalid access token' })
+    response.status(401).json({ error: 'Invalid access token' })
+    return
   }
 }
 
 export const user: RequestHandler = (request, response) => {
-  return response.status(200).send({
+  response.status(200).send({
     walletAddress: request.user?.walletAddress,
   })
+  return
 }
 
 export const nonce: RequestHandler = (_, response) => {
   const nonce = generateNonce()
-  return response
+  response
     .status(200)
     .setHeader('content-type', 'text/html')
     .setHeader('nonce', nonce)
     .send(nonce)
+  return
 }
 
 export const logout: RequestHandler = async (request, response) => {
@@ -201,14 +207,16 @@ export const logout: RequestHandler = async (request, response) => {
       },
       force: true,
     })
-    return response.status(200).send({
+    response.status(200).send({
       message: 'Successfully logged out',
     })
+    return
   } catch (error) {
     logger.error(error.message)
-    return response.status(500).send({
+    response.status(500).send({
       message: 'Failed to logout',
     })
+    return
   }
 }
 
@@ -217,9 +225,10 @@ export const revoke: RequestHandler = async (request, response) => {
     const id = request.user?.session
     if (!id) {
       // Missing id... so we can't revoke
-      return response.status(400).send({
+      response.status(400).send({
         message: 'Missing id, cannot revoke',
       })
+      return
     }
     await Session.destroy({
       where: {
@@ -227,13 +236,15 @@ export const revoke: RequestHandler = async (request, response) => {
       },
       force: true,
     })
-    return response.status(200).send({
+    response.status(200).send({
       message: 'Successfully revoked',
     })
+    return
   } catch (error) {
     logger.error(error.message)
-    return response.status(500).send({
+    response.status(500).send({
       message: 'Failed to revoke',
     })
+    return
   }
 }

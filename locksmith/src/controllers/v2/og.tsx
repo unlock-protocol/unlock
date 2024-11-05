@@ -217,11 +217,13 @@ export const eventOGHandler: RequestHandler = async (request, response) => {
       'Content-Length': pngBuffer.length,
     })
 
-    return response.end(pngBuffer)
+    response.end(pngBuffer)
+    return
   } catch (error) {
     logger.error('Could not generate OG image', error)
-    return response
+    response
       .status(500)
       .json({ message: 'We could not generate OG image', error })
+    return
   }
 }

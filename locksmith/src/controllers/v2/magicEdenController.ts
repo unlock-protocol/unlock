@@ -41,5 +41,6 @@ export const purchase = async (request: Request, response: Response) => {
     _data: [[]],
   }
 
-  return response.status(200).send(params)
+  response.status(200).send(params)
+  return
 }
