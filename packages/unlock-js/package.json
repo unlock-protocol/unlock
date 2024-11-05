@@ -44,7 +44,7 @@
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "@unlock-protocol/types": "workspace:./packages/types",
     "eslint": "9.14.0",
-    "ethers": "6.13.2",
+    "ethers": "6.13.4",
     "hardhat": "2.22.15",
     "prettier": "3.3.3",
     "tsup": "8.3.5",

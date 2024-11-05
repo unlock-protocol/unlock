@@ -27,7 +27,7 @@
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "arb-shared-dependencies": "1.0.0",
     "eslint": "9.14.0",
-    "ethers": "6.13.2",
+    "ethers": "6.13.4",
     "ethers-multisend": "3.1.0",
     "fs-extra": "11.2.0",
     "hardhat": "2.22.15",
