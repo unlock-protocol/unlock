@@ -165,8 +165,8 @@ When using an async function to parse a proposal, you can pass params to the fun
 **CLI call**
 
 ```sh
-RUN_FORK=1 yarn hardhat gov --gov-address 0x440d9D4E66d39bb28FB58729Cb4D3ead2A595591 \
-  --proposal proposals/my-proposal.js
+RUN_FORK=8453 yarn hardhat gov --gov-address 0x65bA0624403Fc5Ca2b20479e9F626eD4D78E0aD9 \
+  --proposal proposals/up/my-proposal.js
   0x000000 1000
 ```
 
@@ -200,11 +200,11 @@ module.exports = async function (params) {
 
 check [`./proposals/002-set-protocol-fee.js`](./proposals/002-set-protocol-fee.js) for an example.
 
-2. Test you proposal locally on a mainnet fork
+2. Test your proposal locally on a base fork
 
 ```shell
-RUN_FORK=1 yarn hardhat gov --gov-address 0x440d9D4E66d39bb28FB58729Cb4D3ead2A595591 \
-  --proposal proposals/<your-proposal>.js
+RUN_FORK=8453 yarn hardhat gov --gov-address 0x65bA0624403Fc5Ca2b20479e9F626eD4D78E0aD9 \
+  --proposal proposals/up/<your-proposal>.js
 ```
 
 Additionnaly, you can pass arguments to your proposal script via CLI positional args.
@@ -212,7 +212,7 @@ Additionnaly, you can pass arguments to your proposal script via CLI positional 
 3. When things are ready, post it to the DAO!
 
 ```
-yarn hardhat gov:submit --proposal proposals/<your-proposal>.js --network mainnet
+yarn hardhat gov:submit --proposal proposals/<your-proposal>.js --network base
 ```
 
 4. Head to [Tally](https://www.withtally.com/governance/unlock) to see your proposal. NB: this may take some time as it requires X block confirmations
