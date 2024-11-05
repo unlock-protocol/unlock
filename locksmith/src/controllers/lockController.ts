@@ -22,11 +22,12 @@ export const connectStripe = async (req: Request, res: Response) => {
       parseInt(chain)
     )
     if (!isAuthorized) {
-      return res
+      res
         .status(401)
         .send(
           `${req.signee} is not a lock manager for ${lockAddress} on ${chain}`
         )
+      return
     } else {
       const links = await stripeOperations.connectStripe(
         Normalizer.ethereumAddress(req.signee),
@@ -34,14 +35,16 @@ export const connectStripe = async (req: Request, res: Response) => {
         chain,
         baseUrl
       )
-      return res.json(links)
+      res.json(links)
+      return
     }
   } catch (error) {
     logger.error(
       `Failed to connect Stripe: there was an error ${lockAddress}, ${chain}`,
       error
     )
-    return res.status(401).send(`Cannot connect stripe: ${error.message}`)
+    res.status(401).send(`Cannot connect stripe: ${error.message}`)
+    return
   }
 }
 
@@ -57,19 +60,22 @@ export const stripeConnected = async (req: Request, res: Response) => {
     )
 
     if (stripeEnabled) {
-      return res.json({ connected: 1, account, countrySpec })
+      res.json({ connected: 1, account, countrySpec })
+      return
     }
 
-    return res.json({
+    res.json({
       connected: account ? 0 : -1, // status is '0' when account is connected but not ready
       account,
     })
+    return
   } catch (error) {
     logger.error(
       'Cannot verified if Stripe is connected: there was an error',
       error
     )
-    return res.status(500).send(error)
+    res.status(500).send(error)
+    return
   }
 }
 
@@ -102,10 +108,12 @@ export const lockIcon = async (req: Request, res: Response) => {
   }
 
   if (icon.isURL) {
-    return res.redirect(icon.icon)
+    res.redirect(icon.icon)
+    return
   } else {
     res.setHeader('Content-Type', icon.type!)
-    return res.send(icon.icon)
+    res.send(icon.icon)
+    return
   }
 }
 
@@ -136,7 +144,8 @@ export const getTokenURIImage: RequestHandler<{
       if (key.tokenURI) {
         const metadata = await fetch(key.tokenURI)
         const json = await metadata.json()
-        return response.redirect(json?.image)
+        response.redirect(json?.image)
+        return
       }
     }
 
@@ -147,15 +156,18 @@ export const getTokenURIImage: RequestHandler<{
     })
 
     if (lockIcon.isURL) {
-      return response.redirect(lockIcon.icon)
+      response.redirect(lockIcon.icon)
+      return
     } else {
       response.setHeader('Content-Type', lockIcon.type!)
-      return response.send(lockIcon.icon)
+      response.send(lockIcon.icon)
+      return
     }
   } catch (error) {
     logger.error(error)
     const svg = getGeneratedLockIcon(lockAddress)
-    return response.setHeader('Content-Type', 'image/svg+xml').send(svg)
+    response.setHeader('Content-Type', 'image/svg+xml').send(svg)
+    return
   }
 }
 
@@ -169,11 +181,12 @@ export const changeLockIcon = async (req: Request, res: Response) => {
     parseInt(chain)
   )
   if (!isAuthorized) {
-    return res
+    res
       .status(401)
       .send(
         `${req.signee} is not a lock manager for ${lockAddress} on ${chain}`
       )
+    return
   } else {
     let lockIcon = await LockIcons.findOne({
       where: {
@@ -193,7 +206,8 @@ export const changeLockIcon = async (req: Request, res: Response) => {
     }
   }
 
-  return res.status(200).send('OK')
+  res.status(200).send('OK')
+  return
 }
 
 export const disconnectStripe = async (req: Request, res: Response) => {
