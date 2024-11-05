@@ -17092,7 +17092,7 @@ __metadata:
     react-use-clipboard: "npm:1.0.9"
     storybook: "npm:8.4.2"
     tailwind-merge: "npm:2.5.4"
-    tailwindcss: "npm:3.4.13"
+    tailwindcss: "npm:3.4.14"
     tsup: "npm:8.3.5"
     tsx: "npm:4.19.2"
     typescript: "npm:5.6.3"
@@ -17196,7 +17196,7 @@ __metadata:
     remove-markdown: "npm:0.5.5"
     siwe: "npm:2.3.2"
     tailwind-merge: "npm:2.5.4"
-    tailwindcss: "npm:3.4.13"
+    tailwindcss: "npm:3.4.14"
     typescript: "npm:5.6.3"
     unified: "npm:11.0.5"
     universal-cookie: "npm:7.2.2"
@@ -17303,7 +17303,7 @@ __metadata:
     rss: "npm:1.2.2"
     showdown-highlight: "npm:3.1.0"
     tailwind-merge: "npm:2.5.4"
-    tailwindcss: "npm:3.4.13"
+    tailwindcss: "npm:3.4.14"
     typescript: "npm:5.6.3"
     use-local-storage: "npm:3.0.0"
     vitest: "npm:2.1.4"
@@ -46346,9 +46346,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:3.4.13":
-  version: 3.4.13
-  resolution: "tailwindcss@npm:3.4.13"
+"tailwindcss@npm:3.4.14":
+  version: 3.4.14
+  resolution: "tailwindcss@npm:3.4.14"
   dependencies:
     "@alloc/quick-lru": "npm:^5.2.0"
     arg: "npm:^5.0.2"
@@ -46375,7 +46375,7 @@ __metadata:
   bin:
     tailwind: lib/cli.js
     tailwindcss: lib/cli.js
-  checksum: 10/01b8dd35a65a028474c632b9ea7fb38634060a2c70f1f3fdfa2fe6ec74dec8224e2ee1178a5428182849790dad324e7a810de7301a9126946528c59d37f455cf
+  checksum: 10/2b75b697d4859ce813947b043edf19ed61f80321914743a00ba883f327016e4f7f9414823b6ccffeb1359524335c47933d970da5ce2158329f43e9a89d934eb0
   languageName: node
   linkType: hard
 
