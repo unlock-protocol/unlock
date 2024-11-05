@@ -23,7 +23,7 @@
     "embla-carousel-react": "8.3.1",
     "eslint": "9.14.0",
     "ethers": "6.13.2",
-    "next": "14.2.14",
+    "next": "14.2.16",
     "next-seo": "6.6.0",
     "numeral": "2.0.6",
     "path-match": "1.2.4",
@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "autoprefixer": "10.4.20",
-    "eslint-config-next": "14.2.14",
+    "eslint-config-next": "14.2.16",
     "feed": "4.2.2",
     "gray-matter": "4.0.3",
     "next-transpile-modules": "10.0.1",
