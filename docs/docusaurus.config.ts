@@ -225,7 +225,152 @@ const config: Config = {
     [
       require.resolve('docusaurus-gtm-plugin'),
       {
-        id: 'GTM-PRCCFV9', // GTM Container ID
+        id: 'GTM-PRCCFV9',
+      },
+    ],
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects: [
+          {
+            to: '/tools/sign-in-with-ethereum/',
+            from: '/unlock/developers/sign-in-with-ethereum',
+          },
+          {
+            to: '/',
+            from: '/unlock',
+          },
+          {
+            to: '/',
+            from: '/basics',
+          },
+          {
+            to: '/tools/locksmith/webhooks',
+            from: '/unlock/tools/locksmith/webhooks',
+          },
+          {
+            to: '/governance/roadmap',
+            from: '/unlock/governance/roadmap',
+          },
+          {
+            to: '/tools/sign-in-with-ethereum/unlock-accounts',
+            from: [
+              '/basics/new-to-unlock/unlock-accounts',
+              '/basics/unlock-accounts',
+            ],
+          },
+          {
+            to: '/tools/sign-in-with-ethereum/',
+            from: '/tools/paywall/sign-in-with-ethereum',
+          },
+          {
+            to: '/getting-started/new-to-web3/ethereum-architecture',
+            from: '/new-to-web3/ethereum-architecture',
+          },
+          {
+            to: '/getting-started/new-to-web3/',
+            from: '/new-to-web3/',
+          },
+          {
+            to: '/getting-started/new-to-web3/using-etherscan',
+            from: '/new-to-web3/using-etherscan',
+          },
+          {
+            to: '/getting-started/new-to-web3/what-is-a-crypto-wallet',
+            from: '/new-to-web3/what-is-a-crypto-wallet-a-guide-for-developers',
+          },
+          {
+            to: '/getting-started/new-to-web3/what-is-a-decentralised-application-aka-dapp',
+            from: '/new-to-web3/what-is-a-decentralised-application-aka-dapp',
+          },
+          {
+            to: '/getting-started/new-to-web3/what-is-a-smart-contract',
+            from: '/new-to-web3/what-is-a-smart-contract',
+          },
+          {
+            to: '/getting-started/new-to-web3/what-is-an-nft',
+            from: '/new-to-web3/what-is-an-nft',
+          },
+          {
+            to: '/getting-started/our-code-of-conduct',
+            from: '/our-code-of-conduct',
+          },
+          {
+            to: '/getting-started/what-is-unlock/litepaper',
+            from: '/litepaper',
+          },
+          {
+            to: '/tutorials/back-end/backend-locking-with-express.js',
+            from: '/tutorials/backend-locking-with-express.js',
+          },
+          {
+            to: '/tutorials/front-end/locking-page',
+            from: [
+              '/tutorials/ad-free-experience',
+              '/tutorials/front-end/ad-free-experience',
+              '/tutorials/front-end/locking-media-content',
+              '/tutorials/locking-media-content',
+            ],
+          },
+          {
+            to: '/tutorials/front-end/react-example',
+            from: '/tutorials/react-example',
+          },
+          {
+            to: '/tutorials/misc/using-subgraphs',
+            from: '/tutorials/using-subgraphs',
+          },
+          {
+            to: '/tutorials/smart-contracts/ethers',
+            from: '/tutorials/ethers',
+          },
+          {
+            to: '/tutorials/smart-contracts/hooks/the-key-purchase-hook',
+            from: [
+              '/tutorials/smart-contracts/the-key-purchase-hook',
+              '/tutorials/the-key-purchase-hook',
+            ],
+          },
+          {
+            to: '/tutorials/smart-contracts/hooks/using-an-existing-nft-contract',
+            from: [
+              '/tutorials/smart-contracts/using-an-existing-nft-contract',
+              '/tutorials/using-an-existing-nft-contract',
+            ],
+          },
+          {
+            to: '/tutorials/smart-contracts/using-unlock-in-other-contracts',
+            from: '/tutorials/using-unlock-in-other-contracts',
+          },
+          {
+            to: '/tutorials/smart-contracts/deploying-locally',
+            from: '/core-protocol/deploying-locally/',
+          },
+          {
+            to: '/tools/unlock.js',
+            from: '/developers/unlock.js',
+          },
+          {
+            to: '/tools/subgraph/entities',
+            from: '/tools/entities',
+          },
+          {
+            to: '/tools/subgraph/queries',
+            from: '/tools/queries',
+          },
+          {
+            to: '/core-protocol/public-lock/deploying-locks',
+            from: '/basics/deploying-a-lock',
+          },
+          {
+            to: '/tools/checkout/configuration',
+            from: '/tools/paywall/configuring-checkout',
+          },
+          {
+            to: '/governance/grants-bounties/',
+            from: '/governance/grants-bounties-and-matchings',
+          },
+        ],
       },
     ],
     [
