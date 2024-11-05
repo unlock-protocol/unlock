@@ -3,7 +3,7 @@ import {
   generateAppleWalletPass,
   generateGoogleWalletPass,
 } from '../../controllers/v2/passController'
-const router = express.Router({ mergeParams: true })
+const router: express.Router = express.Router({ mergeParams: true })
 
 // android pass generation route
 router.get('/:network/:lockAddress/:keyId/android', generateGoogleWalletPass)

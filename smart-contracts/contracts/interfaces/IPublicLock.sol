@@ -23,6 +23,7 @@ interface IPublicLock {
     address referrer;
     address keyManager;
     bytes data;
+    uint additionalPeriods;
   }
 
   /// Functions

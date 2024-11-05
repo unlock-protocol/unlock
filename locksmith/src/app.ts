@@ -11,7 +11,7 @@ import timeout from 'connect-timeout'
 import config from './config/config'
 import logger from './logger'
 
-const app = express()
+const app: express.Application = express()
 
 if (config.requestTimeout) {
   app.use(timeout(config.requestTimeout))
