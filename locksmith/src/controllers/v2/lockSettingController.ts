@@ -109,12 +109,14 @@ export const updateSettings: RequestHandler = async (
       network,
       ...options,
     })
-    return response.status(200).send(settings)
+    response.status(200).send(settings)
+    return
   } catch (err: any) {
     logger.error(err.message)
-    return response.status(500).send({
+    response.status(500).send({
       message: 'Could not save setting, please try again.',
     })
+    return
   }
 }
 
@@ -145,16 +147,19 @@ export const getSettings: RequestHandler = async (
     })
 
     if (settings) {
-      return response.status(200).send(settings)
+      response.status(200).send(settings)
+      return
     }
 
     // return default settings
-    return response.status(200).send(DEFAULT_LOCK_SETTINGS)
+    response.status(200).send(DEFAULT_LOCK_SETTINGS)
+    return
   } catch (err: any) {
     logger.error(err.message)
-    return response.status(500).send({
+    response.status(500).send({
       message: 'Could not get settings for this Lock.',
     })
+    return
   }
 }
 
@@ -166,11 +171,13 @@ export const getLockSettingsBySlug: RequestHandler = async (
     const slug = request.params.slug.toLowerCase().trim()
     const settings = await lockSettingOperations.getLockSettingsBySlug(slug)
 
-    return response.status(200).send(settings)
+    response.status(200).send(settings)
+    return
   } catch (err: any) {
     logger.error(err.message)
-    return response.status(500).send({
+    response.status(500).send({
       message: 'Could not get settings for this Lock.',
     })
+    return
   }
 }

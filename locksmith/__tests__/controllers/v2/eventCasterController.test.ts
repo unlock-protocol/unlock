@@ -16,9 +16,25 @@ const mockWalletService = {
   },
 }
 
+const mockWeb3Service = {
+  getKeyByLockForOwner: vi.fn((lockAddress, owner, network) => {
+    if (owner === '0xCEEd9585854F12F81A0103861b83b995A64AD915') {
+      return Promise.resolve({
+        tokenId: 1337,
+      })
+    }
+    return Promise.resolve({
+      tokenId: 0,
+    })
+  }),
+}
+
 vi.mock('@unlock-protocol/unlock-js', () => ({
   WalletService: function WalletService() {
     return mockWalletService
+  },
+  Web3Service: function Web3Service() {
+    return mockWeb3Service
   },
 }))
 
@@ -267,6 +283,30 @@ describe('eventcaster endpoints', () => {
 
       expect(response.status).toBe(201)
       expect(response.body.id).toBe(tokenId)
+      expect(response.body.owner).toBe(owner)
+      expect(response.body.network).toBe(eventCasterEvent.contract.network)
+      expect(response.body.address).toBe(eventCasterEvent.contract.address)
+    })
+    it('returns the existing token if one already exists', async () => {
+      fetchMock.mockResponseOnce(
+        JSON.stringify({ success: true, event: eventCasterEvent })
+      )
+
+      const response = await request(app)
+        .post(`/v2/eventcaster/${eventCasterEvent.id}/rsvp`)
+        .set('Accept', 'json')
+        .set('Authorization', `Api-key ${eventCasterApplication.key}`)
+        .send({
+          ...eventCasterRsvp,
+          user: {
+            verified_addresses: {
+              eth_addresses: ['0xCEEd9585854F12F81A0103861b83b995A64AD915'],
+            },
+          },
+        })
+
+      expect(response.status).toBe(200)
+      expect(response.body.id).toBe(1337)
       expect(response.body.owner).toBe(owner)
       expect(response.body.network).toBe(eventCasterEvent.contract.network)
       expect(response.body.address).toBe(eventCasterEvent.contract.address)

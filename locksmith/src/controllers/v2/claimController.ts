@@ -64,9 +64,10 @@ export const claim: RequestHandler = async (request, response: Response) => {
   }
 
   if (!owner && !email) {
-    return response.status(401).send({
+    response.status(401).send({
       message: 'You are not authenticated.',
     })
+    return
   }
 
   if (
@@ -74,9 +75,10 @@ export const claim: RequestHandler = async (request, response: Response) => {
       normalizer.ethereumAddress(lockAddress)
     ) > -1
   ) {
-    return response.status(400).send({
+    response.status(400).send({
       message: 'Claim disabled for this lock',
     })
+    return
   }
 
   const pricer = new KeyPricer()
@@ -98,22 +100,25 @@ export const claim: RequestHandler = async (request, response: Response) => {
     ])
 
   if (BigInt(totalAmount) > 0) {
-    return response.status(402).send({
+    response.status(402).send({
       message: 'Lock is not free',
     })
+    return
   }
 
   if (!canAffordGas.canAfford) {
-    return response.status(422).send({
+    response.status(422).send({
       message: canAffordGas.reason,
     })
+    return
   }
 
   // Is user already has a valid key, claim will fail
   if (hasValidKey) {
-    return response.status(400).send({
+    response.status(400).send({
       message: 'User already has key',
     })
+    return
   }
 
   // Save metadata if applicable
@@ -149,10 +154,11 @@ export const claim: RequestHandler = async (request, response: Response) => {
       network,
       data || '0x',
       async (_, transactionHash) => {
-        return response.send({
+        response.send({
           transactionHash,
           owner,
         })
+        return
       }
     )
   }
@@ -167,10 +173,11 @@ export const claim: RequestHandler = async (request, response: Response) => {
       keyManager: email ? keyManagerAddress : owner,
     },
     async (_, transactionHash) => {
-      return response.send({
+      response.send({
         transactionHash,
         owner,
       })
+      return
     }
   )
 }

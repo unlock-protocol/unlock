@@ -16,17 +16,17 @@
   },
   "dependencies": {
     "@unlock-protocol/paywall": "workspace:./packages/paywall",
-    "next": "14.2.14",
+    "next": "14.2.16",
     "vite-plugin-node-polyfills": "0.22.0"
   },
   "license": "MIT",
   "devDependencies": {
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
-    "eslint": "9.11.1",
+    "eslint": "9.14.0",
     "prettier": "3.3.3",
     "typescript": "5.6.3",
-    "vite": "5.4.8"
+    "vite": "5.4.10"
   },
   "browserslist": [
     "defaults",
