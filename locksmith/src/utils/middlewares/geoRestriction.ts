@@ -31,9 +31,10 @@ export const createGeoRestriction = (restricted: string[]): RequestHandler => {
       })
 
       if (restrict) {
-        return response.status(403).send({
+        response.status(403).send({
           message: 'Access denied.',
         })
+        return
       }
 
       return next()
