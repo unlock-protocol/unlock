@@ -38,6 +38,7 @@ contract MixinPurchase is
     address recipient,
     address payer,
     uint value,
+    address tokenAddress,
     address referrer,
     uint totalPaid,
     bool isExtend
@@ -306,6 +307,7 @@ contract MixinPurchase is
       _recipient,
       msg.sender, // payer
       pricePaid,
+      tokenAddress,
       _referrer,
       tokenAddress == address(0) ? msg.value : _value,
       false
@@ -349,6 +351,7 @@ contract MixinPurchase is
           purchaseArgs[i].recipient,
           msg.sender, // payer
           pricePaid,
+          tokenAddress,
           purchaseArgs[i].referrer,
           tokenAddress == address(0) ? msg.value : purchaseArgs[i].value,
           true
@@ -469,6 +472,7 @@ contract MixinPurchase is
       ownerOf(_tokenId),
       msg.sender, // payer
       pricePaid,
+      tokenAddress,
       _referrer,
       tokenAddress == address(0) ? msg.value : _value,
       true
@@ -514,6 +518,7 @@ contract MixinPurchase is
       ownerOf(_tokenId),
       msg.sender, // payer
       keyPrice,
+      tokenAddress,
       _referrer,
       keyPrice, // totalPaid
       true // extend
