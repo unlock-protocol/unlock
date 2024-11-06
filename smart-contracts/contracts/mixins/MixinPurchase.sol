@@ -36,7 +36,7 @@ contract MixinPurchase is
   // default to 0
   uint256 internal _gasRefundValue;
 
-  // DEPREC: use of these is deprecated
+  // DEPREC: use of these is deprecated, kept for backward storage compatibility!
   mapping(uint256 => uint256) internal _originalPrices;
   mapping(uint256 => uint256) internal _originalDurations;
   mapping(uint256 => address) internal _originalTokens;
