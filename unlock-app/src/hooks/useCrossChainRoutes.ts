@@ -6,7 +6,6 @@ import { purchasePriceFor } from './usePricing'
 import { getReferrer } from '~/utils/checkoutLockUtils'
 import { CrossChainRoute, getCrossChainRoute } from '~/utils/relayLink'
 import { networks } from '@unlock-protocol/networks'
-import { BoxEvmChains } from '@decent.xyz/box-common'
 import { Token } from '@unlock-protocol/types'
 import { useAuthenticate } from './useAuthenticate'
 
@@ -72,19 +71,22 @@ export const useCrossChainRoutes = ({
   const hasPrices = Array.isArray(prices) && prices.length > 0
 
   const balanceResults = useQueries({
-    queries: BoxEvmChains.filter((network) => {
-      return networks[network.id]
-    }).map((network) => ({
-      queryKey: ['balance', account, network.id],
-      queryFn: async () => {
-        return {
-          network: network.id,
-          balance: await web3Service.getAddressBalance(account!, network.id),
-        }
-      },
-      staleTime: 1000 * 60 * 5, // 5 minutes
-      enabled: enabled && hasPrices,
-    })),
+    queries: Object.values(networks)
+      .filter((network) => {
+        // Filter out networks that are not the same type as the lock
+        return network.isTestNetwork === networks[lock.network].isTestNetwork
+      })
+      .map((network) => ({
+        queryKey: ['balance', account, network.id],
+        queryFn: async () => {
+          return {
+            network: network.id,
+            balance: await web3Service.getAddressBalance(account!, network.id),
+          }
+        },
+        staleTime: 1000 * 60 * 5, // 5 minutes
+        enabled: enabled,
+      })),
   })
 
   const { data: lockContract } = useQuery({

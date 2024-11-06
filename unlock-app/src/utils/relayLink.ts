@@ -34,7 +34,7 @@ interface getCrossChainRouteParams {
 
 // Get a route for a given token and chain.
 export const getCrossChainRoute = async (
-  lockContract,
+  lockContract: any,
   {
     sender,
     lock,
@@ -120,7 +120,8 @@ export const getCrossChainRoute = async (
   })
   if (response?.status === 200) {
     const { data } = response
-    console.log({ data })
+    console.log(data.steps)
+    return
     return {
       ...data,
       tx: {
