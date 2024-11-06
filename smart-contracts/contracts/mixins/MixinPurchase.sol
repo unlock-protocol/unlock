@@ -486,13 +486,19 @@ contract MixinPurchase is
 
   /**
    * Renew a given token
-   * get referrer that was set during the original purchase
+   * This will use the referrer that was set during the original purchase, if specified
+   * If none was specified will use the one passed as param
    * @notice only works for non-free, expiring, ERC20 locks
    * @param _tokenId the ID fo the token to renew
    * @param _referrer the address of the referrer
    */
   function renewMembershipFor(uint _tokenId, address _referrer) public {
-    _renewMembershipFor(_tokenId, _referrer);
+    _renewMembershipFor(
+      _tokenId,
+      _renewalConditions[_tokenId].referrer == address(0)
+        ? _referrer
+        : _renewalConditions[_tokenId].referrer
+    );
   }
 
   /**
