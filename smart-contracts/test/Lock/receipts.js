@@ -6,8 +6,7 @@ const { ADDRESS_ZERO, getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 const scenarios = [false, true]
 const someTokens = ethers.parseUnits('10', 'ether')
-const additionalPeriods = 2n
-const tip = ethers.parseUnits('0.5', 'ether')
+const tip = ethers.parseUnits('0.005', 'ether')
 
 describe('Lock / PurchaseReceipt event', () => {
   let lock
@@ -35,6 +34,7 @@ describe('Lock / PurchaseReceipt event', () => {
           .connect(spender)
           .approve(await lock.getAddress(), someTokens)
 
+        console.log({ keyPrice, tip, totla: keyPrice + tip })
         // purchase a key
         const purchaseArgs = [
           {
@@ -47,7 +47,7 @@ describe('Lock / PurchaseReceipt event', () => {
           },
         ]
         const purchaseTx = await lock.connect(spender).purchase(purchaseArgs, {
-          value: isErc20 ? 0 : keyPrice + tip,
+          value: isErc20 ? 0 : keyPrice * 3n + tip,
         })
 
         purchaseTxReceipt = await purchaseTx.wait()
@@ -63,7 +63,7 @@ describe('Lock / PurchaseReceipt event', () => {
         assert.equal(args.value, keyPrice)
         assert.equal(args.tokenAddress, tokenAddress)
         assert.equal(args.referrer, await referrer.getAddress())
-        assert.equal(args.totalPaid, keyPrice + tip)
+        assert.equal(args.totalPaid, keyPrice * 3n + tip)
         assert.equal(args.isExtend, false)
       })
 
@@ -94,6 +94,13 @@ describe('Lock / PurchaseReceipt event', () => {
 
       if (isErc20) {
         it('is fired when renewing a key', async () => {
+          await token.mint(await keyOwner.getAddress(), someTokens)
+
+          // Approve spending
+          await token
+            .connect(spender)
+            .approve(await lock.getAddress(), someTokens)
+
           // expire key
           const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
           await increaseTimeTo(expirationTs)
@@ -107,7 +114,7 @@ describe('Lock / PurchaseReceipt event', () => {
           const { args } = await getEvent(receipt, 'PurchaseReceipt')
           assert.equal(args.tokenId, tokenId)
           assert.equal(args.recipient, await keyOwner.getAddress())
-          assert.equal(args.payer, await spender.getAddress())
+          assert.equal(args.payer, await keyOwner.getAddress())
           assert.equal(args.value, keyPrice)
           assert.equal(args.tokenAddress, tokenAddress)
           assert.equal(args.referrer, await referrer.getAddress())
