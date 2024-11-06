@@ -22,11 +22,12 @@ export class ContractsController {
     const network = Number(request.params.network)
     // Only supported on polygon, and gnosis.
     if (![137, 100].includes(network)) {
-      return response.status(404).send({
+      response.status(404).send({
         message: `Network ${
           networks[network]?.name || network
         } is not supported.`,
       })
+      return
     }
 
     const user = request.user?.walletAddress

@@ -29,9 +29,10 @@ export default class KeyController {
       } = request.query ?? {}
 
       if (!filterKey) {
-        return response.status(404).send({
+        response.status(404).send({
           message: 'No filterKey query found.',
         })
+        return
       }
 
       const filters = {
@@ -54,12 +55,14 @@ export default class KeyController {
         loggedInUserAddress,
       })
 
-      return response.status(200).send(keys)
+      response.status(200).send(keys)
+      return
     } catch (error) {
       logger.error(error.message)
-      return response.status(500).send({
+      response.status(500).send({
         message: 'Keys list could not be retrieved.',
       })
+      return
     }
   }
 
@@ -88,12 +91,14 @@ export default class KeyController {
         priority: -1,
       })
 
-      return response.status(200).send({ jobId })
+      response.status(200).send({ jobId })
+      return
     } catch (error) {
       logger.error(error.message)
-      return response.status(500).send({
+      response.status(500).send({
         message: 'An error occurred while starting the job to export keys.',
       })
+      return
     }
   }
 
@@ -104,7 +109,8 @@ export default class KeyController {
     const jobId = request.params.jobId
 
     if (!jobId) {
-      return response.status(404).send({ message: 'Job not found.' })
+      response.status(404).send({ message: 'Job not found.' })
+      return
     }
 
     try {
@@ -114,16 +120,19 @@ export default class KeyController {
       )
 
       if (!file) {
-        return response
+        response
           .status(202)
           .send({ message: 'Job is still processing. Please retry later.' })
+        return
       }
 
-      return response.status(200).send(file)
+      response.status(200).send(file)
+      return
     } catch (error) {
-      return response
+      response
         .status(202)
         .send({ message: `Unknown job status. Error ${error}` })
+      return
     }
   }
 
@@ -144,9 +153,10 @@ export default class KeyController {
       } = request.query ?? {}
 
       if (!filterKey) {
-        return response.status(404).send({
+        response.status(404).send({
           message: 'No filterKey query found.',
         })
+        return
       }
 
       const filters = {
@@ -169,7 +179,7 @@ export default class KeyController {
         loggedInUserAddress,
       })
 
-      return response.status(200).send({
+      response.status(200).send({
         keys,
         meta: {
           total,
@@ -177,10 +187,12 @@ export default class KeyController {
           byPage: filters.max,
         },
       })
+      return
     } catch (error) {
-      return response.status(500).send({
+      response.status(500).send({
         message: 'Keys list could not be retrieved.',
       })
+      return
     }
   }
 }

@@ -1,4 +1,10 @@
-const { targetChains, DelayMod: delayModAbi } = require('../../helpers/bridge')
+const {
+  targetChains,
+  DelayMod: delayModAbi,
+  ConnextMod: connextModAbi,
+} = require('../../helpers/bridge')
+const { UPGovernor } = require('@unlock-protocol/contracts')
+
 const { getProvider } = require('../../helpers/multisig')
 const { Contract } = require('ethers')
 
@@ -15,16 +21,63 @@ async function main() {
     const {
       id,
       name,
+      multisig,
       dao: {
+        chainId: daoChainId,
+        governor,
         governanceBridge: {
-          modules: { delayMod: delayModAddress },
+          modules: { delayMod: delayModAddress, connextMod: connextModAddress },
         },
       },
     } = targetChains[i]
+
     const log = (msg) => console.log(`[${name} (${id})] ${msg}`)
+
+    // get domain ID for base
+    const { domainId: daoDomainId } = targetChains.find(
+      ({ id }) => id === daoChainId
+    ).dao.governanceBridge
+
+    // get timelock address
+    const daoChainProvider = await getProvider(daoChainId)
+    const gov = new Contract(governor, UPGovernor.abi, daoChainProvider)
+    const daoTimelockAddress = await gov.timelock()
+
     // parse Delay contract
     const provider = await getProvider(id)
     const delayMod = new Contract(delayModAddress, delayModAbi, provider)
+    const connextMod = new Contract(connextModAddress, connextModAbi, provider)
+
+    // make sure SAFE modules config is correct
+    if (
+      (await delayMod.getFunction('target')()) != multisig ||
+      (await connextMod.getFunction('target')()) != delayModAddress
+    ) {
+      log(`Config error in SAFE modules. Should be:
+    - delayMod target : ${multisig} (currently: ${await delayMod.getFunction('target')()})
+    - connextMod target ${delayModAddress} (currently: ${await connextMod.getFunction('target')()})
+    `)
+    }
+
+    // check ownership of the modules
+    if ((await delayMod.owner()) != multisig) {
+      log('Incorrect ownership of SAFE Delay module.')
+    }
+    if ((await connextMod.owner()) != multisig) {
+      log(
+        `Incorrect ownership of SAFE Connext module. ${await connextMod.owner()}`
+      )
+    }
+
+    // make sure the connext bridge module is set correctly to DAO coordinates on Base
+    if (
+      (await connextMod.originSender()) != daoTimelockAddress ||
+      (await connextMod.origin()) != daoDomainId
+    ) {
+      log(
+        `Incorrect config for SAFE Connext module origin ${await connextMod.origin()} and origin sender ${await connextMod.originSender()}.`
+      )
+    }
 
     // get nonces
     const currentNonce = await delayMod.txNonce()

@@ -14,9 +14,10 @@ export const eventCasterOnly: RequestHandler = (req, res, next) => {
   if (req.user?.walletAddress === EVENT_CASTER_ADDRESS) {
     return next()
   }
-  return res.status(403).send({
+  res.status(403).send({
     message: 'Not Authorized',
   })
+  return
 }
 
 router.post(

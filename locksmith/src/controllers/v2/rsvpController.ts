@@ -57,7 +57,8 @@ export const rsvp = async (request: Request, response: Response) => {
   })
   if (rsvp) {
     // We do not overwrite the metadata, on purpose. First come, first serve for wallets!
-    return response.status(200).send(rsvp.toJSON())
+    response.status(200).send(rsvp.toJSON())
+    return
   }
   // Let's try to create a new RSVP
   rsvp = await Rsvp.create({
@@ -91,7 +92,8 @@ export const rsvp = async (request: Request, response: Response) => {
     },
     attachments: [],
   })
-  return response.status(200).send(rsvp.toJSON())
+  response.status(200).send(rsvp.toJSON())
+  return
 }
 
 export const update = (approval: 'approved' | 'denied') => {
@@ -108,11 +110,13 @@ export const update = (approval: 'approved' | 'denied') => {
       },
     })
     if (!rsvp) {
-      return response.status(404)
+      response.status(404)
+      return
     }
     rsvp.approval = approval
     await rsvp.save()
-    return response.status(200).send(rsvp.toJSON())
+    response.status(200).send(rsvp.toJSON())
+    return
   }
 }
 
@@ -141,8 +145,9 @@ export const updateBulk = (approval: 'approved' | 'denied') => {
         returning: true,
       }
     )
-    return response.status(200).send({
+    response.status(200).send({
       results: rsvps.map((rsvp) => rsvp.toJSON()),
     })
+    return
   }
 }
