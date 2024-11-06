@@ -39,7 +39,8 @@ contract MixinPurchase is
     address payer,
     uint value,
     address referrer,
-    uint totalPaid
+    uint totalPaid,
+    bool isExtend
   );
 
   // default to 0
@@ -306,9 +307,9 @@ contract MixinPurchase is
       msg.sender, // payer
       pricePaid,
       _referrer,
-      0 // TODO: uint totalPaid
+      tokenAddress == address(0) ? msg.value : _value,
+      false
     );
-
   }
 
   function purchase(
@@ -342,6 +343,16 @@ contract MixinPurchase is
 
         // send what is due to referrer
         _payReferrer(purchaseArgs[i].referrer);
+
+        emit PurchaseReceipt(
+          tokenId,
+          purchaseArgs[i].recipient,
+          msg.sender, // payer
+          pricePaid,
+          purchaseArgs[i].referrer,
+          tokenAddress == address(0) ? msg.value : purchaseArgs[i].value,
+          true
+        );
       }
     }
 
@@ -453,6 +464,16 @@ contract MixinPurchase is
       _checkValue(_value, pricePaid);
     }
 
+    emit PurchaseReceipt(
+      _tokenId,
+      ownerOf(_tokenId),
+      msg.sender, // payer
+      pricePaid,
+      _referrer,
+      tokenAddress == address(0) ? msg.value : _value,
+      true
+    );
+
     // process in unlock
     _recordKeyPurchase(pricePaid, _referrer);
 
@@ -487,6 +508,16 @@ contract MixinPurchase is
 
     // extend key duration
     _extendKey(_tokenId, 0);
+
+    emit PurchaseReceipt(
+      _tokenId,
+      ownerOf(_tokenId),
+      msg.sender, // payer
+      keyPrice,
+      _referrer,
+      keyPrice, // totalPaid
+      true // extend
+    );
 
     // store in unlock
     _recordKeyPurchase(keyPrice, _referrer);
