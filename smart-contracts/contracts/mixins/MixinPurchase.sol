@@ -51,7 +51,7 @@ contract MixinPurchase is
     address tokenAddress;
     address referrer;
   }
-  mapping(uint256 => RenewalCondition) public _renewalConditions;
+  mapping(uint256 => RenewalCondition) internal _renewalConditions;
 
   error TransferFailed();
 
