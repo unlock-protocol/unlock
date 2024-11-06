@@ -1,3 +1,4 @@
+'use client'
 import { usePrivy, useWallets } from '@privy-io/react-auth'
 import { useQuery } from '@tanstack/react-query'
 import {
@@ -99,14 +100,17 @@ const BurnableToken = ({ network, token, balance }) => {
   const { wallets } = useWallets()
 
   const burn = async () => {
+    console.log('burning', token.symbol)
     if (!authenticated) {
       login()
       setBurning(true)
     } else {
       // switch network
-      await wallets[0].switchChain(network.id)
+      // await wallets[0].switchChain(network.id)
 
-      const provider = await wallets[0].getEthersProvider()
+      const provider = new BrowserProvider(
+        await wallets[0].getEthereumProvider()
+      )
       // Send tx
       const unlock = new Contract(
         network.unlockAddress,
@@ -132,16 +136,15 @@ const BurnableToken = ({ network, token, balance }) => {
         ],
         provider
       )
-      console.log(unlock)
       console.log(await unlock.swapBurnerAddress())
-      console.log('GO!')
-      const tx = await unlock.swapAndBurn.populateTransaction(
+      const tx = await unlock.swapAndBurn(
         token.address || ethers.ZeroAddress,
         1, // burn 1 token
         3000,
         { value: 0 }
       )
       console.log(tx)
+
       setBurning(false)
     }
   }
