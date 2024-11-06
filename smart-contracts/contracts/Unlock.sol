@@ -106,6 +106,9 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   // UDT SwapBurner contract address
   address public swapBurnerAddress;
 
+  // addresse with emply impl used to "burn" lock
+  address public burnedLockImpl;
+
   // errors
   error Unlock__MANAGER_ONLY();
   error Unlock__VERSION_TOO_HIGH();
@@ -150,6 +153,8 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     address indexed oldAddress,
     address indexed newAddress
   );
+
+  event LockBurned(address lockAddress);
 
   // Use initialize instead of a constructor to support proxies (for upgradeability via OZ).
   function initialize(address _unlockOwner) public initializer {
@@ -410,7 +415,9 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     ITransparentUpgradeableProxy proxy = ITransparentUpgradeableProxy(
       lockAddress
     );
-    proxyAdmin.upgrade(proxy, address(0));
+    proxyAdmin.upgrade(proxy, burnedLockImpl);
+
+    emit LockBurned(lockAddress);
   }
 
   function _isLockManager(
@@ -650,6 +657,13 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    */
   function getGlobalBaseTokenURI() external view returns (string memory) {
     return globalBaseTokenURI;
+  }
+
+  /**
+   * @param implAddress the address of the empty implementation used to disable locks
+   */
+  function setBurnedLockImpl(address implAddress) external onlyOwner {
+    burnedLockImpl = implAddress;
   }
 
   /**
