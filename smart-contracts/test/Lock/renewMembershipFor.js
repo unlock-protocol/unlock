@@ -6,6 +6,9 @@ const {
   ADDRESS_ZERO,
   deployLock,
   increaseTimeTo,
+  deployWETH,
+  createMockOracle,
+  deployContracts,
 } = require('../helpers')
 const { ethers } = require('hardhat')
 const { getEvent } = require('@unlock-protocol/hardhat-helpers')
@@ -18,20 +21,21 @@ const totalPrice = keyPrice * 10n
 const someDai = ethers.parseUnits('10', 'ether')
 
 describe('Lock / Recurring memberships', () => {
-  let lockOwner
-  let keyOwner
-  let randomSigner
+  let deployer, keyOwner, referrer, attacker
+  let up, unlock
 
   beforeEach(async () => {
-    ;[lockOwner, keyOwner, randomSigner] = await ethers.getSigners()
-    dai = await deployERC20(await lockOwner.getAddress(), true)
+    ;[deployer, keyOwner, referrer, attacker] = await ethers.getSigners()
+    dai = await deployERC20(await deployer.getAddress(), true)
 
     // Mint some dais for testing
     await dai.mint(await keyOwner.getAddress(), someDai)
 
+    // deploy contracts
+    ;({ unlock, up } = await deployContracts())
     lock = await deployLock({
       tokenAddress: await dai.getAddress(),
-      isEthers: true,
+      unlock,
     })
 
     // set ERC20 approval for entire scope
@@ -100,14 +104,12 @@ describe('Lock / Recurring memberships', () => {
       })
 
       it('reverts if key is valid', async () => {
-        await dai.mint(await randomSigner.getAddress(), someDai)
-        await dai
-          .connect(randomSigner)
-          .approve(await lock.getAddress(), totalPrice)
+        await dai.mint(await attacker.getAddress(), someDai)
+        await dai.connect(attacker).approve(await lock.getAddress(), totalPrice)
 
         const { tokenId: newTokenId } = await purchaseKey(
           lock,
-          await randomSigner.getAddress(),
+          await attacker.getAddress(),
           true
         )
         assert.equal(await lock.isValidKey(newTokenId), true)
@@ -143,10 +145,8 @@ describe('Lock / Recurring memberships', () => {
 
       it('should revert if erc20 token has changed', async () => {
         // deploy another token
-        const dai2 = await deployERC20(randomSigner, true)
-        await dai2
-          .connect(randomSigner)
-          .mint(await keyOwner.getAddress(), someDai)
+        const dai2 = await deployERC20(attacker, true)
+        await dai2.connect(attacker).mint(await keyOwner.getAddress(), someDai)
         // update lock token without changing price
         await lock.updateKeyPricing(keyPrice, await dai2.getAddress())
         await reverts(
@@ -238,7 +238,7 @@ describe('Lock / Recurring memberships', () => {
           .connect(keyOwner)
           .transferFrom(
             await keyOwner.getAddress(),
-            await randomSigner.getAddress(),
+            await attacker.getAddress(),
             balanceBefore
           )
         assert.equal(await dai.balanceOf(await keyOwner.getAddress()), '0')
@@ -264,7 +264,7 @@ describe('Lock / Recurring memberships', () => {
           .connect(keyOwner)
           .transferFrom(
             await keyOwner.getAddress(),
-            await randomSigner.getAddress(),
+            await attacker.getAddress(),
             tokenId
           )
         // should fail
@@ -319,20 +319,85 @@ describe('Lock / Recurring memberships', () => {
       })
     })
 
-    /*
-    describe('should grant UDT to referrer', async () => {
-      it('referrer has no UDT to start', async () => {
-        const actual = new BigNumber(await udt.balanceOf(referrer))
-        assert.equal(actual, 0)
-      })
+    describe('should remember the referrer set in first purchase', async () => {
+      // 1% in basis points
+      const PROTOCOL_FEE = 100n
+      const BASIS_POINTS_DEN = 10000n
 
-      it('referrer has some UDT now', async () => {
-        await lock.renewMembershipFor(tokenId, referrer)
-        const actual = new BigNumber(await udt.balanceOf(referrer))
-        assert.equal(actual, 10)
+      // arbitrarly decided
+      const ERC20_RATE = ethers.parseEther('0.02')
+      const UP_WETH_RATE = ethers.parseEther('0.00000042')
+
+      before(async () => {
+        // set protocol fee to 1%
+        await unlock.setProtocolFee(PROTOCOL_FEE)
+
+        // deploy WETH
+        const weth = await deployWETH(deployer)
+
+        // config unlock
+        await unlock.configUnlock(
+          await up.getAddress(),
+          await weth.getAddress(),
+          BigInt(252166 * 2), // estimateGas
+          await unlock.globalTokenSymbol(),
+          await unlock.globalBaseTokenURI(),
+          31337 // chainId
+        )
+
+        const rates = [
+          {
+            tokenIn: await up.getAddress(),
+            rate: UP_WETH_RATE,
+            tokenOut: await weth.getAddress(),
+          },
+          {
+            tokenIn: await dai.getAddress(),
+            rate: ERC20_RATE,
+            tokenOut: await weth.getAddress(),
+          },
+        ]
+
+        // setup oracle with rates
+        const oracle = await createMockOracle({
+          rates,
+        })
+        await unlock.setOracle(
+          await dai.getAddress(),
+          await oracle.getAddress()
+        )
+
+        // purchase a key with referrer set
+        const tx = await lock.purchase(
+          [keyPrice],
+          [await referrer.getAddress()],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
+          ['0x']
+        )
+        const receipt = await tx.wait()
+        const { args } = await getEvent(receipt, 'Transfer')
+        ;({ tokenId } = args)
+      })
+      it('referrer has some UP when no address is passed', async () => {
+        const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
+        await increaseTimeTo(expirationTs)
+        const before = await up.balanceOf(referrer)
+        await lock.renewMembershipFor(tokenId, ADDRESS_ZERO)
+        const actual = await up.balanceOf(referrer)
+        const amountEarned = actual - before
+        assert.notEqual(amountEarned, 0n)
+        const protocolFee = (keyPrice * PROTOCOL_FEE) / BASIS_POINTS_DEN
+        const fee = (protocolFee * ERC20_RATE) / 10n ** 18n
+        assert.equal(amountEarned, ((fee / 2n) * UP_WETH_RATE) / 10n ** 18n)
+      })
+      it('attacker cant bypass existing referrer', async () => {
+        const before = await up.balanceOf(referrer)
+        await lock.renewMembershipFor(tokenId, await attacker.getAddress())
+        const actual = await up.balanceOf(referrer)
+        assert.equal(actual - before, 0n)
       })
     })
-    */
 
     it('should call onPurchase if set', async () => {
       // set hook
