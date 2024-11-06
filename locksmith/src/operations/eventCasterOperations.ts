@@ -119,6 +119,8 @@ export const deployLockForEventCaster = async ({
     }
   })
 
+  // const addTicketForHots
+
   const receipt = await (
     await lockProxyDeployer.deployLockAndExecute(
       networks[DEFAULT_NETWORK].unlockAddress,

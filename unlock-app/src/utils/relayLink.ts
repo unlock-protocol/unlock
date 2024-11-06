@@ -120,18 +120,31 @@ export const getCrossChainRoute = async (
   })
   if (response?.status === 200) {
     const { data } = response
-    console.log(data.steps)
-    return
-    return {
-      ...data,
-      tx: {
-        ...data.tx,
-        value: BigInt(data.tx.value.slice(0, -1)),
-      },
-      network: network.id,
-      currency: network.nativeCurrency.name,
-      symbol: network.nativeCurrency.symbol,
-      networkName: network.name,
-    } as CrossChainRoute
+    const relayStep = data.steps[data.steps.length - 1]
+    const tx = relayStep.items[0].data
+    console.log(data.details.currencyIn.currency.address)
+
+    if (
+      data.details.currencyIn.currency.address.toLowerCase() ===
+      '0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E'.toLowerCase()
+    ) {
+      console.log('WIN WIN WIN!')
+      return {
+        tx,
+        tokenPayment: {
+          amount: data.details.currencyIn.amount,
+          tokenAddress: data.details.currencyIn.currency.address,
+          chainId: data.details.chainId,
+          isNative: srcToken === ADDRESS_ZERO,
+          name: data.details.currencyIn.currency.name,
+          symbol: data.details.currencyIn.currency.symbol,
+          decimals: data.details.currencyIn.currency.decimals,
+        },
+        network: network.id,
+        currency: network.nativeCurrency.name,
+        symbol: network.nativeCurrency.symbol,
+        networkName: network.name,
+      } as CrossChainRoute
+    }
   }
 }
