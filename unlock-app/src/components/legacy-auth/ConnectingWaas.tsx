@@ -1,9 +1,8 @@
 import { Placeholder } from '@unlock-protocol/ui'
 import { useSession } from 'next-auth/react'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { config } from '~/config/app'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import SvgComponents from '../interface/svg'
 import { useCaptcha } from '~/hooks/useCaptcha'
 import ReCaptcha from 'react-google-recaptcha'
 import { UserAccountType } from '~/utils/userAccountType'
@@ -17,81 +16,70 @@ interface ConnectingWaasProps {
 
 export const ConnectingWaas = ({ setWalletPk }: ConnectingWaasProps) => {
   const { data: session } = useSession()
-
-  const [selectedProvider, _] = useState<UserAccountType>(
-    localStorage.getItem('nextAuthProvider') as UserAccountType
-  )
-
   const { recaptchaRef } = useCaptcha()
 
-  const connect = async () => {
-    try {
-      const waas = await InitializeWaas({
-        collectAndReportMetrics: true,
-        enableHostedBackups: true,
-        prod: config.env === 'prod',
-        projectId: config.coinbaseProjectId,
-      })
-
-      const user = await waas.auth.login({
-        provideAuthToken: async () => {
-          const waasToken = await getUserWaasUuid(
-            'sdhddudd',
-            session?.user?.email as string,
-            UserAccountType.EmailCodeAccount,
-            session?.user?.token as string
-          )
-
-          console.log('waas token', waasToken)
-          return waasToken!
-        },
-      })
-
-      console.log('user from waas', user)
-
-      let wallet: Wallet
-
-      console.log('waas wallets', waas.wallets)
-      if (waas.wallets.wallet) {
-        // Resuming wallet
-        wallet = waas.wallets.wallet
-      } else if (user.hasWallet) {
-        // Restoring wallet
-        console.log('restoring wallet')
-        wallet = await waas.wallets.restoreFromHostedBackup()
-        console.log('wallet from waas', wallet)
-      } else {
-        // Creating wallet
-        console.log('creating wallet')
-        wallet = await waas.wallets.create()
-        console.log('wallet from waas', wallet)
-      }
-
-      const exportedKeys = await wallet.exportKeysFromHostedBackup(
-        undefined,
-        'RAW' as PrivateKeyFormat
-      )
-      // use the first key's private key (ecKeyPrivate)
-      if (exportedKeys.length > 0) {
-        const firstKey = exportedKeys[0] as RawPrivateKey
-        setWalletPk(firstKey.ecKeyPrivate)
-      } else {
-        throw new Error('No private keys found in wallet')
-      }
-    } catch (error) {
-      ToastHelper.error(
-        'We could not connect your account to your wallet. Please refresh and try again.'
-      )
-      console.error('Error connecting to provider: ', error)
-      throw new Error('Error connecting to provider')
-    }
-  }
-
   useEffect(() => {
-    if (!session || !selectedProvider) return
+    const connect = async () => {
+      try {
+        const waas = await InitializeWaas({
+          collectAndReportMetrics: true,
+          enableHostedBackups: true,
+          prod: config.env === 'prod',
+          projectId: config.coinbaseProjectId,
+        })
 
+        const user = await waas.auth.login({
+          provideAuthToken: async () => {
+            const waasToken = await getUserWaasUuid(
+              'TODO: CAPTCHA!',
+              session?.user?.email as string,
+              UserAccountType.EmailCodeAccount,
+              session?.user?.token as string
+            )
+            return waasToken!
+          },
+        })
+
+        console.log('user from waas', user)
+
+        let wallet: Wallet
+
+        if (waas.wallets.wallet) {
+          // Resuming wallet
+          wallet = waas.wallets.wallet
+        } else if (user.hasWallet) {
+          // Restoring wallet
+          console.log('restoring wallet')
+          wallet = await waas.wallets.restoreFromHostedBackup()
+          console.log('wallet from waas', wallet)
+        } else {
+          // Creating wallet
+          console.log('creating wallet')
+          wallet = await waas.wallets.create()
+          console.log('wallet from waas', wallet)
+        }
+
+        const exportedKeys = await wallet.exportKeysFromHostedBackup(
+          undefined,
+          'RAW' as PrivateKeyFormat
+        )
+        // use the first key's private key (ecKeyPrivate)
+        if (exportedKeys.length > 0) {
+          const firstKey = exportedKeys[0] as RawPrivateKey
+          setWalletPk(firstKey.ecKeyPrivate)
+        } else {
+          throw new Error('No private keys found in wallet')
+        }
+      } catch (error) {
+        ToastHelper.error(
+          'We could not connect your account to your wallet. Please refresh and try again.'
+        )
+        console.error('Error connecting to provider: ', error)
+        throw new Error('Error connecting to provider')
+      }
+    }
     connect()
-  }, [selectedProvider])
+  }, [])
 
   return (
     <div className="h-full px-6 pb-6">
@@ -103,18 +91,12 @@ export const ConnectingWaas = ({ setWalletPk }: ConnectingWaasProps) => {
       />
       <div className="grid">
         <div className="flex flex-col items-center justify-center gap-6 pb-6">
-          {selectedProvider == UserAccountType.GoogleAccount && (
-            <SvgComponents.Google width={40} height={40} />
-          )}
-          {selectedProvider == UserAccountType.EmailCodeAccount && (
-            <SvgComponents.Email width={40} height={40} />
-          )}
           <div className="inline-flex items-center gap-2 text-lg font-bold">
             {session && session.user?.email}
           </div>
         </div>
         <span className="flex w-full max-w-lg text-base text-gray-700 justify-center">
-          Signing in...
+          Signing in on your legacy account...
         </span>
         <div>
           <Placeholder.Root className="mt-4">

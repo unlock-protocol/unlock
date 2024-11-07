@@ -11,7 +11,6 @@ export default function MigrationFeedback({ walletPk }: { walletPk: string }) {
   const [isImported, setIsImported] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  console.log({ walletPk })
   const handleImport = async () => {
     setIsImporting(true)
     setError(null)
