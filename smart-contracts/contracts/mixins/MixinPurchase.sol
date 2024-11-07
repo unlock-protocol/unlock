@@ -33,15 +33,13 @@ contract MixinPurchase is
 
   event ReferrerPaid(address tokenAddress, address referrer, uint fee);
 
-  event PurchaseReceipt(
-    uint tokenId,
-    address recipient,
+  event PaymentReceipt(
+    uint[] tokenIds,
+    uint purchases,
+    uint extensions,
     address payer,
-    uint value,
     address tokenAddress,
-    address referrer,
-    uint totalPaid,
-    bool isExtend
+    uint totalPaid
   );
 
   // default to 0
@@ -301,17 +299,6 @@ contract MixinPurchase is
         tokenAddress == address(0) ? msg.value : _value
       );
     }
-
-    emit PurchaseReceipt(
-      tokenId,
-      _recipient,
-      msg.sender, // payer
-      pricePaid,
-      tokenAddress,
-      _referrer,
-      tokenAddress == address(0) ? msg.value : _value,
-      false
-    );
   }
 
   function purchase(
@@ -321,6 +308,7 @@ contract MixinPurchase is
 
     uint totalPriceToPay;
     uint[] memory tokenIds = new uint[](purchaseArgs.length);
+    uint extensionsCount = 0;
 
     for (uint256 i = 0; i < purchaseArgs.length; i++) {
       (uint tokenId, uint pricePaid) = _purchaseKey(
@@ -332,6 +320,7 @@ contract MixinPurchase is
       );
       totalPriceToPay = totalPriceToPay + pricePaid;
       tokenIds[i] = tokenId;
+      extensionsCount += purchaseArgs[i].additionalPeriods;
 
       // extend key as many times as specified in the period
       for (uint256 p = 0; p < purchaseArgs[i].additionalPeriods; p++) {
@@ -345,19 +334,18 @@ contract MixinPurchase is
 
         // send what is due to referrer
         _payReferrer(purchaseArgs[i].referrer);
-
-        emit PurchaseReceipt(
-          tokenId,
-          purchaseArgs[i].recipient,
-          msg.sender, // payer
-          pricePaid,
-          tokenAddress,
-          purchaseArgs[i].referrer,
-          tokenAddress == address(0) ? msg.value : purchaseArgs[i].value,
-          true
-        );
       }
     }
+
+    // receipt event
+    emit PaymentReceipt(
+      tokenIds,
+      purchaseArgs.length, // purchases
+      extensionsCount, // extensions
+      msg.sender, // payer
+      tokenAddress,
+      totalPriceToPay // totalPaid
+    );
 
     // transfer the ERC20 tokens
     _transferValue(msg.sender, totalPriceToPay);
@@ -421,6 +409,16 @@ contract MixinPurchase is
       tokenIds[i] = tokenId;
     }
 
+    // receipt event
+    emit PaymentReceipt(
+      tokenIds,
+      _recipients.length, // purchases
+      0, // extensions
+      msg.sender, // payer
+      tokenAddress,
+      totalPriceToPay // totalPaid
+    );
+
     // transfer the ERC20 tokens
     _transferValue(msg.sender, totalPriceToPay);
 
@@ -467,15 +465,16 @@ contract MixinPurchase is
       _checkValue(_value, pricePaid);
     }
 
-    emit PurchaseReceipt(
-      _tokenId,
-      ownerOf(_tokenId),
+    // receipt event
+    uint[] memory tokenIds;
+    tokenIds[1] = _tokenId;
+    emit PaymentReceipt(
+      tokenIds,
+      0, // purchases
+      1, // extensions
       msg.sender, // payer
-      pricePaid,
       tokenAddress,
-      _referrer,
-      tokenAddress == address(0) ? msg.value : _value,
-      true
+      pricePaid // totalPaid
     );
 
     // process in unlock
@@ -513,15 +512,16 @@ contract MixinPurchase is
     // extend key duration
     _extendKey(_tokenId, 0);
 
-    emit PurchaseReceipt(
-      _tokenId,
-      ownerOf(_tokenId),
+    // receipt event
+    uint[] memory tokenIds;
+    tokenIds[1] = _tokenId;
+    emit PaymentReceipt(
+      tokenIds,
+      0, // purchases
+      1, // extensions
       msg.sender, // payer
-      keyPrice,
       tokenAddress,
-      _referrer,
-      keyPrice, // totalPaid
-      true // extend
+      keyPrice // totalPaid
     );
 
     // store in unlock
