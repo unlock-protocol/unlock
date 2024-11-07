@@ -3,6 +3,7 @@
 import { Button } from '@unlock-protocol/ui'
 import { usePrivy } from '@privy-io/react-auth'
 import { useState } from 'react'
+import Link from 'next/link'
 
 export default function MigrationFeedback({ walletPk }: { walletPk: string }) {
   // @ts-ignore
@@ -52,7 +53,9 @@ export default function MigrationFeedback({ walletPk }: { walletPk: string }) {
             the dashboard.
           </p>
           <div className="flex flex-col gap-3 md:flex-row">
-            <Button href="/dashboard">Return to Dashboard</Button>
+            <Link href="/settings">
+              <Button>Return to Dashboard</Button>
+            </Link>
           </div>
         </>
       )}
