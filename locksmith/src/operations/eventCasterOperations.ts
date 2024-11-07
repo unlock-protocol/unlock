@@ -185,7 +185,7 @@ export const deployLockForEventCaster = async ({
 export const getEventFormEventCaster = async (eventId: string) => {
   // make the request to @event api
   const eventCasterResponse = await fetch(
-    `https://events.xyz/api/v1/event?event_id=${request.params.eventId}`
+    `https://events.xyz/api/v1/event?event_id=${eventId}`
   )
   // parse the response and continue
   const { success, event } = await eventCasterResponse.json()
@@ -200,44 +200,45 @@ export const getEventFormEventCaster = async (eventId: string) => {
   return event
 }
 
-export const mintNFTForRsvp = async ({ user }) => {
-  // Get the recipient
-  if (!user.verified_addresses.eth_addresses[0]) {
-    response
-      .status(422)
-      .json({ message: 'User does not have a verified address.' })
-    return
+export const mintNFTForRsvp = async ({
+  ownerAddress,
+  contract,
+}: {
+  ownerAddress: string
+  contract: {
+    address: string
+    network: number
   }
+}) => {
+  // Get the recipient
 
   const [provider, wallet] = await Promise.all([
-    getProviderForNetwork(event.contract.network),
-    getPurchaser({ network: event.contract.network }),
+    getProviderForNetwork(contract.network),
+    getPurchaser({ network: contract.network }),
   ])
 
-  const ownerAddress = user.verified_addresses.eth_addresses[0]
   // Check first if the user has a key
   const web3Service = new Web3Service(networks)
   const existingKey = await web3Service.getKeyByLockForOwner(
-    event.contract.address,
+    contract.address,
     ownerAddress,
-    event.contract.network
+    contract.network
   )
 
   if (existingKey.tokenId > 0) {
-    response.status(200).json({
-      network: event.contract.network,
-      address: event.contract.address,
+    return {
+      network: contract.network,
+      address: contract.address,
       id: Number(existingKey.tokenId),
       owner: ownerAddress,
-    })
-    return
+    }
   }
 
   const walletService = new WalletService(networks)
   await walletService.connect(provider, wallet)
 
   return await walletService.grantKey({
-    lockAddress: event.contract.address,
+    lockAddress: contract.address,
     recipient: ownerAddress,
   })
 }

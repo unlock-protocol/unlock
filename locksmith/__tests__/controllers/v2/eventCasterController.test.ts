@@ -42,6 +42,12 @@ vi.mock('../../../src/operations/eventCasterOperations', () => ({
   deployLockForEventCaster: async () => {
     return { address: lockAddress, network: 84532 }
   },
+  getEventFormEventCaster: async () => {
+    return { contract: { network: 84532, address: lockAddress } }
+  },
+  mintNFTForRsvp: async () => {
+    return { id: tokenId, owner, network: 84532, address: lockAddress }
+  },
 }))
 
 // https://events.xyz/api/v1/event?event_id=195ede7f
@@ -281,7 +287,7 @@ describe('eventcaster endpoints', () => {
         .set('Authorization', `Api-key ${eventCasterApplication.key}`)
         .send(eventCasterRsvp)
 
-      expect(response.status).toBe(201)
+      expect(response.status).toBe(200)
       expect(response.body.id).toBe(tokenId)
       expect(response.body.owner).toBe(owner)
       expect(response.body.network).toBe(eventCasterEvent.contract.network)

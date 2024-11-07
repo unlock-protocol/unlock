@@ -1,11 +1,5 @@
-import networks from '@unlock-protocol/networks'
-import { WalletService, Web3Service } from '@unlock-protocol/unlock-js'
 import { RequestHandler } from 'express'
 import { z } from 'zod'
-import {
-  getProviderForNetwork,
-  getPurchaser,
-} from '../../fulfillment/dispatcher'
 import {
   deployLockForEventCaster,
   getEventFormEventCaster,
@@ -76,35 +70,12 @@ export const rsvpForEvent: RequestHandler = async (request, response) => {
     return
   }
 
-  const [provider, wallet] = await Promise.all([
-    getProviderForNetwork(event.contract.network),
-    getPurchaser({ network: event.contract.network }),
-  ])
-
-  // Check first if the user has a key
-  const web3Service = new Web3Service(networks)
-  const existingKey = await web3Service.getKeyByLockForOwner(
-    event.contract.address,
+  const token = await mintNFTForRsvp({
     ownerAddress,
-    event.contract.network
-  )
+    contract: event.contract,
+  })
 
-  if (existingKey.tokenId > 0) {
-    response.status(200).json({
-      network: event.contract.network,
-      address: event.contract.address,
-      id: Number(existingKey.tokenId),
-      owner: ownerAddress,
-    })
-    return
-  }
-
-  const walletService = new WalletService(networks)
-  await walletService.connect(provider, wallet)
-
-  const token = await mintNFTForRsvp({ user, ownerAddress })
-
-  response.status(201).json({
+  response.status(200).json({
     network: event.contract.network,
     address: event.contract.address,
     ...token,
