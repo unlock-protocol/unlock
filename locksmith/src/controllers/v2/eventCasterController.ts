@@ -12,6 +12,8 @@ import { deployLockForEventCaster } from '../../operations/eventCasterOperations
 const CreateEventBody = z.object({
   id: z.string(),
   title: z.string(),
+  description: z.string(),
+  image_url: z.string(),
   hosts: z.array(
     z.object({
       verified_addresses: z.object({
@@ -35,11 +37,15 @@ export const createEvent: RequestHandler = async (request, response) => {
     title,
     id: eventId,
     hosts,
+    description,
+    image_url,
   } = await CreateEventBody.parseAsync(request.body)
   const { address, network } = await deployLockForEventCaster({
     title,
     hosts,
     eventId,
+    imageUrl: image_url,
+    description,
   })
   response.status(201).json({ address, network })
   return
