@@ -15,8 +15,6 @@ import ReCaptcha from 'react-google-recaptcha'
 import { useEffect, useState } from 'react'
 import { ConnectButton } from '../interface/connect/Custom'
 import { EnterCode } from '../interface/connect/EnterCode'
-import { useLegacyAuth } from '~/contexts/LegacyAuthenticationContext'
-import { useLegacySIWE } from '~/hooks/legacy-auth/useLegacySiwe'
 import ConnectingWaas from './ConnectingWaas'
 
 export interface UserDetails {
@@ -49,19 +47,12 @@ export const SignInUnlockAccount = ({
     },
   })
   const { recaptchaRef, getCaptchaValue } = useCaptcha()
-  const { account, connected } = useLegacyAuth()
-  const { isSignedIn } = useLegacySIWE()
 
   const { data: session } = useSession()
   const [emailCodeSent, setEmailCodeSent] = useState(false)
   const [emailCodeEntered, setEmailCodeEntered] = useState(false)
 
-  const isLoadingWaas =
-    session &&
-    emailCodeSent &&
-    emailCodeEntered &&
-    (!connected || !isSignedIn || account === '')
-
+  const isLoadingWaas = session && emailCodeSent && emailCodeEntered
   // automatically trigger email code sending
   useEffect(() => {
     const sendEmailCode = async () => {
@@ -145,9 +136,6 @@ export const SignInUnlockAccount = ({
             ToastHelper.success('Sign in with Google')
           }}
         />
-      )}
-      {accountType.includes(UserAccountType.PasskeyAccount) && (
-        <div>Passkey Account</div>
       )}
     </div>
   )
