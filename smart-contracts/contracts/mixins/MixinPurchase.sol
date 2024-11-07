@@ -466,8 +466,8 @@ contract MixinPurchase is
     }
 
     // receipt event
-    uint[] memory tokenIds;
-    tokenIds[1] = _tokenId;
+    uint[] memory tokenIds = new uint[](1);
+    tokenIds[0] = _tokenId;
     emit PaymentReceipt(
       tokenIds,
       0, // purchases
@@ -513,8 +513,8 @@ contract MixinPurchase is
     _extendKey(_tokenId, 0);
 
     // receipt event
-    uint[] memory tokenIds;
-    tokenIds[1] = _tokenId;
+    uint[] memory tokenIds = new uint[](1);
+    tokenIds[0] = _tokenId;
     emit PaymentReceipt(
       tokenIds,
       0, // purchases

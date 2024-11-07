@@ -1,18 +1,27 @@
 const { ethers } = require('hardhat')
 const assert = require('assert')
-const { deployLock, deployERC20, increaseTimeTo } = require('../helpers')
+const {
+  deployLock,
+  deployERC20,
+  increaseTimeTo,
+  compareBigNumberArrays,
+} = require('../helpers')
 
-const { ADDRESS_ZERO, getEvent } = require('@unlock-protocol/hardhat-helpers')
+const {
+  ADDRESS_ZERO,
+  getEvent,
+  getEvents,
+} = require('@unlock-protocol/hardhat-helpers')
 
 const scenarios = [false, true]
 const someTokens = ethers.parseUnits('10', 'ether')
 const tip = ethers.parseUnits('0.005', 'ether')
 
-describe('Lock / PurchaseReceipt event', () => {
+describe('Lock / PaymentReceipt event', () => {
   let lock
   let token
   let tokenAddress
-  let tokenId, purchaseTxReceipt
+  let tokenIds, purchaseTxReceipt
   let keyPrice
   let lockOwner, spender, keyOwner, referrer
   scenarios.forEach((isErc20) => {
@@ -34,7 +43,6 @@ describe('Lock / PurchaseReceipt event', () => {
           .connect(spender)
           .approve(await lock.getAddress(), someTokens)
 
-        console.log({ keyPrice, tip, totla: keyPrice + tip })
         // purchase a key
         const purchaseArgs = [
           {
@@ -45,26 +53,60 @@ describe('Lock / PurchaseReceipt event', () => {
             data: '0x',
             additionalPeriods: 2n,
           },
+          {
+            value: isErc20 ? keyPrice : 0n,
+            recipient: await keyOwner.getAddress(),
+            keyManager: ADDRESS_ZERO,
+            referrer: await referrer.getAddress(),
+            data: '0x',
+            additionalPeriods: 3n,
+          },
         ]
         const purchaseTx = await lock.connect(spender).purchase(purchaseArgs, {
-          value: isErc20 ? 0 : keyPrice * 3n + tip,
+          value: isErc20 ? 0 : keyPrice * 7n,
         })
 
         purchaseTxReceipt = await purchaseTx.wait()
-        const { args } = await getEvent(purchaseTxReceipt, 'Transfer')
-        ;({ tokenId } = args)
+        const { events: transfers } = await getEvents(
+          purchaseTxReceipt,
+          'Transfer'
+        )
+        tokenIds = transfers.map(({ args }) => args.tokenId)
       })
 
       it('is fired when purchasing a key', async () => {
-        const { args } = await getEvent(purchaseTxReceipt, 'PurchaseReceipt')
-        assert.equal(args.tokenId, tokenId)
-        assert.equal(args.recipient, await keyOwner.getAddress())
+        const { args } = await getEvent(purchaseTxReceipt, 'PaymentReceipt')
+        compareBigNumberArrays(args.tokenIds.toArray(), tokenIds)
+        assert.equal(args.purchases, 2n)
+        assert.equal(args.extensions, 5n)
         assert.equal(args.payer, await spender.getAddress())
-        assert.equal(args.value, keyPrice)
         assert.equal(args.tokenAddress, tokenAddress)
-        assert.equal(args.referrer, await referrer.getAddress())
-        assert.equal(args.totalPaid, keyPrice * 3n + tip)
-        assert.equal(args.isExtend, false)
+        assert.equal(args.totalPaid, keyPrice * 7n)
+      })
+
+      it('is fired when purchasing a key using legacy sig', async () => {
+        const purchaseTx = await lock
+          .connect(spender)
+          .purchase(
+            isErc20 ? [keyPrice, keyPrice] : [],
+            [await keyOwner.getAddress(), await keyOwner.getAddress()],
+            [ADDRESS_ZERO, ADDRESS_ZERO],
+            [ADDRESS_ZERO, ADDRESS_ZERO],
+            ['0x', '0x'],
+            {
+              value: isErc20 ? 0 : keyPrice * 2n,
+            }
+          )
+        const receipt = await purchaseTx.wait()
+        const { events } = await getEvents(receipt, 'Transfer')
+        const tokenIds = events.map(({ args }) => args.tokenId)
+        const { args } = await getEvent(receipt, 'PaymentReceipt')
+        compareBigNumberArrays(args.tokenIds.toArray(), tokenIds)
+        assert.equal(args.purchases, 2n)
+        assert.equal(args.extensions, 0n)
+        assert.equal(args.payer, await spender.getAddress())
+        assert.equal(args.tokenAddress, tokenAddress)
+        assert.equal(args.totalPaid, keyPrice * 2n)
       })
 
       it('is fired when extending a key', async () => {
@@ -73,7 +115,7 @@ describe('Lock / PurchaseReceipt event', () => {
           .connect(spender)
           .extend(
             isErc20 ? keyPrice : 0,
-            tokenId,
+            tokenIds[0],
             await referrer.getAddress(),
             '0x',
             {
@@ -81,45 +123,40 @@ describe('Lock / PurchaseReceipt event', () => {
             }
           )
         const receipt = await tx.wait()
-        const { args } = await getEvent(receipt, 'PurchaseReceipt')
-        assert.equal(args.tokenId, tokenId)
-        assert.equal(args.recipient, await keyOwner.getAddress())
+        const { args } = await getEvent(receipt, 'PaymentReceipt')
+        compareBigNumberArrays(args.tokenIds.toArray(), [tokenIds[0]])
+        assert.equal(args.purchases, 0n)
+        assert.equal(args.extensions, 1n)
         assert.equal(args.payer, await spender.getAddress())
-        assert.equal(args.value, keyPrice)
         assert.equal(args.tokenAddress, tokenAddress)
-        assert.equal(args.referrer, await referrer.getAddress())
         assert.equal(args.totalPaid, keyPrice)
-        assert.equal(args.isExtend, true)
       })
 
       if (isErc20) {
         it('is fired when renewing a key', async () => {
+          // Approve key owner to spend
           await token.mint(await keyOwner.getAddress(), someTokens)
-
-          // Approve spending
           await token
-            .connect(spender)
+            .connect(keyOwner)
             .approve(await lock.getAddress(), someTokens)
 
           // expire key
-          const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
+          const expirationTs = await lock.keyExpirationTimestampFor(tokenIds[1])
           await increaseTimeTo(expirationTs)
 
           // renew key
           const tx = await lock
             .connect(spender)
-            .renewMembershipFor(tokenId, await referrer.getAddress())
+            .renewMembershipFor(tokenIds[1], await referrer.getAddress())
 
           const receipt = await tx.wait()
-          const { args } = await getEvent(receipt, 'PurchaseReceipt')
-          assert.equal(args.tokenId, tokenId)
-          assert.equal(args.recipient, await keyOwner.getAddress())
-          assert.equal(args.payer, await keyOwner.getAddress())
-          assert.equal(args.value, keyPrice)
+          const { args } = await getEvent(receipt, 'PaymentReceipt')
+          compareBigNumberArrays(args.tokenIds.toArray(), [tokenIds[1]])
+          assert.equal(args.purchases, 0n)
+          assert.equal(args.extensions, 1n)
+          assert.equal(args.payer, await spender.getAddress())
           assert.equal(args.tokenAddress, tokenAddress)
-          assert.equal(args.referrer, await referrer.getAddress())
           assert.equal(args.totalPaid, keyPrice)
-          assert.equal(args.isExtend, true)
         })
       }
     })
