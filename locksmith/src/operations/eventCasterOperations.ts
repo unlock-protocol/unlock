@@ -7,9 +7,10 @@ import {
   getPurchaser,
 } from '../fulfillment/dispatcher'
 import networks from '@unlock-protocol/networks'
-import { WalletService } from '@unlock-protocol/unlock-js'
+import { WalletService, Web3Service } from '@unlock-protocol/unlock-js'
 import { EVENT_CASTER_ADDRESS } from '../utils/constants'
 import { LockMetadata } from '../models'
+import logger from '../logger'
 
 const DEFAULT_NETWORK = isProduction ? 8453 : 84532 // Base or Base Sepolia
 
@@ -179,4 +180,122 @@ export const deployLockForEventCaster = async ({
     address: lockAddress,
     network: DEFAULT_NETWORK,
   }
+}
+
+export const getEventFormEventCaster = async (eventId: string) => {
+  // make the request to @event api
+  const eventCasterResponse = await fetch(
+    `https://events.xyz/api/v1/event?event_id=${request.params.eventId}`
+  )
+  // parse the response and continue
+  const { success, event } = await eventCasterResponse.json()
+
+  if (!success) {
+    return new Error('Could not retrieve event')
+  }
+
+  if (!(event.contract?.address && event.contract?.network)) {
+    return new Error('This event does not have a contract attached.')
+  }
+  return event
+}
+
+export const mintNFTForRsvp = async ({ user }) => {
+  // Get the recipient
+  if (!user.verified_addresses.eth_addresses[0]) {
+    response
+      .status(422)
+      .json({ message: 'User does not have a verified address.' })
+    return
+  }
+
+  const [provider, wallet] = await Promise.all([
+    getProviderForNetwork(event.contract.network),
+    getPurchaser({ network: event.contract.network }),
+  ])
+
+  const ownerAddress = user.verified_addresses.eth_addresses[0]
+  // Check first if the user has a key
+  const web3Service = new Web3Service(networks)
+  const existingKey = await web3Service.getKeyByLockForOwner(
+    event.contract.address,
+    ownerAddress,
+    event.contract.network
+  )
+
+  if (existingKey.tokenId > 0) {
+    response.status(200).json({
+      network: event.contract.network,
+      address: event.contract.address,
+      id: Number(existingKey.tokenId),
+      owner: ownerAddress,
+    })
+    return
+  }
+
+  const walletService = new WalletService(networks)
+  await walletService.connect(provider, wallet)
+
+  return await walletService.grantKey({
+    lockAddress: event.contract.address,
+    recipient: ownerAddress,
+  })
+}
+
+export const saveContractOnEventCasterEvent = async ({
+  eventId,
+  contract,
+  network,
+}: {
+  eventId: string
+  contract: string
+  network: number
+}) => {
+  const response = await fetch(
+    `https://events.xyz/api/v1/unlock/update-event?event_id=${eventId}&address=${contract}&network=${network}`,
+    {
+      method: 'POST',
+      headers: {
+        'x-api-key': ``,
+      },
+      body: '',
+    }
+  )
+  if (response.status !== 200) {
+    logger.error('Failed to save contract on EventCaster')
+    return
+  }
+  const responseBody = await response.json()
+  if (!responseBody.success) {
+    logger.error('Failed to save contract on EventCaster', responseBody)
+    return
+  }
+  return responseBody
+}
+
+export const saveTokenOnEventCasterRSVP = async ({
+  eventId,
+  farcasterId,
+  tokenId,
+}: {
+  eventId: string
+  farcasterId: string
+  tokenId: string
+}) => {
+  const response = await fetch(
+    `https://events.xyz/api/v1/unlock/update-rsvp?event_id=${eventId}&fid=${farcasterId}&token_id=${tokenId}`,
+    {
+      method: 'POST',
+      headers: {
+        'x-api-key': ``,
+      },
+      body: '',
+    }
+  )
+  const responseBody = await response.json()
+  if (response.status !== 200) {
+    logger.error('Failed to save RSVP on EventCaster')
+    return
+  }
+  return responseBody
 }

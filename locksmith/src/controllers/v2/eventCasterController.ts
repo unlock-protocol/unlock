@@ -6,7 +6,11 @@ import {
   getProviderForNetwork,
   getPurchaser,
 } from '../../fulfillment/dispatcher'
-import { deployLockForEventCaster } from '../../operations/eventCasterOperations'
+import {
+  deployLockForEventCaster,
+  getEventFormEventCaster,
+  mintNFTForRsvp,
+} from '../../operations/eventCasterOperations'
 
 // This is the API endpoint used by EventCaster to create events
 const CreateEventBody = z.object({
@@ -55,27 +59,17 @@ export const createEvent: RequestHandler = async (request, response) => {
 export const rsvpForEvent: RequestHandler = async (request, response) => {
   const { user } = await RsvpBody.parseAsync(request.body)
 
-  // make the request to @event api
-  const eventCasterResponse = await fetch(
-    `https://events.xyz/api/v1/event?event_id=${request.params.eventId}`
-  )
-  // parse the response and continue
-  const { success, event } = await eventCasterResponse.json()
-
-  if (!success) {
-    response.status(422).json({ message: 'Could not retrieve event' })
-    return
-  }
-
-  if (!(event.contract?.address && event.contract?.network)) {
-    response
-      .status(422)
-      .json({ message: 'This event does not have a contract attached.' })
+  let event
+  try {
+    event = await getEventFormEventCaster(request.params.eventId)
+  } catch (error) {
+    response.status(422).json({ message: error.message })
     return
   }
 
   // Get the recipient
-  if (!user.verified_addresses.eth_addresses[0]) {
+  const ownerAddress = user.verified_addresses.eth_addresses[0]
+  if (!ownerAddress) {
     response
       .status(422)
       .json({ message: 'User does not have a verified address.' })
@@ -87,7 +81,6 @@ export const rsvpForEvent: RequestHandler = async (request, response) => {
     getPurchaser({ network: event.contract.network }),
   ])
 
-  const ownerAddress = user.verified_addresses.eth_addresses[0]
   // Check first if the user has a key
   const web3Service = new Web3Service(networks)
   const existingKey = await web3Service.getKeyByLockForOwner(
@@ -109,10 +102,7 @@ export const rsvpForEvent: RequestHandler = async (request, response) => {
   const walletService = new WalletService(networks)
   await walletService.connect(provider, wallet)
 
-  const token = await walletService.grantKey({
-    lockAddress: event.contract.address,
-    recipient: ownerAddress,
-  })
+  const token = await mintNFTForRsvp({ user, ownerAddress })
 
   response.status(201).json({
     network: event.contract.network,
