@@ -1,26 +1,71 @@
+import { Input, Button } from '@unlock-protocol/ui'
+import { useForm } from 'react-hook-form'
+import { useMutation } from '@tanstack/react-query'
+import { locksmith } from '~/config/locksmith'
 import { getAccountFromPrivateKey } from '~/utils/accounts'
+import { ToastHelper } from '../helpers/toast.helper'
 
-export const SignInWithPassword = ({ setWalletPk }) => {
-  const [password, setPassword] = useState<string>('')
+interface SignInWithPasswordProps {
+  userEmail: string
+  onNext: (walletPk: string) => void
+}
 
-  const handleSignIn = async () => {
-    if (!password) {
-      ToastHelper.error('Password is required')
-      throw new Error('Password is required')
-    }
-    try {
+interface FormData {
+  password: string
+}
+
+export const SignInWithPassword = ({
+  userEmail,
+  onNext,
+}: SignInWithPasswordProps) => {
+  const methods = useForm<FormData>()
+
+  const signInMutation = useMutation({
+    mutationFn: async (password: string) => {
       const response = await locksmith.getUserPrivateKey(userEmail)
+      if (!response?.data?.passwordEncryptedPrivateKey) {
+        throw new Error('No encrypted private key found')
+      }
       const wallet = await getAccountFromPrivateKey(
-        response!.data!.passwordEncryptedPrivateKey!,
+        response.data.passwordEncryptedPrivateKey,
         password
       )
-      setWalletPk(wallet.privateKey)
-    } catch (error) {
+      return wallet.privateKey
+    },
+    onSuccess: (privateKey) => {
+      onNext(privateKey)
+    },
+    onError: (error) => {
       console.error('Sign in error:', error)
-      ToastHelper.error('Sign in failed. Please check your credentials.')
-      throw error
+      ToastHelper.error('Sign in failed. Please check your password.')
+    },
+  })
+
+  const onSubmit = async (data: FormData) => {
+    if (!data.password) {
+      ToastHelper.error('Password is required')
+      return
     }
+    await signInMutation.mutateAsync(data.password)
   }
 
-  return <>Sign in with Password</>
+  return (
+    <div className="grid gap-2">
+      <form className="grid gap-4" onSubmit={methods.handleSubmit(onSubmit)}>
+        <Input
+          label="Password"
+          type="password"
+          disabled={signInMutation.isPending}
+          placeholder="Enter your password"
+          {...methods.register('password', {
+            required: 'Password is required',
+          })}
+          error={methods.formState.errors.password?.message}
+        />
+        <Button type="submit" loading={signInMutation.isPending}>
+          Sign In
+        </Button>
+      </form>
+    </div>
+  )
 }
