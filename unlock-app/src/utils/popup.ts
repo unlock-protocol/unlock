@@ -23,4 +23,5 @@ export const popupCenter = (url: string, title: string) => {
   )
 
   newWindow?.focus()
+  return newWindow
 }
