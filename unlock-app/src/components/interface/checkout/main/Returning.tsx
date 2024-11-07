@@ -6,7 +6,6 @@ import { useConfig } from '~/utils/withConfig'
 import { Stepper } from '../Stepper'
 import { useSelector } from '@xstate/react'
 import { Fragment, useState, lazy, Suspense } from 'react'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { ReturningButton } from '../ReturningButton'
@@ -14,6 +13,8 @@ import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
 import { shouldSkip } from './utils'
 import { AddToWallet } from '../../keychain/AddToWallet'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { useProvider } from '~/hooks/useProvider'
 
 const Lottie = lazy(() => import('lottie-react'))
 
@@ -25,12 +26,13 @@ interface Props {
 
 export function Returning({ checkoutService, onClose, communication }: Props) {
   const config = useConfig()
-  const {
-    paywallConfig,
-    lock,
-    messageToSign: signedMessage,
-  } = useSelector(checkoutService, (state) => state.context)
-  const { account, getWalletService } = useAuth()
+  const { paywallConfig, lock, messageToSign } = useSelector(
+    checkoutService,
+    (state) => state.context
+  )
+  const { account } = useAuthenticate()
+  const { getWalletService } = useProvider()
+  const [signedMessage, setSignedMessage] = useState(messageToSign)
   const [hasMessageToSign, setHasMessageToSign] = useState(
     !signedMessage && paywallConfig.messageToSign
   )
@@ -46,6 +48,7 @@ export function Returning({ checkoutService, onClose, communication }: Props) {
         'personal_sign'
       )
       setIsSigningMessage(false)
+      setSignedMessage({ address: account!, signature })
       checkoutService.send({
         type: 'SIGN_MESSAGE',
         signature,
@@ -126,7 +129,7 @@ export function Returning({ checkoutService, onClose, communication }: Props) {
               }`}
             >
               <ReturningButton
-                onClick={() => onClose()}
+                onClick={() => onClose(signedMessage)}
                 returnLabel="Return"
                 checkoutService={checkoutService}
               />

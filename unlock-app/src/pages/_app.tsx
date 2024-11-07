@@ -12,11 +12,11 @@ import { ErrorBoundary } from '@sentry/nextjs'
 import { ErrorFallback } from '~/components/interface/ErrorFallback'
 import { queryClient } from '~/config/queryClient'
 import { SessionProvider } from '~/hooks/useSession'
-import { ConnectModalProvider } from '~/hooks/useConnectModal'
-import { SessionProvider as NextAuthSessionProvider } from 'next-auth/react'
 import '~/utils/bigint'
 import { Inter } from 'next/font/google'
 import ShouldOpenConnectModal from '~/components/interface/connect/ShouldOpenConnectModal'
+import { ConnectModalProvider } from '~/hooks/useConnectModal'
+import Privy from '~/config/PrivyProvider'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -40,8 +40,8 @@ const UnlockApp = ({
   return (
     <div className={inter.className}>
       <QueryClientProvider client={queryClient}>
-        <SessionProvider>
-          <NextAuthSessionProvider>
+        <Privy>
+          <SessionProvider>
             <ConnectModalProvider>
               <GlobalWrapper>
                 <ErrorBoundary
@@ -57,8 +57,8 @@ const UnlockApp = ({
                 <Toaster />
               </GlobalWrapper>
             </ConnectModalProvider>
-          </NextAuthSessionProvider>
-        </SessionProvider>
+          </SessionProvider>
+        </Privy>
       </QueryClientProvider>
       <SpeedInsights />
     </div>

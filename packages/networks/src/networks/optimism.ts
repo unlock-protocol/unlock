@@ -5,6 +5,18 @@ export const optimism: NetworkConfig = {
     url: (address: string) => `https://blockscan.com/address/${address}`,
   },
   chain: 'optimism',
+  dao: {
+    chainId: 8453,
+    governanceBridge: {
+      connext: '0x8f7492DE823025b4CfaAB1D34c58963F2af5DEDA',
+      domainId: 1869640809,
+      modules: {
+        connextMod: '0xF241F12506fb6Bf1909c6bC176A199166414007a',
+        delayMod: '0xA8BB5AF09B599794136B14B112e137FAf83Acf1f',
+      },
+    },
+    governor: '0x65bA0624403Fc5Ca2b20479e9F626eD4D78E0aD9',
+  },
   description:
     'Optimism is a Layer 2 Optimistic Rollup network designed to utilize the strong security guarantees of Ethereum while reducing its cost and latency.',
   explorer: {
@@ -19,14 +31,6 @@ export const optimism: NetworkConfig = {
     },
   },
   featured: true,
-  governanceBridge: {
-    connext: '0x8f7492DE823025b4CfaAB1D34c58963F2af5DEDA',
-    domainId: 1869640809,
-    modules: {
-      connextMod: '0xF241F12506fb6Bf1909c6bC176A199166414007a',
-      delayMod: '0xA8BB5AF09B599794136B14B112e137FAf83Acf1f',
-    },
-  },
   hooks: {
     onKeyPurchaseHook: [
       {
@@ -154,6 +158,12 @@ export const optimism: NetworkConfig = {
       decimals: 8,
       name: 'Wrapped BTC',
       symbol: 'WBTC',
+    },
+    {
+      address: '0xc709c9116dBf29Da9c25041b13a07A0e68aC5d2D',
+      decimals: 18,
+      name: 'Unlock Discount Token',
+      symbol: 'UDT',
     },
   ],
   uniswapV3: {

@@ -5,6 +5,18 @@ export const polygon: NetworkConfig = {
     url: (address: string) => `https://blockscan.com/address/${address}`,
   },
   chain: 'polygon',
+  dao: {
+    chainId: 8453,
+    governanceBridge: {
+      connext: '0x11984dc4465481512eb5b777E44061C158CF2259',
+      domainId: 1886350457,
+      modules: {
+        connextMod: '0xa8E0FD3D023B1A253eF52B6169851Ee95eF257bE',
+        delayMod: '0x31B8bB0BC5ffEe8e476202e9D97b0b8c31aA767d',
+      },
+    },
+    governor: '0x65bA0624403Fc5Ca2b20479e9F626eD4D78E0aD9',
+  },
   description:
     "Polygon is a side-chain to build and scale your projects on Ethereum, the world's largest blockchain ecosystem.",
   explorer: {
@@ -19,14 +31,6 @@ export const polygon: NetworkConfig = {
     },
   },
   featured: true,
-  governanceBridge: {
-    connext: '0x11984dc4465481512eb5b777E44061C158CF2259',
-    domainId: 1886350457,
-    modules: {
-      connextMod: '0xa8E0FD3D023B1A253eF52B6169851Ee95eF257bE',
-      delayMod: '0x31B8bB0BC5ffEe8e476202e9D97b0b8c31aA767d',
-    },
-  },
   hooks: {
     onKeyPurchaseHook: [
       {
@@ -71,8 +75,8 @@ export const polygon: NetworkConfig = {
   nativeCurrency: {
     coingecko: 'matic-network',
     decimals: 18,
-    name: 'Matic',
-    symbol: 'MATIC',
+    name: 'Wrapped Polygon Ecosystem Token',
+    symbol: 'WPOL',
     wrapped: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
   },
   opensea: {
@@ -142,14 +146,20 @@ export const polygon: NetworkConfig = {
     {
       address: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
       decimals: 18,
-      name: 'Wrapped Matic',
-      symbol: 'WMATIC',
+      name: 'Wrapped Polygon Ecosystem Token',
+      symbol: 'WPOL',
     },
     {
       address: '0xE06Bd4F5aAc8D0aA337D13eC88dB6defC6eAEefE',
       decimals: 18,
       name: 'PlanetIX',
       symbol: 'IXT',
+    },
+    {
+      address: '0xf7E78d9C4c74df889A83C8C8d6D05BF70fF75876',
+      decimals: 18,
+      name: 'Unlock Discount Token (PoS)',
+      symbol: 'UDT',
     },
   ],
   uniswapV3: {

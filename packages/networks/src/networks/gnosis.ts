@@ -5,6 +5,18 @@ export const gnosis: NetworkConfig = {
     url: (address: string) => `https://blockscan.com/address/${address}`,
   },
   chain: 'xdai',
+  dao: {
+    chainId: 8453,
+    governanceBridge: {
+      connext: '0x5bB83e95f63217CDa6aE3D181BA580Ef377D2109',
+      domainId: 6778479,
+      modules: {
+        connextMod: '0xdFB9328cF62e3525D355581dE88AeAa330879D12',
+        delayMod: '0x6E74DC46EbF2cDB75B72Ab1dCAe3C98c7E9d28a1',
+      },
+    },
+    governor: '0x65bA0624403Fc5Ca2b20479e9F626eD4D78E0aD9',
+  },
   description:
     'Gnosis Chain is one of the first Ethereum sidechains and has stayed true to its values.',
   explorer: {
@@ -19,14 +31,6 @@ export const gnosis: NetworkConfig = {
     },
   },
   featured: true,
-  governanceBridge: {
-    connext: '0x5bB83e95f63217CDa6aE3D181BA580Ef377D2109',
-    domainId: 6778479,
-    modules: {
-      connextMod: '0xdFB9328cF62e3525D355581dE88AeAa330879D12',
-      delayMod: '0x6E74DC46EbF2cDB75B72Ab1dCAe3C98c7E9d28a1',
-    },
-  },
   hooks: {
     onKeyPurchaseHook: [
       {
@@ -113,6 +117,12 @@ export const gnosis: NetworkConfig = {
       featured: true,
       name: 'Tether USD on xDai',
       symbol: 'USDT',
+    },
+    {
+      address: '0x8C84142c4a716a16a89d0e61707164d6107A9811',
+      decimals: 18,
+      name: 'UDT from Ethereum',
+      symbol: 'UDT',
     },
   ],
   unlockAddress: '0x1bc53f4303c711cc693F6Ec3477B83703DcB317f',

@@ -1,5 +1,4 @@
-import { Fragment, useState } from 'react'
-import { useAuth } from '../../contexts/AuthenticationContext'
+import { useState } from 'react'
 import {
   MembershipCard,
   MembershipCardPlaceholder,
@@ -7,21 +6,16 @@ import {
 import { ToastHelper } from '../helpers/toast.helper'
 import { MembershipVerificationConfig } from '~/utils/verification'
 import { invalidMembership } from './verification/invalidMembership'
-import { Button } from '@unlock-protocol/ui'
+import { Button, Modal } from '@unlock-protocol/ui'
 import { isSignatureValidForAddress } from '~/utils/signatures'
 import { locksmith } from '~/config/locksmith'
 import { AxiosError } from 'axios'
 import { useEventTicket, useLocksmithGranterAddress } from '~/hooks/useTicket'
-import {
-  Dialog,
-  DialogPanel,
-  Transition,
-  TransitionChild,
-} from '@headlessui/react'
 import { MAX_UINT } from '~/constants'
 import { config as AppConfig } from '~/config/app'
 import { useConnectModal } from '~/hooks/useConnectModal'
 import { Event, PaywallConfigType } from '@unlock-protocol/core'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface Props {
   checkoutConfig?: PaywallConfigType
@@ -42,66 +36,40 @@ const WarningDialog = ({
   setIsOpen,
   onConfirm,
 }: WarningDialogProps) => (
-  <Transition show={isOpen} appear as={Fragment}>
-    <Dialog
-      as="div"
-      className="relative z-50"
-      onClose={() => {
-        setIsOpen(false)
-      }}
-      open={isOpen}
-    >
-      <div className="fixed inset-0 bg-opacity-25 backdrop-filter backdrop-blur-sm bg-zinc-500" />
-      <TransitionChild
-        as={Fragment}
-        enter="transition ease-out duration-300"
-        enterFrom="opacity-0 translate-y-1"
-        enterTo="opacity-100"
-        leave="transition ease-in duration-150"
-        leaveFrom="opacity-100"
-        leaveTo="opacity-0 translate-y-1"
-      >
-        <div className="fixed inset-0 p-6 overflow-y-auto">
-          <div className="flex items-center justify-center min-h-full">
-            <DialogPanel className="w-full max-w-sm">
-              <div className="w-full max-w-sm bg-white rounded-xl">
-                <div className="flex flex-col gap-3">
-                  <div className="p-2 text-center bg-amber-300 rounded-t-xl">
-                    <span className="text-lg">Warning</span>
-                  </div>
-                  <div className="flex flex-col w-full gap-3 p-4">
-                    <span>
-                      The current ticket has not been checked-in. Are you sure
-                      you want to scan the next one?
-                    </span>
-                    <Button
-                      onClick={(event) => {
-                        event.preventDefault()
-                        setIsOpen(false)
-                      }}
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      variant="outlined-primary"
-                      onClick={(event) => {
-                        event.preventDefault()
-                        onConfirm()
-                      }}
-                    >
-                      <div className="flex items-center">
-                        <span>Ok, continue</span>
-                      </div>
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </DialogPanel>
-          </div>
+  <Modal isOpen={isOpen} setIsOpen={setIsOpen} size="small">
+    <div className="w-full max-w-sm bg-white rounded-xl">
+      <div className="flex flex-col gap-3">
+        <div className="p-2 text-center bg-amber-300 rounded-t-xl">
+          <span className="text-lg">Warning</span>
         </div>
-      </TransitionChild>
-    </Dialog>
-  </Transition>
+        <div className="flex flex-col w-full gap-3 p-4">
+          <span>
+            The current ticket has not been checked-in. Are you sure you want to
+            scan the next one?
+          </span>
+          <Button
+            onClick={(event) => {
+              event.preventDefault()
+              setIsOpen(false)
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="outlined-primary"
+            onClick={(event) => {
+              event.preventDefault()
+              onConfirm()
+            }}
+          >
+            <div className="flex items-center">
+              <span>Ok, continue</span>
+            </div>
+          </Button>
+        </div>
+      </div>
+    </div>
+  </Modal>
 )
 
 /**
@@ -113,11 +81,10 @@ export const VerificationStatus = ({
   eventProp,
   config,
   onVerified,
-  onClose,
 }: Props) => {
   const { data, sig, raw } = config
   const { lockAddress, timestamp, network, tokenId, account } = data
-  const { account: viewer } = useAuth()
+  const { account: viewer } = useAuthenticate()
   const { openConnectModal } = useConnectModal()
   const [isCheckingIn, setIsCheckingIn] = useState(false)
   const [showWarning, setShowWarning] = useState(false)
@@ -263,7 +230,6 @@ export const VerificationStatus = ({
       {ticket && (
         <MembershipCard
           image={ticket!.image}
-          onClose={onClose}
           keyId={tokenId!}
           owner={ticket!.owner}
           userMetadata={ticket!.userMetadata}

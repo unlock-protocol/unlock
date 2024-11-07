@@ -1,4 +1,3 @@
-import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import { GAS_COST_TO_GRANT } from './constants'
 import { getProviderForNetwork, getPurchaser } from '../fulfillment/dispatcher'
@@ -6,12 +5,6 @@ import GasPrice from './gasPrice'
 
 // @deprecated - Remove once no longer used anywhere. Use functions in pricing.ts instead.
 export default class KeyPricer {
-  readOnlyEthereumService: any
-
-  constructor() {
-    this.readOnlyEthereumService = new Web3Service(networks)
-  }
-
   async canAffordGrant(
     network: number
   ): Promise<{ canAfford: boolean; reason?: string }> {

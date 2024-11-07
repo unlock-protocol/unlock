@@ -6,7 +6,7 @@ import {
   getConnectionsForManager,
 } from '../../controllers/v2/stripeController'
 
-const router = express.Router({ mergeParams: true })
+const router: express.Router = express.Router({ mergeParams: true })
 
 router.post(
   '/connect/:network/locks/:lockAddress',

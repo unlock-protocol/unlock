@@ -11,7 +11,6 @@ import { AirdropMember } from './AirdropElements'
 import { useList } from 'react-use'
 import { AirdropListItem } from './AirdropElements'
 import { Lock } from '~/unlockTypes'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { formatDate } from '~/utils/lock'
 import { ChangeEvent, useCallback, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -19,6 +18,7 @@ import { KeyManager } from '@unlock-protocol/unlock-js'
 import { useConfig } from '~/utils/withConfig'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { onResolveName } from '~/utils/resolvers'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 export interface Props {
   add(member: AirdropMember): void
@@ -312,7 +312,7 @@ export function AirdropManualForm({
   emailRequired = false,
 }: AirdropManualFormProps) {
   const [list, { push, removeAt, clear }] = useList<AirdropMember>([])
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const expiration =
     lock.expirationDuration > 0
       ? new Date(formatDate(lock.expirationDuration || 0))

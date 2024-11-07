@@ -1,8 +1,13 @@
-import React, { useCallback, useState } from 'react'
-import { Button, Input, Select, ToggleSwitch } from '@unlock-protocol/ui'
+import { useCallback, useState } from 'react'
+import {
+  Button,
+  Combobox,
+  Input,
+  Select,
+  ToggleSwitch,
+} from '@unlock-protocol/ui'
 import { Token } from '@unlock-protocol/types'
 import { useForm, useWatch } from 'react-hook-form'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { BalanceWarning } from './BalanceWarning'
 import { useConfig } from '~/utils/withConfig'
@@ -14,6 +19,7 @@ import { networks } from '@unlock-protocol/networks'
 import { useAvailableNetworks } from '~/utils/networks'
 import { SelectToken } from './SelectToken'
 import { ProtocolFee } from './ProtocolFee'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 export interface LockFormProps {
   name: string
@@ -87,7 +93,7 @@ export const CreateLockForm = ({
 }: CreateLockFormProps) => {
   const { networks } = useConfig()
   const web3Service = useWeb3Service()
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const mainNetworkOptions = useAvailableNetworks()
   const additionalNetworkOptions = useAvailableNetworks(true)
 
@@ -171,7 +177,7 @@ export const CreateLockForm = ({
             onSubmit={handleSubmit(onHandleSubmit)}
           >
             {!hideFields.includes('network') && (
-              <Select
+              <Combobox
                 label="Network:"
                 tooltip={
                   <p className="py-2">

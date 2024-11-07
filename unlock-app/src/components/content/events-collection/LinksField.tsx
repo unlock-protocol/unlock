@@ -18,13 +18,14 @@ export const LinksField: React.FC = () => {
 
   return (
     <div className="space-y-4 w-full">
+      {/* Website Field */}
       <Controller
         control={control}
         name="links.website"
         rules={{
           pattern: {
             value:
-              /^https?:\/\/(?!(?:www\.)?(?:github\.com|youtube\.com|farcaster\.xyz|twitter\.com|x\.com)).+\..+/,
+              /^https?:\/\/(?!(?:www\.)?(?:github\.com|youtube\.com|farcaster\.xyz|warpcast\.com|twitter\.com|x\.com)).+\..+/,
             message: 'Invalid URL format',
           },
         }}
@@ -39,34 +40,38 @@ export const LinksField: React.FC = () => {
           />
         )}
       />
+
+      {/* Farcaster/Warpcast Field */}
       <Controller
         control={control}
         name="links.farcaster"
         rules={{
           pattern: {
             value:
-              /^https?:\/\/(www\.)?(?:farcaster\.xyz|warpcast\.com)\/[a-zA-Z0-9_-]+$/,
-            message: 'Invalid Farcaster URL format',
+              /^https?:\/\/(?:www\.)?(?:farcaster\.xyz|warpcast\.com)(?:\/(?:~\/channel\/[a-zA-Z0-9_-]+|[a-zA-Z0-9_-]+))$/,
+            message: 'Invalid Farcaster/Warpcast URL format',
           },
         }}
         render={({ field }) => (
           <Input
             {...field}
             type="url"
-            placeholder="https://warpcast.com/yourhandle"
-            label="Farcaster"
-            description="Your Farcaster URL."
+            placeholder="https://warpcast.com/~/channel/yourchannel"
+            label="Farcaster/Warpcast"
+            description="Your Farcaster or Warpcast profile URL."
             error={errors.links?.farcaster?.message}
           />
         )}
       />
+
+      {/* X (Twitter) Field */}
       <Controller
         control={control}
         name="links.x"
         rules={{
           pattern: {
             value:
-              /^https?:\/\/(www\.)?(?:twitter\.com|x\.com)\/[a-zA-Z0-9_]+$/,
+              /^https?:\/\/(?:www\.)?(?:twitter\.com|x\.com)\/[a-zA-Z0-9_]+$/,
             message: 'Invalid X (Twitter) URL format',
           },
         }}
@@ -76,17 +81,20 @@ export const LinksField: React.FC = () => {
             type="url"
             placeholder="https://x.com/yourhandle"
             label="X"
-            description="Your X (formerly Twitter) URL."
+            description="Your X (formerly Twitter) profile URL."
             error={errors.links?.x?.message}
           />
         )}
       />
+
+      {/* YouTube Field */}
       <Controller
         control={control}
         name="links.youtube"
         rules={{
           pattern: {
-            value: /^https?:\/\/(www\.)?youtube\.com\/@[a-zA-Z0-9_-]+$/,
+            value:
+              /^https?:\/\/(?:www\.)?youtube\.com\/(?:@[\w-]+|watch\?v=[\w-]+|playlist\?list=[\w-]+)$/,
             message: 'Invalid YouTube URL format',
           },
         }}
@@ -96,17 +104,19 @@ export const LinksField: React.FC = () => {
             type="url"
             placeholder="https://www.youtube.com/@yourchannel"
             label="YouTube"
-            description="Your YouTube URL."
+            description="Your YouTube channel or video URL."
             error={errors.links?.youtube?.message}
           />
         )}
       />
+
+      {/* GitHub Field */}
       <Controller
         control={control}
         name="links.github"
         rules={{
           pattern: {
-            value: /^https?:\/\/github\.com\/.+$/,
+            value: /^https?:\/\/(?:www\.)?github\.com\/[a-zA-Z0-9_-]+$/,
             message: 'Invalid GitHub URL format',
           },
         }}

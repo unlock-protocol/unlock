@@ -9,12 +9,12 @@ import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { ethers } from 'ethers'
 import { useForm } from 'react-hook-form'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { getEthersWalletFromPassword } from '~/utils/strings'
 import LoadingIcon from '../../Loading'
 import { useDebounce } from 'react-use'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import Disconnect from './Disconnect'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 interface Props {
   checkoutService: CheckoutService
 }
@@ -24,7 +24,7 @@ interface FormData {
 }
 
 export function Password({ checkoutService }: Props) {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const [password, setPassword] = useState<string | undefined>('')
   const [hookAddress, setHookAddress] = useState<string>()
   const [isPasswordLoading, setPasswordLoading] = useState<boolean>(false)

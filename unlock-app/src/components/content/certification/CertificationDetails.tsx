@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import { useMetadata } from '~/hooks/metadata'
 import { toFormData } from '~/components/interface/locks/metadata/utils'
@@ -11,14 +13,13 @@ import {
   minifyAddress,
   Card,
 } from '@unlock-protocol/ui'
-import router from 'next/router'
+import { useRouter } from 'next/navigation'
 import ReactMarkdown from 'react-markdown'
 import { useLockManager } from '~/hooks/useLockManager'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { networks } from '@unlock-protocol/networks'
 import { addressMinify } from '~/utils/strings'
 import { expirationAsDate } from '~/utils/durations'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { MAX_UINT } from '~/constants'
 import { AirdropForm } from '~/components/interface/members/airdrop/AirdropDrawer'
 import LinkedinShareButton from './LinkedInShareButton'
@@ -32,6 +33,7 @@ import { WarningBar } from '~/components/interface/locks/Create/elements/Balance
 import { UpdateTransferFee } from '~/components/interface/locks/Settings/forms/UpdateTransferFee'
 import { PaywallConfigType, getLockTypeByMetadata } from '@unlock-protocol/core'
 import { useLockData } from '~/hooks/useLockData'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface CertificationDetailsProps {
   lockAddress: string
@@ -126,8 +128,9 @@ export const CertificationDetails = ({
   network,
   tokenId,
 }: CertificationDetailsProps) => {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const [isCheckoutOpen, setCheckoutOpen] = useState(false)
+  const router = useRouter()
 
   const { lock, isLockLoading: isLockDataLoading } = useLockData({
     lockAddress,
@@ -141,9 +144,7 @@ export const CertificationDetails = ({
   })
 
   const onEdit = () => {
-    return router.push(
-      `/locks/metadata?lockAddress=${lockAddress}&network=${network}`
-    )
+    router.push(`/locks/metadata?lockAddress=${lockAddress}&network=${network}`)
   }
 
   const { data: key } = useCertification({

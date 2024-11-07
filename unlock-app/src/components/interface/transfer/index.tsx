@@ -1,3 +1,5 @@
+'use client'
+
 import { Input, Button, Placeholder } from '@unlock-protocol/ui'
 import { KeyManager, TransferObject } from '@unlock-protocol/unlock-js'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -8,11 +10,11 @@ import { useConfig } from '~/utils/withConfig'
 import ReCaptcha from 'react-google-recaptcha'
 import { toast } from 'react-hot-toast'
 import { AxiosError } from 'axios'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useLockData } from '~/hooks/useLockData'
 import { useTransferFee } from '~/hooks/useTransferFee'
 import { useQuery } from '@tanstack/react-query'
+import { useProvider } from '~/hooks/useProvider'
 
 interface SendTransferFormProps {
   createTransferCode: ReturnType<typeof useTransferCode>['createTransferCode']
@@ -104,7 +106,7 @@ export const ConfirmTransferForm = ({
   const router = useRouter()
   const web3Service = useWeb3Service()
   const manager = new KeyManager(config.networks)
-  const { getWalletService } = useAuth()
+  const { getWalletService } = useProvider()
   const {
     handleSubmit,
     register,
@@ -231,7 +233,7 @@ export const ConfirmTransferForm = ({
 
 export const useQueryTransfer = () => {
   const searchParams = useSearchParams()
-  const result = useMemo(() => {
+  return useMemo(() => {
     const lockAddress = searchParams.get('lockAddress')
     const keyId = searchParams.get('keyId')
     const network = searchParams.get('network')
@@ -244,7 +246,6 @@ export const useQueryTransfer = () => {
       isReady: !!lockAddress && !!keyId && !!network,
     }
   }, [searchParams])
-  return result
 }
 
 export const Transfer = () => {

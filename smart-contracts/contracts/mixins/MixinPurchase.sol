@@ -31,6 +31,8 @@ contract MixinPurchase is
 
   event GasRefundValueChanged(uint refundValue);
 
+  event ReferrerPaid(address tokenAddress, address referrer, uint fee);
+
   // default to 0
   uint256 internal _gasRefundValue;
 
@@ -46,6 +48,15 @@ contract MixinPurchase is
   mapping(address => uint) public referrerFees;
 
   error TransferFailed();
+
+  struct PurchaseArgs {
+    uint value;
+    address recipient;
+    address referrer;
+    address keyManager;
+    bytes data;
+    uint additionalPeriods;
+  }
 
   /**
    * @dev Set the value/price to be refunded to the sender on purchase
@@ -93,11 +104,9 @@ contract MixinPurchase is
 
       // pay the referrer if necessary
       if (basisPointsToPay != 0) {
-        _transfer(
-          tokenAddress,
-          payable(_referrer),
-          (keyPrice * basisPointsToPay) / BASIS_POINTS_DEN
-        );
+        uint amount = (keyPrice * basisPointsToPay) / BASIS_POINTS_DEN;
+        emit ReferrerPaid(tokenAddress, _referrer, amount);
+        _transfer(tokenAddress, payable(_referrer), amount);
       }
     }
   }
@@ -232,6 +241,108 @@ contract MixinPurchase is
     }
   }
 
+  function _lockPurchaseIsPossible(uint nbOfKeysToPurchase) internal view {
+    _lockIsUpToDate();
+    if (_totalSupply + nbOfKeysToPurchase > maxNumberOfKeys) {
+      revert LOCK_SOLD_OUT();
+    }
+  }
+
+  function _purchaseKey(
+    uint _value,
+    address _recipient,
+    address _keyManager,
+    address _referrer,
+    bytes memory _data
+  ) internal returns (uint tokenId, uint pricePaid) {
+    // create a new key, check for a non-expiring key
+    tokenId = _createNewKey(
+      _recipient,
+      _keyManager,
+      expirationDuration == type(uint).max
+        ? type(uint).max
+        : block.timestamp + expirationDuration
+    );
+
+    // price
+    pricePaid = purchasePriceFor(_recipient, _referrer, _data);
+
+    // store values at purchase time
+    _recordTokenTerms(tokenId, pricePaid);
+
+    // make sure erc20 price is correct
+    if (tokenAddress != address(0)) {
+      _checkValue(_value, pricePaid);
+    }
+
+    // store in unlock
+    _recordKeyPurchase(pricePaid, _referrer);
+
+    // fire hook
+    if (address(onKeyPurchaseHook) != address(0)) {
+      onKeyPurchaseHook.onKeyPurchase(
+        tokenId,
+        msg.sender,
+        _recipient,
+        _referrer,
+        _data,
+        pricePaid,
+        tokenAddress == address(0) ? msg.value : _value
+      );
+    }
+  }
+
+  function purchase(
+    PurchaseArgs[] memory purchaseArgs
+  ) external payable returns (uint[] memory) {
+    _lockPurchaseIsPossible(purchaseArgs.length);
+
+    uint totalPriceToPay;
+    uint[] memory tokenIds = new uint[](purchaseArgs.length);
+
+    for (uint256 i = 0; i < purchaseArgs.length; i++) {
+      (uint tokenId, uint pricePaid) = _purchaseKey(
+        purchaseArgs[i].value,
+        purchaseArgs[i].recipient,
+        purchaseArgs[i].keyManager,
+        purchaseArgs[i].referrer,
+        purchaseArgs[i].data
+      );
+      totalPriceToPay = totalPriceToPay + pricePaid;
+      tokenIds[i] = tokenId;
+
+      // extend key as many times as specified in the period
+      for (uint256 p = 0; p < purchaseArgs[i].additionalPeriods; p++) {
+        _extendKey(tokenId, 0);
+
+        // compute total price
+        totalPriceToPay = totalPriceToPay + pricePaid;
+
+        // process in unlock
+        _recordKeyPurchase(pricePaid, purchaseArgs[i].referrer);
+
+        // send what is due to referrer
+        _payReferrer(purchaseArgs[i].referrer);
+      }
+    }
+
+    // transfer the ERC20 tokens
+    _transferValue(msg.sender, totalPriceToPay);
+
+    // pay protocol
+    _payProtocol(totalPriceToPay);
+
+    // refund gas
+    _refundGas();
+
+    // send what is due to referrers
+    for (uint256 i = 0; i < purchaseArgs.length; i++) {
+      _payReferrer(purchaseArgs[i].referrer);
+    }
+
+    return tokenIds;
+  }
+
   /**
    * @dev Purchase function
    * @param _values array of tokens amount to pay for this purchase >= the current keyPrice - any applicable discount
@@ -252,10 +363,9 @@ contract MixinPurchase is
     address[] memory _keyManagers,
     bytes[] calldata _data
   ) external payable returns (uint[] memory) {
-    _lockIsUpToDate();
-    if (_totalSupply + _recipients.length > maxNumberOfKeys) {
-      revert LOCK_SOLD_OUT();
-    }
+    _lockPurchaseIsPossible(_recipients.length);
+
+    // check for array mismatch
     if (
       (_recipients.length != _referrers.length) ||
       (_recipients.length != _keyManagers.length)
@@ -267,50 +377,15 @@ contract MixinPurchase is
     uint[] memory tokenIds = new uint[](_recipients.length);
 
     for (uint256 i = 0; i < _recipients.length; i++) {
-      // check recipient address
-      address _recipient = _recipients[i];
-
-      // create a new key, check for a non-expiring key
-      tokenIds[i] = _createNewKey(
-        _recipient,
+      (uint tokenId, uint pricePaid) = _purchaseKey(
+        tokenAddress != address(0) ? _values[i] : 0,
+        _recipients[i],
         _keyManagers[i],
-        expirationDuration == type(uint).max
-          ? type(uint).max
-          : block.timestamp + expirationDuration
-      );
-
-      // price
-      uint inMemoryKeyPrice = purchasePriceFor(
-        _recipient,
         _referrers[i],
         _data[i]
       );
-      totalPriceToPay = totalPriceToPay + inMemoryKeyPrice;
-
-      // store values at purchase time
-      _recordTokenTerms(tokenIds[i], inMemoryKeyPrice);
-
-      // make sure erc20 price is correct
-      if (tokenAddress != address(0)) {
-        _checkValue(_values[i], inMemoryKeyPrice);
-      }
-
-      // store in unlock
-      _recordKeyPurchase(inMemoryKeyPrice, _referrers[i]);
-
-      // fire hook
-      uint pricePaid = tokenAddress == address(0) ? msg.value : _values[i];
-      if (address(onKeyPurchaseHook) != address(0)) {
-        onKeyPurchaseHook.onKeyPurchase(
-          tokenIds[i],
-          msg.sender,
-          _recipient,
-          _referrers[i],
-          _data[i],
-          inMemoryKeyPrice,
-          pricePaid
-        );
-      }
+      totalPriceToPay = totalPriceToPay + pricePaid;
+      tokenIds[i] = tokenId;
     }
 
     // transfer the ERC20 tokens
@@ -352,25 +427,21 @@ contract MixinPurchase is
     _extendKey(_tokenId, 0);
 
     // transfer the tokens
-    uint inMemoryKeyPrice = purchasePriceFor(
-      ownerOf(_tokenId),
-      _referrer,
-      _data
-    );
+    uint pricePaid = purchasePriceFor(ownerOf(_tokenId), _referrer, _data);
 
     // make sure erc20 price is correct
     if (tokenAddress != address(0)) {
-      _checkValue(_value, inMemoryKeyPrice);
+      _checkValue(_value, pricePaid);
     }
 
     // process in unlock
-    _recordKeyPurchase(inMemoryKeyPrice, _referrer);
+    _recordKeyPurchase(pricePaid, _referrer);
 
     // pay value in ERC20
-    _transferValue(msg.sender, inMemoryKeyPrice);
+    _transferValue(msg.sender, pricePaid);
 
     // if key params have changed, then update them
-    _recordTokenTerms(_tokenId, inMemoryKeyPrice);
+    _recordTokenTerms(_tokenId, pricePaid);
 
     // refund gas (if applicable)
     _refundGas();
@@ -379,7 +450,7 @@ contract MixinPurchase is
     _payReferrer(_referrer);
 
     // pay protocol
-    _payProtocol(inMemoryKeyPrice);
+    _payProtocol(pricePaid);
   }
 
   /**

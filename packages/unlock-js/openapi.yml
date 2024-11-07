@@ -670,6 +670,77 @@ components:
           description: Array of event slugs to remove.
           items:
             type: string
+    PrivyUserCheckBody:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          description: Email address to check
+        address:
+          type: string
+          description: Ethereum wallet address to check
+      oneOf:
+        - required: ['email']
+        - required: ['address']
+
+    PrivyUserResponse:
+      type: object
+      required:
+        - exists
+        - user
+      properties:
+        exists:
+          type: boolean
+          description: Whether the user exists in Privy
+        user:
+          type: object
+          nullable: true
+          properties:
+            id:
+              type: string
+            createdAt:
+              type: string
+              format: date-time
+            isGuest:
+              type: boolean
+            customMetadata:
+              type: object
+            linkedAccounts:
+              type: array
+              items:
+                type: object
+            email:
+              type: object
+              properties:
+                address:
+                  type: string
+                  format: email
+                verifiedAt:
+                  type: string
+                  format: date-time
+                firstVerifiedAt:
+                  type: string
+                  format: date-time
+                latestVerifiedAt:
+                  type: string
+                  format: date-time
+            wallet:
+              type: object
+              properties:
+                address:
+                  type: string
+                chainType:
+                  type: string
+                verifiedAt:
+                  type: string
+                  format: date-time
+                firstVerifiedAt:
+                  type: string
+                  format: date-time
+                latestVerifiedAt:
+                  type: string
+                  format: date-time
 
   parameters:
     Network:
@@ -770,6 +841,17 @@ components:
           schema:
             $ref: '#/components/schemas/GenericInvalidBodyError'
 
+    400.BadRequest:
+      description: Bad Request.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: 'Bad request due to invalid input.'
+
     401.NotAuthenticated:
       description: User is not authenticated.
       content:
@@ -777,7 +859,28 @@ components:
           schema:
             $ref: '#/components/schemas/GenericServerError'
 
+    401.Unauthorized:
+      description: User is not authorized to perform this action.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotAuthenticated'
+
     403.NotAuthenticatedOrAuthorized:
+      description: User is not authorized to perform this action.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotAuthenticated'
+
+    403.Forbidden:
+      description: User is not authorized to perform this action.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotAuthenticated'
+
+    403.NotAuthorized:
       description: User is not authorized to perform this action.
       content:
         application/json:
@@ -838,6 +941,43 @@ paths:
                   type: string
                 signature:
                   type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResult'
+
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/auth/privy:
+    post:
+      operationId: loginWithPrivy
+      description: Verify an access token using Privy's library and authenticate the user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                accessToken:
+                  type: string
+                  description: The Privy access token to verify
+                identityToken:
+                  type: string
+                  description: The Privy id token (from cookies)
+              required:
+                - accessToken
+                - identityToken
       responses:
         200:
           description: OK
@@ -5103,3 +5243,45 @@ paths:
           $ref: '#/components/responses/404.NotFound'
         500:
           $ref: '#/components/responses/500.InternalError'
+
+  /v2/privy/check:
+    post:
+      operationId: checkPrivyUser
+      description: Check if a user exists in Privy by email or wallet address
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrivyUserCheckBody'
+      responses:
+        200:
+          description: Successfully checked user existence in Privy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrivyUserResponse'
+        400:
+          description: Missing required fields
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+                    example: 'Either email or wallet address must be provided'
+        500:
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+                    example: 'Failed to check Privy user'

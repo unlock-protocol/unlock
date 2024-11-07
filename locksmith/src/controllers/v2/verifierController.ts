@@ -26,15 +26,15 @@ export default class VerifierController {
       )
 
       if (list) {
-        return response.status(200).send({
+        response.status(200).send({
           results: list,
         })
       } else {
-        return response.sendStatus(204)
+        response.sendStatus(204)
       }
     } catch (error) {
       logger.error(error.message)
-      return response.status(500).send({
+      response.status(500).send({
         message: 'Verifier list could not be retrieved.',
       })
     }
@@ -64,7 +64,7 @@ export default class VerifierController {
         )
 
       if (alreadyExists) {
-        return response.status(409).send({
+        response.status(409).send({
           message: 'Verifier already exists',
         })
       } else {
@@ -75,14 +75,15 @@ export default class VerifierController {
           network,
           name
         )
-        return response.status(201).send(createdVerifier)
+        response.status(201).send(createdVerifier)
       }
     } catch (error) {
       logger.error(error.message)
-      return response.status(500).send({
+      response.status(500).send({
         message: 'There were some problems adding the verifier.',
       })
     }
+    return
   }
 
   //  for a lock manager to remove a verifier for a lock
@@ -100,7 +101,7 @@ export default class VerifierController {
         )
 
       if (!alreadyExists) {
-        return response.status(404).send({
+        response.status(404).send({
           message: 'Verifier does not exists',
         })
       } else {
@@ -113,13 +114,13 @@ export default class VerifierController {
           lockAddress,
           network
         )
-        return response.status(200).send({
+        response.status(200).send({
           results: list,
         })
       }
     } catch (error) {
       logger.error(error.message)
-      return response.status(500).send({
+      response.status(500).send({
         message: 'There were some problems removing the verifier.',
       })
     }
@@ -133,9 +134,10 @@ export default class VerifierController {
    */
   async isVerifierEnabled(_request: Request, response: Response) {
     // Handled by middlewares...
-    return response.status(200).send({
+    response.status(200).send({
       enabled: true,
     })
+    return
   }
 }
 
@@ -148,7 +150,8 @@ export const getEventVerifiers = async (
 
   const list = await VerifierOperations.getEventVerifiers(slug)
 
-  return response.status(200).send({ results: list })
+  response.status(200).send({ results: list })
+  return
 }
 
 // Adds a verifier to an event
@@ -176,9 +179,10 @@ export const addEventVerifier = async (
   )
   const list = await VerifierOperations.getEventVerifiers(slug)
 
-  return response.status(201).send({
+  response.status(201).send({
     results: list,
   })
+  return
 }
 
 export const deleteEventVerifier = async (
@@ -190,7 +194,8 @@ export const deleteEventVerifier = async (
 
   await VerifierOperations.deleteVerifierForEvent(address, slug)
   const list = await VerifierOperations.getEventVerifiers(slug)
-  return response.status(200).send({
+  response.status(200).send({
     results: list,
   })
+  return
 }

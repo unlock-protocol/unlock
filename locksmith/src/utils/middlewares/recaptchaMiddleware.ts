@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express'
 import fetch from 'isomorphic-fetch'
-import config, { isProduction, isStaging } from '../../config/config'
+import config, { isProduction } from '../../config/config'
 import normalizer from '../normalizer'
 import logger from '../../logger'
 
@@ -16,7 +16,7 @@ export const captchaMiddleware: RequestHandler = async (
   response,
   next
 ) => {
-  if (!isProduction && !isStaging) {
+  if (!isProduction) {
     logger.debug('Skip captcha in development')
     return next()
   }
@@ -31,9 +31,10 @@ export const captchaMiddleware: RequestHandler = async (
 
   const captchaValue = request.headers['captcha']
   if (!captchaValue) {
-    return response.status(403).send({
+    response.status(403).send({
       message: 'You need to provide a valid captcha value in the headers.',
     })
+    return
   }
   const endpoint = `https://www.google.com/recaptcha/api/siteverify?secret=${config.recaptchaSecret}&response=${captchaValue}`
 
@@ -44,10 +45,10 @@ export const captchaMiddleware: RequestHandler = async (
   const json = await result.json()
 
   if (!json.success) {
-    console.log(json)
-    return response.status(403).send({
+    response.status(403).send({
       message: 'Invalid captcha value. Try again',
     })
+    return
   }
 
   return next()

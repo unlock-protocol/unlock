@@ -33,20 +33,25 @@ export const createUser = async (req: Request, res: Response): Promise<any> => {
       const ejected = await UserOperations.ejectionStatus(emailAddress)
 
       if (ejected) {
-        return res.sendStatus(409)
+        res.sendStatus(409)
+        return
       }
       const creationStatus = await userCreationStatus(user)
       const { recoveryPhrase } = creationStatus
 
-      return res.status(creationStatus.status).json({ recoveryPhrase })
+      res.status(creationStatus.status).json({ recoveryPhrase })
+      return
     }
-    return res.sendStatus(400)
+    res.sendStatus(400)
+    return
   } catch (error: any) {
     if (error.name === 'SequelizeUniqueConstraintError') {
-      return res.status(400).json(error.errors)
+      res.status(400).json(error.errors)
+      return
     } else {
       logger.error('Failed to create user', error)
-      return res.sendStatus(400)
+      res.sendStatus(400)
+      return
     }
   }
 }
@@ -97,14 +102,16 @@ export const retrieveEncryptedPrivatekey = async (
   const ejected = await UserOperations.ejectionStatus(emailAddress)
 
   if (ejected) {
-    return res.sendStatus(404)
+    res.sendStatus(404)
+    return
   }
 
   const result =
     await UserOperations.getUserPrivateKeyByEmailAddress(emailAddress)
 
   if (result) {
-    return res.json({ passwordEncryptedPrivateKey: result })
+    res.json({ passwordEncryptedPrivateKey: result })
+    return
   } else {
     let passwordEncryptedPrivateKey =
       decoyUserCache.retrieveItemValue(emailAddress)
@@ -129,9 +136,10 @@ export const retrieveEncryptedPrivatekey = async (
       )
     }
 
-    return res.json({
+    res.json({
       passwordEncryptedPrivateKey,
     })
+    return
   }
 }
 
@@ -147,7 +155,8 @@ export const retrieveWaasUuid = async (
   const { token } = RetrieveWaasUuidBodySchema.parse(req.body)
 
   if (!token) {
-    return res.sendStatus(401)
+    res.sendStatus(401)
+    return
   }
 
   // Verify the JWT token
@@ -157,9 +166,10 @@ export const retrieveWaasUuid = async (
     token
   )
   if (!isTokenValid) {
-    return res.status(401).json({
+    res.status(401).json({
       message: 'There was an error verifying the token or it is not valid',
     })
+    return
   }
 
   let userUUID
@@ -174,14 +184,16 @@ export const retrieveWaasUuid = async (
   if (!user) {
     const userAccountType = selectedProvider as UserAccountType
     if (!userAccountType) {
-      console.error('No selectedProvider provided')
-      return res.status(500).json({ message: 'No selectedProvider provided' })
+      logger.error('No selectedProvider provided')
+      res.status(500).json({ message: 'No selectedProvider provided' })
+      return
     }
     if (userAccountType === UserAccountType.UnlockAccount) {
-      console.error('Creating a user with UnlockAccount type is not allowed')
-      return res.status(500).json({
+      logger.error('Creating a user with UnlockAccount type is not allowed')
+      res.status(500).json({
         message: 'Creating a user with UnlockAccount type is not allowed',
       })
+      return
     }
     const newUserUUID = await UserOperations.createUserAccount(
       emailAddress,
@@ -203,14 +215,15 @@ export const retrieveWaasUuid = async (
     })
     res.json({ token })
   } catch (error) {
-    console.error(
+    logger.error(
       'Error issuing Coinbase WAAS token for user',
       userUUID,
       error.message
     )
-    return res
+    res
       .status(400)
       .json({ message: 'Error issuing Coinbase WAAS token for user' })
+    return
   }
 }
 
@@ -222,17 +235,20 @@ export const retrieveRecoveryPhrase = async (
   const ejected = await UserOperations.ejectionStatus(emailAddress)
 
   if (ejected) {
-    return res.sendStatus(404)
+    res.sendStatus(404)
+    return
   }
   const result =
     await UserOperations.getUserRecoveryPhraseByEmailAddress(emailAddress)
 
   if (result) {
-    return res.json({ recoveryPhrase: result })
+    res.json({ recoveryPhrase: result })
+    return
   }
   // Create a fake recoveryPhrase
   const recoveryPhrase = (Math.random() + 1).toString(36)
-  return res.json({ recoveryPhrase })
+  res.json({ recoveryPhrase })
+  return
 }
 
 export const updateUser = async (req: Request, res: Response): Promise<any> => {
@@ -241,7 +257,8 @@ export const updateUser = async (req: Request, res: Response): Promise<any> => {
   const ejected = await UserOperations.ejectionStatus(emailAddress)
 
   if (ejected) {
-    return res.sendStatus(404)
+    res.sendStatus(404)
+    return
   }
   try {
     const result = await UserOperations.updateEmail(
@@ -250,11 +267,14 @@ export const updateUser = async (req: Request, res: Response): Promise<any> => {
     )
 
     if (result?.[0] == 0) {
-      return res.sendStatus(400)
+      res.sendStatus(400)
+      return
     }
-    return res.sendStatus(202)
+    res.sendStatus(202)
+    return
   } catch (error) {
-    return res.sendStatus(400)
+    res.sendStatus(400)
+    return
   }
 }
 
@@ -268,14 +288,17 @@ export const updatePaymentDetails = async (
   const ejected = await UserOperations.ejectionStatus(emailAddress)
 
   if (ejected) {
-    return res.sendStatus(404)
+    res.sendStatus(404)
+    return
   }
   const result = await UserOperations.updatePaymentDetails(token, publicKey)
 
   if (result) {
-    return res.sendStatus(202)
+    res.sendStatus(202)
+    return
   }
-  return res.sendStatus(400)
+  res.sendStatus(400)
+  return
 }
 
 export const updateAddressPaymentDetails = async (
@@ -285,9 +308,11 @@ export const updateAddressPaymentDetails = async (
   const { ethereumAddress } = req.params
 
   if (ethereumAddress == null) {
-    return res.sendStatus(401)
+    res.sendStatus(401)
+    return
   } else if (ethereumAddress != req.owner) {
-    return res.sendStatus(401)
+    res.sendStatus(401)
+    return
   }
   const token = req.body.message['Save Card'].stripeTokenId
 
@@ -297,9 +322,11 @@ export const updateAddressPaymentDetails = async (
   )
 
   if (result) {
-    return res.sendStatus(202)
+    res.sendStatus(202)
+    return
   }
-  return res.sendStatus(400)
+  res.sendStatus(400)
+  return
 }
 
 export const getAddressPaymentDetails = async (
@@ -308,22 +335,26 @@ export const getAddressPaymentDetails = async (
 ): Promise<any> => {
   const { ethereumAddress } = req.params
   if (!ethereumAddress || !req.signee) {
-    return res.sendStatus(401)
+    res.sendStatus(401)
+    return
   } else if (
     Normalizer.ethereumAddress(ethereumAddress) !==
     Normalizer.ethereumAddress(req.signee)
   ) {
-    return res.sendStatus(401)
+    res.sendStatus(401)
+    return
   }
 
   const stripeCustomerId =
     await StripeOperations.getStripeCustomerIdForAddress(ethereumAddress)
   if (!stripeCustomerId) {
-    return res.json([])
+    res.json([])
+    return
   }
   const result = await UserOperations.getCardDetailsFromStripe(stripeCustomerId)
 
-  return res.json(result)
+  res.json(result)
+  return
 }
 
 export const deleteAddressPaymentDetails = async (
@@ -333,21 +364,25 @@ export const deleteAddressPaymentDetails = async (
   const { ethereumAddress } = req.params
 
   if (!ethereumAddress || !req.signee) {
-    return res.sendStatus(401)
+    res.sendStatus(401)
+    return
   } else if (
     Normalizer.ethereumAddress(ethereumAddress) !==
     Normalizer.ethereumAddress(req.signee)
   ) {
-    return res.sendStatus(401)
+    res.sendStatus(401)
+    return
   }
 
   const result =
     await StripeOperations.deletePaymentDetailsForAddress(ethereumAddress)
 
   if (result) {
-    return res.sendStatus(202)
+    res.sendStatus(202)
+    return
   }
-  return res.sendStatus(400)
+  res.sendStatus(400)
+  return
 }
 
 export const updatePasswordEncryptedPrivateKey = async (
@@ -361,7 +396,8 @@ export const updatePasswordEncryptedPrivateKey = async (
   const ejected = await UserOperations.ejectionStatusByAddress(publicKey)
 
   if (ejected) {
-    return res.sendStatus(404)
+    res.sendStatus(404)
+    return
   }
 
   const result = await UserOperations.updatePasswordEncryptedPrivateKey(
@@ -370,15 +406,18 @@ export const updatePasswordEncryptedPrivateKey = async (
   )
 
   if (result[0] != 0) {
-    return res.sendStatus(202)
+    res.sendStatus(202)
+    return
   }
-  return res.sendStatus(400)
+  res.sendStatus(400)
+  return
 }
 
 export const cards = async (req: Request, res: Response) => {
   const { emailAddress } = req.params
   const result = await UserOperations.getCards(emailAddress)
-  return res.json(result)
+  res.json(result)
+  return
 }
 
 export const eject = async (req: Request, res: Response) => {
@@ -388,19 +427,23 @@ export const eject = async (req: Request, res: Response) => {
   if (
     Normalizer.ethereumAddress(address) != Normalizer.ethereumAddress(req.owner)
   ) {
-    return res.sendStatus(401)
+    res.sendStatus(401)
+    return
   }
 
   if (ejected) {
-    return res.sendStatus(400)
+    res.sendStatus(400)
+    return
   }
 
   const result = await UserOperations.eject(address)
 
   if (result[0] > 0) {
-    return res.sendStatus(202)
+    res.sendStatus(202)
+    return
   }
-  return res.sendStatus(400)
+  res.sendStatus(400)
+  return
 }
 
 export const exist = async (request: Request, response: Response) => {
@@ -408,9 +451,11 @@ export const exist = async (request: Request, response: Response) => {
   const user = await UserOperations.findByEmail(emailAddress)
 
   if (!user) {
-    return response.sendStatus(404)
+    response.sendStatus(404)
+    return
   }
-  return response.sendStatus(200)
+  response.sendStatus(200)
+  return
 }
 
 // Method used for nextAuth
@@ -420,9 +465,11 @@ export const existNextAuth = async (request: Request, response: Response) => {
     await UserOperations.findLoginMethodsByEmail(emailAddress)
 
   if (!userAccountType) {
-    return response.sendStatus(404)
+    response.sendStatus(404)
+    return
   }
-  return response.status(200).json({ userAccountType })
+  response.status(200).json({ userAccountType })
+  return
 }
 
 export const sendVerificationCode = async (
@@ -471,12 +518,12 @@ export const sendVerificationCode = async (
       },
     })
 
-    return response.status(200).json({
+    response.status(200).json({
       message: 'Email code sent',
     })
   } catch (error) {
-    console.error('Error sending verification code:', error)
-    return response.status(500).send('Error sending verification code')
+    logger.error('Error sending verification code:', error)
+    response.status(500).send('Error sending verification code')
   }
 }
 
@@ -485,7 +532,8 @@ export const verifyEmailCode = async (request: Request, response: Response) => {
   const { code } = request.body
 
   if (!emailAddress || !code) {
-    return response.sendStatus(400).json({ message: 'Missing parameters' })
+    response.sendStatus(400).json({ message: 'Missing parameters' })
+    return
   }
 
   try {
@@ -494,9 +542,8 @@ export const verifyEmailCode = async (request: Request, response: Response) => {
     })
 
     if (!verificationEntry) {
-      return response
-        .status(404)
-        .json({ message: 'Verification code not found' })
+      response.status(404).json({ message: 'Verification code not found' })
+      return
     }
 
     const currentTime = new Date()
@@ -506,24 +553,27 @@ export const verifyEmailCode = async (request: Request, response: Response) => {
       !verificationEntry.isCodeUsed
     ) {
       verificationEntry.update({ isCodeUsed: true })
-      return response.status(200).json({
+      response.status(200).json({
         message: 'Verification successful',
         token: verificationEntry.token,
       })
+      return
     } else if (verificationEntry.codeExpiration <= currentTime) {
-      return response
-        .status(400)
-        .json({ message: 'Verification code has expired' })
+      response.status(400).json({ message: 'Verification code has expired' })
+      return
     } else if (verificationEntry.isCodeUsed) {
-      return response
+      response
         .status(400)
         .json({ message: 'Verification code has already been used' })
+      return
     } else {
-      return response.status(400).json({ message: 'Invalid verification code' })
+      response.status(400).json({ message: 'Invalid verification code' })
+      return
     }
   } catch (error) {
-    console.error('Error verifying email code:', error)
-    return response.status(500).json({ message: 'Error verifying email code' })
+    logger.error('Error verifying email code:', error)
+    response.status(500).json({ message: 'Error verifying email code' })
+    return
   }
 }
 

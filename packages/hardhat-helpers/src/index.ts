@@ -14,6 +14,7 @@ import upgrades from './upgrades'
 import localhost from './localhost'
 import events from './events'
 import deploy from './deploy'
+import roles from './roles'
 
 module.exports = {
   ...balance,
@@ -32,4 +33,5 @@ module.exports = {
   ...localhost,
   ...events,
   ...deploy,
+  ...roles,
 }

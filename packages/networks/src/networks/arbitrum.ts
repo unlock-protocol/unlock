@@ -5,6 +5,18 @@ export const arbitrum: NetworkConfig = {
     url: (address: string) => `https://blockscan.com/address/${address}`,
   },
   chain: 'arbitrum',
+  dao: {
+    chainId: 8453,
+    governanceBridge: {
+      connext: '0xEE9deC2712cCE65174B561151701Bf54b99C24C8',
+      domainId: 1634886255,
+      modules: {
+        connextMod: '0x4A553635774b3d6fB6273A83b5B49577dF450227',
+        delayMod: '0xF241F12506fb6Bf1909c6bC176A199166414007a',
+      },
+    },
+    governor: '0x65bA0624403Fc5Ca2b20479e9F626eD4D78E0aD9',
+  },
   description:
     'Arbitrum One is a Layer 2 (L2) chain running on top of Ethereum Mainnet that enables high-throughput, low cost smart contracts operations.',
   explorer: {
@@ -18,14 +30,7 @@ export const arbitrum: NetworkConfig = {
     },
   },
   featured: true,
-  governanceBridge: {
-    connext: '0xEE9deC2712cCE65174B561151701Bf54b99C24C8',
-    domainId: 1634886255,
-    modules: {
-      connextMod: '0x4A553635774b3d6fB6273A83b5B49577dF450227',
-      delayMod: '0xF241F12506fb6Bf1909c6bC176A199166414007a',
-    },
-  },
+
   hooks: {
     onKeyPurchaseHook: [
       {
@@ -70,8 +75,8 @@ export const arbitrum: NetworkConfig = {
   id: 42161,
   isTestNetwork: false,
   keyManagerAddress: '0x520294E736167303efa038205D4391b58261BC9c',
-  kickbackAddress: '0x62f155229fb60d793440b8c733c4C5937C626c1A',
 
+  kickbackAddress: '0x62f155229fb60d793440b8c733c4C5937C626c1A',
   maxFreeClaimCost: 100,
   multisig: '0x310e9f9E3918a71dB8230cFCF32a083c7D9536d0',
   name: 'Arbitrum',
@@ -146,6 +151,12 @@ export const arbitrum: NetworkConfig = {
       decimals: 18,
       name: 'Arbitrum',
       symbol: 'ARB',
+    },
+    {
+      address: '0xd5d3aA404D7562d09a848F96a8a8d5D65977bF90',
+      decimals: 18,
+      name: 'Unlock Discount Token',
+      symbol: 'UDT',
     },
   ],
   uniswapV3: {

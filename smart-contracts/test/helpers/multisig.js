@@ -28,12 +28,10 @@ const confirmMultisigTx = async ({
   const success = await getEvent(receipt, 'Execution')
 
   if (failure) {
-    // eslint-disable-next-line no-console
     console.log(
       `ERROR: Proposal ${transactionId} failed to execute (txid: ${transactionHash})`
     )
   } else if (success) {
-    // eslint-disable-next-line no-console
     console.log(
       `Proposal ${transactionId} executed successfully (txid: ${transactionHash})`
     )

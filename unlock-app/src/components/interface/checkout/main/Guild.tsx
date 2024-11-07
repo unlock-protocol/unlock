@@ -4,7 +4,6 @@ import { Button, Placeholder, minifyAddress } from '@unlock-protocol/ui'
 import { Fragment } from 'react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useLockGuild } from '~/hooks/useLockGuild'
 import Link from 'next/link'
 import { useDataForGuild } from '~/hooks/useDataForGuild'
@@ -12,13 +11,14 @@ import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import LoadingIcon from '../../Loading'
 import { useSelector } from '@xstate/react'
 import Disconnect from './Disconnect'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface Props {
   checkoutService: CheckoutService
 }
 
 export function Guild({ checkoutService }: Props) {
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const { recipients, lock } = useSelector(
     checkoutService,
     (state) => state.context

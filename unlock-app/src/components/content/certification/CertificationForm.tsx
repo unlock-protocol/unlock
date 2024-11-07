@@ -13,7 +13,6 @@ import {
   Select,
 } from '@unlock-protocol/ui'
 import { useConfig } from '~/utils/withConfig'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { NetworkDescription } from '~/components/interface/locks/Create/elements/CreateLockForm'
 import { SelectCurrencyModal } from '~/components/interface/locks/Create/modals/SelectCurrencyModal'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
@@ -22,11 +21,12 @@ import { NetworkWarning } from '~/components/interface/locks/Create/elements/Net
 import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useQuery } from '@tanstack/react-query'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useAvailableNetworks } from '~/utils/networks'
 import Link from 'next/link'
 import { BalanceWarning } from '~/components/interface/locks/Create/elements/BalanceWarning'
 import { ProtocolFee } from '~/components/interface/locks/Create/elements/ProtocolFee'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewCertificationForm {
@@ -43,7 +43,7 @@ interface FormProps {
 
 export const CertificationForm = ({ onSubmit }: FormProps) => {
   const { networks } = useConfig()
-  const { account } = useAuth()
+  const { account } = useAuthenticate()
   const networkOptions = useAvailableNetworks()
   const moreNetworkOption = useAvailableNetworks(true)
   const network = networkOptions[0]?.value

@@ -5,10 +5,9 @@ import { ReactNode } from 'react'
 import { IoIosRocket as RocketIcon } from 'react-icons/io'
 import { CheckoutHookType, CheckoutService } from './main/checkoutMachine'
 import { useStepperItems } from './main/useStepperItems'
-import { useSIWE } from '~/hooks/useSIWE'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useSelector } from '@xstate/react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface IconProps {
   active?: boolean
@@ -117,8 +116,7 @@ export const Stepper = ({
   const base = items.slice(0, index).filter((item) => !item?.skip)
   const rest = items.slice(index + 1).filter((item) => !item?.skip)
 
-  const { signOut } = useSIWE()
-  const { deAuthenticate } = useAuth()
+  const { signOut } = useAuthenticate()
 
   const router = useRouter()
   const pathname = usePathname()
@@ -131,11 +129,11 @@ export const Stepper = ({
           item.to && !disabled ? (
             <StepButton
               key={idx}
-              onClick={() => {
+              onClick={async () => {
                 if (item.to === 'CONNECT') {
+                  // Can't disconnect the delegated provider!
                   if (useDelegatedProvider) return
-                  signOut()
-                  deAuthenticate()
+                  await signOut()
                 }
 
                 // Convert search params to an object
