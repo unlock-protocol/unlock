@@ -40,6 +40,8 @@ export const EnterCode = ({ email, callbackUrl, onReturn }: EnterCodeProps) => {
         redirect: false,
       })
 
+      console.log(value)
+
       if (value?.error) {
         ToastHelper.error('Invalid code')
       } else {

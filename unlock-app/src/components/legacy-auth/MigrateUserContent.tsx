@@ -95,7 +95,6 @@ export const MigrateUserContent = () => {
             description: 'Sign in to your existing Unlock account',
             disabled: !userEmail || checkPrivyUserMutation.isPending,
             children: ({ onNext }) => {
-              console.log(userAccountType)
               // This component is in charge of getting a private key for
               // any account used
               if (userAccountType.indexOf(UserAccountType.GoogleAccount) > -1) {
