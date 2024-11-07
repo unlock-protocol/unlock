@@ -101,24 +101,22 @@ export const SignInWithCode = ({
 
   if (!codeSent) {
     return (
-      <>
+      <div className="flex flex-col gap-4">
         <p>
           Please, verify that you own this email address by entering the code
           you will receive by email.
         </p>
         <Button onClick={sendEmailCode}>Send code</Button>
-      </>
+      </div>
     )
   }
 
   return (
-    <>
-      <EnterCode
-        // Not sure this is useful
-        callbackUrl={'/migrate-user'}
-        onReturn={onCodeCorrect}
-        email={email}
-      />
-    </>
+    <EnterCode
+      // Not sure this is useful
+      callbackUrl={'/migrate-user'}
+      onReturn={onCodeCorrect}
+      email={email}
+    />
   )
 }

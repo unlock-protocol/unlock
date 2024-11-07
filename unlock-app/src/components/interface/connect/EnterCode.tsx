@@ -66,36 +66,34 @@ export const EnterCode = ({ email, callbackUrl, onReturn }: EnterCodeProps) => {
   }
 
   return (
-    <div className="grid gap-2 px-6">
-      <div className="grid gap-4">
-        <div className="text-sm text-gray-600">
-          An email code has been sent. Check your inbox or spam folder.
-        </div>
-        <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)}>
-          <Input
-            type="text"
-            autoComplete="text"
-            placeholder="Code"
-            error={errors.code?.message}
-            {...register('code', {
-              required: {
-                value: true,
-                message: 'Code is required',
-              },
-            })}
-            actions={
-              <Button
-                type="submit"
-                variant="borderless"
-                loading={isSubmitting}
-                className="p-2.5"
-              >
-                Continue
-              </Button>
-            }
-          />
-        </form>
+    <div className="grid gap-4">
+      <div className="text-sm">
+        An email code has been sent. Check your inbox or spam folder.
       </div>
+      <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)}>
+        <Input
+          type="text"
+          autoComplete="text"
+          placeholder="Code"
+          error={errors.code?.message}
+          {...register('code', {
+            required: {
+              value: true,
+              message: 'Code is required',
+            },
+          })}
+          actions={
+            <Button
+              type="submit"
+              variant="borderless"
+              loading={isSubmitting}
+              className="p-2.5"
+            >
+              Continue
+            </Button>
+          }
+        />
+      </form>
     </div>
   )
 }
