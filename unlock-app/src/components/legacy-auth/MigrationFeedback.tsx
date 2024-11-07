@@ -15,7 +15,7 @@ export default function MigrationFeedback({ walletPk }: { walletPk: string }) {
     setIsImporting(true)
     setError(null)
     try {
-      await importWallet({ walletPk })
+      await importWallet({ privateKey: walletPk })
       setIsImported(true)
     } catch (error) {
       console.error('Failed to import wallet:', error)
