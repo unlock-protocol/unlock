@@ -140,7 +140,9 @@ export const SignInUnlockAccount = ({
         <SignWithGoogle
           callbackUrl=""
           isSignUp={false}
-          handleSignIn={() => {}}
+          handleSignIn={() => {
+            ToastHelper.success('Sign in with Google')
+          }}
         />
       )}
       {accountType.includes(UserAccountType.PasskeyAccount) && (

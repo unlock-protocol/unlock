@@ -22,7 +22,7 @@ export const ConnectingWaas = ({ setWalletPk }: ConnectingWaasProps) => {
     localStorage.getItem('nextAuthProvider') as UserAccountType
   )
 
-  const { recaptchaRef, getCaptchaValue } = useCaptcha()
+  const { recaptchaRef } = useCaptcha()
 
   const connect = async () => {
     try {
