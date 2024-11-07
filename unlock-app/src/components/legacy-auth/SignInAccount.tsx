@@ -12,7 +12,7 @@ import { useCaptcha } from '~/hooks/useCaptcha'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { config } from '~/config/app'
 import ReCaptcha from 'react-google-recaptcha'
-import { useState } from 'react'
+import { useEffect } from 'react'
 import { ConnectButton } from '../interface/connect/Custom'
 import { EnterCode } from '../interface/connect/EnterCode'
 
@@ -43,26 +43,44 @@ export const SignInUnlockAccount = ({
       password: '',
     },
   })
-  const [isEmailCodeSent, setEmailCodeSent] = useState(false)
+  const { recaptchaRef, getCaptchaValue } = useCaptcha()
+
+  // automatically trigger email code sending
+  useEffect(() => {
+    const sendEmailCode = async () => {
+      if (accountType.includes(UserAccountType.EmailCodeAccount)) {
+        try {
+          const captcha = await getCaptchaValue()
+          await locksmith.sendVerificationCode(captcha, email)
+        } catch (error) {
+          console.error(error)
+          ToastHelper.error('Error sending email code, try again later')
+        }
+      }
+    }
+    sendEmailCode()
+  }, [accountType, email, getCaptchaValue])
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const password = e.target.value
     onSubmit({ email, password })
   }
 
-  const handleSignIn = async (signInMethod: string, handler: () => void) => {
-    localStorage.setItem('nextAuthProvider', signInMethod)
-
-    await handler()
-  }
-
-  if (isEmailCodeSent) {
+  if (accountType.includes(UserAccountType.EmailCodeAccount)) {
     return (
-      <EnterCode
-        email={email}
-        callbackUrl={'callbackUrl'}
-        onReturn={() => {}}
-      />
+      <>
+        <ReCaptcha
+          ref={recaptchaRef}
+          sitekey={config.recaptchaKey}
+          size="invisible"
+          badge="bottomleft"
+        />
+        <EnterCode
+          email={email}
+          callbackUrl={'/migrate-user'}
+          onReturn={() => console.log('onReturn')}
+        />
+      </>
     )
   }
 
@@ -96,20 +114,11 @@ export const SignInUnlockAccount = ({
         <SignWithGoogle
           callbackUrl=""
           isSignUp={false}
-          handleSignIn={(method, handler) => handler()}
+          handleSignIn={() => {}}
         />
       )}
       {accountType.includes(UserAccountType.PasskeyAccount) && (
         <div>Passkey Account</div>
-      )}
-      {accountType.includes(UserAccountType.EmailCodeAccount) && (
-        <SignWithEmail
-          isSignUp={false}
-          email={email}
-          setEmailCodeSent={setEmailCodeSent}
-          callbackUrl=""
-          handleSignIn={(method, handler) => handler()}
-        />
       )}
     </div>
   )
@@ -145,55 +154,6 @@ const SignWithGoogle = ({
         }}
       >
         {isSignUp ? 'Sign up with Google' : 'Sign in with Google'}
-      </ConnectButton>
-    </div>
-  )
-}
-
-export interface SignWithEmail {
-  isSignUp: boolean
-  email: string
-  setEmailCodeSent: (isEmailCodeSent: boolean) => void
-  callbackUrl: string
-  handleSignIn: (signInMethod: string, handler: () => void) => void
-}
-
-const SignWithEmail = ({
-  isSignUp,
-  email,
-  setEmailCodeSent,
-  handleSignIn,
-}: SignWithEmail) => {
-  const { recaptchaRef, getCaptchaValue } = useCaptcha()
-
-  const signWithEmail = async () => {
-    try {
-      const captcha = await getCaptchaValue()
-      await locksmith.sendVerificationCode(captcha, email)
-    } catch (error) {
-      console.error(error)
-      ToastHelper.error('Error sending email code, try again later')
-    }
-
-    setEmailCodeSent(true)
-  }
-
-  return (
-    <div className="w-full">
-      <ReCaptcha
-        ref={recaptchaRef}
-        sitekey={config.recaptchaKey}
-        size="invisible"
-        badge="bottomleft"
-      />
-      <ConnectButton
-        className="w-full"
-        icon={<SvgComponents.Email width={40} height={40} />}
-        onClick={async () => {
-          await handleSignIn(UserAccountType.EmailCodeAccount, signWithEmail)
-        }}
-      >
-        {isSignUp ? 'Sign up with Email' : 'Sign in with Email'}
       </ConnectButton>
     </div>
   )
