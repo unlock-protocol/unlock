@@ -1,5 +1,6 @@
 import { Button, Input } from '@unlock-protocol/ui'
-import { signIn } from 'next-auth/react'
+import { signIn as nextAuthSignIn } from 'next-auth/react'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 
@@ -23,14 +24,16 @@ export const EnterCode = ({ email, callbackUrl, onReturn }: EnterCodeProps) => {
     setValue,
   } = useForm<UserDetails>()
 
-  if (email) {
-    setValue('email', email)
-  }
+  useEffect(() => {
+    if (email) {
+      setValue('email', email)
+    }
+  }, [email, setValue])
 
   const onSubmit = async (data: UserDetails) => {
     if (!data.email) return
     try {
-      const value = await signIn('credentials', {
+      const value = await nextAuthSignIn('credentials', {
         callbackUrl: callbackUrl,
         email: email,
         code: data.code,
@@ -39,70 +42,58 @@ export const EnterCode = ({ email, callbackUrl, onReturn }: EnterCodeProps) => {
 
       if (value?.error) {
         ToastHelper.error('Invalid code')
+      } else {
+        // Call the onReturn callback upon successful verification
+        if (onReturn) {
+          onReturn()
+        }
       }
-
       return
     } catch (error) {
       if (error instanceof Error) {
-        if (error instanceof Error) {
-          setError(
-            'code',
-            {
-              type: 'value',
-              message: error.message,
-            },
-            {
-              shouldFocus: true,
-            }
-          )
-        }
+        setError(
+          'code',
+          {
+            type: 'value',
+            message: error.message,
+          },
+          {
+            shouldFocus: true,
+          }
+        )
       }
     }
   }
 
   return (
-    <div className="grid gap-2 px-6">
-      <div className="grid gap-4">
-        <div className="text-sm text-gray-600">
-          We have sent an email to you containing your sign-in code. Please
-          check your inbox. If you do not see the email in your inbox, please
-          check your spam or junk folder.
-        </div>
-        <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)}>
-          <Input
-            type="text"
-            autoComplete="text"
-            placeholder="Code"
-            error={errors.code?.message}
-            {...register('code', {
-              required: {
-                value: true,
-                message: 'Code is required',
-              },
-            })}
-            actions={
-              <Button
-                type="submit"
-                variant="borderless"
-                loading={isSubmitting}
-                className="p-2.5"
-              >
-                Continue
-              </Button>
-            }
-          />
-        </form>
-        {onReturn && (
-          <div className="w-full flex items-center justify-end px-6 py-4">
-            <button
-              onClick={() => onReturn()}
-              className="hover:text-ui-main-600 underline"
-            >
-              Back
-            </button>
-          </div>
-        )}
+    <div className="grid gap-4">
+      <div className="text-sm">
+        An email code has been sent. Check your inbox or spam folder.
       </div>
+      <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)}>
+        <Input
+          type="text"
+          autoComplete="text"
+          placeholder="Code"
+          error={errors.code?.message}
+          {...register('code', {
+            required: {
+              value: true,
+              message: 'Code is required',
+            },
+          })}
+          actions={
+            <Button
+              type="submit"
+              variant="borderless"
+              loading={isSubmitting}
+              className="p-2.5"
+            >
+              Continue
+            </Button>
+          }
+        />
+      </form>
     </div>
   )
 }
