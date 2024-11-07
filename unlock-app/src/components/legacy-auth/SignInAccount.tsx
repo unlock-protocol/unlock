@@ -80,7 +80,6 @@ export const SignInUnlockAccount = ({
   }
 
   if (isLoadingWaas) {
-    console.log('loading waas')
     return <ConnectingWaas setWalletPk={setWalletPk} />
   }
 

@@ -6,39 +6,18 @@ import { useMutation } from '@tanstack/react-query'
 import { locksmith } from '~/config/locksmith'
 import { Tabs } from '@unlock-protocol/ui'
 import MigrationFeedback from './MigrationFeedback'
-import { SignInUnlockAccount, UserDetails } from './SignInAccount'
 import { ToastHelper } from '../helpers/toast.helper'
 import ConnectToPrivy from './ConnectToPrivy'
 import { usePrivy } from '@privy-io/react-auth'
 import { UserAccountType } from '~/utils/userAccountType'
-import { getAccountFromPrivateKey } from '~/utils/accounts'
+import { SignInWithPassword } from './SignInWithPassword'
 
 export const MigrateUserContent = () => {
   const [userEmail, setUserEmail] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
   const [walletPk, setWalletPk] = useState<string | null>(null)
   const [userAccountType, setUserAccountType] = useState<UserAccountType[]>([])
   const emailFormRef = useRef<ConnectViaEmailRef>(null)
   const { user } = usePrivy()
-
-  const handleSignIn = async () => {
-    if (!password) {
-      ToastHelper.error('Password is required')
-      throw new Error('Password is required')
-    }
-    try {
-      const response = await locksmith.getUserPrivateKey(userEmail)
-      const wallet = await getAccountFromPrivateKey(
-        response!.data!.passwordEncryptedPrivateKey!,
-        password
-      )
-      setWalletPk(wallet.privateKey)
-    } catch (error) {
-      console.error('Sign in error:', error)
-      ToastHelper.error('Sign in failed. Please check your credentials.')
-      throw error
-    }
-  }
 
   // Mutation to handle the user account type
   const checkUserAccountType = useMutation({
@@ -99,6 +78,9 @@ export const MigrateUserContent = () => {
                 checkUserAccountType.isPending,
             },
             children: (
+              // Goal of this cimponent is to get user email address + type of account
+              // It should also check if there is a privy account already.
+              // If not, it "yields" the email account + type to the next step
               <ConnectViaEmail
                 email={userEmail}
                 onEmailChange={setUserEmail}
@@ -109,53 +91,59 @@ export const MigrateUserContent = () => {
                 ref={emailFormRef}
               />
             ),
-            onNext: async () => {
-              // Handle form submission and Privy check
-              await emailFormRef.current?.handleSubmit(async (data) => {
-                const email = data.email.trim()
-                if (!email) {
-                  ToastHelper.error('Email is required')
-                  throw new Error('Email is required')
-                }
+            showButton: userEmail ? true : false,
 
-                setUserEmail(email)
+            // onNext: async () => {
+            //   // Handle form submission and Privy check
+            //   await emailFormRef.current?.handleSubmit(async (data) => {
+            //     const email = data.email.trim()
+            //     if (!email) {
+            //       ToastHelper.error('Email is required')
+            //       throw new Error('Email is required')
+            //     }
 
-                // Perform Privy user check first
-                const privyUser =
-                  await checkPrivyUserMutation.mutateAsync(email)
-                if (privyUser) {
-                  ToastHelper.error('Email already has a Privy account')
-                }
+            //     setUserEmail(email)
 
-                // Then check user account type
-                const userAccountType =
-                  await checkUserAccountType.mutateAsync(email)
-                if (!userAccountType) {
-                  ToastHelper.error('No account found for this email')
-                  throw new Error('No account found for this email')
-                }
-                setUserAccountType(userAccountType)
-              })()
-            },
+            //     // Perform Privy user check first
+            //     const privyUser =
+            //       await checkPrivyUserMutation.mutateAsync(email)
+            //     if (privyUser) {
+            //       ToastHelper.error('Email already has a Privy account')
+            //     }
+
+            //     // Then check user account type
+            //     const userAccountType =
+            //       await checkUserAccountType.mutateAsync(email)
+            //     if (!userAccountType) {
+            //       ToastHelper.error('No account found for this email')
+            //       throw new Error('No account found for this email')
+            //     }
+            //     setUserAccountType(userAccountType)
+            //   })()
+            // },
           },
           {
             title: 'Sign in to your account',
             description: 'Sign in to your existing Unlock account',
             disabled: !userEmail || checkPrivyUserMutation.isPending,
             children: (
-              <SignInUnlockAccount
-                email={userEmail}
-                accountType={userAccountType}
-                onSubmit={(data: UserDetails) => {
-                  setPassword(data.password)
-                }}
-                setWalletPk={setWalletPk}
-                useIcon={false}
-              />
+              // This component is in charge of getting a private key for
+              // any account used
+              <>
+                {userAccountType === UserAccountType.GoogleAccount && (
+                  <SignInWithPassword setWalletPk={setWalletPk} />
+                )}
+                {userAccountType === UserAccountType.EmailCodeAccount && (
+                  <SignInWithCode setWalletPk={setWalletPk} />
+                )}
+                {userAccountType === UserAccountType.UnlockAccount && (
+                  <SignInWithPassword setWalletPk={setWalletPk} />
+                )}
+              </>
             ),
             onNext: async () => {
               // Handle sign in and proceed
-              await handleSignIn()
+              // await handleSignIn()
             },
           },
           {
