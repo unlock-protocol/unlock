@@ -6,7 +6,6 @@ import { useMutation } from '@tanstack/react-query'
 import { locksmith } from '~/config/locksmith'
 import { Tabs } from '@unlock-protocol/ui'
 import MigrationFeedback from './MigrationFeedback'
-import { ToastHelper } from '../helpers/toast.helper'
 import ConnectToPrivy from './ConnectToPrivy'
 import { usePrivy } from '@privy-io/react-auth'
 import { UserAccountType } from '~/utils/userAccountType'
@@ -77,21 +76,21 @@ export const MigrateUserContent = () => {
                 checkPrivyUserMutation.isPending ||
                 checkUserAccountType.isPending,
             },
-            children: (
+            children: ({ onNext }) => {
               // Goal of this cimponent is to get user email address + type of account
               // It should also check if there is a privy account already.
               // If not, it "yields" the email account + type to the next step
-              <ConnectViaEmail
-                email={userEmail}
-                onEmailChange={setUserEmail}
-                isLoadingUserExists={
-                  checkPrivyUserMutation.isPending ||
-                  checkUserAccountType.isPending
-                }
-                ref={emailFormRef}
-              />
-            ),
-            showButton: userEmail ? true : false,
+              return (
+                <ConnectViaEmail
+                  onNext={({ email, accountType }) => {
+                    setUserEmail(email)
+                    setUserAccountType(accountType)
+                    onNext()
+                  }}
+                />
+              )
+            },
+            showButton: false,
 
             // onNext: async () => {
             //   // Handle form submission and Privy check
@@ -126,25 +125,28 @@ export const MigrateUserContent = () => {
             title: 'Sign in to your account',
             description: 'Sign in to your existing Unlock account',
             disabled: !userEmail || checkPrivyUserMutation.isPending,
-            children: (
+            children: ({ onNext }) => {
               // This component is in charge of getting a private key for
               // any account used
-              <>
-                {userAccountType === UserAccountType.GoogleAccount && (
-                  <SignInWithPassword setWalletPk={setWalletPk} />
-                )}
-                {userAccountType === UserAccountType.EmailCodeAccount && (
-                  <SignInWithCode setWalletPk={setWalletPk} />
-                )}
-                {userAccountType === UserAccountType.UnlockAccount && (
-                  <SignInWithPassword setWalletPk={setWalletPk} />
-                )}
-              </>
-            ),
-            onNext: async () => {
-              // Handle sign in and proceed
-              // await handleSignIn()
-            },
+              if (userAccountType === UserAccountType.GoogleAccount) {
+                  return <SignInWithPassword email={userEmail} onNext={(privateKey) => {
+                    setWalletPk(privateKey)
+                    onNext()
+                  }} />
+              }
+              if (userAccountType === UserAccountType.EmailCodeAccount) {
+                  return <SignInWithCode email={userEmail} onNext={(privateKey) => {
+                    setWalletPk(privateKey)
+                    onNext()
+                  }} />
+              }
+              if (userAccountType === UserAccountType.UnlockAccount) {
+                return <SignInWithPassword email={userEamil} onNext={(privateKey) => {
+                  setWalletPk(privateKey)
+                  onNext()
+                }} />
+              }
+            }),
           },
           {
             title: 'Create a Privy Account',
