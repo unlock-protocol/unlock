@@ -143,7 +143,7 @@ export const MigrateUserContent = () => {
             showButton: false,
           },
           {
-            title: 'Migrating',
+            title: 'Migration',
             disabled: !walletPk,
             description:
               'This is the last step! We will migrate your Unlock account to Privy!',
