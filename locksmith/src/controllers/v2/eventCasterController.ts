@@ -85,6 +85,7 @@ export const rsvpForEvent: RequestHandler = async (request, response) => {
 
 // Deletes an event. Unsure how to proceed here...
 export const deleteEvent: RequestHandler = async (_request, response) => {
+  // TODO: implement this
   response.status(200).json({})
   return
 }
