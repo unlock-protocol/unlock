@@ -1,5 +1,6 @@
 import { Button, Input } from '@unlock-protocol/ui'
 import { signIn as nextAuthSignIn } from 'next-auth/react'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 
@@ -14,7 +15,7 @@ export interface EnterCodeProps {
   onReturn?(): void
 }
 
-export const EnterCode = ({ email, callbackUrl }: EnterCodeProps) => {
+export const EnterCode = ({ email, callbackUrl, onReturn }: EnterCodeProps) => {
   const {
     register,
     handleSubmit,
@@ -23,9 +24,11 @@ export const EnterCode = ({ email, callbackUrl }: EnterCodeProps) => {
     setValue,
   } = useForm<UserDetails>()
 
-  if (email) {
-    setValue('email', email)
-  }
+  useEffect(() => {
+    if (email) {
+      setValue('email', email)
+    }
+  }, [email, setValue])
 
   const onSubmit = async (data: UserDetails) => {
     if (!data.email) return
@@ -39,23 +42,25 @@ export const EnterCode = ({ email, callbackUrl }: EnterCodeProps) => {
 
       if (value?.error) {
         ToastHelper.error('Invalid code')
+      } else {
+        // Call the onReturn callback upon successful verification
+        if (onReturn) {
+          onReturn()
+        }
       }
-
       return
     } catch (error) {
       if (error instanceof Error) {
-        if (error instanceof Error) {
-          setError(
-            'code',
-            {
-              type: 'value',
-              message: error.message,
-            },
-            {
-              shouldFocus: true,
-            }
-          )
-        }
+        setError(
+          'code',
+          {
+            type: 'value',
+            message: error.message,
+          },
+          {
+            shouldFocus: true,
+          }
+        )
       }
     }
   }
