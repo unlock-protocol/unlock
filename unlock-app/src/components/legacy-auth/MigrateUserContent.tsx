@@ -123,9 +123,10 @@ export const MigrateUserContent = () => {
               if (userAccountType?.includes(UserAccountType.GoogleAccount)) {
                 return (
                   <SignInWithGoogle
-                    email={userEmail}
-                    setWalletPk={setWalletPk}
-                    onNext={() => onNext()}
+                    onNext={(walletPk) => {
+                      setWalletPk(walletPk)
+                      onNext()
+                    }}
                   />
                 )
               }
