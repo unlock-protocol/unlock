@@ -4,7 +4,7 @@ import SvgComponents from '../interface/svg'
 import BlockiesSvg from 'blockies-react-svg'
 import { UserAccountType } from '~/utils/userAccountType'
 
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import { popupCenter } from '~/utils/popup'
 
 import { locksmith } from '~/config/locksmith'
@@ -12,9 +12,12 @@ import { useCaptcha } from '~/hooks/useCaptcha'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { config } from '~/config/app'
 import ReCaptcha from 'react-google-recaptcha'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { ConnectButton } from '../interface/connect/Custom'
 import { EnterCode } from '../interface/connect/EnterCode'
+import { useLegacyAuth } from '~/contexts/LegacyAuthenticationContext'
+import { useLegacySIWE } from '~/hooks/legacy-auth/useLegacySiwe'
+import ConnectingWaas from './ConnectingWaas'
 
 export interface UserDetails {
   email: string
@@ -26,6 +29,7 @@ export interface SignInUnlockAccountProps {
   accountType: UserAccountType[]
   onSubmit: (data: UserDetails) => void
   useIcon?: boolean
+  setWalletPk: (pk: string) => void
 }
 
 export const SignInUnlockAccount = ({
@@ -33,6 +37,7 @@ export const SignInUnlockAccount = ({
   accountType,
   onSubmit,
   useIcon = true,
+  setWalletPk,
 }: SignInUnlockAccountProps) => {
   const {
     register,
@@ -44,6 +49,18 @@ export const SignInUnlockAccount = ({
     },
   })
   const { recaptchaRef, getCaptchaValue } = useCaptcha()
+  const { account, connected } = useLegacyAuth()
+  const { isSignedIn } = useLegacySIWE()
+
+  const { data: session } = useSession()
+  const [emailCodeSent, setEmailCodeSent] = useState(false)
+  const [emailCodeEntered, setEmailCodeEntered] = useState(false)
+
+  const isLoadingWaas =
+    session &&
+    emailCodeSent &&
+    emailCodeEntered &&
+    (!connected || !isSignedIn || account === '')
 
   // automatically trigger email code sending
   useEffect(() => {
@@ -52,6 +69,7 @@ export const SignInUnlockAccount = ({
         try {
           const captcha = await getCaptchaValue()
           await locksmith.sendVerificationCode(captcha, email)
+          setEmailCodeSent(true)
         } catch (error) {
           console.error(error)
           ToastHelper.error('Error sending email code, try again later')
@@ -61,9 +79,17 @@ export const SignInUnlockAccount = ({
     sendEmailCode()
   }, [accountType, email, getCaptchaValue])
 
+  const handleEmailCodeEntered = () => {
+    setEmailCodeEntered(true)
+  }
+
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const password = e.target.value
     onSubmit({ email, password })
+  }
+
+  if (isLoadingWaas) {
+    return <ConnectingWaas setWalletPk={setWalletPk} />
   }
 
   if (accountType.includes(UserAccountType.EmailCodeAccount)) {
@@ -78,7 +104,7 @@ export const SignInUnlockAccount = ({
         <EnterCode
           email={email}
           callbackUrl={'/migrate-user'}
-          onReturn={() => console.log('onReturn')}
+          onReturn={handleEmailCodeEntered}
         />
       </>
     )
