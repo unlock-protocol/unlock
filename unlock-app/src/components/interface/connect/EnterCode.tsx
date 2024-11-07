@@ -14,7 +14,7 @@ export interface EnterCodeProps {
   onReturn?(): void
 }
 
-export const EnterCode = ({ email, callbackUrl, onReturn }: EnterCodeProps) => {
+export const EnterCode = ({ email, callbackUrl }: EnterCodeProps) => {
   const {
     register,
     handleSubmit,
