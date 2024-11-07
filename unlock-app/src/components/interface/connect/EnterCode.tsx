@@ -1,5 +1,5 @@
 import { Button, Input } from '@unlock-protocol/ui'
-import { signIn } from 'next-auth/react'
+import { signIn as nextAuthSignIn } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 
@@ -30,7 +30,7 @@ export const EnterCode = ({ email, callbackUrl, onReturn }: EnterCodeProps) => {
   const onSubmit = async (data: UserDetails) => {
     if (!data.email) return
     try {
-      const value = await signIn('credentials', {
+      const value = await nextAuthSignIn('credentials', {
         callbackUrl: callbackUrl,
         email: email,
         code: data.code,
@@ -64,9 +64,7 @@ export const EnterCode = ({ email, callbackUrl, onReturn }: EnterCodeProps) => {
     <div className="grid gap-2 px-6">
       <div className="grid gap-4">
         <div className="text-sm text-gray-600">
-          We have sent an email to you containing your sign-in code. Please
-          check your inbox. If you do not see the email in your inbox, please
-          check your spam or junk folder.
+          An email code has been sent. Check your inbox or spam folder.
         </div>
         <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)}>
           <Input
