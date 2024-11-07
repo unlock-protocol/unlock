@@ -61,7 +61,6 @@ export const MigrateUserContent = () => {
               throw new Error(`Unknown account type: ${type}`)
           }
         }) || []
-      console.log('userAccountType', userAccountType)
       return userAccountType
     },
   })
@@ -83,8 +82,9 @@ export const MigrateUserContent = () => {
       <div className="space-y-2 mb-20">
         <h2 className="text-2xl font-bold">Migrate your account</h2>
         <p>
-          We are migrating users from the old auth system to the new one. Please
-          enter your email below to migrate your account.
+          We are migrating Unlock Accounts to use our new Authentication
+          provider, Privy. Please enter your email below to migrate your
+          account.
         </p>
       </div>
       <Tabs

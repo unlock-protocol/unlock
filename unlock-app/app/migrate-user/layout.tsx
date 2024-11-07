@@ -4,7 +4,11 @@ import { ReactNode, useState } from 'react'
 import LegacyAuthWrapper from '~/components/legacy-auth/LegacyAuthWrapper'
 import ProviderContext from '~/contexts/ProviderContext'
 
-export default function LocksLayout({ children }: { children: ReactNode }) {
+export default function MigrateUserLayout({
+  children,
+}: {
+  children: ReactNode
+}) {
   const [provider, setProvider] = useState<any>(null)
 
   return (

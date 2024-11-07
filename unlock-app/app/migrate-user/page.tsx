@@ -6,7 +6,7 @@ import { MigrateUserContent } from '~/components/legacy-auth/MigrateUserContent'
 export const metadata: Metadata = {
   ...SHARED_METADATA,
   title: 'Migrate Account - Unlock',
-  description: 'Migrate your account from the old auth system to the new one.',
+  description: 'Migrate your legacy Unlock account.',
 }
 
 const MigrateUserPage: React.FC = () => {
