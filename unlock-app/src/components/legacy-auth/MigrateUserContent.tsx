@@ -137,9 +137,9 @@ export const MigrateUserContent = () => {
             title: 'Create a Privy Account',
             disabled: !walletPk,
             description: 'Create a Privy Account',
-            children: userEmail ? (
-              <ConnectToPrivy userEmail={userEmail} />
-            ) : null,
+            children: ({ onNext }) => (
+              <ConnectToPrivy userEmail={userEmail} onNext={() => onNext()} />
+            ),
             showButton: false,
           },
           {
