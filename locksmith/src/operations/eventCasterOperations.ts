@@ -9,6 +9,7 @@ import {
 import networks from '@unlock-protocol/networks'
 import { WalletService } from '@unlock-protocol/unlock-js'
 import { EVENT_CASTER_ADDRESS } from '../utils/constants'
+import { LockMetadata } from '../models'
 
 const DEFAULT_NETWORK = isProduction ? 8453 : 84532 // Base or Base Sepolia
 
@@ -38,10 +39,14 @@ export const deployLockForEventCaster = async ({
   title,
   hosts,
   eventId,
+  imageUrl,
+  description,
 }: {
   title: string
   hosts: any[]
   eventId: string
+  imageUrl: string
+  description: string
 }) => {
   const [provider, wallet] = await Promise.all([
     getProviderForNetwork(DEFAULT_NETWORK),
@@ -119,6 +124,19 @@ export const deployLockForEventCaster = async ({
     }
   })
 
+  const hostsAddresses = hosts.map(
+    (host) => host.verified_addresses.eth_addresses[0]
+  )
+  const addHostsAsAttendees = lockInterface.encodeFunctionData(
+    'grantKeys(address[],uint256[],address[])',
+    [
+      hostsAddresses,
+      Array(hostsAddresses.length).fill(ethers.MaxUint256),
+      hostsAddresses,
+    ]
+  )
+  transactions.push(addHostsAsAttendees)
+
   const receipt = await (
     await lockProxyDeployer.deployLockAndExecute(
       networks[DEFAULT_NETWORK].unlockAddress,
@@ -144,8 +162,21 @@ export const deployLockForEventCaster = async ({
     throw new Error('No NewLock event')
   }
 
+  const lockAddress = newLockEvent.args.newLockAddress
+
+  // Save Lock Metadata!
+  await LockMetadata.create({
+    chain: DEFAULT_NETWORK,
+    address: lockAddress,
+    data: {
+      description,
+      image: imageUrl,
+      name: title,
+    },
+  })
+
   return {
-    address: newLockEvent.args.newLockAddress,
+    address: lockAddress,
     network: DEFAULT_NETWORK,
   }
 }
