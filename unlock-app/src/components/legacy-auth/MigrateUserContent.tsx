@@ -10,6 +10,7 @@ import ConnectToPrivy from './ConnectToPrivy'
 import { UserAccountType } from '~/utils/userAccountType'
 import { SignInWithPassword } from './SignInWithPassword'
 import { SignInWithCode } from './SignInWithCode'
+import { SignInWithGoogle } from './SignInWithGoogle'
 
 export const MigrateUserContent = () => {
   const [userEmail, setUserEmail] = useState<string>('')
@@ -97,41 +98,30 @@ export const MigrateUserContent = () => {
             children: ({ onNext }) => {
               // This component is in charge of getting a private key for
               // any account used
-              if (userAccountType.indexOf(UserAccountType.GoogleAccount) > -1) {
+              if (userAccountType?.includes(UserAccountType.UnlockAccount)) {
                 return (
                   <SignInWithPassword
-                    email={userEmail}
-                    onNext={(privateKey) => {
-                      setWalletPk(privateKey)
-                      onNext()
-                    }}
-                  />
-                )
-              } else if (
-                userAccountType.indexOf(UserAccountType.EmailCodeAccount) > -1
-              ) {
-                return (
-                  <SignInWithCode
-                    email={userEmail}
-                    onNext={(privateKey) => {
-                      setWalletPk(privateKey)
-                      onNext()
-                    }}
-                  />
-                )
-              } else if (
-                userAccountType.indexOf(UserAccountType.UnlockAccount) > -1
-              ) {
-                return (
-                  <SignInWithPassword
-                    email={userEmail}
-                    onNext={(privateKey) => {
-                      setWalletPk(privateKey)
+                    userEmail={userEmail}
+                    onNext={(walletPk) => {
+                      setWalletPk(walletPk)
                       onNext()
                     }}
                   />
                 )
               }
+              if (userAccountType?.includes(UserAccountType.EmailCodeAccount)) {
+                return <SignInWithCode setWalletPk={setWalletPk} />
+              }
+              if (userAccountType?.includes(UserAccountType.GoogleAccount)) {
+                return (
+                  <SignInWithGoogle
+                    email={userEmail}
+                    setWalletPk={setWalletPk}
+                    onNext={() => onNext()}
+                  />
+                )
+              }
+              return null
             },
           },
           {
