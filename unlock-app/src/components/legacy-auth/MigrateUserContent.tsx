@@ -1,22 +1,20 @@
 'use client'
 
-import { useState, useRef } from 'react'
-import { ConnectViaEmail, ConnectViaEmailRef } from './ConnectViaEmail'
+import { useState } from 'react'
+import { ConnectViaEmail } from './ConnectViaEmail'
 import { useMutation } from '@tanstack/react-query'
 import { locksmith } from '~/config/locksmith'
 import { Tabs } from '@unlock-protocol/ui'
 import MigrationFeedback from './MigrationFeedback'
 import ConnectToPrivy from './ConnectToPrivy'
-import { usePrivy } from '@privy-io/react-auth'
 import { UserAccountType } from '~/utils/userAccountType'
 import { SignInWithPassword } from './SignInWithPassword'
+import { SignInWithCode } from './SignInWithCode'
 
 export const MigrateUserContent = () => {
   const [userEmail, setUserEmail] = useState<string>('')
   const [walletPk, setWalletPk] = useState<string | null>(null)
   const [userAccountType, setUserAccountType] = useState<UserAccountType[]>([])
-  const emailFormRef = useRef<ConnectViaEmailRef>(null)
-  const { user } = usePrivy()
 
   // Mutation to handle the user account type
   const checkUserAccountType = useMutation({
@@ -91,62 +89,51 @@ export const MigrateUserContent = () => {
               )
             },
             showButton: false,
-
-            // onNext: async () => {
-            //   // Handle form submission and Privy check
-            //   await emailFormRef.current?.handleSubmit(async (data) => {
-            //     const email = data.email.trim()
-            //     if (!email) {
-            //       ToastHelper.error('Email is required')
-            //       throw new Error('Email is required')
-            //     }
-
-            //     setUserEmail(email)
-
-            //     // Perform Privy user check first
-            //     const privyUser =
-            //       await checkPrivyUserMutation.mutateAsync(email)
-            //     if (privyUser) {
-            //       ToastHelper.error('Email already has a Privy account')
-            //     }
-
-            //     // Then check user account type
-            //     const userAccountType =
-            //       await checkUserAccountType.mutateAsync(email)
-            //     if (!userAccountType) {
-            //       ToastHelper.error('No account found for this email')
-            //       throw new Error('No account found for this email')
-            //     }
-            //     setUserAccountType(userAccountType)
-            //   })()
-            // },
           },
           {
             title: 'Sign in to your account',
             description: 'Sign in to your existing Unlock account',
             disabled: !userEmail || checkPrivyUserMutation.isPending,
             children: ({ onNext }) => {
+              console.log(userAccountType)
               // This component is in charge of getting a private key for
               // any account used
-              if (userAccountType === UserAccountType.GoogleAccount) {
-                  return <SignInWithPassword email={userEmail} onNext={(privateKey) => {
-                    setWalletPk(privateKey)
-                    onNext()
-                  }} />
+              if (userAccountType.indexOf(UserAccountType.GoogleAccount) > -1) {
+                return (
+                  <SignInWithPassword
+                    email={userEmail}
+                    onNext={(privateKey) => {
+                      setWalletPk(privateKey)
+                      onNext()
+                    }}
+                  />
+                )
+              } else if (
+                userAccountType.indexOf(UserAccountType.EmailCodeAccount) > -1
+              ) {
+                return (
+                  <SignInWithCode
+                    email={userEmail}
+                    onNext={(privateKey) => {
+                      setWalletPk(privateKey)
+                      onNext()
+                    }}
+                  />
+                )
+              } else if (
+                userAccountType.indexOf(UserAccountType.UnlockAccount) > -1
+              ) {
+                return (
+                  <SignInWithPassword
+                    email={userEmail}
+                    onNext={(privateKey) => {
+                      setWalletPk(privateKey)
+                      onNext()
+                    }}
+                  />
+                )
               }
-              if (userAccountType === UserAccountType.EmailCodeAccount) {
-                  return <SignInWithCode email={userEmail} onNext={(privateKey) => {
-                    setWalletPk(privateKey)
-                    onNext()
-                  }} />
-              }
-              if (userAccountType === UserAccountType.UnlockAccount) {
-                return <SignInWithPassword email={userEamil} onNext={(privateKey) => {
-                  setWalletPk(privateKey)
-                  onNext()
-                }} />
-              }
-            }),
+            },
           },
           {
             title: 'Create a Privy Account',
@@ -155,7 +142,7 @@ export const MigrateUserContent = () => {
             children: userEmail ? (
               <ConnectToPrivy userEmail={userEmail} />
             ) : null,
-            showButton: user ? true : false,
+            showButton: false,
           },
           {
             title: 'Migrating',

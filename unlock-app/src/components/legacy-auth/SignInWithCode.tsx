@@ -1,3 +1,3 @@
-export const SignInWithCode = ({ setWalletPk }) => {
+export const SignInWithCode = ({ email, onNext }) => {
   return <>Sign in with Code</>
 }
