@@ -7,15 +7,13 @@ import { locksmith } from '~/config/locksmith'
 import { Tabs } from '@unlock-protocol/ui'
 import MigrationFeedback from './MigrationFeedback'
 import { SignInUnlockAccount, UserDetails } from './SignInAccount'
-import { Wallet } from 'ethers'
-import useAccount from '~/hooks/useAccount'
 import { ToastHelper } from '../helpers/toast.helper'
 import ConnectToPrivy from './ConnectToPrivy'
 import { usePrivy } from '@privy-io/react-auth'
 import { UserAccountType } from '~/utils/userAccountType'
+import { getAccountFromPrivateKey } from '~/utils/accounts'
 
 export const MigrateUserContent = () => {
-  const { retrieveUserAccount } = useAccount('')
   const [userEmail, setUserEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [walletPk, setWalletPk] = useState<string | null>(null)
@@ -29,11 +27,12 @@ export const MigrateUserContent = () => {
       throw new Error('Password is required')
     }
     try {
-      const unlockProvider = await retrieveUserAccount(userEmail, password)
-      // @ts-expect-error Property 'mnemonic' does not exist on type 'Wallet | HDNodeWallet'
-      const wallet = Wallet.fromPhrase(unlockProvider.wallet.mnemonic.phrase)
-      const privateKey = wallet.privateKey
-      setWalletPk(privateKey)
+      const response = await locksmith.getUserPrivateKey(userEmail)
+      const wallet = await getAccountFromPrivateKey(
+        response!.data!.passwordEncryptedPrivateKey!,
+        password
+      )
+      setWalletPk(wallet.privateKey)
     } catch (error) {
       console.error('Sign in error:', error)
       ToastHelper.error('Sign in failed. Please check your credentials.')

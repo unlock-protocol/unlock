@@ -10,13 +10,13 @@ export default function ConnectToPrivy({ userEmail }: { userEmail: string }) {
     if (!authenticated && ready && userEmail) {
       login({ prefill: { type: 'email', value: userEmail } })
     }
-  }, [])
+  }, [ready])
 
   if (!userEmail) {
     return null
   }
 
-  if (!authenticated) {
+  if (!authenticated && ready) {
     return (
       <div className="space-y-5">
         <div className="text-2xl font-bold">Ready to Connect to Privy</div>

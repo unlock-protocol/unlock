@@ -6,11 +6,12 @@ import { useState } from 'react'
 
 export default function MigrationFeedback({ walletPk }: { walletPk: string }) {
   // @ts-ignore
-  const { importWallet, ready, authenticated } = usePrivy()
+  const { importWallet } = usePrivy()
   const [isImporting, setIsImporting] = useState(false)
   const [isImported, setIsImported] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  console.log({ walletPk })
   const handleImport = async () => {
     setIsImporting(true)
     setError(null)
