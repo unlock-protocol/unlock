@@ -29,8 +29,7 @@ export default function MigrationFeedback({ walletPk }: { walletPk: string }) {
     <div className="space-y-5">
       {!isImported ? (
         <>
-          <div className="text-2xl font-bold">Ready to Migrate Your Wallet</div>
-          <p className="text-gray-700">
+          <p className="">
             Your wallet will now be managed securely by Privy, making it easier
             to access your assets across devices. Click below to proceed with
             the migration.
