@@ -16,7 +16,6 @@ export default function ConnectToPrivy({
   const { login } = useLogin({
     onComplete: () => {
       // When login is complete, proceed to next step (tab)
-      console.log('login complete')
       onNext()
     },
     onError: (error) => {
