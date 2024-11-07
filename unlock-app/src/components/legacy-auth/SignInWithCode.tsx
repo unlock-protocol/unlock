@@ -14,6 +14,60 @@ import { UserAccountType } from '~/utils/userAccountType'
 import { Button } from '@unlock-protocol/ui'
 import { getSession } from 'next-auth/react'
 
+// TODO: finish testing this works in a "real" environment (can't test with existing accounts on a different domain)
+export const getPrivateKeyFromWaas = async (captcha: string) => {
+  const waas = await InitializeWaas({
+    collectAndReportMetrics: true,
+    enableHostedBackups: true,
+    prod: config.env === 'prod',
+    projectId: config.coinbaseProjectId,
+  })
+
+  const user = await waas.auth.login({
+    provideAuthToken: async () => {
+      const nextAuthSession = await getSession()
+      const waasToken = await getUserWaasUuid(
+        captcha,
+        nextAuthSession?.user?.email as string,
+        UserAccountType.EmailCodeAccount,
+        nextAuthSession?.user?.token as string
+      )
+      return waasToken!
+    },
+  })
+
+  console.log('user from waas', user)
+
+  let wallet
+
+  if (waas.wallets.wallet) {
+    // Resuming wallet
+    wallet = waas.wallets.wallet
+  } else if (user.hasWallet) {
+    // Restoring wallet
+    console.log('restoring wallet')
+    wallet = await waas.wallets.restoreFromHostedBackup()
+    console.log('wallet from waas', wallet)
+  }
+
+  if (!wallet) {
+    console.error('No wallet linked to that user. It cannot be migrated.')
+    return
+  }
+
+  const exportedKeys = await wallet.exportKeysFromHostedBackup(
+    undefined,
+    'RAW' as PrivateKeyFormat
+  )
+  // use the first key's private key (ecKeyPrivate)
+  if (exportedKeys.length > 0) {
+    const firstKey = exportedKeys[0] as RawPrivateKey
+    return firstKey.ecKeyPrivate
+  } else {
+    console.error('No private keys found in wallet, so it cannot be migrated.')
+  }
+}
+
 export const SignInWithCode = ({
   email,
   onNext,
@@ -37,57 +91,11 @@ export const SignInWithCode = ({
   }
 
   const onCodeCorrect = async () => {
-    const waas = await InitializeWaas({
-      collectAndReportMetrics: true,
-      enableHostedBackups: true,
-      prod: config.env === 'prod',
-      projectId: config.coinbaseProjectId,
-    })
-
-    const user = await waas.auth.login({
-      provideAuthToken: async () => {
-        const nextAuthSession = await getSession()
-        const waasToken = await getUserWaasUuid(
-          await getCaptchaValue(),
-          nextAuthSession?.user?.email as string,
-          UserAccountType.EmailCodeAccount,
-          nextAuthSession?.user?.token as string
-        )
-        return waasToken!
-      },
-    })
-
-    console.log('user from waas', user)
-
-    let wallet
-
-    if (waas.wallets.wallet) {
-      // Resuming wallet
-      wallet = waas.wallets.wallet
-    } else if (user.hasWallet) {
-      // Restoring wallet
-      console.log('restoring wallet')
-      wallet = await waas.wallets.restoreFromHostedBackup()
-      console.log('wallet from waas', wallet)
-    }
-
-    if (!wallet) {
-      ToastHelper.error('No wallet linked to that user. It cannot be migrated.')
-      return
-    }
-
-    const exportedKeys = await wallet.exportKeysFromHostedBackup(
-      undefined,
-      'RAW' as PrivateKeyFormat
-    )
-    // use the first key's private key (ecKeyPrivate)
-    if (exportedKeys.length > 0) {
-      const firstKey = exportedKeys[0] as RawPrivateKey
-      onNext(firstKey.ecKeyPrivate)
+    const privateKey = await getPrivateKeyFromWaas(await getCaptchaValue())
+    if (privateKey) {
+      onNext(privateKey)
     } else {
-      ToastHelper.error(
-        'No private keys found in wallet, so it cannot be migrated.'
-      )
+      ToastHelper.error('Error getting private key from WAAS')
     }
   }
 

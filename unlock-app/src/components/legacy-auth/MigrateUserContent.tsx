@@ -110,7 +110,15 @@ export const MigrateUserContent = () => {
                 )
               }
               if (userAccountType?.includes(UserAccountType.EmailCodeAccount)) {
-                return <SignInWithCode setWalletPk={setWalletPk} />
+                return (
+                  <SignInWithCode
+                    email={userEmail}
+                    onNext={(walletPk) => {
+                      setWalletPk(walletPk)
+                      onNext()
+                    }}
+                  />
+                )
               }
               if (userAccountType?.includes(UserAccountType.GoogleAccount)) {
                 return (
