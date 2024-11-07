@@ -124,7 +124,6 @@ export const MigrateUserContent = () => {
                 // Perform Privy user check first
                 const privyUser =
                   await checkPrivyUserMutation.mutateAsync(email)
-                console.log('privyUser', privyUser)
                 if (privyUser) {
                   ToastHelper.error('Email already has a Privy account')
                 }
@@ -151,6 +150,7 @@ export const MigrateUserContent = () => {
                 onSubmit={(data: UserDetails) => {
                   setPassword(data.password)
                 }}
+                setWalletPk={setWalletPk}
                 useIcon={false}
               />
             ),
