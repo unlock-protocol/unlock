@@ -4,9 +4,10 @@ import { useConnectModal } from '~/hooks/useConnectModal'
 import { UserMenu } from '../../connect/UserMenu'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { usePathname } from 'next/navigation'
+import { NotificationsMenu } from './NotificationsMenu'
 
 // Paths where menu should be hidden
-const HIDDEN_MENU_PATHS = ['/']
+const HIDDEN_MENU_PATHS = ['/', '/migrate-user']
 
 // Menu sections shown everywhere when logged in
 const MENU_SECTIONS = [
@@ -70,7 +71,12 @@ export default function DashboardHeader({
       {...menuProps}
       actions={[
         {
-          content: account ? (
+          content: pathname?.includes('migrate-user') ? null : (
+            <NotificationsMenu />
+          ),
+        },
+        {
+          content: pathname?.includes('migrate-user') ? null : account ? (
             <UserMenu />
           ) : (
             <Button

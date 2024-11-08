@@ -1,6 +1,6 @@
 'use client'
 
-import React, { Suspense } from 'react'
+import React, { Suspense, useState } from 'react'
 import {
   isServer,
   QueryClient,
@@ -17,6 +17,8 @@ import GlobalWrapper from '~/components/interface/GlobalWrapper'
 import { ConnectModalProvider } from '~/hooks/useConnectModal'
 import Privy from '~/config/PrivyProvider'
 import LoadingFallback from './Components/LoadingFallback'
+import AuthenticationContext from '~/contexts/AuthenticationContext'
+import { SessionProvider as NextAuthSessionProvider } from 'next-auth/react'
 
 function makeQueryClient() {
   return new QueryClient({
@@ -44,28 +46,35 @@ function getQueryClient() {
 export default function Providers({ children }: { children: React.ReactNode }) {
   // Avoid useState for client init without a suspense boundary
   const queryClient = getQueryClient()
+  const [account, setAccount] = useState<string | undefined>(undefined)
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <GlobalWrapper>
-        <Privy>
-          <SessionProvider>
-            <Suspense fallback={<LoadingFallback />}>
-              <ConnectModalProvider>
-                <AirstackProvider apiKey={'162b7c4dda5c44afdb0857b6b04454f99'}>
-                  <ErrorBoundary
-                    fallback={(props: any) => <ErrorFallback {...props} />}
-                  >
-                    <ShouldOpenConnectModal />
-                    {children}
-                  </ErrorBoundary>
-                </AirstackProvider>
-              </ConnectModalProvider>
-              <Toaster />
-            </Suspense>
-          </SessionProvider>
-        </Privy>
-      </GlobalWrapper>
-    </QueryClientProvider>
+    <AuthenticationContext.Provider value={{ account, setAccount }}>
+      <Privy>
+        <QueryClientProvider client={queryClient}>
+          <GlobalWrapper>
+            <SessionProvider>
+              <Suspense fallback={<LoadingFallback />}>
+                <NextAuthSessionProvider>
+                  <ConnectModalProvider>
+                    <AirstackProvider
+                      apiKey={'162b7c4dda5c44afdb0857b6b04454f99'}
+                    >
+                      <ErrorBoundary
+                        fallback={(props: any) => <ErrorFallback {...props} />}
+                      >
+                        <ShouldOpenConnectModal />
+                        {children}
+                      </ErrorBoundary>
+                    </AirstackProvider>
+                  </ConnectModalProvider>
+                </NextAuthSessionProvider>
+                <Toaster />
+              </Suspense>
+            </SessionProvider>
+          </GlobalWrapper>
+        </QueryClientProvider>
+      </Privy>
+    </AuthenticationContext.Provider>
   )
 }

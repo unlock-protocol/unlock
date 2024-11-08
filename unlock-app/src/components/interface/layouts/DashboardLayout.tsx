@@ -33,7 +33,6 @@ export default function DashboardLayout({
           <TermsOfServiceModal />
           <Container>
             <ConnectModal />
-
             <DashboardHeader />
 
             <div className="flex flex-col gap-10 min-h-screen">{children}</div>

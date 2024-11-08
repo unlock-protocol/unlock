@@ -23,6 +23,7 @@ interface IPublicLock {
     address referrer;
     address keyManager;
     bytes data;
+    uint additionalPeriods;
   }
 
   /// Functions
@@ -148,6 +149,7 @@ interface IPublicLock {
    * @param _onKeyTransferHook Hook called when a key is transfered
    * @param _onKeyExtendHook Hook called when a key is extended or renewed
    * @param _onKeyGrantHook Hook called when a key is granted
+   * @param _onHasRoleHook Hook called when checking if an address as a specific role
    */
   function setEventHooks(
     address _onKeyPurchaseHook,
@@ -156,7 +158,8 @@ interface IPublicLock {
     address _onTokenURIHook,
     address _onKeyTransferHook,
     address _onKeyExtendHook,
-    address _onKeyGrantHook
+    address _onKeyGrantHook,
+    address _onHasRoleHook
   ) external;
 
   /**
@@ -389,6 +392,12 @@ interface IPublicLock {
    * @return hookAddress the address ok the hook
    */
   function onKeyGrantHook() external view returns (address hookAddress);
+
+  /**
+   * Returns the address of the `onHasRoleHook` hook.
+   * @return hookAddress the address ok the hook
+   */
+  function onHasRoleHook() external view returns (address hookAddress);
 
   /**
    * @return the maximum number of key allowed for a single address

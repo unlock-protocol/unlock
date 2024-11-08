@@ -14,5 +14,10 @@ export default defineConfig({
     setupFiles: ['./__tests__/setup.ts'],
     // 5 minute timeout
     testTimeout: 1000 * 60 * 5,
+    poolOptions: {
+      forks: {
+        singleFork: true,
+      },
+    },
   },
 })

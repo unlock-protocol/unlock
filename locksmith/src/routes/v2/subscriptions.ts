@@ -6,7 +6,7 @@ import {
 } from '../../utils/middlewares/auth'
 import { lockManagerOrKeyOwnerMiddleware } from '../../utils/middlewares/lockManagerOrKeyOwner'
 
-const router = express.Router({ mergeParams: true })
+const router: express.Router = express.Router({ mergeParams: true })
 
 const subscriptionController = new SubscriptionController()
 
