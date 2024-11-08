@@ -16,7 +16,10 @@ import { getSession } from 'next-auth/react'
 import ReCAPTCHA from 'react-google-recaptcha'
 
 // TODO: finish testing this works in a "real" environment (can't test with existing accounts on a different domain)
-export const getPrivateKeyFromWaas = async (captcha: string) => {
+export const getPrivateKeyFromWaas = async (
+  captcha: string,
+  accountType: UserAccountType
+) => {
   const waas = await InitializeWaas({
     collectAndReportMetrics: true,
     enableHostedBackups: true,
@@ -30,7 +33,7 @@ export const getPrivateKeyFromWaas = async (captcha: string) => {
       const waasToken = await getUserWaasUuid(
         captcha,
         nextAuthSession?.user?.email as string,
-        UserAccountType.EmailCodeAccount,
+        accountType,
         nextAuthSession?.user?.token as string
       )
       return waasToken!
@@ -96,7 +99,10 @@ export const SignInWithCode = ({
   }
 
   const onCodeCorrect = async () => {
-    const privateKey = await getPrivateKeyFromWaas(await getCaptchaValue())
+    const privateKey = await getPrivateKeyFromWaas(
+      await getCaptchaValue(),
+      UserAccountType.EmailCodeAccount
+    )
     if (privateKey) {
       onNext(privateKey)
     } else {
