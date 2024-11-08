@@ -44,7 +44,11 @@ export const deployLockForEventCaster = async ({
   description,
 }: {
   title: string
-  hosts: any[]
+  hosts: {
+    verified_addresses: {
+      eth_addresses: string[]
+    }
+  }[]
   eventId: string
   imageUrl: string
   description: string

@@ -7,7 +7,13 @@ import { z } from 'zod'
 
 export const CreateEventCasterEventPayload = z.object({
   title: z.string(),
-  hosts: z.array(z.string()),
+  hosts: z.array(
+    z.object({
+      verified_addresses: z.object({
+        eth_addresses: z.array(z.string()),
+      }),
+    })
+  ),
   eventId: z.string(),
   imageUrl: z.string(),
   description: z.string(),

@@ -24,6 +24,7 @@ const RsvpBody = z.object({
     verified_addresses: z.object({
       eth_addresses: z.array(z.string()),
     }),
+    fid: z.number(),
   }),
 })
 
@@ -43,7 +44,7 @@ export const createEvent: RequestHandler = async (request, response) => {
     imageUrl: image_url,
     description,
   })
-  response.status(204)
+  response.sendStatus(204)
   return
 }
 
@@ -51,6 +52,7 @@ export const createEvent: RequestHandler = async (request, response) => {
 export const rsvpForEvent: RequestHandler = async (request, response) => {
   const { user } = await RsvpBody.parseAsync(request.body)
 
+  console.log('I WAS CALLED')
   let event
   try {
     event = await getEventFormEventCaster(request.params.eventId)
@@ -69,13 +71,13 @@ export const rsvpForEvent: RequestHandler = async (request, response) => {
   }
 
   await addJob('rsvpForEventCasterEvent', {
-    farcasterId: event.fid,
+    farcasterId: user.fid,
     ownerAddress,
     contract: event.contract,
     eventId: request.params.eventId,
   })
 
-  response.status(204)
+  response.sendStatus(204)
   return
 }
 

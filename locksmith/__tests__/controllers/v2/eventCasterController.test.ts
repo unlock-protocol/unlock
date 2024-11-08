@@ -4,6 +4,8 @@ import app from '../../app'
 import { Application } from '../../../src/models/application'
 import { EVENT_CASTER_ADDRESS } from '../../../src/utils/constants'
 import { ethers } from 'ethers'
+import { addJob } from '../../../src/worker/worker'
+import { add } from 'lodash'
 
 const lockAddress = '0xce332211f030567bd301507443AD9240e0b13644'
 const tokenId = 1337
@@ -48,6 +50,10 @@ vi.mock('../../../src/operations/eventCasterOperations', () => ({
   mintNFTForRsvp: async () => {
     return { id: tokenId, owner, network: 84532, address: lockAddress }
   },
+}))
+
+vi.mock('../../../src/worker/worker', () => ({
+  addJob: vi.fn().mockResolvedValue(Promise.resolve(true)),
 }))
 
 // https://events.xyz/api/v1/event?event_id=195ede7f
@@ -264,58 +270,58 @@ describe('eventcaster endpoints', () => {
       expect(response.status).toBe(403)
     })
 
-    it('creates the contract and returns its address', async () => {
+    it('creates a job to deploy the contract', async () => {
       const response = await request(app)
         .post(`/v2/eventcaster/create-event`)
         .set('Accept', 'json')
         .set('Authorization', `Api-key ${eventCasterApplication.key}`)
         .send(eventCasterEvent)
-
-      expect(response.status).toBe(201)
-      expect(response.body.address).toBe(lockAddress)
+      expect(response.status).toBe(204)
+      expect(addJob).toHaveBeenCalledWith('createEventCasterEvent', {
+        description: eventCasterEvent.description,
+        eventId: eventCasterEvent.id,
+        imageUrl: eventCasterEvent.image_url,
+        title: eventCasterEvent.title,
+        hosts: [
+          {
+            verified_addresses: {
+              eth_addresses: [
+                '0xdcf37d8Aa17142f053AAA7dc56025aB00D897a19',
+                '0x05e189E1BbaF77f1654F0983872fd938AE592eDD',
+                '0x70abdCd7A5A8Ff9cDef1ccA9eA15a5d315780986',
+              ],
+            },
+          },
+          {
+            verified_addresses: {
+              eth_addresses: ['0xCEEd9585854F12F81A0103861b83b995A64AD915'],
+            },
+          },
+        ],
+      })
     })
   })
   describe('rsvp-for-event endpoint', () => {
-    it('mints the token and returns its id', async () => {
+    it('triggers the job to mint the NFT', async () => {
       fetchMock.mockResponseOnce(
         JSON.stringify({ success: true, event: eventCasterEvent })
       )
-
       const response = await request(app)
         .post(`/v2/eventcaster/${eventCasterEvent.id}/rsvp`)
         .set('Accept', 'json')
         .set('Authorization', `Api-key ${eventCasterApplication.key}`)
         .send(eventCasterRsvp)
 
-      expect(response.status).toBe(200)
-      expect(response.body.id).toBe(tokenId)
-      expect(response.body.owner).toBe(owner)
-      expect(response.body.network).toBe(eventCasterEvent.contract.network)
-      expect(response.body.address).toBe(eventCasterEvent.contract.address)
-    })
-    it('returns the existing token if one already exists', async () => {
-      fetchMock.mockResponseOnce(
-        JSON.stringify({ success: true, event: eventCasterEvent })
-      )
-
-      const response = await request(app)
-        .post(`/v2/eventcaster/${eventCasterEvent.id}/rsvp`)
-        .set('Accept', 'json')
-        .set('Authorization', `Api-key ${eventCasterApplication.key}`)
-        .send({
-          ...eventCasterRsvp,
-          user: {
-            verified_addresses: {
-              eth_addresses: ['0xCEEd9585854F12F81A0103861b83b995A64AD915'],
-            },
-          },
-        })
-
-      expect(response.status).toBe(200)
-      expect(response.body.id).toBe(1337)
-      expect(response.body.owner).toBe(owner)
-      expect(response.body.network).toBe(eventCasterEvent.contract.network)
-      expect(response.body.address).toBe(eventCasterEvent.contract.address)
+      expect(response.status).toBe(204)
+      expect(addJob).toHaveBeenCalledWith('rsvpForEventCasterEvent', {
+        contract: {
+          address: lockAddress,
+          network: 84532,
+        },
+        eventId: eventCasterEvent.id,
+        farcasterId: eventCasterRsvp.user.fid,
+        ownerAddress: eventCasterRsvp.user.verified_addresses.eth_addresses[0],
+      })
     })
   })
   describe('delete-event endpoint', () => {
