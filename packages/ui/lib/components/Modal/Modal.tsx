@@ -15,6 +15,7 @@ export interface Props {
   size?: 'small' | 'medium' | 'large'
   spacing?: 'small' | 'medium' | 'large' | 'none'
   closeIconStyle?: string
+  hideCloseIcon?: boolean
 }
 
 const sizeClasses = {
@@ -38,6 +39,7 @@ export function Modal({
   size = 'medium',
   spacing = 'small',
   closeIconStyle = 'fill-inherit',
+  hideCloseIcon = false,
 }: Props) {
   const sizeClass = sizeClasses[size]
   const spacingClass = spacingClasses[spacing]
@@ -54,17 +56,19 @@ export function Modal({
       <div
         className={`relative w-full ${sizeClass} mx-auto overflow-hidden transition-all transform bg-white border-none rounded-xl shadow-xl`}
       >
-        <div className="absolute top-4 right-4">
-          <button
-            aria-label="close"
-            onClick={(event) => {
-              event.preventDefault()
-              setIsOpen(false)
-            }}
-          >
-            <CloseIcon className={closeIconStyle} size={24} />
-          </button>
-        </div>
+        {!hideCloseIcon && (
+          <div className="absolute top-4 right-4">
+            <button
+              aria-label="close"
+              onClick={(event) => {
+                event.preventDefault()
+                setIsOpen(false)
+              }}
+            >
+              <CloseIcon className={closeIconStyle} size={24} />
+            </button>
+          </div>
+        )}
         <div className={spacingClass}>{children}</div>
       </div>
     )
