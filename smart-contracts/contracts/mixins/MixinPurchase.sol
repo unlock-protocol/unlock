@@ -191,6 +191,11 @@ contract MixinPurchase is
       tokenAddress,
       _referrer
     );
+
+    // clear previous records
+    _originalPrices[_tokenId] = 0;
+    _originalDurations[_tokenId] = 0;
+    _originalTokens[_tokenId] = address(0);
   }
 
   /**
@@ -211,10 +216,15 @@ contract MixinPurchase is
 
     // make sure key duration haven't decreased or price hasn't increase
     if (
-      _renewalConditions[_tokenId].price <
-      purchasePriceFor(ownerOf(_tokenId), _referrer, "") ||
-      _renewalConditions[_tokenId].duration > expirationDuration ||
-      _renewalConditions[_tokenId].tokenAddress != tokenAddress
+      _originalPrices[_tokenId] != 0 // check if a previous record exists
+        ? _originalPrices[_tokenId] <
+          purchasePriceFor(ownerOf(_tokenId), _referrer, "") ||
+          _originalDurations[_tokenId] > expirationDuration ||
+          _originalTokens[_tokenId] != tokenAddress
+        : _renewalConditions[_tokenId].price <
+          purchasePriceFor(ownerOf(_tokenId), _referrer, "") ||
+          _renewalConditions[_tokenId].duration > expirationDuration ||
+          _renewalConditions[_tokenId].tokenAddress != tokenAddress
     ) {
       revert LOCK_HAS_CHANGED();
     }
