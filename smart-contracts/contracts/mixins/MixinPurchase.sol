@@ -33,6 +33,15 @@ contract MixinPurchase is
 
   event ReferrerPaid(address tokenAddress, address referrer, uint fee);
 
+  event PaymentReceipt(
+    uint[] tokenIds,
+    uint purchases,
+    uint extensions,
+    address payer,
+    address tokenAddress,
+    uint totalPaid
+  );
+
   // default to 0
   uint256 internal _gasRefundValue;
 
@@ -299,6 +308,7 @@ contract MixinPurchase is
 
     uint totalPriceToPay;
     uint[] memory tokenIds = new uint[](purchaseArgs.length);
+    uint extensionsCount = 0;
 
     for (uint256 i = 0; i < purchaseArgs.length; i++) {
       (uint tokenId, uint pricePaid) = _purchaseKey(
@@ -310,6 +320,7 @@ contract MixinPurchase is
       );
       totalPriceToPay = totalPriceToPay + pricePaid;
       tokenIds[i] = tokenId;
+      extensionsCount += purchaseArgs[i].additionalPeriods;
 
       // extend key as many times as specified in the period
       for (uint256 p = 0; p < purchaseArgs[i].additionalPeriods; p++) {
@@ -325,6 +336,16 @@ contract MixinPurchase is
         _payReferrer(purchaseArgs[i].referrer);
       }
     }
+
+    // receipt event
+    emit PaymentReceipt(
+      tokenIds,
+      purchaseArgs.length, // purchases
+      extensionsCount, // extensions
+      msg.sender, // payer
+      tokenAddress,
+      totalPriceToPay // totalPaid
+    );
 
     // transfer the ERC20 tokens
     _transferValue(msg.sender, totalPriceToPay);
@@ -388,6 +409,16 @@ contract MixinPurchase is
       tokenIds[i] = tokenId;
     }
 
+    // receipt event
+    emit PaymentReceipt(
+      tokenIds,
+      _recipients.length, // purchases
+      0, // extensions
+      msg.sender, // payer
+      tokenAddress,
+      totalPriceToPay // totalPaid
+    );
+
     // transfer the ERC20 tokens
     _transferValue(msg.sender, totalPriceToPay);
 
@@ -434,6 +465,18 @@ contract MixinPurchase is
       _checkValue(_value, pricePaid);
     }
 
+    // receipt event
+    uint[] memory tokenIds = new uint[](1);
+    tokenIds[0] = _tokenId;
+    emit PaymentReceipt(
+      tokenIds,
+      0, // purchases
+      1, // extensions
+      msg.sender, // payer
+      tokenAddress,
+      pricePaid // totalPaid
+    );
+
     // process in unlock
     _recordKeyPurchase(pricePaid, _referrer);
 
@@ -468,6 +511,18 @@ contract MixinPurchase is
 
     // extend key duration
     _extendKey(_tokenId, 0);
+
+    // receipt event
+    uint[] memory tokenIds = new uint[](1);
+    tokenIds[0] = _tokenId;
+    emit PaymentReceipt(
+      tokenIds,
+      0, // purchases
+      1, // extensions
+      msg.sender, // payer
+      tokenAddress,
+      keyPrice // totalPaid
+    );
 
     // store in unlock
     _recordKeyPurchase(keyPrice, _referrer);
