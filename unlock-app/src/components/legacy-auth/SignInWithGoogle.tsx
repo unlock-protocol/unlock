@@ -146,7 +146,7 @@ export const SignInWithGoogle = ({ onNext }: SignInWithGoogleProps) => {
         badge="bottomleft"
       />
       <ConnectButton
-        className="w-full"
+        className={`w-full ${isAuthenticating ? 'cursor-not-allowed' : ''}`}
         icon={<SvgComponents.Google width={40} height={40} />}
         onClick={handleSignWithGoogle}
         disabled={isAuthenticating}
