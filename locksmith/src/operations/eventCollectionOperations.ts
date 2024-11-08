@@ -3,10 +3,10 @@ import { EventData } from '../models/Event'
 import { EventCollectionAssociation } from '../models/EventCollectionAssociation'
 import { z } from 'zod'
 import { kebabCase } from 'lodash'
-import { privy } from '../utils/privyClient'
 import { sendEmail } from './wedlocksOperations'
 import config from '../config/config'
 import logger from '../logger'
+import { getPrivyUserByAddress } from './privyUserOperations'
 
 // event collection body schema
 const EventCollectionBody = z.object({
@@ -82,11 +82,11 @@ export const createEventCollectionOperation = async (
   try {
     // Send email to each manager
     for (const manager of managerAddresses) {
-      const user = await privy?.getUserByWalletAddress(manager)
-      if (user?.email) {
+      const result = await getPrivyUserByAddress(manager)
+      if (result.success && result.user?.email?.address) {
         await sendEmail({
           template: 'eventCollectionCreated',
-          recipient: user.email.toString(),
+          recipient: result.user.email.address,
           params: {
             collectionName: parsedBody.title,
             collectionUrl: `${config.unlockApp}/events/${eventCollection.slug}`,
@@ -95,7 +95,6 @@ export const createEventCollectionOperation = async (
       }
     }
   } catch (error) {
-    // Log error but don't fail the operation if email sending fails
     logger.error('Failed to send notification emails:', error)
   }
 
@@ -321,11 +320,11 @@ export const addEventToCollectionOperation = async (
   if (created && !isManager) {
     try {
       // Send email to submitter
-      const submitterEmail = await privy?.getUserByWalletAddress(userAddress)
-      if (submitterEmail?.email) {
+      const submitterResult = await getPrivyUserByAddress(userAddress)
+      if (submitterResult.success && submitterResult.user?.email?.address) {
         await sendEmail({
           template: 'eventSubmittedToCollectionSubmitter',
-          recipient: submitterEmail.email.toString(),
+          recipient: submitterResult.user.email.address,
           params: {
             eventName: event.name,
             eventDate: event.data.startDate,
@@ -337,11 +336,11 @@ export const addEventToCollectionOperation = async (
 
       // Send email to all managers
       for (const managerAddress of collection.managerAddresses) {
-        const managerEmail = await privy?.getUserByWalletAddress(managerAddress)
-        if (managerEmail?.email) {
+        const managerResult = await getPrivyUserByAddress(managerAddress)
+        if (managerResult.success && managerResult.user?.email?.address) {
           await sendEmail({
             template: 'eventSubmittedToCollectionManager',
-            recipient: managerEmail.email.toString(),
+            recipient: managerResult.user.email.address,
             params: {
               eventName: event.name,
               eventDate: event.data.startDate,
@@ -353,7 +352,6 @@ export const addEventToCollectionOperation = async (
         }
       }
     } catch (error) {
-      // Log error but don't fail the operation if email sending fails
       logger.error('Failed to send notification emails:', error)
     }
   }
@@ -413,15 +411,14 @@ export const approveEventOperation = async (
     })
 
     if (event && association.submitterAddress) {
-      // Get submitter's email
-      const submitterEmail = await privy?.getUserByWalletAddress(
+      const submitterResult = await getPrivyUserByAddress(
         association.submitterAddress
       )
 
-      if (submitterEmail?.email) {
+      if (submitterResult.success && submitterResult.user?.email?.address) {
         await sendEmail({
           template: 'eventApprovedInCollection',
-          recipient: submitterEmail.email.toString(),
+          recipient: submitterResult.user.email.address,
           params: {
             eventName: event.name,
             eventDate: event.data.startDate,
@@ -433,7 +430,6 @@ export const approveEventOperation = async (
       }
     }
   } catch (error) {
-    // Log error but don't fail the operation if email sending fails
     logger.error('Failed to send approval notification email:', error)
   }
 
@@ -481,15 +477,14 @@ export const removeEventFromCollectionOperation = async (
       })
 
       if (event) {
-        // Get submitter's email
-        const submitterEmail = await privy?.getUserByWalletAddress(
+        const submitterResult = await getPrivyUserByAddress(
           association.submitterAddress
         )
 
-        if (submitterEmail?.email) {
+        if (submitterResult.success && submitterResult.user?.email?.address) {
           await sendEmail({
             template: 'eventDeniedInCollection',
-            recipient: submitterEmail.email.toString(),
+            recipient: submitterResult.user.email.address,
             params: {
               eventName: event.name,
               eventDate: event.data.startDate,
@@ -501,7 +496,6 @@ export const removeEventFromCollectionOperation = async (
         }
       }
     } catch (error) {
-      // Log error but don't fail the operation if email sending fails
       logger.error('Failed to send rejection notification email:', error)
     }
   }
@@ -599,15 +593,14 @@ export const bulkRemoveEventsOperation = async (
         })
 
         if (event) {
-          // Get submitter's email
-          const submitterEmail = await privy?.getUserByWalletAddress(
+          const submitterResult = await getPrivyUserByAddress(
             association.submitterAddress
           )
 
-          if (submitterEmail?.email) {
+          if (submitterResult.success && submitterResult.user?.email?.address) {
             await sendEmail({
               template: 'eventDeniedInCollection',
-              recipient: submitterEmail.email.toString(),
+              recipient: submitterResult.user.email.address,
               params: {
                 eventName: event.name,
                 eventDate: event.data.startDate,
@@ -619,7 +612,6 @@ export const bulkRemoveEventsOperation = async (
           }
         }
       } catch (error) {
-        // Log error but don't fail the operation if email sending fails
         logger.error('Failed to send rejection notification email:', error)
       }
     }

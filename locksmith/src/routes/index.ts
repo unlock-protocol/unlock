@@ -43,8 +43,9 @@ import passRouter from './v2/pass'
 import newUserRouter from './v2/user'
 import eventCollectionRouter from './v2/eventCollection'
 import eventCasterRouter from './v2/eventCaster'
+import privyRouter from './v2/privy'
 
-const router = express.Router({ mergeParams: true })
+const router: express.Router = express.Router({ mergeParams: true })
 
 // Set the chain!
 router.use((request, _, next) => {
@@ -68,9 +69,10 @@ router.use('/claim', claimRouter)
 router.use(
   '/api/key/:chain([0-9]{1,12}):lock(0x[0-9A-Fa-f]{40}):rest(/[0-9]{0,12})?',
   (req, res) => {
-    return res.redirect(
+    res.redirect(
       `/api/key/${req.params.chain}/${req.params.lock}${req.params.rest || ''}`
     )
+    return
   }
 )
 
@@ -116,7 +118,7 @@ router.use('/v2/pass', passRouter)
 router.use('/v2/api/users', newUserRouter)
 router.use('/v2/event-collection', eventCollectionRouter)
 router.use('/v2/eventcaster', eventCasterRouter)
-
+router.use('/v2/privy', privyRouter)
 router.use('/', (_, res) => {
   res.send('<a href="https://unlock-protocol.com/">Unlock Protocol</a>')
 })

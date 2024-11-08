@@ -41,12 +41,14 @@ export const saveCustomContent = async (
         conflictFields: ['lockAddress', 'network', 'template'],
       }
     )
-    return response.status(200).send(customEmail)
+    response.status(200).send(customEmail)
+    return
   } catch (err: any) {
     logger.error(err.message)
-    return response.status(500).send({
+    response.status(500).send({
       message: 'Could not save custom email content.',
     })
+    return
   }
 }
 
@@ -66,16 +68,19 @@ export const getCustomContent = async (
     })
 
     if (customEmail) {
-      return response.status(200).send(customEmail)
+      response.status(200).send(customEmail)
+      return
     }
-    return response.status(404).json({
+    response.status(404).json({
       message: 'Custom email content not found for this template.',
     })
+    return
   } catch (err: any) {
     logger.error(err.message)
-    return response.status(500).send({
+    response.status(500).send({
       message: 'Could not get custom email content.',
     })
+    return
   }
 }
 
@@ -91,9 +96,10 @@ export const sendCustomEmail: RequestHandler = async (request, response) => {
   const parsed = await SendCustomEmailBody.parseAsync(request.body)
 
   if (!(lockAddress && network)) {
-    return response.status(400).send({
+    response.status(400).send({
       message: 'Invalid lock address or network',
     })
+    return
   }
 
   await addJob(
@@ -108,9 +114,10 @@ export const sendCustomEmail: RequestHandler = async (request, response) => {
     }
   )
 
-  return response.status(200).send({
+  response.status(200).send({
     success: true,
   })
+  return
 }
 
 export const EventInviteBody = z.object({
@@ -141,5 +148,6 @@ export const sendEventInvite: RequestHandler = async (request, response) => {
     )
   )
 
-  return response.send(results).status(200)
+  response.send(results).status(200)
+  return
 }

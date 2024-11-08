@@ -72,12 +72,18 @@ export const PrivyChild = ({ children }: { children: ReactNode }) => {
 }
 
 export const Privy = ({ children }: { children: ReactNode }) => {
+  const isMigratePage =
+    typeof window !== 'undefined' &&
+    window.location.pathname.includes('migrate-user')
+
   return (
     <PrivyProvider
       config={{
-        loginMethods: ['wallet', 'email', 'google', 'farcaster'],
+        loginMethods: isMigratePage
+          ? ['email']
+          : ['wallet', 'email', 'google', 'farcaster'],
         embeddedWallets: {
-          createOnLogin: 'users-without-wallets', // defaults to 'off'
+          createOnLogin: isMigratePage ? 'off' : 'users-without-wallets', // defaults to 'off'
         },
         appearance: {
           landingHeader: '',
