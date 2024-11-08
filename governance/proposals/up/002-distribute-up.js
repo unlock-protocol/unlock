@@ -14,7 +14,7 @@ module.exports = async () => {
 This proposal enables change from distributing UDT to UPToken when using referrers. This requires to also setup the Uniswap oracle 
 in Unlock to support price discovery for UPToken.`
 
-  const { unlockAddress, uniswap, id } = await getNetwork()
+  const { unlockAddress, uniswapV3, id } = await getNetwork()
 
   // parse config args from existing settings
   const unlock = await ethers.getContractAt(Unlock.abi, unlockAddress)
@@ -32,7 +32,7 @@ in Unlock to support price discovery for UPToken.`
       contractAddress: unlockAddress,
       calldata: unlock.interface.encodeFunctionData('setOracle', [
         upTokenAddress,
-        uniswap.oracle['3000'], // uniswap UP pool is 0.3%
+        uniswapV3.oracle['3000'], // uniswap UP pool is 0.3%
       ]),
     },
     {
@@ -47,6 +47,6 @@ in Unlock to support price discovery for UPToken.`
 
   return {
     proposalName,
-    calls: packedCalls,
+    calls: [packedCalls],
   }
 }
