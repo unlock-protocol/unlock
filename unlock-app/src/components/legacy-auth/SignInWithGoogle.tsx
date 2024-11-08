@@ -51,12 +51,10 @@ export const SignInWithGoogle = ({ onNext }: SignInWithGoogleProps) => {
     // Handle message from the popup
     const messageHandler = async (event: MessageEvent) => {
       if (event.origin !== window.location.origin) {
-        console.log('Ignoring message from different origin:', event.origin)
         return
       }
 
       if (event.data === 'nextAuthGoogleSignInComplete') {
-        console.log('Received completion message')
         if (sessionCheckInterval) return // Already polling
 
         sessionCheckInterval = setInterval(async () => {
@@ -93,7 +91,6 @@ export const SignInWithGoogle = ({ onNext }: SignInWithGoogleProps) => {
     window.addEventListener('message', messageHandler)
 
     try {
-      console.log('Starting Google sign in process')
       popupWindow = popupCenter('/google-sign-in', 'Google Sign In')
       if (!popupWindow) {
         throw new Error('Failed to open popup')
@@ -102,7 +99,6 @@ export const SignInWithGoogle = ({ onNext }: SignInWithGoogleProps) => {
       // Monitor popup closure
       const popupCheckInterval = setInterval(() => {
         if (popupWindow && popupWindow.closed) {
-          console.log('Popup closed, starting cleanup delay')
           clearInterval(popupCheckInterval)
           setTimeout(() => {
             if (isAuthenticating) {
