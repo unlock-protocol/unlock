@@ -19,6 +19,8 @@ export const MigrateUserContent = () => {
   const [userEmail, setUserEmail] = useState<string>('')
   const [walletPk, setWalletPk] = useState<string | null>(null)
   const [userAccountType, setUserAccountType] = useState<UserAccountType[]>([])
+  //  track migration status
+  const [isMigrating, setIsMigrating] = useState(false)
 
   // Mutation to handle the user account type
   const checkUserAccountType = useMutation({
@@ -153,14 +155,19 @@ export const MigrateUserContent = () => {
               disabled: !walletPk,
               description:
                 'This is the last step! We will migrate your Unlock account to Privy!',
-              children: <MigrationFeedback walletPk={walletPk!} />,
+              children: (
+                <MigrationFeedback
+                  walletPk={walletPk!}
+                  onMigrationStart={() => setIsMigrating(true)}
+                />
+              ),
               showButton: false,
             },
           ]}
         />
       </div>
 
-      {account && <PromptSignOut />}
+      {account && !isMigrating && <PromptSignOut />}
     </>
   )
 }

@@ -7,7 +7,13 @@ import Link from 'next/link'
 import { onSignedInWithPrivy } from '~/config/PrivyProvider'
 import { ToastHelper } from '../helpers/toast.helper'
 
-export default function MigrationFeedback({ walletPk }: { walletPk: string }) {
+export default function MigrationFeedback({
+  walletPk,
+  onMigrationStart,
+}: {
+  walletPk: string
+  onMigrationStart: () => void
+}) {
   // @ts-ignore
   const { importWallet } = usePrivy()
   const [isImporting, setIsImporting] = useState(false)
@@ -15,6 +21,7 @@ export default function MigrationFeedback({ walletPk }: { walletPk: string }) {
 
   const handleImport = async () => {
     setIsImporting(true)
+    onMigrationStart()
     try {
       // First attempt the wallet import
       const importResult = await importWallet({ privateKey: walletPk })
