@@ -45,7 +45,7 @@ export const EnterCode = ({ email, callbackUrl, onReturn }: EnterCodeProps) => {
       } else {
         // Call the onReturn callback upon successful verification
         if (onReturn) {
-          onReturn()
+          await onReturn()
         }
       }
       return
