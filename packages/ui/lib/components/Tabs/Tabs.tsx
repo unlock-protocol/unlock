@@ -1,5 +1,11 @@
 import { classed } from '@tw-classed/react'
-import { InputHTMLAttributes, ReactNode, useRef, useState } from 'react'
+import {
+  InputHTMLAttributes,
+  isValidElement,
+  ReactNode,
+  useRef,
+  useState,
+} from 'react'
 import { Button, Props as ButtonProps } from '../Button/Button'
 import { QueryClientProvider, useMutation } from '@tanstack/react-query'
 import { DEFAULT_QUERY_CLIENT_OPTIONS } from '../constants'
@@ -8,7 +14,7 @@ import { Placeholder } from '../Placeholder'
 interface TabProps {
   title: ReactNode
   description?: ReactNode
-  children: ReactNode
+  children: ReactNode | (({ onNext }: { onNext: any }) => ReactNode)
   disabled?: boolean
   onNext?: () => Promise<any> | void
   onNextLabel?: string
@@ -168,20 +174,31 @@ const Tab = ({
             <div className="w-[2px] bg-gray-300 h-full"></div>
           </div>
           <div className="flex flex-col w-full gap-10 mt-10">
-            {loading ? <Placeholder.Card /> : children}
-            {showButton && (
-              <Button
-                loading={isPending}
-                className="w-full"
-                onClick={async () => {
-                  await handleNextMutation()
-                }}
-                disabled={disabled || button?.disabled || loading}
-                {...button}
-              >
-                {onNextLabel}
-              </Button>
+            {isValidElement(children) && (
+              <>
+                {loading ? <Placeholder.Card /> : children}
+                {showButton && (
+                  <Button
+                    loading={isPending}
+                    className="w-full"
+                    onClick={async () => {
+                      await handleNextMutation()
+                    }}
+                    disabled={disabled || button?.disabled || loading}
+                    {...button}
+                  >
+                    {onNextLabel}
+                  </Button>
+                )}
+              </>
             )}
+            {!isValidElement(children) &&
+              typeof children === 'function' &&
+              children({
+                onNext: async () => {
+                  await handleNextMutation()
+                },
+              })}
           </div>
         </TabContent>
       </>

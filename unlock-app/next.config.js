@@ -44,6 +44,16 @@ const config = {
     // this includes files from the monorepo base directory up
     outputFileTracingRoot: path.join(__dirname, '../'),
   },
+  async redirects() {
+    return [
+      // redirect to locks page
+      {
+        source: '/dashboard',
+        destination: '/locks',
+        permanent: true,
+      },
+    ]
+  },
 }
 
 module.exports = withSentryConfig(config)

@@ -9,7 +9,7 @@ import crypto from 'node:crypto'
 import config, { isProduction, isStaging } from '../../config/config'
 import { createRateLimitMiddleware } from '../../utils/middlewares/rateLimit'
 
-const router = express.Router()
+const router: express.Router = express.Router()
 
 const rateLimiter = createRateLimitMiddleware({
   prefix: 'upload_images',
@@ -82,7 +82,7 @@ router.post(
   // Upload upto 5 images at once
   upload.array('images', 5),
   (request, response) => {
-    return response.status(201).send({
+    response.status(201).send({
       results: Object.values(request.files || []).map((file: any) => {
         return {
           url: file.location,
@@ -103,6 +103,7 @@ router.post(
         }
       }),
     })
+    return
   }
 )
 

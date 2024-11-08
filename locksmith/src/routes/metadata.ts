@@ -3,7 +3,7 @@ import signatureValidationMiddleware from '../middlewares/signatureValidationMid
 import MetadataController from '../controllers/metadataController'
 import { createCacheMiddleware } from '../utils/middlewares/cacheMiddleware'
 
-const router = express.Router({ mergeParams: true })
+const router: express.Router = express.Router({ mergeParams: true })
 
 const metaDataConfiguration = {
   name: 'LockMetaData',

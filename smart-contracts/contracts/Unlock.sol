@@ -200,8 +200,8 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     // if the template has not been initialized,
     // claim the template so that no-one else could
     try IPublicLock(impl).initialize(address(this), 0, address(0), 0, 0, "") {
-      // renounce the lock manager role that was added during initialization
-      IPublicLock(impl).renounceLockManager();
+      // renounce Unlock's lock manager role that was added during initialization
+      IPublicLock(impl).revokeRole(keccak256("LOCK_MANAGER"), address(this));
     } catch {
       // failure means that the template is already initialized
     }
@@ -419,10 +419,10 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   }
 
   /**
-   * This function keeps track of the added GDP, as well as grants of discount tokens
+   * This function keeps track of the added GDP, as well as rewards governance tokens
    * to the referrer, if applicable.
-   * The number of discount tokens granted is based on the value of the referal,
-   * the current growth rate and the lock's discount token distribution rate
+   * The number of governance discount tokens granted is equal to the half
+   * of the protocol fee perceived during the purchase.
    * This function is invoked by a previously deployed lock only.
    */
   function recordKeyPurchase(
@@ -430,78 +430,63 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     address _referrer
   ) public onlyFromDeployedLock {
     if (_value > 0) {
-      uint valueInETH;
+      uint valueInNativeTokens;
       address tokenAddress = IPublicLock(msg.sender).tokenAddress();
+
+      // 1. calculate the value in native tokens to add to the GDP
       if (tokenAddress != address(0) && tokenAddress != weth) {
         // If priced in an ERC-20 token, find the supported uniswap oracle
         IUniswapOracleV3 oracle = uniswapOracles[tokenAddress];
         if (address(oracle) != address(0)) {
-          valueInETH = oracle.updateAndConsult(tokenAddress, _value, weth);
+          valueInNativeTokens = oracle.updateAndConsult(
+            tokenAddress,
+            _value,
+            weth
+          );
         }
       } else {
-        // If priced in ETH (or value is 0), no conversion is required
-        valueInETH = _value;
+        // If priced in native tokens (or value is 0), no conversion is required
+        valueInNativeTokens = _value;
       }
 
+      // 2. record GNP increase
       updateGrossNetworkProduct(
-        valueInETH,
+        valueInNativeTokens,
         tokenAddress,
         _value,
         msg.sender // lockAddress
       );
 
-      // If GNP does not overflow, the lock totalSales should be safe
-      locks[msg.sender].totalSales += valueInETH;
+      // 3. increase total sales
+      locks[msg.sender].totalSales += valueInNativeTokens;
 
-      // Distribute UDT
-      // version 13 is the first version for which locks can be paying the fee.
-      // Prior versions should not distribute UDT if they don't "pay" the fee.
+      // 4. Distribute Governance Tokens
+      // NB: version 13 is the first version where locks pay the protocol fee.
+      // Prior versions should not distribute tokens as they don't "pay" the fee.
       if (
+        valueInNativeTokens != 0 && // dont distribute tokens for free keys or missing oracle
         _referrer != address(0) &&
         IPublicLock(msg.sender).publicLockVersion() >= 13
       ) {
-        IUniswapOracleV3 governanceTokenOracle = uniswapOracles[udt];
-        if (address(governanceTokenOracle) != address(0)) {
-          // Get the value of 1 UDT (w/ 18 decimals) in ETH
-          uint governanceTokenPrice = governanceTokenOracle.updateAndConsult(
+        // get price for a single governance token
+        IUniswapOracleV3 govTokenOracle = uniswapOracles[udt];
+
+        if (address(govTokenOracle) != address(0)) {
+          // Get the paid value in governance token
+          uint govTokenPrice = govTokenOracle.updateAndConsult(
             udt,
-            10 ** 18,
+            valueInNativeTokens,
             weth
           );
 
-          uint balance = IMintableERC20(udt).balanceOf(address(this));
-
-          // base fee default to 100 GWEI for chains that does
-          uint baseFee;
-          try this.networkBaseFee() returns (uint _basefee) {
-            // no assigned value
-            if (_basefee == 0) {
-              baseFee = 100;
-            } else {
-              baseFee = _basefee;
-            }
-          } catch {
-            // block.basefee not supported
-            baseFee = 100;
-          }
-
-          // tokensToDistribute is either == to the gas cost
-          uint tokensToDistribute = ((estimatedGasForPurchase * baseFee) *
-            (10 ** 18)) / governanceTokenPrice;
-
-          // or tokensToDistribute is capped by network GDP growth
-          // we distribute tokens using asymptotic curve between 0 and 0.5
-          uint maxTokens = (balance * valueInETH) /
-            (2 + (2 * valueInETH) / grossNetworkProduct) /
-            grossNetworkProduct;
-
-          // cap to GDP growth!
-          if (tokensToDistribute > maxTokens) {
-            tokensToDistribute = maxTokens;
-          }
+          // amount of tokens to distribute is equal to half the protocol fee in basis points)
+          uint tokensToDistribute = ((govTokenPrice * protocolFee) / 10000 / 2);
 
           if (tokensToDistribute > 0) {
-            if (balance > tokensToDistribute) {
+            // make sure we have governance tokens
+            if (
+              IMintableERC20(udt).balanceOf(address(this)) > tokensToDistribute
+            ) {
               // Only distribute if there are enough tokens
               IMintableERC20(udt).transfer(_referrer, tokensToDistribute);
             }

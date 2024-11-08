@@ -1,7 +1,7 @@
 import express from 'express'
-
-const router = express.Router({ mergeParams: true })
 import captchaController from '../controllers/captchaController'
+
+const router: express.Router = express.Router({ mergeParams: true })
 
 router.get('/', captchaController.sign)
 

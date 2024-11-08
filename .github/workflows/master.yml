@@ -67,7 +67,7 @@ jobs:
   deploy-unlock-app-vercel:
     needs: run-all-tests
     if: ${{ github.repository_owner == 'unlock-protocol'  }}
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with:

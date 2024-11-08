@@ -41,7 +41,10 @@ export const UserMenu = () => {
             {({ active }) => {
               if (isPrime) {
                 return (
-                  <span className="text-gray-700 group text-sm w-full items-center rounded-md px-2 py-2 text-base">
+                  <Link
+                    href="/prime"
+                    className="text-gray-700 group text-sm w-full items-center rounded-md px-2 py-2"
+                  >
                     💫 You are a{' '}
                     <span
                       className="mx-1  font-extrabold text-transparent  bg-clip-text"
@@ -53,7 +56,7 @@ export const UserMenu = () => {
                       Prime Member
                     </span>
                     !
-                  </span>
+                  </Link>
                 )
               }
               return (

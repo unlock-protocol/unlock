@@ -84,6 +84,7 @@ describe('Lock / purchase using Struct signature', () => {
                 referrer: ADDRESS_ZERO,
                 keyManager: ADDRESS_ZERO,
                 data: '0x',
+                additionalPeriods: 0,
               },
             ],
             {

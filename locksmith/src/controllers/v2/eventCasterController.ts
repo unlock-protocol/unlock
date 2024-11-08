@@ -1,5 +1,5 @@
 import networks from '@unlock-protocol/networks'
-import { WalletService } from '@unlock-protocol/unlock-js'
+import { WalletService, Web3Service } from '@unlock-protocol/unlock-js'
 import { RequestHandler } from 'express'
 import { z } from 'zod'
 import {
@@ -12,6 +12,8 @@ import { deployLockForEventCaster } from '../../operations/eventCasterOperations
 const CreateEventBody = z.object({
   id: z.string(),
   title: z.string(),
+  description: z.string(),
+  image_url: z.string(),
   hosts: z.array(
     z.object({
       verified_addresses: z.object({
@@ -35,13 +37,18 @@ export const createEvent: RequestHandler = async (request, response) => {
     title,
     id: eventId,
     hosts,
+    description,
+    image_url,
   } = await CreateEventBody.parseAsync(request.body)
   const { address, network } = await deployLockForEventCaster({
     title,
     hosts,
     eventId,
+    imageUrl: image_url,
+    description,
   })
-  return response.status(201).json({ address, network })
+  response.status(201).json({ address, network })
+  return
 }
 
 // This is the API endpoint used by EventCaster to mint RSVP tokens
@@ -56,20 +63,23 @@ export const rsvpForEvent: RequestHandler = async (request, response) => {
   const { success, event } = await eventCasterResponse.json()
 
   if (!success) {
-    return response.status(422).json({ message: 'Could not retrieve event' })
+    response.status(422).json({ message: 'Could not retrieve event' })
+    return
   }
 
   if (!(event.contract?.address && event.contract?.network)) {
-    return response
+    response
       .status(422)
       .json({ message: 'This event does not have a contract attached.' })
+    return
   }
 
   // Get the recipient
   if (!user.verified_addresses.eth_addresses[0]) {
-    return response
+    response
       .status(422)
       .json({ message: 'User does not have a verified address.' })
+    return
   }
 
   const [provider, wallet] = await Promise.all([
@@ -77,28 +87,50 @@ export const rsvpForEvent: RequestHandler = async (request, response) => {
     getPurchaser({ network: event.contract.network }),
   ])
 
+  const ownerAddress = user.verified_addresses.eth_addresses[0]
+  // Check first if the user has a key
+  const web3Service = new Web3Service(networks)
+  const existingKey = await web3Service.getKeyByLockForOwner(
+    event.contract.address,
+    ownerAddress,
+    event.contract.network
+  )
+
+  if (existingKey.tokenId > 0) {
+    response.status(200).json({
+      network: event.contract.network,
+      address: event.contract.address,
+      id: Number(existingKey.tokenId),
+      owner: ownerAddress,
+    })
+    return
+  }
+
   const walletService = new WalletService(networks)
   await walletService.connect(provider, wallet)
 
   const token = await walletService.grantKey({
     lockAddress: event.contract.address,
-    recipient: user.verified_addresses.eth_addresses[0],
+    recipient: ownerAddress,
   })
 
-  return response.status(201).json({
+  response.status(201).json({
     network: event.contract.network,
     address: event.contract.address,
     ...token,
   })
+  return
 }
 
 // Deletes an event. Unsure how to proceed here...
 export const deleteEvent: RequestHandler = async (_request, response) => {
-  return response.status(200).json({})
+  response.status(200).json({})
+  return
 }
 
 // Removes the RSVP for an event (burns the ticket!)
 export const unrsvpForEvent: RequestHandler = async (_request, response) => {
   // TODO: implement this
-  return response.status(200).json({})
+  response.status(200).json({})
+  return
 }
