@@ -62,6 +62,7 @@ contract MixinPurchase is
     uint value;
     address recipient;
     address referrer;
+    address protocolReferrer;
     address keyManager;
     bytes data;
     uint additionalPeriods;
@@ -262,6 +263,7 @@ contract MixinPurchase is
     address _recipient,
     address _keyManager,
     address _referrer,
+    address _protocolReferrer,
     bytes memory _data
   ) internal returns (uint tokenId, uint pricePaid) {
     // create a new key, check for a non-expiring key
@@ -284,8 +286,8 @@ contract MixinPurchase is
       _checkValue(_value, pricePaid);
     }
 
-    // store in unlock
-    _recordKeyPurchase(pricePaid, _referrer);
+    // store in unlock and pay gov token reward
+    _recordKeyPurchase(pricePaid, _protocolReferrer);
 
     // fire hook
     if (address(onKeyPurchaseHook) != address(0)) {
@@ -316,6 +318,7 @@ contract MixinPurchase is
         purchaseArgs[i].recipient,
         purchaseArgs[i].keyManager,
         purchaseArgs[i].referrer,
+        purchaseArgs[i].protocolReferrer,
         purchaseArgs[i].data
       );
       totalPriceToPay = totalPriceToPay + pricePaid;
@@ -329,8 +332,8 @@ contract MixinPurchase is
         // compute total price
         totalPriceToPay = totalPriceToPay + pricePaid;
 
-        // process in unlock
-        _recordKeyPurchase(pricePaid, purchaseArgs[i].referrer);
+        // process in unlock and pay gov token reward
+        _recordKeyPurchase(pricePaid, purchaseArgs[i].protocolReferrer);
 
         // send what is due to referrer
         _payReferrer(purchaseArgs[i].referrer);
