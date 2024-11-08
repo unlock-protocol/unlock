@@ -1,7 +1,5 @@
 import SvgComponents from '../interface/svg'
-
 import { popupCenter } from '~/utils/popup'
-
 import { ConnectButton } from '../interface/connect/Custom'
 import { getSession } from 'next-auth/react'
 import { ToastHelper } from '../helpers/toast.helper'
@@ -10,6 +8,7 @@ import { UserAccountType } from '~/utils/userAccountType'
 import { getPrivateKeyFromWaas } from './SignInWithCode'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { config } from '~/config/app'
+import { useState, useEffect, useRef } from 'react'
 
 export interface SignInWithGoogleProps {
   onNext: (privateKey: string) => void
@@ -17,78 +16,124 @@ export interface SignInWithGoogleProps {
 
 export const SignInWithGoogle = ({ onNext }: SignInWithGoogleProps) => {
   const { getCaptchaValue, recaptchaRef } = useCaptcha()
+  const [isAuthenticating, setIsAuthenticating] = useState(false)
+  const cleanupRef = useRef<() => void>(() => {})
+
+  useEffect(() => {
+    // Cleanup on unmount
+    return () => {
+      cleanupRef.current()
+    }
+  }, [])
 
   const handleSignWithGoogle = async () => {
+    if (isAuthenticating) return
+    setIsAuthenticating(true)
+
+    let sessionCheckInterval: NodeJS.Timeout | null = null
+    let popupWindow: Window | null = null
+
+    // Cleanup function
+    const cleanup = () => {
+      if (sessionCheckInterval) {
+        clearInterval(sessionCheckInterval)
+        sessionCheckInterval = null
+      }
+      if (popupWindow && !popupWindow.closed) {
+        popupWindow.close()
+        popupWindow = null
+      }
+      window.removeEventListener('message', messageHandler)
+    }
+
+    cleanupRef.current = cleanup
+
+    // Handle message from the popup
+    const messageHandler = async (event: MessageEvent) => {
+      if (event.origin !== window.location.origin) {
+        console.log('Ignoring message from different origin:', event.origin)
+        return
+      }
+
+      if (event.data === 'nextAuthGoogleSignInComplete') {
+        console.log('Received completion message')
+        if (sessionCheckInterval) return // Already polling
+
+        sessionCheckInterval = setInterval(async () => {
+          console.debug('Polling for user session...')
+          const session = await getSession()
+          if (session?.user) {
+            console.debug('User session found')
+            cleanup()
+            try {
+              const captcha = await getCaptchaValue()
+              if (!captcha) {
+                throw new Error('CAPTCHA verification failed')
+              }
+              const privateKey = await getPrivateKeyFromWaas(
+                captcha,
+                UserAccountType.GoogleAccount
+              )
+              if (privateKey) {
+                onNext(privateKey)
+              } else {
+                ToastHelper.error('Error getting private key from WAAS')
+              }
+            } catch (error) {
+              console.error('Error during Google sign in:', error)
+              ToastHelper.error('Error during Google sign in')
+            } finally {
+              setIsAuthenticating(false)
+            }
+          }
+        }, 500) // Check every 500ms
+      }
+    }
+
+    window.addEventListener('message', messageHandler)
+
     try {
-      // Open popup for Google sign in
-      const popup = popupCenter('/google-sign-in', 'Google Sign In')
-      if (!popup) {
+      console.log('Starting Google sign in process')
+      popupWindow = popupCenter('/google-sign-in', 'Google Sign In')
+      if (!popupWindow) {
         throw new Error('Failed to open popup')
       }
 
-      console.debug('Popup opened')
-      // Create promise to handle popup message and session
-      await new Promise<void>((resolve, reject) => {
-        let sessionCheckInterval: NodeJS.Timeout
-
-        const messageHandler = async (event: MessageEvent) => {
-          if (event.origin !== window.location.origin) return
-
-          if (event.data === 'nextAuthGoogleSignInComplete') {
-            // Start checking for session after receiving completion message
-            console.debug('Starting to poll for user session')
-            sessionCheckInterval = setInterval(async () => {
-              console.debug('Polling for user session...')
-              const session = await getSession()
-              if (session?.user) {
-                console.debug('User session found')
-                clearInterval(sessionCheckInterval)
-                window.removeEventListener('message', messageHandler)
-                resolve()
-              }
-            }, 500) // Check every 500ms
-          }
+      // Monitor popup closure
+      const popupCheckInterval = setInterval(() => {
+        if (popupWindow && popupWindow.closed) {
+          console.log('Popup closed, starting cleanup delay')
+          clearInterval(popupCheckInterval)
+          setTimeout(() => {
+            if (isAuthenticating) {
+              cleanup()
+              ToastHelper.error('Authentication was cancelled')
+              setIsAuthenticating(false)
+            }
+          }, 1000)
         }
+      }, 1000)
 
-        window.addEventListener('message', messageHandler)
-
-        // Cleanup if popup is closed manually
-        const cleanup = setInterval(() => {
-          if (popup.closed) {
-            clearInterval(cleanup)
-            clearInterval(sessionCheckInterval)
-            window.removeEventListener('message', messageHandler)
-            reject(new Error('Popup closed by user'))
-          }
-        }, 1000)
-
-        // Timeout after 2 minutes
-        setTimeout(() => {
-          clearInterval(cleanup)
-          clearInterval(sessionCheckInterval)
-          window.removeEventListener('message', messageHandler)
-          reject(new Error('Authentication timeout'))
-        }, 120000)
-      })
-
-      // At this point we have a confirmed session
-      try {
-        const privateKey = await getPrivateKeyFromWaas(
-          await getCaptchaValue(),
-          UserAccountType.GoogleAccount
-        )
-        if (privateKey) {
-          onNext(privateKey)
-        } else {
-          ToastHelper.error('Error getting private key from WAAS')
+      // Timeout after 2 minutes
+      const timeout = setTimeout(() => {
+        if (isAuthenticating) {
+          cleanup()
+          ToastHelper.error('Authentication timeout')
+          setIsAuthenticating(false)
         }
-      } catch (error) {
-        console.error(error)
-        ToastHelper.error('Error during Google sign in')
+      }, 120000)
+
+      // Update cleanup to include timeout
+      cleanupRef.current = () => {
+        clearInterval(popupCheckInterval)
+        clearTimeout(timeout)
+        cleanup()
       }
     } catch (error) {
-      console.error(error)
+      console.error('Error initiating Google sign in:', error)
       ToastHelper.error('Google sign in was cancelled')
+      setIsAuthenticating(false)
+      cleanup()
     }
   }
 
@@ -104,8 +149,9 @@ export const SignInWithGoogle = ({ onNext }: SignInWithGoogleProps) => {
         className="w-full"
         icon={<SvgComponents.Google width={40} height={40} />}
         onClick={handleSignWithGoogle}
+        disabled={isAuthenticating}
       >
-        Sign in with Google
+        {isAuthenticating ? 'Authenticating...' : 'Sign in with Google'}
       </ConnectButton>
     </div>
   )
