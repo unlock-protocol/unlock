@@ -1,6 +1,6 @@
 import { PublicLock } from '@unlock-protocol/contracts'
 import { ethers } from 'ethers'
-import { isProduction } from '../config/config'
+import config, { isProduction } from '../config/config'
 import {
   getAllPurchasers,
   getProviderForNetwork,
@@ -257,7 +257,7 @@ export const saveContractOnEventCasterEvent = async ({
     {
       method: 'POST',
       headers: {
-        'x-api-key': ``,
+        'x-api-key': `${config.eventCasterApiKey}`,
       },
       body: '',
     }
@@ -288,7 +288,7 @@ export const saveTokenOnEventCasterRSVP = async ({
     {
       method: 'POST',
       headers: {
-        'x-api-key': ``,
+        'x-api-key': `${config.eventCasterApiKey}`,
       },
       body: '',
     }
