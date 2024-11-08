@@ -20,28 +20,33 @@ export const SignInWithGoogle = ({ onNext }: SignInWithGoogleProps) => {
 
   const handleSignWithGoogle = async () => {
     try {
-      // Open popup for Google sign in
+      console.log('Starting Google sign in process')
       const popup = popupCenter('/google-sign-in', 'Google Sign In')
       if (!popup) {
         throw new Error('Failed to open popup')
       }
 
-      console.debug('Popup opened')
-      // Create promise to handle popup message and session
       await new Promise<void>((resolve, reject) => {
         let sessionCheckInterval: NodeJS.Timeout
+        let isResolved = false
 
         const messageHandler = async (event: MessageEvent) => {
-          if (event.origin !== window.location.origin) return
+          console.log('Received message:', event.data)
+          if (event.origin !== window.location.origin) {
+            console.log('Ignoring message from different origin:', event.origin)
+            return
+          }
 
           if (event.data === 'nextAuthGoogleSignInComplete') {
+            console.log('Received completion message')
             // Start checking for session after receiving completion message
             console.debug('Starting to poll for user session')
             sessionCheckInterval = setInterval(async () => {
               console.debug('Polling for user session...')
               const session = await getSession()
-              if (session?.user) {
+              if (session?.user && !isResolved) {
                 console.debug('User session found')
+                isResolved = true
                 clearInterval(sessionCheckInterval)
                 window.removeEventListener('message', messageHandler)
                 resolve()
@@ -52,25 +57,37 @@ export const SignInWithGoogle = ({ onNext }: SignInWithGoogleProps) => {
 
         window.addEventListener('message', messageHandler)
 
-        // Cleanup if popup is closed manually
         const cleanup = setInterval(() => {
           if (popup.closed) {
+            console.log('Popup closed, starting cleanup delay')
             clearInterval(cleanup)
-            clearInterval(sessionCheckInterval)
-            window.removeEventListener('message', messageHandler)
-            reject(new Error('Popup closed by user'))
+
+            setTimeout(() => {
+              if (!isResolved) {
+                console.log(
+                  'No successful resolution after popup closed, rejecting'
+                )
+                clearInterval(sessionCheckInterval)
+                window.removeEventListener('message', messageHandler)
+                reject(new Error('Authentication failed or was cancelled'))
+              }
+            }, 1000)
           }
         }, 1000)
 
         // Timeout after 2 minutes
         setTimeout(() => {
-          clearInterval(cleanup)
-          clearInterval(sessionCheckInterval)
-          window.removeEventListener('message', messageHandler)
-          reject(new Error('Authentication timeout'))
+          if (!isResolved) {
+            isResolved = true
+            clearInterval(cleanup)
+            clearInterval(sessionCheckInterval)
+            window.removeEventListener('message', messageHandler)
+            reject(new Error('Authentication timeout'))
+          }
         }, 120000)
       })
 
+      console.log('Promise resolved successfully')
       // At this point we have a confirmed session
       try {
         const privateKey = await getPrivateKeyFromWaas(
