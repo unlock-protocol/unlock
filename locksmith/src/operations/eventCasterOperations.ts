@@ -1,15 +1,16 @@
 import { PublicLock } from '@unlock-protocol/contracts'
 import { ethers } from 'ethers'
-import { isProduction } from '../config/config'
+import config, { isProduction } from '../config/config'
 import {
   getAllPurchasers,
   getProviderForNetwork,
   getPurchaser,
 } from '../fulfillment/dispatcher'
 import networks from '@unlock-protocol/networks'
-import { WalletService } from '@unlock-protocol/unlock-js'
+import { WalletService, Web3Service } from '@unlock-protocol/unlock-js'
 import { EVENT_CASTER_ADDRESS } from '../utils/constants'
 import { LockMetadata } from '../models'
+import logger from '../logger'
 
 const DEFAULT_NETWORK = isProduction ? 8453 : 84532 // Base or Base Sepolia
 
@@ -43,7 +44,11 @@ export const deployLockForEventCaster = async ({
   description,
 }: {
   title: string
-  hosts: any[]
+  hosts: {
+    verified_addresses: {
+      eth_addresses: string[]
+    }
+  }[]
   eventId: string
   imageUrl: string
   description: string
@@ -179,4 +184,128 @@ export const deployLockForEventCaster = async ({
     address: lockAddress,
     network: DEFAULT_NETWORK,
   }
+}
+
+export const getEventFormEventCaster = async (eventId: string) => {
+  // make the request to @event api
+  const eventCasterResponse = await fetch(
+    `https://events.xyz/api/v1/event?event_id=${eventId}`
+  )
+  // parse the response and continue
+  const { success, event } = await eventCasterResponse.json()
+
+  if (!success) {
+    return new Error('Could not retrieve event')
+  }
+
+  if (!(event.contract?.address && event.contract?.network)) {
+    return new Error('This event does not have a contract attached.')
+  }
+  return event
+}
+
+export const mintNFTForRsvp = async ({
+  ownerAddress,
+  contract,
+}: {
+  ownerAddress: string
+  contract: {
+    address: string
+    network: number
+  }
+}): Promise<{
+  network: number
+  address: string
+  id: number
+  owner: string
+}> => {
+  // Get the recipient
+
+  const [provider, wallet] = await Promise.all([
+    getProviderForNetwork(contract.network),
+    getPurchaser({ network: contract.network }),
+  ])
+
+  // Check first if the user has a key
+  const web3Service = new Web3Service(networks)
+  const existingKey = await web3Service.getKeyByLockForOwner(
+    contract.address,
+    ownerAddress,
+    contract.network
+  )
+
+  if (existingKey.tokenId > 0) {
+    return {
+      network: contract.network,
+      address: contract.address,
+      id: existingKey.tokenId,
+      owner: ownerAddress,
+    }
+  }
+
+  const walletService = new WalletService(networks)
+  await walletService.connect(provider, wallet)
+
+  return await walletService.grantKey({
+    lockAddress: contract.address,
+    recipient: ownerAddress,
+  })
+}
+
+export const saveContractOnEventCasterEvent = async ({
+  eventId,
+  address,
+  network,
+}: {
+  eventId: string
+  address: string
+  network: number
+}) => {
+  const response = await fetch(
+    `https://events.xyz/api/v1/unlock/update-event?event_id=${eventId}&address=${address}&network=${network}`,
+    {
+      method: 'POST',
+      headers: {
+        'x-api-key': `${config.eventCasterApiKey}`,
+      },
+      body: '',
+    }
+  )
+  if (response.status !== 200) {
+    logger.error('Failed to save contract on EventCaster')
+    return
+  }
+  const responseBody = await response.json()
+  if (!responseBody.success) {
+    logger.error('Failed to save contract on EventCaster', responseBody)
+    return
+  }
+  return responseBody
+}
+
+export const saveTokenOnEventCasterRSVP = async ({
+  eventId,
+  farcasterId,
+  tokenId,
+}: {
+  eventId: string
+  farcasterId: string
+  tokenId: number
+}) => {
+  const response = await fetch(
+    `https://events.xyz/api/v1/unlock/update-rsvp?event_id=${eventId}&fid=${farcasterId}&token_id=${tokenId}`,
+    {
+      method: 'POST',
+      headers: {
+        'x-api-key': `${config.eventCasterApiKey}`,
+      },
+      body: '',
+    }
+  )
+  const responseBody = await response.json()
+  if (response.status !== 200) {
+    logger.error('Failed to save RSVP on EventCaster')
+    return
+  }
+  return responseBody
 }

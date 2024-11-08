@@ -131,6 +131,7 @@ const config = {
   signerKeyPassphrase: process.env.APPLE_WALLET_SIGNER_KEY_PASSPHRASE,
   privyAppId: process.env.PRIVY_APP_ID,
   privyAppSecret: process.env.PRIVY_APP_SECRET,
+  eventCasterApiKey: process.env.EVENTCASTER_API_KEY,
 
   logtailSourceToken: process.env.LOGTAIL,
   sessionDuration: Number(process.env.SESSION_DURATION || 86400 * 60), // 60 days
