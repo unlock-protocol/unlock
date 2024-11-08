@@ -3,6 +3,7 @@
 import { useLogin } from '@privy-io/react-auth'
 import { useEffect, useRef } from 'react'
 import { LoginModal } from '@privy-io/react-auth'
+import { signOut as nextAuthSignOut, useSession } from 'next-auth/react'
 
 interface ConnectToPrivyProps {
   userEmail: string
@@ -13,9 +14,15 @@ export default function ConnectToPrivy({
   userEmail,
   onNext,
 }: ConnectToPrivyProps) {
+  const { data: session } = useSession()
+
   const { login } = useLogin({
-    onComplete: () => {
-      // When login is complete, proceed to next step (tab)
+    onComplete: async () => {
+      // When Privy login is complete, sign out of next-auth session
+      if (session) {
+        await nextAuthSignOut({ redirect: false })
+      }
+      // Then proceed to next step
       onNext()
     },
     onError: (error) => {
