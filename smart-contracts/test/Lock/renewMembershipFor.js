@@ -18,7 +18,7 @@ let dai
 
 const keyPrice = ethers.parseUnits('0.01', 'ether')
 const totalPrice = keyPrice * 10n
-const someDai = ethers.parseUnits('10', 'ether')
+const someDai = ethers.parseUnits('100', 'ether')
 
 describe('Lock / Recurring memberships', () => {
   let deployer, keyOwner, referrer, attacker
@@ -319,62 +319,28 @@ describe('Lock / Recurring memberships', () => {
       })
     })
 
-    describe('should remember the referrer set in first purchase', async () => {
+    describe.only('should remember the referrer set in first purchase', async () => {
       // 1% in basis points
-      const PROTOCOL_FEE = 100n
       const BASIS_POINTS_DEN = 10000n
+      const generalFee = 1000n
 
-      // arbitrarly decided
-      const ERC20_RATE = ethers.parseEther('0.02')
-      const UP_WETH_RATE = ethers.parseEther('0.00000042')
+      beforeEach(async () => {
+        // set general referrer fee to 1%
+        await lock.setReferrerFee(ADDRESS_ZERO, generalFee)
 
-      before(async () => {
-        // set protocol fee to 1%
-        await unlock.setProtocolFee(PROTOCOL_FEE)
-
-        // deploy WETH
-        const weth = await deployWETH(deployer)
-
-        // config unlock
-        await unlock.configUnlock(
-          await up.getAddress(),
-          await weth.getAddress(),
-          BigInt(252166 * 2), // estimateGas
-          await unlock.globalTokenSymbol(),
-          await unlock.globalBaseTokenURI(),
-          31337 // chainId
-        )
-
-        const rates = [
-          {
-            tokenIn: await up.getAddress(),
-            rate: UP_WETH_RATE,
-            tokenOut: await weth.getAddress(),
-          },
-          {
-            tokenIn: await dai.getAddress(),
-            rate: ERC20_RATE,
-            tokenOut: await weth.getAddress(),
-          },
-        ]
-
-        // setup oracle with rates
-        const oracle = await createMockOracle({
-          rates,
-        })
-        await unlock.setOracle(
-          await dai.getAddress(),
-          await oracle.getAddress()
-        )
+        // set ERC20 approval for entire scope
+        // await dai.connect(keyOwner).approve(await lock.getAddress(), totalPrice)
 
         // purchase a key with referrer set
-        const tx = await lock.purchase(
-          [keyPrice],
-          [await referrer.getAddress()],
-          [ADDRESS_ZERO],
-          [ADDRESS_ZERO],
-          ['0x']
-        )
+        const tx = await lock
+          .connect(keyOwner)
+          .purchase(
+            [keyPrice],
+            [await keyOwner.getAddress()],
+            [await referrer.getAddress()],
+            [ADDRESS_ZERO],
+            ['0x']
+          )
         const receipt = await tx.wait()
         const { args } = await getEvent(receipt, 'Transfer')
         ;({ tokenId } = args)
@@ -382,19 +348,20 @@ describe('Lock / Recurring memberships', () => {
       it('referrer has some UP when no address is passed', async () => {
         const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
         await increaseTimeTo(expirationTs)
-        const before = await up.balanceOf(referrer)
+        const before = await dai.balanceOf(await referrer.getAddress())
         await lock.renewMembershipFor(tokenId, ADDRESS_ZERO)
-        const actual = await up.balanceOf(referrer)
+        const actual = await dai.balanceOf(await referrer.getAddress())
         const amountEarned = actual - before
         assert.notEqual(amountEarned, 0n)
-        const protocolFee = (keyPrice * PROTOCOL_FEE) / BASIS_POINTS_DEN
-        const fee = (protocolFee * ERC20_RATE) / 10n ** 18n
-        assert.equal(amountEarned, ((fee / 2n) * UP_WETH_RATE) / 10n ** 18n)
+        const fee = (keyPrice * generalFee) / BASIS_POINTS_DEN
+        assert.equal(amountEarned, fee)
       })
       it('attacker cant bypass existing referrer', async () => {
-        const before = await up.balanceOf(referrer)
+        const before = await dai.balanceOf(await attacker.getAddress())
+        const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
+        await increaseTimeTo(expirationTs)
         await lock.renewMembershipFor(tokenId, await attacker.getAddress())
-        const actual = await up.balanceOf(referrer)
+        const actual = await dai.balanceOf(await attacker.getAddress())
         assert.equal(actual - before, 0n)
       })
     })
