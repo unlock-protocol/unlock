@@ -58,7 +58,7 @@ export const MigrateUserContent = () => {
 
   return (
     <>
-      <div className="px-28 mt-10">
+      <div className="md:px-28 mt-10">
         <div className="space-y-2 mb-20">
           <h2 className="text-2xl font-bold">Migrate your account</h2>
           <p>
