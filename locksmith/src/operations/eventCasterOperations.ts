@@ -209,7 +209,12 @@ export const mintNFTForRsvp = async ({
     address: string
     network: number
   }
-}) => {
+}): Promise<{
+  network: number
+  address: string
+  id: number
+  owner: string
+}> => {
   // Get the recipient
 
   const [provider, wallet] = await Promise.all([
@@ -229,7 +234,7 @@ export const mintNFTForRsvp = async ({
     return {
       network: contract.network,
       address: contract.address,
-      id: Number(existingKey.tokenId),
+      id: existingKey.tokenId,
       owner: ownerAddress,
     }
   }
@@ -245,15 +250,15 @@ export const mintNFTForRsvp = async ({
 
 export const saveContractOnEventCasterEvent = async ({
   eventId,
-  contract,
+  address,
   network,
 }: {
   eventId: string
-  contract: string
+  address: string
   network: number
 }) => {
   const response = await fetch(
-    `https://events.xyz/api/v1/unlock/update-event?event_id=${eventId}&address=${contract}&network=${network}`,
+    `https://events.xyz/api/v1/unlock/update-event?event_id=${eventId}&address=${address}&network=${network}`,
     {
       method: 'POST',
       headers: {
@@ -281,7 +286,7 @@ export const saveTokenOnEventCasterRSVP = async ({
 }: {
   eventId: string
   farcasterId: string
-  tokenId: string
+  tokenId: number
 }) => {
   const response = await fetch(
     `https://events.xyz/api/v1/unlock/update-rsvp?event_id=${eventId}&fid=${farcasterId}&token_id=${tokenId}`,

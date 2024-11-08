@@ -1,10 +1,7 @@
 import { RequestHandler } from 'express'
 import { z } from 'zod'
-import {
-  deployLockForEventCaster,
-  getEventFormEventCaster,
-  mintNFTForRsvp,
-} from '../../operations/eventCasterOperations'
+import { getEventFormEventCaster } from '../../operations/eventCasterOperations'
+import { addJob } from '../../worker/worker'
 
 // This is the API endpoint used by EventCaster to create events
 const CreateEventBody = z.object({
@@ -30,6 +27,7 @@ const RsvpBody = z.object({
   }),
 })
 
+// Asynchronously creates an event on EventCaster
 export const createEvent: RequestHandler = async (request, response) => {
   const {
     title,
@@ -38,14 +36,14 @@ export const createEvent: RequestHandler = async (request, response) => {
     description,
     image_url,
   } = await CreateEventBody.parseAsync(request.body)
-  const { address, network } = await deployLockForEventCaster({
+  await addJob('createEventCasterEvent', {
     title,
     hosts,
     eventId,
     imageUrl: image_url,
     description,
   })
-  response.status(201).json({ address, network })
+  response.status(204)
   return
 }
 
@@ -70,16 +68,14 @@ export const rsvpForEvent: RequestHandler = async (request, response) => {
     return
   }
 
-  const token = await mintNFTForRsvp({
+  await addJob('rsvpForEventCasterEvent', {
+    farcasterId: event.fid,
     ownerAddress,
     contract: event.contract,
+    eventId: request.params.eventId,
   })
 
-  response.status(200).json({
-    network: event.contract.network,
-    address: event.contract.address,
-    ...token,
-  })
+  response.status(204)
   return
 }
 
