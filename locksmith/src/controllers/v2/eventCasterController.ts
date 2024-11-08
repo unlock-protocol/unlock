@@ -52,7 +52,6 @@ export const createEvent: RequestHandler = async (request, response) => {
 export const rsvpForEvent: RequestHandler = async (request, response) => {
   const { user } = await RsvpBody.parseAsync(request.body)
 
-  console.log('I WAS CALLED')
   let event
   try {
     event = await getEventFormEventCaster(request.params.eventId)
