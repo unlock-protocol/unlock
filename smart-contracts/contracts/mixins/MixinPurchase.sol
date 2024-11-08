@@ -406,6 +406,7 @@ contract MixinPurchase is
         _recipients[i],
         _keyManagers[i],
         _referrers[i],
+        _referrers[i], // here protocol referrer is the same
         _data[i]
       );
       totalPriceToPay = totalPriceToPay + pricePaid;
