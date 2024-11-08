@@ -252,6 +252,7 @@ describe('Lock / setReferrerFee', () => {
           const receipt = await tx.wait()
           ;({ args: eventArgs } = await getEvent(receipt, 'ReferrerFee'))
         })
+
         describe('setting the fee', () => {
           it('store fee correctly', async () => {
             await storeFeeCorrectly(lock, ADDRESS_ZERO, generalFee)
@@ -265,6 +266,7 @@ describe('Lock / setReferrerFee', () => {
             )
           })
         })
+
         describe('purchasing with referrer', () => {
           before(async () => {
             balanceBefore = await getBalance(
@@ -302,6 +304,43 @@ describe('Lock / setReferrerFee', () => {
               tokenAddress,
               await referrer.getAddress(),
               (keyPrice * generalFee) / BASIS_POINT_DENOMINATOR
+            )
+          })
+        })
+
+        describe('purchasing without referrer', () => {
+          let balanceZeroBefore
+          let receipt
+          before(async () => {
+            balanceZeroBefore = await getBalance(ADDRESS_ZERO, tokenAddress)
+
+            const txPurchase = await lock
+              .connect(keyOwner)
+              .purchase(
+                isErc20 ? [keyPrice] : [],
+                [await keyOwner.getAddress()],
+                [ADDRESS_ZERO],
+                [ADDRESS_ZERO],
+                ['0x'],
+                {
+                  value: isErc20 ? 0 : keyPrice,
+                }
+              )
+            // fee is stored correctly
+            await storeFeeCorrectly(lock, ADDRESS_ZERO, generalFee)
+
+            const receiptPurchase = await txPurchase.wait()
+            receipt = await getEvent(receiptPurchase, 'ReferrerPaid')
+          })
+
+          it('no event was fired', async () => {
+            assert.equal(receipt, null)
+          })
+
+          it('didnt transfer anything to zero address', async () => {
+            compareBigNumbers(
+              await getBalance(ADDRESS_ZERO, tokenAddress),
+              balanceZeroBefore
             )
           })
         })
