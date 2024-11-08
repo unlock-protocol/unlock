@@ -13,6 +13,7 @@ import { getUserWaasUuid } from '~/utils/getUserWaasUuid'
 import { UserAccountType } from '~/utils/userAccountType'
 import { Button } from '@unlock-protocol/ui'
 import { getSession } from 'next-auth/react'
+import ReCAPTCHA from 'react-google-recaptcha'
 
 // TODO: finish testing this works in a "real" environment (can't test with existing accounts on a different domain)
 export const getPrivateKeyFromWaas = async (captcha: string) => {
@@ -76,7 +77,7 @@ export const SignInWithCode = ({
   onNext: (pkey: string) => void
 }) => {
   const [codeSent, setCodeSent] = useState(false)
-  const { getCaptchaValue } = useCaptcha()
+  const { getCaptchaValue, recaptchaRef } = useCaptcha()
 
   const sendEmailCode = async () => {
     try {
@@ -112,11 +113,19 @@ export const SignInWithCode = ({
   }
 
   return (
-    <EnterCode
-      // Not sure this is useful
-      callbackUrl={'/migrate-user'}
-      onReturn={onCodeCorrect}
-      email={email}
-    />
+    <>
+      <ReCAPTCHA
+        ref={recaptchaRef}
+        sitekey={config.recaptchaKey}
+        size="invisible"
+        badge="bottomleft"
+      />
+      <EnterCode
+        // Not sure this is useful
+        callbackUrl={'/migrate-user'}
+        onReturn={onCodeCorrect}
+        email={email}
+      />
+    </>
   )
 }
