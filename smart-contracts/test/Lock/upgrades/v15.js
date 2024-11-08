@@ -8,6 +8,7 @@ const {
   ADDRESS_ZERO,
   getEvents,
 } = require('@unlock-protocol/hardhat-helpers')
+const { deployContracts, deployERC20, purchaseKey } = require('../../helpers')
 
 // pass proper root folder to helpers
 const dirname = path.join(__dirname, '..')
@@ -204,6 +205,44 @@ describe('PublicLock upgrade v14 > v15', () => {
           true
         )
       })
+    })
+  })
+
+  describe('renewal settings', async () => {
+    let tokenId
+    let deployer, keyOwner
+    before(async () => {
+      ;[deployer, , keyOwner] = await ethers.getSigners()
+      const token = await deployERC20(deployer)
+      // make it erc20
+      await lock.updateKeyPricing(
+        await lock.keyPrice(),
+        await token.getAddress()
+      )
+
+      // set approval
+      await token.mint(await keyOwner.getAddress(), 100n * 10n ** 18n)
+      await token
+        .connect(keyOwner)
+        .approve(await lock.getAddress(), 100n * 10n ** 18n)
+      ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))
+
+      assert(await lock.isRenewable(tokenId))
+    })
+
+    it('are preserved during upgrade', async () => {
+      // make upgrade
+      lock = await upgrades.upgradeProxy(
+        await lock.getAddress(),
+        PublicLockLatest,
+        {
+          // UNSECURE - but we need the flag as we are resizing the `__gap`
+          unsafeSkipStorageCheck: true,
+        }
+      )
+
+      // isRenewable
+      assert(await lock.isRenewable(tokenId))
     })
   })
 })
