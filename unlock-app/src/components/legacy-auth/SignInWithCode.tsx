@@ -13,6 +13,7 @@ import { getUserWaasUuid } from '~/utils/getUserWaasUuid'
 import { UserAccountType } from '~/utils/userAccountType'
 import { Button } from '@unlock-protocol/ui'
 import { getSession } from 'next-auth/react'
+import ReCAPTCHA from 'react-google-recaptcha'
 
 // TODO: finish testing this works in a "real" environment (can't test with existing accounts on a different domain)
 export const getPrivateKeyFromWaas = async (captcha: string) => {
@@ -48,6 +49,10 @@ export const getPrivateKeyFromWaas = async (captcha: string) => {
     console.log('restoring wallet')
     wallet = await waas.wallets.restoreFromHostedBackup()
     console.log('wallet from waas', wallet)
+  } else {
+    console.log('creating a waas wallet (for debugging only!)', wallet)
+    // Creating wallet
+    wallet = await waas.wallets.create()
   }
 
   if (!wallet) {
@@ -76,7 +81,7 @@ export const SignInWithCode = ({
   onNext: (pkey: string) => void
 }) => {
   const [codeSent, setCodeSent] = useState(false)
-  const { getCaptchaValue } = useCaptcha()
+  const { getCaptchaValue, recaptchaRef } = useCaptcha()
 
   const sendEmailCode = async () => {
     try {
@@ -99,24 +104,31 @@ export const SignInWithCode = ({
     }
   }
 
-  if (!codeSent) {
-    return (
-      <div className="flex flex-col gap-4">
-        <p>
-          Please, verify that you own this email address by entering the code
-          you will receive by email.
-        </p>
-        <Button onClick={sendEmailCode}>Send code</Button>
-      </div>
-    )
-  }
-
   return (
-    <EnterCode
-      // Not sure this is useful
-      callbackUrl={'/migrate-user'}
-      onReturn={onCodeCorrect}
-      email={email}
-    />
+    <>
+      <ReCAPTCHA
+        ref={recaptchaRef}
+        sitekey={config.recaptchaKey}
+        size="invisible"
+        badge="bottomleft"
+      />
+      {!codeSent && (
+        <div className="flex flex-col gap-4">
+          <p>
+            Please, verify that you own this email address by entering the code
+            you will receive by email.
+          </p>
+          <Button onClick={sendEmailCode}>Send code</Button>
+        </div>
+      )}
+      {codeSent && (
+        <EnterCode
+          // Not sure this is useful
+          callbackUrl={'/migrate-user'}
+          onReturn={onCodeCorrect}
+          email={email}
+        />
+      )}
+    </>
   )
 }
