@@ -58,10 +58,8 @@ export const SignInWithGoogle = ({ onNext }: SignInWithGoogleProps) => {
         if (sessionCheckInterval) return // Already polling
 
         sessionCheckInterval = setInterval(async () => {
-          console.debug('Polling for user session...')
           const session = await getSession()
           if (session?.user) {
-            console.debug('User session found')
             cleanup()
             try {
               const captcha = await getCaptchaValue()
