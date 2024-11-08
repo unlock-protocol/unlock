@@ -49,6 +49,10 @@ export const getPrivateKeyFromWaas = async (captcha: string) => {
     console.log('restoring wallet')
     wallet = await waas.wallets.restoreFromHostedBackup()
     console.log('wallet from waas', wallet)
+  } else {
+    console.log('creating a waas wallet (for debugging only!)', wallet)
+    // Creating wallet
+    wallet = await waas.wallets.create()
   }
 
   if (!wallet) {
