@@ -5,8 +5,8 @@ import {
 } from '@tanstack/react-query'
 import { Tabs } from './Tabs'
 import { Meta, StoryFn } from '@storybook/react'
-import { Input } from '../Form'
-
+import { Checkbox, Input } from '../Form'
+import { Button } from '../Button/Button'
 const meta = {
   component: Tabs,
   title: 'Tabs',
@@ -221,5 +221,46 @@ export const TabWithLoading: StoryFn<typeof meta> = () => {
         ]}
       />
     </QueryClientProvider>
+  )
+}
+
+export const TabWithOnNext: StoryFn<typeof meta> = () => {
+  return (
+    <Tabs
+      onTabChange={(tab) => {
+        console.log(`change to new tab ${tab}`)
+      }}
+      defaultTab={1}
+      tabs={[
+        {
+          title: 'Do one thing',
+          description: 'Do a thing and advance when you click the button',
+          children: ({ onNext }) => (
+            <>
+              <Input placeholder="test" />
+              <Button onClick={onNext}>Go on!</Button>
+            </>
+          ),
+        },
+        {
+          title: 'Do another thing',
+          description: 'Do another thing and advance when you check the box!',
+          children: ({ onNext }) => {
+            return (
+              <>
+                <span>step 2 content</span>
+                <Checkbox label="enable to advance" onChange={onNext} />
+              </>
+            )
+          },
+        },
+        {
+          title: 'Do final thing',
+          description: 'This finishes the process. ',
+          children: <span>You are now done!</span>,
+          showButton: false,
+        },
+      ]}
+    />
   )
 }
