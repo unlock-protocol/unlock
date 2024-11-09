@@ -1,21 +1,18 @@
 const { ethers } = require('hardhat')
+const { UPGovernor } = require('@unlock-protocol/contracts')
 const { base } = require('@unlock-protocol/networks')
-const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 
 const VOTING_DELAY = 4 * 24 * 60 * 60 // 4 days in seconds
 const VOTING_PERIOD = 6 * 24 * 60 * 60 // 6 days in seconds
 const MIN_DELAY = 2 * 24 * 60 * 60 // 2 days in seconds
+const BASE_GOVERNOR_ADDRESS = base.dao.governor
 const BASE_TIMELOCK_ADDRESS = '0xB34567C4cA697b39F72e1a8478f285329A98ed1b'
-const BASE_GOVERNOR_ADDRESS = '0x65bA0624403Fc5Ca2b20479e9F626eD4D78E0aD9'
 
 module.exports = async () => {
   console.log(`Proposal to change voting duration and minDelay`)
 
   // Governor interface for voting delay and voting period
-  const governorInterface = new ethers.Interface([
-    'function setVotingDelay(uint256)',
-    'function setVotingPeriod(uint256)',
-  ])
+  const governorInterface = new ethers.Interface(UPGovernor.abi)
 
   // TimelockController interface for minDelay
   const timelockInterface = new ethers.Interface([
@@ -57,22 +54,16 @@ module.exports = async () => {
     },
   ]
 
-  const proposalName = `Lower Voting Duration for Unlock DAO`
+  const proposalName = `Lower Voting Duration for Unlock DAO  
 
-  const proposalDescription = `
-
-This proposal sets the voting delay, and voting period in
-the Governor contract, as well as the minimum delay for
-execution (minDelay) in the timelock contract.  
+This proposal sets the voting delay, and voting period in the Governor contract,
+as well as the minimum delay for execution (minDelay) in the timelock contract.  
 
 ## About this proposal
 
-The proposal contains calls to update the voting delay, voting period, and minDelay using the respective functions.`
+The proposal contains calls to update the voting delay, voting period, and 
+minDelay.`
 
-  console.log(proposalName)
-  console.log(calls)
-
-  // Return the proposal details
   return {
     proposalName,
     calls,
