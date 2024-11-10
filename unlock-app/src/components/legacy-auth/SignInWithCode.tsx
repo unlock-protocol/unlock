@@ -38,7 +38,6 @@ const getWaasInstance = async (): Promise<Waas> => {
   return waasInstance
 }
 
-// TODO: finish testing this works in a "real" environment (can't test with existing accounts on a different domain)
 /**
  * Retrieves the private key from WAAS.
  * @param captcha - The CAPTCHA value.
@@ -79,11 +78,6 @@ export const getPrivateKeyFromWaas = async (
       },
     })
 
-    // Conditionally log based on environment
-    if (config.env !== 'prod') {
-      console.log('user from waas', user)
-    }
-
     let wallet: any = null
 
     if (waas.wallets.wallet) {
@@ -91,18 +85,8 @@ export const getPrivateKeyFromWaas = async (
       wallet = waas.wallets.wallet
     } else if (user.hasWallet) {
       // Restoring wallet
-      if (config.env !== 'prod') {
-        console.log('restoring wallet')
-      }
       wallet = await waas.wallets.restoreFromHostedBackup()
-
-      if (config.env !== 'prod') {
-        console.log('wallet from waas', wallet)
-      }
     } else {
-      if (config.env !== 'prod') {
-        console.log('creating a waas wallet (for debugging only!)')
-      }
       // Creating wallet
       wallet = await waas.wallets.create()
     }
@@ -116,10 +100,6 @@ export const getPrivateKeyFromWaas = async (
       undefined,
       PrivateKeyFormat.RAW
     )
-
-    if (config.env !== 'prod') {
-      console.log('exportedKeys', exportedKeys)
-    }
 
     // Use the first key's private key (ecKeyPrivate)
     if (exportedKeys.length > 0) {
