@@ -5,10 +5,8 @@ const globalAny: any = global
 
 export const getWeb3Service = () => {
   if (globalAny.web3Service) {
-    console.log('using gloabl!')
     return globalAny.web3Service
   } else {
-    console.log('creating gloabl!')
     globalAny.web3Service = new Web3Service(networks)
     return globalAny.web3Service
   }
