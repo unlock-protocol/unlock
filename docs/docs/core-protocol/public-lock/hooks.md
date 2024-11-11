@@ -145,7 +145,7 @@ interface ILockValidKeyHook
 
 ## onKeyTransferHook Hook
 
-Called when a key is transfered, it can be useful to use with `onKeyPurchaseHook` to track key ownership on a 3rd party contract.
+Called when a key is transferred, it can be useful to use with `onKeyPurchaseHook` to track key ownership on a 3rd party contract.
 
 The `ILockKeyTransferHook` interface is quite straightforward:
 
