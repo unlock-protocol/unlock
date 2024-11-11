@@ -19,19 +19,26 @@ export const onSignedInWithPrivy = async () => {
   try {
     const accessToken = await privyGetAccessToken()
     const identityToken = cookies.get('privy-id-token')
-    const response = await locksmith.loginWithPrivy({
-      accessToken: accessToken!,
-      identityToken: identityToken!,
-    })
-    const { accessToken: locksmithAccessToken, walletAddress } = response.data
-    if (locksmithAccessToken && walletAddress) {
-      saveAccessToken({
-        accessToken: locksmithAccessToken,
-        walletAddress,
+    if (identityToken) {
+      const response = await locksmith.loginWithPrivy({
+        accessToken: accessToken!,
+        identityToken: identityToken!,
       })
-      window.dispatchEvent(
-        new CustomEvent('locksmith.authenticated', { detail: walletAddress })
+      const { accessToken: locksmithAccessToken, walletAddress } = response.data
+      if (locksmithAccessToken && walletAddress) {
+        saveAccessToken({
+          accessToken: locksmithAccessToken,
+          walletAddress,
+        })
+        window.dispatchEvent(
+          new CustomEvent('locksmith.authenticated', { detail: walletAddress })
+        )
+      }
+    } else {
+      console.error(
+        'No Privy identity token found, cannot authenticate with Locksmith'
       )
+      return null
     }
   } catch (error) {
     console.error(error)
