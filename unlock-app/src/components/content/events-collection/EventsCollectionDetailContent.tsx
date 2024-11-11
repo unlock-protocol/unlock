@@ -202,7 +202,7 @@ export default function EventsCollectionDetailContent({
           <div className="w-full hidden sm:block sm:overflow-hidden bg-slate-200 max-h-80 sm:rounded-3xl">
             <img
               className="object-cover w-full h-full"
-              src={eventCollection?.banner || ''}
+              src={eventCollection?.banner || eventCollection?.coverImage || ''}
               alt="Cover image"
             />
           </div>

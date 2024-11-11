@@ -47,8 +47,6 @@ export default function EventsCollectionDetailLoading() {
 
         <section className="mt-16">
           <div className="flex flex-col gap-14 mt-5">
-            <h2 className="text-3xl font-bold">Events</h2>
-            <div className="lg:col-span-1"></div>
             <div className="flex flex-col gap-6 lg:col-span-10 px-10">
               <Placeholder.Root>
                 <Placeholder.Card />
