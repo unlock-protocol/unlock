@@ -12,20 +12,42 @@ type Props = {
 export async function generateMetadata({
   searchParams,
 }: Props): Promise<Metadata> {
-  const id = searchParams.id
+  const id = searchParams?.id?.trim()
 
-  const config = await getConfig(id as string)
+  // Default metadata without frame data
+  const baseMetadata: Metadata = {
+    title: 'Checkout | Unlock Protocol',
+  }
 
-  return {
-    title: config?.title || 'Checkout | Unlock Protocol',
-    openGraph: {
-      images: [`/og/checkout?id=${id}`],
-    },
-    other: {
-      ...(await fetchMetadata(
-        new URL(`/frames/checkout?id=${id}`, appConfig.unlockApp)
-      )),
-    },
+  // Return base metadata if no valid ID is present
+  if (!id || id.length === 0) {
+    return baseMetadata
+  }
+
+  try {
+    const config = await getConfig(id)
+
+    // Return base metadata if config could not be fetched
+    if (!config) {
+      return baseMetadata
+    }
+
+    const metadata: Metadata = {
+      title: config.title || baseMetadata.title,
+      openGraph: {
+        images: [`/og/checkout?id=${id}`],
+      },
+      other: {
+        ...(await fetchMetadata(
+          new URL(`/frames/checkout?id=${id}`, appConfig.unlockApp)
+        )),
+      },
+    }
+
+    return metadata
+  } catch (error) {
+    console.error('Error generating metadata:', error)
+    return baseMetadata
   }
 }
 
