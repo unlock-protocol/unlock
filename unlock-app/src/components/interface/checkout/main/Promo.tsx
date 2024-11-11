@@ -1,5 +1,4 @@
 import { CheckoutService } from './checkoutMachine'
-import { networks } from '@unlock-protocol/networks'
 import { Button, Input, Badge } from '@unlock-protocol/ui'
 import { Fragment, useEffect, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -9,12 +8,12 @@ import { Stepper } from '../Stepper'
 import { ethers } from 'ethers'
 import { useForm } from 'react-hook-form'
 import { getEthersWalletFromPassword } from '~/utils/strings'
-import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useDebounce } from 'react-use'
 import LoadingIcon from '../../Loading'
 import { useSearchParams } from 'next/navigation'
 import Disconnect from './Disconnect'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 interface Props {
   checkoutService: CheckoutService
   recipients: string[]
@@ -26,7 +25,7 @@ interface FormData {
   promo: string
 }
 
-const web3Service = new Web3Service(networks)
+const web3Service = useWeb3Service()
 
 export const computePromoData = async (promo: string, recipients: string[]) => {
   const privateKeyAccount = await getEthersWalletFromPassword(promo)

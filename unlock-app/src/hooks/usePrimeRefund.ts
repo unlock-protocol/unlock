@@ -1,11 +1,10 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import networks from '@unlock-protocol/networks'
-import { Web3Service } from '@unlock-protocol/unlock-js'
 import { config } from '~/config/app'
 import { useAuthenticate } from './useAuthenticate'
 import { ethers } from 'ethers'
 import { useProvider } from './useProvider'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 const HOOK_ABI = [
   {
@@ -31,7 +30,7 @@ const HOOK_ABI = [
 export const usePrimeRefund = () => {
   const { account } = useAuthenticate()
   const { getWalletService } = useProvider()
-
+  const web3Service = useWeb3Service()
   const primeRefund = useQuery({
     queryKey: ['usePrimeRefund', account],
     queryFn: async () => {
@@ -41,7 +40,6 @@ export const usePrimeRefund = () => {
           timestamp: 0,
         }
       }
-      const web3Service = new Web3Service(networks)
       const hookAddress = await web3Service.onKeyPurchaseHook({
         lockAddress: config.prime.contract,
         network: config.prime.network,
@@ -64,7 +62,6 @@ export const usePrimeRefund = () => {
   const claimRefund = useMutation({
     mutationFn: async () => {
       const walletService = await getWalletService(config.prime.network)
-      const web3Service = new Web3Service(networks)
       const hookAddress = await web3Service.onKeyPurchaseHook({
         lockAddress: config.prime.contract,
         network: config.prime.network,

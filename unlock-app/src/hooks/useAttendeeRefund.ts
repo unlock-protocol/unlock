@@ -1,18 +1,19 @@
 import { useQuery } from '@tanstack/react-query'
 import { AttendeeRefundType } from '@unlock-protocol/core'
 import networks from '@unlock-protocol/networks'
-import { Web3Service } from '@unlock-protocol/unlock-js'
 import { ZeroAddress } from 'ethers'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 export const useAttendeeRefund = ({
   attendeeRefund,
 }: {
   attendeeRefund?: AttendeeRefundType
 }) => {
+  const web3Service = useWeb3Service()
+
   return useQuery({
     queryKey: ['attendeeRefund', attendeeRefund],
     queryFn: async () => {
-      const web3Service = new Web3Service(networks)
       const networkConfig = networks[attendeeRefund!.network]
 
       if (

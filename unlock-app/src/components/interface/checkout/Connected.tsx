@@ -5,6 +5,7 @@ import { Stepper } from './Stepper'
 import { ConnectPage } from './main/ConnectPage'
 import { getMembership } from '~/hooks/useMemberships'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface ConnectedCheckoutProps {
   service: CheckoutService
@@ -17,7 +18,7 @@ export function Connected({ service }: ConnectedCheckoutProps) {
 
   const lockAddress = lock?.address
   const lockNetwork = lock?.network || paywallConfig.network
-
+  const web3Service = useWeb3Service()
   useEffect(() => {
     const checkMemberships = async (
       lockAddress: string,
@@ -25,7 +26,12 @@ export function Connected({ service }: ConnectedCheckoutProps) {
       lockNetwork: number
     ) => {
       // Get the membership!
-      const membership = await getMembership(lockAddress, account!, lockNetwork)
+      const membership = await getMembership(
+        web3Service,
+        lockAddress,
+        account!,
+        lockNetwork
+      )
       service.send({
         type: 'SELECT_LOCK',
         existingMember: !!membership?.member,
