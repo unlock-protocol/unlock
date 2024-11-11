@@ -8,11 +8,13 @@ import { signOut as nextAuthSignOut, useSession } from 'next-auth/react'
 interface ConnectToPrivyProps {
   userEmail: string
   onNext: () => void
+  setPrivyConnected: (connected: boolean) => void
 }
 
 export default function ConnectToPrivy({
   userEmail,
   onNext,
+  setPrivyConnected,
 }: ConnectToPrivyProps) {
   const { data: session } = useSession()
 
@@ -22,6 +24,8 @@ export default function ConnectToPrivy({
       if (session) {
         await nextAuthSignOut({ redirect: false })
       }
+      // Set Privy connection status to true
+      setPrivyConnected(true)
       // Then proceed to next step
       onNext()
     },
