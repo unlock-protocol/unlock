@@ -25,8 +25,6 @@ interface FormData {
   promo: string
 }
 
-const web3Service = useWeb3Service()
-
 export const computePromoData = async (promo: string, recipients: string[]) => {
   const privateKeyAccount = await getEthersWalletFromPassword(promo)
   return Promise.all(
@@ -48,6 +46,7 @@ export function PromoContent({
   checkoutService,
 }: Props) {
   const { account } = useAuthenticate()
+  const web3Service = useWeb3Service()
   const [hookAddress, setHookAddress] = useState<string>()
   const [code, setCode] = useState<string | undefined>(promoCode)
   const [promoCodeLoading, setPromoCodeLoading] = useState<boolean>(false)
