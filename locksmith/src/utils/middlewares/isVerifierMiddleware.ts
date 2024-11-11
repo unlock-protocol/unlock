@@ -47,16 +47,18 @@ export const isLockVerifierMiddleware: RequestHandler = async (
     if (await isVerifierOrManagerForLock(lockAddress, address, network)) {
       return next()
     } else {
-      return res.status(403).send({
+      res.status(403).send({
         message: `${address} is not a verifier of from ${lockAddress} on ${network}`,
       })
+      return
     }
   } catch (err) {
     logger.error(err)
-    return res.status(500).send({
+    res.status(500).send({
       message:
         'There is some unexpected issue when checking if the user is a verifier or manager.',
     })
+    return
   }
 }
 
@@ -82,15 +84,17 @@ export const isEventVerifierOrManagerMiddleware: RequestHandler = async (
       // The user is verifier for the event
       return next()
     } else {
-      return res.status(403).send({
+      res.status(403).send({
         message: `${address} is not a verifier of the event`,
       })
+      return
     }
   } catch (err) {
     logger.error(err)
-    return res.status(500).send({
+    res.status(500).send({
       message:
         'There is some unexpected issue when checking if the user is a verifier or manager.',
     })
+    return
   }
 }

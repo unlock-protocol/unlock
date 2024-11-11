@@ -74,9 +74,11 @@ export const createEventCollection: RequestHandler = async (
       parsedBody,
       req.user!.walletAddress
     )
-    return res.status(201).json(eventCollection)
+    res.status(201).json(eventCollection)
+    return
   } catch (error) {
-    return res.status(400).json({ error: (error as Error).message })
+    res.status(400).json({ error: (error as Error).message })
+    return
   }
 }
 
@@ -93,12 +95,15 @@ export const getEventCollection: RequestHandler = async (
 
   try {
     const eventCollection = await getEventCollectionOperation(slug)
-    return res.json(eventCollection)
+    res.json(eventCollection)
+    return
   } catch (error) {
     if (error.message === 'Event collection not found') {
-      return res.status(404).json({ error: error.message })
+      res.status(404).json({ error: error.message })
+      return
     }
-    return res.status(400).json({ error: (error as Error).message })
+    res.status(400).json({ error: (error as Error).message })
+    return
   }
 }
 
@@ -119,15 +124,19 @@ export const updateEventCollection: RequestHandler = async (
       parsedBody,
       req.user!.walletAddress
     )
-    return res.json(eventCollection)
+    res.json(eventCollection)
+    return
   } catch (error) {
     if (error.message === 'Event collection not found') {
-      return res.status(404).json({ error: error.message })
+      res.status(404).json({ error: error.message })
+      return
     }
     if (error.message === 'Not authorized to update this collection') {
-      return res.status(403).json({ error: error.message })
+      res.status(403).json({ error: error.message })
+      return
     }
-    return res.status(400).json({ error: error.message })
+    res.status(400).json({ error: error.message })
+    return
   }
 }
 
@@ -144,10 +153,11 @@ export const addManagerAddress: RequestHandler = async (
   const parsedBody = await AddManagerBody.safeParseAsync(req.body)
 
   if (!parsedBody.success) {
-    return res.status(400).json({
+    res.status(400).json({
       error: 'Invalid request body',
       details: parsedBody.error.errors,
     })
+    return
   }
 
   const { newManagerAddress } = parsedBody.data
@@ -158,7 +168,8 @@ export const addManagerAddress: RequestHandler = async (
       newManagerAddress,
       req.user!.walletAddress
     )
-    return res.status(200).json(updatedCollection)
+    res.status(200).json(updatedCollection)
+    return
   } catch (error) {
     const errorMessage = (error as Error).message
     let statusCode = 400
@@ -167,7 +178,8 @@ export const addManagerAddress: RequestHandler = async (
     } else if (errorMessage.includes('not found')) {
       statusCode = 404
     }
-    return res.status(statusCode).json({ error: errorMessage })
+    res.status(statusCode).json({ error: errorMessage })
+    return
   }
 }
 
@@ -184,10 +196,11 @@ export const removeManagerAddress: RequestHandler = async (
   const parsedBody = await RemoveManagerBody.safeParseAsync(req.body)
 
   if (!parsedBody.success) {
-    return res.status(400).json({
+    res.status(400).json({
       error: 'Invalid request body',
       details: parsedBody.error.errors,
     })
+    return
   }
 
   const { managerAddressToRemove } = parsedBody.data
@@ -198,7 +211,8 @@ export const removeManagerAddress: RequestHandler = async (
       managerAddressToRemove,
       req.user!.walletAddress
     )
-    return res.status(200).json(updatedCollection)
+    res.status(200).json(updatedCollection)
+    return
   } catch (error) {
     const errorMessage = (error as Error).message
     let statusCode = 400
@@ -207,7 +221,8 @@ export const removeManagerAddress: RequestHandler = async (
     } else if (errorMessage.includes('not found')) {
       statusCode = 404
     }
-    return res.status(statusCode).json({ error: errorMessage })
+    res.status(statusCode).json({ error: errorMessage })
+    return
   }
 }
 
@@ -223,10 +238,11 @@ export const addEventToCollection: RequestHandler = async (
   const { slug: collectionSlug } = req.params
   const parsedBody = await AddEventToCollectionBody.safeParseAsync(req.body)
   if (!parsedBody.success) {
-    return res.status(400).json({
+    res.status(400).json({
       error: 'Invalid request body',
       details: parsedBody.error.errors,
     })
+    return
   }
   const { eventSlug } = parsedBody.data
 
@@ -236,12 +252,14 @@ export const addEventToCollection: RequestHandler = async (
       eventSlug,
       req.user?.walletAddress || ''
     )
-    return res.status(200).json({
+    res.status(200).json({
       message: `Event ${result.status}`,
       association: result.association,
     })
+    return
   } catch (error) {
-    return res.status(400).json({ error: (error as Error).message })
+    res.status(400).json({ error: (error as Error).message })
+    return
   }
 }
 
@@ -259,9 +277,11 @@ export const getUnapprovedEventsForCollection: RequestHandler = async (
   try {
     const unapprovedEvents =
       await getUnapprovedEventsForCollectionOperation(slug)
-    return res.status(200).json(unapprovedEvents)
+    res.status(200).json(unapprovedEvents)
+    return
   } catch (error) {
-    return res.status(400).json({ error: (error as Error).message })
+    res.status(400).json({ error: (error as Error).message })
+    return
   }
 }
 
@@ -278,7 +298,8 @@ export const approveEvent: RequestHandler = async (
   const { eventSlug } = req.body
 
   if (!eventSlug) {
-    return res.status(400).json({ error: 'eventSlug is required' })
+    res.status(400).json({ error: 'eventSlug is required' })
+    return
   }
 
   try {
@@ -287,7 +308,8 @@ export const approveEvent: RequestHandler = async (
       eventSlug,
       req.user!.walletAddress
     )
-    return res.status(200).json(association)
+    res.status(200).json(association)
+    return
   } catch (error) {
     const errorMessage = (error as Error).message
     let statusCode = 400
@@ -296,7 +318,8 @@ export const approveEvent: RequestHandler = async (
     } else if (errorMessage.includes('not found')) {
       statusCode = 404
     }
-    return res.status(statusCode).json({ error: errorMessage })
+    res.status(statusCode).json({ error: errorMessage })
+    return
   }
 }
 
@@ -313,7 +336,8 @@ export const removeEventFromCollection: RequestHandler = async (
   const { eventSlug } = req.body
 
   if (!eventSlug) {
-    return res.status(400).json({ error: 'eventSlug is required' })
+    res.status(400).json({ error: 'eventSlug is required' })
+    return
   }
 
   try {
@@ -322,7 +346,8 @@ export const removeEventFromCollection: RequestHandler = async (
       eventSlug,
       req.user!.walletAddress
     )
-    return res.status(200).json(updatedCollection)
+    res.status(200).json(updatedCollection)
+    return
   } catch (error) {
     const errorMessage = (error as Error).message
     let statusCode = 400
@@ -331,7 +356,8 @@ export const removeEventFromCollection: RequestHandler = async (
     } else if (errorMessage.includes('not found')) {
       statusCode = 404
     }
-    return res.status(statusCode).json({ error: errorMessage })
+    res.status(statusCode).json({ error: errorMessage })
+    return
   }
 }
 
@@ -348,10 +374,11 @@ export const bulkApproveEvents: RequestHandler = async (
   const parsedBody = ApproveEventsBody.safeParse(req.body)
 
   if (!parsedBody.success) {
-    return res.status(400).json({
+    res.status(400).json({
       error: 'Invalid request body',
       details: parsedBody.error.errors,
     })
+    return
   }
 
   const { eventSlugs } = parsedBody.data
@@ -362,7 +389,8 @@ export const bulkApproveEvents: RequestHandler = async (
       eventSlugs,
       req.user!.walletAddress
     )
-    return res.status(200).json(associations)
+    res.status(200).json(associations)
+    return
   } catch (error) {
     const errorMessage = (error as Error).message
     let statusCode = 400
@@ -371,7 +399,8 @@ export const bulkApproveEvents: RequestHandler = async (
     } else if (errorMessage.includes('not found')) {
       statusCode = 404
     }
-    return res.status(statusCode).json({ error: errorMessage })
+    res.status(statusCode).json({ error: errorMessage })
+    return
   }
 }
 
@@ -388,10 +417,11 @@ export const bulkRemoveEvents: RequestHandler = async (
   const parsedBody = RemoveEventsBody.safeParse(req.body)
 
   if (!parsedBody.success) {
-    return res.status(400).json({
+    res.status(400).json({
       error: 'Invalid request body',
       details: parsedBody.error.errors,
     })
+    return
   }
 
   const { eventSlugs } = parsedBody.data
@@ -402,7 +432,8 @@ export const bulkRemoveEvents: RequestHandler = async (
       eventSlugs,
       req.user!.walletAddress
     )
-    return res.status(200).json(updatedCollection)
+    res.status(200).json(updatedCollection)
+    return
   } catch (error) {
     const errorMessage = (error as Error).message
     let statusCode = 400
@@ -411,6 +442,7 @@ export const bulkRemoveEvents: RequestHandler = async (
     } else if (errorMessage.includes('not found')) {
       statusCode = 404
     }
-    return res.status(statusCode).json({ error: errorMessage })
+    res.status(statusCode).json({ error: errorMessage })
+    return
   }
 }

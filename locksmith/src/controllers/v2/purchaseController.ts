@@ -44,12 +44,14 @@ export const createSetupIntent: RequestHandler = async (request, response) => {
       customerId: stripeCustomerId,
     })
 
-    return response.status(201).send(setupIntent)
+    response.status(201).send(setupIntent)
+    return
   } catch (error) {
     logger.error(error.message)
-    return response.status(500).send({
+    response.status(500).send({
       error: 'Unable to create setupIntent',
     })
+    return
   }
 }
 
@@ -65,14 +67,16 @@ export const list: RequestHandler = async (request, response) => {
       customerId,
     })
 
-    return response.status(200).send({
+    response.status(200).send({
       methods,
     })
+    return
   } catch (error) {
     logger.error(error.message)
-    return response.status(500).send({
+    response.status(500).send({
       message: 'Unable to find methods associated with the account',
     })
+    return
   }
 }
 
@@ -88,7 +92,8 @@ export const createPaymentIntent: RequestHandler = async (
 
   const soldOut = await isSoldOut(lockAddress, network, recipients.length)
   if (soldOut) {
-    return response.status(400).send({ message: 'Lock is sold out.' })
+    response.status(400).send({ message: 'Lock is sold out.' })
+    return
   }
 
   const { stripeEnabled, stripeAccount } = await getStripeConnectForLock(
@@ -97,9 +102,8 @@ export const createPaymentIntent: RequestHandler = async (
   )
 
   if (!stripeEnabled || !stripeAccount) {
-    return response
-      .status(400)
-      .send({ message: 'Missing Stripe Connect integration' })
+    response.status(400).send({ message: 'Missing Stripe Connect integration' })
+    return
   }
 
   const stripeConnectApiKey = stripeAccount.id
@@ -116,18 +120,18 @@ export const createPaymentIntent: RequestHandler = async (
   }
 
   if (!stripeCustomerId) {
-    return response
-      .status(400)
-      .send({ message: 'Missing Stripe customer info' })
+    response.status(400).send({ message: 'Missing Stripe customer info' })
+    return
   }
 
   const dispatcher = new Dispatcher()
   const hasEnoughToPayForGas = await dispatcher.hasFundsForTransaction(network)
 
   if (!hasEnoughToPayForGas) {
-    return response.status(400).send({
+    response.status(400).send({
       error: `Purchaser does not have enough to pay for gas on ${network}`,
     })
+    return
   }
   const processor = new PaymentProcessor()
   try {
@@ -143,12 +147,14 @@ export const createPaymentIntent: RequestHandler = async (
       data,
       referrers
     )
-    return response.send(paymentIntentDetails)
+    response.send(paymentIntentDetails)
+    return
   } catch (error) {
     logger.error(error.message)
-    return response.status(500).send({
+    response.status(500).send({
       error: `We could not capture the payment. ${error.message}`,
     })
+    return
   }
 }
 
@@ -160,14 +166,14 @@ export const removePaymentMethods: RequestHandler = async (
   const customerId = await getStripeCustomerIdForAddress(userAddress)
 
   if (!customerId) {
-    return response
-      .status(400)
-      .send({ message: 'Missing Stripe customer info' })
+    response.status(400).send({ message: 'Missing Stripe customer info' })
+    return
   }
 
   const processor = new PaymentProcessor()
   await processor.removePaymentMethods({
     customerId,
   })
-  return response.status(200).send({ success: true })
+  response.status(200).send({ success: true })
+  return
 }

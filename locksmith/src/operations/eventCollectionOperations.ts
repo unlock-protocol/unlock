@@ -3,6 +3,10 @@ import { EventData } from '../models/Event'
 import { EventCollectionAssociation } from '../models/EventCollectionAssociation'
 import { z } from 'zod'
 import { kebabCase } from 'lodash'
+import { sendEmail } from './wedlocksOperations'
+import config from '../config/config'
+import logger from '../logger'
+import { getPrivyUserByAddress } from './privyUserOperations'
 
 // event collection body schema
 const EventCollectionBody = z.object({
@@ -54,6 +58,7 @@ export async function createEventCollectionSlug(
  * Creates a new event collection.
  * This operation generates a unique slug for the collection based on the title,
  * and associates the creator's address as a manager if no other addresses are provided.
+ * It also sends email notifications to all managers.
  *
  * @param parsedBody - The parsed body containing event collection details.
  * @param creatorAddress - The wallet address of the user creating the collection.
@@ -73,6 +78,25 @@ export const createEventCollectionOperation = async (
     slug,
     managerAddresses,
   })
+
+  try {
+    // Send email to each manager
+    for (const manager of managerAddresses) {
+      const result = await getPrivyUserByAddress(manager)
+      if (result.success && result.user?.email?.address) {
+        await sendEmail({
+          template: 'eventCollectionCreated',
+          recipient: result.user.email.address,
+          params: {
+            collectionName: parsedBody.title,
+            collectionUrl: `${config.unlockApp}/events/${eventCollection.slug}`,
+          },
+        })
+      }
+    }
+  } catch (error) {
+    logger.error('Failed to send notification emails:', error)
+  }
 
   eventCollection.events = []
   return eventCollection
@@ -292,6 +316,46 @@ export const addEventToCollectionOperation = async (
     },
   })
 
+  // If this is a new submission (created) and the user is not a manager
+  if (created && !isManager) {
+    try {
+      // Send email to submitter
+      const submitterResult = await getPrivyUserByAddress(userAddress)
+      if (submitterResult.success && submitterResult.user?.email?.address) {
+        await sendEmail({
+          template: 'eventSubmittedToCollectionSubmitter',
+          recipient: submitterResult.user.email.address,
+          params: {
+            eventName: event.name,
+            eventDate: event.data.startDate,
+            eventUrl: `${config.unlockApp}/event/${event.slug}`,
+            collectionName: collection.title,
+          },
+        })
+      }
+
+      // Send email to all managers
+      for (const managerAddress of collection.managerAddresses) {
+        const managerResult = await getPrivyUserByAddress(managerAddress)
+        if (managerResult.success && managerResult.user?.email?.address) {
+          await sendEmail({
+            template: 'eventSubmittedToCollectionManager',
+            recipient: managerResult.user.email.address,
+            params: {
+              eventName: event.name,
+              eventDate: event.data.startDate,
+              eventUrl: `${config.unlockApp}/event/${event.slug}`,
+              collectionName: collection.title,
+              collectionUrl: `${config.unlockApp}/events/${collection.slug}`,
+            },
+          })
+        }
+      }
+    } catch (error) {
+      logger.error('Failed to send notification emails:', error)
+    }
+  }
+
   if (!created && !association.isApproved && isManager) {
     await association.update({ isApproved: true })
   }
@@ -323,34 +387,64 @@ export const approveEventOperation = async (
   }
 
   if (!collection.managerAddresses.includes(userAddress)) {
-    throw new Error('Not authorized to approve events in this collection')
+    throw new Error('Not authorized to approve events')
   }
 
   const association = await EventCollectionAssociation.findOne({
-    where: { collectionSlug, eventSlug },
+    where: {
+      eventSlug,
+      collectionSlug,
+    },
   })
 
   if (!association) {
-    throw new Error('Event is not part of the collection')
+    throw new Error('Event not found in collection')
   }
 
-  if (association.isApproved) {
-    throw new Error('Event is already approved')
-  }
+  // Update the approval status
+  await association.update({ isApproved: true })
 
-  association.isApproved = true
-  await association.save()
+  try {
+    // Get the event details for the email
+    const event = await EventData.findOne({
+      where: { slug: eventSlug },
+    })
+
+    if (event && association.submitterAddress) {
+      const submitterResult = await getPrivyUserByAddress(
+        association.submitterAddress
+      )
+
+      if (submitterResult.success && submitterResult.user?.email?.address) {
+        await sendEmail({
+          template: 'eventApprovedInCollection',
+          recipient: submitterResult.user.email.address,
+          params: {
+            eventName: event.name,
+            eventDate: event.data.startDate,
+            eventUrl: `${config.unlockApp}/event/${event.slug}`,
+            collectionName: collection.title,
+            collectionUrl: `${config.unlockApp}/events/${collection.slug}`,
+          },
+        })
+      }
+    }
+  } catch (error) {
+    logger.error('Failed to send approval notification email:', error)
+  }
 
   return association
 }
 
 /**
- * Removes a single event from a collection.
+ * Removes an event from a collection. If the event was submitted but not yet approved,
+ * sends a notification email to the submitter informing them that their event was denied.
  *
  * @param collectionSlug - The slug of the event collection.
  * @param eventSlug - The slug of the event to remove.
  * @param userAddress - The address of the user performing the operation.
- * @returns The updated event collection.
+ * @returns The updated event collection with its associated events.
+ * @throws Error if collection not found, user not authorized, or event not in collection
  */
 export const removeEventFromCollectionOperation = async (
   collectionSlug: string,
@@ -374,9 +468,41 @@ export const removeEventFromCollectionOperation = async (
     throw new Error('Event is not part of the collection')
   }
 
+  // Check if this is a rejection of a submitted event
+  if (!association.isApproved && association.submitterAddress) {
+    try {
+      // Get the event details for the email
+      const event = await EventData.findOne({
+        where: { slug: eventSlug },
+      })
+
+      if (event) {
+        const submitterResult = await getPrivyUserByAddress(
+          association.submitterAddress
+        )
+
+        if (submitterResult.success && submitterResult.user?.email?.address) {
+          await sendEmail({
+            template: 'eventDeniedInCollection',
+            recipient: submitterResult.user.email.address,
+            params: {
+              eventName: event.name,
+              eventDate: event.data.startDate,
+              eventUrl: `${config.unlockApp}/event/${event.slug}`,
+              collectionName: collection.title,
+              collectionUrl: `${config.unlockApp}/events/${collection.slug}`,
+            },
+          })
+        }
+      }
+    } catch (error) {
+      logger.error('Failed to send rejection notification email:', error)
+    }
+  }
+
   await association.destroy()
 
-  // Optionally, you can fetch and return the updated collection
+  // fetch and return the updated collection
   return (await EventCollection.findByPk(collectionSlug, {
     include: [{ model: EventData, as: 'events' }],
   })) as EventCollection
@@ -458,10 +584,41 @@ export const bulkRemoveEventsOperation = async (
   }
 
   for (const association of associations) {
+    // Check if this is a rejection of a submitted event
+    if (!association.isApproved && association.submitterAddress) {
+      try {
+        // Get the event details for the email
+        const event = await EventData.findOne({
+          where: { slug: association.eventSlug },
+        })
+
+        if (event) {
+          const submitterResult = await getPrivyUserByAddress(
+            association.submitterAddress
+          )
+
+          if (submitterResult.success && submitterResult.user?.email?.address) {
+            await sendEmail({
+              template: 'eventDeniedInCollection',
+              recipient: submitterResult.user.email.address,
+              params: {
+                eventName: event.name,
+                eventDate: event.data.startDate,
+                eventUrl: `${config.unlockApp}/event/${event.slug}`,
+                collectionName: collection.title,
+                collectionUrl: `${config.unlockApp}/events/${collection.slug}`,
+              },
+            })
+          }
+        }
+      } catch (error) {
+        logger.error('Failed to send rejection notification email:', error)
+      }
+    }
     await association.destroy()
   }
 
-  // Optionally, fetch and return the updated collection
+  // fetch and return the updated collection
   return (await EventCollection.findByPk(collectionSlug, {
     include: [{ model: EventData, as: 'events' }],
   })) as EventCollection

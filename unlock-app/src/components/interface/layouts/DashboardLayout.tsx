@@ -8,7 +8,7 @@ import DashboardFooter from '~/components/interface/layouts/index/DashboardFoote
 import { usePathname } from 'next/navigation'
 
 // Paths that shouldn't be wrapped in the default layout
-const UNWRAPPED_PATHS = ['/checkout', '/demo']
+const UNWRAPPED_PATHS = ['/checkout', '/demo', '/google-sign-in']
 
 export default function DashboardLayout({
   children,
@@ -33,7 +33,6 @@ export default function DashboardLayout({
           <TermsOfServiceModal />
           <Container>
             <ConnectModal />
-
             <DashboardHeader />
 
             <div className="flex flex-col gap-10 min-h-screen">{children}</div>

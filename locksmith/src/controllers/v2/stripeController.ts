@@ -12,9 +12,10 @@ export const connectStripe = async (req: Request, res: Response) => {
   const baseUrl = Normalizer.getURL(req.body.baseUrl)?.toString()
   const stripeAccount = req.body.stripeAccount
   if (!baseUrl) {
-    return res.status(400).send({
+    res.status(400).send({
       message: `baseUrl is invalid or missing.`,
     })
+    return
   }
   try {
     const connected = await stripeOperations.connectStripe(
@@ -25,22 +26,25 @@ export const connectStripe = async (req: Request, res: Response) => {
       stripeAccount
     )
     if (connected) {
-      return res.json({
+      res.json({
         url: connected.url,
         created: connected.created,
         object: connected.object,
         expiresAt: connected.expires_at,
       })
+      return
     }
-    return res.json({})
+    res.json({})
+    return
   } catch (error) {
     logger.error(
       `Failed to connect Stripe: there was an error ${lockAddress}, ${network}`,
       error
     )
-    return res.status(400).send({
+    res.status(400).send({
       message: `Cannot connect stripe: ${error.message}`,
     })
+    return
   }
 }
 
@@ -49,9 +53,10 @@ export const getConnectionsForManager = async (req: Request, res: Response) => {
   const connections =
     await stripeOperations.getConnectionsForManager(userAddress)
   if (!connections) {
-    return {
+    res.json({
       result: [],
-    }
+    })
+    return
   }
 
   const seen: {
@@ -75,7 +80,8 @@ export const getConnectionsForManager = async (req: Request, res: Response) => {
     return connection
   })
 
-  return res.json({
+  res.json({
     result: activeStripeAccounts,
   })
+  return
 }
