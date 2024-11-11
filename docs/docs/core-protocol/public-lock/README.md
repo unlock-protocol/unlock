@@ -6,7 +6,7 @@ description: >-
 
 # Public Lock
 
-A "Lock" (`PublicLock.sol`) is a customized smart contract for minting (creating) ERC-721 NFT's. They are the Unlock Protocol version of a "minting contract". They are created with the [Unlock](../../core-protocol/unlock/) smart contract, which is a "factory" contract. That factory contract uses the [Public Lock](../../core-protocol/public-lock/) template contact along with
+A "Lock" (`PublicLock.sol`) is a customized smart contract for minting (creating) ERC-721 NFT's. They are the Unlock Protocol version of a "minting contract". They are created with the [Unlock](../../core-protocol/unlock/) smart contract, which is a "factory" contract. That factory contract uses the [Public Lock](../../core-protocol/public-lock/) template contract along with
 with the configuration options you choose to record a new customized
 smart contract to the blockchain [network](../../core-protocol/unlock/networks) of your choice.
 
@@ -84,7 +84,7 @@ Easily check if a key is ready for renewal
 
 **Released**: October 2022
 
-The following are the signifigant changes and a full list of commits including bug fixes can be found [here](https://github.com/unlock-protocol/unlock/issues?q=+label%3A%22publicLock+v12%22+).
+The following are the significant changes and a full list of commits including bug fixes can be found [here](https://github.com/unlock-protocol/unlock/issues?q=+label%3A%22publicLock+v12%22+).
 
 #### `onGrantKeyHook` and `onKeyExtendHook`
 
