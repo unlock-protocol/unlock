@@ -8,7 +8,7 @@ import { privy } from '../../../src/utils/privyClient'
 vi.mock('../../../src/utils/privyClient', () => ({
   privy: {
     verifyAuthToken: vi.fn(),
-    getUser: vi.fn(),
+    getUserByWalletAddress: vi.fn(),
   },
 }))
 
@@ -38,7 +38,7 @@ describe('Auth login endpoints for locksmith', () => {
         expiration: Date.now() + 1000 * 60 * 60 * 24,
         sessionId: 'mock-session-id',
       })
-      vi.mocked(privy.getUser).mockResolvedValue({
+      vi.mocked(privy.getUserByWalletAddress).mockResolvedValue({
         id: mockUserId,
         linkedAccounts: [
           {
