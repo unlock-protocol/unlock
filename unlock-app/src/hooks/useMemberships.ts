@@ -3,8 +3,8 @@ import {
   PaywallConfigType,
   PaywallLocksConfigType,
 } from '@unlock-protocol/core'
-import networks from '@unlock-protocol/networks'
 import { Web3Service } from '@unlock-protocol/unlock-js'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface MembershipOptions {
   account: string | undefined
@@ -12,11 +12,11 @@ interface MembershipOptions {
 }
 
 export const getMembership = async (
+  web3Service: Web3Service,
   lockAddress: string,
   account: string,
   lockNetwork: number
 ) => {
-  const web3Service = new Web3Service(networks)
   const [member, total] = await Promise.all([
     web3Service.getHasValidKey(lockAddress, account!, lockNetwork),
     web3Service.totalKeys(lockAddress, account!, lockNetwork),
@@ -31,12 +31,11 @@ export const getMembership = async (
 }
 
 export const getMemberships = async (
+  web3Service: Web3Service,
   locks: PaywallLocksConfigType,
   account: string,
   network = 1
 ) => {
-  const web3Service = new Web3Service(networks)
-
   return Promise.all(
     Object.entries(locks).map(async ([lockAddress, props]) => {
       if (!account) {
@@ -68,10 +67,16 @@ export const useMemberships = ({
   account,
   paywallConfig,
 }: MembershipOptions) => {
+  const web3Service = useWeb3Service()
   return useQuery({
     queryKey: ['memberships', account, JSON.stringify(paywallConfig)],
     queryFn: () =>
-      getMemberships(paywallConfig.locks, account!, paywallConfig.network),
+      getMemberships(
+        web3Service,
+        paywallConfig.locks,
+        account!,
+        paywallConfig.network
+      ),
     enabled: !!account,
   })
 }
