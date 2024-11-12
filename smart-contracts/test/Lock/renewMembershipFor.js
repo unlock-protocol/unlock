@@ -319,7 +319,7 @@ describe('Lock / Recurring memberships', () => {
       })
     })
 
-    describe.only('should remember the referrer set in first purchase', async () => {
+    describe('should remember the referrer set in first purchase', async () => {
       // 1% in basis points
       const BASIS_POINTS_DEN = 10000n
       const generalFee = 1000n
@@ -329,7 +329,7 @@ describe('Lock / Recurring memberships', () => {
         await lock.setReferrerFee(ADDRESS_ZERO, generalFee)
 
         // set ERC20 approval for entire scope
-        // await dai.connect(keyOwner).approve(await lock.getAddress(), totalPrice)
+        await dai.connect(keyOwner).approve(await lock.getAddress(), totalPrice)
 
         // purchase a key with referrer set
         const tx = await lock
