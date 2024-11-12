@@ -1,7 +1,6 @@
 import { RequestHandler } from 'express'
-import networks from '@unlock-protocol/networks'
-import { Web3Service } from '@unlock-protocol/unlock-js'
 import Normalizer from '../normalizer'
+import { getWeb3Service } from '../../initializers'
 
 export const lockManagerOrKeyGranterMiddleware: RequestHandler = async (
   req,
@@ -26,7 +25,7 @@ export const lockManagerOrKeyGranterMiddleware: RequestHandler = async (
     return
   }
 
-  const web3Service = new Web3Service(networks)
+  const web3Service = getWeb3Service()
 
   const isLockManager = await web3Service.isLockManager(
     lockAddress,

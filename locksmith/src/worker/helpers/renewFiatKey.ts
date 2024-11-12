@@ -5,8 +5,7 @@ import { logger } from '../../logger'
 import { Charge, KeyRenewal, KeySubscription } from '../../models'
 import stripe from '../../config/stripe'
 import { Op } from 'sequelize'
-import { Web3Service } from '@unlock-protocol/unlock-js'
-import networks from '@unlock-protocol/networks'
+import { getWeb3Service } from '../../initializers'
 
 interface RenewKeyReturned {
   keyId?: string
@@ -137,7 +136,7 @@ export async function renewFiatKey({
       }
     }
 
-    const web3Service = new Web3Service(networks)
+    const web3Service = getWeb3Service()
 
     // Get provider for network
     const provider = await web3Service.providerForNetwork(subscription.network)

@@ -1,7 +1,6 @@
 import { RequestHandler } from 'express'
-import networks from '@unlock-protocol/networks'
-import { Web3Service } from '@unlock-protocol/unlock-js'
 import Normalizer from '../normalizer'
+import { getWeb3Service } from '../../initializers'
 
 export const keyOwnerMiddleware: RequestHandler = async (req, res, next) => {
   const network = Number(req.params.network)
@@ -30,7 +29,7 @@ export const keyOwnerMiddleware: RequestHandler = async (req, res, next) => {
     return
   }
 
-  const web3Service = new Web3Service(networks)
+  const web3Service = getWeb3Service()
   const tokenOwner = await web3Service.ownerOf(lockAddress, keyId, network)
 
   if (tokenOwner !== userAddress) {

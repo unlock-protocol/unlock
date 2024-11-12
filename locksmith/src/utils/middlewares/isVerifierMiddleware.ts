@@ -1,11 +1,10 @@
-import networks from '@unlock-protocol/networks'
-import { Web3Service } from '@unlock-protocol/unlock-js'
 import { RequestHandler } from 'express'
 import Normalizer from '../normalizer'
 import { logger } from '@sentry/utils'
 import { Verifier } from '../../models/verifier'
 import { getEventVerifiers } from '../../operations/verifierOperations'
 import { IsEventOrganizerEnum, isEventOrganizer } from '../eventOrganizers'
+import { getWeb3Service } from '../../initializers'
 
 export const isVerifierOrManagerForLock = async (
   lockAddress: string,
@@ -23,7 +22,7 @@ export const isVerifierOrManagerForLock = async (
   })
 
   if (!verifier) {
-    const web3Service = new Web3Service(networks)
+    const web3Service = getWeb3Service()
     isLockManager = await web3Service.isLockManager(
       lockAddress,
       address,

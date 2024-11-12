@@ -2,8 +2,7 @@ import { PaywallLocksConfigType } from '@unlock-protocol/core'
 import { getCheckoutConfigById } from '../operations/checkoutConfigOperations'
 import { getEventBySlug } from '../operations/eventOperations'
 import { isEmpty } from 'lodash'
-import networks from '@unlock-protocol/networks'
-import { Web3Service } from '@unlock-protocol/unlock-js'
+import { getWeb3Service } from '../initializers'
 
 export enum IsEventOrganizerEnum {
   NO_EVENT,
@@ -15,7 +14,7 @@ export const isEventOrganizer = async (
   address: string,
   slug: string
 ): Promise<IsEventOrganizerEnum> => {
-  const web3Service = new Web3Service(networks)
+  const web3Service = getWeb3Service()
   let locks: PaywallLocksConfigType = {}
 
   // If this is an existing event!

@@ -2,10 +2,9 @@ import AuthorizedLockOperations from './authorizedLockOperations'
 import { getStripeConnectForLock } from './stripeOperations'
 import Dispatcher from '../fulfillment/dispatcher'
 import { MIN_PAYMENT_STRIPE_CREDIT_CARD } from '../utils/constants'
-import { Web3Service } from '@unlock-protocol/unlock-js'
-import networks from '@unlock-protocol/networks'
 import * as lockSettingOperations from './lockSettingOperations'
 import * as pricingOperations from './pricingOperations'
+import { getWeb3Service } from '../initializers'
 
 /**
  * Check if credit card is enabled for a specific lock
@@ -83,7 +82,7 @@ const getTotalPriceToChargeInCentsForLock = async ({
   network,
   lockAddress,
 }: CreditCardStateProps) => {
-  const web3Service = new Web3Service(networks)
+  const web3Service = getWeb3Service()
 
   // First check if we have a custom price, and return it if we do!
   const settingsPricing = await lockSettingOperations.getSettings({

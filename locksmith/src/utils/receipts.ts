@@ -1,5 +1,4 @@
-import networks from '@unlock-protocol/networks'
-import { SubgraphService, Web3Service } from '@unlock-protocol/unlock-js'
+import { SubgraphService } from '@unlock-protocol/unlock-js'
 import archiver from 'archiver'
 import { uploadZipToS3 } from './s3'
 import config from '../config/config'
@@ -7,6 +6,7 @@ import pdfmake from 'pdfmake/build/pdfmake.js'
 import pdfFonts from 'pdfmake/build/vfs_fonts.js'
 import { TDocumentDefinitions } from 'pdfmake/interfaces'
 import { Receipt, ReceiptBase } from '../models'
+import { getWeb3Service } from '../initializers'
 
 pdfmake.vfs = pdfFonts.pdfMake.vfs
 
@@ -116,7 +116,7 @@ export const zipReceiptsAndSendtos3 = async (
     return false
   }
 
-  const web3Service = new Web3Service(networks)
+  const web3Service = getWeb3Service()
   const lock = await web3Service.getLock(lockAddress, network)
 
   const createPDFBuffer = async (data: any) => {

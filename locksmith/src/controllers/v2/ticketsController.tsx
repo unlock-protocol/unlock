@@ -1,9 +1,8 @@
 import { Request, RequestHandler, Response } from 'express'
-import networks from '@unlock-protocol/networks'
 import Dispatcher from '../../fulfillment/dispatcher'
 import { notifyNewKeyToWedlocks } from '../../operations/wedlocksOperations'
 import Normalizer from '../../utils/normalizer'
-import { SubgraphService, Web3Service } from '@unlock-protocol/unlock-js'
+import { SubgraphService } from '@unlock-protocol/unlock-js'
 import logger from '../../logger'
 import { generateQrCode, generateQrCodeUrl } from '../../utils/qrcode'
 import { KeyMetadata } from '../../models/keyMetadata'
@@ -17,6 +16,7 @@ import {
 import { Verifier } from '../../models/verifier'
 import { getEventForLock } from '../../operations/eventOperations'
 import { notify } from '../../worker/helpers'
+import { getWeb3Service } from '../../initializers'
 
 export class TicketsController {
   /**
@@ -122,7 +122,7 @@ export class TicketsController {
         true /** includeProtected */
       )
 
-      const web3Service = new Web3Service(networks)
+      const web3Service = getWeb3Service()
       const tokenOwner = await web3Service.ownerOf(lockAddress, id, network)
 
       if (event?.data.notifyCheckInUrls) {

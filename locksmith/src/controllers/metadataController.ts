@@ -1,4 +1,3 @@
-import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import { Response } from 'express'
 import Normalizer from '../utils/normalizer'
@@ -8,13 +7,14 @@ import { addMetadata, getMetadata } from '../operations/userMetadataOperations'
 import * as lockOperations from '../operations/lockOperations'
 import * as metadataOperations from '../operations/metadataOperations'
 import logger from '../logger'
+import { getWeb3Service } from '../initializers'
 
 export const evaluateLockOwnership = async (
   lockAddress: string,
   lockManager: string,
   network: number
 ) => {
-  const web3Service = new Web3Service(networks)
+  const web3Service = getWeb3Service()
   logger.info('networks', networks)
   logger.info('data', { lockAddress, lockManager, network })
   logger.info('network', networks[network])

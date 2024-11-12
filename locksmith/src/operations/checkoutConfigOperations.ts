@@ -1,7 +1,6 @@
 import { randomUUID } from 'crypto'
 import { CheckoutConfig } from '../models'
-import { Web3Service } from '@unlock-protocol/unlock-js'
-import networks from '@unlock-protocol/networks'
+import { getWeb3Service } from '../initializers'
 
 interface SaveCheckoutConfigArgs {
   id?: string
@@ -38,7 +37,7 @@ const isLockManager = async (
   userAddress: string,
   network: number
 ): Promise<boolean> => {
-  const web3Service = new Web3Service(networks)
+  const web3Service = getWeb3Service()
   try {
     return await web3Service.isLockManager(lockAddress, userAddress, network)
   } catch (error) {

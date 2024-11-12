@@ -12,8 +12,7 @@ import { KeySubscription } from '../models'
 import { LOCKS_WITH_DISABLED_CLAIMS } from './v2/claimController'
 import { z } from 'zod'
 import { getTotalPurchasePriceInCrypto } from '../utils/claim'
-import { Web3Service } from '@unlock-protocol/unlock-js'
-import { networks } from '@unlock-protocol/networks'
+import { getWeb3Service } from '../initializers'
 
 const PaymentCaptureBody = z.object({
   lock: z.string().transform((item) => Normalizer.ethereumAddress(item)),
@@ -161,7 +160,7 @@ export class PurchaseController {
           transactionHandler
         )
       } else if (purchaseType === 'extend') {
-        const web3Service = new Web3Service(networks)
+        const web3Service = getWeb3Service()
         const owner = paymentIntentRecipients?.[0]?.recipient || userAddress
         const tokenId = await web3Service.tokenOfOwnerByIndex(
           paymentIntent.metadata.lock,

@@ -1,6 +1,5 @@
 import { StandardMerkleTree } from '@openzeppelin/merkle-tree'
 import { ethers } from 'ethers'
-import networks from '@unlock-protocol/networks'
 import { RequestHandler } from 'express'
 import {
   getCheckedInAttendees,
@@ -23,11 +22,12 @@ import { removeProtectedAttributesFromObject } from '../../utils/protectedAttrib
 import { isVerifierOrManagerForLock } from '../../utils/middlewares/isVerifierMiddleware'
 import { sendEmail } from '../../operations/wedlocksOperations'
 import { getEventUrl } from '../../utils/eventHelpers'
-import { Web3Service, getErc20Decimals } from '@unlock-protocol/unlock-js'
+import { getErc20Decimals } from '@unlock-protocol/unlock-js'
 import { uploadJsonToS3 } from '../../utils/s3'
 import config from '../../config/config'
 import { downloadJsonFromS3 } from '../../utils/downloadJsonFromS3'
 import logger from '../../logger'
+import { getWeb3Service } from '../../initializers'
 
 // DEPRECATED!
 export const getEventDetailsByLock: RequestHandler = async (
@@ -226,7 +226,7 @@ export const approveRefunds: RequestHandler = async (request, response) => {
   let decimals = 18
 
   if (currency) {
-    const web3Service = new Web3Service(networks)
+    const web3Service = getWeb3Service()
     const provider = web3Service.providerForNetwork(network)
 
     // Get the decimals

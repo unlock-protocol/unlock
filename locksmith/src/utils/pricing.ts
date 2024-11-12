@@ -1,5 +1,5 @@
 import { networks } from '@unlock-protocol/networks'
-import { Web3Service, getErc20Decimals } from '@unlock-protocol/unlock-js'
+import { getErc20Decimals } from '@unlock-protocol/unlock-js'
 import { ethers } from 'ethers'
 import logger from '../logger'
 import GasPrice from './gasPrice'
@@ -17,6 +17,7 @@ import {
 } from '../operations/pricingOperations'
 import { getSettings as getLockSettings } from '../operations/lockSettingOperations'
 import normalizer from './normalizer'
+import { getWeb3Service } from '../initializers'
 
 interface KeyPricingOptions {
   recipients: (string | null)[]
@@ -33,7 +34,7 @@ export const getLockKeyPricing = async ({
   lockAddress: string
   network: number
 }) => {
-  const web3Service = new Web3Service(networks)
+  const web3Service = getWeb3Service()
   const provider = web3Service.providerForNetwork(network)
   const lockContract = await web3Service.getLockContract(lockAddress, provider)
   const [keyPrice, currencyContractAddress] = await Promise.all([

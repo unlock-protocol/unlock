@@ -1,11 +1,10 @@
-import networks from '@unlock-protocol/networks'
 import * as Normalizer from '../utils/normalizer'
-import { Web3Service } from '@unlock-protocol/unlock-js'
 import { Op } from 'sequelize'
 import { UserTokenMetadata, LockMetadata, LockIcons } from '../models'
 import parseDataUri from 'parse-data-uri'
 import lockIconUtils from '../utils/lockIcon'
 import { ticketForFilBangalore } from '../utils/ticket'
+import { getWeb3Service } from '../initializers'
 
 interface IconType {
   icon: string
@@ -38,7 +37,7 @@ export async function isSoldOut(
   chain: number,
   keysNeeded = 1
 ): Promise<boolean> {
-  const web3Service = new Web3Service(networks)
+  const web3Service = getWeb3Service()
   const keysAvailable = await web3Service.keysAvailable(address, chain)
   return keysAvailable < keysNeeded // true of keysAvailable smaller than keysNeeded
 }
