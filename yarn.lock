@@ -15746,13 +15746,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/cookie@npm:^0.6.0":
-  version: 0.6.0
-  resolution: "@types/cookie@npm:0.6.0"
-  checksum: 10/b883348d5bf88695fbc2c2276b1c49859267a55cae3cf11ea1dccc1b3be15b466e637ce3242109ba27d616c77c6aa4efe521e3d557110b4fdd9bc332a12445c2
-  languageName: node
-  linkType: hard
-
 "@types/cookiejar@npm:^2.1.5":
   version: 2.1.5
   resolution: "@types/cookiejar@npm:2.1.5"
@@ -17706,7 +17699,6 @@ __metadata:
     tailwindcss: "npm:3.4.14"
     typescript: "npm:5.6.3"
     unified: "npm:11.0.5"
-    universal-cookie: "npm:7.2.2"
     validator: "npm:13.12.0"
     vitest: "npm:2.1.4"
     vitest-fetch-mock: "npm:0.3.0"
@@ -23382,7 +23374,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cookie@npm:0.7.2, cookie@npm:^0.7.0, cookie@npm:^0.7.1, cookie@npm:^0.7.2":
+"cookie@npm:0.7.2, cookie@npm:^0.7.0, cookie@npm:^0.7.1":
   version: 0.7.2
   resolution: "cookie@npm:0.7.2"
   checksum: 10/24b286c556420d4ba4e9bc09120c9d3db7d28ace2bd0f8ccee82422ce42322f73c8312441271e5eefafbead725980e5996cc02766dbb89a90ac7f5636ede608f
@@ -49588,16 +49580,6 @@ __metadata:
     unist-util-is: "npm:^6.0.0"
     unist-util-visit-parents: "npm:^6.0.0"
   checksum: 10/f2bbde23641e9ade7640358c06ddeec0f38342322eb8e7819d9ee380b0f859d25d084dde22bf63db0280b3b2f36575f15aa1d6c23acf276c91c2493cf799e3b0
-  languageName: node
-  linkType: hard
-
-"universal-cookie@npm:7.2.2":
-  version: 7.2.2
-  resolution: "universal-cookie@npm:7.2.2"
-  dependencies:
-    "@types/cookie": "npm:^0.6.0"
-    cookie: "npm:^0.7.2"
-  checksum: 10/0ff895dc031d925b2bd479010e750822cf2cfc966e704d822022b5075d1a4222ef839d05a3237b568c01c641051da31283dadbc138f712347ffbec002e2bc193
   languageName: node
   linkType: hard
 
