@@ -52,6 +52,17 @@ const config = {
         destination: '/locks',
         permanent: true,
       },
+      // redirect to checkout page and preserve path
+      {
+        source: '/alpha/checkout/:path*',
+        destination: '/checkout/:path*',
+        permanent: true,
+      },
+      {
+        source: '/legacy/checkout/:path*',
+        destination: '/checkout/:path*',
+        permanent: true,
+      },
     ]
   },
 }
