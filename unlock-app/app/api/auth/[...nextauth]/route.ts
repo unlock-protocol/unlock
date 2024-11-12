@@ -4,8 +4,8 @@ import NextAuth, { NextAuthOptions } from 'next-auth'
 import { config } from '../../../../src/config/app'
 import { locksmith } from '../../../../src/config/locksmith'
 
-// Create handler with auth options
-const handler: NextAuthOptions = NextAuth({
+// Create auth options
+const authOptions: NextAuthOptions = {
   secret: config.nexthAuthSecret as string,
   pages: {
     error: '/auth-error',
@@ -61,7 +61,8 @@ const handler: NextAuthOptions = NextAuth({
       return session
     },
   },
-})
+}
 
-// Export handler functions
+// Create and export handler
+const handler = NextAuth(authOptions)
 export { handler as GET, handler as POST }
