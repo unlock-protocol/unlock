@@ -1,6 +1,5 @@
-import { Web3Service } from '@unlock-protocol/unlock-js'
-import { networks } from '@unlock-protocol/networks'
 import { ethers } from 'ethers'
+import { getWeb3Service } from '../initializers'
 
 interface Options {
   recipients: string[]
@@ -15,7 +14,7 @@ export const getTotalPurchasePriceInCrypto = async ({
   data,
   lockAddress,
 }: Options) => {
-  const web3Service = new Web3Service(networks)
+  const web3Service = getWeb3Service()
   const prices = await Promise.all(
     recipients.map((recipient, index) => {
       return web3Service.purchasePriceFor({

@@ -7,31 +7,33 @@ export const GoogleSignInContent = () => {
   const { data: session, status } = useSession()
 
   useEffect(() => {
-    if (!(status === 'loading') && !session) {
-      void signIn('google', {
-        redirect: true,
-      })
+    const handleSignIn = async () => {
+      if (status === 'loading') return
+
+      if (!session) {
+        // Sign in without redirect
+        const result = await signIn('google', { redirect: false })
+
+        if (result?.error) {
+          window.close()
+        }
+      } else if (session?.user?.token) {
+        // Notify opener and close popup
+        window.opener?.postMessage(
+          'nextAuthGoogleSignInComplete',
+          window.location.origin
+        )
+        window.close()
+      }
     }
-    if (session?.user?.token) {
-      window.opener?.postMessage(
-        'nextAuthGoogleSignInComplete',
-        window.location.origin
-      )
-      window.close()
-    }
+
+    void handleSignIn()
   }, [session, status])
 
   return (
-    <div
-      style={{
-        width: '50vw',
-        height: '50vh',
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        background: 'white',
-      }}
-    ></div>
+    <div className="flex items-center justify-center h-screen">
+      <p>Authenticating with Google...</p>
+    </div>
   )
 }
 
