@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
-import networks from '@unlock-protocol/networks'
-import { Web3Service } from '@unlock-protocol/unlock-js'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 export const useGetGasRefund = (lockAddress: string, network: number) => {
+  const web3Service = useWeb3Service()
+
   return useQuery({
     queryKey: ['getGasRefund', lockAddress, network],
     queryFn: async () => {
-      const web3Service = new Web3Service(networks)
       return web3Service.getGasRefundValue({
         lockAddress,
         network,

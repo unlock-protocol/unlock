@@ -1,7 +1,6 @@
 import { useQueries, useQuery } from '@tanstack/react-query'
-import networks from '@unlock-protocol/networks'
-import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useAuthenticate } from './useAuthenticate'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface UseLocKManagerProps {
   lockAddress: string
@@ -25,6 +24,7 @@ export const useLockManager = ({
   network,
   lockManagerAddress,
 }: UseLocKManagerProps) => {
+  const web3Service = useWeb3Service()
   const { account } = useAuthenticate()
   const addressToCheck = lockManagerAddress || account
   const {
@@ -37,7 +37,6 @@ export const useLockManager = ({
       if (!addressToCheck || !lockAddress || !network) {
         return false
       }
-      const web3Service = new Web3Service(networks)
       return web3Service.isLockManager(lockAddress, addressToCheck, network)
     },
     staleTime: 1000 * 60,
@@ -60,6 +59,7 @@ export const useMultipleLockManagers = ({
   locks,
   lockManagerAddress,
 }: UseMultipleLockManagersProps) => {
+  const web3Service = useWeb3Service()
   const { account } = useAuthenticate()
   const addressToCheck = lockManagerAddress || account
 
@@ -88,7 +88,6 @@ export const useMultipleLockManagers = ({
           if (!addressToCheck || !address || !network) {
             return false
           }
-          const web3Service = new Web3Service(networks)
           return web3Service.isLockManager(
             address,
             addressToCheck,

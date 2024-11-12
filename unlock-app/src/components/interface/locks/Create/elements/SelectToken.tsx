@@ -3,8 +3,8 @@ import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useEffect, useState } from 'react'
 import { SelectCurrencyModal } from '../modals/SelectCurrencyModal'
 import networks from '@unlock-protocol/networks'
-import { Web3Service } from '@unlock-protocol/unlock-js'
 import { twMerge } from 'tailwind-merge'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 export const SelectToken = ({
   network,
@@ -21,6 +21,7 @@ export const SelectToken = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [token, setToken] = useState(defaultToken)
+  const web3Service = useWeb3Service()
 
   const onSelect = (_token: Token) => {
     onChange(_token)
@@ -34,8 +35,6 @@ export const SelectToken = ({
           ? networks[network]?.tokens![0]
           : (networks[network]?.nativeCurrency as Token)
       if (defaultToken?.address) {
-        const web3Service = new Web3Service(networks)
-
         const symbol = await web3Service.getTokenSymbol(
           defaultToken.address,
           network

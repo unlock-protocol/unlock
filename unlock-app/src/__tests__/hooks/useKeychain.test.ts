@@ -7,10 +7,8 @@ const mockWeb3Service = {
   getCancelAndRefundValueFor: vi.fn(() => Promise.resolve(0.1)),
 }
 
-vi.mock('@unlock-protocol/unlock-js', () => ({
-  Web3Service: function Web3Service() {
-    return mockWeb3Service
-  },
+vi.mock('~/utils/withWeb3Service', () => ({
+  useWeb3Service: () => mockWeb3Service,
 }))
 
 describe('useKeychain', () => {

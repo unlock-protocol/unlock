@@ -1,5 +1,4 @@
-import networks from '@unlock-protocol/networks'
-import { Web3Service } from '@unlock-protocol/unlock-js'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 export const useKeychain = ({
   lockAddress,
@@ -14,7 +13,7 @@ export const useKeychain = ({
   tokenAddress: string
   keyId: string
 }) => {
-  const web3Service = new Web3Service(networks)
+  const web3Service = useWeb3Service()
 
   const getCancellationFee = async () => {
     return web3Service.transferFeeBasisPoints(lockAddress, network)

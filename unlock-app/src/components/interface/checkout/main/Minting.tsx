@@ -13,11 +13,10 @@ import { TransactionAnimation } from '../Shell'
 import Link from 'next/link'
 import type { Transaction } from './checkoutMachine'
 import { ReturningButton } from '../ReturningButton'
-import { Web3Service } from '@unlock-protocol/unlock-js'
-import { networks } from '@unlock-protocol/networks'
 import { AddToWallet } from '../../keychain/AddToWallet'
 import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface MintingScreenProps {
   lockName: string
@@ -134,12 +133,12 @@ export function Minting({
   const config = useConfig()
   const processing = mint?.status === 'PROCESSING' && paywallConfig.pessimistic
   const [doneWaiting, setDoneWaiting] = useState(false)
+  const web3Service = useWeb3Service()
 
   useEffect(() => {
     if (!mint || doneWaiting) {
       return
     }
-    const web3Service = new Web3Service(networks)
     const network = config.networks[mint!.network || lock!.network]
     if (!network) {
       return

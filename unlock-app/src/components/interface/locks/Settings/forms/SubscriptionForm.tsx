@@ -1,10 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
-import networks from '@unlock-protocol/networks'
-import { Web3Service } from '@unlock-protocol/unlock-js'
 import { ZeroAddress } from 'ethers'
 import { UpdateGasRefundForm } from './UpdateGasRefundForm'
 import useGetGasRefund from '~/hooks/useGetGasRefund'
 import { Placeholder } from '@unlock-protocol/ui'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface SubscriptionFormProps {
   lockAddress: string
@@ -20,10 +19,11 @@ export const SubscriptionForm = ({
   network,
   price,
 }: SubscriptionFormProps) => {
+  const web3Service = useWeb3Service()
+
   const { data: lock, isPending: isLoadingLock } = useQuery({
     queryKey: ['getLock', lockAddress, network],
     queryFn: async () => {
-      const web3Service = new Web3Service(networks)
       return web3Service.getLock(lockAddress, network)
     },
   })

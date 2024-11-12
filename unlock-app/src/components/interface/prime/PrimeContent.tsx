@@ -3,8 +3,6 @@
 import { Button, Modal, Placeholder } from '@unlock-protocol/ui'
 import { useQuery } from '@tanstack/react-query'
 import { config } from '~/config/app'
-import { Web3Service } from '@unlock-protocol/unlock-js'
-import networks from '@unlock-protocol/networks'
 import { useRouter } from 'next/navigation'
 import { useUnlockPrime } from '~/hooks/useUnlockPrime'
 import { usePrimeRefund } from '~/hooks/usePrimeRefund'
@@ -12,6 +10,7 @@ import { ethers } from 'ethers'
 import dayjs from '../../../../src/utils/dayjs'
 import { useEffect, useState } from 'react'
 import { SiFarcaster, SiX } from 'react-icons/si'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 export function ShareRefundModal({
   isOpen,
@@ -106,11 +105,11 @@ export const PrimeContent = () => {
   const router = useRouter()
   const { joinPrime, isPrime } = useUnlockPrime()
   const { data: refund, claimRefund } = usePrimeRefund()
+  const web3Service = useWeb3Service()
 
   const { data: lock } = useQuery({
     queryKey: ['prime'],
     queryFn: async () => {
-      const web3Service = new Web3Service(networks)
       const lock = await web3Service.getLock(
         config.prime.contract,
         config.prime.network
