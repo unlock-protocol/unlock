@@ -1,14 +1,15 @@
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { config } from '~/config/app'
-import NextAuth from 'next-auth'
-import { locksmith } from '~/config/locksmith'
+import NextAuth, { NextAuthOptions } from 'next-auth'
+import { config } from '../../../../src/config/app'
+import { locksmith } from '../../../../src/config/locksmith'
 
-export const authOptions = {
+// Create auth options
+const authOptions: NextAuthOptions = {
   secret: config.nexthAuthSecret as string,
   pages: {
-    error: '/authError',
-    signIn: '/authError',
+    error: '/auth-error',
+    signIn: '/google-sign-in',
   },
   providers: [
     GoogleProvider({
@@ -39,7 +40,6 @@ export const authOptions = {
     async signIn({ user, account }: { user: any; account: any }) {
       user.selectedProvider = account.provider
       user.idToken = account.id_token
-
       return true
     },
     async jwt({ token, user }: { token: any; user: any }) {
@@ -47,7 +47,6 @@ export const authOptions = {
         token.selectedProvider = user.selectedProvider
         token.idToken = user.idToken
       }
-
       return token
     },
     async session({ session, token }: { session: any; token: any; user: any }) {
@@ -59,10 +58,11 @@ export const authOptions = {
           session.user.token = token.sub
         }
       }
-
       return session
     },
   },
 }
 
-export default NextAuth(authOptions)
+// Create and export handler
+const handler = NextAuth(authOptions)
+export { handler as GET, handler as POST }
