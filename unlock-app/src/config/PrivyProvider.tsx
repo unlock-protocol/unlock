@@ -8,23 +8,20 @@ import { ReactNode, useContext, useEffect } from 'react'
 import { config } from './app'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { locksmith } from './locksmith'
-import Cookies from 'universal-cookie'
 import AuthenticationContext from '~/contexts/AuthenticationContext'
-
-const cookies = new Cookies(null, { path: '/' })
 
 // This method is meant to be called when the user is signed in with Privy,
 // BUT NOT yet signed in with Locksmith and hence does not have an access token.
-export const onSignedInWithPrivy = async () => {
+export const onSignedInWithPrivy = async (user: any) => {
   try {
     const accessToken = await privyGetAccessToken()
-    const identityToken = cookies.get('privy-id-token')
-    if (identityToken) {
+    const walletAddress = user.wallet.address
+    if (walletAddress) {
       const response = await locksmith.loginWithPrivy({
         accessToken: accessToken!,
-        identityToken: identityToken!,
+        walletAddress,
       })
-      const { accessToken: locksmithAccessToken, walletAddress } = response.data
+      const { accessToken: locksmithAccessToken } = response.data
       if (locksmithAccessToken && walletAddress) {
         saveAccessToken({
           accessToken: locksmithAccessToken,
@@ -36,7 +33,7 @@ export const onSignedInWithPrivy = async () => {
       }
     } else {
       console.error(
-        'No Privy identity token found, cannot authenticate with Locksmith'
+        'No wallet linked on Privy account, cannot authenticate with Locksmith'
       )
       return null
     }
