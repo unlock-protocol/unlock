@@ -11,6 +11,6 @@ These RPC providers are all using the same syntax: `https://rpc.unlock-protocol.
 
 You can check our [Networks](/core-protocol/unlock/networks) page to see the network that we currently support.
 
-Each of the library that we offer comes pre-configured with these RPC providers, but can also be configured to change these.
+Each of the libraries that we offer comes pre-configured with these RPC providers, but can also be configured to change these.
 
 **In production, you should _always_ use your own RPC providers.**
