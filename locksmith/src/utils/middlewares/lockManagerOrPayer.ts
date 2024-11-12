@@ -1,8 +1,7 @@
 import { RequestHandler } from 'express'
-import networks from '@unlock-protocol/networks'
-import { Web3Service } from '@unlock-protocol/unlock-js'
 import Normalizer from '../normalizer'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
+import { getWeb3Service } from '../../initializers'
 
 // check if the endpoint caller is the lock manager or the payer of the transaction
 export const lockManagerOrPayerMiddleware: RequestHandler = async (
@@ -29,7 +28,7 @@ export const lockManagerOrPayerMiddleware: RequestHandler = async (
     return
   }
 
-  const web3Service = new Web3Service(networks)
+  const web3Service = getWeb3Service()
 
   const isLockManager = await web3Service.isLockManager(
     lockAddress,
