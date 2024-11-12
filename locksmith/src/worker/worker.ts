@@ -19,6 +19,8 @@ import { Pool } from 'pg'
 import { notifyExpiredKeysForNetwork } from './jobs/expiredKeys'
 import { notifyExpiringKeysForNetwork } from './jobs/expiringKeys'
 import { downloadReceipts } from './tasks/receipts'
+import { createEventCasterEvent } from './tasks/eventCaster/createEventCasterEvent'
+import { rsvpForEventCasterEvent } from './tasks/eventCaster/rsvpForEventCasterEvent'
 import exportKeysJob from './tasks/exportKeysJob'
 
 const crontabProduction = `
@@ -105,6 +107,8 @@ export async function startWorker() {
       fiatRenewalJob,
       cryptoRenewalJob,
       downloadReceipts,
+      createEventCasterEvent,
+      rsvpForEventCasterEvent,
     },
   })
 
