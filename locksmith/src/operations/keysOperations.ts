@@ -1,16 +1,12 @@
 import { keysByQuery } from '../graphql/datasource'
-import {
-  SubgraphKey,
-  SubgraphLock,
-  Web3Service,
-} from '@unlock-protocol/unlock-js'
-import networks from '@unlock-protocol/networks'
+import { SubgraphKey, SubgraphLock } from '@unlock-protocol/unlock-js'
 import * as metadataOperations from './metadataOperations'
 import Fuse from 'fuse.js'
 import normalizer from '../utils/normalizer'
 import { getUserAddressesMatchingData } from './userMetadataOperations'
 import { Rsvp } from '../models'
 import { PAGE_SIZE } from '@unlock-protocol/core'
+import { getWeb3Service } from '../initializers'
 
 const KEY_FILTER_MAPPING: { [key: string]: string } = {
   owner: 'keyholderAddress',
@@ -112,7 +108,7 @@ export async function getKeysWithMetadata({
   filters: any
   loggedInUserAddress: string
 }) {
-  const web3Service = new Web3Service(networks)
+  const web3Service = getWeb3Service()
   const isLockOwner = await web3Service.isLockManager(
     lockAddress,
     loggedInUserAddress,

@@ -1,7 +1,5 @@
-import networks from '@unlock-protocol/networks'
 import {
   SubgraphService,
-  Web3Service,
   getAllowance,
   getErc20BalanceForAddress,
   getErc20Decimals,
@@ -12,6 +10,7 @@ import { KeySubscription } from '../models'
 import { Op } from 'sequelize'
 
 import dayjs from '../config/dayjs'
+import { getWeb3Service } from '../initializers'
 
 interface Amount {
   amount: string
@@ -62,7 +61,7 @@ export const getSubscriptionsForLockByOwner = async ({
     return []
   }
 
-  const web3Service = new Web3Service(networks)
+  const web3Service = getWeb3Service()
   const provider = web3Service.providerForNetwork(network)
   const [userBalance, decimals, userAllowance, symbol] = await Promise.all([
     getErc20BalanceForAddress(key.lock.tokenAddress, key.owner, provider),

@@ -1,4 +1,4 @@
-import { KeyManager, Web3Service } from '@unlock-protocol/unlock-js'
+import { KeyManager } from '@unlock-protocol/unlock-js'
 import { RequestHandler, Response } from 'express'
 import { z } from 'zod'
 import Dispatcher from '../../fulfillment/dispatcher'
@@ -8,6 +8,7 @@ import networks from '@unlock-protocol/networks'
 import { UserMetadata } from './metadataController'
 import { upsertUserMetadata } from '../../operations/userMetadataOperations'
 import { getTotalPurchasePriceInCrypto } from '../../utils/claim'
+import { getWeb3Service } from '../../initializers'
 
 const ClaimBody = z.object({
   data: z.string().optional(),
@@ -83,7 +84,7 @@ export const claim: RequestHandler = async (request, response: Response) => {
 
   const pricer = new KeyPricer()
   const fulfillmentDispatcher = new Dispatcher()
-  const web3Service = new Web3Service(networks)
+  const web3Service = getWeb3Service()
 
   // Check that claim is not too costly and that the lock is free
   const [canAffordGas, totalAmount, hasValidKey, totalKeysForUser] =
