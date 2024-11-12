@@ -609,9 +609,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws-sdk/client-s3@npm:3.688.0":
-  version: 3.688.0
-  resolution: "@aws-sdk/client-s3@npm:3.688.0"
+"@aws-sdk/client-s3@npm:3.689.0":
+  version: 3.689.0
+  resolution: "@aws-sdk/client-s3@npm:3.689.0"
   dependencies:
     "@aws-crypto/sha1-browser": "npm:5.2.0"
     "@aws-crypto/sha256-browser": "npm:5.2.0"
@@ -622,7 +622,7 @@ __metadata:
     "@aws-sdk/credential-provider-node": "npm:3.687.0"
     "@aws-sdk/middleware-bucket-endpoint": "npm:3.686.0"
     "@aws-sdk/middleware-expect-continue": "npm:3.686.0"
-    "@aws-sdk/middleware-flexible-checksums": "npm:3.688.0"
+    "@aws-sdk/middleware-flexible-checksums": "npm:3.689.0"
     "@aws-sdk/middleware-host-header": "npm:3.686.0"
     "@aws-sdk/middleware-location-constraint": "npm:3.686.0"
     "@aws-sdk/middleware-logger": "npm:3.686.0"
@@ -671,7 +671,7 @@ __metadata:
     "@smithy/util-utf8": "npm:^3.0.0"
     "@smithy/util-waiter": "npm:^3.1.7"
     tslib: "npm:^2.6.2"
-  checksum: 10/ddac3e59d04cb1c656463e2b13d2a8b725a68cc055d226e67b7a04d9a7d95f043fcf06f06b96dd55a73d9773ee65b05c5ca1d1a0170eed8f785fc4bdcb0abc92
+  checksum: 10/b9cc98e20937229a81f961a888eef965bd3d7b5ba2e50b6ff068eee7300a9c6bd2a44a90c62db2363da68477bc2e66a7a86a8a45da5221fa8ef2e5f5c4ea54b4
   languageName: node
   linkType: hard
 
@@ -1391,9 +1391,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws-sdk/middleware-flexible-checksums@npm:3.688.0":
-  version: 3.688.0
-  resolution: "@aws-sdk/middleware-flexible-checksums@npm:3.688.0"
+"@aws-sdk/middleware-flexible-checksums@npm:3.689.0":
+  version: 3.689.0
+  resolution: "@aws-sdk/middleware-flexible-checksums@npm:3.689.0"
   dependencies:
     "@aws-crypto/crc32": "npm:5.2.0"
     "@aws-crypto/crc32c": "npm:5.2.0"
@@ -1408,7 +1408,7 @@ __metadata:
     "@smithy/util-stream": "npm:^3.2.1"
     "@smithy/util-utf8": "npm:^3.0.0"
     tslib: "npm:^2.6.2"
-  checksum: 10/1685216e37e124dc0f83d4b123c29b4e960358c5fa247164e462cdb754bbb51014636f531164326bcf4cbf96ec81072f500773b1bfade318ec2ca281dfe95d91
+  checksum: 10/5a4af72caa64f3bcfdbfe848f35825a06c17c3d80a3e2ba6191fe37a8e9e450b350c7218f2472d4920d0119547e000e5fd3d62b1cd8b1abf0ea066cef5c4ce0f
   languageName: node
   linkType: hard
 
@@ -17362,7 +17362,7 @@ __metadata:
   resolution: "@unlock-protocol/locksmith@workspace:locksmith"
   dependencies:
     "@ambire/signature-validator": "npm:1.4.1"
-    "@aws-sdk/client-s3": "npm:3.688.0"
+    "@aws-sdk/client-s3": "npm:3.689.0"
     "@coinbase/waas-server-auth": "npm:3.1.2"
     "@logtail/node": "npm:0.5.2"
     "@logtail/winston": "npm:0.5.2"
