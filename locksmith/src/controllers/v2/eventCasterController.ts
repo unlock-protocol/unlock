@@ -7,7 +7,7 @@ import { addJob } from '../../worker/worker'
 const CreateEventBody = z.object({
   id: z.string(),
   title: z.string(),
-  description: z.string(),
+  description: z.string().nullish(),
   image_url: z.string(),
   hosts: z.array(
     z.object({
