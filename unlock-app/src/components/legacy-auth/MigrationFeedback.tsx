@@ -15,7 +15,7 @@ export default function MigrationFeedback({
   onMigrationStart: () => void
 }) {
   // @ts-ignore
-  const { importWallet } = usePrivy()
+  const { importWallet, user } = usePrivy()
   const [isImporting, setIsImporting] = useState(false)
   const [isImported, setIsImported] = useState(false)
 
@@ -35,7 +35,7 @@ export default function MigrationFeedback({
 
       // Only proceed with dashboard authentication if wallet import was successful
       try {
-        await onSignedInWithPrivy()
+        await onSignedInWithPrivy(user)
         setIsImported(true)
       } catch (authError) {
         console.error('Failed to fully authenticate with dashboard:', authError)
