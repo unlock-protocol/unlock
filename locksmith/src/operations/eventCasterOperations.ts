@@ -7,10 +7,11 @@ import {
   getPurchaser,
 } from '../fulfillment/dispatcher'
 import networks from '@unlock-protocol/networks'
-import { WalletService, Web3Service } from '@unlock-protocol/unlock-js'
+import { WalletService } from '@unlock-protocol/unlock-js'
 import { EVENT_CASTER_ADDRESS } from '../utils/constants'
 import { LockMetadata } from '../models'
 import logger from '../logger'
+import { getWeb3Service } from '../initializers'
 
 const DEFAULT_NETWORK = isProduction ? 8453 : 84532 // Base or Base Sepolia
 
@@ -227,7 +228,7 @@ export const mintNFTForRsvp = async ({
   ])
 
   // Check first if the user has a key
-  const web3Service = new Web3Service(networks)
+  const web3Service = getWeb3Service()
   const existingKey = await web3Service.getKeyByLockForOwner(
     contract.address,
     ownerAddress,

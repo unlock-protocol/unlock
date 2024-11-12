@@ -1,5 +1,4 @@
 import { ethers, Wallet, Contract } from 'ethers'
-import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 
 import { KeyRenewal } from '../../models'
@@ -7,6 +6,7 @@ import GasPrice from '../../utils/gasPrice'
 import Dispatcher from '../../fulfillment/dispatcher'
 import logger from '../../logger'
 import { getDefiLlamaPrice } from '../../operations/pricingOperations'
+import { getWeb3Service } from '../../initializers'
 
 // multiply factor to increase precision for gas calculations
 const BASE_POINT_ACCURACY = 1000
@@ -56,7 +56,7 @@ export const isWorthRenewing = async (
   lockAddress: string,
   keyId: string
 ): Promise<ShouldRenew> => {
-  const web3Service = new Web3Service(networks)
+  const web3Service = getWeb3Service()
   const provider = new ethers.JsonRpcProvider(networks[network].provider)
 
   // locks for which renewals are disabled
