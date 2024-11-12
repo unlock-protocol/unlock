@@ -8,7 +8,7 @@ const {
   ADDRESS_ZERO,
   getEvents,
 } = require('@unlock-protocol/hardhat-helpers')
-const { deployContracts, deployERC20, purchaseKey } = require('../../helpers')
+const { deployERC20, purchaseKey, increaseTimeTo } = require('../../helpers')
 
 // pass proper root folder to helpers
 const dirname = path.join(__dirname, '..')
@@ -19,8 +19,7 @@ const nextVersionNumber = 15
 
 const duration = 60 * 60 * 24 * 30 // 30 days
 const currency = ADDRESS_ZERO
-const price = ethers.parseEther('0.01')
-const maxKeys = 20
+const maxKeys = 200
 const name = 'A neat upgradeable lock!'
 
 describe('PublicLock upgrade v14 > v15', () => {
@@ -58,7 +57,7 @@ describe('PublicLock upgrade v14 > v15', () => {
     lock = await upgrades.deployProxy(PublicLockPast, args)
 
     // allow many keys
-    await lock.connect(lockOwner).updateLockConfig(duration, 20, 3)
+    await lock.connect(lockOwner).updateLockConfig(duration, maxKeys, maxKeys)
   })
 
   it('past version has correct version number', async () => {
@@ -126,7 +125,7 @@ describe('PublicLock upgrade v14 > v15', () => {
       assert.equal(await lock.publicLockVersion(), nextVersionNumber)
       assert.equal(await lock.name(), name)
       assert.equal(await lock.expirationDuration(), duration)
-      assert.equal(await lock.keyPrice(), price)
+      assert.equal(await lock.keyPrice(), keyPrice)
       assert.equal(await lock.maxNumberOfKeys(), maxKeys)
       assert.equal(await lock.tokenAddress(), currency)
     })
@@ -210,24 +209,28 @@ describe('PublicLock upgrade v14 > v15', () => {
 
   describe('renewal settings', async () => {
     let tokenId
-    let deployer, keyOwner
+    let deployer, lockOwner, keyOwner
     before(async () => {
-      ;[deployer, , keyOwner] = await ethers.getSigners()
+      ;[deployer, lockOwner, keyOwner] = await ethers.getSigners()
       const token = await deployERC20(deployer)
+
       // make it erc20
-      await lock.updateKeyPricing(
-        await lock.keyPrice(),
-        await token.getAddress()
-      )
+      await lock
+        .connect(lockOwner)
+        .updateKeyPricing(await lock.keyPrice(), await token.getAddress())
 
       // set approval
-      await token.mint(await keyOwner.getAddress(), 100n * 10n ** 18n)
-      await token
-        .connect(keyOwner)
-        .approve(await lock.getAddress(), 100n * 10n ** 18n)
-      ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))
-
-      assert(await lock.isRenewable(tokenId))
+      const someTokens = ethers.parseEther('100.0')
+      await token.mint(await keyOwner.getAddress(), someTokens)
+      await token.connect(keyOwner).approve(await lock.getAddress(), someTokens)
+      ;({ tokenId } = await purchaseKey(
+        lock,
+        await keyOwner.getAddress(),
+        true
+      ))
+      const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
+      await increaseTimeTo(expirationTs)
+      assert(await lock.isRenewable(tokenId, ADDRESS_ZERO))
     })
 
     it('are preserved during upgrade', async () => {
@@ -242,7 +245,7 @@ describe('PublicLock upgrade v14 > v15', () => {
       )
 
       // isRenewable
-      assert(await lock.isRenewable(tokenId))
+      assert(await lock.isRenewable(tokenId, ADDRESS_ZERO))
     })
   })
 })
