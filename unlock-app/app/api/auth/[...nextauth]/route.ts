@@ -1,11 +1,11 @@
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import NextAuth from 'next-auth'
+import NextAuth, { NextAuthOptions } from 'next-auth'
 import { config } from '../../../../src/config/app'
 import { locksmith } from '../../../../src/config/locksmith'
 
-// Define auth options
-export const authOptions = {
+// Create handler with auth options
+const handler: NextAuthOptions = NextAuth({
   secret: config.nexthAuthSecret as string,
   pages: {
     error: '/auth-error',
@@ -61,10 +61,7 @@ export const authOptions = {
       return session
     },
   },
-}
-
-// Create handler
-const handler = NextAuth(authOptions)
+})
 
 // Export handler functions
 export { handler as GET, handler as POST }
