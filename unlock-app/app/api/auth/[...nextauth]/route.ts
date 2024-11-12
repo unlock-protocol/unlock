@@ -8,8 +8,8 @@ import { locksmith } from '../../../../src/config/locksmith'
 export const authOptions = {
   secret: config.nexthAuthSecret as string,
   pages: {
-    error: '/authError',
-    signIn: '/authError',
+    error: '/auth-error',
+    signIn: '/google-sign-in',
   },
   providers: [
     GoogleProvider({
