@@ -91,7 +91,7 @@ export default class UnlockService {
     }
 
     throw new Error(
-      `Contract ${address} (${contractName}) not deployed on ${await provider.getNetwork()}, or unknown version ${version}`
+      `Contract ${address} (${contractName}) not deployed on ${(await provider.getNetwork()).chainId}, or unknown version ${version}`
     )
   }
 

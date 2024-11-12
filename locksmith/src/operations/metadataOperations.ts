@@ -2,8 +2,6 @@ import { KeyMetadata } from '../models/keyMetadata'
 import { LockMetadata } from '../models/lockMetadata'
 import KeyData from '../utils/keyData'
 import { getMetadata } from './userMetadataOperations'
-import { Web3Service } from '@unlock-protocol/unlock-js'
-import networks from '@unlock-protocol/networks'
 import { Verifier } from '../models/verifier'
 import Normalizer from '../utils/normalizer'
 import * as lockOperations from './lockOperations'
@@ -12,6 +10,7 @@ import metadata from '../config/metadata'
 import { getDefaultLockData } from '../utils/metadata'
 import { getEventUrl } from '../utils/eventHelpers'
 import { getEventForLock } from './eventOperations'
+import { getWeb3Service } from '../initializers'
 
 interface IsKeyOrLockOwnerOptions {
   userAddress?: string
@@ -189,7 +188,7 @@ export const isKeyOwnerOrLockVerifier = async ({
   if (!userAddress) {
     return false
   }
-  const web3Service = new Web3Service(networks)
+  const web3Service = getWeb3Service()
   const loggedUserAddress = Normalizer.ethereumAddress(userAddress)
 
   const isVerifier = await Verifier.findOne({

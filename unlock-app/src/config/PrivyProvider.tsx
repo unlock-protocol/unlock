@@ -8,30 +8,34 @@ import { ReactNode, useContext, useEffect } from 'react'
 import { config } from './app'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { locksmith } from './locksmith'
-import Cookies from 'universal-cookie'
 import AuthenticationContext from '~/contexts/AuthenticationContext'
-
-const cookies = new Cookies(null, { path: '/' })
 
 // This method is meant to be called when the user is signed in with Privy,
 // BUT NOT yet signed in with Locksmith and hence does not have an access token.
-export const onSignedInWithPrivy = async () => {
+export const onSignedInWithPrivy = async (user: any) => {
   try {
     const accessToken = await privyGetAccessToken()
-    const identityToken = cookies.get('privy-id-token')
-    const response = await locksmith.loginWithPrivy({
-      accessToken: accessToken!,
-      identityToken: identityToken!,
-    })
-    const { accessToken: locksmithAccessToken, walletAddress } = response.data
-    if (locksmithAccessToken && walletAddress) {
-      saveAccessToken({
-        accessToken: locksmithAccessToken,
+    const walletAddress = user.wallet.address
+    if (walletAddress) {
+      const response = await locksmith.loginWithPrivy({
+        accessToken: accessToken!,
         walletAddress,
       })
-      window.dispatchEvent(
-        new CustomEvent('locksmith.authenticated', { detail: walletAddress })
+      const { accessToken: locksmithAccessToken } = response.data
+      if (locksmithAccessToken && walletAddress) {
+        saveAccessToken({
+          accessToken: locksmithAccessToken,
+          walletAddress,
+        })
+        window.dispatchEvent(
+          new CustomEvent('locksmith.authenticated', { detail: walletAddress })
+        )
+      }
+    } else {
+      console.error(
+        'No wallet linked on Privy account, cannot authenticate with Locksmith'
       )
+      return null
     }
   } catch (error) {
     console.error(error)
@@ -72,12 +76,18 @@ export const PrivyChild = ({ children }: { children: ReactNode }) => {
 }
 
 export const Privy = ({ children }: { children: ReactNode }) => {
+  const isMigratePage =
+    typeof window !== 'undefined' &&
+    window.location.pathname.includes('migrate-user')
+
   return (
     <PrivyProvider
       config={{
-        loginMethods: ['wallet', 'email', 'google', 'farcaster'],
+        loginMethods: isMigratePage
+          ? ['email']
+          : ['wallet', 'email', 'google', 'farcaster'],
         embeddedWallets: {
-          createOnLogin: 'users-without-wallets', // defaults to 'off'
+          createOnLogin: isMigratePage ? 'off' : 'users-without-wallets', // defaults to 'off'
         },
         appearance: {
           landingHeader: '',

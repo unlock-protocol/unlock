@@ -1,10 +1,6 @@
 import { Defender } from '@openzeppelin/defender-sdk'
 
-import {
-  KeyManager,
-  WalletService,
-  Web3Service,
-} from '@unlock-protocol/unlock-js'
+import { KeyManager, WalletService } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import { ethers } from 'ethers'
 import logger from '../logger'
@@ -13,6 +9,7 @@ import { getGasSettings } from '../utils/gasSettings'
 import config from '../config/config'
 import executeAndRetry from './retries'
 import normalizer from '../utils/normalizer'
+import { getWeb3Service } from '../initializers'
 
 interface KeyToGrant {
   recipient: string
@@ -141,7 +138,7 @@ export const getSignerFromOnKeyPurchaserHookOnLock = async function ({
   lockAddress: string
   network: number
 }) {
-  const web3Service = new Web3Service(networks)
+  const web3Service = getWeb3Service()
   const hookAddress = await web3Service.onKeyPurchaseHook({
     lockAddress,
     network,
@@ -191,7 +188,7 @@ export const getSignerWhoIsKeyGranterOnLock = async function ({
   lockAddress: string
   network: number
 }) {
-  const web3Service = new Web3Service(networks)
+  const web3Service = getWeb3Service()
 
   const purchasers = await getAllPurchasers({ network })
   const keyGranters = await Promise.all(
@@ -312,7 +309,7 @@ export default class Dispatcher {
     account?: string
   ) {
     if (!account) {
-      const web3Service = new Web3Service(networks)
+      const web3Service = getWeb3Service()
       account = await web3Service.ownerOf(lockAddress, tokenId, network)
     }
 
