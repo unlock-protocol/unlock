@@ -1,4 +1,5 @@
 import request from 'supertest'
+import { expect } from 'vitest'
 import app from '../../src/app'
 
 describe('HubPublisherController', () => {
