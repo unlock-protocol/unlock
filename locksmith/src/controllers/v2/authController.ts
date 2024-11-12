@@ -142,8 +142,14 @@ export const loginWithPrivy: RequestHandler = async (request, response) => {
 
     // Verify the access token using Privy
     const userAuthClaims = await privy.verifyAuthToken(accessToken)
+    const user = await privy.getUserByWalletAddress(walletAddress)
 
-    // const walletAddress = normalizer.ethereumAddress(wallet.address)
+    if (!user || userAuthClaims.userId !== user.id) {
+      response.status(401).json({
+        error:
+          'The wallet you are authenticating with does not match your authentication token',
+      })
+    }
 
     // Create a new session
     const expireAt = dayjs().add(config.sessionDuration, 'seconds').toDate()
