@@ -132,7 +132,7 @@ export function useAuthenticate() {
     if (!(await signInWithExistingSession())) {
       setAccount(undefined)
       if (privyAuthenticated) {
-        await onSignedInWithPrivy()
+        await onSignedInWithPrivy(user)
       } else {
         privyLogin()
         onshowUI()

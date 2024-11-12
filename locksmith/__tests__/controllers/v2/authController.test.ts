@@ -26,7 +26,6 @@ describe('Auth login endpoints for locksmith', () => {
 
     const mockWalletAddress = '0x1234567890123456789012345678901234567890'
     const mockAccessToken = 'mock-access-token'
-    const mockIdentityToken = 'mock-identity-token'
     const mockUserId = 'mock-user-id'
 
     // Mock Privy client responses
@@ -54,7 +53,7 @@ describe('Auth login endpoints for locksmith', () => {
 
     const loginResponse = await request(app).post('/v2/auth/privy').send({
       accessToken: mockAccessToken,
-      identityToken: mockIdentityToken,
+      walletAddress: mockWalletAddress,
     })
 
     expect(loginResponse.status).toBe(200)

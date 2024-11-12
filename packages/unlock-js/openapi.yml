@@ -972,12 +972,12 @@ paths:
                 accessToken:
                   type: string
                   description: The Privy access token to verify
-                identityToken:
+                walletAddress:
                   type: string
-                  description: The Privy id token (from cookies)
+                  description: The wallet address from the user
               required:
                 - accessToken
-                - identityToken
+                - walletAddress
       responses:
         200:
           description: OK
