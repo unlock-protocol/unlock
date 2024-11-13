@@ -179,9 +179,6 @@ contract MixinTransfer is
 
     // decrease totalSupply
     _totalSupply--;
-
-    // increase burnt token counter
-    _burntTokens++;
   }
 
   /**
