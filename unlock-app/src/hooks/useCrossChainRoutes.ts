@@ -164,6 +164,7 @@ export const useCrossChainRoutes = ({
             token,
             network,
             nativeBalance,
+            sharedParams,
           ],
           queryFn: async () => {
             try {
@@ -200,8 +201,6 @@ export const useCrossChainRoutes = ({
                 return null
               }
 
-              console.log(route)
-
               let userTokenBalance
               if (route.tokenPayment.tokenAddress === ZeroAddress) {
                 userTokenBalance = nativeBalance
@@ -213,17 +212,15 @@ export const useCrossChainRoutes = ({
                 )
               }
 
-              console.log(route.tokenPayment.amount)
-              console.log(userTokenBalance)
-              // const amount = BigInt(toBigInt(route.tokenPayment.amount))
-              // const cost = ethers.formatUnits(
-              //   amount,
-              //   route.tokenPayment.decimals
-              // )
-              // if (Number(cost) > Number(userTokenBalance)) {
-              //   // Skip any route for which the user does not have enough tokens
-              //   return null
-              // }
+              const amount = BigInt(route.tokenPayment.amount)
+              const cost = ethers.formatUnits(
+                amount,
+                route.tokenPayment.decimals
+              )
+              if (Number(cost) > Number(userTokenBalance)) {
+                // Skip any route for which the user does not have enough tokens
+                return null
+              }
               return {
                 resolvedAt: new Date().getTime(), // maintaining order
                 userTokenBalance,
@@ -234,7 +231,7 @@ export const useCrossChainRoutes = ({
               return null
             }
           },
-          enabled: enabled && hasPrices,
+          enabled: enabled && hasPrices && sharedParams,
           staleTime: 1000 * 60 * 5, // 5 minutes
         })
       ),
