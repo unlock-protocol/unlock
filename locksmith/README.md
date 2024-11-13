@@ -48,7 +48,7 @@ Once the database has been configured (per above), make sure to migrate by calli
 
 ## Running Locksmith
 
-For running in production, use `yarn start` otherwise `yarn dev` which will restart the server on file changes. This requires using 1password locally and have access to the Unlock Labs vault.
+For running in production, use `yarn start` otherwise `yarn dev` which will restart the server on file changes. This requires using 1password locally and having access to the Unlock Labs vault.
 
 You can start a worker with `yarn worker:start`.
 
