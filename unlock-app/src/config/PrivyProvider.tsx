@@ -5,10 +5,10 @@ import {
   getAccessToken as privyGetAccessToken,
   PrivyProvider,
   useLogin,
-  usePrivy,
+  useCreateWallet,
   User,
 } from '@privy-io/react-auth'
-import { ReactNode, useContext, useEffect, useState } from 'react'
+import { ReactNode, useContext, useEffect, useState, useCallback } from 'react'
 import { config } from './app'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { locksmith } from './locksmith'
@@ -75,11 +75,16 @@ export const PrivyChild = ({ children }: { children: ReactNode }) => {
   const { setAccount } = useContext<{
     setAccount: (account: string | undefined) => void
   }>(AuthenticationContext)
-  const { createWallet } = usePrivy()
+  const { createWallet } = useCreateWallet({
+    onError: (error) => {
+      console.error('Error creating wallet:', error)
+      ToastHelper.error('Failed to create wallet. Please try again.')
+    },
+  })
   const [showMigrationModal, setShowMigrationModal] = useState(false)
 
   // handle wallet creation
-  const createWalletForUser = async () => {
+  const createWalletForUser = useCallback(async () => {
     try {
       const newWallet = await createWallet()
       return newWallet.address
@@ -88,10 +93,11 @@ export const PrivyChild = ({ children }: { children: ReactNode }) => {
       ToastHelper.error('Failed to create wallet. Please try again.')
       return null
     }
-  }
+  }, [createWallet])
 
-  useLogin({
-    onComplete: async (user) => {
+  // handle onComplete logic
+  const handleLoginComplete = useCallback(
+    async (user: User) => {
       let hasLegacyAccount = false
 
       // Check for legacy account if user logged in with email
@@ -99,6 +105,9 @@ export const PrivyChild = ({ children }: { children: ReactNode }) => {
         hasLegacyAccount = await checkLegacyAccount(user.email.address)
         if (hasLegacyAccount) {
           setShowMigrationModal(true)
+          // close connect modal
+          window.dispatchEvent(new CustomEvent('legacy.account.detected'))
+          return
         }
       }
 
@@ -111,6 +120,11 @@ export const PrivyChild = ({ children }: { children: ReactNode }) => {
       // Proceed with normal login flow
       await onSignedInWithPrivy(user)
     },
+    [createWalletForUser, setShowMigrationModal]
+  )
+
+  useLogin({
+    onComplete: handleLoginComplete,
     onError: (error) => {
       if (error !== 'generic_connect_wallet_error') {
         ToastHelper.error(`Error while logging in: ${error}`)
@@ -131,7 +145,7 @@ export const PrivyChild = ({ children }: { children: ReactNode }) => {
     return () => {
       window.removeEventListener('locksmith.authenticated', onAuthenticated)
     }
-  }, [])
+  }, [setAccount])
 
   return (
     <>
