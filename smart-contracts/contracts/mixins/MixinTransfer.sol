@@ -230,8 +230,7 @@ contract MixinTransfer is
     _clearApproval(_tokenId);
 
     // make future reccuring transactions impossible
-    _originalDurations[_tokenId] = 0;
-    _originalPrices[_tokenId] = 0;
+    _recordTokenTerms(_tokenId, 0, address(0));
 
     // trigger event
     emit Transfer(_from, _recipient, _tokenId);
