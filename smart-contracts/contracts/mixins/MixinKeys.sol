@@ -619,6 +619,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
     return _maxKeysPerAddress;
   }
 
+  // decrease 996 to 995 when adding _burntTokens mappings in v15
   // decrease 1000 to 996 when adding new tokens/owners mappings in v10
-  uint256[996] private __safe_upgrade_gap;
+  uint256[995] private __safe_upgrade_gap;
 }
