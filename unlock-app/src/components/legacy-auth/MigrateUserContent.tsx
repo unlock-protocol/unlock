@@ -11,11 +11,11 @@ import { UserAccountType } from '~/utils/userAccountType'
 import { SignInWithPassword } from './SignInWithPassword'
 import { SignInWithCode } from './SignInWithCode'
 import { SignInWithGoogle } from './SignInWithGoogle'
-import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { PromptSignOut } from './PromptSignOut'
+import { usePrivy } from '@privy-io/react-auth'
 
 export const MigrateUserContent = () => {
-  const { account } = useAuthenticate()
+  const { user } = usePrivy()
   const [userEmail, setUserEmail] = useState<string>('')
   const [walletPk, setWalletPk] = useState<string | null>(null)
   const [userAccountType, setUserAccountType] = useState<UserAccountType[]>([])
@@ -173,7 +173,9 @@ export const MigrateUserContent = () => {
         />
       </div>
 
-      {account && !isMigrating && <PromptSignOut />}
+      {user?.email?.address && user?.wallet && !isMigrating && (
+        <PromptSignOut />
+      )}
     </>
   )
 }
