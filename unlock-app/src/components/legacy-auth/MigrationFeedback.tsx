@@ -35,8 +35,10 @@ export default function MigrationFeedback({
 
       // Only proceed with dashboard authentication if wallet import was successful
       try {
-        await onSignedInWithPrivy(user)
-        setIsImported(true)
+        if (user) {
+          await onSignedInWithPrivy(user)
+          setIsImported(true)
+        }
       } catch (authError) {
         console.error('Failed to fully authenticate with dashboard:', authError)
         ToastHelper.error(
