@@ -32,7 +32,7 @@ interface getCrossChainRouteParams {
   srcChainId: number
 }
 
-export const prepareShareParams = async ({
+export const prepareSharedParams = async ({
   sender,
   lock,
   prices,

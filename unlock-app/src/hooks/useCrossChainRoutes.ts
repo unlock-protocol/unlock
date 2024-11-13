@@ -18,10 +18,6 @@ interface CrossChainRouteWithBalance extends CrossChainRoute {
   userTokenBalance: string
 }
 
-// TheBox returns BigInts as strings with a trailing 'n'
-export const toBigInt = (str: string) =>
-  /[a-zA-Z]$/.test(str) ? str.slice(0, -1) : str
-
 interface CrossChainRoutesOption {
   lock: Lock
   purchaseData: string[] | undefined
@@ -174,6 +170,7 @@ export const useCrossChainRoutes = ({
               if (!prices) {
                 return null
               }
+              // Skip any identical route
               if (
                 network === lock.network &&
                 (token.address === lock.currencyContractAddress ||
@@ -202,7 +199,9 @@ export const useCrossChainRoutes = ({
                 )
                 return null
               }
-              const amount = BigInt(toBigInt(route.tokenPayment.amount))
+
+              console.log(route)
+
               let userTokenBalance
               if (route.tokenPayment.tokenAddress === ZeroAddress) {
                 userTokenBalance = nativeBalance
@@ -214,13 +213,17 @@ export const useCrossChainRoutes = ({
                 )
               }
 
-              const cost = ethers.formatUnits(
-                amount,
-                route.tokenPayment.decimals
-              )
-              if (Number(cost) > Number(userTokenBalance)) {
-                return null
-              }
+              console.log(route.tokenPayment.amount)
+              console.log(userTokenBalance)
+              // const amount = BigInt(toBigInt(route.tokenPayment.amount))
+              // const cost = ethers.formatUnits(
+              //   amount,
+              //   route.tokenPayment.decimals
+              // )
+              // if (Number(cost) > Number(userTokenBalance)) {
+              //   // Skip any route for which the user does not have enough tokens
+              //   return null
+              // }
               return {
                 resolvedAt: new Date().getTime(), // maintaining order
                 userTokenBalance,
