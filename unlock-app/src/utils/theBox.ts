@@ -70,7 +70,6 @@ export const getCrossChainRoute = async ({
   purchaseData,
   srcToken,
   srcChainId,
-  sharedParams,
 }: getCrossChainRouteParams): Promise<CrossChainRoute | undefined> => {
   const network = networks[srcChainId]
 
