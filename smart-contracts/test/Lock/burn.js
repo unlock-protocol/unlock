@@ -67,6 +67,18 @@ describe('Lock / burn', () => {
     compareBigNumbers(await lock.totalSupply(), totalSupply - 1n)
   })
 
+  it('tokenId is not used twice', async () => {
+    const totalSupply = await lock.totalSupply()
+    // assert.equal(tokenId + 1n, totalSupply)
+    await lock.connect(keyOwner).burn(tokenId)
+    compareBigNumbers(await lock.totalSupply(), totalSupply - 1n)
+    const { tokenId: tokenIdAfterBurn } = await purchaseKey(
+      lock,
+      await keyOwner.getAddress()
+    )
+    assert.notEqual(tokenId, tokenIdAfterBurn)
+  })
+
   it('should work only on existing keys', async () => {
     await reverts(lock.burn(123), 'NO_SUCH_KEY')
   })
