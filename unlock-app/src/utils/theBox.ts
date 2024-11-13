@@ -3,6 +3,7 @@ import { ethers } from 'ethers'
 import axios from 'axios'
 import { networks } from '@unlock-protocol/networks'
 import { ADDRESS_ZERO } from '~/constants'
+import { CrossChainRoute } from '~/hooks/useCrossChainRoutes'
 
 export interface BoxActionRequest {
   sender: string
@@ -15,22 +16,8 @@ export interface BoxActionRequest {
   actionConfig: any
 }
 
-export interface CrossChainRoute {
-  network: number
-  tx: any
-  tokenPayment?: any
-  applicationFee?: any
-  bridgeFee?: any
-  bridgeId?: any
-  relayInfo?: any
-  // Remove me
-  symbol: string
-  networkName: string
-  currency: string
-}
-
 // TheBox returns BigInts as strings with a trailing 'n'
-export const toBigInt = (str: string) =>
+const toBigInt = (str: string) =>
   /[a-zA-Z]$/.test(str) ? str.slice(0, -1) : str
 
 const bigintSerializer = (_key: string, value: unknown): unknown => {
