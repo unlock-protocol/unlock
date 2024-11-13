@@ -1,21 +1,49 @@
+'use client'
+
 import { saveAccessToken } from '~/utils/session'
 import {
   getAccessToken as privyGetAccessToken,
   PrivyProvider,
   useLogin,
+  usePrivy,
+  User,
 } from '@privy-io/react-auth'
-import { ReactNode, useContext, useEffect } from 'react'
+import { ReactNode, useContext, useEffect, useState } from 'react'
 import { config } from './app'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { locksmith } from './locksmith'
 import AuthenticationContext from '~/contexts/AuthenticationContext'
+import { MigrationModal } from '~/components/legacy-auth/MigrationNotificationModal'
+
+// check for legacy account
+export const checkLegacyAccount = async (
+  emailAddress: string
+): Promise<boolean> => {
+  try {
+    const response = await locksmith.getUserAccountType(emailAddress)
+    return (
+      response.data.userAccountType?.some((type: string) => {
+        return (
+          type === 'EMAIL_CODE' ||
+          type === 'UNLOCK_ACCOUNT' ||
+          type === 'GOOGLE_ACCOUNT' ||
+          type === 'PASSKEY_ACCOUNT'
+        )
+      }) || false
+    )
+  } catch (error) {
+    console.error('Error checking legacy account:', error)
+    return false
+  }
+}
 
 // This method is meant to be called when the user is signed in with Privy,
 // BUT NOT yet signed in with Locksmith and hence does not have an access token.
-export const onSignedInWithPrivy = async (user: any) => {
+export const onSignedInWithPrivy = async (user: User) => {
   try {
     const accessToken = await privyGetAccessToken()
-    const walletAddress = user.wallet.address
+    const walletAddress = user?.wallet?.address
+
     if (walletAddress) {
       const response = await locksmith.loginWithPrivy({
         accessToken: accessToken!,
@@ -47,9 +75,42 @@ export const PrivyChild = ({ children }: { children: ReactNode }) => {
   const { setAccount } = useContext<{
     setAccount: (account: string | undefined) => void
   }>(AuthenticationContext)
+  const { createWallet } = usePrivy()
+  const [showMigrationModal, setShowMigrationModal] = useState(false)
+
+  // handle wallet creation
+  const createWalletForUser = async () => {
+    try {
+      const newWallet = await createWallet()
+      return newWallet.address
+    } catch (error) {
+      console.error('Error creating wallet:', error)
+      ToastHelper.error('Failed to create wallet. Please try again.')
+      return null
+    }
+  }
 
   useLogin({
-    onComplete: onSignedInWithPrivy,
+    onComplete: async (user) => {
+      let hasLegacyAccount = false
+
+      // Check for legacy account if user logged in with email
+      if (user.email?.address) {
+        hasLegacyAccount = await checkLegacyAccount(user.email.address)
+        if (hasLegacyAccount) {
+          setShowMigrationModal(true)
+        }
+      }
+
+      // Only create wallet if user doesn't have one AND doesn't have a legacy account
+      if (!user.wallet?.address && !hasLegacyAccount) {
+        const walletAddress = await createWalletForUser()
+        if (!walletAddress) return
+      }
+
+      // Proceed with normal login flow
+      await onSignedInWithPrivy(user)
+    },
     onError: (error) => {
       if (error !== 'generic_connect_wallet_error') {
         ToastHelper.error(`Error while logging in: ${error}`)
@@ -72,7 +133,15 @@ export const PrivyChild = ({ children }: { children: ReactNode }) => {
     }
   }, [])
 
-  return children
+  return (
+    <>
+      {children}
+      <MigrationModal
+        isOpen={showMigrationModal}
+        setIsOpen={setShowMigrationModal}
+      />
+    </>
+  )
 }
 
 export const Privy = ({ children }: { children: ReactNode }) => {
@@ -87,7 +156,7 @@ export const Privy = ({ children }: { children: ReactNode }) => {
           ? ['email']
           : ['wallet', 'email', 'google', 'farcaster'],
         embeddedWallets: {
-          createOnLogin: isMigratePage ? 'off' : 'users-without-wallets', // defaults to 'off'
+          createOnLogin: 'off',
         },
         appearance: {
           landingHeader: '',
