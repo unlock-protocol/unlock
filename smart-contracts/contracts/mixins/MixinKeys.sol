@@ -84,6 +84,9 @@ contract MixinKeys is MixinErrors, MixinLockCore {
   // Mapping owner address to token count
   mapping(address => uint256) private _balances;
 
+  // keep track of how many keys have been burnt to prevent token id conflicts
+  uint internal _burntTokens;
+
   /**
    * Ensure that the caller is the keyManager of the key
    * or that the caller has been approved
@@ -182,7 +185,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
     unchecked {
       _totalSupply++;
     }
-    tokenId = _totalSupply;
+    tokenId = _totalSupply + _burntTokens;
 
     // create the key
     _keys[tokenId] = Key(tokenId, expirationTimestamp);
