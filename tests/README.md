@@ -18,7 +18,7 @@ First start a fully provisioned ETH node (with the Unlock contracts deployed and
 yarn start:infra
 ```
 
-then you nneed to export the subgraph URL, rebuild the networks package and run the test
+then you need to export the subgraph URL, rebuild the networks package and run the test
 
 ```shell
 export SUBGRAPH_URL=http://localhost:8000/subgraphs/name/testgraph

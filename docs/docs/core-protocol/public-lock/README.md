@@ -17,7 +17,7 @@ Each lock is a standalone contract with its own deployment, address, and storage
 - A given user may own only 1 key (NFT) at a time as a default, but that can be changed using the `setMaxKeysPerAddress` function.
   Additionally, the Lock smart contract has multiple capabilities:
 
-- _Administrative_: these are the functions that change rights (see[ access control](./access-control/)) associated to the lock or individual parameters for the lock a such as its name or of course its price. Finally, there is a method to withdraw funds from the lock contract itself.
+- _Administrative_: these are the functions that change rights (see[ access control](./access-control/)) associated to the lock or individual parameters for the lock such as its name or of course its price. Finally, there is a method to withdraw funds from the lock contract itself.
 - _Transferring key ownership_: keys can be purchased from the lock smart contract itself or from another user who purchased one previously. Another element is that keys can be purchased on behalf of somebody else \(this is important because this lets somebody pay gas fees on behalf of somebody else\)
 - _Changing key attributes_: the keys have an expiration date which can be changed \(for an earlier date by the lock owner\) as well as data attributes which can be changed to something else.
 
@@ -63,7 +63,7 @@ For advanced users and developers, the lower level changes below are noteworthy:
 - Replace `UnlockUtils` dependencies by optimized Open Zeppelin implementation
 - Remove dev reward/cut when purchasing a key
 - Add unchecked scopes on math operations (gas optimisation)
-- New Solidity version 0.8.21 (creating issues on some chains that wont support new `PUSH0` evm opcode)
+- New Solidity version 0.8.21 (creating issues on some chains that won't support new `PUSH0` evm opcode)
 - Fix potential overflow when merging keys
 
 ### Version 13
@@ -100,7 +100,7 @@ The configuration for a key’s default duration and available quantity (both pe
 
 #### `expirationTimestamp`
 
-This adds the expiration timestamp on ExpirationDuration event emitted by the time machine when time gets added or substracted to/from a key.
+This adds the expiration timestamp on ExpirationDuration event emitted by the time machine when time gets added or subtracted to/from a key.
 
 #### Events and schema changes
 

@@ -1,6 +1,6 @@
 # Unlock Protocol Governance
 
-This folders contains all the tools to manage the Unlock Protocol (contracts, DAO, etc).
+This folder contains all the tools to manage the Unlock Protocol (contracts, DAO, etc).
 
 To get the list of all available tasks use `yarn hardhat --help`.
 
@@ -138,7 +138,7 @@ yarn hardhat deploy:template --network tenderly
 
 ### Make a DAO proposal
 
-1. First, create a file in the `proposals` folder that describe the proposal itself. The file should contain either a js async function or a literal object and should export as default an object containing: 1. the title of the proposal and 2. an array with the description of the calls to send - in following format:
+1. First, create a file in the `proposals` folder that describes the proposal itself. The file should contain either a js async function or a literal object and should export as default an object containing: 1. the title of the proposal and 2. an array with the description of the calls to send - in following format:
 
 #### Exports a literal object
 
@@ -207,7 +207,7 @@ RUN_FORK=8453 yarn hardhat gov --gov-address 0x65bA0624403Fc5Ca2b20479e9F626eD4D
   --proposal proposals/up/<your-proposal>.js
 ```
 
-Additionnaly, you can pass arguments to your proposal script via CLI positional args.
+Additionally, you can pass arguments to your proposal script via CLI positional args.
 
 3. When things are ready, post it to the DAO!
 
@@ -237,7 +237,7 @@ yarn run scripts/uniswap/addLiquidity.js
 
 ## Cross-Chain DAO Proposals
 
-To maintain the integrity of the protocol accross various chains, we use a pattern of DAO proposals that allows execution on multiple chains. Messaging is sent accross the [Connext bridge](https://connext.network) to all supported chains.
+To maintain the integrity of the protocol across various chains, we use a pattern of DAO proposals that allows execution on multiple chains. Messaging is sent across the [Connext bridge](https://connext.network) to all supported chains.
 
 ### Prepare a cross-chain proposal
 
@@ -266,7 +266,7 @@ Once the proposal has been through the timelock embargo period and has been exec
 
 To execute these commands, you will need the hash from the transaction that executed the proposal on the DAO. The transaction contains the IDs of the bridge calls that will be used by the scripts to fetch information.
 
-NB: On [Tally.xyz](://www.tally.xyz/gov/unlock), a etherscan link containing the hash can be found on the upper left button next to _Proposal Executed_.
+NB: On [Tally.xyz](://www.tally.xyz/gov/unlock), an etherscan link containing the hash can be found on the upper left button next to _Proposal Executed_.
 
 ```
 export PROPOSAL_EXECUTION_TX=<0x....>
@@ -315,7 +315,7 @@ NB: The tmp file with all txs statuses is required, so you need to first run the
 
 ### Add a new network to the cross-chain governance
 
-As the Connext bridge supports more networks, they need to added to the cross chain gov process (see [supported networks](https://docs.connext.network/resources/deployments) on Connext docs).
+As the Connext bridge supports more networks, they need to be added to the cross chain gov process (see [supported networks](https://docs.connext.network/resources/deployments) on Connext docs).
 
 The process is as follow:
 

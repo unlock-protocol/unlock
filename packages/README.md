@@ -20,7 +20,7 @@ We rely on [yarn release workflow](https://yarnpkg.com/features/release-workflow
 
 ### Versions
 
-Yarn use "deffered" version release, which means that we first prepare a file that state which packages should be updated - and how (minor, major, etc). Then the new version number is applied to the package and updated in deps accross the entire repo.
+Yarn use "deferred" version release, which means that we first prepare a file that state which packages should be updated - and how (minor, major, etc). Then the new version number is applied to the package and updated in deps across the entire repo.
 
 Shortcuts commands available from the root repo:
 

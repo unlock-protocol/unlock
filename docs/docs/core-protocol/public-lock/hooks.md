@@ -17,7 +17,7 @@ We currently support 7 hooks (as of v12). If your lock uses a previous version, 
 - <a href="#onkeycancel-hook">onKeyCancelHook</a>: called when a key is canceled
 - <a href="#ontokenuri-hook">onTokenUriHook</a>: called when the tokenURI is fetched
 - <a href="#onvalidkey-hook">onValidKeyHook</a>: called when checking if a user has a valid key
-- <a href="#onkeytransferhook-hook">onKeyTransferHook</a>: called when a key is transfered from an address to another.
+- <a href="#onkeytransferhook-hook">onKeyTransferHook</a>: called when a key is transferred from an address to another.
 
 ## onGrantKey Hook
 
@@ -50,7 +50,7 @@ interface ILockKeyGrantHook
 
 ## onKeyExtend Hook
 
-The `onKeyExtendHook` allows you create custom logic when a key is extended or renewed. This could enable use cases where for instance key metadata is updated, maybe you want to update the image when renewals happen. It could enable rewards programs where you increment a reward point total everytime a membership is renewed.
+The `onKeyExtendHook` allows you create custom logic when a key is extended or renewed. This could enable use cases where for instance key metadata is updated, maybe you want to update the image when renewals happen. It could enable rewards programs where you increment a reward point total every time a membership is renewed.
 
 A KeyExtendHook should implement the following interface.
 
@@ -82,7 +82,7 @@ It contains 2 main functions:
 1. `keyPurchasePrice` which is used to determine the purchase price before issuing a transaction,
 2. `onKeyPurchase` which is called every time a key is sold.
 
-If either of these fail, then the whole purchase will revert.
+If either of these fails, then the whole purchase will revert.
 
 The `ILockKeyPurchaseHook` contract interface describes the parameters of each function (from, recipient, original price, price paid, etc), so the hook can be properly implemented.
 
@@ -136,7 +136,7 @@ interface ILockValidKeyHook
     address lockAddress, // the address of the current lock
     address keyOwner, // the potential owner of a key
     uint256 expirationTimestamp, // the key expiration timestamp
-    bool isValidKey // the validity in the lock contrat
+    bool isValidKey // the validity in the lock contract
   )
   external view
   returns (bool);

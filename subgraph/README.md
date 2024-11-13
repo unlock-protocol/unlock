@@ -24,7 +24,7 @@ The `networks.json` file and `/config` files are generated from our `@unlock-pro
 yarn prepare:networks
 ```
 
-#### Contrat ABIs
+#### Contract ABIs
 
 Unlock's contracts are upgradable, we parse the multiple ABIs that are required from our `@unlock-protocol/contracts` package.
 

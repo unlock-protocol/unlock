@@ -104,7 +104,7 @@ identify important dates.
 The final milestone should include success metrics or ROI. Here are some
 examples based on your application type.
 
-- For a membership implementation: the number of members joined your through
+- For a membership implementation: the number of members who joined you through
   your platform.
 - For an event: the number of tickets sold.
 - For use with credentials: the number of credentials handed out.
