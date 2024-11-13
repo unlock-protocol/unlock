@@ -74,11 +74,7 @@ export const useCrossChainRoutes = ({
     queries: Object.values(networks)
       .filter((network) => {
         // Filter out networks that are not the same type as the lock
-        return (
-          network.isTestNetwork === networks[lock.network].isTestNetwork &&
-          [56, 42220, 100, 1].indexOf(network.id) > -1 &&
-          network.id === 8453
-        )
+        return network.isTestNetwork === networks[lock.network].isTestNetwork
       })
       .map((network) => ({
         queryKey: ['balance', account, network.id],
