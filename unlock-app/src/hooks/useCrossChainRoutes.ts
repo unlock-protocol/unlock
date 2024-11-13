@@ -4,9 +4,12 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Lock } from '~/unlockTypes'
 import { purchasePriceFor } from './usePricing'
 import { getReferrer } from '~/utils/checkoutLockUtils'
-import { CrossChainRoute, getCrossChainRoute } from '~/utils/theBox'
+import {
+  CrossChainRoute,
+  getCrossChainRoute,
+  prepareSharedParams,
+} from '~/utils/theBox'
 import { networks } from '@unlock-protocol/networks'
-import { BoxEvmChains } from '@decent.xyz/box-common'
 import { Token } from '@unlock-protocol/types'
 import { useAuthenticate } from './useAuthenticate'
 
@@ -14,10 +17,6 @@ interface CrossChainRouteWithBalance extends CrossChainRoute {
   resolvedAt: number
   userTokenBalance: string
 }
-
-// TheBox returns BigInts as strings with a trailing 'n'
-export const toBigInt = (str: string) =>
-  /[a-zA-Z]$/.test(str) ? str.slice(0, -1) : str
 
 interface CrossChainRoutesOption {
   lock: Lock
@@ -37,6 +36,7 @@ export const useCrossChainRoutes = ({
 
   const { account } = useAuthenticate()
   const web3Service = useWeb3Service()
+
   const { recipients, paywallConfig, keyManagers, renew } = context
 
   const { data: prices, isPending: isLoadingPrices } = useQuery({
@@ -71,19 +71,46 @@ export const useCrossChainRoutes = ({
   const hasPrices = Array.isArray(prices) && prices.length > 0
 
   const balanceResults = useQueries({
-    queries: BoxEvmChains.filter((network) => {
-      return networks[network.id]
-    }).map((network) => ({
-      queryKey: ['balance', account, network.id],
-      queryFn: async () => {
-        return {
-          network: network.id,
-          balance: await web3Service.getAddressBalance(account!, network.id),
-        }
-      },
-      staleTime: 1000 * 60 * 5, // 5 minutes
-      enabled: enabled && hasPrices,
-    })),
+    queries: Object.values(networks)
+      .filter((network) => {
+        // Filter out networks that are not the same type as the lock
+        return network.isTestNetwork === networks[lock.network].isTestNetwork
+      })
+      .map((network) => ({
+        queryKey: ['balance', account, network.id],
+        queryFn: async () => {
+          return {
+            network: network.id,
+            balance: await web3Service.getAddressBalance(account!, network.id),
+          }
+        },
+        staleTime: 1000 * 60 * 5, // 5 minutes
+        enabled: enabled,
+      })),
+  })
+
+  const { data: sharedParams } = useQuery({
+    queryKey: [
+      'sharedParams',
+      account,
+      lock,
+      recipients,
+      keyManagers,
+      purchaseData,
+    ],
+    queryFn: async () => {
+      return prepareSharedParams({
+        sender: account!,
+        lock,
+        prices,
+        recipients,
+        keyManagers: keyManagers || recipients,
+        referrers: recipients.map(() =>
+          getReferrer(account!, paywallConfig, lock.address)
+        ),
+        purchaseData: purchaseData || recipients.map(() => '0x'),
+      })
+    },
   })
 
   const routeResults = useQueries({
@@ -137,12 +164,14 @@ export const useCrossChainRoutes = ({
             token,
             network,
             nativeBalance,
+            sharedParams,
           ],
           queryFn: async () => {
             try {
               if (!prices) {
                 return null
               }
+              // Skip any identical route
               if (
                 network === lock.network &&
                 (token.address === lock.currencyContractAddress ||
@@ -163,14 +192,15 @@ export const useCrossChainRoutes = ({
                 purchaseData: purchaseData || recipients.map(() => '0x'),
                 srcToken: token.address,
                 srcChainId: network,
+                sharedParams,
               })
               if (!route) {
                 console.info(
-                  `No route found from ${network} and ${token.address} to ${lock.network} and ${lock.currencyContractAddress}`
+                  `No route found from ${networks[network].name} and ${token.symbol} to ${networks[lock.network].name} and ${lock.currencySymbol}`
                 )
                 return null
               }
-              const amount = BigInt(toBigInt(route.tokenPayment.amount))
+
               let userTokenBalance
               if (route.tokenPayment.tokenAddress === ZeroAddress) {
                 userTokenBalance = nativeBalance
@@ -182,11 +212,13 @@ export const useCrossChainRoutes = ({
                 )
               }
 
+              const amount = BigInt(route.tokenPayment.amount)
               const cost = ethers.formatUnits(
                 amount,
                 route.tokenPayment.decimals
               )
               if (Number(cost) > Number(userTokenBalance)) {
+                // Skip any route for which the user does not have enough tokens
                 return null
               }
               return {
@@ -199,7 +231,7 @@ export const useCrossChainRoutes = ({
               return null
             }
           },
-          enabled: enabled && hasPrices,
+          enabled: enabled && hasPrices && sharedParams,
           staleTime: 1000 * 60 * 5, // 5 minutes
         })
       ),

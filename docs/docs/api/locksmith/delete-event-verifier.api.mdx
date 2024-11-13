@@ -1,0 +1,71 @@
+---
+id: delete-event-verifier
+title: "deleteEventVerifier"
+description: "Removes a verifier for an event."
+sidebar_label: "deleteEventVerifier"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVlFv20YM/isHPm2AEgdZ96K3AEuHbmkxNM6GwfADI1HW1dKdyqPceoL++8CTLDu2l7TdQ/MSSyJ55MeP97ED3xCjWO/e5JBCThUJ3W7IyZ/EtrDEkECgrGUrW0gXHTwEYkgXy36ZQE4hY9uoO6Twnmq/oWDQbEZfU3g26AxpwEtIoEHGmoQ4xFhW3RqUEhJwWBOkEKp2BQkwfWwtUw6pcEvHJ90PRiErqUZIO5BtE52FrVtB3ydnY+/SuslzphBePEZLNTgYG/GmDWQwTNU9m8FSg4fGu0BBv19fXem/pwfc2SDGF4apRuusW02xg6KVeSfkRP2waSqbxUbNPgR17k4P948fKBOFmbWtYoejmUJbSTgwRGbcQgJWqA7nAri2qvCxIkgLrAIdArWAERFYHh+0+3ACx0nAPoHKZ+ubr3V4iw5Xyr8vcXAknzyvD4ytE1rFxp2xjhx5Lq5SpO8TECv6CNOE9MNfAq+ufjptcmSRDcZ5MdhK6dn+Q7nyqSEuPNdGShsMZmr/v9p+0rWn7akpBFydLTKnAttKIIW/fWuQ6ThbneNWSnKi6Tyb/jG0B4i983JzGAV2sL06hW1eklF+mu2YUY1rnRBlIgWJV0vuacCVPtsg3x07puBbzgbwCt+6/Hk4fiVHbLN3Xl5H4wGNn8/dFA9OYyjqRVtVha0mHPI2vlZqs8PKBOINsSFmz98dkXlJTOYThqgCmpKxbleCdlNK2lXyAndGsO5jebcaCsapq0lKv1evKDNSQgqzzfUsSk+Ydaor/Wy6XmfdkRj0Uec09iBNLVeQQinShHQ207sn1FbKy9bp74uGvfjMV5eZr+FYN/5gn7dxHsyQLqggPY0YBFfWrS6+LvL94DWFXe7F+V4bObRmkOipL3rkTqv0+ZGQ4yU4/HjtuUZt1m9/zaFP4GbPkkPJaOzvtN1rKTb2Yh1fRKH92BJvVXjBusJHv7FvD7Esc7erExLV4TDUc31S4WRnGvYbm1Mwj5ityeWmaF0EFSsr2zj/pFMRaWSzNYl1q8TUJJijoAniGVeUGHS5TqQtxqpM6f06CmxlM3Ihcngs6+2beayi8UFqdAdfBnKZuBuZg+XoSfrdfty+ZB0asRX6LLOmQusU/8iTbuTwAjaK0cBiSCAd96OJyPrueK9ZJlD6IOrddY8Y6IGrvtfXQ5vSxTKBDbIdRm3RQW6D/s6nWf/Pqn54P24CP5pxCztbxI41ThmywarVJ0hAKTMueToT33Tuy2vZN6R0jGG/7BMoCfO47Xaj1U2WUSMH/idXqo7kdCH9cnt3O7+FBFQ7D4bpaALjAWfT67rBYu7X5Pp+ylb0WXPs+38BWDkbbw==
+sidebar_class_name: "delete api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"deleteEventVerifier"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/v2/events/{slug}/verifiers/{verifierAddress}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Removes a verifier for an event.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"slug","required":true,"description":"Slug","schema":{"type":"string"}},{"in":"path","name":"verifierAddress","required":true,"description":"User address to use as verifier","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"List of remaining verifiers.","content":{"application/json":{"schema":{"type":"object","properties":{"results":{"type":"array","items":{"type":"object","nullable":false,"required":["address"],"properties":{"address":{"type":"string","nullable":false},"lockAddress":{"type":"string","nullable":false},"lockManager":{"type":"string","nullable":false},"network":{"type":"integer","nullable":false},"name":{"type":"string","nullable":true}},"title":"Verifier"}}}}}}},"403":{"description":"User is not authorized to perform this action.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"You are not authorized or authenticated to perform this action.","nullable":false}},"title":"NotAuthenticated"}}}},"404":{"description":"The item you are making request for does not exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"resource not found","nullable":false}},"title":"GenericNotFound"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

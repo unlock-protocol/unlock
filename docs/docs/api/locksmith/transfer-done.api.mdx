@@ -1,0 +1,71 @@
+---
+id: transfer-done
+title: "transferDone"
+description: "Finalize the transfer of a key to a recipient. This is to copy over any locksmith related data to the recipient's account."
+sidebar_label: "transferDone"
+hide_title: true
+hide_table_of_contents: true
+api: eJzNVk2P2zYQ/SvEXHrR2u42J93SNinStGhQe9GD4cOYGlmMKVIhKTuKoP9eDCnZ3tVm0QJFW18s8WP45s28R/VgG3IYlDXvCsghODS+JPejNQQZeJKtU6GDfNvDgycH+XY37DIoyEunGt4HObxVBrX6QiJUJKYQwpYCxZE6EaxA4UiqRpEJC7GplBfK87i0TSfsiZxA0wlt5dHXKlTCkcZAhSgwIK/jwJcI33iBUtrWhAVk4OhTSz58b4sO8h6kNYFM4EdsGq1kTG750TPSHrysqEZ+Cl1DkIPdfyQZxjjKUQH59kLDWh0MhtYxF/ZsyEEGDBIyCPZIBjIwFM7W8UhBWGhlCHYZNI55DYp8PGoW7nq+D06ZAzyldFOR8NNypvIRtdIWJDyZMONmAcMEdXbGMIJ/biKl89zMlOB1zrT1nhzPXVKeT8Yfs+oba3zi4X614r/Hma5bKcn7stW6u2ToqJha5ya17J+pbk3e4+GZOk0TcxrGbF6tvp0nwLrgdjY2CGxDRSYwLiq+DvhlrKbVGveaIC9Re/rLKLkeJbY6pP5xJM7oBRpBzlknlBFMcqm0Moexa6J0FvMzOdmgAr/DT2TIKbkmdyL3hkPBxMZ3czY2U49OdFinvlAh9jfy/j8U8tUc+nvqIurStuaF4v1LIIcMagqVZVturOewDYYKclie7peTUJbF5NRcHR+NunUacqhCaHy+XF5YX7SGn+8aZ4OVVi+krWe+88HZopX8IlLBYcieRvQBD8oc7v5e5HXadQm7u14vayYykZIumQsjfCRnFxdADntCF104Pby1rkZu95//2LAfvX4ssTEINuo9ddzkWI/vd8c4oBjYp5ZcB8w3F/b363Xy5jPWjaavOPhVdaPdXgeSy17fR3O9Dlw8dXXroauBEZU2HjiK7yEyK365kQ7XOVF6PyP5sk40zp5UQV7sUR7JFKJsTawrahU6UVonyOA+eYGSRwrKHDJRU8B46fpgHR4oE2gKVoUqR2JFZe3Rszy0kmR85Gdk9td3m0gk92uN5mbmcnWNXxaPYN/c2v/tt8TYMIE+h2WjURluqtj8/Si+LZyY9QkYZ2LTlV+xRvMt9P0ePT04PQw8nLor3+4yOKFTyWO3uyGDirCIX1Q9cDfm8EMi4W7DKHi5blO7PrEeVmTa8VpKasKLa3c3NvLht/WGtTN+KtW24D0Oz2xZeIYcuJtjUaIY41gPGs2hjU4FKSaXmK39RmNPhBmzmuRnuhuEfZ9WbFgTwwDZmErSyLAbhuFPIsyzvw==
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"transferDone"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/transfer/done"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Finalize the transfer of a key to a recipient. This is to copy over any locksmith related data to the recipient's account.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={undefined}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"type":"object","required":["transferSignature","owner","lock","token","network","deadline"],"properties":{"transferSignature":{"type":"string","description":"The signature of the transfer code sent to the recipient."},"owner":{"type":"string"},"lock":{"type":"string"},"token":{"type":"string"},"network":{"type":"number"},"deadline":{"type":"number"}}}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully transferred key to recipient.","content":{"application/json":{"schema":{"type":"object","required":["message"],"properties":{"message":{"type":"string"}}}}}},"401":{"description":"User is not authenticated.","content":{"application":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}},"403":{"description":"Transfer not authorized by locksmith","content":{"application/json":{"schema":{"type":"object","required":["message"],"properties":{"message":{"type":"string"}}}}}},"404":{"description":"Key not found.","content":{"application/json":{"schema":{"type":"object","required":["message"],"properties":{"message":{"type":"string"}}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

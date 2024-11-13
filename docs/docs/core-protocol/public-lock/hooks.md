@@ -17,7 +17,7 @@ We currently support 7 hooks (as of v12). If your lock uses a previous version, 
 - <a href="#onkeycancel-hook">onKeyCancelHook</a>: called when a key is canceled
 - <a href="#ontokenuri-hook">onTokenUriHook</a>: called when the tokenURI is fetched
 - <a href="#onvalidkey-hook">onValidKeyHook</a>: called when checking if a user has a valid key
-- <a href="#onkeytransferhook-hook">onKeyTransferHook</a>: called when a key is transfered from an address to another.
+- <a href="#onkeytransferhook-hook">onKeyTransferHook</a>: called when a key is transferred from an address to another.
 
 ## onGrantKey Hook
 
@@ -26,8 +26,7 @@ The `onGrantKeyHook` allows you to create custom logic that is called each time 
 A KeyGrantedHook should implement the following interface.
 
 ```solidity
-interface ILockKeyGrantHook
-{
+interface ILockKeyGrantHook {
   /**
    * @notice If the lock owner has registered an implementer then this hook
    * is called with every key granted.
@@ -50,13 +49,12 @@ interface ILockKeyGrantHook
 
 ## onKeyExtend Hook
 
-The `onKeyExtendHook` allows you create custom logic when a key is extended or renewed. This could enable use cases where for instance key metadata is updated, maybe you want to update the image when renewals happen. It could enable rewards programs where you increment a reward point total everytime a membership is renewed.
+The `onKeyExtendHook` allows you create custom logic when a key is extended or renewed. This could enable use cases where for instance key metadata is updated, maybe you want to update the image when renewals happen. It could enable rewards programs where you increment a reward point total every time a membership is renewed.
 
 A KeyExtendHook should implement the following interface.
 
 ```solidity
-interface ILockKeyExtendHook
-{
+interface ILockKeyExtendHook {
   /**
    * @notice This hook every time a key is extended.
    * @param tokenId tje id of the key
@@ -82,7 +80,7 @@ It contains 2 main functions:
 1. `keyPurchasePrice` which is used to determine the purchase price before issuing a transaction,
 2. `onKeyPurchase` which is called every time a key is sold.
 
-If either of these fail, then the whole purchase will revert.
+If either of these fails, then the whole purchase will revert.
 
 The `ILockKeyPurchaseHook` contract interface describes the parameters of each function (from, recipient, original price, price paid, etc), so the hook can be properly implemented.
 
@@ -111,15 +109,14 @@ This hook is called every time the `tokenURI()` is called. This allows customiza
 Want each key owner to have his/her own profile pic? Change description based on your own NFT? Just hook a contract compatible with the `ILockTokenURIHook` interface and return your own tokenURI.
 
 ```solidity
-interface ILockTokenURIHook
-{
+interface ILockTokenURIHook {
   function tokenURI(
     address lockAddress, // the address of the lock
-    address operator,    // the msg.sender issuing the call
-    address owner,    // the owner of the key
-    uint256 keyId,    // the id (tokenId) of the key (if applicable)
-    uint expirationTimestamp    // the key expiration timestamp
-  ) external view returns(string memory);
+    address operator, // the msg.sender issuing the call
+    address owner, // the owner of the key
+    uint256 keyId, // the id (tokenId) of the key (if applicable)
+    uint expirationTimestamp // the key expiration timestamp
+  ) external view returns (string memory);
 }
 ```
 
@@ -130,30 +127,24 @@ This hook is called every time the (ERC721) `balanceOf` method is called. This a
 That way you could whitelist your own NFT holders or DAO members, and provide them access without having them to register. Just use a connector contract compatible with `ILockValidKeyHook` that checks if the account is allowed or not, and register it as a hook.
 
 ```solidity
-interface ILockValidKeyHook
-{
+interface ILockValidKeyHook {
   function hasValidKey(
     address lockAddress, // the address of the current lock
     address keyOwner, // the potential owner of a key
     uint256 expirationTimestamp, // the key expiration timestamp
-    bool isValidKey // the validity in the lock contrat
-  )
-  external view
-  returns (bool);
+    bool isValidKey // the validity in the lock contract
+  ) external view returns (bool);
 }
 ```
 
 ## onKeyTransferHook Hook
 
-Called when a key is transfered, it can be useful to use with `onKeyPurchaseHook` to track key ownership on a 3rd party contract.
+Called when a key is transferred, it can be useful to use with `onKeyPurchaseHook` to track key ownership on a 3rd party contract.
 
 The `ILockKeyTransferHook` interface is quite straightforward:
 
 ```solidity
-
-interface ILockKeyTransferHook
-{
-
+interface ILockKeyTransferHook {
   /**
    * @notice If the lock owner has registered an implementer then this hook
    * is called every time balanceOf is called

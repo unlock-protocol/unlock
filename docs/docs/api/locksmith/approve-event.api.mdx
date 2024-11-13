@@ -1,0 +1,71 @@
+---
+id: approve-event
+title: "approveEvent"
+description: "Approve a single event within an event collection."
+sidebar_label: "approveEvent"
+hide_title: true
+hide_table_of_contents: true
+api: eJzNV1tv2zYU/ivEedoA2S6y7kVvaZEO2aUrEgfDYPiBFo8l1hSp8uLUE/Tfh0PStmI7Kdo9dE+xJPJcvu87l/RgOrTcS6NvBZTAu86aLd5sUXsowGEVrPQ7KBc9PDi0UC6Ww7IAga6ysqN7UMJ1usU4c1LXChnSffYofSM14zo/V0YprOjOFArouOUterQuWte8RSjBqVBDAZLMdtw3UIDFT0FaFFB6G7AAVzXYcih78Lsu3vFW6hqG07DuVaiZWTPf4IUIKA0yjc6/MWJH9k49VUZ7AqLsCRglqwjU7KMj8/15IGb1ESv/JOQFRM8UCiwL6Czh7SU6unb8dJbMl3PxhmW2pjAMBXjpFR7JiBTGxIaBPlt0ndEuOb569Yr+nLgIVYXOrYNSu71pcXRInH0zIE/zlmJ0RmqPNVqi7wU8BnK+J+/ZI9Ll7McOVsYo5DqasMg9imt/CfC1sS33UILgHidetkhXQie+7sqIisjB20PY186ZSkbIMimvL/Fwq7dcScGk7oJnFiuUWxRT9oYLlgX7n7jQQSm+ogDXXDk8JadF53iNlyW55kFRvndZTWxlxI4lX0w6JlPs03M3RK+1xl6yezxKdTdG8BfUaGWVISE530Qje/h+OoeP2hSFoo1nPPjGWPkP6diwDi0RxnwjHeOHRvRdgfzbBMYtnkZrbHxC7SmcF8M/xXmE3nvjr8dWDrC9Podt3iCTHlu2yxG1fCN1vVccWxvLhMGEK36W/wMRWnQm2CqBtzZBi5fhyGJ6b/y7eDih8fOlGnzQZINQp3a4luqAgwjxNXUtq7liDu0WLYva/u6IzBu0yB65i0OXQmJS71MgNqmbj3rIl8G6j+kdi24ooEXfGFoWOuNib6cxXcJsezWLDXxybNSznub5kN67WR4qcbEgs2nyB6ughMb7zpWzmTLVxrXSN9Og6feks8abyqhpZdqzsfjBGhGiK5YihaE4teg8r6WuJ19n+T7dOphdHrehe+IwsZJ2ogMl5BLyhhJHD3KLFor8491+XPz615xmy/VRICMjvJO/4Y7YSSsR7+RkE1/ErehTQLuLY4Y0dXfcYG4+87ZTeLJYjKejXpvoJ1P8EGFgv+9xgQKIlJT/1Rkih3OMWJQCHVvxaoNasHXQkQSupN/FVoFUQFFxstqgl7ouWIueC+45c95YXmPBuBZUvHKdUWCNMRtHylSyQu1iMhmGP27nMWtSXcv16EuWFdtvrU/C7o8V+W17ambF42c/6xSXcZGICuuz9BewJbROxQ8FlHmdTfqHYh8qrYINVU+5gL5fcYcPVg0DvU70lotlAVtuZarORQ9COvotDu3h2Sx/uMvb54/s5Q34mdz2MtQkuS1XgZ6gANJgXtCH5VBAg1zE/wj6/OltCmEyJwPHq2dtkEo03biuKuz8i2eXo4bz4c/7ORVTXtdbI+iO5Y+0cvPHFKaJkMTqjO96UFzXIfZOSDZJRjRex0vi00qNWV0Eou/TibnZoB6GAy6engmYYfgXN/esjA==
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"approveEvent"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/event-collection/{slug}/events/approve"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Approve a single event within an event collection.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"slug","in":"path","required":true,"schema":{"type":"string"},"description":"Slug of the event collection."}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"required":true,"content":{"application/json":{"schema":{"type":"object","required":["eventSlug"],"properties":{"eventSlug":{"type":"string","description":"Slug of the event to approve."}},"title":"ApproveEventBody"}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully approved the event.","content":{"application/json":{"schema":{"type":"object","properties":{"id":{"type":"integer"},"eventSlug":{"type":"string"},"collectionSlug":{"type":"string"},"isApproved":{"type":"boolean"},"createdAt":{"type":"string","format":"date-time"},"updatedAt":{"type":"string","format":"date-time"}},"title":"EventCollectionAssociation"}}}},"400":{"description":"Invalid input received. Bad request.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"Response body schema is invalid.","nullable":false},"error":{"type":"string","nullable":true}},"title":"GenericInvalidBodyError"}}}},"403":{"description":"User is not authorized to perform this action.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"You are not authorized or authenticated to perform this action.","nullable":false}},"title":"NotAuthenticated"}}}},"404":{"description":"The item you are making request for does not exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"resource not found","nullable":false}},"title":"GenericNotFound"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

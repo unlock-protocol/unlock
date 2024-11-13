@@ -1,0 +1,71 @@
+---
+id: check-event-ticket
+title: "checkEventTicket"
+description: "Mark an event ticket as checked in."
+sidebar_label: "checkEventTicket"
+hide_title: true
+hide_table_of_contents: true
+api: eJzlV02P2zYQ/SvEnFpAay226aG67SEptkkWQdfbolj4wKVGFiOKVMiRE1fQfw+GlD/WdrKJLynQk0WJfDPz5nFmPIDr0EvSzt6UUICqUTUvV2hprlWDBBkEVL3XtIbiYYD7gB6KB/gLva40eliMiwxKDMrrjlGggLfSN0JagQwjKOIIGUTExlJoO4MMOulli4Q+RGDNJztJNWRgZYtQQDD9EjLw+KHXHksoyPd4aOwubQqqxlZCMQCtu3iYvLZLGMfsJLZF+uh88yz8bdondDk7ZUVbwiX6L5oxTjXXZekxhGdNvXGqETJtPmnsmZAaXN+Uz1p5jWtxczqYLf6CQULnbMDA368ur/jnKVDSh9CHeVXOElriA7LrjFZRXPn7wKeGY6vu8T0q1pntjZGPBqGopAmYQedZm6STEy2GIJd47C9HWMneEKuhVwpDqHpj1qLqTaWNwVJQjYJpwUCzY0vjmAFp4jX8jha9VhMOjCN/fHH5y3H8fBM4eutIyJ5q5/W/bMqJDn3lfCuo1kFIxft/ODH/uF5Ij4feOh9XaInd+ar7XyHt1tH1PsqWthcnZFOj0IStWE8etbLRdrlJj6icF6XDxCt+0iljP5Q7j8H1XiXyKtfb8ps0dOvoVdy8YeO3k2x4ZBVJoZytjFY0E/Oo1smmNB5luf6PUJH8/ShDrO/eOy+05YvGN43T+P03Df0K/UuGmoj69fLyxG2zDMPynIxtBVP28TVXYm+lESECJuf+B3yNGbRItePm3fUUGyvVUEC+usplp/PUf/OBu+mYD1PjG3NuTfmw16DGvMF1PsQ2MuaxqMfuz/ZSj+69gQJqoi4UeQQIraZ61lt+vui8I6ecmSnXwmHfeedd2cdiIlIIwG3sKWIgudR2efF9yHfp1BZ2sRtZ7ji5KV1pcNnmik1ueiCvH1F69JBND6+cbyUn8I+/5zBmcL1Tzh6I7PRrXO86sOz0RRNfxPb8oUe/5nYN2lYunptyeR/DEm82cUIGTHKK5+oowu0+0Xm30iUG8ShVg7YUVW8jqdJoWsfiiXxTorRi4rVdZqJFkqUkKQI5L5eYCWlLLme6mqIStXNNHDuMVmhD1PUU1tubeYyic4Faafe+RJGIOC6K7bz4xPdhd/++cS6cuCX8RHlnpLbMf9TJMEn7AVbMkew0b9+YLaZxsdiNdkwyv3k6haUMFZtxKQl9kUHtAjH4MDzKgPfejCO/TlksHhYZrKTX6XY+DFDqwM/ltjx8Me6f/pwmsp/FNK2ejHEjKsvuraTpeTX5Ow3DfGXOsvt0jD3D/IbUsz04nG7P8GE/jWf7sZt/z/AgaWZcjBnUKMv4V2iYvl0rhR3tnTrqNlyZtrX63f2cNdyzoLcF5aAKRfSTHg1D2jF3Ddpx3DpIvGYHx/EzHQDLYg==
+sidebar_class_name: "put api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"checkEventTicket"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"put"}
+  path={"/v2/api/ticket/{slug}/{network}/lock/{lockAddress}/key/{keyId}/check"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Mark an event ticket as checked in.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"slug","required":true,"description":"Slug","schema":{"type":"string"}},{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}},{"in":"path","name":"keyId","required":true,"description":"Key Id.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"202":{"description":"Ticket is checked in.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"Successfully fulfilled the request.","nullable":false}},"title":"GenericSuccess"}}}},"403":{"description":"User is not authorized to perform this action.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"You are not authorized or authenticated to perform this action.","nullable":false}},"title":"NotAuthenticated"}}}},"404":{"description":"The item you are making request for does not exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"resource not found","nullable":false}},"title":"GenericNotFound"}}}},"409":{"description":"There is a conflict. The resource already exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

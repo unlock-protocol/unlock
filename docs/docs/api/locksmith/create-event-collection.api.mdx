@@ -1,0 +1,71 @@
+---
+id: create-event-collection
+title: "createEventCollection"
+description: "Create a new event collection"
+sidebar_label: "createEventCollection"
+hide_title: true
+hide_table_of_contents: true
+api: eJzNV01vGzcQ/SvEnFeSa7SXvTmGWzhpUSOW0YMgBCNyJDHikhuSK0cQ9r8XQ66ktbSJ4eTQnrTLj9mZN+/NjPbgavIYtbP3CkqQnjDS3ZZsvHXGkOQdKCCQbLyOOyhne3gK5KGczdt5AYqC9LpOx0q4TdcFCkvPgtiKkH0znr40FOI7p3ZQ7tOr9qSgjL6hAqSzkWzkLaxro2VybPI5sPE9BLmmCvkp7mqCEtziM8nY2c2GZhB1NAQvPSugQosr8jdKeQqBAswLqD0HHzWFZDPdOxkP0Wu7gvYsxoF96bbk7ytcDV9foLUM2MCW0XYTejvoPe6gAB2pCkOBnrmcdgfsNt4MrLdtOwDE618/3S8OKMEZRVJG8wc8hdrZzvL11S/885Ilj42UFMKyMWYnMuPUEFt+mA4vUQqmWQ2i9H/I+NFnVErz99A8DOT4lIOfy2DRKVzdxMvtApbOVxihBIWRRlFXlNhUq7deSdl8E7P7ErZYsYJT4grQCedzQWOMXi+aOCTldH8I/W9SQX8zl69RoefHD0YbPer4KZ0oYIumoYHidDoz5ES+Naj4c81+V8adhH+9urpU7b3dotFKaFs3UXiSpLekxuIdKtHV9fHPiNY2xuCCvVqiCXSOQEUhDOaIU7TExjAHP3a1Ryyc2on8LaGD0Nn38eVnmKveuwGx9o9ye+rD9gdZ8lp2kHDxu0tGMny/DcH3ZNmUiE5w3VtqcwBNqCYtaxvJWzQikN+SF8mt/xzR6Zo8iWcMAm12SWh7CEHblYhr6qf/HN5L0B5TeCe8uKJRXDseP2oXUv3GuIYSJtvrSSokI/lyFmEDIY0iqdHBOsY6lJOJcXITKh3X48by86j2LjrpzFi6Cs6HlQfvVJOMiuwTtMW5xRBxpe1q9DbLj/nW0ez8NEA9crYy/nmMOoLPn+To0gEoYUHoyUPRPfx+qLPv/5my5G9OVOgXnlp/IK48uQTy+2iTFjQ79qUhv0ttgNnz8TSN3X3Fqu6aYZeuHhn6sR2X+z3wtHpofaeVruPNLlmWoT7UqvlQZ5sdtudcpO3S9T18SqkQfx5yw+WTfMh+Xl94fjwnau+2WlEQC5QbskosGytz89VxJ5bOC2K5Jn5ruaGo7aoQFUVUGFGE6DyuqBBolbAu6mWXCbF2bhPGKWpJNtCpG8Ff99OEPHO8QtvbyS1ZpFosXozdZ83nWAleHbQ7qCN9jZPaoLa9qTCrawZbhuhCX/MC1qzCcgb7/QIDPXnTtrycyVPO5txvvM4qn3Fi1oQq/SXYA5OthNvs6Gjab2rlZfliweUbN1JSHb97dt4rFA9/P06Zbd0ficopvuPxmXsrPkMJUIBLwCWtpbU9GLSrJjM22+SEYMN4HOl5prs+c9Hueh7u9/nE1G3Iti0UXSiR36Gdt237L8dsqwk=
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"createEventCollection"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/event-collection"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Create a new event collection
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={undefined}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"required":true,"content":{"application/json":{"schema":{"type":"object","required":["title","description","managerAddresses"],"properties":{"title":{"type":"string"},"description":{"type":"string"},"coverImage":{"type":"string"},"banner":{"type":"string"},"links":{"type":"array","items":{"type":"object","properties":{"type":{"type":"string"},"url":{"type":"string"}}}},"managerAddresses":{"type":"array","items":{"type":"string"}}},"title":"EventCollectionBody"}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"201":{"description":"Successfully created event collection","content":{"application/json":{"schema":{"type":"object","properties":{"slug":{"type":"string"},"title":{"type":"string"},"description":{"type":"string"},"coverImage":{"type":"string"},"banner":{"type":"string"},"links":{"type":"object","additionalProperties":{"type":"string"}},"managerAddresses":{"type":"array","items":{"type":"string"}},"createdAt":{"type":"string","format":"date-time"},"updatedAt":{"type":"string","format":"date-time"},"events":{"type":"array","items":{"type":"object","required":["name","slug","image","description","attributes"],"properties":{"name":{"type":"string"},"slug":{"type":"string"},"image":{"type":"string"},"description":{"type":"string"},"attributes":{"type":"array","items":{"type":"object","required":["trait_type","value"],"properties":{"trait_type":{"type":"string"},"value":{"type":"string"}}}}},"title":"Event"}}},"title":"EventCollection"}}}},"400":{"description":"Invalid input received. Bad request.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"Response body schema is invalid.","nullable":false},"error":{"type":"string","nullable":true}},"title":"GenericInvalidBodyError"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

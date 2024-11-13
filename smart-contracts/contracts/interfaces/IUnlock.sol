@@ -355,4 +355,23 @@ interface IUnlock {
    * The address of the UDT Swap and Burn contract
    */
   function swapBurnerAddress() external view returns (address);
+
+  /**
+   * Disable an existing lock
+   * @param lockAddress the addres of the lock
+   * @notice after this step, the lock will be unsable
+   */
+  function burnLock(address lockAddress) external;
+
+  /**
+   * The implementation used to disable an existing lock
+   */
+  function burnedLockImpl() external view returns (address);
+
+  /**
+   * Set the implementation that will be used when disabling a lock
+   * @dev `burnLock` will perform a proxy upgrade of the lock to this contract
+   * @param implAddress an empty implementation contract
+   */
+  function setBurnedLockImpl(address implAddress) external;
 }

@@ -1,0 +1,71 @@
+---
+id: get-receipts-status
+title: "getReceiptsStatus"
+description: "Retrieve the status of receipt generation for a lock."
+sidebar_label: "getReceiptsStatus"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVk1v5DYM/SsCTy2gZBbBnnxLgW6x7XZRZBL0MJiDRqLH2pElRaKnHRj+7wVtj+fLRbBBgeYSWxbJx0fycVoIEZMiG/xnAwVskZ5Qo42Ul6SoySAho26SpQMUqxZeMiYoVutuLcFg1slGNoYCnpCSxT0KqlDk3liEUqTBndiiHwOJMiShhAt6dw8SokqqRsKU+wCWfUVFFUjwqkYowCP9FdIOJCR8bWxCAwWlBq8RfB3uCWvYb9YV1gqKFugQ2Y31hFtM0HVyNgwDejQmYc5vhvoS9E6o4fJssEzJ+i10zFPCHIPPmPn7w4cP/O/S3bLRGnMuG+cOIo1EmjnuBmI5pA6e0BM7UzE6q/sLi2+ZPba3iMLmG2q6yGzF0BrHhzqhIjSPBGsJMXFXkB0QW8I6nzlSKakDyJvzKcCVuZmhhct+cEGZt+2HjG99SEDf1JxERG+GkzzwCBJKZR0aWHcSdniYRTDm/nZiUy277pyoGURlSLUiKMAowjuyNXKgJprvMzn+Sfg41y0/KW6N1wYz/WeNUGPOaou31T9+mKVjgPjxFuLX8O/NK8rQePO/I+8k1EhVGGWvVyKqoIDF/mExgs8L5dyiHQWoW7RnGtH10pj2R+FqkoMCKqKYi8WCL+baUnXfeH6+iylQ0MHd61DDtZz8kYJpdM/RsncJrFGXHjOprfXbu+/zvBysJrfrk54vmd6BqkHVJ5445FHU+H2DKmECOT58Orbsr38+c38/nmp3Pk3R/oaHk7yqaO92/UGvva8NpgNrMVhfht7OkuOLL31a4ssxT5DAJA/5PNxkON0TMYW9NZjFRukdeiPKxvekKmfp0K8d9GrjmA+yeodk/VaKGkkZRUpkCkltUQrljfCBbDlmJaoQdr3oOqvR576nxrR+//zcZxFDplr5sy9bJHFcpmLaphfg29MIvHt/jnQT/k2L6JT1veRw67RjR69g/9APzYAFJCjnQEJxWqzF+fJbS6hCJjZs243K+JJc1/HxULRitZawV8mqDRds1YKxmZ8NFKVy+Xpbnmf5w9M4uj+Ky3U9m8axlTy3zV65ht9glPTpdwHPyrsQXG/xd2A4563jbVOhMv1PpHa88ag1RjqzvZE6HspJin75+ZkL1HDhplm6GsDe+yyuth1uPIcd+q6bYBK/M8Cu+weGyXMq
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"getReceiptsStatus"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/receipts/all/{network}/{lockAddress}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Retrieve the status of receipt generation for a lock.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully retrieved receipt generation status.","content":{"application/json":{"schema":{"type":"object","required":["result","createdAt"],"properties":{"items":{"type":"array","items":{"type":"object","properties":{"id":{"type":"string"},"payload":{"type":"object","properties":{"status":{"type":"string","enum":["pending","success","failed"]},"key":{"type":"string"},"result":{"type":"array","items":{"type":"string"}}}},"createdAt":{"type":"string","format":"date-time"},"updatedAt":{"type":"string","format":"date-time"}}}}}}}}},"400":{"description":"Bad request.","content":{"application/json":{"schema":{"type":"object","required":["message"],"properties":{"message":{"type":"string"}}}}}},"404":{"description":"No receipt generation status found.","content":{"application/json":{"schema":{"type":"object","required":["message"],"properties":{"message":{"type":"string"}}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      
