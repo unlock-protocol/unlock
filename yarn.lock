@@ -3638,18 +3638,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@coinbase/wallet-sdk@npm:4.1.0":
-  version: 4.1.0
-  resolution: "@coinbase/wallet-sdk@npm:4.1.0"
-  dependencies:
-    "@noble/hashes": "npm:^1.4.0"
-    clsx: "npm:^1.2.1"
-    eventemitter3: "npm:^5.0.1"
-    preact: "npm:^10.16.0"
-  checksum: 10/5db6ab86a2c5c2d327e98c1e22ecbbc44d91d0aa5003606adbff2c2c6d7cd590e81bcae101c02501afd78848c966e3f0aafbee24a7f5a0fdb08ee89dfdc2600f
-  languageName: node
-  linkType: hard
-
 "@colors/colors@npm:1.5.0":
   version: 1.5.0
   resolution: "@colors/colors@npm:1.5.0"
@@ -7216,7 +7204,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hookform/error-message@npm:2.0.1, @hookform/error-message@npm:^2.0.1":
+"@hookform/error-message@npm:^2.0.1":
   version: 2.0.1
   resolution: "@hookform/error-message@npm:2.0.1"
   peerDependencies:
@@ -12605,15 +12593,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rehooks/local-storage@npm:2.4.5":
-  version: 2.4.5
-  resolution: "@rehooks/local-storage@npm:2.4.5"
-  peerDependencies:
-    react: ">=16.8.0"
-  checksum: 10/6ee932cc83e9c6358df595f6b9cba9f4ccf3aeac2149632dcfcd12e09733430d65ec13d77baff98b689826efa8173abb178dc862063670fe6585db41572ea69c
-  languageName: node
-  linkType: hard
-
 "@repeaterjs/repeater@npm:^3.0.4, @repeaterjs/repeater@npm:^3.0.6":
   version: 3.0.6
   resolution: "@repeaterjs/repeater@npm:3.0.6"
@@ -17405,12 +17384,9 @@ __metadata:
     google-auth-library: "npm:9.14.2"
     graphile-worker: "npm:0.16.6"
     graphql: "npm:16.9.0"
-    graphql-tag: "npm:2.12.6"
-    html-template-tag: "npm:4.1.0"
     ics: "npm:3.8.1"
     isomorphic-fetch: "npm:3.0.0"
     jsonwebtoken: "npm:9.0.2"
-    lodash.isequal: "npm:4.5.0"
     memory-cache-node: "npm:1.4.0"
     multer: "npm:1.4.5-lts.1"
     multer-s3: "npm:3.0.1"
@@ -17436,7 +17412,6 @@ __metadata:
     tsx: "npm:4.19.2"
     typescript: "npm:5.6.3"
     unified: "npm:11.0.5"
-    unlock-abi-1-1: "npm:1.1.1"
     vitest: "npm:2.1.4"
     vitest-fetch-mock: "npm:0.4.2"
     winston: "npm:3.17.0"
@@ -17633,17 +17608,14 @@ __metadata:
   dependencies:
     "@airstack/airstack-react": "npm:0.6.4"
     "@coinbase/waas-sdk-web": "npm:3.3.3"
-    "@coinbase/wallet-sdk": "npm:4.1.0"
     "@crossmint/client-sdk-react-ui": "npm:1.2.2"
     "@decent.xyz/box-common": "npm:3.3.17"
     "@enzoferey/ethers-error-parser": "npm:0.2.3"
     "@guildxyz/sdk": "npm:2.6.9"
     "@headlessui/react": "npm:2.1.9"
-    "@hookform/error-message": "npm:2.0.1"
     "@hookform/resolvers": "npm:3.9.1"
     "@privy-io/react-auth": "npm:1.89.0"
     "@radix-ui/react-avatar": "npm:1.1.1"
-    "@rehooks/local-storage": "npm:2.4.5"
     "@sentry/nextjs": "npm:7.119.2"
     "@stripe/react-stripe-js": "npm:2.8.1"
     "@stripe/stripe-js": "npm:4.5.0"
@@ -17669,16 +17641,12 @@ __metadata:
     "@vercel/og": "npm:0.6.3"
     "@vercel/speed-insights": "npm:1.0.14"
     "@vitejs/plugin-react": "npm:4.3.3"
-    "@walletconnect/ethereum-provider": "npm:2.16.2"
-    "@walletconnect/modal": "npm:2.6.2"
     "@xstate/react": "npm:4.1.3"
     autoprefixer: "npm:10.4.20"
     axios: "npm:1.7.7"
-    blockies-react-svg: "npm:0.0.13"
     calendar-link: "npm:2.7.0"
     csv: "npm:6.3.10"
     dayjs: "npm:1.11.13"
-    deep-object-diff: "npm:1.1.9"
     dotenv: "npm:16.4.5"
     eslint: "npm:9.11.1"
     ethers: "npm:6.13.4"
@@ -17693,7 +17661,6 @@ __metadata:
     node-forge: "npm:1.3.1"
     postcss: "npm:8.4.47"
     postmate: "npm:1.5.2"
-    prettier: "npm:3.3.3"
     qr-scanner: "npm:1.4.2"
     qrcode.react: "npm:4.0.1"
     react-device-detect: "npm:2.2.3"
@@ -17704,7 +17671,6 @@ __metadata:
     react-hook-form: "npm:7.53.1"
     react-hot-toast: "npm:2.4.1"
     react-icons: "npm:5.3.0"
-    react-jwt: "npm:1.2.2"
     react-markdown: "npm:9.0.1"
     react-test-renderer: "npm:18.3.1"
     react-to-print: "npm:3.0.2"
@@ -17724,7 +17690,6 @@ __metadata:
     vitest-localstorage-mock: "npm:0.1.2"
     xstate: "npm:5.14.0"
     zod: "npm:3.23.8"
-    zod-to-json-schema: "npm:3.23.5"
   peerDependencies:
     react: 18.3.1
     react-dom: 18.3.1
@@ -18110,30 +18075,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@walletconnect/core@npm:2.16.2":
-  version: 2.16.2
-  resolution: "@walletconnect/core@npm:2.16.2"
-  dependencies:
-    "@walletconnect/heartbeat": "npm:1.2.2"
-    "@walletconnect/jsonrpc-provider": "npm:1.0.14"
-    "@walletconnect/jsonrpc-types": "npm:1.0.4"
-    "@walletconnect/jsonrpc-utils": "npm:1.0.8"
-    "@walletconnect/jsonrpc-ws-connection": "npm:1.0.14"
-    "@walletconnect/keyvaluestorage": "npm:1.1.1"
-    "@walletconnect/logger": "npm:2.1.2"
-    "@walletconnect/relay-api": "npm:1.0.11"
-    "@walletconnect/relay-auth": "npm:1.0.4"
-    "@walletconnect/safe-json": "npm:1.0.2"
-    "@walletconnect/time": "npm:1.0.2"
-    "@walletconnect/types": "npm:2.16.2"
-    "@walletconnect/utils": "npm:2.16.2"
-    events: "npm:3.3.0"
-    lodash.isequal: "npm:4.5.0"
-    uint8arrays: "npm:3.1.0"
-  checksum: 10/b867127db13594276fcf107c09b94407858fcf7214771c7682ebf1f552b386d1a116332084ce06579466a5db3a19c2750882eb44606743c54ed902ef27c849a1
-  languageName: node
-  linkType: hard
-
 "@walletconnect/core@npm:2.17.2":
   version: 2.17.2
   resolution: "@walletconnect/core@npm:2.17.2"
@@ -18165,24 +18106,6 @@ __metadata:
   dependencies:
     tslib: "npm:1.14.1"
   checksum: 10/f6a1e3456e50cc7cfa58d99fd513ecac75573d0b8bcbbedcb1d7ec04ca9108df16b471afd40761b2a5cb4f66d8e33b7ba25f02c62c8365d68b1bd1ef52c1813e
-  languageName: node
-  linkType: hard
-
-"@walletconnect/ethereum-provider@npm:2.16.2":
-  version: 2.16.2
-  resolution: "@walletconnect/ethereum-provider@npm:2.16.2"
-  dependencies:
-    "@walletconnect/jsonrpc-http-connection": "npm:1.0.8"
-    "@walletconnect/jsonrpc-provider": "npm:1.0.14"
-    "@walletconnect/jsonrpc-types": "npm:1.0.4"
-    "@walletconnect/jsonrpc-utils": "npm:1.0.8"
-    "@walletconnect/modal": "npm:2.6.2"
-    "@walletconnect/sign-client": "npm:2.16.2"
-    "@walletconnect/types": "npm:2.16.2"
-    "@walletconnect/universal-provider": "npm:2.16.2"
-    "@walletconnect/utils": "npm:2.16.2"
-    events: "npm:3.3.0"
-  checksum: 10/b438d11e32d12f58afa6d782defc22f59ef07ecc3eef1d2bf24a500e4e2348168a1cc4185e3fcb4db90fa87c97d5722aca6c49aed5391ba66dc57f317fef8c6a
   languageName: node
   linkType: hard
 
@@ -18308,33 +18231,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@walletconnect/modal-core@npm:2.6.2":
-  version: 2.6.2
-  resolution: "@walletconnect/modal-core@npm:2.6.2"
-  dependencies:
-    valtio: "npm:1.11.2"
-  checksum: 10/671184da341eebb6b7a3ad7c334851113683d71e6118f7203a377e493b61eb94bc0571484e497e577b9f4d7221a8a7034ad4b52af722c89fa4105627bed638ba
-  languageName: node
-  linkType: hard
-
 "@walletconnect/modal-core@npm:2.7.0":
   version: 2.7.0
   resolution: "@walletconnect/modal-core@npm:2.7.0"
   dependencies:
     valtio: "npm:1.11.2"
   checksum: 10/1549f9ba5c98dfed2f97fbfccfcd2e342550c7ba7a85970bff224258dd397bad0a29721b90fef408dcc6cdfa65c52253476a04c16fece9b4d48792f03c3a4b4f
-  languageName: node
-  linkType: hard
-
-"@walletconnect/modal-ui@npm:2.6.2":
-  version: 2.6.2
-  resolution: "@walletconnect/modal-ui@npm:2.6.2"
-  dependencies:
-    "@walletconnect/modal-core": "npm:2.6.2"
-    lit: "npm:2.8.0"
-    motion: "npm:10.16.2"
-    qrcode: "npm:1.5.3"
-  checksum: 10/5460ad7f4591c016b723b3f707ac0020e185b60744cf7132b4b4f48d71c87c1c55826f6e11005860f96bd11e0ed3f88da7cda4c0a1c35a0e5b7d6e53bc14cf15
   languageName: node
   linkType: hard
 
@@ -18347,16 +18249,6 @@ __metadata:
     motion: "npm:10.16.2"
     qrcode: "npm:1.5.3"
   checksum: 10/00d17001bde7646def34eaffef81c4a580f09fdf10902a7a938cd2a3738f8f1cbb10520c229989b64e147df9f4df8ca31bd1d904f9019acc63327b495fb5b3ed
-  languageName: node
-  linkType: hard
-
-"@walletconnect/modal@npm:2.6.2":
-  version: 2.6.2
-  resolution: "@walletconnect/modal@npm:2.6.2"
-  dependencies:
-    "@walletconnect/modal-core": "npm:2.6.2"
-    "@walletconnect/modal-ui": "npm:2.6.2"
-  checksum: 10/f8f132c89d1d7f44f2fa564c8d5122163610be4afb0cadc9576c77083471297c37ff62aae3a25492c0ddb480240a2a6ffefe3eba1fd48f1664160c6bac01466d
   languageName: node
   linkType: hard
 
@@ -18402,23 +18294,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@walletconnect/sign-client@npm:2.16.2":
-  version: 2.16.2
-  resolution: "@walletconnect/sign-client@npm:2.16.2"
-  dependencies:
-    "@walletconnect/core": "npm:2.16.2"
-    "@walletconnect/events": "npm:1.0.1"
-    "@walletconnect/heartbeat": "npm:1.2.2"
-    "@walletconnect/jsonrpc-utils": "npm:1.0.8"
-    "@walletconnect/logger": "npm:2.1.2"
-    "@walletconnect/time": "npm:1.0.2"
-    "@walletconnect/types": "npm:2.16.2"
-    "@walletconnect/utils": "npm:2.16.2"
-    events: "npm:3.3.0"
-  checksum: 10/4b07c859c2d66b53bcef825b5d9374471e711b1f057c523c546d093ee66112e2884ad26dda3c3e2696b1f5abb05a88bab8bf767030e6122e5d2cb460e51a4e7a
-  languageName: node
-  linkType: hard
-
 "@walletconnect/sign-client@npm:2.17.2":
   version: 2.17.2
   resolution: "@walletconnect/sign-client@npm:2.17.2"
@@ -18445,20 +18320,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@walletconnect/types@npm:2.16.2":
-  version: 2.16.2
-  resolution: "@walletconnect/types@npm:2.16.2"
-  dependencies:
-    "@walletconnect/events": "npm:1.0.1"
-    "@walletconnect/heartbeat": "npm:1.2.2"
-    "@walletconnect/jsonrpc-types": "npm:1.0.4"
-    "@walletconnect/keyvaluestorage": "npm:1.1.1"
-    "@walletconnect/logger": "npm:2.1.2"
-    events: "npm:3.3.0"
-  checksum: 10/bad714e4681aee92d9aeb112dc1e3df6336a17bb082d67e573c84c935dcee8976c3276d7b38f63d688281fe6d5ab6239528025749324cf9c36bd6e0d6d810a11
-  languageName: node
-  linkType: hard
-
 "@walletconnect/types@npm:2.17.2":
   version: 2.17.2
   resolution: "@walletconnect/types@npm:2.17.2"
@@ -18470,23 +18331,6 @@ __metadata:
     "@walletconnect/logger": "npm:2.1.2"
     events: "npm:3.3.0"
   checksum: 10/a668ab7a88b9f5904833f9e0b1bc5ac7501a5bdfdd1c84774464e399f337e31e61da90982bb9bf022ef91398b5e15d74ef368625cce38902c6a7cffb255d46fd
-  languageName: node
-  linkType: hard
-
-"@walletconnect/universal-provider@npm:2.16.2":
-  version: 2.16.2
-  resolution: "@walletconnect/universal-provider@npm:2.16.2"
-  dependencies:
-    "@walletconnect/jsonrpc-http-connection": "npm:1.0.8"
-    "@walletconnect/jsonrpc-provider": "npm:1.0.14"
-    "@walletconnect/jsonrpc-types": "npm:1.0.4"
-    "@walletconnect/jsonrpc-utils": "npm:1.0.8"
-    "@walletconnect/logger": "npm:2.1.2"
-    "@walletconnect/sign-client": "npm:2.16.2"
-    "@walletconnect/types": "npm:2.16.2"
-    "@walletconnect/utils": "npm:2.16.2"
-    events: "npm:3.3.0"
-  checksum: 10/729af58013c0831d998fd72a64e89512d6311c1bcb6d5167fd5b21ea08a89a078e2c7f5592e1ff346b4ab1245a4a8a5354507b54b625210fc4795f34f1f8e0d3
   languageName: node
   linkType: hard
 
@@ -18507,30 +18351,6 @@ __metadata:
     events: "npm:3.3.0"
     lodash: "npm:4.17.21"
   checksum: 10/7081d7927df86bea80e056c497db468668369dc2020735da8ff5e687f95504e2b26e667d46bc39617db5141d42279b85a27deee699b046ab634e0f4cfd89e821
-  languageName: node
-  linkType: hard
-
-"@walletconnect/utils@npm:2.16.2":
-  version: 2.16.2
-  resolution: "@walletconnect/utils@npm:2.16.2"
-  dependencies:
-    "@stablelib/chacha20poly1305": "npm:1.0.1"
-    "@stablelib/hkdf": "npm:1.0.1"
-    "@stablelib/random": "npm:1.0.2"
-    "@stablelib/sha256": "npm:1.0.1"
-    "@stablelib/x25519": "npm:1.0.3"
-    "@walletconnect/relay-api": "npm:1.0.11"
-    "@walletconnect/relay-auth": "npm:1.0.4"
-    "@walletconnect/safe-json": "npm:1.0.2"
-    "@walletconnect/time": "npm:1.0.2"
-    "@walletconnect/types": "npm:2.16.2"
-    "@walletconnect/window-getters": "npm:1.0.1"
-    "@walletconnect/window-metadata": "npm:1.0.1"
-    detect-browser: "npm:5.3.0"
-    elliptic: "npm:^6.5.7"
-    query-string: "npm:7.1.3"
-    uint8arrays: "npm:3.1.0"
-  checksum: 10/21bbfcdb170a661399f6a63be9338bf31492d6f2e62a58589930ad6aca639b7ea691c73ec89e97d8cb95555eaf13b0a4f5746bd20549560244d4348d34f552f1
   languageName: node
   linkType: hard
 
@@ -21087,15 +20907,6 @@ __metadata:
   dependencies:
     browser-readablestream-to-it: "npm:^1.0.3"
   checksum: 10/7e0081b24909732a3526003ab06bb7e0df10418fdb20a10c3c747c7eb0fb2b7ba6ad8fce5b5463025b25cf0ea53b4fd71e1fb5d862bb9339447ddf97d0dbb2f4
-  languageName: node
-  linkType: hard
-
-"blockies-react-svg@npm:0.0.13":
-  version: 0.0.13
-  resolution: "blockies-react-svg@npm:0.0.13"
-  peerDependencies:
-    react: ">=16.8.0"
-  checksum: 10/1618aaf4186afe4cfec9680e831cdc03ea2fb911964a71e5392a64487c0a5ccddb0f37bc933e9680f76b552fa20f1e85b0a6072cfa9445df8b5d5877e2b0360f
   languageName: node
   linkType: hard
 
@@ -24853,13 +24664,6 @@ __metadata:
   version: 0.1.4
   resolution: "deep-is@npm:0.1.4"
   checksum: 10/ec12d074aef5ae5e81fa470b9317c313142c9e8e2afe3f8efa124db309720db96d1d222b82b84c834e5f87e7a614b44a4684b6683583118b87c833b3be40d4d8
-  languageName: node
-  linkType: hard
-
-"deep-object-diff@npm:1.1.9":
-  version: 1.1.9
-  resolution: "deep-object-diff@npm:1.1.9"
-  checksum: 10/b9771cc1ca08a34e408309eaab967bd2ab697684abdfa1262f4283ced8230a9ace966322f356364ff71a785c6e9cc356b7596582e900da5726e6b87d4b2a1463
   languageName: node
   linkType: hard
 
@@ -29523,16 +29327,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fsevents@npm:^2.3.2, fsevents@npm:~2.3.2, fsevents@npm:~2.3.3":
-  version: 2.3.3
-  resolution: "fsevents@npm:2.3.3"
-  dependencies:
-    node-gyp: "npm:latest"
-  checksum: 10/4c1ade961ded57cdbfbb5cac5106ec17bc8bccd62e16343c569a0ceeca83b9dfef87550b4dc5cbb89642da412b20c5071f304c8c464b80415446e8e155a038c0
-  conditions: os=darwin
-  languageName: node
-  linkType: hard
-
 "fsevents@npm:~2.1.1":
   version: 2.1.3
   resolution: "fsevents@npm:2.1.3"
@@ -29543,11 +29337,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fsevents@patch:fsevents@npm%3A^2.3.2#optional!builtin<compat/fsevents>, fsevents@patch:fsevents@npm%3A~2.3.2#optional!builtin<compat/fsevents>, fsevents@patch:fsevents@npm%3A~2.3.3#optional!builtin<compat/fsevents>":
+"fsevents@npm:~2.3.2, fsevents@npm:~2.3.3":
   version: 2.3.3
-  resolution: "fsevents@patch:fsevents@npm%3A2.3.3#optional!builtin<compat/fsevents>::version=2.3.3&hash=df0bf1"
+  resolution: "fsevents@npm:2.3.3"
   dependencies:
     node-gyp: "npm:latest"
+  checksum: 10/4c1ade961ded57cdbfbb5cac5106ec17bc8bccd62e16343c569a0ceeca83b9dfef87550b4dc5cbb89642da412b20c5071f304c8c464b80415446e8e155a038c0
   conditions: os=darwin
   languageName: node
   linkType: hard
@@ -29555,6 +29350,15 @@ __metadata:
 "fsevents@patch:fsevents@npm%3A~2.1.1#optional!builtin<compat/fsevents>":
   version: 2.1.3
   resolution: "fsevents@patch:fsevents@npm%3A2.1.3#optional!builtin<compat/fsevents>::version=2.1.3&hash=31d12a"
+  dependencies:
+    node-gyp: "npm:latest"
+  conditions: os=darwin
+  languageName: node
+  linkType: hard
+
+"fsevents@patch:fsevents@npm%3A~2.3.2#optional!builtin<compat/fsevents>, fsevents@patch:fsevents@npm%3A~2.3.3#optional!builtin<compat/fsevents>":
+  version: 2.3.3
+  resolution: "fsevents@patch:fsevents@npm%3A2.3.3#optional!builtin<compat/fsevents>::version=2.3.3&hash=df0bf1"
   dependencies:
     node-gyp: "npm:latest"
   conditions: os=darwin
@@ -30417,7 +30221,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphql-tag@npm:2.12.6, graphql-tag@npm:^2.11.0, graphql-tag@npm:^2.12.6":
+"graphql-tag@npm:^2.11.0, graphql-tag@npm:^2.12.6":
   version: 2.12.6
   resolution: "graphql-tag@npm:2.12.6"
   dependencies:
@@ -31406,13 +31210,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"html-element-attributes@npm:^3.4.0":
-  version: 3.4.0
-  resolution: "html-element-attributes@npm:3.4.0"
-  checksum: 10/6a007458192e2d4579c9ead3abbfc2f6685e6f858076491b32e7fa5cd5951d95dca2aecbb0f856ef32be13604deb3c76fe8586ff9477673a1b833f09a1edeb1f
-  languageName: node
-  linkType: hard
-
 "html-encoder-decoder@npm:^1.3.9":
   version: 1.3.10
   resolution: "html-encoder-decoder@npm:1.3.10"
@@ -31437,13 +31234,6 @@ __metadata:
   version: 2.5.2
   resolution: "html-entities@npm:2.5.2"
   checksum: 10/4ec12ebdf2d5ba8192c68e1aef3c1e4a4f36b29246a0a88464fe278a54517d0196d3489af46a3145c7ecacb4fc5fd50497be19eb713b810acab3f0efcf36fdc2
-  languageName: node
-  linkType: hard
-
-"html-es6cape@npm:^2.0.0":
-  version: 2.0.2
-  resolution: "html-es6cape@npm:2.0.2"
-  checksum: 10/05478ddad003561394e8adad0b19cb9949cbedd36fb56f84f8109da774ed53f5b2c3ac6c0d4e7c5e1906b26eef69f68af6dc9f470ac925375df0720926062c77
   languageName: node
   linkType: hard
 
@@ -31492,16 +31282,6 @@ __metadata:
   version: 3.3.1
   resolution: "html-tags@npm:3.3.1"
   checksum: 10/d0e808544b92d8b999cbcc86d539577255a2f0f2f4f73110d10749d1d36e6fe6ad706a0355a8477afb6e000ecdc93d8455b3602951f9a2b694ac9e28f1b52878
-  languageName: node
-  linkType: hard
-
-"html-template-tag@npm:4.1.0":
-  version: 4.1.0
-  resolution: "html-template-tag@npm:4.1.0"
-  dependencies:
-    html-element-attributes: "npm:^3.4.0"
-    html-es6cape: "npm:^2.0.0"
-  checksum: 10/1c3103f45e2a334b03081458ac870ebc8be7c8bd89d511d0d95e15352ccb92421cd6a53ac55b398de2b36fbaabc1f2f86c0e0bdbfb32461a59b1e06c7f090ff6
   languageName: node
   linkType: hard
 
@@ -43008,20 +42788,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-jwt@npm:1.2.2":
-  version: 1.2.2
-  resolution: "react-jwt@npm:1.2.2"
-  dependencies:
-    fsevents: "npm:^2.3.2"
-  peerDependencies:
-    react: ^16.0.0 || ^17.0.0 || ^18.0.0
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  checksum: 10/88cf19351af0520aa73332c6b3ed0cceebbe3d3a7b2f78b9bd5a493da696c47be77746fb30879bd1f9040bf0aefee8ac5ac2e972a814f5195c3779e0cc5d6b18
-  languageName: node
-  linkType: hard
-
 "react-lifecycles-compat@npm:^3.0.0":
   version: 3.0.4
   resolution: "react-lifecycles-compat@npm:3.0.4"
@@ -49644,13 +49410,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unlock-abi-1-1@npm:1.1.1":
-  version: 1.1.1
-  resolution: "unlock-abi-1-1@npm:1.1.1"
-  checksum: 10/595a1d9c309c5cadfbf57b814e0ba8c3c60af57d4c662c4a7e30a6c5ac5c2a4421421f991ba1ad19c459e84a3fba51c350a63e3038006f964becdeaec3d68fc0
-  languageName: node
-  linkType: hard
-
 "unlock-express-example@workspace:packages/unlock-express/example":
   version: 0.0.0-use.local
   resolution: "unlock-express-example@workspace:packages/unlock-express/example"
@@ -52215,15 +51974,6 @@ __metadata:
   peerDependencies:
     ethers: ^5.7.0
   checksum: 10/a1566a2a2ba34a3026680f3b4000ffa02593e02d9c73a4dd143bde929b5e39b09544d429bccad0479070670cfdad5f6836cb686c4b8d7954b4d930826be91c92
-  languageName: node
-  linkType: hard
-
-"zod-to-json-schema@npm:3.23.5":
-  version: 3.23.5
-  resolution: "zod-to-json-schema@npm:3.23.5"
-  peerDependencies:
-    zod: ^3.23.3
-  checksum: 10/53d07a419f0f194e0b96711dc11e7e6fa52a366b0ed5fceb405dc55f13252a1bf433712e4fb496c2a5fdc851018ee1acba7b39c2265c43d6fbb180e12c110c3b
   languageName: node
   linkType: hard
 
