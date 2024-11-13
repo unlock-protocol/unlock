@@ -52,7 +52,7 @@ export const deployLockForEventCaster = async ({
   }[]
   eventId: string
   imageUrl: string
-  description: string
+  description?: string
 }) => {
   const [provider, wallet] = await Promise.all([
     getProviderForNetwork(DEFAULT_NETWORK),
@@ -175,7 +175,7 @@ export const deployLockForEventCaster = async ({
     chain: DEFAULT_NETWORK,
     address: lockAddress,
     data: {
-      description,
+      description: description || 'Eventcaster event!',
       image: imageUrl,
       name: title,
     },
