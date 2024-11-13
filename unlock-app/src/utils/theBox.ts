@@ -3,6 +3,7 @@ import { ethers } from 'ethers'
 import axios from 'axios'
 import { networks } from '@unlock-protocol/networks'
 import { ADDRESS_ZERO } from '~/constants'
+import { CrossChainRoute } from '~/hooks/useCrossChainRoutes'
 
 export interface BoxActionRequest {
   sender: string
@@ -13,20 +14,6 @@ export interface BoxActionRequest {
   slippage: number
   actionType: any
   actionConfig: any
-}
-
-export interface CrossChainRoute {
-  network: number
-  tx: any
-  tokenPayment?: any
-  applicationFee?: any
-  bridgeFee?: any
-  bridgeId?: any
-  relayInfo?: any
-  // Remove me
-  symbol: string
-  networkName: string
-  currency: string
 }
 
 // TheBox returns BigInts as strings with a trailing 'n'
@@ -70,7 +57,6 @@ export const getCrossChainRoute = async ({
   purchaseData,
   srcToken,
   srcChainId,
-  sharedParams,
 }: getCrossChainRouteParams): Promise<CrossChainRoute | undefined> => {
   const network = networks[srcChainId]
 
