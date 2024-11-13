@@ -74,11 +74,7 @@ export const useCrossChainRoutes = ({
     queries: Object.values(networks)
       .filter((network) => {
         // Filter out networks that are not the same type as the lock
-        return (
-          network.isTestNetwork === networks[lock.network].isTestNetwork &&
-          [56, 42220, 100, 1].indexOf(network.id) > -1 &&
-          network.id === 8453
-        )
+        return network.isTestNetwork === networks[lock.network].isTestNetwork
       })
       .map((network) => ({
         queryKey: ['balance', account, network.id],
@@ -91,16 +87,6 @@ export const useCrossChainRoutes = ({
         staleTime: 1000 * 60 * 5, // 5 minutes
         enabled: enabled,
       })),
-  })
-
-  const { data: lockContract } = useQuery({
-    queryKey: ['lockContract', lock.address],
-    queryFn: async () => {
-      return web3Service.getLockContract(
-        lock.address,
-        web3Service.providerForNetwork(lock.network)
-      )
-    },
   })
 
   const routeResults = useQueries({
@@ -168,7 +154,7 @@ export const useCrossChainRoutes = ({
               ) {
                 return null
               }
-              const route = await getCrossChainRoute(lockContract, {
+              const route = await getCrossChainRoute({
                 sender: account!,
                 lock,
                 prices,
@@ -183,7 +169,7 @@ export const useCrossChainRoutes = ({
               })
               if (!route) {
                 console.info(
-                  `No route found from ${network} and ${token.symbol} to ${lock.network} and ${lock.currencySymbol}`
+                  `No route found from ${networks[network].name} and ${token.symbol} to ${networks[lock.network].name} and ${lock.currencySymbol}`
                 )
                 return null
               }

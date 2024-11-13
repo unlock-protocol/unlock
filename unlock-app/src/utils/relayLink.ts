@@ -33,20 +33,17 @@ interface getCrossChainRouteParams {
 }
 
 // Get a route for a given token and chain.
-export const getCrossChainRoute = async (
-  lockContract: any,
-  {
-    sender,
-    lock,
-    prices,
-    recipients,
-    keyManagers,
-    referrers,
-    purchaseData,
-    srcToken,
-    srcChainId,
-  }: getCrossChainRouteParams
-): Promise<CrossChainRoute | undefined> => {
+export const getCrossChainRoute = async ({
+  sender,
+  lock,
+  prices,
+  recipients,
+  keyManagers,
+  referrers,
+  purchaseData,
+  srcToken,
+  srcChainId,
+}: getCrossChainRouteParams): Promise<CrossChainRoute | undefined> => {
   const network = networks[srcChainId]
   const totalPrice = prices
     .reduce(
@@ -58,19 +55,19 @@ export const getCrossChainRoute = async (
 
   const txs = []
 
-  const callData = lockContract.interface.encodeFunctionData('purchase', [
-    prices.map((price) => {
-      const priceParsed = ethers.parseUnits(
-        price.amount.toString(),
-        price.decimals
-      )
-      return priceParsed
-    }),
-    recipients,
-    referrers,
-    keyManagers,
-    purchaseData,
-  ])
+  // const callData = lockContract.interface.encodeFunctionData('purchase', [
+  //   prices.map((price) => {
+  //     const priceParsed = ethers.parseUnits(
+  //       price.amount.toString(),
+  //       price.decimals
+  //     )
+  //     return priceParsed
+  //   }),
+  //   recipients,
+  //   referrers,
+  //   keyManagers,
+  //   purchaseData,
+  // ])
 
   if (
     lock.currencyContractAddress &&
