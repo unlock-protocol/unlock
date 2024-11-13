@@ -4,7 +4,11 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Lock } from '~/unlockTypes'
 import { purchasePriceFor } from './usePricing'
 import { getReferrer } from '~/utils/checkoutLockUtils'
-import { CrossChainRoute, getCrossChainRoute } from '~/utils/theBox'
+import {
+  CrossChainRoute,
+  getCrossChainRoute,
+  prepareSharedParams,
+} from '~/utils/theBox'
 import { networks } from '@unlock-protocol/networks'
 import { Token } from '@unlock-protocol/types'
 import { useAuthenticate } from './useAuthenticate'
@@ -13,10 +17,6 @@ interface CrossChainRouteWithBalance extends CrossChainRoute {
   resolvedAt: number
   userTokenBalance: string
 }
-
-// TheBox returns BigInts as strings with a trailing 'n'
-export const toBigInt = (str: string) =>
-  /[a-zA-Z]$/.test(str) ? str.slice(0, -1) : str
 
 interface CrossChainRoutesOption {
   lock: Lock
@@ -89,6 +89,30 @@ export const useCrossChainRoutes = ({
       })),
   })
 
+  const { data: sharedParams } = useQuery({
+    queryKey: [
+      'sharedParams',
+      account,
+      lock,
+      recipients,
+      keyManagers,
+      purchaseData,
+    ],
+    queryFn: async () => {
+      return prepareSharedParams({
+        sender: account!,
+        lock,
+        prices,
+        recipients,
+        keyManagers: keyManagers || recipients,
+        referrers: recipients.map(() =>
+          getReferrer(account!, paywallConfig, lock.address)
+        ),
+        purchaseData: purchaseData || recipients.map(() => '0x'),
+      })
+    },
+  })
+
   const routeResults = useQueries({
     queries: balanceResults
       .filter((result) => !!result?.data?.balance)
@@ -140,12 +164,14 @@ export const useCrossChainRoutes = ({
             token,
             network,
             nativeBalance,
+            sharedParams,
           ],
           queryFn: async () => {
             try {
               if (!prices) {
                 return null
               }
+              // Skip any identical route
               if (
                 network === lock.network &&
                 (token.address === lock.currencyContractAddress ||
@@ -166,6 +192,7 @@ export const useCrossChainRoutes = ({
                 purchaseData: purchaseData || recipients.map(() => '0x'),
                 srcToken: token.address,
                 srcChainId: network,
+                sharedParams,
               })
               if (!route) {
                 console.info(
@@ -173,7 +200,7 @@ export const useCrossChainRoutes = ({
                 )
                 return null
               }
-              const amount = BigInt(toBigInt(route.tokenPayment.amount))
+
               let userTokenBalance
               if (route.tokenPayment.tokenAddress === ZeroAddress) {
                 userTokenBalance = nativeBalance
@@ -185,11 +212,13 @@ export const useCrossChainRoutes = ({
                 )
               }
 
+              const amount = BigInt(route.tokenPayment.amount)
               const cost = ethers.formatUnits(
                 amount,
                 route.tokenPayment.decimals
               )
               if (Number(cost) > Number(userTokenBalance)) {
+                // Skip any route for which the user does not have enough tokens
                 return null
               }
               return {
@@ -202,7 +231,7 @@ export const useCrossChainRoutes = ({
               return null
             }
           },
-          enabled: enabled && hasPrices,
+          enabled: enabled && hasPrices && sharedParams,
           staleTime: 1000 * 60 * 5, // 5 minutes
         })
       ),

@@ -29,6 +29,10 @@ export interface CrossChainRoute {
   currency: string
 }
 
+// TheBox returns BigInts as strings with a trailing 'n'
+export const toBigInt = (str: string) =>
+  /[a-zA-Z]$/.test(str) ? str.slice(0, -1) : str
+
 const bigintSerializer = (_key: string, value: unknown): unknown => {
   if (typeof value === 'bigint') {
     return value.toString() + 'n'
@@ -46,6 +50,13 @@ interface getCrossChainRouteParams {
   purchaseData: string[]
   srcToken: string
   srcChainId: number
+  sharedParams: any
+}
+
+export const prepareSharedParams = async (
+  _params: Partial<getCrossChainRouteParams>
+) => {
+  return true
 }
 
 // Get a route for a given token and chain.
@@ -128,7 +139,7 @@ export const getCrossChainRoute = async ({
     })
   if (response?.status === 200) {
     const { data } = response
-    return {
+    const route = {
       ...data,
       tx: {
         ...data.tx,
@@ -139,5 +150,8 @@ export const getCrossChainRoute = async ({
       symbol: network.nativeCurrency.symbol,
       networkName: network.name,
     } as CrossChainRoute
+    // reformat
+    route.tokenPayment.amount = toBigInt(route.tokenPayment.amount)
+    return route
   }
 }

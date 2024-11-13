@@ -17,7 +17,6 @@ import { formatNumber } from '~/utils/formatter'
 import { PricingData } from './PricingData'
 import Disconnect from '../Disconnect'
 import { ethers } from 'ethers'
-import { toBigInt } from '~/hooks/useCrossChainRoutes'
 import { approveTransfer, getAllowance } from '@unlock-protocol/unlock-js'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useProvider } from '~/hooks/useProvider'
@@ -109,7 +108,7 @@ export function ConfirmCrossChainPurchase({
       setIsConfirming(true)
       const walletService = await getWalletService(route.network)
       if (!route.tokenPayment.isNative) {
-        const requiredAllowance = BigInt(toBigInt(route.tokenPayment.amount))
+        const requiredAllowance = BigInt(route.tokenPayment.amount)
         const allowance = await getAllowance(
           route.tokenPayment.tokenAddress,
           route.tx.to,
@@ -192,7 +191,7 @@ export function ConfirmCrossChainPurchase({
             keyPrice={`${formatNumber(
               Number(
                 ethers.formatUnits(
-                  toBigInt(route.tokenPayment.amount),
+                  route.tokenPayment.amount,
                   route.tokenPayment.decimals
                 )
               )
