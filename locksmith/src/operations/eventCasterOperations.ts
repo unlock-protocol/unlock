@@ -273,7 +273,12 @@ export const saveContractOnEventCasterEvent = async ({
     }
   )
   if (response.status !== 200) {
-    logger.error('Failed to save contract on EventCaster')
+    const responseBody = await response.text()
+    logger.error(
+      'Failed to save contract on EventCaster',
+      response.status,
+      responseBody
+    )
     return
   }
   const responseBody = await response.json()
@@ -305,7 +310,12 @@ export const saveTokenOnEventCasterRSVP = async ({
   )
   const responseBody = await response.json()
   if (response.status !== 200) {
-    logger.error('Failed to save RSVP on EventCaster')
+    const responseBody = await response.text()
+    logger.error(
+      'Failed to save RSVP on EventCaster',
+      response.status,
+      responseBody
+    )
     return
   }
   return responseBody
