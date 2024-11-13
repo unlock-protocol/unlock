@@ -1,0 +1,75 @@
+---
+id: keys
+title: "keys"
+description: "List of lock keys by network with additional metadata if the caller is the lockManager (deprecated, use keys-by-page)"
+sidebar_label: "keys"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFV0tv4zYQ/isETwmg2EGwvfiWQ3a73SRoGwc9BD6MpZHFtURqyZFjQ9B/L4aU5Lc3dgusL7Zozsw370+1TLC0GANhIkdkK4ykKdECKaO/JnIk57hyMpIO48oqWsnRWy1fHVo5eps0US3vyzJXsb/vjyaRTNDFVpXhSD4qR8KkIjfxXLA2MV0JjfRu7Fy8K8oEJIniy5CLAgkSIBAqFZShiCHP0Qrl/BOreAINM7Tiag08EpVDr/pmuropYYbXMpIlWCiQ0DqPWTGWEiiTkdRQoBzJFoSMpMUflbLrEGx78NyCVcmAIxFnWIAc1ZJWJatRmnCGVjYcjgNmGPV9klh07qemHjlIEC4fNObIKj3bsPWjQrtaG+sed80cVbSL4C9WIFamEu+gSZARDsHGmUiNHchjZlOVE9pv+J9MjzOfxUPGjT5uG5elCgV7KmC7xh56KUGqwKPaoSytWUB+ju77VkY4AqqcuLKY44I9So0VJk3jDJQWnWonjBa4QE3OX8AlFGWO10cxcYmfrMRdQH/CDIWuiila8Z6hFiXMlAYK6A8bKWB5lo0nWKqiKjozJhWKsHCcxBkSN72HzQPCoiuNduhY793tLX8dHhp+XhRAcab0zM+ADmVsNKEmFoX1CBp+dyxfb+DWVZ7DNEc5SiF3GHWOgLXAijzKDQfN9DvGxHHYFSwtj0ZSATeZOer9YtiTayI/AZ59VD96u5sXHxLYaID9PB0SmOPqd5MnaM8w00SSFPGz/Iarp3ZOy4Y/kfx0+2k/idzPHF3f0GBRFDDnNPKAQBeaITHohDYkcKkcDc5J7Jn5KtA5LsADviaYQpWTHHFlmsrG6CGlptLJ6VB8QY1Wxc+GPvvLIRq/HSrpV806uB3SKs9TlfdxSCp/zBmzvAQd2gVagdbyyP3FERlnaFG8gxOgAyShdOdC15StJ4MPBevFu/fAqrryKZAyw2xjhuRXN2VyJIeLuyGUali3i7oZcmu4Yb3RIc2wJyisNez6yuZyJDOi0o2GQahQlA0qzb9vSmvIxCYfxKaQe6PSmqSK/V4IQP2A3NboiMfn7OY8zS9Bqlc7WbOqF05hSErgVn1G2GQ3hvl5imB9V4cfn40tgNP0xz9jHslbbKxXAqUKq7nfaepm7g82Bj/nQenUeLk2Y6/eLfHY+SkjyUEO/tztedjfE7zYVIJOTCGeo05EWuk4cDxFq7DluB98Aal4jryKojX9c2QszDASoBPuRZW2XonMmLmnRrmKUTtfva1bT1/H3ovSOCpAb/zT1sgW2nrdV7+Mo7b5IVzSsMxBac6hr7W6bYI3ueA4Q6lkJEdrxupLj4+22aV3dBLJzDhi4bqegsNXmzcNH4dMc4skynGXJv1oOBqbq79bPnctTnPDI+5woa3JxQLyiu/4rroIxE9Y4kkUmzT1QiS7vPGkvS1qeqHB/4tMngS6wXIvhHmKYp403ZLZC81+kHWeRBCY7hrAhB+sClvs0l7Zfmk8aL2bznqrHDtUXa9f3Ci775IXYNgcLs2kiWSGkPh3/7q9cR/HWNKG7B5D4XD2+/3Lw5inWcWjrV9POzvNaz+Iq67DjTFT76bpYQYq3kyapvkXxZ/Vpw==
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"keys"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/api/{network}/locks/{lockAddress}/keys"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+:::caution deprecated
+
+This endpoint has been deprecated and may be replaced or removed in future versions of the API.
+
+:::
+
+List of lock keys by network with additional metadata if the caller is the lockManager (deprecated, use keys-by-page)
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}},{"in":"query","name":"query","required":true,"schema":{"type":"string"},"description":"Query you want to search for."},{"in":"query","name":"filterKey","required":true,"schema":{"type":"string"},"description":"The key you want to search on."},{"in":"query","name":"expiration","schema":{"type":"string"},"description":"Expiration time"},{"in":"query","name":"approval","schema":{"type":"string"},"description":"Approval status (relevant for offchain approvals on events for example)"},{"in":"query","name":"page","schema":{"type":"integer"},"description":"Page number when paginating"},{"in":"query","name":"max","schema":{"type":"integer"},"description":"Maximum number of items to get by page"}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"List of keys matching the query","content":{"application/json":{"schema":{"nullable":false,"type":"array","items":{"type":"object","nullable":false,"properties":{"token":{"type":"string","nullable":false},"lockName":{"type":"string","nullable":false},"lockAddress":{"type":"string","nullable":false},"expiration":{"type":"integer","nullable":false},"keyHolderAddress":{"type":"string","nullable":false}},"title":"KeyMetadata"}}}}},"404":{"description":"The item you are making request for does not exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"resource not found","nullable":false}},"title":"GenericNotFound"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

@@ -1,0 +1,71 @@
+---
+id: get-subscription
+title: "getSubscription"
+description: "Get an active subscription associated with the key. It can be fiat or crypto."
+sidebar_label: "getSubscription"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVktv4zYQ/ivEnFpAsdOgJ91y2Abpbotik6AHw4cRNba4lkgtOXJWEPTfiyEVv7PZBgXqi8XXfPP8ZgZwLXlk4+x9CTmsiR+6ImhvWtmDDErar3K4I1ZoFWo2W1Lh4KrCEJw2yFSqZ8OV4orUhvqZumel0aqC1MogK+eV9n3LbgYZBNKdN9xDvhjgKZCHfLEclxm06LEhJh/ikRHwFrmCDCw2BDlY4mfnN5CBp6+d8VRCzr6jU5X/TPeUKSOgrqhByAfgvhUxxjKtycM4Zhdhaqc3t2XpKYQ3oT45vVGYLl8EC+yNXb+KtaH+vnwT5SP16v6yMTv5SxESWmcDBTm/ub6Wv2NBt7a/FEmRrJ1lsixvsG1ro2OKzL8EeTicA7viC2mGDFovCcUmwR6KDQfX0XvsIQPD1IS3xVj6xge3bNcU5MVtXV1jUVPy05hBgTVaTT+gWN8Urr7guQywcZ3li0cladNgHc51GcdRIMz/ho1t692Wys9k6fn42iTjNI1upxcqiVFupfz0WBW96gL5mQC3LgRT1PTjkv+aXlyUjIFK5WykB8FQqLUYrabYRcwkfwCyXQP5AhJhQAbCILA8BXysSMkTQWqxb8iyaogrVwpEqVbOR7zjLB9ffhn8ev3LeXkIHSkTlHWssOOKLEsdUPl6gXy/NvbpusI60GleNBQCrumyf1fY1ZxM9aSeMQgNk/fOK2PVqqvrlamNXUc7hT8o8OwcU4xlw7KGO7LkjX4gvyX/QUTB5I7ku9QOJH2FpHKYb2/mRwU9HyYOHufCkmE+HJDlON9QH+ZD5LQxUr3gJDrvfA05VMxtyOfpcWO4mnVWvq9a79hpV8+0a86zy7uy07HlJNVB2PRYYmBcG7u++neSH9Krndjlvj89SFBTmFKX2sVIIF+oWNYFoY/klD5+c75BCdzvfz9KZt8eJ8sLH7bmI/X7RoCtudrEjdglvnbke+kaYOzKxXdTDJ+iWerTi52QgTg52XNzZuHunpLaNyVJQeoN2VKtOhudirXhPlYMWSxSShm9ITZ2nUlVYYmMKrDzuKZMoS2lQsxqskpVzm1i96uNJhtiPk9m/XH/GK1oXeAG7cHJmlh9b/AY9gX3n88gUwyYvvG8rdFYiVPMp2FK/QVsxZfH3SyDfD+CxESTreNxQUpAdlNjX2ZQucAibxiECJ98PY6ynQKcL5YZbNGbVLCLAUoT5LvcMcarTvnp8zQz/KyOB56L1r2knZUU22LdySrpezBZSV29S4PTOegdOhz68d167Celd2iQYjYuxwwqwjKOpsN0dqs1tXzw6mxIEvLY0ejdh0fIQHrIQc2fEEWUflGjYUg3Ht2G7DjuFGRZi4Lj+A97Bhd+
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"getSubscription"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/subscriptions/{network}/locks/{lockAddress}/keys/{keyId}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Get an active subscription associated with the key. It can be fiat or crypto.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}},{"in":"path","name":"keyId","required":true,"description":"Key Id.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Any active subscription.","content":{"application/json":{"schema":{"type":"object","properties":{"subscriptions":{"type":"array","items":{"type":"object","properties":{"next":{"type":"number","nullable":true},"balance":{"type":"object","properties":{"symbol":{"type":"string"},"amount":{"type":"string"},"decimals":{"type":"number"}}},"price":{"type":"object","properties":{"symbol":{"type":"string"},"amount":{"type":"string"},"decimals":{"type":"number"}}},"approvedRenewals":{"type":"string","description":"Approved number of renewals by user."},"possibleRenewals":{"type":"string","description":"Possible number of renewals based on the user account balance."},"type":{"enum":["crypto","fiat"],"description":"The type of payment method used for the subscription."}}}}}}}}},"401":{"description":"User is not authenticated.","content":{"application":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

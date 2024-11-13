@@ -1,0 +1,71 @@
+---
+id: get-waas-token
+title: "getWaasToken"
+description: "Gets Coinbase WAAS token for user by email and selected provider."
+sidebar_label: "getWaasToken"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVktv2zgQ/ivEnHYBxe4G3YtuadEW7e62Qewgh8CHsTi2WFOkSo6cGIL/+2JI2XnYCbrdbNcXS+Jw5ptvnj34lgKy8e6jhhKWxFeIcepX5KAATbEKppVjKOEDcVRvvXFzjKSuzs4mikVQLXxQXaSg5htFDRqr0GkVyVLFpFUb/NpoCiMooMWADTGFCOV1Dw4bghIqbLmqEQowYqgm1BSggEDfOhNIQ8mho8d4Lmi4p9ZoO1LsVYsxiplY1dQglD3wphULkYNxS9hui73RhPRM60Ax7iy3yPURu9+jbufu+eDtD6ucZWGK/MbrjUg8T8OnyZfPys+/UsWq8o7ROOOWKpqlU8blEEEBckSORR+2rTVVivr4axQl/SGerFFCFiRH2FBMp0ndEdjyE+Sx9S5m2dNXr+TvIdxJV1UU46Kzap97Pw3e62OI3qBWF5nx0cshoRB8OERSAN1i01oaDA+hVjonsHFrtEYr49qOR/dw/3aI+1JKzkTlPCvsuCbHApb0014874DrrMW5QFugjfTYo4ZixCUd80nTAjvLUMK0pkDqBqNCpxIHkoSLztqFsZKXXNPO6dGhTXGWDSd6PpCjYKoJhTWFd4nOHRuvD9mY1qQMU6M2vlMYSDW4Ens7gqVJaU+ZLro1/zLYL8FVoOi7UFGCtPCd099FyGfP75NwZuP3Yzl96USHZNRA/WGiMQWHVsVEbw7V/87If5892wIa4trLtGt9THUrHbqE8fp0jK0ZyySL4/7+eNiO+8ftfTu+QZS5kfnL46wLVsYXcxvL8dj6ahUbw/Woc/J80gbPvvJ2VPnmYLqeB6+7Sl5UxgwyXB5qjIxL45Yn/0zzJN/aq50J6KoLhjcTiWaOj3STe8ERk7tBKu9zwpCGWn5470ODErFPV1PYFnD2sMcMSrA1f9BG4pRnJLbmZJU+pNH4raOwkSEKkl0Xd0Pv3a5F7hv6vpHL1YVPJ0OgLxMF6s8dJ1CABCT7fnrAxl5ut5dENcdqRU6rRedSANAa3qSGQVJGKe9MtSI2blmohhg1MqrIPuCSirTtOM9mMTCgau9XaQ+xpiIXkyMDBX99nCaPJfcadPdOlsRKli91dPvq7wrzRRaxIUJMtzxuLRon1KZs64eCuIa1sIetgQJSUUAB5aOtqTyy9qTCmBVQS3mV19D3gvMy2O1WPueol9ezAtYYTC7f6x60ifKs9/3jSf9/uRgWol/VU57sEtBJsqX1EEqAAiT7Hq1+UmY/0fYBYdvZttitvD/MwzO78FGMGcvd3r2HKWzkw7fZzslU7t9JHAyFuxtnVUUtPys7u9d+z79MptJQhi238VruBLyRdRlvMmk++Z06VPrWg0W37NIkgaxTfn8Decx0Lw==
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"getWaasToken"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/api/users/{emailAddress}/{selectedProvider}/waas"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Gets Coinbase WAAS token for user by email and selected provider.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"captcha","in":"header","required":true,"description":"Recaptcha value to pass.","schema":{"type":"string"}},{"name":"emailAddress","in":"path","required":true,"schema":{"type":"string"}},{"name":"selectedProvider","in":"path","required":true,"schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"required":true,"description":"JSON object containing sign in token","content":{"application/json":{"schema":{"type":"object","properties":{"token":{"type":"string"}}}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successful operation","content":{"application/json":{"schema":{"type":"object","properties":{"token":{"type":"string"}}}}}},"400":{"description":"Bad Request.","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string","example":"Bad request due to invalid input."}}}}}},"401":{"description":"User is not authenticated.","content":{"application":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}},"404":{"description":"The item you are making request for does not exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"resource not found","nullable":false}},"title":"GenericNotFound"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

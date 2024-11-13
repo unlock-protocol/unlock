@@ -1,0 +1,63 @@
+---
+id: balance
+title: "balance"
+description: "balance"
+sidebar_label: "balance"
+hide_title: true
+hide_table_of_contents: true
+api: eJyVlE1v2zAMhv+KwLOaFAV28a0DuqH7AAq0wQ5BDozMxGpkyaXodIGR/z7QdpIm7Q7NJfqgKD4vX7mD1BCj+BTvSyhgiQGjI7DAlJsUM2UoOri5vta/krJj32g0FPB1iM1mldg0LbsKM7HBsmTKmbJJ0RC6ykSS18SbCVhwKQpF0WTYNMG7/urpc9aMHWRXUY06im0IuAwExQpDJguyawgKSMtncgIWsCy9nsXwwMogfij1Mu6USLglC81Z9Fjsm4NZ2Mc17C1ErOnDjYNI7/eGn4UvH+k1i1qHkWRWbQgrHwzTS0tZTNn2yz4KccRgMvGW2BBz4k+p9n/4UcVz+ppyxvUHIBZKWmEbBAp4qojJvGI2GIeSjI8HBB/XRio6kEze36lyiBedw3eKxN499nh3mgpGwc6VOrmwJqmSGnNNytOgVFDA9OA2sDBolaGYd9BygAIqkSYX02lIbpNrL9WkjTq+ajhJcilMXKrh8s4HTmXrdGKG+mBvLzNmwbWP66vPZX4cTh3TLrRo17KX3aN2bujFLBO/aYReqXR9gEpCyMRgx8G3xDVqd378eVJL3p5s8SYJNv4n7eBgZZ1fbfoFr4W9tMQ7UPl9XKX+3NioWY9lfh04wYKKPPDcvCM8xpmG09aXlM0S3YZiaVZtdMMz9bLrvxSkz6D3jXcbEh/X1tQkWKKgyZIY12QNxtLEJH41UpkqpU1WfwXvKObetCPW7/unnqJJWWqMb3ZORjor+CiQ0F+ZNgF9VBH7ZnejyeZwNNnCQpWy6FrXLTHTjMN+r8uDgsV8YWGL7Afbzxd7CxVhqQ2dd6CKF3DrHDXq4S2GdmjGxUtWYxz9/v1Omf4BOXD4DA==
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"balance"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/purchase"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+balance
+
+<ParamsDetails
+  parameters={undefined}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Balances for purchaser addresses on each network.","content":{"application/json":{"schema":{"nullable":false,"type":"object","additionalProperties":{"type":"object","nullable":true,"properties":{"address":{"type":"string"},"name":{"type":"string"},"balance":{"type":"string"}}}}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

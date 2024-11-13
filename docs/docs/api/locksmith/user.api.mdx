@@ -1,0 +1,63 @@
+---
+id: user
+title: "user"
+description: "Get user details."
+sidebar_label: "user"
+hide_title: true
+hide_table_of_contents: true
+api: eJyVVE1v2zAM/SsCz2pSFNjFtxy6ovsAhjXBDoEPikzHamTJleh0gaH/PlB2kjYNBvRkkSJpvsdHDeA7DIqMd48VFNBHDCChwqiD6dgNBTwgCb4QFZIyNs5AQkTdB0MHKNYDrDirWJeplBAwdt5FjFAMcHd7y5/35X4j9cEJavBDVe0doSPOUV1njc6dzZ8jJw4QdYOt4lPAl94ErKBYw6uyFmlRVQFjhFICHTqEAvzmGTWBhC4wSDJjT+/Di+EYHikYtwUJrrdWbSxCUSsbMSUJZIhtWPTUQErs+nIN2spxoiAv6t7a2ljBjWIkUfXZbRxhcMqKiGGPQWAIPnwK+SW4i24v0bYYo9riNZwV1qq3BAUsGwwoXlUUyo0tCeOOEIzb5llNSGb/Z+gBHQajnzK8ey6V+UoSWqTGs8a2mIeiqIEC5vu7ueqpmU/KG3mJWVZ9sFBAQ9TFYj63Xu9ia6iZ9Y7PN13w5LW3M+3bD5r9FXzVazbE2AskeVkxktoat735XOWnMetUtjwvwxNPaeR9XIkT6fxLRpcDoIANqpDxjoevPrSKJ/HtzxKShMVZAm+KqM58xwPzr9rJvtllh+HGXnoMB2Cqjat9zpuGssqwxI8jTpDAJI947j4gPMWJLvi9qTCKjdI7dJWoe5dJVdbQQdQ+CGTJZ40YvUMybitFi6QqRUpE8kFtUQrlKuE8mXpCJRrvd3nlrdHoYhboBOvn4zKj6HykVrk3N9dep+G8Olcfqok7wr8076wyjvnNOhgmDa5hzxywCkGO/yglND4S3w3DRkVcBZsSu0eSi3UpYa+CGbdgXSYJDaoqP4MD8FAKWGiNHUt9r2w/zutisVk7p7V4uF8euziP/EInufpRDe7wpvYwjBFLv0OXEsipCWIbUplS+gc58g8j
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"user"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/auth/user"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Get user details.
+
+<ParamsDetails
+  parameters={undefined}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Return the user details.","content":{"application/json":{"schema":{"required":["walletAddress"],"type":"object","properties":{"walletAddress":{"type":"string","nullable":false}},"title":"Auth"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

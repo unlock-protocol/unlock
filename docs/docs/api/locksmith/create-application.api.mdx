@@ -1,0 +1,71 @@
+---
+id: create-application
+title: "createApplication"
+description: "Create application associated with user wallet."
+sidebar_label: "createApplication"
+hide_title: true
+hide_table_of_contents: true
+api: eJzNVktv4zYQ/ivEnJU4TduLbtnFtkifi42DojB8GItji2uK1JIjZ11B/70YUo4VxwjSAkF7kviY4cw33zx68C0FZOPdrYYSqkDIdNO21lRpFwqIVHXB8B7KRQ/3kQKUi+WwLEBTrIJp07US3idRhUdZhTH6yiCTVg+Ga9VFCuoBrSW+hAICfeko8juv91D2aWkCaSg5dFRA5R2TYzmaKJ19jvJcD7GqqUH5431LUIJffaaKoQDXWYsrS1Cu0UYqoA3iJRuKct1hQxOxyMG4zXOxoYAt7V++KIYOBWSXbrQOFONrVA8FsGFZwwTrBMQwyGmg2HoXs8HXV9/I5xzceoq3YPpWoBk9EXJds6JwFrL/LbgjsN9dXT3H8tbt0BqtjGs7VoEqMjvSl+odajWS9C2xbShG3JyFTdMaO8tQwqeREWrl9V7lt5SJymTbL89iTCH48AqUJ5D9SI6CqUZIhJIfkpIDfN8+h09qgpjiPCvsuPbB/EVasVcthbUPjeLaRIXVW5P0VUD+6TuFgU6t9SGtyLGY86L5LxDuN883Uy0jbN+fY929EyXyzrqzdm3sgWtKd2nbOKbg0KpIYUdBpWj+5/jNawqkHjAqdNkkZdzBBeM2imuaZs0LaI1cu0vuHWk2FNAQ114aUuujGN4i11DCbHc9m3gcU3cS4ZiaUxcslFAzt7GczayvtrExXF92Tv4v2uDZV95eVr6B0/b1MXjdpRCrbA8MxanGyLgxbnPxzzTfZalHtctjS72TSGXsc2N9BF6eFO/SBShhRRhSyc0/P/jQoETjpz/mMBRPCt1RCbbmZ9rDoSrL+mKbNowY9qWjIA2nAGHOp2M3/vAVm9bSsVkeeZCq9nF5UpwPB4O8sPbJlDHW9wkp9csBOihA4pYhun4G2uM91Qa/M5qiWmG1JafVunMpTmgN79XaB0WSSYl6ptoSG7cpVEOMGhlVZB9wQ4VCpyXpzfowntTeb6NQ1JqKXJz6++vtPAEj9GvQTU7yhKSejkhPbO+P+fkvhqIxdExfedZaNE7ATDTsxyxYwE7wepIHywJqyZRyAX2/wkj3wQ6DbOcgl4tlATsMJmfiYjkUUBPqNMz1Y1TfZ7Mv5mKCXLddZs1JiZHEyBI3VUUtv3h3OUnmj7/fzYXC48DXeC0yAR9kGMQHKAEK8G12SSZC2evBott0qS5B1imRkWI9ofpJfiSvDlng9hML+z7fmPstuWF4pDTLGoblMAx/A4L242o=
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"createApplication"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/applications"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Create application associated with user wallet.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={undefined}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"required":true,"content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"name":{"type":"string","nullable":false},"key":{"type":"string","nullable":true},"walletAddress":{"type":"string","nullable":false}},"title":"ApplicationBody"}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"201":{"description":"Created application.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"id":{"type":"number","nullable":false},"name":{"type":"string","nullable":false},"key":{"type":"string","nullable":true},"walletAddress":{"type":"string","nullable":false}},"title":"Application"}}}},"400":{"description":"Invalid input received. Bad request.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"Response body schema is invalid.","nullable":false},"error":{"type":"string","nullable":true}},"title":"GenericInvalidBodyError"}}}},"403":{"description":"User is not authorized to perform this action.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"You are not authorized or authenticated to perform this action.","nullable":false}},"title":"NotAuthenticated"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

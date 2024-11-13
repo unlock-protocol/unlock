@@ -1,0 +1,71 @@
+---
+id: save-receipt
+title: "saveReceipt"
+description: "Create purchaser details"
+sidebar_label: "saveReceipt"
+hide_title: true
+hide_table_of_contents: true
+api: eJytVk2P2zYQ/SvEnFpAu94Y7UW3RdG0abdpEO+iB8OHMTW2GEskQ46cuoL+ezCUbK9tOdsu6otFcTgfj2/eqAXnKSAbZ98VkEPELX0kTcYzZBBJN8HwDvJ5C0+RAuTzRbfIoKCog/FyDHL4KRAyKd8EXWKkoApiNFWEDDwGrIkpxOTDiLlHLiEDizVBDpb4iwsbyCDQ58YEKiDn0NB5kPe9nTLFrWSmS6oR8hZ458WNsUxrCtB12WiYyunNfVEEivHFUA9ObxT2xqPBIgdj11djlRjLF4P82htd970QD9E7GynK/vTuTv5OvcwarSnGVVNVO6XTPcTLi5AitLNMlsUFel8ZnS598imKn/YyD7f8RFpI4INQhE2fhUTqy7zIOINlE42lGN9fMxhAfTCW3rxkMB010ImOIxuRkceD/mP8uCvXWA5j3tIvgx/u3lwiLm2gTFTWscKGS7IsWFJxHeRv42ubqsJlRZCvsIp0DnhNMeJ6pDIh1AqbiiGHx5ICqS8YFVpFIbigjFVyVytTGbtWXJISPlLk28uYUiwbljX8QpaC0TMKWwo/iyvo0fhxjH9v0VRUKHaq8YWIgAsDDf9nFh6baX6AZPGvser2V1oTl06EzruYyC2Nm8NkO52EXvbipB0kqZu0z1Sjm7TS112SRcGmV7QmVNLxzD7mk4nYx9pwedtYeb7xwbHTrrrVroZzCfgQXNFoWagebhBBOfUYGdfGrm/+m+dZf+rgdnHU8plA3MPVK/oBKwm5VyRZLwkDBciGh7cu1Chk++2vR2mf+1OCD07Qm99pd9RC9OZmk14kofzcUNiJcIKxK5fODbx7SmWph32dkIGA3NczvajwYKd8cFtTUFRL1BuyhVo1NoGKleGdWrmgyOKybwOjN8TGrjNVE2OBjCqyC7imTKEtpKvNaqhKlc5tEmsro8nGxKuhrD/ePaYqhEY12mc7MkHVcYSeZN0e+f+toTlAyfQ3T3yFxgrciRbtQNg5bKepKXrKQgb5cY7mp7MuT+NokUEplM/n0LZLjPQUqq6T1/2V5PNFBlsMppeFeQuFifJcHHTpainffRya83t1OqVHC9kTxQoptlg1soIMhCXHzwHphFdlcD68X5HDc/xenccw318RPt1Xt+gyKAmL9NHVDlv3WlOi1f7QhYhKqx9E7sOfs0fIQMbUsxY96+vkfjSjtu0tHt2GbNcdEmRZS4Zd9xX484xk
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"saveReceipt"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/receipts/{network}/{lockAddress}/{hash}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Create purchaser details
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}},{"in":"path","name":"hash","required":true,"description":"Hash","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully creates purchaser details.","content":{"application/json":{"schema":{"type":"object","properties":{"fullname":{"type":"string"},"businessName":{"type":"string"},"addressLine1":{"type":"string"},"addressLine2":{"type":"string"},"city":{"type":"string"},"state":{"type":"string"},"zip":{"type":"string"},"country":{"type":"string"}}}}}},"401":{"description":"User is not authenticated.","content":{"application":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}},"500":{"description":"Failed to update or create purchaser details.","content":{"application/json":{"schema":{"type":"object","required":["message"],"properties":{"message":{"type":"string"}}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

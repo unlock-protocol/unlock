@@ -1,0 +1,71 @@
+---
+id: get-charges-for-lock
+title: "getChargesForLock"
+description: "Get the price breakdown for recipients & total charges with fees for a specific lock"
+sidebar_label: "getChargesForLock"
+hide_title: true
+hide_table_of_contents: true
+api: eJy9VsFu4zYQ/RViDkULKPEiR9+CtFlsuy0WTYIeDB/G1FjiWiK5w5FTw/C/F0PJthJr226A1hfb4nD43uPMG+2hpGTZRXHBwxzekxipyUR2lsyKCTdlePZmHdgwWRcdeUnmOyNBsDG2Rq4omWcntVkTpRyIJkWybu2saYLdQAEhEqMe8aGEOVQkd/3G+8Af+4iIjC0JcYL5Yg9OwUSUGgrw2BLMwZM8B9ZYpi+dYyphLtxR8YrCb32cceU1FJBsTS3CfA+yi5rGeaGKGA6HYvIYRXxblkwp/eNRit1gHzx5WBJ2vurPGvLHjm2NiX5EwcUSXqd8VPGHEFOioImYEpVGQn8xx7V1523eU/QsvnTEuwnEF5iQGTXQCbVpCusI7PnKvwJ1VBP/P86lZkkx+EQ54ObdO/16ifKhs5ZSWndNszNVEGORy1zfzle5XDvvtsRJyxm51Fu3wQt50WQYY+Nsrt3Z56QZ95dQw+ozWXlBagG5Q6CAzmtJPRBvnaV7IiigwnQXksCygMjaG+J6Bv2ec2LftSut1QLSrl2FZkKGAixT6eQOufzEQbk6X+k5U2kuwEwFHeFNrWVjSP/imiY16RLxubmwDZ3XkIHchRzj8CnmQ4Kppa/qdfoU0JLUYTCkbEFSwxxm25sZRjcbvG22H4znMFPp0mw/coiDgifeHm2r4wbmUIvENJ/18a2T+rqX/SpykGBDc21De9FOnziUXW4V85BTgjbiy4xJsHK+uvq2zA/9rlPapYK2HTvZPWgp92I/JeKRXnrk0dL0/4qQiaEYftwHblFgDj//8ah63577ZFwc0f1Cu7O5YnRXm/xg5AV6Fc6vQ97npNHAp0zLfDzyhAJU5J7PzQXDU5yJHLaupGRWaDfky5P/YONkl/udPK4a1UOc3ZA4XxWmJcHstkkCY0WFQV8aH0SnWGZl6hA22eUbZ8mn3DoDrV8/PGYWMSRp0Y9WKhIzzDpzH9gM0+4F+v3Zb/6r+Ttch9CfMosNOp+9gHN/9GW/gK3KitGp//VpoYD5eermmtNH4wm5LKDOVrGA/X6FiZ64ORz0cX+32hSlS7hq1ADW2KTXQ3TM/vvfB6/4wbxlDk6y1HKbmLpbbDoNzk32ZoTfNP7+Bt6rOXsGt9Q/7BTd27V8+UY0CePYr343Pv4I71gEb9bq9YvSGzCMq+6wPBRQE5bqWIv9EHFrLUUZ7b2Y3SrnyfTf/6RN+xcw0NPb
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"getChargesForLock"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/api/charges/{network}/locks/{lockAddress}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Get the price breakdown for recipients & total charges with fees for a specific lock
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}},{"name":"purchaseData[]","description":"The purchase data passed to the purchase function","in":"query","required":true,"schema":{"type":"array","items":{"type":"string"}}},{"name":"recipients[]","description":"The recipients passed to the purchase function","in":"query","required":true,"schema":{"type":"array","items":{"type":"string"}}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully got card pricing for universal cards","content":{"application/json":{"schema":{"type":"object","required":["total","unlockServiceFee","gasCost"],"properties":{"total":{"type":"number"},"symbol":{"type":"string"},"creditCardProcessingFee":{"type":"number"},"unlockServiceFee":{"type":"number"},"gasCost":{"type":"number"},"prices":{"type":"array","items":{"type":"object","required":["userAddress","amount","symbol"],"properties":{"userAddress":{"type":"string"},"amount":{"type":"string"},"symbol":{"type":"string"}}}}}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

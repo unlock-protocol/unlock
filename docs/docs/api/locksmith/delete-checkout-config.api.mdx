@@ -1,0 +1,71 @@
+---
+id: delete-checkout-config
+title: "deleteCheckoutConfig"
+description: "Delete a checkout config"
+sidebar_label: "deleteCheckoutConfig"
+hide_title: true
+hide_table_of_contents: true
+api: eJyVVE2P2zgM/SsCTy2gmUwHPflWTGeLdrtAsZNBD0EOjETHamTJlejsBob/+4Kyk/lIZ9DNJZblRz4+PnKA2FFCdjF8tlCBJU9MNw2ZXez5JobabUFDJtMnxweoVgPcZ0pQrdbjWoOlbJLrBA8VfCxohcrMAZQ5RugwYUtMKZcYAVuCCpwFDU6gHXIDGhL97F0iCxWnnjRk01CLUA3Ah04QmZMLWxifp142pJxVsVbc0Fl+oZoodzFkyhLt+upK/p7GuHmKUpMYQtHEwBRYINh13pmi2OJHFtxwzjJufpBhKTuJvuymrC3ljFv6RTnlp+H91btzWqK3clmFyAp7biiwECB7+SKz10mF3nvceIKqRp/pt1mK5jX2nie9E6l/MCsMilKKSbmg6t772nkXtqUN0k3KfHmeU4plx3KGTxQoOXNHaU/pVkLBLEdL3MQHWxYbcQMVLPbXi2OPF4OzY/Go4Cd79clDBQ1zl6vFwkezy63j5rIP8nzRpcjRRH9pYgvPnfQtRdsbOaiJEoz6ecTMuHVhe/H/It9NqFPY9cNg3UmzJvmn8TppLylhHgQ5bwgTJdDzwx8xtSgN+fJ9KVPx4akJ5iDYuT/pIG2Y5g47d7ErL8rw/ewpHUAUd6GOBTf35r6Upb4e6wQNIvJUz/VZhafvVJfi3lnKaoNmR8Gqug9FVPSOD6qOSVHAzWQVZ3bELmy1aonRIqPKHBNuSSsMVpzv6rkq1cS4y2Ip7wyFXHw6l/XX52WpoouZWwyPbiYDqdOEnzbbE/7Dwzi9tstmUZn+5UXn0QURvhhkmA26gr2Ic4SChspZWGtoYma5HoYNZrpPfhzl9dSAarXWsMfkpkFZDWBdlmd7mtQX6b75e96cb9Xrq/AF+kejBDHFHn0vJ9AgLil7elyPGhpCW5b/MF98MIY6fgQ5W4/i8tMcf7z9eru8BQ2yxx7585mpS4JfMhqG6Ytl3FEYxxNBlrNwHMf/ALy1XUA=
+sidebar_class_name: "delete api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"deleteCheckoutConfig"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/v2/checkout/{id}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Delete a checkout config
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"id","in":"path","required":true,"schema":{"type":"string"},"description":"The id of the checkout config"}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Checkout config deleted","content":{"application/json":{"schema":{"type":"object","properties":{"message":{"type":"string"}}}}}},"401":{"description":"User is not authenticated.","content":{"application":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

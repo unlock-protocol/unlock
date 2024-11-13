@@ -1,0 +1,71 @@
+---
+id: save-event-data
+title: "saveEventData"
+description: "Save event data"
+sidebar_label: "saveEventData"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVttu4zYQ/RVinuVLjA221Vs2TYv0ggYbBwVq+IEmxxbXFKklKWcFQf9eDCnflQWCoqhfLFEzw+GZc2bYgq3Q8aCseZSQg+c7fNihCT/xwCEDj6J2KjSQL1p48eggXyy7ZQYSvXCqIkfI4ZnvkCH5MZkcHX6t0YdPVjaQtyCsCWgCPfKq0krELSdfPLm34EWBJaen0FQIOdjVFxQBMqgcJRgUevqq5ImNqcsVOugyiHteOXcZiALF1tbh3pq12gzFpzyVQwn5gpIkqwwMLxGW393cB6fMhvaIxkMfVs3gsngzFy6lIli4fjrZOLgaz/PUVmz9dX5p+V1xu44ScsgDyrtwnW4Ga+tKHiAnjHEUVIl0hrqS73PpMggqaLK7P69JF390QF9Z49NRZtMp/V2QrBYCvV/XWjeMiCrPKfffcuzNMr9JPq/rzaDHZaG4c7yBDFTA0g947CH6MITKo9lxrSRTpqoDcyhQ7VCO2ScuWS/C8b8Bx9Ra8xVVbs21x0u0SvSebwaQoRax5rUmInzua8tWVjYs7cWUZyrlPr7epssAnbNuKO7RNFH4SK1f0KBTooeEes9DDJLgux2C78VQKBYsI16tld6DxmQdl5UJ6AzXzKPboWMxrf8d0XmBDtkr94yblBJTZn8EZTYsFHha/kt4r0F7jsc74tVlUGIoLE2FyvqoEx4KyGGym02i8PyEVBinBPn6OCRqpyGHIoTK55NJpHqpQjGuDT2PKmeDFVaPhS3hcow8OStrQS8spQNddhnRB75RZjN6X+Tn5HUIuzyOtmcqVII+DbgD7rQlnS4aQA4r5A4dZP3Dz/s+9+tfc5L13ZEFp+Ku1G/Y7IdKfB9t44KixL7W6JrYH4k4n49T8+EbLyuN+440PTSawbGm5JlC0laHd5pEx7fjANo3oospALPp7MNo+nE0+3F+c5vf3uSzH8bTjzd/w1nnf9uM4imzthGGnmYvsUrs933ZIAPiTCrP7KpgBztWObtTEj1bcbFFI9m6NiKNMxUatraOIYk4sl6JLQZlNhkrMXBCjPlgHd9gxriRzNig1n2RWGHt1pM6tBJofMS6h+6Px3k8BTG/5ObkC1GexSsS6+9IZ4mfXHUGbkU9JwJ+C5NKc2XiMCV+t726FrAjMJK+iHyksGUGBUkwX0DbrrjHF6e7jpYTffLFMoMddypJfLHsMiiQy3hda4HolsN9yms0pxzIXNeJjxe9iySXPO6EwCp813Z50iWe/nyeE9n6K19pJfk4/krXLP4KOUAGNuIU1RbXWtDcbOrY8CDFJNx5TWAcRHShvHiqvb5Mc5Jh2yaLud2i6TrI+qMEeodu2XXdP90TxN0=
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"saveEventData"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/events/save"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Save event data
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={undefined}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"id":{"type":"number"},"data":{"type":"object"},"checkoutConfig":{"type":"object","required":["config","name"],"properties":{"id":{"type":"string"},"name":{"type":"string"},"by":{"type":"string"},"config":{"type":"object","additionalProperties":true,"required":["locks"],"properties":{"locks":{"type":"object","additionalProperties":true}}},"createdAt":{"type":"string","format":"date-time"},"updatedAt":{"type":"string","format":"date-time"}},"title":"CheckoutConfig"}}}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully saved event data","content":{"application/json":{"schema":{"type":"object","properties":{"id":{"type":"number"},"name":{"type":"string"},"data":{"type":"object"},"slug":{"type":"string"},"locks":{"type":"array","items":{"type":"string"}}}}}}},"400":{"description":"Invalid input received. Bad request.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"Response body schema is invalid.","nullable":false},"error":{"type":"string","nullable":true}},"title":"GenericInvalidBodyError"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

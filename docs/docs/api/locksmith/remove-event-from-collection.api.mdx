@@ -1,0 +1,71 @@
+---
+id: remove-event-from-collection
+title: "removeEventFromCollection"
+description: "Remove a single event from an event collection."
+sidebar_label: "removeEventFromCollection"
+hide_title: true
+hide_table_of_contents: true
+api: eJzNV1tv2zYU/ivEedoAJS6y7kVvaZcM2bqiSBwMQ2AMtHhssaZIlTxy4gn678MhFVu2lWRNB2xPtng5l+/cPrbgavSStLNXCnLwWLk1XqzR0qV31XtnDBa8CxkELBqvaQP5XQu3AT3kd7NuloHCUHhdx2M5XEcRQoqg7dKgQBYmFt5VQtr+q9jKPYUMaullhYQ+RNFWVgg5BNMsIQPNMmtJJWTg8UujPSrIyTeYQShKrCTkLdCmjnfIa7uE7tCmG9MshVsIKnHEAvaBRWOgd05tWN6hpsJZQku8Jeva6CJCNvkcWHx7bIibf8aC9ky+g6iZTYFZBrVn5Elj4Gu7rSNnXvaFnEhxO4Wuy4A0GdwGIsYyutV1vOsx1M6GpPbszRv+OVDQFAWGsGiM2fSC1UBbjCR/7gfx1QjtAxFGMdh59VKoR/YLt0Z/Vcnl+PW5tJZzeWTLaLsKYzZLpTTrk+bTnvUHEroMKmnlEv25Uh5D2DslvZcbznDC6onbhUdJqM5pLC0WzleSIAclCU9IV8g2N7X62isxrv/EstGsjuWabcs14rwflAwkkdfzhjAcp34q9xH0n0wF/WQsX0qFgR2v9Ja81PRnPJHBWpoGjz0anBkzIt0aiXc3rN5Yt3C8NGjJ6cLbsRq+smtptBLa1g0JjwXqNapT8U4q0be6bypa2xgj52zVQpqAhwhUGMJojDhEC9kYiv0pdSIxd2ojki6hg9DJ9tNjNZyr3ruRYh0e5Y49hO1ntOh10UPCrfAiCnmE74dj+Hi6sSnWkZANlc7rv7gJOlGj5yISVOog5Ld3v38DyD9cI6THQ2udj19oic151vxDnAfofXR0PpSyhe3tMWzTEgVXkdj0FlVype3yMePEwnmhHCZc8UH/D5LQY3CNLxJ4C9dY9TwcfTJ9dHQZDyc0fhyrwVvLMhh1HqULbbY4qCYua0vorTQioF+jFzG3/3NEpiV6FPcyRLrGJgltH13gaPLsH/SQl8G6ie7tio7HIlLpmHAqNEgYSSCVkMNkfTaJ8+hkRy8mLY+CbtLPKWaiLDCxxcYbyKEkqkM+mRhXrEKlqTxtLP8/qb0jVzhzWrjqiEp98k41UYVINkKXHUoMJJfaLk++TvJNurUVO9vR5xuOXopHItHbYLBK6Fktf89RevSQ9X8uH4f3L79PeY6c71JjOM1q/SvyOOtptKz1ySouRCb9pUG/idyCs+l6x3ovHmRVJ4Y1IKPDqWsXLurpg3sbYRAfHnHheYg+JP/PjhDZnhO1d2utMIi5LFZolVg0tkhsStMmNgnk0om5posVkrbLTFRIUkmSIpDzcomZkFZx2epFj4IonVsFzkmjC7QBd/QCfruaRq9rF6iSdrCTGK6Iw1Xwo0fsvXoOKMW2NF/xzukjRPhAk9pIbSNf42xr+/S/gzUjd1gAkEHe86u+BmYZlC4Q32jbuQx4603X8XIKcH43Y6LhdarMuxaUDvxfbVvDk459d93zne/F8++mJzx6TES72VKkHCADzsL+WdfNugxKlCo+Itt+630y4WQ6ZFf5cQvkIk03zosCa3r27GzQbH66+HAxveCC6p95lVMxBeQ90zx5nwx1EZRYoXGtBSPtsomdE5JUTiUeroPCO6jW6NcoFG2bTkzdCm3XbZEh/mZouu5vy+t0GA==
+sidebar_class_name: "delete api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"removeEventFromCollection"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/v2/event-collection/{slug}/events"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Remove a single event from an event collection.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"slug","in":"path","required":true,"schema":{"type":"string"},"description":"Slug of the event collection."}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"required":true,"content":{"application/json":{"schema":{"type":"object","required":["eventSlug"],"properties":{"eventSlug":{"type":"string","description":"Slug of the event to remove."}},"title":"RemoveEventBody"}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully removed the event from the collection.","content":{"application/json":{"schema":{"type":"object","properties":{"slug":{"type":"string"},"title":{"type":"string"},"description":{"type":"string"},"coverImage":{"type":"string"},"banner":{"type":"string"},"links":{"type":"object","additionalProperties":{"type":"string"}},"managerAddresses":{"type":"array","items":{"type":"string"}},"createdAt":{"type":"string","format":"date-time"},"updatedAt":{"type":"string","format":"date-time"},"events":{"type":"array","items":{"type":"object","required":["name","slug","image","description","attributes"],"properties":{"name":{"type":"string"},"slug":{"type":"string"},"image":{"type":"string"},"description":{"type":"string"},"attributes":{"type":"array","items":{"type":"object","required":["trait_type","value"],"properties":{"trait_type":{"type":"string"},"value":{"type":"string"}}}}},"title":"Event"}}},"title":"EventCollection"}}}},"400":{"description":"Invalid input received. Bad request.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"Response body schema is invalid.","nullable":false},"error":{"type":"string","nullable":true}},"title":"GenericInvalidBodyError"}}}},"403":{"description":"User is not authorized to perform this action.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"You are not authorized or authenticated to perform this action.","nullable":false}},"title":"NotAuthenticated"}}}},"404":{"description":"The item you are making request for does not exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"resource not found","nullable":false}},"title":"GenericNotFound"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

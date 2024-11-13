@@ -1,0 +1,71 @@
+---
+id: update-user-metadata
+title: "updateUserMetadata"
+description: "Update or create user metadata for lock."
+sidebar_label: "updateUserMetadata"
+hide_title: true
+hide_table_of_contents: true
+api: eJzlV1Fv2zYQ/ivEPW2AEmdB9zC9tUM7ZGuKIHHQh8APZ/JssZZIlaScGIL++3CkbMuym7VBNxSYXyxR5HfH747H71qwNTkM2porBTk0tcJA957cNQVUGBAy8CQbp8MG8ocW+BvkD9DwfwallatrNLgkB7NuloEiL52uGRFyuI94wjohHfETLxNVjy0W1glGOIcManRYUSDnox3Ny2sMBWRgsCLIwVB4tG4FGTj63GhHCvLgGhob/ZDmCa0Y18uCKoS8hbCpGUabQOxu12UnzbBDr5Vy5P0/mnpv5UpgmnzSmA9Om+UXbTEdX2uLmf86W7MERT68sWrDM8bI0ppAJvAnrOtSy5gCk0+eLbXH0Hb+iWTgKDlOmKDJ89dtIE/NNE1Z4rwkyBdYehovrZt5qeXzC7csLLAp2dcuA1RKs6tY3gzgeGIXLQSSgbf5/WC7DIIOvA6G5+LK1E2ALv6Ybl9b49PWLi9e8d9h9G4pNM6M8t/jmmKSvjgeRyw/txP29NXFxbFzV2aNpVZC86aEI0maHRNvUIk+k76vl+M08h6XdJzKgyjBbU+xmFu1EcmW0F7o5Pv5sZkuA3LOulO4h9kwDPIfZMhp2VPCB+htBNnS98sxffFkai+MDQKbUJAJzM1zof33+ZoW5Eg8ohdoRORBaCMWTVkudKnNUoSChsEdk3dMyR25NblDNk5k+rQgoQNVYmMbgY5EhSu219uKRV9ZSnTRk/4BcsuRt42TFF1a2MaoryLkgw3v4uQtG7+dZMMRJwcKac2i1DKci2mkvreJpSNUmx+Eiv8ibX49VYPuDcOIYLfGdgmjmjjM97YzWAofAZNz/wO+uozv2cKyPuM7J0saIofJ+nKCtZ5sr5NJ2yukbsIaxk/agZTpJnz1+Ek7kBxdFHdsLWmuxpWQQxFC7fNJwqh0KM4bw89nfL1aactzaSsYq5MbZ1Uj+UWkDQBLnkNEH3CpzfLs25Dv0qod7GyvSO84tClYSZfuIsUmtxqJ3+eELgrW9PDOugo5fH9+nEKXwevDytyDYK3/os1erWGtz1ZxIEq5zw25DUs74FS73Suut09Y1SWNFdJO8oykSgyxNgsbTW+1RmRGvN9SBRlwnBIll0ck7eaJ2tm1VuTFHOWKjBKLxsikCHTYxOpLfNRibmq5oqDNMhtokmAdLikTaBTXQ73oiRGFtauoPEstyfi4v56Z66tpJKK2PlRoBl9SRyHiFTnoKQ68b/dH+Fs6hj5KgZ7CpC5RG45kzLi2PyIPsGaqsNaQ7UORQb5vJWIu8tCh7I+HhYeHCn2WQWF9YNy2naOne1d2HQ+nVMgfZhms0el0wB9aUNrzs9pVmC/u+6fbXqL/LA77l5O73Cao4WRcY9nwG2TA2blvlPgEvsiDcVvzAh+GdL7Yj3HL8wI/hvHrZl0GBaGKLWzbz/g9WT6bMs4e4egq4V2kFa+lpDo8O3c2KNo391MuPH0rVlnFSxw+cseHj8lZG4mIlSyOtVCiWTbx+oEEyeeL1eWgQI2qWtzUSTraNs2Y2hWZrtuxE/ideem6vwHw+JsD
+sidebar_class_name: "put api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"updateUserMetadata"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"put"}
+  path={"/v2/api/metadata/{network}/locks/{lockAddress}/users/{userAddress}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Update or create user metadata for lock.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}},{"in":"path","name":"userAddress","required":true,"description":"User address.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"required":true,"content":{"application/json":{"schema":{"type":"object","properties":{"metadata":{"type":"object","nullable":false,"properties":{"public":{"type":"object","nullable":true,"default":{},"additionalProperties":true},"protected":{"type":"object","nullable":true,"default":{},"additionalProperties":true}},"title":"UserMetadataInput"}}}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"204":{"description":"Return user metadata saved.","content":{"application/json":{"schema":{"type":"object","nullable":false,"additionalProperties":true}}}},"400":{"description":"Invalid input received. Bad request.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"Response body schema is invalid.","nullable":false},"error":{"type":"string","nullable":true}},"title":"GenericInvalidBodyError"}}}},"401":{"description":"User is not authenticated.","content":{"application":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}},"404":{"description":"The item you are making request for does not exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"resource not found","nullable":false}},"title":"GenericNotFound"}}}},"409":{"description":"There is a conflict. The resource already exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

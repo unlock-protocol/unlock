@@ -1,0 +1,71 @@
+---
+id: is-card-payment-enabled-for-lock
+title: "isCardPaymentEnabledForLock"
+description: "Returns if credit card payment are enable for a lock"
+sidebar_label: "isCardPaymentEnabledForLock"
+hide_title: true
+hide_table_of_contents: true
+api: eJydVMFu20gM/ZUBT7uAHBU56hYsmkW73UXRNNhD4AM9Q9tTSzNTDuXWEPTvC46UWIkDLBpfLI3IN+Tj4xsgJmIUH8MHBw34/Aey+4ynjoK8D7hpyd1G/hTtASpwlC37pNHQwBeSnkM2fmssk/NiLLIzaUo2yGSoIJhtZIOmnUASMnYkxBmahwG8QiWUPVQQsCNoIJD8iKyxTN97z+SgEe7pZQH/THHGuyuoINs9dQjNAHJKCuOD0I4YxrF69Rqt58Y5ppz/9yolwOAU/OplWdiHHYzjWqFyiiFT1u/X797p33O4u95aynnbt+3J8MzjksSJOGeyoPRano1BKIhCYUqtt2Vm9beseMNlPXHzjawo3awTFj9VM92hM56Hu0jZxNgSBhinXwUdyT6qKnZUkJS9BurjdY3J1xPUSstdORL0ba6HeXRjreTmelhwPCptxMfHwffcQgN7kZSbeorvvOyv+qDPq8RRoo3tlY3dhfQ+c3S91RdzVyBBZ/wcMQvufNitfg35bsp6gl1r0bZnL6c75Xii8T4TL5jTKx9FUZgkZGKo5ofbyB0KNPDx368wVnBzHuACBJP/i05neWLyq0M5KNr93hOfVMvgwzaWPC+tBt6Xtsynxz6hAiV56uf6osOnOJM4Hr2jbDZoDxSc2fahkIqtl1PZ2qJD5UO8PZD4sKtMR4IOBU2WyLijymBwJkTx27krs4/xUPak9ZZCJi13buvvD19LFylm6TAsvvhsVJhmdh8zK9TcRjavGdBwXoq3etFMvdBPqVOLPuh4ioyGWe4PcFQKMXldwkvJQwXN2a+K1vRo6S3rCvYxi2INwwYz3XM7jno8zbR5WFdwRPZaX1kN5/O8nFts80szWvb925fZtn43z93w1c4elRZUVUdse32DClRmZ9vVVXpTBS9N8g01LHkb12MFe0Knu/YwzBE31lKSRe6FHerOPlnXn+9Vbv8BjoBlYQ==
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"isCardPaymentEnabledForLock"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/api/credit-card-details/{network}/locks/{lockAddress}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Returns if credit card payment are enable for a lock
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully returns credit card enabled status","content":{"application/json":{"schema":{"type":"object","properties":{"creditCardEnabled":{"type":"boolean"}}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

@@ -1,0 +1,71 @@
+---
+id: get-user-recovery-phrase
+title: "getUserRecoveryPhrase"
+description: "Given a user's email address, retrieves their recovery phrase. In the case of failure a rejected promise is returned to the caller."
+sidebar_label: "getUserRecoveryPhrase"
+hide_title: true
+hide_table_of_contents: true
+api: eJzNVU1v5DYM/SsEL20BZWaxaC++pcA2SD+ART7QQzAHxqbH2pElh5KmOzD83wvKziSZyR6K9tC5jGSJ5HskHzViGFgo2eCvG6xwy+k+stxwHfYsh8+dUGQ0GLnOYtMBq4cR9QZWD5tpY7DhWIsd1AFWeGX37IEgR5bvInBP1gE1jXCMBoSTWN5zhNSxFZAlCgwlzAquvZ5ATZEhtNCSdVkYCIS/cJ24gUFCbyODjeoti+cGUlisnGNZocGBhHpOLLHA9dQzVljAXM5Y0KBVvAOlDg0KP2Ur3GCVJLPBWHfcE1YjpsOgtjGJ9VuclLFwHIKPHPX844cP+vc2C7e5rjnGNjs4ZhcN1sEn9knv0zA4W5eD9ZeoRuN50PCopJWPqJtk55BveJxDVIBvivcOC/0Z/PE97D9TAzf8lDmm1X+IWSTIORKD/JX6wfESWObA0GTWqlq/J2cbsH7IaXXE/dN7uO89Pbpi1WbnWuvOnSUWTw4iy54FCqR/RdFn5zQoVi25yKece46Rtu/kX0XTUnYJK7zrWBj+ogjkZ0hg/TMF67els+WlHicxNR3JppLAK/Ystr4t9D6VhC8J6zl1YVF3kUfqsMK1ijSux9f9NK2fm2d4Ub76m5WUxWGFXUpDrNZrF+pd7G3qVtnr+mKQkEId3KoOPZ6Ohs8SmlzrBmaIOJlTjzHR1vrtxT/zfDtbHd1uXsbVrRZvLsc8tI610JC4KF33j0zCgmZZ/BKkJy3Qr3/eqaYuXzrjlRMa7G980LLMI4YGe7ErH8p0ecosB9QKWN+GYrfU6r7Qgt+feaJBTfLM5+MZw+M9nX9723CER6p37Btosy9JJWfTAdogwKqE0jq23nGyfmug50QNJYKYgtCWDZBvwIdk24UVdCHsoraYszX7eW4stP64visshhBTT/7VyZYTaGLh+cGA44vxhsH4orL/yRuxVDDx17QeHFmvVS7dOC4CecAiEDRYnTwdJxrZGOxCTGoxjo8U+V7cNOnnuQGqh43BPYmdhfswYmOjrpvj5Phmsr6/WZ6mH+BboJ970Wvf7cll3aFBbcSTV2/aTAY7pqa83+Ny5bKueUivjM/GoErqOESuPt2hQcqao6MSTuRTvL8LbBznG3dhx36ajjiT7hXgNP0Np5sCJw==
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"getUserRecoveryPhrase"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/users/{emailAddress}/recoveryphrase"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Given a user's email address, retrieves their recovery phrase. In the case of failure a rejected promise is returned to the caller.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"emailAddress","in":"path","required":true,"schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successful operation","content":{"application/json":{"schema":{"type":"object","properties":{"emailAddress":{"type":"string"},"recoveryPhrase":{"type":"string"}}}}}},"400":{"description":"Bad Request.","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string","example":"Bad request due to invalid input."}}}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

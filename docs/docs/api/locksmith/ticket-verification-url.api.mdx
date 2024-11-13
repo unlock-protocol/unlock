@@ -1,0 +1,71 @@
+---
+id: ticket-verification-url
+title: "ticketVerificationUrl"
+description: "Get the verification URL for the key."
+sidebar_label: "ticketVerificationUrl"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVktv20YQ/iuLObUAbRpueuHNh8Rw4rhFLKUoBB3G5EjckNxldodKVIL/PZhd6q3EjS/RRdzXN/PNuwfbkkPW1twVkAHrvCL+SE4vdB62p66GBDzlndO8hmzWw9STg2wGnfwnUNu8eo8Gl+RgPswTKMjnTrfyGjK4JVZcklrtgarph3u1sC4cVLS+hARadNgQk/NBiJa3LXIJCRhsCDIwxF+sqyABR5877aiAjF1HxxIf4j2lC8H1eUkNQtYDr1uB0YZJdB2G5KwY4XNTFI68f1bUvc0rhfHyWWGenTbL78qqaH1XPCvlHa3V3XkyW/y5gPjWGk9ezq+vruTvEOjt418Pyj59opxVbg2jNtosT93TBafLDTIsMNi29XiYfvKC1e/pYrq6xqeaIFtg7SnZKBcliW+dhBnrqNrqKLxO2CTHiEP4JfDq6o9TUhKOSntlLCvsuLRO/0eFYqtacgvrGsWl9gpzuX/5M7yOaZzwPOTVkPe4pHN8ClpgVzNk8K/tFDo61ta6sCLDos4P1T+xTQKsWdbwYPlmHwU2Znt1arZJSUozNWo9atRgJcEgoUieQ3oWlqJd6av2/Mtt58jbzuXReAvbmeLH5rglQ07nD5bfhMvRGn+ey4ypEQyx+qKr64Wut3YourAtVcMZrJUntyKnyDnrfrlFJiU5Ul/QKzRRJaXNhsImtUcmz8TOaKzHQO+1QMGYdQ1xaaU7LCkks1SwDNLVdYqtTmPLSPuxOg9pv1dAh7QPJW5I95M+NBQRE0u9VJsMSubWZ2kqr32jubzsjHxftM6yzW19mdsGjkvj384WXUgNFTUHqbSHiJ5xqc3y4ueQH+OrLex81wUfxafRS7EXbl0kIjdlWtZPhC40yfjxxroGxW9v/5nAkMDNLmD2QLDV72i9axLY6osqbIQO8rkjt5aOAtosbHg3unAaaKn7DU9IpNb6yOf6hOH2nmqdXemCvHrCvCJTqEVnglGx1rwOpYAkQUJEBX9rs0xUQ4wFMirP1uGSEoWmkOTcdZLS2ip0xlrnZHwI55HW+7tJYNFazw2avZMoQn08mBhCSzog0O9y739PGaOJmb5y2taojbihi00oBvYMVmIqbLVcD5pAAtlu+MgOB4Rs08MPInyeQGk9C1zfP6GnqauHQbaj+7LZPIEVOh2zcdZDob18F9ty8F2uv30Yp4Xf1eGoc5bcJqiMBNAK605WkMjosTdTSda8SIPjCegFOuzb88V67GakF2gQXTjMhwRKwiKMt/14dpPn1PLeq5MqL6VhWyNvX08kejoJpW1GH5WBgH5Wo76PNya2IjMMWwVZ1qLgMHwDuK4QlQ==
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"ticketVerificationUrl"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/api/ticket/{network}/{lockAddress}/{keyId}/verification"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Get the verification URL for the key.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}},{"in":"path","name":"keyId","required":true,"description":"Key Id.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"JSON object containing the verification url","content":{"application/json":{"schema":{"nullable":false,"type":"object","properties":{"verificationUrl":{"type":"string","nullable":false}}}}}},"403":{"description":"User is not authorized to perform this action.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"You are not authorized or authenticated to perform this action.","nullable":false}},"title":"NotAuthenticated"}}}},"404":{"description":"The item you are making request for does not exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"resource not found","nullable":false}},"title":"GenericNotFound"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

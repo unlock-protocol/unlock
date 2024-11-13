@@ -1,0 +1,71 @@
+---
+id: get-user-account-type
+title: "getUserAccountType"
+description: "Gets User account type by email."
+sidebar_label: "getUserAccountType"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVVFvIjcQ/ivWPLXSBk7R9WXfaMqhNLlwOkBVhdDJeAfWh9d27DENWvHfq/FuCBdy0lWtVF5Y2+PxfDPffNOC8xgkaWdvKyhhi7SIGEZKuWRpfvAIBVQYVdCejaCECVIUbCRkZyXo4FGsDwIbqc0ACvAyyAYJQ4Ry2YKVDUIJ+XhUVQFjhAI0O/OSaigg4GPSASsoKSQsIKoaGwllC+wbSogUtN3C8bhi4+idjRj5/PrdO/77NsRZUgpj3CQjTvCgAOUsoSW2l94brfLB8GvkS+3lo279FRUxnsBuSHdPplcJerkgQ5AHhkbYxMvoC0CbGiiXsHi4n97cfRnd3EwXD3MoYDKdTu7HZxufRrPZ3fjPs53xx9Ht/Zeb6W9jWB27XwHv34L/q6zEZ3xMGGnw38HGEFx4E9STbLzB/uHQPSyqhIKc0HYvja6Etj7RAF7ifn8Z97xGwakTB5eEDCgaudN2e3K5cUFUDqOwjgQ+6X8JzyZj5JoD30gT8TXeBmOUW3wLcYUbmQxByVx0KSjMIW1cstWlY8ZLmnKGJmgxaPXg6EM27rLxy1tVXFj2wTncJGM22lymljBYaUTEsMcgcoH+94zMawwo/pJRSNuFJLR9hsDVpBqfkQx+KFmzDG+c6dfTp0GqXa9XWW+ohhKG++uh9HrIDRqH7bneHIeZLw/4RKOUJadLWidQKRgooSbysRwOjVO72GiqB8ny95UPjpxyZqBccyGHn4KrkuKF6AKFY/HaYyS51XZ79c88z7pbJ7crDlqloOkw4xJ2RWElPqsIPwm9gPJ6jTJggKL/+OBCI7lMv/8xh2MBoxd+nOuY13fIQtYrt/T6apc3smg/JgwH4Dpou3H5Xl+xRYYl7p9xQgGc5A7P9QXCk53wwe11hVGspdqhrcQm2ZxUaTQdcucj90MmkFY7JG23hWiQZCVJikguyC0WQtqKe1FvelSidm4XmWhGK7Qxs7eH9fF2nlF4F6mR9uxki9SNuF7nxVuTsH1ptB8Zin1uCZ9o6I3UlvOfedL2BF7CnnMkvYYiTxkek+Wrsfktj1cF1C4S323btYy4COZ45O2uSOVyVcBeBt212LKFSkf+rk49/l1MP33up/LP4nvhP/PFMjf20iReQQFMllcD/7g6FlCjrJiuy7Y3GSmFns4uXwgW0/7U7pMxV+xveS0FAw==
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"getUserAccountType"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/api/users/{emailAddress}/existNextAuth"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Gets User account type by email.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"emailAddress","in":"path","required":true,"schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successful operation","content":{"application/json":{"schema":{"type":"object","properties":{"userAccountType":{"type":"array","items":{"type":"string","enum":["UNLOCK_ACCOUNT","GOOGLE_ACCOUNT","PASSKEY_ACCOUNT","EMAIL_CODE"]}}}}}}},"400":{"description":"Bad Request.","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string","example":"Bad request due to invalid input."}}}}}},"404":{"description":"The item you are making request for does not exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"resource not found","nullable":false}},"title":"GenericNotFound"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

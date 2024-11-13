@@ -1,0 +1,71 @@
+---
+id: login
+title: "login"
+description: "Login as a user using Sign in with Ethereum message signed by the wallet address."
+sidebar_label: "login"
+hide_title: true
+hide_table_of_contents: true
+api: eJzNlsFu2zgQhl9lMGfFLoLuRbd0kRZpu9sicbAHwwdaHEusKVIlh04Mw+++GFKpncRIm8Ni64tFiqL++eafoXboBwqKjXdXGmu0vjUOK9QUm2AGmccaP8ssqAgKUqQAKRrXwo1pHRgHd4Y7uOSOAqUeeopRtQTRtI40LLfAHcGdspYYlNaBYpxghYG+J4r8zust1rs8NIE01hwSVdh4x+RYbqlhsKbJGqffogjaYWw66pVc8XYgrNEvv1HDWOEQJCI2FOXuqOZoYeRgXIv7CkWh4hRO3c0/ERkH72LZ6/zNG/l7jObLJ3yF2EOUc1RNQzHO/JoEeAF0UfjgovpJXI+XP9NfoUvWqqWlwnNfPXrdi+tXykaS4NmwjPEicXdNMVnGQuXtKRBXbqOs0WDckBgCNWQ2pCfwTmkYcz15Daqn8T8R+MuJFi+vlIiv8XpMJyy93kJ5F5gIpmifnOBQIYXgwy8gPiL2gRwF04xIxOKXeZMHfG+f45t1BIaph61PoAJBr9ZSZCM6WPkA2lME5xno3vwGNANFn0JDWdLKJ6df9tFI5W/P7/PiQuOPU2a6dbIHsIdVsnZl7A8OOuVp45iCUxYihQ0FyEn634nMpAfCnTRKVyRJfxxDkGxKKzwqhp/DusnhHdyzr7An7rz06sHH3BgUd1jjdHM+VYm76UMLL2Qi1vMdpmCxxo55iPV0an2zjr3hbpKcXJ8NwbNvvJ00vn/W/L8Gr1MjAyhqcF893TGyao1rz16380156se2CxHdpGB4eyN5KuRvIx2Xn7xSossLsMYlqUABq/HivQ+9klx8/GcmTf7iYIKjTdRgPtFWMqD6cXy2zhNGhH1PFLYosMU314eT6vJe9YOlR4Y4GOHoQDk6Zoxb+fzqMbO3mQx8fkCFFUqeCpLzE2fvuA6G4DdGU4SlatbkNKySy3lR1vA2dwiSuslGM82a2Li2gp5YacUKIvugWqpAOS01a1YjGOi8X+dD2ZqGXMzxjWT+upplEGK2XrmjOyc/FXaHAvxPvhrG/DHd83SwyjghnL24GwthjhuBKKUgAWWRiwo7KZZ6jrvdUkW6DXa/l+mS6Xq+qHCjginFOF/sK+xIaTHefIfijBr/LIGdzUSCLLepWOdJl5HqKE9cNA0N/OLaxVE9f/1yMxMfj19EvdfyTFB38rWk7rBGrNBn0Lkw8twOrXJtKk4se8rvXxQ5csI=
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"login"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/auth/login"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Login as a user using Sign in with Ethereum message signed by the wallet address.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={undefined}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"required":true,"content":{"application/json":{"schema":{"type":"object","properties":{"message":{"type":"string"},"signature":{"type":"string"}}}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"OK","content":{"application/json":{"schema":{"required":["accessToken","walletAddress"],"type":"object","properties":{"walletAddress":{"type":"string","nullable":true},"accessToken":{"type":"string","nullable":false}},"title":"AuthResult"}}}},"400":{"description":"Invalid input received. Bad request.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"Response body schema is invalid.","nullable":false},"error":{"type":"string","nullable":true}},"title":"GenericInvalidBodyError"}}}},"404":{"description":"The item you are making request for does not exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"resource not found","nullable":false}},"title":"GenericNotFound"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

@@ -1,0 +1,63 @@
+---
+id: get-stripe-connections
+title: "getStripeConnections"
+description: "Lists the locks connected to Stripe for a user"
+sidebar_label: "getStripeConnections"
+hide_title: true
+hide_table_of_contents: true
+api: eJytVU1v2zAM/SsCz2rTFTv5Ngxd0X0AA5pihyAHRaZtLbLkiXS2wPB/Hyi7aZp0wwosl0gy9fxIvkcPEDtMhl0MdyUUUCPfc3Idvo8hoJVzAg2Etk+O91CsBnggTFCs1uNaQ4lkk+skDgr47IhJcYPKR7slZScQLBVHNeGqKiZlVC8YGhJSFwMhQTHA9dWV/J1DqljNgF3CnYs9+f1L2KDBxsAYWHBM13lnc2qL7yRgA5BtsDWy4n2HUEDcfEfLoKFLUgh2E5WE1Hs+ijMpmT1ocIwtnd8fRw2YUkxHj4iTCzVoCL33ZuMRCk49jvmn4e1L2d6FnfGuVAl/9Ej8/xJqkcjUeE7vic6bczrSaeVIhcjK9NxgYCGA5eUfmf2d1FMpKuMJ/5mlCK0yuSWwbDCh+mlImaBy0ZULquq9r5x3oc76mwt4ef5OSZYdyx5uMWBy9h7TDtNN7t9cjha5ibMhpJiGGyhgsbteUJbawp74QxAo26NPHgpomDsqFous29Zxc9kHWV90KXK00V/a2MKpgb6mWPYZVU2kYNSniMSmdqG+eB3y/XTrALt+MvW9tGtqwGTtQ/XllZJdDoACNmhS9u20+BBTa6QlH78tYdTw7rkMHq3TuU8o3gmmnfcX23zghNiPHtM+G8iFKuZ7c3ceclrq82OeoEGKPOVzfZbhIU51Ke5ciaQ2xm4xlKrqQy6q8Y73eQJhMJtJLM5ukV2otWqRTWnYKOKYTI1amVCK9l01Z6WaGLckovLOYqCs1DmtL3fLnEUXiVsTjp7UyI/D7/lUfcZ/eDLU6+foXGrGX7zovHFB2pFlM8zaXcFOSkZHg/LAZK2hicQSNAwbQ/iQ/DjK8dScYrXWsDPJTTZarUcNDZoyfwYGkGYW8M5a7MQrO+P7qc8n40o0d/DV7c0SNMhQOZLKib4y+qOKwv4IeximiGXcYhhH0DMJlj2M63EcfwOveGXh
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"getStripeConnections"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/stripe/connections"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Lists the locks connected to Stripe for a user
+
+<ParamsDetails
+  parameters={undefined}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"List of locks previously connected to Stripe","content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"array","items":{"type":"object"}},"error":{"type":"string","nullable":true}}}}}},"400":{"description":"Invalid request","content":{"application/json":{"schema":{"type":"object","properties":{"message":{"type":"string"}}}}}},"401":{"description":"User is not authenticated.","content":{"application":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

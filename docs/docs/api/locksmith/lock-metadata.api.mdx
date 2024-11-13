@@ -1,0 +1,71 @@
+---
+id: lock-metadata
+title: "lockMetadata"
+description: "Get metadata for lock address."
+sidebar_label: "lockMetadata"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVUtv2zgQ/ivEnLYAEwdB96JbDm3QV7bYJNiD4cNYHFmsJZIlR24NQf99MZRsK3GKbnvZk8TXzPfN45sefKCIbL17Z6CAxpfbT8RokBE0GEpltEGOoYBbYtVOh6ryUclthcZESukSNASM2BJTTFAse7DyKCDXoMFhS1CAI/7m4xY0RPra2UgGCo4dPXd1N95T1ojdVNbUIhQ98D6IGeuYNhRhGPSLbgTYzYjrp64+PiNx5ixxtG4Dw7ASUyl4lyjJ+fXVlXyemnt//9fdKUqld4zWWbdRAk2r2WWt0BlVdol9q0KURLCldIysgJH35FjcYAiNLXOqFl+S+OpnWF3XNLhuCIoKm0T6AN6vv1DJoAGNsfIWm89HV2NAhmEYNLy+en1O5qEmZZlatfedwkiqxa1wkYhS4gzVeErKeVb03Sb+JdDPMZ6RCDOoPbSUEm7oPDWS0gq7hqGQDPkulpQhVb5z5tyw8GXLsoZbchRteef5bb48RuPPl1L76MSGYq+qrmkq2xzjYLq8LWUZHTYqUdxRVBSjj/97RB5qiqS+YVLoRkjKugMFySbXdGBy+Z+CdZ/pvRFTOV6Dhpa49qIgG+KsBFxDAYvd9QKDXRz6YdFPAjAspMLTop916iDNly2P8tHFBgqomUMqFuP91nJ92Tn5vwjRsy99c1n69kyqPkdvulIWagQLohRPLSbGjXWbi1+zfD++OppdCeiyi5b395LGMTGPieIsK+LyIC2yXhNGiqCnn7c+tiipev/PAwwabk41MjOCwX6g/UnkMNiLbd7ICvi1o7gXRQTrKp/fTVl7zLTUxwNP0CBBHvlcnzE83hNR2llDSa2x3JIzqupcOYqI5X3ufpKeyEVkyy2xdRt9Ur/EPuKGRqFznm01sVK199usto0tyaVcwROtT+8eMovgE7foZieZxY+mU39qsp8PqimiTN95ERq0TqKeq6OfSncJO4kMBgu5uA8+i9MEy3UjW/Nps9JQ+8RioO/XmOgxNsMg22N+iuVKww6jHTts2YOxSf7NscV/SOuPv6dB9ko9nY8v0jlUjZMK2WHTyQo0SMmcBrG0xW8heD42fwPDPG7DatBQExrpm2U/3bgpSwo8e3umntJ/R+25fSOl8y+b7RK+
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"lockMetadata"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/api/metadata/{network}/locks/{lockAddress}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Get metadata for lock address.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"JSON metadata containing name, description, and custom properties for lock.","content":{"application/json":{"schema":{"nullable":false,"type":"object","additionalProperties":true}}}},"404":{"description":"The item you are making request for does not exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"resource not found","nullable":false}},"title":"GenericNotFound"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

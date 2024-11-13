@@ -1,0 +1,71 @@
+---
+id: generate-google-wallet-pass
+title: "generateGoogleWalletPass"
+description: "Generate and return a Google Wallet pass for a specified key associated with a lock."
+sidebar_label: "generateGoogleWalletPass"
+hide_title: true
+hide_table_of_contents: true
+api: eJy1Vk1v4zYQ/SvEnFpAiRcBetEth22QbtpdJDb2YPgwFscWVzSpJUdODUH/vRhS/oy3RVM0l5Ai+TiPb96Me/AtBWTj3aOGEtbkZEoP3q8tfUVrib9gjFBApKoLhndQznuYRQpQzqGh3edXRwEWw6IATbEKphU0KOFhxFLotArEXXAKVUZWGVq1GKNa+aBQxZYqszKkVUM7hTH6yiCTVq+Ga4XK+qq5hQJaDLghphBTJEauapFrKMDhhqAER/zqQwMFBPremUAaSg4dXQb4R96njBbcWNW0QSh74F0rMMYxrSnAMBRXr5GA7rUOlJ7n76968lWjMG++elnkYNz6h3c1tHvU/3jLJ9qpx+tkDvgLAYmtd5GirN99+CD/zoGek1pRcU1q9vyk2KdhFSgrciKeX36jiuXOyjsmx4KGbWtNldJq8i0KZP82pHxSFA2ShGxyQIL6OS3Ngn3LoADXWYtLS1Cu0EYa0l8Bv1wjMnOyU+JfddaujFXyghRZ6S59FpGDQ6sihS0FRSH48J/YXIR3SW9DMeKarhHTtMLOMpQwrSmQesWo0OWQlHF7Csatkxojk9trT1IAG5Z5dqGpXhK9jwIF44NtiGufTZ9UkIQrYbK9m4gEk3600TDpTzJ9mPQpF4cJOh280akyCHa2YyeaQc3cxnIykYNxY7i+7ZyMb9rg2Vfe3lZ+A5fp+yV43VUyUTlcEDecI0bGtXHrm3+H/JJPHWAXx3L2IkJmaXJRO+giV+6tJPMlYaAAxTj41YcNili/fZ3CUMD9MUtOQLA1n2h3NDK25qZJH5LLv3cUduJ6MG7l07lRt1mipZ72PKEAeeTM5+4Nw8M+1Qa/NZqiWmLVkNNq1bn0qGgN71KxJXFFSiNTNcTGrQu1IUaNjCqyD7imIpVt59msRlaq9r5J1cuailxMOTzS+v1xmli0PvIG3cnKvqNcFP6xqZyR6I+m+7+ax6gK0588aS0aJ8p1uc5kA8xhe5fckOIrj72kPK/35b4k732wKKD2kQWh75cYaRbsMMjnLHI5XxSwxWCyUec9aBNlrA+V4oev8dPzWPd/VudN6yqffeo5SbMt2k5mUEgTOemO4q13RXDZy94Rw+lTvjuOY7d7RwRZvWExFFAT6vRrph/X7quKWj459aYBSAE5lM+Hj1NJg06y5+D7i2KR0K9G1Pd5x9Q35IbhECDLXAIchr8AIJ1WTA==
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"generateGoogleWalletPass"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/pass/{network}/{lockAddress}/{keyId}/android"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Generate and return a Google Wallet pass for a specified key associated with a lock.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}},{"in":"path","name":"keyId","required":true,"description":"Key Id.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Returns the URL to the created wallet pass object.","content":{"application/json":{"schema":{"type":"object","properties":{"passObjectUrl":{"type":"string","nullable":false}}}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

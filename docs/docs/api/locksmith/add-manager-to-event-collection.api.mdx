@@ -1,0 +1,71 @@
+---
+id: add-manager-to-event-collection
+title: "addManagerToEventCollection"
+description: "Add a new manager address to an event collection"
+sidebar_label: "addManagerToEventCollection"
+hide_title: true
+hide_table_of_contents: true
+api: eJzNV21v2zYQ/ivEfdoAJe667ou+pUU6ZFu7onEwDIYxnMWzzVoiVfLk1DP034cjFUe2lPQNRffJMt/u7rnnjg/34GryyMbZKw05oNav0OKK/NRdbsnyC1eWVMg8ZBCoaLzhHeSzPdwE8pDP5u08gxo9VsTkQ5yyWBHkEMpmBRkYCznUyGvIwNP7xnjSkLNvKINQrKlCyPfAuzruYW/sClo5VVMovKmj8RwutFaoLN2qKnmoUGtPISh2Cq0icVcVfX/FGgV+7vROTJwaL5xlsixTWNelKSIOk3dB7O2HvrnFOyr4KIoZWLrtELtI7oDg4QVWNhRk+3DJSLwZsOGSUqDd8uh428qkp1A7G9KBT588kZ9jfK6boqAQlk1Z7gQa0qdAwVeEfBxRzOwwiEMMIzNHzo7MF25L/qrC1fj2BVorfBuZKo3dhDGfUWsj9rB8c+T9EPrqKD1Hq9B73AmLmaoHdheekElf8HA6g6XzFTLkoJHpjE1F4nNT68/dEvn9KZ6N01RKMjuUZMT5OCkZILM3i4ZpjMOxpEfQf5AK5sFcfowKPT++MFr2aPifuCKDLZYNDSPqrRlzIu0ayXfbr9XYI2E41GubacOzsZK9slssjVbG1g0rTwWZLelz9Ry16nrX+dcUrW3KEhfi1RLLQKcIVBTCaI4kRUtsSuHg267xqIXTO5VsKROUSb6fD80IV713I8XaXyotuA/br2TJm6KDRDrfZTzkDr6fhvDJDSSuWMcKG16TZcGG9MOgfXu8pmvypG4xxDtJQlDGKunKS1Mau1K8pn5yT8EbQnJNfkv+GI2fP46G8+Zf0nI51uSlpShem6AwsvK70+pv1yj0dOqt88eZfMT9R4B77fiif8oBtmdD2KZrUtJT1K7zqMKNpKlLkVo6r7SjhCt9MP+DkvQUXOOLBN7SNVZ/Eo9eO34ZFyc0fhnrSDdWzhDUO8YecNBNHDaWyVssVYisTAz/7oh8+6ITkUC8diKSaxeiJBJJm8Nk+3QS7+aze+052cu12E46XRGidpYDkz5ufAk5rJnrkE8mpSs2oTK8Pm+sfJ/V3rErXHleuApOZfAb73QTjajkI7TZ6YmBcWXs6uzzTr5Ouw7Hzu8F/7VkL+Ujyf5DMsQkdDpe/i8IPXnIuo+Xd1Lmt7+mcqteHLfiu7u9Nr+TXO7dwwFrc7aJA/Ht8L4hv4tKS9j09l7UX37Aqk56c0Rj97WIXbpor0vyTYRD/XGHj6gE8iHh8HSAzGGdqr3bGk1BLbDYkNVq2dgiaUzDu9gsSEoocs4UG2JjV5mqiFEjowrsPK4oU2i1lK9ZdmiotXObINwsTUE20L3ogldX0xi98K5C25tBrVUXtpo6FaWHOnqynWitQ5V+yXOqyxbTB57UJRoblawwb98Vwwy2gt5pOUAGeac8DxUxz2AtdZTPYL9fYKAbX7atDKd057O5iDBvUp3O9qBNkG99aBQPxvbD204L/qgecvuOeXZ3UIg5QAZCu+7l2s7bDNaEOr5z993Ui2TlbNoXl/mw50lVph0XRUE1P7p23usub/68nkr9dI/WymnZ4/FWNC7eJjddjDoWZBzbQ4l21cRGCelMYYzcpb06OynOGNUoEPt9WjF1G7Jte8CF5b8A07b/Ad4BrIU=
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"addManagerToEventCollection"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/event-collection/{slug}/managers"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Add a new manager address to an event collection
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"slug","in":"path","required":true,"schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"required":true,"content":{"application/json":{"schema":{"type":"object","required":["newManagerAddress"],"properties":{"newManagerAddress":{"type":"string"}},"title":"AddManagerBody"}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully added manager address","content":{"application/json":{"schema":{"type":"object","properties":{"slug":{"type":"string"},"title":{"type":"string"},"description":{"type":"string"},"coverImage":{"type":"string"},"banner":{"type":"string"},"links":{"type":"object","additionalProperties":{"type":"string"}},"managerAddresses":{"type":"array","items":{"type":"string"}},"createdAt":{"type":"string","format":"date-time"},"updatedAt":{"type":"string","format":"date-time"},"events":{"type":"array","items":{"type":"object","required":["name","slug","image","description","attributes"],"properties":{"name":{"type":"string"},"slug":{"type":"string"},"image":{"type":"string"},"description":{"type":"string"},"attributes":{"type":"array","items":{"type":"object","required":["trait_type","value"],"properties":{"trait_type":{"type":"string"},"value":{"type":"string"}}}}},"title":"Event"}}},"title":"EventCollection"}}}},"400":{"description":"Invalid input received. Bad request.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"Response body schema is invalid.","nullable":false},"error":{"type":"string","nullable":true}},"title":"GenericInvalidBodyError"}}}},"401":{"description":"User is not authenticated.","content":{"application":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}},"403":{"description":"User is not authorized to perform this action.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"You are not authorized or authenticated to perform this action.","nullable":false}},"title":"NotAuthenticated"}}}},"404":{"description":"The item you are making request for does not exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"resource not found","nullable":false}},"title":"GenericNotFound"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

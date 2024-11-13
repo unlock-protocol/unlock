@@ -1,0 +1,71 @@
+---
+id: unsubscribe-email
+title: "unsubscribeEmail"
+description: "Unsubscribe email from lock"
+sidebar_label: "unsubscribeEmail"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVs+v2zYM/lcEnjZALyketotvr0A3vK3biibBDkEOjMTEamTJleR0geH/faDsxM6PoVh3WC6xHIr8+JEfmRZ8TQGT8e5VQwGNi802qmC29K5CY0FCJNUEk05QrFtYRQpQrDfdRoImNqz5LhSwGm8K4qtiF3wlrFcHkFBjwIoShZjdGL5RYypBgsOKoABH6YsPbBvoc2MCaShSaOg2zu+9nTB6xuBUSRVC0UI61ezGuER7CtB18mEYxvOidaAYvxrqvVcHgb3xw2AxBeP20DEbgWLtXaTIvz+/ecNf1+4WjVIU466x9iQmROsHfCnvErnETrCurVG5RPNPkT2190j89hOpxEQHLmgyPY7Yh5wYbr23hA66/JHwwyOkr+6I1mhhXN0kEUiROZKeibeoBVNGMc3+C0jXWItbS1Ds0Ea6RV1RjLine6K5QDtsbIICPg58i63XJ9HHEiYK02Of3YfpJFAIPjzyO5pyIzAxySQ+ws/kKBg1UPLW69O77KSn78dH9K0cuxLJC671ztgzaUI3+TU3aXBoRaRwpCAyrP+d0WVJgcQXjAJdD0kYd07BuL1IJU3Lf0vvPWmLnN7IVyeholR6njS1j7lfWZ0FzI/P86yCp0EWmcs4n8hk3g4jopuzSOK8nWi5y4OKo/UDpgkWCihTqmMx7+0rk8pZ4/j5qQ4+eeXtTPkKbmX/IXjdKD6IPgHgWXLtMSbcG7d/+neeF/2ti9vNOF0XXNq+WP2MvVSKQ56HT1YwYaAAcnj4yYcKuXy//LmETsLL2DcTJ1ibX+k0jkGszdMhv8gz8nND4cQzE4zb+XxvqOQqpyXen/MECUxyn8/zXYYXO1EHfzSaotiiOpDTYte4TCpak05i54Mg1kluLKMOlIzbS1FRQo0JRUw+4J6kQKeF88nshqxE6f0hz2NrFLmYu3pI67fXZc6Cm6tCN/ll0kjivNmuoLej+L6yywZKE/2V5rVF45j23B7t0M5rODI1Dxoa5BQJSCjGvZd7iV9Nd9RGQslKKdbQtluMtAq26/h1X7NivZFwxGB6Ja5b0Cbys76Mgn9M87uPw/r7Xlxv1YcZnjvJcdcc0TZ8AgncRuP6Zql8E4LbZfsNGKa8dZtOQkmo8/+VdrB4UYrqNLl7N2VZk5cZ9eGPxRIkYMNFHVfotQCz+4fA2ra3WPoDua674Ex8ZoRd9zeggFG5
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"unsubscribeEmail"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/email-subscriptions/unsubscribe/{network}/locks/{lockAddress}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Unsubscribe email from lock
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully unsubscribed email from lock","content":{"application/json":{"schema":{"type":"object","properties":{"success":{"type":"boolean"}}}}}},"400":{"description":"Invalid input received. Bad request.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"Response body schema is invalid.","nullable":false},"error":{"type":"string","nullable":true}},"title":"GenericInvalidBodyError"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

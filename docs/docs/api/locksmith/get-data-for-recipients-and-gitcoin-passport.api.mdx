@@ -1,0 +1,71 @@
+---
+id: get-data-for-recipients-and-gitcoin-passport
+title: "getDataForRecipientsAndGitcoinPassport"
+description: "Get the data for recipients and gitcoin passport. This is to be used in conjunction with the Gitcoin passport scorer."
+sidebar_label: "getDataForRecipientsAndGitcoinPassport"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVU1v2zAM/SsCTxvgNkOPvgXYWnQfQLG22KHIQZGZWI0tqSSdrTDy3wcqbuI2abFhh+USf4h8j+Tjcw8xIVnxMVxWUMIS5aMVex7pOzqfPAbhaaguvLjow5VlTpEECqiQHfmkgVDCBYqRGk1lxZpFJEO7aGNDZZbbeJOGBKfmpvZsPBuJZo6mY6yMD8bFcN8Fp1nNTy91TnrxItiwi4R0CgUkS7ZFQWIo73rwyuWhQ3qEAoJtEUoIKD8jraAAwofOE1ZQCnX4soSbGs1wNqM20a2UYAxQALsaWwtlD/KYctaunSPBZlMcR9XoaVURMh80S5Hs9p2Jix3YMRgW8mH5Osy+zUdRGs+iEKNp6HAUMXXkast4DNUSWQXxgi0fY7OZaTc5xcCYD5x9+KB/zxnIiEEWhg+pkzzyjnHHRMgGtnnmUICLQTCIZrMpNd5lbU7uWVP2h1zj/B6dCjKRKln8lhAhd438VU35V0CLUsdhFbLCpIYSJuuzSR3jiieDlLVvSOsn5XXUQAm1SOJyMtFxcuulPu2CXp8kihJdbE5dbA8mdUWx6raav84pQcf9PCOLXfqwPPm7zNfbqF3amZJ2HXl5vNZGbnt1y0ijjijkkyr0fo6WkKAYLs4jtVaghM8/bmBTwHQ/pXG7k/+CI6Ha5E9W+cFIxtpuHxYxx3lp9OBtLst8faoTCtAmb+s5O6hwd84kimtfIZu5dSsMlVkMRmIbL49ZbRjsvNF+iHcrFB+WhWlRbBYnSyS7xCL7VYjiF0NVJs9d3abxDgOj0h3K+nZ5k6tIkaW1YfRmiWLUSc15JLP3UjMN1c7QXrPTfr8F/81ZhzkK/pJJaqwPOuusyX7YiTtY6zxyd6CAp72Y6SMWfd/3c8t4S81mo4+3Q9dtqTzbeaNOvLANv7Ticfnvvg+m/d68adBH6argxh+AtW06PZX36885vO7Xb6A+/wD8A/KfefgbTJ59I/ZEZnpDXplAeTfbFFCjrdQJ7vohcuocJhlFHTiyZtkZ5sUnXYbfZcfnHw==
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"getDataForRecipientsAndGitcoinPassport"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/hooks/gitcoin"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Get the data for recipients and gitcoin passport. This is to be used in conjunction with the Gitcoin passport scorer.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"query","name":"network","required":true,"description":"The network the lock is on","schema":{"type":"number"}},{"in":"query","name":"lockAddress","description":"The address of the lock","schema":{"type":"string"}},{"in":"query","name":"recipients","description":"The list of recipients for the purchase","schema":{"type":"array","items":{"type":"string"}}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"the list of data inputs to use for the transaction","content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"array","items":{"type":"string"}}}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

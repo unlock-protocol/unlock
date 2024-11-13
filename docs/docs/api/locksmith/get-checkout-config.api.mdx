@@ -1,0 +1,71 @@
+---
+id: get-checkout-config
+title: "getCheckoutConfig"
+description: "getCheckoutConfig"
+sidebar_label: "getCheckoutConfig"
+hide_title: true
+hide_table_of_contents: true
+api: eJyVVU2P4zYM/SsCTy2gmUwHPfk2GGwXu9sCi04GPQRzUCTa5saWvBKdNjD83wvKjpuvLjCnWFJIPT6+Rw0QOoyGKfhPDgqokJ9rtLvQ83PwJVWgIaHtI/EBis0ArwkjFJu38U1DZ6JpkTGmfORNi1AAOdBAHgroDNegIeL3niI6KDj2qCHZGlsDxQB86CQicSRfwajBYbKROoEDBaxrVORUKBXXqOyMS9kJmCCImLrgEybJ9vjwID/nOZ7Po1QZYs5W0R69ylht8IyeJdZ0XUM207H6liTBcA03bL+h5bPCNmCPbGUWhJwozDJN2MjdrHei7MbB9nBze77lBhbjHAls03w9uXgi/BRnE+wuXeObtt+VdxwFUETD6J74Gq6GMsTWMBTgDOMdU4tSQ9+594WMGpi4wZNuztocM4ZfH3657rvoVFFSPrAyPdfoWRqL7v5/O/7jZvu+acxWUJSmSXhJYIspmepGM0XUpekbngQdUf1tkjJeYYwhKvKq7JumpIZ8lZUp3cLE99d3njLxET1Gsi8Y9xg/SKrMxpWHbhm6Ra7D7HbQk00LWO0fV0ePrQZyY7a+pJ/s3ccGCqiZu1SsVlkwLXF933v5vuti4GBDc29DC5covsbgeisLNSGGUV9mTGwq8tXd+zK/TFFL2rf/5tWL9HLqzjS1ltbIlTAPIllv0USMoOeP344i/PzXWhT7dK6ROYnp6Asejo7P67td3sjD73uP8ZDFS74MOW5u3WsuS/1+rBM0CMlTPY9XFS7/U10Me3KY1NbYHXqnyt7byZzEhzza0JvtpCSyO2TylVYtsnGGjUocoqlQK+OdGIPKuSpVh7BLoriGLPqUZTyX9cenda6iC4lb409OKmS1jNdFXGfgF7IY/+FV1xjyeQRI44dZeBvYS9FH6YGGgpxMqDokluNh2JqEr7EZR9meiC02bxr2JtLkj80AjpJ8u8WgF0gW08NPf84D8Wf14ydG34Z/FICXZu9N08sKNEj38/s3vo0aajQuv5XDfPBkLXZ8EnL12oh6F3N+/LCW+dsLRwuPF0rN2W/CGYbpH+uwQz+OCzqWtQAcx38BuZjDjQ==
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"getCheckoutConfig"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/checkout/{id}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+getCheckoutConfig
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"id","in":"path","required":true,"schema":{"type":"string"},"description":"The id of the checkout config"}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Checkout config for the given id","content":{"application/json":{"schema":{"type":"object","required":["config","name"],"properties":{"id":{"type":"string"},"name":{"type":"string"},"by":{"type":"string"},"config":{"type":"object","additionalProperties":true,"required":["locks"],"properties":{"locks":{"type":"object","additionalProperties":true}}},"createdAt":{"type":"string","format":"date-time"},"updatedAt":{"type":"string","format":"date-time"}},"title":"CheckoutConfig"}}}},"401":{"description":"User is not authenticated.","content":{"application":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

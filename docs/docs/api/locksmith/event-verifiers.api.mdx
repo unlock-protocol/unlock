@@ -1,0 +1,71 @@
+---
+id: event-verifiers
+title: "eventVerifiers"
+description: "List of verifiers for an event."
+sidebar_label: "eventVerifiers"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVkuP2zYQ/ivEnFqAay+26UW3PaRB2iQost4WheEDLY0kxhSpHY68dQX992Io+bG2u03QQ32xKM7zm29m1ENokQzb4N8XkAFu0fNvSLa0SBE0RMw7sryDbNnDY0SCbAku5JuPxpsKCVbDSkOBMSfbihnI4IONrEKptns7qgykjFfJ+gw0tIZMgywuxK4VrdZwDRq8aRAyiK6rQAPhU2cJC8iYOjx39DAKxbzGxkDWA+/apMxkfQWDhEYY2+AjRrm/u72Vv9fDVaYoCKOoaMiDZ/QsWqZtnc0TVvMvUVT7S9dh/QVzlhRJkGU7OiaMneN4ImiIzA40WMYmXjPgO+fM2iFkpXERT7FYwhQirM4d7S8uwLgwOOhUx/tvVdgX/qsUPPJzoM2JsPWMon5VOtX+NbvCgmHQwJblCHuqwjD+NNzdvrks8aeg9jyYqc/41GFkZfKND88OiwqLGQwa3tz+cKkqnFc2Kh9YmY7rQPYvLBQH1SKVgRrFtY3K5CI/+y+MuSj4y8o2GKOpruJTYGk6x5DBH6FThvA8Wmm/jmv0LOG8Gv55VU7A/hT4/tQKjIj/eK2pHr0YET9l51xpnaIJ9qJLr4UH5I1TEWmLpJAo0P+O36JGQvVsYhpXEpKyfp+C9ZXiGveZ/Ata79Aj2fwhpfdWTMFE0Qa5DjJtK0yTQgZfBvPt3TwNyDjvZfoN8+2LOSxmxnHZkYMMauY2ZvO59GRsLNezzsvzTUuBQx7cLA8NnI/MXykUXSq2GiODQZ9bjGwq66ubb7P8MGodzK6Oy+NBajZWYVwhhxKIy/0El/MaDaXhMD78FKgxUpeff19Ih94fCXE6Slv7C+6Ou8O09maTXqTF8tQh7UCAt74MSW8q0WNKS33Y5wkaBOQxn7uLDA9yqqWwtQVGtTb5Bn2hys4nUI2zvEvrDqUBEmNsvkG2vtKqQTaFYaMiBzIVamV8Ib1qyykrVYewicIsZ3P0MdF1Suvj+0XKog2RG+NPbhJt1OnafhF4f+ypr9jNE6iMf/K8dcZ6AT4RpJ+ouoStgDOSFTRk07I+8nWloQ6RRbTv1ybiI7lhkNdjMbLlSsPWkB17Z9lDYaM8F4fm/ccMvvs87cHv1bT/r0a854YXHmyN6+QEGoQY0+fFsBo01GiK9FXTT1f3eY4tnyhdTCGh9qGH371dgAaZrieMPKNxsn41oL4fJRZhg34YDvGxnCXAYfgbQldcqQ==
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"eventVerifiers"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/events/{slug}/verifiers"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+List of verifiers for an event.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"slug","required":true,"description":"Slug","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"List of verifier addresses","content":{"application/json":{"schema":{"type":"object","properties":{"results":{"type":"array","items":{"type":"object","nullable":false,"required":["address"],"properties":{"address":{"type":"string","nullable":false},"lockAddress":{"type":"string","nullable":false},"lockManager":{"type":"string","nullable":false},"network":{"type":"integer","nullable":false},"name":{"type":"string","nullable":true}},"title":"Verifier"}}}}}}},"204":{"description":"No response. Request acknowledged."},"403":{"description":"User is not authorized to perform this action.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"You are not authorized or authenticated to perform this action.","nullable":false}},"title":"NotAuthenticated"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

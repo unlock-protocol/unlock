@@ -1,0 +1,71 @@
+---
+id: generate-apple-wallet-pass
+title: "generateAppleWalletPass"
+description: "Generate and return an Apple Wallet pass for a specified key associated with a lock."
+sidebar_label: "generateAppleWalletPass"
+hide_title: true
+hide_table_of_contents: true
+api: eJy1Vk2P2zYQ/SvEnFpAawcL9KLbHtJgm7QNsl7kYPgwFscWI4pkyJG3hqD/Xgwlf228W2SBnqyRyDdvPt6Me/CBIrLx7l5DCVtyYtJdCJa+orXEnzElKCBR1UXDeyiXPTwmilAuoaH930+OIqyGVQGaUhVNEDAo4cMEpdBpFYm76BQ6lZHVCK0CpqQ2PipUKVBlNoa0amivMCVfGWTS6slwrVBZXzUzKCBgxJaYYspMjLgKyDUU4LAlKMERP/nYQAGRvncmkoaSY0fPCf41nlNGC26qamoRyh54HwTGOKYtRRiG4qobIXSndaScntddffJVo3A8fNVZ4mjc9kVfDe3v9X96+Uh7dX89mCP+SkBS8C5Rku+3797JzyXQl1ytpLgmlTgStri2pA7Noa8V0VgSz5V3TI4FE0Owpsq9Nd85PRObZqGR8/L9JZIFbHxskaGEtXEY9zAMw1DAb9eoPrpMjb3adNZujFWSI0qsdJdfSxmjQ6sSxR1FRTH6+ArTb0lwr7Dz629UsdSks1acQrlBm6iAEEVEbMaMtpQSbulaXJo22FkJbFFTJPWESSSRKSnjDiEYt82pnyKZ/ehT0sGGxR51ZqqHHN57gcr5GgpoiWs/qpqzcriGEua727mUYN5PQhnm/VkvD/M+d9swN37UveCOYuuihRJq5pDK+VwupdZwPeucPN+E6NlX3s4q38Lz5vwcve4qMdRIFaTXLxET49a47c3PIT+Mt46wq9OwepAijmUZR9axJuLyIBSx14SRIhTTw++HDvzj6wKGAu5OHXIGgsF8pP1JphjMTZNfZA1/7yg3r5gbn+9NNXvMYalPhzihAEnyGM/tDxEez6kQ/c5oSmqNVUNOq03nclLRGt7nUUqiiNxCpmqIjdsWqiVGjYwqsY+4pSIPZefZbKaoVO19k2eTNRW5lPt3CuvP+0WOIvjELbqzL4eJcDkQpo1xEUN/0tv/tRmmojD9w/Ng0TgpXG6wfur9JexusxAyv/K0KMrLYV4e5q1IYFVA7RPL7b5fY6LHaIdBXo/1LZerAnYYzajPZQ/aJHnWxwHxYiZ++TIN9F/V5Ta6Gsuh65x02A5tJxYUsh3O1p7I6k0Mni+pN3A4T+ObeZzW2BsYjJUbVkMBNaHOf1P66dtdVVHgs1uvbiiZI8cJ+uH9AgrATrroKP9nMyN7usqu78cTC9+QG4YjWRZbyA7Dv0WdTH4=
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"generateAppleWalletPass"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/pass/{network}/{lockAddress}/{keyId}/ios"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Generate and return an Apple Wallet pass for a specified key associated with a lock.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}},{"in":"path","name":"keyId","required":true,"description":"Key Id.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Returns the streamable generated Apple Wallet pass file.","content":{"application/vnd.apple.pkpass":{"schema":{"type":"string","format":"binary"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

@@ -1,0 +1,71 @@
+---
+id: cancel-subscription
+title: "cancelSubscription"
+description: "Cancel a fiat subscription."
+sidebar_label: "cancelSubscription"
+hide_title: true
+hide_table_of_contents: true
+api: eJydVUtv4zYQ/ivEnFqAibfBnnQL2rTIbloUtYMeDB/G1NjiSiK15MhbQ9B/L4ZU/Ii9DRpfLD7m8c1883EA31FAtt49llCAQWeomffraILtZBs0lHRcFfBzuqJQbSyyiidXb0FDJNMHy3solgM8RwpQLFfjSkOHAVtiCjEdWXHVIVegwWFLUIAj/uZDDRoCfe1toBIKDj29TuCPfE/ZMgU0FbUIxQC878SNdUxbCjCO+mqYxpv6viwDxfhmqCdvaoX58tVgkYN12+/Gqmn/WL4Z5TPt1eN1MAf/K3ESO+8iRTm/+/BR/s4dzXtjKMZN3zR7VVJDTKXiil51adTw8cNPl+bSLmWjcp4V9lyRY2uQKaVmvGNyLFbYdY0cJKvhMmm//kKGpQp90+C6ISg22ETS0AWhG9uMoaUYcUuXcKVAG+wbhgIWFQVS3zAqdIpC8EFZpwTixjbWbRM+qS9Fvr2MOY4a2LKs4TdyFKyZU9hReBBXMMpPQ0tceeF/Lhro3McCZru72Wnx4myYaDrOhEhxNpzwaZzVtI+zIbV9TNMgoTLj+9BAARVzF4tZNm4tV7e9k++bLnj2xje3xrcXM/dn8GVvZKFy9iCEO/cYGbfWbW/+n+d5tjq4XR1HeC59zZ3Kg3xok4R8Yaus14SBAujp41cfWpTeffp7IWS7P+fL5AQ7+5n2x1nBzt7UaSMN0teewl4GC6zb+GQ3tfE5wVJPLzhBgxQ547m7QHi4p7rgd7akqNZoanKl2vQuFRUby3u18UGRw3VmlTU1sXVbrVpiLJFRRfYBt6QVulKGxG4mVKryvk4C0VhDLiZKT7B+f1wkFJ2P3KI7Oclaq/5LbIfj2L2hu1NRmf7hWdegdVL4RJBh4vISdlKcMzaDhuIou4k5snUukcJp2c1ittJQ+cjibxjWGOk5NOMo27ljxXKlYYfB5iFcDlDaKN/lQQW+C/GHvyad/FGdi/xVdC88csKZHTa9rHK+J6+JDMq7Mnit/e/I4bSO787j+Dq8I4Pcs3E1aqgIy/QcD9PZvTHU8YnVqa6LEBxU8ZeHp4fFA2iQV+FkhF/NffJ9NZ9hyDcWviY3jof0WNaS3jj+C/iI8oQ=
+sidebar_class_name: "delete api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"cancelSubscription"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/v2/subscriptions/{network}/locks/{lockAddress}/keys/{keyId}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Cancel a fiat subscription.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}},{"in":"path","name":"keyId","required":true,"description":"Key Id.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"204":{"description":"Successfully deleted the subscription."},"401":{"description":"User is not authenticated.","content":{"application":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

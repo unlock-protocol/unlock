@@ -1,0 +1,71 @@
+---
+id: get-event-ticket
+title: "getEventTicket"
+description: "get a ticket for a key by event."
+sidebar_label: "getEventTicket"
+hide_title: true
+hide_table_of_contents: true
+api: eJydV0tv20YQ/iuLPbUAbbpGT7z54AZukiKo5eQgCMVoORI3JHeZ3aEcguB/L2aXkiiJhludRHLe3zzVS9ugA9LWPOUyk1ukxx0aWmhVIslEelSt09TJbNnLF49OZsvVsEpkjl453bBklBMgKEiJjXUCRImdWHcCWd2tTGQDDmokdD7o0izWABUykQZqlJn0VbuViXT4o9UOc5mRa/Hc0nNk8qrAGmTWS+qaIExOm60chmRWt0F6ta58V/1fkU/o/HbOijaEW3RvmqmsKh/y3KH375r6ZFUpIDLPGnsnpBK7p/xdKx+xE0/zwRz0r1iJb6zx6Jl+f3fHP2fAt0qh95u2qjrhkJzGHeaCChzzzjaUNYSGWBqaptIqlFb63bOKfuKCaasK1hXKbAOVx2kUyxhgcgbmPtwaDHAKEtm060orhvErOs9eJrL16D4jQQ4EMpHaf0WnNzrwA5HT65aQ1ekatmxkGmQi7asJrPiz0bEt5CrZ42XX31FxUzSOu4Z0RCs6dgnrPlEzhGhmjrKPbo42xWOOHkOao5xkcoauClQl5k/mgSZ009ZrrvUzVI8MB0AgzzUrh+rLBBoux+EEyznbk6wcyeAcdJwlwtrPWZyWyw6qFjlPp3khB5r+iYIzdqPULFraNxV0b4kOwzBXe7MZOZbfRT99K5AKdKGBGF/xWljBYaGnk74SCozYsZ7urNtGe2trKwQTPGPffr/77dIcz26hvTCWBLRUoCHuTszfbtvTjj3PwEUHn6Jfo/ez5cjVuIG2IpnJRYEOxSt4AUagc9YJbQSPmI2utNmGeEdMbi9tcrCkid/lBzTotHpGt0P3yKrkCEeNVNhxuYU9RIXMZLq7T6HRaUQz7Xn5DGk/7okh5WZL+0nLDWmJXdqHbh/CZmRLcZm1rpKZLIgan6VB1NeaitvW8PNN4yxZZatbZWt5PqC/OJu3il9EdF7yvD/V6Am22mxv/p/m5yh1ULs6rvNnTmtMVFzqhyyxyf2yCMWF4MJIjA9/WFcDp+7Pbwuu8IfTctm3b6M/YndcVdDomzJ8CHvsR4uu470mtdnYIDdm8SWEJT7t45SJ3O37S95fRHjgE42zO52jF2tQJZpcbFqj4kjS1IWTBA2sY1GFlGuzTUQ9DjXhyTrYYiLA5NwjejNGJQpry7CfK63Q+FDRY1ifnxYhisZ6qsFMKHwPhUNKHC6psxl8aLn/cjuNsBL+pLSpQJswlLlE+rGel3LH8ECjmX1vMxtPqux4/jC+/OViufLHuMpWiSysJ1ba92vw+OKqYeDPMXHZcsXj0+nYisueJyY/54dZ8Gawv/w9Du5fxXjJzca2ryPDbo2TWo5+jocid8lVdk9PvCvM78G82oPzy+8KH6bpu9qP4214hQexVobVkMgCIQ//DPqR9qAUNjSRujgGeRgdBvOHxwXXbsuFfJghZ4MnaJ/1qO8jx8KWaIbh4CDxOzs4DP8CUCty5A==
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"getEventTicket"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/api/ticket/{slug}/{network}/lock/{lockAddress}/key/{keyId}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+get a ticket for a key by event.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"slug","required":true,"description":"Slug","schema":{"type":"string"}},{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}},{"in":"path","name":"keyId","required":true,"description":"Key Id.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully retrieved the ticket.","content":{"application/json":{"schema":{"nullable":false,"required":["name","lockAddress","keyId","manager","publicLockVersion","userMetadata","isVerifier","attributes","image","description","owner","expiration"],"type":"object","properties":{"keyId":{"type":"string"},"name":{"type":"string"},"owner":{"type":"string"},"manager":{"type":"string"},"lockAddress":{"type":"string"},"image":{"type":"string"},"description":{"type":"string"},"checkedInAt":{"type":"number"},"userMetadata":{"type":"object","additionalProperties":true},"expiration":{"type":"string"},"attributes":{"type":"array","items":{"type":"object","required":["value"],"properties":{"trait_type":{"type":"string"},"value":{"type":"string"},"display_type":{"type":"string"}}}},"publicLockVersion":{"type":"string"},"isVerifier":{"description":"Whether the user who requested the ticket can verify the ticket.","type":"boolean"}}}}}},"401":{"description":"User is not authenticated.","content":{"application":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

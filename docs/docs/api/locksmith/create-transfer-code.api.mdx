@@ -1,0 +1,71 @@
+---
+id: create-transfer-code
+title: "createTransferCode"
+description: "Create a transfer code to transfer an airdropped key to an email address."
+sidebar_label: "createTransferCode"
+hide_title: true
+hide_table_of_contents: true
+api: eJytVk2P2zYQ/SvEnBpAu94uctJtEaTFNmkbdL3owfCBJkcWI4nUkiNvDUH/vRhS/pSdIIv4YonUfL15fMMeXIteknH2UUMOyqMknHtpQ4H+g9MIGQRUnTe0hXzRw3NAD/liOSwz0BiUNy1bQw4foq2QgkZzoZxGQe6wIK2Qxmvv2ha1qHDLu9IKbKSphdTaYwi3kEErvWyQ0IcY1LD/VlIJGVjZIORgkV6dryADjy+d8aghJ9/heVZ/pe+E0ew3qBIbCXkPtG3ZjbGEa/QwDNnFMLVT1UPK67uhPjtVHRcxCRbIG7u+GqvC7aP+bpRPuBWPl4vZ+1+yk9A6GzDw/v3dHf+dOnrqlMIQiq6utyI1Xp/1TlotAlo69Ii7WaLwqExr0BLnoZwltMQRZNvWRkU+zb4GDtNP03Srr6jopNAFuFeLHrIIOGRArkILXLvUtbFMQzpm5TKD1jN3yaQSk/0Ui9HjpY0U49LOPuph03bNinlylsfE+rxdX6Qn4YqI2tnBKCUJE8QOBcZ2haILqMWroTKatGweWzBFfoi/DN7f/TrtLp9T9m4dCdlRiZa4Maivd+zbzbJdXctVjZAXsg54jn+DIcj1FUAK2dUEOcxL9CheZYiE8t55YaxgBhamNnY9VvjSYYjMOovJxZIhfoff0aI36gn9Bv1HdgU7NN5P0eBDw0gUrrPfQOAHObureULGq2AMu541SKVjxW1doCh4VEIOs839bMeSWT9q3DBjCodZfyRGw6zCbZj1UTOGKNIMRJLLzteQQ0nUhnyWjBtD5W1n+fmm9Y6ccvWtcs2Ur97pTvGLSNgCq9Wpx0Bybez65sc8PyWrvdvlYbI8MdwJujRf9rhxyJ3U8fsKpY86kR5+c76RzKw//p3z2Xw4ZfPoRLbmE24PQitbc1PFhajCLx36LasyGFu4aDeS7DmWJT7v6oQMGORUz/2kwv13ovVuYzQGsZKqQqtF0dkIqqwNbUXhvEArV4nzRlVIxq4z0SBJLUmKQM7LNWZRga0jU4xVidK5Kk6X2ii0IXJsLOvPx3msginVSHu0k9Rd7Oa6GAf7Sfb94Uz81FE+9oDwP5q1tTSW+xT51I+sX8Dm/kjfIYP8MN0jx3jpdBIz+3k1zcxlBiWfo3wBfb+SAZ99PQy8nHqbL5YZbKQ3SUwWPWgT+Fnv1ewqFr/8M574d+L0LnGxsB3jLLNrI+uO31K+R5cWPlJvyuD8ivGGHI5xfHMeh0vIGzJIPRuWQwYlSh3vk/2496AUtnRkNVFn1o29en75+2kOGfCAOzrvZyIR3V9Mqe/TF3O+CQzDPsN0MxiWwzD8DwPQ2jU=
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"createTransferCode"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/transfer/{network}/locks/{lockAddress}/keys/{keyId}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Create a transfer code to transfer an airdropped key to an email address.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}},{"in":"path","name":"keyId","required":true,"description":"Key Id.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully created transfer code and sent an email to the recipient.","content":{"application/json":{"schema":{"type":"object","required":["owner","lock","token","deadline","transferCode"],"properties":{"owner":{"type":"string"},"lock":{"type":"string"},"token":{"type":"string"},"deadline":{"type":"number"},"transferCode":{"type":"string","description":"Part of the transfer code that is required to be used with the part sent to the recipient."}}}}}},"401":{"description":"User is not authenticated.","content":{"application":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}},"404":{"description":"Key not found.","content":{"application/json":{"schema":{"type":"object","required":["message"],"properties":{"message":{"type":"string"}}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

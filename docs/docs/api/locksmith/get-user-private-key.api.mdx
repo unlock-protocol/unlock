@@ -1,0 +1,71 @@
+---
+id: get-user-private-key
+title: "getUserPrivateKey"
+description: "Given a user's email address, retrieves their private key. In the case of failure a rejected promise is returned to the caller."
+sidebar_label: "getUserPrivateKey"
+hide_title: true
+hide_table_of_contents: true
+api: eJzNVU1v5DYM/SsCL20BZWaxaC++ZYE0SD+AxSZBD8EcGJsea0eWFIqe3YHh/15Qdiazk+yhaA+dy0iWSL5H8lEjxESM4mK4aaCCLcl9Jv7Ibo9Cv9MBLGSqB3ZygOphBD2F6mEzbSw0lGt2SY2hgmu3p2DQDJn4h2yoR+cNNg1TztYwCTvaUzbSkWOT5ghmR4eVuQn61dSYycTWtOj8wGTQMH2mWqgxiWPvMhmX1dPAgRojcbHynngFFhIy9iTEuUAN2BNUUIBczjjAglOsCaUDC0xPg2NqoBIeyEKuO+oRqhHkkNQ2C7uwhUnZMuUUQ6as5+/fvdO/bzNwO9Q15dwO3hyzChbqGISC6H1Mybu6HKw/ZzUaXweNj0pa+bC6ETeHTJjzl8jNVaj5kISakyK9gVh/Fn5+C+cHbMwnehooy+q/w0fMkV8jsUBfsU+elsA8BzbNQFpBF/boXWNcSIOsjrh/eQv3fcBHX6zawfvW+dfOhDigN5l4T2wKpH9FMQzea1CoWvSZzjn3lDNu6S3WDbU4eIEK7jpiMl8wGwwzJOPCMwUXtqWL+aUeZzE1HeKkJPCaArGrbwu9q5LwJWE9SRcXBRcpSAcVrFWMeT2eamBaL9rbLepWX7NiBvZQQSeScrVe+1jvcu+kWw1B1xeJo8Q6+lUdeziX/0eOzVDrxszwYLLnHrPg1oXtxT/zfDtbHd1uXkbSrRZuLsU8mI510JCwKFr3j4RMDHZZ/Bq5Ry3Ob3/dwWTh8qUrTpxgcvMIXEYJJncxZ61MkaeB+ACafRfaWOyWOt0XWuaPZ55gQZM883n/iuHxns65vWsom0esdxQa0w6hJBW9k4NpIxtSFZS2cfWOxIWtNT0JNihoskTGLVmDoTEhimsXVqaLcZe1vbyrKeTSswutP2/uCosUs/QYTk62JEYTa5ZZY+Z0fIN+fFHX/+ANWCon9FXWyaMLWt3SheMiigcoogAL1dnTcKKLjYUuZtHb4/iIme7ZT5N+notePWws7JHdLNSHERqXdd0cJ8V3k/Tjp+XZ+cl8D/Bz/wXN9h79oDuwoNDOXrRpM1noCJvyLo/Llcu6piQnxq/GnsroODSur+7AAg6an2P3n0mmeH8T2DjON+7ijsI0HXGK7hXgNP0NQFbxzA==
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"getUserPrivateKey"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/users/{emailAddress}/privatekey"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Given a user's email address, retrieves their private key. In the case of failure a rejected promise is returned to the caller.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"emailAddress","in":"path","required":true,"schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successful operation","content":{"application/json":{"schema":{"type":"object","properties":{"passwordEncryptedPrivateKey":{"type":"string"}}}}}},"400":{"description":"Bad Request.","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string","example":"Bad request due to invalid input."}}}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

@@ -1,0 +1,71 @@
+---
+id: update-user-encrypted-private-key
+title: "updateUserEncryptedPrivateKey"
+description: "Updates a user's private key, using their email address as key. In the case of failure a rejected promise is returned to the caller."
+sidebar_label: "updateUserEncryptedPrivateKey"
+hide_title: true
+hide_table_of_contents: true
+api: eJzNVk1vGzcQ/SuDuTQF1lIQtJe9OYFTuB+AYUvowdBhvBxJjLgkww85wmL/ezHclWRLcoCiOVQX7Qdn+ObNm8ft0HkOlLSztwprzF5R4nnkcGObsPOJ1V3QW0r8B++wwshNDjrtsH7sUJZh/bjoFxUqjk3QXhJhjfOSJgJBjhx+iuCHJLDhXQU5aruCtGYdgFvSBkipwDECRVkxgVsrr6GhyOCWsCRtcmAgCPyFm8QKfHCtjgw6QuCUg2UFyY1RxnCYYIWeArWcOMSC11LLWGPZ8nrYESvUAthTWmOFgb9mHVhhnULmCmOz5paw7jDtvMTGFLRdYS8ly2KO6aNTO1lxGts4m9gmeUXeG90UlqdfojDUnad2T1KaoA7Sk6Q5yttcSD4DUGFyG7aXoMlP0EXvbBySfHj/Xv5eN+khNw3HuMwGDiLAH4b7FcuX8L9R2Aj/l0uIP5KC+4H1yQ9EGoK7gKRC/katNzxuPLYbVGZRmrZbMlqBtj6nyQH3r5dwzy09mRK1zMYstTlPljhYMhA5bDlAgfSfSrTZGNkU6yWZyKc1txwjrfhS1YqXlE3CGmdrDgzPFIHsAAm03ZcwjvC+ksn5nkJH0qkQ+BtbDrp5KOXdFMJHwlpOayfW43NpjQxijVNRR5x2L1XUTz3F+OyCesubJPkw6jkYrHGdko/1dGpcs4mtTutJtnJ95YNLrnFm0rgWT83rLjiVG7mBAS/21WnGmGil7erq32V+GKIOaRdHQ32QTg69mb8eDNkSRyuS+yemwAGr8eKzCy1Jt37/eyZjdX2UyYsk5PVA0uiB5PXVpjwo9vc1c9ihtEOUdX80tpv9COyN6KiT0X9eTLS2S1f2HJs+L5TAn3uOsEJp0MDFhzN2DuvE3LdacYQnajZsFSyzLQ0ho9MOli4Ay0gVDepmw0nbVQUtJ1KUCGJygVZcAVkF1iW9HBmBtXObKFo1umEbS2EjJX/dzgoD3sXUkn3xZjgUQfoCB+nBqD0YeH1VSnec2//LUTjqIPG3NPWGtC0WLJruxpl7LB2WE7E+OSG/N3aLCtcuJgnvuieKPA+m7+XxoKn6cVHhloIejOGxQ6WjXKuDM71J3bv78Uj9Gd6qYC9vKz3YkslyhxWKtk9O+n7RV7hmUuWjpRuXfBp2u5pJomOKM7MVCxgirpuGffru2sULW7ubz2RWx4+E1ikJCfQsXxv0PKB1pfgy/OVZh4bsKheDxiGlKJOy9Okw0ydGUIq6yEfXDStmMrF9f6BnmOB+0ff9P2CYhJA=
+sidebar_class_name: "put api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"updateUserEncryptedPrivateKey"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"put"}
+  path={"/users/{emailAddress}/passwordEncryptedPrivateKey"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Updates a user's private key, using their email address as key. In the case of failure a rejected promise is returned to the caller.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"emailAddress","in":"path","required":true,"schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"required":true,"content":{"application/json":{"schema":{"type":"object","properties":{"user":{"type":"string"},"token":{"type":"string"}}}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successful operation","content":{"application/json":{"schema":{"type":"object","properties":{"emailAddress":{"type":"string"},"user":{"type":"string"}}}}}},"400":{"description":"Bad Request.","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string","example":"Bad request due to invalid input."}}}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

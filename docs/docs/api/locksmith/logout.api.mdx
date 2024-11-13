@@ -1,0 +1,63 @@
+---
+id: logout
+title: "logout"
+description: "Logout from locksmith. This will invalidate all your session tokens."
+sidebar_label: "logout"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVE1v2zAM/SsCz24zFNjFtx62YV/YgKbYIciBkelYiyx5EpUuMPTfB8rOR9NdNgzYyZIsku89PmoEP1BANt69b6AG67c+MVQQSadg+AD1aoTHSAHq1TqvK2go6mAGiYAaPpX7qg2+V9brXewNd7dq2Zmonoy1yrg9WtMgk0Jr1cGnoCLFaLxT7Hfk4i1UECgO3kWKUI9w9+qVfJ4XekhaU4xtsvagtO8HS0yN4o5UoB+JIkse7R2TYwnHYbBGF2aL71FyjBB1Rz3Kig8DQQ1+85200HXJWtxYgrpFG6mCIYgwbCZIPcWIW7qIjByM24Lo0WKyfA2xTbY11r6EeFUp5wrYsOzhHTkKRs95IGf5+fp3ajw6SaHYSx0pdKygmlSOjWMKDq2KFPYUFIXgw39XaNlRIPWEUaGbICnjjhSM2/6FVoXeG0lV9MoV9MSdFy8PPgrwAbmDGhb7uwUm7hYXFpfYWByegoUaOuYh1ovF2cnJyfpmCJ699vZW+x6uZ+Br8E3SslETHMjVdcbIuDVue/NnmR+mqFPa9XkuH6RRk/TTdJ50l5LCrlyAGjaEgQJU8+KtDz1KMz58W0Ku4P7sgoskOJiPdJAWYD/vb3blwAiwH4nCAURt41pf4ua+PBZa6tORJ1QgIk987l4wPN1TQ/B701BUG9Q7co1qkyuiojV8UK0PisT1xSZG74iN21aqJ8YGGVVkH3BLlULXKOfZtDMr1Xm/K6+MNZpcLB6daX1+vywsxCo9uos/J5c8wzue5+dfPX2z4Ew/eTFYNE6aUswzztZdwV6EE/MKiQnYuoJO/F2vYBw3GOkx2JzleOpNvVpXsMdgpvlZrXMFHWFTHvIRpJc13GtNg5Dco01Tm6+eBLHcaaC+fnlYHoGcrXLlr5L+6CJ3uEg+jtONpXDPGaoZRdEC8jrn/Asepk18
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"logout"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/auth/logout"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Logout from locksmith. This will invalidate all your session tokens.
+
+<ParamsDetails
+  parameters={undefined}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully completed the request.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"Successfully fulfilled the request.","nullable":false}},"title":"GenericSuccess"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

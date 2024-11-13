@@ -1,0 +1,75 @@
+---
+id: get-event-details
+title: "getEventDetails"
+description: "Get the event details from lock"
+sidebar_label: "getEventDetails"
+hide_title: true
+hide_table_of_contents: true
+api: eJydVU2P2zgM/SsCT11AMxnM0bcB+oHutkWxM4M9BDkwEhNrIkuqRGcbGP7vC9rOJGky0259sWRRj+TjI92BpZTJIJOFinNLGmKijOxi+GihgjXxuy0FfkuMzhfQYKmY7JJYQAUfiBXXpEiMlB2t1CrHRvloNqAhYcaGmHKBat6Bk1sJuQYNARuCCgLxvzGLbaZvrcuHWE59fRntlLPXoKGYmhqEqgPeJYFxgWlNGfpeX3Qj8dxZm6mUn7r6FM1G4Wh80Vnh7MIa+n4hUCXFUKjI+e3NjbxO4e5bY6iUVev9Tq2Jf6BruduTZWJgCiwImJJ3ZqjE7KkITHceRlw+kWHJsfUel56gWqEvpCFlKSS7MarB35eBh7MU9Hj69jjiF42QX4F4cK852HN/yaAw5lfAg33d8WP2l2qjgR0LJ3Ci4V4eDQ1xHSeNDzrlGiqYbW9nA2aZdZMw+1l3pJ1e5EB5uxd0K76hZk6lms3EsDSO6+s2yPoq5cjRRH9tYnPWPV9ztK2RjbofIEG0e4pYGNcurK/+H/L9eOsZdiFBmzY73t2LiEZZPBbKR8SJy73YZb8kzJRBT4v3MTfIUMGf/zwI9XcHhR6BYHJ/0e7Qdpjc1Wb4MPTkt5bybqiNC6s43Jtq9DikpT7t8wQNQvKYz+1Zhs92KuW4dZaKWqLZULBq1YaBVPSOd2oVs6KASy98sDMbYhfWWjXEaJFRFY4Z16QVBqtCZLeaslJ1jJuh/70zFMqgwCmtzx8fhixSLNxgODqR/h70pl4Ymt2hzX9hfk60Mn3nWfLoglDfjoIfNTuHrdAzqhY0VIeBWh0PvYWGOhaWC123xEKP2fe9fB6LUs0XGraY3ThI5h1YV2Rtn6fKi3m8+Xuap3+o0zF9Mfy9VILIYou+lR1oEJ0c/gfSC78VwY/T+zdiOOatX/QaakIrzTLvJos7Yyjx0d2zgS1N9zxkPrwTvfwHbLSUkQ==
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"getEventDetails"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/events/{network}/{lockAddress}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+:::caution deprecated
+
+This endpoint has been deprecated and may be replaced or removed in future versions of the API.
+
+:::
+
+Get the event details from lock
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully get event details by lock","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"eventName":{"type":"string"},"eventDescription":{"type":"string"},"eventDate":{"type":"string"},"eventTime":{"type":"string"},"eventAddress":{"type":"string"},"startDate":{"type":"string"},"endDate":{"type":"string"},"eventUrl":{"type":"string"}},"title":"EventDetails"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

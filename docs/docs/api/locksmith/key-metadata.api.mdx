@@ -1,0 +1,71 @@
+---
+id: key-metadata
+title: "keyMetadata"
+description: "Get key and user metadata."
+sidebar_label: "keyMetadata"
+hide_title: true
+hide_table_of_contents: true
+api: eJydVUuP4zYM/isCTy2gGS/m6Nsc2sV0H110ZtBDkINiMbHWtqSV6LSGof9eUE4c57HddnKJZfPxkfw+agTnMSgyzj5pKKHB4ROS0ooUSIhY9cHQAOVqhNeIAcrVOskxrSV4FVSHhCHmr8ZCCV5RDRKs6hBKsEh/udCAhIDfehNQQ0mhRwkaYxWM56xQwufJThh9zzmrGjsF5Qg0eA5jLOEOA6Qkb6ZpXdU8ah0wxh+m+uiqRqjJ+GaySMHY3XdzNTg86R9m+YCDeLpdzBx/fen0Hkk0OAhltegjBtEd5nCf80XvbMTIoR7eveO/c/ffnn//PLuIyllSxhq7E4xcioWxFFUfyXXCB549GYzXSYXZCtVTjZZMpQi12LogFCNkPBwfLTEM5X3LJsbZ4mtkLOOibNu3rdq0COVWtRHlsQ9u8xUrAgknEGw+9feqXfIyTpJnY/9PDkc6XjPr2jpJUFobLkq1XxYQedyJfxI6pNqxZnaYC2GilFDsHwrlTXFsZDEe8qaCEcdiXABPRYNDLMZcdsqCC/ujovrQQgk1kY9lMTl3hur73vLznQ+OXOXa+8p1cEmmL8HpvuKDeM4hgQl9HjGS2hm7u/t/kZ8nrzns+rQlnnnq0xynXTE3mlMe1cDnDaqQ+z49/OpCp4hJ/OcLJAmPJ0otgihvPuBw0qLy5q7JL7JQv/UYBhYuGLt12c8QTxRec1ni47FOkMBNnup5uKpwtmOB7I3GKDaqatBqse1tNXHC0JAVgVZtWu4HmapBMnYnTxqK5ILaoczyso7M9lCVqJ1r8gJqTYU2YpbKVNanp5dchXeROmUXX3g7LJbzGerxJMl/3ySHZhL+TYVvlbHc8EyM8UDhFey5KcobyCQ/5itP+zxThl+d714mM7+dVLyWULtIHHAcNyria2hT4tfTqMrVWsJeBTMJbzWCNpGf9bwsvlviT38cFvDP4vz2uFnekUCWybJXbc+nCe/immKFvAnB5aXyBgzLPr4Zx+naeQOCaWZpnSTUqHS+6sfDt8eqQk8Lr6udz2tg3ofvf3lh/vRMplm9F5LP0W8iGsfJ4sU1aFOaARKfGWBK/wBlpQAZ
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"keyMetadata"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/api/metadata/{network}/locks/{lockAddress}/keys/{keyId}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Get key and user metadata.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}},{"in":"path","name":"keyId","required":true,"description":"Key Id.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"JSON metadata containing name, description, custom properties and user metadata if authenticated for a key.","content":{"application/json":{"schema":{"nullable":false,"type":"object","properties":{"keyId":{"type":"string","nullable":false},"lockAddress":{"type":"string","nullable":false},"network":{"type":"integer","nullable":false}},"additionalProperties":true}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

@@ -1,0 +1,71 @@
+---
+id: get-lock-stripe-connection-details
+title: "getLockStripeConnectionDetails"
+description: "Returns Stripe connection details"
+sidebar_label: "getLockStripeConnectionDetails"
+hide_title: true
+hide_table_of_contents: true
+api: eJylVU2P20YM/SsDnlpAuw5y1G3RNkHaFCjiLHpYLBb0iLYmlmYmHGoTQdB/LziSbTn2Ylv0ZEPix3vk49MAIRKjuOA/VFDCjuRjsPu1sIv0S/CerL77lQRdk6CAipJlF/UhlPCJpGOfzBRv7DHBVMeMiIwtCXGC8mEAp3kRpYYCPLYEJTTB7u+qiilpPNPXzjFVUAp39GNHRWdwCr6FApKtqUUoB5A+arEk7PwOxrGYe33tiPtTM1uj81faXBTyXbshhvEqAk/yLfAexketlGLwiZImv33zRn/OU9adtZTStmua3vA8M2X98uCUmw1eyIvWwxgbZ/OeVl+SFh0uEYfNF7KiI2fdqrgJkg2dF+7XkezrwamLMbBQ9RSxb8nLk+2Yydv5/ZyNzKhDdUJtujb9cSwAbW79elNXXSlR6Kp4R+mJPG4aWsZsQmgIvQZF7EMnrwTNy1Y+6XU4lUu51hMTzrO+pDfm/ejWzpoeVDPOMS1JHebLyscgNZSw0uWvhoXwx1XKUrg5FS0gET8f7qbjBkqoRWIqVzk/tU7q287r/5vIQYINza0N7cWZ/sWh6iZ5rXNJ0Os4r5gEd87vbv5b5fWUdSz7qKBtx076tcpzGuh9Il7MSFseTjcvipCJoZj/vAvcokAJv//9WZd3d9L+UoHR/UGLu8bobvb5weLqdQPOb0POc9Jo4H2mZT4eeEIBOuSJz9sLhsc4Ezk8u4qS2aDdk6/MtvN5qNg46c02sMki1HmIs3sS53eFaUmwQkGTJDDuqDDoK+ODuO3MytQh7PPFN86ST6RwZ1p/fvicWcSQpEW/eLMjySQOHnJya/OCXQ8nR/lXzj1PWui7rGKjtjkWk2qGWcgP2buhgPLcwy+0/FhAHZJoxjBsMNE9N+Ooj6dFqcIPZwflFpv0o/Mvwf/0aTbvn82ZG78AWWVxMv5nbDqNyWJ9Rnba9H8CWHyQriI4aNb3SwAHZMvZjY9jATVhpRfzMMwRd9ZSlEXuxfdAyRy95v1vKpp/ALD1wic=
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"getLockStripeConnectionDetails"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/lock/{lockAddress}/stripe-connected"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Returns Stripe connection details
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}},{"in":"query","name":"chain","required":true,"schema":{"type":"number"},"description":"Lock network"}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully returns lock Stripe connection details.","content":{"application/json":{"schema":{"type":"object","properties":{"countrySpec":{"type":"object","properties":{"supported_payment_currencies":{"type":"array","items":{"type":"string"}}}},"account":{"type":"object","properties":{"id":{"type":"string"},"charges_enabled":{"type":"boolean"},"payouts_enabled":{"type":"boolean"},"requirements":{"type":"object","properties":{"disabled_reason":{"type":"string"}}}}},"connected":{"type":"number"}}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

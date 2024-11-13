@@ -1,0 +1,71 @@
+---
+id: get-custom-email-content
+title: "getCustomEmailContent"
+description: "Get custom email content for a specific template and lock details"
+sidebar_label: "getCustomEmailContent"
+hide_title: true
+hide_table_of_contents: true
+api: eJytVk2P2zYQ/SvEnFpAu9os0otui8V2kTQtiq4XPRg+0NRYYkyRCjlyagj678VQX/5M0kV9sSiJw3lv3rxRC65GL0k7+yGHDAqkxyaQq54qqc2js4SWIIGAqvGa9pAtW3gN6CFbrrpVAjkG5XXNASCDZySh4n6BHECoPoLYOC+kCDUqvdFKEFa1kYRC2lwYp7YiR5LaBEigll5WSOhDPExz3FpSCQlYWSFkYJG+Or+FBDx+abTHHDLyDZ5m80f/ntD5LUNQJVYSshZoX3MYbQkL9NB1ycVjOK+HPPcYwneP+sQYZP/yxcMCeW2Lq2eNhHz3oMXInM4jqZHmbx644pChdjZg4Of3d3f8dxz2pVEKQ9g0xuxFMVdxKpSapDBeZS3IujZaRfWknwMHas8TcevPqHhj7VlrpPs0Dtk9zzqZijw/s0215nIlM1uXNh7kd0oF/xJ4f/funADWtNBBWEdCNlSiJUaGUTqXIX8brW2MkWuDkG2kCXgKv8IQZHEBARd8IxtDXOwSPYqvMghpBXrvvNBWcJE22mhbCCpRsF4w0O35mQyWNPEantGi1+oF/Q79E4eCkY3352w8XuphpmbjGtsLj0odJnncMvG/XBLWo2tMHrcWV7zhOsE/oKm5WZYTpasf5robJVEhlW7wv2hBVEIG6e4+jamm7aDGLmXZhrQ9UG+X9qjSdmSji4bJRPcW1ngDGZREdcjSPkKlqbxtLF/f1N6RU87cKlfBab//6V3eKF6IvnbADnIcMZAstC1u/lvkl37XFHY1u/wL891z13v9RBwfOboNr9coPXpIhotfna8kK/fj3wuWxMNxtwxBZK1/w/1sfrLWN9t4Izrjlwb9np0StN24uG8Q8WuEJT6NOCEBJrnHc3+GcHpP1N7tdI5BrKXaIiu4sZFUaTTteyO1ct33lFZbJG2LRFRIMpckRSDnZYFJnFfWEQ+xiEqUzm2j4xut0IYosgHW7x8WEUXtAlXSHjzhVhhaLM5ZMQ/aIwTt3Bj/y2gd+Cf8h9LaSG25RlFL7aD5JeyYx3GqZPOojeLiW8djsU+J70+mvEqgdIE4WNuuZcBXb7qOb/eVzZarBHbS696qli3kOvB1PnnlVRZ++mto+J/F8XS/CG3Um2Vt7aRpeAUJsNjmzwhuqDdlcDr035DDIZlvzuPaN8Eb8pmK2K26BEqUefzUa4fHD0phTQcbz9yabWRy0+enBSTA4/Sg+08sI0a/mFTb9m8s3BZt18058poT7Lp/Afp0vGg=
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"getCustomEmailContent"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/email/{network}/locks/{lockAddress}/custom/{template}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Get custom email content for a specific template and lock details
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}},{"in":"path","name":"template","required":true,"description":"Template id for email","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully get custom template content","content":{"application/json":{"schema":{"type":"object","properties":{"lockAddress":{"type":"string"},"network":{"type":"number"},"template":{"type":"string"},"content":{"type":"string"}}}}}},"401":{"description":"User is not authenticated.","content":{"application":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}},"404":{"description":"Custom email content not found for this template."},"500":{"description":"Could not get custom email content.","content":{"application/json":{"schema":{"type":"object","required":["message"],"properties":{"message":{"type":"string"}}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

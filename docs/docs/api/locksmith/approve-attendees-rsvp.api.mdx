@@ -1,0 +1,71 @@
+---
+id: approve-attendees-rsvp
+title: "approveAttendeesRsvp"
+description: "Approves users to attend an event. (does not airdrop!)"
+sidebar_label: "approveAttendeesRsvp"
+hide_title: true
+hide_table_of_contents: true
+api: eJzNVkuP2zYQ/ivsnBJAaweL9KLbpkiKbdM02PWiB8OHsTi2GUskM6S8awj678WQ8mNtN0G3KFpfLJGjeXwz38x04DwxRuPsrYYS0Ht2G7qJkawmCndh46EAj4wNReIA5bQDY6EEj3EFBVhsCEqwFB8dr6EApq+tYdJQRm6pAE2hYuPFBJTwKcspo0dQQKhW1CCUHcStFzXGRloSQ98XF83UrlrfaM0UwndNfXTVWmEWvmgsRDZ2CX0/y6ooxHdOb0XiVHPlbCQb5Qq9r02VIBt/CWKpO1ft5l+oioIcC8DRUMhqK+MN2RiOZJEZt1CAidSES+6l32l0NzlTQbWBOKjoFKakKbSKNmTjSL3SjoKyLio0rNn5H14n0IJ3NmSHrt+8kb/nqu/bqqIQFm1dbxXu7MQVndmSs2QM/gFEtq1rnNcE5QLrQKeYHaf8HJwCxKdv3ecAsL54uSvbw51tm3kuQIgmileQSJBz8PYSXrd2g7XRyljfRsVUkdmQHql3qNVQV6N/EaCGQsAlnccnJbPAto4Sw5B1NXd6q7ItZYIy2ffRuZm+AGJ2fEnvQVTocYzVz2SJTTVAInR6n5Ts4Ht7Dt9kRUpqX21dq5BJNbg2drmDTi0cq30l05P5H6DJFFzLFSWXFq61+gJ+56h8cvFDEs5o/HipmB6s6BCOCf8Wpt7joNt0LC2SLdYqEG+IVUrSf47IZEVM6hFD6j/ikjJ2F4JkU1rFERm+D9Z9Cu9QPX0BDcWVkzHlXUjNVWZDCePN9ZjDxo+7gc79uDvqGv146GEyA5LSPMVarqGEVYw+lOOxfBAaE1ej1srzlWcXXeXqUeUaOO2+n9nptpIXlf0EGVjPNYaIS2OXV39P833+aq92Jk5XLZu4vZcM5pw8BDomppjcTTh5nxMyMRTDwwfHDUqWfvljIl3v5lAex3PIm19pe5i16M3VOh2kQfy1Jd6mvigVdXeYl++fsPE1nc636a5MZr1oWLhkasjxQ0JCfdxBAwVIXjIE12eg7OWUJNJoCmqO1VpG0KK1KQ9Ym7hNvYKEQankTLWmaOyyUA1F1BhRhegYl1QotFrYaxYDEGrl3DrtCbWpyIYUz4DEb7eTFLiUXYP26GaoLLVfmNSwMT3zvztw8+Vze8hSpKc49jUam4Yfp7mWiTCFjUDH2YPysJKVz9emHR1mBayESOUUum6OgR647ns5zrkup7MCNsgmE3XagTZBnvW+U/xlmK/uhg3qtXq+8l0MY1eBVqptg3Urb1CAlN9htxSKvciD003wBT4cI9hLRa8ItXBw2g0SP2XLVxPRc9Bw1oolivzFTVWRj9+UnR01vc+/30+E0sOK2jgt3zA+Ss7xMXvrEhJ52ZSzDmq0yzb1b8g65fcn60Uu0A==
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"approveAttendeesRsvp"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/rsvp/{network}/{lockAddress}/approve"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Approves users to attend an event. (does not airdrop!)
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"required":true,"content":{"application/json":{"schema":{"type":"object","properties":{"recipients":{"type":"array","items":{"type":"string"}}}}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully approves the users to attend the event","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"lockAddress":{"type":"string"},"userAddress":{"type":"string"},"approval":{"type":"string"},"network":{"type":"number"}},"title":"Rsvp"}}}},"400":{"description":"Invalid input received. Bad request.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"Response body schema is invalid.","nullable":false},"error":{"type":"string","nullable":true}},"title":"GenericInvalidBodyError"}}}},"404":{"description":"The item you are making request for does not exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"resource not found","nullable":false}},"title":"GenericNotFound"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

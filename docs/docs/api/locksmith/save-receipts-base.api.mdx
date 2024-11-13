@@ -1,0 +1,71 @@
+---
+id: save-receipts-base
+title: "saveReceiptsBase"
+description: "Create supplier details."
+sidebar_label: "saveReceiptsBase"
+hide_title: true
+hide_table_of_contents: true
+api: eJytVk2P20YM/SsDnlpAu94Y7UW3TdEUabfpYr2LHgwf6BFtTSzNKBzKqSvovxeU5G9t0gb1xRoNh0M+Pj6qgVARo7jg32eQQsQtPZElV0l8i5EggUi2Zic7SOcNvERiSOeLdpFARtGyq/QspPATEwqZWFdV4YhNRoKuiLeQQIWMJQlx7Hw4Na9QckjAY0mQgif5HHgDCTB9qh1TBqlwTZeXfOjtjMvUb7Q5lQhpA7Kr1I3zQmtiaNtk9Joi2M19ljHF+NWrHoLdGOyNRy+Lws6voVUomGIVfKSo+9O7O/07dzerraUYV3VR7IztsIqjYNnghbyoB9Rd2xVn8jGqm+Y6jLD8SFYUZdZSiuuD2Lv+0GV+FXQCW5TX3r/F6OJjcF7iE8rpcV+XS8VXWcFbZ+mReBW4VBBHfA3wPThPb75mMB01sB3xRjainEd23PnbVeOuQu2Fx7x1vwR+uHtzXTclvHHR+CAGa8nJi5aEstdr9eUy+boocFkQpCssIl3WraQYcT2SmfJzhXUhkMJzTkzmM0aD3hBzYOO8UW6tXOH82khORulNUW6v79RkxYmu4RfyxM7OiLfEP6sr6NH4cYzF79AVlBkJpq4ybffAA5n/Xy4fW3N+QGTxr6Fq9xUtSfKgslaF2LWIqkEKk+10woPI3Swx0qQZBKidNCca0ULP871w1VxACrlIFdPJRA1j6SS/rb0+31QcJNhQ3NpQwqWcPHLIaqsL02MNqlHnHqPg2vn1zX/zPOtPHdwujpI9U4B7sHrhPiClV+5FTddLQiaGZHh4F7hUfYBf/3zW3rk/Z/fgBCv3G+2O8oqVu9l0Lzrt/VQT71SLwflV6M4NpHvp0jIP+zwhAQW5z2d6leHBzlQcti6jaJZoN+Qzs6p9ByoWTnZmFdiQx2XfA85uSJxfJ6YkwQwFTZTAuKbEoM+0pd1qyMrkIWw6zhbOko8dq4a0fn//3GWhJCrRn+zotDT7cWmGeXkWe3PsgS9NyAFQob9kUhXovILekaMZSDuH7bRrjBPaQgLpcXKmp9NtkUCunE/n0DRq+8JF2+rrvirpfKFSz66XhXkDmYv6nB106dU8vnsauvN7cz6PR7PYc8UrL7ZY1LqCBJQox8GvzfBNEVyO6W+I4RS3dtEmkBNm3WdOM1jcW0uVnJy9UjPtuoPaPP4xe4YEdFycdMtFi3XuRwNrmt7iOWzIt+0hTtG1Rti2/wA++mC1
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"saveReceiptsBase"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/receipts-base/{network}/{lockAddress}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Create supplier details.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully creates supplier details.","content":{"application/json":{"schema":{"type":"object","properties":{"supplierName":{"type":"string"},"vat":{"type":"string"},"vatBasisPointsRate":{"type":"number"},"servicePerformed":{"type":"string"},"addressLine1":{"type":"string"},"addressLine2":{"type":"string"},"city":{"type":"string"},"state":{"type":"string"},"zip":{"type":"string"},"country":{"type":"string"}}}}}},"401":{"description":"User is not authenticated.","content":{"application":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}},"500":{"description":"Failed to update or create supplier details.","content":{"application/json":{"schema":{"type":"object","required":["message"],"properties":{"message":{"type":"string"}}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

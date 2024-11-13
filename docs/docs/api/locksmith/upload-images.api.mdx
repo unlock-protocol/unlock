@@ -1,0 +1,71 @@
+---
+id: upload-images
+title: "uploadImages"
+description: "Upload images to locksmith"
+sidebar_label: "uploadImages"
+hide_title: true
+hide_table_of_contents: true
+api: eJyVVU2P2zgM/SsCz86kO9iTb23RLqb7VSAJeghyUGTaViNLrkSldQP/94KSk3pmkkHriyVRpPiox6cTuB69JO3sQwUlxN44WT10ssEABQRU0WsaoNyeYBPQQ7ndjbsCKgzK6579oIRN8hI6uQlywjh1CJ2mFgrw+CVioDeuGqA8gXKW0BIPu2hI99LTsna+W1SSJC8H1WKXRjT0CCW4/WdUBAX0nrMljYGt+bjZPum9HKAATdjN1wN5bRsogI+RBCXstZV+gDF/nGPonQ052v2rP/j3GOIqKoUh1NGYQeQq4RnxHRRzWLLvjVappsvPgb1/HZPHEA39CqgbAaI3z5GPBfRxb7Ta3LA6rxttZfef7PDqhk53mBevGCfs61v2oL/PDTZ2e/RsOOBw/TQkeWbDy3Brjaa6mbXyKAmrN9dO4WtHq1zFs2vmMzf+vEYH7gWhg7COhIzUoiW+cqxuc+FlGthojNwbhLKWJuBTnB2GIJsrKLkVaxkNs3rdokfxVQYhrUDvnRfaCqZsrY22jaAWxdSOd8/PZLCkiefwF1r0Wq3QH9G/41AwlaNDah1LRe9Cug9JLZSwPN4vczcsc3ck9WDvkMQj8RJaoj6Uy+VFH+6i5fGi946ccuZOuQ6eystH76qoeCJyQjAWTyMGko22zeL3Iq+y1yXs7qfkrfiqcvGz8F0qz0cyurSBxQSlRw/FNHh/FpkPn9ZMwtePKXBu617/jdzXNpGX54tDWtCc2JeISZ94WrvkN93MJsES/8wUlouc8dw/Q3jZJ3rvjrrCIPZSHdBWoo42FVUaTYOonRdo5T4TRasDkrZNIc69KAI5LxsshLQV817XEyrROndIImi0QhsSSydY/z6sEwomSyftzJJZIi5PzaO0Z8/Ey4/LVE3Cb7TsjdSWKz5pYGbmFo5cFX0+Z2LnroCWCVxu4XTay4Abb8aRl3Ppy+2ugKP0OjfIdjcW0KKs0hN4ysoFb3OSi6R8vN1Ezubau8aMzU6vlcKeZtufvRdMw0ubffx/tWZuTc9n5yr24cApbvFzmJNkNZrx7Ak5U/JnCtphlsXplHes3QHtOMKkzkA8h3E3juMPsL/Zfw==
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"uploadImages"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/images/upload"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Upload images to locksmith
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={undefined}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"multipart/form-data":{"schema":{"type":"object","properties":{"images":{"type":"array","items":{"type":"string","format":"binary"}}}}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"201":{"description":"Successfully uploaded images.","content":{"application/json":{"schema":{"type":"object","properties":{"results":{"type":"array","items":{"type":"object","properties":{"url":{"type":"string"},"publicUrl":{"type":"string"},"originamName":{"type":"string"},"mimetype":{"type":"string"},"contentType":{"type":"string"},"size":{"type":"number"},"key":{"type":"string"},"metadata":{"type":"object","properties":{"fieldName":{"type":"string"},"createdBy":{"type":"string"}}},"encoding":{"type":"string"}}}}}}}}},"401":{"description":"User is not authenticated.","content":{"application":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

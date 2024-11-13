@@ -1,0 +1,63 @@
+---
+id: applications
+title: "applications"
+description: "List applications created the user."
+sidebar_label: "applications"
+hide_title: true
+hide_table_of_contents: true
+api: eJytVU1v4zYQ/SvEnJU4yLYX3XLYLrbdLQrEQVEYPtDSyOKaIrUzQ6euoP9eDOU4iuP9KLa+WJSGj/PevBkOEHskKy6G9zWUYPveuyqvGQpgrBI5OUC5GuCBkaBcrcd1ATVyRa7XOCjhg2Mx862mIrSCtZEWTWKkayiAkPsYGBnKAW5vbvTvAk5sXkLFx4C12Rwylk3SYhD9iPUJuYpBMIgCzrYuPrGiDsBVi53VJzn0CCXEzSesBAroSemLm3Ii5OSFZ4GWyB6gACfY8SWAkLy3G49QNtYzniO6erYppG6D9HrTWECwHc4iWciF7cXIHR6+HiiUNO7Reo9yV9eEzN8DPRYgTnQNd88awjj9Cvjp5s3rgqkljGMTouTSRHL/aNWj6ZGaSJ2R1rGxlcb/UKW+IXSHzHZ7UcMaG5u8QAl/xWQs4Xm2kc5s9eX0vyLa71Hu5igwyfbzJZ8/BAXRc5rkfeO8IfyckMXUKb92QZCC9YaR9kgGieKPOf3/0G/ZIqF5tGxsmFIyLjxRcGGbO/TI5BtqvcOA5Kr7TO+tQsHRZx1KG3UUbTF3qJUWSljsbxfzqbDwjiUPKAXgPJ8SeSihFem5XCx8rHbcOWmvU9Dnq56ixCr66yp2cD7B/qBYp1xmM+UEY3GOyGK3Lmyv/hvy/bTrBLt+nqr3Wq1J/2m2nsTXI5VdDoASNmgpj47p4ZdIndWK/PrnEsbiRcPOhlfvfkOdXtN00fXVLr9wmtjnhHQAldyFJuZ9x+I8ZFrmwxNPKEBFnvjcvmJ4ijM9xb2rkc3GVjsMtWlSyKJa7+RgmkgG1frZK67aobiwLUyHYmsr1rBEslssjA21dqlrjqxMG+OO1VPeVRg4G/VI6+P7ZWbRR5bOhtmXs8vsRdbDcyt95/V1VFXwb1n03rqgymeHDEeXrmCv6pwdm526LqCNLBozDBvL+EB+HPX1VIZytS5gb8lN/bJajwW0aOt84w7T1Ie7qsJeXb+3Pp0RnEaAuuvUQO/eLjWbpKmdTHHmpIz+5JdwmGEPwxSxjDsM4wjHqwdE1zCux3H8F/If4+c=
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"applications"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/applications/list"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+List applications created the user.
+
+<ParamsDetails
+  parameters={undefined}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"List of applications owned by the authenticated user.","content":{"application/json":{"schema":{"type":"object","properties":{"results":{"type":"array","items":{"type":"object","nullable":false,"properties":{"id":{"type":"number","nullable":false},"name":{"type":"string","nullable":false},"key":{"type":"string","nullable":true},"walletAddress":{"type":"string","nullable":false}},"title":"Application"}}}}}}},"403":{"description":"User is not authorized to perform this action.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"You are not authorized or authenticated to perform this action.","nullable":false}},"title":"NotAuthenticated"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

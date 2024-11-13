@@ -1,0 +1,63 @@
+---
+id: list-payment-methods
+title: "listPaymentMethods"
+description: "List payment methods for user."
+sidebar_label: "listPaymentMethods"
+hide_title: true
+hide_table_of_contents: true
+api: eJyVVstu2zoQ/RVi1kqcBl1p10Vv0d4WCJAEdxEYxpgaWawpUh2OnBqG/v1iJNuxHSV2VqbMmcN5nHlsIDbEKC6G7wXk4F2SO1zXFOQXSRWLBBkksi07WUP+tIHHRAz507SbZlBQsuwa1YYcfrokphmUTT1omzKyaRPxNWTAlJoYEiXIN3B7c6M/xxD3wq6hd0FsDEJBVBebxjvbGz/5nRRgA8lWVKOeZN0Q5BDnv8kKZNCwuipueH4LfSCIzLiGDJxQnc4DuOJAJgm7sIAu20mPXc2d9y4sZgUJOn/BE1gUTOkCQdsn5/TJDMrINQrkEFrvce5JzbCxDcIj8l0G3gX6dDGSSt9eLN3EJOhnNhZ0sU4SlEuluy4DqtH5i9ED1iPgamoVw0eetcjF+SzNGcM4aWxFdnk5IWZ9mma91sXO7nQP0vBBBLuyb2kMUXiHWPS3mdUxSHVwG9p6Try7XRPy6GXpwoK4YRfGy6psQ6HHsbsFBe1uVMxKjvXlxMYkn0cBA8lz5ItytUI3AJ5vMfsoKgiVxEwjRHmTflIx0ayY9X2aZm3CBZ03MLVNE1mOXprH6AnDAPuM3tNIzN8uAyY8xnvJom2TxJp4NKrerag+7gt7SzJt1VigjDZ1LAqn/R/93YFzwi1pXHrhsSiLE00MHI06daLrHfl88+n1bNLBZ1wyIYrBVioKosOHiren0vsDaR+8vESf6PWESieJ3Me/oBJbrwl4qIjJPGMyGAwxRzYumLL1vnQ6bIxUZJj+tJTk+vWbh7H4prXi7D3xivirQsE2HMOshBwW1NMItYxhsrqdNC3bChNNdG/oNwVVTv2i0LKHHCqRJuWTiY92mWon1XUb9HzVcJRoo7+2sYbTVeKOY9Fa/TCDPdBlp4hJcOHC4upjyPeD1h52+rLe3GumhtgPS84+8PqketcLKDkJmRiy7eGfXTn8+O9BCfvlmAG74m/cv6TVP4wd/b5a9n84NexPS7zuyelCGXu9bWIee7fMz52fkIEGefDn9pWHeznTcFy5gpKZo11SKEzZBjtUi5N1v1VRwPnAE2eXJC4sMrOrN5MkMi4oMxgKpb0rt16ZKsZlUj55ZymknqRbt359fxgaWUxSYzi4UY6YbcWZl+3yyPrNSyWd3ye3gRX6K5PGo+u7RU+SzZakT7DSAO1o2hucBKYZVDGJ3m82c0z0yL7r9O8hC/nTNIMVshtK5WnaZVARFv3muwHNWg5frKVGSb9C3w4JPVlHlVz72vn29UH7VXs0Ak+I1KPv6BLWB9ibzSDxEJcUug6yrRGi39BNu677HzWnG60=
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"listPaymentMethods"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/purchase/list"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+List payment methods for user.
+
+<ParamsDetails
+  parameters={undefined}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Stripe payment methods for user.","content":{"application/json":{"schema":{"type":"object","properties":{"methods":{"type":"array","items":{"type":"object","properties":{"id":{"type":"string"},"object":{"type":"string"},"billing_details":{"type":"object","properties":{"address":{"type":"object","properties":{"city":{"type":"string","format":"nullable"},"country":{"type":"string"},"line1":{"type":"string","format":"nullable"},"line2":{"type":"string","format":"nullable"},"postal_code":{"type":"string","format":"nullable"},"state":{"type":"string","format":"nullable"}}},"email":{"type":"string","format":"nullable"},"name":{"type":"string"},"phone":{"type":"string","format":"nullable"}}},"card":{"type":"object","properties":{"brand":{"type":"string"},"checks":{"type":"object","properties":{"address_line1_check":{"type":"string","format":"nullable"},"address_postal_code_check":{"type":"string","format":"nullable"},"cvc_check":{"type":"string"}}},"country":{"type":"string"},"exp_month":{"type":"number"},"exp_year":{"type":"number"},"fingerprint":{"type":"string"},"funding":{"type":"string"},"generated_from":{"type":"string","format":"nullable"},"last4":{"type":"string"},"networks":{"type":"object","properties":{"available":{"type":"array","items":{"type":"string"}},"preferred":{"type":"string","format":"nullable"}}},"three_d_secure_usage":{"type":"object","properties":{"supported":{"type":"boolean"}}},"wallet":{"type":"string","format":"nullable"}}},"created":{"type":"number"},"customer":{"type":"string"},"livemode":{"type":"boolean"},"metadata":{"type":"object","additionalProperties":true},"type":{"type":"string"}},"title":"PaymentMethod"}}}}}}},"401":{"description":"User is not authenticated.","content":{"application":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

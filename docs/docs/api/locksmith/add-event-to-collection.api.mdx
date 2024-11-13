@@ -1,0 +1,71 @@
+---
+id: add-event-to-collection
+title: "addEventToCollection"
+description: "Add an event to a collection"
+sidebar_label: "addEventToCollection"
+hide_title: true
+hide_table_of_contents: true
+api: eJzNVsmOGzcQ/RWiTgnQGhkD59I32RgHk9UYaZCDoEOJLEm02GSbi8ZCo/89KHZLrW1sODkkJ7W4VNV7rxY24GryGLWzjwpKQKUedmTjzL13xpDkDSggkExexz2U8waeA3ko54t2UUCNHiuK5EPeslgRlBBMWkMB2kIJNcYNFODpc9KeFJTRJyogyA1VCGUDcV/nO9Fru4aWrSoK0us6Oy9hopRAK4jjEtEJFPI0NrZMIb5zas/mLh1JZyPZyFtY10bLDHb8KbDt5joOt/xEMp5FPIfse8qoGLNnzqKmwNeGrRtYCog6GupAXBGbQ25bPuYp1M6GzuT9mzf8c87CNElJIaySMXuBSpEaGDnj4x8DPsel1ckZbSOtyUNbfBUvOz9E8uoRHSZ17d2OTh0snTOENpvwhJHUJF7fLmDlfIURSlAYaRR1RXwl1er7rpwIk1UZNJmE4KTOlPXSvL2lxqPdodFKaFunKDxJ0jtSd+IdKtEn5N2/0cImY3DJAa7QBLoUp6IQcE234CpaYTKM96nPKbF0ai86X0IHobvY767dsLzeO3/L7nCU6+qUwZ/Jkteyp4ST+iEbOdD39pq+2YaEjlSJvUsCPYkKt9quD9SJlfNCOQrCuijoi/4fsOkpuOQl5ZBWLll1g79rVv5w8UM+3LHx061kerZsgwuZq3ulzZEHlfIyl5+3aEQgvyMvskj/OSOzDXkSLxhyd+aQhLYHCKxm3NBpMXybrGmGN2RPW0BFceN4MtUu5CbF46SE8e5+nDvRaOg444bnTtuthzy12Fw3mZI3UMImxjqU47FxchsqHTd3yfL3qPYuOunMnXQVXA6gj96plF2ILkJoi0uLIeJa2/Xo+yxPu1tHs4th1E5Zu06NbuAepWCX0E/Q3DsJPXko+o8Ph373y18zbo6TITFOjGCtf6U9q9KNbKz1aJsX8tT+nMjvc5/kXHoaRuzDF6xqQxeT77S925XLfnppnzMN4rcDL1AAi9Lhv79i5HhO8IzQioJYotySVWKVbBYBjY773CKICydnmpZbitquC1FRRIURRYjO45oKgVZx0epVz4LYOLcNnJFGS7Ihg+lp+P1xllFztlVoT3ZQKZFnhZg5cfY4OgPQDDX5rYdLr0SkL3FcG9R5+uWsavo0n8OOGbpMdCig7J9Yfa4vCthwfZRzaJolBnr2pm15uROynC8K2KHXXf3NG1A68Lc6NoBXUfzw1D+EfhSvBX3IKcv5s0OT+B8UwAnVvwbbRVvAhlDlt2PTb73vvIxmbGC4etXLuN66GxMpqY5fPbs46Rof/5zOuDL6x2HlFN/x+MIPPHzpwnQZdS61vNaAQbtOuQFCZ5NzAhNrMjxZzssuo7pJRNN0J2ZuS7Ztj7xE/s/EtO3fr74GnQ==
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"addEventToCollection"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/event-collection/{slug}/events"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Add an event to a collection
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"slug","in":"path","required":true,"schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"required":true,"content":{"application/json":{"schema":{"type":"object","required":["eventSlug"],"properties":{"eventSlug":{"type":"string"}},"title":"AddEventToCollectionBody"}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully added event to collection","content":{"application/json":{"schema":{"type":"object","properties":{"id":{"type":"integer"},"eventSlug":{"type":"string"},"collectionSlug":{"type":"string"},"isApproved":{"type":"boolean"},"createdAt":{"type":"string","format":"date-time"},"updatedAt":{"type":"string","format":"date-time"}},"title":"EventCollectionAssociation"}}}},"400":{"description":"Invalid input received. Bad request.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"Response body schema is invalid.","nullable":false},"error":{"type":"string","nullable":true}},"title":"GenericInvalidBodyError"}}}},"404":{"description":"The item you are making request for does not exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"resource not found","nullable":false}},"title":"GenericNotFound"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

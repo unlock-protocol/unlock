@@ -1,0 +1,71 @@
+---
+id: claim
+title: "claim"
+description: "Claim a membership key for a lock. If not authenticated, requires an email in the body."
+sidebar_label: "claim"
+hide_title: true
+hide_table_of_contents: true
+api: eJy1Vk1v4zYQ/SvEnFpAsdOgJ93SRdqm3baLxEEPhg9jamxxLZFakrLXEPTfiyFlS7YVpxu0PskUNR9v3ryZBhzJ2iq/h3TewIsjC+l80S4SMBVZ9MroxwxSkAWqEhLIyEmrKj6HFD7wqUBRUrkk63JViQ3txcpYgaIwcjMRjyuhjRdY+5y0VxI9ZYmw9KVWlpxALahEVQilhc9JLE22n0ACFVosyZN1ITDF3ir0OSSgsSRIQZPfGbuBBDpjGaTe1nQe45/xnlAZ23UypxIhbcDvKzajtKc1WWjbZNQNZ3GfZZace9PVRyM3AuPlUWfOW6XX0VdnX2LlZY6QROc5YUb2TU9P1H0ntljUJLwRFf57p5akqhRpf8XtCgs35jd+eEgz1HpD+6uOF9EuOf+TyfZ84zw7abTncNIGsKoKpokyevrZsdfm0rRZfibJ0VeWeeoVOX6boR8LIIHAscs35+k9BCoeUjOrQMkerDYZIPemsdexCnZWZC1329tm4s2jldpRxgUvlfYTMcuVEyXuxZq8MFuyO6u8Jz2BNvzYlauMdhGhu9vbANSJi+daSnJuVRfFXoROZw85cbBMqf+oOt6idij521/R5aOFMjs9Bsohlx9vf7gMn1VLKHepM6/Hfj1sXRcFLgs6NsFpHiU5h2saL90K68JDCrOcLIkdRomz1liWOIZ4pQql1x21QldMLn1ysl55/g+/kCar5DPZLdkHNgUdHCX53LA8V8YFvFm6Uphu76ahjNOmU8l2yjrmps1Azlru2WAzamxtC1YC7yuXTuP9Uvl8Umt+vqms8UaaYiLN5SD4ZE1Wh8qKGCaw2pxadB7XSq9vvs3yc/zqaHaRHEfWMxcwliQOrmM92OVBkfj/ktAGeYsPPxtbIhfpt79nTLr7U2J0RrBSvwdh60QTK3UTlS5I5pea7J5VFbgPnnp9e/iKZVVQr0c9PToZ6g8GcjI8PGjDoDGUXpkQXEeKl4Cd+HgAExLgSkbQ7i5gPN4TlTVblZETS5Qb0plY1TpUDgvl4+wmjcvIUSU35JVeJ6Ikj5yOcN5YXFMiUGfccmrVQSdyYzZhBBVKknYBgQ67Px5nASrmaYl68GZ0sWj6tv0fd4yuzp6++mlVoNKMc+Bs03XSHLYM5SHGtN85Aon5aLgfLBLIuRHTOTTNEh292KJt+TiSJZ0vEtiiVbHR5w1kyvHzK+N2CMN3T93I/F6cbjSjWRworJmuYUWAFCAB5m+/OnGPviuC80XnHTEMcWsXbXJYQd6NypWVaDS8GEa/fh0j/DZUrm1EV/wON7ATz/H1h2j/ZsYW+hsX07f/4l5KqvzVu4vBwPj01/OM9bDbx0qThb0Qd6w/uIuVMiHfILDhrIEC9boOsw+iTW5q7ruBbp6JbajoKBeaJt6YmQ3ptj1Sw/N/JkXb/gPjN2AT
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"claim"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/claim/{network}/locks/{lockAddress}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Claim a membership key for a lock. If not authenticated, requires an email in the body.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}},{"name":"captcha","in":"header","required":true,"description":"Recaptcha value to pass.","schema":{"type":"string"}},{"name":"recipient","in":"header","required":false,"description":"Recipient address for key","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"required":true,"content":{"application/json":{"schema":{"type":"object","properties":{"data":{"type":"string"},"email":{"type":"string","description":"Email address of the recipient"},"recipient":{"type":"string","description":"Recipient address for key"},"referrer":{"type":"string","description":"Referrer address used to mint. This may get overwritten."}}}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully claimed the key.","content":{"application/json":{"schema":{"type":"object","properties":{"transactionHash":{"type":"string"},"owner":{"type":"string"}}}}}},"401":{"description":"User is not authenticated.","content":{"application":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      
