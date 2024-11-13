@@ -295,7 +295,7 @@ export const saveTokenOnEventCasterRSVP = async ({
   tokenId,
 }: {
   eventId: string
-  farcasterId: string
+  farcasterId: number
   tokenId: number
 }) => {
   const response = await fetch(
