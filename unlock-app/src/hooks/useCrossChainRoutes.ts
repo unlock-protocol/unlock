@@ -89,6 +89,12 @@ export const useCrossChainRoutes = ({
       })),
   })
 
+  // const sharedParamsResults = useQuery({
+  //   queryKey: ['sharedParams', account, lock, recipients, manager, purchaseData],
+  //   queryFn: async () => {
+
+  // })
+
   const routeResults = useQueries({
     queries: balanceResults
       .filter((result) => !!result?.data?.balance)
@@ -202,7 +208,7 @@ export const useCrossChainRoutes = ({
               return null
             }
           },
-          enabled: enabled && hasPrices && !!lockContract,
+          enabled: enabled && hasPrices,
           staleTime: 1000 * 60 * 5, // 5 minutes
         })
       ),

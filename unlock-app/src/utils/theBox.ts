@@ -48,6 +48,8 @@ interface getCrossChainRouteParams {
   srcChainId: number
 }
 
+export const prepareSharedParams = async (params: any) => {}
+
 // Get a route for a given token and chain.
 export const getCrossChainRoute = async ({
   sender,
