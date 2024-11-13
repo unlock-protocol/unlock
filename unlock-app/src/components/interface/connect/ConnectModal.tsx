@@ -13,9 +13,17 @@ export const ConnectModal = () => {
       closeConnectModal()
     }
 
+    const handleLegacyAccount = () => {
+      closeConnectModal()
+    }
+
     window.addEventListener('locksmith.authenticated', handleLoginComplete)
+    // close connect modal if legacy account is detected
+    window.addEventListener('legacy.account.detected', handleLegacyAccount)
+
     return () => {
       window.removeEventListener('locksmith.authenticated', handleLoginComplete)
+      window.removeEventListener('legacy.account.detected', handleLegacyAccount)
     }
   }, [closeConnectModal])
 
