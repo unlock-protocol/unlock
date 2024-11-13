@@ -131,7 +131,7 @@ export function useAuthenticate() {
   const signInWithPrivy = async ({ onshowUI }: { onshowUI: () => void }) => {
     if (!(await signInWithExistingSession())) {
       setAccount(undefined)
-      if (privyAuthenticated) {
+      if (privyAuthenticated && user) {
         await onSignedInWithPrivy(user)
       } else {
         privyLogin()
