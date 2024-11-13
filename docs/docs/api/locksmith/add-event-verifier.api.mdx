@@ -1,0 +1,71 @@
+---
+id: add-event-verifier
+title: "addEventVerifier"
+description: "Adds a verifier for an event."
+sidebar_label: "addEventVerifier"
+hide_title: true
+hide_table_of_contents: true
+api: eJzlVk1v4zYQ/SvEnFpAidO0PVQ3t0iLbbuLxcZpURg+jMWxxbVEasmRE6+g/14MKX/EdpJuUKCH+mKJGj7OvHmcmQ5cQx7ZOPtGQw6o9c2aLP9B3iwMecggUNF6wxvIpx3cBfKQT6FyxeotWlySh1k/y0BTKLxpBAhyGGsdFKr1gKIWziu0igT6EjJo0GNNTD5EVCN7GuQSMrBYE+QQqnYJGXj61BpPGnL2LR0fc5uMQlFSjZB3wJsmbmZv7BL6PjuLvXVrrLWnEF48RoJWmIwVO9UGUhh20T3rwSyBU+Afnd6Ixf6sBVaBMiicZbIs37BpKlPEdIw+Bjm8O8V2849UsLDoJXlsKMjXrTvvYpDHnhzH5OIDVvscRXL6+BOfQ+NsSMjXV9/I30mKSe92S1JfHYdtqwrnFe0Y2VM0hYF3mB3Hu/1wJtQjwD6Leh1/6YatwP/RBkt87/zqwNhYpmWUxxnrJ5K0txQhSibYsLzC7kamBH139e1pTqJQTVDWscKWS+fNZ9Ii2Yb8wvlacWmCwkLs/92UPc5NTSHg8gkZLrCtGHL4y7UKPR17K6Wi5ZIsizvPun/M6wFd7xyPD1F2tP1wStukJE/CG6rC2UVlCr5Uk5KUp+BaX5DCyhPqjaIHE/g/Jy75e48h1lTvnVfGqkVbVQtTGbtUHH2PVecFmn4hS94Ut+TX5G8EaiDq+6urM/qyAiMJGQ7bnqJ0G5dF8l6qSoiAybn/AV99BjVx6aSFNm2szdJxchitr0ex64VRJy2tH20rZhh1R32oj81WgFNXbH0FOZTMTchHIylIoTZcXrZWni8a79gVrrosXH1S3t97p9t4T1TyFaQXPkYMjEtjlxdfhnybdu1gZ/sJ4VaymPKS5oRdUuTIbZuU9zmhj5UxPfzsfI2SqV//nECfwXgvkQMQbMxvtNm3cWzMxSouxB7/qSW/kZ4PoqoP+6Z784B1U9Fpj9x1aUFYuHjUkOe7yIT6fUsNZLI3JAquT0jZ2anGu7XRFNQcixVZrRatLVKrNbyJgxDJLYqyM8WK2Nhlpmpi1MioAjuPS8oUWi2V0SwGIlTp3CqIPCtTkA0xnoGJt28mMfDGBa7RHnxBrVUc6NTBRPfI925/N18c24ZEMD3wqKnQWKEuiqobBD+FtbCTJA8Z5MMct1O9rB3PX7MMShdYdnfdHAPd+arvZTnlNJ/OMlijN+lSTjvQJsjzfoZ6MqSvPgyzxNdqmBbPBrGVmBU5rbFq5Q0yEH0Nw6hcoFed+/L4+AqXjjnsZ30GJaGO83k3WP2U/LmYCNYe5aQES2xpx7goqOFnbWcHxe793URu8TDa1k7LFo/3MlPjfXI4jZqxLMS1Diq0yzaWbUiQIl5p+ge3/ahExKDOUtJ1yWLiVmT7fscQy7vw0vd/A8dfgVg=
+sidebar_class_name: "put api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"addEventVerifier"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"put"}
+  path={"/v2/events/{slug}/verifiers/{verifierAddress}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Adds a verifier for an event.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"slug","required":true,"description":"Slug","schema":{"type":"string"}},{"in":"path","name":"verifierAddress","required":true,"description":"User address to use as verifier","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"required":false,"content":{"application/json":{"schema":{"type":"object","properties":{"verifierName":{"type":"string","description":"optional verifier name"}}}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"201":{"description":"Added verifier.","content":{"application/json":{"schema":{"type":"object","nullable":false,"required":["address"],"properties":{"address":{"type":"string","nullable":false},"lockAddress":{"type":"string","nullable":false},"lockManager":{"type":"string","nullable":false},"network":{"type":"integer","nullable":false},"name":{"type":"string","nullable":true}},"title":"Verifier"}}}},"403":{"description":"User is not authorized to perform this action.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"You are not authorized or authenticated to perform this action.","nullable":false}},"title":"NotAuthenticated"}}}},"409":{"description":"There is a conflict. The resource already exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

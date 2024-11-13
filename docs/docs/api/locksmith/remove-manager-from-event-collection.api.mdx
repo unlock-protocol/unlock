@@ -1,0 +1,71 @@
+---
+id: remove-manager-from-event-collection
+title: "removeManagerFromEventCollection"
+description: "Remove a manager address from an event collection"
+sidebar_label: "removeManagerFromEventCollection"
+hide_title: true
+hide_table_of_contents: true
+api: eJzNV9uO2zYQ/RVinlpAu07T9EVvm3RTbJsEQdaLolgYxVgc24wlUiFHThxD/14MqdXKtry5IUifLPM2Z85ceLgDV5NHNs5eacjBU+U29BItLsk/96663JDlZ64sqZBFkEGgovGGt5Df7uAmkIf8dtbOMqjRY0VMPsQpixVBDqFslpCBsZBDjbyCDDy9a4wnDTn7hjIIxYoqhHwHvK3jHvbGLqGVUzWFwps6Gs/hTcSnUFUJokKtPYWgFt5VCq0iwauKIWAxR4GfOr0VG4fWC2eZLMsU1nVpisjG5G0Qg7tjcG7+lgrec+MWOjgXCc3UJZwgrHhhmA0FOePEuhHXM2DDJfU+dzGJXrStzHsKtbMhHfz40SP52WfruikKCmHRlOVWpdDqQ+bgGxjY9y1G+tiT3pGRmT24I/OF25C/qnA5vn2O1kr+jUyVxq7DGGbU2og9LF/voT/mfz9We6vQe9xKVjNVJ3YXnpBJX/DxdAYL5ytkyEEj0xmbigRzU+sv3RLT/XOQjWZtLNGsL9HI835QMkBmb+YNUzjO5lTiI+yfTAVzMpafSoUBjq/0lj0a/jeuyGCDZTNSn4M1YyDSrpF4t8OCjT0TjocGbTRteDJWtFd2g6XRyti6YeWpILMhfa6eolZdKzv/lqK1TVniXFAtsAx01KEohNEYSYgW2JQcW1JqPWru9FYlW8oEZRL282Mzkqveu5FiHS6Vjjyk7Q+y5E3RUSK97zIeckffL8f0yY0kUKxjhQ2vyLJwQ/o0ad+fr+mKPKn3GOIVJS4oY5X05YUpjV0qXtEwuIfkHVNyTX5Dfp+NXz/NhvPmI2nFTtXkpaUoXpmgMGblD0+rf1yj0NMhWuf3I/kA/AeIe+X4YnhKT9uTY9qmK1LSU9S2Q1ThWsLUhUgtnFfaUeKVPpj/QUl6Cq7xRSJv4RqrPyuPXjl+HhcnNn4b60g3Vs4Q1ruM7XnQTRw2lslbLFWIWZky/Icz8v2LTkQC8cqJctZUEsvNEkVuDpPN40m8nc/uxehkJxdjO+mURYhqWo5MirnxJeSwYq5DPpmUrliHyvDqvLHyfVZ7x65w5XnhKjgUxq+90000ohJKaLPDEwPj0tjl2ZedfJ129cfO7p8A1xK/FJH0EOjDISahU/byf07oyUPWfTy/EzN//j2Ve/Vivxnf3e61+Yvkeu+eElibs3UciK+Jdw35bdRakk9v7lX+5Qes6qQ4T+ntoSSxCxeNdrG+iZyoF3ckiVggHxIZj4/o6dep2ruN0RTUHIs1Wa0WjS2S1DS8jT2DpJJi6pliTWzsMlMVMWpkVIGdxyVlCq2WKjaLjhK1cm4dJEVLU5ANdK+94OXVNFJQu8AV2sFM0vuqezcoecypKEPU3nPuQHf1FftVT60ucEwfeFKXaGyUtZKEu64ubmEjHB5WBmSQdzK0L45ZBisXWPbsdnMMdOPLtpXhFPn8diaKzJtUtLc70CbIt+67xknnfnrTCcOf1SnYd0lot71czAEykAzsnrXtrM1gRajjI3jXTT1LVs6mQ6WZHzdAKdC046IoqOYH184Greb3yxeX00sppu5JWzkdI47vRfLi+wTURb9jdcaxHZRol03sm5BOlcyRq3VQdAeVGv0apWK3Syumbk22bXtmWP4LNW37H6hYvB0=
+sidebar_class_name: "delete api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"removeManagerFromEventCollection"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/v2/event-collection/{slug}/managers"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Remove a manager address from an event collection
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"slug","in":"path","required":true,"schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"required":true,"content":{"application/json":{"schema":{"type":"object","required":["managerAddressToRemove"],"properties":{"managerAddressToRemove":{"type":"string"}},"title":"RemoveManagerBody"}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully removed manager address","content":{"application/json":{"schema":{"type":"object","properties":{"slug":{"type":"string"},"title":{"type":"string"},"description":{"type":"string"},"coverImage":{"type":"string"},"banner":{"type":"string"},"links":{"type":"object","additionalProperties":{"type":"string"}},"managerAddresses":{"type":"array","items":{"type":"string"}},"createdAt":{"type":"string","format":"date-time"},"updatedAt":{"type":"string","format":"date-time"},"events":{"type":"array","items":{"type":"object","required":["name","slug","image","description","attributes"],"properties":{"name":{"type":"string"},"slug":{"type":"string"},"image":{"type":"string"},"description":{"type":"string"},"attributes":{"type":"array","items":{"type":"object","required":["trait_type","value"],"properties":{"trait_type":{"type":"string"},"value":{"type":"string"}}}}},"title":"Event"}}},"title":"EventCollection"}}}},"400":{"description":"Invalid input received. Bad request.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"Response body schema is invalid.","nullable":false},"error":{"type":"string","nullable":true}},"title":"GenericInvalidBodyError"}}}},"401":{"description":"User is not authenticated.","content":{"application":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}},"403":{"description":"User is not authorized to perform this action.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"You are not authorized or authenticated to perform this action.","nullable":false}},"title":"NotAuthenticated"}}}},"404":{"description":"The item you are making request for does not exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"resource not found","nullable":false}},"title":"GenericNotFound"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

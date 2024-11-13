@@ -1,0 +1,71 @@
+---
+id: get-unapproved-events-for-collection
+title: "getUnapprovedEventsForCollection"
+description: "Get unapproved events for a collection"
+sidebar_label: "getUnapprovedEventsForCollection"
+hide_title: true
+hide_table_of_contents: true
+api: eJzNV9uO2zYQ/RVinhpAu0636YveNsHuYnsJiqwXRWEYBS2NLcYSqQyHblxB/14MqZWvm6QogvTJkkgOz5wzQx534FokzcbZ+xJyWCE/Wt225DZY3mzQsr919MbVNRYyCTLwWAQyvIV81sGjR4J8Nu/nGbSadIOM5OOQ1Q1CDr4OK8jAWMih1VxBBoQfgiEsIWcKmIEvKmw05B3wto1rmIxdQS9RS/QFmTZunsMdsgojQIURoVo6UloV+ygJfeusRy9hr16+lJ/DUA+hKND7ZajrrSJkMighT6JDBoWzjJYlhm7b2hSRsMl7L4G6U/xu8R4LPsh0lvjIRj4avZLXfUwZaGYyi8DoQQglEYdNSiLxecLREPHcQNrj3MgBE2fG93DshjWR3gp0xsZ/LlsmbfjPOCODja4Dnma0N+cciLTqTFX0fZ8BG67layxSSN9endP53m50bUplbBtYERZoNlheqte6VIIYPV/+F41tqGu9ECxLXXs8TrJB78/KICosdagZcng3VKtauHKr0l7KeGUS9svTbfoMkMjRubi7qdJf+2TdoUUyxUDJa1dub2KQJ/q+P6VPOlygWMdKB67QsnCD5fOkfX2+phUSqr+0V9qqyIMyVkkrL01t7EpxhfviHpN3SskD0gbpkI0fPs+GI/M3loqdapGWjhrFlfFKx2Pom5fVHy4oTXiMVk7LfSU/Af8TxL11fL0fZaTt1Slt0wqVHBtqOyBq9FpkGiSKB3jpMPGKH83/oCUJvQtUJPKWLtjyi+rorePbODmx8eO5E+nRSgxhfajYkYcyxM/GMpLVtfKxKlOFf3NGvn7T9Rk0yJUbnAhkyTHkMNlcTeJtfLG75CedXHz9ZHdhX4wXduIt+ZBANeRQMbc+n0xqV6x9Y7i6DFaeL1py7ApXXxaugWO78Ru5MsTdVMIKfXYc0bNeGbu6+HeRH9KqMex8Z6weRMWkS7JXoyiyJQx+Sd4XqAkJsuHh1lGjRamffp/KBXp9eCQ/XeOt+RnlHh8Mmm7NxTp+iB7tQ0Dagkhh7NLFdYNojzEt9ctTnnKxI/mUz9VJhuM8JeqYEr1a6GKNtlTLYCOpuja8jc2P0hKxhkyxRjZ2lakGWZeatfLsSK8wU9qW0o5mOWSlKufWXmqtNgVajzufBL/eT2MWrfPcaLs3skJWO5OrkstVt47Ugc898khj6325Bx0IZ/zIk7bWxooosXi6obBnsBHijksbMsgHn3ha3fMMKudZFnfdQnt8pLrv5XOSLp/NxTuRSb0366A0Xp7LsfmfTe27d4OFe6Gew/9URXY7GrscIAMpocHt9/M+gwp1Gf8bdMPQdVFgy3uLTk4waYKx/+9upmKIg9A01u5RwcfoZwF1XZoxdWu0fT/iY3kXgH3/D+uDji0=
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"getUnapprovedEventsForCollection"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/event-collection/{slug}/unapproved-events"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Get unapproved events for a collection
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"slug","in":"path","required":true,"schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully retrieved unapproved events","content":{"application/json":{"schema":{"type":"object","required":["name","slug","image","description","attributes"],"properties":{"name":{"type":"string"},"slug":{"type":"string"},"image":{"type":"string"},"description":{"type":"string"},"attributes":{"type":"array","items":{"type":"object","required":["trait_type","value"],"properties":{"trait_type":{"type":"string"},"value":{"type":"string"}}}}},"title":"Event"}}}},"400":{"description":"Invalid input received. Bad request.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"Response body schema is invalid.","nullable":false},"error":{"type":"string","nullable":true}},"title":"GenericInvalidBodyError"}}}},"401":{"description":"User is not authenticated.","content":{"application":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}},"403":{"description":"User is not authorized to perform this action.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"You are not authorized or authenticated to perform this action.","nullable":false}},"title":"NotAuthenticated"}}}},"404":{"description":"The item you are making request for does not exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"resource not found","nullable":false}},"title":"GenericNotFound"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      
