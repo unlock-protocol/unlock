@@ -42,12 +42,11 @@ export const checkLegacyAccount = async (
 export const onSignedInWithPrivy = async (user: User) => {
   try {
     const accessToken = await privyGetAccessToken()
-    const walletAddress = user?.wallet?.address
     if (!accessToken) {
       console.error('No access token found in Privy')
       return null
     }
-    const walletAddress = user.wallet.address
+    const walletAddress = user.wallet?.address
     if (walletAddress) {
       const response = await locksmith.loginWithPrivy({
         accessToken,
