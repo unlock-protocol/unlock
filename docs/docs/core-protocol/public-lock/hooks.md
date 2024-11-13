@@ -26,7 +26,8 @@ The `onGrantKeyHook` allows you to create custom logic that is called each time 
 A KeyGrantedHook should implement the following interface.
 
 ```solidity
-interface ILockKeyGrantHook {
+interface ILockKeyGrantHook
+{
   /**
    * @notice If the lock owner has registered an implementer then this hook
    * is called with every key granted.
@@ -54,7 +55,8 @@ The `onKeyExtendHook` allows you create custom logic when a key is extended or r
 A KeyExtendHook should implement the following interface.
 
 ```solidity
-interface ILockKeyExtendHook {
+interface ILockKeyExtendHook
+{
   /**
    * @notice This hook every time a key is extended.
    * @param tokenId tje id of the key
@@ -109,14 +111,15 @@ This hook is called every time the `tokenURI()` is called. This allows customiza
 Want each key owner to have his/her own profile pic? Change description based on your own NFT? Just hook a contract compatible with the `ILockTokenURIHook` interface and return your own tokenURI.
 
 ```solidity
-interface ILockTokenURIHook {
+interface ILockTokenURIHook
+{
   function tokenURI(
     address lockAddress, // the address of the lock
-    address operator, // the msg.sender issuing the call
-    address owner, // the owner of the key
-    uint256 keyId, // the id (tokenId) of the key (if applicable)
-    uint expirationTimestamp // the key expiration timestamp
-  ) external view returns (string memory);
+    address operator,    // the msg.sender issuing the call
+    address owner,    // the owner of the key
+    uint256 keyId,    // the id (tokenId) of the key (if applicable)
+    uint expirationTimestamp    // the key expiration timestamp
+  ) external view returns(string memory);
 }
 ```
 
@@ -127,13 +130,16 @@ This hook is called every time the (ERC721) `balanceOf` method is called. This a
 That way you could whitelist your own NFT holders or DAO members, and provide them access without having them to register. Just use a connector contract compatible with `ILockValidKeyHook` that checks if the account is allowed or not, and register it as a hook.
 
 ```solidity
-interface ILockValidKeyHook {
+interface ILockValidKeyHook
+{
   function hasValidKey(
     address lockAddress, // the address of the current lock
     address keyOwner, // the potential owner of a key
     uint256 expirationTimestamp, // the key expiration timestamp
     bool isValidKey // the validity in the lock contract
-  ) external view returns (bool);
+  )
+  external view
+  returns (bool);
 }
 ```
 
@@ -144,7 +150,10 @@ Called when a key is transferred, it can be useful to use with `onKeyPurchaseHoo
 The `ILockKeyTransferHook` interface is quite straightforward:
 
 ```solidity
-interface ILockKeyTransferHook {
+
+interface ILockKeyTransferHook
+{
+
   /**
    * @notice If the lock owner has registered an implementer then this hook
    * is called every time balanceOf is called

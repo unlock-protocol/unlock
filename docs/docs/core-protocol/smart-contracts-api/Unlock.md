@@ -100,14 +100,14 @@ _internally call `createUpgradeableLock`_
 
 #### Parameters
 
-| Name                 | Type    | Description                                                                                                                                                                                                                            |
-| -------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| \_expirationDuration | uint256 | the duration of the lock (pass 0 for unlimited duration)                                                                                                                                                                               |
-| \_tokenAddress       | address | set to the ERC20 token address, or 0 for ETH.                                                                                                                                                                                          |
-| \_keyPrice           | uint256 | the price of each key                                                                                                                                                                                                                  |
-| \_maxNumberOfKeys    | uint256 | the maximum numbers of keys to be edited                                                                                                                                                                                               |
+| Name                 | Type    | Description                                                                                                                                                                                                                           |
+| -------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| \_expirationDuration | uint256 | the duration of the lock (pass 0 for unlimited duration)                                                                                                                                                                              |
+| \_tokenAddress       | address | set to the ERC20 token address, or 0 for ETH.                                                                                                                                                                                         |
+| \_keyPrice           | uint256 | the price of each key                                                                                                                                                                                                                 |
+| \_maxNumberOfKeys    | uint256 | the maximum numbers of keys to be edited                                                                                                                                                                                              |
 | \_lockName           | string  | the name of the lock param \_salt [deprec] -- kept only for backwards compatibility This may be implemented as a sequence ID or with RNG. It&#39;s used with `create2` to know the lock&#39;s address before the transaction is mined. |
-| \_5                  | bytes12 | undefined                                                                                                                                                                                                                              |
+| \_5                  | bytes12 | undefined                                                                                                                                                                                                                             |
 
 #### Returns
 
