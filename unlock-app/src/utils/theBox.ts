@@ -46,9 +46,29 @@ interface getCrossChainRouteParams {
   purchaseData: string[]
   srcToken: string
   srcChainId: number
+  sharedParams: any
 }
 
-export const prepareSharedParams = async (params: any) => {}
+export const prepareShareParams = async ({
+  sender,
+  lock,
+  prices,
+  recipients,
+  keyManagers,
+  referrers,
+  purchaseData,
+}: Partial<getCrossChainRouteParams>) => {
+  console.log({
+    sender,
+    lock,
+    prices,
+    recipients,
+    keyManagers,
+    referrers,
+    purchaseData,
+  })
+  return {}
+}
 
 // Get a route for a given token and chain.
 export const getCrossChainRoute = async ({
@@ -61,6 +81,7 @@ export const getCrossChainRoute = async ({
   purchaseData,
   srcToken,
   srcChainId,
+  sharedParams,
 }: getCrossChainRouteParams): Promise<CrossChainRoute | undefined> => {
   const network = networks[srcChainId]
 

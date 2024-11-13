@@ -4,7 +4,11 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Lock } from '~/unlockTypes'
 import { purchasePriceFor } from './usePricing'
 import { getReferrer } from '~/utils/checkoutLockUtils'
-import { CrossChainRoute, getCrossChainRoute } from '~/utils/relayLink'
+import {
+  CrossChainRoute,
+  getCrossChainRoute,
+  prepareSharedParams,
+} from '~/utils/theBox'
 import { networks } from '@unlock-protocol/networks'
 import { Token } from '@unlock-protocol/types'
 import { useAuthenticate } from './useAuthenticate'
@@ -89,11 +93,29 @@ export const useCrossChainRoutes = ({
       })),
   })
 
-  // const sharedParamsResults = useQuery({
-  //   queryKey: ['sharedParams', account, lock, recipients, manager, purchaseData],
-  //   queryFn: async () => {
-
-  // })
+  const { data: sharedParams } = useQuery({
+    queryKey: [
+      'sharedParams',
+      account,
+      lock,
+      recipients,
+      keyManagers,
+      purchaseData,
+    ],
+    queryFn: async () => {
+      return prepareSharedParams({
+        sender: account!,
+        lock,
+        prices,
+        recipients,
+        keyManagers: keyManagers || recipients,
+        referrers: recipients.map(() =>
+          getReferrer(account!, paywallConfig, lock.address)
+        ),
+        purchaseData: purchaseData || recipients.map(() => '0x'),
+      })
+    },
+  })
 
   const routeResults = useQueries({
     queries: balanceResults
@@ -172,6 +194,7 @@ export const useCrossChainRoutes = ({
                 purchaseData: purchaseData || recipients.map(() => '0x'),
                 srcToken: token.address,
                 srcChainId: network,
+                sharedParams,
               })
               if (!route) {
                 console.info(
