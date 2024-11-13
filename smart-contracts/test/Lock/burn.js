@@ -69,7 +69,6 @@ describe('Lock / burn', () => {
 
   it('tokenId is not used twice', async () => {
     const totalSupply = await lock.totalSupply()
-    // assert.equal(tokenId + 1n, totalSupply)
     await lock.connect(keyOwner).burn(tokenId)
     compareBigNumbers(await lock.totalSupply(), totalSupply - 1n)
     const { tokenId: tokenIdAfterBurn } = await purchaseKey(
