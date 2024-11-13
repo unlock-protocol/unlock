@@ -3,9 +3,21 @@
 import { useConnectModal } from '~/hooks/useConnectModal'
 import { Modal } from '@unlock-protocol/ui'
 import { LoginModal } from '@privy-io/react-auth'
+import { useEffect } from 'react'
 
 export const ConnectModal = () => {
   const { closeConnectModal, open } = useConnectModal()
+
+  useEffect(() => {
+    const handleLoginComplete = () => {
+      closeConnectModal()
+    }
+
+    window.addEventListener('privy.login.complete', handleLoginComplete)
+    return () => {
+      window.removeEventListener('privy.login.complete', handleLoginComplete)
+    }
+  }, [closeConnectModal])
 
   return (
     <Modal isOpen={open} setIsOpen={closeConnectModal} size="small">
