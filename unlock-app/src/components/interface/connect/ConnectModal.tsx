@@ -13,9 +13,9 @@ export const ConnectModal = () => {
       closeConnectModal()
     }
 
-    window.addEventListener('privy.login.complete', handleLoginComplete)
+    window.addEventListener('locksmith.authenticated', handleLoginComplete)
     return () => {
-      window.removeEventListener('privy.login.complete', handleLoginComplete)
+      window.removeEventListener('locksmith.authenticated', handleLoginComplete)
     }
   }, [closeConnectModal])
 

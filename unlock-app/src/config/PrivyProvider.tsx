@@ -49,12 +49,7 @@ export const PrivyChild = ({ children }: { children: ReactNode }) => {
   }>(AuthenticationContext)
 
   useLogin({
-    onComplete: async (user) => {
-      await onSignedInWithPrivy(user)
-
-      // Dispatch event to notify successful login
-      window.dispatchEvent(new CustomEvent('privy.login.complete'))
-    },
+    onComplete: onSignedInWithPrivy,
     onError: (error) => {
       if (error !== 'generic_connect_wallet_error') {
         ToastHelper.error(`Error while logging in: ${error}`)
