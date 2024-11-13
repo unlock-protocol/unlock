@@ -4,7 +4,7 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Lock } from '~/unlockTypes'
 import { purchasePriceFor } from './usePricing'
 import { getReferrer } from '~/utils/checkoutLockUtils'
-import { CrossChainRoute, getCrossChainRoute } from '~/utils/relayLink'
+import { CrossChainRoute, getCrossChainRoute } from '~/utils/theBox'
 import { networks } from '@unlock-protocol/networks'
 import { Token } from '@unlock-protocol/types'
 import { useAuthenticate } from './useAuthenticate'
@@ -93,16 +93,6 @@ export const useCrossChainRoutes = ({
       })),
   })
 
-  const { data: lockContract } = useQuery({
-    queryKey: ['lockContract', lock.address],
-    queryFn: async () => {
-      return web3Service.getLockContract(
-        lock.address,
-        web3Service.providerForNetwork(lock.network)
-      )
-    },
-  })
-
   const routeResults = useQueries({
     queries: balanceResults
       .filter((result) => !!result?.data?.balance)
@@ -168,7 +158,7 @@ export const useCrossChainRoutes = ({
               ) {
                 return null
               }
-              const route = await getCrossChainRoute(lockContract, {
+              const route = await getCrossChainRoute({
                 sender: account!,
                 lock,
                 prices,
@@ -183,7 +173,7 @@ export const useCrossChainRoutes = ({
               })
               if (!route) {
                 console.info(
-                  `No route found from ${network} and ${token.symbol} to ${lock.network} and ${lock.currencySymbol}`
+                  `No route found from ${networks[network].name} and ${token.symbol} to ${networks[lock.network].name} and ${lock.currencySymbol}`
                 )
                 return null
               }
@@ -216,7 +206,7 @@ export const useCrossChainRoutes = ({
               return null
             }
           },
-          enabled: enabled && hasPrices && !!lockContract,
+          enabled: enabled && hasPrices,
           staleTime: 1000 * 60 * 5, // 5 minutes
         })
       ),
