@@ -14,7 +14,7 @@ module.exports = async () => {
 This proposal enables change from distributing UDT to UPToken when using referrers. This requires to also setup the Uniswap oracle 
 in Unlock to support price discovery for UPToken.`
 
-  const { unlockAddress, uniswapV3, id } = await getNetwork()
+  const { unlockAddress, uniswapV3, id, multisig } = await getNetwork()
 
   // parse config args from existing settings
   const unlock = await ethers.getContractAt(Unlock.abi, unlockAddress)
@@ -43,10 +43,32 @@ in Unlock to support price discovery for UPToken.`
       ),
     },
   ]
-  const packedCalls = await parseSafeMulticall({ chainId: id, calls })
+
+  // parse multicall
+  const { to, data, value, operation } = await parseSafeMulticall({
+    chainId: id,
+    calls,
+  })
+
+  // encode multicall instructions to be executed by the SAFE
+  const abiCoder = ethers.AbiCoder.defaultAbiCoder()
+  const moduleData = abiCoder.encode(
+    ['address', 'uint256', 'bytes', 'bool'],
+    [
+      to, // to
+      value, // value
+      data, // data
+      operation, // operation: 0 for CALL, 1 for DELEGATECALL
+    ]
+  )
 
   return {
     proposalName,
-    calls: [packedCalls],
+    calls: [
+      {
+        contractAddress: multisig,
+        calldata: moduleData,
+      },
+    ],
   }
 }
