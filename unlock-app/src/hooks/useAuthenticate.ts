@@ -128,17 +128,21 @@ export function useAuthenticate() {
 
   // Tries to login the user with Privy
   // Returns true if the modal needs to be shown.
-  const signInWithPrivy = async ({ onshowUI }: { onshowUI: () => void }) => {
-    if (!(await signInWithExistingSession())) {
-      setAccount(undefined)
-      if (privyAuthenticated && user) {
-        await onSignedInWithPrivy(user)
-      } else {
-        privyLogin()
-        onshowUI()
+const signInWithPrivy = async ({ onshowUI }: { onshowUI: () => void }) => {
+  if (!(await signInWithExistingSession())) {
+    setAccount(undefined);
+    if (privyAuthenticated && user) {
+      const signedIn = await onSignedInWithPrivy(user);
+      if (!signedIn) {
+        privyLogin();
+        onshowUI();
       }
+    } else {
+      privyLogin();
+      onshowUI();
     }
   }
+}
 
   // TODO: do not set this has part of a hook that re-renders many times
   const wallet = wallets[0]

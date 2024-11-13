@@ -43,10 +43,14 @@ export const onSignedInWithPrivy = async (user: User) => {
   try {
     const accessToken = await privyGetAccessToken()
     const walletAddress = user?.wallet?.address
-
+    if (!accessToken) {
+      console.error('No access token found in Privy')
+      return null
+    }
+    const walletAddress = user.wallet.address
     if (walletAddress) {
       const response = await locksmith.loginWithPrivy({
-        accessToken: accessToken!,
+        accessToken,
         walletAddress,
       })
       const { accessToken: locksmithAccessToken } = response.data
@@ -58,6 +62,7 @@ export const onSignedInWithPrivy = async (user: User) => {
         window.dispatchEvent(
           new CustomEvent('locksmith.authenticated', { detail: walletAddress })
         )
+        return walletAddress
       }
     } else {
       console.error(
