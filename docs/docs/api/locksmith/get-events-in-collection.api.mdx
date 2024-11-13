@@ -1,0 +1,71 @@
+---
+id: get-events-in-collection
+title: "getEventsInCollection"
+description: "Get events in a collection"
+sidebar_label: "getEventsInCollection"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVk2P2zYQ/SvEnFpAu94G6UW3INgstl8IurvoYWEENDWWGFOkMhy5cQ3992JI2SvbStCmh54kkZzHmffmQ3sIHZJmG/x9BSXUyLdb9Bzv/dvgHBrZgQI6TbpFRopQPu/B6xahhOj6GgqwHkroNDdQAOGn3hJWUDL1WEA0DbYayj3wrks2TNbXMAzFEabTNR5gPvVIO5ixs56xRoICKlzr3jGUP5yDPNi/vg3oZhiW8h0N2S6FXMIdssLEhbJeaWWmfBDGLviIUYBf3dzI49T8oTcGY1z3zu0UIZPFLVYTxBM8EzyjZ4HRXeesSZIsPkbB2l8GEVYf0bAIQyIg2+xJRp+c00RaWLCMbZyzf9HrOTNZHFVtsyzTsArQzGRXPWOE5fntWYkLpUfEuY18x9zOCZkz+xM/vjFaJm35QzpRwFa7Hi8jmpyZcyJbzeT2MAwFsGUnq6mgIK0E1u5t6LPQZ/k4FGB6IvT8/pSUyYEEINtxbv/8ztMizk69vnl9mauPDSrhTO1CrzShavXG+loJXRhZrQOpKmBUPrDCzzby9X/JWd87p1fi51q7iOektxjjbFpMKlYKMPRkMLm0Dr2vLoGnhNyhR7Lmt8Dv0uHMxo9zlfvkBUNxUFK8a+uOPFR9WhbCyWunItIWSSFRoP+dkccGCdWfOirts0vSZcYQRE1u8BDJ9T8i6yGFdytQh5xukZswDoo0FriBEhbbV4vUeq5emtpiL1U/LMaWVEAmK8+PnhyU0DB3sVwsXDCb2Fpurnsv71cdBQ4muGsTWjjvy+8pVH26QmUHQabAKWJkXVtfX/075IdsdYRditOmJ8u7B5Eui/EUkSZKyJWHMSPfK9SUpkt+eReo1SLPT388SgW/ecmLaePq7M8onWscZrqzV5u0MJllwr/165DsRqWeUljql0Oc0sqQYo7n1UWEx3Oqo7C1FUa10maDvlLr3idStbO8SxWPUgcpcazZIFtfF6pF1pVmrSIH0jUWSvtKatCux6hUE8ImSoI5a9BHfJkM8Ov9Y4qiC5Fb7Sc7NbLKPUvde3Xy63E2CY419vUBPRLL+JkXndPWC/kpSfZj1j7DVgg6z1sooBwn4Ji6ywKaEFks9vuVjvhEbhhkOesiCV3ZKLVUHQtY1Dv+2YxzAlKmfuXo+P/ycnwpH2Rzmc5d80Vyvvt9HHXfqy+xccg9v5veefAncTAshwIa1JWk/PN+3HpjDHY8MbpoduL4sVXc3YrqfwNjwZ0y
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"getEventsInCollection"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/event-collection/{slug}/events"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Get events in a collection
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"slug","in":"path","required":true,"schema":{"type":"string"}},{"name":"page","in":"query","schema":{"type":"integer","default":1}},{"name":"pageSize","in":"query","schema":{"type":"integer","default":10}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully retrieved events in collection","content":{"application/json":{"schema":{"type":"object","properties":{"events":{"type":"array","items":{"type":"object","required":["name","slug","image","description","attributes"],"properties":{"name":{"type":"string"},"slug":{"type":"string"},"image":{"type":"string"},"description":{"type":"string"},"attributes":{"type":"array","items":{"type":"object","required":["trait_type","value"],"properties":{"trait_type":{"type":"string"},"value":{"type":"string"}}}}},"title":"Event"}},"totalCount":{"type":"integer"},"currentPage":{"type":"integer"},"totalPages":{"type":"integer"}},"title":"EventsInCollection"}}}},"404":{"description":"The item you are making request for does not exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"resource not found","nullable":false}},"title":"GenericNotFound"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

@@ -1,0 +1,71 @@
+---
+id: get-lock-settings
+title: "getLockSettings"
+description: "Get saved lock settings"
+sidebar_label: "getLockSettings"
+hide_title: true
+hide_table_of_contents: true
+api: eJy9Vk1vIzcM/SsCTy0wiYNge5lbYOwGabdFUCfowfBBluix1hppVqK8NQbz3wtq/DGOZ7feLdCTPRJJkU+Pj2rBNxgkGe+eNJRQIX30ajNDIuOqCAVojCqYhi2ghEckEeUWtbBebUQ82TUyyBoJQ4Ry3oJh60bSGgpwskYowSF98WEDBQT8nExADSWFhG/P+KO3E0bfQgFRrbGWULZAu4bDGEdYYYCuK0aP4cQetA4Y478exbUK2RuPHhYpGFdB1y04VGy8ixh5//7ujn/Ow82SUhjjKlm7ExVDtcdHrHzIiEEByjtCR+wtm8YaldGffIocor1MwS8/oSKuL1krlxahXEkbsYAm8OWR6TMa1n1ZQHGE/7TnUr1kIAuI6PT7Who72F16b1G6vG1TNRozYGN3L/5yb5gtA98VoAJqQ1MZ9HMwCi/zGPFBzmmGTmO47ow1qo1PNPVuZSpm9BVOa+83j8lYfaV9cgz1B8TpWoYK9Yt/jWf5DZA7FT1NIaBTu7EjNK5ksgQlpKh7Nx9jbRxNrUFHVybWBF/7qdc4JIAMQe6gAENYjxGD/WSMX3zQ3+l2aK1HQ8ob9yxjbHygmfLhmtvtCiBD/AlnktN1vPXu7t1If/U2wnkSK5+c/i/tdN49NcYoKxyrtE/ol7GGf3JbaY0WDAVG+t/S6QqokdZ+L9lZfmkNJUy29xNm581BeSbtvu+7vB4n7UAnOpY8DNuDaKdgoYQ1URPLSW9fG1rf9oy/aYInr7y9Vb6+mAzPweuk+EPMckhgfT6PGElWxlU33xd51nsdwy44aZWCod2M4ewRe9ODfORB0HNPogyZhf2fDz7Ukhvu179euOEeTnc1bILG/Ia702iRjbnZ5IU8dz4nDLvcCsatehHcE/o1lyU+HuqEAhjkvp77iwqPdqIJfms0RrGUaoNOi1VyGVRpDe3yGEEnl5bxIKM2yJdciBpJaklSRPJBVlgI6TS3iVntqxKscnnGWaPQxUytfVm/P730OuAj1dINdniG5Rn5tQdBeyL8N94GezgJ/6ZJY6XJ0pip0e6JO4ctw3JGXSigPL0ZMmd4aTjnFqzekdi/bZcy4muwXcfL/d2U80UBWxlMrzvzFrSJ/F8fh+hXy/npz72+/SzOXySj1RwY45gdW2kTf0EBTJfT04db4ocyePtQ+YEchrh1C557KPNcnbd7iwelsKGB74WCce8dhefxPdPmH+Jjk6k=
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"getLockSettings"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/lock-settings/{network}/locks/{lockAddress}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Get saved lock settings
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully get settings for lock","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"lockAddress":{"type":"string"},"network":{"type":"number"},"sendEmail":{"type":"boolean"},"slug":{"type":"string"},"replyTo":{"type":"string","nullable":true},"creditCardPrice":{"type":"number","nullable":true},"emailSender":{"type":"string","nullable":true},"checkoutConfigId":{"type":"string","nullable":true},"hookGuildId":{"type":"string","nullable":true},"unlockFeeChargedToUser":{"type":"boolean"},"creditCardCurrency":{"type":"string","default":"usd"},"crossmintClientId":{"type":"string","nullable":true},"promoCodes":{"type":"array","items":{"type":"string"}},"passwords":{"type":"array","items":{"type":"string"}},"requiredGitcoinPassportScore":{"type":"number","nullable":true}},"title":"LockSettings"}}}},"404":{"description":"Setting not found","content":{"application/json":{"schema":{"type":"object","properties":{"message":{"type":"string"}}}}}},"500":{"description":"Invalid request","content":{"application/json":{"schema":{"type":"object","properties":{"message":{"type":"string"}}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

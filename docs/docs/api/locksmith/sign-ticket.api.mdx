@@ -1,0 +1,71 @@
+---
+id: sign-ticket
+title: "signTicket"
+description: "Generate signature to prove validity of token."
+sidebar_label: "signTicket"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVk1v20YQ/SuLObUAbRpueuHNhyRwPtwillEUhg5j7lDckNxldodyVIL/vZglRcmSEjfuIb5YJHffvJl589GDa8kjG2evNWQQzMouTF4RQwKB8s4b3kB238NdIA/ZPVS0+ePRkoflsExAU8i9aeU+ZPCWrICREhjkzpNip1rv1qTWWBtteKNcodhVZM8hgRY9NsTkQ7RhBKRFLiEBiw1BBpb40fkKEvD0pTOeNGTsOzo0fTOeU0YLbshLahCyHnjTCoyxTCvyMAzJSTO1y6srrT2F8KypDy6vFI6HTxoL7I1dfdNWRZtr/ayV97RR16edmfGXAhJaZwMF+X55cSH/ngJ9Iu68DXs5QatVi5vaYcTPnWWyLDexbWuTRzmkn4Nc74/Nu4fPlIs+Wi/iYTManxCPeSZgu7rGh5ogK7AONCQwk/kvx+NfAq8ufjv2TmSpTFDWscKOS+fNP6Sj7MgXzjeKSxMU5nL+f3l7wOrQ/YZCwNVJfzQV2NUMGfztOoWeDtk6H5/IstD5Lv2j2CTAhuUZbhxf7aPANmyvjsO2KEkZpkZtJkYNVsaulGiSAqvCeaUdjXGlrybwT4+dp+A6n4/BK1xn9ffDEZuRyW8cv4mHx2j8fqpE7qxgSNSLrq4LU89x0F18Le3DW6xVIL8mr8h75396RBYleVKPGBTakZIyduuCZJNL2nryjHamYN1G914LFExV1xCXTkbDKs6E2MoySNeXKbYm5Tgr0n5q00Pa73XSIe1jrxtSKfc4UAR+7PWdryGDkrkNWZrKrdAYLs87K7/PWu/Y5a4+z10Dh73xT+90F0tCjYxBWu1TxMC4MnZ19mPIt+OtGXa5m4K3kssxO+MsnFMjJrd9Wp4fCD15SKYfb5xvUPL17q8FDAlc7YSyB4KteU+b3ZTA1pxV8UUcIV868hsZKWBs4eK9KXV30S31YesnJCBBHv25PPJwPhfnstEU1APmFVmtis7GoGItc1paAElhRCXFPBu7SlRDjBoZVWDncUVJnCfWsSkmr1TpXBVHY21ysiHKeHLr4/UietG6wA3avS+iETXvHk9I97s6+/EdY4ov01dO2xqNlRxErfSTmu9hLXHC1sjxLYNst3pkT9eDbDvBo6yXCZQusMD0/QMGuvP1MMjrMWfZ/TKBNXozlt59D9oE+a3n2v+ms798mnaEX9XTBeekU1slWVHNGutOniCRhWNvk5JSeRGDw73nBRz24/hiHrvN6AUMxtQNyyGBklDHnbafvl3lObW8d+uopUs/mBvi29cLUU0nEprL+KD2I/pJRn0/nliITodhJhh1KwSH4V83nAip
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"signTicket"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/api/ticket/{network}/{lockAddress}/{keyId}/sign"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Generate signature to prove validity of token.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}},{"in":"path","name":"keyId","required":true,"description":"Key Id.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Returns signature and payload.","content":{"application/json":{"schema":{"type":"object","properties":{"payload":{"type":"string","nullable":false},"signature":{"type":"string","nullable":false}}}}}},"403":{"description":"User is not authorized to perform this action.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"You are not authorized or authenticated to perform this action.","nullable":false}},"title":"NotAuthenticated"}}}},"404":{"description":"The item you are making request for does not exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"resource not found","nullable":false}},"title":"GenericNotFound"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

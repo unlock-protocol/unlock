@@ -1,0 +1,71 @@
+---
+id: get-user-metadata
+title: "getUserMetadata"
+description: "get user metadata for a lock."
+sidebar_label: "getUserMetadata"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVktv2zgQ/ivEnHYBJcoG3YtuObRFdttF0TjYg+EDLY0s1hKpkkO3hqD/vhhSliXb6aZBi570IOebmW+eHZgWrSRl9H0BGWyQHh3a90iykCQhAYe5t4r2kC074DPIluD5uepXCRTocqtaBojigs9EMwCI0lghRW3y7TUk0EorGyS0LsAplmklVZCAlg1CBnzzrigsOgcJWPzslcUCMrIeT7W9M/lWyHiZ0V1eYSMh64D2LYM5skpvoO+Ti7rY0ufqYs+fp2vFUK412qHj89ubG37M4T4ieavdCVmqFNJThZpULgmLE/Zyowk1MZps25rvKKPTT44hu3OTzPoT5sT++rqW6xohK2XtcOrr8oTxOSfNMQ800hdjt7BKoLWcNKSif4eDo16lCTdozxX3yUzbGXmXBKYGPUtgtPk5RMxdaf26Vvm3BQ/JUUpfcyj6BGRRKI6ErD9M4PhiHzQQ5sRc/zjYPgFSxHIwLdd73XqCp06h7/no1c0f5/kY0ls5oQ3NU/DpvPvOlJsz3aBzcoOXIjpyAIsKLYov0gmpBVprrFBalL6uS1UrvRFUoeBURkfXF3JhwsNb1GhV/oB2h/Y1Q41svDpnY1GhUISN2BsvpEXRyC3rG3SFsiwMRrrwq4rqf1x5voAri854m2MwqTReF88i5B9Db8LlyMafl3rVo2YMQeZA/chD4cNvrnerZS1coDeG6pcz8vOzJzabygyDM8w3qiCDdHebylalh1aUdkOT7FPufy7tJm2wT7nFubSbdLo+DF7WFgeltzVkUBG1LksjRqOouvaa36+4x5jc1Ne5aeB0cn2wpvA5f4joAPA4nCM6khulN1ffh/wQpUbY1XFbeODQxmDFnWGMFKs8zE/+XqO0YVbElzfGNpLD99e/C+gTuJs3nAFEtupv3B8nuWzV1Tb8CGP+s0e7D31Q6dIEuUM/DG6Jdwc/IQEmOfpze+bheE+01uxUgU6sZb5FXYjS6zx2Z0X70BGQ6yQklsq3SEpvkuNod2Ss3GAipC64RlU5eCUqY7ZhpahVjtqFrB7cen+/CF60xlEj9eSEF63Qsyeb2sz07lh8/7uVDaQSfqW0raXSTHxIkG7I6CXsmBzZqvlSkB2GfxzsvDJk5/tE+D2d46sEKuOIcbtuLR0+2rrv+XeMXLZcJbCTVsV6XHZQKMfvxdgQnnT2t4/DbvO7ON0PL/p5yCjN2bOTtecvSIDTab6Octm8yI7T3fEFdkzZ61d9AhXKIuzi3XDjLs+xpYnsWcfl+hz71dvXCw6o5+iOZXVSiwH9ol1dF28szBZ1349mEn+zgX3/H6uPT58=
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"getUserMetadata"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/api/metadata/{network}/locks/{lockAddress}/users/{userAddress}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+get user metadata for a lock.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}},{"in":"path","name":"userAddress","required":true,"description":"User address.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Returns user metadata if authenticated for a lock.","content":{"application/json":{"schema":{"type":"object","nullable":false,"required":["lockAddress","userAddress","metadata","network"],"properties":{"network":{"type":"integer","nullable":false},"lockAddress":{"type":"string","nullable":false},"userAddress":{"type":"string","nullable":false},"metadata":{"type":"object","nullable":false,"properties":{"public":{"type":"object","nullable":true,"default":{},"additionalProperties":true},"protected":{"type":"object","nullable":true,"default":{},"additionalProperties":true}},"title":"UserMetadataInput"}},"title":"UserMetadata"}}}},"401":{"description":"User is not authenticated.","content":{"application":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}},"404":{"description":"The item you are making request for does not exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"resource not found","nullable":false}},"title":"GenericNotFound"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

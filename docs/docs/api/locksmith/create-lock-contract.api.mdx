@@ -1,0 +1,71 @@
+---
+id: create-lock-contract
+title: "createLockContract"
+description: "createLockContract"
+sidebar_label: "createLockContract"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVk1z2zYQ/SuYPbUztOV60gtvaZq0aVLbY8vtwaPDClyJiEiAWYCyNRz+98wClChZauKmh55IAIvFfrx9ux24hhiDcfZ9ATloJgz00enVG2cDow6QgSfdsgkbyB86uPfEkD/M+qyD101TGR1vx61ZBg0y1hSIfZQ2FnJoMJSQgcWaIAdL4dHxCjJg+twapgLywC1lUJDXbJqkDq6SnDLFudigS6oR8g7CphE1xgZaEkMvhgyqNTZBlwhZerckLIi/+dAtDffUGquWVHCqQe9PvuoDG7uEXlwVreTDL67YiMTzR7SzgWyQIxzjNPnk5dHuWLWbf6IYbttWFc4rgnyBlacMGpYkBUNexJOvRxZlQE+NSan8teUhKc/F9rWLmX0GNT5dtfWc+HrxgTb+RXdWtLlho0/bETHk+EWKdMtMVm+2aHtdFEz+ZUY07bwyWrD6F7E/dNdGj45v9RkEE2QJ+yC/jljw0PciweQbZ30K9+XFT/I5hMyU0XrUslIl+lK5hQolqcrplYr+y0kYpQRM3w2Iw/zvaf0dfXkKnMmNVxevTlhekjKBarVxrUImVePK2KUawKwWjlXhyCvrgqIn48N/Mv0bWK7Je1yegJHU6ALbKkAu6XAta4omLVxri2PF+4n9jSyx0VcuvIvCKRo/X1wcR+Peig6p+EVbVQtT7eJQJCIQlmGLlfLEa2JFzI7/94hMS2JSj+gV2mSSMnbrgmRTsDh4cv6iYN1F996KKhjgcxipk42hplA6aRuN8xGoQvQ5TNaXE2zMRA+SftINpN9PpEJiS5H3Uo9ouRKyDqHx+SQK+NqE8ry18n/WsAtOu+pcuxqem3XDrmhTHSYXQNrBoUYfcGns8uzfab5Lt3ZqZ2MfvJPkpnSlbrjLlTy5bRuynhNypKH0885xjZLAP/6eClMe9M+dEmzMB9qMDRMbc7aKG7GrfW6JN9L2QMB2Ozaht09YNxWNPWKEzqnWMJ4edYDxaCT6cW/H73tb/0Tjo8gJtr7oxaWFi74PeLyPqVEft7mCDNZbebg8ytJOTjXs1qYgr+aoV2QLtWhtBAZWJmwir5FUeywPo1cUjF1mqqaABQZUPjjGJWUKbSFMYxZDZlTp3CpOA5XRZP1+gP98P42ZEPzXaPdOUr1EP9RexRxYv8t4oKcwaSo0VlAR0dsNxfQAa/EaGzOQTiwoyCAf56hYU7MMSqnC/AG6bo6e7rnqe9lOgMkfZhmskU0igocOCuPlv9gx0TPjdhQHP9wOs82P6nAqO2n/FsZWIBtHKsghYWlv/Otnfbad0L7bmq+MbidNSyaMY+LOOmGNdPgmvXM2lfujxBHJjzdea01N+KrsbI8rb67vpsIIw9hYu0LuMD7KoIqPKVZuGEhkrpS9Diq0yzZ2Bkg6BXfYhv0B4BndxLiezEbXJYmpW5Ht+11ygqwlNX3/BQ+/O/E=
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"createLockContract"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/api/contracts/{network}/lock"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+createLockContract
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"name":"captcha","in":"header","required":true,"description":"Recaptcha value to pass.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"required":true,"content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"name":{"type":"string"},"expirationDuration":{"type":"string","nullable":true},"maxNumberOfKeys":{"type":"string","nullable":true},"keyPrice":{"type":"string"},"creator":{"type":"string","nullable":true},"currencyContractAddress":{"type":"string","nullable":true},"publicLockVersion":{"type":"number","nullable":true}},"title":"LockContractOptions"}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"201":{"description":"Transaction hash of the lock creation transaction.","content":{"application/json":{"schema":{"type":"object","properties":{"transactionHash":{"type":"string"}}}}}},"404":{"description":"The item you are making request for does not exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"resource not found","nullable":false}},"title":"GenericNotFound"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

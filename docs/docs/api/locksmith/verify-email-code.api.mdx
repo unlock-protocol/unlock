@@ -1,0 +1,71 @@
+---
+id: verify-email-code
+title: "verifyEmailCode"
+description: "Verifies the email code sent to the users email address."
+sidebar_label: "verifyEmailCode"
+hide_title: true
+hide_table_of_contents: true
+api: eJy9Vk1v4zYQ/SvEnFpAjhbB9qJbukiLbbvoYuO0B8OHMTmyuKZILkkpMQT/92JIJTZipx/YYn2xRA6HM2/evNEEzlPApJ19r6CBkYJu97c9avPOKYIKFEUZtGcLaOAP3tcURepIEJsJ6RSJSDaJ5PLyECnEeROVChTjFVTgMWBPiUKEZjWBxZ6ggWx2U6ygAs2XeEwdVBDoy6ADKWhSGKiCKDvqEZoJ0t7z2ZiCtls4HNbFmGL60ak9W7w8K51NZBNvofdGy5xy/TlyVtO5a7f5TDJx1IEBSpoi73KulwLgH8cQvbOxmF6/ecN/l+Arl4s4SEkxtoNheP6nCHuKEbeXgqwguR3Z18N/eyniDzpGbbfiWD3hgtB2RKNVTY+eURbjaV4M0jfJ6Dnut/+AdKaodUm0brDqW8b2wyVM7y1uDHG7tIMxrTZiZq9QQ17WNlGwaESkMFIQFIILXxW2HYzhS6Fp0UT613lw/7c4mAQNLDsKJB4wCrQlJKHtUwrMEW7+OZOr8zsZjqQTv8PPZCloeZfTu2VXMAPWU+ocK5F3MePNWtBAPV7X6HWdtaWeTlXjUBfRWuTFhSyyVZArUjMEAw10KfnY1LVxchd7nbqrwfLzwgeXnHTmSrr+TPA+BqcGmVlUooVD9dJjTLjVdrv4b57vyqlnt2sOWg5Bp/0d17FU5j5SOCkLXwmzFPL7hjBQgGp++MmFHrlWv/y55I6/OZLkxAl6/SvtuUJFg9HrxS4vZPn9MlDYAxeDefXpKKy3j9h7Q0chPNEWbVuXr5grfJ8REL89QQIVz5ZYUr8+A+PZTvjgRq0oig3KHVkl2sFm/NHotBetC4K4fzLhtNxR0nZbiZ4SKkwoYnIBt1QJtIp7/qgCnXO7PImMlmRjzmNG4MP7ZU6YSdejPdkp3BJ5IopLI3E6NuXXTMe5NIkeU+0NasugZppNcw+sYGTc0GuoIHuBCpoX8/O8FdYVdNxKzQqmaYOR7oM5HHi51LlZrSsYMejSqqsJlI78rJ614tV8v/s0j9nvxWspPFHOMr1GNAO/QQXMtxfT/7A+VNARKmb8appN3pXbFkt2dHRxJn/cluXEjZTk09/ark+E5uPvd0tuoPnLoS/MDvjAnyD4UMJ1OfvckXltAoN2O2TNhOKTf38BSxpB8A==
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"verifyEmailCode"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/api/users/{emailAddress}/verify-email-code"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Verifies the email code sent to the users email address.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"emailAddress","in":"path","required":true,"schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"required":true,"content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"string"}}}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Verification successful.","content":{"application/json":{"schema":{"type":"object","properties":{"message":{"type":"string"},"token":{"type":"string"}}}}}},"400":{"description":"Missing parameters or invalid/expired verification code.","content":{"application/json":{"schema":{"type":"object","properties":{"message":{"type":"string"}}}}}},"404":{"description":"Verification code not found.","content":{"application/json":{"schema":{"type":"object","properties":{"message":{"type":"string"}}}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      
