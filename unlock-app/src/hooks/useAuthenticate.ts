@@ -61,6 +61,11 @@ export function useAuthenticate() {
         const { walletAddress } = response.data
         if (walletAddress) {
           await onSignedIn(walletAddress)
+          window.dispatchEvent(
+            new CustomEvent('locksmith.authenticated', {
+              detail: walletAddress,
+            })
+          )
           return true
         }
       } catch (error) {
@@ -127,7 +132,7 @@ export function useAuthenticate() {
     if (!(await signInWithExistingSession())) {
       setAccount(undefined)
       if (privyAuthenticated) {
-        onSignedInWithPrivy()
+        await onSignedInWithPrivy(user)
       } else {
         privyLogin()
         onshowUI()
