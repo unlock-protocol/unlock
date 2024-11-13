@@ -131,7 +131,7 @@ export const useCrossChainRoutes = ({
       return prepareSharedParams({
         sender: account!,
         lock,
-        prices,
+        prices: prices!,
         recipients,
         keyManagers: keyManagers || recipients,
         referrers: recipients.map(() =>
@@ -260,7 +260,7 @@ export const useCrossChainRoutes = ({
               return null
             }
           },
-          enabled: enabled && hasPrices && sharedParams,
+          enabled: enabled && hasPrices && !!sharedParams,
           staleTime: 1000 * 60 * 5, // 5 minutes
         })
       ),

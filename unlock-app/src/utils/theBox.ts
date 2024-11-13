@@ -17,7 +17,7 @@ export interface BoxActionRequest {
 }
 
 // TheBox returns BigInts as strings with a trailing 'n'
-export const toBigInt = (str: string) =>
+const toBigInt = (str: string) =>
   /[a-zA-Z]$/.test(str) ? str.slice(0, -1) : str
 
 const bigintSerializer = (_key: string, value: unknown): unknown => {

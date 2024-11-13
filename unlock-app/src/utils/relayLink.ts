@@ -3,8 +3,7 @@ import { ethers } from 'ethers'
 import axios from 'axios'
 import { networks } from '@unlock-protocol/networks'
 import { ADDRESS_ZERO } from '~/constants'
-
-export interface RelayBody {}
+import { Web3Service } from '@unlock-protocol/unlock-js'
 
 export interface CrossChainRoute {
   network: number
@@ -30,27 +29,49 @@ interface getCrossChainRouteParams {
   purchaseData: string[]
   srcToken: string
   srcChainId: number
+  sharedParams: any
+}
+
+interface prepareSharedParamsParams {
+  lock: Lock
+  prices: any[]
+  recipients: string[]
+  keyManagers: string[]
+  referrers: string[]
+  purchaseData: string[]
 }
 
 export const prepareSharedParams = async ({
-  sender,
   lock,
   prices,
   recipients,
   keyManagers,
   referrers,
   purchaseData,
-}: Partial<getCrossChainRouteParams>) => {
-  console.log({
-    sender,
-    lock,
-    prices,
+}: prepareSharedParamsParams) => {
+  const web3Service = new Web3Service(networks)
+  const lockContract = await web3Service.lockContract(
+    lock.address,
+    lock.network
+  )
+
+  const callData = lockContract.interface.encodeFunctionData('purchase', [
+    prices.map((price) => {
+      const priceParsed = ethers.parseUnits(
+        price.amount.toString(),
+        price.decimals
+      )
+      return priceParsed
+    }),
     recipients,
-    keyManagers,
     referrers,
+    keyManagers,
     purchaseData,
-  })
-  return {}
+  ])
+
+  return {
+    callData,
+  }
 }
 
 // Get a route for a given token and chain.
@@ -58,12 +79,9 @@ export const getCrossChainRoute = async ({
   sender,
   lock,
   prices,
-  recipients,
-  keyManagers,
-  referrers,
-  purchaseData,
   srcToken,
   srcChainId,
+  sharedParams,
 }: getCrossChainRouteParams): Promise<CrossChainRoute | undefined> => {
   const network = networks[srcChainId]
   const totalPrice = prices
@@ -75,20 +93,6 @@ export const getCrossChainRoute = async ({
     .toString()
 
   const txs = []
-
-  // const callData = lockContract.interface.encodeFunctionData('purchase', [
-  //   prices.map((price) => {
-  //     const priceParsed = ethers.parseUnits(
-  //       price.amount.toString(),
-  //       price.decimals
-  //     )
-  //     return priceParsed
-  //   }),
-  //   recipients,
-  //   referrers,
-  //   keyManagers,
-  //   purchaseData,
-  // ])
 
   if (
     lock.currencyContractAddress &&
@@ -110,19 +114,19 @@ export const getCrossChainRoute = async ({
     txs.push({
       to: lock.address,
       value: 0,
-      data: callData,
+      data: sharedParams.callData,
     })
   } else {
     // Add the purchase transaction only
     txs.push({
       to: lock.address,
       value: totalPrice,
-      data: callData,
+      data: sharedParams.callData,
     })
   }
 
   const baseUrl = 'https://api.relay.link/quote'
-  const request: RelayBody = {
+  const request = {
     user: sender,
     originChainId: srcChainId,
     destinationChainId: lock.network,
@@ -140,29 +144,22 @@ export const getCrossChainRoute = async ({
     const { data } = response
     const relayStep = data.steps[data.steps.length - 1]
     const tx = relayStep.items[0].data
-    console.log(data.details.currencyIn.currency.address)
 
-    if (
-      data.details.currencyIn.currency.address.toLowerCase() ===
-      '0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E'.toLowerCase()
-    ) {
-      console.log('WIN WIN WIN!')
-      return {
-        tx,
-        tokenPayment: {
-          amount: data.details.currencyIn.amount,
-          tokenAddress: data.details.currencyIn.currency.address,
-          chainId: data.details.chainId,
-          isNative: srcToken === ADDRESS_ZERO,
-          name: data.details.currencyIn.currency.name,
-          symbol: data.details.currencyIn.currency.symbol,
-          decimals: data.details.currencyIn.currency.decimals,
-        },
-        network: network.id,
-        currency: network.nativeCurrency.name,
-        symbol: network.nativeCurrency.symbol,
-        networkName: network.name,
-      } as CrossChainRoute
-    }
+    return {
+      tx,
+      tokenPayment: {
+        amount: data.details.currencyIn.amount,
+        tokenAddress: data.details.currencyIn.currency.address,
+        chainId: data.details.chainId,
+        isNative: srcToken === ADDRESS_ZERO,
+        name: data.details.currencyIn.currency.name,
+        symbol: data.details.currencyIn.currency.symbol,
+        decimals: data.details.currencyIn.currency.decimals,
+      },
+      network: network.id,
+      currency: network.nativeCurrency.name,
+      symbol: network.nativeCurrency.symbol,
+      networkName: network.name,
+    } as CrossChainRoute
   }
 }
