@@ -3,7 +3,6 @@ import { CustomComponentProps } from '../UpdateHooksForm'
 import { useFormContext } from 'react-hook-form'
 
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { networks } from '@unlock-protocol/networks'
 import { FaTrash as TrashIcon } from 'react-icons/fa'
 
 import {
@@ -11,11 +10,11 @@ import {
   useSaveLockSettings,
 } from '~/hooks/useLockSettings'
 import { getEthersWalletFromPassword } from '~/utils/strings'
-import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useEffect, useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import LoadingIcon from '~/components/interface/Loading'
 import { useProvider } from '~/hooks/useProvider'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 export const PromoCodeHook = ({
   lockAddress,
@@ -206,10 +205,11 @@ export const PromoCode = ({
     count: number
   } | null>(null)
 
+  const web3Service = useWeb3Service()
+
   // Load the code details from the hook!
   useEffect(() => {
     const getPromoCodeDetails = async () => {
-      const web3Service = new Web3Service(networks)
       const signerAddress = await getEthersWalletFromPassword(code).address
       setPromoCodeDetails(
         await web3Service.getDiscountHookWithCapValues({

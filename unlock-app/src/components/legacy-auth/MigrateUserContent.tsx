@@ -11,14 +11,18 @@ import { UserAccountType } from '~/utils/userAccountType'
 import { SignInWithPassword } from './SignInWithPassword'
 import { SignInWithCode } from './SignInWithCode'
 import { SignInWithGoogle } from './SignInWithGoogle'
-import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { PromptSignOut } from './PromptSignOut'
+import { usePrivy } from '@privy-io/react-auth'
 
 export const MigrateUserContent = () => {
-  const { account } = useAuthenticate()
+  const { user } = usePrivy()
   const [userEmail, setUserEmail] = useState<string>('')
   const [walletPk, setWalletPk] = useState<string | null>(null)
   const [userAccountType, setUserAccountType] = useState<UserAccountType[]>([])
+  // Track migration status
+  const [isMigrating, setIsMigrating] = useState(false)
+  // Track Privy connection status
+  const [privyConnected, setPrivyConnected] = useState(false)
 
   // Mutation to handle the user account type
   const checkUserAccountType = useMutation({
@@ -80,8 +84,8 @@ export const MigrateUserContent = () => {
                   checkUserAccountType.isPending,
               },
               children: ({ onNext }) => {
-                // Goal of this cimponent is to get user email address + type of account
-                // It should also check if there is a privy account already.
+                // Goal of this component is to get user email address + type of account
+                // It should also check if there is a Privy account already.
                 // If not, it "yields" the email account + type to the next step
                 return (
                   <ConnectViaEmail
@@ -144,23 +148,34 @@ export const MigrateUserContent = () => {
               disabled: !walletPk,
               description: 'Create a Privy Account',
               children: ({ onNext }) => (
-                <ConnectToPrivy userEmail={userEmail} onNext={() => onNext()} />
+                <ConnectToPrivy
+                  userEmail={userEmail}
+                  onNext={onNext}
+                  setPrivyConnected={setPrivyConnected}
+                />
               ),
               showButton: false,
             },
             {
               title: 'Migration',
-              disabled: !walletPk,
+              disabled: !walletPk || !privyConnected,
               description:
                 'This is the last step! We will migrate your Unlock account to Privy!',
-              children: <MigrationFeedback walletPk={walletPk!} />,
+              children: (
+                <MigrationFeedback
+                  walletPk={walletPk!}
+                  onMigrationStart={() => setIsMigrating(true)}
+                />
+              ),
               showButton: false,
             },
           ]}
         />
       </div>
 
-      {account && <PromptSignOut />}
+      {user?.email?.address && user?.wallet && !isMigrating && (
+        <PromptSignOut />
+      )}
     </>
   )
 }

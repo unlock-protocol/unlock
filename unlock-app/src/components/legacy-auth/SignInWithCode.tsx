@@ -7,6 +7,7 @@ import {
   InitializeWaas,
   PrivateKeyFormat,
   RawPrivateKey,
+  Waas,
 } from '@coinbase/waas-sdk-web'
 import { config } from '~/config/app'
 import { getUserWaasUuid } from '~/utils/getUserWaasUuid'
@@ -15,57 +16,104 @@ import { Button } from '@unlock-protocol/ui'
 import { getSession } from 'next-auth/react'
 import ReCAPTCHA from 'react-google-recaptcha'
 
-// TODO: finish testing this works in a "real" environment (can't test with existing accounts on a different domain)
-export const getPrivateKeyFromWaas = async (captcha: string) => {
-  const waas = await InitializeWaas({
+// Singleton instance for WAAS
+let waasInstance: Waas | null = null
+
+/**
+ * Initialize and return the WAAS instance.
+ * Ensures that WAAS is initialized only once (Singleton Pattern).
+ */
+const getWaasInstance = async (): Promise<Waas> => {
+  if (waasInstance) {
+    return waasInstance
+  }
+
+  waasInstance = await InitializeWaas({
     collectAndReportMetrics: true,
     enableHostedBackups: true,
     prod: config.env === 'prod',
     projectId: config.coinbaseProjectId,
   })
 
-  const user = await waas.auth.login({
-    provideAuthToken: async () => {
-      const nextAuthSession = await getSession()
-      const waasToken = await getUserWaasUuid(
-        captcha,
-        nextAuthSession?.user?.email as string,
-        UserAccountType.EmailCodeAccount,
-        nextAuthSession?.user?.token as string
+  return waasInstance
+}
+
+/**
+ * Retrieves the private key from WAAS.
+ * @param captcha - The CAPTCHA value.
+ * @param accountType - The type of user account.
+ * @returns The private key string or null if not found.
+ */
+export const getPrivateKeyFromWaas = async (
+  captcha: string,
+  accountType: UserAccountType
+): Promise<string | null> => {
+  try {
+    const waas = await getWaasInstance()
+
+    const user = await waas.auth.login({
+      provideAuthToken: async () => {
+        const nextAuthSession = await getSession()
+        if (
+          !nextAuthSession ||
+          !nextAuthSession.user ||
+          !nextAuthSession.user.email ||
+          !nextAuthSession.user.token
+        ) {
+          throw new Error('Invalid session data')
+        }
+
+        const waasToken = await getUserWaasUuid(
+          captcha,
+          nextAuthSession.user.email,
+          accountType,
+          nextAuthSession.user.token
+        )
+
+        if (!waasToken) {
+          throw new Error('Failed to retrieve WAAS token')
+        }
+
+        return waasToken
+      },
+    })
+
+    let wallet: any = null
+
+    if (waas.wallets.wallet) {
+      // Resuming wallet
+      wallet = waas.wallets.wallet
+    } else if (user.hasWallet) {
+      // Restoring wallet
+      wallet = await waas.wallets.restoreFromHostedBackup()
+    } else {
+      // Creating wallet
+      wallet = await waas.wallets.create()
+    }
+
+    if (!wallet) {
+      console.error('No wallet linked to that user. It cannot be migrated.')
+      return null
+    }
+
+    const exportedKeys = await wallet.exportKeysFromHostedBackup(
+      undefined,
+      PrivateKeyFormat.RAW
+    )
+
+    // Use the first key's private key (ecKeyPrivate)
+    if (exportedKeys.length > 0) {
+      const firstKey = exportedKeys[0] as RawPrivateKey
+      return firstKey.ecKeyPrivate
+    } else {
+      console.error(
+        'No private keys found in wallet, so it cannot be migrated.'
       )
-      return waasToken!
-    },
-  })
-
-  console.log('user from waas', user)
-
-  let wallet
-
-  if (waas.wallets.wallet) {
-    // Resuming wallet
-    wallet = waas.wallets.wallet
-  } else if (user.hasWallet) {
-    // Restoring wallet
-    console.log('restoring wallet')
-    wallet = await waas.wallets.restoreFromHostedBackup()
-    console.log('wallet from waas', wallet)
-  }
-
-  if (!wallet) {
-    console.error('No wallet linked to that user. It cannot be migrated.')
-    return
-  }
-
-  const exportedKeys = await wallet.exportKeysFromHostedBackup(
-    undefined,
-    'RAW' as PrivateKeyFormat
-  )
-  // use the first key's private key (ecKeyPrivate)
-  if (exportedKeys.length > 0) {
-    const firstKey = exportedKeys[0] as RawPrivateKey
-    return firstKey.ecKeyPrivate
-  } else {
-    console.error('No private keys found in wallet, so it cannot be migrated.')
+      return null
+    }
+  } catch (error) {
+    console.error('Error in getPrivateKeyFromWaas:', error)
+    return null
   }
 }
 
@@ -82,21 +130,38 @@ export const SignInWithCode = ({
   const sendEmailCode = async () => {
     try {
       const captcha = await getCaptchaValue()
+      if (!captcha) {
+        ToastHelper.error('CAPTCHA verification failed')
+        return
+      }
       await locksmith.sendVerificationCode(captcha, email)
       ToastHelper.success('Email code sent!')
       setCodeSent(true)
     } catch (error) {
-      console.error(error)
+      console.error('Error sending email code:', error)
       ToastHelper.error('Error sending email code, try again later')
     }
   }
 
   const onCodeCorrect = async () => {
-    const privateKey = await getPrivateKeyFromWaas(await getCaptchaValue())
-    if (privateKey) {
-      onNext(privateKey)
-    } else {
-      ToastHelper.error('Error getting private key from WAAS')
+    try {
+      const captcha = await getCaptchaValue()
+      if (!captcha) {
+        ToastHelper.error('CAPTCHA verification failed')
+        return
+      }
+      const privateKey = await getPrivateKeyFromWaas(
+        captcha,
+        UserAccountType.EmailCodeAccount
+      )
+      if (privateKey) {
+        onNext(privateKey)
+      } else {
+        ToastHelper.error('Error getting private key from WAAS')
+      }
+    } catch (error) {
+      console.error('Error in onCodeCorrect:', error)
+      ToastHelper.error('Error processing the code')
     }
   }
 

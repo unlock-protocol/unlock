@@ -1,88 +1,151 @@
 import SvgComponents from '../interface/svg'
-
 import { popupCenter } from '~/utils/popup'
-
 import { ConnectButton } from '../interface/connect/Custom'
-import { signIn } from 'next-auth/react'
-import { getPrivateKeyFromWaas } from './SignInWithCode'
+import { getSession } from 'next-auth/react'
 import { ToastHelper } from '../helpers/toast.helper'
 import { useCaptcha } from '~/hooks/useCaptcha'
+import { UserAccountType } from '~/utils/userAccountType'
+import { getPrivateKeyFromWaas } from './SignInWithCode'
+import ReCAPTCHA from 'react-google-recaptcha'
+import { config } from '~/config/app'
+import { useState, useEffect, useRef } from 'react'
 
 export interface SignInWithGoogleProps {
   onNext: (privateKey: string) => void
 }
 
 export const SignInWithGoogle = ({ onNext }: SignInWithGoogleProps) => {
-  const { getCaptchaValue } = useCaptcha()
+  const { getCaptchaValue, recaptchaRef } = useCaptcha()
+  const [isAuthenticating, setIsAuthenticating] = useState(false)
+  const cleanupRef = useRef<() => void>(() => {})
+
+  useEffect(() => {
+    // Cleanup on unmount
+    return () => {
+      cleanupRef.current()
+    }
+  }, [])
 
   const handleSignWithGoogle = async () => {
-    const popup = popupCenter('/google-sign-in', 'Google Sign In')
+    if (isAuthenticating) return
+    setIsAuthenticating(true)
 
+    let sessionCheckInterval: NodeJS.Timeout | null = null
+    let popupWindow: Window | null = null
+
+    // Cleanup function
+    const cleanup = () => {
+      if (sessionCheckInterval) {
+        clearInterval(sessionCheckInterval)
+        sessionCheckInterval = null
+      }
+      if (popupWindow && !popupWindow.closed) {
+        popupWindow.close()
+        popupWindow = null
+      }
+      window.removeEventListener('message', messageHandler)
+    }
+
+    cleanupRef.current = cleanup
+
+    // Handle message from the popup
     const messageHandler = async (event: MessageEvent) => {
+      if (event.origin !== window.location.origin) {
+        return
+      }
+
       if (event.data === 'nextAuthGoogleSignInComplete') {
-        window.removeEventListener('message', messageHandler)
+        if (sessionCheckInterval) return // Already polling
 
-        // Wait for the popup to close
-        if (popup) {
-          const checkClosed = () => {
-            return new Promise<void>((resolve) => {
-              const check = setInterval(() => {
-                if (popup.closed) {
-                  clearInterval(check)
-                  resolve()
-                }
-              }, 100)
-            })
-          }
-          await checkClosed()
-        }
-
-        const signInResult = await signIn('google', {
-          redirect: false,
-        })
-
-        if (signInResult?.ok) {
-          // Only get private key if sign in was successful
-          try {
-            const privateKey = await getPrivateKeyFromWaas(
-              await getCaptchaValue()
-            )
-            if (privateKey) {
-              onNext(privateKey)
-            } else {
-              ToastHelper.error('Error getting private key from WAAS')
+        sessionCheckInterval = setInterval(async () => {
+          const session = await getSession()
+          if (session?.user) {
+            cleanup()
+            try {
+              const captcha = await getCaptchaValue()
+              if (!captcha) {
+                throw new Error('CAPTCHA verification failed')
+              }
+              const privateKey = await getPrivateKeyFromWaas(
+                captcha,
+                UserAccountType.GoogleAccount
+              )
+              if (privateKey) {
+                onNext(privateKey)
+              } else {
+                ToastHelper.error('Error getting private key from WAAS')
+              }
+            } catch (error) {
+              console.error('Error during Google sign in:', error)
+              ToastHelper.error('Error during Google sign in')
+            } finally {
+              setIsAuthenticating(false)
             }
-          } catch (error) {
-            console.error(error)
-            ToastHelper.error('Error during Google sign in')
           }
-        } else {
-          ToastHelper.error('Google sign in failed')
-        }
+        }, 500) // Check every 500ms
       }
     }
 
     window.addEventListener('message', messageHandler)
 
-    // Remove the separate interval since we handle it in messageHandler
-    if (popup) {
-      const cleanup = setInterval(() => {
-        if (popup.closed) {
-          clearInterval(cleanup)
-          window.removeEventListener('message', messageHandler)
+    try {
+      popupWindow = popupCenter('/google-sign-in', 'Google Sign In')
+      if (!popupWindow) {
+        throw new Error('Failed to open popup')
+      }
+
+      // Monitor popup closure
+      const popupCheckInterval = setInterval(() => {
+        if (popupWindow && popupWindow.closed) {
+          clearInterval(popupCheckInterval)
+          setTimeout(() => {
+            if (isAuthenticating) {
+              cleanup()
+              ToastHelper.error('Authentication was cancelled')
+              setIsAuthenticating(false)
+            }
+          }, 1000)
         }
       }, 1000)
+
+      // Timeout after 2 minutes
+      const timeout = setTimeout(() => {
+        if (isAuthenticating) {
+          cleanup()
+          ToastHelper.error('Authentication timeout')
+          setIsAuthenticating(false)
+        }
+      }, 120000)
+
+      // Update cleanup to include timeout
+      cleanupRef.current = () => {
+        clearInterval(popupCheckInterval)
+        clearTimeout(timeout)
+        cleanup()
+      }
+    } catch (error) {
+      console.error('Error initiating Google sign in:', error)
+      ToastHelper.error('Google sign in was cancelled')
+      setIsAuthenticating(false)
+      cleanup()
     }
   }
 
   return (
     <div className="w-full">
+      <ReCAPTCHA
+        ref={recaptchaRef}
+        sitekey={config.recaptchaKey}
+        size="invisible"
+        badge="bottomleft"
+      />
       <ConnectButton
-        className="w-full"
+        className={`w-full ${isAuthenticating ? 'cursor-not-allowed' : ''}`}
         icon={<SvgComponents.Google width={40} height={40} />}
         onClick={handleSignWithGoogle}
+        disabled={isAuthenticating}
       >
-        Sign in with Google
+        {isAuthenticating ? 'Authenticating...' : 'Sign in with Google'}
       </ConnectButton>
     </div>
   )

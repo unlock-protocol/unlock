@@ -7,14 +7,21 @@ import Link from 'next/link'
 import { onSignedInWithPrivy } from '~/config/PrivyProvider'
 import { ToastHelper } from '../helpers/toast.helper'
 
-export default function MigrationFeedback({ walletPk }: { walletPk: string }) {
+export default function MigrationFeedback({
+  walletPk,
+  onMigrationStart,
+}: {
+  walletPk: string
+  onMigrationStart: () => void
+}) {
   // @ts-ignore
-  const { importWallet } = usePrivy()
+  const { importWallet, user } = usePrivy()
   const [isImporting, setIsImporting] = useState(false)
   const [isImported, setIsImported] = useState(false)
 
   const handleImport = async () => {
     setIsImporting(true)
+    onMigrationStart()
     try {
       // First attempt the wallet import
       const importResult = await importWallet({ privateKey: walletPk })
@@ -28,8 +35,10 @@ export default function MigrationFeedback({ walletPk }: { walletPk: string }) {
 
       // Only proceed with dashboard authentication if wallet import was successful
       try {
-        await onSignedInWithPrivy()
-        setIsImported(true)
+        if (user) {
+          await onSignedInWithPrivy(user)
+          setIsImported(true)
+        }
       } catch (authError) {
         console.error('Failed to fully authenticate with dashboard:', authError)
         ToastHelper.error(
