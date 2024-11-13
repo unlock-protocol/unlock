@@ -96,7 +96,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "NODE_OPTIONS='--max-old-space-size=4096' next build --no-lint",
+    "build": "next build --no-lint",
     "deploy": "yarn build && next export -o out",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
     "deploy-vercel": "./scripts/deploy-vercel.sh",
