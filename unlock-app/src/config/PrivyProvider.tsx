@@ -107,7 +107,9 @@ export const PrivyChild = ({ children }: { children: ReactNode }) => {
       // Check for legacy account if user logged in with email
       if (user.email?.address) {
         hasLegacyAccount = await checkLegacyAccount(user.email.address)
-        if (hasLegacyAccount) {
+
+        // Only show migration modal if user has legacy account but no Privy wallet
+        if (hasLegacyAccount && !user.wallet?.address) {
           setShowMigrationModal(true)
           // close connect modal
           window.dispatchEvent(new CustomEvent('legacy.account.detected'))

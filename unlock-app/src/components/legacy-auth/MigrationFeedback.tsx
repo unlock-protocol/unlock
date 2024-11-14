@@ -5,14 +5,17 @@ import { usePrivy } from '@privy-io/react-auth'
 import { useState } from 'react'
 import Link from 'next/link'
 import { onSignedInWithPrivy } from '~/config/PrivyProvider'
+import { FaCheckCircle as CheckIcon } from 'react-icons/fa'
 import { ToastHelper } from '../helpers/toast.helper'
 
 export default function MigrationFeedback({
   walletPk,
   onMigrationStart,
+  mode,
 }: {
   walletPk: string
-  onMigrationStart: () => void
+  onMigrationStart?: () => void
+  mode?: 'checkout'
 }) {
   // @ts-ignore
   const { importWallet, user } = usePrivy()
@@ -21,7 +24,7 @@ export default function MigrationFeedback({
 
   const handleImport = async () => {
     setIsImporting(true)
-    onMigrationStart()
+    onMigrationStart?.()
     try {
       // First attempt the wallet import
       const importResult = await importWallet({ privateKey: walletPk })
@@ -30,7 +33,6 @@ export default function MigrationFeedback({
         ToastHelper.error(
           'Failed to import wallet. Please ensure your private key is correct and try again.'
         )
-        return
       }
 
       // Only proceed with dashboard authentication if wallet import was successful
@@ -53,11 +55,19 @@ export default function MigrationFeedback({
     }
   }
 
+  const isCheckoutMode = mode === 'checkout'
+  const baseTextClasses = 'text-gray-700'
+  const successTitleClasses = `text-2xl font-bold ${
+    isCheckoutMode ? 'text-center flex flex-col items-center' : ''
+  }`
+
   return (
     <div className="space-y-5">
       {!isImported ? (
         <>
-          <p className="">
+          <p
+            className={`${isCheckoutMode ? 'text-center' : ''} ${baseTextClasses}`}
+          >
             Your wallet will now be managed securely by Privy, making it easier
             to access your assets across devices. Click below to proceed with
             the migration.
@@ -73,16 +83,23 @@ export default function MigrationFeedback({
         </>
       ) : (
         <>
-          <div className="text-2xl font-bold">Migration Successful!</div>
-          <p className="text-gray-700">
-            Your wallet has been successfully migrated. You can now return to
-            the dashboard.
-          </p>
-          <div className="flex flex-col gap-3 md:flex-row">
-            <Link href="/settings">
-              <Button>Return to Dashboard</Button>
-            </Link>
+          <div className={successTitleClasses}>
+            <CheckIcon size={24} className="text-green-500 mb-5" />
+            Migration Successful!
           </div>
+          {!isCheckoutMode && (
+            <>
+              <p className={baseTextClasses}>
+                Your wallet has been successfully migrated. You can now return
+                to the dashboard.
+              </p>
+              <div className="flex flex-col gap-3 md:flex-row">
+                <Link href="/settings">
+                  <Button>Return to Dashboard</Button>
+                </Link>
+              </div>
+            </>
+          )}
         </>
       )}
     </div>

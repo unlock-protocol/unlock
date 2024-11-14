@@ -1,5 +1,6 @@
 import { Button, Modal } from '@unlock-protocol/ui'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 export const MigrationModal = ({
   isOpen,
@@ -8,6 +9,11 @@ export const MigrationModal = ({
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
 }) => {
+  const pathname = usePathname()
+  const isCheckoutPage = pathname?.includes('checkout')
+  // don't show the modal on the checkout page
+  if (isCheckoutPage) return null
+
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen} size="small">
       <div className="flex flex-col gap-4 text-center">
