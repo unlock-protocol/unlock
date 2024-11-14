@@ -23,8 +23,6 @@ export const MigrateUserCheckout = ({
   const [walletPk, setWalletPk] = useState<string | null>(null)
   const [userAccountType, setUserAccountType] = useState<UserAccountType[]>([])
 
-  console.log('walletPk', walletPk)
-
   // Mutation to handle the user account type
   const checkUserAccountType = useMutation({
     mutationFn: async (email: string) => {
