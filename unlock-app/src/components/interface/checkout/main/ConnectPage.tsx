@@ -23,7 +23,6 @@ export const ConnectPage = ({ style, showPrivyModal }: ConnectPageProps) => {
       if (user && !user.wallet?.address) {
         if (user.email?.address) {
           const hasLegacyAccount = await checkLegacyAccount(user.email?.address)
-          console.log('hasLegacyAccount', hasLegacyAccount)
           setShowLegacyMessage(hasLegacyAccount)
         }
       }
