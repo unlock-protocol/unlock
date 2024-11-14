@@ -12,10 +12,21 @@ interface ConnectPageProps {
   showPrivyModal: boolean
 }
 
-export const ConnectPage = ({ style, showPrivyModal }: ConnectPageProps) => {
+export const ConnectPage = ({
+  style,
+  checkoutService,
+  showPrivyModal,
+}: ConnectPageProps) => {
   const [showLegacyMessage, setShowLegacyMessage] = useState(false)
   const [showMigrationSteps, setShowMigrationSteps] = useState(false)
-  const { user } = usePrivy()
+  const { user, logout: privyLogout } = usePrivy()
+
+  const handleSignOut = async () => {
+    await privyLogout()
+    setShowMigrationSteps(false)
+    setShowLegacyMessage(false)
+    checkoutService?.send({ type: 'SELECT' })
+  }
 
   useEffect(() => {
     // check if the user has a legacy account
@@ -31,7 +42,12 @@ export const ConnectPage = ({ style, showPrivyModal }: ConnectPageProps) => {
   }, [user?.email?.address, user?.wallet?.address, user])
 
   if (showMigrationSteps) {
-    return <MigrateUserCheckout userEmail={user?.email?.address || ''} />
+    return (
+      <MigrateUserCheckout
+        userEmail={user?.email?.address || ''}
+        onSignOut={handleSignOut}
+      />
+    )
   }
 
   if (showLegacyMessage) {
@@ -43,8 +59,7 @@ export const ConnectPage = ({ style, showPrivyModal }: ConnectPageProps) => {
         <h2 className="text-xl font-bold">Legacy Account Detected</h2>
         <p>
           We&apos;ve detected that you have an existing Unlock account that
-          needs to be migrated. Please visit the migration page to complete the
-          migration process.
+          needs to be migrated. Please proceed to migrate your account.
         </p>
 
         <div className="flex justify-center">
