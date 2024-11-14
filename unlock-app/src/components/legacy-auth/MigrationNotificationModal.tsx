@@ -1,14 +1,17 @@
+import { usePrivy } from '@privy-io/react-auth'
 import { Button, Modal } from '@unlock-protocol/ui'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 export const MigrationModal = ({
   isOpen,
+  setIsOpen,
 }: {
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
 }) => {
   const pathname = usePathname()
+  const { logout } = usePrivy()
   const isCheckoutPage = pathname?.includes('checkout')
   const isMigrationPage = pathname?.includes('migrate-user')
   // don't show the modal on the checkout or migration page
@@ -16,6 +19,11 @@ export const MigrationModal = ({
 
   // no-op function to prevent modal from closing, even by entering the escape key
   const preventClose = () => {}
+
+  const handleSignOut = async () => {
+    await logout()
+    setIsOpen(false)
+  }
 
   return (
     <Modal isOpen={isOpen} setIsOpen={preventClose} size="small" hideCloseIcon>
@@ -26,10 +34,16 @@ export const MigrationModal = ({
           needs to be migrated. Please complete the migration process to
           continue.
         </p>
-        <div className="flex justify-center">
+        <div className="flex flex-col gap-2 items-center">
           <Link href="/migrate-user">
             <Button>Start Migration</Button>
           </Link>
+          <p
+            className="text-sm underline text-brand-ui-primary cursor-pointer"
+            onClick={handleSignOut}
+          >
+            Sign out
+          </p>
         </div>
       </div>
     </Modal>
