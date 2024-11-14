@@ -61,8 +61,7 @@ export const ConnectPage = ({
         <h2 className="text-xl font-bold">Legacy Account Detected</h2>
         <p>
           We&apos;ve detected that you have an existing Unlock account that
-          needs to be migrated. Please visit the migration page to complete the
-          migration process.
+          needs to be migrated. Please proceed to migrate your account.
         </p>
 
         <div className="flex justify-center">
