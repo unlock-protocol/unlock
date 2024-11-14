@@ -77,7 +77,7 @@ export const getCrossChainRoute = async ({
       contractAddress: lock.address,
 
       cost: {
-        isNative: true,
+        isNative: lock.currencyContractAddress === ADDRESS_ZERO,
         amount:
           prices
             .reduce(
