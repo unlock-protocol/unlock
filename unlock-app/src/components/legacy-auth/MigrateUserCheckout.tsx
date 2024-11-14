@@ -9,7 +9,17 @@ import { SignInWithPassword } from './SignInWithPassword'
 import { SignInWithCode } from './SignInWithCode'
 import { SignInWithGoogle } from './SignInWithGoogle'
 
-export const MigrateUserCheckout = ({ userEmail }: { userEmail: string }) => {
+interface MigrateUserCheckoutProps {
+  userEmail: string
+  setShowMigrationSteps: (show: boolean) => void
+  setShowLegacyMessage: (show: boolean) => void
+  onSignOut: () => Promise<void>
+}
+
+export const MigrateUserCheckout = ({
+  userEmail,
+  onSignOut,
+}: MigrateUserCheckoutProps) => {
   const [walletPk, setWalletPk] = useState<string | null>(null)
   const [userAccountType, setUserAccountType] = useState<UserAccountType[]>([])
 
@@ -69,9 +79,17 @@ export const MigrateUserCheckout = ({ userEmail }: { userEmail: string }) => {
 
   return (
     <div className="px-4 space-y-16 mt-4">
-      <h3 className="text-sm text-center">
-        migrating <span className="font-bold text-md">{userEmail}</span>
-      </h3>
+      <div>
+        <h3 className="text-sm text-center">
+          Migrating <span className="font-bold text-md">{userEmail}</span>
+        </h3>
+        <p
+          onClick={onSignOut}
+          className="text-sm text-center text-brand-ui-primary underline cursor-pointer"
+        >
+          Sign out
+        </p>
+      </div>
 
       {!walletPk && (
         <div className="space-y-2">
