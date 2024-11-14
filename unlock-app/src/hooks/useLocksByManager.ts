@@ -24,13 +24,22 @@ export const getLocksByNetworks = async ({
         orderDirection: OrderDirection.Desc,
       },
       {
-        networks, // Pass all networks at once
+        networks,
       }
     )
   } catch (error) {
     console.error('Failed to fetch locks:', error)
     return []
   }
+}
+
+// Legacy support wrapper to maintain backwards compatibility
+export const getLocksByNetwork = async ({ account, network }: any) => {
+  const results = await getLocksByNetworks({
+    account,
+    networks: [Number(network)],
+  })
+  return results
 }
 
 const useLocksByManagerOnNetworks = (
@@ -52,6 +61,7 @@ const useLocksByManagerOnNetworks = (
     refetchOnWindowFocus: false,
   }
 
+  // Maintain backwards compatibility by wrapping the result in an array
   return useQueries({
     queries: [query],
   })
