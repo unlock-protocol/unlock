@@ -14,7 +14,7 @@ export default function MigrationFeedback({
   mode,
 }: {
   walletPk: string
-  onMigrationStart: () => void
+  onMigrationStart?: () => void
   mode?: 'checkout'
 }) {
   // @ts-ignore
@@ -24,7 +24,7 @@ export default function MigrationFeedback({
 
   const handleImport = async () => {
     setIsImporting(true)
-    onMigrationStart()
+    onMigrationStart?.()
     try {
       // First attempt the wallet import
       const importResult = await importWallet({ privateKey: walletPk })

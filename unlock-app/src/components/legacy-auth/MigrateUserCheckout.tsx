@@ -12,7 +12,6 @@ import { SignInWithGoogle } from './SignInWithGoogle'
 export const MigrateUserCheckout = ({ userEmail }: { userEmail: string }) => {
   const [walletPk, setWalletPk] = useState<string | null>(null)
   const [userAccountType, setUserAccountType] = useState<UserAccountType[]>([])
-  const [isMigrating, setIsMigrating] = useState(false)
 
   console.log('walletPk', walletPk)
 
@@ -81,13 +80,7 @@ export const MigrateUserCheckout = ({ userEmail }: { userEmail: string }) => {
         </div>
       )}
 
-      {walletPk && (
-        <MigrationFeedback
-          mode="checkout"
-          walletPk={walletPk}
-          onMigrationStart={() => setIsMigrating(true)}
-        />
-      )}
+      {walletPk && <MigrationFeedback mode="checkout" walletPk={walletPk} />}
     </div>
   )
 }
