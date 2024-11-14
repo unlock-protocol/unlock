@@ -14,38 +14,47 @@ const {
 } = require('@unlock-protocol/hardhat-helpers/dist/ABIs/ProxyAdmin.json')
 
 const { parseSafeMulticall } = require('../../helpers/multisig')
+const { addSomeETH } = require('@unlock-protocol/hardhat-helpers')
 
-// addresses
+// TODO: deployment addresses
 const deployedContracts = {
+  // mainnet
   1: {
     unlockImplAddress: ADDRESS_ZERO,
     publicLockAddress: ADDRESS_ZERO,
   },
+  // optimism
   10: {
     publicLockAddress: ADDRESS_ZERO,
     unlockImplAddress: ADDRESS_ZERO,
   },
+  // binance
   56: {
     publicLockAddress: ADDRESS_ZERO,
     unlockImplAddress: ADDRESS_ZERO,
   },
+  // gnosis
   100: {
     publicLockAddress: ADDRESS_ZERO,
     unlockImplAddress: ADDRESS_ZERO,
   },
+  // polygon
   137: {
     publicLockAddress: ADDRESS_ZERO,
     unlockImplAddress: ADDRESS_ZERO,
     unlockSwapBurner: ADDRESS_ZERO,
   },
+  // arb
   42161: {
     publicLockAddress: ADDRESS_ZERO,
     unlockImplAddress: ADDRESS_ZERO,
   },
+  // base
   8453: {
     publicLockAddress: ADDRESS_ZERO,
     unlockImplAddress: ADDRESS_ZERO,
   },
+  //linea
   59144: {
     publicLockAddress: ADDRESS_ZERO,
     unlockImplAddress: ADDRESS_ZERO,
@@ -118,12 +127,13 @@ const parseCalls = async ({ unlockAddress, name, id, provider }) => {
 }
 
 module.exports = async () => {
+  // TODO: remove this / fund for testing
+  const BASE_TIMELOCK_ADDRESS = '0xB34567C4cA697b39F72e1a8478f285329A98ed1b'
+  await addSomeETH(BASE_TIMELOCK_ADDRESS)
+
   // src info
   const { id: chainId, unlockAddress, name, provider } = await getNetwork()
-  const {
-    governanceBridge: { connext: bridgeAddress },
-    chainId: daoChainId,
-  } = networks[chainId].dao
+  const { chainId: daoChainId } = networks[chainId].dao
 
   // store some explanations
   const explainers = {}
@@ -143,8 +153,7 @@ module.exports = async () => {
   )
 
   // get all the calls
-  const bridgeCalls = []
-  await Promise.all(
+  const bridgeCalls = await Promise.all(
     targetChains.map(async (network, i) => {
       const { dao, id: destChainId } = network
 
@@ -188,11 +197,12 @@ module.exports = async () => {
         destChainId,
         moduleData,
       })
-      bridgeCalls.push(bridgeCall)
+      return bridgeCall
     })
   )
 
   const calls = [
+    // TODO: transfer ownership of contracts from multisig to timelock
     // ...daoNetworkCalls,
     ...bridgeCalls,
   ]
