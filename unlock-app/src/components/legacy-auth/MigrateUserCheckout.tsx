@@ -11,8 +11,6 @@ import { SignInWithGoogle } from './SignInWithGoogle'
 
 interface MigrateUserCheckoutProps {
   userEmail: string
-  setShowMigrationSteps: (show: boolean) => void
-  setShowLegacyMessage: (show: boolean) => void
   onSignOut: () => Promise<void>
 }
 

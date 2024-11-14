@@ -45,8 +45,6 @@ export const ConnectPage = ({
     return (
       <MigrateUserCheckout
         userEmail={user?.email?.address || ''}
-        setShowMigrationSteps={setShowMigrationSteps}
-        setShowLegacyMessage={setShowLegacyMessage}
         onSignOut={handleSignOut}
       />
     )
