@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.0.31
+
+- Add `PublicLock v15` and `Unlock v14`
+
 ## 0.0.30
 
 - Remove deprecated versions of `Unlock` (from V0 to v10)
