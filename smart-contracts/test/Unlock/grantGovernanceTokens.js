@@ -14,7 +14,7 @@ const {
 const { ADDRESS_ZERO } = require('@unlock-protocol/hardhat-helpers')
 
 let unlock, up, udt, swap, lock, oracle, weth, token
-let deployer, minter, referrer, keyBuyer
+let deployer, minter, protocolReferrer, keyBuyer, referrer, recipient
 let keyPrice
 
 const estimateGas = BigInt(252166 * 2)
@@ -41,7 +41,9 @@ describe('UnlockGovernanceToken / granting Tokens', () => {
   lockTestCases.forEach((isERC20) => {
     describe(`lock is priced in ${isERC20 ? 'erc20' : 'native'} tokens`, () => {
       before(async function () {
-        ;[deployer, minter, keyBuyer, referrer] = await ethers.getSigners()
+        // here the "protocolReferrer"
+        ;[deployer, minter, keyBuyer, recipient, protocolReferrer, referrer] =
+          await ethers.getSigners()
         ;({ unlock, up, udt, swap } = await deployContracts())
         weth = await deployWETH(deployer)
 
@@ -106,12 +108,12 @@ describe('UnlockGovernanceToken / granting Tokens', () => {
               rates,
             })
 
-            // Purchase a valid key for the referrer
+            // Purchase a valid key for the protocolReferrer
             await lock
               .connect(keyBuyer)
               .purchase(
                 isERC20 ? [keyPrice] : [],
-                [await referrer.getAddress()],
+                [await protocolReferrer.getAddress()],
                 [ADDRESS_ZERO],
                 [ADDRESS_ZERO],
                 ['0x'],
@@ -155,9 +157,9 @@ describe('UnlockGovernanceToken / granting Tokens', () => {
             }
           })
 
-          it(`referrer has 0 ${symbol} to start`, async () => {
+          it(`protocolReferrer has 0 ${symbol} to start`, async () => {
             const actual = await governanceToken.balanceOf(
-              await referrer.getAddress()
+              await protocolReferrer.getAddress()
             )
             compareBigNumbers(actual, '0')
           })
@@ -204,7 +206,7 @@ describe('UnlockGovernanceToken / granting Tokens', () => {
               await unlock.setProtocolFee(PROTOCOL_FEE)
 
               balanceReferrerBefore = await governanceToken.balanceOf(
-                await referrer.getAddress()
+                await protocolReferrer.getAddress()
               )
 
               unlockBalanceBefore = await getBalance(
@@ -213,18 +215,22 @@ describe('UnlockGovernanceToken / granting Tokens', () => {
               )
 
               // purchase a key with refferer
-              await lock
-                .connect(keyBuyer)
-                .purchase(
-                  isERC20 ? [keyPrice] : [],
-                  [await keyBuyer.getAddress()],
-                  [await referrer.getAddress()],
-                  [ADDRESS_ZERO],
-                  ['0x'],
+              await lock.connect(keyBuyer).purchase(
+                [
                   {
                     value: keyPrice,
-                  }
-                )
+                    recipient: await recipient.getAddress(),
+                    referrer: await referrer.getAddress(),
+                    protocolReferrer: await protocolReferrer.getAddress(),
+                    keyManager: ADDRESS_ZERO,
+                    data: '0x',
+                    additionalPeriods: 0,
+                  },
+                ],
+                {
+                  value: isERC20 ? 0 : keyPrice,
+                }
+              )
             })
 
             it('unlock has received protocol fee in ERC20', async () => {
@@ -238,10 +244,97 @@ describe('UnlockGovernanceToken / granting Tokens', () => {
               )
             })
 
-            it(`referrer has received ${symbol} based on protocol fee`, async () => {
+            it(`protocolReferrer has received ${symbol} based on protocol fee`, async () => {
               const amountEarned =
-                (await governanceToken.balanceOf(await referrer.getAddress())) -
-                balanceReferrerBefore
+                (await governanceToken.balanceOf(
+                  await protocolReferrer.getAddress()
+                )) - balanceReferrerBefore
+              assert.notEqual(amountEarned, 0n)
+
+              const rate = symbol === 'UP' ? UP_WETH_RATE : UDT_WETH_RATE
+              const protocolFee = (keyPrice * PROTOCOL_FEE) / BASIS_POINTS_DEN
+
+              // fee in native tokens
+              const fee = isERC20
+                ? (protocolFee * ERC20_RATE) / 10n ** 18n
+                : protocolFee
+
+              assert.equal(amountEarned, ((fee / 2n) * rate) / 10n ** 18n)
+            })
+          })
+
+          describe(`grant rewards in ${symbol} and referrer fee separately`, () => {
+            let balanceProtocolReferrerBefore,
+              balanceReferrerBefore,
+              unlockBalanceBefore
+            const REFERRER_FEE = 2000n
+            before(async () => {
+              // set protocol fee to 1%
+              await unlock.setProtocolFee(PROTOCOL_FEE)
+
+              // set referrer fee to 20% for all addresses
+              await lock.setReferrerFee(ADDRESS_ZERO, REFERRER_FEE)
+
+              balanceProtocolReferrerBefore = await governanceToken.balanceOf(
+                await protocolReferrer.getAddress()
+              )
+
+              balanceReferrerBefore = await getBalance(
+                await referrer.getAddress(),
+                isERC20 ? await token.getAddress() : null
+              )
+
+              unlockBalanceBefore = await getBalance(
+                await unlock.getAddress(),
+                isERC20 ? await token.getAddress() : null
+              )
+
+              // purchase a key with refferer
+              await lock.connect(keyBuyer).purchase(
+                [
+                  {
+                    value: keyPrice,
+                    recipient: await recipient.getAddress(),
+                    referrer: await referrer.getAddress(),
+                    protocolReferrer: await protocolReferrer.getAddress(),
+                    keyManager: ADDRESS_ZERO,
+                    data: '0x',
+                    additionalPeriods: 0,
+                  },
+                ],
+                {
+                  value: isERC20 ? 0 : keyPrice,
+                }
+              )
+            })
+
+            it('unlock has received protocol fee', async () => {
+              const balance = await getBalance(
+                await unlock.getAddress(),
+                isERC20 ? await token.getAddress() : null
+              )
+              assert.equal(
+                balance - unlockBalanceBefore,
+                (keyPrice * PROTOCOL_FEE) / BASIS_POINTS_DEN
+              )
+            })
+
+            it('referrer has received referrer fee', async () => {
+              const balance = await getBalance(
+                await referrer.getAddress(),
+                isERC20 ? await token.getAddress() : null
+              )
+              assert.equal(
+                balance - balanceReferrerBefore,
+                (keyPrice * REFERRER_FEE) / BASIS_POINTS_DEN
+              )
+            })
+
+            it(`protocolReferrer has received ${symbol} based on protocol fee`, async () => {
+              const amountEarned =
+                balanceProtocolReferrerBefore -
+                (await governanceToken.balanceOf(await referrer.getAddress()))
+
               assert.notEqual(amountEarned, 0n)
 
               const rate = symbol === 'UP' ? UP_WETH_RATE : UDT_WETH_RATE

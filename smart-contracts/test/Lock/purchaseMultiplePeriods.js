@@ -70,6 +70,7 @@ describe('Lock / purchase multiple periods at once', () => {
             recipient: await keyOwner.getAddress(),
             keyManager: ADDRESS_ZERO,
             referrer: ADDRESS_ZERO,
+            protocolReferrer: ADDRESS_ZERO,
             data: '0x',
             additionalPeriods: nbPeriods,
           },
