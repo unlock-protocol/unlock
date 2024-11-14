@@ -136,6 +136,10 @@ export const getCrossChainRoute = async ({
       currency: network.nativeCurrency.name,
       symbol: network.nativeCurrency.symbol,
       networkName: network.name,
+      provider: {
+        name: 'Decent',
+        url: 'https://www.decent.xyz',
+      },
     } as CrossChainRoute
     // reformat
     route.tokenPayment.amount = toBigInt(route.tokenPayment.amount)
