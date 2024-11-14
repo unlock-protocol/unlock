@@ -26,7 +26,6 @@ export default function MigrationFeedback({
   const [hasImported, setHasImported] = useState(false)
 
   const handleImport = async () => {
-    console.log('Starting wallet import process...')
     setIsImporting(true)
     setImportError(null)
     setAuthError(null)
