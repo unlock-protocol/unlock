@@ -1,5 +1,6 @@
 'use client'
 import { usePrivy, useWallets } from '@privy-io/react-auth'
+import { Button } from '@unlock-protocol/ui'
 import { useQuery } from '@tanstack/react-query'
 import {
   BrowserProvider,
@@ -56,14 +57,6 @@ const getSymbol = async (provider, tokenAddress) => {
   return await contract.symbol()
 }
 
-const getName = async (provider, tokenAddress) => {
-  if (!tokenAddress) {
-    return ''
-  }
-  const contract = new Contract(tokenAddress, ERC20_ABI, provider)
-  return await contract.name()
-}
-
 const getProtocolFee = async (provider, unlockAddress) => {
   const contract = new Contract(
     unlockAddress,
@@ -74,15 +67,34 @@ const getProtocolFee = async (provider, unlockAddress) => {
   return `${(Number(fee) / 100).toFixed(2)}%`
 }
 
-const getBalances = async (provider, nativeCurrency, tokens, ownerAddress) => {
+const getBalances = async (
+  provider,
+  network,
+  nativeCurrency,
+  tokens,
+  ownerAddress
+) => {
   const balances = await Promise.all([
-    ...tokens.map(async (token) => {
-      const contract = new Contract(token.address, ERC20_ABI, provider)
-      return {
-        token,
-        balance: await contract.balanceOf(ownerAddress).catch(() => 0),
-      }
-    }),
+    ...tokens
+      .filter((token) => {
+        // Excluding UDT/UP
+        return (
+          token.address !== network.unlockDaoToken?.address &&
+          token.symbol !== 'UDT' &&
+          token.symbol !== 'UP'
+        )
+      })
+      .map(async (token) => {
+        const contract = new Contract(token.address, ERC20_ABI, provider)
+        return {
+          token,
+          balance: await contract.balanceOf(ownerAddress).catch(() => {
+            console.error(
+              `Could not get balance for ${token.address} on ${network.name}`
+            )
+          }),
+        }
+      }),
     {
       token: {
         symbol: nativeCurrency.symbol,
@@ -94,23 +106,31 @@ const getBalances = async (provider, nativeCurrency, tokens, ownerAddress) => {
   return balances.filter(({ balance }) => balance > 0)
 }
 
-const BurnableToken = ({ network, token, balance }) => {
+const BurnableToken = ({ network, token, balance, reload }) => {
+  const [hash, setHash] = useState('')
   const [burning, setBurning] = useState(false)
-  const { ready, authenticated, user, login, logout } = usePrivy()
+  const { authenticated, login } = usePrivy()
   const { wallets } = useWallets()
 
   const burn = async () => {
-    console.log('burning', token.symbol)
     if (!authenticated) {
       login()
       setBurning(true)
     } else {
-      // switch network
-      // await wallets[0].switchChain(network.id)
-
+      // Get a signer
       const provider = new BrowserProvider(
         await wallets[0].getEthereumProvider()
       )
+      const signer = await provider.getSigner()
+
+      // switch network
+      // await wallets[0].switchChain(network.id)
+      await provider.send('wallet_switchEthereumChain', [
+        {
+          chainId: `0x${network.id.toString(16)}`,
+        },
+      ])
+
       // Send tx
       const unlock = new Contract(
         network.unlockAddress,
@@ -134,17 +154,54 @@ const BurnableToken = ({ network, token, balance }) => {
             type: 'function',
           },
         ],
-        provider
+        signer
       )
-      console.log(await unlock.swapBurnerAddress())
-      const tx = await unlock.swapAndBurn(
-        token.address || ethers.ZeroAddress,
-        1, // burn 1 token
-        3000,
-        { value: 0 }
-      )
-      console.log(tx)
 
+      const addressOfTokenToBurn = token.address || ethers.ZeroAddress
+      let tx
+
+      if (addressOfTokenToBurn === ethers.ZeroAddress) {
+        try {
+          tx = await unlock.swapAndBurn.populateTransaction(
+            token.address || ethers.ZeroAddress,
+            balance,
+            3000 // No need to enter a pool fee for native currency
+          )
+        } catch (e) {
+          console.error(e)
+        }
+      } else {
+        const fees = [500, 3000, 10000]
+        for (let fee of fees) {
+          if (!tx) {
+            try {
+              tx = await unlock.swapAndBurn.populateTransaction(
+                token.address || ethers.ZeroAddress,
+                balance,
+                fee // pool for the token, not for UDT/UP
+              )
+            } catch (e) {
+              console.error(e)
+            }
+          }
+        }
+      }
+      if (tx) {
+        try {
+          const transaction = await signer.sendTransaction(tx)
+          setHash(transaction.hash)
+          await transaction.wait()
+        } catch (error) {
+          console.error(error)
+          // TODO: replace with Toast once we have UI package
+          alert('The transaction to burn tokens could not be sent.')
+        }
+        await reload()
+        setBurning(false)
+      } else {
+        // TODO: replace with Toast once we have UI package
+        alert('We could find a way to burn this token.')
+      }
       setBurning(false)
     }
   }
@@ -158,8 +215,15 @@ const BurnableToken = ({ network, token, balance }) => {
 
   return (
     <li>
-      {Number(formatUnits(balance, token.decimals)).toFixed(2)} {token.symbol}{' '}
-      <button onClick={burn}>Burn</button>
+      {Number(formatUnits(balance, token.decimals)).toFixed(4)} {token.symbol}{' '}
+      <Button isLoading={true} onClick={burn}>
+        Burn
+      </Button>{' '}
+      {hash && (
+        <a href={network.explorer.urls.transaction(hash)} target="_blank">
+          Transaction
+        </a>
+      )}
     </li>
   )
 }
@@ -169,11 +233,12 @@ const BurnableTokens = ({ network }) => {
     batchMaxCount: 10,
   })
 
-  const { data: balances } = useQuery({
+  const { data: balances, refetch } = useQuery({
     queryKey: ['getBalances', network.tokens, network.unlockAddress],
     queryFn: () => {
       return getBalances(
         provider,
+        network,
         network.nativeCurrency,
         network.tokens,
         network.unlockAddress
@@ -183,16 +248,15 @@ const BurnableTokens = ({ network }) => {
   if (!balances || balances.length === 0) {
     return null
   }
+
   return (
     <li>
       <a href="/governance/unlock-dao-tokens#swap-and-burn">Burnable tokens</a>:{' '}
       <ul>
         {balances.map(({ token, balance }) => {
-          if (token.symbol === 'UDT' || token.symbol === 'UP') {
-            return
-          }
           return (
             <BurnableToken
+              reload={refetch}
               network={network}
               key={token.address}
               token={token}
@@ -206,19 +270,12 @@ const BurnableTokens = ({ network }) => {
 }
 
 const BurnedTokens = ({ network }) => {
+  const burnAddress = '0x000000000000000000000000000000000000dEaD'
   const provider = new JsonRpcProvider(network.provider)
   const { data: burnedTokens } = useQuery({
-    queryKey: [
-      'getBalance',
-      network.unlockDaoToken?.address,
-      '0x000000000000000000000000000000000000dEaD',
-    ],
+    queryKey: ['getBalance', network.unlockDaoToken?.address, burnAddress],
     queryFn: () => {
-      return getBalance(
-        provider,
-        network.unlockDaoToken?.address,
-        '0x000000000000000000000000000000000000dEaD'
-      )
+      return getBalance(provider, network.unlockDaoToken?.address, burnAddress)
     },
     enabled: !!network.unlockDaoToken?.address,
   })
@@ -230,7 +287,16 @@ const BurnedTokens = ({ network }) => {
       <a href="/governance/unlock-dao-tokens#swap-and-burn">
         Burned Governance Tokens
       </a>
-      : {burnedTokens}
+      :{' '}
+      <a
+        href={network.explorer.urls.token(
+          network.unlockDaoToken?.address,
+          burnAddress
+        )}
+        target="_blank"
+      >
+        {burnedTokens}
+      </a>
     </li>
   )
 }
@@ -274,6 +340,7 @@ export const SupportedNetwork = ({ network }) => {
             {network.unlockAddress}
           </a>
         </li>
+        <li>Controlled by the DAO: {network.dao ? '✅' : '❌'}</li>
         <li>
           <a href="/governance/unlock-dao-tokens#earning-udt">
             Protocol Reward
@@ -328,8 +395,3 @@ export const TokenNetwork = ({ network }) => {
     </tr>
   )
 }
-
-// export const Network = ({ network }) => {
-//   return (
-//   )
-// }
