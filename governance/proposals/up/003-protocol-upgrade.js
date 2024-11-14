@@ -5,13 +5,10 @@
 const { ethers } = require('hardhat')
 const { UnlockV13 } = require('@unlock-protocol/contracts')
 const { networks } = require('@unlock-protocol/networks')
-const { IConnext, targetChains } = require('../../helpers/bridge')
+const { targetChains } = require('../../helpers/bridge')
+const { parseBridgeCall } = require('../../helpers/crossChain')
 
-const {
-  getProxyAdminAddress,
-  getNetwork,
-  ADDRESS_ZERO,
-} = require('@unlock-protocol/hardhat-helpers')
+const { getNetwork, ADDRESS_ZERO } = require('@unlock-protocol/hardhat-helpers')
 const {
   abi: proxyAdminABI,
 } = require('@unlock-protocol/hardhat-helpers/dist/ABIs/ProxyAdmin.json')
@@ -21,36 +18,53 @@ const { parseSafeMulticall } = require('../../helpers/multisig')
 // addresses
 const deployedContracts = {
   1: {
-    unlockImplAddress: '',
-    publicLockAddress: '',
+    unlockImplAddress: ADDRESS_ZERO,
+    publicLockAddress: ADDRESS_ZERO,
   },
   10: {
-    publicLockAddress: '',
-    unlockImplAddress: '',
+    publicLockAddress: ADDRESS_ZERO,
+    unlockImplAddress: ADDRESS_ZERO,
   },
   56: {
-    publicLockAddress: '',
-    unlockImplAddress: '',
+    publicLockAddress: ADDRESS_ZERO,
+    unlockImplAddress: ADDRESS_ZERO,
   },
   100: {
-    publicLockAddress: '',
-    unlockImplAddress: '',
+    publicLockAddress: ADDRESS_ZERO,
+    unlockImplAddress: ADDRESS_ZERO,
   },
   137: {
-    publicLockAddress: '',
-    unlockImplAddress: '',
-  },
-  8453: {
-    publicLockAddress: '',
-    unlockImplAddress: '',
+    publicLockAddress: ADDRESS_ZERO,
+    unlockImplAddress: ADDRESS_ZERO,
+    unlockSwapBurner: ADDRESS_ZERO,
   },
   42161: {
-    publicLockAddress: '',
-    unlockImplAddress: '',
+    publicLockAddress: ADDRESS_ZERO,
+    unlockImplAddress: ADDRESS_ZERO,
+  },
+  8453: {
+    publicLockAddress: ADDRESS_ZERO,
+    unlockImplAddress: ADDRESS_ZERO,
+  },
+  59144: {
+    publicLockAddress: ADDRESS_ZERO,
+    unlockImplAddress: ADDRESS_ZERO,
   },
 }
 
-const parseCalls = async ({ unlockAddress, name, id }) => {
+const getProxyAdminAddress = async (contractAddress, providerURL) => {
+  const provider = new ethers.JsonRpcProvider(providerURL)
+
+  const hex = await provider.getStorage(
+    contractAddress,
+    '0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103'
+  )
+
+  const adminAddress = ethers.stripZerosLeft(hex)
+  return adminAddress
+}
+
+const parseCalls = async ({ unlockAddress, name, id, provider }) => {
   const publicLockVersion = 15
 
   // get addresses
@@ -67,7 +81,7 @@ const parseCalls = async ({ unlockAddress, name, id }) => {
   )
 
   // submit Unlock upgrade
-  const proxyAdminAddress = await getProxyAdminAddress({ chainId: id })
+  const proxyAdminAddress = await getProxyAdminAddress(unlockAddress, provider)
   const { interface: proxyAdminInterface } = await ethers.getContractAt(
     proxyAdminABI,
     proxyAdminAddress
@@ -105,17 +119,23 @@ const parseCalls = async ({ unlockAddress, name, id }) => {
 
 module.exports = async () => {
   // src info
-  const { id: chainId } = await getNetwork()
+  const { id: chainId, unlockAddress, name, provider } = await getNetwork()
   const {
     governanceBridge: { connext: bridgeAddress },
+    chainId: daoChainId,
   } = networks[chainId].dao
 
   // store some explanations
   const explainers = {}
 
   // parse calls for mainnet
-  const daoNetworkCalls = await parseCalls(networks[1])
-  explainers[1] = daoNetworkCalls
+  const daoNetworkCalls = await parseCalls({
+    id: daoChainId,
+    unlockAddress,
+    name,
+    provider,
+  })
+  explainers[daoChainId] = daoNetworkCalls
 
   // parse all calls for dest chains
   const contractCalls = await Promise.all(
@@ -145,24 +165,30 @@ module.exports = async () => {
       // store explainers
       explainers[destChainId] = destCalls
 
-      // parse calls for Safe
-      const moduleData = await parseSafeMulticall(destCalls)
+      // parse calls for Multisend
+      const { to, value, data, operation } = await parseSafeMulticall({
+        chainId: destChainId,
+        calls: destCalls,
+      })
+
+      // encode multisend instructions to be executed by the SAFE
+      const abiCoder = ethers.AbiCoder.defaultAbiCoder()
+      const moduleData = abiCoder.encode(
+        ['address', 'uint256', 'bytes', 'bool'],
+        [
+          to, // to
+          value, // value
+          data, // data
+          operation, // operation: 0 for CALL, 1 for DELEGATECALL
+        ]
+      )
 
       // add to the list of calls to be passed to the bridge
-      bridgeCalls.push({
-        contractAddress: bridgeAddress,
-        contractNameOrAbi: IConnext,
-        functionName: 'xcall',
-        functionArgs: [
-          destDomainId,
-          destAddress, // destMultisigAddress,
-          ADDRESS_ZERO, // asset
-          ADDRESS_ZERO, // delegate
-          0, // amount
-          30, // slippage
-          moduleData, // calldata
-        ],
+      const bridgeCall = await parseBridgeCall({
+        destChainId,
+        moduleData,
       })
+      bridgeCalls.push(bridgeCall)
     })
   )
 
