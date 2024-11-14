@@ -21,6 +21,7 @@ interface IPublicLock {
     uint value;
     address recipient;
     address referrer;
+    address protocolReferrer;
     address keyManager;
     bytes data;
     uint additionalPeriods;
