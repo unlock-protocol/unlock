@@ -1,0 +1,71 @@
+---
+id: login-with-privy
+title: "loginWithPrivy"
+description: "Verify an access token using Privy's library and authenticate the user"
+sidebar_label: "loginWithPrivy"
+hide_title: true
+hide_table_of_contents: true
+api: eJzNls1uGzcQgF+FmEsvaysw0svenCIJ3LSNYcvNQdCBIme1jLjkhhzKFoR992LItSVLQmwDBVpdtNwdDme++eMWfI9BkvHuSkMN1i+N+2aovQ5mvYEKNEYVTM8CUMPfGEyzEdIJqRTGKMiv0IkUjVuKvOWXKKxZBBlYSguZqEVHRklCQS2KFDFABQF/JIz0wesN1Nu8NAE11BQSVqC8I3TEn2TfW95uvJt8j2zFFqJqsZP8RJseoQa/+I6KoII+sD9kMOa92cgp27gnHCkYtzzybdpiceG5b+TFOnsNQwX30lqkS60Dxvg6lWWLkGWPaILvdiCGodrzffbM4MPT5sNQxGPvXSwOXrx7x3/PT/36Bd5A8NXHVy/AfpGNS9bKhcUS5KF6KTw7+UbaiOw8GeI1XCZqbzAmS1CovD8F4sqtpTVaGNcnEgEVmjXqc/FBajEm4PlbUB36f2DgIZAOY5RLPJ0mjWTja7gZwykWXm9EOUuYKEyx/fwEhwowBB9egXiP2Gd0GIwakXDdfcxKHvG9P8bH2WsIO7HxSciAopMrrvMRnWh8ENpjFM6TwAfzP6AZMPoUFGaTGp+c/nkejVT+8vQpCxcav55KpjvHOrgdNMnaxtgnDjrl18YRBietiBjWGEQO0n9OZNpi4CYUuWlnk4Rxjy5wNLkX7RXDy7Bus3u77Bkq6JBaz+Oj9zE3Bkkt1DBZX0x4AEz6cZgUMhHq2RZSsFBDS9THejKxXq1iZ6g9T46fz/rgyStvz5XvjvrqdfA6KV6IYg0M1aHGSHJp3PLsbZpvy64ntXM2WqVgaHPLcSrk77h377DzkexdFoAaFihDnnLl4ZMPneRY/P5tykPkcpcEe0pkb74gQ3KyG9dnq/zCsGE/EoZNnhecNze78fnxQXa9xaNxt0uGg8b8+GFgzY3PJowRvsuExB+PyKACjldBc3EE60lO9MGvjcYoFlKt0GnRJJfjI62hTe4UyPWTE86oFZJxy0p0SFJLkiKSD3KJVb4zOE+mGQGJ1vtV5MS0RqGL2c+R0J9X0wyEk66Tbu9LvsUIvsaIk/eY7a4m/70rzRhHwgea9FYax4RzTm7HgpjBmiGygjw92bJ5BS0XTT2D7XYhI94FOwz8ukS8ns0rWMtgSlHO5kMFLUrNCTjbAmdIDb8Vb86mbAKL21RS6KDbcJWUHZdKYU8/lZ3v1fX119sp5/N4Xeu85j1B3vNVTt5DDVCBz3RzgeR3W7DSLVNuUVB08u8f4CKsgQ==
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"loginWithPrivy"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/auth/privy"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Verify an access token using Privy's library and authenticate the user
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={undefined}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"required":true,"content":{"application/json":{"schema":{"type":"object","properties":{"accessToken":{"type":"string","description":"The Privy access token to verify"},"walletAddress":{"type":"string","description":"The wallet address from the user"}},"required":["accessToken","walletAddress"]}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"OK","content":{"application/json":{"schema":{"required":["accessToken","walletAddress"],"type":"object","properties":{"walletAddress":{"type":"string","nullable":true},"accessToken":{"type":"string","nullable":false}},"title":"AuthResult"}}}},"400":{"description":"Invalid input received. Bad request.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"Response body schema is invalid.","nullable":false},"error":{"type":"string","nullable":true}},"title":"GenericInvalidBodyError"}}}},"404":{"description":"The item you are making request for does not exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"resource not found","nullable":false}},"title":"GenericNotFound"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

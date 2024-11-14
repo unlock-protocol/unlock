@@ -1,0 +1,71 @@
+---
+id: get-ticket
+title: "getTicket"
+description: "get a ticket for a key by lock."
+sidebar_label: "getTicket"
+hide_title: true
+hide_table_of_contents: true
+api: eJydVkuP2zYQ/isETy2gXW0XPem2hzTYJimCrjc5GEYxpsYWI4lUyJE3gqD/Xgwpy7KtRdo96UHO+/tmppe2QQekrXnMZSb3SCutSiSZSI+qdZo6ma17+ezRyWy9GTaJzNErpxsWiiICBAUpsbNOgCixE9tOVFaVtzKRDTiokdD5oEqzVANUyEQaqFFm0iC9WFfKRDr83mqHuczItXhp6694T+ic9XpVYA0y6yV1DavRhnCPTg5DsmiGHXrIc4fe/9TUR6tKAfHyojFPTpv9q7ZK7B7zn1r5gJ14XA5m0r9hJb6xxqPn8/u7O36cK3pqlULvd21VdcIhOY0HzAUVOJaGbShrCA2xNDRNpVUofPrNs4p+5oJpqwq2FcpsB5XHeRTrGGBykcxjuDUY4BIksmm3lVacxi/oPHuZyNaj+4QEORDIRGr/BZ3e6XAfiJzetoSsTtewZyPzIBNpX0y4ij8aHUErN8kxX3b7DRXjtnGMadIxW9Gx67QeC7VwEM0snRyjWzqb52PpPIa0dHJWyYVzVaAqMX80DzQ7N229ZaxfZPV0YUoI5Llm5VB9nqWG4Tic5XLJ9qwqp2NwDjquEmHtlyzO4XKAqkWu03ldyIGmf6Lggt0otZgt7ZsKutdEh2FYwt5iRU7wu+LT1wKpQBcIxPkVL4UVHBZ6OuOVUGDEgfV0F2wb7W2trRBM8Ix9+/3ut2tz3F6F9sJYEtBSgYaYnZi/Tttzxl5W4IrB59mv0ftFODIad9BWJDO5KtCheAEvwAh0zjqhjeAWs9OVNvsQ75iT22ubHCxp4m/5Hg06rZ7QHdC9Y1VyTEeNVNhx9IRZQYXMZHq4T6HRacxm2o8DYkiZZWk/49qQltilfaD5EKYWm4iTpnWVzGRB1PgsDaK+1lTctobfbxpnySpb3Spby8vO/NnZvFX8IaLXkhv9uUZPsNdmf/P/ND9FqUnt5jRqn7iesUJx4E7lYZPHKRFQheBCL4wvf1hXA9fsz68rhvbDOU6OvG30B+xOMwoafVOGH2GAfW/RdTzQpDY7G+TG8j2HsMTHY5wykYcjseT9VYTTPdE4e9A5erEFVaLJxa41KvYiTV1YF9DANqIp1FqbfSLqsZsJT9bBHhMBJmdy6N0YlSisLcNgrrRC4wOUx7A+Pa5CFI31VIOZnfCuMu03F213Ytl/2GjGfBL+oLSpQJvQhhkb/YjgtTxwXqDRfP1oMjstOqyK/1yNUf4Zh9YmkYX1xMr6fgsen101DPw7Vipbb7hROh1Jt+65N/J7PrH+1Rh/+Xts0b+K86VqMbQjfgx7N7ZmObp72t6YIG/y4HLXeoMP8zS+2Y/TNvYGD2LNhs2QyAIhD+tyP549KIUNzaSu1i/uAlMrfP9uxdhpGUgTeS8YH7QvetT38cbKlmiGYXKQ+JsdHIZ/AVIpIcs=
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"getTicket"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/api/ticket/{network}/lock/{lockAddress}/key/{keyId}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+get a ticket for a key by lock.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}},{"in":"path","name":"keyId","required":true,"description":"Key Id.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully retrieved the ticket.","content":{"application/json":{"schema":{"nullable":false,"required":["name","lockAddress","keyId","manager","publicLockVersion","userMetadata","isVerifier","attributes","image","description","owner","expiration"],"type":"object","properties":{"keyId":{"type":"string"},"name":{"type":"string"},"owner":{"type":"string"},"manager":{"type":"string"},"lockAddress":{"type":"string"},"image":{"type":"string"},"description":{"type":"string"},"checkedInAt":{"type":"number"},"userMetadata":{"type":"object","additionalProperties":true},"expiration":{"type":"string"},"attributes":{"type":"array","items":{"type":"object","required":["value"],"properties":{"trait_type":{"type":"string"},"value":{"type":"string"},"display_type":{"type":"string"}}}},"publicLockVersion":{"type":"string"},"isVerifier":{"description":"Whether the user who requested the ticket can verify the ticket.","type":"boolean"}}}}}},"401":{"description":"User is not authenticated.","content":{"application":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

@@ -1,0 +1,71 @@
+---
+id: approve-refunds
+title: "approveRefunds"
+description: "Approves refunds for an event."
+sidebar_label: "approveRefunds"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVk2P20YM/SsDnlpAu3a37UW3bZAWaZs22PWiKAwfaIm2JpZmFA7HG1fQfy84kj9ib3YbtEB9sTTivCEfycfpwLfEKNa7NyXkgG3Lfkt3tIquDJBBoCKylR3k8w4eAjHkc6h9sXmLDtfEsOgXGZQUCratwkAOtwNIMDzAmJVng87QlpxcQwYtMjYkxCHBWt3UolSQgcOGIIdQxzVkwPQhWqYScuFI5+fcD0ahqKhByDuQXZs2C1u3hl49UwQK8oMvd2pxDlh4J+REP2Hb1rZIVEzeBz2gu4T2y/dUyCeezQEbH50uOpJHzxtYZNCyEiuWQsIeLI44LjZLYt0S6xqXNUG+wjpQn0ERmckVu8uATq3V/f544j9ATj91PLTehcGvm+k3+veF6ftPSFt5blAXhYkggy3WkcIldaPds2TsqRsxjrbIjDvIwAo14dIj5SMd//KOQ02NNH43/faSOe0PY4NxXgxGqTzbv6g04k1LrIEYqWwwWKj9v2LyLPZz0hoKAdf0FGslrTDWAjn86aNBpnNvNdlRKnKi7jzr/kWJZSBW9B1+83J7igIDbd9Pp0/Q5hREz1nFul7Z2oxda8qYlq0TYoe1CcRbYkPMnv93/mYVMZlHDKk51CVj3T4E69ZGKtpH8gJbP5EjtsV9Cu+1QsFYZw1J5VWZWx8kSadUkMNkezNJ/RgmnWplPxmV+4pPpFvRBomNXEMOlUgb8slE9Ts0Vqrr6PT5qmUvvvD1deEbOJfZd+zLmHJuBgehz84Rg+DauvXVlyHfD7sOsIvjvLnX1A3JGKbOIRN65F719X1JyEnwhocfR72An/+YQZ+pmu3r4rTNW/sL7Y7zBlt7tUkLaRh9iMS7JA9aSnfHGfL6IzZtTaeaPj2V7BN12ivztFfQlU+nj/l+SOSYX/dsqf4Rh4GVmwueDnZGc2xLCmaJxYZcaVbRpdRgbWWXlJq0m1L52WJDYt06Mw0JlihognjGNWUGXamNb1cjN6byfhO0TGtbkAspxJGct29miQstwQbdyZex6MzxvvCJ492xQV+eKmNmhD7KpK3ROs1eqrJurPo5bJWboe4hg3y8JZyX/iKDSrsln0PXLTHQA9d9r8tDXvP5QmcF26Eb5x2UNuhzeZCDz4bx1d04w7424/XjSb/3ZeZ2+9EGOUAGWmPj7aZf9BlUhGW6U3Xjp1fDSVczBThuvVA3bcFhx21RUCvP2i5OdOTd7/czbZbxQtT4UvcwPup8xsfBTZ8iT92X1jqo0a1jkkQYMLUgdE6cNNVZJ6aoniSi6waLmd+Q6/sDL6LvSkzf/w1UIrKU
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"approveRefunds"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/events/{slug}/approve-refunds"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Approves refunds for an event.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"slug","required":true,"description":"Slug","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"required":true,"content":{"application/json":{"schema":{"type":"object","required":["amount","network"],"properties":{"amount":{"type":"number","nullable":false},"currency":{"type":"string","nullable":true},"network":{"type":"number","nullable":false}}}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"201":{"description":"Approves refunds for an event.","content":{"application/json":{"schema":{"type":"object","required":["format","tree","values"],"properties":{"format":{"type":"string","nullable":false},"values":{"type":"array","items":{"type":"object"}},"tree":{"type":"array","items":{"type":"string"}}}}}}},"403":{"description":"User is not authorized to perform this action.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"You are not authorized or authenticated to perform this action.","nullable":false}},"title":"NotAuthenticated"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

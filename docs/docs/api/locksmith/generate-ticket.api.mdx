@@ -1,0 +1,71 @@
+---
+id: generate-ticket
+title: "generateTicket"
+description: "Generate a ticket for a key."
+sidebar_label: "generateTicket"
+hide_title: true
+hide_table_of_contents: true
+api: eJydVU2P2zYQ/SvEnBpAa20XPem2hyTYJi2Krhc9GD6MqbHESCIVcuRUEPTfi6Fk2V47WHR9sfgxb77ePA7gWvLIxtmnHDIoyMqS1kZXxJBAIN15wz1kmwFeAnnINttxm0BOQXvTiiVk8Hm2U6g4mqq98wpVRf0KEmjRY0NMPkQcIyYtcgkJWGwIMrDEP5yvIAFP3zvjKYeMfUevHf053VMmF9ygS2oQsgG4bwXGWKaCPIxjctNN7XT1mOeeQnjT1VenK4XT5ZvOAntji5/6qqh/yt/08oV69XQ7mQV/KyChdTZQkPOH+3v5uwR67rSmEPZdXffq2MdccUlzS1YwJvDb/a/XptJXZYKyjhV2XJJlo8VawtLOMlkWK2zbWg6i1XAdsNt9Iy2ssV1d464myPZYB0qg9cIzNlP8DYWABV2nKsXZY1czZLAuyZP6gUGhVeS988pYJentTW1sETOT2lLg1bXPcUyADct6YqfRz+QP5D8KFIzyS6AhLt1EfI485RIySA8PKbYmneqWDjM5x1Tokw5nJBrTivp0iK0e02PV49yIr4nuna8hg5K5DVkaMUJjuFx1Vr7vWu/YaVevtGvgNT3+8i7vtCzUFD4I2y4RA2NhbHH3/5CfJ6sFdnsa9mdp7NSqaeSXPonLI1VlvSP05CGZPz4536A07/d/1sK2x0vCzCDYmi/UnwYFW3NXxY04Rd878r1MFRi7d9Fu7uNLTEt9PeYJCUiRp3werjJc7qnWu4PJKagd6opsrvadjUXF2nAftYos7iZaxaYbWySqIcYcGVVg57GgRKHNZUrMfs5Klc5VUR1qo8mGyOk5rT+e1jGL1gVu0J6dHHmiFpm9CHw4zdxbwjpXlOlfTtsajZWqR3YMM5k3cJDKYGvk+tFfdtJbKansXErj1I/sqGELs7cJlC6w4A7DDgO9+HocZXtqW7bZJnBAb6ZR3AyQmyDf+aIFP831l79npfygLmX+ZpZHMlkJ9IB1J6s58tN7ItPyrgheq/87Yjiv6LvjOL0P74hgat+4HRMoCfP4eg/z2aPW1PKZ1bm6ixos2vj541oY1AmdliF+NfkR+GYwwzDdWLuK7DgusbGsJbZx/A/hh+0v
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"generateTicket"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/api/ticket/{network}/lock/{lockAddress}/key/{keyId}/generate"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Generate a ticket for a key.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}},{"in":"path","name":"keyId","required":true,"description":"Key Id.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully generated the ticket."},"401":{"description":"User is not authenticated.","content":{"application":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

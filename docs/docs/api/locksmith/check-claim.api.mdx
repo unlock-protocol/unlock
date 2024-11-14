@@ -1,0 +1,71 @@
+---
+id: check-claim
+title: "checkClaim"
+description: "Check if claim is possible for a given purchase"
+sidebar_label: "checkClaim"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVsGO2zYQ/RViTi2gtYOgvei2WaTFtmkbrL3IwfBhTI4txhTJkJQ3hqB/L4aU117bbZFtgepiiR7ODN+8ecMeFEUZtE/aWajhriG5FXotpEHdCh2FdzHqlSGxdkGg2OgdWeG7IBuMBBU4TwF5972CGiTvv+O9UIHHgC0lChHqRQ+aA3hMDVRgsSWowVJ6cmELFQT60ulACuoUOqrO0vq92AmtJlBBlA21CHUPae/ZjbaJNhRgGKqrYYyT21ulAsX4j6E+OLkVWIyvBospaLuBYVgWVxTTO6f2bCGdTWQTv6L3RssMzPRzZM/9pSu3+kwyMVKBYUyaIv8bSGqvyaZ4Yosh4B4q0InaeC2dChQm/JYd+eFDRO9sLLHfvnnDPy8xmZFVgsFiZhxqLyRasaLCFFJQ/VfHl2gLg46WK+cMoYVDyj9cy/Le7tBoJbT1XRKBJOkdqYl4h0qMhZr8myxtZwyuDEG9RhPpPO2WYsQNXQLNDFtjZxLU8DBiLVZO7UWJxV2mS+6TyzBDBRSCC9f8Hk25OAxM0ok/4WeyFLQcIWF+vs9OCnw/XoPv0bIrkZxYd8astTmAJlSXl7nLgkUjIoUdBZHT+t8RnTcUSDxhFGhLSkLbwxG03YjU0Gn5z+G9BG2Wj3fEa6igpdQ41jfvYiYsy0sN08z9aT/K2DBloYnT/kRvBpaQ7LCIYBcM1NCk5GM9LfatTs2ks/x+44NLTjozka6Fc2n6GJzqJH+IkiOw3r30GBNutN3cfJvnWdn17HbJScsu6LSfcfVKPR4jndKQQx4EMjcpYaAA1fjykwstcoV++TSHoYLbIzVORcrrX2l/lGr0+mabF7KOf+ko7LO4MZsejnL7/iu23tC5XC4OFFke5PC4MrDPtcvBx4o/ZmzEhwNYUAFXqoDy9gKmZzvhg9tpRVGsUG5ZHdedzZVBo9M+z0rifsoE1HJLSdtNJVpKyGmJmFzADVUCrRLWJb0eoRGNc9s8eIyWZGM+4YjNb/fzDAWTsEV78k8eu+Iwd18kfTKVXjHdxyol+pqm3qC2XMnMuH5sggXIMWx9nOaZfbx0OnmXFTTcPvUC+n6FkR6DGQZeLlWuF8sKdhh0ac9FD0pHflfP+vCXJ/vuYRzq34uXd4WrBzhwzzLPdmg6/oIKmHjHSwk316syOL9CvCKHU9wGZm5DqLj7Fv1ocVci38zZz9HDhQDzKcqOWynJp7+1XZ5I3cc/ZnNu5vFu0zrFewI+8RUKn0q2LiNRbi281oNBu+myakPxyc+fj+WeQA==
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"checkClaim"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/claim/{network}/locks/{lockAddress}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Check if claim is possible for a given purchase
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"recipients":{"type":"array","items":{"type":"string"}},"data":{"type":"array","items":{"type":"string"}}}}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Send true if purchase can be claimed","content":{"application/json":{"schema":{"type":"object","properties":{"canClaim":{"type":"boolean"}}}}}},"400":{"description":"Invalid input received. Bad request.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"Response body schema is invalid.","nullable":false},"error":{"type":"string","nullable":true}},"title":"GenericInvalidBodyError"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

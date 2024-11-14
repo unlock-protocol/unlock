@@ -1,0 +1,71 @@
+---
+id: generate-certificate
+title: "generateCertificate"
+description: "Generate certificate for specific key"
+sidebar_label: "generateCertificate"
+hide_title: true
+hide_table_of_contents: true
+api: eJy9Vk1v20YQ/SuLObUAbTpue+HNKNJA+UJR2ygKQYfRckRuRO4yu0OlKsH/XsySkihLthMHiC7iirPz8ebNG3XgGvLIxtlZDhkUZOVIv5NnszIamSCBnIL2phEryODNaKP0wUitnFehIS1ntaYtJNCgx5qYfIBs3oGRuw1yCQlYrAkysMRfnF9DAp4+t8ZTDhn7lh5G/DjYKZNfQgJBl1QjZB3wthE3xjIV5KHvk7NhKqfXN3nuKYRnQ713eq1wMD4bLLA3tng01pq2s/zZKO9oq2bni9n7X4iT0DgbKMj766sr+Tp2dNtqTSGs2qraqoJ40hPjbOwKxnb0Cfx69erUwX0gr0xQ1rHClkuyHBsak9POMlmWW9g01ehVjidpu+Un0iw4tFWFy4ogW2EVKIHGC8XYDFXUFAIWdFqwQLTCtmLI4K4kT+oLBoVWkffOK2OVFLkylbGF4pKUIEyBL09j9n0CbFjOA1mNviW/If9aXEHf9xGNX55Hw3nzH+WKnWrIr5yvFZcmKNRi/zhC6afwI2D6x7UKPT3MVno+7eQT6T8B3EfHN1MvI2y/nWPhzG6wMvmuJd+Dy1fC0A+fBGri0g3KFa/LMGaQbq7TiTql3ag0fSpakHYTRejTNW3TLs5tn+70TyYzUmbQrtZXkEHJ3IQsjT5Cbbi8bK08XzTesdOuutSuPpHLP73L24i4GlgIIh3HHgNjYWxx8W2eb4dbe7cLSVq33vD2VgAeMBROTwCUkDvdkfOS0JOHZHz4w/kahVxv/74T0bg5nvvRCTbmXdT4UfWwMReD6EdJ/NyS34pEgrErF++NrLqPZan3uzohAQF5qOf6pMK9nWq825icglqiXpPN1aq1EVSsDG+j0JHF5aAORq+JjS0SVRNjjowqsPNYUKLQ5jIwB40snVtHqa+MJhsi2cayPszuYhWNC1yjnbzZ8UQ9sSi7wxR89c4c8WX6l9OmQmOlB5Er3cjtOWwEJ30UNztsUsFXfjleeoP3bLed9jRfJFC6wOK265YY6N5XfS8/Dz3M5osENujNoBLzDnIT5DnfC9ejNf/017gDf1bHC/xskTtmWUl0g1UrpzHzwz8FGZ0XZfBwr78ghymiL87jsPlfkMHQvn7RJ1AS5jLX8258d6M1NTy5Nd3YIg17pXzzWlj9P8s7dok=
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"generateCertificate"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/certificate/{network}/lock/{lockAddress}/key/{keyId}/generate"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Generate certificate for specific key
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}},{"in":"path","name":"keyId","required":true,"description":"Key Id.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully get certification for a key"},"401":{"description":"User is not authenticated.","content":{"application":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}},"403":{"description":"User is not authorized to perform this action.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"You are not authorized or authenticated to perform this action.","nullable":false}},"title":"NotAuthenticated"}}}},"500":{"description":"Invalid request","content":{"application/json":{"schema":{"type":"object","properties":{"message":{"type":"string"}}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

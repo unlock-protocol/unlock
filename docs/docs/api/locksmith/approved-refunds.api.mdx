@@ -1,0 +1,71 @@
+---
+id: approved-refunds
+title: "approvedRefunds"
+description: "Returns the merkle proof of an approved refund."
+sidebar_label: "approvedRefunds"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVk2P2zYQ/SvEnFpAXm8WyUW3HDbBtmlR7Ad6MHygxZHFmCKV4dBdQ9B/D4aSvV7baZP20L2sPjhP82bevHEPoUPSbIO/M1CC7joKWzT3WCdvIhRgMFZkOzkBJdwjJ/JRcYOqRdo4VB2FUKtQK+3VPlxRjr+CAjpNukVGilAuerCC0mluoACvW4QSoktrKIDwS7KEBkqmhKcffhgPxarBVkPZA++6HMxk/RqGYSkIsQs+YpT3N9fX8u81yuN3p10Fz+hZIHTXOVvlGs0/R8Hpz/MIq89Y8SsaC6gDtVoeMiFCAVvtEkZYFtCR1J3tmOt07oxVAehTK0iRtTeazGz7RsJ9ck6vHEJZaxdxKMChrm99FYzEvQBpIr2DAixjGy+U7RLUlOU/gxw4v2aT4/8m/OJHpUJ33uDzUaBP7QoJhmGYDvwAsfGvgLfXby/LQALVLiSlCVWrN9avlfQOI6s6kDIBo/KBFT7byP9JEidsT+vVYox6jZfab7DWyTGUou2QqMKcUh2SN+fAuUyW5R4+okey1e+BP+TDYzXeXRqKJy8YioOqk3O1dYc6mJQfW89IXjsVkbZICokC/e8VeWyQUP2lo0xwTklZv6cg3RSPmphcfVexHjK9W4GCST4tchPEGNeYhS7GVcJ8ezPHLXqO8711zEbriPNe7GwQq8poo+slclBCw9zFcj53odrE1nJzlbxczzoKHKrgrqrQnlnuHxRMquRGjQnCUJwiRtZr69ezH0N+GKMOsEtJukpkefcgrRub8RSRjjohn9wbsdyvUBMSFNPFh8nK4Jc/H8Ve3r/o4nh6O/sr7l5WgO7sbJMf5P3wJSHtQOpvfR1y3NSpp0xLfdrzFFNFiiOfmzOGh3Ni91trMKqVrjbojaqTz0XVzvIuTzzKHGTh2GqDbP26UC2yNpq1ihxIr7FQ2huZQVtPrFQTwiaKwJyt0Mes2onWb3ePmUUXIrfaH705bJxvLNr+Zbb+xc6dqsz4zPPOaeulE1kx/SThBWylWqOIoYBTGUMBZd7LywKaEFki+n6lIz6RGwZ5PDapXCxlY5AdR2vRg7FRrs1htr9J7Kf7aVf+rKb1fjHxvWb8br9CoQQoQAQz/XoYlkMBDWojUl3006v3VYUdHwWdmZRI/jDiH2+lW18BGvgpWg==
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"approvedRefunds"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/events/approved-refunds/{slug}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Returns the merkle proof of an approved refund.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"slug","required":true,"description":"Slug","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"The merkle proof of an approved refund.","content":{"application/json":{"schema":{"type":"object","required":["format","tree","values"],"properties":{"format":{"type":"string","enum":["standard-v1"],"nullable":false},"leafEncoding":{"type":"array","items":{"type":"string"},"nullable":false},"values":{"type":"array","items":{"type":"object","properties":{"value":{"type":"array","items":{},"nullable":false},"treeIndex":{"type":"number"}}}},"tree":{"type":"array","items":{"type":"string"}}}}}}},"404":{"description":"The item you are making request for does not exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"resource not found","nullable":false}},"title":"GenericNotFound"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

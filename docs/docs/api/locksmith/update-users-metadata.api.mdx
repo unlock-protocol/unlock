@@ -1,0 +1,71 @@
+---
+id: update-users-metadata
+title: "updateUsersMetadata"
+description: "Update or create user metadata for lock."
+sidebar_label: "updateUsersMetadata"
+hide_title: true
+hide_table_of_contents: true
+api: eJztV01vGzcQ/SvEnGnLMdLL3pwiKdw2hRHL6EHQYbQcaRlxyQ3JlSIs9r8XQ660kuw4NtCgPUQXLT9mOHwzb2bYgWvIY9TO3ioooG0URnoI5MNHiqgwIkgIVLZexx0Usw54EYrZvJddP5egKJReN6wBCnhI8sJ5UXrirzaQF/WgSiydF8aV60uQ4OlLSyG+c2oHRZeG2pOCIvqWzvWymiDQe9yJ0tmI2mq7OtXOSnmNbGSF2DRGl+lqk8+BtXQQyopq5K+4awgKcIvPVEaQYFtjcGEIiiWaQBIaz8hETYG3p/OP5JIlIEFHqsOL9I33mwFDcKOUpxBAJt3jqB5htxS3zq9hfm7NfmE8V9tIK/KPD+7lyWmjRIhe29WTAscGvUjgYPPrgW3ahdHl84L7gFhia9i1vQRUSrNn0dwdqeONfTohUhkZ639PbS8h6shyiQF7dtzapo3wrVXo84/dHxpnQ7709dUb/jsN8Ztng1tsK11WYothYJa6FLdLEauBYmg8odqJCsNBRgodxVYbI6yLYkEis1sJtEo0ngLZKLRNSlJA/0gGeQoZ5p8U+kmh11FIAnnv/Espgxl3CqncZN6MNMKQ2LAnEcjvxePgtAOT315dPbbk1m7QaCU030V4KklvmKLvUImh0P1IctUUAq7oqVA7OAc+DSlILJzaiXyW0EHobPvlk3F5QP7bIXzu29/IktflAAnX9/dJyR6+t4/hm1YkGHexc61AT6LGNftzgC45UjnKrqOv+n+ApqfgWl9SMmnpWquewO8xKn+5+CFtzmj88lQwPVjWIaITy9aYpTYHHFSbpjlVeYtGBPIb8iI56T9HZFqRp0QwtNkkLi7DFdibXGeOyPB9sO7T9cboyXmyctypcs6Q0GCsoIDJ5nqCjZ7saT7J/Rp3rqwhpMa19QYKqGJsQjGZcEoPtY7VZWv5+4JTniuduSxdDef95513qi15ILJR0MtzjSHiStvVxes032epg9r52G7fs7uyA3LTfUCfj+TbpQ1QwILQp9KVPz44XyO75Pe/p9BLuBlj4bgAN/oP4oxnsR7GF+s0odmwLy35Xcq+HD6fxm79/VesG0NHbfHsqJ5enVXLMVJOauI4fVz5DqXsrAT1fT/v2a6lSxfY14mEr/hzDzhIYG9nYK8fQX3YJxrvNlpREAss12SVWLa2zFVLx11KN8QkTFGryzVFbVdyrCIhOo8rkqmTsi7q5QCvqJxbB45uo0uyIaE04PvxdprgbFyINdqjldyXifTsEkfvrhPzu5Hdr3lmDc6O9DVOGoPackCkwO0G9sxgw1hho097p+zcuYTKhcjbum6BgR686XuezgFSzOYSNuh1pjK/C6EiVOmR2AEHVAG/ZssvpmwMbzdtjrizHMWkyhI3ZUlNfHbv/Cgb3D1MOfqHt2TtFIt43PI7E7dQAEhwCcjcjPJcBwbtqk15DbJKdg+2DMqBJWfUSpfaE8jujgzsurxj6tZk+x7kcJPIY+jnfd//A2xybTg=
+sidebar_class_name: "put api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"updateUsersMetadata"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"put"}
+  path={"/v2/api/metadata/users"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Update or create user metadata for lock.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={undefined}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"required":true,"description":"users array containing user metadata.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"users":{"type":"array","items":{"type":"object","nullable":false,"required":["lockAddress","userAddress","metadata","network"],"properties":{"network":{"type":"integer","nullable":false},"lockAddress":{"type":"string","nullable":false},"userAddress":{"type":"string","nullable":false},"metadata":{"type":"object","nullable":false,"properties":{"public":{"type":"object","nullable":true,"default":{},"additionalProperties":true},"protected":{"type":"object","nullable":true,"default":{},"additionalProperties":true}},"title":"UserMetadataInput"}},"title":"UserMetadata"}}}}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"201":{"description":"Array containing user metadata which was created. If the user already has metadata, it will not be updated and present in the array.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"result":{"type":"array","items":{"type":"object","nullable":false,"required":["lockAddress","userAddress","metadata","network"],"properties":{"network":{"type":"integer","nullable":false},"lockAddress":{"type":"string","nullable":false},"userAddress":{"type":"string","nullable":false},"metadata":{"type":"object","nullable":false,"properties":{"public":{"type":"object","nullable":true,"default":{},"additionalProperties":true},"protected":{"type":"object","nullable":true,"default":{},"additionalProperties":true}},"title":"UserMetadataInput"}},"title":"UserMetadata"}},"error":{"description":"Array containing user addresses for which metadata was not created.","type":"array","items":{"type":"string"}}}}}}},"400":{"description":"Invalid input received. Bad request.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"Response body schema is invalid.","nullable":false},"error":{"type":"string","nullable":true}},"title":"GenericInvalidBodyError"}}}},"404":{"description":"The item you are making request for does not exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"resource not found","nullable":false}},"title":"GenericNotFound"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

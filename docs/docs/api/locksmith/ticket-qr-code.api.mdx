@@ -1,0 +1,71 @@
+---
+id: ticket-qr-code
+title: "ticketQRCode"
+description: "Get QR code for the key."
+sidebar_label: "ticketQRCode"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVk1v3DYQ/SvEnFpAtgw3vehmFInhJjEae42iMPYwFkcSI4mUydEmW0H/vRhK++H1xkZ9yUkiRb158+aLA7iOPLJx9kpDBmzymvjLzR9OEyQQKO+94TVk9wPcBfKQ3UMvzwQal9ef0WJJHpbjMgFNIfemEyzI4JJYfblRudOkCucVV6RqWp9CAh16bInJh4hr5HiHXEECFluCDCzxN+drSMDTY288acjY93Ro5Ho6p4wW3JBX1CJkA/C6ExhjmYTeOCZHzYgLF1p7CuFVU59cXiucDh81FtgbW/7QVk3rK/2qlY+0VlfHndniLwUkdM4GCvL9/OxMHk+BNtKbFksSvNxZJstyMu6lpSlksbNj+6bBh4YmZuM4jgm8O/vtObYkgjJBWccKe66cN/+SVuxUR75wvlVcmaAwl/MHtrHrGpPHhEu/BoEbnrvqHr5SzqLdllKBTaAEOi/5ymbyvKUQsKTnIomsBfYNQwb/uF6hp0O2zscVWRY6L9I/YCG6sGFZw7Xji30U2Mj27rlsi4qUYWrVembUYm1sqSQjKHCsEu1o0pW+m8A/XTtPwfU+n8QrXG/1y3JckiVv8mvHH+LhSY3fjyXonRUMUb3om6YwzVYH3cdtKV5vsVGB/Iq8Iu+d/+mKLCrypL5hUGgnSsrYjQsSTelzsyev5M4s1m10771ARb3GBFriykk7Loljv+QKMkhX5yl2Jp16dDrMTXJMh70+NqZD7DRj+uhjAxfwqc/2voEMKuYuZGkq/4TWcHXaW3k/6bxjl7vmNHctHPalv7zTfSwINfEFaXNPEQNjaWx58v+Qb6e/trDL3dS5lUhOsZlmzzYwYnLTI2X9QOjjUJpePjjfokTrz78XMCZwsUuTPRDszEda7zo0duakjhuxfT/25NfSzsHYwsX/5sDdRbfUp42fkICIPPlz/szD7TnVebcymoJ6wLwmq1XR2ygqNobXsQGQlEXMoxhlY8tEtcSokVEFdh5LShRaLSVpitkrVTlXx7HUmJxsiEk8u/X5ahG96FzgFu3el8mETOl53D/hPewK7aVhPovJ9J3TrkFjRfCYGMOcuPewElGwM3I82oQEst2Mz57O4WwzKh89LBOoXGABGYYHDHTnm3GU7Sk82f0ygRV6M9XY/QDaBHnX2yL/oVO/3Myj+Ff19B5x1KVN0lhJkBU2vawgkbm+d2GRqngTg8PrxRs47Kv4Zh67C8gbGEyBG5djAhWhjtfFYf52kefU8d5fu1uI1Py25V2+X0iy9JI521I9qO8Ie5TKMEwnFq4mO45bZixrYTaO/wFz6MZr
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"ticketQRCode"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/api/ticket/{network}/{lockAddress}/{keyId}/qr"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Get QR code for the key.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}},{"in":"path","name":"keyId","required":true,"description":"Key Id.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"QR code image.","content":{"image/gif":{"schema":{"nullable":true}}}},"403":{"description":"User is not authorized to perform this action.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"You are not authorized or authenticated to perform this action.","nullable":false}},"title":"NotAuthenticated"}}}},"404":{"description":"The item you are making request for does not exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"resource not found","nullable":false}},"title":"GenericNotFound"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      
