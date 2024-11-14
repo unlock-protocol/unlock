@@ -1,0 +1,71 @@
+---
+id: connect-stripe-account
+title: "connectStripeAccount"
+description: "Connect a stripe account to a lock"
+sidebar_label: "connectStripeAccount"
+hide_title: true
+hide_table_of_contents: true
+api: eJytVkuP2zYQ/ivEnFJAu04XPenmBEmxbdoGsRc5GD6MqbHFmCIZkvKuIei/F0PKb+9mG9QX6zGcx/fNfKMOrCOPUVlzX0EJ0hpDMk6iV47GUtrWRCggkGy9ilsoZx08BPJQzub9vICKgvTK8Xko4X0+LVCE5EBg9iCiFSi0lWsowKHHhiL5kLwpPugw1lCAwYagBEPx0Xq29fS9VZ4qKKNv6Tzc39lOqOqWc5Q1NQhlB3Hr2I0ykVbkoe+Lq2E4n3FVeQrhh6E+WbkWmI2vBuOCzQp6BoVdUYjvbLVlC2lNJBP5Ep3TSia4R98Ce+6OXB1SmMECAz14DfNiF8EuvpFkMpxnzqKiwId2hpepFBBOaLySLP843+CsCdnf3du3/Hda/qSVkkJYtlpvxdAjVJ2xDMXrS325pvaZeqQnjIzP/p1pmwVTXAA9OeUpjOPVt0OgZyH47VrV92aDWlVi4PP/q6+hEHBFL6Xz62U6PHdCBWFsFNjGmkzkBCh1//XMXk7KtFrjQhOUS9SBXp0lD8cSWx2hhGlNnsQjBoFGkPfWC2UEN8pSaWVWIta0A/D2MiYXG1Xke/idDHklJ+Q35D+wKxjgaCjWluXJ2URDmuMSRpu7UW7B0dCTo27Qjn7E0x1G3dGQ90nI2HlWntRlUMfoQjnK9o2K9W1r+PrGeRuttPpW2gbO9eCzt1Ur+UbkfIFF5tRjiLhSZnXz3zxP8qm92/lBfSfMZOYma/CeGA65UyW+XxB68lAMFx+tb5DZ+uPrlKdhfNohgxN06k/aHvQRnbpZpwdJPL+35LcspsDt/uWgcR+esHGaTsTo0CpnGnQ0zcosbQo/8P+Q0BGfdnBBAcxVhuXuAqi9nXDeblRFQSxQrslUYtmaxA1qFbdiab0gg4vcjkquKSqzKkRDESuMvKysxxUVAk3F06WWAziitnad9F4rSSakGgd0/rqfJjC4JRs0R2+GXhR5iYrDFj3J/2gvvG5vDixFeoojp1EZxnBQyjwQM9jc7RHPmmDypJeHlZq6kR8dr795ATWPVjmDrhtI7Ht+nFkvZ/MCNuhVHt1ZB5UKfF3ttePZ4t58GdbaL+J0YV8taNeLhvtug7rlOyiAG/HwZcDD9lMZnO/xn8jhGLd+3hdQE1bpi6gbLN7nyDfTbaJh5+FiY3AV+cRYSnLxRdv5kQx+/mcy5eEePjAaW/EZj4/8HYOPOVubkEhqkZ51oNGs2qTokH1y//ImORKBM+VIVV3Fo+uyxdSuyfT9Hp7I9wxM3/8LVtOa5g==
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"connectStripeAccount"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/stripe/connect/{network}/locks/{lockAddress}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Connect a stripe account to a lock
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"required":["baseUrl"],"type":"object","properties":{"baseUrl":{"type":"string"},"stripeAccount":{"type":"string"}}}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully connected stripe account","content":{"application/json":{"schema":{"type":"object","properties":{"url":{"type":"string"},"created":{"type":"number"},"expiresAt":{"type":"number"},"object":{"type":"string"}}}}}},"400":{"description":"Invalid request","content":{"application/json":{"schema":{"type":"object","properties":{"message":{"type":"string"}}}}}},"401":{"description":"User is not authenticated.","content":{"application":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

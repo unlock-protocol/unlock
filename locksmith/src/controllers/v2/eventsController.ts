@@ -1,6 +1,5 @@
 import { StandardMerkleTree } from '@openzeppelin/merkle-tree'
 import { ethers } from 'ethers'
-import networks from '@unlock-protocol/networks'
 import { RequestHandler } from 'express'
 import {
   getCheckedInAttendees,
@@ -23,11 +22,12 @@ import { removeProtectedAttributesFromObject } from '../../utils/protectedAttrib
 import { isVerifierOrManagerForLock } from '../../utils/middlewares/isVerifierMiddleware'
 import { sendEmail } from '../../operations/wedlocksOperations'
 import { getEventUrl } from '../../utils/eventHelpers'
-import { Web3Service, getErc20Decimals } from '@unlock-protocol/unlock-js'
+import { getErc20Decimals } from '@unlock-protocol/unlock-js'
 import { uploadJsonToS3 } from '../../utils/s3'
 import config from '../../config/config'
 import { downloadJsonFromS3 } from '../../utils/downloadJsonFromS3'
 import logger from '../../logger'
+import { getWeb3Service } from '../../initializers'
 
 // DEPRECATED!
 export const getEventDetailsByLock: RequestHandler = async (
@@ -37,7 +37,8 @@ export const getEventDetailsByLock: RequestHandler = async (
   const network = Number(request.params.network)
   const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
   const eventDetails = await getEventMetadataForLock(lockAddress, network)
-  return response.status(200).send(eventDetails)
+  response.status(200).send(eventDetails)
+  return
 }
 
 export const EventBody = z.object({
@@ -88,7 +89,8 @@ export const saveEventDetails: RequestHandler = async (request, response) => {
   }
 
   const statusCode = created ? 201 : 200
-  return response.status(statusCode).send(event.toJSON())
+  response.status(statusCode).send(event.toJSON())
+  return
 }
 
 export const getAllEvents: RequestHandler = async (request, response) => {
@@ -102,10 +104,11 @@ export const getAllEvents: RequestHandler = async (request, response) => {
   events.forEach((event) => {
     event.data = removeProtectedAttributesFromObject(event.data)
   })
-  return response.status(200).send({
+  response.status(200).send({
     data: events,
     page,
   })
+  return
 }
 
 // This function returns the event based on its slug.
@@ -153,7 +156,8 @@ export const getEvent: RequestHandler = async (request, response) => {
       )
     }
 
-    return response.status(200).send(eventResponse)
+    response.status(200).send(eventResponse)
+    return
   }
 
   const settings = await getLockSettingsBySlug(slug)
@@ -198,16 +202,18 @@ export const getEvent: RequestHandler = async (request, response) => {
         )[0]
       )
 
-      return response.status(200).send({
+      response.status(200).send({
         data: { ...lockData },
         checkoutConfig,
       })
+      return
     }
   }
 
-  return response.status(404).send({
+  response.status(404).send({
     message: `No event found for slug ${slug}`,
   })
+  return
 }
 
 // API endpoint that a manager can call to approve refunds for attendees
@@ -220,7 +226,7 @@ export const approveRefunds: RequestHandler = async (request, response) => {
   let decimals = 18
 
   if (currency) {
-    const web3Service = new Web3Service(networks)
+    const web3Service = getWeb3Service()
     const provider = web3Service.providerForNetwork(network)
 
     // Get the decimals
@@ -234,7 +240,8 @@ export const approveRefunds: RequestHandler = async (request, response) => {
   const list = await getCheckedInAttendees(slug)
 
   if (list.length === 0) {
-    return response.status(404).send({ error: 'No attendees found' })
+    response.status(404).send({ error: 'No attendees found' })
+    return
   }
 
   // then, create the merkel tree using the OZ library
@@ -253,7 +260,8 @@ export const approveRefunds: RequestHandler = async (request, response) => {
     fullTree
   )
 
-  return response.status(200).send(fullTree)
+  response.status(200).send(fullTree)
+  return
 }
 
 export const approvedRefunds: RequestHandler = async (request, response) => {
@@ -271,8 +279,10 @@ export const approvedRefunds: RequestHandler = async (request, response) => {
   }
 
   if (!file) {
-    return response.status(404).send({ error: 'Not found' })
+    response.status(404).send({ error: 'Not found' })
+    return
   }
 
-  return response.status(200).send(file)
+  response.status(200).send(file)
+  return
 }

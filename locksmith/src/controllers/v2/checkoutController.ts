@@ -21,9 +21,10 @@ export const createOrUpdateCheckoutConfig: RequestHandler = async (
   const id: string | undefined = request.params.id
   const { config, name } = request.body
   if (!(config && name)) {
-    return response.status(400).send({
+    response.status(400).send({
       message: 'Missing config or name',
     })
+    return
   }
   try {
     const checkoutConfig = await PaywallConfig.strip().parseAsync(config)
@@ -34,7 +35,7 @@ export const createOrUpdateCheckoutConfig: RequestHandler = async (
       config: checkoutConfig,
       user: request.user!.walletAddress,
     })
-    return response.status(200).send({
+    response.status(200).send({
       id: storedConfig.id,
       by: storedConfig.createdBy,
       name: storedConfig.name,
@@ -42,14 +43,16 @@ export const createOrUpdateCheckoutConfig: RequestHandler = async (
       updatedAt: storedConfig.updatedAt.toISOString(),
       createdAt: storedConfig.createdAt.toISOString(),
     })
+    return
   } catch (error) {
     if (
       error instanceof Error &&
       error.message === 'User not authorized to update this configuration'
     ) {
-      return response.status(403).send({
+      response.status(403).send({
         message: error.message,
       })
+      return
     }
     throw error
   }
@@ -65,12 +68,14 @@ export const getCheckoutConfig: RequestHandler = async (request, response) => {
 
   const checkoutConfig = await getCheckoutConfigById(id)
   if (!checkoutConfig) {
-    return response.status(404).send({
+    response.status(404).send({
       message: 'No config found',
     })
+    return
   }
 
-  return response.status(200).send(checkoutConfig)
+  response.status(200).send(checkoutConfig)
+  return
 }
 
 /**
@@ -83,7 +88,7 @@ export const getCheckoutConfigs: RequestHandler = async (request, response) => {
   const userAddress = request.user!.walletAddress
   const checkoutConfigs = await getCheckoutConfigsByUser(userAddress)
 
-  return response.status(200).send({
+  response.status(200).send({
     results: checkoutConfigs.map((config) => {
       return {
         id: config.id,
@@ -95,6 +100,7 @@ export const getCheckoutConfigs: RequestHandler = async (request, response) => {
       }
     }),
   })
+  return
 }
 
 /**
@@ -115,20 +121,23 @@ export const deleteCheckoutConfig: RequestHandler = async (
   const existingConfig = await getCheckoutConfigById(id)
 
   if (!existingConfig) {
-    return response.status(404).send({
+    response.status(404).send({
       message: 'Config not found.',
     })
+    return
   }
 
   const deleted = await deleteCheckoutConfigById(userAddress, id)
 
   if (!deleted) {
-    return response.status(403).send({
+    response.status(403).send({
       message: 'You do not have permission to delete this configuration.',
     })
+    return
   }
 
-  return response.status(200).send({
+  response.status(200).send({
     message: 'Config deleted',
   })
+  return
 }

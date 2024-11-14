@@ -1,0 +1,71 @@
+---
+id: rsvp
+title: "rsvp"
+description: "User applies to attend an event."
+sidebar_label: "rsvp"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVk1v4zYQ/SvEnFpAsRdBe9EtW+wWabdtkA/swfBhTI5trimSS1LOGob/ezGkHCm2mmwDFPXFkkjODN+8eTN7cJ4CJu3stYIaQtx6qMBjwIYShQj1bA/aQg0e0xoqsNgQ1GApPbqwgQoCfW11IAV1Ci1VoCjKoD2bhBr+LPuEVhOoIMo1NQj1HtLOsxltE60owOFQjboxTm6ulAoU46uuPjm5EVg2jzqLKWi7Kr46+xJ9kmuEqjhfEyoKr3q6pe6c2KJpSSQnPL7mdH5q5SFSEOi90RTZBKZEVgm0grZk06QLg2J679SOTUpnE9nEj/mczImbfolsb3/u2y2+kEycz8BpTpoirwaS2uvO0EmYFVCD2oyuKEyj1lEpzYGguRn4YeAO+cf3iN7ZWNxfvnvHf8/BuGulpBiXrTG7DhTFoGQooHr71W1rDC4MQb1EE+kUiyHBxu7cRgovraP3wW1xHLBjkfRrtm0Whe6QdOKo4JZLrsD00xgy13aLRiuhrW+TCCRJb0lNxHtUouPH5D8EqKEYcUXn92M6L7E1KRdEya9YOLUTxZfQUegS++TcDRMtBBfG7PZbC4d6rH4lS0HLDhIuiw/ZSIHv5zH4HiybYioxt5baHEETqlQuS1CwaESksKUgclj/O6L3awokHjFmPeCQhLbHK2i7EmlNw/SfwnsO2l2+Xo/XoYKG0tqx7HsXs0yw9tYw3V5OuRFM9x2BD9P9oE4OLHPZWOkObTAsnSn5WE+nvDE2Oq0nreXnCx9cctKZiXQNnGrgTXCqlfwiSnzA4vzcYky40nZ18e8s35VTT2bnHLRsg067O85cyQVr8CAR7PIo4vy+IAy5H5SHjy40yNn57fM91/dVT4uBEfT6d9r1PQy9vtjkD7nHfG0p7LICMJNue4X/8A0bb+hEoXtydMI8YEvRYzal7dLlELqcP2SExKcjZFAB56tAc3kG1tM+wWqmFUWxQLnhdrRsrSzirtNOLF0QxBWVKajlhpK2q0o0lJDDETG5gCuqBFolrEt62QEk1s5tcos0WpKN+Z4dQn9c32dAmIYN2sFKN488i3bQB7+nh3ZZSfQtTb1BbbOsh6zYhfAz2DIkna+6H23qYXeYV7DmMqlnsN8vMNJDMIcDfy4ZrWfzCrYYdCnD2R6UjvysnnTgH6/xw203b/wong9Mo8EfeWaZU3kCgRqgAiZZP5lxIb0pgtM56g0xDHE7zA/VcbB6MyovTFyj4ZUw+unuKUJGpSz+Uvxc3PP5fseZ1PcnrqQkn17cOx+I6s1fd/csHd3w1jiVGY2PzDV8LHi5fO8ylvG3PRi0qzb3Byg2+fc3/ToNEw==
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"rsvp"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/rsvp/{network}/{lockAddress}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+User applies to attend an event.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}},{"name":"captcha","in":"header","required":true,"description":"Recaptcha value to pass.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"recipient":{"type":"string"},"email":{"type":"string"},"data":{"type":"object","additionalProperties":true}}}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully applied to event","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"lockAddress":{"type":"string"},"userAddress":{"type":"string"},"approval":{"type":"string"},"network":{"type":"number"}},"title":"Rsvp"}}}},"400":{"description":"Invalid input received. Bad request.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"Response body schema is invalid.","nullable":false},"error":{"type":"string","nullable":true}},"title":"GenericInvalidBodyError"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

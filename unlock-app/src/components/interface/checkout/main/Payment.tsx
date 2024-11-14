@@ -21,7 +21,7 @@ import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { useCanClaim } from '~/hooks/useCanClaim'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { useCrossmintEnabled } from '~/hooks/useCrossmintEnabled'
-import { toBigInt, useCrossChainRoutes } from '~/hooks/useCrossChainRoutes'
+import { useCrossChainRoutes } from '~/hooks/useCrossChainRoutes'
 import { usePricing } from '~/hooks/usePricing'
 import Link from 'next/link'
 import Disconnect from './Disconnect'
@@ -376,7 +376,7 @@ export function Payment({ checkoutService }: Props) {
                         amount={formatNumber(
                           Number(
                             ethers.formatUnits(
-                              toBigInt(route.tokenPayment.amount),
+                              route.tokenPayment.amount,
                               route.tokenPayment.decimals
                             )
                           )
@@ -393,9 +393,9 @@ export function Payment({ checkoutService }: Props) {
                         <Link
                           className="underline ml-1"
                           target="_blank"
-                          href="https://www.decent.xyz/"
+                          href={route.provider.url}
                         >
-                          Decent
+                          {route.provider.name}
                         </Link>
                         .
                       </div>

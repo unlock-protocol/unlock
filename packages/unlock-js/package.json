@@ -33,7 +33,7 @@
     "ethers": "^6.13.0"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "5.0.2",
+    "@graphql-codegen/cli": "5.0.3",
     "@graphql-codegen/typescript": "4.1.1",
     "@graphql-codegen/typescript-graphql-request": "6.2.0",
     "@graphql-codegen/typescript-operations": "4.3.1",
@@ -44,10 +44,10 @@
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "@unlock-protocol/types": "workspace:./packages/types",
     "eslint": "9.14.0",
-    "ethers": "6.13.2",
+    "ethers": "6.13.4",
     "hardhat": "2.22.15",
     "prettier": "3.3.3",
-    "tsup": "8.3.0",
+    "tsup": "8.3.5",
     "typescript": "5.6.3",
     "vitest": "2.1.4"
   },

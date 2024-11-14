@@ -1,4 +1,3 @@
-import { Web3Service } from '@unlock-protocol/unlock-js'
 import { Response, Request, RequestHandler } from 'express'
 import * as z from 'zod'
 import Normalizer from '../../utils/normalizer'
@@ -13,7 +12,7 @@ import {
   UserMetadataInputs,
   getMetadata,
 } from '../../operations/userMetadataOperations'
-import { networks } from '@unlock-protocol/networks'
+import { getWeb3Service } from '../../initializers'
 
 export const UserMetadata = z
   .object({
@@ -41,7 +40,8 @@ export const getLockMetadata: RequestHandler = async (request, response) => {
     lockAddress,
     network,
   })
-  return response.status(200).send(lockData)
+  response.status(200).send(lockData)
+  return
 }
 
 export const getKeyMetadata: RequestHandler = async (request, response) => {
@@ -65,7 +65,8 @@ export const getKeyMetadata: RequestHandler = async (request, response) => {
     network
   )
 
-  return response.status(200).send(keyData)
+  response.status(200).send(keyData)
+  return
 }
 
 export const getBulkKeysMetadata: RequestHandler = async (
@@ -78,11 +79,12 @@ export const getBulkKeysMetadata: RequestHandler = async (
     const { keys }: any = request.body
 
     if (!keys) {
-      return response
+      response
         .send({
           message: 'Parameter `keys` is not present',
         })
         .status(400)
+      return
     }
 
     const owners: { owner: string; keyId: string }[] = keys?.map(
@@ -130,12 +132,14 @@ export const getBulkKeysMetadata: RequestHandler = async (
     const mergedData = await Promise.all(mergedDataList)
     const filtredMergedData = mergedData.filter(Boolean)
 
-    return response.send(filtredMergedData).status(200)
+    response.send(filtredMergedData).status(200)
+    return
   } catch (err) {
     logger.error(err.message)
-    return response.status(400).send({
+    response.status(400).send({
       message: 'There were some problems from getting keys metadata.',
     })
+    return
   }
 }
 
@@ -155,7 +159,8 @@ export const updateLockMetadata: RequestHandler = async (request, response) => {
       returning: true,
     }
   )
-  return response.status(200).send(updatedLockMetadata.data)
+  response.status(200).send(updatedLockMetadata.data)
+  return
 }
 
 export const updateKeyMetadata: RequestHandler = async (request, response) => {
@@ -187,7 +192,8 @@ export const updateKeyMetadata: RequestHandler = async (request, response) => {
     network
   )
 
-  return response.status(200).send(keyData)
+  response.status(200).send(keyData)
+  return
 }
 
 export const updateUserMetadata: RequestHandler = async (request, response) => {
@@ -195,7 +201,7 @@ export const updateUserMetadata: RequestHandler = async (request, response) => {
   const userAddress = Normalizer.ethereumAddress(request.params.userAddress)
   const network = Number(request.params.network)
   const metadata = await UserMetadata.parseAsync(request.body.metadata)
-  const web3Service = new Web3Service(networks)
+  const web3Service = getWeb3Service()
   const loggedInUser = request.user!.walletAddress
   const isLockManager = await web3Service.isLockManager(
     lockAddress,
@@ -213,9 +219,10 @@ export const updateUserMetadata: RequestHandler = async (request, response) => {
     isLockManager
   )
 
-  return response.status(200).send({
+  response.status(200).send({
     metadata: user.toJSON().data?.userMetadata,
   })
+  return
 }
 
 export const updateUsersMetadata: RequestHandler = async (
@@ -235,7 +242,7 @@ export const updateUsersMetadata: RequestHandler = async (
 
   const { updated, error } = await upsertUsersMetadata(users)
 
-  return response.status(200).send({
+  response.status(200).send({
     result: updated.map((item) => {
       return {
         network: item.chain,
@@ -246,6 +253,7 @@ export const updateUsersMetadata: RequestHandler = async (
     }),
     error,
   })
+  return
 }
 
 export const readUserMetadata: RequestHandler = async (request, response) => {
@@ -261,10 +269,11 @@ export const readUserMetadata: RequestHandler = async (request, response) => {
     normalisedLoggedInAddress === userAddress /* includeProtected */
   )
 
-  return response.status(200).send({
+  response.status(200).send({
     metadata: user?.userMetadata || {},
     userAddress,
     lockAddress: tokenAddress,
     network,
   })
+  return
 }

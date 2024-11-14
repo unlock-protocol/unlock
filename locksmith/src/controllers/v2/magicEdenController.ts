@@ -1,9 +1,9 @@
-import { Web3Service } from '@unlock-protocol/unlock-js'
 import { z } from 'zod'
 import normalizer from '../../utils/normalizer'
 import networks from '@unlock-protocol/networks'
 import { Request, Response } from 'express'
 import { ethers } from 'ethers'
+import { getWeb3Service } from '../../initializers'
 
 const PurchaseBody = z.object({
   address: z.string(),
@@ -12,7 +12,7 @@ const PurchaseBody = z.object({
 export const purchase = async (request: Request, response: Response) => {
   const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
   const network = Number(request.params.network)
-  const web3Service = new Web3Service(networks)
+  const web3Service = getWeb3Service()
 
   const { address } = await PurchaseBody.parseAsync(request.body)
   const recipient = normalizer.ethereumAddress(address)
@@ -41,5 +41,6 @@ export const purchase = async (request: Request, response: Response) => {
     _data: [[]],
   }
 
-  return response.status(200).send(params)
+  response.status(200).send(params)
+  return
 }

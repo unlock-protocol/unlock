@@ -20,9 +20,10 @@ export class SubscriptionController {
         lockAddress,
       })
 
-    return response.status(200).send({
+    response.status(200).send({
       subscriptions,
     })
+    return
   }
 
   /**
@@ -41,6 +42,7 @@ export class SubscriptionController {
         userAddress,
       },
     })
-    return response.sendStatus(204)
+    response.sendStatus(204)
+    return
   }
 }

@@ -1,0 +1,71 @@
+---
+id: capture-purchase
+title: "capturePurchase"
+description: "Capture a purchase"
+sidebar_label: "capturePurchase"
+hide_title: true
+hide_table_of_contents: true
+api: eJydVcFu4zgM/RWBZ7cp5uhbZ7CD6e4MttikmIPhgyIzsSa2pKHotobhf19QdhInLRbo5hJZIimS7z1qAB+QNFvvHirIwejAHeFjR6bWESGDiKYjyz3kxQBPEQnyohzLDCqMhmwQV8jhy+SotApnX8LfHUb+7Kse8gGMd4yOZalDaKxJ965+RYkwQDQ1tlpW3AeEHPz2Fxqe41jCCvICHPKLpwNk0Hgjf11Euq8qwhghg6D7Fh0/TDeVGQSSCtlilMiExgaLjuPiHk2ke8jAMrbL/chk3R7GMTvdej50XbtFgnHO463XZWbvnV/m+p5FpVl/LFHCHRIhfbC+I2ibdHJtcQ32S41cIyn2Cl8ZXaU8nXBXLUpnYm2D2nlSXKM6tf0WMkDXtYLk5Arny6Ec00+qiMG7OGH26e5O/i5TWHfGYIy7rml6NbO2WnLvf5PtkjBM2kVtxPebjvV73ZtzbpFrLxoKPqY4mmvIYXXMaTVnmTRFzwmiYoCOGsihZg4xX62ES7G1XN92TtY3gTx745tb49s3ODySr7qUm1qnkDBm1xEj6711+5uPRV5PXqew5XkQrKVzU3OmcXDqiFwp1SUDyGGLmpAgmxdfPbWaIYc/f26E3PdnWJZkDfYvFLY63c7fN4e0YSWx3x1SnygrSP5zHjB/vOo2NHgt8uKIU7kQ8d1RtGeCX2j1vH0l0YUgkjKX0RfKW25fKutI+lHK2flUt2VJG54SLOr7ESfIQEgy4fHpDUInOxXIP9sKo9pqcxAx7jqXSKEby33SIDq9bQRPtuaAbN0+Uy2ylipUZE96j5nSrlLOs93NqKja+0MUyTbWoIupuTMsPx420+DwkVvtFiczzdXiDbnIfPEOvP9qzERgfOVVaLR1aZYKqYdZVAUshT7LqsygFuXlBQzDVkd8omYcZXviTF6UGTxrsnor/S7KMYMadZVetAGEYzl8mVK7SWiJedNNJLyaIKKzyePeGAz8n7blYjg8/r3eiCLmJ7H1lfiQfpFnTr9ADpCBT62aHizZG6DRbt/pvdhOMaX3uuPlQLqSW6rqKCrXLzIchsli4w/oxhGyuRSWbxhlCv8LjPPUVQ==
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"capturePurchase"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/purchase/capture"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Capture a purchase
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={undefined}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"type":"object","required":["network","lock","userAddress","paymentIntent"],"properties":{"recipients":{"type":"array","items":{"type":"string"}},"network":{"type":"number"},"lock":{"type":"string"},"userAddress":{"type":"string"},"paymentIntent":{"type":"string"},"data":{"type":"array","items":{"type":"string"}},"referrers":{"type":"array","items":{"type":"string"}},"purchaseType":{"type":"string","description":"whether to extend or purchase membership for the recipient.","enum":["extend","purchase"]}}}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully captured purchase","content":{"application/json":{"schema":{"type":"object","properties":{"transactionHash":{"type":"string"}}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

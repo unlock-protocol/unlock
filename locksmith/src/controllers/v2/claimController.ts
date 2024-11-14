@@ -1,4 +1,4 @@
-import { KeyManager, Web3Service } from '@unlock-protocol/unlock-js'
+import { KeyManager } from '@unlock-protocol/unlock-js'
 import { RequestHandler, Response } from 'express'
 import { z } from 'zod'
 import Dispatcher from '../../fulfillment/dispatcher'
@@ -8,6 +8,7 @@ import networks from '@unlock-protocol/networks'
 import { UserMetadata } from './metadataController'
 import { upsertUserMetadata } from '../../operations/userMetadataOperations'
 import { getTotalPurchasePriceInCrypto } from '../../utils/claim'
+import { getWeb3Service } from '../../initializers'
 
 const ClaimBody = z.object({
   data: z.string().optional(),
@@ -64,9 +65,10 @@ export const claim: RequestHandler = async (request, response: Response) => {
   }
 
   if (!owner && !email) {
-    return response.status(401).send({
+    response.status(401).send({
       message: 'You are not authenticated.',
     })
+    return
   }
 
   if (
@@ -74,14 +76,15 @@ export const claim: RequestHandler = async (request, response: Response) => {
       normalizer.ethereumAddress(lockAddress)
     ) > -1
   ) {
-    return response.status(400).send({
+    response.status(400).send({
       message: 'Claim disabled for this lock',
     })
+    return
   }
 
   const pricer = new KeyPricer()
   const fulfillmentDispatcher = new Dispatcher()
-  const web3Service = new Web3Service(networks)
+  const web3Service = getWeb3Service()
 
   // Check that claim is not too costly and that the lock is free
   const [canAffordGas, totalAmount, hasValidKey, totalKeysForUser] =
@@ -98,22 +101,25 @@ export const claim: RequestHandler = async (request, response: Response) => {
     ])
 
   if (BigInt(totalAmount) > 0) {
-    return response.status(402).send({
+    response.status(402).send({
       message: 'Lock is not free',
     })
+    return
   }
 
   if (!canAffordGas.canAfford) {
-    return response.status(422).send({
+    response.status(422).send({
       message: canAffordGas.reason,
     })
+    return
   }
 
   // Is user already has a valid key, claim will fail
   if (hasValidKey) {
-    return response.status(400).send({
+    response.status(400).send({
       message: 'User already has key',
     })
+    return
   }
 
   // Save metadata if applicable
@@ -149,10 +155,11 @@ export const claim: RequestHandler = async (request, response: Response) => {
       network,
       data || '0x',
       async (_, transactionHash) => {
-        return response.send({
+        response.send({
           transactionHash,
           owner,
         })
+        return
       }
     )
   }
@@ -167,10 +174,11 @@ export const claim: RequestHandler = async (request, response: Response) => {
       keyManager: email ? keyManagerAddress : owner,
     },
     async (_, transactionHash) => {
-      return response.send({
+      response.send({
         transactionHash,
         owner,
       })
+      return
     }
   )
 }

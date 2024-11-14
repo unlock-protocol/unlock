@@ -3,8 +3,7 @@ import { Request, RequestHandler, Response } from 'express'
 import Normalizer from '../../utils/normalizer'
 import logger from '../../logger'
 import * as lockSettingOperations from '../../operations/lockSettingOperations'
-import networks from '@unlock-protocol/networks'
-import { Web3Service } from '@unlock-protocol/unlock-js'
+import { getWeb3Service } from '../../initializers'
 
 const LockSettingSchema = z.object({
   sendEmail: z
@@ -109,12 +108,14 @@ export const updateSettings: RequestHandler = async (
       network,
       ...options,
     })
-    return response.status(200).send(settings)
+    response.status(200).send(settings)
+    return
   } catch (err: any) {
     logger.error(err.message)
-    return response.status(500).send({
+    response.status(500).send({
       message: 'Could not save setting, please try again.',
     })
+    return
   }
 }
 
@@ -123,7 +124,7 @@ export const getSettings: RequestHandler = async (
   response: Response
 ) => {
   try {
-    const web3Service = new Web3Service(networks)
+    const web3Service = getWeb3Service()
     const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
     const network = Number(request.params.network)
 
@@ -145,16 +146,19 @@ export const getSettings: RequestHandler = async (
     })
 
     if (settings) {
-      return response.status(200).send(settings)
+      response.status(200).send(settings)
+      return
     }
 
     // return default settings
-    return response.status(200).send(DEFAULT_LOCK_SETTINGS)
+    response.status(200).send(DEFAULT_LOCK_SETTINGS)
+    return
   } catch (err: any) {
     logger.error(err.message)
-    return response.status(500).send({
+    response.status(500).send({
       message: 'Could not get settings for this Lock.',
     })
+    return
   }
 }
 
@@ -166,11 +170,13 @@ export const getLockSettingsBySlug: RequestHandler = async (
     const slug = request.params.slug.toLowerCase().trim()
     const settings = await lockSettingOperations.getLockSettingsBySlug(slug)
 
-    return response.status(200).send(settings)
+    response.status(200).send(settings)
+    return
   } catch (err: any) {
     logger.error(err.message)
-    return response.status(500).send({
+    response.status(500).send({
       message: 'Could not get settings for this Lock.',
     })
+    return
   }
 }

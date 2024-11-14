@@ -1,0 +1,71 @@
+---
+id: update-lock-metadata
+title: "updateLockMetadata"
+description: "Update or create metadata for lock address."
+sidebar_label: "updateLockMetadata"
+hide_title: true
+hide_table_of_contents: true
+api: eJzdVk1v20YQ/SuLObUAbblGeuHNLZIiqeMasYQcDB3G3JG40XKX2R3KFgj+92KWlEhLbhPnUqA6cVezb+bNdwu+poBsvHuvIYem1sh07YvNR2LUyAgZRCqaYHgH+X0Li0gB8nuwIoMO1xRg2S0z0BSLYGqBghwWCUj5oIpA8lUNeGrlg5LHCrUOFOM5ZFBjwIqYQkw6jCDUyCVk4LAiyMERP/qwgQwCfW1MIA05h4aO9d70cspowY1FSRVC3gLvaoExjkks7rrsRTVi2FVv1zdVXR+ROFEWORi3hk68I1AU+TevdyJxjFx4x+RY/sK6tqZIIZl9iaKpnUA/N+HD3V83o2eNi0ZPPW3IavVorFUPpCJuKTllsM4/fKGChXpjLT5YgnyFNlIGdZCkYENRNO7hJsQOT1FrI6agvZ28EUpd+gnvWHsXe6jLi1++xUEcgcYZt1YSkkxNhDOFTquiiewrNRr5YkZ9t0NP2L+OYwaXF2/+f6TevERqXpIyTJXa+UZhIFXhRjgNuZ1M1p6icp4VPZnIrzL61XkZI67ptN6kTlfYWIZc0s83oaBk0so3Tp8CC182LGf4gxwFU9x4fpeEe2/8enFx6o2FEwzFXq0aa1fGHvygm3QtvSY4tCpS2FJQFIIP/7lH5iUFUo8YFbreJGXcnoJEk0vaMzn/LmfdJXpvBQqGqq+ISy/zpG44tXcuIYfZ9nKGtZnt62LWDl29m0mmx1k7ab9dGjyC3M+EJljIoWSuYz7r5SvD5Xnj5PusDp594e154Ss47tS3weumkIPqjQVp/88RI+PauPXZ65Dv+lcH2OU4Le8kjH1g+pl5iIqo3M8LOT8QBgqQDR/vfKhQQvXh8xy6DK7GHJmAYG3+pN04ubA2Z5t0kcba14bCTsYcSFp9GqfP2yesaktHnV0EjVv5pGAI7yLxV9d7h0AGEo2e+OWJKw5y0sW2RlNUD1hsyGm1alzRdxvDu9QmSIonZZspNsTGrbOxXUb2AdfUd0bn2awG+qr0fpM6oTUFuZhYDPw/vp8nurWPXKGb/NPvNImHmmw1z6xvx6J85eoyhIPpiWe1ReMkZCm12iHv72Er3sLaQDb6PIN83GlS0snVdP9YZlD6yALQtg8YaRFs18l1H9z8fpnBFoPpy/O+BW2ifOtDf/hHjj99GhaQn9XzjelFOvuUc5JeW7SNnCADybdxNZOa+iELjhepH7Bh6rdu2WVQEuq0qLaDxO+95rO54IwIJw1YWPQvroqCav5X2eWk1d0u5lLCw4JXeS1PAj7KHomPvbE+OSL1hHTXgkW3blLThh5SchgbyZtDqR/1h0TqRXe0bS8x9xtyXXfwDstZ/NJ1fwP05i0g
+sidebar_class_name: "put api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"updateLockMetadata"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"put"}
+  path={"/v2/api/metadata/{network}/locks/{lockAddress}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Update or create metadata for lock address.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"required":true,"content":{"application/json":{"schema":{"description":"JSON metadata inside metadata field will be saved.","type":"object","nullable":false,"properties":{"metadata":{"type":"object","additionalProperties":true}}}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"201":{"description":"JSON metadata containing name, description, and custom properties for lock address.","content":{"application/json":{"schema":{"nullable":false,"type":"object","additionalProperties":true}}}},"204":{"description":"JSON metadata containing name, description, and custom properties for lock address.","content":{"application/json":{"schema":{"nullable":false,"type":"object","additionalProperties":true}}}},"404":{"description":"The item you are making request for does not exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"resource not found","nullable":false}},"title":"GenericNotFound"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      
