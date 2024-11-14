@@ -26,6 +26,10 @@ export interface CrossChainRoute {
   bridgeFee?: any
   bridgeId?: any
   relayInfo?: any
+  provider: {
+    url: string
+    name: string
+  }
   // Remove me
   symbol: string
   networkName: string

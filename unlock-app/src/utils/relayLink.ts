@@ -4,20 +4,7 @@ import axios from 'axios'
 import { networks } from '@unlock-protocol/networks'
 import { ADDRESS_ZERO } from '~/constants'
 import { Web3Service } from '@unlock-protocol/unlock-js'
-
-export interface CrossChainRoute {
-  network: number
-  tx: any
-  tokenPayment?: any
-  applicationFee?: any
-  bridgeFee?: any
-  bridgeId?: any
-  relayInfo?: any
-  // Remove me
-  symbol: string
-  networkName: string
-  currency: string
-}
+import { CrossChainRoute } from '~/hooks/useCrossChainRoutes'
 
 interface getCrossChainRouteParams {
   sender: string
@@ -160,6 +147,10 @@ export const getCrossChainRoute = async ({
       currency: network.nativeCurrency.name,
       symbol: network.nativeCurrency.symbol,
       networkName: network.name,
+      provider: {
+        name: 'Relay.link',
+        url: 'https://relay.link',
+      },
     } as CrossChainRoute
   }
 }

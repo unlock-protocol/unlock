@@ -393,9 +393,9 @@ export function Payment({ checkoutService }: Props) {
                         <Link
                           className="underline ml-1"
                           target="_blank"
-                          href="https://www.decent.xyz/"
+                          href={route.provider.url}
                         >
-                          Decent
+                          {route.provider.name}
                         </Link>
                         .
                       </div>
