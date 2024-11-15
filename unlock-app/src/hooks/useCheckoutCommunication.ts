@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { usePostmateParent } from './usePostmateParent'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { OAuthConfig } from '~/unlockTypes'
-import { useProvider } from './useProvider'
+import { createBrowserProvider, useProvider } from './useProvider'
 import { isInIframe } from '~/utils/iframe'
 
 export interface UserInfo {
@@ -256,52 +256,54 @@ export const useCheckoutCommunication = () => {
 
   useEffect(() => {
     if (useDelegatedProvider) {
-      setProvider({
-        parentOrigin: () => {
-          // @ts-expect-error Property 'parentOrigin' does not exist on type 'ChildAPI'.ts(2339)
-          return parent?.parentOrigin
-        },
-        enable: () => {
-          return new Promise((resolve) => {
-            enabled = resolve
-            emitEnable()
-          })
-        },
-        sendAsync: (request: MethodCall, callback: any) => {
-          if (!request.id) {
-            request.id = window.crypto.randomUUID()
-          }
-          waitingMethodCalls[request.id] = (error: any, response: any) => {
-            callback(error, response)
-          }
-          emitMethodCall(request)
-        },
-        request: async (request: MethodCall) => {
-          if (!request.id) {
-            // Assigning an id because they may be returned in a different order
-            try {
+      setProvider(
+        createBrowserProvider({
+          parentOrigin: () => {
+            // @ts-expect-error Property 'parentOrigin' does not exist on type 'ChildAPI'.ts(2339)
+            return parent?.parentOrigin
+          },
+          enable: () => {
+            return new Promise((resolve) => {
+              enabled = resolve
+              emitEnable()
+            })
+          },
+          sendAsync: (request: MethodCall, callback: any) => {
+            if (!request.id) {
               request.id = window.crypto.randomUUID()
-            } catch (error) {
-              console.error(error)
-              request.id = Math.floor(Math.random() * 100000000).toString() // fallback
             }
-          }
-          return new Promise((resolve, reject) => {
             waitingMethodCalls[request.id] = (error: any, response: any) => {
-              if (error) {
-                reject(error)
-              } else {
-                resolve(response)
-              }
+              callback(error, response)
             }
             emitMethodCall(request)
-          })
-        },
-        on: (event: string, callback: any) => {
-          eventHandlers[event] = callback
-          emitOnEvent(event)
-        },
-      })
+          },
+          request: async (request: MethodCall) => {
+            if (!request.id) {
+              // Assigning an id because they may be returned in a different order
+              try {
+                request.id = window.crypto.randomUUID()
+              } catch (error) {
+                console.error(error)
+                request.id = Math.floor(Math.random() * 100000000).toString() // fallback
+              }
+            }
+            return new Promise((resolve, reject) => {
+              waitingMethodCalls[request.id] = (error: any, response: any) => {
+                if (error) {
+                  reject(error)
+                } else {
+                  resolve(response)
+                }
+              }
+              emitMethodCall(request)
+            })
+          },
+          on: (event: string, callback: any) => {
+            eventHandlers[event] = callback
+            emitOnEvent(event)
+          },
+        })
+      )
     }
   }, [useDelegatedProvider])
 

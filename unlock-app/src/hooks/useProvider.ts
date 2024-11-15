@@ -13,23 +13,23 @@ interface WatchAssetInterface {
   tokenId: string
 }
 
+export const createBrowserProvider = (
+  provider: any
+): ethers.BrowserProvider | null => {
+  if (!provider) {
+    return null
+  }
+  const browserProvider = new ethers.BrowserProvider(provider, 'any')
+  if (provider.parentOrigin) {
+    // @ts-expect-error Property 'parentOrigin' does not exist on type 'BrowserProvider'.
+    browserProvider.parentOrigin = provider.parentOrigin
+  }
+  return browserProvider
+}
+
 export const useProvider = () => {
   const { setProvider, provider } = useContext(ProviderContext)
   const { session: account } = useSession()
-
-  const createBrowserProvider = (
-    provider: any
-  ): ethers.BrowserProvider | null => {
-    if (!provider) {
-      return null
-    }
-    const browserProvider = new ethers.BrowserProvider(provider, 'any')
-    if (provider.parentOrigin) {
-      // @ts-expect-error Property 'parentOrigin' does not exist on type 'BrowserProvider'.
-      browserProvider.parentOrigin = provider.parentOrigin
-    }
-    return browserProvider
-  }
 
   /**
    * Initializes a `WalletService` instance with the provided provider.
@@ -148,9 +148,7 @@ export const useProvider = () => {
 
   return {
     getWalletService,
-    setProvider: (provider: any) => {
-      setProvider(createBrowserProvider(provider))
-    },
+    setProvider,
     account: provider ? account : undefined,
     watchAsset,
     provider,
