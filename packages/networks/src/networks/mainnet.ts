@@ -24,7 +24,7 @@ export const mainnet: NetworkConfig = {
       address: (address) => `https://etherscan.io/address/${address}`,
       base: 'https://etherscan.io/',
       token: (address, holder) =>
-        `https://etherscan.com/token/${address}?a=${holder}`,
+        `https://etherscan.io/token/${address}?a=${holder}`,
       transaction: (hash) => `https://etherscan.io/tx/${hash}`,
     },
   },
