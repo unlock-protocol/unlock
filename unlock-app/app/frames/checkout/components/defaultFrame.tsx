@@ -40,7 +40,7 @@ export async function getDefaultFrame(ctx: any) {
         userAddress as string,
         tokenAddress!
       )
-      if (Number(allowance) >= Number(keyPrice)) {
+      if (Number(allowance) >= Number(keyPrice) && !lock.isRenewable) {
         lock.erc20Approved = true
       }
     }

@@ -16,6 +16,7 @@ export type Lock = {
   redirectText?: string
   isSoldOut: boolean
   isMember?: boolean
+  isRenewable: boolean
 }
 
 export type State = {

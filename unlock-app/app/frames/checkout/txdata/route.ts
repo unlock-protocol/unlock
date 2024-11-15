@@ -1,9 +1,7 @@
 import { Abi, encodeFunctionData } from 'viem'
 import { frames } from '../frames'
 import { transaction } from 'frames.js/core'
-import { PublicLockV14 } from '@unlock-protocol/contracts'
-
-const abi = PublicLockV14.abi
+import { PublicLock } from '@unlock-protocol/contracts'
 
 export const POST = frames(async (ctx) => {
   if (!ctx?.message) {
@@ -13,6 +11,7 @@ export const POST = frames(async (ctx) => {
   const userAddress = ctx.message.address!
   const { address: lockAddress, priceForUser } = ctx.state.lock!
   const network = Number(ctx.state.lock!.network)
+  const abi = PublicLock.abi
 
   const calldata = encodeFunctionData({
     abi,

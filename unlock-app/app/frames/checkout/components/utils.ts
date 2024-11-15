@@ -4,6 +4,7 @@ import networks from '@unlock-protocol/networks'
 import { config as appConfig } from '~/config/app'
 import { erc20Abi } from 'viem'
 import { ethers } from 'ethers'
+import { MAX_UINT } from '~/constants'
 
 interface GetKeyPriceParams {
   lockAddress: string
@@ -51,6 +52,10 @@ export async function getLockDataFromCheckout(id: string) {
   const res = await web3Service.getLock(lockAddress, network)
   const price = `${res.keyPrice} ${res.currencySymbol}`
   const tokenAddress = res.currencyContractAddress
+  const isRenewable =
+    Number(res.publicLockVersion) >= 11 &&
+    res.expirationDuration !== MAX_UINT &&
+    !!tokenAddress
 
   const keysAvailable = await web3Service.keysAvailable(lockAddress, network)
   const isSoldOut = Number(keysAvailable) < 1
@@ -71,6 +76,7 @@ export async function getLockDataFromCheckout(id: string) {
     redirectUri,
     redirectText,
     isSoldOut,
+    isRenewable,
   }
 
   return lock
