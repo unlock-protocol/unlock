@@ -11,7 +11,7 @@ import {
 import { Placeholder } from '@unlock-protocol/ui'
 import useLocksByManagerOnNetworks from '~/hooks/useLocksByManager'
 import { ImageBar } from '../../Manage/elements/ImageBar'
-import { useState, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useAppStorage } from '~/hooks/useAppStorage'
 
 export const NoItems = () => {
@@ -30,7 +30,7 @@ export const NoItems = () => {
 interface LocksByNetworkProps {
   network: number | null
   isLoading: boolean
-  locks?: any[]
+  locks?: Lock[]
   favoriteLocks: FavoriteLocks
   setFavoriteLocks: (favoriteLocks: FavoriteLocks) => void
 }
@@ -61,7 +61,7 @@ const LocksByNetwork = ({
         <Placeholder.Card />
       </Placeholder.Root>
     )
-  if (locks?.length === 0) return null
+  if (!locks || locks.length === 0) return null
 
   return (
     <div className="w-full">
@@ -108,7 +108,6 @@ export const LockList = ({ owner }: LockListProps) => {
   const networkItems = useMemo(() => {
     if (!networks) return []
     const networkEntries = Object.entries(networks)
-    // Sort networks so that default and preferred networks are first.
     return [
       ...networkEntries.filter(([network]) =>
         [defaultNetwork.toString()].includes(network)
@@ -121,17 +120,23 @@ export const LockList = ({ owner }: LockListProps) => {
   }, [networks, defaultNetwork])
 
   const results = useLocksByManagerOnNetworks(owner, networkItems)
+  const result = results[0]
 
-  const [favoriteLocks, setFavoriteLocks] = useState<FavoriteLocks>(
-    getStorage('favoriteLocks')
-      ? JSON.parse(getStorage('favoriteLocks') as string)
-      : {}
+  const [favoriteLocks, setFavoriteLocks] = useState<FavoriteLocks>(() => {
+    try {
+      return JSON.parse(getStorage('favoriteLocks') || '{}')
+    } catch {
+      return {}
+    }
+  })
+
+  const saveFavoriteLocks = useCallback(
+    (newFavoriteLocks: FavoriteLocks) => {
+      setFavoriteLocks(newFavoriteLocks)
+      setStorage('favoriteLocks', JSON.stringify(newFavoriteLocks))
+    },
+    [setStorage]
   )
-
-  const saveFavoriteLocks = (favoriteLocks: FavoriteLocks) => {
-    setFavoriteLocks(favoriteLocks)
-    setStorage('favoriteLocks', favoriteLocks)
-  }
 
   if (!networks || !owner) {
     return (
@@ -143,34 +148,33 @@ export const LockList = ({ owner }: LockListProps) => {
     )
   }
 
-  const isEmpty = results.reduce((previous: boolean, current: any) => {
-    return !!(
-      previous &&
-      !current.isLoading &&
-      current.data &&
-      current.data.length === 0
+  const isLoading = result.isLoading
+  const hasError = result.error
+
+  if (hasError) {
+    return (
+      <div className="text-center text-red-500">
+        Failed to load locks. Please try again later.
+      </div>
     )
-  }, true)
+  }
+
+  const allLocks = (result.data as Lock[]) || []
+  const isEmpty = !isLoading && allLocks.length === 0
 
   return (
     <div className="grid gap-20 mb-20">
       <LocksByNetwork
-        isLoading={
-          results?.filter((element) => element.isLoading == true).length > 0
-        }
-        locks={results.flatMap(
-          (result) =>
-            (result?.data as any[])?.filter((item: any) =>
-              favoriteLocks[item.address] ? true : false
-            ) || []
-        )}
+        isLoading={isLoading}
+        locks={allLocks.filter((item: Lock) => favoriteLocks[item.address])}
         favoriteLocks={favoriteLocks}
         setFavoriteLocks={saveFavoriteLocks}
         network={null}
       />
-      {networkItems.map(([network], index) => {
-        const locksByNetwork: any = results?.[index]?.data || []
-        const isLoading = results?.[index]?.isLoading || false
+      {networkItems.map(([network]) => {
+        const locksByNetwork = allLocks.filter(
+          (lock: Lock) => lock.network === Number(network)
+        )
 
         return (
           <LocksByNetwork

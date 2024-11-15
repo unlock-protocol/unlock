@@ -39,11 +39,13 @@ interface AmountBadgeProps {
 
 const AmountBadge = ({ symbol, amount }: AmountBadgeProps) => {
   return (
-    <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
-      {Number(amount) <= 0
-        ? 'FREE'
-        : `${formatNumber(Number(amount))} ${symbol.toUpperCase()}`}
-      <CryptoIcon size={16} symbol={symbol} />
+    <div>
+      <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm text-nowrap">
+        {Number(amount) <= 0
+          ? 'FREE'
+          : `${formatNumber(Number(amount))} ${symbol.toUpperCase()}`}
+        <CryptoIcon size={16} symbol={symbol} />
+      </div>
     </div>
   )
 }
@@ -344,9 +346,7 @@ export function Payment({ checkoutService }: Props) {
             {!enableClaim &&
               paymentMethods['crosschain'] &&
               crossChainRoutes?.map((route, index) => {
-                const symbol = route.tokenPayment.isNative
-                  ? route.currency
-                  : route.tokenPayment.symbol || ''
+                const symbol = route.tokenPayment?.symbol || route.symbol
 
                 if (!symbol) {
                   // Some routes are returned with Decent without a token
@@ -393,9 +393,9 @@ export function Payment({ checkoutService }: Props) {
                         <Link
                           className="underline ml-1"
                           target="_blank"
-                          href="https://www.decent.xyz/"
+                          href={route.provider.url}
                         >
-                          Decent
+                          {route.provider.name}
                         </Link>
                         .
                       </div>
