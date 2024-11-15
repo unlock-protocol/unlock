@@ -457,6 +457,9 @@ components:
         requiredGitcoinPassportScore:
           type: number
           nullable: true
+        allowList:
+          type: string
+          nullable: true
 
     EventDetails:
       type: object
