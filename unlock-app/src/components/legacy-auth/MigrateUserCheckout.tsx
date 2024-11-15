@@ -8,6 +8,7 @@ import { UserAccountType } from '~/utils/userAccountType'
 import { SignInWithPassword } from './SignInWithPassword'
 import { SignInWithCode } from './SignInWithCode'
 import { SignInWithGoogle } from './SignInWithGoogle'
+import { Placeholder } from '@unlock-protocol/ui'
 
 interface MigrateUserCheckoutProps {
   userEmail: string
@@ -58,7 +59,13 @@ export const MigrateUserCheckout = ({
 
   const renderAuthComponent = () => {
     if (checkUserAccountType.isPending) {
-      return <div>Loading account details...</div>
+      return (
+        <Placeholder.Root>
+          <Placeholder.Line />
+          <Placeholder.Line />
+          <Placeholder.Line />
+        </Placeholder.Root>
+      )
     }
 
     if (userAccountType?.includes(UserAccountType.UnlockAccount)) {
@@ -74,22 +81,19 @@ export const MigrateUserCheckout = ({
   }
 
   return (
-    <div className="px-4 space-y-16 mt-4">
-      <div>
-        <h3 className="text-sm text-center">
-          Migrating <span className="font-bold text-md">{userEmail}</span>
-        </h3>
-        <p
-          onClick={onSignOut}
-          className="text-sm text-center text-brand-ui-primary underline cursor-pointer"
-        >
-          Sign out
-        </p>
-      </div>
-
+    <div className="px-6 mt-4 flex flex-col gap-4">
       {!walletPk && (
-        <div className="space-y-2">
-          <p className="text-center">Sign in to your existing Unlock account</p>
+        <div className="flex flex-col gap-4">
+          <p className=" text-gray-700 text-sm">
+            You are migrating the account <span className="">{userEmail}</span>.
+            Please enter your password.{' '}
+            <span
+              onClick={onSignOut}
+              className=" text-brand-ui-primary underline cursor-pointer"
+            >
+              Sign out
+            </span>
+          </p>
           {renderAuthComponent()}
         </div>
       )}
