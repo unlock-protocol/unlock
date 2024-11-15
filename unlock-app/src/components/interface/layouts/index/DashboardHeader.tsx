@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation'
 import { NotificationsMenu } from './NotificationsMenu'
 
 // Paths where menu should be hidden
-const HIDDEN_MENU_PATHS = ['/', '/migrate-user']
+const HIDDEN_MENU_PATHS = ['/migrate-user']
 
 // Menu sections shown everywhere when logged in
 const MENU_SECTIONS = [
