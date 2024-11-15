@@ -11,7 +11,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useSession } from './useSession'
 import { useSIWE } from './useSIWE'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { createBrowserProvider, useProvider } from './useProvider'
+import { useProvider } from './useProvider'
 import AuthenticationContext from '~/contexts/AuthenticationContext'
 import { onSignedInWithPrivy } from '~/config/PrivyProvider'
 
@@ -149,7 +149,7 @@ export function useAuthenticate() {
   useEffect(() => {
     const setProviderFromPrivy = async () => {
       if (wallet) {
-        setProvider(createBrowserProvider(await wallet.getEthereumProvider()))
+        setProvider(await wallet.getEthereumProvider())
       }
     }
     if (account && privyAuthenticated) {
