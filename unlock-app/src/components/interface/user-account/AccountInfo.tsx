@@ -5,17 +5,16 @@ import {
   useUpdateAccount,
 } from '@privy-io/react-auth'
 import { useState } from 'react'
-import { Item } from './styles'
-import useEns from '../../../hooks/useEns'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { Button, Modal } from '@unlock-protocol/ui'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { SettingCard } from '../locks/Settings/elements/SettingCard'
+import { WrappedAddress } from '../WrappedAddress'
 
 export const AccountInfo = () => {
   const { account, privyReady } = useAuthenticate()
   const { user } = usePrivy()
   const [showEmailModal, setShowEmailModal] = useState(false)
-  const name = useEns(account || '')
 
   const { linkEmail } = useLinkAccount({
     onSuccess: () => {
@@ -50,40 +49,50 @@ export const AccountInfo = () => {
   }
 
   return (
-    <div className="max-w-4xl mt-10">
-      <h2 className="text-base font-bold leading-5 mb-4">Account</h2>
+    <div className="space-y-5">
+      <SettingCard
+        label="Wallet Address"
+        description="Your wallet address is the unique identifier for your account."
+        defaultOpen={true}
+      >
+        <span className="flex h-5 mx-1 my-3 text-black text-sm md:text-base">
+          <WrappedAddress
+            className="mx-2 font-semibold text-base"
+            addressType="wallet"
+            minified={false}
+            address={account!}
+          />
+        </span>
+      </SettingCard>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Item title="Wallet Address" count="half">
-          <span className="flex h-5 mx-1 my-3 text-black text-sm md:text-base">
-            {account} {name !== account ? `(${name})` : ''}
+      <SettingCard
+        label="Email"
+        description="Your email address is used to send you notifications and receipts."
+        defaultOpen={true}
+      >
+        <div className="flex flex-col gap-4 space-y-4">
+          <span className="flex h-5 mx-1 text-black text-sm font-semibold md:text-base">
+            {user?.email?.address || 'No email added yet'}
           </span>
-        </Item>
-        <Item title="Email" count="half">
-          <div className="flex justify-between items-center">
-            <span className="flex h-5 mx-1 my-3 text-black text-sm md:text-base">
-              {user?.email?.address || 'No email added yet'}
-            </span>
-            {user?.email?.address ? (
-              <Button
-                size="small"
-                onClick={handleUpdateEmail}
-                disabled={!privyReady}
-              >
-                Update Email
-              </Button>
-            ) : (
-              <Button
-                size="small"
-                onClick={handleLinkEmail}
-                disabled={!privyReady}
-              >
-                Link Email
-              </Button>
-            )}
-          </div>
-        </Item>
-      </div>
+          {user?.email?.address ? (
+            <Button
+              className="w-full md:w-1/3"
+              onClick={handleUpdateEmail}
+              disabled={!privyReady}
+            >
+              Update Email
+            </Button>
+          ) : (
+            <Button
+              className="w-full md:w-1/3"
+              onClick={handleLinkEmail}
+              disabled={!privyReady}
+            >
+              Link Email
+            </Button>
+          )}
+        </div>
+      </SettingCard>
 
       <Modal isOpen={showEmailModal} setIsOpen={setShowEmailModal} size="small">
         <LoginModal open={showEmailModal} />
