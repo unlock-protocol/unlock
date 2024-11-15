@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
 import { SetPassword } from '../interface/SetPassword'
 import Loading from '../interface/Loading'
 import { reEncryptPrivateKey } from '../../utils/accounts'
@@ -9,9 +8,9 @@ import UnlockProvider from '../../services/unlockProvider'
 
 import { Badge } from '@unlock-protocol/ui'
 import { locksmith } from '~/config/locksmith'
-import { useProvider } from '~/hooks/useProvider'
 import { useSearchParams } from 'next/navigation'
 import { config } from '~/config/app'
+import Link from 'next/link'
 
 interface RestoreAccountProps {
   config: any
@@ -25,7 +24,7 @@ export const RestoreAccount = ({
   email,
   recoveryKey,
 }: RestoreAccountProps) => {
-  const { setProvider, provider } = useProvider()
+  const [provider, setProvider] = useState<any>(null) // Not ACTUALLY using the provider because the goal here is just to change the password, not to connect the user.
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [recoveryPhrase, setRecoveryPhrase] = useState('')
@@ -64,7 +63,8 @@ export const RestoreAccount = ({
       }
     }
     getRecoveryPhrase()
-  }, [email])
+  }, [email, recoveryKey])
+
   const resetPassword = async (newPassword: string) => {
     setLoading(true)
     const passwordEncryptedPrivateKey = await reEncryptPrivateKey(
@@ -87,7 +87,7 @@ export const RestoreAccount = ({
     setLoading(false)
   }
 
-  if (loading) {
+  if (loading || !recoveryKey) {
     return <Loading />
   }
 
@@ -97,22 +97,26 @@ export const RestoreAccount = ({
 
   if (success) {
     return (
-      <div>
+      <div className="flex flex-col w-2/3 mx-auto gap-2">
         <h1 className="text-4xl font-bold">Recover your Unlock Account</h1>
-        <span className="mt-1 text-sm font-thin">
-          Your password was successfuly changed. Visit{' '}
-          <Link href="/settings">your settings page</Link>.
-        </span>
+        <p className="">
+          Your password was successfuly changed. However, your account needs to{' '}
+          <Link
+            className="text-brand-ui-primary underline"
+            href="/migrate-user"
+          >
+            be migrated
+          </Link>
+          .
+        </p>
       </div>
     )
   }
   return (
     <>
-      <div className="w-1/2 mx-auto">
+      <div className="flex flex-col w-2/3 mx-auto gap-2">
         <h1 className="text-4xl font-bold">Recover your Unlock Account</h1>
-        <span className="block mb-5 text-xl font-light">
-          Please, set a new password for your account.
-        </span>
+        <p className="">Please, set a new password for your account.</p>
         <div className="flex gap-2 mt-2 mb-3">
           <Badge>{email}</Badge>
         </div>
@@ -157,7 +161,7 @@ export const RecoverContent = () => {
     <RestoreAccount
       network={1} // Default to mainnet
       config={config}
-      email={email}
+      email={email.replace(' ', '+')}
       recoveryKey={recoveryKey}
     />
   )
