@@ -1,94 +1,84 @@
 'use client'
-
-import { useState } from 'react'
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
+import { ReactNode, useState } from 'react'
+import { SettingsContext } from '~/components/interface/locks/Settings'
+import { PaymentSettings } from '../interface/user-account/PaymentSettings'
 import AccountInfo from '../interface/user-account/AccountInfo'
-// import EjectAccount from '../interface/user-account/EjectAccount'
-import { loadStripe } from '@stripe/stripe-js'
-import { useConfig } from '~/utils/withConfig'
-import { Card } from '../interface/checkout/Card'
-import { SetupForm } from '../interface/checkout/main/CardPayment'
-import { Button } from '@unlock-protocol/ui'
-import {
-  usePaymentMethodList,
-  useRemovePaymentMethods,
-} from '~/hooks/usePaymentMethods'
-
-export const PaymentSettings = () => {
-  const config = useConfig()
-  const stripe = loadStripe(config.stripeApiKey, {})
-  const [isSaving, setIsSaving] = useState(false)
-  const { mutateAsync: removePaymentMethods } = useRemovePaymentMethods()
-  const {
-    data: methods,
-    isLoading: isMethodLoading,
-    refetch: refetchPaymentMethodList,
-  } = usePaymentMethodList()
-
-  const payment = methods?.[0]
-  const card = payment?.card
-
-  if (isMethodLoading) {
-    return null
-  }
-  const cardContent = card ? (
-    <Card
-      name={payment!.billing_details?.name || ''}
-      last4={card.last4!}
-      exp_month={card.exp_month!}
-      exp_year={card.exp_year!}
-      country={card.country!}
-      onChange={async () => {
-        await removePaymentMethods()
-        await refetchPaymentMethodList()
-      }}
-    />
-  ) : (
-    <div className="grid max-w-sm space-y-6">
-      <SetupForm
-        stripe={stripe}
-        onSubmit={() => {
-          setIsSaving(true)
-        }}
-        onError={() => {
-          setIsSaving(false)
-        }}
-        onSuccess={async () => {
-          await refetchPaymentMethodList()
-          setIsSaving(false)
-        }}
-      />
-      <Button
-        loading={isSaving}
-        disabled={isSaving}
-        type="submit"
-        form="payment"
-      >
-        Save
-      </Button>
-    </div>
-  )
-
-  return (
-    <div className="flex flex-col gap-4 mt-6 mb-4">
-      <div className="col-span-12 text-base font-bold leading-5">
-        Card Payments
-      </div>
-      <p>
-        Some membership contracts may have fiat payment enabled. If you enter
-        your payment details you will be able to use perform a fiat payment.
-      </p>
-      {cardContent}
-    </div>
-  )
-}
 
 export const SettingsContent = () => {
+  const [selectedIndex, setSelectedIndex] = useState(0)
+
+  const tabs: {
+    label: string
+    description?: string
+    id: 'account' | 'payments'
+    children: ReactNode
+  }[] = [
+    {
+      id: 'account',
+      label: 'Account',
+      description:
+        'Manage your account information including your wallet and email address.',
+      children: <AccountInfo />,
+    },
+    {
+      id: 'payments',
+      label: 'Card Payments',
+      description: 'Configure your credit card payment settings.',
+      children: <PaymentSettings />,
+    },
+  ]
+
   return (
-    <>
-      <AccountInfo />
-      <PaymentSettings />
-      {/* <EjectAccount /> */}
-    </>
+    <SettingsContext.Provider value={{ setTab: setSelectedIndex }}>
+      <TabGroup
+        vertical
+        defaultIndex={0}
+        selectedIndex={selectedIndex}
+        onChange={setSelectedIndex}
+      >
+        <div className="flex flex-col gap-6 my-8 md:gap-10 md:grid md:grid-cols-5">
+          <div className="md:col-span-1">
+            <TabList className="flex flex-col gap-4">
+              {tabs.map(({ label }, index) => {
+                const isActive = index === selectedIndex
+                return (
+                  <Tab
+                    className={`px-4 py-2 text-lg font-bold text-left rounded-lg outline-none ${
+                      isActive
+                        ? 'bg-brand-primary text-brand-dark'
+                        : 'text-gray-500'
+                    }`}
+                    key={index}
+                  >
+                    {label}
+                  </Tab>
+                )
+              })}
+            </TabList>
+          </div>
+          <div className="md:col-span-4">
+            <TabPanels>
+              {tabs.map(({ label, description, children }, index) => (
+                <TabPanel className="flex flex-col gap-10" key={index}>
+                  <div className="flex flex-col gap-4">
+                    <h2 className="text-2xl font-bold md:text-4xl text-brand-dark">
+                      {label}
+                    </h2>
+                    {description && (
+                      <span className="text-base text-brand-dark">
+                        {description}
+                      </span>
+                    )}
+                  </div>
+                  {children}
+                </TabPanel>
+              ))}
+            </TabPanels>
+          </div>
+        </div>
+      </TabGroup>
+    </SettingsContext.Provider>
   )
 }
 
