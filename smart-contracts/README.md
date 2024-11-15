@@ -155,15 +155,34 @@ Deploying Governor on localhost with the account: 0xf39Fd6e51aad88F6F4ce6aB88272
 
 ## Release a new version of a contract
 
-1. Update the version number in the contract
-2. Fix relevant tests
-3. Create a PR mentioning the version bump
-4. Make you changes
-5. Release the new versions of the contracts ABI with the following command
+1. Create a PR where you update the version number in the contract
+2. Make you changes and add/fix relevant tests
+3. add an upgrade test following the model in `test/Lock/upgrades` folder
+4. Release the new versions of the contracts into the `contracts` package
+   using the following command.
 
 ```
+yarn hardhat release --contract contracts/<xxx>.sol
+```
 
-yarn workspace @unlock-protocol/smart-contracts hardhat release --contract contracts/<xxx>.sol
+5. Bump version number and edit changelog in `contracts` package
+6. Once your release is ready to roll, update the `UNLOCK_LATEST_VERSION` and `PUBLICLOCK_LATEST_VERSION` in both contracts and hardhat-plugin package.
+7. Update unlockjs lib with new features and changes
+8. Update unlock-app to use the newest version of unlockjs
+9. For DAO-governed chains, deploy implementations for all networks and send a (cross-chain) proposal with the upgrade logic (following the [previous proposal](../governance/proposals/udt/009-protocol-upgrade.js) as template ).
+
+```
+# for unlock
+yarn hardhat unlock:upgrade --unlock-version <xxx>
+
+# for publiclock
+yarn hardhat deploy:template --public-lock-version <xxx>
+```
+
+10. For other chains, you can send directly a tx to the team multisig using
+
+```
+yarn hardhat deploy:protocol-upgrade --unlock-version <xxx> --public-lock-version <xxx> --network <xxx>
 ```
 
 ## Locks
