@@ -16625,6 +16625,7 @@ __metadata:
     "@privy-io/react-auth": "npm:1.92.6"
     "@tanstack/react-query": "npm:5.59.16"
     "@unlock-protocol/networks": "workspace:./packages/networks"
+    "@unlock-protocol/ui": "workspace:./packages/ui"
     clsx: "npm:2.1.1"
     docusaurus-gtm-plugin: "npm:0.0.2"
     docusaurus-node-polyfills: "npm:1.0.0"
