@@ -108,9 +108,79 @@ const getBalances = async (
 
 const BurnableToken = ({ network, token, balance, reload }) => {
   const [hash, setHash] = useState('')
+  const [burnTx, setBurnTx] = useState(null)
   const [burning, setBurning] = useState(false)
   const { authenticated, login } = usePrivy()
   const { wallets } = useWallets()
+
+  const prepareBurnTx = async () => {
+    const provider = new JsonRpcProvider(network.provider, network.chainId, {})
+
+    const unlock = new Contract(
+      network.unlockAddress,
+      [
+        {
+          inputs: [
+            { internalType: 'address', name: 'token', type: 'address' },
+            { internalType: 'uint256', name: 'amount', type: 'uint256' },
+            { internalType: 'uint24', name: 'poolFee', type: 'uint24' },
+          ],
+          name: 'swapAndBurn',
+          outputs: [],
+          stateMutability: 'nonpayable',
+          type: 'function',
+        },
+        {
+          inputs: [],
+          name: 'swapBurnerAddress',
+          outputs: [{ internalType: 'address', name: '', type: 'address' }],
+          stateMutability: 'view',
+          type: 'function',
+        },
+      ],
+      provider
+    )
+
+    const addressOfTokenToBurn = token.address || ethers.ZeroAddress
+    let tx
+
+    if (addressOfTokenToBurn === ethers.ZeroAddress) {
+      try {
+        tx = await unlock.swapAndBurn.populateTransaction(
+          token.address || ethers.ZeroAddress,
+          balance,
+          3000 // No need to enter a pool fee for native currency
+        )
+      } catch (e) {
+        console.error(e)
+      }
+    } else {
+      const fees = [500, 3000, 10000]
+      for (let fee of fees) {
+        if (!tx) {
+          try {
+            tx = await unlock.swapAndBurn.populateTransaction(
+              token.address || ethers.ZeroAddress,
+              balance,
+              fee // pool for the token, not for UDT/UP
+            )
+          } catch (e) {
+            console.error(e)
+          }
+        }
+      }
+    }
+    try {
+      const gas = await provider.estimateGas(tx)
+      setBurnTx(tx)
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  useEffect(() => {
+    prepareBurnTx()
+  }, [])
 
   const burn = async () => {
     if (!authenticated) {
@@ -124,71 +194,15 @@ const BurnableToken = ({ network, token, balance, reload }) => {
       const signer = await provider.getSigner()
 
       // switch network
-      // await wallets[0].switchChain(network.id)
       await provider.send('wallet_switchEthereumChain', [
         {
           chainId: `0x${network.id.toString(16)}`,
         },
       ])
 
-      // Send tx
-      const unlock = new Contract(
-        network.unlockAddress,
-        [
-          {
-            inputs: [
-              { internalType: 'address', name: 'token', type: 'address' },
-              { internalType: 'uint256', name: 'amount', type: 'uint256' },
-              { internalType: 'uint24', name: 'poolFee', type: 'uint24' },
-            ],
-            name: 'swapAndBurn',
-            outputs: [],
-            stateMutability: 'nonpayable',
-            type: 'function',
-          },
-          {
-            inputs: [],
-            name: 'swapBurnerAddress',
-            outputs: [{ internalType: 'address', name: '', type: 'address' }],
-            stateMutability: 'view',
-            type: 'function',
-          },
-        ],
-        signer
-      )
-
-      const addressOfTokenToBurn = token.address || ethers.ZeroAddress
-      let tx
-
-      if (addressOfTokenToBurn === ethers.ZeroAddress) {
+      if (burnTx) {
         try {
-          tx = await unlock.swapAndBurn.populateTransaction(
-            token.address || ethers.ZeroAddress,
-            balance,
-            3000 // No need to enter a pool fee for native currency
-          )
-        } catch (e) {
-          console.error(e)
-        }
-      } else {
-        const fees = [500, 3000, 10000]
-        for (let fee of fees) {
-          if (!tx) {
-            try {
-              tx = await unlock.swapAndBurn.populateTransaction(
-                token.address || ethers.ZeroAddress,
-                balance,
-                fee // pool for the token, not for UDT/UP
-              )
-            } catch (e) {
-              console.error(e)
-            }
-          }
-        }
-      }
-      if (tx) {
-        try {
-          const transaction = await signer.sendTransaction(tx)
+          const transaction = await signer.sendTransaction(burnTx)
           setHash(transaction.hash)
           await transaction.wait()
         } catch (error) {
@@ -216,9 +230,11 @@ const BurnableToken = ({ network, token, balance, reload }) => {
   return (
     <li>
       {Number(formatUnits(balance, token.decimals)).toFixed(4)} {token.symbol}{' '}
-      <Button isLoading={true} onClick={burn}>
-        Burn
-      </Button>{' '}
+      {burnTx && (
+        <Button isLoading={true} onClick={burn}>
+          Burn
+        </Button>
+      )}{' '}
       {hash && (
         <a href={network.explorer.urls.transaction(hash)} target="_blank">
           Transaction
@@ -251,7 +267,8 @@ const BurnableTokens = ({ network }) => {
 
   return (
     <li>
-      <a href="/governance/unlock-dao-tokens#swap-and-burn">Burnable tokens</a>:{' '}
+      <a href="/governance/unlock-dao-tokens#swap-and-burn">Burnable tokens</a>{' '}
+      <a href="#footnote-1">[1]</a>:{' '}
       <ul>
         {balances.map(({ token, balance }) => {
           return (
@@ -284,10 +301,7 @@ const BurnedTokens = ({ network }) => {
   }
   return (
     <li>
-      <a href="/governance/unlock-dao-tokens#swap-and-burn">
-        Burned Governance Tokens
-      </a>
-      :{' '}
+      Burned Governance Tokens :{' '}
       <a
         href={network.explorer.urls.token(
           network.unlockDaoToken?.address,
@@ -340,9 +354,14 @@ export const SupportedNetwork = ({ network }) => {
             {network.unlockAddress}
           </a>
         </li>
-        <li>Controlled by the DAO: {network.dao ? '✅' : '❌'}</li>
         <li>
-          <a href="/governance/unlock-dao-tokens#earning-udt">
+          <a href="/governance/unlock-dao/cross-chain-governance">
+            Controlled by the DAO
+          </a>
+          : {network.dao ? '✅' : '❌'}
+        </li>
+        <li>
+          <a href="/governance/unlock-dao-tokens#earning-up-token-rewards">
             Protocol Reward
           </a>
           :{' '}
@@ -350,9 +369,12 @@ export const SupportedNetwork = ({ network }) => {
             ? `✅ ${udtBalance} to be distributed`
             : '❌'}
         </li>
-        <BurnedTokens network={network} />
-        <li>Protocol Fee: {protocolFee}</li>
+        <li>
+          <a href="/governance/unlock-dao-tokens#protocol-fee">Protocol Fee</a>:{' '}
+          {protocolFee}
+        </li>
         <BurnableTokens network={network} />
+        <BurnedTokens network={network} />
       </ul>
     </div>
   )
