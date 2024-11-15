@@ -13,10 +13,10 @@ Currently, locksmith support sending updates on new locks and keys. To subscribe
 
 For examples on using the webhooks checkout the tutorial ["Using Webhooks with the Locksmith API"](../../tutorials/back-end/locksmith-webhooks.md).
 
-Currently the following topics are supported: 
+Currently the following topics are supported:
 
 - New Locks `https://locksmith.unlock-protocol.com/api/hooks/:network/locks`
-- New Keys `https://locksmith.unlock-protocol.com/api/hooks/:network/keys` 
+- New Keys `https://locksmith.unlock-protocol.com/api/hooks/:network/keys`
 - New Keys for a Lock `https://locksmith.unlock-protocol.com/api/hooks/:network/locks/:lock/keys`
 
-You need to replace `network` and `lock` with the respective network ID and Lock Address. 
+You need to replace `network` and `lock` with the respective network ID and Lock Address.
