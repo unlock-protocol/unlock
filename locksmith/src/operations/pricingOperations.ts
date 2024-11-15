@@ -1,10 +1,11 @@
 import networks from '@unlock-protocol/networks'
 import { ethers } from 'ethers'
-import { Web3Service, getErc20Decimals } from '@unlock-protocol/unlock-js'
+import { getErc20Decimals } from '@unlock-protocol/unlock-js'
 import * as lockSettingOperations from './lockSettingOperations'
 import { Currencies } from '@unlock-protocol/core'
 import normalizer from '../utils/normalizer'
 import { MemoryCache } from 'memory-cache-node'
+import { getWeb3Service } from '../initializers'
 
 interface DefiLamaResponse {
   price?: number
@@ -203,7 +204,7 @@ export async function getLockKeyPricingFromContract({
   lockAddress: string
   network: number
 }) {
-  const web3Service = new Web3Service(networks)
+  const web3Service = getWeb3Service()
   const provider = web3Service.providerForNetwork(network)
   const lockContract = await web3Service.getLockContract(lockAddress, provider)
   const [keyPrice, currencyContractAddress] = await Promise.all([
@@ -275,7 +276,7 @@ export const getFiatPricingForRecipient = async ({
   data,
   referrer,
 }: PricingForRecipientProps): Promise<any> => {
-  const web3Service = new Web3Service(networks)
+  const web3Service = getWeb3Service()
 
   const [{ decimals, currencyContractAddress }, pricingFromSettings] =
     await Promise.all([

@@ -1,0 +1,71 @@
+---
+id: get-data-for-recipients-and-captcha
+title: "getDataForRecipientsAndCaptcha"
+description: "Retrieves data for recipients and captcha."
+sidebar_label: "getDataForRecipientsAndCaptcha"
+hide_title: true
+hide_table_of_contents: true
+api: eJy1Vk2P2zYQ/SvEnBpAawdBe9HNbbNB0hYodr3twfCBpsYSY4rUDkdODEH/vRhKlr3r3YPRrC+2RM6befPxxh2EBkmzDf5zATmUyL9r1reB7tDYxqLnuPDFb7phU2nIIKJpyfIB8lUHDxEJ8tW6X2dQYDRkG0GCHO6QyeIeoyo0a7UNpGgCVNoXygyQM8ig0aRrZKSYUL2uEXI43V+tIQMrsI8t0gEyIHxsLWEBOVOLGURTYa0h74APjRhrIi0XLWMdz95HJutL6Ps+mxyNkfyjXYtXO5oAT3gumN2iKAhj/BFwHvlboN3VUNYzlkjQS3UIYxN8xJSLD+/fy9fTit23xmCM29apqSUgAxM8o2e5r5vGWZMO5l+jGHWXXsPmKxqWopLAsB1c1hijLjFeU6IMoi29dNjF2XCkuaXrINMng59fSsCvulB3+Nhi5NmPI45E4QUGGeB3XTcOR8c0OFZFi4qDsn6vnS2U9U3LMzjG/ctLcT94vXHJats6t7XuEoyRvHYqIu2RVArpf1H0rXPiFPKtdhFfKfZLrAvc6tYx5LCskFB906IGQ0jK+iMF60vFFR6ZzC59SjrYckrgJ/RI1twneh9TwseE1chVGHUtCQ1XkMNcN3ZuziRN7AbtaclBDhVzE/P5XCY51parWevl901DgYMJbmZCDc81728KRWvkQQ2hgEzxU8TIurS+vLkO+X6wmmDXJx2+lyINaR/UeMq5uIRRF+R5g5qQIBt/3AaqtRTiy79LGajFqQPOJ6qxf6CM1ChGurE3u/TiTIwk09ZvQ7Iba/KQaKk/jzwhA0nywOfDBcPpnmoo7G2BUW202aEv1Lb1KanaWT6kTYLS8alFrNkhW19mqkbWadVEDqRLzNKS8YHtdmSlqhB2UVrJWYM+pv4caf31eZlYNCFyrf3ZSYmsZCOq20DqtBPVwhfqtBWfkOlOg3XdHhxzzvid543T1ktdUv90Y+uupAAyuaPndQZViCwHXbfRER/I9b28HiojLV3YKHNTTMP6arA/3Y075Z16LRqp/cVq3qfNmUPq9zdw92xBv7W7p/v7rb2d1vvJ01oeyA5yt1r3GVSoi/RfqxvNFsZgw2dWFwouKJP+ffq4hAx0K000DfczRUjox7n3hzPsrhtuLMMOfd/DMXaWZ+jXfd//B4HIj8w=
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"getDataForRecipientsAndCaptcha"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/api/captcha"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Retrieves data for recipients and captcha.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"recipients[]","in":"query","required":true,"schema":{"type":"array","items":{"type":"string"}}},{"name":"captchaValue","in":"query","required":true,"schema":{"type":"string"}},{"name":"lockAddress","in":"query","required":true,"schema":{"type":"string"}},{"name":"network","in":"query","required":true,"schema":{"type":"integer"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successful operation","content":{"application/json":{"schema":{"type":"object","properties":{"messages":{"type":"array","items":{"type":"string"}},"signer":{"type":"string"},"signatures":{"type":"array","items":{"type":"string"}}}}}}},"400":{"description":"Bad Request.","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string","example":"Bad request due to invalid input."}}}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

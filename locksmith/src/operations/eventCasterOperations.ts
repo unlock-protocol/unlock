@@ -7,10 +7,11 @@ import {
   getPurchaser,
 } from '../fulfillment/dispatcher'
 import networks from '@unlock-protocol/networks'
-import { WalletService, Web3Service } from '@unlock-protocol/unlock-js'
+import { WalletService } from '@unlock-protocol/unlock-js'
 import { EVENT_CASTER_ADDRESS } from '../utils/constants'
 import { LockMetadata } from '../models'
 import logger from '../logger'
+import { getWeb3Service } from '../initializers'
 
 const DEFAULT_NETWORK = isProduction ? 8453 : 84532 // Base or Base Sepolia
 
@@ -51,7 +52,7 @@ export const deployLockForEventCaster = async ({
   }[]
   eventId: string
   imageUrl: string
-  description: string
+  description?: string | null
 }) => {
   const [provider, wallet] = await Promise.all([
     getProviderForNetwork(DEFAULT_NETWORK),
@@ -174,7 +175,7 @@ export const deployLockForEventCaster = async ({
     chain: DEFAULT_NETWORK,
     address: lockAddress,
     data: {
-      description,
+      description: description || 'Eventcaster event!',
       image: imageUrl,
       name: title,
     },
@@ -227,7 +228,7 @@ export const mintNFTForRsvp = async ({
   ])
 
   // Check first if the user has a key
-  const web3Service = new Web3Service(networks)
+  const web3Service = getWeb3Service()
   const existingKey = await web3Service.getKeyByLockForOwner(
     contract.address,
     ownerAddress,
@@ -272,7 +273,12 @@ export const saveContractOnEventCasterEvent = async ({
     }
   )
   if (response.status !== 200) {
-    logger.error('Failed to save contract on EventCaster')
+    const responseBody = await response.text()
+    logger.error(
+      'Failed to save contract on EventCaster',
+      response.status,
+      responseBody
+    )
     return
   }
   const responseBody = await response.json()
@@ -289,7 +295,7 @@ export const saveTokenOnEventCasterRSVP = async ({
   tokenId,
 }: {
   eventId: string
-  farcasterId: string
+  farcasterId: number
   tokenId: number
 }) => {
   const response = await fetch(
@@ -304,7 +310,12 @@ export const saveTokenOnEventCasterRSVP = async ({
   )
   const responseBody = await response.json()
   if (response.status !== 200) {
-    logger.error('Failed to save RSVP on EventCaster')
+    const responseBody = await response.text()
+    logger.error(
+      'Failed to save RSVP on EventCaster',
+      response.status,
+      responseBody
+    )
     return
   }
   return responseBody

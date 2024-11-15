@@ -1,0 +1,63 @@
+---
+id: revoke
+title: "revoke"
+description: "Invalidate a session."
+sidebar_label: "revoke"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVD2P2zAM/SsCZ93lcEAXbze0xfUDLZAcOgQZGJmO1ciSK9FpA0P/vaDs5HJpO7RLJ0uy+Mj3+KgRQk8R2Qb/WEMFkQ5hT6AhkRmi5SNU6xGeEkWo1pu80VBTMtH2EgEVPPoDOlsjk0KVKCUb/C1oiJT64BMlqEa4v7uTz8vI5WAMpdQMzh2VCV3viKlW3JKK9G2gxIJjgmfyLOHY986aUuriaxKMEZJpqUNZ8bEnqCBsv5Jh0OAH53DrCKoGXSINfRSmbKeSOkoJd3QRmThavwMh2ODg+LrEZnCNde7XEq8y5ayBLcse3pKnaM2MAznLz1e/U+PJC4TiIHkk0SmDqodybD1T9OhUonigqCjGEP+7QquWIqnvmBT6qSRl/YmC9bt/0KrQey1QRa+soSNug5izD0kK75FbqGBxuF/gwO3iwrMSm4plh+iggpa5T9Vi4YLZp85yezt4Wd/0MXAwwd2a0MG1qT/HUA9GNmoqB7K+RkyMO+t3N3+HvJyizrCb50FbSqMm6adxO+suKYVduQAVbAkjRdDz4k2IHUoz3n1ZQdbw8OyCCxDs7Xs6Sguwm/c3+3JgpbBvA8UjiNrWN6HEzX15KrTUhxNP0CAiT3zuf2F4vqf6GA62pqS2aPbka9UMvoiKzvJRNSEqEtcXm1izJ7Z+p1VHjDUyqsQh4o60Ql8rH9g2MyvVhrBPYidnDflUPDrT+vi4KizEKh36iz9nl7yod3yenz++ZbOCTD940Tu0XlQubhhnL67hIEqIG8vbVzJtNLRi2GoN47jFRE/R5SzHk9jVeqPhgNFOA7HeZA0tYV2e2hGkORU8GEO9mP6Abpj6djXj4qHzhHz+tFydCnnu/ZVhCvzJFv54AT6O041V2JPPGfRcBcse8ibn/BOwIina
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"revoke"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/auth/revoke"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Invalidate a session.
+
+<ParamsDetails
+  parameters={undefined}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully completed the request.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"Successfully fulfilled the request.","nullable":false}},"title":"GenericSuccess"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

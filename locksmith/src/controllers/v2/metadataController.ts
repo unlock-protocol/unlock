@@ -1,4 +1,3 @@
-import { Web3Service } from '@unlock-protocol/unlock-js'
 import { Response, Request, RequestHandler } from 'express'
 import * as z from 'zod'
 import Normalizer from '../../utils/normalizer'
@@ -13,7 +12,7 @@ import {
   UserMetadataInputs,
   getMetadata,
 } from '../../operations/userMetadataOperations'
-import { networks } from '@unlock-protocol/networks'
+import { getWeb3Service } from '../../initializers'
 
 export const UserMetadata = z
   .object({
@@ -202,7 +201,7 @@ export const updateUserMetadata: RequestHandler = async (request, response) => {
   const userAddress = Normalizer.ethereumAddress(request.params.userAddress)
   const network = Number(request.params.network)
   const metadata = await UserMetadata.parseAsync(request.body.metadata)
-  const web3Service = new Web3Service(networks)
+  const web3Service = getWeb3Service()
   const loggedInUser = request.user!.walletAddress
   const isLockManager = await web3Service.isLockManager(
     lockAddress,

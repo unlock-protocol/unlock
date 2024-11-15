@@ -1,0 +1,71 @@
+---
+id: export-keys
+title: "exportKeys"
+description: "Starts Job process to get all the keys for the given lock"
+sidebar_label: "exportKeys"
+hide_title: true
+hide_table_of_contents: true
+api: eJytVkuP2zYQ/ivEnBJAu94uctJtD0mRR4O260UPCx9oamxxTZEMOXLWFfTfi6FkW5YfQZz6YlOexzfD75tRA85jkKSd/VhADvjqXaDPuImQQURVB00byJ8beIoYIH+etVkDD94brZJXejTLoMCogvbdI3gkGSiKT24ufHAKYxTkxBJJSGMElShWuIli4UI6LPUarTBOrSADL4OskDDElFdzPC+phAysrBBysEjfXWDbgN9qHbCAnEKNYxRfOzuhi1uuRpVYScgboI3nMNoSLjFAyyWdSMN4HooiYIw/TPXFqZWQnfHJZJGCtstBrm81hs0+2fY4TnM20BjBXxxAbFwtvktL3O6IMqiSm3wL59IutCEMn/GXUk+7+zyV3NnzufHV6456lxo2TvZ+5yVIV3g2uvQ+uLU0PxP7ofcRkSTVUbwJaHDNFTFT3WKhSqmt2IaOwlmBa7TUURlfZeUNvgUWRMDonY0YOe/93R1/jURSK1bGojZmwxkDYSFYeqwbyEA5S2iJHeVecJOXyN7NcVVu/oKKWEGBRU26y/3i5iztYybyJ4N3d78dQ3uysqbSBf0vFpCM3h0bfXUkPrjaFsxqqJBKxyNkiQkDSymHyfp+Ir2eNL1m2wmrKk6agbjaSTd1blbbsRPWW/XXwUAOJZGP+aTzrTSVt7Xl3zc+OHLKmVvlKhjf5p/BFbVKTHlMIRNXDiNGkkttlzc/F/mx89qFne1n5SPfStf4bmLu+s4pt2Tk8xxlwABZ/+ODC5UkyOHTP1Nu+cGM3QWRXndi3bFcc9sgG2qAr0PbhUt+mgymG+WyxJdtnZABN7mr5/6owp0dz++1LjCKuVQrtIVY1DY1VRpNm473Vs4N94O0WiFpu8xEhSQLSVJEckEuMRPSFsI60ou+KlE6t0rD0miFNiLD7cv64+M0VeFdpErawT8dVUS/oQ5AN3vF/NIC6ltN+EoTb6S2fB2JNk1P62dYc8uk15BBvl9HiUX86HB1DOk9y6B0kThG08xlxKdg2pYfd3fHpC90lHPDg3ghTRzvmmGZb/7uZ/ZbcXn+n6mKqbOfnGtparZJOrkKxA82wUUUw1V0JZLxbriY72D9XJnw/1oYF4EONtke5owPQTPO6zlz+IJ0EsJ27tiDa9lC21L/asKM35uuwDDUWjtrMyhRFuldtektHpRCTwPfo3XK7dwtsN/fT1ncNSt9N3hH0zpFP4mraTqLqVuhbdsdTOIzA2zb/wAfSfX+
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"exportKeys"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/api/{network}/locks/{lockAddress}/export-keys"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Starts Job process to get all the keys for the given lock
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}},{"in":"query","name":"query","required":true,"schema":{"type":"string"},"description":"Query you want to search for."},{"in":"query","name":"filterKey","required":true,"schema":{"type":"string"},"description":"The key you want to search on."},{"in":"query","name":"expiration","schema":{"type":"string"},"description":"Expiration time"},{"in":"query","name":"approval","schema":{"type":"string"},"description":"Approval status (relevant for offchain approvals on events for example)"}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully started Keys Job","content":{"application/json":{"schema":{"type":"object","properties":{"jobId":{"type":"string"}}}}}},"401":{"description":"Unauthorized"},"404":{"description":"Not Found"}}}
+>
+  
+</StatusCodes>
+
+
+      

@@ -24,7 +24,7 @@ function addLockTemplate(address impl, uint16 version) external nonpayable
 
 Add a PublicLock template to be used for future calls to `createLock`.
 
-_This is used to upgrade conytract per version number_
+_This is used to upgrade contract per version number_
 
 #### Parameters
 
@@ -105,8 +105,8 @@ _internally call `createUpgradeableLock`_
 | \_expirationDuration | uint256 | the duration of the lock (pass 0 for unlimited duration)                                                                                                                                                                              |
 | \_tokenAddress       | address | set to the ERC20 token address, or 0 for ETH.                                                                                                                                                                                         |
 | \_keyPrice           | uint256 | the price of each key                                                                                                                                                                                                                 |
-| \_maxNumberOfKeys    | uint256 | the maximum nimbers of keys to be edited                                                                                                                                                                                              |
-| \_lockName           | string  | the name of the lock param \_salt [deprec] -- kept only for backwards copatibility This may be implemented as a sequence ID or with RNG. It&#39;s used with `create2` to know the lock&#39;s address before the transaction is mined. |
+| \_maxNumberOfKeys    | uint256 | the maximum numbers of keys to be edited                                                                                                                                                                                              |
+| \_lockName           | string  | the name of the lock param \_salt [deprec] -- kept only for backwards compatibility This may be implemented as a sequence ID or with RNG. It&#39;s used with `create2` to know the lock&#39;s address before the transaction is mined. |
 | \_5                  | bytes12 | undefined                                                                                                                                                                                                                             |
 
 #### Returns
@@ -176,7 +176,7 @@ function estimatedGasForPurchase() external view returns (uint256)
 function getAdmin() external view returns (address)
 ```
 
-Returns the ProxyAdmin contract address that manage upgrades for the current Unlock contract.
+Returns the ProxyAdmin contract address that manages upgrades for the current Unlock contract.
 
 _this reads the address directly from storage, at the slot `_ADMIN_SLOT` defined by Open Zeppelin&#39;s EIP1967 Proxy implementation which corresponds to the keccak-256 hash of &quot;eip1967.proxy.admin&quot; subtracted by 1_
 
@@ -340,7 +340,7 @@ _Returns the address of the current owner._
 function postLockUpgrade() external nonpayable
 ```
 
-Call executed by a lock after its version upgrade triggred by `upgradeLock` - PublicLock v12 &gt; v13 (mainnet): migrate an existing Lock to another instance of the Unlock contract
+Call executed by a lock after its version upgrade triggered by `upgradeLock` - PublicLock v12 &gt; v13 (mainnet): migrate an existing Lock to another instance of the Unlock contract
 
 _The `msg.sender` will be the upgraded lock_
 
@@ -410,7 +410,7 @@ Match lock templates addresses with version numbers
 function publicLockLatestVersion() external view returns (uint16 _version)
 ```
 
-Retrive the latest existing lock template version
+Retrieve the latest existing lock template version
 
 #### Returns
 
@@ -461,7 +461,7 @@ _[DEPRECATED] Kept for backwards compatibility This function will keep track of 
 function recordKeyPurchase(uint256 _value, address _referrer) external nonpayable
 ```
 
-This function keeps track of the added GDP, as well as grants of discount tokens to the referrer, if applicable. The number of discount tokens granted is based on the value of the referal, the current growth rate and the lock&#39;s discount token distribution rate This function is invoked by a previously deployed lock only.
+This function keeps track of the added GDP, as well as grants of discount tokens to the referrer, if applicable. The number of discount tokens granted is based on the value of the referral, the current growth rate and the lock&#39;s discount token distribution rate This function is invoked by a previously deployed lock only.
 
 #### Parameters
 
@@ -574,7 +574,7 @@ Set the UDT Swap and Burn contract address
 function swapAndBurn(address token, uint256 amount, uint24 poolFee) external nonpayable
 ```
 
-Send tokens held by this contract to the UDT SwapBurner contract. The tokens sent to the contract are then swapped for UDT and UDT itself will be sent to a burner address.This function can be called by anyone (not only the contract owner) as a way to ensure decentralization.
+Send tokens held by this contract to the UDT SwapBurner contract. The tokens sent to the contract are then swapped for UDT and UDT itself will be sent to a burner address. This function can be called by anyone (not only the contract owner) as a way to ensure decentralization.
 
 #### Parameters
 
@@ -630,7 +630,7 @@ _Transfers ownership of the contract to a new account (`newOwner`). Can only be 
 function transferTokens(address token, address to, uint256 amount) external nonpayable
 ```
 
-Functions which transfers tokens held by the contract It handles both ERC20 and the base currency.
+Function which transfers tokens held by the contract It handles both ERC20 and the base currency.
 
 _This function is onlyOwner_
 

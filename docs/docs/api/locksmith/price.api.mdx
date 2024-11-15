@@ -1,0 +1,71 @@
+---
+id: price
+title: "price"
+description: "price"
+sidebar_label: "price"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVk2P2zgM/SsCT7uAJxkM0ItvA2x3kP0ois4EexjkwNi0rUaWNBKdaWD4vy8oO1+bdNruHjaXWBJNvkc+Uu7BeQrI2tlFCTn4oAuCDDwGbIkpRMife9BWzpAbyMBiS5CDJX51YQMZBHrpdKAScg4dZVBSLIL24hNy+DDaKV3OIINYNNQi5D3wzosbbZlqCjAM2RTmpaOwO8bB1nWWz8JUaOJFnPtkp1yl2G3IRrVznXpFy4qdqokVN6QSPVW5oLRVy8dfrkKyXbt+E1FZBorx25CeGlIUirtbNb3yNqaZWlTKOm60rZWOymOMVGbJ6P7jQr1qY1Qg7oJNexZZb2mkO3q5Sidy0LaGYVgJ4OidjRTl/O72Vv7OMT8Qn2TpIowLCu1uYuUmHGOFJXjhLJNlcYveG10kZc0/R/HdX2Jz689USHF9EB2yHpEFip3hb9uVVOgWTbwsXga2MwbXhkZVDtkk7csyZ8C6pcjY+quncdeunbmS0ES30iXZr/hNERd2VOZ3YJx+Gby7VpmlFVNRTtUZU2nRwktHkVXZpW1ppWDRqEhhS0FRCC78p6oc8U36Pk9/SzFiTZepkUaoMJVQmiCQesWo0I6QpPcmCqJ0kdDEZHYZc0j1YVnDA1kKunhM9N6LK5gSdp6p/RBriRsnU62mpB2ZXznMt3dz9HreT7od5nv7MW/jxOuCgRwaZh/z+dy4YhNbzc2ss/J844NjVzgzK1wL/4z/MbiyK2ShRqwgo+TcY2Ssta1vfszz4/jWwe1KQBdd0Lx7lCqOdVlGCidFkZD7wSDrNWFI8hsffnWhRanUb389iWrvjxI5cYJe/06nQ9Drm03aOBmRUgptK5fem4q2TLTUH3uekIEkeeRzd8HwYKd8cFtdUlRrLDZkS1V1NiUVjeZdGk8kLZE0pIsNsbZ1plpiLJFRRXYBa8oU2lLGqq4mVqpxbhNFa0YXZGMS8ETrz8VTYuFd5BbtycleJGdwD+lh+sJzb1BbSWEqdT8J7hm2QhO9hgzy47U5Olxl0LjIYtb3a4y0DGYYZHtMqWix1FE64ivXTH/s739/CV6lIfU9uYC3aDoxSmr+fkz/yy34Fp/D9X0ktJJF0OPc+aGM//Rp+gb4WZ1/6VxFsG8muzsNv0e218awGjJoCEtp4+d+Or0vCvKndbiY5ULjMPMe3ouS/wadiWuO
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"price"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/api/{network}/price"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+price
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"query","name":"amount","required":false,"description":"Amount of tokens you want to get the price for in USD.","schema":{"type":"number"}},{"in":"query","name":"address","required":false,"description":"The erc20 address you want to get the price for. If nothing is passed, the API will return the native token price.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Get price for the native token or any erc20 on the network.","content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"object","properties":{"decimals":{"type":"number","nullable":true},"price":{"type":"number"},"timestamp":{"type":"number"},"symbol":{"type":"string"},"confidence":{"type":"number"},"priceInAmount":{"type":"number","nullable":true}}}}}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

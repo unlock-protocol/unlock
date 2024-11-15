@@ -1,0 +1,71 @@
+---
+id: send-event-invites
+title: "sendEventInvites"
+description: "Send event invites to a list of recipients"
+sidebar_label: "sendEventInvites"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVk1v4zYQ/SvsnFpAsdOgvei2W6SF+4EuEgd7MHwYS2OLa4rUkiMlhqD/XgwpW17bLbBogeYSUSIfZ968eeMeXEMeWTu7KCGHQLZ87MjywnaaKUAGgYrWaz5AvurhJZCHfLUe1hmUFAqvGzkLOTyTLRXJUaXTWcVOoTI6sHJb5anQjSbLgtmgx5qYfIioWgAa5AoysFiTBGLaHWTg6XOrPZWQs2/p6s60KRQV1Qh5D3xo4mH22u5gkCgFgQK/d+VBdhTOMlmWR2wao4uY+/xTEMD+GsptPlHBErIXplhTkK9n2Ux70Xs8QAaaqQ43wsmg1naRPn6fQY1vx8X9EP8k2tA4G9IlD/f38u8i57YoKIRta8xBhTO6v4Hsv8oujBjjro1zhtDCMcgfbsW1sB0aXSptm5al2qQ7KmfqPZZqrMHs30RoW2NwYwjyLZpAlyHXFALu6Jp10cwWW8OQw9PIrtq48qDSXUoHYVBin11fM2RA3jt/C3faKtoUYlizLOEXsuR1MVIi0nuMIIm+H2/R92IFSlpGKrvV5kiaKtv4Wlsmb9GoQL4jr2JY/zujy4o8qVcMCm0KSWl7TEHbneKKzst/Se81ac8xvYkv6Rriyok7NS5EsYpT5DDvHuZUozbzXtximKdGiJYlGMlbWm8gh4q5Cfl8blyxD7XmatZaeb5rvGNXODMrXA2X/vLBu7ItZKFSWDBkl4iBcaft7u7rkJ/TqRPsevLZZylYKkFy2xP/cuXR7mJfEnrykI0PPztfoxTl149LMZt3kxrOTarRv9FhMlps9N0+vogu/LklfwBhXQT0NJnn4xvWjaFL81sdVbEeBGHr4lVjSV8iE+r3IzWQgdQlUfBwRcppn2q863RJQW2w2Mtg2bY21gGN5oPaOq9IGiYqTBd7Ym13maqJsURGFdh53FGm0JbKOtbbkQhVObcPokSjC7Ih5jMy8cdiGRMXldVoz77IVFRxLKppLn4R+9lg+bpJOFaF6Y3njUFtpXJRYf2o8xV0QlVUOmSQj5NxFPs6g0q6Il9B328w0Is3wyCvUyXz1TqDDr1OXbfqodRBnstT2/9tIt8+jdP3OzVO2pvRHoVlRUQdmlZWkIGoahzkg6ijIizjr4d+/PRTuuluKQDT0SsXk6ZLJ94VBTX8j3vXZ37x4c/npbTHOPtrV8oZj6/yywJfU5guZp6murzrwaDdtdH6IGGKKrCVYkwz8cvei1ndJKLv046l25MdhhMvLGshZhj+AjOPURw=
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"sendEventInvites"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/email/{slug}/invite"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Send event invites to a list of recipients
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"slug","required":true,"description":"Slug","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"recipients":{"type":"array","items":{"type":"string"},"minItems":1,"maxItems":10}}}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully sent invites!","content":{"application/json":{"schema":{"type":"object","properties":{"sent":{"type":"boolean"}}}}}},"400":{"description":"Invalid input received. Bad request.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"Response body schema is invalid.","nullable":false},"error":{"type":"string","nullable":true}},"title":"GenericInvalidBodyError"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

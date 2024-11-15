@@ -1,0 +1,71 @@
+---
+id: download-receipts
+title: "downloadReceipts"
+description: "Download the ZIP file containing all receipts for a lock."
+sidebar_label: "downloadReceipts"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVU2P3DYM/SsCTy2gXQeLnHzboh/YNgmC7C4KdDAHjcSxlbElRaInnRr67wU19nxlmqDJISdbEkU+ku9RI/iAUZH17sFADcZ/dJ1X5h1qtIESSEioh2hpB/VihOeEEerFMi8lGEw62sB3oYafp5uCWhR/PbwVa9uh0N6Rss66RqiuE3FyK9Y+CiU6rze3ICGoqHokjKkEsewvKGpBglM9Qg0O6aOPG5AQ8cNgIxqoKQ54ieLN3k5Yw36TbrFXUI9Au8BurCNsMELO8moYBnRvTMSUvhjqldcbofbGV4MlitY1kLlWEVPwLmHi87sXL/hz7u5x0BpTWg9dtxNzG/C8nByGK4qO2IEKobO6NK/6xwbe+i8QEtY+9oqghpV1Ku4g55wlvLwG5SdlBOeOiT4T8X1i4ysh/eo9ajqr3wJ6TEk1CEsJITLnyO6LMR9cqdsM8eWnEA8Ec57E2g/OCB/LokHHhEbz3aFnCT1S61lXDVLhObVQQ7W9q2YlVHOrq3HieK7GExrmosC4nbUxxA5qaIlCqquKDVNvqb0dHP/fhOjJa9/dat/DJWPfRm8GzQvxWFwCy+DcYyLVWNfc/D/Pj/tbB7fL49h45Brv67UfHodicchZN7xeoYoYQU4/v86E/f3PJ8gS7o8NPHGigv0Dd0cFq2BvNmWjyPvDgIXrvFz7cs9Sx4bPJS3xas4TJHCR9/ncfZLhwU6E6LfWYBIrpTfojFgPrhRVdZZ2ZbKhU6uO60FWb5Csa6TokZRRpEQiH1WDUihnmLF2PWUlWu83ZZR0VqNLhVhTWq8fnkoWwSfqlTs5mfkjTkb2GfTxqIJvGtJTwQn/pip0yjpuSiHPOBF7Adu7op0jkCkeSKiPI7w+HbNLCa1PxLfHcaUSPscuZ97e965eLCVsVbRqxX1bjGBs4n8D9Vp16XIun6b7w7tJxj+K84fhai4zoxyzZ6u6gVcggel0fIFYMl+F4PK9+AoMp3XLyyyhRWXKgzxOFvdaY6CTu5dvBEvzMJV+++UJJKiBm3dQ1IUMi/OrsMZxb/HkN+hyPqAkXjO+nP8F2qXmBg==
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"downloadReceipts"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/receipts/download/{network}/{lockAddress}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Download the ZIP file containing all receipts for a lock.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully downloaded the ZIP file.","content":{"application/zip":{"schema":{"type":"string","format":"binary"}}}},"400":{"description":"Bad request.","content":{"application/json":{"schema":{"type":"object","required":["message"],"properties":{"message":{"type":"string"}}}}}},"404":{"description":"ZIP file not found or not generated.","content":{"application/json":{"schema":{"type":"object","required":["message"],"properties":{"message":{"type":"string"}}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

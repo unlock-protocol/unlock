@@ -1,0 +1,71 @@
+---
+id: email-ticket
+title: "emailTicket"
+description: "Send QR code by email."
+sidebar_label: "emailTicket"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVktv20YQ/iuLObUAbRpueuHNh6Rwk7hpJKMoBB1G5EjckNzd7A6VqAT/ezBL6i3HqFOguohLzs7M982zA+vII2tr7gvIgBrU9VTnFTEkEChvveYNZLMOHgN5yGbwzubVezS4Ig/zfp5AQSH32okOyGBCplB/flS5LUgtNipqvIYEHHpsiMmHqE6LsEMuIQGDDUEGhviL9RUk4Olzqz0VkLFv6dTEwyCndCF6Q15Sg5B1wBsnarRhEuf6PrloprZ5dVcUnkJ41pSAVTgIXzQW2GuzetJWRZv74lkrb2mj7i+D2emfi5LgrAkU5PvtzY38HSt6LWSrQIZFWW4Nk2ERQ+dqncc4p5+CyHbntuziE+USd+clK1gPlsKoY5RaWFsTGhAQS2xr3mIybV3joibIllgH6uMvgVc3v5w7KsmkdFDGssKWS+v1P1QotsqRX1rfKC51UJiL/A9hOfHqFFxDIeCKzhk/gAd/21ahp1NvrY8nMizufNf9M24SYM1yhgfLd4daYEvbq3PapiUpzdSozehRg5U2KyXpRYHV0npVWBp4pa86/Fge/BfceQq29flA3tK2pvg+Hb+RIa/zB8tvovDAxq+Xsv3RiA5hfdnW9VLXOx6KNr6WTuANSkX4NXlF3lv/vzMyLcmT+oJBoRlcUtpsIUg0uaQtkmdyZyRrEuG9FlUwVl1DXFrp6M6GWNLSljJI17cpOp1ybPFpN7bcPu0OumKfdrFv9Wls3nEQiIGhcbe+hgxKZheyNJVrodFcXrdGnq+ct2xzW1/ntoHTRvfB26KNRaEGn0H65rHGwLjSZnX17zRPhls7tfP99JpINIf4DDNsFxwxuW26sbURevKQjA9vrG9QIvb7X1PoE7jbp8qBEnT6LW32LR+dvqriizgPPrfkNzIfQJuljffG4D1GWOrdFickICQPeG7PEO7klPN2rQsKaoF5JeN22ZpIKtaaN7EJkJRGzKUYaG1WiWqIsUBGFdh6XFGi0BRSlno5olKltVWcc7XOyYSYyCOs9/fTiELyqUFz8CUmidotDUded/tSe3ozGIlk+sqpq1EbITsmRTfm7QzWQgg6LeJbS9l+YciOh3q2nbtDAs8TKKUMshl03QIDPfq67+X1EJ1sNk9gjV4PZTbroNBBnotdnT+J6qeP42j/WR3vJRdRbXPGSH6ssW7lBInsCQcLkBTFizw4XVde4MMhkS/2Y7/QvMCDIXb9vE+gJCzi1tmN3+7ynBwf3Dpr31L5u+b34Y/JVPKmlSTabzDHZR7VX3Sp6waJqa3I9P3OQ5azeNj33wBTZeQt
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"emailTicket"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/api/ticket/{network}/{lockAddress}/{keyId}/email"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Send QR code by email.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}},{"in":"path","name":"keyId","required":true,"description":"Key Id.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Email sent.","content":{"application/json":{"schema":{"type":"object","properties":{"sent":{"type":"boolean","default":true,"nullable":false}}}}}},"403":{"description":"User is not authorized to perform this action.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"You are not authorized or authenticated to perform this action.","nullable":false}},"title":"NotAuthenticated"}}}},"404":{"description":"The item you are making request for does not exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"resource not found","nullable":false}},"title":"GenericNotFound"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      
