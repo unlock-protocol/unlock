@@ -1,0 +1,75 @@
+---
+id: verifiers
+title: "verifiers"
+description: "List of verifiers for the lock address. (deprecated in favor of eventVerifiers)"
+sidebar_label: "verifiers"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVktv20YQ/iuLOSUAbRlueuHNhzRI6xhFbLcIBB3G5FDciNylZ4dyVYL/vZglJVGPNGmKorqIS87zm29mtoOcGqYMhXJIhVtKwDfEKNa79zmksCa2hSUOkECgrGUrG0jnHTwGYkjnUPls9QEdLolh0S8SyClkbBu1ACnc2iDGF2ZnxxSejZRkVNFgnjOFcGle7QMx1pkC155Vj9bk5Let8mtIoEHGmkRD0jisemlQSkjAYU2QgiN58byCBJieW8v73A5juxvkjM0vNbuspBoh7UA2jZqxTkiz6vvkrBtN4GaI/6uubqfJnnMWhK1bQq8IMoXGu0BBv19fXenfobnqCNWp6cw7ISeqhE1T2SwWc/Y5qGZ36tk/faZMFFjW0osd/DKFtpIwEURm3EACVqgO5wy4tqrwqSJIC6wCTTGZwxghLI4dbT+cYHFisE8OMP9mhS09v0lhS55THpyVjlT4O7vKhr5PQKzoEbZchn74JXB99ea0wnfebGlwaT7Sc0tBDGYr518qypeUX0KfwJurH05VtTONDcZ5MdhK6dn+SbkRbxriwnNtpLTBYKby/4oxJwU/rGxNIeDyLD45FdhWAil88q1BpuNoPccTObHDUPhy+MdVmYB95+VmagUGxH8811OPTo2on6KtqsJWhkfY8za+Vh6ww8oE4jWxIWbP/zt+DyUxmRcMBt0QUpyfQwrWLeOsHTP5ClrvyBHb7D6m91ZNwUjRmqT0ug6WFCeFzsEUZuvrGTZ2tp1CMx1Ls27soH7WTbq1j/tDDQ9ju+UKUihFmpDOZioYaivlZev0+aJhLz7z1WXmazgepr+yz9tYfjPECjqhDy0GwaV1y4t/Zvl+0NqZXeyX3r1WcajLsPp2RVGX25Gu5ydCjuNiePjJc41aqZ9/f9CevdlTZDpcG/sLbfbLBRt7sYov4uZ5bok3uonAusJHvbFojzEtc7vNExLd2WHI5/okw52cadivbU7BPGG2IpebonURVKysbOKaJm2JyCGbrUisWyamJsEcBU0Qz7ikxKDLtXttMWZlSu9XcRVVNiMXIoHHtD68f4hZND5IjW7yZXrROAi52/fXf3CbGOEX+kNmTYXWaYkilbqR5nNYK4zY2AHaYXoncQdDAun+tpFOt9MigdIHUf2ue8JAj1z1vb4eapnOFwmske3QjPMOchv0Od9Ngy/C8OrjuFhfm8M7zNlstgxzyqY1Vq2eIAGl1/6ypC30XREcX22+I4Ypbv2iT6AkzOP1shslbrKMGpnongxa7dXdmHr39kFL1mr9di121JfR+tm4um6QePArcn2/C1P0rAH2/V9klOmn
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"verifiers"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/api/verifier/list/{network}/{lockAddress}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+:::caution deprecated
+
+This endpoint has been deprecated and may be replaced or removed in future versions of the API.
+
+:::
+
+List of verifiers for the lock address. (deprecated in favor of eventVerifiers)
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"list of verifier address.","content":{"application/json":{"schema":{"type":"object","properties":{"results":{"type":"array","items":{"type":"object","nullable":false,"required":["address"],"properties":{"address":{"type":"string","nullable":false},"lockAddress":{"type":"string","nullable":false},"lockManager":{"type":"string","nullable":false},"network":{"type":"integer","nullable":false},"name":{"type":"string","nullable":true}},"title":"Verifier"}}}}}}},"204":{"description":"No response. Request acknowledged."},"403":{"description":"User is not authorized to perform this action.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"You are not authorized or authenticated to perform this action.","nullable":false}},"title":"NotAuthenticated"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

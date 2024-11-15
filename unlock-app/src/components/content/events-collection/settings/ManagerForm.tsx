@@ -38,6 +38,13 @@ interface RenounceModalProps {
   onConfirm: () => Promise<any>
 }
 
+interface RemoveModalProps {
+  isOpen: boolean
+  setIsOpen: (open: boolean) => void
+  onConfirm: () => Promise<any>
+  managerAddress: string
+}
+
 const RenounceModal = ({
   isOpen,
   setIsOpen,
@@ -65,54 +72,99 @@ const RenounceModal = ({
   }
 
   return (
-    <>
-      <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-        <form
-          onSubmit={handleSubmit(onRenounce)}
-          className="flex flex-col gap-6 text-center"
-        >
-          <form
-            onSubmit={handleSubmit(onRenounce)}
-            className="flex flex-col gap-6 text-center"
+    <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+      <div className="flex flex-col gap-6 text-center">
+        <div className="overflow-hidden bg-center rounded-lg">
+          <img
+            className="object-cover h-40"
+            src="/images/illustrations/img-error.svg"
+            alt="img error"
+          />
+        </div>
+        <div className="flex flex-col gap-4">
+          <h3 className="text-4xl font-bold text-brand-dark">
+            Hold Your Horses
+          </h3>
+          <span className="text-base text-brand-dark">
+            You are about to permanently renounce yourself as a Collection
+            manager. You will not be able to revert this action. Please type
+            &ldquo;renounce&rdquo; to confirm.
+          </span>
+        </div>
+        <Input
+          placeholder="renounce"
+          {...register('confirm')}
+          autoComplete="off"
+        />
+        <div className="flex gap-4">
+          <Button
+            className="w-full"
+            variant="outlined-primary"
+            onClick={() => setIsOpen(false)}
           >
-            <div className="overflow-hidden bg-center rounded-lg">
-              <img
-                className="object-cover h-40"
-                src="/images/illustrations/img-error.svg"
-                alt="img error"
-              />
-            </div>
-            <div className="flex flex-col gap-4">
-              <h3 className="text-4xl font-bold text-brand-dark">
-                Hold Your Horses
-              </h3>
-              <span className="text-base text-brand-dark">
-                You are about to permanently renounce yourself as a Collection
-                manager. You will not be able to revert this action. Please type
-                &ldquo;renounce&rdquo; to confirm.
-              </span>
-            </div>
-            <Input
-              placeholder="renounce"
-              {...register('confirm')}
-              autoComplete="off"
-            />
-            <div className="flex gap-4">
-              <Button
-                className="w-full"
-                variant="outlined-primary"
-                onClick={() => setIsOpen(false)}
-              >
-                Cancel
-              </Button>
-              <Button className="w-full" type="submit" disabled={!confirmMatch}>
-                Confirm
-              </Button>
-            </div>
-          </form>
-        </form>
-      </Modal>
-    </>
+            Cancel
+          </Button>
+          <Button
+            className="w-full"
+            onClick={handleSubmit(onRenounce)}
+            disabled={!confirmMatch}
+          >
+            Confirm
+          </Button>
+        </div>
+      </div>
+    </Modal>
+  )
+}
+
+const RemoveModal = ({
+  isOpen,
+  setIsOpen,
+  onConfirm,
+  managerAddress,
+}: RemoveModalProps) => {
+  const onRemove = async () => {
+    await onConfirm()
+    setIsOpen(false)
+  }
+
+  return (
+    <Modal isOpen={isOpen} setIsOpen={setIsOpen} spacing="none">
+      <div className="flex flex-col gap-6 text-center mb-5">
+        <div className="overflow-hidden bg-center rounded-lg">
+          <img
+            className="object-cover h-40"
+            src="/images/illustrations/img-error.svg"
+            alt="img error"
+          />
+        </div>
+        <div className="flex flex-col gap-4 items-center">
+          <h3 className="text-xl font-bold text-brand-dark">Remove Manager</h3>
+          <span className="text-md text-center text-brand-dark flex items-center">
+            Are you sure you want to remove{' '}
+            <WrappedAddress
+              className="mx-2 font-semibold"
+              address={managerAddress}
+              showExternalLink={false}
+              showCopyIcon={false}
+            />{' '}
+            as a manager?
+          </span>
+        </div>
+        <div className="flex gap-4 mx-3">
+          <Button
+            className="w-full"
+            variant="outlined-primary"
+            onClick={() => setIsOpen(false)}
+          >
+            Cancel
+          </Button>
+          <Button className="w-full" onClick={onRemove}>
+            Remove
+          </Button>
+        </div>
+      </div>
+    </Modal>
   )
 }
 
@@ -124,6 +176,7 @@ const CollectionManagerCard = ({
   isRemoving,
 }: CollectionManagerCardProps) => {
   const [renounceModal, setRenounceModal] = useState(false)
+  const [removeModal, setRemoveModal] = useState(false)
   const { account } = useAuthenticate()
   const isLoggedUser = account === manager
   const isManager = collectionManagers.includes(manager)
@@ -149,6 +202,12 @@ const CollectionManagerCard = ({
         isOpen={renounceModal}
         setIsOpen={setRenounceModal}
         onConfirm={onRenounce}
+      />
+      <RemoveModal
+        isOpen={removeModal}
+        setIsOpen={setRemoveModal}
+        onConfirm={() => onRemove(manager)}
+        managerAddress={managerAddress}
       />
       <div className="flex items-center justify-between px-4 py-2 border border-gray-200 rounded-lg">
         <div className="flex flex-col gap-2">
@@ -179,7 +238,7 @@ const CollectionManagerCard = ({
           <Button
             size="small"
             variant="outlined-primary"
-            onClick={renounce}
+            onClick={() => setRemoveModal(true)}
             loading={isRemoving}
           >
             Remove
@@ -204,7 +263,9 @@ export const CollectionManagerForm = ({
     isRemovingManager,
   } = useEventCollectionManagers(eventCollection.slug || '')
 
-  const { handleSubmit, control, setValue } = useForm<{ manager: string }>({
+  const { handleSubmit, control, reset } = useForm<{
+    manager: string
+  }>({
     mode: 'onChange',
   })
   const { manager } = useWatch({ control })
@@ -212,11 +273,10 @@ export const CollectionManagerForm = ({
   const onSubmit = async (data: { manager: string }) => {
     if (data.manager) {
       await addManager(data.manager)
-      setValue('manager', '')
+      reset({ manager: '' })
     }
   }
 
-  // TODO: Display modal before removing
   const handleRemoveManager = async (managerAddress: string) => {
     await removeManager(managerAddress)
   }
@@ -247,10 +307,7 @@ export const CollectionManagerForm = ({
         </div>
       </div>
       {isManager && (
-        <form
-          className="flex flex-col gap-6 mt-8"
-          onSubmit={handleSubmit(onSubmit)}
-        >
+        <div className="flex flex-col gap-6 mt-8">
           <div className="flex flex-col gap-2">
             <Controller
               name="manager"
@@ -283,13 +340,13 @@ export const CollectionManagerForm = ({
           </div>
           <Button
             className="w-full md:w-1/2"
-            type="submit"
+            onClick={handleSubmit(onSubmit)}
             disabled={isAddingManager || disabled || !manager}
             loading={isAddingManager}
           >
             Add Manager
           </Button>
-        </form>
+        </div>
       )}
     </div>
   )

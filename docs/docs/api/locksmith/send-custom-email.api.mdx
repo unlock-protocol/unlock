@@ -1,0 +1,71 @@
+---
+id: send-custom-email
+title: "sendCustomEmail"
+description: "Send custom email to recipients"
+sidebar_label: "sendCustomEmail"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVk2P4zYM/SsCTy3giReD9uLb7GJaTLttF5MM9hDkwEhMoo0seSU5s4Hh/15QcuJ89WtboHOJpaFI6vHxUR24hjxG7eyTggoCWfWuDdHVjzVqAwUEkq3XcQ/VvIOXQB6q+aJfFKAoSK8bPgoVTMkqIdNJQXxURCc8Sd1osjFAAQ16rCmSD8mV5lMNxg0UYLEmqMBSfHV+CwV4+txqTwqq6Fu6jPVrthNaTThBuaEaoeog7ht2o22kNXno++JmGOPk9kEpTyH8Zaj3Tm4FZuObwUL02q6hZ0TYFYX41qk9W0hnI9nIn9g0RssEc/kpsOfu2pVbfiIZGSnPRYmaQrJr8/51zOI0xGU+/McphcbZkD3dv3nDPxeFa6WkEFatMXsRyMazKkLxn13jPM+lc4bQHhP97lZuT3aHRiuhbdNGZhPpHamJeItKDGBP/k2GtjUGl4agWqEJdJlyTSHgmq7RZZassDURKngeEBZLp/YixxI6CJ1zn1yH6Qsg752/5Xc0ZTYyMFFHXsKPZMlrOUDCHHtMTjJ839+C78WyK25Eru5KmwNoQrVpmzvFWzQikN+RFymt/x3R2YY8iVcMAm1OSWh7uIK2axE3dFr+S3ivQZum64149QXUFDeOFa9xIZGVJaKCcndfJuKX3aBGfcl6EcruRDb6MvdIyXKZNJL9Z11rvYEKNjE2oSrz2VrHzaS1/H3XeBeddGYiXQ2XavPBO9VKXoicMrCEnXsMEdfaru/+medpPnV0uxiFfcrFzOXJ8n6sDYc8aF7qWUJPHorh4wfna+SC/fRxxmL0MDLlxAk2+mfaj+qLjb7bpo0kzZ9b8nuWamByPY8K+vgF68bQmQKObDkS9EQMtV25FHgo/kvCRbw/AAUFcJUyIPdXEB3tROPdTisKYolyy3Nt1dpUFTQ67sXKeUHcWomLWm4parsuRE0RFUYUITqPayoEWiWsi3o1wCI2zm3THDFakg3pdgMuvzzNEgzMxxrtyX+YZCIPZXGYymepn4yavzGHh7pE+hLLxqC2jF3iWDd0wRx2DM9hAFTjXE6k463zGZrjpUawChYFbLipqjl03RIDvXjT97ydi13NFwXs0OvctPMOlA78rY6q8YfX++Z5GNffivNXwM1bHShomW47NC2voADm3/jc4B77qgwuHwdfkcMpjv2iL2BDqNIbqxss3uXIdzP2M3q4kmW+RT7xICU18U9tFycC+OG36Yx7eni11E7xGY+v/DjC15ytS0gkkUh7HRi06zZpOWSfTF5smT/jkD8XjHSrm3h0XbaYuS3Zvj/CE3nNwPT970uNto0=
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"sendCustomEmail"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/email/{network}/locks/{lockAddress}/custom/send"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Send custom email to recipients
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"subject":{"type":"string"},"content":{"type":"string"}}}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully sent custom email","content":{"application/json":{"schema":{"type":"object","properties":{"sent":{"type":"boolean"}}}}}},"400":{"description":"Invalid input received. Bad request.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"Response body schema is invalid.","nullable":false},"error":{"type":"string","nullable":true}},"title":"GenericInvalidBodyError"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

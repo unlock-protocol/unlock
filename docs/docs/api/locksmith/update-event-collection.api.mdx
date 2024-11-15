@@ -1,0 +1,71 @@
+---
+id: update-event-collection
+title: "updateEventCollection"
+description: "Update an existing event collection"
+sidebar_label: "updateEventCollection"
+hide_title: true
+hide_table_of_contents: true
+api: eJzNV01v20YQ/SuLObUAbRlueuHNDZzC/QiMWEZRCEKxIkfiRuQuMzuUowr878HsUhJN0XadHNKTqP2YnX3zZubtDlyNpNk4e5NDCk2da8brDVp+68oSM5mBBDxmDRneQjrbwb1HgnQ2b+cJ1Jp0hYzkw5TVFUIKvmxWkICxkEKtuYAECD81hjCHlKnBBHxWYKUh3QFv67CHydgVtGI1R5+RqcPhKdwHp5S2Cj8bz8auFIqHKuu7KAeg519cvhWrw/MyZxkty5Su69Jk4dKTj16O2J264xYfMeNHjs+ADZcIj/1LoNJWr5Cu8pzQe/QguJAAywZ9sBn2nd51cNOR+cxtkG4qvRrfvtDWSjBGpkpj1743o4n0VoLCWPmxiw5cDrMjdhsqx6LWtiNAvHz6cX+yRwkG9AsRjQcQ+trZzvLlxYX8PObKXZNl6P2yKcutimzOx9jy1XR4jFIg+hhK/4eIH3zWeW7kPF3ejsT4GINvi2ACGaHgfcWn0wksHVWaIQWJyRmbCgObYohesyVE81XM7qdwqFDJoUIFnIcJrZnJLBoeS+VY4UbQf5IK5slYvkSFnh9feVsmbfifsCKBjS4bHClOxzVjTsRdoxk/zNln07hL4TcXP51mrXQUZbyyjpVuuHBk/sVcsVM1krBAcWG80sHQ+bekr23KUi/Ev6UuPQ6xqND70WhJsJa6KYWNf7tGacKht47CP7Qs7jzr/sCLPmrvHV/1rRxge3MK27RAJTRQ286jSq+lO3atUC0dqdxhxDX0zu+OHaF3DWURvKVrbP48HL+iRTLZe8fvwuKIxs9jpf/eig1BXar/0pQHHPImDBvLSFaXyiNtkBQSOfruiEwLJFQP2geBIy4pY/dXkGhygfubvMCdDqy7cL1rMbVP0wq5cCLw6iY0MdFkKUw2l5NQTc+OvXGyk0LWBs0nZqKuC00fCubap5NJ6bK1rwwX542V77OaHLvMleeZq2Ao327J5U2wraJn0CZDi571ytjV2ess38VdB7Pzo1C9k5jFKES5egiBHAmd/pT/C9SEBEn38W7fc377ayrl7+pIiH4Rrs3vKFW4E7y6NmfrMBA076cGaRtaonDow1GZXn/WVd0Jgy5oPUr073YY7uuB4+heBhxHuu4/O+VahHpft+djXX62n55Lw7JL1/fwPoRC/bGPjbQSJB/9vDzx/LBO1eQ2JkevFjpbo83VsrFZFCKGt6E8oSRtYLnJ1ijaPlEVss41a+XZkV5horTNpWCYZRcJVTi39ufh1hlaj8fODH/eTAPytfNcadubiVpDhb6kHj1vBo34UA/+49OjA5zxM0/qUhvb08kx1WawEaCGyQYJpEE3zBMonGdZuNsttMd7KttWhiOV0tlcOjGZmPmzHeTGy3d+KD1P3uGHD50g+FE95eue1XZ7kAkpQAJC6e411wozCtR5ePvtuqm38ZSzaV9hpKdVVDI+7rjKMqz52bXzXr26vZ8K27tHXeVy2UL6QXSOfoheunDpkOthbAeltqsmZkw0KYSQ5txL4UHe9zPnMQ67XVwxdWu0bXuAheW/4NK2XwBMv1XN
+sidebar_class_name: "put api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"updateEventCollection"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"put"}
+  path={"/v2/event-collection/{slug}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Update an existing event collection
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"slug","in":"path","required":true,"schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"required":true,"content":{"application/json":{"schema":{"type":"object","required":["title","description","managerAddresses"],"properties":{"title":{"type":"string"},"description":{"type":"string"},"coverImage":{"type":"string"},"banner":{"type":"string"},"links":{"type":"array","items":{"type":"object","properties":{"type":{"type":"string"},"url":{"type":"string"}}}},"managerAddresses":{"type":"array","items":{"type":"string"}}},"title":"EventCollectionBody"}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully updated event collection","content":{"application/json":{"schema":{"type":"object","properties":{"slug":{"type":"string"},"title":{"type":"string"},"description":{"type":"string"},"coverImage":{"type":"string"},"banner":{"type":"string"},"links":{"type":"object","additionalProperties":{"type":"string"}},"managerAddresses":{"type":"array","items":{"type":"string"}},"createdAt":{"type":"string","format":"date-time"},"updatedAt":{"type":"string","format":"date-time"},"events":{"type":"array","items":{"type":"object","required":["name","slug","image","description","attributes"],"properties":{"name":{"type":"string"},"slug":{"type":"string"},"image":{"type":"string"},"description":{"type":"string"},"attributes":{"type":"array","items":{"type":"object","required":["trait_type","value"],"properties":{"trait_type":{"type":"string"},"value":{"type":"string"}}}}},"title":"Event"}}},"title":"EventCollection"}}}},"403":{"description":"User is not authorized to perform this action.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"You are not authorized or authenticated to perform this action.","nullable":false}},"title":"NotAuthenticated"}}}},"404":{"description":"The item you are making request for does not exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"resource not found","nullable":false}},"title":"GenericNotFound"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

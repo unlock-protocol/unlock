@@ -1,0 +1,71 @@
+---
+id: check-privy-user
+title: "checkPrivyUser"
+description: "Check if a user exists in Privy by email or wallet address"
+sidebar_label: "checkPrivyUser"
+hide_title: true
+hide_table_of_contents: true
+api: eJzVVk1v2zgQ/SvEnOm4CHYvOm22SIt2N2jQJNuD4QNNjizWFKmSIyeGof++GEp2/KEGaLPAornEIofDmfdm3nALocGoyAb/wUABukK9uo12vXlIGEGCwaSjbdgACnjL28KWQok2YRT4ZBMlYb3IZ8RiI7BW1okQxaNyDkkoYyKmBBIifmsx0Z/BbKDY5k8b0UBBsUUJOnhCT7ylmsZZnaOafk188xaSrrBW/Is2DUIBYfEVNYGEJnIOZDHxbr7/wCxRtH4JEsoQa0VQDBanqV3nuIdoBQWRoYBOwi6DEZ8nLqjCiG19kvqBs05C8PiphGJ2CMBsiGneyePl3dXzbi6BLDm+fU9PZiPD2XXsOmJqgk89Dpdv3vC/4wjvWq0xpbJ1btPHhOaASfQa92TCKyg5Si3XCEjge2B+xle//exkEYJD5c/Q/VIh4yuowtHiY6ryFSPx+NY5tWD0+lo7DsGac247CTqiIjRX9GI1GUU4IVsjH7HpPZf4SDbsr00U6hskZRSNwNZJcNav0FxpHVp/BIqKUTEjlrBOI0c7eVb43+mPF6r5pEM6CWuMtrQ/hkFpY6J/fuKgU4Q/c5KT7zvuFdkzP5Wy/j6vjuz+IlBkNM6U4vOgDINQ/DamDTc2JeuXYte7orToTPrPZCDGMNb+eXkkPXxSdZOzuLa5778zWETdJhILFE0Ma2vQ7FH4fVQBMa7ZWb72f0/tnbIOzX5ADFM0q1i3S6NGqgLP5iakXNCKKihgur6cNmw+7WeLhJRTS3m2tNFBARVRk4rp1AW9SrWl6qL1/HvSxEBBB3ehQ30mtLcxmFbzh+jRAh5Lxx4TqaX1y8mPeb7rT+3dzjlo3UZLmztGusft4VjE+UrOLhuwoqKK+WnS/3i3a4OPX+65da6eaTzUz8b+hSygXtXD92SVFywH9q3FuMkqysx/fn6oXO+o2j8s8oz5Y6BwyHKvKgd6YX0ZcgBDLz5kfMTfO8AgS0rqgbk8g2pvt6vrJBZKr9AbUbY+s6OcpY0oQxTo1cIxsGT1Csn6pRT1MGdEohDVEqVQ3ggfyJYDPKIKYZUugMeORlaHYrvD5+bDfYaDa65W/mDnsFDH3ojb55563XNxYI7wiaaNUzbP0FyF26EHZrC+zAo/vFZyH8wlVNwoxQy224VK+BBd1/FyT3Ixm0tYq2j798Bs3kmoUBmuudkWuCgKeNunMMnTgM1d21fNiURwY/QnrrTGhl60nR/08u2nu3su4eEtXAfDZ6J6ZGlRj1AASAgZ0twTeW0LTvllq5Zs2/vkv38BJC4aOQ==
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"checkPrivyUser"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/privy/check"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Check if a user exists in Privy by email or wallet address
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={undefined}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"required":true,"content":{"application/json":{"schema":{"type":"object","properties":{"email":{"type":"string","format":"email","description":"Email address to check"},"address":{"type":"string","description":"Ethereum wallet address to check"}},"oneOf":[{"required":["email"]},{"required":["address"]}],"title":"PrivyUserCheckBody"}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully checked user existence in Privy","content":{"application/json":{"schema":{"type":"object","required":["exists","user"],"properties":{"exists":{"type":"boolean","description":"Whether the user exists in Privy"},"user":{"type":"object","nullable":true,"properties":{"id":{"type":"string"},"createdAt":{"type":"string","format":"date-time"},"isGuest":{"type":"boolean"},"customMetadata":{"type":"object"},"linkedAccounts":{"type":"array","items":{"type":"object"}},"email":{"type":"object","properties":{"address":{"type":"string","format":"email"},"verifiedAt":{"type":"string","format":"date-time"},"firstVerifiedAt":{"type":"string","format":"date-time"},"latestVerifiedAt":{"type":"string","format":"date-time"}}},"wallet":{"type":"object","properties":{"address":{"type":"string"},"chainType":{"type":"string"},"verifiedAt":{"type":"string","format":"date-time"},"firstVerifiedAt":{"type":"string","format":"date-time"},"latestVerifiedAt":{"type":"string","format":"date-time"}}}}}},"title":"PrivyUserResponse"}}}},"400":{"description":"Missing required fields","content":{"application/json":{"schema":{"type":"object","required":["error"],"properties":{"error":{"type":"string","example":"Either email or wallet address must be provided"}}}}}},"500":{"description":"Server error","content":{"application/json":{"schema":{"type":"object","required":["error"],"properties":{"error":{"type":"string","example":"Failed to check Privy user"}}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

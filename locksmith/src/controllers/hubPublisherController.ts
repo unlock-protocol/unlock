@@ -1,4 +1,3 @@
-import html from 'html-template-tag'
 import { RequestHandler } from 'express'
 import { networks } from '@unlock-protocol/networks'
 
@@ -17,9 +16,7 @@ export const template = ({ links }: HubPublisherTemplateOptions) => {
         <html>
           <head>
             ${links
-              .map(
-                (item) => html`<link rel="${item.rel}" href="${item.href}" />`
-              )
+              .map((item) => `<link rel="${item.rel}" href="${item.href}" />`)
               .join('\n')}
           </head>
           <body>

@@ -1,0 +1,71 @@
+---
+id: get-exported-keys
+title: "getExportedKeys"
+description: "Get job result by job id"
+sidebar_label: "getExportedKeys"
+hide_title: true
+hide_table_of_contents: true
+api: eJydVktv2zgQ/ivEnHYBJUqDnnTLoe2maYtik2APgQ+UOLYYSyRLjrzRCvzvi6Hkt522OVkk5z3ffOMBrEMvSVtzq6CABdKHF2c9obrDPkAGAavOa+qheBrgMaCH4mkWswFunGt0lVTT1SwDhaHy2o1X8AlJPNtSeAxdQ6Ls00kryMBJL1sk9CGZ1SzuJNWQgZEtQgEG6V/rl5CBxx+d9qigIN/hoZNvo5zQ6pKDrWpsJRQDUO/YjDaEC/QQOeITbhpbLW+U8hjCT119sdVSyFH4pLNAXpvFWV/PtrxVP/Vyq4SdC6pR4NQILtvr/mZsNDhrAgZ+v7664p99w/ddVWEI865peuGRvMbVaHzqEGRQWUNoiJXltr35c2ALw04EpmsaWTYIxVw2AbN1SLZ8xootOc/AIj0G1CLtBn5GiizJ5lTzGDALPP1S9t/PvMWYwZJB/Eq80nvZQwaasA2nIjxSPAx5iea4JUd6MUtQ+5aQ8KvSa2D+kgK+OO2naTyqxSmFJfZ/2Uah/w03MQPSxGe4w/4rklSSJJc6pnK/v3p3DLxHIzuqrdf/oYIk9P5Y6LMthbEk5rYzikeIMVPbiZMSZVANBeSr61w6nQ8TQcScKxXyYadgMR9H54K7nw9p7mKiMr9aU07nGyigJnKhyEcbrab6sjP8feG8JVvZ5rKyLRyO6HdvVVfxQdwnk8ATv28xkFxos7j4Pcv3o9bG7GzLv/c8eyPoRhbedItdrumBzyVKn3o+fny0vpXEJf7ngcu/x9sbI9LpO+y3ZCWd5vLxaHBgPzr0fWqLNnOb9CYcPKa0xJd1npABF3nM5/oow42ccN6utMIgSlkt0Sgx70wqqmw09WJuvUAjy4brQbpaImmzyEQ7gU4Esl4uMBPSKIaOnk9ZidraZWLoRldoQpq4Ka2vtw8pC2cDtdLsvCyQxHr1iWn37YU+bNnxtdU21ZPwhXLXSG245gkbw4ThJ1hxXaTTkEGxXXQJKny1v5R2sMyP4xaZZVDbQGxsGEoZ8NE3MfL12KniaZbBSno9Tu/TAEoH/lYbIjub3B9/TwvqT7G/XU+mtsaPYaysZNPxCRK97KxxHpA3RXC4dN8Qw2453xzH+bX8hojGHsZZzKBGqdJ/qmF6u6kqdLSjdbSImRU25PjpwwNjqWNgbYb5gAGS9ZMRDcMo8cBrLMZNgONai7MY4/8ooH2e
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"getExportedKeys"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/api/{network}/locks/{lockAddress}/export-keys/{jobId}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Get job result by job id
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}},{"in":"path","name":"jobId","required":true,"description":"Id of the exported job.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully retrieved job result","content":{"application/json":{"schema":{"nullable":false,"type":"object","properties":{"meta":{"type":"object","properties":{"total":{"type":"integer"},"page":{"type":"integer"},"byPage":{"type":"integer"}}},"keys":{"nullable":false,"type":"array","items":{"type":"object","nullable":false,"properties":{"token":{"type":"string","nullable":false},"lockName":{"type":"string","nullable":false},"lockAddress":{"type":"string","nullable":false},"expiration":{"type":"integer","nullable":false},"keyHolderAddress":{"type":"string","nullable":false}},"title":"KeyMetadata"}}}}}}},"401":{"description":"Unauthorized"},"404":{"description":"Job not found"}}}
+>
+  
+</StatusCodes>
+
+
+      

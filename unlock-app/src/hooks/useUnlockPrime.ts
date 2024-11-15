@@ -1,21 +1,20 @@
 import { useQuery } from '@tanstack/react-query'
 import networks from '@unlock-protocol/networks'
 import Paywall from '@unlock-protocol/paywall'
-import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useCallback } from 'react'
 import { config } from '~/config/app'
 import { getEventOrganizers } from './useEventOrganizers'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { useAuthenticate } from './useAuthenticate'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 // This hook will return the status of the user's prime key
 export const useUnlockPrime = () => {
   const { account } = useAuthenticate()
-
+  const web3Service = useWeb3Service()
   const { data: isPrime, ...rest } = useQuery({
     queryKey: ['usePrime', account],
     queryFn: async () => {
-      const web3Service = new Web3Service(networks)
       return web3Service.getHasValidKey(
         config.prime.contract,
         account!,
@@ -54,11 +53,11 @@ export const useUnlockPrimeEvent = ({
     config: PaywallConfigType
   }
 }) => {
+  const web3Service = useWeb3Service()
   const { data: isPrime, ...rest } = useQuery({
     queryKey: ['usePrimeEvent', JSON.stringify(checkoutConfig)],
     queryFn: async () => {
       const organizers = await getEventOrganizers(checkoutConfig)
-      const web3Service = new Web3Service(networks)
       const arePrime = await Promise.all(
         organizers.map(async (organizer) =>
           web3Service.getHasValidKey(

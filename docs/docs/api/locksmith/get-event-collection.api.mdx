@@ -1,0 +1,71 @@
+---
+id: get-event-collection
+title: "getEventCollection"
+description: "Get details of an event collection"
+sidebar_label: "getEventCollection"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVk1v4zYQ/SvEnFpAiYNge9EtKLJB+oVFk6AHwyhociRxTZHa4chdw/B/L4aSHX8oaLY99GSZH6P3Zt680RZih6TZxfBooYQa+X6NgX+M3qORZSig06RbZKQE5XwLQbcIJSTf11CAC1BCp7mBAgi/9I7QQsnUYwHJNNhqKLfAmy7fYXKhht1uUYDFZMh1+R0lPCAri6ydTypWSgeFgkOZYyCEqYshYZKQtzc38nMa5qk3BlOqeu83ipDJ4RrtVCwTA2NgCaG7zjuTkzD7nCTO9hJ6XH5Gw5INkpSxG1DkLFwSLIAde5zcOUE8sW/iGumx1fX09aUOAWlyy7uwSlOYtbVO3qf9pxP052UpoNVB10h31hKmdHJKE+mNVJyxfeO2IdSM9o4vtwuoIrWaoQSrGa/YtSiY+85+65VczfcgO/B/FeZ8kG9xkG/O82lRCtDM5JY9Y4LFecUH+U9k/00puDdr+U9SOMLxL9kyacd/5hMFrLXv8ZLR0ZkpEMOtiXrvdq86h2wbcLl05CTDhQ83Hy779rlBJXzUJvZKE6pWr1yolVDBxKqKpGzEpEJkhV9d4uv/0sOh914vBWSlfcLzhLSY0mTJpGKV7r1IkjDFngxmSFXsg70MfJyNBwxIzvwW+WM+PGTjhykXewkSQ3FUYmSV84c82D4vu8BIQXuVkNZICoki/e8ZeW6QUP2lU7ZvgaRc2FOQanKDeybX70rWU6Z3L6H2emuRmziOqjybuIESZuvbWbaFq1eTn22lI3fS6znMML168lBCw9ylcjbz0axS67i57oM8X3UUOZror01s4XxIfaJo+xxbDchgV5xHTKxrF+qrb4v8NNw6hF0IaNOT482T1Gyowks6MX55JYxTVv4vURMSFOPDx715/vTHs/Tx3asgjt2kcz+j2Mk41nXnrlZ5IU/2Lz3SJnu7C1XM98YSvWRa6pc9T/EXpDTwub1geDinOoprZzGppTYrDFZVfTDDdHK8ya2O0gBZMc6skF2oC9Uia6tZq8SRdI2F0sFK87lqZKWaGFdJlOWdwZDw1a7h18fnzKKLiVsdjnZqZJWdSp189JxZ86Gx3velMiaX8SvPOq9dyKNOhLIdJTuHtSTpXLRQQJkHyaKAJiaWg9vtUid8Ib/byfJQknK+EGsmN3TQfAvWJXm2hxZ+k8J3v48T4nv1Fta9OsLmMDdKgAJEGuO3326xK6BBbUWU8+24dWcMdnx06cKHRNyHLn64l7r8DU2Xq2U=
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"getEventCollection"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/event-collection/{slug}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Get details of an event collection
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"slug","in":"path","required":true,"schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully retrieved event collection","content":{"application/json":{"schema":{"type":"object","properties":{"slug":{"type":"string"},"title":{"type":"string"},"description":{"type":"string"},"coverImage":{"type":"string"},"banner":{"type":"string"},"links":{"type":"object","additionalProperties":{"type":"string"}},"managerAddresses":{"type":"array","items":{"type":"string"}},"createdAt":{"type":"string","format":"date-time"},"updatedAt":{"type":"string","format":"date-time"},"events":{"type":"array","items":{"type":"object","required":["name","slug","image","description","attributes"],"properties":{"name":{"type":"string"},"slug":{"type":"string"},"image":{"type":"string"},"description":{"type":"string"},"attributes":{"type":"array","items":{"type":"object","required":["trait_type","value"],"properties":{"trait_type":{"type":"string"},"value":{"type":"string"}}}}},"title":"Event"}}},"title":"EventCollection"}}}},"404":{"description":"The item you are making request for does not exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"resource not found","nullable":false}},"title":"GenericNotFound"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

@@ -1,0 +1,71 @@
+---
+id: nonce
+title: "nonce"
+description: "Provide a unique nonce for using in sign in with ethereum"
+sidebar_label: "nonce"
+hide_title: true
+hide_table_of_contents: true
+api: eJylVEtv2zAM/isCz248FNjFtx66onsAA9pghyAHRqZtNbLkSlS6wPB/Hyg7bdbmMuxkPWiK34McwQ8UkI139zVU4LzTBAXUFHUwg5xDBT+DP5iaFKrkzHMilcNU44NK0bhWGaeiaZ18Xwx3irijQKmHAgYM2BNTiFBttgUEioN3kSJUI1x/+iSfv19bn72xggK0d0yOJbDj3pZMv/Mm6o56lBUfB4IKIgfjWijAJWtxZwmqBm2kaZqmAj5ffkviFHvVJGsbY1Wg50SRVZ3ysXFMwaFVkcKBgqIQfHhXFQ6DNTqTWD5FyXuhOL97Is0fiytgCKIBm5mSnmLEli7BqqnBZBkqeBR61QtGhW4uSahfIIgg3NEJyeoSIQWwYdnDHTkKRj9keLeSCqaZsJ6482KKljgLyR1UUB6uS0zclSerzMSIuiOkYKGCjnmIVVlar/exN9ytkpP11RA8e+3tSvv+ksnqpGWj5mJgKt5njIytce3Vv2V+mP96TbuVonUKho8PItNM/DpSOGNdnhR0OQAq2BEGClAsiy8+9ChSfP31CFMBN28eOEuCg/lGRxEA+2V/tc8HRgp7ThSOIFwb1/j836LKOsNS3084oQAhecZz/QHha5wa5laNaod6T65WTXKZVLSGj7llSTyfTWL0nti4tlA9MdbIqCL7gC0VCl2tnGfTLKhU5/0+ipms0eRidugC68f9Y0Yx+Mg9urObi/NkfGue/xotC8kyD8rBonEiRDbMuLh1AwchS/wqIuRitgV0PrJcjuMOI62DnSY5nuXIU+qAwcwNs9lOBXSEtbhjM4LIV8GN1jRIVxzQptkup8kk9nptnbtbYeYP0dzh8w==
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"nonce"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/auth/nonce"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Provide a unique nonce for using in sign in with ethereum
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Unique nonce.","content":{"html/text":{"schema":{"type":"string","nullable":false}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

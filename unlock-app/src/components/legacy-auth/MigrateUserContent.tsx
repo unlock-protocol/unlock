@@ -11,14 +11,15 @@ import { UserAccountType } from '~/utils/userAccountType'
 import { SignInWithPassword } from './SignInWithPassword'
 import { SignInWithCode } from './SignInWithCode'
 import { SignInWithGoogle } from './SignInWithGoogle'
-import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { PromptSignOut } from './PromptSignOut'
+import { usePrivy } from '@privy-io/react-auth'
 
 export const MigrateUserContent = () => {
-  const { account } = useAuthenticate()
+  const { user } = usePrivy()
   const [userEmail, setUserEmail] = useState<string>('')
   const [walletPk, setWalletPk] = useState<string | null>(null)
   const [userAccountType, setUserAccountType] = useState<UserAccountType[]>([])
+
   // Track migration status
   const [isMigrating, setIsMigrating] = useState(false)
   // Track Privy connection status
@@ -89,8 +90,9 @@ export const MigrateUserContent = () => {
                 // If not, it "yields" the email account + type to the next step
                 return (
                   <ConnectViaEmail
+                    email={user?.email?.address || ''}
                     onNext={({ email, accountType }) => {
-                      setUserEmail(email)
+                      setUserEmail(email || user?.email?.address || '')
                       setUserAccountType(accountType)
                       onNext()
                     }}
@@ -173,7 +175,9 @@ export const MigrateUserContent = () => {
         />
       </div>
 
-      {account && !isMigrating && <PromptSignOut />}
+      {user?.email?.address && user?.wallet && !isMigrating && (
+        <PromptSignOut />
+      )}
     </>
   )
 }

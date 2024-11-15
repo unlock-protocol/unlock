@@ -1,0 +1,63 @@
+---
+id: setup-payment
+title: "setupPayment"
+description: "Setup a payment method for user."
+sidebar_label: "setupPayment"
+hide_title: true
+hide_table_of_contents: true
+api: eJyVVMtu2zAQ/BViz0qcBj3xFhRt0RcawA56MHxYUyuLMUUy5MqtIejfi6WUxHHQotVFosQdzczOcoAQKSHb4D/VoCET9/EWjx15hgoymT5ZPoJeD3CXKYFeb8ZNBTVlk2yUOtCwlCqFKk6FqiNuQ62akFSfKV1CBYlyDD5TBj3A9dWV3F6CvEuETLUqFJT1LEjGWbllMolYcEwoH6QcY3TWFO6L+ywYA2TTUofyxMdIoCFs78mIlJhEKduJwYS7LLAnuzMn63cwlquCt1dvXvMUG5TNygdW2HNLnoUF1X+m93dmvncOt45AN+gynVPtKGfc0WuW0oUGe8egYdVSIvUTs0KvKKWQlPWq6Z1rrLN+p7glleihp1xsPPuniGXLsoaP5ClZs6R0oPReoGC2Y2oraIghF0uRW9CwOFwvYp9Mi5kWpXslOVKeS3D65EBDyxyzXixcMPvcWW4vey/PFzEFDia4SxM6OI/WbQp1b2ShJkYwVueImXFn/e7i/5CXU9UT7OY57kvp1eT+FPon6+WXoq5sAA1bwkQJqvnhQ0gdSj8+/1jBWMHNywzMIBjtFzpKF7Cb1xf78sIKsYee0hHEcOubUOrm1twVWerro06oQEye9Fy/Uvi0T8UUDramrLZo9uRr1fS+mIrO8rEMKnncTkmxZk9s/a6SOcYaGVXmkHBHlUJfS/BtM6tSbQj7LIly1pDPJaazrG+fVkWFpKVDf/JlGvHnY+YF7eF5iP7lYJk9ZfrFi+jQevG95GOYA7qGg3jzGNESTgnppoJWgqzXMAxbzHSX3DjK66kDer2p4IDJToOy3owVtIR1OQUHkI5puDGGomg4oOunZp6dShKsp8m5/b5cQQVybpwE4ixFBf4xK/54Aj4M045V2JMfR6hmFixrGDfjOP4Gy+MIMw==
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"setupPayment"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/purchase/setup"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Setup a payment method for user.
+
+<ParamsDetails
+  parameters={undefined}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Created setup intent client secret.","content":{"application/json":{"schema":{"type":"object","properties":{"clientSecret":{"type":"string"}}}}}},"401":{"description":"User is not authenticated.","content":{"application":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      
