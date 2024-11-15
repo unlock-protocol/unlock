@@ -11,11 +11,12 @@ const { parseBridgeCall } = require('../../helpers/crossChain')
 
 // TODO: deploy swap burner contracts
 const swapBurnerAddresses = {
-  56: '', // BNB
+  1: '', // mainnet
   137: '', // polygon
-  324: '', // zksync
-  42220: '', // celo
-  43114: '', // Avalance
+  // 56: '', // BNB
+  // 324: '', // zksync
+  // 42220: '', // celo
+  // 43114: '', // Avalance
 }
 
 const targetChainsIds = Object.keys(swapBurnerAddresses)
