@@ -6,21 +6,15 @@ type contractVersion = {
   abiPath: string
 }
 
-const findLatest = (exports: contractVersion[], contract: string) => {
-  const [latest] = exports
-    .filter(({ contractName }) => contractName === contract)
-    .sort(
-      ({ versionNumber: a }, { versionNumber: b }) =>
-        parseInt(b.replace('V', '')) - parseInt(a.replace('V', ''))
-    )
-  const { contractName, versionNumber } = latest
-  const varName = `${contract.toLocaleUpperCase()}_LATEST_VERSION`
-  const versionInt = versionNumber.replace('V', '')
+const PUBLICLOCK_LATEST_VERSION = 14
+const UNLOCK_LATEST_VERSION = 13
 
-  console.log(`export { ${contractName}${versionNumber} as ${contract} }`)
-  console.log(`const ${varName} = ${versionInt}`)
+const exportLatest = (contract: string, versionNumber: number) => {
+  const varName = `${contract.toLocaleUpperCase()}_LATEST_VERSION`
+
+  console.log(`export { ${contract}V${versionNumber} as ${contract} }`)
+  console.log(`const ${varName} = ${versionNumber}`)
   console.log(`export { ${varName} }`)
-  return latest
 }
 
 async function main() {
@@ -67,8 +61,8 @@ async function main() {
 
   // alias for the newest versions
   console.log('\n// latest')
-  findLatest(exports, 'PublicLock')
-  findLatest(exports, 'Unlock')
+  exportLatest('PublicLock', PUBLICLOCK_LATEST_VERSION)
+  exportLatest('Unlock', UNLOCK_LATEST_VERSION)
 }
 
 main()
