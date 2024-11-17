@@ -1,10 +1,10 @@
 ---
-title: 'UP Token Swap Reward Airdrop Now Live!'
-subtitle: ''
-authorName: 'Unlock Protocol'
-publishDate: 'Fri Nov 01 2024 17:06:35 GMT+0000 (Coordinated Universal Time)'
-description: 'The Unlock DAO migration to Base is complete, and the UP token swap reward airdrop, totaling 1.061 million UP tokens, is now live for all eligible participants.'
-image: '/images/blog/up-token-swap-reward-airdrop-now-live-/a559894d55a07ce1aa0e64509cfb6670.jpg'
+title: "UP Token Swap Reward Airdrop Now Live!"
+subtitle: ""
+authorName: "Unlock Protocol"
+publishDate: "Fri Nov 01 2024 17:06:35 GMT+0000 (Coordinated Universal Time)"
+description: "The Unlock DAO migration to Base is complete, and the UP token swap reward airdrop, totaling 1.061 million UP tokens, is now live for all eligible participants."
+image: "/images/blog/up-token-swap-reward-airdrop-now-live-/a559894d55a07ce1aa0e64509cfb6670.jpg"
 ---
 
 ![UP Token Swap Reward Airdrop Now Live!](https://storage.googleapis.com/papyrus_images/a559894d55a07ce1aa0e64509cfb6670.jpg)
