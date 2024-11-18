@@ -46,7 +46,7 @@ We retrieve the locks sorted by the creation block in a descending order (first 
 
 ## Sending the request
 
-There are exists multiple GraphQL libraries in many languages. Here we will focus on the most basic approach: using JavaScript's fetch function that is available in any web browser environment, but also in node.js using [`node-fetch`](https://www.npmjs.com/package/node-fetch).
+There are multiple GraphQL libraries in many languages. Here we will focus on the most basic approach: using JavaScript's fetch function that is available in any web browser environment, but also in node.js using [`node-fetch`](https://www.npmjs.com/package/node-fetch).
 
 ```javascript
 // We build the query, with a variable $owner
