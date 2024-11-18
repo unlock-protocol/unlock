@@ -12,7 +12,6 @@ import { useEthPrice } from '~/hooks/useEthPrice'
 
 export const Funding = () => {
   const { account } = useAuthenticate()
-
   const web3Service = useWeb3Service()
   const { fundWallet } = useFundWallet({
     onUserExited: () => {
@@ -21,14 +20,17 @@ export const Funding = () => {
   })
   const [showFundingModal, setShowFundingModal] = useState(false)
 
-  const { isPending: isLoadingBalance, data: balance } = useQuery({
+  const { isPending: isLoadingBalance, data: userBalance } = useQuery({
     queryKey: ['getBalance', account, 8453],
     queryFn: async () => {
       return parseFloat(await web3Service.getAddressBalance(account!, 8453))
     },
   })
 
-  const { data: ethPrice } = useEthPrice()
+  const { data: ethPrice } = useEthPrice({
+    amount: userBalance?.toFixed(4),
+    network: 8453,
+  })
 
   const handleFundWallet = async () => {
     setShowFundingModal(true)
@@ -36,9 +38,6 @@ export const Funding = () => {
       chain: base,
     })
   }
-
-  const usdBalance =
-    balance && ethPrice ? (balance * ethPrice).toFixed(2) : null
 
   return (
     <SettingCard
@@ -56,16 +55,16 @@ export const Funding = () => {
             <div className="text-gray-700">Your current balance</div>
             <div className="flex items-center gap-2">
               <Badge
-                variant={balance === 0 ? 'red' : 'default'}
+                variant={userBalance === 0 ? 'red' : 'default'}
                 className="text-lg font-bold"
               >
-                {balance?.toFixed(4)} ETH
+                {userBalance?.toFixed(4)} ETH
               </Badge>
-              {usdBalance && ethPrice && ethPrice > 0 && (
+              {userBalance && ethPrice && ethPrice > 0 && (
                 <div className="text-gray-600">
                   (≈{' '}
                   <span className="font-semibold">
-                    ${new Intl.NumberFormat().format(parseFloat(usdBalance))}
+                    ${new Intl.NumberFormat().format(ethPrice)}
                   </span>
                   )
                 </div>
