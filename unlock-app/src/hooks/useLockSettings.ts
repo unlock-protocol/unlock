@@ -95,6 +95,7 @@ interface SaveLockProps {
   crossmintClientId?: string
   requiredGitcoinPassportScore?: number | null
   passwords?: string[]
+  allowList?: string | null
 }
 
 export function useSaveLockSettings() {

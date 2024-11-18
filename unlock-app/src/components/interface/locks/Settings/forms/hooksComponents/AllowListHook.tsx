@@ -1,4 +1,3 @@
-import { StandardMerkleTree } from '@openzeppelin/merkle-tree'
 import { ethers } from 'ethers'
 import { CustomComponentProps } from '../UpdateHooksForm'
 import { Button, TextBox } from '@unlock-protocol/ui'
@@ -39,11 +38,6 @@ export const AllowListHook = ({
   const onSubmit = async (values: any) => {
     const allowList = getValues('hook.allowList').toString()
 
-    const tree = StandardMerkleTree.of(
-      allowList.split('\n').map((approved: string) => [approved, '1']),
-      ['address', 'uint256']
-    )
-    console.log(tree)
     // Save the list!
     await saveSettingsMutation({
       lockAddress,
