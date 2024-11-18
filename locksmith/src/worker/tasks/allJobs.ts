@@ -17,10 +17,8 @@ export const allJobs: Task = async () => {
       },
     })
 
-    await Promise.allSettled([
-      notifyOfKeys(subscribers),
-      notifyOfLocks(subscribers),
-    ])
+    await notifyOfKeys(subscribers)
+    await notifyOfLocks(subscribers)
 
     logger.info('Finished running keys and locks job')
   } catch (error) {
