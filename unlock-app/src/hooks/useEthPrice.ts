@@ -1,19 +1,24 @@
 import { useQuery } from '@tanstack/react-query'
+import { locksmith } from '~/config/locksmith'
 
-export const useEthPrice = () => {
+export const useEthPrice = ({
+  amount,
+  network,
+}: {
+  amount: string | undefined
+  network: number
+}) => {
   return useQuery({
-    queryKey: ['getEthPrice'],
+    queryKey: ['getEthPrice', amount, network],
     queryFn: async () => {
+      if (!amount) return null
       try {
-        const response = await fetch(
-          'https://api.coinbase.com/v2/exchange-rates?currency=ETH'
-        )
-        const json = await response.json()
-        const price = parseFloat(json.data.rates.USD)
-        return price > 0 ? price : null
+        const response = await locksmith.price(network, parseFloat(amount))
+        return response.data.result?.priceInAmount
       } catch (error) {
         return null
       }
     },
+    enabled: !!amount,
   })
 }
