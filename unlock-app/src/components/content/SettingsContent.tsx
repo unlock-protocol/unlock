@@ -4,6 +4,7 @@ import { ReactNode, useState } from 'react'
 import { SettingsContext } from '~/components/interface/locks/Settings'
 import { PaymentSettings } from '../interface/user-account/PaymentSettings'
 import AccountInfo from '../interface/user-account/AccountInfo'
+import { Funding } from '../interface/user-account/Funding'
 
 export const SettingsContent = () => {
   const [selectedIndex, setSelectedIndex] = useState(0)
@@ -11,7 +12,7 @@ export const SettingsContent = () => {
   const tabs: {
     label: string
     description?: string
-    id: 'account' | 'payments'
+    id: 'account' | 'payments' | 'funding'
     children: ReactNode
   }[] = [
     {
@@ -26,6 +27,12 @@ export const SettingsContent = () => {
       label: 'Card Payments',
       description: 'Configure your credit card payment settings.',
       children: <PaymentSettings />,
+    },
+    {
+      id: 'funding',
+      label: 'Funding',
+      description: 'Fund your account with ETH.',
+      children: <Funding />,
     },
   ]
 
