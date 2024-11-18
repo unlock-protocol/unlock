@@ -143,14 +143,13 @@ export const deployLockForEventCaster = async ({
   )
   transactions.push(addHostsAsAttendees)
 
-  const transactionResponse = await lockProxyDeployer.deployLockAndExecute(
+  const { hash } = await lockProxyDeployer.deployLockAndExecute(
     networks[DEFAULT_NETWORK].unlockAddress,
     14,
     calldata,
     transactions
   )
-  const transaction = await transactionResponse.getTransaction()
-  const receipt = await transaction.wait()
+  const receipt = await provider.waitForTransaction(hash)
 
   if (!receipt) {
     throw new Error('No receipt')
