@@ -77,7 +77,7 @@ export const getCrossChainRoute = async ({
       contractAddress: lock.address,
 
       cost: {
-        isNative: true,
+        isNative: lock.currencyContractAddress === ADDRESS_ZERO,
         amount:
           prices
             .reduce(
@@ -136,6 +136,10 @@ export const getCrossChainRoute = async ({
       currency: network.nativeCurrency.name,
       symbol: network.nativeCurrency.symbol,
       networkName: network.name,
+      provider: {
+        name: 'Decent',
+        url: 'https://www.decent.xyz',
+      },
     } as CrossChainRoute
     // reformat
     route.tokenPayment.amount = toBigInt(route.tokenPayment.amount)
