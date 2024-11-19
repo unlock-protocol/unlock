@@ -9,14 +9,9 @@ const { ethers } = require('hardhat')
 const { Contract } = require('ethers')
 const { parseBridgeCall } = require('../../helpers/crossChain')
 
-// TODO: deploy swap burner contracts
 const swapBurnerAddresses = {
   1: '', // mainnet
-  137: '', // polygon
-  // 56: '', // BNB
-  // 324: '', // zksync
-  // 42220: '', // celo
-  // 43114: '', // Avalance
+  137: '0x52690873b22B0949A3A2c1AaD22653218460A002', // polygon
 }
 
 const targetChainsIds = Object.keys(swapBurnerAddresses)
