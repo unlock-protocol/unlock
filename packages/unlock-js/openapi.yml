@@ -5292,7 +5292,7 @@ paths:
   /v2/merkle-tree:
     post:
       operationId: saveMerkleTree
-      description: Saveds a merkle tree from a list of addresses.
+      description: Saves a merkle tree from a list of addresses.
       requestBody:
         required: true
         content:

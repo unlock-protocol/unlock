@@ -92,6 +92,7 @@ export const DEFAULT_LOCK_SETTINGS: LockSettingProps = {
   promoCodes: [],
   requiredGitcoinPassportScore: undefined,
   passwords: [],
+  allowList: [],
 }
 
 export const updateSettings: RequestHandler = async (

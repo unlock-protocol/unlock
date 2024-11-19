@@ -28,7 +28,7 @@ export const AllowListHook = ({
 
   const saveMerkleProof = useMutation({
     mutationFn: async (allowList: string[], hookAddress: string) => {
-      const x = locksmith.saveMerkleTree(allowList)
+      const x = await locksmith.saveMerkleTree(allowList)
       console.log(x)
       const walletService = await getWalletService(network)
       await ToastHelper.promise(
