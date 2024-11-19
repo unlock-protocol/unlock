@@ -1,11 +1,10 @@
 import { useMutation } from '@tanstack/react-query'
 import { Button, Modal, Placeholder, TextBox } from '@unlock-protocol/ui'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback, memo } from 'react'
 import { useForm } from 'react-hook-form'
 import { locksmith } from '~/config/locksmith'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import * as z from 'zod'
-import React from 'react'
 import {
   useCustomContentForEmail,
   useEmailPreviewDataForLock,
@@ -31,7 +30,7 @@ const FormSchema = z.object({
 
 type FormSchemaProps = z.infer<typeof FormSchema>
 
-export const EmailTemplatePreview = ({
+const EmailTemplatePreviewComponent = ({
   templateId,
   disabled,
   network,
@@ -93,6 +92,10 @@ export const EmailTemplatePreview = ({
     },
   })
 
+  const handleSave = useCallback(() => {
+    return saveCustomContent.mutateAsync()
+  }, [saveCustomContent])
+
   if (isLoadingCustomContent) {
     return (
       <Placeholder.Root>
@@ -129,7 +132,7 @@ export const EmailTemplatePreview = ({
           <div className="flex gap-2 ml-auto">
             <Button
               size="small"
-              onClick={() => saveCustomContent.mutateAsync()}
+              onClick={handleSave}
               loading={saveCustomContent.isPending}
             >
               Save
@@ -159,5 +162,7 @@ export const EmailTemplatePreview = ({
     </>
   )
 }
+
+export const EmailTemplatePreview = memo(EmailTemplatePreviewComponent)
 
 export default EmailTemplatePreview
