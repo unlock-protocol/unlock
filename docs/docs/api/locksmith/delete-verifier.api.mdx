@@ -1,0 +1,75 @@
+---
+id: delete-verifier
+title: "deleteVerifier"
+description: "Remove verifier. (deprecated in favor of deleteEventVerifier)"
+sidebar_label: "deleteVerifier"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFV0tv3DYQ/ivEnBJA9hpuetHNQJ0irWMU8bpFsdgDLY1WzEqkMhxtshX034MhpX37UecQXyxKnNc33zy2gxwbwkwz5pAytZiAa5A0G2c/5JBCjhUy/o1kCoMECXjMWjK8hnTWwb1HgnQ27+cJ5OgzMo1IQgqfsHYrVKtB8Fy92VpSxqpCrxwpV6ho4HqFlkcrbyGBRpOukZF8MGREZ6O5hASsrhFSsMhfHS0hAcIvraFtBPue3MZ7yuTn4n5WYq0h7YDXjagxlnGBBH2fnDRTuWx5leeE3j9r6sZlS6Xj5ZPGPJOxi0dtjWi91J7AP9pT7FTrUWm/Af1JD+ai3DfOevTy/fLiQv4dBGQ8S5IIa22ssYuN7hBf5iyjZZHTTVOZLPBm8tmLcHds3D18xowluyQsYxNNE/q2Yr9zURPpNSRgGGt/SoFtq0o/VAhpoSuPu0DNYEAE5oeGxg9HcBwp7JO9xL9Y4KO2Wtj0IoGRwcdkPHk7cOQpvUKRvk+ADcsRNlXbx78E3l38cpzkwCLjlXWsdMulI/Mf5sKnBqlwVCsujVc6k/s/lPajrO2np0bv9eJkkDkWuq0YUvjXtUoTHnrrKJzQsok95nH3D6HdQezW8dWuFhhhe3cM27REJfxU68GjWi+lQoSJ6FkVjlTuMOKK34znn44doXctZRG8wrU2fxqO39EimezW8ftwOaLx66lOcW9Fh6BetFVVmGqDQ96G10JtsrpSHmmFpJDI0U9HZFoiofqqvdI2uhSGUwxBsskljpE8w50BrLsQ3rWogqHqauTSbYdpmG5cQgqT1eVEN2YyNtVJN7SEftLttJ9+0h1Mhj4MYjEUx2NLFaRQMjc+nUxE1NeGy/PWyvNZQ45d5qrzzNVwOET+Ipe3oThU9B1kOu1r9KwXxi7O/p/muyi1UTvfbg93ktWYp7hDbJIkJsfBJecH1BQ6Ynx476jWkrk//plCn8DVljK786Mxf+J6O1h1Y86W4UWYul9apLVMYTC2cEFuSOJ9CEvdjHFCIkPZx3gujyLc3FMNuZXJ0asHnS3R5qpobQBVV4bXoRmglEjglMmWyMYuElUj61yzVp4d6QUmSttcytMUQ1SqdG4Zpm1lMrQ+EHoI6+OHaYiicZ5rbXe+RKapnb1tz/FuW3U/vKkNkDN+40lTaWMlLYE+3cDzGawEOt2YCOfoUrpd4dL9NSs93ITmCZTOs+jqugft8Z6qvpfXMZfpbJ7ASpOJxTnrIDdenvNNd3gUgDefht3hrdrfFU9GNjLMCptWumrlBAkIvbZLqZTQqzw4XCFf4cMulK/24/nV8hWeHWa1n/cJlKjz8CuiG25dZRk2vCN/NBakk2ya6m/XN9fTa+FXK2Tb9ICDxhEMnHSv6+KNqVui7fuNtyxn8bHvvwNyg5eK
+sidebar_class_name: "delete api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"deleteVerifier"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/v2/api/verifier/{network}/{lockAddress}/{verifierAddress}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+:::caution deprecated
+
+This endpoint has been deprecated and may be replaced or removed in future versions of the API.
+
+:::
+
+Remove verifier. (deprecated in favor of deleteEventVerifier)
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}},{"in":"path","name":"verifierAddress","required":true,"description":"User address to use as verifier","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"List of remaining verifiers.","content":{"application/json":{"schema":{"type":"object","properties":{"results":{"type":"array","items":{"type":"object","nullable":false,"required":["address"],"properties":{"address":{"type":"string","nullable":false},"lockAddress":{"type":"string","nullable":false},"lockManager":{"type":"string","nullable":false},"network":{"type":"integer","nullable":false},"name":{"type":"string","nullable":true}},"title":"Verifier"}}}}}}},"403":{"description":"User is not authorized to perform this action.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"You are not authorized or authenticated to perform this action.","nullable":false}},"title":"NotAuthenticated"}}}},"404":{"description":"The item you are making request for does not exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"resource not found","nullable":false}},"title":"GenericNotFound"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

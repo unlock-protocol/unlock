@@ -1,0 +1,71 @@
+---
+id: send-verification-code
+title: "sendVerificationCode"
+description: "Sends a verification code to the user's email if the current code is expired or does not exist."
+sidebar_label: "sendVerificationCode"
+hide_title: true
+hide_table_of_contents: true
+api: eJy9VcluIzcQ/RWiLkmAljUwkkvfnMAZTBYg8JIcDB1KZEnNEZukWWzFQkP/HhSpbSw5yEyC+OIWt3r1qt6rEUKkhNkG/8FAC0ze/E7JLqwuiz8EQ9CAIdbJRlmBFu7JG1ao1icHlQ6GVA4qd6QGpvQVK+rROmUXZU0PKZHP9ZxlRS/RJjIqJGUCsfIhK3qxnK+ggYgJe8qUGNqnETz2BC1ojFl3CA1YgdERGkrQQKLnQd6CNqeBXqO9o909tUY3FIwRmSUM6456hHaEvIkSgXOyfgnbbXMIWpK4MSYR8z5yxNxdiPv2czM5zDF4Jpb963fv5N+nQG8LXYUfFqZ40JqYF4NzG0Grg8/ks1zEGN2O+OlHltvjefQw/0g6C5tJipxtjd0TMy7pEkz5a+DbS+C+R6Pu6HmgWqD/CAulFNI5kgboBfvoaBc41cDK1PJZv0ZnjbI+DvnqgPu7S7gfPc5duSU8Lqw7fyxT8ugUU1pTUgXSv0rRD85JUGgX6Jj+Mf/SuAscXIYWHjpKpP5EVugrJGX9PgXrl0VS6ViPVzGFjmxzIfA9eUpW35f0bgvhO8J6yl0Q1S+plEa6uoXp+nqK0U5FxDwdT/t/OxV/mJzqfqKrQ1T2qlyH5ESeOUdup1MX9Ip7m7urwcv3JKaQgw7uSof+zFt+S8EMujhKRQyixU9f5IxL65eTz3v5vt46PDsT0HpINm/upZa1Oo9Mpw0pIfdGIb/nhKl4Tv34MaQepV4//fEA2wZujo1y8ghG+zNtpErVUjDayaosFDd5HihtxHPA+kUo93aleyxpqV/2eUIDQnLN5/osw8M5FVNYW0Os5qhX5I1aDL6Qis7mjVqEpEiEUTrJ6hVl65eN6imjwYyKc0i4pEahN+LMR5vvQlgV73RWk+fSxru0fv3wULKIgXOP/mRHukadjhV1aa6MR8n9DyNmV5tML3kaHVov9St9Nu6U8ARr4RijhQaKGqCB9tU8eEMQswa6wFkeGcc5Mj0mt93Kcq12+zRrYI3JVtE+jWAsy7c5uMab3Hx9t5s736i38tg3npcmK2MPWoAGpOtejbTtbNvsR+kX4/ibGXsRX8VxnOcHiCL2unmjNcV8sndmwqLgg4W9v5Xm+wuK4RIw
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"sendVerificationCode"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/api/users/{emailAddress}/send-verification-code"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Sends a verification code to the user's email if the current code is expired or does not exist.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"captcha","in":"header","required":true,"description":"Recaptcha value to pass.","schema":{"type":"string"}},{"name":"emailAddress","in":"path","required":true,"schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Email code sent successfully.","content":{"application/json":{"schema":{"type":"object","properties":{"message":{"type":"string"}}}}}},"400":{"description":"Bad Request.","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string","example":"Bad request due to invalid input."}}}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

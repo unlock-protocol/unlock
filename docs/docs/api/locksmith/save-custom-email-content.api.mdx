@@ -1,0 +1,71 @@
+---
+id: save-custom-email-content
+title: "saveCustomEmailContent"
+description: "Save custom email content for a specif lock."
+sidebar_label: "saveCustomEmailContent"
+hide_title: true
+hide_table_of_contents: true
+api: eJylVk1v4zYQ/SvEnFpAidKgvegWBNti2227qBP0YPgwpsYW1xTJJSlvDUH/vRhStvyVbDfNJaJIvZl5fPPGPVhHHqOy5n0NFQTc0mMXom3ftaj0ozWRTIQCAsnOq7iDat7DcyAP1XwxLAqoKUivHCNABTPckpAJQBAjCJkhxMp6gSI4kmoltJWbWyjAoceWIvmQcBVDOIwNFGCwJajAUPxi/QYK8PS5U55qqKLv6DzwH/mcUDXjBtlQi1D1EHeOYZSJtCYPw1BcDcMJPdS1pxC+GuqDlRuB+fDVYCF6ZdYvxorUOo2RvhroaTwoVJ3oS4S+GnDBkMFZEyjw/v3dHf87hX28dj2hk5JCWHVa7wSrIPE47jIGOqeVTEopPwUG6i8TsctPJFkuzrOuosppHLN7mXVxuORpz3Ttkq+rmNi69uFRfudU8F8BP979cEkAy1eoIIyNArvYkIlc2Wslv16t6bTGpSaoVqgDnZffUgi4vlIBX/gKOx35shvyJL5gEGgEeW+9UEbwfayUVmYtYkOC9UIh3l7G5GKjiryGX8iQV3JGfkv+HUNBZuOnq3Kwna4TF+Gl5v1fUpg0Pj8wsfjPFA37m2wpNpYtytmQFMY9VUG5vS9TrmU/qmgoWW6h7I9UN5S5rLLfy2lInsYEZevpvIYKmhhdqMqM0KrY3HaGn2+ct9FKq2+lbeG8Tz96W3eSFyJzDtz5p4gh4lqZ9c23Ic/yVwfYxWTEMyY8k5ft+MAch9y7BK+XhJ48FOPDz9a3yIr79e8n7qGHU5WPIOjUb7SbTAudutmkF8nRPnfkd+xwoMzKpu9G8T2nssSHfZ1QAJOc67m/qPBwTjhvt6qmIJYoN2RqsepMIhW1irtsgAaXuReU3FBUZl2IliLWGFGEaD2uqRBokpzVaqxKNNZuklNrJcmEpLKxrN/fP6UqWFQtmqOd1AyjVaZZKKZheFJCP7XGt46/ketI/8TSaVSG7yPpph/1PYctc7Z3/moah0lI/Op0dOXg/P5gnIsCGu6Zag59v8RAz14PA7/Ot1jNFwVs0atsJ/MeahX4uT742YsFf/fX2N3fi9MJfLW0vbYM62iLuuMVFMDCmkY9N8+bMjgfzG/I4ZjMN+fx0tx+Qz6HSxwWQwENYZ1+efXj9oOU5OLRhxfWzJZxsM6Pf86eoACeeUetfuYPCf5qVn2fTzzZDZlhmJLkNWc4DP8CahiUUg==
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"saveCustomEmailContent"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/email/{network}/locks/{lockAddress}/custom/{template}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Save custom email content for a specif lock.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}},{"in":"path","name":"template","required":true,"description":"Template id for email","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Custom email content successfully saved.","content":{"application/json":{"schema":{"type":"object","properties":{"lockAddress":{"type":"string"},"network":{"type":"number"},"template":{"type":"string"},"content":{"type":"string"}}}}}},"401":{"description":"User is not authenticated.","content":{"application":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}},"500":{"description":"Could not save custom email content.","content":{"application/json":{"schema":{"type":"object","required":["message"],"properties":{"message":{"type":"string"}}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

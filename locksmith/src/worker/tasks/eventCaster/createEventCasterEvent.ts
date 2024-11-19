@@ -16,7 +16,7 @@ export const CreateEventCasterEventPayload = z.object({
   ),
   eventId: z.string(),
   imageUrl: z.string(),
-  description: z.string(),
+  description: z.string().nullish(),
 })
 
 export const createEventCasterEvent: Task = async (payload) => {

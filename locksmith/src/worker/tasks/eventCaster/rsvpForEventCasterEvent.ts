@@ -12,7 +12,7 @@ export const RsvpForEventCasterEventPayload = z.object({
     network: z.number(),
     address: z.string(),
   }),
-  farcasterId: z.string(),
+  farcasterId: z.number(),
 })
 
 export const rsvpForEventCasterEvent: Task = async (payload) => {

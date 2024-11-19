@@ -1,0 +1,71 @@
+---
+id: get-data-for-recipients-and-guild
+title: "getDataForRecipientsAndGuild"
+description: "Get the data for recipients and guild. This is to be used in conjunction with the Guild"
+sidebar_label: "getDataForRecipientsAndGuild"
+hide_title: true
+hide_table_of_contents: true
+api: eJy1VMtu20AM/JUFTy2gxEWOuhloE/QFFE2CHgIf1ita2lja3ZKU20DwvxdcK7YSu0GLor5YjyVnOBzNADEhWfExvK+ghBrlrRV7GekrOp88BuF5qK5631ZQQIXsyCc9DiVcoRhp0FRWrFlFMrSvMTZUptaqc3PTeDaejUSzRNMzVsYH42K474PTVuaHlyZ3esRJlmyHgsRQ3g3gFe17j/QABQTbIZQQUH5EWkMBhN97T1hBKdTjc5I3DZrxbIZoo1srmxigAHYNdhbKAeQh5a59t0SC7bY4jarV86oiZD6SQ5Hs7p2Jqz3YKRgW8qH+PcxByJMorWdRiIneKr8ipp5cYxlPoVoiqyBesONTbLYLVZNTDIz5wMWbN/r3lIFMGOTV+5B6yfvtGfdMhGxgmxcMBbgYBINoN5tS61323OyeteVwzDUu79GJWoHUoeJ3hAi5b+WvZsq/AjqUJo4Wzw6TBkqYbS5mTYxrntWj9Rhp8+i7nloooRFJXM5mukzuvDTnfdDrs0RRoovtuYvd0Z6+UKz6nb2vc0vQZT/tyGJrH+qzv+t8vavat10oadeTl4drlXGn1C0jTfRQyEdP6P0SLSFBMV5cRuqsQAkfvt3AtoD5YUdTsZP/iBOb2uTP1vnBxMQqtg+rmOu8tHrwNo9lPj3OCQWoyLt5Lo4m3J8zieLGV8hmad0aQ2VWY2bY1stD9hoGu2xVD/FujeJDXZgOxWZrskSyNRY5j0IUvxqnMnnr51BA6x0GRqU7jvX5/U2eIkWWzobJmxrFaD6ay0jmkJBmHipzMiOHg/H/Y1yO6xH8KbPUWh90hdlqw2j0O9iozHloKGBn9oU+YNG3w7C0jLfUbrf6eLdJ/QQqz3bZariubMvP03U63quvYw6/Ni9m7kmy6qJppm9s2+up/NH8OYffR/ALqE8z/R+Q/yyWX2DyJPYPRBZ6Q16ZQHm32BbQoK30874bxsq5c5hkUnUUstpln4FX79ThvwC278Vf
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"getDataForRecipientsAndGuild"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/hooks/guild"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Get the data for recipients and guild. This is to be used in conjunction with the Guild
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"query","name":"network","required":true,"description":"The network the lock is on","schema":{"type":"number"}},{"in":"query","name":"lockAddress","description":"The address of the lock","schema":{"type":"string"}},{"in":"query","name":"recipients","description":"The list of recipients for the purchase","schema":{"type":"array","items":{"type":"string"}}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"the list of data inputs to use for the transaction","content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"array","items":{"type":"string"}}}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

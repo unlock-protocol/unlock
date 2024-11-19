@@ -52,7 +52,7 @@ export const deployLockForEventCaster = async ({
   }[]
   eventId: string
   imageUrl: string
-  description: string
+  description?: string | null
 }) => {
   const [provider, wallet] = await Promise.all([
     getProviderForNetwork(DEFAULT_NETWORK),
@@ -143,14 +143,13 @@ export const deployLockForEventCaster = async ({
   )
   transactions.push(addHostsAsAttendees)
 
-  const receipt = await (
-    await lockProxyDeployer.deployLockAndExecute(
-      networks[DEFAULT_NETWORK].unlockAddress,
-      14,
-      calldata,
-      transactions
-    )
-  ).wait()
+  const { hash } = await lockProxyDeployer.deployLockAndExecute(
+    networks[DEFAULT_NETWORK].unlockAddress,
+    14,
+    calldata,
+    transactions
+  )
+  const receipt = await provider.waitForTransaction(hash)
 
   if (!receipt) {
     throw new Error('No receipt')
@@ -175,7 +174,7 @@ export const deployLockForEventCaster = async ({
     chain: DEFAULT_NETWORK,
     address: lockAddress,
     data: {
-      description,
+      description: description || 'Eventcaster event!',
       image: imageUrl,
       name: title,
     },
@@ -273,7 +272,12 @@ export const saveContractOnEventCasterEvent = async ({
     }
   )
   if (response.status !== 200) {
-    logger.error('Failed to save contract on EventCaster')
+    const responseBody = await response.text()
+    logger.error(
+      'Failed to save contract on EventCaster',
+      response.status,
+      responseBody
+    )
     return
   }
   const responseBody = await response.json()
@@ -290,7 +294,7 @@ export const saveTokenOnEventCasterRSVP = async ({
   tokenId,
 }: {
   eventId: string
-  farcasterId: string
+  farcasterId: number
   tokenId: number
 }) => {
   const response = await fetch(
@@ -305,7 +309,12 @@ export const saveTokenOnEventCasterRSVP = async ({
   )
   const responseBody = await response.json()
   if (response.status !== 200) {
-    logger.error('Failed to save RSVP on EventCaster')
+    const responseBody = await response.text()
+    logger.error(
+      'Failed to save RSVP on EventCaster',
+      response.status,
+      responseBody
+    )
     return
   }
   return responseBody

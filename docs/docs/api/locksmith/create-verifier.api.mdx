@@ -1,0 +1,75 @@
+---
+id: create-verifier
+title: "createVerifier"
+description: "Create verifier. (deprecated in favor of addEventVerifier)"
+sidebar_label: "createVerifier"
+hide_title: true
+hide_table_of_contents: true
+api: eJzlV01v3DYQ/SvEnBJA9rpue6hu28At0iZGEK9bFIs9jMXRilmJVEhq7Y2g/14MKa32y7HrFOihvliUyDczb4Yzb1uQVFvK0JOE1NuGEjA1WfTK6LcSUsgsoac/yKpckYUEHGWNVX4D6byFW0cW0jmUJlu9R41LsrDoFglIcplVNcNACm8CiFj3KOfi1WhWKC1yXBsrTC5Qyqs1aT/Yew0J1GixIk/WBZOKAWv0BSSgsSJIQZO/N3YFCVj63Cg7xrLvxnXcJ5Q850CygiqEtAW/qRlGaU8cQNclJ81wkFMpLTn3pKl3JltxNLz5pDHnrdLLR20NVD3XHidisCe8EY0jgW7L+Fc9WERwcv5nIze8Y7SVY+kogcxoT9rzN6zrUmWhQCafHBtvj7HN3SfKPCfPcjl5RY6/Du5chyAPPTmMyYQHLLdRiEBOF/7YZ1cb7SLy5cV3/G8fYColybHq4Bvi0E1Z4l1JW0ZGiubQ8w6Lw3iHDydCPQDskr3yevaB4dI968BwT45L/uTuR5I07uRC5Ex45XkJ2y4RE/TDxffHOQmFqpzQxgtsfGGs+kKSS7YmmxtbCV8oJzDj/f9uyvZzU5FzuHykDHNsSg8p/GUagZYOvTU2rEh7FXvY4+4f8rpD17Xx012ULW0/HdM2K8gS84YiMzovVebPxawgYcmZxmYksLSEciPoQTn/nxMX/b1HJ1ALstbY0OebssxVqfRS+OB76DpP0PQrabIquyG7JnvFUD1RP15cnKgvzTCckN7YYEXIJrzmkrfcVVwAjM79D/jqEqjIF4aHet2E3swTJ4XJ+nKCtZoMfXLS9n2im7Q7PambtAdDqQtqgK3EydzYElIovK9dOpnwUVcpX5w3mp/Pamu8yUx5npnqqNd/sEY24dKI6DjwYNxHdB6XSi/P/hnyTTy1hV2MEuaGUxqTFIXMNkNscpiZvL4jtKFNxodfjK2Q0/bbnzPoEpiO9bIDgrX6nTbjTMdana3CizDwPzdkNywAgEvs4ziBrx6wqks6Hpjbkc0IuQmm+qTfBibEu4EaSPisixRcHpGy3Sdqa9ZKkhN3mK1IS5E3OotzV/mNyI0VxFcq1KDKVuSVXiaiIo8SPQrnjcUlJQK15Dap8p4IURizCtqnVBlpF+LpmXj/dhYCr43zFeqdL1Fuih29ued4O97SbxOVfYo8PfhJXaLSTGoot7a/F3NYM29Yq8jl4E86qs10XxGmh6JtkUBhnGestr1DR7e27Dp+HXOfzhcJrNGqeJPnLUjl+HkUXo9G/+pjL0Bei31ZezKyoSI1V98ay4ZXkACX46if+cq9yINDtfsCH3apfLEfT6vgF3h2mNVu0SVQEMrw06ftd72J/pzNGGtEOZokHFs8Mc0yqv1X9y52evaH2xn3n16hV0byEYv3/NMA76PDUTGHhhbetVCiXjZh+kCE5GvH2mWnTx00txDUSUraNu6YmRXprtsy5HnNvHTd3xZVABo=
+sidebar_class_name: "put api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"createVerifier"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"put"}
+  path={"/v2/api/verifier/{network}/{lockAddress}/{verifierAddress}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+:::caution deprecated
+
+This endpoint has been deprecated and may be replaced or removed in future versions of the API.
+
+:::
+
+Create verifier. (deprecated in favor of addEventVerifier)
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}},{"in":"path","name":"verifierAddress","required":true,"description":"User address to use as verifier","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"required":false,"content":{"application/json":{"schema":{"type":"object","properties":{"verifierName":{"type":"string","description":"optional verifier name"}}}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"201":{"description":"Added verifier.","content":{"application/json":{"schema":{"type":"object","nullable":false,"required":["address"],"properties":{"address":{"type":"string","nullable":false},"lockAddress":{"type":"string","nullable":false},"lockManager":{"type":"string","nullable":false},"network":{"type":"integer","nullable":false},"name":{"type":"string","nullable":true}},"title":"Verifier"}}}},"403":{"description":"User is not authorized to perform this action.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"You are not authorized or authenticated to perform this action.","nullable":false}},"title":"NotAuthenticated"}}}},"409":{"description":"There is a conflict. The resource already exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      
