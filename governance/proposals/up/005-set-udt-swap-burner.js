@@ -149,7 +149,7 @@ This proposal sets 1) the UDT address and 2) the Swap Burner contract address in
   
 ## About this proposal
 
-Now that UDT has been bridged, the new address has to be set in the main Unlock contract for the tokens to be distributed or swap/burned. For that, we call the \`configUnlock\` function with the bridge UDT address as parameter (keeping other parameters untouched).
+Now that UDT has been bridged, the new address has to be set in the main Unlock contract for the tokens to be distributed or swap/burned. For that, we call the \`configUnlock\` function with the bridge UDT address as a parameter (keeping other parameters untouched).
 
 A \`SwapBurner\` helper contract has been deployed on all three chains and will be added as setting to the main Unlock contract. This will enable the “swap and burn” feature of fees collected by the protocol on these chains, following the deployment of bridged versions of UDT there.
 
