@@ -73,6 +73,7 @@ const LockSettingSchema = z.object({
     )
     .nullish(),
   passwords: z.array(z.string()).optional().optional(),
+  allowList: z.array(z.string()).optional().optional(),
 })
 
 export type LockSettingProps = z.infer<typeof LockSettingSchema>
@@ -91,6 +92,7 @@ export const DEFAULT_LOCK_SETTINGS: LockSettingProps = {
   promoCodes: [],
   requiredGitcoinPassportScore: undefined,
   passwords: [],
+  allowList: [],
 }
 
 export const updateSettings: RequestHandler = async (
