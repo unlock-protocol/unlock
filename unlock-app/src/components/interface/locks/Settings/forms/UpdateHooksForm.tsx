@@ -13,7 +13,6 @@ import { GuildContractHook } from './hooksComponents/GuildContractHook'
 import { PromoCodeHook } from './hooksComponents/PromoCodeHook'
 import { useCustomHook } from '~/hooks/useCustomHooks'
 import { GitcoinContractHook } from './hooksComponents/GitcoinContractHook'
-import { AllowListHook } from './hooksComponents/AllowListHook'
 import { useProvider } from '~/hooks/useProvider'
 
 interface UpdateHooksFormProps {
@@ -98,11 +97,6 @@ export const HookMapping: Record<FormPropsKey, HookValueProps> = {
         label: 'Gitcoin Passport verification',
         value: HookType.GITCOIN,
         component: (args) => <GitcoinContractHook {...args} />,
-      },
-      {
-        label: 'Allow List',
-        value: HookType.ALLOW_LIST,
-        component: (args) => <AllowListHook {...args} />,
       },
     ],
   },
