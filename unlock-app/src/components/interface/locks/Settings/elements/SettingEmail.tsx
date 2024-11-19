@@ -30,6 +30,12 @@ const TemplateByLockType: Record<keyof LockType, TemplateProps[]> = {
       templateId: 'eventKeyMined',
     },
     {
+      label: 'Subscription reminder template',
+      description:
+        'Customize the content of the email sent when a membership is about to expire.',
+      templateId: 'keyExpiring',
+    },
+    {
       label: 'Airdrop confirmation template',
       description:
         'Customize the content of the email sent when an event ticket has been airdropped. ',
@@ -59,6 +65,12 @@ const DEFAULT_EMAIL_TEMPLATES: TemplateProps[] = [
     description:
       'Customize the content of the email sent when a new membership has been purchased. Emails are only sent if you selected the Collect Email option on the checkout.',
     templateId: 'keyMined',
+  },
+  {
+    label: 'Subscription reminder template',
+    description:
+      'Customize the content of the email sent when a membership is about to expire.',
+    templateId: 'keyExpiring',
   },
   {
     label: 'Airdrop confirmation template',
@@ -93,6 +105,8 @@ export const SettingEmail = ({
   // template based on lockType
   const emailTemplates =
     TemplateByLockType[template as keyof LockType] || DEFAULT_EMAIL_TEMPLATES
+
+  console.log('emailTemplates', emailTemplates)
 
   return (
     <div className="grid grid-cols-1 gap-6">
