@@ -67,7 +67,7 @@ export const SignInWithPassword = ({
             If you forgot your password, check your emails for an email from us
             titled
             <em>
-              &#34;Welcome to Unlock! Please, read this email carefuly&#34;
+              &#34;Welcome to Unlock! Please, read this email carefully&#34;
             </em>
           </small>
         </div>
