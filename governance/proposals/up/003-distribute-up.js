@@ -4,21 +4,17 @@
 const { ethers } = require('hardhat')
 const { Unlock } = require('@unlock-protocol/contracts')
 const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
-const { parseSafeMulticall } = require('../../helpers/multisig')
-const { addSomeETH } = require('@unlock-protocol/hardhat-helpers')
 const upTokenAddress = '0xaC27fa800955849d6D17cC8952Ba9dD6EAA66187'
 
 module.exports = async () => {
-  // TODO: remove this / fund for testing
-  const BASE_TIMELOCK_ADDRESS = '0xB34567C4cA697b39F72e1a8478f285329A98ed1b'
-  await addSomeETH(BASE_TIMELOCK_ADDRESS)
-
-  const proposalName = `Distribute UP through Unlock contracts
+  const proposalName = `Distribute UP through the Unlock contract
   
-This proposal enables change from distributing UDT to UPToken when using referrers. This requires to also setup the Uniswap oracle 
-in Unlock to support price discovery for UPToken.`
+This proposal enables the distribution of UPToken on Base network as protocol reward when a referrer is specified during purchase, extension or renewal of a key. The distribution of UDT that was previously active on Base will therefore be replaced by UPToken.
 
-  const { unlockAddress, uniswapV3, id, multisig } = await getNetwork()
+As part of this update, an Uniswap oracle is also set in Unlock to support price discovery for UPToken from the WETH/Uniswap pool.
+`
+
+  const { unlockAddress, uniswapV3 } = await getNetwork()
 
   // parse config args from existing settings
   const unlock = await ethers.getContractAt(Unlock.abi, unlockAddress)
