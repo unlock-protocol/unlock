@@ -10,12 +10,15 @@ import {
 import { useMutation } from '@tanstack/react-query'
 import { locksmith } from '~/config/locksmith'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { useProvider } from '~/hooks/useProvider'
 
 export const AllowListHook = ({
   lockAddress,
   network,
   setEventsHooksMutation,
 }: CustomComponentProps) => {
+  const { getWalletService } = useProvider()
+
   const { data: settings } = useGetLockSettings({
     lockAddress,
     network,
@@ -24,7 +27,7 @@ export const AllowListHook = ({
   const { mutateAsync: saveSettingsMutation } = useSaveLockSettings()
 
   const saveMerkleProof = useMutation({
-    mutationFn: async () => {
+    mutationFn: async (allowList: string[], hookAddress: string) => {
       const x = locksmith.saveMerkleTree(allowList)
       console.log(x)
       const walletService = await getWalletService(network)
@@ -60,7 +63,10 @@ export const AllowListHook = ({
   }, [settings, setValue])
 
   const onSubmit = async (values: any) => {
-    const allowList = getValues('hook.allowList').toString()
+    const allowList = getValues('hook.allowList')
+      .split('\n')
+      .filter((line: string) => line.trim() !== '')
+      .map((line: string) => line.trim())
 
     // Save the list!
     await saveSettingsMutation({
@@ -69,9 +75,8 @@ export const AllowListHook = ({
       allowList,
     })
 
-    console.log(values)
     // Then, create the merkle proof and save the proof
-    await saveMerkleProof.mutateAsync()
+    await saveMerkleProof.mutateAsync(allowList)
 
     // Save the hook!
     await setEventsHooksMutation.mutateAsync(values)
