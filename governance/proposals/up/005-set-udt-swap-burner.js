@@ -4,13 +4,14 @@
  */
 const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const { Unlock } = require('@unlock-protocol/contracts')
-const { parseSafeMulticall, getProvider } = require('../../helpers/multisig')
+const { getProvider } = require('../../helpers/multisig')
 const { ethers } = require('hardhat')
 const { Contract } = require('ethers')
 const { parseBridgeCall } = require('../../helpers/crossChain')
+const { addSomeETH } = require('@unlock-protocol/hardhat-helpers')
 
 const swapBurnerAddresses = {
-  1: '', // mainnet
+  1: '0x52690873b22B0949A3A2c1AaD22653218460A002', // mainnet
   137: '0x52690873b22B0949A3A2c1AaD22653218460A002', // polygon
 }
 
@@ -34,75 +35,21 @@ const parseCalls = async (destChainId) => {
     )
   }
 
-  // parse config args
-  const estimatedGasForPurchase = 200000n
-  const configUnlockArgs = [
-    unlockDaoToken.address,
-    nativeCurrency.wrapped,
-    estimatedGasForPurchase,
-    await unlock.globalTokenSymbol(),
-    await unlock.globalBaseTokenURI(),
-    await unlock.chainId(),
-  ]
-
-  console.log(configUnlockArgs)
-
-  const calls = [
-    {
-      contractAddress: unlockAddress,
-      calldata: unlock.interface.encodeFunctionData('setSwapBurner', [
-        swapBurnerAddress,
-      ]),
-      value: 0,
-      operation: 1,
-    },
-    {
-      contractAddress: unlockAddress,
-      calldata: unlock.interface.encodeFunctionData(
-        'configUnlock',
-        configUnlockArgs
-      ),
-      value: 0,
-      operation: 1,
-    },
-  ]
-
-  // parse multicall
-  const { to, data, value, operation } = await parseSafeMulticall({
-    chainId: destChainId,
-    calls,
-  })
-
   // encode multicall instructions to be executed by the SAFE
   const abiCoder = ethers.AbiCoder.defaultAbiCoder()
   const moduleData = abiCoder.encode(
     ['address', 'uint256', 'bytes', 'bool'],
     [
-      to, // to
-      value, // value
-      data, // data
-      operation, // operation: 0 for CALL, 1 for DELEGATECALL
+      unlockAddress, // to
+      0, // value
+      unlock.interface.encodeFunctionData('setSwapBurner', [swapBurnerAddress]), // data
+      1, // operation: 0 for CALL, 1 for DELEGATECALL
     ]
   )
 
-  const configUnlockKeys = [
-    '_udt',
-    '_weth',
-    '_estimatedGasForPurchase',
-    '_symbol',
-    '_URI',
-    '_chainId',
-  ]
-
   const explainer = `Changes sent to the Unlock contract at ${unlockAddress}
 
-1. call \`configUnlock\` with the following parameters 
-
-${configUnlockArgs
-  .map((val, i) => `  - ${configUnlockKeys[i]}: ${val}`)
-  .join('\n')}
-
-2. call \`setSwapBurner(${swapBurnerAddress})\` and set the [SwapBurner](${explorer.urls.address(
+  call \`setSwapBurner(${swapBurnerAddress})\` and set the [SwapBurner](${explorer.urls.address(
     swapBurnerAddress
   )}) contract
   `
@@ -111,6 +58,10 @@ ${configUnlockArgs
 }
 
 module.exports = async () => {
+  // TODO: remove this / fund for testing
+  const BASE_TIMELOCK_ADDRESS = '0xB34567C4cA697b39F72e1a8478f285329A98ed1b'
+  await addSomeETH(BASE_TIMELOCK_ADDRESS)
+
   const explainers = []
   const targetChains = await Promise.all(
     targetChainsIds.map((id) => getNetwork(id))
@@ -137,21 +88,19 @@ module.exports = async () => {
   console.log({ explainers, calls })
 
   // parse proposal
-  const title = `Set UDT and SwapBurner in Unlock contract on Mainnet and Polygon`
+  const title = `Set SwapBurner in Unlock contract on Mainnet and Polygon`
 
   const proposalName = `${title}
 
 ## Goal of the proposal
 
-This proposal sets 1) the UDT address and 2) the Swap Burner contract address in the main Unlock factory contract on the following chains: ${targetChains
+This proposal sets the Swap Burner contract address in the main Unlock factory contract on the following chains: ${targetChains
     .map(({ name }) => name)
     .toString()}. 
   
 ## About this proposal
 
-Now that UDT has been bridged, the new address has to be set in the main Unlock contract for the tokens to be distributed or swap/burned. For that, we call the \`configUnlock\` function with the bridge UDT address as a parameter (keeping other parameters untouched).
-
-A \`SwapBurner\` helper contract has been deployed on all three chains and will be added as a setting to the main Unlock contract. This will enable the “swap and burn” feature of fees collected by the protocol on these chains, following the deployment of bridged versions of UDT there.
+A \`SwapBurner\` helper contract has been deployed on all three chains and will be added as setting to the main Unlock contract. This will enable the “swap and burn” feature of fees collected by the protocol on these chains, following the deployment of bridged versions of UDT there.
 
 ## How it works
 
