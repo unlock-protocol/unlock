@@ -88,7 +88,7 @@ export const deployLockForEventCaster = async ({
     'setLockMetadata(string,string,string)',
     [
       title,
-      'TKT',
+      'EVENT',
       `https://events.xyz/api/v1/nft/unlock/${DEFAULT_NETWORK}/${eventId}/`,
     ]
   )
