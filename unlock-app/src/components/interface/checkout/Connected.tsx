@@ -6,6 +6,8 @@ import { ConnectPage } from './main/ConnectPage'
 import { getMembership } from '~/hooks/useMemberships'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useWeb3Service } from '~/utils/withWeb3Service'
+import { usePrivy } from '@privy-io/react-auth'
+import { onSignedInWithPrivy } from '~/config/PrivyProvider'
 
 interface ConnectedCheckoutProps {
   service: CheckoutService
@@ -14,22 +16,43 @@ interface ConnectedCheckoutProps {
 export function Connected({ service }: ConnectedCheckoutProps) {
   const [showPrivyModal, setShowPrivyModal] = useState(true)
   const { paywallConfig, lock } = useSelector(service, (state) => state.context)
-  const { account, signInWithPrivy } = useAuthenticate()
+  const { user } = usePrivy()
+  const { signInWithPrivy } = useAuthenticate()
 
   const lockAddress = lock?.address
   const lockNetwork = lock?.network || paywallConfig.network
   const web3Service = useWeb3Service()
+
+  // handle sign-in
+  useEffect(() => {
+    const handleSignIn = async () => {
+      if (user?.wallet?.address) {
+        console.debug(`Connected as ${user.wallet.address}`)
+        await onSignedInWithPrivy(user)
+      } else {
+        console.debug('Not connected')
+        signInWithPrivy({
+          onshowUI: () => {
+            setShowPrivyModal(true)
+          },
+        })
+      }
+    }
+
+    handleSignIn()
+  }, [user?.wallet?.address])
+
+  // check memberships after sign-in
   useEffect(() => {
     const checkMemberships = async (
       lockAddress: string,
-      account: string,
+      walletAddress: string,
       lockNetwork: number
     ) => {
-      // Get the membership!
       const membership = await getMembership(
         web3Service,
         lockAddress,
-        account!,
+        walletAddress,
         lockNetwork
       )
       service.send({
@@ -38,20 +61,11 @@ export function Connected({ service }: ConnectedCheckoutProps) {
         expiredMember: !!membership?.expired,
       })
     }
-    if (!account) {
-      console.debug('Not connected')
-      signInWithPrivy({
-        onshowUI: () => {
-          setShowPrivyModal(true)
-        },
-      })
-    } else {
-      console.debug(`Connected as ${account}`)
-      if (lockAddress && lockNetwork) {
-        checkMemberships(lockAddress, account!, lockNetwork)
-      }
+
+    if (user?.wallet?.address && lockAddress && lockNetwork) {
+      checkMemberships(lockAddress, user.wallet.address, lockNetwork)
     }
-  }, [account, lockAddress, lockNetwork])
+  }, [user?.wallet?.address, lockAddress, lockNetwork])
 
   return (
     <>
