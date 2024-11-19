@@ -9,7 +9,9 @@ const upTokenAddress = '0xaC27fa800955849d6D17cC8952Ba9dD6EAA66187'
 module.exports = async () => {
   const proposalName = `Distribute UP through the Unlock contract
   
-This proposal enables the distribution of UPToken on Base network as protocol reward when a referrer is specified during purchase, extension or renewal of a key. The distribution of UDT that was previously active on Base will therefore be replaced by UPToken.
+This proposal enables the distribution of the UPToken on Base as the protocol reward when a referrer is specified during purchase, extension or renewal of a key. 
+
+The distribution of UDT that was previously active on Base will therefore be replaced by UPToken through this proposed change.
 
 As part of this update, an Uniswap oracle is also set in Unlock to support price discovery for UPToken from the WETH/Uniswap pool.
 `
