@@ -1,5 +1,5 @@
 import { Button, Input, Modal, TextBox } from '@unlock-protocol/ui'
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { useCustomEmailSend } from '~/hooks/useCustomEmail'
 
@@ -16,11 +16,17 @@ export function SendCustomEmail({
   lockAddress,
   network,
 }: SendCustomEmailProps) {
+  const form = useForm<SendCustomEmailData>({
+    defaultValues: {
+      subject: '',
+      content: '',
+    },
+  })
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SendCustomEmailData>()
+  } = form
   const [confirm, setIsConfirm] = useState(false)
   const [customEmailData, setCustomEmailData] = useState<SendCustomEmailData>({
     subject: '',
@@ -28,10 +34,22 @@ export function SendCustomEmail({
   })
   const { mutateAsync: sendCustomEmail, isPending: isSendingCustomEmail } =
     useCustomEmailSend()
-  const onSubmit = (data: SendCustomEmailData) => {
+  const onSubmit = useCallback((data: SendCustomEmailData) => {
     setCustomEmailData(data)
     setIsConfirm(true)
-  }
+  }, [])
+  const handleSendEmail = useCallback(
+    async (event: React.MouseEvent) => {
+      event.preventDefault()
+      await sendCustomEmail({
+        lockAddress,
+        network,
+        ...customEmailData,
+      })
+      setIsConfirm(false)
+    },
+    [sendCustomEmail, lockAddress, network, customEmailData]
+  )
   return (
     <div>
       <Modal isOpen={confirm} setIsOpen={setIsConfirm}>
@@ -50,18 +68,7 @@ export function SendCustomEmail({
             >
               Cancel
             </Button>
-            <Button
-              loading={isSendingCustomEmail}
-              onClick={async (event) => {
-                event.preventDefault()
-                await sendCustomEmail({
-                  lockAddress,
-                  network,
-                  ...customEmailData,
-                })
-                setIsConfirm(false)
-              }}
-            >
+            <Button loading={isSendingCustomEmail} onClick={handleSendEmail}>
               Send
             </Button>
           </div>
