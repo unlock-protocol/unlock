@@ -5,10 +5,14 @@ const { ethers } = require('hardhat')
 const { Unlock } = require('@unlock-protocol/contracts')
 const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const { parseSafeMulticall } = require('../../helpers/multisig')
-
+const { addSomeETH } = require('@unlock-protocol/hardhat-helpers')
 const upTokenAddress = '0xaC27fa800955849d6D17cC8952Ba9dD6EAA66187'
 
 module.exports = async () => {
+  // TODO: remove this / fund for testing
+  const BASE_TIMELOCK_ADDRESS = '0xB34567C4cA697b39F72e1a8478f285329A98ed1b'
+  await addSomeETH(BASE_TIMELOCK_ADDRESS)
+
   const proposalName = `Distribute UP through Unlock contracts
   
 This proposal enables change from distributing UDT to UPToken when using referrers. This requires to also setup the Uniswap oracle 
@@ -44,31 +48,8 @@ in Unlock to support price discovery for UPToken.`
     },
   ]
 
-  // parse multicall
-  const { to, data, value, operation } = await parseSafeMulticall({
-    chainId: id,
-    calls,
-  })
-
-  // encode multicall instructions to be executed by the SAFE
-  const abiCoder = ethers.AbiCoder.defaultAbiCoder()
-  const moduleData = abiCoder.encode(
-    ['address', 'uint256', 'bytes', 'bool'],
-    [
-      to, // to
-      value, // value
-      data, // data
-      operation, // operation: 0 for CALL, 1 for DELEGATECALL
-    ]
-  )
-
   return {
     proposalName,
-    calls: [
-      {
-        contractAddress: multisig,
-        calldata: moduleData,
-      },
-    ],
+    calls,
   }
 }
