@@ -28,15 +28,14 @@ export const AllowListHook = ({
 
   const saveMerkleProof = useMutation({
     mutationFn: async (allowList: string[], hookAddress: string) => {
-      const x = await locksmith.saveMerkleTree(allowList)
-      console.log(x)
+      const { data: tree } = await locksmith.saveMerkleTree(allowList)
       const walletService = await getWalletService(network)
       await ToastHelper.promise(
         walletService.setMerkleRoot({
           network,
           lockAddress,
           hookAddress,
-          root,
+          root: tree.root,
         }),
         {
           success: 'The allow-list was saved onchain!',
@@ -57,8 +56,8 @@ export const AllowListHook = ({
 
   // initialize the form field with the fetched setting
   useEffect(() => {
-    if (settings?.allowList !== undefined) {
-      setValue('hook.allowList', settings.allowList)
+    if (settings?.allowList) {
+      setValue('hook.allowList', settings.allowList.join('\n'))
     }
   }, [settings, setValue])
 
