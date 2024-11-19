@@ -106,8 +106,6 @@ export const SettingEmail = ({
   const emailTemplates =
     TemplateByLockType[template as keyof LockType] || DEFAULT_EMAIL_TEMPLATES
 
-  console.log('emailTemplates', emailTemplates)
-
   return (
     <div className="grid grid-cols-1 gap-6">
       <SettingCard
