@@ -304,7 +304,6 @@ export const checkoutMachine = createMachine(
               actions: ['lockSelected'],
               target: 'PROMO',
               guard: ({ context }) => {
-                console.log('is promocode?')
                 return context.hook === 'promocode'
               },
             },

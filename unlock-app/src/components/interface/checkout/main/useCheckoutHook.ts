@@ -75,7 +75,6 @@ export function useCheckoutHook(service: CheckoutService) {
                   hookType = 'promocode'
                 }
               }
-              console.log('hookType', hookType)
 
               return {
                 [lockAddress?.toLowerCase()]: hookType,
