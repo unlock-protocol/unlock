@@ -19,7 +19,7 @@ export const ConnectViaEmail = ({ onNext, email }: ConnectViaEmailProps) => {
   })
 
   useEffect(() => {
-    if (email) {
+    if (email && !methods.getValues('email')) {
       methods.setValue('email', email)
       onSubmit({ email })
     }
