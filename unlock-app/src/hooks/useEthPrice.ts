@@ -44,8 +44,8 @@ export const useEthPrice = ({
           const oneEthInUsd = response.data.result?.priceInAmount
           if (!oneEthInUsd) return null
 
-          // Add 10 cents ($0.10) for gas fees when converting USD to ETH
-          const amountWithPenny = parseFloat(amount) + 0.1
+          // Add 50 cents ($0.50) for gas fees when converting USD to ETH
+          const amountWithPenny = parseFloat(amount) + 0.5
           return (amountWithPenny / oneEthInUsd).toFixed(6).toString()
         }
       } catch (error) {
