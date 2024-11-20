@@ -96,6 +96,7 @@ export const EmailPreview = ({
               __html: email?.html || '',
             }}
             style={{ width: '200px' }}
+            className="text-left"
           />
           <div className="flex flex-col gap-2">
             <Input
