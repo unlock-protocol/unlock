@@ -296,37 +296,27 @@ export const checkoutMachine = createMachine(
             {
               actions: ['lockSelected'],
               target: 'PASSWORD',
-              guard: ({ context }) => {
-                return context.hook === 'password'
-              },
+              guard: 'requirePassword',
             },
             {
               actions: ['lockSelected'],
               target: 'PROMO',
-              guard: ({ context }) => {
-                return context.hook === 'promocode'
-              },
+              guard: 'requirePromo',
             },
             {
               actions: ['lockSelected'],
               target: 'GUILD',
-              guard: ({ context }) => {
-                return context.hook === 'guild'
-              },
+              guard: 'requireGuild',
             },
             {
               actions: ['lockSelected'],
               target: 'CAPTCHA',
-              guard: ({ context }) => {
-                return context.hook === 'captcha'
-              },
+              guard: 'requireCaptcha',
             },
             {
               actions: ['lockSelected'],
               target: 'GITCOIN',
-              guard: ({ context }) => {
-                return context.hook === 'gitcoin'
-              },
+              guard: 'requireGitcoin',
             },
             {
               actions: ['lockSelected'],
