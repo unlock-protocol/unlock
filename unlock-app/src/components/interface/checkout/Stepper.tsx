@@ -3,7 +3,7 @@ import { Tooltip } from '@unlock-protocol/ui'
 import { twMerge } from 'tailwind-merge'
 import { ReactNode } from 'react'
 import { IoIosRocket as RocketIcon } from 'react-icons/io'
-import { CheckoutHookType, CheckoutService } from './main/checkoutMachine'
+import { CheckoutService } from './main/checkoutMachine'
 import { useStepperItems } from './main/useStepperItems'
 import { useSelector } from '@xstate/react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
@@ -84,7 +84,6 @@ interface StepperProps {
   service: CheckoutService
   isUnlockAccount?: boolean
   disabled?: boolean
-  hookType?: CheckoutHookType
   existingMember?: boolean
   isRenew?: boolean
 }
@@ -92,7 +91,6 @@ interface StepperProps {
 export const Stepper = ({
   service,
   disabled,
-  hookType,
   existingMember,
   isRenew,
   isUnlockAccount = false,
@@ -103,7 +101,6 @@ export const Stepper = ({
   )
   const items = useStepperItems(service, {
     isUnlockAccount,
-    hookType,
     existingMember,
     isRenew,
     useDelegatedProvider,

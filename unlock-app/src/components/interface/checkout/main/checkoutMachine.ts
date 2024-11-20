@@ -4,6 +4,7 @@ import {
   PaywallLockConfigType as PaywallConfigLock,
 } from '@unlock-protocol/core'
 import { createMachine, assign, ActorRefFrom, Actor } from 'xstate'
+import { getHookType } from './checkoutHookUtils'
 
 export type CheckoutPage =
   | 'SELECT'
@@ -61,7 +62,6 @@ export interface ConnectEvent {
   skipRecipient?: boolean
   recipients?: string[]
   keyManagers?: string[]
-  hook?: CheckoutHookType
 }
 
 export interface SignMessageEvent {
@@ -121,7 +121,6 @@ interface BackEvent {
   skipRecipient?: boolean
   recipients?: string[]
   keyManagers?: string[]
-  hook?: CheckoutHookType
 }
 
 interface ResetEvent {
@@ -187,7 +186,6 @@ export interface CheckoutMachineContext {
   skipRecipient: boolean
   metadata?: any[]
   data?: string[]
-  hook?: CheckoutHookType
   renew: boolean
   existingMember: boolean
   expiredMember: boolean
@@ -207,7 +205,6 @@ const DEFAULT_CONTEXT: CheckoutMachineContext = {
   keyManagers: [],
   skipQuantity: false,
   renew: false,
-  hook: undefined,
   metadata: undefined,
   existingMember: false,
   expiredMember: false,
@@ -715,7 +712,6 @@ export const checkoutMachine = createMachine(
         // Handle undefined case by providing a default value of an empty array
         recipients: ({ event }) => event.recipients || [],
         keyManagers: ({ event }) => event.keyManagers,
-        hook: ({ event }) => event.hook,
         renew: ({ event }) => event.expiredMember as boolean,
         existingMember: ({ event }) => event.existingMember as boolean,
         expiredMember: ({ event }) => event.expiredMember as boolean,
@@ -780,11 +776,16 @@ export const checkoutMachine = createMachine(
     guards: {
       requireMessageToSign: ({ context }) =>
         !!context.paywallConfig.messageToSign,
-      requireCaptcha: ({ context }) => context && context?.hook === 'captcha',
-      requirePassword: ({ context }) => context && context?.hook === 'password',
-      requirePromo: ({ context }) => context && context?.hook === 'promocode',
-      requireGuild: ({ context }) => context && context?.hook === 'guild',
-      requireGitcoin: ({ context }) => context && context?.hook === 'gitcoin',
+      requireCaptcha: ({ context }) =>
+        getHookType(context.lock, context.paywallConfig) === 'captcha',
+      requirePassword: ({ context }) =>
+        getHookType(context.lock, context.paywallConfig) === 'password',
+      requirePromo: ({ context }) =>
+        getHookType(context.lock, context.paywallConfig) === 'promocode',
+      requireGuild: ({ context }) =>
+        getHookType(context.lock, context.paywallConfig) === 'guild',
+      requireGitcoin: ({ context }) =>
+        getHookType(context.lock, context.paywallConfig) === 'gitcoin',
       isCardPayment: ({ context }) => ['card'].includes(context.payment.method),
     },
   }
