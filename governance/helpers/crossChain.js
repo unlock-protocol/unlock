@@ -21,7 +21,11 @@ const fetchRelayerFee = async ({ originDomain, destinationDomain }) => {
   return BigInt(hex)
 }
 
-const parseBridgeCall = async ({ srcChainId = 1, destChainId, moduleData }) => {
+const parseBridgeCall = async ({
+  srcChainId = 8453,
+  destChainId,
+  moduleData,
+}) => {
   const { dao } = await getNetwork(destChainId)
 
   // get bridge info on receiving chain
