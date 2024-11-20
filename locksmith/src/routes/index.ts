@@ -44,7 +44,6 @@ import newUserRouter from './v2/user'
 import eventCollectionRouter from './v2/eventCollection'
 import eventCasterRouter from './v2/eventCaster'
 import privyRouter from './v2/privy'
-import merkleTreeRouter from './v2/merkleTree'
 
 const router: express.Router = express.Router({ mergeParams: true })
 
@@ -120,7 +119,6 @@ router.use('/v2/api/users', newUserRouter)
 router.use('/v2/event-collection', eventCollectionRouter)
 router.use('/v2/eventcaster', eventCasterRouter)
 router.use('/v2/privy', privyRouter)
-router.use('/v2/merkle-tree', merkleTreeRouter)
 router.use('/', (_, res) => {
   res.send('<a href="https://unlock-protocol.com/">Unlock Protocol</a>')
 })
