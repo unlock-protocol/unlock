@@ -11,7 +11,7 @@ const { parseBridgeCall } = require('../../helpers/crossChain')
 const { addSomeETH } = require('@unlock-protocol/hardhat-helpers')
 
 const swapBurnerAddresses = {
-  1: '0x52690873b22B0949A3A2c1AaD22653218460A002', // mainnet
+  1: '0xfA3F427d2691ce680f96E6916a9Dac6c9042CBd2', // mainnet
   137: '0x52690873b22B0949A3A2c1AaD22653218460A002', // polygon
 }
 
