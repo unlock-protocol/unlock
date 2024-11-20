@@ -5,32 +5,22 @@ const { getUniswapV3Contracts } = require('../../helpers/uniswap')
 const MAINNET_TIMELOCK_ADDRESS = '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B'
 
 const exitPosition = async ({ positionManager, tokenId }) => {
-  const [
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    // nonce
-    // operator
-    // token0
-    // token1
-    // fee
-    // tickLower
-    // tickUpper
-    liquidity,
-  ] = await positionManager.positions(tokenId)
+  // unpack uniswap position
+  // nonce, operator, token0, token1, fee, tickLower, tickUpper, *liquidity*
+  const [, , token0, token1, , , , liquidity] =
+    await positionManager.positions(tokenId)
 
-  const { timestamp: currentTime } = await ethers.provider.getBlock('latest')
+  // deadline is set to 8 weeks after the proposal was submitted
   const ONE_WEEK = 7 * 24 * 3600
+  const { timestamp: currentTime } = await ethers.provider.getBlock('latest')
+  const deadline = currentTime + 8 * ONE_WEEK
+
   const decreaseLiquidityParams = {
     tokenId: tokenId,
-    liquidity,
+    liquidity, // remove all existing liquidity
     amount0Min: 0n,
     amount1Min: 0n,
-    deadline: currentTime + 8 * ONE_WEEK, //  deadline is a ts
+    deadline,
   }
 
   const MAX_UINT128 = 2n ** 128n - 1n
@@ -55,6 +45,7 @@ const exitPosition = async ({ positionManager, tokenId }) => {
       tokenId, // tokenId
     ]),
   ]
+
   return calls
 }
 
@@ -73,7 +64,6 @@ module.exports = async () => {
         positionManager.tokenOfOwnerByIndex(MAINNET_TIMELOCK_ADDRESS, i)
       )
   )
-  console.log({ balance, tokenIds })
 
   const tokenCalls = await Promise.all(
     tokenIds.map((tokenId) => exitPosition({ positionManager, tokenId }))
@@ -88,10 +78,26 @@ module.exports = async () => {
   // parse calls for Safe
   const proposalName = `# Exit UDT Uniswap positions
 
-    This proposal will decrease liquidity to zero on all UDT uniswap positions owned by the DAO treasury on mainnet, collect UDT and WETH from the pools and burn the position.
+There are currently ${balance.toString()} positions owned by the DAO in the Uniswap UDT / WETH pool on mainnet. Liquidity for these positions is provided by the DAO treasury.
 
-    This will result on all UDT and WETH currently in pools being transferred back to the DAO's timelock.
-    `
+This proposal will result in exiting these positions by: 
+
+1) decrease liquidity to zero on all these positions 
+2) collect the UDT and WETH from the pools 
+3) burn the Uniswap position NFT
+
+Once executed, all UDT and WETH tokens currently held in pools will be transferred back to the DAO's timelock.
+
+You can check the current positions here: ${tokenIds
+    .map(
+      (tokenId) =>
+        `[${tokenId}](https://app.uniswap.org/nfts/asset/${managerAddress}/${tokenId})`
+    )
+    .join(', ')} ).
+
+`
+
+  console.log(proposalName)
 
   return {
     proposalName,
