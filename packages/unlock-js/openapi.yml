@@ -458,9 +458,7 @@ components:
           type: number
           nullable: true
         allowList:
-          type: array
-          items:
-            type: string
+          type: string
           nullable: true
 
     EventDetails:
@@ -5313,8 +5311,6 @@ paths:
                 properties:
                   success:
                     type: boolean
-                  root:
-                    type: string
                   url:
                     type: string
         400:
