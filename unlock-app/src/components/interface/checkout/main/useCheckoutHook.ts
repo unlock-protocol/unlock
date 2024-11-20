@@ -4,6 +4,7 @@ import { HookType } from '@unlock-protocol/types'
 import { useSelector } from '@xstate/react'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { CheckoutHookType, CheckoutService } from './checkoutMachine'
+import { PaywallConfigType } from '@unlock-protocol/core'
 
 type LockHookProps = Record<string, CheckoutHookType | undefined>
 const HookIdMapping: Partial<Record<HookType, CheckoutHookType>> = {
@@ -14,6 +15,52 @@ const HookIdMapping: Partial<Record<HookType, CheckoutHookType>> = {
   PROMOCODE: 'promocode',
   PROMO_CODE_CAPPED: 'promocode',
   PASSWORD_CAPPED: 'password',
+}
+
+export const getOnPurchaseHookTypeFromAddressOnNetwork = (
+  hookAddress: string,
+  network: number
+) => {
+  const onPurchaseHooks = network
+    ? networks[network].hooks?.onKeyPurchaseHook
+    : []
+
+  // check for match for hook value
+  const match = onPurchaseHooks?.find(
+    ({ address }) =>
+      address?.trim()?.toLowerCase() === hookAddress?.trim()?.toLowerCase()
+  )
+
+  const hookType: CheckoutHookType | undefined = match?.id
+    ? HookIdMapping?.[match?.id]
+    : undefined
+  return hookType
+}
+
+export const getOnPurchaseHookTypeFromPaywallConfig = (
+  paywallConfig: PaywallConfigType,
+  lockAddress: string
+) => {
+  const {
+    password = false,
+    promo = false,
+    captcha = false,
+  } = paywallConfig.locks?.[lockAddress] ?? {}
+
+  const hookStatePaywall: Record<string, boolean> = {
+    isPromo: !!(promo || paywallConfig?.promo),
+    isPassword: !!(password || paywallConfig?.password),
+    isCaptcha: !!(captcha || paywallConfig?.captcha),
+  }
+
+  const { isCaptcha, isPromo, isPassword } = hookStatePaywall
+  if (isPassword) {
+    return 'password'
+  } else if (isCaptcha) {
+    return 'captcha'
+  } else if (isPromo) {
+    return 'promocode'
+  }
 }
 
 export function useCheckoutHook(service: CheckoutService) {
@@ -31,51 +78,18 @@ export function useCheckoutHook(service: CheckoutService) {
           return {
             queryKey: ['getKeyPurchaseHook', lockAddress, network],
             queryFn: async (): Promise<LockHookProps> => {
-              const onPurchaseHooks = network
-                ? networks[network!].hooks?.onKeyPurchaseHook
-                : []
-
               // get hook value
               const hookValue = await web3Service.onKeyPurchaseHook({
                 lockAddress,
                 network,
               })
 
-              // check for match for hook value
-              const match = onPurchaseHooks?.find(
-                ({ address }) =>
-                  address?.trim()?.toLowerCase() ===
-                  hookValue?.trim()?.toLowerCase()
-              )
-
-              let hookType: CheckoutHookType | undefined = match?.id
-                ? HookIdMapping?.[match?.id]
-                : undefined
-
-              // Get hook type from paywall config as fallback
-              if (!hookType) {
-                const {
-                  password = false,
-                  promo = false,
-                  captcha = false,
-                } = paywallConfig.locks?.[lockAddress] ?? {}
-
-                const hookStatePaywall: Record<string, boolean> = {
-                  isPromo: !!(promo || paywallConfig?.promo),
-                  isPassword: !!(password || paywallConfig?.password),
-                  isCaptcha: !!(captcha || paywallConfig?.captcha),
-                }
-
-                const { isCaptcha, isPromo, isPassword } = hookStatePaywall
-                if (isPassword) {
-                  hookType = 'password'
-                } else if (isCaptcha) {
-                  hookType = 'captcha'
-                } else if (isPromo) {
-                  hookType = 'promocode'
-                }
-              }
-
+              const hookType =
+                getOnPurchaseHookTypeFromAddressOnNetwork(hookValue, network) ||
+                getOnPurchaseHookTypeFromPaywallConfig(
+                  paywallConfig,
+                  lockAddress
+                )
               return {
                 [lockAddress?.toLowerCase()]: hookType,
               }

@@ -782,7 +782,10 @@ export const checkoutMachine = createMachine(
         !!context.paywallConfig.messageToSign,
       requireCaptcha: ({ context }) => context && context?.hook === 'captcha',
       requirePassword: ({ context }) => context && context?.hook === 'password',
-      requirePromo: ({ context }) => context && context?.hook === 'promocode',
+      requirePromo: ({ context }) => {
+        console.log(context)
+        return context && context?.hook === 'promocode'
+      },
       requireGuild: ({ context }) => context && context?.hook === 'guild',
       requireGitcoin: ({ context }) => context && context?.hook === 'gitcoin',
       isCardPayment: ({ context }) => ['card'].includes(context.payment.method),
