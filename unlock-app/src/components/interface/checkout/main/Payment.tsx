@@ -8,7 +8,8 @@ import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { RiArrowRightLine as RightArrowIcon } from 'react-icons/ri'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
-import { Fragment } from 'react'
+import { base } from 'viem/chains'
+import { Fragment, useState } from 'react'
 import {
   RiVisaLine as VisaIcon,
   RiMastercardLine as MasterCardIcon,
@@ -27,6 +28,10 @@ import Link from 'next/link'
 import Disconnect from './Disconnect'
 import { TransactionPreparationError } from './TransactionPreparationError'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { LoginModal, useFundWallet } from '@privy-io/react-auth'
+import { Modal } from '@unlock-protocol/ui'
+import { useEthPrice } from '~/hooks/useEthPrice'
+import InsufficientFundsWarning from '../InsufficientFundsWarning'
 
 interface Props {
   checkoutService: CheckoutService
@@ -68,6 +73,8 @@ export function Payment({ checkoutService }: Props) {
   const networkConfig = config.networks[lock.network]
   const baseSymbol = networkConfig.nativeCurrency.symbol
   const symbol = lockTickerSymbol(lock, baseSymbol)
+  const { fundWallet } = useFundWallet()
+  const [showFundingModal, setShowFundingModal] = useState(false)
 
   if (recipients.length === 0) {
     recipients.push(account as string)
@@ -179,6 +186,28 @@ export function Payment({ checkoutService }: Props) {
     enableCrypto,
     enableCrossmint,
   ].every((item) => !item)
+
+  // Get the price of the membership in ETH or USD
+  const { data: priceInETH } = useEthPrice({
+    amount: pricingData?.total.toString() || '0',
+    network: 8453,
+    currency: pricingData?.prices[0]?.symbol === 'USDC' ? 'USD' : 'ETH',
+  })
+
+  // Handle adding funds to the user's wallet
+  const handleFundWallet = async () => {
+    setShowFundingModal(true)
+    // If the membership is priced in USDC, use the price in ETH
+    const amount =
+      pricingData?.prices[0]?.symbol === 'USDC'
+        ? priceInETH?.toString() || '0'
+        : (Number(pricingData?.prices[0]?.amount || 0) + 0.0001).toString()
+
+    await fundWallet(account!, {
+      chain: base,
+      amount,
+    })
+  }
 
   return (
     <Fragment>
@@ -426,6 +455,21 @@ export function Payment({ checkoutService }: Props) {
             )}
           </div>
         )}
+
+        {balance?.balance === '0' && (
+          <InsufficientFundsWarning
+            enableCreditCard={!!enableCreditCard}
+            onFundWallet={handleFundWallet}
+          />
+        )}
+
+        <Modal
+          isOpen={showFundingModal}
+          setIsOpen={setShowFundingModal}
+          size="small"
+        >
+          <LoginModal open={showFundingModal} />
+        </Modal>
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
         <Disconnect service={checkoutService} />
