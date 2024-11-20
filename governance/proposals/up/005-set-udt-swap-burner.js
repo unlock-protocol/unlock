@@ -8,7 +8,6 @@ const { getProvider } = require('../../helpers/multisig')
 const { ethers } = require('hardhat')
 const { Contract } = require('ethers')
 const { parseBridgeCall } = require('../../helpers/crossChain')
-const { addSomeETH } = require('@unlock-protocol/hardhat-helpers')
 
 const swapBurnerAddresses = {
   1: '0xfA3F427d2691ce680f96E6916a9Dac6c9042CBd2', // mainnet
@@ -58,10 +57,6 @@ const parseCalls = async (destChainId) => {
 }
 
 module.exports = async () => {
-  // TODO: remove this / fund for testing
-  const BASE_TIMELOCK_ADDRESS = '0xB34567C4cA697b39F72e1a8478f285329A98ed1b'
-  await addSomeETH(BASE_TIMELOCK_ADDRESS)
-
   const explainers = []
   const targetChains = await Promise.all(
     targetChainsIds.map((id) => getNetwork(id))
