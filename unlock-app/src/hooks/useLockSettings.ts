@@ -3,6 +3,7 @@ import { locksmith } from '~/config/locksmith'
 import { ADDRESS_ZERO } from '~/constants'
 import { secondsAsDays } from '~/utils/durations'
 import { useWeb3Service } from '~/utils/withWeb3Service'
+import { useAuthenticate } from './useAuthenticate'
 
 interface LockSettingsProps {
   lockAddress: string
@@ -70,8 +71,9 @@ export function useGetLockSettings({
   lockAddress,
   network,
 }: LockSettingsProps) {
+  const { account } = useAuthenticate()
   return useQuery({
-    queryKey: ['getLockSettings', lockAddress, network],
+    queryKey: ['getLockSettings', lockAddress, network, account],
     queryFn: async () => {
       const response = await locksmith.getLockSettings(network, lockAddress)
       return response?.data
