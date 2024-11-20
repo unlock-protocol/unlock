@@ -82,7 +82,7 @@ There are currently ${balance.toString()} positions owned by the DAO in the Unis
 
 This proposal will result in exiting these positions by: 
 
-1) decrease liquidity to zero on all these positions 
+1) decreasing liquidity to zero on all these positions 
 2) collect the UDT and WETH from the pools 
 3) burn the Uniswap position NFT
 
