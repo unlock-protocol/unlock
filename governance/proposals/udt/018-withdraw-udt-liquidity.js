@@ -86,7 +86,7 @@ This proposal will result in exiting these positions by:
 2) collecting the UDT and WETH from the pools and transferring to the DAO timelock
 3) burning the Uniswap position NFT
 
-Once executed, all UDT and WETH tokens currently held in pools will be transferred back to the DAO's timelock.
+As noted in Step 2, once executed, all UDT and WETH tokens currently held in pools will be transferred back to the DAO's timelock.
 
 You can check the current positions here: ${tokenIds
     .map(
