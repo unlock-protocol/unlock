@@ -72,7 +72,7 @@ export const sepolia: NetworkConfig = {
         name: 'Gitcoin',
       },
       {
-        address: '0x95222290DD7278Aa3Ddd389Cc1E1d165CC4BAfe5',
+        address: '0x92954dB2CeB43C2BF241C6a968EF711124408B00',
         id: HookType.ALLOW_LIST,
         name: 'Allow list',
       },

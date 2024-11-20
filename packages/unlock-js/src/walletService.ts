@@ -6,6 +6,7 @@ import { passwordHookAbi } from './abis/passwordHookAbi'
 import { passwordCapHookAbi } from './abis/passwordCapHookAbi'
 import { discountCodeHookAbi } from './abis/discountCodeHookAbi'
 import { discountCodeWithCapHookAbi } from './abis/discountCodeWithCapHookAbi'
+import { allowListHookAbi } from './abis/allowListHookAbi'
 import { signTransferAuthorization } from './erc20'
 import { CardPurchaser } from './CardPurchaser'
 
@@ -1310,6 +1311,29 @@ export default class WalletService extends UnlockService {
       discountBasisPoints,
       cap
     )
+    return transaction.wait()
+  }
+
+  async setMerkleRoot({
+    network,
+    lockAddress,
+    hookAddress,
+    root,
+  }: {
+    network: number
+    lockAddress: string
+    hookAddress: string
+    root: string
+  }) {
+    const contract = await this.getHookContract({
+      network,
+      address: hookAddress,
+      abi: new ethers.Interface(allowListHookAbi),
+    })
+
+    const transaction = await contract
+      .connect(this.signer)
+      .getFunction('setMerkleRootForLock')(lockAddress, root)
     return transaction.wait()
   }
 }

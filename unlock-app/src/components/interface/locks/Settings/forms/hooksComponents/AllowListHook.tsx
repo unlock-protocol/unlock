@@ -27,7 +27,13 @@ export const AllowListHook = ({
   const { mutateAsync: saveSettingsMutation } = useSaveLockSettings()
 
   const saveMerkleProof = useMutation({
-    mutationFn: async (allowList: string[], hookAddress: string) => {
+    mutationFn: async ({
+      allowList,
+      hookAddress,
+    }: {
+      allowList: string[]
+      hookAddress: string
+    }) => {
       const { data: tree } = await locksmith.saveMerkleTree(allowList)
       const walletService = await getWalletService(network)
       await ToastHelper.promise(
@@ -35,7 +41,7 @@ export const AllowListHook = ({
           network,
           lockAddress,
           hookAddress,
-          root: tree.root,
+          root: tree.root!,
         }),
         {
           success: 'The allow-list was saved onchain!',
@@ -75,7 +81,10 @@ export const AllowListHook = ({
     })
 
     // Then, create the merkle proof and save the proof
-    await saveMerkleProof.mutateAsync(allowList)
+    await saveMerkleProof.mutateAsync({
+      allowList,
+      hookAddress: values.keyPurchase,
+    })
 
     // Save the hook!
     await setEventsHooksMutation.mutateAsync(values)
