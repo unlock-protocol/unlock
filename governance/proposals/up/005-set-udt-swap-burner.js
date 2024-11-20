@@ -43,7 +43,7 @@ const parseCalls = async (destChainId) => {
       unlockAddress, // to
       0, // value
       unlock.interface.encodeFunctionData('setSwapBurner', [swapBurnerAddress]), // data
-      1, // operation: 0 for CALL, 1 for DELEGATECALL
+      0, // operation: 0 for CALL, 1 for DELEGATECALL
     ]
   )
 
