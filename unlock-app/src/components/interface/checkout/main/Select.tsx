@@ -303,6 +303,7 @@ export function Select({ checkoutService }: Props) {
       return
     }
 
+    console.log('autoSelectedLock', hookType)
     checkoutService.send({
       type: 'CONNECT',
       lock,
@@ -407,6 +408,7 @@ export function Select({ checkoutService }: Props) {
       return
     }
 
+    console.log('Connected account, lock selected, move on!', hookType)
     // Connected account, lock selected, move on!
     checkoutService.send({
       type: 'CONNECT',
@@ -445,6 +447,7 @@ export function Select({ checkoutService }: Props) {
     ) {
       const lock = locks?.find((l) => l.address === selectedLock)
       if (lock) {
+        console.log('Selected lock from url', hookType)
         checkoutService.send({
           type: 'CONNECT',
           lock,
@@ -497,6 +500,7 @@ export function Select({ checkoutService }: Props) {
       await signInWithSIWE()
     }
 
+    console.log('onSelectLock', hookType)
     checkoutService.send({
       type: 'CONNECT',
       lock,
