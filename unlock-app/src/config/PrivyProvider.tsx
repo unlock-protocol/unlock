@@ -181,6 +181,12 @@ export const Privy = ({ children }: { children: ReactNode }) => {
         appearance: {
           landingHeader: '',
         },
+        fundingMethodConfig: {
+          moonpay: {
+            uiConfig: { accentColor: '#603DEB', theme: 'light' },
+            useSandbox: config.env !== 'prod',
+          },
+        },
         // @ts-expect-error internal api
         _render: {
           standalone: true,

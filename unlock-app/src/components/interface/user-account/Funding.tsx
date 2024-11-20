@@ -39,6 +39,9 @@ export const Funding = () => {
     })
   }
 
+  const ethPriceNumber =
+    typeof ethPrice === 'string' ? parseFloat(ethPrice) : ethPrice
+
   return (
     <SettingCard
       label="Fund Wallet"
@@ -60,11 +63,11 @@ export const Funding = () => {
               >
                 {userBalance?.toFixed(4)} ETH
               </Badge>
-              {userBalance && ethPrice && ethPrice > 0 && (
+              {userBalance && ethPriceNumber && ethPriceNumber > 0 && (
                 <div className="text-gray-600">
                   (≈{' '}
                   <span className="font-semibold">
-                    ${new Intl.NumberFormat().format(ethPrice)}
+                    ${new Intl.NumberFormat().format(ethPriceNumber)}
                   </span>
                   )
                 </div>
