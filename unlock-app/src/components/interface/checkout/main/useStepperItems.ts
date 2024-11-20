@@ -1,34 +1,29 @@
 // Not sure, here we use checkout and account machines
 import { useSelector } from '@xstate/react'
 import { StepItem } from '../Stepper'
-import {
-  CheckoutHookType,
-  CheckoutMachineContext,
-  CheckoutService,
-} from './checkoutMachine'
+import { CheckoutMachineContext, CheckoutService } from './checkoutMachine'
 import { shouldSkip } from './utils'
+import { getHookType } from './useCheckoutHook'
 
 export function useStepperItems(
   service: CheckoutService,
   {
     isUnlockAccount,
-    hookType,
     isRenew,
     existingMember: isExistingMember,
     useDelegatedProvider,
   }: {
     isRenew?: boolean
     isUnlockAccount?: boolean
-    hookType?: CheckoutHookType
     existingMember?: boolean
     useDelegatedProvider?: boolean
   } = {}
 ) {
   const {
+    lock,
     paywallConfig,
     skipQuantity,
     skipRecipient,
-    hook,
     existingMember,
     payment,
     renew,
@@ -51,11 +46,11 @@ export function useStepperItems(
       lock: lockConfig,
     })
 
-  const isPassword = hook === 'password' || hookType === 'password'
-  const isCaptcha = hook === 'captcha' || hookType === 'captcha'
-  const isPromo = hook === 'promocode' || hookType === 'promocode'
-  const isGuild = hook === 'guild' || hookType === 'guild'
-  const isGitcoin = hook === 'gitcoin' || hookType === 'gitcoin'
+  const isPassword = getHookType(lock, paywallConfig) === 'password'
+  const isCaptcha = getHookType(lock, paywallConfig) === 'captcha'
+  const isPromo = getHookType(lock, paywallConfig) === 'promocode'
+  const isGuild = getHookType(lock, paywallConfig) === 'guild'
+  const isGitcoin = getHookType(lock, paywallConfig) === 'gitcoin'
   const isMember = existingMember || isExistingMember
   const checkoutItems: StepItem[] = [
     {
