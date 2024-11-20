@@ -100,7 +100,7 @@ This proposal sets the Swap Burner contract address in the main Unlock factory c
   
 ## About this proposal
 
-A \`SwapBurner\` helper contract has been deployed on all three chains and will be added as setting to the main Unlock contract. This will enable the “swap and burn” feature of fees collected by the protocol on these chains, following the deployment of bridged versions of UDT there.
+A \`SwapBurner\` helper contract has been deployed on all three chains and will be added as a setting to the main Unlock contract. This will enable the “swap and burn” feature of fees collected by the protocol on these chains, following the deployment of bridged versions of UDT there.
 
 ## How it works
 
