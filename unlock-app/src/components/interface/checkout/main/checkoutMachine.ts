@@ -4,7 +4,7 @@ import {
   PaywallLockConfigType as PaywallConfigLock,
 } from '@unlock-protocol/core'
 import { createMachine, assign, ActorRefFrom, Actor } from 'xstate'
-import { getHookType } from './useCheckoutHook'
+import { getHookType } from './checkoutHookUtils'
 
 export type CheckoutPage =
   | 'SELECT'

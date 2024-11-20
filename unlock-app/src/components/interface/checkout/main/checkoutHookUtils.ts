@@ -14,6 +14,9 @@ const HookIdMapping: Partial<Record<HookType, CheckoutHookType>> = {
 }
 
 export const getHookType = (lock: any, paywallConfig: PaywallConfigType) => {
+  if (!lock) {
+    return undefined
+  }
   return (
     getOnPurchaseHookTypeFromAddressOnNetwork(
       lock.onKeyPurchaseHook,

@@ -3,7 +3,7 @@ import { useSelector } from '@xstate/react'
 import { StepItem } from '../Stepper'
 import { CheckoutMachineContext, CheckoutService } from './checkoutMachine'
 import { shouldSkip } from './utils'
-import { getHookType } from './useCheckoutHook'
+import { getHookType } from './checkoutHookUtils'
 
 export function useStepperItems(
   service: CheckoutService,
