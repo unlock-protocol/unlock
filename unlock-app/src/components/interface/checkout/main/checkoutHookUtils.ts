@@ -11,7 +11,6 @@ const HookIdMapping: Partial<Record<HookType, CheckoutHookType>> = {
   PROMOCODE: 'promocode',
   PROMO_CODE_CAPPED: 'promocode',
   PASSWORD_CAPPED: 'password',
-  ALLOW_LIST: 'allowlist',
 }
 
 export const getHookType = (lock: any, paywallConfig: PaywallConfigType) => {
