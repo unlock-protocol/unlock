@@ -21,7 +21,6 @@ import { LabeledItem } from '../LabeledItem'
 import * as Avatar from '@radix-ui/react-avatar'
 import { numberOfAvailableKeys } from '~/utils/checkoutLockUtils'
 import { minifyAddress } from '@unlock-protocol/ui'
-import { useCheckoutHook } from './useCheckoutHook'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { getLockUsdPrice } from '~/hooks/useUSDPricing'
 import { shouldSkip } from './utils'
@@ -302,7 +301,6 @@ export function Select({ checkoutService }: Props) {
     if (!autoSelectedLock) {
       return
     }
-
     checkoutService.send({
       type: 'CONNECT',
       lock,
@@ -311,7 +309,6 @@ export function Select({ checkoutService }: Props) {
       skipQuantity,
       skipRecipient,
       recipients: account ? [account] : [],
-      hook: hookType,
     })
   }, [autoSelectedLock])
 
@@ -372,16 +369,6 @@ export function Select({ checkoutService }: Props) {
   )
 
   const membership = memberships?.find((item) => item.lock === lock?.address)
-  const { isLoading: isLoadingHook, lockHookMapping } =
-    useCheckoutHook(checkoutService)
-
-  const hookType = useMemo(() => {
-    if (!lock) return undefined
-
-    const hook =
-      lockHookMapping?.[lock?.address?.trim()?.toLowerCase()] ?? undefined
-    return hook
-  }, [lockHookMapping, lock])
 
   const isDisabled =
     isLocksLoading ||
@@ -389,8 +376,7 @@ export function Select({ checkoutService }: Props) {
     !lock ||
     // if locks are sold out and the user is not an existing member of the lock
     (lock?.isSoldOut && !(membership?.member || membership?.expired)) ||
-    isNotExpectedAddress ||
-    isLoadingHook
+    isNotExpectedAddress
 
   useEffect(() => {
     if (locks?.length) {
@@ -400,7 +386,7 @@ export function Select({ checkoutService }: Props) {
     }
   }, [locks])
 
-  const isLoading = isLocksLoading || isLoadingHook || isMembershipsLoading
+  const isLoading = isLocksLoading || isMembershipsLoading
 
   useEffect(() => {
     if (!(lock && skipSelect && account && !isLoading)) {
@@ -417,13 +403,11 @@ export function Select({ checkoutService }: Props) {
       // unlock account are unable to renew : wut?
       expiredMember: !!membership?.expired,
       recipients: account ? [account] : [],
-      hook: hookType,
     })
   }, [
     lock,
     membership,
     account,
-    hookType,
     skipQuantity,
     skipRecipient,
     checkoutService,
@@ -453,7 +437,6 @@ export function Select({ checkoutService }: Props) {
           skipQuantity,
           skipRecipient,
           recipients: account ? [account] : [],
-          hook: hookType,
         })
 
         // clean up urls
@@ -472,7 +455,6 @@ export function Select({ checkoutService }: Props) {
     account,
     checkoutService,
     locks,
-    hookType,
     skipQuantity,
     skipRecipient,
     router,
@@ -505,7 +487,6 @@ export function Select({ checkoutService }: Props) {
       skipQuantity,
       skipRecipient,
       recipients: account ? [account] : [],
-      hook: hookType,
     })
   }
 
@@ -513,7 +494,6 @@ export function Select({ checkoutService }: Props) {
     <Fragment>
       <Stepper
         service={checkoutService}
-        hookType={hookType}
         existingMember={!!membership?.member}
         isRenew={!!membership?.expired}
       />
