@@ -169,7 +169,13 @@ yarn hardhat release --contract contracts/<xxx>.sol
 6. Once your release is ready to roll, update the `UNLOCK_LATEST_VERSION` and `PUBLICLOCK_LATEST_VERSION` in both contracts and hardhat-plugin package.
 7. Update unlockjs lib with new features and changes
 8. Update unlock-app to use the newest version of unlockjs
-9. For DAO-governed chains, deploy implementations for all networks and send a (cross-chain) proposal with the upgrade logic (following the [previous proposal](../governance/proposals/udt/009-protocol-upgrade.js) as template ).
+9. Deploy a test version on testnet (Sepolia) to be tested against the staging website
+
+```
+yarn hardhat deploy:protocol-upgrade --unlock-version <xxx> --public-lock-version <xxx> --network sepolia
+```
+
+10. For DAO-governed chains, deploy implementations for all networks and send a (cross-chain) proposal with the upgrade logic (following the [previous proposal](../governance/proposals/udt/009-protocol-upgrade.js) as template ).
 
 ```
 # for unlock
@@ -179,11 +185,13 @@ yarn hardhat unlock:upgrade --unlock-version <xxx>
 yarn hardhat deploy:template --public-lock-version <xxx>
 ```
 
-10. For other chains, you can send directly a tx to the team multisig using
+11. For other chains, you can send directly a tx to the team multisig using
 
 ```
 yarn hardhat deploy:protocol-upgrade --unlock-version <xxx> --public-lock-version <xxx> --network <xxx>
 ```
+
+12. Once all txs from dao and multisig have been executed, update the `publicLockVersionToDeploy` param in all network files of the networks package to the latest publicLock version
 
 ## Locks
 
