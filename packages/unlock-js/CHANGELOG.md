@@ -1,5 +1,13 @@
 # Changes
 
+# 0.49.2
+
+- adding `setMerkleRoot` to WalletService
+
+## 0.49.1
+
+- Returning onKeyPurchaseHook when using `getLock`.
+
 ## 0.49.0
 
 - Remove support for deprecated versions of `Unlock` (prior to v10)
