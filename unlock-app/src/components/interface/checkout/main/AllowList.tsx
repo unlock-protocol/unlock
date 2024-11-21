@@ -27,6 +27,7 @@ export function AllowList({ checkoutService }: Props) {
     isLoading: isLoadingAllowListData,
     isFetching: isFetchingAllowListData,
   } = useDataForAllowList({
+    hookAddress: lock!.onKeyPurchaseHook,
     lockAddress: lock!.address,
     network: lock!.network,
     recipients: users,

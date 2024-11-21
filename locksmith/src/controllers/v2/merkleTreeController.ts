@@ -48,7 +48,8 @@ export const getMerkleTree = async (request: Request, response: Response) => {
 
       readableStream.pipe(response)
 
-      readableStream.on('error', () => {
+      readableStream.on('error', (error) => {
+        console.log(error)
         if (!response.headersSent) {
           response.status(400).send('Failed to download file')
         }
