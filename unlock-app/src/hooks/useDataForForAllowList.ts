@@ -20,6 +20,7 @@ const getDataForAllowList = async (root: string, recipients: string[]) => {
           .join('')}`
       }
     }
+    return ''
   })
   return data
 }
