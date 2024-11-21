@@ -22,6 +22,7 @@ interface KeyByFilterProps {
   owners?: string[]
   transactionHash?: string[]
   after?: string
+  createdAt?: number
 }
 
 const locksByFilter = async ({
