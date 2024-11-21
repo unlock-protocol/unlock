@@ -13,7 +13,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useLockManager } from '~/hooks/useLockManager'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import { ADDRESS_ZERO, MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
-import { durationAsText } from '~/utils/durations'
+import { durationAsText, expirationAsDate } from '~/utils/durations'
 import { locksmith } from '~/config/locksmith'
 import { useGetReceiptsPageUrl } from '~/hooks/useReceipts'
 import Link from 'next/link'
@@ -48,6 +48,7 @@ const keysToIgnore = [
   'email',
   'data',
   'transactionsHash',
+  'createdAt',
 ]
 
 interface KeyRenewalProps {
@@ -239,15 +240,10 @@ const ChangeManagerModal = ({
 }
 export const MetadataCard = ({
   metadata,
-
   owner,
-
   network,
-
   expirationDuration,
-
   lockSettings,
-
   isExpired,
 }: MetadataCardProps) => {
   const [showTransferKey, setShowTransferKey] = useState(false)
@@ -548,6 +544,25 @@ export const MetadataCard = ({
                   </div>
                 </div>
               }
+            />
+            <Detail
+              label={
+                <div className="flex flex-col justify-between w-full gap-2 md:items-center md:flex-row">
+                  <Tooltip
+                    tip="Time at which the NFT was minted."
+                    label="Time at which the NFT was minted."
+                    side="bottom"
+                  >
+                    <div className="flex items-center gap-2">
+                      <span>Created at:</span>
+                      <div className="text-base font-semibold text-black break-words">
+                        {new Date(data.createdAt * 1000).toLocaleString()}
+                      </div>
+                    </div>
+                  </Tooltip>
+                </div>
+              }
+              className="py-2"
             />
             {showManager && (
               <div className="w-full">
