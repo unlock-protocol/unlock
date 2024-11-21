@@ -1,25 +1,27 @@
 import { useQuery } from '@tanstack/react-query'
-import { locksmith } from '~/config/locksmith'
+import { StandardMerkleTree } from '@openzeppelin/merkle-tree'
+
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import networks from '@unlock-protocol/networks'
 
-const getDataForAllowList = async (
-  root: string,
-  network: number,
-  lockAddress: string,
-  recipients: string[]
-) => {
-  // Get the list
-  // For each, get the proof
-  // format it right!
-  // const root = web3Ser
-  const response = fetch(
+const getDataForAllowList = async (root: string, recipients: string[]) => {
+  const response = await fetch(
     `https://merkle-trees.unlock-protocol.com/${root}.json`
   )
-  console.log((await response).json())
-  console.log(root, network, lockAddress, recipients)
-  return recipients.map(() => '')
+  const tree = StandardMerkleTree.load(await response.json())
+  const data = recipients.map((recipient) => {
+    for (const [node, leaf] of tree.entries()) {
+      if (leaf[0].toLowerCase() === recipient.toLowerCase()) {
+        // formatting the proof to be used in the smart contract
+        // remove 0x prefix and concatenate the proof, add 0x in front.
+        return `0x${tree
+          .getProof(node)
+          .map((p) => p.slice(2))
+          .join('')}`
+      }
+    }
+  })
+  return data
 }
 
 interface UseDataForAllowListProps {
@@ -35,7 +37,6 @@ export function useDataForAllowList({
   network,
   recipients,
 }: UseDataForAllowListProps) {
-  console.log(networks[network].hooks)
   const web3Service = useWeb3Service()
   return useQuery({
     queryKey: ['getAllowList', lockAddress, network, hookAddress, recipients],
@@ -46,7 +47,7 @@ export function useDataForAllowList({
           network,
           hookAddress,
         })
-        return getDataForAllowList(root, network, lockAddress, recipients)
+        return getDataForAllowList(root, recipients)
       } catch (error: any) {
         ToastHelper.error(error.message)
         return recipients.map(() => '') // Return empty values by default
