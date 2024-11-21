@@ -25,9 +25,14 @@ const parseLogs = (
   const interface = new ethers.Interface(abi)
 
   // parse logs
-  const parsedLogs = logs.map((log) => {
-    const parsed = interface.parseLog(log)
-    return parsed || log
+  const parsedLogs = logs.map((log, i) => {
+    try {
+      const parsed = interface.parseLog(log)
+      log = parsed || log
+    } catch (error) {
+      log.decodedError = true
+    }
+    return log
   })
   return parsedLogs
 }
