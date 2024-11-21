@@ -13,7 +13,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useLockManager } from '~/hooks/useLockManager'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import { ADDRESS_ZERO, MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
-import { durationAsText, expirationAsDate } from '~/utils/durations'
+import { durationAsText } from '~/utils/durations'
 import { locksmith } from '~/config/locksmith'
 import { useGetReceiptsPageUrl } from '~/hooks/useReceipts'
 import Link from 'next/link'
@@ -27,6 +27,7 @@ import { TransferKeyDrawer } from '~/components/interface/keychain/TransferKeyDr
 import { WrappedAddress } from '~/components/interface/WrappedAddress'
 import { UpdateEmailModal } from '~/components/content/event/attendees/UpdateEmailModal'
 import { useProvider } from '~/hooks/useProvider'
+import networks from '@unlock-protocol/networks'
 
 interface MetadataCardProps {
   metadata: any
@@ -555,9 +556,22 @@ export const MetadataCard = ({
                   >
                     <div className="flex items-center gap-2">
                       <span>Created at:</span>
-                      <div className="text-base font-semibold text-black break-words">
-                        {new Date(data.createdAt * 1000).toLocaleString()}
-                      </div>
+                      {networks[network].explorer?.urls?.transaction &&
+                      data.transactionsHash[0] ? (
+                        <Link
+                          target="_blank"
+                          rel="noreferrer"
+                          href={`${networks[network].explorer?.urls?.transaction(data.transactionsHash[0])}`}
+                        >
+                          <div className="text-base font-semibold text-black break-words">
+                            {new Date(data.createdAt * 1000).toLocaleString()}
+                          </div>
+                        </Link>
+                      ) : (
+                        <div className="text-base font-semibold text-black break-words">
+                          {new Date(data.createdAt * 1000).toLocaleString()}
+                        </div>
+                      )}
                     </div>
                   </Tooltip>
                 </div>

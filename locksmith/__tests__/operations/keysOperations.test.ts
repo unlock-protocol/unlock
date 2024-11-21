@@ -17,12 +17,14 @@ const lock = {
   keys: [
     {
       owner: '0x4Ff5A116Ff945cC744346cFd32c6C6e3d3a018Ff',
+      createdAt: '1732222032',
       tokenId: '1',
       expiration:
         '115792089237316195423570985008687907853269984665640564039457584007913129639935',
       transactionsHash: ['0x'],
     },
     {
+      createdAt: '1732222032',
       manager: '0xf44fF7951688BFbBb573967FfcB0D8aabDaF36c9',
       owner: '0xf44fF7951688BFbBb573967FfcB0D8aabDaF36c9',
       tokenId: '2',
@@ -31,6 +33,7 @@ const lock = {
       transactionsHash: ['0x'],
     },
     {
+      createdAt: '1732222032',
       manager: '0x3FEE1f4175001802d3828B76068B8d898E72a25a',
       owner: '0x3FEE1f4175001802d3828B76068B8d898E72a25a',
       tokenId: '3',
@@ -39,6 +42,7 @@ const lock = {
       transactionsHash: ['0x'],
     },
     {
+      createdAt: '1732222032',
       manager: '0xfF24307539A043E7fA40C4582090B3029de26b41',
       owner: '0xfF24307539A043E7fA40C4582090B3029de26b41',
       tokenId: '42',
@@ -47,6 +51,7 @@ const lock = {
       transactionsHash: ['0x'],
     },
     {
+      createdAt: '1732222032',
       manager: '0x8D33b257bce083eE0c7504C7635D1840b3858AFD',
       owner: '0x77ccc37a6d89a75A29cDaA74e757599efC4b30f5',
       tokenId: '43',
@@ -130,6 +135,7 @@ describe('keysOperations operations', () => {
       expect(results).toEqual([
         {
           checkedInAt: 1660812048626,
+          createdAt: '1732222032',
           expiration:
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
           keyManager: '0x4Ff5A116Ff945cC744346cFd32c6C6e3d3a018Ff',
@@ -141,6 +147,7 @@ describe('keysOperations operations', () => {
         },
         {
           checkedInAt: 1660812066160,
+          createdAt: '1732222032',
           expiration:
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
           keyManager: '0xf44fF7951688BFbBb573967FfcB0D8aabDaF36c9',
@@ -151,6 +158,7 @@ describe('keysOperations operations', () => {
           transactionsHash: ['0x'],
         },
         {
+          createdAt: '1732222032',
           expiration:
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
           keyManager: '0x3FEE1f4175001802d3828B76068B8d898E72a25a',
@@ -161,6 +169,7 @@ describe('keysOperations operations', () => {
           transactionsHash: ['0x'],
         },
         {
+          createdAt: '1732222032',
           address: 'email address',
           email: 'kld.diagne@gmail.com',
           expiration:
@@ -174,6 +183,7 @@ describe('keysOperations operations', () => {
           transactionsHash: ['0x'],
         },
         {
+          createdAt: '1732222032',
           address: 'brescia',
           email: 'example@gmai.com',
           expiration:
@@ -196,6 +206,7 @@ describe('keysOperations operations', () => {
       expect(results.length).toBe(5)
       expect(results).toStrictEqual([
         {
+          createdAt: '1732222032',
           token: '1',
           lockName: 'Alice in Borderlands',
           expiration:
@@ -206,6 +217,7 @@ describe('keysOperations operations', () => {
           transactionsHash: ['0x'],
         },
         {
+          createdAt: '1732222032',
           token: '2',
           lockName: 'Alice in Borderlands',
           expiration:
@@ -216,6 +228,7 @@ describe('keysOperations operations', () => {
           transactionsHash: ['0x'],
         },
         {
+          createdAt: '1732222032',
           token: '3',
           lockName: 'Alice in Borderlands',
           expiration:
@@ -226,6 +239,7 @@ describe('keysOperations operations', () => {
           transactionsHash: ['0x'],
         },
         {
+          createdAt: '1732222032',
           token: '42',
           lockName: 'Alice in Borderlands',
           expiration:
@@ -236,6 +250,7 @@ describe('keysOperations operations', () => {
           transactionsHash: ['0x'],
         },
         {
+          createdAt: '1732222032',
           token: '43',
           lockName: 'Alice in Borderlands',
           expiration:
@@ -278,6 +293,7 @@ describe('keysOperations operations', () => {
       expect(keys.length).toBe(5)
       expect(keys).toEqual([
         {
+          createdAt: '1732222032',
           token: '1',
           lockName: 'Alice in Borderlands',
           expiration:
@@ -289,6 +305,7 @@ describe('keysOperations operations', () => {
           transactionsHash: ['0x'],
         },
         {
+          createdAt: '1732222032',
           token: '2',
           lockName: 'Alice in Borderlands',
           expiration:
@@ -300,6 +317,7 @@ describe('keysOperations operations', () => {
           transactionsHash: ['0x'],
         },
         {
+          createdAt: '1732222032',
           token: '3',
           lockName: 'Alice in Borderlands',
           expiration:
@@ -310,6 +328,7 @@ describe('keysOperations operations', () => {
           transactionsHash: ['0x'],
         },
         {
+          createdAt: '1732222032',
           token: '42',
           lockName: 'Alice in Borderlands',
           expiration:
@@ -323,6 +342,7 @@ describe('keysOperations operations', () => {
           transactionsHash: ['0x'],
         },
         {
+          createdAt: '1732222032',
           token: '43',
           lockName: 'Alice in Borderlands',
           expiration:
@@ -351,6 +371,7 @@ describe('keysOperations operations', () => {
       expect(keys.length).toBe(5)
       expect(keys).toEqual([
         {
+          createdAt: '1732222032',
           token: '1',
           lockName: 'Alice in Borderlands',
           expiration:
@@ -361,6 +382,7 @@ describe('keysOperations operations', () => {
           transactionsHash: ['0x'],
         },
         {
+          createdAt: '1732222032',
           token: '2',
           lockName: 'Alice in Borderlands',
           expiration:
@@ -371,6 +393,7 @@ describe('keysOperations operations', () => {
           transactionsHash: ['0x'],
         },
         {
+          createdAt: '1732222032',
           token: '3',
           lockName: 'Alice in Borderlands',
           expiration:
@@ -381,6 +404,7 @@ describe('keysOperations operations', () => {
           transactionsHash: ['0x'],
         },
         {
+          createdAt: '1732222032',
           token: '42',
           lockName: 'Alice in Borderlands',
           expiration:
@@ -391,6 +415,7 @@ describe('keysOperations operations', () => {
           transactionsHash: ['0x'],
         },
         {
+          createdAt: '1732222032',
           token: '43',
           lockName: 'Alice in Borderlands',
           expiration:
