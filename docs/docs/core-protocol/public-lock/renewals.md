@@ -6,7 +6,7 @@ sidebar_position: 3
 
 Once [minted](./minting-keys.md), an expiration is set _onchain_ for any key. The expiration is a timestamp which can be retrieved for any individual key by using the [`keyExpirationTimestampFor`](/core-protocol/smart-contracts-api/PublicLock#keyexpirationtimestampfor) method.
 
-Once expired, a key is not considered valid anymore, and functions like `balanceOf` will not return a key can be renewed, and its expiration extended.
+Once expired, a key is not considered valid anymore, and functions like `balanceOf` will not return a key that can be renewed, and its expiration extended.
 
 An **expired key can be renewed**. When it is renewed, the key's expiration date is extended so the key is considered valid for a longer duration.
 

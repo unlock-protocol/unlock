@@ -41,7 +41,7 @@ You can call and inspect the Lock contracts directly using the block explorers a
 
 All locks deployed (version 10 and later) are upgradable by their lock manager, through the Unlock contract.
 
-Lock managers can also alter the behavior of their locks thru the use of [hooks](./hooks/).
+Lock managers can also alter the behavior of their locks through the use of [hooks](./hooks/).
 
 ## Changelog
 
@@ -60,9 +60,9 @@ The version 14 introduces several changes in user-facing features :
 
 For advanced users and developers, the lower level changes below are noteworthy:
 
-- Replace `UnlockUtils` dependencies by optimized Open Zeppelin implementation
+- Replace `UnlockUtils` dependencies by an optimized Open Zeppelin implementation
 - Remove dev reward/cut when purchasing a key
-- Add unchecked scopes on math operations (gas optimisation)
+- Add unchecked scopes on math operations (gas optimization)
 - New Solidity version 0.8.21 (creating issues on some chains that won't support new `PUSH0` evm opcode)
 - Fix potential overflow when merging keys
 
@@ -118,7 +118,7 @@ This new version brings a lot of gas savings as well as a few minor bug fixes. I
 
 This is the most important addition to the protocol in this version. `referrerFees` are ways for a lock manager to share their income with the `referrer` when a purchase is made (when calling `purchase`, `renewMembershipFor`, or `extend`). The fee is set as a percentage in basis points (`1000` is 10%).
 
-A lock manager can call `setReferrerFee` to set specific fees for different referers. It is possible to set a _default_ fee for _any_ referrer by passing the Zero address as the referrer when calling `setReferrerFee`.
+A lock manager can call `setReferrerFee` to set specific fees for different referrers. It is possible to set a _default_ fee for _any_ referrer by passing the Zero address as the referrer when calling `setReferrerFee`.
 
 The function `referrerFees(address)` can be used to retrieve the fees set for a specific address.
 

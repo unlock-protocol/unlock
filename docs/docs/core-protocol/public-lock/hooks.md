@@ -17,7 +17,7 @@ We currently support 7 hooks (as of v12). If your lock uses a previous version, 
 - <a href="#onkeycancel-hook">onKeyCancelHook</a>: called when a key is canceled
 - <a href="#ontokenuri-hook">onTokenUriHook</a>: called when the tokenURI is fetched
 - <a href="#onvalidkey-hook">onValidKeyHook</a>: called when checking if a user has a valid key
-- <a href="#onkeytransferhook-hook">onKeyTransferHook</a>: called when a key is transferred from an address to another.
+- <a href="#onkeytransferhook-hook">onKeyTransferHook</a>: called when a key is transferred from one address to another.
 
 ## onGrantKey Hook
 
@@ -49,7 +49,7 @@ interface ILockKeyGrantHook {
 
 ## onKeyExtend Hook
 
-The `onKeyExtendHook` allows you create custom logic when a key is extended or renewed. This could enable use cases where for instance key metadata is updated, maybe you want to update the image when renewals happen. It could enable rewards programs where you increment a reward point total every time a membership is renewed.
+The `onKeyExtendHook` allows you to create custom logic when a key is extended or renewed. This could enable use cases where for instance key metadata is updated, maybe you want to update the image when renewals happen. It could enable rewards programs where you increment a reward point total every time a membership is renewed.
 
 A KeyExtendHook should implement the following interface.
 
