@@ -1,7 +1,7 @@
 import { CheckoutService } from './../checkoutMachine'
 import { useConfig } from '~/utils/withConfig'
 import { Button } from '@unlock-protocol/ui'
-import { Fragment, useRef, useState } from 'react'
+import { Fragment, useRef, useState, useEffect } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
@@ -20,6 +20,11 @@ import { ethers } from 'ethers'
 import { approveTransfer, getAllowance } from '@unlock-protocol/unlock-js'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useProvider } from '~/hooks/useProvider'
+import {
+  LoginModal as PrivyTransactionPrompt,
+  usePrivy,
+} from '@privy-io/react-auth'
+import { useEmbeddedWallet } from '~/hooks/useEmbeddedWallet'
 
 interface Props {
   checkoutService: CheckoutService
@@ -39,6 +44,7 @@ export function ConfirmCrossChainPurchase({
   const config = useConfig()
   const recaptchaRef = useRef<any>()
   const [isConfirming, setIsConfirming] = useState(false)
+  const { sendTransaction } = usePrivy()
 
   const { address: lockAddress, network: lockNetwork } = lock!
 
@@ -84,6 +90,10 @@ export function ConfirmCrossChainPurchase({
 
   const isLoading = isPricingDataLoading || isInitialDataLoading
 
+  const [showPrivyTransactionPrompt, setShowPrivyTransactionPrompt] =
+    useState(false)
+  const { isEmbeddedWallet } = useEmbeddedWallet()
+
   const onError = (error: any, message?: string) => {
     console.error(error)
     switch (error.code) {
@@ -100,13 +110,21 @@ export function ConfirmCrossChainPurchase({
     }
   }
 
+  useEffect(() => {
+    if (showPrivyTransactionPrompt && isEmbeddedWallet) {
+      onConfirm()
+    }
+  }, [showPrivyTransactionPrompt])
+
   const onConfirm = async () => {
     if (!pricingData) {
       return
     }
+
     try {
       setIsConfirming(true)
       const walletService = await getWalletService(route.network)
+
       if (!route.tokenPayment.isNative) {
         const requiredAllowance = BigInt(route.tokenPayment.amount)
         const allowance = await getAllowance(
@@ -117,7 +135,7 @@ export function ConfirmCrossChainPurchase({
         )
         if (requiredAllowance > allowance) {
           setButtonLabel(`Approving ${symbol}...`)
-          // If it's an ERC20 we need to approve first!
+          // Handle ERC20 approvals only for non-native tokens
           const approveTx = await approveTransfer(
             route.tokenPayment.tokenAddress,
             route.tx.to,
@@ -135,12 +153,24 @@ export function ConfirmCrossChainPurchase({
       delete route.tx.maxFeePerGas
       delete route.tx.maxPriorityFeePerGas
 
-      const tx = await walletService.signer.sendTransaction(route.tx)
-      onConfirmed(lockAddress, route.network, tx.hash)
+      let tx
+      // if embedded wallet, we need to use the sendTransaction method from Privy
+      if (isEmbeddedWallet) {
+        tx = await sendTransaction(route.tx)
+        onConfirmed(lockAddress, route.network, tx.transactionHash)
+      } else {
+        tx = await walletService.signer.sendTransaction(route.tx)
+        onConfirmed(lockAddress, route.network, tx.hash)
+      }
     } catch (error: any) {
       setIsConfirming(false)
       onError(error)
     }
+  }
+
+  // If embedded wallet and showing transaction prompt, only show the transaction prompt
+  if (showPrivyTransactionPrompt && isEmbeddedWallet) {
+    return <PrivyTransactionPrompt open={true} />
   }
 
   return (
@@ -205,11 +235,15 @@ export function ConfirmCrossChainPurchase({
             loading={isConfirming}
             disabled={isConfirming || isLoading || isPricingDataError}
             onClick={async (event) => {
-              event.preventDefault()
+              event?.preventDefault()
               if (metadata) {
                 await updateUsersMetadata(metadata)
               }
-              onConfirm()
+              if (isEmbeddedWallet) {
+                setShowPrivyTransactionPrompt(true)
+              } else {
+                onConfirm()
+              }
             }}
           >
             {buttonLabel}
