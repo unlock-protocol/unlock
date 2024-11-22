@@ -181,7 +181,7 @@ const InsufficientFundsWarning = ({
         </div>
 
         <Button
-          className="w-full mt-5 bg-red-400"
+          className="w-full mt-5 bg-red-500"
           onClick={() => handleSetShowFundingContent(false)}
         >
           Cancel
