@@ -169,16 +169,13 @@ export function Payment({ checkoutService }: Props) {
 
   const canAfford = balance?.isGasPayable && balance?.isPayable
 
-  const {
-    routes: crossChainRoutes,
-    isLoading: isCrossChaingRoutesLoading,
-    refetch: refetchRoutes,
-  } = useCrossChainRoutes({
-    lock,
-    purchaseData,
-    context: state.context,
-    enabled: !canAfford && !enableClaim,
-  })
+  const { routes: crossChainRoutes, isLoading: isCrossChaingRoutesLoading } =
+    useCrossChainRoutes({
+      lock,
+      purchaseData,
+      context: state.context,
+      enabled: !canAfford && !enableClaim,
+    })
 
   const isLoadingMoreRoutes = isCrossChaingRoutesLoading
 
@@ -188,11 +185,6 @@ export function Payment({ checkoutService }: Props) {
     enableCrypto,
     enableCrossmint,
   ].every((item) => !item)
-
-  console.log('showingFundingContent', showingFundingContent)
-  console.log('balance', balance)
-  console.log('hasCrossChainRoutes', crossChainRoutes?.length)
-  console.log('pricingData', pricingData?.total.toString())
 
   return (
     <Fragment>
@@ -456,14 +448,16 @@ export function Payment({ checkoutService }: Props) {
           requiredAmount={(pricingData?.total ?? 0).toString()}
           userAddress={account!}
           symbol={pricingData?.prices[0]?.symbol || ''}
-          onBalanceCheck={() => refetchBalance()}
           onShowFundingContent={setShowingFundingContent}
           currentBalance={balance?.balance}
-          onRefetchRoutes={() => refetchRoutes()}
           isCrossChainRoutesLoading={isCrossChaingRoutesLoading}
           hasCrossChainRoutes={Boolean(
             crossChainRoutes && crossChainRoutes.length > 0
           )}
+          lock={lock}
+          purchaseData={purchaseData || []}
+          context={state.context}
+          checkoutService={checkoutService}
         />
       </main>
       {!showingFundingContent && (
