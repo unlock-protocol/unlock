@@ -14,16 +14,16 @@ const { execSync } = require('child_process')
 const only = []
 
 // these networks will be excluded from run
-const toExclude = ['localhost', 'default', 'networks']
-const excludeTestnets = true
+const toExclude = ['localhost', 'default', 'networks', 'arbitrum', 'avalanche', 'base', 'bsc', 'celo', 'gnosis', 'linea', 'optimism', 'baseSepolia', 'mainnet', 'sepolia', 'scroll', 'zkevm']
+const excludeTestnets = false
 
 const networks = only.length
   ? only
   : Object.keys(allNetworks).filter(
-      (n) =>
-        !toExclude.includes(n) &&
-        (excludeTestnets ? !allNetworks[n].isTestNetwork : true)
-    )
+    (n) =>
+      !toExclude.includes(n) &&
+      (excludeTestnets ? !allNetworks[n].isTestNetwork : true)
+  )
 
 console.log(`Running task for the following networks: ${networks.toString()}`)
 
