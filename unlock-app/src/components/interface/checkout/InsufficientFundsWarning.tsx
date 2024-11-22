@@ -35,7 +35,6 @@ const InsufficientFundsWarning = ({
   enableCreditCard,
   requiredAmount,
   userAddress,
-  symbol,
   onShowFundingContent,
   currentBalance,
   isCrossChainRoutesLoading,
@@ -50,7 +49,7 @@ const InsufficientFundsWarning = ({
 
   const { recipients, paywallConfig, keyManagers, renew } = context
 
-  const { data: prices } = useQuery({
+  const { data: baseRoute } = useQuery({
     queryKey: ['prices', userAddress, lock, recipients, purchaseData],
     queryFn: async () => {
       if (!purchaseData || !userAddress || !lock || !recipients || renew) {
@@ -72,22 +71,8 @@ const InsufficientFundsWarning = ({
       if (isNaN(price) || price === 0) {
         return []
       }
-      return prices
-    },
-    staleTime: 1000 * 60 * 5,
-  })
 
-  const { data: sharedParams } = useQuery({
-    queryKey: [
-      'sharedParams',
-      userAddress,
-      lock,
-      recipients,
-      keyManagers,
-      purchaseData,
-    ],
-    queryFn: async () => {
-      return prepareSharedParams({
+      const sharedParams = await prepareSharedParams({
         lock,
         prices: prices!,
         recipients,
@@ -97,13 +82,7 @@ const InsufficientFundsWarning = ({
         ),
         purchaseData,
       })
-    },
-  })
 
-  // Get the Base/ETH route for funding
-  const { data: baseRoute } = useQuery({
-    queryKey: ['baseRoute', requiredAmount, userAddress, symbol],
-    queryFn: async () => {
       const route = await relayGetCrossChainRoute({
         sender: userAddress,
         lock,
@@ -119,9 +98,10 @@ const InsufficientFundsWarning = ({
         srcChainId: 8453,
         sharedParams: sharedParams!,
       })
+
       return route
     },
-    enabled: !showFundingContent,
+    staleTime: 1000 * 60 * 5,
   })
 
   const { fundWallet } = useFundWallet({
@@ -132,11 +112,14 @@ const InsufficientFundsWarning = ({
         : '0'
 
       // Get route amount based on the payment currency
-      const requiredAmountInETH = baseRoute?.tokenPayment?.amount
-        ? parseFloat(ethers.formatEther(baseRoute.tokenPayment.amount)).toFixed(
-            4
-          )
-        : requiredAmount
+      const requiredAmountInETH =
+        baseRoute &&
+        'tokenPayment' in baseRoute &&
+        baseRoute.tokenPayment?.amount
+          ? parseFloat(
+              ethers.formatEther(baseRoute.tokenPayment.amount)
+            ).toFixed(4)
+          : requiredAmount
 
       if (Number(formattedBalance) < Number(requiredAmountInETH)) {
         handleSetShowFundingContent(false)
@@ -159,9 +142,12 @@ const InsufficientFundsWarning = ({
 
   const handleFundWallet = async () => {
     // Use route amount for any currency, with a small buffer for gas
-    const fundingAmount = baseRoute?.tokenPayment?.amount
-      ? parseFloat(ethers.formatEther(baseRoute.tokenPayment.amount)).toFixed(4)
-      : (Number(requiredAmount) + 0.0001).toString()
+    const fundingAmount =
+      baseRoute && 'tokenPayment' in baseRoute && baseRoute.tokenPayment?.amount
+        ? parseFloat(ethers.formatEther(baseRoute.tokenPayment.amount)).toFixed(
+            4
+          )
+        : (Number(requiredAmount) + 0.0001).toString()
 
     await fundWallet(userAddress, {
       chain: base,
