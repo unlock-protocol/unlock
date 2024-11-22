@@ -4,20 +4,31 @@ import {
   useFundWallet,
 } from '@privy-io/react-auth'
 import { base } from 'viem/chains'
-import { useEthPrice } from '~/hooks/useEthPrice'
 import { ethers } from 'ethers'
+import {
+  getCrossChainRoute as relayGetCrossChainRoute,
+  prepareSharedParams,
+} from '~/utils/relayLink'
+import { ADDRESS_ZERO } from '~/constants'
+import { useQuery } from '@tanstack/react-query'
+import { getReferrer } from '~/utils/checkoutLockUtils'
+import { purchasePriceFor } from '~/hooks/usePricing'
+import { useWeb3Service } from '~/utils/withWeb3Service'
+import { CheckoutService } from './main/checkoutMachine'
 
 interface InsufficientFundsWarningProps {
   enableCreditCard: boolean
   requiredAmount: string
   userAddress: string
   symbol: string
-  onBalanceCheck: () => Promise<any>
   onShowFundingContent?: (showing: boolean) => void
   currentBalance?: string
-  onRefetchRoutes?: () => Promise<any>
   isCrossChainRoutesLoading?: boolean
   hasCrossChainRoutes?: boolean
+  lock: any
+  purchaseData: string[]
+  context: any
+  checkoutService: CheckoutService
 }
 
 const InsufficientFundsWarning = ({
@@ -25,20 +36,92 @@ const InsufficientFundsWarning = ({
   requiredAmount,
   userAddress,
   symbol,
-  onBalanceCheck,
   onShowFundingContent,
   currentBalance,
-  onRefetchRoutes,
   isCrossChainRoutesLoading,
   hasCrossChainRoutes,
+  lock,
+  purchaseData,
+  context,
+  checkoutService,
 }: InsufficientFundsWarningProps) => {
   const [showFundingContent, setShowFundingContent] = useState(false)
+  const web3Service = useWeb3Service()
 
-  // Get ETH price conversion if needed
-  const { data: priceInETH } = useEthPrice({
-    amount: requiredAmount,
-    network: base.id,
-    currency: symbol === 'USDC' ? 'USD' : 'ETH',
+  const { recipients, paywallConfig, keyManagers, renew } = context
+
+  const { data: prices } = useQuery({
+    queryKey: ['prices', userAddress, lock, recipients, purchaseData],
+    queryFn: async () => {
+      if (!purchaseData || !userAddress || !lock || !recipients || renew) {
+        return []
+      }
+
+      const prices = await purchasePriceFor(web3Service, {
+        lockAddress: lock.address,
+        network: lock.network,
+        recipients,
+        data: purchaseData || recipients.map(() => ''),
+        paywallConfig,
+        currencyContractAddress: lock.currencyContractAddress,
+        symbol: lock.currencySymbol,
+      })
+
+      const price = prices.reduce((acc, item) => acc + item.amount, 0)
+
+      if (isNaN(price) || price === 0) {
+        return []
+      }
+      return prices
+    },
+    staleTime: 1000 * 60 * 5,
+  })
+
+  const { data: sharedParams } = useQuery({
+    queryKey: [
+      'sharedParams',
+      userAddress,
+      lock,
+      recipients,
+      keyManagers,
+      purchaseData,
+    ],
+    queryFn: async () => {
+      return prepareSharedParams({
+        lock,
+        prices: prices!,
+        recipients,
+        keyManagers: keyManagers || recipients,
+        referrers: recipients.map(() =>
+          getReferrer(userAddress, paywallConfig, lock.address)
+        ),
+        purchaseData,
+      })
+    },
+  })
+
+  // Get the Base/ETH route for funding
+  const { data: baseRoute } = useQuery({
+    queryKey: ['baseRoute', requiredAmount, userAddress, symbol],
+    queryFn: async () => {
+      const route = await relayGetCrossChainRoute({
+        sender: userAddress,
+        lock,
+        prices: prices!,
+        srcToken: ADDRESS_ZERO,
+        recipients,
+        keyManagers: keyManagers || recipients,
+        referrers: recipients.map(() =>
+          getReferrer(userAddress, paywallConfig, lock.address)
+        ),
+        purchaseData,
+        // always use the base chain
+        srcChainId: 8453,
+        sharedParams: sharedParams!,
+      })
+      return route
+    },
+    enabled: !showFundingContent,
   })
 
   const { fundWallet } = useFundWallet({
@@ -48,45 +131,45 @@ const InsufficientFundsWarning = ({
         ? ethers.formatEther(balance.toString())
         : '0'
 
-      // For both USDC and ETH payments, we compare against ETH values
-      const requiredAmountInETH =
-        symbol === 'USDC' ? priceInETH?.toString() : requiredAmount
+      // Get route amount based on the payment currency
+      const requiredAmountInETH = baseRoute?.tokenPayment?.amount
+        ? parseFloat(ethers.formatEther(baseRoute.tokenPayment.amount)).toFixed(
+            4
+          )
+        : requiredAmount
 
       if (Number(formattedBalance) < Number(requiredAmountInETH)) {
-        // If still insufficient, keep warning visible
         handleSetShowFundingContent(false)
         onShowFundingContent?.(false)
         return
       }
 
-      // Check balance after funding
-      await onBalanceCheck().catch(console.error)
+      checkoutService.send({
+        type: 'SELECT_PAYMENT_METHOD',
+        payment: {
+          method: 'crosschain_purchase',
+          route: baseRoute,
+        },
+      })
 
-      // Refetch cross-chain routes
-      if (onRefetchRoutes) {
-        await onRefetchRoutes().catch(console.error)
-      }
-
-      // Hide modals while we wait for routes to be checked
       handleSetShowFundingContent(false)
       onShowFundingContent?.(false)
     },
   })
 
   const handleFundWallet = async () => {
-    // If paying in USDC, we need to convert to ETH equivalent for funding
-    const fundingAmount =
-      symbol === 'USDC'
-        ? priceInETH?.toString()
-        : (Number(requiredAmount) + 0.0001).toString() // Add small buffer for gas
+    // Use route amount for any currency, with a small buffer for gas
+    const fundingAmount = baseRoute?.tokenPayment?.amount
+      ? parseFloat(ethers.formatEther(baseRoute.tokenPayment.amount)).toFixed(4)
+      : (Number(requiredAmount) + 0.0001).toString()
 
     await fundWallet(userAddress, {
-      // always use the base chain
       chain: base,
       amount: fundingAmount,
     })
   }
 
+  // Handle rendering of the funding content
   const handleSetShowFundingContent = (show: boolean) => {
     setShowFundingContent(show)
     onShowFundingContent?.(show)
@@ -102,7 +185,7 @@ const InsufficientFundsWarning = ({
     return null
   }
 
-  // Don't show login modal content while routes are being checked
+  // Don't show funding content while routes are being checked
   if (showFundingContent && !isCrossChainRoutesLoading) {
     return (
       <div className="transition-opacity duration-300 ease-in-out flex flex-col items-center">
@@ -118,22 +201,20 @@ const InsufficientFundsWarning = ({
       </div>
     )
   }
+  if (enableCreditCard) {
+    return null
+  }
 
   return (
     <div
       onClick={() => {
-        if (!enableCreditCard) {
-          handleSetShowFundingContent(true)
-          handleFundWallet()
-        }
+        handleSetShowFundingContent(true)
+        handleFundWallet()
       }}
       className="mt-4 text-sm py-5 px-4 bg-red-200 rounded-lg border border-gray-200 cursor-pointer"
     >
       You don&apos;t have enough funds in your wallet to pay for this
-      membership.{' '}
-      {enableCreditCard
-        ? 'You can proceed to pay with a credit card.'
-        : 'Please add funds to your wallet to continue.'}
+      membership. Please add funds to your wallet to continue.
     </div>
   )
 }
