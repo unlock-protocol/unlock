@@ -92,7 +92,8 @@ export function ConfirmCrossChainPurchase({
 
   const [showPrivyTransactionPrompt, setShowPrivyTransactionPrompt] =
     useState(false)
-  const { isEmbeddedWallet } = useEmbeddedWallet()
+  const { isEmbeddedWallet, isLoading: isEmbeddedWalletLoading } =
+    useEmbeddedWallet()
 
   const onError = (error: any, message?: string) => {
     console.error(error)
@@ -111,7 +112,13 @@ export function ConfirmCrossChainPurchase({
   }
 
   useEffect(() => {
-    if (showPrivyTransactionPrompt && isEmbeddedWallet) {
+    if (isEmbeddedWallet && !isEmbeddedWalletLoading) {
+      setShowPrivyTransactionPrompt(true)
+    }
+  }, [isEmbeddedWallet, isEmbeddedWalletLoading])
+
+  useEffect(() => {
+    if (showPrivyTransactionPrompt) {
       onConfirm()
     }
   }, [showPrivyTransactionPrompt])
@@ -154,9 +161,24 @@ export function ConfirmCrossChainPurchase({
       delete route.tx.maxPriorityFeePerGas
 
       let tx
-      // if embedded wallet, we need to use the sendTransaction method from Privy
+      // Ensure the value prop of route.tx is a BigInt for embedded wallets
       if (isEmbeddedWallet) {
-        tx = await sendTransaction(route.tx)
+        const txParams = { ...route.tx }
+        // Convert value to BigInt, handling different input formats
+        if (txParams.value) {
+          if (typeof txParams.value === 'string') {
+            // Handle hex strings
+            if (txParams.value.startsWith('0x')) {
+              txParams.value = BigInt(txParams.value)
+            } else {
+              txParams.value = BigInt(txParams.value)
+            }
+          } else if (typeof txParams.value === 'number') {
+            txParams.value = BigInt(txParams.value)
+          }
+          // If it's already a BigInt, no conversion needed
+        }
+        tx = await sendTransaction(txParams)
         onConfirmed(lockAddress, route.network, tx.transactionHash)
       } else {
         tx = await walletService.signer.sendTransaction(route.tx)
