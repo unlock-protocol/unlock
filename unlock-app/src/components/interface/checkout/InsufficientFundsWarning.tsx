@@ -28,6 +28,7 @@ interface InsufficientFundsWarningProps {
   purchaseData: string[]
   context: any
   checkoutService: CheckoutService
+  refetchCrossChainRoutes: () => Promise<any>
 }
 
 const InsufficientFundsWarning = ({
@@ -40,6 +41,7 @@ const InsufficientFundsWarning = ({
   purchaseData,
   context,
   checkoutService,
+  refetchCrossChainRoutes,
 }: InsufficientFundsWarningProps) => {
   const [showFundingContent, setShowFundingContent] = useState(false)
   const web3Service = useWeb3Service()
@@ -120,7 +122,14 @@ const InsufficientFundsWarning = ({
         ? ethers.formatEther(balance.toString())
         : '0'
 
+      // Hide funding content first
+      handleSetShowFundingContent(false)
+      onShowFundingContent?.(false)
+
       if (Number(formattedBalance) < (fundingAmount ?? 0)) {
+        // Refetch routes before showing warning again
+        await refetchCrossChainRoutes()
+        // Show warning again if balance is still insufficient
         handleSetShowFundingContent(true)
         onShowFundingContent?.(true)
         return
@@ -133,9 +142,6 @@ const InsufficientFundsWarning = ({
           route: baseRoute,
         },
       })
-
-      handleSetShowFundingContent(false)
-      onShowFundingContent?.(false)
     },
   })
 

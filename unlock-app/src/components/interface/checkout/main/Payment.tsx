@@ -165,13 +165,16 @@ export function Payment({ checkoutService }: Props) {
 
   const canAfford = balance?.isGasPayable && balance?.isPayable
 
-  const { routes: crossChainRoutes, isLoading: isCrossChaingRoutesLoading } =
-    useCrossChainRoutes({
-      lock,
-      purchaseData,
-      context: state.context,
-      enabled: !canAfford && !enableClaim,
-    })
+  const {
+    routes: crosschainRoutes,
+    isLoading: isCrossChaingRoutesLoading,
+    refetch: refetchCrossChainRoutes,
+  } = useCrossChainRoutes({
+    lock,
+    purchaseData,
+    context: state.context,
+    enabled: !canAfford && !enableClaim,
+  })
 
   const isLoadingMoreRoutes = isCrossChaingRoutesLoading
 
@@ -355,7 +358,7 @@ export function Payment({ checkoutService }: Props) {
                 {/* Crosschain purchase */}
                 {!enableClaim &&
                   paymentMethods['crosschain'] &&
-                  crossChainRoutes?.map((route, index) => {
+                  crosschainRoutes?.map((route, index) => {
                     const symbol = route.tokenPayment?.symbol || route.symbol
 
                     if (!symbol) {
@@ -441,19 +444,17 @@ export function Payment({ checkoutService }: Props) {
 
         <InsufficientFundsWarning
           enableCreditCard={!!enableCreditCard}
-          requiredAmount={(pricingData?.total ?? 0).toString()}
           userAddress={account!}
-          symbol={pricingData?.prices[0]?.symbol || ''}
           onShowFundingContent={setShowingFundingContent}
-          currentBalance={balance?.balance}
           isCrossChainRoutesLoading={isCrossChaingRoutesLoading}
           hasCrossChainRoutes={Boolean(
-            crossChainRoutes && crossChainRoutes.length > 0
+            crosschainRoutes && crosschainRoutes.length > 0
           )}
           lock={lock}
           purchaseData={purchaseData || []}
           context={state.context}
           checkoutService={checkoutService}
+          refetchCrossChainRoutes={refetchCrossChainRoutes}
         />
       </main>
       {!showingFundingContent && (
