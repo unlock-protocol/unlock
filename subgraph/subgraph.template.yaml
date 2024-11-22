@@ -77,7 +77,7 @@ templates:
         - event: ExpirationChanged(indexed uint256,uint256,bool)
           handler: handleExpirationChangedUntilV11
           receipt: true
-        - event: ExpirationChanged(indexed uint256,uint256,uint256,bool)
+        - event: ExpirationChanged(indexed uint256,uint256,uint256)
           handler: handleExpirationChanged
           receipt: true
         - event: ExpireKey(indexed uint256)
