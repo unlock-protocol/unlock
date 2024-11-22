@@ -15,6 +15,7 @@ import { getReferrer } from '~/utils/checkoutLockUtils'
 import { purchasePriceFor } from '~/hooks/usePricing'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { CheckoutService } from './main/checkoutMachine'
+import { Button } from '@unlock-protocol/ui'
 
 interface InsufficientFundsWarningProps {
   enableCreditCard: boolean
@@ -175,15 +176,16 @@ const InsufficientFundsWarning = ({
   if (showFundingContent && !isCrossChainRoutesLoading) {
     return (
       <div className="transition-opacity duration-300 ease-in-out flex flex-col items-center">
-        <button
-          onClick={() => handleSetShowFundingContent(false)}
-          className="mb-2 text-sm font-medium text-red-500 hover:text-red-900"
-        >
-          Cancel
-        </button>
         <div className="flex-1">
           <FundingContent open={true} />
         </div>
+
+        <Button
+          className="w-full mt-5 bg-red-400"
+          onClick={() => handleSetShowFundingContent(false)}
+        >
+          Cancel
+        </Button>
       </div>
     )
   }
