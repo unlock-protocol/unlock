@@ -128,11 +128,7 @@ export function Payment({ checkoutService }: Props) {
 
   const enableCrossmint = !!crossmintEnabled
 
-  const {
-    isLoading: isBalanceLoading,
-    data: balance,
-    refetch: refetchBalance,
-  } = useBalance({
+  const { isLoading: isBalanceLoading, data: balance } = useBalance({
     account: account!,
     network: lock.network,
     currencyContractAddress: lock.currencyContractAddress,
