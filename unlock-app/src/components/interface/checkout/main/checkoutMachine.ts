@@ -164,10 +164,6 @@ type Payment =
   | {
       method: 'crossmint'
     }
-  | {
-      method: 'embedded_crosschain_purchase'
-      route?: any
-    }
 
 export type TransactionStatus = 'ERROR' | 'PROCESSING' | 'FINISHED'
 
