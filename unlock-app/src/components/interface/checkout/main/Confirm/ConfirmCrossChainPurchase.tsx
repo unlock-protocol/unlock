@@ -1,7 +1,7 @@
 import { CheckoutService } from './../checkoutMachine'
 import { useConfig } from '~/utils/withConfig'
 import { Button } from '@unlock-protocol/ui'
-import { Fragment, useRef, useState, useEffect } from 'react'
+import { Fragment, useRef, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
@@ -20,11 +20,6 @@ import { ethers } from 'ethers'
 import { approveTransfer, getAllowance } from '@unlock-protocol/unlock-js'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useProvider } from '~/hooks/useProvider'
-import {
-  LoginModal as PrivyTransactionPrompt,
-  usePrivy,
-} from '@privy-io/react-auth'
-import { useEmbeddedWallet } from '~/hooks/useEmbeddedWallet'
 
 interface Props {
   checkoutService: CheckoutService
@@ -44,7 +39,6 @@ export function ConfirmCrossChainPurchase({
   const config = useConfig()
   const recaptchaRef = useRef<any>()
   const [isConfirming, setIsConfirming] = useState(false)
-  const { sendTransaction } = usePrivy()
 
   const { address: lockAddress, network: lockNetwork } = lock!
 
@@ -90,11 +84,6 @@ export function ConfirmCrossChainPurchase({
 
   const isLoading = isPricingDataLoading || isInitialDataLoading
 
-  const [showPrivyTransactionPrompt, setShowPrivyTransactionPrompt] =
-    useState(false)
-  const { isEmbeddedWallet, isLoading: isEmbeddedWalletLoading } =
-    useEmbeddedWallet()
-
   const onError = (error: any, message?: string) => {
     console.error(error)
     switch (error.code) {
@@ -110,18 +99,6 @@ export function ConfirmCrossChainPurchase({
         ToastHelper.error(message || error?.error?.message || error.message)
     }
   }
-
-  useEffect(() => {
-    if (isEmbeddedWallet && !isEmbeddedWalletLoading) {
-      setShowPrivyTransactionPrompt(true)
-    }
-  }, [isEmbeddedWallet, isEmbeddedWalletLoading])
-
-  useEffect(() => {
-    if (showPrivyTransactionPrompt) {
-      onConfirm()
-    }
-  }, [showPrivyTransactionPrompt])
 
   const onConfirm = async () => {
     if (!pricingData) {
@@ -160,39 +137,12 @@ export function ConfirmCrossChainPurchase({
       delete route.tx.maxFeePerGas
       delete route.tx.maxPriorityFeePerGas
 
-      let tx
-      // Ensure the value prop of route.tx is a BigInt for embedded wallets
-      if (isEmbeddedWallet) {
-        const txParams = { ...route.tx }
-        // Convert value to BigInt, handling different input formats
-        if (txParams.value) {
-          if (typeof txParams.value === 'string') {
-            // Handle hex strings
-            if (txParams.value.startsWith('0x')) {
-              txParams.value = BigInt(txParams.value)
-            } else {
-              txParams.value = BigInt(txParams.value)
-            }
-          } else if (typeof txParams.value === 'number') {
-            txParams.value = BigInt(txParams.value)
-          }
-          // If it's already a BigInt, no conversion needed
-        }
-        tx = await sendTransaction(txParams)
-        onConfirmed(lockAddress, route.network, tx.transactionHash)
-      } else {
-        tx = await walletService.signer.sendTransaction(route.tx)
-        onConfirmed(lockAddress, route.network, tx.hash)
-      }
+      const tx = await walletService.signer.sendTransaction(route.tx)
+      onConfirmed(lockAddress, route.network, tx.hash)
     } catch (error: any) {
       setIsConfirming(false)
       onError(error)
     }
-  }
-
-  // If embedded wallet and showing transaction prompt, only show the transaction prompt
-  if (showPrivyTransactionPrompt && isEmbeddedWallet) {
-    return <PrivyTransactionPrompt open={true} />
   }
 
   return (
@@ -261,11 +211,7 @@ export function ConfirmCrossChainPurchase({
               if (metadata) {
                 await updateUsersMetadata(metadata)
               }
-              if (isEmbeddedWallet) {
-                setShowPrivyTransactionPrompt(true)
-              } else {
-                onConfirm()
-              }
+              onConfirm()
             }}
           >
             {buttonLabel}
