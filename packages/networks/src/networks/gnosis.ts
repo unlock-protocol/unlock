@@ -63,6 +63,11 @@ export const gnosis: NetworkConfig = {
         id: HookType.GITCOIN,
         name: 'Gitcoin',
       },
+      {
+        address: '0xc19C366dE3439AD9312450c691f35539be7068BE',
+        id: HookType.ALLOW_LIST,
+        name: 'Allow List',
+      },
     ],
     onTokenURIHook: [
       {

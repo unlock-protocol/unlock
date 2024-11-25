@@ -63,6 +63,11 @@ export const linea: NetworkConfig = {
         id: HookType.PASSWORD_CAPPED,
         name: 'Passwords with caps. Multiple passwords can be used per contract',
       },
+      {
+        address: '0x15922b77301Df5EA532074e9fb30d115FB6A03fE',
+        id: HookType.ALLOW_LIST,
+        name: 'Allow List',
+      },
     ],
   },
   id: 59144,

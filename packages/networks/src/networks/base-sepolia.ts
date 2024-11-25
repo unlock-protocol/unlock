@@ -40,6 +40,11 @@ export const baseSepolia: NetworkConfig = {
         id: HookType.GITCOIN,
         name: 'Gitcoin',
       },
+      {
+        address: '0x72B427E751e711E9AbeD0F8aA1c28ec2034023F3',
+        id: HookType.ALLOW_LIST,
+        name: 'Allow List',
+      },
     ],
     onTokenURIHook: [
       {

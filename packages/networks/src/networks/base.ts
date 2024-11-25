@@ -63,6 +63,11 @@ export const base: NetworkConfig = {
         id: HookType.GITCOIN,
         name: 'Gitcoin',
       },
+      {
+        address: '0x3b36FfbfF6bC62D3E9f715bbDBabe477018b0c92',
+        id: HookType.ALLOW_LIST,
+        name: 'Allow List',
+      },
     ],
     onTokenURIHook: [
       {

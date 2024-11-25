@@ -46,6 +46,11 @@ export const mainnet: NetworkConfig = {
         id: HookType.GUILD,
         name: 'Guild',
       },
+      {
+        address: '0xfF7aBFACC805AD158a8ea554d4c363FC2D9527d4',
+        id: HookType.ALLOW_LIST,
+        name: 'Allow List',
+      },
     ],
   },
   id: 1,

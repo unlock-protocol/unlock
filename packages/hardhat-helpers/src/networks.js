@@ -62,7 +62,7 @@ Object.keys(networks).forEach((key) => {
     hardhatNetworks[key] = {
       chainId: networks[key].id,
       name: networks[key].name,
-      url: networks[key].provider,
+      url: networks[key].publicProvider,
       accounts: getAccounts(networks[key].name),
     }
   }
@@ -83,7 +83,7 @@ Object.keys(networks).forEach((key) => {
     hardhatNetworks['gnosis'] = {
       chainId: 100,
       name: 'gnosis',
-      url: networks[key].provider,
+      url: networks[key].publicProvider,
     }
   }
 

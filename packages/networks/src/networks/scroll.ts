@@ -1,4 +1,4 @@
-import { NetworkConfig } from '@unlock-protocol/types'
+import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const scroll: NetworkConfig = {
   chain: 'scroll',
@@ -16,7 +16,13 @@ export const scroll: NetworkConfig = {
   },
   featured: false,
   hooks: {
-    onKeyPurchaseHook: [],
+    onKeyPurchaseHook: [
+      {
+        address: '0xe87eFc02F26EFE45171afDBEc85D743FDB2Eb1FB',
+        id: HookType.ALLOW_LIST,
+        name: 'Allow List',
+      },
+    ],
   },
   id: 534352,
   isTestNetwork: false,
