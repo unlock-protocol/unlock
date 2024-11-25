@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { checkoutMachine } from './checkoutMachine'
 import { Quantity } from './Quantity'
@@ -25,6 +25,7 @@ import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { Select } from './Select'
 import { Connected } from '../Connected'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import PrivyFunding from './embedded-wallet/PrivyFunding'
 
 interface Props {
   paywallConfig: PaywallConfigType
@@ -172,6 +173,9 @@ export function Checkout({
       }
       case 'CARD': {
         return <CardPayment checkoutService={checkoutService} />
+      }
+      case 'PRIVY_FUNDING': {
+        return <PrivyFunding checkoutService={checkoutService} />
       }
       case 'METADATA': {
         return <Metadata checkoutService={checkoutService} />
