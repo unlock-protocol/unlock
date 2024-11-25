@@ -119,6 +119,11 @@ export function useStepperItems(
         skip: !['card'].includes(payment?.method),
       },
       {
+        name: 'Fund account',
+        to: 'PRIVY_FUNDING',
+        skip: !['embedded_crosschain_purchase'].includes(payment?.method),
+      },
+      {
         name: 'Confirm',
         to: 'CONFIRM',
       },
