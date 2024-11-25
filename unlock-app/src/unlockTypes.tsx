@@ -131,6 +131,7 @@ export interface Lock {
   publicLockVersion?: number
   maxKeysPerAddress?: number
   selfAllowance?: string
+  onKeyPurchaseHook?: string
 }
 
 export interface Locks {

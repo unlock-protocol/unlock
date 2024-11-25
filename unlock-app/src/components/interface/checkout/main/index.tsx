@@ -25,6 +25,7 @@ import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { Select } from './Select'
 import { Connected } from '../Connected'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { AllowList } from './AllowList'
 import PrivyFunding from './embedded-wallet/PrivyFunding'
 
 interface Props {
@@ -219,6 +220,9 @@ export function Checkout({
       }
       case 'GITCOIN': {
         return <Gitcoin checkoutService={checkoutService} />
+      }
+      case 'ALLOW_LIST': {
+        return <AllowList checkoutService={checkoutService} />
       }
       case 'RETURNING': {
         return (

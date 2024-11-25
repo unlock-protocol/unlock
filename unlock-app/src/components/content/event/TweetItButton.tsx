@@ -1,9 +1,9 @@
 import { Tooltip } from '@unlock-protocol/ui'
 import Link from 'next/link'
-import { FiX } from 'react-icons/fi'
 import { Metadata } from '~/components/interface/locks/metadata/utils'
 import { getEventDate } from './utils'
 import { config } from '~/config/app'
+import { SiX as XIcon } from 'react-icons/si'
 
 interface TweetItButtonProps {
   event?: Partial<Metadata>
@@ -62,7 +62,7 @@ export const TweetItButton = ({
         href={tweetIntent.toString()}
         className="w-12 h-12 flex justify-center items-center"
       >
-        <FiX className="w-6 h-6" />
+        <XIcon className="w-4 h-4" />
       </Link>
     </Tooltip>
   )

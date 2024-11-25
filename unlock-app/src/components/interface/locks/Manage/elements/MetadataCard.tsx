@@ -27,6 +27,7 @@ import { TransferKeyDrawer } from '~/components/interface/keychain/TransferKeyDr
 import { WrappedAddress } from '~/components/interface/WrappedAddress'
 import { UpdateEmailModal } from '~/components/content/event/attendees/UpdateEmailModal'
 import { useProvider } from '~/hooks/useProvider'
+import networks from '@unlock-protocol/networks'
 
 interface MetadataCardProps {
   metadata: any
@@ -48,6 +49,7 @@ const keysToIgnore = [
   'email',
   'data',
   'transactionsHash',
+  'createdAt',
 ]
 
 interface KeyRenewalProps {
@@ -239,15 +241,10 @@ const ChangeManagerModal = ({
 }
 export const MetadataCard = ({
   metadata,
-
   owner,
-
   network,
-
   expirationDuration,
-
   lockSettings,
-
   isExpired,
 }: MetadataCardProps) => {
   const [showTransferKey, setShowTransferKey] = useState(false)
@@ -548,6 +545,38 @@ export const MetadataCard = ({
                   </div>
                 </div>
               }
+            />
+            <Detail
+              label={
+                <div className="flex flex-col justify-between w-full gap-2 md:items-center md:flex-row">
+                  <Tooltip
+                    tip="Time at which the NFT was minted."
+                    label="Time at which the NFT was minted."
+                    side="bottom"
+                  >
+                    <div className="flex items-center gap-2">
+                      <span>Created at:</span>
+                      {networks[network].explorer?.urls?.transaction &&
+                      data.transactionsHash[0] ? (
+                        <Link
+                          target="_blank"
+                          rel="noreferrer"
+                          href={`${networks[network].explorer?.urls?.transaction(data.transactionsHash[0])}`}
+                        >
+                          <div className="text-base font-semibold text-black break-words">
+                            {new Date(data.createdAt * 1000).toLocaleString()}
+                          </div>
+                        </Link>
+                      ) : (
+                        <div className="text-base font-semibold text-black break-words">
+                          {new Date(data.createdAt * 1000).toLocaleString()}
+                        </div>
+                      )}
+                    </div>
+                  </Tooltip>
+                </div>
+              }
+              className="py-2"
             />
             {showManager && (
               <div className="w-full">
