@@ -108,7 +108,7 @@ const PrivyFunding = ({ checkoutService }: PrivyFundingProps) => {
       checkoutService.send({
         type: 'SELECT_PAYMENT_METHOD',
         payment: {
-          method: 'embedded_crosschain_purchase',
+          method: 'crosschain_purchase',
           route: baseRoute,
         },
       })
