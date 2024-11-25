@@ -28,7 +28,6 @@ import Disconnect from './Disconnect'
 import { TransactionPreparationError } from './TransactionPreparationError'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import InsufficientFundsWarning from '../InsufficientFundsWarning'
-import { useEmbeddedWallet } from '~/hooks/useEmbeddedWallet'
 
 interface Props {
   checkoutService: CheckoutService
@@ -67,7 +66,6 @@ export function Payment({ checkoutService }: Props) {
   const { recipients } = state.context
   const lock = state.context.lock!
   const { account } = useAuthenticate()
-  const { isEmbeddedWallet } = useEmbeddedWallet()
   const networkConfig = config.networks[lock.network]
   const baseSymbol = networkConfig.nativeCurrency.symbol
   const symbol = lockTickerSymbol(lock, baseSymbol)
@@ -182,7 +180,6 @@ export function Payment({ checkoutService }: Props) {
     enableCrypto,
     enableCrossmint,
   ].every((item) => !item)
-  console.log('isEmbeddedWallet', isEmbeddedWallet)
 
   return (
     <Fragment>
@@ -370,9 +367,7 @@ export function Payment({ checkoutService }: Props) {
                         checkoutService.send({
                           type: 'SELECT_PAYMENT_METHOD',
                           payment: {
-                            method: isEmbeddedWallet
-                              ? 'embedded_crosschain_purchase'
-                              : 'crosschain_purchase',
+                            method: 'crosschain_purchase',
                             route,
                           },
                         })
