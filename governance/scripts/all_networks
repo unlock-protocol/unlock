@@ -14,7 +14,7 @@ const { execSync } = require('child_process')
 const only = []
 
 // these networks will be excluded from run
-const toExclude = ['localhost', 'default', 'networks', 'arbitrum', 'avalanche', 'base', 'bsc', 'celo', 'gnosis', 'linea', 'optimism', 'baseSepolia', 'mainnet', 'sepolia', 'scroll', 'zkevm']
+const toExclude = ['localhost', 'default', 'networks']
 const excludeTestnets = false
 
 const networks = only.length
