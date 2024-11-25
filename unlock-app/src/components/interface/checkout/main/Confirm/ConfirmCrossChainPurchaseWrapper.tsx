@@ -30,6 +30,11 @@ export function ConfirmCrossChainPurchaseWrapper({
   // handle embedded wallet confirmation
   const handleEmbeddedWalletConfirm = async () => {
     try {
+      // delete unwanted gas values
+      delete route.tx.gasLimit
+      delete route.tx.maxFeePerGas
+      delete route.tx.maxPriorityFeePerGas
+
       const txParams = { ...route.tx }
       // Convert value to BigInt if needed
       if (txParams.value) {
