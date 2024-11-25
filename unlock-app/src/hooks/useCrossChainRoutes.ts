@@ -276,14 +276,6 @@ export const useCrossChainRoutes = ({
       (data?: CrossChainRouteWithBalance | null) => !!data
     ) as CrossChainRouteWithBalance[]
 
-  // Function to refetch all queries
-  const refetch = async () => {
-    await Promise.all([
-      ...balanceResults.map((result) => result.refetch()),
-      ...routeResults.map((result) => result.refetch()),
-    ])
-  }
-
   return {
     isLoading:
       isLoadingPrices ||
@@ -293,6 +285,5 @@ export const useCrossChainRoutes = ({
       (a: CrossChainRouteWithBalance, b: CrossChainRouteWithBalance) =>
         a!.resolvedAt - b!.resolvedAt
     ),
-    refetch,
   }
 }
