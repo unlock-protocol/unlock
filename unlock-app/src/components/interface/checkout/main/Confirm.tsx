@@ -10,6 +10,7 @@ import { ConfirmCard } from './Confirm/ConfirmCard'
 import { ConfirmCrossmint } from './Confirm/ConfirmCrossmint'
 import { ConfirmCrossChainPurchase } from './Confirm/ConfirmCrossChainPurchase'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { ConfirmEmbeddedCrossChainPurchase } from './Confirm/ConfirmEmbeddedCrossChainPurchase'
 
 interface Props {
   checkoutService: CheckoutService
@@ -63,6 +64,13 @@ export function Confirm({ checkoutService, communication }: Props) {
       )}
       {payment.method === 'crosschain_purchase' && (
         <ConfirmCrossChainPurchase
+          checkoutService={checkoutService}
+          onConfirmed={onConfirmed}
+          onError={onError}
+        />
+      )}
+      {payment.method === 'embedded_crosschain_purchase' && (
+        <ConfirmEmbeddedCrossChainPurchase
           checkoutService={checkoutService}
           onConfirmed={onConfirmed}
           onError={onError}
