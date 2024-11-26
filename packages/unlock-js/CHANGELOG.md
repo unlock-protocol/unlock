@@ -1,5 +1,9 @@
 # Changes
 
+# 0.50.0
+
+- adding `burnKey` to WalletService
+
 # 0.49.2
 
 - adding `setMerkleRoot` to WalletService

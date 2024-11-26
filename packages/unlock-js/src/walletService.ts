@@ -583,6 +583,21 @@ export default class WalletService extends UnlockService {
     return version.grantKeys.bind(this)(params, transactionOptions, callback)
   }
 
+  async burnKey(
+    params: {
+      lockAddress: string
+      tokenId: string
+    },
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) {
+      throw new Error('Missing lockAddress')
+    }
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    return version.burnKey.bind(this)(params, transactionOptions, callback)
+  }
+
   /**
    * Grant key extension. This implementation requires the following
    * @param {object} params:
