@@ -60,7 +60,7 @@ export const getCrossChainRoute = async ({
 }: getCrossChainRouteParams): Promise<CrossChainRoute | undefined> => {
   const network = networks[srcChainId]
 
-  const baseUrl = 'https://box-v2.api.decent.xyz/api/getBoxAction'
+  const baseUrl = 'https://box-v4.api.decent.xyz/api/getBoxAction'
   const apiKey = '6477b3b3671589d81df0cba67ba9f3e6'
   const actionRequest: BoxActionRequest = {
     sender,
