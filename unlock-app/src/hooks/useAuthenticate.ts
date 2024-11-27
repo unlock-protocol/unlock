@@ -97,7 +97,6 @@ export function useAuthenticate() {
     try {
       const { data: nonce } = await locksmith.nonce()
       const siweResult = await siweSign(nonce, '')
-
       if (siweResult) {
         const { message, signature } = siweResult
         const response = await locksmith.login({
