@@ -252,28 +252,6 @@ export const mintNFTForRsvp = async ({
   })
 }
 
-export const burnNFTFronRsvp = async ({
-  network,
-  lockAddress,
-  tokenId,
-}: {
-  network: number
-}) => {
-  const [provider, wallet] = await Promise.all([
-    getProviderForNetwork(network),
-    getPurchaser({ network }),
-  ])
-
-  // Get the recipient
-  const walletService = new WalletService(networks)
-  await walletService.connect(provider, wallet)
-
-  return await walletService.burnKey({
-    lockAddress,
-    id: tokenId,
-  })
-}
-
 export const saveContractOnEventCasterEvent = async ({
   eventId,
   address,
