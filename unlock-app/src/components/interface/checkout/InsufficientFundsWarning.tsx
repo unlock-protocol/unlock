@@ -48,7 +48,7 @@ const InsufficientFundsWarning = ({
     return null
   }
 
-  if (!enableClaim) {
+  if (enableClaim) {
     return null
   }
 
