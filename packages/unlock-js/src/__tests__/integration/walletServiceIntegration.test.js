@@ -46,6 +46,7 @@ import setBaseTokenURI from './lock/setBaseTokenURI'
 import setEventHooks from './lock/setEventHooks'
 import transferFrom from './lock/transferFrom'
 import lendKey from './lock/lendKey'
+import burnKey from './lock/burnKey'
 
 // Increasing timeouts
 
@@ -168,6 +169,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
       withdrawFromLock(testSetupArgs)
       transferFrom(testSetupArgs)
       lendKey(testSetupArgs)
+      burnKey(testSetupArgs)
     })
   })
 })
