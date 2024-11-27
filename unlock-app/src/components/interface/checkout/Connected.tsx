@@ -6,8 +6,6 @@ import { ConnectPage } from './main/ConnectPage'
 import { getMembership } from '~/hooks/useMemberships'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { usePrivy } from '@privy-io/react-auth'
-import { onSignedInWithPrivy } from '~/config/PrivyProvider'
 
 interface ConnectedCheckoutProps {
   service: CheckoutService
@@ -16,8 +14,7 @@ interface ConnectedCheckoutProps {
 export function Connected({ service }: ConnectedCheckoutProps) {
   const [showPrivyModal, setShowPrivyModal] = useState(true)
   const { paywallConfig, lock } = useSelector(service, (state) => state.context)
-  const { user } = usePrivy()
-  const { signInWithPrivy } = useAuthenticate()
+  const { signInWithPrivy, account } = useAuthenticate()
 
   const lockAddress = lock?.address
   const lockNetwork = lock?.network || paywallConfig.network
@@ -26,9 +23,8 @@ export function Connected({ service }: ConnectedCheckoutProps) {
   // handle sign-in
   useEffect(() => {
     const handleSignIn = async () => {
-      if (user?.wallet?.address) {
-        console.debug(`Connected as ${user.wallet.address}`)
-        await onSignedInWithPrivy(user)
+      if (account) {
+        console.debug(`Connected as ${account}`)
       } else {
         console.debug('Not connected')
         signInWithPrivy({
@@ -40,7 +36,7 @@ export function Connected({ service }: ConnectedCheckoutProps) {
     }
 
     handleSignIn()
-  }, [user?.wallet?.address])
+  }, [account])
 
   // check memberships after sign-in
   useEffect(() => {
@@ -62,10 +58,10 @@ export function Connected({ service }: ConnectedCheckoutProps) {
       })
     }
 
-    if (user?.wallet?.address && lockAddress && lockNetwork) {
-      checkMemberships(lockAddress, user.wallet.address, lockNetwork)
+    if (account && lockAddress && lockNetwork) {
+      checkMemberships(lockAddress, account, lockNetwork)
     }
-  }, [user?.wallet?.address, lockAddress, lockNetwork])
+  }, [account, lockAddress, lockNetwork])
 
   return (
     <>
