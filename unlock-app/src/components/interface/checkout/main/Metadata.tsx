@@ -119,11 +119,13 @@ export const MetadataInputs = ({
   const recipient = recipientFromConfig(paywallConfig, lock) || account
   const hideRecipient = shouldSkip({ paywallConfig, lock }).skipRecipient
 
-  const [hideEmailInput, setHideEmailInput] = useState<boolean>(!!email)
+  const [hideEmailInput, setHideEmailInput] = useState<boolean>(
+    !!email && id === 0
+  )
 
-  // register email value from user's
+  // register email value from user's account - to only apply to first recipient
   useEffect(() => {
-    if (email && hideEmailInput) {
+    if (email && hideEmailInput && id === 0) {
       metadataInputs?.forEach((input) => {
         const isEmailInput = [
           'email',
@@ -250,7 +252,7 @@ export const MetadataInputs = ({
             'emailaddress',
           ].includes(name.toLowerCase())
 
-          if (isEmailInput && hideEmailInput && email) {
+          if (isEmailInput && hideEmailInput && email && id === 0) {
             return (
               <div key={name} className="space-y-1">
                 <div className="ml-1 text-sm">{inputLabel}</div>
@@ -273,7 +275,7 @@ export const MetadataInputs = ({
               key={name}
               label={`${inputLabel}:`}
               autoComplete={inputLabel}
-              defaultValue={isEmailInput ? email : defaultValue}
+              defaultValue={isEmailInput && id === 0 ? email : defaultValue} // only prefill email for first recipient
               size="small"
               disabled={disabled}
               placeholder={placeholder}
@@ -281,7 +283,7 @@ export const MetadataInputs = ({
               error={errors?.metadata?.[id]?.[name]?.message}
               {...register(`metadata.${id}.${name}`, {
                 required: required && `${inputLabel} is required`,
-                value: isEmailInput ? email : value,
+                value: isEmailInput && id === 0 ? email : value, // only prefill email for first recipient
               })}
             />
           )
