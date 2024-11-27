@@ -13,6 +13,7 @@ import { discountCodeHookAbi } from './abis/discountCodeHookAbi'
 import { passwordCapHookAbi } from './abis/passwordCapHookAbi'
 import { discountCodeWithCapHookAbi } from './abis/discountCodeWithCapHookAbi'
 import { allowListHookAbi } from './abis/allowListHookAbi'
+import { PurchaseKeyParams } from './params'
 
 /**
  * This service reads data from the RPC endpoint.
@@ -1156,5 +1157,28 @@ export default class Web3Service extends UnlockService {
       abi: new ethers.Interface(allowListHookAbi),
     })
     return contract.roots(lockAddress)
+  }
+
+  /**
+   * Data-only signatures
+   */
+  async purchaseKey({
+    lockAddress,
+    network,
+    params,
+  }: {
+    lockAddress: string
+    network: number
+    params: PurchaseKeyParams
+  }) {
+    if (!lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const data = version.purchaseKey.bind(this)(params, {
+      returnCalldata: true,
+    })
+    return data
   }
 }
