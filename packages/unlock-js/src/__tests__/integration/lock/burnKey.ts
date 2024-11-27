@@ -9,18 +9,21 @@ export default ({ publicLockVersion }) => {
       let keyOwner
       let tokenId
       let transactionHash
-      let key
 
       beforeAll(async () => {
         ;({ walletService, web3Service, lockAddress, accounts, chainId } =
           global.suiteData)
 
-        keyOwner = accounts[5]
+        keyOwner = accounts[10]
 
         tokenId = await walletService.purchaseKey({
           lockAddress,
           owners: keyOwner,
         })
+
+        expect(
+          await web3Service.isValidKey(lockAddress, tokenId, chainId)
+        ).toBe(true)
 
         // then extend existing expired key
         await walletService.burnKey(
@@ -37,7 +40,7 @@ export default ({ publicLockVersion }) => {
             transactionHash = hash
           }
         )
-        key = await web3Service.getKeyByTokenId(lockAddress, tokenId, chainId)
+        await web3Service.getKeyByTokenId(lockAddress, tokenId, chainId)
       })
 
       it('should have yielded a transaction hash', () => {

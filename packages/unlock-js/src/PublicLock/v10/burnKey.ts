@@ -21,10 +21,6 @@ export default async function (
     throw new Error('Missing tokenId.')
   }
 
-  const callData = lockContract.interface.encodeFunctionData('burnKey', [
-    tokenId,
-  ])
-
   // Estimate gas. Bump by 30% because estimates are wrong!
   if (!transactionOptions.gasLimit) {
     try {
@@ -61,7 +57,7 @@ export default async function (
     }
   }
 
-  const transactionRequestpromise = lockContract.extend.populateTransaction(
+  const transactionRequestpromise = lockContract.burnKey.populateTransaction(
     [tokenId],
     transactionOptions
   )
