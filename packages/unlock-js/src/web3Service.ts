@@ -12,6 +12,7 @@ import { passwordHookAbi } from './abis/passwordHookAbi'
 import { discountCodeHookAbi } from './abis/discountCodeHookAbi'
 import { passwordCapHookAbi } from './abis/passwordCapHookAbi'
 import { discountCodeWithCapHookAbi } from './abis/discountCodeWithCapHookAbi'
+import { allowListHookAbi } from './abis/allowListHookAbi'
 
 /**
  * This service reads data from the RPC endpoint.
@@ -1141,5 +1142,19 @@ export default class Web3Service extends UnlockService {
       cap,
       count,
     }
+  }
+
+  async getMerkleRootFromAllowListHook(params: {
+    lockAddress: string
+    hookAddress: string
+    network: number
+  }) {
+    const { lockAddress, hookAddress, network } = params ?? {}
+    const contract = await this.getHookContract({
+      network,
+      address: hookAddress,
+      abi: new ethers.Interface(allowListHookAbi),
+    })
+    return contract.roots(lockAddress)
   }
 }

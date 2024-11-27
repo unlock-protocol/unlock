@@ -62,6 +62,11 @@ export const bsc: NetworkConfig = {
         id: HookType.GITCOIN,
         name: 'Gitcoin',
       },
+      {
+        address: '0xC4E6FDfe46CD1DF46801e080000a4897c42Fd75F',
+        id: HookType.ALLOW_LIST,
+        name: 'Allow List',
+      },
     ],
     onTokenURIHook: [
       {

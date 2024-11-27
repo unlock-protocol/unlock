@@ -1,6 +1,6 @@
-const { PERMIT2_ADDRESS } = require('@uniswap/universal-router-sdk')
 const {
   getNetwork,
+  PERMIT2_ADDRESS,
   deployContract,
   copyAndBuildContractsAtVersion,
 } = require('@unlock-protocol/hardhat-helpers')

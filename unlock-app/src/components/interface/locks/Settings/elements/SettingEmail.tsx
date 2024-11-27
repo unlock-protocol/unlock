@@ -5,6 +5,7 @@ import { SettingCard } from './SettingCard'
 import { useMetadata } from '~/hooks/metadata'
 import { SendCustomEmail } from '../forms/SendCustomEmail'
 import { useGetLockSettings } from '~/hooks/useLockSettings'
+import { memo, useMemo } from 'react'
 
 interface SettingEmailProps {
   lockAddress: string
@@ -28,6 +29,12 @@ const TemplateByLockType: Record<keyof LockType, TemplateProps[]> = {
       description:
         'Customize the content of the email sent when a event ticket is purchased. ',
       templateId: 'eventKeyMined',
+    },
+    {
+      label: 'Subscription reminder template',
+      description:
+        'Customize the content of the email sent when a membership is about to expire.',
+      templateId: 'keyExpiring',
     },
     {
       label: 'Airdrop confirmation template',
@@ -61,6 +68,12 @@ const DEFAULT_EMAIL_TEMPLATES: TemplateProps[] = [
     templateId: 'keyMined',
   },
   {
+    label: 'Subscription reminder template',
+    description:
+      'Customize the content of the email sent when a membership is about to expire.',
+    templateId: 'keyExpiring',
+  },
+  {
     label: 'Airdrop confirmation template',
     description:
       'Customize the content of the email sent when a new membership has been airdropped. Emails are only sent if you supplied them when you airdropped the memberships.',
@@ -68,7 +81,7 @@ const DEFAULT_EMAIL_TEMPLATES: TemplateProps[] = [
   },
 ]
 
-export const SettingEmail = ({
+const SettingEmailComponent = ({
   isManager,
   lockAddress,
   network,
@@ -79,20 +92,24 @@ export const SettingEmail = ({
     network,
   })
 
-  const { data: { replyTo, emailSender } = {} } = useGetLockSettings({
+  const { data: lockSettings = {} } = useGetLockSettings({
     network,
     lockAddress,
   })
 
-  const types = getLockTypeByMetadata(metadata)
+  const { replyTo, emailSender } = lockSettings
 
-  // find lock type
-  const [template] =
-    Object.entries(types ?? {}).find(([, value]) => value === true) ?? []
+  const types = useMemo(() => getLockTypeByMetadata(metadata), [metadata])
+  const [template] = useMemo(
+    () => Object.entries(types ?? {}).find(([, value]) => value === true) ?? [],
+    [types]
+  )
 
-  // template based on lockType
-  const emailTemplates =
-    TemplateByLockType[template as keyof LockType] || DEFAULT_EMAIL_TEMPLATES
+  const emailTemplates = useMemo(
+    () =>
+      TemplateByLockType[template as keyof LockType] || DEFAULT_EMAIL_TEMPLATES,
+    [template]
+  )
 
   return (
     <div className="grid grid-cols-1 gap-6">
@@ -140,3 +157,5 @@ export const SettingEmail = ({
     </div>
   )
 }
+
+export const SettingEmail = memo(SettingEmailComponent)

@@ -51,6 +51,7 @@ export function useStepperItems(
   const isPromo = getHookType(lock, paywallConfig) === 'promocode'
   const isGuild = getHookType(lock, paywallConfig) === 'guild'
   const isGitcoin = getHookType(lock, paywallConfig) === 'gitcoin'
+  const isAllowList = getHookType(lock, paywallConfig) === 'allowlist'
   const isMember = existingMember || isExistingMember
   const checkoutItems: StepItem[] = [
     {
@@ -104,11 +105,16 @@ export function useStepperItems(
                   name: 'Gitcoin Passport Verification',
                   to: 'GITCOIN',
                 }
-              : {
-                  name: 'Solve captcha',
-                  to: 'CAPTCHA',
-                  skip: !isCaptcha,
-                },
+              : isAllowList
+                ? {
+                    name: 'Allow list',
+                    to: 'ALLOW_LIST',
+                  }
+                : {
+                    name: 'Solve captcha',
+                    to: 'CAPTCHA',
+                    skip: !isCaptcha,
+                  },
       {
         name: 'Payment method',
         to: 'PAYMENT',
@@ -117,6 +123,11 @@ export function useStepperItems(
         name: 'Add card',
         to: 'CARD',
         skip: !['card'].includes(payment?.method),
+      },
+      {
+        name: 'Fund account',
+        to: 'PRIVY_FUNDING',
+        skip: !['crosschain_purchase'].includes(payment?.method),
       },
       {
         name: 'Confirm',
