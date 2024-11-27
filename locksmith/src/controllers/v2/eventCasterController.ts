@@ -2,7 +2,6 @@ import { RequestHandler } from 'express'
 import { z } from 'zod'
 import { getEventFormEventCaster } from '../../operations/eventCasterOperations'
 import { addJob } from '../../worker/worker'
-import logger from '../../logger'
 
 // This is the API endpoint used by EventCaster to create events
 const CreateEventBody = z.object({
@@ -89,9 +88,8 @@ export const deleteEvent: RequestHandler = async (_request, response) => {
 }
 
 // Removes the RSVP for an event (burns the ticket!)
-export const unrsvpForEvent: RequestHandler = async (request, response) => {
+export const unrsvpForEvent: RequestHandler = async (_request, response) => {
   // TODO: implement this
-  logger.info(request.body)
   response.status(200).json({})
   return
 }

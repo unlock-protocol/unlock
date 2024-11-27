@@ -78,6 +78,7 @@ export const buildKeysWithMetadata = (
           token: key?.tokenId,
           lockName: lock?.name,
           expiration: key?.expiration,
+          createdAt: key?.createdAt,
           keyholderAddress: key?.owner,
           // defaults to the owner when the manager is not set
           keyManager: key?.manager || key?.owner,

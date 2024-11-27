@@ -104,9 +104,11 @@ export function ConfirmCrossChainPurchase({
     if (!pricingData) {
       return
     }
+
     try {
       setIsConfirming(true)
       const walletService = await getWalletService(route.network)
+
       if (!route.tokenPayment.isNative) {
         const requiredAllowance = BigInt(route.tokenPayment.amount)
         const allowance = await getAllowance(
@@ -117,7 +119,7 @@ export function ConfirmCrossChainPurchase({
         )
         if (requiredAllowance > allowance) {
           setButtonLabel(`Approving ${symbol}...`)
-          // If it's an ERC20 we need to approve first!
+          // Handle ERC20 approvals only for non-native tokens
           const approveTx = await approveTransfer(
             route.tokenPayment.tokenAddress,
             route.tx.to,
@@ -205,7 +207,7 @@ export function ConfirmCrossChainPurchase({
             loading={isConfirming}
             disabled={isConfirming || isLoading || isPricingDataError}
             onClick={async (event) => {
-              event.preventDefault()
+              event?.preventDefault()
               if (metadata) {
                 await updateUsersMetadata(metadata)
               }

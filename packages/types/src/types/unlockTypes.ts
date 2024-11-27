@@ -48,6 +48,7 @@ export enum HookType {
   GUILD = 'GUILD',
   GITCOIN = 'GITCOIN',
   ADVANCED_TOKEN_URI = 'ADVANCED_TOKEN_URI',
+  ALLOW_LIST = 'ALLOW_LIST',
 }
 
 export const HooksName = [
