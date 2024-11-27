@@ -6,8 +6,6 @@ import { ConnectPage } from './main/ConnectPage'
 import { getMembership } from '~/hooks/useMemberships'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { usePrivy } from '@privy-io/react-auth'
-import { onSignedInWithPrivy } from '~/config/PrivyProvider'
 
 interface ConnectedCheckoutProps {
   service: CheckoutService
@@ -16,7 +14,6 @@ interface ConnectedCheckoutProps {
 export function Connected({ service }: ConnectedCheckoutProps) {
   const [showPrivyModal, setShowPrivyModal] = useState(true)
   const { paywallConfig, lock } = useSelector(service, (state) => state.context)
-  // const { user } = usePrivy()
   const { signInWithPrivy, account } = useAuthenticate()
 
   const lockAddress = lock?.address
@@ -28,7 +25,6 @@ export function Connected({ service }: ConnectedCheckoutProps) {
     const handleSignIn = async () => {
       if (account) {
         console.debug(`Connected as ${account}`)
-        // await onSignedInWithPrivy(user)
       } else {
         console.debug('Not connected')
         signInWithPrivy({

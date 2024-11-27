@@ -9,7 +9,7 @@ import {
   User,
   usePrivy,
 } from '@privy-io/react-auth'
-import { ReactNode, useContext, useEffect, useState, useCallback } from 'react'
+import { ReactNode, useContext, useEffect, useState } from 'react'
 import { config } from './app'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { locksmith } from './locksmith'
@@ -42,7 +42,6 @@ export const checkLegacyAccount = async (
 // BUT NOT yet signed in with Locksmith and hence does not have an access token.
 export const onSignedInWithPrivy = async (user: User) => {
   try {
-    console.log('Signed with Privy:', user)
     const accessToken = await privyGetAccessToken()
     if (!accessToken) {
       console.error('No access token found in Privy')
@@ -77,6 +76,7 @@ export const onSignedInWithPrivy = async (user: User) => {
   }
 }
 
+// IMPORTANT: This component should be rendered only once in the app. Do NOT add hooks here.
 export const PrivyChild = ({ children }: { children: ReactNode }) => {
   const { setAccount } = useContext<{
     setAccount: (account: string | undefined) => void
@@ -145,7 +145,6 @@ export const PrivyMigration = () => {
 
   // handle onComplete logic
   const handleMigrationIfNeeded = async (user: User) => {
-    console.log('handleMigrationIfNeeded:', user)
     let hasLegacyAccount = false
 
     // Check for legacy account if user logged in with email
@@ -186,7 +185,6 @@ export const PrivyMigration = () => {
 }
 
 export const Privy = ({ children }: { children: ReactNode }) => {
-  console.log('render Privy')
   const isMigratePage =
     typeof window !== 'undefined' &&
     window.location.pathname.includes('migrate-user')
