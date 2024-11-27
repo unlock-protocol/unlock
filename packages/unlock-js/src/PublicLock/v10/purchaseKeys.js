@@ -30,10 +30,15 @@ export default async function (options, transactionOptions = {}, callback) {
   } = await getPurchaseKeysArguments.bind(this)(options)
 
   const purchaseArgs = [keyPrices, owners, referrers, keyManagers, data]
-  const callData = lockContract.interface.encodeFunctionData(
-    'purchase',
-    purchaseArgs
-  )
+
+  // calldata only
+  if (options.returnCalldata) {
+    const callData = lockContract.interface.encodeFunctionData(
+      'purchase',
+      purchaseArgs
+    )
+    return callData
+  }
 
   // tx options
   if (!erc20Address || erc20Address === ZERO) {
