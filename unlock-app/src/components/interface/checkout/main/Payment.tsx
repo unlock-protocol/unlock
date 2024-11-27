@@ -436,6 +436,7 @@ export function Payment({ checkoutService }: Props) {
 
         <InsufficientFundsWarning
           enableCreditCard={!!enableCreditCard}
+          enableClaim={!!enableClaim}
           isCrossChainRoutesLoading={isCrossChaingRoutesLoading}
           hasCrossChainRoutes={Boolean(
             crosschainRoutes && crosschainRoutes.length > 0
