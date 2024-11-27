@@ -7,6 +7,7 @@ import { useBaseRoute } from '~/hooks/useCrosschainBaseRoute'
 
 interface InsufficientFundsWarningProps {
   enableCreditCard: boolean
+  enableClaim: boolean
   isCrossChainRoutesLoading?: boolean
   hasCrossChainRoutes?: boolean
   checkoutService: CheckoutService
@@ -14,6 +15,7 @@ interface InsufficientFundsWarningProps {
 
 const InsufficientFundsWarning = ({
   enableCreditCard,
+  enableClaim,
   isCrossChainRoutesLoading,
   hasCrossChainRoutes,
   checkoutService,
@@ -43,6 +45,10 @@ const InsufficientFundsWarning = ({
   }
 
   if (enableCreditCard) {
+    return null
+  }
+
+  if (enableClaim) {
     return null
   }
 
