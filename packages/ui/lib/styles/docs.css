@@ -1,8 +1,32 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500&display=swap');
+:root {
+  --ifm-color-primary: #8064ef;
+  --ifm-color-primary-dark: #4a22e8;
+  --ifm-color-primary-darker: #4118e4;
+  --ifm-color-primary-darkest: #3513bc;
+  --ifm-color-primary-light: #6948ec;
+  --ifm-color-primary-lighter: #7252ed;
+  --ifm-color-primary-lightest: #7a5dee;
+  --ifm-navbar-background-color: #fff7e8;
+  --ifm-navbar-shadow: none;
+  --ifm-navbar-height: 4.2rem;
+  --menu-background: #e6ded1;
+  --text-800: #373a3e;
+  --text-500: #75797e;
+  --ifm-navbar-item-padding-horizontal: 1rem;
+  --ifm-font-family-base: 'Inter', sans-serif;
+  --ifm-heading-font-weight: 800;
+  --ifm-h1-font-size: 2.5rem;
+  --ifm-footer-background-color: #000000;
+  --ifm-code-background-color: #373a3e;
+  --ifm-global-radius: 1.5rem;
+  --ifm-pre-padding: 1.5rem;
+  --ifm-color-secondary: #603deb;
+  --ifm-color-success: #faffe7;
+  --ifm-color-info: #ffffff;
+  --ifm-color-warning: #fffbe3;
+  --ifm-color-danger: #fff0f1;
+  --ifm-button-background-color: #603deb;
+}
 
 .prose code {
   @apply rounded-md border border-slate-300 bg-slate-100 px-1 py-0.5;
@@ -34,38 +58,10 @@
   @apply border-l-4 border-brand-ui-primary;
 }
 
-:root {
-  --ifm-color-primary: #8064ef;
-  --ifm-color-primary-dark: #4a22e8;
-  --ifm-color-primary-darker: #4118e4;
-  --ifm-color-primary-darkest: #3513bc;
-  --ifm-color-primary-light: #6948ec;
-  --ifm-color-primary-lighter: #7252ed;
-  --ifm-color-primary-lightest: #7a5dee;
-  --ifm-navbar-background-color: #fff7e8;
-  --ifm-navbar-shadow: none;
-  --ifm-navbar-height: 4.2rem;
-  --menu-background: #e6ded1;
-  --text-800: #373a3e;
-  --text-500: #75797e;
-  --ifm-navbar-item-padding-horizontal: 1rem;
-  --ifm-font-family-base: 'Inter', sans-serif;
-  --ifm-heading-font-weight: 800;
-  --ifm-h1-font-size: 2.5rem;
-  --ifm-footer-background-color: #000000;
-  --ifm-code-background-color: #373a3e;
-  --ifm-global-radius: 1.5rem;
-  --ifm-pre-padding: 1.5rem;
-  --ifm-color-secondary: #603deb;
-  --ifm-color-success: #faffe7;
-  --ifm-color-info: #ffffff;
-  --ifm-color-warning: #fffbe3;
-  --ifm-color-danger: #fff0f1;
-  --ifm-button-background-color: #603deb;
-}
 [data-theme='light'] {
   background-color: #fff9ef;
 }
+
 [data-theme='dark'] {
   --ifm-color-primary: #bfb1f7;
   --ifm-color-primary-dark: #ffdfa4;
@@ -78,8 +74,6 @@
   --menu-background: #494e53;
   --text-800: #e4e4e4;
   --text-500: #9ea3a7;
-}
-[data-theme='dark'] {
   background-color: #282a2d;
 }
 
@@ -92,7 +86,6 @@ p {
   font-weight: 400;
   font-size: 1.05rem;
 }
-
 .main-wrapper {
   flex: 1 0 auto;
   font-weight: 300;
@@ -125,17 +118,21 @@ p {
 .navbar__logo {
   height: 2.5rem;
 }
+
 .navbar__title {
   font-size: 1.2rem;
 }
+
 .navbar .navbar__item.navbar__link {
   font-size: 1rem;
 }
+
 .navbar__item {
   display: inline-block;
   padding: var(--ifm-navbar-item-padding-vertical)
     var(--ifm-navbar-item-padding-horizontal);
 }
+
 @media (max-width: 996px) {
   .colorModeToggle_o_qc,
   .footer__link-separator,
@@ -148,11 +145,13 @@ p {
 .navbar__link {
   color: var(--text-500);
 }
+
 .navbar__link--active,
 .navbar__link:hover {
   color: var(--text-800);
   text-decoration: none;
 }
+
 .navbar .navbar__link--active:after {
   background: var(--ifm-color-primary);
   content: '';
@@ -171,27 +170,41 @@ p {
   padding: 1.1em !important;
   margin-top: 1rem;
 }
+
 .menu__list .theme-doc-sidebar-item-link .menu__list,
 .theme-doc-sidebar-item-link-level-1,
 .menu__list-item-collapsible {
-  font-size: 1.2rem;
-  font-weight: 500;
-}
-.menu__list .menu__list {
-  margin-top: 0.25rem;
-}
-.theme-doc-sidebar-item-link-level-2 {
-  font-size: 1.1rem;
-  font-weight: 400;
-}
-.theme-doc-sidebar-item-link-level-3 {
   font-size: 1rem;
-  font-weight: 400;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
 }
+
+.menu__list .menu__list {
+  margin-top: 0.4rem;
+  margin-left: 0.75rem;
+}
+
+.theme-doc-sidebar-item-link-level-2 {
+  font-size: 0.95rem;
+  font-weight: 400;
+  margin-bottom: 0.4rem;
+}
+
+.theme-doc-sidebar-item-link-level-3 {
+  font-size: 0.9rem;
+  font-weight: 400;
+  margin-bottom: 0.3rem;
+}
+
+.menu__list-item {
+  margin-bottom: 0.5rem;
+}
+
 .menu__link {
   color: var(--text-500);
   padding-left: 12px;
 }
+
 .menu__link--active {
   color: var(--text-800);
 }
@@ -199,6 +212,7 @@ p {
 .menu__link .menu__link--sublist .menu__link--active {
   font-weight: 700 !important;
 }
+
 .menu__list .theme-doc-sidebar-item-link .menu__link--active {
   color: var(--text-800);
   border-left-color: var(--ifm-color-primary) !important;
@@ -211,6 +225,7 @@ p {
 main {
   padding: 1.1rem;
 }
+
 /*page body*/
 .markdown h1:first-child {
   font-size: 2.2rem;
@@ -221,16 +236,23 @@ dt {
   padding-top: 14px;
   padding-bottom: 14px;
 }
+
 dd {
   margin-left: 15px;
 }
+
 /*footer*/
 .footer .container {
   max-width: 900px;
 }
+
 .footer--dark {
-  background: black;
+  background: #1a1a1a;
   padding-top: 2rem;
+}
+
+[data-theme='dark'] .footer--dark {
+  background: #1a1c1e;
 }
 
 .footer__title {
@@ -271,38 +293,47 @@ dd {
   background: #ffffff;
   border-left: 8px solid #bfb1f7;
 }
+
 [data-theme='dark'] .alert--info {
   background: #020207;
 }
+
 /* ::tip */
 .alert--success {
   background: #faffe7;
   border-left: 8px solid #bde422;
 }
+
 [data-theme='dark'] .alert--success {
   background: #3a4803;
 }
+
 /* ::note */
 .alert--secondary {
   background: #ffffff;
   border-left: 8px solid #9ea3a7;
 }
+
 [data-theme='dark'] .alert--note {
   background: #373a3e;
 }
+
 /* ::caution */
 .alert--warning {
   background: #fffbe3;
   border-left: 8px solid #fada33;
 }
+
 [data-theme='dark'] .alert--warning {
   background: #60520b;
 }
+
 /* ::danger */
 .alert--danger {
   background: #fff0f1;
   border-left: 8px solid #b23e45;
 }
+
 [data-theme='dark'] .alert--danger {
   background: #8b2930;
 }
@@ -323,27 +354,31 @@ dd {
 [data-theme='dark'] .card {
   color: #373a3e;
 }
+
 .card__header h3 {
   font-size: 1.3em;
   text-align: center;
 }
+
 .card__body {
   text-align: left;
   font-size: 0.9em;
 }
+
 .card__body dl {
   margin-block-start: 0px;
 }
+
 .card__body dt {
   font-weight: bold;
   padding-top: 15px;
 }
+
 .card__body dd {
   margin: 0px 20px;
 }
 
 /* Getting Started Layout */
-
 .row .col.col--4 {
   padding: 0.5rem;
 }
@@ -359,7 +394,6 @@ dd {
 }
 
 /* Icons */
-
 .react-icons {
   vertical-align: text-bottom;
 }
