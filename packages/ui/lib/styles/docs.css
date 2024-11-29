@@ -109,6 +109,14 @@ p {
   color: #bfb1f7;
 }
 
+a .button {
+  text-decoration: none;
+}
+
+a:hover .button {
+  text-decoration: none;
+}
+
 /**Nav bar **/
 .navbar .navbar__inner {
   margin: 0 auto;
@@ -418,4 +426,60 @@ dd {
 
 .button p {
   margin: 0;
+}
+
+/* Breadcrumbs styling */
+.breadcrumbs {
+  --ifm-breadcrumb-spacing: 0.5rem;
+  --ifm-breadcrumb-separator-size: 0.4rem;
+  padding: 0.8rem 0;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumbs__item {
+  --ifm-breadcrumb-size-multiplier: 1;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ifm-breadcrumb-spacing);
+  margin: 0;
+  padding: 0;
+}
+
+.breadcrumbs__item svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  vertical-align: middle;
+  margin-top: -2px;
+}
+
+.breadcrumbs__link {
+  color: var(--text-500);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.breadcrumbs__link:hover {
+  color: var(--text-800);
+  text-decoration: none;
+}
+
+.breadcrumbs__item--active .breadcrumbs__link {
+  color: var(--text-800);
+  font-weight: 500;
+}
+
+/* separator between breadcrumb items */
+.breadcrumbs__item--active:after {
+  display: none;
+}
+
+.breadcrumbs__item:not(:last-child):after {
+  content: '›';
+  margin-left: var(--ifm-breadcrumb-spacing);
+  color: var(--text-500);
+  font-size: var(--ifm-breadcrumb-separator-size);
+  line-height: 1;
 }
