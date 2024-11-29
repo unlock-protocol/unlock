@@ -20,7 +20,7 @@ export default async function (options, transactionOptions = {}, callback) {
   const lockContract = await this.getLockContract(lockAddress)
 
   // get the tx data
-  const txRequests = await preparePurchaseTx(options, this.provider)
+  const txRequests = await preparePurchaseTx.bind(this)(options, this.provider)
 
   let approvalTransactionRequest, purchaseTransactionRequest
   if (txRequests.length === 2) {
