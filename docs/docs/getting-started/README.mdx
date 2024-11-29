@@ -9,10 +9,12 @@ description: >-
 ---
 
 import Admonition from '@theme/Admonition'
+import { Button } from '@unlock-protocol/ui'
+import Card from '../../src/components/Card'
 
-<div className="container getting-started">
-  <div className="row">
-    <div className="col col--12">
+<div className="container mx-auto px-4">
+  <div className="flex flex-wrap -mx-4">
+    <div className="w-full px-4">
       <h3>
         Unlock is a protocol for creating{' '}
         <strong>onchain memberships and subscriptions as NFTs</strong>
@@ -26,133 +28,91 @@ import Admonition from '@theme/Admonition'
       </p>
     </div>
   </div>
-  <div className="row">
-    <div className="col col--6">
-      <div className="row">
-        <div className="card">
-          <div className="card__header">
-            <h3>Why Unlock?</h3>
-          </div>
-          <div className="card__body">
-            Details about how Unlock is built and the specific use cases it
-            enables.
-          </div>
-          <div className="card__footer">
-            <a href="./getting-started/what-is-unlock/">
-              <button class="button button--secondary button--block">
-                Find Out
-              </button>
-            </a>
-          </div>
-        </div>
+  <div className="flex flex-wrap -mx-4">
+    <div className="w-full md:w-1/2 px-4">
+      <div className="mb-8">
+        <Card
+          title="Why Unlock?"
+          description="Details about how Unlock is built and the specific use cases it enables."
+          action={{
+            title: 'Find Out',
+            url: './getting-started/what-is-unlock/',
+          }}
+        />
       </div>
-      <div className="row">
-        <div className="card">
-          <div className="card__header">
-            <h3>Developer Tools</h3>
-          </div>
-          <div className="card__body">
-            Get up and running with libraries, APIs and integration tools.
-          </div>
-          <div className="card__footer">
-            <a href="./tools/">
-              <button class="button button--secondary button--block">
-                Get Started
-              </button>
-            </a>
-          </div>
-        </div>
+      <div className="mb-8">
+        <Card
+          title="Developer Tools"
+          description="Get up and running with libraries, APIs and integration tools."
+          action={{ title: 'Get Started', url: './tools/' }}
+        />
       </div>
-      <div className="row">
-        <div className="card">
-          <div className="card__header">
-            <h3>Examples & Tutorials</h3>
-          </div>
-          <div className="card__body">
-            Learn how to interact with the smart contracts or use our template
-            repos.
-          </div>
-          <div className="card__footer">
-            <a href="../tutorials">
-              <button class="button button--secondary button--block">
-                Show Me How
-              </button>
-            </a>
-          </div>
-        </div>
+      <div className="mb-8">
+        <Card
+          title="Examples & Tutorials"
+          description="Learn how to interact with the smart contracts or use our template repos."
+          action={{ title: 'Show Me How', url: '../tutorials' }}
+        />
       </div>
-      <div className="row">
-        <div className="card">
-          <div className="card__header">
-            <h3>New to web3?</h3>
-          </div>
-          <div className="card__body">
-            Gain an understanding of key concepts unique to web3 but not
-            specific to Unlock Protocol.
-          </div>
-          <div className="card__footer">
-            <a href="./getting-started/new-to-web3">
-              <button class="button button--secondary button--block">
-                Learn More
-              </button>
-            </a>
-          </div>
-        </div>
+      <div className="mb-8">
+        <Card
+          title="New to web3?"
+          description="Gain an understanding of key concepts unique to web3 but not specific to Unlock Protocol."
+          action={{ title: 'Learn More', url: './getting-started/new-to-web3' }}
+        />
       </div>
-      <div className="row">
-        <div className="card">
-          <div class="card__header">
-            <h3>Glossary of Terms</h3>
+      <div className="mb-8">
+        <div className="bg-white bg-opacity-80 rounded-2xl p-6">
+          <div className="text-center mb-4">
+            <h3 className="text-xl font-bold">Glossary of Terms</h3>
           </div>
-          <div className="card__body">
+          <div className="text-left text-sm">
             In the Unlock ecosystem...
             <dl>
-              <dt>Membership</dt>
-              <dd>
+              <dt className="font-bold pt-4">Membership</dt>
+              <dd className="mx-5">
                 A connection between a creator, brand or project and a fan or
-                community member. A membership usually confers benefits or special
-                access to those who hold it. Members can also connect directly
-                with each other.
+                community member. A membership usually confers benefits or
+                special access to those who hold it. Members can also connect
+                directly with each other.
               </dd>
-              <dt>Lock</dt>
-              <dd>
-                a “Lock” is a smart contract that creates (or “mints”) NFTs.
-                Locks also can be used to ensure “members-only” access to
+              <dt className="font-bold pt-4">Lock</dt>
+              <dd className="mx-5">
+                a "Lock" is a smart contract that creates (or "mints") NFTs.
+                Locks also can be used to ensure "members-only" access to
                 resources like online content, live events, online
-                certifications, or other “members-only” experiences.
+                certifications, or other "members-only" experiences.
               </dd>
-              <dt>Key</dt>
-              <dd>
-                a “Key” is an NFT (minted by a Lock) that has additional
+              <dt className="font-bold pt-4">Key</dt>
+              <dd className="mx-5">
+                a "Key" is an NFT (minted by a Lock) that has additional
                 features added to it to facilitate the management of
                 memberships, such as an expiration date.
               </dd>
-              <dt>Dashboard</dt>
-              <dd>
+              <dt className="font-bold pt-4">Dashboard</dt>
+              <dd className="mx-5">
                 A web app built by Unlock Labs for creating "Locks", managing
                 "Keys", and more.
               </dd>
             </dl>
           </div>
-          <div className="card__footer">
-            <a href="/getting-started/glossary">
-              <button className="button button--secondary button--block">
-                See Full Glossary
-              </button>
+          <div className="mt-4">
+            <a href="/getting-started/glossary" className="block w-full">
+              <Button className="w-full">See Full Glossary</Button>
             </a>
           </div>
         </div>
       </div>
     </div>
-    <div className="col col--6">
-      <div className="row">
-        <div className="card">
-          <div class="card__header">
+    <div className="w-full md:w-1/2 px-4">
+      <div className="mb-8">
+        <div className="bg-white bg-opacity-80 rounded-2xl p-6">
+          <div className="text-center mb-4">
             <h3>Quickstart overview and tutorials </h3>
           </div>
-          <div className="card__body">
+          <div className="text-left text-sm">
             <dl>
-              <dt>Overview of Unlock Protocol</dt>
+              <dt className="font-bold pt-4">Overview of Unlock Protocol</dt>
               <dd>
                 <a href="https://www.youtube.com/watch?v=ppYLt2GTeKA&t=1s">
                   <img
@@ -161,7 +121,7 @@ import Admonition from '@theme/Admonition'
                   />
                 </a>
               </dd>
-              <dt>The Unlock Ecosystem</dt>
+              <dt className="font-bold pt-4">The Unlock Ecosystem</dt>
               <dd>
                 <a href="https://www.youtube.com/watch?v=ppYLt2GTeKA&t=1319s">
                   <img
@@ -170,7 +130,7 @@ import Admonition from '@theme/Admonition'
                   />
                 </a>
               </dd>
-              <dt>Front-end live coding tutorial</dt>
+              <dt className="font-bold pt-4">Front-end live coding tutorial</dt>
               <dd>
                 <a href="https://www.youtube.com/watch?v=ppYLt2GTeKA&t=2000s">
                   <img
@@ -179,7 +139,7 @@ import Admonition from '@theme/Admonition'
                   />
                 </a>
               </dd>
-              <dt>Back-end live coding tutorial</dt>
+              <dt className="font-bold pt-4">Back-end live coding tutorial</dt>
               <dd>
                 <a href="https://www.youtube.com/watch?v=ppYLt2GTeKA&t=2954s">
                   <img
@@ -190,11 +150,12 @@ import Admonition from '@theme/Admonition'
               </dd>
             </dl>
           </div>
-          <div className="card__footer">
-            <a href="https://www.youtube.com/unlockprotocol">
-              <button className="button button--secondary button--block">
-                See All Video Tutorials
-              </button>
+          <div style={{ marginTop: '0.5rem' }}>
+            <a
+              href="https://www.youtube.com/unlockprotocol"
+              className="block w-full"
+            >
+              <Button className="w-full">See All Video Tutorials</Button>
             </a>
           </div>
         </div>
