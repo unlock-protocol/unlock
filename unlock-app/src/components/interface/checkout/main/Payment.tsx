@@ -38,7 +38,7 @@ interface AmountBadgeProps {
   amount: string
 }
 
-const AmountBadge = ({ symbol, amount }: AmountBadgeProps) => {
+export const AmountBadge = ({ symbol, amount }: AmountBadgeProps) => {
   return (
     <div>
       <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm text-nowrap">
@@ -436,6 +436,7 @@ export function Payment({ checkoutService }: Props) {
 
         <InsufficientFundsWarning
           enableCreditCard={!!enableCreditCard}
+          enableClaim={!!enableClaim}
           isCrossChainRoutesLoading={isCrossChaingRoutesLoading}
           hasCrossChainRoutes={Boolean(
             crosschainRoutes && crosschainRoutes.length > 0

@@ -7,8 +7,9 @@ import {
   useLogin,
   useCreateWallet,
   User,
+  usePrivy,
 } from '@privy-io/react-auth'
-import { ReactNode, useContext, useEffect, useState, useCallback } from 'react'
+import { ReactNode, useContext, useEffect, useState } from 'react'
 import { config } from './app'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { locksmith } from './locksmith'
@@ -75,59 +76,17 @@ export const onSignedInWithPrivy = async (user: User) => {
   }
 }
 
+// IMPORTANT: This component should be rendered only once in the app. Do NOT add hooks here.
 export const PrivyChild = ({ children }: { children: ReactNode }) => {
   const { setAccount } = useContext<{
     setAccount: (account: string | undefined) => void
   }>(AuthenticationContext)
-  const { createWallet } = useCreateWallet({
-    onError: (error) => {
-      console.error('Error creating wallet:', error)
-      ToastHelper.error('Failed to create wallet. Please try again.')
-    },
-  })
-  const [showMigrationModal, setShowMigrationModal] = useState(false)
-
-  // handle wallet creation
-  const createWalletForUser = useCallback(async () => {
-    try {
-      const newWallet = await createWallet()
-      return newWallet.address
-    } catch (error) {
-      console.error('Error creating wallet:', error)
-      ToastHelper.error('Failed to create wallet. Please try again.')
-      return null
-    }
-  }, [createWallet])
 
   // handle onComplete logic
-  const handleLoginComplete = useCallback(
-    async (user: User) => {
-      let hasLegacyAccount = false
-
-      // Check for legacy account if user logged in with email
-      if (user.email?.address) {
-        hasLegacyAccount = await checkLegacyAccount(user.email.address)
-
-        // Only show migration modal if user has legacy account but no Privy wallet
-        if (hasLegacyAccount && !user.wallet?.address) {
-          setShowMigrationModal(true)
-          // close connect modal
-          window.dispatchEvent(new CustomEvent('legacy.account.detected'))
-          return
-        }
-      }
-
-      // Only create wallet if user doesn't have one AND doesn't have a legacy account
-      if (!user.wallet?.address && !hasLegacyAccount) {
-        const walletAddress = await createWalletForUser()
-        if (!walletAddress) return
-      }
-
-      // Proceed with normal login flow
-      await onSignedInWithPrivy(user)
-    },
-    [createWalletForUser, setShowMigrationModal]
-  )
+  const handleLoginComplete = async (user: User) => {
+    // Proceed with normal login flow
+    await onSignedInWithPrivy(user)
+  }
 
   useLogin({
     onComplete: handleLoginComplete,
@@ -156,11 +115,72 @@ export const PrivyChild = ({ children }: { children: ReactNode }) => {
   return (
     <>
       {children}
-      <MigrationModal
-        isOpen={showMigrationModal}
-        setIsOpen={setShowMigrationModal}
-      />
+      <PrivyMigration />
     </>
+  )
+}
+
+export const PrivyMigration = () => {
+  const [showMigrationModal, setShowMigrationModal] = useState(false)
+  const { user } = usePrivy()
+
+  const { createWallet } = useCreateWallet({
+    onError: (error) => {
+      console.error('Error creating wallet:', error)
+      ToastHelper.error('Failed to create wallet. Please try again.')
+    },
+  })
+
+  // handle wallet creation
+  const createWalletForUser = async () => {
+    try {
+      const newWallet = await createWallet()
+      return newWallet.address
+    } catch (error) {
+      console.error('Error creating wallet:', error)
+      ToastHelper.error('Failed to create wallet. Please try again.')
+      return null
+    }
+  }
+
+  // handle onComplete logic
+  const handleMigrationIfNeeded = async (user: User) => {
+    let hasLegacyAccount = false
+
+    // Check for legacy account if user logged in with email
+    if (user.email?.address) {
+      hasLegacyAccount = await checkLegacyAccount(user.email.address)
+
+      // Only show migration modal if user has legacy account but no Privy wallet
+      if (hasLegacyAccount && !user.wallet?.address) {
+        setShowMigrationModal(true)
+        // close connect modal
+        window.dispatchEvent(new CustomEvent('legacy.account.detected'))
+        return
+      }
+    }
+
+    // Only create wallet if user doesn't have one AND doesn't have a legacy account
+    if (!user.wallet?.address && !hasLegacyAccount) {
+      const walletAddress = await createWalletForUser()
+      if (!walletAddress) return
+    }
+
+    // Proceed with normal login flow
+    await onSignedInWithPrivy(user)
+  }
+
+  useEffect(() => {
+    if (user) {
+      handleMigrationIfNeeded(user)
+    }
+  }, [user])
+
+  return (
+    <MigrationModal
+      isOpen={showMigrationModal}
+      setIsOpen={setShowMigrationModal}
+    />
   )
 }
 
