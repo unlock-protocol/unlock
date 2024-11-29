@@ -17,12 +17,10 @@ import approveAllowance from '../utils/approveAllowance'
  */
 export default async function (options, transactionOptions = {}, callback) {
   const { lockAddress } = options
-  console.log(this)
   const lockContract = await this.getLockContract(lockAddress)
 
   // get the tx data
-  const txRequests = await preparePurchaseTx(options)
-  console.log(txRequests)
+  const txRequests = await preparePurchaseTx(options, this.provider)
 
   let approvalTransactionRequest, purchaseTransactionRequest
   if (txRequests.length === 2) {
