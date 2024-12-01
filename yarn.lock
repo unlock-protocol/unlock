@@ -7247,9 +7247,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@matterlabs/hardhat-zksync-upgradable@npm:1.8.1":
-  version: 1.8.1
-  resolution: "@matterlabs/hardhat-zksync-upgradable@npm:1.8.1"
+"@matterlabs/hardhat-zksync-upgradable@npm:1.8.2":
+  version: 1.8.2
+  resolution: "@matterlabs/hardhat-zksync-upgradable@npm:1.8.2"
   dependencies:
     "@matterlabs/hardhat-zksync-deploy": "npm:^1.6.0"
     "@matterlabs/hardhat-zksync-ethers": "npm:^1.2.1"
@@ -7269,8 +7269,8 @@ __metadata:
     proper-lockfile: "npm:^4.1.2"
     semver: "npm:^7.6.2"
     solidity-ast: "npm:^0.4.56"
-    zksync-ethers: "npm:^6.11.2"
-  checksum: 10/0edd6c3a2c4537dde36d3419e9c57e0c86899a30324cfd80e3fbf58cdeb5aa394ed26a2047c2766ff25c251bc893d28952a3f50b7b0bf36c93607a00e78779cd
+    zksync-ethers: "npm:^6.15.0"
+  checksum: 10/59cf31fca734b34db6f6df837eb89defc169c6428a221b61a53b1551df871ac291fe510939de51b2adde4decd3742ebcef9b195700071f0b32dc335d285e7a7c
   languageName: node
   linkType: hard
 
@@ -16681,7 +16681,7 @@ __metadata:
     "@gnosis-guild/zodiac-core": "npm:2.0.4"
     "@matterlabs/hardhat-zksync-deploy": "npm:1.6.0"
     "@matterlabs/hardhat-zksync-solc": "npm:1.2.5"
-    "@matterlabs/hardhat-zksync-upgradable": "npm:1.8.1"
+    "@matterlabs/hardhat-zksync-upgradable": "npm:1.8.2"
     "@matterlabs/hardhat-zksync-verify": "npm:1.7.0"
     "@nomicfoundation/hardhat-ethers": "npm:3.0.8"
     "@nomicfoundation/hardhat-network-helpers": "npm:1.0.12"
@@ -16713,7 +16713,7 @@ __metadata:
   dependencies:
     "@matterlabs/hardhat-zksync-deploy": "npm:1.6.0"
     "@matterlabs/hardhat-zksync-solc": "npm:1.2.5"
-    "@matterlabs/hardhat-zksync-upgradable": "npm:1.8.1"
+    "@matterlabs/hardhat-zksync-upgradable": "npm:1.8.2"
     "@matterlabs/hardhat-zksync-verify": "npm:1.7.0"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@nomiclabs/hardhat-waffle": "npm:2.0.6"
@@ -50952,12 +50952,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zksync-ethers@npm:^6.11.2":
-  version: 6.15.0
-  resolution: "zksync-ethers@npm:6.15.0"
+"zksync-ethers@npm:^6.15.0":
+  version: 6.15.1
+  resolution: "zksync-ethers@npm:6.15.1"
   peerDependencies:
     ethers: ^6.7.1
-  checksum: 10/6e56c8a7306841b76ce1168fdc9601813d74f21c576af7db6166d21bead42d6313b15ee85c1c4edb93bdb7c0a618936065acec268c0093a86e377cfab0bbceb1
+  checksum: 10/adbb2801414b787e17cfa69d86bb8a1ce22a9584a27a0c84c787fbc2520a2f2c1f6a090a19cf8d32478f432e6f37424f7de0118f359fb5a21b86b3cf557bc355
   languageName: node
   linkType: hard
 
