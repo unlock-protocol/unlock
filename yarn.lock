@@ -11375,21 +11375,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@privy-io/server-auth@npm:1.16.1":
-  version: 1.16.1
-  resolution: "@privy-io/server-auth@npm:1.16.1"
+"@privy-io/server-auth@npm:1.16.6":
+  version: 1.16.6
+  resolution: "@privy-io/server-auth@npm:1.16.6"
   dependencies:
+    "@noble/curves": "npm:^1.6.0"
+    "@noble/hashes": "npm:^1.5.0"
     "@solana/web3.js": "npm:^1.95.3"
     canonicalize: "npm:^2.0.0"
-    crypto: "npm:^1.0.1"
     dotenv: "npm:^16.0.3"
     jose: "npm:^4.10.4"
     node-fetch-native: "npm:^1.4.0"
     redaxios: "npm:^0.5.1"
-    svix: "npm:^1.29.0"
+    svix: "npm:>=1.29.0 <= 1.37.0 || ^1.40.0"
     ts-case-convert: "npm:^2.0.2"
     type-fest: "npm:^3.6.1"
-  checksum: 10/1845bc7181f9583a2494e5ae1ab7a4062428bd4eb913f7d12e6b7e4dd4c56c81671d91f8ca58f7e5b8f755563a0d1c6677870c9f3e9a28cdcd37b47e683366ee
+  checksum: 10/1b22e83e2691dbd8cfb7ba993d57e0da57fff64d9a331fbe4f9075be80fc61af3f6a77b5931a91b8daa376e43e2bc8e5db4a9bc387e8bef6284885523c85afc7
   languageName: node
   linkType: hard
 
@@ -16780,7 +16781,7 @@ __metadata:
     "@nuintun/qrcode": "npm:4.1.6"
     "@openzeppelin/defender-sdk": "npm:1.15.2"
     "@openzeppelin/merkle-tree": "npm:1.0.7"
-    "@privy-io/server-auth": "npm:1.16.1"
+    "@privy-io/server-auth": "npm:1.16.6"
     "@resvg/resvg-js": "npm:2.6.2"
     "@sentry/node": "npm:7.119.2"
     "@sentry/tracing": "npm:7.114.0"
@@ -23119,13 +23120,6 @@ __metadata:
   dependencies:
     type-fest: "npm:^1.0.1"
   checksum: 10/cd5d7ae13803de53680aaed4c732f67209af5988cbeec5f6b29082020347c2d8849ca921b2008be7d6bd1d9d198c3c3697e7441d6d0d3da1bf51e9e4d2032149
-  languageName: node
-  linkType: hard
-
-"crypto@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "crypto@npm:1.0.1"
-  checksum: 10/087fe3165bd94c333a49e6ed66a0193911f63eac38a24f379b3001a5fe260a59c413646e53a0f67875ba13902b2686d81dc703cb2c147a4ec727dcdc04e5645e
   languageName: node
   linkType: hard
 
@@ -46255,9 +46249,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svix@npm:^1.29.0":
-  version: 1.40.0
-  resolution: "svix@npm:1.40.0"
+"svix@npm:>=1.29.0 <= 1.37.0 || ^1.40.0":
+  version: 1.42.0
+  resolution: "svix@npm:1.42.0"
   dependencies:
     "@stablelib/base64": "npm:^1.0.0"
     "@types/node": "npm:^22.7.5"
@@ -46265,7 +46259,7 @@ __metadata:
     fast-sha256: "npm:^1.3.0"
     svix-fetch: "npm:^3.0.0"
     url-parse: "npm:^1.5.10"
-  checksum: 10/d5450f84855963b59cbe9be8902ea4c40ee05bc12449cafefa1bd92d0b68f5a5927f74d701d166f0641442cafa8555697b2abc7afe850b4685fc292a7ea6d0a9
+  checksum: 10/d10a489d6fc75abc1bc8d0eef9c5452ea4bfa5853182a150d92097b23892211bc82524eda46a2cb26d82e0f033c51568f040753b238c63cc896da833854f17f5
   languageName: node
   linkType: hard
 
