@@ -39,4 +39,24 @@
   .navbar__link {
     @apply inline-flex items-center gap-1;
   }
+
+  [data-theme='dark'] {
+    .card,
+    .bg-white {
+      @apply bg-gray-800 text-gray-100;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      @apply text-gray-100;
+    }
+
+    p {
+      @apply text-gray-200;
+    }
+  }
 }
