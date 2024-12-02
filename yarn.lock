@@ -17235,7 +17235,7 @@ __metadata:
     multer-s3: "npm:3.0.1"
     nock: "npm:13.5.6"
     node-mocks-http: "npm:1.16.1"
-    p-retry: "npm:6.2.0"
+    p-retry: "npm:6.2.1"
     parse-data-uri: "npm:0.2.0"
     passkit-generator: "npm:3.2.0"
     path-to-regexp: "npm:8.2.0"
@@ -39445,14 +39445,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"p-retry@npm:6.2.0":
-  version: 6.2.0
-  resolution: "p-retry@npm:6.2.0"
+"p-retry@npm:6.2.1":
+  version: 6.2.1
+  resolution: "p-retry@npm:6.2.1"
   dependencies:
     "@types/retry": "npm:0.12.2"
     is-network-error: "npm:^1.0.0"
     retry: "npm:^0.13.1"
-  checksum: 10/1a5ac16828c96c03c354f78d643dfc7aa8f8b998e1b60e27533da2c75e5cabfb1c7f88ce312e813e09a80b056011fbb372d384132e9c92d27d052bd7c282a978
+  checksum: 10/7104ef13703b155d70883b0d3654ecc03148407d2711a4516739cf93139e8bec383451e14925e25e3c1ae04dbace3ed53c26dc3853c1e9b9867fcbdde25f4cdc
   languageName: node
   linkType: hard
 
