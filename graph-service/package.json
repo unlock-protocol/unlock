@@ -1,7 +1,7 @@
 {
   "name": "graph-service",
   "dependencies": {
-    "@cloudflare/workers-types": "4.20241022.0",
+    "@cloudflare/workers-types": "4.20241127.0",
     "@sentry/node": "8.36.0",
     "toucan-js": "4.0.0",
     "wrangler": "3.84.1"
