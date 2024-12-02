@@ -950,7 +950,7 @@ const abis = {
         "function ownerOf(uint256 _tokenId) view returns (address)",
         "function publicLockVersion() pure returns (uint16)",
         "function purchase(uint256[] _values,address[] _recipients,address[] _referrers,address[] _keyManagers,bytes[] _data) payable returns (uint256[])",
-        "function purchase(tuple[] purchaseArgs) payable returns (uint256[])",
+        "function purchase((uint256,address,address,address,address,bytes,uint256)[]) payable returns (uint256[])",
         "function purchasePriceFor(address _recipient,address _referrer,bytes _data) view returns (uint256 minKeyPrice)",
         "function referrerFees(address) view returns (uint256)",
         "function refundPenaltyBasisPoints() view returns (uint256)",

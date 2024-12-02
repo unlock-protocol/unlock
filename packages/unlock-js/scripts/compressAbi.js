@@ -30,9 +30,18 @@ const data = {
   ),
 }
 
+function formatStruct(type) {
+  const struct = type.components.map(({ type }) => type).join(',')
+  return `(${struct})[]`
+}
+
 function formatTypes(types) {
   return types
-    .map((type) => `${type.type}${type.name ? ` ${type.name}` : ''}`)
+    .map((type) =>
+      type.internalType.startsWith('struct')
+        ? formatStruct(type)
+        : `${type.type}${type.name ? ` ${type.name}` : ''}`
+    )
     .join(',')
 }
 
