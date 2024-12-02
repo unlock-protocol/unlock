@@ -52,6 +52,7 @@ export type WalletServiceCallback = (
 ) => unknown
 
 export interface TransactionOptions {
+  returnCalldata?: boolean
   nonce?: number
   gasLimit?: ethers.BigNumberish
   gasPrice?: ethers.BigNumberish

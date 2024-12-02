@@ -1,7 +1,11 @@
 import Web3Service from '../web3Service'
 import PublicLockVersions from '../PublicLock'
 import networks from '@unlock-protocol/networks'
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeAll } from 'vitest'
+import { chainId, setupTest, setupLock } from './helpers/integration'
+import nodeSetup from './setup/prepare-eth-node-for-unlock'
+import locks from './helpers/fixtures/locks'
+import { ethers } from 'ethers'
 
 var web3Service = new Web3Service(networks)
 const lock = {
@@ -103,6 +107,114 @@ describe('Web3Service', () => {
       )
 
       expect(returnedAddress).toBe(account)
+    })
+  })
+
+  describe('build tx without submitting it', () => {
+    let accounts, web3Service, walletService
+    let lock, lockAddress
+    const unlockVersion = 'v13'
+    const publicLockVersion = 'v13'
+    describe.each(
+      locks[publicLockVersion].map((lock, index) => [index, lock.name, lock])
+    )('lock %i: %s', async (lockIndex, lockName, lockParams) => {
+      beforeAll(async () => {
+        // deploy ERC20 and set balances
+        const ERC20 = await nodeSetup()
+        ;({ accounts, walletService, web3Service } =
+          await setupTest(unlockVersion))
+
+        global.suiteData = {
+          ...global.suiteData,
+          web3Service,
+        }
+        ;({ lock, lockAddress } = await setupLock({
+          walletService,
+          web3Service,
+          publicLockVersion,
+          unlockVersion,
+          lockParams,
+          ERC20,
+        }))
+      })
+      describe('purchaseKey', () => {
+        let approvalTx
+        let purchaseTx
+
+        beforeAll(async () => {
+          const [keyOwner] = accounts
+          const txs = await web3Service.purchaseKey({
+            lockAddress: lockAddress,
+            network: chainId,
+            params: {
+              owner: keyOwner,
+              lockAddress: lock.address,
+            },
+          })
+          if (lock.currencyContractAddress) {
+            ;[approvalTx, purchaseTx] = txs
+          } else {
+            ;[purchaseTx] = txs
+          }
+        })
+        it('parse correctly purchase tx', async () => {
+          expect.assertions(2)
+          expect(purchaseTx.to).toBe(lockAddress)
+          expect(ethers.formatEther(purchaseTx.value)).toBe(
+            lock.currencyContractAddress ? '0.0' : lock.keyPrice
+          )
+        })
+        it('parse adds allowance tx if erc20', async () => {
+          // check that approval tx has been added
+          if (!lock.currencyContractAddress) {
+            expect.assertions(1)
+            expect(approvalTx).toBeUndefined()
+          } else {
+            expect.assertions(2)
+            expect(approvalTx.to).toBe(lock.currencyContractAddress)
+            expect(approvalTx.value).toBe(0)
+          }
+        })
+      })
+      describe('purchaseKeys', () => {
+        let approvalTx
+        let purchaseTx
+
+        beforeAll(async () => {
+          const [keyOwner] = accounts
+          const txs = await web3Service.purchaseKeys({
+            lockAddress: lockAddress,
+            network: chainId,
+            params: {
+              owners: [keyOwner],
+              lockAddress: lock.address,
+            },
+          })
+          if (lock.currencyContractAddress) {
+            ;[approvalTx, purchaseTx] = txs
+          } else {
+            ;[purchaseTx] = txs
+          }
+        })
+        it('parse correctly purchase tx', async () => {
+          expect.assertions(2)
+          expect(purchaseTx.to).toBe(lockAddress)
+          expect(ethers.formatEther(purchaseTx.value)).toBe(
+            lock.currencyContractAddress ? '0.0' : lock.keyPrice
+          )
+        })
+        it('parse adds allowance tx if erc20', async () => {
+          // check that approval tx has been added
+          if (!lock.currencyContractAddress) {
+            expect.assertions(1)
+            expect(approvalTx).toBeUndefined()
+          } else {
+            expect.assertions(2)
+            expect(approvalTx.to).toBe(lock.currencyContractAddress)
+            expect(approvalTx.value).toBe(0)
+          }
+        })
+      })
     })
   })
 })
