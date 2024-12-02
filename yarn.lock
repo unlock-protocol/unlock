@@ -18086,7 +18086,7 @@ __metadata:
     copyfiles: "npm:2.4.1"
     eslint: "npm:9.16.0"
     fs-extra: "npm:11.2.0"
-    hardhat: "npm:2.22.15"
+    hardhat: "npm:2.22.16"
     solidity-docgen: "npm:0.6.0-beta.36"
     typescript: "npm:5.7.2"
   languageName: unknown
@@ -18231,7 +18231,7 @@ __metadata:
     ethers: "npm:6.13.4"
     ethers-multisend: "npm:3.1.0"
     fs-extra: "npm:11.2.0"
-    hardhat: "npm:2.22.15"
+    hardhat: "npm:2.22.16"
     zksync-ethers: "npm:6.15.1"
   languageName: unknown
   linkType: soft
@@ -18254,7 +18254,7 @@ __metadata:
     copyfiles: "npm:2.4.1"
     eslint: "npm:9.14.0"
     ethers: "npm:6.13.4"
-    hardhat: "npm:2.22.15"
+    hardhat: "npm:2.22.16"
     tsup: "npm:8.3.5"
     typescript: "npm:5.7.2"
     zksync-ethers: "npm:6.15.1"
@@ -18281,7 +18281,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:^"
     eslint: "npm:9.16.0"
     ethers: "npm:6.13.4"
-    hardhat: "npm:2.22.15"
+    hardhat: "npm:2.22.16"
     hardhat-gas-reporter: "npm:2.2.2"
     mocha: "npm:10.8.2"
     prettier: "npm:3.4.1"
@@ -18468,7 +18468,7 @@ __metadata:
     eth-gas-reporter: "npm:0.2.27"
     ethers: "npm:6.13.4"
     fs-extra: "npm:11.2.0"
-    hardhat: "npm:2.22.15"
+    hardhat: "npm:2.22.16"
     hardhat-contract-sizer: "npm:2.10.0"
     hardhat-erc1820: "npm:0.1.0"
     hardhat-gas-reporter: "npm:2.2.2"
@@ -18695,7 +18695,7 @@ __metadata:
     ethers: "npm:6.13.4"
     graphql: "npm:16.9.0"
     graphql-request: "npm:6.1.0"
-    hardhat: "npm:2.22.15"
+    hardhat: "npm:2.22.16"
     prettier: "npm:3.4.1"
     siwe: "npm:2.3.2"
     tsup: "npm:8.3.5"
@@ -31506,7 +31506,69 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hardhat@npm:2.22.15, hardhat@npm:^2.22.5":
+"hardhat@npm:2.22.16":
+  version: 2.22.16
+  resolution: "hardhat@npm:2.22.16"
+  dependencies:
+    "@ethersproject/abi": "npm:^5.1.2"
+    "@metamask/eth-sig-util": "npm:^4.0.0"
+    "@nomicfoundation/edr": "npm:^0.6.4"
+    "@nomicfoundation/ethereumjs-common": "npm:4.0.4"
+    "@nomicfoundation/ethereumjs-tx": "npm:5.0.4"
+    "@nomicfoundation/ethereumjs-util": "npm:9.0.4"
+    "@nomicfoundation/solidity-analyzer": "npm:^0.1.0"
+    "@sentry/node": "npm:^5.18.1"
+    "@types/bn.js": "npm:^5.1.0"
+    "@types/lru-cache": "npm:^5.1.0"
+    adm-zip: "npm:^0.4.16"
+    aggregate-error: "npm:^3.0.0"
+    ansi-escapes: "npm:^4.3.0"
+    boxen: "npm:^5.1.2"
+    chokidar: "npm:^4.0.0"
+    ci-info: "npm:^2.0.0"
+    debug: "npm:^4.1.1"
+    enquirer: "npm:^2.3.0"
+    env-paths: "npm:^2.2.0"
+    ethereum-cryptography: "npm:^1.0.3"
+    ethereumjs-abi: "npm:^0.6.8"
+    find-up: "npm:^5.0.0"
+    fp-ts: "npm:1.19.3"
+    fs-extra: "npm:^7.0.1"
+    immutable: "npm:^4.0.0-rc.12"
+    io-ts: "npm:1.10.4"
+    json-stream-stringify: "npm:^3.1.4"
+    keccak: "npm:^3.0.2"
+    lodash: "npm:^4.17.11"
+    mnemonist: "npm:^0.38.0"
+    mocha: "npm:^10.0.0"
+    p-map: "npm:^4.0.0"
+    picocolors: "npm:^1.1.0"
+    raw-body: "npm:^2.4.1"
+    resolve: "npm:1.17.0"
+    semver: "npm:^6.3.0"
+    solc: "npm:0.8.26"
+    source-map-support: "npm:^0.5.13"
+    stacktrace-parser: "npm:^0.1.10"
+    tinyglobby: "npm:^0.2.6"
+    tsort: "npm:0.0.1"
+    undici: "npm:^5.14.0"
+    uuid: "npm:^8.3.2"
+    ws: "npm:^7.4.6"
+  peerDependencies:
+    ts-node: "*"
+    typescript: "*"
+  peerDependenciesMeta:
+    ts-node:
+      optional: true
+    typescript:
+      optional: true
+  bin:
+    hardhat: internal/cli/bootstrap.js
+  checksum: 10/77e3f0447e42265107242827f8efd8346224c79001a0eea2d0d71bcaeee1ab9ed1e1fff47c28e36d19e1b3c386707dc60dd3d5e22b09da15f8b2ea5feb5ff943
+  languageName: node
+  linkType: hard
+
+"hardhat@npm:^2.22.5":
   version: 2.22.15
   resolution: "hardhat@npm:2.22.15"
   dependencies:
@@ -48673,7 +48735,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tinyglobby@npm:^0.2.9":
+"tinyglobby@npm:^0.2.6, tinyglobby@npm:^0.2.9":
   version: 0.2.10
   resolution: "tinyglobby@npm:0.2.10"
   dependencies:
