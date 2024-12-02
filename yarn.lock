@@ -6037,7 +6037,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphql-codegen/typescript-operations@npm:4.3.1, @graphql-codegen/typescript-operations@npm:^4.3.1":
+"@graphql-codegen/typescript-operations@npm:4.4.0":
+  version: 4.4.0
+  resolution: "@graphql-codegen/typescript-operations@npm:4.4.0"
+  dependencies:
+    "@graphql-codegen/plugin-helpers": "npm:^5.1.0"
+    "@graphql-codegen/typescript": "npm:^4.1.2"
+    "@graphql-codegen/visitor-plugin-common": "npm:5.6.0"
+    auto-bind: "npm:~4.0.0"
+    tslib: "npm:~2.6.0"
+  peerDependencies:
+    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
+  checksum: 10/9b4d3dfe2641ee8b8f06a004af733fca05f93a8b8274f44296f61a43e313d94954cd2fcfeb9dc63e852116fc7e017b93cce94ca49fa433025412efc185a61323
+  languageName: node
+  linkType: hard
+
+"@graphql-codegen/typescript-operations@npm:^4.3.1":
   version: 4.3.1
   resolution: "@graphql-codegen/typescript-operations@npm:4.3.1"
   dependencies:
@@ -6052,7 +6067,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphql-codegen/typescript@npm:4.1.2":
+"@graphql-codegen/typescript@npm:4.1.2, @graphql-codegen/typescript@npm:^4.1.2":
   version: 4.1.2
   resolution: "@graphql-codegen/typescript@npm:4.1.2"
   dependencies:
@@ -17409,22 +17424,22 @@ __metadata:
     "@graphql-codegen/cli": "npm:5.0.3"
     "@graphql-codegen/typescript": "npm:4.1.2"
     "@graphql-codegen/typescript-graphql-request": "npm:6.2.0"
-    "@graphql-codegen/typescript-operations": "npm:4.3.1"
+    "@graphql-codegen/typescript-operations": "npm:4.4.0"
     "@nomicfoundation/hardhat-ethers": "npm:3.0.8"
     "@openapitools/openapi-generator-cli": "npm:2.15.3"
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/types": "workspace:./packages/types"
-    eslint: "npm:9.14.0"
+    eslint: "npm:9.16.0"
     ethers: "npm:6.13.4"
     graphql: "npm:16.9.0"
     graphql-request: "npm:6.1.0"
     hardhat: "npm:2.22.15"
-    prettier: "npm:3.3.3"
+    prettier: "npm:3.4.1"
     siwe: "npm:2.3.2"
     tsup: "npm:8.3.5"
-    typescript: "npm:5.6.3"
+    typescript: "npm:5.7.2"
     vitest: "npm:2.1.4"
   peerDependencies:
     axios: 1.7.8
