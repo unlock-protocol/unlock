@@ -32,7 +32,7 @@
     "@vercel/og": "0.6.4",
     "@vercel/speed-insights": "1.0.14",
     "@xstate/react": "5.0.0",
-    "axios": "1.7.7",
+    "axios": "1.7.8",
     "calendar-link": "2.7.0",
     "csv": "6.3.11",
     "dayjs": "1.11.13",
