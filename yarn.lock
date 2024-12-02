@@ -17396,7 +17396,7 @@ __metadata:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     ethers: "npm:6.13.4"
     passport-custom: "npm:1.1.1"
-    prettier: "npm:3.3.3"
+    prettier: "npm:3.4.1"
   peerDependencies:
     passport: 0.6 || 0.7
   languageName: unknown
