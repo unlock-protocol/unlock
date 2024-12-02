@@ -16235,9 +16235,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tenderly/api-client@npm:^1.0.0":
-  version: 1.0.1
-  resolution: "@tenderly/api-client@npm:1.0.1"
+"@tenderly/api-client@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@tenderly/api-client@npm:1.1.0"
   dependencies:
     axios: "npm:^0.27.2"
     cli-table3: "npm:^0.6.2"
@@ -16255,15 +16255,15 @@ __metadata:
       optional: true
     typescript:
       optional: true
-  checksum: 10/61ab3583bbd74617e9b449441ad3550e85954dc4355568d47b7192b9a105124a263894072ea5f50fa9db511f7aa2a1258ccb79cb2f66e1e83f108bcedbea7b05
+  checksum: 10/c42af0d9d6b1cccd66a024252a28c42a500655e3e6307f0d0f26ca74ef4e9f6803a0f14c482073d8b62b0be0465e66738c8d7672cf5f76410b938c91f7f0a070
   languageName: node
   linkType: hard
 
-"@tenderly/hardhat-integration@npm:^1.0.0":
-  version: 1.0.2
-  resolution: "@tenderly/hardhat-integration@npm:1.0.2"
+"@tenderly/hardhat-integration@npm:^1.1.0":
+  version: 1.1.1
+  resolution: "@tenderly/hardhat-integration@npm:1.1.1"
   dependencies:
-    "@tenderly/api-client": "npm:^1.0.0"
+    "@tenderly/api-client": "npm:^1.1.0"
     axios: "npm:^1.6.7"
     dotenv: "npm:^16.4.5"
     fs-extra: "npm:^10.1.0"
@@ -16275,13 +16275,13 @@ __metadata:
     typescript: "npm:^5.5.4"
   peerDependencies:
     hardhat: ^2.22.6
-  checksum: 10/62222abd69655eab242e73ed9a649763ed21ea58477a37f3d5639bedadad60dd1140ad9ad5fc720e29bbd5f4f27a78c9d00061e3033acaa52c02c6a73f777e1c
+  checksum: 10/6416d0695c1b78281b080ad7a7311750c6796ea938de8337e5180a0b425cc5a3a3ac96598f58fa925dca477411007fb9395511272c1c3d751da58ae2774504cc
   languageName: node
   linkType: hard
 
-"@tenderly/hardhat-tenderly@npm:2.4.0":
-  version: 2.4.0
-  resolution: "@tenderly/hardhat-tenderly@npm:2.4.0"
+"@tenderly/hardhat-tenderly@npm:2.5.1":
+  version: 2.5.1
+  resolution: "@tenderly/hardhat-tenderly@npm:2.5.1"
   dependencies:
     "@ethersproject/bignumber": "npm:^5.7.0"
     "@nomicfoundation/hardhat-ethers": "npm:^3.0.0"
@@ -16289,10 +16289,10 @@ __metadata:
     "@nomicfoundation/hardhat-verify": "npm:^2.0.8"
     "@openzeppelin/hardhat-upgrades": "npm:^3.3.0"
     "@openzeppelin/upgrades-core": "npm:^1.32.2"
-    "@tenderly/hardhat-integration": "npm:^1.0.0"
+    "@tenderly/hardhat-integration": "npm:^1.1.0"
     dotenv: "npm:^16.4.5"
     ethers: "npm:^6.8.1"
-  checksum: 10/ba11fca9a66d4ab52e7bd8a8fb0e2e7f7114bf272af8f3cb904979e68b2252c70dae6b42be4a16528c2fa425a4de02f2bd97104009f83ff8e3276da3a0f5b94a
+  checksum: 10/f7b483d1aa2d8de87aa1cf2d826abe02d590efef17a88bcb630efe75e4da09140332be635cf2758ed6876dd71876ffa690bc88d9496f097cef9d7ec2c4b01646
   languageName: node
   linkType: hard
 
@@ -18220,7 +18220,7 @@ __metadata:
     "@openzeppelin/upgrades-core": "npm:1.40.0"
     "@safe-global/api-kit": "npm:2.5.4"
     "@safe-global/protocol-kit": "npm:5.0.4"
-    "@tenderly/hardhat-tenderly": "npm:2.4.0"
+    "@tenderly/hardhat-tenderly": "npm:2.5.1"
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/hardhat-helpers": "workspace:^"
