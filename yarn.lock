@@ -17188,7 +17188,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:22.9.0, @types/node@npm:>=13.7.0, @types/node@npm:>=8.1.0, @types/node@npm:^22.7.5":
+"@types/node@npm:*, @types/node@npm:>=13.7.0, @types/node@npm:>=8.1.0, @types/node@npm:^22.7.5":
   version: 22.9.0
   resolution: "@types/node@npm:22.9.0"
   dependencies:
@@ -18274,22 +18274,22 @@ __metadata:
     "@typechain/ethers-v6": "npm:0.5.1"
     "@typechain/hardhat": "npm:9.1.0"
     "@types/mocha": "npm:10.0.10"
-    "@types/node": "npm:22.9.0"
+    "@types/node": "npm:22.10.1"
     "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/eslint-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
-    eslint: "npm:9.14.0"
+    eslint: "npm:9.16.0"
     ethers: "npm:6.13.4"
     hardhat: "npm:2.22.15"
     hardhat-gas-reporter: "npm:2.2.2"
     mocha: "npm:10.8.2"
-    prettier: "npm:3.3.3"
+    prettier: "npm:3.4.1"
     solidity-coverage: "npm:0.8.14"
     ts-mocha: "npm:10.0.0"
     ts-node: "npm:10.9.2"
     typechain: "npm:8.3.2"
-    typescript: "npm:5.6.3"
+    typescript: "npm:5.7.2"
   peerDependencies:
     "@unlock-protocol/contracts": "*"
     "@unlock-protocol/networks": "*"
