@@ -12,8 +12,8 @@ export default async function approveAllowance({
     const approvedAmount = await getAllowance(
       erc20Address,
       address,
-      this.provider
-      // this.signer.getAddress()
+      this.provider,
+      this.signer ? this.signer.getAddress() : null
     )
 
     if (
