@@ -34,7 +34,7 @@ We also maintain a production branch which is used to deploy to ... production! 
 
 If needed, we can also deploy specific versions to production. For this is recommended approach is to open a new pull request against the production branch containing **only** the commits to be deployed since the latest production deploy. One way to do this is to rebase a local production-fix branch against the remote production branch and cherry pick the commits to be deployed from master. After this is a pull request is made and has to be approved by some of our team members. Once approved the updated production branch is immediately deployed.
 
-#### Execptions
+#### Exceptions
 
 Both wedlocks (email service) and unlock-protocol-com (static site) are deployed to production from the `master` branch. They do not have a staging environment.
 
