@@ -14688,6 +14688,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/query-core@npm:5.62.0":
+  version: 5.62.0
+  resolution: "@tanstack/query-core@npm:5.62.0"
+  checksum: 10/f3172cd997907ef2b3c767ee51116fffd739f26b504f2d3ce5854cc118c4e2ad1bd1d1d5f223c5ed431fb90f96e649425572402b580852b6ee7aaee72a2dac12
+  languageName: node
+  linkType: hard
+
 "@tanstack/react-query@npm:5.59.16":
   version: 5.59.16
   resolution: "@tanstack/react-query@npm:5.59.16"
@@ -14707,6 +14714,17 @@ __metadata:
   peerDependencies:
     react: ^18 || ^19
   checksum: 10/def87fc10646c79a355a05f9a76faa0b4ca511073cd80ebe2a701d05f43969c41498e42bd5228c3c6047d5af3e5805ced5a72a890504f776b861eaf4d17eea0d
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:5.62.0":
+  version: 5.62.0
+  resolution: "@tanstack/react-query@npm:5.62.0"
+  dependencies:
+    "@tanstack/query-core": "npm:5.62.0"
+  peerDependencies:
+    react: ^18 || ^19
+  checksum: 10/69712c822e35a32a27fc06009d7e12904e72369bd5dbc039f7fd1023811440f60a9df096e22196a53a64564b6bebfcae755de4b468ce0056e8092f769b0bac52
   languageName: node
   linkType: hard
 
@@ -16623,7 +16641,7 @@ __metadata:
     "@mui/material": "npm:6.1.6"
     "@mui/x-charts": "npm:7.22.1"
     "@privy-io/react-auth": "npm:1.92.6"
-    "@tanstack/react-query": "npm:5.59.16"
+    "@tanstack/react-query": "npm:5.62.0"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/ui": "workspace:./packages/ui"
     clsx: "npm:2.1.1"
@@ -17186,7 +17204,7 @@ __metadata:
     "@headlessui/react": "npm:2.2.0"
     "@observablehq/plot": "npm:0.6.16"
     "@radix-ui/react-avatar": "npm:1.1.1"
-    "@tanstack/react-query": "npm:5.59.16"
+    "@tanstack/react-query": "npm:5.62.0"
     "@testing-library/react": "npm:16.0.1"
     "@types/node": "npm:22.9.0"
     "@types/react": "npm:18.3.12"
