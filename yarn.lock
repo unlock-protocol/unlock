@@ -16852,7 +16852,7 @@ __metadata:
     ethers-multisend: "npm:3.1.0"
     fs-extra: "npm:11.2.0"
     hardhat: "npm:2.22.15"
-    zksync-ethers: "npm:6.14.2"
+    zksync-ethers: "npm:6.15.1"
   languageName: unknown
   linkType: soft
 
@@ -16877,7 +16877,7 @@ __metadata:
     hardhat: "npm:2.22.15"
     tsup: "npm:8.3.5"
     typescript: "npm:5.6.3"
-    zksync-ethers: "npm:6.14.2"
+    zksync-ethers: "npm:6.15.1"
   languageName: unknown
   linkType: soft
 
@@ -51078,12 +51078,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zksync-ethers@npm:6.14.2":
-  version: 6.14.2
-  resolution: "zksync-ethers@npm:6.14.2"
+"zksync-ethers@npm:6.15.1":
+  version: 6.15.1
+  resolution: "zksync-ethers@npm:6.15.1"
   peerDependencies:
     ethers: ^6.7.1
-  checksum: 10/adba0a9a4d10abae61f6cbefe0af796985d8b5e22e36b17fd61c975e7e51a1c340e0b42de7f1007cbda8f3342b9942ecfcbe9d04e4a7dd6778d817d2295c0206
+  checksum: 10/adbb2801414b787e17cfa69d86bb8a1ce22a9584a27a0c84c787fbc2520a2f2c1f6a090a19cf8d32478f432e6f37424f7de0118f359fb5a21b86b3cf557bc355
   languageName: node
   linkType: hard
 
