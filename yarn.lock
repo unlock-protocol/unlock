@@ -17037,7 +17037,7 @@ __metadata:
     prism-react-renderer: "npm:2.4.0"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
-    react-dropzone: "npm:14.3.4"
+    react-dropzone: "npm:14.3.5"
     react-hook-form: "npm:7.53.1"
     react-icons: "npm:5.3.0"
     react-use-clipboard: "npm:1.0.9"
@@ -41672,19 +41672,6 @@ __metadata:
   peerDependencies:
     react: ^18.3.1
   checksum: 10/3f4b73a3aa083091173b29812b10394dd06f4ac06aff410b74702cfb3aa29d7b0ced208aab92d5272919b612e5cda21aeb1d54191848cf6e46e9e354f3541f81
-  languageName: node
-  linkType: hard
-
-"react-dropzone@npm:14.3.4":
-  version: 14.3.4
-  resolution: "react-dropzone@npm:14.3.4"
-  dependencies:
-    attr-accept: "npm:^2.2.4"
-    file-selector: "npm:^2.1.0"
-    prop-types: "npm:^15.8.1"
-  peerDependencies:
-    react: ">= 16.8 || 18.0.0"
-  checksum: 10/11eae4f1c76e68deed2bba23f87c313fdccf7f8606beb9be6c809f3246632958f4894256b45448511ffc1a76a4fd3b03d1ab6a3eb7a4646a1659fa1f4e8bbf52
   languageName: node
   linkType: hard
 
