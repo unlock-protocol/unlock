@@ -454,16 +454,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@arbitrum/sdk@npm:4.0.1":
-  version: 4.0.1
-  resolution: "@arbitrum/sdk@npm:4.0.1"
+"@arbitrum/sdk@npm:4.0.2":
+  version: 4.0.2
+  resolution: "@arbitrum/sdk@npm:4.0.2"
   dependencies:
     "@ethersproject/address": "npm:^5.0.8"
     "@ethersproject/bignumber": "npm:^5.1.1"
     "@ethersproject/bytes": "npm:^5.0.8"
     async-mutex: "npm:^0.4.0"
     ethers: "npm:^5.1.0"
-  checksum: 10/3d81f8645022f723f36dd8711493f8bddd5f4306e7ed2d1a31b34091492f0be972bae03d3abef5dbf6b230e01e1693c826e6e624ae831f3bfe6cf42166f14350
+  checksum: 10/b30b982ff88160c405a1af351f52efc4105c99a53b30138a2cadd7d173a0d934045559eefc7b47344478182a3be19a768521059bfb8a4bfedf5363fe28c241e4
   languageName: node
   linkType: hard
 
@@ -16809,7 +16809,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/governance@workspace:governance"
   dependencies:
-    "@arbitrum/sdk": "npm:4.0.1"
+    "@arbitrum/sdk": "npm:4.0.2"
     "@eth-optimism/sdk": "npm:3.3.2"
     "@gnosis-guild/zodiac": "npm:4.0.3"
     "@gnosis-guild/zodiac-core": "npm:2.0.4"
