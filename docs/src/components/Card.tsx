@@ -3,14 +3,20 @@ import React from 'react'
 
 interface CardProps {
   title: string
-  description: string
+  description?: string
+  content?: React.ReactNode
   action: {
     title: string
     url: string
   }
 }
 
-export default function Card({ title, description, action }: CardProps) {
+export default function Card({
+  title,
+  description,
+  content,
+  action,
+}: CardProps) {
   return (
     <div
       className="bg-white bg-opacity-80 dark:bg-gray-800 dark:bg-opacity-80 rounded-2xl space-y-4 p-4"
@@ -21,11 +27,14 @@ export default function Card({ title, description, action }: CardProps) {
           {title}
         </h3>
       </div>
-      <div className="p-4">
-        <p className="text-left text-gray-800 dark:text-gray-200">
-          {description}
-        </p>
-      </div>
+      {description && (
+        <div className="p-4">
+          <p className="text-left text-gray-800 dark:text-gray-200">
+            {description}
+          </p>
+        </div>
+      )}
+      {content && <div className="pb-4 prose dark:prose-invert">{content}</div>}
       <div>
         <a href={action.url} className="block w-full">
           <Button className="w-full">{action.title}</Button>

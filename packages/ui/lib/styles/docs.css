@@ -75,6 +75,86 @@
   --text-800: #e4e4e4;
   --text-500: #9ea3a7;
   background-color: #282a2d;
+  --ifm-color-content: #e4e4e4;
+  --ifm-color-content-secondary: #9ea3a7;
+  color: var(--ifm-font-color-base);
+
+  /* Ensure all text elements are visible */
+  color: var(--ifm-font-color-base);
+
+  /* Style specific elements */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--ifm-heading-color);
+  }
+
+  p,
+  li,
+  dt,
+  dd {
+    color: var(--ifm-font-color-base);
+  }
+
+  /* Style links */
+  a {
+    color: var(--ifm-color-primary);
+
+    &:hover {
+      color: var(--ifm-color-primary-lighter);
+    }
+  }
+
+  /* Ensure markdown content is visible */
+  .markdown {
+    color: var(--ifm-font-color-base);
+
+    > * {
+      color: var(--ifm-font-color-base);
+    }
+  }
+
+  /* Remove the existing card-specific color overrides since we want consistent colors */
+  .card {
+    background-color: var(--ifm-card-background-color);
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    li,
+    dt,
+    dd {
+      color: var(--ifm-font-color-base);
+    }
+  }
+}
+
+[data-theme='dark'] {
+  .markdown {
+    color: var(--ifm-font-color-base);
+  }
+
+  p,
+  li,
+  td,
+  th,
+  dt,
+  dd {
+    color: var(--ifm-font-color-base);
+  }
+
+  .markdown > p,
+  .markdown > ul,
+  .markdown > ol {
+    color: var(--ifm-font-color-base);
+  }
 }
 
 [data-theme='light'] img[src$='#gh-dark-mode-only'],
@@ -506,4 +586,81 @@ dd {
   display: inline-block;
   position: static; /* Override any absolute positioning */
   transform: none; /* Remove any transforms */
+}
+
+[data-theme='dark'] {
+  /* Existing dark theme variables */
+  --ifm-color-primary: #bfb1f7;
+  --ifm-navbar-background-color: #373a3e;
+  --menu-background: #494e53;
+  --text-800: #e4e4e4;
+  --text-500: #9ea3a7;
+  background-color: #282a2d;
+
+  /* Add these new variables */
+  --ifm-heading-color: #e4e4e4;
+  --ifm-font-color-base: #e4e4e4;
+  --ifm-color-content: #e4e4e4;
+  --ifm-color-content-secondary: #9ea3a7;
+
+  /* Ensure all text elements are visible */
+  color: var(--ifm-font-color-base);
+
+  /* Style specific elements */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--ifm-heading-color);
+  }
+
+  p,
+  li,
+  dt,
+  dd {
+    color: var(--ifm-font-color-base);
+  }
+
+  /* Style links */
+  a {
+    color: var(--ifm-color-primary);
+
+    &:hover {
+      color: var(--ifm-color-primary-lighter);
+    }
+  }
+
+  /* Ensure markdown content is visible */
+  .markdown {
+    color: var(--ifm-font-color-base);
+
+    > * {
+      color: var(--ifm-font-color-base);
+    }
+  }
+
+  /* Remove the existing card-specific color overrides since we want consistent colors */
+  .card {
+    background-color: var(--ifm-card-background-color);
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    li,
+    dt,
+    dd {
+      color: var(--ifm-font-color-base);
+    }
+  }
+}
+
+/* Add specific overrides for any problematic elements */
+[data-theme='dark'] .theme-doc-markdown {
+  color: var(--ifm-font-color-base);
 }
