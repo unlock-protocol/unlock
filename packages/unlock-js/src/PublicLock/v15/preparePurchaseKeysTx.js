@@ -43,10 +43,10 @@ export default async function preparePurchase(options, provider) {
     txs.push(approvalTxRequest)
   }
 
-  // parse
+  // parse using struct
   const callData = lockContract.interface.encodeFunctionData(
-    'purchase',
-    purchaseArgs
+    'purchase((uint256,address,address,address,address,bytes,uint256)[])',
+    [purchaseArgs.map((p) => Object.values(p))]
   )
 
   const value = !erc20Address || erc20Address === ZERO ? totalPrice : 0
