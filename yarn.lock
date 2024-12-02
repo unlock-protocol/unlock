@@ -13999,6 +13999,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@solidity-parser/parser@npm:^0.19.0":
+  version: 0.19.0
+  resolution: "@solidity-parser/parser@npm:0.19.0"
+  checksum: 10/2136708ecc988b534efcf836e95f4f02a1452ab0c026438014c35ce31b26dc011cc8c512d502fc7bcb968f850ab7e524838292bc36cad6a144fedb4c29685587
+  languageName: node
+  linkType: hard
+
 "@spruceid/siwe-parser@npm:^2.1.2":
   version: 2.1.2
   resolution: "@spruceid/siwe-parser@npm:2.1.2"
@@ -16887,7 +16894,7 @@ __metadata:
     eslint: "npm:9.14.0"
     ethers: "npm:6.13.4"
     hardhat: "npm:2.22.15"
-    hardhat-gas-reporter: "npm:2.2.1"
+    hardhat-gas-reporter: "npm:2.2.2"
     mocha: "npm:10.8.2"
     prettier: "npm:3.3.3"
     solidity-coverage: "npm:0.8.13"
@@ -17076,7 +17083,7 @@ __metadata:
     hardhat: "npm:2.22.15"
     hardhat-contract-sizer: "npm:2.10.0"
     hardhat-erc1820: "npm:0.1.0"
-    hardhat-gas-reporter: "npm:2.2.1"
+    hardhat-gas-reporter: "npm:2.2.2"
     hardhat-storage-layout: "npm:0.1.7"
     hardhat-tracer: "npm:3.1.0"
     prettier: "npm:3.3.3"
@@ -29860,14 +29867,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hardhat-gas-reporter@npm:2.2.1":
-  version: 2.2.1
-  resolution: "hardhat-gas-reporter@npm:2.2.1"
+"hardhat-gas-reporter@npm:2.2.2":
+  version: 2.2.2
+  resolution: "hardhat-gas-reporter@npm:2.2.2"
   dependencies:
     "@ethersproject/abi": "npm:^5.7.0"
     "@ethersproject/bytes": "npm:^5.7.0"
     "@ethersproject/units": "npm:^5.7.0"
-    "@solidity-parser/parser": "npm:^0.18.0"
+    "@solidity-parser/parser": "npm:^0.19.0"
     axios: "npm:^1.6.7"
     brotli-wasm: "npm:^2.0.1"
     chalk: "npm:4.1.2"
@@ -29881,7 +29888,7 @@ __metadata:
     viem: "npm:2.7.14"
   peerDependencies:
     hardhat: ^2.16.0
-  checksum: 10/af8bd86400035ab1ed574c5f782e7ee408fff75ea6cfcd56ab87bf80c2e911e9fbe943b528ad17844abad8ff8f63daa24aae391ccbf3e07a9970be66f949bd3d
+  checksum: 10/32a13011b414bae887741907bb2ea23cda0e645fb4fdfce87bed5a37be95f26a723ccc4140b413ec215832d6cc0fa5ff517f6d47af1bbedee5508bb5432269d7
   languageName: node
   linkType: hard
 
