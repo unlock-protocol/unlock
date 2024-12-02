@@ -48,7 +48,7 @@
     "feed": "4.2.2",
     "gray-matter": "4.0.3",
     "next-transpile-modules": "10.0.1",
-    "postcss": "8.4.47",
+    "postcss": "8.4.49",
     "remark": "15.0.1",
     "remark-html": "16.0.1",
     "tailwindcss": "3.4.14",
