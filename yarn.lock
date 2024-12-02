@@ -19933,20 +19933,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-polyfill-corejs2@npm:0.4.11":
-  version: 0.4.11
-  resolution: "babel-plugin-polyfill-corejs2@npm:0.4.11"
-  dependencies:
-    "@babel/compat-data": "npm:^7.22.6"
-    "@babel/helper-define-polyfill-provider": "npm:^0.6.2"
-    semver: "npm:^6.3.1"
-  peerDependencies:
-    "@babel/core": ^7.4.0 || ^8.0.0-0 <8.0.0
-  checksum: 10/9c79908bed61b9f52190f254e22d3dca6ce25769738642579ba8d23832f3f9414567a90d8367a31831fa45d9b9607ac43d8d07ed31167d8ca8cda22871f4c7a1
-  languageName: node
-  linkType: hard
-
-"babel-plugin-polyfill-corejs2@npm:^0.4.10":
+"babel-plugin-polyfill-corejs2@npm:0.4.12, babel-plugin-polyfill-corejs2@npm:^0.4.10":
   version: 0.4.12
   resolution: "babel-plugin-polyfill-corejs2@npm:0.4.12"
   dependencies:
@@ -48502,7 +48489,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:8.12.2"
     "@vitest/coverage-v8": "npm:2.1.4"
     "@vitest/eslint-plugin": "npm:1.1.7"
-    babel-plugin-polyfill-corejs2: "npm:0.4.11"
+    babel-plugin-polyfill-corejs2: "npm:0.4.12"
     eslint: "npm:9.14.0"
     eslint-plugin-evm-address-to-checksummed: "npm:0.0.6"
     eslint-plugin-json: "npm:4.0.1"
