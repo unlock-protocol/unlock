@@ -17284,10 +17284,10 @@ __metadata:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/paywall": "workspace:./packages/paywall"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
-    eslint: "npm:9.14.0"
+    eslint: "npm:9.16.0"
     next: "npm:14.2.16"
-    prettier: "npm:3.3.3"
-    typescript: "npm:5.6.3"
+    prettier: "npm:3.4.1"
+    typescript: "npm:5.7.2"
     vite: "npm:6.0.2"
     vite-plugin-node-polyfills: "npm:0.22.0"
   languageName: unknown

@@ -23,9 +23,9 @@
   "devDependencies": {
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
-    "eslint": "9.14.0",
-    "prettier": "3.3.3",
-    "typescript": "5.6.3",
+    "eslint": "9.16.0",
+    "prettier": "3.4.1",
+    "typescript": "5.7.2",
     "vite": "6.0.2"
   },
   "browserslist": [
