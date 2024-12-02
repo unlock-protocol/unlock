@@ -7982,9 +7982,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@matterlabs/hardhat-zksync-verify@npm:1.7.0":
-  version: 1.7.0
-  resolution: "@matterlabs/hardhat-zksync-verify@npm:1.7.0"
+"@matterlabs/hardhat-zksync-verify@npm:1.7.1":
+  version: 1.7.1
+  resolution: "@matterlabs/hardhat-zksync-verify@npm:1.7.1"
   dependencies:
     "@ethersproject/abi": "npm:^5.7.0"
     "@ethersproject/address": "npm:5.7.0"
@@ -8001,7 +8001,7 @@ __metadata:
   peerDependencies:
     "@nomicfoundation/hardhat-verify": ^2.0.8
     hardhat: ^2.22.5
-  checksum: 10/a65bb92593cdd63eeec692686cd92ecdc926ba689a23549184e4bf5b8f1d72de443686c0998cd60b9e5e939cc6e85c8123aa86ba0481b95dd1112b9accdfdd51
+  checksum: 10/a86f3bbe2499cf4269b4cd8c48106e61548a7d4d1427026cbec6eb6d138e6999504ce4442bb06d1b520544816fec691dae850cd210caa89d5e15fff8d8e49ef5
   languageName: node
   linkType: hard
 
@@ -18211,7 +18211,7 @@ __metadata:
     "@matterlabs/hardhat-zksync-deploy": "npm:1.6.0"
     "@matterlabs/hardhat-zksync-solc": "npm:1.2.5"
     "@matterlabs/hardhat-zksync-upgradable": "npm:1.8.2"
-    "@matterlabs/hardhat-zksync-verify": "npm:1.7.0"
+    "@matterlabs/hardhat-zksync-verify": "npm:1.7.1"
     "@nomicfoundation/hardhat-ethers": "npm:3.0.8"
     "@nomicfoundation/hardhat-network-helpers": "npm:1.0.12"
     "@nomicfoundation/hardhat-verify": "npm:2.0.11"
@@ -18243,7 +18243,7 @@ __metadata:
     "@matterlabs/hardhat-zksync-deploy": "npm:1.6.0"
     "@matterlabs/hardhat-zksync-solc": "npm:1.2.5"
     "@matterlabs/hardhat-zksync-upgradable": "npm:1.8.2"
-    "@matterlabs/hardhat-zksync-verify": "npm:1.7.0"
+    "@matterlabs/hardhat-zksync-verify": "npm:1.7.1"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@nomiclabs/hardhat-waffle": "npm:2.0.6"
     "@openzeppelin/upgrades-core": "npm:1.40.0"
