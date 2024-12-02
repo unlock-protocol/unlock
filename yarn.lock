@@ -17158,7 +17158,7 @@ __metadata:
     hardhat-gas-reporter: "npm:2.2.2"
     mocha: "npm:10.8.2"
     prettier: "npm:3.3.3"
-    solidity-coverage: "npm:0.8.13"
+    solidity-coverage: "npm:0.8.14"
     ts-mocha: "npm:10.0.0"
     ts-node: "npm:10.9.2"
     typechain: "npm:8.3.2"
@@ -17350,7 +17350,7 @@ __metadata:
     prettier: "npm:3.3.3"
     prettier-plugin-solidity: "npm:1.4.1"
     solhint: "npm:5.0.3"
-    solidity-coverage: "npm:0.8.13"
+    solidity-coverage: "npm:0.8.14"
     yesno: "npm:0.4.0"
   languageName: unknown
   linkType: soft
@@ -45475,12 +45475,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"solidity-coverage@npm:0.8.13":
-  version: 0.8.13
-  resolution: "solidity-coverage@npm:0.8.13"
+"solidity-coverage@npm:0.8.14":
+  version: 0.8.14
+  resolution: "solidity-coverage@npm:0.8.14"
   dependencies:
     "@ethersproject/abi": "npm:^5.0.9"
-    "@solidity-parser/parser": "npm:^0.18.0"
+    "@solidity-parser/parser": "npm:^0.19.0"
     chalk: "npm:^2.4.2"
     death: "npm:^1.1.0"
     difflib: "npm:^0.2.4"
@@ -45502,7 +45502,7 @@ __metadata:
     hardhat: ^2.11.0
   bin:
     solidity-coverage: plugins/bin.js
-  checksum: 10/c92e4c1356155e1445241fe0a004c14656517c29e7fec42cc76737dd91e555891861cd716bd5ebb08fbf004f479d2c1ea45bd6dca9350c1ead2ae72c1271f37a
+  checksum: 10/995763921261b98c87be9a8bf1397bf806c8347a4f5678eff0b0b1810f4f1d86f2b2fb6b864a9dd7a909b3c1828518d2b18bcc2bfe4eaf3cba11c9eb68d86ea6
   languageName: node
   linkType: hard
 
