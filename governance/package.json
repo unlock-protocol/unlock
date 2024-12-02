@@ -36,7 +36,7 @@
   "scripts": {
     "test": "hardhat test",
     "ci": "yarn lint && yarn test",
-    "check": "node ./all_networks unlock:info --quiet",
+    "check": "node ./scripts/all_networks unlock:info --quiet",
     "check:oracles": "node ./scripts/all_networks run scripts/uniswap/checkOracles.js",
     "check:multisig": "yarn hardhat run scripts/multisig/check-all.js",
     "check:cross-chain": "yarn hardhat run scripts/bridge/check.js",
