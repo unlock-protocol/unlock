@@ -33,6 +33,6 @@
   },
   "devDependencies": {
     "globals": "15.13.0",
-    "vitest": "2.1.4"
+    "vitest": "2.1.8"
   }
 }
