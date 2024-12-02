@@ -114,7 +114,7 @@ describe('Web3Service', () => {
     let accounts, web3Service, walletService
     let lock, lockAddress
     const unlockVersion = 'v13'
-    const publicLockVersion = 'v13'
+    const publicLockVersion = 'v15'
     describe.each(
       locks[publicLockVersion].map((lock, index) => [index, lock.name, lock])
     )('lock %i: %s', async (lockIndex, lockName, lockParams) => {
