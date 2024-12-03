@@ -14,6 +14,8 @@ import renewMembershipFor from './renewMembershipFor'
 import v9 from '../v9'
 import getPurchaseKeysArguments from './getPurchaseKeysArguments'
 import burnKey from './burnKey'
+import preparePurchaseKeysTx from './preparePurchaseKeysTx'
+import preparePurchaseKeyTx from './preparePurchaseKeyTx'
 
 const {
   grantKey,
@@ -87,4 +89,6 @@ export default {
   transferFrom,
   setGasRefundValue,
   burnKey,
+  preparePurchaseKeyTx,
+  preparePurchaseKeysTx,
 }

@@ -27,16 +27,31 @@ export function useStepperItems(
     existingMember,
     payment,
     renew,
+    mint,
   } = useSelector(service, (state) => state.context) as CheckoutMachineContext
 
-  if (!paywallConfig.locks || Object.keys(paywallConfig.locks).length === 0) {
+  const currentState = useSelector(service, (state) => state.value)
+
+  // If we're in a transition state or signing a message, maintain previous items
+  if (
+    !paywallConfig?.locks ||
+    Object.keys(paywallConfig.locks).length === 0 ||
+    typeof currentState === 'object' ||
+    currentState === 'MESSAGE_TO_SIGN'
+  ) {
     return []
   }
+
   const [address, config] = Object.entries(paywallConfig.locks)[0]
   const hasOneLock = Object.keys(paywallConfig.locks).length === 1
   const lockConfig = {
     address,
     ...config,
+  }
+
+  // Only calculate steps if we have a lock and are not in a transition
+  if (!lock && currentState !== 'SELECT') {
+    return []
   }
 
   const isExpired = isRenew || renew
@@ -135,6 +150,8 @@ export function useStepperItems(
       },
       {
         name: 'Minting NFT',
+        skip: !mint || mint.status !== 'FINISHED',
+        to: 'MINTING',
       },
     ]
   )
