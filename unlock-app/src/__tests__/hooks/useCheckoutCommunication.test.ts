@@ -44,7 +44,7 @@ describe('useCheckoutCommunication', () => {
     await waitFor(() => result.current.ready)
 
     const userInfo = { address: '0xmyaddress' }
-    result.current.emitUserInfo(userInfo)
+    result.current.emitUserInfo(userInfo, null)
 
     expect(emit).toHaveBeenCalledWith(CheckoutEvents.userInfo, userInfo)
   })
@@ -73,7 +73,7 @@ describe('useCheckoutCommunication', () => {
     await waitFor(() => result.current.ready)
 
     const transactionInfo = { hash: '0xmyhash', lock: '0xmylock' }
-    result.current.emitTransactionInfo(transactionInfo)
+    result.current.emitTransactionInfo(transactionInfo, null)
 
     expect(emit).toHaveBeenCalledWith(
       CheckoutEvents.transactionInfo,
@@ -100,10 +100,10 @@ describe('useCheckoutCommunication', () => {
     const { result, waitFor } = renderHook(() => useCheckoutCommunication())
 
     const userInfo = { address: '0xmyaddress' }
-    act(() => result.current.emitUserInfo(userInfo))
+    act(() => result.current.emitUserInfo(userInfo, null))
 
     const transactionInfo = { hash: '0xmyhash', lock: '0xmylock' }
-    act(() => result.current.emitTransactionInfo(transactionInfo))
+    act(() => result.current.emitTransactionInfo(transactionInfo, null))
 
     act(() => result.current.emitCloseModal())
 
