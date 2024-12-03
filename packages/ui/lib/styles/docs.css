@@ -147,7 +147,6 @@ a:hover .button {
 @media (max-width: 996px) {
   .colorModeToggle_o_qc,
   .footer__link-separator,
-  .navbar__item,
   .tableOfContents_jWtb {
     display: none;
   }
@@ -506,4 +505,75 @@ dd {
   display: inline-block;
   position: static; /* Override any absolute positioning */
   transform: none; /* Remove any transforms */
+}
+
+/* Update responsive layout breakpoints */
+@media screen and (max-width: 996px) {
+  .flex.flex-wrap {
+    flex-direction: column;
+  }
+
+  .w-full.md\:w-1\/2.lg\:w-1\/2 {
+    width: 100%;
+  }
+
+  .px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* Keep two columns on tablet and desktop */
+@media screen and (min-width: 997px) {
+  .w-full.md\:w-1\/2.lg\:w-1\/2 {
+    width: 50%;
+  }
+}
+
+/* Mobile navigation fixes */
+@media (max-width: 996px) {
+  /* Remove the blanket hide of navbar items */
+  .navbar__items {
+    display: flex; /* Keep flex display */
+  }
+
+  /* Hide only the main navigation items */
+  .navbar__items--right > .navbar__item:not(.navbar__toggle) {
+    display: none;
+  }
+
+  /* Show the mobile menu toggle button */
+  .navbar__toggle {
+    display: flex;
+  }
+
+  /* Style the sidebar when it's open */
+  .navbar-sidebar {
+    display: block;
+  }
+
+  .navbar-sidebar .navbar__items {
+    padding: 0.5rem;
+  }
+
+  .navbar-sidebar .navbar__item {
+    display: block;
+    padding: 0.5rem 1rem;
+  }
+
+  .navbar-sidebar .navbar__link {
+    width: 100%;
+    padding: 0.5rem 0;
+  }
+}
+
+/* Preserve desktop navigation above 996px */
+@media screen and (min-width: 997px) {
+  .navbar__toggle {
+    display: none;
+  }
+
+  .navbar__items {
+    display: flex;
+  }
 }
