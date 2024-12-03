@@ -43,7 +43,8 @@
   [data-theme='dark'] {
     .card,
     .bg-white {
-      @apply bg-gray-800 text-gray-100;
+      @apply bg-gray-800;
+      @apply text-gray-100;
     }
 
     h1,
