@@ -3,6 +3,22 @@ import { loginRandomUser } from '../../test-helpers/utils'
 import app from '../../app'
 import { vi, expect } from 'vitest'
 
+// mock pdfmake
+vi.mock('pdfmake/build/pdfmake', () => ({
+  default: {
+    vfs: {},
+    createPdf: vi.fn(),
+  },
+}))
+
+vi.mock('pdfmake/build/vfs_fonts', () => ({
+  default: {
+    pdfMake: {
+      vfs: {},
+    },
+  },
+}))
+
 const lockAddress = '0x62CcB13A72E6F991dE53b9B7AC42885151588Cd2'
 const wrongLockAddress = '0x70997970C51812dc3A010C7d01b50e0d17dc79C8'
 const network = 4

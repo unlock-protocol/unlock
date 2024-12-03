@@ -8,7 +8,8 @@ import { TDocumentDefinitions } from 'pdfmake/interfaces'
 import { Receipt, ReceiptBase } from '../models'
 import { getWeb3Service } from '../initializers'
 
-pdfmake.vfs = pdfFonts.pdfMake.vfs
+// @ts-ignore
+pdfmake.vfs = pdfFonts.pdfMake ? pdfFonts.pdfMake.vfs : pdfFonts.vfs
 
 export const getAllReceipts = async ({
   network,

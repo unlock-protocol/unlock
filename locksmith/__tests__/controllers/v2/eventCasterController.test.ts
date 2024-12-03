@@ -55,6 +55,22 @@ vi.mock('../../../src/worker/worker', () => ({
   addJob: vi.fn().mockResolvedValue(Promise.resolve(true)),
 }))
 
+// mock pdfmake
+vi.mock('pdfmake/build/pdfmake', () => ({
+  default: {
+    vfs: {},
+    createPdf: vi.fn(),
+  },
+}))
+
+vi.mock('pdfmake/build/vfs_fonts', () => ({
+  default: {
+    pdfMake: {
+      vfs: {},
+    },
+  },
+}))
+
 // https://events.xyz/api/v1/event?event_id=195ede7f
 const eventCasterEvent = {
   contract: {
