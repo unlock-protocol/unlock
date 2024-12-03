@@ -114,6 +114,37 @@ export const BasicConfigForm = ({ onChange, defaultValues }: Props) => {
         error={errors.endingCallToAction?.message}
       />
 
+      <fieldset className="flex flex-col gap-4">
+        <legend>Hooks</legend>
+        <p className="text-sm text-gray-600">
+          Configure URLs for specific events during the checkout process
+        </p>
+        <Input
+          label="Status"
+          size="small"
+          description="URL to be called on status change"
+          {...register('hooks.status')}
+        />
+        <Input
+          label="Authenticated"
+          size="small"
+          description="URL to be called when the user is authenticated"
+          {...register('hooks.authenticated')}
+        />
+        <Input
+          label="Transaction Sent"
+          size="small"
+          description="URL to be called when a transaction is sent"
+          {...register('hooks.transactionSent')}
+        />
+        <Input
+          label="Metadata"
+          size="small"
+          description="URL to be called for metadata updates"
+          {...register('hooks.metadata')}
+        />
+      </fieldset>
+
       {/* Deprecated, replaced by SIWE */}
       {/* <TextBox
         label="Message to Sign"

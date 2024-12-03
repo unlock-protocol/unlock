@@ -55,11 +55,14 @@ export function Returning({ checkoutService, onClose, communication }: Props) {
         address: account!,
       })
       setHasMessageToSign(false)
-      communication?.emitUserInfo({
-        address: account,
-        message: paywallConfig.messageToSign,
-        signedMessage: signature,
-      })
+      communication?.emitUserInfo(
+        {
+          address: account,
+          message: paywallConfig.messageToSign,
+          signedMessage: signature,
+        },
+        paywallConfig
+      )
     } catch (error) {
       if (error instanceof Error) {
         ToastHelper.error(error.message)

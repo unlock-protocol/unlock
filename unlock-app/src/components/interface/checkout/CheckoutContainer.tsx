@@ -13,7 +13,11 @@ import { ethers } from 'ethers'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { Connect } from './Connect'
 import { isInIframe } from '~/utils/iframe'
+import { useEffect } from 'react'
+import { config } from '~/config/app'
+import { postToWebhook } from './main/checkoutHookUtils'
 
+declare const window: any
 export function CheckoutContainer() {
   const searchParams = useSearchParams()
 
@@ -51,6 +55,40 @@ export function CheckoutContainer() {
         ].includes(key.toLowerCase())
       })?.[1]
       ?.toString()
+
+  // prevents posting twice when this re-renders
+  let prevBody: string
+  useEffect(() => {
+    let script: any
+    let handler: any
+
+    if (paywallConfig) {
+      handler = window.addEventListener(
+        'unlockProtocol.status',
+        async (state: any) => {
+          const body = state.detail
+          if (JSON.stringify(body) === prevBody) {
+            return
+          } else {
+            prevBody = JSON.stringify(body)
+            await postToWebhook(body, paywallConfig, 'status')
+          }
+        }
+      )
+
+      window.unlockProtocolConfig = paywallConfig
+
+      script = document.createElement('script')
+      script.src = `${config.paywallUrl}/static/unlock.latest.min.js`
+      script.async = true
+      document.body.appendChild(script)
+    }
+
+    return () => {
+      script?.remove()
+      window.removeEventListener('unlockProtocol', handler)
+    }
+  }, [paywallConfig])
 
   if (!(paywallConfig || oauthConfig) || isLoading) {
     return <LoadingIcon size={20} className="animate-spin" />

@@ -64,6 +64,7 @@ export function Checkout({
   }, [paywallConfig])
 
   useEffect(() => {
+    console.log('pwallconfig=', paywallConfig)
     if (paywallConfigChanged) {
       checkoutService.send({
         type: 'UPDATE_PAYWALL_CONFIG',
@@ -74,8 +75,9 @@ export function Checkout({
 
   useEffect(() => {
     const user = account ? { address: account } : {}
-    if (isInIframe() && communication) {
-      communication.emitUserInfo(user)
+    console.log('user=>', user)
+    if (communication) {
+      communication.emitUserInfo(user, paywallConfig)
     }
   }, [account, communication])
 

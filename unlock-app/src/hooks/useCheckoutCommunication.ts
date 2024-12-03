@@ -4,6 +4,7 @@ import { PaywallConfigType } from '@unlock-protocol/core'
 import { OAuthConfig } from '~/unlockTypes'
 import { useProvider } from './useProvider'
 import { isInIframe } from '~/utils/iframe'
+import { postToWebhook } from '~/components/interface/checkout/main/checkoutHookUtils'
 
 export interface UserInfo {
   address?: string
@@ -218,25 +219,31 @@ export const useCheckoutCommunication = () => {
     }
   }, [provider, incomingBuffer, handleMethodCallEvent])
 
-  const emitUserInfo = (info: UserInfo) => {
+  const emitUserInfo = async (info: UserInfo, config: any) => {
     // if user already emitted, avoid re-emitting
     if (info.address === user && !info.signedMessage) {
       return
     }
     setUser(info.address)
     pushOrEmit(CheckoutEvents.userInfo, info)
+    await postToWebhook(info, config, 'authenticated')
   }
 
-  const emitMetadata = (metadata: any) => {
+  const emitMetadata = async (metadata: any, config: any) => {
     pushOrEmit(CheckoutEvents.metadata, metadata)
+    await postToWebhook(metadata, config, 'metadata')
   }
 
   const emitCloseModal = () => {
     pushOrEmit(CheckoutEvents.closeModal)
   }
 
-  const emitTransactionInfo = (info: TransactionInfo) => {
+  const emitTransactionInfo = async (
+    info: TransactionInfo,
+    paywallConfig: any
+  ) => {
     pushOrEmit(CheckoutEvents.transactionInfo, info)
+    await postToWebhook(info, paywallConfig, 'transactionSent')
   }
 
   const emitMethodCall = (call: MethodCall) => {
