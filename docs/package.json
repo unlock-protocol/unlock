@@ -33,7 +33,7 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
-    "build": "yarn docusaurus gen-api-docs all && docusaurus build",
+    "build": "yarn workspace @unlock-protocol/ui build && yarn docusaurus gen-api-docs all && docusaurus build",
     "gen-api": "docusaurus gen-api-docs all",
     "clean-api": "docusaurus clean-api-docs all",
     "swizzle": "docusaurus swizzle",
