@@ -24,6 +24,7 @@ export type CheckoutPage =
   | 'GITCOIN'
   | 'CONNECT'
   | 'ALLOW_LIST'
+  | 'PRIVY_FUNDING'
 
 export interface FiatPricing {
   creditCardEnabled: boolean
@@ -239,6 +240,7 @@ export const checkoutMachine = createMachine(
       UNLOCK_ACCOUNT: '.UNLOCK_ACCOUNT',
       SELECT: '.SELECT',
       QUANTITY: '.QUANTITY',
+      PRIVY_FUNDING: '.PRIVY_FUNDING',
       PAYMENT: '.PAYMENT',
       METADATA: '.METADATA',
       MESSAGE_TO_SIGN: '.MESSAGE_TO_SIGN',
@@ -680,6 +682,16 @@ export const checkoutMachine = createMachine(
           ],
           DISCONNECT,
           BACK: 'PAYMENT',
+        },
+      },
+      PRIVY_FUNDING: {
+        on: {
+          SELECT_PAYMENT_METHOD: {
+            target: 'CONFIRM',
+            actions: ['selectPaymentMethod'],
+          },
+          BACK: 'PAYMENT',
+          DISCONNECT,
         },
       },
       CONFIRM: {

@@ -51,16 +51,14 @@ You can run the entire test suite using
 yarn test
 ```
 
-Run a single test
+### Run a single integration test using a specific versions
 
-You can edit `testPath` and versions values in `./src/__integrations__/single.js` to test for specific functions on specific versions of the protocol.
+You can use env variables to specify which test to run. Alternatively, you can edit path and versions directly in `./src/__integrations__/single.js` to test for a specific functions on specific versions of the protocol
 
 ```
+export UNLOCK_JS_TEST_RUN_UNLOCK_VERSION='v13'
+export UNLOCK_JS_TEST_RUN_PUBLIC_LOCK_VERSION='v14'
+export UNLOCK_JS_TEST_RUN_TEST_PATH='./lock/purchaseKeys.js'
+
 yarn test:single
-```
-
-Run a single integration test with specific versions
-
-```
-yarn hardhat test:integration src/__tests__/integration/lock/cancelAndRefund.js --unlock-version 10 --lock-version 12
 ```
