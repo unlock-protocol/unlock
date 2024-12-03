@@ -109,12 +109,21 @@ p {
   color: #bfb1f7;
 }
 
-a .button {
-  text-decoration: none;
+a .button,
+a button,
+a:hover .button,
+a:visited .button {
+  text-decoration: none !important;
 }
 
-a:hover .button {
-  text-decoration: none;
+a:hover .button.button--secondary,
+a:visited .button.button--secondary {
+  color: #ffffff;
+}
+
+[data-theme='dark'] a:hover .button.button--secondary,
+[data-theme='dark'] a:visited .button.button--secondary {
+  color: #bfb1f7;
 }
 
 /**Nav bar **/
@@ -576,4 +585,29 @@ dd {
   .navbar__items {
     display: flex;
   }
+}
+
+/* More specific rules for buttons in anchor tags */
+a[href]:has(.button),
+a[href]:hover:has(.button),
+a[href]:visited:has(.button) {
+  text-decoration: none !important;
+}
+
+/* Remove any hover effects from anchor tags containing buttons */
+a:hover .button,
+a:hover .button.button--secondary,
+a:hover .button--primary {
+  text-decoration: none !important;
+}
+
+/* Target the specific Button component */
+a[href] .button,
+a[href]:hover .button {
+  text-decoration: none !important;
+}
+
+/* Ensure no underline on the button itself */
+.button {
+  text-decoration: none !important;
 }

@@ -36,8 +36,12 @@ export default function Card({
       )}
       {content && <div className="pb-4 prose dark:prose-invert">{content}</div>}
       <div>
-        <a href={action.url} className="block w-full">
-          <Button className="w-full">{action.title}</Button>
+        <a
+          href={action.url}
+          className="block w-full no-underline hover:no-underline"
+          style={{ textDecoration: 'none' }}
+        >
+          <Button className="w-full no-underline">{action.title}</Button>
         </a>
       </div>
     </div>
