@@ -26,6 +26,15 @@ export default defineConfig({
     rollupOptions: {
       external: isCDN ? Object.keys(peerDependencies) : external,
       shimMissingExports: true,
+      output: {
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name?.endsWith('.css')) {
+            return 'style.css'
+          }
+          // Return a default name if assetInfo.name is undefined
+          return assetInfo.name ?? 'asset'
+        },
+      },
     },
     sourcemap: true,
   },
@@ -34,7 +43,6 @@ export default defineConfig({
     react(),
     svgr(),
     nodePolyfills({
-      // Whether to polyfill `node:` protocol imports.
       protocolImports: true,
     }),
   ],

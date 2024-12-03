@@ -1,4 +1,4 @@
-import './index.css'
+import './styles/index.css'
 export { Button } from './components/Button/Button'
 export { Alert } from './components/Alert/Alert'
 export { Drawer } from './components/Drawer/Drawer'

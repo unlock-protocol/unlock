@@ -11,6 +11,7 @@ import {
   ethers,
 } from 'ethers'
 import { useEffect, useState } from 'react'
+import React from 'react'
 
 const ERC20_ABI = [
   'function balanceOf(address) view returns (uint256)',
@@ -29,7 +30,40 @@ const UNLOCK_ABI = [
   },
 ]
 
-const getBalance = async (provider, contractAddress, ownerAddress) => {
+interface Token {
+  address?: string
+  symbol: string
+  decimals: number
+}
+
+interface Network {
+  id: number
+  chainId: number
+  name: string
+  description?: string
+  provider: string
+  unlockAddress: string
+  unlockDaoToken?: Token
+  dao?: boolean
+  nativeCurrency: {
+    symbol: string
+    decimals: number
+  }
+  tokens: Token[]
+  explorer: {
+    urls: {
+      address: (address: string) => string
+      transaction: (hash: string) => string
+      token: (address: string, holderAddress?: string) => string
+    }
+  }
+}
+
+const getBalance = async (
+  provider: JsonRpcProvider,
+  contractAddress: string | undefined,
+  ownerAddress: string
+): Promise<string> => {
   if (!contractAddress || !ownerAddress) {
     return ''
   }
@@ -40,7 +74,10 @@ const getBalance = async (provider, contractAddress, ownerAddress) => {
   return `${Number(formatUnits(balance, decimals)).toFixed(2)} ${symbol}`
 }
 
-const getUdt = async (provider, unlockAddress) => {
+const getUdt = async (
+  provider: JsonRpcProvider,
+  unlockAddress: string
+): Promise<string> => {
   if (!unlockAddress) {
     return ''
   }
@@ -106,7 +143,20 @@ const getBalances = async (
   return balances.filter(({ balance }) => balance > 0)
 }
 
-const BurnableToken = ({ network, token, balance, reload }) => {
+// Add types to component props
+interface BurnableTokenProps {
+  network: Network
+  token: Token
+  balance: bigint
+  reload: () => void
+}
+
+const BurnableToken = ({
+  network,
+  token,
+  balance,
+  reload,
+}: BurnableTokenProps) => {
   const [hash, setHash] = useState('')
   const [burnTx, setBurnTx] = useState(null)
   const [burning, setBurning] = useState(false)
@@ -156,7 +206,7 @@ const BurnableToken = ({ network, token, balance, reload }) => {
       }
     } else {
       const fees = [500, 3000, 10000]
-      for (let fee of fees) {
+      for (const fee of fees) {
         if (!tx) {
           try {
             tx = await unlock.swapAndBurn.populateTransaction(
@@ -228,10 +278,12 @@ const BurnableToken = ({ network, token, balance, reload }) => {
   }, [burning, authenticated])
 
   return (
-    <li>
-      {Number(formatUnits(balance, token.decimals)).toFixed(4)} {token.symbol}{' '}
+    <li className="flex items-center">
+      <span>
+        {Number(formatUnits(balance, token.decimals)).toFixed(4)} {token.symbol}
+      </span>
       {burnTx && (
-        <Button isLoading={true} onClick={burn}>
+        <Button onClick={burn} className="ml-2" size="tiny">
           Burn
         </Button>
       )}{' '}
@@ -244,7 +296,12 @@ const BurnableToken = ({ network, token, balance, reload }) => {
   )
 }
 
-const BurnableTokens = ({ network }) => {
+// Add types to component props
+interface BurnableTokensProps {
+  network: Network
+}
+
+const BurnableTokens = ({ network }: BurnableTokensProps) => {
   const provider = new JsonRpcProvider(network.provider, network.chainId, {
     batchMaxCount: 10,
   })
@@ -266,10 +323,10 @@ const BurnableTokens = ({ network }) => {
   }
 
   return (
-    <li>
+    <li className="space-y-2">
       <a href="/governance/unlock-dao-tokens#swap-and-burn">Burnable tokens</a>{' '}
       <a href="#footnote-1">[1]</a>:{' '}
-      <ul>
+      <ul className="space-y-2">
         {balances.map(({ token, balance }) => {
           return (
             <BurnableToken
@@ -286,7 +343,11 @@ const BurnableTokens = ({ network }) => {
   )
 }
 
-const BurnedTokens = ({ network }) => {
+interface BurnedTokensProps {
+  network: Network
+}
+
+const BurnedTokens = ({ network }: BurnedTokensProps) => {
   const burnAddress = '0x000000000000000000000000000000000000dEaD'
   const provider = new JsonRpcProvider(network.provider)
   const { data: burnedTokens } = useQuery({
@@ -304,7 +365,7 @@ const BurnedTokens = ({ network }) => {
       Burned Governance Tokens :{' '}
       <a
         href={network.explorer.urls.token(
-          network.unlockDaoToken?.address,
+          network.unlockDaoToken?.address || '',
           burnAddress
         )}
         target="_blank"
@@ -315,7 +376,11 @@ const BurnedTokens = ({ network }) => {
   )
 }
 
-export const SupportedNetwork = ({ network }) => {
+interface SupportedNetworkProps {
+  network: Network
+}
+
+export const SupportedNetwork = ({ network }: SupportedNetworkProps) => {
   const provider = new JsonRpcProvider(network.provider)
   const { data: udtBalance } = useQuery({
     queryKey: [
@@ -344,7 +409,7 @@ export const SupportedNetwork = ({ network }) => {
     return null
   }
   return (
-    <div key={network.id} style={{ 'margin-bottom': '30px' }}>
+    <div key={network.id} style={{ marginBottom: '30px' }}>
       <h2>{network.name}</h2>
       <p>{network.description}</p>
       <ul>
@@ -365,7 +430,7 @@ export const SupportedNetwork = ({ network }) => {
             Protocol Reward
           </a>
           :{' '}
-          {parseFloat(udtBalance) > 0
+          {udtBalance && parseFloat(udtBalance) > 0
             ? `✅ ${udtBalance} to be distributed`
             : '❌'}
         </li>
@@ -380,7 +445,11 @@ export const SupportedNetwork = ({ network }) => {
   )
 }
 
-export const TokenNetwork = ({ network }) => {
+interface TokenNetworkProps {
+  network: Network
+}
+
+export const TokenNetwork = ({ network }: TokenNetworkProps) => {
   const provider = new JsonRpcProvider(network.provider)
   const { data: udt } = useQuery({
     queryKey: ['getUdt', network.unlockAddress, network.id],
@@ -393,9 +462,10 @@ export const TokenNetwork = ({ network }) => {
   const { data: symbol } = useQuery({
     queryKey: ['getSymbol', network.unlockAddress, udt],
     queryFn: async () => {
+      if (!udt || udt === ZeroAddress) return null
       return getSymbol(provider, udt)
     },
-    enabled: udt && udt !== ZeroAddress,
+    enabled: !!udt && udt !== ZeroAddress,
   })
 
   if (network.name === 'localhost') {
@@ -410,7 +480,7 @@ export const TokenNetwork = ({ network }) => {
       <td>{network.name}</td>
       <td>{symbol}</td>
       <td>
-        <a target="_blank" href={network.explorer.urls.token(udt)}>
+        <a target="_blank" href={network.explorer.urls.token(udt!)}>
           <code>{udt}</code>
         </a>
       </td>
