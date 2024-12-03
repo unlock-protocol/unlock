@@ -13701,16 +13701,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/core@npm:8.9.2":
-  version: 8.9.2
-  resolution: "@sentry/core@npm:8.9.2"
-  dependencies:
-    "@sentry/types": "npm:8.9.2"
-    "@sentry/utils": "npm:8.9.2"
-  checksum: 10/f11532b9f0cceceb40f1934a23360c98d3dd7ae8a05f14e2ed5f5a247932716f5f7367aa1f6cba7dc2736b063ceaefe27d4ebe55af6e6ca593a9b39d75d1ca4e
-  languageName: node
-  linkType: hard
-
 "@sentry/hub@npm:5.30.0":
   version: 5.30.0
   resolution: "@sentry/hub@npm:5.30.0"
@@ -13972,13 +13962,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/types@npm:8.9.2":
-  version: 8.9.2
-  resolution: "@sentry/types@npm:8.9.2"
-  checksum: 10/a38f4dd21330a3d4c848f94ba678ce24ce5489236286247bae351db1d97d49733cd4888b59e1b193077fe38a1bd8e04e72067e749897bfd15d657cc551333657
-  languageName: node
-  linkType: hard
-
 "@sentry/utils@npm:5.30.0":
   version: 5.30.0
   resolution: "@sentry/utils@npm:5.30.0"
@@ -14013,15 +13996,6 @@ __metadata:
   dependencies:
     "@sentry/types": "npm:7.120.0"
   checksum: 10/d4fd729732f5811d90a8a524903c6c00a84fa14c2ed4d1fb34aa2d02f6182b09400b5e042a4f2b6fb44e66fa10d650b613b098b3ea12b3adb5cb133400459829
-  languageName: node
-  linkType: hard
-
-"@sentry/utils@npm:8.9.2":
-  version: 8.9.2
-  resolution: "@sentry/utils@npm:8.9.2"
-  dependencies:
-    "@sentry/types": "npm:8.9.2"
-  checksum: 10/4933dbbb837ce61006ea867fea061d610c72330d04b33fd1871a9a327e8d11d8d150db34054d5fd7c316270167c17179f5bfe7eddded49cb5010b14cdffb5e75
   languageName: node
   linkType: hard
 
@@ -31114,7 +31088,6 @@ __metadata:
   dependencies:
     "@cloudflare/workers-types": "npm:4.20241127.0"
     "@sentry/node": "npm:8.41.0"
-    toucan-js: "npm:4.0.0"
     vitest: "npm:2.1.8"
     wrangler: "npm:3.91.0"
   languageName: unknown
@@ -48969,17 +48942,6 @@ __metadata:
   version: 3.0.1
   resolution: "totalist@npm:3.0.1"
   checksum: 10/5132d562cf88ff93fd710770a92f31dbe67cc19b5c6ccae2efc0da327f0954d211bbfd9456389655d726c624f284b4a23112f56d1da931ca7cfabbe1f45e778a
-  languageName: node
-  linkType: hard
-
-"toucan-js@npm:4.0.0":
-  version: 4.0.0
-  resolution: "toucan-js@npm:4.0.0"
-  dependencies:
-    "@sentry/core": "npm:8.9.2"
-    "@sentry/types": "npm:8.9.2"
-    "@sentry/utils": "npm:8.9.2"
-  checksum: 10/900b09b5da8e3a5f19ccffa20f10de1ea2f538a2a3f5847ecfb75683d4ff161ea7d10fcf610f585be8ec7271ec8b3e3a10f44598c70e1296229bae3b11b75da7
   languageName: node
   linkType: hard
 
