@@ -80,7 +80,7 @@
     "p-retry": "6.2.1",
     "passkit-generator": "3.2.0",
     "path-to-regexp": "8.2.0",
-    "pdfmake": "0.2.14",
+    "pdfmake": "0.2.15",
     "pg": "8.13.1",
     "rate-limiter-flexible": "5.0.4",
     "react": "18.3.1",
