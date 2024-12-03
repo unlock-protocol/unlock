@@ -15,7 +15,7 @@
     "@guildxyz/sdk": "2.6.9",
     "@headlessui/react": "2.1.9",
     "@hookform/resolvers": "3.9.1",
-    "@privy-io/react-auth": "1.92.7",
+    "@privy-io/react-auth": "1.95.2",
     "@radix-ui/react-avatar": "1.1.1",
     "@sentry/nextjs": "7.119.2",
     "@stripe/react-stripe-js": "3.0.0",

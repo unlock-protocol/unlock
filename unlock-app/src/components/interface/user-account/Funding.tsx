@@ -54,37 +54,39 @@ export const Funding = () => {
             <Placeholder.Line size="md" />
           </Placeholder.Root>
         ) : (
-          <div className="flex flex-col gap-2">
-            <div className="text-gray-700">Your current balance</div>
-            <div className="flex items-center gap-2">
-              <Badge
-                variant={userBalance === 0 ? 'red' : 'default'}
-                className="text-lg font-bold"
-              >
-                {userBalance?.toFixed(4)} ETH
-              </Badge>
-              {userBalance && ethPriceNumber && ethPriceNumber > 0 && (
-                <div className="text-gray-600">
-                  (≈{' '}
-                  <span className="font-semibold">
-                    ${new Intl.NumberFormat().format(ethPriceNumber)}
-                  </span>
-                  )
-                </div>
-              )}
+          <>
+            <div className="flex flex-col gap-2">
+              <div className="text-gray-700">Your current balance</div>
+              <div className="flex items-center gap-2">
+                <Badge
+                  variant={userBalance === 0 ? 'red' : 'default'}
+                  className="text-lg font-bold"
+                >
+                  {userBalance?.toFixed(4)} ETH
+                </Badge>
+                {userBalance !== 0 && ethPriceNumber && ethPriceNumber > 0 && (
+                  <div className="text-gray-600">
+                    (≈{' '}
+                    <span className="font-semibold">
+                      ${new Intl.NumberFormat().format(ethPriceNumber)}
+                    </span>
+                    )
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+
+            <Button onClick={handleFundWallet}>Fund Account</Button>
+
+            <Modal
+              isOpen={showFundingModal}
+              setIsOpen={setShowFundingModal}
+              size="small"
+            >
+              <FundingModal open={showFundingModal} />
+            </Modal>
+          </>
         )}
-
-        <Button onClick={handleFundWallet}>Fund Account</Button>
-
-        <Modal
-          isOpen={showFundingModal}
-          setIsOpen={setShowFundingModal}
-          size="small"
-        >
-          <FundingModal open={showFundingModal} />
-        </Modal>
       </div>
     </SettingCard>
   )

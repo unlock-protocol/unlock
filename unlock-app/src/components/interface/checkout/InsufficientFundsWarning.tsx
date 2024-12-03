@@ -4,6 +4,7 @@ import { AmountBadge } from './main/Payment'
 import { useSelector } from '@xstate/react'
 import { useEthPrice } from '~/hooks/useEthPrice'
 import { useBaseRoute } from '~/hooks/useCrosschainBaseRoute'
+import { Placeholder } from '@unlock-protocol/ui'
 
 interface InsufficientFundsWarningProps {
   enableCreditCard: boolean
@@ -33,7 +34,7 @@ const InsufficientFundsWarning = ({
   })
 
   // get dollar equivalent to hint user
-  const { data: ethPrice } = useEthPrice({
+  const { data: ethPrice, isPending: isEthPricePending } = useEthPrice({
     amount: fundingAmount,
     network: 8453,
     currency: 'ETH',
@@ -64,10 +65,11 @@ const InsufficientFundsWarning = ({
     >
       <div className="flex justify-between w-full">
         <h3 className="font-bold">Fund your account</h3>
-        <AmountBadge
-          amount={ethPrice?.toString() || '0.00000'}
-          symbol={'USD'}
-        />
+        {!isEthPricePending && ethPrice ? (
+          <AmountBadge amount={ethPrice.toString()} symbol={'USD'} />
+        ) : (
+          <Placeholder.Line className="max-w-32" />
+        )}
       </div>
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center w-full text-sm text-left text-gray-500">
