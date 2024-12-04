@@ -322,7 +322,7 @@ contract MixinPurchase is
 
   function purchase(
     PurchaseArgs[] memory purchaseArgs
-  ) external payable returns (uint[] memory) {
+  ) public payable returns (uint[] memory) {
     _lockPurchaseIsPossible(purchaseArgs.length);
 
     uint totalPriceToPay;
@@ -404,8 +404,6 @@ contract MixinPurchase is
     address[] memory _keyManagers,
     bytes[] calldata _data
   ) external payable returns (uint[] memory) {
-    _lockPurchaseIsPossible(_recipients.length);
-
     // check for array mismatch
     if (
       (_recipients.length != _referrers.length) ||
@@ -414,47 +412,20 @@ contract MixinPurchase is
       revert INVALID_LENGTH();
     }
 
-    uint totalPriceToPay;
-    uint[] memory tokenIds = new uint[](_recipients.length);
-
+    PurchaseArgs[] memory purchaseArgs = new PurchaseArgs[](_recipients.length);
     for (uint256 i = 0; i < _recipients.length; i++) {
-      (uint tokenId, uint pricePaid) = _purchaseKey(
-        tokenAddress != address(0) ? _values[i] : 0,
-        _recipients[i],
-        _keyManagers[i],
-        _referrers[i],
-        _referrers[i], // here protocol referrer is the same
-        _data[i]
-      );
-      totalPriceToPay = totalPriceToPay + pricePaid;
-      tokenIds[i] = tokenId;
+      purchaseArgs[i] = PurchaseArgs({
+        value: tokenAddress != address(0) ? _values[i] : 0, //
+        recipient: _recipients[i], //
+        keyManager: _keyManagers[i], //
+        referrer: _referrers[i],
+        protocolReferrer: _referrers[i], // here protocol referrer is the same
+        additionalPeriods: 0,
+        data: _data[i]
+      });
     }
 
-    // receipt event
-    emit PaymentReceipt(
-      tokenIds,
-      _recipients.length, // purchases
-      0, // extensions
-      msg.sender, // payer
-      tokenAddress,
-      totalPriceToPay // totalPaid
-    );
-
-    // transfer the ERC20 tokens
-    _transferValue(msg.sender, totalPriceToPay);
-
-    // pay protocol
-    _payProtocol(totalPriceToPay);
-
-    // refund gas
-    _refundGas();
-
-    // send what is due to referrers
-    for (uint256 i = 0; i < _referrers.length; i++) {
-      _payReferrer(_referrers[i]);
-    }
-
-    return tokenIds;
+    return purchase(purchaseArgs);
   }
 
   /**
