@@ -98,7 +98,7 @@ const PrivyFunding = ({ checkoutService }: PrivyFundingProps) => {
   return (
     <Fragment>
       <Stepper service={checkoutService} />
-      <main className="h-full px-6 pb-4 overflow-auto">
+      <main className="h-full pb-4 overflow-auto">
         <FundingContent open={true} />
       </main>
     </Fragment>

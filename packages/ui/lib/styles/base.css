@@ -1,0 +1,63 @@
+@layer base {
+  h1 {
+    @apply text-4xl font-bold mb-6;
+  }
+
+  h2 {
+    @apply text-3xl font-bold mb-4 mt-8;
+  }
+
+  h3 {
+    @apply text-2xl font-bold mb-3 mt-6;
+  }
+
+  h4 {
+    @apply text-xl font-bold mb-2 mt-4;
+  }
+
+  p {
+    @apply mb-4 leading-relaxed;
+  }
+
+  ul {
+    @apply list-disc pl-8 mb-4;
+  }
+
+  ol {
+    @apply list-decimal pl-8 mb-4;
+  }
+
+  li {
+    @apply mb-2;
+  }
+
+  a {
+    @apply text-brand-ui-primary hover:underline inline-flex items-center gap-1;
+  }
+
+  /* Override navbar link styles to prevent icon gap */
+  .navbar__link {
+    @apply inline-flex items-center gap-1;
+  }
+
+  [data-theme='dark'] {
+    .card,
+    .bg-white {
+      @apply bg-gray-800;
+      @apply text-gray-100;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      @apply text-gray-100;
+    }
+
+    p {
+      @apply text-gray-200;
+    }
+  }
+}
