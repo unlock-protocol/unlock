@@ -429,10 +429,23 @@ contract MixinPurchase is
   }
 
   function _processPayment(
+    uint _tokenId,
     address _payer,
     address _referrer,
     uint _pricePaid
   ) internal {
+    // receipt event
+    uint[] memory tokenIds = new uint[](1);
+    tokenIds[0] = _tokenId;
+    emit PaymentReceipt(
+      tokenIds,
+      0, // purchases
+      1, // extensions
+      msg.sender, // payer
+      tokenAddress,
+      _pricePaid // totalPaid
+    );
+
     // process in unlock
     _recordKeyPurchase(_pricePaid, _referrer);
 
@@ -478,23 +491,11 @@ contract MixinPurchase is
       _checkValue(_value, pricePaid);
     }
 
-    // receipt event
-    uint[] memory tokenIds = new uint[](1);
-    tokenIds[0] = _tokenId;
-    emit PaymentReceipt(
-      tokenIds,
-      0, // purchases
-      1, // extensions
-      msg.sender, // payer
-      tokenAddress,
-      pricePaid // totalPaid
-    );
-
     // if key params have changed, then update them
     _recordTokenTerms(_tokenId, pricePaid, _referrer);
 
     // pay everyone
-    _processPayment(msg.sender, _referrer, pricePaid);
+    _processPayment(_tokenId, msg.sender, _referrer, pricePaid);
   }
 
   /**
@@ -518,20 +519,8 @@ contract MixinPurchase is
     // extend key duration
     _extendKey(_tokenId, 0);
 
-    // receipt event
-    uint[] memory tokenIds = new uint[](1);
-    tokenIds[0] = _tokenId;
-    emit PaymentReceipt(
-      tokenIds,
-      0, // purchases
-      1, // extensions
-      msg.sender, // payer
-      tokenAddress,
-      keyPrice // totalPaid
-    );
-
     // pay everyone
-    _processPayment(ownerOf(_tokenId), referrer, keyPrice);
+    _processPayment(_tokenId, ownerOf(_tokenId), referrer, keyPrice);
   }
 
   /**
