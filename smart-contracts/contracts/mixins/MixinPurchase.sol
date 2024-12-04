@@ -503,7 +503,12 @@ contract MixinPurchase is
     _extendKey(_tokenId, 0);
 
     // pay everyone
-    _processPayment(_tokenId, ownerOf(_tokenId), referrer, keyPrice);
+    _processPayment(
+      _tokenId,
+      ownerOf(_tokenId),
+      referrer,
+      _originalPrices[_tokenId]
+    );
   }
 
   /**
