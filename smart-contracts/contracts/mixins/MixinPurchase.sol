@@ -541,5 +541,6 @@ contract MixinPurchase is
 
   // decreased from 1000 to 997 when added mappings for initial purchases pricing and duration on v10
   // decreased from 997 to 996 when added the `referrerFees` mapping on v11
-  uint256[996] private __safe_upgrade_gap;
+  // decreased from 996 to 995 when added the `_originalReferrers` mapping on v15
+  uint256[995] private __safe_upgrade_gap;
 }
