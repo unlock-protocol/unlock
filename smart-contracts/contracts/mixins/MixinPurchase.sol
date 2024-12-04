@@ -428,6 +428,27 @@ contract MixinPurchase is
     return purchase(purchaseArgs);
   }
 
+  function _processPayment(
+    address _payer,
+    address _referrer,
+    uint _pricePaid
+  ) internal {
+    // process in unlock
+    _recordKeyPurchase(_pricePaid, _referrer);
+
+    // pay value in ERC20
+    _transferValue(_payer, _pricePaid);
+
+    // refund gas (if applicable)
+    _refundGas();
+
+    // send what is due to referrer
+    _payReferrer(_referrer);
+
+    // pay protocol
+    _payProtocol(_pricePaid);
+  }
+
   /**
    * @dev Extend function
    * @param _value the number of tokens to pay for this purchase >= the current keyPrice - any applicable discount
@@ -469,23 +490,11 @@ contract MixinPurchase is
       pricePaid // totalPaid
     );
 
-    // process in unlock
-    _recordKeyPurchase(pricePaid, _referrer);
-
-    // pay value in ERC20
-    _transferValue(msg.sender, pricePaid);
-
     // if key params have changed, then update them
     _recordTokenTerms(_tokenId, pricePaid, _referrer);
 
-    // refund gas (if applicable)
-    _refundGas();
-
-    // send what is due to referrer
-    _payReferrer(_referrer);
-
-    // pay protocol
-    _payProtocol(pricePaid);
+    // pay everyone
+    _processPayment(msg.sender, _referrer, pricePaid);
   }
 
   /**
@@ -521,20 +530,8 @@ contract MixinPurchase is
       keyPrice // totalPaid
     );
 
-    // store in unlock
-    _recordKeyPurchase(keyPrice, referrer);
-
-    // transfer the tokens
-    _transferValue(ownerOf(_tokenId), keyPrice);
-
-    // refund gas if applicable
-    _refundGas();
-
-    // send what is due to referrer
-    _payReferrer(referrer);
-
-    // pay protocol
-    _payProtocol(keyPrice);
+    // pay everyone
+    _processPayment(ownerOf(_tokenId), referrer, keyPrice);
   }
 
   /**
