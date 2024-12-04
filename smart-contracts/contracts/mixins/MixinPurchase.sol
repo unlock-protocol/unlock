@@ -45,22 +45,14 @@ contract MixinPurchase is
   // default to 0
   uint256 internal _gasRefundValue;
 
-  // DEPREC: use of these is deprecated, kept for backward storage compatibility!
+  // keep track of conditions at purchase for key renewals
   mapping(uint256 => uint256) internal _originalPrices;
   mapping(uint256 => uint256) internal _originalDurations;
   mapping(uint256 => address) internal _originalTokens;
+  mapping(uint256 => address) internal _originalReferrers;
 
   // keep track of referrer fees
   mapping(address => uint) public referrerFees;
-
-  // keep track of conditions of purchase for key renewals
-  struct RenewalCondition {
-    uint price;
-    uint duration;
-    address tokenAddress;
-    address referrer;
-  }
-  mapping(uint256 => RenewalCondition) internal _renewalConditions;
 
   error TransferFailed();
 
@@ -186,17 +178,10 @@ contract MixinPurchase is
     uint _keyPrice,
     address _referrer
   ) internal {
-    _renewalConditions[_tokenId] = RenewalCondition(
-      _keyPrice,
-      expirationDuration,
-      tokenAddress,
-      _referrer
-    );
-
-    // clear previous records
-    _originalPrices[_tokenId] = 0;
-    _originalDurations[_tokenId] = 0;
-    _originalTokens[_tokenId] = address(0);
+    _originalPrices[_tokenId] = _keyPrice;
+    _originalDurations[_tokenId] = expirationDuration;
+    _originalTokens[_tokenId] = tokenAddress;
+    _originalReferrers[_tokenId] = _referrer;
   }
 
   /**
@@ -209,7 +194,7 @@ contract MixinPurchase is
   ) public view returns (bool) {
     // check the lock
     if (
-      _renewalConditions[_tokenId].duration == type(uint).max ||
+      _originalDurations[_tokenId] == type(uint).max ||
       tokenAddress == address(0)
     ) {
       revert NON_RENEWABLE_LOCK();
@@ -217,15 +202,10 @@ contract MixinPurchase is
 
     // make sure key duration haven't decreased or price hasn't increase
     if (
-      _originalPrices[_tokenId] != 0 // check if a previous record exists
-        ? _originalPrices[_tokenId] <
-          purchasePriceFor(ownerOf(_tokenId), _referrer, "") ||
-          _originalDurations[_tokenId] > expirationDuration ||
-          _originalTokens[_tokenId] != tokenAddress
-        : _renewalConditions[_tokenId].price <
-          purchasePriceFor(ownerOf(_tokenId), _referrer, "") ||
-          _renewalConditions[_tokenId].duration > expirationDuration ||
-          _renewalConditions[_tokenId].tokenAddress != tokenAddress
+      _originalPrices[_tokenId] <
+      purchasePriceFor(ownerOf(_tokenId), _referrer, "") ||
+      _originalDurations[_tokenId] > expirationDuration ||
+      _originalTokens[_tokenId] != tokenAddress
     ) {
       revert LOCK_HAS_CHANGED();
     }
@@ -428,6 +408,9 @@ contract MixinPurchase is
     return purchase(purchaseArgs);
   }
 
+  /**
+   * @dev internal helper used only for extend and renewal
+   */
   function _processPayment(
     uint _tokenId,
     address _payer,
@@ -509,9 +492,9 @@ contract MixinPurchase is
     _lockIsUpToDate();
     _isKey(_tokenId);
 
-    address referrer = _renewalConditions[_tokenId].referrer == address(0)
+    address referrer = _originalReferrers[_tokenId] == address(0)
       ? _referrer
-      : _renewalConditions[_tokenId].referrer;
+      : _originalReferrers[_tokenId];
 
     // check if key is ripe for renewal
     isRenewable(_tokenId, referrer);
