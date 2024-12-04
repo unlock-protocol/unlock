@@ -12,7 +12,9 @@ async function main({ proxyAddress, contractName, contractVersion }) {
     throw Error('Need a version number')
   }
 
-  console.log(`Setting up version ${contractVersion} from package`)
+  console.log(
+    `Setting up version ${contractVersion} of ${contractName} from package`
+  )
   const [qualifiedPath] = await copyAndBuildContractsAtVersion(__dirname, [
     {
       contractName,
@@ -51,6 +53,8 @@ async function main({ proxyAddress, contractName, contractVersion }) {
     implementation = await upgrades.prepareUpgrade(proxyAddress, Contract, {
       kind: 'transparent',
     })
+
+    console.log(implementation)
   }
 
   console.log(`${contractName} implementation deployed at: ${implementation}`)
