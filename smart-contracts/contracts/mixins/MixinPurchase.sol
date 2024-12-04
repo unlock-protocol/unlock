@@ -395,9 +395,9 @@ contract MixinPurchase is
     PurchaseArgs[] memory purchaseArgs = new PurchaseArgs[](_recipients.length);
     for (uint256 i = 0; i < _recipients.length; i++) {
       purchaseArgs[i] = PurchaseArgs({
-        value: tokenAddress != address(0) ? _values[i] : 0, //
-        recipient: _recipients[i], //
-        keyManager: _keyManagers[i], //
+        value: tokenAddress != address(0) ? _values[i] : 0,
+        recipient: _recipients[i],
+        keyManager: _keyManagers[i],
         referrer: _referrers[i],
         protocolReferrer: _referrers[i], // here protocol referrer is the same
         additionalPeriods: 0,
