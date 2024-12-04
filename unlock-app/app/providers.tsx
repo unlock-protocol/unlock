@@ -18,7 +18,6 @@ import { ConnectModalProvider } from '~/hooks/useConnectModal'
 import Privy from '~/config/PrivyProvider'
 import LoadingFallback from './Components/LoadingFallback'
 import AuthenticationContext from '~/contexts/AuthenticationContext'
-import { SessionProvider as NextAuthSessionProvider } from 'next-auth/react'
 
 function makeQueryClient() {
   return new QueryClient({
@@ -55,20 +54,18 @@ export default function Providers({ children }: { children: React.ReactNode }) {
           <GlobalWrapper>
             <SessionProvider>
               <Suspense fallback={<LoadingFallback />}>
-                <NextAuthSessionProvider>
-                  <ConnectModalProvider>
-                    <AirstackProvider
-                      apiKey={'162b7c4dda5c44afdb0857b6b04454f99'}
+                <ConnectModalProvider>
+                  <AirstackProvider
+                    apiKey={'162b7c4dda5c44afdb0857b6b04454f99'}
+                  >
+                    <ErrorBoundary
+                      fallback={(props: any) => <ErrorFallback {...props} />}
                     >
-                      <ErrorBoundary
-                        fallback={(props: any) => <ErrorFallback {...props} />}
-                      >
-                        <ShouldOpenConnectModal />
-                        {children}
-                      </ErrorBoundary>
-                    </AirstackProvider>
-                  </ConnectModalProvider>
-                </NextAuthSessionProvider>
+                      <ShouldOpenConnectModal />
+                      {children}
+                    </ErrorBoundary>
+                  </AirstackProvider>
+                </ConnectModalProvider>
                 <Toaster />
               </Suspense>
             </SessionProvider>
