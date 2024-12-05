@@ -40,25 +40,29 @@ async function main({
     const unlockVersionPrev = await unlock.unlockVersion()
     unlockVersion = unlockVersionPrev + 1n
   }
-  if (publicLockVersion) {
+  if (!publicLockVersion) {
     const template = await ethers.getContractAt(
       PublicLock.abi,
-      publicLockAddress
+      await unlock.publicLockAddress()
     )
     const publicLockVersionPrev = await template.publicLockVersion()
     publicLockVersion = publicLockVersionPrev + 1n
   }
+
+  console.log(
+    `Deploying Unlock v${unlockVersion} and template v${publicLockVersion}`
+  )
 
   // deploy contracts
   if (!unlockImplAddress) {
     unlockImplAddress = await deployImpl({
       proxyAddress: unlockAddress,
       contractName: 'Unlock',
-      contractVersion: unlockVersion + 1n,
+      contractVersion: unlockVersion,
     })
   }
   if (!publicLockAddress) {
-    publicLockAddress = await deployTemplate(publicLockVersion)
+    publicLockAddress = await deployTemplate({ publicLockVersion })
   }
 
   // submit Unlock upgrade

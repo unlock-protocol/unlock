@@ -147,6 +147,7 @@ task(
       unlockImplAddress,
       publicLockVersion,
       unlockVersion,
+      submit,
     }) => {
       const upgradeProtocol = require('../scripts/upgrade/protocol-upgrade')
       await upgradeProtocol({
@@ -154,6 +155,7 @@ task(
         unlockVersion,
         publicLockAddress,
         unlockImplAddress,
+        submit,
       })
     }
   )
