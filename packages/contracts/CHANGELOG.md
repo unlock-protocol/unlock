@@ -2,7 +2,8 @@
 
 ## 0.0.32
 
-- Minor changes to reduce contract size (see (https://github.com/unlock-protocol/unlock/pull/15242)[#15242])
+- PublicLock v15 : Minor changes to reduce contract size (see (https://github.com/unlock-protocol/unlock/pull/15242)[#15242])
+- Unlock v14: fix a typo (see #15110)
 
 ## 0.0.31
 
