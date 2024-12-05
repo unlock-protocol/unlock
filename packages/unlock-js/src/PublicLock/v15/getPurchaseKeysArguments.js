@@ -3,6 +3,7 @@ import utils from '../../utils'
 import formatKeyPrice from '../utils/formatKeyPrice'
 
 export default async function getPurchaseKeysArguments({
+  lockContract,
   owners: _owners,
   keyManagers: _keyManagers,
   keyPrices: _keyPrices,
@@ -16,16 +17,26 @@ export default async function getPurchaseKeysArguments({
   totalApproval, // explicit approval amount
   data: _data,
 }) {
-  const lockContract = await this.getLockContract(lockAddress)
-
   // If erc20Address was not provided, get it
   if (!erc20Address) {
     erc20Address = await lockContract.tokenAddress()
   }
 
   // owners default to a single key for current signer
-  const defaultOwner = await this.signer.getAddress()
-  const owners = _owners || [defaultOwner]
+  let owners
+  if (!_owners || (_owners || []).length === 0) {
+    if (this.signer) {
+      // owners default to a single key for current signer
+      const defaultOwner = await this.signer.getAddress()
+      owners = [defaultOwner]
+    } else {
+      throw Error(
+        'Missing recipients. You need to specify explicit key owners when using Web3Service to generate calldata'
+      )
+    }
+  } else {
+    owners = _owners
+  }
 
   // we parse by default a length corresponding to the owners length
   const defaultArray = Array(owners.length).fill(null)
