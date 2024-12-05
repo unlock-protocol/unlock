@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.0.32
+
+- Minor changes to reduce contract size (see (https://github.com/unlock-protocol/unlock/pull/15242)[#15242])
+
 ## 0.0.31
 
 - Add `PublicLock v15` and `Unlock v14`
