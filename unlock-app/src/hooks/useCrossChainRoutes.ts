@@ -26,6 +26,10 @@ export interface CrossChainRoute {
   bridgeFee?: any
   bridgeId?: any
   relayInfo?: any
+  provider: {
+    url: string
+    name: string
+  }
   // Remove me
   symbol: string
   networkName: string
@@ -55,13 +59,13 @@ export const useCrossChainRoutes = ({
 
   const xchainApi = useSearchParam('xchain')
   const prepareSharedParams =
-    xchainApi === 'relay'
-      ? prepareRelayLinkSharedParams
-      : prepareDecentSharedParams
+    xchainApi === 'decent'
+      ? prepareDecentSharedParams
+      : prepareRelayLinkSharedParams
   const getCrossChainRoute =
-    xchainApi === 'relay'
-      ? getRelayLinkCrossChainRoute
-      : getDecentCrossChainRoute
+    xchainApi === 'decent'
+      ? getDecentCrossChainRoute
+      : getRelayLinkCrossChainRoute
 
   const { account } = useAuthenticate()
   const web3Service = useWeb3Service()

@@ -69,6 +69,7 @@ describe('PublicLock upgrade v14 > v15', () => {
     let tokenIds
     let expirationTimestamps
     let totalSupplyBefore
+    let penaltyBefore, ownerBefore
 
     before(async () => {
       // buy some keys
@@ -104,6 +105,10 @@ describe('PublicLock upgrade v14 > v15', () => {
 
       totalSupplyBefore = await lock.totalSupply()
 
+      // using refundPenaltyBasisPoints and convenience owner as they are the lowest var in storage layout
+      penaltyBefore = await lock.refundPenaltyBasisPoints()
+      ownerBefore = await lock.owner()
+
       // deploy new implementation
       lock = await upgrades.upgradeProxy(
         await lock.getAddress(),
@@ -132,6 +137,13 @@ describe('PublicLock upgrade v14 > v15', () => {
 
     it('totalSupply is preserved', async () => {
       assert.equal(totalSupplyBefore, await lock.totalSupply())
+    })
+
+    it('refund penalty is preserved', async () => {
+      assert.equal(penaltyBefore, await lock.refundPenaltyBasisPoints())
+    })
+    it('owner is preserved', async () => {
+      assert.equal(ownerBefore, await lock.owner())
     })
 
     describe('data migration', () => {

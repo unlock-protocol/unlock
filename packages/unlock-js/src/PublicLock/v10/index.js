@@ -13,6 +13,8 @@ import getLock from './getLock'
 import renewMembershipFor from './renewMembershipFor'
 import v9 from '../v9'
 import getPurchaseKeysArguments from './getPurchaseKeysArguments'
+import preparePurchaseKeysTx from './preparePurchaseKeysTx'
+import preparePurchaseKeyTx from './preparePurchaseKeyTx'
 
 const {
   grantKey,
@@ -85,4 +87,6 @@ export default {
   setKeyManagerOf,
   transferFrom,
   setGasRefundValue,
+  preparePurchaseKeyTx,
+  preparePurchaseKeysTx,
 }

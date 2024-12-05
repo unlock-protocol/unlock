@@ -60,7 +60,7 @@ export const getCrossChainRoute = async ({
 }: getCrossChainRouteParams): Promise<CrossChainRoute | undefined> => {
   const network = networks[srcChainId]
 
-  const baseUrl = 'https://box-v2.api.decent.xyz/api/getBoxAction'
+  const baseUrl = 'https://box-v4.api.decent.xyz/api/getBoxAction'
   const apiKey = '6477b3b3671589d81df0cba67ba9f3e6'
   const actionRequest: BoxActionRequest = {
     sender,
@@ -77,7 +77,7 @@ export const getCrossChainRoute = async ({
       contractAddress: lock.address,
 
       cost: {
-        isNative: true,
+        isNative: lock.currencyContractAddress === ADDRESS_ZERO,
         amount:
           prices
             .reduce(
@@ -136,6 +136,10 @@ export const getCrossChainRoute = async ({
       currency: network.nativeCurrency.name,
       symbol: network.nativeCurrency.symbol,
       networkName: network.name,
+      provider: {
+        name: 'Decent',
+        url: 'https://www.decent.xyz',
+      },
     } as CrossChainRoute
     // reformat
     route.tokenPayment.amount = toBigInt(route.tokenPayment.amount)

@@ -4,7 +4,12 @@ const { getQuorum, getGovTokenAddress } = require('../../helpers/gov')
 const { parseXCalledEvents } = require('../../helpers/bridge')
 const { simulateDestCalls } = require('../../helpers/crossChain')
 const { addUDT, getEvent } = require('@unlock-protocol/hardhat-helpers')
-const { Unlock, UnlockDiscountTokenV2 } = require('@unlock-protocol/contracts')
+const {
+  Unlock,
+  PublicLock,
+  UnlockDiscountTokenV2,
+  UniswapOracleV3,
+} = require('@unlock-protocol/contracts')
 
 // workflow
 const submit = require('./submit')
@@ -13,13 +18,21 @@ const queue = require('./queue')
 const execute = require('./execute')
 
 // parse logs
-const parseLogs = (logs, abi = Unlock.abi) => {
+const parseLogs = (
+  logs,
+  abi = [...Unlock.abi, ...PublicLock.abi, ...UniswapOracleV3.abi]
+) => {
   const interface = new ethers.Interface(abi)
 
   // parse logs
-  const parsedLogs = logs.map((log) => {
-    const parsed = interface.parseLog(log)
-    return parsed || log
+  const parsedLogs = logs.map((log, i) => {
+    try {
+      const parsed = interface.parseLog(log)
+      log = parsed || log
+    } catch (error) {
+      log.decodedError = true
+    }
+    return log
   })
   return parsedLogs
 }

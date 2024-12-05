@@ -68,16 +68,63 @@ async function getPoolState(poolContract) {
 
 const getUniswapV3Contracts = async function () {
   /**
-   * You need to build the artifacts first by running `yarn && yarn hardhat compile`
+   * You can get the latest version of the ABIS by building artifacts from the node_modules
+   * in the root of the monorepo first by running `yarn && yarn hardhat compile`
    * in `node_modules/@uniswap/v3-core` and `node_modules/@uniswap/v3-periphery`
+   *
+   * Keeping them hardcoded here as they are uniswap v3 and wont get updated anymore
    */
-  const {
-    abi: IUniswapV3Factory,
-  } = require('@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Factory.sol/IUniswapV3Factory.json')
+  const INonfungiblePositionManager = [
+    'event Approval(address indexed,address indexed,uint256 indexed)',
+    'event ApprovalForAll(address indexed,address indexed,bool)',
+    'event Collect(uint256 indexed,address,uint256,uint256)',
+    'event DecreaseLiquidity(uint256 indexed,uint128,uint256,uint256)',
+    'event IncreaseLiquidity(uint256 indexed,uint128,uint256,uint256)',
+    'event Transfer(address indexed,address indexed,uint256 indexed)',
+    'function DOMAIN_SEPARATOR() view returns (bytes32)',
+    'function PERMIT_TYPEHASH() pure returns (bytes32)',
+    'function WETH9() view returns (address)',
+    'function approve(address,uint256)',
+    'function balanceOf(address) view returns (uint256)',
+    'function burn(uint256) payable',
+    'function collect((uint256,address,uint128,uint128)) payable returns (uint256,uint256)',
+    'function createAndInitializePoolIfNecessary(address,address,uint24,uint160) payable returns (address)',
+    'function decreaseLiquidity((uint256,uint128,uint256,uint256,uint256)) payable returns (uint256,uint256)',
+    'function factory() view returns (address)',
+    'function getApproved(uint256) view returns (address)',
+    'function increaseLiquidity((uint256,uint256,uint256,uint256,uint256,uint256)) payable returns (uint128,uint256,uint256)',
+    'function isApprovedForAll(address,address) view returns (bool)',
+    'function mint((address,address,uint24,int24,int24,uint256,uint256,uint256,uint256,address,uint256)) payable returns (uint256,uint128,uint256,uint256)',
+    'function name() view returns (string)',
+    'function ownerOf(uint256) view returns (address)',
+    'function permit(address,uint256,uint256,uint8,bytes32,bytes32) payable',
+    'function positions(uint256) view returns (uint96,address,address,address,uint24,int24,int24,uint128,uint256,uint256,uint128,uint128)',
+    'function refundETH() payable',
+    'function safeTransferFrom(address,address,uint256)',
+    'function safeTransferFrom(address,address,uint256,bytes)',
+    'function setApprovalForAll(address,bool)',
+    'function supportsInterface(bytes4) view returns (bool)',
+    'function sweepToken(address,uint256,address) payable',
+    'function symbol() view returns (string)',
+    'function tokenByIndex(uint256) view returns (uint256)',
+    'function tokenOfOwnerByIndex(address,uint256) view returns (uint256)',
+    'function tokenURI(uint256) view returns (string)',
+    'function totalSupply() view returns (uint256)',
+    'function transferFrom(address,address,uint256)',
+    'function unwrapWETH9(uint256,address) payable',
+  ]
 
-  const {
-    abi: INonfungiblePositionManager,
-  } = require('@uniswap/v3-periphery/artifacts/contracts/interfaces/INonfungiblePositionManager.sol/INonfungiblePositionManager.json')
+  const IUniswapV3Factory = [
+    'event FeeAmountEnabled(uint24 indexed,int24 indexed)',
+    'event OwnerChanged(address indexed,address indexed)',
+    'event PoolCreated(address indexed,address indexed,uint24 indexed,int24,address)',
+    'function createPool(address,address,uint24) returns (address)',
+    'function enableFeeAmount(uint24,int24)',
+    'function feeAmountTickSpacing(uint24) view returns (int24)',
+    'function getPool(address,address,uint24) view returns (address)',
+    'function owner() view returns (address)',
+    'function setOwner(address)',
+  ]
 
   const { chainId } = await ethers.provider.getNetwork()
   const {
@@ -163,6 +210,7 @@ const deployUniswapV3Oracle = async function () {
 module.exports = {
   createOrGetUniswapV3Pool: createOrGetPool,
   deployUniswapV3Oracle,
+  getUniswapV3Contracts,
   getTokenInfo,
   getPoolState,
   getPoolImmutables,

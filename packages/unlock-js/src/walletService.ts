@@ -6,69 +6,18 @@ import { passwordHookAbi } from './abis/passwordHookAbi'
 import { passwordCapHookAbi } from './abis/passwordCapHookAbi'
 import { discountCodeHookAbi } from './abis/discountCodeHookAbi'
 import { discountCodeWithCapHookAbi } from './abis/discountCodeWithCapHookAbi'
+import { allowListHookAbi } from './abis/allowListHookAbi'
 import { signTransferAuthorization } from './erc20'
 import { CardPurchaser } from './CardPurchaser'
 
-interface CreateLockOptions {
-  publicLockVersion?: number | string
-  name: string
-  expirationDuration?: number | string
-  maxNumberOfKeys?: number | string
-  currencyContractAddress?: string | null
-  keyPrice?: string | number
-  creator?: string
-}
-
-interface PurchaseKeyParams {
-  lockAddress: string
-  owner?: string
-  keyPrice?: string
-  data?: string | null
-  erc20Address?: string
-  decimals?: number
-  recurringPayments?: number
-  referrer?: string
-  totalApproval?: string
-  keyManager?: string
-}
-
-interface PurchaseKeysParams {
-  lockAddress: string
-  owners: string[]
-  keyPrices?: string[]
-  data?: string[] | null
-  erc20Address?: string
-  decimals?: number
-  referrers?: (string | null)[]
-  recurringPayments?: number[]
-  totalApproval?: string
-  keyManagers?: string[]
-}
-
-interface ExtendKeyParams {
-  lockAddress: string
-  tokenId?: string
-  owner?: string
-  referrer?: string
-  data?: string
-  decimals?: number
-  erc20Address?: string
-  keyPrice?: string
-  recurringPayment?: string | number
-  totalApproval?: string
-}
-
-interface GetAndSignAuthorizationsForTransferAndPurchaseParams {
-  amount: string // this is in cents
-  lockAddress: string
-  network: number
-}
-
-interface PurchaseWithCardPurchaserParams {
-  transfer: any
-  purchase: any
-  callData: string
-}
+import type {
+  CreateLockOptions,
+  PurchaseKeyParams,
+  PurchaseKeysParams,
+  ExtendKeyParams,
+  GetAndSignAuthorizationsForTransferAndPurchaseParams,
+  PurchaseWithCardPurchaserParams,
+} from './params'
 
 /**
  * This service interacts with the user's wallet.
@@ -1310,6 +1259,29 @@ export default class WalletService extends UnlockService {
       discountBasisPoints,
       cap
     )
+    return transaction.wait()
+  }
+
+  async setMerkleRoot({
+    network,
+    lockAddress,
+    hookAddress,
+    root,
+  }: {
+    network: number
+    lockAddress: string
+    hookAddress: string
+    root: string
+  }) {
+    const contract = await this.getHookContract({
+      network,
+      address: hookAddress,
+      abi: new ethers.Interface(allowListHookAbi),
+    })
+
+    const transaction = await contract
+      .connect(this.signer)
+      .getFunction('setMerkleRootForLock')(lockAddress, root)
     return transaction.wait()
   }
 }

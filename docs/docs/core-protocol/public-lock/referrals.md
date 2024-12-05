@@ -20,7 +20,7 @@ As such, the lock manager can set multiple referrer fees for various referrers. 
 
 Finally, if the lock manager sets a referrer fee for the `0x0` address (the zero address), then the referrer fee will apply to _any_ referrer address.
 
-It is possible to query a contract to identity the referrer fee set for a specific address by querying the `referrerFees` function.
+It is possible to query a contract to identify the referrer fee set for a specific address by querying the `referrerFees` function.
 
 ### Examples
 
