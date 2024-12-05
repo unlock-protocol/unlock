@@ -210,11 +210,6 @@ contract MixinLockCore is MixinRoles, MixinFunds, MixinDisable {
   ) external {
     _onlyLockManager();
 
-
-    if (_onHasRoleHook != address(0) && !_onHasRoleHook.isContract()) {
-      revert INVALID_HOOK(7);
-    }
-
     // validate hooks
     _isValidHook(_onKeyPurchaseHook, 0);
     _isValidHook(_onKeyCancelHook, 1);
