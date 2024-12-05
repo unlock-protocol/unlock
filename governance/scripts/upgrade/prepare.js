@@ -12,7 +12,9 @@ async function main({ proxyAddress, contractName, contractVersion }) {
     throw Error('Need a version number')
   }
 
-  console.log(`Setting up version ${contractVersion} from package`)
+  console.log(
+    `Setting up ${contractName} version ${contractVersion} from package`
+  )
   const [qualifiedPath] = await copyAndBuildContractsAtVersion(__dirname, [
     {
       contractName,
@@ -33,12 +35,12 @@ async function main({ proxyAddress, contractName, contractVersion }) {
     await copyAndBuildContractsAtVersion(__dirname, [
       {
         contractName,
-        version: contractVersion - 1,
+        version: contractVersion - 1n,
       },
     ])
     const PreviousContract = await ethers.getContractFactory(
       `contracts/past-versions/${contractName}V${
-        contractVersion - 1
+        contractVersion - 1n
       }.sol:${contractName}`
     )
 
