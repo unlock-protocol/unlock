@@ -5,13 +5,6 @@ import UserOperations from '../operations/userOperations'
 import logger from '../logger'
 import { ethers } from 'ethers'
 import { MemoryCache } from 'memory-cache-node'
-import { issueUserToken } from '@coinbase/waas-server-auth'
-import config from '../config/config'
-import { verifyNextAuthToken } from '../utils/verifyNextAuthToken'
-import { z } from 'zod'
-import { generateVerificationCode } from '../utils/generateVerificationCode'
-import VerificationCodes from '../models/verificationCodes'
-import { sendEmail } from '../operations/wedlocksOperations'
 
 // Decoy users are cached for 15 minutes
 const cacheDuration = 60 * 15
@@ -19,9 +12,6 @@ const decoyUserCache = new MemoryCache<string, any>(cacheDuration / 5, 1000)
 
 export const enum UserAccountType {
   UnlockAccount = 'UNLOCK_ACCOUNT',
-  GoogleAccount = 'GOOGLE_ACCOUNT',
-  PasskeyAccount = 'PASSKEY_ACCOUNT',
-  EmailCodeAccount = 'EMAIL_CODE',
 }
 
 export const createUser = async (req: Request, res: Response): Promise<any> => {
@@ -139,90 +129,6 @@ export const retrieveEncryptedPrivatekey = async (
     res.json({
       passwordEncryptedPrivateKey,
     })
-    return
-  }
-}
-
-const RetrieveWaasUuidBodySchema = z.object({
-  token: z.string(),
-})
-
-export const retrieveWaasUuid = async (
-  req: Request,
-  res: Response
-): Promise<any> => {
-  const { emailAddress, selectedProvider } = req.params
-  const { token } = RetrieveWaasUuidBodySchema.parse(req.body)
-
-  if (!token) {
-    res.sendStatus(401)
-    return
-  }
-
-  // Verify the JWT token
-  const isTokenValid = await verifyNextAuthToken(
-    selectedProvider as UserAccountType,
-    emailAddress,
-    token
-  )
-  if (!isTokenValid) {
-    res.status(401).json({
-      message: 'There was an error verifying the token or it is not valid',
-    })
-    return
-  }
-
-  let userUUID
-
-  const user = await UserOperations.findUserAccountByEmail(
-    req.params.emailAddress
-  )
-
-  userUUID = user?.id
-
-  // If no user is found, create
-  if (!user) {
-    const userAccountType = selectedProvider as UserAccountType
-    if (!userAccountType) {
-      logger.error('No selectedProvider provided')
-      res.status(500).json({ message: 'No selectedProvider provided' })
-      return
-    }
-    if (userAccountType === UserAccountType.UnlockAccount) {
-      logger.error('Creating a user with UnlockAccount type is not allowed')
-      res.status(500).json({
-        message: 'Creating a user with UnlockAccount type is not allowed',
-      })
-      return
-    }
-    const newUserUUID = await UserOperations.createUserAccount(
-      emailAddress,
-      selectedProvider as UserAccountType
-    )
-    userUUID = newUserUUID
-
-    await sendEmail({
-      template: 'welcome',
-      recipient: emailAddress,
-    })
-  }
-
-  try {
-    const token = await issueUserToken({
-      apiKeyName: config.coinbaseCloudApiKeyName as string,
-      privateKey: config.coinbaseCloudPrivateKey as string,
-      userID: userUUID as string,
-    })
-    res.json({ token })
-  } catch (error) {
-    logger.error(
-      'Error issuing Coinbase WAAS token for user',
-      userUUID,
-      error.message
-    )
-    res
-      .status(400)
-      .json({ message: 'Error issuing Coinbase WAAS token for user' })
     return
   }
 }
@@ -472,116 +378,10 @@ export const existNextAuth = async (request: Request, response: Response) => {
   return
 }
 
-export const sendVerificationCode = async (
-  request: Request,
-  response: Response
-) => {
-  const { emailAddress } = request.params
-  const currentTime = new Date()
-
-  try {
-    let verificationEntry = await VerificationCodes.findOne({
-      where: { emailAddress },
-    })
-
-    if (
-      !verificationEntry ||
-      verificationEntry.codeExpiration < currentTime ||
-      verificationEntry.isCodeUsed
-    ) {
-      const { code, expiration } = generateVerificationCode()
-
-      if (verificationEntry) {
-        await verificationEntry.update({
-          code,
-          codeExpiration: expiration,
-          isCodeUsed: false,
-          token: crypto.randomUUID(),
-          tokenExpiration: new Date(Date.now() + 60 * 60 * 1000),
-        })
-      } else {
-        verificationEntry = await VerificationCodes.create({
-          emailAddress,
-          code,
-          codeExpiration: expiration,
-          token: crypto.randomUUID(),
-          tokenExpiration: new Date(Date.now() + 60 * 60 * 1000),
-        })
-      }
-    }
-
-    await sendEmail({
-      template: 'nextAuthCode',
-      recipient: emailAddress,
-      params: {
-        code: verificationEntry.code,
-      },
-    })
-
-    response.status(200).json({
-      message: 'Email code sent',
-    })
-  } catch (error) {
-    logger.error('Error sending verification code:', error)
-    response.status(500).send('Error sending verification code')
-  }
-}
-
-export const verifyEmailCode = async (request: Request, response: Response) => {
-  const { emailAddress } = request.params
-  const { code } = request.body
-
-  if (!emailAddress || !code) {
-    response.sendStatus(400).json({ message: 'Missing parameters' })
-    return
-  }
-
-  try {
-    const verificationEntry = await VerificationCodes.findOne({
-      where: { emailAddress },
-    })
-
-    if (!verificationEntry) {
-      response.status(404).json({ message: 'Verification code not found' })
-      return
-    }
-
-    const currentTime = new Date()
-    if (
-      verificationEntry.code === code &&
-      verificationEntry.codeExpiration > currentTime &&
-      !verificationEntry.isCodeUsed
-    ) {
-      verificationEntry.update({ isCodeUsed: true })
-      response.status(200).json({
-        message: 'Verification successful',
-        token: verificationEntry.token,
-      })
-      return
-    } else if (verificationEntry.codeExpiration <= currentTime) {
-      response.status(400).json({ message: 'Verification code has expired' })
-      return
-    } else if (verificationEntry.isCodeUsed) {
-      response
-        .status(400)
-        .json({ message: 'Verification code has already been used' })
-      return
-    } else {
-      response.status(400).json({ message: 'Invalid verification code' })
-      return
-    }
-  } catch (error) {
-    logger.error('Error verifying email code:', error)
-    response.status(500).json({ message: 'Error verifying email code' })
-    return
-  }
-}
-
 const UserController = {
   createUser,
   userCreationStatus,
   retrieveEncryptedPrivatekey,
-  retrieveWaasUuid,
   retrieveRecoveryPhrase,
   updateUser,
   updatePaymentDetails,
@@ -593,8 +393,6 @@ const UserController = {
   eject,
   exist,
   existNextAuth,
-  sendVerificationCode,
-  verifyEmailCode,
 }
 
 export default UserController
