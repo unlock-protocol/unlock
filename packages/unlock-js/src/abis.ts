@@ -985,7 +985,7 @@ const abis = {
         "function updateTransferFee(uint256 _transferFeeBasisPoints)",
         "function withdraw(address _tokenAddress,address _recipient,uint256 _amount)"
       ],
-      "bytecodeHash": "0x61b581bcdec4c3ee9f609f78041da32f16378e93d1783415339516a1f6baf0ac"
+      "bytecodeHash": "0xfec1cb16ca560bee247838d5b7d29723c2bd7c095a7331441a25684b9c66e7b4"
     }
   },
   "Unlock": {
