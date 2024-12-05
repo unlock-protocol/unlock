@@ -74,7 +74,7 @@ const config = {
     compilers: [
       // required to compile oracle as Uniswap v3-periphery supports only solc < 0.8
       { version: '0.7.6', settings: { ...settings, evmVersion: 'istanbul' } },
-      { version: '0.8.21', settings },
+      { version: '0.8.21', settings: { ...settings, evmVersion: 'shanghai' } },
     ],
   },
   sourcify: {
