@@ -49,7 +49,6 @@ task('deploy', 'Deploy the entire Unlock protocol')
       locksmithURI,
       owner,
     }) => {
-      // eslint-disable-next-line global-require
       const mainDeployer = require('../scripts/deployments')
       const {
         unlockAddress: newUnlockAddress,
@@ -78,7 +77,6 @@ task('deploy', 'Deploy the entire Unlock protocol')
   )
 
 task('deploy:udt', 'Deploy Unlock Discount Token proxy').setAction(async () => {
-  // eslint-disable-next-line global-require
   const udtDeployer = require('../scripts/deployments/udt')
   return await udtDeployer()
 })
@@ -86,13 +84,11 @@ task('deploy:udt', 'Deploy Unlock Discount Token proxy').setAction(async () => {
 task('deploy:unlock', 'Deploy Unlock proxy')
   .addOptionalParam('unlockVersion', 'the version of unlock to deploy')
   .setAction(async ({ unlockVersion }) => {
-    // eslint-disable-next-line global-require
     const unlockDeployer = require('../scripts/deployments/unlock')
     return await unlockDeployer({ unlockVersion })
   })
 
 task('deploy:weth', 'Deploy WETH contract').setAction(async () => {
-  // eslint-disable-next-line global-require
   const wethDeployer = require('../scripts/deployments/weth')
   return await wethDeployer()
 })
@@ -104,7 +100,6 @@ task('deploy:oracle', 'Deploy Uniswap Oracle contract')
   )
   .addOptionalParam('fee', 'the fee of the Uniswap pools to check')
   .setAction(async ({ uniswapFactoryAddress, fee }) => {
-    // eslint-disable-next-line global-require
     const oracleDeployer = require('../scripts/deployments/oracle')
     return await oracleDeployer({ uniswapFactoryAddress, fee })
   })
@@ -112,7 +107,6 @@ task('deploy:oracle', 'Deploy Uniswap Oracle contract')
 task('deploy:template', 'Deploy PublicLock contract')
   .addOptionalParam('publicLockVersion', 'the version of unlock to deploy')
   .setAction(async ({ publicLockVersion }) => {
-    // eslint-disable-next-line global-require
     const templateDeployer = require('../scripts/deployments/publicLock')
     return await templateDeployer({ publicLockVersion })
   })
@@ -122,7 +116,6 @@ task('deploy:governor', 'Deploy governor contracts')
   .addOptionalParam('timelockAddress', 'address of a timelock contract')
   .addFlag('testing', 'lower vesting periods for dev purposes')
   .setAction(async ({ upAddress, timelockAddress, testing }) => {
-    // eslint-disable-next-line global-require
     const govDeployer = require('../scripts/deployments/governor')
     return await govDeployer({ upAddress, timelockAddress, testing })
   })
@@ -135,7 +128,6 @@ task('deploy:keyManager', 'Deploy KeyManager contract')
   .setAction(async ({ locksmiths }) => {
     const locksmithsArray = !locksmiths ? [] : locksmiths.split(',')
 
-    // eslint-disable-next-line global-require
     const keyManagerDeployer = require('../scripts/deployments/keyManager')
     return await keyManagerDeployer(locksmithsArray)
   })
@@ -144,28 +136,24 @@ task(
   'deploy:protocol-upgrade',
   'Deploy latest versions of Unlock and PublicLock contracts'
 )
-  .addParam('publicLockVersion', 'version for publicLock')
-  .addParam('unlockVersion', 'version for Unlock')
-  .setAction(async ({ publicLockVersion, unlockVersion }, { ethers }) => {
-    // eslint-disable-next-line global-require
-    const deployPublicLock = require('../scripts/deployments/publicLock')
-
-    // eslint-disable-next-line global-require
-    const deployImpl = require('../scripts/upgrade/prepare')
-
-    const { chainId } = await ethers.provider.getNetwork()
-    const { unlockAddress, name } = networks[chainId]
-    console.log(`Deploying to ${name}(${chainId}) - Unlock: ${unlockAddress}`)
-
-    // deploy publicLock
-    const publicLockAddress = await deployPublicLock({ publicLockVersion })
-
-    // deploy unlock impl
-    const unlockImplAddress = await deployImpl({
-      proxyAddress: unlockAddress,
-      contractName: 'Unlock',
-      contractVersion: unlockVersion,
-    })
-
-    return { publicLockAddress, unlockImplAddress }
-  })
+  .addOptionalParam('publicLockVersion', 'version for publicLock')
+  .addOptionalParam('unlockVersion', 'version for Unlock')
+  .addOptionalParam('unlockImplAddress', 'address of deployed impl for Unlock')
+  .addOptionalParam('publicLockAddress', 'address of deployed  for Unlock')
+  .addOptionalFlag('submit', 'submit to multisig')
+  .setAction(
+    async ({
+      publicLockAddress,
+      unlockImplAddress,
+      publicLockVersion,
+      unlockVersion,
+    }) => {
+      const upgradeProtocol = require('../scripts/upgrade/protocol-upgrade')
+      await upgradeProtocol({
+        publicLockVersion,
+        unlockVersion,
+        publicLockAddress,
+        unlockImplAddress,
+      })
+    }
+  )
