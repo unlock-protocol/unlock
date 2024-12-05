@@ -140,7 +140,7 @@ task(
   .addOptionalParam('unlockVersion', 'version for Unlock')
   .addOptionalParam('unlockImplAddress', 'address of deployed impl for Unlock')
   .addOptionalParam('publicLockAddress', 'address of deployed  for Unlock')
-  .addOptionalFlag('submit', 'submit to multisig')
+  .addFlag('submit', 'submit to multisig')
   .setAction(
     async ({
       publicLockAddress,

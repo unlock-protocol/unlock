@@ -7,15 +7,12 @@
  */
 
 const { ethers } = require('hardhat')
-const {
-  getNetwork,
-  getProxyAdminAddress,
-} = require('@unlock-protocol/hardhat-helpers')
+const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const { submitTx } = require('../multisig')
 const deployImpl = require('./prepare')
 const deployTemplate = require('../deployments/publicLock')
 
-const { UnlockV13, PublicLockV14 } = require('@unlock-protocol/contracts')
+const { Unlock, PublicLock } = require('@unlock-protocol/contracts')
 const {
   abi: proxyAdminABI,
 } = require('@unlock-protocol/hardhat-helpers/dist/ABIs/ProxyAdmin.json')
@@ -35,7 +32,7 @@ async function main({
 } = {}) {
   const { id, multisig, unlockAddress } = await getNetwork()
 
-  const unlock = await ethers.getContractAt(UnlockV13.abi, unlockAddress)
+  const unlock = await ethers.getContractAt(Unlock.abi, unlockAddress)
   const { interface: unlockInterface } = unlock
 
   // get latest versions if necessary
@@ -45,7 +42,7 @@ async function main({
   }
   if (publicLockVersion) {
     const template = await ethers.getContractAt(
-      PublicLockV14.abi,
+      PublicLock.abi,
       publicLockAddress
     )
     const publicLockVersionPrev = await template.publicLockVersion()
@@ -73,11 +70,13 @@ async function main({
 
   let [signer] = await ethers.getSigners()
   console.log(`Preparing contract upgrade on chain ${id}: 
+Unlock v${unlockVersion}
   - unlock proxy: ${unlockAddress}
   - proxyAdmin: ${proxyAdminAddress}
   - unlock impl: ${unlockImplAddress}
+PublicLock v${publicLockVersion}
   - publicLock: ${publicLockAddress}
-  - signer: ${await signer.getAddress()}
+Deployer: ${await signer.getAddress()}
   `)
 
   // check owner is multisig
