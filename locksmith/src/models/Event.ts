@@ -27,16 +27,17 @@ export class EventData extends Model<
   declare slug: string
   declare checkoutConfigId: string | null
   declare eventUrl: string | null
-  declare pendingLockTransaction: string | null
-  declare pendingLockNetwork: number | null
+  declare pendingTransactionHash: string | null
+  declare network: number | null
+  declare isPending: boolean
   declare lockAddress: string | null
 
   /**
    * Updates the event with pending lock deployment information
    */
   async setPendingLock(pendingLock: PendingLockDeployment) {
-    this.pendingLockTransaction = pendingLock.transaction
-    this.pendingLockNetwork = pendingLock.network
+    this.pendingTransactionHash = pendingLock.transaction
+    this.network = pendingLock.network
     await this.save()
   }
 
@@ -48,8 +49,8 @@ export class EventData extends Model<
     network: number,
     checkoutConfig: any
   ) {
-    this.pendingLockTransaction = null
-    this.pendingLockNetwork = null
+    this.pendingTransactionHash = null
+    this.network = null
     this.checkoutConfigId = checkoutConfig.id
 
     // Update the data field to include the deployed lock address
@@ -66,7 +67,7 @@ export class EventData extends Model<
    * Returns whether this event has a pending lock deployment
    */
   hasPendingLock(): boolean {
-    return !!this.pendingLockTransaction
+    return !!this.pendingTransactionHash
   }
 
   /**
@@ -118,17 +119,22 @@ EventData.init(
         return `${config.unlockApp}/event/${this.getDataValue('slug')}`
       },
     },
-    pendingLockTransaction: {
-      allowNull: true,
+    pendingTransactionHash: {
       type: DataTypes.STRING,
-    },
-    pendingLockNetwork: {
       allowNull: true,
+    },
+    network: {
       type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    isPending: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
     },
     lockAddress: {
-      allowNull: true,
       type: DataTypes.STRING,
+      allowNull: true,
     },
   },
   {
