@@ -1,4 +1,3 @@
-// src/components/PrivyWrapper.js
 import React from 'react'
 import { PrivyProvider } from '@privy-io/react-auth'
 
