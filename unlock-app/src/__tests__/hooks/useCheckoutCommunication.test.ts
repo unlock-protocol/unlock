@@ -100,10 +100,10 @@ describe('useCheckoutCommunication', () => {
     const { result, waitFor } = renderHook(() => useCheckoutCommunication())
 
     const userInfo = { address: '0xmyaddress' }
-    act(() => result.current.emitUserInfo(userInfo, null))
+    act(() => result.current.emitUserInfo(userInfo))
 
     const transactionInfo = { hash: '0xmyhash', lock: '0xmylock' }
-    act(() => result.current.emitTransactionInfo(transactionInfo, null))
+    act(() => result.current.emitTransactionInfo(transactionInfo))
 
     act(() => result.current.emitCloseModal())
 
@@ -113,12 +113,7 @@ describe('useCheckoutCommunication', () => {
     await waitFor(() => result.current.ready)
 
     // Once the emitter is ready, the buffer is flushed in the order events were received
-    expect(emit).toHaveBeenNthCalledWith(
-      1,
-      CheckoutEvents.userInfo,
-      userInfo,
-      null
-    )
+    expect(emit).toHaveBeenNthCalledWith(1, CheckoutEvents.userInfo, userInfo)
 
     expect(emit).toHaveBeenNthCalledWith(
       2,

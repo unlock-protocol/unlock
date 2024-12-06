@@ -219,19 +219,19 @@ export const useCheckoutCommunication = () => {
     }
   }, [provider, incomingBuffer, handleMethodCallEvent])
 
-  const emitUserInfo = async (info: UserInfo, config: any) => {
+  const emitUserInfo = async (info: UserInfo, paywallConfig?: any) => {
     // if user already emitted, avoid re-emitting
     if (info.address === user && !info.signedMessage) {
       return
     }
     setUser(info.address)
     pushOrEmit(CheckoutEvents.userInfo, info)
-    await postToWebhook(info, config, 'authenticated')
+    postToWebhook(info, paywallConfig, 'authenticated')
   }
 
-  const emitMetadata = async (metadata: any, config: any) => {
+  const emitMetadata = async (metadata: any, paywallConfig?: any) => {
     pushOrEmit(CheckoutEvents.metadata, metadata)
-    await postToWebhook(metadata, config, 'metadata')
+    postToWebhook(metadata, paywallConfig, 'metadata')
   }
 
   const emitCloseModal = () => {
@@ -240,10 +240,10 @@ export const useCheckoutCommunication = () => {
 
   const emitTransactionInfo = async (
     info: TransactionInfo,
-    paywallConfig: any
+    paywallConfig?: any
   ) => {
     pushOrEmit(CheckoutEvents.transactionInfo, info)
-    await postToWebhook(info, paywallConfig, 'transactionSent')
+    postToWebhook(info, paywallConfig, 'transactionSent')
   }
 
   const emitMethodCall = (call: MethodCall) => {

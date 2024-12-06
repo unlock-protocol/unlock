@@ -71,7 +71,7 @@ export function CheckoutContainer() {
             return
           } else {
             prevBody = JSON.stringify(body)
-            await postToWebhook(body, paywallConfig, 'status')
+            postToWebhook(body, paywallConfig, 'status')
           }
         }
       )
