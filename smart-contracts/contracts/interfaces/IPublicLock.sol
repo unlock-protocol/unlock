@@ -573,6 +573,9 @@ interface IPublicLock {
 
   function hasRole(bytes32 role, address account) external view returns (bool);
 
+  // helper function
+  function renounceLockManager() external;
+
   /** `owner()` is provided as an helper to mimick the `Ownable` contract ABI.
    * The `Ownable` logic is used by many 3rd party services to determine
    * contract ownership - e.g. who is allowed to edit metadata on Opensea.
