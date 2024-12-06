@@ -1,4 +1,5 @@
-import { SubgraphService } from '@unlock-protocol/unlock-js'
+import { SubgraphService, Web3Service } from '@unlock-protocol/unlock-js'
+import { networks } from '@unlock-protocol/networks'
 
 import dayjs from '../config/dayjs'
 import { kebabCase, defaultsDeep } from 'lodash'
@@ -13,6 +14,7 @@ import { saveCheckoutConfig } from './checkoutConfigOperations'
 import { EventBodyType } from '../controllers/v2/eventsController'
 import { Op } from 'sequelize'
 import { removeProtectedAttributesFromObject } from '../utils/protectedAttributes'
+import { ethers } from 'ethers'
 
 interface AttributeProps {
   value: string
@@ -312,4 +314,124 @@ export const getCheckedInAttendees = async (slug: string) => {
     }
   )
   return keys.map((key) => key.owner)
+}
+
+/**
+ * Updates an event with pending lock deployment information
+ */
+export const updateEventPendingLock = async (
+  slug: string,
+  pendingLock: {
+    transaction: string
+    network: number
+  }
+) => {
+  const event = await EventData.findOne({
+    where: { slug },
+  })
+
+  if (!event) {
+    throw new Error('Event not found')
+  }
+
+  await event.setPendingLock(pendingLock)
+  return event
+}
+
+/**
+ * Checks if a lock has been deployed from a transaction
+ * Returns the lock address if found
+ */
+export const getLockAddressFromTransaction = async (
+  transactionHash: string,
+  network: number
+): Promise<string | null> => {
+  const web3Service = new Web3Service(networks)
+  const provider = web3Service.providerForNetwork(network)
+
+  try {
+    const receipt = await provider.getTransactionReceipt(transactionHash)
+
+    if (!receipt || receipt.status !== 1) {
+      return null
+    }
+
+    const unlock = new ethers.Contract(
+      networks[network].unlockAddress,
+      [
+        'event NewLock(address indexed lockOwner, address indexed newLockAddress)',
+      ],
+      provider
+    )
+
+    const newLockEvent = receipt.logs
+      .map((log) => {
+        try {
+          return unlock.interface.parseLog(log)
+        } catch {
+          return null
+        }
+      })
+      .find((log) => log?.name === 'NewLock')
+
+    return newLockEvent ? newLockEvent.args.newLockAddress : null
+  } catch (error) {
+    console.error('Error getting lock address from transaction:', error)
+    return null
+  }
+}
+
+/**
+ * Updates an event with deployed lock information
+ */
+export const updateEventWithDeployedLock = async (
+  slug: string,
+  lockAddress: string,
+  checkoutConfig: any
+) => {
+  const event = await EventData.findOne({
+    where: { slug },
+  })
+
+  if (!event) {
+    throw new Error('Event not found')
+  }
+
+  await event.update({
+    lockAddress,
+    checkoutConfigId: checkoutConfig.id,
+    pendingTransactionHash: null,
+    isPending: false,
+  })
+
+  return event
+}
+
+/**
+ * Gets all events with pending lock deployments
+ */
+export const getPendingLockDeployments = async () => {
+  return EventData.findAll({
+    where: {
+      pendingLockTransaction: {
+        [Op.not]: null,
+      },
+    },
+  })
+}
+
+export const createEventWithPendingLock = async (
+  eventData: any,
+  transactionHash: string,
+  network: number,
+  creator: string
+) => {
+  const event = await EventData.create({
+    ...eventData,
+    pendingTransactionHash: transactionHash,
+    network,
+    isPending: true,
+    createdBy: creator,
+  })
+  return event
 }

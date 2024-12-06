@@ -22,6 +22,7 @@ import { downloadReceipts } from './tasks/receipts'
 import { createEventCasterEvent } from './tasks/eventCaster/createEventCasterEvent'
 import { rsvpForEventCasterEvent } from './tasks/eventCaster/rsvpForEventCasterEvent'
 import exportKeysJob from './tasks/exportKeysJob'
+import { checkPendingEventsForLocks } from './jobs/locks'
 
 const crontabProduction = `
 */5 * * * * monitor
@@ -35,6 +36,7 @@ const crontabProduction = `
 0 0 * * * notifyExpiringKeysForNetwork
 0 0 * * * notifyExpiredKeysForNetwork
 30 */6 * * * checkBalances
+*/2 * * * * checkPendingEventsForLocks
 `
 
 const cronTabTesting = `
@@ -109,6 +111,7 @@ export async function startWorker() {
       downloadReceipts,
       createEventCasterEvent,
       rsvpForEventCasterEvent,
+      checkPendingEventsForLocks,
     },
   })
 
