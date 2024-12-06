@@ -5,7 +5,7 @@ let web3Service, accounts, lock, lockAddress, chainId
 let approvalTx, purchaseTx
 
 export default () =>
-  describe('preparePurchaseKey', () => {
+  describe('preparePurchaseKeys', () => {
     beforeAll(async () => {
       ;({ web3Service, accounts, lock, lockAddress, chainId } =
         global.suiteData)
