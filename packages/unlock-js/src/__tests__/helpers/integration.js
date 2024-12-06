@@ -97,12 +97,14 @@ export const setupLock = async ({
   )
   lock = await web3Service.getLock(lockAddress, chainId)
 
-  // test will fail with default to 1 key per address
-  await walletService.setMaxKeysPerAddress({
-    lockAddress,
-    chainId,
-    maxKeysPerAddress: 100,
-  })
+  if (versionEqualOrAbove(publicLockVersion, 'v10')) {
+    // test will fail with default to 1 key per address
+    await walletService.setMaxKeysPerAddress({
+      lockAddress,
+      chainId,
+      maxKeysPerAddress: 100,
+    })
+  }
 
   return {
     lock,
