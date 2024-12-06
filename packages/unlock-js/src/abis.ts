@@ -955,6 +955,7 @@ const abis = {
         "function referrerFees(address) view returns (uint256)",
         "function refundPenaltyBasisPoints() view returns (uint256)",
         "function renewMembershipFor(uint256 _tokenId,address _referrer)",
+        "function renounceLockManager()",
         "function renounceRole(bytes32 role,address account)",
         "function revokeRole(bytes32 role,address account)",
         "function safeTransferFrom(address _from,address _to,uint256 _tokenId)",
@@ -985,7 +986,7 @@ const abis = {
         "function updateTransferFee(uint256 _transferFeeBasisPoints)",
         "function withdraw(address _tokenAddress,address _recipient,uint256 _amount)"
       ],
-      "bytecodeHash": "0xfec1cb16ca560bee247838d5b7d29723c2bd7c095a7331441a25684b9c66e7b4"
+      "bytecodeHash": "0x54623a3f93497e62531ef372edb64a3d448b7ed0622ce887b08d26400793f86e"
     }
   },
   "Unlock": {
@@ -1254,7 +1255,7 @@ const abis = {
         "function upgradeLock(address lockAddress,uint16 version) returns (address)",
         "function weth() view returns (address)"
       ],
-      "bytecodeHash": "0x0d8defeff0c50762257c9a6285bddae7a28fe7fb66ad02e5c44c1a7c8db62b6d"
+      "bytecodeHash": "0x2831dbe45bc3ba0b2b5787dd61588e3a0a644f97e1e0dc744df50486667cd3f5"
     }
   }
 }
