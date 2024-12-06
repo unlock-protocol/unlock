@@ -113,7 +113,12 @@ describe('useCheckoutCommunication', () => {
     await waitFor(() => result.current.ready)
 
     // Once the emitter is ready, the buffer is flushed in the order events were received
-    expect(emit).toHaveBeenNthCalledWith(1, CheckoutEvents.userInfo, userInfo)
+    expect(emit).toHaveBeenNthCalledWith(
+      1,
+      CheckoutEvents.userInfo,
+      userInfo,
+      null
+    )
 
     expect(emit).toHaveBeenNthCalledWith(
       2,
