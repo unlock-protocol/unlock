@@ -21,6 +21,9 @@ export class EventData extends Model<
   declare slug: string
   declare checkoutConfigId: string | null
   declare eventUrl: string | null
+  declare pendingLockTransaction: string | null
+  declare pendingLockNetwork: number | null
+  declare lockAddress: string | null
 }
 
 EventData.init(
@@ -63,6 +66,18 @@ EventData.init(
       get() {
         return `${config.unlockApp}/event/${this.getDataValue('slug')}`
       },
+    },
+    pendingLockTransaction: {
+      allowNull: true,
+      type: DataTypes.STRING,
+    },
+    pendingLockNetwork: {
+      allowNull: true,
+      type: DataTypes.INTEGER,
+    },
+    lockAddress: {
+      allowNull: true,
+      type: DataTypes.STRING,
     },
   },
   {
