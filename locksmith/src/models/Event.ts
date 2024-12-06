@@ -8,6 +8,12 @@ import { sequelize } from './sequelize'
 import { CheckoutConfig } from './checkoutConfig'
 import config from '../config/config'
 
+export interface PendingLockDeployment {
+  transaction: string
+  network: number
+  name: string
+}
+
 export class EventData extends Model<
   InferAttributes<EventData>,
   InferCreationAttributes<EventData>
@@ -24,6 +30,51 @@ export class EventData extends Model<
   declare pendingLockTransaction: string | null
   declare pendingLockNetwork: number | null
   declare lockAddress: string | null
+
+  /**
+   * Updates the event with pending lock deployment information
+   */
+  async setPendingLock(pendingLock: PendingLockDeployment) {
+    this.pendingLockTransaction = pendingLock.transaction
+    this.pendingLockNetwork = pendingLock.network
+    await this.save()
+  }
+
+  /**
+   * Clears pending lock information and sets the deployed lock details
+   */
+  async setDeployedLock(
+    lockAddress: string,
+    network: number,
+    checkoutConfig: any
+  ) {
+    this.pendingLockTransaction = null
+    this.pendingLockNetwork = null
+    this.checkoutConfigId = checkoutConfig.id
+
+    // Update the data field to include the deployed lock address
+    this.data = {
+      ...this.data,
+      lockAddress,
+      network,
+    }
+
+    await this.save()
+  }
+
+  /**
+   * Returns whether this event has a pending lock deployment
+   */
+  hasPendingLock(): boolean {
+    return !!this.pendingLockTransaction
+  }
+
+  /**
+   * Returns whether this event has a deployed lock
+   */
+  hasDeployedLock(): boolean {
+    return !!this.checkoutConfigId
+  }
 }
 
 EventData.init(
