@@ -100,10 +100,10 @@ describe('useCheckoutCommunication', () => {
     const { result, waitFor } = renderHook(() => useCheckoutCommunication())
 
     const userInfo = { address: '0xmyaddress' }
-    await act(() => result.current.emitUserInfo(userInfo))
+    act(() => result.current.emitUserInfo(userInfo))
 
     const transactionInfo = { hash: '0xmyhash', lock: '0xmylock' }
-    await act(() => result.current.emitTransactionInfo(transactionInfo))
+    act(() => result.current.emitTransactionInfo(transactionInfo))
 
     act(() => result.current.emitCloseModal())
 
