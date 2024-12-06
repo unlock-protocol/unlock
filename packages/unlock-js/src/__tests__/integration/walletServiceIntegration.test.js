@@ -46,6 +46,7 @@ import setBaseTokenURI from './lock/setBaseTokenURI'
 import setEventHooks from './lock/setEventHooks'
 import transferFrom from './lock/transferFrom'
 import lendKey from './lock/lendKey'
+import burnKey from './lock/burnKey'
 
 // Increasing timeouts
 
@@ -145,6 +146,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
 
       // lock tests
       approveBeneficiary(testSetupArgs)
+      burnKey(testSetupArgs)
       cancelAndRefund(testSetupArgs)
       expireAndRefundFor(testSetupArgs)
       extendKey(testSetupArgs)
@@ -152,6 +154,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
       grantKeyExtension(testSetupArgs)
       grantKeys(testSetupArgs)
       keyGranter(testSetupArgs)
+      lendKey(testSetupArgs)
       maxKeysPerAddress(testSetupArgs)
       mergeKeys(testSetupArgs)
       purchaseKey(testSetupArgs)
@@ -162,12 +165,11 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
       setMaxNumberOfKeys(testSetupArgs)
       shareKeyToAddress(testSetupArgs)
       shareKeyToTokenId(testSetupArgs)
+      transferFrom(testSetupArgs)
       updateKeyPrice(testSetupArgs)
       updateLockName(testSetupArgs)
       updateLockSymbol(testSetupArgs)
       withdrawFromLock(testSetupArgs)
-      transferFrom(testSetupArgs)
-      lendKey(testSetupArgs)
     })
   })
 })

@@ -1,10 +1,10 @@
 ---
-title: "Unlock Labs Release Notes: November 27, 2024"
-subtitle: ""
-authorName: "Unlock Protocol"
-publishDate: "Wed Nov 27 2024 15:28:02 GMT+0000 (Coordinated Universal Time)"
-description: "Unlock Labs Release Notes"
-image: "/images/blog/unlock-labs-release-notes--november-27--2024/65d9d5747d63fcedbb3bc9e487818fb8.jpg"
+title: 'Unlock Labs Release Notes: November 27, 2024'
+subtitle: ''
+authorName: 'Unlock Protocol'
+publishDate: 'Wed Nov 27 2024 15:28:02 GMT+0000 (Coordinated Universal Time)'
+description: 'Unlock Labs Release Notes'
+image: '/images/blog/unlock-labs-release-notes--november-27--2024/65d9d5747d63fcedbb3bc9e487818fb8.jpg'
 ---
 
 ![Unlock Labs Release Notes: November 27, 2024](https://storage.googleapis.com/papyrus_images/65d9d5747d63fcedbb3bc9e487818fb8.jpg)
