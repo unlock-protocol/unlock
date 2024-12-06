@@ -112,10 +112,8 @@ export async function notifyOfLocks(hooks: Hook[]) {
 async function processNewLocks(locks: any[], network: number) {
   const pendingEvents = await EventData.findAll({
     where: {
-      pendingLockTransaction: {
-        [Op.not]: null,
-      },
-      pendingLockNetwork: network,
+      isPending: true,
+      network,
       lockAddress: null,
     },
   })
@@ -123,14 +121,14 @@ async function processNewLocks(locks: any[], network: number) {
   for (const event of pendingEvents) {
     // Find if any of the new locks corresponds to our pending transaction
     const matchingLock = locks.find(async (lock) => {
-      const txHash = await lock.transactionHash // assuming this is available from subgraph
+      const txHash = await lock.transactionHash
       return (
-        txHash?.toLowerCase() === event.pendingLockTransaction?.toLowerCase()
+        txHash?.toLowerCase() === event.pendingTransactionHash?.toLowerCase()
       )
     })
 
     if (matchingLock) {
-      // Update checkout config with actual lock address
+      // Create checkout config with actual lock address
       const checkoutConfig = await saveCheckoutConfig({
         ...defaultEventCheckoutConfigForLockOnNetwork(
           matchingLock.address,
@@ -143,8 +141,8 @@ async function processNewLocks(locks: any[], network: number) {
       await event.update({
         lockAddress: matchingLock.address,
         checkoutConfigId: checkoutConfig.id,
-        pendingLockTransaction: null,
-        pendingLockNetwork: null,
+        pendingTransactionHash: null,
+        isPending: false,
       })
 
       logger.info(`Lock deployed for event ${event.slug}`, {
