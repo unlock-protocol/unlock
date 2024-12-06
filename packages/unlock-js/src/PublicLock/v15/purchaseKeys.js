@@ -54,7 +54,7 @@ export default async function (options, transactionOptions = {}, callback) {
         }
       }
 
-      const gasLimit = this.signer.estimateGas(purchaseTransactionRequest)
+      const gasLimit = await this.signer.estimateGas(purchaseTransactionRequest)
       transactionOptions.gasLimit = (gasLimit * 13n) / 10n
     } catch (error) {
       console.error(
