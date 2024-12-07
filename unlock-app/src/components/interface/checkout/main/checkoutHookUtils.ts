@@ -88,12 +88,8 @@ export const postToWebhook = async (body: any, config: any, event: string) => {
   prevBody = JSON.stringify(body)
 
   const sendWebhookRequest = async (attempt: number) => {
-    try {
-      await axios.post(url, body)
-      toast.success(`Sent ${event} event data to ${url} on attempt ${attempt}`)
-    } catch (error) {
-      throw error
-    }
+    await axios.post(url, body)
+    toast.success(`Sent ${event} event data to ${url} on attempt ${attempt}`)
   }
 
   const retryRequest = async (maxRetries: number) => {
