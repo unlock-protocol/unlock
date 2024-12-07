@@ -44,7 +44,7 @@ describe('useCheckoutCommunication', () => {
     await waitFor(() => result.current.ready)
 
     const userInfo = { address: '0xmyaddress' }
-    result.current.emitUserInfo(userInfo, null)
+    result.current.emitUserInfo(userInfo)
 
     expect(emit).toHaveBeenCalledWith(CheckoutEvents.userInfo, userInfo)
   })
@@ -73,7 +73,7 @@ describe('useCheckoutCommunication', () => {
     await waitFor(() => result.current.ready)
 
     const transactionInfo = { hash: '0xmyhash', lock: '0xmylock' }
-    result.current.emitTransactionInfo(transactionInfo, null)
+    result.current.emitTransactionInfo(transactionInfo)
 
     expect(emit).toHaveBeenCalledWith(
       CheckoutEvents.transactionInfo,
@@ -113,20 +113,6 @@ describe('useCheckoutCommunication', () => {
     await waitFor(() => result.current.ready)
 
     // Once the emitter is ready, the buffer is flushed in the order events were received
-    // expect(emit).toHaveBeenNthCalledWith(1, CheckoutEvents.userInfo, userInfo)
-
-    // expect(emit).toHaveBeenNthCalledWith(
-    //   2,
-    //   CheckoutEvents.transactionInfo,
-    //   transactionInfo
-    // )
-
-    // expect(emit).toHaveBeenNthCalledWith(
-    //   3,
-    //   CheckoutEvents.closeModal,
-    //   undefined
-    // )
-
     await waitFor(() => {
       expect(emit).toHaveBeenNthCalledWith(1, CheckoutEvents.userInfo, userInfo)
       expect(emit).toHaveBeenNthCalledWith(
