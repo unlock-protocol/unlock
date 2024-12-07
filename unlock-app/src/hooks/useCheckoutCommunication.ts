@@ -4,7 +4,7 @@ import { PaywallConfigType } from '@unlock-protocol/core'
 import { OAuthConfig } from '~/unlockTypes'
 import { useProvider } from './useProvider'
 import { isInIframe } from '~/utils/iframe'
-// import { postToWebhook } from '~/components/interface/checkout/main/checkoutHookUtils'
+import { postToWebhook } from '~/components/interface/checkout/main/checkoutHookUtils'
 
 export interface UserInfo {
   address?: string
@@ -226,14 +226,12 @@ export const useCheckoutCommunication = () => {
     }
     setUser(info.address)
     pushOrEmit(CheckoutEvents.userInfo, info)
-    console.log('pwconfig=>', paywallConfig)
-    // parent && postToWebhook(info, paywallConfig, 'authenticated')
+    postToWebhook(info, paywallConfig, 'authenticated')
   }
 
   const emitMetadata = async (metadata: any, paywallConfig?: any) => {
     pushOrEmit(CheckoutEvents.metadata, metadata)
-    console.log('pwconfig=>', paywallConfig)
-    // parent && postToWebhook(metadata, paywallConfig, 'metadata')
+    postToWebhook(metadata, paywallConfig, 'metadata')
   }
 
   const emitCloseModal = () => {
@@ -245,8 +243,7 @@ export const useCheckoutCommunication = () => {
     paywallConfig?: any
   ) => {
     pushOrEmit(CheckoutEvents.transactionInfo, info)
-    console.log('pwconfig=>', paywallConfig)
-    // parent && postToWebhook(info, paywallConfig, 'transactionSent')
+    postToWebhook(info, paywallConfig, 'transactionSent')
   }
 
   const emitMethodCall = (call: MethodCall) => {
