@@ -8,6 +8,12 @@ import { sequelize } from './sequelize'
 import { CheckoutConfig } from './checkoutConfig'
 import config from '../config/config'
 
+export interface PendingLockDeployment {
+  transaction: string
+  network: number
+  name: string
+}
+
 export class EventData extends Model<
   InferAttributes<EventData>,
   InferCreationAttributes<EventData>
@@ -21,6 +27,55 @@ export class EventData extends Model<
   declare slug: string
   declare checkoutConfigId: string | null
   declare eventUrl: string | null
+  declare pendingTransactionHash: string | null
+  declare network: number | null
+  declare isPending: boolean
+  declare lockAddress: string | null
+
+  /**
+   * Updates the event with pending lock deployment information
+   */
+  async setPendingLock(pendingLock: PendingLockDeployment) {
+    this.pendingTransactionHash = pendingLock.transaction
+    this.network = pendingLock.network
+    await this.save()
+  }
+
+  /**
+   * Clears pending lock information and sets the deployed lock details
+   */
+  async setDeployedLock(
+    lockAddress: string,
+    network: number,
+    checkoutConfig: any
+  ) {
+    this.pendingTransactionHash = null
+    this.network = null
+    this.checkoutConfigId = checkoutConfig.id
+
+    // Update the data field to include the deployed lock address
+    this.data = {
+      ...this.data,
+      lockAddress,
+      network,
+    }
+
+    await this.save()
+  }
+
+  /**
+   * Returns whether this event has a pending lock deployment
+   */
+  hasPendingLock(): boolean {
+    return !!this.pendingTransactionHash
+  }
+
+  /**
+   * Returns whether this event has a deployed lock
+   */
+  hasDeployedLock(): boolean {
+    return !!this.checkoutConfigId
+  }
 }
 
 EventData.init(
@@ -63,6 +118,23 @@ EventData.init(
       get() {
         return `${config.unlockApp}/event/${this.getDataValue('slug')}`
       },
+    },
+    pendingTransactionHash: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    network: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    isPending: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
+    lockAddress: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
   },
   {

@@ -56,40 +56,9 @@ export const NewEvent = () => {
   const { getWalletService } = useProvider()
 
   const onSubmit = async (formData: NewEventForm) => {
-    let lockAddress
     const walletService = await getWalletService(formData.network)
     try {
-      lockAddress = await walletService.createLock(
-        {
-          ...formData.lock,
-          name: formData.lock.name,
-          publicLockVersion:
-            networks[formData.network].publicLockVersionToDeploy,
-        },
-        {} /** transactionParams */,
-        async (createLockError, transactionHash) => {
-          if (createLockError) {
-            throw createLockError
-          }
-          if (transactionHash) {
-            setTransactionDetails({
-              hash: transactionHash,
-              network: formData.network,
-            })
-          }
-        }
-      ) // Deploy the lock! and show the "waiting" screen + mention to *not* close!
-    } catch (error) {
-      console.error(error)
-      ToastHelper.error('The contract could not be deployed. Please try again.')
-    }
-    if (lockAddress) {
-      await locksmith.updateLockMetadata(formData.network, lockAddress, {
-        metadata: {
-          name: `Ticket for ${formData.lock.name}`,
-          image: formData.metadata.image,
-        },
-      })
+      // Create event first with pending status
       const { data: event } = await locksmith.saveEventData({
         data: {
           ...formDataToMetadata({
@@ -98,19 +67,45 @@ export const NewEvent = () => {
           }),
           ...formData.metadata,
         },
+        pendingLock: {
+          network: formData.network,
+          name: formData.lock.name,
+        },
         checkoutConfig: {
           name: `Checkout config for ${formData.lock.name}`,
-          config: defaultEventCheckoutConfigForLockOnNetwork(
-            lockAddress,
-            formData.network
-          ),
+          config: {}, // Empty config until lock is deployed
         },
       })
-      // Save slug for URL if present
-      setSlug(event.slug)
 
-      // Finally
-      setLockAddress(lockAddress)
+      // Then deploy the lock
+      await walletService.createLock(
+        {
+          ...formData.lock,
+          name: formData.lock.name,
+          publicLockVersion:
+            networks[formData.network].publicLockVersionToDeploy,
+        },
+        {},
+        async (error, transactionHash) => {
+          if (error) throw error
+          if (transactionHash) {
+            // Update event with pending transaction
+            await locksmith.updateEventPendingLock(event.slug, {
+              transaction: transactionHash,
+              network: formData.network,
+            })
+            setTransactionDetails({
+              hash: transactionHash,
+              network: formData.network,
+            })
+          }
+        }
+      )
+    } catch (error) {
+      console.error(error)
+      ToastHelper.error(
+        'There was an error creating your event. Please try again.'
+      )
     }
   }
 
