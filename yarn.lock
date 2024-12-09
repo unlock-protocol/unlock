@@ -11993,9 +11993,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@privy-io/js-sdk-core@npm:0.35.1":
-  version: 0.35.1
-  resolution: "@privy-io/js-sdk-core@npm:0.35.1"
+"@privy-io/js-sdk-core@npm:0.35.2":
+  version: 0.35.2
+  resolution: "@privy-io/js-sdk-core@npm:0.35.2"
   dependencies:
     "@ethersproject/abstract-signer": "npm:^5.7.0"
     "@ethersproject/bignumber": "npm:^5.7.0"
@@ -12004,7 +12004,7 @@ __metadata:
     "@ethersproject/transactions": "npm:^5.7.0"
     "@ethersproject/units": "npm:^5.7.0"
     "@privy-io/api-base": "npm:^1.4.1"
-    "@privy-io/public-api": "npm:2.15.2"
+    "@privy-io/public-api": "npm:2.15.3"
     eventemitter3: "npm:^5.0.1"
     fetch-retry: "npm:^5.0.6"
     jose: "npm:^4.15.5"
@@ -12020,26 +12020,26 @@ __metadata:
       optional: true
     viem:
       optional: true
-  checksum: 10/dd972a2e0f1be57cd8bb78a5bacd896a64f42f3c3dbf48dbc0d553e692d02380f03c51a0dd467897d9d7e37fc88db03b9e93fe4d8e5841ebafa96d402eaae713
+  checksum: 10/d586de2001930a2b39de467ab4ba8c6508a76b39da03e86d335acd2a2b5c4e7cb10a8d385513c6387dee9e8e6ea6a0cc6ec35a58fe5271d6703eceade3e1f8ee
   languageName: node
   linkType: hard
 
-"@privy-io/public-api@npm:2.15.2":
-  version: 2.15.2
-  resolution: "@privy-io/public-api@npm:2.15.2"
+"@privy-io/public-api@npm:2.15.3":
+  version: 2.15.3
+  resolution: "@privy-io/public-api@npm:2.15.3"
   dependencies:
     "@privy-io/api-base": "npm:1.4.1"
     bs58: "npm:^5.0.0"
     ethers: "npm:^5.7.2"
     libphonenumber-js: "npm:^1.10.31"
     zod: "npm:^3.22.4"
-  checksum: 10/c13b5706d3e4b613e2ab3ae72f54b9f8745c71a2923001167d13d28e4202458b002c930f4117b8baa823666c1a177a92e1b1d65ee15e0260b625b963990395ba
+  checksum: 10/2a4172bd5bbbef5981166fecd894f6cb0b61471656956d2ab29acfa249bcadb6ec3c70d92c04f55e373a262b91dfb10a6e7e0697b69a659976b2aacbf33a6f39
   languageName: node
   linkType: hard
 
-"@privy-io/react-auth@npm:1.95.2":
-  version: 1.95.2
-  resolution: "@privy-io/react-auth@npm:1.95.2"
+"@privy-io/react-auth@npm:1.95.3":
+  version: 1.95.3
+  resolution: "@privy-io/react-auth@npm:1.95.3"
   dependencies:
     "@coinbase/wallet-sdk": "npm:4.0.3"
     "@ethersproject/abstract-signer": "npm:^5.7.0"
@@ -12057,7 +12057,7 @@ __metadata:
     "@heroicons/react": "npm:^2.1.1"
     "@marsidev/react-turnstile": "npm:^0.4.1"
     "@metamask/eth-sig-util": "npm:^6.0.0"
-    "@privy-io/js-sdk-core": "npm:0.35.1"
+    "@privy-io/js-sdk-core": "npm:0.35.2"
     "@simplewebauthn/browser": "npm:^9.0.1"
     "@solana/wallet-adapter-base": "npm:^0.9.23"
     "@solana/wallet-standard-wallet-adapter-base": "npm:^1.1.2"
@@ -12089,7 +12089,7 @@ __metadata:
     web3-core-helpers: "npm:^1.8.0"
   peerDependencies:
     "@abstract-foundation/agw-client": ^0.0.1-beta.17
-    "@solana/web3.js": ^1.95.3
+    "@solana/web3.js": ^1.95.8
     permissionless: ^0.2.10
     react: ^18 || ^19
     react-dom: ^18 || ^19
@@ -12100,7 +12100,7 @@ __metadata:
       optional: true
     permissionless:
       optional: true
-  checksum: 10/840177a49b0ad4a74e99b8ca696d906f92f707278ddeccddfff5fe59ef94b613487c2d288b9fb3fdc2d182b5454d239092ed42f492bd71508561c892e771d1c4
+  checksum: 10/d15d558dc31386549010e332ac81bf3c26345e4f388e98504a7a91c88df3d28923f63ce4ed56067a7f5e3d330432b7178ba22b0720bebebeb1f0b8e704fd3f4a
   languageName: node
   linkType: hard
 
@@ -17982,7 +17982,7 @@ __metadata:
     "@mdx-js/react": "npm:3.1.0"
     "@mui/material": "npm:6.1.9"
     "@mui/x-charts": "npm:7.23.0"
-    "@privy-io/react-auth": "npm:1.95.2"
+    "@privy-io/react-auth": "npm:1.95.3"
     "@tanstack/react-query": "npm:5.62.0"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/ui": "workspace:./packages/ui"
@@ -18415,7 +18415,7 @@ __metadata:
     "@guildxyz/sdk": "npm:2.6.9"
     "@headlessui/react": "npm:2.1.9"
     "@hookform/resolvers": "npm:3.9.1"
-    "@privy-io/react-auth": "npm:1.95.2"
+    "@privy-io/react-auth": "npm:1.95.3"
     "@radix-ui/react-avatar": "npm:1.1.1"
     "@sentry/nextjs": "npm:7.119.2"
     "@stripe/react-stripe-js": "npm:3.0.0"
