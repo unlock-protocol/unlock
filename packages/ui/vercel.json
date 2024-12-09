@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "cd .. && yarn build && yarn workspace @unlock-protocol/networks build && yarn build-storybook",
+  "buildCommand": "cd .. && yarn build && yarn workspace @unlock-protocol/networks build && cd packages/ui && yarn build-storybook",
   "devCommand": "yarn storybook",
   "installCommand": "yarn install",
   "framework": null,
