@@ -27,9 +27,8 @@
     "build": "yarn build:lib && yarn build:cdn && tsup ./lib/index.tsx --dts-only",
     "build:lib": "vite build",
     "build:cdn": "IS_CDN=1 && vite build",
-    "storybook": "storybook dev -p 6006 -s public",
-    "build-storybook": "storybook build -s public",
-    "serve-storybook": "serve storybook-static"
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@headlessui/react": "2.2.0",
