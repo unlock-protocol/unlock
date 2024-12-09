@@ -15,7 +15,7 @@
     "@mdx-js/react": "3.1.0",
     "@mui/material": "6.1.9",
     "@mui/x-charts": "7.23.0",
-    "@privy-io/react-auth": "1.96.1",
+    "@privy-io/react-auth": "1.95.3",
     "@tanstack/react-query": "5.62.0",
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "@unlock-protocol/ui": "workspace:./packages/ui",
