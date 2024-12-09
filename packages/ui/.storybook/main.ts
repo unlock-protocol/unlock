@@ -2,11 +2,7 @@ import { mergeConfig } from 'vite'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import svgr from 'vite-plugin-svgr'
 export default {
-  stories: [
-    '../lib/**/*.stories.mdx',
-    '../lib/**/*.stories.@(js|jsx|ts|tsx)',
-    '../lib/**',
-  ],
+  stories: ['../lib/**/*.stories.mdx', '../lib/**/*.stories.@(js|jsx|ts|tsx)'],
   addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
   staticDirs: ['../public'],
   framework: '@storybook/react-vite',
