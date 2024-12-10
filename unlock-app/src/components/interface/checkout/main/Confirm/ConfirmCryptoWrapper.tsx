@@ -101,7 +101,6 @@ export function ConfirmCryptoWrapper({
 
   const handleEmbeddedWalletConfirm = async () => {
     try {
-      console.log('Starting purchase keys transaction')
       const txs = await web3Service.purchaseKeys({
         lockAddress,
         network: lockNetwork,
