@@ -12,7 +12,6 @@ import { useQuery } from '@tanstack/react-query'
 import { fetchRecipientsData } from '../utils'
 import { purchasePriceFor } from '~/hooks/usePricing'
 import { ethers } from 'ethers'
-import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface Props {
   checkoutService: CheckoutService
@@ -102,12 +101,13 @@ export function ConfirmCryptoWrapper({
 
   const handleEmbeddedWalletConfirm = async () => {
     try {
+      console.log('Starting purchase keys transaction')
       const txs = await web3Service.purchaseKeys({
         lockAddress,
         network: lockNetwork,
         params: {
           owners: recipients,
-          keyPrices,
+          keyPrices: keyPrices.map((price) => price.toString()),
           lockAddress,
           keyManagers: keyManagers?.length ? keyManagers : undefined,
           referrers,
@@ -116,27 +116,17 @@ export function ConfirmCryptoWrapper({
 
       const [purchaseTx] = txs
 
-      // Convert the tx value to hex string properly
+      // Ensure value is properly converted to hex
       let convertedValue = '0x0'
       if (purchaseTx.value) {
-        try {
-          let valueInWei
-          if (typeof purchaseTx.value === 'bigint') {
-            valueInWei = purchaseTx.value
-          } else {
-            // Convert decimal ETH to Wei
-            valueInWei = ethers.parseEther(purchaseTx.value.toString())
-          }
-
-          // Convert to hex string with '0x' prefix
+        const valueString = purchaseTx.value.toString()
+        // If the value is already in Wei (big number), convert directly to hex
+        if (typeof purchaseTx.value === 'bigint') {
+          convertedValue = `0x${purchaseTx.value.toString(16)}`
+        } else {
+          // If the value is in ETH, convert to Wei first
+          const valueInWei = ethers.parseEther(valueString)
           convertedValue = `0x${valueInWei.toString(16)}`
-        } catch (conversionError) {
-          ToastHelper.error('Error encountered while handling conversion')
-          console.error('Error converting value:', {
-            originalValue: purchaseTx.value,
-            valueType: typeof purchaseTx.value,
-            error: conversionError,
-          })
         }
       }
 
