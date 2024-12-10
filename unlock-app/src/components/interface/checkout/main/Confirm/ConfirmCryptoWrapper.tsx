@@ -12,6 +12,7 @@ import { useQuery } from '@tanstack/react-query'
 import { fetchRecipientsData } from '../utils'
 import { purchasePriceFor } from '~/hooks/usePricing'
 import { ethers } from 'ethers'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface Props {
   checkoutService: CheckoutService
@@ -41,11 +42,7 @@ export function ConfirmCryptoWrapper({
   )
 
   // Combined query for purchase data and pricing
-  const {
-    data: pricingData,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data: pricingData } = useQuery({
     queryKey: [
       'pricingData',
       lockNetwork,
@@ -105,7 +102,6 @@ export function ConfirmCryptoWrapper({
 
   const handleEmbeddedWalletConfirm = async () => {
     try {
-      // Get transaction data using web3Service
       const txs = await web3Service.purchaseKeys({
         lockAddress,
         network: lockNetwork,
@@ -115,22 +111,49 @@ export function ConfirmCryptoWrapper({
           lockAddress,
           keyManagers: keyManagers?.length ? keyManagers : undefined,
           referrers,
-          data:
-            data || Array.from({ length: recipients.length }).map(() => '0x'), // Use original data
         },
       })
 
-      console.log('txs', txs)
-
       const [purchaseTx] = txs
-      const tx = await sendTransaction({
+
+      // Convert the tx value to hex string properly
+      let convertedValue = '0x0'
+      if (purchaseTx.value) {
+        try {
+          let valueInWei
+          if (typeof purchaseTx.value === 'bigint') {
+            valueInWei = purchaseTx.value
+          } else {
+            // Convert decimal ETH to Wei
+            valueInWei = ethers.parseEther(purchaseTx.value.toString())
+          }
+
+          // Convert to hex string with '0x' prefix
+          convertedValue = `0x${valueInWei.toString(16)}`
+        } catch (conversionError) {
+          ToastHelper.error('Error encountered while handling conversion')
+          console.error('Error converting value:', {
+            originalValue: purchaseTx.value,
+            valueType: typeof purchaseTx.value,
+            error: conversionError,
+          })
+        }
+      }
+
+      const txParams = {
         to: purchaseTx.to,
         data: purchaseTx.data,
-        value: ethers.formatEther(purchaseTx.value?.toString() || '0'),
-      })
+        value: convertedValue,
+      }
+
+      const tx = await sendTransaction(txParams)
       onConfirmed(lockAddress, lockNetwork, tx.transactionHash)
     } catch (error: any) {
-      console.error(error)
+      console.error('Transaction error details:', {
+        error,
+        message: error.message,
+        stack: error.stack,
+      })
       onError(error.message || 'Transaction failed')
     }
   }
