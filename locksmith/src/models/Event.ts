@@ -8,6 +8,11 @@ import { sequelize } from './sequelize'
 import { CheckoutConfig } from './checkoutConfig'
 import config from '../config/config'
 
+export enum EventStatus {
+  PENDING = 'pending',
+  DEPLOYED = 'deployed',
+}
+
 export class EventData extends Model<
   InferAttributes<EventData>,
   InferCreationAttributes<EventData>
@@ -21,6 +26,8 @@ export class EventData extends Model<
   declare slug: string
   declare checkoutConfigId: string | null
   declare eventUrl: string | null
+  declare status: EventStatus
+  declare transactionHash: string | null
 }
 
 EventData.init(
@@ -63,6 +70,15 @@ EventData.init(
       get() {
         return `${config.unlockApp}/event/${this.getDataValue('slug')}`
       },
+    },
+    status: {
+      type: DataTypes.ENUM(...Object.values(EventStatus)),
+      allowNull: false,
+      defaultValue: EventStatus.PENDING,
+    },
+    transactionHash: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
   },
   {
