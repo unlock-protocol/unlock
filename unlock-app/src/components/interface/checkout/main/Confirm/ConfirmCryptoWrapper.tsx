@@ -106,7 +106,7 @@ export function ConfirmCryptoWrapper({
         network: lockNetwork,
         params: {
           owners: recipients,
-          keyPrices: keyPrices.map((price) => price.toString()),
+          keyPrices,
           lockAddress,
           keyManagers: keyManagers?.length ? keyManagers : undefined,
           referrers,
