@@ -6,6 +6,7 @@ import {
   getAllEvents,
   approveRefunds,
   approvedRefunds,
+  updateEventData,
 } from '../../controllers/v2/eventsController'
 import { authenticatedMiddleware } from '../../utils/middlewares/auth'
 import { eventOrganizerMiddleware } from '../../utils/middlewares/eventOrganizerMiddleware'
@@ -46,6 +47,13 @@ router.post(
   authenticatedMiddleware,
   eventOrganizerMiddleware,
   saveEventDetails
+)
+
+router.put(
+  '/:slug/update',
+  authenticatedMiddleware,
+  eventOrganizerMiddleware,
+  updateEventData
 )
 
 export default router
