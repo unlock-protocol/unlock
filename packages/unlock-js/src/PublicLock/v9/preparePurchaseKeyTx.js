@@ -19,6 +19,7 @@ export default async function (
     decimals,
     referrer,
     data,
+    skipAllowance, // used to parse allowance externally during multiple purchase on v9
   },
   provider
 ) {
@@ -59,7 +60,7 @@ export default async function (
     )
   }
   // If the lock is priced in ERC20, we need to approve the transfer
-  if (erc20Address != ZERO) {
+  if (erc20Address != ZERO && !skipAllowance) {
     const totalAmountToApprove = actualAmount
     const approvalOptions = {
       erc20Address,
