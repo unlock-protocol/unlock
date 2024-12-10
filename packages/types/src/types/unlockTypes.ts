@@ -20,6 +20,11 @@ export enum TransactionStatus {
   NONE = '', // for testing purposes
 }
 
+export enum EventStatus {
+  PENDING = 'pending',
+  DEPLOYED = 'deployed',
+}
+
 export interface NetworkDeploy {
   unlockAddress: string
   startBlock: number
