@@ -6,10 +6,11 @@ let web3Service, accounts, lock, lockAddress, chainId
 export default () =>
   describe('preparePurchaseKey', () => {
     let txs
+    let keyPrice
     beforeAll(async () => {
       ;({ web3Service, accounts, lock, lockAddress, chainId } =
         global.suiteData)
-
+      ;({ keyPrice } = await web3Service.getLock(lockAddress, chainId))
       const [keyOwner] = accounts
       txs = await web3Service.purchaseKey({
         lockAddress: lockAddress,
@@ -34,7 +35,7 @@ export default () =>
       }
       expect(purchaseTx.to).toBe(lockAddress)
       expect(ethers.formatEther(purchaseTx.value)).toBe(
-        lock.currencyContractAddress ? '0.0' : lock.keyPrice
+        lock.currencyContractAddress ? '0.0' : keyPrice
       )
     })
     it('parse adds allowance tx if erc20', async () => {

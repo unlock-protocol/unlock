@@ -31,8 +31,6 @@ export default async function (params, transactionOptions = {}, callback) {
     purchaseTransactionRequests = txRequests
   }
 
-  console.log({ approvalTransactionRequest, purchaseTransactionRequests })
-
   // execute all purchases requests
   return await Promise.all(
     purchaseTransactionRequests.map(async (purchaseTransactionRequest) => {
