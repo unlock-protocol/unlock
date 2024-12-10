@@ -6,6 +6,7 @@ import {
   getEventBySlug,
   getEventMetadataForLock,
   saveEvent,
+  updateEvent,
 } from '../../operations/eventOperations'
 import normalizer from '../../utils/normalizer'
 import { CheckoutConfig, EventData } from '../../models'
@@ -28,6 +29,7 @@ import config from '../../config/config'
 import { downloadJsonFromS3 } from '../../utils/downloadJsonFromS3'
 import logger from '../../logger'
 import { getWeb3Service } from '../../initializers'
+import { EventStatus } from '@unlock-protocol/types'
 
 // DEPRECATED!
 export const getEventDetailsByLock: RequestHandler = async (
@@ -44,10 +46,14 @@ export const getEventDetailsByLock: RequestHandler = async (
 export const EventBody = z.object({
   id: z.number().optional(),
   data: z.any(),
-  checkoutConfig: z.object({
-    config: PaywallConfig,
-    id: z.string().optional(),
-  }),
+  checkoutConfig: z
+    .object({
+      config: PaywallConfig,
+      id: z.string().optional(),
+    })
+    .optional(),
+  status: z.enum([EventStatus.PENDING, EventStatus.DEPLOYED]).optional(),
+  transactionHash: z.string().optional(),
 })
 export type EventBodyType = z.infer<typeof EventBody>
 
@@ -73,8 +79,8 @@ export const saveEventDetails: RequestHandler = async (request, response) => {
     request.user!.walletAddress
   )
 
-  // This was a creation!
-  if (created) {
+  // Only send email if event is deployed
+  if (created && event.status === EventStatus.DEPLOYED) {
     await sendEmail({
       template: 'eventDeployed',
       recipient: event.data.replyTo,
@@ -285,4 +291,33 @@ export const approvedRefunds: RequestHandler = async (request, response) => {
 
   response.status(200).send(file)
   return
+}
+
+export const updateEventData: RequestHandler = async (request, response) => {
+  const { slug } = request.params
+  const { status, transactionHash, checkoutConfig } = request.body
+
+  try {
+    const event = await updateEvent(slug, {
+      status,
+      transactionHash,
+      checkoutConfig,
+    })
+
+    if (!event) {
+      response.status(404).json({ error: 'Event not found' })
+      return
+    }
+
+    response.status(200).json({
+      slug: event.slug,
+      status: event.status,
+      transactionHash: event.transactionHash,
+    })
+    return
+  } catch (error) {
+    logger.error(error)
+    response.status(500).json({ error: 'Failed to update event' })
+    return
+  }
 }
