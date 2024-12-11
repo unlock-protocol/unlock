@@ -46,7 +46,7 @@ type Lock @entity {
   """
   keyGranters: [Bytes!]!
   "transaction hash of the lock's creation"
-  transactionHash: String!
+  creationTransactionHash: String!
 }
 
 type Key @entity {

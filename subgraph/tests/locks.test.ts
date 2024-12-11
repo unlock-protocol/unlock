@@ -88,7 +88,7 @@ describe('Describe Locks events', () => {
     assert.fieldEquals(
       'Lock',
       lockAddress,
-      'transactionHash',
+      'creationTransactionHash',
       '0x0000000000000000000000000000000000000000000000000000000000000001'
     )
     assert.fieldEquals('Lock', lockAddress, 'version', '11')

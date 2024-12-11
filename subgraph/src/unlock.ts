@@ -105,7 +105,7 @@ export function handleNewLock(event: NewLock): void {
   lock.createdAtBlock = event.block.number
   lock.lastKeyMintedAt = null
   lock.lastKeyRenewedAt = null
-  lock.transactionHash = event.transaction.hash.toHexString()
+  lock.creationTransactionHash = event.transaction.hash.toHexString()
 
   if (version.le(BigInt.fromI32(8))) {
     // prior to v8, add default lock manager
