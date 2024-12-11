@@ -35,6 +35,11 @@ export function createNewLockEvent(
 ): NewLock {
   const newLockEvent = changetype<NewLock>(newMockEvent())
 
+  // Set a deterministic transaction hash for testing
+  newLockEvent.transaction.hash = Bytes.fromHexString(
+    '0x0000000000000000000000000000000000000000000000000000000000000001'
+  )
+
   newLockEvent.parameters = []
 
   newLockEvent.parameters.push(

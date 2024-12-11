@@ -65,6 +65,9 @@ describe('Receipts for base currency locks', () => {
     lock.deployer = Bytes.fromHexString(lockManagers[0])
     lock.numberOfReceipts = BigInt.fromU32(0)
     lock.numberOfCancelReceipts = BigInt.fromU32(0)
+    lock.creationTransactionHash =
+      '0x0000000000000000000000000000000000000000000000000000000000000001'
+    lock.createdAtBlock = BigInt.fromI32(1)
     lock.save()
 
     // transfer event
@@ -99,6 +102,9 @@ describe('Receipts for base currency locks', () => {
     lock.deployer = Bytes.fromHexString(lockManagers[0])
     lock.numberOfReceipts = BigInt.fromU32(0)
     lock.numberOfCancelReceipts = BigInt.fromU32(0)
+    lock.creationTransactionHash =
+      '0x0000000000000000000000000000000000000000000000000000000000000001'
+    lock.createdAtBlock = BigInt.fromI32(1)
     lock.save()
 
     // create a key
@@ -149,6 +155,9 @@ describe('Receipts for base currency locks', () => {
     lock.deployer = Bytes.fromHexString(lockManagers[0])
     lock.numberOfReceipts = BigInt.fromU32(0)
     lock.numberOfCancelReceipts = BigInt.fromU32(0)
+    lock.creationTransactionHash =
+      '0x0000000000000000000000000000000000000000000000000000000000000001'
+    lock.createdAtBlock = BigInt.fromI32(1)
     lock.save()
 
     // transfer event
@@ -182,6 +191,9 @@ describe('Receipts for base currency locks', () => {
     lock.deployer = Bytes.fromHexString(lockManagers[0])
     lock.numberOfReceipts = BigInt.fromU32(0)
     lock.numberOfCancelReceipts = BigInt.fromU32(0)
+    lock.creationTransactionHash =
+      '0x0000000000000000000000000000000000000000000000000000000000000001'
+    lock.createdAtBlock = BigInt.fromI32(1)
     lock.save()
 
     // renew event
@@ -226,6 +238,9 @@ describe('Receipts for base currency locks', () => {
     lock.deployer = Bytes.fromHexString(lockManagers[0])
     lock.numberOfReceipts = BigInt.fromU32(0)
     lock.numberOfCancelReceipts = BigInt.fromU32(0)
+    lock.creationTransactionHash =
+      '0x0000000000000000000000000000000000000000000000000000000000000001'
+    lock.createdAtBlock = BigInt.fromI32(1)
     lock.save()
 
     const key = new Key(`${lockAddress}-${tokenId}`)
@@ -290,6 +305,9 @@ describe('Receipts for an ERC20 locks', () => {
     lock.deployer = Bytes.fromHexString(lockManagers[0])
     lock.numberOfReceipts = BigInt.fromU32(0)
     lock.numberOfCancelReceipts = BigInt.fromU32(0)
+    lock.creationTransactionHash =
+      '0x0000000000000000000000000000000000000000000000000000000000000001'
+    lock.createdAtBlock = BigInt.fromI32(1)
     lock.save()
 
     // transfer event
@@ -331,6 +349,9 @@ describe('Receipts for Cancel and refund', () => {
     lock.deployer = Bytes.fromHexString(lockManagers[0])
     lock.numberOfReceipts = BigInt.fromU32(0)
     lock.numberOfCancelReceipts = BigInt.fromU32(0)
+    lock.creationTransactionHash =
+      '0x0000000000000000000000000000000000000000000000000000000000000001'
+    lock.createdAtBlock = BigInt.fromI32(1)
     lock.save()
 
     const key = new Key(`${lockAddress}-${tokenId}`)
@@ -407,6 +428,9 @@ describe('Receipts for Cancel and refund', () => {
     lock.deployer = Bytes.fromHexString(lockManagers[0])
     lock.numberOfReceipts = BigInt.fromU32(0)
     lock.numberOfCancelReceipts = BigInt.fromU32(0)
+    lock.creationTransactionHash =
+      '0x0000000000000000000000000000000000000000000000000000000000000001'
+    lock.createdAtBlock = BigInt.fromI32(1)
     lock.save()
 
     const key = new Key(`${lockAddress}-${tokenId}`)
@@ -445,6 +469,9 @@ describe('Receipts for Cancel and refund', () => {
     lock.deployer = Bytes.fromHexString(lockManagers[0])
     lock.numberOfReceipts = BigInt.fromU32(0)
     lock.numberOfCancelReceipts = BigInt.fromU32(0)
+    lock.creationTransactionHash =
+      '0x0000000000000000000000000000000000000000000000000000000000000001'
+    lock.createdAtBlock = BigInt.fromI32(1)
     lock.save()
 
     const key = new Key(`${lockAddress}-${tokenId}`)
@@ -521,6 +548,9 @@ describe('Receipts for Cancel and refund', () => {
     lock.deployer = Bytes.fromHexString(lockManagers[0])
     lock.numberOfReceipts = BigInt.fromU32(0)
     lock.numberOfCancelReceipts = BigInt.fromU32(0)
+    lock.creationTransactionHash =
+      '0x0000000000000000000000000000000000000000000000000000000000000001'
+    lock.createdAtBlock = BigInt.fromI32(1)
     lock.save()
 
     const key = new Key(`${lockAddress}-${tokenId}`)

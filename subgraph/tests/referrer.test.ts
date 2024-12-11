@@ -26,6 +26,9 @@ describe('Referrer', () => {
     lock.deployer = Bytes.fromHexString(lockManagers[0])
     lock.numberOfReceipts = BigInt.fromU32(0)
     lock.numberOfCancelReceipts = BigInt.fromU32(0)
+    lock.creationTransactionHash =
+      '0x0000000000000000000000000000000000000000000000000000000000000001'
+    lock.createdAtBlock = BigInt.fromI32(1)
     lock.save()
   })
 
