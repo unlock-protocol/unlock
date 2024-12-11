@@ -46,25 +46,18 @@ import setBaseTokenURI from './lock/setBaseTokenURI'
 import setEventHooks from './lock/setEventHooks'
 import transferFrom from './lock/transferFrom'
 import lendKey from './lock/lendKey'
+import preparePurchaseKey from './lock/web3Service/purchaseKey'
+import preparePurchaseKeys from './lock/web3Service/purchaseKeys'
 
-// Increasing timeouts
-
-// Unlock versions to test
-export const UnlockVersionNumbers = Object.keys(UnlockVersions).filter(
-  (v) => !['v6', 'v4'].includes(v) // 'v6' is disabled it required erc1820
-)
+// Unlock and PublicLock versions to test
+export const UnlockVersionNumbers = Object.keys(UnlockVersions)
+const PublicLockVersions = Object.keys(locks)
 
 describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
   let walletService
   let web3Service
   let ERC20
   let accounts
-
-  // Unlock v4 can only interact w PublicLock v4
-  const PublicLockVersions =
-    unlockVersion === 'v4' // Unlock v4 can only interact w PublicLock v4
-      ? ['v4']
-      : Object.keys(locks).filter((v) => !['v4', 'v6'].includes(v))
 
   beforeAll(async () => {
     // deploy ERC20 and set balances
@@ -143,7 +136,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
       // make sure everything is ok
       describe('lock creation', lockCreation(testSetupArgs))
 
-      // lock tests
+      // wallet service lock tests
       approveBeneficiary(testSetupArgs)
       cancelAndRefund(testSetupArgs)
       expireAndRefundFor(testSetupArgs)
@@ -168,6 +161,10 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
       withdrawFromLock(testSetupArgs)
       transferFrom(testSetupArgs)
       lendKey(testSetupArgs)
+
+      // web3 service tx building tests
+      preparePurchaseKey(testSetupArgs)
+      preparePurchaseKeys(testSetupArgs)
     })
   })
 })

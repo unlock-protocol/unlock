@@ -1,6 +1,6 @@
 import { ZERO } from '../../constants'
-import approveAllowance from '../utils/approveAllowance'
-import formatKeyPrice from '../utils/formatKeyPrice'
+import preparePurchaseKeyTx from './preparePurchaseKeyTx'
+
 /**
  * Purchase key function. This implementation requires the following
  * @param {object} params:
@@ -29,114 +29,75 @@ export default async function (
 ) {
   const lockContract = await this.getLockContract(lockAddress)
 
-  if (!owner) {
-    owner = await this.signer.getAddress()
-  }
-
-  if (!referrer) {
-    referrer = ZERO
-  }
-
-  if (!keyManager) {
-    keyManager = ZERO
-  }
-
-  if (!data) {
-    data = '0x'
-  }
-
-  // If erc20Address was not provided, get it
-  if (!erc20Address) {
-    erc20Address = await lockContract.tokenAddress()
-  }
-  let actualAmount
-  if (!keyPrice) {
-    // We might not have the keyPrice, in which case, we need to retrieve from the the lock!
-    actualAmount = await lockContract.keyPrice()
-  } else {
-    actualAmount = await formatKeyPrice(
+  // get the tx data
+  const txRequests = await preparePurchaseKeyTx.bind(this)(
+    {
+      lockAddress,
+      owner,
+      keyManager,
       keyPrice,
       erc20Address,
       decimals,
-      this.provider
-    )
-  }
-
-  const purchaseArgs = [actualAmount, owner, referrer, keyManager, data]
-
-  const callData = lockContract.interface.encodeFunctionData(
-    'purchase',
-    purchaseArgs
+      referrer,
+      data,
+    },
+    this.provider
   )
 
-  // tx options
-  if (!erc20Address || erc20Address === ZERO) {
-    transactionOptions.value = actualAmount
-  }
-
-  // If the lock is priced in ERC20, we need to approve the transfer
-  const approvalOptions = {
-    erc20Address,
-    totalAmountToApprove: actualAmount,
-    address: lockAddress,
-  }
-
   // Only ask for approval if the lock is priced in ERC20
-  if (approvalOptions.erc20Address && approvalOptions.erc20Address !== ZERO) {
-    await approveAllowance.bind(this)(approvalOptions)
+  let approvalTransactionRequest, purchaseTransactionRequest
+  if (txRequests.length === 2) {
+    // execute approval if necessary
+    ;[approvalTransactionRequest, purchaseTransactionRequest] = txRequests
+    await this.signer.sendTransaction(approvalTransactionRequest)
+  } else {
+    ;[purchaseTransactionRequest] = txRequests
   }
 
   // Estimate gas. Bump by 30% because estimates are wrong!
   if (!transactionOptions.gasLimit) {
+    const preserveGasSettings =
+      transactionOptions.maxFeePerGas || transactionOptions.gasPrice
     try {
       // To get good estimates we need the gas price, because it matters in the actual execution (UDT calculation takes it into account)
       // TODO remove once we move to use block.baseFee in UDT calculation
-      const { gasPrice, maxFeePerGas, maxPriorityFeePerGas } =
-        await this.provider.getFeeData()
+      if (!preserveGasSettings) {
+        const { gasPrice, maxFeePerGas, maxPriorityFeePerGas } =
+          await this.provider.getFeeData()
 
-      if (maxFeePerGas && maxPriorityFeePerGas) {
-        transactionOptions.maxFeePerGas = maxFeePerGas
-        transactionOptions.maxPriorityFeePerGas = maxPriorityFeePerGas
-      } else {
-        transactionOptions.gasPrice = gasPrice
+        if (maxFeePerGas && maxPriorityFeePerGas) {
+          transactionOptions.maxFeePerGas = maxFeePerGas
+          transactionOptions.maxPriorityFeePerGas = maxPriorityFeePerGas
+        } else {
+          transactionOptions.gasPrice = gasPrice
+        }
       }
-
-      const gasLimitPromise = lockContract.purchase.estimateGas(
-        actualAmount,
-        owner,
-        referrer,
-        keyManager,
-        data,
-        transactionOptions
-      )
-
-      const gasLimit = await gasLimitPromise
-
-      // Remove the gas prices settings for the actual transaction (the wallet will set them)
-      delete transactionOptions.maxFeePerGas
-      delete transactionOptions.maxPriorityFeePerGas
-      delete transactionOptions.gasPrice
+      const gasLimit = await this.signer.estimateGas(purchaseTransactionRequest)
       transactionOptions.gasLimit = (gasLimit * 13n) / 10n
     } catch (error) {
       console.error(
         'We could not estimate gas ourselves. Let wallet do it.',
         error
       )
+    }
+    if (!preserveGasSettings) {
       delete transactionOptions.maxFeePerGas
       delete transactionOptions.maxPriorityFeePerGas
       delete transactionOptions.gasPrice
     }
   }
 
-  const transactionRequestPromise = lockContract.purchase(
-    actualAmount,
-    owner,
-    referrer,
-    keyManager,
-    data,
-    transactionOptions
-  )
+  if (transactionOptions.runEstimate) {
+    const estimate = this.signer.estimateGas(purchaseTransactionRequest)
+    return {
+      purchaseTransactionRequest,
+      estimate,
+    }
+  }
 
+  const transactionRequestPromise = this.signer.sendTransaction(
+    purchaseTransactionRequest
+  )
   const hash = await this._handleMethodCall(transactionRequestPromise)
 
   if (callback) {

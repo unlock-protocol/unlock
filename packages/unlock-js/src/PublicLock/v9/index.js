@@ -14,6 +14,8 @@ import initializeTemplate from './initializeTemplate'
 import isKeyGranter from './isKeyGranter'
 import isLockManager from './isLockManager'
 import keyManagerOf from './keyManagerOf'
+import preparePurchaseKeyTx from './preparePurchaseKeyTx'
+import preparePurchaseKeysTx from './preparePurchaseKeysTx'
 import purchaseKey from './purchaseKey'
 import purchaseKeys from './purchaseKeys'
 import removeKeyGranter from './removeKeyGranter'
@@ -53,6 +55,8 @@ export default {
   isKeyGranter,
   isLockManager,
   keyManagerOf,
+  preparePurchaseKeyTx,
+  preparePurchaseKeysTx,
   purchaseKey,
   purchaseKeys,
   removeKeyGranter,
