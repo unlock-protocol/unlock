@@ -20,9 +20,10 @@ import {
 
 const unlockVersion = process.env.UNLOCK_JS_TEST_RUN_UNLOCK_VERSION || 'v11'
 const publicLockVersion =
-  process.env.UNLOCK_JS_TEST_RUN_PUBLIC_LOCK_VERSION || 'v11'
+  process.env.UNLOCK_JS_TEST_RUN_PUBLIC_LOCK_VERSION || 'v9'
 const testPath =
-  process.env.UNLOCK_JS_TEST_RUN_TEST_PATH || './lock/preparePurchaseKeys.js'
+  process.env.UNLOCK_JS_TEST_RUN_TEST_PATH ||
+  './lock/web3Service/purchaseKeys.js'
 
 // parse describe info from file name
 const testName = testPath
