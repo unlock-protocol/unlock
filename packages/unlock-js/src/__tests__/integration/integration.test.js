@@ -46,10 +46,8 @@ import setBaseTokenURI from './lock/setBaseTokenURI'
 import setEventHooks from './lock/setEventHooks'
 import transferFrom from './lock/transferFrom'
 import lendKey from './lock/lendKey'
-import preparePurchaseKey from './lock/preparePurchaseKey'
-import preparePurchaseKeys from './lock/preparePurchaseKeys'
-
-// Increasing timeouts
+import preparePurchaseKey from './lock/web3Service/purchaseKey'
+import preparePurchaseKeys from './lock/web3Service/purchaseKeys'
 
 // Unlock and PublicLock versions to test
 export const UnlockVersionNumbers = Object.keys(UnlockVersions)
