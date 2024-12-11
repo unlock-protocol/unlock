@@ -37,7 +37,6 @@
   "dependencies": {
     "@ambire/signature-validator": "1.4.1",
     "@aws-sdk/client-s3": "3.703.0",
-    "@coinbase/waas-server-auth": "3.1.2",
     "@logtail/node": "0.5.2",
     "@logtail/winston": "0.5.2",
     "@nuintun/qrcode": "4.1.6",
@@ -80,7 +79,7 @@
     "p-retry": "6.2.1",
     "passkit-generator": "3.2.0",
     "path-to-regexp": "8.2.0",
-    "pdfmake": "0.2.14",
+    "pdfmake": "0.2.15",
     "pg": "8.13.1",
     "rate-limiter-flexible": "5.0.4",
     "react": "18.3.1",

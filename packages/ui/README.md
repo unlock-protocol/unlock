@@ -2,6 +2,10 @@
 
 This package includes React Components used across our products.
 
+## Component Playground
+
+Explore the components at [storybook.unlock-protocol.com](https://storybook.unlock-protocol.com) – an interactive playground for testing and previewing.
+
 ## Using the package
 
 First of all, you will need to run the `yarn build` command in root.
