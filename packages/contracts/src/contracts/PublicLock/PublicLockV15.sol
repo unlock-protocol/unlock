@@ -1,4 +1,4 @@
-// Sources flattened with hardhat v2.22.15 https://hardhat.org
+// Sources flattened with hardhat v2.22.16 https://hardhat.org
 
 // SPDX-License-Identifier: MIT
 
@@ -3146,6 +3146,10 @@ contract MixinRoles is AccessControlUpgradeable, MixinErrors {
     return hasRole(LOCK_MANAGER_ROLE, account);
   }
 
+  // kept for backward compat
+  function renounceLockManager() public {
+    renounceRole(LOCK_MANAGER_ROLE, msg.sender);
+  }
 
   // added -1 slot for the onRoleHook address in v15
   uint256[999] private __safe_upgrade_gap;
@@ -3363,11 +3367,6 @@ contract MixinLockCore is MixinRoles, MixinFunds, MixinDisable {
     address _onHasRoleHook
   ) external {
     _onlyLockManager();
-
-
-    if (_onHasRoleHook != address(0) && !_onHasRoleHook.isContract()) {
-      revert INVALID_HOOK(7);
-    }
 
     // validate hooks
     _isValidHook(_onKeyPurchaseHook, 0);
@@ -4407,22 +4406,14 @@ contract MixinPurchase is
   // default to 0
   uint256 internal _gasRefundValue;
 
-  // DEPREC: use of these is deprecated, kept for backward storage compatibility!
+  // keep track of conditions at purchase for key renewals
   mapping(uint256 => uint256) internal _originalPrices;
   mapping(uint256 => uint256) internal _originalDurations;
   mapping(uint256 => address) internal _originalTokens;
+  mapping(uint256 => address) internal _originalReferrers;
 
   // keep track of referrer fees
   mapping(address => uint) public referrerFees;
-
-  // keep track of conditions of purchase for key renewals
-  struct RenewalCondition {
-    uint price;
-    uint duration;
-    address tokenAddress;
-    address referrer;
-  }
-  mapping(uint256 => RenewalCondition) internal _renewalConditions;
 
   error TransferFailed();
 
@@ -4548,17 +4539,10 @@ contract MixinPurchase is
     uint _keyPrice,
     address _referrer
   ) internal {
-    _renewalConditions[_tokenId] = RenewalCondition(
-      _keyPrice,
-      expirationDuration,
-      tokenAddress,
-      _referrer
-    );
-
-    // clear previous records
-    _originalPrices[_tokenId] = 0;
-    _originalDurations[_tokenId] = 0;
-    _originalTokens[_tokenId] = address(0);
+    _originalPrices[_tokenId] = _keyPrice;
+    _originalDurations[_tokenId] = expirationDuration;
+    _originalTokens[_tokenId] = tokenAddress;
+    _originalReferrers[_tokenId] = _referrer;
   }
 
   /**
@@ -4571,7 +4555,7 @@ contract MixinPurchase is
   ) public view returns (bool) {
     // check the lock
     if (
-      _renewalConditions[_tokenId].duration == type(uint).max ||
+      _originalDurations[_tokenId] == type(uint).max ||
       tokenAddress == address(0)
     ) {
       revert NON_RENEWABLE_LOCK();
@@ -4579,15 +4563,10 @@ contract MixinPurchase is
 
     // make sure key duration haven't decreased or price hasn't increase
     if (
-      _originalPrices[_tokenId] != 0 // check if a previous record exists
-        ? _originalPrices[_tokenId] <
-          purchasePriceFor(ownerOf(_tokenId), _referrer, "") ||
-          _originalDurations[_tokenId] > expirationDuration ||
-          _originalTokens[_tokenId] != tokenAddress
-        : _renewalConditions[_tokenId].price <
-          purchasePriceFor(ownerOf(_tokenId), _referrer, "") ||
-          _renewalConditions[_tokenId].duration > expirationDuration ||
-          _renewalConditions[_tokenId].tokenAddress != tokenAddress
+      _originalPrices[_tokenId] <
+      purchasePriceFor(ownerOf(_tokenId), _referrer, "") ||
+      _originalDurations[_tokenId] > expirationDuration ||
+      _originalTokens[_tokenId] != tokenAddress
     ) {
       revert LOCK_HAS_CHANGED();
     }
@@ -4684,7 +4663,7 @@ contract MixinPurchase is
 
   function purchase(
     PurchaseArgs[] memory purchaseArgs
-  ) external payable returns (uint[] memory) {
+  ) public payable returns (uint[] memory) {
     _lockPurchaseIsPossible(purchaseArgs.length);
 
     uint totalPriceToPay;
@@ -4766,8 +4745,6 @@ contract MixinPurchase is
     address[] memory _keyManagers,
     bytes[] calldata _data
   ) external payable returns (uint[] memory) {
-    _lockPurchaseIsPossible(_recipients.length);
-
     // check for array mismatch
     if (
       (_recipients.length != _referrers.length) ||
@@ -4776,47 +4753,57 @@ contract MixinPurchase is
       revert INVALID_LENGTH();
     }
 
-    uint totalPriceToPay;
-    uint[] memory tokenIds = new uint[](_recipients.length);
-
+    PurchaseArgs[] memory purchaseArgs = new PurchaseArgs[](_recipients.length);
     for (uint256 i = 0; i < _recipients.length; i++) {
-      (uint tokenId, uint pricePaid) = _purchaseKey(
-        tokenAddress != address(0) ? _values[i] : 0,
-        _recipients[i],
-        _keyManagers[i],
-        _referrers[i],
-        _referrers[i], // here protocol referrer is the same
-        _data[i]
-      );
-      totalPriceToPay = totalPriceToPay + pricePaid;
-      tokenIds[i] = tokenId;
+      purchaseArgs[i] = PurchaseArgs({
+        value: tokenAddress != address(0) ? _values[i] : 0,
+        recipient: _recipients[i],
+        keyManager: _keyManagers[i],
+        referrer: _referrers[i],
+        protocolReferrer: _referrers[i], // here protocol referrer is the same
+        additionalPeriods: 0,
+        data: _data[i]
+      });
     }
 
+    return purchase(purchaseArgs);
+  }
+
+  /**
+   * @dev internal helper used only for extend and renewal
+   */
+  function _processPayment(
+    uint _tokenId,
+    address _payer,
+    address _referrer,
+    uint _pricePaid
+  ) internal {
     // receipt event
+    uint[] memory tokenIds = new uint[](1);
+    tokenIds[0] = _tokenId;
     emit PaymentReceipt(
       tokenIds,
-      _recipients.length, // purchases
-      0, // extensions
+      0, // purchases
+      1, // extensions
       msg.sender, // payer
       tokenAddress,
-      totalPriceToPay // totalPaid
+      _pricePaid // totalPaid
     );
 
-    // transfer the ERC20 tokens
-    _transferValue(msg.sender, totalPriceToPay);
+    // process in unlock
+    _recordKeyPurchase(_pricePaid, _referrer);
 
-    // pay protocol
-    _payProtocol(totalPriceToPay);
+    // pay value in ERC20
+    _transferValue(_payer, _pricePaid);
 
-    // refund gas
+    // refund gas (if applicable)
     _refundGas();
 
-    // send what is due to referrers
-    for (uint256 i = 0; i < _referrers.length; i++) {
-      _payReferrer(_referrers[i]);
-    }
+    // send what is due to referrer
+    _payReferrer(_referrer);
 
-    return tokenIds;
+    // pay protocol
+    _payProtocol(_pricePaid);
   }
 
   /**
@@ -4848,35 +4835,11 @@ contract MixinPurchase is
       _checkValue(_value, pricePaid);
     }
 
-    // receipt event
-    uint[] memory tokenIds = new uint[](1);
-    tokenIds[0] = _tokenId;
-    emit PaymentReceipt(
-      tokenIds,
-      0, // purchases
-      1, // extensions
-      msg.sender, // payer
-      tokenAddress,
-      pricePaid // totalPaid
-    );
-
-    // process in unlock
-    _recordKeyPurchase(pricePaid, _referrer);
-
-    // pay value in ERC20
-    _transferValue(msg.sender, pricePaid);
-
     // if key params have changed, then update them
     _recordTokenTerms(_tokenId, pricePaid, _referrer);
 
-    // refund gas (if applicable)
-    _refundGas();
-
-    // send what is due to referrer
-    _payReferrer(_referrer);
-
-    // pay protocol
-    _payProtocol(pricePaid);
+    // pay everyone
+    _processPayment(_tokenId, msg.sender, _referrer, pricePaid);
   }
 
   /**
@@ -4890,9 +4853,9 @@ contract MixinPurchase is
     _lockIsUpToDate();
     _isKey(_tokenId);
 
-    address referrer = _renewalConditions[_tokenId].referrer == address(0)
+    address referrer = _originalReferrers[_tokenId] == address(0)
       ? _referrer
-      : _renewalConditions[_tokenId].referrer;
+      : _originalReferrers[_tokenId];
 
     // check if key is ripe for renewal
     isRenewable(_tokenId, referrer);
@@ -4900,32 +4863,13 @@ contract MixinPurchase is
     // extend key duration
     _extendKey(_tokenId, 0);
 
-    // receipt event
-    uint[] memory tokenIds = new uint[](1);
-    tokenIds[0] = _tokenId;
-    emit PaymentReceipt(
-      tokenIds,
-      0, // purchases
-      1, // extensions
-      msg.sender, // payer
-      tokenAddress,
-      keyPrice // totalPaid
+    // pay everyone
+    _processPayment(
+      _tokenId,
+      ownerOf(_tokenId),
+      referrer,
+      _originalPrices[_tokenId]
     );
-
-    // store in unlock
-    _recordKeyPurchase(keyPrice, referrer);
-
-    // transfer the tokens
-    _transferValue(ownerOf(_tokenId), keyPrice);
-
-    // refund gas if applicable
-    _refundGas();
-
-    // send what is due to referrer
-    _payReferrer(referrer);
-
-    // pay protocol
-    _payProtocol(keyPrice);
   }
 
   /**
@@ -4963,7 +4907,8 @@ contract MixinPurchase is
 
   // decreased from 1000 to 997 when added mappings for initial purchases pricing and duration on v10
   // decreased from 997 to 996 when added the `referrerFees` mapping on v11
-  uint256[996] private __safe_upgrade_gap;
+  // decreased from 996 to 995 when added the `_originalReferrers` mapping on v15
+  uint256[995] private __safe_upgrade_gap;
 }
 
 
