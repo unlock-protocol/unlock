@@ -59,7 +59,7 @@ export const createCacheMiddleware = (
     // @ts-expect-error Type '(body: string | Buffer) => void' is not assignable to type 'Send<any, Response<any, Record<string, any>, number>>'.
     res.send = function send(body: string | Buffer) {
       // Only cache 200 responses
-      if ([200].includes(res.statusCode)) {
+      if ([200].includes(res?.statusCode)) {
         cache.storeExpiringItem(
           key,
           {
