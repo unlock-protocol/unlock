@@ -3,7 +3,7 @@
  * Unlock v14 and PublicLock v15
  */
 const { ethers } = require('hardhat')
-const { UnlockV13 } = require('@unlock-protocol/contracts')
+const { UnlockV14, PublicLockV15 } = require('@unlock-protocol/contracts')
 const { networks } = require('@unlock-protocol/networks')
 const { targetChains } = require('../../helpers/bridge')
 const { parseBridgeCall } = require('../../helpers/crossChain')
@@ -25,39 +25,39 @@ const deployedContracts = {
   },
   // optimism
   10: {
-    publicLockAddress: ADDRESS_ZERO,
-    unlockImplAddress: ADDRESS_ZERO,
+    publicLockAddress: '0xEBe5a6A322E6aa9aF2414f5632dEeABB5ca5c60F',
+    unlockImplAddress: '0x40E57487d5C7a53293ad83042D0cF4b9ffA3D833',
   },
   // binance
   56: {
-    publicLockAddress: ADDRESS_ZERO,
-    unlockImplAddress: ADDRESS_ZERO,
+    publicLockAddress: '0xE1a7Ec44fB4c5c88ebB3744A9Ba2A3cCA879A47d',
+    unlockImplAddress: '0x5814B64C69ae89f152859d20f53B240df1AC5066',
   },
   // gnosis
   100: {
-    publicLockAddress: ADDRESS_ZERO,
-    unlockImplAddress: ADDRESS_ZERO,
+    publicLockAddress: '0xF05a4Ec7C2106A9767Da776C3a484F3396D4cdb9',
+    unlockImplAddress: '0xED95D4B52b49Eaa77427c83AA81775dB9F69Ba21',
   },
   // polygon
   137: {
-    publicLockAddress: ADDRESS_ZERO,
-    unlockImplAddress: ADDRESS_ZERO,
+    publicLockAddress: '0x3D234f0e0F5B5A238DB94EE7fFfDc5e1c41Bf1d6',
+    unlockImplAddress: '0x6a372BE86D515b0C8fc828650C574fe4c9A65Bd5',
     unlockSwapBurner: ADDRESS_ZERO,
   },
   // arb
   42161: {
-    publicLockAddress: ADDRESS_ZERO,
-    unlockImplAddress: ADDRESS_ZERO,
+    publicLockAddress: '0x9bA1F0aD35795A836eF8Fa089E3Fd2bE4A97dD94',
+    unlockImplAddress: '0x2e5F6B31d100C527B782e26953D9509C591aC41d',
   },
   // base
   8453: {
-    publicLockAddress: ADDRESS_ZERO,
-    unlockImplAddress: ADDRESS_ZERO,
+    publicLockAddress: '0x77694145408ac958Ed747a1aD55192025B22bdd6',
+    unlockImplAddress: '0x93c8b77D9bB8dFF1D628e3991443C809a13Ca98E',
   },
   //linea
   59144: {
-    publicLockAddress: ADDRESS_ZERO,
-    unlockImplAddress: ADDRESS_ZERO,
+    publicLockAddress: ADDRESS_ZERO, // max size because stil using paris evm
+    unlockImplAddress: '0x530Ff2dAED410cA7D70C25f18dc770f106201151',
   },
 }
 
@@ -85,9 +85,19 @@ const parseCalls = async ({ unlockAddress, name, id, provider }) => {
 
   // submit template to Unlock
   const { interface: unlockInterface } = await ethers.getContractAt(
-    UnlockV13.abi,
+    UnlockV14.abi,
     unlockAddress
   )
+
+  // add version check
+  const unlock = new ethers.Contract(unlockImplAddress, unlockInterface)
+  const template = new ethers.Contract(publicLockAddress, PublicLockV15.abi)
+  if (
+    (await unlock.unlockVersion()) !== 15 ||
+    (await template.publicLockVersion()) !== 14
+  ) {
+    throw Error(`Wrong version. Checks failed`)
+  }
 
   // submit Unlock upgrade
   const proxyAdminAddress = await getProxyAdminAddress(unlockAddress, provider)
