@@ -103,16 +103,17 @@ async function parseAtomFeed(url: string) {
   const unreadItems: Blog[] = []
   for (const entry of Array.from(entries)) {
     const id =
-      entry.getElementsByTagNameNS(atomNS, 'id')[0]?.textContent.trim() || ''
+      entry.getElementsByTagNameNS(atomNS, 'id')[0]?.textContent?.trim() || ''
     const title =
-      entry.getElementsByTagNameNS(atomNS, 'title')[0]?.textContent.trim() || ''
+      entry.getElementsByTagNameNS(atomNS, 'title')[0]?.textContent?.trim() ||
+      ''
     const linkElement = entry.getElementsByTagNameNS(atomNS, 'link')[0]
     const link = linkElement?.getAttribute('href')?.trim() || ''
     const updated =
-      entry.getElementsByTagNameNS(atomNS, 'updated')[0]?.textContent.trim() ||
+      entry.getElementsByTagNameNS(atomNS, 'updated')[0]?.textContent?.trim() ||
       ''
     const content =
-      entry.getElementsByTagNameNS(atomNS, 'content')[0]?.textContent.trim() ||
+      entry.getElementsByTagNameNS(atomNS, 'content')[0]?.textContent?.trim() ||
       ''
 
     const viewed = viewedMap.has(id) ? viewedMap.get(id)! : false
