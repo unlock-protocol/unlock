@@ -10,6 +10,7 @@ import { networks } from '@unlock-protocol/networks'
 import { formDataToMetadata } from '~/components/interface/locks/metadata/utils'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { useProvider } from '~/hooks/useProvider'
+import { EventStatus } from '@unlock-protocol/types'
 
 export interface TransactionDetails {
   hash: string
@@ -56,10 +57,27 @@ export const NewEvent = () => {
   const { getWalletService } = useProvider()
 
   const onSubmit = async (formData: NewEventForm) => {
-    let lockAddress
     const walletService = await getWalletService(formData.network)
     try {
-      lockAddress = await walletService.createLock(
+      // Create the event first with pending status
+      const { data: event } = await locksmith.saveEventData({
+        data: {
+          ...formDataToMetadata({
+            name: formData.lock.name,
+            ...formData.metadata,
+          }),
+          ...formData.metadata,
+        },
+        status: EventStatus.PENDING,
+      })
+
+      // Set slug for URL if present
+      if (event.slug) {
+        setSlug(event.slug)
+      }
+
+      // Deploy the lock
+      await walletService.createLock(
         {
           ...formData.lock,
           name: formData.lock.name,
@@ -71,46 +89,36 @@ export const NewEvent = () => {
           if (createLockError) {
             throw createLockError
           }
-          if (transactionHash) {
+          if (transactionHash && event.slug) {
+            // Update event with transaction hash
+            await locksmith.updateEventData(event.slug, {
+              transactionHash,
+            })
+
             setTransactionDetails({
               hash: transactionHash,
               network: formData.network,
             })
           }
         }
-      ) // Deploy the lock! and show the "waiting" screen + mention to *not* close!
+      )
+
+      // Once we have the lock address, update the event with checkout config
+      if (lockAddress && event.slug) {
+        await locksmith.updateEventData(event.slug, {
+          status: EventStatus.DEPLOYED,
+          checkoutConfig: {
+            name: `Checkout config for ${formData.lock.name}`,
+            config: defaultEventCheckoutConfigForLockOnNetwork(
+              lockAddress,
+              formData.network
+            ),
+          },
+        })
+      }
     } catch (error) {
       console.error(error)
       ToastHelper.error('The contract could not be deployed. Please try again.')
-    }
-    if (lockAddress) {
-      await locksmith.updateLockMetadata(formData.network, lockAddress, {
-        metadata: {
-          name: `Ticket for ${formData.lock.name}`,
-          image: formData.metadata.image,
-        },
-      })
-      const { data: event } = await locksmith.saveEventData({
-        data: {
-          ...formDataToMetadata({
-            name: formData.lock.name,
-            ...formData.metadata,
-          }),
-          ...formData.metadata,
-        },
-        checkoutConfig: {
-          name: `Checkout config for ${formData.lock.name}`,
-          config: defaultEventCheckoutConfigForLockOnNetwork(
-            lockAddress,
-            formData.network
-          ),
-        },
-      })
-      // Save slug for URL if present
-      setSlug(event.slug)
-
-      // Finally
-      setLockAddress(lockAddress)
     }
   }
 
