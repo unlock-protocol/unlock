@@ -11,11 +11,14 @@ import {
 import normalizer from '../../utils/normalizer'
 import { CheckoutConfig, EventData } from '../../models'
 import { z } from 'zod'
+import { getLockSettingsBySlug } from '../../operations/lockSettingOperations'
+import { getLockMetadata } from '../../operations/metadataOperations'
 import {
   PaywallConfig,
   PaywallConfigType,
   AttendeeRefund,
 } from '@unlock-protocol/core'
+import listManagers from '../../utils/lockManagers'
 import { removeProtectedAttributesFromObject } from '../../utils/protectedAttributes'
 import { isVerifierOrManagerForLock } from '../../utils/middlewares/isVerifierMiddleware'
 import { sendEmail } from '../../operations/wedlocksOperations'
@@ -120,74 +123,104 @@ export const getAllEvents: RequestHandler = async (request, response) => {
 // whose slug matches and get the event data from that lock.
 export const getEvent: RequestHandler = async (request, response) => {
   const slug = request.params.slug.toLowerCase().trim()
-  try {
-    const event = await getEventBySlug(
-      slug,
-      true /** includeProtected and we will cleanup later */
-    )
+  const event = await getEventBySlug(
+    slug,
+    true /** includeProtected and we will cleanup later */
+  )
 
-    if (!event) {
-      response.status(404).send({
-        message: `No event found for slug ${slug}`,
-      })
-      return
-    }
-
-    const eventResponse = event.toJSON()
-
-    // Only try to get checkout config if it exists
+  if (event) {
+    const eventResponse = event.toJSON() as any // TODO: type!
     if (event.checkoutConfigId) {
-      const checkoutConfig = await CheckoutConfig.findOne({
+      delete eventResponse.checkoutConfigId
+      eventResponse.checkoutConfig = await CheckoutConfig.findOne({
         where: {
           id: event.checkoutConfigId,
         },
       })
-      if (checkoutConfig) {
-        delete eventResponse.checkoutConfigId
-        eventResponse.checkoutConfig = checkoutConfig
+    }
 
-        // Handle permissions and protected attributes only if there's a checkout config
-        let isManagerOrVerifier = false
-        if (request.user && checkoutConfig.config?.locks) {
-          const locks = Object.keys(checkoutConfig.config.locks)
-          for (const lock of locks) {
-            if (!isManagerOrVerifier) {
-              const network =
-                checkoutConfig.config.locks[lock].network ||
-                checkoutConfig.config.network
-              isManagerOrVerifier = await isVerifierOrManagerForLock(
-                lock,
-                request.user.walletAddress,
-                network!
-              )
-            }
-          }
-        }
-
+    // Check if the caller is a verifier or manager and remove protected attributes if not
+    let isManagerOrVerifier = false
+    if (request.user) {
+      const locks = Object.keys(eventResponse.checkoutConfig.config.locks)
+      for (let i = 0; i < locks.length; i++) {
         if (!isManagerOrVerifier) {
-          eventResponse.data = removeProtectedAttributesFromObject(
-            eventResponse.data
+          const lock = locks[i]
+          const network =
+            eventResponse.checkoutConfig.config.locks[lock].network ||
+            eventResponse.checkoutConfig.config.network
+          isManagerOrVerifier = await isVerifierOrManagerForLock(
+            lock,
+            request.user.walletAddress,
+            network
           )
         }
       }
-    } else {
-      // If no checkout config, always remove protected attributes
+    }
+    if (!isManagerOrVerifier) {
       eventResponse.data = removeProtectedAttributesFromObject(
         eventResponse.data
       )
     }
 
     response.status(200).send(eventResponse)
-  } catch (error) {
-    logger.error('Failed to get event', {
-      error,
-      slug,
-    })
-    response.status(500).send({
-      error: 'Failed to get event',
-      details: error.message,
-    })
+    return
   }
+
+  const settings = await getLockSettingsBySlug(slug)
+
+  if (settings) {
+    const lockData = await getLockMetadata({
+      lockAddress: settings.lockAddress,
+      network: settings.network,
+    })
+
+    if (lockData) {
+      // We need to look if there are more locks for that event as well!
+      // For this we need to check if any checkout config is attached to this lock.
+      const checkoutConfig = settings.checkoutConfigId
+        ? await CheckoutConfig.findOne({
+            where: {
+              id: settings.checkoutConfigId,
+            },
+          })
+        : {
+            config: {
+              ...defaultPaywallConfig,
+              locks: {
+                [settings.lockAddress]: {
+                  network: settings.network,
+                },
+              },
+              referrer: request.user?.walletAddress,
+            },
+          }
+
+      await saveEvent(
+        {
+          data: { ...lockData },
+          checkoutConfig: checkoutConfig!,
+        },
+        (
+          await listManagers({
+            lockAddress: settings.lockAddress,
+            network: settings.network,
+          })
+        )[0]
+      )
+
+      response.status(200).send({
+        data: { ...lockData },
+        checkoutConfig,
+      })
+      return
+    }
+  }
+
+  response.status(404).send({
+    message: `No event found for slug ${slug}`,
+  })
+  return
 }
 
 // API endpoint that a manager can call to approve refunds for attendees
