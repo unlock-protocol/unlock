@@ -64,6 +64,7 @@ EventData.init(
     checkoutConfigId: {
       allowNull: true,
       type: DataTypes.STRING,
+      defaultValue: null,
     },
     eventUrl: {
       type: DataTypes.VIRTUAL,
