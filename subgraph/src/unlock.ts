@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable prefer-const */
-import { log, BigInt, ethereum } from '@graphprotocol/graph-ts'
+import { log, BigInt } from '@graphprotocol/graph-ts'
 import { NewLock, LockUpgraded, GNPChanged } from '../generated/Unlock/Unlock'
 import { PublicLock as PublicLockMerged } from '../generated/templates/PublicLock/PublicLock'
 import { PublicLock } from '../generated/templates'
@@ -105,6 +105,7 @@ export function handleNewLock(event: NewLock): void {
   lock.createdAtBlock = event.block.number
   lock.lastKeyMintedAt = null
   lock.lastKeyRenewedAt = null
+  lock.transactionHash = event.transaction.hash.toHexString()
 
   if (version.le(BigInt.fromI32(8))) {
     // prior to v8, add default lock manager
