@@ -14,8 +14,6 @@ const { log } = require('./logger')
 const safeServiceURLs = {
   324: 'https://safe-transaction-zksync.safe.global/api',
   1101: 'https://safe-transaction-zkevm.safe.global/api',
-  534352: 'https://transaction.safe.scroll.xyz/api',
-  59144: 'https://transaction.safe.linea.build/api',
 }
 
 const prodSigners = [
