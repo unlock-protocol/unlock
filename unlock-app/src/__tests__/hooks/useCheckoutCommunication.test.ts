@@ -95,7 +95,7 @@ describe('useCheckoutCommunication', () => {
   })
 
   it('buffers an arbitrary number of events before the emitter is ready', async () => {
-    expect.assertions(4)
+    expect.assertions(5)
 
     const { result, waitFor } = renderHook(() => useCheckoutCommunication())
 
@@ -113,19 +113,19 @@ describe('useCheckoutCommunication', () => {
     await waitFor(() => result.current.ready)
 
     // Once the emitter is ready, the buffer is flushed in the order events were received
-    expect(emit).toHaveBeenNthCalledWith(1, CheckoutEvents.userInfo, userInfo)
-
-    expect(emit).toHaveBeenNthCalledWith(
-      2,
-      CheckoutEvents.transactionInfo,
-      transactionInfo
-    )
-
-    expect(emit).toHaveBeenNthCalledWith(
-      3,
-      CheckoutEvents.closeModal,
-      undefined
-    )
+    await waitFor(() => {
+      expect(emit).toHaveBeenNthCalledWith(1, CheckoutEvents.userInfo, userInfo)
+      expect(emit).toHaveBeenNthCalledWith(
+        2,
+        CheckoutEvents.transactionInfo,
+        transactionInfo
+      )
+      expect(emit).toHaveBeenNthCalledWith(
+        3,
+        CheckoutEvents.closeModal,
+        undefined
+      )
+    })
   })
 })
 

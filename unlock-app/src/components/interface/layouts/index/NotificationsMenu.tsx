@@ -1,5 +1,5 @@
 import { Menu, MenuButton, MenuItems, Transition } from '@headlessui/react'
-import { Fragment, ReactNode, useState } from 'react'
+import { Fragment, ReactNode, useEffect, useState } from 'react'
 import { BiBell as BellIcon } from 'react-icons/bi'
 import { Button } from '@unlock-protocol/ui'
 import { PromptEmailLink } from '../../PromptEmailLink'
@@ -7,6 +7,7 @@ import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { usePathname } from 'next/navigation'
 import { Modal } from '@unlock-protocol/ui'
 import { LoginModal } from '@privy-io/react-auth'
+import { Hooks } from '../../HooksNotifications'
 
 interface NotificationAction {
   label: string
@@ -23,8 +24,15 @@ interface NotificationProps {
 export function NotificationsMenu() {
   const [isOpen, setIsOpen] = useState(false)
   const [showModal, setShowModal] = useState(false)
+  const [hooks, setHooks] = useState([])
   const { account, email } = useAuthenticate()
   const pathname = usePathname()
+
+  useEffect(() => {
+    const hooksNotifications = localStorage.getItem('hooks')
+    const parsedHooks = hooksNotifications ? JSON.parse(hooksNotifications) : []
+    setHooks(parsedHooks)
+  }, [])
 
   if (!account) {
     return null
@@ -42,6 +50,14 @@ export function NotificationsMenu() {
     notifications.push({
       id: '1',
       content: <PromptEmailLink setModalOpen={setShowModal} />,
+      timestamp: new Date(),
+    })
+  }
+
+  if (hooks.length > 0) {
+    notifications.push({
+      id: '2',
+      content: <Hooks hooks={hooks} setHooks={setHooks} />,
       timestamp: new Date(),
     })
   }

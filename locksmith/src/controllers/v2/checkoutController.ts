@@ -141,3 +141,69 @@ export const deleteCheckoutConfig: RequestHandler = async (
   })
   return
 }
+
+export const updateCheckoutHooks: RequestHandler = async (
+  request,
+  response
+) => {
+  const { id } = request.params
+  const userAddress = request.user!.walletAddress
+  const payload = request.body
+
+  try {
+    const existingConfig = await getCheckoutConfigById(id)
+
+    if (!existingConfig) {
+      response.status(404).send({
+        message: 'No config found',
+      })
+      return
+    }
+
+    const updatedConfig = {
+      ...existingConfig.config,
+      hooks: {
+        ...existingConfig.config.hooks,
+        ...payload,
+      },
+    }
+
+    const checkoutConfig = await PaywallConfig.strip().parseAsync(updatedConfig)
+
+    const storedConfig = await saveCheckoutConfig({
+      id,
+      name: existingConfig.name,
+      config: checkoutConfig,
+      user: userAddress,
+    })
+
+    response.status(200).send({
+      id: storedConfig.id,
+      by: storedConfig.createdBy,
+      name: storedConfig.name,
+      config: storedConfig.config,
+      updatedAt: storedConfig.updatedAt.toISOString(),
+      createdAt: storedConfig.createdAt.toISOString(),
+    })
+  } catch (error) {
+    if (
+      error instanceof Error &&
+      error.message === 'User not authorized to update this configuration'
+    ) {
+      response.status(403).send({
+        message: error.message,
+      })
+      return
+    }
+
+    if (error instanceof Error) {
+      response.status(400).send({
+        message: 'Invalid hooks payload',
+        error: error.message,
+      })
+      return
+    }
+
+    throw error
+  }
+}
