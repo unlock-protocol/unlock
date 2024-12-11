@@ -225,6 +225,7 @@ export const saveEvent = async (
   const previousEvent = await EventData.scope('withoutId').findOne({
     where: { slug },
   })
+
   if (previousEvent) {
     data = defaultsDeep(
       {
@@ -235,7 +236,7 @@ export const saveEvent = async (
   } else {
     data = {
       ...parsed.data,
-      slug, // Making sure we add the slug to the data as well.
+      slug,
     }
   }
 
@@ -245,13 +246,14 @@ export const saveEvent = async (
       slug,
       data,
       createdBy: walletAddress,
+      status: parsed.status || EventStatus.PENDING,
     },
     {
       conflictFields: ['slug'],
     }
   )
 
-  if (!savedEvent.checkoutConfigId) {
+  if (!savedEvent.checkoutConfigId && parsed.checkoutConfig) {
     const checkoutConfig = await PaywallConfig.strip().parseAsync(
       parsed.checkoutConfig.config
     )
@@ -260,7 +262,7 @@ export const saveEvent = async (
       config: checkoutConfig,
       user: walletAddress,
     })
-    // And now attach the id to the savedEvent
+
     savedEvent.checkoutConfigId = createdConfig.id
     await savedEvent.save()
   }
@@ -323,10 +325,13 @@ export const updateEvent = async (
     checkoutConfig?: {
       config: PaywallConfigType
     }
-  }
+  },
+  walletAddress: string
 ) => {
   const event = await EventData.findOne({
-    where: { slug },
+    where: {
+      slug,
+    },
   })
 
   if (!event) {
@@ -342,14 +347,16 @@ export const updateEvent = async (
   }
 
   if (updates.checkoutConfig) {
-    const checkoutConfig = await PaywallConfig.strip().parseAsync(
+    const config = await PaywallConfig.strip().parseAsync(
       updates.checkoutConfig.config
     )
+
     const createdConfig = await saveCheckoutConfig({
       name: `Checkout config for ${event.name} (${event.slug})`,
-      config: checkoutConfig,
-      user: event.createdBy,
+      config,
+      user: walletAddress,
     })
+
     event.checkoutConfigId = createdConfig.id
   }
 
