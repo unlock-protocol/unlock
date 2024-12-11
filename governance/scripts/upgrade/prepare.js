@@ -35,12 +35,12 @@ async function main({ proxyAddress, contractName, contractVersion }) {
     await copyAndBuildContractsAtVersion(__dirname, [
       {
         contractName,
-        version: contractVersion - 1n,
+        version: BigInt(contractVersion) - 1n,
       },
     ])
     const PreviousContract = await ethers.getContractFactory(
       `contracts/past-versions/${contractName}V${
-        contractVersion - 1n
+        BigInt(contractVersion) - 1n
       }.sol:${contractName}`
     )
 
