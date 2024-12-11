@@ -138,7 +138,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
       // make sure everything is ok
       describe('lock creation', lockCreation(testSetupArgs))
 
-      // lock tests
+      // wallet service lock tests
       approveBeneficiary(testSetupArgs)
       cancelAndRefund(testSetupArgs)
       expireAndRefundFor(testSetupArgs)
@@ -164,7 +164,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
       transferFrom(testSetupArgs)
       lendKey(testSetupArgs)
 
-      // tx building with web3service
+      // web3 service tx building tests
       preparePurchaseKey(testSetupArgs)
       preparePurchaseKeys(testSetupArgs)
     })
