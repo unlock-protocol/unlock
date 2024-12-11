@@ -74,6 +74,15 @@ export const getOnPurchaseHookTypeFromPaywallConfig = (
   }
 }
 
+const saveToLocalStorage = (data: any) => {
+  const hooks = localStorage.getItem('hooks')
+  const parsed = (hooks && JSON.parse(hooks)) ?? []
+  localStorage.setItem(
+    'hooks',
+    JSON.stringify([...parsed, { id: parsed.length, ...data }])
+  )
+}
+
 let prevBody: string | null = null
 export const postToWebhook = async (body: any, config: any, event: string) => {
   const url = config?.hooks && config.hooks[event]
@@ -81,7 +90,6 @@ export const postToWebhook = async (body: any, config: any, event: string) => {
   if (!url) return
 
   if (JSON.stringify(body) === prevBody) {
-    console.log('DUPLICATE REQUEST!! Skipping...', event, body)
     return
   }
 
@@ -89,7 +97,11 @@ export const postToWebhook = async (body: any, config: any, event: string) => {
 
   const sendWebhookRequest = async (attempt: number) => {
     await axios.post(url, body)
-    toast.success(`Sent ${event} event data to ${url} on attempt ${attempt}`)
+    const text = `Sent ${event} event data to ${url} on attempt ${attempt}`
+    toast.success(text)
+
+    const data = { text, created: new Date().toISOString(), success: true }
+    saveToLocalStorage(data)
   }
 
   const retryRequest = async (maxRetries: number) => {
@@ -114,10 +126,13 @@ export const postToWebhook = async (body: any, config: any, event: string) => {
     }
 
     setTimeout(() => {
-      lastError &&
-        attempt === maxRetries &&
-        toast.error(`Failed to post ${event} event data to ${url}`)
-    }, 2000)
+      if (lastError && attempt === maxRetries) {
+        const text = `Failed to post ${event} event data to ${url}`
+        toast.error(text)
+        const data = { text, created: new Date().toISOString(), success: false }
+        saveToLocalStorage(data)
+      }
+    }, 1000)
 
     throw lastError
   }

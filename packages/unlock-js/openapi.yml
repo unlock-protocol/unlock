@@ -3965,6 +3965,85 @@ paths:
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
 
+  /v2/checkout/hooks/{id}:
+    post:
+      operationId: updateCheckoutHooks
+      security:
+        - User: []
+      description: Update the hooks object of a checkout config
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the checkout configuration to update
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  description: URL to call when checkout status changes
+                metadata:
+                  type: string
+                  description: URL to call to fetch metadata
+                authenticated:
+                  type: string
+                  description: URL to call on successful user authentication
+                transactionSent:
+                  type: string
+                  description: URL to call when a transaction is sent
+              additionalProperties: false
+      responses:
+        200:
+          description: Successfully updated the hooks for the given checkout configuration.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckoutConfig'
+        400:
+          description: Invalid hooks payload or user not authorized to update the configuration.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  error:
+                    type: string
+        401:
+          description: User is not authenticated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        403:
+          description: User not authorized to update this configuration.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        404:
+          description: No checkout configuration found for the given id.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
   /v2/purchase/payment-methods:
     delete:
       operationId: removePaymentMethods
