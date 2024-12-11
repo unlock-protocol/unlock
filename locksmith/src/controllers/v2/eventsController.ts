@@ -6,6 +6,7 @@ import {
   getEventBySlug,
   getEventMetadataForLock,
   saveEvent,
+  updateEvent,
 } from '../../operations/eventOperations'
 import normalizer from '../../utils/normalizer'
 import { CheckoutConfig, EventData } from '../../models'
@@ -28,6 +29,8 @@ import config from '../../config/config'
 import { downloadJsonFromS3 } from '../../utils/downloadJsonFromS3'
 import logger from '../../logger'
 import { getWeb3Service } from '../../initializers'
+import { EventStatus } from '@unlock-protocol/types'
+import { addJob } from '../../worker/worker'
 
 // DEPRECATED!
 export const getEventDetailsByLock: RequestHandler = async (
@@ -44,10 +47,14 @@ export const getEventDetailsByLock: RequestHandler = async (
 export const EventBody = z.object({
   id: z.number().optional(),
   data: z.any(),
-  checkoutConfig: z.object({
-    config: PaywallConfig,
-    id: z.string().optional(),
-  }),
+  checkoutConfig: z
+    .object({
+      config: PaywallConfig,
+      id: z.string().optional(),
+    })
+    .optional(),
+  status: z.enum([EventStatus.PENDING, EventStatus.DEPLOYED]).optional(),
+  transactionHash: z.string().optional(),
 })
 export type EventBodyType = z.infer<typeof EventBody>
 
@@ -73,8 +80,8 @@ export const saveEventDetails: RequestHandler = async (request, response) => {
     request.user!.walletAddress
   )
 
-  // This was a creation!
-  if (created) {
+  // Only send email if event is deployed
+  if (created && event.status === EventStatus.DEPLOYED) {
     await sendEmail({
       template: 'eventDeployed',
       recipient: event.data.replyTo,
@@ -285,4 +292,72 @@ export const approvedRefunds: RequestHandler = async (request, response) => {
 
   response.status(200).send(file)
   return
+}
+
+export const updateEventData: RequestHandler = async (request, response) => {
+  const { slug } = request.params
+  const { status, transactionHash, checkoutConfig } = request.body
+
+  try {
+    const updatedEvent = await updateEvent(
+      slug,
+      { status, transactionHash, checkoutConfig },
+      request.user!.walletAddress
+    )
+
+    if (!updatedEvent) {
+      logger.warn('Event not found for update', { slug })
+      response.status(404).json({
+        error: 'Event not found',
+        requestedSlug: slug,
+      })
+      return
+    }
+
+    response.status(200).json({
+      slug: updatedEvent.slug,
+      status: updatedEvent.status,
+      transactionHash: updatedEvent.transactionHash,
+    })
+  } catch (error) {
+    logger.error('Failed to update event', {
+      error,
+      slug,
+      requestBody: { status, transactionHash, checkoutConfig },
+    })
+    response.status(500).json({
+      error: 'Failed to update event',
+      details: error.message,
+    })
+  }
+}
+
+export const queueEventDeployment: RequestHandler = async (
+  request,
+  response
+) => {
+  try {
+    const { slug, transactionHash, network } = request.body
+
+    await addJob(
+      'completeEventDeployment',
+      {
+        slug,
+        transactionHash,
+        network,
+        walletAddress: request.user!.walletAddress,
+      },
+      {
+        maxAttempts: 5,
+      }
+    )
+
+    response.sendStatus(204)
+    return
+  } catch (error) {
+    logger.error('Failed to queue event deployment', error)
+    response.status(500).json({
+      error: 'Failed to queue event deployment',
+    })
+  }
 }
