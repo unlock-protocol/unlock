@@ -52,7 +52,7 @@ describe('Lock / initializers', () => {
   })
 
   describe('initializing when setting as Unlock template', () => {
-    it('admin role is revoked when adding a template', async () => {
+    it('admin role is revoked when adding a template that hasnt been initialized', async () => {
       // deploy contracts
       const PublicLock = await ethers.getContractFactory(
         'contracts/PublicLock.sol:PublicLock'
@@ -69,6 +69,12 @@ describe('Lock / initializers', () => {
       // unlock should not be lock manager anymore
       await assert.equal(
         await template.isLockManager(await unlock.getAddress()),
+        false
+      )
+
+      // deployer should not be lock manager
+      await assert.equal(
+        await template.isLockManager(await deployer.getAddress()),
         false
       )
 

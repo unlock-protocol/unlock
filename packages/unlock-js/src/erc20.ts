@@ -106,6 +106,14 @@ export async function approveTransfer(
   return contract.approve(lockContractAddress, value)
 }
 
+export async function prepareApproval(
+  lockContractAddress: string,
+  value: unknown
+) {
+  const iface = new ethers.Interface(erc20abi)
+  return iface.encodeFunctionData('approve', [lockContractAddress, value])
+}
+
 interface TransferAuthorizationMessage {
   from: string
   to: string

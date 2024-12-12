@@ -1,7 +1,11 @@
 import Web3Service from '../web3Service'
 import PublicLockVersions from '../PublicLock'
 import networks from '@unlock-protocol/networks'
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeAll } from 'vitest'
+import { chainId, setupTest, setupLock } from './helpers/integration'
+import nodeSetup from './setup/prepare-eth-node-for-unlock'
+import locks from './helpers/fixtures/locks'
+import { ethers } from 'ethers'
 
 var web3Service = new Web3Service(networks)
 const lock = {
