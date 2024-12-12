@@ -8,6 +8,9 @@ const config: StorybookConfig = {
   addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
   staticDirs: ['../public'],
   framework: '@storybook/react-vite',
+  core: {
+    builder: '@storybook/builder-vite',
+  },
   async viteFinal(config) {
     // Merge custom configuration into the default config
     return mergeConfig(config, {
