@@ -3,6 +3,7 @@ import { Fragment, ReactNode, useState } from 'react'
 import { BiBell as BellIcon } from 'react-icons/bi'
 import { Button } from '@unlock-protocol/ui'
 import { PromptEmailLink } from '../../PromptEmailLink'
+import { LatestBlogs, LatestBlogsLink } from '../../LatestBlogs'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { usePathname } from 'next/navigation'
 import { Modal } from '@unlock-protocol/ui'
@@ -23,6 +24,7 @@ interface NotificationProps {
 export function NotificationsMenu() {
   const [isOpen, setIsOpen] = useState(false)
   const [showModal, setShowModal] = useState(false)
+  const [showBlogsModal, setShowBlogsModal] = useState(false)
   const { account, email } = useAuthenticate()
   const pathname = usePathname()
 
@@ -45,6 +47,12 @@ export function NotificationsMenu() {
       timestamp: new Date(),
     })
   }
+
+  notifications.push({
+    id: '2',
+    content: <LatestBlogsLink setModalOpen={setShowBlogsModal} />,
+    timestamp: new Date(),
+  })
 
   return (
     <>
@@ -80,7 +88,7 @@ export function NotificationsMenu() {
               <MenuItems
                 static
                 className={`absolute right-1/2 translate-x-1/2 mt-2 w-80 ${
-                  notifications.length < 3 ? 'h-auto max-h-48' : 'h-96'
+                  notifications.length < 3 ? 'h-auto max-h-50' : 'h-96'
                 } origin-top rounded-md divide-y divide-gray-300 bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-y-auto`}
               >
                 <div className="p-2">
@@ -108,6 +116,18 @@ export function NotificationsMenu() {
         <Modal isOpen={showModal} setIsOpen={setShowModal} size="small">
           <div onClick={(e) => e.stopPropagation()}>
             <LoginModal open={true} />
+          </div>
+        </Modal>
+      )}
+
+      {showBlogsModal && (
+        <Modal
+          isOpen={showBlogsModal}
+          setIsOpen={setShowBlogsModal}
+          size="small"
+        >
+          <div onClick={(e) => e.stopPropagation()}>
+            <LatestBlogs />
           </div>
         </Modal>
       )}
