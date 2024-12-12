@@ -5597,9 +5597,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eth-optimism/sdk@npm:3.3.2":
-  version: 3.3.2
-  resolution: "@eth-optimism/sdk@npm:3.3.2"
+"@eth-optimism/sdk@npm:3.3.3":
+  version: 3.3.3
+  resolution: "@eth-optimism/sdk@npm:3.3.3"
   dependencies:
     "@eth-optimism/contracts": "npm:0.6.0"
     "@eth-optimism/core-utils": "npm:^0.13.2"
@@ -5609,7 +5609,7 @@ __metadata:
     semver: "npm:^7.6.0"
   peerDependencies:
     ethers: ^5
-  checksum: 10/980619792b5be44407d26dc102d95074c4a385055ccf1cfb6d03d557028f3ee45fb2338a63e09b44a5ff9c16dd14d6e9b906644a4559d98aa66867209de45b62
+  checksum: 10/435d0c0b38238e76e1b13cf09a0b1f39c212bcd91ad231ad3d5be522498645633d1391ec1ac4a3843fa7f22f7110f161bc8168394996e59e5841558cd658110a
   languageName: node
   linkType: hard
 
@@ -18040,7 +18040,7 @@ __metadata:
   resolution: "@unlock-protocol/governance@workspace:governance"
   dependencies:
     "@arbitrum/sdk": "npm:4.0.2"
-    "@eth-optimism/sdk": "npm:3.3.2"
+    "@eth-optimism/sdk": "npm:3.3.3"
     "@gnosis-guild/zodiac": "npm:4.0.3"
     "@gnosis-guild/zodiac-core": "npm:2.0.4"
     "@matterlabs/hardhat-zksync-deploy": "npm:1.6.0"
