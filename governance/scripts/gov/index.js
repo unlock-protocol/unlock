@@ -10,6 +10,7 @@ const {
   UnlockDiscountTokenV2,
   UniswapOracleV3,
 } = require('@unlock-protocol/contracts')
+const l1BridgeAbi = require('../../helpers/abi/l1standardbridge.json')
 
 // workflow
 const submit = require('./submit')
@@ -20,7 +21,12 @@ const execute = require('./execute')
 // parse logs
 const parseLogs = (
   logs,
-  abi = [...Unlock.abi, ...PublicLock.abi, ...UniswapOracleV3.abi]
+  abi = [
+    ...Unlock.abi,
+    ...PublicLock.abi,
+    ...UniswapOracleV3.abi,
+    ...l1BridgeAbi,
+  ]
 ) => {
   const interface = new ethers.Interface(abi)
 
