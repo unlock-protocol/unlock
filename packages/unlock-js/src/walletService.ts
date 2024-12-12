@@ -884,6 +884,7 @@ export default class WalletService extends UnlockService {
       keyTransfer?: string
       keyExtend?: string
       keyGrant?: string
+      roleHook?: string
     },
     transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback

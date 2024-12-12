@@ -17,6 +17,8 @@ export interface PurchaseKeyParams {
   decimals?: number
   recurringPayments?: number
   referrer?: string
+  protocolReferrer?: string
+  additionalPeriods?: number
   totalApproval?: string
   keyManager?: string
 }
@@ -29,6 +31,8 @@ export interface PurchaseKeysParams {
   erc20Address?: string
   decimals?: number
   referrers?: (string | null)[]
+  protocolReferrers?: (string | null)[]
+  additionalPeriods?: number[]
   recurringPayments?: number[]
   totalApproval?: string
   keyManagers?: string[]

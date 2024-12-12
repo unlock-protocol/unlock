@@ -20,18 +20,11 @@ export default async function preparePurchase(options, provider) {
   const { lockAddress } = options
   const lockContract = await this.getLockContract(lockAddress, provider)
   options.lockContract = lockContract
-  const {
-    owners,
-    keyPrices,
-    keyManagers,
-    referrers,
-    data,
-    totalPrice,
-    erc20Address,
-    totalAmountToApprove,
-  } = await getPurchaseKeysArguments.bind(this)(options)
+  const { purchaseArgs, totalPrice, erc20Address, totalAmountToApprove } =
+    await getPurchaseKeysArguments.bind(this)(options)
 
   const txs = []
+
   // If the lock is priced in ERC20, we need to approve the transfer
   if (erc20Address != ZERO) {
     const approvalOptions = {
@@ -53,11 +46,10 @@ export default async function preparePurchase(options, provider) {
     }
   }
 
-  // parse
-  const purchaseArgs = [keyPrices, owners, referrers, keyManagers, data]
+  // parse using struct
   const callData = lockContract.interface.encodeFunctionData(
-    'purchase',
-    purchaseArgs
+    'purchase((uint256,address,address,address,address,bytes,uint256)[])',
+    [purchaseArgs.map((p) => Object.values(p))]
   )
 
   const value = !erc20Address || erc20Address === ZERO ? totalPrice : 0
