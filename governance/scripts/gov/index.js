@@ -54,6 +54,7 @@ async function main({ proposal, proposalId, govAddress, txId }) {
   const [signer] = await ethers.getSigners()
   const { chainId } = await ethers.provider.getNetwork()
 
+  console.log(proposal.proposalName)
   const quorum = await getQuorum(govAddress)
   const udtAddress = await getGovTokenAddress(govAddress)
 
