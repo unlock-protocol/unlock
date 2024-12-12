@@ -20,8 +20,8 @@ const { addSomeETH } = require('@unlock-protocol/hardhat-helpers')
 const deployedContracts = {
   // mainnet
   1: {
-    unlockImplAddress: ADDRESS_ZERO,
-    publicLockAddress: ADDRESS_ZERO,
+    unlockImplAddress: '0x93c8b77D9bB8dFF1D628e3991443C809a13Ca98E',
+    publicLockAddress: '0x77694145408ac958Ed747a1aD55192025B22bdd6',
   },
   // optimism
   10: {

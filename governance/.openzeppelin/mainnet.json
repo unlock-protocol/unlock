@@ -3205,7 +3205,7 @@
             "label": "locks",
             "offset": 0,
             "slot": "104",
-            "type": "t_mapping(t_address,t_struct(LockBalances)3109_storage)",
+            "type": "t_mapping(t_address,t_struct(LockBalances)12505_storage)",
             "contract": "Unlock",
             "src": "contracts/past-versions/UnlockV13.sol:2791"
           },
@@ -3237,7 +3237,7 @@
             "label": "uniswapOracles",
             "offset": 0,
             "slot": "108",
-            "type": "t_mapping(t_address,t_contract(IUniswapOracleV3)757)",
+            "type": "t_mapping(t_address,t_contract(IUniswapOracleV3)10153)",
             "contract": "Unlock",
             "src": "contracts/past-versions/UnlockV13.sol:2806"
           },
@@ -3285,7 +3285,7 @@
             "label": "proxyAdmin",
             "offset": 0,
             "slot": "114",
-            "type": "t_contract(ProxyAdmin)3095",
+            "type": "t_contract(ProxyAdmin)12491",
             "contract": "Unlock",
             "src": "contracts/past-versions/UnlockV13.sol:2822"
           },
@@ -3343,19 +3343,19 @@
             "label": "bool",
             "numberOfBytes": "1"
           },
-          "t_contract(IUniswapOracleV3)757": {
+          "t_contract(IUniswapOracleV3)10153": {
             "label": "contract IUniswapOracleV3",
             "numberOfBytes": "20"
           },
-          "t_contract(ProxyAdmin)3095": {
+          "t_contract(ProxyAdmin)12491": {
             "label": "contract ProxyAdmin",
             "numberOfBytes": "20"
           },
-          "t_mapping(t_address,t_contract(IUniswapOracleV3)757)": {
+          "t_mapping(t_address,t_contract(IUniswapOracleV3)10153)": {
             "label": "mapping(address => contract IUniswapOracleV3)",
             "numberOfBytes": "32"
           },
-          "t_mapping(t_address,t_struct(LockBalances)3109_storage)": {
+          "t_mapping(t_address,t_struct(LockBalances)12505_storage)": {
             "label": "mapping(address => struct Unlock.LockBalances)",
             "numberOfBytes": "32"
           },
@@ -3371,7 +3371,7 @@
             "label": "string",
             "numberOfBytes": "32"
           },
-          "t_struct(LockBalances)3109_storage": {
+          "t_struct(LockBalances)12505_storage": {
             "label": "struct Unlock.LockBalances",
             "members": [
               {
@@ -3672,7 +3672,10 @@
           }
         },
         "namespaces": {}
-      }
+      },
+      "allAddresses": [
+        "0xd8250925527e769d90C6F2Fc55384B9110f26b62"
+      ]
     }
   }
 }
