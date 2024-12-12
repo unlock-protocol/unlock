@@ -3,7 +3,13 @@ const { mine } = require('@nomicfoundation/hardhat-network-helpers')
 const { getQuorum, getGovTokenAddress } = require('../../helpers/gov')
 const { parseXCalledEvents } = require('../../helpers/bridge')
 const { simulateDestCalls } = require('../../helpers/crossChain')
-const { addUDT, getEvent } = require('@unlock-protocol/hardhat-helpers')
+const {
+  addUDT,
+  getEvent,
+  addSomeETH,
+  impersonate,
+  getERC20Contract,
+} = require('@unlock-protocol/hardhat-helpers')
 const {
   Unlock,
   PublicLock,
@@ -43,6 +49,23 @@ async function main({ proposal, proposalId, govAddress, txId }) {
 
   const quorum = await getQuorum(govAddress)
   const udtAddress = await getGovTokenAddress(govAddress)
+
+  if (process.env.RUN_FORK == 8453) {
+    // fund timelock for testing execution
+    const BASE_TIMELOCK_ADDRESS = '0xB34567C4cA697b39F72e1a8478f285329A98ed1b'
+    await addSomeETH(BASE_TIMELOCK_ADDRESS)
+
+    // fund 50k UP to make sure we can send a proposal
+    const holder = '0x3074517c5F5428f42C74543C68001E0Ca86FE7dd'
+    await impersonate(holder)
+    const up = await getERC20Contract(
+      '0xaC27fa800955849d6D17cC8952Ba9dD6EAA66187'
+    )
+    const [signer] = await ethers.getSigners()
+    await up
+      .connect(await ethers.getSigner(holder))
+      .transfer(await signer.getAddress(), ethers.parseEther('51000'))
+  }
 
   // lower voting period on mainnet
   if (chainId === 31337 || process.env.RUN_FORK) {
