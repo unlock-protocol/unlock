@@ -5,7 +5,10 @@ const IXCalled = require('./abis/IXCalled')
 
 const targetChains = Object.keys(networks)
   .map((id) => networks[id])
-  .filter(({ dao, isTestNetwork }) => !isTestNetwork && !!dao)
+  .filter(
+    ({ id, dao, isTestNetwork }) =>
+      !isTestNetwork && !!dao && id !== dao.chainId
+  )
 
 /***
  * CONNEXT logic
