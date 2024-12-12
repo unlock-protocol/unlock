@@ -1,3 +1,8 @@
+/**
+ * Runs a simulation for the entire cycle of a proposal
+ * from submission, voting, etc to cross-chain simulation
+ * using Tenderly
+ */
 const { ethers } = require('hardhat')
 const { mine } = require('@nomicfoundation/hardhat-network-helpers')
 const { getQuorum, getGovTokenAddress } = require('../../helpers/gov')

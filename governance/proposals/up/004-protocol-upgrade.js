@@ -8,7 +8,7 @@ const { networks } = require('@unlock-protocol/networks')
 const { targetChains } = require('../../helpers/bridge')
 const { parseBridgeCall } = require('../../helpers/crossChain')
 
-const { getNetwork, ADDRESS_ZERO } = require('@unlock-protocol/hardhat-helpers')
+const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const {
   abi: proxyAdminABI,
 } = require('@unlock-protocol/hardhat-helpers/dist/ABIs/ProxyAdmin.json')
@@ -74,7 +74,12 @@ const getProxyAdminAddress = async (contractAddress, providerURL) => {
   return adminAddress
 }
 
-const parseCalls = async ({ unlockAddress, name, id, provider }) => {
+const parseCalls = async ({
+  unlockAddress,
+  name,
+  id,
+  provider: providerURL,
+}) => {
   const publicLockVersion = 15
 
   // get addresses
@@ -91,17 +96,34 @@ const parseCalls = async ({ unlockAddress, name, id, provider }) => {
   )
 
   // add version check
-  const unlock = new ethers.Contract(unlockImplAddress, unlockInterface)
-  const template = new ethers.Contract(publicLockAddress, PublicLockV15.abi)
+  const provider = new ethers.JsonRpcProvider(providerURL)
+  const unlock = new ethers.Contract(
+    unlockImplAddress,
+    unlockInterface,
+    provider
+  )
+  const template = new ethers.Contract(
+    publicLockAddress,
+    PublicLockV15.abi,
+    provider
+  )
   if (
-    (await unlock.unlockVersion()) !== 15 ||
-    (await template.publicLockVersion()) !== 14
+    (await unlock.unlockVersion()) !== BigInt(14) ||
+    (await template.publicLockVersion()) !== BigInt(15)
   ) {
-    throw Error(`Wrong version. Checks failed`)
+    throw Error(
+      `Wrong versions. 
+      Unlock v${await unlock.unlockVersion()} and 
+    PublicLockv ${await template.publicLockVersion()}
+    Checks failed.`
+    )
   }
 
   // submit Unlock upgrade
-  const proxyAdminAddress = await getProxyAdminAddress(unlockAddress, provider)
+  const proxyAdminAddress = await getProxyAdminAddress(
+    unlockAddress,
+    providerURL
+  )
   const { interface: proxyAdminInterface } = await ethers.getContractAt(
     proxyAdminABI,
     proxyAdminAddress
@@ -138,10 +160,6 @@ const parseCalls = async ({ unlockAddress, name, id, provider }) => {
 }
 
 module.exports = async () => {
-  // TODO: remove this / fund for testing
-  const BASE_TIMELOCK_ADDRESS = '0xB34567C4cA697b39F72e1a8478f285329A98ed1b'
-  await addSomeETH(BASE_TIMELOCK_ADDRESS)
-
   // src info
   const { id: chainId, unlockAddress, name, provider } = await getNetwork()
   const { chainId: daoChainId } = networks[chainId].dao
@@ -158,6 +176,9 @@ module.exports = async () => {
   })
   explainers[daoChainId] = daoNetworkCalls
 
+  console.log(
+    `Targets chains: ${targetChains.map(({ id, name }) => `${name}(${id})`).join(',')}`
+  )
   // parse all calls for dest chains
   const contractCalls = await Promise.all(
     targetChains.map((targetChain) => parseCalls(targetChain))
@@ -212,11 +233,7 @@ module.exports = async () => {
     })
   )
 
-  const calls = [
-    // TODO: transfer ownership of contracts from multisig to timelock
-    // ...daoNetworkCalls,
-    ...bridgeCalls,
-  ]
+  const calls = [...daoNetworkCalls, ...bridgeCalls]
 
   // set proposal name and text
   const proposalName = `Protocol upgrade: switch to Unlock v14 and PublicLock v15
@@ -245,6 +262,7 @@ Onwards !
 
 The Unlock Protocol Team
 `
+  console.log(proposalName)
   return {
     proposalName,
     calls,
