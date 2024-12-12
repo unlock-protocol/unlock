@@ -167,9 +167,9 @@ async function simulateDestCalls(xCalls) {
   const abiCoder = ethers.AbiCoder.defaultAbiCoder()
   const destChainCalls = xCalls.map(
     ({ transferId, params: { callData, destinationDomain } }) => {
-      const network = Object.values(networks).find((network) =>
-        network.dao.governanceBridge
-          ? network.dao.governanceBridge.domainId.toString() ==
+      const network = Object.values(networks).find((n) =>
+        n.dao && n.dao.governanceBridge
+          ? n.dao.governanceBridge.domainId.toString() ==
             destinationDomain.toString()
           : false
       )

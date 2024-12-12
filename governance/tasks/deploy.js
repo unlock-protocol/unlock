@@ -105,10 +105,14 @@ task('deploy:oracle', 'Deploy Uniswap Oracle contract')
   })
 
 task('deploy:template', 'Deploy PublicLock contract')
-  .addOptionalParam('publicLockVersion', 'the version of unlock to deploy')
-  .setAction(async ({ publicLockVersion }) => {
+  .addOptionalParam('publicLockVersion', 'the version of PublicLock to deploy')
+  .addOptionalParam(
+    'publicLockAddress',
+    'the address of a deployed PublicLock contract'
+  )
+  .setAction(async ({ publicLockVersion, publicLockAddress }) => {
     const templateDeployer = require('../scripts/deployments/publicLock')
-    return await templateDeployer({ publicLockVersion })
+    return await templateDeployer({ publicLockVersion, publicLockAddress })
   })
 
 task('deploy:governor', 'Deploy governor contracts')
