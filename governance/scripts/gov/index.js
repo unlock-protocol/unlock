@@ -21,6 +21,7 @@ const execute = require('./execute')
 // parse logs
 const parseLogs = (
   logs,
+  showAll = false,
   abi = [
     ...Unlock.abi,
     ...PublicLock.abi,
@@ -34,13 +35,19 @@ const parseLogs = (
   const parsedLogs = logs.map((log, i) => {
     try {
       const parsed = interface.parseLog(log)
-      log = parsed || log
+      log = parsed || { ...log, decodedError: true }
     } catch (error) {
       log.decodedError = true
     }
     return log
   })
-  return parsedLogs
+  const toShow = showAll
+    ? parsedLogs
+    : parsedLogs.filter(({ decodedError }) => !decodedError)
+
+  console.log(toShow)
+  console.log(`Logs not decoded: ${parsedLogs.length - toShow.length}`)
+  return toShow
 }
 
 async function main({ proposal, proposalId, govAddress, txId }) {
@@ -111,7 +118,7 @@ async function main({ proposal, proposalId, govAddress, txId }) {
   const { logs } = await execute({ proposalId, txId, proposal, govAddress })
 
   // log all events
-  console.log(parseLogs(logs))
+  parseLogs(logs)
 
   // simulate bridge calls
   const xCalled = await parseXCalledEvents(logs)
