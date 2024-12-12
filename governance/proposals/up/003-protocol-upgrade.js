@@ -42,7 +42,6 @@ const deployedContracts = {
   137: {
     publicLockAddress: '0x3D234f0e0F5B5A238DB94EE7fFfDc5e1c41Bf1d6',
     unlockImplAddress: '0x6a372BE86D515b0C8fc828650C574fe4c9A65Bd5',
-    unlockSwapBurner: ADDRESS_ZERO,
   },
   // arb
   42161: {
