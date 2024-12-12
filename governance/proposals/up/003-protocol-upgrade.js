@@ -16,7 +16,7 @@ const {
 const { parseSafeMulticall } = require('../../helpers/multisig')
 const { addSomeETH } = require('@unlock-protocol/hardhat-helpers')
 
-// TODO: deployment addresses
+// deployment addresses
 const deployedContracts = {
   // mainnet
   1: {
@@ -55,7 +55,9 @@ const deployedContracts = {
   },
   //linea
   59144: {
-    publicLockAddress: ADDRESS_ZERO, // max size because stil using paris evm
+    // linea max size because stil using paris evm
+    // so had to deploy with settings.optimizer.runs = 1
+    publicLockAddress: '0x5814B64C69ae89f152859d20f53B240df1AC5066',
     unlockImplAddress: '0x530Ff2dAED410cA7D70C25f18dc770f106201151',
   },
 }
