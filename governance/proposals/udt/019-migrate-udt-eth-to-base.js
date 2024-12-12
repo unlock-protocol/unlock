@@ -27,10 +27,6 @@ module.exports = async ({
   console.log(
     `Submitting proposal to bridge UDT from ${srcName} to  ${destName} (${srcChainId} > ${destChainId})`
   )
-  console.log({
-    udtMainnetAddress,
-    udtBaseAddress,
-  })
 
   // get current UDT balance
   const udt = await getERC20Contract(udtMainnetAddress)
