@@ -34,7 +34,7 @@ export const Address: React.FC<AddressProps> = ({
   onCopied,
 }) => {
   // manage clipboard copy status
-  const [isCopied, setCopied] = useClipboard(address, {
+  const [, setCopied] = useClipboard(address, {
     successDuration: 0,
   })
   //state to hold the resolved name, initialized with the resolvedName prop
