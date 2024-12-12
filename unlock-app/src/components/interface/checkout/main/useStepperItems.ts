@@ -27,16 +27,31 @@ export function useStepperItems(
     existingMember,
     payment,
     renew,
+    mint,
   } = useSelector(service, (state) => state.context) as CheckoutMachineContext
 
-  if (!paywallConfig.locks || Object.keys(paywallConfig.locks).length === 0) {
+  const currentState = useSelector(service, (state) => state.value)
+
+  // If we're in a transition state or signing a message, maintain previous items
+  if (
+    !paywallConfig?.locks ||
+    Object.keys(paywallConfig.locks).length === 0 ||
+    typeof currentState === 'object' ||
+    currentState === 'MESSAGE_TO_SIGN'
+  ) {
     return []
   }
+
   const [address, config] = Object.entries(paywallConfig.locks)[0]
   const hasOneLock = Object.keys(paywallConfig.locks).length === 1
   const lockConfig = {
     address,
     ...config,
+  }
+
+  // Only calculate steps if we have a lock and are not in a transition
+  if (!lock && currentState !== 'SELECT') {
+    return []
   }
 
   const isExpired = isRenew || renew
@@ -51,6 +66,7 @@ export function useStepperItems(
   const isPromo = getHookType(lock, paywallConfig) === 'promocode'
   const isGuild = getHookType(lock, paywallConfig) === 'guild'
   const isGitcoin = getHookType(lock, paywallConfig) === 'gitcoin'
+  const isAllowList = getHookType(lock, paywallConfig) === 'allowlist'
   const isMember = existingMember || isExistingMember
   const checkoutItems: StepItem[] = [
     {
@@ -104,11 +120,16 @@ export function useStepperItems(
                   name: 'Gitcoin Passport Verification',
                   to: 'GITCOIN',
                 }
-              : {
-                  name: 'Solve captcha',
-                  to: 'CAPTCHA',
-                  skip: !isCaptcha,
-                },
+              : isAllowList
+                ? {
+                    name: 'Allow list',
+                    to: 'ALLOW_LIST',
+                  }
+                : {
+                    name: 'Solve captcha',
+                    to: 'CAPTCHA',
+                    skip: !isCaptcha,
+                  },
       {
         name: 'Payment method',
         to: 'PAYMENT',
@@ -119,11 +140,18 @@ export function useStepperItems(
         skip: !['card'].includes(payment?.method),
       },
       {
+        name: 'Fund account',
+        to: 'PRIVY_FUNDING',
+        skip: !['crosschain_purchase'].includes(payment?.method),
+      },
+      {
         name: 'Confirm',
         to: 'CONFIRM',
       },
       {
         name: 'Minting NFT',
+        skip: !mint || mint.status !== 'FINISHED',
+        to: 'MINTING',
       },
     ]
   )

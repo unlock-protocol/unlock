@@ -1,4 +1,4 @@
-// Sources flattened with hardhat v2.22.15 https://hardhat.org
+// Sources flattened with hardhat v2.22.16 https://hardhat.org
 
 // SPDX-License-Identifier: MIT
 
@@ -2971,7 +2971,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     // claim the template so that no-one else could
     try IPublicLock(impl).initialize(address(this), 0, address(0), 0, 0, "") {
       // renounce Unlock's lock manager role that was added during initialization
-      IPublicLock(impl).revokeRole(keccak256("LOCK_MANAGER"), address(this));
+      IPublicLock(impl).renounceRole(keccak256("LOCK_MANAGER"), address(this));
     } catch {
       // failure means that the template is already initialized
     }

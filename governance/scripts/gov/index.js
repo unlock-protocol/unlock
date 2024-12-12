@@ -1,10 +1,27 @@
+/**
+ * Runs a simulation for the entire cycle of a proposal
+ * from submission, voting, etc to cross-chain simulation
+ * using Tenderly
+ */
 const { ethers } = require('hardhat')
 const { mine } = require('@nomicfoundation/hardhat-network-helpers')
 const { getQuorum, getGovTokenAddress } = require('../../helpers/gov')
 const { parseXCalledEvents } = require('../../helpers/bridge')
 const { simulateDestCalls } = require('../../helpers/crossChain')
-const { addUDT, getEvent } = require('@unlock-protocol/hardhat-helpers')
-const { Unlock, UnlockDiscountTokenV2 } = require('@unlock-protocol/contracts')
+const {
+  addUDT,
+  getEvent,
+  addSomeETH,
+  impersonate,
+  getERC20Contract,
+} = require('@unlock-protocol/hardhat-helpers')
+const {
+  Unlock,
+  PublicLock,
+  UnlockDiscountTokenV2,
+  UniswapOracleV3,
+} = require('@unlock-protocol/contracts')
+const l1BridgeAbi = require('../../helpers/abi/l1standardbridge.json')
 
 // workflow
 const submit = require('./submit')
@@ -13,23 +30,61 @@ const queue = require('./queue')
 const execute = require('./execute')
 
 // parse logs
-const parseLogs = (logs, abi = Unlock.abi) => {
+const parseLogs = (
+  logs,
+  showAll = false,
+  abi = [
+    ...Unlock.abi,
+    ...PublicLock.abi,
+    ...UniswapOracleV3.abi,
+    ...l1BridgeAbi,
+  ]
+) => {
   const interface = new ethers.Interface(abi)
 
   // parse logs
-  const parsedLogs = logs.map((log) => {
-    const parsed = interface.parseLog(log)
-    return parsed || log
+  const parsedLogs = logs.map((log, i) => {
+    try {
+      const parsed = interface.parseLog(log)
+      log = parsed || { ...log, decodedError: true }
+    } catch (error) {
+      log.decodedError = true
+    }
+    return log
   })
-  return parsedLogs
+  const toShow = showAll
+    ? parsedLogs
+    : parsedLogs.filter(({ decodedError }) => !decodedError)
+
+  console.log(toShow)
+  console.log(`Logs not decoded: ${parsedLogs.length - toShow.length}`)
+  return toShow
 }
 
 async function main({ proposal, proposalId, govAddress, txId }) {
   const [signer] = await ethers.getSigners()
   const { chainId } = await ethers.provider.getNetwork()
 
+  console.log(proposal.proposalName)
   const quorum = await getQuorum(govAddress)
   const udtAddress = await getGovTokenAddress(govAddress)
+
+  if (process.env.RUN_FORK == 8453) {
+    // fund timelock for testing execution
+    const BASE_TIMELOCK_ADDRESS = '0xB34567C4cA697b39F72e1a8478f285329A98ed1b'
+    await addSomeETH(BASE_TIMELOCK_ADDRESS)
+
+    // fund 50k UP to make sure we can send a proposal
+    const holder = '0x3074517c5F5428f42C74543C68001E0Ca86FE7dd'
+    await impersonate(holder)
+    const up = await getERC20Contract(
+      '0xaC27fa800955849d6D17cC8952Ba9dD6EAA66187'
+    )
+    const [signer] = await ethers.getSigners()
+    await up
+      .connect(await ethers.getSigner(holder))
+      .transfer(await signer.getAddress(), ethers.parseEther('51000'))
+  }
 
   // lower voting period on mainnet
   if (chainId === 31337 || process.env.RUN_FORK) {
@@ -92,7 +147,7 @@ async function main({ proposal, proposalId, govAddress, txId }) {
   const { logs } = await execute({ proposalId, txId, proposal, govAddress })
 
   // log all events
-  console.log(parseLogs(logs))
+  parseLogs(logs)
 
   // simulate bridge calls
   const xCalled = await parseXCalledEvents(logs)

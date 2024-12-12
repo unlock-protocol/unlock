@@ -9,8 +9,6 @@ import MigrationFeedback from './MigrationFeedback'
 import ConnectToPrivy from './ConnectToPrivy'
 import { UserAccountType } from '~/utils/userAccountType'
 import { SignInWithPassword } from './SignInWithPassword'
-import { SignInWithCode } from './SignInWithCode'
-import { SignInWithGoogle } from './SignInWithGoogle'
 import { PromptSignOut } from './PromptSignOut'
 import { usePrivy } from '@privy-io/react-auth'
 
@@ -107,25 +105,21 @@ export const MigrateUserContent = () => {
             />
           )
         }
-        if (userAccountType?.includes(UserAccountType.EmailCodeAccount)) {
+        if (
+          userAccountType?.includes(UserAccountType.EmailCodeAccount) ||
+          userAccountType?.includes(UserAccountType.GoogleAccount)
+        ) {
           return (
-            <SignInWithCode
-              email={userEmail}
-              onNext={(walletPk) => {
-                setWalletPk(walletPk)
-                onNext()
-              }}
-            />
-          )
-        }
-        if (userAccountType?.includes(UserAccountType.GoogleAccount)) {
-          return (
-            <SignInWithGoogle
-              onNext={(walletPk) => {
-                setWalletPk(walletPk)
-                onNext()
-              }}
-            />
+            <div className="space-y-4">
+              <h2 className="text-xl font-bold">
+                Account Migration Not Available
+              </h2>
+              <p>
+                We apologize, but migration is currently only available for
+                Unlock 1.0 accounts. Migration support for these account types
+                has now been discontinued.
+              </p>
+            </div>
           )
         }
         return null

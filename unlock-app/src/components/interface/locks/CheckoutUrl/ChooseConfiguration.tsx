@@ -245,6 +245,7 @@ export function ChooseConfiguration({
           <Combobox
             disabled={items?.length === 0}
             options={configOptions}
+            maxWidth="max-w-2xl"
             onChange={handleSelectChange}
             defaultValue={selectedConfig?.id || value?.id || ''}
             customOption={true}
