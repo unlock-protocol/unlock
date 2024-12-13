@@ -95,7 +95,7 @@ describe('useCheckoutCommunication', () => {
   })
 
   it('buffers an arbitrary number of events before the emitter is ready', async () => {
-    expect.assertions(5)
+    expect.assertions(4)
 
     const { result, waitFor } = renderHook(() => useCheckoutCommunication())
 
