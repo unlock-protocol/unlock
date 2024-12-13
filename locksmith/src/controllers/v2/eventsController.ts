@@ -141,7 +141,7 @@ export const getEvent: RequestHandler = async (request, response) => {
 
     // Check if the caller is a verifier or manager and remove protected attributes if not
     let isManagerOrVerifier = false
-    if (request.user) {
+    if (request.user && eventResponse.checkoutConfig?.config) {
       const locks = Object.keys(eventResponse.checkoutConfig.config.locks)
       for (let i = 0; i < locks.length; i++) {
         if (!isManagerOrVerifier) {
