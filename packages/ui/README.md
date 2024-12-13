@@ -4,7 +4,7 @@ This package includes React Components used across our products.
 
 ## Component Playground
 
-Explore the components at [storybook.unlock-protocol.com](https://storybook.unlock-protocol.com) – an interactive playground for testing and previewing.
+Explore the components at [ui.unlock-protocol.com](https://ui.unlock-protocol.com) – an interactive playground for testing and previewing.
 
 ## Using the package
 
