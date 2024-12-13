@@ -1,5 +1,7 @@
 import { ZERO } from '../../constants'
+import getPurchaseKeysArguments from './getPurchaseKeysArguments'
 import preparePurchaseTx from './preparePurchaseKeysTx'
+
 import approveAllowance from '../utils/approveAllowance'
 
 /**
@@ -10,9 +12,11 @@ import approveAllowance from '../utils/approveAllowance'
  * - {PropTypes.arrayOf(string)} keyPrices
  * - {PropTypes.address} erc20Address
  * - {number} decimals
- * - {PropTypes.arrayOf(PropTypes.address)} referrers (address which will receive UDT - if applicable)
- * - {PropTypes.arrayOf(number)} recurringPayments the number of payments to allow for each keys. If the array is set, the keys are considered using recurring ERRC20 payments).
  * - {PropTypes.arrayOf(PropTypes.array[bytes])} _data (array of array of bytes, not used in transaction but can be used by hooks)
+ * - {PropTypes.arrayOf(PropTypes.address)} referrers (address which will receive UDT - if applicable)
+ * - {PropTypes.arrayOf(PropTypes.address)} protocolReferrers (referrer that perceive the protocol reward)
+ * - {PropTypes.arrayOf(number)} recurringPayments the number of payments to allow for each keys. If the array is set, the keys are considered using recurring ERRC20 payments).
+ * - {PropTypes.arrayOf(number)} additionalPeriods (number of periods of time to purchase at once)
  * @param {function} callback invoked with the transaction hash
  */
 export default async function (options, transactionOptions = {}, callback) {
@@ -49,6 +53,7 @@ export default async function (options, transactionOptions = {}, callback) {
           transactionOptions.gasPrice = gasPrice
         }
       }
+
       const gasLimit = await this.signer.estimateGas(purchaseTransactionRequest)
       transactionOptions.gasLimit = (gasLimit * 13n) / 10n
     } catch (error) {
