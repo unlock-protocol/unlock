@@ -219,7 +219,7 @@ export const useCheckoutCommunication = () => {
     }
   }, [provider, incomingBuffer, handleMethodCallEvent])
 
-  const emitUserInfo = async (info: UserInfo, paywallConfig?: any) => {
+  const emitUserInfo = (info: UserInfo, paywallConfig?: any) => {
     // if user already emitted, avoid re-emitting
     if (info.address === user && !info.signedMessage) {
       return
@@ -229,7 +229,7 @@ export const useCheckoutCommunication = () => {
     postToWebhook(info, paywallConfig, 'authenticated')
   }
 
-  const emitMetadata = async (metadata: any, paywallConfig?: any) => {
+  const emitMetadata = (metadata: any, paywallConfig?: any) => {
     pushOrEmit(CheckoutEvents.metadata, metadata)
     postToWebhook(metadata, paywallConfig, 'metadata')
   }
@@ -238,10 +238,7 @@ export const useCheckoutCommunication = () => {
     pushOrEmit(CheckoutEvents.closeModal)
   }
 
-  const emitTransactionInfo = async (
-    info: TransactionInfo,
-    paywallConfig?: any
-  ) => {
+  const emitTransactionInfo = (info: TransactionInfo, paywallConfig?: any) => {
     pushOrEmit(CheckoutEvents.transactionInfo, info)
     postToWebhook(info, paywallConfig, 'transactionSent')
   }
