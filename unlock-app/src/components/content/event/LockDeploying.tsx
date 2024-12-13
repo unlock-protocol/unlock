@@ -37,7 +37,6 @@ export const LockDeploying = ({
   useInterval(async () => {
     if (slug) {
       const { data: event } = await locksmith.getEvent(slug)
-      console.log('Event data:', event)
       setEventData({
         status: event.data?.status as EventStatus,
       })
