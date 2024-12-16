@@ -5,6 +5,18 @@ export const base: NetworkConfig = {
     url: (address: string) => `https://blockscan.com/address/${address}`,
   },
   chain: 'base',
+  dao: {
+    chainId: 8453,
+    governanceBridge: {
+      connext: '0xB8448C6f7f7887D36DcA487370778e419e9ebE3F',
+      domainId: 1650553709,
+      modules: {
+        connextMod: '0xfe9fD6af67E48D9f05Aa88679Ac294E3f28532eE',
+        delayMod: '0x805C2EbaE1510f59E1D717A1A51aFad335FFAec5',
+      },
+    },
+    governor: '0x65bA0624403Fc5Ca2b20479e9F626eD4D78E0aD9',
+  },
   description:
     'Base is a secure, low-cost, builder-friendly Ethereum L2 built to bring the next billion users onchain.  ',
   explorer: {
@@ -19,14 +31,6 @@ export const base: NetworkConfig = {
   },
   featured: true,
   fullySubsidizedGas: false,
-  governanceBridge: {
-    connext: '0xB8448C6f7f7887D36DcA487370778e419e9ebE3F',
-    domainId: 1650553709,
-    modules: {
-      connextMod: '0xfe9fD6af67E48D9f05Aa88679Ac294E3f28532eE',
-      delayMod: '0x805C2EbaE1510f59E1D717A1A51aFad335FFAec5',
-    },
-  },
   hooks: {
     onKeyPurchaseHook: [
       {
@@ -58,6 +62,11 @@ export const base: NetworkConfig = {
         address: '0xbBBdD46ef548712c203d306F6587336EC15E0d7f',
         id: HookType.GITCOIN,
         name: 'Gitcoin',
+      },
+      {
+        address: '0x3b36FfbfF6bC62D3E9f715bbDBabe477018b0c92',
+        id: HookType.ALLOW_LIST,
+        name: 'Allow List',
       },
     ],
     onTokenURIHook: [

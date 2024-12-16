@@ -1,47 +1,57 @@
 // Not sure, here we use checkout and account machines
 import { useSelector } from '@xstate/react'
 import { StepItem } from '../Stepper'
-import {
-  CheckoutHookType,
-  CheckoutMachineContext,
-  CheckoutService,
-} from './checkoutMachine'
+import { CheckoutMachineContext, CheckoutService } from './checkoutMachine'
 import { shouldSkip } from './utils'
+import { getHookType } from './checkoutHookUtils'
 
 export function useStepperItems(
   service: CheckoutService,
   {
     isUnlockAccount,
-    hookType,
     isRenew,
     existingMember: isExistingMember,
     useDelegatedProvider,
   }: {
     isRenew?: boolean
     isUnlockAccount?: boolean
-    hookType?: CheckoutHookType
     existingMember?: boolean
     useDelegatedProvider?: boolean
   } = {}
 ) {
   const {
+    lock,
     paywallConfig,
     skipQuantity,
     skipRecipient,
-    hook,
     existingMember,
     payment,
     renew,
+    mint,
   } = useSelector(service, (state) => state.context) as CheckoutMachineContext
 
-  if (!paywallConfig.locks || Object.keys(paywallConfig.locks).length === 0) {
+  const currentState = useSelector(service, (state) => state.value)
+
+  // If we're in a transition state or signing a message, maintain previous items
+  if (
+    !paywallConfig?.locks ||
+    Object.keys(paywallConfig.locks).length === 0 ||
+    typeof currentState === 'object' ||
+    currentState === 'MESSAGE_TO_SIGN'
+  ) {
     return []
   }
+
   const [address, config] = Object.entries(paywallConfig.locks)[0]
   const hasOneLock = Object.keys(paywallConfig.locks).length === 1
   const lockConfig = {
     address,
     ...config,
+  }
+
+  // Only calculate steps if we have a lock and are not in a transition
+  if (!lock && currentState !== 'SELECT') {
+    return []
   }
 
   const isExpired = isRenew || renew
@@ -51,11 +61,12 @@ export function useStepperItems(
       lock: lockConfig,
     })
 
-  const isPassword = hook === 'password' || hookType === 'password'
-  const isCaptcha = hook === 'captcha' || hookType === 'captcha'
-  const isPromo = hook === 'promocode' || hookType === 'promocode'
-  const isGuild = hook === 'guild' || hookType === 'guild'
-  const isGitcoin = hook === 'gitcoin' || hookType === 'gitcoin'
+  const isPassword = getHookType(lock, paywallConfig) === 'password'
+  const isCaptcha = getHookType(lock, paywallConfig) === 'captcha'
+  const isPromo = getHookType(lock, paywallConfig) === 'promocode'
+  const isGuild = getHookType(lock, paywallConfig) === 'guild'
+  const isGitcoin = getHookType(lock, paywallConfig) === 'gitcoin'
+  const isAllowList = getHookType(lock, paywallConfig) === 'allowlist'
   const isMember = existingMember || isExistingMember
   const checkoutItems: StepItem[] = [
     {
@@ -109,11 +120,16 @@ export function useStepperItems(
                   name: 'Gitcoin Passport Verification',
                   to: 'GITCOIN',
                 }
-              : {
-                  name: 'Solve captcha',
-                  to: 'CAPTCHA',
-                  skip: !isCaptcha,
-                },
+              : isAllowList
+                ? {
+                    name: 'Allow list',
+                    to: 'ALLOW_LIST',
+                  }
+                : {
+                    name: 'Solve captcha',
+                    to: 'CAPTCHA',
+                    skip: !isCaptcha,
+                  },
       {
         name: 'Payment method',
         to: 'PAYMENT',
@@ -124,11 +140,18 @@ export function useStepperItems(
         skip: !['card'].includes(payment?.method),
       },
       {
+        name: 'Fund account',
+        to: 'PRIVY_FUNDING',
+        skip: !['crosschain_purchase'].includes(payment?.method),
+      },
+      {
         name: 'Confirm',
         to: 'CONFIRM',
       },
       {
         name: 'Minting NFT',
+        skip: !mint || mint.status !== 'FINISHED',
+        to: 'MINTING',
       },
     ]
   )

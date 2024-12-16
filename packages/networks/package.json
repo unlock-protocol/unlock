@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/networks",
-  "version": "0.0.21",
+  "version": "0.0.24",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -36,17 +36,17 @@
   "devDependencies": {
     "@unlock-protocol/tsconfig": "workspace:^",
     "@unlock-protocol/types": "workspace:^",
-    "eslint": "9.11.1",
+    "eslint": "9.16.0",
     "fs-extra": "11.2.0",
-    "tsup": "8.3.0",
-    "typescript": "5.6.2"
+    "tsup": "8.3.5",
+    "typescript": "5.7.2"
   },
   "files": [
     "dist"
   ],
   "dependencies": {
     "eslint-plugin-sort-keys-fix": "1.1.2",
-    "ethers": "6.13.2",
-    "tsx": "4.19.1"
+    "ethers": "6.13.4",
+    "tsx": "4.19.2"
   }
 }

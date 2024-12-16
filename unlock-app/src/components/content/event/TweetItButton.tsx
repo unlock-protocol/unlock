@@ -1,9 +1,9 @@
 import { Tooltip } from '@unlock-protocol/ui'
 import Link from 'next/link'
-import { FiTwitter } from 'react-icons/fi'
 import { Metadata } from '~/components/interface/locks/metadata/utils'
 import { getEventDate } from './utils'
 import { config } from '~/config/app'
+import { SiX as XIcon } from 'react-icons/si'
 
 interface TweetItButtonProps {
   event?: Partial<Metadata>
@@ -56,18 +56,13 @@ export const TweetItButton = ({
   tweetIntent.searchParams.set('url', urlToShare)
 
   return (
-    <Tooltip
-      delay={0}
-      label="Share on Twitter"
-      tip="Share on Twitter"
-      side="bottom"
-    >
+    <Tooltip delay={0} label="Share on X" tip="Share on X" side="bottom">
       <Link
         target="_blank"
         href={tweetIntent.toString()}
         className="w-12 h-12 flex justify-center items-center"
       >
-        <FiTwitter className="w-6 h-6" />
+        <XIcon className="w-4 h-4" />
       </Link>
     </Tooltip>
   )

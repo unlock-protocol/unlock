@@ -1,0 +1,71 @@
+---
+id: get-receipts
+title: "getReceipts"
+description: "Get all receipts for a lock"
+sidebar_label: "getReceipts"
+hide_title: true
+hide_table_of_contents: true
+api: eJylVk2P20YM/SsDnlpAu94u0otue0gW26ZBkfWiB8MHWqKtiUczCodyagj67wUlWbbX8qZNfbFGw8/HR1INhIoYxQb/lEMKG5LPlJGtJEICkbKarewhXTTwEokhXSzbZQI5xYxtpWqQwiOJQecMD5pmHdigcSHbQgIVMpYkxLEzY1WjQikgAY8lQQqe5FtglWX6WlumHFLhml77+dTLGZvfanBZQSVC2oDsKzVjvdCGGNo2mXSj8TzkOVOM33X1MWRbg73wpLMobP0GWkWDKVbBR4p6f393p3/n5p7rLKMY17Vze8MkbGlH+QiYesiCF/KiulhVzmZdUWZfohpoLgMIqy+UieLLWkKxvXsrVMYTMWTGPSQX76+p5xM5aoZdoJ/qcqUkmJAQW1IULKvJ20g+v6JY4f7KDVNmKztgcnF7Ws3JgMKW/FsCG4zzIOgmL7EMtZc5o49r4o4mE1IH4h7vfI+QplxrFYmvh3D4JfDu7pdLzmi/GRuND2KwloK8KCkov86Wt4nia+dw5QjSNbpIr0tfUoy4octAtTfWWDuBFOYFMZlvGA16Q8yBjfVGeb22zvqNkYKMthZFub302XZMET3DI3limz0T74jfqyk4oPHuEo2nsgox2pUjI2FsoUMHmZwErYu3ivyvUx34Aa2j/G3d/9GEx2myGIFc/muERyKUJEUY5nA3OqWAFGa7+9lhVMyagXTtrDlpgXaGznUTW9HsJ23NDlIoRKqYzmYqHEsrxW3t9fmm4iAhC+42CyW8nn9/csjrTA+mLxDoUD23GAU31m9u/pvl515rNLs8rplnhbeHql82I07q8jCF9bwiZGJIhocPgUtUev7211wZ8HDeEodRWNnfaX/cB1jZm233olsWX2vivS4PsH4dOr2BqS9dWubjIU9IQEHu87m/yHCUMxWHnc0pmhVmW/K5Wde+AxWdlX23Jsnjqm8cm21JrN8kpiTBHAVNlMC4ocSgz3UO2PWQlSlC2HaMdTYjHztODWn98TTvsqhClBL9yc2GxJxs97OomyP3v7PPBzSF/pZZ5dB6RbxjRjMQdgG7exiXhrpKjys+PV/DSttlAkWIoopNs8JIL+zaVl/3NUkXywR2yLafJIsGchv1OR9H2dVcfvo8dObP5vzzYTKNA1O8smKHrtYTJKA0OX6naCv8UASvvyp+IIZT9Nplm0BB2K3WRTNIPGQZVXKiezHJtOfGSfP4fq5lqLVwY6u86q/O+mRcTdNLzHXbtu0YZrd9NcC2/QcZH5uO
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"getReceipts"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/receipts/{network}/{lockAddress}/all"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Get all receipts for a lock
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully retrieved receipts.","content":{"application/json":{"schema":{"type":"object","properties":{"items":{"type":"array","items":{"type":"object","properties":{"id":{"type":"string"},"receiptNumber":{"type":"string"},"timestamp":{"type":"string"},"sender":{"type":"string"},"payer":{"type":"string"},"recipient":{"type":"string"},"lockAddress":{"type":"string"},"tokenAddress":{"type":"string"},"gasTotal":{"type":"string"},"amountTransferred":{"type":"string"},"network":{"type":"number"},"supplierAddress":{"type":"string"}}}}}}}}},"401":{"description":"User is not authenticated.","content":{"application":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}},"404":{"description":"Impossible to retrieve receipt details."},"500":{"description":"Failed to retrieve receipt details.","content":{"application/json":{"schema":{"type":"object","required":["message"],"properties":{"message":{"type":"string"}}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

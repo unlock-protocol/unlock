@@ -84,6 +84,9 @@ contract MixinKeys is MixinErrors, MixinLockCore {
   // Mapping owner address to token count
   mapping(address => uint256) private _balances;
 
+  // keep track of how many keys have been burnt to prevent token id conflicts
+  uint internal _burntTokens;
+
   /**
    * Ensure that the caller is the keyManager of the key
    * or that the caller has been approved
@@ -91,14 +94,10 @@ contract MixinKeys is MixinErrors, MixinLockCore {
    * @dev This is a modifier
    */
   function _onlyKeyManagerOrApproved(uint _tokenId) internal view {
-    address realKeyManager = keyManagerOf[_tokenId] == address(0)
-      ? _ownerOf[_tokenId]
-      : keyManagerOf[_tokenId];
     if (
       !isLockManager(msg.sender) &&
       !_isKeyManager(_tokenId, msg.sender) &&
-      approved[_tokenId] != msg.sender &&
-      !isApprovedForAll(realKeyManager, msg.sender)
+      approved[_tokenId] != msg.sender
     ) {
       revert ONLY_KEY_MANAGER_OR_APPROVED();
     }
@@ -135,18 +134,6 @@ contract MixinKeys is MixinErrors, MixinLockCore {
       "SCHEMA_VERSION_NOT_CORRECT"
     );
 
-    // only for mainnet
-    if (block.chainid == 1) {
-      // Hardcoded address for the redeployed Unlock contract on mainnet
-      address newUnlockAddress = 0xe79B93f8E22676774F2A8dAd469175ebd00029FA;
-
-      // trigger migration from the new Unlock
-      IUnlock(newUnlockAddress).postLockUpgrade();
-
-      // update unlock ref in this lock
-      unlockProtocol = IUnlock(newUnlockAddress);
-    }
-
     // update data version
     schemaVersion = publicLockVersion();
   }
@@ -155,7 +142,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
    * Set the schema version to the latest
    * @notice only lock manager call call this
    */
-  function updateSchemaVersion() public {
+  function updateSchemaVersion() internal {
     _onlyLockManager();
     schemaVersion = publicLockVersion();
   }
@@ -198,13 +185,13 @@ contract MixinKeys is MixinErrors, MixinLockCore {
     unchecked {
       _totalSupply++;
     }
-    tokenId = _totalSupply;
+    tokenId = _totalSupply + _burntTokens;
 
     // create the key
     _keys[tokenId] = Key(tokenId, expirationTimestamp);
 
-    // increase total number of unique owners
-    if (totalKeys(_recipient) == 0) {
+    // increase total number of unique owners (except for zero address)
+    if (totalKeys(_recipient) == 0 && _recipient != address(0)) {
       unchecked {
         numberOfOwners++;
       }
@@ -273,7 +260,8 @@ contract MixinKeys is MixinErrors, MixinLockCore {
     uint length = totalKeys(_recipient);
 
     // make sure address does not have more keys than allowed
-    if (length >= _maxKeysPerAddress) {
+    // exception for zero address that can hold several keys
+    if (length >= _maxKeysPerAddress && _recipient != address(0)) {
       revert MAX_KEYS_REACHED();
     }
 
@@ -495,19 +483,6 @@ contract MixinKeys is MixinErrors, MixinLockCore {
   }
 
   /**
-   * @dev Tells whether an operator is approved by a given keyManager
-   * @param _owner owner address which you want to query the approval of
-   * @param _operator operator address which you want to query the approval of
-   * @return bool whether the given operator is approved by the given owner
-   */
-  function isApprovedForAll(
-    address _owner,
-    address _operator
-  ) public view returns (bool) {
-    return managerToOperatorApproved[_owner][_operator];
-  }
-
-  /**
    * Returns true if _keyManager is explicitly set as key manager, or if the
    * address is the owner but no km is set.
    * identified by _tokenId
@@ -644,6 +619,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
     return _maxKeysPerAddress;
   }
 
+  // decrease 996 to 995 when adding _burntTokens mappings in v15
   // decrease 1000 to 996 when adding new tokens/owners mappings in v10
-  uint256[996] private __safe_upgrade_gap;
+  uint256[995] private __safe_upgrade_gap;
 }

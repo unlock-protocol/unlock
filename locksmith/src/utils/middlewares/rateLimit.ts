@@ -12,7 +12,7 @@ export const createRateLimitMiddleware = ({
   prefix,
   duration,
   requests,
-}: Options) => {
+}: Options): RequestHandler => {
   /**
    * Rate limiter backed by postgres. This is fine for upto 1000 requests per second. Anything more than that, we should replace it with redis.
    */

@@ -1,0 +1,71 @@
+---
+id: save-lock-setting
+title: "saveLockSetting"
+description: "Save lock settings"
+sidebar_label: "saveLockSetting"
+hide_title: true
+hide_table_of_contents: true
+api: eJytVsGO2zYQ/RViTi2gXW+D9qJbaiRB2rRdxF70YPgwJsc2Y4pUSMobQ9C/F0PalrxWtpu0J1vkzHA4fPPetOBq8hi1s+8VlBBwTx+c3M0oRm03UEAg2XgdD1AuWngI5KFcLLtlAYqC9LpmVyhhhnsSxsmdCNk1QAE1eqwokg/JW7NhjXELBVisCEqwFB+d30EBnj432pOCMvqGnob/M9sJrW45J7mlCqFsIR5qDqNtpA156Lpi9BhO7LVSnkL416P4+gKz8ehhIXouTcdF4FAU4q9OHdhCOhvJRv6LdW20TJWdfAocub0O5VafSEbOszEGV4agXKMJVEDt+WGipsDmw/yvEynOZez3bFOtuCD8gFa9qVCbwe7KOUNo07ZpNqMxPdXmMHfXe8NsuYBdAdKT0nGKXt17Lek6jxEf4pxmZBVD6iVnbEnuXBOnzq71htH6Aqetc7t3jTbqhfaN5VK/JZpu0W9IzV2G/Fjl+ktPG+/JysPYEYrW2JgIJTRBZTcXQqVtnBpNNr4wsdq7yk2doiEA0Hs8QAE6UjUGDPbDEB6dV9/odmqRdzpKp+09hlA7H2fS+Ze8bldA1JE/YcAmAbouBw+1syFf5dXdHf88YZNGSgph3RhzEMxJ6kwrYu18Ihoovr/dLrvr2Q7pcs4/3/10nSZjQ+ggrIsCm7glGzkHSiQ1ntx/ooGKQsANPQ+z+ZY8iUcMAq0g750X2gou5VobbTcibkkceev2+szh270jS17LGfk9+Tcc6viCv4w92nu7R6PVKfb/9z5fvXZ3ep2K4taxftUuHZzYv4TJ/tWEoXJzAs+kPTJll9bDpB0wa5fUjq+a5arxBkrYxliHcpLtKx23t5kjbmrvopPO3EpXwVMRufdONZI/RK4esDJdRgwRN9pubr4t8ix7ncMue4mecT1zyZ6wFh95krKEbkKf+jb/eet8hYyd3/6eM0W9vsTriTZq/TsdelHFWt/s0kJS3M8N+UMiD37fj70wvvmCVW3oSscGbHeSr7sLucrqnAWqNz7rUr90JT93T+RlYHqlIv3ehVj0y1/ThJzemAokqh9l+j7qkNAXp+XlBWEPl58n5LuOH2GdxfrYvA8pbfHhhC4ogKGdUfTqCldnO1F7t9eKglih3JFVYt3YBGU0Oh4S/5LFVeYSLXfErVWIiiIqjChCdB43VAi0iqlRr49YElzgNFMZLcmGBIkjmP54P8965UKs0A52mP7TLUQ/lF6kPhi7xsfQI34jfYmT2qBO6p16sT0yxQL2XJELroACyn48TU3KS0MILxkzIbJ/264w0IM3XcfLuRnKxbKAPXqd+XXRgtKB/6szwX/1Jj98PL74j+Jy+B29zalFLbfjHk3DX1AA92c/ZTMHfVcGT2fi78hhWLduyaMZYerNRXu0mOaTb+Ycp49wpRx8i+zxWkqq47O2y4E43P81mzPnHYf1yin28fjIrIKPOVuXKpFINK21YNBumqQ/kGMyTlnuh+PCJaGmW43Wo22zxdztyHbduTyRv7kwXfcP96C9Gg==
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"saveLockSetting"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/lock-settings/{network}/locks/{lockAddress}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Save lock settings
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"lockAddress":{"type":"string"},"network":{"type":"number"},"sendEmail":{"type":"boolean"},"slug":{"type":"string"},"replyTo":{"type":"string","nullable":true},"creditCardPrice":{"type":"number","nullable":true},"emailSender":{"type":"string","nullable":true},"checkoutConfigId":{"type":"string","nullable":true},"hookGuildId":{"type":"string","nullable":true},"unlockFeeChargedToUser":{"type":"boolean"},"creditCardCurrency":{"type":"string","default":"usd"},"crossmintClientId":{"type":"string","nullable":true},"promoCodes":{"type":"array","items":{"type":"string"}},"passwords":{"type":"array","items":{"type":"string"}},"requiredGitcoinPassportScore":{"type":"number","nullable":true}},"title":"LockSettings"}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully saved settings for lock","content":{"application/json":{"schema":{"type":"object","properties":{"sendEmail":{"type":"boolean"}}}}}},"401":{"description":"User is not authenticated.","content":{"application":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}},"500":{"description":"Invalid request","content":{"application/json":{"schema":{"type":"object","properties":{"message":{"type":"string"}}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

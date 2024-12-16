@@ -1,7 +1,7 @@
 import { classed } from '@tw-classed/react'
 import { ReactNode, useEffect, useState, useCallback } from 'react'
 import { RadioGroup } from '@headlessui/react'
-import { Input, Placeholder, Select } from '@unlock-protocol/ui'
+import { Combobox, Input, Placeholder } from '@unlock-protocol/ui'
 import { useController, useFormContext } from 'react-hook-form'
 import { CheckoutConfig } from '@unlock-protocol/core'
 import { useCheckoutConfig } from '~/hooks/useCheckoutConfig'
@@ -241,13 +241,17 @@ export function ChooseConfiguration({
       key: 'existing',
       label: 'Edit existing',
       children: (
-        <Select
-          disabled={items?.length === 0}
-          options={configOptions}
-          onChange={handleSelectChange}
-          defaultValue={selectedConfig?.id || value?.id || ''}
-          customOption={true}
-        />
+        <div className="w-full">
+          <Combobox
+            disabled={items?.length === 0}
+            options={configOptions}
+            maxWidth="max-w-2xl"
+            onChange={handleSelectChange}
+            defaultValue={selectedConfig?.id || value?.id || ''}
+            customOption={true}
+            placeholder="Select or enter configuration ID"
+          />
+        </div>
       ),
     },
   ]

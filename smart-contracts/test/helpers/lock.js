@@ -29,7 +29,9 @@ const purchaseKey = async (
     recipient: keyOwnerAddress,
     keyManager: ADDRESS_ZERO,
     referrer: ADDRESS_ZERO,
+    protocolReferrer: ADDRESS_ZERO,
     data: '0x',
+    additionalPeriods: 0,
   }
 
   const tx = await lock.connect(keyOwner).purchase([purchaseArgs], {
@@ -69,7 +71,9 @@ const purchaseKeys = async (lock, nbOfKeys = 1n, isErc20 = false, signer) => {
     recipient: signer.getAddress(),
     keyManager: ADDRESS_ZERO,
     referrer: ADDRESS_ZERO,
+    protocolReferrer: ADDRESS_ZERO,
     data: '0x',
+    additionalPeriods: 0,
   }))
 
   const tx = await lock.purchase(purchaseArgs, {

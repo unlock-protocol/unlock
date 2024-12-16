@@ -21,19 +21,24 @@ const fetchRelayerFee = async ({ originDomain, destinationDomain }) => {
   return BigInt(hex)
 }
 
-const parseBridgeCall = async ({ srcChainId = 1, destChainId, moduleData }) => {
-  const { governanceBridge } = await getNetwork(destChainId)
+const parseBridgeCall = async ({
+  srcChainId = 8453,
+  destChainId,
+  moduleData,
+}) => {
+  const { dao } = await getNetwork(destChainId)
 
   // get bridge info on receiving chain
   const {
     domainId: destDomainId,
     modules: { connextMod: destAddress },
-  } = governanceBridge
+  } = dao.governanceBridge
 
   // get bridge address on mainnet
+  const network = await getNetwork(srcChainId)
   const {
     governanceBridge: { connext: bridgeAddress, domainId: srcDomainId },
-  } = await getNetwork(srcChainId)
+  } = network.dao
 
   if (!destDomainId || !destAddress) {
     throw Error('Missing bridge information')
@@ -68,8 +73,10 @@ async function simulateDelayCall({ rpcUrl, projectURL, network, moduleCall }) {
   const {
     name,
     id,
-    governanceBridge: {
-      modules: { delayMod },
+    dao: {
+      governanceBridge: {
+        modules: { delayMod },
+      },
     },
   } = network
 
@@ -160,9 +167,9 @@ async function simulateDestCalls(xCalls) {
   const abiCoder = ethers.AbiCoder.defaultAbiCoder()
   const destChainCalls = xCalls.map(
     ({ transferId, params: { callData, destinationDomain } }) => {
-      const network = Object.values(networks).find((network) =>
-        network.governanceBridge
-          ? network.governanceBridge.domainId.toString() ==
+      const network = Object.values(networks).find((n) =>
+        n.dao && n.dao.governanceBridge
+          ? n.dao.governanceBridge.domainId.toString() ==
             destinationDomain.toString()
           : false
       )

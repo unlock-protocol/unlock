@@ -6,21 +6,23 @@ export const popupCenter = (url: string, title: string) => {
   const width =
     window.innerWidth ?? document.documentElement.clientWidth ?? screen.width
 
-  const height =
-    window.innerHeight ?? document.documentElement.clientHeight ?? screen.height
-
   const systemZoom = width / window.screen.availWidth
 
-  const left = (width - 500) / 2 / systemZoom + dualScreenLeft
-  const top = (height - 550) / 2 / systemZoom + dualScreenTop
+  const popupWidth = 300
+  const popupHeight = 300
+
+  // Position popup at a fixed offset from top-left
+  const left = dualScreenLeft + 50
+  const top = dualScreenTop + 50
 
   const newWindow = window.open(
     url,
     title,
-    `width=${500 / systemZoom},height=${
-      550 / systemZoom
+    `width=${popupWidth / systemZoom},height=${
+      popupHeight / systemZoom
     },top=${top},left=${left}`
   )
 
   newWindow?.focus()
+  return newWindow
 }

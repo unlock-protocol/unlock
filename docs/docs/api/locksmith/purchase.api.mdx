@@ -1,0 +1,71 @@
+---
+id: purchase
+title: "purchase"
+description: "Create purchase intent for stripe."
+sidebar_label: "purchase"
+hide_title: true
+hide_table_of_contents: true
+api: eJylVsFy2zYQ/RXMntoZ2nI9PfHmuEnHbdp6Ynty0OgAASsJEQkgC1COhsN/7yxAibTMJkrqi0US2F289/B2W3AeSUbj7J2GEnxDaiMDQgEBVUMm7qGct/AUkKCcL7pFARqDIuN5D5RwSygjisNGYWxEG8XKkQiRjMdLKMBLkjVGpJCiGd7oZdxAAVbWCCVYjM+OtlAA4efGEGooIzV4mu7vvE4YzXGD2mAtoWwh7j2H4exrJOi6YjJN5dT2RmvCEL6Z6r1TWyHz4slkfD67ho5B4VAY4hun97ziNLJyCRb+JL2vjEqQzz4FztSOQg8b50CojDdoI9eawXx0W2SmCvBkFGdfFIdy3PITqpg+ManRYMgRj1GG0iWR3EMBJmIdJo5UQG3sXf74S3eafWr9oZ7hm23qJVPB4KiGaPJrAbapKrmsMEPVFaBllN9Raoq/QqKkrvO3pT/eG7yzIWN1fXXF/6YUroWX+5ql3StcVQyqCKgIYyGkUq6x/MNq4eIGSWiM0lRJO2fz/3Uuc86HlHKShczTTa5lckV0UVb3ZBTe2d9OVDEwNmLzJT/fUtsW9yn4WUw3lu/jA9LOKHyH521ShNrEW0n6npzCEM7T1ZHwX6c4vrM7WRktjPVNFIQKzQ71pXgjteiv9v+icShmJauAp6jVGIJc42vC2JNWsqkilPChV6pYOr0XOZcwQZhc++XrNF0BSORoKu4pPAVEE/kRfkeLZFQPCTva2xSkx6/GuHGpV7iQ+GeDLWG2u54dmsAsX5FZ27t6N2Oew6wd2W+XWgztDj2hoQpK2MToQznL62sTN5dZIxeeXHTKVZfK1XDq1PfkdKP4QTykkMD2/zJiiHJt7Pri+yI/5F3HsIuhLz4wAZm+3B2PGHPKQ7/g5yVKSpLMP945qiUT+sfHR75rN4OSxv7lzZ+4HzqX9OZim16ktva5Qdon82PxfRi6z9svsvYVnjr//MD84pWZD5o43vqrF559dfDkcZCR5w6vO65u5dIxejU9JZTF+wPsUABznuG9fgX4cZ3w5HZGYxBLqbZotVg1NnEsKxP3acBAK5cV0xON2mI0dl2IGqPkakWIjuQasyFbF82qB1lsnNsmV66MQhsSVj3Kf909JlBZ27W0oy+jyehFxe1gCufNQj2/Eb/Ema+ksayBpNW2v0tz2DEwo4w5EBRQDnNSEjK/Gs80iwI2fC3LObTtUgZ8oqrr+HUWTDlfFLCTZPLVn7egTeDf+uhM/3m6nz70s8nP4uUUNnmig4wtS3Ynq4afoOAGMRr3+J7+UAWnw9kP1DDGrWPpblDqNOa2/YrbnPnikeMMEV5ZP58i77hRCn386trFyELv/3l4ZF/op8baad5D8pmHU/mcq3UJiTzL8bsWKmnXTeoXkGOyZGXD2jn6x4nppFNN4tG2eUXyg647whP5mYHpun8B2G462A==
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"purchase"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/purchase/intent/{network}/locks/{lockAddress}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Create purchase intent for stripe.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"required":true,"content":{"application/json":{"schema":{"required":["recipients","stripeTokenId","pricing"],"type":"object","properties":{"recipients":{"type":"array","items":{"type":"string"},"minItems":1},"stripeTokenId":{"type":"string"},"pricing":{"type":"number"},"recurring":{"type":"number","nullable":true},"data":{"type":"array","items":{"type":"string"}},"referrers":{"type":"array","items":{"type":"string"}}}}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Created payment intent client secret, account, and other details.","content":{"application/json":{"schema":{"type":"object","properties":{"clientSecret":{"type":"string"},"stripeAccount":{"type":"string"},"totalPriceInDents":{"type":"number"},"pricing":{"nullable":true,"type":"object","properties":{"keyPrice":{"type":"number","nullable":true},"unlockServiceFee":{"type":"number","nullable":true},"creditCardProcessing":{"type":"number","nullable":true}}}}}}}},"400":{"description":"Invalid input received. Bad request.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"Response body schema is invalid.","nullable":false},"error":{"type":"string","nullable":true}},"title":"GenericInvalidBodyError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

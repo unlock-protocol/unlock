@@ -28,6 +28,7 @@ const attributes = {
   tokenAddress: (x) => x,
   publicLockVersion: parseInt,
   unlockProtocol: (x) => x,
+  onKeyPurchaseHook: (x) => x,
 }
 
 export default async function (address, provider, { fields = [] } = {}) {

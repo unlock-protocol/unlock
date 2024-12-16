@@ -40,6 +40,11 @@ export const avalanche: NetworkConfig = {
         id: HookType.PASSWORD_CAPPED,
         name: 'Passwords with caps. Multiple passwords can be used per contract',
       },
+      {
+        address: '0xF498a07cac92DA348E4E9F05865025aE51e9fcfa',
+        id: HookType.ALLOW_LIST,
+        name: 'Allow List',
+      },
     ],
     onTokenURIHook: [
       {

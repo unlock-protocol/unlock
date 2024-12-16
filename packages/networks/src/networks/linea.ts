@@ -5,6 +5,18 @@ export const linea: NetworkConfig = {
     url: (address: string) => `https://blockscan.com/address/${address}`,
   },
   chain: 'linea',
+  dao: {
+    chainId: 8453,
+    governanceBridge: {
+      connext: '0xa05eF29e9aC8C75c530c2795Fa6A800e188dE0a9',
+      domainId: 1818848877,
+      modules: {
+        connextMod: '0x1b6ED52be06Cef3b9eD234114843BE79971e51f3',
+        delayMod: '0x2D4123dB5A4d3bAA2DbeA4cB10333a9E3271292a',
+      },
+    },
+    governor: '0x65bA0624403Fc5Ca2b20479e9F626eD4D78E0aD9',
+  },
   description:
     'Linea a Layer 2 zk-Rollup EVM-compatible chain powered by ConsenSys.',
   explorer: {
@@ -19,14 +31,6 @@ export const linea: NetworkConfig = {
     },
   },
   featured: false,
-  governanceBridge: {
-    connext: '0xa05eF29e9aC8C75c530c2795Fa6A800e188dE0a9',
-    domainId: 1818848877,
-    modules: {
-      connextMod: '0x1b6ED52be06Cef3b9eD234114843BE79971e51f3',
-      delayMod: '0x2D4123dB5A4d3bAA2DbeA4cB10333a9E3271292a',
-    },
-  },
   hooks: {
     onKeyPurchaseHook: [
       {
@@ -58,6 +62,11 @@ export const linea: NetworkConfig = {
         address: '0xD925Ac2887Ba4372849F0fd64217A6749552bb21',
         id: HookType.PASSWORD_CAPPED,
         name: 'Passwords with caps. Multiple passwords can be used per contract',
+      },
+      {
+        address: '0x15922b77301Df5EA532074e9fb30d115FB6A03fE',
+        id: HookType.ALLOW_LIST,
+        name: 'Allow List',
       },
     ],
   },

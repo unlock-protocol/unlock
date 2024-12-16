@@ -67,11 +67,28 @@ interface IUnlock {
    * Create an upgradeable lock using a specific PublicLock version
    * @param data bytes containing the call to initialize the lock template
    * (refer to createUpgradeableLock for more details)
-   * @param _lockVersion the version of the lock to use
+   * @param lockVersion the version of the lock to use
    */
   function createUpgradeableLockAtVersion(
     bytes memory data,
-    uint16 _lockVersion
+    uint16 lockVersion
+  ) external returns (address);
+
+  /**
+   * Create an upgradeable lock using a specific PublicLock version, and execute
+   * transaction(s) on the created lock.
+   * @param data bytes containing the call to initialize the lock template
+   * (refer to createUpgradeableLock for more details).
+   * Importantly, the initial lock manager needs to be set to this contract.
+   * @param lockVersion the version of the lock to use
+   * @param transactions an array of transactions to be executed on the newly
+   * created lock. It is recommended to include a transaction to renounce the
+   * lock manager as the last transaction.
+   */
+  function createUpgradeableLockAtVersion(
+    bytes memory data,
+    uint16 lockVersion,
+    bytes[] calldata transactions
   ) external returns (address);
 
   /**
@@ -338,4 +355,23 @@ interface IUnlock {
    * The address of the UDT Swap and Burn contract
    */
   function swapBurnerAddress() external view returns (address);
+
+  /**
+   * Disable an existing lock
+   * @param lockAddress the addres of the lock
+   * @notice after this step, the lock will be unsable
+   */
+  function burnLock(address lockAddress) external;
+
+  /**
+   * The implementation used to disable an existing lock
+   */
+  function burnedLockImpl() external view returns (address);
+
+  /**
+   * Set the implementation that will be used when disabling a lock
+   * @dev `burnLock` will perform a proxy upgrade of the lock to this contract
+   * @param implAddress an empty implementation contract
+   */
+  function setBurnedLockImpl(address implAddress) external;
 }

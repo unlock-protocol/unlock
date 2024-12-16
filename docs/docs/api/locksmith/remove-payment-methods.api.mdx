@@ -1,0 +1,63 @@
+---
+id: remove-payment-methods
+title: "removePaymentMethods"
+description: "Remove all payment methods for a user"
+sidebar_label: "removePaymentMethods"
+hide_title: true
+hide_table_of_contents: true
+api: eJyVVMFu2zAM/RWBZyfpip18G7Bs6NYCxZJihyAHRmZiNbLkSnS2wPC/D5TcNkm3YfPFki0+PfI9sgffUkA23t1UUEKgxh/oHo8NOb4jrn0VoYBIuguGj1CueniIFKBcrYd1ARVFHUwr8VDCtxSt0FrVZgjVZAy19UGh6iS0gECx9S5ShLKH66sreZ0jLTqtKcZtZ+1RZVLV73ChAO0dk2PBwLa1RqdsZo9RgHqIuqYGZcXHlqAEv3kkzVBAGyR3NplGzDeeHNx4bwkdDOkp4P3Vu7dEpRjKROU8K+y4JsfCgKrpH6n9nZXrrMWNJSi3aCNd0mwoRtzRSWTkYNwORIstdpahhGVNgdQPjAqdohB8UMYpKebWWON2imtSgZ46ijx9e6cky4ZlD5/JUTB6QeFAYS5QMJYjKwAlVGSJSQqKXEMJs8P1rO2CrjHSbNRr0px4SaBislIXLJRQM7exnM2s1/vYGK6nnZP1pA2evfZ2qn0Dl2a7D77qtGxUZgdDcYkYGXfG7Sb/h7zIUS+w69cGWIhuWYncBi8yyJWSXTog7iEMyex58cmHBkWbL9+XMBTw4dwPIwi25isdRRFsxv1knz4YIfbUUTiCFN+4rU9xo0wPKS11+5wnFCBFzvlcv8nw5Zxqgz+YiqLaoN6Tq9S2c6moaA0fU9uSw012jdF7YuN2hbQfVsioIvuAOyoUukqawGzHrFTt/T6Ku6zR5GKy7JjW3c0yZdH6yA26kz+51dU4gNTrBDrj37921j/PnLHCTD951lo0TlRIbulH467gIJV6tm4y9Ll51wXUPrIc7fsNRnoIdhjkc1amXK0LOGAwuZlW66GAmrBK87IHUbKED1pTK51+QNtlkS+mlhjupbs+zm/nyzkUINPldDqd+ytd8OwidzyB7/t8Yun35IYBipEHyx6G9TAMvwBisRxy
+sidebar_class_name: "delete api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"removePaymentMethods"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/v2/purchase/payment-methods"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Remove all payment methods for a user
+
+<ParamsDetails
+  parameters={undefined}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully removed all payment methods","content":{"application/json":{"schema":{"type":"object","properties":{"success":{"type":"boolean"}}}}}},"401":{"description":"User is not authenticated.","content":{"application":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

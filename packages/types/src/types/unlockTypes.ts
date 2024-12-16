@@ -20,6 +20,12 @@ export enum TransactionStatus {
   NONE = '', // for testing purposes
 }
 
+// Event deployment status
+export enum EventStatus {
+  PENDING = 'pending',
+  DEPLOYED = 'deployed',
+}
+
 export interface NetworkDeploy {
   unlockAddress: string
   startBlock: number
@@ -48,6 +54,7 @@ export enum HookType {
   GUILD = 'GUILD',
   GITCOIN = 'GITCOIN',
   ADVANCED_TOKEN_URI = 'ADVANCED_TOKEN_URI',
+  ALLOW_LIST = 'ALLOW_LIST',
 }
 
 export const HooksName = [
@@ -88,6 +95,11 @@ export interface Faucet {
 export interface NetworkConfig {
   id: number
   featured: boolean
+  dao?: {
+    governor: string
+    chainId: number
+    governanceBridge: NetworkBridgeConfig
+  }
   name: string
   chain: string
   provider: string
@@ -144,7 +156,6 @@ export interface NetworkConfig {
   blockScan?: {
     url?: (address: string) => string
   }
-  governanceBridge?: NetworkBridgeConfig
   isTestNetwork?: boolean
   erc20?: {
     symbol: string

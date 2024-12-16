@@ -82,8 +82,10 @@ describe('Lock / purchase using Struct signature', () => {
                 value: keyPrice,
                 recipient: await recipient.getAddress(),
                 referrer: ADDRESS_ZERO,
+                protocolReferrer: ADDRESS_ZERO,
                 keyManager: ADDRESS_ZERO,
                 data: '0x',
+                additionalPeriods: 0,
               },
             ],
             {

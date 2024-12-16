@@ -113,7 +113,7 @@ contract MixinTransfer is
    * @param _recipient the address that will receive the token
    * @param _tokenId the id of the token
    * @dev Requirements: if the caller is not `from`, it must be approved to move this token by
-   * either `approve` or `setApprovalForAll`.
+   * `approve`
    * The key manager will be reset to address zero after the transfer
    */
   function transferFrom(
@@ -179,6 +179,9 @@ contract MixinTransfer is
 
     // decrease totalSupply
     _totalSupply--;
+
+    // increase burnt token counter
+    _burntTokens++;
   }
 
   /**
@@ -215,8 +218,8 @@ contract MixinTransfer is
     // update expiration
     key.expirationTimestamp = keyExpirationTimestampFor(_tokenId);
 
-    // increase total number of unique owners
-    if (totalKeys(_recipient) == 0) {
+    // increase total number of unique owners (zero address is ignored)
+    if (totalKeys(_recipient) == 0 && _recipient != address(0)) {
       numberOfOwners++;
     }
 
@@ -230,8 +233,7 @@ contract MixinTransfer is
     _clearApproval(_tokenId);
 
     // make future reccuring transactions impossible
-    _originalDurations[_tokenId] = 0;
-    _originalPrices[_tokenId] = 0;
+    _recordTokenTerms(_tokenId, 0, address(0));
 
     // trigger event
     emit Transfer(_from, _recipient, _tokenId);
@@ -259,22 +261,6 @@ contract MixinTransfer is
    */
   function safeTransferFrom(address _from, address _to, uint _tokenId) public {
     safeTransferFrom(_from, _to, _tokenId, "");
-  }
-
-  /**
-   * @dev Sets or unsets the approval of a given operator
-   * An operator is allowed to transfer all tokens of the sender on their behalf
-   * @param _to operator address to set the approval
-   * @param _approved representing the status of the approval to be set
-   * @notice disabled when transfers are disabled
-   */
-  function setApprovalForAll(address _to, bool _approved) public {
-    _transferNotDisabled();
-    if (_to == msg.sender) {
-      revert CANNOT_APPROVE_SELF();
-    }
-    managerToOperatorApproved[msg.sender][_to] = _approved;
-    emit ApprovalForAll(msg.sender, _to, _approved);
   }
 
   /**

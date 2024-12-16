@@ -76,6 +76,18 @@ export const zksync: NetworkConfig = {
       symbol: 'WBTC',
     },
   ],
+  uniswapV3: {
+    factoryAddress: '0x8FdA5a7a8dCA67BBcDd10F02Fa0649A937215422',
+    oracle: {
+      // TODO: deploy oracles
+      // 100: '0x92C9b3A4FFD7D2046132732FedC9f9f25E316F0B',
+      // 3000: '0x584c5af22DB79a13F4Fb45c66E0ff2311D58d9B2',
+      // 500: '0x2e5F6B31d100C527B782e26953D9509C591aC41d',
+    },
+    positionManager: '0x0616e5762c1E7Dc3723c50663dF10a162D690a86',
+    quoterAddress: '0x8Cb537fc92E26d8EBBb760E632c95484b6Ea3e28',
+    universalRouterAddress: '0x28731BCC616B5f51dD52CF2e4dF0E78dD1136C06',
+  },
   unlockAddress: '0x32CF553582159F12fBb1Ae1649b3670395610F24',
   url: 'https://zksync.io/',
 }

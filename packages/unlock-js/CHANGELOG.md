@@ -1,5 +1,22 @@
 # Changes
 
+# 0.50.1
+
+- added `creationTransactionHash` to `Lock`
+
+# 0.50.0
+
+- added support for `PublicLock` v15 and `Unlock` v14
+- added support for tx building in `web3Service` by using `web3Service.purchaseKey` and `web3Service.purchaseKeys` that will return a set of raw transactions without executing them
+
+# 0.49.2
+
+- adding `setMerkleRoot` to WalletService
+
+## 0.49.1
+
+- Returning onKeyPurchaseHook when using `getLock`.
+
 ## 0.49.0
 
 - Remove support for deprecated versions of `Unlock` (prior to v10)

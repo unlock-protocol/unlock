@@ -14,6 +14,7 @@ import "../interfaces/hooks/ILockKeyGrantHook.sol";
 import "../interfaces/hooks/ILockTokenURIHook.sol";
 import "../interfaces/hooks/ILockKeyTransferHook.sol";
 import "../interfaces/hooks/ILockKeyExtendHook.sol";
+import "../interfaces/hooks/ILockHasRoleHook.sol";
 
 /**
  * @title Mixin for core lock data and functions.
@@ -62,16 +63,8 @@ contract MixinLockCore is MixinRoles, MixinFunds, MixinDisable {
     address onTokenURIHook,
     address onKeyTransferHook,
     address onKeyExtendHook,
-    address onKeyGrantHook
-  );
-
-  /**
-   * @dev Emitted when `owner` enables or disables (`approved`) `operator` to manage all of its assets.
-   */
-  event ApprovalForAll(
-    address indexed owner,
-    address indexed operator,
-    bool approved
+    address onKeyGrantHook,
+    address onHasRoleHook
   );
 
   // Unlock Protocol address
@@ -103,7 +96,7 @@ contract MixinLockCore is MixinRoles, MixinFunds, MixinDisable {
   ILockTokenURIHook public onTokenURIHook;
 
   // use to check data version (added to v10)
-  uint public schemaVersion;
+  uint internal schemaVersion;
 
   // keep track of how many key a single address can use (added to v10)
   uint internal _maxKeysPerAddress;
@@ -196,6 +189,12 @@ contract MixinLockCore is MixinRoles, MixinFunds, MixinDisable {
     emit PricingChanged(oldKeyPrice, keyPrice, oldTokenAddress, tokenAddress);
   }
 
+  function _isValidHook(address hookAddress, uint8 index) private view {
+    if (hookAddress != address(0) && !hookAddress.isContract()) {
+      revert INVALID_HOOK(index);
+    }
+  }
+
   /**
    * @notice Allows a lock manager to add or remove an event hook
    */
@@ -206,31 +205,20 @@ contract MixinLockCore is MixinRoles, MixinFunds, MixinDisable {
     address _onTokenURIHook,
     address _onKeyTransferHook,
     address _onKeyExtendHook,
-    address _onKeyGrantHook
+    address _onKeyGrantHook,
+    address _onHasRoleHook
   ) external {
     _onlyLockManager();
 
-    if (_onKeyPurchaseHook != address(0) && !_onKeyPurchaseHook.isContract()) {
-      revert INVALID_HOOK(0);
-    }
-    if (_onKeyCancelHook != address(0) && !_onKeyCancelHook.isContract()) {
-      revert INVALID_HOOK(1);
-    }
-    if (_onValidKeyHook != address(0) && !_onValidKeyHook.isContract()) {
-      revert INVALID_HOOK(2);
-    }
-    if (_onTokenURIHook != address(0) && !_onTokenURIHook.isContract()) {
-      revert INVALID_HOOK(3);
-    }
-    if (_onKeyTransferHook != address(0) && !_onKeyTransferHook.isContract()) {
-      revert INVALID_HOOK(4);
-    }
-    if (_onKeyExtendHook != address(0) && !_onKeyExtendHook.isContract()) {
-      revert INVALID_HOOK(5);
-    }
-    if (_onKeyGrantHook != address(0) && !_onKeyGrantHook.isContract()) {
-      revert INVALID_HOOK(6);
-    }
+    // validate hooks
+    _isValidHook(_onKeyPurchaseHook, 0);
+    _isValidHook(_onKeyCancelHook, 1);
+    _isValidHook(_onValidKeyHook, 2);
+    _isValidHook(_onTokenURIHook, 3);
+    _isValidHook(_onKeyTransferHook, 4);
+    _isValidHook(_onKeyExtendHook, 5);
+    _isValidHook(_onKeyGrantHook, 6);
+    _isValidHook(_onHasRoleHook, 7);
 
     onKeyPurchaseHook = ILockKeyPurchaseHook(_onKeyPurchaseHook);
     onKeyCancelHook = ILockKeyCancelHook(_onKeyCancelHook);
@@ -239,6 +227,7 @@ contract MixinLockCore is MixinRoles, MixinFunds, MixinDisable {
     onKeyTransferHook = ILockKeyTransferHook(_onKeyTransferHook);
     onKeyExtendHook = ILockKeyExtendHook(_onKeyExtendHook);
     onKeyGrantHook = ILockKeyGrantHook(_onKeyGrantHook);
+    onHasRoleHook = ILockHasRoleHook(_onHasRoleHook);
 
     emit EventHooksUpdated(
       _onKeyPurchaseHook,
@@ -247,7 +236,8 @@ contract MixinLockCore is MixinRoles, MixinFunds, MixinDisable {
       _onTokenURIHook,
       _onKeyTransferHook,
       _onKeyExtendHook,
-      _onKeyGrantHook
+      _onKeyGrantHook,
+      _onHasRoleHook
     );
   }
 

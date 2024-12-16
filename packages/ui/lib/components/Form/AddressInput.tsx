@@ -37,6 +37,7 @@ export interface Props extends InputProps {
   withIcon?: boolean
   isTruncated?: boolean
   onResolveName: (address: string) => Promise<any>
+  ref?: ForwardedRef<HTMLInputElement>
 }
 
 const WalletIcon = (props: IconBaseProps) => (
@@ -58,6 +59,7 @@ export const WrappedAddressInput = ({
   onChange,
   onResolveName,
   error,
+  ref,
   ...inputProps
 }: Props) => {
   const [errorMessage, setErrorMessage] = useState<string>('')
@@ -146,6 +148,7 @@ export const WrappedAddressInput = ({
       description={description}
       iconClass={resolveNameMutation.isPending ? 'animate-spin' : ''}
       icon={resolveNameMutation.isPending ? LoadingIcon : WalletIcon}
+      ref={ref}
       onChange={(e) => {
         const value: string = e.target.value
         resolveNameMutation.reset() // Reset the mutation to handle new input values.
@@ -168,26 +171,11 @@ export const WrappedAddressInput = ({
  *
  */
 export const AddressInput = forwardRef(
-  (props: Props, ref: ForwardedRef<HTMLInputElement>) => {
-    const {
-      size = 'medium',
-      value,
-      defaultValue,
-      className,
-      description,
-      label,
-      withIcon = true,
-      isTruncated = false, // address not truncated by default
-      onChange,
-      onResolveName,
-      ...inputProps
-    } = props
-    return (
-      <QueryClientProvider client={queryClient}>
-        <WrappedAddressInput {...props} />
-      </QueryClientProvider>
-    )
-  }
+  (props: Props, ref: ForwardedRef<HTMLInputElement>) => (
+    <QueryClientProvider client={queryClient}>
+      <WrappedAddressInput {...props} ref={ref} />
+    </QueryClientProvider>
+  )
 )
 
 AddressInput.displayName = 'AddressInput'

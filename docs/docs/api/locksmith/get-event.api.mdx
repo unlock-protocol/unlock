@@ -1,0 +1,71 @@
+---
+id: get-event
+title: "getEvent"
+description: "Retrieves an event based on its slug"
+sidebar_label: "getEvent"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVk2P2zYQ/SvEnFpAaweL9qLbJtgG2w8giHfRg2EENDmWGEukQo6cCoL+ezGkbGttbZNFDj1ZJjnDN2/ezLAH16CXZJx90JBDgXR/QEuQQSO9rJHQB8jXPRgLOTSSSsjAyhohh1C1BWTg8UtrPGrIybeYgcagvGnYJ+SwSoeCKrGWkPdAXRONyRtbwDBsLi0+InmDBwxCWoGMRmxlQC2cFYaCOF0bGmcDBnZ6++YN/1xc3SqFIezaquqEP3mlEke3snK2EF8NldGxKlHtXUtCObszfIdylpiNvAfZNJVRkanl58D+++ug3PYzqkieZ17JJHRGT87Ytt6ihyEDLWnW+EzoOlGdHak2tSz47zTODCSRN9uWMMDm8uqUqivWR49zG+mOuZ1n7M7sT3Cct6X3smPohHX4VrTkpaFP8UQGB1m1eB3R5MwciGQ1o7NhGDIgQxWvJpEPGRxz/i6l/Bv4TsKItF5Be5bnM6QXc7DtZpfVi1ik1obpl9WHycWp7KY4K6f2M2JIy6/yG1lTHiWhvqNruBnsnK8lQc5yxhsyNXIMbaNfZzJJzrvnOXlZrGNSf5kr/gd7kJXRwtimJeFRoTmgXoi3UgumCgMtfqTCbVtVcst4d7IKeEl1jSHM1hGX0U62FcVOl1qY2DrdiXSXMEGYhH1xfc2QAXrv/Jzf89GUuDOh79GiN2qk5K3T3X10kuj7dY6+J8uuBDnB7XNnqiNpQrdx2VhCb2UlAvoDehFh/e+MPpboUXyVaXYwJGHsMQRji9j8J+m/pPeatFUM78zXkEGNVLpxWsZBSSXksDzcLuNYCcue9Tpw247GaYC2voIcSqIm5MtlLMXaULloLX/fNN6RU65aKFfD5Uj84J1uFf8RCQ8M2aXHQLIwtrh5nedVsjq53TBo1XpD3Yozlbh/CjiVHF95nOn8f4vSo4ds/PjtWN6///3I1Xt3lsF0MDTmD+zOrwnZmJt9XIhPjS8t+i62BWN3LtqNiXmKYYk/j3HyqEAfUjy3VxGezonGu4PRGMRWqj1aLXatVantGerEznmBLPuoE6P2SMYWmaiRJI9qEch5WWAmpNXCOjK7MSpROrcPrKfKKLQBz5MX/np4jFE0LlAt7WSnQBLHx9bFaD3V0Pc+hkZOCf+hZVNJY2MPZn30oz7XcGBukkIhgzxabjIoXSDe7nt2/OSrYeDlxH++3vBI9SYVyboHbQJ/61OVvgj9p4/jRPpZrP4D5VEOtjvN/BwgA9bC+MYcNkMGJUrNKlz349adUtjQxOiq3bCaT8X6/p4T8S8CcM6b
+sidebar_class_name: "get api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"getEvent"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/events/{slug}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Retrieves an event based on its slug
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"slug","required":true,"description":"Slug","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully retrieves the event along with its checkout config","content":{"application/json":{"schema":{"type":"object","properties":{"id":{"type":"number"},"data":{"type":"object","required":["name","slug","image","description","attributes"],"properties":{"name":{"type":"string"},"slug":{"type":"string"},"image":{"type":"string"},"description":{"type":"string"},"attributes":{"type":"array","items":{"type":"object","required":["trait_type","value"],"properties":{"trait_type":{"type":"string"},"value":{"type":"string"}}}}},"title":"Event"},"checkoutConfig":{"type":"object","required":["config","name"],"properties":{"id":{"type":"string"},"name":{"type":"string"},"by":{"type":"string"},"config":{"type":"object","additionalProperties":true,"required":["locks"],"properties":{"locks":{"type":"object","additionalProperties":true}}},"createdAt":{"type":"string","format":"date-time"},"updatedAt":{"type":"string","format":"date-time"}},"title":"CheckoutConfig"},"slug":{"type":"string"}}}}}},"400":{"description":"Invalid input received. Bad request.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"Response body schema is invalid.","nullable":false},"error":{"type":"string","nullable":true}},"title":"GenericInvalidBodyError"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

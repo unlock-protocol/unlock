@@ -69,7 +69,7 @@ export const MetadataInputs = ({
   const [hideRecipientAddress, setHideRecipientAddress] = useState<boolean>(
     hideFirstRecipient || false
   )
-  const { account } = useAuthenticate()
+  const { account, email } = useAuthenticate()
   const config = useConfig()
   const [useEmail, setUseEmail] = useState(false)
   const web3Service = useWeb3Service()
@@ -118,6 +118,26 @@ export const MetadataInputs = ({
 
   const recipient = recipientFromConfig(paywallConfig, lock) || account
   const hideRecipient = shouldSkip({ paywallConfig, lock }).skipRecipient
+
+  const [hideEmailInput, setHideEmailInput] = useState<boolean>(
+    !!email && id === 0
+  )
+
+  // register email value from user's account - to only apply to first recipient
+  useEffect(() => {
+    if (email && hideEmailInput && id === 0) {
+      metadataInputs?.forEach((input) => {
+        const isEmailInput = [
+          'email',
+          'email-address',
+          'emailaddress',
+        ].includes(input.name.toLowerCase())
+        if (isEmailInput) {
+          setValue(`metadata.${id}.${input.name}`, email)
+        }
+      })
+    }
+  }, [email, hideEmailInput, id, metadataInputs, setValue])
 
   return (
     <div className="grid gap-2">
@@ -225,18 +245,37 @@ export const MetadataInputs = ({
           const { name, label, placeholder, required, value } =
             metadataInputItem ?? {}
           const { defaultValue, type } = metadataInputItem ?? {}
-          // if (name === 'email') {
-          // We pre-fill it with the user's email!
-          // defaultValue = email
-          // type = 'hidden'
-          // }
           const inputLabel = label || name
+          const isEmailInput = [
+            'email',
+            'email-address',
+            'emailaddress',
+          ].includes(name.toLowerCase())
+
+          if (isEmailInput && hideEmailInput && email && id === 0) {
+            return (
+              <div key={name} className="space-y-1">
+                <div className="ml-1 text-sm">{inputLabel}</div>
+                <div className="flex items-center pl-4 pr-2 py-1.5 justify-between bg-gray-200 rounded-lg">
+                  <div className="w-32 text-sm truncate">{email}</div>
+                  <Button
+                    type="button"
+                    onClick={() => setHideEmailInput(false)}
+                    size="tiny"
+                  >
+                    Change
+                  </Button>
+                </div>
+              </div>
+            )
+          }
+
           return (
             <Input
               key={name}
               label={`${inputLabel}:`}
               autoComplete={inputLabel}
-              defaultValue={defaultValue}
+              defaultValue={isEmailInput && id === 0 ? email : defaultValue} // only prefill email for first recipient
               size="small"
               disabled={disabled}
               placeholder={placeholder}
@@ -244,7 +283,7 @@ export const MetadataInputs = ({
               error={errors?.metadata?.[id]?.[name]?.message}
               {...register(`metadata.${id}.${name}`, {
                 required: required && `${inputLabel} is required`,
-                value,
+                value: isEmailInput && id === 0 ? email : value, // only prefill email for first recipient
               })}
             />
           )

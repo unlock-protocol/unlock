@@ -1,4 +1,3 @@
-import html from 'html-template-tag'
 import { RequestHandler } from 'express'
 import { networks } from '@unlock-protocol/networks'
 
@@ -17,9 +16,7 @@ export const template = ({ links }: HubPublisherTemplateOptions) => {
         <html>
           <head>
             ${links
-              .map(
-                (item) => html`<link rel="${item.rel}" href="${item.href}" />`
-              )
+              .map((item) => `<link rel="${item.rel}" href="${item.href}" />`)
               .join('\n')}
           </head>
           <body>
@@ -36,7 +33,8 @@ export const handlePublisher: RequestHandler<{
 }> = (request, response) => {
   const network = networks[request.params.network]
   if (!network) {
-    return response.status(404).send('Unsupported network')
+    response.status(404).send('Unsupported network')
+    return
   }
 
   const url = new URL(
@@ -60,5 +58,6 @@ export const handlePublisher: RequestHandler<{
     links.map((item) => `<${item.href}>; rel="${item.rel}"`)
   )
 
-  return response.send(template({ links }))
+  response.send(template({ links }))
+  return
 }

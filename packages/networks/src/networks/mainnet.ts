@@ -5,6 +5,18 @@ export const mainnet: NetworkConfig = {
     url: (address: string) => `https://blockscan.com/address/${address}`,
   },
   chain: 'ethereum',
+  dao: {
+    chainId: 8453,
+    governanceBridge: {
+      connext: '0x8898B472C54c31894e3B9bb83cEA802a5d0e63C6',
+      domainId: 6648936,
+      modules: {
+        connextMod: '0xAB6A5080e569A269D8cB54fdD00312A2c4c3a3aa',
+        delayMod: '0x8f05058d05C8167132f07aAA5130Ed3F0D78d5aE',
+      },
+    },
+    governor: '0x65bA0624403Fc5Ca2b20479e9F626eD4D78E0aD9',
+  },
   description: 'The original and most secure EVM network. ',
   explorer: {
     name: 'Etherscan',
@@ -12,19 +24,11 @@ export const mainnet: NetworkConfig = {
       address: (address) => `https://etherscan.io/address/${address}`,
       base: 'https://etherscan.io/',
       token: (address, holder) =>
-        `https://etherscan.com/token/${address}?a=${holder}`,
+        `https://etherscan.io/token/${address}?a=${holder}`,
       transaction: (hash) => `https://etherscan.io/tx/${hash}`,
     },
   },
   featured: true,
-  governanceBridge: {
-    connext: '0x8898B472C54c31894e3B9bb83cEA802a5d0e63C6',
-    domainId: 6648936,
-    modules: {
-      connextMod: '0xAB6A5080e569A269D8cB54fdD00312A2c4c3a3aa',
-      delayMod: '0x8f05058d05C8167132f07aAA5130Ed3F0D78d5aE',
-    },
-  },
   hooks: {
     onKeyPurchaseHook: [
       {
@@ -41,6 +45,11 @@ export const mainnet: NetworkConfig = {
         address: '0x1d8DD27432cC0aCB93B93c4486F46b67E2208359',
         id: HookType.GUILD,
         name: 'Guild',
+      },
+      {
+        address: '0xfF7aBFACC805AD158a8ea554d4c363FC2D9527d4',
+        id: HookType.ALLOW_LIST,
+        name: 'Allow List',
       },
     ],
   },

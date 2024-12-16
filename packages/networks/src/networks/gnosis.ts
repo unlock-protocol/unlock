@@ -5,6 +5,18 @@ export const gnosis: NetworkConfig = {
     url: (address: string) => `https://blockscan.com/address/${address}`,
   },
   chain: 'xdai',
+  dao: {
+    chainId: 8453,
+    governanceBridge: {
+      connext: '0x5bB83e95f63217CDa6aE3D181BA580Ef377D2109',
+      domainId: 6778479,
+      modules: {
+        connextMod: '0xdFB9328cF62e3525D355581dE88AeAa330879D12',
+        delayMod: '0x6E74DC46EbF2cDB75B72Ab1dCAe3C98c7E9d28a1',
+      },
+    },
+    governor: '0x65bA0624403Fc5Ca2b20479e9F626eD4D78E0aD9',
+  },
   description:
     'Gnosis Chain is one of the first Ethereum sidechains and has stayed true to its values.',
   explorer: {
@@ -19,14 +31,6 @@ export const gnosis: NetworkConfig = {
     },
   },
   featured: true,
-  governanceBridge: {
-    connext: '0x5bB83e95f63217CDa6aE3D181BA580Ef377D2109',
-    domainId: 6778479,
-    modules: {
-      connextMod: '0xdFB9328cF62e3525D355581dE88AeAa330879D12',
-      delayMod: '0x6E74DC46EbF2cDB75B72Ab1dCAe3C98c7E9d28a1',
-    },
-  },
   hooks: {
     onKeyPurchaseHook: [
       {
@@ -58,6 +62,11 @@ export const gnosis: NetworkConfig = {
         address: '0xd6129cAC45a16187F4D09Dd69C512F68F0f2B371',
         id: HookType.GITCOIN,
         name: 'Gitcoin',
+      },
+      {
+        address: '0xc19C366dE3439AD9312450c691f35539be7068BE',
+        id: HookType.ALLOW_LIST,
+        name: 'Allow List',
       },
     ],
     onTokenURIHook: [

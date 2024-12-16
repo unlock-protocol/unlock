@@ -1,0 +1,71 @@
+---
+id: disconnect-stripe
+title: "disconnectStripe"
+description: "Disconnect stripe account."
+sidebar_label: "disconnectStripe"
+hide_title: true
+hide_table_of_contents: true
+api: eJydVU2P2zYQ/SvEnBKAu94GPem2QLZF0m0R1F7kYPgwpsYWY4pUyNGmhsD/Xgyl9ec2ReKLRZEznPfmvdEAoaOIbIP/UEMFtU0meE+G5xxtR6Ahkemj5T1UywGeEkWolqu80lBTMtF2EgsVvD9EqlRCFRoTes+3oKHDiC0xxVSyWAnokBvQ4LElqMATfwtxBxoife1tpBoqjj1dXvPXeE7ZWvIm01CLUA3A+07SWM+0pQg561evccHs7us6Ukr/e9VjMDuF4+FXLxOcfgtZyIiUuuATJdl/d3cnf+fp5r0xlNKmd26vjjxTfcVX1vDr3S/XGYR8ZZPygRX23JBna5CpUGGCZ/IsUdh1TjZK1HBdd1h/IcNCSu8crh1BtUGXSEMXRQ5sRxgtpYRbukYsTG2wdwwVLBqKpL5hUugVxRiisl4Jyo111m8VN6SEaEpFChd35qyBLcsafidP0Zo5xWeKD5IKsvw0tMRNKPokR0xFUdxABbNhEk6eSWtnw0mD8ywdNSwpR/H10UEFDXOXqlmJSq3l5rb38nzTxcDBBHdrQguXkvgUQ90bWaixShCdnWdMjFvrtzc/lnk+Rh3Sro7Gm0v/xo6M9ju0Q658Eaas14SRIujp4bcQW5Qeffy8EFHdn+tiSoKd/YP2R4tgZ2925UXxz9ee4l78BNZvQomb2vVUYKnHF5ygQUge8by7Qng4p7oYnm1NSa3R7MjXatP7Qio6y3u1CVGRx/WoHmt2xNZvtWqJsUZGlThE3JJW6Gsxg91MqFQTwq541VlDPhXpTrD+/LAoKLqQuEV/snP0ojoMvbPSh6O5vj/mJkaZ/uFZ59B6Yb2oY5gEu4TqOOmEPtBQnQ+lSbQrDU1ILCHDsMZET9HlLK/HjlTLlYZnjHY003IQHPJcH9z8nyDe/D0NvrfqfJ6+CuBFJ1408YyulxVoEJEcB7cY4acquByzP1HDKYF5lTU0hHX5UA3TiXtjqOOT2NMZKWY7TJj3D48PiwfQIBP2xCYX3iq5X61qGMYTi7Ajn/OhSJa1lJfzv2QulzM=
+sidebar_class_name: "delete api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"disconnectStripe"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/{network}/lock/{lockAddress}/stripe"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Disconnect stripe account.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"network","required":true,"description":"Network id.","schema":{"type":"integer"}},{"in":"path","name":"lockAddress","required":true,"description":"Lock address.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully disconnected stripe account."},"401":{"description":"User is not authenticated.","content":{"application":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

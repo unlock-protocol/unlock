@@ -1,0 +1,71 @@
+---
+id: eject-user
+title: "ejectUser"
+description: "Ejects a user given their public key. In the case of failure, a rejected promise is returned to the caller."
+sidebar_label: "ejectUser"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVk2P4zYM/SsCTy3gSbaL9uLbbDEtpp+D+UBRBDkwNh1rI0teSspsavi/F5Q8STbJDlBs0d4smaIeHx9JDeB6Ygza2dsaSqD3VIUnTwwFeKoi67CDcjFA2isXy3FZQE2+Yt3LISjhRo54hSp6YrXWW7IqtKRZ9XFldKU2tJup27SpKvSkXKMa1CYyFQoVpzupVj27TntS2iumENlSrYKbjhlDPIMCemTsKBD7BMtiR1BCvuln2kEBWkD1GFoogOlD1Ew1lIEjFeCrljqEcoCw6+WgD6ztGkYJS4zJh3eu3onFp1E+BI5ViEy1qjGkYBO6NVnhjxJMr9cWxejC1ZWzgWwQz9j3RleJ9Pl7L+6Hc2RuJbRAAVjXWkzR3LEkK2jy2ek4jqNc5HtnvWwO8PbNmwvYY1WR9000ap9t+AJE/RGO4Yj7C7RmiN9eQvUOa3WfKZ/9e2iI2fE5kgLoI3a9oeniKdeqjiRZ1HaLRtdK2z6G2RHub85xSyWIRq0LCmNoHeu/shZ64sZxp0KrvcJK7L8oMhuNwZVgbtB4Og21I+9xTZeCranBaAKU8KeLCplO0TpOK7JB4LwK/wSF8BJ0SEz+5sL1sRfItH13Kd1PVpzIPU00ptHmPAeB2KJRnnhLrFIm/3f+HltiUs/oFdoMSWn7EoK261T3fJDxK2z9KK1CVw8pvJuk00lnHYXWSfvtnU+Slu5Vwlw6qp8P+wob5zSFljnKPTCygRLaEHpfzufGVRvf6dDOopXvq55dcJUzs8p1cNq879jVMaVaZVwwFqcefcC1tuurf+b5IZ/au10eBsqDZCznII+VfQLkSpjatKxXhJxmUf74wXGHkpWf/niEsYDrgxyOnGCv8ySYhgP2+mpzGA0fIvEOhHZR0P2h6d+8dIhhFNPGJZ9T8p5SyOqXFw6gAElAjvXtWfR7O5lqW12TVyusNmRr1URb5X6uw041jhVJaSQt6WpDQdt1oToKmAaND45xLZPS1lLFupkiVq1zGy+aM7oi65OQp5B/vX1MEYqeOrRHf5KA1DThP8E8HArtP57pU94CfQzz3qC2ktukwWEqhQWkUoACyuNRn6thWUArdVMuYBhW6OmJzTjKdk51uVgWsEXWuS4XA9Tay3e9bwyfJeKr+2mMf60+B/RFdVYQbdFEWUEBIrnjl8m4HAtoCev0kBqm/9/nq64excvh/Fmjk7LMJ66rivrwqu3yqKXc/f7wKAU0vWo6V8sZxmd5o+BzxupS6Kki094ABu06pu4I2afISUbGUaGdVGeK6iIbw5AtHt2G7DjuyQmyFmLG8W8korBv
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"ejectUser"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/users/{publicKey}/eject"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Ejects a user given their public key. In the case of failure, a rejected promise is returned to the caller.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"publicKey","in":"path","required":true,"schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"description":"Structured data used to generate the signature","required":true,"content":{"application/json":{"schema":{"type":"object","additionalProperties":true}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successful operation","content":{"application/json":{"schema":{"type":"object","properties":{"publicKey":{"type":"string"}}}}}},"400":{"description":"Bad Request.","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string","example":"Bad request due to invalid input."}}}}}},"401":{"description":"User is not authorized to perform this action.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"You are not authorized or authenticated to perform this action.","nullable":false}},"title":"NotAuthenticated"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

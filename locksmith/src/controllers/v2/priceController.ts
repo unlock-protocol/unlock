@@ -19,9 +19,10 @@ export const amount: RequestHandler = async (request, response) => {
     amount,
     erc20Address,
   })
-  return response.status(200).send({
+  response.status(200).send({
     result,
   })
+  return
 }
 
 export const isCardPaymentEnabledForLock: RequestHandler = async (
@@ -35,10 +36,12 @@ export const isCardPaymentEnabledForLock: RequestHandler = async (
       lockAddress: Normalizer.ethereumAddress(lockAddress),
       network,
     })
-    return response.status(200).send(creditCardEnabled)
+    response.status(200).send(creditCardEnabled)
+    return
   } catch (error) {
     logger.error(error)
-    return response.status(200).send({ creditCardEnabled: false })
+    response.status(200).send({ creditCardEnabled: false })
+    return
   }
 }
 
@@ -73,9 +76,8 @@ export const getTotalChargesForLock: RequestHandler = async (
   })
 
   if (!pricing) {
-    return response
-      .status(400)
-      .send({ error: 'Pricing could not be computed.' })
+    response.status(400).send({ error: 'Pricing could not be computed.' })
+    return
   }
 
   const {
@@ -86,7 +88,7 @@ export const getTotalChargesForLock: RequestHandler = async (
     currency,
   } = pricing
 
-  return response.status(200).send({
+  response.status(200).send({
     currency,
     symbol: pricingOperations.getCurrencySymbol(currency),
     creditCardProcessingFee,
@@ -103,4 +105,5 @@ export const getTotalChargesForLock: RequestHandler = async (
       }),
     ],
   })
+  return
 }

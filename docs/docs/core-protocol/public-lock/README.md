@@ -6,7 +6,7 @@ description: >-
 
 # Public Lock
 
-A "Lock" (`PublicLock.sol`) is a customized smart contract for minting (creating) ERC-721 NFT's. They are the Unlock Protocol version of a "minting contract". They are created with the [Unlock](../../core-protocol/unlock/) smart contract, which is a "factory" contract. That factory contract uses the [Public Lock](../../core-protocol/public-lock/) template contact along with
+A "Lock" (`PublicLock.sol`) is a customized smart contract for minting (creating) ERC-721 NFT's. They are the Unlock Protocol version of a "minting contract". They are created with the [Unlock](../../core-protocol/unlock/) smart contract, which is a "factory" contract. That factory contract uses the [Public Lock](../../core-protocol/public-lock/) template contract along with
 with the configuration options you choose to record a new customized
 smart contract to the blockchain [network](../../core-protocol/unlock/networks) of your choice.
 
@@ -17,7 +17,7 @@ Each lock is a standalone contract with its own deployment, address, and storage
 - A given user may own only 1 key (NFT) at a time as a default, but that can be changed using the `setMaxKeysPerAddress` function.
   Additionally, the Lock smart contract has multiple capabilities:
 
-- _Administrative_: these are the functions that change rights (see[ access control](./access-control/)) associated to the lock or individual parameters for the lock a such as its name or of course its price. Finally, there is a method to withdraw funds from the lock contract itself.
+- _Administrative_: these are the functions that change rights (see[ access control](./access-control/)) associated to the lock or individual parameters for the lock such as its name or of course its price. Finally, there is a method to withdraw funds from the lock contract itself.
 - _Transferring key ownership_: keys can be purchased from the lock smart contract itself or from another user who purchased one previously. Another element is that keys can be purchased on behalf of somebody else \(this is important because this lets somebody pay gas fees on behalf of somebody else\)
 - _Changing key attributes_: the keys have an expiration date which can be changed \(for an earlier date by the lock owner\) as well as data attributes which can be changed to something else.
 
@@ -41,7 +41,7 @@ You can call and inspect the Lock contracts directly using the block explorers a
 
 All locks deployed (version 10 and later) are upgradable by their lock manager, through the Unlock contract.
 
-Lock managers can also alter the behavior of their locks thru the use of [hooks](./hooks/).
+Lock managers can also alter the behavior of their locks through the use of [hooks](./hooks/).
 
 ## Changelog
 
@@ -60,10 +60,10 @@ The version 14 introduces several changes in user-facing features :
 
 For advanced users and developers, the lower level changes below are noteworthy:
 
-- Replace `UnlockUtils` dependencies by optimized Open Zeppelin implementation
+- Replace `UnlockUtils` dependencies by an optimized Open Zeppelin implementation
 - Remove dev reward/cut when purchasing a key
-- Add unchecked scopes on math operations (gas optimisation)
-- New Solidity version 0.8.21 (creating issues on some chains that wont support new `PUSH0` evm opcode)
+- Add unchecked scopes on math operations (gas optimization)
+- New Solidity version 0.8.21 (creating issues on some chains that won't support new `PUSH0` evm opcode)
 - Fix potential overflow when merging keys
 
 ### Version 13
@@ -84,7 +84,7 @@ Easily check if a key is ready for renewal
 
 **Released**: October 2022
 
-The following are the signifigant changes and a full list of commits including bug fixes can be found [here](https://github.com/unlock-protocol/unlock/issues?q=+label%3A%22publicLock+v12%22+).
+The following are the significant changes and a full list of commits including bug fixes can be found [here](https://github.com/unlock-protocol/unlock/issues?q=+label%3A%22publicLock+v12%22+).
 
 #### `onGrantKeyHook` and `onKeyExtendHook`
 
@@ -100,7 +100,7 @@ The configuration for a key’s default duration and available quantity (both pe
 
 #### `expirationTimestamp`
 
-This adds the expiration timestamp on ExpirationDuration event emitted by the time machine when time gets added or substracted to/from a key.
+This adds the expiration timestamp on ExpirationDuration event emitted by the time machine when time gets added or subtracted to/from a key.
 
 #### Events and schema changes
 
@@ -118,7 +118,7 @@ This new version brings a lot of gas savings as well as a few minor bug fixes. I
 
 This is the most important addition to the protocol in this version. `referrerFees` are ways for a lock manager to share their income with the `referrer` when a purchase is made (when calling `purchase`, `renewMembershipFor`, or `extend`). The fee is set as a percentage in basis points (`1000` is 10%).
 
-A lock manager can call `setReferrerFee` to set specific fees for different referers. It is possible to set a _default_ fee for _any_ referrer by passing the Zero address as the referrer when calling `setReferrerFee`.
+A lock manager can call `setReferrerFee` to set specific fees for different referrers. It is possible to set a _default_ fee for _any_ referrer by passing the Zero address as the referrer when calling `setReferrerFee`.
 
 The function `referrerFees(address)` can be used to retrieve the fees set for a specific address.
 

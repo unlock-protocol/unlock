@@ -41,14 +41,14 @@ await unlock.createUpgradeableLockAtVersion(calldata, version)
 
 This is the method the Unlock labs team uses in the Unlock [Dashboard](../../tools/dashboard/) so that we have time after a new version is released to update the UI to support it. Locks deployed using this method can later be upgraded to newer versions. Your application should verify the version of a lock to avoid unexpected behaviors.
 
-You can also create Locks from another contract that would call the Unlock factory contract. This can be useful if your applicatiion requires a specific lock setup (special referrer fees, metadata... etc), but also if you want to deploy locks on behalf of users and provide a gasless experience for lock managers.
+You can also create Locks from another contract that would be called the Unlock factory contract. This can be useful if your application requires a specific lock setup (special referrer fees, metadata... etc), but also if you want to deploy locks on behalf of users and provide a gasless experience for lock managers.
 
 ### `createLock`
 
 This method provides the simplest interface as it takes arguments for the duration of each NFT membership (key), the currency contract address, the price, the maximum number of keys, the name... etc. It creates locks that are using the current version of the protocol.
 
 :::note
-If a new version of the protocol is released using "createLock" might break your implementation of a deployment script as the signature for that function migth change, and the locks deployed after the upgrade might be of a newer version.
+If a new version of the protocol is released using "createLock" might break your implementation of a deployment script as the signature for that function might change, and the locks deployed after the upgrade might be of a newer version.
 :::
 
 ## Upgrading Locks

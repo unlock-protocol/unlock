@@ -21,8 +21,10 @@ interface IPublicLock {
     uint value;
     address recipient;
     address referrer;
+    address protocolReferrer;
     address keyManager;
     bytes data;
+    uint additionalPeriods;
   }
 
   /// Functions
@@ -148,6 +150,7 @@ interface IPublicLock {
    * @param _onKeyTransferHook Hook called when a key is transfered
    * @param _onKeyExtendHook Hook called when a key is extended or renewed
    * @param _onKeyGrantHook Hook called when a key is granted
+   * @param _onHasRoleHook Hook called when checking if an address as a specific role
    */
   function setEventHooks(
     address _onKeyPurchaseHook,
@@ -156,7 +159,8 @@ interface IPublicLock {
     address _onTokenURIHook,
     address _onKeyTransferHook,
     address _onKeyExtendHook,
-    address _onKeyGrantHook
+    address _onKeyGrantHook,
+    address _onHasRoleHook
   ) external;
 
   /**
@@ -346,8 +350,6 @@ interface IPublicLock {
     uint _tokenId
   ) external view returns (uint refund);
 
-  function addLockManager(address account) external;
-
   function isLockManager(address account) external view returns (bool);
 
   /**
@@ -392,7 +394,11 @@ interface IPublicLock {
    */
   function onKeyGrantHook() external view returns (address hookAddress);
 
-  function renounceLockManager() external;
+  /**
+   * Returns the address of the `onHasRoleHook` hook.
+   * @return hookAddress the address ok the hook
+   */
+  function onHasRoleHook() external view returns (address hookAddress);
 
   /**
    * @return the maximum number of key allowed for a single address
@@ -487,7 +493,7 @@ interface IPublicLock {
    * - `from`, `to` cannot be zero.
    * - `tokenId` must be owned by `from`.
    * - If the caller is not `from`, it must be have been allowed to move this
-   * NFT by either `approve` or `setApprovalForAll`.
+   * `approve`
    */
   function safeTransferFrom(address from, address to, uint256 tokenId) external;
 
@@ -504,7 +510,7 @@ interface IPublicLock {
    * @param to the address that will receive the token
    * @param tokenId the id of the token
    * @dev Requirements: if the caller is not `from`, it must be approved to move this token by
-   * either `approve` or `setApprovalForAll`.
+   * `approve`
    * The key manager will be reset to address zero after the transfer
    */
   function transferFrom(address from, address to, uint256 tokenId) external;
@@ -542,26 +548,6 @@ interface IPublicLock {
   ) external view returns (address operator);
 
   /**
-   * @dev Sets or unsets the approval of a given operator
-   * An operator is allowed to transfer all tokens of the sender on their behalf
-   * @param _operator operator address to set the approval
-   * @param _approved representing the status of the approval to be set
-   * @notice disabled when transfers are disabled
-   */
-  function setApprovalForAll(address _operator, bool _approved) external;
-
-  /**
-   * @dev Tells whether an operator is approved by a given keyManager
-   * @param _owner owner address which you want to query the approval of
-   * @param _operator operator address which you want to query the approval of
-   * @return bool whether the given operator is approved by the given owner
-   */
-  function isApprovedForAll(
-    address _owner,
-    address _operator
-  ) external view returns (bool);
-
-  /**
    * Returns the total number of keys, including non-valid ones
    * @return _totalKeysCreated the total number of keys, valid or not
    */
@@ -587,6 +573,9 @@ interface IPublicLock {
 
   function hasRole(bytes32 role, address account) external view returns (bool);
 
+  // helper function
+  function renounceLockManager() external;
+
   /** `owner()` is provided as an helper to mimick the `Ownable` contract ABI.
    * The `Ownable` logic is used by many 3rd party services to determine
    * contract ownership - e.g. who is allowed to edit metadata on Opensea.
@@ -608,20 +597,6 @@ interface IPublicLock {
    * variable to the latest/current lock version
    */
   function migrate(bytes calldata _calldata) external;
-
-  /**
-   * Returns the version number of the data schema currently used by the lock
-   * @notice if this is different from `publicLockVersion`, then the ability to purchase, grant
-   * or extend keys is disabled.
-   * @dev will return 0 if no ;igration has ever been run
-   */
-  function schemaVersion() external view returns (uint);
-
-  /**
-   * Set the schema version to the latest
-   * @notice only lock manager call call this
-   */
-  function updateSchemaVersion() external;
 
   /**
    * Renew a given token

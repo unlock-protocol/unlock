@@ -1,6 +1,6 @@
 # Unlock Protocol Governance
 
-This folders contains all the tools to manage the Unlock Protocol (contracts, DAO, etc).
+This folder contains all the tools to manage the Unlock Protocol (contracts, DAO, etc).
 
 To get the list of all available tasks use `yarn hardhat --help`.
 
@@ -138,7 +138,7 @@ yarn hardhat deploy:template --network tenderly
 
 ### Make a DAO proposal
 
-1. First, create a file in the `proposals` folder that describe the proposal itself. The file should contain either a js async function or a literal object and should export as default an object containing: 1. the title of the proposal and 2. an array with the description of the calls to send - in following format:
+1. First, create a file in the `proposals` folder that describes the proposal itself. The file should contain either a js async function or a literal object and should export as default an object containing: 1. the title of the proposal and 2. an array with the description of the calls to send - in following format:
 
 #### Exports a literal object
 
@@ -165,8 +165,8 @@ When using an async function to parse a proposal, you can pass params to the fun
 **CLI call**
 
 ```sh
-RUN_FORK=1 yarn hardhat gov --gov-address 0x440d9D4E66d39bb28FB58729Cb4D3ead2A595591 \
-  --proposal proposals/my-proposal.js
+RUN_FORK=8453 yarn hardhat gov --gov-address 0x65bA0624403Fc5Ca2b20479e9F626eD4D78E0aD9 \
+  --proposal proposals/up/my-proposal.js
   0x000000 1000
 ```
 
@@ -200,19 +200,19 @@ module.exports = async function (params) {
 
 check [`./proposals/002-set-protocol-fee.js`](./proposals/002-set-protocol-fee.js) for an example.
 
-2. Test you proposal locally on a mainnet fork
+2. Test your proposal locally on a base fork
 
 ```shell
-RUN_FORK=1 yarn hardhat gov --gov-address 0x440d9D4E66d39bb28FB58729Cb4D3ead2A595591 \
-  --proposal proposals/<your-proposal>.js
+RUN_FORK=8453 yarn hardhat gov --gov-address 0x65bA0624403Fc5Ca2b20479e9F626eD4D78E0aD9 \
+  --proposal proposals/up/<your-proposal>.js
 ```
 
-Additionnaly, you can pass arguments to your proposal script via CLI positional args.
+Additionally, you can pass arguments to your proposal script via CLI positional args.
 
 3. When things are ready, post it to the DAO!
 
 ```
-yarn hardhat gov:submit --proposal proposals/<your-proposal>.js --network mainnet
+yarn hardhat gov:submit --proposal proposals/<your-proposal>.js --network base
 ```
 
 4. Head to [Tally](https://www.withtally.com/governance/unlock) to see your proposal. NB: this may take some time as it requires X block confirmations
@@ -237,7 +237,7 @@ yarn run scripts/uniswap/addLiquidity.js
 
 ## Cross-Chain DAO Proposals
 
-To maintain the integrity of the protocol accross various chains, we use a pattern of DAO proposals that allows execution on multiple chains. Messaging is sent accross the [Connext bridge](https://connext.network) to all supported chains.
+To maintain the integrity of the protocol across various chains, we use a pattern of DAO proposals that allows execution on multiple chains. Messaging is sent across the [Connext bridge](https://connext.network) to all supported chains.
 
 ### Prepare a cross-chain proposal
 
@@ -266,7 +266,7 @@ Once the proposal has been through the timelock embargo period and has been exec
 
 To execute these commands, you will need the hash from the transaction that executed the proposal on the DAO. The transaction contains the IDs of the bridge calls that will be used by the scripts to fetch information.
 
-NB: On [Tally.xyz](://www.tally.xyz/gov/unlock), a etherscan link containing the hash can be found on the upper left button next to _Proposal Executed_.
+NB: On [Tally.xyz](://www.tally.xyz/gov/unlock), an etherscan link containing the hash can be found on the upper left button next to _Proposal Executed_.
 
 ```
 export PROPOSAL_EXECUTION_TX=<0x....>
@@ -315,11 +315,11 @@ NB: The tmp file with all txs statuses is required, so you need to first run the
 
 ### Add a new network to the cross-chain governance
 
-As the Connext bridge supports more networks, they need to added to the cross chain gov process (see [supported networks](https://docs.connext.network/resources/deployments) on Connext docs).
+As the Connext bridge supports more networks, they need to be added to the cross chain gov process (see [supported networks](https://docs.connext.network/resources/deployments) on Connext docs).
 
 The process is as follow:
 
 - [ ] deploy the delayMod and connextMod for the Safe multisig by running `yarn hardhat run scripts/multisig/deployMods.js --network <network_name>`
-- [ ] add both modules addresses to the `governanceBridge` section in the networks package file (see an [example](https://github.com/unlock-protocol/unlock/blob/15c396ea583dc9fa2d6901d68c478a6a3f93b077/packages/networks/src/networks/optimism.ts#L22C2-L29C5))
+- [ ] add both modules addresses to the `dao.governanceBridge` section in the networks package file (see an [example](https://github.com/unlock-protocol/unlock/blob/15c396ea583dc9fa2d6901d68c478a6a3f93b077/packages/networks/src/networks/optimism.ts#L22C2-L29C5))
 - [ ] setup modules correctly in network SAFE by running the command
       `yarn hardhat safe:submit --proposal proposals/enableModule.js --network <xxx>`

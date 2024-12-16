@@ -1,4 +1,4 @@
-import { NetworkConfig } from '@unlock-protocol/types'
+import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const zkevm: NetworkConfig = {
   chain: 'zkevm',
@@ -16,7 +16,13 @@ export const zkevm: NetworkConfig = {
   },
   featured: false,
   hooks: {
-    onKeyPurchaseHook: [],
+    onKeyPurchaseHook: [
+      {
+        address: '0xe87eFc02F26EFE45171afDBEc85D743FDB2Eb1FB',
+        id: HookType.ALLOW_LIST,
+        name: 'Allow List',
+      },
+    ],
   },
   id: 1101,
   isTestNetwork: false,

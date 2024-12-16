@@ -1,6 +1,10 @@
 import request from 'supertest'
-import { vi, describe, expect } from 'vitest'
+import { vi, describe, expect, beforeAll, beforeEach } from 'vitest'
 import app from '../../app'
+import { Application } from '../../../src/models/application'
+import { EVENT_CASTER_ADDRESS } from '../../../src/utils/constants'
+import { ethers } from 'ethers'
+import { addJob } from '../../../src/worker/worker'
 
 const lockAddress = '0xce332211f030567bd301507443AD9240e0b13644'
 const tokenId = 1337
@@ -8,18 +12,62 @@ const owner = '0xCEEd9585854F12F81A0103861b83b995A64AD915'
 
 const mockWalletService = {
   connect: vi.fn(),
-  createLock: async () => {
-    return lockAddress
-  },
   grantKey: async () => {
     return { id: tokenId, owner }
   },
 }
 
+const mockWeb3Service = {
+  getKeyByLockForOwner: vi.fn((lockAddress, owner, network) => {
+    if (owner === '0xCEEd9585854F12F81A0103861b83b995A64AD915') {
+      return Promise.resolve({
+        tokenId: 1337,
+      })
+    }
+    return Promise.resolve({
+      tokenId: 0,
+    })
+  }),
+}
+
 vi.mock('@unlock-protocol/unlock-js', () => ({
-  // Web3Service: function Web3Service() {},
   WalletService: function WalletService() {
     return mockWalletService
+  },
+  Web3Service: function Web3Service() {
+    return mockWeb3Service
+  },
+}))
+
+vi.mock('../../../src/operations/eventCasterOperations', () => ({
+  deployLockForEventCaster: async () => {
+    return { address: lockAddress, network: 84532 }
+  },
+  getEventFormEventCaster: async () => {
+    return { contract: { network: 84532, address: lockAddress } }
+  },
+  mintNFTForRsvp: async () => {
+    return { id: tokenId, owner, network: 84532, address: lockAddress }
+  },
+}))
+
+vi.mock('../../../src/worker/worker', () => ({
+  addJob: vi.fn().mockResolvedValue(Promise.resolve(true)),
+}))
+
+// mock pdfmake
+vi.mock('pdfmake/build/pdfmake', () => ({
+  default: {
+    vfs: {},
+    createPdf: vi.fn(),
+  },
+}))
+
+vi.mock('pdfmake/build/vfs_fonts', () => ({
+  default: {
+    pdfMake: {
+      vfs: {},
+    },
   },
 }))
 
@@ -197,34 +245,124 @@ const eventCasterRsvp = {
   timestamp: 1729197029821,
 }
 
+const eventCasterApplication = new Application()
+eventCasterApplication.name = 'EventCaster'
+eventCasterApplication.walletAddress = EVENT_CASTER_ADDRESS
+eventCasterApplication.key = Buffer.from(crypto.randomUUID()).toString('base64')
+
 describe('eventcaster endpoints', () => {
+  beforeAll(async () => {
+    await eventCasterApplication.save()
+  })
+
+  beforeEach(() => {
+    fetchMock.resetMocks()
+  })
+
   describe('create-event endpoint', () => {
-    it('creates the contract and returns its address', async () => {
+    it('fails without authentication', async () => {
       const response = await request(app)
         .post(`/v2/eventcaster/create-event`)
         .set('Accept', 'json')
         .send(eventCasterEvent)
 
-      expect(response.status).toBe(201)
-      expect(response.body.address).toBe(lockAddress)
+      expect(response.status).toBe(401)
+    })
+
+    it('fails with the wrong authentication', async () => {
+      const badApplication = new Application()
+      badApplication.name = 'Fake EventCaster'
+      badApplication.walletAddress = ethers.Wallet.createRandom().address
+      badApplication.key = Buffer.from(crypto.randomUUID()).toString('base64')
+      await badApplication.save()
+
+      const response = await request(app)
+        .post(`/v2/eventcaster/create-event`)
+        .set('Accept', 'json')
+        .set('Authorization', `Api-key ${badApplication.key}`)
+        .send(eventCasterEvent)
+
+      expect(response.status).toBe(403)
+    })
+
+    it('creates a job to deploy the contract', async () => {
+      const response = await request(app)
+        .post(`/v2/eventcaster/create-event`)
+        .set('Accept', 'json')
+        .set('Authorization', `Api-key ${eventCasterApplication.key}`)
+        .send(eventCasterEvent)
+      expect(response.status).toBe(204)
+      expect(addJob).toHaveBeenCalledWith('createEventCasterEvent', {
+        description: eventCasterEvent.description,
+        eventId: eventCasterEvent.id,
+        imageUrl: eventCasterEvent.image_url,
+        title: eventCasterEvent.title,
+        hosts: [
+          {
+            verified_addresses: {
+              eth_addresses: [
+                '0xdcf37d8Aa17142f053AAA7dc56025aB00D897a19',
+                '0x05e189E1BbaF77f1654F0983872fd938AE592eDD',
+                '0x70abdCd7A5A8Ff9cDef1ccA9eA15a5d315780986',
+              ],
+            },
+          },
+          {
+            verified_addresses: {
+              eth_addresses: ['0xCEEd9585854F12F81A0103861b83b995A64AD915'],
+            },
+          },
+        ],
+      })
     })
   })
   describe('rsvp-for-event endpoint', () => {
-    it('mints the token and returns its id', async () => {
+    it('triggers the job to mint the NFT', async () => {
+      fetchMock.mockResponseOnce(
+        JSON.stringify({ success: true, event: eventCasterEvent })
+      )
+      const response = await request(app)
+        .post(`/v2/eventcaster/${eventCasterEvent.id}/rsvp`)
+        .set('Accept', 'json')
+        .set('Authorization', `Api-key ${eventCasterApplication.key}`)
+        .send(eventCasterRsvp)
+
+      expect(response.status).toBe(204)
+      expect(addJob).toHaveBeenCalledWith('rsvpForEventCasterEvent', {
+        contract: {
+          address: lockAddress,
+          network: 84532,
+        },
+        eventId: eventCasterEvent.id,
+        farcasterId: eventCasterRsvp.user.fid,
+        ownerAddress: eventCasterRsvp.user.verified_addresses.eth_addresses[0],
+      })
+    })
+  })
+  describe('delete-event endpoint', () => {
+    it('should be able to delete an event', async () => {
+      const response = await request(app)
+        .post(`/v2/eventcaster/delete-event`)
+        .set('Accept', 'json')
+        .set('Authorization', `Api-key ${eventCasterApplication.key}`)
+        .send({ id: eventCasterEvent.id })
+
+      expect(response.status).toBe(200)
+    })
+  })
+  describe('unrsvp-for-event endpoint', () => {
+    it('burns the token', async () => {
       fetchMock.mockResponseOnce(
         JSON.stringify({ success: true, event: eventCasterEvent })
       )
 
       const response = await request(app)
-        .post(`/v2/eventcaster/${eventCasterEvent.id}/rsvp`)
+        .post(`/v2/eventcaster/${eventCasterEvent.id}/unrsvp`)
         .set('Accept', 'json')
+        .set('Authorization', `Api-key ${eventCasterApplication.key}`)
         .send(eventCasterRsvp)
 
-      expect(response.status).toBe(201)
-      expect(response.body.id).toBe(tokenId)
-      expect(response.body.owner).toBe(owner)
-      expect(response.body.network).toBe(eventCasterEvent.contract.network)
-      expect(response.body.address).toBe(eventCasterEvent.contract.address)
+      expect(response.status).toBe(200)
     })
   })
 })

@@ -19,7 +19,6 @@ import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useImageUpload } from '~/hooks/useImageUpload'
 import { NetworkWarning } from '~/components/interface/locks/Create/elements/NetworkWarning'
 import { getAccountTokenBalance } from '~/hooks/useAccount'
-import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { useAvailableNetworks } from '~/utils/networks'
@@ -27,6 +26,7 @@ import Link from 'next/link'
 import { BalanceWarning } from '~/components/interface/locks/Create/elements/BalanceWarning'
 import { ProtocolFee } from '~/components/interface/locks/Create/elements/ProtocolFee'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewCertificationForm {
@@ -56,6 +56,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
   const router = useRouter()
 
   const [selectedNetwork, setSelectedNetwork] = useState<number>()
+  const web3Service = useWeb3Service()
 
   const methods = useForm<NewCertificationForm>({
     mode: 'onChange',
@@ -112,8 +113,6 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
   const { data: balance, isPending: isLoadingBalance } = useQuery({
     queryKey: ['getBalance', account, network, selectedNetwork],
     queryFn: async () => {
-      const web3Service = new Web3Service(networks)
-
       return await getAccountTokenBalance(
         web3Service,
         account!,

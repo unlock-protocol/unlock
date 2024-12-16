@@ -3,6 +3,7 @@ import { ethers } from 'ethers'
 import axios from 'axios'
 import { networks } from '@unlock-protocol/networks'
 import { ADDRESS_ZERO } from '~/constants'
+import { CrossChainRoute } from '~/hooks/useCrossChainRoutes'
 
 export interface BoxActionRequest {
   sender: string
@@ -15,26 +16,16 @@ export interface BoxActionRequest {
   actionConfig: any
 }
 
-export interface CrossChainRoute {
-  network: number
-  tx: any
-  tokenPayment?: any
-  applicationFee?: any
-  bridgeFee?: any
-  bridgeId?: any
-  relayInfo?: any
-  // Remove me
-  symbol: string
-  networkName: string
-  currency: string
-}
+// TheBox returns BigInts as strings with a trailing 'n'
+const toBigInt = (str: string) =>
+  /[a-zA-Z]$/.test(str) ? str.slice(0, -1) : str
 
-// const bigintSerializer = (_key: string, value: unknown): unknown => {
-//   if (typeof value === 'bigint') {
-//     return value.toString() + 'n'
-//   }
-//   return value
-// }
+const bigintSerializer = (_key: string, value: unknown): unknown => {
+  if (typeof value === 'bigint') {
+    return value.toString() + 'n'
+  }
+  return value
+}
 
 interface getCrossChainRouteParams {
   sender: string
@@ -46,6 +37,13 @@ interface getCrossChainRouteParams {
   purchaseData: string[]
   srcToken: string
   srcChainId: number
+  sharedParams: any
+}
+
+export const prepareSharedParams = async (
+  _params: Partial<getCrossChainRouteParams>
+) => {
+  return true
 }
 
 // Get a route for a given token and chain.
@@ -62,7 +60,7 @@ export const getCrossChainRoute = async ({
 }: getCrossChainRouteParams): Promise<CrossChainRoute | undefined> => {
   const network = networks[srcChainId]
 
-  const baseUrl = 'https://box-v2.api.decent.xyz/api/getBoxAction'
+  const baseUrl = 'https://box-v4.api.decent.xyz/api/getBoxAction'
   const apiKey = '6477b3b3671589d81df0cba67ba9f3e6'
   const actionRequest: BoxActionRequest = {
     sender,
@@ -79,7 +77,7 @@ export const getCrossChainRoute = async ({
       contractAddress: lock.address,
 
       cost: {
-        isNative: true,
+        isNative: lock.currencyContractAddress === ADDRESS_ZERO,
         amount:
           prices
             .reduce(
@@ -109,9 +107,12 @@ export const getCrossChainRoute = async ({
     },
   }
 
-  const query = JSON.stringify({
-    ...actionRequest,
-  })
+  const query = JSON.stringify(
+    {
+      ...actionRequest,
+    },
+    bigintSerializer
+  )
 
   const url = `${baseUrl}?arguments=${query}`
   const response = await axios
@@ -125,7 +126,7 @@ export const getCrossChainRoute = async ({
     })
   if (response?.status === 200) {
     const { data } = response
-    return {
+    const route = {
       ...data,
       tx: {
         ...data.tx,
@@ -135,6 +136,13 @@ export const getCrossChainRoute = async ({
       currency: network.nativeCurrency.name,
       symbol: network.nativeCurrency.symbol,
       networkName: network.name,
+      provider: {
+        name: 'Decent',
+        url: 'https://www.decent.xyz',
+      },
     } as CrossChainRoute
+    // reformat
+    route.tokenPayment.amount = toBigInt(route.tokenPayment.amount)
+    return route
   }
 }

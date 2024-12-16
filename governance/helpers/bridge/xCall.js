@@ -6,8 +6,8 @@ const IXCalled = require('./abis/IXCalled')
 const targetChains = Object.keys(networks)
   .map((id) => networks[id])
   .filter(
-    ({ governanceBridge, isTestNetwork, id }) =>
-      !isTestNetwork && !!governanceBridge && id != 1
+    ({ id, dao, isTestNetwork }) =>
+      !isTestNetwork && !!dao && id !== dao.chainId
   )
 
 /***
@@ -93,14 +93,11 @@ const fetchDestinationXCall = async ({ transferIds, chainId }) => {
 const getSupportedChainsByDomainId = async () => {
   return Object.keys(networks)
     .map((id) => networks[id])
-    .filter(
-      ({ governanceBridge, isTestNetwork, id }) =>
-        !isTestNetwork && !!governanceBridge && id != 1
-    )
+    .filter(({ dao, isTestNetwork }) => !isTestNetwork && !!dao)
     .reduce(
       (prev, curr) => ({
         ...prev,
-        [curr.governanceBridge.domainId]: curr,
+        [curr.dao.governanceBridge.domainId]: curr,
       }),
       {}
     )

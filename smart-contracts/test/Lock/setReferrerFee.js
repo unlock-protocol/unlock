@@ -44,8 +44,10 @@ describe('Lock / setReferrerFee', () => {
           value: isErc20 ? keyPrice : 0,
           recipient: await keyOwner.getAddress(),
           referrer: referrerAddress,
+          protocolReferrer: referrerAddress,
           keyManager: ADDRESS_ZERO,
           data: '0x',
+          additionalPeriods: 0,
         },
       ],
       {

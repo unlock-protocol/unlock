@@ -1,4 +1,4 @@
-import { useLogin, usePrivy, useWallets } from '@privy-io/react-auth'
+import { usePrivy, useWallets } from '@privy-io/react-auth'
 import { useAppStorage } from './useAppStorage'
 import { useContext, useEffect } from 'react'
 import {
@@ -10,10 +10,10 @@ import { locksmith } from '~/config/locksmith'
 import { useQueryClient } from '@tanstack/react-query'
 import { useSession } from './useSession'
 import { useSIWE } from './useSIWE'
-import { useCookies } from 'react-cookie'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useProvider } from './useProvider'
 import AuthenticationContext from '~/contexts/AuthenticationContext'
+import { onSignedInWithPrivy } from '~/config/PrivyProvider'
 
 // This hook includes *all* signIn and signOut methods
 // TODO: consider adding useSession() stuff here too?
@@ -23,49 +23,33 @@ export function useAuthenticate() {
     setAccount: (account: string | undefined) => void
   }>(AuthenticationContext)
   const { setProvider } = useProvider()
-  const [cookies] = useCookies()
   const { refetchSession } = useSession()
   const { setStorage } = useAppStorage()
   const {
     logout: privyLogout,
-    getAccessToken: privyGetAccessToken,
     ready: privyReady,
     authenticated: privyAuthenticated,
+    user,
+    login: privyLogin,
   } = usePrivy()
   const queryClient = useQueryClient()
   const { siweSign } = useSIWE()
   const { wallets } = useWallets()
 
-  // This method is meant to be called when the user is signed in with Privy,
-  // BUT NOT yet signed in with Locksmith and hence does not have an access token.
-  const onSignedInWithPrivy = async () => {
-    try {
-      const accessToken = await privyGetAccessToken()
-      const identityToken = cookies['privy-id-token']
-      const response = await locksmith.loginWithPrivy({
-        accessToken: accessToken!,
-        identityToken: identityToken!,
-      })
-      const { accessToken: locksmithAccessToken, walletAddress } = response.data
-      if (locksmithAccessToken && walletAddress) {
-        saveAccessToken({
-          accessToken: locksmithAccessToken,
-          walletAddress,
-        })
-        onSignedIn(walletAddress)
-      }
-    } catch (error) {
-      console.error(error)
-      return null
+  // When a user is logged in, this method is called to set the account and refetch the session
+  const onSignedIn = async (walletAddress: string) => {
+    const changed = setStorage('account', walletAddress)
+    if (changed) {
+      await Promise.all([queryClient.refetchQueries(), refetchSession()])
     }
   }
 
-  // When a user is logged in, this method is called to set the account and refetch the session
-  const onSignedIn = async (walletAddress: string) => {
-    setStorage('account', walletAddress)
-    setAccount(walletAddress)
-    await Promise.all([queryClient.refetchQueries(), refetchSession()])
-  }
+  // Detects when login was successful via an event
+  useEffect(() => {
+    if (account) {
+      onSignedIn(account)
+    }
+  }, [account])
 
   // Method that tries to sign in with an existing session
   const signInWithExistingSession = async () => {
@@ -77,6 +61,11 @@ export function useAuthenticate() {
         const { walletAddress } = response.data
         if (walletAddress) {
           await onSignedIn(walletAddress)
+          window.dispatchEvent(
+            new CustomEvent('locksmith.authenticated', {
+              detail: walletAddress,
+            })
+          )
           return true
         }
       } catch (error) {
@@ -85,18 +74,6 @@ export function useAuthenticate() {
     }
     return false
   }
-
-  const { login: privyLogin } = useLogin({
-    onComplete: onSignedInWithPrivy,
-    onError: (error) => {
-      if (error !== 'generic_connect_wallet_error') {
-        ToastHelper.error(`Error while logging in: ${error}`)
-      } else {
-        ToastHelper.error('Error while logging in. Please retry!')
-      }
-      console.error(error)
-    },
-  })
 
   // Signs the user out (removes the session)
   const signOut = async () => {
@@ -120,7 +97,6 @@ export function useAuthenticate() {
     try {
       const { data: nonce } = await locksmith.nonce()
       const siweResult = await siweSign(nonce, '')
-
       if (siweResult) {
         const { message, signature } = siweResult
         const response = await locksmith.login({
@@ -154,8 +130,12 @@ export function useAuthenticate() {
   const signInWithPrivy = async ({ onshowUI }: { onshowUI: () => void }) => {
     if (!(await signInWithExistingSession())) {
       setAccount(undefined)
-      if (privyAuthenticated) {
-        onSignedInWithPrivy()
+      if (privyAuthenticated && user) {
+        const signedIn = await onSignedInWithPrivy(user)
+        if (!signedIn) {
+          privyLogin()
+          onshowUI()
+        }
       } else {
         privyLogin()
         onshowUI()
@@ -178,6 +158,7 @@ export function useAuthenticate() {
 
   return {
     account,
+    email: user?.email?.address,
     signInWithSIWE,
     signInWithPrivy,
     signOut,
