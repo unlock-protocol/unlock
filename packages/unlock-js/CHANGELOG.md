@@ -1,5 +1,9 @@
 # Changes
 
+# 0.50.1
+
+- added `creationTransactionHash` to `Lock`
+
 # 0.50.0
 
 - added support for `PublicLock` v15 and `Unlock` v14
