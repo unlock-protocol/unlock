@@ -14,8 +14,20 @@ import { LockOrderBy } from '@unlock-protocol/unlock-js'
 import { EventStatus } from '@unlock-protocol/types'
 import { PaywallConfigType } from '@unlock-protocol/core'
 
+/**
+ * Number of locks to fetch in each batch
+ */
 const FETCH_LIMIT = 25
 
+/**
+ * Fetches all unprocessed locks for a given network
+ * Uses pagination to fetch locks in batches
+ * Filters out any locks that have already been processed
+ *
+ * @param network - Network ID to fetch locks from
+ * @param page - Page number for pagination
+ * @returns Array of unprocessed locks
+ */
 async function fetchUnprocessedLocks(network: number, page = 0) {
   const subgraph = new SubgraphService()
 
@@ -47,8 +59,15 @@ async function fetchUnprocessedLocks(network: number, page = 0) {
   return unprocessedLocks
 }
 
+/**
+ * Updates pending events with new lock information
+ * Creates checkout configs for matching events
+ * Updates event status to DEPLOYED when matches are found
+ *
+ * @param locks - Array of new locks to check against pending events
+ * @param network - Network ID where locks exist
+ */
 async function updatePendingEvents(locks: any[], network: number) {
-  // Get all pending events
   const pendingEvents = await EventData.findAll({
     where: {
       status: EventStatus.PENDING,
@@ -59,7 +78,6 @@ async function updatePendingEvents(locks: any[], network: number) {
   })
 
   for (const event of pendingEvents) {
-    // Find any lock that was created with this event's transaction hash
     const matchingLock = locks.find(
       (lock) =>
         lock.creationTransactionHash?.toLowerCase() ===
@@ -67,7 +85,6 @@ async function updatePendingEvents(locks: any[], network: number) {
     )
 
     if (matchingLock) {
-      // Create default checkout config for the event
       const config: PaywallConfigType = {
         title: 'Registration',
         locks: {
@@ -77,7 +94,7 @@ async function updatePendingEvents(locks: any[], network: number) {
         },
       }
 
-      // Create checkout config
+      // create checkout config for the event
       const checkoutConfig = await CheckoutConfig.create({
         id: `${event.slug}-${Date.now()}`,
         name: `Checkout config for ${event.name} (${event.slug})`,
@@ -85,7 +102,7 @@ async function updatePendingEvents(locks: any[], network: number) {
         createdBy: event.createdBy,
       })
 
-      // Update event with lock details and deployed status
+      // update event status to DEPLOYED
       await event.update({
         status: EventStatus.DEPLOYED,
         checkoutConfigId: checkoutConfig.id,
@@ -98,68 +115,134 @@ async function updatePendingEvents(locks: any[], network: number) {
   }
 }
 
-async function notifyHooksOfAllUnprocessedLocks(
+/**
+ * Notifies all relevant hooks about new locks
+ * Sends parallel notifications to each hook
+ *
+ * @param hooks - Array of hooks to notify
+ * @param locks - Array of new locks to notify about
+ * @param network - Network ID where locks exist
+ */
+async function notifyHooksOfNewLocks(
   hooks: Hook[],
+  locks: any[],
   network: number
 ) {
-  let page = 0
-  while (true) {
-    logger.info(`Running job on ${network}`)
-    const locks = await fetchUnprocessedLocks(network, page)
-
-    if (!locks.length) {
-      logger.info(`No new locks for, ${network}`)
-      break
-    }
-
-    logger.info('Found new locks', {
-      locks: locks.map((lock: any) => [network, lock.id]),
+  return Promise.all(
+    hooks.map(async (hook) => {
+      return notifyHook(hook, {
+        data: locks,
+        network,
+      })
     })
+  )
+}
 
-    // Run both operations in parallel
-    await Promise.all([
-      // Notify hooks
-      Promise.all(
-        hooks.map(async (hook) => {
-          const data = locks
-          const hookEvent = await notifyHook(hook, {
-            data,
-            network,
-          })
-          return hookEvent
-        })
-      ),
-      // Update any pending events
-      updatePendingEvents(locks, network),
-    ])
-
-    const processedHookItems = locks.map((lock: any) => ({
+/**
+ * Marks locks as processed
+ * Creates bulk records to track processed locks
+ *
+ * @param locks - Array of locks to mark as processed
+ * @param network - Network ID where locks exist
+ */
+async function markLocksAsProcessed(locks: any[], network: number) {
+  await ProcessedHookItem.bulkCreate(
+    locks.map((lock: any) => ({
       network,
       type: 'lock',
       objectId: lock.id,
     }))
+  )
+}
 
-    await ProcessedHookItem.bulkCreate(processedHookItems)
+/**
+ * Finalizes the processing of new locks
+ * Handles both event updates and marking locks as processed
+ * Both tasks run in parallel for efficiency
+ *
+ * @param locks - Array of locks to finalize
+ * @param network - Network ID where locks exist
+ */
+async function finalizeLockProcessing(locks: any[], network: number) {
+  await Promise.all([
+    updatePendingEvents(locks, network),
+    markLocksAsProcessed(locks, network),
+  ])
+}
 
+/**
+ * Processes a single batch of newly discovered locks
+ * Runs webhook notifications and lock finalization in parallel
+ *
+ * @param hooks - Relevant webhooks to notify
+ * @param locks - Array of new locks to process
+ * @param network - Network ID where locks were found
+ */
+async function processLockBatch(hooks: Hook[], locks: any[], network: number) {
+  await Promise.all([
+    notifyHooksOfNewLocks(hooks, locks, network),
+    finalizeLockProcessing(locks, network),
+  ])
+}
+
+/**
+ * Handles lock processing for a specific network
+ * Implements pagination to process all unprocessed locks in batches
+ *
+ * Process:
+ * 1. Fetches unprocessed locks in batches of FETCH_LIMIT
+ * 2. For each batch:
+ *    - Notifies relevant webhooks
+ *    - Updates associated events
+ *    - Marks locks as processed
+ * 3. Continues until no new locks are found
+ *
+ * @param hooks - Array of webhooks for this specific network
+ * @param network - Network ID being processed
+ */
+async function handleNetworkLocks(hooks: Hook[], network: number) {
+  let page = 0
+  while (true) {
+    logger.info(`Processing locks for network ${network}`)
+    const newLocks = await fetchUnprocessedLocks(network, page)
+
+    if (!newLocks.length) {
+      logger.info(`No new locks found for network ${network}`)
+      break
+    }
+
+    logger.info('Found new locks', {
+      locks: newLocks.map((lock: any) => [network, lock.id]),
+    })
+
+    await processLockBatch(hooks, newLocks, network)
     page += 1
   }
 }
 
+/**
+ * Main entry point for lock notifications system
+ * Orchestrates the processing of new locks across all supported networks
+ *
+ * Process:
+ * 1. Filters hooks by relevant topic and network
+ * 2. For each network, initiates parallel processing
+ * 3. Skips local development network (31337)
+ *
+ * @param hooks - Array of webhook configurations to be notified
+ */
 export async function notifyOfLocks(hooks: Hook[]) {
   const subscribedHooks = filterHooksByTopic(hooks, TOPIC_LOCKS)
-  const tasks: Promise<void>[] = []
+  const networkTasks: Promise<void>[] = []
 
   for (const network of Object.values(networks)) {
-    if (network.id !== 31337) {
-      const hooksFilteredByNetwork = subscribedHooks.filter(
-        (hook) => hook.network === network.id
-      )
-      const task = notifyHooksOfAllUnprocessedLocks(
-        hooksFilteredByNetwork,
-        network.id
-      )
-      tasks.push(task)
-    }
+    if (network.id === 31337) continue // Skip local network
+
+    const networkHooks = subscribedHooks.filter(
+      (hook) => hook.network === network.id
+    )
+    networkTasks.push(handleNetworkLocks(networkHooks, network.id))
   }
-  await Promise.allSettled(tasks)
+
+  await Promise.allSettled(networkTasks)
 }
