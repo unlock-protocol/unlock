@@ -30,7 +30,6 @@ import { downloadJsonFromS3 } from '../../utils/downloadJsonFromS3'
 import logger from '../../logger'
 import { getWeb3Service } from '../../initializers'
 import { EventStatus } from '@unlock-protocol/types'
-import { addJob } from '../../worker/worker'
 
 // DEPRECATED!
 export const getEventDetailsByLock: RequestHandler = async (
@@ -328,36 +327,6 @@ export const updateEventData: RequestHandler = async (request, response) => {
     response.status(500).json({
       error: 'Failed to update event',
       details: error.message,
-    })
-  }
-}
-
-export const queueEventDeployment: RequestHandler = async (
-  request,
-  response
-) => {
-  try {
-    const { slug, transactionHash, network } = request.body
-
-    await addJob(
-      'completeEventDeployment',
-      {
-        slug,
-        transactionHash,
-        network,
-        walletAddress: request.user!.walletAddress,
-      },
-      {
-        maxAttempts: 5,
-      }
-    )
-
-    response.sendStatus(204)
-    return
-  } catch (error) {
-    logger.error('Failed to queue event deployment', error)
-    response.status(500).json({
-      error: 'Failed to queue event deployment',
     })
   }
 }

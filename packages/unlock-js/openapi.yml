@@ -1520,47 +1520,6 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
-  /v2/events/queue-deployment/{slug}:
-    post:
-      operationId: queueEventDeployment
-      security:
-        - User: [] # Ensure authentication is required
-      description: Queue an event deployment completion task
-      parameters:
-        - $ref: '#/components/parameters/Slug'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - transactionHash
-                - network
-              properties:
-                transactionHash:
-                  type: string
-                  description: The transaction hash of the lock deployment
-                network:
-                  type: number
-                  description: The network ID where the lock was deployed
-      responses:
-        202:
-          description: Event deployment queued successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  message:
-                    type: string
-        401:
-          $ref: '#/components/responses/401.NotAuthenticated'
-        500:
-          $ref: '#/components/responses/500.InternalError'
-
   /v2/api/ticket/{network}/{lockAddress}/{keyId}/sign:
     get:
       operationId: signTicket
