@@ -4637,7 +4637,7 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
-  /v2/events/update/{slug}: # Changed from /v2/events/{slug}/update
+  /v2/events/update/{slug}:
     post:
       operationId: updateEventData
       security:
