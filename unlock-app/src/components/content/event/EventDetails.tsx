@@ -1,7 +1,7 @@
 'use client'
 
 import { BiQrScan as ScanIcon } from 'react-icons/bi'
-import { useRouter, usePathname } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import {
   Button,
   Card,
@@ -43,7 +43,6 @@ export const EventDetails = ({
   checkoutConfig,
 }: EventDetailsProps) => {
   const router = useRouter()
-  const pathname = usePathname()
 
   // Check if the user is one of the lock manager
   const { data: isOrganizer } = useEventOrganizer({
