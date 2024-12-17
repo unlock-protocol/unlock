@@ -23,11 +23,9 @@ export const LockDeploying = ({
   const config = useConfig()
   const router = useRouter()
   const [loadingEventPage, setLoadingEventPage] = useState(false)
-  const [eventData, setEventData] = useState<{
-    status: EventStatus
-  }>({
-    status: EventStatus.PENDING,
-  })
+  const [eventStatus, setEventStatus] = useState<EventStatus>(
+    EventStatus.PENDING
+  )
   const { hash: transactionHash, network, slug } = transactionDetails
 
   const [title, setTitle] = useState('Waiting for your transaction to be mined')
@@ -39,13 +37,13 @@ export const LockDeploying = ({
 
   // Update title and message when event is deployed
   useEffect(() => {
-    if (eventData.status === EventStatus.DEPLOYED) {
+    if (eventStatus === EventStatus.DEPLOYED) {
       setTitle('🚀​ Your contract was successfully deployed')
       setMessage(
         'Did you know that you can airdrop tickets to your fren by sending them email?'
       )
     }
-  }, [eventData.status])
+  }, [eventStatus])
 
   // Poll for event status every 5 seconds
   useInterval(
@@ -53,14 +51,13 @@ export const LockDeploying = ({
       if (!slug) return
       try {
         const { data: event } = await locksmith.getEvent(slug)
-        setEventData({
-          status: event.data?.status as EventStatus,
-        })
+        // @ts-ignore
+        setEventStatus(event.status as EventStatus)
       } catch (error) {
         console.error('Failed to fetch event status:', error)
       }
     },
-    eventData.status === EventStatus.DEPLOYED ? null : 5000
+    eventStatus === EventStatus.DEPLOYED ? null : 5000
   )
 
   // Scroll to top on mount
@@ -102,7 +99,7 @@ export const LockDeploying = ({
       <div className="flex flex-col items-stretch p-4 border border-gray-400 rounded-xl">
         <AnimationContent
           status={
-            eventData.status === EventStatus.DEPLOYED ? 'deployed' : 'progress'
+            eventStatus === EventStatus.DEPLOYED ? 'deployed' : 'progress'
           }
         />
         <div className="grid grid-cols-1 lg:grid-cols-2">
@@ -111,7 +108,7 @@ export const LockDeploying = ({
               Status
             </span>
             <span className={`font-bold ${compact ? 'text-base' : 'text-lg'}`}>
-              {eventData.status === EventStatus.DEPLOYED
+              {eventStatus === EventStatus.DEPLOYED
                 ? 'Deployed'
                 : 'In progress...'}
             </span>
@@ -131,7 +128,7 @@ export const LockDeploying = ({
         <span className={`mb-4 font-base ${compact ? 'text-sm' : ''}`}>
           {message}
         </span>
-        {eventData.status === EventStatus.DEPLOYED && !compact && (
+        {eventStatus === EventStatus.DEPLOYED && !compact && (
           <div className="flex flex-col items-center content-center text-center">
             <p>We made a page for your event! Go check it out!</p>
             <Button
