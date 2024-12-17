@@ -31,34 +31,39 @@ const FETCH_LIMIT = 25
  * @returns Array of unprocessed locks
  */
 async function fetchUnprocessedLocks(network: number, page = 0) {
-  const subgraph = new SubgraphService()
+  try {
+    const subgraph = new SubgraphService()
 
-  const locks = await subgraph.locks(
-    {
-      first: FETCH_LIMIT,
-      skip: page ? page * FETCH_LIMIT : 0,
-      orderBy: LockOrderBy.CreatedAtBlock,
-      orderDirection: OrderDirection.Desc,
-    },
-    {
-      networks: [network],
-    }
-  )
-
-  const lockIds = locks.map((lock: any) => lock.id)
-  const processedLocks = await ProcessedHookItem.findAll({
-    where: {
-      type: 'lock',
-      objectId: {
-        [Op.in]: lockIds,
+    const locks = await subgraph.locks(
+      {
+        first: FETCH_LIMIT,
+        skip: page ? page * FETCH_LIMIT : 0,
+        orderBy: LockOrderBy.CreatedAtBlock,
+        orderDirection: OrderDirection.Desc,
       },
-    },
-  })
+      {
+        networks: [network],
+      }
+    )
 
-  const unprocessedLocks = locks.filter(
-    (lock: any) => !processedLocks.find((item) => item.objectId === lock.id)
-  )
-  return unprocessedLocks
+    const lockIds = locks.map((lock: any) => lock.id)
+    const processedLocks = await ProcessedHookItem.findAll({
+      where: {
+        type: 'lock',
+        objectId: {
+          [Op.in]: lockIds,
+        },
+      },
+    })
+
+    const unprocessedLocks = locks.filter(
+      (lock: any) => !processedLocks.find((item) => item.objectId === lock.id)
+    )
+    return unprocessedLocks
+  } catch (error) {
+    logger.error('Error fetching unprocessed locks', { network, error })
+    return []
+  }
 }
 
 /**
