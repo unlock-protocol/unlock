@@ -54,7 +54,7 @@ export const LockDeploying = ({
       try {
         const { data: event } = await locksmith.getEvent(slug)
         setEventData({
-          status: event.status as EventStatus,
+          status: event.data?.status as EventStatus,
         })
       } catch (error) {
         console.error('Failed to fetch event status:', error)
