@@ -24,7 +24,7 @@ const InsufficientFundsWarning = ({
   const { recipients, paywallConfig, keyManagers, lock, renew, data } =
     useSelector(checkoutService, (state) => state.context)
 
-  const { fundingAmount } = useBaseRoute({
+  const { fundingAmount, isLoading: isBaseRouteLoading } = useBaseRoute({
     lock,
     recipients,
     keyManagers,
@@ -45,6 +45,7 @@ const InsufficientFundsWarning = ({
     enableCreditCard || // Credit card payment is available
     enableClaim || // Can claim for free
     isCrossChainRoutesLoading || // Still loading cross-chain routes
+    isBaseRouteLoading || // Still loading base route
     hasCrossChainRoutes || // Has available cross-chain routes
     !fundingAmount || // No funding amount available
     Number(fundingAmount) <= 0 // Invalid funding amount
