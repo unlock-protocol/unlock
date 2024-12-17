@@ -13,6 +13,8 @@ import { OrderDirection, SubgraphService } from '@unlock-protocol/unlock-js'
 import { LockOrderBy } from '@unlock-protocol/unlock-js'
 import { EventStatus } from '@unlock-protocol/types'
 import { PaywallConfigType } from '@unlock-protocol/core'
+import { getEventUrl } from '../../utils/eventHelpers'
+import { sendEmail } from '../../operations/wedlocksOperations'
 
 /**
  * Number of locks to fetch in each batch
@@ -106,6 +108,19 @@ async function updatePendingEvents(locks: any[], network: number) {
       await event.update({
         status: EventStatus.DEPLOYED,
         checkoutConfigId: checkoutConfig.id,
+      })
+
+      // send email notification to event creator
+      await sendEmail({
+        template: 'eventDeployed',
+        recipient: event.data.replyTo,
+        params: {
+          eventName: event!.name,
+          eventDate: event!.data.ticket.event_start_date,
+          eventTime: event!.data.ticket.event_start_time,
+          eventUrl: getEventUrl(event!),
+        },
+        attachments: [],
       })
 
       logger.info(
