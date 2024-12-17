@@ -22,6 +22,7 @@ export function useAuthenticate() {
     account: string | undefined
     setAccount: (account: string | undefined) => void
   }>(AuthenticationContext)
+
   const { setProvider } = useProvider()
   const { refetchSession } = useSession()
   const { setStorage } = useAppStorage()
@@ -157,7 +158,7 @@ export function useAuthenticate() {
   }, [wallet?.address, account])
 
   return {
-    account,
+    account: wallets[0]?.address && account,
     email: user?.email?.address,
     signInWithSIWE,
     signInWithPrivy,
