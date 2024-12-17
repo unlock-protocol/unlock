@@ -1,5 +1,13 @@
 import { createContext } from 'react'
 
-export const AuthenticationContext = createContext({} as any)
+interface AuthenticationContextType {
+  account: string | undefined
+  setAccount: (account: string | undefined) => void
+}
+
+export const AuthenticationContext = createContext<AuthenticationContextType>({
+  account: undefined,
+  setAccount: () => {},
+})
 
 export default AuthenticationContext
