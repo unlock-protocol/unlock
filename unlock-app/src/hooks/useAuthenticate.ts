@@ -18,10 +18,8 @@ import { onSignedInWithPrivy } from '~/config/PrivyProvider'
 // This hook includes *all* signIn and signOut methods
 // TODO: consider adding useSession() stuff here too?
 export function useAuthenticate() {
-  const { account, setAccount } = useContext<{
-    account: string | undefined
-    setAccount: (account: string | undefined) => void
-  }>(AuthenticationContext)
+  const { account, setAccount } = useContext(AuthenticationContext)
+
   const { setProvider } = useProvider()
   const { refetchSession } = useSession()
   const { setStorage } = useAppStorage()
@@ -157,7 +155,7 @@ export function useAuthenticate() {
   }, [wallet?.address, account])
 
   return {
-    account,
+    account: account ? wallets[0]?.address && account : undefined,
     email: user?.email?.address,
     signInWithSIWE,
     signInWithPrivy,
