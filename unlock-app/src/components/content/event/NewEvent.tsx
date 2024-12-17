@@ -14,7 +14,7 @@ import { PaywallConfigType } from '@unlock-protocol/core'
 export interface TransactionDetails {
   hash: string
   network: number
-  slug: string
+  slug?: string
 }
 
 export const defaultEventCheckoutConfigForLockOnNetwork = (
