@@ -6,6 +6,7 @@ import {
   getEventBySlug,
   getEventMetadataForLock,
   saveEvent,
+  updateEvent,
 } from '../../operations/eventOperations'
 import normalizer from '../../utils/normalizer'
 import { CheckoutConfig, EventData } from '../../models'
@@ -28,6 +29,7 @@ import config from '../../config/config'
 import { downloadJsonFromS3 } from '../../utils/downloadJsonFromS3'
 import logger from '../../logger'
 import { getWeb3Service } from '../../initializers'
+import { EventStatus } from '@unlock-protocol/types'
 
 // DEPRECATED!
 export const getEventDetailsByLock: RequestHandler = async (
@@ -44,10 +46,14 @@ export const getEventDetailsByLock: RequestHandler = async (
 export const EventBody = z.object({
   id: z.number().optional(),
   data: z.any(),
-  checkoutConfig: z.object({
-    config: PaywallConfig,
-    id: z.string().optional(),
-  }),
+  checkoutConfig: z
+    .object({
+      config: PaywallConfig,
+      id: z.string().optional(),
+    })
+    .optional(),
+  status: z.enum([EventStatus.PENDING, EventStatus.DEPLOYED]).optional(),
+  transactionHash: z.string().optional(),
 })
 export type EventBodyType = z.infer<typeof EventBody>
 
@@ -73,8 +79,8 @@ export const saveEventDetails: RequestHandler = async (request, response) => {
     request.user!.walletAddress
   )
 
-  // This was a creation!
-  if (created) {
+  // Only send email if event is deployed
+  if (created && event.status === EventStatus.DEPLOYED) {
     await sendEmail({
       template: 'eventDeployed',
       recipient: event.data.replyTo,
@@ -134,7 +140,7 @@ export const getEvent: RequestHandler = async (request, response) => {
 
     // Check if the caller is a verifier or manager and remove protected attributes if not
     let isManagerOrVerifier = false
-    if (request.user) {
+    if (request.user && eventResponse.checkoutConfig?.config) {
       const locks = Object.keys(eventResponse.checkoutConfig.config.locks)
       for (let i = 0; i < locks.length; i++) {
         if (!isManagerOrVerifier) {
@@ -285,4 +291,42 @@ export const approvedRefunds: RequestHandler = async (request, response) => {
 
   response.status(200).send(file)
   return
+}
+
+export const updateEventData: RequestHandler = async (request, response) => {
+  const { slug } = request.params
+  const { status, transactionHash, checkoutConfig } = request.body
+
+  try {
+    const updatedEvent = await updateEvent(
+      slug,
+      { status, transactionHash, checkoutConfig },
+      request.user!.walletAddress
+    )
+
+    if (!updatedEvent) {
+      logger.warn('Event not found for update', { slug })
+      response.status(404).json({
+        error: 'Event not found',
+        requestedSlug: slug,
+      })
+      return
+    }
+
+    response.status(200).json({
+      slug: updatedEvent.slug,
+      status: updatedEvent.status,
+      transactionHash: updatedEvent.transactionHash,
+    })
+  } catch (error) {
+    logger.error('Failed to update event', {
+      error,
+      slug,
+      requestBody: { status, transactionHash, checkoutConfig },
+    })
+    response.status(500).json({
+      error: 'Failed to update event',
+      details: error.message,
+    })
+  }
 }

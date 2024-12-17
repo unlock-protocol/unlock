@@ -7,6 +7,7 @@ import { Model, DataTypes } from 'sequelize'
 import { sequelize } from './sequelize'
 import { CheckoutConfig } from './checkoutConfig'
 import config from '../config/config'
+import { EventStatus } from '@unlock-protocol/types'
 
 export class EventData extends Model<
   InferAttributes<EventData>,
@@ -21,6 +22,8 @@ export class EventData extends Model<
   declare slug: string
   declare checkoutConfigId: string | null
   declare eventUrl: string | null
+  declare status: EventStatus
+  declare transactionHash: string | null
 }
 
 EventData.init(
@@ -57,12 +60,22 @@ EventData.init(
     checkoutConfigId: {
       allowNull: true,
       type: DataTypes.STRING,
+      defaultValue: null,
     },
     eventUrl: {
       type: DataTypes.VIRTUAL,
       get() {
         return `${config.unlockApp}/event/${this.getDataValue('slug')}`
       },
+    },
+    status: {
+      type: DataTypes.ENUM(...Object.values(EventStatus)),
+      allowNull: false,
+      defaultValue: EventStatus.PENDING,
+    },
+    transactionHash: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
   },
   {

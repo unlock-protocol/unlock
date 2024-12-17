@@ -1,8 +1,7 @@
 'use client'
 
 import { BiQrScan as ScanIcon } from 'react-icons/bi'
-import { useEffect } from 'react'
-import { useRouter, usePathname } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import {
   Button,
   Card,
@@ -14,14 +13,9 @@ import { getEventDate, getEventEndDate, getEventUrl } from './utils'
 import { useEventOrganizer } from '~/hooks/useEventOrganizer'
 import { useEventOrganizers } from '~/hooks/useEventOrganizers'
 import dayjs from 'dayjs'
-import {
-  Event,
-  PaywallConfigType,
-  formDataToMetadata,
-} from '@unlock-protocol/core'
+import { Event, PaywallConfigType } from '@unlock-protocol/core'
 import { useEvent } from '~/hooks/useEvent'
 import { SettingEmail } from '~/components/interface/locks/Settings/elements/SettingEmail'
-import { locksmith } from '~/config/locksmith'
 import { FaUsers } from 'react-icons/fa'
 import { TbSettings } from 'react-icons/tb'
 import { useEventVerifiers } from '~/hooks/useEventVerifiers'
@@ -49,7 +43,6 @@ export const EventDetails = ({
   checkoutConfig,
 }: EventDetailsProps) => {
   const router = useRouter()
-  const pathname = usePathname()
 
   // Check if the user is one of the lock manager
   const { data: isOrganizer } = useEventOrganizer({
@@ -81,32 +74,6 @@ export const EventDetails = ({
         'We could not load the list of verifiers for your lock. Please reload to try again.'
     )
   }
-
-  // Migrate legacy event and/or redirect
-  // TODO: remove by June 1st 2024
-  useEffect(() => {
-    const migrateAndRedirect = async () => {
-      if (pathname === '/event') {
-        if (event.slug) {
-          router.push(eventUrl)
-        } else {
-          const { data: savedEvent } = await locksmith.saveEventData({
-            data: formDataToMetadata(event),
-            // @ts-expect-error Property ''name'' is missing in type
-            checkoutConfig,
-          })
-          if (savedEvent.data) {
-            router.push(
-              getEventUrl({
-                event: savedEvent.data,
-              })
-            )
-          }
-        }
-      }
-    }
-    migrateAndRedirect()
-  }, [router, event, eventUrl, checkoutConfig, pathname])
 
   const eventDate = getEventDate(event.ticket) // Full date + time of event
   const eventEndDate = getEventEndDate(event.ticket)
