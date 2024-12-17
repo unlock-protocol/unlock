@@ -7,8 +7,6 @@ import {
 } from '../../operations/checkoutConfigOperations'
 import { PaywallConfig } from '@unlock-protocol/core'
 import { Payload } from '../../models/payload'
-import logger from '../../logger'
-import { z } from 'zod'
 import { addJob } from '../../worker/worker'
 
 /**
