@@ -40,12 +40,12 @@ const InsufficientFundsWarning = ({
     currency: 'ETH',
   })
 
-  // Don't render in these cases
+  // Don't render if any of these conditions are true
   if (
-    isCrossChainRoutesLoading || // Still loading routes
     enableCreditCard || // Credit card payment is available
-    !hasCrossChainRoutes || // No cross-chain routes available
     enableClaim || // Can claim for free
+    isCrossChainRoutesLoading || // Still loading cross-chain routes
+    hasCrossChainRoutes || // Has available cross-chain routes
     !fundingAmount || // No funding amount available
     Number(fundingAmount) <= 0 // Invalid funding amount
   ) {
