@@ -4686,10 +4686,10 @@ paths:
       operationId: getEvent
       parameters:
         - $ref: '#/components/parameters/Slug'
-      description: Retrieves an event based on its slug.
+      description: Retrieves an event based on its slug. The event data including status and transactionHash can be accessed through the `data` property.
       responses:
         200:
-          description: Successfully retrieves the event along with its checkout config.
+          description: Successfully retrieves the event along with its checkout config. Event details including status and transactionHash are nested under the `data` property.
           content:
             application/json:
               schema:
@@ -4697,33 +4697,12 @@ paths:
                 properties:
                   id:
                     type: number
-                  name:
-                    type: string
-                  slug:
-                    type: string
-                  image:
-                    type: string
-                  description:
-                    type: string
-                  status:
-                    type: string
-                    enum: [pending, deployed]
-                  transactionHash:
-                    type: string
-                  attributes:
-                    type: array
-                    items:
-                      type: object
-                      required:
-                        - trait_type
-                        - value
-                      properties:
-                        trait_type:
-                          type: string
-                        value:
-                          type: string
+                  data:
+                    $ref: '#/components/schemas/Event'
                   checkoutConfig:
                     $ref: '#/components/schemas/CheckoutConfig'
+                  slug:
+                    type: string
 
         400:
           $ref: '#/components/responses/400.Invalid'
