@@ -78,9 +78,7 @@ export const onSignedInWithPrivy = async (user: User) => {
 
 // IMPORTANT: This component should be rendered only once in the app. Do NOT add hooks here.
 export const PrivyChild = ({ children }: { children: ReactNode }) => {
-  const { setAccount } = useContext<{
-    setAccount: (account: string | undefined) => void
-  }>(AuthenticationContext)
+  const { setAccount } = useContext(AuthenticationContext)
 
   // handle onComplete logic
   const handleLoginComplete = async (user: User) => {
