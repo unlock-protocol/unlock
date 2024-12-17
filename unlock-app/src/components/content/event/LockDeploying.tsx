@@ -2,7 +2,6 @@ import { Button } from '@unlock-protocol/ui'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
-
 import {
   AnimationContent,
   DeployStatus,
@@ -11,24 +10,38 @@ import { useConfig } from '~/utils/withConfig'
 import { TransactionDetails } from './NewEvent'
 import { useEffect, useState } from 'react'
 import { getEventPath } from './utils'
+import { locksmith } from '~/config/locksmith'
+import { EventStatus } from '@unlock-protocol/types'
+import { useInterval } from 'react-use'
 
 interface LockDeployingProps {
   transactionDetails: TransactionDetails
-  lockAddress?: string
-  slug?: string
   compact?: boolean
 }
 
 export const LockDeploying = ({
   transactionDetails,
-  lockAddress,
-  slug,
   compact = false,
 }: LockDeployingProps) => {
   const config = useConfig()
   const router = useRouter()
   const [loadingEventPage, setLoadingEventPage] = useState(false)
-  const { hash: transactionHash, network } = transactionDetails
+  const [eventData, setEventData] = useState<{
+    status: EventStatus
+  }>({
+    status: EventStatus.PENDING,
+  })
+  const { hash: transactionHash, network, slug } = transactionDetails
+
+  // Poll for event status every 2 seconds
+  useInterval(async () => {
+    if (slug) {
+      const { data: event } = await locksmith.getEvent(slug)
+      setEventData({
+        status: event.data?.status as EventStatus,
+      })
+    }
+  }, 2000)
 
   let status: DeployStatus = 'progress'
   let title = 'Waiting for your transaction to be mined'
@@ -37,10 +50,10 @@ export const LockDeploying = ({
     : 'Please do not close this window'
 
   useEffect(() => {
-    window?.scrollTo(0, 0) // force scroll start of page
+    window?.scrollTo(0, 0)
   }, [])
 
-  if (lockAddress) {
+  if (eventData.status === EventStatus.DEPLOYED) {
     status = 'deployed'
     title = '🚀​ Your contract was successfully deployed'
     message =
@@ -48,13 +61,11 @@ export const LockDeploying = ({
   }
 
   const goToEventPage = () => {
-    if (lockAddress && network) {
+    if (slug) {
       setLoadingEventPage(true)
       router.push(
         getEventPath({
-          lockAddress,
-          network,
-          metadata: {
+          event: {
             slug,
           },
         })
