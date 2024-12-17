@@ -44,9 +44,6 @@ export default function AddEventsToCollectionDrawer({
 }: AddEventsToCollectionDrawerProps) {
   const { account } = useAuthenticate()
   const { getWalletService } = useProvider()
-  const [newEventSlug, setNewEventSlug] = useState<string | undefined>(
-    undefined
-  )
 
   const [transactionDetails, setTransactionDetails] =
     useState<TransactionDetails>()
@@ -165,7 +162,6 @@ export default function AddEventsToCollectionDrawer({
     setErrorMessage(null)
     setAddMethod(null)
     setIsEventSelected(false)
-    setNewEventSlug(undefined)
     setTransactionDetails(undefined)
   }, [])
 
@@ -428,9 +424,6 @@ export default function AddEventsToCollectionDrawer({
           status: EventStatus.PENDING,
         },
       })
-
-      // Save slug for URL if present
-      setNewEventSlug(newEvent.slug)
 
       // Deploy the lock
       const walletService = await getWalletService(eventData.network)
