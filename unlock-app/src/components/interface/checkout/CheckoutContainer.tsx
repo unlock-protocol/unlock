@@ -16,10 +16,12 @@ import { isInIframe } from '~/utils/iframe'
 import { useEffect } from 'react'
 import { config } from '~/config/app'
 import { postToWebhook } from './main/checkoutHookUtils'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 declare const window: any
 export function CheckoutContainer() {
   const searchParams = useSearchParams()
+  const { account } = useAuthenticate()
 
   // Fetch config from parent in iframe context
   const communication = useCheckoutCommunication()
@@ -62,7 +64,7 @@ export function CheckoutContainer() {
     let script: any
     let handler: any
 
-    if (paywallConfig) {
+    if (paywallConfig && account) {
       handler = window.addEventListener(
         'unlockProtocol.status',
         async (state: any) => {

@@ -2,8 +2,7 @@ import { networks } from '@unlock-protocol/networks'
 import { HookType } from '@unlock-protocol/types'
 import { CheckoutHookType } from './checkoutMachine'
 import { PaywallConfigType } from '@unlock-protocol/core'
-import axios from 'axios'
-import { toast } from 'react-hot-toast'
+import { locksmith } from '~/config/locksmith'
 
 const HookIdMapping: Partial<Record<HookType, CheckoutHookType>> = {
   PASSWORD: 'password',
@@ -74,15 +73,6 @@ export const getOnPurchaseHookTypeFromPaywallConfig = (
   }
 }
 
-const saveToLocalStorage = (data: any) => {
-  const hooks = localStorage.getItem('hooks')
-  const parsed = (hooks && JSON.parse(hooks)) ?? []
-  localStorage.setItem(
-    'hooks',
-    JSON.stringify([...parsed, { id: parsed.length, ...data }])
-  )
-}
-
 let prevBody: string | null = null
 export const postToWebhook = async (body: any, config: any, event: string) => {
   const url = config?.hooks && config.hooks[event]
@@ -92,54 +82,10 @@ export const postToWebhook = async (body: any, config: any, event: string) => {
   if (JSON.stringify(body) === prevBody) {
     return
   }
-
   prevBody = JSON.stringify(body)
 
-  const sendWebhookRequest = async (attempt: number) => {
-    await axios.post(url, body)
-    const text = `Sent ${event} event data to ${url} on attempt ${attempt}`
-    toast.success(text)
-
-    const data = { text, created: new Date().toISOString(), success: true }
-    saveToLocalStorage(data)
-  }
-
-  const retryRequest = async (maxRetries: number) => {
-    let lastError: any
-    let attempt = 0
-
-    while (attempt < maxRetries) {
-      try {
-        attempt++
-        await sendWebhookRequest(attempt)
-        return
-      } catch (error) {
-        lastError = error
-        toast.error(
-          `Could not post ${event} event data to ${url}. Attempt ${attempt}`
-        )
-        if (attempt < maxRetries) {
-          const delay = attempt === 1 ? 1000 : 3000
-          await new Promise((resolve) => setTimeout(resolve, delay))
-        }
-      }
-    }
-
-    setTimeout(() => {
-      if (lastError && attempt === maxRetries) {
-        const text = `Failed to post ${event} event data to ${url}`
-        toast.error(text)
-        const data = { text, created: new Date().toISOString(), success: false }
-        saveToLocalStorage(data)
-      }
-    }, 1000)
-
-    throw lastError
-  }
-
   try {
-    await retryRequest(3)
-  } catch (error) {
-    console.error('Webhook request failed:', error)
-  }
+    const checkoutId = new URL(window.location.href).searchParams.get('id')
+    await locksmith.addCheckoutHookJob(checkoutId!, { data: body, event })
+  } catch (error) {}
 }

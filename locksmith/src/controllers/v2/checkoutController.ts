@@ -6,6 +6,10 @@ import {
   deleteCheckoutConfigById,
 } from '../../operations/checkoutConfigOperations'
 import { PaywallConfig } from '@unlock-protocol/core'
+import { Payload } from '../../models/payload'
+import logger from '../../logger'
+import { z } from 'zod'
+import { addJob } from '../../worker/worker'
 
 /**
  * Create or update a checkout configuration.
@@ -205,5 +209,102 @@ export const updateCheckoutHooks: RequestHandler = async (
     }
 
     throw error
+  }
+}
+
+export const getCheckoutHookJobs: RequestHandler = async (
+  request,
+  response
+) => {
+  const userAddress = request.user!.walletAddress
+
+  try {
+    const jobs = await Payload.findAll({
+      where: {
+        payload: {
+          by: userAddress,
+          read: false,
+        },
+      },
+      order: [['createdAt', 'DESC']],
+    })
+
+    if (!jobs) {
+      response
+        .status(404)
+        .send({ message: 'No unread checkout hook jobs found for this user.' })
+      return
+    }
+
+    response.status(200).send(jobs)
+  } catch (error: any) {
+    response.status(400).send({ message: 'Could not retrieve jobs.' })
+  }
+}
+
+export const addCheckoutHookJob: RequestHandler = async (request, response) => {
+  const { id } = request.params
+  const userAddress = request.user!.walletAddress
+
+  const checkout = await getCheckoutConfigById(id)
+
+  if (checkout?.by !== userAddress) {
+    response.status(403).send({ message: 'Not authorized to add job.' })
+  }
+
+  try {
+    const payloadData = request.body
+
+    const payload = new Payload()
+    payload.payload = {
+      checkoutId: id,
+      by: userAddress,
+      status: 'pending',
+      read: false,
+      ...payloadData,
+    }
+    await payload.save()
+
+    const job = await addJob('checkoutHookJob', payload)
+
+    response.status(200).send({
+      message: 'Job added successfully',
+      job,
+    })
+  } catch (error) {
+    response.status(400).send({ message: 'Could not add job.' })
+  }
+}
+
+export const updateCheckoutHookJob: RequestHandler = async (
+  request,
+  response
+) => {
+  const payloadId = request.params.id
+  const userAddress = request.user!.walletAddress
+
+  try {
+    const job = await Payload.findByPk(payloadId)
+    if (!job) {
+      response.status(404).send({ message: 'No existing job found to update.' })
+      return
+    }
+
+    if (job.payload.by !== userAddress) {
+      response.status(403).send({ message: 'Not authorized to update job.' })
+    }
+
+    job.payload = {
+      ...job.payload,
+      read: true,
+    }
+    await job.save()
+
+    response.status(200).send({
+      message: 'Job marked as read successfully',
+      job,
+    })
+  } catch (error) {
+    response.status(400).send({ message: 'Could not update job.' })
   }
 }

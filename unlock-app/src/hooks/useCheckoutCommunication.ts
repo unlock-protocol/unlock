@@ -5,6 +5,7 @@ import { OAuthConfig } from '~/unlockTypes'
 import { useProvider } from './useProvider'
 import { isInIframe } from '~/utils/iframe'
 import { postToWebhook } from '~/components/interface/checkout/main/checkoutHookUtils'
+import { useAuthenticate } from './useAuthenticate'
 
 export interface UserInfo {
   address?: string
@@ -114,6 +115,7 @@ export const resolveOnEvent = (name: string) => {
 // directly.
 export const useCheckoutCommunication = () => {
   const { setProvider } = useProvider()
+  const { account } = useAuthenticate()
   const [outgoingBuffer, setOutgoingBuffer] = useState([] as BufferedEvent[])
   const [incomingBuffer, setIncomingBuffer] = useState([] as MethodCall[])
   const [paywallConfig, setPaywallConfig] = useState<
@@ -226,12 +228,12 @@ export const useCheckoutCommunication = () => {
     }
     setUser(info.address)
     pushOrEmit(CheckoutEvents.userInfo, info)
-    postToWebhook(info, paywallConfig, 'authenticated')
+    account && postToWebhook(info, paywallConfig, 'authenticated')
   }
 
   const emitMetadata = (metadata: any, paywallConfig?: any) => {
     pushOrEmit(CheckoutEvents.metadata, metadata)
-    postToWebhook(metadata, paywallConfig, 'metadata')
+    account && postToWebhook(metadata, paywallConfig, 'metadata')
   }
 
   const emitCloseModal = () => {
@@ -240,7 +242,7 @@ export const useCheckoutCommunication = () => {
 
   const emitTransactionInfo = (info: TransactionInfo, paywallConfig?: any) => {
     pushOrEmit(CheckoutEvents.transactionInfo, info)
-    postToWebhook(info, paywallConfig, 'transactionSent')
+    account && postToWebhook(info, paywallConfig, 'transactionSent')
   }
 
   const emitMethodCall = (call: MethodCall) => {

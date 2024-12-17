@@ -8,6 +8,8 @@ import { usePathname } from 'next/navigation'
 import { Modal } from '@unlock-protocol/ui'
 import { LoginModal } from '@privy-io/react-auth'
 import { Hooks } from '../../HooksNotifications'
+import { locksmith } from '~/config/locksmith'
+import { useQuery } from '@tanstack/react-query'
 
 interface NotificationAction {
   label: string
@@ -24,15 +26,18 @@ interface NotificationProps {
 export function NotificationsMenu() {
   const [isOpen, setIsOpen] = useState(false)
   const [showModal, setShowModal] = useState(false)
-  const [hooks, setHooks] = useState([])
   const { account, email } = useAuthenticate()
   const pathname = usePathname()
 
-  useEffect(() => {
-    const hooksNotifications = localStorage.getItem('hooks')
-    const parsedHooks = hooksNotifications ? JSON.parse(hooksNotifications) : []
-    setHooks(parsedHooks)
-  }, [])
+  const {
+    isLoading,
+    error,
+    data: hooks,
+    refetch,
+  } = useQuery({
+    queryKey: ['checkoutHookJobs'],
+    queryFn: () => locksmith.getCheckoutHookJobs(),
+  })
 
   if (!account) {
     return null
@@ -54,10 +59,10 @@ export function NotificationsMenu() {
     })
   }
 
-  if (hooks.length > 0) {
+  if (!isLoading && !error && hooks?.data?.length && hooks?.data?.length > 0) {
     notifications.push({
       id: '2',
-      content: <Hooks hooks={hooks} setHooks={setHooks} />,
+      content: <Hooks hooks={hooks.data} refetch={refetch} />,
       timestamp: new Date(),
     })
   }
