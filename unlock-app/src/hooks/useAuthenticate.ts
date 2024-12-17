@@ -155,7 +155,7 @@ export function useAuthenticate() {
   }, [wallet?.address, account])
 
   return {
-    account: wallets[0]?.address && account,
+    account: account ? wallets[0]?.address && account : undefined,
     email: user?.email?.address,
     signInWithSIWE,
     signInWithPrivy,
