@@ -185,31 +185,34 @@ export const PrivyMigration = () => {
 }
 
 export const Privy = ({ children }: { children: ReactNode }) => {
+  const [account, setAccount] = useState<string | undefined>(undefined)
   const isMigratePage =
     typeof window !== 'undefined' &&
     window.location.pathname.includes('migrate-user')
 
   return (
-    <PrivyProvider
-      config={{
-        loginMethods: isMigratePage
-          ? ['email']
-          : ['wallet', 'email', 'google', 'farcaster'],
-        embeddedWallets: {
-          createOnLogin: 'off',
-        },
-        appearance: {
-          landingHeader: '',
-        },
-        // @ts-expect-error internal api
-        _render: {
-          standalone: true,
-        },
-      }}
-      appId={config.privyAppId}
-    >
-      <PrivyChild>{children}</PrivyChild>
-    </PrivyProvider>
+    <AuthenticationContext.Provider value={{ account, setAccount }}>
+      <PrivyProvider
+        config={{
+          loginMethods: isMigratePage
+            ? ['email']
+            : ['wallet', 'email', 'google', 'farcaster'],
+          embeddedWallets: {
+            createOnLogin: 'off',
+          },
+          appearance: {
+            landingHeader: '',
+          },
+          // @ts-expect-error internal api
+          _render: {
+            standalone: true,
+          },
+        }}
+        appId={config.privyAppId}
+      >
+        <PrivyChild>{children}</PrivyChild>
+      </PrivyProvider>
+    </AuthenticationContext.Provider>
   )
 }
 
