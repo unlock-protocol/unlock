@@ -7,11 +7,7 @@ import { Model, DataTypes } from 'sequelize'
 import { sequelize } from './sequelize'
 import { CheckoutConfig } from './checkoutConfig'
 import config from '../config/config'
-
-export enum EventStatus {
-  PENDING = 'pending',
-  DEPLOYED = 'deployed',
-}
+import { EventStatus } from '@unlock-protocol/types'
 
 export class EventData extends Model<
   InferAttributes<EventData>,

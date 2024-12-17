@@ -9,11 +9,12 @@ import {
   getLockTypeByMetadata,
   toFormData,
 } from '@unlock-protocol/core'
-import { CheckoutConfig, EventData, EventStatus, KeyMetadata } from '../models'
+import { CheckoutConfig, EventData, KeyMetadata } from '../models'
 import { saveCheckoutConfig } from './checkoutConfigOperations'
 import { EventBodyType } from '../controllers/v2/eventsController'
 import { Op } from 'sequelize'
 import { removeProtectedAttributesFromObject } from '../utils/protectedAttributes'
+import { EventStatus } from '@unlock-protocol/types'
 
 interface AttributeProps {
   value: string
