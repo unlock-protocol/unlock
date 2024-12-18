@@ -53,9 +53,13 @@ export function useAuthenticate() {
   const signInWithExistingSession = async () => {
     const existingAccessToken = getAccessToken()
 
-    // when privy's auth state remains true [stale] but wallets are empty, it means the user is not connected to a wallet
-    // we need to logout and remove the access token
-    if (privyAuthenticated && wallets.length === 0) {
+    // Check if user is authenticated and has a linked wallet account
+    const hasLinkedWallet = user?.linkedAccounts?.some(
+      (account) => account.type === 'wallet'
+    )
+
+    // when privy's auth state is true but no linked wallet, we log out and remove the access token
+    if (privyAuthenticated && !hasLinkedWallet) {
       privyLogout()
       removeAccessToken()
       return false
