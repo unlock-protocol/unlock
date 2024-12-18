@@ -228,12 +228,12 @@ export const useCheckoutCommunication = () => {
     }
     setUser(info.address)
     pushOrEmit(CheckoutEvents.userInfo, info)
-    if (account) postToWebhook(info, paywallConfig, 'authenticated')
+    postToWebhook(info, paywallConfig, 'authenticated', account)
   }
 
   const emitMetadata = (metadata: any, paywallConfig?: any) => {
     pushOrEmit(CheckoutEvents.metadata, metadata)
-    if (account) postToWebhook(metadata, paywallConfig, 'metadata')
+    postToWebhook(metadata, paywallConfig, 'metadata', account)
   }
 
   const emitCloseModal = () => {
@@ -242,7 +242,7 @@ export const useCheckoutCommunication = () => {
 
   const emitTransactionInfo = (info: TransactionInfo, paywallConfig?: any) => {
     pushOrEmit(CheckoutEvents.transactionInfo, info)
-    if (account) postToWebhook(info, paywallConfig, 'transactionSent')
+    postToWebhook(info, paywallConfig, 'transactionSent', account)
   }
 
   const emitMethodCall = (call: MethodCall) => {

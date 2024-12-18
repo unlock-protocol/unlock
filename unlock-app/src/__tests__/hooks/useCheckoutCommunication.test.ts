@@ -31,10 +31,9 @@ vi.mock('~/utils/iframe', async () => {
 })
 
 describe('useCheckoutCommunication', () => {
-  beforeEach(async () => {
+  beforeEach(() => {
     emit = vi.fn()
     vi.spyOn(Postmate, 'Model').mockResolvedValue({ emit })
-    await act(async () => {})
   })
 
   it('emits a userInfo event when emitUserInfo is called', async () => {
