@@ -52,12 +52,26 @@ export function useAuthenticate() {
   // Method that tries to sign in with an existing session
   const signInWithExistingSession = async () => {
     const existingAccessToken = getAccessToken()
+
+    // when privy's auth state remains true [stale] but wallets are empty, it means the user is not connected to a wallet
+    // we need to logout and remove the access token
+    if (privyAuthenticated && wallets.length === 0) {
+      privyLogout()
+      removeAccessToken()
+      return false
+    }
+
+    // if privy's auth state is false, return false
+    if (!privyAuthenticated) {
+      return false
+    }
+
     // Use the existing access token to log in
     if (existingAccessToken) {
       try {
         const response = await locksmith.user()
         const { walletAddress } = response.data
-        if (walletAddress) {
+        if (walletAddress && wallets.length > 0) {
           await onSignedIn(walletAddress)
           window.dispatchEvent(
             new CustomEvent('locksmith.authenticated', {
