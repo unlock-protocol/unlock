@@ -1,5 +1,5 @@
 import { Menu, MenuButton, MenuItems, Transition } from '@headlessui/react'
-import { Fragment, ReactNode, useEffect, useState } from 'react'
+import { Fragment, ReactNode, useState } from 'react'
 import { BiBell as BellIcon } from 'react-icons/bi'
 import { Button } from '@unlock-protocol/ui'
 import { PromptEmailLink } from '../../PromptEmailLink'
