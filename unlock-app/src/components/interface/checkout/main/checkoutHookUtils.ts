@@ -87,5 +87,7 @@ export const postToWebhook = async (body: any, config: any, event: string) => {
   try {
     const checkoutId = new URL(window.location.href).searchParams.get('id')
     await locksmith.addCheckoutHookJob(checkoutId!, { data: body, event })
-  } catch (error) {}
+  } catch (error) {
+    console.error('job not added')
+  }
 }
