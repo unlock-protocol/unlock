@@ -52,6 +52,15 @@ export function useAuthenticate() {
   // Method that tries to sign in with an existing session
   const signInWithExistingSession = async () => {
     const existingAccessToken = getAccessToken()
+
+    // when privy's auth state remains true [stale] but wallets are empty, it means the user is not connected to a wallet
+    // we need to logout and remove the access token
+    if (privyAuthenticated && wallets.length === 0) {
+      privyLogout()
+      removeAccessToken()
+      return false
+    }
+
     // Use the existing access token to log in
     if (existingAccessToken) {
       try {
