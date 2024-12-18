@@ -61,12 +61,17 @@ export function useAuthenticate() {
       return false
     }
 
+    // if privy's auth state is false, return false
+    if (!privyAuthenticated) {
+      return false
+    }
+
     // Use the existing access token to log in
     if (existingAccessToken) {
       try {
         const response = await locksmith.user()
         const { walletAddress } = response.data
-        if (walletAddress) {
+        if (walletAddress && wallets.length > 0) {
           await onSignedIn(walletAddress)
           window.dispatchEvent(
             new CustomEvent('locksmith.authenticated', {
