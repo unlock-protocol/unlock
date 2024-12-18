@@ -74,14 +74,7 @@ export const getOnPurchaseHookTypeFromPaywallConfig = (
 }
 
 let prevBody: string | null = null
-export const postToWebhook = async (
-  body: any,
-  config: any,
-  event: string,
-  account?: string
-) => {
-  if (!account) return
-
+export const postToWebhook = async (body: any, config: any, event: string) => {
   const url = config?.hooks && config.hooks[event]
   if (!url) return
 
