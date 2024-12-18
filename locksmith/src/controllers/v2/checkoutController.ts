@@ -242,9 +242,9 @@ export const getCheckoutHookJobs: RequestHandler = async (
 
 export const addCheckoutHookJob: RequestHandler = async (request, response) => {
   const { id } = request.params
-  const checkout = await getCheckoutConfigById(id)
 
   try {
+    const checkout = await getCheckoutConfigById(id)
     const payloadData = request.body
 
     const payload = new Payload()
