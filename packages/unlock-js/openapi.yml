@@ -4051,15 +4051,6 @@ paths:
                 properties:
                   message:
                     type: string
-        403:
-          description: Not authorized to add job.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
 
     put:
       operationId: updateCheckoutHooks

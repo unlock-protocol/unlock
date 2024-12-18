@@ -242,13 +242,7 @@ export const getCheckoutHookJobs: RequestHandler = async (
 
 export const addCheckoutHookJob: RequestHandler = async (request, response) => {
   const { id } = request.params
-  const userAddress = request.user!.walletAddress
-
   const checkout = await getCheckoutConfigById(id)
-
-  if (checkout?.by !== userAddress) {
-    response.status(403).send({ message: 'Not authorized to add job.' })
-  }
 
   try {
     const payloadData = request.body
@@ -256,7 +250,7 @@ export const addCheckoutHookJob: RequestHandler = async (request, response) => {
     const payload = new Payload()
     payload.payload = {
       checkoutId: id,
-      by: userAddress,
+      by: checkout?.by,
       status: 'pending',
       read: false,
       ...payloadData,
