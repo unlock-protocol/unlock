@@ -42,7 +42,9 @@ export default async function preparePurchase(options, provider) {
     ) {
       const approvalTxRequest =
         await approveAllowance.bind(this)(approvalOptions)
-      txs.push(approvalTxRequest)
+      if (approvalTxRequest) {
+        txs.push(approvalTxRequest)
+      }
     }
   }
 

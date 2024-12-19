@@ -77,7 +77,9 @@ export default async function (
     ) {
       const approvalTxRequest =
         await approveAllowance.bind(this)(approvalOptions)
-      txs.push(approvalTxRequest)
+      if (approvalTxRequest) {
+        txs.push(approvalTxRequest)
+      }
     }
   }
   // parse
