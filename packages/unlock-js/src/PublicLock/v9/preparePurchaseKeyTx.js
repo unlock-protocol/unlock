@@ -49,7 +49,7 @@ export default async function (
   }
   let actualAmount
   if (!keyPrice) {
-    // We might not have the keyPrice, in which case, we need to retrieve from the the lock!
+    // We might not have the keyPrice, in which case, we need to retrieve from the lock!
     actualAmount = await lockContract.keyPrice()
   } else {
     actualAmount = await formatKeyPrice(

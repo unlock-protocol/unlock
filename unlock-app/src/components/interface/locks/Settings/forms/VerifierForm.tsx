@@ -161,7 +161,7 @@ export const VerifierForm = ({ event }: VerifierFormProps) => {
     if (verifiersError) {
       ToastHelper.error(
         (verifiersError as any)?.error ??
-          'We could not load the list of verifiers for your lock. Please reload to to try again.'
+          'We could not load the list of verifiers for your lock. Please reload to try again.'
       )
     }
   }, [verifiersError])

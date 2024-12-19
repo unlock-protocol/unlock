@@ -115,7 +115,7 @@ describe('Lock / erc721 / tokenURI', () => {
       assert.equal(baseTokenURI, metadata.baseTokenURI)
     })
 
-    it('should allow the lock creator to to unset the custom URI and default to the global one', async () => {
+    it('should allow the lock creator to unset the custom URI and default to the global one', async () => {
       await lock.connect(lockManager).setLockMetadata(
         metadata.name,
         metadata.symbol,
