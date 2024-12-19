@@ -37,7 +37,7 @@ export default async function preparePurchaseKeys(
     erc20Address = await lockContract.tokenAddress()
   }
 
-  // We might not have the keyPrice, in which case, we need to retrieve from the the lock!
+  // We might not have the keyPrice, in which case, we need to retrieve from the lock!
   const getPrice = async (price) =>
     !price
       ? await lockContract.keyPrice()
