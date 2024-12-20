@@ -36,7 +36,7 @@ const parseXCalledEvents = async (logs) => {
   return xCalled
 }
 
-const fetchOriginXCall = async ({ transferIds = [], chainId = 1 }) => {
+const fetchOriginXCall = async ({ transferIds = [], chainId = 8453 }) => {
   const query = `
     {
       originTransfers(where:{
