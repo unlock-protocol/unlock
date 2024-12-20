@@ -114,8 +114,9 @@ const connextSubgraphIds = {
 
 const connextSubgraphURL = (chainId) => {
   // bnb is hosted version
+  // check https://github.com/connext/monorepo/blob/7758e62037bba281b8844c37831bde0b838edd36/packages/adapters/subgraph/.graphclientrc.yml#L7
   if (chainId == 56) {
-    return 'https://api.thegraph.com/subgraphs/name/connext/amarok-runtime-v0-bnb'
+    return 'https://connext.bwarelabs.com/subgraphs/name/connext/amarok-runtime-v1-bnb'
   }
   const { SUBGRAPH_QUERY_API_KEY } = process.env
   if (!SUBGRAPH_QUERY_API_KEY) {
