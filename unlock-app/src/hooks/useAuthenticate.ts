@@ -122,6 +122,11 @@ export function useAuthenticate() {
             walletAddress,
           })
           await onSignedIn(walletAddress)
+          window.dispatchEvent(
+            new CustomEvent('locksmith.authenticated', {
+              detail: walletAddress,
+            })
+          )
         } else {
           console.error('Error logging in with SIWE:', response)
           ToastHelper.error(
