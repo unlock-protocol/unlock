@@ -104,6 +104,7 @@ export const SIWEProvider = ({ children }: Props) => {
       setSiweResult({ message, signature })
       return { message, signature }
     } catch (error) {
+      console.error(error)
       onError(error)
       return null
     }
