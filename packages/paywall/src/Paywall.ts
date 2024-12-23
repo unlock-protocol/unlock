@@ -14,6 +14,8 @@ import { unlockAppUrl } from './urls'
 
 export const checkoutIframeClassName = 'unlock-protocol-checkout'
 
+Postmate.debug = true
+
 // TODO move to newer format for provider
 // https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1193.md#request
 

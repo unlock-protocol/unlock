@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import Postmate from 'postmate'
 
+Postmate.debug = true
+
 export const usePostmateParent = (model: any = {}) => {
   const [parent, setParent] = useState<Postmate.ChildAPI | undefined>(undefined)
 
