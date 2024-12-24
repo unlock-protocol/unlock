@@ -5,6 +5,7 @@ import useTermsOfService, {
   localStorageKey,
 } from '../../hooks/useTermsOfService'
 import { it, expect, describe } from 'vitest'
+import { APP_NAME } from '~/hooks/useAppStorage'
 
 describe('useTermsOfService', () => {
   it('should default to false if no value is set in localtorage', async () => {
@@ -16,7 +17,7 @@ describe('useTermsOfService', () => {
 
   it('should return true if the correct value is set in localstorage', async () => {
     expect.assertions(1)
-    localStorage.setItem(localStorageKey, 'true')
+    localStorage.setItem(`${APP_NAME}.${localStorageKey}`, 'true')
     const { result } = renderHook(() => useTermsOfService())
     const termsAccepted = result.current.termsAccepted
     expect(termsAccepted).toBe(true)
@@ -24,7 +25,7 @@ describe('useTermsOfService', () => {
 
   it('should return false if the value in localstorage is not correct', async () => {
     expect.assertions(1)
-    localStorage.setItem(localStorageKey, 'hello')
+    localStorage.setItem(`${APP_NAME}.${localStorageKey}`, 'hello')
     const { result } = renderHook(() => useTermsOfService())
     const termsAccepted = result.current.termsAccepted
     expect(termsAccepted).toBe(false)
@@ -44,7 +45,7 @@ describe('useTermsOfService', () => {
     act(() => {
       saveTermsAccepted()
     })
-    const savedValue = localStorage.getItem(localStorageKey)
+    const savedValue = localStorage.getItem(`${APP_NAME}.${localStorageKey}`)
     expect(savedValue).toBe('true')
   })
 })
