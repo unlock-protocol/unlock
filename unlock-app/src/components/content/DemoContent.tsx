@@ -73,9 +73,6 @@ const usePaywall = () => {
       },
     }
 
-    // Remove localStorage (on the demo we do not want to store any account)
-    localStorage.removeItem('userInfo')
-
     // Event handler
     const handler = window.addEventListener(
       'unlockProtocol.status',
