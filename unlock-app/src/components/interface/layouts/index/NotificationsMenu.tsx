@@ -7,6 +7,9 @@ import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { usePathname } from 'next/navigation'
 import { Modal } from '@unlock-protocol/ui'
 import { LoginModal } from '@privy-io/react-auth'
+import { Hooks } from '../../HooksNotifications'
+import { locksmith } from '~/config/locksmith'
+import { useQuery } from '@tanstack/react-query'
 
 interface NotificationAction {
   label: string
@@ -26,6 +29,16 @@ export function NotificationsMenu() {
   const { account, email } = useAuthenticate()
   const pathname = usePathname()
 
+  const {
+    isLoading,
+    error,
+    data: hooks,
+    refetch,
+  } = useQuery({
+    queryKey: ['checkoutHookJobs'],
+    queryFn: () => locksmith.getCheckoutHookJobs(),
+  })
+
   if (!account) {
     return null
   }
@@ -42,6 +55,14 @@ export function NotificationsMenu() {
     notifications.push({
       id: '1',
       content: <PromptEmailLink setModalOpen={setShowModal} />,
+      timestamp: new Date(),
+    })
+  }
+
+  if (!isLoading && !error && hooks?.data?.length && hooks?.data?.length > 0) {
+    notifications.push({
+      id: '2',
+      content: <Hooks hooks={hooks.data} refetch={refetch} />,
       timestamp: new Date(),
     })
   }
