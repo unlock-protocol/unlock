@@ -51,7 +51,7 @@
     "eslint": "9.16.0",
     "ethers": "6.13.4",
     "hardhat": "2.22.16",
-    "mocha": "10.8.2",
+    "mocha": "11.0.1",
     "prettier": "3.4.1",
     "ts-mocha": "10.0.0",
     "ts-node": "10.9.2",
