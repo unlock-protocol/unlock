@@ -12,7 +12,7 @@
     "@typescript-eslint/eslint-plugin": "8.16.0",
     "@typescript-eslint/parser": "8.16.0",
     "babel-plugin-polyfill-corejs2": "0.4.12",
-    "node-gyp": "10.2.0",
+    "node-gyp": "10.3.1",
     "prettier-plugin-solidity": "1.4.1",
     "typescript": "5.7.2"
   },
