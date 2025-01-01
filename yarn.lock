@@ -11381,52 +11381,52 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk-account-client@npm:^1.15.2":
-  version: 1.15.2
-  resolution: "@openzeppelin/defender-sdk-account-client@npm:1.15.2"
+"@openzeppelin/defender-sdk-account-client@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@openzeppelin/defender-sdk-account-client@npm:2.0.0"
   dependencies:
-    "@openzeppelin/defender-sdk-base-client": "npm:^1.15.2"
-    axios: "npm:^1.7.2"
+    "@openzeppelin/defender-sdk-base-client": "npm:^2.0.0"
+    axios: "npm:^1.7.4"
     lodash: "npm:^4.17.21"
-  checksum: 10/d40d447e2af95daf2d9b56662068a2db8728c8124477d5f93372a0068d1086df4aed7f2e42e38ecbf3d928a8db2f4bc4cc19256c5d3f598f47986a6700b7b016
+  checksum: 10/72e880f9e73941bc48b8b8a795b32efadf997e6ef804f06ca4d4fac67746080836207709eefbf1eb2524c976827cb3b3296fe7802067b998efdc0d71fe85752d
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk-action-client@npm:^1.15.2":
-  version: 1.15.2
-  resolution: "@openzeppelin/defender-sdk-action-client@npm:1.15.2"
+"@openzeppelin/defender-sdk-action-client@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@openzeppelin/defender-sdk-action-client@npm:2.0.0"
   dependencies:
-    "@openzeppelin/defender-sdk-base-client": "npm:^1.15.2"
-    axios: "npm:^1.7.2"
+    "@openzeppelin/defender-sdk-base-client": "npm:^2.0.0"
+    axios: "npm:^1.7.4"
     dotenv: "npm:^16.3.1"
     glob: "npm:^11.0.0"
     jszip: "npm:^3.10.1"
     lodash: "npm:^4.17.21"
   bin:
     defender-action: lib/bin.js
-  checksum: 10/cde58a56be0ae092c2d7fd863bcc5fcfb0d6b22eb7417f21cff6e0257eb27519039ede293ac8abcc43628003ce66113857509dd03bb61f93479849442769a454
+  checksum: 10/88e8bec8f62ce557b57be9ddfa007fd07ea16a7c8442b55fbc77cec706719452b282ed90ad4993bf010a2755fb27b1cb51df89cccf3ba105613c5cda63f11d57
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk-address-book-client@npm:^1.15.2":
-  version: 1.15.2
-  resolution: "@openzeppelin/defender-sdk-address-book-client@npm:1.15.2"
+"@openzeppelin/defender-sdk-address-book-client@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@openzeppelin/defender-sdk-address-book-client@npm:2.0.0"
   dependencies:
-    "@openzeppelin/defender-sdk-base-client": "npm:^1.15.2"
+    "@openzeppelin/defender-sdk-base-client": "npm:^2.0.0"
     dotenv: "npm:^16.3.1"
     lodash: "npm:^4.17.21"
-  checksum: 10/a28b9af8b1ab6df48e62155117fc7a62279b14824f3bef9d534145f1b09da357cc331bbd186394611d4974bd41781ec99379c921a33d2c83a396c5697924d7aa
+  checksum: 10/92735fa0dfba1a7c936613ab5fbb98b12cbeca8303c6777e75be38e8653aa154a70f1b60dfd26564cd3b2ad63f4cb7187e993fd751a208f6c4c10135219c2d4d
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk-approval-process-client@npm:^1.15.2":
-  version: 1.15.2
-  resolution: "@openzeppelin/defender-sdk-approval-process-client@npm:1.15.2"
+"@openzeppelin/defender-sdk-approval-process-client@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@openzeppelin/defender-sdk-approval-process-client@npm:2.0.0"
   dependencies:
-    "@openzeppelin/defender-sdk-base-client": "npm:^1.15.2"
-    axios: "npm:^1.6.7"
+    "@openzeppelin/defender-sdk-base-client": "npm:^2.0.0"
+    axios: "npm:^1.7.4"
     lodash: "npm:^4.17.21"
-  checksum: 10/7b9275eb7e2fb04ce83657b455fb0ba63e31befdb9a90cbafdff23c16fd99601ca4816cd597a9ee2445db52aaaa24cba33d1a75e08034e0306b57f22f29147a3
+  checksum: 10/6a654562982707d026a7ec0f5ba135e169a2230a5df7a2a6a18032d23d65a7a7e61feef4cb44ff3ed8e4fecee660f77c120c6ab8d3ce9009b16f4a4a52987761
   languageName: node
   linkType: hard
 
@@ -11440,7 +11440,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk-deploy-client@npm:^1.10.0, @openzeppelin/defender-sdk-deploy-client@npm:^1.14.4, @openzeppelin/defender-sdk-deploy-client@npm:^1.15.2":
+"@openzeppelin/defender-sdk-base-client@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@openzeppelin/defender-sdk-base-client@npm:2.0.0"
+  dependencies:
+    amazon-cognito-identity-js: "npm:^6.3.6"
+    async-retry: "npm:^1.3.3"
+  checksum: 10/28cb9108c2058c42f390993293e05fc0dca2b8302a5186cd1235b8b80866ab134847b5a724ea7875def00aee7b965daaa289e059db5bf9d4e7c32c69a6444b95
+  languageName: node
+  linkType: hard
+
+"@openzeppelin/defender-sdk-deploy-client@npm:^1.10.0, @openzeppelin/defender-sdk-deploy-client@npm:^1.14.4":
   version: 1.15.2
   resolution: "@openzeppelin/defender-sdk-deploy-client@npm:1.15.2"
   dependencies:
@@ -11451,31 +11461,42 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk-key-value-store-client@npm:^1.15.2":
-  version: 1.15.2
-  resolution: "@openzeppelin/defender-sdk-key-value-store-client@npm:1.15.2"
+"@openzeppelin/defender-sdk-deploy-client@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@openzeppelin/defender-sdk-deploy-client@npm:2.0.0"
   dependencies:
-    "@openzeppelin/defender-sdk-base-client": "npm:^1.15.2"
-    axios: "npm:^1.7.2"
+    "@openzeppelin/defender-sdk-base-client": "npm:^2.0.0"
+    axios: "npm:^1.7.4"
+    lodash: "npm:^4.17.21"
+  checksum: 10/53faa2cfe6877466e171d37f14a3efc44e60e2633e709c9eb7f36d0127750219e9df1bd4c9992eb341b24ebe42a626264ba5a662427a73f5509d3567a0556a3f
+  languageName: node
+  linkType: hard
+
+"@openzeppelin/defender-sdk-key-value-store-client@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@openzeppelin/defender-sdk-key-value-store-client@npm:2.0.0"
+  dependencies:
+    "@openzeppelin/defender-sdk-base-client": "npm:^2.0.0"
+    axios: "npm:^1.7.4"
     fs-extra: "npm:^11.2.0"
     lodash: "npm:^4.17.21"
-  checksum: 10/a406ce00729153076bfabd709c0a2db2fe63ef5ae9dd08ba39b56504b23679180580805c48a28519bff75c239994ef09f82bf70292e662c45237c38482bca3b3
+  checksum: 10/14c8d39bbc18c3805dcd7046bacf3f2cabe3e020971e74299984d3fc960ee20e53479ba65b7b1cfe4b89e33a0fbcca058d40b38c6aa0751fa8ba20f527998ea0
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk-monitor-client@npm:^1.15.2":
-  version: 1.15.2
-  resolution: "@openzeppelin/defender-sdk-monitor-client@npm:1.15.2"
+"@openzeppelin/defender-sdk-monitor-client@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@openzeppelin/defender-sdk-monitor-client@npm:2.0.0"
   dependencies:
-    "@openzeppelin/defender-sdk-base-client": "npm:^1.15.2"
-    axios: "npm:^1.7.2"
+    "@openzeppelin/defender-sdk-base-client": "npm:^2.0.0"
+    axios: "npm:^1.7.4"
     ethers: "npm:^6.9.0"
     lodash: "npm:^4.17.21"
-  checksum: 10/051771c3cf0f4fb4723ac3492db16363059b2eb229e1a728e50bc97db67f8835791111b6ce725220d21277aecfed36b18ebbaa39ad77526aefb5d82bbdac68d3
+  checksum: 10/9ed6f1c91c978e2f6a00f5626c1d4fe30b637f639f75bf7c3d718bd4fe2dec6e14b00bd3cb466de5f6c6c1961645cb4df49e84b3e9d5e72cf6977b1f44d727ef
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk-network-client@npm:^1.10.0, @openzeppelin/defender-sdk-network-client@npm:^1.14.4, @openzeppelin/defender-sdk-network-client@npm:^1.15.2":
+"@openzeppelin/defender-sdk-network-client@npm:^1.10.0, @openzeppelin/defender-sdk-network-client@npm:^1.14.4":
   version: 1.15.2
   resolution: "@openzeppelin/defender-sdk-network-client@npm:1.15.2"
   dependencies:
@@ -11486,54 +11507,65 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk-notification-channel-client@npm:^1.15.2":
-  version: 1.15.2
-  resolution: "@openzeppelin/defender-sdk-notification-channel-client@npm:1.15.2"
+"@openzeppelin/defender-sdk-network-client@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@openzeppelin/defender-sdk-network-client@npm:2.0.0"
   dependencies:
-    "@openzeppelin/defender-sdk-base-client": "npm:^1.15.2"
-    axios: "npm:^1.7.2"
+    "@openzeppelin/defender-sdk-base-client": "npm:^2.0.0"
+    axios: "npm:^1.7.4"
     lodash: "npm:^4.17.21"
-  checksum: 10/fe868193da4f33d59e4150d08ff471e83a64969992c863dde40e849a96675c5f9d00c25ea9a82efbc4d7099d365646de38da971bd62dd7f1f37bae4a0d84a265
+  checksum: 10/6b2ae41352a94761cf38dd25459f15dfb706c915983b7071be6a89cc76eaeaa73d45faa8071211a6ea8d30f941261ef00c896275f45d19b5f551ee38d1536792
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk-proposal-client@npm:^1.15.2":
-  version: 1.15.2
-  resolution: "@openzeppelin/defender-sdk-proposal-client@npm:1.15.2"
+"@openzeppelin/defender-sdk-notification-channel-client@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@openzeppelin/defender-sdk-notification-channel-client@npm:2.0.0"
   dependencies:
-    "@openzeppelin/defender-sdk-base-client": "npm:^1.15.2"
-    axios: "npm:^1.7.2"
+    "@openzeppelin/defender-sdk-base-client": "npm:^2.0.0"
+    axios: "npm:^1.7.4"
+    lodash: "npm:^4.17.21"
+  checksum: 10/6152753f284a3d62592df9a8f13979b4f2d0dbcc6a2f0dca0b4e5bc8cfc7d3ea062e83a28de468c53d8d735e533a93cbdf7e342008c8462b3d377eb8d1318ad1
+  languageName: node
+  linkType: hard
+
+"@openzeppelin/defender-sdk-proposal-client@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@openzeppelin/defender-sdk-proposal-client@npm:2.0.0"
+  dependencies:
+    "@openzeppelin/defender-sdk-base-client": "npm:^2.0.0"
+    axios: "npm:^1.7.4"
     ethers: "npm:^6.9.0"
     lodash: "npm:^4.17.21"
-  checksum: 10/7677d48e14910912cdc67dbaa90a1568a3d1b899087a983e909a4453ab82af19098823bf6520fe80b652fdd79840d4a157a9d9adb3a065a486fd062b785c2654
+  checksum: 10/722540bf64d339c2156553138576fc8005603507e7cb9ebb757194076108162e673e4062873b28152e159b371fc750330dede29dae0664bfa94aaf0dabcd7275
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk-relay-client@npm:^1.15.2":
-  version: 1.15.2
-  resolution: "@openzeppelin/defender-sdk-relay-client@npm:1.15.2"
+"@openzeppelin/defender-sdk-relay-client@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@openzeppelin/defender-sdk-relay-client@npm:2.0.0"
   dependencies:
-    "@openzeppelin/defender-sdk-base-client": "npm:^1.15.2"
-    axios: "npm:^1.7.2"
+    "@openzeppelin/defender-sdk-base-client": "npm:^2.0.0"
+    axios: "npm:^1.7.4"
     lodash: "npm:^4.17.21"
-  checksum: 10/2a89093ab26434e467eebc1be30da0ac6b08697598c95adfda71a1c96121e3015d1c87f667ceb467bfde0842982428815926c835dfa92241ed337edc930103ad
+  checksum: 10/821c37c7cafead17c26ec73457d4bedcdc16301b915ad53ffa51271a4a59a3f302b64347a72f7475e4e03bd3ba99ce29095c975eaed529ca18e4e66e7ccfffb8
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk-relay-group-client@npm:^1.15.2":
-  version: 1.15.2
-  resolution: "@openzeppelin/defender-sdk-relay-group-client@npm:1.15.2"
+"@openzeppelin/defender-sdk-relay-group-client@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@openzeppelin/defender-sdk-relay-group-client@npm:2.0.0"
   dependencies:
-    "@openzeppelin/defender-sdk-base-client": "npm:^1.15.2"
-    axios: "npm:^1.7.2"
+    "@openzeppelin/defender-sdk-base-client": "npm:^2.0.0"
+    axios: "npm:^1.7.4"
     lodash: "npm:^4.17.21"
-  checksum: 10/b624c984e0d2887e5913c4d633c602199f1b37d393a3c9be714fbdae2917291398c7d8ff5a0fce24b809691897ebf5ede9e690b1bab97ee081795b6919f8247c
+  checksum: 10/6cb393dce496153dad0aac84849fc359add9ce985754a80c3ab64b55498ca3a3462ad2b417730fa5468f3761ea46f2b4cba6e8c7b426c6b45c432c497fc214c9
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk-relay-signer-client@npm:^1.15.2":
-  version: 1.15.2
-  resolution: "@openzeppelin/defender-sdk-relay-signer-client@npm:1.15.2"
+"@openzeppelin/defender-sdk-relay-signer-client@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@openzeppelin/defender-sdk-relay-signer-client@npm:2.0.0"
   dependencies:
     "@ethersproject/bignumber": "npm:^5.7.0"
     "@ethersproject/bytes": "npm:^5.7.0"
@@ -11542,38 +11574,38 @@ __metadata:
     "@ethersproject/properties": "npm:^5.7.0"
     "@ethersproject/providers": "npm:^5.7.2"
     "@ethersproject/strings": "npm:^5.7.0"
-    "@openzeppelin/defender-sdk-base-client": "npm:^1.15.2"
+    "@openzeppelin/defender-sdk-base-client": "npm:^2.0.0"
     amazon-cognito-identity-js: "npm:^6.3.6"
-    axios: "npm:^1.7.2"
+    axios: "npm:^1.7.4"
     ethers: "npm:^6.9.0"
     lodash: "npm:^4.17.21"
   peerDependencies:
     web3: ^4.14.0
     web3-core: ^4.7.0
     web3-utils: ^4.3.2
-  checksum: 10/b7d7aa61530b6b70d6c78969a161ded3f204a8e9436fa4b01e9d9571fc8ef5fd9066d3c658344e378592d0099de1860fa075f4cc29eec4d4725d74c442a7caf4
+  checksum: 10/de490b384893ef356b44adcdc263d1161cb2f631f13b5caa482e968bb7b222e03428b37cab9262f04e7d44d2e67b7a289f890df66deec7872cad869bd7340aef
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk@npm:1.15.2":
-  version: 1.15.2
-  resolution: "@openzeppelin/defender-sdk@npm:1.15.2"
+"@openzeppelin/defender-sdk@npm:2.0.0":
+  version: 2.0.0
+  resolution: "@openzeppelin/defender-sdk@npm:2.0.0"
   dependencies:
-    "@openzeppelin/defender-sdk-account-client": "npm:^1.15.2"
-    "@openzeppelin/defender-sdk-action-client": "npm:^1.15.2"
-    "@openzeppelin/defender-sdk-address-book-client": "npm:^1.15.2"
-    "@openzeppelin/defender-sdk-approval-process-client": "npm:^1.15.2"
-    "@openzeppelin/defender-sdk-base-client": "npm:^1.15.2"
-    "@openzeppelin/defender-sdk-deploy-client": "npm:^1.15.2"
-    "@openzeppelin/defender-sdk-key-value-store-client": "npm:^1.15.2"
-    "@openzeppelin/defender-sdk-monitor-client": "npm:^1.15.2"
-    "@openzeppelin/defender-sdk-network-client": "npm:^1.15.2"
-    "@openzeppelin/defender-sdk-notification-channel-client": "npm:^1.15.2"
-    "@openzeppelin/defender-sdk-proposal-client": "npm:^1.15.2"
-    "@openzeppelin/defender-sdk-relay-client": "npm:^1.15.2"
-    "@openzeppelin/defender-sdk-relay-group-client": "npm:^1.15.2"
-    "@openzeppelin/defender-sdk-relay-signer-client": "npm:^1.15.2"
-  checksum: 10/37162bdc53fb997d6a7283be84b979535c5bd0b477960e0f6e70736d27eede65ae63f555332389f604f1688cebaf9ddc9afbce81b22dc22d9afaa089d3a8e03f
+    "@openzeppelin/defender-sdk-account-client": "npm:^2.0.0"
+    "@openzeppelin/defender-sdk-action-client": "npm:^2.0.0"
+    "@openzeppelin/defender-sdk-address-book-client": "npm:^2.0.0"
+    "@openzeppelin/defender-sdk-approval-process-client": "npm:^2.0.0"
+    "@openzeppelin/defender-sdk-base-client": "npm:^2.0.0"
+    "@openzeppelin/defender-sdk-deploy-client": "npm:^2.0.0"
+    "@openzeppelin/defender-sdk-key-value-store-client": "npm:^2.0.0"
+    "@openzeppelin/defender-sdk-monitor-client": "npm:^2.0.0"
+    "@openzeppelin/defender-sdk-network-client": "npm:^2.0.0"
+    "@openzeppelin/defender-sdk-notification-channel-client": "npm:^2.0.0"
+    "@openzeppelin/defender-sdk-proposal-client": "npm:^2.0.0"
+    "@openzeppelin/defender-sdk-relay-client": "npm:^2.0.0"
+    "@openzeppelin/defender-sdk-relay-group-client": "npm:^2.0.0"
+    "@openzeppelin/defender-sdk-relay-signer-client": "npm:^2.0.0"
+  checksum: 10/7ed89f39a0da44ee4643d25223f26104d683fca6233a93b5c0c8507a8898f4c30558bbcee0afa3f18acfd949377f040093e1c42d880b7a2888067c308f95b0f0
   languageName: node
   linkType: hard
 
@@ -18132,7 +18164,7 @@ __metadata:
     "@logtail/node": "npm:0.5.2"
     "@logtail/winston": "npm:0.5.2"
     "@nuintun/qrcode": "npm:4.1.6"
-    "@openzeppelin/defender-sdk": "npm:1.15.2"
+    "@openzeppelin/defender-sdk": "npm:2.0.0"
     "@openzeppelin/merkle-tree": "npm:1.0.7"
     "@privy-io/server-auth": "npm:1.16.6"
     "@resvg/resvg-js": "npm:2.6.2"
@@ -21170,6 +21202,17 @@ __metadata:
     follow-redirects: "npm:^1.14.9"
     form-data: "npm:^4.0.0"
   checksum: 10/2efaf18dd0805f7bc772882bc86f004abd92d51007b54c5081f74db0d08ce3593e2c010261896d25a14318eeaa2e966fd825e34f810e8a3339dc64b9d177cf70
+  languageName: node
+  linkType: hard
+
+"axios@npm:^1.7.4":
+  version: 1.7.9
+  resolution: "axios@npm:1.7.9"
+  dependencies:
+    follow-redirects: "npm:^1.15.6"
+    form-data: "npm:^4.0.0"
+    proxy-from-env: "npm:^1.1.0"
+  checksum: 10/b7a5f660ea53ba9c2a745bf5ad77ad8bf4f1338e13ccc3f9f09f810267d6c638c03dac88b55dae8dc98b79c57d2d6835be651d58d2af97c174f43d289a9fd007
   languageName: node
   linkType: hard
 
