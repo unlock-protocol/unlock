@@ -17033,12 +17033,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:22.10.1":
-  version: 22.10.1
-  resolution: "@types/node@npm:22.10.1"
+"@types/node@npm:22.10.3":
+  version: 22.10.3
+  resolution: "@types/node@npm:22.10.3"
   dependencies:
     undici-types: "npm:~6.20.0"
-  checksum: 10/c802a526da2f3fa3ccefd00a71244e7cb825329951719e79e8fec62b1dbc2855388c830489770611584665ce10be23c05ed585982038b24924e1ba2c2cce03fd
+  checksum: 10/c63bd7800b82a53efd3fc0e115d045ae539eaa6367a7804fc17db84a311995a2228b8dce3e8eed089b4f91ae28224cfcf86086ff1ecf48a16c3b9efc03a725f8
   languageName: node
   linkType: hard
 
@@ -18100,7 +18100,7 @@ __metadata:
     "@typechain/ethers-v6": "npm:0.5.1"
     "@typechain/hardhat": "npm:9.1.0"
     "@types/mocha": "npm:10.0.10"
-    "@types/node": "npm:22.10.1"
+    "@types/node": "npm:22.10.3"
     "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/eslint-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
@@ -18148,7 +18148,7 @@ __metadata:
     "@types/lodash": "npm:4.17.13"
     "@types/multer": "npm:1.4.12"
     "@types/multer-s3": "npm:3.0.3"
-    "@types/node": "npm:22.10.1"
+    "@types/node": "npm:22.10.3"
     "@types/node-cron": "npm:3.0.11"
     "@types/pdfmake": "npm:0.2.9"
     "@types/supertest": "npm:6.0.2"
@@ -18537,7 +18537,7 @@ __metadata:
     "@radix-ui/react-avatar": "npm:1.1.1"
     "@tanstack/react-query": "npm:5.62.0"
     "@testing-library/react": "npm:16.0.1"
-    "@types/node": "npm:22.10.1"
+    "@types/node": "npm:22.10.3"
     "@types/react": "npm:18.3.12"
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
@@ -42553,7 +42553,7 @@ __metadata:
   resolution: "provider@workspace:provider"
   dependencies:
     "@cloudflare/workers-types": "npm:4.20241127.0"
-    "@types/node": "npm:22.10.1"
+    "@types/node": "npm:22.10.3"
     "@unlock-protocol/networks": "workspace:^"
     ethers: "npm:6.13.4"
     typescript: "npm:5.7.2"
