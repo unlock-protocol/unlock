@@ -17989,7 +17989,7 @@ __metadata:
     prism-react-renderer: "npm:2.4.0"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
-    react-icons: "npm:5.3.0"
+    react-icons: "npm:5.4.0"
     tailwindcss: "npm:3.4.15"
   languageName: unknown
   linkType: soft
@@ -43204,6 +43204,15 @@ __metadata:
   peerDependencies:
     react: "*"
   checksum: 10/7f315d2a5e0eee7fefe01eac5cbe818b9592d88964f6c99ba454539a78cd2efd4430152e88113585c5a54bca6a5e1e7e7978df9cf69a03d8479a8d3d106a027c
+  languageName: node
+  linkType: hard
+
+"react-icons@npm:5.4.0":
+  version: 5.4.0
+  resolution: "react-icons@npm:5.4.0"
+  peerDependencies:
+    react: "*"
+  checksum: 10/c900d475c64852b316d16bdc1a436c93e18e0ffb321ebc43a1d8741191baba736e0ef4c6d871399056832b69413cd13b56ae6a18eaa5ad17041df805d803651c
   languageName: node
   linkType: hard
 
