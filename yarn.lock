@@ -18301,7 +18301,7 @@ __metadata:
     hardhat-tracer: "npm:3.1.0"
     prettier: "npm:3.3.3"
     prettier-plugin-solidity: "npm:1.4.1"
-    solhint: "npm:5.0.3"
+    solhint: "npm:5.0.4"
     solidity-coverage: "npm:0.8.14"
     yesno: "npm:0.4.0"
   languageName: unknown
@@ -46387,11 +46387,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"solhint@npm:5.0.3":
-  version: 5.0.3
-  resolution: "solhint@npm:5.0.3"
+"solhint@npm:5.0.4":
+  version: 5.0.4
+  resolution: "solhint@npm:5.0.4"
   dependencies:
-    "@solidity-parser/parser": "npm:^0.18.0"
+    "@solidity-parser/parser": "npm:^0.19.0"
     ajv: "npm:^6.12.6"
     antlr4: "npm:^4.13.1-patch-1"
     ast-parents: "npm:^0.0.1"
@@ -46415,7 +46415,7 @@ __metadata:
       optional: true
   bin:
     solhint: solhint.js
-  checksum: 10/87bc03fce019a3b3443a37a1bdaaabcec9a19730175d306b1c21109dcc612a520eb710ab746850505494b509156dd3bcf21d77fdb176abd57d4d4e6ca76cd85e
+  checksum: 10/52f1219142aaad8e5b9930ecf44369e1dca02fafebcdfb3dde157c95c5a0b97f3617b2d0b3eb5275a5a2ed9e55d32ae626ceedf7fb499dff5135f8d43b7bccfb
   languageName: node
   linkType: hard
 
