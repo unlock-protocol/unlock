@@ -89,7 +89,7 @@
     "react-test-renderer": "18.3.1",
     "tailwindcss": "3.4.15",
     "vitest": "2.1.8",
-    "vitest-fetch-mock": "0.4.2",
+    "vitest-fetch-mock": "0.4.3",
     "vitest-localstorage-mock": "0.1.2"
   },
   "scripts": {
