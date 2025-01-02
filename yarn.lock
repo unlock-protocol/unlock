@@ -17976,7 +17976,7 @@ __metadata:
     ethers: "npm:6.13.4"
     postcss: "npm:8.4.49"
     postcss-nesting: "npm:13.0.1"
-    prism-react-renderer: "npm:2.4.0"
+    prism-react-renderer: "npm:2.4.1"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
     react-icons: "npm:5.3.0"
@@ -18357,7 +18357,7 @@ __metadata:
     autoprefixer: "npm:10.4.20"
     ethers: "npm:6.13.4"
     postcss: "npm:8.4.49"
-    prism-react-renderer: "npm:2.4.0"
+    prism-react-renderer: "npm:2.4.1"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
     react-dropzone: "npm:14.3.5"
@@ -42317,7 +42317,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prism-react-renderer@npm:2.4.0, prism-react-renderer@npm:^2.0.6, prism-react-renderer@npm:^2.3.0":
+"prism-react-renderer@npm:2.4.1":
+  version: 2.4.1
+  resolution: "prism-react-renderer@npm:2.4.1"
+  dependencies:
+    "@types/prismjs": "npm:^1.26.0"
+    clsx: "npm:^2.0.0"
+  peerDependencies:
+    react: ">=16.0.0"
+  checksum: 10/f76ea89b8b18c477eb74e9ddda2571b5c4d21142731f6733160723aa03567b17df315d7db68ffb1122c199750ece65578ecacb488559229b26db5474d6aae55b
+  languageName: node
+  linkType: hard
+
+"prism-react-renderer@npm:^2.0.6, prism-react-renderer@npm:^2.3.0":
   version: 2.4.0
   resolution: "prism-react-renderer@npm:2.4.0"
   dependencies:
