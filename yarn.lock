@@ -16038,10 +16038,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:5.62.0":
-  version: 5.62.0
-  resolution: "@tanstack/query-core@npm:5.62.0"
-  checksum: 10/f3172cd997907ef2b3c767ee51116fffd739f26b504f2d3ce5854cc118c4e2ad1bd1d1d5f223c5ed431fb90f96e649425572402b580852b6ee7aaee72a2dac12
+"@tanstack/query-core@npm:5.62.9":
+  version: 5.62.9
+  resolution: "@tanstack/query-core@npm:5.62.9"
+  checksum: 10/1a10a256d8c7da657d4c370f46bfc9f874bbaa201f5ef63f2d20f20eb5c9f515228c76e9b75e2510a78541a6dc2903cbb3e1495b81037585a67542d48839d977
   languageName: node
   linkType: hard
 
@@ -16056,14 +16056,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:5.62.0":
-  version: 5.62.0
-  resolution: "@tanstack/react-query@npm:5.62.0"
+"@tanstack/react-query@npm:5.62.11":
+  version: 5.62.11
+  resolution: "@tanstack/react-query@npm:5.62.11"
   dependencies:
-    "@tanstack/query-core": "npm:5.62.0"
+    "@tanstack/query-core": "npm:5.62.9"
   peerDependencies:
     react: ^18 || ^19
-  checksum: 10/69712c822e35a32a27fc06009d7e12904e72369bd5dbc039f7fd1023811440f60a9df096e22196a53a64564b6bebfcae755de4b468ce0056e8092f769b0bac52
+  checksum: 10/3f2c372fb7fa656a4d61599657f6df3d8a9164ade866c456c2139f29fc991ee7fbe2dfcd6e1da87bff6583e528f4914c8f8cf209ece8219c20f2a8c661d98e13
   languageName: node
   linkType: hard
 
@@ -18014,7 +18014,7 @@ __metadata:
     "@mui/material": "npm:6.1.9"
     "@mui/x-charts": "npm:7.23.0"
     "@privy-io/react-auth": "npm:1.95.3"
-    "@tanstack/react-query": "npm:5.62.0"
+    "@tanstack/react-query": "npm:5.62.11"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/ui": "workspace:./packages/ui"
     autoprefixer: "npm:10.4.20"
@@ -18398,7 +18398,7 @@ __metadata:
     "@tailwindcss/aspect-ratio": "npm:0.4.2"
     "@tailwindcss/forms": "npm:0.5.9"
     "@tailwindcss/typography": "npm:0.5.15"
-    "@tanstack/react-query": "npm:5.62.0"
+    "@tanstack/react-query": "npm:5.62.11"
     "@tw-classed/react": "npm:1.8.0"
     "@types/react": "npm:18.3.12"
     "@types/react-dom": "npm:18.3.1"
@@ -18575,7 +18575,7 @@ __metadata:
     "@headlessui/react": "npm:2.2.0"
     "@observablehq/plot": "npm:0.6.16"
     "@radix-ui/react-avatar": "npm:1.1.1"
-    "@tanstack/react-query": "npm:5.62.0"
+    "@tanstack/react-query": "npm:5.62.11"
     "@testing-library/react": "npm:16.0.1"
     "@types/node": "npm:22.10.1"
     "@types/react": "npm:18.3.12"
