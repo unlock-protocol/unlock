@@ -11,16 +11,22 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.es.js",
-      "require": "./dist/index.umd.js"
+      "require": "./dist/index.umd.js",
+      "default": "./dist/index.es.js"
     },
     "./dist/style.css": {
       "import": "./dist/style.css",
-      "require": "./dist/style.css"
+      "require": "./dist/style.css",
+      "default": "./dist/style.css"
     },
     "./dist/unlock-tailwind-preset": {
-      "require": "./dist/unlock-tailwind-preset.js"
+      "require": "./dist/unlock-tailwind-preset.js",
+      "default": "./dist/unlock-tailwind-preset.js"
     }
   },
+  "sideEffects": [
+    "**/*.css"
+  ],
   "version": "0.4.8",
   "scripts": {
     "preview": "yarn build && vite --config ./vite.config.ts src",
@@ -47,9 +53,14 @@
     "tailwindcss": "3.4.15"
   },
   "peerDependencies": {
-    "@headlessui/react": "2.2.0",
-    "react": "19.0.0",
-    "react-dom": "19.0.0"
+    "@headlessui/react": "^2.2.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@headlessui/react": {
+      "optional": true
+    }
   },
   "repository": {
     "type": "git",
