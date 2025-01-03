@@ -1,4 +1,4 @@
-import type { ReactNode, ForwardedRef } from 'react'
+import type { ReactNode } from 'react'
 import type { SizeStyleProp } from '../../types'
 import { twMerge } from 'tailwind-merge'
 import { forwardRef } from 'react'
@@ -45,8 +45,8 @@ const VARIANTS_STYLES: Record<Variant, string> = {
     'bg-transparent text-black transition ease-in-out duration-300 text-brand-ui-primary disabled:text-brand-gray disabled:hover:text-brand-gray disabled:hover:bg-opacity-75 font-medium p-0',
 }
 
-export const Button = forwardRef(
-  (props: Props, ref: ForwardedRef<HTMLButtonElement>) => {
+export const Button = forwardRef<HTMLButtonElement, Props>(
+  function Button(props, ref) {
     let {
       children,
       size = 'medium',
@@ -84,14 +84,16 @@ export const Button = forwardRef(
           <Icon
             icon={SpinnerIcon}
             size={size}
-            className="animate-spin motion-reduce:invisible "
+            className="animate-spin motion-reduce:invisible"
           />
         ) : (
           iconLeft
         )}
-        <span> {children}</span>
+        {children && <span>{children}</span>}
         {!loading && iconRight}
       </Box>
     )
   }
 )
+
+Button.displayName = 'Button'
