@@ -13,11 +13,7 @@ import { CheckoutConfig, EventData } from '../../models'
 import { z } from 'zod'
 import { getLockSettingsBySlug } from '../../operations/lockSettingOperations'
 import { getLockMetadata } from '../../operations/metadataOperations'
-import {
-  PaywallConfig,
-  PaywallConfigType,
-  AttendeeRefund,
-} from '@unlock-protocol/core'
+import { PaywallConfigType, AttendeeRefund } from '@unlock-protocol/core'
 import listManagers from '../../utils/lockManagers'
 import { removeProtectedAttributesFromObject } from '../../utils/protectedAttributes'
 import { isVerifierOrManagerForLock } from '../../utils/middlewares/isVerifierMiddleware'
@@ -48,7 +44,7 @@ export const EventBody = z.object({
   data: z.any(),
   checkoutConfig: z
     .object({
-      config: PaywallConfig,
+      config: z.custom<PaywallConfigType>(),
       id: z.string().optional(),
     })
     .optional(),
