@@ -18619,9 +18619,9 @@ __metadata:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/types": "workspace:./packages/types"
-    eslint: "npm:9.16.0"
+    eslint: "npm:9.17.0"
     ethers: "npm:6.13.4"
-    graphql: "npm:16.9.0"
+    graphql: "npm:16.10.0"
     graphql-request: "npm:6.1.0"
     hardhat: "npm:2.22.16"
     prettier: "npm:3.4.1"
@@ -31219,6 +31219,13 @@ __metadata:
   version: 15.5.0
   resolution: "graphql@npm:15.5.0"
   checksum: 10/77e750f639b681ce24fd07aa199e22ffd9399fce7613dd26d1ec1cc67be5fb3c1f608ef267a47f61be7b70019dbbac602ef796a6d93e3d9ec3583d3c2694f7c3
+  languageName: node
+  linkType: hard
+
+"graphql@npm:16.10.0":
+  version: 16.10.0
+  resolution: "graphql@npm:16.10.0"
+  checksum: 10/d42cf81ddcf3a61dfb213217576bf33c326f15b02c4cee369b373dc74100cbdcdc4479b3b797e79b654dabd8fddf50ef65ff75420e9ce5596c02e21f24c9126a
   languageName: node
   linkType: hard
 

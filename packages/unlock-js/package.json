@@ -43,7 +43,7 @@
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "@unlock-protocol/types": "workspace:./packages/types",
-    "eslint": "9.16.0",
+    "eslint": "9.17.0",
     "ethers": "6.13.4",
     "hardhat": "2.22.16",
     "prettier": "3.4.1",
@@ -52,7 +52,7 @@
     "vitest": "2.1.8"
   },
   "dependencies": {
-    "graphql": "16.9.0",
+    "graphql": "16.10.0",
     "graphql-request": "6.1.0",
     "siwe": "2.3.2"
   }
