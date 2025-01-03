@@ -18110,7 +18110,7 @@ __metadata:
     prism-react-renderer: "npm:2.4.1"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
-    react-icons: "npm:5.3.0"
+    react-icons: "npm:5.4.0"
     tailwindcss: "npm:3.4.15"
   languageName: unknown
   linkType: soft
