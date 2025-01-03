@@ -26,8 +26,8 @@
     "docusaurus-theme-openapi-docs": "4.2.0",
     "ethers": "6.13.4",
     "prism-react-renderer": "2.4.1",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
     "react-icons": "5.4.0"
   },
   "scripts": {
