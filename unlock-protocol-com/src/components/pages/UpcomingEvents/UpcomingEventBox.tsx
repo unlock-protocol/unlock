@@ -1,12 +1,9 @@
 import { Button, Modal } from '@unlock-protocol/ui'
 import { FaRegCalendarPlus } from 'react-icons/fa'
 
-import {
-  SiGooglecalendar,
-  SiMicrosoft as SiMicrosoftoffice,
-  SiMicrosoftoutlook,
-} from 'react-icons/si'
-import { BsCalendarDate } from 'react-icons/bs'
+import { SiGooglecalendar } from 'react-icons/si'
+import { PiMicrosoftOutlookLogoFill } from 'react-icons/pi'
+import { BsCalendarDate, BsMicrosoft } from 'react-icons/bs'
 
 import { google, outlook, office365, ics } from 'calendar-link'
 import React, { useState } from 'react'
@@ -95,7 +92,7 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
                 className="hover:underline"
                 href={outlook(calendarEvent)}
               >
-                <SiMicrosoftoutlook className="inline w-8 h-8 mr-3" />
+                <PiMicrosoftOutlookLogoFill className="inline w-8 h-8 mr-3" />
                 Microsoft Outlook
               </Link>
             </li>
@@ -105,7 +102,7 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
                 className="hover:underline"
                 href={office365(calendarEvent)}
               >
-                <SiMicrosoftoffice className="inline w-8 h-8 mr-3" />
+                <BsMicrosoft className="inline w-8 h-8 mr-3" />
                 Microsoft Office 365
               </Link>
             </li>
