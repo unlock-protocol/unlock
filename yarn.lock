@@ -18516,9 +18516,12 @@ __metadata:
     vite-plugin-svgr: "npm:4.3.0"
     vite-tsconfig-paths: "npm:4.3.2"
   peerDependencies:
-    "@headlessui/react": 2.2.0
-    react: 19.0.0
-    react-dom: 19.0.0
+    "@headlessui/react": ^2.2.0
+    react: ^19.0.0
+    react-dom: ^19.0.0
+  peerDependenciesMeta:
+    "@headlessui/react":
+      optional: true
   languageName: unknown
   linkType: soft
 
