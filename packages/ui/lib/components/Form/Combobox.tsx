@@ -354,7 +354,9 @@ export function Combobox({
                           {displayedOptions.map((option, index) => (
                             <li
                               key={`${option.value}-${index}`}
-                              ref={(el) => (optionsRef.current[index] = el)}
+                              ref={(el) => {
+                                optionsRef.current[index] = el
+                              }}
                               className={clsx(
                                 'flex cursor-pointer mx-2 rounded-sm items-center gap-2 py-2 px-3 text-base min-w-0',
                                 'hover:bg-ui-main-50',
@@ -402,10 +404,10 @@ export function Combobox({
                             query === '' &&
                             moreOptions.length > 0 && (
                               <li
-                                ref={(el) =>
-                                  (optionsRef.current[displayedOptions.length] =
-                                    el)
-                                }
+                                ref={(el) => {
+                                  optionsRef.current[displayedOptions.length] =
+                                    el
+                                }}
                                 className={clsx(
                                   'flex cursor-pointer mx-2 rounded-sm items-center justify-center gap-2 py-3 px-3 text-base font-semibold min-w-0',
                                   'hover:bg-ui-main-50 text-brand-ui-primary',
