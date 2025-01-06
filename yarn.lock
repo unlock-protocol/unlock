@@ -18076,7 +18076,7 @@ __metadata:
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
     react-icons: "npm:5.4.0"
-    tailwindcss: "npm:3.4.15"
+    tailwindcss: "npm:3.4.17"
   languageName: unknown
   linkType: soft
 
@@ -18462,7 +18462,7 @@ __metadata:
     react-use-clipboard: "npm:1.0.9"
     storybook: "npm:8.4.6"
     tailwind-merge: "npm:2.6.0"
-    tailwindcss: "npm:3.4.15"
+    tailwindcss: "npm:3.4.17"
     tsup: "npm:8.3.5"
     tsx: "npm:4.19.2"
     typescript: "npm:5.7.2"
@@ -18555,7 +18555,7 @@ __metadata:
     remove-markdown: "npm:0.5.5"
     siwe: "npm:2.3.2"
     tailwind-merge: "npm:2.5.5"
-    tailwindcss: "npm:3.4.15"
+    tailwindcss: "npm:3.4.17"
     typescript: "npm:5.6.3"
     unified: "npm:11.0.5"
     validator: "npm:13.12.0"
@@ -18660,7 +18660,7 @@ __metadata:
     rss: "npm:1.2.2"
     showdown-highlight: "npm:3.1.0"
     tailwind-merge: "npm:2.6.0"
-    tailwindcss: "npm:3.4.15"
+    tailwindcss: "npm:3.4.17"
     typescript: "npm:5.7.2"
     use-local-storage: "npm:3.0.0"
     vitest: "npm:2.1.8"
@@ -35461,13 +35461,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lilconfig@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "lilconfig@npm:2.1.0"
-  checksum: 10/b1314a2e55319013d5e7d7d08be39015829d2764a1eaee130129545d40388499d81b1c31b0f9b3417d4db12775a88008b72ec33dd06e0184cf7503b32ca7cc0b
-  languageName: node
-  linkType: hard
-
 "lilconfig@npm:^3.0.0, lilconfig@npm:^3.1.1":
   version: 3.1.2
   resolution: "lilconfig@npm:3.1.2"
@@ -35475,7 +35468,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lilconfig@npm:~3.1.3":
+"lilconfig@npm:^3.1.3, lilconfig@npm:~3.1.3":
   version: 3.1.3
   resolution: "lilconfig@npm:3.1.3"
   checksum: 10/b932ce1af94985f0efbe8896e57b1f814a48c8dbd7fc0ef8469785c6303ed29d0090af3ccad7e36b626bfca3a4dc56cc262697e9a8dd867623cf09a39d54e4c3
@@ -48169,9 +48162,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:3.4.15":
-  version: 3.4.15
-  resolution: "tailwindcss@npm:3.4.15"
+"tailwindcss@npm:3.4.17":
+  version: 3.4.17
+  resolution: "tailwindcss@npm:3.4.17"
   dependencies:
     "@alloc/quick-lru": "npm:^5.2.0"
     arg: "npm:^5.0.2"
@@ -48182,7 +48175,7 @@ __metadata:
     glob-parent: "npm:^6.0.2"
     is-glob: "npm:^4.0.3"
     jiti: "npm:^1.21.6"
-    lilconfig: "npm:^2.1.0"
+    lilconfig: "npm:^3.1.3"
     micromatch: "npm:^4.0.8"
     normalize-path: "npm:^3.0.0"
     object-hash: "npm:^3.0.0"
@@ -48198,7 +48191,7 @@ __metadata:
   bin:
     tailwind: lib/cli.js
     tailwindcss: lib/cli.js
-  checksum: 10/670bc70ae98d36601990424067f1164eebcbe97493ce8d314e8baa85eb47a6b92caabcea3046dfa9e3888a40a4807c123e12dfa2e05d884ff0583c6a1b647cb7
+  checksum: 10/b0e00533ae3800223b5b71af9cb1dd9bfea5ef5ffa01300f1ced99de9511487aa41e03106173e4168c56c8f6600ee21c98c1d75a5def23cddf9b39b4ad71210d
   languageName: node
   linkType: hard
 
