@@ -18252,7 +18252,7 @@ __metadata:
     cookie-parser: "npm:1.4.7"
     cors: "npm:2.8.5"
     dayjs: "npm:1.11.13"
-    dotenv: "npm:16.4.5"
+    dotenv: "npm:16.4.7"
     eslint: "npm:9.17.0"
     eslint-config-standard: "npm:17.1.0"
     ethers: "npm:6.13.4"
@@ -18522,7 +18522,7 @@ __metadata:
     calendar-link: "npm:2.7.0"
     csv: "npm:6.3.11"
     dayjs: "npm:1.11.13"
-    dotenv: "npm:16.4.5"
+    dotenv: "npm:16.4.7"
     eslint: "npm:9.11.1"
     ethers: "npm:6.13.4"
     file-saver: "npm:2.0.5"
@@ -18634,7 +18634,7 @@ __metadata:
     babel-preset-react-app: "npm:10.0.1"
     calendar-link: "npm:2.8.0"
     dayjs: "npm:1.11.13"
-    dotenv: "npm:16.4.5"
+    dotenv: "npm:16.4.7"
     embla-carousel-react: "npm:8.5.1"
     eslint: "npm:9.14.0"
     eslint-config-next: "npm:14.2.22"
@@ -18681,7 +18681,7 @@ __metadata:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     babel-loader: "npm:9.2.1"
     babel-plugin-wildcard: "npm:7.0.0"
-    dotenv: "npm:16.4.5"
+    dotenv: "npm:16.4.7"
     eslint: "npm:9.17.0"
     handlebars: "npm:4.7.8"
     netlify-cli: "npm:15.11.0"
@@ -26487,7 +26487,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:16.4.5, dotenv@npm:^16.0.0, dotenv@npm:^16.0.3, dotenv@npm:^16.3.1, dotenv@npm:^16.4.5":
+"dotenv@npm:16.4.7":
+  version: 16.4.7
+  resolution: "dotenv@npm:16.4.7"
+  checksum: 10/f13bfe97db88f0df4ec505eeffb8925ec51f2d56a3d0b6d916964d8b4af494e6fb1633ba5d09089b552e77ab2a25de58d70259b2c5ed45ec148221835fc99a0c
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^16.0.0, dotenv@npm:^16.0.3, dotenv@npm:^16.3.1, dotenv@npm:^16.4.5":
   version: 16.4.5
   resolution: "dotenv@npm:16.4.5"
   checksum: 10/55a3134601115194ae0f924e54473459ed0d9fc340ae610b676e248cca45aa7c680d86365318ea964e6da4e2ea80c4514c1adab5adb43d6867fb57ff068f95c8
