@@ -405,7 +405,7 @@ export function Combobox({
                             moreOptions.length > 0 && (
                               <li
                                 ref={(el) => {
-                                  optionsRef.current[displayedOptions.length] =
+                                  return optionsRef.current[displayedOptions.length] =
                                     el
                                 }}
                                 className={clsx(
