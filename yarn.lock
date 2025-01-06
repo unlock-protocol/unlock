@@ -18002,7 +18002,7 @@ __metadata:
     typescript: "npm:5.7.2"
     vitest: "npm:2.1.8"
   peerDependencies:
-    zod: 3.23.8
+    zod: 3.24.1
   languageName: unknown
   linkType: soft
 
