@@ -18196,7 +18196,7 @@ __metadata:
     hardhat: "npm:2.22.16"
     hardhat-gas-reporter: "npm:2.2.2"
     mocha: "npm:11.0.1"
-    prettier: "npm:3.4.1"
+    prettier: "npm:3.4.2"
     solidity-coverage: "npm:0.8.14"
     ts-mocha: "npm:10.0.0"
     ts-node: "npm:10.9.2"
@@ -18324,7 +18324,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     eslint: "npm:9.17.0"
     next: "npm:14.2.18"
-    prettier: "npm:3.4.1"
+    prettier: "npm:3.4.2"
     typescript: "npm:5.7.2"
     vite: "npm:6.0.2"
     vite-plugin-node-polyfills: "npm:0.22.0"
@@ -18577,7 +18577,7 @@ __metadata:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     ethers: "npm:6.13.4"
     passport-custom: "npm:1.1.1"
-    prettier: "npm:3.4.1"
+    prettier: "npm:3.4.2"
   peerDependencies:
     passport: 0.6 || 0.7
   languageName: unknown
@@ -18602,7 +18602,7 @@ __metadata:
     graphql: "npm:16.10.0"
     graphql-request: "npm:6.1.0"
     hardhat: "npm:2.22.16"
-    prettier: "npm:3.4.1"
+    prettier: "npm:3.4.2"
     siwe: "npm:2.3.2"
     tsup: "npm:8.3.5"
     typescript: "npm:5.7.2"
@@ -18647,7 +18647,7 @@ __metadata:
     numeral: "npm:2.0.6"
     path-match: "npm:1.2.4"
     postcss: "npm:8.4.49"
-    prettier: "npm:3.4.1"
+    prettier: "npm:3.4.2"
     raw-loader: "npm:4.0.2"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
@@ -18687,7 +18687,7 @@ __metadata:
     netlify-cli: "npm:15.11.0"
     node-forge: "npm:1.3.1"
     nodemailer: "npm:6.9.16"
-    prettier: "npm:3.4.1"
+    prettier: "npm:3.4.2"
     regenerator-runtime: "npm:0.14.1"
     typescript: "npm:5.7.2"
     vitest: "npm:2.1.8"
@@ -42503,12 +42503,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:3.4.1":
-  version: 3.4.1
-  resolution: "prettier@npm:3.4.1"
+"prettier@npm:3.4.2":
+  version: 3.4.2
+  resolution: "prettier@npm:3.4.2"
   bin:
     prettier: bin/prettier.cjs
-  checksum: 10/1ee4d1b1a9b6761cbb847cd81b9d87e51a0f4b2a4d5fe5755627c24828afe057a7ee9b764c3ee777d84abd46218d173d8a204ee9cb3acdd321ff9a6b25f99c1c
+  checksum: 10/a3e806fb0b635818964d472d35d27e21a4e17150c679047f5501e1f23bd4aa806adf660f0c0d35214a210d5d440da6896c2e86156da55f221a57938278dc326e
   languageName: node
   linkType: hard
 
@@ -50203,7 +50203,7 @@ __metadata:
     husky: "npm:9.1.7"
     lint-staged: "npm:15.3.0"
     node-gyp: "npm:10.2.0"
-    prettier: "npm:3.4.1"
+    prettier: "npm:3.4.2"
     prettier-plugin-solidity: "npm:1.4.1"
     typescript: "npm:5.7.2"
     typescript-eslint: "npm:8.19.0"
