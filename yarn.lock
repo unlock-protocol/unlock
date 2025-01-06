@@ -18672,7 +18672,7 @@ __metadata:
     react-icons: "npm:5.3.0"
     react-markdown: "npm:9.0.1"
     react-test-renderer: "npm:18.3.1"
-    react-to-print: "npm:3.0.2"
+    react-to-print: "npm:3.0.4"
     react-use: "npm:17.5.1"
     react-use-clipboard: "npm:1.0.9"
     remark-html: "npm:16.0.1"
@@ -43910,12 +43910,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-to-print@npm:3.0.2":
-  version: 3.0.2
-  resolution: "react-to-print@npm:3.0.2"
+"react-to-print@npm:3.0.4":
+  version: 3.0.4
+  resolution: "react-to-print@npm:3.0.4"
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ~19
-  checksum: 10/40ad66ba217c7f7e2ab115c7896bab6075fd89ac2eb6b1766498278ebfcdd834a76bb0e548edf4c5d430b2cc849a60334a392c3cb26b97102d8ad18d43680659
+  checksum: 10/10cf0e47a45b96e9243f1e704224e3c0c0e1fda8a9de142e3dda15789546726ad15d77fc1c6269db45cf62f606c9127ae896be503cf5d81f73abcf26c453ed55
   languageName: node
   linkType: hard
 
