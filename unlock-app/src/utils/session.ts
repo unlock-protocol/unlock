@@ -1,9 +1,4 @@
-import {
-  APP_NAME,
-  deleteLocalStorageItem,
-  getLocalStorageItem,
-  setLocalStorageItem,
-} from '~/hooks/useAppStorage'
+import { APP_NAME } from '~/hooks/useAppStorage'
 
 export const CURRENT_ACCOUNT_KEY = `${APP_NAME}.account`
 
@@ -11,15 +6,19 @@ export const getSessionKey = (address: string) =>
   `${APP_NAME}.session_${address.trim().toLowerCase()}`
 
 export const getCurrentAccount = () => {
-  return getLocalStorageItem(CURRENT_ACCOUNT_KEY) || undefined
+  if (typeof window === 'undefined') return undefined
+  return localStorage.getItem(CURRENT_ACCOUNT_KEY) || undefined
 }
 
 export const getCurrentProvider = () => {
-  return getLocalStorageItem(`${APP_NAME}.provider`)
+  if (typeof window === 'undefined') return null
+  const provider = localStorage.getItem(`${APP_NAME}.provider`)
+  return provider
 }
 
 export const getCurrentNetwork = () => {
-  const network = getLocalStorageItem(`${APP_NAME}.network`)
+  if (typeof window === 'undefined') return 1
+  const network = localStorage.getItem(`${APP_NAME}.network`)
   return network ? parseInt(network) : undefined
 }
 
@@ -30,7 +29,7 @@ export const getAccessToken = (
     return null
   }
   const ACCESS_TOKEN_KEY = getSessionKey(address)
-  return getLocalStorageItem(ACCESS_TOKEN_KEY)
+  return localStorage.getItem(ACCESS_TOKEN_KEY)
 }
 
 export const removeAccessToken = (
@@ -40,7 +39,7 @@ export const removeAccessToken = (
     return null
   }
   const ACCESS_TOKEN_KEY = getSessionKey(address)
-  deleteLocalStorageItem(ACCESS_TOKEN_KEY)
+  localStorage.removeItem(ACCESS_TOKEN_KEY)
 }
 
 export const saveAccessToken = ({
@@ -48,6 +47,6 @@ export const saveAccessToken = ({
   accessToken,
 }: Record<'walletAddress' | 'accessToken', string>) => {
   const ACCESS_TOKEN_KEY = getSessionKey(walletAddress)
-  setLocalStorageItem(ACCESS_TOKEN_KEY, accessToken)
+  localStorage.setItem(ACCESS_TOKEN_KEY, accessToken)
   return accessToken
 }
