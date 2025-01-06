@@ -18447,7 +18447,7 @@ __metadata:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/paywall": "workspace:./packages/paywall"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
-    eslint: "npm:9.16.0"
+    eslint: "npm:9.17.0"
     next: "npm:14.2.18"
     prettier: "npm:3.4.1"
     typescript: "npm:5.7.2"
