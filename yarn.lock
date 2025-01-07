@@ -10032,16 +10032,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomicfoundation/hardhat-ignition-ethers@npm:0.15.8":
-  version: 0.15.8
-  resolution: "@nomicfoundation/hardhat-ignition-ethers@npm:0.15.8"
+"@nomicfoundation/hardhat-ignition-ethers@npm:0.15.9":
+  version: 0.15.9
+  resolution: "@nomicfoundation/hardhat-ignition-ethers@npm:0.15.9"
   peerDependencies:
     "@nomicfoundation/hardhat-ethers": ^3.0.4
-    "@nomicfoundation/hardhat-ignition": ^0.15.8
-    "@nomicfoundation/ignition-core": ^0.15.8
+    "@nomicfoundation/hardhat-ignition": ^0.15.9
+    "@nomicfoundation/ignition-core": ^0.15.9
     ethers: ^6.7.0
     hardhat: ^2.18.0
-  checksum: 10/aac8941cd1c6fc6d659a4a42256fbf7de03045c44e06be82d5e84a4e7ec9a94e6d423ea04d101436502c08f10aff220e7277de7d0fee2beb9a0a26fa6ba0d928
+  checksum: 10/057dfbc89385e280693de66f167a0d1e340125a081ee70b49629dff77a3112563228cfa411300d553289661362dceca4b159c0820877540687ab2694207581bd
   languageName: node
   linkType: hard
 
@@ -18379,7 +18379,7 @@ __metadata:
     "@nomicfoundation/hardhat-chai-matchers": "npm:2.0.8"
     "@nomicfoundation/hardhat-ethers": "npm:3.0.8"
     "@nomicfoundation/hardhat-ignition": "npm:0.15.8"
-    "@nomicfoundation/hardhat-ignition-ethers": "npm:0.15.8"
+    "@nomicfoundation/hardhat-ignition-ethers": "npm:0.15.9"
     "@nomicfoundation/hardhat-toolbox": "npm:5.0.0"
     "@nomicfoundation/ignition-core": "npm:0.15.8"
     "@typechain/ethers-v6": "npm:0.5.1"
