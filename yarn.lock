@@ -18516,7 +18516,7 @@ __metadata:
     "@vercel/og": "npm:0.6.4"
     "@vercel/speed-insights": "npm:1.0.14"
     "@vitejs/plugin-react": "npm:4.3.4"
-    "@xstate/react": "npm:5.0.0"
+    "@xstate/react": "npm:5.0.1"
     autoprefixer: "npm:10.4.20"
     axios: "npm:1.7.9"
     calendar-link: "npm:2.7.0"
@@ -19654,19 +19654,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@xstate/react@npm:5.0.0":
-  version: 5.0.0
-  resolution: "@xstate/react@npm:5.0.0"
+"@xstate/react@npm:5.0.1":
+  version: 5.0.1
+  resolution: "@xstate/react@npm:5.0.1"
   dependencies:
     use-isomorphic-layout-effect: "npm:^1.1.2"
     use-sync-external-store: "npm:^1.2.0"
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-0
-    xstate: ^5.19.0
+    xstate: ^5.19.1
   peerDependenciesMeta:
     xstate:
       optional: true
-  checksum: 10/1f2c8e18c192da935e9d28d57c527530fccf3f24a62c5cab3b8e2fd3c280a93baeffdc558bce9d65420770160f8a01c74a4a915b03c6be2cb0b629c9747e3c8d
+  checksum: 10/970e64e323b0ef56ca95d029ebcfe5668cf5898190ff0aacf1f7c08a29502e9fe9c8597cba29a11aca89a6a6e48cf51f0bc927b85c08531b727be3acd4209d2e
   languageName: node
   linkType: hard
 
