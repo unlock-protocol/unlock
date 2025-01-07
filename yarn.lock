@@ -9612,7 +9612,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@noble/hashes@npm:1.5.0, @noble/hashes@npm:^1.1.2, @noble/hashes@npm:^1.3.3, @noble/hashes@npm:^1.4.0, @noble/hashes@npm:^1.5.0, @noble/hashes@npm:~1.5.0":
+"@noble/hashes@npm:1.5.0, @noble/hashes@npm:^1.1.2, @noble/hashes@npm:^1.4.0, @noble/hashes@npm:^1.5.0, @noble/hashes@npm:~1.5.0":
   version: 1.5.0
   resolution: "@noble/hashes@npm:1.5.0"
   checksum: 10/da7fc7af52af7afcf59810a7eea6155075464ff462ffda2572dc6d57d53e2669b1ea2ec774e814f6273f1697e567f28d36823776c9bf7068cba2a2855140f26e
@@ -13450,22 +13450,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/protocol-kit@npm:5.0.4":
-  version: 5.0.4
-  resolution: "@safe-global/protocol-kit@npm:5.0.4"
-  dependencies:
-    "@noble/hashes": "npm:^1.3.3"
-    "@safe-global/safe-deployments": "npm:^1.37.14"
-    "@safe-global/safe-modules-deployments": "npm:^2.2.4"
-    "@safe-global/types-kit": "npm:^1.0.0"
-    abitype: "npm:^1.0.2"
-    semver: "npm:^7.6.3"
-    viem: "npm:^2.21.8"
-  checksum: 10/a6f7c64ca55dc61be1161920dca2f8aa4755d5289f14e271fc1c78c96239b478011f45d0921678dead647eed26dd3f2e2665c20f804eb05b93507142a0ef8de0
-  languageName: node
-  linkType: hard
-
-"@safe-global/protocol-kit@npm:^5.1.1":
+"@safe-global/protocol-kit@npm:5.1.1, @safe-global/protocol-kit@npm:^5.1.1":
   version: 5.1.1
   resolution: "@safe-global/protocol-kit@npm:5.1.1"
   dependencies:
@@ -13486,15 +13471,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/safe-deployments@npm:^1.37.14":
-  version: 1.37.16
-  resolution: "@safe-global/safe-deployments@npm:1.37.16"
-  dependencies:
-    semver: "npm:^7.6.2"
-  checksum: 10/f3f446eb80a9ba80b6ad9e140b6fc070310ae0f81f485d8940af7ed683914390f11feefd824dbc70b550df976f66f03d4e248d30ddec662082de16554b56ffe1
-  languageName: node
-  linkType: hard
-
 "@safe-global/safe-deployments@npm:^1.37.22":
   version: 1.37.22
   resolution: "@safe-global/safe-deployments@npm:1.37.22"
@@ -13508,15 +13484,6 @@ __metadata:
   version: 2.2.4
   resolution: "@safe-global/safe-modules-deployments@npm:2.2.4"
   checksum: 10/594a86c3c8b9b4b39379dfcc360cf81fce5bda633738f0455ce208447e0bbd01133ddb5934486e714d8115da8b5f38a1b7d2fa0fef2a04d57eb81362ef02ce6d
-  languageName: node
-  linkType: hard
-
-"@safe-global/types-kit@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@safe-global/types-kit@npm:1.0.0"
-  dependencies:
-    abitype: "npm:^1.0.2"
-  checksum: 10/a17024b306a3b93e1647d7d9629723e02c25e066774d7aaceca298d5e5ef49a736693ae9ed31b1a4a6fa5d0fcb97f5a08aaf059451e7929348520ceb232e9085
   languageName: node
   linkType: hard
 
@@ -18299,7 +18266,7 @@ __metadata:
     "@openzeppelin/hardhat-upgrades": "npm:3.6.0"
     "@openzeppelin/upgrades-core": "npm:1.41.0"
     "@safe-global/api-kit": "npm:2.5.6"
-    "@safe-global/protocol-kit": "npm:5.0.4"
+    "@safe-global/protocol-kit": "npm:5.1.1"
     "@tenderly/hardhat-tenderly": "npm:2.5.1"
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
