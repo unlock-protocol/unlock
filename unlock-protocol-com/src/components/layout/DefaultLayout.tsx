@@ -179,11 +179,11 @@ export function Layout({ children }: Props) {
           { label: 'Forum', url: 'https://unlock.community/' },
           {
             label: 'Snapshot',
-            url: 'https://snapshot.org/#/unlock-protocol.eth',
+            url: 'https://snapshot.box/#/s:unlock-dao.eth',
           },
           {
             label: 'Tally',
-            url: 'https://www.tally.xyz/gov/unlock',
+            url: 'https://www.tally.xyz/gov/unlock-protocol',
           },
         ],
       },
