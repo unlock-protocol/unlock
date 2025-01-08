@@ -18409,7 +18409,7 @@ __metadata:
     clsx: "npm:2.1.1"
     docusaurus-gtm-plugin: "npm:0.0.2"
     docusaurus-node-polyfills: "npm:1.0.0"
-    docusaurus-plugin-openapi-docs: "npm:4.2.0"
+    docusaurus-plugin-openapi-docs: "npm:4.3.1"
     docusaurus-theme-openapi-docs: "npm:4.2.0"
     ethers: "npm:6.13.4"
     postcss: "npm:8.4.49"
@@ -26560,7 +26560,35 @@ __metadata:
   languageName: node
   linkType: hard
 
-"docusaurus-plugin-openapi-docs@npm:4.2.0, docusaurus-plugin-openapi-docs@npm:^4.2.0":
+"docusaurus-plugin-openapi-docs@npm:4.3.1":
+  version: 4.3.1
+  resolution: "docusaurus-plugin-openapi-docs@npm:4.3.1"
+  dependencies:
+    "@apidevtools/json-schema-ref-parser": "npm:^11.5.4"
+    "@redocly/openapi-core": "npm:^1.10.5"
+    allof-merge: "npm:^0.6.6"
+    chalk: "npm:^4.1.2"
+    clsx: "npm:^1.1.1"
+    fs-extra: "npm:^9.0.1"
+    json-pointer: "npm:^0.6.2"
+    json5: "npm:^2.2.3"
+    lodash: "npm:^4.17.20"
+    mustache: "npm:^4.2.0"
+    openapi-to-postmanv2: "npm:^4.21.0"
+    postman-collection: "npm:^4.4.0"
+    slugify: "npm:^1.6.5"
+    swagger2openapi: "npm:^7.0.8"
+    xml-formatter: "npm:^2.6.1"
+  peerDependencies:
+    "@docusaurus/plugin-content-docs": ^3.5.0
+    "@docusaurus/utils": ^3.5.0
+    "@docusaurus/utils-validation": ^3.5.0
+    react: ^16.8.4 || ^17.0.0 || ^18.0.0
+  checksum: 10/2386effda395411725a628b667a23e9f346961921584c6df302fd45590d46275473bedc7fa85a1db9a5341a99f78e30d2399ad292e11f7cfcc566f1cf4f49c47
+  languageName: node
+  linkType: hard
+
+"docusaurus-plugin-openapi-docs@npm:^4.2.0":
   version: 4.2.0
   resolution: "docusaurus-plugin-openapi-docs@npm:4.2.0"
   dependencies:
