@@ -11,10 +11,9 @@ export const useTermsOfService = () => {
   useEffect(() => {
     try {
       const storedVal = getStorage(localStorageKey)
-      setTermsAccepted(Boolean(storedVal))
+      setTermsAccepted(storedVal === true)
     } catch (error) {
       console.error(error)
-
       setTermsAccepted(false)
     } finally {
       setTermsLoading(false)
