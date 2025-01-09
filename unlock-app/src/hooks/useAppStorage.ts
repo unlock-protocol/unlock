@@ -2,39 +2,52 @@ import { useCallback } from 'react'
 
 export const APP_NAME = '@unlock-app'
 
-const isObject = (value: any) => typeof value === 'object'
+/**
+ * Store objects as JSON, so it's easier to just always try parse, then fallback to the raw value on parse errors.
+ */
+function parseIfNeeded(value: string) {
+  try {
+    return JSON.parse(value)
+  } catch {
+    // If not valid JSON, just return the original string
+    return value
+  }
+}
 
-const getKey = (key: string, withAppName = true) => {
+function getKey(key: string, withAppName = true) {
   return withAppName ? `${APP_NAME}.${key}` : key
 }
 
-export const getLocalStorageItem = (key: string): string | null => {
+export function getLocalStorageItem(key: string, withAppName = true) {
   if (typeof window === 'undefined') return null
   try {
-    const value = localStorage.getItem(getKey(key))
-    if (!value) return null
-    return isObject(value) ? JSON.parse(value) : value
+    const stored = localStorage.getItem(getKey(key, withAppName))
+    if (!stored) return null
+    return parseIfNeeded(stored)
   } catch (error) {
     console.error(error)
+    return null
   }
-  return null
 }
 
-export const setLocalStorageItem = (key: string, value: any) => {
-  const currentValue = getLocalStorageItem(key)
-  if (currentValue === value) return false
+export function setLocalStorageItem(
+  key: string,
+  value: any,
+  withAppName = true
+) {
   try {
     localStorage.setItem(
-      getKey(key),
-      isObject(value) ? JSON.stringify(value) : value
+      getKey(key, withAppName),
+      typeof value === 'object' ? JSON.stringify(value) : String(value)
     )
+    return value
   } catch (error) {
     console.error(error)
+    return null
   }
-  return value
 }
 
-export const deleteLocalStorageItem = (key: string, withAppName = true) => {
+export function deleteLocalStorageItem(key: string, withAppName = true) {
   try {
     localStorage.removeItem(getKey(key, withAppName))
   } catch (error) {
@@ -42,18 +55,22 @@ export const deleteLocalStorageItem = (key: string, withAppName = true) => {
   }
 }
 
-export const clearLocalStorage = (clearItems: string[], addAppName = true) => {
-  for (const item of clearItems) {
-    deleteLocalStorageItem(item, addAppName)
+export function clearLocalStorage(keys: string[], withAppName = true) {
+  for (const key of keys) {
+    deleteLocalStorageItem(key, withAppName)
   }
 }
 
 export function useAppStorage() {
-  // Get and set items in local storage, with caching!
   const getStorage = useCallback(getLocalStorageItem, [])
   const setStorage = useCallback(setLocalStorageItem, [])
+  const removeKey = useCallback(deleteLocalStorageItem, [])
+  const clearStorage = useCallback(clearLocalStorage, [])
+
   return {
-    setStorage,
     getStorage,
+    setStorage,
+    removeKey,
+    clearStorage,
   }
 }
