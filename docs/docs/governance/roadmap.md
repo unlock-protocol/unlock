@@ -30,7 +30,7 @@ As of January 2025, the Unlock ecosystem consists of the following:
   - PassKeys
   - Move to Vercel
 - Core Protocol:
-  - Recurring Cross-chain
+  - Recurring cross-chain purchases
   - Recurring Swap and Purchase
   - Support for better meta-tx
   - Better types
