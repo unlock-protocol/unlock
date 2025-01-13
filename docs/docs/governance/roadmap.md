@@ -40,7 +40,7 @@ As of January 2025, the Unlock ecosystem consists of the following:
 # December 31st 2024
 
 - Dashboard:
-  - Unlock Account 3.0 with Privy: ✅
+  - Unlock Account 3.0 with Privy ✅
   - Basename support ✅
   - Unlock Prime ✅
   - Account funding ✅
