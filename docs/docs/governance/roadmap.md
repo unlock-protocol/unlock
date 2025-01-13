@@ -32,7 +32,7 @@ As of January 2025, the Unlock ecosystem consists of the following:
 - Core Protocol:
   - Recurring cross-chain purchases
   - Recurring swap-and-purchase transactions
-  - Support for better meta-tx
+  - Support for better meta-transactions
   - Better types
 - Governance:
   - Adding more oracles
