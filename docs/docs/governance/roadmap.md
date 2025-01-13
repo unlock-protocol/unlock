@@ -23,7 +23,7 @@ As of January 2025, the Unlock ecosystem consists of the following:
 - Paywall:
   - Allow List Hook: ✅
   - Crosschain and swap and purchase for renewals and extensions
-  - Recurring Cross-chain
+  - Recurring cross-chain purchases
   - Recurring Swap and Purchase
   - Support for better meta-tx
 - Dashboard:
