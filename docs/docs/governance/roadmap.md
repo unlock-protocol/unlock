@@ -51,7 +51,7 @@ As of January 2025, the Unlock ecosystem consists of the following:
   - Farcaster frames ✅
   - Better Google/Apple Pass integration ✅
 - Core Protocol:
-  - Better economic incentives (based on protocol fee): ✅
+  - Better economic incentives (based on protocol fee) ✅
   - Referral maintained on subscriptions ✅
   - Differentiation between protocol referrer and membership referrer ✅
   - Multiple "periods" purchases ✅
