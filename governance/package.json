@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@arbitrum/sdk": "4.0.2",
-    "@eth-optimism/sdk": "3.3.2",
+    "@eth-optimism/sdk": "3.3.3",
     "@gnosis-guild/zodiac": "4.0.3",
     "@gnosis-guild/zodiac-core": "2.0.4",
     "@matterlabs/hardhat-zksync-deploy": "1.6.0",
