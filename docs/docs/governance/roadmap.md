@@ -25,7 +25,7 @@ As of January 2025, the Unlock ecosystem consists of the following:
   - Crosschain and swap and purchase for renewals and extensions
   - Recurring cross-chain purchases
   - Recurring swap-and-purchase transactions
-  - Support for better meta-tx
+  - Support for better meta-transactions
 - Dashboard:
   - PassKeys
   - Move to Vercel
