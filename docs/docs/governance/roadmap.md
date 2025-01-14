@@ -8,7 +8,7 @@ sidebar_position: 5
 
 # Roadmap
 
-As of January 2024, the Unlock ecosystem consists of the following:
+As of January 2025, the Unlock ecosystem consists of the following:
 
 - A set of smart contracts (the [core protocol](../core-protocol/)) which let creators deploy their locks, as well as lets consumers unlock the locks, deployed on [multiple networks](../core-protocol/unlock/networks).
 - An [unlock-js](https://www.npmjs.com/package/@unlock-protocol/unlock-js) library that developers can use to interact with the contracts,
@@ -16,27 +16,70 @@ As of January 2024, the Unlock ecosystem consists of the following:
 - An [unlock-app](https://app.unlock-protocol.com/locks) application that lets creators deploy their lock and view their members, as well as lets consumers view the keys they purchased and interact with them (keychain). The Unlock app also provides user accounts that enable people to create an account with their email and password and then purchase keys with their credit cards through Unlock Inc,
 - The [Unlock DAO Tokens](/governance/unlock-dao-tokens), aka UDT, a governance token for the Unlock ecosystem, is used to share ownership, as well as incentivize the use of the protocol.
 - The [Unlock DAO](https://unlock-protocol.com/blog/unlock-dao), a set of contracts that lets anyone who owns Unlock tokens submit proposals and vote on them in order to effectively govern the protocol and its treasury
+- An [Events app](https://events.unlock-protocol.com/) which lets event organizers use Unlock to mint paid or free tickets for their events
+
+# June 30th 2025
+
+- Paywall:
+  - Allow List Hook: ✅
+  - Crosschain and swap and purchase for renewals and extensions
+  - Recurring cross-chain purchases
+  - Recurring swap-and-purchase transactions
+  - Support for better meta-transactions
+- Dashboard:
+  - PassKeys
+  - Move to Vercel
+- Core Protocol:
+  - Recurring cross-chain purchases
+  - Recurring swap-and-purchase transactions
+  - Support for better meta-transactions
+  - Better types
+- Governance:
+  - Adding more oracles
+
+# December 31st 2024
+
+- Dashboard:
+  - Unlock Account 3.0 with Privy ✅
+  - Basename support ✅
+  - Unlock Prime ✅
+  - Account funding ✅
+  - Transfer keys from Dashboard ✅
+- Paywall:
+  - Using relay.link ✅
+  - Basename support ✅
+  - Farcaster frames ✅
+  - Better Google/Apple Pass integration ✅
+- Core Protocol:
+  - Better economic incentives (based on protocol fee) ✅
+  - Referral maintained on subscriptions ✅
+  - Differentiation between protocol referrer and membership referrer ✅
+  - Multiple "periods" purchases ✅
+- Governance:
+  - Move DAO to Base ✅
+  - New Governance Token (UP) ✅
+  - DAO governance for Linea ✅
 
 # June 30th 2024
 
 - Dashboard:
-  - "Favorite" locks in dashboard
-  - Event app with user pre-approval
-  - UI to manage caps on Discount and Password Hooks
-  - Showing Key granters in settings
+  - "Favorite" locks in dashboard ✅
+  - Event app with user pre-approval ✅
+  - UI to manage caps on Discount and Password Hooks ✅
+  - Showing Key granters in settings ✅
 - Paywall:
   - Dark Mode, color customization
 - Subgraphs
-  - All decentralized
-  - Single endpoint
+  - All decentralized ✅
+  - Single endpoint ✅
 - Core Protocol (contracts):
-  - More networks supported
+  - More networks supported ✅
   - Recurring Cross-chain
   - Recurring Swap and Purchase
   - Support for better meta-tx
-  - Transfer to Unlock Account
+  - Transfer to Unlock Account ✅
 - Governance:
-  - UDT bridged to more networks
+  - UDT bridged to more networks ✅
 
 # December 31th 2023
 
