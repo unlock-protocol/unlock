@@ -36,6 +36,7 @@ As of January 2025, the Unlock ecosystem consists of the following:
   - Better types
 - Governance:
   - Adding more oracles
+  - Adding the ability to "transfer" tokens back to DAO (in case they can't be burned!)
 
 # December 31st 2024
 
