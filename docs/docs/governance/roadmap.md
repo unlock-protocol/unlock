@@ -14,7 +14,7 @@ As of January 2025, the Unlock ecosystem consists of the following:
 - An [unlock-js](https://www.npmjs.com/package/@unlock-protocol/unlock-js) library that developers can use to interact with the contracts,
 - A [paywall application](https://paywall.unlock-protocol.com) that can be embedded on any website or application to limit access to members and then lets users purchase keys to unlock content,
 - An [unlock-app](https://app.unlock-protocol.com/locks) application that lets creators deploy their lock and view their members, as well as lets consumers view the keys they purchased and interact with them (keychain). The Unlock app also provides user accounts that enable people to create an account with their email and password and then purchase keys with their credit cards through Unlock Inc,
-- The [Unlock DAO Tokens](/governance/unlock-dao-tokens), aka UDT, a governance token for the Unlock ecosystem, is used to share ownership, as well as incentivize the use of the protocol.
+- [Unlock Protocol Tokens](/governance/unlock-dao-tokens), aka UP, are governance tokens for the Unlock ecosystem, and are used to share ownership, as well as incentivize the use of the protocol.
 - The [Unlock DAO](https://unlock-protocol.com/blog/unlock-dao), a set of contracts that lets anyone who owns Unlock tokens submit proposals and vote on them in order to effectively govern the protocol and its treasury
 - An [Events app](https://events.unlock-protocol.com/) which lets event organizers use Unlock to mint paid or free tickets for their events
 
