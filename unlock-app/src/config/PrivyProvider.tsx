@@ -189,8 +189,9 @@ export const Privy = ({ children }: { children: ReactNode }) => {
     typeof window !== 'undefined' &&
     window.location.pathname.includes('migrate-user')
 
-  // Check if we're in an iframe (paywall context)
-  const isInPaywall = isInIframe()
+  // Check if we're in an iframe && not in the Unlock dashboard
+  const isInPaywall =
+    isInIframe() && !window.location.href.includes(config.unlockApp)
 
   return (
     <AuthenticationContext.Provider value={{ account, setAccount }}>
