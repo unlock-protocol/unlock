@@ -15,6 +15,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { locksmith } from './locksmith'
 import AuthenticationContext from '~/contexts/AuthenticationContext'
 import { MigrationModal } from '~/components/legacy-auth/MigrationNotificationModal'
+import { isInIframe } from '~/utils/iframe'
 
 // check for legacy account
 export const checkLegacyAccount = async (
@@ -188,13 +189,21 @@ export const Privy = ({ children }: { children: ReactNode }) => {
     typeof window !== 'undefined' &&
     window.location.pathname.includes('migrate-user')
 
+  // Check if we're in an iframe (paywall context)
+  const isInPaywall = isInIframe()
+
   return (
     <AuthenticationContext.Provider value={{ account, setAccount }}>
       <PrivyProvider
         config={{
+          /* For the meantime, when user is authenticating via paywall on an external website (embedded paywall),
+           * we can only allow the wallet method to login.
+           */
           loginMethods: isMigratePage
             ? ['email']
-            : ['wallet', 'email', 'google', 'farcaster'],
+            : isInPaywall
+              ? ['wallet']
+              : ['wallet', 'email', 'google', 'farcaster'],
           embeddedWallets: {
             createOnLogin: 'off',
           },
