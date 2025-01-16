@@ -2,10 +2,10 @@ import forge from 'node-forge'
 import config from '../config'
 
 /**
- * Encrypts data asymetrically.
+ * Encrypts data asymmetrically.
  * The private key is known by wedlocks only, while the public key can be public.
  * This way we can ensure that the data consumed by a web app was transiting thru wedlocks
- * This is used for email verifcation
+ * This is used for email verification
  * @param {*} data UTF8 string
  */
 export const signParam = (
