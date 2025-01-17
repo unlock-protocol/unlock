@@ -40,4 +40,4 @@ heroku container:login
 # Release all processes
 echo "> heroku releasing web, worker, and release images"
 heroku container:release -a $HEROKU_APP_NAME web worker release
-echo "> heroku release done!"
+

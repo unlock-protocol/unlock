@@ -7,7 +7,7 @@ const headers = {
 }
 
 export const handler = async (event, context, responseCallback) => {
-  const callback = (err /** alway null! */, response) => {
+  const callback = (err /** always null! */, response) => {
     if (response.statusCode >= 400) {
       logger.error({
         event,
