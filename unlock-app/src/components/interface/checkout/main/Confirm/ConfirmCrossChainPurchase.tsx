@@ -37,7 +37,7 @@ export function ConfirmCrossChainPurchase({
   const { account } = useAuthenticate()
   const { getWalletService } = useProvider()
   const config = useConfig()
-  const recaptchaRef = useRef<any>()
+  const recaptchaRef = useRef<ReCaptcha>(null)
   const [isConfirming, setIsConfirming] = useState(false)
 
   const { address: lockAddress, network: lockNetwork } = lock!
@@ -147,6 +147,7 @@ export function ConfirmCrossChainPurchase({
 
   return (
     <Fragment>
+      {/* @ts-expect-error ReCaptcha is not a valid JSX component */}
       <ReCaptcha
         ref={recaptchaRef}
         sitekey={config.recaptchaKey}

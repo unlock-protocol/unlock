@@ -27,7 +27,7 @@ export function ConfirmClaim({ checkoutService, onConfirmed, onError }: Props) {
     useSelector(checkoutService, (state) => state.context)
   const config = useConfig()
 
-  const recaptchaRef = useRef<any>()
+  const recaptchaRef = useRef<ReCaptcha>(null)
   const [isConfirming, setIsConfirming] = useState(false)
 
   const { address: lockAddress, network: lockNetwork } = lock!
@@ -78,7 +78,7 @@ export function ConfirmClaim({ checkoutService, onConfirmed, onError }: Props) {
     const captcha = await recaptchaRef.current?.executeAsync()
     const { hash } = await claim({
       data: purchaseData?.[0],
-      captcha,
+      captcha: captcha || '',
     })
 
     if (hash) {
@@ -91,6 +91,7 @@ export function ConfirmClaim({ checkoutService, onConfirmed, onError }: Props) {
 
   return (
     <Fragment>
+      {/* @ts-expect-error ReCaptcha is not a valid JSX component */}
       <ReCaptcha
         ref={recaptchaRef}
         sitekey={config.recaptchaKey}
