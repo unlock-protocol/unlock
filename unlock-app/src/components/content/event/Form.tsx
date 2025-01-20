@@ -85,7 +85,6 @@ export const GoogleMapsAutoComplete = ({
   return (
     <Input
       defaultValue={defaultValue}
-      // @ts-expect-error Type 'RefObject<null>' is not assignable to type 'Ref<HTMLInputElement> | undefined'.
       ref={ref}
       type="text"
       placeholder="123 1st street, 11217 Springfield, US"
