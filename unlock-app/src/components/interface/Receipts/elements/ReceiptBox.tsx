@@ -275,7 +275,7 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
     )
   }
 
-  const componentRef = useRef<any>()
+  const componentRef = useRef<any>(null)
 
   const handlePrint = useReactToPrint({
     documentTitle: `Receipt-${receiptNumber}`,
