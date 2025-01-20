@@ -18081,7 +18081,6 @@ __metadata:
   linkType: hard
 
 "@types/react@npm:*":
-"@types/react@npm:*":
   version: 18.3.12
   resolution: "@types/react@npm:18.3.12"
   dependencies:
