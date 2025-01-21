@@ -11,7 +11,6 @@ async function main() {
       networks: [1, 5],
     }
   )
-  console.log(locks)
 
   const keys = await service.locks(
     {
