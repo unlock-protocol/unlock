@@ -53,6 +53,9 @@ async function fetchUnprocessedLocks(network: number, page = 0) {
         objectId: {
           [Op.in]: lockIds,
         },
+        network: {
+          [Op.eq]: network,
+        },
       },
     })
 
