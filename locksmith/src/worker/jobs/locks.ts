@@ -151,14 +151,13 @@ async function notifyHooksOfNewLocks(
   locks: any[],
   network: number
 ) {
-  return Promise.all(
-    hooks.map(async (hook) => {
-      return notifyHook(hook, {
-        data: locks,
-        network,
-      })
+  for (let i = 0; i < hooks.length; i++) {
+    const hook = hooks[i]
+    await notifyHook(hook, {
+      data: locks,
+      network,
     })
-  )
+  }
 }
 
 /**
@@ -187,10 +186,8 @@ async function markLocksAsProcessed(locks: any[], network: number) {
  * @param network - Network ID where locks exist
  */
 async function finalizeLockProcessing(locks: any[], network: number) {
-  await Promise.all([
-    updatePendingEvents(locks, network),
-    markLocksAsProcessed(locks, network),
-  ])
+  await updatePendingEvents(locks, network)
+  await markLocksAsProcessed(locks, network)
 }
 
 /**
@@ -202,10 +199,8 @@ async function finalizeLockProcessing(locks: any[], network: number) {
  * @param network - Network ID where locks were found
  */
 async function processLockBatch(hooks: Hook[], locks: any[], network: number) {
-  await Promise.all([
-    notifyHooksOfNewLocks(hooks, locks, network),
-    finalizeLockProcessing(locks, network),
-  ])
+  await notifyHooksOfNewLocks(hooks, locks, network)
+  await finalizeLockProcessing(locks, network)
 }
 
 /**

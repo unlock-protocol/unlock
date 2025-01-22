@@ -100,17 +100,14 @@ export const notifyExpiredKeysForLock = async (keys: any[]) => {
     hooks,
     TOPIC_EXPIRED_KEYS_ON_NETWORK
   )
-
-  const events = await Promise.allSettled(
-    expiredKeysHook.map(async (hook) => {
-      const data = keys.filter((key: any) => key.lock.id === hook.lock)
-      const hookEvent = await notifyHook(hook, {
-        data,
-        network: hook.network,
-      })
-      return hookEvent
+  for (let i = 0; i < expiredKeysHook.length; i++) {
+    const hook = expiredKeysHook[i]
+    const data = keys.filter((key: any) => key.lock.id === hook.lock)
+    await notifyHook(hook, {
+      data,
+      network: hook.network,
     })
-  )
+  }
   const items = keys.map((key: any) => ({
     type: 'expired-keys',
     objectId: key.id,
@@ -118,7 +115,6 @@ export const notifyExpiredKeysForLock = async (keys: any[]) => {
   }))
 
   await ProcessedHookItem.bulkCreate(items)
-  return events
 }
 
 export const notifyExpiredKeysForNetwork: Task = async () => {
