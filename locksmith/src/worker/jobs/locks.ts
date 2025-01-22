@@ -230,7 +230,7 @@ async function handleNetworkLocks(hooks: Hook[], network: number) {
     const newLocks = await fetchUnprocessedLocks(network, page)
 
     if (!newLocks.length) {
-      logger.info(`No new locks found for network ${network}`)
+      logger.info(`No more new locks found for network ${network}`)
       break
     }
 
@@ -256,7 +256,6 @@ async function handleNetworkLocks(hooks: Hook[], network: number) {
  */
 export async function notifyOfLocks(hooks: Hook[]) {
   const subscribedHooks = filterHooksByTopic(hooks, TOPIC_LOCKS)
-  const networkTasks: Promise<void>[] = []
 
   for (const network of Object.values(networks)) {
     if (network.id === 31337) continue // Skip local network
@@ -264,8 +263,6 @@ export async function notifyOfLocks(hooks: Hook[]) {
     const networkHooks = subscribedHooks.filter(
       (hook) => hook.network === network.id
     )
-    networkTasks.push(handleNetworkLocks(networkHooks, network.id))
+    await handleNetworkLocks(networkHooks, network.id)
   }
-
-  await Promise.allSettled(networkTasks)
 }
