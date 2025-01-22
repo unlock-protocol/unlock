@@ -57,22 +57,24 @@ export class SubgraphService {
     const networks =
       options?.networks?.map((item) => this.networks[item]) ||
       Object.values(this.networks).filter((item) => item.id !== 31337)
-    const items = await Promise.all(
-      networks.map(async (config) => {
-        try {
-          const sdk = this.createSdk(config.id)
-          const results = await sdk.allLocks(variables)
-          return results.locks.map((item) => ({
+
+    const items = []
+    for (let i = 0; i < networks.length; i++) {
+      const network = networks[i]
+      try {
+        const sdk = this.createSdk(network.id)
+        const results = await sdk.allLocks(variables)
+        items.push(
+          ...results.locks.map((item) => ({
             ...item,
-            network: config.id,
+            network: network.id,
           }))
-        } catch (error) {
-          console.error(error)
-          return []
-        }
-      })
-    )
-    return items.flat()
+        )
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    return items
   }
 
   /**
@@ -94,22 +96,24 @@ export class SubgraphService {
     const networks =
       options?.networks?.map((item) => this.networks[item]) ||
       Object.values(this.networks).filter((item) => item.id !== 31337)
-    const items = await Promise.all(
-      networks.map(async (config) => {
-        try {
-          const sdk = this.createSdk(config.id)
-          const results = await sdk.allLocksWithKeys(variables)
-          return results.locks.map((item) => ({
+
+    const items = []
+    for (let i = 0; i < networks.length; i++) {
+      const network = networks[i]
+      try {
+        const sdk = this.createSdk(network.id)
+        const results = await sdk.allLocksWithKeys(variables)
+        items.push(
+          ...results.locks.map((item) => ({
             ...item,
-            network: config.id,
+            network: network.id,
           }))
-        } catch (error) {
-          console.error(error)
-          return []
-        }
-      })
-    )
-    return items.flat()
+        )
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    return items
   }
 
   /**
@@ -139,23 +143,23 @@ export class SubgraphService {
       options?.networks?.map((item) => this.networks[item]) ||
       Object.values(this.networks).filter((item) => item.id !== 31337)
 
-    const items = await Promise.all(
-      networks.map(async (config) => {
-        try {
-          const sdk = this.createSdk(config.id)
-          const results = await sdk.AllKeys(variables)
-          return results.keys.map((item) => ({
+    const items = []
+    for (let i = 0; i < networks.length; i++) {
+      const network = networks[i]
+      try {
+        const sdk = this.createSdk(network.id)
+        const results = await sdk.AllKeys(variables)
+        items.push(
+          ...results.keys.map((item) => ({
             ...item,
-            network: config.id,
+            network: network.id,
           }))
-        } catch (error) {
-          console.error(error)
-          return []
-        }
-      })
-    )
-
-    return items.flat()
+        )
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    return items
   }
 
   /**
@@ -175,22 +179,23 @@ export class SubgraphService {
       options?.networks?.map((item) => this.networks[item]) ||
       Object.values(this.networks).filter((item) => item.id !== 31337)
 
-    const items = await Promise.all(
-      networks.map(async (config) => {
-        try {
-          const sdk = this.createSdk(config.id)
-          const results = await sdk.AllReceipts(variables)
-          return results.receipts.map((item) => ({
+    const items = []
+    for (let i = 0; i < networks.length; i++) {
+      const network = networks[i]
+      try {
+        const sdk = this.createSdk(network.id)
+        const results = await sdk.AllReceipts(variables)
+        items.push(
+          ...results.receipts.map((item) => ({
             ...item,
-            network: config.id,
+            network: network.id,
           }))
-        } catch (error) {
-          console.error(error)
-          return []
-        }
-      })
-    )
-    return items.flat()
+        )
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    return items
   }
 
   /** Get a single receipt for a specific network */
