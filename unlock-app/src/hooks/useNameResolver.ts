@@ -2,7 +2,17 @@ import { ethers } from 'ethers'
 import { useQuery } from '@tanstack/react-query'
 import configure from '~/config'
 import { L2_RESOLVER_ADDRESS, L2_RESOLVER_ABI } from '~/utils/baseResolver'
+import { limitFunction } from 'p-limit'
+
 const config = configure()
+
+const maxConcurrency = 10
+
+const BasenameContract = new ethers.Contract(
+  L2_RESOLVER_ADDRESS,
+  L2_RESOLVER_ABI,
+  new ethers.JsonRpcProvider(config.networks[8453].provider)
+)
 
 /**
  * Converts a chain ID to its corresponding coin type for ENS compatibility.
@@ -46,38 +56,42 @@ const convertReverseNodeToBytes = (
  * @param {string} address - The Ethereum address to lookup.
  * @returns {Promise<string | null>} The ENS name if found, null otherwise.
  */
-const getEnsName = async (address: string): Promise<string | null> => {
-  try {
-    const provider = new ethers.JsonRpcProvider(config.networks[1].provider)
-    const ensName = await provider.lookupAddress(address)
-    return ensName || null
-  } catch (error) {
-    console.error(`Error resolving ENS name for ${address}:`, error)
-    return null
-  }
-}
+const getEnsName = limitFunction(
+  async (address: string): Promise<string | null> => {
+    try {
+      const provider = new ethers.JsonRpcProvider(config.networks[1].provider)
+      const ensName = await provider.lookupAddress(address)
+      return ensName || address
+    } catch (error) {
+      console.error(`Error resolving ENS name for ${address}:`, error)
+      return null
+    }
+  },
+  { concurrency: maxConcurrency }
+)
 
 /**
  * Fetches the basename for a given address from the L2 resolver.
  * @param {string} address - The Ethereum address to lookup.
  * @returns {Promise<string | null>} The basename if found, null otherwise.
  */
-const getBaseName = async (address: string): Promise<string | null> => {
-  try {
-    const provider = new ethers.JsonRpcProvider(config.networks[8453].provider)
-    const addressReverseNode = convertReverseNodeToBytes(address, 8453)
-    const contract = new ethers.Contract(
-      L2_RESOLVER_ADDRESS,
-      L2_RESOLVER_ABI,
-      provider
-    )
-    const basename = await contract.name(addressReverseNode)
-    return basename || null
-  } catch (error) {
-    console.error(`Error resolving Base name for ${address}:`, error)
-    return null
-  }
-}
+const getBaseName = limitFunction(
+  async (address: string): Promise<string | null> => {
+    try {
+      const addressReverseNode = convertReverseNodeToBytes(address, 8453)
+      const basename = await BasenameContract.name(addressReverseNode).catch(
+        (error) => {
+          console.log(error)
+        }
+      )
+      return basename || address
+    } catch (error) {
+      console.error(`Error resolving Base name for ${address}:`, error)
+      return null
+    }
+  },
+  { concurrency: maxConcurrency }
+)
 
 /**
  * Hook to resolve ENS name and Base name for an Ethereum address.
@@ -89,16 +103,28 @@ const getBaseName = async (address: string): Promise<string | null> => {
  *   - isBaseNameLoading: Boolean indicating if the Base name is still loading.
  */
 export const useNameResolver = (address: string) => {
+  const queryParams = {
+    staleTime: Infinity,
+    cacheTime: Infinity,
+    retry: 0,
+    refetchOnWindowFocus: false,
+    retryOnMount: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  }
+
   const { data: ensName, isPending: isEnsNameLoading } = useQuery({
     queryKey: ['ensName', address],
     queryFn: () => getEnsName(address),
     enabled: !!address,
+    ...queryParams,
   })
 
   const { data: baseName, isPending: isBaseNameLoading } = useQuery({
     queryKey: ['baseName', address],
     queryFn: () => getBaseName(address),
     enabled: !!address,
+    ...queryParams,
   })
 
   return {
