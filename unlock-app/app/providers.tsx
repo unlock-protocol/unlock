@@ -1,11 +1,7 @@
 'use client'
 
 import React, { Suspense } from 'react'
-import {
-  isServer,
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 
 import { SessionProvider } from '~/hooks/useSession'
 import { AirstackProvider } from '@airstack/airstack-react'
@@ -17,33 +13,9 @@ import GlobalWrapper from '~/components/interface/GlobalWrapper'
 import { ConnectModalProvider } from '~/hooks/useConnectModal'
 import Privy from '~/config/PrivyProvider'
 import LoadingFallback from './Components/LoadingFallback'
-
-function makeQueryClient() {
-  return new QueryClient({
-    defaultOptions: {
-      queries: {
-        staleTime: 60 * 1000,
-      },
-    },
-  })
-}
-
-let browserQueryClient: QueryClient | undefined = undefined
-
-function getQueryClient() {
-  if (isServer) {
-    // Always create a new client on the server
-    return makeQueryClient()
-  } else {
-    // Create client once in the browser to avoid re-instantiation
-    if (!browserQueryClient) browserQueryClient = makeQueryClient()
-    return browserQueryClient
-  }
-}
+import { queryClient } from '~/config/queryClient'
 
 export default function Providers({ children }: { children: React.ReactNode }) {
-  const queryClient = getQueryClient()
-
   return (
     <Privy>
       <QueryClientProvider client={queryClient}>
