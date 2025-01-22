@@ -57,23 +57,23 @@ export class SubgraphService {
     const networks =
       options?.networks?.map((item) => this.networks[item]) ||
       Object.values(this.networks).filter((item) => item.id !== 31337)
+
     const items = []
     for (let i = 0; i < networks.length; i++) {
-      const config = networks[i]
+      const network = networks[i]
       try {
-        const sdk = this.createSdk(config.id)
+        const sdk = this.createSdk(network.id)
         const results = await sdk.allLocks(variables)
         items.push(
           ...results.locks.map((item) => ({
             ...item,
-            network: config.id,
+            network: network.id,
           }))
         )
       } catch (error) {
         console.error(error)
       }
     }
-
     return items
   }
 
@@ -99,21 +99,20 @@ export class SubgraphService {
 
     const items = []
     for (let i = 0; i < networks.length; i++) {
-      const config = networks[i]
+      const network = networks[i]
       try {
-        const sdk = this.createSdk(config.id)
+        const sdk = this.createSdk(network.id)
         const results = await sdk.allLocksWithKeys(variables)
         items.push(
           ...results.locks.map((item) => ({
             ...item,
-            network: config.id,
+            network: network.id,
           }))
         )
       } catch (error) {
         console.error(error)
       }
     }
-
     return items
   }
 
@@ -182,14 +181,14 @@ export class SubgraphService {
 
     const items = []
     for (let i = 0; i < networks.length; i++) {
-      const config = networks[i]
+      const network = networks[i]
       try {
-        const sdk = this.createSdk(config.id)
+        const sdk = this.createSdk(network.id)
         const results = await sdk.AllReceipts(variables)
         items.push(
-          results.receipts.map((item) => ({
+          ...results.receipts.map((item) => ({
             ...item,
-            network: config.id,
+            network: network.id,
           }))
         )
       } catch (error) {
