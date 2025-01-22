@@ -81,9 +81,9 @@ async function notifyHooksOfAllUnprocessedKeys(hooks: Hook[], network: number) {
         })
       }
 
-      for (let i = 0; i < keysOnLockHooks.length; i++) {
-        const keysOnLockHook = keysOnLockHooks[i]
-        await notifyHook(keysOnLockHook, {
+      for (let i = 0; i < keysOnNetworkHooks.length; i++) {
+        const keysOnNetworkHook = keysOnNetworkHooks[i]
+        await notifyHook(keysOnNetworkHook, {
           network,
           data: keys,
         })
