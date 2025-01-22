@@ -25,7 +25,7 @@ export const defaultEventCheckoutConfigForLockOnNetwork = (
     title: 'Registration',
     locks: {
       [lockAddress]: {
-        network: network,
+        network,
         metadataInputs: [
           {
             name: 'email',
@@ -56,21 +56,26 @@ export const NewEvent = () => {
 
   const onSubmit = async (formData: NewEventForm) => {
     try {
-      // Create the event with pending status
-      const { data: event } = await locksmith.saveEventData({
+      const walletService = await getWalletService(formData.network)
+
+      // Create initial event with pending status
+      const pendingEventData = {
         data: {
           ...formDataToMetadata({
             name: formData.lock.name,
             ...formData.metadata,
           }),
           ...formData.metadata,
-          status: EventStatus.PENDING,
         },
-      })
+        status: EventStatus.PENDING,
+      }
 
-      // Deploy the lock
-      const walletService = await getWalletService(formData.network)
-      walletService.createLock(
+      // Create pending event first
+      const { data: pendingEvent } =
+        await locksmith.saveEventData(pendingEventData)
+
+      // Deploy the lock and wait for the address
+      const lockAddress = await walletService.createLock(
         {
           ...formData.lock,
           name: formData.lock.name,
@@ -80,24 +85,41 @@ export const NewEvent = () => {
         {},
         async (createLockError, transactionHash) => {
           if (createLockError) {
-            console.error('Error creating lock:', createLockError)
             throw createLockError
           }
           if (transactionHash) {
-            // update the event with the transaction hash
-            await locksmith.updateEventData(event.slug, {
-              transactionHash,
-            })
             setTransactionDetails({
               hash: transactionHash,
               network: formData.network,
-              slug: event.slug,
+              slug: pendingEvent.slug,
             })
           }
         }
       )
+
+      // If lock is created, update metadata and update event status to deployed
+      if (lockAddress) {
+        // Update lock metadata
+        await locksmith.updateLockMetadata(formData.network, lockAddress, {
+          metadata: {
+            name: `Ticket for ${formData.lock.name}`,
+            image: formData.metadata.image,
+          },
+        })
+
+        // Update existing event with checkout config and deployed status
+        await locksmith.updateEventData(pendingEvent.slug, {
+          status: EventStatus.DEPLOYED,
+          checkoutConfig: {
+            name: `Checkout config for ${formData.lock.name}`,
+            config: defaultEventCheckoutConfigForLockOnNetwork(
+              lockAddress,
+              formData.network
+            ),
+          },
+        })
+      }
     } catch (error) {
-      console.error('Error in event creation process:', error)
       ToastHelper.error(
         'There was an error creating your event. Please try again.'
       )
