@@ -1,4 +1,4 @@
-import { SubgraphService } from '@unlock-protocol/unlock-js'
+import { graphService } from '../config/subgraph'
 
 interface listManagersProps {
   lockAddress: string
@@ -9,8 +9,7 @@ export default async function listManagers({
   lockAddress,
   network,
 }: listManagersProps) {
-  const service = new SubgraphService()
-  const lock = await service.lock(
+  const lock = await graphService.lock(
     {
       where: {
         address_in: [lockAddress],

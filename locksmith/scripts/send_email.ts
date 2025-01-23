@@ -1,6 +1,6 @@
 import { notifyNewKeysToWedlocks } from '../src/operations/wedlocksOperations'
-import { SubgraphService } from '@unlock-protocol/unlock-js'
 import yargs from 'yargs'
+import { graphService } from '../src/config/subgraph'
 
 const argv = yargs
   .option('network', {
@@ -29,8 +29,7 @@ interface Options {
 }
 
 async function run({ lockAddress, network }: Options) {
-  const service = new SubgraphService()
-  const keys = await service.keys(
+  const keys = await graphService.keys(
     {
       first: 1000,
       where: {

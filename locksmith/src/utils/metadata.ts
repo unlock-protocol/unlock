@@ -1,8 +1,8 @@
 import config from '../config/config'
-import { SubgraphService } from '@unlock-protocol/unlock-js'
 import logger from '../logger'
 import { waitOrTimeout } from './promises'
 import { TIMEOUT_ON_SUBGRAPH } from './constants'
+import { graphService } from '../config/subgraph'
 
 interface Options {
   lockAddress: string
@@ -21,9 +21,8 @@ export const getDefaultLockData = async ({ lockAddress, network }: Options) => {
     attributes: [],
   }
   try {
-    const subgraphClient = new SubgraphService()
     const lock = await waitOrTimeout(
-      subgraphClient.lock(
+      graphService.lock(
         {
           where: {
             address: lockAddress.toLowerCase(),
