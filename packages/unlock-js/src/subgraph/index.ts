@@ -37,9 +37,16 @@ export class SubgraphService {
   graphqlClientOptions?: RequestConfig
 
   constructor(
-    subgraphServiceParams: SubgraphServiceParams | NetworkConfigs | string
+    subgraphServiceParams:
+      | SubgraphServiceParams
+      | NetworkConfigs
+      | string
+      | undefined
   ) {
-    if (typeof subgraphServiceParams == 'string') {
+    if (!subgraphServiceParams) {
+      this.networks = networkConfigs
+      this.graphqlClientOptions = {}
+    } else if (typeof subgraphServiceParams == 'string') {
       // If the first parameter is a string, we assume it's the endpoint URL
       this.endpointUrl = subgraphServiceParams
       this.networks = networkConfigs
