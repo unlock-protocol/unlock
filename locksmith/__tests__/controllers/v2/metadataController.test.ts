@@ -12,33 +12,41 @@ const lockAddress = '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'
 const keyId = 100
 
 vi.mock('@unlock-protocol/unlock-js', () => {
-  return {
-    Web3Service: vi.fn().mockImplementation(() => {
-      return {
-        isLockManager: (lock: string, manager: string) =>
-          lockAddress === lock || manager === lockManager,
-        ownerOf: (_lockAddress: string, _tokenId: string, _network: number) =>
+  const SubgraphService = vi.fn().mockImplementation(() => {
+    return {
+      lock: (filter: any, opts: any) => {
+        return {
+          name: 'Test Lock',
+          address: lockAddress,
+        }
+      },
+      key: (filter: any, opts: any) => {
+        logger.info(filter, opts)
+        return {
           owner,
-      }
-    }),
-    SubgraphService: vi.fn().mockImplementation(() => {
-      return {
-        lock: (filter: any, opts: any) => {
-          return {
-            name: 'Test Lock',
-            address: lockAddress,
-          }
-        },
-        key: (filter: any, opts: any) => {
-          logger.info(filter, opts)
-          return {
-            owner,
-            expiration: 0,
-            tokenId: 1,
-          }
-        },
-      }
-    }),
+          expiration: 0,
+          tokenId: 1,
+        }
+      },
+    }
+  })
+
+  const Web3Service = vi.fn().mockImplementation(() => {
+    return {
+      isLockManager: (lock: string, manager: string) =>
+        lockAddress === lock || manager === lockManager,
+      ownerOf: (_lockAddress: string, _tokenId: string, _network: number) =>
+        owner,
+    }
+  })
+
+  return {
+    SubgraphService,
+    Web3Service,
+    default: {
+      Web3Service,
+      SubgraphService,
+    },
   }
 })
 

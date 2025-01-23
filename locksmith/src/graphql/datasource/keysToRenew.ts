@@ -1,5 +1,5 @@
-import { SubgraphService } from '@unlock-protocol/unlock-js'
 import logger from '../../logger'
+import { graphService } from '../../config/subgraph'
 
 interface Options {
   limit: number
@@ -26,10 +26,9 @@ export const getKeysToRenew = async ({
 }: Options) => {
   const now = Math.floor(Date.now() / 1000)
   try {
-    const subgraph = new SubgraphService()
     // Pagination starts at 0
     const skip = page * limit
-    const keys = await subgraph.keys(
+    const keys = await graphService.keys(
       {
         skip,
         first: limit,

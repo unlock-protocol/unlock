@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express'
 import Dispatcher from '../../fulfillment/dispatcher'
-import { SubgraphService } from '@unlock-protocol/unlock-js'
+import { graphService } from '../../config/subgraph'
 import normalizer from '../../utils/normalizer'
 import { UserTokenMetadata } from '../../models'
 import { sendEmail } from '../../operations/wedlocksOperations'
@@ -11,8 +11,7 @@ export const createTransferCode: RequestHandler = async (request, response) => {
   const network = Number(request.params.network)
   const keyId = request.params.keyId
   const dispatcher = new Dispatcher()
-  const subgraph = new SubgraphService()
-  const key = await subgraph.key(
+  const key = await graphService.key(
     {
       where: {
         tokenId: keyId.toLowerCase(),

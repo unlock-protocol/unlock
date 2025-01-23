@@ -2,7 +2,6 @@ import normalizer from './normalizer'
 import config from '../config/config'
 import * as metadataOperations from '../operations/metadataOperations'
 import { Certificate, minifyAddress } from '@unlock-protocol/ui'
-import { SubgraphService } from '@unlock-protocol/unlock-js'
 import satori from 'satori'
 import dayjs from '../config/dayjs'
 
@@ -11,6 +10,7 @@ import { networks } from '@unlock-protocol/networks'
 import { generateKeyMetadata } from '../operations/metadataOperations'
 import { ethers } from 'ethers'
 import { imageUrlToBase64 } from './image'
+import { graphService } from '../config/subgraph'
 const inter400 = readFileSync('src/fonts/inter-400.woff')
 const inter700 = readFileSync('src/fonts/inter-700.woff')
 
@@ -28,8 +28,7 @@ export const createCertificate = async ({
   lockAddress: lock,
   tokenId,
 }: Options) => {
-  const subgraph = new SubgraphService()
-  const key = await subgraph.key(
+  const key = await graphService.key(
     {
       where: {
         lock: lock.toLowerCase(),

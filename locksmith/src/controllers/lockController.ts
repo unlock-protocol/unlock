@@ -4,7 +4,7 @@ import * as Normalizer from '../utils/normalizer'
 import { LockIcons } from '../models'
 import { Request, RequestHandler, Response } from 'express'
 import logger from '../logger'
-import { SubgraphService } from '@unlock-protocol/unlock-js'
+import { graphService } from '../config/subgraph'
 import {
   getGeneratedLockIcon,
   getLockIcon,
@@ -128,8 +128,7 @@ export const getTokenURIImage: RequestHandler<{
   try {
     // If we have a keyId, we can try to get the tokenURI from the subgraph
     if (keyId) {
-      const subgraph = new SubgraphService()
-      const key = await subgraph.key(
+      const key = await graphService.key(
         {
           where: {
             tokenId: keyId,

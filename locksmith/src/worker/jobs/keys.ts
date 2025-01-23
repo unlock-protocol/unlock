@@ -5,21 +5,17 @@ import { TOPIC_KEYS_ON_LOCK, TOPIC_KEYS_ON_NETWORK } from '../topics'
 import { notifyHook, filterHooksByTopic } from '../helpers'
 import { notifyNewKeysToWedlocks } from '../../operations/wedlocksOperations'
 import { logger } from '../../logger'
-import {
-  SubgraphService,
-  KeyOrderBy,
-  OrderDirection,
-} from '@unlock-protocol/unlock-js'
+import { KeyOrderBy, OrderDirection } from '@unlock-protocol/unlock-js'
+import { graphService } from '../../config/subgraph'
 
 // If this is too high, the memory gets too high and Heroku kills the dyno
 const FETCH_LIMIT = 20
 
 async function fetchUnprocessedKeys(network: number, page = 0) {
-  const subgraph = new SubgraphService()
   const skip = page ? page * FETCH_LIMIT : 0
 
   try {
-    const keys = await subgraph.keys(
+    const keys = await graphService.keys(
       {
         first: FETCH_LIMIT,
         skip,

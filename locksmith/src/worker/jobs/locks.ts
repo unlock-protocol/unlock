@@ -9,12 +9,13 @@ import {
 import { TOPIC_LOCKS } from '../topics'
 import { notifyHook, filterHooksByTopic } from '../helpers'
 import { logger } from '../../logger'
-import { OrderDirection, SubgraphService } from '@unlock-protocol/unlock-js'
+import { OrderDirection } from '@unlock-protocol/unlock-js'
 import { LockOrderBy } from '@unlock-protocol/unlock-js'
 import { EventStatus } from '@unlock-protocol/types'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { getEventUrl } from '../../utils/eventHelpers'
 import { sendEmail } from '../../operations/wedlocksOperations'
+import { graphService } from '../../config/subgraph'
 
 /**
  * Number of locks to fetch in each batch
@@ -32,9 +33,7 @@ const FETCH_LIMIT = 25
  */
 async function fetchUnprocessedLocks(network: number, page = 0) {
   try {
-    const subgraph = new SubgraphService()
-
-    const locks = await subgraph.locks(
+    const locks = await graphService.locks(
       {
         first: FETCH_LIMIT,
         skip: page ? page * FETCH_LIMIT : 0,
