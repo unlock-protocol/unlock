@@ -1,4 +1,3 @@
-import { SubgraphService } from '@unlock-protocol/unlock-js'
 import archiver from 'archiver'
 import { uploadZipToS3 } from './s3'
 import config from '../config/config'
@@ -7,6 +6,7 @@ import pdfFonts from 'pdfmake/build/vfs_fonts.js'
 import { TDocumentDefinitions } from 'pdfmake/interfaces'
 import { Receipt, ReceiptBase } from '../models'
 import { getWeb3Service } from '../initializers'
+import { graphService } from '../config/subgraph'
 
 // @ts-ignore
 pdfmake.vfs = pdfFonts.pdfMake ? pdfFonts.pdfMake.vfs : pdfFonts.vfs
@@ -18,13 +18,12 @@ export const getAllReceipts = async ({
   network: number
   lockAddress: string
 }) => {
-  const subgraph = new SubgraphService()
   const receipts: any[] = []
   const limit = 1000
   let skip = 0
   let more = true
   while (more) {
-    const results = await subgraph.receipts(
+    const results = await graphService.receipts(
       {
         where: {
           lockAddress: lockAddress.toLowerCase(),
