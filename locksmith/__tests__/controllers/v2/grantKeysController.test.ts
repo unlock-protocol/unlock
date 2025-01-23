@@ -4,7 +4,7 @@ import {
   loginRandomUser,
   loginAsApplication,
 } from '../../test-helpers/utils'
-import { vi } from 'vitest'
+import { expect, vi } from 'vitest'
 import app from '../../app'
 
 const lockAddress = '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'
@@ -31,6 +31,23 @@ vi.mock('@unlock-protocol/unlock-js', () => {
       return {
         isLockManager: (lockAddress: string) => lockAddress === managedLock,
         isKeyGranter: (lockAddress: string) => lockAddress === keyGranterLock,
+      }
+    }),
+    SubgraphService: vi.fn().mockImplementation(() => {
+      return {
+        lock: () => {
+          return {
+            name: 'Test Lock',
+            address: lockAddress,
+          }
+        },
+        key: () => {
+          return {
+            owner: '0x123',
+            expiration: 0,
+            tokenId: 1,
+          }
+        },
       }
     }),
   }

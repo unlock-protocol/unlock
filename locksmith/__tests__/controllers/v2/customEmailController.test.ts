@@ -1,7 +1,7 @@
 import request from 'supertest'
 import { loginRandomUser } from '../../test-helpers/utils'
 import app from '../../app'
-import { vi, beforeAll } from 'vitest'
+import { vi, expect } from 'vitest'
 import { saveEvent } from '../../../src/operations/eventOperations'
 import { ethers } from 'ethers'
 import { sendEmail } from '../../../src/operations/wedlocksOperations'
@@ -26,6 +26,23 @@ vi.mock('@unlock-protocol/unlock-js', () => {
       return {
         isLockManager: (lock: string, manager: string) => {
           return lockAddress.toLowerCase() === lock.toLowerCase()
+        },
+      }
+    }),
+    SubgraphService: vi.fn().mockImplementation(() => {
+      return {
+        lock: () => {
+          return {
+            name: 'Test Lock',
+            address: lockAddress,
+          }
+        },
+        key: () => {
+          return {
+            owner: '0x123',
+            expiration: 0,
+            tokenId: 1,
+          }
         },
       }
     }),

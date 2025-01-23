@@ -37,6 +37,23 @@ vi.mock('@unlock-protocol/unlock-js', () => ({
   Web3Service: function Web3Service() {
     return mockWeb3Service
   },
+  SubgraphService: vi.fn().mockImplementation(() => {
+    return {
+      lock: () => {
+        return {
+          name: 'Test Lock',
+          address: lockAddress,
+        }
+      },
+      key: () => {
+        return {
+          owner: '0x123',
+          expiration: 0,
+          tokenId: 1,
+        }
+      },
+    }
+  }),
 }))
 
 vi.mock('../../../src/operations/eventCasterOperations', () => ({
