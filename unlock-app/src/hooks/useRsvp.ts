@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { SubgraphService } from '@unlock-protocol/unlock-js'
 import dayjs from 'dayjs'
 import { locksmith } from '~/config/locksmith'
-import { graphService } from '~/config/subgraph'
 
 interface RsvpOption {
   data?: any
@@ -65,6 +65,7 @@ export const useEventRSVP = ({
   return useQuery({
     queryKey: ['eventRSVP', checkoutConfig, eventEndDate],
     queryFn: async () => {
+      const service = new SubgraphService()
       const currentTime = Math.floor(Date.now() / 1000)
       const isEventExpired = dayjs(eventEndDate).isBefore(dayjs())
 
@@ -84,7 +85,7 @@ export const useEventRSVP = ({
               keysQuery.where.expiration_gt = currentTime
             }
 
-            const keys = await graphService.keys(keysQuery, {
+            const keys = await service.keys(keysQuery, {
               networks: [lockConfig.network],
             })
             totalRSVPCount += keys.length

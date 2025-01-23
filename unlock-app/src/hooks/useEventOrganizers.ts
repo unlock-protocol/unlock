@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { PaywallConfigType } from '@unlock-protocol/core'
-import { graphService } from '~/config/subgraph'
+import { SubgraphService } from '@unlock-protocol/unlock-js'
 
 interface useEventOrganizersProps {
   checkoutConfig: {
@@ -13,6 +13,7 @@ export const getEventOrganizers = async (checkoutConfig: {
   id?: string
   config: PaywallConfigType
 }) => {
+  const service = new SubgraphService()
   // Group locks by network
   const locksByNetwork: { [key: string]: string[] } = {}
   const defaultNetwork = checkoutConfig.config.network
@@ -34,7 +35,7 @@ export const getEventOrganizers = async (checkoutConfig: {
   await Promise.all(
     Object.keys(locksByNetwork).map(async (network: string) => {
       const locks = locksByNetwork[network]
-      const locksWithManagers = await graphService.locks(
+      const locksWithManagers = await service.locks(
         {
           first: locks.length,
           where: {

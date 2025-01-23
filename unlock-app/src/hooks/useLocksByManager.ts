@@ -1,7 +1,6 @@
 import { QueriesOptions, useQueries } from '@tanstack/react-query'
-import { LockOrderBy } from '@unlock-protocol/unlock-js'
+import { LockOrderBy, SubgraphService } from '@unlock-protocol/unlock-js'
 import { OrderDirection } from '@unlock-protocol/unlock-js'
-import { graphService } from '~/config/subgraph'
 
 interface GetLocksParams {
   account: string
@@ -13,8 +12,9 @@ export const getLocksByNetworks = async ({
   account,
   networks,
 }: GetLocksParams) => {
+  const service = new SubgraphService()
   try {
-    return graphService.locks(
+    return await service.locks(
       {
         first: 1000,
         where: {

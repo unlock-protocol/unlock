@@ -1,7 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
-import { KeyOrderBy, OrderDirection } from '@unlock-protocol/unlock-js'
+import {
+  KeyOrderBy,
+  OrderDirection,
+  SubgraphService,
+} from '@unlock-protocol/unlock-js'
 import dayjs from 'dayjs'
-import { graphService } from '~/config/subgraph'
 import { ADDRESS_ZERO, MAX_UINT } from '~/constants'
 
 interface Options {
@@ -14,10 +17,11 @@ interface Options {
 export type Key = NonNullable<ReturnType<typeof useKeys>['keys']>[0]
 
 export const useKeys = ({ networks, lockAddress, owner }: Options) => {
+  const subgraph = new SubgraphService()
   const { data: keys, isPending: isKeysLoading } = useQuery({
     queryKey: ['keys', owner, networks, lockAddress],
     queryFn: async () => {
-      const keys = await graphService.keys(
+      const keys = await subgraph.keys(
         {
           first: 500,
           where: {
