@@ -25,23 +25,45 @@ interface QueryOptions {
   networks?: number[] | string[]
 }
 
+interface SubgraphServiceParams {
+  endpointUrl?: string
+  networks?: NetworkConfigs
+  graphqlClientOptions?: RequestConfig
+}
+
 export class SubgraphService {
   networks: NetworkConfigs
   endpointUrl?: string
   graphqlClientOptions?: RequestConfig
 
-  constructor({
-    endpointUrl,
-    networks,
-    graphqlClientOptions,
-  }: {
-    endpointUrl?: string | undefined
-    networks?: NetworkConfigs
-    graphqlClientOptions?: RequestConfig
-  }) {
-    this.networks = networks || networkConfigs
-    this.endpointUrl = endpointUrl
-    this.graphqlClientOptions = graphqlClientOptions
+  constructor(
+    subgraphServiceParams: SubgraphServiceParams | NetworkConfigs | string
+  ) {
+    if (typeof subgraphServiceParams == 'string') {
+      // If the first parameter is a string, we assume it's the endpoint URL
+      this.endpointUrl = subgraphServiceParams
+      this.networks = networkConfigs
+      this.graphqlClientOptions = {}
+    } else if (
+      subgraphServiceParams.networks ||
+      subgraphServiceParams.endpointUrl ||
+      subgraphServiceParams.graphqlClientOptions
+    ) {
+      // If the first parameter is SubgraphServiceParams object, we assign values from it
+      this.endpointUrl = (
+        subgraphServiceParams as SubgraphServiceParams
+      ).endpointUrl
+      this.networks =
+        (subgraphServiceParams as SubgraphServiceParams).networks ||
+        networkConfigs
+      this.graphqlClientOptions = (
+        subgraphServiceParams as SubgraphServiceParams
+      ).graphqlClientOptions
+    } else {
+      // This must be a networks object
+      this.networks = subgraphServiceParams as NetworkConfigs
+      this.graphqlClientOptions = {}
+    }
   }
 
   createSdk(networkId = 1) {
