@@ -9,6 +9,7 @@ import {
 import { GraphQLClient } from 'graphql-request'
 import { NetworkConfigs } from '@unlock-protocol/types'
 import { networks as networkConfigs } from '@unlock-protocol/networks'
+import { RequestConfig } from 'graphql-request/build/esm/types'
 
 export {
   OrderDirection,
@@ -27,9 +28,20 @@ interface QueryOptions {
 export class SubgraphService {
   networks: NetworkConfigs
   endpointUrl?: string
-  constructor(endpointUrl?: string, networks?: NetworkConfigs) {
+  graphqlClientOptions?: RequestConfig
+
+  constructor({
+    endpointUrl,
+    networks,
+    graphqlClientOptions,
+  }: {
+    endpointUrl?: string | undefined
+    networks?: NetworkConfigs
+    graphqlClientOptions?: RequestConfig
+  }) {
     this.networks = networks || networkConfigs
     this.endpointUrl = endpointUrl
+    this.graphqlClientOptions = graphqlClientOptions
   }
 
   createSdk(networkId = 1) {
@@ -40,7 +52,10 @@ export class SubgraphService {
       ? endpointUrl
       : network.subgraph.endpoint!
 
-    const client = new GraphQLClient(GraphQLClientURL)
+    const client = new GraphQLClient(
+      GraphQLClientURL,
+      this.graphqlClientOptions
+    )
     const sdk = getSdk(client)
     return sdk
   }

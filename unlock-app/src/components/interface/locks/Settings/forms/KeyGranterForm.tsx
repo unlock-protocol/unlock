@@ -7,7 +7,6 @@ import {
   isAddressOrEns,
   Placeholder,
 } from '@unlock-protocol/ui'
-import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { BsCreditCard as CreditCardIcon } from 'react-icons/bs'
 import { onResolveName } from '~/utils/resolvers'
@@ -195,8 +194,7 @@ export const KeyGranterForm = ({
   })
 
   const getLock = async () => {
-    const service = new SubgraphService()
-    return await service.lock(
+    return await graphService.lock(
       {
         where: {
           address_in: [lockAddress],
