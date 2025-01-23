@@ -17,6 +17,7 @@ import {
   useKeyGranter,
 } from '~/hooks/useKeyGranter'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { graphService } from '~/config/subgraph'
 
 interface KeyGranterFormProps {
   lockAddress: string

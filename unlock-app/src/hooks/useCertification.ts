@@ -60,7 +60,7 @@ export const useCertification = ({
         throw new Error('No valid certification for this token')
       } else if (account) {
         // Get the certification for the current user
-        const key = await subgraph.key(
+        const key = await graphService.key(
           {
             where: {
               owner: account.toLowerCase(),
