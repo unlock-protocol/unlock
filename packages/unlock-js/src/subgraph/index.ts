@@ -9,6 +9,7 @@ import {
 import { GraphQLClient } from 'graphql-request'
 import { NetworkConfigs } from '@unlock-protocol/types'
 import { networks as networkConfigs } from '@unlock-protocol/networks'
+import { RequestConfig } from 'graphql-request/build/esm/types'
 
 export {
   OrderDirection,
@@ -24,12 +25,45 @@ interface QueryOptions {
   networks?: number[] | string[]
 }
 
+interface SubgraphServiceParams {
+  endpointUrl?: string
+  networks?: NetworkConfigs
+  graphqlClientOptions?: RequestConfig
+}
+
 export class SubgraphService {
   networks: NetworkConfigs
   endpointUrl?: string
-  constructor(endpointUrl?: string, networks?: NetworkConfigs) {
-    this.networks = networks || networkConfigs
-    this.endpointUrl = endpointUrl
+  graphqlClientOptions?: RequestConfig
+
+  constructor(
+    subgraphServiceParams: SubgraphServiceParams | NetworkConfigs | string
+  ) {
+    if (typeof subgraphServiceParams == 'string') {
+      // If the first parameter is a string, we assume it's the endpoint URL
+      this.endpointUrl = subgraphServiceParams
+      this.networks = networkConfigs
+      this.graphqlClientOptions = {}
+    } else if (
+      subgraphServiceParams.networks ||
+      subgraphServiceParams.endpointUrl ||
+      subgraphServiceParams.graphqlClientOptions
+    ) {
+      // If the first parameter is SubgraphServiceParams object, we assign values from it
+      this.endpointUrl = (
+        subgraphServiceParams as SubgraphServiceParams
+      ).endpointUrl
+      this.networks =
+        (subgraphServiceParams as SubgraphServiceParams).networks ||
+        networkConfigs
+      this.graphqlClientOptions = (
+        subgraphServiceParams as SubgraphServiceParams
+      ).graphqlClientOptions
+    } else {
+      // This must be a networks object
+      this.networks = subgraphServiceParams as NetworkConfigs
+      this.graphqlClientOptions = {}
+    }
   }
 
   createSdk(networkId = 1) {
@@ -40,7 +74,10 @@ export class SubgraphService {
       ? endpointUrl
       : network.subgraph.endpoint!
 
-    const client = new GraphQLClient(GraphQLClientURL)
+    const client = new GraphQLClient(
+      GraphQLClientURL,
+      this.graphqlClientOptions
+    )
     const sdk = getSdk(client)
     return sdk
   }
