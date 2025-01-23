@@ -37,11 +37,7 @@ export class SubgraphService {
   graphqlClientOptions?: RequestConfig
 
   constructor(
-    subgraphServiceParams:
-      | SubgraphServiceParams
-      | NetworkConfigs
-      | string
-      | undefined
+    subgraphServiceParams?: SubgraphServiceParams | NetworkConfigs | string
   ) {
     if (!subgraphServiceParams) {
       this.networks = networkConfigs
