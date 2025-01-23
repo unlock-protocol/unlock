@@ -1,9 +1,9 @@
+import { SubgraphService } from '@unlock-protocol/unlock-js'
 import logger from '../logger'
 import { ethers } from 'ethers'
 import { Attribute } from '../types'
 import { waitOrTimeout } from './promises'
 import { TIMEOUT_ON_SUBGRAPH } from './constants'
-import { graphService } from '../config/subgraph'
 
 interface Key {
   expiration?: number
@@ -15,8 +15,9 @@ interface Key {
 export default class KeyData {
   async get(lockAddress: string, tokenId: string, network: number) {
     try {
+      const subgraphClient = new SubgraphService()
       const key = await waitOrTimeout(
-        graphService.key(
+        subgraphClient.key(
           {
             where: {
               lock: lockAddress.toLowerCase(),

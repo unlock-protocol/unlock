@@ -1,6 +1,10 @@
 import networks from '@unlock-protocol/networks'
 import config from '../../config/config'
-import { KeyOrderBy, OrderDirection } from '@unlock-protocol/unlock-js'
+import {
+  KeyOrderBy,
+  OrderDirection,
+  SubgraphService,
+} from '@unlock-protocol/unlock-js'
 import dayjs from '../../config/dayjs'
 
 import { logger } from '../../logger'
@@ -10,7 +14,6 @@ import * as userMetadataOperations from '../../operations/userMetadataOperations
 import * as membershipOperations from '../../operations/membershipOperations'
 import * as Normalizer from '../../utils/normalizer'
 import { Task } from 'graphile-worker'
-import { graphService } from '../../config/subgraph'
 
 /**
  * send email notification for key that are about to expire
@@ -103,9 +106,10 @@ export const notifyExpiringKeysForNetwork: Task = async () => {
 
   // get expiring keys for every network
   for (const networkId in networks) {
+    const subgraph = new SubgraphService()
     // get keys that are about to expire
 
-    const keys = await graphService.keys(
+    const keys = await subgraph.keys(
       {
         first: 1000, //  TODO: handle more than 1000 keys
         orderBy: KeyOrderBy.Expiration,

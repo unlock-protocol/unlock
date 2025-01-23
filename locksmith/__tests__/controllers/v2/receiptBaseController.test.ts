@@ -31,23 +31,6 @@ vi.mock('@unlock-protocol/unlock-js', () => {
         },
       }
     }),
-    SubgraphService: vi.fn().mockImplementation(() => {
-      return {
-        lock: () => {
-          return {
-            name: 'Test Lock',
-            address: lockAddress,
-          }
-        },
-        key: () => {
-          return {
-            owner: '0x123',
-            expiration: 0,
-            tokenId: 1,
-          }
-        },
-      }
-    }),
   }
 })
 

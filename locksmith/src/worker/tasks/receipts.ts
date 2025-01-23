@@ -4,6 +4,7 @@ import {
   KeyOrderBy,
   OrderDirection,
   SubgraphKey,
+  SubgraphService,
 } from '@unlock-protocol/unlock-js'
 import { Payload } from '../../models/payload'
 import normalizer from '../../utils/normalizer'
@@ -11,7 +12,6 @@ import {
   getReceiptsZipName,
   zipReceiptsAndSendtos3,
 } from '../../utils/receipts'
-import { graphService } from '../../config/subgraph'
 
 const TaskPayload = z.object({
   lockAddress: z
@@ -31,11 +31,12 @@ interface AllKeysOptions {
  */
 
 export const allKeys = async ({ lockAddress, network }: AllKeysOptions) => {
+  const subgraphService = new SubgraphService()
   let finished = true
   const keys: SubgraphKey[] = []
   let start = 0
   while (finished) {
-    const result = await graphService.keys(
+    const result = await subgraphService.keys(
       {
         first: 1000,
         where: {

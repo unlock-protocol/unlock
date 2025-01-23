@@ -5,9 +5,9 @@ import {
   KeyFilter as KeyFilterProps,
   OrderDirection,
   SubgraphLock,
+  SubgraphService,
   KeyOrderBy,
 } from '@unlock-protocol/unlock-js'
-import { graphService } from '../../config/subgraph'
 
 export type KeyFilter = 'all' | 'active' | 'expired' | 'tokenId'
 
@@ -37,6 +37,8 @@ const locksByFilter = async ({
   transactionHash = [],
   after = '',
 }: KeyByFilterProps): Promise<any> => {
+  const subgraph = new SubgraphService()
+
   if (filter === 'all') {
     expireTimestamp = 0
   }
@@ -67,7 +69,7 @@ const locksByFilter = async ({
     address_in: addresses?.map((address) => address.toLowerCase()), // lowercase address
   }
 
-  const locks = await graphService.locksKeys(
+  const locks = await subgraph.locksKeys(
     {
       first,
       skip,

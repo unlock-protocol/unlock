@@ -3,7 +3,7 @@ import request from 'supertest'
 import { keyTypedData } from '../../test-helpers/typeDataGenerators'
 import * as Base64 from '../../../src/utils/base64'
 import app from '../../app'
-import { expect, vi } from 'vitest'
+import { vi } from 'vitest'
 
 const keyHolder = [
   '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
@@ -23,23 +23,6 @@ vi.mock('@unlock-protocol/unlock-js', () => ({
   Web3Service: function Web3Service() {
     return mockWeb3Service
   },
-  SubgraphService: vi.fn().mockImplementation(() => {
-    return {
-      lock: (filter: any, opts: any) => {
-        return {
-          name: 'Test Lock',
-          address: lockAddress,
-        }
-      },
-      key: (filter: any, opts: any) => {
-        return {
-          owner: keyHolder[0],
-          expiration: 0,
-          tokenId: 1,
-        }
-      },
-    }
-  }),
 }))
 
 describe('updating address holder metadata', () => {

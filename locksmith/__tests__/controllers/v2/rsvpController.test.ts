@@ -1,9 +1,10 @@
 import request from 'supertest'
 import { loginRandomUser } from '../../test-helpers/utils'
+import { KeyManager } from '@unlock-protocol/unlock-js'
 
 import app from '../../app'
 import { Rsvp } from '../../../src/models'
-import { expect, vi } from 'vitest'
+import { vi } from 'vitest'
 
 const lockAddress = '0x62CcB13A72E6F991dE53b9B7AC42885151588Cd2'
 const userAddress = '0x81Dd955D02D337DB81BA6c9C5F6213E647672052'
@@ -24,23 +25,6 @@ vi.mock('@unlock-protocol/unlock-js', () => ({
         '0x9d3ea9e9adde71141f4534dB3b9B80dF3D03Ee5f',
     }
   },
-  SubgraphService: vi.fn().mockImplementation(() => {
-    return {
-      lock: () => {
-        return {
-          name: 'Test Lock',
-          address: lockAddress,
-        }
-      },
-      key: () => {
-        return {
-          owner: '0x123',
-          expiration: 0,
-          tokenId: 1,
-        }
-      },
-    }
-  }),
 }))
 
 describe('RSVP', () => {

@@ -1,3 +1,5 @@
+import { SubgraphService } from '@unlock-protocol/unlock-js'
+
 import dayjs from '../config/dayjs'
 import { kebabCase, defaultsDeep } from 'lodash'
 import * as metadataOperations from './metadataOperations'
@@ -13,7 +15,6 @@ import { EventBodyType } from '../controllers/v2/eventsController'
 import { Op } from 'sequelize'
 import { removeProtectedAttributesFromObject } from '../utils/protectedAttributes'
 import { EventStatus } from '@unlock-protocol/types'
-import { graphService } from '../config/subgraph'
 
 interface AttributeProps {
   value: string
@@ -299,9 +300,10 @@ export const getCheckedInAttendees = async (slug: string) => {
       networks.push(network)
     }
   }
+  const subgraph = new SubgraphService()
 
   // And finally let's get their owners!
-  const keys = await graphService.keys(
+  const keys = await subgraph.keys(
     {
       first: 1000, // How do we handle when there is more than 1000 atten
       where: {

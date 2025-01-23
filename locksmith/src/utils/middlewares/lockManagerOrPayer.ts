@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express'
 import Normalizer from '../normalizer'
+import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { getWeb3Service } from '../../initializers'
-import { graphService } from '../../config/subgraph'
 
 // check if the endpoint caller is the lock manager or the payer of the transaction
 export const lockManagerOrPayerMiddleware: RequestHandler = async (
@@ -36,8 +36,10 @@ export const lockManagerOrPayerMiddleware: RequestHandler = async (
     network
   )
 
+  const subgraph = new SubgraphService()
+
   // get receipt from subgraph
-  const receipt = await graphService.receipt(
+  const receipt = await subgraph.receipt(
     {
       where: {
         id: hash,

@@ -123,22 +123,6 @@ vi.mock('@unlock-protocol/unlock-js', () => {
           lockAddress.toLowerCase() === lock.toLowerCase(),
       }
     }),
-    SubgraphService: vi.fn().mockImplementation(() => {
-      return {
-        keys: () => {
-          return lock.keys
-        },
-        lock: () => {
-          return {
-            name: 'Test Lock',
-            address: lockAddress,
-          }
-        },
-        key: () => {
-          return lock.keys[0]
-        },
-      }
-    }),
   }
 })
 

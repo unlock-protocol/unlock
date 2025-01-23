@@ -2,6 +2,7 @@ import { Request, RequestHandler, Response } from 'express'
 import Dispatcher from '../../fulfillment/dispatcher'
 import { notifyNewKeyToWedlocks } from '../../operations/wedlocksOperations'
 import Normalizer from '../../utils/normalizer'
+import { SubgraphService } from '@unlock-protocol/unlock-js'
 import logger from '../../logger'
 import { generateQrCode, generateQrCodeUrl } from '../../utils/qrcode'
 import { KeyMetadata } from '../../models/keyMetadata'
@@ -16,7 +17,6 @@ import { Verifier } from '../../models/verifier'
 import { getEventForLock } from '../../operations/eventOperations'
 import { notify } from '../../worker/helpers'
 import { getWeb3Service } from '../../initializers'
-import { graphService } from '../../config/subgraph'
 
 export class TicketsController {
   /**
@@ -174,7 +174,8 @@ export class TicketsController {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const network = Number(request.params.network)
       const keyId = request.params.keyId.toLowerCase()
-      const key = await graphService.key(
+      const subgraph = new SubgraphService()
+      const key = await subgraph.key(
         {
           where: {
             lock: lockAddress.toLowerCase(),
@@ -288,9 +289,9 @@ export const generateTicket: RequestHandler = async (request, response) => {
   const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
   const network = Number(request.params.network)
   const tokenId = request.params.keyId.toLowerCase()
-
+  const subgraph = new SubgraphService()
   const loggedInUser = request.user!.walletAddress
-  const key = await graphService.key(
+  const key = await subgraph.key(
     {
       where: {
         owner: loggedInUser.toLowerCase(),
@@ -331,9 +332,10 @@ export const getTicket: RequestHandler = async (request, response) => {
   const eventSlug = request.params.eventSlug
   const tokenId = request.params.keyId.toLowerCase().trim()
   const userAddress = request.user?.walletAddress
+  const subgraph = new SubgraphService()
 
   const [key, verifiers] = await Promise.all([
-    graphService.key(
+    subgraph.key(
       {
         where: {
           tokenId,

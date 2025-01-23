@@ -1,6 +1,10 @@
 import networks from '@unlock-protocol/networks'
 import config from '../../config/config'
-import { KeyOrderBy, OrderDirection } from '@unlock-protocol/unlock-js'
+import {
+  KeyOrderBy,
+  OrderDirection,
+  SubgraphService,
+} from '@unlock-protocol/unlock-js'
 import { logger } from '../../logger'
 import { hasReminderAlreadySent } from '../../operations/keyExpirationReminderOperations'
 import { sendEmail } from '../../operations/wedlocksOperations'
@@ -11,7 +15,6 @@ import { Hook, ProcessedHookItem } from '../../models'
 import { Op } from 'sequelize'
 import { filterHooksByTopic, notifyHook } from '../helpers'
 import { TOPIC_EXPIRED_KEYS_ON_NETWORK } from '../topics'
-import { graphService } from '../../config/subgraph'
 
 /**
  * Send email notification for expired key
@@ -125,8 +128,9 @@ export const notifyExpiredKeysForNetwork: Task = async () => {
 
   // get expired keys for every network
   for (const networkId in networks) {
+    const subgraph = new SubgraphService()
     // get expired keys in the last 24h
-    const keys = await graphService.keys(
+    const keys = await subgraph.keys(
       {
         first: 1000, //  TODO: handle more than 1000 keys
         orderBy: KeyOrderBy.Expiration,

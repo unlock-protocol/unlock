@@ -1,4 +1,5 @@
 import {
+  SubgraphService,
   getAllowance,
   getErc20BalanceForAddress,
   getErc20Decimals,
@@ -10,7 +11,6 @@ import { Op } from 'sequelize'
 
 import dayjs from '../config/dayjs'
 import { getWeb3Service } from '../initializers'
-import { graphService } from '../config/subgraph'
 
 interface Amount {
   amount: string
@@ -38,8 +38,9 @@ export const getSubscriptionsForLockByOwner = async ({
   lockAddress,
   network,
 }: GetSubscriptionsProps): Promise<Subscription[]> => {
+  const subgraphService = new SubgraphService()
   // TODO: replace with web3Service when is possible to get specific fields again
-  const key = await graphService.key(
+  const key = await subgraphService.key(
     {
       where: {
         tokenId,

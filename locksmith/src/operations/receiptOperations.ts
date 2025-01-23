@@ -1,7 +1,7 @@
+import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { Receipt, ReceiptBase } from '../models'
 import { getMetadata } from './userMetadataOperations'
 import { lowercaseObjectKeys } from '../utils/object'
-import { graphService } from '../config/subgraph'
 
 interface ReceiptDetailsProps {
   lockAddress: string
@@ -18,8 +18,8 @@ export const getSingleReceiptDetails = async ({
   network: number
 }) => {
   // get receipts details from subgraph
-
-  const receipt = await graphService.receipt(
+  const subgraph = new SubgraphService()
+  const receipt = await subgraph.receipt(
     {
       where: {
         id: hash,
