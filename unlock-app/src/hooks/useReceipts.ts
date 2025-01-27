@@ -1,8 +1,8 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import { locksmith } from '~/config/locksmith'
+import { graphService } from '~/config/subgraph'
 
 interface ReceiptProps {
   network: number
@@ -41,8 +41,7 @@ export const useGetReceiptsPageUrl = ({
   return useQuery({
     queryKey: ['getReceiptsPageUrl', lockAddress, network, tokenId],
     queryFn: async () => {
-      const subgraph = new SubgraphService()
-      const key = await subgraph.key(
+      const key = await graphService.key(
         {
           where: {
             id: `${lockAddress}-${tokenId}`,

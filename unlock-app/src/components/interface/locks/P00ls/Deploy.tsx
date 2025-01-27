@@ -12,7 +12,7 @@ import networks from '@unlock-protocol/networks'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { locksmith } from '~/config/locksmith'
 import { useCheckoutConfigUpdate } from '~/hooks/useCheckoutConfig'
-import { subgraph } from '~/config/subgraph'
+import { graphService } from '~/config/subgraph'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Placeholder } from '@unlock-protocol/ui'
 import { Deployed } from './Deployed'
@@ -30,7 +30,7 @@ export const Deploy: React.FC = () => {
   const { data: locks, isPending: isLoadingLocks } = useQuery({
     queryKey: ['locks', account, searchParams.get('chainId')],
     queryFn: async () => {
-      const locks = await subgraph.locks(
+      const locks = await graphService.locks(
         {
           first: 100,
           where: {
