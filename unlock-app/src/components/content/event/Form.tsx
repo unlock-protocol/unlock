@@ -366,7 +366,7 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
                             >
                               Read our guide
                             </Link>{' '}
-                            on how to chose the right network.
+                            on how to choose the right network.
                           </p>
                         </div>
                       }
