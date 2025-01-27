@@ -2,20 +2,13 @@
 
 import { BiQrScan as ScanIcon } from 'react-icons/bi'
 import { useRouter } from 'next/navigation'
-import {
-  Button,
-  Card,
-  Disclosure,
-  Icon,
-  minifyAddress,
-} from '@unlock-protocol/ui'
+import { Button, Icon } from '@unlock-protocol/ui'
 import { getEventDate, getEventEndDate, getEventUrl } from './utils'
 import { useEventOrganizer } from '~/hooks/useEventOrganizer'
 import { useEventOrganizers } from '~/hooks/useEventOrganizers'
 import dayjs from 'dayjs'
 import { Event, PaywallConfigType } from '@unlock-protocol/core'
 import { useEvent } from '~/hooks/useEvent'
-import { SettingEmail } from '~/components/interface/locks/Settings/elements/SettingEmail'
 import { FaUsers } from 'react-icons/fa'
 import { TbSettings } from 'react-icons/tb'
 import { useEventVerifiers } from '~/hooks/useEventVerifiers'
@@ -200,78 +193,6 @@ export const EventDetails = ({
         </div>
       </div>
       {renderEventLayout()}
-      <section className="flex flex-col">
-        {isOrganizer && (
-          <div className="grid gap-6 mt-12">
-            <span className="text-2xl font-bold text-brand-dark">
-              Tools for you, the event organizer
-            </span>
-            <div className="grid gap-4">
-              <Disclosure
-                label="Emails"
-                description="Customize the emails your attendees will receive."
-              >
-                <div className="flex flex-col gap-4">
-                  {Object.keys(checkoutConfig.config.locks).map(
-                    (lockAddress: string) => {
-                      const network =
-                        checkoutConfig.config.locks[lockAddress].network ||
-                        checkoutConfig.config.network
-                      if (Object.keys(checkoutConfig.config.locks).length > 1) {
-                        return (
-                          <Disclosure
-                            label={`Emails for ${minifyAddress(lockAddress)}`}
-                            key={lockAddress}
-                          >
-                            <SettingEmail
-                              key={lockAddress}
-                              lockAddress={lockAddress}
-                              network={network!}
-                              isManager={true}
-                              isLoading={false}
-                            />
-                          </Disclosure>
-                        )
-                      } else {
-                        return (
-                          <SettingEmail
-                            key={lockAddress}
-                            lockAddress={lockAddress}
-                            network={network!}
-                            isManager={true}
-                            isLoading={false}
-                          />
-                        )
-                      }
-                    }
-                  )}
-                </div>
-              </Disclosure>
-              {/* Put that only if the event requires the checkout? */}
-              <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
-                <div className="md:col-span-2">
-                  <Card.Label
-                    title="Checkout configuration"
-                    description="Configure the checkout experience for your event: collect attendee info... etc."
-                  />
-                </div>
-                <div className="md:col-span-1">
-                  <Button
-                    variant="black"
-                    className="button border w-full"
-                    size="small"
-                    onClick={() => {
-                      router.push(`/locks/checkout-url?id=${checkoutConfig.id}`)
-                    }}
-                  >
-                    Configure
-                  </Button>
-                </div>
-              </Card>
-            </div>
-          </div>
-        )}
-      </section>
     </div>
   )
 }
