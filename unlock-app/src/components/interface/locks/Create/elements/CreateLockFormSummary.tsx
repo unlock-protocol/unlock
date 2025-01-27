@@ -14,7 +14,7 @@ import deployingAnimation from '~/animations/deploying.json'
 import deployErrorAnimation from '~/animations/deploy-error.json'
 import { durationsAsTextFromSeconds } from '~/utils/durations'
 import { ONE_DAY_IN_SECONDS } from '~/constants'
-import { subgraph } from '~/config/subgraph'
+import { graphService } from '~/config/subgraph'
 
 const Lottie = dynamic(() => import('lottie-react'), { ssr: false })
 
@@ -145,7 +145,7 @@ export const CreateLockFormSummary = ({
       formData.network,
     ],
     queryFn: () => {
-      return subgraph.lock(
+      return graphService.lock(
         {
           where: {
             address: lockAddress,
