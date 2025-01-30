@@ -9,7 +9,7 @@ image: /images/blog/erc20-locks/hero.jpg
 
 ![Dashboard Lock](/images/blog/erc20-locks/use-dai.jpg)
 
-When creators deploy their locks using our dashboard, they can chose the following:
+When creators deploy their locks using our dashboard, they can choose the following:
 
 - the name of their locks
 - how long each key is valid (from seconds to centuries!)
