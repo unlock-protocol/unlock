@@ -54,6 +54,14 @@ You can start a worker with `yarn worker:start`.
 
 You can also run scripts with `yarn run runner ./src/scripts/script.ts` (check the sample file for an example).
 
+### Debugging
+
+It is possible to create files and run them locally
+
+```sh
+yarn run runner src/debug.ts
+```
+
 ## Attributions
 
 This product uses GeoLite2 data created by MaxMind, available from [https://www.maxmind.com](https://www.maxmind.com).

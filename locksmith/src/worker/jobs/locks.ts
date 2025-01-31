@@ -53,6 +53,9 @@ async function fetchUnprocessedLocks(network: number, page = 0) {
         objectId: {
           [Op.in]: lockIds,
         },
+        network: {
+          [Op.eq]: network,
+        },
       },
     })
 
@@ -148,14 +151,13 @@ async function notifyHooksOfNewLocks(
   locks: any[],
   network: number
 ) {
-  return Promise.all(
-    hooks.map(async (hook) => {
-      return notifyHook(hook, {
-        data: locks,
-        network,
-      })
+  for (let i = 0; i < hooks.length; i++) {
+    const hook = hooks[i]
+    await notifyHook(hook, {
+      data: locks,
+      network,
     })
-  )
+  }
 }
 
 /**
@@ -184,10 +186,8 @@ async function markLocksAsProcessed(locks: any[], network: number) {
  * @param network - Network ID where locks exist
  */
 async function finalizeLockProcessing(locks: any[], network: number) {
-  await Promise.all([
-    updatePendingEvents(locks, network),
-    markLocksAsProcessed(locks, network),
-  ])
+  await updatePendingEvents(locks, network)
+  await markLocksAsProcessed(locks, network)
 }
 
 /**
@@ -199,10 +199,8 @@ async function finalizeLockProcessing(locks: any[], network: number) {
  * @param network - Network ID where locks were found
  */
 async function processLockBatch(hooks: Hook[], locks: any[], network: number) {
-  await Promise.all([
-    notifyHooksOfNewLocks(hooks, locks, network),
-    finalizeLockProcessing(locks, network),
-  ])
+  await notifyHooksOfNewLocks(hooks, locks, network)
+  await finalizeLockProcessing(locks, network)
 }
 
 /**
@@ -227,7 +225,7 @@ async function handleNetworkLocks(hooks: Hook[], network: number) {
     const newLocks = await fetchUnprocessedLocks(network, page)
 
     if (!newLocks.length) {
-      logger.info(`No new locks found for network ${network}`)
+      logger.info(`No more new locks found for network ${network}`)
       break
     }
 
@@ -253,7 +251,6 @@ async function handleNetworkLocks(hooks: Hook[], network: number) {
  */
 export async function notifyOfLocks(hooks: Hook[]) {
   const subscribedHooks = filterHooksByTopic(hooks, TOPIC_LOCKS)
-  const networkTasks: Promise<void>[] = []
 
   for (const network of Object.values(networks)) {
     if (network.id === 31337) continue // Skip local network
@@ -261,8 +258,6 @@ export async function notifyOfLocks(hooks: Hook[]) {
     const networkHooks = subscribedHooks.filter(
       (hook) => hook.network === network.id
     )
-    networkTasks.push(handleNetworkLocks(networkHooks, network.id))
+    await handleNetworkLocks(networkHooks, network.id)
   }
-
-  await Promise.allSettled(networkTasks)
 }

@@ -68,28 +68,26 @@ async function notifyHooksOfAllUnprocessedKeys(hooks: Hook[], network: number) {
         keys: keys.map((key: any) => [network, key.lock.address, key.id]),
       })
 
-      await Promise.allSettled([
-        notifyNewKeysToWedlocks(keys, network), // send emails when applicable!
-        // Send notification to hooks subscribed to keys on a specific lock address
-        ...keysOnLockHooks.map(async (keysOnLockHook) => {
-          const data = keys.filter(
-            (key: any) => key.lock.id === keysOnLockHook.lock
-          )
-          const hookEvent = await notifyHook(keysOnLockHook, {
-            data,
-            network,
-          })
-          return hookEvent
-        }),
-        // Send notification to hooks subscribed to keys on a whole network
-        ...keysOnNetworkHooks.map(async (keysOnNetworkHook) => {
-          const hookEvent = await notifyHook(keysOnNetworkHook, {
-            network,
-            data: keys,
-          })
-          return hookEvent
-        }),
-      ])
+      await notifyNewKeysToWedlocks(keys, network) // send emails when applicable!
+
+      for (let i = 0; i < keysOnLockHooks.length; i++) {
+        const keysOnLockHook = keysOnLockHooks[i]
+        const data = keys.filter(
+          (key: any) => key.lock.id === keysOnLockHook.lock
+        )
+        await notifyHook(keysOnLockHook, {
+          data,
+          network,
+        })
+      }
+
+      for (let i = 0; i < keysOnNetworkHooks.length; i++) {
+        const keysOnNetworkHook = keysOnNetworkHooks[i]
+        await notifyHook(keysOnNetworkHook, {
+          network,
+          data: keys,
+        })
+      }
 
       const processedHookItems = keys.map((key: any) => {
         return {
