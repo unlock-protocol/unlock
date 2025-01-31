@@ -11,16 +11,22 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.es.js",
-      "require": "./dist/index.umd.js"
+      "require": "./dist/index.umd.js",
+      "default": "./dist/index.es.js"
     },
     "./dist/style.css": {
       "import": "./dist/style.css",
-      "require": "./dist/style.css"
+      "require": "./dist/style.css",
+      "default": "./dist/style.css"
     },
     "./dist/unlock-tailwind-preset": {
-      "require": "./dist/unlock-tailwind-preset.js"
+      "require": "./dist/unlock-tailwind-preset.js",
+      "default": "./dist/unlock-tailwind-preset.js"
     }
   },
+  "sideEffects": [
+    "**/*.css"
+  ],
   "version": "0.4.8",
   "scripts": {
     "preview": "yarn build && vite --config ./vite.config.ts src",
@@ -48,8 +54,13 @@
   },
   "peerDependencies": {
     "@headlessui/react": "2.2.0",
-    "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@headlessui/react": {
+      "optional": true
+    }
   },
   "repository": {
     "type": "git",
@@ -65,14 +76,14 @@
     "@storybook/addon-links": "8.4.7",
     "@storybook/react": "8.4.7",
     "@storybook/react-vite": "8.4.7",
-    "@types/react": "18.3.18",
-    "@types/react-dom": "18.3.5",
+    "@types/react": "19.0.2",
+    "@types/react-dom": "19.0.2",
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js",
     "@vitejs/plugin-react": "4.3.4",
     "autoprefixer": "10.4.20",
     "postcss": "8.4.49",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
     "storybook": "8.4.7",
     "tailwindcss": "3.4.17",
     "tsup": "8.3.5",

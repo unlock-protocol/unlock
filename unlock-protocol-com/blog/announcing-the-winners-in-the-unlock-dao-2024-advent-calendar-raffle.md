@@ -1,10 +1,10 @@
 ---
-title: "Announcing the Winners in the Unlock DAO 2024 Advent Calendar Raffle"
-subtitle: ""
-authorName: "Stella Achenbach"
-publishDate: "Fri Jan 17 2025 17:20:00 GMT+0000 (Coordinated Universal Time)"
+title: 'Announcing the Winners in the Unlock DAO 2024 Advent Calendar Raffle'
+subtitle: ''
+authorName: 'Stella Achenbach'
+publishDate: 'Fri Jan 17 2025 17:20:00 GMT+0000 (Coordinated Universal Time)'
 description: "Last month, Unlock DAO community ran the Unlock Advent Calendar for the first time! (The Unlock Labs team had executed the campaign in previous years.) Contributors from Unlock DAO, Eth Bolivia, The ALANA Project banded together to bring you last year's Advent Calendar. But beyond that, we received incredible support from the Octant App and Glo Dollar team to raffle out some fantastic New Year gifts.ProcessUnlock Protocol is a protocol and not a platform for a reason. Most people involved her..."
-image: "/images/blog/announcing-the-winners-in-the-unlock-dao-2024-advent-calendar-raffle/f86cf15eec9587af69ad7d86214e269b.jpg"
+image: '/images/blog/announcing-the-winners-in-the-unlock-dao-2024-advent-calendar-raffle/f86cf15eec9587af69ad7d86214e269b.jpg'
 ---
 
 ![Announcing the Winners in the Unlock DAO 2024 Advent Calendar Raffle](https://storage.googleapis.com/papyrus_images/f86cf15eec9587af69ad7d86214e269b.jpg)

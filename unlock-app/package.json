@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "peerDependencies": {
-    "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
   },
   "dependencies": {
     "@airstack/airstack-react": "0.6.4",
@@ -86,7 +86,7 @@
     "autoprefixer": "10.4.20",
     "jsdom": "25.0.1",
     "postcss": "8.4.49",
-    "react-test-renderer": "18.3.1",
+    "react-test-renderer": "19.0.0",
     "tailwindcss": "3.4.17",
     "vitest": "2.1.8",
     "vitest-fetch-mock": "0.4.3",
