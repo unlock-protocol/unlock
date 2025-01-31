@@ -223,7 +223,6 @@ export const RegistrationForm = ({
     captcha: string
   }) => void
 }) => {
-  const config = useConfig()
   const { executeRecaptcha } = useReCaptcha()
 
   const [loading, setLoading] = useState<boolean>(false)
