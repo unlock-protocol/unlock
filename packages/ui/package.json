@@ -53,9 +53,9 @@
     "tailwindcss": "3.4.17"
   },
   "peerDependencies": {
-    "@headlessui/react": "^2.2.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "@headlessui/react": "2.2.0",
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
   },
   "peerDependenciesMeta": {
     "@headlessui/react": {
