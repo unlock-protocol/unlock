@@ -17,6 +17,7 @@ import { networks } from '@unlock-protocol/networks'
 import { Token } from '@unlock-protocol/types'
 import { useAuthenticate } from './useAuthenticate'
 import { useSearchParam } from 'react-use'
+import { useGetTokenIdForOwner } from './useGetTokenIdForOwner'
 
 export interface CrossChainRoute {
   network: number
@@ -75,8 +76,7 @@ export const useCrossChainRoutes = ({
   const { data: prices, isPending: isLoadingPrices } = useQuery({
     queryKey: ['prices', account, lock, recipients, purchaseData],
     queryFn: async () => {
-      // TODO: support renewals
-      if (!purchaseData || !account || !lock || !recipients || renew) {
+      if (!purchaseData || !account || !lock || !recipients) {
         return []
       }
 
@@ -122,6 +122,21 @@ export const useCrossChainRoutes = ({
       })),
   })
 
+  // Get tokenId for renewals
+  const { data: tokenId } = useGetTokenIdForOwner(
+    {
+      account: account!,
+      lockAddress: lock.address,
+      network: lock.network,
+    },
+    {
+      enabled: renew,
+    }
+  )
+
+  // Convert BigInt tokenId to string for query key
+  const tokenIdString = tokenId ? tokenId.toString() : null
+
   const { data: sharedParams } = useQuery({
     queryKey: [
       'sharedParams',
@@ -130,10 +145,11 @@ export const useCrossChainRoutes = ({
       recipients,
       keyManagers,
       purchaseData,
+      renew,
+      tokenIdString,
     ],
     queryFn: async () => {
       return prepareSharedParams({
-        sender: account!,
         lock,
         prices: prices!,
         recipients,
@@ -142,6 +158,8 @@ export const useCrossChainRoutes = ({
           getReferrer(account!, paywallConfig, lock.address)
         ),
         purchaseData: purchaseData || recipients.map(() => '0x'),
+        renew,
+        tokenId: tokenIdString,
       })
     },
   })
