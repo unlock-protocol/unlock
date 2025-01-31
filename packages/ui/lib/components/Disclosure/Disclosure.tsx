@@ -1,11 +1,11 @@
-import { ReactNode } from 'react'
+import { ReactNode, ReactElement } from 'react'
 import { FiChevronDown as ArrowDownIcon } from 'react-icons/fi'
 import { Disclosure as HeadlessDisclosure } from '@headlessui/react'
 import { Card } from '../Card/Card'
 
 export interface DisclosureProps {
   label: string
-  description?: ReactNode
+  description?: string | ReactElement
   children?: ReactNode
   isLoading?: boolean
   disabled?: boolean
@@ -31,10 +31,11 @@ export const Disclosure = ({
   }
 
   return (
-    <HeadlessDisclosure defaultOpen={defaultOpen}>
+    <HeadlessDisclosure as="div" defaultOpen={defaultOpen}>
       {({ open }) => (
         <Card variant="primary">
           <HeadlessDisclosure.Button
+            as="div"
             className="flex flex-col w-full gap-2 outline-none"
             disabled={disabled}
           >
@@ -53,8 +54,8 @@ export const Disclosure = ({
             )}
           </HeadlessDisclosure.Button>
           {open && (
-            <HeadlessDisclosure.Panel unmount={false} className="pt-6">
-              {children}
+            <HeadlessDisclosure.Panel as="div" unmount={false} className="pt-6">
+              <div>{children}</div>
             </HeadlessDisclosure.Panel>
           )}
         </Card>

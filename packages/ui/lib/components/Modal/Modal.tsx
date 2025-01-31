@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import {
   Dialog,
   DialogBackdrop,
@@ -81,7 +81,7 @@ export function Modal({
   }
 
   return (
-    <Transition show={isOpen} as={React.Fragment}>
+    <Transition show={isOpen} as="div">
       <Dialog
         as="div"
         className="fixed inset-0 z-10 overflow-y-auto"
@@ -94,7 +94,7 @@ export function Modal({
           } justify-center`}
         >
           <TransitionChild
-            as={React.Fragment}
+            as="div"
             enter="ease-out duration-300"
             enterFrom={`opacity-0 ${disableBottomSheet ? 'translate-y-4 sm:translate-y-4' : 'translate-y-[100%] sm:translate-y-4'} sm:scale-95`}
             enterTo="opacity-100 translate-y-0 sm:scale-100"

@@ -226,8 +226,9 @@ export const Select = <T extends unknown>({
       }
     >
       <Listbox
+        as="div"
         disabled={fieldDisabled}
-        value={selected?.value || ''}
+        value={selected?.value ?? ''}
         onChange={onChangeOption}
       >
         <div className="relative">

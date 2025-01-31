@@ -1,5 +1,5 @@
-import { Popover, Transition } from '@headlessui/react'
-import { Fragment, ReactNode, useEffect, useState } from 'react'
+import { Popover, Transition, Dialog, TransitionChild } from '@headlessui/react'
+import { ReactNode, useEffect, useState } from 'react'
 import { Button } from '../Button/Button'
 import { SOCIAL_LINKS } from '../constants'
 import { Icon } from '../Icon/Icon'
@@ -272,7 +272,7 @@ const NavSectionDesktop = (section: MenuSectionProps) => {
               <Title title={title} open={open} />
             </Popover.Button>
             <Transition
-              as={Fragment}
+              as="div"
               enter="transition ease-out duration-200"
               enterFrom="opacity-0 translate-y-1"
               enterTo="opacity-100 translate-y-0"
@@ -512,19 +512,39 @@ export const HeaderNav = ({
         </div>
       </div>
 
-      {/* mobile menu */}
-      {menuExpanded && (
-        <div
-          className={`fixed bottom-0 left-0 right-0 z-10 block overflow-scroll pb-20 top-24 lg:hidden ${
-            extraClass?.mobile ?? ''
-          }`}
+      {/* Mobile menu */}
+      <Transition show={menuExpanded} as="div">
+        <Dialog
+          as="div"
+          className="fixed inset-0 z-10 overflow-y-auto"
+          onClose={setMenuExpanded}
         >
-          <div className="flex flex-col gap-10">
-            <NavSectionMobile menuSections={menuSections} />
-            {showSocialIcons && <SocialIcons />}
+          <div className="min-h-screen px-4 text-center">
+            <TransitionChild
+              as="div"
+              enter="ease-out duration-300"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <div className="fixed inset-0 bg-black bg-opacity-75" />
+            </TransitionChild>
+
+            <div className="fixed inset-0 overflow-y-auto">
+              <div className="flex items-center justify-center min-h-full p-4">
+                <div className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                  <div className="flex flex-col gap-10">
+                    <NavSectionMobile menuSections={menuSections} />
+                    {showSocialIcons && <SocialIcons />}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      )}
+        </Dialog>
+      </Transition>
     </div>
   )
 }
