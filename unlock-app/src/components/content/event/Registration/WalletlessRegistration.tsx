@@ -260,7 +260,6 @@ export const RegistrationForm = ({
     setLoading(true)
     try {
       const captcha = await executeRecaptcha('submit')
-      console.log('captcha', captcha)
       await onRSVP({
         recipient,
         data,
