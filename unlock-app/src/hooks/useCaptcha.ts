@@ -1,9 +1,8 @@
 import { useCallback, useRef } from 'react'
-import ReCAPTCHA from 'react-google-recaptcha'
 import { config } from '~/config/app'
 
 export const useCaptcha = () => {
-  const recaptchaRef = useRef<ReCAPTCHA>(null)
+  const recaptchaRef = useRef<any>()
 
   const getCaptchaValue = useCallback(async () => {
     if (config?.env === 'dev') {

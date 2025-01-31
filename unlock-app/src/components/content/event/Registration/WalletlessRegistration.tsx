@@ -264,7 +264,7 @@ export const RegistrationForm = ({
       await onRSVP({
         recipient,
         data,
-        captcha: captcha || '',
+        captcha,
       })
       reset(Object.keys(data).reduce((acc, key) => ({ ...acc, [key]: '' }), {}))
     } catch (error: any) {
