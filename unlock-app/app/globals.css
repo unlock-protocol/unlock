@@ -46,3 +46,8 @@ body {
 #iframe-crossmint-payment-element {
   width: 100%;
 }
+
+/* hide captcha badge */
+.grecaptcha-badge {
+  visibility: hidden !important;
+}
