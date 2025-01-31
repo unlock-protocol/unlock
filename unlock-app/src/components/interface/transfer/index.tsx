@@ -30,13 +30,13 @@ const SendTransferForm = ({
   onTransferCodeReceived,
 }: SendTransferFormProps) => {
   const config = useConfig()
-  const recaptchaRef = useRef<ReCaptcha>(null)
+  const recaptchaRef = useRef<any>()
 
   const onTransfer: MouseEventHandler = async (event) => {
     event.preventDefault()
     const captcha = await recaptchaRef.current?.executeAsync()
     createTransferCode(
-      { captcha: captcha || '' },
+      { captcha },
       {
         async onSettled() {
           await recaptchaRef.current?.reset()
@@ -71,7 +71,6 @@ const SendTransferForm = ({
         </p>
       </div>
       <div className="flex items-center justify-end">
-        {/* @ts-expect-error ReCaptcha is not a valid JSX component */}
         <ReCaptcha
           ref={recaptchaRef}
           sitekey={config.recaptchaKey}

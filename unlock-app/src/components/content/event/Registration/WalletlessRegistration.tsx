@@ -283,7 +283,6 @@ export const RegistrationForm = ({
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col w-full gap-4"
     >
-      {/* @ts-expect-error ReCaptcha is not a valid JSX component */}
       <ReCaptcha
         ref={recaptchaRef}
         sitekey={config.recaptchaKey}

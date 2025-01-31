@@ -1,6 +1,6 @@
 import { CheckoutService } from './checkoutMachine'
 import { Button } from '@unlock-protocol/ui'
-import { Fragment, useState } from 'react'
+import React, { Fragment, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { useConfig } from '~/utils/withConfig'
@@ -61,7 +61,6 @@ export function Captcha({ checkoutService }: Props) {
       <Stepper service={checkoutService} />
       <main className="h-full px-6 py-2 overflow-auto">
         <div className="flex justify-center">
-          {/* @ts-expect-error ReCaptcha is not a valid JSX component */}
           <ReCAPTCHA
             sitekey={config.recaptchaKey}
             onChange={(token) => setRecaptchaValue(token)}

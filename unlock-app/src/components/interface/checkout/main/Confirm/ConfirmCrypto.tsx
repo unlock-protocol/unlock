@@ -48,7 +48,7 @@ export function ConfirmCrypto({
   const { getWalletService } = useProvider()
   const config = useConfig()
   const web3Service = useWeb3Service()
-  const recaptchaRef = useRef<ReCaptcha>(null)
+  const recaptchaRef = useRef<any>()
   const [isConfirming, setIsConfirming] = useState(false)
 
   const { address: lockAddress, network: lockNetwork, keyPrice } = lock!
@@ -243,7 +243,6 @@ export function ConfirmCrypto({
 
   return (
     <Fragment>
-      {/* @ts-expect-error ReCaptcha is not a valid JSX component */}
       <ReCaptcha
         ref={recaptchaRef}
         sitekey={config.recaptchaKey}
