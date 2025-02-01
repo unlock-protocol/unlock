@@ -19211,7 +19211,7 @@ __metadata:
     from-exponential: "npm:1.1.1"
     graphql: "npm:16.9.0"
     jsdom: "npm:25.0.1"
-    lottie-react: "npm:2.4.0"
+    lottie-react: "npm:2.4.1"
     next: "npm:14.2.21"
     next-recaptcha-v3: "npm:1.5.2"
     node-forge: "npm:1.3.1"
@@ -37308,15 +37308,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lottie-react@npm:2.4.0":
-  version: 2.4.0
-  resolution: "lottie-react@npm:2.4.0"
+"lottie-react@npm:2.4.1":
+  version: 2.4.1
+  resolution: "lottie-react@npm:2.4.1"
   dependencies:
     lottie-web: "npm:^5.10.2"
   peerDependencies:
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 10/6b8e69922eaf3ff14ca09ecc8a4318487b18eb3f776801ddd85e8cbff6f05c7229e32f8e6c32f1e01d8564fb806e8b9a4956cb6fbf7b62ca9318feccc3d3923a
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10/d1c54c3d90e322db988ea1dc92900a122e699e1d833368b8a817f4bd2ccc6d5600ab3cd0f34aa6e0bcbab28425f6de514b6d567e13164693cbde2c82af08fa06
   languageName: node
   linkType: hard
 
