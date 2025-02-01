@@ -6798,16 +6798,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@foliojs-fork/pdfkit@npm:^0.15.2":
-  version: 0.15.2
-  resolution: "@foliojs-fork/pdfkit@npm:0.15.2"
+"@foliojs-fork/pdfkit@npm:^0.15.3":
+  version: 0.15.3
+  resolution: "@foliojs-fork/pdfkit@npm:0.15.3"
   dependencies:
     "@foliojs-fork/fontkit": "npm:^1.9.2"
     "@foliojs-fork/linebreak": "npm:^1.1.1"
     crypto-js: "npm:^4.2.0"
     jpeg-exif: "npm:^1.1.4"
     png-js: "npm:^1.0.0"
-  checksum: 10/8fd73ce7babf2d9cb8710aa8d007f35b512de18c973f4630aaeb252f844f1afc5621d6a9382ef555abbad31d6c7632558a3621969117d14e1bfa9da380d9192b
+  checksum: 10/cefd13f5d2d4b4cb2f7e5f0f0852000c3b868d755dbc0761e59565f42d10e42385a158d8847defef9b255ec5d994a8106b5233c7f7b8aea609597866e3766129
   languageName: node
   linkType: hard
 
@@ -17903,13 +17903,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/pdfmake@npm:0.2.10":
-  version: 0.2.10
-  resolution: "@types/pdfmake@npm:0.2.10"
+"@types/pdfmake@npm:0.2.11":
+  version: 0.2.11
+  resolution: "@types/pdfmake@npm:0.2.11"
   dependencies:
     "@types/node": "npm:*"
     "@types/pdfkit": "npm:*"
-  checksum: 10/49942042df967edd2283780ddeb3c3ef0c80a2c64f1dd1f0bbc305cf58e485e3e3a3042c224d006c86ff6e2211e7291b87507b1097c8c61b73c6aac27a9438af
+  checksum: 10/4d1392d6740d873594c56b64fe89b54a73eecf1f93f9d689c7f03ad01057959c880b5c54acfbbe652755f7bc2c83b538967b5d22e83e328d8369570dcddfab43
   languageName: node
   linkType: hard
 
@@ -18918,7 +18918,7 @@ __metadata:
     "@types/multer-s3": "npm:3.0.3"
     "@types/node": "npm:22.10.5"
     "@types/node-cron": "npm:3.0.11"
-    "@types/pdfmake": "npm:0.2.10"
+    "@types/pdfmake": "npm:0.2.11"
     "@types/supertest": "npm:6.0.2"
     "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/core": "workspace:./packages/core"
@@ -18957,7 +18957,7 @@ __metadata:
     parse-data-uri: "npm:0.2.0"
     passkit-generator: "npm:3.2.0"
     path-to-regexp: "npm:8.2.0"
-    pdfmake: "npm:0.2.17"
+    pdfmake: "npm:0.2.18"
     pg: "npm:8.13.1"
     rate-limiter-flexible: "npm:5.0.4"
     react: "npm:18.3.1"
@@ -42579,15 +42579,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pdfmake@npm:0.2.17":
-  version: 0.2.17
-  resolution: "pdfmake@npm:0.2.17"
+"pdfmake@npm:0.2.18":
+  version: 0.2.18
+  resolution: "pdfmake@npm:0.2.18"
   dependencies:
     "@foliojs-fork/linebreak": "npm:^1.1.2"
-    "@foliojs-fork/pdfkit": "npm:^0.15.2"
+    "@foliojs-fork/pdfkit": "npm:^0.15.3"
     iconv-lite: "npm:^0.6.3"
     xmldoc: "npm:^1.3.0"
-  checksum: 10/b2659a850533c08837a9804fa90d75b670e288f229d59e5584146f1c8388f703e18f0f5552e01d494bef849cd21554475287eea0d6c601da2161ba302ea11651
+  checksum: 10/02c430bfa761615dd2237880d4d7ad07279fbc47017701111d15a39dabe9f8f00973d59f66f6401124f2558f358d0bec639855645f2f67b29937f9fe3225ee70
   languageName: node
   linkType: hard
 
