@@ -19,7 +19,7 @@
     "@openzeppelin/upgrades-core": "1.41.0",
     "@safe-global/api-kit": "2.5.6",
     "@safe-global/protocol-kit": "5.1.1",
-    "@tenderly/hardhat-tenderly": "2.5.1",
+    "@tenderly/hardhat-tenderly": "2.5.2",
     "@unlock-protocol/contracts": "workspace:./packages/contracts",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/hardhat-helpers": "workspace:^",
