@@ -17630,12 +17630,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jsonwebtoken@npm:9.0.7":
-  version: 9.0.7
-  resolution: "@types/jsonwebtoken@npm:9.0.7"
+"@types/jsonwebtoken@npm:9.0.8":
+  version: 9.0.8
+  resolution: "@types/jsonwebtoken@npm:9.0.8"
   dependencies:
+    "@types/ms": "npm:*"
     "@types/node": "npm:*"
-  checksum: 10/4c0cffc488ba200765b50004de5e046c55360121a91ad9520d904e303cdd217b3f77b51b6ba8b9cbdd03d73876d546cbd0d9992d6e205d97decba918aee5b395
+  checksum: 10/9747728082bd7877cff6202bb899ad2c9f4d8e22ec672058711089e3a2448f21e235b978a2876e0183802fda452a0abed49614047dae26b820e2f6122d9852b1
   languageName: node
   linkType: hard
 
@@ -18912,7 +18913,7 @@ __metadata:
     "@types/cors": "npm:2.8.17"
     "@types/geoip-country": "npm:4.0.2"
     "@types/isomorphic-fetch": "npm:0.0.39"
-    "@types/jsonwebtoken": "npm:9.0.7"
+    "@types/jsonwebtoken": "npm:9.0.8"
     "@types/lodash": "npm:4.17.13"
     "@types/multer": "npm:1.4.12"
     "@types/multer-s3": "npm:3.0.3"
