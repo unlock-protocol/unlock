@@ -17,12 +17,12 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@babel/eslint-parser": "7.25.9",
+    "@babel/eslint-parser": "7.26.5",
     "@eslint/compat": "1.2.4",
-    "@typescript-eslint/eslint-plugin": "8.19.0",
-    "@typescript-eslint/parser": "8.19.0",
+    "@typescript-eslint/eslint-plugin": "8.22.0",
+    "@typescript-eslint/parser": "8.22.0",
     "@vitest/eslint-plugin": "1.1.24",
-    "eslint": "9.17.0",
+    "eslint": "9.19.0",
     "eslint-config-next": "15.1.4",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-evm-address-to-checksummed": "0.0.6",
