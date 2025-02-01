@@ -18941,7 +18941,7 @@ __metadata:
     express: "npm:5.0.0-beta.3"
     express-winston: "npm:4.2.0"
     fuse.js: "npm:7.0.0"
-    geoip-country: "npm:5.0.202412312341"
+    geoip-country: "npm:5.0.202501312341"
     google-auth-library: "npm:9.15.0"
     graphile-worker: "npm:0.16.6"
     graphql: "npm:16.10.0"
@@ -31394,15 +31394,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"geoip-country@npm:5.0.202412312341":
-  version: 5.0.202412312341
-  resolution: "geoip-country@npm:5.0.202412312341"
+"geoip-country@npm:5.0.202501312341":
+  version: 5.0.202501312341
+  resolution: "geoip-country@npm:5.0.202501312341"
   dependencies:
     async: "npm:^2.6.4"
     countries-list: "npm:^3.1.1"
     ip-address: "npm:^6.4.0"
     yauzl: "npm:^2.10.0"
-  checksum: 10/ed638ed436705c77400b299a45d7983f14eaeec91fc50d6d8db18ae6aca0a36295688d67411044df8dd8babad4446d7dea53f127703963ebf5065ce9efc80fda
+  checksum: 10/f3be460a5fe1a9bdd2ba208fa315ce5f695396fc15959eb6ce59cf8df391016698185cf1e83c2d149b40682f817f46bcdabb41f18577ae80fa605ac68895c486
   languageName: node
   linkType: hard
 
