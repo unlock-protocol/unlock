@@ -10860,12 +10860,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuintun/qrcode@npm:4.1.12":
-  version: 4.1.12
-  resolution: "@nuintun/qrcode@npm:4.1.12"
+"@nuintun/qrcode@npm:4.1.13":
+  version: 4.1.13
+  resolution: "@nuintun/qrcode@npm:4.1.13"
   dependencies:
     tslib: "npm:^2.8.1"
-  checksum: 10/a12fed73001ce4603757c13cc9560d5b4b694582655b5045c824ade8ec1a63e39ca035fb6575aab7f7ad46f7f81aca3ec196d71235382d20b04ab4f68fb3b4e3
+  checksum: 10/8133349bf27895804bd08d3ed49266036a50f2001594e86c75d8ff78d9eb3ee5883fa29bc9d56589f2fbe228b89e2d4441b2d643239f7c8cc01c1042623b2761
   languageName: node
   linkType: hard
 
@@ -18899,7 +18899,7 @@ __metadata:
     "@aws-sdk/client-s3": "npm:3.717.0"
     "@logtail/node": "npm:0.5.2"
     "@logtail/winston": "npm:0.5.2"
-    "@nuintun/qrcode": "npm:4.1.12"
+    "@nuintun/qrcode": "npm:4.1.13"
     "@openzeppelin/defender-sdk": "npm:1.15.2"
     "@openzeppelin/merkle-tree": "npm:1.0.7"
     "@privy-io/server-auth": "npm:1.17.1"
