@@ -39,7 +39,7 @@
     "@aws-sdk/client-s3": "3.717.0",
     "@logtail/node": "0.5.2",
     "@logtail/winston": "0.5.2",
-    "@nuintun/qrcode": "4.1.12",
+    "@nuintun/qrcode": "4.1.13",
     "@openzeppelin/defender-sdk": "1.15.2",
     "@openzeppelin/merkle-tree": "1.0.7",
     "@privy-io/server-auth": "1.17.1",
