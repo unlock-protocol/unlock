@@ -50,20 +50,7 @@ export const getMemberships = async (
         }
       }
       const lockNetwork = props.network || network
-      const [member, total, tokenId] = await Promise.all([
-        web3Service.getHasValidKey(lockAddress, account!, lockNetwork),
-        web3Service.totalKeys(lockAddress, account!, lockNetwork),
-        web3Service.getTokenIdForOwner(lockAddress, account!, lockNetwork),
-      ])
-      // if not member but total is above 0
-      const expired = !member && total > 0
-      return {
-        lock: lockAddress,
-        expired,
-        member,
-        network: lockNetwork,
-        tokenId: tokenId ? tokenId.toString() : null,
-      }
+      return getMembership(web3Service, lockAddress, account, lockNetwork)
     })
   )
 }
