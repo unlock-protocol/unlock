@@ -32,7 +32,7 @@
   "devDependencies": {
     "copyfiles": "2.4.1",
     "eslint": "9.14.0",
-    "tsup": "8.3.5"
+    "tsup": "8.3.6"
   },
   "repository": {
     "type": "git",
