@@ -65,7 +65,7 @@
     "remark-parse": "11.0.0",
     "remove-markdown": "0.5.5",
     "siwe": "2.3.2",
-    "tailwind-merge": "2.5.5",
+    "tailwind-merge": "3.0.1",
     "typescript": "5.6.3",
     "unified": "11.0.5",
     "validator": "13.12.0",
