@@ -19194,7 +19194,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/ui": "workspace:./packages/ui"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
-    "@vercel/og": "npm:0.6.4"
+    "@vercel/og": "npm:0.6.5"
     "@vercel/speed-insights": "npm:1.0.14"
     "@vitejs/plugin-react": "npm:4.3.4"
     "@xstate/react": "npm:5.0.1"
@@ -19420,14 +19420,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vercel/og@npm:0.6.4":
-  version: 0.6.4
-  resolution: "@vercel/og@npm:0.6.4"
+"@vercel/og@npm:0.6.5":
+  version: 0.6.5
+  resolution: "@vercel/og@npm:0.6.5"
   dependencies:
     "@resvg/resvg-wasm": "npm:2.4.0"
-    satori: "npm:0.12.0"
+    satori: "npm:0.12.1"
     yoga-wasm-web: "npm:0.3.3"
-  checksum: 10/6941bc7e95b7c88fd0e017ab1a89356c16ca1c99c29d2d5984d5470594f7ac2a4d1169945bf5e7ca77c813ffbfc3e1c2e3dd98007ca990906a412963dbb2c516
+  checksum: 10/80695fe00a025ca63230315770940e57e88f6cb9d862dc0080f78b5879fcb0e9a4810fc8cdd91a483639dc13e0114d31ac0f4a48c7585ea7e24cb232cfdaa830
   languageName: node
   linkType: hard
 
@@ -47120,6 +47120,25 @@ __metadata:
     postcss-value-parser: "npm:^4.2.0"
     yoga-wasm-web: "npm:^0.3.3"
   checksum: 10/e27c63de4ece6f43ad07e1c0e15fbd6206d02a1ecf3b5788d4d258b73e6549c7d32ffee3f8ab580635e4b9f6ac58dcfa03b6102b8f15a6a14408eeb887af676f
+  languageName: node
+  linkType: hard
+
+"satori@npm:0.12.1":
+  version: 0.12.1
+  resolution: "satori@npm:0.12.1"
+  dependencies:
+    "@shuding/opentype.js": "npm:1.4.0-beta.0"
+    css-background-parser: "npm:^0.1.0"
+    css-box-shadow: "npm:1.0.0-3"
+    css-gradient-parser: "npm:^0.0.16"
+    css-to-react-native: "npm:^3.0.0"
+    emoji-regex: "npm:^10.2.1"
+    escape-html: "npm:^1.0.3"
+    linebreak: "npm:^1.1.0"
+    parse-css-color: "npm:^0.2.1"
+    postcss-value-parser: "npm:^4.2.0"
+    yoga-wasm-web: "npm:^0.3.3"
+  checksum: 10/fa5dac909499d900a37a41aa5fdabd43d381285f478151c0fb0fad643feb10e2f09bcaf7ed92a7591fd26c6a4d5e0b59eb4ba788a193a5a83e784b5382af30e9
   languageName: node
   linkType: hard
 
