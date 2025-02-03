@@ -50,7 +50,7 @@
     "@unlock-protocol/tsconfig": "workspace:^",
     "eslint": "9.19.0",
     "ethers": "6.13.4",
-    "hardhat": "2.22.17",
+    "hardhat": "2.22.18",
     "mocha": "11.1.0",
     "prettier": "3.4.2",
     "ts-mocha": "10.0.0",

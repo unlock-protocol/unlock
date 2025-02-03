@@ -31,7 +31,7 @@
     "eth-gas-reporter": "0.2.27",
     "ethers": "6.13.4",
     "fs-extra": "11.2.0",
-    "hardhat": "2.22.17",
+    "hardhat": "2.22.18",
     "hardhat-contract-sizer": "2.10.0",
     "hardhat-erc1820": "0.1.0",
     "hardhat-gas-reporter": "2.2.2",
