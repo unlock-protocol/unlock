@@ -67,7 +67,7 @@
     "express-winston": "4.2.0",
     "fuse.js": "7.0.0",
     "geoip-country": "5.0.202501312341",
-    "google-auth-library": "9.15.0",
+    "google-auth-library": "9.15.1",
     "graphile-worker": "0.16.6",
     "graphql": "16.10.0",
     "ics": "3.8.1",
