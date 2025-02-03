@@ -17,9 +17,10 @@ export const getMembership = async (
   account: string,
   lockNetwork: number
 ) => {
-  const [member, total] = await Promise.all([
+  const [member, total, tokenId] = await Promise.all([
     web3Service.getHasValidKey(lockAddress, account!, lockNetwork),
     web3Service.totalKeys(lockAddress, account!, lockNetwork),
+    web3Service.getTokenIdForOwner(lockAddress, account!, lockNetwork),
   ])
   const expired = !member && total > 0
   return {
@@ -27,6 +28,7 @@ export const getMembership = async (
     expired,
     member,
     network: lockNetwork,
+    tokenId: tokenId ? tokenId.toString() : null,
   }
 }
 
@@ -44,12 +46,14 @@ export const getMemberships = async (
           expired: false,
           member: false,
           network: props.network || network,
+          tokenId: null,
         }
       }
       const lockNetwork = props.network || network
-      const [member, total] = await Promise.all([
+      const [member, total, tokenId] = await Promise.all([
         web3Service.getHasValidKey(lockAddress, account!, lockNetwork),
         web3Service.totalKeys(lockAddress, account!, lockNetwork),
+        web3Service.getTokenIdForOwner(lockAddress, account!, lockNetwork),
       ])
       // if not member but total is above 0
       const expired = !member && total > 0
@@ -58,6 +62,7 @@ export const getMemberships = async (
         expired,
         member,
         network: lockNetwork,
+        tokenId: tokenId ? tokenId.toString() : null,
       }
     })
   )
