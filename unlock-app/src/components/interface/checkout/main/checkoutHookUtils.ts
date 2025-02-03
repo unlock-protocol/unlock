@@ -2,6 +2,7 @@ import { networks } from '@unlock-protocol/networks'
 import { HookType } from '@unlock-protocol/types'
 import { CheckoutHookType } from './checkoutMachine'
 import { PaywallConfigType } from '@unlock-protocol/core'
+import { locksmith } from '~/config/locksmith'
 
 const HookIdMapping: Partial<Record<HookType, CheckoutHookType>> = {
   PASSWORD: 'password',
@@ -69,5 +70,23 @@ export const getOnPurchaseHookTypeFromPaywallConfig = (
     return 'captcha'
   } else if (isPromo) {
     return 'promocode'
+  }
+}
+
+let prevBody: string | null = null
+export const postToWebhook = async (body: any, config: any, event: string) => {
+  const url = config?.hooks && config.hooks[event]
+  if (!url) return
+
+  if (JSON.stringify(body) === prevBody) {
+    return
+  }
+  prevBody = JSON.stringify(body)
+
+  try {
+    const checkoutId = new URL(window.location.href).searchParams.get('id')
+    await locksmith.addCheckoutHookJob(checkoutId!, { data: body, event })
+  } catch (error) {
+    console.error('job not added')
   }
 }
