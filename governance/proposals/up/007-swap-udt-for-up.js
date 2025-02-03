@@ -24,7 +24,7 @@ module.exports = async ({
   // parse proposal
   const proposalName = `Swap UDT for UP
 
-  Swap ${udtAmount} UDT that have been bridged for UP token
+  Swap ${udtAmount} UDT that have been bridged for UP token.
 
 `
   const calls = [
