@@ -19150,7 +19150,7 @@ __metadata:
     docusaurus-gtm-plugin: "npm:0.0.2"
     docusaurus-node-polyfills: "npm:1.0.0"
     docusaurus-plugin-openapi-docs: "npm:4.3.3"
-    docusaurus-theme-openapi-docs: "npm:4.3.1"
+    docusaurus-theme-openapi-docs: "npm:4.3.3"
     ethers: "npm:6.13.4"
     postcss: "npm:8.5.1"
     postcss-nesting: "npm:13.0.1"
@@ -27437,9 +27437,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"docusaurus-theme-openapi-docs@npm:4.3.1":
-  version: 4.3.1
-  resolution: "docusaurus-theme-openapi-docs@npm:4.3.1"
+"docusaurus-theme-openapi-docs@npm:4.3.3":
+  version: 4.3.3
+  resolution: "docusaurus-theme-openapi-docs@npm:4.3.3"
   dependencies:
     "@hookform/error-message": "npm:^2.0.1"
     "@reduxjs/toolkit": "npm:^1.7.1"
@@ -27470,9 +27470,9 @@ __metadata:
     "@docusaurus/theme-common": ^3.5.0
     docusaurus-plugin-openapi-docs: ^4.0.0
     docusaurus-plugin-sass: ^0.2.3
-    react: ^16.8.4 || ^17.0.0 || ^18.0.0
-    react-dom: ^16.8.4 || ^17.0.0 || ^18.0.0
-  checksum: 10/73493b8c520c5a9460b8396fba7c3bbd36cdb4120b9bbeb2485e542f3bfc07dc1b5773e2f7420f27d833049ad298c45582fe902f58b59de93d67cd8fdde761a7
+    react: ^16.8.4 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    react-dom: ^16.8.4 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10/018f261632c9b36e03bfd5df911be695afa0694f634f3e6bb143b450448f31c4d26ae583b2587e577f374325880afcb4981d713e67cd1b841c656a93deb8bb9a
   languageName: node
   linkType: hard
 
