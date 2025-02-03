@@ -13973,19 +13973,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/api-kit@npm:2.5.6":
-  version: 2.5.6
-  resolution: "@safe-global/api-kit@npm:2.5.6"
+"@safe-global/api-kit@npm:2.5.8":
+  version: 2.5.8
+  resolution: "@safe-global/api-kit@npm:2.5.8"
   dependencies:
-    "@safe-global/protocol-kit": "npm:^5.1.1"
-    "@safe-global/types-kit": "npm:^1.0.1"
+    "@safe-global/protocol-kit": "npm:^5.2.1"
+    "@safe-global/types-kit": "npm:^1.0.2"
     node-fetch: "npm:^2.7.0"
     viem: "npm:^2.21.8"
-  checksum: 10/3d80f288b03c3adb2479dc4e5052b233428ef468728c100385c3709ff6ac4987b841fae1c08123ba907b76bf83205c7483f53538a2221102d2ffe02165587395
+  checksum: 10/044d57647e72a0a2aaf1c45097a32e6aa7d7e1cb41a8da8d241ebf91a91d517625b48994c39d3ee90ebd1cbbe2cb339754d68f5746d808dcaf2cf90ec33f4aac
   languageName: node
   linkType: hard
 
-"@safe-global/protocol-kit@npm:5.1.1, @safe-global/protocol-kit@npm:^5.1.1":
+"@safe-global/protocol-kit@npm:5.1.1":
   version: 5.1.1
   resolution: "@safe-global/protocol-kit@npm:5.1.1"
   dependencies:
@@ -14006,12 +14006,42 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@safe-global/protocol-kit@npm:^5.2.1":
+  version: 5.2.1
+  resolution: "@safe-global/protocol-kit@npm:5.2.1"
+  dependencies:
+    "@noble/curves": "npm:^1.6.0"
+    "@peculiar/asn1-schema": "npm:^2.3.13"
+    "@safe-global/safe-deployments": "npm:^1.37.26"
+    "@safe-global/safe-modules-deployments": "npm:^2.2.5"
+    "@safe-global/types-kit": "npm:^1.0.2"
+    abitype: "npm:^1.0.2"
+    semver: "npm:^7.6.3"
+    viem: "npm:^2.21.8"
+  dependenciesMeta:
+    "@noble/curves":
+      optional: true
+    "@peculiar/asn1-schema":
+      optional: true
+  checksum: 10/9d6fd4341aef27316afd2a7f813357efcd52d1da02b6f81867d78c3977b56596d3f37e04b1a46c1f3c8090fc17eb9889dca0913af895943b2436e8802e7293b7
+  languageName: node
+  linkType: hard
+
 "@safe-global/safe-deployments@npm:^1.37.22":
   version: 1.37.22
   resolution: "@safe-global/safe-deployments@npm:1.37.22"
   dependencies:
     semver: "npm:^7.6.2"
   checksum: 10/722553e71ed8bfc0a228ea0157badc6dde71ca31a2950ba77676464e281e0f5c220bf6e8e6865ffd3c67ee9520c192aafadb5f835f7d80c43e75418651d12d35
+  languageName: node
+  linkType: hard
+
+"@safe-global/safe-deployments@npm:^1.37.26":
+  version: 1.37.26
+  resolution: "@safe-global/safe-deployments@npm:1.37.26"
+  dependencies:
+    semver: "npm:^7.6.2"
+  checksum: 10/992e1982966af2299e1023eebab7a216da1b4629acc330d82e71020626fd3f0cc83a95db511dd820bad37f27b62fce7c348ef194870b72393cd9ebcbcbb20978
   languageName: node
   linkType: hard
 
@@ -14022,12 +14052,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@safe-global/safe-modules-deployments@npm:^2.2.5":
+  version: 2.2.5
+  resolution: "@safe-global/safe-modules-deployments@npm:2.2.5"
+  checksum: 10/fac2c7f3ce2653482523ecf7ce3a4251e1dc8fb858a14801caa8d5f7dc13a17537408af012fa10b7f0d64e63ea4d5714dd4505fe7c7d8cfbdd91f8d07def1873
+  languageName: node
+  linkType: hard
+
 "@safe-global/types-kit@npm:^1.0.1":
   version: 1.0.1
   resolution: "@safe-global/types-kit@npm:1.0.1"
   dependencies:
     abitype: "npm:^1.0.2"
   checksum: 10/2b740301a7aa8280f34ba1e7c74f7e9993e60a38b7a303ee65496f0116beff691690c957adc2d49667cc112f44c63141da2ae010c0ef39cb33ad0693a1d39512
+  languageName: node
+  linkType: hard
+
+"@safe-global/types-kit@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "@safe-global/types-kit@npm:1.0.2"
+  dependencies:
+    abitype: "npm:^1.0.2"
+  checksum: 10/202019341a49be4ab1636b2aea51b1c897bd5757c17b0540c043bab90cab47b8e8eb122224a2ad99c9bf9c1ab2c359b381a9afd03d89834d2c55234fd498ad9e
   languageName: node
   linkType: hard
 
@@ -19128,7 +19174,7 @@ __metadata:
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@openzeppelin/hardhat-upgrades": "npm:3.8.0"
     "@openzeppelin/upgrades-core": "npm:1.41.0"
-    "@safe-global/api-kit": "npm:2.5.6"
+    "@safe-global/api-kit": "npm:2.5.8"
     "@safe-global/protocol-kit": "npm:5.1.1"
     "@tenderly/hardhat-tenderly": "npm:2.5.1"
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
