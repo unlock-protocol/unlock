@@ -14,7 +14,7 @@
     "babel-plugin-polyfill-corejs2": "0.4.12",
     "node-gyp": "11.0.0",
     "prettier-plugin-solidity": "1.4.1",
-    "typescript": "5.7.2"
+    "typescript": "5.7.3"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "2.1.8",
