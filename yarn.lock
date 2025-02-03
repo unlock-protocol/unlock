@@ -19498,16 +19498,16 @@ __metadata:
     "@babel/node": "npm:7.26.0"
     "@babel/plugin-transform-runtime": "npm:7.25.9"
     "@babel/preset-env": "npm:7.26.0"
-    "@typescript-eslint/parser": "npm:8.19.0"
+    "@typescript-eslint/parser": "npm:8.22.0"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     babel-loader: "npm:9.2.1"
     babel-plugin-wildcard: "npm:7.0.0"
     dotenv: "npm:16.4.7"
-    eslint: "npm:9.17.0"
+    eslint: "npm:9.19.0"
     handlebars: "npm:4.7.8"
     netlify-cli: "npm:15.11.0"
     node-forge: "npm:1.3.1"
-    nodemailer: "npm:6.9.16"
+    nodemailer: "npm:6.10.0"
     prettier: "npm:3.4.2"
     regenerator-runtime: "npm:0.14.1"
     typescript: "npm:5.7.2"
@@ -41053,10 +41053,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nodemailer@npm:6.9.16":
-  version: 6.9.16
-  resolution: "nodemailer@npm:6.9.16"
-  checksum: 10/f131888d3111238fde4ee03539e62f1764b99365ff31d556dde0367dfefcee1f2eb8948558f35ba84fe5cd805f2d01294eee63a5675d3aa501e7df548a2518ce
+"nodemailer@npm:6.10.0":
+  version: 6.10.0
+  resolution: "nodemailer@npm:6.10.0"
+  checksum: 10/2e28961c264501e2621860d912e1ab59788825c5aea5ce71041c5b5b52c7470b63e7ab290003d755f647f25048552c6eec256f468292f454d4d6a68c93dd0659
   languageName: node
   linkType: hard
 
