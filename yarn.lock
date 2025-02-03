@@ -18006,12 +18006,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/qrcode.react@npm:1.0.5":
-  version: 1.0.5
-  resolution: "@types/qrcode.react@npm:1.0.5"
+"@types/qrcode.react@npm:3.0.0":
+  version: 3.0.0
+  resolution: "@types/qrcode.react@npm:3.0.0"
   dependencies:
-    "@types/react": "npm:*"
-  checksum: 10/eea7526180988a1bc4937f12c0b82951a9be9a68817a01ab10cfae68796f9a4629cdbf3a47d24b87cb10a9ca55ebd3d0690516d33637f95767a46e1961eb6b9d
+    qrcode.react: "npm:*"
+  checksum: 10/8ce11d0455fca9a898f6e9d499529526671c5e398f44cf2bc507ad84e1e4982ff0f384261e52b16b933bdd1d6db6bef27b437f90bb804a039ddfe21112d19da5
   languageName: node
   linkType: hard
 
@@ -19322,7 +19322,7 @@ __metadata:
     "@tw-classed/react": "npm:1.7.0"
     "@types/file-saver": "npm:2.0.7"
     "@types/postmate": "npm:1.5.4"
-    "@types/qrcode.react": "npm:1.0.5"
+    "@types/qrcode.react": "npm:3.0.0"
     "@types/react": "npm:18.3.18"
     "@types/react-gtm-module": "npm:2.0.4"
     "@types/remove-markdown": "npm:0.3.4"
@@ -44779,6 +44779,15 @@ __metadata:
   dependencies:
     "@types/offscreencanvas": "npm:^2019.6.4"
   checksum: 10/21e09c3c6d5928f56cac243d0a50ce29a9c25c4cd5b31c74b1579d232622c3944777406b652e503cd457a983e3f6806bf2d89ba387f90f841b77f1f3b119fdd0
+  languageName: node
+  linkType: hard
+
+"qrcode.react@npm:*":
+  version: 4.2.0
+  resolution: "qrcode.react@npm:4.2.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10/665036d88b160e6d5de4e24d101bc63bd2b76712802e874bbffe56c6b6e5fe50c63f02c3cba2975b2e2b555c1f1e112cbb42987f8cb3a626ce2d17023cfde6ac
   languageName: node
   linkType: hard
 
