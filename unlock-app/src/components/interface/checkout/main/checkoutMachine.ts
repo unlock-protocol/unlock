@@ -54,6 +54,7 @@ export interface SelectLockEvent {
   type: 'SELECT_LOCK'
   existingMember: boolean
   expiredMember: boolean
+  tokenId?: string | null
 }
 
 export interface ConnectEvent {
@@ -185,6 +186,7 @@ export interface CheckoutMachineContext {
   recipients: string[]
   keyManagers?: string[]
   mint?: Transaction
+  tokenId: string | null
   skipQuantity: boolean
   skipRecipient: boolean
   metadata?: any[]
@@ -200,6 +202,7 @@ const DEFAULT_CONTEXT: CheckoutMachineContext = {
   lock: undefined,
   messageToSign: undefined,
   mint: undefined,
+  tokenId: null,
   payment: {
     method: 'crypto',
   },
@@ -759,6 +762,8 @@ export const checkoutMachine = createMachine(
           event.expiredMember as boolean,
         renew: ({ event }: { event: SelectLockEvent }) =>
           event.expiredMember as boolean,
+        tokenId: ({ event }: { event: SelectLockEvent }) =>
+          event.tokenId ?? null,
       }),
 
       connect: assign({
