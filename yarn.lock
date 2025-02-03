@@ -17238,9 +17238,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tenderly/hardhat-tenderly@npm:2.5.1":
-  version: 2.5.1
-  resolution: "@tenderly/hardhat-tenderly@npm:2.5.1"
+"@tenderly/hardhat-tenderly@npm:2.5.2":
+  version: 2.5.2
+  resolution: "@tenderly/hardhat-tenderly@npm:2.5.2"
   dependencies:
     "@ethersproject/bignumber": "npm:^5.7.0"
     "@nomicfoundation/hardhat-ethers": "npm:^3.0.0"
@@ -17251,7 +17251,7 @@ __metadata:
     "@tenderly/hardhat-integration": "npm:^1.1.0"
     dotenv: "npm:^16.4.5"
     ethers: "npm:^6.8.1"
-  checksum: 10/f7b483d1aa2d8de87aa1cf2d826abe02d590efef17a88bcb630efe75e4da09140332be635cf2758ed6876dd71876ffa690bc88d9496f097cef9d7ec2c4b01646
+  checksum: 10/b9b5ee25ffca25b5f641b94ebe2b8469652261faa22e900d3aa8fd0c573bd769c551b60ea051f24d4959c467315bbb6c7f83202e767de46b77d7cb2f5630586d
   languageName: node
   linkType: hard
 
@@ -19223,7 +19223,7 @@ __metadata:
     "@openzeppelin/upgrades-core": "npm:1.41.0"
     "@safe-global/api-kit": "npm:2.5.8"
     "@safe-global/protocol-kit": "npm:5.1.1"
-    "@tenderly/hardhat-tenderly": "npm:2.5.1"
+    "@tenderly/hardhat-tenderly": "npm:2.5.2"
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/hardhat-helpers": "workspace:^"
