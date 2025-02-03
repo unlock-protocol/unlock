@@ -19082,7 +19082,7 @@ __metadata:
     tsup: "npm:8.3.6"
     tsx: "npm:4.19.2"
     typescript: "npm:5.7.2"
-    vite: "npm:6.0.9"
+    vite: "npm:6.0.11"
     vite-plugin-svgr: "npm:4.3.0"
     vite-tsconfig-paths: "npm:4.3.2"
   peerDependencies:
@@ -19374,7 +19374,7 @@ __metadata:
     next: "npm:14.2.21"
     prettier: "npm:3.4.2"
     typescript: "npm:5.7.2"
-    vite: "npm:6.0.9"
+    vite: "npm:6.0.11"
     vite-plugin-node-polyfills: "npm:0.23.0"
   languageName: unknown
   linkType: soft
@@ -19392,7 +19392,7 @@ __metadata:
     postmate: "npm:1.5.2"
     tsup: "npm:8.3.6"
     typescript: "npm:5.7.2"
-    vite: "npm:6.0.9"
+    vite: "npm:6.0.11"
     vite-plugin-css-injected-by-js: "npm:3.5.2"
     vite-plugin-node-polyfills: "npm:0.23.0"
     vitest: "npm:2.1.8"
@@ -19515,7 +19515,7 @@ __metadata:
     tsx: "npm:4.19.2"
     typescript: "npm:5.7.2"
     url-loader: "npm:4.1.1"
-    vite: "npm:6.0.9"
+    vite: "npm:6.0.11"
     vite-plugin-node-polyfills: "npm:0.23.0"
     vite-plugin-svgr: "npm:4.3.0"
     vite-tsconfig-paths: "npm:4.3.2"
@@ -53262,9 +53262,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:6.0.9":
-  version: 6.0.9
-  resolution: "vite@npm:6.0.9"
+"vite@npm:6.0.11":
+  version: 6.0.11
+  resolution: "vite@npm:6.0.11"
   dependencies:
     esbuild: "npm:^0.24.2"
     fsevents: "npm:~2.3.3"
@@ -53310,7 +53310,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10/6f4f27c602f997537df26cc9665763b402f5978a7381146f6c0b146888ee257484a7f140df79e495b922082ca608bd1f563b0be9e272d22c689aad2b1e1da440
+  checksum: 10/753d06b07a4d90863d3478162cfb18fa5cd7f6eb22a74525348a8fd46593a82875d0f92352c2f4833e15cb6581fc97d6ab434c0c5d83d8d58cfbbe6e7267726d
   languageName: node
   linkType: hard
 
