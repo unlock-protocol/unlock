@@ -3436,10 +3436,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloudflare/workers-types@npm:4.20241230.0":
-  version: 4.20241230.0
-  resolution: "@cloudflare/workers-types@npm:4.20241230.0"
-  checksum: 10/ddb68935d69522e98a3b22e80620cc3c110c9f46cb033341b680c53c528d5704a43f4adaf3c69cecea7011212a8e36047146911419baba00f39043f1dc866676
+"@cloudflare/workers-types@npm:4.20250129.0":
+  version: 4.20250129.0
+  resolution: "@cloudflare/workers-types@npm:4.20250129.0"
+  checksum: 10/7c722a2ef81af43621853d14400a32134dc9b5be68db19c96210df1a27084665af448b04f7e79f0adc05f02c7116b518cea6bb679836f4740328c92be36f36c3
   languageName: node
   linkType: hard
 
@@ -32487,7 +32487,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "graph-service@workspace:graph-service"
   dependencies:
-    "@cloudflare/workers-types": "npm:4.20241230.0"
+    "@cloudflare/workers-types": "npm:4.20250129.0"
     "@sentry/node": "npm:8.47.0"
     vitest: "npm:2.1.8"
     wrangler: "npm:3.107.2"
@@ -44898,7 +44898,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "provider@workspace:provider"
   dependencies:
-    "@cloudflare/workers-types": "npm:4.20241230.0"
+    "@cloudflare/workers-types": "npm:4.20250129.0"
     "@types/node": "npm:22.10.5"
     "@unlock-protocol/networks": "workspace:^"
     ethers: "npm:6.13.4"
