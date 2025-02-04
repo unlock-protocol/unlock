@@ -17,7 +17,6 @@ import { networks } from '@unlock-protocol/networks'
 import { Token } from '@unlock-protocol/types'
 import { useAuthenticate } from './useAuthenticate'
 import { useSearchParam } from 'react-use'
-import { useGetTokenIdForOwner } from './useGetTokenIdForOwner'
 
 export interface CrossChainRoute {
   network: number
@@ -121,21 +120,6 @@ export const useCrossChainRoutes = ({
         enabled: enabled,
       })),
   })
-
-  // Get tokenId for renewals
-  const { data: tokenId } = useGetTokenIdForOwner(
-    {
-      account: account!,
-      lockAddress: lock.address,
-      network: lock.network,
-    },
-    {
-      enabled: renew,
-    }
-  )
-
-  // Convert BigInt tokenId to string for query key
-  const tokenIdString = tokenId ? tokenId.toString() : null
 
   const { data: sharedParams } = useQuery({
     queryKey: [
