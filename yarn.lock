@@ -19189,7 +19189,7 @@ __metadata:
     ethers-multisend: "npm:3.1.0"
     fs-extra: "npm:11.3.0"
     hardhat: "npm:2.22.18"
-    zksync-ethers: "npm:6.15.3"
+    zksync-ethers: "npm:6.16.0"
   languageName: unknown
   linkType: soft
 
@@ -19214,7 +19214,7 @@ __metadata:
     hardhat: "npm:2.22.18"
     tsup: "npm:8.3.6"
     typescript: "npm:5.7.3"
-    zksync-ethers: "npm:6.15.3"
+    zksync-ethers: "npm:6.16.0"
   languageName: unknown
   linkType: soft
 
@@ -47571,25 +47571,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"satori@npm:0.12.0":
-  version: 0.12.0
-  resolution: "satori@npm:0.12.0"
-  dependencies:
-    "@shuding/opentype.js": "npm:1.4.0-beta.0"
-    css-background-parser: "npm:^0.1.0"
-    css-box-shadow: "npm:1.0.0-3"
-    css-gradient-parser: "npm:^0.0.16"
-    css-to-react-native: "npm:^3.0.0"
-    emoji-regex: "npm:^10.2.1"
-    escape-html: "npm:^1.0.3"
-    linebreak: "npm:^1.1.0"
-    parse-css-color: "npm:^0.2.1"
-    postcss-value-parser: "npm:^4.2.0"
-    yoga-wasm-web: "npm:^0.3.3"
-  checksum: 10/e27c63de4ece6f43ad07e1c0e15fbd6206d02a1ecf3b5788d4d258b73e6549c7d32ffee3f8ab580635e4b9f6ac58dcfa03b6102b8f15a6a14408eeb887af676f
-  languageName: node
-  linkType: hard
-
 "satori@npm:0.12.1":
   version: 0.12.1
   resolution: "satori@npm:0.12.1"
@@ -55049,12 +55030,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zksync-ethers@npm:6.15.3":
-  version: 6.15.3
-  resolution: "zksync-ethers@npm:6.15.3"
+"zksync-ethers@npm:6.16.0":
+  version: 6.16.0
+  resolution: "zksync-ethers@npm:6.16.0"
   peerDependencies:
     ethers: ^6.7.1
-  checksum: 10/6bfea8c01b6d7b286f902e93f1f040e7159b712d9e639b4bfe9e64894991f1b772f371d50c3eabf289b6b9e0f1c96f9c8530f5dd46a2aa1e93a5eb4123e1a53b
+  checksum: 10/cbc69413be9a491fa9f5dcbd62b270360e6b3290007211f8d8a622bcd9b91f7ca746810c44b76af36031cdf403745b7d51f8fe246368f4d6ecd3859af06a4778
   languageName: node
   linkType: hard
 
