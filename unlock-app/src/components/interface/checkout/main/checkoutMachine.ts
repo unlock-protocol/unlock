@@ -106,6 +106,7 @@ export interface MakeAnotherPurchaseEvent {
 
 interface ConfirmMintEvent extends Transaction {
   type: 'CONFIRM_MINT'
+  tokenId?: string
 }
 
 interface UnlockAccountEvent {
@@ -821,6 +822,7 @@ export const checkoutMachine = createMachine(
             network: event.network,
           } as const
         },
+        tokenId: ({ event }) => event.tokenId ?? null,
       }),
 
       updatePaywallConfig: assign(({ event }) => {
