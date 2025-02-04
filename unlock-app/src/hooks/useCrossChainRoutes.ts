@@ -71,7 +71,7 @@ export const useCrossChainRoutes = ({
   const { account } = useAuthenticate()
   const web3Service = useWeb3Service()
 
-  const { recipients, paywallConfig, keyManagers, renew } = context
+  const { recipients, paywallConfig, keyManagers, renew, tokenId } = context
 
   const { data: prices, isPending: isLoadingPrices } = useQuery({
     queryKey: ['prices', account, lock, recipients, purchaseData],
@@ -146,7 +146,7 @@ export const useCrossChainRoutes = ({
       keyManagers,
       purchaseData,
       renew,
-      tokenIdString,
+      tokenId,
     ],
     queryFn: async () => {
       return prepareSharedParams({
@@ -159,7 +159,7 @@ export const useCrossChainRoutes = ({
         ),
         purchaseData: purchaseData || recipients.map(() => '0x'),
         renew,
-        tokenId: tokenIdString,
+        tokenId,
       })
     },
   })

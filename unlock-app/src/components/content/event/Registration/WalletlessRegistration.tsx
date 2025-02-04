@@ -1,8 +1,6 @@
 import { useClaim } from '~/hooks/useClaim'
 import { ethers } from 'ethers'
 
-import ReCaptcha from 'react-google-recaptcha'
-
 import { Button, Input, AddressInput } from '@unlock-protocol/ui'
 import { Controller, useForm } from 'react-hook-form'
 import { useEffect, useState } from 'react'
@@ -13,7 +11,7 @@ import { TransactionStatus } from '~/components/interface/checkout/main/checkout
 import { onResolveName } from '~/utils/resolvers'
 import { MetadataInputType } from '@unlock-protocol/core'
 import { useRsvp } from '~/hooks/useRsvp'
-import { useCaptcha } from '~/hooks/useCaptcha'
+import { useReCaptcha } from 'next-recaptcha-v3'
 import { useMutation } from '@tanstack/react-query'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 
@@ -225,8 +223,8 @@ export const RegistrationForm = ({
     captcha: string
   }) => void
 }) => {
-  const config = useConfig()
-  const { recaptchaRef, getCaptchaValue } = useCaptcha()
+  const { executeRecaptcha } = useReCaptcha()
+
   const [loading, setLoading] = useState<boolean>(false)
   const { account, email } = useAuthenticate()
 
@@ -260,7 +258,7 @@ export const RegistrationForm = ({
   const onSubmit = async ({ recipient, ...data }: any) => {
     setLoading(true)
     try {
-      const captcha = await getCaptchaValue()
+      const captcha = await executeRecaptcha('submit')
       await onRSVP({
         recipient,
         data,
@@ -283,13 +281,6 @@ export const RegistrationForm = ({
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col w-full gap-4"
     >
-      <ReCaptcha
-        ref={recaptchaRef}
-        sitekey={config.recaptchaKey}
-        size="invisible"
-        badge="bottomleft"
-      />
-
       {/* TODO: delete me after May 1st 2024 once all new events use `metadataInputs` */}
       {(!metadataInputs || metadataInputs.length === 0) && (
         <>
