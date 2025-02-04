@@ -22,7 +22,7 @@
     "dotenv": "16.4.7",
     "embla-carousel-react": "8.5.2",
     "eslint": "9.14.0",
-    "ethers": "6.13.4",
+    "ethers": "6.13.5",
     "next": "14.2.21",
     "next-seo": "6.6.0",
     "numeral": "2.0.6",
