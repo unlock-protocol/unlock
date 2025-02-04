@@ -54,6 +54,6 @@
   "dependencies": {
     "graphql": "16.10.0",
     "graphql-request": "6.1.0",
-    "siwe": "2.3.2"
+    "siwe": "3.0.0"
   }
 }
