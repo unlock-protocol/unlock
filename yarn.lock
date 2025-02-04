@@ -19327,7 +19327,7 @@ __metadata:
     remark-html: "npm:16.0.1"
     remark-parse: "npm:11.0.0"
     run-script-os: "npm:1.1.6"
-    satori: "npm:0.12.0"
+    satori: "npm:0.12.1"
     sequelize: "npm:6.37.5"
     sequelize-cli: "npm:6.6.2"
     siwe: "npm:2.3.2"
