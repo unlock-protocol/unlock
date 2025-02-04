@@ -1236,7 +1236,7 @@ __metadata:
     "@unlock-protocol/hardhat-plugin": "npm:latest"
     "@unlock-protocol/networks": "npm:latest"
     eslint: "npm:9.17.0"
-    ethers: "npm:6.13.4"
+    ethers: "npm:6.13.5"
     fs-extra: "npm:11.2.0"
     hardhat: "npm:2.22.18"
     hardhat-erc1820: "npm:0.1.0"
@@ -2540,9 +2540,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:6.13.4":
-  version: 6.13.4
-  resolution: "ethers@npm:6.13.4"
+"ethers@npm:6.13.5":
+  version: 6.13.5
+  resolution: "ethers@npm:6.13.5"
   dependencies:
     "@adraffy/ens-normalize": "npm:1.10.1"
     "@noble/curves": "npm:1.2.0"
@@ -2551,7 +2551,7 @@ __metadata:
     aes-js: "npm:4.0.0-beta.5"
     tslib: "npm:2.7.0"
     ws: "npm:8.17.1"
-  checksum: 10/221192fed93f6b0553f3e5e72bfd667d676220577d34ff854f677e955d6f608e60636a9c08b5d54039c532a9b9b7056384f0d7019eb6e111d53175806f896ac6
+  checksum: 10/ccba21a83679fb6a7c3eb9d187593501565d140064f2db28057a64d6707678bacf2adf4555882c4814688246da73173560df81fd3361fd2f227b5d3c75cb8685
   languageName: node
   linkType: hard
 
