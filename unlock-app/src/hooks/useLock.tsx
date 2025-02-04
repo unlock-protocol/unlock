@@ -172,74 +172,6 @@ export const withdrawFromLock = (
     }
   )
 }
-/**
- * Function called to purchase a key
- */
-export const purchaseKeyFromLock = async (
-  web3Service: any,
-  walletService: any,
-  config: any,
-  lock: Lock,
-  recipient: string,
-  referrer: string,
-  setLock: (...args: any) => void,
-  data: string,
-  recurringPayments: number | undefined | string,
-  callback: (...args: any) => void
-) => {
-  // In order to not modify the behavior for v10, by default if the user owns a key on
-  // a non expiring lock, we extend it.
-  // TODO: allow for purchase of explicit new keys!
-  const tokenId = await web3Service.getTokenIdForOwner(
-    lock.address,
-    recipient,
-    walletService.networkId
-  )
-
-  if (
-    tokenId &&
-    lock.expirationDuration !== -1 &&
-    (lock.publicLockVersion || 0) >= 10
-  ) {
-    // We assume this is a renewal to remain consistent with old versions of the checkout
-    return walletService.extendKey({
-      lockAddress: lock.address,
-      tokenId,
-      referrer,
-      keyPrice: lock.keyPrice,
-      data,
-    })
-  }
-
-  return walletService.purchaseKey(
-    {
-      lockAddress: lock.address,
-      owner: recipient,
-      referrer,
-      recurringPayments,
-      keyPrice: lock.keyPrice,
-      data,
-    },
-    {} /** transactionParams */,
-    async (error: any, transactionHash: string) => {
-      if (error) {
-        throw error
-      }
-      processTransaction(
-        'keyPurchase',
-        web3Service,
-        config,
-        lock,
-        setLock,
-        transactionHash,
-        walletService.networkId
-      )
-      if (callback) {
-        return callback(transactionHash)
-      }
-    }
-  )
-}
 
 /**
  * A hook which yield a lock, tracks its state changes, and (TODO) provides methods to update it
@@ -285,28 +217,6 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
       config,
       lock,
       setLock,
-      callback
-    )
-  }
-
-  const purchaseKey = async (
-    recipient: string,
-    referrer: string,
-    data: string,
-    recurringPayments: number | undefined | string,
-    callback: (...args: any) => void
-  ) => {
-    const walletService = await getWalletService(network)
-    await purchaseKeyFromLock(
-      web3Service,
-      walletService,
-      config,
-      lock,
-      recipient,
-      referrer,
-      setLock,
-      data,
-      recurringPayments,
       callback
     )
   }
@@ -365,7 +275,6 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
     lock,
     updateKeyPrice,
     withdraw,
-    purchaseKey,
     error,
     isStripeConnected,
     isLockManager,

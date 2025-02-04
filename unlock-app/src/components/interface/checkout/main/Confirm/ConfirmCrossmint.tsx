@@ -16,9 +16,7 @@ import { ethers } from 'ethers'
 import { useCrossmintEnabled } from '~/hooks/useCrossmintEnabled'
 import { TransactionAnimation } from '../../Shell'
 import { config } from '~/config/app'
-import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
 import Disconnect from '../Disconnect'
-import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface Props {
   checkoutService: CheckoutService
@@ -41,8 +39,7 @@ export function ConfirmCrossmint({
 }: Props) {
   const [error, setError] = useState<string | null>(null)
   const [crossmintLoading, setCrossmintLoading] = useState(true)
-  const { account } = useAuthenticate()
-  const { lock, recipients, paywallConfig, data, keyManagers, renew } =
+  const { lock, recipients, paywallConfig, data, keyManagers, renew, tokenId } =
     useSelector(checkoutService, (state) => state.context)
   const [isConfirming, setIsConfirming] = useState(false)
   const [quote, setQuote] = useState<CrossmintQuote | null>(null)
@@ -117,13 +114,6 @@ export function ConfirmCrossmint({
       config.networks[lock!.network].nativeCurrency.symbol
     ),
   })
-
-  const { data: tokenId } = useGetTokenIdForOwner(
-    { account: account!, lockAddress: lock!.address, network: lock!.network },
-    {
-      enabled: renew,
-    }
-  )
 
   const isLoading =
     !error &&
