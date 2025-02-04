@@ -136,7 +136,7 @@ export function ConfirmCryptoWrapper({
       }
 
       const tx = await sendTransaction(txParams)
-      onConfirmed(lockAddress, lockNetwork, tx.transactionHash)
+      onConfirmed(lockAddress, lockNetwork, tx.hash)
     } catch (error: any) {
       console.error('Transaction error details:', {
         error,
