@@ -44,7 +44,7 @@
     "@openzeppelin/merkle-tree": "1.0.7",
     "@privy-io/server-auth": "1.17.1",
     "@resvg/resvg-js": "2.6.2",
-    "@sentry/node": "7.120.2",
+    "@sentry/node": "8.49.0",
     "@sentry/tracing": "7.114.0",
     "@types/archiver": "6.0.3",
     "@types/connect-timeout": "0.0.39",
