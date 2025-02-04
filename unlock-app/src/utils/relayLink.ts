@@ -17,6 +17,7 @@ interface getCrossChainRouteParams {
   srcToken: string
   srcChainId: number
   sharedParams: any
+  renew?: boolean
 }
 
 interface prepareSharedParamsParams {
@@ -26,6 +27,8 @@ interface prepareSharedParamsParams {
   keyManagers: string[]
   referrers: string[]
   purchaseData: string[]
+  renew?: boolean
+  tokenId?: string | null
 }
 
 export const prepareSharedParams = async ({
