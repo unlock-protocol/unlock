@@ -32,9 +32,9 @@
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "@unlock-protocol/types": "workspace:^",
     "copyfiles": "2.4.1",
-    "eslint": "9.17.0",
-    "fs-extra": "11.2.0",
-    "hardhat": "2.22.17",
+    "eslint": "9.19.0",
+    "fs-extra": "11.3.0",
+    "hardhat": "2.22.18",
     "solidity-docgen": "0.6.0-beta.36",
     "typescript": "5.7.3"
   },

@@ -44,8 +44,8 @@
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "@unlock-protocol/types": "workspace:./packages/types",
     "eslint": "9.19.0",
-    "ethers": "6.13.4",
-    "hardhat": "2.22.17",
+    "ethers": "6.13.5",
+    "hardhat": "2.22.18",
     "prettier": "3.4.2",
     "tsup": "8.3.6",
     "typescript": "5.7.3",
@@ -54,6 +54,6 @@
   "dependencies": {
     "graphql": "16.10.0",
     "graphql-request": "6.1.0",
-    "siwe": "2.3.2"
+    "siwe": "3.0.0"
   }
 }
