@@ -29,7 +29,7 @@
     "babel-register": "6.26.0",
     "eslint": "9.11.1",
     "eth-gas-reporter": "0.2.27",
-    "ethers": "6.13.4",
+    "ethers": "6.13.5",
     "fs-extra": "11.2.0",
     "hardhat": "2.22.18",
     "hardhat-contract-sizer": "2.10.0",
