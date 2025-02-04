@@ -15991,13 +15991,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@solidity-parser/parser@npm:^0.18.0":
-  version: 0.18.0
-  resolution: "@solidity-parser/parser@npm:0.18.0"
-  checksum: 10/3b600b584f49bd84d6d27aeeb453c49c279df49324e104bda00d12cd3b26f18cb6230ff63db6a0ba1f383868620d318b15b7417a92aa8c580099449adaa13d76
-  languageName: node
-  linkType: hard
-
 "@solidity-parser/parser@npm:^0.19.0":
   version: 0.19.0
   resolution: "@solidity-parser/parser@npm:0.19.0"
@@ -19451,7 +19444,7 @@ __metadata:
     hardhat-storage-layout: "npm:0.1.7"
     hardhat-tracer: "npm:3.1.0"
     prettier: "npm:3.3.3"
-    prettier-plugin-solidity: "npm:1.4.1"
+    prettier-plugin-solidity: "npm:1.4.2"
     solhint: "npm:5.0.5"
     solidity-coverage: "npm:0.8.14"
     yesno: "npm:0.4.0"
@@ -44557,15 +44550,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier-plugin-solidity@npm:1.4.1":
-  version: 1.4.1
-  resolution: "prettier-plugin-solidity@npm:1.4.1"
+"prettier-plugin-solidity@npm:1.4.2":
+  version: 1.4.2
+  resolution: "prettier-plugin-solidity@npm:1.4.2"
   dependencies:
-    "@solidity-parser/parser": "npm:^0.18.0"
-    semver: "npm:^7.5.4"
+    "@solidity-parser/parser": "npm:^0.19.0"
+    semver: "npm:^7.6.3"
   peerDependencies:
     prettier: ">=2.3.0"
-  checksum: 10/8bd0b20cd1a0973bfdbb4e035d5dae9ff229a7f6475c4e31e99b85d74f77625c0a874835df23e51d36750139aa2e5c5d900a366d1cdff16edfe52b3550b7e2da
+  checksum: 10/5f4ca400275c860bbca7ba3ee316682bec04a760a816e903f6a528acc61ef3d2eda9a81edb7e38449b79196d2946db44424fbab78944d2e8bb32f8fed31363bc
   languageName: node
   linkType: hard
 
@@ -52533,7 +52526,7 @@ __metadata:
     lint-staged: "npm:15.4.3"
     node-gyp: "npm:11.0.0"
     prettier: "npm:3.4.2"
-    prettier-plugin-solidity: "npm:1.4.1"
+    prettier-plugin-solidity: "npm:1.4.2"
     typescript: "npm:5.7.3"
     typescript-eslint: "npm:8.22.0"
     vitest: "npm:2.1.8"
