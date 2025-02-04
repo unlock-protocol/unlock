@@ -12361,12 +12361,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/upgrades-core@npm:1.41.0, @openzeppelin/upgrades-core@npm:^1.41.0":
-  version: 1.41.0
-  resolution: "@openzeppelin/upgrades-core@npm:1.41.0"
+"@openzeppelin/upgrades-core@npm:1.42.1":
+  version: 1.42.1
+  resolution: "@openzeppelin/upgrades-core@npm:1.42.1"
   dependencies:
     "@nomicfoundation/slang": "npm:^0.18.3"
-    cbor: "npm:^9.0.0"
+    cbor: "npm:^10.0.0"
     chalk: "npm:^4.1.0"
     compare-versions: "npm:^6.0.0"
     debug: "npm:^4.1.1"
@@ -12377,7 +12377,7 @@ __metadata:
     solidity-ast: "npm:^0.4.51"
   bin:
     openzeppelin-upgrades-core: dist/cli/cli.js
-  checksum: 10/fb8b6c11326f71809dd07b2b451daf037d99cc8c6748ca82b47fe4573314ca4c037f872945c7f02b072cb9af4309e56323ba3a1b754ecfaaaa480ee4e416280c
+  checksum: 10/e52b600a7635929aab649a3ec9e248cad73cc57c3ef7d467d9f0de84b2a2b0846523ce98aa4f5b80acaff68cd66ebc60ab81c1c5fbcd8e284570d592f6e18f9c
   languageName: node
   linkType: hard
 
@@ -12398,6 +12398,26 @@ __metadata:
   bin:
     openzeppelin-upgrades-core: dist/cli/cli.js
   checksum: 10/99e6d7b411450e8bfc865d98f6de705f0839b9d3aea7e221d880e0fa58bee5b9159d53ccbd6cb69e58d00fd5daf55b90be179eb58957a5b30e321f3e28945660
+  languageName: node
+  linkType: hard
+
+"@openzeppelin/upgrades-core@npm:^1.41.0":
+  version: 1.41.0
+  resolution: "@openzeppelin/upgrades-core@npm:1.41.0"
+  dependencies:
+    "@nomicfoundation/slang": "npm:^0.18.3"
+    cbor: "npm:^9.0.0"
+    chalk: "npm:^4.1.0"
+    compare-versions: "npm:^6.0.0"
+    debug: "npm:^4.1.1"
+    ethereumjs-util: "npm:^7.0.3"
+    minimatch: "npm:^9.0.5"
+    minimist: "npm:^1.2.7"
+    proper-lockfile: "npm:^4.1.1"
+    solidity-ast: "npm:^0.4.51"
+  bin:
+    openzeppelin-upgrades-core: dist/cli/cli.js
+  checksum: 10/fb8b6c11326f71809dd07b2b451daf037d99cc8c6748ca82b47fe4573314ca4c037f872945c7f02b072cb9af4309e56323ba3a1b754ecfaaaa480ee4e416280c
   languageName: node
   linkType: hard
 
@@ -19174,7 +19194,7 @@ __metadata:
     "@nomicfoundation/hardhat-verify": "npm:2.0.12"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@openzeppelin/hardhat-upgrades": "npm:3.8.0"
-    "@openzeppelin/upgrades-core": "npm:1.41.0"
+    "@openzeppelin/upgrades-core": "npm:1.42.1"
     "@safe-global/api-kit": "npm:2.5.8"
     "@safe-global/protocol-kit": "npm:5.2.1"
     "@tenderly/hardhat-tenderly": "npm:2.5.2"
@@ -19203,7 +19223,7 @@ __metadata:
     "@matterlabs/hardhat-zksync-verify": "npm:1.7.1"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@nomiclabs/hardhat-waffle": "npm:2.0.6"
-    "@openzeppelin/upgrades-core": "npm:1.41.0"
+    "@openzeppelin/upgrades-core": "npm:1.42.1"
     "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
@@ -23760,6 +23780,15 @@ __metadata:
   version: 0.12.0
   resolution: "caseless@npm:0.12.0"
   checksum: 10/ea1efdf430975fdbac3505cdd21007f7ac5aa29b6d4d1c091f965853cd1bf87e4b08ea07b31a6d688b038872b7cdf0589d9262d59c699d199585daad052aeb20
+  languageName: node
+  linkType: hard
+
+"cbor@npm:^10.0.0":
+  version: 10.0.3
+  resolution: "cbor@npm:10.0.3"
+  dependencies:
+    nofilter: "npm:^3.0.2"
+  checksum: 10/ff33c3404c3acc8afc448163a7b32eea39f4f99d641ac496352a6830256617a0b1d49b2862746b6b150e8931b6f6da10572d78c28af3a64b6836881c33c5d942
   languageName: node
   linkType: hard
 
@@ -41296,7 +41325,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nofilter@npm:^3.1.0":
+"nofilter@npm:^3.0.2, nofilter@npm:^3.1.0":
   version: 3.1.0
   resolution: "nofilter@npm:3.1.0"
   checksum: 10/f63d87231dfda4b783db17d75b15aac948f78e65f4f1043096ef441147f6667ff74cd4b3f57ada5dbe240be282d3e9838558ac863a66cb04ef25fff7b2b4be4e
@@ -47568,25 +47597,6 @@ __metadata:
     postcss-value-parser: "npm:^4.2.0"
     yoga-wasm-web: "npm:^0.3.3"
   checksum: 10/210b55f50f25cc7b00e670e2d20cdf805ebdd6be2e6bba09fd6244366abb9ebbd9456fd727ef2fd17c7bffee0563ac24373d7dbff90fa487f21e77d88b4c96d5
-  languageName: node
-  linkType: hard
-
-"satori@npm:0.12.0":
-  version: 0.12.0
-  resolution: "satori@npm:0.12.0"
-  dependencies:
-    "@shuding/opentype.js": "npm:1.4.0-beta.0"
-    css-background-parser: "npm:^0.1.0"
-    css-box-shadow: "npm:1.0.0-3"
-    css-gradient-parser: "npm:^0.0.16"
-    css-to-react-native: "npm:^3.0.0"
-    emoji-regex: "npm:^10.2.1"
-    escape-html: "npm:^1.0.3"
-    linebreak: "npm:^1.1.0"
-    parse-css-color: "npm:^0.2.1"
-    postcss-value-parser: "npm:^4.2.0"
-    yoga-wasm-web: "npm:^0.3.3"
-  checksum: 10/e27c63de4ece6f43ad07e1c0e15fbd6206d02a1ecf3b5788d4d258b73e6549c7d32ffee3f8ab580635e4b9f6ac58dcfa03b6102b8f15a6a14408eeb887af676f
   languageName: node
   linkType: hard
 
