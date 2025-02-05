@@ -68,9 +68,9 @@ function multiProofVerify(bytes32[] proof, bool[] proofFlags, bytes32 root, byte
 ```
 
 \_Returns true if the `leaves` can be simultaneously proven to be a part of a Merkle tree defined by
-`root`, according to `proof` and `proofFlags` as described in {processMultiProof}.
+`root`, according to `proof` and `proofFlags` as described in processMultiProof.
 
-CAUTION: Not all Merkle trees admit multiproofs. See {processMultiProof} for details.\_
+CAUTION: Not all Merkle trees admit multiproofs. See processMultiProof for details.\_
 
 ### multiProofVerifyCalldata
 
@@ -80,7 +80,7 @@ function multiProofVerifyCalldata(bytes32[] proof, bool[] proofFlags, bytes32 ro
 
 \_Calldata version of multiProofVerify
 
-CAUTION: Not all Merkle trees admit multiproofs. See {processMultiProof} for details.\_
+CAUTION: Not all Merkle trees admit multiproofs. See processMultiProof for details.\_
 
 ### processMultiProof
 
@@ -105,7 +105,7 @@ function processMultiProofCalldata(bytes32[] proof, bool[] proofFlags, bytes32[]
 
 \_Calldata version of processMultiProof.
 
-CAUTION: Not all Merkle trees admit multiproofs. See {processMultiProof} for details.\_
+CAUTION: Not all Merkle trees admit multiproofs. See processMultiProof for details.\_
 
 ## IPublicLock
 
