@@ -12422,12 +12422,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/contracts-upgradeable5@npm:@openzeppelin/contracts-upgradeable@5.0.2, @openzeppelin/contracts-upgradeable@npm:5.0.2":
-  version: 5.0.2
-  resolution: "@openzeppelin/contracts-upgradeable@npm:5.0.2"
+"@openzeppelin/contracts-upgradeable5@npm:@openzeppelin/contracts-upgradeable@5.2.0":
+  version: 5.2.0
+  resolution: "@openzeppelin/contracts-upgradeable@npm:5.2.0"
   peerDependencies:
-    "@openzeppelin/contracts": 5.0.2
-  checksum: 10/71847c6bbd7a859a2f02f496215b9664e41375589010e66da32f080d9af9215accf558da63134926e0eb3eb87ee7ab952462bc877ec5c5e1ac077b44cac9c363
+    "@openzeppelin/contracts": 5.2.0
+  checksum: 10/202f8a0fe118d1b5b838867224b183b8fcef814e9e45c575deb99859a031ef89ca0e778f0e3cf14b18494d5b867bbe0c8ea9d064a4410c53afb20d7b470c7479
   languageName: node
   linkType: hard
 
@@ -12435,6 +12435,15 @@ __metadata:
   version: 4.9.6
   resolution: "@openzeppelin/contracts-upgradeable@npm:4.9.6"
   checksum: 10/af9057147f13b6f0e13ca69581777f615f2cce8c6c274ec00fbea906a9095cd9ca1fb70e2c1282122a9f522fd639641c180bf1ad79bb2722494aac5ae9e565bc
+  languageName: node
+  linkType: hard
+
+"@openzeppelin/contracts-upgradeable@npm:5.0.2":
+  version: 5.0.2
+  resolution: "@openzeppelin/contracts-upgradeable@npm:5.0.2"
+  peerDependencies:
+    "@openzeppelin/contracts": 5.0.2
+  checksum: 10/71847c6bbd7a859a2f02f496215b9664e41375589010e66da32f080d9af9215accf558da63134926e0eb3eb87ee7ab952462bc877ec5c5e1ac077b44cac9c363
   languageName: node
   linkType: hard
 
@@ -12447,10 +12456,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/contracts5@npm:@openzeppelin/contracts@5.0.2, @openzeppelin/contracts@npm:5.0.2":
-  version: 5.0.2
-  resolution: "@openzeppelin/contracts@npm:5.0.2"
-  checksum: 10/938ebffbdade7dc59ea3df5b562c0e457bbefde9d82be8fa2acfd11da887df11653ac07922f41746b80cdbc106430e1e6978ce244fe99b00a7d9dc1418fc7670
+"@openzeppelin/contracts5@npm:@openzeppelin/contracts@5.2.0, @openzeppelin/contracts@npm:5.2.0":
+  version: 5.2.0
+  resolution: "@openzeppelin/contracts@npm:5.2.0"
+  checksum: 10/d77e1bdfca6fa1c40b5a32bb92220ec633ef86cc0bf43a011ad218c26c9e763c70ace3fc1e148a0462394a3aed8c5d7445935ebfeb146ba1454abec66625e420
   languageName: node
   linkType: hard
 
@@ -12458,6 +12467,13 @@ __metadata:
   version: 3.4.2-solc-0.7
   resolution: "@openzeppelin/contracts@npm:3.4.2-solc-0.7"
   checksum: 10/a21aa0a623f020cb32cd3c6b7903d806ec458b2a750feb86f5e3bcf0b7ae124d844b9d1c029f9e0707d6263b561f35a694bafc1b0bff30c3e95541124f8fd41c
+  languageName: node
+  linkType: hard
+
+"@openzeppelin/contracts@npm:5.0.2":
+  version: 5.0.2
+  resolution: "@openzeppelin/contracts@npm:5.0.2"
+  checksum: 10/938ebffbdade7dc59ea3df5b562c0e457bbefde9d82be8fa2acfd11da887df11653ac07922f41746b80cdbc106430e1e6978ce244fe99b00a7d9dc1418fc7670
   languageName: node
   linkType: hard
 
@@ -12690,33 +12706,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/hardhat-upgrades@npm:3.4.0":
-  version: 3.4.0
-  resolution: "@openzeppelin/hardhat-upgrades@npm:3.4.0"
-  dependencies:
-    "@openzeppelin/defender-sdk-base-client": "npm:^1.14.4"
-    "@openzeppelin/defender-sdk-deploy-client": "npm:^1.14.4"
-    "@openzeppelin/defender-sdk-network-client": "npm:^1.14.4"
-    "@openzeppelin/upgrades-core": "npm:^1.38.0"
-    chalk: "npm:^4.1.0"
-    debug: "npm:^4.1.1"
-    ethereumjs-util: "npm:^7.1.5"
-    proper-lockfile: "npm:^4.1.1"
-    undici: "npm:^6.11.1"
-  peerDependencies:
-    "@nomicfoundation/hardhat-ethers": ^3.0.0
-    "@nomicfoundation/hardhat-verify": ^2.0.0
-    ethers: ^6.6.0
-    hardhat: ^2.0.2
-  peerDependenciesMeta:
-    "@nomicfoundation/hardhat-verify":
-      optional: true
-  bin:
-    migrate-oz-cli-project: dist/scripts/migrate-oz-cli-project.js
-  checksum: 10/e407ddd3df3c901c52e577cd2462017176bb88055b6bfbce8fc66d056b1e5cc8aa1686ccde637223bf8bbbde77f63269a7291517ef4053454d804bed1b921756
-  languageName: node
-  linkType: hard
-
 "@openzeppelin/hardhat-upgrades@npm:3.9.0":
   version: 3.9.0
   resolution: "@openzeppelin/hardhat-upgrades@npm:3.9.0"
@@ -12783,26 +12772,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/upgrades-core@npm:1.39.0":
-  version: 1.39.0
-  resolution: "@openzeppelin/upgrades-core@npm:1.39.0"
-  dependencies:
-    "@nomicfoundation/slang": "npm:^0.17.0"
-    cbor: "npm:^9.0.0"
-    chalk: "npm:^4.1.0"
-    compare-versions: "npm:^6.0.0"
-    debug: "npm:^4.1.1"
-    ethereumjs-util: "npm:^7.0.3"
-    minimatch: "npm:^9.0.5"
-    minimist: "npm:^1.2.7"
-    proper-lockfile: "npm:^4.1.1"
-    solidity-ast: "npm:^0.4.51"
-  bin:
-    openzeppelin-upgrades-core: dist/cli/cli.js
-  checksum: 10/7779ce35966a6ee054eb4f167ef98f0d95dd4e5e5f309b89a59b6eaf0de8d0395205eb3b19957aea09c74c92754073a4c12f7728f86e072208694361aeb6c201
-  languageName: node
-  linkType: hard
-
 "@openzeppelin/upgrades-core@npm:1.42.1":
   version: 1.42.1
   resolution: "@openzeppelin/upgrades-core@npm:1.42.1"
@@ -12823,7 +12792,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/upgrades-core@npm:^1.32.2, @openzeppelin/upgrades-core@npm:^1.37.0, @openzeppelin/upgrades-core@npm:^1.38.0, @openzeppelin/upgrades-core@npm:^1.40.0":
+"@openzeppelin/upgrades-core@npm:^1.32.2, @openzeppelin/upgrades-core@npm:^1.37.0, @openzeppelin/upgrades-core@npm:^1.40.0":
   version: 1.40.0
   resolution: "@openzeppelin/upgrades-core@npm:1.40.0"
   dependencies:
@@ -19865,13 +19834,13 @@ __metadata:
     "@nomicfoundation/hardhat-ethers": "npm:3.0.8"
     "@nomicfoundation/hardhat-network-helpers": "npm:1.0.12"
     "@nomicfoundation/hardhat-verify": "npm:2.0.12"
-    "@openzeppelin/contracts": "npm:5.0.2"
+    "@openzeppelin/contracts": "npm:5.2.0"
     "@openzeppelin/contracts-upgradeable": "npm:4.9.6"
-    "@openzeppelin/contracts-upgradeable5": "npm:@openzeppelin/contracts-upgradeable@5.0.2"
-    "@openzeppelin/contracts5": "npm:@openzeppelin/contracts@5.0.2"
-    "@openzeppelin/hardhat-upgrades": "npm:3.4.0"
+    "@openzeppelin/contracts-upgradeable5": "npm:@openzeppelin/contracts-upgradeable@5.2.0"
+    "@openzeppelin/contracts5": "npm:@openzeppelin/contracts@5.2.0"
+    "@openzeppelin/hardhat-upgrades": "npm:3.9.0"
     "@openzeppelin/merkle-tree": "npm:1.0.7"
-    "@openzeppelin/upgrades-core": "npm:1.39.0"
+    "@openzeppelin/upgrades-core": "npm:1.42.1"
     "@uniswap/v3-core": "npm:1.0.1"
     "@uniswap/v3-periphery": "npm:1.4.4"
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
@@ -19880,17 +19849,17 @@ __metadata:
     "@unlock-protocol/networks": "workspace:./packages/networks"
     babel-polyfill: "npm:6.26.0"
     babel-register: "npm:6.26.0"
-    eslint: "npm:9.11.1"
+    eslint: "npm:9.19.0"
     eth-gas-reporter: "npm:0.2.27"
     ethers: "npm:6.13.5"
-    fs-extra: "npm:11.2.0"
+    fs-extra: "npm:11.3.0"
     hardhat: "npm:2.22.18"
     hardhat-contract-sizer: "npm:2.10.0"
     hardhat-erc1820: "npm:0.1.0"
     hardhat-gas-reporter: "npm:2.2.2"
     hardhat-storage-layout: "npm:0.1.7"
     hardhat-tracer: "npm:3.1.0"
-    prettier: "npm:3.3.3"
+    prettier: "npm:3.4.2"
     prettier-plugin-solidity: "npm:1.4.2"
     solhint: "npm:5.0.5"
     solidity-coverage: "npm:0.8.14"
@@ -45000,15 +44969,6 @@ __metadata:
   bin:
     prettier: bin/prettier.cjs
   checksum: 10/ccf1ead9794b017be6b42d0873f459070beef2069eb393c8b4c0d11aa3430acefc54f6d5f44a5b7ce9af05ad8daf694b912f0aa2808d1c22dfa86e61e9d563f8
-  languageName: node
-  linkType: hard
-
-"prettier@npm:3.3.3":
-  version: 3.3.3
-  resolution: "prettier@npm:3.3.3"
-  bin:
-    prettier: bin/prettier.cjs
-  checksum: 10/5beac1f30b5b40162532b8e2f7c3a4eb650910a2695e9c8512a62ffdc09dae93190c29db9107fa7f26d1b6c71aad3628ecb9b5de1ecb0911191099be109434d7
   languageName: node
   linkType: hard
 
