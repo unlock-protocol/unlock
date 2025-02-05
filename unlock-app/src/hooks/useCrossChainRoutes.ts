@@ -134,6 +134,7 @@ export const useCrossChainRoutes = ({
     ],
     queryFn: async () => {
       return prepareSharedParams({
+        sender: account!,
         lock,
         prices: prices!,
         recipients,
