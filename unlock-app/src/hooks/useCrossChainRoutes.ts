@@ -75,8 +75,7 @@ export const useCrossChainRoutes = ({
   const { data: prices, isPending: isLoadingPrices } = useQuery({
     queryKey: ['prices', account, lock, recipients, purchaseData],
     queryFn: async () => {
-      // TODO: support renewals
-      if (!purchaseData || !account || !lock || !recipients || renew) {
+      if (!purchaseData || !account || !lock || !recipients) {
         return []
       }
 
