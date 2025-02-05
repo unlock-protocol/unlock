@@ -20105,7 +20105,7 @@ __metadata:
     eslint: "npm:9.19.0"
     ethers: "npm:6.13.5"
     graphql: "npm:16.10.0"
-    graphql-request: "npm:6.1.0"
+    graphql-request: "npm:7.1.2"
     hardhat: "npm:2.22.18"
     prettier: "npm:3.4.2"
     siwe: "npm:3.0.0"
@@ -33025,7 +33025,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphql-request@npm:6.1.0, graphql-request@npm:^6.0.0":
+"graphql-request@npm:7.1.2":
+  version: 7.1.2
+  resolution: "graphql-request@npm:7.1.2"
+  dependencies:
+    "@graphql-typed-document-node/core": "npm:^3.2.0"
+  peerDependencies:
+    graphql: 14 - 16
+  checksum: 10/08e6612d88103ced678f210e4c1a50366ca882622c6383e974aa285963e33c24979fea62aaeb4380b2c1069abd640346d132509f1350f4d4decdf5122ed21e16
+  languageName: node
+  linkType: hard
+
+"graphql-request@npm:^6.0.0":
   version: 6.1.0
   resolution: "graphql-request@npm:6.1.0"
   dependencies:
