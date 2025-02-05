@@ -40,7 +40,7 @@ pair of leaves and each pair of pre-images are assumed to be sorted._
 function verifyCalldata(bytes32[] proof, bytes32 root, bytes32 leaf) internal pure returns (bool)
 ```
 
-_Calldata version of {verify}_
+_Calldata version of verify_
 
 ### processProof
 
@@ -59,7 +59,7 @@ of leafs & pre-images are assumed to be sorted._
 function processProofCalldata(bytes32[] proof, bytes32 leaf) internal pure returns (bytes32)
 ```
 
-_Calldata version of {processProof}_
+_Calldata version of processProof_
 
 ### multiProofVerify
 
@@ -78,7 +78,7 @@ CAUTION: Not all Merkle trees admit multiproofs. See {processMultiProof} for det
 function multiProofVerifyCalldata(bytes32[] proof, bool[] proofFlags, bytes32 root, bytes32[] leaves) internal pure returns (bool)
 ```
 
-\_Calldata version of {multiProofVerify}
+\_Calldata version of multiProofVerify
 
 CAUTION: Not all Merkle trees admit multiproofs. See {processMultiProof} for details.\_
 
@@ -103,7 +103,7 @@ tree (i.e., as seen from right to left starting at the deepest layer and continu
 function processMultiProofCalldata(bytes32[] proof, bool[] proofFlags, bytes32[] leaves) internal pure returns (bytes32 merkleRoot)
 ```
 
-\_Calldata version of {processMultiProof}.
+\_Calldata version of processMultiProof.
 
 CAUTION: Not all Merkle trees admit multiproofs. See {processMultiProof} for details.\_
 
