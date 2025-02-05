@@ -101,7 +101,7 @@ export const useProvider = () => {
    * @returns An initialized `WalletService` instance for the specified or current network.
    * @throws an error if there's an issue during the process, such as failed network switching.
    */
-  const getWalletService = async (networkId?: number) => {
+  const getWalletService = async (networkId: number) => {
     if (!provider) {
       ToastHelper.error('Please make sure your wallet is connected.')
       throw new Error('Wallet not connected!')
@@ -111,12 +111,27 @@ export const useProvider = () => {
       const network = await provider.getNetwork()
       const currentChainId = network.chainId
 
+      console.debug(`Currently connected to network: ${currentChainId}`)
+
       // compare the networkId with the current chainId
       if (networkId && networkId !== currentChainId) {
         // Prompt user to switch to the requested network
         await switchProviderNetwork(networkId)
-        // Add a 1 second delay after switching provider network
-        await new Promise((resolve) => setTimeout(resolve, 1000))
+        await new Promise((resolve, reject): void => {
+          const start = new Date().getTime()
+          const interval = setInterval(async () => {
+            const network = await provider.getNetwork()
+            const currentChainId = network.chainId
+            console.debug(`Currently connected to network: ${currentChainId}`)
+            if (networkId === currentChainId) {
+              clearInterval(interval)
+              resolve(true)
+            } else if (new Date().getTime() - start > 10000) {
+              clearInterval(interval)
+              reject(new Error('Network switch timed out!'))
+            }
+          }, 500)
+        })
       }
 
       // instantiate the wallet service with the current provider
