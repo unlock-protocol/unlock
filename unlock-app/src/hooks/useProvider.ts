@@ -109,26 +109,34 @@ export const useProvider = () => {
     try {
       // Get the current network
       const network = await provider.getNetwork()
-      const currentChainId = network.chainId
+      const currentChainId = parseInt(network.chainId)
 
-      console.debug(`Currently connected to network: ${currentChainId}`)
+      console.debug(
+        `Currently connected to network: ${currentChainId} and want ${networkId}`
+      )
 
       // compare the networkId with the current chainId
       if (networkId && networkId !== currentChainId) {
         // Prompt user to switch to the requested network
-        await switchProviderNetwork(networkId)
+        await switchProviderNetwork(networkId!)
         await new Promise((resolve, reject): void => {
           const start = new Date().getTime()
           const interval = setInterval(async () => {
             const network = await provider.getNetwork()
-            const currentChainId = network.chainId
-            console.debug(`Currently connected to network: ${currentChainId}`)
+            const currentChainId = parseInt(network.chainId)
+            console.debug(
+              `Currently connected to network: ${currentChainId} and want ${networkId!}`
+            )
             if (networkId === currentChainId) {
               clearInterval(interval)
               resolve(true)
             } else if (new Date().getTime() - start > 10000) {
               clearInterval(interval)
-              reject(new Error('Network switch timed out!'))
+              reject(
+                new Error(
+                  `Network switch timed out: please switch your wallet\s network manually to ${networkId}.`
+                )
+              )
             }
           }, 500)
         })
@@ -139,7 +147,6 @@ export const useProvider = () => {
         await createWalletService(provider)
       return _walletService
     } catch (error: any) {
-      ToastHelper.error(`Error while getting wallet service: ${error}`)
       console.error('Error in getWalletService:', error)
       throw error
     }
