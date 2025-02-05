@@ -101,7 +101,7 @@ export const useProvider = () => {
    * @returns An initialized `WalletService` instance for the specified or current network.
    * @throws an error if there's an issue during the process, such as failed network switching.
    */
-  const getWalletService = async (networkId: number) => {
+  const getWalletService = async (networkId?: number) => {
     if (!provider) {
       ToastHelper.error('Please make sure your wallet is connected.')
       throw new Error('Wallet not connected!')
