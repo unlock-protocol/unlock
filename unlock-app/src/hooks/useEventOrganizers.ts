@@ -64,7 +64,7 @@ export const useEventOrganizers = ({
   checkoutConfig,
 }: useEventOrganizersProps) => {
   return useQuery({
-    queryKey: ['eventOrganizers', checkoutConfig.id],
+    queryKey: ['eventOrganizers', checkoutConfig],
     queryFn: async (): Promise<string[]> => {
       let organizers: string[] = []
       // Hardcoded event organizers for specific events : /event/hats-friends
