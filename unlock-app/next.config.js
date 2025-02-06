@@ -64,9 +64,6 @@ const config = {
 
 module.exports = withSentryConfig(config, {
   telemetry: false,
-  sourcemaps: {
-    disable: true,
-  },
   disableLogger: true,
   sentryBuildOptions: {
     disableServerWebpackPlugin: true,
