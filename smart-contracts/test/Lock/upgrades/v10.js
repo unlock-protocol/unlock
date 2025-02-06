@@ -55,7 +55,14 @@ describe('PublicLock upgrade  v9 > v10', () => {
       'A neat upgradeable lock!',
     ]
 
-    lock = await upgrades.deployProxy(PublicLockPast, args)
+    lock = await upgrades.deployProxy(PublicLockPast, args, {
+      unsafeAllow: [
+        'missing-initializer',
+        'missing-initializer-call',
+        'duplicate-initializer-call',
+        'incorrect-initializer-order',
+      ],
+    })
   })
 
   describe('perform upgrade', async () => {
@@ -110,6 +117,12 @@ describe('PublicLock upgrade  v9 > v10', () => {
         PublicLockLatest,
         {
           unsafeSkipStorageCheck: true, // UNSECURE - but we need the flag as we are resizing the `__gap`
+          unsafeAllow: [
+            'missing-initializer',
+            'missing-initializer-call',
+            'duplicate-initializer-call',
+            'incorrect-initializer-order',
+          ],
         }
       )
 

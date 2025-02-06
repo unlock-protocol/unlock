@@ -1443,6 +1443,7 @@ abstract contract UnlockOwnable is
    * @dev Initializes the contract setting the deployer as the initial owner.
    */
   function __initializeOwnable(address sender) public initializer {
+    UnlockContextUpgradeable.__Context_init();    
     _owner = sender;
     emit OwnershipTransferred(address(0), _owner);
   }

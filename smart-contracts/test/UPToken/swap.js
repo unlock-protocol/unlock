@@ -16,6 +16,12 @@ describe('Swapper UP / UDT', () => {
     const UDT = await ethers.getContractFactory('UnlockDiscountTokenV3')
     udt = await upgrades.deployProxy(UDT, [await udtMinter.getAddress()], {
       initializer: 'initialize(address)',
+      unsafeAllow: [
+        'missing-initializer',
+        'missing-initializer-call',
+        'duplicate-initializer-call',
+        'incorrect-initializer-order',
+      ],
     })
 
     const UP = await ethers.getContractFactory('UPToken')
