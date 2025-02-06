@@ -1,10 +1,10 @@
 ---
-title: 'Unlock DAO Weekly Newsletter | January 28, 2025'
-subtitle: ''
-authorName: 'Stella Achenbach'
-publishDate: 'Fri Jan 31 2025 15:06:00 GMT+0000 (Coordinated Universal Time)'
+title: "Unlock DAO Weekly Newsletter | January 28, 2025"
+subtitle: ""
+authorName: "Stella Achenbach"
+publishDate: "Fri Jan 31 2025 15:06:00 GMT+0000 (Coordinated Universal Time)"
 description: "Hey Unlockers! Welcome to our latest newsletter, packed with exciting updates from our recent DAO call. We've got a lot to cover, from community insights to upcoming events and strategic initiatives. Let's dive in!Discovering Unlock: A Community TapestryWe kicked off our call with a fascinating mini-poll, asking members how they found their way to Unlock Protocol. The responses painted a vibrant picture of our community's diverse paths: Some stumbled upon Unlock through organic searches, seek..."
-image: '/images/blog/unlock-dao-weekly-newsletter---january-28--2025/d814d418f16a5f64b37035b6bff62668.jpg'
+image: "/images/blog/unlock-dao-weekly-newsletter---january-28--2025/d814d418f16a5f64b37035b6bff62668.jpg"
 ---
 
 ![Unlock DAO Weekly Newsletter | January 28, 2025](https://storage.googleapis.com/papyrus_images/d814d418f16a5f64b37035b6bff62668.jpg)
