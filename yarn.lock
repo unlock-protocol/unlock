@@ -19095,7 +19095,7 @@ __metadata:
     vitest-fetch-mock: "npm:0.4.3"
     vitest-localstorage-mock: "npm:0.1.2"
     xstate: "npm:5.14.0"
-    zod: "npm:3.23.8"
+    zod: "npm:3.24.1"
   peerDependencies:
     react: 18.3.1
     react-dom: 18.3.1
@@ -53388,13 +53388,6 @@ __metadata:
   peerDependencies:
     ethers: ^5.7.0
   checksum: 10/a1566a2a2ba34a3026680f3b4000ffa02593e02d9c73a4dd143bde929b5e39b09544d429bccad0479070670cfdad5f6836cb686c4b8d7954b4d930826be91c92
-  languageName: node
-  linkType: hard
-
-"zod@npm:3.23.8":
-  version: 3.23.8
-  resolution: "zod@npm:3.23.8"
-  checksum: 10/846fd73e1af0def79c19d510ea9e4a795544a67d5b34b7e1c4d0425bf6bfd1c719446d94cdfa1721c1987d891321d61f779e8236fde517dc0e524aa851a6eff1
   languageName: node
   linkType: hard
 
