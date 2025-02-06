@@ -70,7 +70,7 @@ export const useEventOrganizers = ({
       let organizers: string[] = []
       // Hardcoded event organizers for specific events : /event/hats-friends
       if (checkoutConfig.id === '1a2543a9-a233-4e19-ab16-b2cbf2df7196') {
-        organizers = ['0x2D785497c6C8ce3f4cCff4937D321C37e80705E8']
+        organizers = ['0xe6DEd6460bf4a1ac320997Bed7991166054574De']
       } else {
         organizers = await getEventOrganizers(checkoutConfig)
       }
