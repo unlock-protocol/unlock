@@ -39,12 +39,12 @@ Some impressive projects leveraging Unlock Protocol for decentralized science,
 or DeSci, tagged us in this round.
 [Omni Analytics](https://twitter.com/omnianalytics) maintaining the top spot for
 community support in this category, has continued to use the funding they've
-recieved by adding more content to their "Learning Data Science on the Ethereum
+received by adding more content to their "Learning Data Science on the Ethereum
 Blockchain" course. Congratulations to
 [Active Inference Institute](https://www.activeinference.org/) who caught
 community attention with their plans to create a first of its kind open-source
 package Active Blockference which aims to implement Active Inference simulations
-for congnitive modeling for the blockchain space, use Active Blockference to
+for cognitive modeling for the blockchain space, use Active Blockference to
 understand behavior in ETH/Web3 ecosystems and improve educational materials
 around use of Active Blockference.
 
@@ -52,7 +52,7 @@ around use of Active Blockference.
 
 We saw an increase in the number of web3 social projects taking advantage of
 the power of Unlock Protocol too! [Nimi](https://nimi.io/) was a crowd favorite
-with a dApp that allows you to aggregate your soical profiles. Other notable
+with a dApp that allows you to aggregate your social profiles. Other notable
 projects include [Cobogo](https://cobogo.io) for creator profiles and
 fundraising for the creator economy, [Maven Foundation](https://maven.foundation/)
 is continuing their work on building tools to empower social influencers and
