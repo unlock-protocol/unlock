@@ -22,7 +22,7 @@ As of January 2025, the Unlock ecosystem consists of the following:
 
 - Paywall:
   - Allow List Hook: ✅
-  - Crosschain and swap and purchase for renewals and extensions
+  - Cross-chain and swap and purchase for renewals and extensions
   - Recurring cross-chain purchases
   - Recurring swap-and-purchase transactions
   - Support for better meta-transactions
@@ -42,13 +42,13 @@ As of January 2025, the Unlock ecosystem consists of the following:
 
 - Dashboard:
   - Unlock Account 3.0 with Privy ✅
-  - Basename support ✅
+  - Base name support ✅
   - Unlock Prime ✅
   - Account funding ✅
   - Transfer keys from Dashboard ✅
 - Paywall:
   - Using relay.link ✅
-  - Basename support ✅
+  - Base name support ✅
   - Farcaster frames ✅
   - Better Google/Apple Pass integration ✅
 - Core Protocol:
@@ -82,7 +82,7 @@ As of January 2025, the Unlock ecosystem consists of the following:
 - Governance:
   - UDT bridged to more networks ✅
 
-# December 31th 2023
+# December 31st 2023
 
 - Dashboard:
   - Universal credit cards ✅
@@ -95,7 +95,7 @@ As of January 2025, the Unlock ecosystem consists of the following:
 - Governance:
   - Cross-chain governance ([Connext](https://www.connext.network/)) ✅
 
-# June 31th 2023
+# June 30th 2023
 
 - Dashboard:
   - Image Uploader ✅
