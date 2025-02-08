@@ -100,7 +100,7 @@ create a powerful healing modality for domestic violence victims using art to
 process trauma and is building an art workshop platform on Unlock Protocol to
 deliver it. They continue to be the only grantee on the platform addressing the
 issue of domestic violence so we're watching closely to see how the community
-reacts to the progess they'll make between this round and next as they get off
+reacts to the progress they'll make between this round and next as they get off
 the ground. Another project supporting women's reproductive rights while also
 bringing you an innovative music experience is
 [Beats Per Mint](https://tell.ie/beatspermint/j6upJTcHktEE) who will soon be
