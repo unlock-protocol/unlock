@@ -17,7 +17,7 @@ While these events are recorded onchain, querying appears to not be very practic
 
 To facilitate the query of transactions data, [the graph](https://thegraph.com/docs/en/) collects all the events in your contract and put them in the database so it can be easily used. The [Graph Foundation](https://www.notion.so/The-Graph-Foundation-e822e66d7b614fdd899a647f5db51a68) provides tools and libraries to index, store and retrieve graph data.
 
-To facilitate the use of our protocol, Unlock offers several web services (checkout, user dasboard, etc) that use chain data to display info about locks and keys. The frontend queries rely on instances of the graph that are indexing and formatting transactions on each supported chain, called subgraphs. All subgraphs are public, and data about locks or keys can be retrieved using [graphql](https://graphql.org/) requests.
+To facilitate the use of our protocol, Unlock offers several web services (checkout, user dashboard, etc) that use chain data to display info about locks and keys. The frontend queries rely on instances of the graph that are indexing and formatting transactions on each supported chain, called subgraphs. All subgraphs are public, and data about locks or keys can be retrieved using [graphql](https://graphql.org/) requests.
 
 ## Unlock subgraph V2
 
