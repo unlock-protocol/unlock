@@ -16,10 +16,11 @@ interface Props {
 }
 
 export function MessageToSign({ checkoutService, communication }: Props) {
-  const { messageToSign } = useSelector(
+  const paywallConfig = useSelector(
     checkoutService,
     (state) => state.context.paywallConfig
   )
+  const messageToSign = paywallConfig.messageToSign
   const { account } = useAuthenticate()
   const { getWalletService } = useProvider()
   const [isSigning, setIsSigning] = useState(false)
@@ -39,11 +40,14 @@ export function MessageToSign({ checkoutService, communication }: Props) {
         signature,
         address: account!,
       })
-      communication?.emitUserInfo({
-        address: account,
-        message: messageToSign,
-        signedMessage: signature,
-      })
+      communication?.emitUserInfo(
+        {
+          address: account,
+          message: messageToSign,
+          signedMessage: signature,
+        },
+        paywallConfig
+      )
     } catch (error) {
       if (error instanceof Error) {
         ToastHelper.error(error.message)
