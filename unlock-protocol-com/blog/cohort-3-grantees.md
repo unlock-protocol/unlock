@@ -21,25 +21,25 @@ Matt will be working on an Unlock integration for Notion pages. We love us some 
 
 ## Yuriy Dybskiy - Puma Browser
 
-[https://twitter.com/pumabrowser](https://twitter.com/pumabrowser)
+[https://x.com/pumabrowser](https://x.com/pumabrowser)
 
 Puma is a mobile browser and wallet for the Web3 ecosystem and is focusing on creating support for lock detection and the ability to unlock/get a key natively in the app. The Puma team started this project as part of the HackFS Hackathon and is continuing this project with our grant program.
 
 ## Patrick Murphy - Aloy
 
-[https://twitter.com/aloy_club](https://twitter.com/aloy_club)
+[https://x.com/aloy_club](https://x.com/aloy_club)
 
 Aloy’s working to create better loyalty programs through digital assets. They are building a SaaS solution that allows brands in the travel, hospitality, and leisure sector to create NFT-enabled membership programs that tie real-world benefits to the ownership of digital assets (NFTs).
 
 ## Josh - The Blockchain Socialist
 
-[https://twitter.com/TBSocialist](https://twitter.com/TBSocialist)
+[https://x.com/TBSocialist](https://x.com/TBSocialist)
 
 The Blockchain Socialist is a blog and podcast that explores the intersection of blockchain and left politics. Josh will be exploring deeper ways of integrating Unlock to try and create a true web3 version of Patreon.
 
 ## Victor Feng - Nama Protocol
 
-[https://twitter.com/nama_finance](https://twitter.com/nama_finance)
+[https://x.com/nama_finance](https://x.com/nama_finance)
 
 Nama Protocol is a multi-chain enabled lending protocol that empowers borrowers to use their NFTs as collateral to get loans and lenders to stake their stablecoins to the lending pools to get high yield farming and gain attractive interest while lending to borrowers. Nama Protocol will be using Unlock in various aspect of their protocol.
 
@@ -51,7 +51,7 @@ Seed Club is a DAO that builds and invests in communities with tokens. They're a
 
 ## Pedro Alves - Creator Portal
 
-[https://twitter.com/devprtcl](https://twitter.com/devprtcl)
+[https://x.com/devprtcl](https://x.com/devprtcl)
 
 Dev Protocol is building a Creators Portal using Unlock to help support patrons using their robust platform. Dev Protocol is working to build a Decentralized Creator Economy and creator DAOs to support the web3 movement.
 

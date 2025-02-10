@@ -29,7 +29,7 @@ E.g. if the key costs $5, I could have the option to:
 
 Only options using tokens the user actually owns will be presented. So if the user does not have USDT, it will not be mentioned.
 
-This helps to overcome one of the challenges users have today - [“there are just too many ERC-20 [token types]”](https://twitter.com/julien51/status/1222957379031117825).
+This helps to overcome one of the challenges users have today - [“there are just too many ERC-20 [token types]”](https://x.com/julien51/status/1222957379031117825).
 
 ## How it works
 

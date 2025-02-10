@@ -48,7 +48,7 @@ export function ShareRefundModal({
             iconLeft={<SiX />}
             className="basis-1 grow"
             onClick={() => {
-              const tweetIntent = new URL('https://twitter.com/intent/tweet')
+              const tweetIntent = new URL('https://x.com/intent/tweet')
               tweetIntent.searchParams.set(
                 'text',
                 'I just claimed my @unlockProtocol Prime ETH reward! Get a Prime Membership now and claim yours as well!\n\n'

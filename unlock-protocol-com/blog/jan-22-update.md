@@ -38,22 +38,22 @@ Ok, you’ll be glad you read down this far. This is kind of like the after-cred
 
 [Croissant](http://twitter.com/croissanteth) has launched BakeryDAO with a thundering Twitter thread...
 
-[![Croissant](https://unlock-protocol.com/images/blog/jan-22-update/1-min.png)](https://twitter.com/CroissantEth/status/1486387648457580546?s=20)
+[![Croissant](https://unlock-protocol.com/images/blog/jan-22-update/1-min.png)](https://x.com/CroissantEth/status/1486387648457580546?s=20)
 
 [ETHAnglia](http://twitter.com/ethanglia) is bringing web3 to the East of England...
 
-[![ETHAnglia](https://unlock-protocol.com/images/blog/jan-22-update/2-min.png)](https://twitter.com/ETHAnglia/status/1484517935796400128?s=20)
+[![ETHAnglia](https://unlock-protocol.com/images/blog/jan-22-update/2-min.png)](https://x.com/ETHAnglia/status/1484517935796400128?s=20)
 
 [WPOptimizers](http://twitter.com/YoRaulGonzalez) 🇪🇸 has created a membership site for optimizing WordPress, the open-source content management system that powers 43% of the web...
 
-[![WPOptimizers](https://unlock-protocol.com/images/blog/jan-22-update/3-min.png)](https://twitter.com/YoRaulGonzalez/status/1483756404947181571?s=20)
+[![WPOptimizers](https://unlock-protocol.com/images/blog/jan-22-update/3-min.png)](https://x.com/YoRaulGonzalez/status/1483756404947181571?s=20)
 
 [The Willow Tree](http://twitter.com/twtdao) has launched their membership for bridging web3 and rave culture (and their site design is off the charts)...
 
-[![TWT](https://unlock-protocol.com/images/blog/jan-22-update/4-min.png)](https://twitter.com/twtdao/status/1485996222003433477?s=20)
+[![TWT](https://unlock-protocol.com/images/blog/jan-22-update/4-min.png)](https://x.com/twtdao/status/1485996222003433477?s=20)
 
 [CDAA](http://twitter.com/plannerdao) is one of the first projects we have seen using utility NFTs as the basis for industry certification and on-chain credentials for digital asset advisors...amazing...
 
-[![CDAA](https://unlock-protocol.com/images/blog/jan-22-update/5-min.png)](https://twitter.com/PlannerDAO/status/1480991827209641988?s=20)
+[![CDAA](https://unlock-protocol.com/images/blog/jan-22-update/5-min.png)](https://x.com/PlannerDAO/status/1480991827209641988?s=20)
 
 Want to know what’s going on with Unlock in real time? [Jump into our Discord](https://discord.unlock-protocol.com/). #protip

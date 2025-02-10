@@ -89,4 +89,4 @@ When a credit card transaction has been reversed, it is recommended that the loc
 
 Eventually, more of the world will move to crypto, especially as wallets and self-sovereign identities will be required by more an more applications. But until then, we know that people still like to use FIAT, and this is a way to do that! We want to embrace the migration by making it easy for anyone to dip their toes and purchase their first NFTs with a credit card!
 
-**What do you think?** Feel free [to tweet us](https://twitter.com/unlockProtocol) or [join our Discord](https://discord.unlock-protocol.com/). See something missing or want to build an integration with unlock? [Join our grant program!](/blog/token-grant-program)
+**What do you think?** Feel free [to tweet us](https://x.com/unlockProtocol) or [join our Discord](https://discord.unlock-protocol.com/). See something missing or want to build an integration with unlock? [Join our grant program!](/blog/token-grant-program)

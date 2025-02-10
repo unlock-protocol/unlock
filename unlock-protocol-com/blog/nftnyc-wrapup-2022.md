@@ -17,7 +17,7 @@ Here are some of the highlights from the events the Unlock Labs squad participat
 
 If you don’t yet know them, [Superfluid](https://www.superfluid.finance/home) is a token standard to describe programmable, composable and modular cashflows and execute them automatically on chain, while [Privy](https://docs.privy.io/) is a simple API that enables you to manage user data off-chain (e.g. their name, email address or KYC information). Both are great partners to Unlock, and we were thrilled to team up with Superfluid and Privy to co-host a happy hour at Casa Bocado in Manhattan, with stellar conversation, incredible food, and tasty beverages. Big thanks to everyone who came out to connect up with us!
 
-[![nftnyc-tweet1.jpg](/images/blog/nyc22/nftnyc-tweet1.jpg)](https://twitter.com/UnlockProtocol/status/1540321536078389249?s=20&t=Adgq-5dMDayRmtPAwl5ZWQ)
+[![nftnyc-tweet1.jpg](/images/blog/nyc22/nftnyc-tweet1.jpg)](https://x.com/UnlockProtocol/status/1540321536078389249?s=20&t=Adgq-5dMDayRmtPAwl5ZWQ)
 
 ## We experienced ~ vibesIRL ~ with Developer DAO
 
@@ -25,9 +25,9 @@ If you don’t yet know them, [Superfluid](https://www.superfluid.finance/home) 
 
 Developer DAO exists to accelerate the education and impact of a new wave of web3 builders. Unlock and Polygon teamed up to help sponsor Developer DAO’s ~ vibesIRL ~ event during blockchain week in New York at Barcade! A great time was had meeting new members of the developer community and reconnecting with old frens. Looking forward to the next one!
 
-[![nftnyc-tweet2.jpg](/images/blog/nyc22/nftnyc-tweet2.jpg)](https://twitter.com/tchowd_/status/1540814568376745993?s=20&t=Adgq-5dMDayRmtPAwl5ZWQ)
+[![nftnyc-tweet2.jpg](/images/blog/nyc22/nftnyc-tweet2.jpg)](https://x.com/tchowd_/status/1540814568376745993?s=20&t=Adgq-5dMDayRmtPAwl5ZWQ)
 
-[![nftnyc-tweet3.jpg](/images/blog/nyc22/nftnyc-tweet3.jpg)](https://twitter.com/0xPolygonDevs/status/1540895003261681665?s=20&t=Adgq-5dMDayRmtPAwl5ZWQ)
+[![nftnyc-tweet3.jpg](/images/blog/nyc22/nftnyc-tweet3.jpg)](https://x.com/0xPolygonDevs/status/1540895003261681665?s=20&t=Adgq-5dMDayRmtPAwl5ZWQ)
 
 ## DAO NYC
 
@@ -39,21 +39,21 @@ Unlock participated in multiple ways: as a sponsor, as the provider of [NFT tick
 
 Plus, the views were amazing.
 
-[![nftnyc-tweet4.jpg](/images/blog/nyc22/nftnyc-tweet4.jpg)](https://twitter.com/ccarfi/status/1539633052686630913?s=20&t=IQYM2Y_wvmZzCQrw28vw-g)
+[![nftnyc-tweet4.jpg](/images/blog/nyc22/nftnyc-tweet4.jpg)](https://x.com/ccarfi/status/1539633052686630913?s=20&t=IQYM2Y_wvmZzCQrw28vw-g)
 
-[![nftnyc-tweet5.jpg](/images/blog/nyc22/nftnyc-tweet5.jpg)](https://twitter.com/ccarfi/status/1539629471619219458?s=20&t=IQYM2Y_wvmZzCQrw28vw-g)
+[![nftnyc-tweet5.jpg](/images/blog/nyc22/nftnyc-tweet5.jpg)](https://x.com/ccarfi/status/1539629471619219458?s=20&t=IQYM2Y_wvmZzCQrw28vw-g)
 
 In addition to Julien’s panel, DAO NYC’s programming had a wide array of panels that hit on topics that went much deeper than the typical “wen lambo?” web3 conference fare.
 
 Kinjal Shah, Manasi Vora, Medha Kothari, Karima Williams and Gabrielle Micheletti discussed the importance of doing the work to ensure that web3 represents all its participants, and not just the stereotypical tech bro / crypto bro point of view. (Important note: Major kudos to the DAO NYC team for not just having one side panel on this topic at the end of the day in an out-of-the-way conference room, but instead weaving diverse viewpoints into the speaker roster from the get-go across the board. [See for yourself here](https://www.dao-nyc.xyz/#speakers). This is the group to learn from.)
 
-[![nftnyc-tweet6.jpg](/images/blog/nyc22/nftnyc-tweet6.jpg)](https://twitter.com/ccarfi/status/1539623901935828996?s=20&t=IQYM2Y_wvmZzCQrw28vw-g)
+[![nftnyc-tweet6.jpg](/images/blog/nyc22/nftnyc-tweet6.jpg)](https://x.com/ccarfi/status/1539623901935828996?s=20&t=IQYM2Y_wvmZzCQrw28vw-g)
 
-[![nftnyc-tweet7.jpg](/images/blog/nyc22/nftnyc-tweet7.jpg)](https://twitter.com/ccarfi/status/1539622330846117892?s=20&t=IQYM2Y_wvmZzCQrw28vw-g)
+[![nftnyc-tweet7.jpg](/images/blog/nyc22/nftnyc-tweet7.jpg)](https://x.com/ccarfi/status/1539622330846117892?s=20&t=IQYM2Y_wvmZzCQrw28vw-g)
 
 In working in and building online communities and community strategies throughout my career, I also wanted to note the conversation in the “Communities in web3” panel was all spot-on and another major highlight of the day.
 
-[![nftnyc-tweet8.jpg](/images/blog/nyc22/nftnyc-tweet8.jpg)](https://twitter.com/ccarfi/status/1539616453644673025?s=20&t=IQYM2Y_wvmZzCQrw28vw-g)
+[![nftnyc-tweet8.jpg](/images/blog/nyc22/nftnyc-tweet8.jpg)](https://x.com/ccarfi/status/1539616453644673025?s=20&t=IQYM2Y_wvmZzCQrw28vw-g)
 
 Again, hats off to the DAO NYC conference team. Cannot wait for the next one! (The conference organizers have assured us that the videos will be live soon. We’ll post links from the @UnlockProtocol Twitter handle when they do.)
 

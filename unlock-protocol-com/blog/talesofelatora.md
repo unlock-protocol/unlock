@@ -7,7 +7,7 @@ description: In the hands of a visionary artist, Unlock Protocol helped @littlef
 image: /images/blog/talesofronin/tales-of-ronin-cover-min.jpeg
 ---
 
-_As an open-source protocol, we take the tools we’ve built and place them in the hands of creators and developers and hope something beautiful emerges. In the late fall of 2021, Caroline aka [@littlefortunes](https://twitter.com/littlefortunes) joined our Discord with a brilliant idea, a ton of passion, and the determination to find solutions for the project she was building. She took her idea, integrated Unlock, and launched an initial rare NFT collection that sold out in 24 hours. An amazing accomplishment in itself, but what she’s created with her artistic brilliance and perseverance deserves a deeper examination._
+_As an open-source protocol, we take the tools we’ve built and place them in the hands of creators and developers and hope something beautiful emerges. In the late fall of 2021, Caroline aka [@littlefortunes](https://x.com/littlefortunes) joined our Discord with a brilliant idea, a ton of passion, and the determination to find solutions for the project she was building. She took her idea, integrated Unlock, and launched an initial rare NFT collection that sold out in 24 hours. An amazing accomplishment in itself, but what she’s created with her artistic brilliance and perseverance deserves a deeper examination._
 
 ![Tales of Elatora](/images/blog/talesofronin/tales-of-ronin-cover-min.jpeg)
 

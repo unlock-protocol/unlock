@@ -15,7 +15,7 @@ Bringing our ultimate vision for Unlock to life requires community support, part
 
 > “At Unlock, we envision a fairer, more humane Internet in which every creator can monetize their work on their own terms through membership benefits of their choice,” said Unlock CEO Julien Genestoux. “With the funding we have raised to date, Unlock will continue growing to become the most complete, open source platform to achieve this goal. We’re grateful to the investors who support our vision, and to our developer and creator communities who continue to build amazing new applications of our protocol.”
 
-The $4 million round was led by VC firms including [Betaworks](https://www.betaworks.com/), [Cygni Labs](https://twitter.com/totofrance), [GMG Ventures](https://www.gmgventures.co/) (parent company of [The Guardian](https://www.theguardian.com/us)), and [Metacartel Ventures China](https://metacartel.xyz/), along with participation from early investors
+The $4 million round was led by VC firms including [Betaworks](https://www.betaworks.com/), [Cygni Labs](https://x.com/totofrance), [GMG Ventures](https://www.gmgventures.co/) (parent company of [The Guardian](https://www.theguardian.com/us)), and [Metacartel Ventures China](https://metacartel.xyz/), along with participation from early investors
 
 [Techcrunch wrote about us](https://techcrunch.com/2021/09/28/guardian-owner-invests-in-unlock-an-nft-protocol-designed-for-subscriptions-and-memberships/):
 

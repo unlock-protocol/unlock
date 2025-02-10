@@ -15,19 +15,19 @@ Here’s a quick introduction to each grantee, their project and how to find the
 
 **Jenil Thakker - Coinvise**
 
-[https://twitter.com/CoinviseCo](https://twitter.com/CoinviseCo)
+[https://x.com/CoinviseCo](https://x.com/CoinviseCo)
 
 Every time a member of a creator community claims a membership on Unlock, they'll be eligible to claim an airdrop on Coinvise. Coinvise is a platform of powerful tools for creators to build and operate tokenized communities.
 
 **Andrew Berkowitz - Socialstack**
 
-[https://twitter.com/trysocialstack](https://twitter.com/trysocialstack)
+[https://x.com/trysocialstack](https://x.com/trysocialstack)
 
 Socialstack is an impact-driven toolkit to launch and manage a social token community. They're cultivating a curated community of impact-first brands, organizations, creators, and DAOs to launch on their platform and onboard their community into Web3. Socialstack is planning to implement Unlock's functionality into their CommunityOS dApp to enable communities to activate turnkey membership NFTs across all the platforms that Unlock enables, and provide their members with membership NFTs to purchase. Check out [their platform here.](https://www.socialstack.co/)
 
 **Blair Gardner - Dinner DAO**
 
-[https://twitter.com/dinner_dao](https://twitter.com/dinner_dao)
+[https://x.com/dinner_dao](https://x.com/dinner_dao)
 
 Dinner DAO represents a modern day dinner club that brings together members of the web3 community through IRL meals and events to bond, network, share stories, and extend the connections we're building as a community into the real world. Learn more about [Dinner DAO here.](https://dinnerdao.xyz/)
 
@@ -37,13 +37,13 @@ Gymnasia makes it possible for anyone to earn cryptocurrencies & NFTs by partici
 
 **Gaetan Renaudeau - Greweb Monthly Plots**
 
-[https://twitter.com/greweb](https://twitter.com/greweb)
+[https://x.com/greweb](https://x.com/greweb)
 
 Gaetan is a generative artist and coder looking to integrate Unlock into various aspects of their NFT artwork. Be sure to check out their artwork [at this link!](https://greweb.me/plots)
 
 **Micol Ap - VCA**
 
-[https://twitter.com/verticalcrypto](https://twitter.com/verticalcrypto)
+[https://x.com/verticalcrypto](https://x.com/verticalcrypto)
 
 The VCA Residency vision is to democratise the access to knowledge and give free educational programs dedicated to creators of all kinds interested in Crypto Art and the NFT ecosystem. VCA will integrate Unlock to power their memberships and access for participants in their ecosystem
 

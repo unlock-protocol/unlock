@@ -21,7 +21,7 @@ export const SOCIAL_LINKS: SocialLinkProps[] = [
     icon: DiscordIcon,
   },
   {
-    url: 'https://twitter.com/UnlockProtocol',
+    url: 'https://x.com/UnlockProtocol',
     icon: TwitterIcon,
   },
 ]

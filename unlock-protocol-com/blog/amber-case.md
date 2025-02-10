@@ -7,7 +7,7 @@ description: Welcome UX/Monetization Expert Amber Case as Strategic Advisor to U
 image: /images/blog/amber-case.png
 ---
 
-Hello everyone! Let me warmly introduce [Amber Case](https://twitter.com/caseorganic) to the Unlock community. Someone I’ve known and admired for years, Amber is a UX expert, a Mozilla Fellow working on the future of money, and a powerful advocate of the open web. ([Full bio here](https://www.caseorganic.com/about).)
+Hello everyone! Let me warmly introduce [Amber Case](https://x.com/caseorganic) to the Unlock community. Someone I’ve known and admired for years, Amber is a UX expert, a Mozilla Fellow working on the future of money, and a powerful advocate of the open web. ([Full bio here](https://www.caseorganic.com/about).)
 
 ![Amber Case](/images/blog/amber-case.png)
 

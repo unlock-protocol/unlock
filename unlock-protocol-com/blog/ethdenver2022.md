@@ -23,7 +23,7 @@ Every person I spoke with had **an intriguing project, either in motion or in th
 
 Despite the snow and a never-ending stream of long lines, I was able to slip into the Schelling Point event at the very start of my first day at ETHDenver. While the venue itself was chaotic and the speakers were in the midst of that chaos, I was able to attend some talks that truly reinforced my belief in what’s possible with the technology that powers web3.
 
-One talk that resonated was _Policy Proposals for Non Dystopian Crypto Protocols_ by [Nathan Schneider](https://twitter.com/ntnsndr) from the University of Colorado Boulder. Nathan spoke deeply, as deep as one can in 20 minutes, about governance and moving beyond blockchain as just a financial instrument. His slides placed some profound questions and premises into the community right from the start of Schelling Point.
+One talk that resonated was _Policy Proposals for Non Dystopian Crypto Protocols_ by [Nathan Schneider](https://x.com/ntnsndr) from the University of Colorado Boulder. Nathan spoke deeply, as deep as one can in 20 minutes, about governance and moving beyond blockchain as just a financial instrument. His slides placed some profound questions and premises into the community right from the start of Schelling Point.
 
 > “Build finance around communities, not speculators”
 
@@ -37,7 +37,7 @@ If you are at all interested in governance and the future of decentralized commu
 
 ## Plurality
 
-Another talk that drew me in was [Glen Weyl’s](https://twitter.com/glenweyl) presentation titled _Plurality_. He began by talking about **the notion of public freedom and moments where “the practices of a community have the chance to set a pattern for the whole way that social life works.”** He also placed some highly intellectual premises into the discourse on how we can begin to look at the different sectors of the ecosystem and avoid the mistakes made in past technological movements.
+Another talk that drew me in was [Glen Weyl’s](https://x.com/glenweyl) presentation titled _Plurality_. He began by talking about **the notion of public freedom and moments where “the practices of a community have the chance to set a pattern for the whole way that social life works.”** He also placed some highly intellectual premises into the discourse on how we can begin to look at the different sectors of the ecosystem and avoid the mistakes made in past technological movements.
 
 One slide that resonated explored “Ideologies of the Future: Corporate Libertarianism, Synthetic Technocracy & Digital Democracy.” He then spoke of the plurality of funding in relation to communities in the web3 ecosystem and he [published a deeper blog post](https://www.radicalxchange.org/media/blog/political-ideologies-for-the-21st-century/) about this very topic the day before his talk. Take a moment to watch his presentation because there are some profound theories and concepts we should explore as we build technology and web3 communities.
 
@@ -49,7 +49,7 @@ One slide that resonated explored “Ideologies of the Future: Corporate Liberta
 
 Community building was a prominent theme for many of the speakers and adapting traditional community-building methodology from web2 for a decentralized community structure like DAOs was a common narrative of ETHDenver. As a community builder, I’m obviously biased to the importance of this topic, and I was inspired to see the speakers talking about **the nuanced soft skills of holding space for community members and fostering positive environments so innovation and collaboration can occur.** I repeatedly heard speakers addressing the health of the community hinging on these often immeasurable, but necessary, soft skills.
 
-The presentation titled _Coordinating Work in Web3 & Beyond_ by [Pooja Shah](https://twitter.com/pooja_eth) had a few particularly excellent slides. The points on the slide titled “Goals for Work Organization in Web3” were particularly interesting and if you watch her presentation, this entire section is worth taking notes and applying to your organization.
+The presentation titled _Coordinating Work in Web3 & Beyond_ by [Pooja Shah](https://x.com/pooja_eth) had a few particularly excellent slides. The points on the slide titled “Goals for Work Organization in Web3” were particularly interesting and if you watch her presentation, this entire section is worth taking notes and applying to your organization.
 
 > “Massively scalable systems of human cooperation (unprecedented levels of scale)
 
@@ -63,7 +63,7 @@ Her talk is relevant for managers and founders working with decentralized ecosys
 
 ## Regenerative Culture
 
-I was particularly impressed by a presentation from [Beth McCarthy](https://twitter.com/ontologymachine) called _Building Regenerative Culture_. I loved her talk so much I photographed almost every slide and spoke with her after the presentation. **She touched on the care work of community building and addressing cultural debt in a community.**
+I was particularly impressed by a presentation from [Beth McCarthy](https://x.com/ontologymachine) called _Building Regenerative Culture_. I loved her talk so much I photographed almost every slide and spoke with her after the presentation. **She touched on the care work of community building and addressing cultural debt in a community.**
 
 Here are my favorite points from her slides:
 

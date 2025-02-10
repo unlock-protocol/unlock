@@ -31,4 +31,4 @@ Forbes is at the forefront of publications writing about crypto and blockchain a
 
 Similarly, if you believe as a user that cryptocurrencies are the future of money, whether as stores of value, means of exchanging goods and services, or even as decentralizing technology, you should experiment with it!
 
-As such, we are offering up to 100 memberships to Forbes ads-free lock! For this, we've asked the team at [LinkDrop](https://linkdrop.io/) to develop a way to [generate links which include a key to a lock](https://github.com/LinkdropHQ/linkdrop-unlock)! To receive your own key (for free!) just send us follow us on [Twitter](https://twitter.com/unlockprotocol) (so we can send a DM) and send us an @reply!
+As such, we are offering up to 100 memberships to Forbes ads-free lock! For this, we've asked the team at [LinkDrop](https://linkdrop.io/) to develop a way to [generate links which include a key to a lock](https://github.com/LinkdropHQ/linkdrop-unlock)! To receive your own key (for free!) just send us follow us on [Twitter](https://x.com/unlockprotocol) (so we can send a DM) and send us an @reply!

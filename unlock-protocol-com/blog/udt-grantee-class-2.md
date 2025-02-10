@@ -10,7 +10,7 @@ image: /images/blog/udt-grants-class-2.png
 
 We are so excited to announce the following grant recipients for our second cohort! Our grant selection committee carefully reviewed each project and, the winners were chosen for their vision and potential growth for the protocol.
 
-Last month, we [began decentralizing our grant process](https://unlock.community/t/decentralizing-the-grants-process/106/4). We have nominated some of our earliest community members to make the winning selections for the next class. We included a mix of early Unlock Inc. investors, grantees and, community members. The Unlock Grant committee is run by [Amber Case](https://twitter.com/caseorganic). If you’d like to learn more about this process, please [join the Governance channel](https://unlock.community/t/decentralizing-the-grants-process/106) on our community forum and read more.
+Last month, we [began decentralizing our grant process](https://unlock.community/t/decentralizing-the-grants-process/106/4). We have nominated some of our earliest community members to make the winning selections for the next class. We included a mix of early Unlock Inc. investors, grantees and, community members. The Unlock Grant committee is run by [Amber Case](https://x.com/caseorganic). If you’d like to learn more about this process, please [join the Governance channel](https://unlock.community/t/decentralizing-the-grants-process/106) on our community forum and read more.
 
 # Unlock Grantees - Second Cohort
 

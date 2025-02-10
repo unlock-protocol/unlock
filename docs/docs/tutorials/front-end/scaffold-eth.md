@@ -15,7 +15,7 @@ The stack includes [Solidity](https://docs.soliditylang.org/), [Hardhat](https:/
 
 ## Why it matters
 
-We decided it would be useful to show people how Unlock Protocol could fit into that stack. So we put out a bounty and one of our community members [Danni Thomx](https://twitter.com/dannithomx) forked the scaffold-eth github repository and [scaffold-eth-unlock](https://github.com/unlock-protocol/scaffold-eth-unlock) was born.
+We decided it would be useful to show people how Unlock Protocol could fit into that stack. So we put out a bounty and one of our community members [Danni Thomx](https://x.com/dannithomx) forked the scaffold-eth github repository and [scaffold-eth-unlock](https://github.com/unlock-protocol/scaffold-eth-unlock) was born.
 
 Now you can use this repository to learn how Unlock can be used in a modern dApp or as a base to start prototyping your next killer dApp.
 

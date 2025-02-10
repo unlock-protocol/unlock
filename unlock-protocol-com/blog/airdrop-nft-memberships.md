@@ -14,8 +14,8 @@ Memberships can then be purchased directly by the fans. This happens by calling 
 However, in a lot of cases, creators may want to "give away" or **airdrop NFT memberships** for free to some of their users. Here are examples of why this is useful:
 
 - This is how our [credit card](/blog/credit-card-nft) flow works: the NFT is paid "off chain" via a credit card transaction, and _granted_ on chain (technically, no on-chain payment happens).
-- Someone might want to give a "limited time" trial. For example, my [personal blog](https://ouvre-boite.com) has a membership of its own, where NFTs expire after 1 year, but where anyone who [follows me on Twitter](https://twitter.com/julien51) [can claim a 30 minute](https://claim-ouvre-boite-membership.herokuapp.com/) trial!
-- Finally, some communities and memberships cannot be purchased, but only be granted. That is the case for the [PlannerDAO certifications](https://twitter.com/PlannerDAO/status/1479097169747529735).
+- Someone might want to give a "limited time" trial. For example, my [personal blog](https://ouvre-boite.com) has a membership of its own, where NFTs expire after 1 year, but where anyone who [follows me on Twitter](https://x.com/julien51) [can claim a 30 minute](https://claim-ouvre-boite-membership.herokuapp.com/) trial!
+- Finally, some communities and memberships cannot be purchased, but only be granted. That is the case for the [PlannerDAO certifications](https://x.com/PlannerDAO/status/1479097169747529735).
 
 # How to airdrop NFT memberships
 
