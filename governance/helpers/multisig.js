@@ -237,7 +237,7 @@ const parseSafeMulticall = async ({ calls, chainId, options }) => {
     calldata = data
   }
 
-  // parse calls correcly for our multisig/dao helpers
+  // parse calls correctly for our multisig/dao helpers
   data.calldata = calldata
   data.contractAddress = to
   return {

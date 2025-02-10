@@ -1,6 +1,6 @@
 # Packages
 
-Packages in this folder are shared accross multiple apps in this (mono)repo.
+Packages in this folder are shared across multiple apps in this (mono)repo.
 
 ## Howto
 
