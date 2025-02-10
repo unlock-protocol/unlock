@@ -18,7 +18,7 @@ const TEAM_MEMBERS: TeamProps[] = [
     socials: [
       {
         title: 'Twitter',
-        url: 'https://twitter.com/julien51',
+        url: 'https://x.com/julien51',
       },
       {
         title: 'Linked-in',
@@ -34,7 +34,7 @@ const TEAM_MEMBERS: TeamProps[] = [
     socials: [
       {
         title: 'Twitter',
-        url: 'https://twitter.com/ccarfi',
+        url: 'https://x.com/ccarfi',
       },
       {
         title: 'Linked-in',
@@ -50,7 +50,7 @@ const TEAM_MEMBERS: TeamProps[] = [
     socials: [
       {
         title: 'Twitter',
-        url: 'https://twitter.com/kld_diagne',
+        url: 'https://x.com/kld_diagne',
       },
       {
         title: 'Linked-in',
@@ -66,7 +66,7 @@ const TEAM_MEMBERS: TeamProps[] = [
     socials: [
       {
         title: 'Twitter',
-        url: 'https://twitter.com/clemsos',
+        url: 'https://x.com/clemsos',
       },
       {
         title: 'Linked-in',
@@ -82,7 +82,7 @@ const TEAM_MEMBERS: TeamProps[] = [
     socials: [
       {
         title: 'Twitter',
-        url: 'https://twitter.com/searchableguy',
+        url: 'https://x.com/searchableguy',
       },
     ],
   },
@@ -94,7 +94,7 @@ const TEAM_MEMBERS: TeamProps[] = [
     socials: [
       {
         title: 'Twitter',
-        url: 'https://twitter.com/PatrickWorkman',
+        url: 'https://x.com/PatrickWorkman',
       },
       {
         title: 'Linked-in',
@@ -110,7 +110,7 @@ const TEAM_MEMBERS: TeamProps[] = [
     socials: [
       {
         title: 'Twitter',
-        url: 'https://twitter.com/Chia_Tea',
+        url: 'https://x.com/Chia_Tea',
       },
       {
         title: 'Linked-in',

@@ -21,25 +21,25 @@ David Layton is creating Unfurl, an Open ID Connect Provider powered by Unlock P
 
 ## MJ Zilla - Element Integration
 
-[https://twitter.com/\_mecyver](https://twitter.com/_mecyver)
+[https://x.com/\_mecyver](https://x.com/_mecyver)
 
 MJ, aka Mecyver is working on an Element + Unlock integration. Providing a viable alternative to community building outside of Discord that utilizes our protocol to manage memberships will help support more adoption by creators! We're very excited to see a fresh integration for private and group chats that is also open-source and encrypted.
 
 ## Stephen Grinalds - Chisos Capital
 
-[https://twitter.com/ChisosCapital](https://twitter.com/ChisosCapital)
+[https://x.com/ChisosCapital](https://x.com/ChisosCapital)
 
 Chisos Capital is utilizing Unlock to support their membership club and community of investors and entrepreneurs throughout their ecosystem.
 
 ## Carlos Diaz-Padron and Gail Wilson - Metaphor
 
-[https://twitter.com/the_carlosdp](https://twitter.com/the_carlosdp)
+[https://x.com/the_carlosdp](https://x.com/the_carlosdp)
 
 Carlos and Gail are working on an integration for Metaphor's DAO onboarding tool, with the intention of creating an easy method for joining a DAO. This will allow members to bypass expensive, and often prohibitive, token ownership that normally powers DAO participation.
 
 ## Fanny Lakoubay - BAD 2.0 (Blockchain Art Directory)
 
-[https://twitter.com/badOG_xyz](https://twitter.com/badOG_xyz)
+[https://x.com/badOG_xyz](https://x.com/badOG_xyz)
 
 Fanny is looking to incorporate Unlock into the existing BAD platform to help them elevate their mission and further embrace the full power of web3. BAD was originally built in 2017 to help serve as a directory for blockchain art. BAD is upping their game to better serve the blockchain art community which is hot right now!
 

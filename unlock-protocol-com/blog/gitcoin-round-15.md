@@ -37,7 +37,7 @@ for climate impact are [Green Academy](https://green-academy.webflow.io/),
 
 Some impressive projects leveraging Unlock Protocol for decentralized science,
 or DeSci, tagged us in this round.
-[Omni Analytics](https://twitter.com/omnianalytics) maintaining the top spot for
+[Omni Analytics](https://x.com/omnianalytics) maintaining the top spot for
 community support in this category, has continued to use the funding they've
 recieved by adding more content to their "Learning Data Science on the Ethereum
 Blockchain" course. Congratulations to

@@ -39,20 +39,20 @@ const UNLOCK_GRANT_HELP = [
 const UNLOCK_GRANT_COMMITTEE = [
   {
     name: 'Crystal Street',
-    socialURL: 'https://twitter.com/crystaldstreet',
+    socialURL: 'https://x.com/crystaldstreet',
     text: 'Founding Member JournoDAO',
     avatarURL: '/images/marketing/grants/crystal-street.png',
   },
   {
     name: 'White Hat',
     text: 'Founder of White Hat DAO',
-    socialURL: 'https://twitter.com/White_Hat_DAO',
+    socialURL: 'https://x.com/White_Hat_DAO',
     avatarURL: '/images/marketing/grants/white-hat.png',
   },
   {
     name: 'Henry Hoffman',
     text: 'BAFTA-winning Game Designer',
-    socialURL: 'https://twitter.com/HenryHoffman',
+    socialURL: 'https://x.com/HenryHoffman',
     avatarURL: '/images/marketing/grants/henry-hoffman.png',
   },
 ]
@@ -76,7 +76,7 @@ const UNLOCK_PAST_COHORTS = [
   {
     name: 'SwordyBot',
     avatarURL: '/images/marketing/grants/patrick-gallagher.png',
-    socialURL: 'https://twitter.com/pi0neerpat',
+    socialURL: 'https://x.com/pi0neerpat',
     by: 'Patrick Gallagher',
     text: 'SwordyBot uses Unlock Protocol to let Discord administators automatically grant or limit access to Discord channels based on NFTs.',
   },
@@ -84,7 +84,7 @@ const UNLOCK_PAST_COHORTS = [
     name: 'Puma Browser',
     avatarURL: '/images/marketing/grants/yuriy-dybskiy.png',
     by: 'Yuriy Dybskiy',
-    socialURL: 'https://twitter.com/html5cat',
+    socialURL: 'https://x.com/html5cat',
     text: 'Puma - a mobile browser and wallet for the Web3 ecosystem - is integrating with Unlock.',
   },
   {
@@ -98,21 +98,21 @@ const UNLOCK_PAST_COHORTS = [
     name: 'Dinner DAO',
     avatarURL: '/images/marketing/grants/austin-robey.png',
     by: 'Austin Robey',
-    socialURL: 'https://twitter.com/austinrobey_',
+    socialURL: 'https://x.com/austinrobey_',
     text: 'Unlock Protocol-powered NFTs that allow groups to meet over a great meal.',
   },
   {
     name: 'Tales of Elatora',
     avatarURL: '/images/marketing/grants/caroline.png',
     by: 'Caroline',
-    socialURL: 'https://twitter.com/littlefortunes',
+    socialURL: 'https://x.com/littlefortunes',
     text: 'A NFT Artist who uses Unlock to token-gate their story writing. Members can vote on the story. ',
   },
   {
     name: 'Decentraland',
     avatarURL: '/images/marketing/grants/henry-hoffman.png',
     by: 'Henry Hoffman',
-    socialURL: 'https://twitter.com/henryhoffman',
+    socialURL: 'https://x.com/henryhoffman',
     text: 'Unlock Decentraland Integration allow you to token-gate access to digital spaces and sell memberships in Decentraland ',
   },
 ]

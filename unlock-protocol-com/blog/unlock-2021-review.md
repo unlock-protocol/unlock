@@ -58,7 +58,7 @@ In July, we released credit card support, powered by Stripe, through which commu
 
 ![credit card](/images/blog/unlock-2021-review/creditcard.png)
 
-July was also when the EthCC Paris conference finally took place, after being postponed in 2020. [Did you know participants who purchased their EthCC ticket with a crypto wallet used Unlock](https://twitter.com/ethcc/status/1233397647794483200)? Other conferences like [Liscon](https://liscon.org/!) also use Unlock to sell NFT tickets and manage attendees, with endless capabilities to design various levels of membership experiences (via crypto or fiat, thanks to our credit card support).
+July was also when the EthCC Paris conference finally took place, after being postponed in 2020. [Did you know participants who purchased their EthCC ticket with a crypto wallet used Unlock](https://x.com/ethcc/status/1233397647794483200)? Other conferences like [Liscon](https://liscon.org/!) also use Unlock to sell NFT tickets and manage attendees, with endless capabilities to design various levels of membership experiences (via crypto or fiat, thanks to our credit card support).
 
 Last but not least, we ended summer announcing a $4 million investment round from Betaworks, Cygni Labs, GMG Ventures (parent company of The Guardian), and Metacartel Ventures China, along with participation from early investors
 
