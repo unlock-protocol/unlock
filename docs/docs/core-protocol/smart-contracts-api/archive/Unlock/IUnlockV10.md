@@ -68,7 +68,7 @@ function computeAvailableDiscountFor(address _purchaser, uint256 _keyPrice) exte
 
 [DEPRECATED] Call to this function has been removed from PublicLock &gt; v9.
 
-*[DEPRECATED] Kept for backwards compatibility This function returns the discount available for a user, when purchasing a a key from a lock. This does not modify the state. It returns both the discount and the number of tokens consumed to grant that discount.*
+*[DEPRECATED] Kept for backwards compatibility This function returns the discount available for a user, when purchasing a key from a lock. This does not modify the state. It returns both the discount and the number of tokens consumed to grant that discount.*
 
 #### Parameters
 

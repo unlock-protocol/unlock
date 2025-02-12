@@ -4,7 +4,7 @@ description: One of the unique characteristics of the Unlock Protocol is that it
 sidebar_position: 3
 ---
 
-Once [minted](./minting-keys.md), an expiration is set _onchain_ for any key. The expiration is a timestamp which can be retrieved for any individual key by using the [`keyExpirationTimestampFor`](/core-protocol/smart-contracts-api/PublicLock#keyexpirationtimestampfor) method.
+Once [minted](./minting-keys.md), an expiration is set _on-chain_ for any key. The expiration is a timestamp which can be retrieved for any individual key by using the [`keyExpirationTimestampFor`](/core-protocol/smart-contracts-api/PublicLock#keyexpirationtimestampfor) method.
 
 Once expired, a key is not considered valid anymore, and functions like `balanceOf` will not return a key that can be renewed, and its expiration extended.
 
