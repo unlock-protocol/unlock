@@ -11,11 +11,11 @@ After years of loyal service, the Rinkeby test network is about to [retire](http
 
 ## Why use a test network?
 
-Testnets (for test networks) are alternative chains that are used exclusively for testing and development. They work exactly the same as the main networks, except their coins can be obtained for free, usually via online [faucets](https://goerli-faucet.mudit.blog/). Testnets allows risk-free experiments, which is great when you are a novice or experimenting at the latest edge of the crypto world. Before spending valuable tokens on costly contract deployments and operations, you better first try things first in an environment close to the "real-word" chains. The Mumbai testnet mimics Polygon, Korvan mimics Optimisim, and Goerli or Rinkeby mimics Ethereum Mainnet - without the costs.
+Testnets (for test networks) are alternative chains that are used exclusively for testing and development. They work exactly the same as the main networks, except their coins can be obtained for free, usually via online [faucets](https://goerli-faucet.mudit.blog/). Testnets allow risk-free experiments, which is great when you are a novice or experimenting at the latest edge of the crypto world. Before spending valuable tokens on costly contract deployments and operations, you better first try things first in an environment close to the "real-word" chains. The Mumbai testnet mimics Polygon, Korvan mimics Optimisim, and Goerli or Rinkeby mimic Ethereum Mainnet - without the costs.
 
 ## Why so many testnets?
 
-With test coins being free, there is no economic incentives for miners to secure the test chains and these networks are often left vulnerable. Therefore designing, maintaining and running testnets pertains more to a labor of love of the developer community. Behind their mysterious names, each network has its own set of advantages and flaws. Some are quite unstable, other are stable but slow, some do not support specific Ethereum clients, some have too few active faucets, etc. Picking one always comes with its own set of drawbacks or tradeoffs.
+With test coins being free, there are no economic incentives for miners to secure the test chains and these networks are often left vulnerable. Therefore designing, maintaining and running testnets pertains more to a labor of love of the developer community. Behind their mysterious names, each network has its own set of advantages and flaws. some are quite unstable, others are stable but slow, some do not support specific Ethereum clients, some have too few active faucets, etc. Picking one always comes with its own set of drawbacks or tradeoffs.
 
 ## Why Goerli?
 
