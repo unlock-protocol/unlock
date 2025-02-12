@@ -5,11 +5,11 @@ description: How to use Unlock Protocol in a React.js app.
 
 # React + Unlock Protocol
 
-To get you started working with Unlock Protocol in a react frontend we’ve created a starter kit for your convenience.
+To get you started working with Unlock Protocol in a react frontend we’ve created a starter kit for your convenience..
 
 ## Prerequisites
 
-This tutorial assumes a beginner level understanding of HTML, CSS, JavaScript ES6, Git and React
+This tutorial assumes a beginner-level understanding of HTML, CSS, JavaScript ES6, Git, and React.
 
 ## Additional Resources
 
@@ -21,33 +21,33 @@ This tutorial assumes a beginner level understanding of HTML, CSS, JavaScript ES
 
 ## Creating your repo
 
-We have already created a base [react-example](https://github.com/unlock-protocol/react-example) repo which you can use. Bootstrapped with Create React App so it comes with the tooling you expect to get started quickly.
+We have already created a base [React-example](https://github.com/unlock-protocol/React-example) repo which you can use. Bootstrapped with Create React App so it comes with the tooling you expect to get started quickly.
 
 Most of the time you will want to fork this repo as a place to get started. If you’d like to pull in future changes or contribute back make sure you take the additional steps to sync your fork with the original. If you’re unsure about your workflow then I would suggest consulting the Github guide Working with forks to see if that is right for you.
 
 ### Creating your fork
 
-1. Navigate to the [react-example](https://github.com/unlock-protocol/react-example) Github repository.
+1. Navigate to the [React-example](https://github.com/unlock-protocol/React-example) Github repository.
 1. In the top-right corner of the page, click Fork.
    ![fork button][fork button]
-   [fork button]: /img/tutorial/react-example-fork_button.png
+   [fork button]: /img/tutorial/React-example-fork_button.png
 
 ### Cloning your fork
 
 1. Navigate to your fork of the repository you just made.
 1. Above the list of files, click Code button.
    ![download code button][download code]
-   [download code]: /img/tutorial/react-example-code_button.png
+   [download code]: /img/tutorial/React-example-code_button.png
 1. Copy the URL for the repository.
    ![clone button][clone button]
-   [clone button]: /img/tutorial/react-example-https_url_clone_cli.png
+   [clone button]: /img/tutorial/React-example-https_url_clone_cli.png
 1. To clone the repository using HTTPS, under "HTTPS", click paste button highlighted above.
 1. Open Terminal.
 1. Change the current working directory to the location where you want the cloned directory.
 1. Type git clone, and then paste the URL you copied earlier. It will look like this, with your GitHub username instead of YOUR-USERNAME:
 
 ```terminal
-$ git clone https://github.com/YOUR-USERNAME/react-example
+$ git clone https://github.com/YOUR-USERNAME/React-example
 ```
 
 1. Press Enter. Your local clone will be created.

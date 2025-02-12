@@ -82,7 +82,7 @@ As of January 2025, the Unlock ecosystem consists of the following:
 - Governance:
   - UDT bridged to more networks ✅
 
-# December 31th 2023
+# December 31st 2023
 
 - Dashboard:
   - Universal credit cards ✅
@@ -95,7 +95,7 @@ As of January 2025, the Unlock ecosystem consists of the following:
 - Governance:
   - Cross-chain governance ([Connext](https://www.connext.network/)) ✅
 
-# June 31th 2023
+# June 30th 2023
 
 - Dashboard:
   - Image Uploader ✅
@@ -107,7 +107,7 @@ As of January 2025, the Unlock ecosystem consists of the following:
 - Contracts:
   - Swap and Pay ✅
 
-# December 31th 2022
+# December 31st 2022
 
 - Fully refactored Dashboard:
   - Checkout configuration UI ✅

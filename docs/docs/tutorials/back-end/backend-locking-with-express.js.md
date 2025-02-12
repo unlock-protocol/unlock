@@ -2,7 +2,7 @@
 title: Token-gating Express.js
 description: >-
   Express.js is a popular HTTP server framework for Node.js. In this tutorial,
-  we will see to use the unlock-express plugin for Express.js in order to add
+  we will see how to use the unlock-express plugin for Express.js in order to add
   locked routes in an Express application.
 ---
 
@@ -24,7 +24,7 @@ An example application exists in the [source code's directory](https://github.co
 
 ### Configuration
 
-The plugin works by adding a middleware that can be used to ensure that the current visitor owns a valid membership, but before that it needs to be configured.
+The plugin works by adding a middleware that can be used to ensure that the current visitor owns a valid membership, but it needs to be configured first.
 
 The configuration step is required but has many good defaults. The `configureUnlock` has 3 arguments.
 
