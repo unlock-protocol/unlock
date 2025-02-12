@@ -15,7 +15,7 @@ Here’s a quick introduction to each grantee, their project and how to find the
 
 ## Matt Mankins - Notion
 
-[https://www.twitter.com/mankins](https://www.twitter.com/mankins)
+[https://www.x.com/mankins](https://www.x.com/mankins)
 
 Matt will be working on an Unlock integration for Notion pages. We love us some Notion and are excited to see this come to life!
 
