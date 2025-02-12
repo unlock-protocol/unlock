@@ -83,7 +83,7 @@ async function simulateDelayCall({ rpcUrl, projectURL, network, moduleCall }) {
   // package module args
   const [to, value, data, operation] = moduleCall
   const moduleArgs = [to, value, data, operation ? 1n : 0n]
-  console.log(`${name} [${id}]: simulating execution on receving chain`)
+  console.log(`${name} [${id}]: simulating execution on receiving chain`)
 
   // ethers provider and signer
   const forkProvider = new ethers.JsonRpcProvider(rpcUrl)

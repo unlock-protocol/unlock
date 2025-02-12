@@ -256,7 +256,7 @@ export function handleKeyExtended(event: KeyExtendedEvent): void {
   }
 }
 
-// from < v10 (before using tokenId accross the board)
+// from < v10 (before using tokenId across the board)
 export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
   const lockContract = PublicLock.bind(event.address)
 

@@ -234,7 +234,7 @@ task('gov:quorum', 'Retrieve current quorum')
   })
 
 task('gov:delegate', 'Delagate voting power')
-  .addParam('delegate', 'The delegate receving the voting power')
+  .addParam('delegate', 'The delegate receiving the voting power')
   .addParam('govAddress', 'The address of the Governor contract')
   .addOptionalParam('holder', 'The holder address')
   .setAction(async ({ delegate, holder, govAddress }) => {
