@@ -8,7 +8,6 @@ import {
   Placeholder,
   Modal,
 } from '@unlock-protocol/ui'
-import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useEffect, useState } from 'react'
@@ -17,6 +16,8 @@ import useEns from '~/hooks/useEns'
 import { useAddLockManager } from '~/hooks/useAddLockManager'
 import { useProvider } from '~/hooks/useProvider'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { graphService } from '~/config/subgraph'
+
 interface LockManagerFormProps {
   lockAddress: string
   network: number
@@ -194,8 +195,7 @@ export const LockManagerForm = ({
   })
 
   const getLock = async () => {
-    const service = new SubgraphService()
-    return await service.lock(
+    return await graphService.lock(
       {
         where: {
           address_in: [lockAddress],

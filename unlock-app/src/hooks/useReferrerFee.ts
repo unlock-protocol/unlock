@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { useProvider } from './useProvider'
+import { graphService } from '~/config/subgraph'
 
 interface ReferrerFeeProps {
   lockAddress: string
@@ -31,8 +31,7 @@ export const useReferrerFee = ({ lockAddress, network }: ReferrerFeeProps) => {
   const isSettingReferrerFee = setReferrerFee.isPending
 
   const getLock = async () => {
-    const service = new SubgraphService()
-    return service.lock(
+    return graphService.lock(
       {
         where: {
           address: lockAddress,
