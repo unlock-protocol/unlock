@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
-import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { useAuthenticate } from './useAuthenticate'
+import { graphService } from '~/config/subgraph'
 
 interface CertificationProps {
   lockAddress: string
@@ -40,10 +40,9 @@ export const useCertification = ({
   return useQuery({
     queryKey: ['getCertification', lockAddress, network, tokenId, account],
     queryFn: async () => {
-      const subgraph = new SubgraphService()
       if (tokenId) {
         // Get the certification matching the token id
-        const key = await subgraph.key(
+        const key = await graphService.key(
           {
             where: {
               tokenId,
@@ -61,7 +60,7 @@ export const useCertification = ({
         throw new Error('No valid certification for this token')
       } else if (account) {
         // Get the certification for the current user
-        const key = await subgraph.key(
+        const key = await graphService.key(
           {
             where: {
               owner: account.toLowerCase(),
