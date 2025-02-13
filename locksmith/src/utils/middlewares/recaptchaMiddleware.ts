@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express'
 import fetch from 'isomorphic-fetch'
-import config, { isProduction, isStaging } from '../../config/config'
+import config, { isProduction } from '../../config/config'
 import normalizer from '../normalizer'
 import logger from '../../logger'
 
@@ -16,8 +16,8 @@ export const captchaMiddleware: RequestHandler = async (
   response,
   next
 ) => {
-  if (!isProduction && !isStaging) {
-    logger.debug('Skip captcha in development')
+  if (!isProduction) {
+    logger.debug('Skip captcha in development and staging')
     return next()
   }
 
