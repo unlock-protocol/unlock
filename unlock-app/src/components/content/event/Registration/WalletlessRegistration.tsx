@@ -258,7 +258,8 @@ export const RegistrationForm = ({
   const onSubmit = async ({ recipient, ...data }: any) => {
     setLoading(true)
     try {
-      const captcha = await executeRecaptcha('submit')
+      // passing a dummy value for captcha
+      const captcha = 'disabled'
       await onRSVP({
         recipient,
         data,
