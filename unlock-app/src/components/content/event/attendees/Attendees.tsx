@@ -14,13 +14,13 @@ import { AirdropKeysDrawer } from '~/components/interface/members/airdrop/Airdro
 import { useEventOrganizer } from '~/hooks/useEventOrganizer'
 import { Event, PaywallConfigType } from '@unlock-protocol/core'
 import { MemberCard } from '~/components/interface/locks/Manage/elements/MemberCard'
-import { AttendeeInfo } from './AttendeeInfo'
+import MetadataCard from './MetadataCard'
+import { useRouter } from 'next/navigation'
 import { ApplicantInfo } from './ApplicantInfo'
+import { AttendeeInfo } from './AttendeeInfo'
 import { AttendeesActionsWrapper } from './AttendeesActions'
 import { ApproveAttendeeModal } from './ApproveAttendeeModal'
 import { DenyAttendeeModal } from './DenyAttendeeModal'
-import MetadataCard from './MetadataCard'
-import { useRouter } from 'next/navigation'
 
 interface AttendeesProps {
   event: Event
@@ -30,85 +30,9 @@ interface AttendeesProps {
   }
 }
 
-// Memoized MemberCardComponent
-const MemberCardComponent = React.memo(
-  ({
-    token,
-    owner,
-    expiration,
-    version,
-    metadata,
-    lockAddress,
-    network,
-    expirationDuration,
-    lockSettings,
-    selected,
-    setSelected,
-  }: any) => {
-    return (
-      <MemberCard
-        token={token}
-        owner={owner}
-        expiration={expiration}
-        showExpiration={false}
-        version={version}
-        metadata={metadata}
-        lockAddress={lockAddress!}
-        network={network}
-        expirationDuration={expirationDuration}
-        lockSettings={lockSettings}
-        MetadataCard={
-          <MetadataCard
-            metadata={metadata}
-            network={network}
-            data={{ lockAddress, token }}
-          />
-        }
-        MemberInfo={() => {
-          if (!token) {
-            return (
-              <ApplicantInfo
-                network={network}
-                lockAddress={lockAddress}
-                owner={owner}
-                metadata={metadata}
-                isSelected={!!selected[owner]}
-                setIsSelected={() => {
-                  setSelected((prevSelected: any) => ({
-                    ...prevSelected,
-                    [owner]: !prevSelected[owner],
-                  }))
-                }}
-              />
-            )
-          }
-          return (
-            <AttendeeInfo
-              network={network}
-              lockAddress={lockAddress}
-              owner={owner}
-              token={token}
-              metadata={metadata}
-            />
-          )
-        }}
-      />
-    )
-  }
-)
-MemberCardComponent.displayName = 'MemberCardComponent'
-// Memoized NoMember components
-const NoMemberNoFilter = React.memo(() => (
-  <p>No ticket minted from this contract yet!</p>
-))
-NoMemberNoFilter.displayName = 'NoMemberNoFilter'
-const NoMemberWithFilter = React.memo(() => (
-  <p>No ticket matches your filter.</p>
-))
-NoMemberWithFilter.displayName = 'NoMemberWithFilter'
-
 export const Attendees = React.memo(
   ({ checkoutConfig, event }: AttendeesProps) => {
+    // Global states for modals, loading, pagination, etc.
     const [airdropKeys, setAirdropKeys] = useState(false)
     const [loading, setLoading] = useState(false)
     const [selected, setSelected] = useState<{ [key: string]: boolean }>({})
@@ -148,6 +72,7 @@ export const Attendees = React.memo(
     })
     const [page, setPage] = useState(1)
 
+    // Reset selections on page or filter change
     useEffect(() => {
       setAllSelected(false)
       setSelected({})
@@ -159,6 +84,7 @@ export const Attendees = React.memo(
         : null
     }, [checkoutConfig.config.locks, lockAddress])
 
+    // stable callbacks for modals, filters, etc.
     const handleSetAirdropKeysOpen = useCallback((isOpen: boolean) => {
       setAirdropKeys(isOpen)
     }, [])
@@ -229,15 +155,82 @@ export const Attendees = React.memo(
       [toggleAll, selected, bulkApprove, bulkDeny, allSelected]
     )
 
-    const content = useMemo(() => {
+    // Memoized MemberCardComponent (used by the render callback)
+    const MemberCardComponent = React.memo(
+      ({
+        token,
+        owner,
+        expiration,
+        version,
+        metadata,
+        lockAddress,
+        network,
+        expirationDuration,
+        lockSettings,
+        selected,
+        setSelected,
+      }: any) => {
+        return (
+          <MemberCard
+            token={token}
+            owner={owner}
+            expiration={expiration}
+            showExpiration={false}
+            version={version}
+            metadata={metadata}
+            lockAddress={lockAddress!}
+            network={network}
+            expirationDuration={expirationDuration}
+            lockSettings={lockSettings}
+            MetadataCard={
+              <MetadataCard
+                metadata={metadata}
+                network={network}
+                data={{ lockAddress, token }}
+              />
+            }
+            MemberInfo={() => {
+              if (!token) {
+                return (
+                  <ApplicantInfo
+                    network={network}
+                    lockAddress={lockAddress}
+                    owner={owner}
+                    metadata={metadata}
+                    isSelected={!!selected[owner]}
+                    setIsSelected={() => {
+                      setSelected((prevSelected: any) => ({
+                        ...prevSelected,
+                        [owner]: !prevSelected[owner],
+                      }))
+                    }}
+                  />
+                )
+              }
+              return (
+                <AttendeeInfo
+                  network={network}
+                  lockAddress={lockAddress}
+                  owner={owner}
+                  token={token}
+                  metadata={metadata}
+                />
+              )
+            }}
+          />
+        )
+      }
+    )
+    MemberCardComponent.displayName = 'MemberCardComponent'
+
+    // separate the header (filters, modals, buttons, etc.) from the member list
+    const headerContent = useMemo(() => {
       if (showNotManagerBanner) {
         return <NotManagerBanner />
       }
-
       if (!lockAddress || !lockNetwork) {
         return null
       }
-
       return (
         <>
           <AirdropKeysDrawer
@@ -259,62 +252,37 @@ export const Attendees = React.memo(
             lockAddress={lockAddress}
             attendees={deniedAttendees}
           />
-          <div className="min-h-screen bg-ui-secondary-200 pb-60 flex flex-col gap-4">
-            <div className="flex justify-between items-center">
-              <Button variant="borderless" onClick={() => router.back()}>
-                <ArrowBackIcon size={20} />
-              </Button>
-              <Button
-                onClick={() => {
-                  setAirdropKeys((prev) => !prev)
-                }}
-              >
-                Airdrop tickets
-              </Button>
-            </div>
-
-            <div className="flex flex-col gap-6 lg:col-span-9">
-              <ActionBar
-                page={page}
-                lockAddress={lockAddress}
-                network={lockNetwork!}
-                isOpen={airdropKeys}
-                setIsOpen={handleSetAirdropKeysOpen}
-              />
-
-              <FilterBar
-                hideExpirationFilter={true}
-                hideApprovalFilter={false}
-                locks={checkoutConfig.config.locks}
-                lockAddress={lockAddress}
-                filters={filters}
-                setLockAddress={handleSetLockAddress}
-                setFilters={handleSetFilters}
-                setLoading={setLoading}
-                setPage={handleSetPage}
-                page={page}
-              />
-
-              <Members
-                lockAddress={lockAddress}
-                network={lockNetwork}
-                filters={filters}
-                loading={loading}
-                setPage={setPage}
-                page={page}
-                MemberCard={(props: any) => (
-                  <MemberCardComponent
-                    {...props}
-                    selected={selected}
-                    setSelected={setSelected}
-                  />
-                )}
-                NoMemberNoFilter={NoMemberNoFilter}
-                NoMemberWithFilter={NoMemberWithFilter}
-                MembersActions={membersActions}
-              />
-            </div>
+          <div className="flex justify-between items-center">
+            <Button variant="borderless" onClick={() => router.back()}>
+              <ArrowBackIcon size={20} />
+            </Button>
+            <Button
+              onClick={() => {
+                setAirdropKeys((prev) => !prev)
+              }}
+            >
+              Airdrop tickets
+            </Button>
           </div>
+          <ActionBar
+            page={page}
+            lockAddress={lockAddress}
+            network={lockNetwork!}
+            isOpen={airdropKeys}
+            setIsOpen={handleSetAirdropKeysOpen}
+          />
+          <FilterBar
+            hideExpirationFilter={true}
+            hideApprovalFilter={false}
+            locks={checkoutConfig.config.locks}
+            lockAddress={lockAddress}
+            filters={filters}
+            setLockAddress={handleSetLockAddress}
+            setFilters={handleSetFilters}
+            setLoading={setLoading}
+            setPage={handleSetPage}
+            page={page}
+          />
         </>
       )
     }, [
@@ -331,17 +299,45 @@ export const Attendees = React.memo(
       checkoutConfig.config.locks,
       page,
       filters,
-      loading,
-      selected,
-      setSelected,
-      membersActions,
-      handleSetLockAddress,
-      handleSetFilters,
-      handleSetPage,
       router,
     ])
 
-    return content
+    // Memoized render callback for a MemberCard.
+    // This callback is the only part that depends on the selection state.
+    const renderMemberCard = useCallback(
+      (props: any) => {
+        return (
+          <MemberCardComponent
+            {...props}
+            selected={selected}
+            setSelected={setSelected}
+          />
+        )
+      },
+      [selected, setSelected]
+    )
+
+    return (
+      <>
+        {headerContent}
+        <div className="flex flex-col gap-6">
+          <Members
+            lockAddress={lockAddress}
+            network={lockNetwork!}
+            filters={filters}
+            loading={loading}
+            setPage={handleSetPage}
+            page={page}
+            MemberCard={renderMemberCard}
+            NoMemberNoFilter={() => (
+              <p>No ticket minted from this contract yet!</p>
+            )}
+            NoMemberWithFilter={() => <p>No ticket matches your filter.</p>}
+            MembersActions={membersActions}
+          />
+        </div>
+      </>
+    )
   }
 )
 
