@@ -1,3 +1,9 @@
+/**
+ * Context provider for managing selection state of attendees.
+ * Provides functionality to select/deselect individual attendees,
+ * clear all selections, and check selection status.
+ * Used for bulk operations like approving/denying multiple attendees.
+ */
 import React, { createContext, useContext, useState, useCallback } from 'react'
 
 interface SelectionContextType {
