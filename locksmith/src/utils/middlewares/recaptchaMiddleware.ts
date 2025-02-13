@@ -17,7 +17,7 @@ export const captchaMiddleware: RequestHandler = async (
   next
 ) => {
   if (!isProduction) {
-    logger.debug('Skip captcha in development and staging')
+    logger.debug('Skip captcha in development')
     return next()
   }
 
