@@ -3,6 +3,7 @@ import React, { useState, useCallback } from 'react'
 import { ApproveAttendeeModal } from './ApproveAttendeeModal'
 import { DenyAttendeeModal } from './DenyAttendeeModal'
 import { WrappedAddress } from '~/components/interface/WrappedAddress'
+import { useSelection } from './SelectionContext'
 
 interface ApplicantInfoProps {
   network: number
@@ -19,26 +20,18 @@ export const ApplicantInfo = React.memo(
     lockAddress,
     owner,
     metadata,
-    setIsSelected,
-    isSelected,
-  }: ApplicantInfoProps) => {
+  }: Omit<ApplicantInfoProps, 'isSelected' | 'setIsSelected'>) => {
+    const { isSelected, toggleSelection } = useSelection()
     const [approveAttendeeModalOpen, setApproveAttendeeModalOpen] =
       useState(false)
     const [denyAttendeeModalOpen, setDenyAttendeeModalOpen] = useState(false)
 
-    console.log('ApplicantInfo', metadata)
+    const handleCheckboxChange = useCallback(() => {
+      toggleSelection(owner)
+    }, [owner, toggleSelection])
 
-    const handleCheckboxChange = useCallback(
-      (event: React.ChangeEvent<HTMLInputElement>) => {
-        console.log('Checkbox clicked:', {
-          checked: event.target.checked,
-          owner,
-          metadata,
-        })
-        setIsSelected(event.target.checked)
-      },
-      [owner, metadata, setIsSelected]
-    )
+    // Get the current checked state for this owner
+    const checked = isSelected(owner)
 
     return (
       <>
@@ -71,8 +64,8 @@ export const ApplicantInfo = React.memo(
           <div className="flex items-start pt-2 md:pt-1 mr-auto md:ml-2">
             <Checkbox
               label=" "
-              checked={isSelected}
               onChange={handleCheckboxChange}
+              checked={checked}
             />
           </div>
           <Detail
