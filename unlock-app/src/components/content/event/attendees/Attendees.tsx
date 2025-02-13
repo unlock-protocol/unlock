@@ -21,6 +21,7 @@ import { AttendeeInfo } from './AttendeeInfo'
 import { AttendeesActionsWrapper } from './AttendeesActions'
 import { ApproveAttendeeModal } from './ApproveAttendeeModal'
 import { DenyAttendeeModal } from './DenyAttendeeModal'
+import { SelectionProvider, useSelection } from './SelectionContext'
 
 interface AttendeesProps {
   event: Event
@@ -30,86 +31,55 @@ interface AttendeesProps {
   }
 }
 
-export const Attendees = React.memo(
-  ({ checkoutConfig, event }: AttendeesProps) => {
-    // Global states for modals, loading, pagination, etc.
-    const [airdropKeys, setAirdropKeys] = useState(false)
-    const [loading, setLoading] = useState(false)
-    const [selected, setSelected] = useState<{ [key: string]: boolean }>({})
-    const [allSelected, setAllSelected] = useState(false)
-    const [approvedAttendees, setApprovedAttendees] = useState<any[]>([])
-    const [deniedAttendees, setDeniedAttendees] = useState<any[]>([])
-    const router = useRouter()
+// Separate component for the content to use the selection context
+const AttendeesContent = ({ checkoutConfig, event }: AttendeesProps) => {
+  const { setSelected, clearSelections, isSelected } = useSelection()
+  const [airdropKeys, setAirdropKeys] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [allSelected, setAllSelected] = useState(false)
+  const [approvedAttendees, setApprovedAttendees] = useState<any[]>([])
+  const [deniedAttendees, setDeniedAttendees] = useState<any[]>([])
+  const router = useRouter()
 
-    const initialLockAddress = useMemo(() => {
-      const keys = Object.keys(checkoutConfig.config.locks)
-      return keys.length > 0 ? keys[0] : ''
-    }, [checkoutConfig.config.locks])
+  const initialLockAddress = useMemo(() => {
+    const keys = Object.keys(checkoutConfig.config.locks)
+    return keys.length > 0 ? keys[0] : ''
+  }, [checkoutConfig.config.locks])
 
-    const [lockAddress, setLockAddress] = useState(initialLockAddress)
+  const [lockAddress, setLockAddress] = useState(initialLockAddress)
+  const [page, setPage] = useState(1)
+  const [filters, setFilters] = useState({
+    query: '',
+    filterKey: 'owner',
+    expiration: ExpirationStatus.ALL,
+    approval: event.requiresApproval
+      ? ApprovalStatus.PENDING
+      : ApprovalStatus.MINTED,
+  })
 
-    const network = useMemo(() => {
-      return (
-        checkoutConfig.config.locks[lockAddress]?.network ||
-        checkoutConfig.config.network
-      )
-    }, [checkoutConfig.config, lockAddress])
+  // Reset selections on page or filter change
+  useEffect(() => {
+    clearSelections()
+    setAllSelected(false)
+  }, [page, filters, clearSelections])
 
-    const { data: isOrganizer, isLoading: isLoadingLockManager } =
-      useEventOrganizer({
-        checkoutConfig,
-      })
+  const network = useMemo(() => {
+    return (
+      checkoutConfig.config.locks[lockAddress]?.network ||
+      checkoutConfig.config.network
+    )
+  }, [checkoutConfig.config, lockAddress])
 
-    const showNotManagerBanner = !isLoadingLockManager && !isOrganizer
-
-    const [filters, setFilters] = useState({
-      query: '',
-      filterKey: 'owner',
-      expiration: ExpirationStatus.ALL,
-      approval: event.requiresApproval
-        ? ApprovalStatus.PENDING
-        : ApprovalStatus.MINTED,
+  const { data: isOrganizer, isLoading: isLoadingLockManager } =
+    useEventOrganizer({
+      checkoutConfig,
     })
-    const [page, setPage] = useState(1)
 
-    // Reset selections on page or filter change
-    useEffect(() => {
-      setAllSelected(false)
-      setSelected({})
-    }, [page, filters])
+  const showNotManagerBanner = !isLoadingLockManager && !isOrganizer
 
-    const lockNetwork = useMemo(() => {
-      return lockAddress
-        ? checkoutConfig.config.locks[lockAddress].network
-        : null
-    }, [checkoutConfig.config.locks, lockAddress])
-
-    // stable callbacks for modals, filters, etc.
-    const handleSetAirdropKeysOpen = useCallback((isOpen: boolean) => {
-      setAirdropKeys(isOpen)
-    }, [])
-
-    const handleSetApprovedAttendeesOpen = useCallback(() => {
-      setApprovedAttendees([])
-    }, [])
-
-    const handleSetDeniedAttendeesOpen = useCallback(() => {
-      setDeniedAttendees([])
-    }, [])
-
-    const handleSetLockAddress = useCallback((newLockAddress: string) => {
-      setLockAddress(newLockAddress)
-    }, [])
-
-    const handleSetFilters = useCallback((newFilters: any) => {
-      setFilters(newFilters)
-    }, [])
-
-    const handleSetPage = useCallback((newPage: number) => {
-      setPage(newPage)
-    }, [])
-
-    const toggleAll = useCallback((keys: any) => {
+  // Updated bulk action handlers to use SelectionContext
+  const toggleAll = useCallback(
+    (keys: any[]) => {
       setAllSelected((prevAllSelected) => {
         const newAllSelected = !prevAllSelected
         setSelected(
@@ -122,152 +92,149 @@ export const Attendees = React.memo(
         )
         return newAllSelected
       })
-    }, [])
+    },
+    [setSelected]
+  )
 
-    const bulkApprove = useCallback(
-      (keys: any) => {
-        const approved = keys.filter(
-          (key: any) => selected[key.keyholderAddress]
-        )
-        setApprovedAttendees(approved)
-      },
-      [selected]
-    )
+  const bulkApprove = useCallback(
+    (keys: any[]) => {
+      const approved = keys.filter((key) => isSelected(key.keyholderAddress))
+      setApprovedAttendees(approved)
+    },
+    [isSelected]
+  )
 
-    const bulkDeny = useCallback(
-      (keys: any) => {
-        const denied = keys.filter((key: any) => selected[key.keyholderAddress])
-        setDeniedAttendees(denied)
-      },
-      [selected]
-    )
+  const bulkDeny = useCallback(
+    (keys: any[]) => {
+      const denied = keys.filter((key) => isSelected(key.keyholderAddress))
+      setDeniedAttendees(denied)
+    },
+    [isSelected]
+  )
 
-    const membersActions = useCallback(
-      ({ keys, filters }: any) => {
-        return AttendeesActionsWrapper({
-          toggleAll,
-          selected,
-          bulkApprove,
-          bulkDeny,
-          allSelected,
-        })({ keys, filters })
-      },
-      [toggleAll, selected, bulkApprove, bulkDeny, allSelected]
-    )
+  // Memoized callbacks
+  const handleSetAirdropKeysOpen = useCallback((isOpen: boolean) => {
+    setAirdropKeys(isOpen)
+  }, [])
 
-    // Memoized MemberCardComponent (used by the render callback)
-    const MemberCardComponent = React.memo(
-      ({
-        token,
-        owner,
-        expiration,
-        version,
-        metadata,
-        lockAddress,
-        network,
-        expirationDuration,
-        lockSettings,
-        selected,
-        setSelected,
-      }: any) => {
-        return (
-          <MemberCard
-            token={token}
-            owner={owner}
-            expiration={expiration}
-            showExpiration={false}
-            version={version}
-            metadata={metadata}
-            lockAddress={lockAddress!}
-            network={network}
-            expirationDuration={expirationDuration}
-            lockSettings={lockSettings}
-            MetadataCard={
-              <MetadataCard
-                metadata={metadata}
-                network={network}
-                data={{ lockAddress, token }}
-              />
-            }
-            MemberInfo={() => {
-              if (!token) {
-                return (
-                  <ApplicantInfo
-                    network={network}
-                    lockAddress={lockAddress}
-                    owner={owner}
-                    metadata={metadata}
-                    isSelected={!!selected[owner]}
-                    setIsSelected={() => {
-                      setSelected((prevSelected: any) => ({
-                        ...prevSelected,
-                        [owner]: !prevSelected[owner],
-                      }))
-                    }}
-                  />
-                )
-              }
-              return (
-                <AttendeeInfo
-                  network={network}
-                  lockAddress={lockAddress}
-                  owner={owner}
-                  token={token}
-                  metadata={metadata}
-                />
-              )
-            }}
-          />
-        )
-      }
-    )
-    MemberCardComponent.displayName = 'MemberCardComponent'
+  const handleSetApprovedAttendeesOpen = useCallback(() => {
+    setApprovedAttendees([])
+  }, [])
 
-    // separate the header (filters, modals, buttons, etc.) from the member list
-    const headerContent = useMemo(() => {
-      if (showNotManagerBanner) {
-        return <NotManagerBanner />
-      }
-      if (!lockAddress || !lockNetwork) {
-        return null
-      }
+  const handleSetDeniedAttendeesOpen = useCallback(() => {
+    setDeniedAttendees([])
+  }, [])
+
+  const handleSetLockAddress = useCallback((newLockAddress: string) => {
+    setLockAddress(newLockAddress)
+  }, [])
+
+  const handleSetFilters = useCallback((newFilters: any) => {
+    setFilters(newFilters)
+  }, [])
+
+  const handleSetPage = useCallback((newPage: number) => {
+    setPage(newPage)
+  }, [])
+
+  // Memoized MemberCard render function
+  const renderMemberCard = useCallback((props: any) => {
+    if (!props.token) {
       return (
+        <MemberCard
+          {...props}
+          MetadataCard={
+            <MetadataCard
+              metadata={props.metadata}
+              network={props.network}
+              data={{ lockAddress: props.lockAddress, token: props.token }}
+            />
+          }
+          MemberInfo={() => (
+            <ApplicantInfo
+              network={props.network}
+              lockAddress={props.lockAddress}
+              owner={props.owner}
+              metadata={props.metadata}
+            />
+          )}
+        />
+      )
+    }
+    return (
+      <MemberCard
+        {...props}
+        MetadataCard={
+          <MetadataCard
+            metadata={props.metadata}
+            network={props.network}
+            data={{ lockAddress: props.lockAddress, token: props.token }}
+          />
+        }
+        MemberInfo={() => (
+          <AttendeeInfo
+            network={props.network}
+            lockAddress={props.lockAddress}
+            owner={props.owner}
+            token={props.token}
+            metadata={props.metadata}
+          />
+        )}
+      />
+    )
+  }, [])
+
+  // Memoized members actions
+  const membersActions = useCallback(
+    ({ keys, filters }: any) => {
+      return AttendeesActionsWrapper({
+        toggleAll,
+        bulkApprove,
+        bulkDeny,
+        allSelected,
+      })({ keys, filters })
+    },
+    [toggleAll, bulkApprove, bulkDeny, allSelected]
+  )
+
+  return (
+    <>
+      <AirdropKeysDrawer
+        isOpen={airdropKeys}
+        setIsOpen={handleSetAirdropKeysOpen}
+        locks={checkoutConfig.config.locks}
+      />
+      <ApproveAttendeeModal
+        network={network!}
+        isOpen={approvedAttendees.length > 0}
+        setIsOpen={handleSetApprovedAttendeesOpen}
+        lockAddress={lockAddress}
+        attendees={approvedAttendees}
+      />
+      <DenyAttendeeModal
+        network={network!}
+        isOpen={deniedAttendees.length > 0}
+        setIsOpen={handleSetDeniedAttendeesOpen}
+        lockAddress={lockAddress}
+        attendees={deniedAttendees}
+      />
+
+      {showNotManagerBanner ? (
+        <NotManagerBanner />
+      ) : (
         <>
-          <AirdropKeysDrawer
-            isOpen={airdropKeys}
-            setIsOpen={handleSetAirdropKeysOpen}
-            locks={checkoutConfig.config.locks}
-          />
-          <ApproveAttendeeModal
-            network={network!}
-            isOpen={approvedAttendees.length > 0}
-            setIsOpen={handleSetApprovedAttendeesOpen}
-            lockAddress={lockAddress}
-            attendees={approvedAttendees}
-          />
-          <DenyAttendeeModal
-            network={network!}
-            isOpen={deniedAttendees.length > 0}
-            setIsOpen={handleSetDeniedAttendeesOpen}
-            lockAddress={lockAddress}
-            attendees={deniedAttendees}
-          />
           <div className="flex justify-between items-center">
             <Button variant="borderless" onClick={() => router.back()}>
               <ArrowBackIcon size={20} />
             </Button>
-            <Button
-              onClick={() => {
-                setAirdropKeys((prev) => !prev)
-              }}
-            >
+            <Button onClick={() => setAirdropKeys(true)}>
               Airdrop tickets
             </Button>
           </div>
           <ActionBar
             page={page}
             lockAddress={lockAddress}
-            network={lockNetwork!}
+            network={network!}
             isOpen={airdropKeys}
             setIsOpen={handleSetAirdropKeysOpen}
           />
@@ -283,64 +250,39 @@ export const Attendees = React.memo(
             setPage={handleSetPage}
             page={page}
           />
+          <div className="flex flex-col gap-6">
+            <Members
+              lockAddress={lockAddress}
+              network={network!}
+              filters={filters}
+              loading={loading}
+              setPage={handleSetPage}
+              page={page}
+              MemberCard={renderMemberCard}
+              NoMemberNoFilter={() => (
+                <p>No ticket minted from this contract yet!</p>
+              )}
+              NoMemberWithFilter={() => <p>No ticket matches your filter.</p>}
+              MembersActions={membersActions}
+            />
+          </div>
         </>
-      )
-    }, [
-      showNotManagerBanner,
-      lockAddress,
-      lockNetwork,
-      airdropKeys,
-      approvedAttendees,
-      deniedAttendees,
-      network,
-      handleSetAirdropKeysOpen,
-      handleSetApprovedAttendeesOpen,
-      handleSetDeniedAttendeesOpen,
-      checkoutConfig.config.locks,
-      page,
-      filters,
-      router,
-    ])
+      )}
+    </>
+  )
+}
 
-    // Memoized render callback for a MemberCard.
-    // This callback is the only part that depends on the selection state.
-    const renderMemberCard = useCallback(
-      (props: any) => {
-        return (
-          <MemberCardComponent
-            {...props}
-            selected={selected}
-            setSelected={setSelected}
-          />
-        )
-      },
-      [selected, setSelected]
-    )
-
+// Main Attendees component wrapped with SelectionProvider
+export const Attendees = React.memo(
+  ({ checkoutConfig, event }: AttendeesProps) => {
     return (
-      <>
-        {headerContent}
-        <div className="flex flex-col gap-6">
-          <Members
-            lockAddress={lockAddress}
-            network={lockNetwork!}
-            filters={filters}
-            loading={loading}
-            setPage={handleSetPage}
-            page={page}
-            MemberCard={renderMemberCard}
-            NoMemberNoFilter={() => (
-              <p>No ticket minted from this contract yet!</p>
-            )}
-            NoMemberWithFilter={() => <p>No ticket matches your filter.</p>}
-            MembersActions={membersActions}
-          />
-        </div>
-      </>
+      <SelectionProvider>
+        <AttendeesContent checkoutConfig={checkoutConfig} event={event} />
+      </SelectionProvider>
     )
   }
 )
 
 Attendees.displayName = 'Attendees'
 
-export default React.memo(Attendees)
+export default Attendees
