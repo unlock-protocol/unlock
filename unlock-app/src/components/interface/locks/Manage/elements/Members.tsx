@@ -95,7 +95,16 @@ export const Members = ({
 }: MembersProps) => {
   // Consolidated query that fetches members, subgraph lock info, and lock settings
   const { data, isLoading, error } = useQuery({
-    queryKey: ['attendeesData', lockAddress, network, page, filters],
+    queryKey: [
+      'attendeesData',
+      lockAddress,
+      network,
+      page,
+      filters.query,
+      filters.filterKey,
+      filters.expiration,
+      filters.approval,
+    ],
     queryFn: async () => {
       const [membersResponse, subgraphLock, lockSettingsResponse] =
         await Promise.all([
