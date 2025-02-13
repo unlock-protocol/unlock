@@ -1,11 +1,7 @@
 import { Button, Detail } from '@unlock-protocol/ui'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { ExpireAndRefundModal } from '~/components/interface/ExpireAndRefundModal'
-import useEns from '~/hooks/useEns'
-import { addressMinify } from '~/utils/strings'
 import { BiCopy as CopyIcon } from 'react-icons/bi'
-import useClipboard from 'react-use-clipboard'
-import { ToastHelper } from '~/components/helpers/toast.helper'
 import { Metadata } from '@unlock-protocol/core'
 
 interface AttendeeInfoProps {
@@ -24,20 +20,6 @@ export const AttendeeInfo = ({
   metadata,
 }: AttendeeInfoProps) => {
   const [expireAndRefundOpen, setExpireAndRefundOpen] = useState(false)
-
-  const addressToEns = useEns(owner)
-  const resolvedAddress =
-    addressToEns === owner ? addressMinify(owner) : addressToEns
-  const addressToCopy = addressToEns === owner ? owner : addressToEns
-
-  const [isCopied, setCopied] = useClipboard(addressToCopy, {
-    successDuration: 2000,
-  })
-
-  useEffect(() => {
-    if (!isCopied) return
-    ToastHelper.success('Address copied')
-  }, [isCopied])
 
   return (
     <>
@@ -81,13 +63,8 @@ export const AttendeeInfo = ({
           className="w-full overflow-auto min-w-24"
         >
           <div className="flex self-start gap-2">
-            <div>{resolvedAddress}</div>
             <div className="mt-auto">
-              <Button
-                variant="borderless"
-                onClick={setCopied}
-                aria-label="copy"
-              >
+              <Button variant="borderless" aria-label="copy">
                 <CopyIcon size={20} />
               </Button>
             </div>
