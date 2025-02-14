@@ -51,7 +51,7 @@ For too long, perverse attention economics have both shaped and dictated the con
 
 ### Launch event
 
-- We will be holding a [Twitter Space launch event on May 25th](https://twitter.com/unlockprotocol/).
+- We will be holding a [Twitter Space launch event on May 25th](https://x.com/unlockprotocol/).
 
 ### Documentation and demo
 

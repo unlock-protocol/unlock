@@ -23,7 +23,7 @@ Think about it: your bank account is managed by your bank, the data associated w
 
 Blockchain transactions behave more like cash. We have a mutual understanding of the value of our physical money and you own and control the cash that’s in your real world wallet. You hand over the cash without anyone in middle and the transaction is done. This is very similar to the blockchain with a few additional advantages: your blockchain wallet can live in several places and you can transact without having to be in the same physical space. On top of that the Ethereum blockchain (and other blockchain projects) let you create smart contracts that allow you to codify and automate parts of the transaction.
 
-I liked this analogie by [Steven Chien](https://twitter.com/stevenmeets): he calls the internet the “Information Superhighway” – which allowed for the large scale (and cost efficient) distribution of information and the blockchain the “Value Superhighway” – that allow for a large scale and cost efficient but also more equitable distribution of value. It’s a good read, check it out on [Hackernoon](https://hackernoon.com/blockchain-the-value-superhighway-into-your-wallet-9330cec5bf8f).
+I liked this analogie by [Steven Chien](https://x.com/stevenmeets): he calls the internet the “Information Superhighway” – which allowed for the large scale (and cost efficient) distribution of information and the blockchain the “Value Superhighway” – that allow for a large scale and cost efficient but also more equitable distribution of value. It’s a good read, check it out on [Hackernoon](https://hackernoon.com/blockchain-the-value-superhighway-into-your-wallet-9330cec5bf8f).
 
 <p style="text-align:center">
 	<img src="/images/blog/digital-cash/keychain.jpg" width="400px" alt="Towards an access ecosystem.">
@@ -45,4 +45,4 @@ Taking that idea a step further you could start swapping, trading or even bundli
 
 This feature set is really powerful: imagine if you could get into your WeWork office with your credit card (because you’ve paid for your desk with it) but it also gives you access to the new york times online, gets you bonus points at your local coffee shop and at the end of the day opens up and pays for your car2go or zipcar.
 
-You have thoughts or comments? Reach out I’d love to chat. [@UnlockProtocol](https://twitter.com/UnlockProtocol) or [hello@unlock-protocol.com](mailto:hello@unlock-protocol.com).
+You have thoughts or comments? Reach out I’d love to chat. [@UnlockProtocol](https://x.com/UnlockProtocol) or [hello@unlock-protocol.com](mailto:hello@unlock-protocol.com).

@@ -7,7 +7,7 @@ sidebar_position: 4
 The Public Lock smart contract implements the [ERC721 specification](https://docs.openzeppelin.com/contracts/2.x/api/token/erc721), including transfer functions (`transferFrom`, `safeTransferFrom`, and the related `approve` and `setApprovalForAll`), but their behavior can be customized.
 
 :::info
-Expired keys **can not** be transferred.
+Expired keys **cannot** be transferred.
 :::
 
 ## Key Managers

@@ -39,7 +39,7 @@ image: /images/blog/july-22-update/july-22-banner.png
 
 - Load all keys grouped by network
 - Show metadata on keychain
-- Support for [EthPass](https://twitter.com/ethpass/status/1548054634899550208)
+- Support for [EthPass](https://x.com/ethpass/status/1548054634899550208)
 
 ## NFT ticketing
 
