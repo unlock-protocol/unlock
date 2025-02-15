@@ -1,4 +1,4 @@
-import { useQueries } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { ImageBar } from './ImageBar'
 import { MemberCard as DefaultMemberCard, MemberCardProps } from './MemberCard'
@@ -9,7 +9,6 @@ import { graphService } from '~/config/subgraph'
 import { locksmith } from '~/config/locksmith'
 import { Placeholder } from '@unlock-protocol/ui'
 import { PAGE_SIZE } from '@unlock-protocol/core'
-import { useEffect } from 'react'
 
 const DefaultNoMemberNoFilter = () => {
   return (
@@ -51,6 +50,32 @@ export interface FilterProps {
   approval: ApprovalStatus
 }
 
+// Function to fetch the paginated keys for members.
+const getMembers = async (
+  network: number,
+  lockAddress: string,
+  filters: FilterProps,
+  page: number
+) => {
+  const { query, filterKey, expiration, approval } = filters
+  const response = await locksmith.keysByPage(
+    network,
+    lockAddress,
+    query,
+    filterKey,
+    expiration,
+    approval,
+    page - 1, // API starts at 0
+    PAGE_SIZE
+  )
+  return response.data
+}
+
+// Function to fetch lock settings.
+const getLockSettings = async (network: number, lockAddress: string) => {
+  return await locksmith.getLockSettings(network, lockAddress)
+}
+
 export const Members = ({
   lockAddress,
   network,
@@ -68,85 +93,44 @@ export const Members = ({
   NoMemberNoFilter = DefaultNoMemberNoFilter,
   MembersActions,
 }: MembersProps) => {
-  const getMembers = async () => {
-    const { query, filterKey, expiration, approval } = filters
-    const response = await locksmith.keysByPage(
-      network,
+  // Consolidated query that fetches members, subgraph lock info, and lock settings
+  const { data, isLoading, error } = useQuery({
+    queryKey: [
+      'attendeesData',
       lockAddress,
-      query,
-      filterKey,
-      expiration,
-      approval,
-      page - 1, // API starts at 0
-      PAGE_SIZE
-    )
-    return response.data
-  }
-
-  const getLockSettings = async () => {
-    return await locksmith.getLockSettings(network, lockAddress)
-  }
-
-  const [
-    {
-      isPending,
-      data: { keys = [], meta = {} } = { keys: [] },
-      error: membersError,
-    },
-    { isPending: isLockLoading, data: lock, error: lockError },
-    { isPending: isLoadingSettings, data: { data: lockSettings = {} } = {} },
-  ] = useQueries({
-    queries: [
-      {
-        queryFn: getMembers,
-        queryKey: ['getMembers', page, lockAddress, network, filters],
-      },
-      {
-        queryFn: () => {
-          return graphService.lock(
+      network,
+      page,
+      filters.query,
+      filters.filterKey,
+      filters.expiration,
+      filters.approval,
+    ],
+    queryFn: async () => {
+      const [membersResponse, subgraphLock, lockSettingsResponse] =
+        await Promise.all([
+          getMembers(network, lockAddress, filters, page),
+          graphService.lock(
             {
               where: {
                 address: lockAddress,
               },
             },
             { network }
-          )
-        },
-        queryKey: ['getSubgraphLock', lockAddress, network],
-      },
-      {
-        queryKey: ['getLockSettings', lockAddress, network],
-        queryFn: async () => getLockSettings(),
-      },
-    ],
+          ),
+          getLockSettings(network, lockAddress),
+        ])
+      return {
+        keys: membersResponse?.keys || [],
+        meta: membersResponse?.meta || {},
+        lock: subgraphLock,
+        lockSettings: lockSettingsResponse?.data || {},
+      }
+    },
+    placeholderData: (previousData) => previousData,
   })
 
-  useEffect(() => {
-    if (membersError) {
-      ToastHelper.error("Can't load members, please try again")
-    }
-  }, [membersError])
-
-  useEffect(() => {
-    if (lockError) {
-      ToastHelper.error(
-        `Unable to fetch lock ${lockAddress} from subgraph on network ${network}`
-      )
-    }
-  }, [lockError, lockAddress, network])
-
-  const loading =
-    isLockLoading || isPending || loadingFilters || isLoadingSettings
-
-  const noItems = keys?.length === 0 && !loading
-
-  const hasActiveFilter =
-    filters?.approval !== 'minted' ||
-    filters?.expiration !== 'all' ||
-    filters?.filterKey !== 'owner' ||
-    filters?.query?.length > 0
-
-  if (loading) {
+  // While the query is loading, show placeholders.
+  if (isLoading || loadingFilters) {
     return (
       <>
         <Placeholder.Root>
@@ -158,7 +142,9 @@ export const Members = ({
     )
   }
 
-  if (lockError) {
+  // If an error occurred in the query, display an error image.
+  if (error) {
+    ToastHelper.error('There was an error fetching attendees data')
     return (
       <ImageBar
         alt="Fetch error"
@@ -168,11 +154,13 @@ export const Members = ({
     )
   }
 
-  const { maxNumbersOfPage } = paginate({
-    page: meta.page || 0,
-    itemsPerPage: meta.byPage,
-    totalItems: meta.total,
-  })
+  const { keys, meta, lock, lockSettings } = data || {}
+  const noItems = (keys?.length || 0) === 0
+  const hasActiveFilter =
+    filters?.approval !== 'minted' ||
+    filters?.expiration !== 'all' ||
+    filters?.filterKey !== 'owner' ||
+    filters?.query?.length > 0
 
   if (noItems && !hasActiveFilter) {
     return <NoMemberNoFilter />
@@ -183,7 +171,13 @@ export const Members = ({
       <>
         <NoMemberWithFilter />{' '}
         <PaginationBar
-          maxNumbersOfPage={maxNumbersOfPage}
+          maxNumbersOfPage={
+            paginate({
+              page: meta?.page || 0,
+              itemsPerPage: meta?.byPage || PAGE_SIZE,
+              totalItems: meta?.total || 0,
+            }).maxNumbersOfPage
+          }
           setPage={setPage}
           page={page}
         />
@@ -191,11 +185,17 @@ export const Members = ({
     )
   }
 
+  const { maxNumbersOfPage } = paginate({
+    page: meta?.page || 0,
+    itemsPerPage: meta?.byPage || PAGE_SIZE,
+    totalItems: meta?.total || 0,
+  })
+
   return (
-    <div className="flex flex-col  gap-6">
+    <div className="flex flex-col gap-6">
       {MembersActions ? <MembersActions filters={filters} keys={keys} /> : null}
 
-      {(keys || [])?.map((metadata: any) => {
+      {(keys || []).map((metadata: any) => {
         const { token, keyholderAddress: owner, expiration } = metadata ?? {}
         return (
           <MemberCard
@@ -205,7 +205,7 @@ export const Members = ({
             expiration={expiration}
             version={lock?.version}
             metadata={metadata}
-            lockAddress={lockAddress!}
+            lockAddress={lockAddress}
             network={network}
             expirationDuration={lock?.expirationDuration}
             lockSettings={lockSettings}

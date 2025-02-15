@@ -59,7 +59,7 @@ Welcome, Locksmith! Let’s start with getting the lay of the land with a few co
 
   <dt>Membership</dt>
     <dd>A membership is a connection between a creator, brand or project and a 
-    fan or community member. A membership usual confers benefits or special access 
+    fan or community member. A membership usually confers benefits or special access 
     to those who hold it. Members can also connect directly with each other.</dd>
 
   <dt>NFT</dt>

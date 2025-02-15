@@ -70,13 +70,12 @@ export const useCrossChainRoutes = ({
   const { account } = useAuthenticate()
   const web3Service = useWeb3Service()
 
-  const { recipients, paywallConfig, keyManagers, renew } = context
+  const { recipients, paywallConfig, keyManagers, renew, tokenId } = context
 
   const { data: prices, isPending: isLoadingPrices } = useQuery({
     queryKey: ['prices', account, lock, recipients, purchaseData],
     queryFn: async () => {
-      // TODO: support renewals
-      if (!purchaseData || !account || !lock || !recipients || renew) {
+      if (!purchaseData || !account || !lock || !recipients) {
         return []
       }
 
@@ -130,6 +129,8 @@ export const useCrossChainRoutes = ({
       recipients,
       keyManagers,
       purchaseData,
+      renew,
+      tokenId,
     ],
     queryFn: async () => {
       return prepareSharedParams({
@@ -142,6 +143,8 @@ export const useCrossChainRoutes = ({
           getReferrer(account!, paywallConfig, lock.address)
         ),
         purchaseData: purchaseData || recipients.map(() => '0x'),
+        renew,
+        tokenId,
       })
     },
   })

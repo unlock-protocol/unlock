@@ -17,6 +17,7 @@ interface getCrossChainRouteParams {
   srcToken: string
   srcChainId: number
   sharedParams: any
+  renew?: boolean
 }
 
 interface prepareSharedParamsParams {
@@ -26,6 +27,8 @@ interface prepareSharedParamsParams {
   keyManagers: string[]
   referrers: string[]
   purchaseData: string[]
+  renew?: boolean
+  tokenId?: string | null
 }
 
 export const prepareSharedParams = async ({
@@ -35,12 +38,32 @@ export const prepareSharedParams = async ({
   keyManagers,
   referrers,
   purchaseData,
+  renew = false,
+  tokenId = null,
 }: prepareSharedParamsParams) => {
   const web3Service = new Web3Service(networks)
   const lockContract = await web3Service.lockContract(
     lock.address,
     lock.network
   )
+
+  // support renewals
+  if (renew && tokenId) {
+    // Get single price value
+    const priceParsed = ethers.parseUnits(
+      prices[0].amount.toString(),
+      prices[0].decimals
+    )
+
+    const callData = lockContract.interface.encodeFunctionData('extend', [
+      priceParsed.toString(),
+      BigInt(tokenId),
+      referrers[0],
+      purchaseData[0],
+    ])
+
+    return { callData }
+  }
 
   const callData = lockContract.interface.encodeFunctionData('purchase', [
     prices.map((price) => {

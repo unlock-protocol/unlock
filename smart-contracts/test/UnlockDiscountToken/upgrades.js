@@ -49,7 +49,14 @@ const upgradeContract = async (contractAddress) => {
   const updated = await upgrades.upgradeProxy(
     contractAddress,
     UnlockDiscountTokenV3,
-    {}
+    {
+      unsafeAllow: [
+        'missing-initializer',
+        'missing-initializer-call',
+        'duplicate-initializer-call',
+        'incorrect-initializer-order',
+      ],
+    }
   )
   return updated
 }
@@ -82,6 +89,12 @@ describe('UnlockDiscountToken upgrade', async () => {
     udt = await upgrades.deployProxy(udtSigned, [await deployer.getAddress()], {
       kind: 'transparent',
       initializer: 'initialize(address)',
+      unsafeAllow: [
+        'missing-initializer',
+        'missing-initializer-call',
+        'duplicate-initializer-call',
+        'incorrect-initializer-order',
+      ],
     })
   })
 

@@ -1,23 +1,22 @@
 import { Button } from '@unlock-protocol/ui'
 import { useCallback } from 'react'
 import { FilterProps } from '~/components/interface/locks/Manage/elements/Members'
+import { useSelection } from './SelectionContext'
 
 export const AttendeesActionsWrapper = ({
   toggleAll,
-  selected,
   bulkApprove,
   bulkDeny,
   allSelected,
 }: {
   toggleAll: (keys: any) => void
-  selected: { [key: string]: boolean }
   bulkApprove: (keys: any) => void
   bulkDeny: (keys: any) => void
   allSelected: boolean
 }) => {
-  const numberOfSelected = Object.values(selected).filter(
-    (value) => !!value
-  ).length
+  const { selected } = useSelection()
+  const numberOfSelected = Object.values(selected).filter(Boolean).length
+
   const AttendeesActions = ({
     keys,
     filters,
@@ -51,7 +50,7 @@ export const AttendeesActionsWrapper = ({
               variant="secondary"
               size="small"
             >
-              Approve {numberOfSelected === 0 ? '' : numberOfSelected}
+              Approve {numberOfSelected}
             </Button>
             <Button
               onClick={() => bulkDeny(keys)}
@@ -59,7 +58,7 @@ export const AttendeesActionsWrapper = ({
               variant="secondary"
               size="small"
             >
-              Deny {numberOfSelected === 0 ? '' : numberOfSelected}
+              Deny {numberOfSelected}
             </Button>
           </>
         )}

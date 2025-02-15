@@ -47,7 +47,7 @@ export function ConfirmCrossChainPurchaseWrapper({
         }
       }
       const tx = await sendTransaction(txParams)
-      onConfirmed(lockAddress, route.network, tx.transactionHash)
+      onConfirmed(lockAddress, route.network, tx.hash)
     } catch (error: any) {
       onError(error)
     }

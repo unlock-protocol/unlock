@@ -9,7 +9,7 @@ import {
 import { GraphQLClient } from 'graphql-request'
 import { NetworkConfigs } from '@unlock-protocol/types'
 import { networks as networkConfigs } from '@unlock-protocol/networks'
-import { RequestConfig } from 'graphql-request/build/esm/types'
+import { RequestConfig } from 'graphql-request/build/legacy/helpers/types'
 
 export {
   OrderDirection,

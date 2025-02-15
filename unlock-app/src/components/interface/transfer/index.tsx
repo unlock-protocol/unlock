@@ -3,11 +3,10 @@
 import { Input, Button, Placeholder } from '@unlock-protocol/ui'
 import { KeyManager, TransferObject } from '@unlock-protocol/unlock-js'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { MouseEventHandler, useMemo, useRef, useState } from 'react'
+import { MouseEventHandler, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTransferCode, useTransferDone } from '~/hooks/useTransfer'
 import { useConfig } from '~/utils/withConfig'
-import ReCaptcha from 'react-google-recaptcha'
 import { toast } from 'react-hot-toast'
 import { AxiosError } from 'axios'
 import { useWeb3Service } from '~/utils/withWeb3Service'
@@ -15,6 +14,7 @@ import { useLockData } from '~/hooks/useLockData'
 import { useTransferFee } from '~/hooks/useTransferFee'
 import { useQuery } from '@tanstack/react-query'
 import { useProvider } from '~/hooks/useProvider'
+import { useReCaptcha } from 'next-recaptcha-v3'
 
 interface SendTransferFormProps {
   createTransferCode: ReturnType<typeof useTransferCode>['createTransferCode']
@@ -29,18 +29,14 @@ const SendTransferForm = ({
   createTransferCode,
   onTransferCodeReceived,
 }: SendTransferFormProps) => {
-  const config = useConfig()
-  const recaptchaRef = useRef<any>()
+  const { executeRecaptcha } = useReCaptcha()
 
   const onTransfer: MouseEventHandler = async (event) => {
     event.preventDefault()
-    const captcha = await recaptchaRef.current?.executeAsync()
+    const captcha = await executeRecaptcha('transfer')
     createTransferCode(
       { captcha },
       {
-        async onSettled() {
-          await recaptchaRef.current?.reset()
-        },
         onError(error) {
           if (error instanceof AxiosError) {
             if (error.status === 409) {
@@ -71,12 +67,6 @@ const SendTransferForm = ({
         </p>
       </div>
       <div className="flex items-center justify-end">
-        <ReCaptcha
-          ref={recaptchaRef}
-          sitekey={config.recaptchaKey}
-          size="invisible"
-          badge="bottomleft"
-        />
         <Button loading={isLoading} onClick={onTransfer}>
           Send Transfer Code
         </Button>

@@ -54,15 +54,15 @@ const query = `query DomainsAndSocials($wallets: [Address!]) {
 
 export const useSocials = (addresses: string[]) => {
   const socials: Socials = {} as Socials
-
+  const wallets = addresses.map((address) => address.toLowerCase())
   const { data, loading, error } = useQuery(query, {
-    wallets: addresses,
+    wallets,
   })
 
   if (data) {
     data.Socials?.Social?.forEach((social: any) => {
       social.userAssociatedAddresses.forEach((address: string) => {
-        if (addresses.indexOf(address) > -1) {
+        if (wallets.indexOf(address) > -1) {
           const existing = socials[address] || {}
           // prioritize Farcaster (profiles are more complete!)
           if (social.dappName === 'farcaster') {

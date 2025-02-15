@@ -106,6 +106,7 @@ const getSupportedChainsByDomainId = async () => {
 const connextSubgraphIds = {
   1: `FfTxiY98LJG6zoiAjCXdT34pAmCKDEP8vZRVuC8D5Gf`,
   137: `7mDXK2K6UfkVXiJMhXU8VEFuh7qi2TwdYxeyaRjkmexo`, //polygon
+  56: `AYp19ZA7oF8jSAgCgPPTodqxBX27Ua5a4cF6HTnF1uaY`, // bsc
   10: `3115xfkzXPrYzbqDHTiWGtzRDYNXBxs8dyitva6J18jf`, //optimims
   42161: `F325dMRiLVCJpX8EUFHg3SX8LE3kXBUmrsLRASisPEQ3`, // arb
   100: `6oJrPk9YJEU9rWU4DAizjZdALSccxe5ZahBsTtFaGksU`, //gnosis
@@ -113,20 +114,20 @@ const connextSubgraphIds = {
 }
 
 const connextSubgraphURL = (chainId) => {
-  // bnb is hosted version
-  // check https://github.com/connext/monorepo/blob/7758e62037bba281b8844c37831bde0b838edd36/packages/adapters/subgraph/.graphclientrc.yml#L7
-  if (chainId == 56) {
-    return 'https://connext.bwarelabs.com/subgraphs/name/connext/amarok-runtime-v1-bnb'
-  }
-  const { SUBGRAPH_QUERY_API_KEY } = process.env
-  if (!SUBGRAPH_QUERY_API_KEY) {
-    throw new Error(`Missing SUBGRAPH_QUERY_API_KEY env`)
-  }
   const subgraphId = connextSubgraphIds[chainId]
-  if (!subgraphId) {
-    throw new Error(`Unknown chain id ${chainId}`)
+  if (subgraphId) {
+    const { SUBGRAPH_QUERY_API_KEY } = process.env
+    if (SUBGRAPH_QUERY_API_KEY) {
+      return `https://gateway-arbitrum.network.thegraph.com/api/${SUBGRAPH_QUERY_API_KEY}/subgraphs/id/${subgraphId}`
+    }
+    throw new Error(`Missing SUBGRAPH_QUERY_API_KEY env`)
+  } else if (chainId === 59144) {
+    // linea has custom subgraph URL
+    // check https://github.com/connext/monorepo/blob/7758e62037bba281b8844c37831bde0b838edd36/packages/adapters/subgraph/.graphclientrc.yml#L7
+    return 'https://api.goldsky.com/api/public/project_clssc64y57n5r010yeoly05up/subgraphs/connext/amarok-runtime-v1-linea/gn'
+  } else {
+    throw new Error(`Missing subgraph URL for chain ${chainId}`)
   }
-  return `https://gateway-arbitrum.network.thegraph.com/api/${SUBGRAPH_QUERY_API_KEY}/subgraphs/id/${subgraphId}`
 }
 
 const fetchXCall = async ({ query, chainId }) => {
@@ -141,7 +142,7 @@ const fetchXCall = async ({ query, chainId }) => {
 
   const { data, errors } = await q.json()
   if (errors) {
-    console.log('LOCK > Error while fetching the graph', errors)
+    console.log(`LOCK > Error while fetching the graph (${chainId})`, errors)
     return []
   }
   return data

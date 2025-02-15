@@ -1,7 +1,6 @@
-import ReCaptcha from 'react-google-recaptcha'
 import { CheckoutService } from './../checkoutMachine'
 import { Button } from '@unlock-protocol/ui'
-import { Fragment, useRef, useState } from 'react'
+import { Fragment, useState } from 'react'
 import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { Pricing } from '../../Lock'
@@ -15,6 +14,7 @@ import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { useConfig } from '~/utils/withConfig'
 import { PricingData } from './PricingData'
 import Disconnect from '../Disconnect'
+import { useReCaptcha } from 'next-recaptcha-v3'
 
 interface Props {
   checkoutService: CheckoutService
@@ -27,7 +27,7 @@ export function ConfirmClaim({ checkoutService, onConfirmed, onError }: Props) {
     useSelector(checkoutService, (state) => state.context)
   const config = useConfig()
 
-  const recaptchaRef = useRef<any>()
+  const { executeRecaptcha } = useReCaptcha()
   const [isConfirming, setIsConfirming] = useState(false)
 
   const { address: lockAddress, network: lockNetwork } = lock!
@@ -75,7 +75,7 @@ export function ConfirmClaim({ checkoutService, onConfirmed, onError }: Props) {
 
   const onConfirmClaim = async () => {
     setIsConfirming(true)
-    const captcha = await recaptchaRef.current?.executeAsync()
+    const captcha = await executeRecaptcha('claim')
     const { hash } = await claim({
       data: purchaseData?.[0],
       captcha,
@@ -91,13 +91,6 @@ export function ConfirmClaim({ checkoutService, onConfirmed, onError }: Props) {
 
   return (
     <Fragment>
-      <ReCaptcha
-        ref={recaptchaRef}
-        sitekey={config.recaptchaKey}
-        size="invisible"
-        badge="bottomleft"
-      />
-
       <main className="h-full p-6 space-y-2 overflow-auto">
         <div className="grid gap-y-2">
           <h4 className="text-xl font-bold"> {lock!.name}</h4>
