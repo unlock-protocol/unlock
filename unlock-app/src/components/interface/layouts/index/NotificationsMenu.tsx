@@ -56,15 +56,15 @@ export function NotificationsMenu() {
   }
 
   blogs &&
-    blogs.forEach(
-      (blog: Blog) =>
-        !blog.viewed &&
-        notifications.push({
-          id: blog.id,
-          content: <BlogLink blog={blog} setBlogs={setBlogs} />,
-          timestamp: new Date(),
-        })
+    blogs.forEach((blog: Blog) =>
+      notifications.push({
+        id: blog.id,
+        content: <BlogLink blog={blog} setBlogs={setBlogs} />,
+        timestamp: new Date(),
+      })
     )
+
+  const viewedBlogs = blogs?.filter((blog) => blog.viewed == true).length || 0
 
   return (
     <>
@@ -81,7 +81,7 @@ export function NotificationsMenu() {
                 <BellIcon className="h-6 w-6" />
                 {notifications.length > 0 && (
                   <span className="absolute -top-2 -right-1 h-4 w-4 rounded-full bg-red-500 text-xs text-white flex items-center justify-center">
-                    {notifications.length}
+                    {notifications.length - viewedBlogs}
                   </span>
                 )}
               </Button>

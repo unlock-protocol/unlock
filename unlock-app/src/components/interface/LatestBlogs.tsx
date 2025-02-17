@@ -27,7 +27,9 @@ export function BlogLink({
       className="block p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow bg-white"
     >
       <div className="flex flex-col space-y-4">
-        <div className="text-base font-semibold text-gray-800">
+        <div
+          className={`text-base font-semibold ${blog.viewed ? 'text-gray-400' : 'text-black'}`}
+        >
           {blog.title}
         </div>
         <div className="text-xs text-gray-500">
