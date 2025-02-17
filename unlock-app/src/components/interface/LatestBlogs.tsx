@@ -1,81 +1,40 @@
 import axios from 'axios'
 import dayjs from 'dayjs'
 import isToday from 'dayjs/plugin/isToday'
-import { useEffect } from 'react'
 dayjs.extend(isToday)
 
-interface Blog {
+export interface Blog {
   title: string
   link: string
   id: string
   updated: string
-  content: string
   viewed: boolean
 }
 
-export function LatestBlogsLink({
-  setModalOpen,
+export function BlogLink({
+  setBlogs,
+  blog,
 }: {
-  setModalOpen: (modalOpen: boolean) => void
+  setBlogs: (blogs: Blog[]) => void
+  blog: Blog
 }) {
-  useEffect(() => {
-    saveLatestBlogs('https://unlock-protocol.com/blog.rss')
-  }, [])
-
-  const handleClick = async (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setModalOpen(true)
-  }
-
   return (
-    <div className="flex flex-col gap-1 cursor-pointer" onClick={handleClick}>
-      <div className="font-medium">Show Latest Blogs</div>
-      <div className="text-sm text-gray-500">
-        Check out the latest updates from our blog.
+    <a
+      href={blog.link}
+      target="_blank"
+      onClick={() => updateBlog(blog.id, setBlogs)}
+      rel="noopener noreferrer"
+      className="block p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow bg-white"
+    >
+      <div className="flex flex-col space-y-4">
+        <div className="text-base font-semibold text-gray-800">
+          {blog.title}
+        </div>
+        <div className="text-xs text-gray-500">
+          {dayjs(blog.updated).format('MMM DD, YYYY')}
+        </div>
       </div>
-    </div>
-  )
-}
-
-export const LatestBlogs = () => {
-  const blogs: Blog[] = getLatestBlogs()
-
-  return (
-    <div className="p-4">
-      <h2 className="text-lg font-medium mb-4">Latest Blogs</h2>
-      <div className="space-y-4 max-h-[80vh] overflow-y-scroll">
-        {!blogs || blogs.length === 0 ? (
-          <div className="text-sm text-gray-600">No blogs available.</div>
-        ) : (
-          blogs.map(
-            (blog, i) =>
-              !blog.viewed && (
-                <a
-                  key={i}
-                  href={blog.link}
-                  target="_blank"
-                  onClick={() => updateBlog(blog.id)}
-                  rel="noopener noreferrer"
-                  className="block p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow bg-white"
-                >
-                  <div className="flex flex-col space-y-4">
-                    <div className="text-base font-semibold text-gray-800">
-                      {blog.title}
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      Updated: {dayjs(blog.updated).format('MMM DD, YYYY')}
-                    </div>
-                    <div className="text-sm text-blue-600 hover:underline mt-2">
-                      Read more →
-                    </div>
-                  </div>
-                </a>
-              )
-          )
-        )}
-      </div>
-    </div>
+    </a>
   )
 }
 
@@ -91,17 +50,22 @@ async function parseAtomFeed(url: string) {
   }
 
   const atomNS = 'http://www.w3.org/2005/Atom'
-  const entries = doc.getElementsByTagNameNS(atomNS, 'entry')
+  const entries = Array.from(doc.getElementsByTagNameNS(atomNS, 'entry'))
 
-  const storedData = localStorage.getItem('latest_blogs')
   let viewedMap = new Map<string, boolean>()
+  const storedData = localStorage.getItem('latest_blogs')
   if (storedData) {
-    const parsed = JSON.parse(storedData)
-    viewedMap = new Map(parsed.blogs.map((b: any) => [b.id, b.viewed]))
+    try {
+      const parsed = JSON.parse(storedData)
+      if (Array.isArray(parsed.blogs)) {
+        viewedMap = new Map(parsed.blogs.map((b: any) => [b.id, b.viewed]))
+      }
+    } catch (error) {
+      console.error('Error parsing stored latest_blogs', error)
+    }
   }
 
-  const unreadItems: Blog[] = []
-  for (const entry of Array.from(entries)) {
+  const blogs: Blog[] = entries.map((entry) => {
     const id =
       entry.getElementsByTagNameNS(atomNS, 'id')[0]?.textContent?.trim() || ''
     const title =
@@ -112,23 +76,19 @@ async function parseAtomFeed(url: string) {
     const updated =
       entry.getElementsByTagNameNS(atomNS, 'updated')[0]?.textContent?.trim() ||
       ''
-    const content =
-      entry.getElementsByTagNameNS(atomNS, 'content')[0]?.textContent?.trim() ||
-      ''
-
     const viewed = viewedMap.has(id) ? viewedMap.get(id)! : false
-    if (!viewed) {
-      unreadItems.push({ title, link, id, updated, content, viewed: false })
-      if (unreadItems.length === 10) break
-    }
-  }
 
-  return {
-    entries: unreadItems,
-  }
+    return { title, link, id, updated, viewed }
+  })
+
+  const limitedBlogs = blogs.slice(0, 5)
+  return { entries: limitedBlogs }
 }
 
-export async function saveLatestBlogs(url: string) {
+export async function saveLatestBlogs(
+  url: string,
+  setBlogs: (blogs: Blog[]) => void
+) {
   const storedDate =
     localStorage.getItem('latest_blogs') &&
     JSON.parse(localStorage.getItem('latest_blogs')!).fetched_on
@@ -141,19 +101,10 @@ export async function saveLatestBlogs(url: string) {
     'latest_blogs',
     JSON.stringify({ blogs: entries, fetched_on: new Date().toISOString() })
   )
+  setBlogs(entries)
 }
 
-function getLatestBlogs() {
-  const storedData = localStorage.getItem('latest_blogs')
-  if (!storedData) {
-    return null
-  }
-
-  const parsed = JSON.parse(storedData)
-  return parsed.blogs
-}
-
-function updateBlog(blogId: string) {
+function updateBlog(blogId: string, setBlogs: (blogs: Blog[]) => void) {
   const storedData = localStorage.getItem('latest_blogs')
   if (!storedData) return
 
@@ -172,4 +123,5 @@ function updateBlog(blogId: string) {
       fetched_on: parsed.fetched_on,
     })
   )
+  setBlogs(updatedBlogs)
 }

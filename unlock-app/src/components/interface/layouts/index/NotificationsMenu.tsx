@@ -1,9 +1,9 @@
 import { Menu, MenuButton, MenuItems, Transition } from '@headlessui/react'
-import { Fragment, ReactNode, useState } from 'react'
+import { Fragment, ReactNode, useState, useEffect } from 'react'
 import { BiBell as BellIcon } from 'react-icons/bi'
 import { Button } from '@unlock-protocol/ui'
 import { PromptEmailLink } from '../../PromptEmailLink'
-import { LatestBlogs, LatestBlogsLink } from '../../LatestBlogs'
+import { Blog, BlogLink, saveLatestBlogs } from '../../LatestBlogs'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { usePathname } from 'next/navigation'
 import { Modal } from '@unlock-protocol/ui'
@@ -24,9 +24,16 @@ interface NotificationProps {
 export function NotificationsMenu() {
   const [isOpen, setIsOpen] = useState(false)
   const [showModal, setShowModal] = useState(false)
-  const [showBlogsModal, setShowBlogsModal] = useState(false)
+  const [blogs, setBlogs] = useState<Blog[] | null>(
+    localStorage.getItem('latest_blogs') &&
+      JSON.parse(localStorage.getItem('latest_blogs')!).blogs
+  )
   const { account, email } = useAuthenticate()
   const pathname = usePathname()
+
+  useEffect(() => {
+    saveLatestBlogs('http://localhost:4000/random', setBlogs)
+  }, [])
 
   if (!account) {
     return null
@@ -48,11 +55,16 @@ export function NotificationsMenu() {
     })
   }
 
-  notifications.push({
-    id: '2',
-    content: <LatestBlogsLink setModalOpen={setShowBlogsModal} />,
-    timestamp: new Date(),
-  })
+  blogs &&
+    blogs.forEach(
+      (blog: Blog) =>
+        !blog.viewed &&
+        notifications.push({
+          id: blog.id,
+          content: <BlogLink blog={blog} setBlogs={setBlogs} />,
+          timestamp: new Date(),
+        })
+    )
 
   return (
     <>
@@ -116,18 +128,6 @@ export function NotificationsMenu() {
         <Modal isOpen={showModal} setIsOpen={setShowModal} size="small">
           <div onClick={(e) => e.stopPropagation()}>
             <LoginModal open={true} />
-          </div>
-        </Modal>
-      )}
-
-      {showBlogsModal && (
-        <Modal
-          isOpen={showBlogsModal}
-          setIsOpen={setShowBlogsModal}
-          size="small"
-        >
-          <div onClick={(e) => e.stopPropagation()}>
-            <LatestBlogs />
           </div>
         </Modal>
       )}
