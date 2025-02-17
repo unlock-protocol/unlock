@@ -14,6 +14,8 @@ import networks from '@unlock-protocol/networks'
  * @property {boolean} [minified] - Whether to show a minified version of the address.
  * @property {'ens' | 'multiple'} [preferredResolver] - The preferred name resolution method.
  * @property {string} [externalLinkUrl] - Custom external link URL.
+ * @property {string} [resolvedName] - The resolved name (ENS or Base) for the address.
+ * @property {boolean} [skipResolution] - Whether to skip name resolution and just show the address.
  * @property {string} [addressType] - The type of address being displayed (e.g., 'lock', 'wallet', 'contract', 'default').
  * @property {number} [network] - The network ID for generating the explorer URL.
  */
@@ -28,6 +30,8 @@ interface WrappedAddressProps {
   externalLinkUrl?: string
   addressType?: 'lock' | 'wallet' | 'contract' | 'default'
   network?: number
+  resolvedName?: string
+  skipResolution?: boolean
 }
 
 /**
@@ -46,19 +50,27 @@ const normalizeAddress = (address: string | `0x${string}`): `0x${string}` => {
  */
 export const WrappedAddress: React.FC<WrappedAddressProps> = ({
   address,
+  resolvedName,
   preferredResolver = 'multiple',
   showCopyIcon = true,
   showExternalLink = true,
   externalLinkUrl,
   addressType = 'default',
+  skipResolution = false,
   network,
   ...props
 }) => {
   // Normalize the address to always start with 0x
   const normalizedAddress = normalizeAddress(address)
 
+  // If resolvedName is provided or skipResolution is true, we should skip the name resolution
+  const shouldSkipResolution = Boolean(resolvedName || skipResolution)
+
   // Fetch names for the address using the name resolver hook
-  const { ensName, baseName } = useNameResolver(normalizedAddress)
+  const { ensName, baseName } = useNameResolver(
+    normalizedAddress,
+    shouldSkipResolution
+  )
 
   /**
    * Handles the copy action for the address.
@@ -139,7 +151,7 @@ export const WrappedAddress: React.FC<WrappedAddressProps> = ({
   return (
     <Address
       address={address}
-      useName={resolveMultipleNames}
+      resolvedName={resolvedName ?? address}
       onCopied={handleCopy}
       showCopyIcon={showCopyIcon}
       showExternalLink={showExternalLink}
