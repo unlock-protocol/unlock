@@ -121,19 +121,6 @@ export const WrappedAddress: React.FC<WrappedAddressProps> = ({
   )
 
   /**
-   * Wrapper function for resolving multiple names (currently only ENS and Base names).
-   * This function is designed to be extensible for future name resolution methods.
-   * @param {string} address - The address to resolve.
-   * @returns {Promise<string | undefined>} The resolved name or undefined.
-   */
-  const resolveMultipleNames = useCallback(
-    async (address: string): Promise<string | undefined> => {
-      return resolveNames(address)
-    },
-    [resolveNames]
-  )
-
-  /**
    * Generates the explorer URL based on the provided network.
    * This function checks if the network is valid and retrieves the corresponding explorer URL for the normalized address.
    * If the network is not provided or not found, it returns undefined.
