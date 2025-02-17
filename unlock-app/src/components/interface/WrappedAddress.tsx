@@ -102,23 +102,29 @@ export const WrappedAddress: React.FC<WrappedAddressProps> = ({
 
   /**
    * Resolves names based on the preferred resolver.
-   * @param {string} addr - The address to resolve.
-   * @returns {Promise<string | undefined>} The resolved name or the original address if not resolved.
+   * @returns {string} The resolved name or the original address if not resolved.
    */
-  const resolveNames = useCallback(
-    async (addr: string): Promise<string> => {
-      if (preferredResolver === 'ens') {
-        return ensName || baseName || addr
-      } else if (preferredResolver === 'base') {
-        return baseName || ensName || addr
-      } else if (preferredResolver === 'multiple') {
-        // Prioritize ENS, then Base name, then fall back to address
-        return ensName || baseName || addr
-      }
-      return addr
-    },
-    [preferredResolver, ensName, baseName]
-  )
+  const getResolvedName = useCallback((): string => {
+    if (resolvedName) return resolvedName
+    if (skipResolution) return address
+
+    if (preferredResolver === 'ens') {
+      return ensName || baseName || address
+    } else if (preferredResolver === 'base') {
+      return baseName || ensName || address
+    } else if (preferredResolver === 'multiple') {
+      // Prioritize ENS, then Base name, then fall back to address
+      return ensName || baseName || address
+    }
+    return address
+  }, [
+    preferredResolver,
+    ensName,
+    baseName,
+    address,
+    resolvedName,
+    skipResolution,
+  ])
 
   /**
    * Generates the explorer URL based on the provided network.
@@ -138,7 +144,7 @@ export const WrappedAddress: React.FC<WrappedAddressProps> = ({
   return (
     <Address
       address={address}
-      resolvedName={resolvedName ?? address}
+      resolvedName={getResolvedName()}
       onCopied={handleCopy}
       showCopyIcon={showCopyIcon}
       showExternalLink={showExternalLink}
