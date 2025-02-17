@@ -97,11 +97,17 @@ export const CertificationDeploying = ({
         <span className="mb-4 font-base">{message}</span>
         {status === 'deployed' && lockAddress && (
           <div className="flex flex-col items-center content-center text-center">
-            {!updateTransferFeeMutation.isPending ? (
+            {updateTransferFeeMutation.isSuccess ? (
+              <>
+                <p>We have also built a page for you!</p>
+                <Button className="my-4" onClick={goToCertification}>
+                  View certification page
+                </Button>
+              </>
+            ) : (
               <>
                 <p>
-                  {`We're almost there, but it's essential to make sure your
-                  certification is not transferable.`}
+                  {`We're almost there, but it's essential to make sure your certification is not transferable.`}
                 </p>
                 <Button
                   className="my-4"
@@ -112,13 +118,6 @@ export const CertificationDeploying = ({
                   }}
                 >
                   Make tokens non-transferable
-                </Button>
-              </>
-            ) : (
-              <>
-                <p>We have also built a page for you!</p>
-                <Button className="my-4" onClick={goToCertification}>
-                  View certification page
                 </Button>
               </>
             )}
