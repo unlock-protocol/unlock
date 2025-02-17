@@ -313,11 +313,9 @@ export const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
     <>
       <div className="flex items-center justify-between">
         <Button variant="borderless" aria-label="arrow back">
-          <ArrowBackIcon
-            size={20}
-            className="cursor-pointer"
-            onClick={() => router.back()}
-          />
+          <Link href="/locks">
+            <ArrowBackIcon size={20} className="cursor-pointer" />
+          </Link>
         </Button>
         <div className="flex gap-3">
           {isManager && (
