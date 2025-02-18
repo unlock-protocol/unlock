@@ -3,16 +3,14 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { MdExitToApp as DisconnectIcon } from 'react-icons/md'
 import Link from 'next/link'
-import useEns from '~/hooks/useEns'
-import { addressMinify } from '~/utils/strings'
 import { useCallback, useState } from 'react'
 import { useUnlockPrime } from '~/hooks/useUnlockPrime'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { WrappedAddress } from '../WrappedAddress'
 
 export const UserMenu = () => {
   const { isPrime } = useUnlockPrime()
   const { account } = useAuthenticate()
-  const userEns = useEns(account || '')
   const [isDisconnecting, setIsDisconnecting] = useState(false)
   const { signOut } = useAuthenticate()
 
@@ -31,7 +29,11 @@ export const UserMenu = () => {
     <Menu as="div" className="relative inline-block z-10 text-left">
       <MenuButton className="flex items-center gap-2">
         <span className="text-brand-ui-primary text-right">
-          {userEns === account ? addressMinify(userEns) : userEns}
+          <WrappedAddress
+            address={account!}
+            showExternalLink={false}
+            showCopyIcon={false}
+          />
         </span>
         <DisconnectIcon className="text-brand-ui-primary" size={20} />
       </MenuButton>

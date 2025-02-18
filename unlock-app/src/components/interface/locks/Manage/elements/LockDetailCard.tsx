@@ -67,6 +67,7 @@ const LockInfoCard = ({
           address={lockAddress}
           network={network}
           addressType="lock"
+          skipResolution
         />
       </div>
     </>
