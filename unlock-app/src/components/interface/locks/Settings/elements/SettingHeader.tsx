@@ -57,6 +57,7 @@ export const SettingHeader = ({
                 address={lock.address}
                 network={network}
                 addressType="lock"
+                skipResolution
               />
             </div>
           </div>
