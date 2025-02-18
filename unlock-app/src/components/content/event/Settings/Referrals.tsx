@@ -15,10 +15,10 @@ import { onResolveName } from '~/utils/resolvers'
 import { Controller, useForm } from 'react-hook-form'
 import { useReferrerFee } from '~/hooks/useReferrerFee'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import useEns from '~/hooks/useEns'
-import { addressMinify } from '~/utils/strings'
+
 import CopyUrlButton from '../CopyUrlButton'
 import { getEventUrl } from '../utils'
+import { WrappedAddress } from '~/components/interface/WrappedAddress'
 
 interface ReferralsProps {
   event: Event
@@ -42,11 +42,6 @@ export const Referral = ({
   onDelete: (referrer: string) => void
   referral: { referrer: string; fee: number }
 }) => {
-  const addressToEns = useEns(referrer)
-
-  const resolvedAddress =
-    addressToEns === referrer ? addressMinify(referrer) : addressToEns
-
   const eventUrlWithReferrer = new URL(eventUrl)
   eventUrlWithReferrer.searchParams.append('referrer', referrer)
 
@@ -56,7 +51,11 @@ export const Referral = ({
         {fee / 100}%
       </Detail>
       <Detail valueSize="medium" label="Address:">
-        {resolvedAddress}
+        <WrappedAddress
+          address={referrer}
+          showCopyIcon={false}
+          showExternalLink={false}
+        />
       </Detail>
       <div className="grow flex justify-end place-items-center	flex-row ">
         <CopyUrlButton url={eventUrlWithReferrer.toString()} />
