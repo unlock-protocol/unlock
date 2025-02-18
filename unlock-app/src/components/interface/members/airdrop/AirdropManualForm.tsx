@@ -6,7 +6,6 @@ import {
   AddressInput,
 } from '@unlock-protocol/ui'
 import { useForm, Controller, useWatch } from 'react-hook-form'
-import { getAddressForName } from '~/hooks/useEns'
 import { AirdropMember } from './AirdropElements'
 import { useList } from 'react-use'
 import { AirdropListItem } from './AirdropElements'
@@ -19,6 +18,7 @@ import { useConfig } from '~/utils/withConfig'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { onResolveName } from '~/utils/resolvers'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { getAddressForName } from '~/hooks/useNameResolver'
 
 export interface Props {
   add(member: AirdropMember): void
