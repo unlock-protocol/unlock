@@ -11,12 +11,13 @@ import {
 } from '@unlock-protocol/ui'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import useEns, { getAddressForName } from '~/hooks/useEns'
 import { locksmith } from '~/config/locksmith'
 import { onResolveName } from '~/utils/resolvers'
 import { Verifier } from '@unlock-protocol/unlock-js'
 import { useEffect } from 'react'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { getAddressForName } from '~/hooks/useNameResolver'
+import { WrappedAddress } from '~/components/interface/WrappedAddress'
 
 export interface VerifierFormProps {
   event: Event
@@ -47,12 +48,15 @@ const VerifierCard = ({
   const isCurrentAccount =
     account?.toLowerCase() === verifier?.address?.toLowerCase()
 
-  const address = useEns(verifier.address)
-
   return (
     <div className="flex flex-col items-center justify-between px-4 py-2 border border-gray-200 rounded-lg md:flex-row">
       <div className="flex flex-col gap-2 ">
-        <span className="text-base text-brand-dark">{address}</span>
+        <WrappedAddress
+          address={verifier.address}
+          className="text-base text-brand-dark"
+          showCopyIcon={false}
+          showExternalLink={false}
+        />
         {isCurrentAccount && (
           <span className="text-sm font-semibold text-brand-ui-primary">
             {"That's you"}

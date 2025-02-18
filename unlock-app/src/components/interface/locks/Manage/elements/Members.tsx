@@ -134,6 +134,8 @@ export const Members = ({
         resolvedNames,
       }
     },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    refetchOnWindowFocus: false,
     placeholderData: (previousData) => previousData,
   })
 

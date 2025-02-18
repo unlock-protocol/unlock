@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react'
 import { Address } from '@unlock-protocol/ui'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useNameResolver } from '~/hooks/useNameResolver'
 import networks from '@unlock-protocol/networks'
+import { resolveAddress } from '~/hooks/useNameResolver'
 
 /**
  * @typedef {Object} WrappedAddressProps
@@ -58,6 +58,7 @@ export const WrappedAddress: React.FC<WrappedAddressProps> = ({
   addressType = 'default',
   skipResolution = false,
   network,
+  showResolvedName = true,
   ...props
 }) => {
   // Normalize the address to always start with 0x
@@ -66,10 +67,15 @@ export const WrappedAddress: React.FC<WrappedAddressProps> = ({
   // If resolvedName is provided or skipResolution is true, we should skip the name resolution
   const shouldSkipResolution = Boolean(resolvedName || skipResolution)
 
-  // Fetch names for the address using the name resolver hook
-  const { ensName, baseName } = useNameResolver(
-    normalizedAddress,
-    shouldSkipResolution
+  /**
+   * Wrapper function for resolving names.
+   */
+  const resolveMultipleNames = useCallback(
+    async (address: string): Promise<string | undefined> => {
+      if (shouldSkipResolution) return undefined
+      return resolveAddress(address, preferredResolver)
+    },
+    [shouldSkipResolution, preferredResolver]
   )
 
   /**
@@ -101,35 +107,8 @@ export const WrappedAddress: React.FC<WrappedAddressProps> = ({
   }, [addressType]) // include addressType to ensure the latest value is used
 
   /**
-   * Resolves names based on the preferred resolver.
-   * @returns {string} The resolved name or the original address if not resolved.
-   */
-  const getResolvedName = useCallback((): string => {
-    if (resolvedName) return resolvedName
-    if (skipResolution) return address
-
-    if (preferredResolver === 'ens') {
-      return ensName || baseName || address
-    } else if (preferredResolver === 'base') {
-      return baseName || ensName || address
-    } else if (preferredResolver === 'multiple') {
-      // Prioritize ENS, then Base name, then fall back to address
-      return ensName || baseName || address
-    }
-    return address
-  }, [
-    preferredResolver,
-    ensName,
-    baseName,
-    address,
-    resolvedName,
-    skipResolution,
-  ])
-
-  /**
    * Generates the explorer URL based on the provided network.
    * This function checks if the network is valid and retrieves the corresponding explorer URL for the normalized address.
-   * If the network is not provided or not found, it returns undefined.
    * @returns {string | undefined} The explorer URL for the address or undefined if no valid network is provided.
    */
   const getExplorerUrl = useCallback(() => {
@@ -137,17 +116,19 @@ export const WrappedAddress: React.FC<WrappedAddressProps> = ({
       const { explorer } = networks[network]
       return explorer?.urls?.address(normalizedAddress) || undefined
     }
-    // Return undefined if no network is provided or if it's not found
+    // Return undefined if no network is provided or if it's not found.
     return undefined
   }, [network, normalizedAddress])
 
   return (
     <Address
       address={address}
-      resolvedName={getResolvedName()}
+      resolvedName={resolvedName}
+      useName={resolvedName ? undefined : resolveMultipleNames}
       onCopied={handleCopy}
       showCopyIcon={showCopyIcon}
       showExternalLink={showExternalLink}
+      showResolvedName={showResolvedName}
       externalLinkUrl={getExplorerUrl()}
       {...props}
     />

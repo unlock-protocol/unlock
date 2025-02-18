@@ -16,7 +16,6 @@ import {
 } from 'react'
 import { Button, Input, Placeholder } from '@unlock-protocol/ui'
 import { twMerge } from 'tailwind-merge'
-import { getAddressForName } from '~/hooks/useEns'
 import { formResultToMetadata } from '~/utils/userMetadata'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useSelector } from '@xstate/react'
@@ -36,6 +35,7 @@ import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 import Disconnect from './Disconnect'
 import { shouldSkip } from './utils'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { getAddressForName } from '~/hooks/useNameResolver'
 
 interface Props {
   checkoutService: CheckoutService
