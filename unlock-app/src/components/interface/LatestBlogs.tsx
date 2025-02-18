@@ -40,6 +40,16 @@ export function BlogLink({
   )
 }
 
+export function getBlogs() {
+  if (typeof localStorage !== 'undefined') {
+    const data =
+      localStorage.getItem('latest_blogs') &&
+      JSON.parse(localStorage.getItem('latest_blogs')!)
+    return data
+  }
+  return null
+}
+
 async function parseAtomFeed(url: string) {
   const response = await axios.get(url)
   const text = response?.data
@@ -55,12 +65,11 @@ async function parseAtomFeed(url: string) {
   const entries = Array.from(doc.getElementsByTagNameNS(atomNS, 'entry'))
 
   let viewedMap = new Map<string, boolean>()
-  const storedData = localStorage.getItem('latest_blogs')
+  const storedData = getBlogs()
   if (storedData) {
     try {
-      const parsed = JSON.parse(storedData)
-      if (Array.isArray(parsed.blogs)) {
-        viewedMap = new Map(parsed.blogs.map((b: any) => [b.id, b.viewed]))
+      if (Array.isArray(storedData.blogs)) {
+        viewedMap = new Map(storedData.blogs.map((b: any) => [b.id, b.viewed]))
       }
     } catch (error) {
       console.error('Error parsing stored latest_blogs', error)
@@ -91,9 +100,7 @@ export async function saveLatestBlogs(
   url: string,
   setBlogs: (blogs: Blog[]) => void
 ) {
-  const storedDate =
-    localStorage.getItem('latest_blogs') &&
-    JSON.parse(localStorage.getItem('latest_blogs')!).fetched_on
+  const storedDate = getBlogs()?.fetched_on
   if (storedDate && dayjs(storedDate).isToday()) {
     return
   }
@@ -107,11 +114,12 @@ export async function saveLatestBlogs(
 }
 
 function updateBlog(blogId: string, setBlogs: (blogs: Blog[]) => void) {
-  const storedData = localStorage.getItem('latest_blogs')
-  if (!storedData) return
+  const storedData = getBlogs()
+  if (!storedData) {
+    return
+  }
 
-  const parsed = JSON.parse(storedData)
-  const updatedBlogs = parsed.blogs.map((b: Blog) => {
+  const updatedBlogs = storedData.blogs.map((b: Blog) => {
     if (b.id === blogId) {
       return { ...b, viewed: true }
     }
@@ -122,7 +130,7 @@ function updateBlog(blogId: string, setBlogs: (blogs: Blog[]) => void) {
     'latest_blogs',
     JSON.stringify({
       blogs: updatedBlogs,
-      fetched_on: parsed.fetched_on,
+      fetched_on: storedData.fetched_on,
     })
   )
   setBlogs(updatedBlogs)

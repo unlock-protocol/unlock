@@ -3,7 +3,7 @@ import { Fragment, ReactNode, useState, useEffect } from 'react'
 import { BiBell as BellIcon } from 'react-icons/bi'
 import { Button } from '@unlock-protocol/ui'
 import { PromptEmailLink } from '../../PromptEmailLink'
-import { Blog, BlogLink, saveLatestBlogs } from '../../LatestBlogs'
+import { Blog, BlogLink, getBlogs, saveLatestBlogs } from '../../LatestBlogs'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { usePathname } from 'next/navigation'
 import { Modal } from '@unlock-protocol/ui'
@@ -24,15 +24,12 @@ interface NotificationProps {
 export function NotificationsMenu() {
   const [isOpen, setIsOpen] = useState(false)
   const [showModal, setShowModal] = useState(false)
-  const [blogs, setBlogs] = useState<Blog[] | null>(
-    localStorage.getItem('latest_blogs') &&
-      JSON.parse(localStorage.getItem('latest_blogs')!).blogs
-  )
+  const [blogs, setBlogs] = useState<Blog[] | null>(getBlogs()?.blogs)
   const { account, email } = useAuthenticate()
   const pathname = usePathname()
 
   useEffect(() => {
-    saveLatestBlogs('http://localhost:4000/random', setBlogs)
+    saveLatestBlogs('https://unlock-protocol.com/blog.rss', setBlogs)
   }, [])
 
   if (!account) {
