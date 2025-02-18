@@ -9,6 +9,7 @@ import { graphService } from '~/config/subgraph'
 import { locksmith } from '~/config/locksmith'
 import { Placeholder } from '@unlock-protocol/ui'
 import { PAGE_SIZE } from '@unlock-protocol/core'
+import { batchNameResolver } from '~/hooks/useNameResolver'
 
 const DefaultNoMemberNoFilter = () => {
   return (
@@ -93,7 +94,7 @@ export const Members = ({
   NoMemberNoFilter = DefaultNoMemberNoFilter,
   MembersActions,
 }: MembersProps) => {
-  // Consolidated query that fetches members, subgraph lock info, and lock settings
+  // Consolidated query that fetches members, subgraph lock info, lock settings, and resolved names
   const { data, isLoading, error } = useQuery({
     queryKey: [
       'attendeesData',
@@ -119,11 +120,18 @@ export const Members = ({
           ),
           getLockSettings(network, lockAddress),
         ])
+
+      const memberAddresses = (membersResponse?.keys || []).map(
+        (metadata: any) => metadata.keyholderAddress
+      )
+      const resolvedNames = await batchNameResolver(memberAddresses)
+
       return {
         keys: membersResponse?.keys || [],
         meta: membersResponse?.meta || {},
         lock: subgraphLock,
         lockSettings: lockSettingsResponse?.data || {},
+        resolvedNames,
       }
     },
     placeholderData: (previousData) => previousData,
@@ -154,7 +162,7 @@ export const Members = ({
     )
   }
 
-  const { keys, meta, lock, lockSettings } = data || {}
+  const { keys, meta, lock, lockSettings, resolvedNames } = data || {}
   const noItems = (keys?.length || 0) === 0
   const hasActiveFilter =
     filters?.approval !== 'minted' ||
@@ -209,6 +217,7 @@ export const Members = ({
             network={network}
             expirationDuration={lock?.expirationDuration}
             lockSettings={lockSettings}
+            resolvedName={resolvedNames?.[metadata.keyholderAddress]}
           />
         )
       })}
