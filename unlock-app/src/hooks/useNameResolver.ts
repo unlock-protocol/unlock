@@ -127,6 +127,27 @@ export const batchNameResolver = async (
 }
 
 /**
+ * Fetches the Ethereum address for a given ENS name.
+ * @param {string} _name - The ENS name to resolve.
+ * @returns {Promise<string>} The resolved address or an empty string if resolution fails.
+ */
+export const getAddressForName = async (_name: string): Promise<string> => {
+  try {
+    const name = _name.trim()
+    const isAddress = name.split('.').pop()?.toLowerCase() !== 'eth'
+    if (isAddress) {
+      return name
+    }
+    const result = await ensProvider.resolveName(name)
+    return result || ''
+  } catch (error) {
+    // Resolution failed. So be it, we'll show the 0x address
+    console.error(`We could not resolve ENS address for ${name}`)
+    return ''
+  }
+}
+
+/**
  * Hook to resolve ENS name and Base name for an Ethereum address.
  *
  * @param {string} address - The Ethereum address to resolve.
