@@ -1,5 +1,9 @@
 # Changes
 
+# 0.51.1
+
+- Using `grantRole` for `addLockManager`
+
 # 0.51.0
 
 - Changed GraphService constructor to accept params
