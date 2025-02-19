@@ -1,0 +1,55 @@
+{
+  "name": "@unlock-protocol/airdrops",
+  "version": "0.1.0",
+  "private": true,
+  "peerDependencies": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "dependencies": {
+    "@headlessui/react": "2.1.9",
+    "@privy-io/react-auth": "2.2.1",
+    "@sentry/nextjs": "8.54.0",
+    "@tanstack/react-query": "5.59.19",
+    "@tw-classed/react": "1.7.0",
+    "@unlock-protocol/core": "workspace:./packages/core",
+    "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon",
+    "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
+    "@unlock-protocol/networks": "workspace:./packages/networks",
+    "@unlock-protocol/ui": "workspace:./packages/ui",
+    "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js",
+    "@vercel/og": "0.6.5",
+    "@vercel/speed-insights": "1.0.14",
+    "dayjs": "1.11.13",
+    "embla-carousel-react": "8.5.2",
+    "eslint": "9.11.1",
+    "next": "14.2.21",
+    "react-hot-toast": "2.4.1",
+    "tailwind-merge": "3.0.1",
+    "typescript": "5.6.3"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.18",
+    "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
+    "@vitejs/plugin-react": "4.3.4",
+    "autoprefixer": "10.4.20",
+    "jsdom": "26.0.0",
+    "postcss": "8.4.49",
+    "tailwindcss": "3.4.17",
+    "vitest": "2.1.9"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build --no-lint",
+    "deploy": "yarn build && next export -o out",
+    "start": "yarn build && NODE_ENV=production next start",
+    "test": "UNLOCK_ENV=test vitest run --coverage --environment=jsdom",
+    "lint": "eslint",
+    "ci": "yarn test && yarn lint && yarn build"
+  },
+  "browserslist": [
+    "defaults",
+    "not IE 11",
+    "maintained node versions"
+  ]
+}
