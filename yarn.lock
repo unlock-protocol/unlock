@@ -18567,6 +18567,49 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@unlock-protocol/airdrops@workspace:airdrops":
+  version: 0.0.0-use.local
+  resolution: "@unlock-protocol/airdrops@workspace:airdrops"
+  dependencies:
+    "@headlessui/react": "npm:2.1.9"
+    "@privy-io/react-auth": "npm:2.2.1"
+    "@sentry/nextjs": "npm:8.54.0"
+    "@tanstack/react-query": "npm:5.59.19"
+    "@tw-classed/react": "npm:1.7.0"
+    "@types/react": "npm:18.3.18"
+    "@unlock-protocol/core": "workspace:./packages/core"
+    "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon"
+    "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
+    "@unlock-protocol/networks": "workspace:./packages/networks"
+    "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
+    "@unlock-protocol/ui": "workspace:./packages/ui"
+    "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
+    "@vercel/og": "npm:0.6.5"
+    "@vercel/speed-insights": "npm:1.0.14"
+    "@vitejs/plugin-react": "npm:4.3.4"
+    autoprefixer: "npm:10.4.20"
+    dayjs: "npm:1.11.13"
+    embla-carousel-react: "npm:8.5.2"
+    eslint: "npm:9.11.1"
+    ethers: "npm:6.13.5"
+    graphql: "npm:16.9.0"
+    jsdom: "npm:26.0.0"
+    lottie-react: "npm:2.4.1"
+    next: "npm:14.2.21"
+    next-recaptcha-v3: "npm:1.5.2"
+    postcss: "npm:8.4.49"
+    react-hook-form: "npm:7.53.2"
+    react-hot-toast: "npm:2.4.1"
+    tailwind-merge: "npm:3.0.1"
+    tailwindcss: "npm:3.4.17"
+    typescript: "npm:5.6.3"
+    vitest: "npm:2.1.9"
+  peerDependencies:
+    react: 18.3.1
+    react-dom: 18.3.1
+  languageName: unknown
+  linkType: soft
+
 "@unlock-protocol/contracts@workspace:./packages/contracts, @unlock-protocol/contracts@workspace:^, @unlock-protocol/contracts@workspace:packages/contracts":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/contracts@workspace:packages/contracts"
