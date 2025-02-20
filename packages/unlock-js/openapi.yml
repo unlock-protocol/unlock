@@ -5346,7 +5346,7 @@ paths:
   /v2/merkle-tree:
     post:
       operationId: saveMerkleTree
-      description: Saves a merkle tree from a list of addresses.
+      description: Saves a merkle tree from either a list of addresses or a list of [address, amount] tuples.
       requestBody:
         required: true
         content:
@@ -5354,7 +5354,21 @@ paths:
             schema:
               type: array
               items:
-                type: string
+                oneOf:
+                  - type: string
+                    description: Recipient address (will be assigned amount "1")
+                  - type: array
+                    minItems: 2
+                    maxItems: 2
+                    items:
+                      - type: string
+                        description: Recipient address
+                      - oneOf:
+                          - type: string
+                            description: Amount as string
+                          - type: number
+                            description: Amount as number
+              description: Array must contain either all strings or all tuples, no mixing allowed
       responses:
         200:
           description: Successfully saved the Merkle Tree
@@ -5365,10 +5379,13 @@ paths:
                 properties:
                   success:
                     type: boolean
+                    default: true
                   root:
                     type: string
+                    description: The merkle tree root hash
                   url:
                     type: string
+                    description: URL where the merkle tree is stored
         400:
           description: Missing required fields
           content:
