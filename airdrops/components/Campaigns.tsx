@@ -37,7 +37,7 @@ const CampaignCard = ({
 }: CampaignCardProps) => {
   return (
     <Link
-      href={`#${contractAddress}`}
+      href={`/campaigns/${contractAddress}`}
       className={`block h-full p-6 space-y-4 border min-w-[24rem] sm:min-w-[28rem] rounded-xl transition-all duration-200 ${
         authenticated
           ? isEligible > 0
