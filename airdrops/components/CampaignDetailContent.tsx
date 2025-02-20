@@ -2,7 +2,7 @@
 
 import { usePrivy } from '@privy-io/react-auth'
 import { Container } from './layout/Container'
-import { Button } from '@unlock-protocol/ui'
+import { Button, Checkbox } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import Link from 'next/link'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
@@ -32,14 +32,16 @@ export default function CampaignDetailContent({
         </Link>
       </Button>
 
-      <div className="grid max-w-6xl grid-cols-1 gap-8 pt-5 pb-12 md:grid-cols-2">
-        {/* Left Column - Campaign Info */}
-        <div className="space-y-8">
-          <div className="space-y-4">
-            <h1 className="text-4xl font-bold">{campaign.title}</h1>
-            <p className="text-xl text-gray-600">{campaign.description}</p>
-          </div>
+      {/* Full-width title and description */}
+      <div className="max-w-6xl space-y-4 mb-8">
+        <h1 className="text-4xl font-bold">{campaign.title}</h1>
+        <p className="text-xl text-gray-600">{campaign.description}</p>
+      </div>
 
+      {/* Two-column layout for remaining content */}
+      <div className="grid max-w-6xl grid-cols-1 gap-8 pb-12 md:grid-cols-2">
+        {/* Left Column */}
+        <div className="space-y-8">
           <div className="p-6 border rounded-xl space-y-4 bg-gray-50">
             <h2 className="text-2xl font-semibold">Your Rewards</h2>
             <div className="space-y-2">
@@ -72,19 +74,11 @@ export default function CampaignDetailContent({
                 <p className="text-green-600 font-medium">Eligible for Claim</p>
               </div>
 
-              <label className="flex items-start gap-3 cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="mt-1"
-                  checked={tosAccepted}
-                  onChange={(e) =>
-                    setTosAccepted((e.target as HTMLInputElement).checked)
-                  }
-                />
-                <span className="text-sm text-gray-600">
-                  I have read and agree to the Terms of Service
-                </span>
-              </label>
+              <Checkbox
+                label="I have read and agree to the Terms of Service"
+                checked={tosAccepted}
+                onChange={(e) => setTosAccepted(e.target.checked)}
+              />
 
               <Button
                 disabled={!tosAccepted}
