@@ -1,0 +1,47 @@
+[
+  {
+    "id": "1",
+    "title": "Airdrop #1",
+    "description": "A mysterious collection of digital artifacts found in an abandoned crypto wallet. Legend says they multiply when no one is watching.",
+    "contractAddress": "0x1234567890123456789012345678901234567890",
+    "tokenAmount": "5000",
+    "tokenSymbol": "UP",
+    "isEligible": true
+  },
+  {
+    "id": "2",
+    "title": "Airdrop #2",
+    "description": "Tokens that smell like fresh baked cookies. Warning: Do not attempt to eat these digital assets.",
+    "contractAddress": "0x2345678901234567890123456789012345678901",
+    "tokenAmount": "10000",
+    "tokenSymbol": "UP",
+    "isEligible": false
+  },
+  {
+    "id": "3",
+    "title": "Airdrop #3",
+    "description": "A collection of tokens that were discovered floating in the metaverse. They seem to hum a catchy tune when transferred.",
+    "contractAddress": "0x3456789012345678901234567890123456789012",
+    "tokenAmount": "10000",
+    "tokenSymbol": "UP",
+    "isEligible": true
+  },
+  {
+    "id": "4",
+    "title": "Airdrop #4",
+    "description": "These tokens were created during a solar eclipse while a cat walked across a keyboard. Side effects may include spontaneous dancing.",
+    "contractAddress": "0x4567890123456789012345678901234567890123",
+    "tokenAmount": "10000",
+    "tokenSymbol": "UP",
+    "isEligible": false
+  },
+  {
+    "id": "5",
+    "title": "Airdrop #5",
+    "description": "Rumor has it these tokens were minted by time-traveling robots from the year 3000. They occasionally speak in riddles.",
+    "contractAddress": "0x5678901234567890123456789012345678901234",
+    "tokenAmount": "10000",
+    "tokenSymbol": "UP",
+    "isEligible": true
+  }
+]
