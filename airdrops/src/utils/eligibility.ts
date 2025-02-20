@@ -4,8 +4,8 @@
  * To be replaced with actual implementation that checks against the recipients file
  */
 export const isEligible = async (
-  address: string,
-  recipientsFile: string
+  _address: string,
+  _recipientsFile: string
 ): Promise<number> => {
   // Temporary implementation: randomly determine eligibility
   const random = Math.random()
@@ -13,7 +13,8 @@ export const isEligible = async (
   // 40% chance of being eligible
   if (random < 0.4) {
     // Random amount between 100 and 1000 tokens
-    return Math.floor(Math.random() * 900) + 100
+    const amount = Math.floor(Math.random() * 900) + 100
+    return amount
   }
 
   return 0
