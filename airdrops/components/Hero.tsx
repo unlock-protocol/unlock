@@ -1,11 +1,11 @@
 'use client'
 
-import { Button } from '@unlock-protocol/ui'
 import { Container } from './layout/Container'
 import { usePrivy } from '@privy-io/react-auth'
+import { ConnectButton } from './auth/ConnectButton'
 
 export default function Hero() {
-  const { ready, authenticated, login } = usePrivy()
+  const { authenticated } = usePrivy()
 
   return (
     <div className="h-[50vh] flex items-center">
@@ -19,18 +19,7 @@ export default function Hero() {
               airdrops.
             </p>
             <div className="flex gap-4 justify-center">
-              {!authenticated && (
-                <Button
-                  disabled={!ready}
-                  onClick={() => {
-                    if (ready && !authenticated) {
-                      login()
-                    }
-                  }}
-                >
-                  Connect Wallet
-                </Button>
-              )}
+              {!authenticated && <ConnectButton />}
             </div>
           </div>
         </div>
