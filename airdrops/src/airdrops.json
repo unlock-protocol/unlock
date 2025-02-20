@@ -6,7 +6,7 @@
     "contractAddress": "0x1234567890123456789012345678901234567890",
     "tokenAmount": "5000",
     "tokenSymbol": "UP",
-    "isEligible": true
+    "recipientsFile": "https://example.com/airdrop1-recipients.json"
   },
   {
     "id": "2",
@@ -15,7 +15,7 @@
     "contractAddress": "0x2345678901234567890123456789012345678901",
     "tokenAmount": "10000",
     "tokenSymbol": "UP",
-    "isEligible": false
+    "recipientsFile": "https://example.com/airdrop2-recipients.json"
   },
   {
     "id": "3",
@@ -24,7 +24,7 @@
     "contractAddress": "0x3456789012345678901234567890123456789012",
     "tokenAmount": "10000",
     "tokenSymbol": "UP",
-    "isEligible": true
+    "recipientsFile": "https://example.com/airdrop3-recipients.json"
   },
   {
     "id": "4",
@@ -33,7 +33,7 @@
     "contractAddress": "0x4567890123456789012345678901234567890123",
     "tokenAmount": "10000",
     "tokenSymbol": "UP",
-    "isEligible": false
+    "recipientsFile": "https://example.com/airdrop4-recipients.json"
   },
   {
     "id": "5",
@@ -42,6 +42,6 @@
     "contractAddress": "0x5678901234567890123456789012345678901234",
     "tokenAmount": "10000",
     "tokenSymbol": "UP",
-    "isEligible": true
+    "recipientsFile": "https://example.com/airdrop5-recipients.json"
   }
 ]
