@@ -1,7 +1,9 @@
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { Metadata } from 'next'
+import RootHeader from '../components/layout/Header'
 import Providers from '../components/providers'
+import Footer from '../components/layout/Footer'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -26,7 +28,9 @@ export default function RootLayout({
       <Providers>
         <body>
           <div className="overflow-hidden bg-ui-secondary-200 px-4 mx-auto lg:container">
+            <RootHeader />
             <div className="flex flex-col gap-10 min-h-screen">{children}</div>
+            <Footer />
           </div>
         </body>
       </Providers>
