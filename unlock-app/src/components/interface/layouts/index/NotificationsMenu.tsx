@@ -1,5 +1,5 @@
 import { Menu, MenuButton, MenuItems, Transition } from '@headlessui/react'
-import { Fragment, ReactNode, useState } from 'react'
+import { Fragment, ReactNode, useState, useMemo } from 'react'
 import { BiBell as BellIcon } from 'react-icons/bi'
 import { Button } from '@unlock-protocol/ui'
 import { PromptEmailLink } from '../../PromptEmailLink'
@@ -39,32 +39,39 @@ export function NotificationsMenu() {
     queryFn: () => locksmith.getCheckoutHookJobs(),
   })
 
-  if (!account) {
-    return null
-  }
+  const notifications = useMemo<NotificationProps[]>(() => {
+    const items: NotificationProps[] = []
 
-  const notifications: NotificationProps[] = []
-
-  /*
+    /*
     Only show email prompt notification if:
     1. User connected
     2. User doesn't have an email
     3. Not on checkout or demo pages
   */
-  if (!email && !['/checkout', '/demo'].includes(pathname)) {
-    notifications.push({
-      id: '1',
-      content: <PromptEmailLink setModalOpen={setShowModal} />,
-      timestamp: new Date(),
-    })
-  }
+    if (!email && !['/checkout', '/demo'].includes(pathname)) {
+      items.push({
+        id: '1',
+        content: <PromptEmailLink setModalOpen={setShowModal} />,
+        timestamp: new Date(),
+      })
+    }
+    if (
+      !isLoading &&
+      !error &&
+      hooks?.data?.length &&
+      hooks?.data?.length > 0
+    ) {
+      items.push({
+        id: '2',
+        content: <Hooks hooks={hooks!.data} refetch={refetch} />,
+        timestamp: new Date(),
+      })
+    }
+    return items
+  }, [email, pathname, isLoading, error, hooks, refetch])
 
-  if (!isLoading && !error && hooks?.data?.length && hooks?.data?.length > 0) {
-    notifications.push({
-      id: '2',
-      content: <Hooks hooks={hooks.data} refetch={refetch} />,
-      timestamp: new Date(),
-    })
+  if (!account) {
+    return null
   }
 
   return (
