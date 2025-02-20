@@ -37,7 +37,7 @@ const CampaignCard = ({
     >
       <div className="space-y-4">
         <h3 className="text-xl font-medium">{title}</h3>
-        <p className="text-gray-600">{description}</p>
+        <p className="text-gray-600 line-clamp-3">{description}</p>
         <div className="flex items-center justify-between">
           <Button disabled={!authenticated || !isEligible}>
             {!authenticated
