@@ -8,13 +8,24 @@ import airDrops from '../src/airdrops.json'
 import { Button } from '@unlock-protocol/ui'
 import Link from 'next/link'
 import { usePrivy } from '@privy-io/react-auth'
+import { isEligible } from '../src/utils/eligibility'
+
+interface AirdropData {
+  id: string
+  title: string
+  description: string
+  contractAddress: string
+  tokenAmount: string
+  tokenSymbol: string
+  recipientsFile: string
+}
 
 interface CampaignCardProps {
   title: string
   description: string
   contractAddress: string
-  isEligible: boolean
   authenticated: boolean
+  isEligible?: number
 }
 
 const CampaignCard = ({
@@ -29,7 +40,7 @@ const CampaignCard = ({
       href={`#${contractAddress}`}
       className={`block h-full p-6 space-y-4 border min-w-[24rem] sm:min-w-[28rem] rounded-xl transition-all duration-200 ${
         authenticated
-          ? isEligible
+          ? isEligible > 0
             ? 'hover:border-brand-ui-primary'
             : 'opacity-50 cursor-not-allowed hover:border-gray-200'
           : ''
@@ -42,17 +53,19 @@ const CampaignCard = ({
           <Button disabled={!authenticated || !isEligible}>
             {!authenticated
               ? 'Connect Wallet'
-              : isEligible
+              : isEligible > 0
                 ? 'Claim Rewards'
                 : 'Not Eligible'}
           </Button>
           {authenticated && (
             <div
               className={`text-sm font-medium ${
-                isEligible ? 'text-green-600' : 'text-gray-500'
+                isEligible > 0 ? 'text-green-600' : 'text-gray-500'
               }`}
             >
-              {isEligible ? 'Eligible' : 'Not Eligible'}
+              {isEligible > 0
+                ? `Eligible for ${isEligible} UP`
+                : 'Not Eligible'}
             </div>
           )}
         </div>
@@ -86,7 +99,28 @@ const CampaignsContent = () => {
     onSelect()
   }, [embla, onSelect])
 
-  const { authenticated } = usePrivy()
+  const { authenticated, user } = usePrivy()
+  const [eligibility, setEligibility] = useState<Record<string, number>>({})
+
+  useEffect(() => {
+    const checkEligibility = async () => {
+      if (!authenticated || !user?.wallet?.address) return
+
+      const eligibilityChecks = await Promise.all(
+        (airDrops as AirdropData[]).map(async (drop) => {
+          const amount = await isEligible(
+            user.wallet.address,
+            drop.recipientsFile
+          )
+          return [drop.contractAddress, amount] as const
+        })
+      )
+
+      setEligibility(Object.fromEntries(eligibilityChecks))
+    }
+
+    checkEligibility()
+  }, [authenticated, user?.wallet?.address])
 
   return (
     <Container>
@@ -124,13 +158,13 @@ const CampaignsContent = () => {
         <div className="relative max-w-fit">
           <div className="overflow-hidden cursor-move" ref={viewportRef}>
             <div className="flex gap-8 py-6 select-none">
-              {airDrops.map((drop) => (
+              {(airDrops as AirdropData[]).map((drop) => (
                 <CampaignCard
                   key={drop.contractAddress}
                   contractAddress={drop.contractAddress}
                   title={drop.title}
                   description={drop.description}
-                  isEligible={drop.isEligible}
+                  isEligible={eligibility[drop.contractAddress] ?? 0}
                   authenticated={authenticated}
                 />
               ))}
