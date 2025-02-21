@@ -5346,15 +5346,36 @@ paths:
   /v2/merkle-tree:
     post:
       operationId: saveMerkleTree
-      description: Saves a merkle tree from a list of addresses.
+      description: Saves a merkle tree from either a list of addresses or a list of [address, amount] tuples.
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: array
+              minItems: 1
+              description: Array must contain either all strings (addresses) or all [address, amount] tuples, no mixing allowed
               items:
-                type: string
+                type: object
+                oneOf:
+                  - type: string
+                    description: Recipient address (will be assigned amount "1")
+                  - type: array
+                    description: Address and amount tuple
+                    minItems: 2
+                    maxItems: 2
+                    items:
+                      oneOf:
+                        - type: string
+                          description: Recipient address
+                        - type: object
+                          properties:
+                            amount:
+                              oneOf:
+                                - type: string
+                                  description: Amount as string
+                                - type: number
+                                  description: Amount as number
       responses:
         200:
           description: Successfully saved the Merkle Tree
@@ -5362,15 +5383,14 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - root
                 properties:
-                  success:
-                    type: boolean
                   root:
                     type: string
-                  url:
-                    type: string
+                    description: The merkle tree root hash
         400:
-          description: Missing required fields
+          description: Invalid request (empty array, mixed types, or invalid addresses)
           content:
             application/json:
               schema:
@@ -5379,15 +5399,22 @@ paths:
                   - error
                 properties:
                   error:
-                    type: string
+                    type: object
+                    required:
+                      - issues
+                    properties:
+                      issues:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: string
+                            message:
+                              type: string
+                            path:
+                              type: array
+                              items:
+                                type: string
         500:
-          description: Server error
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - error
-                properties:
-                  error:
-                    type: string
+          $ref: '#/components/responses/500.InternalError'
