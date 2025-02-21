@@ -1,8 +1,9 @@
-import { z } from 'zod'
-import { Request, Response } from 'express'
+import { z, ZodError } from 'zod'
+import { RequestHandler } from 'express'
 import { StandardMerkleTree } from '@openzeppelin/merkle-tree'
 import { uploadJsonToS3 } from '../../utils/s3'
 import config from '../../config/config'
+import * as Normalizer from '../../utils/normalizer'
 
 /**
  * A tree entry can either be:
@@ -10,8 +11,11 @@ import config from '../../config/config'
  * - a tuple of [recipient, amount] where amount can be a number or a string, ideal for airdrops with varying amounts.
  */
 const RawMerkleTreeEntry = z.union([
-  z.string(),
-  z.tuple([z.string(), z.union([z.string(), z.number()])]),
+  z.string().transform((address) => Normalizer.ethereumAddress(address)),
+  z.tuple([
+    z.string().transform((address) => Normalizer.ethereumAddress(address)),
+    z.union([z.string(), z.number()]),
+  ]),
 ])
 
 /**
@@ -22,8 +26,7 @@ const CreateMerkleTreeEntries = z
   .array(RawMerkleTreeEntry)
   .refine(
     (entries) => {
-      if (entries.length === 0) return true
-      // If first element is a string, all entries must be strings
+      if (entries.length === 0) return false // Reject empty arrays
       const isSimpleList = typeof entries[0] === 'string'
       return entries.every((entry) =>
         isSimpleList ? typeof entry === 'string' : Array.isArray(entry)
@@ -31,11 +34,11 @@ const CreateMerkleTreeEntries = z
     },
     {
       message:
-        'All entries must be of the same type: either simple recipient strings or [recipient, amount] tuples.',
+        'All entries must be of the same type: either simple recipient strings or [recipient, amount] tuples. Empty arrays are not allowed.',
     }
   )
   .transform((entries) => {
-    if (entries.length === 0 || typeof entries[0] === 'string') {
+    if (typeof entries[0] === 'string') {
       return (entries as string[]).map(
         (recipient) => [recipient, '1'] as [string, string]
       )
@@ -51,27 +54,37 @@ const CreateMerkleTreeEntries = z
  *
  * If the payload is an array of strings, it assigns a fixed amount "1" to each address.
  * If the payload is an array of [recipient, amount] tuples, it uses the provided amount (normalized to a string).
- * The second format is particularly useful for airdrops where different recipients receive different amounts.
+ * Empty arrays are rejected with a 400 status code.
  */
-export const createMerkleTree = async (
-  request: Request,
-  response: Response
-) => {
-  const normalizedEntries = await CreateMerkleTreeEntries.parseAsync(
-    request.body
-  )
+export const createMerkleTree: RequestHandler = async (request, response) => {
+  try {
+    const normalizedEntries = await CreateMerkleTreeEntries.parseAsync(
+      request.body
+    )
 
-  const tree = StandardMerkleTree.of(normalizedEntries, ['address', 'uint256'])
+    const tree = StandardMerkleTree.of(normalizedEntries, [
+      'address',
+      'uint256',
+    ])
 
-  // dump the tree
-  const fullTree = tree.dump()
+    // dump the tree
+    const fullTree = tree.dump()
 
-  // Then, store the tree (at <slug>.json)
-  await uploadJsonToS3(
-    config.storage.merkleTreesBucket,
-    `${tree.root}.json`,
-    fullTree
-  )
+    // Store the tree (at <root>.json)
+    await uploadJsonToS3(
+      config.storage.merkleTreesBucket,
+      `${tree.root}.json`,
+      fullTree
+    )
 
-  response.status(200).send({ root: tree.root })
+    response.status(200).send({ root: tree.root })
+    return
+  } catch (error: any) {
+    if (error instanceof ZodError) {
+      response.status(400).json({ error: { issues: error.errors } })
+      return
+    }
+    response.status(400).json({ error })
+    return
+  }
 }
