@@ -1,10 +1,24 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.21;
 
-import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
-import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
-import "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { MerkleProof } from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
+import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import { MessageHashUtils } from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
+import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
+// Custom errors for gas efficiency.
+error NOT_AUTHORIZED();
+error OnlyOwner();
+
+/**
+ * @notice Interface for the Airdrops contract that handles campaign management and token claims
+ * @dev Defines functions for setting campaign parameters, signing TOS, and claiming tokens
+ */
+interface IAirdrops {
+    function setMerkleRootForCampaign(string calldata campaignName, string calldata tos, bytes32 root) external;
+    function signTos(string calldata campaignName, address recipient, bytes calldata signature) external;
+    function claim(string calldata campaignName, address recipient, uint256 amount, bytes calldata proof) external;
+}
 
 /**
  * @title Airdrops
@@ -12,18 +26,18 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
  * The contract allows only those who have signed the campaign's Terms of Service (TOS) to claim tokens.
  * The owner sets up campaigns with a TOS and a corresponding Merkle root representing eligible entries.
  */
-contract Airdrops {
-  /// @notice The ERC20 token to be airdropped (UP)
-  IERC20 public token;
-
-  /// @notice Owner for administrative functions
-  address public owner;
-
+contract Airdrops is IAirdrops {
   /// @notice Structure representing a campaign's Terms of Service and its corresponding Merkle tree root.
   struct Campaign {
     string tos;
     bytes32 merkleRoot;
   }
+
+  /// @notice The ERC20 token to be airdropped (UP)
+  IERC20 public token;
+
+  /// @notice Owner for administrative functions
+  address public owner;
 
   /// @notice Mapping from campaign name to campaign details.
   mapping(string => Campaign) public campaigns;
@@ -41,9 +55,6 @@ contract Airdrops {
   /// @notice Emitted when tokens are claimed.
   event TokensClaimed(string indexed campaignName, address indexed recipient, uint256 amount);
 
-  /// @notice Custom error for unauthorized actions.
-  error NOT_AUTHORIZED();
-
   /**
    * @notice Constructor that sets the token to be airdropped and initializes the owner.
    * @param _token The address of the ERC20 token contract (UP).
@@ -57,7 +68,7 @@ contract Airdrops {
    * @notice Modifier to restrict functions to the contract owner.
    */
   modifier onlyOwner() {
-    require(msg.sender == owner, "Only owner");
+    if (msg.sender != owner) revert OnlyOwner();
     _;
   }
 
@@ -71,7 +82,7 @@ contract Airdrops {
     string calldata campaignName,
     string calldata tos,
     bytes32 root
-  ) external onlyOwner {
+  ) external override onlyOwner {
     campaigns[campaignName] = Campaign(tos, root);
     emit CampaignSet(campaignName, root);
   }
@@ -89,9 +100,8 @@ contract Airdrops {
     string calldata campaignName,
     address recipient,
     bytes calldata signature
-  ) external {
-    // Ensure the caller is the recipient signing the TOS.
-    require(msg.sender == recipient, "Caller must be recipient");
+  ) external override {
+    if (msg.sender != recipient) revert NOT_AUTHORIZED();
 
     Campaign storage campaign = campaigns[campaignName];
     require(bytes(campaign.tos).length != 0, "Campaign does not exist");
@@ -126,10 +136,8 @@ contract Airdrops {
     address recipient,
     uint256 amount,
     bytes calldata proof
-  ) external {
-    // Ensure that the caller is the recipient.
-    require(msg.sender == recipient, "Caller must be recipient");
-    // Check that the recipient has signed the TOS for the campaign.
+  ) external override {
+    if (msg.sender != recipient) revert NOT_AUTHORIZED();
     require(signedTos[campaignName][recipient], "TOS not signed");
 
     Campaign storage campaign = campaigns[campaignName];
@@ -167,6 +175,7 @@ contract Airdrops {
     uint256 length = data.length / 32;
     bytes32[] memory dataList = new bytes32[](length);
     for (uint256 i = 0; i < length; i++) {
+      // solhint-disable-next-line no-inline-assembly
       bytes32 current;
       assembly {
         current := mload(add(data, mul(add(i, 1), 32)))
