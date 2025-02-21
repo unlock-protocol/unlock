@@ -5353,22 +5353,34 @@ paths:
           application/json:
             schema:
               type: array
-              items:
-                oneOf:
-                  - type: string
-                    description: Recipient address (will be assigned amount "1")
-                  - type: array
-                    minItems: 2
-                    maxItems: 2
-                    items:
-                      - type: string
-                        description: Recipient address
-                      - oneOf:
-                          - type: string
-                            description: Amount as string
-                          - type: number
-                            description: Amount as number
               description: Array must contain either all strings or all tuples, no mixing allowed
+              items:
+                type: object
+                oneOf:
+                  - type: object
+                    properties:
+                      value:
+                        type: string
+                        description: Recipient address (will be assigned amount "1")
+                  - type: object
+                    properties:
+                      value:
+                        type: array
+                        minItems: 2
+                        maxItems: 2
+                        items:
+                          oneOf:
+                            - type: object
+                              properties:
+                                recipient:
+                                  type: string
+                                  description: Recipient address
+                                amount:
+                                  oneOf:
+                                    - type: string
+                                      description: Amount as string
+                                    - type: number
+                                      description: Amount as number
       responses:
         200:
           description: Successfully saved the Merkle Tree
