@@ -6,9 +6,10 @@ import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import { MessageHashUtils } from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-// Custom errors for gas efficiency.
+// Custom errors
 error NOT_AUTHORIZED();
-error OnlyOwner();
+error NOT_OWNER();
+error ALREADY_CLAIMED();
 
 /**
  * @notice Interface for the Airdrops contract that handles campaign management and token claims
@@ -27,14 +28,14 @@ interface IAirdrops {
  * The owner sets up campaigns with a TOS and a corresponding Merkle root representing eligible entries.
  */
 contract Airdrops is IAirdrops {
-  /// @notice Structure representing a campaign's Terms of Service and its corresponding Merkle tree root.
+  /// @notice Structure representing a campaign's TOS hash and its corresponding Merkle tree root.
   struct Campaign {
-    string tos;
+    bytes32 tosHash; // Stores only the Ethereum Signed Message hash of the TOS for gas efficiency.
     bytes32 merkleRoot;
   }
 
   /// @notice The ERC20 token to be airdropped (UP)
-  IERC20 public token;
+  IERC20 public immutable token;
 
   /// @notice Owner for administrative functions
   address public owner;
@@ -43,10 +44,10 @@ contract Airdrops is IAirdrops {
   mapping(string => Campaign) public campaigns;
 
   /// @notice Mapping from campaign name to addresses that have signed the TOS.
-  mapping(string => mapping(address => bool)) public signedTos;
+  mapping(string => mapping(address => bytes32)) public signedTos;
 
-  /// @notice Mapping of Merkle tree leaves that have been claimed to prevent double claiming.
-  mapping(bytes32 => bool) public claimedLeafs;
+  /// @notice Mapping of Merkle tree leaves that have been claimed.
+  mapping(bytes32 => bytes32) public claimedLeafs;
 
   /// @notice Emitted when a campaign is set.
   event CampaignSet(string indexed campaignName, bytes32 merkleRoot);
@@ -68,7 +69,7 @@ contract Airdrops is IAirdrops {
    * @notice Modifier to restrict functions to the contract owner.
    */
   modifier onlyOwner() {
-    if (msg.sender != owner) revert OnlyOwner();
+    if (msg.sender != owner) revert NOT_OWNER();
     _;
   }
 
@@ -83,7 +84,9 @@ contract Airdrops is IAirdrops {
     string calldata tos,
     bytes32 root
   ) external override onlyOwner {
-    campaigns[campaignName] = Campaign(tos, root);
+    // Compute and store only the Ethereum Signed Message hash of the TOS.
+    bytes32 tosHash = MessageHashUtils.toEthSignedMessageHash(keccak256(bytes(tos)));
+    campaigns[campaignName] = Campaign(tosHash, root);
     emit CampaignSet(campaignName, root);
   }
 
@@ -101,24 +104,28 @@ contract Airdrops is IAirdrops {
     address recipient,
     bytes calldata signature
   ) external override {
-    if (msg.sender != recipient) revert NOT_AUTHORIZED();
+    // Removed check for msg.sender equality to recipient to allow flexible signing.
 
     Campaign storage campaign = campaigns[campaignName];
-    require(bytes(campaign.tos).length != 0, "Campaign does not exist");
+    if (campaign.tosHash == bytes32(0)) revert NOT_AUTHORIZED(); // Campaign does not exist.
 
-    // Create the Ethereum Signed Message hash from the campaign's TOS.
-    bytes32 messageHash = MessageHashUtils.toEthSignedMessageHash(keccak256(bytes(campaign.tos)));
+    // Use stored message hash from campaign.
+    bytes32 messageHash = campaign.tosHash;
+
     // Recover the signer from the provided signature.
     address recovered = ECDSA.recover(messageHash, signature);
     if (recovered != recipient) {
       revert NOT_AUTHORIZED();
     }
-    signedTos[campaignName][recipient] = true;
+
+    // Store a pseudo transaction hash for the TOS signing event using block.timestamp.
+    bytes32 tosTxHash = keccak256(abi.encodePacked(block.timestamp, recipient, campaignName));
+    signedTos[campaignName][recipient] = tosTxHash;
     emit TosSigned(campaignName, recipient);
   }
 
   /**
-   * @notice Claims tokens for the airdrop if the recipient is eligible via the Merkle proof and has signed the TOS.
+   * @notice Claims tokens for the airdrop if the recipient is eligible via the Merkle proof and has a signed TOS.
    *
    * It computes the leaf from the recipient address and token amount using the same logic as the backend:
    * 
@@ -127,7 +134,7 @@ contract Airdrops is IAirdrops {
    * \]
    *
    * @param campaignName The campaign identifier.
-   * @param recipient The address claiming tokens. (Must be equal to msg.sender.)
+   * @param recipient The address for whom the tokens are being claimed.
    * @param amount The token amount to claim.
    * @param proof The concatenated proof bytes (multiple of 32 bytes) used for Merkle proof verification.
    */
@@ -137,8 +144,10 @@ contract Airdrops is IAirdrops {
     uint256 amount,
     bytes calldata proof
   ) external override {
-    if (msg.sender != recipient) revert NOT_AUTHORIZED();
-    require(signedTos[campaignName][recipient], "TOS not signed");
+    // Removed check for msg.sender equality to recipient to allow claims on behalf of someone else.
+
+    // Ensure the TOS has been signed. The stored pseudo transaction hash must be non-zero.
+    if (signedTos[campaignName][recipient] == bytes32(0)) revert NOT_AUTHORIZED();
 
     Campaign storage campaign = campaigns[campaignName];
     if (campaign.merkleRoot == bytes32(0)) {
@@ -148,18 +157,20 @@ contract Airdrops is IAirdrops {
     // Compute the Merkle tree leaf.
     bytes32 leaf = keccak256(bytes.concat(keccak256(abi.encode(recipient, amount))));
     
-    // Prevent double-claiming.
-    require(!claimedLeafs[leaf], "Already claimed");
+    // Prevent double-claiming; check that no transaction hash is stored yet.
+    if (claimedLeafs[leaf] != bytes32(0)) revert ALREADY_CLAIMED();
 
     // Verify the Merkle proof.
     bool valid = MerkleProof.verify(_bytesToBytes32Array(proof), campaign.merkleRoot, leaf);
     if (!valid) {
       revert NOT_AUTHORIZED();
     }
-    claimedLeafs[leaf] = true;
 
-    // Transfer tokens to the recipient.
-    require(token.transfer(recipient, amount), "Token transfer failed");
+    // Record the claim with a pseudo transaction hash incorporating the timestamp.
+    claimedLeafs[leaf] = keccak256(abi.encodePacked(block.timestamp, recipient, amount, leaf));
+
+    // Transfer tokens to the recipient without wrapping in require.
+    token.transfer(recipient, amount);
     emit TokensClaimed(campaignName, recipient, amount);
   }
 
