@@ -5353,34 +5353,29 @@ paths:
           application/json:
             schema:
               type: array
-              description: Array must contain either all strings or all tuples, no mixing allowed
+              minItems: 1
+              description: Array must contain either all strings (addresses) or all [address, amount] tuples, no mixing allowed
               items:
                 type: object
                 oneOf:
-                  - type: object
-                    properties:
-                      value:
-                        type: string
-                        description: Recipient address (will be assigned amount "1")
-                  - type: object
-                    properties:
-                      value:
-                        type: array
-                        minItems: 2
-                        maxItems: 2
-                        items:
-                          oneOf:
-                            - type: object
-                              properties:
-                                recipient:
-                                  type: string
-                                  description: Recipient address
-                                amount:
-                                  oneOf:
-                                    - type: string
-                                      description: Amount as string
-                                    - type: number
-                                      description: Amount as number
+                  - type: string
+                    description: Recipient address (will be assigned amount "1")
+                  - type: array
+                    description: Address and amount tuple
+                    minItems: 2
+                    maxItems: 2
+                    items:
+                      oneOf:
+                        - type: string
+                          description: Recipient address
+                        - type: object
+                          properties:
+                            amount:
+                              oneOf:
+                                - type: string
+                                  description: Amount as string
+                                - type: number
+                                  description: Amount as number
       responses:
         200:
           description: Successfully saved the Merkle Tree
@@ -5388,18 +5383,14 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - root
                 properties:
-                  success:
-                    type: boolean
-                    default: true
                   root:
                     type: string
                     description: The merkle tree root hash
-                  url:
-                    type: string
-                    description: URL where the merkle tree is stored
         400:
-          description: Missing required fields
+          description: Invalid request (empty array, mixed types, or invalid addresses)
           content:
             application/json:
               schema:
@@ -5408,15 +5399,22 @@ paths:
                   - error
                 properties:
                   error:
-                    type: string
+                    type: object
+                    required:
+                      - issues
+                    properties:
+                      issues:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: string
+                            message:
+                              type: string
+                            path:
+                              type: array
+                              items:
+                                type: string
         500:
-          description: Server error
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - error
-                properties:
-                  error:
-                    type: string
+          $ref: '#/components/responses/500.InternalError'
