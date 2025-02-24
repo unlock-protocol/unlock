@@ -10,6 +10,7 @@ import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 error NOT_AUTHORIZED();
 error NOT_OWNER();
 error ALREADY_CLAIMED();
+error USER_BLOCKED();
 
 /**
  * @notice Interface for the Airdrops contract that handles campaign management and token claims
@@ -48,6 +49,9 @@ contract Airdrops is IAirdrops {
 
   /// @notice Mapping of Merkle tree leaves that have been claimed.
   mapping(bytes32 => bytes32) public claimedLeafs;
+
+  /// @notice Mapping of addresses that are blocklisted.
+  mapping(address => bool) public blocklist;
 
   /// @notice Emitted when a campaign is set.
   event CampaignSet(string indexed campaignName, bytes32 merkleRoot);
@@ -144,7 +148,8 @@ contract Airdrops is IAirdrops {
     uint256 amount,
     bytes calldata proof
   ) external override {
-    // Removed check for msg.sender equality to recipient to allow claims on behalf of someone else.
+    // Blocked users are not allowed to claim tokens.
+    if (blocklist[recipient]) revert USER_BLOCKED();
 
     // Ensure the TOS has been signed. The stored pseudo transaction hash must be non-zero.
     if (signedTos[campaignName][recipient] == bytes32(0)) revert NOT_AUTHORIZED();
@@ -172,6 +177,22 @@ contract Airdrops is IAirdrops {
     // Transfer tokens to the recipient without wrapping in require.
     token.transfer(recipient, amount);
     emit TokensClaimed(campaignName, recipient, amount);
+  }
+
+  /**
+   * @notice Adds an address to the blocklist.
+   * @param user The address to be added to the blocklist.
+   */
+  function addToBlocklist(address user) external onlyOwner {
+    blocklist[user] = true;
+  }
+
+  /**
+   * @notice Removes an address from the blocklist.
+   * @param user The address to be removed from the blocklist.
+   */
+  function removeFromBlocklist(address user) external onlyOwner {
+    blocklist[user] = false;
   }
 
   /**
