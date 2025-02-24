@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { CoverImageDrawer } from '../CoverImageDrawer'
 import { Event, PaywallConfigType } from '@unlock-protocol/core'
 import AddToCalendarButton from '../AddToCalendarButton'
@@ -22,7 +22,7 @@ type EventDefaultLayoutProps = {
     config: PaywallConfigType
   }
   hasLocation: boolean
-  hasDate: string | null
+  hasDate: boolean
   coverImage: string
   refetch: () => void
   organizers: string[] | undefined
@@ -75,7 +75,7 @@ export const EventDefaultLayout = ({
           <section className="flex justify-between flex-col sm:flex-row">
             <div className="flex p-1 bg-white sm:p-2 sm:w-48 sm:h-48 sm:rounded-3xl rounded-xl border">
               <img
-                // @ts-expect-error protperty 'title' does not exist on type 'Event'
+                // @ts-expect-error property 'title' does not exist on type 'Event'
                 alt={event.title}
                 className="object-cover w-full m-auto aspect-1 sm:rounded-2xl rounded-lg"
                 src={event.image}
@@ -110,7 +110,7 @@ export const EventDefaultLayout = ({
               {hasDate && (
                 <EventDetail label="Date" icon={CalendarIcon}>
                   <div
-                    // @ts-expect-error protperty 'background_color' does not exist on type 'Event'
+                    // @ts-expect-error property 'background_color' does not exist on type 'Event'
                     style={{ color: `#${event.background_color}` }}
                     className="flex flex-col text-lg font-normal text-brand-dark"
                   >

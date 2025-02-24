@@ -1,4 +1,3 @@
-import React from 'react'
 import { Event, PaywallConfigType } from '@unlock-protocol/core'
 import AddToCalendarButton from '../AddToCalendarButton'
 import TweetItButton from '../TweetItButton'
@@ -21,7 +20,7 @@ type EventBannerlessProps = {
     config: PaywallConfigType
   }
   hasLocation: boolean
-  hasDate: string | null
+  hasDate: boolean
   organizers: string[] | undefined
   startDate: string | null
   endDate: string | null
@@ -51,7 +50,7 @@ export const EventBannerlessLayout = ({
           <section className="flex justify-between flex-col">
             <div className="flex p-1 bg-white sm:p-2 sm:w-96 sm:h-96 sm:rounded-3xl rounded-xl border">
               <img
-                // @ts-expect-error propery 'title' does not exist on type 'Event'
+                // @ts-expect-error property 'title' does not exist on type 'Event'
                 alt={event.title}
                 className="object-cover w-full m-auto aspect-1 sm:rounded-2xl rounded-lg"
                 src={event.image}
@@ -100,7 +99,7 @@ export const EventBannerlessLayout = ({
             {hasDate && (
               <EventDetail label="Date" icon={CalendarIcon}>
                 <div
-                  // @ts-expect-error propery 'background_color' does not exist on type 'Event'
+                  // @ts-expect-error property 'background_color' does not exist on type 'Event'
                   style={{ color: `#${event.background_color}` }}
                   className="flex flex-col text-lg font-normal text-brand-dark"
                 >
