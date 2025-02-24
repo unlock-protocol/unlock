@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.21;
 
-import { MerkleProof } from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
-import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
-import { MessageHashUtils } from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
-import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
+import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import {MessageHashUtils} from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 // Custom errors
 error NOT_AUTHORIZED();
@@ -17,9 +17,22 @@ error USER_BLOCKED();
  * @dev Defines functions for setting campaign parameters, signing TOS, and claiming tokens
  */
 interface IAirdrops {
-    function setMerkleRootForCampaign(string calldata campaignName, string calldata tos, bytes32 root) external;
-    function signTos(string calldata campaignName, address recipient, bytes calldata signature) external;
-    function claim(string calldata campaignName, address recipient, uint256 amount, bytes calldata proof) external;
+  function setMerkleRootForCampaign(
+    string calldata campaignName,
+    string calldata tos,
+    bytes32 root
+  ) external;
+  function signTos(
+    string calldata campaignName,
+    address recipient,
+    bytes calldata signature
+  ) external;
+  function claim(
+    string calldata campaignName,
+    address recipient,
+    uint256 amount,
+    bytes calldata proof
+  ) external;
 }
 
 /**
@@ -58,7 +71,11 @@ contract Airdrops is IAirdrops {
   /// @notice Emitted when a recipient signs the TOS.
   event TosSigned(string indexed campaignName, address indexed recipient);
   /// @notice Emitted when tokens are claimed.
-  event TokensClaimed(string indexed campaignName, address indexed recipient, uint256 amount);
+  event TokensClaimed(
+    string indexed campaignName,
+    address indexed recipient,
+    uint256 amount
+  );
 
   /**
    * @notice Constructor that sets the token to be airdropped and initializes the owner.
@@ -89,7 +106,9 @@ contract Airdrops is IAirdrops {
     bytes32 root
   ) external override onlyOwner {
     // Compute and store only the Ethereum Signed Message hash of the TOS.
-    bytes32 tosHash = MessageHashUtils.toEthSignedMessageHash(keccak256(bytes(tos)));
+    bytes32 tosHash = MessageHashUtils.toEthSignedMessageHash(
+      keccak256(bytes(tos))
+    );
     campaigns[campaignName] = Campaign(tosHash, root);
     emit CampaignSet(campaignName, root);
   }
@@ -123,7 +142,9 @@ contract Airdrops is IAirdrops {
     }
 
     // Store a pseudo transaction hash for the TOS signing event using block.timestamp.
-    bytes32 tosTxHash = keccak256(abi.encodePacked(block.timestamp, recipient, campaignName));
+    bytes32 tosTxHash = keccak256(
+      abi.encodePacked(block.timestamp, recipient, campaignName)
+    );
     signedTos[campaignName][recipient] = tosTxHash;
     emit TosSigned(campaignName, recipient);
   }
@@ -132,7 +153,7 @@ contract Airdrops is IAirdrops {
    * @notice Claims tokens for the airdrop if the recipient is eligible via the Merkle proof and has a signed TOS.
    *
    * It computes the leaf from the recipient address and token amount using the same logic as the backend:
-   * 
+   *
    * \[
    * \text{leaf} = \mathtt{keccak256( bytes.concat( keccak256( abi.encode( recipient, amount ) ) ) )}
    * \]
@@ -152,7 +173,8 @@ contract Airdrops is IAirdrops {
     if (blocklist[recipient]) revert USER_BLOCKED();
 
     // Ensure the TOS has been signed. The stored pseudo transaction hash must be non-zero.
-    if (signedTos[campaignName][recipient] == bytes32(0)) revert NOT_AUTHORIZED();
+    if (signedTos[campaignName][recipient] == bytes32(0))
+      revert NOT_AUTHORIZED();
 
     Campaign storage campaign = campaigns[campaignName];
     if (campaign.merkleRoot == bytes32(0)) {
@@ -160,19 +182,27 @@ contract Airdrops is IAirdrops {
     }
 
     // Compute the Merkle tree leaf.
-    bytes32 leaf = keccak256(bytes.concat(keccak256(abi.encode(recipient, amount))));
-    
+    bytes32 leaf = keccak256(
+      bytes.concat(keccak256(abi.encode(recipient, amount)))
+    );
+
     // Prevent double-claiming; check that no transaction hash is stored yet.
     if (claimedLeafs[leaf] != bytes32(0)) revert ALREADY_CLAIMED();
 
     // Verify the Merkle proof.
-    bool valid = MerkleProof.verify(_bytesToBytes32Array(proof), campaign.merkleRoot, leaf);
+    bool valid = MerkleProof.verify(
+      _bytesToBytes32Array(proof),
+      campaign.merkleRoot,
+      leaf
+    );
     if (!valid) {
       revert NOT_AUTHORIZED();
     }
 
     // Record the claim with a pseudo transaction hash incorporating the timestamp.
-    claimedLeafs[leaf] = keccak256(abi.encodePacked(block.timestamp, recipient, amount, leaf));
+    claimedLeafs[leaf] = keccak256(
+      abi.encodePacked(block.timestamp, recipient, amount, leaf)
+    );
 
     // Transfer tokens to the recipient without wrapping in require.
     token.transfer(recipient, amount);
@@ -196,7 +226,7 @@ contract Airdrops is IAirdrops {
   }
 
   /**
-   * @notice Internal helper to convert a bytes blob into an array of bytes32.
+   * @notice Internal helper to convert a bytes blob into an array of bytes32
    * @param data The concatenated bytes (proof) to be split.
    * @return An array of bytes32 extracted from the input data.
    */
@@ -207,12 +237,12 @@ contract Airdrops is IAirdrops {
     uint256 length = data.length / 32;
     bytes32[] memory dataList = new bytes32[](length);
     for (uint256 i = 0; i < length; i++) {
-      // solhint-disable-next-line no-inline-assembly
-      bytes32 current;
-      assembly {
-        current := mload(add(data, mul(add(i, 1), 32)))
+      uint256 word = 0;
+      // Iterate through each of the 32 bytes in the chunk and build the word.
+      for (uint256 j = 0; j < 32; j++) {
+        word = (word << 8) | uint8(data[i * 32 + j]);
       }
-      dataList[i] = current;
+      dataList[i] = bytes32(word);
     }
     return dataList;
   }
