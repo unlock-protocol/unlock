@@ -17,7 +17,6 @@ import {
 import { FaGithub, FaGlobe, FaXTwitter, FaYoutube } from 'react-icons/fa6'
 import { SiFarcaster as FarcasterIcon } from 'react-icons/si'
 import AddEventsToCollectionDrawer from './AddEventsToCollectionDawer'
-import { EventDetailDrawer } from './EventDetailDrawer'
 import { Metadata } from '@unlock-protocol/core'
 import CopyUrlButton from '../event/CopyUrlButton'
 import TweetItButton from '../event/TweetItButton'
@@ -28,6 +27,7 @@ import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 import { useConnectModal } from '~/hooks/useConnectModal'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { EventDetailDrawer } from './EventDetailDrawer'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -353,7 +353,7 @@ export default function EventsCollectionDetailContent({
           collectionSlug={eventCollection?.slug}
           isOpen={isEventDetailDrawerOpen}
           setIsOpen={setIsEventDetailDrawerOpen}
-          event={selectedEvent}
+          selectedEvent={selectedEvent}
           isManager={isManager}
         />
       )}
