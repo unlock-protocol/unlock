@@ -1,5 +1,4 @@
 import React from 'react'
-import { Event } from './EventsCollectionDetailContent'
 import ReactMarkdown from 'react-markdown'
 import { Button, Drawer, Placeholder } from '@unlock-protocol/ui'
 import { AiOutlineCalendar as CalendarIcon } from 'react-icons/ai'
@@ -9,21 +8,24 @@ import { useEventOrganizers } from '~/hooks/useEventOrganizers'
 import Hosts from '../event/Hosts'
 import { EventDetail } from '../event/EventDetail'
 import { EventLocation } from '../event/EventLocation'
-import dayjs from 'dayjs'
 import AddToCalendarButton from '../event/AddToCalendarButton'
 import { FaExternalLinkAlt } from 'react-icons/fa'
 import Link from 'next/link'
 import PastEvent from '../event/Layout/PastEvent'
 import RemoveFromCollectionButton from './RemoveFromCollectionButton'
-import { getEventAttributes } from '~/utils/eventCollections'
 import { useEventOrganizer } from '~/hooks/useEventOrganizer'
 import { TbSettings } from 'react-icons/tb'
+import { useEvent } from '~/hooks/useEvent'
+import { toFormData } from '~/components/interface/locks/metadata/utils'
+import { Event } from '@unlock-protocol/core'
+import { getEventUrl } from '../event/utils'
+import { formatEventDates } from '~/utils/formatEventDates'
 
 interface EventDetailDrawerProps {
   collectionSlug: string | undefined
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
-  event: Event | null
+  selectedEvent: any
   isManager: boolean
 }
 
@@ -31,13 +33,26 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
   collectionSlug,
   isOpen,
   setIsOpen,
-  event,
+  selectedEvent,
   isManager,
 }) => {
   const { data: checkoutConfig, isPending: isCheckoutConfigPending } =
     useCheckoutConfig({
-      id: event?.checkoutConfigId,
+      id: selectedEvent?.checkoutConfigId,
     })
+  const { data: eventDetails } = useEvent({
+    slug: selectedEvent?.slug,
+  })
+
+  // transform the event details into an event object
+  const event = toFormData({
+    ...eventDetails!,
+    slug: selectedEvent?.slug,
+  }) as Event
+
+  const eventUrl = getEventUrl({
+    event,
+  })
 
   const { data: isEventOrganizer } = useEventOrganizer({
     checkoutConfig: checkoutConfig!,
@@ -49,46 +64,18 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
 
   if (!event) return null
 
-  const { name, data } = event
-  const { image, description } = data
+  const { name, image, description } = event
 
+  // Format the event dates and get boolean flags
   const {
-    startDate: eventStartDate,
-    startTime: eventStartTime,
-    endDate: eventEndDate,
+    startDate,
+    startTime,
+    endDate,
     endTime,
-    timezone,
-    address,
-  } = getEventAttributes(event)
-
-  const parsedEvent = {
-    ...event.data,
-    slug: event.slug!,
-    ticket: {
-      event_start_date: eventStartDate,
-      event_end_date: eventEndDate,
-      event_start_time: eventStartTime,
-      event_end_time: endTime,
-      event_timezone: timezone,
-      event_address: address,
-    },
-  }
-
-  const eventDate = dayjs.tz(`${eventStartDate} ${eventStartTime}`, timezone)
-  const eventEndDateObj = dayjs.tz(`${eventEndDate} ${endTime}`, timezone)
-
-  const hasPassed = dayjs().isAfter(eventEndDateObj)
-
-  const isSameDay = eventDate.isSame(eventEndDateObj, 'day')
-
-  const startDate = eventDate.format('dddd, MMMM D, YYYY')
-
-  const endDate = !isSameDay
-    ? eventEndDateObj.format('dddd, MMMM D, YYYY')
-    : null
-
-  const hasLocation = address?.length > 0
-  const hasDate = startDate || endDate
+    hasDate,
+    hasLocation,
+    hasPassed,
+  } = formatEventDates(event.ticket)
 
   // close drawer when the event is removed
   const handleEventRemove = () => {
@@ -131,11 +118,8 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
           />
 
           <div className="flex items-center justify-end gap-0 mt-auto md:gap-2">
-            <AddToCalendarButton
-              event={parsedEvent}
-              eventUrl={event.eventUrl}
-            />
-            <Link href={event.eventUrl} target="_blank">
+            <AddToCalendarButton event={event} eventUrl={eventUrl} />
+            <Link href={eventUrl} target="_blank">
               <Button variant="borderless-primary">
                 <FaExternalLinkAlt size={20} width={1} className="mr-2" />
               </Button>
@@ -155,19 +139,22 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
             {/* Date */}
             {hasDate && (
               <EventDetail compact label="Date" icon={CalendarIcon}>
-                <div
-                  style={{ color: `#${event.background_color}` }}
-                  className="flex flex-col text-sm font-normal text-brand-dark"
-                >
-                  {startDate && endDate && (
-                    <span>{dayjs(startDate).format('dddd D MMM YYYY')}</span>
+                <div className="flex flex-col text-sm font-normal text-brand-dark">
+                  <span>{startDate}</span>
+                  {startTime && <span>{startTime}</span>}
+                  {endDate && (
+                    <>
+                      <span>to</span>
+                      <span>{endDate}</span>
+                    </>
                   )}
+                  {endTime && <span>{endTime}</span>}
                 </div>
               </EventDetail>
             )}
 
             {/* Location */}
-            {hasLocation && <EventLocation event={event.data} compact />}
+            {hasLocation && <EventLocation event={event} compact />}
 
             {isCheckoutConfigPending ? (
               <Placeholder.Root>
@@ -181,8 +168,7 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
               />
             ) : (
               <PastEvent
-                // @ts-ignore
-                event={parsedEvent!}
+                event={eventDetails!}
                 checkoutConfig={checkoutConfig!}
               />
             )}
