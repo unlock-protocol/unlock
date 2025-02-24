@@ -1,5 +1,3 @@
-import { networks } from '@unlock-protocol/networks'
-
 const config = {
   schema: '../../subgraph/introspection.json',
   documents: ['./src/subgraph/schema.graphql'],

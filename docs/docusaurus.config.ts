@@ -31,6 +31,11 @@ const config: Config = {
     ],
   ],
   themeConfig: {
+    colorMode: {
+      defaultMode: 'light',
+      disableSwitch: true,
+      respectPrefersColorScheme: false,
+    },
     start_urls: ['https://docs.unlock-protocol.com'],
     sitemap_urls: ['https://docs.unlock-protocol.com/sitemap.xml'],
     algolia: {

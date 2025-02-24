@@ -134,7 +134,7 @@ export const useProvider = () => {
               clearInterval(interval)
               reject(
                 new Error(
-                  `Network switch timed out: please switch your wallet\s network manually to ${networkId}.`
+                  `Network switch timed out: please switch your wallet's network manually to ${networkId}.`
                 )
               )
             }
