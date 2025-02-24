@@ -133,8 +133,6 @@ contract Airdrops is IAirdrops {
     address recipient,
     bytes calldata signature
   ) external override {
-    // Removed check for msg.sender equality to recipient to allow flexible signing.
-
     Campaign storage campaign = campaigns[campaignName];
     if (campaign.tosHash == bytes32(0)) revert NOT_AUTHORIZED(); // Campaign does not exist.
 
@@ -155,13 +153,6 @@ contract Airdrops is IAirdrops {
 
   /**
    * @notice Claims tokens for the airdrop if the recipient is eligible via the Merkle proof and has a signed TOS.
-   *
-   * It computes the leaf from the recipient address and token amount using the same logic as the backend:
-   *
-   * \[
-   * \text{leaf} = \mathtt{keccak256( bytes.concat( keccak256( abi.encode( recipient, amount ) ) ) )}
-   * \]
-   *
    * @param campaignName The campaign identifier.
    * @param recipient The address for whom the tokens are being claimed.
    * @param amount The token amount to claim.
@@ -206,7 +197,7 @@ contract Airdrops is IAirdrops {
     // Record the claim with the leaf hash itself
     claimedLeafs[leaf] = leaf;
 
-    // Transfer tokens to the recipient without wrapping in require.
+    // Transfer tokens to the recipient
     token.transfer(recipient, amount);
     emit TokensClaimed(campaignName, recipient, amount);
   }
