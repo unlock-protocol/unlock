@@ -46,7 +46,7 @@ interface IAirdrops {
 contract Airdrops is IAirdrops {
   /// @notice Structure representing a campaign's TOS hash and its corresponding Merkle tree root.
   struct Campaign {
-    bytes32 tosHash; // Stores only the Ethereum Signed Message hash of the TOS for gas efficiency.
+    bytes32 tosHash;
     bytes32 merkleRoot;
   }
 
