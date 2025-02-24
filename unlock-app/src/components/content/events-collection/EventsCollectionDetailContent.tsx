@@ -115,15 +115,22 @@ export default function EventsCollectionDetailContent({
     return eventCollection?.events?.map((event) => event.slug) || []
   }, [eventCollection?.events])
 
-  // util to parse event date and time with timezone
-  const parseEventDateTime = (event: Event): dayjs.Dayjs | null => {
-    const { startDate, startTime, timezone } = getEventAttributes(event)
+  // parse event date and time with timezone
+  const parseEventDateTime = (
+    event: Event,
+    isEndDate: boolean = false
+  ): dayjs.Dayjs | null => {
+    const { startDate, startTime, endDate, endTime, timezone } =
+      getEventAttributes(event)
+
+    if (isEndDate) {
+      if (!endDate) return null
+      const dateTimeString = `${endDate}T${endTime || '23:59'}:59`
+      return dayjs.tz(dateTimeString, timezone || 'UTC')
+    }
 
     if (!startDate) return null
-
-    // Combine date and time, default to "00:00" if time is missing
     const dateTimeString = `${startDate}T${startTime || '00:00'}:00`
-    // Parse with Day.js considering the timezone
     return dayjs.tz(dateTimeString, timezone || 'UTC')
   }
 
@@ -132,20 +139,21 @@ export default function EventsCollectionDetailContent({
     if (!eventCollection?.events) return { upcomingEvents: [], pastEvents: [] }
 
     const now = dayjs()
-
     const upcoming: Event[] = []
     const past: Event[] = []
 
     eventCollection.events.forEach((event: any) => {
-      const eventStartDate = parseEventDateTime(event)
-      if (eventStartDate && eventStartDate.isAfter(now)) {
+      const eventEndDate = parseEventDateTime(event, true)
+      if (!eventEndDate) return
+
+      if (eventEndDate.isAfter(now)) {
         upcoming.push(event)
       } else {
         past.push(event)
       }
     })
 
-    // Sort upcoming events in chronological order (soonest first)
+    // Sort upcoming events chronologically by start date
     upcoming.sort((a, b) => {
       const aDate = parseEventDateTime(a)
       const bDate = parseEventDateTime(b)
@@ -153,15 +161,18 @@ export default function EventsCollectionDetailContent({
       return aDate.valueOf() - bDate.valueOf()
     })
 
-    // Sort past events in reverse chronological order (most recent first)
+    // Sort past events in reverse chronological order by end date
     past.sort((a, b) => {
-      const aDate = parseEventDateTime(a)
-      const bDate = parseEventDateTime(b)
+      const aDate = parseEventDateTime(a, true)
+      const bDate = parseEventDateTime(b, true)
       if (!aDate || !bDate) return 0
       return bDate.valueOf() - aDate.valueOf()
     })
 
-    return { upcomingEvents: upcoming, pastEvents: past }
+    return {
+      upcomingEvents: upcoming,
+      pastEvents: past,
+    }
   }, [eventCollection?.events])
 
   const getLinkIcon = (type: string) => {
