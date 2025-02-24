@@ -71,7 +71,11 @@ contract Airdrops is IAirdrops {
   /// @notice Emitted when a campaign is set.
   event CampaignSet(string indexed campaignName, bytes32 merkleRoot);
   /// @notice Emitted when a recipient signs the TOS.
-  event TosSigned(string indexed campaignName, address indexed recipient);
+  event TosSigned(
+    string indexed campaignName,
+    address indexed recipient,
+    bytes32 signatureHash
+  );
   /// @notice Emitted when tokens are claimed.
   event TokensClaimed(
     string indexed campaignName,
@@ -146,7 +150,7 @@ contract Airdrops is IAirdrops {
     // Store a hash of recipient and campaign name to mark as signed
     bytes32 tosSignatureHash = keccak256(abi.encode(recipient, campaignName));
     signedTos[campaignName][recipient] = tosSignatureHash;
-    emit TosSigned(campaignName, recipient);
+    emit TosSigned(campaignName, recipient, tosSignatureHash);
   }
 
   /**
