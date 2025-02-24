@@ -143,11 +143,9 @@ contract Airdrops is IAirdrops {
       revert NOT_AUTHORIZED();
     }
 
-    // Store a pseudo transaction hash for the TOS signing event using block.timestamp.
-    bytes32 tosTxHash = keccak256(
-      abi.encodePacked(block.timestamp, recipient, campaignName)
-    );
-    signedTos[campaignName][recipient] = tosTxHash;
+    // Store a hash of recipient and campaign name to mark as signed
+    bytes32 tosSignatureHash = keccak256(abi.encode(recipient, campaignName));
+    signedTos[campaignName][recipient] = tosSignatureHash;
     emit TosSigned(campaignName, recipient);
   }
 
@@ -174,7 +172,7 @@ contract Airdrops is IAirdrops {
     // Blocked users are not allowed to claim tokens.
     if (blocklist[recipient]) revert USER_BLOCKED();
 
-    // Ensure the TOS has been signed. The stored pseudo transaction hash must be non-zero.
+    // Ensure the TOS has been signed. The stored hash must be non-zero.
     if (signedTos[campaignName][recipient] == bytes32(0))
       revert NOT_AUTHORIZED();
 
@@ -188,7 +186,7 @@ contract Airdrops is IAirdrops {
       bytes.concat(keccak256(abi.encode(recipient, amount)))
     );
 
-    // Prevent double-claiming; check that no transaction hash is stored yet.
+    // Prevent double-claiming; check that no hash is stored yet.
     if (claimedLeafs[leaf] != bytes32(0)) revert ALREADY_CLAIMED();
 
     // Verify the Merkle proof.
@@ -201,10 +199,8 @@ contract Airdrops is IAirdrops {
       revert NOT_AUTHORIZED();
     }
 
-    // Record the claim with a pseudo transaction hash incorporating the timestamp.
-    claimedLeafs[leaf] = keccak256(
-      abi.encodePacked(block.timestamp, recipient, amount, leaf)
-    );
+    // Record the claim with the leaf hash itself
+    claimedLeafs[leaf] = leaf;
 
     // Transfer tokens to the recipient without wrapping in require.
     token.transfer(recipient, amount);
