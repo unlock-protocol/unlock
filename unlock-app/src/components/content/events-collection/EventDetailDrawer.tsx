@@ -8,7 +8,6 @@ import { useEventOrganizers } from '~/hooks/useEventOrganizers'
 import Hosts from '../event/Hosts'
 import { EventDetail } from '../event/EventDetail'
 import { EventLocation } from '../event/EventLocation'
-import dayjs from 'dayjs'
 import AddToCalendarButton from '../event/AddToCalendarButton'
 import { FaExternalLinkAlt } from 'react-icons/fa'
 import Link from 'next/link'
@@ -19,7 +18,8 @@ import { TbSettings } from 'react-icons/tb'
 import { useEvent } from '~/hooks/useEvent'
 import { toFormData } from '~/components/interface/locks/metadata/utils'
 import { Event } from '@unlock-protocol/core'
-import { getEventDate, getEventEndDate, getEventUrl } from '../event/utils'
+import { getEventUrl } from '../event/utils'
+import { formatEventDates } from '~/utils/formatEventDates'
 
 interface EventDetailDrawerProps {
   collectionSlug: string | undefined
@@ -66,64 +66,16 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
 
   const { name, image, description } = event
 
-  const language = () => {
-    if (typeof navigator === 'undefined') {
-      return 'en-US'
-    }
-    return navigator?.language || 'en-US'
-  }
-
-  const eventDate = getEventDate(event.ticket)
-  const eventEndDate = getEventEndDate(event.ticket)
-  const hasPassed = eventEndDate
-    ? dayjs().isAfter(eventEndDate)
-    : dayjs().isAfter(eventDate)
-
-  const isSameDay = dayjs(eventDate).isSame(eventEndDate, 'day')
-
-  const startDate = eventDate
-    ? eventDate.toLocaleDateString(undefined, {
-        timeZone: event.ticket.event_timezone,
-        weekday: 'long',
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      })
-    : null
-
-  const startTime =
-    eventDate && event.ticket.event_start_time
-      ? eventDate.toLocaleTimeString(language(), {
-          timeZone: event.ticket.event_timezone,
-          hour: '2-digit',
-          minute: '2-digit',
-          timeZoneName: 'short',
-        })
-      : undefined
-
-  const endDate =
-    eventEndDate && !isSameDay
-      ? eventEndDate.toLocaleDateString(undefined, {
-          timeZone: event.ticket.event_timezone,
-          weekday: 'long',
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-        })
-      : null
-
-  const endTime =
-    eventDate && event.ticket.event_end_time && eventEndDate && isSameDay
-      ? eventEndDate.toLocaleTimeString(language(), {
-          timeZone: event.ticket.event_timezone,
-          hour: '2-digit',
-          minute: '2-digit',
-          timeZoneName: 'short',
-        })
-      : null
-
-  const hasLocation = event.ticket.event_address?.length > 0
-  const hasDate = startDate || endDate
+  // Format the event dates and get boolean flags
+  const {
+    startDate,
+    startTime,
+    endDate,
+    endTime,
+    hasDate,
+    hasLocation,
+    hasPassed,
+  } = formatEventDates(event.ticket)
 
   // close drawer when the event is removed
   const handleEventRemove = () => {
