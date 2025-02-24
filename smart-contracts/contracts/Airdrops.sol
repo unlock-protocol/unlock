@@ -233,17 +233,24 @@ contract Airdrops is IAirdrops {
   function _bytesToBytes32Array(
     bytes memory data
   ) internal pure returns (bytes32[] memory) {
-    require(data.length % 32 == 0, "Invalid proof length");
-    uint256 length = data.length / 32;
-    bytes32[] memory dataList = new bytes32[](length);
-    for (uint256 i = 0; i < length; i++) {
-      uint256 word = 0;
-      // Iterate through each of the 32 bytes in the chunk and build the word.
-      for (uint256 j = 0; j < 32; j++) {
-        word = (word << 8) | uint8(data[i * 32 + j]);
+    // Find 32 bytes segments nb
+    uint256 dataNb = data.length / 32;
+    // Create an array of dataNb elements
+    bytes32[] memory dataList = new bytes32[](dataNb);
+    // Start array index at 0
+    uint256 index = 0;
+    // Loop all 32 bytes segments
+    for (uint256 i = 32; i <= data.length; i = i + 32) {
+      bytes32 temp;
+      // Get 32 bytes from data
+      assembly {
+        temp := mload(add(data, i))
       }
-      dataList[i] = bytes32(word);
+      // Add extracted 32 bytes to list
+      dataList[index] = temp;
+      index++;
     }
-    return dataList;
+    // Return data list
+    return (dataList);
   }
 }
