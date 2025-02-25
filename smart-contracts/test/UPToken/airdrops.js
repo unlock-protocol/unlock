@@ -4,7 +4,7 @@ const { ethers } = require('hardhat')
 const { upgrades } = require('hardhat')
 const { reverts } = require('../helpers')
 
-describe.only('Airdrops Contract', function () {
+describe('Airdrops Contract', function () {
   let owner, recipient
   let token, airdrops, sanctionsList
 
