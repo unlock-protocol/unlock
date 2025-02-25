@@ -6,7 +6,7 @@ const { reverts } = require('../helpers')
 
 describe.only('Airdrops Contract', function () {
   let owner, recipient
-  let token, airdrops, upSwap
+  let token, airdrops, sanctionsList
 
   const airdropTokens = ethers.parseEther('10000') // 10,000 tokens for airdrop
   const campaignName = 'Campaign1'
@@ -74,15 +74,19 @@ describe.only('Airdrops Contract', function () {
     token = await upgrades.deployProxy(UP, [await owner.getAddress()])
     await token.waitForDeployment()
 
-    // Create a mock UPSwap contract address to receive the minted tokens
-    upSwap = owner.address
+    // Mint tokens to the owner address (which is owner in this test)
+    await token.mint(owner.address)
 
-    // Mint tokens to the upSwap address (which is owner in this test)
-    await token.mint(upSwap)
+    // Deploy a SanctionsList contract
+    const SanctionsList = await ethers.getContractFactory('SanctionsList')
+    sanctionsList = await SanctionsList.deploy()
 
     // Deploy the Airdrops contract
     const Airdrops = await ethers.getContractFactory('Airdrops')
-    airdrops = await Airdrops.deploy(await token.getAddress())
+    airdrops = await Airdrops.deploy(
+      await token.getAddress(),
+      await sanctionsList.getAddress()
+    )
     await airdrops.waitForDeployment()
 
     // Transfer tokens to the Airdrops contract
@@ -163,6 +167,7 @@ describe.only('Airdrops Contract', function () {
       const [, recipient] = await ethers.getSigners()
       // Check initial token balance.
       const initialBal = await token.balanceOf(recipient.address)
+      const initialBalAirdrops = await airdrops.balanceOf(recipient.address)
       let proof
 
       for (const [i, v] of tree.entries()) {
@@ -190,6 +195,49 @@ describe.only('Airdrops Contract', function () {
       // Verify that the recipient received the correct tokens.
       const finalBal = await token.balanceOf(recipient.address)
       expect(finalBal - initialBal).to.equal(claimAmount)
+
+      const finalBalAirdrops = await token.balanceOf(recipient.address)
+      expect(initialBalAirdrops - finalBalAirdrops).to.equal(claimAmount)
+    })
+
+    it('should prevent a user from claiming twice', async function () {
+      const [, recipient] = await ethers.getSigners()
+      // Check initial token balance.
+      const initialBal = await token.balanceOf(recipient.address)
+      let proof
+
+      for (const [i, v] of tree.entries()) {
+        if (v[0] === recipient.address) {
+          proof = tree.getProof(i)
+        }
+      }
+
+      const { tosSignature, timestamp } = await getSignature(
+        recipient,
+        recipient
+      )
+
+      // Execute the claim with the valid proof - use formatted proof
+      const tx = await airdrops.claim(
+        campaignName,
+        timestamp,
+        recipient.address,
+        claimAmount,
+        proof,
+        tosSignature
+      )
+      await tx.wait()
+      await reverts(
+        airdrops.claim(
+          campaignName,
+          timestamp,
+          recipient.address,
+          claimAmount,
+          proof,
+          tosSignature
+        ),
+        `AlreadyClaimed("${campaignHash}", "${recipient.address}", ${claimAmount})`
+      )
     })
 
     it('should revert claim with an invalid proof', async function () {
@@ -211,7 +259,6 @@ describe.only('Airdrops Contract', function () {
           invalidProof,
           tosSignature
         ),
-        // `InvalidProof("${campaignHash}", "${recipient.address}", ${claimAmount}, ${invalidProof})`
         `InvalidProof("${campaignHash}", "${recipient.address}", ${claimAmount}, ${JSON.stringify(invalidProof)})`
       )
     })
@@ -219,6 +266,36 @@ describe.only('Airdrops Contract', function () {
     it('should revert claim for a blocklisted user', async function () {
       // Blocklist the recipient.
       await airdrops.addToBlocklist(recipient.address)
+
+      let proof
+      for (const [i, v] of tree.entries()) {
+        if (v[0] === recipient.address) {
+          proof = tree.getProof(i)
+        }
+      }
+
+      const { tosSignature, timestamp } = await getSignature(
+        recipient,
+        recipient
+      )
+
+      // Use the valid proof
+      await reverts(
+        airdrops.claim(
+          campaignName,
+          timestamp,
+          recipient.address,
+          claimAmount,
+          proof,
+          tosSignature
+        ),
+        `UserBlocked("${recipient.address}")`
+      )
+    })
+
+    it('should revert claim for a user on the sanction list contract', async function () {
+      // Blocklist the recipient.
+      await sanctionsList.addToList(recipient.address)
 
       let proof
       for (const [i, v] of tree.entries()) {

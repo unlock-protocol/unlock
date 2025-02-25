@@ -1,5 +1,3 @@
-/* solhint-disable no-inline-assembly */
-
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.21;
 
@@ -11,7 +9,7 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import {EIP712} from "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
 
-interface SanctionsList {
+interface ISanctionsList {
   function isSanctioned(address addr) external view returns (bool);
 }
 
@@ -24,12 +22,7 @@ error InvalidProof(
   uint amount,
   bytes32[] proof
 );
-error AlreadyClaimed(
-  bytes32 campaignHash,
-  address recipient,
-  uint amount,
-  bytes32[] proof
-);
+error AlreadyClaimed(bytes32 campaignHash, address recipient, uint amount);
 
 error UserBlocked(address recipient);
 
@@ -82,9 +75,11 @@ contract Airdrops is Ownable, EIP712 {
    * @param _token The address of the ERC20 token contract (UP).
    */
   constructor(
-    address _token
+    address _token,
+    address _chainalysisOracle
   ) Ownable(msg.sender) EIP712("Unlock Protocol Airdrops", "1") {
     token = IERC20(_token);
+    setChainalysisOracle(_chainalysisOracle);
   }
 
   function EIP712Name() public view returns (string memory) {
@@ -165,7 +160,7 @@ contract Airdrops is Ownable, EIP712 {
       revert MissingCampaign(campaignHash);
     }
 
-    // Ensure the TOS has been signed. The stored hash must be non-zero.
+    // Ensure the TOS has been signed.
     if (!verifySignature(recipient, campaignName, timestamp, tosSignature)) {
       revert WrongSigner(campaignHash, recipient);
     }
@@ -175,15 +170,15 @@ contract Airdrops is Ownable, EIP712 {
       bytes.concat(keccak256(abi.encode(recipient, amount)))
     );
 
-    // Prevent double-claiming; check that no hash is stored yet.
-    if (claimedLeafs[campaignHash][leaf] != 0)
-      revert AlreadyClaimed(campaignHash, recipient, amount, proof);
-
     // Verify the Merkle proof.
     bool valid = MerkleProof.verify(proof, campaign.merkleRoot, leaf);
     if (!valid) {
       revert InvalidProof(campaignHash, recipient, amount, proof);
     }
+
+    // Prevent double-claiming; check that no hash is stored yet.
+    if (claimedLeafs[campaignHash][leaf] != 0)
+      revert AlreadyClaimed(campaignHash, recipient, amount);
 
     // Record the claim with the leaf hash itself
     claimedLeafs[campaignHash][leaf] = block.timestamp;
@@ -215,7 +210,7 @@ contract Airdrops is Ownable, EIP712 {
    * @notice Sets the chainalysis oracle address. https://go.chainalysis.com/chainalysis-oracle-docs.html
    * @param _chainalysisOracle The address of the oracle
    */
-  function setChainalysisOracle(address _chainalysisOracle) external onlyOwner {
+  function setChainalysisOracle(address _chainalysisOracle) public onlyOwner {
     chainalysisOracle = _chainalysisOracle;
     emit ChainalysisOracleSet(_chainalysisOracle);
   }
@@ -226,6 +221,6 @@ contract Airdrops is Ownable, EIP712 {
    */
   function isBlocked(address user) public view returns (bool) {
     return
-      blocklist[user] || SanctionsList(chainalysisOracle).isSanctioned(user);
+      blocklist[user] || ISanctionsList(chainalysisOracle).isSanctioned(user);
   }
 }
