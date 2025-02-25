@@ -11,6 +11,10 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import {EIP712} from "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
 
+interface SanctionsList {
+  function isSanctioned(address addr) external view returns (bool);
+}
+
 // Custom errors
 error MissingCampaign(bytes32 campaignHash);
 error WrongSigner(bytes32 campaignHash, address expected);
@@ -50,14 +54,14 @@ contract Airdrops is Ownable, EIP712 {
   /// @notice Mapping from campaign name to campaign details.
   mapping(bytes32 => Campaign) public campaigns;
 
-  /// @notice Mapping from campaign name to addresses that have signed the TOS.
-  mapping(bytes32 => mapping(address => bytes)) public signedTos;
-
   /// @notice Mapping of Merkle tree leaves that have been claimed.
   mapping(bytes32 => mapping(bytes32 => uint)) public claimedLeafs;
 
   /// @notice Mapping of addresses that are blocklisted.
   mapping(address => bool) public blocklist;
+
+  /// @notice Chainalysis sanction oracle
+  address public chainalysisOracle;
 
   /// @notice Emitted when a campaign is set.
   event CampaignSet(bytes32 indexed campaign, bytes32 merkleRoot);
@@ -69,9 +73,9 @@ contract Airdrops is Ownable, EIP712 {
     uint256 amount
   );
 
-  /// @notice
   event AddedToBlockList(address indexed recipient);
   event RemovedFromBlockList(address indexed recipient);
+  event ChainalysisOracleSet(address indexed chainalysisOracle);
 
   /**
    * @notice Constructor that sets the token to be airdropped and initializes the owner.
@@ -154,7 +158,7 @@ contract Airdrops is Ownable, EIP712 {
     bytes32 campaignHash = keccak256(abi.encodePacked(campaignName));
 
     // Blocked users are not allowed to claim tokens.
-    if (blocklist[recipient]) revert UserBlocked(recipient);
+    if (isBlocked(recipient)) revert UserBlocked(recipient);
 
     Campaign storage campaign = campaigns[campaignHash];
     if (campaign.merkleRoot == bytes32(0)) {
@@ -205,5 +209,23 @@ contract Airdrops is Ownable, EIP712 {
   function removeFromBlocklist(address user) external onlyOwner {
     blocklist[user] = false;
     emit RemovedFromBlockList(user);
+  }
+
+  /**
+   * @notice Sets the chainalysis oracle address. https://go.chainalysis.com/chainalysis-oracle-docs.html
+   * @param _chainalysisOracle The address of the oracle
+   */
+  function setChainalysisOracle(address _chainalysisOracle) external onlyOwner {
+    chainalysisOracle = _chainalysisOracle;
+    emit ChainalysisOracleSet(_chainalysisOracle);
+  }
+
+  /**
+   * @notice Check if the user is blocked or on the sanctions list.
+   * @param user The address to check
+   */
+  function isBlocked(address user) public view returns (bool) {
+    return
+      blocklist[user] || SanctionsList(chainalysisOracle).isSanctioned(user);
   }
 }

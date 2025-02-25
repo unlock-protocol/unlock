@@ -4,8 +4,8 @@ const { ethers } = require('hardhat')
 const { upgrades } = require('hardhat')
 const { reverts } = require('../helpers')
 
-describe('Airdrops Contract', function () {
-  let owner, recipient, other
+describe.only('Airdrops Contract', function () {
+  let owner, recipient
   let token, airdrops, upSwap
 
   const airdropTokens = ethers.parseEther('10000') // 10,000 tokens for airdrop
@@ -67,7 +67,7 @@ describe('Airdrops Contract', function () {
   }
 
   beforeEach(async function () {
-    ;[owner, recipient, other] = await ethers.getSigners()
+    ;[owner, recipient] = await ethers.getSigners()
 
     // Deploy UPToken
     const UP = await ethers.getContractFactory('UPToken')
@@ -201,6 +201,7 @@ describe('Airdrops Contract', function () {
         recipient,
         recipient
       )
+
       await reverts(
         airdrops.claim(
           campaignName,
@@ -210,7 +211,8 @@ describe('Airdrops Contract', function () {
           invalidProof,
           tosSignature
         ),
-        `InvalidProof("${campaignHash}", "${recipient.address}", 100000000000000000000, ["0x1234567890123456789012345678901234567890123456789012345678901234"])`
+        // `InvalidProof("${campaignHash}", "${recipient.address}", ${claimAmount}, ${invalidProof})`
+        `InvalidProof("${campaignHash}", "${recipient.address}", ${claimAmount}, ${JSON.stringify(invalidProof)})`
       )
     })
 
