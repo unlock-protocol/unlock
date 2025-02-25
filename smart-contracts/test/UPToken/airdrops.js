@@ -1,54 +1,16 @@
-/**
- * Tests for Airdrops.sol contract
- *
- * Tests cover:
- * - Campaign setup
- *   - Only owner can set campaign merkle root and TOS
- *   - Campaign data is stored correctly
- *
- * - TOS signing
- *   - Users must sign valid TOS to claim
- *   - Invalid signatures are rejected
- *
- * - Token claims
- *   - Valid merkle proofs allow claiming tokens
- *   - Invalid proofs are rejected
- *   - Blocklisted users cannot claim
- *   - Double claims are prevented
- *
- * Technical notes:
- * - Merkle leaf computation:
- *   leaf = keccak256(bytes.concat(keccak256(abi.encode(recipient, amount))))
- *
- * - TOS hash computation:
- *   tosHash = MessageHashUtils.toEthSignedMessageHash(keccak256(bytes(tos)))
- */
-
-const { expect, assert } = require('chai')
+const { expect } = require('chai')
 const { StandardMerkleTree } = require('@openzeppelin/merkle-tree')
 const { ethers } = require('hardhat')
 const { upgrades } = require('hardhat')
-
-async function expectRevert(call) {
-  let reverted = false
-  try {
-    await call
-  } catch (error) {
-    reverted = true
-  }
-  if (!reverted) {
-    assert.fail('Expected transaction to revert')
-  }
-}
+const { reverts } = require('../helpers')
 
 describe('Airdrops Contract', function () {
   let owner, recipient, other
   let token, airdrops, upSwap
 
-  const initialSupply = ethers.parseEther('1000000') // 1,000,000 tokens
   const airdropTokens = ethers.parseEther('10000') // 10,000 tokens for airdrop
   const campaignName = 'Campaign1'
-  const tosText = 'I agree to the terms of service.'
+  const campaignHash = ethers.keccak256(ethers.toUtf8Bytes(campaignName))
   const claimAmount = ethers.parseEther('100') // Claim 100 tokens
 
   /**
@@ -74,14 +36,34 @@ describe('Airdrops Contract', function () {
     return ethers.keccak256(innerHash)
   }
 
-  /**
-   * Helper to format proof bytes for the contract
-   *
-   * @param {Array} proof - Array of hex strings representing the proof
-   * @returns {string} - Concatenated proof bytes with single 0x prefix
-   */
-  function formatProof(proof) {
-    return `0x${proof.map((p) => p.slice(2)).join('')}`
+  async function getSignature(recipient, signer) {
+    const domain = {
+      name: await airdrops.EIP712Name(),
+      version: await airdrops.EIP712Version(),
+      chainId: (await ethers.provider.getNetwork()).chainId, // Mainnet (Change for testnets)
+      verifyingContract: await airdrops.getAddress(),
+    }
+
+    const types = {
+      TosSignature: [
+        { name: 'signer', type: 'address' },
+        { name: 'campaignHash', type: 'bytes32' },
+        { name: 'timestamp', type: 'uint256' },
+      ],
+    }
+
+    const timestamp = new Date().getTime()
+    const value = {
+      signer: recipient.address,
+      campaignHash: ethers.keccak256(ethers.toUtf8Bytes(campaignName)),
+      timestamp,
+    }
+
+    // Signing Typed Data (EIP-712)
+    return {
+      timestamp,
+      tosSignature: await signer.signTypedData(domain, types, value),
+    }
   }
 
   beforeEach(async function () {
@@ -113,93 +95,31 @@ describe('Airdrops Contract', function () {
       const leaf = computeLeaf(recipient.address, claimAmount)
 
       // Set the campaign with a valid Merkle root.
-      const tx = await airdrops.setMerkleRootForCampaign(
-        campaignName,
-        tosText,
-        leaf
-      )
+      const tx = await airdrops.setMerkleRootForCampaign(campaignName, leaf)
       await tx.wait()
 
       // Retrieve the campaign details.
-      const campaign = await airdrops.campaigns(campaignName)
-
-      // Compute the expected TOS hash on-chain:
-      // expectedTosHash = keccak256( "\x19Ethereum Signed Message:\n32" || rawTosHash )
-      const rawTosHash = ethers.keccak256(ethers.toUtf8Bytes(tosText))
-      const expectedTosHash = ethers.keccak256(
-        ethers.concat([
-          ethers.toUtf8Bytes('\x19Ethereum Signed Message:\n32'),
-          ethers.getBytes(rawTosHash),
-        ])
-      )
-
-      expect(campaign.tosHash).to.equal(expectedTosHash)
+      const campaign = await airdrops.campaigns(campaignHash)
       expect(campaign.merkleRoot).to.equal(leaf)
+      expect(campaign.name).to.equal(campaignName)
     })
 
     it('should revert if non-owner attempts to set campaign', async function () {
       const leaf = computeLeaf(recipient.address, claimAmount)
-      await expectRevert(
+      await reverts(
         airdrops
           .connect(recipient)
-          .setMerkleRootForCampaign(campaignName, tosText, leaf)
-      )
-    })
-  })
-
-  describe('TOS Signing', function () {
-    beforeEach(async function () {
-      // For TOS signing tests, set the campaign first.
-      const leaf = computeLeaf(recipient.address, claimAmount)
-      await airdrops.setMerkleRootForCampaign(campaignName, tosText, leaf)
-    })
-
-    it('should revert signTos if campaign does not exist', async function () {
-      // Compute the raw TOS hash using the same method as the contract.
-      const rawTosHash = ethers.keccak256(ethers.toUtf8Bytes(tosText))
-      const signature = await recipient.signMessage(ethers.getBytes(rawTosHash))
-      await expectRevert(
-        airdrops.signTos('NonExistingCampaign', recipient.address, signature)
-      )
-    })
-
-    it('should allow valid signature for signing TOS', async function () {
-      const rawTosHash = ethers.keccak256(ethers.toUtf8Bytes(tosText))
-      const signature = await recipient.signMessage(ethers.getBytes(rawTosHash))
-
-      const tx = await airdrops.signTos(
-        campaignName,
-        recipient.address,
-        signature
-      )
-      await tx.wait()
-
-      // Verify that the signedTos mapping for the campaign and recipient is set.
-      const storedValue = await airdrops.signedTos(
-        campaignName,
-        recipient.address
-      )
-      expect(storedValue).to.not.equal(ethers.ZeroHash)
-    })
-
-    it('should revert signTos with an invalid signature', async function () {
-      // Use a signature from a different signer (other) instead of the recipient.
-      const rawTosHash = ethers.keccak256(ethers.toUtf8Bytes(tosText))
-      const invalidSignature = await other.signMessage(
-        ethers.getBytes(rawTosHash)
-      )
-
-      await expectRevert(
-        airdrops.signTos(campaignName, recipient.address, invalidSignature)
+          .setMerkleRootForCampaign(campaignHash, leaf),
+        `OwnableUnauthorizedAccount("${recipient.address}")`
       )
     })
   })
 
   describe('Token Claim', function () {
-    let formattedProof
+    let tree
     beforeEach(async function () {
       // create a merkle tree with the recipient and claim amount
-      const tree = StandardMerkleTree.of(
+      tree = StandardMerkleTree.of(
         [[recipient.address, claimAmount.toString()]],
         ['address', 'uint256']
       )
@@ -208,34 +128,62 @@ describe('Airdrops Contract', function () {
       const root = tree.root
 
       // Set the campaign with the proper Merkle root
-      await airdrops.setMerkleRootForCampaign(campaignName, tosText, root)
+      await airdrops.setMerkleRootForCampaign(campaignName, root)
+    })
 
-      // Have the recipient sign the TOS
-      const rawTosHash = ethers.keccak256(ethers.toUtf8Bytes(tosText))
-      const signature = await recipient.signMessage(ethers.getBytes(rawTosHash))
-      await airdrops.signTos(campaignName, recipient.address, signature)
+    it('should fail to claim if the signature for TOS is not valid', async function () {
+      const [user, recipient] = await ethers.getSigners()
+      // Check initial token balance.
+      const initialBal = await token.balanceOf(recipient.address)
+      let proof
 
-      // Format the proof the same way as in the AllowListHook test
       for (const [i, v] of tree.entries()) {
         if (v[0] === recipient.address) {
-          formattedProof = `0x${tree
-            .getProof(i)
-            .map((p) => p.slice(2))
-            .join('')}`
+          proof = tree.getProof(i)
         }
       }
+
+      const { tosSignature, timestamp } = await getSignature(recipient, user)
+
+      // Execute the claim with the valid proof - use formatted proof
+      await reverts(
+        airdrops.claim(
+          campaignName,
+          timestamp,
+          recipient.address,
+          claimAmount,
+          proof,
+          tosSignature
+        ),
+        `WrongSigner("${campaignHash}", "${recipient.address}")`
+      )
     })
 
     it('should claim tokens successfully with a valid proof', async function () {
+      const [, recipient] = await ethers.getSigners()
       // Check initial token balance.
       const initialBal = await token.balanceOf(recipient.address)
+      let proof
+
+      for (const [i, v] of tree.entries()) {
+        if (v[0] === recipient.address) {
+          proof = tree.getProof(i)
+        }
+      }
+
+      const { tosSignature, timestamp } = await getSignature(
+        recipient,
+        recipient
+      )
 
       // Execute the claim with the valid proof - use formatted proof
       const tx = await airdrops.claim(
         campaignName,
+        timestamp,
         recipient.address,
         claimAmount,
-        formattedProof
+        proof,
+        tosSignature
       )
       await tx.wait()
 
@@ -246,16 +194,23 @@ describe('Airdrops Contract', function () {
 
     it('should revert claim with an invalid proof', async function () {
       // Provide an invalid Merkle proof.
-      const invalidProof = formatProof([
+      const invalidProof = [
         '0x1234567890123456789012345678901234567890123456789012345678901234',
-      ])
-      await expectRevert(
+      ]
+      const { tosSignature, timestamp } = await getSignature(
+        recipient,
+        recipient
+      )
+      await reverts(
         airdrops.claim(
           campaignName,
+          timestamp,
           recipient.address,
           claimAmount,
-          invalidProof
-        )
+          invalidProof,
+          tosSignature
+        ),
+        `InvalidProof("${campaignHash}", "${recipient.address}", 100000000000000000000, ["0x1234567890123456789012345678901234567890123456789012345678901234"])`
       )
     })
 
@@ -263,14 +218,29 @@ describe('Airdrops Contract', function () {
       // Blocklist the recipient.
       await airdrops.addToBlocklist(recipient.address)
 
+      let proof
+      for (const [i, v] of tree.entries()) {
+        if (v[0] === recipient.address) {
+          proof = tree.getProof(i)
+        }
+      }
+
+      const { tosSignature, timestamp } = await getSignature(
+        recipient,
+        recipient
+      )
+
       // Use the valid proof
-      await expectRevert(
+      await reverts(
         airdrops.claim(
           campaignName,
+          timestamp,
           recipient.address,
           claimAmount,
-          formattedProof
-        )
+          proof,
+          tosSignature
+        ),
+        `UserBlocked("${recipient.address}")`
       )
     })
   })
