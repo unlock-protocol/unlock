@@ -107,16 +107,16 @@ contract Airdrops is Ownable, EIP712 {
 
   function getTosSignatureHash(
     address signer,
-    bytes32 campaignHash,
+    string calldata campaignName,
     uint256 timestamp
   ) private view returns (bytes32) {
     bytes32 structHash = keccak256(
       abi.encode(
         keccak256(
-          "TosSignature(address signer,bytes32 campaignHash,uint256 timestamp)"
+          "TosSignature(address signer,string campaignName,uint256 timestamp)"
         ),
         signer,
-        campaignHash,
+        keccak256(abi.encodePacked(campaignName)),
         timestamp
       )
     );
@@ -126,12 +126,11 @@ contract Airdrops is Ownable, EIP712 {
 
   function verifySignature(
     address signer,
-    string memory campaignName,
+    string calldata campaignName,
     uint256 timestamp,
-    bytes memory signature
+    bytes calldata signature
   ) public view returns (bool) {
-    bytes32 campaignHash = keccak256(abi.encodePacked(campaignName));
-    bytes32 digest = getTosSignatureHash(signer, campaignHash, timestamp);
+    bytes32 digest = getTosSignatureHash(signer, campaignName, timestamp);
     return digest.recover(signature) == signer;
   }
 

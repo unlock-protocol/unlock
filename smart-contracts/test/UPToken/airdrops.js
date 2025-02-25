@@ -47,7 +47,7 @@ describe('Airdrops Contract', function () {
     const types = {
       TosSignature: [
         { name: 'signer', type: 'address' },
-        { name: 'campaignHash', type: 'bytes32' },
+        { name: 'campaignName', type: 'string' },
         { name: 'timestamp', type: 'uint256' },
       ],
     }
@@ -55,7 +55,7 @@ describe('Airdrops Contract', function () {
     const timestamp = new Date().getTime()
     const value = {
       signer: recipient.address,
-      campaignHash: ethers.keccak256(ethers.toUtf8Bytes(campaignName)),
+      campaignName,
       timestamp,
     }
 
