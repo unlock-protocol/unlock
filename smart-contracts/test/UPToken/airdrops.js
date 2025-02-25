@@ -167,7 +167,9 @@ describe.only('Airdrops Contract', function () {
       const [, recipient] = await ethers.getSigners()
       // Check initial token balance.
       const initialBal = await token.balanceOf(recipient.address)
-      const initialBalAirdrops = await airdrops.balanceOf(recipient.address)
+      const initialBalAirdrops = await token.balanceOf(
+        await airdrops.getAddress()
+      )
       let proof
 
       for (const [i, v] of tree.entries()) {
@@ -196,7 +198,9 @@ describe.only('Airdrops Contract', function () {
       const finalBal = await token.balanceOf(recipient.address)
       expect(finalBal - initialBal).to.equal(claimAmount)
 
-      const finalBalAirdrops = await token.balanceOf(recipient.address)
+      const finalBalAirdrops = await token.balanceOf(
+        await airdrops.getAddress()
+      )
       expect(initialBalAirdrops - finalBalAirdrops).to.equal(claimAmount)
     })
 
