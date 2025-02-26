@@ -12,7 +12,6 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import LoadingIcon from '~/components/interface/Loading'
-import useEns from '~/hooks/useEns'
 import { useReferrerFee } from '~/hooks/useReferrerFee'
 import { onResolveName } from '~/utils/resolvers'
 import { ADDRESS_ZERO } from '~/constants'
@@ -206,7 +205,6 @@ interface ReferrerRowProps {
 const ReferrerRow = ({ fee, referrer, setReferrerFee }: ReferrerRowProps) => {
   const feeNumber = Number(fee)
   const isAddressLinkedToAnyReferrer = referrer === ADDRESS_ZERO
-  const addressToEns = useEns(referrer!)
 
   const removeReferrer = async () => {
     const setReferrerFeePromise = setReferrerFee.mutateAsync({
@@ -233,7 +231,7 @@ const ReferrerRow = ({ fee, referrer, setReferrerFee }: ReferrerRowProps) => {
       <span className="text-md font-medium break-words w-4/5">
         {isAddressLinkedToAnyReferrer
           ? 'Referral fee applied to any referrer'
-          : addressToEns}
+          : referrer}
       </span>
       <TrashIcon className="cursor-pointer" onClick={removeReferrer} />
     </div>

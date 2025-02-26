@@ -5,7 +5,6 @@ import { useDropzone } from 'react-dropzone'
 import { parse } from 'csv/sync'
 import { RiCloseLine as ClearIcon } from 'react-icons/ri'
 import { Lock } from '~/unlockTypes'
-import { getAddressForName } from '~/hooks/useEns'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -13,6 +12,7 @@ import { KeyManager } from '@unlock-protocol/unlock-js'
 import { useConfig } from '~/utils/withConfig'
 import PrimeOnly from '../../prime/PrimeOnly'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { getAddressForName } from '~/hooks/useNameResolver'
 
 export const MAX_SIZE = 50
 
