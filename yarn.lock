@@ -19128,6 +19128,7 @@ __metadata:
     react-dom: "npm:18.3.1"
     react-dropzone: "npm:14.3.5"
     react-hook-form: "npm:7.54.2"
+    react-hot-toast: "npm:2.5.2"
     react-icons: "npm:5.4.0"
     react-use-clipboard: "npm:1.0.9"
     storybook: "npm:8.5.3"
@@ -31620,7 +31621,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"goober@npm:^2.1.10":
+"goober@npm:^2.1.10, goober@npm:^2.1.16":
   version: 2.1.16
   resolution: "goober@npm:2.1.16"
   peerDependencies:
@@ -44466,6 +44467,19 @@ __metadata:
     react: ">=16"
     react-dom: ">=16"
   checksum: 10/9af91efdb98837e39a126aff084b54db0336c5f88a7dad7c42daf7ee873d06a79d6e59f398412cc250a35ddf1a73c25700fe90b3c3a2a0c394fd17d99b2bcf8b
+  languageName: node
+  linkType: hard
+
+"react-hot-toast@npm:2.5.2":
+  version: 2.5.2
+  resolution: "react-hot-toast@npm:2.5.2"
+  dependencies:
+    csstype: "npm:^3.1.3"
+    goober: "npm:^2.1.16"
+  peerDependencies:
+    react: ">=16"
+    react-dom: ">=16"
+  checksum: 10/fde6aaa26d85a8de6fbc2b62c66fd71da555b389e8276b0b1e3636f0bf2956e57f40d7692959f2fb0ee91000ae44cad2ab5add779ef0e9b7fc9eb148203dca54
   languageName: node
   linkType: hard
 
