@@ -1,7 +1,5 @@
 export const terms = `
-**Unlock Protocol Foundation**
-
-**Airdrop Terms and Conditions**
+## Airdrop Terms and Conditions
 
 Effective Date: February 2025
 

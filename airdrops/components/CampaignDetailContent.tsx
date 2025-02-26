@@ -27,8 +27,10 @@ export default function CampaignDetailContent({
 
   useEffect(() => {
     const run = async () => {
-      const amount = await isEligible(wallets[0].address, airdrop)
-      airdrop.eligible = amount || 0
+      if (wallets[0]) {
+        const amount = await isEligible(wallets[0].address, airdrop)
+        airdrop.eligible = amount || 0
+      }
     }
     run()
   }, [authenticated, wallets, airdrop])
@@ -69,6 +71,11 @@ export default function CampaignDetailContent({
     }
   }
 
+  const onClaim = async () => {
+    console.log('Claiming tokens for', airdrop.contractAddress)
+    console.log({ termsOfServiceSignature, timestamp })
+  }
+
   return (
     <Container>
       <Button variant="borderless" aria-label="arrow back" className="my-5">
@@ -86,13 +93,8 @@ export default function CampaignDetailContent({
       {/* Two-column layout for remaining content */}
       <div className="grid max-w-6xl grid-cols-1 gap-8 pb-12 md:grid-cols-2">
         {/* Left Column */}
-        <div className="space-y-8">
-          <div className="p-4 border rounded-lg bg-gray-50">
-            <h2 className="text-xl font-semibold mb-3">Terms of Service</h2>
-            <div className="text-sm text-gray-600">
-              <ReactMarkdown children={terms} />
-            </div>
-          </div>
+        <div className="p-4 border rounded-lg bg-gray-50 text-sm h-80 overflow-y-auto prose lg:prose-xl">
+          <ReactMarkdown children={terms} />
         </div>
 
         {/* Right Column - Claim Section */}
@@ -109,17 +111,12 @@ export default function CampaignDetailContent({
               </div>
 
               <Checkbox
-                label="I have read and agree to the Terms of Service"
+                label="I have read and agree to the Airdrop Terms and Conditions"
                 checked={!!termsOfServiceSignature}
                 onChange={onBoxChecked}
               />
 
-              <Button
-                disabled={!termsOfServiceSignature}
-                onClick={() => {
-                  console.log('Claiming tokens for', airdrop.contractAddress)
-                }}
-              >
+              <Button disabled={!termsOfServiceSignature} onClick={onClaim}>
                 Claim Tokens
               </Button>
             </div>
