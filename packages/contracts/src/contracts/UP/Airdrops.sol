@@ -2,7 +2,239 @@
 
 // SPDX-License-Identifier: MIT
 
-// File @openzeppelin/contracts/utils/Context.sol@v5.0.2
+// File @openzeppelin/contracts-upgradeable5/proxy/utils/Initializable.sol@v5.0.2
+
+// Original license: SPDX_License_Identifier: MIT
+// OpenZeppelin Contracts (last updated v5.0.0) (proxy/utils/Initializable.sol)
+
+pragma solidity ^0.8.20;
+
+/**
+ * @dev This is a base contract to aid in writing upgradeable contracts, or any kind of contract that will be deployed
+ * behind a proxy. Since proxied contracts do not make use of a constructor, it's common to move constructor logic to an
+ * external initializer function, usually called `initialize`. It then becomes necessary to protect this initializer
+ * function so it can only be called once. The {initializer} modifier provided by this contract will have this effect.
+ *
+ * The initialization functions use a version number. Once a version number is used, it is consumed and cannot be
+ * reused. This mechanism prevents re-execution of each "step" but allows the creation of new initialization steps in
+ * case an upgrade adds a module that needs to be initialized.
+ *
+ * For example:
+ *
+ * [.hljs-theme-light.nopadding]
+ * ```solidity
+ * contract MyToken is ERC20Upgradeable {
+ *     function initialize() initializer public {
+ *         __ERC20_init("MyToken", "MTK");
+ *     }
+ * }
+ *
+ * contract MyTokenV2 is MyToken, ERC20PermitUpgradeable {
+ *     function initializeV2() reinitializer(2) public {
+ *         __ERC20Permit_init("MyToken");
+ *     }
+ * }
+ * ```
+ *
+ * TIP: To avoid leaving the proxy in an uninitialized state, the initializer function should be called as early as
+ * possible by providing the encoded function call as the `_data` argument to {ERC1967Proxy-constructor}.
+ *
+ * CAUTION: When used with inheritance, manual care must be taken to not invoke a parent initializer twice, or to ensure
+ * that all initializers are idempotent. This is not verified automatically as constructors are by Solidity.
+ *
+ * [CAUTION]
+ * ====
+ * Avoid leaving a contract uninitialized.
+ *
+ * An uninitialized contract can be taken over by an attacker. This applies to both a proxy and its implementation
+ * contract, which may impact the proxy. To prevent the implementation contract from being used, you should invoke
+ * the {_disableInitializers} function in the constructor to automatically lock it when it is deployed:
+ *
+ * [.hljs-theme-light.nopadding]
+ * ```
+ * /// @custom:oz-upgrades-unsafe-allow constructor
+ * constructor() {
+ *     _disableInitializers();
+ * }
+ * ```
+ * ====
+ */
+abstract contract Initializable {
+    /**
+     * @dev Storage of the initializable contract.
+     *
+     * It's implemented on a custom ERC-7201 namespace to reduce the risk of storage collisions
+     * when using with upgradeable contracts.
+     *
+     * @custom:storage-location erc7201:openzeppelin.storage.Initializable
+     */
+    struct InitializableStorage {
+        /**
+         * @dev Indicates that the contract has been initialized.
+         */
+        uint64 _initialized;
+        /**
+         * @dev Indicates that the contract is in the process of being initialized.
+         */
+        bool _initializing;
+    }
+
+    // keccak256(abi.encode(uint256(keccak256("openzeppelin.storage.Initializable")) - 1)) & ~bytes32(uint256(0xff))
+    bytes32 private constant INITIALIZABLE_STORAGE = 0xf0c57e16840df040f15088dc2f81fe391c3923bec73e23a9662efc9c229c6a00;
+
+    /**
+     * @dev The contract is already initialized.
+     */
+    error InvalidInitialization();
+
+    /**
+     * @dev The contract is not initializing.
+     */
+    error NotInitializing();
+
+    /**
+     * @dev Triggered when the contract has been initialized or reinitialized.
+     */
+    event Initialized(uint64 version);
+
+    /**
+     * @dev A modifier that defines a protected initializer function that can be invoked at most once. In its scope,
+     * `onlyInitializing` functions can be used to initialize parent contracts.
+     *
+     * Similar to `reinitializer(1)`, except that in the context of a constructor an `initializer` may be invoked any
+     * number of times. This behavior in the constructor can be useful during testing and is not expected to be used in
+     * production.
+     *
+     * Emits an {Initialized} event.
+     */
+    modifier initializer() {
+        // solhint-disable-next-line var-name-mixedcase
+        InitializableStorage storage $ = _getInitializableStorage();
+
+        // Cache values to avoid duplicated sloads
+        bool isTopLevelCall = !$._initializing;
+        uint64 initialized = $._initialized;
+
+        // Allowed calls:
+        // - initialSetup: the contract is not in the initializing state and no previous version was
+        //                 initialized
+        // - construction: the contract is initialized at version 1 (no reininitialization) and the
+        //                 current contract is just being deployed
+        bool initialSetup = initialized == 0 && isTopLevelCall;
+        bool construction = initialized == 1 && address(this).code.length == 0;
+
+        if (!initialSetup && !construction) {
+            revert InvalidInitialization();
+        }
+        $._initialized = 1;
+        if (isTopLevelCall) {
+            $._initializing = true;
+        }
+        _;
+        if (isTopLevelCall) {
+            $._initializing = false;
+            emit Initialized(1);
+        }
+    }
+
+    /**
+     * @dev A modifier that defines a protected reinitializer function that can be invoked at most once, and only if the
+     * contract hasn't been initialized to a greater version before. In its scope, `onlyInitializing` functions can be
+     * used to initialize parent contracts.
+     *
+     * A reinitializer may be used after the original initialization step. This is essential to configure modules that
+     * are added through upgrades and that require initialization.
+     *
+     * When `version` is 1, this modifier is similar to `initializer`, except that functions marked with `reinitializer`
+     * cannot be nested. If one is invoked in the context of another, execution will revert.
+     *
+     * Note that versions can jump in increments greater than 1; this implies that if multiple reinitializers coexist in
+     * a contract, executing them in the right order is up to the developer or operator.
+     *
+     * WARNING: Setting the version to 2**64 - 1 will prevent any future reinitialization.
+     *
+     * Emits an {Initialized} event.
+     */
+    modifier reinitializer(uint64 version) {
+        // solhint-disable-next-line var-name-mixedcase
+        InitializableStorage storage $ = _getInitializableStorage();
+
+        if ($._initializing || $._initialized >= version) {
+            revert InvalidInitialization();
+        }
+        $._initialized = version;
+        $._initializing = true;
+        _;
+        $._initializing = false;
+        emit Initialized(version);
+    }
+
+    /**
+     * @dev Modifier to protect an initialization function so that it can only be invoked by functions with the
+     * {initializer} and {reinitializer} modifiers, directly or indirectly.
+     */
+    modifier onlyInitializing() {
+        _checkInitializing();
+        _;
+    }
+
+    /**
+     * @dev Reverts if the contract is not in an initializing state. See {onlyInitializing}.
+     */
+    function _checkInitializing() internal view virtual {
+        if (!_isInitializing()) {
+            revert NotInitializing();
+        }
+    }
+
+    /**
+     * @dev Locks the contract, preventing any future reinitialization. This cannot be part of an initializer call.
+     * Calling this in the constructor of a contract will prevent that contract from being initialized or reinitialized
+     * to any version. It is recommended to use this to lock implementation contracts that are designed to be called
+     * through proxies.
+     *
+     * Emits an {Initialized} event the first time it is successfully executed.
+     */
+    function _disableInitializers() internal virtual {
+        // solhint-disable-next-line var-name-mixedcase
+        InitializableStorage storage $ = _getInitializableStorage();
+
+        if ($._initializing) {
+            revert InvalidInitialization();
+        }
+        if ($._initialized != type(uint64).max) {
+            $._initialized = type(uint64).max;
+            emit Initialized(type(uint64).max);
+        }
+    }
+
+    /**
+     * @dev Returns the highest version that has been initialized. See {reinitializer}.
+     */
+    function _getInitializedVersion() internal view returns (uint64) {
+        return _getInitializableStorage()._initialized;
+    }
+
+    /**
+     * @dev Returns `true` if the contract is currently initializing. See {onlyInitializing}.
+     */
+    function _isInitializing() internal view returns (bool) {
+        return _getInitializableStorage()._initializing;
+    }
+
+    /**
+     * @dev Returns a pointer to the storage namespace.
+     */
+    // solhint-disable-next-line var-name-mixedcase
+    function _getInitializableStorage() private pure returns (InitializableStorage storage $) {
+        assembly {
+            $.slot := INITIALIZABLE_STORAGE
+        }
+    }
+}
+
+
+// File @openzeppelin/contracts-upgradeable5/utils/ContextUpgradeable.sol@v5.0.2
 
 // Original license: SPDX_License_Identifier: MIT
 // OpenZeppelin Contracts (last updated v5.0.1) (utils/Context.sol)
@@ -19,7 +251,12 @@ pragma solidity ^0.8.20;
  *
  * This contract is only required for intermediate, library-like contracts.
  */
-abstract contract Context {
+abstract contract ContextUpgradeable is Initializable {
+    function __Context_init() internal onlyInitializing {
+    }
+
+    function __Context_init_unchained() internal onlyInitializing {
+    }
     function _msgSender() internal view virtual returns (address) {
         return msg.sender;
     }
@@ -34,12 +271,13 @@ abstract contract Context {
 }
 
 
-// File @openzeppelin/contracts/access/Ownable.sol@v5.0.2
+// File @openzeppelin/contracts-upgradeable5/access/OwnableUpgradeable.sol@v5.0.2
 
 // Original license: SPDX_License_Identifier: MIT
 // OpenZeppelin Contracts (last updated v5.0.0) (access/Ownable.sol)
 
 pragma solidity ^0.8.20;
+
 
 /**
  * @dev Contract module which provides a basic access control mechanism, where
@@ -53,8 +291,20 @@ pragma solidity ^0.8.20;
  * `onlyOwner`, which can be applied to your functions to restrict their use to
  * the owner.
  */
-abstract contract Ownable is Context {
-    address private _owner;
+abstract contract OwnableUpgradeable is Initializable, ContextUpgradeable {
+    /// @custom:storage-location erc7201:openzeppelin.storage.Ownable
+    struct OwnableStorage {
+        address _owner;
+    }
+
+    // keccak256(abi.encode(uint256(keccak256("openzeppelin.storage.Ownable")) - 1)) & ~bytes32(uint256(0xff))
+    bytes32 private constant OwnableStorageLocation = 0x9016d09d72d40fdae2fd8ceac6b6234c7706214fd39c1cd1e609a0528c199300;
+
+    function _getOwnableStorage() private pure returns (OwnableStorage storage $) {
+        assembly {
+            $.slot := OwnableStorageLocation
+        }
+    }
 
     /**
      * @dev The caller account is not authorized to perform an operation.
@@ -71,7 +321,11 @@ abstract contract Ownable is Context {
     /**
      * @dev Initializes the contract setting the address provided by the deployer as the initial owner.
      */
-    constructor(address initialOwner) {
+    function __Ownable_init(address initialOwner) internal onlyInitializing {
+        __Ownable_init_unchained(initialOwner);
+    }
+
+    function __Ownable_init_unchained(address initialOwner) internal onlyInitializing {
         if (initialOwner == address(0)) {
             revert OwnableInvalidOwner(address(0));
         }
@@ -90,7 +344,8 @@ abstract contract Ownable is Context {
      * @dev Returns the address of the current owner.
      */
     function owner() public view virtual returns (address) {
-        return _owner;
+        OwnableStorage storage $ = _getOwnableStorage();
+        return $._owner;
     }
 
     /**
@@ -129,8 +384,9 @@ abstract contract Ownable is Context {
      * Internal function without access restriction.
      */
     function _transferOwnership(address newOwner) internal virtual {
-        address oldOwner = _owner;
-        _owner = newOwner;
+        OwnableStorage storage $ = _getOwnableStorage();
+        address oldOwner = $._owner;
+        $._owner = newOwner;
         emit OwnershipTransferred(oldOwner, newOwner);
     }
 }
@@ -818,271 +1074,7 @@ library MessageHashUtils {
 }
 
 
-// File @openzeppelin/contracts/utils/StorageSlot.sol@v5.0.2
-
-// Original license: SPDX_License_Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.0.0) (utils/StorageSlot.sol)
-// This file was procedurally generated from scripts/generate/templates/StorageSlot.js.
-
-pragma solidity ^0.8.20;
-
-/**
- * @dev Library for reading and writing primitive types to specific storage slots.
- *
- * Storage slots are often used to avoid storage conflict when dealing with upgradeable contracts.
- * This library helps with reading and writing to such slots without the need for inline assembly.
- *
- * The functions in this library return Slot structs that contain a `value` member that can be used to read or write.
- *
- * Example usage to set ERC1967 implementation slot:
- * ```solidity
- * contract ERC1967 {
- *     bytes32 internal constant _IMPLEMENTATION_SLOT = 0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc;
- *
- *     function _getImplementation() internal view returns (address) {
- *         return StorageSlot.getAddressSlot(_IMPLEMENTATION_SLOT).value;
- *     }
- *
- *     function _setImplementation(address newImplementation) internal {
- *         require(newImplementation.code.length > 0);
- *         StorageSlot.getAddressSlot(_IMPLEMENTATION_SLOT).value = newImplementation;
- *     }
- * }
- * ```
- */
-library StorageSlot {
-    struct AddressSlot {
-        address value;
-    }
-
-    struct BooleanSlot {
-        bool value;
-    }
-
-    struct Bytes32Slot {
-        bytes32 value;
-    }
-
-    struct Uint256Slot {
-        uint256 value;
-    }
-
-    struct StringSlot {
-        string value;
-    }
-
-    struct BytesSlot {
-        bytes value;
-    }
-
-    /**
-     * @dev Returns an `AddressSlot` with member `value` located at `slot`.
-     */
-    function getAddressSlot(bytes32 slot) internal pure returns (AddressSlot storage r) {
-        /// @solidity memory-safe-assembly
-        assembly {
-            r.slot := slot
-        }
-    }
-
-    /**
-     * @dev Returns an `BooleanSlot` with member `value` located at `slot`.
-     */
-    function getBooleanSlot(bytes32 slot) internal pure returns (BooleanSlot storage r) {
-        /// @solidity memory-safe-assembly
-        assembly {
-            r.slot := slot
-        }
-    }
-
-    /**
-     * @dev Returns an `Bytes32Slot` with member `value` located at `slot`.
-     */
-    function getBytes32Slot(bytes32 slot) internal pure returns (Bytes32Slot storage r) {
-        /// @solidity memory-safe-assembly
-        assembly {
-            r.slot := slot
-        }
-    }
-
-    /**
-     * @dev Returns an `Uint256Slot` with member `value` located at `slot`.
-     */
-    function getUint256Slot(bytes32 slot) internal pure returns (Uint256Slot storage r) {
-        /// @solidity memory-safe-assembly
-        assembly {
-            r.slot := slot
-        }
-    }
-
-    /**
-     * @dev Returns an `StringSlot` with member `value` located at `slot`.
-     */
-    function getStringSlot(bytes32 slot) internal pure returns (StringSlot storage r) {
-        /// @solidity memory-safe-assembly
-        assembly {
-            r.slot := slot
-        }
-    }
-
-    /**
-     * @dev Returns an `StringSlot` representation of the string storage pointer `store`.
-     */
-    function getStringSlot(string storage store) internal pure returns (StringSlot storage r) {
-        /// @solidity memory-safe-assembly
-        assembly {
-            r.slot := store.slot
-        }
-    }
-
-    /**
-     * @dev Returns an `BytesSlot` with member `value` located at `slot`.
-     */
-    function getBytesSlot(bytes32 slot) internal pure returns (BytesSlot storage r) {
-        /// @solidity memory-safe-assembly
-        assembly {
-            r.slot := slot
-        }
-    }
-
-    /**
-     * @dev Returns an `BytesSlot` representation of the bytes storage pointer `store`.
-     */
-    function getBytesSlot(bytes storage store) internal pure returns (BytesSlot storage r) {
-        /// @solidity memory-safe-assembly
-        assembly {
-            r.slot := store.slot
-        }
-    }
-}
-
-
-// File @openzeppelin/contracts/utils/ShortStrings.sol@v5.0.2
-
-// Original license: SPDX_License_Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.0.0) (utils/ShortStrings.sol)
-
-pragma solidity ^0.8.20;
-
-// | string  | 0xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA   |
-// | length  | 0x                                                              BB |
-type ShortString is bytes32;
-
-/**
- * @dev This library provides functions to convert short memory strings
- * into a `ShortString` type that can be used as an immutable variable.
- *
- * Strings of arbitrary length can be optimized using this library if
- * they are short enough (up to 31 bytes) by packing them with their
- * length (1 byte) in a single EVM word (32 bytes). Additionally, a
- * fallback mechanism can be used for every other case.
- *
- * Usage example:
- *
- * ```solidity
- * contract Named {
- *     using ShortStrings for *;
- *
- *     ShortString private immutable _name;
- *     string private _nameFallback;
- *
- *     constructor(string memory contractName) {
- *         _name = contractName.toShortStringWithFallback(_nameFallback);
- *     }
- *
- *     function name() external view returns (string memory) {
- *         return _name.toStringWithFallback(_nameFallback);
- *     }
- * }
- * ```
- */
-library ShortStrings {
-    // Used as an identifier for strings longer than 31 bytes.
-    bytes32 private constant FALLBACK_SENTINEL = 0x00000000000000000000000000000000000000000000000000000000000000FF;
-
-    error StringTooLong(string str);
-    error InvalidShortString();
-
-    /**
-     * @dev Encode a string of at most 31 chars into a `ShortString`.
-     *
-     * This will trigger a `StringTooLong` error is the input string is too long.
-     */
-    function toShortString(string memory str) internal pure returns (ShortString) {
-        bytes memory bstr = bytes(str);
-        if (bstr.length > 31) {
-            revert StringTooLong(str);
-        }
-        return ShortString.wrap(bytes32(uint256(bytes32(bstr)) | bstr.length));
-    }
-
-    /**
-     * @dev Decode a `ShortString` back to a "normal" string.
-     */
-    function toString(ShortString sstr) internal pure returns (string memory) {
-        uint256 len = byteLength(sstr);
-        // using `new string(len)` would work locally but is not memory safe.
-        string memory str = new string(32);
-        /// @solidity memory-safe-assembly
-        assembly {
-            mstore(str, len)
-            mstore(add(str, 0x20), sstr)
-        }
-        return str;
-    }
-
-    /**
-     * @dev Return the length of a `ShortString`.
-     */
-    function byteLength(ShortString sstr) internal pure returns (uint256) {
-        uint256 result = uint256(ShortString.unwrap(sstr)) & 0xFF;
-        if (result > 31) {
-            revert InvalidShortString();
-        }
-        return result;
-    }
-
-    /**
-     * @dev Encode a string into a `ShortString`, or write it to storage if it is too long.
-     */
-    function toShortStringWithFallback(string memory value, string storage store) internal returns (ShortString) {
-        if (bytes(value).length < 32) {
-            return toShortString(value);
-        } else {
-            StorageSlot.getStringSlot(store).value = value;
-            return ShortString.wrap(FALLBACK_SENTINEL);
-        }
-    }
-
-    /**
-     * @dev Decode a string that was encoded to `ShortString` or written to storage using {setWithFallback}.
-     */
-    function toStringWithFallback(ShortString value, string storage store) internal pure returns (string memory) {
-        if (ShortString.unwrap(value) != FALLBACK_SENTINEL) {
-            return toString(value);
-        } else {
-            return store;
-        }
-    }
-
-    /**
-     * @dev Return the length of a string that was encoded to `ShortString` or written to storage using
-     * {setWithFallback}.
-     *
-     * WARNING: This will return the "byte length" of the string. This may not reflect the actual length in terms of
-     * actual characters as the UTF-8 encoding of a single character can span over multiple bytes.
-     */
-    function byteLengthWithFallback(ShortString value, string storage store) internal view returns (uint256) {
-        if (ShortString.unwrap(value) != FALLBACK_SENTINEL) {
-            return byteLength(value);
-        } else {
-            return bytes(store).length;
-        }
-    }
-}
-
-
-// File @openzeppelin/contracts/utils/cryptography/EIP712.sol@v5.0.2
+// File @openzeppelin/contracts-upgradeable5/utils/cryptography/EIP712Upgradeable.sol@v5.0.2
 
 // Original license: SPDX_License_Identifier: MIT
 // OpenZeppelin Contracts (last updated v5.0.0) (utils/cryptography/EIP712.sol)
@@ -1112,28 +1104,30 @@ pragma solidity ^0.8.20;
  * NOTE: In the upgradeable version of this contract, the cached values will correspond to the address, and the domain
  * separator of the implementation contract. This will cause the {_domainSeparatorV4} function to always rebuild the
  * separator from the immutable values, which is cheaper than accessing a cached version in cold storage.
- *
- * @custom:oz-upgrades-unsafe-allow state-variable-immutable
  */
-abstract contract EIP712 is IERC5267 {
-    using ShortStrings for *;
-
+abstract contract EIP712Upgradeable is Initializable, IERC5267 {
     bytes32 private constant TYPE_HASH =
         keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)");
 
-    // Cache the domain separator as an immutable value, but also store the chain id that it corresponds to, in order to
-    // invalidate the cached domain separator if the chain id changes.
-    bytes32 private immutable _cachedDomainSeparator;
-    uint256 private immutable _cachedChainId;
-    address private immutable _cachedThis;
+    /// @custom:storage-location erc7201:openzeppelin.storage.EIP712
+    struct EIP712Storage {
+        /// @custom:oz-renamed-from _HASHED_NAME
+        bytes32 _hashedName;
+        /// @custom:oz-renamed-from _HASHED_VERSION
+        bytes32 _hashedVersion;
 
-    bytes32 private immutable _hashedName;
-    bytes32 private immutable _hashedVersion;
+        string _name;
+        string _version;
+    }
 
-    ShortString private immutable _name;
-    ShortString private immutable _version;
-    string private _nameFallback;
-    string private _versionFallback;
+    // keccak256(abi.encode(uint256(keccak256("openzeppelin.storage.EIP712")) - 1)) & ~bytes32(uint256(0xff))
+    bytes32 private constant EIP712StorageLocation = 0xa16a46d94261c7517cc8ff89f61c0ce93598e3c849801011dee649a6a557d100;
+
+    function _getEIP712Storage() private pure returns (EIP712Storage storage $) {
+        assembly {
+            $.slot := EIP712StorageLocation
+        }
+    }
 
     /**
      * @dev Initializes the domain separator and parameter caches.
@@ -1147,30 +1141,29 @@ abstract contract EIP712 is IERC5267 {
      * NOTE: These parameters cannot be changed except through a xref:learn::upgrading-smart-contracts.adoc[smart
      * contract upgrade].
      */
-    constructor(string memory name, string memory version) {
-        _name = name.toShortStringWithFallback(_nameFallback);
-        _version = version.toShortStringWithFallback(_versionFallback);
-        _hashedName = keccak256(bytes(name));
-        _hashedVersion = keccak256(bytes(version));
+    function __EIP712_init(string memory name, string memory version) internal onlyInitializing {
+        __EIP712_init_unchained(name, version);
+    }
 
-        _cachedChainId = block.chainid;
-        _cachedDomainSeparator = _buildDomainSeparator();
-        _cachedThis = address(this);
+    function __EIP712_init_unchained(string memory name, string memory version) internal onlyInitializing {
+        EIP712Storage storage $ = _getEIP712Storage();
+        $._name = name;
+        $._version = version;
+
+        // Reset prior values in storage if upgrading
+        $._hashedName = 0;
+        $._hashedVersion = 0;
     }
 
     /**
      * @dev Returns the domain separator for the current chain.
      */
     function _domainSeparatorV4() internal view returns (bytes32) {
-        if (address(this) == _cachedThis && block.chainid == _cachedChainId) {
-            return _cachedDomainSeparator;
-        } else {
-            return _buildDomainSeparator();
-        }
+        return _buildDomainSeparator();
     }
 
     function _buildDomainSeparator() private view returns (bytes32) {
-        return keccak256(abi.encode(TYPE_HASH, _hashedName, _hashedVersion, block.chainid, address(this)));
+        return keccak256(abi.encode(TYPE_HASH, _EIP712NameHash(), _EIP712VersionHash(), block.chainid, address(this)));
     }
 
     /**
@@ -1209,6 +1202,11 @@ abstract contract EIP712 is IERC5267 {
             uint256[] memory extensions
         )
     {
+        EIP712Storage storage $ = _getEIP712Storage();
+        // If the hashed name and version in storage are non-zero, the contract hasn't been properly initialized
+        // and the EIP712 domain is not reliable, as it will be missing name and version.
+        require($._hashedName == 0 && $._hashedVersion == 0, "EIP712: Uninitialized");
+
         return (
             hex"0f", // 01111
             _EIP712Name(),
@@ -1223,23 +1221,67 @@ abstract contract EIP712 is IERC5267 {
     /**
      * @dev The name parameter for the EIP712 domain.
      *
-     * NOTE: By default this function reads _name which is an immutable value.
-     * It only reads from storage if necessary (in case the value is too large to fit in a ShortString).
+     * NOTE: This function reads from storage by default, but can be redefined to return a constant value if gas costs
+     * are a concern.
      */
-    // solhint-disable-next-line func-name-mixedcase
-    function _EIP712Name() internal view returns (string memory) {
-        return _name.toStringWithFallback(_nameFallback);
+    function _EIP712Name() internal view virtual returns (string memory) {
+        EIP712Storage storage $ = _getEIP712Storage();
+        return $._name;
     }
 
     /**
      * @dev The version parameter for the EIP712 domain.
      *
-     * NOTE: By default this function reads _version which is an immutable value.
-     * It only reads from storage if necessary (in case the value is too large to fit in a ShortString).
+     * NOTE: This function reads from storage by default, but can be redefined to return a constant value if gas costs
+     * are a concern.
      */
-    // solhint-disable-next-line func-name-mixedcase
-    function _EIP712Version() internal view returns (string memory) {
-        return _version.toStringWithFallback(_versionFallback);
+    function _EIP712Version() internal view virtual returns (string memory) {
+        EIP712Storage storage $ = _getEIP712Storage();
+        return $._version;
+    }
+
+    /**
+     * @dev The hash of the name parameter for the EIP712 domain.
+     *
+     * NOTE: In previous versions this function was virtual. In this version you should override `_EIP712Name` instead.
+     */
+    function _EIP712NameHash() internal view returns (bytes32) {
+        EIP712Storage storage $ = _getEIP712Storage();
+        string memory name = _EIP712Name();
+        if (bytes(name).length > 0) {
+            return keccak256(bytes(name));
+        } else {
+            // If the name is empty, the contract may have been upgraded without initializing the new storage.
+            // We return the name hash in storage if non-zero, otherwise we assume the name is empty by design.
+            bytes32 hashedName = $._hashedName;
+            if (hashedName != 0) {
+                return hashedName;
+            } else {
+                return keccak256("");
+            }
+        }
+    }
+
+    /**
+     * @dev The hash of the version parameter for the EIP712 domain.
+     *
+     * NOTE: In previous versions this function was virtual. In this version you should override `_EIP712Version` instead.
+     */
+    function _EIP712VersionHash() internal view returns (bytes32) {
+        EIP712Storage storage $ = _getEIP712Storage();
+        string memory version = _EIP712Version();
+        if (bytes(version).length > 0) {
+            return keccak256(bytes(version));
+        } else {
+            // If the version is empty, the contract may have been upgraded without initializing the new storage.
+            // We return the version hash in storage if non-zero, otherwise we assume the version is empty by design.
+            bytes32 hashedVersion = $._hashedVersion;
+            if (hashedVersion != 0) {
+                return hashedVersion;
+            } else {
+                return keccak256("");
+            }
+        }
     }
 }
 
@@ -1775,7 +1817,7 @@ error UserBlocked(address recipient);
  * The contract allows only those who have signed the campaign's Terms of Service (TOS) to claim tokens.
  * The owner sets up campaigns with a TOS and a corresponding Merkle root representing eligible entries.
  */
-contract Airdrops is Ownable, EIP712 {
+contract Airdrops is Initializable, OwnableUpgradeable, EIP712Upgradeable {
   using ECDSA for bytes32;
 
   /// @notice Structure representing a campaign's TOS hash and its corresponding Merkle tree root.
@@ -1785,7 +1827,7 @@ contract Airdrops is Ownable, EIP712 {
   }
 
   /// @notice The ERC20 token to be airdropped (UP)
-  IERC20 public immutable token;
+  IERC20 public token;
 
   /// @notice Mapping from campaign name to campaign details.
   mapping(bytes32 => Campaign) public campaigns;
@@ -1813,14 +1855,21 @@ contract Airdrops is Ownable, EIP712 {
   event RemovedFromBlockList(address indexed recipient);
   event ChainalysisOracleSet(address indexed chainalysisOracle);
 
+  /// @custom:oz-upgrades-unsafe-allow constructor
+  constructor() {
+    _disableInitializers();
+  }
+
   /**
-   * @notice Constructor that sets the token to be airdropped and initializes the owner.
+   * @notice initialize that sets the token to be airdropped and initializes the owner.
    * @param _token The address of the ERC20 token contract (UP).
    */
-  constructor(
+  function initialize(
     address _token,
     address _chainalysisOracle
-  ) Ownable(msg.sender) EIP712("Unlock Protocol Airdrops", "1") {
+  ) public initializer {
+    __Ownable_init(msg.sender);
+    __EIP712_init("Unlock Protocol Airdrops", "1");
     token = IERC20(_token);
     setChainalysisOracle(_chainalysisOracle);
   }
