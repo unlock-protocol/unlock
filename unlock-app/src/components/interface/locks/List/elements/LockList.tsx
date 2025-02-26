@@ -123,17 +123,13 @@ export const LockList = ({ owner }: LockListProps) => {
   const result = results[0]
 
   const [favoriteLocks, setFavoriteLocks] = useState<FavoriteLocks>(() => {
-    try {
-      return JSON.parse(getStorage('favoriteLocks') || '{}')
-    } catch {
-      return {}
-    }
+    return getStorage('favoriteLocks') || {}
   })
 
   const saveFavoriteLocks = useCallback(
     (newFavoriteLocks: FavoriteLocks) => {
       setFavoriteLocks(newFavoriteLocks)
-      setStorage('favoriteLocks', JSON.stringify(newFavoriteLocks))
+      setStorage('favoriteLocks', newFavoriteLocks)
     },
     [setStorage]
   )

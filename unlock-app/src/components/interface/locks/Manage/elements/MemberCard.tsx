@@ -24,6 +24,7 @@ export interface MemberCardProps {
   MetadataCard?: any
   isSelected?: boolean
   setIsSelected?: (selected: boolean) => void
+  resolvedName?: string
 }
 
 export const MemberCard = ({
@@ -38,6 +39,7 @@ export const MemberCard = ({
   showExpiration = true,
   MemberInfo,
   MetadataCard,
+  resolvedName,
 }: MemberCardProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [expireAndRefundOpen, setExpireAndRefundOpen] = useState(false)
@@ -100,6 +102,8 @@ export const MemberCard = ({
               address={owner}
               showCopyIcon={true}
               showExternalLink={false}
+              resolvedName={resolvedName}
+              skipResolution
             />
           </Detail>
 

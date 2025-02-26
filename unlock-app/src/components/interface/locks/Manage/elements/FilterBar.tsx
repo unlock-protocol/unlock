@@ -4,12 +4,11 @@ import { BiSearch as SearchIcon } from 'react-icons/bi'
 import { useEffect, useState } from 'react'
 import { MemberFilter } from '~/unlockTypes'
 import { useDebounce } from 'react-use'
-import { getAddressForName } from '~/hooks/useEns'
-import React from 'react'
 import { FilterProps } from './Members'
 import { PaywallLocksConfigType } from '@unlock-protocol/core'
 import { addressMinify } from '~/utils/strings'
 import { FaFileContract } from 'react-icons/fa'
+import { getAddressForName } from '~/hooks/useNameResolver'
 
 interface FilterBarProps {
   locks?: PaywallLocksConfigType

@@ -1,13 +1,12 @@
-import React from 'react'
 import { Button, Drawer, Input } from '@unlock-protocol/ui'
 import { useMutation } from '@tanstack/react-query'
-import { addressMinify } from '~/utils/strings'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import useEns from '~/hooks/useEns'
+
 import { useForm } from 'react-hook-form'
 import { MAX_UINT } from '~/constants'
 import dayjs from 'dayjs'
 import { useProvider } from '~/hooks/useProvider'
+import { WrappedAddress } from '~/components/interface/WrappedAddress'
 
 interface ExtendKeyDrawerProps {
   isOpen: boolean
@@ -206,7 +205,6 @@ export const ExtendKeysDrawer = ({
   resetSearchFilters,
 }: ExtendKeyDrawerProps) => {
   const owner = selectedKey?.owner
-  const addressToEns = useEns(owner!)
   const {
     lockAddress,
     tokenId,
@@ -238,8 +236,11 @@ export const ExtendKeysDrawer = ({
           <div className="flex gap-2">
             <span className="px-1 text-base font-semibold">Owner:</span>
             <span>
-              {/* ens will not be minified when resolved */}
-              {addressToEns === owner ? addressMinify(owner) : addressToEns}
+              <WrappedAddress
+                address={owner}
+                showCopyIcon={false}
+                showExternalLink={false}
+              />
             </span>
           </div>
         </div>

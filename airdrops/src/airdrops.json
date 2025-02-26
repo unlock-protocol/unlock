@@ -1,0 +1,19 @@
+[
+  {
+    "id": "1",
+    "title": "UP Token Swap",
+    "description": "The Unlock DAO migration to Base is complete, and the UP token swap reward airdrop, totaling 1.061 million UP tokens, is now live for all eligible participants.",
+    "tokenAmount": "1061000",
+    "tokenSymbol": "UP",
+    "recipientsFile": "https://example.com/airdrop1-recipients.json"
+  },
+  {
+    "id": "2",
+    "title": "Airdrop #2",
+    "description": "More to come",
+    "contractAddress": "0x1234567890123456789012345678901234567890",
+    "tokenAmount": "10000",
+    "tokenSymbol": "UP",
+    "recipientsFile": "https://example.com/airdrop2-recipients.json"
+  }
+]

@@ -1,0 +1,28 @@
+{
+  "extends": "@unlock-protocol/tsconfig",
+  "compilerOptions": {
+    "allowJs": true,
+    "jsx": "preserve",
+    "skipLibCheck": true,
+    "strict": false,
+    "noEmit": true,
+    "incremental": true,
+    "lib": [
+      "dom"
+    ],
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "isolatedModules": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ]
+}

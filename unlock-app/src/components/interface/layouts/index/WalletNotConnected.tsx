@@ -1,5 +1,4 @@
 'use client'
-import React from 'react'
 import { useConnectModal } from '~/hooks/useConnectModal'
 import { ImageBar } from '../../locks/Manage/elements/ImageBar'
 
