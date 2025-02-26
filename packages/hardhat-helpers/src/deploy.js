@@ -56,6 +56,7 @@ export const deployUpgradeableContract = async (
   deployOptions = {}
 ) => {
   const { ethers, upgrades } = require('hardhat')
+
   const Factory = await getContractFactory(
     contractNameOrFullyQualifiedNameOrEthersFactory
   )

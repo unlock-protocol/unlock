@@ -33,13 +33,13 @@ const initializeDeployTask = () =>
       }
 
       if (!proxied) {
-        ;({ address, hash } = await deployContract(qualified, params))
+        ; ({ address, hash } = await deployContract(qualified, params))
       } else {
         console.log(`Deploying using a Transparent proxy:`)
-        ;({ address, hash } = await deployUpgradeableContract(
-          qualified,
-          params
-        ))
+          ; ({ address, hash } = await deployUpgradeableContract(
+            qualified,
+            params
+          ))
       }
       console.log(`Contract ${qualified} deployed at ${address} (tx: ${hash})`)
     })
