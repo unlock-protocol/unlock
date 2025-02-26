@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.0.33
+
+- Adding Airdrops contract
+
 ## 0.0.32
 
 - PublicLock v15 : Minor changes to reduce contract size (see (https://github.com/unlock-protocol/unlock/pull/15242)[#15242])
