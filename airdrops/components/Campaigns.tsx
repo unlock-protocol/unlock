@@ -13,7 +13,7 @@ export interface AirdropData {
   id: string
   title: string
   description: string
-  contractAddress: string
+  contractAddress?: string
   tokenAmount: string
   tokenSymbol: string
   recipientsFile: string
