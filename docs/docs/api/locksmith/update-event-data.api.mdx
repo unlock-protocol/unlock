@@ -1,0 +1,71 @@
+---
+id: update-event-data
+title: "updateEventData"
+description: "Update event data"
+sidebar_label: "updateEventData"
+hide_title: true
+hide_table_of_contents: true
+api: eJytVtuOGzcM/RVBTw3g2xobpPXbZrtp01uC2IsCXfhBHtEexTPSVBdnDWP+vaQ0tsf2OMgW2QevNCJF8vCQ1I6bCqzwyuj3kk94qKTw8LAB7X8WXvAed5AFq/yWT552/NGBxcW8nve4BJdZVZEqKj5GRQakyWRSrYQVJXiwLipr3KCkK8IKDxVpVcLnuLbwb1AW0AFvA6DNLIdS8MmO+20VdbxVesVrskvC4PxbI7ckkRnt0SYtRVUVKovBDD87cmt3eZVZfIbMk3eWQvcKXJTzwgd3abLHQYcS/ecVaJm+SKgKs0V353WPeyu0ExkZ/VW4vMPpHkcfsrUJ/t7opVp1OXNE4IkiIqleAmx+7qmSnTYSuh0Hi223T1d9EVIqCkcUH1uGU2bafhYmW7tL/9LnF91b1+SQBWSQvPNdSVgaWwo84cSyvlcYK6oktr5AhfKlfEFy96c5qeMfBegqo10KZTwa0b9Tpk9DloFzy1AUW9Z4cMr770VJKpSu1F3j6jexsYnzdnRzGRqVN1OOaeOZCD7HIMh5kIOrUX09II0giQXhvRSFg/MIS8RRrDpoSzW2FKGg9M1ysMC+CMeEZmCtQRc1I/iXqkBhhn6ypikMLm22c/4LaLAqm4LdgH2gq/gejdtLNNAwUx5KtjWBCfShFGuy19hiSDAmDSS44Fkl8/87+d8DK2SvCTaD6NLSBC2/CZC/jH8XhRtyYNPODY2DyrjIS2rTEz7cjIeR6G6YeD/cEUfrOCUI0tTngy1QOPe+cpPhMLaDUvl8EDSt+xiWN5kpBpkp+fkYwc4gQ6QvS1lCUp/fiPRfYeD9l908TVqHa+fH0TalnCSU04A7QEwmeTOPaL8A5IHFL2nxbt9ifvt7RtV3d1oXzSWiUr/Ddt/P476/jh/iDEQy2W1sTcSRT8fp9vAsyqqA9nRqDaGLSj/y4XLc0Mw4nu8H8X5PE6KlfdDad/Kz7oxtcXzbH73pj3+a3byevL6ZjH8cjN7c/MNPOvJ1MbpP6aWJGDVMfIwpZH/sc4p3EaFS7sYX2TzIMUz6RuEhW4hsjehgZ9BZGjOY2likoJH+sVMoFPG46jGkuKB2zZw3Fuuqh91FUtmoZZNBlhuzdlTSmFPAkUDuNtD9+X4Wo6D6KIVunSQAWHxBseYJdeJ668XS+WhqSOPh2Q+rQiBFaNBRAeyaOnziGwIkVeIBc1xM4sRAYudUtii32y2Eg0db1DV9TkzD5xtiK6xKPQELVipHa3noPFcd/uFTM/9fsWuu7kmvieAbUQTa4ZIY3zz+ano35SBkfEzumqP7ZKU/owuOqhdNlBpC0rjDQVz5r8rOW83s44fpjNjePBxLI0nHii/0/sLf6KaJUcdeEL9hFQi9CrHz8nQnJZ6mY6vEz/pCjKoTCMxIlJgZ5GpdH3DxtCdg6vo/EB7+Dg==
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"updateEventData"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/events/update/{slug}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Update event data
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"slug","in":"path","required":true,"schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"status":{"type":"string","enum":["pending","deployed"]},"transactionHash":{"type":"string"},"checkoutConfig":{"type":"object","required":["config","name"],"properties":{"id":{"type":"string"},"name":{"type":"string"},"by":{"type":"string"},"config":{"type":"object","additionalProperties":true,"required":["locks"],"properties":{"locks":{"type":"object","additionalProperties":true}}},"createdAt":{"type":"string","format":"date-time"},"updatedAt":{"type":"string","format":"date-time"}},"title":"CheckoutConfig"}}}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully updated event data","content":{"application/json":{"schema":{"type":"object","properties":{"slug":{"type":"string"},"status":{"type":"string"},"transactionHash":{"type":"string"}}}}}},"401":{"description":"User is not authenticated.","content":{"application":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}},"404":{"description":"The item you are making request for does not exist.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"resource not found","nullable":false}},"title":"GenericNotFound"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

@@ -18693,6 +18693,7 @@ __metadata:
     docusaurus-theme-openapi-docs: "npm:4.3.3"
     ethers: "npm:6.13.5"
     postcss: "npm:8.5.1"
+    postcss-import: "npm:16.1.0"
     postcss-nesting: "npm:13.0.1"
     prism-react-renderer: "npm:2.4.1"
     react: "npm:18.3.1"
@@ -42550,6 +42551,19 @@ __metadata:
   peerDependencies:
     postcss: ^8.4
   checksum: 10/44c1e7d8586b36e9a55cc63dde4cc9f2b2632861d51bc8aebc1aca9045de2052b243bed3d0f9838334f3584d19bf04a4d308ed3fea671af30dd404e319fae252
+  languageName: node
+  linkType: hard
+
+"postcss-import@npm:16.1.0":
+  version: 16.1.0
+  resolution: "postcss-import@npm:16.1.0"
+  dependencies:
+    postcss-value-parser: "npm:^4.0.0"
+    read-cache: "npm:^1.0.0"
+    resolve: "npm:^1.1.7"
+  peerDependencies:
+    postcss: ^8.0.0
+  checksum: 10/a0877244976b8b8a930adfc8dff9f5f6c251d78649e67aa80e963d11821e6dbc8f8b16fa1d126e8725093d69c77486fc4a6861c823693c068c3192d4879e0b29
   languageName: node
   linkType: hard
 
