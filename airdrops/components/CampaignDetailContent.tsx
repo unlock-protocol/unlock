@@ -9,6 +9,8 @@ import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 import { ConnectButton } from './auth/ConnectButton'
 import { isEligible } from '../src/utils/eligibility'
 import { AirdropData } from './Campaigns'
+import ReactMarkdown from 'react-markdown'
+import { terms } from '../src/utils/terms'
 
 interface CampaignDetailContentProps {
   airdrop: AirdropData
@@ -25,10 +27,7 @@ export default function CampaignDetailContent({
 
   useEffect(() => {
     const run = async () => {
-      const amount = await isEligible(
-        wallets[0].address,
-        airdrop.recipientsFile
-      )
+      const amount = await isEligible(wallets[0].address, airdrop)
       airdrop.eligible = amount || 0
     }
     run()
@@ -90,12 +89,9 @@ export default function CampaignDetailContent({
         <div className="space-y-8">
           <div className="p-4 border rounded-lg bg-gray-50">
             <h2 className="text-xl font-semibold mb-3">Terms of Service</h2>
-            <p className="text-sm text-gray-600">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Earum
-              excepturi id explicabo, ad iste, autem placeat expedita aliquid,
-              commodi qui nam fuga asperiores ab fugit ducimus ipsam. Libero,
-              pariatur. Possimus?
-            </p>
+            <div className="text-sm text-gray-600">
+              <ReactMarkdown children={terms} />
+            </div>
           </div>
         </div>
 

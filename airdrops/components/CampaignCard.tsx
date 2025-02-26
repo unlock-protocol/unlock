@@ -8,7 +8,7 @@ interface CampaignCardProps {
 }
 
 const CampaignCardInternal = ({
-  airdrop: { title, description, eligible },
+  airdrop: { title, description, eligible, contractAddress, url },
   authenticated,
 }: CampaignCardProps) => {
   return (
@@ -16,7 +16,7 @@ const CampaignCardInternal = ({
       <h3 className="text-xl font-medium">{title}</h3>
       <p className="text-gray-600 line-clamp-3">{description}</p>
       <div className="flex items-center justify-between">
-        {authenticated && (
+        {authenticated && contractAddress && (
           <>
             <Button disabled={!authenticated || !eligible}>
               {eligible > 0 ? 'Claim Rewards' : 'Not Eligible'}
@@ -29,6 +29,15 @@ const CampaignCardInternal = ({
               {eligible > 0 ? `Eligible for ${eligible} UP` : ''}
             </div>
           </>
+        )}
+        {url && (
+          <Link
+            className="text-brand-ui-primary underline"
+            href={url}
+            target="_blank"
+          >
+            More info
+          </Link>
         )}
       </div>
     </div>
