@@ -3,7 +3,7 @@ import { StandardMerkleTree } from '@openzeppelin/merkle-tree'
 import { ethers } from 'ethers'
 import { usePrivy, useWallets } from '@privy-io/react-auth'
 import { Container } from './layout/Container'
-import { Button, Checkbox } from '@unlock-protocol/ui'
+import { Button, Checkbox, ToastHelper } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
@@ -97,31 +97,44 @@ export default function CampaignDetailContent({
   }
 
   const onClaim = async () => {
-    const provider = await wallets[0].getEthereumProvider()
-    const ethersProvider = new ethers.BrowserProvider(provider)
-    const signer = await ethersProvider.getSigner()
+    try {
+      const provider = await wallets[0].getEthereumProvider()
+      const ethersProvider = new ethers.BrowserProvider(provider)
+      const signer = await ethersProvider.getSigner()
 
-    const airdropContract = await getContract(
-      airdrop.contractAddress,
-      airdrop.chainId
-    )
-
-    // Get the proof!
-    const { proof } = await getProof(wallets[0].address, airdrop)
-    console.log(proof)
-
-    const tx = await airdropContract
-      .connect(signer)
-      // @ts-expect-error Property 'claim' does not exist on type 'BaseContract'.ts(2339)
-      .claim(
-        airdrop.name,
-        timestamp,
-        wallets[0].address,
-        airdrop.eligible,
-        proof,
-        termsOfServiceSignature
+      const airdropContract = await getContract(
+        airdrop.contractAddress,
+        airdrop.chainId
       )
-    await tx.wait()
+
+      // Get the proof!
+      const { proof } = await getProof(wallets[0].address, airdrop)
+
+      // Create the transaction promise
+      const claimPromise = async () => {
+        const tx = await airdropContract
+          .connect(signer)
+          // @ts-expect-error Property 'claim' does not exist on type 'BaseContract'.ts(2339)
+          .claim(
+            airdrop.name,
+            timestamp,
+            wallets[0].address,
+            airdrop.eligible,
+            proof,
+            termsOfServiceSignature
+          )
+        return tx.wait()
+      }
+
+      // provide feedback to user
+      await ToastHelper.promise(claimPromise(), {
+        loading: 'Processing your claim transaction...',
+        success: `Successfully claimed ${airdrop.eligible} UP tokens!`,
+        error: 'Failed to claim tokens. Please try again.',
+      })
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (
@@ -139,14 +152,33 @@ export default function CampaignDetailContent({
       </div>
 
       {/* Two-column layout for remaining content */}
-      <div className="grid max-w-6xl grid-cols-1 gap-8 pb-12 md:grid-cols-2">
+      <div className="grid max-w-6xl grid-cols-1 gap-8 pb-12 md:grid-cols-2 md:grid-rows-[auto]">
         {/* Left Column */}
-        <div className="p-4 border rounded-lg bg-gray-50 text-sm h-80 overflow-y-auto prose lg:prose-xl">
-          <ReactMarkdown children={terms} />
+        <div className="p-6 py-2 border rounded-lg bg-gray-50 h-[500px] md:h-[600px] lg:h-[650px] overflow-y-auto">
+          <div className="prose prose-sm max-w-none prose-headings:font-bold prose-headings:mb-3 prose-headings:text-gray-800 prose-p:mb-2 prose-p:text-gray-700 prose-li:mb-1 prose-li:text-gray-700 prose-a:text-blue-600 prose-a:font-medium prose-strong:font-semibold">
+            <ReactMarkdown
+              components={{
+                h1: ({ node, ...props }) => (
+                  <h1 className="text-xl font-bold mt-2 mb-3" {...props} />
+                ),
+                h2: ({ node, ...props }) => (
+                  <h2 className="text-lg font-bold mt-5 mb-3" {...props} />
+                ),
+                ol: ({ node, ...props }) => (
+                  <ol className="pl-5 list-decimal space-y-1 my-3" {...props} />
+                ),
+                ul: ({ node, ...props }) => (
+                  <ul className="pl-5 list-disc space-y-1 my-3" {...props} />
+                ),
+              }}
+            >
+              {terms}
+            </ReactMarkdown>
+          </div>
         </div>
 
         {/* Right Column - Claim Section */}
-        <div className="p-6 border rounded-xl space-y-6">
+        <div className="p-6 border rounded-xl space-y-6 h-auto self-start">
           <h2 className="text-2xl font-semibold">Claim Your Rewards</h2>
 
           {authenticated ? (
