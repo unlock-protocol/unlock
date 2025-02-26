@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import CampaignDetailContent from '../../../components/CampaignDetailContent'
-import airDrops from '../../../src/airdrops.json'
+import airdrops from '../../../src/airdrops.json'
 import { Metadata } from 'next'
 
 export interface CampaignDetailPageProps {
@@ -12,9 +12,7 @@ export interface CampaignDetailPageProps {
 export async function generateMetadata({
   params,
 }: CampaignDetailPageProps): Promise<Metadata> {
-  const campaign = airDrops.find(
-    (drop) => drop.contractAddress === params.campaign
-  )
+  const campaign = airdrops.find((drop) => drop.id === params.campaign)
 
   if (!campaign) {
     return {
@@ -39,15 +37,13 @@ export async function generateMetadata({
 }
 
 const CampaignDetailPage = async ({ params }: CampaignDetailPageProps) => {
-  const campaign = airDrops.find(
-    (drop) => drop.contractAddress === params.campaign
-  )
+  const airdrop = airdrops.find((drop) => drop.id === params.campaign)
 
-  if (!campaign) {
+  if (!airdrop) {
     notFound()
   }
 
-  return <CampaignDetailContent campaign={campaign} />
+  return <CampaignDetailContent airdrop={airdrop} />
 }
 
 export default CampaignDetailPage
