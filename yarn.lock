@@ -19081,6 +19081,7 @@ __metadata:
     react-dom: "npm:18.3.1"
     react-dropzone: "npm:14.3.5"
     react-hook-form: "npm:7.54.2"
+    react-hot-toast: "npm:2.4.1"
     react-icons: "npm:5.4.0"
     react-use-clipboard: "npm:1.0.9"
     storybook: "npm:8.5.3"
