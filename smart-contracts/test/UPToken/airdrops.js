@@ -83,10 +83,10 @@ describe('Airdrops Contract', function () {
 
     // Deploy the Airdrops contract
     const Airdrops = await ethers.getContractFactory('Airdrops')
-    airdrops = await Airdrops.deploy(
+    airdrops = await upgrades.deployProxy(Airdrops, [
       await token.getAddress(),
-      await sanctionsList.getAddress()
-    )
+      await sanctionsList.getAddress(),
+    ])
     await airdrops.waitForDeployment()
 
     // Transfer tokens to the Airdrops contract

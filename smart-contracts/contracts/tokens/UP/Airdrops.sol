@@ -1,13 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.21;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts-upgradeable5/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable5/proxy/utils/Initializable.sol";
+import {EIP712Upgradeable} from "@openzeppelin/contracts-upgradeable5/utils/cryptography/EIP712Upgradeable.sol";
+
 import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import {MessageHashUtils} from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
-import {EIP712} from "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
 
 interface ISanctionsList {
   function isSanctioned(address addr) external view returns (bool);
@@ -32,7 +34,7 @@ error UserBlocked(address recipient);
  * The contract allows only those who have signed the campaign's Terms of Service (TOS) to claim tokens.
  * The owner sets up campaigns with a TOS and a corresponding Merkle root representing eligible entries.
  */
-contract Airdrops is Ownable, EIP712 {
+contract Airdrops is Initializable, OwnableUpgradeable, EIP712Upgradeable {
   using ECDSA for bytes32;
 
   /// @notice Structure representing a campaign's TOS hash and its corresponding Merkle tree root.
@@ -42,7 +44,7 @@ contract Airdrops is Ownable, EIP712 {
   }
 
   /// @notice The ERC20 token to be airdropped (UP)
-  IERC20 public immutable token;
+  IERC20 public token;
 
   /// @notice Mapping from campaign name to campaign details.
   mapping(bytes32 => Campaign) public campaigns;
@@ -70,14 +72,21 @@ contract Airdrops is Ownable, EIP712 {
   event RemovedFromBlockList(address indexed recipient);
   event ChainalysisOracleSet(address indexed chainalysisOracle);
 
+  /// @custom:oz-upgrades-unsafe-allow constructor
+  constructor() {
+    _disableInitializers();
+  }
+
   /**
-   * @notice Constructor that sets the token to be airdropped and initializes the owner.
+   * @notice initialize that sets the token to be airdropped and initializes the owner.
    * @param _token The address of the ERC20 token contract (UP).
    */
-  constructor(
+  function initialize(
     address _token,
     address _chainalysisOracle
-  ) Ownable(msg.sender) EIP712("Unlock Protocol Airdrops", "1") {
+  ) public initializer {
+    __Ownable_init(msg.sender);
+    __EIP712_init("Unlock Protocol Airdrops", "1");
     token = IERC20(_token);
     setChainalysisOracle(_chainalysisOracle);
   }
