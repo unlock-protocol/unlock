@@ -7,7 +7,8 @@ const exec = util.promisify(require('child_process').exec)
 task('release', 'Release a new version of the contract')
   .addParam('contract', 'The contract path')
   .addOptionalParam('contractVersion', 'The contract version to use')
-  .setAction(async ({ contract, contractVersion }, hre) => {
+  .addOptionalParam('destFolder', 'The destination folder in contracts package')
+  .setAction(async ({ contract, contractVersion, destFolder }, hre) => {
     let versioned, abiPath, solPath
     const libPath = path.resolve('../packages/contracts/src')
     const contractName = path.basename(contract).replace('.sol', '')
@@ -49,6 +50,19 @@ task('release', 'Release a new version of the contract')
         'contracts',
         contractName,
         `${versioned}.sol`
+      )
+    } else if (destFolder) {
+      abiPath = path.resolve(
+        libPath,
+        'abis',
+        destFolder,
+        `${contractName}.json`
+      )
+      solPath = path.resolve(
+        libPath,
+        'contracts',
+        destFolder,
+        `${contractName}.sol`
       )
     } else {
       abiPath = path.resolve(
