@@ -18591,6 +18591,7 @@ __metadata:
     dayjs: "npm:1.11.13"
     embla-carousel-react: "npm:8.5.2"
     eslint: "npm:9.11.1"
+    ethers: "npm:6.13.5"
     jsdom: "npm:26.0.0"
     next: "npm:14.2.21"
     postcss: "npm:8.4.49"
