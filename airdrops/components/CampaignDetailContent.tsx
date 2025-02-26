@@ -135,9 +135,6 @@ export default function CampaignDetailContent({
       })
     } catch (error) {
       console.error(error)
-      ToastHelper.error(
-        'There was an unexpected issue with the claim process. Please try again.'
-      )
     }
   }
 
@@ -156,14 +153,33 @@ export default function CampaignDetailContent({
       </div>
 
       {/* Two-column layout for remaining content */}
-      <div className="grid max-w-6xl grid-cols-1 gap-8 pb-12 md:grid-cols-2">
+      <div className="grid max-w-6xl grid-cols-1 gap-8 pb-12 md:grid-cols-2 md:grid-rows-[auto]">
         {/* Left Column */}
-        <div className="p-4 border rounded-lg bg-gray-50 text-sm h-80 overflow-y-auto prose lg:prose-xl">
-          <ReactMarkdown children={terms} />
+        <div className="p-6 py-2 border rounded-lg bg-gray-50 h-[500px] md:h-[600px] lg:h-[650px] overflow-y-auto">
+          <div className="prose prose-sm max-w-none prose-headings:font-bold prose-headings:mb-3 prose-headings:text-gray-800 prose-p:mb-2 prose-p:text-gray-700 prose-li:mb-1 prose-li:text-gray-700 prose-a:text-blue-600 prose-a:font-medium prose-strong:font-semibold">
+            <ReactMarkdown
+              components={{
+                h1: ({ node, ...props }) => (
+                  <h1 className="text-xl font-bold mt-2 mb-3" {...props} />
+                ),
+                h2: ({ node, ...props }) => (
+                  <h2 className="text-lg font-bold mt-5 mb-3" {...props} />
+                ),
+                ol: ({ node, ...props }) => (
+                  <ol className="pl-5 list-decimal space-y-1 my-3" {...props} />
+                ),
+                ul: ({ node, ...props }) => (
+                  <ul className="pl-5 list-disc space-y-1 my-3" {...props} />
+                ),
+              }}
+            >
+              {terms}
+            </ReactMarkdown>
+          </div>
         </div>
 
         {/* Right Column - Claim Section */}
-        <div className="p-6 border rounded-xl space-y-6">
+        <div className="p-6 border rounded-xl space-y-6 h-auto self-start">
           <h2 className="text-2xl font-semibold">Claim Your Rewards</h2>
 
           {authenticated ? (

@@ -33,7 +33,7 @@ To participate in the Airdrop, you must:
 
 3) **Old and New Airdrop Provisions**
 
-   1. The Airdrop consists of both a new distribution and a prior distribution of Tokens completed on November 1st 2024\.
+   1. The Airdrop consists of both a new distribution and a prior distribution of Tokens completed on November 1st 2024.
 
    2. If you previously received Tokens under the prior airdrop, you must acknowledge and accept these Terms as applicable to the prior airdrop before claiming further distributions.
 
