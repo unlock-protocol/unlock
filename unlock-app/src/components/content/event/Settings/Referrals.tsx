@@ -14,7 +14,7 @@ import { useLockData } from '~/hooks/useLockData'
 import { onResolveName } from '~/utils/resolvers'
 import { Controller, useForm } from 'react-hook-form'
 import { useReferrerFee } from '~/hooks/useReferrerFee'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 
 import CopyUrlButton from '../CopyUrlButton'
 import { getEventUrl } from '../utils'

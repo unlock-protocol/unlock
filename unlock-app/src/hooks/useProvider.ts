@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { WalletService } from '@unlock-protocol/unlock-js'
 import ProviderContext from '../contexts/ProviderContext'
-import { ToastHelper } from '../components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useSession } from './useSession'
 import { config } from '~/config/app'
 import { ethers } from 'ethers'

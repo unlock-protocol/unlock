@@ -2,7 +2,7 @@ import { LoginModal as FundingModal, useFundWallet } from '@privy-io/react-auth'
 
 import { Badge, Button, Modal, Placeholder } from '@unlock-protocol/ui'
 import { useState } from 'react'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQuery } from '@tanstack/react-query'

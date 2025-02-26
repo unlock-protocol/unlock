@@ -8,7 +8,7 @@ import {
   Detail,
 } from '@unlock-protocol/ui'
 import { Controller, useForm, useWatch } from 'react-hook-form'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { z } from 'zod'
 import { useMutation, useQueries } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'

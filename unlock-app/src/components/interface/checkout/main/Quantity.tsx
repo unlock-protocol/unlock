@@ -6,7 +6,7 @@ import {
   RiCoupon2Line as QuantityIcon,
 } from 'react-icons/ri'
 import { useSelector } from '@xstate/react'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { LabeledItem } from '../LabeledItem'

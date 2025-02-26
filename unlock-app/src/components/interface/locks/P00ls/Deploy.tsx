@@ -9,7 +9,7 @@ import {
   UNLIMITED_KEYS_DURATION,
 } from '~/constants'
 import networks from '@unlock-protocol/networks'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { locksmith } from '~/config/locksmith'
 import { useCheckoutConfigUpdate } from '~/hooks/useCheckoutConfig'
 import { graphService } from '~/config/subgraph'
