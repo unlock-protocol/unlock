@@ -3,7 +3,7 @@ import { StandardMerkleTree } from '@openzeppelin/merkle-tree'
 import { ethers } from 'ethers'
 import { usePrivy, useWallets } from '@privy-io/react-auth'
 import { Container } from './layout/Container'
-import { Button, Checkbox } from '@unlock-protocol/ui'
+import { Button, Checkbox, ToastHelper } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
@@ -97,31 +97,48 @@ export default function CampaignDetailContent({
   }
 
   const onClaim = async () => {
-    const provider = await wallets[0].getEthereumProvider()
-    const ethersProvider = new ethers.BrowserProvider(provider)
-    const signer = await ethersProvider.getSigner()
+    try {
+      const provider = await wallets[0].getEthereumProvider()
+      const ethersProvider = new ethers.BrowserProvider(provider)
+      const signer = await ethersProvider.getSigner()
 
-    const airdropContract = await getContract(
-      airdrop.contractAddress,
-      airdrop.chainId
-    )
-
-    // Get the proof!
-    const { proof } = await getProof(wallets[0].address, airdrop)
-    console.log(proof)
-
-    const tx = await airdropContract
-      .connect(signer)
-      // @ts-expect-error Property 'claim' does not exist on type 'BaseContract'.ts(2339)
-      .claim(
-        airdrop.name,
-        timestamp,
-        wallets[0].address,
-        airdrop.eligible,
-        proof,
-        termsOfServiceSignature
+      const airdropContract = await getContract(
+        airdrop.contractAddress,
+        airdrop.chainId
       )
-    await tx.wait()
+
+      // Get the proof!
+      const { proof } = await getProof(wallets[0].address, airdrop)
+      console.log(proof)
+
+      // Create the transaction promise
+      const claimPromise = async () => {
+        const tx = await airdropContract
+          .connect(signer)
+          // @ts-expect-error Property 'claim' does not exist on type 'BaseContract'.ts(2339)
+          .claim(
+            airdrop.name,
+            timestamp,
+            wallets[0].address,
+            airdrop.eligible,
+            proof,
+            termsOfServiceSignature
+          )
+        return tx.wait()
+      }
+
+      // provide feedback to user
+      await ToastHelper.promise(claimPromise(), {
+        loading: 'Processing your claim transaction...',
+        success: `Successfully claimed ${airdrop.eligible} UP tokens!`,
+        error: 'Failed to claim tokens. Please try again.',
+      })
+    } catch (error) {
+      console.error(error)
+      ToastHelper.error(
+        'There was an unexpected issue with the claim process. Please try again.'
+      )
+    }
   }
 
   return (
