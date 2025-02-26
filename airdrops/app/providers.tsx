@@ -1,6 +1,7 @@
 'use client'
 
 import { PrivyProvider } from '@privy-io/react-auth'
+import { ToastProvider } from '@unlock-protocol/ui'
 
 const Providers = ({ children }) => {
   return (
@@ -10,7 +11,7 @@ const Providers = ({ children }) => {
       }}
       appId="cm2oqudm203nny8z9ho6chvyv"
     >
-      {children}
+      <ToastProvider>{children}</ToastProvider>
     </PrivyProvider>
   )
 }
