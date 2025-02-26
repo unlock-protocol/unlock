@@ -109,7 +109,6 @@ export default function CampaignDetailContent({
 
       // Get the proof!
       const { proof } = await getProof(wallets[0].address, airdrop)
-      console.log(proof)
 
       // Create the transaction promise
       const claimPromise = async () => {
