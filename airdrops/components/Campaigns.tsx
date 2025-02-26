@@ -11,13 +11,18 @@ import { CampaignCard } from './CampaignCard'
 
 export interface AirdropData {
   id: string
-  title: string
+  name: string
   description: string
   contractAddress?: string
-  tokenAmount: string
-  tokenSymbol: string
-  recipientsFile: string
+  token?: {
+    address: string
+    symbol: string
+    decimals: number
+  }
+  recipientsFile?: string
   eligible?: number
+  url?: string
+  chainId?: number
 }
 
 const CampaignsContent = () => {
@@ -53,10 +58,7 @@ const CampaignsContent = () => {
 
       await Promise.all(
         (airdrops as AirdropData[]).map(async (drop) => {
-          const amount = await isEligible(
-            user.wallet.address,
-            drop.recipientsFile
-          )
+          const amount = await isEligible(user.wallet.address, drop)
           drop.eligible = amount || 0
         })
       )

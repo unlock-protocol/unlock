@@ -1,4 +1,5 @@
 'use client'
+import { StandardMerkleTree } from '@openzeppelin/merkle-tree'
 import { ethers } from 'ethers'
 import { usePrivy, useWallets } from '@privy-io/react-auth'
 import { Container } from './layout/Container'
@@ -9,12 +10,34 @@ import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 import { ConnectButton } from './auth/ConnectButton'
 import { isEligible } from '../src/utils/eligibility'
 import { AirdropData } from './Campaigns'
+import ReactMarkdown from 'react-markdown'
+import { terms } from '../src/utils/terms'
+import { UPAirdrops } from '@unlock-protocol/contracts'
 
 interface CampaignDetailContentProps {
   airdrop: AirdropData
 }
 
 const timestamp = new Date().getTime()
+
+const getContract = async (address: string, network: number) => {
+  const provider = new ethers.JsonRpcProvider(
+    `https://rpc.unlock-protocol.com/${network}`
+  )
+  return new ethers.Contract(address, UPAirdrops.abi, provider)
+}
+
+const getProof = async (address: string, airdrop: AirdropData) => {
+  const request = await fetch(airdrop.recipientsFile)
+  const tree = StandardMerkleTree.load(await request.json())
+  for (const [i, leaf] of tree.entries()) {
+    if (leaf[0].toLowerCase() === address.toLowerCase()) {
+      const proof = tree.getProof(i)
+      return { leaf, proof }
+    }
+  }
+  return { leaf: null, proof: null }
+}
 
 export default function CampaignDetailContent({
   airdrop,
@@ -25,11 +48,10 @@ export default function CampaignDetailContent({
 
   useEffect(() => {
     const run = async () => {
-      const amount = await isEligible(
-        wallets[0].address,
-        airdrop.recipientsFile
-      )
-      airdrop.eligible = amount || 0
+      if (wallets[0]) {
+        const amount = await isEligible(wallets[0].address, airdrop)
+        airdrop.eligible = amount || 0
+      }
     }
     run()
   }, [authenticated, wallets, airdrop])
@@ -40,13 +62,17 @@ export default function CampaignDetailContent({
       const ethersProvider = new ethers.BrowserProvider(provider)
       const signer = await ethersProvider.getSigner()
 
-      await wallets[0].switchChain(8453)
+      await wallets[0].switchChain(airdrop.chainId)
+      const contract = await getContract(
+        airdrop.contractAddress,
+        airdrop.chainId
+      )
 
       const domain = {
-        name: 'Airdrops', // await airdrops.EIP712Name(),
-        version: '1', // await airdrops.EIP712Version(),
-        chainId: 8453,
-        verifyingContract: '0x4200000000000000000000000000000000000011', // replace me
+        name: await contract.EIP712Name(),
+        version: await contract.EIP712Version(),
+        chainId: airdrop.chainId,
+        verifyingContract: airdrop.contractAddress,
       }
 
       const types = {
@@ -59,7 +85,7 @@ export default function CampaignDetailContent({
 
       const value = {
         signer: signer.address,
-        campaignName: airdrop.title,
+        campaignName: airdrop.name,
         timestamp,
       }
 
@@ -68,6 +94,34 @@ export default function CampaignDetailContent({
     } else {
       setTermsOfServiceSignature('')
     }
+  }
+
+  const onClaim = async () => {
+    const provider = await wallets[0].getEthereumProvider()
+    const ethersProvider = new ethers.BrowserProvider(provider)
+    const signer = await ethersProvider.getSigner()
+
+    const airdropContract = await getContract(
+      airdrop.contractAddress,
+      airdrop.chainId
+    )
+
+    // Get the proof!
+    const { proof } = await getProof(wallets[0].address, airdrop)
+    console.log(proof)
+
+    const tx = await airdropContract
+      .connect(signer)
+      // @ts-expect-error Property 'claim' does not exist on type 'BaseContract'.ts(2339)
+      .claim(
+        airdrop.name,
+        timestamp,
+        wallets[0].address,
+        airdrop.eligible,
+        proof,
+        termsOfServiceSignature
+      )
+    await tx.wait()
   }
 
   return (
@@ -80,23 +134,15 @@ export default function CampaignDetailContent({
 
       {/* Full-width title and description */}
       <div className="max-w-6xl space-y-4 mb-8">
-        <h1 className="text-4xl font-bold">{airdrop.title}</h1>
+        <h1 className="text-4xl font-bold">{airdrop.name}</h1>
         <p className="text-xl text-gray-600">{airdrop.description}</p>
       </div>
 
       {/* Two-column layout for remaining content */}
       <div className="grid max-w-6xl grid-cols-1 gap-8 pb-12 md:grid-cols-2">
         {/* Left Column */}
-        <div className="space-y-8">
-          <div className="p-4 border rounded-lg bg-gray-50">
-            <h2 className="text-xl font-semibold mb-3">Terms of Service</h2>
-            <p className="text-sm text-gray-600">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Earum
-              excepturi id explicabo, ad iste, autem placeat expedita aliquid,
-              commodi qui nam fuga asperiores ab fugit ducimus ipsam. Libero,
-              pariatur. Possimus?
-            </p>
-          </div>
+        <div className="p-4 border rounded-lg bg-gray-50 text-sm h-80 overflow-y-auto prose lg:prose-xl">
+          <ReactMarkdown children={terms} />
         </div>
 
         {/* Right Column - Claim Section */}
@@ -113,17 +159,12 @@ export default function CampaignDetailContent({
               </div>
 
               <Checkbox
-                label="I have read and agree to the Terms of Service"
+                label="I have read and agree to the Airdrop Terms and Conditions"
                 checked={!!termsOfServiceSignature}
                 onChange={onBoxChecked}
               />
 
-              <Button
-                disabled={!termsOfServiceSignature}
-                onClick={() => {
-                  console.log('Claiming tokens for', airdrop.contractAddress)
-                }}
-              >
+              <Button disabled={!termsOfServiceSignature} onClick={onClaim}>
                 Claim Tokens
               </Button>
             </div>
