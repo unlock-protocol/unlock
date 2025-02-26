@@ -1,13 +1,13 @@
 [
   {
     "id": "1",
-    "title": "UP Token Swap",
+    "name": "UP Token Swap",
     "description": "The Unlock DAO migration to Base is complete, and the UP token swap reward airdrop, totaling 1.061 million UP tokens, is now live for all eligible participants.",
     "url": "https://unlock-protocol.com/blog/up-token-swap-reward-airdrop-now-live-"
   },
   {
     "id": "2",
-    "title": "Blastoff Airdrop",
+    "name": "Blastoff Airdrop",
     "description": "The Unlock Protocol Foundation is launching a next airdrop to Unlock Protocol community members, distributing over 7 million $UP tokens on Base to over 10,000 members of the community!",
     "contractAddress": "0x3b26D06Ea8252a73742d2125D1ACEb594ECEE5c6",
     "recipientsFile": "https://merkle-trees.unlock-protocol.com/0xe238effc14b43022c9ce132e22f0baa73cdd8696f4b435150a4c9341c83abfbf.json",
@@ -15,11 +15,12 @@
       "address": "0x3b26D06Ea8252a73742d2125D1ACEb594ECEE5c6",
       "symbol": "UP",
       "decimals": 18
-    }
+    },
+    "chainId": 8453
   },
   {
     "id": "3",
-    "title": "Trading Volume",
+    "name": "Trading Volume",
     "description": "More details to be announced soon!"
   }
 ]

@@ -22,15 +22,15 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${campaign.title} | Airdrops`,
+    title: `${campaign.name} | Airdrops`,
     description: campaign.description,
     openGraph: {
-      title: `${campaign.title} | Airdrops`,
+      title: `${campaign.name} | Airdrops`,
       description: campaign.description,
     },
     twitter: {
       card: 'summary',
-      title: `${campaign.title} | Airdrops`,
+      title: `${campaign.name} | Airdrops`,
       description: campaign.description,
     },
   }

@@ -11,16 +11,18 @@ import { CampaignCard } from './CampaignCard'
 
 export interface AirdropData {
   id: string
-  title: string
+  name: string
   description: string
   contractAddress?: string
-  token: {
+  token?: {
     address: string
     symbol: string
     decimals: number
   }
-  recipientsFile: string
+  recipientsFile?: string
   eligible?: number
+  url?: string
+  chainId?: number
 }
 
 const CampaignsContent = () => {

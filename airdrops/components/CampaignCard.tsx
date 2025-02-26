@@ -8,12 +8,12 @@ interface CampaignCardProps {
 }
 
 const CampaignCardInternal = ({
-  airdrop: { title, description, eligible, contractAddress, url },
+  airdrop: { name, description, eligible, contractAddress, url },
   authenticated,
 }: CampaignCardProps) => {
   return (
     <div className="space-y-4 md:min-w-96 block min-h-48 p-6 border min-w-[24rem] sm:min-w-[28rem] rounded-xl transition-all duration-200">
-      <h3 className="text-xl font-medium">{title}</h3>
+      <h3 className="text-xl font-medium">{name}</h3>
       <p className="text-gray-600 line-clamp-3">{description}</p>
       <div className="flex items-center justify-between">
         {authenticated && contractAddress && (

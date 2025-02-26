@@ -13,6 +13,7 @@
     "@sentry/nextjs": "8.54.0",
     "@tanstack/react-query": "5.59.19",
     "@tw-classed/react": "1.7.0",
+    "@unlock-protocol/contracts": "workspace:*",
     "@unlock-protocol/core": "workspace:./packages/core",
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",

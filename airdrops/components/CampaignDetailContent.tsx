@@ -1,4 +1,5 @@
 'use client'
+import { StandardMerkleTree } from '@openzeppelin/merkle-tree'
 import { ethers } from 'ethers'
 import { usePrivy, useWallets } from '@privy-io/react-auth'
 import { Container } from './layout/Container'
@@ -11,12 +12,31 @@ import { isEligible } from '../src/utils/eligibility'
 import { AirdropData } from './Campaigns'
 import ReactMarkdown from 'react-markdown'
 import { terms } from '../src/utils/terms'
+import { UPAirdrops } from '@unlock-protocol/contracts'
 
 interface CampaignDetailContentProps {
   airdrop: AirdropData
 }
 
 const timestamp = new Date().getTime()
+
+const getContract = async (address: string, network: number) => {
+  const provider = new ethers.JsonRpcProvider(
+    `https://rpc.unlock-protocol.com/${network}`
+  )
+  return new ethers.Contract(address, UPAirdrops.abi, provider)
+}
+
+const getProof = async (address: string, airdrop: AirdropData) => {
+  const request = await fetch(airdrop.recipientsFile)
+  const tree = StandardMerkleTree.load(await request.json())
+  for (const [i, leaf] of tree.entries()) {
+    if (leaf[0].toLowerCase() === address.toLowerCase()) {
+      const proof = tree.getProof(i)
+      return { leaf, proof }
+    }
+  }
+}
 
 export default function CampaignDetailContent({
   airdrop,
@@ -41,13 +61,17 @@ export default function CampaignDetailContent({
       const ethersProvider = new ethers.BrowserProvider(provider)
       const signer = await ethersProvider.getSigner()
 
-      await wallets[0].switchChain(8453)
+      await wallets[0].switchChain(airdrop.chainId)
+      const contract = await getContract(
+        airdrop.contractAddress,
+        airdrop.chainId
+      )
 
       const domain = {
-        name: 'Airdrops', // await airdrops.EIP712Name(),
-        version: '1', // await airdrops.EIP712Version(),
-        chainId: 8453,
-        verifyingContract: '0x4200000000000000000000000000000000000011', // replace me
+        name: await contract.EIP712Name(),
+        version: await contract.EIP712Version(),
+        chainId: airdrop.chainId,
+        verifyingContract: airdrop.contractAddress,
       }
 
       const types = {
@@ -60,7 +84,7 @@ export default function CampaignDetailContent({
 
       const value = {
         signer: signer.address,
-        campaignName: airdrop.title,
+        campaignName: airdrop.name,
         timestamp,
       }
 
@@ -72,8 +96,30 @@ export default function CampaignDetailContent({
   }
 
   const onClaim = async () => {
-    console.log('Claiming tokens for', airdrop.contractAddress)
-    console.log({ termsOfServiceSignature, timestamp })
+    const provider = await wallets[0].getEthereumProvider()
+    const ethersProvider = new ethers.BrowserProvider(provider)
+    const signer = await ethersProvider.getSigner()
+
+    const airdropContract = await getContract(
+      airdrop.contractAddress,
+      airdrop.chainId
+    )
+
+    // Get the proof!
+    const { proof } = await getProof(wallets[0].address, airdrop)
+    console.log(proof)
+
+    const tx = await airdropContract
+      .connect(signer)
+      .claim(
+        airdrop.name,
+        timestamp,
+        wallets[0].address,
+        airdrop.eligible,
+        proof,
+        termsOfServiceSignature
+      )
+    await tx.wait()
   }
 
   return (
@@ -86,7 +132,7 @@ export default function CampaignDetailContent({
 
       {/* Full-width title and description */}
       <div className="max-w-6xl space-y-4 mb-8">
-        <h1 className="text-4xl font-bold">{airdrop.title}</h1>
+        <h1 className="text-4xl font-bold">{airdrop.name}</h1>
         <p className="text-xl text-gray-600">{airdrop.description}</p>
       </div>
 
