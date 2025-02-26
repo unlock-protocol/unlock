@@ -20,11 +20,17 @@ interface CampaignDetailContentProps {
 
 const timestamp = new Date().getTime()
 
-const getContract = async (address: string, network: number) => {
-  const provider = new ethers.JsonRpcProvider(
-    `https://rpc.unlock-protocol.com/${network}`
+const getContract = async (
+  address: string,
+  network: number,
+  provider?: ethers.Provider
+) => {
+  return new ethers.Contract(
+    address,
+    UPAirdrops.abi,
+    provider ||
+      new ethers.JsonRpcProvider(`https://rpc.unlock-protocol.com/${network}`)
   )
-  return new ethers.Contract(address, UPAirdrops.abi, provider)
 }
 
 const getProof = async (address: string, airdrop: AirdropData) => {
@@ -36,6 +42,7 @@ const getProof = async (address: string, airdrop: AirdropData) => {
       return { leaf, proof }
     }
   }
+  return { leaf: null, proof: null }
 }
 
 export default function CampaignDetailContent({
@@ -98,27 +105,25 @@ export default function CampaignDetailContent({
   const onClaim = async () => {
     const provider = await wallets[0].getEthereumProvider()
     const ethersProvider = new ethers.BrowserProvider(provider)
-    const signer = await ethersProvider.getSigner()
 
     const airdropContract = await getContract(
       airdrop.contractAddress,
-      airdrop.chainId
+      airdrop.chainId,
+      ethersProvider
     )
 
     // Get the proof!
     const { proof } = await getProof(wallets[0].address, airdrop)
     console.log(proof)
 
-    const tx = await airdropContract
-      .connect(signer)
-      .claim(
-        airdrop.name,
-        timestamp,
-        wallets[0].address,
-        airdrop.eligible,
-        proof,
-        termsOfServiceSignature
-      )
+    const tx = await airdropContract.claim(
+      airdrop.name,
+      timestamp,
+      wallets[0].address,
+      airdrop.eligible,
+      proof,
+      termsOfServiceSignature
+    )
     await tx.wait()
   }
 
