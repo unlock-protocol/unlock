@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { Metadata } from '~/components/interface/locks/metadata/utils'
 import { locksmith } from '~/config/locksmith'
 

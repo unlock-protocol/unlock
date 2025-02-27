@@ -8,10 +8,11 @@ import {
   useCreateWallet,
   User,
   usePrivy,
+  LinkedAccountWithMetadata,
 } from '@privy-io/react-auth'
 import { ReactNode, useContext, useEffect, useState } from 'react'
 import { config } from './app'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { locksmith } from './locksmith'
 import AuthenticationContext from '~/contexts/AuthenticationContext'
 import { MigrationModal } from '~/components/legacy-auth/MigrationNotificationModal'
@@ -82,7 +83,12 @@ export const PrivyChild = ({ children }: { children: ReactNode }) => {
   const { setAccount } = useContext(AuthenticationContext)
 
   // handle onComplete logic
-  const handleLoginComplete = async (user: User) => {
+  const handleLoginComplete = async ({
+    user,
+  }: {
+    user: User
+    loginAccount: LinkedAccountWithMetadata | null
+  }) => {
     // Proceed with normal login flow
     await onSignedInWithPrivy(user)
   }

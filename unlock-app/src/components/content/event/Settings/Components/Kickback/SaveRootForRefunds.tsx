@@ -1,4 +1,4 @@
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { config } from '~/config/app'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { ethers } from 'ethers'
