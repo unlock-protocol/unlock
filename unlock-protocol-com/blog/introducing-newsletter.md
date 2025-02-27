@@ -11,7 +11,7 @@ There are many kinds of memberships. Going back to the origins of the internet, 
 
 # The Defiant
 
-A couple of weeks ago, while at DevCon in Osaka, I was introduced to [Camila](https://twitter.com/camirusso) who publishes one of the most insightful newsletters about the DeFi movement. When I told her about Unlock and the fact that we [tokenize memberships](/blog/tokenizing-memberships/), we quickly agreed that she needed to provide the ability to join her mailing list using crypto.
+A couple of weeks ago, while at DevCon in Osaka, I was introduced to [Camila](https://x.com/camirusso) who publishes one of the most insightful newsletters about the DeFi movement. When I told her about Unlock and the fact that we [tokenize memberships](/blog/tokenizing-memberships/), we quickly agreed that she needed to provide the ability to join her mailing list using crypto.
 
 Today, that's possible! You can [become a member of The Defiant](https://bit.ly/the-defiant) using DAI. If you join quickly, you can become an [OG member](https://etherscan.io/address/0xFA7001A0310B5E69B7b95B72aeBaA66C72E084bf) (limited to 100 members) for 70 DAI. If you miss the OG perk, you can still join her [regular membership](https://etherscan.io/address/0x43154efc9cb33c80833c0dec1e15bb9cfc1275e5) for the next year, at 100 DAI!
 

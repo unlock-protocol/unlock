@@ -372,7 +372,7 @@ export const base = `<!DOCTYPE html>
                           </td>
                           <td>
                             <a
-                              href="https://twitter.com/UnlockProtocol"
+                              href="https://x.com/UnlockProtocol"
                               target="_blank"
                               ><img
                                 src="{{inlineImage 'twitter.png'}}"

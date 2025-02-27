@@ -7,7 +7,7 @@ description: We’re very excited to announce that Austin Robey is now Unlock’
 image: /images/blog/austin-robey.png
 ---
 
-Hello, Unlock community! We’re very excited to announce that [Austin Robey](https://twitter.com/austinrobey_) is now Unlock’s Head of Growth. He’ll help us expand the use of our protocol within the indie music industry and beyond. Co-founder of [Ampled](https://twitter.com/ampl3d), a co-op support platform for musicians that’s among the first orgs to integrate Unlock, Austin is a recent recipient in our Token Grant program, and the founder of the fast-growing [Dinner DAO](https://unlock-protocol.com/blog/dinnerdao), along with being an active member of several DAOs, such as Seed Club and Forefront. Last month he wrote [a post on our blog](https://unlock-protocol.com/blog/how-musicians-can-use-unlock) detailing the many ways musicians can leverage Unlock to grow and maintain their fanbase.
+Hello, Unlock community! We’re very excited to announce that [Austin Robey](https://x.com/austinrobey_) is now Unlock’s Head of Growth. He’ll help us expand the use of our protocol within the indie music industry and beyond. Co-founder of [Ampled](https://x.com/ampl3d), a co-op support platform for musicians that’s among the first orgs to integrate Unlock, Austin is a recent recipient in our Token Grant program, and the founder of the fast-growing [Dinner DAO](https://unlock-protocol.com/blog/dinnerdao), along with being an active member of several DAOs, such as Seed Club and Forefront. Last month he wrote [a post on our blog](https://unlock-protocol.com/blog/how-musicians-can-use-unlock) detailing the many ways musicians can leverage Unlock to grow and maintain their fanbase.
 
 ![Amber Case](/images/blog/austin-robey.png)
 

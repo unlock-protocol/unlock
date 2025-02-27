@@ -51,7 +51,7 @@ export const TweetItButton = ({
     return null
   }
 
-  const tweetIntent = new URL('https://twitter.com/intent/tweet')
+  const tweetIntent = new URL('https://x.com/intent/tweet')
   tweetIntent.searchParams.set('text', tweetText)
   tweetIntent.searchParams.set('url', urlToShare)
 

@@ -56,7 +56,7 @@ If you want to have a say in the Unlock DAO, but don’t feel you have the time 
 
 ## Is it possible to become a delegate and not currently hold any UP
 
-No, delegation is the act of assigning the votes from address weighted by the number of tokens that this address owns. If you don't UP, the weight would be 0 :)
+No, delegation is the act of assigning the votes from an address weighted by the number of tokens that this address owns. If you don't UP, the weight would be 0 :)
 
 ## Is there any minimum UP holding threshold for delegate consideration
 
