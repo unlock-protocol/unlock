@@ -16,7 +16,7 @@ import {
 } from '~/hooks/useCheckoutConfig'
 import { FaTrash as TrashIcon } from 'react-icons/fa'
 import { useMutation } from '@tanstack/react-query'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { BasicConfigForm } from './elements/BasicConfigForm'
 import { LocksForm } from './elements/LocksForm'
 import { ChooseConfiguration } from './ChooseConfiguration'

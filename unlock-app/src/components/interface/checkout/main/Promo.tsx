@@ -1,7 +1,7 @@
 import { CheckoutService } from './checkoutMachine'
 import { Button, Input, Badge } from '@unlock-protocol/ui'
 import { Fragment, useEffect, useState } from 'react'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'

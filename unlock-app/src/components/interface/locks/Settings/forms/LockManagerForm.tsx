@@ -9,7 +9,7 @@ import {
   Modal,
 } from '@unlock-protocol/ui'
 import { Controller, useForm, useWatch } from 'react-hook-form'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import { onResolveName } from '~/utils/resolvers'
 import { useAddLockManager } from '~/hooks/useAddLockManager'
