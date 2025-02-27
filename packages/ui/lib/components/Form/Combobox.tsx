@@ -1,4 +1,11 @@
-import { useState, useRef, useEffect, ReactNode, useMemo } from 'react'
+import {
+  useState,
+  useRef,
+  useEffect,
+  ReactNode,
+  useMemo,
+  Fragment,
+} from 'react'
 import {
   Popover,
   PopoverButton,
@@ -323,6 +330,7 @@ export function Combobox({
                 </PopoverButton>
 
                 <Transition
+                  as={Fragment as any}
                   show={isOpen}
                   enter="transition duration-100 ease-out"
                   enterFrom="transform scale-95 opacity-0"
