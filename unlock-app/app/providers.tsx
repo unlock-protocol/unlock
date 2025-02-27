@@ -8,7 +8,7 @@ import { SessionProvider } from '~/hooks/useSession'
 import { AirstackProvider } from '@airstack/airstack-react'
 import { ErrorBoundary } from '@sentry/nextjs'
 import { ErrorFallback } from '~/components/interface/ErrorFallback'
-import { Toaster } from 'react-hot-toast'
+import { ToastProvider } from '@unlock-protocol/ui'
 import ShouldOpenConnectModal from '~/components/interface/connect/ShouldOpenConnectModal'
 import GlobalWrapper from '~/components/interface/GlobalWrapper'
 import { ConnectModalProvider } from '~/hooks/useConnectModal'
@@ -26,18 +26,19 @@ export default function Providers({ children }: { children: React.ReactNode }) {
             <SessionProvider>
               <Suspense fallback={<LoadingFallback />}>
                 <ConnectModalProvider>
-                  <AirstackProvider
-                    apiKey={'162b7c4dda5c44afdb0857b6b04454f99'}
-                  >
-                    <ErrorBoundary
-                      fallback={(props: any) => <ErrorFallback {...props} />}
+                  <ToastProvider>
+                    <AirstackProvider
+                      apiKey={'162b7c4dda5c44afdb0857b6b04454f99'}
                     >
-                      <ShouldOpenConnectModal />
-                      {children}
-                    </ErrorBoundary>
-                  </AirstackProvider>
+                      <ErrorBoundary
+                        fallback={(props: any) => <ErrorFallback {...props} />}
+                      >
+                        <ShouldOpenConnectModal />
+                        {children}
+                      </ErrorBoundary>
+                    </AirstackProvider>
+                  </ToastProvider>
                 </ConnectModalProvider>
-                <Toaster />
               </Suspense>
             </SessionProvider>
           </GlobalWrapper>

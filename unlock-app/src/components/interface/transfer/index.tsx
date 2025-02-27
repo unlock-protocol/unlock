@@ -1,13 +1,12 @@
 'use client'
 
-import { Input, Button, Placeholder } from '@unlock-protocol/ui'
+import { Input, Button, Placeholder, ToastHelper } from '@unlock-protocol/ui'
 import { KeyManager, TransferObject } from '@unlock-protocol/unlock-js'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { MouseEventHandler, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTransferCode, useTransferDone } from '~/hooks/useTransfer'
 import { useConfig } from '~/utils/withConfig'
-import { toast } from 'react-hot-toast'
 import { AxiosError } from 'axios'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useLockData } from '~/hooks/useLockData'
@@ -40,11 +39,11 @@ const SendTransferForm = ({
         onError(error) {
           if (error instanceof AxiosError) {
             if (error.status === 409) {
-              return toast.error(
+              return ToastHelper.error(
                 'Too many requests. Please wait a few minutes before trying again.'
               )
             }
-            return toast.error(
+            return ToastHelper.error(
               'There was en error while trying to send an authorization code. Please try again!'
             )
           }
@@ -134,11 +133,11 @@ export const ConfirmTransferForm = ({
         onError(error) {
           if (error instanceof AxiosError) {
             if (error.status === 409) {
-              return toast.error(
+              return ToastHelper.error(
                 'Too many requests. Please wait a few minutes before trying again.'
               )
             }
-            toast.error(error.message)
+            ToastHelper.error(error.message)
           }
         },
       }
@@ -153,7 +152,7 @@ export const ConfirmTransferForm = ({
       const maxKeysPerAddress = lock?.maxKeysPerAddress ?? 1
 
       if (total >= maxKeysPerAddress) {
-        toast.error(
+        ToastHelper.error(
           'You already have the maximum number of NFTs for this contract. Please connect with another wallet.'
         )
       } else {
@@ -174,7 +173,7 @@ export const ConfirmTransferForm = ({
       }
     } catch (error: any) {
       console.log(error.message)
-      toast.error('Error transferring key. Please try again later.')
+      ToastHelper.error('Error transferring key. Please try again later.')
     }
   }
 
