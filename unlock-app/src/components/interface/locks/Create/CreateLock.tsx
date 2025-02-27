@@ -4,7 +4,7 @@ import { networks } from '@unlock-protocol/networks'
 import { Button } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import {
   ONE_DAY_IN_SECONDS,
   UNLIMITED_KEYS_COUNT,

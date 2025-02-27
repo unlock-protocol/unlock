@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import { Button, Input } from '@unlock-protocol/ui'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useProvider } from '~/hooks/useProvider'
 
 interface UpdateNameFormProps {

@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { minifyAddress } from '@unlock-protocol/ui'
 import { locksmith } from '~/config/locksmith'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useProvider } from './useProvider'
 
 export const useKeyGranter = ({ network }: { network: number }) => {

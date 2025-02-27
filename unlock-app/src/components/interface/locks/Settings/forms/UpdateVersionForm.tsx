@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 import { Button, Icon } from '@unlock-protocol/ui'
 import { AiOutlineAlert as AlertIcon } from 'react-icons/ai'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useProvider } from '~/hooks/useProvider'
 
 interface UpdateVersionFormProps {

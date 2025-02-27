@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { Address } from '@unlock-protocol/ui'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import networks from '@unlock-protocol/networks'
 import { resolveAddress } from '~/hooks/useNameResolver'
 

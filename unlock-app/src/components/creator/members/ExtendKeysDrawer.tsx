@@ -1,6 +1,6 @@
 import { Button, Drawer, Input } from '@unlock-protocol/ui'
 import { useMutation } from '@tanstack/react-query'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 
 import { useForm } from 'react-hook-form'
 import { MAX_UINT } from '~/constants'

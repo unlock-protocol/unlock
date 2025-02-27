@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Form, NewEventForm } from './Form'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { LockDeploying } from './LockDeploying'
 import { locksmith } from '~/config/locksmith'
 import { networks } from '@unlock-protocol/networks'

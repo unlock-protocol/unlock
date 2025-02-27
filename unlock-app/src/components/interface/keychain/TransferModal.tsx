@@ -1,7 +1,7 @@
 import { AddressInput, Button, Input, Modal } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { MAX_UINT } from '~/constants'
 import { useProvider } from '~/hooks/useProvider'
 import { onResolveName } from '~/utils/resolvers'

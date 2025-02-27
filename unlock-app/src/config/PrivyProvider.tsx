@@ -12,7 +12,7 @@ import {
 } from '@privy-io/react-auth'
 import { ReactNode, useContext, useEffect, useState } from 'react'
 import { config } from './app'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { locksmith } from './locksmith'
 import AuthenticationContext from '~/contexts/AuthenticationContext'
 import { MigrationModal } from '~/components/legacy-auth/MigrationNotificationModal'

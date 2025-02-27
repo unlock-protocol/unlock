@@ -2,7 +2,7 @@ import { Button, Modal, TextBox } from '@unlock-protocol/ui'
 import { Event, PaywallConfigType } from '@unlock-protocol/core'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { validateEmail } from '~/components/interface/checkout/main/utils'
 import { useSendInvites } from '~/hooks/useSendInvites'
 

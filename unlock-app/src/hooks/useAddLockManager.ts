@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { minifyAddress } from '@unlock-protocol/ui'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useProvider } from './useProvider'
 
 export const useAddLockManager = (lockAddress: string, network: number) => {

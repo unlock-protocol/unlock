@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { useMutation } from '@tanstack/react-query'
 import { locksmith } from '~/config/locksmith'
 import { UserAccountType } from '~/utils/userAccountType'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useEffect } from 'react'
 
 interface ConnectViaEmailProps {

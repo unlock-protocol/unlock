@@ -3,7 +3,7 @@ import {
   MembershipCard,
   MembershipCardPlaceholder,
 } from './verification/MembershipCard'
-import { ToastHelper } from '../helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { MembershipVerificationConfig } from '~/utils/verification'
 import { invalidMembership } from './verification/invalidMembership'
 import { Button, Modal } from '@unlock-protocol/ui'

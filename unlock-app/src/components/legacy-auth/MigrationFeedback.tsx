@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { onSignedInWithPrivy } from '~/config/PrivyProvider'
 import { FaCheckCircle as CheckIcon } from 'react-icons/fa'
-import { ToastHelper } from '../helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 
 export default function MigrationFeedback({
   walletPk,

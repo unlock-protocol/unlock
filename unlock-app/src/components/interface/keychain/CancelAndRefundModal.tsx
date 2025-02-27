@@ -1,9 +1,9 @@
 import { Button, Modal, Placeholder, PriceFormatter } from '@unlock-protocol/ui'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { BiCopy as CopyIcon } from 'react-icons/bi'
 
-import { ToastHelper } from '../../helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useKeychain } from '~/hooks/useKeychain'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { addressMinify } from '~/utils/strings'

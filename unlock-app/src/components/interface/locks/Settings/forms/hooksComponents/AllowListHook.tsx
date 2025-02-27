@@ -9,7 +9,7 @@ import {
 } from '~/hooks/useLockSettings'
 import { useMutation } from '@tanstack/react-query'
 import { locksmith } from '~/config/locksmith'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useProvider } from '~/hooks/useProvider'
 
 export const AllowListHook = ({

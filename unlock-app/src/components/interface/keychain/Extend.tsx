@@ -1,7 +1,7 @@
 import { Button, Input, Modal } from '@unlock-protocol/ui'
-import React, { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { ToastHelper } from '../../helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import {
   getErc20BalanceForAddress,
   getErc20Decimals,

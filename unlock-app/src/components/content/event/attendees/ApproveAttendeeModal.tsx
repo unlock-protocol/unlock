@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Button, Modal } from '@unlock-protocol/ui'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { MAX_UINT } from '~/constants'
 import { locksmith } from '~/config/locksmith'

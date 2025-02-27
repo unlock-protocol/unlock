@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { StandardMerkleTree } from '@openzeppelin/merkle-tree'
 
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
 const getDataForAllowList = async (root: string, recipients: string[]) => {

@@ -1,8 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 import { Input, Button } from '@unlock-protocol/ui'
-import React from 'react'
 import { useForm } from 'react-hook-form'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useProvider } from '~/hooks/useProvider'
 
 interface UpdateMaxKeysPerAddressProps {

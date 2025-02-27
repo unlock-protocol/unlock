@@ -10,7 +10,7 @@ import {
   minifyAddress,
 } from '@unlock-protocol/ui'
 import { Controller, useForm, useWatch } from 'react-hook-form'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { locksmith } from '~/config/locksmith'
 import { onResolveName } from '~/utils/resolvers'
 import { Verifier } from '@unlock-protocol/unlock-js'

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { locksmith } from '~/config/locksmith'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 
 const getDataForGitcoinPassport = async (
   network: number,

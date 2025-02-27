@@ -1,7 +1,7 @@
 import { Button, Size } from '@unlock-protocol/ui'
 import { Checkout } from '~/components/interface/checkout/main'
 import useClipboard from 'react-use-clipboard'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import FileSaver from 'file-saver'
 import { PaywallConfigType } from '@unlock-protocol/core'
 

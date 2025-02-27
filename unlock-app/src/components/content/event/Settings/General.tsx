@@ -19,7 +19,7 @@ import {
   ToggleSwitch,
 } from '@unlock-protocol/ui'
 import { useImageUpload } from '~/hooks/useImageUpload'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import { config } from '~/config/app'
 import dayjs from 'dayjs'

@@ -38,7 +38,7 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Menu, Transition } from '@headlessui/react'
 import { classed as tw } from '@tw-classed/react'
 import { TbTools as ToolsIcon } from 'react-icons/tb'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import {
   RiNavigationFill as ExploreIcon,
   RiQrCodeLine as QrCodeIcon,

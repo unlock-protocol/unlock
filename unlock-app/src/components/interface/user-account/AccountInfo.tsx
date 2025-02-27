@@ -7,7 +7,7 @@ import {
 import { useState } from 'react'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { Button, Modal } from '@unlock-protocol/ui'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { SettingCard } from '../locks/Settings/elements/SettingCard'
 import { WrappedAddress } from '../WrappedAddress'
 

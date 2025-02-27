@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { ImageBar } from './ImageBar'
 import { MemberCard as DefaultMemberCard, MemberCardProps } from './MemberCard'
 import { paginate } from '~/utils/pagination'

@@ -5,9 +5,9 @@ import {
   Button,
   Select,
 } from '@unlock-protocol/ui'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import {
   CREDIT_CARD_MIN_PRICE_BY_CURRENCY,
   CREDIT_CARD_MIN_USD_PRICE,

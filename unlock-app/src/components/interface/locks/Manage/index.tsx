@@ -38,7 +38,7 @@ import { locksmith } from '~/config/locksmith'
 import { useMetadata } from '~/hooks/metadata'
 import { getLockTypeByMetadata } from '@unlock-protocol/core'
 import { ImageBar } from './elements/ImageBar'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface ActionBarProps {

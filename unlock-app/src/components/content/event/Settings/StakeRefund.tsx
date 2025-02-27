@@ -5,7 +5,7 @@ import { Event, PaywallConfigType } from '@unlock-protocol/core'
 import { SetKickbackContractAsLockManager } from './Components/Kickback/SetKickbackContractAsLockManager'
 import { SaveRootForRefunds } from './Components/Kickback/SaveRootForRefunds'
 import { useGetApprovedRefunds } from '~/hooks/useGetApprovedRefunds'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useAttendeeRefund } from '~/hooks/useAttendeeRefund'
 
 export interface StakeRefundProps {

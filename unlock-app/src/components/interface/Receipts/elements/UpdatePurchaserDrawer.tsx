@@ -1,7 +1,7 @@
 import { Button, Drawer, Input } from '@unlock-protocol/ui'
 import { useForm } from 'react-hook-form'
 import { useUpdateReceipt } from '~/hooks/useReceipts'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 
 type PurchaserBodyProps = any
 export interface Props {

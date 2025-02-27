@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { locksmith } from '~/config/locksmith'
 
 interface UseMarkAsCheckInMutationProps {
