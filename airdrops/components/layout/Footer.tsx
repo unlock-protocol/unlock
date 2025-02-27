@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { config } from '../../src/config/app'
 
 export default function Footer() {
   return (
@@ -8,7 +9,7 @@ export default function Footer() {
       </span>
       <div className="flex gap-8">
         <Link
-          href="https://unlock-protocol.com/privacy"
+          href={`${config.staticSiteUrl}/privacy`}
           className="text-xs text-brand-dark"
           target="_blank"
           rel="noopener noreferrer"
@@ -17,7 +18,7 @@ export default function Footer() {
         </Link>
 
         <Link
-          href="https://unlock-protocol.com/terms"
+          href={`${config.staticSiteUrl}/terms`}
           className="text-xs text-brand-dark"
           target="_blank"
           rel="noopener noreferrer"
