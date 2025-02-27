@@ -5,15 +5,6 @@ import { config } from '../src/config/app'
 
 export const metadata: Metadata = {
   title: `${config.appName.default} | ${config.appName.brand}`,
-  description: config.descriptions.default,
-  openGraph: {
-    title: `${config.appName.default} | ${config.appName.brand}`,
-    description: config.descriptions.default,
-  },
-  twitter: {
-    title: `${config.appName.default} | ${config.appName.brand}`,
-    description: config.descriptions.default,
-  },
 }
 
 export default function Home() {
