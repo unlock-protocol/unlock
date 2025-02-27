@@ -4,5 +4,5 @@ interface Props {
 }
 
 export const Container = ({ children }: Props) => {
-  return <div className="px-4 mx-auto lg:container">{children}</div>
+  return <div className="mx-auto lg:px-4 lg:container">{children}</div>
 }

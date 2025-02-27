@@ -3,8 +3,7 @@ import { AirdropData } from '../../components/Campaigns'
 
 /**
  * Checks if an address is eligible for an airdrop and returns the token amount
- * This is a temporary implementation that randomly determines eligibility
- * To be replaced with actual implementation that checks against the recipients file
+ * Fetches the recipients file and checks if the address exists in it
  */
 export const isEligible = async (
   address: string,

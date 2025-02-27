@@ -147,14 +147,16 @@ export default function CampaignDetailContent({
 
       {/* Full-width title and description */}
       <div className="max-w-6xl space-y-4 mb-8">
-        <h1 className="text-4xl font-bold">{airdrop.name}</h1>
-        <p className="text-xl text-gray-600">{airdrop.description}</p>
+        <h1 className="text-3xl lg:text-4xl font-bold">{airdrop.name}</h1>
+        <p className="text-lg lg:text-xl text-gray-600">
+          {airdrop.description}
+        </p>
       </div>
 
       {/* Two-column layout for remaining content */}
       <div className="grid max-w-6xl grid-cols-1 gap-8 pb-12 md:grid-cols-2 md:grid-rows-[auto]">
         {/* Left Column */}
-        <div className="p-6 py-2 border rounded-lg bg-gray-50 h-[500px] md:h-[600px] lg:h-[650px] overflow-y-auto">
+        <div className="relative p-6 py-2 border rounded-lg bg-gray-50 h-[500px] md:h-[600px] lg:h-[650px] overflow-y-auto">
           <div className="prose prose-sm max-w-none prose-headings:font-bold prose-headings:mb-3 prose-headings:text-gray-800 prose-p:mb-2 prose-p:text-gray-700 prose-li:mb-1 prose-li:text-gray-700 prose-a:text-blue-600 prose-a:font-medium prose-strong:font-semibold">
             <ReactMarkdown
               components={{
@@ -179,7 +181,7 @@ export default function CampaignDetailContent({
 
         {/* Right Column - Claim Section */}
         <div className="p-6 border rounded-xl space-y-6 h-auto self-start">
-          <h2 className="text-2xl font-semibold">Claim Your Rewards</h2>
+          <h2 className="text-xl lg:text-2xl font-bold">Claim Your Rewards</h2>
 
           {authenticated ? (
             <div className="space-y-6">
