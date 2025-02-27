@@ -8,8 +8,23 @@ interface RpcRequest {
   params: string[]
 }
 
-// Cache TTL in seconds (1 hour)
-const CACHE_TTL = 60 * 60
+// Default cache TTL in seconds (1 hour)
+const DEFAULT_CACHE_TTL = 60 * 60
+
+// Get the cache TTL from environment or use default
+const getCacheTTL = (env: Env): number => {
+  if (env.CACHE_DURATION_SECONDS) {
+    const duration = parseInt(env.CACHE_DURATION_SECONDS, 10)
+    // Validate the parsed value is a positive number
+    if (!isNaN(duration) && duration > 0) {
+      return duration
+    }
+    console.warn(
+      `Invalid CACHE_DURATION_SECONDS value: ${env.CACHE_DURATION_SECONDS}, using default: ${DEFAULT_CACHE_TTL}`
+    )
+  }
+  return DEFAULT_CACHE_TTL
+}
 
 // Methods that should be cached
 const CACHEABLE_METHODS = [
@@ -51,6 +66,9 @@ const createCacheKey = (networkId: string, body: RpcRequest): string => {
 }
 
 const handler = async (request: Request, env: Env): Promise<Response> => {
+  // Get the cache TTL from environment or use default
+  const cacheTTL = getCacheTTL(env)
+
   // Handling CORS
   if (request.method === 'OPTIONS') {
     return new Response('', {
@@ -229,13 +247,13 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
     const responseToCache = new Response(JSON.stringify(json), {
       headers: {
         ...headers,
-        'Cache-Control': `public, max-age=${CACHE_TTL}`,
+        'Cache-Control': `public, max-age=${cacheTTL}`,
       },
     })
 
     // Store the response in the cache with the specified TTL
     await cache.put(new Request(cacheKey), responseToCache)
-    console.log(`Cached response for ${cacheKey}`)
+    console.log(`Cached response for ${cacheKey} with TTL: ${cacheTTL} seconds`)
   }
 
   return jsonResponse
