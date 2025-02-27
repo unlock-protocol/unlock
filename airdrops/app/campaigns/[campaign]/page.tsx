@@ -27,10 +27,22 @@ export async function generateMetadata({
     openGraph: {
       title: `${campaign.name} | ${config.appName.default}`,
       description: campaign.description,
+      images: [
+        {
+          url: config.images.default,
+          alt: config.appName.brand,
+        },
+      ],
     },
     twitter: {
       title: `${campaign.name} | ${config.appName.default}`,
       description: campaign.description,
+      images: [
+        {
+          url: config.images.default,
+          alt: config.appName.brand,
+        },
+      ],
     },
   }
 }
