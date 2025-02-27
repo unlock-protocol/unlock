@@ -1,6 +1,7 @@
 import { classed } from '@tw-classed/react'
+import React, { forwardRef } from 'react'
 
-export const Line = classed.div('bg-gray-200 rounded-xl animate-pulse', {
+const BaseLine = classed.div('bg-gray-200 rounded-xl animate-pulse', {
   variants: {
     size: {
       sm: 'h-4',
@@ -20,6 +21,12 @@ export const Line = classed.div('bg-gray-200 rounded-xl animate-pulse', {
     size: 'md',
     width: 'full',
   },
+})
+
+export type LineProps = React.ComponentProps<typeof BaseLine>
+
+export const Line = forwardRef<HTMLDivElement, LineProps>((props, ref) => {
+  return <BaseLine ref={ref} {...props} />
 })
 
 Line.displayName = 'Line'

@@ -2,8 +2,9 @@ import { Line } from './Line'
 import { Image } from './Image'
 import { Card } from './Card'
 import { classed } from '@tw-classed/react'
+import React, { forwardRef } from 'react'
 
-export const Root = classed.div('flex', {
+const BaseRoot = classed.div('flex', {
   variants: {
     spaced: {
       sm: 'gap-2',
@@ -19,6 +20,12 @@ export const Root = classed.div('flex', {
     spaced: 'md',
     inline: false,
   },
+})
+
+export type RootProps = React.ComponentProps<typeof BaseRoot>
+
+export const Root = forwardRef<HTMLDivElement, RootProps>((props, ref) => {
+  return <BaseRoot ref={ref} {...props} />
 })
 
 Root.displayName = 'Root'
