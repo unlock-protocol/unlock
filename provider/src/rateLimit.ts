@@ -8,14 +8,19 @@ export const hasValidLocksmithSecret = (
   request: Request,
   env: Env
 ): boolean => {
-  if (!env.LOCKSMITH_SECRET_KEY) return false
+  try {
+    if (!env.LOCKSMITH_SECRET_KEY) return false
 
-  // Get the secret from the query parameter
-  const url = new URL(request.url)
-  const secret = url.searchParams.get('secret')
+    // Get the secret from the query parameter
+    const url = new URL(request.url)
+    const secret = url.searchParams.get('secret')
 
-  // Check if the secret matches
-  return secret === env.LOCKSMITH_SECRET_KEY
+    // Check if the secret matches
+    return secret === env.LOCKSMITH_SECRET_KEY
+  } catch (error) {
+    console.error('Error checking Locksmith secret:', error)
+    return false
+  }
 }
 
 /**
@@ -42,6 +47,41 @@ export const isUnlockContract = async (
   } catch (error) {
     console.error('Error checking if contract is Unlock contract:', error)
     return false
+  }
+}
+
+/**
+ * Extract the client IP address from the request
+ * This function supports Cloudflare-specific headers to get the real client IP
+ */
+export const getClientIP = (request: Request): string => {
+  try {
+    // Try to get the IP from CF-Connecting-IP header (set by Cloudflare)
+    const cfConnectingIP = request.headers.get('CF-Connecting-IP')
+    if (cfConnectingIP) {
+      return cfConnectingIP
+    }
+
+    // Fallback to X-Forwarded-For header
+    const forwardedFor = request.headers.get('X-Forwarded-For')
+    if (forwardedFor) {
+      // X-Forwarded-For can contain multiple IPs, use the first one which is the client
+      return forwardedFor.split(',')[0].trim()
+    }
+
+    // Generate a unique identifier based on CF-Ray ID or request properties
+    const cfRayId = request.headers.get('CF-Ray')
+    if (cfRayId) {
+      return `unknown-ip-${cfRayId}`
+    }
+
+    // Final fallback - generate a fingerprint from request details
+    // Use the URL, method, and a timestamp to create a somewhat unique identifier
+    const requestFingerprint = `${request.url}-${request.method}-${Date.now()}`
+    return `unknown-ip-${requestFingerprint.slice(0, 32)}`
+  } catch (error) {
+    console.error('Error extracting client IP:', error)
+    return `error-ip-${Date.now()}`
   }
 }
 
