@@ -49,16 +49,24 @@ Build all packages:
 yarn build
 ```
 
-To execute commands inside the repo, we use the pattern `yarn workspace <workspace name> <command>`
+Next, to execute commands inside the repo, we use the pattern `yarn workspace <workspace name> <command>`
 
 ```
-# build the contracts
+# build the contracts only
 yarn workspace @unlock-protocol/smart-contracts build
 
 # validate lint for paywall
 yarn workspace @unlock-protocol/paywall lint
 
 # etc.
+```
+
+## Protocol Health check
+
+Anyone can run a full protocol check from their command line (please follow the steps above to install the dependencies and build the packages first!)
+
+```
+yarn workspace @unlock-protocol/networks check:verify
 ```
 
 ### The protocol
