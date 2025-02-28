@@ -4,6 +4,7 @@ import { HookType } from '@unlock-protocol/types'
 
 export const getAllAddresses = async ({ network }) => {
   const {
+    id,
     unlockAddress,
     hooks,
     provider,
@@ -29,9 +30,15 @@ export const getAllAddresses = async ({ network }) => {
     const lockAddress = await getLockAddress(subgraph.endpoint, lockVersion)
     if (lockAddress) {
       addresses[`LockProxyV${lockVersion}`] = lockAddress
+    } else {
+      console.log(`No lock address on ${id}`)
     }
   } catch (error) {
     // missing lock address
+    console.log(
+      `failed to fetch lock proxy for v${lockVersion} on ${id}`,
+      error
+    )
   }
 
   // add other addresses
@@ -98,11 +105,10 @@ export const getLockAddress = async (subgraphEndpoint, lockVersion) => {
   if (success) {
     // get the first lock
     const [lock] = data.locks
-    let lockAddress
     if (lock) {
-      ;({ address: lockAddress } = lock)
+      return lock.address
     }
-    return lockAddress
+    return null
   }
 }
 
