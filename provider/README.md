@@ -8,6 +8,33 @@ For each network, the RPC endpoint URL is `https://rpc.unlock-protocol.com/<chai
 
 The Ethereum JSON RPC API specification [can be found there](https://github.com/ethereum/execution-apis).
 
+## Caching
+
+The provider implements caching for ENS and BaseName resolution requests. These requests are cached to reduce load on the underlying RPC providers and improve performance.
+
+The following types of requests are cached:
+
+- ENS resolver lookups (`eth_call` to ENS resolver functions)
+- Base name resolution (`eth_call` to L2 resolver functions)
+
+Cache keys are based on the network ID, method, and parameters of the request.
+
+### Cache Duration
+
+By default, the cache duration is set to 1 hour (3600 seconds). This is configured in the `wrangler.toml` file:
+
+```toml
+[vars]
+CACHE_DURATION_SECONDS = "3600"
+```
+
+To modify the cache duration, simply update this value in the wrangler.toml file:
+
+- For a 30-minute cache: `CACHE_DURATION_SECONDS = "1800"`
+- For a 2-hour cache: `CACHE_DURATION_SECONDS = "7200"`
+
+If the environment variable contains an invalid value, the default 1-hour duration will be used.
+
 # Development
 
 You can use the `yarn dev` to run locally.
