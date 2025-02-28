@@ -22,67 +22,28 @@ export default defineConfig({
       entry: path.resolve(__dirname, 'lib/index.tsx'),
       name: '@unlock-protocol/ui',
       fileName: (format) => `index.${format}.js`,
-      formats: isCDN ? ['es'] : ['es'],
     },
     rollupOptions: {
-      external: [
-        ...(isCDN ? Object.keys(peerDependencies) : external),
-        'react/jsx-runtime',
-      ],
+      external: isCDN ? Object.keys(peerDependencies) : external,
       shimMissingExports: true,
       output: {
-        globals: {
-          react: 'React',
-          'react-dom': 'ReactDOM',
-          'react/jsx-runtime': 'jsxRuntime',
-        },
         assetFileNames: (assetInfo) => {
           if (assetInfo.name?.endsWith('.css')) {
             return 'style.css'
           }
+          // Return a default name if assetInfo.name is undefined
           return assetInfo.name ?? 'asset'
         },
-        exports: 'named',
-        ...(isCDN
-          ? {}
-          : {
-              preserveModules: true,
-              preserveModulesRoot: 'lib',
-              format: 'es',
-            }),
       },
     },
     sourcemap: true,
-    commonjsOptions: {
-      include: [/node_modules/],
-      requireReturnsDefault: 'auto',
-    },
   },
   plugins: [
     tsconfigPaths(),
-    react({
-      jsxRuntime: 'automatic',
-      jsxImportSource: 'react',
-      babel: {
-        plugins: [
-          ['@babel/plugin-transform-react-jsx', { runtime: 'automatic' }],
-        ],
-      },
-    }),
+    react(),
     svgr(),
     nodePolyfills({
       protocolImports: true,
     }),
   ],
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './lib'),
-    },
-  },
-  optimizeDeps: {
-    include: ['react', 'react-dom'],
-    esbuildOptions: {
-      target: 'es2020',
-    },
-  },
 })
