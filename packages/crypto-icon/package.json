@@ -4,14 +4,13 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/index.es.js",
+  "main": "./dist/index.umd.js",
   "module": "./dist/index.es.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/index.es.js",
-      "require": "./dist/index.es.js",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.umd.js"
     }
   },
   "version": "0.1.1",
@@ -22,8 +21,8 @@
     "build-storybook": "storybook build"
   },
   "peerDependencies": {
-    "react": "19.0.0",
-    "react-dom": "19.0.0"
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
   },
   "repository": {
     "type": "git",
@@ -37,11 +36,11 @@
     "@storybook/addon-links": "8.5.3",
     "@storybook/react": "8.5.3",
     "@storybook/react-vite": "8.5.3",
-    "@types/react": "19.0.2",
-    "@types/react-dom": "19.0.2",
+    "@types/react": "18.3.18",
+    "@types/react-dom": "18.3.5",
     "@vitejs/plugin-react": "4.3.4",
-    "react": "19.0.0",
-    "react-dom": "19.0.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
     "storybook": "8.5.3",
     "tsup": "8.3.6",
     "tsx": "4.19.2",

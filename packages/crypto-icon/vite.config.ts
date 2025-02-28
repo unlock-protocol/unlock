@@ -13,18 +13,11 @@ export default defineConfig({
       entry: path.resolve(__dirname, 'lib/index.ts'),
       name: '@unlock-protocol/crypto-icon',
       fileName: (format) => `index.${format}.js`,
-      formats: ['es'],
     },
     rollupOptions: {
       external: [...Object.keys(peerDependencies)],
     },
     sourcemap: true,
   },
-  plugins: [
-    tsconfigPaths(),
-    react({
-      jsxRuntime: 'automatic',
-    }),
-    svgr(),
-  ],
+  plugins: [tsconfigPaths(), react(), svgr()],
 })
