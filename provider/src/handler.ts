@@ -1,5 +1,11 @@
 import supportedNetworks from './supportedNetworks'
 import { Env } from './types'
+import {
+  checkRateLimit,
+  getClientIP,
+  getContractAddress,
+  isUnlockContract,
+} from './rateLimit'
 
 interface RpcRequest {
   id: number
@@ -199,6 +205,48 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
         headers,
       }
     )
+  }
+
+  // Apply rate limiting
+  const clientIP = getClientIP(request)
+
+  // Extract contract address if applicable
+  const contractAddress = getContractAddress(body.method, body.params)
+
+  // Check if this is an Unlock contract (skip rate limiting if true)
+  let isUnlock = false
+  if (contractAddress) {
+    isUnlock = await isUnlockContract(contractAddress, networkId, env)
+  }
+
+  // Only apply rate limiting if not an Unlock contract
+  if (!isUnlock) {
+    const isRateLimitAllowed = await checkRateLimit(
+      clientIP,
+      body.method,
+      contractAddress,
+      env
+    )
+
+    if (!isRateLimitAllowed) {
+      return Response.json(
+        {
+          id: body.id || 42,
+          jsonrpc: '2.0',
+          error: {
+            code: -32005,
+            message: 'Rate limit exceeded',
+          },
+        },
+        {
+          status: 429,
+          headers: {
+            ...headers,
+            'Retry-After': '60', // Suggest retry after 60 seconds
+          },
+        }
+      )
+    }
   }
 
   // Check if this is a cacheable request
