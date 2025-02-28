@@ -22,7 +22,7 @@ export default defineConfig({
       entry: path.resolve(__dirname, 'lib/index.tsx'),
       name: '@unlock-protocol/ui',
       fileName: (format) => `index.${format}.js`,
-      formats: isCDN ? ['umd'] : ['es'],
+      formats: isCDN ? ['es'] : ['es'],
     },
     rollupOptions: {
       external: [
