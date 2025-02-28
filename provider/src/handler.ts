@@ -4,6 +4,7 @@ import {
   checkRateLimit,
   getContractAddress,
   isUnlockContract,
+  getClientIP,
 } from './rateLimit'
 
 interface RpcRequest {
@@ -225,6 +226,14 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
     )
 
     if (!isRateLimitAllowed) {
+      // TEMPORARY: Log but don't block rate-limited requests for monitoring purposes
+      // After 10+ days, review logs and enable actual blocking
+      console.log(
+        `RATE_LIMIT_WOULD_BLOCK: IP=${getClientIP(request)}, Method=${body.method}, Contract=${contractAddress || 'none'}, ID=${body.id || 'none'}`
+      )
+
+      // Original blocking code - commented out for monitoring period
+      /*
       return Response.json(
         {
           id: body.id || 42,
@@ -242,6 +251,7 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
           },
         }
       )
+      */
     }
   }
 
