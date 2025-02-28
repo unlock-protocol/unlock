@@ -14,8 +14,6 @@ We also believe that the protocol itself **should not be immutable**. We believe
 
 Finally, we believe that people who are using the Unlock Protocol should be part of the protocol's governance. Interested individuals should have additional mechanisms that are more meaningful than "buying out other existing community members" that enable them to join Unlock's governance process. For this, the Unlock protocol includes its own governance token, called [Unlock Protocol Governance Tokens](./unlock-dao-tokens.mdx), which can be earned by anyone using the protocol.
 
-Unlock Labs, despite being the original builders of the protocol, are just like any other token holders and do not have more "power" or control over the protocol and its smart contracts.
+Governance can happen at multiple levels, and we encourage the community to create their own decision-making processes. Currently, the Unlock Protocol DAO uses both onchain governance through the DAO contracts, and offchain governance through Snapshots.
 
-Governance can happen at multiple levels, and we encourage the community to create their own decision-making processes. Currently, we use both on-chain governance through the DAO contracts, and off-chain governance through Snapshots.
-
-Unlock Labs has already allocated a significant amount of the pre-mined governance tokens to the DAO's Timelock contract (Treasury), as well as various tokens resulting from airdrops (USDC, OP, ARB... etc). At this point, the community has full control over these tokens and **Unlock Labs does not have a mechanism to bypass the governance process**.
+Over time, the Unlock DAO's Timelock contract (Treasury), as well as various individuals and entities in the Unlock community have received tokens from airdrops and other activities. The community has full control over these tokens.
