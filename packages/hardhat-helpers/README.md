@@ -1,6 +1,6 @@
 # Hardhat helpers
 
-This package contains a bunch of convenience helpers that can be used accross various hardhat project to add various tasks, parse networks file, verification APis, etc.
+This package contains a bunch of convenience helpers that can be used across various hardhat project to add various tasks, parse networks file, verification APis, etc.
 
 ### Usage
 

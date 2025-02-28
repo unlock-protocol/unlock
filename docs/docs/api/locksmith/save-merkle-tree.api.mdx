@@ -1,0 +1,71 @@
+---
+id: save-merkle-tree
+title: "saveMerkleTree"
+description: "Saves a merkle tree from either a list of addresses or a list of [address, amount] tuples."
+sidebar_label: "saveMerkleTree"
+hide_title: true
+hide_table_of_contents: true
+api: eJy1Vk2P2zYQ/SsETxvAH8mivei2LdJi2wYJYi9ycHygpZHFmB8qSXnXMPzfO0PSstbeTbpJa8C2SA7JeW/ezGjPbQtOBGnNbcUL7sUW3oHbKJg7AD7iFfjSyZYMcHmGy54JpqMJC2jDamc1AxkacLiipA/M1kxUlQPv0doOpxd5fsSEtp0JSxa6VoGf4FUO/u7Ah19stePFPg6lA/QquA5GvLQmgAm0JNpWyTJ6Pf3iybM992UDWtBT2LWAvgrnxA6P1dLcBtCeF2/O4dyQCdMd+kanC2l6IEoxH5w0a8+ueiyvIhhceg7GiBnLtHzAfWRn79H9EZfp+t4zu/oCZcAFa+B9zYtFv5KuvKD9I5SylQj+SCu7upfoxgqY8F6uDVTZEfaZv/nMX/HD6IKHM+j5IGH6rRHCI8KucSAeToMeyHc7PnSsp6F1JMIgIZ6dvHnJLTfJf+FzyIaXmE6vwH1lSzY4LA8H+tLf4UBi9K01Prl0/fo1/Z3lQleWiKjulNoxypuKoXRYyh6W0+elou05Oal/wZ21gS/PeYqzxbe4maNLw2ylXawRvuGHjPSnp8Ddmq1QsmI5J9kV6DbsWNTSiBROaPFiVDymhMzWp0T5r6CDc9ZdYk/T39grvUffLzfn+ctK8WyePt5f2gouiUcmNWIX66fXWhGaf3HlccPgM+I/PxWhOyNWFFTLSIG1VH2sqi5OS6TfGYF1DNwWS1rkbPIjgTF4EV3Ki1ooD+e8PAufNFmLToWkRwfsXlDlSS6ho0cIVDYphzKSyeWdREeQgcb8dzDgZDmL8N5GRWTCNITGUjtrrY/xi+Tz6fZ6mnJhHFJ6Jmp8rDGdU2jThND6YjpVttx4jc1g0hl6HiPWYEurJqXVF1n2wdmqK2nAkjuxBD0+0QexRoDjl508S7v6Y5fkdNk5GXYzClSi/g6BDHinKwldNMDxCoSLRTA9/GadFhSMPz7NSZs3JxUMJdrKP4E0aoTO4/EmTkhyDCPkdpzYJuF8PPXutw9CUyPBDDzG//R0Ku+91JdLOrG28eoc2rvIDPvrSBVeSnFKlFxfkNTbMeRyK3GRrUS5AextdWdiXLA+Yf2qUW5AiROVJtEk4BMWNAiiEkFgA7EONTyKfdHYIOtMDGus3cTXFKQKsDGQu5mZd7fzSASpTQszWKG2cNYRHnm+PyXj//tulWMa4CFMW4UvOhT3qM99zo4F3xKxw/zAwDSUQLi236+EhzunDgeaTsEvFvi4FU6mBF0s8cwGREVaxIQisRT81wRwPCcPyFx1SU1nlYcSJu24wb7ahq/aLgc5/uH9bE7Szq+NOlZn7sQ9tQP8LTi9aUXCU9+kuT1Xwqy7WK54OpM+/wCd4N5u
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"saveMerkleTree"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/merkle-tree"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Saves a merkle tree from either a list of addresses or a list of [address, amount] tuples.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={undefined}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"required":true,"content":{"application/json":{"schema":{"type":"array","minItems":1,"description":"Array must contain either all strings (addresses) or all [address, amount] tuples, no mixing allowed","items":{"type":"object","oneOf":[{"type":"string","description":"Recipient address (will be assigned amount \"1\")"},{"type":"array","description":"Address and amount tuple","minItems":2,"maxItems":2,"items":{"oneOf":[{"type":"string","description":"Recipient address"},{"type":"object","properties":{"amount":{"oneOf":[{"type":"string","description":"Amount as string"},{"type":"number","description":"Amount as number"}]}}}]}}]}}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully saved the Merkle Tree","content":{"application/json":{"schema":{"type":"object","required":["root"],"properties":{"root":{"type":"string","description":"The merkle tree root hash"}}}}}},"400":{"description":"Invalid request (empty array, mixed types, or invalid addresses)","content":{"application/json":{"schema":{"type":"object","required":["error"],"properties":{"error":{"type":"object","required":["issues"],"properties":{"issues":{"type":"array","items":{"type":"object","properties":{"code":{"type":"string"},"message":{"type":"string"},"path":{"type":"array","items":{"type":"string"}}}}}}}}}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

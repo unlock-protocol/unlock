@@ -38,7 +38,7 @@ import { locksmith } from '~/config/locksmith'
 import { useMetadata } from '~/hooks/metadata'
 import { getLockTypeByMetadata } from '@unlock-protocol/core'
 import { ImageBar } from './elements/ImageBar'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface ActionBarProps {
@@ -313,11 +313,9 @@ export const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
     <>
       <div className="flex items-center justify-between">
         <Button variant="borderless" aria-label="arrow back">
-          <ArrowBackIcon
-            size={20}
-            className="cursor-pointer"
-            onClick={() => router.back()}
-          />
+          <Link href="/locks">
+            <ArrowBackIcon size={20} className="cursor-pointer" />
+          </Link>
         </Button>
         <div className="flex gap-3">
           {isManager && (

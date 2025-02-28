@@ -7,7 +7,6 @@ import { Card, Detail, Icon } from '@unlock-protocol/ui'
 import dayjs from 'dayjs'
 import { useEventAttendees } from '~/hooks/useEventAttendees'
 import { useEventRSVP } from '~/hooks/useRsvp'
-import { WrappedAddress } from '~/components/interface/WrappedAddress'
 
 interface EventCardProps {
   event: {
@@ -36,8 +35,6 @@ const EventImage = ({ imageUrl }: EventImageProps) => {
 
 export const EventCard = ({ event }: EventCardProps) => {
   const { name, checkoutConfig, slug, ticket, image: imageUrl } = event
-  const lockAddress = Object.keys(checkoutConfig.config.locks)[0]
-  const network = checkoutConfig.config.locks[lockAddress].network
   const eventDate = dayjs(ticket.event_start_date).format('D MMM YYYY')
   const eventEndDate = dayjs(ticket.event_end_date).format('D MMM YYYY')
 
@@ -62,12 +59,6 @@ export const EventCard = ({ event }: EventCardProps) => {
                 {name}
               </span>
             </div>
-            <WrappedAddress
-              className="text-brand-dark text-sm md:text-base overflow-hidden overflow-ellipsis line-clamp-3"
-              address={lockAddress}
-              network={network}
-              addressType="lock"
-            />
           </div>
         </div>
 

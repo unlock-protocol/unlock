@@ -4,7 +4,7 @@ import {
   generateGoogleWalletPass,
   Platform,
 } from '../../../services/passService'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import Image from 'next/image'
 
 interface AddToWalletProps {

@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react'
 import { Address } from '@unlock-protocol/ui'
-import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useNameResolver } from '~/hooks/useNameResolver'
+import { ToastHelper } from '@unlock-protocol/ui'
 import networks from '@unlock-protocol/networks'
+import { resolveAddress } from '~/hooks/useNameResolver'
 
 /**
  * @typedef {Object} WrappedAddressProps
@@ -14,6 +14,8 @@ import networks from '@unlock-protocol/networks'
  * @property {boolean} [minified] - Whether to show a minified version of the address.
  * @property {'ens' | 'multiple'} [preferredResolver] - The preferred name resolution method.
  * @property {string} [externalLinkUrl] - Custom external link URL.
+ * @property {string} [resolvedName] - The resolved name (ENS or Base) for the address.
+ * @property {boolean} [skipResolution] - Whether to skip name resolution and just show the address.
  * @property {string} [addressType] - The type of address being displayed (e.g., 'lock', 'wallet', 'contract', 'default').
  * @property {number} [network] - The network ID for generating the explorer URL.
  */
@@ -28,6 +30,8 @@ interface WrappedAddressProps {
   externalLinkUrl?: string
   addressType?: 'lock' | 'wallet' | 'contract' | 'default'
   network?: number
+  resolvedName?: string
+  skipResolution?: boolean
 }
 
 /**
@@ -46,19 +50,33 @@ const normalizeAddress = (address: string | `0x${string}`): `0x${string}` => {
  */
 export const WrappedAddress: React.FC<WrappedAddressProps> = ({
   address,
+  resolvedName,
   preferredResolver = 'multiple',
   showCopyIcon = true,
   showExternalLink = true,
   externalLinkUrl,
   addressType = 'default',
+  skipResolution = false,
   network,
+  showResolvedName = true,
   ...props
 }) => {
   // Normalize the address to always start with 0x
   const normalizedAddress = normalizeAddress(address)
 
-  // Fetch names for the address using the name resolver hook
-  const { ensName, baseName } = useNameResolver(normalizedAddress)
+  // If resolvedName is provided or skipResolution is true, we should skip the name resolution
+  const shouldSkipResolution = Boolean(resolvedName || skipResolution)
+
+  /**
+   * Wrapper function for resolving names.
+   */
+  const resolveMultipleNames = useCallback(
+    async (address: string): Promise<string | undefined> => {
+      if (shouldSkipResolution) return undefined
+      return resolveAddress(address, preferredResolver)
+    },
+    [shouldSkipResolution, preferredResolver]
+  )
 
   /**
    * Handles the copy action for the address.
@@ -89,42 +107,8 @@ export const WrappedAddress: React.FC<WrappedAddressProps> = ({
   }, [addressType]) // include addressType to ensure the latest value is used
 
   /**
-   * Resolves names based on the preferred resolver.
-   * @param {string} addr - The address to resolve.
-   * @returns {Promise<string | undefined>} The resolved name or the original address if not resolved.
-   */
-  const resolveNames = useCallback(
-    async (addr: string): Promise<string> => {
-      if (preferredResolver === 'ens') {
-        return ensName || baseName || addr
-      } else if (preferredResolver === 'base') {
-        return baseName || ensName || addr
-      } else if (preferredResolver === 'multiple') {
-        // Prioritize ENS, then Base name, then fall back to address
-        return ensName || baseName || addr
-      }
-      return addr
-    },
-    [preferredResolver, ensName, baseName]
-  )
-
-  /**
-   * Wrapper function for resolving multiple names (currently only ENS and Base names).
-   * This function is designed to be extensible for future name resolution methods.
-   * @param {string} address - The address to resolve.
-   * @returns {Promise<string | undefined>} The resolved name or undefined.
-   */
-  const resolveMultipleNames = useCallback(
-    async (address: string): Promise<string | undefined> => {
-      return resolveNames(address)
-    },
-    [resolveNames]
-  )
-
-  /**
    * Generates the explorer URL based on the provided network.
    * This function checks if the network is valid and retrieves the corresponding explorer URL for the normalized address.
-   * If the network is not provided or not found, it returns undefined.
    * @returns {string | undefined} The explorer URL for the address or undefined if no valid network is provided.
    */
   const getExplorerUrl = useCallback(() => {
@@ -132,17 +116,19 @@ export const WrappedAddress: React.FC<WrappedAddressProps> = ({
       const { explorer } = networks[network]
       return explorer?.urls?.address(normalizedAddress) || undefined
     }
-    // Return undefined if no network is provided or if it's not found
+    // Return undefined if no network is provided or if it's not found.
     return undefined
   }, [network, normalizedAddress])
 
   return (
     <Address
       address={address}
-      useName={resolveMultipleNames}
+      resolvedName={resolvedName}
+      useName={resolvedName ? undefined : resolveMultipleNames}
       onCopied={handleCopy}
       showCopyIcon={showCopyIcon}
       showExternalLink={showExternalLink}
+      showResolvedName={showResolvedName}
       externalLinkUrl={getExplorerUrl()}
       {...props}
     />

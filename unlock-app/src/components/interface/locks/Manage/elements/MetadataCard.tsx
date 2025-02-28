@@ -9,7 +9,7 @@ import {
 import { useEffect, useState } from 'react'
 import { Controller, FieldValues, useForm } from 'react-hook-form'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useLockManager } from '~/hooks/useLockManager'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import { ADDRESS_ZERO, MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
