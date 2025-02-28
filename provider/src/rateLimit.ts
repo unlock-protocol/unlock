@@ -2,24 +2,20 @@ import { Env } from './types'
 import { isKnownUnlockContract, checkIsLock } from './unlockContracts'
 
 /**
- * Checks if the given IP is in the Locksmith allowlist
+ * Checks if the request has the correct Locksmith secret key
  */
-export const isLocksmithIP = (ip: string, env: Env): boolean => {
-  if (!env.LOCKSMITH_IPS) return false
+export const hasValidLocksmithSecret = (
+  request: Request,
+  env: Env
+): boolean => {
+  if (!env.LOCKSMITH_SECRET_KEY) return false
 
-  const allowlistedIPs = env.LOCKSMITH_IPS.split(',').map((ip) => ip.trim())
-  return allowlistedIPs.includes(ip)
-}
+  // Get the secret from the query parameter
+  const url = new URL(request.url)
+  const secret = url.searchParams.get('secret')
 
-/**
- * Get client IP from request
- */
-export const getClientIP = (request: Request): string => {
-  return (
-    request.headers.get('cf-connecting-ip') ||
-    request.headers.get('x-forwarded-for') ||
-    'unknown'
-  )
+  // Check if the secret matches
+  return secret === env.LOCKSMITH_SECRET_KEY
 }
 
 /**
@@ -54,15 +50,18 @@ export const isUnlockContract = async (
  * Returns true if the request should be allowed, false otherwise
  */
 export const checkRateLimit = async (
-  ip: string,
+  request: Request,
   method: string,
   contractAddress: string | null,
   env: Env
 ): Promise<boolean> => {
-  // Locksmith IPs are always allowed
-  if (isLocksmithIP(ip, env)) {
+  // Authenticated Locksmith requests are exempt from rate limiting
+  if (hasValidLocksmithSecret(request, env)) {
     return true
   }
+
+  // Get client IP for rate limiting
+  const ip = getClientIP(request)
 
   try {
     // Create a key that combines IP with contract address or method to provide granular rate limiting

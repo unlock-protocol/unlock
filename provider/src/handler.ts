@@ -2,7 +2,6 @@ import supportedNetworks from './supportedNetworks'
 import { Env } from './types'
 import {
   checkRateLimit,
-  getClientIP,
   getContractAddress,
   isUnlockContract,
 } from './rateLimit'
@@ -207,9 +206,6 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
     )
   }
 
-  // Apply rate limiting
-  const clientIP = getClientIP(request)
-
   // Extract contract address if applicable
   const contractAddress = getContractAddress(body.method, body.params)
 
@@ -222,7 +218,7 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
   // Only apply rate limiting if not an Unlock contract
   if (!isUnlock) {
     const isRateLimitAllowed = await checkRateLimit(
-      clientIP,
+      request,
       body.method,
       contractAddress,
       env
