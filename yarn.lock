@@ -16701,6 +16701,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/query-core@npm:5.66.11":
+  version: 5.66.11
+  resolution: "@tanstack/query-core@npm:5.66.11"
+  checksum: 10/5ee032f203ae5775bb7490b6a2689d1afe970c9c7c5ce27f30cfc0d8ab69de59b34d7d61155e4d036fa62091a1afed58862121ef4da737b0e23e3007ec9a7866
+  languageName: node
+  linkType: hard
+
 "@tanstack/react-query@npm:5.59.19":
   version: 5.59.19
   resolution: "@tanstack/react-query@npm:5.59.19"
@@ -16720,6 +16727,17 @@ __metadata:
   peerDependencies:
     react: ^18 || ^19
   checksum: 10/482decc02664e756c66c9ff46279b5eb3f0fb29fcdcb51b96319e8487a2b2e8b151319d6a5d9ef1180523a1792d6449cec2e9bfa87f37a4f755fc9d95534585d
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:5.66.11":
+  version: 5.66.11
+  resolution: "@tanstack/react-query@npm:5.66.11"
+  dependencies:
+    "@tanstack/query-core": "npm:5.66.11"
+  peerDependencies:
+    react: ^18 || ^19
+  checksum: 10/22f3b8e8daf481adb9d9ce2f13464587d1a58ece9045d7379cc78f84e55e0cd4867e94e1206c9251d5e9a1d481849defb84b48c4bb9094759b9e640b5938a11a
   languageName: node
   linkType: hard
 
@@ -18619,7 +18637,7 @@ __metadata:
     "@openzeppelin/merkle-tree": "npm:1.0.8"
     "@privy-io/react-auth": "npm:2.2.1"
     "@sentry/nextjs": "npm:8.54.0"
-    "@tanstack/react-query": "npm:5.59.19"
+    "@tanstack/react-query": "npm:5.66.11"
     "@tw-classed/react": "npm:1.7.0"
     "@types/react": "npm:18.3.18"
     "@unlock-protocol/contracts": "workspace:*"

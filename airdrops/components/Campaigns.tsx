@@ -8,6 +8,7 @@ import airdrops from '../src/airdrops.json'
 import { usePrivy } from '@privy-io/react-auth'
 import { isEligible } from '../src/utils/eligibility'
 import { CampaignCard } from './CampaignCard'
+import { useEligibility } from './hooks/useEligibility'
 
 export interface AirdropData {
   id: string
@@ -50,22 +51,7 @@ const CampaignsContent = () => {
     onSelect()
   }, [embla, onSelect])
 
-  const { authenticated, user } = usePrivy()
-
-  useEffect(() => {
-    const checkEligibility = async () => {
-      if (!authenticated || !user?.wallet?.address) return
-
-      await Promise.all(
-        (airdrops as AirdropData[]).map(async (drop) => {
-          const amount = await isEligible(user.wallet.address, drop)
-          drop.eligible = amount || 0
-        })
-      )
-    }
-
-    checkEligibility()
-  }, [authenticated, user?.wallet?.address])
+  const { authenticated } = usePrivy()
 
   return (
     <Container>
