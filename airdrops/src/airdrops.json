@@ -12,7 +12,7 @@
     "contractAddress": "0x3b26D06Ea8252a73742d2125D1ACEb594ECEE5c6",
     "recipientsFile": "https://merkle-trees.unlock-protocol.com/0xe238effc14b43022c9ce132e22f0baa73cdd8696f4b435150a4c9341c83abfbf.json",
     "token": {
-      "address": "0x3b26D06Ea8252a73742d2125D1ACEb594ECEE5c6",
+      "address": "0xaC27fa800955849d6D17cC8952Ba9dD6EAA66187",
       "symbol": "UP",
       "decimals": 18
     },
