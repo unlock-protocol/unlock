@@ -2,8 +2,12 @@ import { ethers } from 'ethers'
 import { queryGraph } from './subgraph'
 import { HookType } from '@unlock-protocol/types'
 
+// importing from contracts package will create recusrive deps conflict
+const LOCK_LATEST_VERSION = 15n
+
 export const getAllAddresses = async ({ network }) => {
   const {
+    id,
     unlockAddress,
     hooks,
     provider,
@@ -24,14 +28,40 @@ export const getAllAddresses = async ({ network }) => {
   }
 
   // get latest lock proxy
-  // TODO: fetch lock proxy status from previous versions
   try {
-    const lockAddress = await getLockAddress(subgraph.endpoint, lockVersion)
+    const lockAddress = await getLockAddress(
+      subgraph.endpoint,
+      LOCK_LATEST_VERSION
+    )
     if (lockAddress) {
-      addresses[`LockProxyV${lockVersion}`] = lockAddress
+      addresses[`LockProxyV${LOCK_LATEST_VERSION}`] = lockAddress
+    } else {
+      console.log(`⚠️ : no lock V${LOCK_LATEST_VERSION} found on ${id}`)
     }
   } catch (error) {
     // missing lock address
+    console.log(
+      `failed to fetch lock proxy for v${LOCK_LATEST_VERSION} on ${id}`,
+      error
+    )
+  }
+
+  // get current lock proxy (if different)
+  if (LOCK_LATEST_VERSION !== lockVersion) {
+    try {
+      const lockAddress = await getLockAddress(subgraph.endpoint, lockVersion)
+      if (lockAddress) {
+        addresses[`LockProxyV${lockVersion}`] = lockAddress
+      } else {
+        console.log(`No lock V${lockVersion} found on ${id}`)
+      }
+    } catch (error) {
+      // missing lock address
+      console.log(
+        `failed to fetch lock proxy for v${lockVersion} on ${id}`,
+        error
+      )
+    }
   }
 
   // add other addresses
@@ -98,11 +128,10 @@ export const getLockAddress = async (subgraphEndpoint, lockVersion) => {
   if (success) {
     // get the first lock
     const [lock] = data.locks
-    let lockAddress
     if (lock) {
-      ;({ address: lockAddress } = lock)
+      return lock.address
     }
-    return lockAddress
+    return null
   }
 }
 

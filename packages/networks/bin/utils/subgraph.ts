@@ -26,8 +26,7 @@ export const queryGraph = async ({
       errors
     )
   }
-
-  return { data, success: !!errors }
+  return { data, success: !errors }
 }
 
 const getLatestSubgraphDeployment = async (subgraphEndpoint) => {
