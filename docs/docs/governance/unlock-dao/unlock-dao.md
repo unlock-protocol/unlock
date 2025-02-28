@@ -18,10 +18,10 @@ Prior to being on Base, the Governor and Timelock contracts were on the Ethereum
 The governor contract has been configured with the following characteristics:
 
 * Anyone can submit a proposal (no ownership threshold)  
-* Proposal Delay: 6 days  
+* Proposal Delay: 4 days  
 * Voting period: 6 days  
 * Quorum: 3M votes  
-* Time-lock duration: 7 days.
+* Time-lock duration: 2 days.
 
 All of these settings can be changed by the Unlock DAO community through an onchain proposal.
 
