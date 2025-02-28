@@ -70,7 +70,8 @@
     "nuke": "./scripts/nuke.sh",
     "lint": "yarn packages --parallel run lint",
     "lint:contracts": "yarn workspace @unlock-protocol/smart-contracts lint:contracts --fix",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "check": "./scripts/health-check.sh"
   },
   "repository": {
     "type": "git",
