@@ -52,16 +52,24 @@ The provider uses a three-tier caching system for lock addresses to minimize blo
 
 ## Rate Limiting
 
-Rate limits ensure fair usage and protect the service:
+The provider implements rate limiting to ensure fair usage of the service:
 
-- **IP-based**: 10 requests/second, 1000 requests/hour per IP (Locksmith IPs exempt)
-- **Contract-based**: Unlock contracts bypass rate limiting, other contracts use standard limits
+- 10 requests per 10 seconds per IP address/contract
+- 1000 requests per hour per IP address
+
+### Locksmith Authentication
+
+Requests from Locksmith are exempt from rate limiting.
+
+1. Locksmith appends a secret key to requests: `?secret=YOUR_SECRET_KEY`
+2. Requests with a valid secret key bypass all rate limiting
+
+### Unlock Contract Exemptions
 
 Rate limiting can be configured in `wrangler.toml`:
 
 ```toml
 [vars]
-LOCKSMITH_IPS = "1.2.3.4,5.6.7.8"  # Comma-separated exempt IPs
 REQUESTS_PER_SECOND = "10"         # Default: 10
 REQUESTS_PER_HOUR = "1000"         # Default: 1000
 ```
