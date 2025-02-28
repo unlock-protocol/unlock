@@ -60,6 +60,7 @@
     "deploy": "yarn build",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
     "deploy-fleek": "./scripts/deploy-fleek.sh",
+    "deploy-vercel": "./scripts/deploy-vercel.sh",
     "start": "yarn build && NODE_ENV=production next start",
     "test": "vitest run",
     "lint": "eslint",
