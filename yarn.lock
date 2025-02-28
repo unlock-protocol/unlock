@@ -19383,7 +19383,7 @@ __metadata:
     react-dropzone: "npm:14.3.5"
     react-hook-form: "npm:7.54.2"
     react-hot-toast: "npm:2.5.2"
-    react-icons: "npm:5.4.0"
+    react-icons: "npm:5.5.0"
     react-use-clipboard: "npm:1.0.9"
     storybook: "npm:8.5.3"
     tailwind-merge: "npm:3.0.1"
@@ -19471,7 +19471,7 @@ __metadata:
     react-google-autocomplete: "npm:2.7.4"
     react-gtm-module: "npm:2.0.11"
     react-hook-form: "npm:7.53.2"
-    react-icons: "npm:5.3.0"
+    react-icons: "npm:5.5.0"
     react-markdown: "npm:9.0.3"
     react-test-renderer: "npm:19.0.0"
     react-to-print: "npm:3.0.5"
@@ -44822,21 +44822,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-icons@npm:5.3.0":
-  version: 5.3.0
-  resolution: "react-icons@npm:5.3.0"
-  peerDependencies:
-    react: "*"
-  checksum: 10/7f315d2a5e0eee7fefe01eac5cbe818b9592d88964f6c99ba454539a78cd2efd4430152e88113585c5a54bca6a5e1e7e7978df9cf69a03d8479a8d3d106a027c
-  languageName: node
-  linkType: hard
-
 "react-icons@npm:5.4.0":
   version: 5.4.0
   resolution: "react-icons@npm:5.4.0"
   peerDependencies:
     react: "*"
   checksum: 10/c900d475c64852b316d16bdc1a436c93e18e0ffb321ebc43a1d8741191baba736e0ef4c6d871399056832b69413cd13b56ae6a18eaa5ad17041df805d803651c
+  languageName: node
+  linkType: hard
+
+"react-icons@npm:5.5.0":
+  version: 5.5.0
+  resolution: "react-icons@npm:5.5.0"
+  peerDependencies:
+    react: "*"
+  checksum: 10/67d5b311c23f74829cb90d58b78ddc87959d2087eda7f29b78d1ab6e337b04b0358a00724d73ab60652469d9a2c66ba3c034b8b7d4f32caae942592f92f59a84
   languageName: node
   linkType: hard
 
