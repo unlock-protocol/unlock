@@ -46,28 +46,17 @@ jobs:
   networks-changed:
     uses: ./.github/workflows/_networks.yml
 
-  # Vercel Deployments
+  # Netlify Deployments (run as drafts, unpublished to main URL)
   deploy-unlock-protocol-com:
-    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }} # make sure we dont deploy from forks
     needs: run-tests
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Load secrets from 1Password
-        uses: 1Password/load-secrets-action@v2.0.0
-        with:
-          export-env: true
-        env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          UNLOCK_PROTOCOL_COM_VERCEL_STAGING_VERCEL_PROJECT_ID: op://secrets/vercel/project-id-unlock-protocol-com-staging
-          UNLOCK_PROTOCOL_COM_VERCEL_STAGING_VERCEL_ORG_ID: op://secrets/vercel/org-id
-          UNLOCK_PROTOCOL_COM_VERCEL_STAGING_VERCEL_TOKEN: op://secrets/vercel/deployment-token
-      - uses: ./.github/actions/vercel
-        with:
-          service: unlock-protocol-com
-          target-env: staging
+    uses: ./.github/workflows/_netlify.yml
+    with:
+      service: unlock-protocol-com
+      target-env: staging
+    secrets:
+      SITE_ID: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_STAGING_SITE_ID }}
+      AUTH_TOKEN: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_STAGING_AUTH_TOKEN }}
 
   deploy-paywall-app:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}

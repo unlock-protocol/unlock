@@ -21,29 +21,20 @@ jobs:
       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
       OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
-  # Vercel Deployments
+  # Netlify Deployments
   # The unlock-protocol-com site is built from `master` as we don't use a staging site for it.
   deploy-unlock-protocol-com-production:
-    if: ${{ github.repository_owner == 'unlock-protocol' }}
+    if: ${{ github.repository_owner == 'unlock-protocol' }} # make sure we dont deploy from forks
     needs: run-all-tests
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Load secrets from 1Password
-        uses: 1Password/load-secrets-action@v2.0.0
-        with:
-          export-env: true
-        env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          UNLOCK_PROTOCOL_COM_VERCEL_PROD_VERCEL_PROJECT_ID: op://secrets/vercel/project-id-unlock-protocol-com-prod
-          UNLOCK_PROTOCOL_COM_VERCEL_PROD_VERCEL_ORG_ID: op://secrets/vercel/org-id
-          UNLOCK_PROTOCOL_COM_VERCEL_PROD_VERCEL_TOKEN: op://secrets/vercel/deployment-token
-      - uses: ./.github/actions/vercel
-        with:
-          service: unlock-protocol-com
-          target-env: prod
+    uses: ./.github/workflows/_netlify.yml
+    with:
+      bypass_diff_check: bypass
+      service: unlock-protocol-com
+      target-env: prod
+    secrets:
+      SITE_ID: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_PROD_SITE_ID }}
+      AUTH_TOKEN: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_PROD_AUTH_TOKEN }}
+      NEXT_PUBLIC_UNLOCK_GA_ID: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_PROD_UNLOCK_GA_ID }}
 
   deploy-paywall-app:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
