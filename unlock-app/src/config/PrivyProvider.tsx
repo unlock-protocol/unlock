@@ -8,13 +8,15 @@ import {
   useCreateWallet,
   User,
   usePrivy,
+  LinkedAccountWithMetadata,
 } from '@privy-io/react-auth'
 import { ReactNode, useContext, useEffect, useState } from 'react'
 import { config } from './app'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { locksmith } from './locksmith'
 import AuthenticationContext from '~/contexts/AuthenticationContext'
 import { MigrationModal } from '~/components/legacy-auth/MigrationNotificationModal'
+import { isInIframe } from '~/utils/iframe'
 
 // check for legacy account
 export const checkLegacyAccount = async (
@@ -78,12 +80,15 @@ export const onSignedInWithPrivy = async (user: User) => {
 
 // IMPORTANT: This component should be rendered only once in the app. Do NOT add hooks here.
 export const PrivyChild = ({ children }: { children: ReactNode }) => {
-  const { setAccount } = useContext<{
-    setAccount: (account: string | undefined) => void
-  }>(AuthenticationContext)
+  const { setAccount } = useContext(AuthenticationContext)
 
   // handle onComplete logic
-  const handleLoginComplete = async (user: User) => {
+  const handleLoginComplete = async ({
+    user,
+  }: {
+    user: User
+    loginAccount: LinkedAccountWithMetadata | null
+  }) => {
     // Proceed with normal login flow
     await onSignedInWithPrivy(user)
   }
@@ -185,31 +190,43 @@ export const PrivyMigration = () => {
 }
 
 export const Privy = ({ children }: { children: ReactNode }) => {
+  const [account, setAccount] = useState<string | undefined>(undefined)
   const isMigratePage =
     typeof window !== 'undefined' &&
     window.location.pathname.includes('migrate-user')
 
+  // Check if we're in an iframe && not in the Unlock dashboard
+  const isInPaywall =
+    isInIframe() && !window.location.href.includes(config.unlockApp)
+
   return (
-    <PrivyProvider
-      config={{
-        loginMethods: isMigratePage
-          ? ['email']
-          : ['wallet', 'email', 'google', 'farcaster'],
-        embeddedWallets: {
-          createOnLogin: 'off',
-        },
-        appearance: {
-          landingHeader: '',
-        },
-        // @ts-expect-error internal api
-        _render: {
-          standalone: true,
-        },
-      }}
-      appId={config.privyAppId}
-    >
-      <PrivyChild>{children}</PrivyChild>
-    </PrivyProvider>
+    <AuthenticationContext.Provider value={{ account, setAccount }}>
+      <PrivyProvider
+        config={{
+          /* For the meantime, when users are authenticating via paywall on an external website (embedded paywall),
+           * we can only allow the wallet method to login.
+           */
+          loginMethods: isMigratePage
+            ? ['email']
+            : isInPaywall
+              ? ['wallet']
+              : ['wallet', 'email', 'google', 'farcaster'],
+          embeddedWallets: {
+            createOnLogin: 'off',
+          },
+          appearance: {
+            landingHeader: '',
+          },
+          // @ts-expect-error internal api
+          _render: {
+            standalone: true,
+          },
+        }}
+        appId={config.privyAppId}
+      >
+        <PrivyChild>{children}</PrivyChild>
+      </PrivyProvider>
+    </AuthenticationContext.Provider>
   )
 }
 

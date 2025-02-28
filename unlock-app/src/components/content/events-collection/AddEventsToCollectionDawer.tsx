@@ -14,11 +14,8 @@ import { useEvent } from '~/hooks/useEvent'
 import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { useAddToEventCollection } from '~/hooks/useEventCollection'
-import { ToastHelper } from '~/components/helpers/toast.helper'
-import {
-  defaultEventCheckoutConfigForLockOnNetwork,
-  TransactionDetails,
-} from '../event/NewEvent'
+import { ToastHelper } from '@unlock-protocol/ui'
+import { TransactionDetails } from '../event/NewEvent'
 import { locksmith } from '~/config/locksmith'
 import { formDataToMetadata } from '~/components/interface/locks/metadata/utils'
 import { networks } from '@unlock-protocol/networks'
@@ -26,6 +23,7 @@ import { LockDeploying } from '../event/LockDeploying'
 import { config } from '~/config/app'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useProvider } from '~/hooks/useProvider'
+import { EventStatus } from '@unlock-protocol/types'
 
 type AddMethod = 'url' | 'existing' | 'form' | null
 
@@ -46,10 +44,7 @@ export default function AddEventsToCollectionDrawer({
 }: AddEventsToCollectionDrawerProps) {
   const { account } = useAuthenticate()
   const { getWalletService } = useProvider()
-  const [newEventSlug, setNewEventSlug] = useState<string | undefined>(
-    undefined
-  )
-  const [lockAddress, setLockAddress] = useState<string>()
+
   const [transactionDetails, setTransactionDetails] =
     useState<TransactionDetails>()
   const { addToEventCollection, isAddingToEventCollection } =
@@ -167,8 +162,6 @@ export default function AddEventsToCollectionDrawer({
     setErrorMessage(null)
     setAddMethod(null)
     setIsEventSelected(false)
-    setNewEventSlug(undefined)
-    setLockAddress(undefined)
     setTransactionDetails(undefined)
   }, [])
 
@@ -405,8 +398,6 @@ export default function AddEventsToCollectionDrawer({
           <LockDeploying
             compact={true}
             transactionDetails={transactionDetails}
-            lockAddress={lockAddress}
-            slug={newEventSlug}
           />
         )}
         {!transactionDetails && (
@@ -421,10 +412,22 @@ export default function AddEventsToCollectionDrawer({
 
   const handleEventCreationAndAddition = async (eventData: NewEventForm) => {
     setIsSubmitting(true)
-    let lockAddress
-    const walletService = await getWalletService(eventData.network)
     try {
-      lockAddress = await walletService.createLock(
+      // First create the event with pending status
+      const { data: newEvent } = await locksmith.saveEventData({
+        data: {
+          ...formDataToMetadata({
+            name: eventData.lock.name,
+            ...eventData.metadata,
+          }),
+          ...eventData.metadata,
+          status: EventStatus.PENDING,
+        },
+      })
+
+      // Deploy the lock
+      const walletService = await getWalletService(eventData.network)
+      walletService.createLock(
         {
           ...eventData.lock,
           name: eventData.lock.name,
@@ -434,70 +437,35 @@ export default function AddEventsToCollectionDrawer({
         {},
         async (createLockError, transactionHash) => {
           if (createLockError) {
+            console.error('Error creating lock:', createLockError)
             throw createLockError
           }
           if (transactionHash) {
+            // Update event with transaction hash
+            await locksmith.updateEventData(newEvent.slug, {
+              transactionHash,
+            })
             setTransactionDetails({
               hash: transactionHash,
               network: eventData.network,
+              slug: newEvent.slug,
+            })
+
+            // Add newly created event to collection
+            await addToEventCollection({
+              collectionSlug: collectionSlug!,
+              eventSlug: newEvent.slug!,
             })
           }
         }
       )
-      // Reset form state
-      resetFormState()
+
+      // Close the drawer upon success
+      setIsOpen(false)
     } catch (error) {
-      console.error(error)
-      ToastHelper.error('The contract could not be deployed. Please try again.')
-      setIsSubmitting(false)
-      return
-    }
-    if (lockAddress) {
-      try {
-        await locksmith.updateLockMetadata(eventData.network, lockAddress, {
-          metadata: {
-            name: `Ticket for ${eventData.lock.name}`,
-            image: eventData.metadata.image,
-          },
-        })
-        const { data: newEvent } = await locksmith.saveEventData({
-          data: {
-            ...formDataToMetadata({
-              name: eventData.lock.name,
-              ...eventData.metadata,
-            }),
-            ...eventData.metadata,
-          },
-          checkoutConfig: {
-            name: `Checkout config for ${eventData.lock.name}`,
-            config: defaultEventCheckoutConfigForLockOnNetwork(
-              lockAddress,
-              eventData.network
-            ),
-          },
-        })
-
-        // Save slug for URL if present
-        setNewEventSlug(newEvent.slug)
-
-        // add newly created event to collection
-        await addToEventCollection({
-          collectionSlug: collectionSlug!,
-          eventSlug: newEvent.slug!,
-        })
-
-        // Finally
-        setLockAddress(lockAddress)
-
-        // Close the drawer upon success
-        setIsOpen(false)
-      } catch (error) {
-        console.error('Error creating or adding event:', error)
-        ToastHelper.error('Failed to create or add event to the collection.')
-      } finally {
-        setIsSubmitting(false)
-      }
-    } else {
+      console.error('Error in event creation process:', error)
+      ToastHelper.error('Failed to create or add event to the collection.')
+    } finally {
       setIsSubmitting(false)
     }
   }

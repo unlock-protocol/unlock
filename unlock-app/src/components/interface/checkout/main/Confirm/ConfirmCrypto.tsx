@@ -2,7 +2,7 @@ import { CheckoutService } from './../checkoutMachine'
 import { useQuery } from '@tanstack/react-query'
 import { useConfig } from '~/utils/withConfig'
 import { Button } from '@unlock-protocol/ui'
-import { Fragment, useEffect, useRef, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { useSelector } from '@xstate/react'
@@ -10,7 +10,6 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Pricing } from '../../Lock'
 import { getReferrer, lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { Lock } from '~/unlockTypes'
-import ReCaptcha from 'react-google-recaptcha'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 import { usePricing } from '~/hooks/usePricing'
@@ -48,7 +47,6 @@ export function ConfirmCrypto({
   const { getWalletService } = useProvider()
   const config = useConfig()
   const web3Service = useWeb3Service()
-  const recaptchaRef = useRef<any>()
   const [isConfirming, setIsConfirming] = useState(false)
 
   const { address: lockAddress, network: lockNetwork, keyPrice } = lock!
@@ -243,12 +241,6 @@ export function ConfirmCrypto({
 
   return (
     <Fragment>
-      <ReCaptcha
-        ref={recaptchaRef}
-        sitekey={config.recaptchaKey}
-        size="invisible"
-        badge="bottomleft"
-      />
       <main className="h-full p-6 space-y-2 overflow-auto">
         <div className="grid gap-y-2">
           <h4 className="text-xl font-bold"> {lock!.name}</h4>

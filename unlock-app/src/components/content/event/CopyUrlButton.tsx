@@ -1,6 +1,6 @@
 import { Tooltip } from '@unlock-protocol/ui'
 import { BiShareAlt } from 'react-icons/bi'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 
 import useClipboard from 'react-use-clipboard'
 

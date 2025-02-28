@@ -47,7 +47,7 @@ export function Checkout({
       paywallConfig,
     },
   })
-  const { account } = useAuthenticate()
+  const { account, signOut } = useAuthenticate()
 
   const { mint, messageToSign } = state.context
   const matched = state.value.toString()
@@ -84,7 +84,7 @@ export function Checkout({
   const messageToSignSigner = messageToSign?.address
 
   const onClose = useCallback(
-    (params: Record<string, string> = {}) => {
+    async (params: Record<string, string> = {}) => {
       // Reset the Paywall State!
       checkoutService.send({ type: 'RESET_CHECKOUT' })
       if (handleClose) {
@@ -113,6 +113,10 @@ export function Checkout({
       } else if (!isInIframe() || !communication) {
         window.history.back()
       } else {
+        if (paywallConfig?.useDelegatedProvider) {
+          signOut()
+          checkoutService.send({ type: 'DISCONNECT' })
+        }
         communication.emitCloseModal()
       }
     },
@@ -240,7 +244,7 @@ export function Checkout({
   }, [matched])
 
   return (
-    <div className="bg-white z-10  shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem]">
+    <div className="bg-white z-10  shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem] text-left">
       <TopNavigation
         onClose={!paywallConfig?.persistentCheckout ? onClose : undefined}
         onBack={onBack}

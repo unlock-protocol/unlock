@@ -130,6 +130,11 @@ components:
           type: string
         description:
           type: string
+        status:
+          type: string
+          enum: [pending, deployed]
+        transactionHash:
+          type: string
         attributes:
           type: array
           items:
@@ -746,6 +751,20 @@ components:
                 latestVerifiedAt:
                   type: string
                   format: date-time
+
+    SaveEventDataRequest:
+      type: object
+      properties:
+        data:
+          type: object
+          additionalProperties: true
+        status:
+          type: string
+          enum: [pending, deployed]
+        transactionHash:
+          type: string
+        checkoutConfig:
+          $ref: '#/components/schemas/CheckoutConfig'
 
   parameters:
     Network:
@@ -1452,7 +1471,6 @@ paths:
 
         500:
           $ref: '#/components/responses/500.InternalError'
-
   /v2/events/approved-refunds/{slug}:
     get:
       operationId: approvedRefunds
@@ -4590,54 +4608,88 @@ paths:
         - User: []
       description: Save event data
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               type: object
               properties:
-                id:
-                  type: number
                 data:
                   type: object
+                  additionalProperties: true
+                status:
+                  type: string
+                  enum: [pending, deployed]
+                transactionHash:
+                  type: string
                 checkoutConfig:
                   $ref: '#/components/schemas/CheckoutConfig'
-
       responses:
-        200:
-          description: Successfully saved event data
+        201:
+          description: Event created successfully
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: number
-                  name:
-                    type: string
-                  data:
-                    type: object
-                  slug:
-                    type: string
-                  locks:
-                    type: array
-                    items:
-                      type: string
+                $ref: '#/components/schemas/Event'
         400:
           $ref: '#/components/responses/400.Invalid'
 
         500:
           $ref: '#/components/responses/500.InternalError'
 
+  /v2/events/update/{slug}:
+    post:
+      operationId: updateEventData
+      security:
+        - User: []
+      description: Update event data
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [pending, deployed]
+                transactionHash:
+                  type: string
+                checkoutConfig:
+                  $ref: '#/components/schemas/CheckoutConfig'
+      responses:
+        200:
+          description: Successfully updated event data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  slug:
+                    type: string
+                  status:
+                    type: string
+                  transactionHash:
+                    type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
   /v2/events/{slug}:
     get:
       operationId: getEvent
       parameters:
         - $ref: '#/components/parameters/Slug'
-      description: Retrieves an event based on its slug
-
+      description: Retrieves an event based on its slug. The event data including status and transactionHash can be accessed through the `data` property.
       responses:
         200:
-          description: Successfully retrieves the event along with its checkout config
+          description: Successfully retrieves the event along with its checkout config. Event details including status and transactionHash are nested under the `data` property.
           content:
             application/json:
               schema:
@@ -5294,15 +5346,36 @@ paths:
   /v2/merkle-tree:
     post:
       operationId: saveMerkleTree
-      description: Saves a merkle tree from a list of addresses.
+      description: Saves a merkle tree from either a list of addresses or a list of [address, amount] tuples.
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: array
+              minItems: 1
+              description: Array must contain either all strings (addresses) or all [address, amount] tuples, no mixing allowed
               items:
-                type: string
+                type: object
+                oneOf:
+                  - type: string
+                    description: Recipient address (will be assigned amount "1")
+                  - type: array
+                    description: Address and amount tuple
+                    minItems: 2
+                    maxItems: 2
+                    items:
+                      oneOf:
+                        - type: string
+                          description: Recipient address
+                        - type: object
+                          properties:
+                            amount:
+                              oneOf:
+                                - type: string
+                                  description: Amount as string
+                                - type: number
+                                  description: Amount as number
       responses:
         200:
           description: Successfully saved the Merkle Tree
@@ -5310,15 +5383,14 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - root
                 properties:
-                  success:
-                    type: boolean
                   root:
                     type: string
-                  url:
-                    type: string
+                    description: The merkle tree root hash
         400:
-          description: Missing required fields
+          description: Invalid request (empty array, mixed types, or invalid addresses)
           content:
             application/json:
               schema:
@@ -5327,15 +5399,22 @@ paths:
                   - error
                 properties:
                   error:
-                    type: string
+                    type: object
+                    required:
+                      - issues
+                    properties:
+                      issues:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: string
+                            message:
+                              type: string
+                            path:
+                              type: array
+                              items:
+                                type: string
         500:
-          description: Server error
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - error
-                properties:
-                  error:
-                    type: string
+          $ref: '#/components/responses/500.InternalError'
