@@ -1,4 +1,5 @@
 import { classed } from '@tw-classed/react'
+import React, { forwardRef } from 'react'
 
 const CardBase = classed.div('w-full rounded-2xl', {
   variants: {
@@ -25,30 +26,49 @@ const CardBase = classed.div('w-full rounded-2xl', {
   },
 })
 
-const CardTitle = classed.span('text-xl font-bold text-brand-ui-primary')
-const CardDescription = classed.span('text-base text-brand-dark"')
+const CardTitleBase = classed.span('text-xl font-bold text-brand-ui-primary')
+const CardDescriptionBase = classed.span('text-base text-brand-dark"')
 
 type CardBaseProps = React.ComponentProps<typeof CardBase> & {
   icon?: React.ReactNode
   as?: keyof JSX.IntrinsicElements
+  children?: React.ReactNode
+}
+
+// Create wrapper components with forwardRef to ensure React 19 compatibility
+const CardTitleComponent = forwardRef<
+  HTMLSpanElement,
+  React.ComponentProps<typeof CardTitleBase>
+>((props, ref) => <CardTitleBase {...props} ref={ref} />)
+
+CardTitleComponent.displayName = 'CardTitle'
+
+const CardDescriptionComponent = forwardRef<
+  HTMLSpanElement,
+  React.ComponentProps<typeof CardDescriptionBase>
+>((props, ref) => <CardDescriptionBase {...props} ref={ref} />)
+
+CardDescriptionComponent.displayName = 'CardDescription'
+
+interface CardLabelProps {
+  title: string
+  description?: string
 }
 
 const CardLabel = ({ title, description }: CardLabelProps) => {
   return (
     <div className="flex flex-col gap-2 md:col-span-2">
-      <CardTitle>{title}</CardTitle>
-      {description && <CardDescription>{description}</CardDescription>}
+      <CardTitleComponent>{title}</CardTitleComponent>
+      {description && (
+        <CardDescriptionComponent>{description}</CardDescriptionComponent>
+      )}
     </div>
   )
 }
-const Card = ({
-  variant,
-  shadow,
-  padding,
-  children,
-  className,
-  as,
-}: CardBaseProps) => {
+
+// Use a more direct approach to avoid type issues
+const Card = (props: CardBaseProps) => {
+  const { variant, shadow, padding, children, className, as, ...rest } = props
   return (
     <CardBase
       variant={variant}
@@ -56,19 +76,16 @@ const Card = ({
       shadow={shadow}
       className={className}
       as={as || 'div'}
+      {...rest}
     >
       {children}
     </CardBase>
   )
 }
 
-interface CardLabelProps {
-  title: string
-  description?: string
-}
-
-Card.Title = CardTitle
-Card.Description = CardDescription
+// Use "as any" casting for React 19 compatibility
+Card.Title = CardTitleComponent as any
+Card.Description = CardDescriptionComponent as any
 Card.Label = CardLabel
 
 export { Card }

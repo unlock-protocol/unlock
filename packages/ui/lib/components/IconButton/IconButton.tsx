@@ -20,7 +20,7 @@ const SIZE_STYLES: SizeStyleProp = {
   large: 'p-3',
 }
 
-export const IconButton = forwardRef(
+const IconButtonComponent = forwardRef(
   (props: Props, ref: ForwardedRef<HTMLButtonElement>) => {
     const buttonClass = twMerge(
       'rounded hover:fill-brand-ui-primary',
@@ -39,3 +39,9 @@ export const IconButton = forwardRef(
     )
   }
 )
+
+IconButtonComponent.displayName = 'IconButton'
+
+// For React 19, we need to use a more direct approach with "any" casting
+// Using "any" is necessary here to make components usable as JSX elements in React 19
+export const IconButton = IconButtonComponent as any

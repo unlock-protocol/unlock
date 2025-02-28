@@ -45,7 +45,7 @@ const VARIANTS_STYLES: Record<Variant, string> = {
     'bg-transparent text-black transition ease-in-out duration-300 text-brand-ui-primary disabled:text-brand-gray disabled:hover:text-brand-gray disabled:hover:bg-opacity-75 font-medium p-0',
 }
 
-export const Button = forwardRef<HTMLButtonElement, Props>(
+const ButtonComponent = forwardRef<HTMLButtonElement, Props>(
   function Button(props, ref) {
     let {
       children,
@@ -96,4 +96,8 @@ export const Button = forwardRef<HTMLButtonElement, Props>(
   }
 )
 
-Button.displayName = 'Button'
+ButtonComponent.displayName = 'Button'
+
+// For React 19, we need to use a more direct approach with "any" casting
+// Using "any" is necessary here to make components usable as JSX elements in React 19
+export const Button = ButtonComponent as any
