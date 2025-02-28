@@ -334,7 +334,7 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
           <Button
             loading={isConfirming}
             disabled={isConfirming || isLoading || isTotalPricingDataError}
-            onClick={async (event) => {
+            onClick={async (event: React.MouseEvent<HTMLButtonElement>) => {
               event.preventDefault()
               if (metadata) {
                 await updateUsersMetadata(metadata)

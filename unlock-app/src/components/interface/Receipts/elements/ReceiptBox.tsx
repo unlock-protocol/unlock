@@ -275,18 +275,18 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
     )
   }
 
-  const componentRef = useRef<any>()
-
-  const handlePrint = useReactToPrint({
-    documentTitle: `Receipt-${receiptNumber}`,
-    contentRef: componentRef,
-  })
-
   const { data: receiptPrice, isLoading: isPriceLoading } = useGetPrice({
     network,
     amount: receiptDetails?.amountTransferred || 0,
     currencyContractAddress: receiptDetails?.tokenAddress,
     hash,
+  })
+
+  const componentRef = useRef<any>(null)
+
+  const handlePrint = useReactToPrint({
+    documentTitle: `Receipt-${receiptNumber}`,
+    contentRef: componentRef,
   })
 
   if (isLoading) {

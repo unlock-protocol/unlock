@@ -298,8 +298,11 @@ export const RegistrationForm = ({
             description={
               'Please enter your email address to get a QR code by email.'
             }
-            // @ts-expect-error  Type 'FieldError' is not assignable to type 'string'.
-            error={errors?.email?.message}
+            error={
+              typeof errors?.email?.message === 'string'
+                ? errors.email.message
+                : undefined
+            }
           />
           <Input
             {...register('fullname', {
@@ -314,8 +317,11 @@ export const RegistrationForm = ({
             description={
               'Please enter your your full name to be added to the RSVP list.'
             }
-            // @ts-expect-error  Type 'FieldError' is not assignable to type 'string'.
-            error={errors?.fullname?.message}
+            error={
+              typeof errors?.fullname?.message === 'string'
+                ? errors.fullname.message
+                : undefined
+            }
           />
         </>
       )}
@@ -339,8 +345,11 @@ export const RegistrationForm = ({
             defaultValue={defaultValue}
             placeholder={placeholder}
             type={type}
-            // @ts-expect-error Element implicitly has an 'any' type because expression of type 'any' can't be used to index type 'FieldErrors<{ email: string; recipient: string; fullname: string; }>'.
-            error={errors[name]?.message}
+            error={
+              typeof errors[name]?.message === 'string'
+                ? errors[name].message
+                : undefined
+            }
             {...register(name, {
               required: required && `${inputLabel} is required`,
               value,

@@ -15,6 +15,7 @@ import { useCustomHook } from '~/hooks/useCustomHooks'
 import { GitcoinContractHook } from './hooksComponents/GitcoinContractHook'
 import { AllowListHook } from './hooksComponents/AllowListHook'
 import { useProvider } from '~/hooks/useProvider'
+import React from 'react'
 
 interface UpdateHooksFormProps {
   lockAddress: string
@@ -39,7 +40,7 @@ type FormPropsKey = keyof FormProps
 interface OptionProps {
   label: string
   value: HookType | string
-  component: (args: CustomComponentProps) => JSX.Element
+  component: (args: CustomComponentProps) => React.ReactElement
 }
 
 interface HookValueProps {

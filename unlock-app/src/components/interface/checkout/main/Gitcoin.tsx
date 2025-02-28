@@ -240,7 +240,7 @@ export function Gitcoin({ checkoutService }: Props) {
         {!isFetchingGitcoinPassportData && !isError && !isSuccess && (
           <Button
             className="w-full"
-            onClick={(event) => {
+            onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
               event.preventDefault()
               refetch()
             }}
@@ -268,7 +268,7 @@ export function Gitcoin({ checkoutService }: Props) {
         {isSuccess && !isFetchingGitcoinPassportData && allValidPassports && (
           <Button
             className="w-full"
-            onClick={(event) => {
+            onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
               event.preventDefault()
               onContinue()
             }}
@@ -282,7 +282,7 @@ export function Gitcoin({ checkoutService }: Props) {
           <Button
             className="w-full"
             disabled
-            onClick={(event) => {
+            onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
               event.preventDefault()
               refetch()
             }}
@@ -295,7 +295,7 @@ export function Gitcoin({ checkoutService }: Props) {
         {isError && (
           <Button
             className="w-full"
-            onClick={(event) => {
+            onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
               event.preventDefault()
               refetch()
             }}

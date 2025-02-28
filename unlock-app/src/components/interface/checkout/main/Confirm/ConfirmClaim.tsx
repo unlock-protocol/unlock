@@ -139,7 +139,7 @@ export function ConfirmClaim({ checkoutService, onConfirmed, onError }: Props) {
           <Button
             loading={isConfirming}
             disabled={isConfirming || isLoading || isPricingDataError}
-            onClick={async (event) => {
+            onClick={async (event: React.MouseEvent<HTMLButtonElement>) => {
               event.preventDefault()
               if (metadata) {
                 await updateUsersMetadata(metadata)

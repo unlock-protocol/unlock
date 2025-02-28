@@ -150,7 +150,7 @@ export const MetadataInputs = ({
                 <div className="w-32 text-sm truncate">{recipient}</div>
                 <Button
                   type="button"
-                  onClick={(event) => {
+                  onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
                     event.preventDefault()
                     setHideRecipientAddress(false)
                   }}
