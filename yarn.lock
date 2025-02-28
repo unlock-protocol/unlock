@@ -43841,6 +43841,7 @@ __metadata:
   dependencies:
     "@cloudflare/workers-types": "npm:4.20250129.0"
     "@types/node": "npm:22.13.0"
+    "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
     ethers: "npm:6.13.5"
     typescript: "npm:5.7.3"
