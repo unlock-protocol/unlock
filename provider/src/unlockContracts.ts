@@ -4,8 +4,14 @@ import networks from '@unlock-protocol/networks'
 import { ethers } from 'ethers'
 import { Unlock } from '@unlock-protocol/contracts'
 
+// Configuration for cache optimization
+const CACHE_API_TTL = 86400 // Cache API TTL in seconds (1 day)
+
 // Local in-memory cache as a fallback and for performance
 let KNOWN_LOCK_ADDRESSES: { [address: string]: boolean } = {}
+
+// Access count tracking for high-frequency locks
+let LOCK_ACCESS_COUNT: { [key: string]: number } = {}
 
 // Key prefix for KV storage to avoid collisions
 const KV_LOCK_PREFIX = 'lock_'
@@ -19,6 +25,73 @@ const UNLOCK_ABI = [
       item.stateMutability === 'view'
   ),
 ]
+
+/**
+ * Add an address to the memory cache
+ */
+const addToMemoryCache = (address: string): void => {
+  const normalizedAddress = address.toLowerCase()
+  // Add to memory cache
+  KNOWN_LOCK_ADDRESSES[normalizedAddress] = true
+}
+
+/**
+ * Track access of a lock address for frequency-based optimization
+ */
+const trackLockAccess = (networkId: string, address: string): void => {
+  const key = `${networkId}:${address.toLowerCase()}`
+  LOCK_ACCESS_COUNT[key] = (LOCK_ACCESS_COUNT[key] || 0) + 1
+}
+
+/**
+ * Prefill the memory cache on worker startup
+ * This reduces KV reads during initial operation
+ */
+export const prefillLockCache = async (env: Env): Promise<void> => {
+  if (!env.LOCK_CACHE) return
+
+  try {
+    console.log('Prefilling lock cache from KV storage...')
+
+    // List keys with the lock prefix (limited to 1000 keys by Cloudflare per list operation)
+    let keys = await env.LOCK_CACHE.list({ prefix: KV_LOCK_PREFIX })
+    let loadedCount = 0
+
+    // Process initial batch of keys
+    for (const key of keys.keys) {
+      const keyParts = key.name.substring(KV_LOCK_PREFIX.length).split('_')
+      if (keyParts.length === 2) {
+        const lockAddress = keyParts[1]
+        // Add to in-memory cache without LRU tracking
+        addToMemoryCache(lockAddress)
+        loadedCount++
+      }
+    }
+
+    // Handle pagination if more than 1000 keys
+    // Note: We use list_complete instead of cursor for Cloudflare Workers KV
+    while (!keys.list_complete) {
+      const lastKey = keys.keys[keys.keys.length - 1].name
+      keys = await env.LOCK_CACHE.list({
+        prefix: KV_LOCK_PREFIX,
+        cursor: lastKey,
+      })
+
+      for (const key of keys.keys) {
+        const keyParts = key.name.substring(KV_LOCK_PREFIX.length).split('_')
+        if (keyParts.length === 2) {
+          const lockAddress = keyParts[1]
+          addToMemoryCache(lockAddress)
+          loadedCount++
+        }
+      }
+    }
+
+    console.log(`Prefilled lock cache with ${loadedCount} lock addresses`)
+  } catch (error) {
+    console.error('Error prefilling lock cache:', error)
+  }
+}
 
 /**
  * Get the Unlock contract address for a specific network
@@ -47,6 +120,8 @@ export const isKnownUnlockContract = (
 
   // Check if this is a known lock in the in-memory cache
   if (KNOWN_LOCK_ADDRESSES[normalizedAddress]) {
+    // Track access for frequency-based optimization
+    trackLockAccess(networkId, normalizedAddress)
     return true
   }
 
@@ -58,6 +133,63 @@ export const isKnownUnlockContract = (
  */
 const createEthersProvider = (rpcUrl: string): ethers.JsonRpcProvider => {
   return new ethers.JsonRpcProvider(rpcUrl)
+}
+
+/**
+ * Generate Cache API key for a lock
+ */
+const getCacheApiKey = (networkId: string, address: string): string => {
+  return `lock-check:${networkId}:${address.toLowerCase()}`
+}
+
+/**
+ * Check if a lock exists in the Cache API
+ */
+const getLockFromCacheAPI = async (
+  networkId: string,
+  address: string
+): Promise<boolean | null> => {
+  try {
+    const cacheKey = getCacheApiKey(networkId, address)
+    const cache = caches.default
+    const cachedResponse = await cache.match(new Request(cacheKey))
+
+    if (cachedResponse) {
+      const result = (await cachedResponse.json()) as { isLock: boolean }
+      return result.isLock === true
+    }
+
+    return null
+  } catch (error) {
+    console.error('Error retrieving lock from Cache API:', error)
+    return null
+  }
+}
+
+/**
+ * Store a lock in the Cache API
+ */
+const storeLockInCacheAPI = async (
+  networkId: string,
+  address: string,
+  isLock: boolean
+): Promise<void> => {
+  try {
+    const cacheKey = getCacheApiKey(networkId, address)
+    const cache = caches.default
+
+    await cache.put(
+      new Request(cacheKey),
+      new Response(JSON.stringify({ isLock }), {
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': `max-age=${CACHE_API_TTL}`,
+        },
+      })
+    )
+  } catch (error) {
+    console.error('Error storing lock in Cache API:', error)
+  }
 }
 
 /**
@@ -123,16 +255,35 @@ export const checkIsLock = async (
 
   const normalizedLockAddress = lockAddress.toLowerCase()
 
-  // First check the in-memory cache for best performance
+  // 1. First check the in-memory cache for best performance
   if (KNOWN_LOCK_ADDRESSES[normalizedLockAddress]) {
+    // Track access
+    trackLockAccess(networkId, normalizedLockAddress)
     return true
   }
 
-  // Then check the KV storage for persistent cache across restarts
+  // 2. Check Cache API for frequently accessed locks
+  const cacheApiResult = await getLockFromCacheAPI(
+    networkId,
+    normalizedLockAddress
+  )
+  if (cacheApiResult === true) {
+    // Add to in-memory cache for future checks
+    addToMemoryCache(normalizedLockAddress)
+    trackLockAccess(networkId, normalizedLockAddress)
+    return true
+  }
+
+  // 3. Then check the KV storage for persistent cache across restarts
   const kvResult = await getLockFromKV(env, networkId, normalizedLockAddress)
   if (kvResult === true) {
     // Add to in-memory cache for future checks
-    KNOWN_LOCK_ADDRESSES[normalizedLockAddress] = true
+    addToMemoryCache(normalizedLockAddress)
+
+    // Also cache in Cache API for faster subsequent access
+    await storeLockInCacheAPI(networkId, normalizedLockAddress, true)
+
+    trackLockAccess(networkId, normalizedLockAddress)
     return true
   }
 
@@ -163,11 +314,17 @@ export const checkIsLock = async (
       .then(([deployed]: [boolean]) => {
         // If it's a lock, add it to our caches
         if (deployed) {
-          // Add to in-memory cache
-          KNOWN_LOCK_ADDRESSES[normalizedLockAddress] = true
+          // Add to in-memory cache without LRU tracking
+          addToMemoryCache(normalizedLockAddress)
 
           // Add to persistent KV storage
           storeLockInKV(env, networkId, normalizedLockAddress)
+
+          // Add to Cache API for faster access
+          storeLockInCacheAPI(networkId, normalizedLockAddress, true)
+
+          // Track access frequency
+          trackLockAccess(networkId, normalizedLockAddress)
         }
         return deployed
       })
