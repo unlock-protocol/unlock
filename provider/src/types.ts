@@ -18,8 +18,8 @@ export interface Env {
   // Optional environment variable for configuring cache duration in seconds
   CACHE_DURATION_SECONDS?: string
 
-  // Locksmith IPs that are exempt from rate limiting
-  LOCKSMITH_IPS?: string
+  // Secret key for authenticating requests from Locksmith
+  LOCKSMITH_SECRET_KEY?: string
 
   // Cloudflare Rate Limiting API bindings
   STANDARD_RATE_LIMITER: RateLimiter

@@ -7,9 +7,6 @@ tail_consumers = [{service = "rpc-provider-tail"}]
 [vars]
 # Cache duration in seconds for ENS/Basename resolution (default: 3600 seconds / 1 hour)
 CACHE_DURATION_SECONDS = "3600"
-# Locksmith IP addresses (comma-separated list)
-LOCKSMITH_IPS = ""
-
 
 # Rate limiting using Cloudflare's Rate Limiting API
 # The rate limiting API is in open beta
