@@ -36,7 +36,7 @@ export const getAllAddresses = async ({ network }) => {
     if (lockAddress) {
       addresses[`LockProxyV${LOCK_LATEST_VERSION}`] = lockAddress
     } else {
-      console.log(`No lock V${LOCK_LATEST_VERSION} found on ${id}`)
+      console.log(`⚠️ : no lock V${LOCK_LATEST_VERSION} found on ${id}`)
     }
   } catch (error) {
     // missing lock address
