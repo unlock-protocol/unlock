@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import {
   MetadataInput,
   PaywallLockConfig,
@@ -695,7 +695,9 @@ export const LocksForm = ({
                               </span>
                               <Input
                                 size="small"
-                                onChange={(e) => {
+                                onChange={(
+                                  e: ChangeEvent<HTMLInputElement>
+                                ) => {
                                   setRecurring(e?.target.value)
                                   onRecurringChange({
                                     recurringPayments: e?.target?.value ?? '',

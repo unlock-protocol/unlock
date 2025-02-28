@@ -181,7 +181,7 @@ export function AirdropInternalForm({
                   type="email"
                   ref={ref}
                   onBlur={onBlur}
-                  onChange={(event) => {
+                  onChange={(event: ChangeEvent<HTMLInputElement>) => {
                     onChange(onWalletChange(event))
                   }}
                 />
