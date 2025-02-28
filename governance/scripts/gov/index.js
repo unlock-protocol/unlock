@@ -21,6 +21,7 @@ const {
   UnlockDiscountTokenV2,
   UniswapOracleV3,
 } = require('@unlock-protocol/contracts')
+const l1BridgeAbi = require('../../helpers/abi/l1standardbridge.json')
 
 // workflow
 const submit = require('./submit')
@@ -31,7 +32,13 @@ const execute = require('./execute')
 // parse logs
 const parseLogs = (
   logs,
-  abi = [...Unlock.abi, ...PublicLock.abi, ...UniswapOracleV3.abi]
+  showAll = false,
+  abi = [
+    ...Unlock.abi,
+    ...PublicLock.abi,
+    ...UniswapOracleV3.abi,
+    ...l1BridgeAbi,
+  ]
 ) => {
   const interface = new ethers.Interface(abi)
 
@@ -39,19 +46,26 @@ const parseLogs = (
   const parsedLogs = logs.map((log, i) => {
     try {
       const parsed = interface.parseLog(log)
-      log = parsed || log
+      log = parsed || { ...log, decodedError: true }
     } catch (error) {
       log.decodedError = true
     }
     return log
   })
-  return parsedLogs
+  const toShow = showAll
+    ? parsedLogs
+    : parsedLogs.filter(({ decodedError }) => !decodedError)
+
+  console.log(toShow)
+  console.log(`Logs not decoded: ${parsedLogs.length - toShow.length}`)
+  return toShow
 }
 
 async function main({ proposal, proposalId, govAddress, txId }) {
   const [signer] = await ethers.getSigners()
   const { chainId } = await ethers.provider.getNetwork()
 
+  console.log(proposal.proposalName)
   const quorum = await getQuorum(govAddress)
   const udtAddress = await getGovTokenAddress(govAddress)
 
@@ -133,7 +147,7 @@ async function main({ proposal, proposalId, govAddress, txId }) {
   const { logs } = await execute({ proposalId, txId, proposal, govAddress })
 
   // log all events
-  console.log(parseLogs(logs))
+  parseLogs(logs)
 
   // simulate bridge calls
   const xCalled = await parseXCalledEvents(logs)

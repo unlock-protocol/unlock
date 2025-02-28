@@ -14,4 +14,7 @@ export interface Env {
   LINEA_PROVIDER: string
   ZKEVM_PROVIDER: string
   SCROLL_PROVIDER: string
+
+  // Optional environment variable for configuring cache duration in seconds
+  CACHE_DURATION_SECONDS?: string
 }

@@ -11,7 +11,7 @@ import { useMultipleLockData } from '~/hooks/useLockData'
 import { useState } from 'react'
 import { useCustomEmailSend } from '~/hooks/useCustomEmail'
 import { useForm } from 'react-hook-form'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 
 interface EmailsProps {
   event: Event

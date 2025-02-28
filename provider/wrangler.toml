@@ -2,3 +2,8 @@ name = "rpc-provider"
 main = "src/index.ts"
 compatibility_date = "2022-08-17"
 tail_consumers = [{service = "rpc-provider-tail"}]
+
+# Optional environment variables
+[vars]
+# Cache duration in seconds for ENS/Basename resolution (default: 3600 seconds / 1 hour)
+CACHE_DURATION_SECONDS = "3600"

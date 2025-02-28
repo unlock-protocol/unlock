@@ -6,6 +6,7 @@ import {
   getAllEvents,
   approveRefunds,
   approvedRefunds,
+  updateEventData,
 } from '../../controllers/v2/eventsController'
 import { authenticatedMiddleware } from '../../utils/middlewares/auth'
 import { eventOrganizerMiddleware } from '../../utils/middlewares/eventOrganizerMiddleware'
@@ -34,7 +35,6 @@ router.get('/approved-refunds/:slug', approvedRefunds)
 router.get('/:network/:lockAddress', getEventDetailsByLock)
 router.get('/:slug', getEvent)
 router.get('/', getAllEvents)
-
 router.post(
   '/:slug/approve-refunds',
   authenticatedMiddleware,
@@ -47,5 +47,7 @@ router.post(
   eventOrganizerMiddleware,
   saveEventDetails
 )
+
+router.post('/update/:slug', authenticatedMiddleware, updateEventData)
 
 export default router

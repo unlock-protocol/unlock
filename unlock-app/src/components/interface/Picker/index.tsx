@@ -2,11 +2,11 @@ import { useMemo, useState } from 'react'
 import { Input, Select, minifyAddress } from '@unlock-protocol/ui'
 import { useQuery } from '@tanstack/react-query'
 import { config } from '~/config/app'
-import { subgraph } from '~/config/subgraph'
+import { graphService } from '~/config/subgraph'
 import { LockImage } from '../locks/Manage/elements/LockPicker'
 import Link from 'next/link'
 import { ethers } from 'ethers'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import networks from '@unlock-protocol/networks'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 
@@ -49,7 +49,7 @@ export function Picker({
   const { data: locks, isPending: isLoadingLocks } = useQuery({
     queryKey: ['locks', userAddress, currentNetwork],
     queryFn: async () => {
-      const locks = await subgraph.locks(
+      const locks = await graphService.locks(
         {
           first: 100,
           where: {

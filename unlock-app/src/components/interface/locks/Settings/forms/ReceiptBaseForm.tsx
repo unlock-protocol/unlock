@@ -2,7 +2,7 @@ import { Placeholder, TextBox, ToggleSwitch } from '@unlock-protocol/ui'
 import { Input, Button } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import {
   useGetReceiptsBase,
   useReceiptsStatus,
@@ -12,10 +12,10 @@ import { z } from 'zod'
 import { locksmith } from '~/config/locksmith'
 import { getAccessToken } from '~/utils/session'
 import { getFormattedTimestamp } from '~/utils/dayjs'
-import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { config } from '~/config/app'
 import axios from 'axios'
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
+import { graphService } from '~/config/subgraph'
 
 const SupplierSchema = z.object({
   prefix: z.string().optional(),
@@ -109,10 +109,9 @@ const ExportReceipts = ({
     )
   }
 
-  const subgraphservice = new SubgraphService()
   async function checkExportPossible() {
     try {
-      const receipts = await subgraphservice.receipts(
+      const receipts = await graphService.receipts(
         {
           where: {
             lockAddress,

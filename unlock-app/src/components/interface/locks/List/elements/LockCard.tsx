@@ -158,6 +158,7 @@ export const LockCard = ({
                 address={lock.address}
                 network={network}
                 addressType="lock"
+                skipResolution
               />
             </div>
           </div>
