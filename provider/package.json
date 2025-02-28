@@ -16,6 +16,7 @@
     "dev": "yarn wrangler dev",
     "deploy": "yarn wrangler deploy",
     "set-provider-urls": "op run --env-file=.op.env --  ./scripts/set-provider-urls.sh",
-    "test": "vitest"
+    "test": "vitest run --config ./vitest.config.ts",
+    "test:watch": "vitest --config ./vitest.config.ts"
   }
 }
