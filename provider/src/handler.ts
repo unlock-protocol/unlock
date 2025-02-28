@@ -183,7 +183,6 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
 
   const body: RpcRequest = await request.json()
   const bodyAsString = JSON.stringify(body)
-  console.log(bodyAsString)
 
   // Handling chainId locally
   if (
