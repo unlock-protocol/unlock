@@ -272,7 +272,7 @@ export default function AddEventsToCollectionDrawer({
               label="Event URL or Slug"
               description="Enter the URL or slug of your Unlock event. You can start with a '/' for slugs."
               value={eventUrl}
-              onChange={(e) => {
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 const inputValue = e.target.value
                 setEventUrl(inputValue)
               }}

@@ -65,7 +65,7 @@ export const Toggle = ({
       checked={value}
       size={size}
       onChange={onChange}
-      as={ToggleButton}
+      as={ToggleButton as any}
       enabled={value}
       {...rest}
     >

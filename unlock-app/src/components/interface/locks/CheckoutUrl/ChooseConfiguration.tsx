@@ -8,6 +8,7 @@ import { useCheckoutConfig } from '~/hooks/useCheckoutConfig'
 import { useMultipleLockManagers } from '~/hooks/useLockManager'
 import { Configuration } from '.'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import React from 'react'
 
 const RadioContentWrapper = classed.div('grid grid-cols-[24px_1fr] gap-2', {
   variants: {
@@ -16,6 +17,17 @@ const RadioContentWrapper = classed.div('grid grid-cols-[24px_1fr] gap-2', {
     },
   },
 })
+
+// Create a component that can be used directly
+interface RadioContentWrapperProps {
+  disabled?: boolean
+  className?: string
+  children: React.ReactNode
+}
+
+const RadioContentWrapperComponent = (props: RadioContentWrapperProps) => (
+  <RadioContentWrapper as="div" {...props} />
+)
 
 interface ConfigurationOptions {
   label: string
@@ -282,7 +294,7 @@ export function ChooseConfiguration({
                   <>
                     <RadioGroup.Label>
                       <div className="flex flex-col gap-2">
-                        <RadioContentWrapper
+                        <RadioContentWrapperComponent
                           className={`${
                             disabled ? '' : 'cursor-pointer'
                           } items-center`}
@@ -290,13 +302,16 @@ export function ChooseConfiguration({
                         >
                           <Radio checked={checked} />
                           <span>{label}</span>
-                        </RadioContentWrapper>
+                        </RadioContentWrapperComponent>
                       </div>
                     </RadioGroup.Label>
                   </>
                 )}
               </RadioGroup.Option>
-              <RadioContentWrapper className="mt-2" disabled={!isSelected}>
+              <RadioContentWrapperComponent
+                className="mt-2"
+                disabled={!isSelected}
+              >
                 <div className="col-start-2">
                   {children}
                   {/* Show status indicator when checking permissions for existing config */}
@@ -307,7 +322,7 @@ export function ChooseConfiguration({
                       </div>
                     )}
                 </div>
-              </RadioContentWrapper>
+              </RadioContentWrapperComponent>
             </div>
           )
         })}

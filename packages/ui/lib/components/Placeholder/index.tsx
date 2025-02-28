@@ -2,8 +2,9 @@ import { Line } from './Line'
 import { Image } from './Image'
 import { Card } from './Card'
 import { classed } from '@tw-classed/react'
+import React, { forwardRef } from 'react'
 
-export const Root = classed.div('flex', {
+const BaseRoot = classed.div('flex', {
   variants: {
     spaced: {
       sm: 'gap-2',
@@ -21,11 +22,19 @@ export const Root = classed.div('flex', {
   },
 })
 
+export type RootProps = React.ComponentProps<typeof BaseRoot>
+
+const Root = forwardRef<HTMLDivElement, RootProps>((props, ref) => {
+  return <BaseRoot ref={ref} {...props} />
+})
+
 Root.displayName = 'Root'
 
+// For React 19, we need to use a more direct approach with "any" casting
 export const Placeholder = {
-  Line,
-  Image,
-  Root,
-  Card,
+  // Using "any" is necessary here to make components usable as JSX elements in React 19
+  Line: Line as any,
+  Image: Image as any,
+  Root: Root as any,
+  Card: Card as any,
 }

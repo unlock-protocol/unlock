@@ -1,4 +1,4 @@
-import {
+import React, {
   useState,
   useContext,
   Fragment,
@@ -66,6 +66,17 @@ export const MenuButton = tw.button(
       },
     },
   }
+)
+
+interface MenuButtonProps {
+  disabled?: boolean
+  active?: boolean
+  onClick?: (event?: React.MouseEvent<Element, MouseEvent>) => void
+  children: React.ReactNode
+}
+
+const MenuButtonComponent = (props: MenuButtonProps) => (
+  <MenuButton as="button" {...props} />
 )
 
 export interface Props {
@@ -336,68 +347,70 @@ function Key({ ownedKey, owner, network }: Props) {
                 <div className="p-1">
                   <Menu.Item disabled={!isAvailableOnOpenSea}>
                     {({ disabled, active }) => (
-                      <MenuButton
+                      <MenuButtonComponent
                         disabled={disabled}
                         active={active}
                         onClick={onOpenSea}
                       >
                         <OpenSeaIcon size={16} />
                         View on Opensea
-                      </MenuButton>
+                      </MenuButtonComponent>
                     )}
                   </Menu.Item>
                   <Menu.Item>
                     {({ disabled, active }) => (
-                      <MenuButton
+                      <MenuButtonComponent
                         disabled={disabled}
                         active={active}
                         onClick={onExploreLock}
                       >
                         <ExploreIcon size={16} />
                         Block explorer
-                      </MenuButton>
+                      </MenuButtonComponent>
                     )}
                   </Menu.Item>
                   {owner == account && (
                     <Menu.Item>
                       {({ active, disabled }) => (
-                        <MenuButton
+                        <MenuButtonComponent
                           disabled={disabled}
                           active={active}
                           onClick={addToWallet}
                         >
                           <WalletIcon />
                           Add to my crypto wallet
-                        </MenuButton>
+                        </MenuButtonComponent>
                       )}
                     </Menu.Item>
                   )}
                   <Menu.Item>
                     {({ active, disabled }) => (
-                      <MenuButton
+                      <MenuButtonComponent
                         disabled={disabled}
                         active={active}
-                        onClick={(event) => {
-                          event.preventDefault()
+                        onClick={(
+                          event?: React.MouseEvent<Element, MouseEvent>
+                        ) => {
+                          if (event) event.preventDefault()
                           setShowMoreInfo(true)
                         }}
                       >
                         <InfoIcon />
                         Show details
-                      </MenuButton>
+                      </MenuButtonComponent>
                     )}
                   </Menu.Item>
                   {owner == account && receiptsPageUrl?.length && (
                     <Menu.Item>
                       {({ active, disabled }) => (
-                        <MenuButton
+                        <MenuButtonComponent
                           disabled={disabled || isLoadingUrl}
                           active={active}
                           onClick={onReceiptsPage}
                         >
                           <ReceiptIcon />
                           Show receipts
-                        </MenuButton>
+                        </MenuButtonComponent>
                       )}
                     </Menu.Item>
                   )}
@@ -405,11 +418,13 @@ function Key({ ownedKey, owner, network }: Props) {
                   {owner == account && (
                     <Menu.Item disabled={!isExtendable}>
                       {({ active, disabled }) => (
-                        <MenuButton
+                        <MenuButtonComponent
                           disabled={disabled}
                           active={active}
-                          onClick={(event) => {
-                            event.preventDefault()
+                          onClick={(
+                            event?: React.MouseEvent<Element, MouseEvent>
+                          ) => {
+                            if (event) event.preventDefault()
                             setShowExtendMembership(true)
                           }}
                         >
@@ -417,7 +432,7 @@ function Key({ ownedKey, owner, network }: Props) {
                           {isRenewable && !isKeyExpired
                             ? 'Renew membership'
                             : 'Extend membership'}
-                        </MenuButton>
+                        </MenuButtonComponent>
                       )}
                     </Menu.Item>
                   )}
@@ -428,17 +443,19 @@ function Key({ ownedKey, owner, network }: Props) {
                     }
                   >
                     {({ active, disabled }) => (
-                      <MenuButton
+                      <MenuButtonComponent
                         disabled={disabled}
                         active={active}
-                        onClick={(event) => {
-                          event.preventDefault()
+                        onClick={(
+                          event?: React.MouseEvent<Element, MouseEvent>
+                        ) => {
+                          if (event) event.preventDefault()
                           setShowTransferModal(true)
                         }}
                       >
                         <TransferIcon />
                         Transfer membership
-                      </MenuButton>
+                      </MenuButtonComponent>
                     )}
                   </Menu.Item>
                 </div>
@@ -446,17 +463,19 @@ function Key({ ownedKey, owner, network }: Props) {
                   <div className="p-1">
                     <Menu.Item disabled={!isRefundable}>
                       {({ active, disabled }) => (
-                        <MenuButton
+                        <MenuButtonComponent
                           disabled={disabled}
                           active={active}
-                          onClick={(event) => {
-                            event.preventDefault()
+                          onClick={(
+                            event?: React.MouseEvent<Element, MouseEvent>
+                          ) => {
+                            if (event) event.preventDefault()
                             setShowCancelModal(!showCancelModal)
                           }}
                         >
                           <CancelIcon />
                           Cancel and refund
-                        </MenuButton>
+                        </MenuButtonComponent>
                       )}
                     </Menu.Item>
                   </div>
@@ -470,7 +489,7 @@ function Key({ ownedKey, owner, network }: Props) {
                         <div className="flex flex-row gap-1">
                           <AddToPhoneWallet
                             platform={Platform.GOOGLE}
-                            as={MenuButton}
+                            as={MenuButtonComponent}
                             network={network}
                             lockAddress={lock.address}
                             tokenId={tokenId}
@@ -480,7 +499,7 @@ function Key({ ownedKey, owner, network }: Props) {
                           />
                           <AddToPhoneWallet
                             platform={Platform.APPLE}
-                            as={MenuButton}
+                            as={MenuButtonComponent}
                             network={network}
                             lockAddress={lock.address}
                             tokenId={tokenId}
@@ -497,8 +516,8 @@ function Key({ ownedKey, owner, network }: Props) {
       </div>
       <div className="grid gap-2">
         <Avatar
-          onClick={(event) => {
-            event.preventDefault()
+          onClick={(event?: React.MouseEvent<Element, MouseEvent>) => {
+            if (event) event.preventDefault()
             setShowMoreInfo(true)
           }}
           className="flex items-center justify-center cursor-pointer hover:bg-gray-50"
@@ -536,8 +555,8 @@ function Key({ ownedKey, owner, network }: Props) {
             {minifyAddress(lock.address)}
             <button
               aria-label="Copy Lock Address"
-              onClick={(event) => {
-                event.preventDefault()
+              onClick={(event?: React.MouseEvent<Element, MouseEvent>) => {
+                if (event) event.preventDefault()
                 setCopied()
                 ToastHelper.success('Copied!')
               }}

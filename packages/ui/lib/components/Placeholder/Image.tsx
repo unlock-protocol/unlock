@@ -1,6 +1,7 @@
 import { classed } from '@tw-classed/react'
+import React, { forwardRef } from 'react'
 
-export const Image = classed.div('bg-gray-200 animate-pulse', {
+const BaseImage = classed.div('bg-gray-200 animate-pulse', {
   variants: {
     size: {
       sm: 'h-24 w-24',
@@ -20,6 +21,12 @@ export const Image = classed.div('bg-gray-200 animate-pulse', {
     size: 'md',
     rounded: 'md',
   },
+})
+
+export type ImageProps = React.ComponentProps<typeof BaseImage>
+
+export const Image = forwardRef<HTMLDivElement, ImageProps>((props, ref) => {
+  return <BaseImage ref={ref} {...props} />
 })
 
 Image.displayName = 'Image'

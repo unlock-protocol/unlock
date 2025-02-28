@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react'
+import { useRef, useEffect } from 'react'
 import * as Plot from '@observablehq/plot'
 
 export function HistoricalChart({
@@ -7,7 +7,7 @@ export function HistoricalChart({
   supportedNetworks,
   viewFilter,
 }) {
-  const ref = useRef<HTMLInputElement>()
+  const ref = useRef<HTMLInputElement>(null)
   useEffect(() => {
     const barChart = Plot.plot({
       width: 1200,

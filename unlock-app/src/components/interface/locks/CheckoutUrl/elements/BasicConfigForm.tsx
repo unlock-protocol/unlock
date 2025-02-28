@@ -44,7 +44,7 @@ export const BasicConfigForm = ({ onChange, defaultValues }: Props) => {
       }}
     >
       <Button
-        onClick={(event) => {
+        onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
           event.preventDefault()
           event.stopPropagation()
           setIsOpen(true)

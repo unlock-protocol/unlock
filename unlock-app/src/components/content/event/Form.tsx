@@ -85,8 +85,7 @@ export const GoogleMapsAutoComplete = ({
   return (
     <Input
       defaultValue={defaultValue}
-      // @ts-expect-error Type 'RefObject<null>' is not assignable to type 'Ref<HTMLInputElement> | undefined'.
-      ref={ref}
+      ref={ref as unknown as React.RefObject<HTMLInputElement>}
       type="text"
       placeholder="123 1st street, 11217 Springfield, US"
     />
@@ -453,7 +452,9 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
                             message: 'Add a link to your event',
                           },
                         })}
-                        onChange={(event) => {
+                        onChange={(
+                          event: React.ChangeEvent<HTMLInputElement>
+                        ) => {
                           if (!regexUrlPattern.test(event.target.value)) {
                             setError('metadata.ticket.event_address', {
                               type: 'manual',

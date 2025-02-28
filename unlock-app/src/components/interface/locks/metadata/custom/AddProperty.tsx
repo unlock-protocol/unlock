@@ -67,7 +67,7 @@ export function AddPropertyModal({
             </div>
           ))}
           <Button
-            onClick={(event) => {
+            onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
               event.preventDefault()
               appendProperty({
                 trait_type: '',
@@ -81,7 +81,7 @@ export function AddPropertyModal({
           </Button>
         </div>
         <Button
-          onClick={(event) => {
+          onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
             event.preventDefault()
             setIsOpen(false)
           }}

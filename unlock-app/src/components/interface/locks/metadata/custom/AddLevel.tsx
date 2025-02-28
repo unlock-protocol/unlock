@@ -80,7 +80,7 @@ export function AddLevelModal({
                 <button
                   className="mb-5 hover:fill-brand-ui-primary"
                   aria-label="remove"
-                  onClick={(event) => {
+                  onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
                     event.preventDefault()
                     removeLevel(index)
                   }}
@@ -91,7 +91,7 @@ export function AddLevelModal({
             </div>
           ))}
           <Button
-            onClick={(event) => {
+            onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
               event.preventDefault()
               appendLevel({
                 trait_type: '',
@@ -107,7 +107,7 @@ export function AddLevelModal({
         </div>
         <Button
           disabled={!!errors.levels?.length}
-          onClick={(event) => {
+          onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
             event.preventDefault()
             setIsOpen(false)
           }}

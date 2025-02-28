@@ -29,10 +29,10 @@ export const Drawer = ({
   description,
 }: DrawerProps) => {
   return (
-    <Transition show={isOpen} as={React.Fragment}>
+    <Transition show={isOpen} as="div">
       <Dialog as="div" className="relative z-10" onClose={setIsOpen}>
         <TransitionChild
-          as={React.Fragment}
+          as="div"
           enter="ease-in-out duration-500"
           enterFrom="opacity-0"
           enterTo="opacity-100"
@@ -47,7 +47,7 @@ export const Drawer = ({
           <div className="absolute inset-0 overflow-hidden">
             <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
               <TransitionChild
-                as={React.Fragment}
+                as="div"
                 enter="transform transition ease-in-out duration-500 sm:duration-700"
                 enterFrom="translate-x-full"
                 enterTo="translate-x-0"

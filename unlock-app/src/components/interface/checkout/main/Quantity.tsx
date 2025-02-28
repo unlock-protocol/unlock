@@ -130,7 +130,7 @@ export function Quantity({ checkoutService }: Props) {
         <div className="grid">
           <Button
             disabled={isDisabled}
-            onClick={async (event) => {
+            onClick={async (event: React.MouseEvent<HTMLButtonElement>) => {
               event.preventDefault()
               checkoutService.send({
                 type: 'SELECT_QUANTITY',

@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ReactNode, type JSX } from 'react';
 import { SOCIAL_LINKS } from '../constants'
 import LogoUrl from './../../assets/unlock-footer-logo.svg?url'
 

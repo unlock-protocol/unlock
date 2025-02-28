@@ -1,3 +1,4 @@
+import type { JSX } from 'react'
 import { classed } from '@tw-classed/react'
 
 const CardBase = classed.div('w-full rounded-2xl', {

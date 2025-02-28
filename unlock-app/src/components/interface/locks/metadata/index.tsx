@@ -299,7 +299,7 @@ export function UpdateMetadataForm({ lockAddress, network, keyId }: Props) {
             <Button
               disabled={isUpdatingBaseTokenURI}
               loading={isUpdatingBaseTokenURI}
-              onClick={async (event) => {
+              onClick={async (event: React.MouseEvent<HTMLButtonElement>) => {
                 event.preventDefault()
                 await update(baseTokenURI)
               }}

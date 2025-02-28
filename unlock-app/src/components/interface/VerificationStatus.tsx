@@ -48,7 +48,7 @@ const WarningDialog = ({
             scan the next one?
           </span>
           <Button
-            onClick={(event) => {
+            onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
               event.preventDefault()
               setIsOpen(false)
             }}
@@ -57,7 +57,7 @@ const WarningDialog = ({
           </Button>
           <Button
             variant="outlined-primary"
-            onClick={(event) => {
+            onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
               event.preventDefault()
               onConfirm()
             }}
@@ -195,7 +195,7 @@ export const VerificationStatus = ({
             loading={isCheckingIn}
             disabled={disableActions}
             variant={'primary'}
-            onClick={async (event) => {
+            onClick={async (event: React.MouseEvent<HTMLButtonElement>) => {
               event.preventDefault()
               onCheckIn()
             }}
@@ -205,7 +205,7 @@ export const VerificationStatus = ({
         ) : null
       ) : (
         <Button
-          onClick={(event) => {
+          onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
             event.preventDefault()
             openConnectModal()
           }}

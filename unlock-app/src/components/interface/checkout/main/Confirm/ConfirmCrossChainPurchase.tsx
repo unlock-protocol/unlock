@@ -198,7 +198,7 @@ export function ConfirmCrossChainPurchase({
           <Button
             loading={isConfirming}
             disabled={isConfirming || isLoading || isPricingDataError}
-            onClick={async (event) => {
+            onClick={async (event: React.MouseEvent<HTMLButtonElement>) => {
               event?.preventDefault()
               if (metadata) {
                 await updateUsersMetadata(metadata)

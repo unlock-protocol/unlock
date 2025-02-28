@@ -1,10 +1,10 @@
 ---
-title: "Unlock Labs Feature Announcement: Allow List Hook"
-subtitle: ""
-authorName: "Unlock Protocol"
-publishDate: "Thu Jan 09 2025 16:59:53 GMT+0000 (Coordinated Universal Time)"
-description: "Secure onchain minting of tickets, memberships, subscriptions, and certifications with pre-approved addresses"
-image: "/images/blog/unlock-labs-feature-announcement--allow-list-hook/545a7aeabc3f6f0c29ae9ea6910ca038.jpg"
+title: 'Unlock Labs Feature Announcement: Allow List Hook'
+subtitle: ''
+authorName: 'Unlock Protocol'
+publishDate: 'Thu Jan 09 2025 16:59:53 GMT+0000 (Coordinated Universal Time)'
+description: 'Secure onchain minting of tickets, memberships, subscriptions, and certifications with pre-approved addresses'
+image: '/images/blog/unlock-labs-feature-announcement--allow-list-hook/545a7aeabc3f6f0c29ae9ea6910ca038.jpg'
 ---
 
 ![Unlock Labs Feature Announcement: Allow List Hook](https://storage.googleapis.com/papyrus_images/545a7aeabc3f6f0c29ae9ea6910ca038.jpg)

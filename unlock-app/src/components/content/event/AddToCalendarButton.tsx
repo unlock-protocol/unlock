@@ -7,11 +7,9 @@ import { FaRegCalendarPlus } from 'react-icons/fa'
 import { Metadata } from '~/components/interface/locks/metadata/utils'
 import { getEventDate, getEventEndDate } from './utils'
 
-import {
-  SiGooglecalendar,
-  SiMicrosoft as SiMicrosoftoffice,
-  SiMicrosoftoutlook,
-} from 'react-icons/si'
+import { FaMicrosoft } from 'react-icons/fa'
+import { SiGooglecalendar } from 'react-icons/si'
+import { PiMicrosoftOutlookLogoFill } from 'react-icons/pi'
 
 interface AddToCalendarButtonProps {
   event: Partial<Metadata>
@@ -64,7 +62,7 @@ export const AddToCalendarButton = ({
                 className="hover:underline"
                 href={outlook(calendarEvent)}
               >
-                <SiMicrosoftoutlook className="inline w-8 h-8 mr-3" />
+                <PiMicrosoftOutlookLogoFill className="inline w-8 h-8 mr-3" />
                 Microsoft Outlook
               </Link>
             </li>
@@ -74,7 +72,7 @@ export const AddToCalendarButton = ({
                 className="hover:underline"
                 href={office365(calendarEvent)}
               >
-                <SiMicrosoftoffice className="inline w-8 h-8 mr-3" />
+                <FaMicrosoft className="inline w-8 h-8 mr-3" />
                 Microsoft Office 365
               </Link>
             </li>
@@ -97,6 +95,7 @@ export const AddToCalendarButton = ({
         label="Add to Calendar"
         tip="Add to Calendar"
         side="bottom"
+        sideOffset={6}
       >
         <button
           onClick={() => setOpen(true)}

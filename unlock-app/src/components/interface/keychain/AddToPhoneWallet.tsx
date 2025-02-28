@@ -6,6 +6,7 @@ import {
 } from '../../../services/passService'
 import { ToastHelper } from '@unlock-protocol/ui'
 import Image from 'next/image'
+import React from 'react'
 
 interface AddToWalletProps {
   platform: Platform
@@ -16,7 +17,7 @@ interface AddToWalletProps {
   handlePassUrl?: (url: string) => void
   disabled?: boolean
   active?: boolean
-  iconLeft?: JSX.Element
+  iconLeft?: React.ReactElement
   size?: Size
   variant?: string
   className?: string

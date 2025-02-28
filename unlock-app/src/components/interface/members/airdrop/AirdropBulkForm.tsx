@@ -297,7 +297,7 @@ export function AirdropBulkForm({ lock, onConfirm, emailRequired }: Props) {
           <Button
             loading={isConfirming}
             disabled={isConfirming}
-            onClick={async (event) => {
+            onClick={async (event: React.MouseEvent<HTMLButtonElement>) => {
               event.preventDefault()
               setIsConfirming(true)
               try {

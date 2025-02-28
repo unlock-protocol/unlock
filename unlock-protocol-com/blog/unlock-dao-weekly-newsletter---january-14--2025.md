@@ -1,10 +1,10 @@
 ---
-title: "Unlock DAO Weekly Newsletter | January 14, 2025"
-subtitle: ""
-authorName: "Stella Achenbach"
-publishDate: "Tue Jan 14 2025 08:00:00 GMT+0000 (Coordinated Universal Time)"
+title: 'Unlock DAO Weekly Newsletter | January 14, 2025'
+subtitle: ''
+authorName: 'Stella Achenbach'
+publishDate: 'Tue Jan 14 2025 08:00:00 GMT+0000 (Coordinated Universal Time)'
 description: "Hey Locksmiths! As we kick off the new year, our recent DAO call was packed with exciting updates and developments that are shaping the future of Unlock Protocol. Let's dive into the key highlights that are propelling our community forward.ETH Denver: Gearing Up for Web3's Premier EventThe buzz is building for ETH Denver, and Unlock DAO is ready to make a splash! We're in full planning mode, strategizing how to maximize our presence at this cornerstone event of the Web3 calendar. Our focus is..."
-image: "/images/blog/unlock-dao-weekly-newsletter---january-14--2025/d814d418f16a5f64b37035b6bff62668.jpg"
+image: '/images/blog/unlock-dao-weekly-newsletter---january-14--2025/d814d418f16a5f64b37035b6bff62668.jpg'
 ---
 
 ![Unlock DAO Weekly Newsletter | January 14, 2025](https://storage.googleapis.com/papyrus_images/d814d418f16a5f64b37035b6bff62668.jpg)

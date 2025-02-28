@@ -285,7 +285,7 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
                       message: 'Add a start date to your event',
                     },
                   })}
-                  onChange={(evt) => {
+                  onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
                     if (
                       !event?.ticket?.event_end_date ||
                       new Date(event?.ticket?.event_end_date) <
@@ -396,7 +396,7 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
                     type="text"
                     defaultValue={event?.ticket?.event_address}
                     placeholder={'Zoom or Google Meet Link'}
-                    onChange={(event) => {
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                       if (!regexUrlPattern.test(event.target.value)) {
                         setError('ticket.event_address', {
                           type: 'manual',

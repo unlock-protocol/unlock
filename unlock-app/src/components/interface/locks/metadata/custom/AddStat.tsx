@@ -86,7 +86,7 @@ export function AddStatModal({
             </div>
           ))}
           <Button
-            onClick={(event) => {
+            onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
               event.preventDefault()
               appendStat({
                 display_type: 'number',
@@ -103,7 +103,7 @@ export function AddStatModal({
         </div>
         <Button
           disabled={!!errors.stats?.length}
-          onClick={(event) => {
+          onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
             event.preventDefault()
             setIsOpen(false)
           }}
