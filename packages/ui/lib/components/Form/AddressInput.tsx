@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios'
-import { ForwardedRef, useState, useEffect, ChangeEvent } from 'react'
+import { ForwardedRef, useState, useEffect } from 'react'
 import { forwardRef } from 'react'
 import { FaWallet, FaSpinner } from 'react-icons/fa'
 import { IconBaseProps } from 'react-icons'
@@ -149,7 +149,7 @@ export const WrappedAddressInput = ({
       iconClass={resolveNameMutation.isPending ? 'animate-spin' : ''}
       icon={resolveNameMutation.isPending ? LoadingIcon : WalletIcon}
       ref={ref}
-      onChange={(e: ChangeEvent<HTMLInputElement>) => {
+      onChange={(e) => {
         const value: string = e.target.value
         resolveNameMutation.reset() // Reset the mutation to handle new input values.
         setAddressOrEns(value)
@@ -170,7 +170,7 @@ export const WrappedAddressInput = ({
  * @returns Input component
  *
  */
-const AddressInputComponent = forwardRef(
+export const AddressInput = forwardRef(
   (props: Props, ref: ForwardedRef<HTMLInputElement>) => (
     <QueryClientProvider client={queryClient}>
       <WrappedAddressInput {...props} ref={ref} />
@@ -178,8 +178,4 @@ const AddressInputComponent = forwardRef(
   )
 )
 
-AddressInputComponent.displayName = 'AddressInput'
-
-// For React 19, we need to use a more direct approach with "any" casting
-// Using "any" is necessary here to make components usable as JSX elements in React 19
-export const AddressInput = AddressInputComponent as any
+AddressInput.displayName = 'AddressInput'

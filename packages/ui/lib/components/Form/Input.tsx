@@ -45,7 +45,7 @@ const INPUT_BUTTON_SIZE: SizeStyleProp = {
   large: 'text-lg',
 }
 
-const InputComponent = forwardRef(
+export const Input = forwardRef(
   (props: Props, ref: ForwardedRef<HTMLInputElement>) => {
     const {
       size = 'medium',
@@ -141,8 +141,4 @@ const InputComponent = forwardRef(
   }
 )
 
-InputComponent.displayName = 'Input'
-
-// For React 19, we need to use a more direct approach with "any" casting
-// Using "any" is necessary here to make components usable as JSX elements in React 19
-export const Input = InputComponent as any
+Input.displayName = 'Input'

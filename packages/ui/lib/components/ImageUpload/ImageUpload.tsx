@@ -4,7 +4,6 @@ import { Tab } from '@headlessui/react'
 import { CgSpinner as SpinnerIcon } from 'react-icons/cg'
 import { Input } from '../Form'
 import { classed } from '@tw-classed/react'
-import { ChangeEvent, forwardRef } from 'react'
 
 const tabs = [
   {
@@ -55,113 +54,100 @@ export type ImageUploadWrapperProps = React.ComponentProps<
     error?: string
   }
 
-const ImageUploadComponent = forwardRef<
-  HTMLDivElement,
-  ImageUploadWrapperProps
->(
-  (
-    {
-      onChange,
-      preview,
-      isUploading,
-      description,
-      size,
-      imageRatio,
-      className,
-      error,
-    }: ImageUploadWrapperProps,
-    ref
-  ) => {
-    const { getInputProps, getRootProps } = useDropzone({
-      accept: {
-        'image/png': ['.png'],
-        'image/jpeg': ['.jpeg', '.jpg'],
-        'image/gif': ['.gif'],
-        'image/svg+xml': ['.svg'],
-      },
-      onDropAccepted: onChange,
-    })
-    return (
-      <ImageUploadWrapper size={size} className={className} ref={ref}>
-        <ImageContainer
-          imageRatio={imageRatio}
-          className={error ? 'border-red-500' : ''}
-        >
-          {isUploading && (
-            <div className="flex flex-col items-center justify-center h-full ">
-              <SpinnerIcon
-                size={24}
-                title="loading"
-                className="text-brand-ui-primary animate-spin"
-              />
-            </div>
-          )}
-          {!isUploading &&
-            (preview ? (
-              <img
-                className="object-cover w-full h-full rounded-xl"
-                src={preview}
-                alt="NFT"
-              />
-            ) : (
-              <div className="text-xs">No image selected</div>
-            ))}
-        </ImageContainer>
-        <Tab.Group>
-          <div className="grid gap-4">
-            {description && (
-              <p className="text-sm text-gray-600">{description}</p>
-            )}
-            <Tab.List className="grid grid-cols-2 border-b border-gray-300">
-              {tabs.map((tab) => (
-                <Tab
-                  key={tab.id}
-                  className={({ selected }) =>
-                    `w-full text-sm py-2 font-semibold leading-5 ${
-                      selected && 'text-ui-main-500 border-b border-ui-main-500'
-                    }`
-                  }
-                >
-                  {tab.name}
-                </Tab>
-              ))}
-            </Tab.List>
-            <Tab.Panels className="h-12">
-              <Tab.Panel>
-                <div
-                  {...getRootProps({
-                    className: 'grid gap-2',
-                  })}
-                >
-                  <input {...getInputProps()} />
-                  <Button size="small" type="button" variant="outlined-primary">
-                    Select an image file
-                  </Button>
-                </div>
-              </Tab.Panel>
-              <Tab.Panel>
-                <Input
-                  onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                    event.preventDefault()
-                    const fileUrl = event.target.value
-                    onChange(fileUrl)
-                  }}
-                  value={preview}
-                  size="small"
-                  type="url"
-                  placeholder="https://"
-                />
-              </Tab.Panel>
-            </Tab.Panels>
-            {error && <p className="-mt-5 text-sm text-red-500">{error}</p>}
+export const ImageUpload = ({
+  onChange,
+  preview,
+  isUploading,
+  description,
+  size,
+  imageRatio,
+  className,
+  error,
+}: ImageUploadWrapperProps) => {
+  const { getInputProps, getRootProps } = useDropzone({
+    accept: {
+      'image/png': ['.png'],
+      'image/jpeg': ['.jpeg', '.jpg'],
+      'image/gif': ['.gif'],
+      'image/svg+xml': ['.svg'],
+    },
+    onDropAccepted: onChange,
+  })
+  return (
+    <ImageUploadWrapper size={size} className={className}>
+      <ImageContainer
+        imageRatio={imageRatio}
+        className={error ? 'border-red-500' : ''}
+      >
+        {isUploading && (
+          <div className="flex flex-col items-center justify-center h-full ">
+            <SpinnerIcon
+              size={24}
+              title="loading"
+              className="text-brand-ui-primary animate-spin"
+            />
           </div>
-        </Tab.Group>
-      </ImageUploadWrapper>
-    )
-  }
-)
-
-ImageUploadComponent.displayName = 'ImageUpload'
-
-// Use "as any" casting for React 19 compatibility
-export const ImageUpload = ImageUploadComponent as any
+        )}
+        {!isUploading &&
+          (preview ? (
+            <img
+              className="object-cover w-full h-full rounded-xl"
+              src={preview}
+              alt="NFT"
+            />
+          ) : (
+            <div className="text-xs">No image selected</div>
+          ))}
+      </ImageContainer>
+      <Tab.Group>
+        <div className="grid gap-4">
+          {description && (
+            <p className="text-sm text-gray-600">{description}</p>
+          )}
+          <Tab.List className="grid grid-cols-2 border-b border-gray-300">
+            {tabs.map((tab) => (
+              <Tab
+                key={tab.id}
+                className={({ selected }) =>
+                  `w-full text-sm py-2 font-semibold leading-5 ${
+                    selected && 'text-ui-main-500 border-b border-ui-main-500'
+                  }`
+                }
+              >
+                {tab.name}
+              </Tab>
+            ))}
+          </Tab.List>
+          <Tab.Panels className="h-12">
+            <Tab.Panel>
+              <div
+                {...getRootProps({
+                  className: 'grid gap-2',
+                })}
+              >
+                <input {...getInputProps()} />
+                <Button size="small" type="button" variant="outlined-primary">
+                  Select an image file
+                </Button>
+              </div>
+            </Tab.Panel>
+            <Tab.Panel>
+              <Input
+                onChange={(event) => {
+                  event.preventDefault()
+                  const fileUrl = event.target.value
+                  onChange(fileUrl)
+                }}
+                value={preview}
+                size="small"
+                type="url"
+                placeholder="https://"
+              />
+            </Tab.Panel>
+          </Tab.Panels>
+          {error && <p className="-mt-5 text-sm text-red-500">{error}</p>}
+        </div>
+      </Tab.Group>
+    </ImageUploadWrapper>
+  )
+}

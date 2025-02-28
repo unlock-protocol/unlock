@@ -1,5 +1,5 @@
 import { Popover, Transition, Dialog, TransitionChild } from '@headlessui/react'
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState, type JSX } from 'react';
 import { Button } from '../Button/Button'
 import { SOCIAL_LINKS } from '../constants'
 import { Icon } from '../Icon/Icon'

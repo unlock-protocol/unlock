@@ -29,7 +29,7 @@ const STATE_STYLES = {
     'border-green-500 hover:border-green-500 focus:border-green-500 focus:ring-green-500',
 }
 
-const TextBoxComponent = forwardRef(
+export const TextBox = forwardRef(
   (props: Props, ref: ForwardedRef<HTMLTextAreaElement>) => {
     const {
       size = 'medium',
@@ -76,8 +76,3 @@ const TextBoxComponent = forwardRef(
     )
   }
 )
-
-TextBoxComponent.displayName = 'TextBox'
-
-// Use "as any" casting for React 19 compatibility
-export const TextBox = TextBoxComponent as any

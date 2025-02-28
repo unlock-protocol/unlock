@@ -16,7 +16,7 @@ export const SIZE_STYLES: SizeStyleProp = {
   large: 'w-6	h-6 text-base',
 }
 
-const CheckboxComponent = forwardRef<HTMLInputElement, CheckboxProps>(
+export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   ({ label, error, description, fieldSize = 'medium', ...rest }, ref) => {
     const inputSizeStyle = SIZE_STYLES[fieldSize]
 
@@ -38,9 +38,6 @@ const CheckboxComponent = forwardRef<HTMLInputElement, CheckboxProps>(
   }
 )
 
-CheckboxComponent.displayName = 'Checkbox'
-
-// Use "as any" casting for React 19 compatibility
-export const Checkbox = CheckboxComponent as any
+Checkbox.displayName = 'Checkbox'
 
 export default Checkbox
