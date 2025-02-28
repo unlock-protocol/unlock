@@ -10,10 +10,6 @@ CACHE_DURATION_SECONDS = "3600"
 # Locksmith IP addresses (comma-separated list)
 LOCKSMITH_IPS = ""
 
-# KV Namespaces
-[[kv_namespaces]]
-binding = "LOCK_CACHE"
-id = "your-lock-cache-id"  # Replace with your actual KV namespace ID after creating it
 
 # Rate limiting using Cloudflare's Rate Limiting API
 # The rate limiting API is in open beta
@@ -31,13 +27,12 @@ namespace_id = "1002"
 # 1000 requests per 60 minutes (similar to previous hourly limit)
 simple = { limit = 1000, period = 60 }
 
-# Development-specific configuration
+
+# Development configuration
 [dev]
-# Enable local KV for development
 port = 8787
 
-# Local KV for development
+# Development-only KV namespace for local testing
 [[kv_namespaces]]
-binding = "LOCK_CACHE" 
-id = "dev-lock-cache"
+binding = "LOCK_CACHE"
 preview_id = "dev-lock-cache"
