@@ -6,9 +6,7 @@ import { FiArrowLeft, FiArrowRight } from 'react-icons/fi'
 import { Container } from './layout/Container'
 import airdrops from '../src/airdrops.json'
 import { usePrivy } from '@privy-io/react-auth'
-import { isEligible } from '../src/utils/eligibility'
 import { CampaignCard } from './CampaignCard'
-import { useEligibility } from './hooks/useEligibility'
 
 export interface AirdropData {
   id: string
