@@ -1,4 +1,4 @@
-FROM node:22.13.1-alpine as unlock-eth-node
+FROM node:22.14.0-alpine as unlock-eth-node
 LABEL Unlock <ops@unlock-protocol.com>
 
 USER root
