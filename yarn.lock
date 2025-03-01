@@ -18938,7 +18938,7 @@ __metadata:
     memory-cache-node: "npm:1.4.0"
     multer: "npm:1.4.5-lts.1"
     multer-s3: "npm:3.0.1"
-    nock: "npm:14.0.0"
+    nock: "npm:14.0.1"
     node-mocks-http: "npm:1.16.2"
     p-retry: "npm:6.2.1"
     parse-data-uri: "npm:0.2.0"
@@ -39864,14 +39864,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nock@npm:14.0.0":
-  version: 14.0.0
-  resolution: "nock@npm:14.0.0"
+"nock@npm:14.0.1":
+  version: 14.0.1
+  resolution: "nock@npm:14.0.1"
   dependencies:
     "@mswjs/interceptors": "npm:^0.37.3"
     json-stringify-safe: "npm:^5.0.1"
     propagate: "npm:^2.0.0"
-  checksum: 10/88138f268ec5f6c1789e3f8c46f48f0d7d5ae5b3e6764a08bf665bc892912a947f7e036fc9a1aa81f2626101a78e68181ee44610f3ab3c1ad3487e677c2467aa
+  checksum: 10/5498352f9b10fcf2f610422bf9365c5f58abe061790c36188d4d4b053ca2970be8afdb8a5c1ca2647aef033ecc089f74b94fa8c3b6c11eab98edb1947fca8188
   languageName: node
   linkType: hard
 
