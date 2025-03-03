@@ -19285,7 +19285,7 @@ __metadata:
     passkit-generator: "npm:3.2.0"
     path-to-regexp: "npm:8.2.0"
     pdfmake: "npm:0.2.18"
-    pg: "npm:8.13.1"
+    pg: "npm:8.13.3"
     rate-limiter-flexible: "npm:5.0.5"
     react: "npm:18.3.1"
     remark-html: "npm:16.0.1"
@@ -42552,7 +42552,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg-pool@npm:^3.7.0, pg-pool@npm:^3.7.1":
+"pg-pool@npm:^3.7.1":
   version: 3.7.1
   resolution: "pg-pool@npm:3.7.1"
   peerDependencies:
@@ -42561,7 +42561,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg-protocol@npm:*, pg-protocol@npm:^1.7.0, pg-protocol@npm:^1.7.1":
+"pg-protocol@npm:*, pg-protocol@npm:^1.7.1":
   version: 1.7.1
   resolution: "pg-protocol@npm:1.7.1"
   checksum: 10/5ccb6e01381261f2f4a995ccc9b135c6071ffe63c0b4bf0b6078dab2ab8567b1a5f64407a0a444ff3e4b689b9b91b2533b930f1a041afcdae8fca5345a18c30d
@@ -42596,29 +42596,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg@npm:8.13.1":
-  version: 8.13.1
-  resolution: "pg@npm:8.13.1"
-  dependencies:
-    pg-cloudflare: "npm:^1.1.1"
-    pg-connection-string: "npm:^2.7.0"
-    pg-pool: "npm:^3.7.0"
-    pg-protocol: "npm:^1.7.0"
-    pg-types: "npm:^2.1.0"
-    pgpass: "npm:1.x"
-  peerDependencies:
-    pg-native: ">=3.0.1"
-  dependenciesMeta:
-    pg-cloudflare:
-      optional: true
-  peerDependenciesMeta:
-    pg-native:
-      optional: true
-  checksum: 10/542aa49fcb37657cf5f779b4a31fe6eb336e683445ecca38e267eeb0ca85d873ffe51f04794f9f9e184187e9f74bf7895e932a0fa9507132ac0dfc76c7c73451
-  languageName: node
-  linkType: hard
-
-"pg@npm:^8.11.3":
+"pg@npm:8.13.3, pg@npm:^8.11.3":
   version: 8.13.3
   resolution: "pg@npm:8.13.3"
   dependencies:
