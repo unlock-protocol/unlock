@@ -84,16 +84,15 @@ You can use the `yarn deploy` to deploy to Cloudflare.
 
 # Adding new networks
 
-To add a new network, make sure you first add it to `supportedNetworks` and `types.ts` (you will need the new network's chain id), as well as in `.op.env` and `set-provider-urls.sh`.
+To add a new network, make sure you first add it to `supportedNetworks` and `types.ts` (you will need the new network's chain id), as well as in `.op.env` and `set-env-vars.sh`.
 
 Then set it in 1Password, under `secrets/rpc-providers`.
 
 ```bash
-  yarn run set-provider-urls
+  yarn run set-env-vars
 ```
 
 ## TODO
 
-- Only support RPC calls to Unlock contracts (or related contracts... such as ERC20 contracts).
 - Deploy through Github action
 - Measure all the things
