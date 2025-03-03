@@ -1,4 +1,3 @@
-import { ethers } from 'ethers'
 import { AirdropData } from '../../components/Campaigns'
 
 /**
@@ -20,5 +19,5 @@ export const isEligible = async (
   if (!recipient) {
     return 0
   }
-  return Number(ethers.formatUnits(recipient.value[1], airdrop.token.decimals))
+  return recipient.value[1]
 }
