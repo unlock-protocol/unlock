@@ -33,3 +33,4 @@ port = 8787
 [[kv_namespaces]]
 binding = "LOCK_CACHE"
 preview_id = "dev-lock-cache"
+id = "37d25438af6b4ab08ec710e776f7217e"
