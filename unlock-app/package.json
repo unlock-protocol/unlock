@@ -15,7 +15,7 @@
     "@headlessui/react": "2.1.9",
     "@hookform/resolvers": "3.9.1",
     "@privy-io/react-auth": "2.2.1",
-    "@radix-ui/react-avatar": "1.1.2",
+    "@radix-ui/react-avatar": "1.1.3",
     "@sentry/nextjs": "9.3.0",
     "@stripe/react-stripe-js": "3.0.0",
     "@stripe/stripe-js": "5.2.0",
