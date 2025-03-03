@@ -19046,7 +19046,7 @@ __metadata:
     clsx: "npm:2.1.1"
     docusaurus-gtm-plugin: "npm:0.0.2"
     docusaurus-node-polyfills: "npm:1.0.0"
-    docusaurus-plugin-openapi-docs: "npm:4.3.3"
+    docusaurus-plugin-openapi-docs: "npm:4.3.5"
     docusaurus-theme-openapi-docs: "npm:4.3.3"
     ethers: "npm:6.13.5"
     postcss: "npm:8.5.3"
@@ -27189,9 +27189,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"docusaurus-plugin-openapi-docs@npm:4.3.3":
-  version: 4.3.3
-  resolution: "docusaurus-plugin-openapi-docs@npm:4.3.3"
+"docusaurus-plugin-openapi-docs@npm:4.3.5":
+  version: 4.3.5
+  resolution: "docusaurus-plugin-openapi-docs@npm:4.3.5"
   dependencies:
     "@apidevtools/json-schema-ref-parser": "npm:^11.5.4"
     "@redocly/openapi-core": "npm:^1.10.5"
@@ -27213,7 +27213,7 @@ __metadata:
     "@docusaurus/utils": ^3.5.0
     "@docusaurus/utils-validation": ^3.5.0
     react: ^16.8.4 || ^17.0.0 || ^18.0.0 || ^19.0.0
-  checksum: 10/e0cdae43c7a41db450fe8b6a124395ddcb341f487ac97d5284cab1ed81e6554656dcf96cd620b70866c8b70f7d8ee5a432b1e5f0b16e1b6f03ead75a2295ba06
+  checksum: 10/ed87c9726425ccf1c0c378fafdb0e30e4d0269bba7fa2c5e1daf6e35d3705f4ab5a8c822a47fd8560249de2af9005949d07644a84acd08fcb345ef9eb76ab60d
   languageName: node
   linkType: hard
 
@@ -43816,7 +43816,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:8.5.3":
+"postcss@npm:8.5.3, postcss@npm:^8.5.3":
   version: 8.5.3
   resolution: "postcss@npm:8.5.3"
   dependencies:
@@ -43835,17 +43835,6 @@ __metadata:
     picocolors: "npm:^1.1.1"
     source-map-js: "npm:^1.2.1"
   checksum: 10/e08c2be3cf461cc63cf4c8e97bb3d5185e196ee0a9b75879cf130590f32bc38c7829c6c4e260158e214fb68a828a95bdac84c8f17fefba993d3ced686643c3e2
-  languageName: node
-  linkType: hard
-
-"postcss@npm:^8.5.3":
-  version: 8.5.3
-  resolution: "postcss@npm:8.5.3"
-  dependencies:
-    nanoid: "npm:^3.3.8"
-    picocolors: "npm:^1.1.1"
-    source-map-js: "npm:^1.2.1"
-  checksum: 10/6d7e21a772e8b05bf102636918654dac097bac013f0dc8346b72ac3604fc16829646f94ea862acccd8f82e910b00e2c11c1f0ea276543565d278c7ca35516a7c
   languageName: node
   linkType: hard
 
