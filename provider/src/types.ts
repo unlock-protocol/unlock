@@ -17,4 +17,23 @@ export interface Env {
 
   // Optional environment variable for configuring cache duration in seconds
   CACHE_DURATION_SECONDS?: string
+
+  // Secret key for authenticating requests from Locksmith
+  LOCKSMITH_SECRET_KEY?: string
+
+  // Cloudflare Rate Limiting API bindings
+  STANDARD_RATE_LIMITER: RateLimiter
+  HOURLY_RATE_LIMITER: RateLimiter
+
+  // KV namespace for caching lock addresses
+  LOCK_CACHE?: KVNamespace
+}
+
+// Cloudflare Rate Limiting API interface
+export interface RateLimiter {
+  limit(options: { key: string }): Promise<{ success: boolean }>
+}
+
+export interface ContractInfo {
+  isUnlockContract: boolean
 }

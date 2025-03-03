@@ -3,6 +3,7 @@
   "devDependencies": {
     "@cloudflare/workers-types": "4.20250129.0",
     "@types/node": "22.13.8",
+    "@unlock-protocol/contracts": "workspace:^",
     "@unlock-protocol/networks": "workspace:^",
     "typescript": "5.8.2",
     "vitest": "2.1.9"
@@ -15,6 +16,7 @@
     "dev": "yarn wrangler dev",
     "deploy": "yarn wrangler deploy",
     "set-provider-urls": "op run --env-file=.op.env --  ./scripts/set-provider-urls.sh",
-    "test": "vitest"
+    "test": "vitest run --config ./vitest.config.ts",
+    "test:watch": "vitest --config ./vitest.config.ts"
   }
 }
