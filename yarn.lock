@@ -18972,13 +18972,13 @@ __metadata:
   dependencies:
     "@unlock-protocol/tsconfig": "workspace:^"
     "@unlock-protocol/types": "workspace:^"
-    eslint: "npm:9.19.0"
+    eslint: "npm:9.21.0"
     eslint-plugin-sort-keys-fix: "npm:1.1.2"
     ethers: "npm:6.13.5"
     fs-extra: "npm:11.3.0"
-    tsup: "npm:8.3.6"
+    tsup: "npm:8.4.0"
     tsx: "npm:4.19.2"
-    typescript: "npm:5.7.3"
+    typescript: "npm:5.8.2"
   languageName: unknown
   linkType: soft
 
