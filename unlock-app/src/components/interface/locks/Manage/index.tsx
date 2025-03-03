@@ -1,7 +1,7 @@
 'use client'
 
 import { MdOutlineTipsAndUpdates } from 'react-icons/md'
-import { useQuery, useMutation } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { Button, Icon } from '@unlock-protocol/ui'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Fragment, useEffect, useState } from 'react'
@@ -397,17 +397,6 @@ export const ManageLockContent = () => {
     approval: ApprovalStatus.MINTED,
   })
   const [page, setPage] = useState(1)
-
-  const { data: eventData } = useQuery({
-    queryKey: ['getEventForLock', lockAddress, network],
-    queryFn: async () => {
-      const { data: eventDetails } = await locksmith.getEventDetails(
-        Number(network),
-        lockAddress
-      )
-      return eventDetails
-    },
-  })
 
   if (!owner) {
     return <ConnectWalletModal isOpen={true} setIsOpen={() => void 0} />
