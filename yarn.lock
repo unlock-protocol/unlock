@@ -18631,7 +18631,7 @@ __metadata:
     "@unlock-protocol/ui": "workspace:./packages/ui"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
     "@vercel/og": "npm:0.6.5"
-    "@vercel/speed-insights": "npm:1.0.14"
+    "@vercel/speed-insights": "npm:1.2.0"
     "@vitejs/plugin-react": "npm:4.3.4"
     autoprefixer: "npm:10.4.20"
     dayjs: "npm:1.11.13"
@@ -19442,6 +19442,33 @@ __metadata:
     vue-router:
       optional: true
   checksum: 10/05c0d05de650453ca5e4452a3bb83a3e5d5ed71762dadee6ff5425f5b5b36cf03fc3b662df7f2340d52e56354deeabf0cfa128d026a1b597cd4201fabd4ed663
+  languageName: node
+  linkType: hard
+
+"@vercel/speed-insights@npm:1.2.0":
+  version: 1.2.0
+  resolution: "@vercel/speed-insights@npm:1.2.0"
+  peerDependencies:
+    "@sveltejs/kit": ^1 || ^2
+    next: ">= 13"
+    react: ^18 || ^19 || ^19.0.0-rc
+    svelte: ">= 4"
+    vue: ^3
+    vue-router: ^4
+  peerDependenciesMeta:
+    "@sveltejs/kit":
+      optional: true
+    next:
+      optional: true
+    react:
+      optional: true
+    svelte:
+      optional: true
+    vue:
+      optional: true
+    vue-router:
+      optional: true
+  checksum: 10/3c453bd5b21a4e43e1810efbc51f0f0d0f91c7a934a024b4c4cd80d6c31960f7376692667628dd544aab1e42b76d65777ec419ef4e2f7e8c97091c5630872fb8
   languageName: node
   linkType: hard
 
