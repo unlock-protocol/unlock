@@ -32,7 +32,7 @@
     "typescript": "5.8.2"
   },
   "devDependencies": {
-    "globals": "15.15.0",
+    "globals": "16.0.0",
     "vitest": "2.1.9"
   }
 }
