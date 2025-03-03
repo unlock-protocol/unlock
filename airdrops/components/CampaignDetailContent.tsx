@@ -4,15 +4,15 @@ import { ethers } from 'ethers'
 import { usePrivy, useWallets } from '@privy-io/react-auth'
 import { Container } from './layout/Container'
 import { Button, Checkbox, ToastHelper } from '@unlock-protocol/ui'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 import { ConnectButton } from './auth/ConnectButton'
-import { isEligible } from '../src/utils/eligibility'
 import { AirdropData } from './Campaigns'
 import ReactMarkdown from 'react-markdown'
 import { terms } from '../src/utils/terms'
 import { UPAirdrops } from '@unlock-protocol/contracts'
+import { useEligibility } from './hooks/useEligibility'
 
 interface CampaignDetailContentProps {
   airdrop: AirdropData
@@ -30,6 +30,7 @@ const getContract = async (address: string, network: number) => {
 const getProof = async (address: string, airdrop: AirdropData) => {
   const request = await fetch(airdrop.recipientsFile)
   const tree = StandardMerkleTree.load(await request.json())
+
   for (const [i, leaf] of tree.entries()) {
     if (leaf[0].toLowerCase() === address.toLowerCase()) {
       const proof = tree.getProof(i)
@@ -46,15 +47,7 @@ export default function CampaignDetailContent({
   const { wallets } = useWallets()
   const [termsOfServiceSignature, setTermsOfServiceSignature] = useState('')
 
-  useEffect(() => {
-    const run = async () => {
-      if (wallets[0]) {
-        const amount = await isEligible(wallets[0].address, airdrop)
-        airdrop.eligible = amount || 0
-      }
-    }
-    run()
-  }, [authenticated, wallets, airdrop])
+  const { data: eligible } = useEligibility(airdrop)
 
   const onBoxChecked = async () => {
     if (!termsOfServiceSignature) {
@@ -119,7 +112,7 @@ export default function CampaignDetailContent({
             airdrop.name,
             timestamp,
             wallets[0].address,
-            airdrop.eligible,
+            eligible,
             proof,
             termsOfServiceSignature
           )
@@ -129,13 +122,17 @@ export default function CampaignDetailContent({
       // provide feedback to user
       await ToastHelper.promise(claimPromise(), {
         loading: 'Processing your claim transaction...',
-        success: `Successfully claimed ${airdrop.eligible} UP tokens!`,
+        success: `Successfully claimed ${eligible} UP tokens!`,
         error: 'Failed to claim tokens. Please try again.',
       })
     } catch (error) {
       console.error(error)
     }
   }
+
+  const eligibleFormatted = eligible
+    ? ethers.formatUnits(eligible, airdrop.token?.decimals)
+    : ''
 
   return (
     <Container>
@@ -188,7 +185,8 @@ export default function CampaignDetailContent({
               <div className="p-4 border rounded-lg bg-gray-50">
                 <h3 className="font-medium mb-2">Status</h3>
                 <p className="text-green-600 font-medium">
-                  Eligible to Claim {airdrop.eligible} UP
+                  Eligible to Claim {Number(eligibleFormatted).toLocaleString()}{' '}
+                  UP
                 </p>
               </div>
 

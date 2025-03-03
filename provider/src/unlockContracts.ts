@@ -139,7 +139,9 @@ const createEthersProvider = (rpcUrl: string): ethers.JsonRpcProvider => {
  * Generate Cache API key for a lock
  */
 const getCacheApiKey = (networkId: string, address: string): string => {
-  return `lock-check:${networkId}:${address.toLowerCase()}`
+  // Use a valid URL format as required by Cloudflare's Cache API
+  // Using a standardized fake domain for all cache operations
+  return `https://cache.unlock-protocol.com/lock-check/${networkId}/${address.toLowerCase()}`
 }
 
 /**
