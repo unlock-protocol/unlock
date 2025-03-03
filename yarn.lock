@@ -10841,14 +10841,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@observablehq/plot@npm:0.6.16":
-  version: 0.6.16
-  resolution: "@observablehq/plot@npm:0.6.16"
+"@observablehq/plot@npm:0.6.17":
+  version: 0.6.17
+  resolution: "@observablehq/plot@npm:0.6.17"
   dependencies:
     d3: "npm:^7.9.0"
     interval-tree-1d: "npm:^1.0.0"
     isoformat: "npm:^0.2.0"
-  checksum: 10/de7850e957512e5363e3307e8edaea20290a6e44f858db611ebfed6de1bcc2ed64b4f3e3b72fc01a7414799357c2d1780b4055af70f4fce773b0d62169126832
+  checksum: 10/311d973a609f410a2e3edae0bce4de3dd4634d95e4711bb350de86ef85d308ae456ea106c3cda64d0799e71cc64906b3292bb007dd1bc773919a0664c6ac2e68
   languageName: node
   linkType: hard
 
@@ -19016,7 +19016,7 @@ __metadata:
   dependencies:
     "@babel/core": "npm:7.26.0"
     "@headlessui/react": "npm:2.2.0"
-    "@observablehq/plot": "npm:0.6.16"
+    "@observablehq/plot": "npm:0.6.17"
     "@radix-ui/react-avatar": "npm:1.1.3"
     "@tanstack/react-query": "npm:5.66.11"
     "@testing-library/react": "npm:16.2.0"
