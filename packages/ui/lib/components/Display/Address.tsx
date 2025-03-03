@@ -1,12 +1,11 @@
 import React, { useCallback, useEffect } from 'react'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import { BiCopy as CopyIcon } from 'react-icons/bi'
-import { Placeholder } from '../Placeholder'
 import useClipboard from 'react-use-clipboard'
 import { minifyAddress } from '~/utils'
 import { Button } from '../Button/Button'
 
-// Define the props for the Address component
+// Props for the Address component
 export interface AddressProps {
   address: string // The Ethereum address to display
   resolvedName?: string // Optional resolved name for the address
@@ -39,13 +38,22 @@ export const Address: React.FC<AddressProps> = ({
   })
   //state to hold the resolved name, initialized with the resolvedName prop
   const [name, setName] = React.useState<string | undefined>(resolvedName)
+  // Add a state for tracking if we're resolving a name
+  const [isResolving, setIsResolving] = React.useState<boolean>(
+    Boolean(useName && !resolvedName)
+  )
 
   // fetch the name associated with the address if `useName` is provided
   useEffect(() => {
     const fetchName = async () => {
       if (useName) {
-        const resolvedName = await useName(address)
-        setName(resolvedName)
+        setIsResolving(true)
+        try {
+          const resolvedName = await useName(address)
+          setName(resolvedName)
+        } finally {
+          setIsResolving(false)
+        }
       }
     }
 
@@ -68,17 +76,18 @@ export const Address: React.FC<AddressProps> = ({
         ? minifyAddress(address) // Minify the address if the minified flag is true
         : address // Default to showing the full address
 
+  // Show a fallback during name resolution
+  const displayText = isResolving
+    ? minified
+      ? minifyAddress(address)
+      : address
+    : displayName
+
   return (
     <div className="flex items-center space-x-2">
-      {name === undefined && useName ? (
-        // Show a placeholder while the name is being resolved
-        <Placeholder.Root inline={true} spaced="sm">
-          <Placeholder.Line width="md" size="sm" />
-        </Placeholder.Root>
-      ) : (
-        // Display the resolved name or minified address
-        <span className={`${className}`}>{displayName}</span>
-      )}
+      {/* Always show either the resolved name, minified address, or a placeholder, never empty */}
+      <span className={`${className}`}>{displayText}</span>
+
       {showCopyIcon && (
         // Button to copy the address to clipboard
         <Button variant="borderless" onClick={handleCopy} aria-label="copy">
