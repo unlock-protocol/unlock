@@ -101,7 +101,7 @@
     "@types/cors": "2.8.17",
     "@types/geoip-country": "4.0.2",
     "@types/isomorphic-fetch": "0.0.39",
-    "@types/jsonwebtoken": "9.0.8",
+    "@types/jsonwebtoken": "9.0.9",
     "@types/multer": "1.4.12",
     "@types/multer-s3": "3.0.3",
     "@types/node": "22.10.5",
