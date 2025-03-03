@@ -33,8 +33,8 @@
     "ethers": "^6.13.0"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "5.0.4",
-    "@graphql-codegen/typescript": "4.1.3",
+    "@graphql-codegen/cli": "5.0.5",
+    "@graphql-codegen/typescript": "4.1.5",
     "@graphql-codegen/typescript-graphql-request": "6.2.0",
     "@graphql-codegen/typescript-operations": "4.4.1",
     "@nomicfoundation/hardhat-ethers": "3.0.8",
