@@ -4131,15 +4131,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@decent.xyz/box-common@npm:4.0.53":
-  version: 4.0.53
-  resolution: "@decent.xyz/box-common@npm:4.0.53"
+"@decent.xyz/box-common@npm:4.0.83":
+  version: 4.0.83
+  resolution: "@decent.xyz/box-common@npm:4.0.83"
   peerDependencies:
     "@wagmi/core": 2.x
     react: ^18.0.0
     viem: 2.x
     wagmi: 2.x
-  checksum: 10/22ba7071641e3182b9e0df55706e50e5cb1ff38cc3f0732758784e85222bd771c133d32f9e358b1330993f6ef7a3ab703214b945196780c72f5f20fe8f28a2e9
+  checksum: 10/c3f06cc2f2ef950d7fe98a56230a9253664744f49f897a07fca29c23eed246cbc829e76c43e1c1dcde270c765811f3affd08168533a3000badeb4728e2925830
   languageName: node
   linkType: hard
 
@@ -19465,7 +19465,7 @@ __metadata:
   dependencies:
     "@airstack/airstack-react": "npm:0.6.4"
     "@crossmint/client-sdk-react-ui": "npm:1.2.2"
-    "@decent.xyz/box-common": "npm:4.0.53"
+    "@decent.xyz/box-common": "npm:4.0.83"
     "@enzoferey/ethers-error-parser": "npm:0.2.3"
     "@guildxyz/sdk": "npm:2.6.9"
     "@headlessui/react": "npm:2.1.9"
@@ -43816,7 +43816,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:8.5.3":
+"postcss@npm:8.5.3, postcss@npm:^8.5.3":
   version: 8.5.3
   resolution: "postcss@npm:8.5.3"
   dependencies:
@@ -43835,17 +43835,6 @@ __metadata:
     picocolors: "npm:^1.1.1"
     source-map-js: "npm:^1.2.1"
   checksum: 10/e08c2be3cf461cc63cf4c8e97bb3d5185e196ee0a9b75879cf130590f32bc38c7829c6c4e260158e214fb68a828a95bdac84c8f17fefba993d3ced686643c3e2
-  languageName: node
-  linkType: hard
-
-"postcss@npm:^8.5.3":
-  version: 8.5.3
-  resolution: "postcss@npm:8.5.3"
-  dependencies:
-    nanoid: "npm:^3.3.8"
-    picocolors: "npm:^1.1.1"
-    source-map-js: "npm:^1.2.1"
-  checksum: 10/6d7e21a772e8b05bf102636918654dac097bac013f0dc8346b72ac3604fc16829646f94ea862acccd8f82e910b00e2c11c1f0ea276543565d278c7ca35516a7c
   languageName: node
   linkType: hard
 
