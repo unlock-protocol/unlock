@@ -14,7 +14,7 @@
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "@unlock-protocol/ui": "workspace:./packages/ui",
-    "babel-loader": "9.2.1",
+    "babel-loader": "10.0.0",
     "babel-plugin-require-context-hook": "1.0.0",
     "babel-preset-react-app": "10.0.1",
     "calendar-link": "2.8.0",
