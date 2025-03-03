@@ -1,80 +1,14 @@
 import supportedNetworks from './supportedNetworks'
 import { Env } from './types'
+import { checkRateLimit, isUnlockContract } from './rateLimit'
 import {
-  checkRateLimit,
-  getContractAddress,
-  isUnlockContract,
+  RpcRequest,
+  getCacheTTL,
   getClientIP,
-} from './rateLimit'
-
-interface RpcRequest {
-  id: number
-  jsonrpc: string
-  method: string
-  params: string[]
-}
-
-// Default cache TTL in seconds (1 hour)
-const DEFAULT_CACHE_TTL = 60 * 60
-
-// Get the cache TTL from environment or use default
-const getCacheTTL = (env: Env): number => {
-  if (env.CACHE_DURATION_SECONDS) {
-    const duration = parseInt(env.CACHE_DURATION_SECONDS, 10)
-    // Validate the parsed value is a positive number
-    if (!isNaN(duration) && duration > 0) {
-      return duration
-    }
-    console.warn(
-      `Invalid CACHE_DURATION_SECONDS value: ${env.CACHE_DURATION_SECONDS}, using default: ${DEFAULT_CACHE_TTL}`
-    )
-  }
-  return DEFAULT_CACHE_TTL
-}
-
-// Methods that should be cached
-const CACHEABLE_METHODS = [
-  'eth_call', // utilised by ENS resolver and other name resolution services
-]
-
-// Check if the request is for name resolution (ENS or Base name)
-const isNameResolutionRequest = (body: RpcRequest): boolean => {
-  if (body.method !== 'eth_call') return false
-
-  // ENS and BaseName resolution typically use eth_call with specific contract data
-  // This checks for common ENS and BaseName resolution patterns in the call data
-  const callParams = body.params[0] as { data?: string } | undefined
-  const callData = callParams?.data?.toLowerCase() || ''
-
-  // ENS resolver methods
-  const ensPatterns = [
-    '0x3b3b57de', // addr(bytes32)
-    '0xf1cb7e06', // addr(bytes32,uint256)
-    '0x691f3431', // name(bytes32)
-    '0x2203ab56', // text(bytes32,string)
-  ]
-
-  // Base Name resolver patterns (L2 resolver methods)
-  const baseNamePatterns = [
-    '0x691f3431', // name(bytes32)
-  ]
-
-  return (
-    ensPatterns.some((pattern) => callData.startsWith(pattern)) ||
-    baseNamePatterns.some((pattern) => callData.startsWith(pattern))
-  )
-}
-
-// Create a cache key from a request
-const createCacheKey = (networkId: string, body: RpcRequest): string => {
-  /*
-   * For name resolution, we want to cache based on the method and params
-   * Using a standardized fake domain for all cache operations
-   * This is just a convention - not an actual domain - to create a properly formatted
-   * cache key that satisfies the Request object format requirements
-   */
-  return `https://cache.unlock-protocol.com/rpc-cache/${networkId}/${body.method}/${encodeURIComponent(JSON.stringify(body.params))}`
-}
+  getContractAddress,
+  createCacheKey,
+  isRequestCacheable,
+} from './utils'
 
 const handler = async (request: Request, env: Env): Promise<Response> => {
   try {
@@ -219,7 +153,7 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
       )
     }
 
-    let body: RpcRequest
+    let body: RpcRequest | RpcRequest[]
     try {
       body = await request.json()
     } catch (error) {
@@ -235,14 +169,19 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
 
     const bodyAsString = JSON.stringify(body)
 
-    // Handling chainId locally
-    if (
-      body?.method?.toLocaleLowerCase().trim() ===
-      'eth_chainId'.toLocaleLowerCase()
-    ) {
+    // Handle both single requests and batch requests
+    const requests = Array.isArray(body) ? body : [body]
+
+    // Check if any request in the batch is for chainId
+    const chainIdRequest = requests.find((req) => {
+      if (!req || typeof req !== 'object' || !req.method) return false
+      return req.method.toLowerCase().trim() === 'eth_chainid'
+    })
+
+    if (chainIdRequest && !Array.isArray(body)) {
       return Response.json(
         {
-          id: body.id || 42,
+          id: chainIdRequest.id || 42,
           jsonrpc: '2.0',
           result: `0x${parseInt(networkId).toString(16)}`,
         },
@@ -252,28 +191,65 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
       )
     }
 
-    // Extract contract address if applicable
-    const contractAddress = getContractAddress(body.method, body.params)
+    // Extract contract addresses from all requests in the batch
+    const contractAddresses: string[] = []
+    for (const req of requests) {
+      if (!req || typeof req !== 'object' || !req.method || !req.params)
+        continue
 
-    // Check if this is an Unlock contract (skip rate limiting if true)
+      const address = getContractAddress(req.method, req.params)
+      if (address) {
+        contractAddresses.push(address)
+      }
+    }
+
+    // Check if any of the addresses is an Unlock contract
     let isUnlock = false
+
+    // Get unique addresses
+    const uniqueAddresses = [...new Set(contractAddresses)]
+
     try {
-      if (contractAddress) {
-        isUnlock = await isUnlockContract(contractAddress, networkId, env)
+      for (const address of uniqueAddresses) {
+        const contractIsUnlock = await isUnlockContract(address, networkId, env)
+
+        if (contractIsUnlock) {
+          isUnlock = true
+          break // If any contract is an Unlock contract, we can skip rate limiting
+        }
       }
     } catch (error) {
-      console.error('Error checking unlock contract:', error)
-      // If we can't verify if it's an Unlock contract, default to not being one
+      console.error(
+        `[HANDLER] Error checking unlock contracts: ${error instanceof Error ? error.message : 'Unknown error'}`
+      )
+      // If we can't verify if any are Unlock contracts, default to not being one
       isUnlock = false
     }
 
-    // Only apply rate limiting if not an Unlock contract
+    // Only apply rate limiting if none of the contracts are Unlock contracts
     if (!isUnlock) {
       try {
+        // Use the first address for rate limiting if available, otherwise null
+        const representativeAddress =
+          uniqueAddresses.length > 0 ? uniqueAddresses[0] : null
+
+        // Get the first valid method from requests for logging
+        let methodToLog: string | undefined
+        if (requests.length > 0) {
+          const firstRequest = requests[0]
+          if (
+            firstRequest &&
+            typeof firstRequest === 'object' &&
+            firstRequest.method
+          ) {
+            methodToLog = firstRequest.method
+          }
+        }
+
         const isRateLimitAllowed = await checkRateLimit(
           request,
-          body.method,
-          contractAddress,
+          methodToLog,
+          representativeAddress,
           env
         )
 
@@ -281,7 +257,7 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
           // TEMPORARY: Log but don't block rate-limited requests for monitoring purposes
           // After 10+ days, review logs and enable actual blocking
           console.log(
-            `RATE_LIMIT_WOULD_BLOCK: IP=${getClientIP(request)}, Method=${body.method}, Contract=${contractAddress || 'none'}, Body=${bodyAsString}`
+            `RATE_LIMIT_WOULD_BLOCK: IP=${getClientIP(request)}, Method=${methodToLog}, Contract=${representativeAddress || 'none'}, Body=${bodyAsString}`
           )
 
           // Original blocking code - commented out for monitoring period
@@ -312,8 +288,7 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
     }
 
     // Check if this is a cacheable request
-    const isCacheable =
-      CACHEABLE_METHODS.includes(body.method) && isNameResolutionRequest(body)
+    const isCacheable = isRequestCacheable(body)
 
     // If cacheable, try to get the result from the cache
     if (isCacheable) {
@@ -325,10 +300,8 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
         const cachedResponse = await cache.match(new Request(cacheKey))
 
         if (cachedResponse) {
-          console.log(`Cache hit for ${cacheKey}`)
           return cachedResponse
         }
-        console.log(`Cache miss for ${cacheKey}`)
       } catch (error) {
         console.error('Error accessing cache:', error)
         // On cache error, proceed to make the actual request
@@ -351,9 +324,24 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
         json = await response.json()
       } catch (error) {
         console.error('Error parsing JSON response:', error)
+
+        // Get ID from the first request or use default
+        let responseId = 42
+        if (Array.isArray(body)) {
+          responseId =
+            body.length > 0 &&
+            body[0] &&
+            typeof body[0] === 'object' &&
+            'id' in body[0]
+              ? body[0].id
+              : 42
+        } else if (body && typeof body === 'object' && 'id' in body) {
+          responseId = body.id
+        }
+
         return Response.json(
           {
-            id: body.id || 42,
+            id: responseId,
             jsonrpc: '2.0',
             error: {
               code: -32603,
@@ -389,9 +377,6 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
 
           // Store the response in the cache with the specified TTL
           await cache.put(new Request(cacheKey), responseToCache)
-          console.log(
-            `Cached response for ${cacheKey} with TTL: ${cacheTTL} seconds`
-          )
         } catch (error) {
           console.error('Error caching response:', error)
           // Continue even if caching fails
@@ -401,9 +386,24 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
       return jsonResponse
     } catch (error) {
       console.error('Error making RPC request:', error)
+
+      // Get ID from the first request or use default
+      let responseId = 42
+      if (Array.isArray(body)) {
+        responseId =
+          body.length > 0 &&
+          body[0] &&
+          typeof body[0] === 'object' &&
+          'id' in body[0]
+            ? body[0].id
+            : 42
+      } else if (body && typeof body === 'object' && 'id' in body) {
+        responseId = body.id
+      }
+
       return Response.json(
         {
-          id: body.id || 42,
+          id: responseId,
           jsonrpc: '2.0',
           error: {
             code: -32603,
