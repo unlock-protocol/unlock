@@ -3,7 +3,7 @@
   "dependencies": {
     "@cloudflare/workers-types": "4.20250129.0",
     "@sentry/node": "9.3.0",
-    "wrangler": "3.107.2"
+    "wrangler": "3.111.0"
   },
   "devDependencies": {
     "vitest": "2.1.9"
