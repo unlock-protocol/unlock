@@ -35,6 +35,45 @@ To modify the cache duration, simply update this value in the wrangler.toml file
 
 If the environment variable contains an invalid value, the default 1-hour duration will be used.
 
+## Lock Caching Optimizations
+
+The provider uses a three-tier caching system for lock addresses to minimize blockchain calls:
+
+1. **In-Memory Cache**: Unlimited-size, fast lookup storage that persists during worker runtime
+2. **Cache API**: Edge-distributed cache with 24-hour TTL for frequently accessed locks
+3. **KV Storage**: Durable storage (1-year TTL) that persists across worker restarts
+
+**Key Features**:
+
+- Automatic prefilling of memory cache on first request
+- Non-blocking async operations to maintain performance
+- Access pattern tracking for analytics
+- No scheduled tasks required - optimized for standard worker environments
+
+## Rate Limiting
+
+The provider implements rate limiting to ensure fair usage of the service:
+
+- 10 requests per 10 seconds per IP address/contract
+- 1000 requests per hour per IP address
+
+### Locksmith Authentication
+
+Requests from Locksmith are exempt from rate limiting.
+
+1. Locksmith appends a secret key to requests: `?secret=YOUR_SECRET_KEY`
+2. Requests with a valid secret key bypass all rate limiting
+
+### Unlock Contract Exemptions
+
+Rate limiting can be configured in `wrangler.toml`:
+
+```toml
+[vars]
+REQUESTS_PER_SECOND = "10"         # Default: 10
+REQUESTS_PER_HOUR = "1000"         # Default: 1000
+```
+
 # Development
 
 You can use the `yarn dev` to run locally.
@@ -58,4 +97,3 @@ Then set it in 1Password, under `secrets/rpc-providers`.
 - Only support RPC calls to Unlock contracts (or related contracts... such as ERC20 contracts).
 - Deploy through Github action
 - Measure all the things
-- Rate limiting
