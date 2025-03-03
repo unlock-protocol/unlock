@@ -18803,7 +18803,7 @@ __metadata:
     mocha: "npm:11.1.0"
     prettier: "npm:3.4.2"
     solidity-coverage: "npm:0.8.14"
-    ts-mocha: "npm:10.0.0"
+    ts-mocha: "npm:11.1.0"
     ts-node: "npm:10.9.2"
     typechain: "npm:8.3.2"
     typescript: "npm:5.7.3"
@@ -22841,7 +22841,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"buffer-from@npm:^1.0.0, buffer-from@npm:^1.1.0":
+"buffer-from@npm:^1.0.0":
   version: 1.1.2
   resolution: "buffer-from@npm:1.1.2"
   checksum: 10/0448524a562b37d4d7ed9efd91685a5b77a50672c556ea254ac9a6d30e3403a517d8981f10e565db24e8339413b43c97ca2951f10e399c6125a0d8911f5679bb
@@ -50455,20 +50455,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-mocha@npm:10.0.0":
-  version: 10.0.0
-  resolution: "ts-mocha@npm:10.0.0"
-  dependencies:
-    ts-node: "npm:7.0.1"
-    tsconfig-paths: "npm:^3.5.0"
+"ts-mocha@npm:11.1.0":
+  version: 11.1.0
+  resolution: "ts-mocha@npm:11.1.0"
   peerDependencies:
-    mocha: ^3.X.X || ^4.X.X || ^5.X.X || ^6.X.X || ^7.X.X || ^8.X.X || ^9.X.X || ^10.X.X
-  dependenciesMeta:
+    mocha: ^3.X.X || ^4.X.X || ^5.X.X || ^6.X.X || ^7.X.X || ^8.X.X || ^9.X.X || ^10.X.X || ^11.X.X
+    ts-node: ^7.X.X || ^8.X.X || ^9.X.X || ^10.X.X
+    tsconfig-paths: ^4.X.X
+  peerDependenciesMeta:
     tsconfig-paths:
       optional: true
   bin:
     ts-mocha: bin/ts-mocha
-  checksum: 10/b11f2a8ceecf195b0db724da429159982fef12e4357088fe900289223587217e8c126ead7929679edd58bf19ad96c5da5911535d26f535386632e18fbff10c40
+  checksum: 10/1e1b508e164702b7d8bc7298c50060a8eb13338a89d8b6dd61ff31237443aab2b1494dd779e72fdba3fab2d46cdf4f32ae4821f9cf66ca76ee4a74e8e9399b5e
   languageName: node
   linkType: hard
 
@@ -50520,24 +50519,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-node@npm:7.0.1":
-  version: 7.0.1
-  resolution: "ts-node@npm:7.0.1"
-  dependencies:
-    arrify: "npm:^1.0.0"
-    buffer-from: "npm:^1.1.0"
-    diff: "npm:^3.1.0"
-    make-error: "npm:^1.1.1"
-    minimist: "npm:^1.2.0"
-    mkdirp: "npm:^0.5.1"
-    source-map-support: "npm:^0.5.6"
-    yn: "npm:^2.0.0"
-  bin:
-    ts-node: dist/bin.js
-  checksum: 10/c1e0f1582867c34a03a25b1861e86922b9576931d473d48cd13275400832972350c4564e5f2c2df5817be6acbbb8e1dedf43bdd6f8c0f06b15d3530562a08a90
-  languageName: node
-  linkType: hard
-
 "ts-node@npm:8.0.0":
   version: 8.0.0
   resolution: "ts-node@npm:8.0.0"
@@ -50569,7 +50550,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsconfig-paths@npm:^3.15.0, tsconfig-paths@npm:^3.5.0":
+"tsconfig-paths@npm:^3.15.0":
   version: 3.15.0
   resolution: "tsconfig-paths@npm:3.15.0"
   dependencies:
