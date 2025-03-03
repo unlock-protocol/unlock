@@ -4,7 +4,7 @@ import { MdOutlineTipsAndUpdates } from 'react-icons/md'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { Button, Icon } from '@unlock-protocol/ui'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useEffect, useState, useCallback } from 'react'
 import { ConnectWalletModal } from '../../ConnectWalletModal'
 import { LockDetailCard } from './elements/LockDetailCard'
 import { Members } from './elements/Members'
@@ -40,6 +40,7 @@ import { getLockTypeByMetadata } from '@unlock-protocol/core'
 import { ImageBar } from './elements/ImageBar'
 import { ToastHelper } from '@unlock-protocol/ui'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { graphService } from '~/config/subgraph'
 
 interface ActionBarProps {
   lockAddress: string
@@ -371,6 +372,60 @@ export const ManageLockContent = () => {
     !searchParams.get('network') &&
     !(lockAddress && network)
 
+  // Centralized lock data query - this will be used by all components
+  // that need lock data, eliminating redundant subgraph requests
+  const { data: centralizedLockData, isLoading: isLoadingLockData } = useQuery({
+    queryKey: ['centralizedLockData', lockAddress, lockNetwork],
+    // Only run this query when we have valid lock parameters
+    enabled: !!lockAddress && !!lockNetwork && !!owner,
+    queryFn: async () => {
+      if (!lockNetwork) return null
+
+      // Fetch all relevant lock data in a single query
+      const [
+        subgraphLock,
+        lockSettingsResponse,
+        eventDetailsResponse,
+        metadataResponse,
+      ] = await Promise.all([
+        // Lock data from subgraph
+        graphService.lock(
+          {
+            where: {
+              address: lockAddress,
+            },
+          },
+          { network: lockNetwork }
+        ),
+        // Lock settings from locksmith
+        locksmith.getLockSettings(lockNetwork, lockAddress),
+        // Event details if available
+        locksmith
+          .getEventDetails(lockNetwork, lockAddress)
+          .catch(() => ({ data: null })),
+        // Metadata
+        locksmith
+          .lockMetadata(lockNetwork, lockAddress)
+          .catch(() => ({ data: {} })),
+      ])
+
+      // Check if the current user is a lock manager
+      const isUserLockManager = subgraphLock?.lockManagers?.includes(
+        owner?.toLowerCase()
+      )
+
+      return {
+        lock: subgraphLock,
+        lockSettings: lockSettingsResponse?.data || {},
+        isManager: isUserLockManager,
+        eventDetails: eventDetailsResponse?.data || null,
+        metadata: metadataResponse?.data || {},
+      }
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes - this data changes infrequently
+    refetchOnWindowFocus: false,
+  })
+
   const { isManager, isPending: isLoadingLockManager } = useLockManager({
     lockAddress,
     network: lockNetwork!,
@@ -378,6 +433,7 @@ export const ManageLockContent = () => {
 
   const showNotManagerBanner = !isLoadingLockManager && !isManager
 
+  // Filtering and pagination state
   const [filters, setFilters] = useState({
     query: '',
     filterKey: 'owner',
@@ -386,25 +442,45 @@ export const ManageLockContent = () => {
   })
   const [page, setPage] = useState(1)
 
-  const { data: eventData } = useQuery({
-    queryKey: ['getEventForLock', lockAddress, network],
-    queryFn: async () => {
-      const { data: eventDetails } = await locksmith.getEventDetails(
-        Number(network),
-        lockAddress
-      )
-      return eventDetails
-    },
-  })
+  // Handler for toggling airdrop modal
+  const toggleAirdropKeys = useCallback(() => {
+    setAirdropKeys((current) => !current)
+  }, [])
+
+  // Custom "No Members" component for the Members component
+  const NoMembersDisplay = useCallback(() => {
+    const checkoutLink = '/locks/checkout-url'
+    return (
+      <ImageBar
+        src="/images/illustrations/no-member.svg"
+        alt="No members"
+        description={
+          <span>
+            Lock is deployed. You can{' '}
+            <button
+              onClick={toggleAirdropKeys}
+              className="outline-none cursor-pointer text-brand-ui-primary"
+            >
+              Airdrop Keys
+            </button>{' '}
+            or{' '}
+            <Link href={checkoutLink}>
+              <span className="outline-none cursor-pointer text-brand-ui-primary">
+                Share a purchase link
+              </span>
+            </Link>{' '}
+            to your community.
+          </span>
+        }
+      />
+    )
+  }, [toggleAirdropKeys])
 
   if (!owner) {
     return <ConnectWalletModal isOpen={true} setIsOpen={() => void 0} />
   }
 
-  const toggleAirdropKeys = () => {
-    setAirdropKeys(!airdropKeys)
-  }
-
+  // Component for selecting a lock when none is provided in the URL
   const LockSelection = () => {
     const resetLockSelection = () => {
       setLockAddress('')
@@ -474,13 +550,19 @@ export const ManageLockContent = () => {
               </div>
               <div className="flex flex-col gap-6 lg:col-span-9">
                 <TotalBar lockAddress={lockAddress} network={lockNetwork!} />
-                {eventData?.eventUrl && (
+
+                {/* Display event URL notification if available */}
+                {centralizedLockData?.eventDetails?.eventUrl && (
                   <div className="p-2 text-base text-center flex gap-2 items-center border rounded-xl">
                     <MdOutlineTipsAndUpdates size="24" />
                     <p>
-                      This lock is used to sell {eventData.eventName}. You can
+                      This lock is used to sell{' '}
+                      {centralizedLockData.eventDetails.eventName}. You can
                       update this event&apos;s{' '}
-                      <Link href={eventData.eventUrl} className="underline">
+                      <Link
+                        href={centralizedLockData.eventDetails.eventUrl || '#'}
+                        className="underline"
+                      >
                         settings directly
                       </Link>
                       .
@@ -488,6 +570,7 @@ export const ManageLockContent = () => {
                   </div>
                 )}
 
+                {/* Action and filter components */}
                 <ActionBar
                   page={page}
                   lockAddress={lockAddress}
@@ -502,40 +585,17 @@ export const ManageLockContent = () => {
                   setPage={setPage}
                   page={page}
                 />
+
+                {/* Members list component with centralized data */}
                 <Members
                   lockAddress={lockAddress}
                   network={lockNetwork!}
                   filters={filters}
-                  loading={loading}
+                  loading={loading || isLoadingLockData}
                   setPage={setPage}
                   page={page}
-                  NoMemberNoFilter={() => {
-                    const checkoutLink = '/locks/checkout-url'
-                    return (
-                      <ImageBar
-                        src="/images/illustrations/no-member.svg"
-                        alt="No members"
-                        description={
-                          <span>
-                            Lock is deployed. You can{' '}
-                            <button
-                              onClick={toggleAirdropKeys}
-                              className="outline-none cursor-pointer text-brand-ui-primary"
-                            >
-                              Airdrop Keys
-                            </button>{' '}
-                            or{' '}
-                            <Link href={checkoutLink}>
-                              <span className="outline-none cursor-pointer text-brand-ui-primary">
-                                Share a purchase link
-                              </span>
-                            </Link>{' '}
-                            to your community.
-                          </span>
-                        }
-                      />
-                    )
-                  }}
+                  centralizedLockData={centralizedLockData}
+                  NoMemberNoFilter={NoMembersDisplay}
                 />
               </div>
             </div>
