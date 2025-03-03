@@ -40,6 +40,7 @@ import { getLockTypeByMetadata } from '@unlock-protocol/core'
 import { ImageBar } from './elements/ImageBar'
 import { ToastHelper } from '@unlock-protocol/ui'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { useCentralizedLockData } from '~/hooks/useCentralizedLockData'
 
 interface ActionBarProps {
   lockAddress: string
@@ -371,6 +372,17 @@ export const ManageLockContent = () => {
     !searchParams.get('network') &&
     !(lockAddress && network)
 
+  // Centralized lock data query - this will be used by all components
+  // that need lock data, eliminating redundant subgraph requests
+  const { data: centralizedLockData } = useCentralizedLockData(
+    lockAddress,
+    lockNetwork,
+    owner,
+    {
+      staleTime: 1 * 60 * 1000, // 1 minute default stale time (reduced from 5)
+    }
+  )
+
   const { isManager, isPending: isLoadingLockManager } = useLockManager({
     lockAddress,
     network: lockNetwork!,
@@ -474,13 +486,19 @@ export const ManageLockContent = () => {
               </div>
               <div className="flex flex-col gap-6 lg:col-span-9">
                 <TotalBar lockAddress={lockAddress} network={lockNetwork!} />
-                {eventData?.eventUrl && (
+
+                {/* Display event URL notification if available */}
+                {centralizedLockData?.eventDetails?.eventUrl && (
                   <div className="p-2 text-base text-center flex gap-2 items-center border rounded-xl">
                     <MdOutlineTipsAndUpdates size="24" />
                     <p>
-                      This lock is used to sell {eventData.eventName}. You can
+                      This lock is used to sell{' '}
+                      {centralizedLockData.eventDetails.eventName}. You can
                       update this event&apos;s{' '}
-                      <Link href={eventData.eventUrl} className="underline">
+                      <Link
+                        href={centralizedLockData.eventDetails.eventUrl || '#'}
+                        className="underline"
+                      >
                         settings directly
                       </Link>
                       .
