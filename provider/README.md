@@ -41,7 +41,7 @@ The provider uses a three-tier caching system for lock addresses to minimize blo
 
 1. **In-Memory Cache**: Unlimited-size, fast lookup storage that persists during worker runtime
 2. **Cache API**: Edge-distributed cache with 24-hour TTL for frequently accessed locks
-3. **KV Storage**: Durable storage (1-year TTL) that persists across worker restarts
+3. **KV Storage**: Durable storage (1-year TTL) that persists across worker restarts (see [KV Namespaces setup](#kv-namespaces) below)
 
 **Key Features**:
 
@@ -81,6 +81,41 @@ You can use the `yarn dev` to run locally.
 # Deployment
 
 You can use the `yarn deploy` to deploy to Cloudflare.
+
+# KV Namespaces
+
+As mentioned in the [Lock Caching Optimizations](#lock-caching-optimizations) section, the provider uses Cloudflare KV (Key-Value) namespaces for durable storage of lock data. This is the third tier of our caching system that persists data across worker restarts with a 1-year TTL.
+
+To set up the required KV namespace:
+
+1. Create a new KV namespace:
+
+```bash
+npx wrangler kv:namespace create LOCK_CACHE
+```
+
+2. This will output an ID that you need to add to your `wrangler.toml` file:
+
+```toml
+[[kv_namespaces]]
+binding = "LOCK_CACHE"
+id = "your-kv-namespace-id"
+```
+
+3. For local development, you'll also need a preview ID:
+
+```bash
+npx wrangler kv:namespace create LOCK_CACHE --preview
+```
+
+4. Add the preview ID to your wrangler.toml:
+
+```toml
+[[kv_namespaces]]
+binding = "LOCK_CACHE"
+id = "your-kv-namespace-id"
+preview_id = "your-preview-id"
+```
 
 # Adding new networks
 
