@@ -24,7 +24,7 @@
     "@vitest/eslint-plugin": "1.1.25",
     "eslint": "9.21.0",
     "eslint-config-next": "15.2.0",
-    "eslint-config-prettier": "10.0.1",
+    "eslint-config-prettier": "10.0.2",
     "eslint-plugin-evm-address-to-checksummed": "0.0.6",
     "eslint-plugin-json": "4.0.1",
     "eslint-plugin-mocha": "10.5.0",
