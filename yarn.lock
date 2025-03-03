@@ -12382,18 +12382,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/merkle-tree@npm:1.0.7":
-  version: 1.0.7
-  resolution: "@openzeppelin/merkle-tree@npm:1.0.7"
-  dependencies:
-    "@ethersproject/abi": "npm:^5.7.0"
-    "@ethersproject/bytes": "npm:^5.7.0"
-    "@ethersproject/constants": "npm:^5.7.0"
-    "@ethersproject/keccak256": "npm:^5.7.0"
-  checksum: 10/f90bb5ac243ff3340a3be7a0583c054dc263089cad2187b976d9148633e373336efa400458d8037897e0716daa88f273bed7b822359f37f42b43309698f7692b
-  languageName: node
-  linkType: hard
-
 "@openzeppelin/merkle-tree@npm:1.0.8":
   version: 1.0.8
   resolution: "@openzeppelin/merkle-tree@npm:1.0.8"
@@ -18833,7 +18821,7 @@ __metadata:
     "@logtail/winston": "npm:0.5.2"
     "@nuintun/qrcode": "npm:4.1.13"
     "@openzeppelin/defender-sdk": "npm:1.15.2"
-    "@openzeppelin/merkle-tree": "npm:1.0.7"
+    "@openzeppelin/merkle-tree": "npm:1.0.8"
     "@privy-io/server-auth": "npm:1.17.1"
     "@resvg/resvg-js": "npm:2.6.2"
     "@sentry/node": "npm:9.3.0"
@@ -18979,7 +18967,7 @@ __metadata:
     "@openzeppelin/contracts-upgradeable5": "npm:@openzeppelin/contracts-upgradeable@5.0.2"
     "@openzeppelin/contracts5": "npm:@openzeppelin/contracts@5.0.2"
     "@openzeppelin/hardhat-upgrades": "npm:3.4.0"
-    "@openzeppelin/merkle-tree": "npm:1.0.7"
+    "@openzeppelin/merkle-tree": "npm:1.0.8"
     "@openzeppelin/upgrades-core": "npm:1.39.0"
     "@uniswap/v3-core": "npm:1.0.1"
     "@uniswap/v3-periphery": "npm:1.4.4"

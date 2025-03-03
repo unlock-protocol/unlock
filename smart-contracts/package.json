@@ -17,7 +17,7 @@
     "@openzeppelin/contracts-upgradeable5": "npm:@openzeppelin/contracts-upgradeable@5.0.2",
     "@openzeppelin/contracts5": "npm:@openzeppelin/contracts@5.0.2",
     "@openzeppelin/hardhat-upgrades": "3.4.0",
-    "@openzeppelin/merkle-tree": "1.0.7",
+    "@openzeppelin/merkle-tree": "1.0.8",
     "@openzeppelin/upgrades-core": "1.39.0",
     "@uniswap/v3-core": "1.0.1",
     "@uniswap/v3-periphery": "1.4.4",
