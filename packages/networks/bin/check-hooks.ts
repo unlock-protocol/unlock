@@ -69,6 +69,13 @@ const run = async () => {
     // }
   }
   errors.forEach((error) => log(`[Networks/Hooks]: ${error}`))
+
+  if (errors.length > 0) {
+    process.exit(1)
+  }
 }
 
-run()
+run().catch((error) => {
+  console.error(error)
+  process.exit(1)
+})
