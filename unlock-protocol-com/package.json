@@ -9,7 +9,7 @@
     "@radix-ui/react-avatar": "1.1.2",
     "@tanstack/react-query": "5.66.0",
     "@testing-library/react": "16.2.0",
-    "@types/node": "22.13.0",
+    "@types/node": "22.13.8",
     "@types/react": "18.3.18",
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
