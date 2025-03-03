@@ -49,6 +49,10 @@ export default function CampaignDetailContent({
 
   const { data: eligible } = useEligibility(airdrop)
 
+  const eligibleFormatted = eligible
+    ? ethers.formatUnits(eligible, airdrop.token?.decimals)
+    : ''
+
   const onBoxChecked = async () => {
     if (!termsOfServiceSignature) {
       const provider = await wallets[0].getEthereumProvider()
@@ -122,17 +126,13 @@ export default function CampaignDetailContent({
       // provide feedback to user
       await ToastHelper.promise(claimPromise(), {
         loading: 'Processing your claim transaction...',
-        success: `Successfully claimed ${eligible} UP tokens!`,
+        success: `Successfully claimed ${Number(eligibleFormatted).toLocaleString()} UP tokens!`,
         error: 'Failed to claim tokens. Please try again.',
       })
     } catch (error) {
       console.error(error)
     }
   }
-
-  const eligibleFormatted = eligible
-    ? ethers.formatUnits(eligible, airdrop.token?.decimals)
-    : ''
 
   return (
     <Container>
