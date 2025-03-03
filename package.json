@@ -17,7 +17,7 @@
     "typescript": "5.7.3"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "2.1.8",
+    "@vitest/coverage-v8": "2.1.9",
     "@vitest/eslint-plugin": "1.1.25",
     "eslint": "9.14.0",
     "eslint-plugin-evm-address-to-checksummed": "0.0.6",
