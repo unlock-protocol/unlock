@@ -18642,7 +18642,7 @@ __metadata:
     react-markdown: "npm:10.0.0"
     tailwind-merge: "npm:3.0.1"
     tailwindcss: "npm:3.4.17"
-    typescript: "npm:5.6.3"
+    typescript: "npm:5.8.2"
     vitest: "npm:2.1.9"
   peerDependencies:
     react: 18.3.1
@@ -18674,7 +18674,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     eslint: "npm:9.14.0"
     tsup: "npm:8.4.0"
-    typescript: "npm:5.7.3"
+    typescript: "npm:5.8.2"
     vitest: "npm:2.1.9"
   peerDependencies:
     zod: 3.24.2
@@ -18699,7 +18699,7 @@ __metadata:
     storybook: "npm:8.6.3"
     tsup: "npm:8.4.0"
     tsx: "npm:4.19.2"
-    typescript: "npm:5.7.3"
+    typescript: "npm:5.8.2"
     vite: "npm:6.0.11"
     vite-plugin-svgr: "npm:4.3.0"
     vite-tsconfig-paths: "npm:4.3.2"
@@ -18752,7 +18752,7 @@ __metadata:
   resolution: "@unlock-protocol/email-templates@workspace:packages/email-templates"
   dependencies:
     handlebars: "npm:4.7.8"
-    typescript: "npm:5.7.3"
+    typescript: "npm:5.8.2"
     vitest: "npm:2.1.9"
   languageName: unknown
   linkType: soft
@@ -18835,7 +18835,7 @@ __metadata:
     ethers: "npm:6.13.5"
     hardhat: "npm:2.22.18"
     tsup: "npm:8.4.0"
-    typescript: "npm:5.7.3"
+    typescript: "npm:5.8.2"
     zksync-ethers: "npm:6.16.0"
   languageName: unknown
   linkType: soft
@@ -19328,7 +19328,7 @@ __metadata:
     showdown-highlight: "npm:3.1.0"
     tailwind-merge: "npm:3.0.1"
     tailwindcss: "npm:3.4.17"
-    typescript: "npm:5.7.3"
+    typescript: "npm:5.8.2"
     use-local-storage: "npm:3.0.0"
     vitest: "npm:2.1.9"
     yaml-front-matter: "npm:4.1.1"
@@ -44039,7 +44039,7 @@ __metadata:
     "@types/node": "npm:22.13.8"
     "@unlock-protocol/networks": "workspace:^"
     ethers: "npm:6.13.5"
-    typescript: "npm:5.7.3"
+    typescript: "npm:5.8.2"
     vitest: "npm:2.1.9"
     wrangler: "npm:3.107.2"
   languageName: unknown
@@ -51655,7 +51655,7 @@ __metadata:
     node-gyp: "npm:11.0.0"
     prettier: "npm:3.4.2"
     prettier-plugin-solidity: "npm:1.4.2"
-    typescript: "npm:5.7.3"
+    typescript: "npm:5.8.2"
     typescript-eslint: "npm:8.25.0"
     vitest: "npm:2.1.9"
   languageName: unknown
