@@ -13948,28 +13948,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/protocol-kit@npm:5.2.1":
-  version: 5.2.1
-  resolution: "@safe-global/protocol-kit@npm:5.2.1"
-  dependencies:
-    "@noble/curves": "npm:^1.6.0"
-    "@peculiar/asn1-schema": "npm:^2.3.13"
-    "@safe-global/safe-deployments": "npm:^1.37.26"
-    "@safe-global/safe-modules-deployments": "npm:^2.2.5"
-    "@safe-global/types-kit": "npm:^1.0.2"
-    abitype: "npm:^1.0.2"
-    semver: "npm:^7.6.3"
-    viem: "npm:^2.21.8"
-  dependenciesMeta:
-    "@noble/curves":
-      optional: true
-    "@peculiar/asn1-schema":
-      optional: true
-  checksum: 10/9d6fd4341aef27316afd2a7f813357efcd52d1da02b6f81867d78c3977b56596d3f37e04b1a46c1f3c8090fc17eb9889dca0913af895943b2436e8802e7293b7
-  languageName: node
-  linkType: hard
-
-"@safe-global/protocol-kit@npm:^5.2.4":
+"@safe-global/protocol-kit@npm:5.2.4, @safe-global/protocol-kit@npm:^5.2.4":
   version: 5.2.4
   resolution: "@safe-global/protocol-kit@npm:5.2.4"
   dependencies:
@@ -13990,7 +13969,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/safe-deployments@npm:^1.37.26, @safe-global/safe-deployments@npm:^1.37.28":
+"@safe-global/safe-deployments@npm:^1.37.28":
   version: 1.37.29
   resolution: "@safe-global/safe-deployments@npm:1.37.29"
   dependencies:
@@ -14003,15 +13982,6 @@ __metadata:
   version: 2.2.7
   resolution: "@safe-global/safe-modules-deployments@npm:2.2.7"
   checksum: 10/3dfce979b2879d72828365a36cebd59ff76b4781e26033724ba858293f38c9a4cf90ce423767e1f5fa23cccd6d5a151e10a7db9d8ea4340c610ee7c615c22797
-  languageName: node
-  linkType: hard
-
-"@safe-global/types-kit@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "@safe-global/types-kit@npm:1.0.2"
-  dependencies:
-    abitype: "npm:^1.0.2"
-  checksum: 10/202019341a49be4ab1636b2aea51b1c897bd5757c17b0540c043bab90cab47b8e8eb122224a2ad99c9bf9c1ab2c359b381a9afd03d89834d2c55234fd498ad9e
   languageName: node
   linkType: hard
 
@@ -18745,7 +18715,7 @@ __metadata:
     "@openzeppelin/hardhat-upgrades": "npm:3.9.0"
     "@openzeppelin/upgrades-core": "npm:1.42.1"
     "@safe-global/api-kit": "npm:2.5.11"
-    "@safe-global/protocol-kit": "npm:5.2.1"
+    "@safe-global/protocol-kit": "npm:5.2.4"
     "@tenderly/hardhat-tenderly": "npm:2.5.2"
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
