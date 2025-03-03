@@ -1,7 +1,7 @@
 'use client'
 
 import { MdOutlineTipsAndUpdates } from 'react-icons/md'
-import { useQuery, useMutation } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { Button, Icon } from '@unlock-protocol/ui'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Fragment, useEffect, useState, useCallback } from 'react'
@@ -41,6 +41,7 @@ import { ImageBar } from './elements/ImageBar'
 import { ToastHelper } from '@unlock-protocol/ui'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { graphService } from '~/config/subgraph'
+import { useCentralizedLockData } from '~/hooks/useCentralizedLockData'
 
 interface ActionBarProps {
   lockAddress: string
@@ -374,57 +375,14 @@ export const ManageLockContent = () => {
 
   // Centralized lock data query - this will be used by all components
   // that need lock data, eliminating redundant subgraph requests
-  const { data: centralizedLockData, isLoading: isLoadingLockData } = useQuery({
-    queryKey: ['centralizedLockData', lockAddress, lockNetwork],
-    // Only run this query when we have valid lock parameters
-    enabled: !!lockAddress && !!lockNetwork && !!owner,
-    queryFn: async () => {
-      if (!lockNetwork) return null
-
-      // Fetch all relevant lock data in a single query
-      const [
-        subgraphLock,
-        lockSettingsResponse,
-        eventDetailsResponse,
-        metadataResponse,
-      ] = await Promise.all([
-        // Lock data from subgraph
-        graphService.lock(
-          {
-            where: {
-              address: lockAddress,
-            },
-          },
-          { network: lockNetwork }
-        ),
-        // Lock settings from locksmith
-        locksmith.getLockSettings(lockNetwork, lockAddress),
-        // Event details if available
-        locksmith
-          .getEventDetails(lockNetwork, lockAddress)
-          .catch(() => ({ data: null })),
-        // Metadata
-        locksmith
-          .lockMetadata(lockNetwork, lockAddress)
-          .catch(() => ({ data: {} })),
-      ])
-
-      // Check if the current user is a lock manager
-      const isUserLockManager = subgraphLock?.lockManagers?.includes(
-        owner?.toLowerCase()
-      )
-
-      return {
-        lock: subgraphLock,
-        lockSettings: lockSettingsResponse?.data || {},
-        isManager: isUserLockManager,
-        eventDetails: eventDetailsResponse?.data || null,
-        metadata: metadataResponse?.data || {},
-      }
-    },
-    staleTime: 5 * 60 * 1000, // 5 minutes - this data changes infrequently
-    refetchOnWindowFocus: false,
-  })
+  const { data: centralizedLockData } = useCentralizedLockData(
+    lockAddress,
+    lockNetwork,
+    owner,
+    {
+      staleTime: 1 * 60 * 1000, // 1 minute default stale time
+    }
+  )
 
   const { isManager, isPending: isLoadingLockManager } = useLockManager({
     lockAddress,
