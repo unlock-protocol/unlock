@@ -279,7 +279,7 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
           // TEMPORARY: Log but don't block rate-limited requests for monitoring purposes
           // After 10+ days, review logs and enable actual blocking
           console.log(
-            `RATE_LIMIT_WOULD_BLOCK: IP=${getClientIP(request)}, Method=${body.method}, Contract=${contractAddress || 'none'}, ID=${body.id || 'none'}`
+            `RATE_LIMIT_WOULD_BLOCK: IP=${getClientIP(request)}, Method=${body.method}, Contract=${contractAddress || 'none'}, Body=${bodyAsString}`
           )
 
           // Original blocking code - commented out for monitoring period
