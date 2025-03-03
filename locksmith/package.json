@@ -94,7 +94,7 @@
     "vitest-fetch-mock": "0.4.3",
     "winston": "3.17.0",
     "yargs": "17.7.2",
-    "zod": "3.24.1"
+    "zod": "3.24.2"
   },
   "devDependencies": {
     "@types/cookie-parser": "1.4.8",
