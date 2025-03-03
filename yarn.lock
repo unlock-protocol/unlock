@@ -13931,15 +13931,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/api-kit@npm:2.5.8":
-  version: 2.5.8
-  resolution: "@safe-global/api-kit@npm:2.5.8"
+"@safe-global/api-kit@npm:2.5.11":
+  version: 2.5.11
+  resolution: "@safe-global/api-kit@npm:2.5.11"
   dependencies:
-    "@safe-global/protocol-kit": "npm:^5.2.1"
-    "@safe-global/types-kit": "npm:^1.0.2"
+    "@safe-global/protocol-kit": "npm:^5.2.4"
+    "@safe-global/types-kit": "npm:^1.0.4"
     node-fetch: "npm:^2.7.0"
     viem: "npm:^2.21.8"
-  checksum: 10/044d57647e72a0a2aaf1c45097a32e6aa7d7e1cb41a8da8d241ebf91a91d517625b48994c39d3ee90ebd1cbbe2cb339754d68f5746d808dcaf2cf90ec33f4aac
+  checksum: 10/1ae125e12d698deeeeec379f96f1f34aae629c86079a61c01055691152409128348c546c440913f6163896af24d68d7d48296607e0f8249454749e61429be4b1
   languageName: node
   linkType: hard
 
@@ -13964,15 +13964,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/protocol-kit@npm:^5.2.1":
-  version: 5.2.2
-  resolution: "@safe-global/protocol-kit@npm:5.2.2"
+"@safe-global/protocol-kit@npm:^5.2.4":
+  version: 5.2.4
+  resolution: "@safe-global/protocol-kit@npm:5.2.4"
   dependencies:
     "@noble/curves": "npm:^1.6.0"
     "@peculiar/asn1-schema": "npm:^2.3.13"
     "@safe-global/safe-deployments": "npm:^1.37.28"
     "@safe-global/safe-modules-deployments": "npm:^2.2.5"
-    "@safe-global/types-kit": "npm:^1.0.2"
+    "@safe-global/types-kit": "npm:^1.0.4"
     abitype: "npm:^1.0.2"
     semver: "npm:^7.6.3"
     viem: "npm:^2.21.8"
@@ -13981,7 +13981,7 @@ __metadata:
       optional: true
     "@peculiar/asn1-schema":
       optional: true
-  checksum: 10/93e9b6c6948d656bbc2820e17f70153eb0f4f97ad795edef7007ade44d2cb2a85d1ff2c5ad026bc36844fbda4e919b3e58e0041fc6d7dd6309c50461a51dfa4b
+  checksum: 10/75f69bbafd5b3a5cf7fa197c3a7a04e6e4fbb3ae8014446cca00a50de9c9cc4af5e41218150525585f6cc4c7e37f994778bc085a1f0d00143ccb266d841de808
   languageName: node
   linkType: hard
 
@@ -14007,6 +14007,15 @@ __metadata:
   dependencies:
     abitype: "npm:^1.0.2"
   checksum: 10/202019341a49be4ab1636b2aea51b1c897bd5757c17b0540c043bab90cab47b8e8eb122224a2ad99c9bf9c1ab2c359b381a9afd03d89834d2c55234fd498ad9e
+  languageName: node
+  linkType: hard
+
+"@safe-global/types-kit@npm:^1.0.4":
+  version: 1.0.4
+  resolution: "@safe-global/types-kit@npm:1.0.4"
+  dependencies:
+    abitype: "npm:^1.0.2"
+  checksum: 10/920a94d7095940a173c2f3b23086b6bf8ead04c520f245187c5bfadded5ee0c94db1295003eda46613e5fa812eba20d594995c2a2ab566edfde6d74d9e41d160
   languageName: node
   linkType: hard
 
@@ -19110,7 +19119,7 @@ __metadata:
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@openzeppelin/hardhat-upgrades": "npm:3.9.0"
     "@openzeppelin/upgrades-core": "npm:1.42.1"
-    "@safe-global/api-kit": "npm:2.5.8"
+    "@safe-global/api-kit": "npm:2.5.11"
     "@safe-global/protocol-kit": "npm:5.2.1"
     "@tenderly/hardhat-tenderly": "npm:2.5.2"
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
@@ -43816,7 +43825,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:8.5.3":
+"postcss@npm:8.5.3, postcss@npm:^8.5.3":
   version: 8.5.3
   resolution: "postcss@npm:8.5.3"
   dependencies:
@@ -43835,17 +43844,6 @@ __metadata:
     picocolors: "npm:^1.1.1"
     source-map-js: "npm:^1.2.1"
   checksum: 10/e08c2be3cf461cc63cf4c8e97bb3d5185e196ee0a9b75879cf130590f32bc38c7829c6c4e260158e214fb68a828a95bdac84c8f17fefba993d3ced686643c3e2
-  languageName: node
-  linkType: hard
-
-"postcss@npm:^8.5.3":
-  version: 8.5.3
-  resolution: "postcss@npm:8.5.3"
-  dependencies:
-    nanoid: "npm:^3.3.8"
-    picocolors: "npm:^1.1.1"
-    source-map-js: "npm:^1.2.1"
-  checksum: 10/6d7e21a772e8b05bf102636918654dac097bac013f0dc8346b72ac3604fc16829646f94ea862acccd8f82e910b00e2c11c1f0ea276543565d278c7ca35516a7c
   languageName: node
   linkType: hard
 
