@@ -7,3 +7,30 @@ tail_consumers = [{service = "rpc-provider-tail"}]
 [vars]
 # Cache duration in seconds for ENS/Basename resolution (default: 3600 seconds / 1 hour)
 CACHE_DURATION_SECONDS = "3600"
+
+# Rate limiting using Cloudflare's Rate Limiting API
+# The rate limiting API is in open beta
+[[unsafe.bindings]]
+name = "STANDARD_RATE_LIMITER"
+type = "ratelimit"
+namespace_id = "1001"
+# 10 requests per 10 seconds (similar to previous per-second limit)
+simple = { limit = 10, period = 10 }
+
+[[unsafe.bindings]]
+name = "HOURLY_RATE_LIMITER"
+type = "ratelimit"
+namespace_id = "1002"
+# 1000 requests per 60 minutes (similar to previous hourly limit)
+simple = { limit = 1000, period = 60 }
+
+
+# Development configuration
+[dev]
+port = 8787
+
+# Development-only KV namespace for local testing
+[[kv_namespaces]]
+binding = "LOCK_CACHE"
+preview_id = "dev-lock-cache"
+id = "37d25438af6b4ab08ec710e776f7217e"
