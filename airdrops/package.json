@@ -28,7 +28,7 @@
     "ethers": "6.13.5",
     "next": "14.2.21",
     "react-markdown": "10.0.0",
-    "tailwind-merge": "3.0.1",
+    "tailwind-merge": "3.0.2",
     "typescript": "5.8.2"
   },
   "devDependencies": {
