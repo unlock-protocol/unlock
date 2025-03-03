@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
-    "tsup": "8.3.6",
+    "tsup": "8.4.0",
     "typescript": "5.7.3",
     "vitest": "2.1.9"
   },
