@@ -43,7 +43,7 @@
     "@typechain/ethers-v6": "0.5.1",
     "@typechain/hardhat": "9.1.0",
     "@types/mocha": "10.0.10",
-    "@types/node": "22.13.0",
+    "@types/node": "22.13.8",
     "@unlock-protocol/contracts": "workspace:^",
     "@unlock-protocol/eslint-config": "workspace:^",
     "@unlock-protocol/networks": "workspace:^",
@@ -53,7 +53,7 @@
     "hardhat": "2.22.18",
     "mocha": "11.1.0",
     "prettier": "3.4.2",
-    "ts-mocha": "10.0.0",
+    "ts-mocha": "11.1.0",
     "ts-node": "10.9.2",
     "typechain": "8.3.2",
     "typescript": "5.7.3"
