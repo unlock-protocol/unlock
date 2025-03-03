@@ -19525,7 +19525,7 @@ __metadata:
     react-gtm-module: "npm:2.0.11"
     react-hook-form: "npm:7.53.2"
     react-icons: "npm:5.3.0"
-    react-markdown: "npm:9.0.3"
+    react-markdown: "npm:10.0.0"
     react-test-renderer: "npm:18.3.1"
     react-to-print: "npm:3.0.5"
     react-use: "npm:17.5.1"
@@ -43816,7 +43816,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:8.5.3":
+"postcss@npm:8.5.3, postcss@npm:^8.5.3":
   version: 8.5.3
   resolution: "postcss@npm:8.5.3"
   dependencies:
@@ -43835,17 +43835,6 @@ __metadata:
     picocolors: "npm:^1.1.1"
     source-map-js: "npm:^1.2.1"
   checksum: 10/e08c2be3cf461cc63cf4c8e97bb3d5185e196ee0a9b75879cf130590f32bc38c7829c6c4e260158e214fb68a828a95bdac84c8f17fefba993d3ced686643c3e2
-  languageName: node
-  linkType: hard
-
-"postcss@npm:^8.5.3":
-  version: 8.5.3
-  resolution: "postcss@npm:8.5.3"
-  dependencies:
-    nanoid: "npm:^3.3.8"
-    picocolors: "npm:^1.1.1"
-    source-map-js: "npm:^1.2.1"
-  checksum: 10/6d7e21a772e8b05bf102636918654dac097bac013f0dc8346b72ac3604fc16829646f94ea862acccd8f82e910b00e2c11c1f0ea276543565d278c7ca35516a7c
   languageName: node
   linkType: hard
 
@@ -45176,27 +45165,6 @@ __metadata:
     "@types/react": ">=18"
     react: ">=18"
   checksum: 10/513d9119587b561ac1195e3b2fa30b2bd9149b4dea658c189e2417fda600fbf9d5067967f098ea8e2d525b5fc7db00e3e4176ba2662a6eb503bc09d9b8bd5b5a
-  languageName: node
-  linkType: hard
-
-"react-markdown@npm:9.0.3":
-  version: 9.0.3
-  resolution: "react-markdown@npm:9.0.3"
-  dependencies:
-    "@types/hast": "npm:^3.0.0"
-    devlop: "npm:^1.0.0"
-    hast-util-to-jsx-runtime: "npm:^2.0.0"
-    html-url-attributes: "npm:^3.0.0"
-    mdast-util-to-hast: "npm:^13.0.0"
-    remark-parse: "npm:^11.0.0"
-    remark-rehype: "npm:^11.0.0"
-    unified: "npm:^11.0.0"
-    unist-util-visit: "npm:^5.0.0"
-    vfile: "npm:^6.0.0"
-  peerDependencies:
-    "@types/react": ">=18"
-    react: ">=18"
-  checksum: 10/b97eb9a61762762043263286ece030bd878acabe24bbf433767a9518cb18e434e26a75b1b810a7cb966e304ddb4e16bd4a15edcc808113b11b4fb85a68d99e8d
   languageName: node
   linkType: hard
 
