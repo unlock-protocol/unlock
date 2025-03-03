@@ -67,11 +67,13 @@ const isNameResolutionRequest = (body: RpcRequest): boolean => {
 
 // Create a cache key from a request
 const createCacheKey = (networkId: string, body: RpcRequest): string => {
-  // For name resolution, we want to cache based on the method and params
-  // Using https://cache/ as a base URL to make it valid for Cloudflare's cache API
-  // This is just a convention - not an actual domain - to create a properly formatted
-  // cache key that satisfies the Request object format requirements
-  return `https://cache/${networkId}/${body.method}/${encodeURIComponent(JSON.stringify(body.params))}`
+  /*
+   * For name resolution, we want to cache based on the method and params
+   * Using a standardized fake domain for all cache operations
+   * This is just a convention - not an actual domain - to create a properly formatted
+   * cache key that satisfies the Request object format requirements
+   */
+  return `https://cache.unlock-protocol.com/rpc-cache/${networkId}/${body.method}/${encodeURIComponent(JSON.stringify(body.params))}`
 }
 
 const handler = async (request: Request, env: Env): Promise<Response> => {

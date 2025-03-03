@@ -106,9 +106,10 @@ export const checkRateLimit = async (
   try {
     // Create a key that combines IP with contract address or method to provide granular rate limiting
     // This is a more stable identifier than just IP alone, as recommended by Cloudflare
-    const rateKey = contractAddress
-      ? `${ip}:${contractAddress.toLowerCase()}`
-      : `${ip}:${method}`
+    const rateKey =
+      contractAddress && typeof contractAddress === 'string'
+        ? `${ip}:${contractAddress.toLowerCase()}`
+        : `${ip}:${method}`
 
     // Check standard rate limiter (10 seconds period)
     const standardResult = await env.STANDARD_RATE_LIMITER.limit({
@@ -146,7 +147,8 @@ export const getContractAddress = (
     ) {
       const txParams = params[0]
       if (txParams && typeof txParams === 'object' && 'to' in txParams) {
-        return txParams.to as string
+        const address = txParams.to
+        return typeof address === 'string' ? address : null
       }
     }
 
@@ -158,7 +160,8 @@ export const getContractAddress = (
         typeof filterParams === 'object' &&
         'address' in filterParams
       ) {
-        return filterParams.address as string
+        const address = filterParams.address
+        return typeof address === 'string' ? address : null
       }
     }
 
@@ -173,7 +176,7 @@ export const getContractAddress = (
       ].includes(method)
     ) {
       if (typeof params[0] === 'string') {
-        return params[0] as string
+        return params[0]
       }
     }
 
