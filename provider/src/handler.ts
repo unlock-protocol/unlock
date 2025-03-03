@@ -194,12 +194,20 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
     // Extract contract addresses from all requests in the batch
     const contractAddresses: string[] = []
     for (const req of requests) {
-      if (!req || typeof req !== 'object' || !req.method || !req.params)
-        continue
+      if (!req || typeof req !== 'object' || !req.method) continue
 
-      const address = getContractAddress(req.method, req.params)
-      if (address) {
-        contractAddresses.push(address)
+      try {
+        // Process params more carefully, ensuring they exist
+        const params = req.params && Array.isArray(req.params) ? req.params : []
+
+        // Get contract address from this request
+        const address = getContractAddress(req.method, params)
+        if (address) {
+          contractAddresses.push(address)
+        }
+      } catch (error) {
+        console.error(`Error extracting contract address from request:`, error)
+        // Continue with next request rather than failing the whole batch
       }
     }
 
@@ -236,13 +244,17 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
         // Get the first valid method from requests for logging
         let methodToLog: string | undefined
         if (requests.length > 0) {
-          const firstRequest = requests[0]
-          if (
-            firstRequest &&
-            typeof firstRequest === 'object' &&
-            firstRequest.method
-          ) {
-            methodToLog = firstRequest.method
+          // Try to find the first request with a valid method
+          for (const req of requests) {
+            if (
+              req &&
+              typeof req === 'object' &&
+              req.method &&
+              typeof req.method === 'string'
+            ) {
+              methodToLog = req.method
+              break
+            }
           }
         }
 
@@ -257,7 +269,7 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
           // TEMPORARY: Log but don't block rate-limited requests for monitoring purposes
           // After 10+ days, review logs and enable actual blocking
           console.log(
-            `RATE_LIMIT_WOULD_BLOCK: IP=${getClientIP(request)}, Method=${methodToLog}, Contract=${representativeAddress || 'none'}, Body=${bodyAsString}`
+            `RATE_LIMIT_WOULD_BLOCK: IP=${getClientIP(request)}, Method=${methodToLog || 'undefined'}, Contract=${representativeAddress || 'none'}`
           )
 
           // Original blocking code - commented out for monitoring period
