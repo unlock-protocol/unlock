@@ -19298,7 +19298,7 @@ __metadata:
     autoprefixer: "npm:10.4.20"
     babel-loader: "npm:10.0.0"
     babel-plugin-require-context-hook: "npm:1.0.0"
-    babel-preset-react-app: "npm:10.0.1"
+    babel-preset-react-app: "npm:10.1.0"
     calendar-link: "npm:2.8.0"
     dayjs: "npm:1.11.13"
     dotenv: "npm:16.4.7"
@@ -22066,9 +22066,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-preset-react-app@npm:10.0.1":
-  version: 10.0.1
-  resolution: "babel-preset-react-app@npm:10.0.1"
+"babel-preset-react-app@npm:10.1.0":
+  version: 10.1.0
+  resolution: "babel-preset-react-app@npm:10.1.0"
   dependencies:
     "@babel/core": "npm:^7.16.0"
     "@babel/plugin-proposal-class-properties": "npm:^7.16.0"
@@ -22077,6 +22077,7 @@ __metadata:
     "@babel/plugin-proposal-numeric-separator": "npm:^7.16.0"
     "@babel/plugin-proposal-optional-chaining": "npm:^7.16.0"
     "@babel/plugin-proposal-private-methods": "npm:^7.16.0"
+    "@babel/plugin-proposal-private-property-in-object": "npm:^7.16.7"
     "@babel/plugin-transform-flow-strip-types": "npm:^7.16.0"
     "@babel/plugin-transform-react-display-name": "npm:^7.16.0"
     "@babel/plugin-transform-runtime": "npm:^7.16.4"
@@ -22086,7 +22087,7 @@ __metadata:
     "@babel/runtime": "npm:^7.16.3"
     babel-plugin-macros: "npm:^3.1.0"
     babel-plugin-transform-react-remove-prop-types: "npm:^0.4.24"
-  checksum: 10/ce66970267cfa6d6289b7bf070f184b3ece4f66fbdcd098c40573e3e86b42ffde7d16d74eabb0d18dc5960ddd3d943a16fac27c8dbb435f63350d6af1acbb28b
+  checksum: 10/7f0dd8ce87982fb6caca01ca0c87c844ac64f68a8bb6bb710b7f45ba0f6c50363e1cf860e9a9ff64f20f646b0c60401ee877ade5b380b2e84637dd993d176d46
   languageName: node
   linkType: hard
 
