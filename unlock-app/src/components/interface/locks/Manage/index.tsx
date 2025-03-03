@@ -40,7 +40,6 @@ import { getLockTypeByMetadata } from '@unlock-protocol/core'
 import { ImageBar } from './elements/ImageBar'
 import { ToastHelper } from '@unlock-protocol/ui'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
-import { graphService } from '~/config/subgraph'
 import { useCentralizedLockData } from '~/hooks/useCentralizedLockData'
 
 interface ActionBarProps {
@@ -375,14 +374,10 @@ export const ManageLockContent = () => {
 
   // Centralized lock data query - this will be used by all components
   // that need lock data, eliminating redundant subgraph requests
-  const { data: centralizedLockData } = useCentralizedLockData(
-    lockAddress,
-    lockNetwork,
-    owner,
-    {
+  const { data: centralizedLockData, isLoading: isLoadingLockData } =
+    useCentralizedLockData(lockAddress, lockNetwork, owner, {
       staleTime: 1 * 60 * 1000, // 1 minute default stale time
-    }
-  )
+    })
 
   const { isManager, isPending: isLoadingLockManager } = useLockManager({
     lockAddress,

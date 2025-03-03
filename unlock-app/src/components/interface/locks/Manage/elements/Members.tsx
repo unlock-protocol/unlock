@@ -155,7 +155,6 @@ export const Members = ({
         lockSettings: lockSettingsResponse?.data || {},
       }
     },
-    staleTime: 5 * 60 * 1000, // Lock data can be cached longer
     refetchOnWindowFocus: false,
   })
 
@@ -194,7 +193,7 @@ export const Members = ({
         memberAddresses,
       }
     },
-    staleTime: 60 * 1000, // Members data needs fresher data
+    staleTime: 5 * 60 * 1000, // 5 minutes stale time for members data
     refetchOnWindowFocus: false,
   })
 
