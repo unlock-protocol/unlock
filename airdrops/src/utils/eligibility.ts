@@ -1,4 +1,3 @@
-import { ethers } from 'ethers'
 import { AirdropData } from '../../components/Campaigns'
 
 /**
@@ -8,9 +7,9 @@ import { AirdropData } from '../../components/Campaigns'
 export const isEligible = async (
   address: string,
   airdrop: AirdropData
-): Promise<number> => {
+): Promise<string> => {
   if (!airdrop.recipientsFile || !address) {
-    return 0
+    return '0'
   }
   const request = await fetch(airdrop.recipientsFile)
   const recipients = await request.json()
@@ -18,7 +17,7 @@ export const isEligible = async (
     return recipient.value[0] === address
   })
   if (!recipient) {
-    return 0
+    return '0'
   }
-  return Number(ethers.formatUnits(recipient.value[1], airdrop.token.decimals))
+  return recipient.value[1]
 }
