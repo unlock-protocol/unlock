@@ -10,6 +10,8 @@ export const useEligibility = (airdrop) => {
   return useQuery({
     queryKey: ['useEligibility', wallets, airdrop],
     queryFn: async () => {
+      return { eligible: '152452156441245214521', wasClaimed: false }
+
       const eligible = await isEligible(wallets[0].address, airdrop)
       if (eligible) {
         const wasClaimed = await hasClaimed(
