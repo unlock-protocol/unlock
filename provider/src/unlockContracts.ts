@@ -3,18 +3,18 @@ import supportedNetworks from './supportedNetworks'
 import networks from '@unlock-protocol/networks'
 import { ethers } from 'ethers'
 import { Unlock } from '@unlock-protocol/contracts'
-
-// Configuration for cache optimization
-const CACHE_API_TTL = 86400 // Cache API TTL in seconds (1 day)
+import {
+  CACHE_API_TTL,
+  KV_LOCK_PREFIX,
+  getCacheApiKey,
+  createEthersProvider,
+} from './utils'
 
 // Local in-memory cache as a fallback and for performance
 let KNOWN_LOCK_ADDRESSES: { [address: string]: boolean } = {}
 
 // Access count tracking for high-frequency locks
 let LOCK_ACCESS_COUNT: { [key: string]: number } = {}
-
-// Key prefix for KV storage to avoid collisions
-const KV_LOCK_PREFIX = 'lock_'
 
 // Extract just the locks function from the official ABI
 const UNLOCK_ABI = [
@@ -126,22 +126,6 @@ export const isKnownUnlockContract = (
   }
 
   return false
-}
-
-/**
- * Create an ethers provider from the RPC URL
- */
-const createEthersProvider = (rpcUrl: string): ethers.JsonRpcProvider => {
-  return new ethers.JsonRpcProvider(rpcUrl)
-}
-
-/**
- * Generate Cache API key for a lock
- */
-const getCacheApiKey = (networkId: string, address: string): string => {
-  // Use a valid URL format as required by Cloudflare's Cache API
-  // Using a standardized fake domain for all cache operations
-  return `https://cache.unlock-protocol.com/lock-check/${networkId}/${address.toLowerCase()}`
 }
 
 /**
