@@ -7,9 +7,9 @@ import { AirdropData } from '../../components/Campaigns'
 export const isEligible = async (
   address: string,
   airdrop: AirdropData
-): Promise<number> => {
+): Promise<string> => {
   if (!airdrop.recipientsFile || !address) {
-    return 0
+    return '0'
   }
   const request = await fetch(airdrop.recipientsFile)
   const recipients = await request.json()
@@ -17,7 +17,7 @@ export const isEligible = async (
     return recipient.value[0] === address
   })
   if (!recipient) {
-    return 0
+    return '0'
   }
   return recipient.value[1]
 }
