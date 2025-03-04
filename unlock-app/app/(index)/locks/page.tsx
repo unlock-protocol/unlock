@@ -1,15 +1,17 @@
-import React from 'react'
-import { Metadata } from 'next'
-import LocksContent from '~/components/content/lock/LocksContent'
+import { Suspense } from 'react'
+import LocksLoading from '~/components/interface/layouts/LocksLoading'
+import LocksClient from './client'
 
-export const metadata: Metadata = {
+export const metadata = {
   title: 'Locks',
   description:
     'A Lock is a membership smart contract you create, deploy, and own on Unlock Protocol.',
 }
 
-const LocksPage: React.FC = () => {
-  return <LocksContent />
+export default function LocksPage() {
+  return (
+    <Suspense fallback={<LocksLoading />}>
+      <LocksClient />
+    </Suspense>
+  )
 }
-
-export default LocksPage

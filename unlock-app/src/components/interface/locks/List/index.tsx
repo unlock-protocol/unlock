@@ -1,10 +1,10 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation'
-import { LockList } from './elements/LockList'
 import { Placeholder } from '@unlock-protocol/ui'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { WalletNotConnected } from '../../layouts/index/WalletNotConnected'
+import { EnhancedLockList } from './elements/EnhancedLockList'
 
 export const LocksListPage = () => {
   const { account } = useAuthenticate()
@@ -34,7 +34,7 @@ export const LocksListPage = () => {
       {!locksOwner ? (
         <WalletNotConnected />
       ) : (
-        <LockList owner={locksOwner as string} />
+        <EnhancedLockList owner={locksOwner as string} />
       )}
     </>
   )

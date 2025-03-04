@@ -353,8 +353,7 @@ const NotManagerBanner = () => {
   )
 }
 
-export const ManageLockContent = () => {
-  const { account: owner } = useAuthenticate()
+export const ManageLockContent = ({ owner }: { owner: string }) => {
   const searchParams = useSearchParams()
   const [loading, setLoading] = useState(false)
   const [network, setNetwork] = useState<string>(
