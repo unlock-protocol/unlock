@@ -8,7 +8,7 @@
   {
     "id": "2",
     "name": "Blastoff Airdrop",
-    "description": "The Unlock Protocol Foundation is launching a next airdrop to Unlock Protocol community members, distributing over 7 million $UP tokens on Base to over 10,000 members of the community!",
+    "description": "The Unlock Protocol Foundation is launching a next airdrop to Unlock Protocol community members, distributing over 7 million UP tokens on Base to over 10,000 members of the community!",
     "contractAddress": "0x3b26D06Ea8252a73742d2125D1ACEb594ECEE5c6",
     "recipientsFile": "https://merkle-trees.unlock-protocol.com/0xe238effc14b43022c9ce132e22f0baa73cdd8696f4b435150a4c9341c83abfbf.json",
     "token": {
