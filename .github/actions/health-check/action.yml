@@ -1,11 +1,6 @@
 name: Protocol Health Check
 description: Check the state of the Unlock Protocol across all chains
 
-env:
-  DOCKER_BUILDKIT: 1
-  BUILDKIT_PROGRESS: plain
-  SENTRY_LOG_LEVEL: info
-
 runs:
   using: 'composite'
   steps:
@@ -16,35 +11,8 @@ runs:
       shell: bash
     - run: yarn build
       shell: bash
-    - name: Check networks package
+    - name: Run health checks
       run: |
-        yarn workspace @unlock-protocol/networks check:keys
-      shell: bash
-    - name: Check tokens in networks package
-      run: |
-        yarn workspace @unlock-protocol/networks check:tokens
-      shell: bash
-    - name: Check hooks in networks package
-      run: |
-        yarn workspace @unlock-protocol/networks check:hooks
-      shell: bash
-    - name: Check Unlock info
-      run: |
-        yarn workspace @unlock-protocol/governance check
-      shell: bash
-    - name: Check Contract Verification
-      run: |
-        yarn workspace @unlock-protocol/networks check:verify
-      shell: bash
-    - name: Check Subgraphs
-      run: |
-        yarn workspace @unlock-protocol/subgraph check
-      shell: bash
-    - name: Check Team Multisigs
-      run: |
-        yarn workspace @unlock-protocol/governance check:multisig
-      shell: bash
-    - name: Check bridge status
-      run: |
-        yarn workspace @unlock-protocol/governance check:cross-chain
+        chmod +x ./scripts/health-check.sh
+        ./scripts/health-check.sh
       shell: bash

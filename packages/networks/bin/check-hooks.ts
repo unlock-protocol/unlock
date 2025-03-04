@@ -16,6 +16,7 @@ const expectedHooks = {
 
 const run = async () => {
   const errors: string[] = []
+  const warnings: string[] = []
   const networkIds = Object.keys(networks)
   for (const networkId of networkIds) {
     const network = networks[networkId]
@@ -24,12 +25,12 @@ const run = async () => {
     } else {
       for (const hook in expectedHooks) {
         if (!network.hooks[hook]) {
-          errors.push(`Missing ${hook} hook for ${network.name}`)
+          warnings.push(`Missing ${hook} hook for ${network.name}`)
         } else {
           for (const expectedHook of expectedHooks[hook]) {
             const found = network.hooks[hook].find((h) => h.id === expectedHook)
             if (!found) {
-              errors.push(
+              warnings.push(
                 `Missing ${hook} hook ${expectedHook} for ${network.name}`
               )
             }
@@ -68,7 +69,16 @@ const run = async () => {
     //   }
     // }
   }
+  // log warnings too
+  warnings.forEach((warning) => log(`[Networks/Hooks]: ${warning}`, 'warning'))
   errors.forEach((error) => log(`[Networks/Hooks]: ${error}`))
+
+  if (errors.length > 0) {
+    process.exit(1)
+  }
 }
 
-run()
+run().catch((error) => {
+  console.error(error)
+  process.exit(1)
+})
