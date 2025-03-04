@@ -64,10 +64,10 @@ const LockInfoCard = ({
         </div>
 
         <WrappedAddress
-          address={lockAddress}
+          address={lockAddress!}
           network={network}
-          addressType="lock"
           skipResolution
+          addressType="lock"
         />
       </div>
     </>

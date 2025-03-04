@@ -4,7 +4,7 @@ import { MdOutlineTipsAndUpdates } from 'react-icons/md'
 import { useMutation } from '@tanstack/react-query'
 import { Button, Icon } from '@unlock-protocol/ui'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useEffect, useState, useCallback } from 'react'
 import { ConnectWalletModal } from '../../ConnectWalletModal'
 import { LockDetailCard } from './elements/LockDetailCard'
 import { Members } from './elements/Members'
@@ -374,14 +374,10 @@ export const ManageLockContent = () => {
 
   // Centralized lock data query - this will be used by all components
   // that need lock data, eliminating redundant subgraph requests
-  const { data: centralizedLockData } = useCentralizedLockData(
-    lockAddress,
-    lockNetwork,
-    owner,
-    {
-      staleTime: 1 * 60 * 1000, // 1 minute default stale time (reduced from 5)
-    }
-  )
+  const { data: centralizedLockData, isLoading: isLoadingLockData } =
+    useCentralizedLockData(lockAddress, lockNetwork, owner, {
+      staleTime: 1 * 60 * 1000, // 1 minute default stale time
+    })
 
   const { isManager, isPending: isLoadingLockManager } = useLockManager({
     lockAddress,
@@ -390,6 +386,7 @@ export const ManageLockContent = () => {
 
   const showNotManagerBanner = !isLoadingLockManager && !isManager
 
+  // Filtering and pagination state
   const [filters, setFilters] = useState({
     query: '',
     filterKey: 'owner',
@@ -398,14 +395,45 @@ export const ManageLockContent = () => {
   })
   const [page, setPage] = useState(1)
 
+  // Handler for toggling airdrop modal
+  const toggleAirdropKeys = useCallback(() => {
+    setAirdropKeys((current) => !current)
+  }, [])
+
+  // Custom "No Members" component for the Members component
+  const NoMembersDisplay = useCallback(() => {
+    const checkoutLink = '/locks/checkout-url'
+    return (
+      <ImageBar
+        src="/images/illustrations/no-member.svg"
+        alt="No members"
+        description={
+          <span>
+            Lock is deployed. You can{' '}
+            <button
+              onClick={toggleAirdropKeys}
+              className="outline-none cursor-pointer text-brand-ui-primary"
+            >
+              Airdrop Keys
+            </button>{' '}
+            or{' '}
+            <Link href={checkoutLink}>
+              <span className="outline-none cursor-pointer text-brand-ui-primary">
+                Share a purchase link
+              </span>
+            </Link>{' '}
+            to your community.
+          </span>
+        }
+      />
+    )
+  }, [toggleAirdropKeys])
+
   if (!owner) {
     return <ConnectWalletModal isOpen={true} setIsOpen={() => void 0} />
   }
 
-  const toggleAirdropKeys = () => {
-    setAirdropKeys(!airdropKeys)
-  }
-
+  // Component for selecting a lock when none is provided in the URL
   const LockSelection = () => {
     const resetLockSelection = () => {
       setLockAddress('')
@@ -495,6 +523,7 @@ export const ManageLockContent = () => {
                   </div>
                 )}
 
+                {/* Action and filter components */}
                 <ActionBar
                   page={page}
                   lockAddress={lockAddress}
@@ -509,40 +538,17 @@ export const ManageLockContent = () => {
                   setPage={setPage}
                   page={page}
                 />
+
+                {/* Members list component with centralized data */}
                 <Members
                   lockAddress={lockAddress}
                   network={lockNetwork!}
                   filters={filters}
-                  loading={loading}
+                  loading={loading || isLoadingLockData}
                   setPage={setPage}
                   page={page}
-                  NoMemberNoFilter={() => {
-                    const checkoutLink = '/locks/checkout-url'
-                    return (
-                      <ImageBar
-                        src="/images/illustrations/no-member.svg"
-                        alt="No members"
-                        description={
-                          <span>
-                            Lock is deployed. You can{' '}
-                            <button
-                              onClick={toggleAirdropKeys}
-                              className="outline-none cursor-pointer text-brand-ui-primary"
-                            >
-                              Airdrop Keys
-                            </button>{' '}
-                            or{' '}
-                            <Link href={checkoutLink}>
-                              <span className="outline-none cursor-pointer text-brand-ui-primary">
-                                Share a purchase link
-                              </span>
-                            </Link>{' '}
-                            to your community.
-                          </span>
-                        }
-                      />
-                    )
-                  }}
+                  centralizedLockData={centralizedLockData}
+                  NoMemberNoFilter={NoMembersDisplay}
                 />
               </div>
             </div>
