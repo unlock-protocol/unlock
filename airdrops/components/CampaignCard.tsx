@@ -32,7 +32,7 @@ const CampaignCardInternal = ({ airdrop }: CampaignCardProps) => {
               <>
                 <Button disabled={!eligible}>Claim Rewards</Button>
                 <div className="text-sm font-medium text-green-600">
-                  Eligible for ${Number(eligibleFormatted).toLocaleString()} UP
+                  Eligible for {Number(eligibleFormatted).toLocaleString()} UP
                 </div>
               </>
             )}
