@@ -1,6 +1,6 @@
 'use client'
 import { StandardMerkleTree } from '@openzeppelin/merkle-tree'
-import { ethers } from 'ethers'
+import { AbiCoder, ethers } from 'ethers'
 import { usePrivy, useWallets } from '@privy-io/react-auth'
 import { Container } from './layout/Container'
 import { Button, Checkbox, ToastHelper } from '@unlock-protocol/ui'
@@ -27,6 +27,28 @@ const getContract = async (address: string, network: number) => {
   return new ethers.Contract(address, UPAirdrops.abi, provider)
 }
 
+export const hasClaimed = async (
+  address: string,
+  amount: string,
+  airdrop: AirdropData
+) => {
+  const airdropContract = await getContract(
+    airdrop.contractAddress,
+    airdrop.chainId
+  )
+  const campaignHash = ethers.keccak256(ethers.toUtf8Bytes(airdrop.name))
+
+  const abiCoder = new AbiCoder()
+
+  // Encode and hash the data
+  const encoded = abiCoder.encode(['address', 'uint256'], [address, amount])
+  const leaf = ethers.keccak256(ethers.keccak256(encoded))
+
+  const wasClaimed = await airdropContract.claimedLeafs(campaignHash, leaf)
+
+  return wasClaimed
+}
+
 const getProof = async (address: string, airdrop: AirdropData) => {
   const request = await fetch(airdrop.recipientsFile)
   const tree = StandardMerkleTree.load(await request.json())
@@ -47,7 +69,14 @@ export default function CampaignDetailContent({
   const { wallets } = useWallets()
   const [termsOfServiceSignature, setTermsOfServiceSignature] = useState('')
 
-  const { data: eligible } = useEligibility(airdrop)
+  const {
+    data: { eligible, claimed },
+    refetch,
+  } = useEligibility(airdrop)
+
+  const eligibleFormatted = eligible
+    ? ethers.formatUnits(eligible, airdrop.token?.decimals)
+    : ''
 
   const onBoxChecked = async () => {
     if (!termsOfServiceSignature) {
@@ -116,23 +145,21 @@ export default function CampaignDetailContent({
             proof,
             termsOfServiceSignature
           )
-        return tx.wait()
+        tx.wait()
+        await refetch()
+        return
       }
 
       // provide feedback to user
       await ToastHelper.promise(claimPromise(), {
         loading: 'Processing your claim transaction...',
-        success: `Successfully claimed ${eligible} UP tokens!`,
+        success: `Successfully claimed ${Number(eligibleFormatted).toLocaleString()} UP tokens!`,
         error: 'Failed to claim tokens. Please try again.',
       })
     } catch (error) {
       console.error(error)
     }
   }
-
-  const eligibleFormatted = eligible
-    ? ethers.formatUnits(eligible, airdrop.token?.decimals)
-    : ''
 
   return (
     <Container>
@@ -182,23 +209,42 @@ export default function CampaignDetailContent({
 
           {authenticated ? (
             <div className="space-y-6">
-              <div className="p-4 border rounded-lg bg-gray-50">
-                <h3 className="font-medium mb-2">Status</h3>
-                <p className="text-green-600 font-medium">
-                  Eligible to Claim {Number(eligibleFormatted).toLocaleString()}{' '}
-                  UP
+              {Number(eligibleFormatted) > 0 ? (
+                <>
+                  <div className="p-4 border rounded-lg bg-gray-50">
+                    <h3 className="font-medium mb-2">Status</h3>
+                    <p className="text-green-600 font-medium">
+                      Eligible to Claim{' '}
+                      {Number(eligibleFormatted).toLocaleString()} UP
+                    </p>
+                  </div>
+
+                  {!claimed ? (
+                    <>
+                      {' '}
+                      <Checkbox
+                        label="I have read and agree to the Airdrop Terms and Conditions"
+                        checked={!!termsOfServiceSignature}
+                        onChange={onBoxChecked}
+                      />
+                      <Button
+                        disabled={!termsOfServiceSignature}
+                        onClick={onClaim}
+                      >
+                        Claim Tokens
+                      </Button>
+                    </>
+                  ) : (
+                    <p className="text-gray-500 font-medium">
+                      👏 Congrats! You have claimed your UP tokens!
+                    </p>
+                  )}
+                </>
+              ) : (
+                <p className="text-gray-500 font-medium">
+                  You are not eligible for this airdrop.
                 </p>
-              </div>
-
-              <Checkbox
-                label="I have read and agree to the Airdrop Terms and Conditions"
-                checked={!!termsOfServiceSignature}
-                onChange={onBoxChecked}
-              />
-
-              <Button disabled={!termsOfServiceSignature} onClick={onClaim}>
-                Claim Tokens
-              </Button>
+              )}
             </div>
           ) : (
             <div className="space-y-4">

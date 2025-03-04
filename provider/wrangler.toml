@@ -34,3 +34,7 @@ port = 8787
 binding = "LOCK_CACHE"
 preview_id = "dev-lock-cache"
 id = "37d25438af6b4ab08ec710e776f7217e"
+
+[observability]
+enabled = true
+head_sampling_rate = 1 # optional. default = 1.

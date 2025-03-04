@@ -5,7 +5,6 @@ import { useCallback, useEffect, useState } from 'react'
 import { FiArrowLeft, FiArrowRight } from 'react-icons/fi'
 import { Container } from './layout/Container'
 import airdrops from '../src/airdrops.json'
-import { usePrivy } from '@privy-io/react-auth'
 import { CampaignCard } from './CampaignCard'
 
 export interface AirdropData {
@@ -49,8 +48,6 @@ const CampaignsContent = () => {
     onSelect()
   }, [embla, onSelect])
 
-  const { authenticated } = usePrivy()
-
   return (
     <Container>
       <div className="space-y-4">
@@ -88,11 +85,7 @@ const CampaignsContent = () => {
           <div className="overflow-hidden cursor-move" ref={viewportRef}>
             <div className="flex flex-col md:flex-row gap-8 py-6 select-none">
               {(airdrops as AirdropData[]).map((drop, index) => (
-                <CampaignCard
-                  key={index}
-                  airdrop={drop}
-                  authenticated={authenticated}
-                />
+                <CampaignCard key={index} airdrop={drop} />
               ))}
             </div>
           </div>
