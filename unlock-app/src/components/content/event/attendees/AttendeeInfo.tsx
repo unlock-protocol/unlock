@@ -1,8 +1,8 @@
-import { Button, Detail } from '@unlock-protocol/ui'
+import { Detail } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { ExpireAndRefundModal } from '~/components/interface/ExpireAndRefundModal'
-import { BiCopy as CopyIcon } from 'react-icons/bi'
 import { Metadata } from '@unlock-protocol/core'
+import { WrappedAddress } from '~/components/interface/WrappedAddress'
 
 interface AttendeeInfoProps {
   network: number
@@ -10,14 +10,20 @@ interface AttendeeInfoProps {
   owner: string
   token: string
   metadata: Metadata
+  resolvedName?: string
 }
 
+/**
+ * Component to display attendee details in the expanded section of a MemberCard
+ * Used in the event attendees view for confirmed ticket holders
+ */
 export const AttendeeInfo = ({
   network,
   lockAddress,
   owner,
   token,
   metadata,
+  resolvedName,
 }: AttendeeInfoProps) => {
   const [expireAndRefundOpen, setExpireAndRefundOpen] = useState(false)
 
@@ -57,18 +63,21 @@ export const AttendeeInfo = ({
           </Detail>
         )}
 
+        {/* Wallet address with proper name resolution */}
         <Detail
           label="Wallet"
           valueSize="medium"
           className="w-full overflow-auto min-w-24"
         >
-          <div className="flex self-start gap-2">
-            <div className="mt-auto">
-              <Button variant="borderless" aria-label="copy">
-                <CopyIcon size={20} />
-              </Button>
-            </div>
-          </div>
+          <WrappedAddress
+            address={owner}
+            network={network}
+            skipResolution
+            resolvedName={resolvedName}
+            showExternalLink={false}
+            addressType="wallet"
+            showResolvedName={true}
+          />
         </Detail>
 
         {/* {isManager && (
