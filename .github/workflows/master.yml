@@ -48,14 +48,24 @@ jobs:
   deploy-paywall-app:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
     needs: run-all-tests
-    uses: ./.github/workflows/_netlify.yml
-    with:
-      service: paywall-app
-      target-env: staging
-      bypass_diff_check: bypass
-    secrets:
-      SITE_ID: ${{ secrets.PAYWALL_APP_NETLIFY_STAGING_SITE_ID }}
-      AUTH_TOKEN: ${{ secrets.PAYWALL_APP_NETLIFY_STAGING_AUTH_TOKEN }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Load secrets from 1Password
+        uses: 1Password/load-secrets-action@v2.0.0
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          PAYWALL_APP_VERCEL_STAGING_VERCEL_PROJECT_ID: op://secrets/vercel/project-id-paywall-app-staging
+          PAYWALL_APP_VERCEL_STAGING_VERCEL_ORG_ID: op://secrets/vercel/org-id
+          PAYWALL_APP_VERCEL_STAGING_VERCEL_TOKEN: op://secrets/vercel/deployment-token
+      - uses: ./.github/actions/vercel
+        with:
+          service: paywall-app
+          target-env: staging
 
   deploy-wedlocks:
     if: ${{ github.repository_owner == 'unlock-protocol' }}

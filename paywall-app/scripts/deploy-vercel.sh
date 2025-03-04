@@ -24,7 +24,7 @@ if [ "$DEPLOY_ENV" = "prod" ]; then
   PROD="--prod"
 fi
 
-echo "READY TO DEPLOY $APP_PATH $DEPLOY_ENV $PROD (commit $COMMIT) TO VERCEL $VERCEL_PROJECT_ID $VERCEL_ORG_ID"
+echo "READY TO DEPLOY $APP_PATH $DEPLOY_ENV $PROD (commit $COMMIT)  TO VERCEL $VERCEL_PROJECT_ID $VERCEL_ORG_ID"
 
 if [ -n "$VERCEL_PROJECT_ID" ] && [ -n "$VERCEL_TOKEN" ] && [ -n "$VERCEL_ORG_ID" ]; then
   # And ship!
