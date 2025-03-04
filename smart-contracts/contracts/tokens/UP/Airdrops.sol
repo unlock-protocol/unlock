@@ -175,6 +175,8 @@ contract Airdrops is Initializable, OwnableUpgradeable, EIP712Upgradeable {
     }
 
     // Compute the Merkle tree leaf.
+    // TODO: no need to keccak256 twice...
+    // We could do just keccak256(abi.encode(recipient, amount))
     bytes32 leaf = keccak256(
       bytes.concat(keccak256(abi.encode(recipient, amount)))
     );
