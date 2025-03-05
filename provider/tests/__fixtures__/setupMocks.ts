@@ -1,14 +1,16 @@
 import { vi } from 'vitest'
 
-// Disable automatic restore between tests to allow tests to control mock behavior
+// Mock the rateLimit module
 vi.mock('../../src/rateLimit', async () => {
   const actual = (await vi.importActual('../../src/rateLimit')) as any
   return {
     ...actual,
     checkRateLimit: vi.fn().mockResolvedValue(true),
-    getContractAddress: vi.fn().mockReturnValue(null),
+    shouldRateLimit: vi.fn().mockResolvedValue(false),
     isUnlockContract: vi.fn().mockResolvedValue(false),
     getClientIP: vi.fn().mockReturnValue('127.0.0.1'),
+    shouldRateLimitSingle:
+      actual.shouldRateLimitSingle || vi.fn().mockResolvedValue(false),
   }
 })
 
