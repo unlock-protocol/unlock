@@ -1,10 +1,10 @@
 ---
-title: "Unlock Protocol Airdrop: 7M $UP Tokens to over 10,000 Community Members"
-subtitle: ""
-authorName: "Unlock Protocol"
-publishDate: "Tue Mar 04 2025 19:43:21 GMT+0000 (Coordinated Universal Time)"
-description: "The Unlock Protocol Foundation is launching its next airdrop to Unlock Protocol community members, distributing over 7 million $UP tokens on Base to over 10,000 community members. The airdrop is starting March 4, 2025. A previous airdrop, from fall 2024, rewarded Unlock Protocol DAO members who migrated their UDT governance tokens from mainnet to the UP governance token on Base. With the migration from Ethereum mainnet to Base, the Unlock Protocol DAO created a more efficient and scalable gov..."
-image: "/images/blog/unlock-protocol-airdrop--7m--up-tokens-to-over-10-000-community-members/56f2038d6c23d36db2a06dca8a50b733.jpg"
+title: 'Unlock Protocol Airdrop: 7M $UP Tokens to over 10,000 Community Members'
+subtitle: ''
+authorName: 'Unlock Protocol'
+publishDate: 'Tue Mar 04 2025 19:43:21 GMT+0000 (Coordinated Universal Time)'
+description: 'The Unlock Protocol Foundation is launching its next airdrop to Unlock Protocol community members, distributing over 7 million $UP tokens on Base to over 10,000 community members. The airdrop is starting March 4, 2025. A previous airdrop, from fall 2024, rewarded Unlock Protocol DAO members who migrated their UDT governance tokens from mainnet to the UP governance token on Base. With the migration from Ethereum mainnet to Base, the Unlock Protocol DAO created a more efficient and scalable gov...'
+image: '/images/blog/unlock-protocol-airdrop--7m--up-tokens-to-over-10-000-community-members/56f2038d6c23d36db2a06dca8a50b733.jpg'
 ---
 
 ![Unlock Protocol Airdrop: 7M $UP Tokens to over 10,000 Community Members](https://storage.googleapis.com/papyrus_images/56f2038d6c23d36db2a06dca8a50b733.jpg)

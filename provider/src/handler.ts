@@ -1,14 +1,8 @@
 import supportedNetworks from './supportedNetworks'
 import { Env } from './types'
-import { checkRateLimit, isUnlockContract } from './rateLimit'
-import {
-  RpcRequest,
-  getCacheTTL,
-  getClientIP,
-  getContractAddress,
-  createCacheKey,
-  isRequestCacheable,
-} from './utils'
+import { shouldRateLimit } from './rateLimit'
+import { getRPCResponseFromCache, storeRPCResponseInCache } from './cache'
+import { RpcRequest, getCacheTTL, getClientIP } from './utils'
 
 const handler = async (request: Request, env: Env): Promise<Response> => {
   try {
@@ -57,6 +51,7 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
     const url = new URL(request.url)
     const { pathname } = url
     const queryURL = url.searchParams.get('url')
+
     const headers = {
       'access-control-allow-origin': '*',
     }
@@ -216,133 +211,45 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
       )
     }
 
-    // Extract contract addresses from all requests in the batch
-    const contractAddresses: string[] = []
-    for (const req of requests) {
-      if (!req || typeof req !== 'object' || !req.method) continue
-
-      try {
-        // Process params more carefully, ensuring they exist
-        const params = req.params && Array.isArray(req.params) ? req.params : []
-
-        // Get contract address from this request
-        const address = getContractAddress(req.method, params)
-        if (address) {
-          contractAddresses.push(address)
-        }
-      } catch (error) {
-        console.error(`Error extracting contract address from request:`, error)
-        // Continue with next request rather than failing the whole batch
-      }
-    }
-
-    // Check if any of the addresses is an Unlock contract
-    let isUnlock = false
-
-    // Get unique addresses
-    const uniqueAddresses = [...new Set(contractAddresses)]
-
-    try {
-      for (const address of uniqueAddresses) {
-        const contractIsUnlock = await isUnlockContract(address, networkId, env)
-
-        if (contractIsUnlock) {
-          isUnlock = true
-          break // If any contract is an Unlock contract, we can skip rate limiting
-        }
-      }
-    } catch (error) {
-      console.error(
-        `[HANDLER] Error checking unlock contracts: ${error instanceof Error ? error.message : 'Unknown error'}`
+    // handle rate limiting
+    const rateLimit = await shouldRateLimit(request, env, body, networkId)
+    if (rateLimit) {
+      // TEMPORARY: Log but don't block rate-limited requests for monitoring purposes
+      // After 10+ days, review logs and enable actual blocking
+      console.log(
+        `RATE_LIMIT_WOULD_BLOCK: IP=${getClientIP(request)}, networkId=${networkId}, Body=${bodyAsString}`
       )
-      // If we can't verify if any are Unlock contracts, default to not being one
-      isUnlock = false
+
+      // Original blocking code - commented out for monitoring period
+      /*
+      return Response.json(
+        {
+          id: body.id || 42,
+          jsonrpc: '2.0',
+          error: {
+            code: -32005,
+            message: 'Rate limit exceeded',
+          },
+        },
+        {
+          status: 429,
+          headers: {
+            ...headers,
+            'Retry-After': '60', // Suggest retry after 60 seconds
+          },
+        }
+      )
+      */
     }
 
-    // Only apply rate limiting if none of the contracts are Unlock contracts
-    if (!isUnlock) {
-      try {
-        // Use the first address for rate limiting if available, otherwise null
-        const representativeAddress =
-          uniqueAddresses.length > 0 ? uniqueAddresses[0] : null
-
-        // Get the first valid method from requests for logging
-        let methodToLog: string | undefined
-        if (requests.length > 0) {
-          // Try to find the first request with a valid method
-          for (const req of requests) {
-            if (
-              req &&
-              typeof req === 'object' &&
-              req.method &&
-              typeof req.method === 'string'
-            ) {
-              methodToLog = req.method
-              break
-            }
-          }
-        }
-
-        const isRateLimitAllowed = await checkRateLimit(
-          request,
-          methodToLog,
-          representativeAddress,
-          env
-        )
-
-        if (!isRateLimitAllowed) {
-          // TEMPORARY: Log but don't block rate-limited requests for monitoring purposes
-          // After 10+ days, review logs and enable actual blocking
-          console.log(
-            `RATE_LIMIT_WOULD_BLOCK: IP=${getClientIP(request)}, Method=${methodToLog || 'undefined'}, Contract=${representativeAddress || 'none'}`
-          )
-
-          // Original blocking code - commented out for monitoring period
-          /*
-          return Response.json(
-            {
-              id: body.id || 42,
-              jsonrpc: '2.0',
-              error: {
-                code: -32005,
-                message: 'Rate limit exceeded',
-              },
-            },
-            {
-              status: 429,
-              headers: {
-                ...headers,
-                'Retry-After': '60', // Suggest retry after 60 seconds
-              },
-            }
-          )
-          */
-        }
-      } catch (error) {
-        console.error('Error checking rate limits:', error)
-        // On error, allow the request to proceed rather than blocking legitimate traffic
-      }
-    }
-
-    // Check if this is a cacheable request
-    const isCacheable = isRequestCacheable(body)
-
-    // If cacheable, try to get the result from the cache
-    if (isCacheable) {
-      try {
-        const cacheKey = createCacheKey(networkId, body)
-
-        // Try to get the cached response
-        const cache = caches.default
-        const cachedResponse = await cache.match(new Request(cacheKey))
-
-        if (cachedResponse) {
-          return cachedResponse
-        }
-      } catch (error) {
-        console.error('Error accessing cache:', error)
-        // On cache error, proceed to make the actual request
-      }
+    // Try to get the cached response, if applicable
+    const cachedResponse = await getRPCResponseFromCache(
+      networkId,
+      body,
+      request
+    )
+    if (cachedResponse) {
+      return cachedResponse
     }
 
     // Make JSON RPC request
@@ -398,27 +305,8 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
         headers,
       })
 
-      // If this is a cacheable request, store the response in the cache
-      if (isCacheable) {
-        try {
-          const cacheKey = createCacheKey(networkId, body)
-          const cache = caches.default
-
-          // Clone the response before modifying it for cache storage
-          const responseToCache = new Response(JSON.stringify(json), {
-            headers: {
-              ...headers,
-              'Cache-Control': `public, max-age=${cacheTTL}`,
-            },
-          })
-
-          // Store the response in the cache with the specified TTL
-          await cache.put(new Request(cacheKey), responseToCache)
-        } catch (error) {
-          console.error('Error caching response:', error)
-          // Continue even if caching fails
-        }
-      }
+      // Store the response in the cache if applicable
+      await storeRPCResponseInCache(networkId, body, json, env)
 
       return jsonResponse
     } catch (error) {
