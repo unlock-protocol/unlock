@@ -286,64 +286,7 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
             }
           )
           */
-    } // // Extract contract address if applicable
-    // const contractAddress = getContractAddress(body.method, body.params)
-
-    // // Check if this is an Unlock contract (skip rate limiting if true)
-    // let isUnlock = false
-    // try {
-    //   if (contractAddress) {
-    //     isUnlock = await isUnlockContract(contractAddress, networkId, env)
-    //   }
-    // } catch (error) {
-    //   console.error('Error checking unlock contract:', error)
-    //   // If we can't verify if it's an Unlock contract, default to not being one
-    //   isUnlock = false
-    // }
-
-    // // Only apply rate limiting if not an Unlock contract
-    // if (!isUnlock) {
-    //   try {
-    //     const isRateLimitAllowed = await checkRateLimit(
-    //       request,
-    //       body.method,
-    //       contractAddress,
-    //       env
-    //     )
-
-    //     if (!isRateLimitAllowed) {
-    //       // TEMPORARY: Log but don't block rate-limited requests for monitoring purposes
-    //       // After 10+ days, review logs and enable actual blocking
-    //       console.log(
-    //         `RATE_LIMIT_WOULD_BLOCK: IP=${getClientIP(request)}, Method=${body.method}, Contract=${contractAddress || 'none'}, Body=${bodyAsString}`
-    //       )
-
-    //       // Original blocking code - commented out for monitoring period
-    //       /*
-    //       return Response.json(
-    //         {
-    //           id: body.id || 42,
-    //           jsonrpc: '2.0',
-    //           error: {
-    //             code: -32005,
-    //             message: 'Rate limit exceeded',
-    //           },
-    //         },
-    //         {
-    //           status: 429,
-    //           headers: {
-    //             ...headers,
-    //             'Retry-After': '60', // Suggest retry after 60 seconds
-    //           },
-    //         }
-    //       )
-    //       */
-    //     }
-    //   } catch (error) {
-    //     console.error('Error checking rate limits:', error)
-    //     // On error, allow the request to proceed rather than blocking legitimate traffic
-    //   }
-    // }
+    }
 
     // Check if this is a cacheable request
     const isCacheable =

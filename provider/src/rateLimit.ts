@@ -209,8 +209,6 @@ const shouldRateLimitSingle = async (
     return false
   }
 
-  console.log(`Not an Unlock contract: ${contractAddress}`)
-
   // TODO: consider applying strict rate limiting for all requests
   // Would that apply to ERC20 contracts as well?
   try {
