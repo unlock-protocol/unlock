@@ -9,13 +9,18 @@ import { getContractStatusFromKV, storeContractStatusInKV } from './cache'
 import { ContractType } from './types'
 import networks from '@unlock-protocol/networks'
 
-// Get all the approved ERC20 from the  networks package
+interface ApprovedContractsByChain {
+  [chainId: string]: {
+    [contractAddress: string]: boolean
+  }
+}
 
-const NON_UNLOCK_APPROVED_CONTRACTS = {
+const NON_UNLOCK_APPROVED_CONTRACTS: ApprovedContractsByChain = {
   1: {
     '0x231b0ee14048e9dccd1d247744d114a4eb5e8e63': true, // ENS Resolver
   },
 }
+
 // Init!
 Object.values(networks).forEach((network) => {
   if (!NON_UNLOCK_APPROVED_CONTRACTS[network.id]) {
@@ -49,6 +54,14 @@ export const isAllowedContract = async (
     // If we have a cached result, return whether it's an Unlock contract
     if (cachedContractStatus !== null) {
       return cachedContractStatus === ContractType.UNLOCK_PROTOCOL_CONTRACT
+    }
+
+    // Check if this contract is in the list of non-Unlock approved contracts
+    if (
+      NON_UNLOCK_APPROVED_CONTRACTS[networkId] &&
+      NON_UNLOCK_APPROVED_CONTRACTS[networkId][contractAddress.toLowerCase()]
+    ) {
+      return true
     }
 
     // If no cache is found, perform on-chain verification
