@@ -17,14 +17,14 @@ read -r -d '' FILE << EOM
   "SEPOLIA_PROVIDER": "$SEPOLIA_PROVIDER",
   "LINEA_PROVIDER": "$LINEA_PROVIDER",
   "SCROLL_PROVIDER": "$SCROLL_PROVIDER",
-  "LOCK_CACHE_KV_ID": "$LOCK_CACHE_KV_ID",
+  "ALLOWED_CONTRACTS_KV_ID": "$ALLOWED_CONTRACTS_KV_ID",
   "LOCKSMITH_SECRET_KEY": "$LOCKSMITH_SECRET_KEY"
 } 
 EOM
 
-# Check if LOCK_CACHE_KV_ID is set
-if [ -z "$LOCK_CACHE_KV_ID" ]; then
-  echo "Warning: LOCK_CACHE_KV_ID environment variable is not set."
+# Check if ALLOWED_CONTRACTS_KV_ID is set
+if [ -z "$ALLOWED_CONTRACTS_KV_ID" ]; then
+  echo "Warning: ALLOWED_CONTRACTS_KV_ID environment variable is not set."
   echo "The KV namespace for lock caching will not be configured correctly."
   echo "Make sure to set this variable from 1Password before deploying to production."
 fi

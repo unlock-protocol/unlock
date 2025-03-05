@@ -45,7 +45,6 @@ export const setupRateLimitMocks = () => {
       ...actual,
       // Only mock these functions when we need to, but don't override by default
       // in tests that actually test these functions
-      checkRateLimit: actual.checkRateLimit,
       shouldRateLimit: actual.shouldRateLimit,
       shouldRateLimitIp: actual.shouldRateLimitIp,
       shouldRateLimitSingle: actual.shouldRateLimitSingle,

@@ -15,20 +15,26 @@ interface ApprovedContractsByChain {
   }
 }
 
-const NON_UNLOCK_APPROVED_CONTRACTS: ApprovedContractsByChain = {
-  1: {
+const OTHER_APPROVED_CONTRACTS: ApprovedContractsByChain = {
+  '1': {
     '0x231b0ee14048e9dccd1d247744d114a4eb5e8e63': true, // ENS Resolver
+  },
+  '8453': {
+    '0xc6d566a56a1aff6508b41f6c90ff131615583bcd': true, // Basename Resolver
   },
 }
 
-// Init!
+// Init with Unlock and ERC20 contracts
 Object.values(networks).forEach((network) => {
-  if (!NON_UNLOCK_APPROVED_CONTRACTS[network.id]) {
-    NON_UNLOCK_APPROVED_CONTRACTS[network.id] = {}
+  if (!OTHER_APPROVED_CONTRACTS[network.id]) {
+    OTHER_APPROVED_CONTRACTS[network.id] = {}
   }
+  // Adding Unlock
+  OTHER_APPROVED_CONTRACTS[network.id][network.unlockAddress.toLowerCase()] =
+    true
+  // Adding the ERC20
   network.tokens?.forEach((token) => {
-    NON_UNLOCK_APPROVED_CONTRACTS[network.id][token.address.toLowerCase()] =
-      true
+    OTHER_APPROVED_CONTRACTS[network.id][token.address.toLowerCase()] = true
   })
 })
 
@@ -57,8 +63,8 @@ export const isAllowedContract = async (
 
     // Check if this contract is in the list of non-Unlock approved contracts
     if (
-      NON_UNLOCK_APPROVED_CONTRACTS[networkId] &&
-      NON_UNLOCK_APPROVED_CONTRACTS[networkId][contractAddress.toLowerCase()]
+      OTHER_APPROVED_CONTRACTS[networkId] &&
+      OTHER_APPROVED_CONTRACTS[networkId][contractAddress.toLowerCase()]
     ) {
       return true
     }
@@ -138,7 +144,18 @@ export const shouldRateLimitSingle = async (
   body: any,
   networkId: string
 ) => {
+  // TODO: handle eth_chainId calls at a higher level
+  if (body.method === 'eth_chainId') {
+    return false
+  }
+  // don't rate limit eth_blockNumber calls
+  if (body.method === 'eth_blockNumber') {
+    return false
+  }
   const contractAddress = getContractAddress(body.method, body.params)
+  if (!contractAddress) {
+    console.log(body)
+  }
 
   if (
     contractAddress &&
@@ -174,34 +191,4 @@ export const shouldRateLimit = async (
     )
   }
   return shouldRateLimitSingle(request, env, body, networkId)
-}
-
-/**
- * Wrapper function for the new rate limiting interface that's compatible
- * with the refactored code from master branch
- */
-export const checkRateLimit = async (
-  request: Request,
-  method: string | undefined,
-  contractAddress: string | null,
-  env: Env,
-  networkId?: string
-): Promise<boolean> => {
-  // Skip rate limiting if the Locksmith secret is valid
-  if (hasValidLocksmithSecret(request, env)) {
-    return true
-  }
-
-  if (
-    contractAddress &&
-    networkId &&
-    (await isAllowedContract(contractAddress, networkId, env))
-  ) {
-    // Skip rate limit if this is an Unlock contract
-    return true
-  }
-
-  // Use the original rate limiting implementation
-  const effectiveMethod = method || 'unknown'
-  return !(await shouldRateLimitIp(request, effectiveMethod, env))
 }
