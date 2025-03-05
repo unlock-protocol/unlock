@@ -26,7 +26,6 @@ Object.values(networks).forEach((network) => {
   if (!NON_UNLOCK_APPROVED_CONTRACTS[network.id]) {
     NON_UNLOCK_APPROVED_CONTRACTS[network.id] = {}
   }
-  console.log(network.id, NON_UNLOCK_APPROVED_CONTRACTS[network.id])
   network.tokens?.forEach((token) => {
     NON_UNLOCK_APPROVED_CONTRACTS[network.id][token.address.toLowerCase()] =
       true
