@@ -153,9 +153,6 @@ export const shouldRateLimitSingle = async (
     return false
   }
   const contractAddress = getContractAddress(body.method, body.params)
-  if (!contractAddress) {
-    console.log(body)
-  }
 
   if (
     contractAddress &&

@@ -144,9 +144,8 @@ export const storeContractStatusInKV = async (
 
   try {
     const key = getKVContractTypeKey(networkId, lockAddress)
-    // Store with 30-day expiration (2592000 seconds)
     await env.ALLOWED_CONTRACTS.put(key, status.toString(), {
-      expirationTtl: 2592000,
+      expirationTtl: 60 * 60 * 24, // TODO extend to 1 month when we have more confidence in the contract
     })
   } catch (error) {
     console.error('Error storing contract status in KV:', error)
