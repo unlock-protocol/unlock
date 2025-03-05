@@ -14,8 +14,7 @@ const supportedNetworks = (env: Env, networkId: string): string | undefined => {
     '42220': env.CELO_PROVIDER,
     '43114': env.AVALANCHE_PROVIDER,
     '84532': env.BASE_SEPOLIA_PROVIDER,
-    '8453':
-      'https://weathered-skilled-mountain.base-mainnet.quiknode.pro/496ea3813e86597a4cf0d2bbfa5389374a5eb108/',
+    '8453': env.BASE_PROVIDER,
     '11155111': env.SEPOLIA_PROVIDER,
     '59144': env.LINEA_PROVIDER,
     '534352': env.SCROLL_PROVIDER,
