@@ -4,7 +4,7 @@ import {
   getCacheTTL,
   createCacheKey,
   isRequestCacheable,
-  getKVLockKey,
+  getKVContractTypeKey,
 } from './utils'
 import { ContractType } from './types'
 
@@ -117,18 +117,12 @@ export const getContractStatusFromKV = async (
 
   try {
     // Create a unique key combining network ID and address for multi-chain support
-    const key = getKVLockKey(networkId, lockAddress)
+    const key = getKVContractTypeKey(networkId, lockAddress)
     const storedValue = await env.LOCK_CACHE.get(key)
     if (storedValue === null) {
       return null
     }
-
-    const numericValue = parseInt(storedValue, 10)
-    if (isNaN(numericValue)) {
-      return null
-    }
-
-    return numericValue as ContractType
+    return storedValue as ContractType
   } catch (error) {
     console.error('Error retrieving contract status from KV:', error)
     return null
@@ -149,7 +143,7 @@ export const storeContractStatusInKV = async (
   }
 
   try {
-    const key = getKVLockKey(networkId, lockAddress)
+    const key = getKVContractTypeKey(networkId, lockAddress)
     // Store with 30-day expiration (2592000 seconds)
     await env.LOCK_CACHE.put(key, status.toString(), { expirationTtl: 2592000 })
   } catch (error) {

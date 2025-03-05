@@ -38,7 +38,7 @@ export interface RateLimiter {
  * Contract type values
  */
 export enum ContractType {
-  UNLOCK_PROTOCOL_CONTRACT = 1,
-  OTHER_CONTRACT = 2,
-  NOT_DEPLOYED = 3,
+  UNLOCK_PROTOCOL_CONTRACT = 'UNLOCK_PROTOCOL_CONTRACT',
+  OTHER_CONTRACT = 'OTHER_CONTRACT',
+  NOT_DEPLOYED = 'NOT_DEPLOYED',
 }
