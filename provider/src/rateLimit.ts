@@ -7,13 +7,31 @@ import {
 } from './utils'
 import { getContractStatusFromKV, storeContractStatusInKV } from './cache'
 import { ContractType } from './types'
+import networks from '@unlock-protocol/networks'
+
+// Get all the approved ERC20 from the  networks package
+
+const NON_UNLOCK_APPROVED_CONTRACTS = {
+  1: {
+    '0x231b0ee14048e9dccd1d247744d114a4eb5e8e63': true, // ENS Resolver
+  },
+}
+// Init!
+Object.values(networks).forEach((network) => {
+  if (!NON_UNLOCK_APPROVED_CONTRACTS[network.id]) {
+    NON_UNLOCK_APPROVED_CONTRACTS[network.id] = {}
+  }
+  console.log(network.id, NON_UNLOCK_APPROVED_CONTRACTS[network.id])
+  network.tokens?.forEach((token) => {
+    NON_UNLOCK_APPROVED_CONTRACTS[network.id][token.address.toLowerCase()] =
+      true
+  })
+})
 
 /**
- * Check if a contract should bypass rate limiting because it's an Unlock lock
- * This function determines if rate limiting should be skipped for Unlock lock contracts
- * It performs verification to identify lock contracts
+ * Check if a contract should bypass rate limiting because it's an Unlock lock or needed for Unlock to work!
  */
-export const isUnlockContract = async (
+export const isAllowedContract = async (
   contractAddress: string,
   networkId: string,
   env: Env
@@ -112,7 +130,7 @@ export const shouldRateLimitSingle = async (
 
   if (
     contractAddress &&
-    (await isUnlockContract(contractAddress, networkId, env))
+    (await isAllowedContract(contractAddress, networkId, env))
   ) {
     // Skip rate limit if this is an Unlock contract
     return false
@@ -165,7 +183,7 @@ export const checkRateLimit = async (
   if (
     contractAddress &&
     networkId &&
-    (await isUnlockContract(contractAddress, networkId, env))
+    (await isAllowedContract(contractAddress, networkId, env))
   ) {
     // Skip rate limit if this is an Unlock contract
     return true
