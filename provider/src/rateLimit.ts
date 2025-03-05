@@ -58,12 +58,14 @@ export const shouldRateLimitIp = async (
     const standardResult = await env.STANDARD_RATE_LIMITER.limit({
       key: `${ip}:${method}`,
     })
+
     if (!standardResult.success) {
       return true
     }
 
     // Check hourly rate limiter (60 seconds period)
     const hourlyResult = await env.HOURLY_RATE_LIMITER.limit({ key: ip })
+
     return !hourlyResult.success
   } catch (error) {
     console.error('Error checking rate limit:', error)
@@ -73,7 +75,7 @@ export const shouldRateLimitIp = async (
   }
 }
 
-const shouldRateLimitSingle = async (
+export const shouldRateLimitSingle = async (
   request: Request,
   env: Env,
   body: any,

@@ -12,6 +12,7 @@ import {
 const handler = async (request: Request, env: Env): Promise<Response> => {
   try {
     const origin = request.headers.get('origin')
+
     // Blocking requests from the Chrome extension
     if (origin === 'chrome-extension://mnkbccinkbalkmmnmbcicdobcmgggmfc') {
       return Response.json(
@@ -42,6 +43,7 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
     const url = new URL(request.url)
     const { pathname } = url
     const queryURL = url.searchParams.get('url')
+
     const headers = {
       'access-control-allow-origin': '*',
     }
@@ -201,9 +203,8 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
       )
     }
 
-    // First try the current branch approach with shouldRateLimit
+    // handle rate limiting
     const rateLimit = await shouldRateLimit(request, env, body, networkId)
-
     if (rateLimit) {
       // TEMPORARY: Log but don't block rate-limited requests for monitoring purposes
       // After 10+ days, review logs and enable actual blocking
