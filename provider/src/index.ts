@@ -1,6 +1,6 @@
 import handler from './handler'
 import { Env } from './types'
-import { prefillLockCache } from './unlockContracts'
+import { prefillLockCache } from './cache'
 
 // Flag to track if we've initialized the cache yet
 let cacheInitialized = false

@@ -1,5 +1,6 @@
+import { getLockStatusFromAllCaches, storeLockStatusInAllCaches } from './cache'
 import { Env } from './types'
-import { isKnownUnlockContract, checkIsLock } from './unlockContracts'
+import { checkContractTypeOnChain } from './unlockContracts'
 import {
   getClientIP,
   hasValidLocksmithSecret,
@@ -7,12 +8,9 @@ import {
 } from './utils'
 
 /**
- * Check if a contract is an Unlock contract
- *
- * This function implements a multi-level caching strategy to efficiently determine
- * if a contract is an Unlock contract. It first checks in-memory cache, then Cache API,
- * then KV storage, and finally falls back to on-chain verification if needed.
- * Both positive and negative results are cached at each level for optimal performance.
+ * Check if a contract should bypass rate limiting because it's an Unlock lock
+ * This function determines if rate limiting should be skipped for Unlock lock contracts
+ * It performs caching and verification as needed to identify lock contracts
  */
 export const isUnlockContract = async (
   contractAddress: string,
@@ -22,13 +20,29 @@ export const isUnlockContract = async (
   if (!contractAddress) return false
 
   try {
-    // Check in-memory cache first (fastest)
-    if (isKnownUnlockContract(contractAddress, networkId)) {
-      return true
+    // Step 1: Check all caches for the contract status
+    const knownContractResult = await getLockStatusFromAllCaches(
+      env,
+      networkId,
+      contractAddress
+    )
+
+    // If we have a definitive result from any cache, return it immediately
+    if (knownContractResult !== null) {
+      return knownContractResult
     }
 
-    // If not in memory, use checkIsLock for complete cache hierarchy
-    return checkIsLock(contractAddress, networkId, env)
+    // Step 2: If not in cache, check contract type on-chain
+    const isLock = await checkContractTypeOnChain(
+      contractAddress,
+      networkId,
+      env
+    )
+
+    // Step 3: Store the result in all caches
+    await storeLockStatusInAllCaches(env, networkId, contractAddress, isLock)
+
+    return isLock
   } catch (error) {
     console.error(
       `Error checking if contract is Unlock contract: ${error instanceof Error ? error.message : 'Unknown error'}`
