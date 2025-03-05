@@ -1,17 +1,17 @@
 import { Env } from './types'
-import { isKnownUnlockContract, checkIsLock } from './unlockContracts'
+import { checkContractTypeOnChain } from './unlockContracts'
 import {
   getClientIP,
   hasValidLocksmithSecret,
   getContractAddress,
 } from './utils'
+import { getContractStatusFromKV, storeContractStatusInKV } from './cache'
+import { ContractType } from './types'
 
 /**
- * Check if a contract is an Unlock contract
- * FIXME: This function should work like this:
- * - check if this is a known contract (unlock or not)
- * - if so, return its type
- * - if not, check its type, cache it and return it
+ * Check if a contract should bypass rate limiting because it's an Unlock lock
+ * This function determines if rate limiting should be skipped for Unlock lock contracts
+ * It performs verification to identify lock contracts
  */
 export const isUnlockContract = async (
   contractAddress: string,
@@ -21,18 +21,45 @@ export const isUnlockContract = async (
   if (!contractAddress) return false
 
   try {
-    // TODO: checkf if this is _any_ known contract (lock or Unlock)
-    if (isKnownUnlockContract(contractAddress, networkId)) {
-      return true
+    // First check if contract status is already in cache
+    const cachedContractStatus = await getContractStatusFromKV(
+      env,
+      networkId,
+      contractAddress
+    )
+
+    // If we have a cached result, return whether it's an Unlock contract
+    if (cachedContractStatus !== null) {
+      return cachedContractStatus === ContractType.UNLOCK_PROTOCOL_CONTRACT
     }
 
-    // Only if a contract is unknown, check if it's a lock and then keep
-    // track of it!
-    return checkIsLock(contractAddress, networkId, env)
+    // If no cache is found, perform on-chain verification
+    const contractStatus = await checkContractTypeOnChain(
+      contractAddress,
+      networkId,
+      env
+    )
+
+    // Only store in cache if we have a definitive status (not null or NOT_DEPLOYED)
+    if (
+      contractStatus !== null &&
+      contractStatus !== ContractType.NOT_DEPLOYED
+    ) {
+      await storeContractStatusInKV(
+        env,
+        networkId,
+        contractAddress,
+        contractStatus
+      )
+    }
+
+    // Return whether it's an Unlock contract
+    return contractStatus === ContractType.UNLOCK_PROTOCOL_CONTRACT
   } catch (error) {
     console.error(
       `Error checking if contract is Unlock contract: ${error instanceof Error ? error.message : 'Unknown error'}`
     )
+
     return false
   }
 }

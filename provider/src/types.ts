@@ -34,6 +34,11 @@ export interface RateLimiter {
   limit(options: { key: string }): Promise<{ success: boolean }>
 }
 
-export interface ContractInfo {
-  isUnlockContract: boolean
+/**
+ * Contract type values
+ */
+export enum ContractType {
+  UNLOCK_PROTOCOL_CONTRACT = 'UNLOCK_PROTOCOL_CONTRACT',
+  OTHER_CONTRACT = 'OTHER_CONTRACT',
+  NOT_DEPLOYED = 'NOT_DEPLOYED',
 }

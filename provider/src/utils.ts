@@ -8,7 +8,15 @@ export const DEFAULT_CACHE_TTL = 60 * 60
 export const CACHE_API_TTL = 86400
 
 // Key prefix for KV storage to avoid collisions
-export const KV_LOCK_PREFIX = 'lock_'
+export const KV_CONTRACT_TYPE_PREFIX = 'contract_type_'
+
+// Generate the KV key for a given contract type
+export const getKVContractTypeKey = (
+  networkId: string,
+  contractAddress: string
+): string => {
+  return `${KV_CONTRACT_TYPE_PREFIX}${networkId}_${contractAddress.toLowerCase()}`
+}
 
 // Methods that should be cached
 export const CACHEABLE_METHODS = [
