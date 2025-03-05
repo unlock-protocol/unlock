@@ -3,6 +3,7 @@ import { AxiosError } from 'axios'
 import * as Sentry from '@sentry/nextjs'
 import { ToastHelper } from '@unlock-protocol/ui'
 
+// Custom query client with enhanced deduplication
 export const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: (error: any, query) => {
@@ -35,23 +36,26 @@ export const queryClient = new QueryClient({
   }),
   defaultOptions: {
     queries: {
-      staleTime: 60 * 1000, // 1 minute
-      gcTime: 5 * 60 * 1000, // 5 minutes
+      staleTime: 5 * 60 * 1000, // 5 minutes (increased from 1 minute)
+      gcTime: 10 * 60 * 1000, // 10 minutes (increased from 5 minutes)
       refetchInterval: false,
       refetchOnReconnect: false,
       refetchOnWindowFocus: false,
+      refetchOnMount: false, // Added to prevent refetches on component mounts during navigation
       refetchIntervalInBackground: false,
       // Add retryDelay to space out retries and prevent flooding
       retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 30000),
       retry: (failureCount, error) => {
-        // Limit retries more aggressively
-        if (failureCount > 2) {
+        // More aggressive retry management
+        if (failureCount > 1) {
           return false
         }
         if (error instanceof AxiosError) {
-          return ![400, 401, 403, 404].includes(error.response?.status || 0)
+          return ![400, 401, 403, 404, 500].includes(
+            error.response?.status || 0
+          )
         }
-        return true
+        return false // Default to not retrying to prevent cascading requests
       },
     },
   },

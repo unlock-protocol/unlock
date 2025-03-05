@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { FiArrowRight as ArrowRightIcon } from 'react-icons/fi'
 import { AiOutlineTag as TagIcon } from 'react-icons/ai'
 import { IoMdTime as TimeIcon } from 'react-icons/io'
@@ -16,6 +16,7 @@ import {
 import { FavoriteLocks } from './LockList'
 import { WrappedAddress } from '~/components/interface/WrappedAddress'
 import { EnhancedLock } from '~/hooks/useLocksByManager'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface EnhancedLockCardProps {
   lock: EnhancedLock
@@ -57,6 +58,7 @@ export const EnhancedLockCard = ({
 }: EnhancedLockCardProps) => {
   const lockAddress = lock.address
   const symbol = lock.tokenSymbol
+  const queryClient = useQueryClient()
 
   const lockUrl = `/locks/lock?address=${lockAddress}&network=${network}`
 
@@ -71,6 +73,15 @@ export const EnhancedLockCard = ({
       setFavoriteLocks({ ...favoriteLocks, [lockAddress]: true })
     }
   }
+
+  // Prefetch data for the management page when user hovers the link
+  const prefetchLockData = useCallback(() => {
+    // Prefetch central lock data with management context
+    queryClient.prefetchQuery({
+      queryKey: ['centralizedLockData', lockAddress, network, 'management'],
+      staleTime: 10 * 60 * 1000, // 10 minutes
+    })
+  }, [lockAddress, network, queryClient])
 
   const duration =
     lock?.expirationDuration === MAX_UINT ? (
@@ -175,7 +186,12 @@ export const EnhancedLockCard = ({
             </Detail>
           </div>
           <div className="md:ml-auto md:col-span-1">
-            <Link href={lockUrl} aria-label="arrow right">
+            <Link
+              href={lockUrl}
+              aria-label="arrow right"
+              onMouseEnter={prefetchLockData}
+              onClick={prefetchLockData}
+            >
               <button className="flex items-center justify-between w-full md:w-auto">
                 <span className="text-base font-bold md:hidden">Manage</span>
                 <ArrowRightIcon size={20} />

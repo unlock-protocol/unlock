@@ -131,7 +131,8 @@ export const EnhancedLockList = ({ owner }: EnhancedLockListProps) => {
 
   const { data, isLoading, error } = useEnhancedLocksByManager(
     owner,
-    networkItems
+    networkItems,
+    'list'
   )
 
   // Process locks as they come in (streaming approach)

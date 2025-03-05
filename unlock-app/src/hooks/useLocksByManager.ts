@@ -47,21 +47,23 @@ export const getLocksByNetwork = async ({ account, network }: any) => {
 
 const useLocksByManagerOnNetworks = (
   manager: string,
-  networkItems: [string, any][]
+  networkItems: [string, any][],
+  context: string = 'default'
 ) => {
   const networks = networkItems.map(([network]) => Number(network))
 
   const query: QueriesOptions<any> = {
-    queryKey: ['getLocks', networks.join(','), manager],
+    queryKey: ['getLocks', networks.join(','), manager, context],
     queryFn: async () =>
       await getLocksByNetworks({
         account: manager,
         networks,
       }),
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    cacheTime: 30 * 60 * 1000, // 30 minutes
+    staleTime: 10 * 60 * 1000, // 10 minutes - increased
+    cacheTime: 60 * 60 * 1000, // 60 minutes - increased
     retry: 2,
     refetchOnWindowFocus: false,
+    refetchOnMount: false, // Explicitly disable refetch on mount
   }
 
   // Maintain backwards compatibility by wrapping the result in an array
@@ -92,7 +94,8 @@ interface EnhancedLockData {
 
 export const useEnhancedLocksByManager = (
   manager: string,
-  networkItems: [string, any][]
+  networkItems: [string, any][],
+  context: string = 'list'
 ) => {
   const web3service = useWeb3Service()
   const networks = networkItems.map(([network]) => Number(network))
@@ -173,26 +176,38 @@ export const useEnhancedLocksByManager = (
     [web3service, iconCache]
   )
 
+  const query: QueriesOptions<any> = {
+    queryKey: ['getLocks', networks.join(','), manager, context],
+    queryFn: async () =>
+      await getLocksByNetworks({
+        account: manager,
+        networks,
+      }),
+    staleTime: 10 * 60 * 1000, // 10 minutes - increased
+    cacheTime: 60 * 60 * 1000, // 60 minutes - increased
+    retry: 2,
+    refetchOnWindowFocus: false,
+  }
+
   return useQuery<EnhancedLockData>({
-    queryKey: ['getEnhancedLocks', networks.join(','), manager],
+    queryKey: query.queryKey,
     queryFn: async (): Promise<EnhancedLockData> => {
       const locks = await getLocksByNetworks({
         account: manager,
         networks,
       })
 
-      // Return data without processing locks here
-      // This will prevent unnecessary processing in the query function
       return {
         locks,
         enhanceLock,
         networkItems,
       }
     },
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 30 * 60 * 1000, // 30 minutes (was cacheTime in React Query v3)
-    retry: 2,
-    refetchOnWindowFocus: false,
+    staleTime: query.staleTime,
+    gcTime: query.cacheTime,
+    retry: query.retry,
+    refetchOnWindowFocus: query.refetchOnWindowFocus,
+    refetchOnMount: false, // Explicitly disable refetch on mount
   })
 }
 
