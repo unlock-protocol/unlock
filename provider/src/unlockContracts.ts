@@ -83,10 +83,6 @@ export const checkContractTypeOnChain = async (
   networkId: string,
   env: Env
 ): Promise<ContractType | null> => {
-  if (!contractAddress) {
-    return null
-  }
-
   const normalizedContractAddress = contractAddress.toLowerCase()
   const unlockAddress = getUnlockAddress(networkId)
 

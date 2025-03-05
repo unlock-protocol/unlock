@@ -28,8 +28,8 @@ describe('Rate Limit Module', () => {
     const mockContractAddress = '0xMockUnlockContract'
     vi.spyOn(utils, 'getContractAddress').mockReturnValue(mockContractAddress)
 
-    // Mock isUnlockContract to return true
-    vi.spyOn(unlockContracts, 'isKnownUnlockContract').mockReturnValue(true)
+    // Mock isAllowedContract to return true
+    vi.spyOn(unlockContracts, 'isAllowedContract').mockReturnValue(true)
 
     // Create a mock request
     const mockRequest = createMockRequest('1', 'eth_call')
@@ -48,7 +48,7 @@ describe('Rate Limit Module', () => {
 
     // Verify our mocks were called
     expect(utils.getContractAddress).toHaveBeenCalledWith('eth_call', [])
-    expect(unlockContracts.isKnownUnlockContract).toHaveBeenCalledWith(
+    expect(unlockContracts.isAllowedContract).toHaveBeenCalledWith(
       mockContractAddress,
       '1'
     )
@@ -120,30 +120,30 @@ describe('Rate Limit Module', () => {
     expect(resultWithRateLimit).toBe(true)
   })
 
-  test('isUnlockContract should check and return correct results', async () => {
-    // Mock isKnownUnlockContract to return true
-    vi.spyOn(unlockContracts, 'isKnownUnlockContract').mockReturnValue(true)
+  test('isAllowedContract should check and return correct results', async () => {
+    // Mock isAllowedContract to return true
+    vi.spyOn(unlockContracts, 'isAllowedContract').mockReturnValue(true)
 
     // Mock checkIsLock to ensure it's not called
     const checkIsLockSpy = vi.spyOn(unlockContracts, 'checkIsLock')
 
-    // Call isUnlockContract directly
-    const result = await rateLimit.isUnlockContract(
+    // Call isAllowedContract directly
+    const result = await rateLimit.isAllowedContract(
       '0xMockUnlockContract',
       '1',
       mockEnv as Env
     )
 
-    // Should return true since we mocked isKnownUnlockContract to return true
+    // Should return true since we mocked isAllowedContract to return true
     expect(result).toBe(true)
 
-    // Verify isKnownUnlockContract was called with the right parameters
-    expect(unlockContracts.isKnownUnlockContract).toHaveBeenCalledWith(
+    // Verify isAllowedContract was called with the right parameters
+    expect(unlockContracts.isAllowedContract).toHaveBeenCalledWith(
       '0xMockUnlockContract',
       '1'
     )
 
-    // checkIsLock should not be called when isKnownUnlockContract returns true
+    // checkIsLock should not be called when isAllowedContract returns true
     expect(checkIsLockSpy).not.toHaveBeenCalled()
   })
 })

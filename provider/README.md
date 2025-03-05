@@ -91,28 +91,28 @@ To set up the required KV namespace:
 1. Create a new KV namespace:
 
 ```bash
-npx wrangler kv:namespace create LOCK_CACHE
+npx wrangler kv:namespace create ALLOWED_CONTRACTS
 ```
 
 2. This will output an ID that you need to add to your `wrangler.toml` file:
 
 ```toml
 [[kv_namespaces]]
-binding = "LOCK_CACHE"
+binding = "ALLOWED_CONTRACTS"
 id = "your-kv-namespace-id"
 ```
 
 3. For local development, you'll also need a preview ID:
 
 ```bash
-npx wrangler kv:namespace create LOCK_CACHE --preview
+npx wrangler kv:namespace create ALLOWED_CONTRACTS --preview
 ```
 
 4. Add the preview ID to your wrangler.toml:
 
 ```toml
 [[kv_namespaces]]
-binding = "LOCK_CACHE"
+binding = "ALLOWED_CONTRACTS"
 id = "your-kv-namespace-id"
 preview_id = "your-preview-id"
 ```
