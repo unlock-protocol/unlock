@@ -105,7 +105,7 @@ export const storeRPCResponseInCache = async (
  * Retrieves a contract's status from KV storage
  * Returns true if it's an unlock contract, false if it's explicitly not an unlock contract, null if not found
  */
-export const getContractFromKV = async (
+export const getContractStatusFromKV = async (
   env: Env,
   networkId: string,
   lockAddress: string
@@ -124,8 +124,8 @@ export const getContractFromKV = async (
       return null
     }
 
-    // Return true if value is "true", false if value is "false"
-    return value === 'true'
+    // Return true if value is "1", false if value is "0"
+    return value === '1'
   } catch (error) {
     console.error('Error retrieving contract status from KV:', error)
     return null
@@ -133,12 +133,13 @@ export const getContractFromKV = async (
 }
 
 /**
- * Stores a contract in KV storage
+ * Stores a contract's status in KV storage
  */
-export const storeContractInKV = async (
+export const storeContractStatusInKV = async (
   env: Env,
   networkId: string,
-  lockAddress: string
+  lockAddress: string,
+  isUnlockContract: boolean
 ): Promise<void> => {
   if (!env.LOCK_CACHE) {
     return
@@ -146,30 +147,10 @@ export const storeContractInKV = async (
 
   try {
     const key = `${KV_LOCK_PREFIX}${networkId}_${lockAddress.toLowerCase()}`
-    // Store with 30-day expiration
-    await env.LOCK_CACHE.put(key, 'true', { expirationTtl: 2592000 })
+    // Store with 30-day expiration (2592000 seconds)
+    const value = isUnlockContract ? '1' : '0'
+    await env.LOCK_CACHE.put(key, value, { expirationTtl: 2592000 })
   } catch (error) {
-    console.error('Error storing contract in KV:', error)
-  }
-}
-
-/**
- * Stores a non-lock in KV storage
- */
-export const storeNonLockInKV = async (
-  env: Env,
-  networkId: string,
-  lockAddress: string
-): Promise<void> => {
-  if (!env.LOCK_CACHE) {
-    return
-  }
-
-  try {
-    const key = `${KV_LOCK_PREFIX}${networkId}_${lockAddress.toLowerCase()}`
-    // Store with 30-day expiration
-    await env.LOCK_CACHE.put(key, 'false', { expirationTtl: 2592000 })
-  } catch (error) {
-    console.error('Error storing non-lock in KV:', error)
+    console.error('Error storing contract status in KV:', error)
   }
 }
