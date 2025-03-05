@@ -189,32 +189,24 @@ const shouldRateLimitSingle = async (
   body: any,
   networkId: string
 ) => {
-  // Extract contract address if applicable
   const contractAddress = getContractAddress(body.method, body.params)
-  if (!contractAddress) {
-    // If we can't determine the contract address, allow the request to proceed
+
+  if (
+    contractAddress &&
+    (await isUnlockContract(contractAddress, networkId, env))
+  ) {
+    // Skip rate limit if this is an Unlock contract
     return false
   }
 
-  // Check if this is an Unlock contract (skip rate limiting if true)
-  if (await isUnlockContract(contractAddress, networkId, env)) {
-    return false
-  }
-
-  try {
-    return shouldRateLimitIp(request, body.method, env)
-  } catch (error) {
-    console.error('Error checking rate limits:', error)
-    // On error, allow the request to proceed rather than blocking legitimate traffic
-    return false
-  }
+  // Otherwise rate limit based on IP
+  return shouldRateLimitIp(request, body.method, env)
 }
 
 /**
  * Rate limit middleware for JSON RPC requests
  * This function checks if the request should be rate limited
- * If the request should be blocked, it returns a 429 response
- * Otherwise, it calls the next middleware in the chain
+ * and considers all "batched" RPC requests in the body
  */
 export const shouldRateLimit = async (
   request: Request,
@@ -231,7 +223,6 @@ export const shouldRateLimit = async (
     return shouldRateLimitRequests.some(
       (shouldRateLimitRequest) => shouldRateLimitRequest
     )
-  } else {
-    return shouldRateLimitSingle(request, env, body, networkId)
   }
+  return shouldRateLimitSingle(request, env, body, networkId)
 }
