@@ -75,8 +75,8 @@ export function Checkout({
 
   useEffect(() => {
     const user = account ? { address: account } : {}
-    if (isInIframe() && communication) {
-      communication.emitUserInfo(user)
+    if (communication) {
+      communication.emitUserInfo(user, paywallConfig)
     }
   }, [account, communication])
 
