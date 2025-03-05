@@ -16,6 +16,9 @@ let KNOWN_LOCK_ADDRESSES: { [address: string]: boolean } = {}
 // Access count tracking for high-frequency locks
 let LOCK_ACCESS_COUNT: { [key: string]: number } = {}
 
+// Non-lock addresses
+let KNOWN_NON_LOCK_ADDRESSES: { [address: string]: boolean } = {}
+
 // Extract just the locks function from the official ABI
 const UNLOCK_ABI = [
   Unlock.abi.find(
@@ -125,6 +128,11 @@ export const isKnownUnlockContract = (
     return true
   }
 
+  // Check if this is a known non-lock in the in-memory cache
+  if (KNOWN_NON_LOCK_ADDRESSES && KNOWN_NON_LOCK_ADDRESSES[normalizedAddress]) {
+    return false
+  }
+
   return false
 }
 
@@ -179,7 +187,7 @@ const storeLockInCacheAPI = async (
 }
 
 /**
- * Retrieve a lock status from the KV storage
+ * Get a lock from KV storage
  */
 const getLockFromKV = async (
   env: Env,
@@ -195,10 +203,15 @@ const getLockFromKV = async (
     const key = `${KV_LOCK_PREFIX}${networkId}_${lockAddress.toLowerCase()}`
     const value = await env.LOCK_CACHE.get(key)
 
-    // If the value exists in KV, it means this is a confirmed lock
-    return value !== null
+    // If the key doesn't exist, return null
+    if (value === null) {
+      return null
+    }
+
+    // Return true if value is "true", false if value is "false"
+    return value === 'true'
   } catch (error) {
-    console.error('Error retrieving lock from KV:', error)
+    console.error('Error retrieving contract status from KV:', error)
     return null
   }
 }
@@ -216,12 +229,54 @@ const storeLockInKV = async (
   }
 
   try {
-    // Create a unique key combining network ID and address for multi-chain support
+    // unique key combining network ID and address for multi-chain support
     const key = `${KV_LOCK_PREFIX}${networkId}_${lockAddress.toLowerCase()}`
-    // Store with value of "1" - we only care about existence, not the value
-    await env.LOCK_CACHE.put(key, '1', { expirationTtl: 31536000 }) // Cache for 1 year (effectively permanent)
+    // Store with a meaningful value indicating it's a lock
+    await env.LOCK_CACHE.put(key, 'true', { expirationTtl: 31536000 })
   } catch (error) {
     console.error('Error storing lock in KV:', error)
+  }
+}
+
+/**
+ * Store a non-lock address in the KV storage
+ */
+const storeNonLockInKV = async (
+  env: Env,
+  networkId: string,
+  lockAddress: string
+): Promise<void> => {
+  if (!env.LOCK_CACHE) {
+    return
+  }
+
+  try {
+    // unique key combining network ID and address for multi-chain support
+    const key = `${KV_LOCK_PREFIX}${networkId}_${lockAddress.toLowerCase()}`
+    // Store with a meaningful value indicating it's not a lock
+    await env.LOCK_CACHE.put(key, 'false', { expirationTtl: 31536000 })
+  } catch (error) {
+    console.error('Error storing non-lock in KV:', error)
+  }
+}
+
+/**
+ * Check if a contract is deployed at the given address
+ */
+const isContractDeployed = async (
+  provider: ethers.Provider,
+  address: string
+): Promise<boolean> => {
+  try {
+    const code = await provider.getCode(address)
+    // If there's no code at this address, it's not a deployed contract
+    return code !== '0x'
+  } catch (error) {
+    console.error(
+      `Error checking if contract is deployed at ${address}:`,
+      error
+    )
+    return false
   }
 }
 
@@ -248,29 +303,58 @@ export const checkIsLock = async (
     return true
   }
 
+  // Also check if it's a known non-lock in memory
+  if (
+    KNOWN_NON_LOCK_ADDRESSES &&
+    KNOWN_NON_LOCK_ADDRESSES[normalizedLockAddress]
+  ) {
+    return false
+  }
+
   // 2. Check Cache API for frequently accessed locks
   const cacheApiResult = await getLockFromCacheAPI(
     networkId,
     normalizedLockAddress
   )
-  if (cacheApiResult === true) {
-    // Add to in-memory cache for future checks
-    addToMemoryCache(normalizedLockAddress)
-    trackLockAccess(networkId, normalizedLockAddress)
-    return true
+
+  if (cacheApiResult !== null) {
+    // If it's a lock, add to in-memory cache for future checks
+    if (cacheApiResult === true) {
+      // Add to in-memory cache for future checks
+      addToMemoryCache(normalizedLockAddress)
+      trackLockAccess(networkId, normalizedLockAddress)
+    } else {
+      // Add to non-lock in-memory cache
+      if (!KNOWN_NON_LOCK_ADDRESSES) {
+        KNOWN_NON_LOCK_ADDRESSES = {}
+      }
+      KNOWN_NON_LOCK_ADDRESSES[normalizedLockAddress] = true
+    }
+    return cacheApiResult
   }
 
   // 3. Then check the KV storage for persistent cache across restarts
   const kvResult = await getLockFromKV(env, networkId, normalizedLockAddress)
-  if (kvResult === true) {
-    // Add to in-memory cache for future checks
-    addToMemoryCache(normalizedLockAddress)
+  if (kvResult !== null) {
+    if (kvResult === true) {
+      // Add to in-memory cache for future checks
+      addToMemoryCache(normalizedLockAddress)
 
-    // Also cache in Cache API for faster subsequent access
-    await storeLockInCacheAPI(networkId, normalizedLockAddress, true)
+      // Also cache in Cache API for faster subsequent access
+      await storeLockInCacheAPI(networkId, normalizedLockAddress, true)
 
-    trackLockAccess(networkId, normalizedLockAddress)
-    return true
+      trackLockAccess(networkId, normalizedLockAddress)
+    } else {
+      // Add to non-lock in-memory cache
+      if (!KNOWN_NON_LOCK_ADDRESSES) {
+        KNOWN_NON_LOCK_ADDRESSES = {}
+      }
+      KNOWN_NON_LOCK_ADDRESSES[normalizedLockAddress] = true
+
+      // Cache in Cache API for faster subsequent access
+      await storeLockInCacheAPI(networkId, normalizedLockAddress, false)
+    }
+    return kvResult
   }
 
   try {
@@ -297,8 +381,8 @@ export const checkIsLock = async (
     // Call the locks function to check if this address is a deployed lock
     const lockPromise = unlockContract
       .locks(normalizedLockAddress)
-      .then(([deployed]: [boolean]) => {
-        // If it's a lock, add it to our caches
+      .then(async ([deployed]: [boolean]) => {
+        // Cache the result regardless of whether it's a lock or not
         if (deployed) {
           // Add to in-memory cache without LRU tracking
           addToMemoryCache(normalizedLockAddress)
@@ -311,6 +395,31 @@ export const checkIsLock = async (
 
           // Track access frequency
           trackLockAccess(networkId, normalizedLockAddress)
+        } else {
+          // Before caching as a non-lock, check if the contract is deployed
+          const isDeployed = await isContractDeployed(
+            provider,
+            normalizedLockAddress
+          )
+
+          // Only cache as non-lock if the contract is actually deployed
+          // This prevents caching addresses that might be in the process of deployment
+          if (isDeployed) {
+            // Cache negative results as well to avoid repeated on-chain checks
+            // Store in all layers for consistency and maximum performance
+
+            if (!KNOWN_NON_LOCK_ADDRESSES) {
+              KNOWN_NON_LOCK_ADDRESSES = {}
+            }
+            KNOWN_NON_LOCK_ADDRESSES[normalizedLockAddress] = true
+
+            // Store in KV storage with a different prefix to distinguish from locks
+            storeNonLockInKV(env, networkId, normalizedLockAddress)
+
+            // Store in Cache API
+            storeLockInCacheAPI(networkId, normalizedLockAddress, false)
+          }
+          // If not deployed, we don't cache it at all
         }
         return deployed
       })
