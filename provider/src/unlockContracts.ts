@@ -4,6 +4,7 @@ import networks from '@unlock-protocol/networks'
 import { ethers } from 'ethers'
 import { Unlock } from '@unlock-protocol/contracts'
 import { createEthersProvider } from './utils'
+import { ContractType } from './types'
 
 // Extract just the locks function from the official ABI
 const UNLOCK_ABI = [
@@ -75,22 +76,23 @@ const verifyLockOnChain = async (
 
 /**
  * Checks if a contract is an Unlock contract
+ * Returns the contract's type
  */
 export const checkContractTypeOnChain = async (
-  lockAddress: string,
+  contractAddress: string,
   networkId: string,
   env: Env
-): Promise<boolean> => {
-  if (!lockAddress) {
-    return false
+): Promise<ContractType | null> => {
+  if (!contractAddress) {
+    return null
   }
 
-  const normalizedLockAddress = lockAddress.toLowerCase()
+  const normalizedContractAddress = contractAddress.toLowerCase()
   const unlockAddress = getUnlockAddress(networkId)
 
   if (!unlockAddress) {
     console.warn(`No Unlock address found for network ${networkId}`)
-    return false
+    return null
   }
 
   try {
@@ -98,24 +100,36 @@ export const checkContractTypeOnChain = async (
     const providerUrl = supportedNetworks(env, networkId)
     if (!providerUrl) {
       console.warn(`No provider URL found for network ${networkId}`)
-      return false
+      return null
     }
 
     // Create ethers provider
     const provider = createEthersProvider(providerUrl)
 
-    // First check if the contract is deployed and verify if it's an Unlock lock
-    return await isContractDeployed(provider, normalizedLockAddress).then(
-      async (isDeployed) => {
-        if (!isDeployed) {
-          return false
-        }
-        return verifyLockOnChain(provider, unlockAddress, normalizedLockAddress)
-      }
+    // First check if the contract is deployed
+    const isDeployed = await isContractDeployed(
+      provider,
+      normalizedContractAddress
     )
+    if (!isDeployed) {
+      return ContractType.NOT_DEPLOYED
+    }
+
+    // Verify if it's an Unlock lock
+    const isUnlockLock = await verifyLockOnChain(
+      provider,
+      unlockAddress,
+      normalizedContractAddress
+    )
+    return isUnlockLock
+      ? ContractType.UNLOCK_PROTOCOL_CONTRACT
+      : ContractType.OTHER_CONTRACT
   } catch (error) {
-    console.error(`Error checking if ${lockAddress} is a lock:`, error)
-    // Return false on error
-    return false
+    console.error(
+      `Error checking if ${contractAddress} is an Unlock contract:`,
+      error
+    )
+    // Return null on error
+    return null
   }
 }

@@ -6,6 +6,7 @@ import {
   getContractAddress,
 } from './utils'
 import { getContractStatusFromKV, storeContractStatusInKV } from './cache'
+import { ContractType } from './types'
 
 /**
  * Check if a contract should bypass rate limiting because it's an Unlock lock
@@ -27,23 +28,33 @@ export const isUnlockContract = async (
       contractAddress
     )
 
-    // If we have a cached result, return it immediately
+    // If we have a cached result, return whether it's an Unlock contract
     if (cachedContractStatus !== null) {
-      return cachedContractStatus
+      return cachedContractStatus === ContractType.UNLOCK_PROTOCOL_CONTRACT
     }
 
     // If no cache is found, perform on-chain verification
-    const isUnlockLock = await checkContractTypeOnChain(
+    const contractStatus = await checkContractTypeOnChain(
       contractAddress,
       networkId,
       env
     )
 
-    // Store verification result in cache for future requests
-    await storeContractStatusInKV(env, networkId, contractAddress, isUnlockLock)
+    // Only store in cache if we have a definitive status (not null or NOT_DEPLOYED)
+    if (
+      contractStatus !== null &&
+      contractStatus !== ContractType.NOT_DEPLOYED
+    ) {
+      await storeContractStatusInKV(
+        env,
+        networkId,
+        contractAddress,
+        contractStatus
+      )
+    }
 
-    // Return verification result
-    return isUnlockLock
+    // Return whether it's an Unlock contract
+    return contractStatus === ContractType.UNLOCK_PROTOCOL_CONTRACT
   } catch (error) {
     console.error(
       `Error checking if contract is Unlock contract: ${error instanceof Error ? error.message : 'Unknown error'}`

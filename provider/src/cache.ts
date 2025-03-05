@@ -6,6 +6,7 @@ import {
   isRequestCacheable,
   KV_LOCK_PREFIX,
 } from './utils'
+import { ContractType } from './types'
 
 /**
  * RPC RESPONSE CACHING
@@ -103,13 +104,13 @@ export const storeRPCResponseInCache = async (
 
 /**
  * Retrieves a contract's status from KV storage
- * Returns true if it's an unlock contract, false if it's explicitly not an unlock contract, null if not found
+ * Returns the contract status: UNLOCK_PROTOCOL_CONTRACT, OTHER_CONTRACT, NOT_DEPLOYED, or null if not found
  */
 export const getContractStatusFromKV = async (
   env: Env,
   networkId: string,
   lockAddress: string
-): Promise<boolean | null> => {
+): Promise<ContractType | null> => {
   if (!env.LOCK_CACHE) {
     return null
   }
@@ -124,8 +125,8 @@ export const getContractStatusFromKV = async (
       return null
     }
 
-    // Return true if value is "1", false if value is "0"
-    return value === '1'
+    // Return the stored status
+    return value as ContractType
   } catch (error) {
     console.error('Error retrieving contract status from KV:', error)
     return null
@@ -139,7 +140,7 @@ export const storeContractStatusInKV = async (
   env: Env,
   networkId: string,
   lockAddress: string,
-  isUnlockContract: boolean
+  status: ContractType
 ): Promise<void> => {
   if (!env.LOCK_CACHE) {
     return
@@ -148,8 +149,7 @@ export const storeContractStatusInKV = async (
   try {
     const key = `${KV_LOCK_PREFIX}${networkId}_${lockAddress.toLowerCase()}`
     // Store with 30-day expiration (2592000 seconds)
-    const value = isUnlockContract ? '1' : '0'
-    await env.LOCK_CACHE.put(key, value, { expirationTtl: 2592000 })
+    await env.LOCK_CACHE.put(key, status, { expirationTtl: 2592000 })
   } catch (error) {
     console.error('Error storing contract status in KV:', error)
   }
