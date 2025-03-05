@@ -259,7 +259,7 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
     }
 
     const rateLimit = await shouldRateLimit(request, env, body, networkId)
-    if (!rateLimit) {
+    if (rateLimit) {
       // TEMPORARY: Log but don't block rate-limited requests for monitoring purposes
       // After 10+ days, review logs and enable actual blocking
       console.log(

@@ -88,36 +88,28 @@ export const getClientIP = (request: Request): string => {
 
 /**
  * Performs rate limiting check using Cloudflare's Rate Limiting API
- * Returns true if the request should be allowed, false otherwise
+ * Returns true if the request should be rate limited, false otherwise
  */
-export const checkRateLimit = async (
+export const shouldRateLimitIp = async (
   request: Request,
   method: string,
-  contractAddress: string | null,
   env: Env
 ): Promise<boolean> => {
   // Authenticated Locksmith requests are exempt from rate limiting
   if (hasValidLocksmithSecret(request, env)) {
-    return true
+    return false
   }
 
   // Get client IP for rate limiting
   const ip = getClientIP(request)
 
   try {
-    // Create a key that combines IP with contract address or method to provide granular rate limiting
-    // This is a more stable identifier than just IP alone, as recommended by Cloudflare
-    const rateKey =
-      contractAddress && typeof contractAddress === 'string'
-        ? `${ip}:${contractAddress.toLowerCase()}`
-        : `${ip}:${method}`
-
     // Check standard rate limiter (10 seconds period)
     const standardResult = await env.STANDARD_RATE_LIMITER.limit({
-      key: rateKey,
+      key: `${ip}:${method}`,
     })
     if (!standardResult.success) {
-      return false
+      return true
     }
 
     // Check hourly rate limiter (60 seconds period)
@@ -127,7 +119,7 @@ export const checkRateLimit = async (
     console.error('Error checking rate limit:', error)
     // In case of error, allow the request to proceed
     // We don't want to block legitimate requests due to rate limiter failures
-    return true
+    return false
   }
 }
 
@@ -209,10 +201,8 @@ const shouldRateLimitSingle = async (
     return false
   }
 
-  // TODO: consider applying strict rate limiting for all requests
-  // Would that apply to ERC20 contracts as well?
   try {
-    return checkRateLimit(request, body.method, contractAddress, env)
+    return shouldRateLimitIp(request, body.method, env)
   } catch (error) {
     console.error('Error checking rate limits:', error)
     // On error, allow the request to proceed rather than blocking legitimate traffic
