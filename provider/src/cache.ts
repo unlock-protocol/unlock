@@ -4,7 +4,7 @@ import {
   getCacheTTL,
   createCacheKey,
   isRequestCacheable,
-  KV_LOCK_PREFIX,
+  getKVLockKey,
 } from './utils'
 import { ContractType } from './types'
 
@@ -117,7 +117,7 @@ export const getContractStatusFromKV = async (
 
   try {
     // Create a unique key combining network ID and address for multi-chain support
-    const key = `${KV_LOCK_PREFIX}${networkId}_${lockAddress.toLowerCase()}`
+    const key = getKVLockKey(networkId, lockAddress)
     const value = await env.LOCK_CACHE.get(key)
 
     // If the key doesn't exist, return null
@@ -147,7 +147,7 @@ export const storeContractStatusInKV = async (
   }
 
   try {
-    const key = `${KV_LOCK_PREFIX}${networkId}_${lockAddress.toLowerCase()}`
+    const key = getKVLockKey(networkId, lockAddress)
     // Store with 30-day expiration (2592000 seconds)
     await env.LOCK_CACHE.put(key, status, { expirationTtl: 2592000 })
   } catch (error) {

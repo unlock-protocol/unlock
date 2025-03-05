@@ -10,6 +10,14 @@ export const CACHE_API_TTL = 86400
 // Key prefix for KV storage to avoid collisions
 export const KV_LOCK_PREFIX = 'lock_'
 
+// Generate the KV key for a given lock
+export const getKVLockKey = (
+  networkId: string,
+  lockAddress: string
+): string => {
+  return `${KV_LOCK_PREFIX}${networkId}_${lockAddress.toLowerCase()}`
+}
+
 // Methods that should be cached
 export const CACHEABLE_METHODS = [
   'eth_call', // utilised by ENS resolver and other name resolution services
