@@ -11,12 +11,25 @@ import {
 
 const handler = async (request: Request, env: Env): Promise<Response> => {
   try {
-    const origin = request.headers.get('origin')
+    // Blocking arbitrum abuses
+    const ipAddress = getClientIP(request)
+    if (
+      ['147.182.205.89', '176.9.154.118', '65.108.198.24'].indexOf(ipAddress) >=
+      0
+    ) {
+      return Response.json(
+        { message: '' },
+        {
+          status: 429,
+        }
+      )
+    }
 
     // Blocking requests from the Chrome extension
+    const origin = request.headers.get('origin')
     if (origin === 'chrome-extension://mnkbccinkbalkmmnmbcicdobcmgggmfc') {
       return Response.json(
-        { message: 'Invalid JSON in request body' },
+        { message: '' },
         {
           status: 400,
         }
