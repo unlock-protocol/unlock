@@ -8,10 +8,11 @@ import {
 
 /**
  * Check if a contract is an Unlock contract
- * FIXME: This function should work like this:
- * - check if this is a known contract (unlock or not)
- * - if so, return its type
- * - if not, check its type, cache it and return it
+ *
+ * This function implements a multi-level caching strategy to efficiently determine
+ * if a contract is an Unlock contract. It first checks in-memory cache, then Cache API,
+ * then KV storage, and finally falls back to on-chain verification if needed.
+ * Both positive and negative results are cached at each level for optimal performance.
  */
 export const isUnlockContract = async (
   contractAddress: string,
@@ -21,13 +22,12 @@ export const isUnlockContract = async (
   if (!contractAddress) return false
 
   try {
-    // TODO: checkf if this is _any_ known contract (lock or Unlock)
+    // Check in-memory cache first (fastest)
     if (isKnownUnlockContract(contractAddress, networkId)) {
       return true
     }
 
-    // Only if a contract is unknown, check if it's a lock and then keep
-    // track of it!
+    // If not in memory, use checkIsLock for complete cache hierarchy
     return checkIsLock(contractAddress, networkId, env)
   } catch (error) {
     console.error(
