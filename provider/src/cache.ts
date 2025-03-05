@@ -98,7 +98,7 @@ export const storeRPCResponseInCache = async (
 }
 
 /**
- * LOCK CACHING - KV STORAGE
+ * Contract CACHING - KV STORAGE
  */
 
 /**
