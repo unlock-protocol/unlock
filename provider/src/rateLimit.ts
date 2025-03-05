@@ -25,9 +25,10 @@ export const hasValidLocksmithSecret = (
 
 /**
  * Check if a contract is an Unlock contract
- * This uses a multi-step approach:
- * 1. Check if it's a known Unlock contract address
- * 2. If not, check if it's a lock by calling the Unlock contract
+ * FIXME: This function should work like this:
+ * - check if this is a known contract (unlock or not)
+ * - if so, return its type
+ * - if not, check its type, cache it and return it
  */
 export const isUnlockContract = async (
   contractAddress: string,
