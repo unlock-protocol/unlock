@@ -10,6 +10,10 @@ import {
 } from './utils'
 
 /**
+ * RPC RESPONSE CACHING
+ */
+
+/**
  * Checks if a request is cacheable and attempts to retrieve it from cache
  * Returns the cached response if found, null otherwise
  */
@@ -96,6 +100,77 @@ export const storeRPCResponseInCache = async (
 }
 
 /**
+ * LOCK CACHING - MEMORY CACHE
+ */
+
+// Local in-memory cache of verified locks
+let MEMORY_VERIFIED_LOCKS: { [address: string]: boolean } = {}
+
+// Non-lock addresses
+let MEMORY_VERIFIED_NON_LOCKS: { [address: string]: boolean } = {}
+
+// Access count tracking for high-frequency locks
+let LOCK_ACCESS_COUNT: { [key: string]: number } = {}
+
+/**
+ * Reset the memory caches
+ */
+export const resetMemoryCaches = () => {
+  MEMORY_VERIFIED_LOCKS = {}
+  MEMORY_VERIFIED_NON_LOCKS = {}
+  LOCK_ACCESS_COUNT = {}
+}
+
+/**
+ * Check if a contract address is cached in memory
+ * @returns true if verified lock, false if verified non-lock, null if unknown
+ */
+export const getLockStatusFromMemory = (address: string): boolean | null => {
+  const normalizedAddress = address.toLowerCase()
+
+  // Check if this is a known lock
+  if (MEMORY_VERIFIED_LOCKS[normalizedAddress] === true) {
+    return true
+  }
+
+  // Check if this is a known non-lock
+  if (MEMORY_VERIFIED_NON_LOCKS[normalizedAddress] === true) {
+    return false
+  }
+
+  // Not in memory cache
+  return null
+}
+
+/**
+ * Add a verified lock to the memory cache
+ */
+export const addVerifiedLockToMemory = (address: string): void => {
+  const normalizedAddress = address.toLowerCase()
+  MEMORY_VERIFIED_LOCKS[normalizedAddress] = true
+}
+
+/**
+ * Add a verified non-lock to the memory cache
+ */
+export const addVerifiedNonLockToMemory = (address: string): void => {
+  const normalizedAddress = address.toLowerCase()
+  MEMORY_VERIFIED_NON_LOCKS[normalizedAddress] = true
+}
+
+/**
+ * Track lock access frequency for popular locks
+ */
+export const trackLockAccess = (networkId: string, address: string): void => {
+  const key = `${networkId}_${address.toLowerCase()}`
+  LOCK_ACCESS_COUNT[key] = (LOCK_ACCESS_COUNT[key] || 0) + 1
+}
+
+/**
+ * LOCK CACHING - KV STORAGE
+ */
+
+/**
  * Retrieves a lock's status from KV storage
  * Returns true if it's a lock, false if it's explicitly not a lock, null if not found
  */
@@ -169,6 +244,10 @@ export const storeNonLockInKV = async (
 }
 
 /**
+ * LOCK CACHING - CACHE API
+ */
+
+/**
  * Gets a lock from Cache API
  */
 export const getLockFromCacheAPI = async (
@@ -218,73 +297,9 @@ export const storeLockInCacheAPI = async (
   }
 }
 
-// =============================================================================
-// LOCK CONTRACT CACHING AND VERIFICATION - UNIFIED INTERFACE
-// =============================================================================
-
 /**
- * In-memory caches for lock verification status
+ * UNIFIED CACHE OPERATIONS
  */
-// Local in-memory cache of verified locks
-let MEMORY_VERIFIED_LOCKS: { [address: string]: boolean } = {}
-
-// Non-lock addresses
-let MEMORY_VERIFIED_NON_LOCKS: { [address: string]: boolean } = {}
-
-// Access count tracking for high-frequency locks
-let LOCK_ACCESS_COUNT: { [key: string]: number } = {}
-
-// Export for testing purposes
-export const resetMemoryCaches = () => {
-  MEMORY_VERIFIED_LOCKS = {}
-  MEMORY_VERIFIED_NON_LOCKS = {}
-  LOCK_ACCESS_COUNT = {}
-}
-
-/**
- * Check if a contract address is cached in memory
- * @returns true if verified lock, false if verified non-lock, null if unknown
- */
-export const getLockStatusFromMemory = (address: string): boolean | null => {
-  const normalizedAddress = address.toLowerCase()
-
-  // Check if this is a known lock
-  if (MEMORY_VERIFIED_LOCKS[normalizedAddress] === true) {
-    return true
-  }
-
-  // Check if this is a known non-lock
-  if (MEMORY_VERIFIED_NON_LOCKS[normalizedAddress] === true) {
-    return false
-  }
-
-  // Not in memory cache
-  return null
-}
-
-/**
- * Add a verified lock to the memory cache
- */
-export const addVerifiedLockToMemory = (address: string): void => {
-  const normalizedAddress = address.toLowerCase()
-  MEMORY_VERIFIED_LOCKS[normalizedAddress] = true
-}
-
-/**
- * Add a verified non-lock to the memory cache
- */
-export const addVerifiedNonLockToMemory = (address: string): void => {
-  const normalizedAddress = address.toLowerCase()
-  MEMORY_VERIFIED_NON_LOCKS[normalizedAddress] = true
-}
-
-/**
- * Track lock access frequency for popular locks
- */
-export const trackLockAccess = (networkId: string, address: string): void => {
-  const key = `${networkId}_${address.toLowerCase()}`
-  LOCK_ACCESS_COUNT[key] = (LOCK_ACCESS_COUNT[key] || 0) + 1
-}
 
 /**
  * Unified function to check if a contract is a lock across all cache layers
