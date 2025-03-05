@@ -10,7 +10,7 @@ import {
  * Checks if a request is cacheable and attempts to retrieve it from cache
  * Returns the cached response if found, null otherwise
  */
-export const getFromCache = async (
+export const getRPCResponseFromCache = async (
   networkId: string,
   body: RpcRequest | RpcRequest[],
   request: Request
@@ -55,7 +55,7 @@ export const getFromCache = async (
  * Stores a response in the cache if the request is cacheable
  * @returns true if caching was successful, false otherwise
  */
-export const storeInCache = async (
+export const storeRPCResponseInCache = async (
   networkId: string,
   body: RpcRequest | RpcRequest[],
   json: any,

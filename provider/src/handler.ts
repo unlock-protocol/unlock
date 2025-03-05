@@ -1,7 +1,7 @@
 import supportedNetworks from './supportedNetworks'
 import { Env } from './types'
 import { shouldRateLimit } from './rateLimit'
-import { getFromCache, storeInCache } from './cache'
+import { getRPCResponseFromCache, storeRPCResponseInCache } from './cache'
 import { RpcRequest, getCacheTTL, getClientIP } from './utils'
 
 const handler = async (request: Request, env: Env): Promise<Response> => {
@@ -243,7 +243,11 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
     }
 
     // Try to get the cached response, if applicable
-    const cachedResponse = await getFromCache(networkId, body, request)
+    const cachedResponse = await getRPCResponseFromCache(
+      networkId,
+      body,
+      request
+    )
     if (cachedResponse) {
       return cachedResponse
     }
@@ -302,7 +306,7 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
       })
 
       // Store the response in the cache if applicable
-      await storeInCache(networkId, body, json, env)
+      await storeRPCResponseInCache(networkId, body, json, env)
 
       return jsonResponse
     } catch (error) {
