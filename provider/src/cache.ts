@@ -111,14 +111,14 @@ export const getContractStatusFromKV = async (
   networkId: string,
   lockAddress: string
 ): Promise<ContractType | null> => {
-  if (!env.LOCK_CACHE) {
+  if (!env.ALLOWED_CONTRACTS) {
     return null
   }
 
   try {
     // Create a unique key combining network ID and address for multi-chain support
     const key = getKVContractTypeKey(networkId, lockAddress)
-    const storedValue = await env.LOCK_CACHE.get(key)
+    const storedValue = await env.ALLOWED_CONTRACTS.get(key)
     if (storedValue === null) {
       return null
     }
@@ -138,14 +138,15 @@ export const storeContractStatusInKV = async (
   lockAddress: string,
   status: ContractType
 ): Promise<void> => {
-  if (!env.LOCK_CACHE) {
+  if (!env.ALLOWED_CONTRACTS) {
     return
   }
 
   try {
     const key = getKVContractTypeKey(networkId, lockAddress)
-    // Store with 30-day expiration (2592000 seconds)
-    await env.LOCK_CACHE.put(key, status.toString(), { expirationTtl: 2592000 })
+    await env.ALLOWED_CONTRACTS.put(key, status.toString(), {
+      expirationTtl: 60 * 60 * 24, // TODO extend to 1 month when we have more confidence in the contract
+    })
   } catch (error) {
     console.error('Error storing contract status in KV:', error)
   }

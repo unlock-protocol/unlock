@@ -31,8 +31,8 @@ port = 8787
 
 # Development-only KV namespace for local testing
 [[kv_namespaces]]
-binding = "LOCK_CACHE"
-preview_id = "dev-lock-cache"
+binding = "ALLOWED_CONTRACTS"
+preview_id = "dev-allowed-contracts"
 id = "37d25438af6b4ab08ec710e776f7217e"
 
 [observability]

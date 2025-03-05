@@ -7,13 +7,41 @@ import {
 } from './utils'
 import { getContractStatusFromKV, storeContractStatusInKV } from './cache'
 import { ContractType } from './types'
+import networks from '@unlock-protocol/networks'
+
+interface ApprovedContractsByChain {
+  [chainId: string]: {
+    [contractAddress: string]: boolean
+  }
+}
+
+const OTHER_APPROVED_CONTRACTS: ApprovedContractsByChain = {
+  '1': {
+    '0x231b0ee14048e9dccd1d247744d114a4eb5e8e63': true, // ENS Resolver
+  },
+  '8453': {
+    '0xc6d566a56a1aff6508b41f6c90ff131615583bcd': true, // Basename Resolver
+  },
+}
+
+// Init with Unlock and ERC20 contracts
+Object.values(networks).forEach((network) => {
+  if (!OTHER_APPROVED_CONTRACTS[network.id]) {
+    OTHER_APPROVED_CONTRACTS[network.id] = {}
+  }
+  // Adding Unlock
+  OTHER_APPROVED_CONTRACTS[network.id][network.unlockAddress.toLowerCase()] =
+    true
+  // Adding the ERC20
+  network.tokens?.forEach((token) => {
+    OTHER_APPROVED_CONTRACTS[network.id][token.address.toLowerCase()] = true
+  })
+})
 
 /**
- * Check if a contract should bypass rate limiting because it's an Unlock lock
- * This function determines if rate limiting should be skipped for Unlock lock contracts
- * It performs verification to identify lock contracts
+ * Check if a contract should bypass rate limiting because it's an Unlock lock or needed for Unlock to work!
  */
-export const isUnlockContract = async (
+export const isAllowedContract = async (
   contractAddress: string,
   networkId: string,
   env: Env
@@ -31,6 +59,14 @@ export const isUnlockContract = async (
     // If we have a cached result, return whether it's an Unlock contract
     if (cachedContractStatus !== null) {
       return cachedContractStatus === ContractType.UNLOCK_PROTOCOL_CONTRACT
+    }
+
+    // Check if this contract is in the list of non-Unlock approved contracts
+    if (
+      OTHER_APPROVED_CONTRACTS[networkId] &&
+      OTHER_APPROVED_CONTRACTS[networkId][contractAddress.toLowerCase()]
+    ) {
+      return true
     }
 
     // If no cache is found, perform on-chain verification
@@ -108,11 +144,19 @@ export const shouldRateLimitSingle = async (
   body: any,
   networkId: string
 ) => {
+  // TODO: handle eth_chainId calls at a higher level
+  if (body.method === 'eth_chainId') {
+    return false
+  }
+  // don't rate limit eth_blockNumber calls
+  if (body.method === 'eth_blockNumber') {
+    return false
+  }
   const contractAddress = getContractAddress(body.method, body.params)
 
   if (
     contractAddress &&
-    (await isUnlockContract(contractAddress, networkId, env))
+    (await isAllowedContract(contractAddress, networkId, env))
   ) {
     // Skip rate limit if this is an Unlock contract
     return false
@@ -144,34 +188,4 @@ export const shouldRateLimit = async (
     )
   }
   return shouldRateLimitSingle(request, env, body, networkId)
-}
-
-/**
- * Wrapper function for the new rate limiting interface that's compatible
- * with the refactored code from master branch
- */
-export const checkRateLimit = async (
-  request: Request,
-  method: string | undefined,
-  contractAddress: string | null,
-  env: Env,
-  networkId?: string
-): Promise<boolean> => {
-  // Skip rate limiting if the Locksmith secret is valid
-  if (hasValidLocksmithSecret(request, env)) {
-    return true
-  }
-
-  if (
-    contractAddress &&
-    networkId &&
-    (await isUnlockContract(contractAddress, networkId, env))
-  ) {
-    // Skip rate limit if this is an Unlock contract
-    return true
-  }
-
-  // Use the original rate limiting implementation
-  const effectiveMethod = method || 'unknown'
-  return !(await shouldRateLimitIp(request, effectiveMethod, env))
 }
