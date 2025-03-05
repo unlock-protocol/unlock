@@ -1,13 +1,8 @@
 import supportedNetworks from './supportedNetworks'
 import { Env } from './types'
 import { shouldRateLimit } from './rateLimit'
-import {
-  RpcRequest,
-  getCacheTTL,
-  getClientIP,
-  createCacheKey,
-  isRequestCacheable,
-} from './utils'
+import { getFromCache, storeInCache } from './cache'
+import { RpcRequest, getCacheTTL, getClientIP } from './utils'
 
 const handler = async (request: Request, env: Env): Promise<Response> => {
   try {
@@ -247,25 +242,10 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
       */
     }
 
-    // Check if this is a cacheable request
-    const isCacheable = isRequestCacheable(body)
-
-    // If cacheable, try to get the result from the cache
-    if (isCacheable) {
-      try {
-        const cacheKey = createCacheKey(networkId, body)
-
-        // Try to get the cached response
-        const cache = caches.default
-        const cachedResponse = await cache.match(new Request(cacheKey))
-
-        if (cachedResponse) {
-          return cachedResponse
-        }
-      } catch (error) {
-        console.error('Error accessing cache:', error)
-        // On cache error, proceed to make the actual request
-      }
+    // Try to get the cached response, if applicable
+    const cachedResponse = await getFromCache(networkId, body, request)
+    if (cachedResponse) {
+      return cachedResponse
     }
 
     // Make JSON RPC request
@@ -321,27 +301,8 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
         headers,
       })
 
-      // If this is a cacheable request, store the response in the cache
-      if (isCacheable) {
-        try {
-          const cacheKey = createCacheKey(networkId, body)
-          const cache = caches.default
-
-          // Clone the response before modifying it for cache storage
-          const responseToCache = new Response(JSON.stringify(json), {
-            headers: {
-              ...headers,
-              'Cache-Control': `public, max-age=${cacheTTL}`,
-            },
-          })
-
-          // Store the response in the cache with the specified TTL
-          await cache.put(new Request(cacheKey), responseToCache)
-        } catch (error) {
-          console.error('Error caching response:', error)
-          // Continue even if caching fails
-        }
-      }
+      // Store the response in the cache if applicable
+      await storeInCache(networkId, body, json, env)
 
       return jsonResponse
     } catch (error) {
