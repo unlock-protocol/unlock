@@ -4,7 +4,13 @@ import {
   getCacheTTL,
   createCacheKey,
   isRequestCacheable,
+  getKVContractTypeKey,
 } from './utils'
+import { ContractType } from './types'
+
+/**
+ * RPC RESPONSE CACHING
+ */
 
 /**
  * Checks if a request is cacheable and attempts to retrieve it from cache
@@ -89,5 +95,58 @@ export const storeRPCResponseInCache = async (
     console.error('Error caching response:', error)
     // Continue even if caching fails
     return false
+  }
+}
+
+/**
+ * Contract CACHING - KV STORAGE
+ */
+
+/**
+ * Retrieves a contract's status from KV storage
+ * Returns the contract status: UNLOCK_PROTOCOL_CONTRACT, OTHER_CONTRACT, NOT_DEPLOYED, or null if not found
+ */
+export const getContractStatusFromKV = async (
+  env: Env,
+  networkId: string,
+  lockAddress: string
+): Promise<ContractType | null> => {
+  if (!env.LOCK_CACHE) {
+    return null
+  }
+
+  try {
+    // Create a unique key combining network ID and address for multi-chain support
+    const key = getKVContractTypeKey(networkId, lockAddress)
+    const storedValue = await env.LOCK_CACHE.get(key)
+    if (storedValue === null) {
+      return null
+    }
+    return storedValue as ContractType
+  } catch (error) {
+    console.error('Error retrieving contract status from KV:', error)
+    return null
+  }
+}
+
+/**
+ * Stores a contract's status in KV storage
+ */
+export const storeContractStatusInKV = async (
+  env: Env,
+  networkId: string,
+  lockAddress: string,
+  status: ContractType
+): Promise<void> => {
+  if (!env.LOCK_CACHE) {
+    return
+  }
+
+  try {
+    const key = getKVContractTypeKey(networkId, lockAddress)
+    // Store with 30-day expiration (2592000 seconds)
+    await env.LOCK_CACHE.put(key, status.toString(), { expirationTtl: 2592000 })
+  } catch (error) {
+    console.error('Error storing contract status in KV:', error)
   }
 }
