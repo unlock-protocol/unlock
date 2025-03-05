@@ -1,4 +1,3 @@
-import { getLockStatusFromAllCaches, storeLockStatusInAllCaches } from './cache'
 import { Env } from './types'
 import { checkContractTypeOnChain } from './unlockContracts'
 import {
@@ -10,7 +9,7 @@ import {
 /**
  * Check if a contract should bypass rate limiting because it's an Unlock lock
  * This function determines if rate limiting should be skipped for Unlock lock contracts
- * It performs caching and verification as needed to identify lock contracts
+ * It performs verification to identify lock contracts
  */
 export const isUnlockContract = async (
   contractAddress: string,
@@ -20,27 +19,12 @@ export const isUnlockContract = async (
   if (!contractAddress) return false
 
   try {
-    // Step 1: Check all caches for the contract status
-    const knownContractResult = await getLockStatusFromAllCaches(
-      env,
-      networkId,
-      contractAddress
-    )
-
-    // If we have a definitive result from any cache, return it immediately
-    if (knownContractResult !== null) {
-      return knownContractResult
-    }
-
-    // Step 2: If not in cache, check contract type on-chain
+    // Check contract type on-chain
     const isLock = await checkContractTypeOnChain(
       contractAddress,
       networkId,
       env
     )
-
-    // Step 3: Store the result in all caches
-    await storeLockStatusInAllCaches(env, networkId, contractAddress, isLock)
 
     return isLock
   } catch (error) {

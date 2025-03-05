@@ -44,7 +44,7 @@ const isContractDeployed = async (
 }
 
 /**
- * Verify if an address is a lock by checking on-chain
+ * Verify if an address is a lock
  * This is a pure verification function
  */
 const verifyLockOnChain = async (
@@ -74,7 +74,7 @@ const verifyLockOnChain = async (
 }
 
 /**
- * Checks if a contract is an Unlock lock by verifying on-chain
+ * Checks if a contract is an Unlock contract
  */
 export const checkContractTypeOnChain = async (
   lockAddress: string,
