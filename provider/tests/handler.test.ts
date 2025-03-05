@@ -186,9 +186,9 @@ describe('Handler Functionality', () => {
       vi.spyOn(utils, 'isRequestCacheable').mockReturnValue(true)
 
       // Mock the cache functions directly
-      vi.spyOn(cache, 'getFromCache').mockResolvedValue(null)
+      vi.spyOn(cache, 'getRPCResponseFromCache').mockResolvedValue(null)
       const storeInCacheSpy = vi
-        .spyOn(cache, 'storeInCache')
+        .spyOn(cache, 'storeRPCResponseInCache')
         .mockResolvedValue(true)
 
       // Mock successful fetch response
@@ -224,7 +224,9 @@ describe('Handler Functionality', () => {
       )
 
       // Mock the cache functions directly
-      vi.spyOn(cache, 'getFromCache').mockResolvedValue(cachedResponse.clone())
+      vi.spyOn(cache, 'getRPCResponseFromCache').mockResolvedValue(
+        cachedResponse.clone()
+      )
 
       // Make sure fetch is never called
       global.fetch = vi.fn().mockImplementation(() => {

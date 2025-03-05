@@ -29,9 +29,9 @@ describe('Caching Functionality', () => {
     vi.spyOn(utils, 'isRequestCacheable').mockReturnValue(true)
 
     // Mock the cache functions directly
-    vi.spyOn(cache, 'getFromCache').mockResolvedValue(null)
+    vi.spyOn(cache, 'getRPCResponseFromCache').mockResolvedValue(null)
     const storeInCacheSpy = vi
-      .spyOn(cache, 'storeInCache')
+      .spyOn(cache, 'storeRPCResponseInCache')
       .mockResolvedValue(true)
 
     // Mock successful fetch response
@@ -44,7 +44,7 @@ describe('Caching Functionality', () => {
     await handler(mockRequest, mockEnv as Env)
 
     // Verify that the cache was checked first
-    expect(cache.getFromCache).toHaveBeenCalledTimes(1)
+    expect(cache.getRPCResponseFromCache).toHaveBeenCalledTimes(1)
 
     // Verify that the result was cached
     expect(storeInCacheSpy).toHaveBeenCalledTimes(1)
@@ -58,11 +58,11 @@ describe('Caching Functionality', () => {
     vi.spyOn(utils, 'isRequestCacheable').mockReturnValue(false)
 
     // Mock the cache functions directly to respect isRequestCacheable
-    vi.spyOn(cache, 'getFromCache').mockResolvedValue(null)
+    vi.spyOn(cache, 'getRPCResponseFromCache').mockResolvedValue(null)
 
     // Mock storeInCache to return false when isRequestCacheable is false
     const storeInCacheSpy = vi
-      .spyOn(cache, 'storeInCache')
+      .spyOn(cache, 'storeRPCResponseInCache')
       .mockImplementation(async (networkId, body, json, env) => {
         // This should return false because isRequestCacheable is mocked to return false
         return utils.isRequestCacheable(body)
@@ -107,7 +107,9 @@ describe('Caching Functionality', () => {
     )
 
     // Mock the cache functions directly
-    vi.spyOn(cache, 'getFromCache').mockResolvedValue(cachedResponse.clone())
+    vi.spyOn(cache, 'getRPCResponseFromCache').mockResolvedValue(
+      cachedResponse.clone()
+    )
 
     // Make sure fetch is never called
     global.fetch = vi.fn().mockImplementation(() => {
