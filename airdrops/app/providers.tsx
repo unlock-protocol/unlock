@@ -12,7 +12,7 @@ const Providers = ({ children }) => {
       config={{
         loginMethods: ['wallet'],
       }}
-      appId="cm2oqudm203nny8z9ho6chvyv"
+      appId="cm0ptl8td04urb29fpotv9q9y"
     >
       <QueryClientProvider client={queryClient}>
         <ToastProvider>{children}</ToastProvider>
