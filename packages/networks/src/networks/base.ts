@@ -101,7 +101,7 @@ export const base: NetworkConfig = {
 
   previousDeploys: [],
 
-  provider: 'http://localhost:8787/8453',
+  provider: 'https://rpc.unlock-protocol.com/8453',
 
   publicLockVersionToDeploy: 14,
 
