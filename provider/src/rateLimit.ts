@@ -37,13 +37,14 @@ export const isUnlockContract = async (
   if (!contractAddress) return false
 
   try {
-    // First, check if it's a known Unlock contract
+    // TODO: checkf if this is _any_ known contract (lock or Unlock)
     if (isKnownUnlockContract(contractAddress, networkId)) {
       return true
     }
 
-    // If not a known Unlock contract, check if it's a lock
-    return await checkIsLock(contractAddress, networkId, env)
+    // Only if a contract is unknown, check if it's a lock and then keep
+    // track of it!
+    return checkIsLock(contractAddress, networkId, env)
   } catch (error) {
     console.error('Error checking if contract is Unlock contract:', error)
     return false
@@ -187,5 +188,62 @@ export const getContractAddress = (
       error
     )
     return null
+  }
+}
+
+const shouldRateLimitSingle = async (
+  request: Request,
+  env: Env,
+  body: any,
+  networkId: string
+) => {
+  // Extract contract address if applicable
+  const contractAddress = getContractAddress(body.method, body.params)
+  if (!contractAddress) {
+    // If we can't determine the contract address, allow the request to proceed
+    return false
+  }
+
+  // Check if this is an Unlock contract (skip rate limiting if true)
+  if (await isUnlockContract(contractAddress, networkId, env)) {
+    return false
+  }
+
+  console.log(`Not an Unlock contract: ${contractAddress}`)
+
+  // TODO: consider applying strict rate limiting for all requests
+  // Would that apply to ERC20 contracts as well?
+  try {
+    return checkRateLimit(request, body.method, contractAddress, env)
+  } catch (error) {
+    console.error('Error checking rate limits:', error)
+    // On error, allow the request to proceed rather than blocking legitimate traffic
+    return false
+  }
+}
+
+/**
+ * Rate limit middleware for JSON RPC requests
+ * This function checks if the request should be rate limited
+ * If the request should be blocked, it returns a 429 response
+ * Otherwise, it calls the next middleware in the chain
+ */
+export const shouldRateLimit = async (
+  request: Request,
+  env: Env,
+  body: any,
+  networkId: string
+) => {
+  if (Array.isArray(body)) {
+    const shouldRateLimitRequests = await Promise.all(
+      body.map((singleBody) =>
+        shouldRateLimitSingle(request, env, singleBody, networkId)
+      )
+    )
+    return shouldRateLimitRequests.some(
+      (shouldRateLimitRequest) => shouldRateLimitRequest
+    )
+  } else {
+    return shouldRateLimitSingle(request, env, body, networkId)
   }
 }
