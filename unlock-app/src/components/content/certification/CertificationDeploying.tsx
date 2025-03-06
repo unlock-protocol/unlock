@@ -107,9 +107,8 @@ export const CertificationDeploying = ({
             ) : (
               <>
                 <p>
-                  {
-                    "We're almost there, but it's essential to make sure your certification is not transferable."
-                  }
+                  We&apos;re almost there, but it&apos;s essential to make sure
+                  your certification is not transferable.
                 </p>
                 <Button
                   className="my-4"
