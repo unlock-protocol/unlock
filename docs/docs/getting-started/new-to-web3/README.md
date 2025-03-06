@@ -7,6 +7,6 @@ description: Guide for developers who are new to web3.
 
 Even if you're an experienced web developer, if you're new to web3 there may be some things that you need in order to get started in the space.
 
-* [Ethereum achitecture overview](https://ethereum.org/en/developers/docs/intro-to-ethereum/)
+* [Ethereum architecture overview](https://ethereum.org/en/developers/docs/intro-to-ethereum/)
 * [What is a crypto wallet](https://coinbureau.com/education/types-of-crypto-wallets/)
 * [Introduction to dapps](https://ethereum.org/en/developers/docs/dapps/)
