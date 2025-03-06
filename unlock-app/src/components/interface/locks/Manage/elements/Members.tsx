@@ -58,7 +58,10 @@ export interface MembersProps {
 
   // Optional customization props - allowing components to be replaced
   MemberCard?: React.FC<MemberCardProps>
-  NoMemberNoFilter?: React.FC
+  NoMemberNoFilter: React.FC<{
+    toggleAirdropKeys: () => void
+    isManager: boolean
+  }>
   NoMemberWithFilter?: React.FC
   MembersActions?: React.FC<{ keys: any; filters: FilterProps }>
 
@@ -250,7 +253,9 @@ export const Members = ({
   // Render appropriate empty state based on filter status
   if (noItems) {
     if (!hasActiveFilter) {
-      return <NoMemberNoFilter />
+      return (
+        <NoMemberNoFilter toggleAirdropKeys={() => {}} isManager={isManager} />
+      )
     }
 
     return (
