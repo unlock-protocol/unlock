@@ -128,13 +128,7 @@ export const ManageLockContent = ({
         }}
       />
       <div className="min-h-screen bg-ui-secondary-200 pb-60">
-        <LockSelection
-          owner={owner}
-          setLockAddress={setLockAddress}
-          setNetwork={setNetwork}
-          lockAddress={lockAddress}
-          network={network}
-        />
+        <LockSelection />
         {!withoutParams && (
           <div className="pt-9">
             <div className="flex flex-col gap-3 mb-7">
