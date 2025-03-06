@@ -1,10 +1,6 @@
-import { QueriesOptions, useQueries, useQuery } from '@tanstack/react-query'
+import { QueriesOptions, useQueries } from '@tanstack/react-query'
 import { LockOrderBy, OrderDirection } from '@unlock-protocol/unlock-js'
 import { graphService } from '~/config/subgraph'
-import { useWeb3Service } from '~/utils/withWeb3Service'
-import { ethers } from 'ethers'
-import { useCallback, useMemo } from 'react'
-import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
 
 interface GetLocksParams {
   account: string
@@ -17,6 +13,13 @@ export const getLocksByNetworks = async ({
   networks,
 }: GetLocksParams) => {
   try {
+    // For now, only fetch locks for Base and Optimism
+    const filteredNetworks = networks.filter(
+      (network) =>
+        // Base network ID is 8453, Optimism network ID is 10
+        network === 8453 || network === 10
+    )
+
     return graphService.locks(
       {
         first: 1000,
@@ -27,7 +30,7 @@ export const getLocksByNetworks = async ({
         orderDirection: OrderDirection.Desc,
       },
       {
-        networks,
+        networks: filteredNetworks,
       }
     )
   } catch (error) {
@@ -38,6 +41,11 @@ export const getLocksByNetworks = async ({
 
 // Legacy support wrapper to maintain backwards compatibility
 export const getLocksByNetwork = async ({ account, network }: any) => {
+  // Only proceed if network is Base or Optimism
+  if (Number(network) !== 8453 && Number(network) !== 10) {
+    return []
+  }
+
   const results = await getLocksByNetworks({
     account,
     networks: [Number(network)],
@@ -50,164 +58,32 @@ const useLocksByManagerOnNetworks = (
   networkItems: [string, any][],
   context: string = 'default'
 ) => {
-  const networks = networkItems.map(([network]) => Number(network))
+  // Filter network items to only include Base and Optimism
+  const filteredNetworkItems = networkItems.filter(
+    ([network]) => Number(network) === 8453 || Number(network) === 10
+  )
+
+  const networks = filteredNetworkItems.map(([network]) => Number(network))
+  const stableNetworks = [...networks].sort((a, b) => a - b)
 
   const query: QueriesOptions<any> = {
-    queryKey: ['getLocks', networks.join(','), manager, context],
+    queryKey: ['getLocksList', stableNetworks.join(','), manager, context],
     queryFn: async () =>
       await getLocksByNetworks({
         account: manager,
-        networks,
+        networks: stableNetworks,
       }),
-    staleTime: 10 * 60 * 1000, // 10 minutes - increased
-    cacheTime: 60 * 60 * 1000, // 60 minutes - increased
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    cacheTime: 60 * 60 * 1000, // 60 minutes
     retry: 2,
     refetchOnWindowFocus: false,
-    refetchOnMount: false, // Explicitly disable refetch on mount
+    refetchOnReconnect: false,
+    refetchOnMount: false,
   }
 
   // Maintain backwards compatibility by wrapping the result in an array
   return useQueries({
     queries: [query],
-  })
-}
-
-export interface EnhancedLock {
-  address: string
-  name: string
-  network: number
-  tokenAddress: string
-  expirationDuration: string
-  totalKeys: number
-  price: string
-  balance: string
-  tokenSymbol: string
-  formattedKeyPrice: string
-  lockIcon: string
-}
-
-interface EnhancedLockData {
-  locks: any[]
-  enhanceLock: (lock: any, networkConfig: any) => Promise<EnhancedLock>
-  networkItems: [string, any][]
-}
-
-export const useEnhancedLocksByManager = (
-  manager: string,
-  networkItems: [string, any][],
-  context: string = 'list'
-) => {
-  const web3service = useWeb3Service()
-  const networks = networkItems.map(([network]) => Number(network))
-
-  // Add a simple cache to avoid duplicate requests
-  const iconCache = useMemo(() => new Map<string, string>(), [])
-
-  const enhanceLock = useCallback(
-    async (lock: any, networkConfig: any): Promise<EnhancedLock> => {
-      const { address, network, tokenAddress } = lock
-      const baseCurrencySymbol = networkConfig?.nativeCurrency?.symbol
-
-      // Check if we already have the icon in the cache
-      const iconCacheKey = `${network}-${address}`
-      const cachedIcon = iconCache.get(iconCacheKey)
-
-      // Ensure we have a storage host, defaulting to main network if not available
-      const storageHost =
-        networkConfig?.services?.storage?.host ||
-        'https://locksmith.unlock-protocol.com'
-
-      try {
-        // Fetch all details in parallel, but use cached icon if available
-        const [balance, tokenSymbol, decimals, lockIcon] = await Promise.all([
-          web3service.getAddressBalance(
-            address,
-            network,
-            tokenAddress === DEFAULT_USER_ACCOUNT_ADDRESS
-              ? undefined
-              : tokenAddress
-          ),
-          web3service.getTokenSymbol(tokenAddress, network),
-          web3service.getTokenDecimals(tokenAddress, network),
-          // Use cached icon or fetch it
-          cachedIcon
-            ? Promise.resolve(cachedIcon)
-            : fetch(
-                `${storageHost}/lock/${address}/icon`,
-                { method: 'GET', cache: 'force-cache' } // Add cache control
-              )
-                .then((res) => {
-                  if (!res.ok) return '/images/svg/default-lock-logo.svg'
-                  const iconUrl = `${storageHost}/lock/${address}/icon`
-                  iconCache.set(iconCacheKey, iconUrl)
-                  return iconUrl
-                })
-                .catch(() => {
-                  const defaultIcon = '/images/svg/default-lock-logo.svg'
-                  iconCache.set(iconCacheKey, defaultIcon)
-                  return defaultIcon
-                }),
-        ])
-
-        const formattedKeyPrice = ethers.formatUnits(
-          lock?.price || '0',
-          decimals
-        )
-        const symbol = tokenSymbol ?? baseCurrencySymbol
-
-        return {
-          ...lock,
-          balance,
-          tokenSymbol: symbol,
-          formattedKeyPrice,
-          lockIcon,
-        }
-      } catch (error) {
-        console.error(`Error enhancing lock ${address}:`, error)
-        return {
-          ...lock,
-          balance: '0',
-          tokenSymbol: baseCurrencySymbol,
-          formattedKeyPrice: '0',
-          lockIcon: '/images/svg/default-lock-logo.svg',
-        }
-      }
-    },
-    [web3service, iconCache]
-  )
-
-  const query: QueriesOptions<any> = {
-    queryKey: ['getLocks', networks.join(','), manager, context],
-    queryFn: async () =>
-      await getLocksByNetworks({
-        account: manager,
-        networks,
-      }),
-    staleTime: 10 * 60 * 1000, // 10 minutes - increased
-    cacheTime: 60 * 60 * 1000, // 60 minutes - increased
-    retry: 2,
-    refetchOnWindowFocus: false,
-  }
-
-  return useQuery<EnhancedLockData>({
-    queryKey: query.queryKey,
-    queryFn: async (): Promise<EnhancedLockData> => {
-      const locks = await getLocksByNetworks({
-        account: manager,
-        networks,
-      })
-
-      return {
-        locks,
-        enhanceLock,
-        networkItems,
-      }
-    },
-    staleTime: query.staleTime,
-    gcTime: query.cacheTime,
-    retry: query.retry,
-    refetchOnWindowFocus: query.refetchOnWindowFocus,
-    refetchOnMount: false, // Explicitly disable refetch on mount
   })
 }
 

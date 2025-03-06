@@ -1,29 +1,17 @@
-'use client'
-
-import React from 'react'
-import { useSearchParams } from 'next/navigation'
 import { ManageLockContent } from '~/components/interface/locks/Manage'
-import { useAuthenticate } from '~/hooks/useAuthenticate'
 
-const ManageLockPage: React.FC = () => {
-  const { account: owner } = useAuthenticate()
-  const searchParams = useSearchParams()
-
-  // Extract search params
-  const network = (searchParams.get('network') as string) || ''
-  const lockAddress = (searchParams.get('address') as string) || ''
-
-  if (!owner) {
-    return <div>Loading...</div>
+interface PageProps {
+  searchParams: {
+    network?: string
+    address?: string
   }
+}
 
-  return (
-    <ManageLockContent
-      owner={owner}
-      network={network}
-      lockAddress={lockAddress}
-    />
-  )
+const ManageLockPage = async ({ searchParams }: PageProps) => {
+  const network = searchParams.network || ''
+  const lockAddress = searchParams.address || ''
+
+  return <ManageLockContent network={network} lockAddress={lockAddress} />
 }
 
 export default ManageLockPage

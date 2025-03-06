@@ -20,23 +20,25 @@ import ActionBar from './elements/ActionBar'
 import NotManagerBanner from './elements/NotManagerBanner'
 import LockSelection from './elements/LockSelection'
 import NoMembersDisplay from './elements/NoMembersDisplay'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 export interface ManageLockContentProps {
-  owner: string
   network: string
   lockAddress: string
 }
 
 export const ManageLockContent = ({
-  owner,
   network: initialNetwork,
   lockAddress: initialLockAddress,
 }: ManageLockContentProps) => {
+  const { account: owner } = useAuthenticate()
   const [loading, setLoading] = useState(false)
   const [network, setNetwork] = useState<string>(initialNetwork || '')
   const [lockAddress, setLockAddress] = useState<string>(
     initialLockAddress || ''
   )
+
+  console.log('network', network)
   const [airdropKeys, setAirdropKeys] = useState(false)
 
   const lockNetwork = network ? parseInt(network as string) : undefined

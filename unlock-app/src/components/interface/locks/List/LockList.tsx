@@ -1,12 +1,11 @@
-'use client'
 import { Lock } from '~/unlockTypes'
 import { config } from '~/config/app'
 import { Placeholder } from '@unlock-protocol/ui'
 import useLocksByManagerOnNetworks from '~/hooks/useLocksByManager'
-import { ImageBar } from '../../Manage/elements/ImageBar'
+import { ImageBar } from '../Manage/elements/ImageBar'
 import { useCallback, useMemo, useState } from 'react'
 import { useAppStorage } from '~/hooks/useAppStorage'
-import { LocksByNetwork } from './LocksByNetwork'
+import { LocksByNetwork } from './elements/LocksByNetwork'
 
 export const NoItems = () => {
   return (

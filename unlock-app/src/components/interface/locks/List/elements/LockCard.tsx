@@ -6,11 +6,8 @@ import { IoMdTime as TimeIcon } from 'react-icons/io'
 import { FiKey as KeyIcon } from 'react-icons/fi'
 import Link from 'next/link'
 import { Lock } from '~/unlockTypes'
-import { DEFAULT_USER_ACCOUNT_ADDRESS, MAX_UINT } from '~/constants'
+import { MAX_UINT } from '~/constants'
 import Duration from '~/components/helpers/Duration'
-import { useWeb3Service } from '~/utils/withWeb3Service'
-import { useQueries } from '@tanstack/react-query'
-import { ethers } from 'ethers'
 import { Card, Detail, Icon } from '@unlock-protocol/ui'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { PriceFormatter } from '@unlock-protocol/ui'
@@ -20,12 +17,15 @@ import {
 } from 'react-icons/fa'
 import { FavoriteLocks } from './LockList'
 import { WrappedAddress } from '~/components/interface/WrappedAddress'
+import { LockData } from '~/hooks/useBatchLockData'
+import { config } from '~/config/app'
 
 interface LockCardProps {
   lock: any
   network: number
   favoriteLocks: FavoriteLocks
   setFavoriteLocks: (favoriteLocks: FavoriteLocks) => void
+  lockData?: LockData
 }
 
 interface LockIconProps {
@@ -61,57 +61,16 @@ export const LockCard = ({
   network,
   favoriteLocks,
   setFavoriteLocks,
+  lockData,
 }: LockCardProps) => {
-  const { networks } = useConfig()
-  const web3service = useWeb3Service()
-  const tokenAddress = lock?.tokenAddress
   const lockAddress = lock?.address
-  const baseCurrencySymbol = networks?.[network].nativeCurrency.symbol
+  const baseCurrencySymbol =
+    config.networks[String(network)]?.nativeCurrency.symbol || ''
 
-  const getBalance = async (
-    address: string,
-    chainId: number,
-    tokenAddress: string
-  ) => {
-    return await web3service.getAddressBalance(
-      address,
-      chainId,
-      tokenAddress === DEFAULT_USER_ACCOUNT_ADDRESS ? undefined : tokenAddress
-    )
-  }
-
-  const getSymbol = async () => {
-    return await web3service.getTokenSymbol(tokenAddress, network)
-  }
-
-  const getKeyPrice = async () => {
-    const decimals = await web3service.getTokenDecimals(tokenAddress, network)
-    return ethers.formatUnits(lock?.price, decimals)
-  }
-
-  const [
-    { isLoading: loadingBalance, data: balance },
-    { isLoading: loadingSymbol, data: tokenSymbol },
-    { isLoading: loadingPrice, data: keyPrice },
-  ] = useQueries({
-    queries: [
-      {
-        queryKey: ['getBalance', lockAddress, network, tokenAddress],
-        queryFn: async () =>
-          await getBalance(lockAddress, network, tokenAddress),
-      },
-      {
-        queryKey: ['getSymbol', lockAddress, network, tokenAddress],
-        queryFn: async () => await getSymbol(),
-      },
-      {
-        queryKey: ['getKeyPrice', lockAddress, network, tokenAddress],
-        queryFn: async () => await getKeyPrice(),
-      },
-    ],
-  })
-
-  const symbol = tokenSymbol ?? baseCurrencySymbol
+  const tokenSymbol = lockData?.tokenSymbol ?? baseCurrencySymbol ?? ''
+  const isLoading = !lockData
+  const balance = lockData ? lockData.balance : ''
+  const keyPrice = lockData ? lockData.keyPrice : ''
 
   const lockUrl = `/locks/lock?address=${lockAddress}&network=${network}`
 
@@ -133,8 +92,6 @@ export const LockCard = ({
     ) : (
       <Duration seconds={lock?.expirationDuration} />
     )
-
-  const isLoading = loadingBalance || loadingSymbol || loadingPrice
 
   return (
     <>
@@ -177,9 +134,9 @@ export const LockCard = ({
               truncate
             >
               <div className="flex items-center gap-2">
-                <CryptoIcon symbol={symbol} />
+                <CryptoIcon symbol={tokenSymbol} />
                 <span className="overflow-auto text-ellipsis">
-                  <PriceFormatter price={keyPrice ?? ''} precision={2} />
+                  <PriceFormatter price={keyPrice} precision={2} />
                 </span>
               </div>
             </Detail>
@@ -197,9 +154,9 @@ export const LockCard = ({
               truncate
             >
               <div className="flex items-center gap-2">
-                <CryptoIcon symbol={symbol} />
+                <CryptoIcon symbol={tokenSymbol} />
                 <span className="overflow-auto text-ellipsis">
-                  <PriceFormatter price={balance ?? ''} precision={2} />
+                  <PriceFormatter price={balance} precision={2} />
                 </span>
               </div>
             </Detail>

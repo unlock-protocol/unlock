@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState } from 'react'
 import { FiArrowRight as ArrowRightIcon } from 'react-icons/fi'
 import { AiOutlineTag as TagIcon } from 'react-icons/ai'
 import { IoMdTime as TimeIcon } from 'react-icons/io'
@@ -13,10 +13,8 @@ import {
   FaRegStar as FavoriteStar,
   FaStar as UnfavoriteStar,
 } from 'react-icons/fa'
-import { FavoriteLocks } from './LockList'
+import { EnhancedLock, FavoriteLocks } from './EnhancedLockList'
 import { WrappedAddress } from '~/components/interface/WrappedAddress'
-import { EnhancedLock } from '~/hooks/useLocksByManager'
-import { useQueryClient } from '@tanstack/react-query'
 
 interface EnhancedLockCardProps {
   lock: EnhancedLock
@@ -58,7 +56,6 @@ export const EnhancedLockCard = ({
 }: EnhancedLockCardProps) => {
   const lockAddress = lock.address
   const symbol = lock.tokenSymbol
-  const queryClient = useQueryClient()
 
   const lockUrl = `/locks/lock?address=${lockAddress}&network=${network}`
 
@@ -74,17 +71,8 @@ export const EnhancedLockCard = ({
     }
   }
 
-  // Prefetch data for the management page when user hovers the link
-  const prefetchLockData = useCallback(() => {
-    // Prefetch central lock data with management context
-    queryClient.prefetchQuery({
-      queryKey: ['centralizedLockData', lockAddress, network, 'management'],
-      staleTime: 10 * 60 * 1000, // 10 minutes
-    })
-  }, [lockAddress, network, queryClient])
-
   const duration =
-    lock?.expirationDuration === MAX_UINT ? (
+    lock?.expirationDuration?.toString() === MAX_UINT ? (
       'Unlimited'
     ) : (
       <Duration seconds={Number(lock?.expirationDuration)} />
@@ -95,7 +83,7 @@ export const EnhancedLockCard = ({
       <Card variant="simple" shadow="lg" padding="sm">
         <div className="grid items-center justify-between grid-cols-1 gap-7 md:gap-4 md:grid-cols-7">
           <div className="md:justify-start md:grid-cols-[56px_1fr] flex justify-around gap-3 md:col-span-3">
-            <LockIcon lockIcon={lock.lockIcon} />
+            <LockIcon lockIcon={lock.lockIcon || ''} />
             <div className="flex flex-col gap-2 w-1/3">
               <div className="flex gap-2">
                 <span className="text-2xl font-bold">{lock.name}</span>
@@ -130,10 +118,10 @@ export const EnhancedLockCard = ({
               truncate
             >
               <div className="flex items-center gap-2">
-                <CryptoIcon symbol={symbol} />
+                <CryptoIcon symbol={symbol || ''} />
                 <span className="overflow-auto text-ellipsis">
                   <PriceFormatter
-                    price={lock.formattedKeyPrice ?? ''}
+                    price={lock.formattedKeyPrice || ''}
                     precision={2}
                   />
                 </span>
@@ -152,9 +140,9 @@ export const EnhancedLockCard = ({
               truncate
             >
               <div className="flex items-center gap-2">
-                <CryptoIcon symbol={symbol} />
+                <CryptoIcon symbol={symbol || ''} />
                 <span className="overflow-auto text-ellipsis">
-                  <PriceFormatter price={lock.balance ?? ''} precision={2} />
+                  <PriceFormatter price={lock.balance || ''} precision={2} />
                 </span>
               </div>
             </Detail>
@@ -186,12 +174,7 @@ export const EnhancedLockCard = ({
             </Detail>
           </div>
           <div className="md:ml-auto md:col-span-1">
-            <Link
-              href={lockUrl}
-              aria-label="arrow right"
-              onMouseEnter={prefetchLockData}
-              onClick={prefetchLockData}
-            >
+            <Link href={lockUrl} aria-label="arrow right">
               <button className="flex items-center justify-between w-full md:w-auto">
                 <span className="text-base font-bold md:hidden">Manage</span>
                 <ArrowRightIcon size={20} />

@@ -1,62 +1,58 @@
-import { QueryClient, QueryCache } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
-import * as Sentry from '@sentry/nextjs'
-import { ToastHelper } from '@unlock-protocol/ui'
+import {
+  QueryClient,
+  isServer,
+  defaultShouldDehydrateQuery,
+} from '@tanstack/react-query'
 
-// Custom query client with enhanced deduplication
-export const queryClient = new QueryClient({
-  queryCache: new QueryCache({
-    onError: (error: any, query) => {
-      const id = Sentry.captureException(error, {
-        contexts: {
-          query: {
-            queryKey: query.queryKey,
-          },
-        },
-      })
-
-      console.debug(`Event ID: ${id}\n`, error)
-
-      if (query?.meta?.errorMessage) {
-        ToastHelper.error(query.meta.errorMessage as string)
-      } else {
-        switch (error?.code) {
-          case -32000:
-          case 4001:
-          case 'ACTION_REJECTED':
-            ToastHelper.error('Transaction rejected')
-            break
-          default: {
-            const errorMessage = error?.error?.message || error.message
-            console.error(errorMessage)
+function makeQueryClient() {
+  return new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 60 * 1000, // Set a reasonable staleTime to prevent refetches
+        refetchOnMount: false, // Prevent refetches on component mounts during navigation
+        refetchIntervalInBackground: false,
+        // Add retryDelay to space out retries and prevent flooding
+        retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 30000),
+        // Add longer gcTime to keep the cache around longer (5 minutes)
+        gcTime: 5 * 60 * 1000,
+        retry: (failureCount, error) => {
+          // More aggressive retry management
+          if (failureCount > 1) {
+            return false
           }
-        }
-      }
-    },
-  }),
-  defaultOptions: {
-    queries: {
-      staleTime: 5 * 60 * 1000, // 5 minutes (increased from 1 minute)
-      gcTime: 10 * 60 * 1000, // 10 minutes (increased from 5 minutes)
-      refetchInterval: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false, // Added to prevent refetches on component mounts during navigation
-      refetchIntervalInBackground: false,
-      // Add retryDelay to space out retries and prevent flooding
-      retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 30000),
-      retry: (failureCount, error) => {
-        // More aggressive retry management
-        if (failureCount > 1) {
-          return false
-        }
-        if (error instanceof AxiosError) {
-          return ![400, 401, 403, 404, 500].includes(
-            error.response?.status || 0
-          )
-        }
-        return false // Default to not retrying to prevent cascading requests
+          if (error instanceof AxiosError) {
+            return ![400, 401, 403, 404, 500].includes(
+              error.response?.status || 0
+            )
+          }
+          return false // Default to not retrying to prevent cascading requests
+        },
+      },
+      dehydrate: {
+        // Include pending queries in dehydration for streaming
+        shouldDehydrateQuery: (query) =>
+          defaultShouldDehydrateQuery(query) ||
+          query.state.status === 'pending',
       },
     },
-  },
-})
+  })
+}
+
+// Keep a reference to the query client in the browser
+let browserQueryClient: QueryClient | undefined = undefined
+
+export function getQueryClient() {
+  if (isServer) {
+    // Always make a new query client on the server
+    return makeQueryClient()
+  } else {
+    // For the browser, create the client only once
+    if (!browserQueryClient) browserQueryClient = makeQueryClient()
+    return browserQueryClient
+  }
+}
+
+// Backward compatibility for existing code that expects a queryClient export
+export const queryClient =
+  typeof window === 'undefined' ? makeQueryClient() : getQueryClient()

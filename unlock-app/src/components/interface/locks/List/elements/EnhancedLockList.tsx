@@ -1,19 +1,33 @@
 'use client'
 import { Disclosure } from '@headlessui/react'
-import { useConfig } from '~/utils/withConfig'
 import { config } from '~/config/app'
 import {
   RiArrowDropUpLine as UpIcon,
   RiArrowDropDownLine as DownIcon,
 } from 'react-icons/ri'
 import { Placeholder } from '@unlock-protocol/ui'
-import { useEnhancedLocksByManager } from '~/hooks/useLocksByManager'
+import useLocksByManagerOnNetworks from '~/hooks/useLocksByManager'
 import { ImageBar } from '../../Manage/elements/ImageBar'
-import { useCallback, useEffect, useMemo, useState, useRef } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useAppStorage } from '~/hooks/useAppStorage'
 import { EnhancedLockCard } from './EnhancedLockCard'
-import { EnhancedLock } from '~/hooks/useLocksByManager'
-import { useConfig as useUnlockConfig } from '~/utils/withConfig'
+
+// Define the EnhancedLock type
+export interface EnhancedLock {
+  address: string
+  name: string
+  network: number
+  keyPrice: string
+  expirationDuration: number
+  currencyContractAddress: string | null
+  currencySymbol: string
+  tokenSymbol?: string
+  totalKeys?: number
+  balance?: string
+  lockManagers?: string[]
+  version?: string
+  [key: string]: any // Allow for additional properties
+}
 
 export const NoItems = () => {
   return (
@@ -47,38 +61,62 @@ const EnhancedLocksByNetwork = ({
   favoriteLocks,
   setFavoriteLocks,
 }: EnhancedLocksByNetworkProps) => {
-  const { networks } = useConfig()
+  const { networks } = config
 
   const getNetworkName = (network: number) => {
-    const { name: networkName } = networks[network]
-    return networkName
+    return networks[network]?.name || `Network #${network}`
   }
 
+  // Count locks for this network
+  const lockCount = locks.length
+
+  // Skip rendering if no locks for this network
+  if (lockCount === 0 && !isLoading) {
+    return null
+  }
+
+  // Render loading state
   if (isLoading) {
     return (
-      <Placeholder.Root>
-        <Placeholder.Card />
-        <Placeholder.Card />
-        <Placeholder.Card />
-      </Placeholder.Root>
+      <div className="mb-6">
+        <Disclosure defaultOpen>
+          {() => (
+            <>
+              <Disclosure.Button className="flex w-full items-center justify-between rounded-lg bg-gray-100 p-4 text-left">
+                <span className="text-lg font-bold text-brand-dark">
+                  <Placeholder.Line width="md" />
+                </span>
+                <DownIcon className="h-8 w-8" aria-hidden="true" />
+              </Disclosure.Button>
+              <div className="mt-4">
+                <Placeholder.Card size="md" />
+              </div>
+            </>
+          )}
+        </Disclosure>
+      </div>
     )
   }
 
-  if (!locks || locks.length === 0) return null
-
+  // Render locks grouped by network
   return (
-    <div className="w-full">
+    <div className="mb-6">
       <Disclosure defaultOpen>
         {({ open }) => (
-          <div className="flex flex-col gap-2">
-            <Disclosure.Button className="flex items-center justify-between w-full outline-none ring-0">
-              <h2 className="text-lg font-bold text-brand-ui-primary">
-                {network ? getNetworkName(network) : 'Favorite'}
-              </h2>
+          <>
+            <Disclosure.Button className="flex w-full items-center justify-between rounded-lg bg-gray-100 p-4 text-left">
+              <div className="flex flex-col">
+                <span className="text-lg font-bold text-brand-dark">
+                  {getNetworkName(Number(network))}
+                </span>
+                <span className="text-sm text-brand-gray">
+                  {lockCount} Lock{lockCount !== 1 && 's'}
+                </span>
+              </div>
               {open ? (
-                <UpIcon className="fill-brand-ui-primary" size={24} />
+                <UpIcon className="h-8 w-8" aria-hidden="true" />
               ) : (
-                <DownIcon className="fill-brand-ui-primary" size={24} />
+                <DownIcon className="h-8 w-8" aria-hidden="true" />
               )}
             </Disclosure.Button>
             <Disclosure.Panel>
@@ -87,14 +125,14 @@ const EnhancedLocksByNetwork = ({
                   <EnhancedLockCard
                     key={`${lock.address}-${index}`}
                     lock={lock}
-                    network={network ? network : lock.network}
+                    network={Number(lock.network)}
                     favoriteLocks={favoriteLocks}
                     setFavoriteLocks={setFavoriteLocks}
                   />
                 ))}
               </div>
             </Disclosure.Panel>
-          </div>
+          </>
         )}
       </Disclosure>
     </div>
@@ -107,14 +145,10 @@ interface EnhancedLockListProps {
 
 export const EnhancedLockList = ({ owner }: EnhancedLockListProps) => {
   const { networks, defaultNetwork } = config
-  const unlockConfig = useUnlockConfig()
   const { getStorage, setStorage } = useAppStorage()
   const [enhancedLocks, setEnhancedLocks] = useState<EnhancedLock[]>([])
-  const [isProcessing, setIsProcessing] = useState(false)
 
-  // Add a ref to keep track of the latest processing run
-  const latestProcessIdRef = useRef<string | null>(null)
-
+  // Set up network items
   const networkItems = useMemo(() => {
     if (!networks) return []
     const networkEntries = Object.entries(networks)
@@ -129,152 +163,116 @@ export const EnhancedLockList = ({ owner }: EnhancedLockListProps) => {
     ]
   }, [networks, defaultNetwork])
 
-  const { data, isLoading, error } = useEnhancedLocksByManager(
-    owner,
-    networkItems,
-    'list'
-  )
+  // Use the useLocksByManagerOnNetworks hook
+  const [queryResult] = useLocksByManagerOnNetworks(owner, networkItems, 'list')
 
-  // Process locks as they come in (streaming approach)
+  const { data, isLoading, error } = queryResult || { isLoading: true }
+
+  // Process locks when data is available
   useEffect(() => {
-    // Skip if already processing or no data
-    if (isProcessing || !data || !data.locks || data.locks.length === 0) return
+    if (!data) return
 
-    // Reset state when data changes to avoid stale entries
-    setEnhancedLocks([])
-    setIsProcessing(true)
+    // Safely access data.locks with type checking
+    const locks =
+      data &&
+      typeof data === 'object' &&
+      'locks' in data &&
+      Array.isArray(data.locks)
+        ? data.locks
+        : []
 
-    // Process locks in batches to avoid blocking the UI
+    if (locks.length === 0) return
+
+    // Process all locks at once for simplicity
     const processLocks = async () => {
-      const { locks, enhanceLock, networkItems } = data
-      const batchSize = 5
-
-      // Create a unique identifier for this processing run to avoid race conditions
-      const processId = Date.now().toString()
-      latestProcessIdRef.current = processId
-
-      for (let i = 0; i < locks.length; i += batchSize) {
-        // If another process has started, abort this one
-        if (latestProcessIdRef.current !== processId) {
-          console.log('Process aborted, newer process started')
-          break
-        }
-
-        const batch = locks.slice(i, i + batchSize)
-        const batchPromises = batch.map(async (lock) => {
-          const networkConfig = unlockConfig.networks[lock.network]
-          return await enhanceLock(lock, networkConfig)
+      try {
+        // Map locks to enhanced locks
+        const processedLocks = locks.map((lock: any) => {
+          const networkConfig = networks[lock.network]
+          return {
+            ...lock,
+            network: Number(lock.network),
+            currencySymbol: networkConfig?.nativeCurrency.symbol || '',
+            // Add any other properties needed by EnhancedLockCard
+          } as EnhancedLock
         })
 
-        // Process batch in parallel
-        const batchResults = await Promise.all(batchPromises)
-
-        // Make sure this is still the latest processing run before updating state
-        if (latestProcessIdRef.current !== processId) break
-
-        // Add batch results and update state to trigger rendering
-        setEnhancedLocks((prev) => [...prev, ...batchResults])
-
-        // Small delay to allow UI to render between batches
-        if (i + batchSize < locks.length) {
-          await new Promise((resolve) => setTimeout(resolve, 50))
-        }
-      }
-
-      // Only reset processing state if this is still the latest run
-      if (latestProcessIdRef.current === processId) {
-        setIsProcessing(false)
+        setEnhancedLocks(processedLocks)
+      } catch (error) {
+        console.error('Error processing locks:', error)
       }
     }
 
-    // Use a try/catch to ensure we always reset isProcessing
-    try {
-      processLocks()
-    } catch (error) {
-      console.error('Error processing locks:', error)
-      setIsProcessing(false)
-    }
+    processLocks()
+  }, [data, networks])
 
-    // Cleanup function to abort processing if component unmounts or dependencies change
-    return () => {
-      latestProcessIdRef.current = null
-      setIsProcessing(false)
+  // Log errors
+  useEffect(() => {
+    if (error) {
+      console.error('Failed to load lock data:', error)
     }
-  }, [data, unlockConfig]) // Include unlockConfig but not isProcessing
+  }, [error])
 
+  // Load and manage favorite locks
   const [favoriteLocks, setFavoriteLocks] = useState<FavoriteLocks>(() => {
-    return getStorage('favoriteLocks') || {}
+    try {
+      const storedFavoriteLocks = getStorage('favoriteLocks')
+      return storedFavoriteLocks ? JSON.parse(storedFavoriteLocks) : {}
+    } catch (error) {
+      console.error('Failed to load favorite locks from storage:', error)
+      return {}
+    }
   })
 
-  const saveFavoriteLocks = useCallback(
-    (newFavoriteLocks: FavoriteLocks) => {
-      setFavoriteLocks(newFavoriteLocks)
-      setStorage('favoriteLocks', newFavoriteLocks)
-    },
-    [setStorage]
-  )
+  // Save favorite locks to storage when they change
+  useEffect(() => {
+    try {
+      setStorage('favoriteLocks', JSON.stringify(favoriteLocks))
+    } catch (error) {
+      console.error('Failed to save favorite locks to storage:', error)
+    }
+  }, [favoriteLocks, setStorage])
 
-  if (!networks || !owner) {
-    return (
-      <Placeholder.Root>
-        <Placeholder.Card />
-        <Placeholder.Card />
-        <Placeholder.Card />
-      </Placeholder.Root>
-    )
-  }
+  // Group locks by network
+  const locksByNetwork = useMemo(() => {
+    const grouped: Record<number, EnhancedLock[]> = {}
 
-  const hasError = error
-  const isLoadingOrProcessing = Boolean(
-    isLoading ||
-      (enhancedLocks.length === 0 && data?.locks && data.locks.length > 0)
-  )
+    enhancedLocks.forEach((lock) => {
+      const network = Number(lock.network)
+      if (!grouped[network]) {
+        grouped[network] = []
+      }
+      grouped[network].push(lock)
+    })
 
-  if (hasError) {
-    return (
-      <div className="text-center text-red-500">
-        Failed to load locks. Please try again later.
-      </div>
-    )
-  }
+    return grouped
+  }, [enhancedLocks])
 
-  const isEmpty = !isLoadingOrProcessing && enhancedLocks.length === 0
-
-  // Show favorite locks
-  const favoriteLocksList = enhancedLocks.filter(
-    (lock) => favoriteLocks[lock.address]
-  )
-
+  // Render locks by network
   return (
-    <div className="grid gap-20 mb-20">
-      {/* Favorites section */}
-      <EnhancedLocksByNetwork
-        isLoading={isLoadingOrProcessing}
-        locks={favoriteLocksList}
-        favoriteLocks={favoriteLocks}
-        setFavoriteLocks={saveFavoriteLocks}
-        network={null}
-      />
-
-      {/* Locks by network */}
-      {networkItems.map(([network]) => {
-        const locksForNetwork = enhancedLocks.filter(
-          (lock) => lock.network === Number(network)
-        )
-
-        return (
+    <div className="space-y-2">
+      {isLoading && Object.keys(locksByNetwork).length === 0 ? (
+        // Loading state
+        <div className="flex flex-col gap-6">
+          <Placeholder.Card size="md" />
+          <Placeholder.Card size="md" />
+        </div>
+      ) : enhancedLocks.length > 0 ? (
+        // Locks found
+        Object.entries(locksByNetwork).map(([network, locks]) => (
           <EnhancedLocksByNetwork
             key={network}
-            isLoading={isLoadingOrProcessing}
             network={Number(network)}
-            locks={locksForNetwork}
+            locks={locks}
+            isLoading={isLoading}
             favoriteLocks={favoriteLocks}
-            setFavoriteLocks={saveFavoriteLocks}
+            setFavoriteLocks={setFavoriteLocks}
           />
-        )
-      })}
-
-      {isEmpty && <NoItems />}
+        ))
+      ) : (
+        // No locks found
+        <NoItems />
+      )}
     </div>
   )
 }
