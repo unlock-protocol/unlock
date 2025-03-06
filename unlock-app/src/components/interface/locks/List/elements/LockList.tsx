@@ -154,7 +154,7 @@ export const LockList = ({ owner }: LockListProps) => {
     )
   }
 
-  const allLocks = (result.data as Lock[]) || []
+  const allLocks = (result.data as unknown as Lock[]) || []
   const isEmpty = !isLoading && allLocks.length === 0
 
   return (
