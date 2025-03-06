@@ -2,7 +2,7 @@ import supportedNetworks from './supportedNetworks'
 import { Env } from './types'
 import { shouldRateLimit } from './rateLimit'
 import { getRPCResponseFromCache, storeRPCResponseInCache } from './cache'
-import { RpcRequest, getCacheTTL, getClientIP } from './utils'
+import { RpcRequest, getClientIP } from './utils'
 
 const handler = async (request: Request, env: Env): Promise<Response> => {
   try {
@@ -22,7 +22,10 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
 
     // Blocking requests from the Chrome extension
     const origin = request.headers.get('origin')
-    if (origin === 'chrome-extension://mnkbccinkbalkmmnmbcicdobcmgggmfc') {
+    if (
+      origin &&
+      origin.match(/\b[a-zA-Z0-9_-]+-extension:\/\/[^ \n\r]+/) !== null
+    ) {
       return Response.json(
         { message: '' },
         {
@@ -30,9 +33,6 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
         }
       )
     }
-
-    // Get the cache TTL from environment or use default
-    const cacheTTL = getCacheTTL(env)
 
     // Handling CORS
     if (request.method === 'OPTIONS') {

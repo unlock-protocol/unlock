@@ -4,7 +4,6 @@ import React, { Suspense } from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { ReCaptchaProvider } from 'next-recaptcha-v3'
 
-import { SessionProvider } from '~/hooks/useSession'
 import { AirstackProvider } from '@airstack/airstack-react'
 import { ErrorBoundary } from '@sentry/nextjs'
 import { ErrorFallback } from '~/components/interface/ErrorFallback'
@@ -25,24 +24,22 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       <QueryClientProvider client={queryClient}>
         <ReCaptchaProvider reCaptchaKey={config.recaptchaKey}>
           <GlobalWrapper>
-            <SessionProvider>
-              <Suspense fallback={<LoadingFallback />}>
-                <ConnectModalProvider>
-                  <ToastProvider>
-                    <AirstackProvider
-                      apiKey={'162b7c4dda5c44afdb0857b6b04454f99'}
+            <Suspense fallback={<LoadingFallback />}>
+              <ConnectModalProvider>
+                <ToastProvider>
+                  <AirstackProvider
+                    apiKey={'162b7c4dda5c44afdb0857b6b04454f99'}
+                  >
+                    <ErrorBoundary
+                      fallback={(props: any) => <ErrorFallback {...props} />}
                     >
-                      <ErrorBoundary
-                        fallback={(props: any) => <ErrorFallback {...props} />}
-                      >
-                        <ShouldOpenConnectModal />
-                        {children}
-                      </ErrorBoundary>
-                    </AirstackProvider>
-                  </ToastProvider>
-                </ConnectModalProvider>
-              </Suspense>
-            </SessionProvider>
+                      <ShouldOpenConnectModal />
+                      {children}
+                    </ErrorBoundary>
+                  </AirstackProvider>
+                </ToastProvider>
+              </ConnectModalProvider>
+            </Suspense>
           </GlobalWrapper>
         </ReCaptchaProvider>
       </QueryClientProvider>

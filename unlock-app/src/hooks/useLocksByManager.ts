@@ -1,5 +1,6 @@
-import { QueriesOptions, useQueries } from '@tanstack/react-query'
-import { LockOrderBy, OrderDirection } from '@unlock-protocol/unlock-js'
+import { useQuery } from '@tanstack/react-query'
+import { LockOrderBy } from '@unlock-protocol/unlock-js'
+import { OrderDirection } from '@unlock-protocol/unlock-js'
 import { graphService } from '~/config/subgraph'
 
 interface GetLocksParams {
@@ -47,27 +48,20 @@ const useLocksByManagerOnNetworks = (
   networkItems: [string, any][]
 ) => {
   const networks = networkItems.map(([network]) => Number(network))
-  const stableNetworks = [...networks].sort((a, b) => a - b)
-
-  const query: QueriesOptions<any> = {
-    queryKey: ['getLocksList', stableNetworks.join(','), manager],
-    queryFn: async () =>
-      await getLocksByNetworks({
+  return useQuery({
+    queryKey: ['getLocks', networks.join(','), manager],
+    queryFn: async () => {
+      return getLocksByNetworks({
         account: manager,
-        networks: stableNetworks,
-      }),
-    staleTime: 30 * 1000,
-    cacheTime: 2 * 60 * 1000,
-    retry: 1,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-    refetchOnMount: false,
-    refetchInterval: 30 * 1000,
-    refetchIntervalInBackground: false,
-  }
-
-  return useQueries({
-    queries: [query],
+        networks,
+      })
+    },
+    retryOnMount: false,
+    staleTime: Infinity,
+    // staleTime: 5 * 60 * 1000, // 5 minutes
+    // gcTime: 30 * 60 * 1000, // 30 minutes
+    // retry: 2,
+    // refetchOnWindowFocus: false,
   })
 }
 
