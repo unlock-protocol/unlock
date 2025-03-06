@@ -102,17 +102,6 @@ export const getCrossChainRoute = async ({
     )
     .toString()
 
-  console.log('[RelayLink] Preparing route with:', {
-    sender,
-    srcChainId,
-    srcNetwork: network.name,
-    srcToken,
-    destChainId: lock.network,
-    destNetwork: networks[lock.network].name,
-    destToken: lock.currencyContractAddress || ADDRESS_ZERO,
-    totalPrice,
-  })
-
   const txs = []
 
   if (
@@ -146,8 +135,6 @@ export const getCrossChainRoute = async ({
     })
   }
 
-  console.log('[RelayLink] Transactions to execute:', txs)
-
   const baseUrl = 'https://api.relay.link/quote'
   const request = {
     user: sender,
@@ -160,34 +147,11 @@ export const getCrossChainRoute = async ({
     txs,
   }
 
-  console.log(
-    '[RelayLink] Sending request to API:',
-    JSON.stringify(request, null, 2)
-  )
-
   const response = await axios.post(baseUrl, request).catch(function (error) {
-    console.error('[RelayLink] API Error:', error.message)
-    if (error.response) {
-      console.error('[RelayLink] Error Response:', error.response.data)
-    }
-    return null
+    console.error(error)
   })
-
-  if (!response) {
-    console.error('[RelayLink] No response received from API')
-    return undefined
-  }
-
-  console.log('[RelayLink] API Response Status:', response.status)
-
   if (response?.status === 200) {
     const { data } = response
-    console.log('[RelayLink] Route found:', {
-      currencyIn: data.details.currencyIn,
-      currencyOut: data.details.currencyOut,
-      steps: data.steps.length,
-    })
-
     const relayStep = data.steps[data.steps.length - 1]
     const tx = relayStep.items[0].data
 
@@ -211,9 +175,5 @@ export const getCrossChainRoute = async ({
         url: 'https://relay.link',
       },
     } as CrossChainRoute
-  } else {
-    console.error('[RelayLink] API returned non-200 status:', response.status)
-    console.error('[RelayLink] Response data:', response.data)
-    return undefined
   }
 }

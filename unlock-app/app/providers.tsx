@@ -14,8 +14,8 @@ import GlobalWrapper from '~/components/interface/GlobalWrapper'
 import { ConnectModalProvider } from '~/hooks/useConnectModal'
 import Privy from '~/config/PrivyProvider'
 import LoadingFallback from './Components/LoadingFallback'
-import { config } from '~/config/app'
 import { getQueryClient } from '~/config/queryClient'
+import { config } from '~/config/app'
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const queryClient = getQueryClient()

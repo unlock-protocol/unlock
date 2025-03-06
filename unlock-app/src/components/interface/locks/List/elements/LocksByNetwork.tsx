@@ -8,8 +8,8 @@ import {
 } from 'react-icons/ri'
 import { LockCard } from './LockCard'
 import { FavoriteLocks } from './LockList'
-import useBatchLockData from '~/hooks/useBatchLockData'
 import { config } from '~/config/app'
+import { useLockListData } from '~/hooks/useLockData'
 
 interface LocksByNetworkProps {
   network: number | null
@@ -35,7 +35,7 @@ export const LocksByNetwork = ({
   const safeLocks = locks || []
 
   // retrieve lock data for all locks
-  const { data: batchData } = useBatchLockData(safeLocks)
+  const { data: batchData } = useLockListData(safeLocks)
 
   if (isLoading) {
     return (

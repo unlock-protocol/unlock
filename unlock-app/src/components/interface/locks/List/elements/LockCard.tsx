@@ -17,7 +17,7 @@ import {
 } from 'react-icons/fa'
 import { FavoriteLocks } from './LockList'
 import { WrappedAddress } from '~/components/interface/WrappedAddress'
-import { LockData } from '~/hooks/useBatchLockData'
+import { LockData } from '~/hooks/useLockData'
 import { config } from '~/config/app'
 
 interface LockCardProps {

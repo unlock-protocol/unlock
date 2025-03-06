@@ -69,6 +69,7 @@ export const useCrossChainRoutes = ({
 
   const { account } = useAuthenticate()
   const web3Service = useWeb3Service()
+
   const { recipients, paywallConfig, keyManagers, renew, tokenId } = context
 
   const { data: prices, isPending: isLoadingPrices } = useQuery({
@@ -77,13 +78,6 @@ export const useCrossChainRoutes = ({
       if (!purchaseData || !account || !lock || !recipients) {
         return []
       }
-
-      console.log('Fetching prices with params:', {
-        lockAddress: lock.address,
-        network: lock.network,
-        recipientsCount: recipients.length,
-        purchaseDataLength: purchaseData.length,
-      })
 
       const prices = await purchasePriceFor(web3Service, {
         lockAddress: lock.address,
@@ -96,7 +90,6 @@ export const useCrossChainRoutes = ({
       })
 
       const price = prices.reduce((acc, item) => acc + item.amount, 0)
-      console.log('Total price calculated:', price)
 
       if (isNaN(price) || price === 0) {
         return []
@@ -118,17 +111,9 @@ export const useCrossChainRoutes = ({
       .map((network) => ({
         queryKey: ['balance', account, network.id],
         queryFn: async () => {
-          const balance = await web3Service.getAddressBalance(
-            account!,
-            network.id
-          )
-          console.log(
-            `Balance for account ${account} on network ${network.name} (${network.id}):`,
-            balance
-          )
           return {
             network: network.id,
-            balance,
+            balance: await web3Service.getAddressBalance(account!, network.id),
           }
         },
         staleTime: 1000 * 60 * 5, // 5 minutes
@@ -148,17 +133,6 @@ export const useCrossChainRoutes = ({
       tokenId,
     ],
     queryFn: async () => {
-      console.log('Preparing shared params with:', {
-        sender: account,
-        lockAddress: lock.address,
-        lockNetwork: lock.network,
-        recipientsCount: recipients.length,
-        keyManagersCount: keyManagers?.length || 0,
-        purchaseDataLength: purchaseData?.length || 0,
-        renew,
-        tokenId,
-      })
-
       return prepareSharedParams({
         sender: account!,
         lock,
@@ -242,17 +216,6 @@ export const useCrossChainRoutes = ({
               ) {
                 return null
               }
-
-              console.log('Checking route with params:', {
-                sender: account,
-                lockAddress: lock.address,
-                lockNetwork: lock.network,
-                srcToken: token.address,
-                srcTokenSymbol: token.symbol,
-                srcChainId: network,
-                srcChainName: networks[network].name,
-              })
-
               const route = await getCrossChainRoute({
                 sender: account!,
                 lock,
@@ -285,28 +248,13 @@ export const useCrossChainRoutes = ({
                 )
               }
 
-              console.log('Route found with token balance:', {
-                network: networks[network].name,
-                tokenAddress: route.tokenPayment.tokenAddress,
-                tokenSymbol: token.symbol,
-                userTokenBalance,
-                paymentAmount: route.tokenPayment.amount,
-              })
-
               const amount = BigInt(route.tokenPayment.amount)
               const cost = ethers.formatUnits(
                 amount,
                 route.tokenPayment.decimals
               )
-              console.log('Route cost calculation:', {
-                cost,
-                userTokenBalance,
-                hasEnoughBalance: Number(cost) <= Number(userTokenBalance),
-              })
-
               if (Number(cost) > Number(userTokenBalance)) {
                 // Skip any route for which the user does not have enough tokens
-                console.log('Skipping route due to insufficient balance')
                 return null
               }
               return {
@@ -330,8 +278,6 @@ export const useCrossChainRoutes = ({
     .filter(
       (data?: CrossChainRouteWithBalance | null) => !!data
     ) as CrossChainRouteWithBalance[]
-
-  console.log('Final routes found:', routes.length)
 
   return {
     isLoading:
