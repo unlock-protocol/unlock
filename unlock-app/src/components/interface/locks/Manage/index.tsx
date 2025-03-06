@@ -1,6 +1,7 @@
 'use client'
 
 import { MdOutlineTipsAndUpdates } from 'react-icons/md'
+import { Button } from '@unlock-protocol/ui'
 import { useState, useCallback } from 'react'
 import { ConnectWalletModal } from '../../ConnectWalletModal'
 import { LockDetailCard } from './elements/LockDetailCard'
@@ -13,46 +14,49 @@ import {
   ExpirationStatus,
   FilterBar,
 } from './elements/FilterBar'
+import { useLockManager } from '~/hooks/useLockManager'
 import Link from 'next/link'
-import { useCentralizedLockData } from '~/hooks/useCentralizedLockData'
-import TopActionBar from './elements/TopActionBar'
-import ActionBar from './elements/ActionBar'
-import NotManagerBanner from './elements/NotManagerBanner'
-import LockSelection from './elements/LockSelection'
-import NoMembersDisplay from './elements/NoMembersDisplay'
+import { Picker } from '../../Picker'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { useCentralizedLockData } from '~/hooks/useCentralizedLockData'
+import { ActionBar } from '../elements/ActionBar'
 
-export interface ManageLockContentProps {
-  network: string
-  lockAddress: string
-}
+import { NotManagerBanner } from '../Settings'
+import { TopActionBar } from '../elements/TopActionBar'
+import NoMembersDisplay from '../elements/NoMembersDisplay'
 
 export const ManageLockContent = ({
   network: initialNetwork,
   lockAddress: initialLockAddress,
-}: ManageLockContentProps) => {
+}: {
+  network: string
+  lockAddress: string
+}) => {
   const { account: owner } = useAuthenticate()
   const [loading, setLoading] = useState(false)
-  const [network, setNetwork] = useState<string>(initialNetwork || '')
-  const [lockAddress, setLockAddress] = useState<string>(
-    initialLockAddress || ''
-  )
-
   const [airdropKeys, setAirdropKeys] = useState(false)
+  const [selectedLockAddress, setSelectedLockAddress] =
+    useState(initialLockAddress)
+  const [selectedNetwork, setSelectedNetwork] = useState(initialNetwork)
 
-  const lockNetwork = network ? parseInt(network as string) : undefined
-
-  const withoutParams = !(lockAddress && network)
+  const lockNetwork = selectedNetwork
+    ? parseInt(selectedNetwork as string)
+    : undefined
+  const withoutParams = !selectedLockAddress && !selectedNetwork
 
   // Centralized lock data query - this will be used by all components
   // that need lock data, eliminating redundant subgraph requests
   const { data: centralizedLockData, isLoading: isLoadingLockData } =
-    useCentralizedLockData(lockAddress, lockNetwork, owner, {
+    useCentralizedLockData(selectedLockAddress, lockNetwork, owner, {
       staleTime: 1 * 60 * 1000, // 1 minute default stale time
     })
 
-  const showNotManagerBanner =
-    !isLoadingLockData && !centralizedLockData?.isManager
+  const { isManager, isPending: isLoadingLockManager } = useLockManager({
+    lockAddress: selectedLockAddress,
+    network: lockNetwork!,
+  })
+
+  const showNotManagerBanner = !isLoadingLockManager && !isManager
 
   // Filtering and pagination state
   const [filters, setFilters] = useState({
@@ -72,14 +76,54 @@ export const ManageLockContent = ({
     return <ConnectWalletModal isOpen={true} setIsOpen={() => void 0} />
   }
 
+  // Component for selecting a lock when none is provided in the URL
+  const LockSelection = () => {
+    const resetLockSelection = () => {
+      setSelectedLockAddress('')
+      setSelectedNetwork('')
+    }
+
+    const hasLockSelected =
+      selectedLockAddress?.length > 0 && selectedNetwork?.length > 0
+
+    return (
+      <div>
+        {withoutParams ? (
+          <>
+            <h2 className="mb-2 text-lg font-bold text-brand-ui-primary">
+              Select a lock to start managing it
+            </h2>
+            <div className="w-1/2">
+              <Picker
+                userAddress={owner!}
+                onChange={({ lockAddress, network }) => {
+                  if (lockAddress && network) {
+                    setSelectedLockAddress(lockAddress)
+                    setSelectedNetwork(`${network}`)
+                  }
+                }}
+              />
+            </div>
+          </>
+        ) : (
+          !hasLockSelected && (
+            <Button onClick={resetLockSelection} variant="outlined-primary">
+              Change lock
+            </Button>
+          )
+        )}
+      </div>
+    )
+  }
+
   return (
     <>
       <AirdropKeysDrawer
         isOpen={airdropKeys}
         setIsOpen={setAirdropKeys}
         locks={{
-          [lockAddress]: {
-            network: parseInt(network!, 10),
+          [selectedLockAddress]: {
+            network: parseInt(selectedNetwork!, 10),
           },
         }}
       />
@@ -94,19 +138,26 @@ export const ManageLockContent = ({
         {!withoutParams && (
           <div className="pt-9">
             <div className="flex flex-col gap-3 mb-7">
-              <TopActionBar lockAddress={lockAddress} network={lockNetwork!} />
+              <TopActionBar
+                lockAddress={selectedLockAddress}
+                network={lockNetwork!}
+                isManager={isManager}
+              />
               <NetworkWarning network={lockNetwork!} />
               {showNotManagerBanner && <NotManagerBanner />}
             </div>
             <div className="flex flex-col lg:grid lg:grid-cols-12 gap-14">
               <div className="lg:col-span-3">
                 <LockDetailCard
-                  lockAddress={lockAddress}
+                  lockAddress={selectedLockAddress}
                   network={lockNetwork!}
                 />
               </div>
               <div className="flex flex-col gap-6 lg:col-span-9">
-                <TotalBar lockAddress={lockAddress} network={lockNetwork!} />
+                <TotalBar
+                  lockAddress={selectedLockAddress}
+                  network={lockNetwork!}
+                />
 
                 {/* Display event URL notification if available */}
                 {centralizedLockData?.eventDetails?.eventUrl && (
@@ -130,7 +181,7 @@ export const ManageLockContent = ({
                 {/* Action and filter components */}
                 <ActionBar
                   page={page}
-                  lockAddress={lockAddress}
+                  lockAddress={selectedLockAddress}
                   network={lockNetwork!}
                   isOpen={airdropKeys}
                   setIsOpen={setAirdropKeys}
@@ -145,7 +196,7 @@ export const ManageLockContent = ({
 
                 {/* Members list component with centralized data */}
                 <Members
-                  lockAddress={lockAddress}
+                  lockAddress={selectedLockAddress}
                   network={lockNetwork!}
                   filters={filters}
                   loading={loading || isLoadingLockData}
@@ -153,7 +204,10 @@ export const ManageLockContent = ({
                   page={page}
                   centralizedLockData={centralizedLockData}
                   NoMemberNoFilter={() => (
-                    <NoMembersDisplay toggleAirdropKeys={toggleAirdropKeys} />
+                    <NoMembersDisplay
+                      toggleAirdropKeys={toggleAirdropKeys}
+                      isManager={isManager}
+                    />
                   )}
                 />
               </div>

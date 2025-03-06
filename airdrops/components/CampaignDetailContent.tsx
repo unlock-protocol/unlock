@@ -4,7 +4,7 @@ import { AbiCoder, ethers } from 'ethers'
 import { usePrivy, useWallets } from '@privy-io/react-auth'
 import { Container } from './layout/Container'
 import { Button, Checkbox, ToastHelper } from '@unlock-protocol/ui'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 import { ConnectButton } from './auth/ConnectButton'
@@ -68,6 +68,10 @@ export default function CampaignDetailContent({
   const { authenticated } = usePrivy()
   const { wallets } = useWallets()
   const [termsOfServiceSignature, setTermsOfServiceSignature] = useState('')
+
+  useEffect(() => {
+    setTermsOfServiceSignature('')
+  }, [wallets[0]?.address])
 
   const {
     data: { eligible, claimed },
