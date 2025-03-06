@@ -13,13 +13,14 @@ export const createMockRequest = (
   networkId: string | number = '1',
   method = 'eth_blockNumber',
   params: any[] = [],
-  headers: Record<string, string> = {}
+  headers: Record<string, string> = {},
+  clientIP: string = '127.0.0.1'
 ) => {
   return new Request(`https://rpc.unlock-protocol.com/${networkId}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'CF-Connecting-IP': '127.0.0.1',
+      'CF-Connecting-IP': clientIP,
       ...headers,
     },
     body: JSON.stringify({
@@ -35,15 +36,22 @@ export const createMockRequest = (
 export const createEthCallRequest = (
   contractAddress = '0x123456789abcdef',
   data = '0x3b3b57de0000000000000000000000000000000000000000000000000000000000000000',
-  networkId = '1'
+  networkId = '1',
+  clientIP?: string
 ) => {
-  return createMockRequest(networkId, 'eth_call', [
-    {
-      to: contractAddress,
-      data,
-    },
-    'latest',
-  ])
+  return createMockRequest(
+    networkId,
+    'eth_call',
+    [
+      {
+        to: contractAddress,
+        data,
+      },
+      'latest',
+    ],
+    {},
+    clientIP
+  )
 }
 
 // Import the setupMocks file

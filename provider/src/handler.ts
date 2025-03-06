@@ -219,7 +219,6 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
       console.log(
         `RATE_LIMIT_WOULD_BLOCK: IP=${getClientIP(request)}, networkId=${networkId}, Body=${bodyAsString}`
       )
-
       // Original blocking code - commented out for monitoring period
       /*
       return Response.json(
