@@ -1,5 +1,5 @@
 import { describe, test, expect, vi, beforeEach } from 'vitest'
-import { Env } from '../src/types'
+import { Env, ContractType } from '../src/types'
 import * as rateLimit from '../src/rateLimit'
 import * as utils from '../src/utils'
 import * as unlockContracts from '../src/unlockContracts'
@@ -21,21 +21,21 @@ describe('Rate Limit Module', () => {
   })
 
   test('shouldRateLimitSingle should exempt Unlock contracts', async () => {
-    // Create a mock implementation of shouldRateLimitSingle that we can test
     const originalShouldRateLimitSingle = rateLimit.shouldRateLimitSingle
 
     // Mock getContractAddress to return a test address
     const mockContractAddress = '0xMockUnlockContract'
     vi.spyOn(utils, 'getContractAddress').mockReturnValue(mockContractAddress)
 
-    // Mock isAllowedContract to return true
-    vi.spyOn(unlockContracts, 'isAllowedContract').mockReturnValue(true)
+    // Mock checkContractTypeOnChain to return the Unlock contract type
+    vi.spyOn(unlockContracts, 'checkContractTypeOnChain').mockResolvedValue(
+      ContractType.UNLOCK_PROTOCOL_CONTRACT
+    )
 
     // Create a mock request
-    const mockRequest = createMockRequest('1', 'eth_call')
+    const mockRequest = createMockRequest('1', 'eth_call', [], {}, '127.0.0.1')
     const mockBody = { method: 'eth_call', params: [] }
 
-    // Call the function under test
     const result = await originalShouldRateLimitSingle(
       mockRequest,
       mockEnv as Env,
@@ -48,15 +48,16 @@ describe('Rate Limit Module', () => {
 
     // Verify our mocks were called
     expect(utils.getContractAddress).toHaveBeenCalledWith('eth_call', [])
-    expect(unlockContracts.isAllowedContract).toHaveBeenCalledWith(
+    expect(unlockContracts.checkContractTypeOnChain).toHaveBeenCalledWith(
       mockContractAddress,
-      '1'
+      '1',
+      mockEnv
     )
   })
 
   test('shouldRateLimit should process batch requests correctly', async () => {
     // Create a mock request
-    const mockRequest = createMockRequest('1', 'eth_call')
+    const mockRequest = createMockRequest('1', 'eth_call', [], {}, '127.0.0.1')
 
     // Prepare a batch of requests
     const batchBody = [
@@ -120,12 +121,11 @@ describe('Rate Limit Module', () => {
     expect(resultWithRateLimit).toBe(true)
   })
 
-  test('isAllowedContract should check and return correct results', async () => {
-    // Mock isAllowedContract to return true
-    vi.spyOn(unlockContracts, 'isAllowedContract').mockReturnValue(true)
-
-    // Mock checkIsLock to ensure it's not called
-    const checkIsLockSpy = vi.spyOn(unlockContracts, 'checkIsLock')
+  test('isUnlockContract should check and return correct results', async () => {
+    // Mock checkContractTypeOnChain to return Unlock contract type
+    vi.spyOn(unlockContracts, 'checkContractTypeOnChain').mockResolvedValue(
+      ContractType.UNLOCK_PROTOCOL_CONTRACT
+    )
 
     // Call isAllowedContract directly
     const result = await rateLimit.isAllowedContract(
@@ -134,16 +134,14 @@ describe('Rate Limit Module', () => {
       mockEnv as Env
     )
 
-    // Should return true since we mocked isAllowedContract to return true
+    // Should return true since we mocked checkContractTypeOnChain to return the Unlock contract type
     expect(result).toBe(true)
 
-    // Verify isAllowedContract was called with the right parameters
-    expect(unlockContracts.isAllowedContract).toHaveBeenCalledWith(
+    // Verify checkContractTypeOnChain was called with the right parameters
+    expect(unlockContracts.checkContractTypeOnChain).toHaveBeenCalledWith(
       '0xMockUnlockContract',
-      '1'
+      '1',
+      mockEnv
     )
-
-    // checkIsLock should not be called when isAllowedContract returns true
-    expect(checkIsLockSpy).not.toHaveBeenCalled()
   })
 })

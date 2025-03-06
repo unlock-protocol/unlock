@@ -17,10 +17,10 @@ interface ApprovedContractsByChain {
 
 const OTHER_APPROVED_CONTRACTS: ApprovedContractsByChain = {
   '1': {
-    '0x231b0ee14048e9dccd1d247744d114a4eb5e8e63': true, // ENS Resolver
+    '0x231b0Ee14048e9dCcD1d247744d114a4EB5E8E63': true, // ENS Resolver
   },
   '8453': {
-    '0xc6d566a56a1aff6508b41f6c90ff131615583bcd': true, // Basename Resolver
+    '0xC6d566A56A1aFf6508b41f6c90ff131615583BCD': true, // Basename Resolver
   },
 }
 

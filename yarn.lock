@@ -18429,6 +18429,23 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@unlock-protocol/provider@workspace:provider":
+  version: 0.0.0-use.local
+  resolution: "@unlock-protocol/provider@workspace:provider"
+  dependencies:
+    "@cloudflare/workers-types": "npm:4.20250129.0"
+    "@types/node": "npm:22.13.8"
+    "@unlock-protocol/contracts": "workspace:^"
+    "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
+    "@unlock-protocol/networks": "workspace:^"
+    eslint: "npm:9.11.1"
+    ethers: "npm:6.13.5"
+    typescript: "npm:5.8.2"
+    vitest: "npm:2.1.9"
+    wrangler: "npm:3.111.0"
+  languageName: unknown
+  linkType: soft
+
 "@unlock-protocol/smart-contracts@workspace:smart-contracts":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/smart-contracts@workspace:smart-contracts"
@@ -43257,21 +43274,6 @@ __metadata:
   checksum: 10/408423506610f70858d7593632f4a6aa4f05796c90fd632be9b9252457c795acc71aa6d3b54bb7f48a890141728fee4ca3906723ccea6c202ad71f21b3879b8b
   languageName: node
   linkType: hard
-
-"provider@workspace:provider":
-  version: 0.0.0-use.local
-  resolution: "provider@workspace:provider"
-  dependencies:
-    "@cloudflare/workers-types": "npm:4.20250129.0"
-    "@types/node": "npm:22.13.8"
-    "@unlock-protocol/contracts": "workspace:^"
-    "@unlock-protocol/networks": "workspace:^"
-    ethers: "npm:6.13.5"
-    typescript: "npm:5.8.2"
-    vitest: "npm:2.1.9"
-    wrangler: "npm:3.111.0"
-  languageName: unknown
-  linkType: soft
 
 "proxy-addr@npm:^2.0.7, proxy-addr@npm:~2.0.7":
   version: 2.0.7

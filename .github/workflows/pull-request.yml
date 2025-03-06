@@ -17,6 +17,7 @@ jobs:
         "smart-contracts",
         "subgraph",
         "governance",
+        "provider",
         "unlock-protocol-com",
         "wedlocks",
         "unlock-app",

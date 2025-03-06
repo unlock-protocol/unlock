@@ -50,7 +50,13 @@ describe('Handler Functionality', () => {
 
   test('Handles invalid network ID', async () => {
     // Create request with invalid network ID
-    const invalidRequest = createMockRequest('invalid')
+    const invalidRequest = createMockRequest(
+      'invalid',
+      'eth_blockNumber',
+      [],
+      {},
+      '127.0.0.1'
+    )
 
     const response = await handler(invalidRequest, mockEnv as Env)
     expect(response.status).toBe(404)
@@ -86,9 +92,15 @@ describe('Handler Functionality', () => {
   describe('Rate Limiting', () => {
     test('Should process requests that are not rate limited', async () => {
       // Create a request with CF-Ray header
-      const mockRateRequest = createMockRequest('1', 'eth_blockNumber', [], {
-        'CF-Ray': '12345678abcdef',
-      })
+      const mockRateRequest = createMockRequest(
+        '1',
+        'eth_blockNumber',
+        [],
+        {
+          'CF-Ray': '12345678abcdef',
+        },
+        '127.0.0.1'
+      )
 
       // Mock successful fetch response
       const mockResponse = new Response(
@@ -111,9 +123,15 @@ describe('Handler Functionality', () => {
 
     test('Should handle rate limited requests', async () => {
       // Create a request with rate-limited CF-Ray header
-      const mockRateRequest = createMockRequest('1', 'eth_blockNumber', [], {
-        'CF-Ray': 'rate-limited-12345',
-      })
+      const mockRateRequest = createMockRequest(
+        '1',
+        'eth_blockNumber',
+        [],
+        {
+          'CF-Ray': 'rate-limited-12345',
+        },
+        '127.0.0.1'
+      )
 
       // Set up the mock to rate limit this request
       vi.spyOn(rateLimit, 'shouldRateLimit').mockResolvedValue(true)
