@@ -46,7 +46,7 @@ export const LockList = ({ owner }: LockListProps) => {
     ]
   }, [networks, defaultNetwork])
 
-  const results = useLocksByManagerOnNetworks(owner, networkItems, 'list')
+  const results = useLocksByManagerOnNetworks(owner, networkItems)
   const result = results[0]
 
   const [favoriteLocks, setFavoriteLocks] = useState<FavoriteLocks>(() => {

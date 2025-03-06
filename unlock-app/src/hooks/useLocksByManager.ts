@@ -44,29 +44,28 @@ export const getLocksByNetwork = async ({ account, network }: any) => {
 
 const useLocksByManagerOnNetworks = (
   manager: string,
-  networkItems: [string, any][],
-  context: string = 'default'
+  networkItems: [string, any][]
 ) => {
   const networks = networkItems.map(([network]) => Number(network))
-
   const stableNetworks = [...networks].sort((a, b) => a - b)
 
   const query: QueriesOptions<any> = {
-    queryKey: ['getLocksList', stableNetworks.join(','), manager, context],
+    queryKey: ['getLocksList', stableNetworks.join(','), manager],
     queryFn: async () =>
       await getLocksByNetworks({
         account: manager,
         networks: stableNetworks,
       }),
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    cacheTime: 60 * 60 * 1000, // 60 minutes
-    retry: 2,
+    staleTime: 30 * 1000,
+    cacheTime: 2 * 60 * 1000,
+    retry: 1,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     refetchOnMount: false,
+    refetchInterval: 30 * 1000,
+    refetchIntervalInBackground: false,
   }
 
-  // Maintain backwards compatibility by wrapping the result in an array
   return useQueries({
     queries: [query],
   })

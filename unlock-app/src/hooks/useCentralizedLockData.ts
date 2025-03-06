@@ -15,7 +15,13 @@ export const useCentralizedLockData = (
   }
 ) => {
   return useQuery({
-    queryKey: ['centralizedLockData', lockAddress, network, 'management'],
+    queryKey: [
+      'centralizedLockData',
+      lockAddress,
+      network,
+      owner?.toLowerCase(),
+      'management',
+    ],
     // Only run this query when we have valid lock parameters
     enabled: !!lockAddress && !!network && !!owner,
     queryFn: async () => {
