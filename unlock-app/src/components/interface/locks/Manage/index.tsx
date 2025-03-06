@@ -38,7 +38,6 @@ export const ManageLockContent = ({
     initialLockAddress || ''
   )
 
-  console.log('network', network)
   const [airdropKeys, setAirdropKeys] = useState(false)
 
   const lockNetwork = network ? parseInt(network as string) : undefined

@@ -13,26 +13,20 @@ export const getLocksByNetworks = async ({
   networks,
 }: GetLocksParams) => {
   try {
-    // For now, only fetch locks for Base and Optimism
-    const filteredNetworks = networks.filter(
-      (network) =>
-        // Base network ID is 8453, Optimism network ID is 10
-        network === 8453 || network === 10
-    )
-
-    return graphService.locks(
-      {
-        first: 1000,
-        where: {
-          lockManagers_contains: [account],
+    // Fetch locks for all provided networks in parallel
+    const lockPromises = networks.map((network) =>
+      graphService.locks(
+        {
+          first: 1000,
+          where: { lockManagers_contains: [account] },
+          orderBy: LockOrderBy.CreatedAtBlock,
+          orderDirection: OrderDirection.Desc,
         },
-        orderBy: LockOrderBy.CreatedAtBlock,
-        orderDirection: OrderDirection.Desc,
-      },
-      {
-        networks: filteredNetworks,
-      }
+        { networks: [network] }
+      )
     )
+    const results = await Promise.all(lockPromises)
+    return results.flat()
   } catch (error) {
     console.error('Failed to fetch locks:', error)
     return []
@@ -41,11 +35,6 @@ export const getLocksByNetworks = async ({
 
 // Legacy support wrapper to maintain backwards compatibility
 export const getLocksByNetwork = async ({ account, network }: any) => {
-  // Only proceed if network is Base or Optimism
-  if (Number(network) !== 8453 && Number(network) !== 10) {
-    return []
-  }
-
   const results = await getLocksByNetworks({
     account,
     networks: [Number(network)],
@@ -58,12 +47,8 @@ const useLocksByManagerOnNetworks = (
   networkItems: [string, any][],
   context: string = 'default'
 ) => {
-  // Filter network items to only include Base and Optimism
-  const filteredNetworkItems = networkItems.filter(
-    ([network]) => Number(network) === 8453 || Number(network) === 10
-  )
+  const networks = networkItems.map(([network]) => Number(network))
 
-  const networks = filteredNetworkItems.map(([network]) => Number(network))
   const stableNetworks = [...networks].sort((a, b) => a - b)
 
   const query: QueriesOptions<any> = {

@@ -1,7 +1,6 @@
 'use client'
 import { Disclosure } from '@headlessui/react'
 import { Lock } from '~/unlockTypes'
-import { useConfig } from '~/utils/withConfig'
 import { Placeholder } from '@unlock-protocol/ui'
 import {
   RiArrowDropUpLine as UpIcon,
@@ -10,6 +9,7 @@ import {
 import { LockCard } from './LockCard'
 import { FavoriteLocks } from './LockList'
 import useBatchLockData from '~/hooks/useBatchLockData'
+import { config } from '~/config/app'
 
 interface LocksByNetworkProps {
   network: number | null
@@ -26,10 +26,8 @@ export const LocksByNetwork = ({
   favoriteLocks,
   setFavoriteLocks,
 }: LocksByNetworkProps) => {
-  const { networks } = useConfig()
-
   const getNetworkName = (network: number) => {
-    const { name: networkName } = networks[network]
+    const { name: networkName } = config.networks[network]
     return networkName
   }
 
