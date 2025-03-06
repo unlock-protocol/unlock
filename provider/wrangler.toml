@@ -33,7 +33,7 @@ port = 8787
 [[kv_namespaces]]
 binding = "ALLOWED_CONTRACTS"
 preview_id = "dev-allowed-contracts"
-id = "37d25438af6b4ab08ec710e776f7217e"
+id = "9073bea6f14048f09e64e75bcb3fba81"
 
 [observability]
 enabled = true
