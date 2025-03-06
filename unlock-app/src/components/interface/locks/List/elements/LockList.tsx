@@ -38,17 +38,17 @@ const Description = ({
   )
 }
 
-const NoItems = () => {
+const StatusMessage = ({ children }: { children: React.ReactNode }) => {
   return (
     <ImageBar
       src="/images/illustrations/no-locks.svg"
-      description={
-        <>
-          <span>You have not created any locks yet. </span>
-        </>
-      }
+      description={<span>{children}</span>}
     />
   )
+}
+
+const NoItems = () => {
+  return <StatusMessage>You have not created any locks yet.</StatusMessage>
 }
 
 export const LockList = () => {
@@ -95,14 +95,16 @@ export const LockList = () => {
   }
 
   const renderContent = () => {
-    if (!networks || !owner) {
+    if (!networks) {
       return (
-        <Placeholder.Root>
-          <Placeholder.Card />
-          <Placeholder.Card />
-          <Placeholder.Card />
-        </Placeholder.Root>
+        <StatusMessage>
+          Network configuration is missing. Please try again later.
+        </StatusMessage>
       )
+    }
+
+    if (!owner) {
+      return <WalletNotConnected />
     }
 
     const isLoading = result?.isLoading
@@ -110,9 +112,19 @@ export const LockList = () => {
 
     if (hasError) {
       return (
-        <div className="text-center text-red-500">
+        <StatusMessage>
           Failed to load locks. Please try again later.
-        </div>
+        </StatusMessage>
+      )
+    }
+
+    if (isLoading) {
+      return (
+        <Placeholder.Root>
+          <Placeholder.Card />
+          <Placeholder.Card />
+          <Placeholder.Card />
+        </Placeholder.Root>
       )
     }
 
@@ -158,7 +170,7 @@ export const LockList = () => {
           showCreateButton={!!account}
         />
       </div>
-      {!owner ? <WalletNotConnected /> : renderContent()}
+      {renderContent()}
     </div>
   )
 }
