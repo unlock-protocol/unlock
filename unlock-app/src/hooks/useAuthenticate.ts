@@ -1,5 +1,4 @@
 import { usePrivy, useWallets } from '@privy-io/react-auth'
-import { useAppStorage } from './useAppStorage'
 import { useContext, useEffect } from 'react'
 import {
   getAccessToken,
@@ -8,7 +7,6 @@ import {
 } from '~/utils/session'
 import { locksmith } from '~/config/locksmith'
 import { useQueryClient } from '@tanstack/react-query'
-import { useSession } from './useSession'
 import { useSIWE } from './useSIWE'
 import { ToastHelper } from '@unlock-protocol/ui'
 import { useProvider } from './useProvider'
@@ -16,13 +14,10 @@ import AuthenticationContext from '~/contexts/AuthenticationContext'
 import { onSignedInWithPrivy } from '~/config/PrivyProvider'
 
 // This hook includes *all* signIn and signOut methods
-// TODO: consider adding useSession() stuff here too?
 export function useAuthenticate() {
   const { account, setAccount } = useContext(AuthenticationContext)
 
   const { setProvider } = useProvider()
-  const { refetchSession } = useSession()
-  const { setStorage } = useAppStorage()
   const {
     logout: privyLogout,
     ready: privyReady,
@@ -36,18 +31,12 @@ export function useAuthenticate() {
 
   // When a user is logged in, this method is called to set the account and refetch the session
   const onSignedIn = async (walletAddress: string) => {
-    const changed = setStorage('account', walletAddress)
-    if (changed) {
-      await Promise.all([queryClient.refetchQueries(), refetchSession()])
-    }
+    window.dispatchEvent(
+      new CustomEvent('locksmith.authenticated', {
+        detail: walletAddress,
+      })
+    )
   }
-
-  // // Detects when login was successful via an event
-  // useEffect(() => {
-  //   if (account) {
-  //     onSignedIn(account)
-  //   }
-  // }, [account])
 
   // Method that tries to sign in with an existing session
   const signInWithExistingSession = async () => {
@@ -73,11 +62,6 @@ export function useAuthenticate() {
         const { walletAddress } = response.data
         if (walletAddress && wallets.length > 0) {
           await onSignedIn(walletAddress)
-          window.dispatchEvent(
-            new CustomEvent('locksmith.authenticated', {
-              detail: walletAddress,
-            })
-          )
           return true
         }
       } catch (error) {
@@ -99,7 +83,7 @@ export function useAuthenticate() {
         removeAccessToken()
       }
       setAccount(undefined)
-      await Promise.all([queryClient.invalidateQueries(), refetchSession()])
+      await Promise.all([queryClient.invalidateQueries()])
     } catch (error) {
       console.error(error)
     }
@@ -122,11 +106,6 @@ export function useAuthenticate() {
             walletAddress,
           })
           await onSignedIn(walletAddress)
-          window.dispatchEvent(
-            new CustomEvent('locksmith.authenticated', {
-              detail: walletAddress,
-            })
-          )
         } else {
           console.error('Error logging in with SIWE:', response)
           ToastHelper.error(

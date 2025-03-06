@@ -56,3 +56,8 @@ export const queryClient = new QueryClient({
     },
   },
 })
+
+window.addEventListener('locksmith.authenticated', async (event: any) => {
+  console.log('refetching queries')
+  queryClient.refetchQueries()
+})

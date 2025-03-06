@@ -50,7 +50,6 @@ const useLocksByManagerOnNetworks = (
   return useQuery({
     queryKey: ['getLocks', networks.join(','), manager],
     queryFn: async () => {
-      console.log('Inside hook called!')
       return getLocksByNetworks({
         account: manager,
         networks,
