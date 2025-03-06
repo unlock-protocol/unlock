@@ -23,7 +23,12 @@ describe('Caching Functionality', () => {
 
   test('Cacheable methods should be cached', async () => {
     // Create a request for eth_call (should be cached)
-    const mockRequest = createEthCallRequest()
+    const mockRequest = createEthCallRequest(
+      '0xAddress',
+      '0xData',
+      '1',
+      '127.0.0.1'
+    )
 
     // Enable caching for this test
     vi.spyOn(utils, 'isRequestCacheable').mockReturnValue(true)
@@ -52,7 +57,13 @@ describe('Caching Functionality', () => {
 
   test('Non-cacheable methods should not be cached', async () => {
     // Create a request for eth_blockNumber (should not be cached)
-    const mockRequest = createMockRequest('1', 'eth_blockNumber', [])
+    const mockRequest = createMockRequest(
+      '1',
+      'eth_blockNumber',
+      [],
+      {},
+      '127.0.0.1'
+    )
 
     // Ensure this is not cacheable
     vi.spyOn(utils, 'isRequestCacheable').mockReturnValue(false)
@@ -90,7 +101,12 @@ describe('Caching Functionality', () => {
 
   test('Cached responses should be returned directly', async () => {
     // Create a request for eth_call (should be cached)
-    const mockRequest = createEthCallRequest()
+    const mockRequest = createEthCallRequest(
+      '0xAddress',
+      '0xData',
+      '1',
+      '127.0.0.1'
+    )
 
     // Enable caching for this test
     vi.spyOn(utils, 'isRequestCacheable').mockReturnValue(true)

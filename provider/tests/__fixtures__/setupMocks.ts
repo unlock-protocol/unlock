@@ -8,12 +8,10 @@ import { Env } from '../../src/types'
 
 // Mock the cache API
 export const setupCacheMocks = () => {
-  // Don't create default mock implementations that always return null
-  // Let each test set up its own expected behavior
   const mockMatch = vi.fn()
   const mockPut = vi.fn()
 
-  // @ts-ignore - Mocking global.caches
+  // @ts-expect-error - Mocking global.caches
   global.caches = {
     default: {
       match: mockMatch,
@@ -37,14 +35,12 @@ export const setupFetchMock = (result = '0x1234', status = 200) => {
   return global.fetch
 }
 
-// Mock the rateLimit module with consistent behavior
+// Mock the rateLimit module
 export const setupRateLimitMocks = () => {
   vi.mock('../../src/rateLimit', async () => {
     const actual = (await vi.importActual('../../src/rateLimit')) as any
     return {
       ...actual,
-      // Only mock these functions when we need to, but don't override by default
-      // in tests that actually test these functions
       checkRateLimit: actual.checkRateLimit,
       shouldRateLimit: actual.shouldRateLimit,
       shouldRateLimitIp: actual.shouldRateLimitIp,
@@ -61,8 +57,7 @@ export const setupUnlockContractsMocks = () => {
     const actual = (await vi.importActual('../../src/unlockContracts')) as any
     return {
       ...actual,
-      isKnownUnlockContract: vi.fn().mockReturnValue(false),
-      checkIsLock: vi.fn().mockResolvedValue(false),
+      checkContractTypeOnChain: vi.fn().mockResolvedValue(null),
     }
   })
 }
@@ -86,7 +81,12 @@ export const setupUtilsMocks = () => {
         .mockReturnValue(
           'https://cache.unlock-protocol.com/rpc-cache/1/eth_call/mock-params'
         ),
-      getClientIP: vi.fn().mockReturnValue('127.0.0.1'),
+      getClientIP: vi
+        .fn()
+        .mockImplementation(
+          (request: Request) =>
+            request.headers.get('CF-Connecting-IP') || '127.0.0.1'
+        ),
       hasValidLocksmithSecret: vi.fn().mockReturnValue(false),
     }
   })
