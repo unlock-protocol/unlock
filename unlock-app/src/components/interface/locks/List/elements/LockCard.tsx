@@ -15,10 +15,10 @@ import {
   FaRegStar as FavoriteStar,
   FaStar as UnfavoriteStar,
 } from 'react-icons/fa'
-import { FavoriteLocks } from './LockList'
 import { WrappedAddress } from '~/components/interface/WrappedAddress'
 import { LockData } from '~/hooks/useLockData'
 import { config } from '~/config/app'
+import { FavoriteLocks } from '..'
 
 interface LockCardProps {
   lock: any

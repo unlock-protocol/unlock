@@ -7,7 +7,7 @@ import {
   RiArrowDropDownLine as DownIcon,
 } from 'react-icons/ri'
 import { LockCard } from './LockCard'
-import { FavoriteLocks } from './LockList'
+import { FavoriteLocks } from '..'
 import { config } from '~/config/app'
 import { useLockListData } from '~/hooks/useLockData'
 

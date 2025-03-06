@@ -5,7 +5,7 @@ import React from 'react'
 import { Button } from '@unlock-protocol/ui'
 import { Launcher } from '~/components/interface/Launcher'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
-import { LockList } from '~/components/interface/locks/List/elements/LockList'
+import { LockList } from '~/components/interface/locks/List'
 
 export default function LocksContent() {
   const { account } = useAuthenticate()

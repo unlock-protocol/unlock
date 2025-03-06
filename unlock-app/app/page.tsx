@@ -1,6 +1,6 @@
 import React from 'react'
 import { Metadata } from 'next'
-import { LockList } from '~/components/interface/locks/List/elements/LockList'
+import { LockList } from '~/components/interface/locks/List'
 
 export const metadata: Metadata = {
   title: 'Creator Dashboard | Unlock Protocol',
