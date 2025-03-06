@@ -2,7 +2,6 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react'
 import { Button } from '@unlock-protocol/ui'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
-import { ActionBar } from '~/components/interface/locks/Manage'
 import {
   ApprovalStatus,
   ExpirationStatus,
@@ -22,6 +21,7 @@ import { AttendeesActionsWrapper } from './AttendeesActions'
 import { ApproveAttendeeModal } from './ApproveAttendeeModal'
 import { DenyAttendeeModal } from './DenyAttendeeModal'
 import { SelectionProvider, useSelection } from './SelectionContext'
+import { ActionBar } from '~/components/interface/locks/elements/ActionBar'
 
 interface AttendeesProps {
   event: Event
