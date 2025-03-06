@@ -19,7 +19,7 @@ import Link from 'next/link'
 import { Picker } from '../../Picker'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useCentralizedLockData } from '~/hooks/useCentralizedLockData'
-import ActionBar from '../elements/ActionBar'
+import { ActionBar } from '../elements/ActionBar'
 
 import { NotManagerBanner } from '../Settings'
 import { TopActionBar } from '../elements/TopActionBar'

@@ -21,7 +21,7 @@ import { AttendeesActionsWrapper } from './AttendeesActions'
 import { ApproveAttendeeModal } from './ApproveAttendeeModal'
 import { DenyAttendeeModal } from './DenyAttendeeModal'
 import { SelectionProvider, useSelection } from './SelectionContext'
-import ActionBar from '~/components/interface/locks/elements/ActionBar'
+import { ActionBar } from '~/components/interface/locks/elements/ActionBar'
 
 interface AttendeesProps {
   event: Event

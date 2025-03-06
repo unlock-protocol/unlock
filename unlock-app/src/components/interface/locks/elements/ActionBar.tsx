@@ -125,5 +125,3 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
     </div>
   )
 }
-
-export default ActionBar
