@@ -25,8 +25,8 @@ export interface Env {
   STANDARD_RATE_LIMITER: RateLimiter
   HOURLY_RATE_LIMITER: RateLimiter
 
-  // KV namespace for caching lock addresses
-  LOCK_CACHE?: KVNamespace
+  // KV namespace for caching contracts addresses
+  ALLOWED_CONTRACTS?: KVNamespace
 }
 
 // Cloudflare Rate Limiting API interface

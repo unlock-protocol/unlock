@@ -127,8 +127,8 @@ describe('Rate Limit Module', () => {
       ContractType.UNLOCK_PROTOCOL_CONTRACT
     )
 
-    // Call isUnlockContract directly
-    const result = await rateLimit.isUnlockContract(
+    // Call isAllowedContract directly
+    const result = await rateLimit.isAllowedContract(
       '0xMockUnlockContract',
       '1',
       mockEnv as Env

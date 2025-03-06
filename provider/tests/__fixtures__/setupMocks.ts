@@ -45,7 +45,7 @@ export const setupRateLimitMocks = () => {
       shouldRateLimit: actual.shouldRateLimit,
       shouldRateLimitIp: actual.shouldRateLimitIp,
       shouldRateLimitSingle: actual.shouldRateLimitSingle,
-      isUnlockContract: actual.isUnlockContract,
+      isAllowedContract: actual.isAllowedContract,
       getClientIP: vi.fn().mockReturnValue('127.0.0.1'),
     }
   })
