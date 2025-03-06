@@ -1,16 +1,12 @@
 import { AxiosError } from 'axios'
-import {
-  QueryClient,
-  isServer,
-  defaultShouldDehydrateQuery,
-} from '@tanstack/react-query'
+import { QueryClient, isServer } from '@tanstack/react-query'
 
 function makeQueryClient() {
   return new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: 60 * 1000, // Set a reasonable staleTime to prevent refetches
-        refetchOnMount: false, // Prevent refetches on component mounts during navigation
+        staleTime: 60 * 1000,
+        refetchOnMount: false,
         refetchIntervalInBackground: false,
         // Add retryDelay to space out retries and prevent flooding
         retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 30000),
@@ -26,14 +22,8 @@ function makeQueryClient() {
               error.response?.status || 0
             )
           }
-          return false // Default to not retrying to prevent cascading requests
+          return false
         },
-      },
-      dehydrate: {
-        // Include pending queries in dehydration for streaming
-        shouldDehydrateQuery: (query) =>
-          defaultShouldDehydrateQuery(query) ||
-          query.state.status === 'pending',
       },
     },
   })
@@ -52,7 +42,3 @@ export function getQueryClient() {
     return browserQueryClient
   }
 }
-
-// Backward compatibility for existing code that expects a queryClient export
-export const queryClient =
-  typeof window === 'undefined' ? makeQueryClient() : getQueryClient()
