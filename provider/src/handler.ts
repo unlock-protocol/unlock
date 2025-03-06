@@ -26,7 +26,6 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
       origin &&
       origin.match(/\b[a-zA-Z0-9_-]+-extension:\/\/[^ \n\r]+/) !== null
     ) {
-      const body = await request.text()
       return Response.json(
         { message: '' },
         {
