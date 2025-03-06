@@ -42,12 +42,12 @@ export function useAuthenticate() {
     }
   }
 
-  // Detects when login was successful via an event
-  useEffect(() => {
-    if (account) {
-      onSignedIn(account)
-    }
-  }, [account])
+  // // Detects when login was successful via an event
+  // useEffect(() => {
+  //   if (account) {
+  //     onSignedIn(account)
+  //   }
+  // }, [account])
 
   // Method that tries to sign in with an existing session
   const signInWithExistingSession = async () => {
