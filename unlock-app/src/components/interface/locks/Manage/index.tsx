@@ -197,7 +197,7 @@ export const ManageLockContent = ({
                   setPage={setPage}
                   page={page}
                   centralizedLockData={centralizedLockData}
-                  NoMemberNoFilter={(props) => (
+                  NoMemberNoFilter={() => (
                     <NoMembersDisplay
                       toggleAirdropKeys={toggleAirdropKeys}
                       isManager={isManager}
