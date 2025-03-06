@@ -2,10 +2,10 @@ import { useContext } from 'react'
 import { WalletService } from '@unlock-protocol/unlock-js'
 import ProviderContext from '../contexts/ProviderContext'
 import { ToastHelper } from '@unlock-protocol/ui'
-import { useSession } from './useSession'
 import { config } from '~/config/app'
 import { ethers } from 'ethers'
 import networks from '@unlock-protocol/networks'
+import AuthenticationContext from '~/contexts/AuthenticationContext'
 
 interface WatchAssetInterface {
   address: string
@@ -15,7 +15,7 @@ interface WatchAssetInterface {
 
 export const useProvider = () => {
   const { setProvider, provider } = useContext(ProviderContext)
-  const { session: account } = useSession()
+  const { account } = useContext(AuthenticationContext)
 
   const createBrowserProvider = (
     provider: any

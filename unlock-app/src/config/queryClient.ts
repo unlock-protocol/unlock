@@ -56,3 +56,9 @@ export const queryClient = new QueryClient({
     },
   },
 })
+if (typeof window !== 'undefined') {
+  window.addEventListener('locksmith.authenticated', async () => {
+    console.log('refetching queries')
+    queryClient.refetchQueries()
+  })
+}
