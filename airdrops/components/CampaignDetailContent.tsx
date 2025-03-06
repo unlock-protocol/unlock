@@ -246,7 +246,7 @@ export default function CampaignDetailContent({
                 </>
               ) : (
                 <p className="text-gray-500 font-medium">
-                  You are not eligible for this airdrop.
+                  Sorry you are not eligible for this airdrop.
                 </p>
               )}
             </div>
