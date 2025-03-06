@@ -1,6 +1,6 @@
 import React from 'react'
 import { Metadata } from 'next'
-import { HomeContent } from '~/components/content/HomeContent'
+import { LockList } from '~/components/interface/locks/List/elements/LockList'
 
 export const metadata: Metadata = {
   title: 'Creator Dashboard | Unlock Protocol',
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 }
 
 const HomePage: React.FC = () => {
-  return <HomeContent />
+  return <LockList />
 }
 
 export default HomePage

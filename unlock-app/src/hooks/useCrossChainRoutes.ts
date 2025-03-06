@@ -67,13 +67,8 @@ export const useCrossChainRoutes = ({
       ? getDecentCrossChainRoute
       : getRelayLinkCrossChainRoute
 
-  const { account: userAccount } = useAuthenticate()
+  const { account } = useAuthenticate()
   const web3Service = useWeb3Service()
-
-  // Hardcoded account to use for the route
-  const account = '0x5B0C0b6bAFC3b498e601EAd2A9243e90e61D9d4d'
-  console.log('Using hardcoded account for routes:', account)
-
   const { recipients, paywallConfig, keyManagers, renew, tokenId } = context
 
   const { data: prices, isPending: isLoadingPrices } = useQuery({

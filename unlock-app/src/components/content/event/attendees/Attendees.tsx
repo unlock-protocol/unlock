@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react'
 import { Button } from '@unlock-protocol/ui'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
-import { ActionBar } from '~/components/interface/locks/Manage'
+import ActionBar from '~/components/interface/locks/Manage/elements/ActionBar'
 import {
   ApprovalStatus,
   ExpirationStatus,

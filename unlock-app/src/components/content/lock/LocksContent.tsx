@@ -4,8 +4,8 @@ import React from 'react'
 
 import { Button } from '@unlock-protocol/ui'
 import { Launcher } from '~/components/interface/Launcher'
-import LocksListPage from '~/components/interface/locks/List'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { LockList as LockListComponent } from '~/components/interface/locks/List/elements/LockList'
 
 export default function LocksContent() {
   const { account } = useAuthenticate()
@@ -42,7 +42,7 @@ export default function LocksContent() {
           <Description />
         </div>
       </div>
-      <LocksListPage />
+      <LockListComponent />
     </>
   )
 }
