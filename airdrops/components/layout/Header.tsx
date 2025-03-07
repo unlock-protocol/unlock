@@ -2,11 +2,12 @@
 import { usePrivy } from '@privy-io/react-auth'
 import { HeaderNav } from '@unlock-protocol/ui'
 import { UserMenu } from '../auth/UserMenu'
+import { config } from '../../src/config/app'
 
 const MENU_SECTIONS = [
-  { title: 'Events', url: 'https://app.unlock-protocol.com/my-events' },
-  { title: 'Locks', url: 'https://app.unlock-protocol.com/locks' },
-  { title: 'Keys', url: 'https://app.unlock-protocol.com/keychain' },
+  { title: 'Events', url: `${config.dashboardUrl}/my-events` },
+  { title: 'Locks', url: `${config.dashboardUrl}/locks` },
+  { title: 'Keys', url: `${config.dashboardUrl}/keychain` },
 ]
 
 export default function RootHeader() {

@@ -24,17 +24,27 @@ jobs:
       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
       OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
-  # Netlify Deployments
+  # Vercel Deployments
   deploy-paywall-app-production:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
-    uses: ./.github/workflows/_netlify.yml
-    with:
-      bypass_diff_check: bypass
-      service: paywall-app
-      target-env: prod
-    secrets:
-      SITE_ID: ${{ secrets.PAYWALL_APP_NETLIFY_PROD_SITE_ID }}
-      AUTH_TOKEN: ${{ secrets.PAYWALL_APP_NETLIFY_PROD_AUTH_TOKEN }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Load secrets from 1Password
+        uses: 1Password/load-secrets-action@v2.0.0
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          PAYWALL_APP_VERCEL_PROD_VERCEL_PROJECT_ID: op://secrets/vercel/project-id-paywall-app-prod
+          PAYWALL_APP_VERCEL_PROD_VERCEL_ORG_ID: op://secrets/vercel/org-id
+          PAYWALL_APP_VERCEL_PROD_VERCEL_TOKEN: op://secrets/vercel/deployment-token
+      - uses: ./.github/actions/vercel
+        with:
+          service: paywall-app
+          target-env: prod
 
   deploy-wedlocks:
     if: ${{ github.repository_owner == 'unlock-protocol' }}

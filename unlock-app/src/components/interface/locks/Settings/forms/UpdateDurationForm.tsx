@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import { ToggleSwitch, Input, Button } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import {
   UNLIMITED_KEYS_DURATION,
   ONE_DAY_IN_SECONDS,
