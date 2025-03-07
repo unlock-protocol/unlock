@@ -14,19 +14,20 @@ export const getLocksByNetworks = async ({
   networks,
 }: GetLocksParams) => {
   try {
-    return graphService.locks(
-      {
-        first: 1000,
-        where: {
-          lockManagers_contains: [account],
+    // Fetch locks for all provided networks in parallel
+    const lockPromises = networks.map((network) =>
+      graphService.locks(
+        {
+          first: 1000,
+          where: { lockManagers_contains: [account] },
+          orderBy: LockOrderBy.CreatedAtBlock,
+          orderDirection: OrderDirection.Desc,
         },
-        orderBy: LockOrderBy.CreatedAtBlock,
-        orderDirection: OrderDirection.Desc,
-      },
-      {
-        networks,
-      }
+        { networks: [network] }
+      )
     )
+    const results = await Promise.all(lockPromises)
+    return results.flat()
   } catch (error) {
     console.error('Failed to fetch locks:', error)
     return []
@@ -43,24 +44,25 @@ export const getLocksByNetwork = async ({ account, network }: any) => {
 }
 
 const useLocksByManagerOnNetworks = (
-  manager: string,
+  manager: string | null | undefined,
   networkItems: [string, any][]
 ) => {
   const networks = networkItems.map(([network]) => Number(network))
   return useQuery({
     queryKey: ['getLocks', networks.join(','), manager],
     queryFn: async () => {
+      if (!manager) {
+        return []
+      }
       return getLocksByNetworks({
         account: manager,
         networks,
       })
     },
+    enabled: !!manager,
     retryOnMount: false,
-    staleTime: Infinity,
-    // staleTime: 5 * 60 * 1000, // 5 minutes
-    // gcTime: 30 * 60 * 1000, // 30 minutes
-    // retry: 2,
-    // refetchOnWindowFocus: false,
+    staleTime: 60 * 1000,
+    gcTime: 5 * 60 * 1000,
   })
 }
 
