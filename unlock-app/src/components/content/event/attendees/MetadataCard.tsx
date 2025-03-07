@@ -5,7 +5,7 @@ import { getCheckInTime } from '~/utils/getCheckInTime'
 import { locksmith } from '~/config/locksmith'
 import { FaCheckCircle as CheckIcon } from 'react-icons/fa'
 import { useMutation } from '@tanstack/react-query'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { UpdateEmailModal } from './UpdateEmailModal'
 import { FieldValues } from 'react-hook-form'
 

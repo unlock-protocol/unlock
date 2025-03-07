@@ -1,18 +1,14 @@
-/* 
-centraliced helper for toasts,
-if in the future we need to change toast functionality/library
-we can do it from here without change everything from around the codebase
-*/
-
 import {
   Renderable,
   toast,
   Toast,
   ToastOptions,
+  Toaster,
   ValueOrFunction,
 } from 'react-hot-toast'
+import { ReactNode } from 'react'
 
-interface ToastHelperProps {
+export interface ToastHelperProps {
   success: (message: string) => void
   error: (message: string) => void
   promise: (
@@ -62,4 +58,27 @@ export const ToastHelper: ToastHelperProps = {
     const redirectPage = `/${page}`
     window.location.href = redirectPage
   },
+}
+
+interface ToastProviderProps {
+  children: ReactNode
+  position?:
+    | 'top-left'
+    | 'top-right'
+    | 'top-center'
+    | 'bottom-left'
+    | 'bottom-right'
+    | 'bottom-center'
+}
+
+export function ToastProvider({
+  children,
+  position = 'top-center',
+}: ToastProviderProps) {
+  return (
+    <>
+      {children}
+      <Toaster position={position} />
+    </>
+  )
 }

@@ -5,19 +5,22 @@ import { useCallback, useEffect, useState } from 'react'
 import { FiArrowLeft, FiArrowRight } from 'react-icons/fi'
 import { Container } from './layout/Container'
 import airdrops from '../src/airdrops.json'
-import { usePrivy } from '@privy-io/react-auth'
-import { isEligible } from '../src/utils/eligibility'
 import { CampaignCard } from './CampaignCard'
 
 export interface AirdropData {
   id: string
-  title: string
+  name: string
   description: string
   contractAddress?: string
-  tokenAmount: string
-  tokenSymbol: string
-  recipientsFile: string
+  token?: {
+    address: string
+    symbol: string
+    decimals: number
+  }
+  recipientsFile?: string
   eligible?: number
+  url?: string
+  chainId?: number
 }
 
 const CampaignsContent = () => {
@@ -44,26 +47,6 @@ const CampaignsContent = () => {
     embla.on('select', onSelect)
     onSelect()
   }, [embla, onSelect])
-
-  const { authenticated, user } = usePrivy()
-
-  useEffect(() => {
-    const checkEligibility = async () => {
-      if (!authenticated || !user?.wallet?.address) return
-
-      await Promise.all(
-        (airdrops as AirdropData[]).map(async (drop) => {
-          const amount = await isEligible(
-            user.wallet.address,
-            drop.recipientsFile
-          )
-          drop.eligible = amount || 0
-        })
-      )
-    }
-
-    checkEligibility()
-  }, [authenticated, user?.wallet?.address])
 
   return (
     <Container>
@@ -102,11 +85,7 @@ const CampaignsContent = () => {
           <div className="overflow-hidden cursor-move" ref={viewportRef}>
             <div className="flex flex-col md:flex-row gap-8 py-6 select-none">
               {(airdrops as AirdropData[]).map((drop, index) => (
-                <CampaignCard
-                  key={index}
-                  airdrop={drop}
-                  authenticated={authenticated}
-                />
+                <CampaignCard key={index} airdrop={drop} />
               ))}
             </div>
           </div>

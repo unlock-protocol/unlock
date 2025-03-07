@@ -2,8 +2,10 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { Metadata } from 'next'
 import RootHeader from '../components/layout/Header'
-import Providers from '../components/providers'
+import Providers from './providers'
 import Footer from '../components/layout/Footer'
+import { SHARED_METADATA } from '../src/config/seo'
+import { config } from '../src/config/app'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -13,8 +15,9 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
+  ...SHARED_METADATA,
   icons: {
-    icon: '/favicon.ico',
+    icon: config.images.favicon,
   },
 }
 

@@ -11,7 +11,7 @@ import {
 import { Button, ImageUpload, Input, TextBox } from '@unlock-protocol/ui'
 import { useImageUpload } from '~/hooks/useImageUpload'
 import { EventCollection } from '@unlock-protocol/unlock-js'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { locksmith } from '~/config/locksmith'
 import { useCallback, useRef } from 'react'
 import { LinksField } from '../LinksField'

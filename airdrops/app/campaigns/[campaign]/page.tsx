@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import CampaignDetailContent from '../../../components/CampaignDetailContent'
 import airdrops from '../../../src/airdrops.json'
 import { Metadata } from 'next'
+import { config } from '../../../src/config/app'
 
 export interface CampaignDetailPageProps {
   params: {
@@ -16,22 +17,32 @@ export async function generateMetadata({
 
   if (!campaign) {
     return {
-      title: 'Campaign Not Found | Airdrops',
-      description: 'The requested campaign could not be found.',
+      title: `Campaign Not Found | ${config.appName.default}`,
     }
   }
 
   return {
-    title: `${campaign.title} | Airdrops`,
+    title: `${campaign.name} | ${config.appName.default}`,
     description: campaign.description,
     openGraph: {
-      title: `${campaign.title} | Airdrops`,
+      title: `${campaign.name} | ${config.appName.default}`,
       description: campaign.description,
+      images: [
+        {
+          url: config.images.default,
+          alt: config.appName.brand,
+        },
+      ],
     },
     twitter: {
-      card: 'summary',
-      title: `${campaign.title} | Airdrops`,
+      title: `${campaign.name} | ${config.appName.default}`,
       description: campaign.description,
+      images: [
+        {
+          url: config.images.default,
+          alt: config.appName.brand,
+        },
+      ],
     },
   }
 }

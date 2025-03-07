@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { ImageBar } from './ImageBar'
 import { MemberCard as DefaultMemberCard, MemberCardProps } from './MemberCard'
 import { paginate } from '~/utils/pagination'
@@ -10,7 +10,11 @@ import { locksmith } from '~/config/locksmith'
 import { Placeholder } from '@unlock-protocol/ui'
 import { PAGE_SIZE } from '@unlock-protocol/core'
 import { batchNameResolver } from '~/hooks/useNameResolver'
+import { useLockManager } from '~/hooks/useLockManager'
 
+/**
+ * Default placeholder component when there are no members and no filters applied
+ */
 const DefaultNoMemberNoFilter = () => {
   return (
     <ImageBar
@@ -21,6 +25,9 @@ const DefaultNoMemberNoFilter = () => {
   )
 }
 
+/**
+ * Default placeholder component when there are no members matching the filters
+ */
 const DefaultNoMemberWithFilter = () => {
   return (
     <ImageBar
@@ -31,19 +38,6 @@ const DefaultNoMemberWithFilter = () => {
   )
 }
 
-interface MembersProps {
-  lockAddress: string
-  network: number
-  loading: boolean
-  setPage: (page: number) => void
-  page: number
-  filters?: FilterProps
-  MemberCard?: React.FC<MemberCardProps>
-  NoMemberNoFilter?: React.FC
-  NoMemberWithFilter?: React.FC
-  MembersActions?: React.FC<{ keys: any; filters: FilterProps }>
-}
-
 export interface FilterProps {
   query: string
   filterKey: string
@@ -51,7 +45,39 @@ export interface FilterProps {
   approval: ApprovalStatus
 }
 
-// Function to fetch the paginated keys for members.
+export interface MembersProps {
+  // Core props
+  lockAddress: string
+  network: number
+  loading: boolean
+  setPage: (page: number) => void
+  page: number
+
+  // Optional filter props
+  filters?: FilterProps
+
+  // Optional customization props - allowing components to be replaced
+  MemberCard?: React.FC<MemberCardProps>
+  NoMemberNoFilter: React.FC<{
+    toggleAirdropKeys: () => void
+    isManager: boolean
+  }>
+  NoMemberWithFilter?: React.FC
+  MembersActions?: React.FC<{ keys: any; filters: FilterProps }>
+
+  // Optional pre-loaded data - allows parent components to provide data directly
+  centralizedLockData?: {
+    lock?: any
+    lockSettings?: any
+    isManager?: boolean
+    eventDetails?: any
+    metadata?: any
+  } | null
+}
+
+/**
+ * Fetches paginated keys/members data for a lock
+ */
 const getMembers = async (
   network: number,
   lockAddress: string,
@@ -72,17 +98,25 @@ const getMembers = async (
   return response.data
 }
 
-// Function to fetch lock settings.
+/**
+ * Fetches lock settings
+ */
 const getLockSettings = async (network: number, lockAddress: string) => {
   return await locksmith.getLockSettings(network, lockAddress)
 }
 
+/**
+ * Component for displaying and managing lock members/keys
+ */
 export const Members = ({
+  // Core props
   lockAddress,
   network,
   loading: loadingFilters,
   setPage,
   page,
+
+  // Optional props with defaults
   filters = {
     query: '',
     filterKey: 'owner',
@@ -93,54 +127,97 @@ export const Members = ({
   NoMemberWithFilter = DefaultNoMemberWithFilter,
   NoMemberNoFilter = DefaultNoMemberNoFilter,
   MembersActions,
+  centralizedLockData,
 }: MembersProps) => {
-  // Consolidated query that fetches members, subgraph lock info, lock settings, and resolved names
-  const { data, isLoading, error } = useQuery({
+  // Fetch lock manager status once for all cards - this avoids redundant API calls
+  const { isManager } = useLockManager({
+    lockAddress,
+    network,
+  })
+
+  // Lock info query - this doesn't need to change with pagination
+  // Only runs if centralizedLockData wasn't provided
+  const { data: lockData, isLoading: isLoadingLockData } = useQuery({
+    queryKey: ['lockData', lockAddress, network],
+    enabled: !centralizedLockData && !!lockAddress && !!network,
+    queryFn: async () => {
+      const [subgraphLock, lockSettingsResponse] = await Promise.all([
+        graphService.lock(
+          {
+            where: {
+              address: lockAddress,
+            },
+          },
+          { network }
+        ),
+        getLockSettings(network, lockAddress),
+      ])
+
+      return {
+        lock: subgraphLock,
+        lockSettings: lockSettingsResponse?.data || {},
+      }
+    },
+    refetchOnWindowFocus: false,
+  })
+
+  // Use centralized data if available (handle null case)
+  const effectiveLockData = centralizedLockData || lockData
+
+  // Members query - changes with pagination and filters
+  // Separating this from name resolution to avoid redundant resolution calls
+  const { data: membersData, isLoading: isLoadingMembers } = useQuery({
     queryKey: [
-      'attendeesData',
+      `page-${page}`,
+      'membersData',
       lockAddress,
       network,
-      page,
       filters.query,
       filters.filterKey,
       filters.expiration,
       filters.approval,
     ],
     queryFn: async () => {
-      const [membersResponse, subgraphLock, lockSettingsResponse] =
-        await Promise.all([
-          getMembers(network, lockAddress, filters, page),
-          graphService.lock(
-            {
-              where: {
-                address: lockAddress,
-              },
-            },
-            { network }
-          ),
-          getLockSettings(network, lockAddress),
-        ])
+      const membersResponse = await getMembers(
+        network,
+        lockAddress,
+        filters,
+        page
+      )
 
+      // Extract unique member addresses, but don't resolve names here
       const memberAddresses = (membersResponse?.keys || []).map(
         (metadata: any) => metadata.keyholderAddress
       )
-      const resolvedNames = await batchNameResolver(memberAddresses)
 
       return {
         keys: membersResponse?.keys || [],
         meta: membersResponse?.meta || {},
-        lock: subgraphLock,
-        lockSettings: lockSettingsResponse?.data || {},
-        resolvedNames,
+        memberAddresses,
       }
     },
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000, // 5 minutes stale time for members data
     refetchOnWindowFocus: false,
-    placeholderData: (previousData) => previousData,
   })
 
-  // While the query is loading, show placeholders.
-  if (isLoading || loadingFilters) {
+  // Separate query for name resolution with a much longer cache time
+  const { data: resolvedNames = {} } = useQuery({
+    queryKey: ['resolvedNames', membersData?.memberAddresses || []],
+    enabled: !!membersData?.memberAddresses?.length,
+    queryFn: async () => {
+      // This will be called only when we have new addresses to resolve
+      return batchNameResolver(membersData!.memberAddresses)
+    },
+    // Cache resolved names for 24 hours as they rarely change
+    staleTime: 24 * 60 * 60 * 1000, // 24 hours (1 day)
+    gcTime: 48 * 60 * 60 * 1000, // 48 hours (2 days)
+    refetchOnWindowFocus: false,
+  })
+
+  // Combined loading state - don't include isLoadingNames so we can render cards right away
+  const isLoading = isLoadingLockData || isLoadingMembers || loadingFilters
+
+  if (isLoading) {
     return (
       <>
         <Placeholder.Root>
@@ -153,7 +230,7 @@ export const Members = ({
   }
 
   // If an error occurred in the query, display an error image.
-  if (error) {
+  if (!effectiveLockData || !membersData) {
     ToastHelper.error('There was an error fetching attendees data')
     return (
       <ImageBar
@@ -164,7 +241,8 @@ export const Members = ({
     )
   }
 
-  const { keys, meta, lock, lockSettings, resolvedNames } = data || {}
+  const { keys, meta } = membersData
+  const { lock, lockSettings } = effectiveLockData
   const noItems = (keys?.length || 0) === 0
   const hasActiveFilter =
     filters?.approval !== 'minted' ||
@@ -172,11 +250,14 @@ export const Members = ({
     filters?.filterKey !== 'owner' ||
     filters?.query?.length > 0
 
-  if (noItems && !hasActiveFilter) {
-    return <NoMemberNoFilter />
-  }
+  // Render appropriate empty state based on filter status
+  if (noItems) {
+    if (!hasActiveFilter) {
+      return (
+        <NoMemberNoFilter toggleAirdropKeys={() => {}} isManager={isManager} />
+      )
+    }
 
-  if (noItems && hasActiveFilter) {
     return (
       <>
         <NoMemberWithFilter />{' '}
@@ -195,34 +276,50 @@ export const Members = ({
     )
   }
 
+  // Calculate pagination parameters
   const { maxNumbersOfPage } = paginate({
     page: meta?.page || 0,
     itemsPerPage: meta?.byPage || PAGE_SIZE,
     totalItems: meta?.total || 0,
   })
 
+  /**
+   * Handle raw addresses with fallback names
+   * This ensures each member has a non-undefined display name even before resolution completes
+   */
+  const getResolvedNameWithFallback = (address: string): string => {
+    return resolvedNames?.[address] || address
+  }
+
   return (
     <div className="flex flex-col gap-6">
-      {MembersActions ? <MembersActions filters={filters} keys={keys} /> : null}
+      {/* Render actions component if provided */}
+      {MembersActions && <MembersActions filters={filters} keys={keys} />}
 
+      {/* Render member cards */}
       {(keys || []).map((metadata: any) => {
         const { token, keyholderAddress: owner, expiration } = metadata ?? {}
-        return (
-          <MemberCard
-            key={metadata.token || owner}
-            token={token}
-            owner={owner}
-            expiration={expiration}
-            version={lock?.version}
-            metadata={metadata}
-            lockAddress={lockAddress}
-            network={network}
-            expirationDuration={lock?.expirationDuration}
-            lockSettings={lockSettings}
-            resolvedName={resolvedNames?.[metadata.keyholderAddress]}
-          />
-        )
+
+        // Avoid redundant prop spreading
+        const memberCardProps: MemberCardProps = {
+          token,
+          owner,
+          expiration,
+          version: lock?.version,
+          metadata,
+          lockAddress,
+          network,
+          expirationDuration: lock?.expirationDuration,
+          lockSettings,
+          // Always provide a non-undefined name to prevent placeholder
+          resolvedName: getResolvedNameWithFallback(owner),
+          isManager,
+        }
+
+        return <MemberCard key={token || owner} {...memberCardProps} />
       })}
+
+      {/* Pagination controls */}
       <PaginationBar
         maxNumbersOfPage={maxNumbersOfPage}
         setPage={setPage}

@@ -1,21 +1,23 @@
+import { AirdropData } from '../../components/Campaigns'
+
 /**
  * Checks if an address is eligible for an airdrop and returns the token amount
- * This is a temporary implementation that randomly determines eligibility
- * To be replaced with actual implementation that checks against the recipients file
+ * Fetches the recipients file and checks if the address exists in it
  */
 export const isEligible = async (
-  _address: string,
-  _recipientsFile: string
-): Promise<number> => {
-  // Temporary implementation: randomly determine eligibility
-  // const random = Math.random()
-
-  // // 40% chance of being eligible
-  // if (random < 0.4) {
-  //   // Random amount between 100 and 1000 tokens
-  //   const amount = Math.floor(Math.random() * 900) + 100
-  //   return amount
-  // }
-
-  return 1337
+  address: string,
+  airdrop: AirdropData
+): Promise<string> => {
+  if (!airdrop.recipientsFile || !address) {
+    return '0'
+  }
+  const request = await fetch(airdrop.recipientsFile)
+  const recipients = await request.json()
+  const recipient = recipients.values.find((recipient: any) => {
+    return recipient.value[0] === address
+  })
+  if (!recipient) {
+    return '0'
+  }
+  return recipient.value[1]
 }
