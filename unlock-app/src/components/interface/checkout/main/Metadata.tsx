@@ -14,7 +14,7 @@ import {
   useMemo,
   useState,
 } from 'react'
-import { Button, Input, Placeholder } from '@unlock-protocol/ui'
+import { Button, Input, Placeholder, isAddressOrEns } from '@unlock-protocol/ui'
 import { twMerge } from 'tailwind-merge'
 import { formResultToMetadata } from '~/utils/userMetadata'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -36,6 +36,7 @@ import Disconnect from './Disconnect'
 import { shouldSkip } from './utils'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { getAddressForName } from '~/hooks/useNameResolver'
+import { isAccount } from '~/utils/validators'
 
 interface Props {
   checkoutService: CheckoutService
@@ -356,35 +357,68 @@ export function Metadata({ checkoutService }: Props) {
   const recipient = recipientFromConfig(paywallConfig, lock) || account || ''
 
   const { isLoading: isMemberLoading, data: isMember } = useQuery({
-    queryKey: ['isMember', recipient, lock],
+    queryKey: ['isMember', recipient, lock?.address],
     queryFn: async () => {
-      const total = await web3Service.totalKeys(
-        lock!.address,
-        recipient!,
-        lock!.network
-      )
-      return total > 0
+      // If recipient is not a valid Ethereum address or ENS, return false immediately
+      if (!recipient || !isAddressOrEns(recipient)) {
+        return false
+      }
+
+      try {
+        const total = await web3Service.totalKeys(
+          lock!.address,
+          recipient,
+          lock!.network
+        )
+        return total > 0
+      } catch (error) {
+        console.error('Error checking membership:', error)
+        return false
+      }
     },
-    enabled: !!recipient,
+
+    enabled: !!(lock?.address && recipient),
+    staleTime: 30000, // 30 seconds
+    retry: false,
   })
 
   useEffect(() => {
-    if (recipient && quantity > fields.length && !isMemberLoading) {
-      const fieldsRequired = quantity - fields.length
-      Array.from({ length: fieldsRequired }).map((_, index) => {
-        const addAccountAddress = !index && !isMember
-        const recipients = addAccountAddress ? { recipient } : { recipient: '' }
-        append(recipients, {
-          shouldFocus: false,
-        })
-      })
-    } else {
-      const fieldsRemove = fields.length - quantity
-      Array.from({ length: fieldsRemove }).map((_, index) =>
-        remove(fields.length - index)
-      )
+    // Don't do anything if we're loading member status or if quantity is invalid
+    if (isMemberLoading || quantity <= 0) {
+      return
     }
-  }, [quantity, recipient, fields, append, remove, isMember, isMemberLoading])
+
+    // Avoid updating fields if the length already matches quantity to prevent loops
+    if (fields.length === quantity) {
+      return
+    }
+
+    // prevent infinite loops
+    if (quantity > fields.length) {
+      const fieldsRequired = quantity - fields.length
+      for (let i = 0; i < fieldsRequired; i++) {
+        const addAccountAddress = fields.length === 0 && !isMember && !!account
+        const isValidAddress = isAddressOrEns(recipient) || isAccount(recipient)
+        const recipientValue = addAccountAddress
+          ? isValidAddress
+            ? recipient
+            : account
+          : ''
+        append(
+          { recipient: recipientValue },
+          {
+            shouldFocus: false,
+          }
+        )
+      }
+    } else if (quantity < fields.length) {
+      const fieldsToRemove = fields.length - quantity
+      for (let i = 0; i < fieldsToRemove; i++) {
+        remove(fields.length - 1 - i)
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quantity, recipient, isMember, isMemberLoading, account])
 
   async function onSubmit(data: FormData) {
     try {
@@ -494,11 +528,18 @@ const recipientFromConfig = (
   lock: Lock | LockState | undefined
 ): string => {
   const paywallRecipient = paywall.recipient
-  const lockRecipient = paywall?.locks[lock!.address].recipient
+  const lockRecipient = paywall?.locks[lock!.address]?.recipient
 
-  if (paywallRecipient != undefined && paywallRecipient != '') {
+  const isValidRecipientFormat = (recipient: string): boolean => {
+    if (!recipient || typeof recipient !== 'string') {
+      return false
+    }
+    return isAddressOrEns(recipient) || isAccount(recipient)
+  }
+
+  if (paywallRecipient && isValidRecipientFormat(paywallRecipient)) {
     return paywallRecipient
-  } else if (lockRecipient != undefined && lockRecipient != '') {
+  } else if (lockRecipient && isValidRecipientFormat(lockRecipient)) {
     return lockRecipient
   }
   return ''
