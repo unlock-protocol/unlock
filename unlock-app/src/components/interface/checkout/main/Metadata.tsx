@@ -393,12 +393,11 @@ export function Metadata({ checkoutService }: Props) {
       return
     }
 
+    // prevent infinite loops
     if (quantity > fields.length) {
       const fieldsRequired = quantity - fields.length
-      // Use a standard for loop instead of map to avoid unnecessary array creation
       for (let i = 0; i < fieldsRequired; i++) {
         const addAccountAddress = fields.length === 0 && !isMember && !!account
-        // Only use the recipient from config if it's a valid address
         const isValidAddress = isAddressOrEns(recipient) || isAccount(recipient)
         const recipientValue = addAccountAddress
           ? isValidAddress
