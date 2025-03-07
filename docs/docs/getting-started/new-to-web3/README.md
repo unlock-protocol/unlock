@@ -9,4 +9,5 @@ Even if you're an experienced web developer, if you're new to web3 there may be 
 
 * [Ethereum architecture overview](https://ethereum.org/en/developers/docs/intro-to-ethereum/)
 * [What is a crypto wallet](https://coinbureau.com/education/types-of-crypto-wallets/)
+* [What is a smart contract](https://www.cherryservers.com/blog/smart-contract-development)
 * [Introduction to dapps](https://ethereum.org/en/developers/docs/dapps/)
