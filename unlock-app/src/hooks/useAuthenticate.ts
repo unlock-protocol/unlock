@@ -159,5 +159,6 @@ export function useAuthenticate() {
     signInWithPrivy,
     signOut,
     privyReady,
+    isLoading: !privyReady || (privyAuthenticated && !wallets[0]?.address),
   }
 }
