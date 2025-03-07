@@ -18,7 +18,6 @@ export interface LockData {
   keyPrice: string
 }
 
-// ExtendedLock to ensure tokenAddress and price exist
 interface ExtendedLock extends Lock {
   tokenAddress: string
   price: string
@@ -99,7 +98,7 @@ export const useLockListData = (
             const defaultSymbol =
               config.networks[String(effectiveNetwork)]?.nativeCurrency
                 .symbol ?? ''
-            // Use nullish coalescing: if fetchedSymbol is null or undefined, fallback to defaultSymbol
+            // if fetchedSymbol is null or undefined, fallback to defaultSymbol
             const tokenSymbol = fetchedSymbol ?? defaultSymbol
             const decimals = await web3service.getTokenDecimals(
               tokenAddress,

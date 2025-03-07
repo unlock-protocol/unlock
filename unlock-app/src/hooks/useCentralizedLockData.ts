@@ -20,7 +20,6 @@ export const useCentralizedLockData = (
       lockAddress,
       network,
       owner?.toLowerCase(),
-      'management',
     ],
     // Only run this query when we have valid lock parameters
     enabled: !!lockAddress && !!network && !!owner,
