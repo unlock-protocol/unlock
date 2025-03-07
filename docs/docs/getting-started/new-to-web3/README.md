@@ -11,3 +11,4 @@ Even if you're an experienced web developer, if you're new to web3 there may be 
 * [What is a crypto wallet](https://coinbureau.com/education/types-of-crypto-wallets/)
 * [What is a smart contract](https://www.cherryservers.com/blog/smart-contract-development)
 * [Introduction to dapps](https://ethereum.org/en/developers/docs/dapps/)
+* [What is an NFT?](https://ethereum.org/en/developers/docs/standards/tokens/erc-721/)
