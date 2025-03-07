@@ -159,6 +159,9 @@ export function useAuthenticate() {
     signInWithPrivy,
     signOut,
     privyReady,
-    isLoading: !privyReady || (privyAuthenticated && !wallets[0]?.address),
+    isLoading:
+      !privyReady ||
+      (privyAuthenticated && !wallets[0]?.address) ||
+      (account && wallets[0]?.address && !getAccessToken(account)),
   }
 }
