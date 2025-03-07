@@ -80,7 +80,7 @@ export const useLockListData = (
 ): { data: Record<string, LockData>; isLoading: boolean; error: any } => {
   const web3service = useWeb3Service()
 
-  const lockAddressesKey = createStableKeyFromLocks(locks)
+  const lockAddressesKey = createStableKeyFromLocks(locks || [])
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['lockListData', lockAddressesKey],
@@ -132,9 +132,18 @@ export const useLockListData = (
     },
     refetchOnWindowFocus: false,
     refetchOnMount: false,
-    staleTime: 60 * 1000,
-    gcTime: 5 * 1000,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+    enabled: locks && locks.length > 0,
   })
+
+  if (!locks || locks.length === 0) {
+    return {
+      data: {},
+      isLoading: false,
+      error: null,
+    }
+  }
 
   return {
     data: data || {},

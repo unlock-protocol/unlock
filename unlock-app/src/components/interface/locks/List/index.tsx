@@ -11,6 +11,8 @@ import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useSearchParams } from 'next/navigation'
 import { Launcher } from '~/components/interface/Launcher'
 import { WalletNotConnected } from '~/components/interface/layouts/index/WalletNotConnected'
+import { useLockListData } from '~/hooks/useLockData'
+import { FavoriteLocksSection } from './elements/FavoriteLocks'
 
 export interface FavoriteLocks {
   [key: string]: boolean
@@ -51,11 +53,6 @@ const NoItems = () => {
   return <StatusMessage>You have not created any locks yet.</StatusMessage>
 }
 
-// Helper functions to filter locks outside of component render
-const filterFavoriteLocks = (locks: Lock[], favoriteLocks: FavoriteLocks) => {
-  return locks.filter((item: Lock) => favoriteLocks[item.address])
-}
-
 const filterLocksByNetwork = (locks: Lock[], network: number) => {
   return locks.filter((lock: Lock) => lock.network === network)
 }
@@ -70,7 +67,7 @@ export const LockList = () => {
   const { networks, defaultNetwork } = config
   const { getStorage, setStorage } = useAppStorage()
 
-  // This is fine to remain memoized since it's based on constant config values
+  // Filter networks to only include valid networks
   const networkItems = Object.entries(networks || {})
     .filter(
       ([network]) =>
@@ -87,11 +84,18 @@ export const LockList = () => {
 
   const result = useLocksByManagerOnNetworks(owner, networkItems)
 
+  // Get all locks first
+  const allLocks = (result.data as unknown as Lock[]) || []
+
+  // Fetch all lock data once at the parent level
+  const { data: allLockData, isLoading: isLoadingLockData } =
+    useLockListData(allLocks)
+
   const [favoriteLocks, setFavoriteLocks] = useState<FavoriteLocks>(() => {
     return getStorage('favoriteLocks') || {}
   })
 
-  // This callback is still useful to encapsulate localStorage logic
+  // Save favorite locks
   const saveFavoriteLocks = useCallback(
     (newFavoriteLocks: FavoriteLocks) => {
       setFavoriteLocks(newFavoriteLocks)
@@ -128,7 +132,7 @@ export const LockList = () => {
       )
     }
 
-    if (isLoading) {
+    if (isLoading || isLoadingLockData) {
       return (
         <Placeholder.Root>
           <Placeholder.Card />
@@ -138,23 +142,19 @@ export const LockList = () => {
       )
     }
 
-    const allLocks = (result.data as unknown as Lock[]) || []
     const isEmpty = !isLoading && allLocks.length === 0
-
-    const favoritedLocks = filterFavoriteLocks(allLocks, favoriteLocks)
 
     return (
       <div className="grid gap-20 mb-20">
-        <LocksByNetwork
+        <FavoriteLocksSection
           isLoading={isLoading}
-          locks={favoritedLocks}
+          locks={allLocks}
           favoriteLocks={favoriteLocks}
           setFavoriteLocks={saveFavoriteLocks}
-          network={null}
+          lockData={allLockData}
         />
         {networkItems.map(([network]) => {
           const networkNumber = Number(network)
-
           const locksByNetwork = filterLocksByNetwork(allLocks, networkNumber)
 
           return (
@@ -165,6 +165,7 @@ export const LockList = () => {
               locks={locksByNetwork}
               favoriteLocks={favoriteLocks}
               setFavoriteLocks={saveFavoriteLocks}
+              lockData={allLockData}
             />
           )
         })}

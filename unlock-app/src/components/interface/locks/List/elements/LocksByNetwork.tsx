@@ -9,7 +9,7 @@ import {
 import { LockCard } from './LockCard'
 import { FavoriteLocks } from '..'
 import { config } from '~/config/app'
-import { useLockListData } from '~/hooks/useLockData'
+import { LockData } from '~/hooks/useLockData'
 
 interface LocksByNetworkProps {
   network: number | null
@@ -17,6 +17,7 @@ interface LocksByNetworkProps {
   locks?: Lock[]
   favoriteLocks: FavoriteLocks
   setFavoriteLocks: (favoriteLocks: FavoriteLocks) => void
+  lockData: Record<string, LockData>
 }
 
 export const LocksByNetwork = ({
@@ -25,6 +26,7 @@ export const LocksByNetwork = ({
   locks,
   favoriteLocks,
   setFavoriteLocks,
+  lockData,
 }: LocksByNetworkProps) => {
   const getNetworkName = (network: number) => {
     const { name: networkName } = config.networks[network]
@@ -33,9 +35,6 @@ export const LocksByNetwork = ({
 
   // Ensure locks is always an array
   const safeLocks = locks || []
-
-  // retrieve lock data for all locks
-  const { data: batchData } = useLockListData(safeLocks)
 
   if (isLoading) {
     return (
@@ -73,7 +72,7 @@ export const LocksByNetwork = ({
                     network={network ? network : lock.network}
                     favoriteLocks={favoriteLocks}
                     setFavoriteLocks={setFavoriteLocks}
-                    lockData={batchData ? batchData[lock.address] : undefined}
+                    lockData={lockData ? lockData[lock.address] : undefined}
                   />
                 ))}
               </div>
