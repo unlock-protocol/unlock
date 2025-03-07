@@ -11,11 +11,16 @@ export const useCentralizedLockData = (
   network?: number,
   owner?: string,
   options = {
-    staleTime: 1 * 60 * 1000, // 1 minute default stale time
+    staleTime: 1 * 60 * 1000,
   }
 ) => {
   return useQuery({
-    queryKey: ['centralizedLockData', lockAddress, network],
+    queryKey: [
+      'centralizedLockData',
+      lockAddress,
+      network,
+      owner?.toLowerCase(),
+    ],
     // Only run this query when we have valid lock parameters
     enabled: !!lockAddress && !!network && !!owner,
     queryFn: async () => {
@@ -62,8 +67,11 @@ export const useCentralizedLockData = (
         metadata: metadataResponse?.data || {},
       }
     },
-    staleTime: options.staleTime, // Configurable stale time with reasonable default
+    staleTime: options.staleTime || 10 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
     refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    retry: false,
   })
 }
 
