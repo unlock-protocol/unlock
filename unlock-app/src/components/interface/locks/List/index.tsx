@@ -4,7 +4,7 @@ import { config } from '~/config/app'
 import { Button, Placeholder } from '@unlock-protocol/ui'
 import useLocksByManagerOnNetworks from '~/hooks/useLocksByManager'
 import { ImageBar } from '../Manage/elements/ImageBar'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useAppStorage } from '~/hooks/useAppStorage'
 import { LocksByNetwork } from './elements/LocksByNetwork'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
@@ -51,6 +51,15 @@ const NoItems = () => {
   return <StatusMessage>You have not created any locks yet.</StatusMessage>
 }
 
+// Helper functions to filter locks outside of component render
+const filterFavoriteLocks = (locks: Lock[], favoriteLocks: FavoriteLocks) => {
+  return locks.filter((item: Lock) => favoriteLocks[item.address])
+}
+
+const filterLocksByNetwork = (locks: Lock[], network: number) => {
+  return locks.filter((lock: Lock) => lock.network === network)
+}
+
 export const LockList = () => {
   const { account } = useAuthenticate()
   const searchParams = useSearchParams()
@@ -61,26 +70,28 @@ export const LockList = () => {
   const { networks, defaultNetwork } = config
   const { getStorage, setStorage } = useAppStorage()
 
-  const networkItems = useMemo(() => {
-    if (!networks) return []
-    const networkEntries = Object.entries(networks)
-    return [
-      ...networkEntries.filter(([network]) =>
-        [defaultNetwork.toString()].includes(network)
-      ),
-      ...networkEntries.filter(
-        ([network]) =>
-          network && !['31337', defaultNetwork.toString()].includes(network)
-      ),
-    ]
-  }, [networks, defaultNetwork])
+  // This is fine to remain memoized since it's based on constant config values
+  const networkItems = Object.entries(networks || {})
+    .filter(
+      ([network]) =>
+        (network && !['31337'].includes(network)) ||
+        network === defaultNetwork.toString()
+    )
+    .sort(([a], [b]) =>
+      a === defaultNetwork.toString()
+        ? -1
+        : b === defaultNetwork.toString()
+          ? 1
+          : 0
+    )
 
-  const result = useLocksByManagerOnNetworks(owner!, networkItems)
+  const result = useLocksByManagerOnNetworks(owner, networkItems)
 
   const [favoriteLocks, setFavoriteLocks] = useState<FavoriteLocks>(() => {
     return getStorage('favoriteLocks') || {}
   })
 
+  // This callback is still useful to encapsulate localStorage logic
   const saveFavoriteLocks = useCallback(
     (newFavoriteLocks: FavoriteLocks) => {
       setFavoriteLocks(newFavoriteLocks)
@@ -130,25 +141,27 @@ export const LockList = () => {
     const allLocks = (result.data as unknown as Lock[]) || []
     const isEmpty = !isLoading && allLocks.length === 0
 
+    const favoritedLocks = filterFavoriteLocks(allLocks, favoriteLocks)
+
     return (
       <div className="grid gap-20 mb-20">
         <LocksByNetwork
           isLoading={isLoading}
-          locks={allLocks.filter((item: Lock) => favoriteLocks[item.address])}
+          locks={favoritedLocks}
           favoriteLocks={favoriteLocks}
           setFavoriteLocks={saveFavoriteLocks}
           network={null}
         />
         {networkItems.map(([network]) => {
-          const locksByNetwork = allLocks.filter(
-            (lock: Lock) => lock.network === Number(network)
-          )
+          const networkNumber = Number(network)
+
+          const locksByNetwork = filterLocksByNetwork(allLocks, networkNumber)
 
           return (
             <LocksByNetwork
               isLoading={isLoading}
               key={network}
-              network={Number(network)}
+              network={networkNumber}
               locks={locksByNetwork}
               favoriteLocks={favoriteLocks}
               setFavoriteLocks={saveFavoriteLocks}

@@ -56,6 +56,22 @@ const LockIcon = ({ lock }: LockIconProps) => {
   )
 }
 
+// toggle favorite lock
+const toggleFavorite = (
+  lockAddress: string,
+  isFavorite: boolean,
+  favoriteLocks: FavoriteLocks,
+  setFavoriteLocks: (favoriteLocks: FavoriteLocks) => void
+) => {
+  if (isFavorite) {
+    const newFavoriteLocks = { ...favoriteLocks }
+    delete newFavoriteLocks[lockAddress]
+    setFavoriteLocks(newFavoriteLocks)
+  } else {
+    setFavoriteLocks({ ...favoriteLocks, [lockAddress]: true })
+  }
+}
+
 export const LockCard = ({
   lock,
   network,
@@ -76,16 +92,6 @@ export const LockCard = ({
 
   const isFavorite = favoriteLocks[lockAddress] === true
 
-  const setFavorite = () => {
-    if (isFavorite) {
-      const newFavoriteLocks = { ...favoriteLocks }
-      delete newFavoriteLocks[lockAddress]
-      setFavoriteLocks(newFavoriteLocks)
-    } else {
-      setFavoriteLocks({ ...favoriteLocks, [lockAddress]: true })
-    }
-  }
-
   const duration =
     lock?.expirationDuration === MAX_UINT ? (
       'Unlimited'
@@ -102,7 +108,16 @@ export const LockCard = ({
             <div className="flex flex-col gap-2 w-1/3">
               <div className="flex gap-2">
                 <span className="text-2xl font-bold">{lock.name}</span>
-                <button onClick={setFavorite}>
+                <button
+                  onClick={() =>
+                    toggleFavorite(
+                      lockAddress,
+                      isFavorite,
+                      favoriteLocks,
+                      setFavoriteLocks
+                    )
+                  }
+                >
                   {isFavorite ? (
                     <UnfavoriteStar size={20} />
                   ) : (

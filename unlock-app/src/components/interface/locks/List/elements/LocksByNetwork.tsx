@@ -66,9 +66,9 @@ export const LocksByNetwork = ({
             </Disclosure.Button>
             <Disclosure.Panel>
               <div className="flex flex-col gap-6">
-                {safeLocks.map((lock: Lock, index: number) => (
+                {safeLocks.map((lock: Lock) => (
                   <LockCard
-                    key={index}
+                    key={`${lock.address}-${network || lock.network}`}
                     lock={lock}
                     network={network ? network : lock.network}
                     favoriteLocks={favoriteLocks}
