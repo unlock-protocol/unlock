@@ -1,7 +1,7 @@
+import { QueryClient, QueryCache } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 import * as Sentry from '@sentry/nextjs'
 import { ToastHelper } from '@unlock-protocol/ui'
-import { QueryClient, QueryCache } from '@tanstack/react-query'
 
 export const queryClient = new QueryClient({
   queryCache: new QueryCache({
