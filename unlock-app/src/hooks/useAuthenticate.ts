@@ -159,6 +159,12 @@ export function useAuthenticate() {
     signInWithPrivy,
     signOut,
     privyReady,
+    /**
+     * isLoading will be true in these scenarios:
+     * 1. When Privy authentication is not ready (!privyReady)
+     * 2. When a user is authenticated with Privy but has no wallet (privyAuthenticated && !wallets[0]?.address)
+     * 3. When a user has an account and wallet but the locksmith access token is missing (account && wallets[0]?.address && !getAccessToken(account))
+     */
     isLoading:
       !privyReady ||
       (privyAuthenticated && !wallets[0]?.address) ||
