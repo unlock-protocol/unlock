@@ -172,17 +172,23 @@ export function Minting({
           throw new Error('Transaction failed.')
         }
         const tokenIds = await waitForTokenIds()
-        communication?.emitTransactionInfo({
-          hash: mint!.transactionHash!,
-          lock: lock?.address,
-          tokenIds: tokenIds?.length ? tokenIds : [],
-          metadata,
-        })
-        communication?.emitUserInfo({
-          address: account,
-          signedMessage: messageToSign?.signature,
-        })
-        communication?.emitMetadata(metadata)
+        communication?.emitTransactionInfo(
+          {
+            hash: mint!.transactionHash!,
+            lock: lock?.address,
+            tokenIds: tokenIds?.length ? tokenIds : [],
+            metadata,
+          },
+          paywallConfig
+        )
+        communication?.emitUserInfo(
+          {
+            address: account,
+            signedMessage: messageToSign?.signature,
+          },
+          paywallConfig
+        )
+        communication?.emitMetadata(metadata, paywallConfig)
         checkoutService.send({
           type: 'CONFIRM_MINT',
           status: 'FINISHED',
