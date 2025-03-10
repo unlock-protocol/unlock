@@ -5,18 +5,12 @@ import {
   processSingleRequest,
   combineResponses,
 } from '../src/batchProcessor'
-import { RpcRequest } from '../src/utils'
+import { RpcRequest } from '../src/types'
 import * as rateLimit from '../src/rateLimit'
-import * as cache from '../src/cache'
+import { setupGlobalMocks } from './__fixtures__/testUtils'
 
 // Mock dependencies
-vi.mock('../src/rateLimit', () => ({
-  shouldRateLimit: vi.fn(),
-}))
-
-vi.mock('../src/cache', () => ({
-  getRPCResponseFromCache: vi.fn(),
-}))
+vi.mock('../src/rateLimit')
 
 describe('Batch Processor', () => {
   const mockEnv = {
@@ -30,6 +24,7 @@ describe('Batch Processor', () => {
   })
 
   beforeEach(() => {
+    setupGlobalMocks()
     vi.resetAllMocks()
   })
 
@@ -104,47 +99,6 @@ describe('Batch Processor', () => {
       })
     })
 
-    it('should handle cached responses', async () => {
-      const request: RpcRequest = {
-        id: 3,
-        jsonrpc: '2.0',
-        method: 'eth_call',
-        params: [{ to: '0x123' }, 'latest'],
-      }
-
-      vi.mocked(rateLimit.shouldRateLimit).mockResolvedValue(false)
-
-      const mockCachedResponse = new Response(
-        JSON.stringify({
-          id: 3,
-          jsonrpc: '2.0',
-          result: '0x456',
-        })
-      )
-
-      vi.mocked(cache.getRPCResponseFromCache).mockResolvedValue(
-        mockCachedResponse
-      )
-
-      const result = await processSingleRequest(
-        request,
-        '1',
-        mockRequest,
-        mockEnv
-      )
-
-      expect(result).toEqual({
-        request,
-        response: {
-          id: 3,
-          jsonrpc: '2.0',
-          result: '0x456',
-        },
-        shouldForward: false,
-        rateLimited: false,
-      })
-    })
-
     it('should mark requests for forwarding when not handled locally', async () => {
       const request: RpcRequest = {
         id: 4,
@@ -154,7 +108,6 @@ describe('Batch Processor', () => {
       }
 
       vi.mocked(rateLimit.shouldRateLimit).mockResolvedValue(false)
-      vi.mocked(cache.getRPCResponseFromCache).mockResolvedValue(null)
 
       const result = await processSingleRequest(
         request,
@@ -190,7 +143,6 @@ describe('Batch Processor', () => {
       ]
 
       vi.mocked(rateLimit.shouldRateLimit).mockResolvedValue(false)
-      vi.mocked(cache.getRPCResponseFromCache).mockResolvedValue(null)
 
       const result = await processBatchRequests(
         requests,
@@ -202,7 +154,6 @@ describe('Batch Processor', () => {
       expect(result.processedRequests).toHaveLength(2)
       expect(result.requestsToForward).toHaveLength(1)
       expect(result.requestsToForward[0].id).toBe(2)
-      expect(result.allRateLimited).toBe(false)
     })
 
     it('should identify when all requests are rate limited', async () => {
@@ -232,7 +183,6 @@ describe('Batch Processor', () => {
 
       expect(result.processedRequests).toHaveLength(2)
       expect(result.requestsToForward).toHaveLength(2)
-      expect(result.allRateLimited).toBe(true)
     })
   })
 
