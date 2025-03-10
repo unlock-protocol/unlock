@@ -3521,6 +3521,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@cloudflare/workers-types@npm:4.20250310.0":
+  version: 4.20250310.0
+  resolution: "@cloudflare/workers-types@npm:4.20250310.0"
+  checksum: 10/c58753550572cfbf60c501fdfc66835df05540f6d54a97e428ba2687fd6c5095b747b6d2459ee385eaaa1c463eb7cde2c04201b76c9c23904bd1e57f489fc65c
+  languageName: node
+  linkType: hard
+
 "@coinbase/wallet-sdk@npm:4.0.3":
   version: 4.0.3
   resolution: "@coinbase/wallet-sdk@npm:4.0.3"
@@ -18894,6 +18901,7 @@ __metadata:
     "@babel/node": "npm:7.26.0"
     "@babel/plugin-transform-runtime": "npm:7.26.9"
     "@babel/preset-env": "npm:7.26.0"
+    "@cloudflare/workers-types": "npm:4.20250310.0"
     "@typescript-eslint/parser": "npm:8.25.0"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     babel-loader: "npm:10.0.0"
@@ -18906,9 +18914,9 @@ __metadata:
     nodemailer: "npm:6.10.0"
     prettier: "npm:3.5.3"
     regenerator-runtime: "npm:0.14.1"
-    typescript: "npm:5.8.2"
     vitest: "npm:2.1.9"
     winston: "npm:3.17.0"
+    wrangler: "npm:3.112.0"
   languageName: unknown
   linkType: soft
 
@@ -38308,6 +38316,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"miniflare@npm:3.20250214.2":
+  version: 3.20250214.2
+  resolution: "miniflare@npm:3.20250214.2"
+  dependencies:
+    "@cspotcode/source-map-support": "npm:0.8.1"
+    acorn: "npm:8.14.0"
+    acorn-walk: "npm:8.3.2"
+    exit-hook: "npm:2.2.1"
+    glob-to-regexp: "npm:0.4.1"
+    stoppable: "npm:1.1.0"
+    undici: "npm:^5.28.5"
+    workerd: "npm:1.20250214.0"
+    ws: "npm:8.18.0"
+    youch: "npm:3.2.3"
+    zod: "npm:3.22.3"
+  bin:
+    miniflare: bootstrap.js
+  checksum: 10/76a90110309027f69a7510c1a14f66051130e9cca63565d86aec9df99fd24997105a00c1f6a751ae488ca3a141c250a8c29f36621267d4ffd8c2b10d7cdeef69
+  languageName: node
+  linkType: hard
+
 "minimalistic-assert@npm:^1.0.0, minimalistic-assert@npm:^1.0.1":
   version: 1.0.1
   resolution: "minimalistic-assert@npm:1.0.1"
@@ -52662,6 +52691,38 @@ __metadata:
     wrangler: bin/wrangler.js
     wrangler2: bin/wrangler.js
   checksum: 10/a0e72dc39543e271740d107e476daa4c6c782d028fcd3ca6ae72ba21d07da4dace8113eb39b9a9cf4683e8f86903b7e96e7f5c338e825494726fcd35c12d68cc
+  languageName: node
+  linkType: hard
+
+"wrangler@npm:3.112.0":
+  version: 3.112.0
+  resolution: "wrangler@npm:3.112.0"
+  dependencies:
+    "@cloudflare/kv-asset-handler": "npm:0.3.4"
+    "@esbuild-plugins/node-globals-polyfill": "npm:0.2.3"
+    "@esbuild-plugins/node-modules-polyfill": "npm:0.2.2"
+    blake3-wasm: "npm:2.1.5"
+    esbuild: "npm:0.17.19"
+    fsevents: "npm:~2.3.2"
+    miniflare: "npm:3.20250214.2"
+    path-to-regexp: "npm:6.3.0"
+    sharp: "npm:^0.33.5"
+    unenv: "npm:2.0.0-rc.1"
+    workerd: "npm:1.20250214.0"
+  peerDependencies:
+    "@cloudflare/workers-types": ^4.20250214.0
+  dependenciesMeta:
+    fsevents:
+      optional: true
+    sharp:
+      optional: true
+  peerDependenciesMeta:
+    "@cloudflare/workers-types":
+      optional: true
+  bin:
+    wrangler: bin/wrangler.js
+    wrangler2: bin/wrangler.js
+  checksum: 10/da2f15d9b369b55cde0ab81752418f7b62c1183152c8818fed93122d110c092dc557620e984f48fa256e46e7dd60148c943158c01eede02479211ab1c8f06f84
   languageName: node
   linkType: hard
 

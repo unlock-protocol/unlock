@@ -13,7 +13,7 @@ netlify functions:serve
 There is a single API:
 
 ```bash
-curl -X POST http://localhost:9999/.netlify/functions/handler/ \
+curl -X POST http://localhost:8787/.netlify/functions/handler/ \
    -H 'Content-Type: application/json' \
    -d '{
     "template": "debug",

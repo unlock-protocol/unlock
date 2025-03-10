@@ -15,25 +15,26 @@
     "dotenv": "16.4.7",
     "eslint": "9.21.0",
     "handlebars": "4.7.8",
-    "netlify-cli": "15.11.0",
     "node-forge": "1.3.1",
     "nodemailer": "6.10.0",
     "prettier": "3.5.3",
-    "typescript": "5.8.2",
-    "winston": "3.17.0"
+    "winston": "3.17.0",
+    "wrangler": "3.112.0"
   },
   "scripts": {
-    "build": "netlify build",
-    "dev": "UNLOCK_ENV=dev netlify functions:serve",
-    "test": "UNLOCK_ENV=test vitest run --coverage --environment=node",
+    "dev": "yarn wrangler dev",
+    "deploy": "yarn wrangler deploy",
+    "set-env-vars": "op run --env-file=.op.env --  ./scripts/set-env-vars.sh",
+    "test": "vitest run --config ./vitest.config.ts",
+    "ci": "yarn lint && yarn test",
     "lint": "eslint",
-    "ci": "yarn test && yarn lint",
-    "deploy-netlify": "./scripts/deploy-netlify.sh"
+    "test:watch": "vitest --config ./vitest.config.ts"
   },
   "author": "",
   "license": "MIT",
   "devDependencies": {
     "@babel/plugin-transform-runtime": "7.26.9",
+    "@cloudflare/workers-types": "4.20250310.0",
     "regenerator-runtime": "0.14.1",
     "vitest": "2.1.9"
   }
