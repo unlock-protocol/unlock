@@ -1,11 +1,6 @@
 import { Env } from './types'
 import { RpcRequest, getClientIP } from './utils'
-import {
-  processBatchRequests,
-  combineResponses,
-  forwardRequestsToProvider,
-  createErrorResponse,
-} from './batchProcessor'
+import { processAndForwardRequests } from './batchProcessor'
 
 const handler = async (request: Request, env: Env): Promise<Response> => {
   try {
@@ -189,115 +184,30 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
       )
     }
 
-    // Convert single requests to batch format for uniform processing
-    const requests = Array.isArray(body) ? body : [body]
-    const isBatchRequest = Array.isArray(body)
-
-    // Process the batch of requests
-    const batchResult = await processBatchRequests(
-      requests,
+    // Process and forward requests as needed
+    const result = await processAndForwardRequests(
+      body,
       networkId,
       request,
       env
     )
 
-    // If all requests can be handled locally, return the combined responses
-    if (batchResult.requestsToForward.length === 0) {
-      const responses = batchResult.processedRequests.map((pr) => pr.response)
-      return Response.json(isBatchRequest ? responses : responses[0], {
-        headers,
-      })
-    }
-
-    // Otherwise, we need to forward some requests to the provider
-    try {
-      // Forward requests to the provider and cache the responses
-      let providerResponse
-      try {
-        providerResponse = await forwardRequestsToProvider(
-          batchResult.requestsToForward,
-          networkId,
-          env
-        )
-      } catch (error) {
-        console.error('Error forwarding requests to provider:', error)
-
-        // Create an error response
-        const requestId = isBatchRequest
-          ? batchResult.requestsToForward[0]?.id || 42
-          : batchResult.requestsToForward[0]?.id || 42
-
-        const errorResponse = createErrorResponse(
-          requestId,
-          -32603,
-          'Internal JSON-RPC error',
-          error instanceof Error
-            ? error.message
-            : 'Failed to process provider response'
-        )
-
-        // If this was a batch request, combine with local responses
-        if (isBatchRequest) {
-          const combinedResponses = combineResponses(
-            batchResult.processedRequests,
-            [errorResponse]
-          )
-
-          return Response.json(combinedResponses, { headers })
-        }
-
-        return Response.json(errorResponse, {
-          status: 500,
+    // Handle any errors
+    if (result.error) {
+      return Response.json(
+        result.isBatchRequest ? result.responses : result.responses[0],
+        {
+          status: result.error.status || 500,
           headers,
-        })
-      }
-
-      // If this was a single request that was forwarded, return the provider response directly
-      if (!isBatchRequest) {
-        return Response.json(providerResponse, { headers })
-      }
-
-      // For batch requests, combine the local and provider responses
-      const providerResponses = Array.isArray(providerResponse)
-        ? providerResponse
-        : [providerResponse]
-
-      const combinedResponses = combineResponses(
-        batchResult.processedRequests,
-        providerResponses
+        }
       )
-
-      return Response.json(combinedResponses, { headers })
-    } catch (error) {
-      console.error('Error making RPC request:', error)
-
-      // Create an error response
-      const requestId = isBatchRequest
-        ? batchResult.requestsToForward[0]?.id || 42
-        : batchResult.requestsToForward[0]?.id || 42
-
-      const outerErrorResponse = createErrorResponse(
-        requestId,
-        -32603,
-        'Internal JSON-RPC error',
-        error instanceof Error ? error.message : 'Unknown error'
-      )
-
-      // If this was a batch request, we need to combine with local responses
-      if (isBatchRequest) {
-        const combinedResponses = combineResponses(
-          batchResult.processedRequests,
-          [outerErrorResponse]
-        )
-
-        return Response.json(combinedResponses, { headers })
-      }
-
-      return Response.json(outerErrorResponse, {
-        status: 500,
-        headers,
-      })
     }
+
+    // Return the responses
+    return Response.json(
+      result.isBatchRequest ? result.responses : result.responses[0],
+      { headers }
+    )
   } catch (error) {
     // Catch all for any uncaught exceptions
     console.error('Unexpected error in handler:', error)
