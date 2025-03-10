@@ -8,6 +8,7 @@ import {
 } from './types'
 import { getClientIP } from './utils'
 import { shouldRateLimit } from './rateLimit'
+import supportedNetworks from './supportedNetworks'
 
 /**
  * Creates a standardized JSON-RPC error response
@@ -219,12 +220,10 @@ export const forwardRequestsToProvider = async (
       : requestsToForward[0]
 
     // Get the appropriate provider URL for the network
-    const providerKey = `${networkId.toUpperCase()}_PROVIDER`
-    const supportedNetwork = env[providerKey as keyof Env] as string
-    // Network validation is already done in the handler, so we can assume the network is supported
+    const supportedNetwork = supportedNetworks(env, networkId)
 
     // Forward the request to the provider
-    const response = await fetch(supportedNetwork, {
+    const response = await fetch(supportedNetwork!, {
       method: 'POST',
       body: JSON.stringify(forwardBody),
       headers: new Headers({
