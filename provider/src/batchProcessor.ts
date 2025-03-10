@@ -1,24 +1,13 @@
-import { Env } from './types'
-import { getClientIP, RpcRequest } from './utils'
+import {
+  BatchProcessingResult,
+  Env,
+  ForwardingResult,
+  ProcessedRequest,
+  ProcessingResult,
+  RpcRequest,
+} from './types'
+import { getClientIP } from './utils'
 import { shouldRateLimit } from './rateLimit'
-
-/**
- * Represents the result of processing a single RPC request
- */
-interface ProcessedRequest {
-  request: RpcRequest
-  response: any | null
-  shouldForward: boolean
-  rateLimited: boolean
-}
-
-/**
- * Represents the result of processing a batch of RPC requests
- */
-interface BatchProcessingResult {
-  processedRequests: ProcessedRequest[]
-  requestsToForward: RpcRequest[]
-}
 
 /**
  * Creates a standardized JSON-RPC error response
@@ -206,17 +195,6 @@ export const combineResponses = (
 }
 
 /**
- * Result of forwarding requests to the provider
- */
-interface ForwardingResult {
-  responses?: any[]
-  error?: {
-    message: string
-    originalError: any
-  }
-}
-
-/**
  * Forwards requests to the provider
  *
  * @param requestsToForward The requests to forward to the provider
@@ -285,19 +263,6 @@ export const forwardRequestsToProvider = async (
         originalError: error,
       },
     }
-  }
-}
-
-/**
- * Result of processing and forwarding requests
- */
-interface ProcessingResult {
-  responses: any[]
-  isBatchRequest: boolean
-  error?: {
-    message: string
-    originalError: any
-    status?: number
   }
 }
 

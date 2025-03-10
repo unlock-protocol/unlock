@@ -1,6 +1,7 @@
-import { Env } from './types'
-import { RpcRequest, getClientIP } from './utils'
+import { Env, RpcRequest } from './types'
+import { getClientIP } from './utils'
 import { processAndForwardRequests } from './batchProcessor'
+import supportedNetworks from './supportedNetworks'
 
 const handler = async (request: Request, env: Env): Promise<Response> => {
   try {
@@ -147,9 +148,10 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
 
     const [_, networkId] = matched
 
-    // Check if the network is supported by trying to get the provider URL
-    const providerKey = `${networkId.toUpperCase()}_PROVIDER`
-    if (!env[providerKey as keyof Env]) {
+    const supportedNetwork = supportedNetworks(env, networkId)
+
+    // Network not supported
+    if (!supportedNetwork) {
       return Response.json(
         { message: `Unsupported network ID: ${networkId}` },
         {

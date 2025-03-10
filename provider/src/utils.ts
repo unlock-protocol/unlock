@@ -1,4 +1,4 @@
-import { Env } from './types'
+import { Env, RpcRequest } from './types'
 import { ethers } from 'ethers'
 
 // Default cache TTL in seconds (1 hour)
@@ -22,16 +22,6 @@ export const getKVContractTypeKey = (
 export const CACHEABLE_METHODS = [
   'eth_call', // utilised by ENS resolver and other name resolution services
 ]
-
-/**
- * Interface for RPC request format
- */
-export interface RpcRequest {
-  id: number
-  jsonrpc: string
-  method: string
-  params: any[]
-}
 
 /**
  * Get the cache TTL from environment or use default
