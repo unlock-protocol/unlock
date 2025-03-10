@@ -1,6 +1,6 @@
 import { Env } from './types'
-import { RpcRequest } from './utils'
-import { getRPCResponseFromCache } from './cache'
+import { getClientIP, RpcRequest } from './utils'
+import { getRPCResponseFromCache, storeRPCResponseInCache } from './cache'
 import { shouldRateLimit } from './rateLimit'
 
 /**
@@ -19,7 +19,32 @@ interface ProcessedRequest {
 interface BatchProcessingResult {
   processedRequests: ProcessedRequest[]
   requestsToForward: RpcRequest[]
-  allRateLimited: boolean
+}
+
+/**
+ * Creates a standardized JSON-RPC error response
+ *
+ * @param id The request ID
+ * @param code The error code
+ * @param message The error message
+ * @param data Additional error data
+ * @returns A standardized JSON-RPC error response object
+ */
+export const createErrorResponse = (
+  id: number | string = 42,
+  code: number = -32603,
+  message: string = 'Internal JSON-RPC error',
+  data: string = 'Unknown error'
+): any => {
+  return {
+    id,
+    jsonrpc: '2.0',
+    error: {
+      code,
+      message,
+      data,
+    },
+  }
 }
 
 /**
@@ -77,7 +102,7 @@ export const processSingleRequest = async (
     // Log the rate limit but still forward the request to maintain current behavior
     // This would later be changed to block rate-limited requests
     console.log(
-      `RATE_LIMIT_WOULD_BLOCK: Request ID=${request.id}, Method=${request.method}`
+      `RATE_LIMIT_WOULD_BLOCK: IP=${getClientIP(originalRequest)}, networkId=${networkId}, Request ID=${request.id}, Method=${request.method}`
     )
 
     return {
@@ -132,33 +157,21 @@ export const processBatchRequests = async (
   originalRequest: Request,
   env: Env
 ): Promise<BatchProcessingResult> => {
-  // Process each request individually
-  const processedRequests: ProcessedRequest[] = []
-
-  for (const request of requests) {
-    const processedRequest = await processSingleRequest(
-      request,
-      networkId,
-      originalRequest,
-      env
+  // process all requests
+  const processedRequests: ProcessedRequest[] = await Promise.all(
+    requests.map((request) =>
+      processSingleRequest(request, networkId, originalRequest, env)
     )
-    processedRequests.push(processedRequest)
-  }
+  )
 
   // Extract requests that need to be forwarded
   const requestsToForward = processedRequests
     .filter((processed) => processed.shouldForward)
     .map((processed) => processed.request)
 
-  // Check if all requests are rate limited
-  const allRateLimited = processedRequests.every(
-    (processed) => processed.rateLimited
-  )
-
   return {
     processedRequests,
     requestsToForward,
-    allRateLimited,
   }
 }
 
@@ -209,4 +222,55 @@ export const combineResponses = (
 
     return providerResponse
   })
+}
+
+/**
+ * Forwards requests to the provider and caches the responses
+ *
+ * @param requestsToForward The requests to forward to the provider
+ * @param networkId The network ID
+ * @param env The environment variables
+ * @returns The provider responses
+ */
+export const forwardRequestsToProvider = async (
+  requestsToForward: RpcRequest[],
+  networkId: string,
+  env: Env
+): Promise<any> => {
+  if (requestsToForward.length === 0) {
+    return null
+  }
+
+  // Determine if this is a single request or a batch
+  const isBatchRequest = requestsToForward.length > 1
+  const forwardBody = isBatchRequest ? requestsToForward : requestsToForward[0]
+
+  // Get the appropriate provider URL for the network
+  const providerKey = `${networkId.toUpperCase()}_PROVIDER`
+  const supportedNetwork = env[providerKey as keyof Env] as string
+
+  // Forward the request to the provider
+  const response = await fetch(supportedNetwork, {
+    method: 'POST',
+    body: JSON.stringify(forwardBody),
+    headers: new Headers({
+      Accept: '*/*',
+      Origin: 'https://rpc.unlock-protocol.com/',
+      'Content-Type': 'application/json',
+    }),
+  })
+
+  // Parse the response
+  let providerResponse
+  try {
+    providerResponse = await response.json()
+  } catch (error) {
+    console.error('Error parsing JSON response:', error)
+    throw error
+  }
+
+  // Store the response in the cache if applicable
+  await storeRPCResponseInCache(networkId, forwardBody, providerResponse, env)
+
+  return providerResponse
 }
