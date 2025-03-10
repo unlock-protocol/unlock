@@ -416,8 +416,9 @@ export function Payment({ checkoutService }: Props) {
 
               {/* Loading details */}
               {isLoadingMoreRoutes && !enableClaim && (
-                <div className="flex items-center justify-center w-full gap-2 text-sm text-center">
-                  <LoadingIcon size={16} /> Loading more payment options...
+                <div className="flex items-center justify-center w-full gap-2 text-xs text-center text-gray-500">
+                  <LoadingIcon size={16} /> Loading more payment options based
+                  on your wallet...
                 </div>
               )}
 

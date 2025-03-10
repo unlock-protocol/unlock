@@ -282,8 +282,8 @@ export const useCrossChainRoutes = ({
   return {
     isLoading:
       isLoadingPrices ||
-      (hasPrices && balanceResults.some((result) => result.isPending)) ||
-      (hasPrices && routeResults.some((result) => result.isPending)),
+      (hasPrices && balanceResults.some((result) => result.isLoading)) ||
+      (hasPrices && routeResults.some((result) => result.isLoading)),
     routes: routes.sort(
       (a: CrossChainRouteWithBalance, b: CrossChainRouteWithBalance) =>
         a!.resolvedAt - b!.resolvedAt
