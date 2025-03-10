@@ -18639,7 +18639,7 @@ __metadata:
     react-gtm-module: "npm:2.0.11"
     react-hook-form: "npm:7.53.2"
     react-icons: "npm:5.3.0"
-    react-markdown: "npm:9.0.3"
+    react-markdown: "npm:10.1.0"
     react-test-renderer: "npm:18.3.1"
     react-to-print: "npm:3.0.5"
     react-use: "npm:17.5.1"
@@ -44055,11 +44055,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-markdown@npm:9.0.3":
-  version: 9.0.3
-  resolution: "react-markdown@npm:9.0.3"
+"react-markdown@npm:10.1.0":
+  version: 10.1.0
+  resolution: "react-markdown@npm:10.1.0"
   dependencies:
     "@types/hast": "npm:^3.0.0"
+    "@types/mdast": "npm:^4.0.0"
     devlop: "npm:^1.0.0"
     hast-util-to-jsx-runtime: "npm:^2.0.0"
     html-url-attributes: "npm:^3.0.0"
@@ -44072,7 +44073,7 @@ __metadata:
   peerDependencies:
     "@types/react": ">=18"
     react: ">=18"
-  checksum: 10/b97eb9a61762762043263286ece030bd878acabe24bbf433767a9518cb18e434e26a75b1b810a7cb966e304ddb4e16bd4a15edcc808113b11b4fb85a68d99e8d
+  checksum: 10/886c037d18266e94750abbc00c6096435bccd4da5f2d1727984bcbdf83e9f2a5cc9a6b0eecfe6c30456dc26546fee41c7f6aecbf176e6d7453963df4abefd7df
   languageName: node
   linkType: hard
 
