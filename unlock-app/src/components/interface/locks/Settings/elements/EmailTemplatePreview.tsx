@@ -56,7 +56,7 @@ const EmailTemplatePreviewComponent = ({
 
   const {
     data: params,
-    // isLoading: isLoadingParams,
+    isLoading: isLoadingParams,
     // refetch: refetchParams,
   } = useEmailPreviewDataForLock({
     lockAddress,
@@ -141,12 +141,13 @@ const EmailTemplatePreviewComponent = ({
               size="small"
               variant="outlined-primary"
               onClick={() => setShowPreview(true)}
+              disabled={isLoadingParams || !params}
             >
               Show email preview
             </Button>
           </div>
         )}
-        {showPreview && (
+        {showPreview && params && (
           <Modal empty isOpen={showPreview} setIsOpen={setShowPreview}>
             <div className="fixed inset-0 z-10 flex justify-center overflow-y-auto bg-white">
               <EmailPreview
