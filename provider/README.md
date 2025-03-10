@@ -74,6 +74,34 @@ REQUESTS_PER_SECOND = "10"         # Default: 10
 REQUESTS_PER_HOUR = "1000"         # Default: 1000
 ```
 
+## Batch Request Processing
+
+The provider supports optimized batch request processing. When a batch of RPC requests is received, the provider:
+
+1. Unbundles the batch into individual requests
+2. Processes each request appropriately:
+   - Handles locally if possible (e.g., `eth_chainId`, cached ENS/Basename requests)
+   - Applies rate limiting checks to each request
+3. Only forwards necessary requests to the underlying RPC provider
+4. Recombines all responses (both locally processed and provider-processed) into a single batch response
+
+This optimization reduces load on the underlying RPC providers and improves performance for batch requests that include requests that can be handled locally.
+
+### Example
+
+For a batch request containing:
+
+- An `eth_chainId` request
+- An ENS resolution request (that's in cache)
+- A contract call that needs to be forwarded
+
+The provider will:
+
+1. Process the `eth_chainId` request locally
+2. Retrieve the ENS resolution from cache
+3. Forward only the contract call to the RPC provider
+4. Combine all three responses and return them in the original order
+
 # Development
 
 You can use the `yarn dev` to run locally.

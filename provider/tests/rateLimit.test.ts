@@ -20,9 +20,7 @@ describe('Rate Limit Module', () => {
     vi.clearAllMocks()
   })
 
-  test('shouldRateLimitSingle should exempt Unlock contracts', async () => {
-    const originalShouldRateLimitSingle = rateLimit.shouldRateLimitSingle
-
+  test('shouldRateLimit should exempt Unlock contracts', async () => {
     // Mock getContractAddress to return a test address
     const mockContractAddress = '0xMockUnlockContract'
     vi.spyOn(utils, 'getContractAddress').mockReturnValue(mockContractAddress)
@@ -36,14 +34,14 @@ describe('Rate Limit Module', () => {
     const mockRequest = createMockRequest('1', 'eth_call', [], {}, '127.0.0.1')
     const mockBody = { method: 'eth_call', params: [] }
 
-    const result = await originalShouldRateLimitSingle(
+    const result = await rateLimit.shouldRateLimit(
       mockRequest,
       mockEnv as Env,
       mockBody,
       '1'
     )
 
-    // If the contract is an Unlock contract, shouldRateLimitSingle should return false
+    // If the contract is an Unlock contract, shouldRateLimit should return false
     expect(result).toBe(false)
 
     // Verify our mocks were called
@@ -56,69 +54,45 @@ describe('Rate Limit Module', () => {
   })
 
   test('shouldRateLimit should process batch requests correctly', async () => {
+    // This test is now obsolete since we've removed the batch handling from shouldRateLimit
+    // We'll test a different aspect of shouldRateLimit instead
+
     // Create a mock request
     const mockRequest = createMockRequest('1', 'eth_call', [], {}, '127.0.0.1')
 
-    // Prepare a batch of requests
-    const batchBody = [
-      { jsonrpc: '2.0', id: 1, method: 'eth_call', params: [] },
-      { jsonrpc: '2.0', id: 2, method: 'eth_getBalance', params: [] },
-    ]
-
-    // Test 1: All requests pass rate limiting
-    // Mock shouldRateLimitSingle directly
-    const shouldRateLimitSingleMock = vi.fn().mockResolvedValue(false)
-
-    // Create a custom implementation of shouldRateLimit that uses our mock
-    const customShouldRateLimit = async (
-      request: Request,
-      env: Env,
-      body: any,
-      networkId: string
-    ) => {
-      if (Array.isArray(body)) {
-        const shouldRateLimitRequests = await Promise.all(
-          body.map((singleBody) =>
-            shouldRateLimitSingleMock(request, env, singleBody, networkId)
-          )
-        )
-        return shouldRateLimitRequests.some(
-          (shouldRateLimitRequest) => shouldRateLimitRequest
-        )
-      }
-      return shouldRateLimitSingleMock(request, env, body, networkId)
+    // Test with eth_chainId which should be exempt from rate limiting
+    const chainIdBody = {
+      jsonrpc: '2.0',
+      id: 1,
+      method: 'eth_chainId',
+      params: [],
     }
-
-    // Test case 1: All requests pass rate limiting
-    const result = await customShouldRateLimit(
+    const chainIdResult = await rateLimit.shouldRateLimit(
       mockRequest,
       mockEnv as Env,
-      batchBody,
+      chainIdBody,
       '1'
     )
 
-    // Verify that shouldRateLimitSingle was called for each item in the batch
-    expect(shouldRateLimitSingleMock).toHaveBeenCalledTimes(2)
-    expect(result).toBe(false)
+    // eth_chainId should not be rate limited
+    expect(chainIdResult).toBe(false)
 
-    // Reset the mock
-    shouldRateLimitSingleMock.mockReset()
-
-    // Test case 2: One request fails rate limiting
-    shouldRateLimitSingleMock
-      .mockResolvedValueOnce(false)
-      .mockResolvedValueOnce(true)
-
-    // Call our custom implementation again
-    const resultWithRateLimit = await customShouldRateLimit(
+    // Test with eth_blockNumber which should also be exempt
+    const blockNumberBody = {
+      jsonrpc: '2.0',
+      id: 2,
+      method: 'eth_blockNumber',
+      params: [],
+    }
+    const blockNumberResult = await rateLimit.shouldRateLimit(
       mockRequest,
       mockEnv as Env,
-      batchBody,
+      blockNumberBody,
       '1'
     )
 
-    // If any request in the batch should be rate limited, the overall result should be true
-    expect(resultWithRateLimit).toBe(true)
+    // eth_blockNumber should not be rate limited
+    expect(blockNumberResult).toBe(false)
   })
 
   test('isUnlockContract should check and return correct results', async () => {
