@@ -1,8 +1,17 @@
-import React from 'react'
 import { ManageLockContent } from '~/components/interface/locks/Manage'
 
-const ManageLockPage: React.FC = () => {
-  return <ManageLockContent />
+interface PageProps {
+  searchParams: {
+    network?: string
+    address?: string
+  }
+}
+
+const ManageLockPage = async ({ searchParams }: PageProps) => {
+  const network = searchParams.network || ''
+  const lockAddress = searchParams.address || ''
+
+  return <ManageLockContent network={network} lockAddress={lockAddress} />
 }
 
 export default ManageLockPage

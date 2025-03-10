@@ -30,11 +30,6 @@ for (const [key, value] of Object.entries(requiredEnvs)) {
 /** @type {import('next').NextConfig} */
 const config = {
   productionBrowserSourceMaps: true,
-  sentry: {
-    disableServerWebpackPlugin: true,
-    disableClientWebpackPlugin: true,
-    hideSourceMaps: true,
-  },
   transpilePackages: ['@tw-classed/react'],
   images: {
     unoptimized: true,
@@ -67,4 +62,12 @@ const config = {
   },
 }
 
-module.exports = withSentryConfig(config)
+module.exports = withSentryConfig(config, {
+  telemetry: false,
+  disableLogger: true,
+  sentryBuildOptions: {
+    disableServerWebpackPlugin: true,
+    disableClientWebpackPlugin: true,
+    hideSourceMaps: true,
+  },
+})

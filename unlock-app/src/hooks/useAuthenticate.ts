@@ -1,5 +1,4 @@
 import { usePrivy, useWallets } from '@privy-io/react-auth'
-import { useAppStorage } from './useAppStorage'
 import { useContext, useEffect } from 'react'
 import {
   getAccessToken,
@@ -8,23 +7,17 @@ import {
 } from '~/utils/session'
 import { locksmith } from '~/config/locksmith'
 import { useQueryClient } from '@tanstack/react-query'
-import { useSession } from './useSession'
 import { useSIWE } from './useSIWE'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useProvider } from './useProvider'
 import AuthenticationContext from '~/contexts/AuthenticationContext'
 import { onSignedInWithPrivy } from '~/config/PrivyProvider'
 
 // This hook includes *all* signIn and signOut methods
-// TODO: consider adding useSession() stuff here too?
 export function useAuthenticate() {
-  const { account, setAccount } = useContext<{
-    account: string | undefined
-    setAccount: (account: string | undefined) => void
-  }>(AuthenticationContext)
+  const { account, setAccount } = useContext(AuthenticationContext)
+
   const { setProvider } = useProvider()
-  const { refetchSession } = useSession()
-  const { setStorage } = useAppStorage()
   const {
     logout: privyLogout,
     ready: privyReady,
@@ -38,34 +31,37 @@ export function useAuthenticate() {
 
   // When a user is logged in, this method is called to set the account and refetch the session
   const onSignedIn = async (walletAddress: string) => {
-    const changed = setStorage('account', walletAddress)
-    if (changed) {
-      await Promise.all([queryClient.refetchQueries(), refetchSession()])
-    }
+    window.dispatchEvent(
+      new CustomEvent('locksmith.authenticated', {
+        detail: walletAddress,
+      })
+    )
   }
-
-  // Detects when login was successful via an event
-  useEffect(() => {
-    if (account) {
-      onSignedIn(account)
-    }
-  }, [account])
 
   // Method that tries to sign in with an existing session
   const signInWithExistingSession = async () => {
     const existingAccessToken = getAccessToken()
+
+    // when privy's auth state remains true [stale] but wallets are empty, it means the user is not connected to a wallet
+    // we need to logout and remove the access token
+    if (privyAuthenticated && wallets.length === 0) {
+      privyLogout()
+      removeAccessToken()
+      return false
+    }
+
+    // if privy's auth state is false, return false
+    if (!privyAuthenticated) {
+      return false
+    }
+
     // Use the existing access token to log in
     if (existingAccessToken) {
       try {
         const response = await locksmith.user()
         const { walletAddress } = response.data
-        if (walletAddress) {
+        if (walletAddress && wallets.length > 0) {
           await onSignedIn(walletAddress)
-          window.dispatchEvent(
-            new CustomEvent('locksmith.authenticated', {
-              detail: walletAddress,
-            })
-          )
           return true
         }
       } catch (error) {
@@ -87,7 +83,7 @@ export function useAuthenticate() {
         removeAccessToken()
       }
       setAccount(undefined)
-      await Promise.all([queryClient.invalidateQueries(), refetchSession()])
+      await Promise.all([queryClient.invalidateQueries()])
     } catch (error) {
       console.error(error)
     }
@@ -157,11 +153,21 @@ export function useAuthenticate() {
   }, [wallet?.address, account])
 
   return {
-    account,
+    account: account ? wallets[0]?.address && account : undefined,
     email: user?.email?.address,
     signInWithSIWE,
     signInWithPrivy,
     signOut,
     privyReady,
+    /**
+     * isLoading will be true in these scenarios:
+     * 1. When Privy authentication is not ready (!privyReady)
+     * 2. When a user is authenticated with Privy but has no wallet (privyAuthenticated && !wallets[0]?.address)
+     * 3. When a user has an account and wallet but the locksmith access token is missing (account && wallets[0]?.address && !getAccessToken(account))
+     */
+    isLoading:
+      !privyReady ||
+      (privyAuthenticated && !wallets[0]?.address) ||
+      (account && wallets[0]?.address && !getAccessToken(account)),
   }
 }

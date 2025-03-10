@@ -1,12 +1,11 @@
 import { classed } from '@tw-classed/react'
 import { ReactNode, useEffect, useState, useCallback } from 'react'
 import { RadioGroup } from '@headlessui/react'
-import { Combobox, Input, Placeholder } from '@unlock-protocol/ui'
+import { Combobox, Input, Placeholder, ToastHelper } from '@unlock-protocol/ui'
 import { useController, useFormContext } from 'react-hook-form'
 import { CheckoutConfig } from '@unlock-protocol/core'
 import { useCheckoutConfig } from '~/hooks/useCheckoutConfig'
 import { useMultipleLockManagers } from '~/hooks/useLockManager'
-import { ToastHelper } from '~/components/helpers/toast.helper'
 import { Configuration } from '.'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 

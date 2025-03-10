@@ -61,7 +61,7 @@ export const addJob = async (jobName: string, payload: any, opts = {}) => {
         connectionString: config.databaseUrl,
         // @ts-expect-error - type is not defined properly
         ssl: config.database?.dialectOptions?.ssl,
-      }),
+      }) as any,
     },
     jobName,
     payload,
@@ -74,7 +74,7 @@ export async function startWorker() {
     connectionString: config.databaseUrl,
     // @ts-expect-error - type is not defined properly
     ssl: config.database?.dialectOptions?.ssl,
-  })
+  }) as any
 
   // Create worker utils for scheduling tasks
   const workerUtils = await makeWorkerUtils({

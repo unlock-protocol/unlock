@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Badge, Select, Placeholder } from '@unlock-protocol/ui'
 import { useState, useCallback, useMemo } from 'react'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { BsCheckCircle as CheckCircleIcon } from 'react-icons/bs'
 import { SettingCardDetail } from '../elements/SettingCard'
