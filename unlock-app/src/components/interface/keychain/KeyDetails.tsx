@@ -1,18 +1,15 @@
-import React from 'react'
 import Key from './Key'
 import { ImageBar } from '../locks/Manage/elements/ImageBar'
-import { useKeys } from '~/hooks/useKeys'
+import { useKeys, Key as FullyLoadedKey } from '~/hooks/useKeys'
 import { minifyAddress, Placeholder } from '@unlock-protocol/ui'
 import networks from '@unlock-protocol/networks'
 import { NetworkConfig } from '@unlock-protocol/types'
-import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 export const KeyDetails = ({ owner }: { owner: string }) => {
-  const { account } = useAuthenticate()
   const { keys, isKeysLoading } = useKeys({
     owner,
     networks: Object.values(networks)
-      .filter((item: NetworkConfig) => !item.isTestNetwork || owner === account)
+      .filter((item: NetworkConfig) => !item.isTestNetwork || owner === owner)
       .map((item: NetworkConfig) => item.id),
   })
 
@@ -44,7 +41,7 @@ export const KeyDetails = ({ owner }: { owner: string }) => {
             </Placeholder.Root>
           ))}
         {!isKeysLoading &&
-          keys?.map((item: any) => (
+          keys?.map((item: FullyLoadedKey) => (
             <Key
               key={item.id}
               ownedKey={item}

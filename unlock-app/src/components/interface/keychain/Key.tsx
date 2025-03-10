@@ -4,37 +4,24 @@ import {
   Fragment,
   MouseEventHandler,
   useRef,
-  useCallback,
+  useEffect,
 } from 'react'
 import useClipboard from 'react-use-clipboard'
-import {
-  AvatarImage,
-  Root as Avatar,
-  Fallback as AvatarFallback,
-} from '@radix-ui/react-avatar'
 import { BsTrashFill as CancelIcon } from 'react-icons/bs'
 import {
   FaWallet as WalletIcon,
-  FaCheckCircle as CheckIcon,
   FaInfoCircle as InfoIcon,
 } from 'react-icons/fa'
-import {
-  RiErrorWarningFill as DangerIcon,
-  RiArrowGoForwardFill as ExtendMembershipIcon,
-} from 'react-icons/ri'
+import { RiArrowGoForwardFill as ExtendMembershipIcon } from 'react-icons/ri'
 import { BiTransfer as TransferIcon } from 'react-icons/bi'
-import { Badge, Button, Card, minifyAddress } from '@unlock-protocol/ui'
+import { Badge, Card, minifyAddress } from '@unlock-protocol/ui'
 import { networks } from '@unlock-protocol/networks'
 import QRModal from './QRModal'
-import useMetadata from '../../../hooks/useMetadata'
 import WedlockServiceContext from '../../../contexts/WedlocksContext'
-import { useConfig } from '../../../utils/withConfig'
 import { OpenSeaIcon } from '../../icons'
 import { CancelAndRefundModal } from './CancelAndRefundModal'
 import { KeyInfoDrawer } from './KeyInfoDrawer'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
-import { useQuery } from '@tanstack/react-query'
-import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Menu, Transition } from '@headlessui/react'
 import { classed as tw } from '@tw-classed/react'
 import { TbTools as ToolsIcon } from 'react-icons/tb'
@@ -45,17 +32,31 @@ import {
 } from 'react-icons/ri'
 import { RiFileCopyLine as CopyLineIcon } from 'react-icons/ri'
 import { ExtendMembershipModal } from './Extend'
-import { Key as HookKey } from '~/hooks/useKeys'
+import { Key as FullyLoadedKey } from '~/hooks/useKeys'
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
-import { useGetReceiptsPageUrl } from '~/hooks/useReceipts'
 import { AddToPhoneWallet } from './AddToPhoneWallet'
 import { useRouter } from 'next/navigation'
 import { Platform } from '~/services/passService'
 import { TransferModal } from './TransferModal'
 import { isKeyTransferable } from '~/utils/key'
-import { useFetchTransferFee } from '~/hooks/useTransferFee'
-import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useProvider } from '~/hooks/useProvider'
+import { config } from '~/config/app'
+import { AiOutlineLoading3Quarters as LoadingIcon } from 'react-icons/ai'
+import Image from 'next/image'
+
+// Loading shimmer animation
+const Shimmer = tw.div('animate-pulse bg-gray-200 rounded', {
+  variants: {
+    size: {
+      sm: 'h-4 w-16',
+      md: 'h-4 w-24',
+      lg: 'h-5 w-32',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+})
 
 export const MenuButton = tw.button(
   'group flex gap-2 w-full font-semibold items-center rounded-md px-2 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed',
@@ -69,19 +70,15 @@ export const MenuButton = tw.button(
 )
 
 export interface Props {
-  ownedKey: HookKey
+  ownedKey: FullyLoadedKey
   owner: string
   network: number
 }
 
 function Key({ ownedKey, owner, network }: Props) {
-  const { lock, expiration, tokenId, isExpired, isExtendable, isRenewable } =
-    ownedKey
-  const { account } = useAuthenticate()
+  console.log('ownedKey', ownedKey)
   const { getWalletService, watchAsset } = useProvider()
   const wedlockService = useContext(WedlockServiceContext)
-  const web3Service = useWeb3Service()
-  const config = useConfig()
   const [showingQR, setShowingQR] = useState(false)
   const [showMoreInfo, setShowMoreInfo] = useState(false)
   const [signature, setSignature] = useState<any | null>(null)
@@ -91,34 +88,26 @@ function Key({ ownedKey, owner, network }: Props) {
   const [showTransferModal, setShowTransferModal] = useState(false)
   const videoRef = useRef(null)
   const [canPlayImageAsVideo, setCanPlayImageAsVideo] = useState(false)
-  const isKeyExpired = isExpired || expireAndRefunded
+  const isKeyExpired = ownedKey.isExpired || expireAndRefunded
 
-  const { data: lockData, isPending: isLockDataLoading } = useQuery({
-    queryKey: ['lock', lock.address, network],
-    queryFn: () => {
-      return web3Service.getLock(lock.address, network)
-    },
-  })
-  const metadata = useMetadata(lock.address, tokenId, network)
-  const [_, setCopied] = useClipboard(lock.address, {
+  const lockData = ownedKey.lockData
+  const isLockDataLoading = ownedKey._isLockDataLoading
+  const metadata = ownedKey.metadata
+  const isMetadataLoading = ownedKey._isMetadataLoading
+  const transferFeeValue = ownedKey.transferFee
+  const transferFeeLoading = ownedKey._isTransferFeeLoading
+  const transferfeeError = null
+  const receiptsPageUrl = ownedKey.receiptsPageUrl
+  const isLoadingReceiptsUrl = ownedKey._isReceiptsUrlLoading
+  const isFullyLoaded = ownedKey._isFullyLoaded
+
+  const [_, setCopied] = useClipboard(ownedKey.lock.address, {
     successDuration: 2000,
   })
 
   let isTransferable
-  const {
-    isLoading: transferFeeLoading,
-    error: transferfeeError,
-    data: transferFee,
-  } = useFetchTransferFee({
-    lockAddress: lock.address,
-    network: network,
-  })
-  if (
-    !transferFeeLoading &&
-    !transferfeeError &&
-    typeof transferFee === 'number'
-  ) {
-    isTransferable = isKeyTransferable(transferFee)
+  if (typeof transferFeeValue === 'number' && !transferFeeLoading) {
+    isTransferable = isKeyTransferable(transferFeeValue)
   }
 
   const handleQRCodeSignature: MouseEventHandler<HTMLButtonElement> = async (
@@ -128,10 +117,10 @@ function Key({ ownedKey, owner, network }: Props) {
     event.stopPropagation()
     const payload = JSON.stringify({
       network,
-      account,
-      lockAddress: lock.address,
+      owner,
+      lockAddress: ownedKey.lock.address,
       timestamp: Date.now(),
-      tokenId,
+      tokenId: ownedKey.tokenId,
     })
     const walletService = await getWalletService()
 
@@ -146,13 +135,13 @@ function Key({ ownedKey, owner, network }: Props) {
   const addToWallet = () => {
     watchAsset({
       network,
-      address: lock.address,
-      tokenId,
+      address: ownedKey.lock.address,
+      tokenId: ownedKey.tokenId,
     })
   }
 
   const onExploreLock = () => {
-    const url = networks[network].explorer?.urls.address(lock.address)
+    const url = networks[network].explorer?.urls.address(ownedKey.lock.address)
     if (!url) {
       return
     }
@@ -161,7 +150,8 @@ function Key({ ownedKey, owner, network }: Props) {
 
   const onOpenSea = () => {
     const { opensea } = networks[network]
-    const url = opensea?.tokenUrl(lock.address, tokenId) ?? null
+    const url =
+      opensea?.tokenUrl(ownedKey.lock.address, ownedKey.tokenId) ?? null
     if (!url) {
       return
     }
@@ -176,7 +166,7 @@ function Key({ ownedKey, owner, network }: Props) {
       await wedlockService.keychainQREmail(
         recipient,
         `${window.location.origin}/keychain`,
-        lock!.name ?? '',
+        ownedKey.lock.name ?? '',
         qrImage
       )
     } catch {
@@ -188,7 +178,10 @@ function Key({ ownedKey, owner, network }: Props) {
 
   const { opensea } = networks[network] ?? {}
 
-  const isAvailableOnOpenSea = !!opensea?.tokenUrl(lock.address, tokenId)
+  const isAvailableOnOpenSea = !!opensea?.tokenUrl(
+    ownedKey.lock.address,
+    ownedKey.tokenId
+  )
 
   const baseSymbol = config.networks[network].nativeCurrency.symbol!
   const symbol =
@@ -200,129 +193,75 @@ function Key({ ownedKey, owner, network }: Props) {
 
   const networkName = networks[ownedKey.network]?.name
 
-  const { isPending: isLoadingUrl, data: receiptsPageUrl } =
-    useGetReceiptsPageUrl({
-      lockAddress: lock.address,
-      network,
-      tokenId,
-    })
-
   const onReceiptsPage = () => {
-    if (!receiptsPageUrl) {
-      return
+    if (receiptsPageUrl) {
+      window.open(receiptsPageUrl, '_blank')
     }
-
-    router.push(receiptsPageUrl)
   }
 
   const checkIfImageUrlIsVideo = async () => {
-    const video = videoRef.current
-    if (video) {
-      try {
-        await (video as HTMLVideoElement).play()
-        setCanPlayImageAsVideo(true)
-      } catch (error) {
-        setCanPlayImageAsVideo(false)
-      }
+    if (!metadata?.image) {
+      return
     }
+
+    // Check if image URL ends with video extension
+    const videoExtensions = ['.mp4', '.webm', '.ogg']
+    const isVideo = videoExtensions.some((ext) =>
+      metadata.image.toLowerCase().endsWith(ext)
+    )
+
+    setCanPlayImageAsVideo(isVideo)
   }
 
-  const onLoadingStatusChangeOfImage = useCallback((status: string) => {
-    if (status === 'error') {
+  useEffect(() => {
+    if (!isMetadataLoading && metadata?.image) {
       checkIfImageUrlIsVideo()
     }
-  }, [])
+  }, [isMetadataLoading, metadata])
+
+  // Helper for progressive UI enhancement
+  const renderWithLoading = (
+    isLoading: boolean,
+    content: React.ReactNode,
+    placeholder: React.ReactNode
+  ) => {
+    return isLoading ? placeholder : content
+  }
 
   return (
-    <Card className="grid gap-6" shadow="lg" padding="xs">
-      <KeyInfoDrawer
-        isOpen={showMoreInfo}
-        setIsOpen={setShowMoreInfo}
-        owner={owner}
-        lock={lock}
-        tokenId={tokenId}
-        network={network}
-        expiration={expiration}
-        imageURL={metadata.image}
-      />
-      <CancelAndRefundModal
-        isOpen={showCancelModal}
-        setIsOpen={setShowCancelModal}
-        lock={lock}
-        tokenId={tokenId}
-        owner={owner}
-        currency={symbol}
-        network={network}
-        onExpireAndRefund={() => setExpireAndRefunded(true)}
-      />
-      <QRModal
-        lock={lock}
-        isOpen={!!(showingQR && signature)}
-        setIsOpen={setShowingQR}
-        dismiss={() => setSignature(null)}
-        sendEmail={sendEmail}
-        signature={signature}
-      />
-      <ExtendMembershipModal
-        isOpen={showExtendMembershipModal}
-        setIsOpen={setShowExtendMembership}
-        lock={lock}
-        tokenId={tokenId}
-        owner={owner}
-        currency={symbol}
-        network={network}
-        ownedKey={ownedKey}
-      />
-      <TransferModal
-        isOpen={showTransferModal}
-        setIsOpen={setShowTransferModal}
-        lock={lock}
-        network={network}
-        owner={owner}
-        tokenId={tokenId}
-        expiration={expiration}
-      />
-      <div className="flex items-center justify-between">
-        <div>
-          {isKeyExpired ? (
-            <Badge
-              size="small"
-              variant="red"
-              iconRight={<DangerIcon size={12} key="expired" />}
-            >
-              Expired
-            </Badge>
-          ) : (
-            <Badge
-              size="small"
-              variant="green"
-              iconRight={<CheckIcon size={12} key="valid" />}
-            >
-              Valid
-            </Badge>
-          )}
-        </div>
-        <div className="flex items-center gap-2">
-          {owner == account && (
-            <button
-              aria-label="QR Code"
-              className="inline-flex items-center gap-2 p-2 border rounded-full border-brand-dark hover:bg-gray-50"
-              type="button"
-              onClick={handleQRCodeSignature}
-            >
-              <QrCodeIcon size={18} />
-            </button>
-          )}
-          <Menu as="div" className="relative inline-block text-left">
-            <Menu.Button as={Fragment}>
-              <Button
-                size="small"
-                variant="outlined-primary"
-                iconLeft={<ToolsIcon key="options" />}
+    <Card className="p-0 overflow-hidden w-full">
+      <div className="m-5 space-y-2 flex flex-col h-full">
+        <div className="flex items-center justify-between gap-2 w-full">
+          <div className="flex items-center gap-2 text-brand-gray">
+            {renderWithLoading(
+              isLockDataLoading,
+              <Badge>{networkName}</Badge>,
+              <Shimmer size="sm" />
+            )}
+            <div className="inline-flex items-center gap-2">
+              {minifyAddress(ownedKey.lock.address)}
+              <button
+                aria-label="Copy Lock Address"
+                className="text-brand-ui-primary"
+                onClick={() => {
+                  setCopied()
+                  ToastHelper.success('Copied')
+                }}
               >
-                Actions
-              </Button>
-            </Menu.Button>
+                <CopyLineIcon
+                  className="hover:fill-brand-ui-primary"
+                  size={12}
+                />
+              </button>
+            </div>{' '}
+          </div>
+          <Menu as="div" className="relative">
+            <div>
+              <Menu.Button className="inline-flex w-full cursor-pointer justify-center rounded-md px-2 py-1 text-sm font-medium text-brand-ui-primary hover:bg-ui-main-50 focus:outline-none">
+                <ToolsIcon className="text-ui-main-600 w-4 h-4" />
+              </Menu.Button>
+            </div>
+
             <Transition
               as={Fragment}
               enter="transition ease-out duration-100"
@@ -358,7 +297,7 @@ function Key({ ownedKey, owner, network }: Props) {
                       </MenuButton>
                     )}
                   </Menu.Item>
-                  {owner == account && (
+                  {owner && (
                     <Menu.Item>
                       {({ active, disabled }) => (
                         <MenuButton
@@ -387,11 +326,11 @@ function Key({ ownedKey, owner, network }: Props) {
                       </MenuButton>
                     )}
                   </Menu.Item>
-                  {owner == account && receiptsPageUrl?.length && (
+                  {owner && receiptsPageUrl?.length && (
                     <Menu.Item>
                       {({ active, disabled }) => (
                         <MenuButton
-                          disabled={disabled || isLoadingUrl}
+                          disabled={disabled || isLoadingReceiptsUrl}
                           active={active}
                           onClick={onReceiptsPage}
                         >
@@ -402,8 +341,8 @@ function Key({ ownedKey, owner, network }: Props) {
                     </Menu.Item>
                   )}
                   {/* This should go in the details modal! */}
-                  {owner == account && (
-                    <Menu.Item disabled={!isExtendable}>
+                  {owner && (
+                    <Menu.Item disabled={!ownedKey.isExtendable}>
                       {({ active, disabled }) => (
                         <MenuButton
                           disabled={disabled}
@@ -414,7 +353,7 @@ function Key({ ownedKey, owner, network }: Props) {
                           }}
                         >
                           <ExtendMembershipIcon />
-                          {isRenewable && !isKeyExpired
+                          {ownedKey.isRenewable && !isKeyExpired
                             ? 'Renew membership'
                             : 'Extend membership'}
                         </MenuButton>
@@ -442,7 +381,7 @@ function Key({ ownedKey, owner, network }: Props) {
                     )}
                   </Menu.Item>
                 </div>
-                {owner == account && (
+                {owner && (
                   <div className="p-1">
                     <Menu.Item disabled={!isRefundable}>
                       {({ active, disabled }) => (
@@ -463,7 +402,7 @@ function Key({ ownedKey, owner, network }: Props) {
                 )}
 
                 {/* Add to wallet buttons */}
-                {owner == account && tokenId && (
+                {owner && ownedKey.tokenId && (
                   <div className="p-1">
                     <Menu.Item>
                       {() => (
@@ -472,8 +411,8 @@ function Key({ ownedKey, owner, network }: Props) {
                             platform={Platform.GOOGLE}
                             as={MenuButton}
                             network={network}
-                            lockAddress={lock.address}
-                            tokenId={tokenId}
+                            lockAddress={ownedKey.lock.address}
+                            tokenId={ownedKey.tokenId}
                             handlePassUrl={(url: string) => {
                               window.location.assign(url)
                             }}
@@ -482,8 +421,8 @@ function Key({ ownedKey, owner, network }: Props) {
                             platform={Platform.APPLE}
                             as={MenuButton}
                             network={network}
-                            lockAddress={lock.address}
-                            tokenId={tokenId}
+                            lockAddress={ownedKey.lock.address}
+                            tokenId={ownedKey.tokenId}
                           />
                         </div>
                       )}
@@ -494,60 +433,141 @@ function Key({ ownedKey, owner, network }: Props) {
             </Transition>
           </Menu>
         </div>
-      </div>
-      <div className="grid gap-2">
-        <Avatar
-          onClick={(event) => {
-            event.preventDefault()
-            setShowMoreInfo(true)
-          }}
-          className="flex items-center justify-center cursor-pointer hover:bg-gray-50"
-        >
-          <AvatarImage
-            className="w-full h-full rounded-xl aspect-1 max-h-72 max-w-72 object-contain	"
-            alt={lock.name!}
-            src={metadata.image}
-            width={250}
-            height={250}
-            onLoadingStatusChange={onLoadingStatusChangeOfImage}
-          />
-          <AvatarFallback
-            className="flex flex-col items-center justify-center text-3xl font-bold uppercase rounded-xl aspect-1 h-72 w-72"
-            delayMs={100}
-          >
-            {!canPlayImageAsVideo && <>{lock?.name?.slice(0, 2)}</>}
-            <video
-              className="w-full h-full rounded-xl aspect-1 max-h-72 max-w-72"
-              muted
-              playsInline
-              src={metadata.image}
-              ref={videoRef}
-              style={{ display: canPlayImageAsVideo ? 'block' : 'none' }}
-            />
-          </AvatarFallback>
-        </Avatar>
-        <div className="flex items-center justify-between text-sm">
-          {networkName && (
-            <div className="flex items-center justify-between gap-2 py-1">
-              <span className="">{networkName}</span>
+        {renderWithLoading(
+          isMetadataLoading,
+          <div className="w-full rounded-xl aspect-1 max-h-72 max-w-72 overflow-hidden">
+            {canPlayImageAsVideo ? (
+              <video
+                className="w-full h-full object-cover"
+                src={metadata.image}
+                ref={videoRef}
+                autoPlay
+                muted
+                playsInline
+                loop
+              />
+            ) : (
+              <Image
+                className="w-full h-full object-cover"
+                alt={ownedKey.lock.name || 'Key NFT'}
+                src={metadata.image}
+                width={250}
+                height={250}
+                onLoad={() => checkIfImageUrlIsVideo()}
+              />
+            )}
+          </div>,
+          <div className="w-full h-full aspect-1 max-h-72 max-w-72 bg-gray-200 animate-pulse rounded-xl flex items-center justify-center">
+            <span className="text-gray-400 flex items-center gap-2">
+              <LoadingIcon className="animate-spin" />
+              Loading...
+            </span>
+          </div>
+        )}
+        <div className="flex flex-col gap-2 mt-auto">
+          {renderWithLoading(
+            isLockDataLoading || isMetadataLoading,
+            <h3 className="text-xl font-bold rounded">
+              {metadata.name || ownedKey.lock.name}
+            </h3>,
+            <Shimmer size="lg" />
+          )}
+
+          {/* Only show the action buttons when full data is loaded */}
+          {!isFullyLoaded && (
+            <div className="flex justify-center py-2">
+              <LoadingIcon className="animate-spin h-5 w-5 text-brand-ui-primary" />
+              <span className="ml-2 text-sm text-gray-500">
+                Loading additional data...
+              </span>
             </div>
           )}
-          <div className="inline-flex items-center gap-2">
-            {minifyAddress(lock.address)}
-            <button
-              aria-label="Copy Lock Address"
-              onClick={(event) => {
-                event.preventDefault()
-                setCopied()
-                ToastHelper.success('Copied!')
-              }}
-            >
-              <CopyLineIcon size={18} />
-            </button>
-          </div>{' '}
+
+          {isFullyLoaded && (
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <button
+                disabled={isLoadingReceiptsUrl}
+                onClick={handleQRCodeSignature}
+                aria-label="Show QR Code"
+                className="bg-ui-main-100 hover:bg-ui-main-200 text-ui-main-500 rounded-md p-2"
+              >
+                <QrCodeIcon size={20} />
+              </button>
+              <button
+                onClick={onExploreLock}
+                aria-label="View on block explorer"
+                className="bg-ui-main-100 hover:bg-ui-main-200 text-ui-main-500 rounded-md p-2"
+              >
+                <ExploreIcon size={20} />
+              </button>
+              {isAvailableOnOpenSea && (
+                <button
+                  onClick={onOpenSea}
+                  aria-label="View on OpenSea"
+                  className="bg-ui-main-100 hover:bg-ui-main-200 text-ui-main-500 rounded-md p-2"
+                >
+                  <OpenSeaIcon size={20} />
+                </button>
+              )}
+              <button
+                onClick={() => setShowMoreInfo((value) => !value)}
+                aria-label="More information"
+                className="bg-ui-main-100 hover:bg-ui-main-200 text-ui-main-500 rounded-md p-2"
+              >
+                <InfoIcon size={20} />
+              </button>
+            </div>
+          )}
         </div>
-        <h3 className="text-xl font-bold rounded">{lock.name}</h3>
       </div>
+
+      <KeyInfoDrawer
+        isOpen={showMoreInfo}
+        setIsOpen={setShowMoreInfo}
+        owner={owner}
+        lock={ownedKey.lock}
+        tokenId={ownedKey.tokenId}
+        network={network}
+        expiration={ownedKey.expiration}
+        imageURL={metadata.image}
+      />
+      <CancelAndRefundModal
+        isOpen={showCancelModal}
+        setIsOpen={setShowCancelModal}
+        lock={ownedKey.lock}
+        tokenId={ownedKey.tokenId}
+        owner={owner}
+        currency={symbol}
+        network={network}
+        onExpireAndRefund={() => setExpireAndRefunded(true)}
+      />
+      <QRModal
+        lock={ownedKey.lock}
+        isOpen={!!(showingQR && signature)}
+        setIsOpen={setShowingQR}
+        dismiss={() => setSignature(null)}
+        sendEmail={sendEmail}
+        signature={signature}
+      />
+      <ExtendMembershipModal
+        isOpen={showExtendMembershipModal}
+        setIsOpen={setShowExtendMembership}
+        lock={ownedKey.lock}
+        tokenId={ownedKey.tokenId}
+        owner={owner}
+        currency={symbol}
+        network={network}
+        ownedKey={ownedKey}
+      />
+      <TransferModal
+        isOpen={showTransferModal}
+        setIsOpen={setShowTransferModal}
+        lock={ownedKey.lock}
+        network={network}
+        owner={owner}
+        tokenId={ownedKey.tokenId}
+        expiration={ownedKey.expiration}
+      />
     </Card>
   )
 }
