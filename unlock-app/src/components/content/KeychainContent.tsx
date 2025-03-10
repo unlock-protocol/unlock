@@ -1,6 +1,5 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import KeyDetails from '../interface/keychain/KeyDetails'
 import networks from '@unlock-protocol/networks'
@@ -15,16 +14,7 @@ import { LoadingIcon } from '../interface/Loading'
 export const KeychainContent = () => {
   const { account, isLoading } = useAuthenticate()
   const searchParams = useSearchParams()
-  const [owner, setOwner] = useState<string | null>(null)
-
-  useEffect(() => {
-    const ownerParam = searchParams.get('owner')
-    if (ownerParam) {
-      setOwner(ownerParam)
-    } else if (account) {
-      setOwner(account)
-    }
-  }, [account, searchParams])
+  const owner = searchParams.get('owner') || account || null
 
   const networkConfig = networks[1]
 
