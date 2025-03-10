@@ -128,14 +128,14 @@ describe('Handler Functionality', () => {
       global.fetch = vi.fn().mockResolvedValueOnce(mockResponse)
 
       // Set up the mock implementation for this specific test
-      vi.spyOn(rateLimit, 'shouldRateLimitSingle').mockResolvedValue(false)
+      vi.spyOn(rateLimit, 'shouldRateLimit').mockResolvedValue(false)
 
       // Process the request
       const response = await handler(mockRateRequest, mockEnv as Env)
 
       expect(response.status).toBe(200)
 
-      // Verify that the rate limit check was called (indirectly through processBatchRequests)
+      // Verify that the batch processor was called
       expect(batchProcessor.processBatchRequests).toHaveBeenCalledTimes(1)
     })
 
@@ -187,7 +187,7 @@ describe('Handler Functionality', () => {
     })
 
     test('Should have special handling for Unlock contracts', async () => {
-      vi.spyOn(rateLimit, 'shouldRateLimitSingle').mockImplementation(
+      vi.spyOn(rateLimit, 'shouldRateLimit').mockImplementation(
         async (req, env, body) => {
           const to = body.params[0]?.to
           return to !== '0xUnlockContract123' // Return false (don't rate limit) for Unlock contracts
@@ -206,7 +206,7 @@ describe('Handler Functionality', () => {
       }
 
       // Test that Unlock contracts are exempted from rate limiting
-      const unlockResult = await rateLimit.shouldRateLimitSingle(
+      const unlockResult = await rateLimit.shouldRateLimit(
         new Request('https://example.com'),
         mockEnv as Env,
         unlockRequest,
@@ -216,7 +216,7 @@ describe('Handler Functionality', () => {
       // Unlock contracts should not be rate limited
       expect(unlockResult).toBe(false)
 
-      const nonUnlockResult = await rateLimit.shouldRateLimitSingle(
+      const nonUnlockResult = await rateLimit.shouldRateLimit(
         new Request('https://example.com'),
         mockEnv as Env,
         nonUnlockRequest,
