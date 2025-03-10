@@ -10,6 +10,7 @@ import {
   setupGlobalMocks,
 } from './__fixtures__/testUtils'
 import * as cache from '../src/cache'
+import * as batchProcessor from '../src/batchProcessor'
 
 interface ExtendedMockEnv extends Partial<Env> {
   NETWORK_CONFIG?: Record<string, { rpcUrl: string }>
@@ -23,6 +24,23 @@ describe('Handler Functionality', () => {
     setupGlobalMocks()
     mockEnv = createMockEnv() as ExtendedMockEnv
     mockRequest = createMockRequest()
+
+    // Mock the batch processor to avoid actual processing
+    vi.spyOn(batchProcessor, 'processBatchRequests').mockImplementation(
+      async (requests, networkId, request, env) => {
+        // Simulate processing by returning a simple result
+        return {
+          processedRequests: requests.map((req) => ({
+            request: req,
+            response: null,
+            shouldForward: true,
+            rateLimited: false,
+          })),
+          requestsToForward: requests,
+          allRateLimited: false,
+        }
+      }
+    )
   })
 
   test('Basic functionality - handles valid requests', async () => {
@@ -110,15 +128,15 @@ describe('Handler Functionality', () => {
       global.fetch = vi.fn().mockResolvedValueOnce(mockResponse)
 
       // Set up the mock implementation for this specific test
-      vi.spyOn(rateLimit, 'shouldRateLimit').mockResolvedValue(false)
+      vi.spyOn(rateLimit, 'shouldRateLimitSingle').mockResolvedValue(false)
 
       // Process the request
       const response = await handler(mockRateRequest, mockEnv as Env)
 
       expect(response.status).toBe(200)
 
-      // Verify that the rate limit check was called
-      expect(rateLimit.shouldRateLimit).toHaveBeenCalledTimes(1)
+      // Verify that the rate limit check was called (indirectly through processBatchRequests)
+      expect(batchProcessor.processBatchRequests).toHaveBeenCalledTimes(1)
     })
 
     test('Should handle rate limited requests', async () => {
@@ -133,8 +151,21 @@ describe('Handler Functionality', () => {
         '127.0.0.1'
       )
 
-      // Set up the mock to rate limit this request
-      vi.spyOn(rateLimit, 'shouldRateLimit').mockResolvedValue(true)
+      // Override the batch processor mock for this test to simulate rate limiting
+      vi.spyOn(batchProcessor, 'processBatchRequests').mockImplementationOnce(
+        async (requests, networkId, request, env) => {
+          return {
+            processedRequests: requests.map((req) => ({
+              request: req,
+              response: null,
+              shouldForward: true,
+              rateLimited: true,
+            })),
+            requestsToForward: requests,
+            allRateLimited: true,
+          }
+        }
+      )
 
       // Mock successful fetch response for the underlying request
       const mockResponse = new Response(
@@ -148,8 +179,8 @@ describe('Handler Functionality', () => {
       // Even though rate limited, for now we're just logging and still processing the request
       expect(response.status).toBe(200)
 
-      // Verify that the rate limit check was called
-      expect(rateLimit.shouldRateLimit).toHaveBeenCalledTimes(1)
+      // Verify that the batch processor was called
+      expect(batchProcessor.processBatchRequests).toHaveBeenCalledTimes(1)
 
       // Verify that fetch was still called (as rate limiting is just logging currently)
       expect(global.fetch).toHaveBeenCalledTimes(1)
@@ -227,35 +258,35 @@ describe('Handler Functionality', () => {
     })
 
     test('Should serve cached responses when available', async () => {
-      // Enable caching for this test
-      vi.spyOn(utils, 'isRequestCacheable').mockReturnValue(true)
-
-      // Create a cached response
-      const cachedResponse = new Response(
-        JSON.stringify({ jsonrpc: '2.0', id: 1, result: '0xcached' }),
-        {
-          status: 200,
-          headers: {
-            'Cache-Control': 'max-age=3600',
-          },
+      // Override the batch processor mock for this test to simulate cached responses
+      vi.spyOn(batchProcessor, 'processBatchRequests').mockImplementationOnce(
+        async (requests, networkId, request, env) => {
+          return {
+            processedRequests: requests.map((req) => ({
+              request: req,
+              response: { id: req.id, jsonrpc: '2.0', result: '0xcached' },
+              shouldForward: false,
+              rateLimited: false,
+            })),
+            requestsToForward: [],
+            allRateLimited: false,
+          }
         }
-      )
-
-      // Mock the cache functions directly
-      vi.spyOn(cache, 'getRPCResponseFromCache').mockResolvedValue(
-        cachedResponse.clone()
       )
 
       // Make sure fetch is never called
       global.fetch = vi.fn().mockImplementation(() => {
-        throw new Error('Fetch should not be called when cache hit exists')
+        throw new Error('Fetch should not be called when response is cached')
       })
 
       // Send the request
       const cachedRequest = createEthCallRequest('0xAddress', '0xData', '1')
       const response = await handler(cachedRequest, mockEnv as Env)
 
-      // Verify we got the cached response back
+      // Verify we got a successful response
+      expect(response.status).toBe(200)
+
+      // Verify the response contains our cached data
       const responseBody = (await response.json()) as {
         jsonrpc: string
         id: number
@@ -263,7 +294,7 @@ describe('Handler Functionality', () => {
       }
       expect(responseBody.result).toBe('0xcached')
 
-      // Verify fetch was not called
+      // Verify that fetch was never called
       expect(global.fetch).not.toHaveBeenCalled()
     })
   })

@@ -1,7 +1,7 @@
 import { Env } from './types'
 import { RpcRequest } from './utils'
 import { getRPCResponseFromCache } from './cache'
-import { shouldRateLimit } from './rateLimit'
+import { shouldRateLimitSingle } from './rateLimit'
 
 /**
  * Represents the result of processing a single RPC request
@@ -66,7 +66,7 @@ export const processSingleRequest = async (
   }
 
   // Check if this request is rate limited
-  const isRateLimited = await shouldRateLimit(
+  const isRateLimited = await shouldRateLimitSingle(
     originalRequest,
     env,
     request,

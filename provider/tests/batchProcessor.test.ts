@@ -11,7 +11,7 @@ import * as cache from '../src/cache'
 
 // Mock dependencies
 vi.mock('../src/rateLimit', () => ({
-  shouldRateLimit: vi.fn(),
+  shouldRateLimitSingle: vi.fn(),
 }))
 
 vi.mock('../src/cache', () => ({
@@ -87,7 +87,7 @@ describe('Batch Processor', () => {
         params: [{ to: '0x123' }, 'latest'],
       }
 
-      vi.mocked(rateLimit.shouldRateLimit).mockResolvedValue(true)
+      vi.mocked(rateLimit.shouldRateLimitSingle).mockResolvedValue(true)
 
       const result = await processSingleRequest(
         request,
@@ -112,7 +112,7 @@ describe('Batch Processor', () => {
         params: [{ to: '0x123' }, 'latest'],
       }
 
-      vi.mocked(rateLimit.shouldRateLimit).mockResolvedValue(false)
+      vi.mocked(rateLimit.shouldRateLimitSingle).mockResolvedValue(false)
 
       const mockCachedResponse = new Response(
         JSON.stringify({
@@ -153,7 +153,7 @@ describe('Batch Processor', () => {
         params: [{ to: '0x123' }, 'latest'],
       }
 
-      vi.mocked(rateLimit.shouldRateLimit).mockResolvedValue(false)
+      vi.mocked(rateLimit.shouldRateLimitSingle).mockResolvedValue(false)
       vi.mocked(cache.getRPCResponseFromCache).mockResolvedValue(null)
 
       const result = await processSingleRequest(
@@ -189,7 +189,7 @@ describe('Batch Processor', () => {
         },
       ]
 
-      vi.mocked(rateLimit.shouldRateLimit).mockResolvedValue(false)
+      vi.mocked(rateLimit.shouldRateLimitSingle).mockResolvedValue(false)
       vi.mocked(cache.getRPCResponseFromCache).mockResolvedValue(null)
 
       const result = await processBatchRequests(
@@ -221,7 +221,7 @@ describe('Batch Processor', () => {
         },
       ]
 
-      vi.mocked(rateLimit.shouldRateLimit).mockResolvedValue(true)
+      vi.mocked(rateLimit.shouldRateLimitSingle).mockResolvedValue(true)
 
       const result = await processBatchRequests(
         requests,
