@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { rewriteIpfsUrl } from '../utils/url'
+import { useQuery } from '@tanstack/react-query'
 
 const defaultMetadata = {
   image: '/images/svg/default-lock-logo.svg',
@@ -11,16 +11,16 @@ const defaultMetadata = {
  * This hook retrieves metadata for a token
  * @param {*} address
  */
-export const useMetadata = (
+export const useTokenMetadata = (
   lockAddress: string,
   tokenId?: string,
   network?: number
 ) => {
-  const [metadata, setMetadata] = useState(defaultMetadata)
   const web3Service = useWeb3Service()
 
-  useEffect(() => {
-    const getMetadata = async () => {
+  const { data: metadata = defaultMetadata } = useQuery({
+    queryKey: ['metadata', lockAddress, tokenId, network],
+    queryFn: async () => {
       let tokenMetadata = defaultMetadata
       try {
         const tokenURI = await web3Service.tokenURI(
@@ -38,11 +38,12 @@ export const useMetadata = (
           `We could not retrieve the metadata for ${lockAddress}, ${tokenId} on ${network}: ${error}`
         )
       }
-      setMetadata(tokenMetadata)
-    }
-    getMetadata()
-  }, [web3Service, lockAddress, tokenId, network])
+      return tokenMetadata
+    },
+    enabled: !!lockAddress && !!web3Service,
+  })
+
   return metadata
 }
 
-export default useMetadata
+export default useTokenMetadata
