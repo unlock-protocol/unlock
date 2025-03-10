@@ -1,8 +1,12 @@
 import supportedNetworks from './supportedNetworks'
 import { Env } from './types'
-import { shouldRateLimit } from './rateLimit'
-import { getRPCResponseFromCache, storeRPCResponseInCache } from './cache'
+import { storeRPCResponseInCache } from './cache'
 import { RpcRequest, getClientIP } from './utils'
+import {
+  processBatchRequests,
+  processChainIdRequest,
+  combineResponses,
+} from './batchProcessor'
 
 const handler = async (request: Request, env: Env): Promise<Response> => {
   try {
@@ -187,38 +191,36 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
       )
     }
 
-    const bodyAsString = JSON.stringify(body)
-
-    // Handle both single requests and batch requests
-    const requests = Array.isArray(body) ? body : [body]
-
-    // Check if any request in the batch is for chainId
-    const chainIdRequest = requests.find((req) => {
-      if (!req || typeof req !== 'object' || !req.method) return false
-      return req.method.toLowerCase().trim() === 'eth_chainid'
-    })
-
-    if (chainIdRequest && !Array.isArray(body)) {
-      return Response.json(
-        {
-          id: chainIdRequest.id || 42,
-          jsonrpc: '2.0',
-          result: `0x${parseInt(networkId).toString(16)}`,
-        },
-        {
-          headers,
-        }
-      )
+    // Handle single request for chainId
+    if (
+      !Array.isArray(body) &&
+      body.method?.toLowerCase().trim() === 'eth_chainid'
+    ) {
+      return Response.json(processChainIdRequest(body, networkId), { headers })
     }
 
-    // handle rate limiting
-    const rateLimit = await shouldRateLimit(request, env, body, networkId)
-    if (rateLimit) {
-      // TEMPORARY: Log but don't block rate-limited requests for monitoring purposes
-      // After 10+ days, review logs and enable actual blocking
+    // Convert single requests to batch format for uniform processing
+    const requests = Array.isArray(body) ? body : [body]
+    const isBatchRequest = Array.isArray(body)
+
+    // Process the batch of requests
+    const batchResult = await processBatchRequests(
+      requests,
+      networkId,
+      request,
+      env
+    )
+
+    // If all requests are rate limited, log but don't block
+    if (
+      batchResult.allRateLimited &&
+      batchResult.processedRequests.length > 0
+    ) {
+      // For monitoring purposes, log but don't block
       console.log(
-        `RATE_LIMIT_WOULD_BLOCK: IP=${getClientIP(request)}, networkId=${networkId}, Body=${bodyAsString}`
+        `RATE_LIMIT_WOULD_BLOCK: IP=${getClientIP(request)}, networkId=${networkId}, Body=${JSON.stringify(body)}`
       )
+
       // Original blocking code - commented out for monitoring period
       /*
       return Response.json(
@@ -239,107 +241,123 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
         }
       )
       */
+      // Note: We continue processing as normal, as rate-limited requests are still forwarded
     }
 
-    // Try to get the cached response, if applicable
-    const cachedResponse = await getRPCResponseFromCache(
-      networkId,
-      body,
-      request
-    )
-    if (cachedResponse) {
-      return cachedResponse
+    // If all requests can be handled locally, return the combined responses
+    if (batchResult.requestsToForward.length === 0) {
+      const responses = batchResult.processedRequests.map((pr) => pr.response)
+      return Response.json(isBatchRequest ? responses : responses[0], {
+        headers,
+      })
     }
 
-    // Make JSON RPC request
+    // Otherwise, we need to forward some requests to the provider
     try {
+      // Only forward the requests that couldn't be handled locally
+      const forwardBody = isBatchRequest
+        ? batchResult.requestsToForward
+        : batchResult.requestsToForward[0]
+
       const response = await fetch(supportedNetwork, {
         method: 'POST',
-        body: bodyAsString,
+        body: JSON.stringify(forwardBody),
         headers: new Headers({
           Accept: '*/*',
-          Origin: 'https://rpc.unlock-protocol.com/', // required to add this to allowlists
+          Origin: 'https://rpc.unlock-protocol.com/',
+          'Content-Type': 'application/json',
         }),
       })
 
-      let json
+      let providerResponse
       try {
-        json = await response.json()
+        providerResponse = await response.json()
       } catch (error) {
         console.error('Error parsing JSON response:', error)
 
-        // Get ID from the first request or use default
-        let responseId = 42
-        if (Array.isArray(body)) {
-          responseId =
-            body.length > 0 &&
-            body[0] &&
-            typeof body[0] === 'object' &&
-            'id' in body[0]
-              ? body[0].id
-              : 42
-        } else if (body && typeof body === 'object' && 'id' in body) {
-          responseId = body.id
-        }
-
-        return Response.json(
-          {
-            id: responseId,
-            jsonrpc: '2.0',
-            error: {
-              code: -32603,
-              message: 'Internal JSON-RPC error',
-              data: 'Failed to parse response from provider',
-            },
-          },
-          {
-            status: 500,
-            headers,
-          }
-        )
-      }
-
-      // Create the response object
-      const jsonResponse = Response.json(json, {
-        headers,
-      })
-
-      // Store the response in the cache if applicable
-      await storeRPCResponseInCache(networkId, body, json, env)
-
-      return jsonResponse
-    } catch (error) {
-      console.error('Error making RPC request:', error)
-
-      // Get ID from the first request or use default
-      let responseId = 42
-      if (Array.isArray(body)) {
-        responseId =
-          body.length > 0 &&
-          body[0] &&
-          typeof body[0] === 'object' &&
-          'id' in body[0]
-            ? body[0].id
-            : 42
-      } else if (body && typeof body === 'object' && 'id' in body) {
-        responseId = body.id
-      }
-
-      return Response.json(
-        {
-          id: responseId,
+        // Create an error response
+        const errorResponse = {
+          id: isBatchRequest
+            ? batchResult.requestsToForward[0]?.id || 42
+            : batchResult.requestsToForward[0]?.id || 42,
           jsonrpc: '2.0',
           error: {
             code: -32603,
             message: 'Internal JSON-RPC error',
-            data: error instanceof Error ? error.message : 'Unknown error',
+            data: 'Failed to parse response from provider',
           },
-        },
-        {
+        }
+
+        // If this was a batch request, combine with local responses
+        if (isBatchRequest) {
+          const combinedResponses = combineResponses(
+            batchResult.processedRequests,
+            Array.isArray(providerResponse) ? providerResponse : [errorResponse]
+          )
+
+          return Response.json(combinedResponses, { headers })
+        }
+
+        return Response.json(errorResponse, {
           status: 500,
           headers,
-        }
+        })
+      }
+
+      // Store the response in the cache if applicable
+      await storeRPCResponseInCache(
+        networkId,
+        forwardBody,
+        providerResponse,
+        env
       )
+
+      // If this was a single request that was forwarded, return the provider response directly
+      if (!isBatchRequest) {
+        return Response.json(providerResponse, { headers })
+      }
+
+      // For batch requests, combine the local and provider responses
+      const providerResponses = Array.isArray(providerResponse)
+        ? providerResponse
+        : [providerResponse]
+
+      const combinedResponses = combineResponses(
+        batchResult.processedRequests,
+        providerResponses
+      )
+
+      return Response.json(combinedResponses, { headers })
+    } catch (error) {
+      console.error('Error making RPC request:', error)
+
+      // Create an error response
+      const errorResponse = {
+        id: isBatchRequest
+          ? batchResult.requestsToForward[0]?.id || 42
+          : batchResult.requestsToForward[0]?.id || 42,
+        jsonrpc: '2.0',
+        error: {
+          code: -32603,
+          message: 'Internal JSON-RPC error',
+          data: error instanceof Error ? error.message : 'Unknown error',
+        },
+      }
+
+      // If this was a batch request, we need to combine with local responses
+      if (isBatchRequest) {
+        const combinedResponses = combineResponses(
+          batchResult.processedRequests,
+          [errorResponse]
+        )
+
+        return Response.json(combinedResponses, { headers })
+      }
+
+      return Response.json(errorResponse, {
+        status: 500,
+        headers,
+      })
     }
   } catch (error) {
     // Catch all for any uncaught exceptions
