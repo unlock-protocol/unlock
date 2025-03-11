@@ -1,8 +1,9 @@
 import { Menu, MenuButton, MenuItems, Transition } from '@headlessui/react'
-import { Fragment, ReactNode, useState } from 'react'
+import { Fragment, ReactNode, useState, useEffect } from 'react'
 import { BiBell as BellIcon } from 'react-icons/bi'
 import { Button } from '@unlock-protocol/ui'
 import { PromptEmailLink } from '../../PromptEmailLink'
+import { Blog, BlogLink, getBlogs, saveLatestBlogs } from '../../LatestBlogs'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { usePathname } from 'next/navigation'
 import { Modal } from '@unlock-protocol/ui'
@@ -23,8 +24,13 @@ interface NotificationProps {
 export function NotificationsMenu() {
   const [isOpen, setIsOpen] = useState(false)
   const [showModal, setShowModal] = useState(false)
+  const [blogs, setBlogs] = useState<Blog[] | null>(getBlogs()?.blogs)
   const { account, email } = useAuthenticate()
   const pathname = usePathname()
+
+  useEffect(() => {
+    saveLatestBlogs('https://unlock-protocol.com/blog.rss', setBlogs)
+  }, [])
 
   if (!account) {
     return null
@@ -46,6 +52,17 @@ export function NotificationsMenu() {
     })
   }
 
+  blogs &&
+    blogs.forEach((blog: Blog) =>
+      notifications.push({
+        id: blog.id,
+        content: <BlogLink blog={blog} setBlogs={setBlogs} />,
+        timestamp: new Date(),
+      })
+    )
+
+  const viewedBlogs = blogs?.filter((blog) => blog.viewed == true).length || 0
+
   return (
     <>
       <Menu as="div" className="relative mr-4 z-10">
@@ -61,7 +78,7 @@ export function NotificationsMenu() {
                 <BellIcon className="h-6 w-6" />
                 {notifications.length > 0 && (
                   <span className="absolute -top-2 -right-1 h-4 w-4 rounded-full bg-red-500 text-xs text-white flex items-center justify-center">
-                    {notifications.length}
+                    {notifications.length - viewedBlogs}
                   </span>
                 )}
               </Button>
@@ -80,7 +97,7 @@ export function NotificationsMenu() {
               <MenuItems
                 static
                 className={`absolute right-1/2 translate-x-1/2 mt-2 w-80 ${
-                  notifications.length < 3 ? 'h-auto max-h-48' : 'h-96'
+                  notifications.length < 3 ? 'h-auto max-h-50' : 'h-96'
                 } origin-top rounded-md divide-y divide-gray-300 bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-y-auto`}
               >
                 <div className="p-2">
