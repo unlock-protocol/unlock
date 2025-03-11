@@ -8,10 +8,11 @@ import {
   setupGlobalMocks,
 } from './__fixtures__/testUtils'
 import * as batchProcessor from '../src/batchProcessor'
+import * as requestProcessor from '../src/requestProcessor'
 
 interface ExtendedMockEnv extends Partial<Env> {
   NETWORK_CONFIG?: Record<string, { rpcUrl: string }>
-  [key: string]: any // Allow dynamic provider keys
+  [key: string]: any
 }
 
 describe('Handler Functionality', () => {
@@ -27,7 +28,7 @@ describe('Handler Functionality', () => {
     mockRequest = createMockRequest('1')
 
     // Mock the batch processor to avoid actual processing
-    vi.spyOn(batchProcessor, 'processBatchRequests').mockImplementation(
+    vi.spyOn(requestProcessor, 'processBatchRequests').mockImplementation(
       async (requests) => {
         return {
           processedRequests: requests.map((req) => ({
@@ -149,7 +150,7 @@ describe('Handler Functionality', () => {
         '127.0.0.1'
       )
 
-      vi.spyOn(batchProcessor, 'processBatchRequests').mockImplementationOnce(
+      vi.spyOn(requestProcessor, 'processBatchRequests').mockImplementationOnce(
         async (requests) => {
           return {
             processedRequests: requests.map((req) => ({

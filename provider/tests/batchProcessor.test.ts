@@ -4,7 +4,7 @@ import {
   processChainIdRequest,
   processSingleRequest,
   combineResponses,
-} from '../src/batchProcessor'
+} from '../src/requestProcessor'
 import { RpcRequest } from '../src/types'
 import * as rateLimit from '../src/rateLimit'
 import { setupGlobalMocks } from './__fixtures__/testUtils'
