@@ -204,13 +204,13 @@ __metadata:
   linkType: hard
 
 "@eslint-community/eslint-utils@npm:^4.2.0":
-  version: 4.4.1
-  resolution: "@eslint-community/eslint-utils@npm:4.4.1"
+  version: 4.5.0
+  resolution: "@eslint-community/eslint-utils@npm:4.5.0"
   dependencies:
     eslint-visitor-keys: "npm:^3.4.3"
   peerDependencies:
     eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
-  checksum: 10/ae92a11412674329b4bd38422518601ec9ceae28e251104d1cad83715da9d38e321f68c817c39b64e66d0af7d98df6f9a10ad2dc638911254b47fb8932df00ef
+  checksum: 10/f926c6a1510ae94ab5ce8ee0d5d8e245e0067e8ef7b25e4a430020e82ba9462a4a15b15187bffb2c45eebaa8b2591d5ac31e06a85dffd6292ccd6eaa17f23952
   languageName: node
   linkType: hard
 
