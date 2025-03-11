@@ -42,13 +42,13 @@ export const prepareSharedParams = async ({
   tokenId = null,
 }: prepareSharedParamsParams) => {
   const web3Service = new Web3Service(networks)
-  const lockContract = await web3Service.lockContract(
-    lock.address,
-    lock.network
-  )
 
   // support renewals
   if (renew && tokenId) {
+    const lockContract = await web3Service.lockContract(
+      lock.address,
+      lock.network
+    )
     // Get single price value
     const priceParsed = ethers.parseUnits(
       prices[0].amount.toString(),
@@ -65,22 +65,29 @@ export const prepareSharedParams = async ({
     return { callData }
   }
 
-  const callData = lockContract.interface.encodeFunctionData('purchase', [
-    prices.map((price) => {
-      const priceParsed = ethers.parseUnits(
-        price.amount.toString(),
-        price.decimals
-      )
-      return priceParsed
-    }),
-    recipients,
-    referrers,
-    keyManagers,
-    purchaseData,
-  ])
+  // This is a purchase
+  const transactions = await web3Service.purchaseKeys({
+    lockAddress: lock.address,
+    network: lock.network,
+    params: {
+      lockAddress: lock.address,
+      owners: recipients,
+      keyPrices: prices.map((price) => {
+        const priceParsed = ethers.parseUnits(
+          price.amount.toString(),
+          price.decimals
+        )
+        return priceParsed.toString()
+      }),
+      data: purchaseData,
+      referrers,
+      keyManagers,
+    },
+  })
+  const purchaseTransaction = transactions[transactions.length - 1]
 
   return {
-    callData,
+    callData: purchaseTransaction.data,
   }
 }
 
