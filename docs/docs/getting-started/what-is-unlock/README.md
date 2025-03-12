@@ -17,7 +17,7 @@ There are a number of interdependent components of Unlock. These are:
 - **The Unlock Ecosystem:** A community of creators, distributors, and consumers who share ownership of Unlock Protocol through their contributions using the protocol.
 - **[Unlock DAO](../../governance/unlock-dao/)**: A decentralized organization of token holders who govern and control Unlock Protocol.
 - **Unlock Protocol Foundation:** A Cayman Islands Foundation whose purpose is to act in service of the Unlock ecosystem and DAO.
-- **Unlock Tools**: Front-end convenience applications built by Unlock Labs to further sustainable innovation on Unlock Protocol.
+- **Unlock Tools**: Front-end convenience applications originally created by Unlock Labs to further sustainable innovation on Unlock Protocol, and now maintained by members of the Unlock Ecosystem.
 
 From 2018 through 2025, Unlock Labs created Unlock Protocol to provide an open, shared infrastructure for memberships that removes friction, increases conversion, enables scale, reduces costs, and evolves the web from a business model built on attention toward one based on membership. Unlock Labs completed its mission and finalized its transfer of responsibilities to the Unlock Protocol Foundation and the Unlock DAO in 2025.
 
