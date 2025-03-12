@@ -1,5 +1,5 @@
 import { Menu, MenuButton, MenuItems, Transition } from '@headlessui/react'
-import { Fragment, ReactNode, useState } from 'react'
+import { Fragment, ReactNode, useState, useMemo } from 'react'
 import { BiBell as BellIcon } from 'react-icons/bi'
 import { Button } from '@unlock-protocol/ui'
 import { PromptEmailLink } from '../../PromptEmailLink'
@@ -7,6 +7,9 @@ import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { usePathname } from 'next/navigation'
 import { Modal } from '@unlock-protocol/ui'
 import { LoginModal } from '@privy-io/react-auth'
+import { Hooks } from '../../HooksNotifications'
+import { locksmith } from '~/config/locksmith'
+import { useQuery } from '@tanstack/react-query'
 
 interface NotificationAction {
   label: string
@@ -26,24 +29,49 @@ export function NotificationsMenu() {
   const { account, email } = useAuthenticate()
   const pathname = usePathname()
 
-  if (!account) {
-    return null
-  }
+  const {
+    isLoading,
+    error,
+    data: hooks,
+    refetch,
+  } = useQuery({
+    queryKey: ['checkoutHookJobs'],
+    queryFn: () => locksmith.getCheckoutHookJobs(),
+  })
 
-  const notifications: NotificationProps[] = []
+  const notifications = useMemo<NotificationProps[]>(() => {
+    const items: NotificationProps[] = []
 
-  /*
+    /*
     Only show email prompt notification if:
     1. User connected
     2. User doesn't have an email
     3. Not on checkout or demo pages
   */
-  if (!email && !['/checkout', '/demo'].includes(pathname)) {
-    notifications.push({
-      id: '1',
-      content: <PromptEmailLink setModalOpen={setShowModal} />,
-      timestamp: new Date(),
-    })
+    if (!email && !['/checkout', '/demo'].includes(pathname)) {
+      items.push({
+        id: '1',
+        content: <PromptEmailLink setModalOpen={setShowModal} />,
+        timestamp: new Date(),
+      })
+    }
+    if (
+      !isLoading &&
+      !error &&
+      hooks?.data?.length &&
+      hooks?.data?.length > 0
+    ) {
+      items.push({
+        id: '2',
+        content: <Hooks hooks={hooks!.data} refetch={refetch} />,
+        timestamp: new Date(),
+      })
+    }
+    return items
+  }, [email, pathname, isLoading, error, hooks, refetch])
+
+  if (!account) {
+    return null
   }
 
   return (
