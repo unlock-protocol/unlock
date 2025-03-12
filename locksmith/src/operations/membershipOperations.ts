@@ -40,9 +40,12 @@ export const getMembershipState = async ({
     const possible = BigInt(subscription.possibleRenewals)
     const approved = BigInt(subscription.approvedRenewals)
 
-    isAutoRenewable = approved >= 0 && possible >= 0
+    // Make conditions mutually exclusive
+    // Only auto-renewable if approved is positive and possible renewals exist
+    isAutoRenewable = approved > 0 && possible > 0
 
-    isRenewableIfReApproved = approved <= 0
+    // Only needs re-approval if approved is insufficient but renewal is possible
+    isRenewableIfReApproved = approved <= 0 && possible > 0
 
     currency = subscription.balance.symbol
   }
