@@ -23,4 +23,4 @@ The configuration for these is simple: just pass the network as part of the lock
   }
 ```
 
-Additionally, we've added a feature to the paywall which lets developers configure which locks are shown when the user is making a purchase. For this, the `loadCheckoutModal` function now accepts an optional config (and defaults to the one used on the page). [Thanks a lot to [Paul](https://twitter.com/pswgnr) from the Unlock community [for his suggestion](https://github.com/unlock-protocol/unlock/issues/7072)!]
+Additionally, we've added a feature to the paywall which lets developers configure which locks are shown when the user is making a purchase. For this, the `loadCheckoutModal` function now accepts an optional config (and defaults to the one used on the page). [Thanks a lot to [Paul](https://x.com/pswgnr) from the Unlock community [for his suggestion](https://github.com/unlock-protocol/unlock/issues/7072)!]

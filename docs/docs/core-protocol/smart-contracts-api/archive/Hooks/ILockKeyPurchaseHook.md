@@ -16,9 +16,9 @@ Functions to be implemented by a keyPurchaseHook.
 function keyPurchasePrice(address from, address recipient, address referrer, bytes data) external view returns (uint256 minKeyPrice)
 ```
 
-Used to determine the purchase price before issueing a transaction. This allows the hook to offer a discount on purchases. This may revert to prevent a purchase.
+Used to determine the purchase price before issuing a transaction. This allows the hook to offer a discount on purchases. This may revert to prevent a purchase.
 
-*the lock&#39;s address is the `msg.sender` when this function is called via the lock&#39;s `purchasePriceFor` function*
+*the lock';s address is the `msg.sender` when this function is called via the lock';s `purchasePriceFor` function*
 
 #### Parameters
 
@@ -43,7 +43,7 @@ function onKeyPurchase(address from, address recipient, address referrer, bytes 
 
 If the lock owner has registered an implementer then this hook is called with every key sold.
 
-*the lock&#39;s address is the `msg.sender` when this function is called*
+*the lock';s address is the `msg.sender` when this function is called*
 
 #### Parameters
 
@@ -53,7 +53,7 @@ If the lock owner has registered an implementer then this hook is called with ev
 | recipient | address | the account which will be granted a key |
 | referrer | address | the account which referred this key sale |
 | data | bytes | arbitrary data populated by the front-end which initiated the sale |
-| minKeyPrice | uint256 | the price including any discount granted from calling this hook&#39;s `keyPurchasePrice` function |
+| minKeyPrice | uint256 | the price including any discount granted from calling this hook';s `keyPurchasePrice` function |
 | pricePaid | uint256 | the value/pricePaid included with the purchase transaction |
 
 

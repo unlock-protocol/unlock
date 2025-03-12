@@ -13,7 +13,7 @@ Luckily, the web is resilient, reliable, and really, really good at lots of thin
 
 Today we’re all members of dozens of communities online, from the obvious ones like our own social circles or neighborhood groups, to the less obvious ones like the people we follow and the apps we use. For example, I read [Macbidouille](https://macbidouille.com) in my [feed reader](https://feedbin.com/) and use [Medium](https://medium.com/) on my phone as I commute: I’m an implicit member of those communities, even if I don’t wear a badge that says so.
 
-I’m even the creator of a few communities too. Admittedly they are small, but they are communities nonetheless. There are the people who follow me on [Twitter](https://twitter.com/julien51), for example, or the readers of [my blog](https://ouvre-boite.com), or those who watch [our work on Github](https://github.com/unlock-protocol/unlock/).
+I’m even the creator of a few communities too. Admittedly they are small, but they are communities nonetheless. There are the people who follow me on [Twitter](https://x.com/julien51), for example, or the readers of [my blog](https://ouvre-boite.com), or those who watch [our work on Github](https://github.com/unlock-protocol/unlock/).
 
 At Unlock, we want to help your participation in those communities — your memberships — mean something. We want to give you more control over them.
 

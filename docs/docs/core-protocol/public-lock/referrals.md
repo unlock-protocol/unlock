@@ -24,7 +24,7 @@ It is possible to query a contract to identify the referrer fee set for a specif
 
 ### Examples
 
-This presentation includes multiple of examples of how the referrer fees can be used to reward platforms,
+This presentation includes multiple examples of how the referrer fees can be used to reward platforms,
 
 <div style={{
   "position": "relative",

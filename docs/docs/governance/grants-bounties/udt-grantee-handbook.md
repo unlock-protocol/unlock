@@ -132,7 +132,7 @@ Below are some useful resources you should use to learn about Unlock Protocol, a
 
 [Forum](https://unlock.community/) - discussions about all kinds of topics but most importantly where community members post pre-vote proposals for consideration.
 
-[Twitter](https://twitter.com/UnlockProtocol) - for announcements and larger web3 ecosystem discussions and news
+[Twitter](https://x.com/UnlockProtocol) - for announcements and larger web3 ecosystem discussions and news
 
 [Discord](https://discord.unlock-protocol.com/) - for chat and support from the community and the core team
 

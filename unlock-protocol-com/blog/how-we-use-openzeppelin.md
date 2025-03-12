@@ -59,6 +59,6 @@ To learn more or get in touch, feel free to reach out to the team, try out our d
 - Github: [github.com/unlock-protocol/unlock](https://github.com/unlock-protocol/unlock)
 - Docs: [docs.unlock-protocol.com](https://docs.unlock-protocol.com/)
 - Blog: [unlock-protocol.com/blog](https://unlock-protocol.com/blog/)
-- twitter [twitter.com/UnlockProtocol](https://twitter.com/UnlockProtocol)
+- twitter [twitter.com/UnlockProtocol](https://x.com/UnlockProtocol)
 - discord: [discord.gg/Ah6ZEJyTDp](https://discord.gg/Ah6ZEJyTDp)
 - email: hello@unlock-protocol.com

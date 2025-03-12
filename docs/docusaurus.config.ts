@@ -175,7 +175,7 @@ const config: Config = {
             },
             {
               label: 'Twitter',
-              href: 'https://twitter.com/UnlockProtocol',
+              href: 'https://x.com/UnlockProtocol',
             },
             {
               label: 'Forum',

@@ -107,7 +107,7 @@ As of January 2025, the Unlock ecosystem consists of the following:
 - Contracts:
   - Swap and Pay ✅
 
-# December 31th 2022
+# December 31st 2022
 
 - Fully refactored Dashboard:
   - Checkout configuration UI ✅

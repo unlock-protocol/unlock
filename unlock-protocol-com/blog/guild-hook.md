@@ -19,7 +19,7 @@ Let’s go ahead and create an example!
 
 ## Guild and Unlock Protocol integration using the Guild Hook
 
-Let’s say I only want people who [follow Unlock on Twitter](https://twitter.com/UnlockProtocol) to be able to claim a membership [from this membership contract.](https://goerli.etherscan.io/address/0xd36695BDF1A17BC4B0aA318d02c60F6e108CB653)
+Let’s say I only want people who [follow Unlock on Twitter](https://x.com/UnlockProtocol) to be able to claim a membership [from this membership contract.](https://goerli.etherscan.io/address/0xd36695BDF1A17BC4B0aA318d02c60F6e108CB653)
 
 1. First, I will go to [Guild.xyz](http://Guild.xyz) and create a Guild whose **requirement** is to follow Unlock on Twitter.
 

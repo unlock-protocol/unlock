@@ -24,7 +24,7 @@ function addLockTemplate(address impl, uint16 version) external nonpayable
 
 Add a PublicLock template to be used for future calls to `createLock`.
 
-_This is used to upgrade conytract per version number_
+_This is used to upgrade contract per version number_
 
 #### Parameters
 
@@ -51,9 +51,9 @@ function chainId() external view returns (uint256)
 function computeAvailableDiscountFor(address _purchaser, uint256 _keyPrice) external pure returns (uint256 discount, uint256 tokens)
 ```
 
-[DEPRECATED] Call to this function has been removed from PublicLock &gt; v9.
+[deprecatedATED] Call to this function has been removed from PublicLock &gt; v9.
 
-_[DEPRECATED] Kept for backwards compatibility This function returns the discount available for a user, when purchasing a a key from a lock. This does not modify the state. It returns both the discount and the number of tokens consumed to grant that discount._
+_[deprecatedATED] Kept for backwards compatibility This function returns the discount available for a user, when purchasing a key from a lock. This does not modify the state. It returns both the discount and the number of tokens consumed to grant that discount._
 
 #### Parameters
 
@@ -96,7 +96,7 @@ function createLock(uint256 _expirationDuration, address _tokenAddress, uint256 
 
 Create lock (legacy) This deploys a lock for a creator. It also keeps track of the deployed lock.
 
-_internally call `createUpgradeableLock`_
+_internally calls `createUpgradeableLock`_
 
 #### Parameters
 
@@ -105,8 +105,8 @@ _internally call `createUpgradeableLock`_
 | \_expirationDuration | uint256 | the duration of the lock (pass 0 for unlimited duration)                                                                                                                                                                              |
 | \_tokenAddress       | address | set to the ERC20 token address, or 0 for ETH.                                                                                                                                                                                         |
 | \_keyPrice           | uint256 | the price of each key                                                                                                                                                                                                                 |
-| \_maxNumberOfKeys    | uint256 | the maximum nimbers of keys to be edited                                                                                                                                                                                              |
-| \_lockName           | string  | the name of the lock param \_salt [deprec] -- kept only for backwards copatibility This may be implemented as a sequence ID or with RNG. It&#39;s used with `create2` to know the lock&#39;s address before the transaction is mined. |
+| \_maxNumberOfKeys    | uint256 | the maximum numbers of keys to be edited                                                                                                                                                                                              |
+| \_lockName           | string  | the name of the lock param \_salt [deprecated] -- kept only for backwards compatibility This may be implemented as a sequence ID or with RNG. It&#39;s used with `create2` to know the lock&#39;s address before the transaction is mined. |
 | \_5                  | bytes12 | undefined                                                                                                                                                                                                                             |
 
 #### Returns
@@ -444,9 +444,9 @@ Match version numbers with lock templates addresses
 function recordConsumedDiscount(uint256 _discount, uint256 _tokens) external view
 ```
 
-[DEPRECATED] Call to this function has been removed from PublicLock &gt; v9.
+[deprecatedATED] Call to this function has been removed from PublicLock &gt; v9.
 
-_[DEPRECATED] Kept for backwards compatibility This function will keep track of consumed discounts by a given user. It will also grant discount tokens to the creator who is granting the discount based on the amount of discount and compensation rate. This function is invoked by a previously deployed lock only._
+_[deprecatedATED] Kept for backwards compatibility This function will keep track of consumed discounts by a given user. It will also grant discount tokens to the creator who is granting the discount based on the amount of discount and compensation rate. This function is invoked by a previously deployed lock only._
 
 #### Parameters
 
@@ -461,7 +461,7 @@ _[DEPRECATED] Kept for backwards compatibility This function will keep track of 
 function recordKeyPurchase(uint256 _value, address _referrer) external nonpayable
 ```
 
-This function keeps track of the added GDP, as well as grants of discount tokens to the referrer, if applicable. The number of discount tokens granted is based on the value of the referal, the current growth rate and the lock&#39;s discount token distribution rate This function is invoked by a previously deployed lock only.
+This function keeps track of the added GDP, as well as grants of discount tokens to the referrer, if applicable. The number of discount tokens granted is based on the value of the referral, the current growth rate and the lock&#39;s discount token distribution rate This function is invoked by a previously deployed lock only.
 
 #### Parameters
 
