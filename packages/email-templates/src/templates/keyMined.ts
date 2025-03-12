@@ -2,12 +2,13 @@ import Handlebars from 'handlebars'
 import { links } from './helpers/links'
 import { transactionLink } from './helpers/transactionLink'
 import { formattedCustomContent } from './helpers/customContent'
+import { prepareAll } from './prepare'
 
 Handlebars.registerHelper('links', links)
 Handlebars.registerHelper('transactionLink', transactionLink)
 Handlebars.registerHelper('formattedCustomContent', formattedCustomContent)
 
-export default {
+export default prepareAll({
   subject: 'You have received a new NFT!',
   html: `<h1>You have received a new NFT!</h1>
 
@@ -22,4 +23,4 @@ export default {
 {{transactionLink transactionReceiptUrl}}
 
 `,
-}
+})

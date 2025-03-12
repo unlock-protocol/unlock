@@ -1,4 +1,6 @@
-export default {
+import { prepareAll } from './prepare'
+
+export default prepareAll({
   subject: 'Welcome to Unlock!',
   html: `<h1>Welcome to Unlock!</h1> 
     
@@ -8,4 +10,4 @@ export default {
     <p>Best Regards,</p>
     <p>The Unlock Team</p>
 `,
-}
+})
