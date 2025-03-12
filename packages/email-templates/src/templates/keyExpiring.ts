@@ -8,7 +8,7 @@ export default {
   subject: 'Your "{{lockName}}" membership is about to expire!',
   html: `<h1>Your Membership NFT will expire soon</h1>
 
-<p>Your <strong>{{lockName}}</strong> membership (#{{keyId}}) will expire on #{{expirationDate}}</p>
+<p>Your <strong>{{lockName}}</strong> membership (#{{keyId}}) will expire on {{expirationDate}}</p>
 
 {{formattedCustomContent "Membership Manager" customContent}}
 
