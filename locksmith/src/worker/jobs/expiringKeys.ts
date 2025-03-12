@@ -21,7 +21,7 @@ import { Task } from 'graphile-worker'
  * @param network network
  * @returns
  */
-async function notifyExpiringKey(key: any, network: number) {
+export async function notifyExpiringKey(key: any, network: number) {
   const lockName = key?.lock?.name ?? ''
   const lockAddress = Normalizer.ethereumAddress(key.lock.address)
   const ownerAddress = Normalizer.ethereumAddress(key.owner)

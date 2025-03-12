@@ -3,6 +3,7 @@
 import { asHtml } from '../utils'
 import welcome from '../../templates/welcome'
 import { expect, it, describe } from 'vitest'
+import { prepareAll } from '../../templates/prepare'
 
 describe('welcome', () => {
   it('should have the right subject', () => {
@@ -13,8 +14,6 @@ describe('welcome', () => {
   it('should have the right text', () => {
     expect.assertions(1)
     const html = asHtml(welcome.html({}))
-    expect(html.textContent).toContain(
-      'Welcome aboard, and we look forward to serving you!'
-    )
+    expect(html.textContent).toContain('The Unlock Team')
   })
 })
