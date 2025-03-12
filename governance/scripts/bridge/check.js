@@ -4,6 +4,7 @@ const {
   ConnextMod: connextModAbi,
 } = require('../../helpers/bridge')
 const { UPGovernor } = require('@unlock-protocol/contracts')
+const { networks } = require('@unlock-protocol/networks')
 
 const { getProvider } = require('../../helpers/multisig')
 const { Contract } = require('ethers')
@@ -34,9 +35,7 @@ async function main() {
     const log = (msg) => console.log(`[${name} (${id})] ${msg}`)
 
     // get domain ID for base
-    const { domainId: daoDomainId } = targetChains.find(
-      ({ id }) => id === daoChainId
-    ).dao.governanceBridge
+    const { domainId: daoDomainId } = networks[daoChainId].dao.governanceBridge
 
     // get timelock address
     const daoChainProvider = await getProvider(daoChainId)

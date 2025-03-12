@@ -186,7 +186,8 @@ const addERC20 = async function (
 }
 
 const toBytes32 = (bn) => {
-  return ethers.hexlify(ethers.zeroPad(bn.toHexString(), 32))
+  const pad = ethers.zeroPadValue(ethers.toBeHex(bn), 32)
+  return ethers.hexlify(pad)
 }
 
 const addUDT = async (recipientAddress, amount = 1000, udt) => {
@@ -200,10 +201,10 @@ const addUDT = async (recipientAddress, amount = 1000, udt) => {
   const udtAmount =
     typeof amount === 'bigint' ? amount : ethers.parseEther(`${amount}`)
 
-  if (chainId === 1 || chainId === 5) {
+  if (chainId === 1n) {
     // NB: slot has been found by using slot20 - see https://kndrck.co/posts/local_erc20_bal_mani_w_hh/
     // Get storage slot index
-    const index = ethers.solidityKeccak256(
+    const index = ethers.solidityPackedKeccak256(
       ['uint256', 'uint256'],
       [recipientAddress, 51] // key, slot
     )
@@ -211,10 +212,14 @@ const addUDT = async (recipientAddress, amount = 1000, udt) => {
     // Manipulate local balance (needs to be bytes32 string)
     await network.provider.request({
       method: 'hardhat_setStorageAt',
-      params: [udt.address, index.toString(), toBytes32(udtAmount).toString()],
+      params: [await udt.getAddress(), index, toBytes32(udtAmount)],
     })
     // Just mines to the next block
     await ethers.provider.send('evm_mine', [])
+    console.log(
+      `UDT Balance updated to ${await udt.balanceOf(recipientAddress)}`
+    )
+    return udt
   } else {
     const unlock_protocol_eth = '0xF5C28ce24Acf47849988f147d5C75787c0103534'
     const whale = await ethers.getSigner(unlock_protocol_eth)

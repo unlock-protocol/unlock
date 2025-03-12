@@ -1,16 +1,9 @@
-import { Toucan } from 'toucan-js'
 import { getSubgraphUrl } from './networks'
 import { Env, GraphQLRequest } from './types'
 import networks from '@unlock-protocol/networks'
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
-    // Initialize Sentry for error tracking
-    const sentry = new Toucan({
-      dsn: env.SENTRY_DSN,
-      request,
-    })
-
     // Define CORS headers to allow cross-origin requests
     const corsHeaders = {
       'Access-Control-Allow-Origin': '*',
@@ -65,49 +58,49 @@ export default {
       })
     }
 
-    try {
-      // Parse the incoming JSON request body
-      const { query, variables }: GraphQLRequest = await request.json()
+    // Parse the incoming JSON request body
+    const { query, variables }: GraphQLRequest = await request.json()
 
-      // Validate that a query is provided
-      if (!query) {
-        return new Response('Bad Request: query is required', {
-          status: 400,
-          headers: corsHeaders,
-        })
-      }
-
-      // Forward the GraphQL request to the subgraph
-      const graphResponse = await fetch(subgraphUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ query, variables }),
-      })
-
-      // Extract response data and headers
-      const responseData = await graphResponse.text()
-      const responseHeaders = new Headers(graphResponse.headers)
-
-      // Append CORS headers to the response
-      Object.entries(corsHeaders).forEach(([key, value]) => {
-        responseHeaders.set(key, value)
-      })
-
-      // Return the response from the subgraph
-      return new Response(responseData, {
-        status: graphResponse.status,
-        headers: responseHeaders,
-      })
-    } catch (error) {
-      // Capture and log any errors that occur during processing
-      sentry.captureException(error)
-      console.error('Error processing request:', error)
-      return new Response('Internal Server Error', {
-        status: 500,
+    // Validate that a query is provided
+    if (!query) {
+      return new Response('Bad Request: query is required', {
+        status: 400,
         headers: corsHeaders,
       })
     }
+
+    // Forward the GraphQL request to the subgraph
+    const graphResponse = await fetch(subgraphUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ query, variables }),
+    })
+
+    // Extract response data and headers
+    const responseData = await graphResponse.text()
+    const responseHeaders = new Headers(graphResponse.headers)
+
+    // Append CORS headers to the response
+    Object.entries(corsHeaders).forEach(([key, value]) => {
+      responseHeaders.set(key, value)
+    })
+
+    if (graphResponse.status !== 200) {
+      console.log({
+        status: graphResponse.status,
+        subgraphUrl,
+        query,
+        variables,
+        responseData,
+      })
+    }
+
+    // Return the response from the subgraph
+    return new Response(responseData, {
+      status: graphResponse.status,
+      headers: responseHeaders,
+    })
   },
 }

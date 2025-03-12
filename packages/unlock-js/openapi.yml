@@ -130,6 +130,11 @@ components:
           type: string
         description:
           type: string
+        status:
+          type: string
+          enum: [pending, deployed]
+        transactionHash:
+          type: string
         attributes:
           type: array
           items:
@@ -457,6 +462,11 @@ components:
         requiredGitcoinPassportScore:
           type: number
           nullable: true
+        allowList:
+          type: array
+          items:
+            type: string
+          nullable: true
 
     EventDetails:
       type: object
@@ -741,6 +751,20 @@ components:
                 latestVerifiedAt:
                   type: string
                   format: date-time
+
+    SaveEventDataRequest:
+      type: object
+      properties:
+        data:
+          type: object
+          additionalProperties: true
+        status:
+          type: string
+          enum: [pending, deployed]
+        transactionHash:
+          type: string
+        checkoutConfig:
+          $ref: '#/components/schemas/CheckoutConfig'
 
   parameters:
     Network:
@@ -1447,7 +1471,6 @@ paths:
 
         500:
           $ref: '#/components/responses/500.InternalError'
-
   /v2/events/approved-refunds/{slug}:
     get:
       operationId: approvedRefunds
@@ -4585,54 +4608,88 @@ paths:
         - User: []
       description: Save event data
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               type: object
               properties:
-                id:
-                  type: number
                 data:
                   type: object
+                  additionalProperties: true
+                status:
+                  type: string
+                  enum: [pending, deployed]
+                transactionHash:
+                  type: string
                 checkoutConfig:
                   $ref: '#/components/schemas/CheckoutConfig'
-
       responses:
-        200:
-          description: Successfully saved event data
+        201:
+          description: Event created successfully
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: number
-                  name:
-                    type: string
-                  data:
-                    type: object
-                  slug:
-                    type: string
-                  locks:
-                    type: array
-                    items:
-                      type: string
+                $ref: '#/components/schemas/Event'
         400:
           $ref: '#/components/responses/400.Invalid'
 
         500:
           $ref: '#/components/responses/500.InternalError'
 
+  /v2/events/update/{slug}:
+    post:
+      operationId: updateEventData
+      security:
+        - User: []
+      description: Update event data
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [pending, deployed]
+                transactionHash:
+                  type: string
+                checkoutConfig:
+                  $ref: '#/components/schemas/CheckoutConfig'
+      responses:
+        200:
+          description: Successfully updated event data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  slug:
+                    type: string
+                  status:
+                    type: string
+                  transactionHash:
+                    type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
   /v2/events/{slug}:
     get:
       operationId: getEvent
       parameters:
         - $ref: '#/components/parameters/Slug'
-      description: Retrieves an event based on its slug
-
+      description: Retrieves an event based on its slug. The event data including status and transactionHash can be accessed through the `data` property.
       responses:
         200:
-          description: Successfully retrieves the event along with its checkout config
+          description: Successfully retrieves the event along with its checkout config. Event details including status and transactionHash are nested under the `data` property.
           content:
             application/json:
               schema:
@@ -5285,3 +5342,52 @@ paths:
                   error:
                     type: string
                     example: 'Failed to check Privy user'
+
+  /v2/merkle-tree:
+    post:
+      operationId: saveMerkleTree
+      description: Saves a merkle tree from a list of addresses.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+      responses:
+        200:
+          description: Successfully saved the Merkle Tree
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  root:
+                    type: string
+                  url:
+                    type: string
+        400:
+          description: Missing required fields
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        500:
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string

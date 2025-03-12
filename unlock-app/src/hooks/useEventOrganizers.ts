@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { PaywallConfigType } from '@unlock-protocol/core'
-import { SubgraphService } from '@unlock-protocol/unlock-js'
+import { graphService } from '~/config/subgraph'
 
 interface useEventOrganizersProps {
   checkoutConfig: {
@@ -13,7 +13,6 @@ export const getEventOrganizers = async (checkoutConfig: {
   id?: string
   config: PaywallConfigType
 }) => {
-  const service = new SubgraphService()
   // Group locks by network
   const locksByNetwork: { [key: string]: string[] } = {}
   const defaultNetwork = checkoutConfig.config.network
@@ -35,7 +34,7 @@ export const getEventOrganizers = async (checkoutConfig: {
   await Promise.all(
     Object.keys(locksByNetwork).map(async (network: string) => {
       const locks = locksByNetwork[network]
-      const locksWithManagers = await service.locks(
+      const locksWithManagers = await graphService.locks(
         {
           first: locks.length,
           where: {
@@ -67,7 +66,14 @@ export const useEventOrganizers = ({
   return useQuery({
     queryKey: ['eventOrganizers', checkoutConfig],
     queryFn: async (): Promise<string[]> => {
-      return getEventOrganizers(checkoutConfig)
+      let organizers: string[] = []
+      // Hardcoded event organizers for specific events : /event/hats-friends
+      if (checkoutConfig?.id === '1a2543a9-a233-4e19-ab16-b2cbf2df7196') {
+        organizers = ['0xe6DEd6460bf4a1ac320997Bed7991166054574De']
+      } else {
+        organizers = await getEventOrganizers(checkoutConfig)
+      }
+      return organizers
     },
   })
 }

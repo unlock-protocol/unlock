@@ -36,6 +36,6 @@ The owner of a given key (an NFT distinguished by its unique _tokenID)._ The key
 
 Only the key manager is authorized to transfer, share or cancel keys, and may or may not be the same entity as the key owner depending on how the key was originally acquired. This enables new use cases, such as the ability to "loan" your key to someone temporarily, while retaining the right to take it back when/if needed, or possibly putting keys (NFTs) inside of a vault contract as collateral by retaining ownership, but transferring the keyManager role to the vault itself!
 
-To help understand the keyManager assignment in different scenarios, the following table is provided. It specifies how the keyManager is assigned for each relevant function in each of 3 key states: **New Key creation, Valid Key extension,** or **Expired Key renewal.**
+To help understand the keyManager assignment in different scenarios, the following table is provided. It specifies how the keyManager is assigned for each relevant function in each of the 3 key states: **New Key creation, Valid Key extension,** or **Expired Key renewal.**
 
 ![Lock Permission Roles Chart](/img/developers/lock-permissions-roles.png)

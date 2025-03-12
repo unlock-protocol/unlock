@@ -1,5 +1,6 @@
 import type { Config } from '@docusaurus/types'
 import UnlockPrismTheme from './unlock-prism-theme'
+import tailwindPlugin from './plugins/tailwind.config.cjs'
 
 const config: Config = {
   title: 'Unlock Protocol',
@@ -24,12 +25,17 @@ const config: Config = {
         },
         blog: false,
         theme: {
-          customCss: './src/css/custom.css',
+          customCss: [require.resolve('@unlock-protocol/ui/dist/style.css')],
         },
       },
     ],
   ],
   themeConfig: {
+    colorMode: {
+      defaultMode: 'light',
+      disableSwitch: true,
+      respectPrefersColorScheme: false,
+    },
     start_urls: ['https://docs.unlock-protocol.com'],
     sitemap_urls: ['https://docs.unlock-protocol.com/sitemap.xml'],
     algolia: {
@@ -221,6 +227,7 @@ const config: Config = {
   },
 
   plugins: [
+    tailwindPlugin,
     'docusaurus-node-polyfills',
     [
       require.resolve('docusaurus-gtm-plugin'),

@@ -2,6 +2,7 @@ export const protectedAttributes = [
   'replyTo',
   'promoCodes',
   'passwords',
+  'allowList',
   'notifyCheckInUrls',
 ]
 

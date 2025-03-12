@@ -1,5 +1,5 @@
 import type { ReactNode, ForwardedRef } from 'react'
-import type { SizeStyleProp, Size } from '../../types'
+import type { SizeStyleProp } from '../../types'
 import { twMerge } from 'tailwind-merge'
 import { forwardRef } from 'react'
 import { Box, Props as BoxProps } from '../Box/Box'

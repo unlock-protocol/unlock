@@ -14,42 +14,53 @@ interface ConnectedCheckoutProps {
 export function Connected({ service }: ConnectedCheckoutProps) {
   const [showPrivyModal, setShowPrivyModal] = useState(true)
   const { paywallConfig, lock } = useSelector(service, (state) => state.context)
-  const { account, signInWithPrivy } = useAuthenticate()
+  const { signInWithPrivy, account } = useAuthenticate()
 
   const lockAddress = lock?.address
   const lockNetwork = lock?.network || paywallConfig.network
   const web3Service = useWeb3Service()
+
+  // handle sign-in
+  useEffect(() => {
+    const handleSignIn = async () => {
+      if (account) {
+        console.debug(`Connected as ${account}`)
+      } else {
+        console.debug('Not connected')
+        signInWithPrivy({
+          onshowUI: () => {
+            setShowPrivyModal(true)
+          },
+        })
+      }
+    }
+
+    handleSignIn()
+  }, [account])
+
+  // check memberships after sign-in
   useEffect(() => {
     const checkMemberships = async (
       lockAddress: string,
-      account: string,
+      walletAddress: string,
       lockNetwork: number
     ) => {
-      // Get the membership!
       const membership = await getMembership(
         web3Service,
         lockAddress,
-        account!,
+        walletAddress,
         lockNetwork
       )
       service.send({
         type: 'SELECT_LOCK',
         existingMember: !!membership?.member,
         expiredMember: !!membership?.expired,
+        tokenId: membership?.tokenId,
       })
     }
-    if (!account) {
-      console.debug('Not connected')
-      signInWithPrivy({
-        onshowUI: () => {
-          setShowPrivyModal(true)
-        },
-      })
-    } else {
-      console.debug(`Connected as ${account}`)
-      if (lockAddress && lockNetwork) {
-        checkMemberships(lockAddress, account!, lockNetwork)
-      }
+
+    if (account && lockAddress && lockNetwork) {
+      checkMemberships(lockAddress, account, lockNetwork)
     }
   }, [account, lockAddress, lockNetwork])
 

@@ -41,7 +41,7 @@ const SOCIAL_PROOF: SocialProofProps = {
       alt: 'ETHTaipei logo',
     },
     {
-      logo: '/images/partners/web3academemy.svg',
+      logo: '/images/partners/web3academy.svg',
       alt: 'web3 Academy logo',
     },
     {
@@ -49,12 +49,12 @@ const SOCIAL_PROOF: SocialProofProps = {
       alt: 'ETHSafari logo',
     },
     {
-      logo: '/images/partners/spruceID.svg',
-      alt: 'SpruceID logo',
+      logo: '/images/partners/farcon.png',
+      alt: 'Farcon logo',
     },
     {
-      logo: '/images/partners/cabincity.svg',
-      alt: 'Cabin.city logo',
+      logo: '/images/partners/onchain-summit.png',
+      alt: 'Onchain summit logo',
     },
     {
       logo: '/images/partners/edgenode.svg',
@@ -67,18 +67,19 @@ export default function SocialProof() {
   return (
     <div className="flex flex-col gap-10 text-center">
       <span className="font-bold text-gray-700">{description}</span>
-      <ul className="flex flex-row flex-wrap justify-around md:mx-10 md:gap-0">
+
+      <ul className="flex flex-row flex-wrap justify-around gap-4 md:mx-10">
         {partners?.map(({ logo, alt }, index) => {
           return (
             <li
               key={index}
-              className="flex items-center h-24 text-center rounded-full md:mx-2"
+              className="flex items-center text-center rounded-full md:mx-2"
             >
               <div>
                 <Image
-                  width={60}
-                  height={60}
-                  className="object-contain w-full h-full mx-auto"
+                  width={64}
+                  height={64}
+                  className="object-contain w-full mx-auto max-w-64"
                   src={logo}
                   alt={alt}
                 />

@@ -18,32 +18,37 @@ async function fetchUnprocessedKeys(network: number, page = 0) {
   const subgraph = new SubgraphService()
   const skip = page ? page * FETCH_LIMIT : 0
 
-  const keys = await subgraph.keys(
-    {
-      first: FETCH_LIMIT,
-      skip,
-      orderBy: KeyOrderBy.CreatedAtBlock,
-      orderDirection: OrderDirection.Desc,
-    },
-    {
-      networks: [network],
-    }
-  )
-
-  const keyIds = keys.map((key: any) => key.id)
-  const processedKeys = await ProcessedHookItem.findAll({
-    where: {
-      type: 'key',
-      objectId: {
-        [Op.in]: keyIds,
+  try {
+    const keys = await subgraph.keys(
+      {
+        first: FETCH_LIMIT,
+        skip,
+        orderBy: KeyOrderBy.CreatedAtBlock,
+        orderDirection: OrderDirection.Desc,
       },
-    },
-  })
+      {
+        networks: [network],
+      }
+    )
 
-  const unprocessedKeys = keys.filter(
-    (key: any) => !processedKeys.find((item) => item.objectId === key.id)
-  )
-  return unprocessedKeys
+    const keyIds = keys.map((key: any) => key.id)
+    const processedKeys = await ProcessedHookItem.findAll({
+      where: {
+        type: 'key',
+        objectId: {
+          [Op.in]: keyIds,
+        },
+      },
+    })
+
+    const unprocessedKeys = keys.filter(
+      (key: any) => !processedKeys.find((item) => item.objectId === key.id)
+    )
+    return unprocessedKeys
+  } catch (error) {
+    logger.error('Error fetching unprocessed keys', { network, error })
+    return []
+  }
 }
 
 async function notifyHooksOfAllUnprocessedKeys(hooks: Hook[], network: number) {
@@ -63,28 +68,26 @@ async function notifyHooksOfAllUnprocessedKeys(hooks: Hook[], network: number) {
         keys: keys.map((key: any) => [network, key.lock.address, key.id]),
       })
 
-      await Promise.allSettled([
-        notifyNewKeysToWedlocks(keys, network), // send emails when applicable!
-        // Send notification to hooks subscribed to keys on a specific lock address
-        ...keysOnLockHooks.map(async (keysOnLockHook) => {
-          const data = keys.filter(
-            (key: any) => key.lock.id === keysOnLockHook.lock
-          )
-          const hookEvent = await notifyHook(keysOnLockHook, {
-            data,
-            network,
-          })
-          return hookEvent
-        }),
-        // Send notification to hooks subscribed to keys on a whole network
-        ...keysOnNetworkHooks.map(async (keysOnNetworkHook) => {
-          const hookEvent = await notifyHook(keysOnNetworkHook, {
-            network,
-            data: keys,
-          })
-          return hookEvent
-        }),
-      ])
+      await notifyNewKeysToWedlocks(keys, network) // send emails when applicable!
+
+      for (let i = 0; i < keysOnLockHooks.length; i++) {
+        const keysOnLockHook = keysOnLockHooks[i]
+        const data = keys.filter(
+          (key: any) => key.lock.id === keysOnLockHook.lock
+        )
+        await notifyHook(keysOnLockHook, {
+          data,
+          network,
+        })
+      }
+
+      for (let i = 0; i < keysOnNetworkHooks.length; i++) {
+        const keysOnNetworkHook = keysOnNetworkHooks[i]
+        await notifyHook(keysOnNetworkHook, {
+          network,
+          data: keys,
+        })
+      }
 
       const processedHookItems = keys.map((key: any) => {
         return {
@@ -102,20 +105,19 @@ async function notifyHooksOfAllUnprocessedKeys(hooks: Hook[], network: number) {
 }
 
 export async function notifyOfKeys(hooks: Hook[]) {
-  const tasks: Promise<void>[] = []
-
   for (const network of Object.values(networks)) {
     if (network.id !== 31337) {
       const hooksFilteredByNetwork = hooks.filter(
         (hook) => hook.network === network.id
       )
-      const task = notifyHooksOfAllUnprocessedKeys(
-        hooksFilteredByNetwork,
-        network.id
-      )
-      tasks.push(task)
+      try {
+        await notifyHooksOfAllUnprocessedKeys(
+          hooksFilteredByNetwork,
+          network.id
+        )
+      } catch (error) {
+        logger.error('Error notifying of keys', { network: network.id, error })
+      }
     }
   }
-
-  await Promise.allSettled(tasks)
 }

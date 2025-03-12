@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ConnectViaEmail } from './ConnectViaEmail'
 import { useMutation } from '@tanstack/react-query'
 import { locksmith } from '~/config/locksmith'
@@ -9,20 +9,17 @@ import MigrationFeedback from './MigrationFeedback'
 import ConnectToPrivy from './ConnectToPrivy'
 import { UserAccountType } from '~/utils/userAccountType'
 import { SignInWithPassword } from './SignInWithPassword'
-import { SignInWithCode } from './SignInWithCode'
-import { SignInWithGoogle } from './SignInWithGoogle'
 import { PromptSignOut } from './PromptSignOut'
 import { usePrivy } from '@privy-io/react-auth'
 
 export const MigrateUserContent = () => {
-  const { user } = usePrivy()
+  const { user: privyUser } = usePrivy()
   const [userEmail, setUserEmail] = useState<string>('')
   const [walletPk, setWalletPk] = useState<string | null>(null)
   const [userAccountType, setUserAccountType] = useState<UserAccountType[]>([])
-  // Track migration status
   const [isMigrating, setIsMigrating] = useState(false)
-  // Track Privy connection status
   const [privyConnected, setPrivyConnected] = useState(false)
+  const [skipPrivyStep, setSkipPrivyStep] = useState(false)
 
   // Mutation to handle the user account type
   const checkUserAccountType = useMutation({
@@ -60,6 +57,107 @@ export const MigrateUserContent = () => {
     },
   })
 
+  // Determine if the Privy step can be skipped
+  useEffect(() => {
+    if (privyUser && walletPk) {
+      setPrivyConnected(true)
+      setSkipPrivyStep(true)
+    }
+  }, [privyUser, walletPk])
+
+  // Dynamically define the tabs
+  const tabs = [
+    {
+      title: 'Enter your email',
+      description: 'First, verify your email address',
+      disabled: false,
+      button: {
+        disabled:
+          checkPrivyUserMutation.isPending || checkUserAccountType.isPending,
+      },
+      children: ({ onNext }: { onNext: () => void }) => {
+        return (
+          <ConnectViaEmail
+            email={privyUser?.email?.address || ''}
+            onNext={({ email, accountType }) => {
+              setUserEmail(email || privyUser?.email?.address || '')
+              setUserAccountType(accountType)
+              onNext()
+            }}
+          />
+        )
+      },
+      showButton: false,
+    },
+    {
+      title: 'Sign in to your account',
+      description: 'Sign in to your existing Unlock account',
+      disabled: !userEmail || checkPrivyUserMutation.isPending,
+      children: ({ onNext }: { onNext: () => void }) => {
+        if (userAccountType?.includes(UserAccountType.UnlockAccount)) {
+          return (
+            <SignInWithPassword
+              userEmail={userEmail}
+              onNext={(walletPk) => {
+                setWalletPk(walletPk)
+                onNext()
+              }}
+            />
+          )
+        }
+        if (
+          userAccountType?.includes(UserAccountType.EmailCodeAccount) ||
+          userAccountType?.includes(UserAccountType.GoogleAccount)
+        ) {
+          return (
+            <div className="space-y-4">
+              <h2 className="text-xl font-bold">
+                Account Migration Not Available
+              </h2>
+              <p>
+                We apologize, but migration is currently only available for
+                Unlock 1.0 accounts. Migration support for these account types
+                has now been discontinued.
+              </p>
+            </div>
+          )
+        }
+        return null
+      },
+    },
+    // Conditionally include the Privy connection step
+    ...(!skipPrivyStep
+      ? [
+          {
+            title: 'Create a Privy Account',
+            disabled: !walletPk,
+            description: 'Create a Privy Account',
+            children: ({ onNext }: { onNext: () => void }) => (
+              <ConnectToPrivy
+                userEmail={userEmail}
+                onNext={onNext}
+                setPrivyConnected={setPrivyConnected}
+              />
+            ),
+            showButton: false,
+          },
+        ]
+      : []),
+    {
+      title: 'Migration',
+      disabled: !walletPk || (!privyConnected && !skipPrivyStep),
+      description:
+        'This is the last step! We will migrate your Unlock account to Privy!',
+      children: (
+        <MigrationFeedback
+          walletPk={walletPk!}
+          onMigrationStart={() => setIsMigrating(true)}
+        />
+      ),
+      showButton: false,
+    },
+  ]
+
   return (
     <>
       <div className="md:px-28 mt-10">
@@ -71,109 +169,10 @@ export const MigrateUserContent = () => {
             account.
           </p>
         </div>
-        <Tabs
-          tabs={[
-            {
-              title: 'Enter your email',
-              description: 'First, verify your email address',
-              disabled: false,
-              button: {
-                // Disable button during mutation
-                disabled:
-                  checkPrivyUserMutation.isPending ||
-                  checkUserAccountType.isPending,
-              },
-              children: ({ onNext }) => {
-                // Goal of this component is to get user email address + type of account
-                // It should also check if there is a Privy account already.
-                // If not, it "yields" the email account + type to the next step
-                return (
-                  <ConnectViaEmail
-                    onNext={({ email, accountType }) => {
-                      setUserEmail(email)
-                      setUserAccountType(accountType)
-                      onNext()
-                    }}
-                  />
-                )
-              },
-              showButton: false,
-            },
-            {
-              title: 'Sign in to your account',
-              description: 'Sign in to your existing Unlock account',
-              disabled: !userEmail || checkPrivyUserMutation.isPending,
-              children: ({ onNext }) => {
-                // This component is in charge of getting a private key for
-                // any account used
-                if (userAccountType?.includes(UserAccountType.UnlockAccount)) {
-                  return (
-                    <SignInWithPassword
-                      userEmail={userEmail}
-                      onNext={(walletPk) => {
-                        setWalletPk(walletPk)
-                        onNext()
-                      }}
-                    />
-                  )
-                }
-                if (
-                  userAccountType?.includes(UserAccountType.EmailCodeAccount)
-                ) {
-                  return (
-                    <SignInWithCode
-                      email={userEmail}
-                      onNext={(walletPk) => {
-                        setWalletPk(walletPk)
-                        onNext()
-                      }}
-                    />
-                  )
-                }
-                if (userAccountType?.includes(UserAccountType.GoogleAccount)) {
-                  return (
-                    <SignInWithGoogle
-                      onNext={(walletPk) => {
-                        setWalletPk(walletPk)
-                        onNext()
-                      }}
-                    />
-                  )
-                }
-                return null
-              },
-            },
-            {
-              title: 'Create a Privy Account',
-              disabled: !walletPk,
-              description: 'Create a Privy Account',
-              children: ({ onNext }) => (
-                <ConnectToPrivy
-                  userEmail={userEmail}
-                  onNext={onNext}
-                  setPrivyConnected={setPrivyConnected}
-                />
-              ),
-              showButton: false,
-            },
-            {
-              title: 'Migration',
-              disabled: !walletPk || !privyConnected,
-              description:
-                'This is the last step! We will migrate your Unlock account to Privy!',
-              children: (
-                <MigrationFeedback
-                  walletPk={walletPk!}
-                  onMigrationStart={() => setIsMigrating(true)}
-                />
-              ),
-              showButton: false,
-            },
-          ]}
-        />
+        <Tabs tabs={tabs} />
       </div>
 
-      {user?.email?.address && user?.wallet && !isMigrating && (
+      {privyUser?.email?.address && privyUser?.wallet && !isMigrating && (
         <PromptSignOut />
       )}
     </>

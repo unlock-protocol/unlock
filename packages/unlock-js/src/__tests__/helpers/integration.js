@@ -18,7 +18,6 @@ export const setupTest = async (unlockVersion) => {
 
   const [signer] = await hre.ethers.getSigners()
   const ethersProvider = signer.provider
-
   // mock functions that are not implemented in hardhat
   signer.provider.waitForTransaction = async (hash) =>
     await signer.provider.getTransactionReceipt(hash)
@@ -62,23 +61,20 @@ export const setupLock = async ({
   let lockAddress
   let lockCreationHash
 
-  if (versionEqualOrAbove(unlockVersion, 'v5')) {
-    // here we need to setup unlock template properly
-    const unlock = await walletService.getUnlockContract()
+  // here we need to setup unlock template properly
+  const unlock = await walletService.getUnlockContract()
 
-    // deploy the relevant template
-    const templateAddress = await deployTemplate(publicLockVersion)
+  // deploy the relevant template
+  const templateAddress = await deployTemplate(publicLockVersion)
 
-    // prepare unlock for upgradeable locks
-    if (versionEqualOrAbove(unlockVersion, 'v10')) {
-      const lockVersionNumber = parseInt(publicLockVersion.replace('v', ''))
-      await unlock.addLockTemplate(templateAddress, lockVersionNumber)
-    }
+  // prepare unlock for upgradeable locks
+  const lockVersionNumber = parseInt(publicLockVersion.replace('v', ''))
+  await unlock.addLockTemplate(templateAddress, lockVersionNumber)
 
-    // set the right template in Unlock
-    const tx = await unlock.setLockTemplate(templateAddress)
-    await tx.wait()
-  }
+  // set the right template in Unlock
+  const tx = await unlock.setLockTemplate(templateAddress)
+  await tx.wait()
+
   // parse erc20
   const { isERC20 } = lockParams
   lockParams.currencyContractAddress = isERC20 ? await ERC20.getAddress() : null
@@ -86,10 +82,8 @@ export const setupLock = async ({
   // unique Lock name to avoid conflicting addresses
   lockParams.name = `Unlock${unlockVersion} - Lock ${publicLockVersion} - ${lockParams.name}`
 
-  if (versionEqualOrAbove(unlockVersion, 'v10')) {
-    // use createLockAtVersion starting on v10
-    lockParams.publicLockVersion = parseInt(publicLockVersion.replace('v', ''))
-  }
+  // use createLockAtVersion starting on v10
+  lockParams.publicLockVersion = parseInt(publicLockVersion.replace('v', ''))
 
   lockAddress = await walletService.createLock(
     lockParams,
@@ -103,8 +97,8 @@ export const setupLock = async ({
   )
   lock = await web3Service.getLock(lockAddress, chainId)
 
-  // test will fail with default to 1 key per address
   if (versionEqualOrAbove(publicLockVersion, 'v10')) {
+    // test will fail with default to 1 key per address
     await walletService.setMaxKeysPerAddress({
       lockAddress,
       chainId,

@@ -1,11 +1,8 @@
 'use client'
 
-import React, { Suspense, useState } from 'react'
-import {
-  isServer,
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query'
+import React, { Suspense } from 'react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { ReCaptchaProvider } from 'next-recaptcha-v3'
 
 import { SessionProvider } from '~/hooks/useSession'
 import { AirstackProvider } from '@airstack/airstack-react'
@@ -17,64 +14,35 @@ import GlobalWrapper from '~/components/interface/GlobalWrapper'
 import { ConnectModalProvider } from '~/hooks/useConnectModal'
 import Privy from '~/config/PrivyProvider'
 import LoadingFallback from './Components/LoadingFallback'
-import AuthenticationContext from '~/contexts/AuthenticationContext'
-import { SessionProvider as NextAuthSessionProvider } from 'next-auth/react'
-
-function makeQueryClient() {
-  return new QueryClient({
-    defaultOptions: {
-      queries: {
-        staleTime: 60 * 1000,
-      },
-    },
-  })
-}
-
-let browserQueryClient: QueryClient | undefined = undefined
-
-function getQueryClient() {
-  if (isServer) {
-    // Always create a new client on the server
-    return makeQueryClient()
-  } else {
-    // Create client once in the browser to avoid re-instantiation
-    if (!browserQueryClient) browserQueryClient = makeQueryClient()
-    return browserQueryClient
-  }
-}
+import { queryClient } from '~/config/queryClient'
+import { config } from '~/config/app'
 
 export default function Providers({ children }: { children: React.ReactNode }) {
-  // Avoid useState for client init without a suspense boundary
-  const queryClient = getQueryClient()
-  const [account, setAccount] = useState<string | undefined>(undefined)
-
   return (
-    <AuthenticationContext.Provider value={{ account, setAccount }}>
-      <Privy>
-        <QueryClientProvider client={queryClient}>
+    <Privy>
+      <QueryClientProvider client={queryClient}>
+        <ReCaptchaProvider reCaptchaKey={config.recaptchaKey}>
           <GlobalWrapper>
             <SessionProvider>
               <Suspense fallback={<LoadingFallback />}>
-                <NextAuthSessionProvider>
-                  <ConnectModalProvider>
-                    <AirstackProvider
-                      apiKey={'162b7c4dda5c44afdb0857b6b04454f99'}
+                <ConnectModalProvider>
+                  <AirstackProvider
+                    apiKey={'162b7c4dda5c44afdb0857b6b04454f99'}
+                  >
+                    <ErrorBoundary
+                      fallback={(props: any) => <ErrorFallback {...props} />}
                     >
-                      <ErrorBoundary
-                        fallback={(props: any) => <ErrorFallback {...props} />}
-                      >
-                        <ShouldOpenConnectModal />
-                        {children}
-                      </ErrorBoundary>
-                    </AirstackProvider>
-                  </ConnectModalProvider>
-                </NextAuthSessionProvider>
+                      <ShouldOpenConnectModal />
+                      {children}
+                    </ErrorBoundary>
+                  </AirstackProvider>
+                </ConnectModalProvider>
                 <Toaster />
               </Suspense>
             </SessionProvider>
           </GlobalWrapper>
-        </QueryClientProvider>
-      </Privy>
-    </AuthenticationContext.Provider>
+        </ReCaptchaProvider>
+      </QueryClientProvider>
+    </Privy>
   )
 }

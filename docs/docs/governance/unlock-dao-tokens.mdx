@@ -92,6 +92,12 @@ When the fee switch is set to any value larger than 0%, on every transaction for
 
 Currently, the protocol fees collected by way of the fee switch can be "swapped and burned" by calling the `swapAndBurn` function on the Unlock contract. This function will swap the collected fees for UP (or UDT) tokens on a decentralized exchange and then burn them.
 
+Note: the collected fees can only be burnt if the following conditions are met:
+
+- UP (or UDT) has been bridged and configured on the network
+- A Uniswap Pool between the native currency and UP (or UDT) exists on the network
+- The Unlock contract has been configured with the address of the Uniswap Pool, as well as the Swap and Burn contract.
+
 ## Bridging and Exchanging UDT and UP
 
 In essence, the UP token on Base is an analogous version of the UDT token on mainnet. (In order to eliminate potential confusion between the two tokens, a different name — UP — was chosen on Base.)

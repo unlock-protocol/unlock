@@ -18,10 +18,8 @@ import { onSignedInWithPrivy } from '~/config/PrivyProvider'
 // This hook includes *all* signIn and signOut methods
 // TODO: consider adding useSession() stuff here too?
 export function useAuthenticate() {
-  const { account, setAccount } = useContext<{
-    account: string | undefined
-    setAccount: (account: string | undefined) => void
-  }>(AuthenticationContext)
+  const { account, setAccount } = useContext(AuthenticationContext)
+
   const { setProvider } = useProvider()
   const { refetchSession } = useSession()
   const { setStorage } = useAppStorage()
@@ -54,12 +52,26 @@ export function useAuthenticate() {
   // Method that tries to sign in with an existing session
   const signInWithExistingSession = async () => {
     const existingAccessToken = getAccessToken()
+
+    // when privy's auth state remains true [stale] but wallets are empty, it means the user is not connected to a wallet
+    // we need to logout and remove the access token
+    if (privyAuthenticated && wallets.length === 0) {
+      privyLogout()
+      removeAccessToken()
+      return false
+    }
+
+    // if privy's auth state is false, return false
+    if (!privyAuthenticated) {
+      return false
+    }
+
     // Use the existing access token to log in
     if (existingAccessToken) {
       try {
         const response = await locksmith.user()
         const { walletAddress } = response.data
-        if (walletAddress) {
+        if (walletAddress && wallets.length > 0) {
           await onSignedIn(walletAddress)
           window.dispatchEvent(
             new CustomEvent('locksmith.authenticated', {
@@ -97,7 +109,6 @@ export function useAuthenticate() {
     try {
       const { data: nonce } = await locksmith.nonce()
       const siweResult = await siweSign(nonce, '')
-
       if (siweResult) {
         const { message, signature } = siweResult
         const response = await locksmith.login({
@@ -111,6 +122,11 @@ export function useAuthenticate() {
             walletAddress,
           })
           await onSignedIn(walletAddress)
+          window.dispatchEvent(
+            new CustomEvent('locksmith.authenticated', {
+              detail: walletAddress,
+            })
+          )
         } else {
           console.error('Error logging in with SIWE:', response)
           ToastHelper.error(
@@ -158,7 +174,7 @@ export function useAuthenticate() {
   }, [wallet?.address, account])
 
   return {
-    account,
+    account: account ? wallets[0]?.address && account : undefined,
     email: user?.email?.address,
     signInWithSIWE,
     signInWithPrivy,

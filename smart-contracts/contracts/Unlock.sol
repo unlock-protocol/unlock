@@ -30,7 +30,7 @@ pragma solidity 0.8.21;
 import {ProxyAdmin, StorageSlot, TransparentUpgradeableProxy, ITransparentUpgradeableProxy} from "./utils/UnlockProxyAdmin.sol";
 import "./utils/UnlockOwnable.sol";
 import "./utils/UnlockInitializable.sol";
-import "./interfaces//IUniswapOracleV3.sol";
+import "./interfaces/IUniswapOracleV3.sol";
 import "./interfaces/IPublicLock.sol";
 import "./interfaces/IUnlock.sol";
 import "./interfaces/IMintableERC20.sol";
@@ -206,7 +206,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     // claim the template so that no-one else could
     try IPublicLock(impl).initialize(address(this), 0, address(0), 0, 0, "") {
       // renounce Unlock's lock manager role that was added during initialization
-      IPublicLock(impl).revokeRole(keccak256("LOCK_MANAGER"), address(this));
+      IPublicLock(impl).renounceRole(keccak256("LOCK_MANAGER"), address(this));
     } catch {
       // failure means that the template is already initialized
     }

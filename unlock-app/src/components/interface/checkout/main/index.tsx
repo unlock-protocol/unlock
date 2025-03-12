@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { checkoutMachine } from './checkoutMachine'
 import { Quantity } from './Quantity'
@@ -25,6 +25,8 @@ import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { Select } from './Select'
 import { Connected } from '../Connected'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { AllowList } from './AllowList'
+import PrivyFunding from './embedded-wallet/PrivyFunding'
 
 interface Props {
   paywallConfig: PaywallConfigType
@@ -45,7 +47,7 @@ export function Checkout({
       paywallConfig,
     },
   })
-  const { account } = useAuthenticate()
+  const { account, signOut } = useAuthenticate()
 
   const { mint, messageToSign } = state.context
   const matched = state.value.toString()
@@ -82,7 +84,7 @@ export function Checkout({
   const messageToSignSigner = messageToSign?.address
 
   const onClose = useCallback(
-    (params: Record<string, string> = {}) => {
+    async (params: Record<string, string> = {}) => {
       // Reset the Paywall State!
       checkoutService.send({ type: 'RESET_CHECKOUT' })
       if (handleClose) {
@@ -111,6 +113,10 @@ export function Checkout({
       } else if (!isInIframe() || !communication) {
         window.history.back()
       } else {
+        if (paywallConfig?.useDelegatedProvider) {
+          signOut()
+          checkoutService.send({ type: 'DISCONNECT' })
+        }
         communication.emitCloseModal()
       }
     },
@@ -173,6 +179,9 @@ export function Checkout({
       case 'CARD': {
         return <CardPayment checkoutService={checkoutService} />
       }
+      case 'PRIVY_FUNDING': {
+        return <PrivyFunding checkoutService={checkoutService} />
+      }
       case 'METADATA': {
         return <Metadata checkoutService={checkoutService} />
       }
@@ -216,6 +225,9 @@ export function Checkout({
       case 'GITCOIN': {
         return <Gitcoin checkoutService={checkoutService} />
       }
+      case 'ALLOW_LIST': {
+        return <AllowList checkoutService={checkoutService} />
+      }
       case 'RETURNING': {
         return (
           <Returning
@@ -232,7 +244,7 @@ export function Checkout({
   }, [matched])
 
   return (
-    <div className="bg-white z-10  shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem]">
+    <div className="bg-white z-10  shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem] text-left">
       <TopNavigation
         onClose={!paywallConfig?.persistentCheckout ? onClose : undefined}
         onBack={onBack}

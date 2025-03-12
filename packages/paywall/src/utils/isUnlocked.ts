@@ -21,15 +21,21 @@ export const isUnlocked = async (
     Object.entries(paywallConfig.locks).map(async ([lockAddress]) => {
       const network =
         paywallConfig.locks[lockAddress].network || paywallConfig.network
-      const { provider } = networks[network]
-      const isValidMember = await hasValidKey(
-        provider,
-        lockAddress,
-        userAccountAddress!
-      )
-      if (isValidMember) {
-        // This lock is unlocked!
-        unlockedLocks.push(lockAddress)
+      if (network && networks[network]) {
+        const { provider } = networks[network]
+        const isValidMember = await hasValidKey(
+          provider,
+          lockAddress,
+          userAccountAddress!
+        )
+        if (isValidMember) {
+          // This lock is unlocked!
+          unlockedLocks.push(lockAddress)
+        }
+      } else {
+        console.error(
+          `Missing network configuration for lock ${lockAddress} in paywall config`
+        )
       }
     })
   )
