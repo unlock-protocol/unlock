@@ -100,7 +100,7 @@ Welcome, Locksmith! Let’s start with getting the lay of the land with a few co
     component to it. After expiration, the subscription (and therefore the access 
     to membership benefits) expires.</dd>
 
-  <dt>UP token</dt>
+  <dt>UP Token</dt>
     <dd>The UP token (Unlock Protocol Token) is used for  
     <a href="/governance/"> governance</a> in the Unlock Protocol ecosystem.</dd>
 
