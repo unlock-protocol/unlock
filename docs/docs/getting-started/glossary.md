@@ -101,7 +101,7 @@ Welcome, Locksmith! Let’s start with getting the lay of the land with a few co
     to membership benefits) expires.</dd>
 
   <dt>UP Token</dt>
-    <dd>The UP token (Unlock Protocol Token) is used for  
+    <dd>The UP Token (Unlock Protocol Token) is used for  
     <a href="/governance/"> governance</a> in the Unlock Protocol ecosystem.</dd>
 
 </dl>
