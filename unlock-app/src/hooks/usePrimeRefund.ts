@@ -3,7 +3,7 @@ import { config } from '~/config/app'
 import { useAuthenticate } from './useAuthenticate'
 import { ethers } from 'ethers'
 import { useProvider } from './useProvider'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
 const HOOK_ABI = [

@@ -23,7 +23,19 @@ interface KeyToGrant {
  * @returns
  */
 export const getProviderForNetwork = async function (network = 1) {
-  return new ethers.JsonRpcProvider(networks[network].provider)
+  // Get the provider URL
+  const providerUrl = networks[network].provider
+
+  // bypass rate limiting
+  const secretKey = config.providerSecretKey
+
+  // Only append the secret if it exists
+  if (secretKey) {
+    const authenticatedUrl = `https://rpc.unlock-protocol.com/${network}?secret=${secretKey}`
+    return new ethers.JsonRpcProvider(authenticatedUrl)
+  }
+
+  return new ethers.JsonRpcProvider(providerUrl)
 }
 
 /**

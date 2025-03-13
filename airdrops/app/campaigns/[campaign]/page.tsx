@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation'
 import CampaignDetailContent from '../../../components/CampaignDetailContent'
-import airDrops from '../../../src/airdrops.json'
+import airdrops from '../../../src/airdrops.json'
 import { Metadata } from 'next'
+import { config } from '../../../src/config/app'
 
 export interface CampaignDetailPageProps {
   params: {
@@ -12,42 +13,48 @@ export interface CampaignDetailPageProps {
 export async function generateMetadata({
   params,
 }: CampaignDetailPageProps): Promise<Metadata> {
-  const campaign = airDrops.find(
-    (drop) => drop.contractAddress === params.campaign
-  )
+  const campaign = airdrops.find((drop) => drop.id === params.campaign)
 
   if (!campaign) {
     return {
-      title: 'Campaign Not Found | Airdrops',
-      description: 'The requested campaign could not be found.',
+      title: `Campaign Not Found | ${config.appName.default}`,
     }
   }
 
   return {
-    title: `${campaign.title} | Airdrops`,
+    title: `${campaign.name} | ${config.appName.default}`,
     description: campaign.description,
     openGraph: {
-      title: `${campaign.title} | Airdrops`,
+      title: `${campaign.name} | ${config.appName.default}`,
       description: campaign.description,
+      images: [
+        {
+          url: config.images.default,
+          alt: config.appName.brand,
+        },
+      ],
     },
     twitter: {
-      card: 'summary',
-      title: `${campaign.title} | Airdrops`,
+      title: `${campaign.name} | ${config.appName.default}`,
       description: campaign.description,
+      images: [
+        {
+          url: config.images.default,
+          alt: config.appName.brand,
+        },
+      ],
     },
   }
 }
 
 const CampaignDetailPage = async ({ params }: CampaignDetailPageProps) => {
-  const campaign = airDrops.find(
-    (drop) => drop.contractAddress === params.campaign
-  )
+  const airdrop = airdrops.find((drop) => drop.id === params.campaign)
 
-  if (!campaign) {
+  if (!airdrop) {
     notFound()
   }
 
-  return <CampaignDetailContent campaign={campaign} />
+  return <CampaignDetailContent airdrop={airdrop} />
 }
 
 export default CampaignDetailPage

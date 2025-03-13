@@ -6,49 +6,64 @@ import { expirationAsDate } from '~/utils/durations'
 import { MetadataCard as MetadataCardDefault } from './MetadataCard'
 import { ExpireAndRefundModal } from '~/components/interface/ExpireAndRefundModal'
 import ExtendKeysDrawer from '~/components/creator/members/ExtendKeysDrawer'
-import { useLockManager } from '~/hooks/useLockManager'
 import { WrappedAddress } from '~/components/interface/WrappedAddress'
 
 export interface MemberCardProps {
+  // Core member data
   token: string
   owner: string
   expiration: string
   version: number
   metadata: any
+
+  // Lock information
   lockAddress: string
   network: number
   expirationDuration: string
   lockSettings?: Record<string, any>
+
+  // customization options
   showExpiration?: boolean
   MemberInfo?: React.FC
-  MetadataCard?: any
+  MetadataCard?: React.ReactNode
+
+  // Selection options (for bulk operations)
   isSelected?: boolean
   setIsSelected?: (selected: boolean) => void
+
+  // Display options
   resolvedName?: string
+  isManager?: boolean
 }
 
+/**
+ * Component for displaying a single member/key with expandable details
+ */
 export const MemberCard = ({
+  // Member data
   owner,
   expiration,
   version,
   metadata,
+
+  // Lock info
   lockAddress,
   network,
   expirationDuration,
   lockSettings,
+
+  // UI options
   showExpiration = true,
   MemberInfo,
   MetadataCard,
+
+  // Display/permissions
   resolvedName,
+  isManager,
 }: MemberCardProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [expireAndRefundOpen, setExpireAndRefundOpen] = useState(false)
   const [extendKeysOpen, setExtendKeysOpen] = useState(false)
-
-  const { isManager } = useLockManager({
-    lockAddress,
-    network,
-  })
 
   const isKeyValid = (timestamp: KeyMetadata['expiration']) => {
     const now = new Date().getTime() / 1000
@@ -56,18 +71,24 @@ export const MemberCard = ({
     return parseInt(timestamp) > now
   }
 
+  // Feature flags based on key status and lock version
   const canExtendKey =
     expiration !== MAX_UINT && version !== undefined && version >= 11
   const refundDisabled = !(isManager && isKeyValid(expiration))
 
+  // Extract metadata fields
   const { token: tokenId, lockName } = metadata ?? {}
 
-  // boolean to check if the membership/key is expired
+  // Check if the membership/key is expired
   const isExpired = expirationAsDate(expiration) === 'Expired'
 
+  /**
+   * Default member info display if none is provided
+   */
   const MemberInfoDefault = () => {
     return (
       <>
+        {/* Modals */}
         <ExpireAndRefundModal
           network={network}
           isOpen={expireAndRefundOpen}
@@ -92,6 +113,7 @@ export const MemberCard = ({
           }
         />
 
+        {/* Member details layout */}
         <div className="flex md:flex-row flex-col gap-4 w-full">
           <Detail label="#" valueSize="medium" className="w-8">
             {tokenId}
@@ -102,8 +124,9 @@ export const MemberCard = ({
               address={owner}
               showCopyIcon={true}
               showExternalLink={false}
-              resolvedName={resolvedName}
-              skipResolution
+              resolvedName={resolvedName || ''}
+              skipResolution={true}
+              showResolvedName={!!resolvedName}
             />
           </Detail>
 
@@ -113,6 +136,7 @@ export const MemberCard = ({
             </Detail>
           )}
 
+          {/* Manager actions - only shown to lock managers */}
           {isManager && (
             <div className="w-full col-span-3 gap-3 mx-auto md:mx-0 md:ml-auto md:col-span-2 md:w-auto">
               {!refundDisabled && (
@@ -150,9 +174,10 @@ export const MemberCard = ({
     <Collapse
       isOpen={isOpen}
       setIsOpen={setIsOpen}
-      disabled={!isManager}
+      disabled={isManager === false}
       content={MemberInfo ? <MemberInfo /> : <MemberInfoDefault />}
     >
+      {/* Render provided MetadataCard or use default */}
       {MetadataCard ? (
         MetadataCard
       ) : (

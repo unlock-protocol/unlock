@@ -254,10 +254,9 @@ export default function EventsCollectionDetailContent({
             <h1 className="text-3xl font-bold md:text-6xl">
               {eventCollection?.title}
             </h1>
-            <ReactMarkdown
-              children={eventCollection?.description}
-              className="text-sm md:text-base"
-            />
+            <span className="text-sm md:text-base">
+              <ReactMarkdown children={eventCollection?.description} />
+            </span>
 
             <div className="flex space-x-6">
               {Array.isArray(eventCollection?.links) &&

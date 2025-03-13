@@ -3,7 +3,7 @@
 import { useCallback, useState } from 'react'
 import { ONE_DAY_IN_SECONDS, UNLIMITED_KEYS_COUNT } from '~/constants'
 import networks from '@unlock-protocol/networks'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useMutation } from '@tanstack/react-query'
 import { CreateLockForm } from '~/components/interface/locks/Create/elements/CreateLockForm'
 import { CreateLockFormSummary } from '~/components/interface/locks/Create/elements/CreateLockFormSummary'

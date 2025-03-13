@@ -21,7 +21,7 @@ import { useGetTotalCharges } from '~/hooks/usePrice'
 import { useGetLockSettings } from '~/hooks/useLockSettings'
 import { getCurrencySymbol } from '~/utils/currency'
 import Disconnect from '../Disconnect'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 
 interface Props {
   checkoutService: CheckoutService

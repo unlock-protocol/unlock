@@ -1,4 +1,4 @@
-import { QueriesOptions, useQueries } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { LockOrderBy } from '@unlock-protocol/unlock-js'
 import { OrderDirection } from '@unlock-protocol/unlock-js'
 import { graphService } from '~/config/subgraph'
@@ -14,19 +14,20 @@ export const getLocksByNetworks = async ({
   networks,
 }: GetLocksParams) => {
   try {
-    return graphService.locks(
-      {
-        first: 1000,
-        where: {
-          lockManagers_contains: [account],
+    // Fetch locks for all provided networks in parallel
+    const lockPromises = networks.map((network) =>
+      graphService.locks(
+        {
+          first: 1000,
+          where: { lockManagers_contains: [account] },
+          orderBy: LockOrderBy.CreatedAtBlock,
+          orderDirection: OrderDirection.Desc,
         },
-        orderBy: LockOrderBy.CreatedAtBlock,
-        orderDirection: OrderDirection.Desc,
-      },
-      {
-        networks,
-      }
+        { networks: [network] }
+      )
     )
+    const results = await Promise.all(lockPromises)
+    return results.flat()
   } catch (error) {
     console.error('Failed to fetch locks:', error)
     return []
@@ -43,27 +44,25 @@ export const getLocksByNetwork = async ({ account, network }: any) => {
 }
 
 const useLocksByManagerOnNetworks = (
-  manager: string,
+  manager: string | null | undefined,
   networkItems: [string, any][]
 ) => {
   const networks = networkItems.map(([network]) => Number(network))
-
-  const query: QueriesOptions<any> = {
+  return useQuery({
     queryKey: ['getLocks', networks.join(','), manager],
-    queryFn: async () =>
-      await getLocksByNetworks({
+    queryFn: async () => {
+      if (!manager) {
+        return []
+      }
+      return getLocksByNetworks({
         account: manager,
         networks,
-      }),
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    cacheTime: 30 * 60 * 1000, // 30 minutes
-    retry: 2,
-    refetchOnWindowFocus: false,
-  }
-
-  // Maintain backwards compatibility by wrapping the result in an array
-  return useQueries({
-    queries: [query],
+      })
+    },
+    enabled: !!manager,
+    retryOnMount: false,
+    staleTime: 60 * 1000,
+    gcTime: 5 * 60 * 1000,
   })
 }
 
