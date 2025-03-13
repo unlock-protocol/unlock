@@ -172,9 +172,6 @@ module.exports = async ({
     multicallCalls,
   ])
 
-  // Encode the L1-to-L2 message
-  const transferCalldata = multicallData
-
   /**
    * Now we can query the required gas params using the estimateAll method in Arbitrum SDK
    */
@@ -188,7 +185,7 @@ module.exports = async ({
     l2CallValue: 0,
     excessFeeRefundAddress: fromL1,
     callValueRefundAddress: fromL1,
-    data: transferCalldata,
+    data: multicallData,
   }
 
   /**
@@ -197,21 +194,22 @@ module.exports = async ({
    * (2) gasLimit: The L2 gas limit
    * (3) deposit: The total amount to deposit on L1 to cover L2 gas and L2 call value
    */
-  const L1ToL2MessageGasParams = await l1ToL2MessageGasEstimate.estimateAll(
-    estimateAllParams,
-    await getBaseFee(l1Provider),
-    l1Provider
-  )
+  const { maxSubmissionCost, gasLimit, deposit } =
+    await l1ToL2MessageGasEstimate.estimateAll(
+      estimateAllParams,
+      await getBaseFee(l1Provider),
+      l1Provider
+    )
   const gasPriceBid = await l2Provider.getGasPrice()
-  const ETHDeposit = L1ToL2MessageGasParams.deposit.toNumber() * 10 // Multiply by 10 to add extra in case gas changes due to proposal delay
+  const ETHDeposit = deposit.toNumber() * 10 // Multiply by 10 to add extra in case gas changes due to proposal delay
 
   const params = [
     estimateAllParams.to,
     estimateAllParams.l2CallValue,
-    L1ToL2MessageGasParams.maxSubmissionCost.toString(), // maxSubmissionCost
+    maxSubmissionCost.toString(), // maxSubmissionCost
     estimateAllParams.excessFeeRefundAddress,
     estimateAllParams.callValueRefundAddress,
-    L1ToL2MessageGasParams.gasLimit.toString(), // gasLimit
+    gasLimit.toString(), // gasLimit
     gasPriceBid.toString(), // maxFeePerGas
     estimateAllParams.data,
   ]
