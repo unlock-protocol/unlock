@@ -14,7 +14,7 @@ Governance happens through _proposals_.
 
 ## What is a proposal?
 
-A proposal is a blockchain-executable transaction: **it is code**. This means that proposals can only trigger "on-chain" actions. For example, a proposal could be "The DAO pays X tokens to address.eth", or "Change parameter P of smart contract to be K", but it cannot be "The Unlock Inc. team needs to travel to conference Y", or "John Doe needs to purchase UDT tokens on the Coinbase exchange".
+A proposal is a blockchain-executable transaction: **it is code**. This means that proposals can only trigger "onchain" actions. For example, a proposal could be "The DAO pays X tokens to address.eth", or "Change parameter P of smart contract to be K", but it cannot be "John Doe needs to purchase UP tokens on the Coinbase exchange".
 
 ## What is the lifecycle of a proposal?
 
@@ -40,7 +40,7 @@ UP tokens were previously known as Unlock Discount Tokens (UDT).
 
 ## How do I vote on governance proposals?
 
-Voting for the Unlock DAO happens "on chain" thru the governor contract. To send their transactions, delegates can use any front-end application that supports the OpenZeppelin Governor contracts, like [Tally](https://www.tally.xyz/gov/unlock-protocol)). Voting on a proposal is only available to delegates with the balance of tokens they had at the time of the proposals' submission.
+Voting for the Unlock DAO happens onchain thru the governor contract. To send their transactions, delegates can use any front-end application that supports the OpenZeppelin Governor contracts, like [Tally](https://www.tally.xyz/gov/unlock-protocol). Voting on a proposal is only available to delegates with the balance of tokens they had at the time of the proposals' submission.
 
 ## How can I help the Unlock DAO?
 
@@ -61,13 +61,3 @@ No, delegation is the act of assigning the votes from address weighted by the nu
 ## Is there any minimum UP holding threshold for delegate consideration
 
 No, even owning 0.000001 UP is enough to delegate.
-
-## What is Unlock Inc. (aka Unlock Labs)?
-
-Unlock Inc. is the company that wrote the first versions of the Unlock Protocol. It is now just one of the many stakeholders of the Unlock Protocol DAO and community.
-
-## What can the DAO ask Unlock Inc. to do?
-
-Nothing :) Because Unlock Inc does not "exist" on-chain. Similarly, Unlock Inc. cannot ask other members of the community to do "things" through the DAO.
-
-
