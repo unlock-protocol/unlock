@@ -100,12 +100,8 @@ Welcome, Locksmith! Let’s start with getting the lay of the land with a few co
     component to it. After expiration, the subscription (and therefore the access 
     to membership benefits) expires.</dd>
 
-  <dt>UDT</dt>
-    <dd>Unlock Discount Token which is granted as rewards upon key purchase to 
-    an address designated in the key purchase call. Currently used for  
-    <a href="/governance/"> governance</a> votes.</dd>
+  <dt>UP Token</dt>
+    <dd>The UP Token (Unlock Protocol Token) is used for  
+    <a href="/governance/"> governance</a> in the Unlock Protocol ecosystem.</dd>
 
-  <dt>web3</dt>
-    <dd>The next stage of the internet, following Web 2.0, which is more 
-decentralized and built with blockchain and other decentralized networks.</dd>
 </dl>
