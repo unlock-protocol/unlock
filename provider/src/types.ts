@@ -29,6 +29,16 @@ export interface Env {
   ALLOWED_CONTRACTS?: KVNamespace
 }
 
+/**
+ * Interface for RPC request format
+ */
+export interface RpcRequest {
+  id: number | string
+  jsonrpc: string
+  method: string
+  params: any[]
+}
+
 // Cloudflare Rate Limiting API interface
 export interface RateLimiter {
   limit(options: { key: string }): Promise<{ success: boolean }>
@@ -41,4 +51,46 @@ export enum ContractType {
   UNLOCK_PROTOCOL_CONTRACT = 'UNLOCK_PROTOCOL_CONTRACT',
   OTHER_CONTRACT = 'OTHER_CONTRACT',
   NOT_DEPLOYED = 'NOT_DEPLOYED',
+}
+
+/**
+ * Represents the result of processing a single RPC request
+ */
+export interface ProcessedRequest {
+  request: RpcRequest
+  response: any | null
+  shouldForward: boolean
+  rateLimited: boolean
+}
+
+/**
+ * Represents the result of processing a batch of RPC requests
+ */
+export interface BatchProcessingResult {
+  processedRequests: ProcessedRequest[]
+  requestsToForward: RpcRequest[]
+}
+
+/**
+ * Result of forwarding requests to the provider
+ */
+export interface ForwardingResult {
+  responses?: any[]
+  error?: {
+    message: string
+    originalError: any
+  }
+}
+
+/**
+ * Result of processing and forwarding requests
+ */
+export interface ProcessingResult {
+  responses: any[]
+  isBatchRequest: boolean
+  error?: {
+    message: string
+    originalError: any
+    status?: number
+  }
 }
