@@ -1,7 +1,6 @@
 // @vitest-environment jsdom
 
 import certificationKeyAirdropped from '../../templates/certificationKeyAirdropped'
-import { prepareAll } from '../../templates/prepare'
 import { expect, it, describe } from 'vitest'
 import { asHtml } from '../utils'
 
@@ -9,7 +8,7 @@ describe('certificationKeyAirdropped', () => {
   it('should have the right subject', () => {
     expect.assertions(1)
     expect(
-      prepareAll(certificationKeyAirdropped).subject({
+      certificationKeyAirdropped.subject({
         keyId: '1337',
         lockName: 'How To Deploy a Lock',
         keychainUrl: 'https://app.unlock-protocol.com/keychain',
@@ -22,7 +21,7 @@ describe('certificationKeyAirdropped', () => {
     expect.assertions(2)
 
     const content = asHtml(
-      prepareAll(certificationKeyAirdropped).html({
+      certificationKeyAirdropped.html({
         keyId: '1337',
         lockName: 'How To Deploy a Lock',
         keychainUrl: 'https://app.unlock-protocol.com/keychain',
@@ -43,7 +42,7 @@ describe('certificationKeyAirdropped', () => {
     expect.assertions(2)
 
     const content = asHtml(
-      prepareAll(certificationKeyAirdropped).html({
+      certificationKeyAirdropped.html({
         keyId: '1337',
         lockName: 'How To Deploy a Lock',
         keychainUrl: 'https://app.unlock-protocol.com/keychain',
@@ -63,7 +62,7 @@ describe('certificationKeyAirdropped', () => {
     expect.assertions(1)
 
     const content = asHtml(
-      prepareAll(certificationKeyAirdropped).html({
+      certificationKeyAirdropped.html({
         keyId: '1337',
         lockName: 'How To Deploy a Lock',
         keychainUrl: 'https://app.unlock-protocol.com/keychain',
@@ -81,7 +80,7 @@ describe('certificationKeyAirdropped', () => {
     expect.assertions(1)
 
     const content = asHtml(
-      prepareAll(certificationKeyAirdropped).html({
+      certificationKeyAirdropped.html({
         keyId: '1337',
         lockName: 'How To Deploy a Lock',
         keychainUrl: 'https://app.unlock-protocol.com/keychain',
@@ -100,7 +99,7 @@ describe('certificationKeyAirdropped', () => {
     expect.assertions(1)
 
     const content = asHtml(
-      prepareAll(certificationKeyAirdropped).html({
+      certificationKeyAirdropped.html({
         keyId: '1337',
         lockName: 'How To Deploy a Lock',
         keychainUrl: 'https://app.unlock-protocol.com/keychain',

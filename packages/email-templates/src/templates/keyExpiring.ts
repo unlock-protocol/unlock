@@ -1,10 +1,11 @@
 import Handlebars from 'handlebars'
 
 import { formattedCustomContent } from './helpers/customContent'
+import { prepareAll } from './prepare'
 
 Handlebars.registerHelper('formattedCustomContent', formattedCustomContent)
 
-export default {
+export default prepareAll({
   subject: 'Your "{{lockName}}" membership is about to expire!',
   html: `<h1>Your Membership NFT will expire soon</h1>
 
@@ -28,4 +29,4 @@ export default {
   <p>This membership will not automatically renew because you have not approved enough {{currency}}. You can approve renewals from the <a href="{{keychainUrl}}">Unlock Keychain</a> so you don't lose any benefit.</p>
 {{/if}}
 `,
-}
+})
