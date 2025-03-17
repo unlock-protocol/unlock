@@ -16928,6 +16928,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/handlebars@npm:4.1.0":
+  version: 4.1.0
+  resolution: "@types/handlebars@npm:4.1.0"
+  dependencies:
+    handlebars: "npm:*"
+  checksum: 10/536d9f690c93f5d13fcc4a37ae7dd11f41eb73c47416d56f51623aedc3b573ad9775d6618ede75d7bf9148ac75694e50f8e6ba5773de7d9f040811368c73739f
+  languageName: node
+  linkType: hard
+
 "@types/hast@npm:^2.0.0":
   version: 2.3.10
   resolution: "@types/hast@npm:2.3.10"
@@ -18238,6 +18247,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/email-templates@workspace:packages/email-templates"
   dependencies:
+    "@types/handlebars": "npm:4.1.0"
     handlebars: "npm:4.7.8"
     tsx: "npm:4.19.3"
     typescript: "npm:5.8.2"
@@ -31333,7 +31343,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"handlebars@npm:4.7.8, handlebars@npm:^4.0.1, handlebars@npm:^4.7.7":
+"handlebars@npm:*, handlebars@npm:4.7.8, handlebars@npm:^4.0.1, handlebars@npm:^4.7.7":
   version: 4.7.8
   resolution: "handlebars@npm:4.7.8"
   dependencies:
