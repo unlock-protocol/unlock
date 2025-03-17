@@ -18239,6 +18239,7 @@ __metadata:
   resolution: "@unlock-protocol/email-templates@workspace:packages/email-templates"
   dependencies:
     handlebars: "npm:4.7.8"
+    tsx: "npm:4.19.3"
     typescript: "npm:5.8.2"
     vitest: "npm:2.1.9"
   languageName: unknown
