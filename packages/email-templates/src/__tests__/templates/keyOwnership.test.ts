@@ -2,14 +2,13 @@
 
 import { asHtml } from '../utils'
 import keyOwnership from '../../templates/keyOwnership'
-import { prepareAll } from '../../templates/prepare'
 import { expect, it, describe } from 'vitest'
 
 describe('keyOwnership', () => {
   it('should have the right subject', () => {
     expect.assertions(1)
     expect(
-      prepareAll(keyOwnership).subject({
+      keyOwnership.subject({
         lockName: 'Unlock Blog Members',
       })
     ).toEqual('Your proof of key ownership for "Unlock Blog Members"')
@@ -18,7 +17,7 @@ describe('keyOwnership', () => {
   it('should have the right text', () => {
     expect.assertions(1)
     const content = asHtml(
-      prepareAll(keyOwnership).html({
+      keyOwnership.html({
         lockName: 'Unlock Blog Members',
         keychainLink: 'https://app.unlock-protocol.com/keychain',
       })

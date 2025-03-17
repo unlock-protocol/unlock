@@ -1,9 +1,10 @@
 import Handlebars from 'handlebars'
 import { verificationCode } from './helpers/verificationCode'
+import { prepareAll } from './prepare'
 
 Handlebars.registerHelper('verificationCode', verificationCode)
 
-export default {
+export default prepareAll({
   subject: 'Your Unlock Verification Code',
   html: `<h1 style="text-align: center;">Your Unlock Login Verification Code</h1>
     
@@ -19,4 +20,4 @@ export default {
 
     <p>Thank you for using Unlock!</p>
 `,
-}
+})

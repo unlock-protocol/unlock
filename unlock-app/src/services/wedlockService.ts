@@ -1,5 +1,4 @@
 export enum emailTemplate {
-  signupConfirmation = 'confirmEmail',
   welcome = 'welcome',
   keyOwnership = 'keyOwnership',
 }
@@ -46,17 +45,6 @@ export default class WedlockService {
     } catch (error) {
       console.error('Failed to send email', error)
     }
-  }
-
-  confirmEmail = (recipient: string, confirmLink: string) => {
-    return this.sendEmail(emailTemplate.signupConfirmation, recipient, {
-      email: encodeURIComponent(recipient),
-      signedEmail: {
-        value: recipient,
-        encrypt: true,
-      },
-      confirmLink,
-    })
   }
 
   keychainQREmail = (

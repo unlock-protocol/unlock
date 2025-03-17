@@ -18855,7 +18855,6 @@ __metadata:
     babel-plugin-wildcard: "npm:7.0.0"
     dotenv: "npm:16.4.7"
     eslint: "npm:9.21.0"
-    handlebars: "npm:4.7.8"
     netlify-cli: "npm:15.11.0"
     node-forge: "npm:1.3.1"
     nodemailer: "npm:6.10.0"

@@ -1,4 +1,6 @@
-export default {
+import { prepareAll } from './prepare'
+
+export default prepareAll({
   subject: 'Please confirm your email address',
   html: `<h1>Welcome to Unlock!</h1>
 
@@ -10,4 +12,4 @@ export default {
 
     <p>Once your email address is confirmed, you'll be able to use your Unlock account to pay for content and services.</p>
 `,
-}
+})
