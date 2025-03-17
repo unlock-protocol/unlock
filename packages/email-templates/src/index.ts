@@ -26,6 +26,7 @@ import eventSubmittedToCollectionSubmitter from './templates/eventSubmittedToCol
 
 // Precompiled templates
 import * as PrecompiledTemplates from './precompiled-templates'
+import * as Handlebars from 'handlebars'
 
 const emailTemplates = {
   confirmEmail,
@@ -82,23 +83,21 @@ export const renderPrecompiledTemplate = (templateName: string, data: any) => {
       `Template ${templateName} not found in precompiled templates`
     )
   }
-  return {
-    subject:
-      typeof precompiledTemplate.subject === 'function'
-        ? precompiledTemplate.subject(data)
-        : precompiledTemplate.subject,
-    html:
-      typeof precompiledTemplate.html === 'function'
-        ? precompiledTemplate.html(data)
-        : precompiledTemplate.html,
+
+  // Convert precompiled specs to template functions
+  const templateFns = {
+    subject: Handlebars.template(precompiledTemplate.subject),
+    html: Handlebars.template(precompiledTemplate.html),
     ...(precompiledTemplate.text
-      ? {
-          text:
-            typeof precompiledTemplate.text === 'function'
-              ? precompiledTemplate.text(data)
-              : precompiledTemplate.text,
-        }
+      ? { text: Handlebars.template(precompiledTemplate.text) }
       : {}),
+  }
+
+  // Render with data
+  return {
+    subject: templateFns.subject(data),
+    html: templateFns.html(data),
+    ...(templateFns.text ? { text: templateFns.text(data) } : {}),
   }
 }
 
