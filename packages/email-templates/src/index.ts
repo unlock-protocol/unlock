@@ -23,38 +23,11 @@ import eventApprovedInCollection from './templates/eventApprovedInCollection'
 import eventDeniedInCollection from './templates/eventDeniedInCollection'
 import eventSubmittedToCollectionManager from './templates/eventSubmittedToCollectionManager'
 import eventSubmittedToCollectionSubmitter from './templates/eventSubmittedToCollectionSubmitter'
-export interface EmailTemplateProps {
-  nowrap?: boolean
-  subject: string
-  html: string
-}
 
-type Template =
-  | 'debug'
-  | 'welcome'
-  | 'confirmEmail'
-  | 'keyMined'
-  | 'keyAirdropped'
-  | 'keyOwnership'
-  | 'transferCode'
-  | 'keyExpiring'
-  | 'keyExpired'
-  | 'inviteEvent'
-  | 'eventDeployed'
-  | 'eventKeyMined'
-  | 'eventRsvpSubmitted'
-  | 'eventKeyAirdropped'
-  | 'certificationKeyMined'
-  | 'certificationKeyAirdropped'
-  | 'custom'
-  | 'nextAuthCode'
-  | 'eventCollectionCreated'
-  | 'eventApprovedInCollection'
-  | 'eventDeniedInCollection'
-  | 'eventSubmittedToCollectionManager'
-  | 'eventSubmittedToCollectionSubmitter'
+// Precompiled templates
+import * as PrecompiledTemplates from './precompiled-templates'
 
-export const EmailTemplates: Record<string, EmailTemplateProps> = {
+const emailTemplates = {
   confirmEmail,
   welcome,
   keyOwnership,
@@ -80,16 +53,54 @@ export const EmailTemplates: Record<string, EmailTemplateProps> = {
   eventSubmittedToCollectionSubmitter,
 }
 
-const templates: Record<string, EmailTemplateProps> = {}
-Object.keys(LockTemplates).forEach((template: string) => {
-  templates[template.toLowerCase()] = LockTemplates[template]
-})
+const templates: Record<string, any> = Object.assign(
+  {},
+  ...[LockTemplates, emailTemplates].map((obj: Record<string, any>) => {
+    return Object.keys(obj).reduce(
+      (acc, key) => {
+        acc[key.toLowerCase()] = obj[key]
+        return acc
+      },
+      {} as Record<string, any>
+    )
+  })
+)
 
-Object.keys(EmailTemplates).forEach((template: string) => {
-  templates[template.toLowerCase()] = EmailTemplates[template as Template]
-})
+export const getEmailTemplate = (template: string): any =>
+  templates[template.toLowerCase()]
 
-const getEmailTemplate = (template: Template | string) => templates[template]
+export interface EmailTemplateProps {
+  nowrap?: boolean
+  subject: string
+  html: string
+}
+
+export const renderPrecompiledTemplate = (templateName: string, data: any) => {
+  const precompiledTemplate = (PrecompiledTemplates as any)[templateName]
+  if (!precompiledTemplate) {
+    throw new Error(
+      `Template ${templateName} not found in precompiled templates`
+    )
+  }
+  return {
+    subject:
+      typeof precompiledTemplate.subject === 'function'
+        ? precompiledTemplate.subject(data)
+        : precompiledTemplate.subject,
+    html:
+      typeof precompiledTemplate.html === 'function'
+        ? precompiledTemplate.html(data)
+        : precompiledTemplate.html,
+    ...(precompiledTemplate.text
+      ? {
+          text:
+            typeof precompiledTemplate.text === 'function'
+              ? precompiledTemplate.text(data)
+              : precompiledTemplate.text,
+        }
+      : {}),
+  }
+}
 
 export default templates
-export { getEmailTemplate, bases }
+export { bases, PrecompiledTemplates }
