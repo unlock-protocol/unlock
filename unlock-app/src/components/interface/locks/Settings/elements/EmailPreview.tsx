@@ -91,11 +91,57 @@ export const EmailPreview = ({
           <ul>
             <li>Email subject: {email?.subject}</li>
           </ul>
+          <style>
+            {`
+              /* Custom content section styles */
+              section[style*="background: #F8FAFC"] {
+                /* Typography */
+                font-family: ui-sans-serif, system-ui, sans-serif !important;
+              }
+              
+              /* Headings */
+              section[style*="background: #F8FAFC"] h1,
+              section[style*="background: #F8FAFC"] h2,
+              section[style*="background: #F8FAFC"] h3 {
+                font-weight: bold;
+                margin-bottom: 0.5rem;
+                margin-top: 1rem;
+              }
+              
+              /* Lists */
+              section[style*="background: #F8FAFC"] ul { list-style-type: disc; }
+              section[style*="background: #F8FAFC"] ol { list-style-type: decimal; }
+              
+              section[style*="background: #F8FAFC"] ul,
+              section[style*="background: #F8FAFC"] ol {
+                padding-left: 1.5rem;
+                margin: 0.5rem 0;
+              }
+              
+              section[style*="background: #F8FAFC"] li {
+                margin-bottom: 0.25rem;
+              }
+              
+              /* Blockquotes */
+              section[style*="background: #F8FAFC"] blockquote {
+                border-left: 4px solid #e2e8f0;
+                padding-left: 1rem;
+                font-style: italic;
+                margin: 0.5rem 0;
+              }
+              
+              /* Horizontal rule */
+              section[style*="background: #F8FAFC"] hr {
+                margin: 1rem 0;
+                border: 0;
+                border-top: 1px solid #e2e8f0;
+              }
+            `}
+          </style>
           <div
             dangerouslySetInnerHTML={{
               __html: email?.html || '',
             }}
-            style={{ width: '200px' }}
             className="text-left"
           />
           <div className="flex flex-col gap-2">
