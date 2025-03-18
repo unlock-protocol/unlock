@@ -118,7 +118,7 @@ export const sepolia: NetworkConfig = {
   provider: 'https://rpc.unlock-protocol.com/11155111',
 
   publicLockVersionToDeploy: 14,
-  publicProvider: 'https://rpc2.sepolia.org/',
+  publicProvider: 'https://sepolia.drpc.org',
   startBlock: 4381710,
   subgraph: {
     endpoint: 'https://subgraph.unlock-protocol.com/11155111',
