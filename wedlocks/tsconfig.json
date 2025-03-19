@@ -1,7 +1,7 @@
 {
   "extends": "@unlock-protocol/tsconfig",
   "compilerOptions": {
-    "resolveJsonModule": true,
-    "moduleResolution": "Bundler"
+    "types": ["@cloudflare/workers-types"],
+    "forceConsistentCasingInFileNames": true
   }
 }
