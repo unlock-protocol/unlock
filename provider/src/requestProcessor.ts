@@ -65,6 +65,8 @@ export const processSingleRequest = async (
       `RATE_LIMIT_WOULD_BLOCK: IP=${getClientIP(originalRequest)}, networkId=${networkId}, Request ID=${request.id}, Method=${request.method}`
     )
 
+    // TODO: This return should be replaced with a rate limit error response
+    // when we start enforcing rate limiting
     return {
       request,
       response: null,

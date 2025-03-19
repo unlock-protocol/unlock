@@ -19,19 +19,13 @@ export const forwardRequestsToProvider = async (
   }
 
   try {
-    // Determine if this is a single request or a batch
-    const isBatchRequest = requestsToForward.length > 1
-    const forwardBody = isBatchRequest
-      ? requestsToForward
-      : requestsToForward[0]
-
     // Get the appropriate provider URL for the network
     const supportedNetwork = supportedNetworks(env, networkId)
 
     // Forward the request to the provider
     const response = await fetch(supportedNetwork!, {
       method: 'POST',
-      body: JSON.stringify(forwardBody),
+      body: JSON.stringify(requestsToForward),
       headers: new Headers({
         Accept: '*/*',
         Origin: 'https://rpc.unlock-protocol.com/',
