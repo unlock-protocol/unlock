@@ -3,8 +3,8 @@ import {
   RpcRequest,
   getCacheTTL,
   createCacheKey,
+  isRequestCacheable,
   getKVContractTypeKey,
-  isSingleRequestCacheable,
 } from './utils'
 import { ContractType } from './types'
 
@@ -18,17 +18,17 @@ import { ContractType } from './types'
  */
 export const getRPCResponseFromCache = async (
   networkId: string,
-  request: RpcRequest,
-  originalRequest: Request
+  body: RpcRequest | RpcRequest[],
+  request: Request
 ): Promise<Response | null> => {
   try {
     // Check if this is a cacheable request
-    if (!isSingleRequestCacheable(request)) {
+    if (!isRequestCacheable(body)) {
       return null
     }
 
     // Try to get the cached response
-    const cacheKey = createCacheKey(networkId, request)
+    const cacheKey = createCacheKey(networkId, body)
     const cache = caches.default
     const cachedResponse = await cache.match(new Request(cacheKey))
 
@@ -58,64 +58,23 @@ export const getRPCResponseFromCache = async (
 }
 
 /**
- * Stores responses in the cache if the requests are cacheable
+ * Stores a response in the cache if the request is cacheable
  * @returns true if caching was successful, false otherwise
  */
-export const storeRPCResponsesInCache = async (
+export const storeRPCResponseInCache = async (
   networkId: string,
-  requests: RpcRequest[],
-  responses: any[],
+  body: RpcRequest | RpcRequest[],
+  json: any,
   env: Env
 ): Promise<boolean> => {
   try {
-    if (
-      !Array.isArray(requests) ||
-      !Array.isArray(responses) ||
-      requests.length !== responses.length
-    ) {
-      console.error('Invalid input to storeRPCResponsesInCache')
+    // Check if this is a cacheable request
+    if (!isRequestCacheable(body)) {
       return false
     }
 
-    const results = await Promise.all(
-      requests.map(async (request, index) => {
-        // Only cache if the individual request is cacheable
-        if (!isSingleRequestCacheable(request)) {
-          return false
-        }
-
-        // Get the corresponding response
-        const response = responses[index]
-        if (!response) {
-          return false
-        }
-
-        // Store the individual response
-        return storeIndividualResponseInCache(networkId, request, response, env)
-      })
-    )
-
-    // Return true if any request was cached
-    return results.some((result) => result)
-  } catch (error) {
-    console.error('Error caching responses:', error)
-    // Continue even if caching fails
-    return false
-  }
-}
-
-/**
- * Helper function to store a single response in the cache
- */
-const storeIndividualResponseInCache = async (
-  networkId: string,
-  request: RpcRequest,
-  response: any,
-  env: Env
-): Promise<boolean> => {
-  try {
     const cacheTTL = getCacheTTL(env)
-    const cacheKey = createCacheKey(networkId, request)
+    const cacheKey = createCacheKey(networkId, body)
     const cache = caches.default
 
     // CORS headers
@@ -125,7 +84,7 @@ const storeIndividualResponseInCache = async (
     }
 
     // Create a response for caching
-    const responseToCache = new Response(JSON.stringify(response), {
+    const responseToCache = new Response(JSON.stringify(json), {
       headers,
     })
 
@@ -133,7 +92,8 @@ const storeIndividualResponseInCache = async (
     await cache.put(new Request(cacheKey), responseToCache)
     return true
   } catch (error) {
-    console.error('Error caching individual response:', error)
+    console.error('Error caching response:', error)
+    // Continue even if caching fails
     return false
   }
 }
