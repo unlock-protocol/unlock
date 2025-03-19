@@ -75,11 +75,13 @@ describe('UnlockDAOArbitrumBridge', () => {
       await arbToken.approve(bridge.getAddress(), initialArbBalance)
 
       // Execute the swap and bridge
-      bridge.swapAndBridgeArb(amountOutMinimum)
+      await bridge.swapAndBridgeArb(amountOutMinimum)
 
       // Check final balances
       const finalArbBalance = await arbToken.balanceOf(l2TimelockAlias)
-      const finalEthBalance = await ethers.provider.getBalance(bridge.address)
+      const finalEthBalance = await ethers.provider.getBalance(
+        await bridge.getAddress()
+      )
 
       expect(finalArbBalance).to.be.equal(0)
       expect(finalEthBalance).to.equal(0) // All ETH should be bridged
