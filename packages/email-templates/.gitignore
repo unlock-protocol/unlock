@@ -1,5 +1,5 @@
 /dist
-/src/templates/precompiled-templates.ts
+/src/precompiled-templates.ts
 
 # testing
 /coverage
