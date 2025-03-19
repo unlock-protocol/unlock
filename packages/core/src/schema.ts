@@ -313,6 +313,30 @@ export const PaywallConfig = z
         claim: z.boolean().optional(),
       })
       .optional(),
+    hooks: z
+      .object({
+        status: z
+          .string({
+            description: 'URL to be called on status change.',
+          })
+          .optional(),
+        authenticated: z
+          .string({
+            description: 'URL to be called when the user is authenticated.',
+          })
+          .optional(),
+        transactionSent: z
+          .string({
+            description: 'URL to be called when a transaction is sent.',
+          })
+          .optional(),
+        metadata: z
+          .string({
+            description: 'URL to be called for metadata updates.',
+          })
+          .optional(),
+      })
+      .optional(),
   })
   .passthrough()
 
