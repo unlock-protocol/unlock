@@ -15,7 +15,7 @@ import certificationKeyAirdropped from './templates/certificationKeyAirdropped'
 import inviteEvent from './templates/inviteEvent'
 import eventDeployed from './templates/eventDeployed'
 import LockTemplates from './templates/locks'
-import bases from './templates/base/index'
+import basesRaw from './templates/base/index'
 import custom from './templates/custom'
 import nextAuthCode from './templates/nextAuthCode'
 import eventCollectionCreated from './templates/eventCollectionCreated'
@@ -26,7 +26,33 @@ import eventSubmittedToCollectionSubmitter from './templates/eventSubmittedToCol
 
 // Precompiled templates
 import * as PrecompiledTemplates from './precompiled-templates'
-import * as Handlebars from 'handlebars'
+import Handlebars from 'handlebars/runtime'
+import { formattedCustomContent } from './templates/helpers/customContent'
+import { certificationLink } from './templates/helpers/certificationLink'
+import {
+  eventDetails,
+  eventDetailsLight,
+} from './templates/helpers/eventDetails'
+import { links } from './templates/helpers/links'
+import { transactionLink } from './templates/helpers/transactionLink'
+import { verificationCode } from './templates/helpers/verificationCode'
+
+/* Register Handlebars helpers for runtime rendering
+ * Note: These same helpers are registered in precompile.ts for build-time template compilation
+ * They need to be registered here as well because precompiled templates still reference helper
+ * functions by name at runtime
+ */
+Handlebars.registerHelper('formattedCustomContent', formattedCustomContent)
+Handlebars.registerHelper('certificationLink', certificationLink)
+Handlebars.registerHelper('eventDetails', eventDetails)
+Handlebars.registerHelper('eventDetailsLight', eventDetailsLight)
+Handlebars.registerHelper('links', links)
+Handlebars.registerHelper('transactionLink', transactionLink)
+Handlebars.registerHelper('verificationCode', verificationCode)
+Handlebars.registerHelper(
+  'inlineImage',
+  (filename: string) => `cid:${filename}`
+)
 
 const emailTemplates = {
   confirmEmail,
@@ -54,18 +80,20 @@ const emailTemplates = {
   eventSubmittedToCollectionSubmitter,
 }
 
-const templates: Record<string, any> = Object.assign(
-  {},
-  ...[LockTemplates, emailTemplates].map((obj: Record<string, any>) => {
-    return Object.keys(obj).reduce(
-      (acc, key) => {
-        acc[key.toLowerCase()] = obj[key]
-        return acc
-      },
-      {} as Record<string, any>
-    )
-  })
-)
+const templates: Record<string, any> = {
+  ...Object.fromEntries(
+    Object.entries(LockTemplates).map(([key, value]) => [
+      key.toLowerCase(),
+      value,
+    ])
+  ),
+  ...Object.fromEntries(
+    Object.entries(emailTemplates).map(([key, value]) => [
+      key.toLowerCase(),
+      value,
+    ])
+  ),
+}
 
 export const getEmailTemplate = (template: string): any =>
   templates[template.toLowerCase()]
@@ -84,22 +112,31 @@ export const renderPrecompiledTemplate = (templateName: string, data: any) => {
     )
   }
 
-  // Convert precompiled specs to template functions
-  const templateFns = {
-    subject: Handlebars.template(precompiledTemplate.subject),
-    html: Handlebars.template(precompiledTemplate.html),
-    ...(precompiledTemplate.text
-      ? { text: Handlebars.template(precompiledTemplate.text) }
-      : {}),
+  // Prepare runtime options for template execution
+  const runtimeOptions = {
+    helpers: Handlebars.helpers,
+    partials: Handlebars.partials,
+    data: {},
   }
 
-  // Render with data
-  return {
-    subject: templateFns.subject(data),
-    html: templateFns.html(data),
-    ...(templateFns.text ? { text: templateFns.text(data) } : {}),
+  // Execute the precompiled templates
+  const subject = precompiledTemplate.subject.main(data, runtimeOptions)
+  const html = precompiledTemplate.html.main(data, runtimeOptions)
+
+  const result: { subject: string; html: string; text?: string } = {
+    subject,
+    html,
   }
+
+  // Add text property if available
+  if (precompiledTemplate.text) {
+    result.text = precompiledTemplate.text.main(data, runtimeOptions)
+  }
+
+  return result
 }
+
+const bases = basesRaw
 
 export default templates
 export { bases, PrecompiledTemplates }
