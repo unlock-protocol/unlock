@@ -1,5 +1,7 @@
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import {IUniswapV3Router} from "@uniswap/v3-periphery/contracts/interfaces/IUniswapV3Router.sol";
+import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "../interfaces/IUniversalRouter.sol";
+import "../interfaces/IWETH.sol";
 
 interface IArbSys {
   /**
@@ -74,7 +76,7 @@ contract UnlockDAOArbitrumBridge {
     IArbSys(0x0000000000000000000000000000000000000064);
 
   IL2GatewayRouter public immutable ROUTER;
-  IUniswapV3Router public immutable UNISWAP_V3_ROUTER;
+  IUniversalRouter public immutable UNISWAP_UNIVERSAL_ROUTER;
   address public immutable L1_UDT;
   address public immutable L1_TIMELOCK;
   address public immutable L2_TIMELOCK_ALIAS_ARB;
@@ -87,20 +89,20 @@ contract UnlockDAOArbitrumBridge {
    */
   constructor(
     address routerGateway,
-    address l1Udt,
-    address uniswapV3Router,
+    address universalRouter,
+    address l2Weth,
     address l2Arb,
+    address l1Udt,
     address l1Timelock,
-    address l2TimelockAlias,
-    address l2Weth
+    address l2TimelockAlias
   ) {
     ROUTER = IL2GatewayRouter(routerGateway);
+    UNISWAP_UNIVERSAL_ROUTER = IUniversalRouter(universalRouter);
+    L2_WETH = l2Weth;
+    L2_ARB_TOKEN = l2Arb;
     L1_UDT = l1Udt;
     L1_TIMELOCK = l1Timelock;
     L2_TIMELOCK_ALIAS_ARB = l2TimelockAlias;
-    UNISWAP_V3_ROUTER = IUniswapV3Router(uniswapV3Router);
-    L2_WETH = l2Weth;
-    L2_ARB_TOKEN = l2Arb;
   }
 
   /**
@@ -113,32 +115,40 @@ contract UnlockDAOArbitrumBridge {
    * @dev Can only be called by the L2 timelock alias address
    */
   function swapAndBridgeArb(uint amountOutMinimum) external payable {
+    // swap arb tokens to WETH
+    uint arbBalance = IERC20(L2_ARB_TOKEN).balanceOf(L2_TIMELOCK_ALIAS_ARB); // send tokens to universal router to manipulate the token
+
     // send tokens to universal router to manipulate the token
     SafeERC20.safeTransfer(
-      IERC20(tokenAddress),
-      UNISWAP_UNIVERSAL_ROUTER,
-      tokenAmount
+      IERC20(L2_ARB_TOKEN),
+      address(UNISWAP_UNIVERSAL_ROUTER),
+      arbBalance
     );
 
-    // swap arb tokens to WETH
-    uint arbBalance = IERC20(L2_ARB_TOKEN).balanceOf(L2_TIMELOCK_ALIAS_ARB);
+    // encode the V3 swap command
+    bytes memory commands = new bytes(1);
+    commands[0] = bytes1(uint8(0x00)); // V3_SWAP_EXACT_IN command
 
-    // encode parameters for the swap om UniversalRouter
-    bytes memory path = abi.encodePacked(L2_ARB_TOKEN, fee, L2_WETH);
-    bytes memory commands = abi.encodePacked(bytes1(uint8(V3_SWAP_EXACT_IN)));
+    // encode the parameters for the swap
     bytes[] memory inputs = new bytes[](1);
     inputs[0] = abi.encode(
-      address(this), // recipient is this contract
-      tokenAmount, // amountIn
-      amountOutMinimum, // amountOutMinimum
-      path,
-      false // funds are coming from universal router
+      address(this), // recipient
+      arbBalance, // amount in
+      amountOutMinimum, // amount out minimum
+      abi.encodePacked(
+        L2_ARB_TOKEN, // token in
+        uint24(3000), // fee tier (0.3%)
+        L2_WETH // token out (WETH)
+      ),
+      false // use stored tokens in router
     );
 
+    // execute the swap via Universal Router
+    UNISWAP_UNIVERSAL_ROUTER.execute(commands, inputs);
+
     // unwrap WETH
-    address weth = IUnlock(L2_TIMELOCK_ALIAS_ARB).weth();
-    address wethBalance = IERC20(weth).balanceOf(address(this));
-    IWETH(WETH).withdraw(wethBalance);
+    uint wethBalance = IERC20(L2_WETH).balanceOf(address(this));
+    IWETH(L2_WETH).withdraw(wethBalance);
 
     // send native tokens to L1
     uint nativeBalance = address(this).balance;
@@ -155,4 +165,9 @@ contract UnlockDAOArbitrumBridge {
     uint udtBalance = IERC20(l2token).balanceOf(L2_TIMELOCK_ALIAS_ARB);
     ROUTER.outboundTransfer(L1_UDT, L1_TIMELOCK, udtBalance, "");
   }
+
+  /**
+   * @dev This function is required to handle ETH received from unwrapping WETH during swaps
+   */
+  receive() external payable {}
 }
