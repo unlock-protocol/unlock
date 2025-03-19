@@ -1,4 +1,4 @@
-import { Env } from './types'
+import { Env, RpcRequest } from './types'
 import { ethers } from 'ethers'
 
 // Default cache TTL in seconds (1 hour)
@@ -22,16 +22,6 @@ export const getKVContractTypeKey = (
 export const CACHEABLE_METHODS = [
   'eth_call', // utilised by ENS resolver and other name resolution services
 ]
-
-/**
- * Interface for RPC request format
- */
-export interface RpcRequest {
-  id: number
-  jsonrpc: string
-  method: string
-  params: any[]
-}
 
 /**
  * Get the cache TTL from environment or use default
@@ -84,11 +74,11 @@ export const isNameResolutionRequest = (body: RpcRequest): boolean => {
 }
 
 /**
- * Create a cache key from a request
+ * Create a cache key for a single RPC request
  */
 export const createCacheKey = (
   networkId: string,
-  body: RpcRequest | RpcRequest[]
+  request: RpcRequest
 ): string => {
   /*
    * For name resolution, we want to cache based on the method and params
@@ -96,29 +86,7 @@ export const createCacheKey = (
    * This is just a convention - not an actual domain - to create a properly formatted
    * cache key that satisfies the Request object format requirements
    */
-  if (Array.isArray(body)) {
-    // For batch requests, use the first request's method and params
-    if (body.length === 0) {
-      return `https://cache.unlock-protocol.com/rpc-cache/${networkId}/batch/empty`
-    }
-    const firstRequest = body[0]
-    return `https://cache.unlock-protocol.com/rpc-cache/${networkId}/batch/${firstRequest.method}/${encodeURIComponent(JSON.stringify(firstRequest.params))}`
-  }
-
-  return `https://cache.unlock-protocol.com/rpc-cache/${networkId}/${body.method}/${encodeURIComponent(JSON.stringify(body.params))}`
-}
-
-/**
- * Check if a request is cacheable (can handle both single and batch requests)
- */
-export const isRequestCacheable = (
-  body: RpcRequest | RpcRequest[]
-): boolean => {
-  if (Array.isArray(body)) {
-    // For batch requests, check if any request is cacheable
-    return body.some((req) => isSingleRequestCacheable(req))
-  }
-  return isSingleRequestCacheable(body)
+  return `https://cache.unlock-protocol.com/rpc-cache/${networkId}/${request.method}/${encodeURIComponent(JSON.stringify(request.params))}`
 }
 
 /**
