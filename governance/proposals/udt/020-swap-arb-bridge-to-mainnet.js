@@ -21,13 +21,21 @@ const { address: L2_ARB_TOKEN_ADDRESS } = arbitrum.tokens.find(
   ({ symbol }) => symbol === 'ARB'
 )
 
+// L1 UDT address
+const L1_UDT_ADDRESS = mainnet.unlockDaoToken.address
+
 // TODO: Replace with actual deployed bridge contract address
 const UNLOCK_DAO_BRIDGE_ADDRESS = '0x...'
 
 // Bridge contract ABI
 const BRIDGE_ABI = [
   'function swapAndBridgeArb(uint amountOutMinimum) external payable',
-  'function bridgeUdt() external',
+]
+
+// Arbitrum Gateway Router ABI
+const GATEWAY_ROUTER_ABI = [
+  'function outboundTransfer(address _l1Token, address _to, uint256 _amount, bytes calldata _data) external payable returns (bytes memory)',
+  'function calculateL2TokenAddress(address l1ERC20) external view returns (address)',
 ]
 
 // Arbitrum Inbox ABI for L1-to-L2 messaging
@@ -109,6 +117,19 @@ module.exports = async ({
   const arbBalance = await arbToken.balanceOf(fromL2)
   const arbDecimals = await arbToken.decimals()
 
+  // Get the L2 Gateway Router
+  const gatewayRouter = new ethers.Contract(
+    arbitrum.arbitrumGatewayRouter,
+    GATEWAY_ROUTER_ABI,
+    l2Provider
+  )
+
+  // Get L2 UDT token address and balance
+  const l2UdtAddress =
+    await gatewayRouter.calculateL2TokenAddress(L1_UDT_ADDRESS)
+  const l2UdtToken = await getERC20Contract(l2UdtAddress, l2Provider)
+  const udtBalance = await l2UdtToken.balanceOf(fromL2)
+
   // Create interfaces
   const bridgeInterface = new ethers.Interface(BRIDGE_ABI)
   const inboxContractInterface = new ethers.Interface(INBOX_ABI)
@@ -141,10 +162,23 @@ module.exports = async ({
         amountOutMinimum,
       ]),
     },
-    // 3. Call bridgeUdt
+    // 3. Approve gateway router to spend UDT tokens
     {
-      target: UNLOCK_DAO_BRIDGE_ADDRESS,
-      callData: bridgeInterface.encodeFunctionData('bridgeUdt'),
+      target: l2UdtAddress,
+      callData: l2UdtToken.interface.encodeFunctionData('approve', [
+        arbitrum.arbitrumGatewayRouter,
+        udtBalance,
+      ]),
+    },
+    // 4. Bridge UDT tokens using gateway router
+    {
+      target: arbitrum.arbitrumGatewayRouter,
+      callData: gatewayRouter.interface.encodeFunctionData('outboundTransfer', [
+        L1_UDT_ADDRESS,
+        L1_TIMELOCK_CONTRACT,
+        udtBalance,
+        '0x', // no extra data needed
+      ]),
     },
   ]
 
@@ -203,10 +237,9 @@ module.exports = async ({
   // Return the proposal
   const proposalName = `# Swap ARB for ETH and Bridge Assets to Mainnet 
 
+This proposal uses the UnlockDAOArbitrumBridge contract to swap ARB tokens for ETH and bridges both UDT and ETH back to the timelock on mainnet.
 
-This proposal uses the UnlockDAOArbitrumBridge contract to swap ARB tokens for ETH and bridge both UDT and ETH back to the timelock on mainnet.
-
-The contract is deployed on Arbitrum at the address ${UNLOCK_DAO_BRIDGE_ADDRESS}.
+The UnlockDAOArbitrumBridge contract is deployed on Arbitrum at the address ${UNLOCK_DAO_BRIDGE_ADDRESS}.
 
 The following steps are performed:
 
@@ -214,14 +247,16 @@ The following steps are performed:
 2. Call \`swapAndBridgeArb\` to:
    - Swap all ARB tokens for ETH (with 2% slippage protection)
    - Bridge the resulting ETH back to the timelock on mainnet
-3. Call \`bridgeUdt\` to bridge all UDT tokens back to the timelock on mainnet
+3. Approve the Arbitrum Gateway Router to spend UDT tokens
+4. Bridge all UDT tokens back to the timelock on mainnet using the Arbitrum Gateway Router
 
-### Current situation of DAO's ARB Tokens
-- Total: ${ethers.formatUnits(arbBalance, arbDecimals)} ARB
+### Current situation of DAO's Assets on Arbitrum
+- ARB Balance: ${ethers.formatUnits(arbBalance, arbDecimals)} ARB
+- UDT Balance: ${ethers.formatUnits(udtBalance, 18)} UDT
 - DAO ALIAS Address (On Arbitrum): [${fromL2}](https://arbiscan.io/address/${fromL2})
 
 ### About the proposal
-The proposal contains a call to the Arbitrum Delayed Inbox Contract's \`createRetryableTicket\` function on mainnet to create a \`Retryable Ticket\` that will execute a multicall transaction on Arbitrum to perform all the necessary operations through our UnlockDAOArbitrumBridge contract at ${UNLOCK_DAO_BRIDGE_ADDRESS}.
+The proposal contains a call to the Arbitrum Delayed Inbox Contract's \`createRetryableTicket\` function on mainnet to create a \`Retryable Ticket\` that will execute a multicall transaction on Arbitrum to perform all the necessary operations.
 
 Note that this function forces the sender to provide a reasonable amount of funds (at least enough for submitting and attempting to execute the ticket), but that doesn't guarantee a successful auto-redemption. [Check Arbitrum docs for more info.](https://docs.arbitrum.io/arbos/l1-to-l2-messaging)
 `
