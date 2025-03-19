@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import axios from 'axios'
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     const { data } = await axios.get('https://unlock-protocol.com/blog.rss')
     return NextResponse.json(data)
