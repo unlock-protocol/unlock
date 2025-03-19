@@ -119,8 +119,9 @@ contract UnlockDAOArbitrumBridge {
     uint arbBalance = IERC20(L2_ARB_TOKEN).balanceOf(L2_TIMELOCK_ALIAS_ARB); // send tokens to universal router to manipulate the token
 
     // send tokens to universal router to manipulate the token
-    SafeERC20.safeTransfer(
+    SafeERC20.safeTransferFrom(
       IERC20(L2_ARB_TOKEN),
+      L2_TIMELOCK_ALIAS_ARB,
       address(UNISWAP_UNIVERSAL_ROUTER),
       arbBalance
     );
