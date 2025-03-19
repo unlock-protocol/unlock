@@ -5,7 +5,8 @@ import {
   BatchProcessingResult,
 } from './types'
 import { shouldRateLimit } from './rateLimit'
-import { getClientIP } from './utils'
+import { isENSOrBasenameRequest } from './utils'
+import { getENSResponseFromKV } from './cache'
 
 /**
  * Process a chainId request locally
@@ -50,6 +51,34 @@ export const processSingleRequest = async (
     }
   }
 
+  // Check if this is an ENS/Basename request that can be cached
+  if (isENSOrBasenameRequest(request, networkId)) {
+    // Try to get from cache
+    const cachedData = await getENSResponseFromKV(request, networkId, env)
+    if (cachedData) {
+      return {
+        request,
+        response: {
+          id: request.id,
+          jsonrpc: request.jsonrpc || '2.0',
+          result: cachedData.result,
+        },
+        shouldForward: false,
+        rateLimited: false,
+        fromCache: true,
+      }
+    }
+
+    // If not in cache, mark for later caching
+    return {
+      request,
+      response: null,
+      shouldForward: true,
+      rateLimited: false,
+      shouldCacheENS: true,
+    }
+  }
+
   // Check if this request is rate limited
   const isRateLimited = await shouldRateLimit(
     originalRequest,
@@ -61,12 +90,6 @@ export const processSingleRequest = async (
   if (isRateLimited) {
     // Log the rate limit but still forward the request to maintain current behavior
     // This would later be changed to block rate-limited requests
-    console.log(
-      `RATE_LIMIT_WOULD_BLOCK: IP=${getClientIP(originalRequest)}, networkId=${networkId}, Request ID=${request.id}, Method=${request.method}`
-    )
-
-    // TODO: This return should be replaced with a rate limit error response
-    // when we start enforcing rate limiting
     return {
       request,
       response: null,
