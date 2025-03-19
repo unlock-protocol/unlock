@@ -143,6 +143,7 @@ export const WalletlessRegistrationClaim = ({
         ToastHelper.success('Transaction successfully sent!')
       }
     } catch (error) {
+      console.error(error)
       ToastHelper.error('Failed to send transaction. Please try again.')
     }
   }
