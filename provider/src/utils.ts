@@ -44,7 +44,7 @@ export const getCacheTTL = (env: Env): number => {
  * @param networkId The network ID
  * @returns Boolean indicating if request is an ENS/Basename lookup
  */
-export const isENSOrBasenameRequest = (
+export const isNameResolutionRequest = (
   request: RpcRequest,
   networkId: string
 ): boolean => {
@@ -138,36 +138,6 @@ export const getClientIP = (request: Request): string => {
     console.error('Error extracting client IP:', error)
     return `error-ip-${Date.now()}`
   }
-}
-
-/**
- * Group similar methods for rate limiting purposes
- */
-export const getMethodGroup = (method: string): string | null => {
-  // Grouped by similar function and expected volume
-  const readMethods = [
-    'eth_call',
-    'eth_getBalance',
-    'eth_getCode',
-    'eth_getTransactionCount',
-    'eth_getStorageAt',
-    'eth_getBlockByNumber',
-    'eth_getBlockByHash',
-  ]
-
-  const writeMethods = [
-    'eth_sendRawTransaction',
-    'eth_sendTransaction',
-    'eth_estimateGas',
-  ]
-
-  const eventMethods = ['eth_getLogs', 'eth_getFilterLogs', 'eth_newFilter']
-
-  if (readMethods.includes(method)) return 'read'
-  if (writeMethods.includes(method)) return 'write'
-  if (eventMethods.includes(method)) return 'event'
-
-  return null
 }
 
 /**

@@ -5,7 +5,7 @@ import {
   BatchProcessingResult,
 } from './types'
 import { shouldRateLimit } from './rateLimit'
-import { isENSOrBasenameRequest } from './utils'
+import { isNameResolutionRequest } from './utils'
 import { getENSResponseFromKV } from './cache'
 
 /**
@@ -52,7 +52,7 @@ export const processSingleRequest = async (
   }
 
   // Check if this is an ENS/Basename request that can be cached
-  if (isENSOrBasenameRequest(request, networkId)) {
+  if (isNameResolutionRequest(request, networkId)) {
     // Try to get from cache
     const cachedData = await getENSResponseFromKV(request, networkId, env)
     if (cachedData) {
