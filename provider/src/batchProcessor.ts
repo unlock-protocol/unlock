@@ -5,6 +5,7 @@ import {
 } from './errorHandlers'
 import { processBatchRequests } from './requestProcessor'
 import { forwardRequestsToProvider } from './providerClient'
+import { storeENSResponseInKV } from './cache'
 
 /**
  * Combine the locally processed responses with the responses from the provider
@@ -86,9 +87,8 @@ export const processAndForwardRequests = async (
 
     // If all requests can be handled locally, return the combined responses
     if (batchResult.requestsToForward.length === 0) {
-      const responses = batchResult.processedRequests.map((pr) => pr.response)
       return {
-        responses: responses,
+        responses: batchResult.processedRequests.map((pr) => pr.response),
         isBatchRequest,
       }
     }
@@ -145,6 +145,27 @@ export const processAndForwardRequests = async (
 
       // Get the provider responses
       const providerResponses = forwardingResult.responses || []
+
+      // Process ENS caching for all relevant responses
+      if (providerResponses.length > 0) {
+        // Find requests that should be cached
+        batchResult.processedRequests
+          .filter((req) => req.shouldCacheENS)
+          .forEach((req) => {
+            // Find the matching response for this request
+            const response = providerResponses.find(
+              (resp) => resp.id === req.request.id
+            )
+            if (response) {
+              // Don't await to avoid blocking the response
+              storeENSResponseInKV(req.request, response, networkId, env).catch(
+                (error: Error) => {
+                  console.error('Error caching ENS response:', error)
+                }
+              )
+            }
+          })
+      }
 
       // For batch requests, combine the local and provider responses
       if (isBatchRequest) {
