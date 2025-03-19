@@ -111,7 +111,7 @@ export const handler = async (event, context, responseCallback) => {
     if (errorString.includes('codeeval') || errorString.includes('security')) {
       return callback(null, {
         statusCode: 500,
-        body: 'CloudFlare security restriction: Dynamic code generation not allowed in Workers',
+        body: 'Security restriction: Dynamic code generation not allowed',
         details: errorString,
       })
     }
@@ -122,9 +122,9 @@ export const handler = async (event, context, responseCallback) => {
     ) {
       return callback(null, {
         statusCode: 500,
-        body: 'CloudFlare Workers cannot use SMTP directly. Use HTTP APIs for email services instead.',
+        body: 'SMTP connections are not supported. Please use HTTP APIs for email services.',
         details:
-          'CloudFlare Workers do not support direct SMTP connections. The email was rendered correctly but cannot be sent using nodemailer. You must use an HTTP-based email API instead.',
+          'The email was rendered correctly but cannot be sent. Please use an HTTP-based email API.',
       })
     }
 
@@ -132,8 +132,7 @@ export const handler = async (event, context, responseCallback) => {
       return callback(null, {
         statusCode: 404,
         body: errorString,
-        details:
-          'Only precompiled templates are supported in CloudFlare Workers',
+        details: 'Only precompiled templates are supported',
       })
     }
 
