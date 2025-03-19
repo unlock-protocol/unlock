@@ -1,10 +1,59 @@
-import { Env, ProcessingResult, RpcRequest } from './types'
+import { Env, ProcessingResult, RpcRequest, ProcessedRequest } from './types'
 import {
   createProviderForwardingErrorResponse,
   createProcessingErrorResponse,
 } from './errorHandlers'
-import { processBatchRequests, combineResponses } from './requestProcessor'
+import { processBatchRequests } from './requestProcessor'
 import { forwardRequestsToProvider } from './providerClient'
+
+/**
+ * Combine the locally processed responses with the responses from the provider
+ *
+ * @param processedRequests The array of processed requests
+ * @param providerResponses The responses from the provider (if any)
+ * @returns An array of combined responses in the same order as the original batch
+ */
+export const combineResponses = (
+  processedRequests: ProcessedRequest[],
+  providerResponses: any[] | null
+): any[] => {
+  // a map of provider responses by request ID for quick lookup
+  const responseMap = new Map<number | string, any>()
+
+  if (providerResponses) {
+    providerResponses.forEach((response) => {
+      if (response && typeof response === 'object' && 'id' in response) {
+        responseMap.set(response.id, response)
+      }
+    })
+  }
+
+  // Combine the responses in the same order as the original batch
+  return processedRequests.map((processed) => {
+    // If the request was processed locally, use that response
+    if (!processed.shouldForward) {
+      return processed.response
+    }
+
+    // Otherwise, look up the response from the provider
+    const providerResponse = responseMap.get(processed.request.id)
+
+    // If we couldn't find a matching response, return an error
+    if (!providerResponse) {
+      return {
+        id: processed.request.id,
+        jsonrpc: '2.0',
+        error: {
+          code: -32603,
+          message: 'Internal JSON-RPC error',
+          data: 'No response received from provider for this request',
+        },
+      }
+    }
+
+    return providerResponse
+  })
+}
 
 /**
  * Process and forward requests as needed
