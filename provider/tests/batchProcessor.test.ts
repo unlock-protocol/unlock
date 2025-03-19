@@ -3,8 +3,8 @@ import {
   processBatchRequests,
   processChainIdRequest,
   processSingleRequest,
-  combineResponses,
 } from '../src/requestProcessor'
+import { combineResponses } from '../src/batchProcessor'
 import { RpcRequest } from '../src/types'
 import * as rateLimit from '../src/rateLimit'
 import { setupGlobalMocks } from './__fixtures__/testUtils'
