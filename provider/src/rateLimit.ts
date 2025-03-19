@@ -138,12 +138,22 @@ export const shouldRateLimitIp = async (
   }
 }
 
-export const shouldRateLimitSingle = async (
+/**
+ * Rate limit middleware for JSON RPC requests
+ * This function checks if the request should be rate limited
+ *
+ * @param request The HTTP request
+ * @param env The environment variables
+ * @param body The RPC request body
+ * @param networkId The network ID
+ * @returns true if the request should be rate limited, false otherwise
+ */
+export const shouldRateLimit = async (
   request: Request,
   env: Env,
   body: any,
   networkId: string
-) => {
+): Promise<boolean> => {
   // TODO: handle eth_chainId calls at a higher level
   if (body.method === 'eth_chainId') {
     return false
@@ -164,28 +174,4 @@ export const shouldRateLimitSingle = async (
 
   // Otherwise rate limit based on IP
   return shouldRateLimitIp(request, body.method, env)
-}
-
-/**
- * Rate limit middleware for JSON RPC requests
- * This function checks if the request should be rate limited
- * and considers all "batched" RPC requests in the body
- */
-export const shouldRateLimit = async (
-  request: Request,
-  env: Env,
-  body: any,
-  networkId: string
-) => {
-  if (Array.isArray(body)) {
-    const shouldRateLimitRequests = await Promise.all(
-      body.map((singleBody) =>
-        shouldRateLimitSingle(request, env, singleBody, networkId)
-      )
-    )
-    return shouldRateLimitRequests.some(
-      (shouldRateLimitRequest) => shouldRateLimitRequest
-    )
-  }
-  return shouldRateLimitSingle(request, env, body, networkId)
 }
