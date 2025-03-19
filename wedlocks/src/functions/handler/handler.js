@@ -34,7 +34,7 @@ export const handler = async (event, context, responseCallback) => {
     })
   }
 
-  // Handle favicon.ico requests to prevent 405 errors in logs
+  // Handle favicon.ico requests
   if (event.path === '/favicon.ico') {
     return callback(null, {
       statusCode: 204,
