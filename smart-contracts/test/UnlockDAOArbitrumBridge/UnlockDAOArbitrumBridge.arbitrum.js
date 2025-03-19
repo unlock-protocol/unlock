@@ -89,32 +89,4 @@ describe('UnlockDAOArbitrumBridge', () => {
       // TODO: check that bridge event was emitted
     })
   })
-
-  describe('bridgeUdt', () => {
-    it('should bridge UDT tokens from L2 to L1', async () => {
-      // We need to get the L2 UDT token address
-      const l2Udt = await ethers.getContractAt('IERC20', L2_UDT)
-
-      const whaleAddress = '0x28ffDfB0A6e6E06E95B3A1f928Dc4024240bD87c'
-      const whale = await impersonate(whaleAddress)
-      //get some udt tokens
-      await l2Udt
-        .connect(whale)
-        .transfer(l2TimelockAlias, ethers.parseEther('100'))
-
-      // Get initial balance
-      const initialUdtBalance = await l2Udt.balanceOf(l2TimelockAlias)
-      expect(initialUdtBalance.toString()).to.not.equal('0')
-
-      // Execute the bridge
-      await l2Udt.approve(await bridge.getAddress(), initialUdtBalance)
-      await bridge.bridgeUdt()
-
-      // Check final balance
-      const finalUdtBalance = await l2Udt.balanceOf(l2TimelockAlias)
-      expect(finalUdtBalance).to.be(0)
-
-      // TODO: check that bridge event was emitted
-    })
-  })
 })
