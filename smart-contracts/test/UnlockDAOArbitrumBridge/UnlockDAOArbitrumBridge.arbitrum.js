@@ -11,9 +11,9 @@ const ARB_TOKEN = arbitrum.tokens.find(
   (token) => token.symbol === 'ARB'
 ).address
 const ARB_WHALE = '0xF3FC178157fb3c87548bAA86F9d24BA38E649B58'
-
 // DAO addresses
 const L1_UDT = mainnet.unlockDaoToken.address
+const L2_UDT = arbitrum.unlockDaoToken.address
 const L1_TIMELOCK_CONTRACT = '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B'
 // const L2_TIMELOCK_ALIAS = '0x28ffDfB0A6e6E06E95B3A1f928Dc4024240bD87c'
 
@@ -93,20 +93,22 @@ describe('UnlockDAOArbitrumBridge', () => {
   describe('bridgeUdt', () => {
     it('should bridge UDT tokens from L2 to L1', async () => {
       // We need to get the L2 UDT token address
-      const router = await ethers.getContractAt(
-        'IL2GatewayRouter',
-        ARB_GATEWAY_ROUTER
-      )
-      const l2UdtAddress = await router.calculateL2TokenAddress(L1_UDT)
-      const l2Udt = await ethers.getContractAt('IERC20', l2UdtAddress)
+      const l2Udt = await ethers.getContractAt('IERC20', L2_UDT)
+
+      const whaleAddress = '0x28ffDfB0A6e6E06E95B3A1f928Dc4024240bD87c'
+      const whale = await impersonate(whaleAddress)
+      //get some udt tokens
+      await l2Udt
+        .connect(whale)
+        .transfer(l2TimelockAlias, ethers.parseEther('100'))
 
       // Get initial balance
       const initialUdtBalance = await l2Udt.balanceOf(l2TimelockAlias)
       expect(initialUdtBalance).to.be.gt(0)
 
-      await l2Udt.approve(await bridge.getAddress(), initialUdtBalance)
       // Execute the bridge
-      await expect(bridge.bridgeUdt()).to.not.be.reverted
+      await l2Udt.approve(await bridge.getAddress(), initialUdtBalance)
+      await bridge.bridgeUdt()
 
       // Check final balance
       const finalUdtBalance = await l2Udt.balanceOf(l2TimelockAlias)
