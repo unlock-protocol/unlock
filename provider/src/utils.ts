@@ -1,14 +1,12 @@
+import {
+  KV_CONTRACT_TYPE_PREFIX,
+  KV_ENS_CACHE_PREFIX,
+  NAME_RESOLVER_METHOD_SIGNATURES,
+} from './lib/constants'
+import { NAME_RESOLVER_CONTRACTS } from './lib/constants'
+import { DEFAULT_CACHE_TTL } from './lib/constants'
 import { Env, RpcRequest } from './types'
 import { ethers } from 'ethers'
-
-// Default cache TTL in seconds (1 hour)
-export const DEFAULT_CACHE_TTL = 60 * 60
-
-// Cache API TTL in seconds (1 day)
-export const CACHE_API_TTL = 86400
-
-// Key prefix for KV storage to avoid collisions
-export const KV_CONTRACT_TYPE_PREFIX = 'contract_type_'
 
 // Generate the KV key for a given contract type
 export const getKVContractTypeKey = (
@@ -41,61 +39,70 @@ export const getCacheTTL = (env: Env): number => {
 }
 
 /**
- * Check if the request is for name resolution (ENS or Base name)
+ * Detect if a request is an ENS/Basename lookup that can be cached
+ * @param request The RPC request
+ * @param networkId The network ID
+ * @returns Boolean indicating if request is an ENS/Basename lookup
  */
-export const isNameResolutionRequest = (body: RpcRequest): boolean => {
-  if (!body || !body.method || body.method !== 'eth_call') return false
+export const isENSOrBasenameRequest = (
+  request: RpcRequest,
+  networkId: string
+): boolean => {
+  // Only process on networks that support ENS or Basenames
+  if (!NAME_RESOLVER_CONTRACTS[networkId]) {
+    return false
+  }
 
-  // ENS and BaseName resolution typically use eth_call with specific contract data
-  // This checks for common ENS and BaseName resolution patterns in the call data
-  const callParams = body.params[0] as { data?: string } | undefined
-  if (!callParams || !callParams.data) return false
+  // Only eth_call can be ENS/Basename requests
+  if (request.method !== 'eth_call') {
+    return false
+  }
 
-  const callData = callParams.data.toLowerCase()
+  // Make sure params exist and have the right structure
+  if (!request.params?.[0]?.to || !request.params?.[0]?.data) {
+    return false
+  }
 
-  // ENS resolver methods
-  const ensPatterns = [
-    '0x3b3b57de', // addr(bytes32)
-    '0xf1cb7e06', // addr(bytes32,uint256)
-    '0x691f3431', // name(bytes32)
-    '0x2203ab56', // text(bytes32,string)
-  ]
+  const toAddress = request.params[0].to.toLowerCase()
+  const data = request.params[0].data.toLowerCase()
 
-  // Base Name resolver patterns (L2 resolver methods)
-  const baseNamePatterns = [
-    '0x691f3431', // name(bytes32)
-  ]
+  // Check if the call is to a relevant contract on this network
+  if (!NAME_RESOLVER_CONTRACTS[networkId].includes(toAddress)) {
+    return false
+  }
 
-  const isNameResolution =
-    ensPatterns.some((pattern) => callData.startsWith(pattern)) ||
-    baseNamePatterns.some((pattern) => callData.startsWith(pattern))
-
-  return isNameResolution
+  // Check if the data starts with any of our method signatures
+  return NAME_RESOLVER_METHOD_SIGNATURES.some((signature) =>
+    data.startsWith(signature)
+  )
 }
 
 /**
- * Create a cache key for a single RPC request
+ * Generate a cache key for ENS lookups
+ * @param request The RPC request
+ * @param networkId The network ID
+ * @returns The cache key
  */
-export const createCacheKey = (
-  networkId: string,
-  request: RpcRequest
+export const generateENSCacheKey = (
+  request: RpcRequest,
+  networkId: string
 ): string => {
-  /*
-   * For name resolution, we want to cache based on the method and params
-   * Using a standardized fake domain for all cache operations
-   * This is just a convention - not an actual domain - to create a properly formatted
-   * cache key that satisfies the Request object format requirements
-   */
-  return `https://cache.unlock-protocol.com/rpc-cache/${networkId}/${request.method}/${encodeURIComponent(JSON.stringify(request.params))}`
-}
+  // Extract method signature (first 10 chars of data)
+  const methodSignature = request.params[0].data.slice(0, 10).toLowerCase()
 
-/**
- * Helper to check if a single request is cacheable
- */
-export const isSingleRequestCacheable = (req: RpcRequest): boolean => {
-  if (!req || !req.method || !req.params) return false
+  // For certain methods, extract the specific parameter for more precise caching
+  let specificParam = ''
 
-  return CACHEABLE_METHODS.includes(req.method) && isNameResolutionRequest(req)
+  if (['0x3b3b57de', '0x691f3431'].includes(methodSignature)) {
+    // These methods query a specific name hash or address
+    // Extract the parameter for more specific caching
+    specificParam = ':' + request.params[0].data.slice(10, 74)
+  }
+
+  // Use different prefix based on network
+  const networkLabel = networkId === '1' ? 'ens' : 'basename'
+
+  return `${KV_ENS_CACHE_PREFIX}${networkLabel}:${networkId}:${methodSignature}${specificParam}`
 }
 
 /**
@@ -221,15 +228,6 @@ export const getContractAddress = (
     )
     return null
   }
-}
-
-/**
- * Generate Cache API key for a lock
- */
-export const getCacheApiKey = (networkId: string, address: string): string => {
-  // Use a valid URL format as required by Cloudflare's Cache API
-  // Using a standardized fake domain for all cache operations
-  return `https://cache.unlock-protocol.com/lock-check/${networkId}/${address.toLowerCase()}`
 }
 
 /**
