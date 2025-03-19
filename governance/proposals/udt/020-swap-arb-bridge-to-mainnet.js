@@ -1,17 +1,16 @@
 /**
  * This proposal swaps ARB tokens for ETH on Arbitrum and bridges both UDT and ETH
- * back to the timelock on mainnet.
+ * back to the timelock on mainnet using the UnlockDAOArbitrumBridge contract.
  */
 const ethers = require('ethers')
 const { ParentToChildMessageGasEstimator } = require('@arbitrum/sdk')
-const { EthBridger, getL2Network } = require('@arbitrum/sdk')
+const { getL2Network } = require('@arbitrum/sdk')
 const { getBaseFee } = require('@arbitrum/sdk/dist/lib/utils/lib')
 const {
   getNetwork,
   getERC20Contract,
 } = require('@unlock-protocol/hardhat-helpers')
 const { arbitrum, mainnet } = require('@unlock-protocol/networks')
-const ERC20_ABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/erc20.json')
 
 // Dao
 const L1_TIMELOCK_CONTRACT = '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B'
@@ -21,14 +20,14 @@ const L2_TIMELOCK_ALIAS = '0x28ffDfB0A6e6E06E95B3A1f928Dc4024240bD87c'
 const { address: L2_ARB_TOKEN_ADDRESS } = arbitrum.tokens.find(
   ({ symbol }) => symbol === 'ARB'
 )
-const L2_UNISWAP_ROUTER_ADDRESS = arbitrum.uniswapV3.universalRouterAddress
-const L2_WETH_ADDRESS = arbitrum.nativeCurrency.wrapped
-const L2_UDT_ADDRESS = arbitrum.unlockDaoToken.address
 
-// Uniswap V3 SwapRouter ABI
-const UNISWAP_ROUTER_ABI = [
-  'function exactInputSingle(tuple(address tokenIn, address tokenOut, uint24 fee, address recipient, uint256 deadline, uint256 amountIn, uint256 amountOutMinimum, uint160 sqrtPriceLimitX96)) external payable returns (uint256 amountOut)',
-  'function unwrapWETH9(uint256 amountMinimum, address recipient) external payable',
+// TODO: Replace with actual deployed bridge contract address
+const UNLOCK_DAO_BRIDGE_ADDRESS = '0x...'
+
+// Bridge contract ABI
+const BRIDGE_ABI = [
+  'function swapAndBridgeArb(uint amountOutMinimum) external payable',
+  'function bridgeUdt() external',
 ]
 
 // Arbitrum Inbox ABI for L1-to-L2 messaging
@@ -98,13 +97,12 @@ module.exports = async ({
   fromL2 = L2_TIMELOCK_ALIAS,
 }) => {
   console.log(
-    'Proposal to swap ARB tokens for ETH on Arbitrum and bridge assets back to mainnet'
+    'Proposal to swap ARB tokens for ETH on Arbitrum and bridge assets back to mainnet using UnlockDAOArbitrumBridge'
   )
 
   // Get inbox address
   const l2Network = await getL2Network(l2Provider)
-  const ethBridger = new EthBridger(l2Network)
-  const inboxAddress = ethBridger.l2Network.ethBridge.inbox
+  const inboxAddress = l2Network.ethBridge.inbox
 
   // Get the ARB balances
   const arbToken = await getERC20Contract(L2_ARB_TOKEN_ADDRESS, l2Provider)
@@ -112,14 +110,11 @@ module.exports = async ({
   const arbDecimals = await arbToken.decimals()
 
   // Create interfaces
-  const uniswapRouterInterface = new ethers.Interface(UNISWAP_ROUTER_ABI)
+  const bridgeInterface = new ethers.Interface(BRIDGE_ABI)
   const inboxContractInterface = new ethers.Interface(INBOX_ABI)
 
-  // TODO:set deadline after dao proposal is executed
-  const deadline = Math.floor(Date.now() / 1000) + 30 * 60
-
-  // TODO: Add slippage protection
-  const amountOutMinimum = 0
+  // TODO: Add slippage protection using an oracle
+  const amountOutMinimum = (arbBalance * 98n) / 100n // 2% slippage
 
   // We'll use the Multicall3 contract on Arbitrum to batch these transactions
   const MULTICALL_ADDRESS = '0xcA11bde05977b3631167028862bE2a173976CA11'
@@ -131,39 +126,25 @@ module.exports = async ({
 
   // Prepare the multicall data
   const multicallCalls = [
-    // 1. Approve Uniswap Router to spend ARB tokens
+    // 1. Approve bridge contract to spend ARB tokens
     {
       target: L2_ARB_TOKEN_ADDRESS,
       callData: arbToken.interface.encodeFunctionData('approve', [
-        L2_UNISWAP_ROUTER_ADDRESS,
+        UNLOCK_DAO_BRIDGE_ADDRESS,
         arbBalance,
       ]),
     },
-
-    // 2. Swap ARB for WETH using Uniswap V3
+    // 2. Call swapAndBridgeArb
     {
-      target: L2_UNISWAP_ROUTER_ADDRESS,
-      callData: uniswapRouterInterface.encodeFunctionData('exactInputSingle', [
-        [
-          L2_ARB_TOKEN_ADDRESS, // tokenIn
-          L2_WETH_ADDRESS, // tokenOut
-          3000, // fee (0.3%)
-          fromL2, // recipient
-          deadline, // deadline
-          arbBalance, // amountIn
-          amountOutMinimum, // amountOutMinimum
-          0, // sqrtPriceLimitX96 (0 = no limit)
-        ],
+      target: UNLOCK_DAO_BRIDGE_ADDRESS,
+      callData: bridgeInterface.encodeFunctionData('swapAndBridgeArb', [
+        amountOutMinimum,
       ]),
     },
-
-    // 3. Unwrap WETH to ETH
+    // 3. Call bridgeUdt
     {
-      target: L2_UNISWAP_ROUTER_ADDRESS,
-      callData: uniswapRouterInterface.encodeFunctionData('unwrapWETH9', [
-        0, // amountMinimum (0 since we already applied slippage)
-        fromL2, // recipient
-      ]),
+      target: UNLOCK_DAO_BRIDGE_ADDRESS,
+      callData: bridgeInterface.encodeFunctionData('bridgeUdt'),
     },
   ]
 
@@ -220,26 +201,27 @@ module.exports = async ({
   )
 
   // Return the proposal
-  const proposalName = `# Swap ARB for ETH and Bridge Assets to Mainnet
+  const proposalName = `# Swap ARB for ETH and Bridge Assets to Mainnet 
 
-This proposal will:
-1. Swap all ARB tokens held by the DAO on Arbitrum for ETH (with slippage protection)
-2. Bridge all UDT tokens from Arbitrum back to the timelock on mainnet
-3. Bridge all ETH (including the newly swapped ETH) back to the timelock on mainnet
+
+This proposal uses the UnlockDAOArbitrumBridge contract to swap ARB tokens for ETH and bridge both UDT and ETH back to the timelock on mainnet.
+
+The contract is deployed on Arbitrum at the address ${UNLOCK_DAO_BRIDGE_ADDRESS}.
+
+The following steps are performed:
+
+1. Approve the UnlockDAOArbitrumBridge contract to spend ARB tokens
+2. Call \`swapAndBridgeArb\` to:
+   - Swap all ARB tokens for ETH (with 2% slippage protection)
+   - Bridge the resulting ETH back to the timelock on mainnet
+3. Call \`bridgeUdt\` to bridge all UDT tokens back to the timelock on mainnet
 
 ### Current situation of DAO's ARB Tokens
-- Total: ${ethers.formatUnits(arbBalance, decimals)} ARB
+- Total: ${ethers.formatUnits(arbBalance, arbDecimals)} ARB
 - DAO ALIAS Address (On Arbitrum): [${fromL2}](https://arbiscan.io/address/${fromL2})
 
 ### About the proposal
-The proposal contains a call to the Arbitrum Delayed Inbox Contract's \`createRetryableTicket\` function on mainnet to create a \`Retryable Ticket\` that will execute a multicall transaction on Arbitrum to:
-1. Approve the Uniswap Router to spend ARB tokens
-2. Swap ARB tokens for ETH using Uniswap V3
-3. Unwrap WETH to native ETH
-
-After this proposal is executed, we will need to submit additional proposals to:
-1. Bridge UDT tokens back to mainnet
-2. Bridge ETH back to mainnet
+The proposal contains a call to the Arbitrum Delayed Inbox Contract's \`createRetryableTicket\` function on mainnet to create a \`Retryable Ticket\` that will execute a multicall transaction on Arbitrum to perform all the necessary operations through our UnlockDAOArbitrumBridge contract at ${UNLOCK_DAO_BRIDGE_ADDRESS}.
 
 Note that this function forces the sender to provide a reasonable amount of funds (at least enough for submitting and attempting to execute the ticket), but that doesn't guarantee a successful auto-redemption. [Check Arbitrum docs for more info.](https://docs.arbitrum.io/arbos/l1-to-l2-messaging)
 `
