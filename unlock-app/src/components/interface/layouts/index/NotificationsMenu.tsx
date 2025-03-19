@@ -29,7 +29,7 @@ export function NotificationsMenu() {
   const pathname = usePathname()
 
   useEffect(() => {
-    saveLatestBlogs('https://unlock-protocol.com/blog.rss', setBlogs)
+    saveLatestBlogs('/api/blogs', setBlogs)
   }, [])
 
   if (!account) {
