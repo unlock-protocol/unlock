@@ -104,7 +104,7 @@ describe('UnlockDAOArbitrumBridge', () => {
 
       // Get initial balance
       const initialUdtBalance = await l2Udt.balanceOf(l2TimelockAlias)
-      expect(initialUdtBalance).to.be.gt(0)
+      expect(initialUdtBalance.toString()).to.not.equal('0')
 
       // Execute the bridge
       await l2Udt.approve(await bridge.getAddress(), initialUdtBalance)
@@ -113,6 +113,8 @@ describe('UnlockDAOArbitrumBridge', () => {
       // Check final balance
       const finalUdtBalance = await l2Udt.balanceOf(l2TimelockAlias)
       expect(finalUdtBalance).to.be(0)
+
+      // TODO: check that bridge event was emitted
     })
   })
 })
