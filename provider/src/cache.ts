@@ -1,5 +1,10 @@
 import { ContractType, Env, RpcRequest } from './types'
-import { getKVContractTypeKey, getCacheTTL } from './utils'
+import {
+  getKVContractTypeKey,
+  getCacheTTL,
+  isNameResolutionRequest,
+  generateRequestCacheKey,
+} from './utils'
 
 /**
  * Retrieves a contract's status from KV storage
@@ -71,11 +76,7 @@ export const getResponseFromKV = async (
     return null
   }
 
-  // Generate a cache key from the request method and params
-  const paramsStr = Array.isArray(request.params)
-    ? request.params.join(',')
-    : ''
-  const cacheKey = [request.method, paramsStr].join(':')
+  const cacheKey = generateRequestCacheKey(request)
 
   try {
     // Try to get and parse as JSON
@@ -92,7 +93,9 @@ export const getResponseFromKV = async (
           return JSON.parse(rawText)
         } catch {
           // If still can't parse, delete the corrupted entry
-          await env.REQUEST_CACHE.delete(cacheKey).catch(() => {})
+          await env.REQUEST_CACHE.delete(cacheKey).catch((err) => {
+            console.error(`Error deleting corrupted cache entry: ${err}`)
+          })
         }
       }
     } catch (error) {
@@ -121,10 +124,7 @@ export const storeResponseInKV = async (
   if (!env.REQUEST_CACHE || !response?.result) {
     return
   }
-  const paramsStr = Array.isArray(request.params)
-    ? request.params.join(',')
-    : ''
-  const cacheKey = [request.method, paramsStr].join(':')
+  const cacheKey = generateRequestCacheKey(request)
   const ttl = getCacheTTL(env)
 
   try {
@@ -142,14 +142,21 @@ export const storeResponseInKV = async (
 /**
  * Determine if a request should be cached
  * @param request The RPC request
+ * @param chainId The chain ID
  * @returns True if the request should be cached, false otherwise
  */
-export const shouldStore = (request: RpcRequest): boolean => {
-  // Determine if the request qualifies for caching.
-
+export const shouldStore = (request: RpcRequest, chainId: string): boolean => {
   if (!request.method) return false
-  const lowerMethod = request.method.toLowerCase()
-  return lowerMethod.includes('ens') || lowerMethod.includes('basename')
+
+  // check if it's a name resolution request
+  if (
+    request.method.toLowerCase() === 'eth_call' &&
+    isNameResolutionRequest(request, chainId)
+  ) {
+    return true
+  }
+
+  return false
 }
 
 /**
@@ -164,7 +171,7 @@ export const getCachedResponseForRequest = async (
   chainId: string,
   env: Env
 ): Promise<any> => {
-  if (!shouldStore(request)) {
+  if (!shouldStore(request, chainId)) {
     return null
   }
   const cached = await getResponseFromKV(request, chainId, env)
@@ -191,7 +198,7 @@ export const storeResponseInCache = async (
   response: any,
   env: Env
 ): Promise<void> => {
-  if (!shouldStore(request) || !response?.result) {
+  if (!shouldStore(request, chainId) || !response?.result) {
     return
   }
   await storeResponseInKV(request, response, chainId, env)

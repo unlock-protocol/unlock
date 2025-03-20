@@ -5,7 +5,7 @@ import {
   BatchProcessingResult,
 } from './types'
 import { shouldRateLimit } from './rateLimit'
-import { getCachedResponseForRequest, shouldStore } from './cache'
+import { getCachedResponseForRequest } from './cache'
 
 /**
  * Process a chainId request locally
@@ -91,7 +91,6 @@ export const processSingleRequest = async (
     response: null,
     shouldForward: true,
     rateLimited: false,
-    shouldCache: shouldStore(request),
   }
 }
 

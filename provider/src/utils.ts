@@ -1,12 +1,23 @@
 import {
   KV_CONTRACT_TYPE_PREFIX,
-  KV_ENS_CACHE_PREFIX,
   NAME_RESOLVER_METHOD_SIGNATURES,
 } from './lib/constants'
 import { NAME_RESOLVER_CONTRACTS } from './lib/constants'
 import { DEFAULT_CACHE_TTL } from './lib/constants'
 import { Env, RpcRequest } from './types'
 import { ethers } from 'ethers'
+
+/**
+ * Generate a cache key from a request's method and params
+ * @param request The RPC request
+ * @returns The cache key
+ */
+export const generateRequestCacheKey = (request: RpcRequest): string => {
+  const paramsStr = Array.isArray(request.params)
+    ? request.params.join(',')
+    : ''
+  return [request.method, paramsStr].join(':')
+}
 
 // Generate the KV key for a given contract type
 export const getKVContractTypeKey = (
@@ -39,21 +50,20 @@ export const getCacheTTL = (env: Env): number => {
 }
 
 /**
- * Detect if a request is an ENS/Basename lookup that can be cached
+ * Detect if a request is an ENS/Basename lookup
  * @param request The RPC request
- * @param networkId The network ID
+ * @param chainId The chain ID
  * @returns Boolean indicating if request is an ENS/Basename lookup
  */
 export const isNameResolutionRequest = (
   request: RpcRequest,
-  networkId: string
+  chainId: string
 ): boolean => {
   // Only process on networks that support ENS or Basenames
-  if (!NAME_RESOLVER_CONTRACTS[networkId]) {
+  if (!NAME_RESOLVER_CONTRACTS[chainId]) {
     return false
   }
 
-  // Only eth_call can be ENS/Basename requests
   if (request.method !== 'eth_call') {
     return false
   }
@@ -67,7 +77,7 @@ export const isNameResolutionRequest = (
   const data = request.params[0].data.toLowerCase()
 
   // Check if the call is to a relevant contract on this network
-  if (!NAME_RESOLVER_CONTRACTS[networkId].includes(toAddress)) {
+  if (!NAME_RESOLVER_CONTRACTS[chainId].includes(toAddress)) {
     return false
   }
 
@@ -75,34 +85,6 @@ export const isNameResolutionRequest = (
   return NAME_RESOLVER_METHOD_SIGNATURES.some((signature) =>
     data.startsWith(signature)
   )
-}
-
-/**
- * Generate a cache key for ENS lookups
- * @param request The RPC request
- * @param networkId The network ID
- * @returns The cache key
- */
-export const generateENSCacheKey = (
-  request: RpcRequest,
-  networkId: string
-): string => {
-  // Extract method signature (first 10 chars of data)
-  const methodSignature = request.params[0].data.slice(0, 10).toLowerCase()
-
-  // For certain methods, extract the specific parameter for more precise caching
-  let specificParam = ''
-
-  if (['0x3b3b57de', '0x691f3431'].includes(methodSignature)) {
-    // These methods query a specific name hash or address
-    // Extract the parameter for more specific caching
-    specificParam = ':' + request.params[0].data.slice(10, 74)
-  }
-
-  // Use different prefix based on network
-  const networkLabel = networkId === '1' ? 'ens' : 'basename'
-
-  return `${KV_ENS_CACHE_PREFIX}${networkLabel}:${networkId}:${methodSignature}${specificParam}`
 }
 
 /**
