@@ -35,6 +35,6 @@
   "devDependencies": {
     "@babel/plugin-transform-runtime": "7.26.9",
     "regenerator-runtime": "0.14.1",
-    "vitest": "2.1.9"
+    "vitest": "3.0.9"
   }
 }
