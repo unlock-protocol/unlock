@@ -1,16 +1,18 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, test } from 'vitest'
 import {
   processBatchRequests,
   processChainIdRequest,
   processSingleRequest,
 } from '../src/requestProcessor'
 import { combineResponses } from '../src/batchProcessor'
-import { RpcRequest } from '../src/types'
+import { RpcRequest, ProcessedRequest } from '../src/types'
 import * as rateLimit from '../src/rateLimit'
+import * as cacheModule from '../src/cache'
 import { setupGlobalMocks } from './__fixtures__/testUtils'
 
 // Mock dependencies
 vi.mock('../src/rateLimit')
+vi.mock('../src/cache')
 
 describe('Batch Processor', () => {
   const mockEnv = {
@@ -123,6 +125,41 @@ describe('Batch Processor', () => {
         rateLimited: false,
       })
     })
+
+    it('should return cached response when available', async () => {
+      const request: RpcRequest = {
+        id: 5,
+        jsonrpc: '2.0',
+        method: 'eth_call',
+        params: [{ to: '0x1234' }, 'latest'],
+      }
+      const envWithCache = { ...mockEnv }
+
+      // Mock the getCachedResponseForRequest function directly
+      const mockCachedResponse = {
+        id: 5,
+        jsonrpc: '2.0',
+        result: '0xCached',
+      }
+
+      vi.spyOn(cacheModule, 'getCachedResponseForRequest').mockResolvedValue(
+        mockCachedResponse
+      )
+
+      const result = await processSingleRequest(
+        request,
+        '1',
+        mockRequest,
+        envWithCache
+      )
+      expect(result).toEqual({
+        request,
+        response: mockCachedResponse,
+        shouldForward: false,
+        rateLimited: false,
+        fromCache: true,
+      })
+    })
   })
 
   describe('processBatchRequests', () => {
@@ -187,7 +224,7 @@ describe('Batch Processor', () => {
   })
 
   describe('combineResponses', () => {
-    it('should combine local and provider responses correctly', () => {
+    it('should combine local and provider responses correctly', async () => {
       const processedRequests = [
         {
           request: { id: 1, jsonrpc: '2.0', method: 'eth_chainId', params: [] },
@@ -205,7 +242,12 @@ describe('Batch Processor', () => {
 
       const providerResponses = [{ id: 2, jsonrpc: '2.0', result: '0xabc' }]
 
-      const result = combineResponses(processedRequests, providerResponses)
+      const result = await combineResponses(
+        processedRequests,
+        providerResponses,
+        '1',
+        mockEnv
+      )
 
       expect(result).toEqual([
         { id: 1, jsonrpc: '2.0', result: '0x1' },
@@ -213,7 +255,7 @@ describe('Batch Processor', () => {
       ])
     })
 
-    it('should handle missing provider responses', () => {
+    it('should handle missing provider responses', async () => {
       const processedRequests = [
         {
           request: { id: 1, jsonrpc: '2.0', method: 'eth_chainId', params: [] },
@@ -229,11 +271,38 @@ describe('Batch Processor', () => {
         },
       ]
 
-      const result = combineResponses(processedRequests, [])
+      const result = await combineResponses(processedRequests, [], '1', mockEnv)
 
       expect(result[0]).toEqual({ id: 1, jsonrpc: '2.0', result: '0x1' })
       expect(result[1].error).toBeDefined()
       expect(result[1].error.code).toBe(-32603)
+    })
+
+    test('should store response in cache when processed request has shouldCache true and provider response exists', async () => {
+      vi.mocked(cacheModule.shouldStore).mockReturnValue(true)
+      const processedRequests: ProcessedRequest[] = [
+        {
+          request: { id: 10, jsonrpc: '2.0', method: 'eth_call', params: [] },
+          response: null,
+          shouldCache: true,
+          shouldForward: true,
+          rateLimited: false,
+        },
+      ]
+      const providerResponses = [
+        { id: 10, jsonrpc: '2.0', result: '0xcacheTest' },
+      ]
+      const storeSpy = vi
+        .spyOn(cacheModule, 'storeResponseInCache')
+        .mockResolvedValue(undefined)
+
+      await combineResponses(processedRequests, providerResponses, '1', mockEnv)
+      expect(storeSpy).toHaveBeenCalledWith(
+        processedRequests[0].request,
+        '1',
+        providerResponses[0],
+        mockEnv
+      )
     })
   })
 })
