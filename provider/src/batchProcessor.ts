@@ -5,18 +5,23 @@ import {
 } from './errorHandlers'
 import { processBatchRequests } from './requestProcessor'
 import { forwardRequestsToProvider } from './providerClient'
+import { storeResponseInCache, shouldStore } from './cache'
 
 /**
  * Combine the locally processed responses with the responses from the provider
  *
  * @param processedRequests The array of processed requests
  * @param providerResponses The responses from the provider (if any)
+ * @param chainId The chain ID
+ * @param env The environment variables
  * @returns An array of combined responses in the same order as the original batch
  */
-export const combineResponses = (
+export const combineResponses = async (
   processedRequests: ProcessedRequest[],
-  providerResponses: any[] | null
-): any[] => {
+  providerResponses: any[] | null,
+  chainId: string,
+  env: any
+): Promise<any[]> => {
   // a map of provider responses by request ID for quick lookup
   const responseMap = new Map<number | string, any>()
 
@@ -28,31 +33,50 @@ export const combineResponses = (
     })
   }
 
-  // Combine the responses in the same order as the original batch
-  return processedRequests.map((processed) => {
-    // If the request was processed locally, use that response
-    if (!processed.shouldForward) {
-      return processed.response
-    }
-
-    // Otherwise, look up the response from the provider
-    const providerResponse = responseMap.get(processed.request.id)
-
-    // If we couldn't find a matching response, return an error
-    if (!providerResponse) {
-      return {
-        id: processed.request.id,
-        jsonrpc: '2.0',
-        error: {
-          code: -32603,
-          message: 'Internal JSON-RPC error',
-          data: 'No response received from provider for this request',
-        },
+  // Process all responses in parallel
+  return Promise.all(
+    processedRequests.map(async (processed) => {
+      // If the request was processed locally, use that response
+      if (!processed.shouldForward) {
+        return processed.response
       }
-    }
 
-    return providerResponse
-  })
+      // Otherwise, look up the response from the provider
+      const providerResponse = responseMap.get(processed.request.id)
+
+      // If provider response is found and the request qualifies for caching, store it
+      if (providerResponse && shouldStore(processed.request, chainId)) {
+        try {
+          await storeResponseInCache(
+            processed.request,
+            chainId,
+            providerResponse,
+            env
+          )
+        } catch (error: any) {
+          console.error('Error caching response:', error)
+        }
+      }
+
+      // If we couldn't find a matching response, return an error
+      if (!providerResponse) {
+        console.error(
+          `Missing provider response for request ID: ${processed.request.id}, method: ${processed.request.method}`
+        )
+        return {
+          id: processed.request.id,
+          jsonrpc: '2.0',
+          error: {
+            code: -32603,
+            message: 'Internal JSON-RPC error',
+            data: 'No response received from provider for this request',
+          },
+        }
+      } else {
+        return providerResponse
+      }
+    })
+  )
 }
 
 /**
@@ -60,14 +84,14 @@ export const combineResponses = (
  * This function handles the complete processing flow, including forwarding requests and combining responses
  *
  * @param body The original request body (single request or batch)
- * @param networkId The network ID
+ * @param chainId The chain ID
  * @param originalRequest The original HTTP request
  * @param env The environment variables
  * @returns A ProcessingResult containing the responses and any error information
  */
 export const processAndForwardRequests = async (
   body: RpcRequest | RpcRequest[],
-  networkId: string,
+  chainId: string,
   originalRequest: Request,
   env: Env
 ): Promise<ProcessingResult> => {
@@ -79,16 +103,15 @@ export const processAndForwardRequests = async (
     // Process the batch of requests
     const batchResult = await processBatchRequests(
       requests,
-      networkId,
+      chainId,
       originalRequest,
       env
     )
 
     // If all requests can be handled locally, return the combined responses
     if (batchResult.requestsToForward.length === 0) {
-      const responses = batchResult.processedRequests.map((pr) => pr.response)
       return {
-        responses: responses,
+        responses: batchResult.processedRequests.map((pr) => pr.response),
         isBatchRequest,
       }
     }
@@ -98,7 +121,7 @@ export const processAndForwardRequests = async (
       // Forward requests to the provider
       const forwardingResult = await forwardRequestsToProvider(
         batchResult.requestsToForward,
-        networkId,
+        chainId,
         env
       )
 
@@ -116,9 +139,11 @@ export const processAndForwardRequests = async (
 
         // If this was a batch request, combine with local responses
         if (isBatchRequest) {
-          const combinedResponses = combineResponses(
+          const combinedResponses = await combineResponses(
             batchResult.processedRequests,
-            [errorResponse]
+            [errorResponse],
+            chainId,
+            env
           )
 
           return {
@@ -148,9 +173,11 @@ export const processAndForwardRequests = async (
 
       // For batch requests, combine the local and provider responses
       if (isBatchRequest) {
-        const combinedResponses = combineResponses(
+        const combinedResponses = await combineResponses(
           batchResult.processedRequests,
-          providerResponses
+          providerResponses,
+          chainId,
+          env
         )
 
         return {
@@ -176,9 +203,11 @@ export const processAndForwardRequests = async (
 
       // If this was a batch request, combine with local responses
       if (isBatchRequest) {
-        const combinedResponses = combineResponses(
+        const combinedResponses = await combineResponses(
           batchResult.processedRequests,
-          [errorResponse]
+          [errorResponse],
+          chainId,
+          env
         )
 
         return {
