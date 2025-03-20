@@ -542,7 +542,7 @@ export function Metadata({ checkoutService }: Props) {
                     </div>
                     <div className="text-sm">
                       <label htmlFor="termsAccepted" className="cursor-pointer">
-                        I agree to Unlock{' '}
+                        I agree to the{' '}
                         <Link
                           target="_blank"
                           href={`${config.unlockStaticUrl}/terms`}
