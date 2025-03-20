@@ -60,6 +60,9 @@ export const combineResponses = async (
 
       // If we couldn't find a matching response, return an error
       if (!providerResponse) {
+        console.error(
+          `Missing provider response for request ID: ${processed.request.id}, method: ${processed.request.method}`
+        )
         return {
           id: processed.request.id,
           jsonrpc: '2.0',

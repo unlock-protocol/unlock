@@ -14,14 +14,11 @@ const generateRequestCacheKey = (request: RpcRequest): string => {
   let paramsStr = ''
 
   try {
-    if (Array.isArray(request.params)) {
-      // Handle each parameter individually to ensure proper serialization
-      paramsStr = request.params
-        .map((param) => {
-          return String(param)
-        })
-        .join(',')
-    }
+    paramsStr = request.params
+      .map((param) => {
+        return String(param)
+      })
+      .join(',')
   } catch (error) {
     console.error(
       `Error generating cache key: ${error instanceof Error ? error.message : String(error)}`
