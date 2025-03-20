@@ -16,6 +16,9 @@ const generateRequestCacheKey = (request: RpcRequest): string => {
   try {
     paramsStr = request.params
       .map((param) => {
+        if (typeof param === 'object' && param !== null) {
+          return JSON.stringify(param)
+        }
         return String(param)
       })
       .join(',')
