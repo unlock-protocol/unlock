@@ -28,8 +28,8 @@ export interface Env {
   // KV namespace for caching contracts addresses
   ALLOWED_CONTRACTS?: KVNamespace
 
-  // KV namespace for caching ENS/Basenames resolutions
-  NAME_RESOLUTION_CACHE?: KVNamespace
+  // KV namespace for caching requests
+  REQUEST_CACHE?: KVNamespace
 }
 
 /**
@@ -64,7 +64,7 @@ export interface ProcessedRequest {
   response: any | null
   shouldForward: boolean
   rateLimited: boolean
-  shouldCacheENS?: boolean
+  shouldCache?: boolean
   fromCache?: boolean
 }
 
