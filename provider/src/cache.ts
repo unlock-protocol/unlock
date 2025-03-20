@@ -84,15 +84,13 @@ export const storeContractStatusInKV = async (
 }
 
 /**
- * Get a cached response from KV storage
+ * Get a cached response from KV storage.
+ * It retrieves and parses the stored value as JSON.
+ * If reading or parsing fails, it attempts to delete the corrupted cache entry and returns null.
  * @param request The RPC request
  * @param chainId The chain ID
  * @param env The environment variables
  * @returns The cached response or null if not found
- *
- * First attempts to retrieve and parse as JSON directly. If that fails,
- * falls back to retrieving as text and parsing manually. If the text
- * parsing also fails, deletes the corrupted cache entry.
  */
 export const getResponseFromKV = async (
   request: RpcRequest,
@@ -114,10 +112,11 @@ export const getResponseFromKV = async (
     console.error(
       `Error reading from cache: ${error instanceof Error ? error.message : String(error)}`
     )
-    // Delete corrupted entry
-    await env.REQUEST_CACHE.delete(cacheKey).catch((err) => {
+    try {
+      await env.REQUEST_CACHE.delete(cacheKey)
+    } catch (err) {
       console.error(`Error deleting corrupted cache entry: ${err}`)
-    })
+    }
   }
 
   return null

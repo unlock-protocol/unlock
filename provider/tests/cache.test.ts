@@ -36,20 +36,15 @@ describe('Cache Module', () => {
     expect(result).toEqual({ result: '0xcached' })
   })
 
-  test('getResponseFromKV falls back to text if json fails and parses text', async () => {
+  test('getResponseFromKV returns null and deletes cache entry when JSON read fails even if valid text is available', async () => {
+    const deleteMock = vi.fn().mockResolvedValue(undefined)
+    env.REQUEST_CACHE!.delete = deleteMock
     ;(env.REQUEST_CACHE!.get as any)
       .mockRejectedValueOnce(new Error('json error'))
       .mockResolvedValueOnce('{"result": "0xcachedText"}')
     const result = await getResponseFromKV(dummyRequest, chainId, env as Env)
-    expect(result).toEqual({ result: '0xcachedText' })
-  })
-
-  test('getResponseFromKV deletes entry if text parsing fails', async () => {
-    ;(env.REQUEST_CACHE!.get as any)
-      .mockRejectedValueOnce(new Error('json error'))
-      .mockResolvedValueOnce('invalid json')
-    await getResponseFromKV(dummyRequest, chainId, env as Env)
-    expect(env.REQUEST_CACHE!.delete).toHaveBeenCalled()
+    expect(result).toBeNull()
+    expect(deleteMock).toHaveBeenCalled()
   })
 
   test('storeResponseInKV calls put when response is valid', async () => {
@@ -83,5 +78,16 @@ describe('Cache Module', () => {
       env as Env
     )
     expect(result).toBeNull()
+  })
+
+  test('getResponseFromKV deletes entry and returns null when JSON read returns invalid JSON', async () => {
+    const deleteMock = vi.fn().mockResolvedValue(undefined)
+    env.REQUEST_CACHE!.delete = deleteMock
+    ;(env.REQUEST_CACHE!.get as any).mockImplementationOnce(() => {
+      throw new Error('invalid json')
+    })
+    const result = await getResponseFromKV(dummyRequest, chainId, env as Env)
+    expect(result).toBeNull()
+    expect(deleteMock).toHaveBeenCalled()
   })
 })

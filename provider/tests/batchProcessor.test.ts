@@ -224,7 +224,7 @@ describe('Batch Processor', () => {
   })
 
   describe('combineResponses', () => {
-    it('should combine local and provider responses correctly', () => {
+    it('should combine local and provider responses correctly', async () => {
       const processedRequests = [
         {
           request: { id: 1, jsonrpc: '2.0', method: 'eth_chainId', params: [] },
@@ -242,7 +242,7 @@ describe('Batch Processor', () => {
 
       const providerResponses = [{ id: 2, jsonrpc: '2.0', result: '0xabc' }]
 
-      const result = combineResponses(
+      const result = await combineResponses(
         processedRequests,
         providerResponses,
         '1',
@@ -255,7 +255,7 @@ describe('Batch Processor', () => {
       ])
     })
 
-    it('should handle missing provider responses', () => {
+    it('should handle missing provider responses', async () => {
       const processedRequests = [
         {
           request: { id: 1, jsonrpc: '2.0', method: 'eth_chainId', params: [] },
@@ -271,14 +271,15 @@ describe('Batch Processor', () => {
         },
       ]
 
-      const result = combineResponses(processedRequests, [], '1', mockEnv)
+      const result = await combineResponses(processedRequests, [], '1', mockEnv)
 
       expect(result[0]).toEqual({ id: 1, jsonrpc: '2.0', result: '0x1' })
       expect(result[1].error).toBeDefined()
       expect(result[1].error.code).toBe(-32603)
     })
 
-    test('should store response in cache when processed request has shouldCache true and provider response exists', () => {
+    test('should store response in cache when processed request has shouldCache true and provider response exists', async () => {
+      vi.mocked(cacheModule.shouldStore).mockReturnValue(true)
       const processedRequests: ProcessedRequest[] = [
         {
           request: { id: 10, jsonrpc: '2.0', method: 'eth_call', params: [] },
@@ -291,12 +292,11 @@ describe('Batch Processor', () => {
       const providerResponses = [
         { id: 10, jsonrpc: '2.0', result: '0xcacheTest' },
       ]
-
       const storeSpy = vi
         .spyOn(cacheModule, 'storeResponseInCache')
         .mockResolvedValue(undefined)
 
-      combineResponses(processedRequests, providerResponses, '1', mockEnv)
+      await combineResponses(processedRequests, providerResponses, '1', mockEnv)
       expect(storeSpy).toHaveBeenCalledWith(
         processedRequests[0].request,
         '1',
