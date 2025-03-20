@@ -5,18 +5,22 @@ import {
 } from './errorHandlers'
 import { processBatchRequests } from './requestProcessor'
 import { forwardRequestsToProvider } from './providerClient'
-import { storeENSResponseInKV } from './cache'
+import { storeResponseInCache } from './cache'
 
 /**
  * Combine the locally processed responses with the responses from the provider
  *
  * @param processedRequests The array of processed requests
  * @param providerResponses The responses from the provider (if any)
+ * @param chainId The chain ID
+ * @param env The environment variables
  * @returns An array of combined responses in the same order as the original batch
  */
 export const combineResponses = (
   processedRequests: ProcessedRequest[],
-  providerResponses: any[] | null
+  providerResponses: any[] | null,
+  chainId: string,
+  env: any
 ): any[] => {
   // a map of provider responses by request ID for quick lookup
   const responseMap = new Map<number | string, any>()
@@ -38,6 +42,18 @@ export const combineResponses = (
 
     // Otherwise, look up the response from the provider
     const providerResponse = responseMap.get(processed.request.id)
+
+    // If provider response is found and the request is marked as cacheable, store it
+    if (providerResponse && processed.shouldCache) {
+      storeResponseInCache(
+        processed.request,
+        chainId,
+        providerResponse,
+        env
+      ).catch((error: Error) => {
+        console.error('Error caching response:', error)
+      })
+    }
 
     // If we couldn't find a matching response, return an error
     if (!providerResponse) {
@@ -61,14 +77,14 @@ export const combineResponses = (
  * This function handles the complete processing flow, including forwarding requests and combining responses
  *
  * @param body The original request body (single request or batch)
- * @param networkId The network ID
+ * @param chainId The chain ID
  * @param originalRequest The original HTTP request
  * @param env The environment variables
  * @returns A ProcessingResult containing the responses and any error information
  */
 export const processAndForwardRequests = async (
   body: RpcRequest | RpcRequest[],
-  networkId: string,
+  chainId: string,
   originalRequest: Request,
   env: Env
 ): Promise<ProcessingResult> => {
@@ -80,7 +96,7 @@ export const processAndForwardRequests = async (
     // Process the batch of requests
     const batchResult = await processBatchRequests(
       requests,
-      networkId,
+      chainId,
       originalRequest,
       env
     )
@@ -98,7 +114,7 @@ export const processAndForwardRequests = async (
       // Forward requests to the provider
       const forwardingResult = await forwardRequestsToProvider(
         batchResult.requestsToForward,
-        networkId,
+        chainId,
         env
       )
 
@@ -118,7 +134,9 @@ export const processAndForwardRequests = async (
         if (isBatchRequest) {
           const combinedResponses = combineResponses(
             batchResult.processedRequests,
-            [errorResponse]
+            [errorResponse],
+            chainId,
+            env
           )
 
           return {
@@ -146,32 +164,13 @@ export const processAndForwardRequests = async (
       // Get the provider responses
       const providerResponses = forwardingResult.responses || []
 
-      // Process ENS caching for all relevant responses
-      if (providerResponses.length > 0) {
-        // Find requests that should be cached
-        batchResult.processedRequests
-          .filter((req) => req.shouldCacheENS)
-          .forEach((req) => {
-            // Find the matching response for this request
-            const response = providerResponses.find(
-              (resp) => resp.id === req.request.id
-            )
-            if (response) {
-              // Don't await to avoid blocking the response
-              storeENSResponseInKV(req.request, response, networkId, env).catch(
-                (error: Error) => {
-                  console.error('Error caching ENS response:', error)
-                }
-              )
-            }
-          })
-      }
-
       // For batch requests, combine the local and provider responses
       if (isBatchRequest) {
         const combinedResponses = combineResponses(
           batchResult.processedRequests,
-          providerResponses
+          providerResponses,
+          chainId,
+          env
         )
 
         return {
@@ -199,7 +198,9 @@ export const processAndForwardRequests = async (
       if (isBatchRequest) {
         const combinedResponses = combineResponses(
           batchResult.processedRequests,
-          [errorResponse]
+          [errorResponse],
+          chainId,
+          env
         )
 
         return {

@@ -5,23 +5,22 @@ import {
   BatchProcessingResult,
 } from './types'
 import { shouldRateLimit } from './rateLimit'
-import { isNameResolutionRequest } from './utils'
-import { getENSResponseFromKV } from './cache'
+import { getCachedResponseForRequest, shouldStore } from './cache'
 
 /**
  * Process a chainId request locally
  * @param request The RPC request
- * @param networkId The network ID
+ * @param chainId The chain ID
  * @returns The RPC response
  */
 export const processChainIdRequest = (
   request: RpcRequest,
-  networkId: string
+  chainId: string
 ): any => {
   return {
     id: request.id,
     jsonrpc: '2.0',
-    result: `0x${parseInt(networkId).toString(16)}`,
+    result: `0x${parseInt(chainId).toString(16)}`,
   }
 }
 
@@ -37,7 +36,7 @@ export const processChainIdRequest = (
  */
 export const processSingleRequest = async (
   request: RpcRequest,
-  networkId: string,
+  chainId: string,
   originalRequest: Request,
   env: Env
 ): Promise<ProcessedRequest> => {
@@ -45,37 +44,25 @@ export const processSingleRequest = async (
   if (request.method?.toLowerCase().trim() === 'eth_chainid') {
     return {
       request,
-      response: processChainIdRequest(request, networkId),
+      response: processChainIdRequest(request, chainId),
       shouldForward: false,
       rateLimited: false,
     }
   }
 
-  // Check if this is an ENS/Basename request that can be cached
-  if (isNameResolutionRequest(request, networkId)) {
-    // Try to get from cache
-    const cachedData = await getENSResponseFromKV(request, networkId, env)
-    if (cachedData) {
-      return {
-        request,
-        response: {
-          id: request.id,
-          jsonrpc: request.jsonrpc || '2.0',
-          result: cachedData.result,
-        },
-        shouldForward: false,
-        rateLimited: false,
-        fromCache: true,
-      }
-    }
-
-    // If not in cache, mark for later caching
+  // Check if this request is cached
+  const cachedResponse = await getCachedResponseForRequest(
+    request,
+    chainId,
+    env
+  )
+  if (cachedResponse) {
     return {
       request,
-      response: null,
-      shouldForward: true,
+      response: cachedResponse,
+      shouldForward: false,
       rateLimited: false,
-      shouldCacheENS: true,
+      fromCache: true,
     }
   }
 
@@ -84,7 +71,7 @@ export const processSingleRequest = async (
     originalRequest,
     env,
     request,
-    networkId
+    chainId
   )
 
   if (isRateLimited) {
@@ -104,6 +91,7 @@ export const processSingleRequest = async (
     response: null,
     shouldForward: true,
     rateLimited: false,
+    shouldCache: shouldStore(request),
   }
 }
 
@@ -113,21 +101,21 @@ export const processSingleRequest = async (
  * can be handled locally and which need to be forwarded to the provider
  *
  * @param requests The array of RPC requests to process
- * @param networkId The network ID
+ * @param chainId The chain ID
  * @param originalRequest The original HTTP request
  * @param env The environment variables
  * @returns A BatchProcessingResult object with the processed requests and requests to forward
  */
 export const processBatchRequests = async (
   requests: RpcRequest[],
-  networkId: string,
+  chainId: string,
   originalRequest: Request,
   env: Env
 ): Promise<BatchProcessingResult> => {
   // process all requests
   const processedRequests: ProcessedRequest[] = await Promise.all(
     requests.map((request) =>
-      processSingleRequest(request, networkId, originalRequest, env)
+      processSingleRequest(request, chainId, originalRequest, env)
     )
   )
 

@@ -1,5 +1,5 @@
 import { ContractType, Env, RpcRequest } from './types'
-import { getKVContractTypeKey, generateENSCacheKey, getCacheTTL } from './utils'
+import { getKVContractTypeKey, getCacheTTL } from './utils'
 
 /**
  * Retrieves a contract's status from KV storage
@@ -52,9 +52,9 @@ export const storeContractStatusInKV = async (
 }
 
 /**
- * Get a cached ENS/Basename response from KV storage
+ * Get a cached response from KV storage
  * @param request The RPC request
- * @param networkId The network ID
+ * @param chainId The chain ID
  * @param env The environment variables
  * @returns The cached response or null if not found
  *
@@ -62,38 +62,42 @@ export const storeContractStatusInKV = async (
  * falls back to retrieving as text and parsing manually. If the text
  * parsing also fails, deletes the corrupted cache entry.
  */
-export const getENSResponseFromKV = async (
+export const getResponseFromKV = async (
   request: RpcRequest,
-  networkId: string,
+  chainId: string,
   env: Env
 ): Promise<any> => {
-  if (!env.NAME_RESOLUTION_CACHE) {
+  if (!env.REQUEST_CACHE) {
     return null
   }
 
-  const cacheKey = generateENSCacheKey(request, networkId)
+  // Generate a cache key from the request method and params
+  const paramsStr = Array.isArray(request.params)
+    ? request.params.join(',')
+    : ''
+  const cacheKey = [request.method, paramsStr].join(':')
 
   try {
     // Try to get and parse as JSON
-    const cached = await env.NAME_RESOLUTION_CACHE.get(cacheKey, 'json')
+    const cached = await env.REQUEST_CACHE.get(cacheKey, 'json')
     if (cached) {
       return cached
     }
   } catch (error) {
     // If JSON parsing fails, try simple text retrieval and parse it
     try {
-      const rawText = await env.NAME_RESOLUTION_CACHE.get(cacheKey, 'text')
+      const rawText = await env.REQUEST_CACHE.get(cacheKey, 'text')
       if (rawText) {
         try {
           return JSON.parse(rawText)
         } catch {
           // If still can't parse, delete the corrupted entry
-          await env.NAME_RESOLUTION_CACHE.delete(cacheKey).catch(() => {})
+          await env.REQUEST_CACHE.delete(cacheKey).catch(() => {})
         }
       }
     } catch (error) {
       console.error(
-        `Error reading from ENS cache: ${error instanceof Error ? error.message : String(error)}`
+        `Error reading from cache: ${error instanceof Error ? error.message : String(error)}`
       )
     }
   }
@@ -102,34 +106,93 @@ export const getENSResponseFromKV = async (
 }
 
 /**
- * Cache an ENS/Basename response
+ * Cache a response
  * @param request The RPC request
  * @param response The response to cache
- * @param networkId The network ID
+ * @param chainId The chain ID
  * @param env The environment variables
  */
-export const storeENSResponseInKV = async (
+export const storeResponseInKV = async (
   request: RpcRequest,
   response: any,
-  networkId: string,
+  chainId: string,
   env: Env
 ): Promise<void> => {
-  if (!env.NAME_RESOLUTION_CACHE || !response?.result) {
+  if (!env.REQUEST_CACHE || !response?.result) {
     return
   }
-
-  const cacheKey = generateENSCacheKey(request, networkId)
+  const paramsStr = Array.isArray(request.params)
+    ? request.params.join(',')
+    : ''
+  const cacheKey = [request.method, paramsStr].join(':')
   const ttl = getCacheTTL(env)
 
   try {
-    // Only store the result, not the full RPC response
     const cacheValue = { result: response.result }
-    await env.NAME_RESOLUTION_CACHE.put(cacheKey, JSON.stringify(cacheValue), {
+    await env.REQUEST_CACHE.put(cacheKey, JSON.stringify(cacheValue), {
       expirationTtl: ttl,
     })
   } catch (error) {
     console.error(
-      `Error writing to ENS cache: ${error instanceof Error ? error.message : String(error)}`
+      `Error writing to cache: ${error instanceof Error ? error.message : String(error)}`
     )
   }
+}
+
+/**
+ * Determine if a request should be cached
+ * @param request The RPC request
+ * @returns True if the request should be cached, false otherwise
+ */
+export const shouldStore = (request: RpcRequest): boolean => {
+  // Determine if the request qualifies for caching.
+
+  if (!request.method) return false
+  const lowerMethod = request.method.toLowerCase()
+  return lowerMethod.includes('ens') || lowerMethod.includes('basename')
+}
+
+/**
+ * Get a cached response for a request
+ * @param request The RPC request
+ * @param chainId The chain ID
+ * @param env The environment variables
+ * @returns The cached response or null if not found
+ */
+export const getCachedResponseForRequest = async (
+  request: RpcRequest,
+  chainId: string,
+  env: Env
+): Promise<any> => {
+  if (!shouldStore(request)) {
+    return null
+  }
+  const cached = await getResponseFromKV(request, chainId, env)
+  if (cached && cached.result !== undefined) {
+    return {
+      id: request.id,
+      jsonrpc: request.jsonrpc || '2.0',
+      result: cached.result,
+    }
+  }
+  return null
+}
+
+/**
+ * Store a response in cache
+ * @param request The RPC request
+ * @param chainId The chain ID
+ * @param response The response to cache
+ * @param env The environment variables
+ */
+export const storeResponseInCache = async (
+  request: RpcRequest,
+  chainId: string,
+  response: any,
+  env: Env
+): Promise<void> => {
+  if (!shouldStore(request) || !response?.result) {
+    return
+  }
+  await storeResponseInKV(request, response, chainId, env)
 }
