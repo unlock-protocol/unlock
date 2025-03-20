@@ -3,8 +3,35 @@ import {
   getKVContractTypeKey,
   getCacheTTL,
   isNameResolutionRequest,
-  generateRequestCacheKey,
 } from './utils'
+
+/**
+ * Generate a cache key from a request's method and params
+ * @param request The RPC request
+ * @returns The cache key
+ */
+const generateRequestCacheKey = (request: RpcRequest): string => {
+  let paramsStr = ''
+
+  try {
+    if (Array.isArray(request.params)) {
+      // Handle each parameter individually to ensure proper serialization
+      paramsStr = request.params
+        .map((param) => {
+          return String(param)
+        })
+        .join(',')
+    }
+  } catch (error) {
+    console.error(
+      `Error generating cache key: ${error instanceof Error ? error.message : String(error)}`
+    )
+    // Fallback to a simple string to avoid breaking
+    paramsStr = String(request.params)
+  }
+
+  return [request.method, paramsStr].join(':')
+}
 
 /**
  * Retrieves a contract's status from KV storage
@@ -79,30 +106,18 @@ export const getResponseFromKV = async (
   const cacheKey = generateRequestCacheKey(request)
 
   try {
-    // Try to get and parse as JSON
     const cached = await env.REQUEST_CACHE.get(cacheKey, 'json')
     if (cached) {
       return cached
     }
   } catch (error) {
-    // If JSON parsing fails, try simple text retrieval and parse it
-    try {
-      const rawText = await env.REQUEST_CACHE.get(cacheKey, 'text')
-      if (rawText) {
-        try {
-          return JSON.parse(rawText)
-        } catch {
-          // If still can't parse, delete the corrupted entry
-          await env.REQUEST_CACHE.delete(cacheKey).catch((err) => {
-            console.error(`Error deleting corrupted cache entry: ${err}`)
-          })
-        }
-      }
-    } catch (error) {
-      console.error(
-        `Error reading from cache: ${error instanceof Error ? error.message : String(error)}`
-      )
-    }
+    console.error(
+      `Error reading from cache: ${error instanceof Error ? error.message : String(error)}`
+    )
+    // Delete corrupted entry
+    await env.REQUEST_CACHE.delete(cacheKey).catch((err) => {
+      console.error(`Error deleting corrupted cache entry: ${err}`)
+    })
   }
 
   return null
@@ -147,16 +162,7 @@ export const storeResponseInKV = async (
  */
 export const shouldStore = (request: RpcRequest, chainId: string): boolean => {
   if (!request.method) return false
-
-  // check if it's a name resolution request
-  if (
-    request.method.toLowerCase() === 'eth_call' &&
-    isNameResolutionRequest(request, chainId)
-  ) {
-    return true
-  }
-
-  return false
+  return isNameResolutionRequest(request, chainId)
 }
 
 /**
@@ -198,7 +204,7 @@ export const storeResponseInCache = async (
   response: any,
   env: Env
 ): Promise<void> => {
-  if (!shouldStore(request, chainId) || !response?.result) {
+  if (!shouldStore(request, chainId)) {
     return
   }
   await storeResponseInKV(request, response, chainId, env)

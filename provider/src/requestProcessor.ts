@@ -6,6 +6,7 @@ import {
 } from './types'
 import { shouldRateLimit } from './rateLimit'
 import { getCachedResponseForRequest } from './cache'
+import { getClientIP } from './utils'
 
 /**
  * Process a chainId request locally
@@ -77,6 +78,9 @@ export const processSingleRequest = async (
   if (isRateLimited) {
     // Log the rate limit but still forward the request to maintain current behavior
     // This would later be changed to block rate-limited requests
+    console.log(
+      `RATE_LIMIT_WOULD_BLOCK: IP=${getClientIP(originalRequest)}, networkId=${chainId}, Request ID=${request.id}, Method=${request.method}`
+    )
     return {
       request,
       response: null,

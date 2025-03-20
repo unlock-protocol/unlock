@@ -7,39 +7,6 @@ import { DEFAULT_CACHE_TTL } from './lib/constants'
 import { Env, RpcRequest } from './types'
 import { ethers } from 'ethers'
 
-/**
- * Generate a cache key from a request's method and params
- * @param request The RPC request
- * @returns The cache key
- */
-export const generateRequestCacheKey = (request: RpcRequest): string => {
-  let paramsStr = ''
-
-  try {
-    if (Array.isArray(request.params)) {
-      // Handle each parameter individually to ensure proper serialization
-      paramsStr = request.params
-        .map((param) => {
-          if (param === null) return 'null'
-          if (typeof param === 'object') {
-            // Sort keys to ensure consistent ordering regardless of original order
-            return JSON.stringify(param, Object.keys(param).sort())
-          }
-          return String(param)
-        })
-        .join(',')
-    }
-  } catch (error) {
-    console.error(
-      `Error generating cache key: ${error instanceof Error ? error.message : String(error)}`
-    )
-    // Fallback to a simple string to avoid breaking
-    paramsStr = String(request.params)
-  }
-
-  return [request.method, paramsStr].join(':')
-}
-
 // Generate the KV key for a given contract type
 export const getKVContractTypeKey = (
   networkId: string,
