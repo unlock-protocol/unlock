@@ -32,14 +32,15 @@ port = 8787
 # KV namespace for allowed contracts
 [[kv_namespaces]]
 binding = "ALLOWED_CONTRACTS"
-preview_id = "dev-allowed-contracts"
 id = "9073bea6f14048f09e64e75bcb3fba81"
+preview_id = "dev-allowed-contracts"
 
-# KV namespace for ENS and Basenames resolution caching
+
+# KV namespace for request caching
 [[kv_namespaces]]
-binding = "NAME_RESOLUTION_CACHE"
-preview_id = "dev-name-resolution-cache"
-id = "14bc8c6e5be04a268004176a7cc211d7"
+binding = "REQUEST_CACHE"
+id = "0d52c25fc4cf4e8eb5cbd944a8bfb5d9"
+preview_id = "dev-request-cache"
 
 
 [observability]
