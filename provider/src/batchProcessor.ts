@@ -5,7 +5,7 @@ import {
 } from './errorHandlers'
 import { processBatchRequests } from './requestProcessor'
 import { forwardRequestsToProvider } from './providerClient'
-import { storeResponseInCache } from './cache'
+import { storeResponseInCache, shouldStore } from './cache'
 
 /**
  * Combine the locally processed responses with the responses from the provider
@@ -43,8 +43,8 @@ export const combineResponses = (
     // Otherwise, look up the response from the provider
     const providerResponse = responseMap.get(processed.request.id)
 
-    // If provider response is found and the request is marked as cacheable, store it
-    if (providerResponse && processed.shouldCache) {
+    // If provider response is found and the request qualifies for caching, store it
+    if (providerResponse && shouldStore(processed.request, chainId)) {
       storeResponseInCache(
         processed.request,
         chainId,
