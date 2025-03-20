@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "peerDependencies": {
-    "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
   },
   "dependencies": {
     "@headlessui/react": "2.2.0",
@@ -32,7 +32,7 @@
     "typescript": "5.8.2"
   },
   "devDependencies": {
-    "@types/react": "18.3.18",
+    "@types/react": "19.0.12",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "@vitejs/plugin-react": "4.3.4",
     "autoprefixer": "10.4.20",
