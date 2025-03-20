@@ -10336,86 +10336,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomicfoundation/slang-darwin-arm64@npm:0.17.0":
-  version: 0.17.0
-  resolution: "@nomicfoundation/slang-darwin-arm64@npm:0.17.0"
-  checksum: 10/a59b03c290eadb72a21096f78e6fa8fd3f33edc117477456ad38b70f407f1e8b972b6f83a2a72c7b13e83eee3745d52ccbcb925d190c9181b7766fb81934aff1
-  languageName: node
-  linkType: hard
-
-"@nomicfoundation/slang-darwin-x64@npm:0.17.0":
-  version: 0.17.0
-  resolution: "@nomicfoundation/slang-darwin-x64@npm:0.17.0"
-  checksum: 10/db721807fd30fe581b60102f86cbccba148d27bdce72d208ccaba8c2a597d68e00f694193b0b3a0d3d2f143fca442a648f6ae93f3d1f42e1cae5deeb33c0e74b
-  languageName: node
-  linkType: hard
-
-"@nomicfoundation/slang-linux-arm64-gnu@npm:0.17.0":
-  version: 0.17.0
-  resolution: "@nomicfoundation/slang-linux-arm64-gnu@npm:0.17.0"
-  checksum: 10/470faf998757658d172d44ce414efde77b8ca93f26da4520b9d470b36b0698ba5cc37c1eb85ab863a4db923e746ff44e02e863cfe019ad7d3b9c946c5d03411c
-  languageName: node
-  linkType: hard
-
-"@nomicfoundation/slang-linux-arm64-musl@npm:0.17.0":
-  version: 0.17.0
-  resolution: "@nomicfoundation/slang-linux-arm64-musl@npm:0.17.0"
-  checksum: 10/ac218fe98b4a8df67c8d8528157c520bd1a3aedc8e5decf485ea54fe0a067602c23abeef769b45cd12ca39c0d720af58cb93733cd0d2665cdae17e9b08401d17
-  languageName: node
-  linkType: hard
-
-"@nomicfoundation/slang-linux-x64-gnu@npm:0.17.0":
-  version: 0.17.0
-  resolution: "@nomicfoundation/slang-linux-x64-gnu@npm:0.17.0"
-  checksum: 10/92c27abd7f1363856aa030cbf19cf7a23de5f6eac83511aa773e2c99de8dc4cb5f0156b0ed0fc605c9367b88475d30dac1ddd03f748e7f03a1f46023a24aa5c6
-  languageName: node
-  linkType: hard
-
-"@nomicfoundation/slang-linux-x64-musl@npm:0.17.0":
-  version: 0.17.0
-  resolution: "@nomicfoundation/slang-linux-x64-musl@npm:0.17.0"
-  checksum: 10/442ec17a4086511abd9983701de2b4fcd01b7c491ec75edb52774d4e37f822ac2243a115affcf365ea0ab29d390850424d323e7fcf7f4cf0ebedb98279e0355a
-  languageName: node
-  linkType: hard
-
-"@nomicfoundation/slang-win32-arm64-msvc@npm:0.17.0":
-  version: 0.17.0
-  resolution: "@nomicfoundation/slang-win32-arm64-msvc@npm:0.17.0"
-  checksum: 10/d9a52a971c334a64929041ee17c35ee281b2771b85bfd5476a0cc6cc58e1bb460d409112b22127cda69fde7eb7c5e62f84a93af7e0acee32f40540a92350ce55
-  languageName: node
-  linkType: hard
-
-"@nomicfoundation/slang-win32-ia32-msvc@npm:0.17.0":
-  version: 0.17.0
-  resolution: "@nomicfoundation/slang-win32-ia32-msvc@npm:0.17.0"
-  checksum: 10/248fc679b3931c2bad638c39f774490c941ebf2b50076d1a493e8b04b43027c5e76613c96f9d2c9e9281dcca10c2835ac8686a7fbe627d9c07e577e484d0b0ea
-  languageName: node
-  linkType: hard
-
-"@nomicfoundation/slang-win32-x64-msvc@npm:0.17.0":
-  version: 0.17.0
-  resolution: "@nomicfoundation/slang-win32-x64-msvc@npm:0.17.0"
-  checksum: 10/75e70c6e07add0981406cb43f4b83c7e49c67d649b0e658afd1a485952b1ef8b9f89ca6cd4ef4432e5b33d53c8a06a76f7446127bc9e28fafbb980fad72fcf18
-  languageName: node
-  linkType: hard
-
-"@nomicfoundation/slang@npm:^0.17.0":
-  version: 0.17.0
-  resolution: "@nomicfoundation/slang@npm:0.17.0"
-  dependencies:
-    "@nomicfoundation/slang-darwin-arm64": "npm:0.17.0"
-    "@nomicfoundation/slang-darwin-x64": "npm:0.17.0"
-    "@nomicfoundation/slang-linux-arm64-gnu": "npm:0.17.0"
-    "@nomicfoundation/slang-linux-arm64-musl": "npm:0.17.0"
-    "@nomicfoundation/slang-linux-x64-gnu": "npm:0.17.0"
-    "@nomicfoundation/slang-linux-x64-musl": "npm:0.17.0"
-    "@nomicfoundation/slang-win32-arm64-msvc": "npm:0.17.0"
-    "@nomicfoundation/slang-win32-ia32-msvc": "npm:0.17.0"
-    "@nomicfoundation/slang-win32-x64-msvc": "npm:0.17.0"
-  checksum: 10/65fe87326105e7c88878c4ca31d9aa062b73387219657a30756eb7c552fba875431faa21ea32a9381cdb5832874a7054728d264ad46ef70ab7da0715d099f9c5
-  languageName: node
-  linkType: hard
-
 "@nomicfoundation/slang@npm:^0.18.3":
   version: 0.18.3
   resolution: "@nomicfoundation/slang@npm:0.18.3"
@@ -11648,19 +11568,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/contracts-hardhat-zksync-upgradable@npm:@openzeppelin/contracts@^5.0.2, @openzeppelin/contracts@npm:^5.0.0":
+"@openzeppelin/contracts-hardhat-zksync-upgradable@npm:@openzeppelin/contracts@^5.0.2, @openzeppelin/contracts5@npm:@openzeppelin/contracts@5.2.0, @openzeppelin/contracts@npm:5.2.0, @openzeppelin/contracts@npm:^5.0.0":
   version: 5.2.0
   resolution: "@openzeppelin/contracts@npm:5.2.0"
   checksum: 10/d77e1bdfca6fa1c40b5a32bb92220ec633ef86cc0bf43a011ad218c26c9e763c70ace3fc1e148a0462394a3aed8c5d7445935ebfeb146ba1454abec66625e420
   languageName: node
   linkType: hard
 
-"@openzeppelin/contracts-upgradeable5@npm:@openzeppelin/contracts-upgradeable@5.0.2, @openzeppelin/contracts-upgradeable@npm:5.0.2":
-  version: 5.0.2
-  resolution: "@openzeppelin/contracts-upgradeable@npm:5.0.2"
+"@openzeppelin/contracts-upgradeable5@npm:@openzeppelin/contracts-upgradeable@5.2.0, @openzeppelin/contracts-upgradeable@npm:^5.0.0":
+  version: 5.2.0
+  resolution: "@openzeppelin/contracts-upgradeable@npm:5.2.0"
   peerDependencies:
-    "@openzeppelin/contracts": 5.0.2
-  checksum: 10/71847c6bbd7a859a2f02f496215b9664e41375589010e66da32f080d9af9215accf558da63134926e0eb3eb87ee7ab952462bc877ec5c5e1ac077b44cac9c363
+    "@openzeppelin/contracts": 5.2.0
+  checksum: 10/202f8a0fe118d1b5b838867224b183b8fcef814e9e45c575deb99859a031ef89ca0e778f0e3cf14b18494d5b867bbe0c8ea9d064a4410c53afb20d7b470c7479
   languageName: node
   linkType: hard
 
@@ -11671,19 +11591,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/contracts-upgradeable@npm:^5.0.0":
-  version: 5.2.0
-  resolution: "@openzeppelin/contracts-upgradeable@npm:5.2.0"
-  peerDependencies:
-    "@openzeppelin/contracts": 5.2.0
-  checksum: 10/202f8a0fe118d1b5b838867224b183b8fcef814e9e45c575deb99859a031ef89ca0e778f0e3cf14b18494d5b867bbe0c8ea9d064a4410c53afb20d7b470c7479
-  languageName: node
-  linkType: hard
-
-"@openzeppelin/contracts5@npm:@openzeppelin/contracts@5.0.2, @openzeppelin/contracts@npm:5.0.2":
+"@openzeppelin/contracts-upgradeable@npm:5.0.2":
   version: 5.0.2
-  resolution: "@openzeppelin/contracts@npm:5.0.2"
-  checksum: 10/938ebffbdade7dc59ea3df5b562c0e457bbefde9d82be8fa2acfd11da887df11653ac07922f41746b80cdbc106430e1e6978ce244fe99b00a7d9dc1418fc7670
+  resolution: "@openzeppelin/contracts-upgradeable@npm:5.0.2"
+  peerDependencies:
+    "@openzeppelin/contracts": 5.0.2
+  checksum: 10/71847c6bbd7a859a2f02f496215b9664e41375589010e66da32f080d9af9215accf558da63134926e0eb3eb87ee7ab952462bc877ec5c5e1ac077b44cac9c363
   languageName: node
   linkType: hard
 
@@ -11691,6 +11604,13 @@ __metadata:
   version: 3.4.2-solc-0.7
   resolution: "@openzeppelin/contracts@npm:3.4.2-solc-0.7"
   checksum: 10/a21aa0a623f020cb32cd3c6b7903d806ec458b2a750feb86f5e3bcf0b7ae124d844b9d1c029f9e0707d6263b561f35a694bafc1b0bff30c3e95541124f8fd41c
+  languageName: node
+  linkType: hard
+
+"@openzeppelin/contracts@npm:5.0.2":
+  version: 5.0.2
+  resolution: "@openzeppelin/contracts@npm:5.0.2"
+  checksum: 10/938ebffbdade7dc59ea3df5b562c0e457bbefde9d82be8fa2acfd11da887df11653ac07922f41746b80cdbc106430e1e6978ce244fe99b00a7d9dc1418fc7670
   languageName: node
   linkType: hard
 
@@ -11743,7 +11663,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk-base-client@npm:^1.10.0, @openzeppelin/defender-sdk-base-client@npm:^1.14.4, @openzeppelin/defender-sdk-base-client@npm:^1.15.2":
+"@openzeppelin/defender-sdk-base-client@npm:^1.10.0, @openzeppelin/defender-sdk-base-client@npm:^1.15.2":
   version: 1.15.2
   resolution: "@openzeppelin/defender-sdk-base-client@npm:1.15.2"
   dependencies:
@@ -11764,7 +11684,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk-deploy-client@npm:^1.10.0, @openzeppelin/defender-sdk-deploy-client@npm:^1.14.4, @openzeppelin/defender-sdk-deploy-client@npm:^1.15.2":
+"@openzeppelin/defender-sdk-deploy-client@npm:^1.10.0, @openzeppelin/defender-sdk-deploy-client@npm:^1.15.2":
   version: 1.15.2
   resolution: "@openzeppelin/defender-sdk-deploy-client@npm:1.15.2"
   dependencies:
@@ -11810,7 +11730,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk-network-client@npm:^1.10.0, @openzeppelin/defender-sdk-network-client@npm:^1.14.4, @openzeppelin/defender-sdk-network-client@npm:^1.15.2":
+"@openzeppelin/defender-sdk-network-client@npm:^1.10.0, @openzeppelin/defender-sdk-network-client@npm:^1.15.2":
   version: 1.15.2
   resolution: "@openzeppelin/defender-sdk-network-client@npm:1.15.2"
   dependencies:
@@ -11923,33 +11843,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/hardhat-upgrades@npm:3.4.0":
-  version: 3.4.0
-  resolution: "@openzeppelin/hardhat-upgrades@npm:3.4.0"
-  dependencies:
-    "@openzeppelin/defender-sdk-base-client": "npm:^1.14.4"
-    "@openzeppelin/defender-sdk-deploy-client": "npm:^1.14.4"
-    "@openzeppelin/defender-sdk-network-client": "npm:^1.14.4"
-    "@openzeppelin/upgrades-core": "npm:^1.38.0"
-    chalk: "npm:^4.1.0"
-    debug: "npm:^4.1.1"
-    ethereumjs-util: "npm:^7.1.5"
-    proper-lockfile: "npm:^4.1.1"
-    undici: "npm:^6.11.1"
-  peerDependencies:
-    "@nomicfoundation/hardhat-ethers": ^3.0.0
-    "@nomicfoundation/hardhat-verify": ^2.0.0
-    ethers: ^6.6.0
-    hardhat: ^2.0.2
-  peerDependenciesMeta:
-    "@nomicfoundation/hardhat-verify":
-      optional: true
-  bin:
-    migrate-oz-cli-project: dist/scripts/migrate-oz-cli-project.js
-  checksum: 10/e407ddd3df3c901c52e577cd2462017176bb88055b6bfbce8fc66d056b1e5cc8aa1686ccde637223bf8bbbde77f63269a7291517ef4053454d804bed1b921756
-  languageName: node
-  linkType: hard
-
 "@openzeppelin/hardhat-upgrades@npm:3.9.0, @openzeppelin/hardhat-upgrades@npm:^3.2.1, @openzeppelin/hardhat-upgrades@npm:^3.3.0":
   version: 3.9.0
   resolution: "@openzeppelin/hardhat-upgrades@npm:3.9.0"
@@ -11987,27 +11880,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/upgrades-core@npm:1.39.0":
-  version: 1.39.0
-  resolution: "@openzeppelin/upgrades-core@npm:1.39.0"
-  dependencies:
-    "@nomicfoundation/slang": "npm:^0.17.0"
-    cbor: "npm:^9.0.0"
-    chalk: "npm:^4.1.0"
-    compare-versions: "npm:^6.0.0"
-    debug: "npm:^4.1.1"
-    ethereumjs-util: "npm:^7.0.3"
-    minimatch: "npm:^9.0.5"
-    minimist: "npm:^1.2.7"
-    proper-lockfile: "npm:^4.1.1"
-    solidity-ast: "npm:^0.4.51"
-  bin:
-    openzeppelin-upgrades-core: dist/cli/cli.js
-  checksum: 10/7779ce35966a6ee054eb4f167ef98f0d95dd4e5e5f309b89a59b6eaf0de8d0395205eb3b19957aea09c74c92754073a4c12f7728f86e072208694361aeb6c201
-  languageName: node
-  linkType: hard
-
-"@openzeppelin/upgrades-core@npm:1.42.1, @openzeppelin/upgrades-core@npm:^1.32.2, @openzeppelin/upgrades-core@npm:^1.37.0, @openzeppelin/upgrades-core@npm:^1.38.0, @openzeppelin/upgrades-core@npm:^1.41.0":
+"@openzeppelin/upgrades-core@npm:1.42.1, @openzeppelin/upgrades-core@npm:^1.32.2, @openzeppelin/upgrades-core@npm:^1.37.0, @openzeppelin/upgrades-core@npm:^1.41.0":
   version: 1.42.1
   resolution: "@openzeppelin/upgrades-core@npm:1.42.1"
   dependencies:
@@ -12024,6 +11897,26 @@ __metadata:
   bin:
     openzeppelin-upgrades-core: dist/cli/cli.js
   checksum: 10/e52b600a7635929aab649a3ec9e248cad73cc57c3ef7d467d9f0de84b2a2b0846523ce98aa4f5b80acaff68cd66ebc60ab81c1c5fbcd8e284570d592f6e18f9c
+  languageName: node
+  linkType: hard
+
+"@openzeppelin/upgrades-core@npm:1.42.2":
+  version: 1.42.2
+  resolution: "@openzeppelin/upgrades-core@npm:1.42.2"
+  dependencies:
+    "@nomicfoundation/slang": "npm:^0.18.3"
+    cbor: "npm:^10.0.0"
+    chalk: "npm:^4.1.0"
+    compare-versions: "npm:^6.0.0"
+    debug: "npm:^4.1.1"
+    ethereumjs-util: "npm:^7.0.3"
+    minimatch: "npm:^9.0.5"
+    minimist: "npm:^1.2.7"
+    proper-lockfile: "npm:^4.1.1"
+    solidity-ast: "npm:^0.4.51"
+  bin:
+    openzeppelin-upgrades-core: dist/cli/cli.js
+  checksum: 10/7000c7cf6822eab2b8a927acc1f09b769004667644e389ae582cd4f87f74433cdd3bc80477f95990d40bb60c15b85e61e5ad4cd47e0e7e70c4e5cbef6cbad10c
   languageName: node
   linkType: hard
 
@@ -18531,13 +18424,13 @@ __metadata:
     "@nomicfoundation/hardhat-ethers": "npm:3.0.8"
     "@nomicfoundation/hardhat-network-helpers": "npm:1.0.12"
     "@nomicfoundation/hardhat-verify": "npm:2.0.13"
-    "@openzeppelin/contracts": "npm:5.0.2"
+    "@openzeppelin/contracts": "npm:5.2.0"
     "@openzeppelin/contracts-upgradeable": "npm:4.9.6"
-    "@openzeppelin/contracts-upgradeable5": "npm:@openzeppelin/contracts-upgradeable@5.0.2"
-    "@openzeppelin/contracts5": "npm:@openzeppelin/contracts@5.0.2"
-    "@openzeppelin/hardhat-upgrades": "npm:3.4.0"
+    "@openzeppelin/contracts-upgradeable5": "npm:@openzeppelin/contracts-upgradeable@5.2.0"
+    "@openzeppelin/contracts5": "npm:@openzeppelin/contracts@5.2.0"
+    "@openzeppelin/hardhat-upgrades": "npm:3.9.0"
     "@openzeppelin/merkle-tree": "npm:1.0.8"
-    "@openzeppelin/upgrades-core": "npm:1.39.0"
+    "@openzeppelin/upgrades-core": "npm:1.42.2"
     "@uniswap/v3-core": "npm:1.0.1"
     "@uniswap/v3-periphery": "npm:1.4.4"
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
@@ -18549,14 +18442,14 @@ __metadata:
     eslint: "npm:9.22.0"
     eth-gas-reporter: "npm:0.2.27"
     ethers: "npm:6.13.5"
-    fs-extra: "npm:11.2.0"
+    fs-extra: "npm:11.3.0"
     hardhat: "npm:2.22.19"
     hardhat-contract-sizer: "npm:2.10.0"
     hardhat-erc1820: "npm:0.1.0"
     hardhat-gas-reporter: "npm:2.2.2"
     hardhat-storage-layout: "npm:0.1.7"
     hardhat-tracer: "npm:3.1.0"
-    prettier: "npm:3.3.3"
+    prettier: "npm:3.5.3"
     prettier-plugin-solidity: "npm:1.4.2"
     solhint: "npm:5.0.5"
     solidity-coverage: "npm:0.8.14"
@@ -42892,15 +42785,6 @@ __metadata:
   bin:
     prettier: bin/prettier.cjs
   checksum: 10/ccf1ead9794b017be6b42d0873f459070beef2069eb393c8b4c0d11aa3430acefc54f6d5f44a5b7ce9af05ad8daf694b912f0aa2808d1c22dfa86e61e9d563f8
-  languageName: node
-  linkType: hard
-
-"prettier@npm:3.3.3":
-  version: 3.3.3
-  resolution: "prettier@npm:3.3.3"
-  bin:
-    prettier: bin/prettier.cjs
-  checksum: 10/5beac1f30b5b40162532b8e2f7c3a4eb650910a2695e9c8512a62ffdc09dae93190c29db9107fa7f26d1b6c71aad3628ecb9b5de1ecb0911191099be109434d7
   languageName: node
   linkType: hard
 
