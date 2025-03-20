@@ -82,7 +82,7 @@
     "pdfmake": "0.2.18",
     "pg": "8.13.3",
     "rate-limiter-flexible": "5.0.5",
-    "react": "18.3.1",
+    "react": "19.0.0",
     "remark-html": "16.0.1",
     "remark-parse": "11.0.0",
     "satori": "0.12.1",

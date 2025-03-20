@@ -21,8 +21,8 @@
     "build-storybook": "storybook build"
   },
   "peerDependencies": {
-    "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
   },
   "repository": {
     "type": "git",
@@ -36,11 +36,11 @@
     "@storybook/addon-links": "8.6.3",
     "@storybook/react": "8.6.3",
     "@storybook/react-vite": "8.6.3",
-    "@types/react": "18.3.18",
-    "@types/react-dom": "18.3.5",
+    "@types/react": "19.0.12",
+    "@types/react-dom": "19.0.4",
     "@vitejs/plugin-react": "4.3.4",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
     "storybook": "8.6.3",
     "tsup": "8.4.0",
     "tsx": "4.19.3",
