@@ -2,6 +2,9 @@
 
 import { PrivyProvider } from '@privy-io/react-auth'
 import { ToastProvider } from '@unlock-protocol/ui'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+const queryClient = new QueryClient()
 
 const Providers = ({ children }) => {
   return (
@@ -9,9 +12,11 @@ const Providers = ({ children }) => {
       config={{
         loginMethods: ['wallet'],
       }}
-      appId="cm2oqudm203nny8z9ho6chvyv"
+      appId="cm0ptl8td04urb29fpotv9q9y"
     >
-      <ToastProvider>{children}</ToastProvider>
+      <QueryClientProvider client={queryClient}>
+        <ToastProvider>{children}</ToastProvider>
+      </QueryClientProvider>
     </PrivyProvider>
   )
 }

@@ -29,7 +29,7 @@
   "author": "Unlock Inc",
   "license": "MIT",
   "peerDependencies": {
-    "axios": "1.8.1",
+    "axios": "1.8.2",
     "ethers": "^6.13.0"
   },
   "devDependencies": {
@@ -45,7 +45,7 @@
     "@unlock-protocol/types": "workspace:./packages/types",
     "eslint": "9.21.0",
     "ethers": "6.13.5",
-    "hardhat": "2.22.18",
+    "hardhat": "2.22.19",
     "prettier": "3.5.3",
     "tsup": "8.4.0",
     "typescript": "5.8.2",

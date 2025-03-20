@@ -25,13 +25,13 @@
     "@unlock-protocol/tsconfig": "workspace:^",
     "@unlock-protocol/types": "workspace:^",
     "ethers": "6.13.5",
-    "hardhat": "2.22.18",
+    "hardhat": "2.22.19",
     "typescript": "5.8.2",
-    "zksync-ethers": "6.16.0"
+    "zksync-ethers": "6.16.1"
   },
   "devDependencies": {
     "copyfiles": "2.4.1",
-    "eslint": "9.14.0",
+    "eslint": "9.22.0",
     "tsup": "8.4.0"
   },
   "repository": {

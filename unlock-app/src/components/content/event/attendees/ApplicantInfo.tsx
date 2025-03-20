@@ -12,6 +12,7 @@ interface ApplicantInfoProps {
   metadata: any
   isSelected: boolean
   setIsSelected: (selected: boolean) => void
+  resolvedName?: string
 }
 
 export const ApplicantInfo = React.memo(
@@ -20,6 +21,7 @@ export const ApplicantInfo = React.memo(
     lockAddress,
     owner,
     metadata,
+    resolvedName,
   }: Omit<ApplicantInfoProps, 'isSelected' | 'setIsSelected'>) => {
     const { isSelected, toggleSelection } = useSelection()
     const [approveAttendeeModalOpen, setApproveAttendeeModalOpen] =
@@ -89,7 +91,15 @@ export const ApplicantInfo = React.memo(
             valueSize="medium"
             className="w-full overflow-auto"
           >
-            <WrappedAddress address={owner} showExternalLink={false} />
+            <WrappedAddress
+              address={owner}
+              network={network}
+              addressType="wallet"
+              skipResolution
+              resolvedName={resolvedName}
+              showExternalLink={false}
+              showResolvedName={true}
+            />
           </Detail>
 
           <div className="md:hidden group-hover:flex absolute top-0 right-0">

@@ -1,5 +1,5 @@
 import { Placeholder } from '@unlock-protocol/ui'
-import { useConfig } from '~/utils/withConfig'
+import { config } from '~/config/app'
 
 interface LockIconProps {
   lockAddress: string
@@ -8,7 +8,6 @@ interface LockIconProps {
 }
 
 export const LockIcon = ({ lockAddress, loading }: LockIconProps) => {
-  const config = useConfig()
   const imageSrc = lockAddress
     ? `${config.services.storage.host}/lock/${lockAddress}/icon`
     : '/images/svg/default-lock-logo.svg'

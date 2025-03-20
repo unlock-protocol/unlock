@@ -14,11 +14,23 @@ The `Unlock.sol` contract is upgradable using OpenZeppelin's upgradability frame
 
 # Changelog
 
+## Version 14
+
+**Released**: Jan 2025
+
+The main changes in version 14 of Unlock focus on governance token distribution and deployment capabilities:
+
+### **Key Features**
+
+- **Updated reward computation**: Governance token rewards are now based on a fraction of the protocol fee. More precisely, the amount of governance tokens distributed is equal to half the protocol fee.
+- **Adding ability to execute more transactions as part of a deployment**: Some actions can now be added directly to the transaction where a lock is created (for instance, setting another lock manager, etc.).
+- **Replace `udt` by `governanceToken`**: The contract now uses `governanceToken` instead of `udt` (though `udt` has been kept for backwards compatibility reasons).
+
 ## Version 13
 
 **Released**: Feb 2024
 
-The main novelty in version 13 of Unlock is a “swap and burn” feature that allows fees collected by the protocol to directly decrease the supply of UDT in circulation.
+The main novelty in version 13 of Unlock is a "swap and burn" feature that allows fees collected by the protocol to directly decrease the supply of UDT in circulation.
 
 ### **How it works**
 

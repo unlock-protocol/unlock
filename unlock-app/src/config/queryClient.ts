@@ -35,13 +35,17 @@ export const queryClient = new QueryClient({
   }),
   defaultOptions: {
     queries: {
-      staleTime: 60 * 1000, // 1 minute!
+      staleTime: 60 * 1000, // 1 minute
+      gcTime: 5 * 60 * 1000, // 5 minutes
       refetchInterval: false,
       refetchOnReconnect: false,
       refetchOnWindowFocus: false,
       refetchIntervalInBackground: false,
+      // Add retryDelay to space out retries and prevent flooding
+      retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 30000),
       retry: (failureCount, error) => {
-        if (failureCount > 3) {
+        // Limit retries more aggressively
+        if (failureCount > 2) {
           return false
         }
         if (error instanceof AxiosError) {
@@ -52,3 +56,9 @@ export const queryClient = new QueryClient({
     },
   },
 })
+if (typeof window !== 'undefined') {
+  window.addEventListener('locksmith.authenticated', async () => {
+    console.log('refetching queries')
+    queryClient.refetchQueries()
+  })
+}
