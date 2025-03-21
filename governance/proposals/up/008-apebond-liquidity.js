@@ -6,8 +6,8 @@ module.exports = async () => {
   const bondTreasuryAddress = '0xa7865ECE6DAB013E7131983b943c2c75D7Fa0D1F' // Provided by monkey.biz (Biz) via discord here: https://discord.com/channels/462280183425138719/1293630882619461713/1340372247344320552
   const upTokenAddress = '0xaC27fa800955849d6D17cC8952Ba9dD6EAA66187'
   const { decimals: tokenDecimals } = await getTokenInfo(upTokenAddress)
-  const additionalTransferAmount = ethers.parseUnits('5348728', tokenDecimals)
-  const upPrice = '0.006992'
+  const additionalTransferAmount = ethers.parseUnits('1530600', tokenDecimals)
+  const upPrice = '0.005247'
 
   const calls = [
     {
@@ -23,11 +23,12 @@ module.exports = async () => {
 
 ### Goal of the Proposal
 
-This proposal aims to transfer additional UP tokens to the ApeBond treasury address to make up for the deficit in the amount needed to establish a bond sale due to the UP token price drop.  
+This proposal aims to transfer additional UP tokens to the ApeBond treasury address to make up for the deficit in the amount needed to establish a bond sale due to the UP token price drop. The origina proposal was intended to have a bond sale of $80,000 but due to recent conversations on discord it has been reviewed to $40,000. [View discussion on discord](https://discord.com/channels/462280183425138719/1293630882619461713)   
 
 **Bond Treasury Address**: 0xa7865ECE6DAB013E7131983b943c2c75D7Fa0D1F  
 **Source**: Provided by monkey.biz (Biz) via Discord [link to message](https://discord.com/channels/462280183425138719/1293630882619461713/1340372247344320552)  
-**UP Token Amount**: Additional ${additionalTransferAmount} UP @ $${upPrice} to adjust for price decline, ensuring the total remains at ~$80,000.
+**UP Token Amount**: Additional ${additionalTransferAmount} UP @ $${upPrice} to adjust for price decline, ensuring the total remains at ~$40,000.
+**Discord Thread on Sustainable Liquidity**: [view here](https://discord.com/channels/462280183425138719/1293630882619461713)  
 
 ### Background on Additional Transfer
 
