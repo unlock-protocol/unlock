@@ -1,10 +1,8 @@
 import confirmEmail from './templates/confirmEmail'
-import welcome from './templates/welcome'
 import keyOwnership from './templates/keyOwnership'
 import keyMined from './templates/keyMined'
-import debug from './templates/debug'
-import transferCode from './templates/transferCode'
 import keyAirdropped from './templates/keyAirdropped'
+import transferCode from './templates/transferCode'
 import keyExpiring from './templates/keyExpiring'
 import keyExpired from './templates/keyExpired'
 import eventKeyMined from './templates/eventKeyMined'
@@ -30,8 +28,6 @@ export interface EmailTemplateProps {
 }
 
 type Template =
-  | 'debug'
-  | 'welcome'
   | 'confirmEmail'
   | 'keyMined'
   | 'keyAirdropped'
@@ -56,10 +52,8 @@ type Template =
 
 export const EmailTemplates: Record<string, EmailTemplateProps> = {
   confirmEmail,
-  welcome,
   keyOwnership,
   keyMined,
-  debug,
   transferCode,
   keyAirdropped,
   keyExpired,
