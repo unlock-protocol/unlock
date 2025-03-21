@@ -1,4 +1,6 @@
-export default {
+import { prepareAll } from './prepare'
+
+export default prepareAll({
   subject:
     'The event "{{eventName}}" was not approved for "{{collectionName}}"',
   html: `<h1>Event Submission Update</h1>
@@ -17,4 +19,4 @@ export default {
     Thank you for your interest in contributing to this collection.
   </p>
   `,
-}
+})

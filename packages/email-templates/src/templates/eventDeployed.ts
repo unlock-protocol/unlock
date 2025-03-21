@@ -1,4 +1,6 @@
-export default {
+import { prepareAll } from './prepare'
+
+export default prepareAll({
   subject: 'Your event {{eventName}} is live onchain!',
   html: `<h1>Your event is live onchain!</h1>
 
@@ -37,4 +39,4 @@ Have questions? Reply to this email 😎.
 </p>
 
 `,
-}
+})

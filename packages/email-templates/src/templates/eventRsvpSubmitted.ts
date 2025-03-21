@@ -2,12 +2,13 @@ import Handlebars from 'handlebars'
 import { links } from './helpers/links'
 import { transactionLink } from './helpers/transactionLink'
 import { eventDetailsLight } from './helpers/eventDetails'
+import { prepareAll } from './prepare'
 
 Handlebars.registerHelper('links', links)
 Handlebars.registerHelper('transactionLink', transactionLink)
 Handlebars.registerHelper('eventDetailsLight', eventDetailsLight)
 
-export default {
+export default prepareAll({
   base: 'events',
   subject: `You have applied to attend {{{eventName}}}!`,
   html: `<h1>Thanks</h1>
@@ -23,4 +24,4 @@ you will receive a confirmation email with your ticket!
   eventUrl
 }}
 `,
-}
+})
