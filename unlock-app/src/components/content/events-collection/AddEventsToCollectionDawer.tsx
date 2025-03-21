@@ -24,8 +24,9 @@ import { config } from '~/config/app'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useProvider } from '~/hooks/useProvider'
 import { EventStatus } from '@unlock-protocol/types'
+import { ExternalEventForm } from './ExternalEventForm'
 
-type AddMethod = 'url' | 'existing' | 'form' | null
+type AddMethod = 'url' | 'existing' | 'form' | 'external' | null
 
 interface AddEventsToCollectionDrawerProps {
   isOpen: boolean
@@ -212,6 +213,9 @@ export default function AddEventsToCollectionDrawer({
       <Button onClick={() => setAddMethod('url')} className="w-full">
         Add via URL
       </Button>
+      <Button onClick={() => setAddMethod('external')} className="w-full">
+        Add external event
+      </Button>
       <div className="space-y-1">
         {filteredUserEvents && filteredUserEvents?.length > 0 && (
           <Button
@@ -318,6 +322,29 @@ export default function AddEventsToCollectionDrawer({
     )
   }
 
+  const renderAddExternalEvent = () => {
+    return (
+      <div className="flex flex-col gap-8">
+        <Button
+          variant="outlined-primary"
+          size="small"
+          onClick={() => setAddMethod(null)}
+          className="self-start"
+          disabled={isSubmitting}
+        >
+          Back
+        </Button>
+
+        <div className="flex flex-col gap-4">
+          <ExternalEventForm
+            compact={true}
+            onSubmit={handleExternalEventCreationAndAddition}
+          />
+        </div>
+      </div>
+    )
+  }
+
   const renderSelectExisting = () => (
     <div className="flex flex-col gap-8">
       <Button
@@ -410,6 +437,20 @@ export default function AddEventsToCollectionDrawer({
     </div>
   )
 
+  const handleExternalEventCreationAndAddition = async (
+    eventData: ExternalEventForm
+  ) => {
+    setIsSubmitting(true)
+    try {
+      console.log('eventData', eventData)
+    } catch (error) {
+      console.error('Error adding external event to collection:', error)
+      ToastHelper.error('Failed to add external event to the collection.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   const handleEventCreationAndAddition = async (eventData: NewEventForm) => {
     setIsSubmitting(true)
     try {
@@ -481,11 +522,18 @@ export default function AddEventsToCollectionDrawer({
           }
         }
       }}
-      title={addMethod ? 'Add Event' : 'Choose Add Method'}
+      title={
+        addMethod === 'external'
+          ? 'Add External Event'
+          : addMethod
+            ? 'Add Event'
+            : 'Choose Add Method'
+      }
     >
       <div className="flex flex-col h-full gap-10 mt-10">
         {!addMethod && renderInitialOptions()}
         {addMethod === 'url' && renderAddViaUrl()}
+        {addMethod === 'external' && renderAddExternalEvent()}
         {addMethod === 'existing' && renderSelectExisting()}
         {addMethod === 'form' && renderCreateForm()}
       </div>
