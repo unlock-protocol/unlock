@@ -12171,6 +12171,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@pdf-lib/standard-fonts@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@pdf-lib/standard-fonts@npm:1.0.0"
+  dependencies:
+    pako: "npm:^1.0.6"
+  checksum: 10/0dfcedbd16e3f48afcac321f153d81f49ea6030030fa1e05a07bde359629949e27b3d77b39a5c7b0b0ff8af09912765f62a911cd67d488d4dc0b3c1c5ca106f0
+  languageName: node
+  linkType: hard
+
+"@pdf-lib/upng@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@pdf-lib/upng@npm:1.0.1"
+  dependencies:
+    pako: "npm:^1.0.10"
+  checksum: 10/eecac72f36d51b67acb09f61a7bbb55577ceb6232aa0c1a827aea003126787cede07ad391c0c789ab36164a9a86d1634768c2cf941148743e155de7ed6c34fc3
+  languageName: node
+  linkType: hard
+
 "@peculiar/asn1-schema@npm:^2.3.13, @peculiar/asn1-schema@npm:^2.3.8":
   version: 2.3.15
   resolution: "@peculiar/asn1-schema@npm:2.3.15"
@@ -18429,6 +18447,7 @@ __metadata:
     parse-data-uri: "npm:0.2.0"
     passkit-generator: "npm:3.2.0"
     path-to-regexp: "npm:8.2.0"
+    pdf-lib: "npm:1.17.1"
     pdfmake: "npm:0.2.18"
     pg: "npm:8.13.3"
     rate-limiter-flexible: "npm:5.0.5"
@@ -40836,7 +40855,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pako@npm:~1.0.2, pako@npm:~1.0.5":
+"pako@npm:^1.0.10, pako@npm:^1.0.11, pako@npm:^1.0.6, pako@npm:~1.0.2, pako@npm:~1.0.5":
   version: 1.0.11
   resolution: "pako@npm:1.0.11"
   checksum: 10/1ad07210e894472685564c4d39a08717e84c2a68a70d3c1d9e657d32394ef1670e22972a433cbfe48976cb98b154ba06855dcd3fcfba77f60f1777634bec48c0
@@ -41360,6 +41379,18 @@ __metadata:
     safe-buffer: "npm:^5.0.1"
     sha.js: "npm:^2.4.8"
   checksum: 10/40bdf30df1c9bb1ae41ec50c11e480cf0d36484b7c7933bf55e4451d1d0e3f09589df70935c56e7fccc5702779a0d7b842d012be8c08a187b44eb24d55bb9460
+  languageName: node
+  linkType: hard
+
+"pdf-lib@npm:1.17.1":
+  version: 1.17.1
+  resolution: "pdf-lib@npm:1.17.1"
+  dependencies:
+    "@pdf-lib/standard-fonts": "npm:^1.0.0"
+    "@pdf-lib/upng": "npm:^1.0.1"
+    pako: "npm:^1.0.11"
+    tslib: "npm:^1.11.1"
+  checksum: 10/ea8c2c0c813d89ca359a0c831cb2e8a581c569ed44b074316f917942b5baa101f878ce922f1cb87e6f41a035008ba75b52267480aee5d65a5e68c445ee83bc37
   languageName: node
   linkType: hard
 
