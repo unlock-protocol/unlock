@@ -4,8 +4,12 @@ import { PDFDocument } from 'pdf-lib'
 
 export const svgStringToPdfURI = async (svgString: string): Promise<string> => {
   try {
-    // First convert SVG to PNG using resvg
-    const svg = new resvg.Resvg(svgString)
+    const svg = new resvg.Resvg(svgString, {
+      dpi: 200,
+      fitTo: {
+        mode: 'original',
+      },
+    })
     const pngData = svg.render()
     const pngBuffer = pngData.asPng()
 
@@ -31,7 +35,9 @@ export const svgStringToPdfURI = async (svgString: string): Promise<string> => {
     })
 
     // Serialize the PDF to bytes
-    const pdfBytes = await pdfDoc.save()
+    const pdfBytes = await pdfDoc.save({
+      useObjectStreams: false,
+    })
 
     // Convert to data URI
     const dataURI = `data:application/pdf;base64,${Buffer.from(pdfBytes).toString('base64')}`
