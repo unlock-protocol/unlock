@@ -6,7 +6,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { useEffect, useState } from 'react'
 import { useConfig } from '~/utils/withConfig'
 import { MintingScreen } from '~/components/interface/checkout/main/Minting'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { TransactionStatus } from '~/components/interface/checkout/main/checkoutMachine'
 import { onResolveName } from '~/utils/resolvers'
 import { MetadataInputType } from '@unlock-protocol/core'
@@ -143,6 +143,7 @@ export const WalletlessRegistrationClaim = ({
         ToastHelper.success('Transaction successfully sent!')
       }
     } catch (error) {
+      console.error(error)
       ToastHelper.error('Failed to send transaction. Please try again.')
     }
   }

@@ -14,11 +14,16 @@ import {
   useMemo,
   useState,
 } from 'react'
-import { Button, Input, Placeholder } from '@unlock-protocol/ui'
+import {
+  Button,
+  Checkbox,
+  Input,
+  Placeholder,
+  isAddressOrEns,
+} from '@unlock-protocol/ui'
 import { twMerge } from 'tailwind-merge'
-import { getAddressForName } from '~/hooks/useEns'
 import { formResultToMetadata } from '~/utils/userMetadata'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
@@ -36,6 +41,10 @@ import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 import Disconnect from './Disconnect'
 import { shouldSkip } from './utils'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { getAddressForName } from '~/hooks/useNameResolver'
+import { isAccount } from '~/utils/validators'
+import Link from 'next/link'
+import { config } from '~/config/app'
 
 interface Props {
   checkoutService: CheckoutService
@@ -43,6 +52,7 @@ interface Props {
 
 interface FormData {
   metadata: Record<'recipient' | string, string>[]
+  termsAccepted: boolean
 }
 
 interface RecipientInputProps {
@@ -340,12 +350,16 @@ export function Metadata({ checkoutService }: Props) {
     shouldFocusError: true,
     mode: 'onSubmit',
     reValidateMode: 'onSubmit',
+    defaultValues: {
+      termsAccepted: false,
+    },
   })
 
   const {
     control,
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { isSubmitting, errors },
+    watch,
   } = methods
 
   const { fields, append, remove } = useFieldArray({
@@ -356,35 +370,70 @@ export function Metadata({ checkoutService }: Props) {
   const recipient = recipientFromConfig(paywallConfig, lock) || account || ''
 
   const { isLoading: isMemberLoading, data: isMember } = useQuery({
-    queryKey: ['isMember', recipient, lock],
+    queryKey: ['isMember', recipient, lock?.address],
     queryFn: async () => {
-      const total = await web3Service.totalKeys(
-        lock!.address,
-        recipient!,
-        lock!.network
-      )
-      return total > 0
+      // If recipient is not a valid Ethereum address or ENS, return false immediately
+      if (!recipient || !isAddressOrEns(recipient)) {
+        return false
+      }
+
+      try {
+        const total = await web3Service.totalKeys(
+          lock!.address,
+          recipient,
+          lock!.network
+        )
+        return total > 0
+      } catch (error) {
+        console.error('Error checking membership:', error)
+        return false
+      }
     },
-    enabled: !!recipient,
+
+    enabled: !!(lock?.address && recipient),
+    staleTime: 30000, // 30 seconds
+    retry: false,
   })
 
   useEffect(() => {
-    if (recipient && quantity > fields.length && !isMemberLoading) {
-      const fieldsRequired = quantity - fields.length
-      Array.from({ length: fieldsRequired }).map((_, index) => {
-        const addAccountAddress = !index && !isMember
-        const recipients = addAccountAddress ? { recipient } : { recipient: '' }
-        append(recipients, {
-          shouldFocus: false,
-        })
-      })
-    } else {
-      const fieldsRemove = fields.length - quantity
-      Array.from({ length: fieldsRemove }).map((_, index) =>
-        remove(fields.length - index)
-      )
+    // Don't do anything if we're loading member status or if quantity is invalid
+    if (isMemberLoading || quantity <= 0) {
+      return
     }
-  }, [quantity, recipient, fields, append, remove, isMember, isMemberLoading])
+
+    // Avoid updating fields if the length already matches quantity to prevent loops
+    if (fields.length === quantity) {
+      return
+    }
+
+    // prevent infinite loops
+    if (quantity > fields.length) {
+      const fieldsRequired = quantity - fields.length
+      for (let i = 0; i < fieldsRequired; i++) {
+        const addAccountAddress = fields.length === 0 && !isMember && !!account
+        const isValidAddress = isAddressOrEns(recipient) || isAccount(recipient)
+        const recipientValue = addAccountAddress
+          ? isValidAddress
+            ? recipient
+            : account
+          : ''
+        append(
+          { recipient: recipientValue },
+          {
+            shouldFocus: false,
+          }
+        )
+      }
+    } else if (quantity < fields.length) {
+      const fieldsToRemove = fields.length - quantity
+      for (let i = 0; i < fieldsToRemove; i++) {
+        remove(fields.length - 1 - i)
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quantity, recipient, isMember, isMemberLoading, account])
+
+  const termsAccepted = watch('termsAccepted')
 
   async function onSubmit(data: FormData) {
     try {
@@ -470,13 +519,55 @@ export function Metadata({ checkoutService }: Props) {
                 </div>
               )
             })}
+
+            {/* Terms of Service */}
+            <div className="mt-4 mb-2">
+              <Controller
+                name="termsAccepted"
+                control={control}
+                rules={{
+                  required:
+                    'You must agree to the Terms of Service to continue',
+                }}
+                render={({ field: { onChange, value, ref } }) => (
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0">
+                      <Checkbox
+                        ref={ref}
+                        id="termsAccepted"
+                        checked={value}
+                        onChange={onChange}
+                        label=""
+                      />
+                    </div>
+                    <div className="text-sm">
+                      <label htmlFor="termsAccepted" className="cursor-pointer">
+                        I agree to the{' '}
+                        <Link
+                          target="_blank"
+                          href={`${config.unlockStaticUrl}/terms`}
+                          className="text-brand-ui-primary hover:underline"
+                        >
+                          Terms of Service
+                        </Link>
+                      </label>
+                    </div>
+                  </div>
+                )}
+              />
+              {errors.termsAccepted && (
+                <p className="mt-1 text-xs text-red-500">
+                  {errors.termsAccepted.message}
+                </p>
+              )}
+            </div>
           </form>
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
         <Button
           loading={isLoading}
-          disabled={isLoading || isMemberLoading}
+          disabled={isLoading || isMemberLoading || !termsAccepted}
           className="w-full"
           form="metadata"
         >
@@ -494,11 +585,18 @@ const recipientFromConfig = (
   lock: Lock | LockState | undefined
 ): string => {
   const paywallRecipient = paywall.recipient
-  const lockRecipient = paywall?.locks[lock!.address].recipient
+  const lockRecipient = paywall?.locks[lock!.address]?.recipient
 
-  if (paywallRecipient != undefined && paywallRecipient != '') {
+  const isValidRecipientFormat = (recipient: string): boolean => {
+    if (!recipient || typeof recipient !== 'string') {
+      return false
+    }
+    return isAddressOrEns(recipient) || isAccount(recipient)
+  }
+
+  if (paywallRecipient && isValidRecipientFormat(paywallRecipient)) {
     return paywallRecipient
-  } else if (lockRecipient != undefined && lockRecipient != '') {
+  } else if (lockRecipient && isValidRecipientFormat(lockRecipient)) {
     return lockRecipient
   }
   return ''

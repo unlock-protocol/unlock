@@ -1,7 +1,7 @@
 'use client'
 
 import { useLinkAccount } from '@privy-io/react-auth'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useModalStatus } from '@privy-io/react-auth'
 import { useEffect } from 'react'
 

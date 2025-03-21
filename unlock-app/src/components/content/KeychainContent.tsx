@@ -10,9 +10,10 @@ import { TbWorld as WorldIcon } from 'react-icons/tb'
 import { OpenSeaIcon } from '../icons'
 import { WalletNotConnected } from '../interface/layouts/index/WalletNotConnected'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { LoadingIcon } from '../interface/Loading'
 
 export const KeychainContent = () => {
-  const { account } = useAuthenticate()
+  const { account, isLoading } = useAuthenticate()
   const searchParams = useSearchParams()
   const [owner, setOwner] = useState<string | null>(null)
 
@@ -26,6 +27,10 @@ export const KeychainContent = () => {
   }, [account, searchParams])
 
   const networkConfig = networks[1]
+
+  if (isLoading) {
+    return <LoadingIcon size={40} />
+  }
 
   if (!owner) {
     return <WalletNotConnected />

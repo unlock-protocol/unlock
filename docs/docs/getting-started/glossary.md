@@ -59,7 +59,7 @@ Welcome, Locksmith! Let’s start with getting the lay of the land with a few co
 
   <dt>Membership</dt>
     <dd>A membership is a connection between a creator, brand or project and a 
-    fan or community member. A membership usual confers benefits or special access 
+    fan or community member. A membership usually confers benefits or special access 
     to those who hold it. Members can also connect directly with each other.</dd>
 
   <dt>NFT</dt>
@@ -100,12 +100,8 @@ Welcome, Locksmith! Let’s start with getting the lay of the land with a few co
     component to it. After expiration, the subscription (and therefore the access 
     to membership benefits) expires.</dd>
 
-  <dt>UDT</dt>
-    <dd>Unlock Discount Token which is granted as rewards upon key purchase to 
-    an address designated in the key purchase call. Currently used for  
-    <a href="/governance/"> governance</a> votes.</dd>
+  <dt>UP Token</dt>
+    <dd>The UP Token (Unlock Protocol Token) is used for  
+    <a href="/governance/"> governance</a> in the Unlock Protocol ecosystem.</dd>
 
-  <dt>web3</dt>
-    <dd>The next stage of the internet, following Web 2.0, which is more 
-decentralized and built with blockchain and other decentralized networks.</dd>
 </dl>
