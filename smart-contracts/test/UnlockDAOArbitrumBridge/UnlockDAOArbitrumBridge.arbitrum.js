@@ -1,36 +1,38 @@
 const { ethers } = require('hardhat')
 const { expect } = require('chai')
 const { mainnet, arbitrum } = require('@unlock-protocol/networks')
-const { impersonate, getEvent } = require('@unlock-protocol/hardhat-helpers')
+const { impersonate } = require('@unlock-protocol/hardhat-helpers')
+const { reverts } = require('../helpers')
 
 // Arbitrum contract addresses
-const ARB_GATEWAY_ROUTER = '0x9fDD1C4E4AA24EEc1d913FABea925594a20d43C7'
 const WETH = arbitrum.tokens.find((token) => token.symbol === 'WETH').address
 const UNISWAP_UNIVERSAL_ROUTER = arbitrum.uniswapV3.universalRouterAddress
 const ARB_TOKEN = arbitrum.tokens.find(
   (token) => token.symbol === 'ARB'
 ).address
-const ARB_WHALE = '0xF3FC178157fb3c87548bAA86F9d24BA38E649B58'
-// DAO addresses
-const L1_UDT = mainnet.unlockDaoToken.address
-const L2_UDT = arbitrum.unlockDaoToken.address
+
 const L1_TIMELOCK_CONTRACT = '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B'
-// const L2_TIMELOCK_ALIAS = '0x28ffDfB0A6e6E06E95B3A1f928Dc4024240bD87c'
+const L2_TIMELOCK_ALIAS = '0x28ffDfB0A6e6E06E95B3A1f928Dc4024240bD87c'
+const L1_UDT = mainnet.unlockDaoToken.address
+const GATEWAY_ROUTER = '0x5288c571Fd7aD117beA99bF60FE0846C4E84F933'
 
 describe('UnlockDAOArbitrumBridge', () => {
   let bridge
   let arbToken
-  let owner
+  let l2TimelockAliasSigner
   let l2TimelockAlias
   let weth
+  let gatewayRouter
+  let l2UdtToken
 
   before(async () => {
     if (!process.env.RUN_FORK) {
       // all suite will be skipped
       this.skip()
     }
-    ;[owner] = await ethers.getSigners()
-    l2TimelockAlias = owner.getAddress() // For testing purposes, using owner as timelock
+
+    // For testing purposes, using a signer as timelock
+    l2TimelockAliasSigner = await impersonate(L2_TIMELOCK_ALIAS)
 
     // Get contract factories
     const UnlockDAOArbitrumBridge = await ethers.getContractFactory(
@@ -39,25 +41,30 @@ describe('UnlockDAOArbitrumBridge', () => {
 
     // get some ARB tokens
     arbToken = await ethers.getContractAt('IERC20', ARB_TOKEN)
-    const arbWhale = await impersonate(ARB_WHALE)
-    await arbToken
-      .connect(arbWhale)
-      .transfer(l2TimelockAlias, ethers.parseEther('1000000'))
+
+    // Get Gateway Router instance
+    gatewayRouter = await ethers.getContractAt(
+      'IL2GatewayRouter',
+      GATEWAY_ROUTER
+    )
 
     // Deploy bridge contract
     const deployArgs = [
-      ARB_GATEWAY_ROUTER, // routerGateway
       UNISWAP_UNIVERSAL_ROUTER, // uniswapUniversalRouter
+      GATEWAY_ROUTER, // gatewayRouter
       WETH, // l2Weth
       ARB_TOKEN, // l2Arb
       L1_UDT, // l1Udt
       L1_TIMELOCK_CONTRACT, // l1Timelock
-      l2TimelockAlias, // l2TimelockAlias
     ]
     bridge = await UnlockDAOArbitrumBridge.deploy(...deployArgs)
 
     // Get instances of existing contracts
     weth = await ethers.getContractAt('IWETH', WETH)
+
+    // Get L2 UDT token address
+    const l2UdtAddress = await gatewayRouter.calculateL2TokenAddress(L1_UDT)
+    l2UdtToken = await ethers.getContractAt('IERC20', l2UdtAddress)
   })
 
   describe('swapAndBridgeArb', () => {
@@ -68,25 +75,50 @@ describe('UnlockDAOArbitrumBridge', () => {
       const amountOutMinimum = ethers.parseEther('0.1') // Minimum amount of ETH to receive
 
       // Get initial balances
-      const initialArbBalance = await arbToken.balanceOf(l2TimelockAlias)
+      const initialArbBalance = await arbToken.balanceOf(L2_TIMELOCK_ALIAS)
       expect(initialArbBalance.toString()).to.not.equal('0')
 
-      // Approve ARB tokens for the bridge
-      await arbToken.approve(bridge.getAddress(), initialArbBalance)
+      // Transfer ARB tokens to the bridge
+      await arbToken
+        .connect(l2TimelockAliasSigner)
+        .transfer(bridge.getAddress(), initialArbBalance)
 
       // Execute the swap and bridge
-      await bridge.swapAndBridgeArb(amountOutMinimum)
+      // NB: we can not test the result of the function because the native bridge requires ArbSys
+      // and this is not supported by local forks. If this does revents with native opcode, it means that swap
+      // and bridge worked.
+      // TODO: check final balances and that bridge event was emitted
+      await reverts(bridge.swapAndBridgeArb(amountOutMinimum), 'invalid opcode')
+    })
+  })
 
-      // Check final balances
-      const finalArbBalance = await arbToken.balanceOf(l2TimelockAlias)
-      const finalEthBalance = await ethers.provider.getBalance(
-        await bridge.getAddress()
+  describe('bridgeUdt', () => {
+    it('should bridge UDT tokens back to L1', async () => {
+      const testAmount = ethers.parseEther('1000') // 1000 UDT tokens
+
+      // First we need to simulate having some UDT tokens in the bridge contract
+      // In a real scenario, these would be transferred from the L2 timelock
+      // await addERC20(L1_UDT, testAmount, L2_TIMELOCK_ALIAS)
+
+      await l2UdtToken
+        .connect(l2TimelockAliasSigner)
+        .transfer(bridge.getAddress(), testAmount)
+
+      // Get initial balances
+      const initialBridgeBalance = await l2UdtToken.balanceOf(
+        bridge.getAddress()
       )
+      expect(initialBridgeBalance).to.equal(testAmount)
 
-      expect(finalArbBalance).to.be.equal(0)
-      expect(finalEthBalance).to.equal(0) // All ETH should be bridged
-
-      // TODO: check that bridge event was emitted
+      // Execute the bridge
+      // NB: we can not test the result of the function because the native bridge requires ArbSys
+      // and this is not supported by local forks. If this does revents with native opcode, it means that swap
+      // and bridge worked.
+      // TODO: check final balances and that bridge event was emitted
+      await reverts(
+        bridge.connect(l2TimelockAliasSigner).bridgeUdt(),
+        'invalid opcode'
+      )
     })
   })
 })

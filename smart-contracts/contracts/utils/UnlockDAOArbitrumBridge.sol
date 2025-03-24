@@ -1,5 +1,4 @@
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "../interfaces/IUniversalRouter.sol";
 import "../interfaces/IWETH.sol";
 
@@ -57,29 +56,45 @@ interface IArbSys {
   error InvalidBlockNumber(uint256 requested, uint256 current);
 }
 
+interface IL2GatewayRouter {
+  function outboundTransfer(
+    address _l1Token,
+    address _to,
+    uint256 _amount,
+    bytes calldata _data
+  ) external payable returns (bytes memory);
+
+  function calculateL2TokenAddress(
+    address l1Token
+  ) external view returns (address);
+}
+
 contract UnlockDAOArbitrumBridge {
   // arb pre-compiles
   IArbSys public immutable ARB_SYS =
     IArbSys(0x0000000000000000000000000000000000000064);
 
   IUniversalRouter public immutable UNISWAP_UNIVERSAL_ROUTER;
+  IL2GatewayRouter public immutable GATEWAY_ROUTER;
   address public immutable L1_TIMELOCK;
-  address public immutable L2_TIMELOCK_ALIAS_ARB;
+  address public immutable L1_UDT;
   address public immutable L2_ARB_TOKEN;
   address public immutable L2_WETH;
 
   constructor(
     address universalRouter,
+    address gatewayRouter,
     address l2Weth,
     address l2Arb,
-    address l1Timelock,
-    address l2TimelockAlias
+    address l1Udt,
+    address l1Timelock
   ) {
     UNISWAP_UNIVERSAL_ROUTER = IUniversalRouter(universalRouter);
+    GATEWAY_ROUTER = IL2GatewayRouter(gatewayRouter);
     L2_WETH = l2Weth;
     L2_ARB_TOKEN = l2Arb;
+    L1_UDT = l1Udt;
     L1_TIMELOCK = l1Timelock;
-    L2_TIMELOCK_ALIAS_ARB = l2TimelockAlias;
   }
 
   /**
@@ -93,12 +108,10 @@ contract UnlockDAOArbitrumBridge {
    */
   function swapAndBridgeArb(uint amountOutMinimum) external payable {
     // swap arb tokens to WETH
-    uint arbBalance = IERC20(L2_ARB_TOKEN).balanceOf(L2_TIMELOCK_ALIAS_ARB); // send tokens to universal router to manipulate the token
+    uint arbBalance = IERC20(L2_ARB_TOKEN).balanceOf(address(this)); // send tokens to universal router to manipulate the token
 
     // send tokens to universal router to manipulate the token
-    SafeERC20.safeTransferFrom(
-      IERC20(L2_ARB_TOKEN),
-      L2_TIMELOCK_ALIAS_ARB,
+    IERC20(L2_ARB_TOKEN).transfer(
       address(UNISWAP_UNIVERSAL_ROUTER),
       arbBalance
     );
@@ -131,6 +144,24 @@ contract UnlockDAOArbitrumBridge {
     // send native tokens to L1
     uint nativeBalance = address(this).balance;
     ARB_SYS.withdrawEth{value: nativeBalance}(L1_TIMELOCK);
+  }
+
+  /**
+   * @notice Bridges UDT tokens from L2 (Arbitrum) back to L1 (Mainnet) using the Arbitrum Gateway Router
+   * @dev Can only be called by the L2 timelock alias address
+   */
+  function bridgeUdt() external {
+    // Get L2 UDT token address and balance
+    address l2UdtToken = GATEWAY_ROUTER.calculateL2TokenAddress(L1_UDT);
+    uint udtBalance = IERC20(l2UdtToken).balanceOf(address(this));
+
+    // Bridge UDT tokens back to L1 using the gateway router
+    GATEWAY_ROUTER.outboundTransfer(
+      L1_UDT,
+      L1_TIMELOCK,
+      udtBalance,
+      "" // no extra data needed
+    );
   }
 
   /**

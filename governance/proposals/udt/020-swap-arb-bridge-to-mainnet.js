@@ -3,14 +3,16 @@
  * back to the timelock on mainnet using the UnlockDAOArbitrumBridge contract.
  */
 const ethers = require('ethers')
+const ethers5 = require('ethers5')
 const { ParentToChildMessageGasEstimator } = require('@arbitrum/sdk')
-const { getL2Network } = require('@arbitrum/sdk')
+const { getArbitrumNetwork } = require('@arbitrum/sdk')
 const { getBaseFee } = require('@arbitrum/sdk/dist/lib/utils/lib')
 const {
   getNetwork,
   getERC20Contract,
 } = require('@unlock-protocol/hardhat-helpers')
 const { arbitrum, mainnet } = require('@unlock-protocol/networks')
+const { parseSafeMulticall } = require('../../helpers/multisig')
 
 // Dao
 const L1_TIMELOCK_CONTRACT = '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B'
@@ -24,8 +26,8 @@ const { address: L2_ARB_TOKEN_ADDRESS } = arbitrum.tokens.find(
 // L1 UDT address
 const L1_UDT_ADDRESS = mainnet.unlockDaoToken.address
 
-// TODO: Replace with actual deployed bridge contract address
-const UNLOCK_DAO_BRIDGE_ADDRESS = '0x...'
+// The deployed UnlockDAOArbitrumBridge contract address
+const UNLOCK_DAO_BRIDGE_ADDRESS = '0x59DD472b1b6f4D777DbbeE1592D12C7BF85edc51'
 
 // Bridge contract ABI
 const BRIDGE_ABI = [
@@ -97,8 +99,8 @@ const INBOX_ABI = [
 ]
 
 // providers
-const l1Provider = new ethers.JsonRpcProvider(mainnet.provider)
-const l2Provider = new ethers.JsonRpcProvider(arbitrum.provider)
+const l1Provider = new ethers5.providers.JsonRpcProvider(mainnet.provider)
+const l2Provider = new ethers5.providers.JsonRpcProvider(arbitrum.provider)
 
 module.exports = async ({
   fromL1 = L1_TIMELOCK_CONTRACT,
@@ -109,17 +111,18 @@ module.exports = async ({
   )
 
   // Get inbox address
-  const l2Network = await getL2Network(l2Provider)
+  const l2Network = await getArbitrumNetwork(arbitrum.id)
   const inboxAddress = l2Network.ethBridge.inbox
 
   // Get the ARB balances
   const arbToken = await getERC20Contract(L2_ARB_TOKEN_ADDRESS, l2Provider)
-  const arbBalance = await arbToken.balanceOf(fromL2)
+  const arbBalance = await arbToken.balanceOf(L2_TIMELOCK_ALIAS)
   const arbDecimals = await arbToken.decimals()
 
   // Get the L2 Gateway Router
+  const gatewayRouterAddress = l2Network.tokenBridge.childGatewayRouter
   const gatewayRouter = new ethers.Contract(
-    arbitrum.arbitrumGatewayRouter,
+    gatewayRouterAddress,
     GATEWAY_ROUTER_ABI,
     l2Provider
   )
@@ -128,7 +131,7 @@ module.exports = async ({
   const l2UdtAddress =
     await gatewayRouter.calculateL2TokenAddress(L1_UDT_ADDRESS)
   const l2UdtToken = await getERC20Contract(l2UdtAddress, l2Provider)
-  const udtBalance = await l2UdtToken.balanceOf(fromL2)
+  const udtBalance = await l2UdtToken.balanceOf(L2_TIMELOCK_ALIAS)
 
   // Create interfaces
   const bridgeInterface = new ethers.Interface(BRIDGE_ABI)
@@ -137,55 +140,49 @@ module.exports = async ({
   // TODO: Add slippage protection using an oracle
   const amountOutMinimum = (arbBalance * 98n) / 100n // 2% slippage
 
-  // We'll use the Multicall3 contract on Arbitrum to batch these transactions
-  const MULTICALL_ADDRESS = '0xcA11bde05977b3631167028862bE2a173976CA11'
-
-  // Multicall ABI
-  const multicallInterface = new ethers.Interface([
-    'function aggregate(tuple(address target, bytes callData)[] calls) external payable returns (uint256 blockNumber, bytes[] returnData)',
-  ])
-
   // Prepare the multicall data
   const multicallCalls = [
     // 1. Approve bridge contract to spend ARB tokens
     {
-      target: L2_ARB_TOKEN_ADDRESS,
-      callData: arbToken.interface.encodeFunctionData('approve', [
+      contractAddress: L2_ARB_TOKEN_ADDRESS,
+      calldata: arbToken.interface.encodeFunctionData('transfer', [
         UNLOCK_DAO_BRIDGE_ADDRESS,
         arbBalance,
       ]),
     },
     // 2. Call swapAndBridgeArb
     {
-      target: UNLOCK_DAO_BRIDGE_ADDRESS,
-      callData: bridgeInterface.encodeFunctionData('swapAndBridgeArb', [
+      contractAddress: UNLOCK_DAO_BRIDGE_ADDRESS,
+      calldata: bridgeInterface.encodeFunctionData('swapAndBridgeArb', [
         amountOutMinimum,
       ]),
     },
-    // 3. Approve gateway router to spend UDT tokens
+    // 3. Send UDT tokens to be spent by the bridge
     {
-      target: l2UdtAddress,
-      callData: l2UdtToken.interface.encodeFunctionData('approve', [
-        arbitrum.arbitrumGatewayRouter,
+      contractAddress: l2UdtAddress,
+      calldata: l2UdtToken.interface.encodeFunctionData('transfer', [
+        UNLOCK_DAO_BRIDGE_ADDRESS,
         udtBalance,
       ]),
     },
-    // 4. Bridge UDT tokens using gateway router
+    // 4. Bridge UDT tokens to mainnet
     {
-      target: arbitrum.arbitrumGatewayRouter,
-      callData: gatewayRouter.interface.encodeFunctionData('outboundTransfer', [
-        L1_UDT_ADDRESS,
-        L1_TIMELOCK_CONTRACT,
-        udtBalance,
-        '0x', // no extra data needed
-      ]),
+      contractAddress: UNLOCK_DAO_BRIDGE_ADDRESS,
+      calldata: bridgeInterface.interface.encodeFunctionData('bridgeUdt'),
     },
   ]
 
+  console.log(multicallCalls)
   // Encode the multicall data
-  const multicallData = multicallInterface.encodeFunctionData('aggregate', [
-    multicallCalls,
-  ])
+  const safeCall = await parseSafeMulticall({
+    calls: multicallCalls,
+    chainId: arbitrum.id,
+  })
+
+  console.log({ safeCall })
+  const { data: multicallData, to: multicallAddress } = safeCall
+
+  console.log({ multicallData, multicallAddress })
 
   /**
    * Now we can query the required gas params using the estimateAll method in Arbitrum SDK
@@ -196,12 +193,13 @@ module.exports = async ({
 
   const estimateAllParams = {
     from: fromL1,
-    to: MULTICALL_ADDRESS,
+    to: multicallAddress,
     l2CallValue: 0,
     excessFeeRefundAddress: fromL1,
     callValueRefundAddress: fromL1,
     data: multicallData,
   }
+  const baseFee = await getBaseFee(l1Provider)
 
   /**
    * The estimateAll method gives us the following values for sending an L1->L2 message
@@ -212,9 +210,10 @@ module.exports = async ({
   const { maxSubmissionCost, gasLimit, deposit } =
     await l1ToL2MessageGasEstimate.estimateAll(
       estimateAllParams,
-      await getBaseFee(l1Provider),
+      baseFee,
       l1Provider
     )
+
   const gasPriceBid = await l2Provider.getGasPrice()
   const ETHDeposit = deposit.toNumber() * 10 // Multiply by 10 to add extra in case gas changes due to proposal delay
 
@@ -243,12 +242,12 @@ The UnlockDAOArbitrumBridge contract is deployed on Arbitrum at the address ${UN
 
 The following steps are performed:
 
-1. Approve the UnlockDAOArbitrumBridge contract to spend ARB tokens
+1. Transfer ARB tokens to the UnlockDAOArbitrumBridge contract
 2. Call \`swapAndBridgeArb\` to:
    - Swap all ARB tokens for ETH (with 2% slippage protection)
    - Bridge the resulting ETH back to the timelock on mainnet
-3. Approve the Arbitrum Gateway Router to spend UDT tokens
-4. Bridge all UDT tokens back to the timelock on mainnet using the Arbitrum Gateway Router
+3. Transfer UDT tokens to the UnlockDAOArbitrumBridge
+4. Call \`bridgeUdt\`  to bridge UDT tokens back to the timelock on mainnet
 
 ### Current situation of DAO's Assets on Arbitrum
 - ARB Balance: ${ethers.formatUnits(arbBalance, arbDecimals)} ARB
