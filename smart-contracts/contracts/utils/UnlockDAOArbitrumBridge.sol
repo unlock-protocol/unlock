@@ -106,7 +106,7 @@ contract UnlockDAOArbitrumBridge {
    * @param amountOutMinimum The minimum amount of WETH to receive from the ARB swap
    * @dev Can only be called by the L2 timelock alias address
    */
-  function swapAndBridgeArb(uint amountOutMinimum) external payable {
+  function swapAndBridgeArb(uint amountOutMinimum) external {
     // swap arb tokens to WETH
     uint arbBalance = IERC20(L2_ARB_TOKEN).balanceOf(address(this)); // send tokens to universal router to manipulate the token
 
