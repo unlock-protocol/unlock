@@ -396,7 +396,15 @@ export const isValidBalance = (balance) => {
   }, true)
 }
 
-const allowedInputTypes = ['text', 'date', 'color', 'email', 'url', 'hidden']
+const allowedInputTypes = [
+  'text',
+  'date',
+  'color',
+  'email',
+  'url',
+  'hidden',
+  'checkbox',
+]
 
 /**
  * A valid metadata field looks like:
