@@ -58,22 +58,6 @@ export const useCertification = ({
           return key
         }
         throw new Error('No valid certification for this token')
-      } else if (account) {
-        // Get the certification for the current user
-        const key = await graphService.key(
-          {
-            where: {
-              owner: account.toLowerCase(),
-              lock_in: [lockAddress.toLowerCase()],
-            },
-          },
-          {
-            network,
-          }
-        )
-        if (key) {
-          return key
-        }
       }
       return placeholderData
     },
