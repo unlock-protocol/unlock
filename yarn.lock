@@ -3537,20 +3537,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@coinbase/wallet-sdk@npm:4.0.3":
-  version: 4.0.3
-  resolution: "@coinbase/wallet-sdk@npm:4.0.3"
-  dependencies:
-    buffer: "npm:^6.0.3"
-    clsx: "npm:^1.2.1"
-    eventemitter3: "npm:^5.0.1"
-    keccak: "npm:^3.0.3"
-    preact: "npm:^10.16.0"
-    sha.js: "npm:^2.4.11"
-  checksum: 10/fcea81c315726d648d3453ff7930d5175db641d05a7840f343d48ff6861215f2d531df5a1e5d4fa34addc10401b1033d7bc7b7b6c2c0eac2e9e4d08325f94a50
-  languageName: node
-  linkType: hard
-
 "@coinbase/wallet-sdk@npm:4.3.0":
   version: 4.3.0
   resolution: "@coinbase/wallet-sdk@npm:4.3.0"
@@ -12369,52 +12355,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@privy-io/api-base@npm:1.4.3":
-  version: 1.4.3
-  resolution: "@privy-io/api-base@npm:1.4.3"
-  dependencies:
-    zod: "npm:^3.21.4"
-  checksum: 10/56973e63eea649d46614833f4ed122180345e654bbe46bd45fd324dd0775be40660aa4d08e69587c96779f4a4369acb8eba9557f0d9a3d612b94d9bb13435d76
-  languageName: node
-  linkType: hard
-
-"@privy-io/api-base@npm:1.4.4, @privy-io/api-base@npm:^1.4.3, @privy-io/api-base@npm:^1.4.4":
+"@privy-io/api-base@npm:1.4.4, @privy-io/api-base@npm:^1.4.4":
   version: 1.4.4
   resolution: "@privy-io/api-base@npm:1.4.4"
   dependencies:
     zod: "npm:^3.21.4"
   checksum: 10/edd297a0839a968a69bd668807cae199ed0fa5d4a51e1fb085c4dfd4119bad0cd6ce9dd4a31182d28aac9e63bcfad49f8908a0c7df79c2eb546689cc7e16f081
-  languageName: node
-  linkType: hard
-
-"@privy-io/js-sdk-core@npm:0.41.5":
-  version: 0.41.5
-  resolution: "@privy-io/js-sdk-core@npm:0.41.5"
-  dependencies:
-    "@ethersproject/abstract-signer": "npm:^5.7.0"
-    "@ethersproject/bignumber": "npm:^5.7.0"
-    "@ethersproject/contracts": "npm:^5.7.0"
-    "@ethersproject/providers": "npm:^5.7.2"
-    "@ethersproject/transactions": "npm:^5.7.0"
-    "@ethersproject/units": "npm:^5.7.0"
-    "@privy-io/api-base": "npm:^1.4.3"
-    "@privy-io/public-api": "npm:2.18.5"
-    eventemitter3: "npm:^5.0.1"
-    fetch-retry: "npm:^5.0.6"
-    jose: "npm:^4.15.5"
-    js-cookie: "npm:^3.0.5"
-    libphonenumber-js: "npm:^1.10.44"
-    set-cookie-parser: "npm:^2.6.0"
-    uuid: "npm:>=8 <10"
-  peerDependencies:
-    permissionless: ^0.2.10
-    viem: ^2.21.36
-  peerDependenciesMeta:
-    permissionless:
-      optional: true
-    viem:
-      optional: true
-  checksum: 10/9e24da49536d860d10b6b13d7fd93fbca1238aae4614b0e873d000a45fef31370137cb07322e99f9acac0f1e6f2cc994123a81e474fa7c73c0b67388f1546c7e
   languageName: node
   linkType: hard
 
@@ -12449,16 +12395,34 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@privy-io/public-api@npm:2.18.5":
-  version: 2.18.5
-  resolution: "@privy-io/public-api@npm:2.18.5"
+"@privy-io/js-sdk-core@npm:0.46.0":
+  version: 0.46.0
+  resolution: "@privy-io/js-sdk-core@npm:0.46.0"
   dependencies:
-    "@privy-io/api-base": "npm:1.4.3"
-    bs58: "npm:^5.0.0"
-    ethers: "npm:^5.7.2"
-    libphonenumber-js: "npm:^1.10.31"
-    zod: "npm:^3.22.4"
-  checksum: 10/bb676592e57f2f9edc521f44f9cdb7081b6b2c87e61d4c9bc676c56dfd0315fb9876aa6bff954eb8d218b78e0b423f679e8a1b176e0e0f4287bb7dbed8826f0f
+    "@ethersproject/abstract-signer": "npm:^5.7.0"
+    "@ethersproject/bignumber": "npm:^5.7.0"
+    "@ethersproject/contracts": "npm:^5.7.0"
+    "@ethersproject/providers": "npm:^5.7.2"
+    "@ethersproject/transactions": "npm:^5.7.0"
+    "@ethersproject/units": "npm:^5.7.0"
+    "@privy-io/api-base": "npm:^1.4.4"
+    "@privy-io/public-api": "npm:2.20.0"
+    eventemitter3: "npm:^5.0.1"
+    fetch-retry: "npm:^6.0.0"
+    jose: "npm:^4.15.5"
+    js-cookie: "npm:^3.0.5"
+    libphonenumber-js: "npm:^1.10.44"
+    set-cookie-parser: "npm:^2.6.0"
+    uuid: "npm:>=8 <10"
+  peerDependencies:
+    permissionless: ^0.2.10
+    viem: ^2.21.36
+  peerDependenciesMeta:
+    permissionless:
+      optional: true
+    viem:
+      optional: true
+  checksum: 10/f1d69e2c18b04bd3bd4e18b788f27067489b3eeca2f5f7990abf49a00334163527460a797f544ed59dc718b1d713fc65f0169a56f2ccea44c9bd1a356091e544
   languageName: node
   linkType: hard
 
@@ -12475,59 +12439,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@privy-io/react-auth@npm:2.2.1":
-  version: 2.2.1
-  resolution: "@privy-io/react-auth@npm:2.2.1"
+"@privy-io/public-api@npm:2.20.0":
+  version: 2.20.0
+  resolution: "@privy-io/public-api@npm:2.20.0"
   dependencies:
-    "@coinbase/wallet-sdk": "npm:4.0.3"
-    "@floating-ui/react": "npm:^0.26.22"
-    "@headlessui/react": "npm:^2.2.0"
-    "@heroicons/react": "npm:^2.1.1"
-    "@marsidev/react-turnstile": "npm:^0.4.1"
-    "@metamask/eth-sig-util": "npm:^6.0.0"
-    "@privy-io/js-sdk-core": "npm:0.41.5"
-    "@simplewebauthn/browser": "npm:^9.0.1"
-    "@solana/wallet-adapter-base": "npm:^0.9.23"
-    "@solana/wallet-standard-wallet-adapter-base": "npm:^1.1.2"
-    "@solana/wallet-standard-wallet-adapter-react": "npm:^1.1.2"
-    "@wallet-standard/app": "npm:^1.0.1"
-    "@walletconnect/ethereum-provider": "npm:^2.15.1"
-    "@walletconnect/modal": "npm:^2.6.2"
-    base64-js: "npm:^1.5.1"
-    dotenv: "npm:^16.0.3"
-    encoding: "npm:^0.1.13"
-    eventemitter3: "npm:^5.0.1"
-    fast-password-entropy: "npm:^1.1.1"
-    jose: "npm:^4.15.5"
-    js-cookie: "npm:^3.0.5"
-    lokijs: "npm:^1.5.12"
-    md5: "npm:^2.3.0"
-    mipd: "npm:^0.0.7"
-    ofetch: "npm:^1.3.4"
-    pino-pretty: "npm:^10.0.0"
-    qrcode: "npm:^1.5.1"
-    react-device-detect: "npm:^2.2.2"
-    secure-password-utilities: "npm:^0.2.1"
-    styled-components: "npm:^6.1.13"
-    stylis: "npm:^4.3.4"
-    tinycolor2: "npm:^1.6.0"
-    uuid: "npm:>=8 <10"
-    viem: "npm:^2.21.9"
-    zustand: "npm:^5.0.0"
-  peerDependencies:
-    "@abstract-foundation/agw-client": ^1.0.0
-    "@solana/web3.js": ^1.95.8
-    permissionless: ^0.2.10
-    react: ^18 || ^19
-    react-dom: ^18 || ^19
-  peerDependenciesMeta:
-    "@abstract-foundation/agw-client":
-      optional: true
-    "@solana/web3.js":
-      optional: true
-    permissionless:
-      optional: true
-  checksum: 10/8c51e810543f0a1474a522fb922852bc8afd4cf4f1f1d5613d4921efeabb3ab4312dc3d3ac0b8dcf174ee71e4ba1b5547f7d6e0fbf33ce54cf357a6bdec7d7ff
+    "@privy-io/api-base": "npm:1.4.4"
+    bs58: "npm:^5.0.0"
+    libphonenumber-js: "npm:^1.10.31"
+    viem: "npm:^2"
+    zod: "npm:^3.22.4"
+  checksum: 10/0db024c604d87447ee53232223f315c3174b671ad78816707b3d163ffba1ec6f06d1524713e2019759a1a3afa221e9c2ecefeb3bacbd8d0a32856c1333e73077
   languageName: node
   linkType: hard
 
@@ -12584,6 +12505,62 @@ __metadata:
     permissionless:
       optional: true
   checksum: 10/dc43026e99ca5046fd5d9b1cb5ab6ac710b6877f1201ce27ac0eac3f6e6e492d2ec0fd9b8524a09f5fc87b2d1292ac173ceab4ed10d2a4a45d10b2d158bccbd0
+  languageName: node
+  linkType: hard
+
+"@privy-io/react-auth@npm:2.6.4":
+  version: 2.6.4
+  resolution: "@privy-io/react-auth@npm:2.6.4"
+  dependencies:
+    "@coinbase/wallet-sdk": "npm:4.3.0"
+    "@floating-ui/react": "npm:^0.26.22"
+    "@headlessui/react": "npm:^2.2.0"
+    "@heroicons/react": "npm:^2.1.1"
+    "@marsidev/react-turnstile": "npm:^0.4.1"
+    "@metamask/eth-sig-util": "npm:^6.0.0"
+    "@privy-io/js-sdk-core": "npm:0.46.0"
+    "@simplewebauthn/browser": "npm:^9.0.1"
+    "@solana/wallet-adapter-base": "npm:^0.9.23"
+    "@solana/wallet-standard-wallet-adapter-base": "npm:^1.1.2"
+    "@solana/wallet-standard-wallet-adapter-react": "npm:^1.1.2"
+    "@wallet-standard/app": "npm:^1.0.1"
+    "@walletconnect/ethereum-provider": "npm:^2.18.0"
+    "@walletconnect/modal": "npm:^2.7.0"
+    base64-js: "npm:^1.5.1"
+    dotenv: "npm:^16.0.3"
+    encoding: "npm:^0.1.13"
+    eventemitter3: "npm:^5.0.1"
+    fast-password-entropy: "npm:^1.1.1"
+    jose: "npm:^4.15.5"
+    js-cookie: "npm:^3.0.5"
+    lokijs: "npm:^1.5.12"
+    md5: "npm:^2.3.0"
+    mipd: "npm:^0.0.7"
+    ofetch: "npm:^1.3.4"
+    pino-pretty: "npm:^10.0.0"
+    qrcode: "npm:^1.5.1"
+    react-device-detect: "npm:^2.2.2"
+    secure-password-utilities: "npm:^0.2.1"
+    styled-components: "npm:^6.1.13"
+    stylis: "npm:^4.3.4"
+    tinycolor2: "npm:^1.6.0"
+    uuid: "npm:>=8 <10"
+    viem: "npm:^2.23.5"
+    zustand: "npm:^5.0.0"
+  peerDependencies:
+    "@abstract-foundation/agw-client": ^1.0.0
+    "@solana/web3.js": ^1.95.8
+    permissionless: ^0.2.10
+    react: ^18 || ^19
+    react-dom: ^18 || ^19
+  peerDependenciesMeta:
+    "@abstract-foundation/agw-client":
+      optional: true
+    "@solana/web3.js":
+      optional: true
+    permissionless:
+      optional: true
+  checksum: 10/8a54cc651151b9851ceeeeafc0273e7ad5f08581bd0fffaee75000aefbb5416d9cc03db9340715c3a296f7a8fe246ab8587aec5e7902c8b6ed562b067a9d3a20
   languageName: node
   linkType: hard
 
@@ -18783,7 +18760,7 @@ __metadata:
     "@guildxyz/sdk": "npm:2.6.9"
     "@headlessui/react": "npm:2.1.9"
     "@hookform/resolvers": "npm:4.1.3"
-    "@privy-io/react-auth": "npm:2.2.1"
+    "@privy-io/react-auth": "npm:2.6.4"
     "@radix-ui/react-avatar": "npm:1.1.3"
     "@sentry/nextjs": "npm:9.3.0"
     "@stripe/react-stripe-js": "npm:3.0.0"
@@ -19382,7 +19359,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@walletconnect/ethereum-provider@npm:^2.15.1, @walletconnect/ethereum-provider@npm:^2.18.0":
+"@walletconnect/ethereum-provider@npm:^2.18.0":
   version: 2.19.1
   resolution: "@walletconnect/ethereum-provider@npm:2.19.1"
   dependencies:
@@ -19525,7 +19502,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@walletconnect/modal@npm:2.7.0, @walletconnect/modal@npm:^2.6.2, @walletconnect/modal@npm:^2.7.0":
+"@walletconnect/modal@npm:2.7.0, @walletconnect/modal@npm:^2.7.0":
   version: 2.7.0
   resolution: "@walletconnect/modal@npm:2.7.0"
   dependencies:
@@ -29813,6 +29790,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fetch-retry@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "fetch-retry@npm:6.0.0"
+  checksum: 10/0c8d3082e2d76fff2df75adef6280bc854bc36fd3ef38506674f0216d0d819e2efd14da7477d3f1732415aea1d2cfde7cd3e1aeae46f45f2adbfc5133296e8de
+  languageName: node
+  linkType: hard
+
 "fflate@npm:^0.7.3":
   version: 0.7.4
   resolution: "fflate@npm:0.7.4"
@@ -35429,7 +35413,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"keccak@npm:^3.0.0, keccak@npm:^3.0.2, keccak@npm:^3.0.3, keccak@npm:^3.0.4":
+"keccak@npm:^3.0.0, keccak@npm:^3.0.2, keccak@npm:^3.0.4":
   version: 3.0.4
   resolution: "keccak@npm:3.0.4"
   dependencies:
@@ -43107,7 +43091,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"preact@npm:^10.16.0, preact@npm:^10.24.2":
+"preact@npm:^10.24.2":
   version: 10.26.4
   resolution: "preact@npm:10.26.4"
   checksum: 10/c356b0c5d0a37ff9030df7226ccd2f5e6c6c1b82ec6ce7574a49d43e2c2c21aae8be6928be23ae81f6fe237ea61f8df3fd12a9b45aa7cb77cd706d3909595050
@@ -46829,7 +46813,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sha.js@npm:^2.4.0, sha.js@npm:^2.4.11, sha.js@npm:^2.4.8":
+"sha.js@npm:^2.4.0, sha.js@npm:^2.4.8":
   version: 2.4.11
   resolution: "sha.js@npm:2.4.11"
   dependencies:
@@ -51711,7 +51695,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"viem@npm:^2, viem@npm:^2.21.8, viem@npm:^2.21.9, viem@npm:^2.23.5, viem@npm:^2.7.8":
+"viem@npm:^2, viem@npm:^2.21.8, viem@npm:^2.23.5, viem@npm:^2.7.8":
   version: 2.23.14
   resolution: "viem@npm:2.23.14"
   dependencies:
