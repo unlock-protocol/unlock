@@ -2,26 +2,32 @@
  * This proposal swaps ARB tokens for ETH on Arbitrum and bridges both UDT and ETH
  * back to the timelock on mainnet using the UnlockDAOArbitrumBridge contract.
  *
- * Dploy the helper contract first (from the smart-contracts folder)
+ * How it owkrs
+ *
+ * 1. Dpeloy the helper contract first (from the smart-contracts folder)
+ *
  * yarn hardhat deploy:contract --contract contracts/utils/UnlockDAOArbitrumBridge.sol --network arbitrum <timelock-address>
  *
- * before execution, the birdge contract needs to be funded with ARB and UDT (dust)
- * so the bridge can simulate the transfer of the tokens to the bridge contract
+ * 2. replace `UNLOCK_DAO_BRIDGE_ADDRESS` with the address of the deployed contract
+ *
+ * 3. fund UNLOCK_DAO_BRIDGE_ADDRESS with some ARB and UDT (dust)
+ * so the Arb sdk can simulate the transfer of the tokens to the bridge contract
+ * to calculate the correct amount of ETH gas fee to pass with the retryable ticket
+ *
+ * 4. send the proposal
+ *
  */
 const ethers = require('ethers')
 const ethers5 = require('ethers5')
 const { ParentToChildMessageGasEstimator } = require('@arbitrum/sdk')
 const { getArbitrumNetwork } = require('@arbitrum/sdk')
 const { getBaseFee } = require('@arbitrum/sdk/dist/lib/utils/lib')
-const {
-  getNetwork,
-  getERC20Contract,
-} = require('@unlock-protocol/hardhat-helpers')
+const { getERC20Contract } = require('@unlock-protocol/hardhat-helpers')
 const { arbitrum, mainnet } = require('@unlock-protocol/networks')
 const { parseSafeMulticall } = require('../../helpers/multisig')
 
 // The deployed UnlockDAOArbitrumBridge contract address
-const UNLOCK_DAO_BRIDGE_ADDRESS = '0x86399725a83bB14C47bB5ce8311Ed25378BAa162'
+const UNLOCK_DAO_BRIDGE_ADDRESS = '0x93c8b77D9bB8dFF1D628e3991443C809a13Ca98E'
 
 // Dao
 const L1_TIMELOCK_CONTRACT = '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B'
@@ -278,30 +284,27 @@ module.exports = async ({
   })
 
   // Return the proposal
-  const proposalName = `# Swap ARB for ETH and Bridge Assets to Mainnet 
+  const proposalName = `# Bring back ARB and UDT on Arbitrum to Mainnet 
 
-This proposal uses the UnlockDAOArbitrumBridge contract to swap ARB tokens for ETH and bridges both UDT and ETH back to the timelock on mainnet.
+This proposal goal is to bring back ARB tokens and UDT on Arbitrum to mainnet. To do this it 1) swaps ARB for ETH 2) bridge ETH and UDT back to the timelock on mainnet.
 
-The UnlockDAOArbitrumBridge contract is deployed on Arbitrum at the address ${UNLOCK_DAO_BRIDGE_ADDRESS}.
+To rpevent splitting the tasks into multiple proposals, it relies on the \`UnlockDAOArbitrumBridge\` contract deployed on Arbitrum at the address ${UNLOCK_DAO_BRIDGE_ADDRESS}.
 
-The following steps are performed:
+The proposal contains three separate calls to the Arbitrum Delayed Inbox Contract's \`createRetryableTicket\` function. Each call creates a \`Retryable Ticket\` (L1->L2 message) that will execute the corresponding transaction on Arbitrum:
 
-1. Transfer ARB tokens to the UnlockDAOArbitrumBridge contract
-2. Transfer UDT tokens to the UnlockDAOArbitrumBridge
-3. Call \`swapAndBridgeArb\` to:
-   - Swap all ARB tokens for ETH (with 2% slippage protection)
-   - Bridge the resulting ETH back to the timelock on mainnet
-4. Call \`bridgeUdt\`  to bridge UDT tokens back to the timelock on mainnet
+
+1. First message: Transfer ARB tokens from the DAO's Arbitrum alias to the UnlockDAOArbitrumBridge contract
+2. Second message: Transfer UDT tokens from the DAO's Arbitrum alias to the UnlockDAOArbitrumBridge contract
+3. Third message: Execute a multicall on the UnlockDAOArbitrumBridge contract (${UNLOCK_DAO_BRIDGE_ADDRESS}) to:
+   - Call \`swapAndBridgeArb\`: Swap ARB tokens for ETH (with 2% slippage protection from historical values) and bridge ETH back to the timelock on mainnet
+   - Call \`bridgeUdt\`: Bridge UDT tokens back to mainnet timelock
 
 ### Current situation of DAO's Assets on Arbitrum
+
 - ARB Balance: ${ethers.formatUnits(arbBalance, arbDecimals)} ARB
 - UDT Balance: ${ethers.formatUnits(udtBalance, 18)} UDT
 - DAO ALIAS Address (On Arbitrum): [${fromL2}](https://arbiscan.io/address/${fromL2})
 
-### About the proposal
-The proposal contains a call to the Arbitrum Delayed Inbox Contract's \`createRetryableTicket\` function on mainnet to create a \`Retryable Ticket\` that will execute a multicall transaction on Arbitrum to perform all the necessary operations.
-
-Note that this function forces the sender to provide a reasonable amount of funds (at least enough for submitting and attempting to execute the ticket), but that doesn't guarantee a successful auto-redemption. [Check Arbitrum docs for more info.](https://docs.arbitrum.io/arbos/l1-to-l2-messaging)
 `
   const calls = [transferArbCall, transferUdtCall, customBridgeCalls]
 
