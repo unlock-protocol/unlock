@@ -5,6 +5,7 @@ import v11 from './v11'
 import v12 from './v12'
 import v13 from './v13'
 import v14 from './v14'
+import v15 from './v15'
 
 export default {
   v8,
@@ -14,4 +15,5 @@ export default {
   v12,
   v13,
   v14,
+  v15,
 } as Record<string, any>

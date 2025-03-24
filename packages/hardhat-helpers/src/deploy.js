@@ -56,6 +56,7 @@ export const deployUpgradeableContract = async (
   deployOptions = {}
 ) => {
   const { ethers, upgrades } = require('hardhat')
+
   const Factory = await getContractFactory(
     contractNameOrFullyQualifiedNameOrEthersFactory
   )
@@ -87,17 +88,29 @@ export const deployUpgradeableContract = async (
 
 export const verify = async ({ address, deployArgs, contract }) => {
   const { run } = require('hardhat')
-  try {
-    await run('verify:verify', {
-      address,
-      contract,
-      constructorArguments: deployArgs,
-    })
-  } catch (error) {
-    console.log(
-      `FAIL: Verification failed for contract at ${address} with args : ${deployArgs.toString()}`
-    )
-    console.log(error)
+  let tries = 0
+  while (tries < 5) {
+    try {
+      await run('verify:verify', {
+        address,
+        contract,
+        constructorArguments: deployArgs,
+      })
+      tries++
+    } catch (error) {
+      if (tries >= 5) {
+        console.log(
+          `FAIL: Verification failed for contract at ${address} with args : ${deployArgs.toString()} after 5 tries.`
+        )
+        console.log(error)
+        return
+      } else {
+        console.log(
+          `FAIL: Verification failed for contract at ${address} with args : ${deployArgs.toString()}. Retrying in 10 seconds`
+        )
+        await new Promise((resolve) => setTimeout(resolve, 10000))
+      }
+    }
   }
 }
 

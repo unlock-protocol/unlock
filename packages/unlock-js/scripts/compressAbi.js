@@ -10,8 +10,8 @@ const fs = require('fs')
 const path = require('path')
 const abis = require('@unlock-protocol/contracts')
 
-const unlockVersions = ['v11', 'v12', 'v13']
-const publicLockVersions = ['v9', 'v10', 'v11', 'v12', 'v13', 'v14']
+const unlockVersions = ['v11', 'v12', 'v13', 'v14']
+const publicLockVersions = ['v9', 'v10', 'v11', 'v12', 'v13', 'v14', 'v15']
 
 const data = {
   PublicLock: publicLockVersions.reduce(
@@ -30,9 +30,18 @@ const data = {
   ),
 }
 
+function formatStruct(type) {
+  const struct = type.components.map(({ type }) => type).join(',')
+  return `(${struct})[]`
+}
+
 function formatTypes(types) {
   return types
-    .map((type) => `${type.type}${type.name ? ` ${type.name}` : ''}`)
+    .map((type) =>
+      type.internalType.startsWith('struct')
+        ? formatStruct(type)
+        : `${type.type}${type.name ? ` ${type.name}` : ''}`
+    )
     .join(',')
 }
 

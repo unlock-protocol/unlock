@@ -12,6 +12,8 @@ import { passwordHookAbi } from './abis/passwordHookAbi'
 import { discountCodeHookAbi } from './abis/discountCodeHookAbi'
 import { passwordCapHookAbi } from './abis/passwordCapHookAbi'
 import { discountCodeWithCapHookAbi } from './abis/discountCodeWithCapHookAbi'
+import { allowListHookAbi } from './abis/allowListHookAbi'
+import { PurchaseKeyParams, PurchaseKeysParams } from './params'
 
 /**
  * This service reads data from the RPC endpoint.
@@ -1141,5 +1143,54 @@ export default class Web3Service extends UnlockService {
       cap,
       count,
     }
+  }
+
+  async getMerkleRootFromAllowListHook(params: {
+    lockAddress: string
+    hookAddress: string
+    network: number
+  }) {
+    const { lockAddress, hookAddress, network } = params ?? {}
+    const contract = await this.getHookContract({
+      network,
+      address: hookAddress,
+      abi: new ethers.Interface(allowListHookAbi),
+    })
+    return contract.roots(lockAddress)
+  }
+
+  /**
+   * Data-only signatures
+   */
+  async purchaseKey({
+    lockAddress,
+    network,
+    params,
+  }: {
+    lockAddress: string
+    network: number
+    params: PurchaseKeyParams
+  }) {
+    if (!lockAddress) throw new Error('Missing lockAddress')
+    const provider = this.providerForNetwork(network)
+    const version = await this.lockContractAbiVersion(lockAddress, provider)
+    const data = version.preparePurchaseKeyTx.bind(this)(params, provider)
+    return data
+  }
+
+  async purchaseKeys({
+    lockAddress,
+    network,
+    params,
+  }: {
+    lockAddress: string
+    network: number
+    params: PurchaseKeysParams
+  }) {
+    if (!lockAddress) throw new Error('Missing lockAddress')
+    const provider = this.providerForNetwork(network)
+    const version = await this.lockContractAbiVersion(lockAddress, provider)
+    const data = version.preparePurchaseKeysTx.bind(this)(params, provider)
+    return data
   }
 }

@@ -71,6 +71,16 @@ export const sepolia: NetworkConfig = {
         id: HookType.GITCOIN,
         name: 'Gitcoin',
       },
+      {
+        address: '0x92954dB2CeB43C2BF241C6a968EF711124408B00',
+        id: HookType.ALLOW_LIST,
+        name: 'Allow list',
+      },
+      {
+        address: '0x1043D06Fab79Ab2B520d8c67a2B15AbfbfC67B06',
+        id: HookType.ALLOW_LIST,
+        name: 'Allow List',
+      },
     ],
     onTokenURIHook: [
       {
@@ -108,7 +118,7 @@ export const sepolia: NetworkConfig = {
   provider: 'https://rpc.unlock-protocol.com/11155111',
 
   publicLockVersionToDeploy: 14,
-  publicProvider: 'https://rpc2.sepolia.org/',
+  publicProvider: 'https://sepolia.drpc.org',
   startBlock: 4381710,
   subgraph: {
     endpoint: 'https://subgraph.unlock-protocol.com/11155111',

@@ -5,6 +5,7 @@ import { kebabCase, defaultsDeep } from 'lodash'
 import * as metadataOperations from './metadataOperations'
 import {
   PaywallConfig,
+  PaywallConfigType,
   getLockTypeByMetadata,
   toFormData,
 } from '@unlock-protocol/core'
@@ -13,6 +14,7 @@ import { saveCheckoutConfig } from './checkoutConfigOperations'
 import { EventBodyType } from '../controllers/v2/eventsController'
 import { Op } from 'sequelize'
 import { removeProtectedAttributesFromObject } from '../utils/protectedAttributes'
+import { EventStatus } from '@unlock-protocol/types'
 
 interface AttributeProps {
   value: string
@@ -224,6 +226,7 @@ export const saveEvent = async (
   const previousEvent = await EventData.scope('withoutId').findOne({
     where: { slug },
   })
+
   if (previousEvent) {
     data = defaultsDeep(
       {
@@ -234,7 +237,7 @@ export const saveEvent = async (
   } else {
     data = {
       ...parsed.data,
-      slug, // Making sure we add the slug to the data as well.
+      slug,
     }
   }
 
@@ -244,13 +247,14 @@ export const saveEvent = async (
       slug,
       data,
       createdBy: walletAddress,
+      status: parsed.status || EventStatus.PENDING,
     },
     {
       conflictFields: ['slug'],
     }
   )
 
-  if (!savedEvent.checkoutConfigId) {
+  if (!savedEvent.checkoutConfigId && parsed.checkoutConfig) {
     const checkoutConfig = await PaywallConfig.strip().parseAsync(
       parsed.checkoutConfig.config
     )
@@ -259,7 +263,7 @@ export const saveEvent = async (
       config: checkoutConfig,
       user: walletAddress,
     })
-    // And now attach the id to the savedEvent
+
     savedEvent.checkoutConfigId = createdConfig.id
     await savedEvent.save()
   }
@@ -312,4 +316,51 @@ export const getCheckedInAttendees = async (slug: string) => {
     }
   )
   return keys.map((key) => key.owner)
+}
+
+export const updateEvent = async (
+  slug: string,
+  updates: {
+    status?: EventStatus
+    transactionHash?: string
+    checkoutConfig?: {
+      config: PaywallConfigType
+    }
+  },
+  walletAddress: string
+) => {
+  const event = await EventData.findOne({
+    where: {
+      slug,
+    },
+  })
+
+  if (!event) {
+    return null
+  }
+
+  if (updates.status) {
+    event.status = updates.status
+  }
+
+  if (updates.transactionHash) {
+    event.transactionHash = updates.transactionHash
+  }
+
+  if (updates.checkoutConfig) {
+    const config = await PaywallConfig.strip().parseAsync(
+      updates.checkoutConfig.config
+    )
+
+    const createdConfig = await saveCheckoutConfig({
+      name: `Checkout config for ${event.name} (${event.slug})`,
+      config,
+      user: walletAddress,
+    })
+
+    event.checkoutConfigId = createdConfig.id
+  }
+
+  await event.save()
+  return event
 }

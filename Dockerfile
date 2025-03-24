@@ -1,6 +1,6 @@
 # syntax = docker/dockerfile:experimental
 
-ARG NODE_VERSION=22.11.0-bullseye
+ARG NODE_VERSION=22.14.0-bullseye
 # the graph cli binary does not work with bookworm which is the default for Node 20 images. Once the graph-cli binary has been updated to not use https://www.npmjs.com/package/binary-install-raw we can use bookworm.
 
 ###################################################################

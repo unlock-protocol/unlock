@@ -9,6 +9,7 @@
     "deploy": "yarn build",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
     "deploy-fleek": "./scripts/deploy-fleek.sh",
+    "deploy-vercel": "./scripts/deploy-vercel.sh",
     "start": "next start",
     "test": "echo 'no tests'",
     "lint": "eslint",
@@ -16,17 +17,17 @@
   },
   "dependencies": {
     "@unlock-protocol/paywall": "workspace:./packages/paywall",
-    "next": "14.2.16",
-    "vite-plugin-node-polyfills": "0.22.0"
+    "next": "14.2.24",
+    "vite-plugin-node-polyfills": "0.23.0"
   },
   "license": "MIT",
   "devDependencies": {
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
-    "eslint": "9.14.0",
-    "prettier": "3.3.3",
-    "typescript": "5.6.3",
-    "vite": "5.4.10"
+    "eslint": "9.21.0",
+    "prettier": "3.5.3",
+    "typescript": "5.8.2",
+    "vite": "6.2.0"
   },
   "browserslist": [
     "defaults",

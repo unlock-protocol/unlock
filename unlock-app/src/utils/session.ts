@@ -1,24 +1,30 @@
-import { APP_NAME } from '~/hooks/useAppStorage'
+import {
+  getLocalStorageItem,
+  setLocalStorageItem,
+  deleteLocalStorageItem,
+} from '~/hooks/useAppStorage'
 
-export const CURRENT_ACCOUNT_KEY = `${APP_NAME}.account`
+/**
+ * These constants are *not* prefixed with "@unlock-app."
+ * They'll be prefixed automatically.
+ */
+const CURRENT_ACCOUNT_KEY = 'account'
+const PROVIDER_KEY = 'provider'
+const NETWORK_KEY = 'network'
 
 export const getSessionKey = (address: string) =>
-  `${APP_NAME}.session_${address.trim().toLowerCase()}`
+  `session_${address.trim().toLowerCase()}`
 
 export const getCurrentAccount = () => {
-  if (typeof window === 'undefined') return undefined
-  return localStorage.getItem(CURRENT_ACCOUNT_KEY) || undefined
+  return getLocalStorageItem(CURRENT_ACCOUNT_KEY) || undefined
 }
 
 export const getCurrentProvider = () => {
-  if (typeof window === 'undefined') return null
-  const provider = localStorage.getItem(`${APP_NAME}.provider`)
-  return provider
+  return getLocalStorageItem(PROVIDER_KEY)
 }
 
 export const getCurrentNetwork = () => {
-  if (typeof window === 'undefined') return 1
-  const network = localStorage.getItem(`${APP_NAME}.network`)
+  const network = getLocalStorageItem(NETWORK_KEY)
   return network ? parseInt(network) : undefined
 }
 
@@ -28,25 +34,22 @@ export const getAccessToken = (
   if (!address) {
     return null
   }
-  const ACCESS_TOKEN_KEY = getSessionKey(address)
-  return localStorage.getItem(ACCESS_TOKEN_KEY)
+  return getLocalStorageItem(getSessionKey(address))
 }
 
 export const removeAccessToken = (
   address: string | undefined = getCurrentAccount()
 ) => {
   if (!address) {
-    return null
+    return
   }
-  const ACCESS_TOKEN_KEY = getSessionKey(address)
-  localStorage.removeItem(ACCESS_TOKEN_KEY)
+  deleteLocalStorageItem(getSessionKey(address))
 }
 
 export const saveAccessToken = ({
   walletAddress,
   accessToken,
 }: Record<'walletAddress' | 'accessToken', string>) => {
-  const ACCESS_TOKEN_KEY = getSessionKey(walletAddress)
-  localStorage.setItem(ACCESS_TOKEN_KEY, accessToken)
+  setLocalStorageItem(getSessionKey(walletAddress), accessToken)
   return accessToken
 }

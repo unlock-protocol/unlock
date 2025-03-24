@@ -1,14 +1,13 @@
 import { CheckoutService } from './../checkoutMachine'
 import { useConfig } from '~/utils/withConfig'
 import { Button } from '@unlock-protocol/ui'
-import { Fragment, useRef, useState } from 'react'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { Fragment, useState } from 'react'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { Pricing } from '../../Lock'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { Lock } from '~/unlockTypes'
-import ReCaptcha from 'react-google-recaptcha'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 import { usePricing } from '~/hooks/usePricing'
@@ -37,7 +36,7 @@ export function ConfirmCrossChainPurchase({
   const { account } = useAuthenticate()
   const { getWalletService } = useProvider()
   const config = useConfig()
-  const recaptchaRef = useRef<any>()
+
   const [isConfirming, setIsConfirming] = useState(false)
 
   const { address: lockAddress, network: lockNetwork } = lock!
@@ -104,9 +103,11 @@ export function ConfirmCrossChainPurchase({
     if (!pricingData) {
       return
     }
+
     try {
       setIsConfirming(true)
       const walletService = await getWalletService(route.network)
+
       if (!route.tokenPayment.isNative) {
         const requiredAllowance = BigInt(route.tokenPayment.amount)
         const allowance = await getAllowance(
@@ -117,7 +118,7 @@ export function ConfirmCrossChainPurchase({
         )
         if (requiredAllowance > allowance) {
           setButtonLabel(`Approving ${symbol}...`)
-          // If it's an ERC20 we need to approve first!
+          // Handle ERC20 approvals only for non-native tokens
           const approveTx = await approveTransfer(
             route.tokenPayment.tokenAddress,
             route.tx.to,
@@ -145,13 +146,6 @@ export function ConfirmCrossChainPurchase({
 
   return (
     <Fragment>
-      <ReCaptcha
-        ref={recaptchaRef}
-        sitekey={config.recaptchaKey}
-        size="invisible"
-        badge="bottomleft"
-      />
-
       <main className="h-full p-6 space-y-2 overflow-auto">
         <div className="grid gap-y-2">
           <h4 className="text-xl font-bold"> {lock!.name}</h4>
@@ -205,7 +199,7 @@ export function ConfirmCrossChainPurchase({
             loading={isConfirming}
             disabled={isConfirming || isLoading || isPricingDataError}
             onClick={async (event) => {
-              event.preventDefault()
+              event?.preventDefault()
               if (metadata) {
                 await updateUsersMetadata(metadata)
               }

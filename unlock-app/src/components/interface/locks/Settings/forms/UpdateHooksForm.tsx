@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import { Select } from '@unlock-protocol/ui'
 import { useRef, useState } from 'react'
 import { FormProvider, useForm, useFormContext } from 'react-hook-form'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { Hook, HookName, HookType } from '@unlock-protocol/types'
 import { CustomContractHook } from './hooksComponents/CustomContractHook'
 import { PasswordCappedContractHook } from './hooksComponents/PasswordCappedContractHook'
@@ -13,6 +13,7 @@ import { GuildContractHook } from './hooksComponents/GuildContractHook'
 import { PromoCodeHook } from './hooksComponents/PromoCodeHook'
 import { useCustomHook } from '~/hooks/useCustomHooks'
 import { GitcoinContractHook } from './hooksComponents/GitcoinContractHook'
+import { AllowListHook } from './hooksComponents/AllowListHook'
 import { useProvider } from '~/hooks/useProvider'
 
 interface UpdateHooksFormProps {
@@ -97,6 +98,11 @@ export const HookMapping: Record<FormPropsKey, HookValueProps> = {
         label: 'Gitcoin Passport verification',
         value: HookType.GITCOIN,
         component: (args) => <GitcoinContractHook {...args} />,
+      },
+      {
+        label: 'Allow List',
+        value: HookType.ALLOW_LIST,
+        component: (args) => <AllowListHook {...args} />,
       },
     ],
   },

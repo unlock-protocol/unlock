@@ -3,7 +3,7 @@ import { Button, Input, Placeholder } from '@unlock-protocol/ui'
 import { useWedlockService } from '~/contexts/WedlocksContext'
 import { useEmailPreview } from '~/hooks/useEmailPreview'
 import { useForm } from 'react-hook-form'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 
 export const EmailPreview = ({
   templateId,
@@ -96,6 +96,7 @@ export const EmailPreview = ({
               __html: email?.html || '',
             }}
             style={{ width: '200px' }}
+            className="text-left"
           />
           <div className="flex flex-col gap-2">
             <Input

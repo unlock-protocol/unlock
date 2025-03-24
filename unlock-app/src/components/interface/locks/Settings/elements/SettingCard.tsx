@@ -7,6 +7,7 @@ interface SettingCardProps {
   children?: ReactNode
   isLoading?: boolean
   disabled?: boolean
+  defaultOpen?: boolean
 }
 
 interface SettingCardDetailProps {
@@ -32,6 +33,7 @@ export const SettingCard = ({
   children,
   isLoading,
   disabled,
+  defaultOpen = false,
 }: SettingCardProps) => {
   if (isLoading) {
     return <Placeholder.Card size="md" />
@@ -43,6 +45,7 @@ export const SettingCard = ({
       description={description}
       disabled={disabled}
       isLoading={isLoading}
+      defaultOpen={defaultOpen}
     >
       {children}
     </Disclosure>

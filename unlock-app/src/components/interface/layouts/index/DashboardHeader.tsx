@@ -7,7 +7,9 @@ import { usePathname } from 'next/navigation'
 import { NotificationsMenu } from './NotificationsMenu'
 
 // Paths where menu should be hidden
-const HIDDEN_MENU_PATHS = ['/', '/migrate-user']
+const HIDDEN_MENU_PATHS = ['/migrate-user', '/recover']
+
+const HIDDEN_CONNECT_PATHS = ['/migrate-user', '/recover']
 
 // Menu sections shown everywhere when logged in
 const MENU_SECTIONS = [
@@ -57,6 +59,9 @@ export default function DashboardHeader({
   const shouldShowMenu =
     showMenu && account && !HIDDEN_MENU_PATHS.includes(pathname || '')
 
+  // Determine if menu should be shown
+  const shouldConnect = !HIDDEN_CONNECT_PATHS.includes(pathname || '')
+
   const menuProps = {
     extraClass: {
       mobile: 'bg-ui-secondary-200 px-6',
@@ -76,7 +81,7 @@ export default function DashboardHeader({
           ),
         },
         {
-          content: pathname?.includes('migrate-user') ? null : account ? (
+          content: !shouldConnect ? null : account ? (
             <UserMenu />
           ) : (
             <Button

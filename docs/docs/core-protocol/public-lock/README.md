@@ -41,11 +41,35 @@ You can call and inspect the Lock contracts directly using the block explorers a
 
 All locks deployed (version 10 and later) are upgradable by their lock manager, through the Unlock contract.
 
-Lock managers can also alter the behavior of their locks thru the use of [hooks](./hooks/).
+Lock managers can also alter the behavior of their locks through the use of [hooks](./hooks/).
 
 ## Changelog
 
-Changelogs can be found here for the last two versions.
+Changelogs can be found here for the last versions.
+
+### Version 15
+
+**Released**: Jan 2025
+
+The version 15 introduces several new features and improvements:
+
+- **Dissociate `referrer` from `protocolReferrer`**: Allows specifying different addresses to receive referrer fees and governance token rewards
+- **Remember referrer for renewals**: The referrer address set during the first purchase is now automatically reused when a key is renewed (for subscriptions)
+- **Purchase multiple periods at once**: Users can now buy several periods for a key during a single purchase
+- **Burn/disable a lock entirely**: "Burning" a lock will disable all features and make existing data inaccessible. To date, this cannot be reversed (even though nothing is deleted from chain storage)
+- **Add `hasRole` hook**: A new hook can be used to set programmatically a role based on a 3rd party custom contract
+
+**Minor / internal changes**:
+
+- Use struct to parse purchase args: A new signature to parse purchase arguments, more flexible and clearer
+- Emit `PaymentReceipt` event
+- Add `ReferrerPaid` event
+
+**Fixes**:
+
+- Owners count now excludes the zero address
+- Lower contract size for PublicLock v15 (removes `addLockManager` shorthand)
+- Fixed wrong token ID after a key was burnt
 
 ### Version 14
 
@@ -53,16 +77,16 @@ Changelogs can be found here for the last two versions.
 
 The version 14 introduces several changes in user-facing features :
 
-- Introduces `setKeyExpiration` to allow a lock manager to update the timestamp of any existing keys freely
+- Introduces `setKeyExpiration` to allow a lock manager to update the timestamp of any existing keys freely
 - Modifies `getHasValidKey` so a hook has a final say while determining the validity of a key
 - Allows a lock manager to always transfer keys, even when transfers are disabled
 - Disables fees for lock managers when transferring or sharing a key
 
 For advanced users and developers, the lower level changes below are noteworthy:
 
-- Replace `UnlockUtils` dependencies by optimized Open Zeppelin implementation
+- Replace `UnlockUtils` dependencies by an optimized Open Zeppelin implementation
 - Remove dev reward/cut when purchasing a key
-- Add unchecked scopes on math operations (gas optimisation)
+- Add unchecked scopes on math operations (gas optimization)
 - New Solidity version 0.8.21 (creating issues on some chains that won't support new `PUSH0` evm opcode)
 - Fix potential overflow when merging keys
 
@@ -96,7 +120,7 @@ The various features to set metadata (name, symbol and tokenURIs) have been regr
 
 #### `updateLockConfig`
 
-The configuration for a key’s default duration and available quantity (both per user and in aggregate) have also been grouped into this single function.
+The configuration for a key's default duration and available quantity (both per user and in aggregate) have also been grouped into this single function.
 
 #### `expirationTimestamp`
 
@@ -118,7 +142,7 @@ This new version brings a lot of gas savings as well as a few minor bug fixes. I
 
 This is the most important addition to the protocol in this version. `referrerFees` are ways for a lock manager to share their income with the `referrer` when a purchase is made (when calling `purchase`, `renewMembershipFor`, or `extend`). The fee is set as a percentage in basis points (`1000` is 10%).
 
-A lock manager can call `setReferrerFee` to set specific fees for different referers. It is possible to set a _default_ fee for _any_ referrer by passing the Zero address as the referrer when calling `setReferrerFee`.
+A lock manager can call `setReferrerFee` to set specific fees for different referrers. It is possible to set a _default_ fee for _any_ referrer by passing the Zero address as the referrer when calling `setReferrerFee`.
 
 The function `referrerFees(address)` can be used to retrieve the fees set for a specific address.
 

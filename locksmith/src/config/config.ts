@@ -132,7 +132,8 @@ const config = {
   privyAppId: process.env.PRIVY_APP_ID,
   privyAppSecret: process.env.PRIVY_APP_SECRET,
   eventCasterApiKey: process.env.EVENTCASTER_API_KEY,
-
+  // Secret key to authenticate with the provider service
+  providerSecretKey: process.env.PROVIDER_SECRET_KEY,
   logtailSourceToken: process.env.LOGTAIL,
   sessionDuration: Number(process.env.SESSION_DURATION || 86400 * 60), // 60 days
   requestTimeout: '25s',

@@ -54,8 +54,8 @@ const checkHealth = async ({ id, name, subgraph }) => {
     errors.push(`⚠️: Subgraph not migrated to studio (${subgraphType})`)
   }
   if (subgraphType === 'custom') {
-    errors.push(`⚠️: Not hosted by The Graoh, couldn't fetch status.`)
-    return
+    errors.push(`⚠️: Not hosted by The Graph, couldn't fetch status.`)
+    return errors
   }
 
   // get latest deployment id
@@ -113,10 +113,11 @@ const checkHealth = async ({ id, name, subgraph }) => {
     console.log(errors.join('\n'))
     console.log(`------ \n`)
     log(
-      `[SUBGRAPH] ${name} (${id}) -- ${subgraphType} - errors.join('\n')`,
+      `[SUBGRAPH] ${name} (${id}) -- ${subgraphType} - ${errors.join('\n')}`,
       'error'
     )
   }
+  return errors
 }
 
 async function main() {
@@ -128,13 +129,26 @@ async function main() {
       (id) => networks[id].name
     )}\n`
   )
-  await Promise.all(
-    networksToCheck.map(
-      async (chainName) => await checkHealth(networks[chainName])
-    )
+
+  let hasErrors = false
+  const results = await Promise.all(
+    networksToCheck.map(async (chainName) => {
+      const errors = await checkHealth(networks[chainName])
+      if (errors.length > 0) {
+        hasErrors = true
+      }
+      return errors
+    })
   )
+
+  if (hasErrors) {
+    process.exit(1)
+  }
 }
 
 main()
   .then(() => console.log(`ok done.`))
-  .catch((err) => console.error(err))
+  .catch((err) => {
+    console.error(err)
+    process.exit(1)
+  })

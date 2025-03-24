@@ -1,11 +1,10 @@
 import { useMutation } from '@tanstack/react-query'
 import { Button, Modal, Placeholder, TextBox } from '@unlock-protocol/ui'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback, memo } from 'react'
 import { useForm } from 'react-hook-form'
 import { locksmith } from '~/config/locksmith'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import * as z from 'zod'
-import React from 'react'
 import {
   useCustomContentForEmail,
   useEmailPreviewDataForLock,
@@ -31,7 +30,7 @@ const FormSchema = z.object({
 
 type FormSchemaProps = z.infer<typeof FormSchema>
 
-export const EmailTemplatePreview = ({
+const EmailTemplatePreviewComponent = ({
   templateId,
   disabled,
   network,
@@ -57,7 +56,7 @@ export const EmailTemplatePreview = ({
 
   const {
     data: params,
-    // isLoading: isLoadingParams,
+    isLoading: isLoadingParams,
     // refetch: refetchParams,
   } = useEmailPreviewDataForLock({
     lockAddress,
@@ -92,6 +91,10 @@ export const EmailTemplatePreview = ({
       })
     },
   })
+
+  const handleSave = useCallback(() => {
+    return saveCustomContent.mutateAsync()
+  }, [saveCustomContent])
 
   if (isLoadingCustomContent) {
     return (
@@ -129,7 +132,7 @@ export const EmailTemplatePreview = ({
           <div className="flex gap-2 ml-auto">
             <Button
               size="small"
-              onClick={() => saveCustomContent.mutateAsync()}
+              onClick={handleSave}
               loading={saveCustomContent.isPending}
             >
               Save
@@ -138,12 +141,13 @@ export const EmailTemplatePreview = ({
               size="small"
               variant="outlined-primary"
               onClick={() => setShowPreview(true)}
+              disabled={isLoadingParams || !params}
             >
               Show email preview
             </Button>
           </div>
         )}
-        {showPreview && (
+        {showPreview && params && (
           <Modal empty isOpen={showPreview} setIsOpen={setShowPreview}>
             <div className="fixed inset-0 z-10 flex justify-center overflow-y-auto bg-white">
               <EmailPreview
@@ -159,5 +163,7 @@ export const EmailTemplatePreview = ({
     </>
   )
 }
+
+export const EmailTemplatePreview = memo(EmailTemplatePreviewComponent)
 
 export default EmailTemplatePreview

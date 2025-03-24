@@ -1,7 +1,7 @@
 import { QueryClient, QueryCache } from '@tanstack/react-query'
-import { toast } from 'react-hot-toast'
 import { AxiosError } from 'axios'
 import * as Sentry from '@sentry/nextjs'
+import { ToastHelper } from '@unlock-protocol/ui'
 
 export const queryClient = new QueryClient({
   queryCache: new QueryCache({
@@ -17,13 +17,13 @@ export const queryClient = new QueryClient({
       console.debug(`Event ID: ${id}\n`, error)
 
       if (query?.meta?.errorMessage) {
-        toast.error(query.meta.errorMessage as string)
+        ToastHelper.error(query.meta.errorMessage as string)
       } else {
         switch (error?.code) {
           case -32000:
           case 4001:
           case 'ACTION_REJECTED':
-            toast.error('Transaction rejected')
+            ToastHelper.error('Transaction rejected')
             break
           default: {
             const errorMessage = error?.error?.message || error.message
@@ -35,13 +35,17 @@ export const queryClient = new QueryClient({
   }),
   defaultOptions: {
     queries: {
-      staleTime: 60 * 10,
+      staleTime: 60 * 1000, // 1 minute
+      gcTime: 5 * 60 * 1000, // 5 minutes
       refetchInterval: false,
       refetchOnReconnect: false,
       refetchOnWindowFocus: false,
       refetchIntervalInBackground: false,
+      // Add retryDelay to space out retries and prevent flooding
+      retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 30000),
       retry: (failureCount, error) => {
-        if (failureCount > 3) {
+        // Limit retries more aggressively
+        if (failureCount > 2) {
           return false
         }
         if (error instanceof AxiosError) {
@@ -52,3 +56,8 @@ export const queryClient = new QueryClient({
     },
   },
 })
+if (typeof window !== 'undefined') {
+  window.addEventListener('locksmith.authenticated', async () => {
+    queryClient.refetchQueries()
+  })
+}

@@ -1,5 +1,5 @@
 import { ZERO } from '../../constants'
-import getPurchaseKeysArguments from './getPurchaseKeysArguments'
+import preparePurchaseTx from './preparePurchaseKeysTx'
 import approveAllowance from '../utils/approveAllowance'
 
 /**
@@ -18,42 +18,17 @@ import approveAllowance from '../utils/approveAllowance'
 export default async function (options, transactionOptions = {}, callback) {
   const { lockAddress } = options
   const lockContract = await this.getLockContract(lockAddress)
-  const {
-    owners,
-    keyPrices,
-    keyManagers,
-    referrers,
-    data,
-    totalPrice,
-    erc20Address,
-    totalAmountToApprove,
-  } = await getPurchaseKeysArguments.bind(this)(options)
 
-  const purchaseArgs = [keyPrices, owners, referrers, keyManagers, data]
-  const callData = lockContract.interface.encodeFunctionData(
-    'purchase',
-    purchaseArgs
-  )
+  // get the tx data
+  const txRequests = await preparePurchaseTx.bind(this)(options, this.provider)
 
-  // tx options
-  if (!erc20Address || erc20Address === ZERO) {
-    transactionOptions.value = totalPrice
-  }
-
-  // If the lock is priced in ERC20, we need to approve the transfer
-  const approvalOptions = {
-    erc20Address,
-    totalAmountToApprove,
-    address: lockAddress,
-  }
-
-  // Only ask for approval if the lock is priced in ERC20
-  if (
-    approvalOptions.erc20Address &&
-    approvalOptions.erc20Address !== ZERO &&
-    totalAmountToApprove > 0
-  ) {
-    await approveAllowance.bind(this)(approvalOptions)
+  let approvalTransactionRequest, purchaseTransactionRequest
+  if (txRequests.length === 2) {
+    // execute approval if necessary
+    ;[approvalTransactionRequest, purchaseTransactionRequest] = txRequests
+    await this.signer.sendTransaction(approvalTransactionRequest)
+  } else {
+    ;[purchaseTransactionRequest] = txRequests
   }
 
   // Estimate gas. Bump by 30% because estimates are wrong!
@@ -74,17 +49,7 @@ export default async function (options, transactionOptions = {}, callback) {
           transactionOptions.gasPrice = gasPrice
         }
       }
-
-      const gasLimitPromise = lockContract.purchase.estimateGas(
-        keyPrices,
-        owners,
-        referrers,
-        keyManagers,
-        data,
-        transactionOptions
-      )
-
-      const gasLimit = await gasLimitPromise
+      const gasLimit = await this.signer.estimateGas(purchaseTransactionRequest)
       transactionOptions.gasLimit = (gasLimit * 13n) / 10n
     } catch (error) {
       console.error(
@@ -99,25 +64,17 @@ export default async function (options, transactionOptions = {}, callback) {
     }
   }
 
-  const transactionRequestPromise = lockContract.purchase.populateTransaction(
-    keyPrices,
-    owners,
-    referrers,
-    keyManagers,
-    data,
-    transactionOptions
-  )
-
-  const transactionRequest = await transactionRequestPromise
   if (transactionOptions.runEstimate) {
-    const estimate = this.signer.estimateGas(transactionRequest)
+    const estimate = this.signer.estimateGas(purchaseTransactionRequest)
     return {
-      transactionRequest,
+      purchaseTransactionRequest,
       estimate,
     }
   }
 
-  const transactionPromise = this.signer.sendTransaction(transactionRequest)
+  const transactionPromise = this.signer.sendTransaction(
+    purchaseTransactionRequest
+  )
 
   const hash = await this._handleMethodCall(transactionPromise)
 

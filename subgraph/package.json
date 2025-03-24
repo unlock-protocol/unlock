@@ -28,7 +28,7 @@
     "@graphprotocol/graph-ts": "0.35.1",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/networks": "workspace:^",
-    "eslint": "9.13.0",
+    "eslint": "9.22.0",
     "fs-extra": "11.2.0",
     "handlebars": "4.7.8",
     "yargs": "17.7.2"
@@ -37,7 +37,7 @@
     "hoistingLimits": "workspaces"
   },
   "devDependencies": {
-    "ethers": "6.13.4",
+    "ethers": "6.13.5",
     "graphql": "16.9.0",
     "matchstick-as": "0.6.0",
     "mustache": "4.2.0"

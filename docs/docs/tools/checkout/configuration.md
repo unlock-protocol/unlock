@@ -10,7 +10,7 @@ sidebar_position: 1
 
 ## Building your URL
 
-First, you can always use the [Checkout Buidler](https://app.unlock-protocol.com/locks/checkout-url) which provides a no-code tool to configure a checkout. At the end of it, you can copy the URL and use however you want.
+First, you can always use the [Checkout Builder](https://app.unlock-protocol.com/locks/checkout-url) which provides a no-code tool to configure a checkout. At the end of it, you can copy the URL and use however you want.
 
 You can also programmatically build your own checkout URLs. All of the purchase URLs start with the following base:
 
@@ -18,10 +18,10 @@ You can also programmatically build your own checkout URLs. All of the purchase 
 https://app.unlock-protocol.com/checkout?
 ```
 
-After this, you will need to include either an `id` parameter, with the `id` of the configuration you saved thru the checkout builder, or the following **required** parameters:
+After this, you will need to include either an `id` parameter, with the `id` of the configuration you saved through the checkout builder, or the following **required** parameters:
 
 - `paywallConfig=...` where `...` is replaced with the URL-encoded version of a JSON `paywallConfig` object. The next section will show you how to build this object.
-- `redirectUri=...` where `...` is replaced with the URL-encodded address of a webpage where the user will be redirected when their membership is valid.
+- `redirectUri=...` where `...` is replaced with the URL-encoded address of a webpage where the user will be redirected when their membership is valid.
 
 These parameters are all separated by the `&` sign and you can use online tools such as [https://www.urlencoder.io/](https://www.urlencoder.io/) to build the encoded version of the parameters.
 

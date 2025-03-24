@@ -27,6 +27,7 @@ export interface Typegen0 {
   eventsCausingDelays: {}
   eventsCausingGuards: {
     isCardPayment: 'BACK'
+    requireAllowList: 'BACK' | 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'
     requireCaptcha: 'BACK' | 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'
     requireGitcoin: 'BACK' | 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'
     requireGuild: 'BACK' | 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'

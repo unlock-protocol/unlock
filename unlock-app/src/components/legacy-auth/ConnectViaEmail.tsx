@@ -3,14 +3,27 @@ import { useForm } from 'react-hook-form'
 import { useMutation } from '@tanstack/react-query'
 import { locksmith } from '~/config/locksmith'
 import { UserAccountType } from '~/utils/userAccountType'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
+import { useEffect } from 'react'
 
 interface ConnectViaEmailProps {
   onNext: (data: { email: string; accountType: UserAccountType[] }) => void
+  email?: string
 }
 
-export const ConnectViaEmail = ({ onNext }: ConnectViaEmailProps) => {
-  const methods = useForm<{ email: string }>()
+export const ConnectViaEmail = ({ onNext, email }: ConnectViaEmailProps) => {
+  const methods = useForm<{ email: string }>({
+    defaultValues: {
+      email: email || '',
+    },
+  })
+
+  useEffect(() => {
+    if (email && !methods.getValues('email')) {
+      methods.setValue('email', email)
+      onSubmit({ email })
+    }
+  }, [email])
 
   // check user account type
   const checkUserAccountType = useMutation({
@@ -51,16 +64,7 @@ export const ConnectViaEmail = ({ onNext }: ConnectViaEmailProps) => {
         return
       }
 
-      // Check if user already has Privy account
-      const privyUser = await checkPrivyUserMutation.mutateAsync(email)
-      if (privyUser) {
-        ToastHelper.error('This email already has a Privy account.')
-        // Clear the form
-        methods.reset()
-        return
-      }
-
-      // Only proceed to check account type if no Privy account exists
+      // proceed to check account type if no Privy account exists
       const accountType = await checkUserAccountType.mutateAsync(email)
       if (!accountType?.length) {
         ToastHelper.error('No account found for this email')

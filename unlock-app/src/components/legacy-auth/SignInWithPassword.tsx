@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { useMutation } from '@tanstack/react-query'
 import { locksmith } from '~/config/locksmith'
 import { getAccountFromPrivateKey } from '~/utils/accounts'
-import { ToastHelper } from '../helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 
 interface SignInWithPasswordProps {
   userEmail: string
@@ -52,16 +52,25 @@ export const SignInWithPassword = ({
   return (
     <div className="grid gap-2">
       <form className="grid gap-4" onSubmit={methods.handleSubmit(onSubmit)}>
-        <Input
-          label="Password"
-          type="password"
-          disabled={signInMutation.isPending}
-          placeholder="Enter your password"
-          {...methods.register('password', {
-            required: 'Password is required',
-          })}
-          error={methods.formState.errors.password?.message}
-        />
+        <div className="flex flex-col gap-1">
+          <Input
+            label="Password"
+            type="password"
+            disabled={signInMutation.isPending}
+            placeholder="Enter your password"
+            {...methods.register('password', {
+              required: 'Password is required',
+            })}
+            error={methods.formState.errors.password?.message}
+          />
+          <small className="text-sm text-gray-600">
+            If you forgot your password, check your emails for an email from us
+            titled
+            <em>
+              &#34;Welcome to Unlock! Please, read this email carefully&#34;
+            </em>
+          </small>
+        </div>
         <Button type="submit" loading={signInMutation.isPending}>
           Sign In
         </Button>
