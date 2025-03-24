@@ -6,7 +6,6 @@ const { reverts } = require('../helpers')
 
 // Arbitrum contract addresses
 const WETH = arbitrum.tokens.find((token) => token.symbol === 'WETH').address
-const UNISWAP_UNIVERSAL_ROUTER = arbitrum.uniswapV3.universalRouterAddress
 const ARB_TOKEN = arbitrum.tokens.find(
   (token) => token.symbol === 'ARB'
 ).address
@@ -49,11 +48,6 @@ describe('UnlockDAOArbitrumBridge', () => {
 
     // Deploy bridge contract
     const deployArgs = [
-      UNISWAP_UNIVERSAL_ROUTER, // uniswapUniversalRouter
-      GATEWAY_ROUTER, // gatewayRouter
-      WETH, // l2Weth
-      ARB_TOKEN, // l2Arb
-      L1_UDT, // l1Udt
       L1_TIMELOCK_CONTRACT, // l1Timelock
     ]
     bridge = await UnlockDAOArbitrumBridge.deploy(...deployArgs)
@@ -68,11 +62,6 @@ describe('UnlockDAOArbitrumBridge', () => {
 
   describe('swapAndBridgeArb', () => {
     it('should swap ARB tokens for ETH and bridge to L1', async () => {
-      // We need to get some ARB tokens first
-      // This would typically involve getting tokens from a holder or minting them
-
-      const amountOutMinimum = ethers.parseEther('0.1') // Minimum amount of ETH to receive
-
       // Get initial balances
       const initialArbBalance = await arbToken.balanceOf(L2_TIMELOCK_ALIAS)
       expect(initialArbBalance.toString()).to.not.equal('0')
@@ -88,7 +77,7 @@ describe('UnlockDAOArbitrumBridge', () => {
       // and bridge worked.
       // tested live https://arbiscan.io/address/0x86399725a83bB14C47bB5ce8311Ed25378BAa162#readContract
       // TODO: check final balances and that bridge event was emitted
-      await reverts(bridge.swapAndBridgeArb(amountOutMinimum), 'invalid opcode')
+      await reverts(bridge.swapAndBridgeArb(), 'invalid opcode')
     })
   })
 

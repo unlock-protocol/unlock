@@ -2,6 +2,9 @@
  * This proposal swaps ARB tokens for ETH on Arbitrum and bridges both UDT and ETH
  * back to the timelock on mainnet using the UnlockDAOArbitrumBridge contract.
  *
+ * Dploy the helper contract first (from the smart-contracts folder)
+ * yarn hardhat deploy:contract --contract contracts/utils/UnlockDAOArbitrumBridge.sol --network arbitrum <timelock-address>
+ *
  * before execution, the birdge contract needs to be funded with ARB and UDT (dust)
  * so the bridge can simulate the transfer of the tokens to the bridge contract
  */
