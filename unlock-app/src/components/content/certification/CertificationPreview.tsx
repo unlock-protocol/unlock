@@ -112,7 +112,6 @@ export const CertificationPreviewContent = ({
   const isMobile = window?.innerWidth < 768
 
   // Get all custom metadata that aren't `minted` or `certification_issuer`
-
   const customMetadata =
     metadata?.attributes?.filter(
       (attr: any) =>
