@@ -19,6 +19,10 @@ interface CertificateProps {
   transactionsHash?: ReactNode
   externalUrl?: string
   isMobile?: boolean
+  customMetadata?: Array<{
+    trait_type: string
+    value: string | number | ReactNode
+  }>
 }
 
 interface Props {
@@ -133,6 +137,7 @@ export const Certificate = ({
   image,
   networkName,
   isMobile = false,
+  customMetadata = [],
 }: CertificateProps) => {
   const networkNameById = networks[network]?.name
 
@@ -221,6 +226,26 @@ export const Certificate = ({
                 </div>
               )}
             </div>
+
+            {customMetadata.length > 0 && (
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: isMobile ? 'column' : 'row',
+                  justifyContent: 'flex-start',
+                  gap: isMobile ? '16px' : '8px',
+                  marginTop: '24px',
+                  flexWrap: 'wrap',
+                }}
+              >
+                {customMetadata.map((attribute, index) => (
+                  <ValueWrapper key={index}>
+                    <CertificateLabel>{attribute.trait_type}</CertificateLabel>
+                    <CertificateValue>{attribute.value}</CertificateValue>
+                  </ValueWrapper>
+                ))}
+              </div>
+            )}
           </div>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column' }}>

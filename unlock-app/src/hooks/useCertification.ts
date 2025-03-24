@@ -57,7 +57,8 @@ export const useCertification = ({
         if (key) {
           return key
         }
-        throw new Error('No valid certification for this token')
+        console.error('No valid certification for this token')
+        return placeholderData
       }
       return placeholderData
     },
