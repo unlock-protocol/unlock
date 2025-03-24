@@ -1,6 +1,9 @@
 /**
  * This proposal swaps ARB tokens for ETH on Arbitrum and bridges both UDT and ETH
  * back to the timelock on mainnet using the UnlockDAOArbitrumBridge contract.
+ *
+ * before execution, the birdge contract needs to be funded with ARB and UDT (dust)
+ * so the bridge can simulate the transfer of the tokens to the bridge contract
  */
 const ethers = require('ethers')
 const ethers5 = require('ethers5')
@@ -14,6 +17,9 @@ const {
 const { arbitrum, mainnet } = require('@unlock-protocol/networks')
 const { parseSafeMulticall } = require('../../helpers/multisig')
 
+// The deployed UnlockDAOArbitrumBridge contract address
+const UNLOCK_DAO_BRIDGE_ADDRESS = '0x86399725a83bB14C47bB5ce8311Ed25378BAa162'
+
 // Dao
 const L1_TIMELOCK_CONTRACT = '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B'
 const L2_TIMELOCK_ALIAS = '0x28ffDfB0A6e6E06E95B3A1f928Dc4024240bD87c'
@@ -25,9 +31,6 @@ const { address: L2_ARB_TOKEN_ADDRESS } = arbitrum.tokens.find(
 
 // L1 UDT address
 const L1_UDT_ADDRESS = mainnet.unlockDaoToken.address
-
-// The deployed UnlockDAOArbitrumBridge contract address
-const UNLOCK_DAO_BRIDGE_ADDRESS = '0x86399725a83bB14C47bB5ce8311Ed25378BAa162'
 
 // Bridge contract ABI
 const BRIDGE_ABI = [
@@ -137,12 +140,7 @@ async function createArbBridgeTicket({
     data,
   }
   const baseFee = await getBaseFee(l1Provider)
-  console.log(baseFee)
-  console.log({
-    from,
-    to,
-    data,
-  })
+
   /**
    * The estimateAll method gives us the following values for sending an L1->L2 message
    * (1) maxSubmissionCost: The maximum cost to be paid for submitting the transaction
@@ -219,7 +217,7 @@ module.exports = async ({
   const bridgeInterface = new ethers.Interface(BRIDGE_ABI)
 
   // TODO: Add slippage protection using an oracle
-  const amountOutMinimum = (arbBalance * 98n) / 100n // 2% slippage
+  const amountOutMinimum = 0 //(arbBalance * 98n) / 100n // 2% slippage
 
   // 1. transfer ARB tokens to the bridge contract
   const transferArbCall = await createArbBridgeTicket({
@@ -266,6 +264,8 @@ module.exports = async ({
       chainId: arbitrum.id,
     })
 
+  // NB: this will fail because the state on Arbitrum is not ready (no ARB or UDT in bridge contract)
+  // Need to fund the contract on chain for this to work
   const customBridgeCalls = await createArbBridgeTicket({
     from: fromL1,
     to: multicallAddress,
@@ -300,7 +300,6 @@ The proposal contains a call to the Arbitrum Delayed Inbox Contract's \`createRe
 
 Note that this function forces the sender to provide a reasonable amount of funds (at least enough for submitting and attempting to execute the ticket), but that doesn't guarantee a successful auto-redemption. [Check Arbitrum docs for more info.](https://docs.arbitrum.io/arbos/l1-to-l2-messaging)
 `
-  console.log({ transferArbCall })
   const calls = [transferArbCall, transferUdtCall, customBridgeCalls]
 
   return {
