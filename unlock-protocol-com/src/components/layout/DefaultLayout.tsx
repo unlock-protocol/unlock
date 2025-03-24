@@ -81,7 +81,30 @@ const MENU = {
     },
     {
       title: 'Governance',
-      url: 'https://docs.unlock-protocol.com/governance/',
+      small: true,
+      options: [
+        {
+          title: '',
+          options: [
+            {
+              title: 'Discuss',
+              url: 'https://discord.unlock-protocol.com',
+            },
+            {
+              title: 'Vote',
+              url: 'https://www.tally.xyz/gov/unlock-protocol',
+            },
+            {
+              title: 'Buy UP',
+              url: 'https://app.uniswap.org/explore/tokens/base/0xac27fa800955849d6d17cc8952ba9dd6eaa66187',
+            },
+            {
+              title: 'Docs',
+              url: 'https://docs.unlock-protocol.com/governance/',
+            },
+          ],
+        },
+      ],
     },
     {
       title: 'Blog',
@@ -179,11 +202,11 @@ export function Layout({ children }: Props) {
           { label: 'Forum', url: 'https://unlock.community/' },
           {
             label: 'Snapshot',
-            url: 'https://snapshot.org/#/unlock-protocol.eth',
+            url: 'https://snapshot.box/#/s:unlock-dao.eth',
           },
           {
             label: 'Tally',
-            url: 'https://www.tally.xyz/gov/unlock',
+            url: 'https://www.tally.xyz/gov/unlock-protocol',
           },
         ],
       },

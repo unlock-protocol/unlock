@@ -32,23 +32,27 @@ export default async function preparePurchase(options, provider) {
   } = await getPurchaseKeysArguments.bind(this)(options)
 
   const txs = []
-
   // If the lock is priced in ERC20, we need to approve the transfer
-  const approvalOptions = {
-    erc20Address,
-    totalAmountToApprove,
-    address: lockAddress,
-    onlyData: true,
-  }
+  if (erc20Address != ZERO) {
+    const approvalOptions = {
+      erc20Address,
+      totalAmountToApprove,
+      address: lockAddress,
+      onlyData: true,
+    }
 
-  // Only ask for approval if the lock is priced in ERC20
-  if (
-    approvalOptions.erc20Address &&
-    approvalOptions.erc20Address !== ZERO &&
-    totalAmountToApprove > 0
-  ) {
-    const approvalTxRequest = await approveAllowance.bind(this)(approvalOptions)
-    txs.push(approvalTxRequest)
+    // Only ask for approval if the lock is priced in ERC20
+    if (
+      approvalOptions.erc20Address &&
+      approvalOptions.erc20Address !== ZERO &&
+      totalAmountToApprove > 0
+    ) {
+      const approvalTxRequest =
+        await approveAllowance.bind(this)(approvalOptions)
+      if (approvalTxRequest) {
+        txs.push(approvalTxRequest)
+      }
+    }
   }
 
   // parse

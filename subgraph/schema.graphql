@@ -45,6 +45,8 @@ type Lock @entity {
   The primary reason for this role is to support additional purchase mechanisms beyond direct key purchases like credit-card purchases.
   """
   keyGranters: [Bytes!]!
+  "transaction hash of the lock's creation"
+  creationTransactionHash: String!
 }
 
 type Key @entity {

@@ -64,8 +64,9 @@ const LockInfoCard = ({
         </div>
 
         <WrappedAddress
-          address={lockAddress}
+          address={lockAddress!}
           network={network}
+          skipResolution
           addressType="lock"
         />
       </div>

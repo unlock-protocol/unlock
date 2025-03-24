@@ -84,10 +84,9 @@ export const EventOverviewCard: React.FC<EventOverviewCardProps> = ({
               </Badge>
             )}
           </div>
-          <ReactMarkdown
-            children={data.description}
-            className="mt-1 text-sm sm:text-base text-gray-500 line-clamp-2"
-          />
+          <div className="mt-1 text-sm sm:text-base text-gray-500 line-clamp-2">
+            <ReactMarkdown children={data.description} />
+          </div>
         </div>
 
         {/* Attendee Cues */}

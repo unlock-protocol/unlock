@@ -3,13 +3,13 @@ import { Fragment } from 'react'
 import { useSelector } from '@xstate/react'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { Stepper } from '../Stepper'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { ConfirmClaim } from './Confirm/ConfirmClaim'
-import { ConfirmCrypto } from './Confirm/ConfirmCrypto'
 import { ConfirmCard } from './Confirm/ConfirmCard'
 import { ConfirmCrossmint } from './Confirm/ConfirmCrossmint'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { ConfirmCrossChainPurchaseWrapper } from './Confirm/ConfirmCrossChainPurchaseWrapper'
+import { ConfirmCryptoWrapper } from './Confirm/ConfirmCryptoWrapper'
 
 interface Props {
   checkoutService: CheckoutService
@@ -76,7 +76,7 @@ export function Confirm({ checkoutService, communication }: Props) {
         />
       )}
       {payment.method === 'crypto' && (
-        <ConfirmCrypto
+        <ConfirmCryptoWrapper
           checkoutService={checkoutService}
           onConfirmed={onConfirmed}
           onError={onError}

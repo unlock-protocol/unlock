@@ -26,9 +26,7 @@ When a transfer happens using `transferFrom` or `safeTransferFrom`, the lock man
 
 ## Fees on Transfers
 
-Many NFTs have the concept of **royalties**. Lock managers can apply royalties to their locks, especially using a [royalties registry like that one](https://royaltyregistry.xyz/lookup). It is important to note that these royalties **cannot be systematically enforced** and rely on the adoption by the platforms and exchanges on which NFTs are traded.
-
-However, inside Unlock Keys, the contract includes a unique feature to monetize secondary market transactions. The contract includes the ability to "burn" time upon transfers.
+Inside Unlock Keys, the contract includes a unique feature to monetize secondary market transactions. The contract includes the ability to "burn" time upon transfers.
 
 Let's take an example. A user, Jane, owns an NFT membership valid for ten more days. The contract includes a 10% fee on each transfer. If Jane transfers her NFT to Claire, Claire will receive the key, but when she receives it, the expiration will have been reduced to 9 days.
 

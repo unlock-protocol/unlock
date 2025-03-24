@@ -35,8 +35,8 @@ const customers = [
     name: 'Women in Web3',
   },
   {
-    image: '/images/partners/spruceID.svg',
-    name: 'SpruceID logo',
+    image: '/images/partners/farcon.png',
+    name: 'Farcon logo',
   },
   {
     image: '/images/partners/dappcon.svg',

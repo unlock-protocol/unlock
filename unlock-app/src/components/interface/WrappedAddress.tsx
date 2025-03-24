@@ -1,19 +1,21 @@
 import React, { useCallback } from 'react'
 import { Address } from '@unlock-protocol/ui'
-import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useNameResolver } from '~/hooks/useNameResolver'
+import { ToastHelper } from '@unlock-protocol/ui'
 import networks from '@unlock-protocol/networks'
+import { resolveAddress } from '~/hooks/useNameResolver'
 
 /**
  * @typedef {Object} WrappedAddressProps
  * @property {string | `0x${string}`} address - The Ethereum address to display.
  * @property {boolean} [showExternalLink] - Whether to show an external link to the address.
  * @property {boolean} [showCopyIcon] - Whether to show a copy icon.
- * @property {boolean} [showResolvedName] - Whether to show the resolved name (e.g., ENS, Base names).
+ * @property {boolean} [showResolvedName] - Whether to show the resolved name instead of minified address. If false, will always show minified address.
  * @property {string} [className] - Additional CSS classes.
  * @property {boolean} [minified] - Whether to show a minified version of the address.
  * @property {'ens' | 'multiple'} [preferredResolver] - The preferred name resolution method.
  * @property {string} [externalLinkUrl] - Custom external link URL.
+ * @property {string} [resolvedName] - The resolved name (ENS or Base) for the address.
+ * @property {boolean} [skipResolution] - Whether to skip name resolution. When true, will not attempt to resolve name unless resolvedName is provided.
  * @property {string} [addressType] - The type of address being displayed (e.g., 'lock', 'wallet', 'contract', 'default').
  * @property {number} [network] - The network ID for generating the explorer URL.
  */
@@ -28,6 +30,8 @@ interface WrappedAddressProps {
   externalLinkUrl?: string
   addressType?: 'lock' | 'wallet' | 'contract' | 'default'
   network?: number
+  resolvedName?: string
+  skipResolution?: boolean
 }
 
 /**
@@ -46,19 +50,37 @@ const normalizeAddress = (address: string | `0x${string}`): `0x${string}` => {
  */
 export const WrappedAddress: React.FC<WrappedAddressProps> = ({
   address,
+  resolvedName,
   preferredResolver = 'multiple',
   showCopyIcon = true,
   showExternalLink = true,
   externalLinkUrl,
   addressType = 'default',
+  skipResolution = false,
   network,
+  showResolvedName = true,
   ...props
 }) => {
   // Normalize the address to always start with 0x
   const normalizedAddress = normalizeAddress(address)
 
-  // Fetch names for the address using the name resolver hook
-  const { ensName, baseName } = useNameResolver(normalizedAddress)
+  // If resolvedName is provided or skipResolution is true, we should skip the name resolution
+  const shouldSkipResolution = Boolean(resolvedName || skipResolution)
+
+  /**
+   * Wrapper function for resolving names.
+   */
+  const resolveMultipleNames = useCallback(
+    async (address: string): Promise<string | undefined> => {
+      if (shouldSkipResolution) return resolvedName || undefined
+
+      // If we already have a resolvedName, return it immediately
+      if (resolvedName) return resolvedName
+
+      return resolveAddress(address, preferredResolver)
+    },
+    [shouldSkipResolution, preferredResolver, resolvedName]
+  )
 
   /**
    * Handles the copy action for the address.
@@ -89,42 +111,8 @@ export const WrappedAddress: React.FC<WrappedAddressProps> = ({
   }, [addressType]) // include addressType to ensure the latest value is used
 
   /**
-   * Resolves names based on the preferred resolver.
-   * @param {string} addr - The address to resolve.
-   * @returns {Promise<string | undefined>} The resolved name or the original address if not resolved.
-   */
-  const resolveNames = useCallback(
-    async (addr: string): Promise<string> => {
-      if (preferredResolver === 'ens') {
-        return ensName || baseName || addr
-      } else if (preferredResolver === 'base') {
-        return baseName || ensName || addr
-      } else if (preferredResolver === 'multiple') {
-        // Prioritize ENS, then Base name, then fall back to address
-        return ensName || baseName || addr
-      }
-      return addr
-    },
-    [preferredResolver, ensName, baseName]
-  )
-
-  /**
-   * Wrapper function for resolving multiple names (currently only ENS and Base names).
-   * This function is designed to be extensible for future name resolution methods.
-   * @param {string} address - The address to resolve.
-   * @returns {Promise<string | undefined>} The resolved name or undefined.
-   */
-  const resolveMultipleNames = useCallback(
-    async (address: string): Promise<string | undefined> => {
-      return resolveNames(address)
-    },
-    [resolveNames]
-  )
-
-  /**
    * Generates the explorer URL based on the provided network.
    * This function checks if the network is valid and retrieves the corresponding explorer URL for the normalized address.
-   * If the network is not provided or not found, it returns undefined.
    * @returns {string | undefined} The explorer URL for the address or undefined if no valid network is provided.
    */
   const getExplorerUrl = useCallback(() => {
@@ -132,18 +120,33 @@ export const WrappedAddress: React.FC<WrappedAddressProps> = ({
       const { explorer } = networks[network]
       return explorer?.urls?.address(normalizedAddress) || undefined
     }
-    // Return undefined if no network is provided or if it's not found
+    // Return undefined if no network is provided or if it's not found.
     return undefined
   }, [network, normalizedAddress])
 
+  /**
+   * When skipResolution is true, we need to ensure that:
+   * 1. We still provide the useName function but it should return immediately
+   * 2. If no resolvedName was provided, we use address as fallback for resolvedName
+   *    to ensure something is always displayed instead of a placeholder
+   */
+  const effectiveResolvedName =
+    skipResolution && !resolvedName ? undefined : resolvedName
+
+  // Always pass resolveMultipleNames, even when skipping resolution
+  const nameResolver =
+    shouldSkipResolution && !resolvedName ? undefined : resolveMultipleNames
+
   return (
     <Address
-      address={address}
-      useName={resolveMultipleNames}
+      address={normalizedAddress}
+      resolvedName={effectiveResolvedName}
+      useName={nameResolver}
       onCopied={handleCopy}
       showCopyIcon={showCopyIcon}
       showExternalLink={showExternalLink}
-      externalLinkUrl={getExplorerUrl()}
+      showResolvedName={showResolvedName}
+      externalLinkUrl={externalLinkUrl || getExplorerUrl()}
       {...props}
     />
   )

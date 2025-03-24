@@ -66,7 +66,7 @@ const buildEmail = async (template, templateParams, args) => {
 //  failoverTemplate: failoverTemplate string
 //  recipient: email address string
 //  params: params for the template (as a hash). Each param is key: value where value can be either a string, or an object with {sign: <boolean></boolean>, value: <string>}
-//  attachments: array of attachements as data-uri strings (nodemailer will handle them)
+//  attachments: array of attachments as data-uri strings (nodemailer will handle them)
 // }
 export const route = async (args) => {
   // Wrap the template

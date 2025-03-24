@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 import { Button, Input } from '@unlock-protocol/ui'
 import { useForm } from 'react-hook-form'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useSaveLockSettings } from '~/hooks/useLockSettings'
 
 interface EmailReplyToFormProps {

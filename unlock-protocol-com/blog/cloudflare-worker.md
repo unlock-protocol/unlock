@@ -21,7 +21,7 @@ This amount of work not only takes times and resources, but often, it is not eve
 
 By now, you know that Unlock is a **protocol for memberships** as NFT. It _decouples_ the membership itself from the website to which these memberships apply. This means that the website does not have to implement mechanisms itself to enforce access control, as they can be implemented at a different layer, and the CDN is actually a great place to do this, with the help of the [Unlock Cloudflare Worker](https://github.com/unlock-protocol/cloudflare-worker)!
 
-### How to to token-gate a website with Cloudflare
+### How to token-gate a website with Cloudflare
 
 #### Clone the repo:
 
