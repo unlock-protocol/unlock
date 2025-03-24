@@ -20,7 +20,6 @@ describe('UnlockDAOArbitrumBridge', () => {
   let bridge
   let arbToken
   let l2TimelockAliasSigner
-  let l2TimelockAlias
   let weth
   let gatewayRouter
   let l2UdtToken
@@ -87,6 +86,7 @@ describe('UnlockDAOArbitrumBridge', () => {
       // NB: we can not test the result of the function because the native bridge requires ArbSys
       // and this is not supported by local forks. If this does revents with native opcode, it means that swap
       // and bridge worked.
+      // tested live https://arbiscan.io/address/0x86399725a83bB14C47bB5ce8311Ed25378BAa162#readContract
       // TODO: check final balances and that bridge event was emitted
       await reverts(bridge.swapAndBridgeArb(amountOutMinimum), 'invalid opcode')
     })
@@ -114,6 +114,7 @@ describe('UnlockDAOArbitrumBridge', () => {
       // NB: we can not test the result of the function because the native bridge requires ArbSys
       // and this is not supported by local forks. If this does revents with native opcode, it means that swap
       // and bridge worked.
+      // tested live https://arbiscan.io/address/0x86399725a83bB14C47bB5ce8311Ed25378BAa162#readContract
       // TODO: check final balances and that bridge event was emitted
       await reverts(
         bridge.connect(l2TimelockAliasSigner).bridgeUdt(),
