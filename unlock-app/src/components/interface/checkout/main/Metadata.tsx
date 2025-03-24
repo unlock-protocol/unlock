@@ -86,6 +86,7 @@ export const MetadataInputs = ({
   const {
     register,
     setValue,
+    control,
     formState: { errors },
   } = useFormContext<FormData>()
   const networkConfig = config.networks[lock.network]
@@ -286,15 +287,25 @@ export const MetadataInputs = ({
           // Handle checkbox type
           if (type === 'checkbox') {
             return (
-              <Checkbox
+              <Controller
                 key={name}
-                label={inputLabel}
-                disabled={disabled}
-                error={errors?.metadata?.[id]?.[name]?.message}
-                {...register(`metadata.${id}.${name}`, {
+                name={`metadata.${id}.${name}`}
+                control={control}
+                rules={{
                   required: required && `${inputLabel} is required`,
-                })}
-                defaultChecked={defaultValue === 'true' ? true : false}
+                }}
+                defaultValue={defaultValue === 'true' ? 'true' : 'false'}
+                render={({ field }) => (
+                  <Checkbox
+                    label={inputLabel}
+                    disabled={disabled}
+                    error={errors?.metadata?.[id]?.[name]?.message}
+                    checked={field.value === 'true'}
+                    onChange={(e) =>
+                      field.onChange(e.target.checked ? 'true' : 'false')
+                    }
+                  />
+                )}
               />
             )
           }
