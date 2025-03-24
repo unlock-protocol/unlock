@@ -1,23 +1,10 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.17;
+
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {IUniversalRouter} from "../interfaces/IUniversalRouter.sol";
 import {IWETH} from "../interfaces/IWETH.sol";
-
-interface IQuoterV2 {
-  function quoteExactInputSingle(
-    address tokenIn,
-    address tokenOut,
-    uint24 fee,
-    uint256 amountIn,
-    uint160 sqrtPriceLimitX96
-  )
-    external
-    returns (
-      uint256 amountOut,
-      uint160 sqrtPriceX96After,
-      uint32 initializedTicksCrossed,
-      uint256 gasEstimate
-    );
-}
+import {IUniswapOracleV3} from "../interfaces/IUniswapOracleV3.sol";
 
 interface IArbSys {
   /**
@@ -98,6 +85,7 @@ contract UnlockDAOArbitrumBridge {
   IERC20 public immutable L2_ARB_TOKEN;
   address public immutable L1_UDT;
   address public immutable L1_TIMELOCK;
+  IUniswapOracleV3 public immutable UNISWAP_ORACLE;
 
   constructor(address l1Timelock) {
     UNISWAP_UNIVERSAL_ROUTER = IUniversalRouter(
@@ -111,6 +99,9 @@ contract UnlockDAOArbitrumBridge {
     L2_ARB_TOKEN = IERC20(0x912CE59144191C1204E64559FE8253a0e49E6548); // ARB token on Arb
     L1_UDT = 0x90DE74265a416e1393A450752175AED98fe11517; // UDT token on Mainnet
     L1_TIMELOCK = l1Timelock; //0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B;
+    UNISWAP_ORACLE = IUniswapOracleV3(
+      0xcAdc0e0A9E555e6c058915C09E3F23255a399999
+    ); // deployed with the correct 3000 fee tier
   }
 
   /**
@@ -120,23 +111,21 @@ contract UnlockDAOArbitrumBridge {
     // swap arb tokens to WETH
     uint arbBalance = IERC20(L2_ARB_TOKEN).balanceOf(address(this));
 
+    // get the quote from the oracle
+    uint256 quoteAmount = UNISWAP_ORACLE.consult(
+      address(L2_ARB_TOKEN),
+      uint256(arbBalance),
+      address(L2_WETH)
+    );
+
     // send tokens to universal router to manipulate the token
     IERC20(L2_ARB_TOKEN).transfer(
       address(UNISWAP_UNIVERSAL_ROUTER),
       arbBalance
     );
 
-    // Get quote for ARB -> WETH swap
-    (uint256 amountOut, , , ) = QUOTER_V2.quoteExactInputSingle(
-      address(L2_ARB_TOKEN),
-      address(L2_WETH),
-      uint24(3000), // 0.3% fee tier
-      arbBalance,
-      0 // no price limit
-    );
-
     // Apply 2% slippage tolerance
-    uint amountOutMinimum = (amountOut * 98) / 100;
+    uint amountOutMinimum = (quoteAmount * 98) / 100;
 
     // encode the V3 swap command
     bytes memory commands = new bytes(1);
