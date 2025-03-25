@@ -2,34 +2,28 @@ import { toFormData } from '@unlock-protocol/core'
 import config from '../config/config'
 
 interface LinkedinShareProps {
-  lockAddress: string
-  network: number
   tokenId: string
   metadata: any
 }
 
 const getCertificationPath = ({
   metadata,
-  lockAddress,
-  network,
   tokenId,
 }: LinkedinShareProps): string => {
   const slug = metadata?.slug
 
   if (slug) {
-    return `${config.unlockApp}/certification?s=${slug}`
+    return `${config.unlockApp}/certification/${slug}`
   }
 
   if (tokenId) {
-    return `${config.unlockApp}/certification?lockAddress=${lockAddress}&network=${network}&tokenId=${tokenId}`
+    return `${config.unlockApp}/certification/${slug}/${tokenId}`
   }
 
-  return `${config.unlockApp}/certification?lockAddress=${lockAddress}&network=${network}`
+  return `${config.unlockApp}/certification/${slug}`
 }
 
 export const getCertificateLinkedinShareUrl = ({
-  lockAddress,
-  network,
   tokenId,
   metadata,
 }: LinkedinShareProps): string | null => {
@@ -37,8 +31,6 @@ export const getCertificateLinkedinShareUrl = ({
 
   const certificationUrl = getCertificationPath({
     metadata,
-    lockAddress,
-    network,
     tokenId,
   })
 

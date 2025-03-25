@@ -2,7 +2,6 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react'
 import { Button } from '@unlock-protocol/ui'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
-import { ActionBar } from '~/components/interface/locks/Manage'
 import {
   ApprovalStatus,
   ExpirationStatus,
@@ -22,6 +21,7 @@ import { AttendeesActionsWrapper } from './AttendeesActions'
 import { ApproveAttendeeModal } from './ApproveAttendeeModal'
 import { DenyAttendeeModal } from './DenyAttendeeModal'
 import { SelectionProvider, useSelection } from './SelectionContext'
+import { ActionBar } from '~/components/interface/locks/elements/ActionBar'
 
 interface AttendeesProps {
   event: Event
@@ -31,21 +31,30 @@ interface AttendeesProps {
   }
 }
 
-// Separate component for the content to use the selection context
+/**
+ * The inner content component that uses the selection context
+ * This is separated to avoid prop drilling through the context provider
+ */
 const AttendeesContent = ({ checkoutConfig, event }: AttendeesProps) => {
+  const router = useRouter()
+
+  // Selection state from context
   const { setSelected, clearSelections, isSelected } = useSelection()
+
+  // UI state
   const [airdropKeys, setAirdropKeys] = useState(false)
   const [loading, setLoading] = useState(false)
   const [allSelected, setAllSelected] = useState(false)
   const [approvedAttendees, setApprovedAttendees] = useState<any[]>([])
   const [deniedAttendees, setDeniedAttendees] = useState<any[]>([])
-  const router = useRouter()
 
+  // Determine initial lock address from checkout config
   const initialLockAddress = useMemo(() => {
     const keys = Object.keys(checkoutConfig.config.locks)
     return keys.length > 0 ? keys[0] : ''
   }, [checkoutConfig.config.locks])
 
+  // Page and filter state
   const [lockAddress, setLockAddress] = useState(initialLockAddress)
   const [page, setPage] = useState(1)
   const [filters, setFilters] = useState({
@@ -57,12 +66,13 @@ const AttendeesContent = ({ checkoutConfig, event }: AttendeesProps) => {
       : ApprovalStatus.MINTED,
   })
 
-  // Reset selections on page or filter change
+  // Reset selections when page or filters change
   useEffect(() => {
     clearSelections()
     setAllSelected(false)
   }, [page, filters, clearSelections])
 
+  // Determine network from checkout config
   const network = useMemo(() => {
     return (
       checkoutConfig.config.locks[lockAddress]?.network ||
@@ -70,6 +80,7 @@ const AttendeesContent = ({ checkoutConfig, event }: AttendeesProps) => {
     )
   }, [checkoutConfig.config, lockAddress])
 
+  // Check if user is an event organizer
   const { data: isOrganizer, isLoading: isLoadingLockManager } =
     useEventOrganizer({
       checkoutConfig,
@@ -77,7 +88,11 @@ const AttendeesContent = ({ checkoutConfig, event }: AttendeesProps) => {
 
   const showNotManagerBanner = !isLoadingLockManager && !isOrganizer
 
-  // Updated bulk action handlers to use SelectionContext
+  // ---- Bulk action handlers ----
+
+  /**
+   * Toggle selection of all members
+   */
   const toggleAll = useCallback(
     (keys: any[]) => {
       setAllSelected((prevAllSelected) => {
@@ -96,6 +111,9 @@ const AttendeesContent = ({ checkoutConfig, event }: AttendeesProps) => {
     [setSelected]
   )
 
+  /**
+   * Mark selected attendees for approval
+   */
   const bulkApprove = useCallback(
     (keys: any[]) => {
       const approved = keys.filter((key) => isSelected(key.keyholderAddress))
@@ -104,6 +122,9 @@ const AttendeesContent = ({ checkoutConfig, event }: AttendeesProps) => {
     [isSelected]
   )
 
+  /**
+   * Mark selected attendees for denial
+   */
   const bulkDeny = useCallback(
     (keys: any[]) => {
       const denied = keys.filter((key) => isSelected(key.keyholderAddress))
@@ -112,7 +133,9 @@ const AttendeesContent = ({ checkoutConfig, event }: AttendeesProps) => {
     [isSelected]
   )
 
-  // Memoized callbacks
+  // ---- UI state handlers ----
+
+  // Memoized to prevent rerenders
   const handleSetAirdropKeysOpen = useCallback((isOpen: boolean) => {
     setAirdropKeys(isOpen)
   }, [])
@@ -137,8 +160,13 @@ const AttendeesContent = ({ checkoutConfig, event }: AttendeesProps) => {
     setPage(newPage)
   }, [])
 
-  // Memoized MemberCard render function
+  // ---- Custom renderers for Members component ----
+
+  /**
+   * Custom MemberCard renderer that uses event-specific components
+   */
   const renderMemberCard = useCallback((props: any) => {
+    // Different rendering for applicants (no token) vs. attendees (with token)
     if (!props.token) {
       return (
         <MemberCard
@@ -156,11 +184,14 @@ const AttendeesContent = ({ checkoutConfig, event }: AttendeesProps) => {
               lockAddress={props.lockAddress}
               owner={props.owner}
               metadata={props.metadata}
+              resolvedName={props.resolvedName}
             />
           )}
         />
       )
     }
+
+    // Rendering for confirmed attendees
     return (
       <MemberCard
         {...props}
@@ -178,13 +209,16 @@ const AttendeesContent = ({ checkoutConfig, event }: AttendeesProps) => {
             owner={props.owner}
             token={props.token}
             metadata={props.metadata}
+            resolvedName={props.resolvedName}
           />
         )}
       />
     )
   }, [])
 
-  // Memoized members actions
+  /**
+   * Generate members actions component with proper props
+   */
   const membersActions = useCallback(
     ({ keys, filters }: any) => {
       return AttendeesActionsWrapper({
@@ -199,6 +233,7 @@ const AttendeesContent = ({ checkoutConfig, event }: AttendeesProps) => {
 
   return (
     <>
+      {/* Modal components */}
       <AirdropKeysDrawer
         isOpen={airdropKeys}
         setIsOpen={handleSetAirdropKeysOpen}
@@ -223,6 +258,7 @@ const AttendeesContent = ({ checkoutConfig, event }: AttendeesProps) => {
         <NotManagerBanner />
       ) : (
         <>
+          {/* Header actions */}
           <div className="flex justify-between items-center">
             <Button variant="borderless" onClick={() => router.back()}>
               <ArrowBackIcon size={20} />
@@ -231,6 +267,8 @@ const AttendeesContent = ({ checkoutConfig, event }: AttendeesProps) => {
               Airdrop tickets
             </Button>
           </div>
+
+          {/* Action bar (inherited from base Members UI) */}
           <ActionBar
             page={page}
             lockAddress={lockAddress}
@@ -238,6 +276,8 @@ const AttendeesContent = ({ checkoutConfig, event }: AttendeesProps) => {
             isOpen={airdropKeys}
             setIsOpen={handleSetAirdropKeysOpen}
           />
+
+          {/* Filter controls */}
           <FilterBar
             hideExpirationFilter={true}
             hideApprovalFilter={false}
@@ -250,6 +290,8 @@ const AttendeesContent = ({ checkoutConfig, event }: AttendeesProps) => {
             setPage={handleSetPage}
             page={page}
           />
+
+          {/* Main member list using the base Members component with customizations */}
           <div className="flex flex-col gap-6">
             <Members
               lockAddress={lockAddress}
@@ -272,7 +314,10 @@ const AttendeesContent = ({ checkoutConfig, event }: AttendeesProps) => {
   )
 }
 
-// Main Attendees component wrapped with SelectionProvider
+/**
+ * Main Attendees component that wraps the content with SelectionProvider
+ * This provides the selection context for bulk operations
+ */
 export const Attendees = React.memo(
   ({ checkoutConfig, event }: AttendeesProps) => {
     return (

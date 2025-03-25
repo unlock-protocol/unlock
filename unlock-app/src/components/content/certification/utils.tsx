@@ -9,19 +9,17 @@ interface CertificationUrlProps {
 
 export const getCertificationPath = ({
   metadata,
-  lockAddress,
-  network,
   tokenId,
 }: CertificationUrlProps): string => {
   const slug = metadata?.slug
 
   if (slug) {
-    return `/certification?s=${slug}`
+    return `/certification/${slug}`
   }
 
   if (tokenId) {
-    return `/certification?lockAddress=${lockAddress}&network=${network}&tokenId=${tokenId}`
+    return `/certification/${slug}/${tokenId}`
   }
 
-  return `/certification?lockAddress=${lockAddress}&network=${network}`
+  return `/certification/${slug}`
 }

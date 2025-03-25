@@ -3,7 +3,7 @@ import { Button, Input, ToggleSwitch } from '@unlock-protocol/ui'
 import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import LoadingIcon from '~/components/interface/Loading'
 import { useTransferFee } from '~/hooks/useTransferFee'
 

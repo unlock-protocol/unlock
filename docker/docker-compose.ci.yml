@@ -19,7 +19,7 @@ services:
         - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: smart-contracts
-  
+
   governance:
     # Image with our contracts
     image: governance
@@ -59,6 +59,21 @@ services:
       - 3000:3000
     expose:
       - 3000
+
+  provider:
+    # Container for the static site
+    env_file:
+      - ./${UNLOCK_ENV}.env
+    image: provider
+    build:
+      context: ../
+      target: dev
+      cache_from:
+        - unlockprotocol/unlock-dev
+      args:
+        BUILD_DIR: provider
+    ports:
+      - 8787:8787
 
   unlock-protocol-com:
     # Container for the static site
@@ -222,7 +237,7 @@ services:
     command: sh -c './scripts/wait-for.sh postgres:5432 -- yarn db:migrate && yarn websub:start'
     depends_on:
       - postgres
-      
+
   docs:
     # Container for the static site
     env_file:
@@ -253,7 +268,7 @@ services:
 
   ipfs:
     # Required for subgraph
-    image: ipfs/go-ipfs:v0.33.1
+    image: ipfs/go-ipfs:v0.33.2
     ports:
       - '5001:5001'
 
