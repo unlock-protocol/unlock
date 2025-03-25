@@ -3,11 +3,12 @@ import { Fragment, ReactNode, useState, useEffect } from 'react'
 import { BiBell as BellIcon } from 'react-icons/bi'
 import { Button } from '@unlock-protocol/ui'
 import { PromptEmailLink } from '../../PromptEmailLink'
-import { Blog, BlogLink, getBlogs, saveLatestBlogs } from '../../LatestBlogs'
+import { Blog, BlogLink, saveLatestBlogs } from '../../LatestBlogs'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { usePathname } from 'next/navigation'
 import { Modal } from '@unlock-protocol/ui'
 import { LoginModal } from '@privy-io/react-auth'
+import { getLocalStorageItem } from '~/hooks/useAppStorage'
 
 interface NotificationAction {
   label: string
@@ -24,7 +25,9 @@ interface NotificationProps {
 export function NotificationsMenu() {
   const [isOpen, setIsOpen] = useState(false)
   const [showModal, setShowModal] = useState(false)
-  const [blogs, setBlogs] = useState<Blog[] | null>(getBlogs()?.blogs)
+  const [blogs, setBlogs] = useState<Blog[] | null>(
+    getLocalStorageItem('latest_blogs')?.blogs
+  )
   const { account, email } = useAuthenticate()
   const pathname = usePathname()
 
@@ -97,7 +100,7 @@ export function NotificationsMenu() {
               <MenuItems
                 static
                 className={`absolute right-1/2 translate-x-1/2 mt-2 w-80 ${
-                  notifications.length < 3 ? 'h-auto max-h-50' : 'h-96'
+                  notifications.length < 3 ? 'h-auto max-h-48' : 'h-96'
                 } origin-top rounded-md divide-y divide-gray-300 bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-y-auto`}
               >
                 <div className="p-2">

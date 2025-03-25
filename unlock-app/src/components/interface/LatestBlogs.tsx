@@ -41,10 +41,6 @@ export function BlogLink({
   )
 }
 
-export function getBlogs() {
-  return getLocalStorageItem('latest_blogs')
-}
-
 async function parseAtomFeed(url: string) {
   const response = await axios.get(url)
   const text = response?.data
@@ -60,7 +56,7 @@ async function parseAtomFeed(url: string) {
   const entries = Array.from(doc.getElementsByTagNameNS(atomNS, 'entry'))
 
   let viewedMap = new Map<string, boolean>()
-  const storedData = getBlogs()
+  const storedData = getLocalStorageItem('latest_blogs')
   if (storedData) {
     try {
       if (Array.isArray(storedData.blogs)) {
@@ -95,7 +91,7 @@ export async function saveLatestBlogs(
   url: string,
   setBlogs: (blogs: Blog[]) => void
 ) {
-  const storedDate = getBlogs()?.fetched_on
+  const storedDate = getLocalStorageItem('latest_blogs')?.fetched_on
   if (storedDate && dayjs(storedDate).isToday()) {
     return
   }
@@ -109,7 +105,7 @@ export async function saveLatestBlogs(
 }
 
 function updateBlog(blogId: string, setBlogs: (blogs: Blog[]) => void) {
-  const storedData = getBlogs()
+  const storedData = getLocalStorageItem('latest_blogs')
   if (!storedData) {
     return
   }
