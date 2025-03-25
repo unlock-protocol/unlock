@@ -24,15 +24,15 @@ export function BlogLink({
       target="_blank"
       onClick={() => updateBlog(blog.id, setBlogs)}
       rel="noopener noreferrer"
-      className="block p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow bg-white"
+      className="block"
     >
-      <div className="flex flex-col space-y-4">
+      <div className="flex flex-col gap-1">
         <div
-          className={`text-base font-semibold ${blog.viewed ? 'text-gray-400' : 'text-black'}`}
+          className={`font-medium ${blog.viewed ? 'text-gray-400' : 'text-black'}`}
         >
           {blog.title}
         </div>
-        <div className="text-xs text-gray-500">
+        <div className="text-sm text-gray-500">
           {dayjs(blog.updated).format('MMM DD, YYYY')}
         </div>
       </div>
