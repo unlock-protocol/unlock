@@ -1,4 +1,8 @@
-import { LockType, getLockTypeByMetadata } from '@unlock-protocol/core'
+import {
+  LockType,
+  getLockTypeByMetadata,
+  isLockForSub,
+} from '@unlock-protocol/core'
 import { SendEmailForm } from '../forms/SendEmailForm'
 import { EmailTemplatePreview } from './EmailTemplatePreview'
 import { SettingCard } from './SettingCard'
@@ -6,6 +10,7 @@ import { useMetadata } from '~/hooks/metadata'
 import { SendCustomEmail } from '../forms/SendCustomEmail'
 import { useGetLockSettings } from '~/hooks/useLockSettings'
 import { memo, useMemo } from 'react'
+import { useLockData } from '~/hooks/useLockData'
 
 interface SettingEmailProps {
   lockAddress: string
@@ -22,19 +27,16 @@ interface TemplateProps {
   templateId: string
   customize?: boolean
 }
-const TemplateByLockType: Record<keyof LockType, TemplateProps[]> = {
+const TemplateByLockType: Record<
+  keyof LockType | 'isSubscription',
+  TemplateProps[]
+> = {
   isEvent: [
     {
       label: 'Purchase confirmation template',
       description:
         'Customize the content of the email sent when a event ticket is purchased. ',
       templateId: 'eventKeyMined',
-    },
-    {
-      label: 'Subscription reminder template',
-      description:
-        'Customize the content of the email sent when a membership is about to expire.',
-      templateId: 'keyExpiring',
     },
     {
       label: 'Airdrop confirmation template',
@@ -57,6 +59,14 @@ const TemplateByLockType: Record<keyof LockType, TemplateProps[]> = {
       templateId: 'certificationKeyAirdropped',
     },
   ],
+  isSubscription: [
+    {
+      label: 'Subscription reminder template',
+      description:
+        'Customize the content of the email sent when a membership is about to expire.',
+      templateId: 'keyExpiring',
+    },
+  ],
   isStamp: [],
 }
 
@@ -66,12 +76,6 @@ const DEFAULT_EMAIL_TEMPLATES: TemplateProps[] = [
     description:
       'Customize the content of the email sent when a new membership has been purchased. Emails are only sent if you selected the Collect Email option on the checkout.',
     templateId: 'keyMined',
-  },
-  {
-    label: 'Subscription reminder template',
-    description:
-      'Customize the content of the email sent when a membership is about to expire.',
-    templateId: 'keyExpiring',
   },
   {
     label: 'Airdrop confirmation template',
@@ -97,6 +101,11 @@ const SettingEmailComponent = ({
     lockAddress,
   })
 
+  const { lock } = useLockData({
+    lockAddress,
+    network,
+  })
+
   const { replyTo, emailSender } = lockSettings
 
   const types = useMemo(() => getLockTypeByMetadata(metadata), [metadata])
@@ -105,11 +114,20 @@ const SettingEmailComponent = ({
     [types]
   )
 
-  const emailTemplates = useMemo(
-    () =>
-      TemplateByLockType[template as keyof LockType] || DEFAULT_EMAIL_TEMPLATES,
-    [template]
-  )
+  // Check if lock is a subscription-type lock
+  const isSubscription = useMemo(() => isLockForSub(lock), [lock])
+
+  const emailTemplates = useMemo(() => {
+    if (isSubscription) {
+      return [
+        ...DEFAULT_EMAIL_TEMPLATES,
+        ...TemplateByLockType['isSubscription'],
+      ]
+    }
+    return (
+      TemplateByLockType[template as keyof LockType] || DEFAULT_EMAIL_TEMPLATES
+    )
+  }, [template, isSubscription])
 
   return (
     <div className="grid grid-cols-1 gap-6">
