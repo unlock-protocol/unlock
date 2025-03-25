@@ -8,6 +8,7 @@ import {
   PaywallConfigType,
   getLockTypeByMetadata,
   toFormData,
+  formDataToMetadata,
 } from '@unlock-protocol/core'
 import { CheckoutConfig, EventData, KeyMetadata } from '../models'
 import { saveCheckoutConfig } from './checkoutConfigOperations'
@@ -363,4 +364,67 @@ export const updateEvent = async (
 
   await event.save()
   return event
+}
+
+export interface ExternalEventData {
+  title: string
+  description: string
+  url: string
+  image: string
+  ticket: {
+    event_start_date: string
+    event_start_time: string
+    event_end_date: string
+    event_end_time: string
+    event_timezone: string
+    event_is_in_person: boolean
+    event_address: string
+    event_location: string
+  }
+}
+
+/**
+ * Saves an external event
+ *
+ * @param externalEventData - The external event data to save
+ * @param walletAddress - The address of the user creating the event
+ * @returns A promise that resolves to the created event
+ */
+export const saveExternalEvent = async (
+  externalEventData: ExternalEventData,
+  walletAddress: string
+): Promise<[EventData, boolean]> => {
+  // Create a slug based on the event title
+  const slug = await createEventSlug(externalEventData.title)
+
+  // Format the data
+  const formData = {
+    name: externalEventData.title,
+    description: externalEventData.description,
+    image: externalEventData.image,
+    external_url: externalEventData.url,
+    slug,
+    ticket: {
+      ...externalEventData.ticket,
+    },
+  }
+
+  const metadataWithAttributes = formDataToMetadata(formData)
+
+  // Save the event with type 'external'
+  const [savedEvent, isNew] = (await EventData.upsert(
+    {
+      name: externalEventData.title,
+      slug,
+      data: metadataWithAttributes,
+      createdBy: walletAddress,
+      eventType: 'external',
+      status: EventStatus.DEPLOYED,
+    },
+    {
+      conflictFields: ['slug'],
+    }
+  )) as [EventData, boolean]
+
+  return [savedEvent, isNew === null ? true : isNew]
 }

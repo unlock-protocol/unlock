@@ -7,6 +7,7 @@ import {
   getEventMetadataForLock,
   saveEvent,
   updateEvent,
+  saveExternalEvent,
 } from '../../operations/eventOperations'
 import normalizer from '../../utils/normalizer'
 import { CheckoutConfig, EventData } from '../../models'
@@ -324,5 +325,66 @@ export const updateEventData: RequestHandler = async (request, response) => {
       error: 'Failed to update event',
       details: error.message,
     })
+  }
+}
+
+// Schema for external event data validation
+export const ExternalEventDataSchema = z.object({
+  title: z.string().min(1, 'Title is required'),
+  description: z.string().min(1, 'Description is required'),
+  url: z.string().url('Valid URL is required'),
+  image: z.string().min(1, 'Image is required'),
+  ticket: z.object({
+    event_start_date: z.string(),
+    event_start_time: z.string(),
+    event_end_date: z.string(),
+    event_end_time: z.string(),
+    event_timezone: z.string(),
+    event_is_in_person: z.boolean(),
+    event_address: z.string(),
+    event_location: z.string(),
+  }),
+})
+
+/**
+ * Saves external event data
+ * External events are not associated with an Unlock lock
+ * but can be added to event collections
+ */
+export const saveExternalEventDetails: RequestHandler = async (
+  request,
+  response
+) => {
+  try {
+    const parsedBody = await ExternalEventDataSchema.parseAsync(request.body)
+
+    // Transform the data to better match regular event structure
+    const formattedEventData = {
+      ...parsedBody,
+      status: EventStatus.DEPLOYED,
+    }
+
+    const [event, created] = await saveExternalEvent(
+      formattedEventData,
+      request.user!.walletAddress
+    )
+
+    const statusCode = created ? 201 : 200
+    response.status(statusCode).send(event.toJSON())
+    return
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      response.status(400).json({
+        error: 'Invalid request body',
+        details: error.errors,
+      })
+      return
+    }
+
+    response.status(500).json({
+      error: 'Failed to save external event',
+      message: (error as Error).message,
+    })
+    return
   }
 }
