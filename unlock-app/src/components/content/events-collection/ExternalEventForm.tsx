@@ -1,7 +1,6 @@
 import { usePlacesWidget } from 'react-google-autocomplete'
 import { config } from '~/config/app'
 import { useState } from 'react'
-import { Lock } from '@unlock-protocol/types'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 import { BiLogoZoom as ZoomIcon } from 'react-icons/bi'
 import { MetadataFormData } from '~/components/interface/locks/metadata/utils'
@@ -18,15 +17,13 @@ import {
 import { useImageUpload } from '~/hooks/useImageUpload'
 import dayjs from 'dayjs'
 import { useRouter } from 'next/navigation'
-import { useAvailableNetworks } from '~/utils/networks'
 import { regexUrlPattern } from '~/utils/regexUrlPattern'
 
-// TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface ExternalEventForm {
-  network: number
-  lock: Omit<Lock, 'address' | 'key'>
-  currencySymbol: string
-  metadata: Partial<MetadataFormData> & { title: string; url: string }
+  metadata: Partial<MetadataFormData> & {
+    title: string
+    url: string
+  }
 }
 
 interface GoogleMapsAutoCompleteProps {
@@ -88,7 +85,6 @@ export const ExternalEventForm = ({ onSubmit, compact = false }: FormProps) => {
   const { mutateAsync: uploadImage, isPending: isUploading } = useImageUpload()
 
   const today = dayjs().format('YYYY-MM-DD')
-  const networkOptions = useAvailableNetworks()
 
   const methods = useForm<ExternalEventForm>({
     mode: 'onChange',
