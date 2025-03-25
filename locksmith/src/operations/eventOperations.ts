@@ -426,5 +426,5 @@ export const saveExternalEvent = async (
     }
   )) as [EventData, boolean]
 
-  return [savedEvent, isNew]
+  return [savedEvent, isNew === null ? true : isNew]
 }
