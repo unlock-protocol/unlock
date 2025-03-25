@@ -5,8 +5,8 @@ tail_consumers = [{service = "rpc-provider-tail"}]
 
 # Optional environment variables
 [vars]
-# Cache duration in seconds for ENS/Basename resolution (default: 3600 seconds / 1 hour)
-CACHE_DURATION_SECONDS = "3600"
+# Cache duration in seconds for ENS/Basename resolution (default: 1 day)
+CACHE_DURATION_SECONDS = "86400" # TODO: extend to 1 month when we have more confidence in the cache
 
 # Rate limiting using Cloudflare's Rate Limiting API
 # The rate limiting API is in open beta
@@ -29,11 +29,19 @@ simple = { limit = 1000, period = 60 }
 [dev]
 port = 8787
 
-# Development-only KV namespace for local testing
+# KV namespace for allowed contracts
 [[kv_namespaces]]
 binding = "ALLOWED_CONTRACTS"
-preview_id = "dev-allowed-contracts"
 id = "9073bea6f14048f09e64e75bcb3fba81"
+preview_id = "dev-allowed-contracts"
+
+
+# KV namespace for request caching
+[[kv_namespaces]]
+binding = "REQUEST_CACHE"
+id = "0d52c25fc4cf4e8eb5cbd944a8bfb5d9"
+preview_id = "dev-request-cache"
+
 
 [observability]
 enabled = true

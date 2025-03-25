@@ -1,12 +1,12 @@
 {
   "name": "@unlock-protocol/provider",
   "devDependencies": {
-    "@cloudflare/workers-types": "4.20250129.0",
+    "@cloudflare/workers-types": "4.20250303.0",
     "@types/node": "22.13.8",
     "@unlock-protocol/contracts": "workspace:^",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/networks": "workspace:^",
-    "eslint": "9.11.1",
+    "eslint": "9.22.0",
     "typescript": "5.8.2",
     "vitest": "2.1.9"
   },

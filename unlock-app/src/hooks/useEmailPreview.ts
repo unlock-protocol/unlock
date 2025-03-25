@@ -41,11 +41,13 @@ export const useEmailPreview = ({
         `${config.services.wedlocks.host}/preview/${templateId}`
       )
 
-      Object.entries(params).forEach(([key, value]) => {
-        if (value) {
-          url.searchParams.append(key, value.toString())
-        }
-      })
+      if (params) {
+        Object.entries(params).forEach(([key, value]) => {
+          if (value) {
+            url.searchParams.append(key, value.toString())
+          }
+        })
+      }
 
       return (
         await fetch(url, {
@@ -55,6 +57,7 @@ export const useEmailPreview = ({
         })
       ).json()
     },
+    enabled: !!templateId && !!params,
   })
 }
 
@@ -88,20 +91,28 @@ export const useEmailPreviewDataForLock = ({
         lockAddress
       )
 
+      // Fetch lock metadata to get the lock name
+      const { data: lockMetadata } = await locksmith.lockMetadata(
+        network,
+        lockAddress
+      )
+
       const params = {
         keychainUrl: `${config.unlockApp}/keychain`,
-        keyId: 5, // Placeholder!
         network,
         lockImage,
+        lockName: lockMetadata?.name,
         customContent: customContentHtml,
         ...eventDetails,
         // certificate details
         certificationDetail: '{Certification details}',
+        certificationUrl: `${config.unlockApp}/certification/${network}/${lockAddress}/#`,
+        isUserAddress: true,
       }
 
       return params
     },
-    enabled: !!customContent && !!lockAddress && !!network,
+    enabled: !!lockAddress && !!network,
   })
 }
 
