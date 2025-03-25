@@ -442,7 +442,44 @@ export default function AddEventsToCollectionDrawer({
   ) => {
     setIsSubmitting(true)
     try {
-      console.log('eventData', eventData)
+      // Ensure required fields exist
+      if (!eventData.metadata?.ticket) {
+        ToastHelper.error('Missing required ticket information')
+        return
+      }
+
+      // format data
+      const externalEventRequest = {
+        title: eventData.metadata.title,
+        description: eventData.metadata.description || '',
+        url: eventData.metadata.url || '',
+        image: eventData.metadata.image || '',
+        ticket: {
+          event_start_date: eventData.metadata.ticket.event_start_date || '',
+          event_start_time: eventData.metadata.ticket.event_start_time || '',
+          event_end_date: eventData.metadata.ticket.event_end_date || '',
+          event_end_time: eventData.metadata.ticket.event_end_time || '',
+          event_timezone: eventData.metadata.ticket.event_timezone || '',
+          event_is_in_person: Boolean(
+            eventData.metadata.ticket.event_is_in_person
+          ),
+          event_address: eventData.metadata.ticket.event_address || '',
+          event_location: eventData.metadata.ticket.event_location || '',
+        },
+      }
+
+      // Save the external event
+      const { data: newEvent } =
+        await locksmith.saveExternalEventData(externalEventRequest)
+
+      // Add the external event to the collection
+      await addToEventCollection({
+        collectionSlug: collectionSlug!,
+        eventSlug: newEvent.slug,
+      })
+
+      // Close the drawer upon success
+      setIsOpen(false)
     } catch (error) {
       console.error('Error adding external event to collection:', error)
       ToastHelper.error('Failed to add external event to the collection.')
