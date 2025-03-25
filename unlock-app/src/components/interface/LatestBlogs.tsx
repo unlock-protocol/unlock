@@ -1,6 +1,7 @@
 import axios from 'axios'
 import dayjs from 'dayjs'
 import isToday from 'dayjs/plugin/isToday'
+import { getLocalStorageItem, setLocalStorageItem } from '~/hooks/useAppStorage'
 dayjs.extend(isToday)
 
 export interface Blog {
@@ -41,13 +42,7 @@ export function BlogLink({
 }
 
 export function getBlogs() {
-  if (typeof localStorage !== 'undefined') {
-    const data =
-      localStorage.getItem('latest_blogs') &&
-      JSON.parse(localStorage.getItem('latest_blogs')!)
-    return data
-  }
-  return null
+  return getLocalStorageItem('latest_blogs')
 }
 
 async function parseAtomFeed(url: string) {
@@ -106,10 +101,10 @@ export async function saveLatestBlogs(
   }
 
   const { entries } = await parseAtomFeed(url)
-  localStorage.setItem(
-    'latest_blogs',
-    JSON.stringify({ blogs: entries, fetched_on: new Date().toISOString() })
-  )
+  setLocalStorageItem('latest_blogs', {
+    blogs: entries,
+    fetched_on: new Date().toISOString(),
+  })
   setBlogs(entries)
 }
 
@@ -126,12 +121,9 @@ function updateBlog(blogId: string, setBlogs: (blogs: Blog[]) => void) {
     return b
   })
 
-  localStorage.setItem(
-    'latest_blogs',
-    JSON.stringify({
-      blogs: updatedBlogs,
-      fetched_on: storedData.fetched_on,
-    })
-  )
+  setLocalStorageItem('latest_blogs', {
+    blogs: updatedBlogs,
+    fetched_on: storedData.fetched_on,
+  })
   setBlogs(updatedBlogs)
 }
