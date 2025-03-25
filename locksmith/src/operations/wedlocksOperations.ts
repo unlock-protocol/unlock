@@ -443,8 +443,6 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
         network
       )
       const certificationUrl = getCertificateLinkedinShareUrl({
-        lockAddress,
-        network,
         tokenId,
         metadata: keyData,
       })
