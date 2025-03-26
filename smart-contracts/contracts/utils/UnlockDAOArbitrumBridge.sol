@@ -78,7 +78,6 @@ contract UnlockDAOArbitrumBridge {
   IArbSys public immutable ARB_SYS =
     IArbSys(0x0000000000000000000000000000000000000064);
 
-  IQuoterV2 public immutable QUOTER_V2;
   IUniversalRouter public immutable UNISWAP_UNIVERSAL_ROUTER;
   IL2GatewayRouter public immutable GATEWAY_ROUTER;
   IWETH public immutable L2_WETH;
@@ -91,17 +90,16 @@ contract UnlockDAOArbitrumBridge {
     UNISWAP_UNIVERSAL_ROUTER = IUniversalRouter(
       0x4C60051384bd2d3C01bfc845Cf5F4b44bcbE9de5
     ); // Arb UniversalRouter
+    UNISWAP_ORACLE = IUniswapOracleV3(
+      0xcAdc0e0A9E555e6c058915C09E3F23255a399999
+    ); // deployed with the correct 3000 fee tier
     GATEWAY_ROUTER = IL2GatewayRouter(
       0x5288c571Fd7aD117beA99bF60FE0846C4E84F933
     ); // Arb Gateway Router
-    QUOTER_V2 = IQuoterV2(0x61fFE014bA17989E743c5F6cB21bF9697530B21e); // Arbitrum Quoter V2
     L2_WETH = IWETH(0x82aF49447D8a07e3bd95BD0d56f35241523fBab1); // Arb WETH
     L2_ARB_TOKEN = IERC20(0x912CE59144191C1204E64559FE8253a0e49E6548); // ARB token on Arb
     L1_UDT = 0x90DE74265a416e1393A450752175AED98fe11517; // UDT token on Mainnet
     L1_TIMELOCK = l1Timelock; //0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B;
-    UNISWAP_ORACLE = IUniswapOracleV3(
-      0xcAdc0e0A9E555e6c058915C09E3F23255a399999
-    ); // deployed with the correct 3000 fee tier
   }
 
   /**

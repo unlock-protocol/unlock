@@ -26,11 +26,12 @@ const { getERC20Contract } = require('@unlock-protocol/hardhat-helpers')
 const { arbitrum, mainnet } = require('@unlock-protocol/networks')
 const { parseSafeMulticall } = require('../../helpers/multisig')
 
+// TODO: redeploy and update this address
 // The deployed UnlockDAOArbitrumBridge contract address
-const UNLOCK_DAO_BRIDGE_ADDRESS = '0x93c8b77D9bB8dFF1D628e3991443C809a13Ca98E'
+const UNLOCK_DAO_BRIDGE_ADDRESS = '0x77694145408ac958Ed747a1aD55192025B22bdd6'
 
 // Dao
-const L1_TIMELOCK_CONTRACT = '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B'
+const L1_DAO_TIMELOCK_ADDRESS = '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B'
 const L2_TIMELOCK_ALIAS = '0x28ffDfB0A6e6E06E95B3A1f928Dc4024240bD87c'
 
 // Arbitrum addresses
@@ -43,8 +44,9 @@ const L1_UDT_ADDRESS = mainnet.unlockDaoToken.address
 
 // Bridge contract ABI
 const BRIDGE_ABI = [
-  'function swapAndBridgeArb(uint amountOutMinimum) external',
+  'function swapAndBridgeArb() external',
   'function bridgeUdt() external',
+  'function L1_TIMELOCK() external view returns (address)',
 ]
 
 // Arbitrum Gateway Router ABI
@@ -177,8 +179,6 @@ async function createArbBridgeTicket({
     estimateAllParams.data,
   ]
 
-  console.log('params', params)
-
   const inboxContractInterface = new ethers.Interface(INBOX_ABI)
   const calldata = inboxContractInterface.encodeFunctionData(
     'createRetryableTicket',
@@ -192,10 +192,7 @@ async function createArbBridgeTicket({
   }
 }
 
-module.exports = async ({
-  fromL1 = L1_TIMELOCK_CONTRACT,
-  fromL2 = L2_TIMELOCK_ALIAS,
-}) => {
+module.exports = async () => {
   console.log(
     'Proposal to swap ARB tokens for ETH on Arbitrum and bridge assets back to mainnet using UnlockDAOArbitrumBridge'
   )
@@ -216,21 +213,27 @@ module.exports = async ({
     l2Provider
   )
 
+  // Create interfaces
+  const bridge = new ethers.Contract(
+    UNLOCK_DAO_BRIDGE_ADDRESS,
+    BRIDGE_ABI,
+    l2Provider
+  )
+  const timelockAddress = await bridge.L1_TIMELOCK()
+
+  if (timelockAddress !== L1_DAO_TIMELOCK_ADDRESS) {
+    throw new Error('Timelock address is not correct')
+  }
+
   // Get L2 UDT token address and balance
   const l2UdtAddress =
     await gatewayRouter.calculateL2TokenAddress(L1_UDT_ADDRESS)
   const l2UdtToken = await getERC20Contract(l2UdtAddress, l2Provider)
   const udtBalance = await l2UdtToken.balanceOf(L2_TIMELOCK_ALIAS)
 
-  // Create interfaces
-  const bridgeInterface = new ethers.Interface(BRIDGE_ABI)
-
-  // TODO: Add slippage protection using an oracle
-  const amountOutMinimum = 0 //(arbBalance * 98n) / 100n // 2% slippage
-
   // 1. transfer ARB tokens to the bridge contract
   const transferArbCall = await createArbBridgeTicket({
-    from: fromL1,
+    from: timelockAddress,
     to: L2_ARB_TOKEN_ADDRESS,
     data: arbToken.interface.encodeFunctionData('transfer', [
       UNLOCK_DAO_BRIDGE_ADDRESS,
@@ -242,7 +245,7 @@ module.exports = async ({
 
   // 2. transfer ARB tokens to the bridge contract
   const transferUdtCall = await createArbBridgeTicket({
-    from: fromL1,
+    from: timelockAddress,
     to: l2UdtAddress,
     data: arbToken.interface.encodeFunctionData('transfer', [
       UNLOCK_DAO_BRIDGE_ADDRESS,
@@ -256,13 +259,11 @@ module.exports = async ({
   const multicallCalls = [
     {
       contractAddress: UNLOCK_DAO_BRIDGE_ADDRESS,
-      calldata: bridgeInterface.encodeFunctionData('swapAndBridgeArb', [
-        amountOutMinimum,
-      ]),
+      calldata: bridge.interface.encodeFunctionData('swapAndBridgeArb'),
     },
     {
       contractAddress: UNLOCK_DAO_BRIDGE_ADDRESS,
-      calldata: bridgeInterface.encodeFunctionData('bridgeUdt'),
+      calldata: bridge.interface.encodeFunctionData('bridgeUdt'),
     },
   ]
 
@@ -276,7 +277,7 @@ module.exports = async ({
   // NB: this will fail because the state on Arbitrum is not ready (no ARB or UDT in bridge contract)
   // Need to fund the contract on chain for this to work
   const customBridgeCalls = await createArbBridgeTicket({
-    from: fromL1,
+    from: timelockAddress,
     to: multicallAddress,
     data: multicallData,
     l1Provider,
@@ -303,7 +304,7 @@ The proposal contains three separate calls to the Arbitrum Delayed Inbox Contrac
 
 - ARB Balance: ${ethers.formatUnits(arbBalance, arbDecimals)} ARB
 - UDT Balance: ${ethers.formatUnits(udtBalance, 18)} UDT
-- DAO ALIAS Address (On Arbitrum): [${fromL2}](https://arbiscan.io/address/${fromL2})
+- DAO ALIAS Address (On Arbitrum): [${L2_TIMELOCK_ALIAS}](https://arbiscan.io/address/${L2_TIMELOCK_ALIAS})
 
 `
   const calls = [transferArbCall, transferUdtCall, customBridgeCalls]
