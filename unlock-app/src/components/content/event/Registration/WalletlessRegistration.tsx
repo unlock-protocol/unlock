@@ -1,7 +1,7 @@
 import { useClaim } from '~/hooks/useClaim'
 import { ethers } from 'ethers'
 
-import { Button, Input, AddressInput } from '@unlock-protocol/ui'
+import { Button, Input, AddressInput, Checkbox } from '@unlock-protocol/ui'
 import { Controller, useForm } from 'react-hook-form'
 import { useEffect, useState } from 'react'
 import { useConfig } from '~/utils/withConfig'
@@ -14,6 +14,8 @@ import { useRsvp } from '~/hooks/useRsvp'
 import { useReCaptcha } from 'next-recaptcha-v3'
 import { useMutation } from '@tanstack/react-query'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import Link from 'next/link'
+import { config } from '~/config/app'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface WalletlessRegistrationProps {
@@ -288,6 +290,7 @@ export const RegistrationForm = ({
     mode: 'onChange',
     defaultValues: {
       recipient: account || '',
+      termsAccepted: false,
     },
   })
   const {
@@ -296,13 +299,16 @@ export const RegistrationForm = ({
     formState: { errors },
     control,
     reset,
+    watch,
   } = localForm
 
   const handleResolve = useMutation({
     mutationFn: onResolveName,
   })
 
-  const onSubmit = async ({ recipient, ...data }: any) => {
+  const termsAccepted = watch('termsAccepted')
+
+  const onSubmit = async ({ recipient, termsAccepted, ...data }: any) => {
     setLoading(true)
     try {
       const captcha = await executeRecaptcha('submit')
@@ -378,6 +384,34 @@ export const RegistrationForm = ({
           value,
         } = metadataInputItem ?? {}
         const inputLabel = label || name
+
+        // Handle checkbox type
+        if (type === 'checkbox') {
+          return (
+            <Controller
+              key={name}
+              name={name}
+              control={control}
+              rules={{
+                required: required && `${inputLabel} is required`,
+              }}
+              defaultValue={defaultValue === 'true' ? 'true' : 'false'}
+              render={({ field }) => (
+                <Checkbox
+                  label={`${inputLabel}`}
+                  fieldSize="medium"
+                  disabled={isLoading}
+                  error={errors[name]?.message?.toString()}
+                  checked={field.value === 'true'}
+                  onChange={(e) =>
+                    field.onChange(e.target.checked ? 'true' : 'false')
+                  }
+                />
+              )}
+            />
+          )
+        }
+
         return (
           <Input
             key={name}
@@ -414,7 +448,51 @@ export const RegistrationForm = ({
         }}
       />
 
-      <Button disabled={isLoading} loading={isLoading} type="submit">
+      <div className="mt-2">
+        <Controller
+          name="termsAccepted"
+          control={control}
+          rules={{
+            required: 'You must agree to the Terms of Service to continue',
+          }}
+          render={({ field: { onChange, value, ref } }) => (
+            <div className="flex items-start">
+              <div className="flex-shrink-0">
+                <Checkbox
+                  ref={ref}
+                  id="termsAccepted"
+                  checked={value}
+                  onChange={onChange}
+                  label=""
+                />
+              </div>
+              <div className="text-sm">
+                <label htmlFor="termsAccepted" className="cursor-pointer">
+                  I agree to the{' '}
+                  <Link
+                    target="_blank"
+                    href={`${config.unlockStaticUrl}/terms`}
+                    className="text-brand-ui-primary hover:underline"
+                  >
+                    Terms of Service
+                  </Link>
+                </label>
+              </div>
+            </div>
+          )}
+        />
+        {errors.termsAccepted && (
+          <p className="mt-1 text-xs text-red-500">
+            {errors.termsAccepted.message?.toString()}
+          </p>
+        )}
+      </div>
+
+      <Button
+        disabled={isLoading || !termsAccepted}
+        loading={isLoading}
+        type="submit"
+      >
         RSVP now
       </Button>
     </form>

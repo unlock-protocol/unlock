@@ -16,9 +16,16 @@ export const SIZE_STYLES: SizeStyleProp = {
   large: 'w-6	h-6 text-base',
 }
 
+export const LABEL_SIZE_STYLES: SizeStyleProp = {
+  small: 'text-sm',
+  medium: 'text-base',
+  large: 'text-lg',
+}
+
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   ({ label, error, description, fieldSize = 'medium', ...rest }, ref) => {
     const inputSizeStyle = SIZE_STYLES[fieldSize]
+    const labelSizeStyle = LABEL_SIZE_STYLES[fieldSize]
 
     const inputClass = twMerge(
       'box-border rounded-md transition-all shadow-sm border border-gray-400 hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none disabled:bg-gray-100 cursor-pointer focus:outline-0 hover:outline-0 outline-0 focus:ring-transparent',
@@ -29,7 +36,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
       <FieldLayout size={fieldSize} description={description} error={error}>
         <div className="flex items-center gap-3">
           <input ref={ref} type="checkbox" className={inputClass} {...rest} />
-          <label className="text-sm" htmlFor={label}>
+          <label className={labelSizeStyle} htmlFor={label}>
             {label}
           </label>
         </div>

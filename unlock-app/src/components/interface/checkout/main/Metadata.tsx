@@ -299,6 +299,7 @@ export const MetadataInputs = ({
                   <Checkbox
                     label={inputLabel}
                     disabled={disabled}
+                    fieldSize="small"
                     error={errors?.metadata?.[id]?.[name]?.message}
                     checked={field.value === 'true'}
                     onChange={(e) =>
