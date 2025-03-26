@@ -384,6 +384,34 @@ export const RegistrationForm = ({
           value,
         } = metadataInputItem ?? {}
         const inputLabel = label || name
+
+        // Handle checkbox type
+        if (type === 'checkbox') {
+          return (
+            <Controller
+              key={name}
+              name={name}
+              control={control}
+              rules={{
+                required: required && `${inputLabel} is required`,
+              }}
+              defaultValue={defaultValue === 'true' ? 'true' : 'false'}
+              render={({ field }) => (
+                <Checkbox
+                  label={`${inputLabel}`}
+                  fieldSize="medium"
+                  disabled={isLoading}
+                  error={errors[name]?.message?.toString()}
+                  checked={field.value === 'true'}
+                  onChange={(e) =>
+                    field.onChange(e.target.checked ? 'true' : 'false')
+                  }
+                />
+              )}
+            />
+          )
+        }
+
         return (
           <Input
             key={name}
