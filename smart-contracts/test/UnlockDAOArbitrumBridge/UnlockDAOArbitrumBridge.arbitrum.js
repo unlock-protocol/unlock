@@ -23,7 +23,7 @@ describe('UnlockDAOArbitrumBridge', () => {
   let gatewayRouter
   let l2UdtToken
 
-  before(async () => {
+  before(async function () {
     if (!process.env.RUN_FORK) {
       // all suite will be skipped
       this.skip()
