@@ -10,11 +10,14 @@
  *
  * 2. replace `UNLOCK_DAO_BRIDGE_ADDRESS` with the address of the deployed contract
  *
- * 3. fund UNLOCK_DAO_BRIDGE_ADDRESS with some ARB and UDT (dust)
+ * 3. Install ethers 5 by adding `"ethers5": "npm:ethers@5.7.2",` to the package.json file
+ *    This is required by the arbitrum SDK library to calculate L1 bridge gas fees
+ *
+ * 4. fund UNLOCK_DAO_BRIDGE_ADDRESS with some ARB and UDT (dust)
  * so the Arb sdk can simulate the transfer of the tokens to the bridge contract
  * to calculate the correct amount of ETH gas fee to pass with the retryable ticket
  *
- * 4. send the proposal
+ * 5. send the proposal
  *
  */
 const ethers = require('ethers')
