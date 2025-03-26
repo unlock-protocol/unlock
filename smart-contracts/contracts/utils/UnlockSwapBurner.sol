@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "../interfaces/IUniversalRouter.sol";
-import "../interfaces/IMintableERC20.sol";
 import "../interfaces/IUnlock.sol";
 import "../interfaces/IWETH.sol";
 import "../interfaces/IUniswapOracleV3.sol";
@@ -62,7 +62,26 @@ contract UnlockSwapBurner {
     return
       token == address(0)
         ? address(this).balance
-        : IMintableERC20(token).balanceOf(address(this));
+        : IERC20(token).balanceOf(address(this));
+  }
+
+  function _getAmountOutMinimum(
+    address tokenIn,
+    address tokenOut,
+    uint256 tokenAmount
+  ) internal view returns (uint256 amountOutMinimum) {
+    address udtAddress = IUnlock(UNLOCK_ADDRESS).governanceToken();
+    address oracleAddress = IUnlock(UNLOCK_ADDRESS).uniswapOracles(tokenOut);
+
+    // get the quote from the oracle
+    uint256 quoteAmount = IUniswapOracleV3(oracleAddress).consult(
+      address(tokenIn),
+      uint256(tokenAmount),
+      address(udtAddress)
+    );
+
+    // Apply 2% slippage tolerance
+    amountOutMinimum = (quoteAmount * 98) / 100;
   }
 
   /**
@@ -84,19 +103,6 @@ contract UnlockSwapBurner {
       revert UnauthorizedSwap();
     }
 
-    // get the quote from the oracle
-    address oracleAddress = IUnlock(UNLOCK_ADDRESS).uniswapOracles(
-      tokenAddress
-    );
-    uint256 quoteAmount = IUniswapOracleV3(oracleAddress).consult(
-      address(tokenAddress),
-      uint256(tokenAmount),
-      address(udtAddress)
-    );
-
-    // Apply 2% slippage tolerance
-    uint amountOutMinimum = (quoteAmount * 98) / 100;
-
     // wrap native tokens
     if (tokenAddress == address(0)) {
       IWETH(wrappedAddress).deposit{value: tokenAmount}();
@@ -106,6 +112,12 @@ contract UnlockSwapBurner {
 
     // transfer the tokens to the router
     IERC20(tokenAddress).transfer(UNISWAP_UNIVERSAL_ROUTER, tokenAmount);
+
+    uint amountOutMinimum = _getAmountOutMinimum(
+      udtAddress,
+      tokenAddress,
+      tokenAmount
+    );
 
     bytes memory defaultPath = abi.encodePacked(
       wrappedAddress,
