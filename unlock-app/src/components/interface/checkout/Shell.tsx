@@ -84,8 +84,13 @@ export function TopNavigation({ onClose }: NavigationProps) {
   )
 }
 
-export function TransactionAnimation({ status }: Partial<Transaction>) {
-  const animationClass = 'w-28 sm:w-36 h-28 sm:h-36'
+export function TransactionAnimation({
+  status,
+  isCompact,
+}: Partial<Transaction> & { isCompact?: boolean }) {
+  const animationClass = isCompact
+    ? 'w-20 sm:w-24 h-20 sm:h-24'
+    : 'w-28 sm:w-36 h-28 sm:h-36'
   switch (status) {
     case 'PROCESSING':
       return (
