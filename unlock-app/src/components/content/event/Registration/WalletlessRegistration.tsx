@@ -14,6 +14,7 @@ import { useRsvp } from '~/hooks/useRsvp'
 import { useReCaptcha } from 'next-recaptcha-v3'
 import { useMutation } from '@tanstack/react-query'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface WalletlessRegistrationProps {
   lockAddress: string
@@ -37,8 +38,34 @@ const WalletlessRegistrationClaiming = ({
 }: WalletlessRegistrationProps) => {
   const [transactionStatus, setTransactionStatus] =
     useState<TransactionStatus>('PROCESSING')
-
+  const [tokenId, setTokenId] = useState<string | null>(null)
   const config = useConfig()
+  const web3Service = useWeb3Service()
+
+  // Wait for token ID
+  const waitForTokenId = async (owner: string): Promise<string | null> => {
+    try {
+      const latestTokenId = await web3Service.latestTokenOfOwner(
+        lockAddress,
+        owner,
+        network
+      )
+
+      if (latestTokenId) {
+        return latestTokenId.toString()
+      }
+
+      // If no token found, we'll retry in a second
+      return new Promise((resolve) => {
+        setTimeout(async () => {
+          resolve(await waitForTokenId(owner))
+        }, 1000)
+      })
+    } catch (error) {
+      console.error('Error fetching token ID:', error)
+      return null
+    }
+  }
 
   useEffect(() => {
     if (
@@ -47,6 +74,7 @@ const WalletlessRegistrationClaiming = ({
     ) {
       return
     }
+
     const waitForConfirmation = async () => {
       const provider = new ethers.JsonRpcProvider(
         config.networks[network].provider
@@ -62,10 +90,26 @@ const WalletlessRegistrationClaiming = ({
       } else {
         setTransactionStatus('FINISHED')
         ToastHelper.success('🎉 You have been added to the attendees list!')
+
+        // After successful transaction, fetch the tokenId
+        if (claimResult.owner) {
+          const newTokenId = await waitForTokenId(claimResult.owner)
+          if (newTokenId) {
+            setTokenId(newTokenId)
+          }
+        }
       }
     }
     waitForConfirmation()
-  }, [transactionStatus, network, claimResult?.hash, config.networks])
+  }, [
+    transactionStatus,
+    network,
+    claimResult?.hash,
+    claimResult?.owner,
+    config.networks,
+    lockAddress,
+    web3Service,
+  ])
 
   return (
     <div className="flex flex-col items-center justify-center h-full">
@@ -82,6 +126,7 @@ const WalletlessRegistrationClaiming = ({
             lockName={''}
             lockAddress={lockAddress}
             network={network}
+            tokenId={tokenId}
             states={{
               PROCESSING: {
                 text: 'Creating your ticket...',
@@ -133,6 +178,7 @@ export const WalletlessRegistrationClaim = ({
         metadata: data,
         captcha,
       })
+
       if (message) {
         ToastHelper.error(message)
         return
@@ -143,6 +189,7 @@ export const WalletlessRegistrationClaim = ({
         ToastHelper.success('Transaction successfully sent!')
       }
     } catch (error) {
+      console.error(error)
       ToastHelper.error('Failed to send transaction. Please try again.')
     }
   }

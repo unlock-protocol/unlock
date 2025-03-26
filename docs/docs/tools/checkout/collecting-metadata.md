@@ -24,7 +24,7 @@ The members of this array should have the following shape:
 ```bash
 {
   name: string,
-  type: 'text' | 'date' | 'color' | 'email' | 'url' | 'hidden',
+  type: 'text' | 'date' | 'color' | 'email' | 'url' | 'hidden' | 'checkbox',
   required: boolean,
   defaultValue?: 'string',
   value?: 'string',
@@ -100,6 +100,13 @@ only really useful if the checkout config is built in a dynamic way.
           "type":"url",
           "required":false,
           "placeholder":"https://example-url.com",
+          "public":false
+       },
+       {
+          "name":"Subscribe to our mailing list",
+          "defaultValue":"false",
+          "type":"checkbox",
+          "required":false,
           "public":false
        }
     ]
