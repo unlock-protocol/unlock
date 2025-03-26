@@ -2,9 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "../interfaces/IUniversalRouter.sol";
-import "@uniswap/v3-periphery/contracts/libraries/TransferHelper.sol";
 import "../interfaces/IMintableERC20.sol";
-import "../interfaces/IPermit2.sol";
 import "../interfaces/IUnlock.sol";
 import "../interfaces/IWETH.sol";
 import "../interfaces/IUniswapOracleV3.sol";
