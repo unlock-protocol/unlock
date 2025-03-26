@@ -71,11 +71,10 @@ async function main({ proposal, proposalId, govAddress, txId }) {
 
   if (process.env.RUN_FORK == 1) {
     // fund timelock for testing execution
-    const BASE_TIMELOCK_ADDRESS = '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B'
-    await addSomeETH(BASE_TIMELOCK_ADDRESS)
-  }
-
-  if (process.env.RUN_FORK == 8453) {
+    const MAINNET_TIMELOCK_ADDRESS =
+      '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B'
+    await addSomeETH(MAINNET_TIMELOCK_ADDRESS)
+  } else if (process.env.RUN_FORK == 8453) {
     // fund 50k UP to make sure we can send a proposal
     const holder = '0x3074517c5F5428f42C74543C68001E0Ca86FE7dd'
     await impersonate(holder)
