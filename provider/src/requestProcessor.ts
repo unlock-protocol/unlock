@@ -5,22 +5,23 @@ import {
   BatchProcessingResult,
 } from './types'
 import { shouldRateLimit } from './rateLimit'
+import { getCachedResponseForRequest } from './cache'
 import { getClientIP } from './utils'
 
 /**
  * Process a chainId request locally
  * @param request The RPC request
- * @param networkId The network ID
+ * @param chainId The chain ID
  * @returns The RPC response
  */
 export const processChainIdRequest = (
   request: RpcRequest,
-  networkId: string
+  chainId: string
 ): any => {
   return {
     id: request.id,
     jsonrpc: '2.0',
-    result: `0x${parseInt(networkId).toString(16)}`,
+    result: `0x${parseInt(chainId).toString(16)}`,
   }
 }
 
@@ -36,7 +37,7 @@ export const processChainIdRequest = (
  */
 export const processSingleRequest = async (
   request: RpcRequest,
-  networkId: string,
+  chainId: string,
   originalRequest: Request,
   env: Env
 ): Promise<ProcessedRequest> => {
@@ -44,9 +45,25 @@ export const processSingleRequest = async (
   if (request.method?.toLowerCase().trim() === 'eth_chainid') {
     return {
       request,
-      response: processChainIdRequest(request, networkId),
+      response: processChainIdRequest(request, chainId),
       shouldForward: false,
       rateLimited: false,
+    }
+  }
+
+  // Check if this request is cached
+  const cachedResponse = await getCachedResponseForRequest(
+    request,
+    chainId,
+    env
+  )
+  if (cachedResponse) {
+    return {
+      request,
+      response: cachedResponse,
+      shouldForward: false,
+      rateLimited: false,
+      fromCache: true,
     }
   }
 
@@ -55,18 +72,15 @@ export const processSingleRequest = async (
     originalRequest,
     env,
     request,
-    networkId
+    chainId
   )
 
   if (isRateLimited) {
     // Log the rate limit but still forward the request to maintain current behavior
     // This would later be changed to block rate-limited requests
     console.log(
-      `RATE_LIMIT_WOULD_BLOCK: IP=${getClientIP(originalRequest)}, networkId=${networkId}, Request ID=${request.id}, Method=${request.method}`
+      `RATE_LIMIT_WOULD_BLOCK: IP=${getClientIP(originalRequest)}, networkId=${chainId}, Request ID=${request.id}, Method=${request.method}`
     )
-
-    // TODO: This return should be replaced with a rate limit error response
-    // when we start enforcing rate limiting
     return {
       request,
       response: null,
@@ -90,21 +104,21 @@ export const processSingleRequest = async (
  * can be handled locally and which need to be forwarded to the provider
  *
  * @param requests The array of RPC requests to process
- * @param networkId The network ID
+ * @param chainId The chain ID
  * @param originalRequest The original HTTP request
  * @param env The environment variables
  * @returns A BatchProcessingResult object with the processed requests and requests to forward
  */
 export const processBatchRequests = async (
   requests: RpcRequest[],
-  networkId: string,
+  chainId: string,
   originalRequest: Request,
   env: Env
 ): Promise<BatchProcessingResult> => {
   // process all requests
   const processedRequests: ProcessedRequest[] = await Promise.all(
     requests.map((request) =>
-      processSingleRequest(request, networkId, originalRequest, env)
+      processSingleRequest(request, chainId, originalRequest, env)
     )
   )
 
