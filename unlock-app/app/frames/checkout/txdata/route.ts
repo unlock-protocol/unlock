@@ -9,7 +9,7 @@ export const POST = frames(async (ctx) => {
   }
 
   const userAddress = ctx.message.address!
-  const { address: lockAddress, priceForUser } = ctx.state.lock!
+  const { address: lockAddress } = ctx.state.lock!
   const network = Number(ctx.state.lock!.network)
 
   const web3Service = new Web3Service(networks)
