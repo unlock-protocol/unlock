@@ -29,9 +29,8 @@ const { getERC20Contract } = require('@unlock-protocol/hardhat-helpers')
 const { arbitrum, mainnet } = require('@unlock-protocol/networks')
 const { parseSafeMulticall } = require('../../helpers/multisig')
 
-// TODO: redeploy and update this address
 // The deployed UnlockDAOArbitrumBridge contract address
-const UNLOCK_DAO_BRIDGE_ADDRESS = '0x77694145408ac958Ed747a1aD55192025B22bdd6'
+const UNLOCK_DAO_BRIDGE_ADDRESS = '0x3b26D06Ea8252a73742d2125D1ACEb594ECEE5c6'
 
 // Dao
 const L1_DAO_TIMELOCK_ADDRESS = '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B'
