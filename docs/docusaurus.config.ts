@@ -358,14 +358,6 @@ const config: Config = {
             from: '/developers/unlock.js',
           },
           {
-            to: '/tools/subgraph/entities',
-            from: '/tools/entities',
-          },
-          {
-            to: '/tools/subgraph/queries',
-            from: '/tools/queries',
-          },
-          {
             to: '/core-protocol/public-lock/deploying-locks',
             from: '/basics/deploying-a-lock',
           },

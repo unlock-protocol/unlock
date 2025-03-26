@@ -1,5 +1,5 @@
 ---
-title: Using Viem for Unlock Protocol
+title: Using Viem
 description: >-
   In this tutorial, we will see how to use Unlock's contract with the popular viem library.
 ---

@@ -14,7 +14,7 @@ Adding a lock to any webpage is simple, using [Unlock's Paywall application](htt
 
 ### npm module
 
-The Unlock Labs team has build an npm module which can be added to your Javascript or Typescript application, or modern front-end framework such as React or Vue. More details on the module [can be found on its README page]()https://github.com/unlock-protocol/unlock/tree/master/packages/paywall.
+The Unlock Labs team has build an npm module which can be added to your Javascript or Typescript application, or modern front-end framework such as React or Vue. More details on the module [can be found on its README page](https://github.com/unlock-protocol/unlock/tree/master/packages/paywall).
 
 ````javascript
 
