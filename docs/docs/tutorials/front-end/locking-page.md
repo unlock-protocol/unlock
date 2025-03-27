@@ -12,13 +12,39 @@ Adding a lock to any webpage is simple, using [Unlock's Paywall application](htt
 
 ## Embedding the paywall
 
+### npm module
+
+The Unlock Labs team has build an npm module which can be added to your Javascript or Typescript application, or modern front-end framework such as React or Vue. More details on the module [can be found on its README page](https://github.com/unlock-protocol/unlock/tree/master/packages/paywall).
+
+````javascript
+
+import { Paywall } from '@unlock-protocol/paywall'
+
+// See https://docs.unlock-protocol.com/getting-started/locking-page#configure-the-paywall
+const paywallConfig = {}
+
+// Configure networks to use
+// You can also use @unlock-protocol/networks for convenience...
+const networkConfigs = {
+  1: {
+    provider: 'HTTP PROVIDER',
+  },
+  100: {
+    // configuration for gnosis chain... etc
+  },
+  // etc
+}
+const paywall = new Paywall(networks)
+
+// Loads the checkout UI
+const response = await paywall.loadCheckoutModal(paywallConfig)
+
+// response is set when the modal is closed. response may include hash (the transaction hash) and lock (the address of the lock to which the transaction was sent)
+```
+
+### CDN version
+
 The first part of this requires embedding a script on the web page where the lock should be installed. You need to achieve this in the `​<head>` section of the HTML body. The script to be loaded is located at the following address: `https://paywall.unlock-protocol.com/static/unlock.latest.min.js`
-
-:::caution
-
-If you are looking for a way to use the legacy unlock checkout, append `legacy=true` as query in the paywall script src url.
-
-:::
 
 We recommend loading the script using the following approach:
 
@@ -30,7 +56,7 @@ We recommend loading the script using the following approach:
   js.src="https://paywall.unlock-protocol.com/static/unlock.latest.min.js";
   sc.parentNode.insertBefore(js, sc); }(document, "script"));
 </script>
-```
+````
 
 ## Configure the Paywall
 

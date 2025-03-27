@@ -97,7 +97,7 @@ const sidebars: SidebarsConfig = {
             type: 'doc',
             id: 'tools/subgraph/README',
           },
-          items: ['tools/subgraph/entities', 'tools/subgraph/queries'],
+          items: [],
         },
         'tools/hardhat-plugin',
         'tools/rpc-provider',
@@ -117,8 +117,6 @@ const sidebars: SidebarsConfig = {
           type: 'category',
           items: [
             'tutorials/front-end/locking-page',
-            'tutorials/front-end/react-example',
-            'tutorials/front-end/scaffold-eth',
             {
               label: 'Paywall',
               link: {
@@ -126,10 +124,7 @@ const sidebars: SidebarsConfig = {
                 id: 'tutorials/front-end/paywall/README',
               },
               type: 'category',
-              items: [
-                'tutorials/front-end/paywall/magic',
-                'tutorials/front-end/paywall/provider',
-              ],
+              items: [],
             },
           ],
         },
@@ -147,6 +142,7 @@ const sidebars: SidebarsConfig = {
           items: [
             'tutorials/smart-contracts/deploying-locally',
             'tutorials/smart-contracts/using-unlock-in-other-contracts',
+            'tutorials/smart-contracts/viem',
             'tutorials/smart-contracts/ethers',
             'tutorials/smart-contracts/deploying-from-another-contract',
             {

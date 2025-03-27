@@ -15,9 +15,9 @@ You should **not need to deploy an Unlock contract yourself**. Here are the addr
 The core team has built a `networks` [npm module](https://www.npmjs.com/package/@unlock-protocol/networks) that includes all the networks' addresses as well as [rpc endpoints](../../tools/rpc-provider.md) that you can use for debugging purposes: `@unlock-protocol/networks`.
 
 <>
-  {Object.values(networks).map((network) => (
-    <SupportedNetwork network={network} />
-  ))}
+  {Object.values(networks).map((network) => {
+    return <SupportedNetwork key={network.id} network={network} />
+  })}
 </>
 
 <p id="footnote-1"></p>

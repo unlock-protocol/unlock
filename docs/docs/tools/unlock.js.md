@@ -29,23 +29,23 @@ The module provides 2 different classes: `web3Service` and `walletService`.
 ### Using Web3Service to retrieve a lock's details:
 
 ```javascript
-const ethers = require("ethers");
-const { Web3Service } = require("@unlock-protocol/unlock-js");
+const ethers = require('ethers')
+const { Web3Service } = require('@unlock-protocol/unlock-js')
 
 const networks = {
   5: {
-    unlockAddress: "0x627118a4fB747016911e5cDA82e2E77C531e8206", // Smart contracts docs include all addresses on all networks
-    provider: "https://rpc.unlock-protocol.com/5",
+    unlockAddress: '0x627118a4fB747016911e5cDA82e2E77C531e8206', // Smart contracts docs include all addresses on all networks
+    provider: 'https://rpc.unlock-protocol.com/5',
   },
-};
+}
 
 async function run() {
-  const web3Service = new Web3Service(networks);
+  const web3Service = new Web3Service(networks)
 
   // This lock exists on Rinkeby (you can create one from the dashboard if needed)
-  const lockAddress = "0xF735257c43dB1723AAE2A46d71E467b1b8a8422A";
+  const lockAddress = '0xF735257c43dB1723AAE2A46d71E467b1b8a8422A'
 
-  const lock = await web3Service.getLock(lockAddress, 4);
+  const lock = await web3Service.getLock(lockAddress, 4)
   //   {
   //     asOf: 10094781,
   //     name: 'May 4th 2021',
@@ -60,88 +60,88 @@ async function run() {
   //   }
 }
 
-run();
+run()
 ```
 
 ### Using WalletService to deploy a lock
 
 ```javascript
-const ethers = require("ethers");
-const { WalletService } = require("@unlock-protocol/unlock-js");
+const ethers = require('ethers')
+const { WalletService } = require('@unlock-protocol/unlock-js')
 
 const networks = {
   4: {
-    unlockAddress: "0x627118a4fB747016911e5cDA82e2E77C531e8206", // Smart contracts docs include all addresses on all networks
-    provider: "https://rpc.unlock-protocol.com/5",
+    unlockAddress: '0x627118a4fB747016911e5cDA82e2E77C531e8206', // Smart contracts docs include all addresses on all networks
+    provider: 'https://rpc.unlock-protocol.com/1',
   },
-};
+}
 
-// Initializing RPC provider and connect it to Goerli
-const provider = new ethers.providers.JsonRpcProvider(networks[5].provider);
+// Initializing RPC provider and connect it
+const provider = new ethers.providers.JsonRpcProvider(networks[1].provider)
 
 // Create a wallet.
 // This one should have a little bit of fake eth but please send more if you use it:
 // 0x42fb30ae9694c45f76d98d01adf4103fc7b636a6
 const wallet = new ethers.Wallet.fromMnemonic(
-  "solid entry walnut extend aisle skirt myth clog need analyst edit bench"
-).connect(provider);
+  'solid entry walnut extend aisle skirt myth clog need analyst edit bench'
+).connect(provider)
 
 async function run() {
-  const walletService = new WalletService(networks);
+  const walletService = new WalletService(networks)
 
   // Connect to a provider with a wallet
-  await walletService.connect(provider, wallet);
+  await walletService.connect(provider, wallet)
 
   // This only resolves when the transaction has been mined, but the callback returns the hash immediately
   await walletService.createLock(
     {
       maxNumberOfKeys: 100,
-      name: "testing silver",
+      name: 'testing silver',
       expirationDuration: 12121311,
-      keyPrice: "0.01", // Key price needs to be a string
+      keyPrice: '0.01', // Key price needs to be a string
     },
     {}, // transaction options
     (error, hash) => {
       // This is the hash of the transaction!
-      console.log({ hash });
+      console.log({ hash })
     }
-  );
+  )
 }
 
-run();
+run()
 ```
 
 ### Using WalletService to purchase a key:
 
 ```javascript
-const ethers = require("ethers");
-const { WalletService } = require("@unlock-protocol/unlock-js");
+const ethers = require('ethers')
+const { WalletService } = require('@unlock-protocol/unlock-js')
 
 const networks = {
   4: {
-    unlockAddress: "0x627118a4fB747016911e5cDA82e2E77C531e8206", // Smart contracts docs include all addresses on all networks
-    provider: "https://rpc.unlock-protocol.com/5",
+    unlockAddress: '0x627118a4fB747016911e5cDA82e2E77C531e8206', // Smart contracts docs include all addresses on all networks
+    provider: 'https://rpc.unlock-protocol.com/5',
   },
-};
+}
 
-// Initializing RPC provider and connect it to Goerli
-const provider = new ethers.providers.JsonRpcProvider(networks[5].provider);
+// Initializing RPC provider and connect it
+const provider = new ethers.providers.JsonRpcProvider(networks[1].provider)
 
 // Create a wallet.
 // This one should have a little bit of eth but please send more if you use it:
 // 0x42fb30ae9694c45f76d98d01adf4103fc7b636a6
 const wallet = new ethers.Wallet.fromMnemonic(
-  "solid entry walnut extend aisle skirt myth clog need analyst edit bench"
-).connect(provider);
+  'solid entry walnut extend aisle skirt myth clog need analyst edit bench'
+).connect(provider)
 
 async function run() {
-  const walletService = new WalletService(networks);
+  const walletService = new WalletService(networks)
 
   // Connect to a provider with a wallet
-  await walletService.connect(provider, wallet);
+  await walletService.connect(provider, wallet)
 
   // This lock exists on Rinkeby (you can create one from the dashboard if needed)
-  const lockAddress = "0xF735257c43dB1723AAE2A46d71E467b1b8a8422A";
+  const lockAddress = '0xF735257c43dB1723AAE2A46d71E467b1b8a8422A'
 
   // This only resolves when the transaction has been mined, but the callback returns the hash immediately
   await walletService.purchaseKey(
@@ -151,12 +151,12 @@ async function run() {
     {}, // transaction options
     (error, hash) => {
       // This is the hash of the transaction!
-      console.log({ hash });
+      console.log({ hash })
     }
-  );
+  )
 }
 
-run();
+run()
 ```
 
 The [Integration test suite](https://github.com/unlock-protocol/unlock/blob/master/packages/unlock-js/src/__tests__/integration/walletServiceIntegration.test.js) provides the most complete example of the supported actions:

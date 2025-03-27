@@ -3,7 +3,11 @@ title: Creating a hook to password-protect purchases
 description: In this tutorial we follow the steps to create a hook that create a password protected flow for purchases on a hook.
 ---
 
-> If you are not a developer but just a creator trying to use an existing hook, please check out guide on [how to password-protect NFT purchases](https://unlock-protocol.com/guides/password-protected-nft-memberships/) on your lock. You can do it directly from the Unlock Dashboard UI as well!
+:::caution
+If you are not a developer but just a creator trying to use an existing hook, please check out guide on [how to password-protect NFT purchases](https://unlock-protocol.com/guides/password-protected-nft-memberships/) on your lock. You can do it directly from the Unlock Dashboard UI as well!
+
+We also support an allow-list hook, a captcha hook, discount hook and several others, directly on the Unlock Dashboard!
+:::
 
 Our goal here is to create a system where purchases on a lock are restricted to people who know a specific password.
 

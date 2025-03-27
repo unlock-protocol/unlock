@@ -1,0 +1,71 @@
+---
+id: save-external-event-data
+title: "saveExternalEventData"
+description: "Save external event data that is not associated with an Unlock lock"
+sidebar_label: "saveExternalEventData"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFV1Fv2zYQ/isEX7YBcpwF24ve2iVbujVY0TgoAsMIztLZYkORKnly4hr678ORsiVbTp1hBZaHJCKPH4/f8b47bqSt0AEpa97lMpUeVnj1TOgM6KsVGroEAplIj1ntFK1lOt3IO49OptNZM0tkjj5zqmIAmcpbWKHAdr1ABhA5EAgqgITywlgS4L3NFBDm4klRIcCIO6Nt9ij4l0ykwy81enpr87VMN+FTOcxlSq7GRGbWEBriKagqrbLg/vizZxc20mcFlsD/0bpCmUo7/4wZtbgRaCpJkUa5738ia6dlIlUJS54jlT0iyVkiK8c0kUIfcMPabgNPTpmlPCRjUqAIpsIuBBWHxMjmYMEpvMvu62VEPsFJpLuP7wXZIwg/ePGEc68IGSvy8Fo0MCIsEA4rhx4NKbOMe2ydawk9EZpg/uAJHD3kQByJ/hCpshtCk+/b8MCeBX98taYbUP5BmYcKnQ8hj4OQ5w69331rG2/VMPgD707yc8u2nAYolBH39/f3o5ub0eWlWFhXQiBmcL5XgrItg15fpzc3A7wdOSfRrkz+Ggd35L4K8NvO7eJyOo9aS4bYv09HAtqhza3VCGYA96lAKrCHxLqkzCgCCOvESjmqQXc7bG/HSVffRMN9T8WPVbH2KgMtWiDehLNm0W0WTf1P3aa7K3hy1+u6BDNyCDnMNYrtQqFMJJ2tmvaHU81X1vh4my/Of+Y/B8HbF/DMYRBrX2cZer+otV7L7yTDBkKqel0ve8K7L8pA5NS8JvTDbAzrBwQ1LeKxiRdE7ZQYMyQB1UcvAZq65NNUaPJtgCpt15jLGcueA+MhY+Br8MVR8ED1JIy+jF+btkJuVVuGCryAWpNMt9PNHmUdHDgHHDhFWPqT9dGBoodgkcgV6BqP1MHO5tiR4qrhTLyGbRGVVzGZw9gv5+fD2/jOrECrXChT1SQcZqhWmJ+Jt5CLtlM4+y/X0dRac97IdAHa4+EhS/T+xTK4Zf5jm1NibvO1iHtFWQm+nw234ZA7Z90x3M6UG54+WX+gQaeylhJukK4CSKTv12P03ZkgCmQFJ+5C6S1pIq/DsDJttnt0K3QiuPW/Mzop0KF4As99RXCJS0l7hG1j0Qv/Ib1D0m7D8Tq+mkSWSIXltreynh2vgAqZyvHqYhzleLxNtDE3xqEPZhAf2uDQasmCqPLpeMyp50tFxVlMw1HlLNnM6rPMlgPJ/uBsXgdFENEv2SSHiJ5gqcxy9O+Qb+OqHeysa95vOWIxBrGF3wWAt+TTBQOunQgOnUzaf36PtTuVf36acGa/6a5DX18q9ReywERR5u/RYxhQ7NiXGt1aMu18gz52Pf7VM5RV21C3IXuh0O2GI1G7z1bTu4Gu0Ry2az1ZHXRdh3NdB3Vs5viarrE5nNlvVOJj5qDBOFzSNQGdfDKfC9unq30+vd9eFJZsdD6uuxjQuLMTlbMrlaMXc8ge0eRiUZtwK0ErWof+BFk/QsIFTpVZJqJEgvCs82QdLDERYHJ+26lFey1EYe2j58TUKkPjsSvW8ubdJJyCk64E05vhJBO77iNUBtE+QA+K806bvtOTs73ChM80rjQo03tLRVWYytXFNiy+X4KT4DZXx4JVJJ3KzWYOHu+cbhoejhc/nc64JDoVVWrKjUGBkIen9EZyoqTyt3is0aRfd9Oh/LJYxBVvsgwr+qbtrCd0H/6+nXBat0/r0ua8xsETl394kqmUibSB5qATYWwjNZhlHXMsYnL8oKZ+L3OgGeFUW2Uw656Hm020mNhHNE0jk/YoxN+ymTVN8w9cRdVf
+sidebar_class_name: "post api-method"
+info_path: api/locksmith/unlock-locksmith
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"saveExternalEventData"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/events/external/save"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Save external event data that is not associated with an Unlock lock
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={undefined}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"required":true,"content":{"application/json":{"schema":{"type":"object","required":["title","description","url","image","ticket"],"properties":{"title":{"type":"string","description":"The title of the external event"},"description":{"type":"string","description":"Description of the external event"},"url":{"type":"string","description":"URL to the external event's website"},"image":{"type":"string","description":"URL to an image representing the event"},"ticket":{"type":"object","required":["event_start_date","event_start_time","event_end_date","event_end_time","event_timezone","event_is_in_person","event_address","event_location"],"properties":{"event_start_date":{"type":"string","description":"Start date in YYYY-MM-DD format"},"event_start_time":{"type":"string","description":"Start time in HH:MM format"},"event_end_date":{"type":"string","description":"End date in YYYY-MM-DD format"},"event_end_time":{"type":"string","description":"End time in HH:MM format"},"event_timezone":{"type":"string","description":"Timezone for the event"},"event_is_in_person":{"type":"boolean","description":"Whether the event is in-person or virtual"},"event_address":{"type":"string","description":"Address for the event (physical address or URL for virtual events)"},"event_location":{"type":"string","description":"Human-readable location information"}}}}}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"201":{"description":"External event created successfully","content":{"application/json":{"schema":{"type":"object","required":["name","slug","image","description","attributes"],"properties":{"name":{"type":"string"},"slug":{"type":"string"},"image":{"type":"string"},"description":{"type":"string"},"status":{"type":"string","enum":["pending","deployed"]},"transactionHash":{"type":"string"},"eventType":{"type":"string","enum":["unlock","external"],"default":"unlock"},"attributes":{"type":"array","items":{"type":"object","required":["trait_type","value"],"properties":{"trait_type":{"type":"string"},"value":{"type":"string"}}}}},"title":"Event"}}}},"400":{"description":"Invalid input received. Bad request.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"Response body schema is invalid.","nullable":false},"error":{"type":"string","nullable":true}},"title":"GenericInvalidBodyError"}}}},"500":{"description":"Unable to fullfil request due to internal server error.","content":{"application/json":{"schema":{"type":"object","nullable":false,"properties":{"message":{"type":"string","default":"There was an error in fullfiling the request.","nullable":false}},"title":"GenericServerError"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      
