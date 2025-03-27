@@ -43,6 +43,11 @@ contract UnlockSwapBurner {
     uint amount
   );
   error UnauthorizedSwap();
+  error OracleV3QuoteFailed(
+    address tokenIn,
+    address tokenOut,
+    uint256 tokenAmount
+  );
 
   /**
    * Set the address of Uniswap Permit2 helper contract
@@ -67,21 +72,40 @@ contract UnlockSwapBurner {
 
   function _getAmountOutMinimum(
     address tokenIn,
-    address tokenOut,
-    uint256 tokenAmount
+    address governanceTokenAddress,
+    uint256 tokenAmount,
+    address wrappedAddress
   ) internal view returns (uint256 amountOutMinimum) {
-    address udtAddress = IUnlock(UNLOCK_ADDRESS).governanceToken();
-    address oracleAddress = IUnlock(UNLOCK_ADDRESS).uniswapOracles(tokenOut);
+    // get the expected amount of tokens in WETH
+    uint256 amountInWeth;
+    if (tokenIn == wrappedAddress) {
+      amountInWeth = tokenAmount;
+    } else {
+      address wethOracleAddress = IUnlock(UNLOCK_ADDRESS).uniswapOracles(
+        tokenIn
+      );
+      amountInWeth = IUniswapOracleV3(wethOracleAddress).consult(
+        address(tokenIn),
+        tokenAmount,
+        wrappedAddress
+      );
+    }
 
-    // get the quote from the oracle
-    uint256 quoteAmount = IUniswapOracleV3(oracleAddress).consult(
-      address(tokenIn),
-      uint256(tokenAmount),
-      address(udtAddress)
+    // get the expected amount of UDT
+    address udtOracleAddress = IUnlock(UNLOCK_ADDRESS).uniswapOracles(
+      governanceTokenAddress
+    );
+    uint256 quoteAmount = IUniswapOracleV3(udtOracleAddress).consult(
+      wrappedAddress,
+      amountInWeth,
+      governanceTokenAddress
     );
 
+    if (quoteAmount == 0) {
+      revert OracleV3QuoteFailed(tokenIn, governanceTokenAddress, tokenAmount);
+    }
     // Apply 2% slippage tolerance
-    amountOutMinimum = (quoteAmount * 98) / 100;
+    amountOutMinimum = (quoteAmount * 95) / 100;
   }
 
   /**
@@ -92,14 +116,14 @@ contract UnlockSwapBurner {
     uint24 poolFee
   ) public payable returns (uint amount) {
     // get info from unlock
-    address udtAddress = IUnlock(UNLOCK_ADDRESS).governanceToken();
+    address governanceTokenAddress = IUnlock(UNLOCK_ADDRESS).governanceToken();
     address wrappedAddress = IUnlock(UNLOCK_ADDRESS).weth();
 
     // get total balance of token to swap
     uint tokenAmount = _getBalance(tokenAddress);
-    uint udtBefore = _getBalance(udtAddress);
+    uint udtBefore = _getBalance(governanceTokenAddress);
 
-    if (tokenAddress == udtAddress) {
+    if (tokenAddress == governanceTokenAddress) {
       revert UnauthorizedSwap();
     }
 
@@ -110,19 +134,21 @@ contract UnlockSwapBurner {
       tokenAmount = _getBalance(tokenAddress);
     }
 
+    // get the amount out minimum from the oracle
+    uint amountOutMinimum = _getAmountOutMinimum(
+      tokenAddress,
+      governanceTokenAddress,
+      tokenAmount,
+      wrappedAddress
+    );
+
     // transfer the tokens to the router
     IERC20(tokenAddress).transfer(UNISWAP_UNIVERSAL_ROUTER, tokenAmount);
-
-    uint amountOutMinimum = _getAmountOutMinimum(
-      udtAddress,
-      tokenAddress,
-      tokenAmount
-    );
 
     bytes memory defaultPath = abi.encodePacked(
       wrappedAddress,
       uint24(3000), // default UDT pool fee is set to 0.3%
-      udtAddress
+      governanceTokenAddress
     );
 
     // encode parameters for the swap om UniversalRouter
@@ -146,13 +172,16 @@ contract UnlockSwapBurner {
     );
 
     // calculate how much UDT has been received
-    uint amountUDTOut = _getBalance(udtAddress) - udtBefore;
+    uint amountUDTOut = _getBalance(governanceTokenAddress) - udtBefore;
     if (amountUDTOut == 0) {
       revert UDTSwapFailed(UNISWAP_UNIVERSAL_ROUTER, tokenAddress, tokenAmount);
     }
 
     // burn the newly received UDT
-    bool success = IERC20(udtAddress).transfer(BURN_ADDRESS, amountUDTOut);
+    bool success = IERC20(governanceTokenAddress).transfer(
+      BURN_ADDRESS,
+      amountUDTOut
+    );
     if (success == false) {
       revert UDTSwapFailed(UNISWAP_UNIVERSAL_ROUTER, tokenAddress, tokenAmount);
     } else {
