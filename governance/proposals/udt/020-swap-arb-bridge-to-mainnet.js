@@ -289,7 +289,7 @@ module.exports = async () => {
   // Return the proposal
   const proposalName = `# Bring back ARB and UDT on Arbitrum to Mainnet 
 
-This proposal goal is to bring back ARB tokens and UDT on Arbitrum to mainnet. To do this it 1) swaps ARB for ETH 2) bridge ETH and UDT back to the timelock on mainnet.
+This proposal goal is to bring back ARB tokens and UDT on Arbitrum to mainnet. To do this it 1) swaps ARB for ETH 2) bridges ETH and UDT back to the timelock on mainnet.
 
 To rpevent splitting the tasks into multiple proposals, it relies on the \`UnlockDAOArbitrumBridge\` contract deployed on Arbitrum at the address ${UNLOCK_DAO_BRIDGE_ADDRESS}.
 
