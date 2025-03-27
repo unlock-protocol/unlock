@@ -2,7 +2,6 @@ const { ethers } = require('hardhat')
 const assert = require('assert')
 const {
   getBalance,
-  PERMIT2_ADDRESS,
   addSomeETH,
   addERC20,
   impersonate,
