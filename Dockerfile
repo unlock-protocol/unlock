@@ -64,7 +64,7 @@ RUN chown -R node:node .
 
 # install deps
 USER node
-RUN --mount=type=cache,target=${DEST_FOLDER}/yarn-cache,uid=1000,gid=1000 yarn
+RUN --mount=type=cache,id=yarn-cache,uid=1000,gid=1000 yarn
 
 # Dedupe deps
 # RUN yarn dedupe # disabled as it may cause issues
@@ -85,7 +85,7 @@ RUN java -version
 RUN javac -version
 
 # Run yarn to install missing dependencies from cached image
-RUN --mount=type=cache,target=${DEST_FOLDER}/yarn-cache,uid=1000,gid=1000 yarn
+RUN --mount=type=cache,id=yarn-cache,uid=1000,gid=1000 yarn
 
 # build all packages in packages/**
 RUN yarn build
