@@ -146,7 +146,7 @@ describe(`swapAndBurn`, function () {
           assert.equal(balanceSwapBurnBefore, amount)
 
           // lets go
-          const tx = await swapBurner.swapAndBurn(tokenAddress, 3000)
+          const tx = await swapBurner.swapAndBurn(tokenAddress, 500)
           receipt = await tx.wait()
         })
 
