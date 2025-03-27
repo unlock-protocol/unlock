@@ -48,6 +48,7 @@ contract UnlockSwapBurner {
     address tokenOut,
     uint256 tokenAmount
   );
+  error OracleNotFound(address token);
 
   /**
    * Set the address of Uniswap Permit2 helper contract
@@ -70,6 +71,14 @@ contract UnlockSwapBurner {
         : IERC20(token).balanceOf(address(this));
   }
 
+  function _getOracleAddress(address token) internal view returns (address) {
+    address oracleAddress = IUnlock(UNLOCK_ADDRESS).uniswapOracles(token);
+    if (oracleAddress == address(0)) {
+      revert OracleNotFound(token);
+    }
+    return oracleAddress;
+  }
+
   function _getAmountOutMinimum(
     address tokenIn,
     address governanceTokenAddress,
@@ -81,9 +90,7 @@ contract UnlockSwapBurner {
     if (tokenIn == wrappedAddress) {
       amountInWeth = tokenAmount;
     } else {
-      address wethOracleAddress = IUnlock(UNLOCK_ADDRESS).uniswapOracles(
-        tokenIn
-      );
+      address wethOracleAddress = _getOracleAddress(tokenIn);
       amountInWeth = IUniswapOracleV3(wethOracleAddress).consult(
         address(tokenIn),
         tokenAmount,
@@ -92,9 +99,7 @@ contract UnlockSwapBurner {
     }
 
     // get the expected amount of UDT
-    address udtOracleAddress = IUnlock(UNLOCK_ADDRESS).uniswapOracles(
-      governanceTokenAddress
-    );
+    address udtOracleAddress = _getOracleAddress(governanceTokenAddress);
     uint256 quoteAmount = IUniswapOracleV3(udtOracleAddress).consult(
       wrappedAddress,
       amountInWeth,
