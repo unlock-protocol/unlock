@@ -320,10 +320,6 @@ const config: Config = {
             ],
           },
           {
-            to: '/tutorials/front-end/react-example',
-            from: '/tutorials/react-example',
-          },
-          {
             to: '/tutorials/misc/using-subgraphs',
             from: '/tutorials/using-subgraphs',
           },
