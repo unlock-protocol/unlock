@@ -7,6 +7,9 @@ WORKDIR /app
 # Enable corepack and set yarn version
 RUN corepack enable && corepack prepare yarn@4.6.0 --activate
 
+# Install Java for OpenAPI Generator
+RUN apk add --no-cache openjdk11
+
 # Copy the entire repository
 COPY . .
 
