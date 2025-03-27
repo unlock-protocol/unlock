@@ -46,5 +46,5 @@ ENV DATABASE_URL=$DATABASE_URL
 # Expose port
 EXPOSE 3000
 
-# Start the locksmith service using workspace command with Railway deployment ID
-CMD ["sh", "-c", "yarn workspace @unlock-protocol/locksmith start"]
+# Start locksmith using the prod script from package.json
+CMD ["sh", "-c", "cd locksmith && yarn prod"]
