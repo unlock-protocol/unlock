@@ -18312,6 +18312,7 @@ __metadata:
     "@mui/x-charts": "npm:7.27.1"
     "@privy-io/react-auth": "npm:2.6.2"
     "@tanstack/react-query": "npm:5.66.11"
+    "@unlock-protocol/contracts": "workspace:*"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/ui": "workspace:./packages/ui"
     autoprefixer: "npm:10.4.20"
