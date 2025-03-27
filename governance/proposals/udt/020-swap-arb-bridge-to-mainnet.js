@@ -291,7 +291,7 @@ module.exports = async () => {
 
 This proposal goal is to bring back ARB tokens and UDT on Arbitrum to mainnet. To do this it 1) swaps ARB for ETH 2) bridges ETH and UDT back to the timelock on mainnet.
 
-To rpevent splitting the tasks into multiple proposals, it relies on the \`UnlockDAOArbitrumBridge\` contract deployed on Arbitrum at the address ${UNLOCK_DAO_BRIDGE_ADDRESS}.
+To prevent splitting the tasks into multiple proposals, it relies on the \`UnlockDAOArbitrumBridge\` contract deployed on Arbitrum at the address ${UNLOCK_DAO_BRIDGE_ADDRESS}.
 
 The proposal contains three separate calls to the Arbitrum Delayed Inbox Contract's \`createRetryableTicket\` function. Each call creates a \`Retryable Ticket\` (L1->L2 message) that will execute the corresponding transaction on Arbitrum:
 
