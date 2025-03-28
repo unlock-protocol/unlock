@@ -52,7 +52,7 @@ RUN chmod +x /app/locksmith/scripts/start.sh
 WORKDIR /app/locksmith
 
 # Expose port
-EXPOSE 3000
+EXPOSE 8080
 
 # Start locksmith using its start script
 CMD ["yarn", "start"]
