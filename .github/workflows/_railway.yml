@@ -38,5 +38,5 @@ jobs:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           RAILWAY_TOKEN: ${{ env.RAILWAY_TOKEN }}
           SVC_ID: ${{ env.SVC_ID }}
-      - name: Deploy to Railway
-        run: railway up --service=${{ env.SVC_ID }}
+      - uses: actions/checkout@v3
+      - run: railway up --service=${{ env.SVC_ID }}
