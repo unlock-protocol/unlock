@@ -1,35 +1,11 @@
-# Build stage
-FROM node:22.13.1-alpine3.21 AS builder
+# syntax = docker/dockerfile:experimental
+FROM node:22.14.0-bullseye as deps
+LABEL Unlock <ops@unlock-protocol.com>
 
-# Set working directory
-WORKDIR /app
-
-# Enable corepack and set yarn version
-RUN corepack enable && corepack prepare yarn@4.6.0 --activate
-
-# Install Java for OpenAPI Generator
-RUN apk add --no-cache openjdk11
-
-# Copy the entire repository
-COPY . .
-
-# Install dependencies
-RUN yarn install
-
-# Build all packages
-RUN yarn build
-
-# Production stage
-FROM node:22.13.1-alpine3.21 AS runner
-
-# Set working directory directly to locksmith
-WORKDIR /app/locksmith
-
-# Enable corepack and set yarn version
-RUN corepack enable && corepack prepare yarn@4.6.0 --activate
-
-# Install necessary dependencies for 1Password CLI
-RUN apk add --no-cache curl unzip ca-certificates
+# Install required dependencies
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends --assume-yes \
+    bash git rsync python3 postgresql default-jdk build-essential ca-certificates unzip
 
 # Setup 1Password CLI
 RUN ARCH="amd64"; \
@@ -39,17 +15,65 @@ RUN ARCH="amd64"; \
     && unzip -od /usr/local/bin/ op.zip \
     && rm op.zip
 
-# Copy built files from builder stage
-COPY --from=builder /app /app
+# Setup folder
+ENV DEST_FOLDER=/home/unlock
+RUN mkdir $DEST_FOLDER
+WORKDIR ${DEST_FOLDER}
 
-# Install production dependencies; skipped build steps as code is already built
-RUN cd /app && yarn install --mode=skip-build
+# Copy yarn configuration
+COPY yarn.lock .
+COPY .yarnrc.yml .
+COPY .yarn/plugins .yarn/plugins
+COPY .yarn/releases .yarn/releases
+COPY .yarn/patches .yarn/patches
 
-# Make sure the scripts directory is executable
-RUN chmod +x /app/locksmith/scripts/*.sh
+# Copy package.json files from all required packages
+COPY package.json .
+COPY packages/*/package.json ./packages/
+COPY locksmith/package.json ./locksmith/
+COPY subgraph/package.json ./subgraph/
+
+# Setup directories for packages
+RUN mkdir -p packages/core packages/networks packages/contracts packages/types packages/unlock-js packages/ui packages/tsconfig packages/eslint-config
+RUN mkdir -p locksmith subgraph
+
+# Use custom yarn cache folder
+RUN echo "cacheFolder: ${DEST_FOLDER}/yarn-cache" >> .yarnrc.yml
+RUN mkdir ./yarn-cache
+RUN chown -R node:node .
+
+# Install dependencies
+USER node
+RUN yarn install
+
+# Build stage
+FROM deps as build
+
+# Copy source code
+COPY --chown=node packages/ ./packages/
+COPY --chown=node locksmith/ ./locksmith/
+COPY --chown=node subgraph/ ./subgraph/
+
+# Build packages
+USER node
+RUN yarn build
+
+# Production stage
+FROM node:22.14.0-bullseye as runner
+
+# Set working directory
+WORKDIR /app/locksmith
+
+# Copy built files
+COPY --from=build /home/unlock/locksmith ./
+COPY --from=build /home/unlock/node_modules ../node_modules
+COPY --from=build /home/unlock/packages ../packages
+
+# Make scripts executable
+RUN chmod +x ./scripts/*.sh
 
 # Expose port
 EXPOSE 3000
 
-# Start locksmith server directly using the start script
-CMD ["yarn", "scripts/start.sh", "server"]
+# Start locksmith server
+CMD ["yarn", "scripts/start.sh", "server"] 
