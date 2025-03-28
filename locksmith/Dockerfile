@@ -51,7 +51,7 @@ RUN cd /app && yarn install --mode=skip-build
 RUN chmod +x /app/locksmith/scripts/*.sh
 
 # Expose the application port
-EXPOSE 3000
+EXPOSE 8080
 
 # Start locksmith using the yarn command (referring to the start script in package.json)
 CMD ["yarn", "start"]
