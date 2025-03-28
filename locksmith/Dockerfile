@@ -42,4 +42,4 @@ RUN ls -la ./scripts
 EXPOSE 8080
 
 # Run the start script
-CMD ["/app/locksmith/scripts/start.sh", "server"]
+CMD ["op", "run", "--env-file=./.op.env.staging", "--", "yarn", "tsx", "./src/server.ts"]
