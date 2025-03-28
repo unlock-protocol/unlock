@@ -28,9 +28,9 @@ jobs:
     with:
       bypass_diff_check: bypass
       service: locksmith
-      service-id: op://secrets/railway/locksmith-service-id
+      service-id: op://secrets/railway/locksmith-staging-service-id
     secrets:
-      railway-token: op://secrets/railway/project-token
+      railway-token: op://secrets/railway/railway-token
       OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
   # Vercel Deployments
