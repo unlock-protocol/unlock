@@ -1,0 +1,37 @@
+# Ignore all files by default
+*
+# Ignore all directories
+*/
+
+# Include locksmith
+!locksmith/
+!locksmith/**
+
+# Include root files needed for yarn workspace
+!package.json
+!yarn.lock
+!.yarnrc.yml
+!.yarn/
+!.yarn/**
+
+# Include required packages from workspace that locksmith depends on
+!packages/core/
+!packages/core/**
+!packages/networks/
+!packages/networks/**
+!packages/contracts/
+!packages/contracts/**
+!packages/types/
+!packages/types/**
+!packages/unlock-js/
+!packages/unlock-js/**
+!packages/ui/
+!packages/ui/**
+!packages/tsconfig/
+!packages/tsconfig/**
+!packages/eslint-config/
+!packages/eslint-config/**
+
+# Include railway configuration
+!railway.json
+!Dockerfile 
