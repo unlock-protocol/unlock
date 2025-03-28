@@ -29,11 +29,11 @@ FROM node:22.13.1-alpine3.21 AS runner
 # Set working directory to the locksmith package
 WORKDIR /app/locksmith
 
-# Setup corepack and prepare yarn
-RUN corepack enable && corepack prepare yarn@4.6.0 --activate
-
 # Install necessary system dependencies for 1Password CLI
 RUN apk add --no-cache curl unzip ca-certificates
+
+# Setup corepack and prepare yarn
+RUN corepack enable && corepack prepare yarn@4.6.0 --activate
 
 # Setup 1Password CLI
 RUN ARCH="amd64"; \
