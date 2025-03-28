@@ -21,7 +21,7 @@ RUN ARCH="amd64"; \
 COPY . .
 
 # Install dependencies and build
-RUN yarn install && yarn build
+RUN yarn install && yarn rebuild && yarn build
 
 # Make sure start.sh script is executable
 RUN chmod +x /app/locksmith/scripts/start.sh
