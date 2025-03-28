@@ -30,13 +30,15 @@ jobs:
       RAILWAY_TOKEN: ${{ secrets.railway-token }}
       SVC_ID: ${{ inputs.service-id }}
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Load secrets from 1Password
         uses: 1Password/load-secrets-action@v2.0.0
         with:
           export-env: true
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          RAILWAY_TOKEN: ${{ env.RAILWAY_TOKEN }}
-          SVC_ID: ${{ env.SVC_ID }}
-      - uses: actions/checkout@v3
+          RAILWAY_TOKEN: ${{ secrets.railway-token }}
+          SVC_ID: ${{ inputs.service-id }}
       - run: railway up --service=${{ env.SVC_ID }}
