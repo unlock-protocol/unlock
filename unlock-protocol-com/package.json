@@ -52,7 +52,7 @@
     "remark": "15.0.1",
     "remark-html": "16.0.1",
     "tailwindcss": "3.4.17",
-    "vitest": "2.1.9"
+    "vitest": "3.0.9"
   },
   "scripts": {
     "dev": "next dev -p 3002",

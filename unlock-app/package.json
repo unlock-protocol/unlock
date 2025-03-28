@@ -87,7 +87,7 @@
     "postcss": "8.4.49",
     "react-test-renderer": "18.3.1",
     "tailwindcss": "3.4.17",
-    "vitest": "2.1.9",
+    "vitest": "3.0.9",
     "vitest-fetch-mock": "0.4.4",
     "vitest-localstorage-mock": "0.1.2"
   },
