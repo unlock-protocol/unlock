@@ -49,8 +49,5 @@ jobs:
       - name: Install Railway CLI
         run: npm i -g @railway/cli
 
-      - name: Configure 1Password Token in Railway
-        run: railway variables add OP_SERVICE_ACCOUNT_TOKEN "${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}" --service=${{ env.SVC_ID }}
-
       - name: Deploy to Railway
         run: railway up --service=${{ env.SVC_ID }}
