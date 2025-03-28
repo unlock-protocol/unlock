@@ -8,7 +8,7 @@ on:
         type: string
         required: true
       service-id:
-        description: 'The Railway service ID to deploy to'
+        description: 'The Railway service ID to deploy to (or 1Password reference)'
         type: string
         required: true
       bypass_diff_check:
@@ -27,11 +27,12 @@ jobs:
     runs-on: ubuntu-latest
     env:
       RAILWAY_TOKEN: ${{ secrets.railway-token }}
-      SVC_ID: ${{ inputs.service-id }}
+      SVC_ID_REF: ${{ inputs.service-id }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
       - name: Load secrets from 1Password
         uses: 1Password/load-secrets-action@v2.0.0
         with:
@@ -40,6 +41,9 @@ jobs:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           RAILWAY_TOKEN: ${{ secrets.railway-token }}
           SVC_ID: ${{ inputs.service-id }}
+
       - name: Install Railway CLI
         run: npm i -g @railway/cli
-      - run: railway up --service=${{ env.SVC_ID }}
+
+      - name: Deploy to Railway
+        run: railway up --service=${{ env.SVC_ID }}
