@@ -1,0 +1,31 @@
+# Ignore all files by default
+*
+# Ignore all directories
+*/
+
+# Include locksmith
+!locksmith/
+!locksmith/**
+
+# Include root files needed for yarn workspace
+!package.json
+!yarn.lock
+!.yarnrc.yml
+!.yarn/
+!.yarn/**
+
+!scripts/
+!.dockerignore
+!.gitignore
+
+# Include all packages
+!packages/
+!packages/**
+
+# Include subgraph directory for GraphQL schema
+!subgraph/
+!subgraph/**
+
+# Include railway configuration
+!railway.json
+!Dockerfile 
