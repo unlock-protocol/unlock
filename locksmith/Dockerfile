@@ -23,17 +23,8 @@ COPY . .
 # Install dependencies and build
 RUN yarn install && yarn rebuild && yarn build
 
-# Make sure start.sh script is executable
-RUN chmod +x /app/locksmith/scripts/start.sh
-
 # Change to locksmith directory for the final command
 WORKDIR /app/locksmith
-
-# Log current directory before running the start script
-RUN pwd
-
-# Log the content of the scripts folder
-RUN ls -la ./scripts
 
 # Expose port
 EXPOSE 8080
