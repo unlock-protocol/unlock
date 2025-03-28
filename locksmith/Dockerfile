@@ -34,14 +34,6 @@ COPY --from=builder /app .
 # Install production dependencies; skipped build steps as code is already built
 RUN yarn install --mode=skip-build
 
-# Set environment variables
-ENV NODE_ENV=production
-
-# Add Railway specific ARGs and persist them into ENV
-ARG RAILWAY_DEPLOYMENT_ID
-ARG DATABASE_URL
-ENV RAILWAY_DEPLOYMENT_ID=$RAILWAY_DEPLOYMENT_ID
-ENV DATABASE_URL=$DATABASE_URL
 
 # Expose port
 EXPOSE 3000
