@@ -51,5 +51,5 @@ RUN chmod +x /app/locksmith/scripts/*.sh
 # Expose port
 EXPOSE 3000
 
-# Start locksmith using yarn command (which references scripts/start.sh in package.json)
-CMD ["yarn", "start"]
+# Start locksmith server directly using the start script
+CMD ["yarn", "scripts/start.sh", "server"]
