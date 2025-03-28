@@ -42,4 +42,4 @@ RUN ls -la ./scripts
 EXPOSE 8080
 
 # Run the start script
-CMD ["./scripts/start.sh", "server"]
+CMD ["/app/locksmith/scripts/start.sh", "server"]
