@@ -17,7 +17,7 @@
     "typescript": "5.8.2"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "2.1.9",
+    "@vitest/coverage-v8": "3.0.9",
     "@vitest/eslint-plugin": "1.1.36",
     "eslint": "9.22.0",
     "eslint-plugin-evm-address-to-checksummed": "0.0.6",
@@ -29,7 +29,7 @@
     "lint-staged": "15.4.3",
     "prettier": "3.5.3",
     "typescript-eslint": "8.25.0",
-    "vitest": "2.1.9"
+    "vitest": "3.0.9"
   },
   "workspaces": [
     "packages/**",
