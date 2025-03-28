@@ -43,7 +43,7 @@ RUN ARCH="amd64"; \
 COPY --from=builder /app /app
 
 # Install production dependencies; skipped build steps as code is already built
-RUN yarn install --mode=skip-build
+RUN yarn install
 
 # Make sure start.sh script is executable
 RUN chmod +x /app/locksmith/scripts/start.sh
