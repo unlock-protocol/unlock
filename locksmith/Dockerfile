@@ -19,9 +19,6 @@ RUN yarn install
 # Build all packages
 RUN yarn build
 
-# Show build output
-RUN ls -la
-
 # Production stage
 FROM node:22.13.1-alpine3.21 AS runner
 
@@ -48,14 +45,11 @@ COPY --from=builder /app /app
 # Install production dependencies; skipped build steps as code is already built
 RUN cd /app && yarn install --mode=skip-build
 
-# Make sure start.sh script is executable
-RUN chmod +x /app/locksmith/scripts/start.sh
-
-# Show final directory contents
-RUN ls -la
+# Make sure the scripts directory is executable
+RUN chmod +x /app/locksmith/scripts/*.sh
 
 # Expose port
 EXPOSE 3000
 
-# Start locksmith using its start script (with full path)
-CMD ls -la && yarn start
+# Start locksmith using yarn command (which references scripts/start.sh in package.json)
+CMD ["yarn", "start"]
