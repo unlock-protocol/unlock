@@ -1,4 +1,4 @@
-specVersion: 0.0.5
+specVersion: 1.2.0
 description: Unlock Protocol & Associated contracts
 features:
   - nonFatalErrors
