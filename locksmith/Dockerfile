@@ -26,9 +26,6 @@ RUN yarn install && yarn build
 # Make sure start.sh script is executable
 RUN chmod +x /app/locksmith/scripts/start.sh
 
-# Log current directory before changing to locksmith
-RUN pwd
-
 # Change to locksmith directory for the final command
 WORKDIR /app/locksmith
 
