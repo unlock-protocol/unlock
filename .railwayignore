@@ -14,23 +14,9 @@
 !.yarn/
 !.yarn/**
 
-# Include required packages from workspace that locksmith depends on
-!packages/core/
-!packages/core/**
-!packages/networks/
-!packages/networks/**
-!packages/contracts/
-!packages/contracts/**
-!packages/types/
-!packages/types/**
-!packages/unlock-js/
-!packages/unlock-js/**
-!packages/ui/
-!packages/ui/**
-!packages/tsconfig/
-!packages/tsconfig/**
-!packages/eslint-config/
-!packages/eslint-config/**
+# Include all packages directory to ensure workspace resolution works correctly
+!packages/
+!packages/**
 
 # Include railway configuration
 !railway.json
