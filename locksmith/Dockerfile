@@ -38,5 +38,5 @@ RUN yarn install --mode=skip-build
 # Expose port
 EXPOSE 3000
 
-# Start locksmith using the prod script from package.json
-CMD ["sh", "-c", "cd locksmith && yarn prod"]
+# Start locksmith using it's start script
+CMD ["sh", "-c", "cd locksmith && yarn start"]
