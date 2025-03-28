@@ -10,6 +10,9 @@ WORKDIR /app
 # Setup corepack and prepare yarn
 RUN corepack enable && corepack prepare yarn@4.6.0 --activate
 
+# Configure Yarn to use node-modules linker to ensure node_modules are created
+RUN yarn config set nodeLinker node-modules
+
 # Copy dependency files to leverage Docker cache
 COPY package.json yarn.lock ./
 
