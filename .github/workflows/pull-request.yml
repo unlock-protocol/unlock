@@ -81,6 +81,18 @@ jobs:
       SITE_ID: ${{ secrets.PAYWALL_APP_NETLIFY_STAGING_SITE_ID }}
       AUTH_TOKEN: ${{ secrets.PAYWALL_APP_NETLIFY_STAGING_AUTH_TOKEN }}
 
+  deploy-locksmith-staging-railway:
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    needs: run-tests
+    uses: ./.github/workflows/_railway.yml
+    with:
+      bypass_diff_check: bypass
+      service: locksmith
+      service-id: op://secrets/railway/locksmith-staging-service-id
+    secrets:
+      railway-token: op://secrets/railway/railway-token
+      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+
   deploy-unlock-app-vercel:
     needs:
       - check-changes
