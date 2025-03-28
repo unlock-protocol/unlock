@@ -29,9 +29,6 @@ WORKDIR /app/locksmith
 # Expose port
 EXPOSE 8080
 
-# Set OP_SERVICE_ACCOUNT_TOKEN as a build argument and environment variable
-ARG OP_SERVICE_ACCOUNT_TOKEN
-ENV OP_SERVICE_ACCOUNT_TOKEN=${OP_SERVICE_ACCOUNT_TOKEN}
 
 # Run the start script
-CMD ["op", "run", "--env-file=./.op.env.staging", "--", "yarn", "tsx", "./src/server.ts"]
+CMD ["yarn", "start"]
