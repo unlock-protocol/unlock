@@ -1,0 +1,61 @@
+name: Deploy on Railway
+
+on:
+  workflow_call:
+    inputs:
+      service:
+        description: 'The service/app to build'
+        type: string
+        required: true
+      service-id:
+        description: 'The Railway service ID to deploy to'
+        type: string
+        required: true
+      bypass_diff_check:
+        description: 'Bypass the monorepo diff check'
+        required: false
+        type: string
+    secrets:
+      railway-token:
+        required: true
+      OP_SERVICE_ACCOUNT_TOKEN:
+        required: true
+
+jobs:
+  deploy-to-railway:
+    name: Deploy ${{ inputs.service }} on Railway
+    runs-on: ubuntu-24.04
+    container: ghcr.io/railwayapp/cli:latest
+    env:
+      DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
+      RAILWAY_TOKEN: ${{ secrets.railway-token }}
+      SVC_ID: ${{ inputs.service-id }}
+    steps:
+      - name: 'Free up disk space'
+        run: sudo rm -rf /usr/share/dotnet && sudo rm -rf /opt/ghc && sudo rm -rf "/usr/local/share/boost" && sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check for changes in ${{ inputs.service }}
+        run: |
+          if  [ -z "${{ inputs.bypass_diff_check }}" ]; then
+            changed=$(scripts/monorepo.sh ${{ inputs.service }} ${{ github.ref_name }})
+          else 
+            changed="changed"
+          fi
+          echo $changed
+          echo "::set-output name=changed::$changed"
+        shell: bash
+        id: check_changes
+      - name: Load secrets from 1Password
+        uses: 1Password/load-secrets-action@v2.0.0
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          RAILWAY_TOKEN: ${{ env.RAILWAY_TOKEN }}
+          SVC_ID: ${{ env.SVC_ID }}
+      - name: Deploy to Railway
+        if: ${{ steps.check_changes.outputs.changed == 'changed' }}
+        run: railway up --service=${{ env.SVC_ID }}
