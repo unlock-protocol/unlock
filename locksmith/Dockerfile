@@ -1,35 +1,13 @@
-# Build stage
-FROM node:22.13.1-alpine3.21 AS builder
+FROM node:22.13.1-alpine3.21
 
 # Set working directory
 WORKDIR /app
 
-# Enable corepack and set yarn version
-RUN corepack enable && corepack prepare yarn@4.6.0 --activate
-
-# Install Java for OpenAPI Generator
-RUN apk add --no-cache openjdk11
-
-# Copy the entire repository
-COPY . .
-
-# Install dependencies
-RUN yarn install
-
-# Build all packages
-RUN yarn build
-
-# Production stage
-FROM node:22.13.1-alpine3.21 AS runner
-
-# Set working directory for the app
-WORKDIR /app
+# Install Java and 1Password CLI dependencies
+RUN apk add --no-cache openjdk11 curl unzip ca-certificates
 
 # Enable corepack and set yarn version
 RUN corepack enable && corepack prepare yarn@4.6.0 --activate
-
-# Install necessary dependencies for 1Password CLI
-RUN apk add --no-cache curl unzip ca-certificates
 
 # Setup 1Password CLI
 RUN ARCH="amd64"; \
@@ -39,20 +17,29 @@ RUN ARCH="amd64"; \
     && unzip -od /usr/local/bin/ op.zip \
     && rm op.zip
 
-# Copy built files from builder stage
-COPY --from=builder /app /app
+# Copy the entire repository
+COPY . .
 
-# Install production dependencies; skipped build steps as code is already built
-RUN yarn install
+# Install dependencies and build
+RUN yarn install && yarn build
 
 # Make sure start.sh script is executable
 RUN chmod +x /app/locksmith/scripts/start.sh
 
+# Log current directory before changing to locksmith
+RUN pwd
+
 # Change to locksmith directory for the final command
 WORKDIR /app/locksmith
+
+# Log current directory before running the start script
+RUN pwd
+
+# Log the content of the scripts folder
+RUN ls -la ./scripts
 
 # Expose port
 EXPOSE 8080
 
-# Start locksmith using its start script
-CMD ["yarn", "start"]
+# Run the start script
+CMD ["./scripts/start.sh", "server"]
