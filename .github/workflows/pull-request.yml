@@ -44,8 +44,8 @@ jobs:
           export-env: false
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          RAILWAY_TOKEN: op://secrets/vercel/project-id-unlock-protocol-com-prod
-          RAILWAY_SERVICE_ID: op://secrets/vercel/project-id-unlock-protocol-com-prod
+          RAILWAY_TOKEN: op://secrets/railway/railway-token
+          RAILWAY_SERVICE_ID: op://secrets/railway/locksmith-staging-service-id
 
       - name: Install Railway CLI
         run: npm i -g @railway/cli
