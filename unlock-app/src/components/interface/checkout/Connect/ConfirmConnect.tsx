@@ -35,11 +35,14 @@ export function ConfirmConnect({
         s: signature,
       })
     ).toString('base64')
-    communication?.emitUserInfo({
-      address: account,
-      message: message,
-      signedMessage: signature,
-    })
+    communication?.emitUserInfo(
+      {
+        address: account,
+        message: message,
+        signedMessage: signature,
+      },
+      paywallConfig
+    )
     onClose({
       code,
       state: oauthConfig.state,

@@ -22,6 +22,7 @@ import { downloadReceipts } from './tasks/receipts'
 import { createEventCasterEvent } from './tasks/eventCaster/createEventCasterEvent'
 import { rsvpForEventCasterEvent } from './tasks/eventCaster/rsvpForEventCasterEvent'
 import exportKeysJob from './tasks/exportKeysJob'
+import { checkoutHookJob } from './tasks/checkoutHooks'
 
 const crontabProduction = `
 */5 * * * * monitor
@@ -109,6 +110,7 @@ export async function startWorker() {
       downloadReceipts,
       createEventCasterEvent,
       rsvpForEventCasterEvent,
+      checkoutHookJob,
     },
   })
 

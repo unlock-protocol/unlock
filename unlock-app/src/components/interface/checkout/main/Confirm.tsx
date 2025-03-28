@@ -31,17 +31,23 @@ export function Confirm({ checkoutService, communication }: Props) {
     // If not pessimistic, we can emit the transaction info right away
     // and pass the signed message as well
     if (!paywallConfig.pessimistic && hash) {
-      communication?.emitTransactionInfo({
-        hash,
-        lock,
-        metadata,
-        network,
-      })
-      communication?.emitUserInfo({
-        address: account,
-        signedMessage: messageToSign?.signature,
-      })
-      communication?.emitMetadata(metadata)
+      communication?.emitTransactionInfo(
+        {
+          hash,
+          lock,
+          metadata,
+          network,
+        },
+        paywallConfig
+      )
+      communication?.emitUserInfo(
+        {
+          address: account,
+          signedMessage: messageToSign?.signature,
+        },
+        paywallConfig
+      )
+      communication?.emitMetadata(metadata, paywallConfig)
     }
     checkoutService.send({
       type: 'CONFIRM_MINT',

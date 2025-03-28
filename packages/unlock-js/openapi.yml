@@ -3987,6 +3987,229 @@ paths:
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
 
+  /v2/checkout/hooks/all:
+    get:
+      operationId: getCheckoutHookJobs
+      security:
+        - User: []
+      description: Get all unread checkout hook jobs for the currently authenticated user.
+      responses:
+        200:
+          description: Array of unread hook jobs for all checkout configs by the current authenticated user.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    createdAt:
+                      type: string
+                    updatedAt:
+                      type: string
+                    payload:
+                      type: object
+        400:
+          description: Could not retrieve jobs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        404:
+          description: No unread checkout hook jobs found for this user.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+  /v2/checkout/hooks/{id}:
+    post:
+      operationId: addCheckoutHookJob
+      security:
+        - User: []
+      description: Add a new checkout hook job for the given checkout configuration, if the authenticated user owns it.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the checkout config.
+          schema:
+            type: string
+      requestBody:
+        description: The payload for the hook job.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        200:
+          description: Job added successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Job added successfully'
+                  job:
+                    type: object
+        400:
+          description: Could not add job.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+    put:
+      operationId: updateCheckoutHooks
+      security:
+        - User: []
+      description: Update the hooks object of a checkout config
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the checkout config to update
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  description: URL to call when checkout status changes
+                metadata:
+                  type: string
+                  description: URL to call to fetch metadata
+                authenticated:
+                  type: string
+                  description: URL to call on successful user authentication
+                transactionSent:
+                  type: string
+                  description: URL to call when a transaction is sent
+              additionalProperties: false
+      responses:
+        200:
+          description: Successfully updated the hooks for the given checkout config.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckoutConfig'
+        400:
+          description: Invalid hooks payload or user not authorized to update the config.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  error:
+                    type: string
+        401:
+          description: User is not authenticated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        403:
+          description: User not authorized to update this configuration.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        404:
+          description: No checkout configuration found for the given id.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+    patch:
+      operationId: updateCheckoutHookJob
+      security:
+        - User: []
+      description: Mark a specific checkout hook job as read.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The job ID to mark as read.
+          schema:
+            type: string
+      responses:
+        200:
+          description: Job marked as read successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Job marked as read successfully'
+                  job:
+                    type: object
+                    additionalProperties: true
+                    properties:
+                      read:
+                        type: boolean
+                        example: true
+        400:
+          description: Could not update job.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        403:
+          description: Not authorized to update job.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        404:
+          description: No existing job found to update.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
   /v2/purchase/payment-methods:
     delete:
       operationId: removePaymentMethods
