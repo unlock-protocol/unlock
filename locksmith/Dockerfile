@@ -28,12 +28,25 @@ WORKDIR /app
 # Enable corepack and set yarn version
 RUN corepack enable && corepack prepare yarn@4.6.0 --activate
 
+# Install necessary dependencies for 1Password CLI
+RUN apk add --no-cache curl unzip ca-certificates
+
+# Setup 1Password CLI
+RUN ARCH="amd64"; \
+    OP_VERSION="v$(curl https://app-updates.agilebits.com/check/1/0/CLI2/en/2.0.0/N -s | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+')"; \
+    curl -sSfo op.zip \
+    https://cache.agilebits.com/dist/1P/op2/pkg/"$OP_VERSION"/op_linux_"$ARCH"_"$OP_VERSION".zip \
+    && unzip -od /usr/local/bin/ op.zip \
+    && rm op.zip
+
 # Copy built files from builder stage
 COPY --from=builder /app .
 
 # Install production dependencies; skipped build steps as code is already built
 RUN yarn install --mode=skip-build
 
+# Make sure start.sh script is executable
+RUN chmod +x locksmith/scripts/start.sh
 
 # Expose port
 EXPOSE 3000
