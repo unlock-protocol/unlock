@@ -18,6 +18,10 @@
 !packages/
 !packages/**
 
+# Include subgraph directory for GraphQL schema
+!subgraph/
+!subgraph/**
+
 # Include railway configuration
 !railway.json
 !Dockerfile 
