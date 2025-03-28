@@ -22,8 +22,8 @@ RUN yarn build
 # Production stage
 FROM node:22.13.1-alpine3.21 AS runner
 
-# Set working directory directly to locksmith
-WORKDIR /app/locksmith
+# Set working directory for the app
+WORKDIR /app
 
 # Enable corepack and set yarn version
 RUN corepack enable && corepack prepare yarn@4.6.0 --activate
@@ -43,13 +43,16 @@ RUN ARCH="amd64"; \
 COPY --from=builder /app /app
 
 # Install production dependencies; skipped build steps as code is already built
-RUN cd /app && yarn install --mode=skip-build
+RUN yarn install --mode=skip-build
 
 # Make sure start.sh script is executable
 RUN chmod +x /app/locksmith/scripts/start.sh
 
+# Change to locksmith directory for the final command
+WORKDIR /app/locksmith
+
 # Expose port
 EXPOSE 3000
 
-# Start locksmith using its start script (with full path)
+# Start locksmith using its start script
 CMD ["yarn", "start"]
