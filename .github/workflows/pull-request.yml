@@ -29,10 +29,28 @@ jobs:
 
   deploy-locksmith-staging-railway:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
-    uses: ./.github/workflows/_railway.yml
-    with:
-      service: locksmith
-      service-id: op://secrets/railway/locksmith-staging-service-id
-    secrets:
-      railway-token: op://secrets/railway/railway-token
-      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+    name: Deploy locksmith on Railway (Staging)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Load secrets from 1Password
+        id: load-secrets
+        uses: 1Password/load-secrets-action@v2.0.0
+        with:
+          export-env: false
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          RAILWAY_TOKEN: op://secrets/railway/railway-token
+          RAILWAY_SERVICE_ID: op://secrets/railway/locksmith-staging-service-id
+
+      - name: Install Railway CLI
+        run: npm i -g @railway/cli
+
+      - name: Deploy to Railway
+        env:
+          RAILWAY_TOKEN: ${{ steps.load-secrets.outputs.RAILWAY_TOKEN }}
+        run: railway up --service=${{ steps.load-secrets.outputs.RAILWAY_SERVICE_ID }}
