@@ -1,7 +1,6 @@
 // @vitest-environment jsdom
 
 import keyExpiring from '../../templates/keyExpiring'
-import { prepareAll } from '../../templates/prepare'
 import { expect, it, describe } from 'vitest'
 import { asHtml } from '../utils'
 
@@ -15,7 +14,7 @@ describe('keyExpiring', () => {
   it('should have the right subject', () => {
     expect.assertions(1)
     expect(
-      prepareAll(keyExpiring).subject({
+      keyExpiring.subject({
         ...DETAILS,
       })
     ).toBe(`Your "Ethereal NYC 202" membership is about to expire!`)
@@ -24,7 +23,7 @@ describe('keyExpiring', () => {
   it('should correct text when isRenewable', () => {
     expect.assertions(1)
 
-    const content = prepareAll(keyExpiring).html({
+    const content = keyExpiring.html({
       ...DETAILS,
       isRenewable: true,
     })
@@ -36,7 +35,7 @@ describe('keyExpiring', () => {
 
   it('should not show text when is not isRenewable', () => {
     expect.assertions(1)
-    const content = prepareAll(keyExpiring).html({
+    const content = keyExpiring.html({
       ...DETAILS,
       isRenewable: false,
     })
@@ -49,7 +48,7 @@ describe('keyExpiring', () => {
   it('should correct text when isAutoRenewable', () => {
     expect.assertions(1)
 
-    const content = prepareAll(keyExpiring).html({
+    const content = keyExpiring.html({
       ...DETAILS,
       isAutoRenewable: true,
       currency: 'STR',
@@ -62,7 +61,7 @@ describe('keyExpiring', () => {
 
   it('should not show text when is not isAutoRenewable', () => {
     expect.assertions(1)
-    const content = prepareAll(keyExpiring).html({
+    const content = keyExpiring.html({
       ...DETAILS,
       isAutoRenewable: false,
       currency: 'STR',
@@ -76,7 +75,7 @@ describe('keyExpiring', () => {
   it('should correct text when isRenewableIfRePurchased', () => {
     expect.assertions(1)
 
-    const content = prepareAll(keyExpiring).html({
+    const content = keyExpiring.html({
       ...DETAILS,
       isRenewableIfRePurchased: true,
     })
@@ -88,7 +87,7 @@ describe('keyExpiring', () => {
 
   it('should not show text when is not isRenewableIfRePurchased', () => {
     expect.assertions(1)
-    const content = prepareAll(keyExpiring).html({
+    const content = keyExpiring.html({
       ...DETAILS,
       isRenewableIfRePurchased: false,
     })
@@ -101,7 +100,7 @@ describe('keyExpiring', () => {
   it('should correct text when isRenewableIfReApproved', () => {
     expect.assertions(1)
 
-    const content = prepareAll(keyExpiring).html({
+    const content = keyExpiring.html({
       ...DETAILS,
       isRenewableIfReApproved: true,
       currency: 'STR',
@@ -114,7 +113,7 @@ describe('keyExpiring', () => {
 
   it('should not show text when is not isRenewableIfReApproved', () => {
     expect.assertions(1)
-    const content = prepareAll(keyExpiring).html({
+    const content = keyExpiring.html({
       ...DETAILS,
       isRenewableIfReApproved: false,
       currency: 'STR',

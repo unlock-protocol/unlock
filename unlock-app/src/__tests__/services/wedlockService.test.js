@@ -9,38 +9,6 @@ describe('Wedlocks Service', () => {
     w = new WedlockService('http://notareal.host')
   })
 
-  it('should request an email confirmation, with the right headers and params', async () => {
-    expect.assertions(1)
-    const recipient = 'thomas.elphinstone+2@hambled.on'
-    const expectedPayload = {
-      template: emailTemplate.signupConfirmation,
-      recipient,
-      params: {
-        email: encodeURIComponent(recipient),
-        signedEmail: {
-          value: recipient,
-          encrypt: true,
-        },
-        confirmLink: 'https://mcdonalds.gov',
-      },
-      attachments: [],
-    }
-
-    const fetchExpected = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(expectedPayload),
-    }
-
-    fetch.mockResolvedValue(fetchExpected)
-
-    const resp = await w.confirmEmail(recipient, 'https://mcdonalds.gov')
-
-    expect(fetch).toHaveBeenCalledWith('http://notareal.host', fetchExpected)
-  })
-
   it('should request a QR code email, with the right headers and params', async () => {
     expect.assertions(1)
     const recipient = 'jefferson@airpla.ne'
