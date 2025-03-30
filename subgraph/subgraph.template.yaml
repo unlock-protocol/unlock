@@ -3,7 +3,7 @@ description: Unlock Protocol & Associated contracts
 features:
   - nonFatalErrors
 indexerHints:
-  prune: auto
+  prune: 500
 schema:
   file: ./schema.graphql
 dataSources:
