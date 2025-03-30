@@ -10,7 +10,7 @@ module.exports = async () => {
   const bondTreasuryAddress = '0xa7865ECE6DAB013E7131983b943c2c75D7Fa0D1F' // Provided by monkey.biz (Biz) via discord here: https://discord.com/channels/462280183425138719/1293630882619461713/1340372247344320552
   const upTokenAddress = '0xaC27fa800955849d6D17cC8952Ba9dD6EAA66187'
   const { decimals: tokenDecimals } = await getTokenInfo(upTokenAddress)
-  const additionalTransferAmount = ethers.parseUnits('12455000', tokenDecimals)
+  const additionalTransferAmount = ethers.parseUnits('1360545', tokenDecimals)
 
   const calls = [
     {
