@@ -1,11 +1,12 @@
 import { useContext } from 'react'
 import { WalletService } from '@unlock-protocol/unlock-js'
 import ProviderContext from '../contexts/ProviderContext'
-import { ToastHelper } from '../components/helpers/toast.helper'
-import { useSession } from './useSession'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { config } from '~/config/app'
 import { ethers } from 'ethers'
 import networks from '@unlock-protocol/networks'
+import AuthenticationContext from '~/contexts/AuthenticationContext'
+import { useConnectWallet, useWallets } from '@privy-io/react-auth'
 
 interface WatchAssetInterface {
   address: string
@@ -15,7 +16,9 @@ interface WatchAssetInterface {
 
 export const useProvider = () => {
   const { setProvider, provider } = useContext(ProviderContext)
-  const { session: account } = useSession()
+  const { account } = useContext(AuthenticationContext)
+  const { wallets } = useWallets()
+  const { connectWallet } = useConnectWallet()
 
   const createBrowserProvider = (
     provider: any
@@ -90,6 +93,49 @@ export const useProvider = () => {
   }
 
   /**
+   * Ensures the connected wallet matches the authenticated account
+   * Returns true if successful, false otherwise
+   */
+  const ensureCorrectWallet = async () => {
+    if (!account) return true
+    // Get current connected address
+    const currentWalletAddress = wallets[0]?.address?.toLowerCase()
+    const authenticatedAddress = account.toLowerCase()
+
+    // If addresses match, we're good
+    if (currentWalletAddress === authenticatedAddress) return true
+
+    // If wallet not connected or wrong address, try to connect with the right one
+    try {
+      // Try to trigger wallet connection with the authenticated address
+      await connectWallet({
+        suggestedAddress: account!,
+      })
+
+      // Re-check if switch was successful
+      const newWallet = wallets[0]
+      const newWalletAddress = newWallet?.address?.toLowerCase()
+
+      if (newWalletAddress === authenticatedAddress) {
+        // If we've switched wallets, we need to update the provider
+        if (newWallet && currentWalletAddress !== newWalletAddress) {
+          const newProvider = await newWallet.getEthereumProvider()
+          setProvider(createBrowserProvider(newProvider))
+        }
+
+        return true
+      } else {
+        // If still not matching, show error
+        ToastHelper.error(`Please switch to address ${account} in your wallet.`)
+        return false
+      }
+    } catch (error) {
+      console.error('Error switching to authenticated wallet:', error)
+      return false
+    }
+  }
+
+  /**
    * Retrieves or initializes a `WalletService` for a specific network.
    * It does the following:
    * 1. Retrieves the current Ethereum provider from the wallet.
@@ -106,7 +152,11 @@ export const useProvider = () => {
       ToastHelper.error('Please make sure your wallet is connected.')
       throw new Error('Wallet not connected!')
     }
+
     try {
+      // Ensure the wallet matches the authenticated account before proceeding
+      await ensureCorrectWallet()
+
       // Get the current network
       const network = await provider.getNetwork()
       const currentChainId = parseInt(network.chainId)
@@ -176,5 +226,6 @@ export const useProvider = () => {
     account: provider ? account : undefined,
     watchAsset,
     provider,
+    ensureCorrectWallet,
   }
 }

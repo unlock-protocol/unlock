@@ -6,7 +6,7 @@ import { BiCopy as CopyIcon } from 'react-icons/bi'
 import { HiOutlineExternalLink as ExternalLinkIcon } from 'react-icons/hi'
 
 import { useConfig } from '~/utils/withConfig'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 
 interface AddressLinkProps {
   address: string

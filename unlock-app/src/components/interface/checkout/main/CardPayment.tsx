@@ -17,7 +17,7 @@ import {
 } from '@stripe/stripe-js'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useForm } from 'react-hook-form'
 import { locksmith } from '~/config/locksmith'
 import {

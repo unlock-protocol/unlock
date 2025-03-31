@@ -28,7 +28,7 @@ You can also easily add it to any webpage with the following:
 </script>
 ```
 
-Then assign a configiration to a global variable `unlockProtocolConfig` to configure it:
+Then assign a configuration to a global variable `unlockProtocolConfig` to configure it:
 
 ```javascript
 <script>
@@ -69,10 +69,10 @@ Handler event object properties.
 
 Triggered when a user authenticates.
 
-| name          | Description                                                                            | values   |
-| ------------- | -------------------------------------------------------------------------------------- | -------- |
-| address       | Ethereum address of the connected user                                                 | _string_ |
-| signedMessage | the signature perform by the user if your configuration includes a messageToSignoption | _string_ |
+| name          | Description                                                                              | values   |
+| ------------- | ---------------------------------------------------------------------------------------- | -------- |
+| address       | Ethereum address of the connected user                                                   | _string_ |
+| signedMessage | the signature performed by the user if your configuration includes a messageToSignoption | _string_ |
 
 Note: if the event is triggered without any payload, please consider that the user has "logged out".
 
