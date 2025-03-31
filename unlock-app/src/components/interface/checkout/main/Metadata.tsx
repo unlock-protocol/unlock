@@ -14,7 +14,14 @@ import {
   useMemo,
   useState,
 } from 'react'
-import { Button, Input, Placeholder, isAddressOrEns } from '@unlock-protocol/ui'
+import {
+  Button,
+  Checkbox,
+  Input,
+  Placeholder,
+  isAddressOrEns,
+  Toggle,
+} from '@unlock-protocol/ui'
 import { twMerge } from 'tailwind-merge'
 import { formResultToMetadata } from '~/utils/userMetadata'
 import { ToastHelper } from '@unlock-protocol/ui'
@@ -26,7 +33,6 @@ import { useQuery } from '@tanstack/react-query'
 import { Lock } from '~/unlockTypes'
 import { KeyManager } from '@unlock-protocol/unlock-js'
 import { useConfig } from '~/utils/withConfig'
-import { Toggle } from '@unlock-protocol/ui'
 import {
   MetadataInputType as MetadataInput,
   PaywallConfigType,
@@ -37,6 +43,8 @@ import { shouldSkip } from './utils'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { getAddressForName } from '~/hooks/useNameResolver'
 import { isAccount } from '~/utils/validators'
+import Link from 'next/link'
+import { config } from '~/config/app'
 
 interface Props {
   checkoutService: CheckoutService
@@ -44,6 +52,7 @@ interface Props {
 
 interface FormData {
   metadata: Record<'recipient' | string, string>[]
+  termsAccepted: boolean
 }
 
 interface RecipientInputProps {
@@ -77,6 +86,7 @@ export const MetadataInputs = ({
   const {
     register,
     setValue,
+    control,
     formState: { errors },
   } = useFormContext<FormData>()
   const networkConfig = config.networks[lock.network]
@@ -151,7 +161,7 @@ export const MetadataInputs = ({
                 <div className="w-32 text-sm truncate">{recipient}</div>
                 <Button
                   type="button"
-                  onClick={(event) => {
+                  onClick={(event: React.MouseEvent) => {
                     event.preventDefault()
                     setHideRecipientAddress(false)
                   }}
@@ -200,7 +210,7 @@ export const MetadataInputs = ({
                         <div className="text-sm">No wallet address?</div>
                         <Toggle
                           value={useEmail}
-                          onChange={(value) => {
+                          onChange={(value: boolean) => {
                             setUseEmail(value)
                           }}
                           size="small"
@@ -261,13 +271,43 @@ export const MetadataInputs = ({
                   <div className="w-32 text-sm truncate">{email}</div>
                   <Button
                     type="button"
-                    onClick={() => setHideEmailInput(false)}
+                    onClick={(event: React.MouseEvent) => {
+                      event.preventDefault()
+                      setHideEmailInput(false)
+                    }}
                     size="tiny"
                   >
                     Change
                   </Button>
                 </div>
               </div>
+            )
+          }
+
+          // Handle checkbox type
+          if (type === 'checkbox') {
+            return (
+              <Controller
+                key={name}
+                name={`metadata.${id}.${name}`}
+                control={control}
+                rules={{
+                  required: required && `${inputLabel} is required`,
+                }}
+                defaultValue={defaultValue === 'true' ? 'true' : 'false'}
+                render={({ field }) => (
+                  <Checkbox
+                    label={inputLabel}
+                    disabled={disabled}
+                    fieldSize="small"
+                    error={errors?.metadata?.[id]?.[name]?.message}
+                    checked={field.value === 'true'}
+                    onChange={(e) =>
+                      field.onChange(e.target.checked ? 'true' : 'false')
+                    }
+                  />
+                )}
+              />
             )
           }
 
@@ -341,12 +381,16 @@ export function Metadata({ checkoutService }: Props) {
     shouldFocusError: true,
     mode: 'onSubmit',
     reValidateMode: 'onSubmit',
+    defaultValues: {
+      termsAccepted: false,
+    },
   })
 
   const {
     control,
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { isSubmitting, errors },
+    watch,
   } = methods
 
   const { fields, append, remove } = useFieldArray({
@@ -419,6 +463,8 @@ export function Metadata({ checkoutService }: Props) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quantity, recipient, isMember, isMemberLoading, account])
+
+  const termsAccepted = watch('termsAccepted')
 
   async function onSubmit(data: FormData) {
     try {
@@ -504,13 +550,55 @@ export function Metadata({ checkoutService }: Props) {
                 </div>
               )
             })}
+
+            {/* Terms of Service */}
+            <div className="mt-4 mb-2">
+              <Controller
+                name="termsAccepted"
+                control={control}
+                rules={{
+                  required:
+                    'You must agree to the Terms of Service to continue',
+                }}
+                render={({ field: { onChange, value, ref } }) => (
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0">
+                      <Checkbox
+                        ref={ref}
+                        id="termsAccepted"
+                        checked={value}
+                        onChange={onChange}
+                        label=""
+                      />
+                    </div>
+                    <div className="text-sm">
+                      <label htmlFor="termsAccepted" className="cursor-pointer">
+                        I agree to the{' '}
+                        <Link
+                          target="_blank"
+                          href={`${config.unlockStaticUrl}/terms`}
+                          className="text-brand-ui-primary hover:underline"
+                        >
+                          Terms of Service
+                        </Link>
+                      </label>
+                    </div>
+                  </div>
+                )}
+              />
+              {errors.termsAccepted && (
+                <p className="mt-1 text-xs text-red-500">
+                  {errors.termsAccepted.message}
+                </p>
+              )}
+            </div>
           </form>
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
         <Button
           loading={isLoading}
-          disabled={isLoading || isMemberLoading}
+          disabled={isLoading || isMemberLoading || !termsAccepted}
           className="w-full"
           form="metadata"
         >

@@ -42,7 +42,6 @@ interface IPublicLock {
    * @param referrer the referrer that will be granted the governance tokens
    * @param keyManager the manager of the key (can cancel, transfer, burn the key)
    * @param data additional data to be used by jooks or other 3rd part contracts
-   * @return tokenIds the ids of the created tokens
    */
 
   struct PurchaseArgs {
@@ -1040,7 +1039,7 @@ interface IUnlock {
    * @notice This function can be called by anyone (not only the contract owner) as a way to ensure decentralization.
    * @param token the address of the token (zero address for native) to swap and burn
    * @param amount the amount of tokens to swap and burn
-   * @param poolFee the poolFee of the token <> WETH/Wrapped Native asset to  use for the swap
+   * @param poolFee the poolFee of the token - WETH/Wrapped Native asset to  use for the swap
    */
   function swapAndBurn(address token, uint256 amount, uint24 poolFee) external;
 

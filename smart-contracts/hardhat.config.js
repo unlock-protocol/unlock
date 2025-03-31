@@ -64,6 +64,9 @@ require('./tasks/keys')
 module.exports = {
   networks,
   etherscan,
+  sourcify: {
+    enabled: true,
+  },
   gasReporter: {
     currency: 'USD',
     excludeContracts: ['TestNoop'],

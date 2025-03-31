@@ -7,16 +7,22 @@ interface AddToWallet {
   network: number
   lockAddress: string
   tokenId: string
+  isCompact?: boolean
 }
 
-export const AddToWallet = ({ network, lockAddress, tokenId }: AddToWallet) => {
+export const AddToWallet = ({
+  network,
+  lockAddress,
+  tokenId,
+  isCompact,
+}: AddToWallet) => {
   return (
     <div className="w-full flex items-center justify-center px-4 py-1 gap-4">
       {!isIOS && (
         <AddToPhoneWallet
-          className="bg-transparent px-0 py-0 "
+          className="bg-transparent px-0 py-0"
           platform={Platform.GOOGLE}
-          size="medium"
+          size={isCompact ? 'small' : 'medium'}
           variant="secondary"
           as={Button}
           network={network}
@@ -29,9 +35,9 @@ export const AddToWallet = ({ network, lockAddress, tokenId }: AddToWallet) => {
       )}
       {!isAndroid && (
         <AddToPhoneWallet
-          className="bg-transparent px-0 py-0 "
+          className="bg-transparent px-0 py-0"
           platform={Platform.APPLE}
-          size="medium"
+          size={isCompact ? 'small' : 'medium'}
           variant="secondary"
           as={Button}
           network={network}
