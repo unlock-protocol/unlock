@@ -6,7 +6,7 @@ import {
   getTemplates,
   getAttachments,
 } from '../../src/operations/wedlocksOperations'
-import { vi, expect, afterAll } from 'vitest'
+import { vi, expect } from 'vitest'
 import app from '../app'
 import request from 'supertest'
 import { loginRandomUser } from '../test-helpers/utils'
@@ -39,7 +39,8 @@ vi.mock('../../src/utils/ticket', async () => {
   const actual: any = await vi.importActual('../../src/utils/ticket')
   return {
     ...actual,
-    createTicket: async () => Promise.resolve('mock'),
+    createTicket: async () =>
+      Promise.resolve('<svg xmlns="http://www.w3.org/2000/svg"></svg>'),
   }
 })
 
@@ -53,7 +54,9 @@ vi.mock('../../src/utils/calendar', async () => {
 
 vi.mock('../../src/utils/certification', async () => {
   return {
-    createCertificate: vi.fn(async () => Promise.resolve('mock')),
+    createCertificate: vi.fn(async () =>
+      Promise.resolve('<svg xmlns="http://www.w3.org/2000/svg"></svg>')
+    ),
   }
 })
 
@@ -419,7 +422,7 @@ describe('Wedlocks operations', () => {
       })
 
       expect(
-        attachments.find((attachment) => attachment.filename === 'ticket.png')
+        attachments.find((attachment) => attachment.filename === 'ticket.pdf')
       ).toBeDefined()
       expect(
         attachments.find((attachment) => attachment.filename === 'calendar.ics')
@@ -442,7 +445,7 @@ describe('Wedlocks operations', () => {
 
       expect(
         attachments.find(
-          (attachment) => attachment.filename === 'certification.png'
+          (attachment) => attachment.filename === 'certification.pdf'
         )
       ).toBeDefined()
     })

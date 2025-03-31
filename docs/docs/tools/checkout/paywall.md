@@ -69,9 +69,9 @@ Handler event object properties.
 
 Triggered when a user authenticates.
 
-| name          | Description                                                                            | values   |
-| ------------- | -------------------------------------------------------------------------------------- | -------- |
-| address       | Ethereum address of the connected user                                                 | _string_ |
+| name          | Description                                                                              | values   |
+| ------------- | ---------------------------------------------------------------------------------------- | -------- |
+| address       | Ethereum address of the connected user                                                   | _string_ |
 | signedMessage | the signature performed by the user if your configuration includes a messageToSignoption | _string_ |
 
 Note: if the event is triggered without any payload, please consider that the user has "logged out".
