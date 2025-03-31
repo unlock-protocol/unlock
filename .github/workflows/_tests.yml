@@ -19,6 +19,7 @@ on:
           "subgraph",
           "unlock-protocol-com",
           "wedlocks",
+          "provider",
           "unlock-app",
           "packages/core"
           ]'

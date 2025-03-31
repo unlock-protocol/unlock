@@ -1,7 +1,7 @@
 import { Button, Input, Modal } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useUpdateUserMetadata } from '~/hooks/useUserMetadata'
 
 export const UpdateEmailModal = ({

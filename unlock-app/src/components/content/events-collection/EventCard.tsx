@@ -6,6 +6,7 @@ import { WrappedAddress } from '~/components/interface/WrappedAddress'
 export interface EventCardProps {
   index: number
   event: {
+    eventType: string
     eventUrl: string
     id: number
     name: string
@@ -62,6 +63,8 @@ export const EventCard = ({
     name,
     slug,
     createdBy,
+    eventType,
+    eventUrl,
     data: { replyTo },
   } = event
 
@@ -86,7 +89,10 @@ export const EventCard = ({
 
         <div className="flex justify-end space-x-5 py-5">
           <Button size="small" variant="outlined-primary" target="_blank">
-            <Link href={`/event/${slug}`} target="_blank">
+            <Link
+              href={eventType === 'external' ? eventUrl : `/event/${slug}`}
+              target="_blank"
+            >
               View Event
             </Link>
           </Button>

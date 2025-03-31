@@ -7,17 +7,17 @@ import {
   isAddressOrEns,
   Placeholder,
 } from '@unlock-protocol/ui'
-import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { BsCreditCard as CreditCardIcon } from 'react-icons/bs'
 import { onResolveName } from '~/utils/resolvers'
-import useEns from '~/hooks/useEns'
+
 import {
   useAddKeyGranter,
   useRemoveKeyGranter,
   useKeyGranter,
 } from '~/hooks/useKeyGranter'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { graphService } from '~/config/subgraph'
 
 interface KeyGranterFormProps {
   lockAddress: string
@@ -125,7 +125,6 @@ const KeyGranterCard = ({
 
   const { account } = useAuthenticate()
 
-  const keyGranterEnsOrAddress = useEns(keyGranter)
   const isLoggedUser = account?.toLowerCase() === keyGranter?.toLowerCase()
 
   const { data: creditCardKeyGranter } = useKeyGranter({
@@ -152,7 +151,7 @@ const KeyGranterCard = ({
         <div className="flex flex-col gap-2 ">
           <span className="text-base text-brand-dark">
             {!isCreditCardGranter ? (
-              keyGranterEnsOrAddress
+              keyGranter
             ) : (
               <div className="flex gap-2 items-center">
                 <CreditCardIcon size={18} />
@@ -195,8 +194,7 @@ export const KeyGranterForm = ({
   })
 
   const getLock = async () => {
-    const service = new SubgraphService()
-    return await service.lock(
+    return await graphService.lock(
       {
         where: {
           address_in: [lockAddress],

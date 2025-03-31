@@ -29,7 +29,7 @@ export const EventOverviewCard: React.FC<EventOverviewCardProps> = ({
       id: event?.checkoutConfigId,
     })
 
-  const { name, data, createdBy } = event
+  const { name, data, createdBy, eventType } = event
 
   if (!data) {
     return (
@@ -39,7 +39,7 @@ export const EventOverviewCard: React.FC<EventOverviewCardProps> = ({
     )
   }
 
-  const { image, attributes } = data
+  const { image, attributes, external_url } = data
 
   const getEventAttribute = (type: string) => {
     const attr = attributes.find(
@@ -54,11 +54,22 @@ export const EventOverviewCard: React.FC<EventOverviewCardProps> = ({
   const eventLocation = getEventAttribute('event_address')
 
   const isUserEvent = account && createdBy === account
+  const isExternalEvent = eventType === 'external'
+
+  const handleClick = () => {
+    if (isExternalEvent && external_url) {
+      // For external events, open the URL in a new tab
+      window.open(external_url, '_blank')
+    } else {
+      // For regular events, open the event detail drawer
+      onClick(event)
+    }
+  }
 
   return (
     <div
       className="flex flex-col sm:flex-row bg-white border cursor-pointer border-gray-200 rounded-2xl p-4 hover:bg-gray-50"
-      onClick={() => onClick(event)}
+      onClick={handleClick}
     >
       <div className="flex-shrink-0 mb-4 sm:mb-0 sm:mr-6">
         <img
@@ -75,31 +86,33 @@ export const EventOverviewCard: React.FC<EventOverviewCardProps> = ({
             <h4 className="text-xl sm:text-2xl font-bold text-brand-ui-primary truncate">
               {name}
             </h4>
-            {isUserEvent && (
-              <Badge
-                variant="green"
-                className="mt-1 sm:mt-0 self-start sm:self-auto"
-              >
-                Organizer
-              </Badge>
-            )}
+            <div className="flex gap-2 mt-1 sm:mt-0 self-start sm:self-auto">
+              {isUserEvent && !isExternalEvent && (
+                <Badge
+                  variant="green"
+                  className="mt-1 sm:mt-0 self-start sm:self-auto"
+                >
+                  Organizer
+                </Badge>
+              )}
+            </div>
           </div>
-          <ReactMarkdown
-            children={data.description}
-            className="mt-1 text-sm sm:text-base text-gray-500 line-clamp-2"
-          />
+          <div className="mt-1 text-sm sm:text-base text-gray-500 line-clamp-2">
+            <ReactMarkdown children={data.description} />
+          </div>
         </div>
 
         {/* Attendee Cues */}
-        {isCheckoutConfigPending ? (
-          <Placeholder.Root>
-            <Placeholder.Line />
-          </Placeholder.Root>
-        ) : (
-          <div className="mt-3">
-            <AttendeeCues checkoutConfig={checkoutConfig!} />
-          </div>
-        )}
+        {!isExternalEvent &&
+          (isCheckoutConfigPending ? (
+            <Placeholder.Root>
+              <Placeholder.Line />
+            </Placeholder.Root>
+          ) : (
+            <div className="mt-3">
+              <AttendeeCues checkoutConfig={checkoutConfig!} />
+            </div>
+          ))}
 
         <div className="mt-3 flex flex-wrap gap-3 text-sm sm:text-base">
           {eventStartDate && eventEndDate && (

@@ -1,10 +1,10 @@
-import { Box, Size } from '@unlock-protocol/ui'
+import { Box } from '@unlock-protocol/ui'
 import {
   generateAppleWalletPass,
   generateGoogleWalletPass,
   Platform,
 } from '../../../services/passService'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import Image from 'next/image'
 
 interface AddToWalletProps {
@@ -17,7 +17,7 @@ interface AddToWalletProps {
   disabled?: boolean
   active?: boolean
   iconLeft?: JSX.Element
-  size?: Size
+  size?: 'small' | 'medium'
   variant?: string
   className?: string
 }
@@ -29,6 +29,7 @@ export const AddToPhoneWallet = ({
   network,
   handlePassUrl,
   platform,
+  size = 'medium',
   ...rest
 }: AddToWalletProps) => {
   const walletConfig = {
@@ -50,6 +51,11 @@ export const AddToPhoneWallet = ({
 
   const config = walletConfig[platform]
 
+  const imageDimensions = {
+    small: { width: 150, height: 12 },
+    medium: { width: 200, height: 16 },
+  } as const
+
   const handleClick = async () => {
     const generate = async () => {
       const passUrl = await config.generatePass(lockAddress, network, tokenId)
@@ -66,7 +72,11 @@ export const AddToPhoneWallet = ({
   }
   return (
     <Box as={as} {...rest} onClick={handleClick}>
-      <Image width="200" height="16" alt={config.altText} src={config.imgSrc} />
+      <Image
+        {...imageDimensions[size]}
+        alt={config.altText}
+        src={config.imgSrc}
+      />
     </Box>
   )
 }

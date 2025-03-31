@@ -4,7 +4,7 @@ import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useConfig } from '~/utils/withConfig'
 import { Fragment, useEffect, useState } from 'react'
 import { ethers } from 'ethers'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useSelector } from '@xstate/react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
@@ -14,7 +14,6 @@ import Link from 'next/link'
 import type { Transaction } from './checkoutMachine'
 import { ReturningButton } from '../ReturningButton'
 import { AddToWallet } from '../../keychain/AddToWallet'
-import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
@@ -24,6 +23,7 @@ interface MintingScreenProps {
   owner: string
   lockAddress: string
   network: number
+  tokenId?: string | null
   states?: Record<string, { text: string }>
   pessimistic?: boolean
   isCompact?: boolean
@@ -43,9 +43,9 @@ const DEFAULT_STATES = {
 
 export const MintingScreen = ({
   mint,
-  owner,
   lockAddress,
   network,
+  tokenId,
   states = DEFAULT_STATES,
   pessimistic = false,
   isCompact = false,
@@ -53,13 +53,6 @@ export const MintingScreen = ({
   const config = useConfig()
   const transactionNetwork = mint.network || network
 
-  // TODO: This returns the Key with the lowest index for given lock dddres from the onwer causing weird behaviour when buying 2-nd... keys
-  const { data: tokenId } = useGetTokenIdForOwner(
-    { account: owner!, lockAddress, network },
-    {
-      enabled: mint?.status === 'FINISHED',
-    }
-  )
   const hasTokenId = !!tokenId
 
   const status =
@@ -67,7 +60,7 @@ export const MintingScreen = ({
 
   return (
     <div className="flex flex-col items-center justify-evenly h-full space-y-2">
-      <TransactionAnimation status={status} />
+      <TransactionAnimation status={status} isCompact={isCompact} />
       {mint?.transactionHash && (
         <a
           href={config.networks[transactionNetwork].explorer.urls.transaction(
@@ -79,7 +72,7 @@ export const MintingScreen = ({
         >
           <p
             className={`text-lg font-bold text-brand-ui-primary inline-flex items-center gap-2 ${
-              isCompact ? 'text-base text-center' : 'text-lg'
+              isCompact ? 'text-sm text-center' : 'text-lg'
             }`}
           >
             {/* 
@@ -109,6 +102,7 @@ export const MintingScreen = ({
           network={network}
           lockAddress={lockAddress}
           tokenId={tokenId.toString()}
+          isCompact={isCompact}
         />
       )}
     </div>
@@ -127,8 +121,15 @@ export function Minting({
   communication,
 }: MintingProps) {
   const { account } = useAuthenticate()
-  const { mint, lock, messageToSign, metadata, recipients, paywallConfig } =
-    useSelector(checkoutService, (state) => state.context)
+  const {
+    mint,
+    lock,
+    messageToSign,
+    metadata,
+    recipients,
+    paywallConfig,
+    tokenId,
+  } = useSelector(checkoutService, (state) => state.context)
 
   const config = useConfig()
   const processing = mint?.status === 'PROCESSING' && paywallConfig.pessimistic
@@ -188,6 +189,7 @@ export function Minting({
           status: 'FINISHED',
           network: mint!.network,
           transactionHash: mint!.transactionHash!,
+          tokenId: tokenIds[0] || undefined,
         })
       } catch (error) {
         if (error instanceof Error) {
@@ -223,6 +225,7 @@ export function Minting({
           lockAddress={lock!.address}
           lockName={lock!.name}
           network={lock!.network}
+          tokenId={tokenId}
           pessimistic={!!paywallConfig.pessimistic}
         />
       </main>

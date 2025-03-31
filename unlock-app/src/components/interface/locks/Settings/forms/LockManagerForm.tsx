@@ -8,15 +8,16 @@ import {
   Placeholder,
   Modal,
 } from '@unlock-protocol/ui'
-import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { Controller, useForm, useWatch } from 'react-hook-form'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import { onResolveName } from '~/utils/resolvers'
-import useEns from '~/hooks/useEns'
 import { useAddLockManager } from '~/hooks/useAddLockManager'
 import { useProvider } from '~/hooks/useProvider'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { graphService } from '~/config/subgraph'
+import { WrappedAddress } from '~/components/interface/WrappedAddress'
+
 interface LockManagerFormProps {
   lockAddress: string
   network: number
@@ -120,7 +121,6 @@ const LockManagerCard = ({
   const [renounceModal, setRenounceModal] = useState(false)
   const { account } = useAuthenticate()
   const { getWalletService } = useProvider()
-  const managerEnsOrAddress = useEns(manager)
   const isLoggedUser = account?.toLowerCase() === manager?.toLowerCase()
 
   const renounceLockManager = async () => {
@@ -160,9 +160,12 @@ const LockManagerCard = ({
       />
       <div className="flex items-center justify-between px-4 py-2 border border-gray-200 rounded-lg">
         <div className="flex flex-col gap-2 ">
-          <span className="text-base text-brand-dark">
-            {managerEnsOrAddress}
-          </span>
+          <WrappedAddress
+            className="text-base text-brand-dark"
+            address={manager}
+            showCopyIcon={false}
+            showExternalLink={false}
+          />
           {isLoggedUser && (
             <span className="text-sm font-semibold text-brand-ui-primary">
               {"That's you"}
@@ -194,8 +197,7 @@ export const LockManagerForm = ({
   })
 
   const getLock = async () => {
-    const service = new SubgraphService()
-    return await service.lock(
+    return await graphService.lock(
       {
         where: {
           address_in: [lockAddress],

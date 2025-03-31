@@ -1,7 +1,7 @@
 import { Button, Input, Placeholder } from '@unlock-protocol/ui'
 import { CustomComponentProps } from '../UpdateHooksForm'
 import { useMutation } from '@tanstack/react-query'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { FaTrash as TrashIcon } from 'react-icons/fa'
 import { getEthersWalletFromPassword } from '~/utils/strings'
 import { useFormContext } from 'react-hook-form'

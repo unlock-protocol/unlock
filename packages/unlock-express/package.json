@@ -10,7 +10,7 @@
     "lint": "yarn run eslint ."
   },
   "dependencies": {
-    "ethers": "6.13.4",
+    "ethers": "6.13.5",
     "passport-custom": "1.1.1"
   },
   "peerDependencies": {
@@ -23,6 +23,6 @@
   },
   "devDependencies": {
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
-    "prettier": "3.4.2"
+    "prettier": "3.5.3"
   }
 }

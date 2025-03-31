@@ -55,6 +55,7 @@ export function Connected({ service }: ConnectedCheckoutProps) {
         type: 'SELECT_LOCK',
         existingMember: !!membership?.member,
         expiredMember: !!membership?.expired,
+        tokenId: membership?.tokenId,
       })
     }
 

@@ -6,11 +6,10 @@ import { useConfig } from '~/utils/withConfig'
 import { Stepper } from '../Stepper'
 import { useSelector } from '@xstate/react'
 import { Fragment, useState, lazy, Suspense } from 'react'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { ReturningButton } from '../ReturningButton'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
-import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
 import { shouldSkip } from './utils'
 import { AddToWallet } from '../../keychain/AddToWallet'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
@@ -26,7 +25,7 @@ interface Props {
 
 export function Returning({ checkoutService, onClose, communication }: Props) {
   const config = useConfig()
-  const { paywallConfig, lock, messageToSign } = useSelector(
+  const { paywallConfig, lock, messageToSign, tokenId } = useSelector(
     checkoutService,
     (state) => state.context
   )
@@ -68,13 +67,6 @@ export function Returning({ checkoutService, onClose, communication }: Props) {
     }
   }
 
-  const { data: tokenId } = useGetTokenIdForOwner(
-    { account: account!, lockAddress: lock!.address, network: lock!.network },
-    {
-      enabled: !!(account && lock),
-    }
-  )
-
   return (
     <Fragment>
       <Stepper service={checkoutService} />
@@ -105,7 +97,7 @@ export function Returning({ checkoutService, onClose, communication }: Props) {
           <AddToWallet
             lockAddress={lock!.address}
             network={lock!.network}
-            tokenId={tokenId}
+            tokenId={tokenId!}
           />{' '}
         </div>
       </main>

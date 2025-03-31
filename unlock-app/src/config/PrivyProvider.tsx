@@ -8,14 +8,16 @@ import {
   useCreateWallet,
   User,
   usePrivy,
+  LinkedAccountWithMetadata,
 } from '@privy-io/react-auth'
 import { ReactNode, useContext, useEffect, useState } from 'react'
 import { config } from './app'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { locksmith } from './locksmith'
 import AuthenticationContext from '~/contexts/AuthenticationContext'
 import { MigrationModal } from '~/components/legacy-auth/MigrationNotificationModal'
 import { isInIframe } from '~/utils/iframe'
+import { setLocalStorageItem } from '~/hooks/useAppStorage'
 
 // check for legacy account
 export const checkLegacyAccount = async (
@@ -82,7 +84,12 @@ export const PrivyChild = ({ children }: { children: ReactNode }) => {
   const { setAccount } = useContext(AuthenticationContext)
 
   // handle onComplete logic
-  const handleLoginComplete = async (user: User) => {
+  const handleLoginComplete = async ({
+    user,
+  }: {
+    user: User
+    loginAccount: LinkedAccountWithMetadata | null
+  }) => {
     // Proceed with normal login flow
     await onSignedInWithPrivy(user)
   }
@@ -102,8 +109,10 @@ export const PrivyChild = ({ children }: { children: ReactNode }) => {
   // Detects when login was successful via an event
   // This should render only once!
   useEffect(() => {
+    // this is called only once when a user is authenticated!
     const onAuthenticated = async (event: any) => {
       setAccount(event.detail)
+      setLocalStorageItem('account', event.detail)
     }
     window.addEventListener('locksmith.authenticated', onAuthenticated)
     return () => {

@@ -2,7 +2,13 @@
 
 import { BiQrScan as ScanIcon } from 'react-icons/bi'
 import { useRouter } from 'next/navigation'
-import { Button, Icon } from '@unlock-protocol/ui'
+import {
+  Button,
+  Card,
+  Disclosure,
+  Icon,
+  minifyAddress,
+} from '@unlock-protocol/ui'
 import { getEventDate, getEventEndDate, getEventUrl } from './utils'
 import { useEventOrganizer } from '~/hooks/useEventOrganizer'
 import { useEventOrganizers } from '~/hooks/useEventOrganizers'
@@ -15,6 +21,7 @@ import { useEventVerifiers } from '~/hooks/useEventVerifiers'
 import { EventDefaultLayout } from './Layout/EventDefaultLayout'
 import { EventBannerlessLayout } from './Layout/EventBannerlessLayout'
 import { EventsLayout } from './Layout/constants'
+import { formatEventDates } from '~/utils/formatEventDates'
 
 interface EventDetailsProps {
   event: Event
@@ -37,7 +44,7 @@ export const EventDetails = ({
 }: EventDetailsProps) => {
   const router = useRouter()
 
-  // Check if the user is one of the lock manager
+  // Check if the user is one of the lock managers
   const { data: isOrganizer } = useEventOrganizer({
     checkoutConfig,
   })
@@ -47,9 +54,7 @@ export const EventDetails = ({
     { initialData: eventProp }
   )
 
-  const eventUrl = getEventUrl({
-    event,
-  })
+  const eventUrl = getEventUrl({ event })
 
   const { data: organizers } = useEventOrganizers({
     checkoutConfig,
@@ -68,57 +73,21 @@ export const EventDetails = ({
     )
   }
 
-  const eventDate = getEventDate(event.ticket) // Full date + time of event
-  const eventEndDate = getEventEndDate(event.ticket)
+  // Format the event dates and get boolean flags
+  const {
+    startDate,
+    startTime,
+    endDate,
+    endTime,
+    eventDate,
+    eventEndDate,
+    hasDate,
+    hasLocation,
+  } = formatEventDates(event.ticket, language())
+
   const hasPassed = eventEndDate
     ? dayjs().isAfter(eventEndDate)
     : dayjs().isAfter(eventDate)
-
-  const isSameDay = dayjs(eventDate).isSame(eventEndDate, 'day')
-
-  const startDate = eventDate
-    ? eventDate.toLocaleDateString(undefined, {
-        timeZone: event.ticket.event_timezone,
-        weekday: 'long',
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      })
-    : null
-
-  const startTime =
-    eventDate && event.ticket.event_start_time
-      ? eventDate.toLocaleTimeString(language(), {
-          timeZone: event.ticket.event_timezone,
-          hour: '2-digit',
-          minute: '2-digit',
-          timeZoneName: 'short',
-        })
-      : undefined
-
-  const endDate =
-    eventEndDate && eventEndDate && !isSameDay
-      ? eventEndDate.toLocaleDateString(undefined, {
-          timeZone: event.ticket.event_timezone,
-          weekday: 'long',
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-        })
-      : null
-
-  const endTime =
-    eventDate && event.ticket.event_end_time && eventEndDate && isSameDay
-      ? eventEndDate.toLocaleTimeString(language(), {
-          timeZone: event.ticket.event_timezone,
-          hour: '2-digit',
-          minute: '2-digit',
-          timeZoneName: 'short',
-        })
-      : null
-
-  const hasLocation = (event.ticket.event_address || '')?.length > 0
-  const hasDate = startDate || startTime || endDate || endTime
 
   const coverImage = event.ticket.event_cover_image
 
