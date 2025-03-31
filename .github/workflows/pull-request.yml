@@ -29,11 +29,23 @@ jobs:
 
   deploy-locksmith-staging-railway:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
-    name: Deploy locksmith on Railway (Staging)
+    name: Deploy locksmith web on Railway (Staging)
     uses: ./.github/workflows/_railway.yml
     with:
-      service: locksmith
+      service: locksmith-web
       service-id: op://secrets/railway/locksmith-staging-service-id
+      bypass_diff_check: bypass
+    secrets:
+      railway-token: op://secrets/railway/railway-token
+      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+
+  deploy-locksmith-worker-staging-railway:
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    name: Deploy locksmith worker on Railway (Staging)
+    uses: ./.github/workflows/_railway.yml
+    with:
+      service: locksmith-worker
+      service-id: op://secrets/railway/locksmith-staging-worker-service-id
       bypass_diff_check: bypass
     secrets:
       railway-token: op://secrets/railway/railway-token
