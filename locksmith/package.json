@@ -37,6 +37,7 @@
   "dependencies": {
     "@ambire/signature-validator": "1.4.1",
     "@aws-sdk/client-s3": "3.717.0",
+    "@guildxyz/sdk": "2.6.9",
     "@logtail/node": "0.5.2",
     "@logtail/winston": "0.5.2",
     "@nuintun/qrcode": "4.1.13",
