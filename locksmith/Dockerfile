@@ -28,6 +28,3 @@ WORKDIR /app/locksmith
 
 # Expose port
 EXPOSE 8080
-
-# Run the start script
-CMD ["op", "run", "--env-file=./.op.env.staging", "--", "yarn", "tsx", "./src/server.ts"]
