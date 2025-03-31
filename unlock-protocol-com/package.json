@@ -52,14 +52,12 @@
     "remark": "15.0.1",
     "remark-html": "16.0.1",
     "tailwindcss": "3.4.17",
-    "vitest": "2.1.9"
+    "vitest": "3.0.9"
   },
   "scripts": {
     "dev": "next dev -p 3002",
     "build": "next build",
     "deploy": "yarn build",
-    "deploy-netlify": "./scripts/deploy-netlify.sh",
-    "deploy-fleek": "./scripts/deploy-fleek.sh",
     "deploy-vercel": "./scripts/deploy-vercel.sh",
     "start": "yarn build && NODE_ENV=production next start",
     "test": "vitest run",
