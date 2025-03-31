@@ -46,7 +46,7 @@ library MerkleProof {
   }
 
   /**
-   * @dev Calldata version of {verify}
+   * @dev Calldata version of verify
    */
   function verifyCalldata(
     bytes32[] calldata proof,
@@ -74,7 +74,7 @@ library MerkleProof {
   }
 
   /**
-   * @dev Calldata version of {processProof}
+   * @dev Calldata version of processProof
    */
   function processProofCalldata(
     bytes32[] calldata proof,
@@ -89,9 +89,9 @@ library MerkleProof {
 
   /**
    * @dev Returns true if the `leaves` can be simultaneously proven to be a part of a Merkle tree defined by
-   * `root`, according to `proof` and `proofFlags` as described in {processMultiProof}.
+   * `root`, according to `proof` and `proofFlags` as described in processMultiProof.
    *
-   * CAUTION: Not all Merkle trees admit multiproofs. See {processMultiProof} for details.
+   * CAUTION: Not all Merkle trees admit multiproofs. See processMultiProof for details.
    */
   function multiProofVerify(
     bytes32[] memory proof,
@@ -103,9 +103,9 @@ library MerkleProof {
   }
 
   /**
-   * @dev Calldata version of {multiProofVerify}
+   * @dev Calldata version of multiProofVerify
    *
-   * CAUTION: Not all Merkle trees admit multiproofs. See {processMultiProof} for details.
+   * CAUTION: Not all Merkle trees admit multiproofs. See processMultiProof for details.
    */
   function multiProofVerifyCalldata(
     bytes32[] calldata proof,
@@ -178,9 +178,9 @@ library MerkleProof {
   }
 
   /**
-   * @dev Calldata version of {processMultiProof}.
+   * @dev Calldata version of processMultiProof.
    *
-   * CAUTION: Not all Merkle trees admit multiproofs. See {processMultiProof} for details.
+   * CAUTION: Not all Merkle trees admit multiproofs. See processMultiProof for details.
    */
   function processMultiProofCalldata(
     bytes32[] calldata proof,
@@ -260,6 +260,7 @@ library MerkleProof {
 
 // Original license: SPDX_License_Identifier: MIT
 pragma solidity >=0.5.17 <0.9.0;
+
 // Original pragma directive: pragma experimental ABIEncoderV2
 
 /**

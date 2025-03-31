@@ -8,6 +8,13 @@ rm -rf $SRC_DOCS_FOLDER
 # build docs
 yarn hardhat docgen
 
+if [ $? -eq 0 ]; then
+    echo "Contracts doc built successfully"
+else
+    echo "Contracts doc built failed"
+    exit 1
+fi
+
 # delete existing folder
 rm -rf $DEST_DOCS_FOLDER
 mkdir -p $DEST_DOCS_FOLDER
@@ -63,7 +70,7 @@ interface references.
 ## Using Smart Contract Interfaces
 
 A Solidity contract interface is a list of function definitions without 
-implementation. This allows for a seperation between the interface and the 
+implementation. This allows for a separation between the interface and the 
 implementation much like Abstract Base Classes in Python or C++. 
 
 You can use these interfaces in your own smart contracts to interact with

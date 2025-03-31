@@ -42,7 +42,7 @@ library MerkleProof {
     }
 
     /**
-     * @dev Calldata version of {verify}
+     * @dev Calldata version of verify
      */
     function verifyCalldata(bytes32[] calldata proof, bytes32 root, bytes32 leaf) internal pure returns (bool) {
         return processProofCalldata(proof, leaf) == root;
@@ -63,7 +63,7 @@ library MerkleProof {
     }
 
     /**
-     * @dev Calldata version of {processProof}
+     * @dev Calldata version of processProof
      */
     function processProofCalldata(bytes32[] calldata proof, bytes32 leaf) internal pure returns (bytes32) {
         bytes32 computedHash = leaf;
@@ -75,9 +75,9 @@ library MerkleProof {
 
     /**
      * @dev Returns true if the `leaves` can be simultaneously proven to be a part of a Merkle tree defined by
-     * `root`, according to `proof` and `proofFlags` as described in {processMultiProof}.
+     * `root`, according to `proof` and `proofFlags` as described in processMultiProof.
      *
-     * CAUTION: Not all Merkle trees admit multiproofs. See {processMultiProof} for details.
+     * CAUTION: Not all Merkle trees admit multiproofs. See processMultiProof for details.
      */
     function multiProofVerify(
         bytes32[] memory proof,
@@ -89,9 +89,9 @@ library MerkleProof {
     }
 
     /**
-     * @dev Calldata version of {multiProofVerify}
+     * @dev Calldata version of multiProofVerify
      *
-     * CAUTION: Not all Merkle trees admit multiproofs. See {processMultiProof} for details.
+     * CAUTION: Not all Merkle trees admit multiproofs. See processMultiProof for details.
      */
     function multiProofVerifyCalldata(
         bytes32[] calldata proof,
@@ -164,9 +164,9 @@ library MerkleProof {
     }
 
     /**
-     * @dev Calldata version of {processMultiProof}.
+     * @dev Calldata version of processMultiProof.
      *
-     * CAUTION: Not all Merkle trees admit multiproofs. See {processMultiProof} for details.
+     * CAUTION: Not all Merkle trees admit multiproofs. See processMultiProof for details.
      */
     function processMultiProofCalldata(
         bytes32[] calldata proof,
@@ -250,6 +250,7 @@ pragma solidity >=0.5.17 <0.9.0;
  * @title The PublicLock Interface
  */
 
+
 interface IPublicLock {
   /**
    * @dev PurchaseArgs struct
@@ -258,7 +259,6 @@ interface IPublicLock {
    * @param referrer the referrer that will be granted the governance tokens
    * @param keyManager the manager of the key (can cancel, transfer, burn the key)
    * @param data additional data to be used by jooks or other 3rd part contracts
-   * @return tokenIds the ids of the created tokens
    */
 
   struct PurchaseArgs {

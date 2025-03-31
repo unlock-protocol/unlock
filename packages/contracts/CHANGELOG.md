@@ -2,6 +2,7 @@
 
 ## 0.0.33
 
+- fixes typos in docstring that prevents docgen from generating proper docs
 - Adding Airdrops contract
 
 ## 0.0.32
