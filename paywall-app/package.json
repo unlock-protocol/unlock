@@ -7,8 +7,6 @@
     "build:next": "next build",
     "build:cdn": "yarn vite build",
     "deploy": "yarn build",
-    "deploy-netlify": "./scripts/deploy-netlify.sh",
-    "deploy-fleek": "./scripts/deploy-fleek.sh",
     "deploy-vercel": "./scripts/deploy-vercel.sh",
     "start": "next start",
     "test": "echo 'no tests'",

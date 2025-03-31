@@ -39,7 +39,6 @@
     "clean-api": "docusaurus clean-api-docs all",
     "swizzle": "docusaurus swizzle",
     "deploy": "yarn build",
-    "deploy-netlify": "./scripts/deploy-netlify.sh",
     "deploy-vercel": "./scripts/deploy-vercel.sh",
     "ci": "yarn build",
     "clear": "docusaurus clear",
