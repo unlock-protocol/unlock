@@ -20,6 +20,12 @@ RUN ARCH="amd64"; \
 # Copy the entire repository
 COPY . .
 
+# Ensure bash is installed (for scripts using #!/bin/bash)
+RUN apk add --no-cache bash
+
+# Grant execute permissions to necessary scripts
+RUN chmod +x /app/locksmith/scripts/start.sh /app/locksmith/scripts/release.sh
+
 # Install dependencies and build
 RUN yarn install && yarn rebuild && yarn build
 
