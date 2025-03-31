@@ -1,7 +1,9 @@
-specVersion: 0.0.5
+specVersion: 1.0.0
 description: Unlock Protocol & Associated contracts
 features:
   - nonFatalErrors
+indexerHints:
+  prune: 5000
 schema:
   file: ./schema.graphql
 dataSources:
