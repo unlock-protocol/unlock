@@ -65,6 +65,7 @@ export function NotificationsMenu() {
     )
 
   const viewedBlogs = blogs?.filter((blog) => blog.viewed == true).length || 0
+  const total_notifications = notifications.length - viewedBlogs
 
   return (
     <>
@@ -79,9 +80,9 @@ export function NotificationsMenu() {
                 onClick={() => setIsOpen(!isOpen)}
               >
                 <BellIcon className="h-6 w-6" />
-                {notifications.length > 0 && (
+                {total_notifications > 0 && (
                   <span className="absolute -top-2 -right-1 h-4 w-4 rounded-full bg-red-500 text-xs text-white flex items-center justify-center">
-                    {notifications.length - viewedBlogs}
+                    {total_notifications}
                   </span>
                 )}
               </Button>

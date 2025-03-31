@@ -43,6 +43,11 @@ export const Address: React.FC<AddressProps> = ({
     Boolean(useName && !resolvedName)
   )
 
+  // Update internal state if the resolvedName prop changes
+  useEffect(() => {
+    setName(resolvedName)
+  }, [resolvedName])
+
   // fetch the name associated with the address if `useName` is provided
   useEffect(() => {
     const fetchName = async () => {
