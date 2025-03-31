@@ -100,7 +100,6 @@ jobs:
           UNLOCK_APP_VERCEL_STAGING_VERCEL_PROJECT_ID: op://secrets/vercel/project-id-unlock-app-staging
           UNLOCK_APP_VERCEL_STAGING_VERCEL_ORG_ID: op://secrets/vercel/org-id
           UNLOCK_APP_VERCEL_STAGING_VERCEL_TOKEN: op://secrets/vercel/deployment-token
-          UNLOCK_APP_VERCEL_STAGING_NEXT_PUBLIC_BASE64_WEDLOCKS_PUBLIC_KEY: op://secrets/wedlocks/public-key
           UNLOCK_APP_VERCEL_STAGING_GOOGLE_CLIENT_SECRET: op://secrets/google/staging-secret
           UNLOCK_APP_VERCEL_STAGING_NEXTAUTH_SECRET: op://secrets/nextauth/staging-secret
       - uses: ./.github/actions/vercel
