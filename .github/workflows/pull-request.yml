@@ -27,26 +27,122 @@ jobs:
       # run all tests if PR contains the 'run-all-tests' tag
       bypass: ${{ contains(github.event.pull_request.labels.*.name, 'run-all-tests')}}
 
+  # run tests for folders that have changed
+  run-tests:
+    needs: check-changes
+    # name: "Run the tests"
+    if: ${{ needs.check-changes.outputs.changed != '[]' }}
+    uses: ./.github/workflows/_tests.yml
+    with:
+      changed: ${{ needs.check-changes.outputs.changed }}
+
+  smart-contracts-coverage:
+    needs: check-changes
+    if: ${{ needs.check-changes.outputs.changed != '[]' && contains(fromJson(needs.check-changes.outputs.changed), 'smart-contracts') }}
+    uses: ./.github/workflows/_coverage.yml
+    with:
+      service: smart-contracts
+
+  # the check for changes in network files is included within the workflow itself
+  networks-changed:
+    uses: ./.github/workflows/_networks.yml
+
+  # Vercel Deployments
+  deploy-unlock-protocol-com:
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    needs: run-tests
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Load secrets from 1Password
+        uses: 1Password/load-secrets-action@v2.0.0
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          UNLOCK_PROTOCOL_COM_VERCEL_STAGING_VERCEL_PROJECT_ID: op://secrets/vercel/project-id-unlock-protocol-com-prod
+          UNLOCK_PROTOCOL_COM_VERCEL_STAGING_VERCEL_ORG_ID: op://secrets/vercel/org-id
+          UNLOCK_PROTOCOL_COM_VERCEL_STAGING_VERCEL_TOKEN: op://secrets/vercel/deployment-token
+      - uses: ./.github/actions/vercel
+        with:
+          service: unlock-protocol-com
+          target-env: staging
+
+  deploy-paywall-app:
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    needs: run-tests
+    uses: ./.github/workflows/_netlify.yml
+    with:
+      service: paywall-app
+      target-env: staging
+    secrets:
+      SITE_ID: ${{ secrets.PAYWALL_APP_NETLIFY_STAGING_SITE_ID }}
+      AUTH_TOKEN: ${{ secrets.PAYWALL_APP_NETLIFY_STAGING_AUTH_TOKEN }}
+
   deploy-locksmith-staging-railway:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
-    name: Deploy locksmith web on Railway (Staging)
+    needs: run-tests
     uses: ./.github/workflows/_railway.yml
     with:
-      service: locksmith-web
-      service-id: op://secrets/railway/locksmith-web-staging-service-id
       bypass_diff_check: bypass
+      service: locksmith
+      service-id: op://secrets/railway/locksmith-staging-service-id
     secrets:
       railway-token: op://secrets/railway/railway-token
       OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
-  deploy-locksmith-worker-staging-railway:
-    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
-    name: Deploy locksmith worker on Railway (Staging)
-    uses: ./.github/workflows/_railway.yml
-    with:
-      service: locksmith-worker
-      service-id: op://secrets/railway/locksmith-worker-staging-service-id
-      bypass_diff_check: bypass
-    secrets:
-      railway-token: op://secrets/railway/railway-token
-      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+  deploy-unlock-app-vercel:
+    needs:
+      - check-changes
+      - run-tests
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository && needs.check-changes.outputs.changed != '[]' && contains(fromJson(needs.check-changes.outputs.changed), 'unlock-app')  }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Load secrets from 1Password
+        uses: 1Password/load-secrets-action@v2.0.0
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          UNLOCK_APP_VERCEL_STAGING_VERCEL_PROJECT_ID: op://secrets/vercel/project-id-unlock-app-staging
+          UNLOCK_APP_VERCEL_STAGING_VERCEL_ORG_ID: op://secrets/vercel/org-id
+          UNLOCK_APP_VERCEL_STAGING_VERCEL_TOKEN: op://secrets/vercel/deployment-token
+          UNLOCK_APP_VERCEL_STAGING_NEXT_PUBLIC_BASE64_WEDLOCKS_PUBLIC_KEY: op://secrets/wedlocks/public-key
+          UNLOCK_APP_VERCEL_STAGING_GOOGLE_CLIENT_SECRET: op://secrets/google/staging-secret
+          UNLOCK_APP_VERCEL_STAGING_NEXTAUTH_SECRET: op://secrets/nextauth/staging-secret
+      - uses: ./.github/actions/vercel
+        with:
+          service: unlock-app
+          target-env: staging
+        env:
+          UNLOCK_APP_VERCEL_STAGING_NEXTAUTH_URL: 'https://staging-app.unlock-protocol.com'
+
+  deploy-docs:
+    needs:
+      - check-changes
+      - run-tests
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository && needs.check-changes.outputs.changed != '[]' && contains(fromJson(needs.check-changes.outputs.changed), 'docs')  }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Load secrets from 1Password
+        uses: 1Password/load-secrets-action@v2.0.0
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          # Using the prod project ID but will create preview deployment
+          DOCS_VERCEL_STAGING_VERCEL_PROJECT_ID: op://secrets/vercel/project-id-docs-prod
+          DOCS_VERCEL_STAGING_VERCEL_ORG_ID: op://secrets/vercel/org-id
+          DOCS_VERCEL_STAGING_VERCEL_TOKEN: op://secrets/vercel/deployment-token
+      - uses: ./.github/actions/vercel
+        with:
+          service: docs
+          target-env: staging

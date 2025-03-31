@@ -8,6 +8,30 @@ jobs:
   run-all-tests:
     uses: ./.github/workflows/_tests.yml
 
+  deploy-locksmith-web-staging-railway:
+    if: ${{ github.repository_owner == 'unlock-protocol' }}
+    name: Deploy locksmith web on Railway (Staging)
+    uses: ./.github/workflows/_railway.yml
+    with:
+      service: locksmith-web
+      service-id: op://secrets/railway/locksmith-web-staging-service-id
+      bypass_diff_check: bypass
+    secrets:
+      railway-token: op://secrets/railway/railway-token
+      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+
+  deploy-locksmith-worker-staging-railway:
+    if: ${{ github.repository_owner == 'unlock-protocol' }}
+    name: Deploy locksmith worker on Railway (Staging)
+    uses: ./.github/workflows/_railway.yml
+    with:
+      service: locksmith-worker
+      service-id: op://secrets/railway/locksmith-worker-staging-service-id
+      bypass_diff_check: bypass
+    secrets:
+      railway-token: op://secrets/railway/railway-token
+      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+
   deploy-locksmith-staging:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
     needs: run-all-tests
@@ -20,18 +44,6 @@ jobs:
       HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
       OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets .OP_SERVICE_ACCOUNT_TOKEN }}
-
-  deploy-locksmith-staging-railway:
-    if: ${{ github.repository_owner == 'unlock-protocol' }}
-    needs: run-all-tests
-    uses: ./.github/workflows/_railway.yml
-    with:
-      bypass_diff_check: bypass
-      service: locksmith
-      service-id: op://secrets/railway/locksmith-staging-service-id
-    secrets:
-      railway-token: op://secrets/railway/railway-token
-      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
   # Vercel Deployments
   # The unlock-protocol-com site is built from `master` as we don't use a staging site for it.
