@@ -1,6 +1,6 @@
 # Solidity API
 
-## IUnlockV12
+## IUnlockV13
 
 ### initialize
 
@@ -451,3 +451,79 @@ Call executed by a lock after its version upgrade triggred by `upgradeLock`
   of the Unlock contract
 
 _The `msg.sender` will be the upgraded lock_
+
+### transferTokens
+
+```solidity
+function transferTokens(address token, address to, uint256 amount) external
+```
+
+Functions which transfers tokens held by the contract
+It handles both ERC20 and the base currency.
+
+_This function is onlyOwner_
+
+#### Parameters
+
+| Name   | Type    | Description                                                                       |
+| ------ | ------- | --------------------------------------------------------------------------------- |
+| token  | address | the address of the token to transfer (pass the 0x0 address for the base currency) |
+| to     | address | the address to transfer the tokens to                                             |
+| amount | uint256 | the amount of tokens to transfer                                                  |
+
+### removeLock
+
+```solidity
+function removeLock(address lock) external
+```
+
+Removes a lock from the list of locks. This will prevent the lock from being able to receive governance tokens.
+The lock will still be able to sell its memberships.
+
+_This function is onlyOwner_
+
+#### Parameters
+
+| Name | Type    | Description                   |
+| ---- | ------- | ----------------------------- |
+| lock | address | address of the lock to remove |
+
+### swapAndBurn
+
+```solidity
+function swapAndBurn(address token, uint256 amount, uint24 poolFee) external
+```
+
+Send tokens held by this contract to the UDT SwapBurner contract. The tokens sent to the
+contract are then swapped for UDT and UDT itself will be sent to a burner address.
+This function can be called by anyone (not only the contract owner) as a way to ensure decentralization.
+
+#### Parameters
+
+| Name    | Type    | Description                                                              |
+| ------- | ------- | ------------------------------------------------------------------------ |
+| token   | address | the address of the token (zero address for native) to swap and burn      |
+| amount  | uint256 | the amount of tokens to swap and burn                                    |
+| poolFee | uint24  | the poolFee of the token - WETH/Wrapped Native asset to use for the swap |
+
+### setSwapBurner
+
+```solidity
+function setSwapBurner(address _swapBurnerAddress) external
+```
+
+Set the UDT Swap and Burn contract address
+
+#### Parameters
+
+| Name                | Type    | Description                                     |
+| ------------------- | ------- | ----------------------------------------------- |
+| \_swapBurnerAddress | address | the address of the SwapBurner contract instance |
+
+### swapBurnerAddress
+
+```solidity
+function swapBurnerAddress() external view returns (address)
+```
+
+The address of the UDT Swap and Burn contract
