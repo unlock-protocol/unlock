@@ -3,11 +3,8 @@ FROM node:22.13.1-alpine3.21
 # Set working directory
 WORKDIR /app
 
-# Install Java and 1Password CLI dependencies
-RUN apk add --no-cache openjdk11 curl unzip ca-certificates
-
-# Enable corepack and set yarn version
-RUN corepack enable && corepack prepare yarn@4.6.0 --activate
+# Install system dependencies (Java, bash, utils)
+RUN apk add --no-cache openjdk11 bash curl unzip ca-certificates
 
 # Setup 1Password CLI
 RUN ARCH="amd64"; \
@@ -17,14 +14,11 @@ RUN ARCH="amd64"; \
     && unzip -od /usr/local/bin/ op.zip \
     && rm op.zip
 
+# Enable corepack and set yarn version
+RUN corepack enable && corepack prepare yarn@4.6.0 --activate
+
 # Copy the entire repository
 COPY . .
-
-# Ensure bash is installed (for scripts using #!/bin/bash)
-RUN apk add --no-cache bash
-
-# Grant execute permissions to necessary scripts
-RUN chmod +x /app/locksmith/scripts/start.sh /app/locksmith/scripts/release.sh
 
 # Install dependencies and build
 RUN yarn install && yarn rebuild && yarn build
