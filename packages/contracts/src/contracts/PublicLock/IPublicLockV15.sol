@@ -14,7 +14,6 @@ interface IPublicLockV15 {
    * @param referrer the referrer that will be granted the governance tokens
    * @param keyManager the manager of the key (can cancel, transfer, burn the key)
    * @param data additional data to be used by jooks or other 3rd part contracts
-   * @return tokenIds the ids of the created tokens
    */
 
   struct PurchaseArgs {

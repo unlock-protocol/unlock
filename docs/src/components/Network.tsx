@@ -1,4 +1,6 @@
 'use client'
+import { Unlock } from '@unlock-protocol/contracts'
+
 import { usePrivy, useWallets } from '@privy-io/react-auth'
 import { Button } from '@unlock-protocol/ui'
 import { useQuery } from '@tanstack/react-query'
@@ -18,16 +20,6 @@ const ERC20_ABI = [
   'function decimals() view returns (uint256)',
   'function symbol() view returns (string)',
   'function name() view returns (string)',
-]
-
-const UNLOCK_ABI = [
-  {
-    inputs: [],
-    name: 'udt',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
 ]
 
 interface Token {
@@ -81,7 +73,7 @@ const getUdt = async (
   if (!unlockAddress) {
     return ''
   }
-  const contract = new Contract(unlockAddress, UNLOCK_ABI, provider)
+  const contract = new Contract(unlockAddress, Unlock.abi, provider)
   const udt = await contract.udt()
   return udt
 }
@@ -332,7 +324,7 @@ const BurnableTokens = ({ network }: BurnableTokensProps) => {
             <BurnableToken
               reload={refetch}
               network={network}
-              key={token.address}
+              key={token.address || 'native'}
               token={token}
               balance={balance}
             />
@@ -419,6 +411,7 @@ export const SupportedNetwork = ({ network }: SupportedNetworkProps) => {
             {network.unlockAddress}
           </a>
         </li>
+        <ProtocolVersions network={network} />
         <li>
           <a href="/governance/unlock-dao/cross-chain-governance">
             Controlled by the DAO
@@ -485,5 +478,32 @@ export const TokenNetwork = ({ network }: TokenNetworkProps) => {
         </a>
       </td>
     </tr>
+  )
+}
+
+export const ProtocolVersions = ({ network }: { network: Network }) => {
+  const provider = new JsonRpcProvider(network.provider)
+  const contract = new Contract(network.unlockAddress, Unlock.abi, provider)
+
+  const { data: unlockVersion } = useQuery({
+    queryKey: ['unlockVersion', network.unlockAddress, network.id],
+    queryFn: async () => {
+      return (await contract.unlockVersion()).toString()
+    },
+    enabled: !!network.unlockAddress,
+  })
+
+  const { data: publicLockVersion } = useQuery({
+    queryKey: ['publicLockVersion', network.unlockAddress, network.id],
+    queryFn: async () => {
+      return (await contract.publicLockLatestVersion()).toString()
+    },
+    enabled: !!network.unlockAddress,
+  })
+
+  return (
+    <li>
+      Protocol Version: Unlock {unlockVersion}, Public Lock: {publicLockVersion}
+    </li>
   )
 }

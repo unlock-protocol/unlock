@@ -20,6 +20,7 @@ import {
   Input,
   Placeholder,
   isAddressOrEns,
+  Toggle,
 } from '@unlock-protocol/ui'
 import { twMerge } from 'tailwind-merge'
 import { formResultToMetadata } from '~/utils/userMetadata'
@@ -32,7 +33,6 @@ import { useQuery } from '@tanstack/react-query'
 import { Lock } from '~/unlockTypes'
 import { KeyManager } from '@unlock-protocol/unlock-js'
 import { useConfig } from '~/utils/withConfig'
-import { Toggle } from '@unlock-protocol/ui'
 import {
   MetadataInputType as MetadataInput,
   PaywallConfigType,
@@ -86,6 +86,7 @@ export const MetadataInputs = ({
   const {
     register,
     setValue,
+    control,
     formState: { errors },
   } = useFormContext<FormData>()
   const networkConfig = config.networks[lock.network]
@@ -160,7 +161,7 @@ export const MetadataInputs = ({
                 <div className="w-32 text-sm truncate">{recipient}</div>
                 <Button
                   type="button"
-                  onClick={(event) => {
+                  onClick={(event: React.MouseEvent) => {
                     event.preventDefault()
                     setHideRecipientAddress(false)
                   }}
@@ -209,7 +210,7 @@ export const MetadataInputs = ({
                         <div className="text-sm">No wallet address?</div>
                         <Toggle
                           value={useEmail}
-                          onChange={(value) => {
+                          onChange={(value: boolean) => {
                             setUseEmail(value)
                           }}
                           size="small"
@@ -270,13 +271,43 @@ export const MetadataInputs = ({
                   <div className="w-32 text-sm truncate">{email}</div>
                   <Button
                     type="button"
-                    onClick={() => setHideEmailInput(false)}
+                    onClick={(event: React.MouseEvent) => {
+                      event.preventDefault()
+                      setHideEmailInput(false)
+                    }}
                     size="tiny"
                   >
                     Change
                   </Button>
                 </div>
               </div>
+            )
+          }
+
+          // Handle checkbox type
+          if (type === 'checkbox') {
+            return (
+              <Controller
+                key={name}
+                name={`metadata.${id}.${name}`}
+                control={control}
+                rules={{
+                  required: required && `${inputLabel} is required`,
+                }}
+                defaultValue={defaultValue === 'true' ? 'true' : 'false'}
+                render={({ field }) => (
+                  <Checkbox
+                    label={inputLabel}
+                    disabled={disabled}
+                    fieldSize="small"
+                    error={errors?.metadata?.[id]?.[name]?.message}
+                    checked={field.value === 'true'}
+                    onChange={(e) =>
+                      field.onChange(e.target.checked ? 'true' : 'false')
+                    }
+                  />
+                )}
+              />
             )
           }
 

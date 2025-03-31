@@ -40,7 +40,7 @@
     "@logtail/node": "0.5.2",
     "@logtail/winston": "0.5.2",
     "@nuintun/qrcode": "4.1.13",
-    "@openzeppelin/defender-sdk": "1.15.2",
+    "@openzeppelin/defender-sdk": "2.4.0",
     "@openzeppelin/merkle-tree": "1.0.8",
     "@privy-io/server-auth": "1.17.1",
     "@resvg/resvg-js": "2.6.2",
@@ -79,6 +79,7 @@
     "p-retry": "6.2.1",
     "passkit-generator": "3.2.0",
     "path-to-regexp": "8.2.0",
+    "pdf-lib": "1.17.1",
     "pdfmake": "0.2.18",
     "pg": "8.13.3",
     "rate-limiter-flexible": "5.0.5",
@@ -119,7 +120,7 @@
     "supertest": "7.0.0",
     "tsx": "4.19.3",
     "typescript": "5.7.3",
-    "vitest": "2.1.9"
+    "vitest": "3.0.9"
   },
   "files": [
     "build",
