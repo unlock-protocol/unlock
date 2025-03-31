@@ -9,7 +9,7 @@ import { graphService } from '~/config/subgraph'
 import { locksmith } from '~/config/locksmith'
 import { Placeholder } from '@unlock-protocol/ui'
 import { PAGE_SIZE } from '@unlock-protocol/core'
-import { batchNameResolver } from '~/hooks/useNameResolver'
+import { useBatchNameResolver } from '~/hooks/useNameResolver'
 import { useLockManager } from '~/hooks/useLockManager'
 
 /**
@@ -165,7 +165,6 @@ export const Members = ({
   const effectiveLockData = centralizedLockData || lockData
 
   // Members query - changes with pagination and filters
-  // Separating this from name resolution to avoid redundant resolution calls
   const { data: membersData, isLoading: isLoadingMembers } = useQuery({
     queryKey: [
       `page-${page}`,
@@ -185,7 +184,7 @@ export const Members = ({
         page
       )
 
-      // Extract unique member addresses, but don't resolve names here
+      // Extract unique member addresses
       const memberAddresses = (membersResponse?.keys || []).map(
         (metadata: any) => metadata.keyholderAddress
       )
@@ -200,21 +199,12 @@ export const Members = ({
     refetchOnWindowFocus: false,
   })
 
-  // Separate query for name resolution with a much longer cache time
-  const { data: resolvedNames = {} } = useQuery({
-    queryKey: ['resolvedNames', membersData?.memberAddresses || []],
-    enabled: !!membersData?.memberAddresses?.length,
-    queryFn: async () => {
-      // This will be called only when we have new addresses to resolve
-      return batchNameResolver(membersData!.memberAddresses)
-    },
-    // Cache resolved names for 24 hours as they rarely change
-    staleTime: 24 * 60 * 60 * 1000, // 24 hours (1 day)
-    gcTime: 48 * 60 * 60 * 1000, // 48 hours (2 days)
-    refetchOnWindowFocus: false,
-  })
+  // Batch name resolution
+  const { resolvedNames } = useBatchNameResolver(
+    membersData?.memberAddresses || []
+  )
 
-  // Combined loading state - don't include isLoadingNames so we can render cards right away
+  // Combined loading state - we don't include name resolution loading as we want to show results as they stream in
   const isLoading = isLoadingLockData || isLoadingMembers || loadingFilters
 
   if (isLoading) {
@@ -284,11 +274,11 @@ export const Members = ({
   })
 
   /**
-   * Handle raw addresses with fallback names
-   * This ensures each member has a non-undefined display name even before resolution completes
+   * Get resolved name with fallback
+   * Will show the address if name resolution is still in progress
    */
   const getResolvedNameWithFallback = (address: string): string => {
-    return resolvedNames?.[address] || address
+    return resolvedNames[address] || address
   }
 
   return (
@@ -311,7 +301,6 @@ export const Members = ({
           network,
           expirationDuration: lock?.expirationDuration,
           lockSettings,
-          // Always provide a non-undefined name to prevent placeholder
           resolvedName: getResolvedNameWithFallback(owner),
           isManager,
         }
