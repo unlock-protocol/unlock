@@ -4,7 +4,7 @@ import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useConfig } from '~/utils/withConfig'
 import { Fragment, useEffect, useState } from 'react'
 import { ethers } from 'ethers'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { useSelector } from '@xstate/react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
@@ -60,7 +60,7 @@ export const MintingScreen = ({
 
   return (
     <div className="flex flex-col items-center justify-evenly h-full space-y-2">
-      <TransactionAnimation status={status} />
+      <TransactionAnimation status={status} isCompact={isCompact} />
       {mint?.transactionHash && (
         <a
           href={config.networks[transactionNetwork].explorer.urls.transaction(
@@ -72,7 +72,7 @@ export const MintingScreen = ({
         >
           <p
             className={`text-lg font-bold text-brand-ui-primary inline-flex items-center gap-2 ${
-              isCompact ? 'text-base text-center' : 'text-lg'
+              isCompact ? 'text-sm text-center' : 'text-lg'
             }`}
           >
             {/* 
@@ -102,6 +102,7 @@ export const MintingScreen = ({
           network={network}
           lockAddress={lockAddress}
           tokenId={tokenId.toString()}
+          isCompact={isCompact}
         />
       )}
     </div>

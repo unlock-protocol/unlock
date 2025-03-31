@@ -15,13 +15,13 @@
     "@unlock-protocol/contracts": "latest",
     "@unlock-protocol/hardhat-plugin": "latest",
     "@unlock-protocol/networks": "latest",
-    "eslint": "9.19.0",
+    "eslint": "9.21.0",
     "ethers": "6.13.5",
     "fs-extra": "11.3.0",
-    "hardhat": "2.22.18",
+    "hardhat": "2.22.19",
     "hardhat-erc1820": "0.1.0",
     "ts-node": "10.9.2",
-    "typescript": "5.7.3"
+    "typescript": "5.8.2"
   },
   "packageManager": "yarn@4.6.0"
 }

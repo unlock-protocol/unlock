@@ -1,12 +1,8 @@
-import { Button, Detail } from '@unlock-protocol/ui'
-import { useEffect, useState } from 'react'
+import { Detail } from '@unlock-protocol/ui'
+import { useState } from 'react'
 import { ExpireAndRefundModal } from '~/components/interface/ExpireAndRefundModal'
-import useEns from '~/hooks/useEns'
-import { addressMinify } from '~/utils/strings'
-import { BiCopy as CopyIcon } from 'react-icons/bi'
-import useClipboard from 'react-use-clipboard'
-import { ToastHelper } from '~/components/helpers/toast.helper'
 import { Metadata } from '@unlock-protocol/core'
+import { WrappedAddress } from '~/components/interface/WrappedAddress'
 
 interface AttendeeInfoProps {
   network: number
@@ -14,30 +10,22 @@ interface AttendeeInfoProps {
   owner: string
   token: string
   metadata: Metadata
+  resolvedName?: string
 }
 
+/**
+ * Component to display attendee details in the expanded section of a MemberCard
+ * Used in the event attendees view for confirmed ticket holders
+ */
 export const AttendeeInfo = ({
   network,
   lockAddress,
   owner,
   token,
   metadata,
+  resolvedName,
 }: AttendeeInfoProps) => {
   const [expireAndRefundOpen, setExpireAndRefundOpen] = useState(false)
-
-  const addressToEns = useEns(owner)
-  const resolvedAddress =
-    addressToEns === owner ? addressMinify(owner) : addressToEns
-  const addressToCopy = addressToEns === owner ? owner : addressToEns
-
-  const [isCopied, setCopied] = useClipboard(addressToCopy, {
-    successDuration: 2000,
-  })
-
-  useEffect(() => {
-    if (!isCopied) return
-    ToastHelper.success('Address copied')
-  }, [isCopied])
 
   return (
     <>
@@ -75,23 +63,21 @@ export const AttendeeInfo = ({
           </Detail>
         )}
 
+        {/* Wallet address with proper name resolution */}
         <Detail
           label="Wallet"
           valueSize="medium"
           className="w-full overflow-auto min-w-24"
         >
-          <div className="flex self-start gap-2">
-            <div>{resolvedAddress}</div>
-            <div className="mt-auto">
-              <Button
-                variant="borderless"
-                onClick={setCopied}
-                aria-label="copy"
-              >
-                <CopyIcon size={20} />
-              </Button>
-            </div>
-          </div>
+          <WrappedAddress
+            address={owner}
+            network={network}
+            skipResolution
+            resolvedName={resolvedName}
+            showExternalLink={false}
+            addressType="wallet"
+            showResolvedName={true}
+          />
         </Detail>
 
         {/* {isManager && (

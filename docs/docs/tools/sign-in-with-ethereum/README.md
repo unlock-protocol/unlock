@@ -10,11 +10,10 @@ In many contexts, your application does not need a full "web3" provider, but jus
 
 > "_Ethereum_" here does not refer to any network in particular but to the type of wallet that can used. Since Polygon, Gnosis Chain or Optimism for example are all using the same wallet, you can (should!) absolutely use the same "Sign In with Ethereum".
 
-> Yeah, the sign in with Ethereum seems confusing to make you think it's all about Ethereum only. No, it covers web3 sign in as a whole not just Ethereum (though initially, it all started with Ethereum - no wonder the confusing naming).
-
-By using Unlock's "Sign-In with Ethereum", users who do not have a crypto wallet can also easily create an [Unlock Account](/tools/sign-in-with-ethereum/unlock-accounts), as well as sign in to their existing account with their email and passwords.
+By using Unlock's "Sign-In with Ethereum", users who do not have a crypto wallet can also easily create an [Unlock Account](/tools/sign-in-with-ethereum/unlock-accounts), as well as sign in to their existing account with their email or social accounts such as Google.
 
 ### Video: Using Sign In With Ethereum and Unlock Protocol
+
 Click to watch the step by step video guide below:
 
 [![Video of Using Sign In With Ethereum and Unlock Protocol](/img/tools/sign-in-with-ethereum/Unlock-Protocol-Images00001a-Sign-In-With-Ethereum-YT-Thumbnail.jpg 'Video of Using Sign In With Ethereum and Unlock Protocol')](https://www.youtube.com/watch?v=L4pMLwXVzto)
@@ -30,10 +29,6 @@ Required query parameters:
 - `redirect_uri`: the URL toward which the user is redirected once they have connected their wallet and signed the message to authenticate them
 - `client_id` : a string to identify your application. It MUST match the "host" part of the `redirect_uri`.
 
-Optional query parameters:
-
-- `paywallConfig` : a JSON object built using the same structure in purchase URLs. You can customize the `messageToSign` and `icon` elements in particular.
-
 ### Redirects
 
 If the user refuses to connect and/or sign a message in their wallet, they will be redirected back to the `redirect_uri` and a new query string parameter will be attached `?error=access-denied`.
@@ -43,19 +38,19 @@ If the user connected their wallet and signed the messages, they will also be re
 Most Ethereum libraries include a function to compute the signer's address from a message and the corresponding signature:
 
 - `verifyMessage` in [Ethers](https://docs.ethers.io/v5/api/utils/signing-key/#utils-verifyMessage)
+- `recoverMessageAddress` in [Viem](https://viem.sh/docs/utilities/recoverMessageAddress.html)
 - `recover` in [web3.js](https://web3js.readthedocs.io/en/v1.2.11/web3-eth-accounts.html#accounts-recover)
-- ... etc
 
 #### Sample code:
 
 ```javascript
-const urlSearchParams = new URLSearchParams(window.location.search);
-const params = Object.fromEntries(urlSearchParams.entries());
-const code = JSON.parse(atob(params.code));
+const urlSearchParams = new URLSearchParams(window.location.search)
+const params = Object.fromEntries(urlSearchParams.entries())
+const code = JSON.parse(atob(params.code))
 // The code object has 2 properties:
 // d: digest (the signed string)
 // s: signature (the signature)
-const address = ethers.utils.verifyMessage(code.d, code.s);
+const address = ethers.utils.verifyMessage(code.d, code.s)
 ```
 
 You can try the Sign-In-With Ethereum flow [on this site for example](https://ouvre-boite.com) (click Sign-In). It is also used in our [WordPress plugin](https://unlock-protocol.com/guides/guide-to-the-unlock-protocol-wordpress-plugin/).

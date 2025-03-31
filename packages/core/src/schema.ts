@@ -1,10 +1,13 @@
 import { z } from 'zod'
 
 export const MetadataInput = z.object({
-  type: z.enum(['text', 'date', 'color', 'email', 'url', 'hidden'], {
-    description:
-      'The type field maps to a certain subset of HTML <input> types, which influences how the form renders. ',
-  }),
+  type: z.enum(
+    ['text', 'date', 'color', 'email', 'url', 'hidden', 'checkbox'],
+    {
+      description:
+        'The type field maps to a certain subset of HTML <input> types, which influences how the form renders. ',
+    }
+  ),
   name: z
     .string({
       description: 'Name of the attribute to collect.',

@@ -135,6 +135,10 @@ components:
           enum: [pending, deployed]
         transactionHash:
           type: string
+        eventType:
+          type: string
+          enum: [unlock, external]
+          default: unlock
         attributes:
           type: array
           items:
@@ -5346,15 +5350,36 @@ paths:
   /v2/merkle-tree:
     post:
       operationId: saveMerkleTree
-      description: Saves a merkle tree from a list of addresses.
+      description: Saves a merkle tree from either a list of addresses or a list of [address, amount] tuples.
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: array
+              minItems: 1
+              description: Array must contain either all strings (addresses) or all [address, amount] tuples, no mixing allowed
               items:
-                type: string
+                type: object
+                oneOf:
+                  - type: string
+                    description: Recipient address (will be assigned amount "1")
+                  - type: array
+                    description: Address and amount tuple
+                    minItems: 2
+                    maxItems: 2
+                    items:
+                      oneOf:
+                        - type: string
+                          description: Recipient address
+                        - type: object
+                          properties:
+                            amount:
+                              oneOf:
+                                - type: string
+                                  description: Amount as string
+                                - type: number
+                                  description: Amount as number
       responses:
         200:
           description: Successfully saved the Merkle Tree
@@ -5362,15 +5387,14 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - root
                 properties:
-                  success:
-                    type: boolean
                   root:
                     type: string
-                  url:
-                    type: string
+                    description: The merkle tree root hash
         400:
-          description: Missing required fields
+          description: Invalid request (empty array, mixed types, or invalid addresses)
           content:
             application/json:
               schema:
@@ -5379,15 +5403,101 @@ paths:
                   - error
                 properties:
                   error:
-                    type: string
+                    type: object
+                    required:
+                      - issues
+                    properties:
+                      issues:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: string
+                            message:
+                              type: string
+                            path:
+                              type: array
+                              items:
+                                type: string
         500:
-          description: Server error
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/events/external/save:
+    post:
+      operationId: saveExternalEventData
+      security:
+        - User: []
+      description: Save external event data that is not associated with an Unlock lock
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - description
+                - url
+                - image
+                - ticket
+              properties:
+                title:
+                  type: string
+                  description: The title of the external event
+                description:
+                  type: string
+                  description: Description of the external event
+                url:
+                  type: string
+                  description: URL to the external event's website
+                image:
+                  type: string
+                  description: URL to an image representing the event
+                ticket:
+                  type: object
+                  required:
+                    - event_start_date
+                    - event_start_time
+                    - event_end_date
+                    - event_end_time
+                    - event_timezone
+                    - event_is_in_person
+                    - event_address
+                    - event_location
+                  properties:
+                    event_start_date:
+                      type: string
+                      description: Start date in YYYY-MM-DD format
+                    event_start_time:
+                      type: string
+                      description: Start time in HH:MM format
+                    event_end_date:
+                      type: string
+                      description: End date in YYYY-MM-DD format
+                    event_end_time:
+                      type: string
+                      description: End time in HH:MM format
+                    event_timezone:
+                      type: string
+                      description: Timezone for the event
+                    event_is_in_person:
+                      type: boolean
+                      description: Whether the event is in-person or virtual
+                    event_address:
+                      type: string
+                      description: Address for the event (physical address or URL for virtual events)
+                    event_location:
+                      type: string
+                      description: Human-readable location information
+      responses:
+        201:
+          description: External event created successfully
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - error
-                properties:
-                  error:
-                    type: string
+                $ref: '#/components/schemas/Event'
+        400:
+          $ref: '#/components/responses/400.Invalid'
+        500:
+          $ref: '#/components/responses/500.InternalError'

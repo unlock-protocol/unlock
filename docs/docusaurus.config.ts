@@ -31,6 +31,11 @@ const config: Config = {
     ],
   ],
   themeConfig: {
+    colorMode: {
+      defaultMode: 'light',
+      disableSwitch: true,
+      respectPrefersColorScheme: false,
+    },
     start_urls: ['https://docs.unlock-protocol.com'],
     sitemap_urls: ['https://docs.unlock-protocol.com/sitemap.xml'],
     algolia: {
@@ -315,10 +320,6 @@ const config: Config = {
             ],
           },
           {
-            to: '/tutorials/front-end/react-example',
-            from: '/tutorials/react-example',
-          },
-          {
             to: '/tutorials/misc/using-subgraphs',
             from: '/tutorials/using-subgraphs',
           },
@@ -351,14 +352,6 @@ const config: Config = {
           {
             to: '/tools/unlock.js',
             from: '/developers/unlock.js',
-          },
-          {
-            to: '/tools/subgraph/entities',
-            from: '/tools/entities',
-          },
-          {
-            to: '/tools/subgraph/queries',
-            from: '/tools/queries',
           },
           {
             to: '/core-protocol/public-lock/deploying-locks',

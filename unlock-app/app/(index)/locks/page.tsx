@@ -1,6 +1,6 @@
 import React from 'react'
 import { Metadata } from 'next'
-import LocksContent from '~/components/content/lock/LocksContent'
+import { LockList } from '~/components/interface/locks/List'
 
 export const metadata: Metadata = {
   title: 'Locks',
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 }
 
 const LocksPage: React.FC = () => {
-  return <LocksContent />
+  return <LockList />
 }
 
 export default LocksPage

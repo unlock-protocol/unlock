@@ -2,7 +2,7 @@
 
 import { networks } from '@unlock-protocol/networks'
 import { useState } from 'react'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 
 import { formDataToMetadata } from '~/components/interface/locks/metadata/utils'
 import { CertificationForm, NewCertificationForm } from './CertificationForm'

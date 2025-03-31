@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ToastHelper } from '../helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { Button, Input, Modal } from '@unlock-protocol/ui'
 import { useProvider } from '~/hooks/useProvider'
 

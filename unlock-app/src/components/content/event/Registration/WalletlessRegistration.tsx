@@ -1,12 +1,12 @@
 import { useClaim } from '~/hooks/useClaim'
 import { ethers } from 'ethers'
 
-import { Button, Input, AddressInput } from '@unlock-protocol/ui'
+import { Button, Input, AddressInput, Checkbox } from '@unlock-protocol/ui'
 import { Controller, useForm } from 'react-hook-form'
 import { useEffect, useState } from 'react'
 import { useConfig } from '~/utils/withConfig'
 import { MintingScreen } from '~/components/interface/checkout/main/Minting'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '@unlock-protocol/ui'
 import { TransactionStatus } from '~/components/interface/checkout/main/checkoutMachine'
 import { onResolveName } from '~/utils/resolvers'
 import { MetadataInputType } from '@unlock-protocol/core'
@@ -14,6 +14,9 @@ import { useRsvp } from '~/hooks/useRsvp'
 import { useReCaptcha } from 'next-recaptcha-v3'
 import { useMutation } from '@tanstack/react-query'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import Link from 'next/link'
+import { config } from '~/config/app'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface WalletlessRegistrationProps {
   lockAddress: string
@@ -37,8 +40,34 @@ const WalletlessRegistrationClaiming = ({
 }: WalletlessRegistrationProps) => {
   const [transactionStatus, setTransactionStatus] =
     useState<TransactionStatus>('PROCESSING')
-
+  const [tokenId, setTokenId] = useState<string | null>(null)
   const config = useConfig()
+  const web3Service = useWeb3Service()
+
+  // Wait for token ID
+  const waitForTokenId = async (owner: string): Promise<string | null> => {
+    try {
+      const latestTokenId = await web3Service.latestTokenOfOwner(
+        lockAddress,
+        owner,
+        network
+      )
+
+      if (latestTokenId) {
+        return latestTokenId.toString()
+      }
+
+      // If no token found, we'll retry in a second
+      return new Promise((resolve) => {
+        setTimeout(async () => {
+          resolve(await waitForTokenId(owner))
+        }, 1000)
+      })
+    } catch (error) {
+      console.error('Error fetching token ID:', error)
+      return null
+    }
+  }
 
   useEffect(() => {
     if (
@@ -47,6 +76,7 @@ const WalletlessRegistrationClaiming = ({
     ) {
       return
     }
+
     const waitForConfirmation = async () => {
       const provider = new ethers.JsonRpcProvider(
         config.networks[network].provider
@@ -62,10 +92,26 @@ const WalletlessRegistrationClaiming = ({
       } else {
         setTransactionStatus('FINISHED')
         ToastHelper.success('🎉 You have been added to the attendees list!')
+
+        // After successful transaction, fetch the tokenId
+        if (claimResult.owner) {
+          const newTokenId = await waitForTokenId(claimResult.owner)
+          if (newTokenId) {
+            setTokenId(newTokenId)
+          }
+        }
       }
     }
     waitForConfirmation()
-  }, [transactionStatus, network, claimResult?.hash, config.networks])
+  }, [
+    transactionStatus,
+    network,
+    claimResult?.hash,
+    claimResult?.owner,
+    config.networks,
+    lockAddress,
+    web3Service,
+  ])
 
   return (
     <div className="flex flex-col items-center justify-center h-full">
@@ -82,6 +128,7 @@ const WalletlessRegistrationClaiming = ({
             lockName={''}
             lockAddress={lockAddress}
             network={network}
+            tokenId={tokenId}
             states={{
               PROCESSING: {
                 text: 'Creating your ticket...',
@@ -133,6 +180,7 @@ export const WalletlessRegistrationClaim = ({
         metadata: data,
         captcha,
       })
+
       if (message) {
         ToastHelper.error(message)
         return
@@ -143,6 +191,7 @@ export const WalletlessRegistrationClaim = ({
         ToastHelper.success('Transaction successfully sent!')
       }
     } catch (error) {
+      console.error(error)
       ToastHelper.error('Failed to send transaction. Please try again.')
     }
   }
@@ -241,6 +290,7 @@ export const RegistrationForm = ({
     mode: 'onChange',
     defaultValues: {
       recipient: account || '',
+      termsAccepted: false,
     },
   })
   const {
@@ -249,13 +299,16 @@ export const RegistrationForm = ({
     formState: { errors },
     control,
     reset,
+    watch,
   } = localForm
 
   const handleResolve = useMutation({
     mutationFn: onResolveName,
   })
 
-  const onSubmit = async ({ recipient, ...data }: any) => {
+  const termsAccepted = watch('termsAccepted')
+
+  const onSubmit = async ({ recipient, termsAccepted, ...data }: any) => {
     setLoading(true)
     try {
       const captcha = await executeRecaptcha('submit')
@@ -331,6 +384,34 @@ export const RegistrationForm = ({
           value,
         } = metadataInputItem ?? {}
         const inputLabel = label || name
+
+        // Handle checkbox type
+        if (type === 'checkbox') {
+          return (
+            <Controller
+              key={name}
+              name={name}
+              control={control}
+              rules={{
+                required: required && `${inputLabel} is required`,
+              }}
+              defaultValue={defaultValue === 'true' ? 'true' : 'false'}
+              render={({ field }) => (
+                <Checkbox
+                  label={`${inputLabel}`}
+                  fieldSize="medium"
+                  disabled={isLoading}
+                  error={errors[name]?.message?.toString()}
+                  checked={field.value === 'true'}
+                  onChange={(e) =>
+                    field.onChange(e.target.checked ? 'true' : 'false')
+                  }
+                />
+              )}
+            />
+          )
+        }
+
         return (
           <Input
             key={name}
@@ -367,7 +448,51 @@ export const RegistrationForm = ({
         }}
       />
 
-      <Button disabled={isLoading} loading={isLoading} type="submit">
+      <div className="mt-2">
+        <Controller
+          name="termsAccepted"
+          control={control}
+          rules={{
+            required: 'You must agree to the Terms of Service to continue',
+          }}
+          render={({ field: { onChange, value, ref } }) => (
+            <div className="flex items-start">
+              <div className="flex-shrink-0">
+                <Checkbox
+                  ref={ref}
+                  id="termsAccepted"
+                  checked={value}
+                  onChange={onChange}
+                  label=""
+                />
+              </div>
+              <div className="text-sm">
+                <label htmlFor="termsAccepted" className="cursor-pointer">
+                  I agree to the{' '}
+                  <Link
+                    target="_blank"
+                    href={`${config.unlockStaticUrl}/terms`}
+                    className="text-brand-ui-primary hover:underline"
+                  >
+                    Terms of Service
+                  </Link>
+                </label>
+              </div>
+            </div>
+          )}
+        />
+        {errors.termsAccepted && (
+          <p className="mt-1 text-xs text-red-500">
+            {errors.termsAccepted.message?.toString()}
+          </p>
+        )}
+      </div>
+
+      <Button
+        disabled={isLoading || !termsAccepted}
+        loading={isLoading}
+        type="submit"
+      >
         RSVP now
       </Button>
     </form>
