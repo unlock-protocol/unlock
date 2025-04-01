@@ -21,7 +21,7 @@
     "dayjs": "1.11.13",
     "dotenv": "16.4.7",
     "embla-carousel-react": "8.5.2",
-    "eslint": "9.22.0",
+    "eslint": "9.23.0",
     "ethers": "6.13.5",
     "next": "14.2.25",
     "next-seo": "6.6.0",
