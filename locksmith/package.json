@@ -75,7 +75,7 @@
     "isomorphic-fetch": "3.0.0",
     "jsonwebtoken": "9.0.2",
     "memory-cache-node": "1.4.0",
-    "multer": "1.4.5-lts.1",
+    "multer": "1.4.5-lts.2",
     "multer-s3": "3.0.1",
     "p-retry": "6.2.1",
     "passkit-generator": "3.2.0",
