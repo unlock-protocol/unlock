@@ -11893,27 +11893,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/upgrades-core@npm:1.42.1":
-  version: 1.42.1
-  resolution: "@openzeppelin/upgrades-core@npm:1.42.1"
-  dependencies:
-    "@nomicfoundation/slang": "npm:^0.18.3"
-    cbor: "npm:^10.0.0"
-    chalk: "npm:^4.1.0"
-    compare-versions: "npm:^6.0.0"
-    debug: "npm:^4.1.1"
-    ethereumjs-util: "npm:^7.0.3"
-    minimatch: "npm:^9.0.5"
-    minimist: "npm:^1.2.7"
-    proper-lockfile: "npm:^4.1.1"
-    solidity-ast: "npm:^0.4.51"
-  bin:
-    openzeppelin-upgrades-core: dist/cli/cli.js
-  checksum: 10/e52b600a7635929aab649a3ec9e248cad73cc57c3ef7d467d9f0de84b2a2b0846523ce98aa4f5b80acaff68cd66ebc60ab81c1c5fbcd8e284570d592f6e18f9c
-  languageName: node
-  linkType: hard
-
-"@openzeppelin/upgrades-core@npm:^1.32.2, @openzeppelin/upgrades-core@npm:^1.37.0, @openzeppelin/upgrades-core@npm:^1.38.0, @openzeppelin/upgrades-core@npm:^1.41.0":
+"@openzeppelin/upgrades-core@npm:1.42.2, @openzeppelin/upgrades-core@npm:^1.32.2, @openzeppelin/upgrades-core@npm:^1.37.0, @openzeppelin/upgrades-core@npm:^1.38.0, @openzeppelin/upgrades-core@npm:^1.41.0":
   version: 1.42.2
   resolution: "@openzeppelin/upgrades-core@npm:1.42.2"
   dependencies:
@@ -18221,7 +18201,7 @@ __metadata:
     "@nomicfoundation/hardhat-verify": "npm:2.0.13"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@openzeppelin/hardhat-upgrades": "npm:3.9.0"
-    "@openzeppelin/upgrades-core": "npm:1.42.1"
+    "@openzeppelin/upgrades-core": "npm:1.42.2"
     "@safe-global/api-kit": "npm:2.5.11"
     "@safe-global/protocol-kit": "npm:5.2.4"
     "@tenderly/hardhat-tenderly": "npm:2.5.2"
@@ -18250,7 +18230,7 @@ __metadata:
     "@matterlabs/hardhat-zksync-verify": "npm:1.7.1"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@nomiclabs/hardhat-waffle": "npm:2.0.6"
-    "@openzeppelin/upgrades-core": "npm:1.42.1"
+    "@openzeppelin/upgrades-core": "npm:1.42.2"
     "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
