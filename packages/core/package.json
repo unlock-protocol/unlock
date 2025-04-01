@@ -31,6 +31,6 @@
   },
   "dependencies": {
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
-    "eslint": "9.22.0"
+    "eslint": "9.23.0"
   }
 }
