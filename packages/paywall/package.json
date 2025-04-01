@@ -40,7 +40,7 @@
     "vite-plugin-css-injected-by-js": "3.5.2",
     "vite-plugin-node-polyfills": "0.23.0",
     "vitest": "3.0.9",
-    "vitest-fetch-mock": "0.4.4"
+    "vitest-fetch-mock": "0.4.5"
   },
   "dependencies": {
     "postmate": "1.5.2"

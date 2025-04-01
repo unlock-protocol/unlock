@@ -93,7 +93,7 @@
     "siwe": "3.0.0",
     "stripe": "17.5.0",
     "unified": "11.0.5",
-    "vitest-fetch-mock": "0.4.4",
+    "vitest-fetch-mock": "0.4.5",
     "winston": "3.17.0",
     "yargs": "17.7.2",
     "zod": "3.24.2"
