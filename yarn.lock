@@ -18376,7 +18376,7 @@ __metadata:
     remark-html: "npm:16.0.1"
     remark-parse: "npm:11.0.0"
     run-script-os: "npm:1.1.6"
-    satori: "npm:0.12.1"
+    satori: "npm:0.12.2"
     sequelize: "npm:6.37.5"
     sequelize-cli: "npm:6.6.2"
     siwe: "npm:3.0.0"
@@ -46143,6 +46143,25 @@ __metadata:
     postcss-value-parser: "npm:^4.2.0"
     yoga-wasm-web: "npm:^0.3.3"
   checksum: 10/fa5dac909499d900a37a41aa5fdabd43d381285f478151c0fb0fad643feb10e2f09bcaf7ed92a7591fd26c6a4d5e0b59eb4ba788a193a5a83e784b5382af30e9
+  languageName: node
+  linkType: hard
+
+"satori@npm:0.12.2":
+  version: 0.12.2
+  resolution: "satori@npm:0.12.2"
+  dependencies:
+    "@shuding/opentype.js": "npm:1.4.0-beta.0"
+    css-background-parser: "npm:^0.1.0"
+    css-box-shadow: "npm:1.0.0-3"
+    css-gradient-parser: "npm:^0.0.16"
+    css-to-react-native: "npm:^3.0.0"
+    emoji-regex: "npm:^10.2.1"
+    escape-html: "npm:^1.0.3"
+    linebreak: "npm:^1.1.0"
+    parse-css-color: "npm:^0.2.1"
+    postcss-value-parser: "npm:^4.2.0"
+    yoga-wasm-web: "npm:^0.3.3"
+  checksum: 10/e927b0fcbe5c48d79e277f5c32c8f1ad880436b6a497205165070ff2513b12f3a93a370171e7e5c01ad4a5bd89c503abe5436304a11f3b94dde814b637d8bb1b
   languageName: node
   linkType: hard
 
