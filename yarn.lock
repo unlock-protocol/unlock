@@ -4119,15 +4119,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@decent.xyz/box-common@npm:4.0.83":
-  version: 4.0.83
-  resolution: "@decent.xyz/box-common@npm:4.0.83"
+"@decent.xyz/box-common@npm:5.0.5":
+  version: 5.0.5
+  resolution: "@decent.xyz/box-common@npm:5.0.5"
   peerDependencies:
     "@wagmi/core": 2.x
     react: ^18.0.0
     viem: 2.x
     wagmi: 2.x
-  checksum: 10/c3f06cc2f2ef950d7fe98a56230a9253664744f49f897a07fca29c23eed246cbc829e76c43e1c1dcde270c765811f3affd08168533a3000badeb4728e2925830
+  checksum: 10/b6c1bc380092c9a758555b1d3304b4d1fdee4ae3d127abbb17d268903f0adbca6e15107d30131f1f303221633c92e41f168232094b462881d425540402d4a501
   languageName: node
   linkType: hard
 
@@ -18596,7 +18596,7 @@ __metadata:
   dependencies:
     "@airstack/airstack-react": "npm:0.6.4"
     "@crossmint/client-sdk-react-ui": "npm:1.2.2"
-    "@decent.xyz/box-common": "npm:4.0.83"
+    "@decent.xyz/box-common": "npm:5.0.5"
     "@enzoferey/ethers-error-parser": "npm:0.2.3"
     "@guildxyz/sdk": "npm:2.6.9"
     "@headlessui/react": "npm:2.1.9"
