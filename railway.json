@@ -3,5 +3,9 @@
   "build": {
     "builder": "RAILPACK",
     "dockerfilePath": "/locksmith/Dockerfile"
+  },
+  "deploy": {
+    "startCommand": "yarn start",
+    "preDeployCommand": "yarn release"
   }
 }
