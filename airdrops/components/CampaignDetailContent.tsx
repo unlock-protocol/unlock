@@ -4,13 +4,14 @@ import { AbiCoder, ethers } from 'ethers'
 import { usePrivy, useWallets } from '@privy-io/react-auth'
 import { Container } from './layout/Container'
 import {
-  Select,
   Button,
   Checkbox,
   ToastHelper,
-  AddressInput,
   isAddressOrEns,
   ToggleSwitch,
+  Combobox,
+  minifyAddress,
+  isAddress,
 } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
@@ -22,10 +23,12 @@ import { terms } from '../src/utils/terms'
 import { UPAirdrops } from '@unlock-protocol/contracts'
 import { useEligibility } from './hooks/useEligibility'
 import { useDelegation } from './hooks/useDelegation'
-import { minifyAddress } from '@unlock-protocol/ui'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { networks } from '@unlock-protocol/networks'
 import { communityStewards } from '../src/utils/stewards'
+import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
+import { FaSpinner, FaCheckCircle as CheckIcon } from 'react-icons/fa'
+import { useDelegationReducer } from '../src/reducers/delegation'
 
 interface CampaignDetailContentProps {
   airdrop: AirdropData
@@ -81,11 +84,7 @@ export default function CampaignDetailContent({
   const { authenticated } = usePrivy()
   const { wallets } = useWallets()
   const [termsOfServiceSignature, setTermsOfServiceSignature] = useState('')
-  const [delegating, setDelegating] = useState(false)
-  const [isSelfDelegate, setIsSelfDelegate] = useState(false)
-  const [useCustomAddress, setUseCustomAddress] = useState(false)
-  const [delegateAddress, setDelegateAddress] = useState('')
-  const [delegateAddressError, setDelegateAddressError] = useState(false)
+  const { state, actions } = useDelegationReducer()
 
   useEffect(() => {
     setTermsOfServiceSignature('')
@@ -108,25 +107,23 @@ export default function CampaignDetailContent({
   const onResolveName = async (address: string) => {
     if (address.length === 0) return null
     try {
+      actions.startResolving()
       const web3Service = new Web3Service(networks)
       const result = await web3Service.resolveName(address)
+      let resolvedAddress = null
       if (result) {
-        setDelegateAddress(result?.address)
-        setDelegateAddressError(false)
+        resolvedAddress = result?.address
       } else {
-        setDelegateAddressError(true)
+        actions.setDelegateError(true)
       }
-      return result
+      actions.finishResolving()
+      return resolvedAddress
     } catch (error) {
       console.error('Error resolving ENS name:', error)
-      setDelegateAddressError(true)
+      actions.setDelegateError(true)
+      actions.finishResolving()
       return null
     }
-  }
-
-  const handleAddressChange = (value: any) => {
-    setDelegateAddress(value ?? '')
-    setDelegateAddressError(!value)
   }
 
   const onBoxChecked = async () => {
@@ -171,7 +168,7 @@ export default function CampaignDetailContent({
 
   const onDelegate = async () => {
     try {
-      setDelegating(true)
+      actions.startDelegating()
       const provider = await wallets[0].getEthereumProvider()
       const ethersProvider = new ethers.BrowserProvider(provider)
       const signer = await ethersProvider.getSigner()
@@ -184,7 +181,9 @@ export default function CampaignDetailContent({
         tokenAbi,
         signer
       )
-      const delegatee = isSelfDelegate ? wallets[0].address : delegateAddress
+      const delegatee = state.isSelfDelegate
+        ? wallets[0].address
+        : state.delegateAddress
 
       if (!ethers.isAddress(delegatee)) {
         throw new Error('Invalid delegate address')
@@ -199,13 +198,13 @@ export default function CampaignDetailContent({
 
       await ToastHelper.promise(delegatePromise(), {
         loading: 'Delegating your tokens...',
-        success: `Successfully delegated voting power to ${isSelfDelegate ? 'yourself' : delegatee}!`,
+        success: `Successfully delegated voting power to ${state.isSelfDelegate ? 'yourself' : delegatee}!`,
         error: 'Failed to delegate tokens. Please try again.',
       })
     } catch (error) {
       console.error(error)
     } finally {
-      setDelegating(false)
+      actions.finishDelegating()
     }
   }
 
@@ -327,58 +326,69 @@ export default function CampaignDetailContent({
                                 Delegate to yourself
                               </span>
                               <ToggleSwitch
-                                enabled={isSelfDelegate}
-                                setEnabled={setIsSelfDelegate}
+                                enabled={state.isSelfDelegate}
+                                setEnabled={(enabled) =>
+                                  actions.setSelfDelegate(enabled)
+                                }
                               />
                             </div>
 
-                            {!isSelfDelegate && (
+                            {!state.isSelfDelegate && (
                               <div className="mt-4 space-y-4">
-                                {!useCustomAddress ? (
-                                  <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                      Select Community Steward
-                                    </label>
-                                    <Select
-                                      options={[
-                                        ...communityStewards.map((steward) => ({
-                                          label: `${steward.name} - ${minifyAddress(steward.address)}`,
-                                          value: steward.address,
-                                        })),
-                                      ]}
-                                      onChange={handleAddressChange}
-                                      defaultValue={{
-                                        label: 'Select a community steward',
-                                        value: '',
-                                      }}
-                                    />
-                                  </div>
-                                ) : (
-                                  <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                      Enter address or ENS name
-                                    </label>
-                                    <div className="relative">
-                                      <AddressInput
-                                        withIcon
-                                        value={delegateAddress}
-                                        onChange={handleAddressChange}
-                                        placeholder="address.eth or 0x..."
-                                        onResolveName={onResolveName}
-                                        disabled={delegating}
-                                      />
+                                <Combobox
+                                  options={communityStewards.map((steward) => ({
+                                    label: `${steward.name} - ${minifyAddress(steward.address)}`,
+                                    value: steward.address,
+                                  }))}
+                                  placeholder="Select a community steward or enter an address"
+                                  onChange={async (value, isCustom) => {
+                                    const data = value.toString()
+                                    if (isCustom) {
+                                      const userAddress =
+                                        await onResolveName(data)
+                                      if (!isAddress(userAddress)) {
+                                        return actions.setDelegateError(true)
+                                      }
+                                      actions.setDelegateAddress(
+                                        userAddress.toString()
+                                      )
+                                    }
+                                  }}
+                                  onSelect={(option) => {
+                                    actions.setDelegateAddress(
+                                      option.value.toString()
+                                    )
+                                    actions.clearDelegateError()
+                                  }}
+                                  customOption={true}
+                                  disabled={state.delegating}
+                                  description={
+                                    <div className="mt-1">
+                                      {state.isResolving ? (
+                                        <div className="flex items-center text-sm text-gray-600">
+                                          <FaSpinner className="animate-spin h-4 w-4 mr-2" />
+                                          Resolving address...
+                                        </div>
+                                      ) : state.delegateAddress &&
+                                        !state.delegateAddressError ? (
+                                        <div className="p-2 border rounded-md border-green-200 bg-green-50">
+                                          <p className="text-sm text-green-700 flex items-center">
+                                            <CheckIcon className="h-4 w-4 mr-1" />
+                                            Delegating to:{' '}
+                                            {minifyAddress(
+                                              state.delegateAddress
+                                            )}
+                                          </p>
+                                        </div>
+                                      ) : state.delegateAddressError ? (
+                                        <p className="text-sm text-red-500 flex items-center">
+                                          <ErrorIcon className="h-4 w-4 mr-1" />
+                                          Enter a valid address or ENS name
+                                        </p>
+                                      ) : null}
                                     </div>
-                                  </div>
-                                )}
-                                <div className="flex items-center justify-between">
-                                  <span className="text-sm font-medium text-gray-700">
-                                    Use custom address
-                                  </span>
-                                  <ToggleSwitch
-                                    enabled={useCustomAddress}
-                                    setEnabled={setUseCustomAddress}
-                                  />
-                                </div>
+                                  }
+                                />
                               </div>
                             )}
                           </div>
@@ -386,13 +396,13 @@ export default function CampaignDetailContent({
                           <Button
                             className="mt-4"
                             onClick={onDelegate}
-                            loading={delegating}
+                            loading={state.delegating}
                             disabled={
-                              delegating ||
-                              (!isSelfDelegate &&
-                                (!delegateAddress ||
-                                  !isAddressOrEns(delegateAddress) ||
-                                  delegateAddressError))
+                              state.delegating ||
+                              (!state.isSelfDelegate &&
+                                (!state.delegateAddress ||
+                                  !isAddressOrEns(state.delegateAddress) ||
+                                  state.delegateAddressError))
                             }
                           >
                             Delegate Voting Power
