@@ -70,7 +70,7 @@
     "@types/react-dom": "18.3.5",
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js",
     "@vitejs/plugin-react": "4.3.4",
-    "autoprefixer": "10.4.20",
+    "autoprefixer": "10.4.21",
     "postcss": "8.5.3",
     "react": "18.3.1",
     "react-dom": "18.3.1",

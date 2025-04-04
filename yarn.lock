@@ -18663,7 +18663,7 @@ __metadata:
     "@vercel/og": "npm:0.6.5"
     "@vercel/speed-insights": "npm:1.2.0"
     "@vitejs/plugin-react": "npm:4.3.4"
-    autoprefixer: "npm:10.4.20"
+    autoprefixer: "npm:10.4.21"
     dayjs: "npm:1.11.13"
     embla-carousel-react: "npm:8.5.2"
     eslint: "npm:9.22.0"
@@ -18762,7 +18762,7 @@ __metadata:
     "@unlock-protocol/contracts": "workspace:*"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/ui": "workspace:./packages/ui"
-    autoprefixer: "npm:10.4.20"
+    autoprefixer: "npm:10.4.21"
     clsx: "npm:2.1.1"
     docusaurus-gtm-plugin: "npm:0.0.2"
     docusaurus-node-polyfills: "npm:1.0.0"
@@ -19170,7 +19170,7 @@ __metadata:
     "@types/react-dom": "npm:18.3.5"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
     "@vitejs/plugin-react": "npm:4.3.4"
-    autoprefixer: "npm:10.4.20"
+    autoprefixer: "npm:10.4.21"
     ethers: "npm:6.13.5"
     postcss: "npm:8.5.3"
     prism-react-renderer: "npm:2.4.1"
@@ -19236,7 +19236,7 @@ __metadata:
     "@vercel/speed-insights": "npm:1.0.14"
     "@vitejs/plugin-react": "npm:4.3.4"
     "@xstate/react": "npm:5.0.2"
-    autoprefixer: "npm:10.4.20"
+    autoprefixer: "npm:10.4.21"
     axios: "npm:1.8.2"
     calendar-link: "npm:2.7.0"
     csv: "npm:6.3.11"
@@ -19346,7 +19346,7 @@ __metadata:
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/ui": "workspace:./packages/ui"
-    autoprefixer: "npm:10.4.20"
+    autoprefixer: "npm:10.4.21"
     babel-loader: "npm:10.0.0"
     babel-plugin-require-context-hook: "npm:1.0.0"
     babel-preset-react-app: "npm:10.1.0"
@@ -21989,25 +21989,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"autoprefixer@npm:10.4.20":
-  version: 10.4.20
-  resolution: "autoprefixer@npm:10.4.20"
-  dependencies:
-    browserslist: "npm:^4.23.3"
-    caniuse-lite: "npm:^1.0.30001646"
-    fraction.js: "npm:^4.3.7"
-    normalize-range: "npm:^0.1.2"
-    picocolors: "npm:^1.0.1"
-    postcss-value-parser: "npm:^4.2.0"
-  peerDependencies:
-    postcss: ^8.1.0
-  bin:
-    autoprefixer: bin/autoprefixer
-  checksum: 10/d3c4b562fc4af2393623a0207cc336f5b9f94c4264ae1c316376904c279702ce2b12dc3f27205f491195d1e29bb52ffc269970ceb0f271f035fadee128a273f7
-  languageName: node
-  linkType: hard
-
-"autoprefixer@npm:^10.4.19":
+"autoprefixer@npm:10.4.21, autoprefixer@npm:^10.4.19":
   version: 10.4.21
   resolution: "autoprefixer@npm:10.4.21"
   dependencies:
@@ -23140,7 +23122,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"browserslist@npm:^4.0.0, browserslist@npm:^4.18.1, browserslist@npm:^4.23.0, browserslist@npm:^4.23.3, browserslist@npm:^4.24.0, browserslist@npm:^4.24.4":
+"browserslist@npm:^4.0.0, browserslist@npm:^4.18.1, browserslist@npm:^4.23.0, browserslist@npm:^4.24.0, browserslist@npm:^4.24.4":
   version: 4.24.4
   resolution: "browserslist@npm:4.24.4"
   dependencies:
@@ -23637,7 +23619,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"caniuse-lite@npm:^1.0.0, caniuse-lite@npm:^1.0.30001579, caniuse-lite@npm:^1.0.30001646, caniuse-lite@npm:^1.0.30001688, caniuse-lite@npm:^1.0.30001702":
+"caniuse-lite@npm:^1.0.0, caniuse-lite@npm:^1.0.30001579, caniuse-lite@npm:^1.0.30001688, caniuse-lite@npm:^1.0.30001702":
   version: 1.0.30001707
   resolution: "caniuse-lite@npm:1.0.30001707"
   checksum: 10/5c5f9aad651f4d957cc59c8b4ac22bb7ac3a1c86c26ee7d5c59b00062bdc1c421980513179da1f5e20cade2da8d7f3c41d482ce7d4a8d9f411e4a827fe092d29
@@ -42412,7 +42394,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"picocolors@npm:^1.0.0, picocolors@npm:^1.0.1, picocolors@npm:^1.1.0, picocolors@npm:^1.1.1":
+"picocolors@npm:^1.0.0, picocolors@npm:^1.1.0, picocolors@npm:^1.1.1":
   version: 1.1.1
   resolution: "picocolors@npm:1.1.1"
   checksum: 10/e1cf46bf84886c79055fdfa9dcb3e4711ad259949e3565154b004b260cd356c5d54b31a1437ce9782624bf766272fe6b0154f5f0c744fb7af5d454d2b60db045
