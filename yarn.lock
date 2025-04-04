@@ -18996,7 +18996,7 @@ __metadata:
     typescript: "npm:5.7.3"
     unified: "npm:11.0.5"
     vitest: "npm:3.0.9"
-    vitest-fetch-mock: "npm:0.4.4"
+    vitest-fetch-mock: "npm:0.4.5"
     winston: "npm:3.17.0"
     yargs: "npm:17.7.2"
     zod: "npm:3.24.2"
@@ -19052,7 +19052,7 @@ __metadata:
     vite-plugin-css-injected-by-js: "npm:3.5.2"
     vite-plugin-node-polyfills: "npm:0.23.0"
     vitest: "npm:3.0.9"
-    vitest-fetch-mock: "npm:0.4.4"
+    vitest-fetch-mock: "npm:0.4.5"
   languageName: unknown
   linkType: soft
 
@@ -19280,7 +19280,7 @@ __metadata:
     unified: "npm:11.0.5"
     validator: "npm:13.12.0"
     vitest: "npm:3.0.9"
-    vitest-fetch-mock: "npm:0.4.4"
+    vitest-fetch-mock: "npm:0.4.5"
     vitest-localstorage-mock: "npm:0.1.2"
     xstate: "npm:5.14.0"
     zod: "npm:3.24.2"
@@ -52702,12 +52702,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vitest-fetch-mock@npm:0.4.4":
-  version: 0.4.4
-  resolution: "vitest-fetch-mock@npm:0.4.4"
+"vitest-fetch-mock@npm:0.4.5":
+  version: 0.4.5
+  resolution: "vitest-fetch-mock@npm:0.4.5"
   peerDependencies:
     vitest: ">=2.0.0"
-  checksum: 10/7af696a5b186d15a8fd6cb17f883af64036613cc79612b967b00fefbbe14a6693af08576f962340179702a71c4f055884589a71bf1e7de5954ab987c325723f9
+  checksum: 10/36b33ea63b582d614a9dfcb3552e4681c29d1168bcc6b023c4438a31143d8febd3ddc46c4593a32f8ffb958624d75c1ae3509b7d30c16173783d3243ee065a9b
   languageName: node
   linkType: hard
 
