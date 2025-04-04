@@ -9,7 +9,7 @@
   "dependencies": {
     "@airstack/airstack-react": "0.6.4",
     "@crossmint/client-sdk-react-ui": "1.2.2",
-    "@decent.xyz/box-common": "4.0.83",
+    "@decent.xyz/box-common": "4.0.122",
     "@enzoferey/ethers-error-parser": "0.2.3",
     "@guildxyz/sdk": "2.6.9",
     "@headlessui/react": "2.1.9",
