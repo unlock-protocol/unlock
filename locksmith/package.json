@@ -109,7 +109,7 @@
     "@types/node": "22.10.5",
     "@types/node-cron": "3.0.11",
     "@types/pdfmake": "0.2.11",
-    "@types/supertest": "6.0.2",
+    "@types/supertest": "6.0.3",
     "@unlock-protocol/eslint-config": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "eslint": "9.22.0",
