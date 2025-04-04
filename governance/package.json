@@ -16,7 +16,7 @@
     "@nomicfoundation/hardhat-verify": "2.0.13",
     "@nomiclabs/hardhat-ethers": "2.2.3",
     "@openzeppelin/hardhat-upgrades": "3.9.0",
-    "@openzeppelin/upgrades-core": "1.42.1",
+    "@openzeppelin/upgrades-core": "1.42.2",
     "@safe-global/api-kit": "2.5.11",
     "@safe-global/protocol-kit": "5.2.4",
     "@tenderly/hardhat-tenderly": "2.5.2",
