@@ -16560,6 +16560,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/query-core@npm:5.71.1":
+  version: 5.71.1
+  resolution: "@tanstack/query-core@npm:5.71.1"
+  checksum: 10/40027a59e6683b3473fd494d9900cf3ecc7acf91e0bdc0c8acb2704056105bd4954942f1a5b0e9e93ccb8330cd9216c950c047f82a2679c5b9d5ea8712486f5c
+  languageName: node
+  linkType: hard
+
 "@tanstack/react-query@npm:5.59.19":
   version: 5.59.19
   resolution: "@tanstack/react-query@npm:5.59.19"
@@ -16579,6 +16586,17 @@ __metadata:
   peerDependencies:
     react: ^18 || ^19
   checksum: 10/22f3b8e8daf481adb9d9ce2f13464587d1a58ece9045d7379cc78f84e55e0cd4867e94e1206c9251d5e9a1d481849defb84b48c4bb9094759b9e640b5938a11a
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:5.71.1":
+  version: 5.71.1
+  resolution: "@tanstack/react-query@npm:5.71.1"
+  dependencies:
+    "@tanstack/query-core": "npm:5.71.1"
+  peerDependencies:
+    react: ^18 || ^19
+  checksum: 10/0153c3f2b130a43a8ec53bc830cde38321ab139427fe2df82f8113b1cebc99b080df24e62504e41a7c366546e8404a8aba4cf5c659fd72bf04fead66c74e9153
   languageName: node
   linkType: hard
 
@@ -19111,7 +19129,7 @@ __metadata:
     "@tailwindcss/aspect-ratio": "npm:0.4.2"
     "@tailwindcss/forms": "npm:0.5.10"
     "@tailwindcss/typography": "npm:0.5.16"
-    "@tanstack/react-query": "npm:5.66.11"
+    "@tanstack/react-query": "npm:5.71.1"
     "@tw-classed/react": "npm:1.8.0"
     "@types/react": "npm:18.3.18"
     "@types/react-dom": "npm:18.3.5"
@@ -19124,12 +19142,12 @@ __metadata:
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
     react-dropzone: "npm:14.3.8"
-    react-hook-form: "npm:7.54.2"
+    react-hook-form: "npm:7.55.0"
     react-hot-toast: "npm:2.5.2"
     react-icons: "npm:5.5.0"
     react-use-clipboard: "npm:1.0.9"
     storybook: "npm:8.6.3"
-    tailwind-merge: "npm:3.0.2"
+    tailwind-merge: "npm:3.1.0"
     tailwindcss: "npm:3.4.17"
     tsup: "npm:8.4.0"
     tsx: "npm:4.19.3"
@@ -44712,7 +44730,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:7.54.2, react-hook-form@npm:^7.43.8":
+"react-hook-form@npm:7.55.0":
+  version: 7.55.0
+  resolution: "react-hook-form@npm:7.55.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17 || ^18 || ^19
+  checksum: 10/900e06064c1b4977f2e3e249a0f91742ae6bd1f2109701b80a9280b1c2b4bee8aac26aed7104371101eadad724f0bbe0215499e84623e6375007489ae850fe8e
+  languageName: node
+  linkType: hard
+
+"react-hook-form@npm:^7.43.8":
   version: 7.54.2
   resolution: "react-hook-form@npm:7.54.2"
   peerDependencies:
@@ -49674,6 +49701,13 @@ __metadata:
   version: 3.0.2
   resolution: "tailwind-merge@npm:3.0.2"
   checksum: 10/f5142ddd670018f4816b8510b0464e703be369018544c35eeb8bbba48b9dc320b5f86561ed9c84602b66d367213ee1508cd28b7c9c572420cfa5ecfc848f28c7
+  languageName: node
+  linkType: hard
+
+"tailwind-merge@npm:3.1.0":
+  version: 3.1.0
+  resolution: "tailwind-merge@npm:3.1.0"
+  checksum: 10/408aec29a07f07093d4987174f3a259b83af3db2559deca853a3da50351c35c0969392399bd308a67304dc7ec81bb979bff7da3a532dd9495a2b8a3f0e7bdc98
   languageName: node
   linkType: hard
 
