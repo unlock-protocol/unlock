@@ -11,7 +11,7 @@
     "@babel/core": "7.26.0",
     "@typescript-eslint/eslint-plugin": "8.29.0",
     "@typescript-eslint/parser": "8.29.0",
-    "babel-plugin-polyfill-corejs2": "0.4.12",
+    "babel-plugin-polyfill-corejs2": "0.4.13",
     "node-gyp": "11.1.0",
     "prettier-plugin-solidity": "1.4.2",
     "typescript": "5.8.2"
