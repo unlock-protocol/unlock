@@ -18893,7 +18893,7 @@ __metadata:
     "@unlock-protocol/eslint-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
-    eslint: "npm:9.21.0"
+    eslint: "npm:9.23.0"
     ethers: "npm:6.13.5"
     hardhat: "npm:2.22.19"
     hardhat-gas-reporter: "npm:2.2.2"
