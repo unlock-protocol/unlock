@@ -27,7 +27,7 @@
     "eslint": "9.23.0",
     "ethers": "6.13.5",
     "next": "14.2.26",
-    "react-markdown": "10.0.0",
+    "react-markdown": "10.1.0",
     "tailwind-merge": "3.1.0",
     "typescript": "5.8.2"
   },

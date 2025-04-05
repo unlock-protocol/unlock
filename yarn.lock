@@ -19110,7 +19110,7 @@ __metadata:
     jsdom: "npm:26.0.0"
     next: "npm:14.2.26"
     postcss: "npm:8.5.3"
-    react-markdown: "npm:10.0.0"
+    react-markdown: "npm:10.1.0"
     tailwind-merge: "npm:3.1.0"
     tailwindcss: "npm:3.4.17"
     typescript: "npm:5.8.2"
@@ -45359,28 +45359,6 @@ __metadata:
   version: 1.0.1
   resolution: "react-magic-dropzone@npm:1.0.1"
   checksum: 10/7b5f049f44c3544e15002bba8e347b297d233fe3fabc3a4a78907959cc50e225edf9ef3237c689effe8f9ef75b750278c1486796e721f268f553c5fe89471239
-  languageName: node
-  linkType: hard
-
-"react-markdown@npm:10.0.0":
-  version: 10.0.0
-  resolution: "react-markdown@npm:10.0.0"
-  dependencies:
-    "@types/hast": "npm:^3.0.0"
-    "@types/mdast": "npm:^4.0.0"
-    devlop: "npm:^1.0.0"
-    hast-util-to-jsx-runtime: "npm:^2.0.0"
-    html-url-attributes: "npm:^3.0.0"
-    mdast-util-to-hast: "npm:^13.0.0"
-    remark-parse: "npm:^11.0.0"
-    remark-rehype: "npm:^11.0.0"
-    unified: "npm:^11.0.0"
-    unist-util-visit: "npm:^5.0.0"
-    vfile: "npm:^6.0.0"
-  peerDependencies:
-    "@types/react": ">=18"
-    react: ">=18"
-  checksum: 10/513d9119587b561ac1195e3b2fa30b2bd9149b4dea658c189e2417fda600fbf9d5067967f098ea8e2d525b5fc7db00e3e4176ba2662a6eb503bc09d9b8bd5b5a
   languageName: node
   linkType: hard
 
