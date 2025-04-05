@@ -88,7 +88,7 @@
     "remark-html": "16.0.1",
     "remark-parse": "11.0.0",
     "satori": "0.12.2",
-    "sequelize": "6.37.5",
+    "sequelize": "6.37.7",
     "sequelize-cli": "6.6.2",
     "siwe": "3.0.0",
     "stripe": "17.5.0",
