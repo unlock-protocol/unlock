@@ -18891,7 +18891,7 @@ __metadata:
     remark-parse: "npm:11.0.0"
     run-script-os: "npm:1.1.6"
     satori: "npm:0.12.2"
-    sequelize: "npm:6.37.5"
+    sequelize: "npm:6.37.7"
     sequelize-cli: "npm:6.6.2"
     siwe: "npm:3.0.0"
     stripe: "npm:17.5.0"
@@ -47262,9 +47262,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sequelize@npm:6.37.5":
-  version: 6.37.5
-  resolution: "sequelize@npm:6.37.5"
+"sequelize@npm:6.37.7":
+  version: 6.37.7
+  resolution: "sequelize@npm:6.37.7"
   dependencies:
     "@types/debug": "npm:^4.1.8"
     "@types/validator": "npm:^13.7.17"
@@ -47301,7 +47301,7 @@ __metadata:
       optional: true
     tedious:
       optional: true
-  checksum: 10/7bd957db9676d02e1964b7b14a0fbe5fa8c3754bdeb99f5e752a2ac528e5422ecb53da59f2b37ed82184e594501b10fb70f27733cf379f402d4f7ad0986427fd
+  checksum: 10/87be264ddf8201f4dde332198a922d05ac57f7f6d2c35fe2ad1484469771103053377d59d197c1cf5d4153178fc0e9fb1e749d3c7c2fa3f60a740e51b715c133
   languageName: node
   linkType: hard
 
