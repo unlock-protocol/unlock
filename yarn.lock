@@ -19317,12 +19317,7 @@ __metadata:
     babel-loader: "npm:10.0.0"
     babel-plugin-wildcard: "npm:7.0.0"
     dotenv: "npm:16.4.7"
-<<<<<<< HEAD
     eslint: "npm:9.21.0"
-=======
-    eslint: "npm:9.23.0"
-    handlebars: "npm:4.7.8"
->>>>>>> master
     netlify-cli: "npm:15.11.0"
     nodemailer: "npm:6.10.0"
     prettier: "npm:3.5.3"
