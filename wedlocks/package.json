@@ -15,8 +15,6 @@
     "dotenv": "16.4.7",
     "eslint": "9.23.0",
     "handlebars": "4.7.8",
-    "netlify-cli": "15.11.0",
-    "nodemailer": "6.10.0",
     "prettier": "3.5.3",
     "winston": "3.17.0",
     "worker-mailer": "1.0.1",
