@@ -1,7 +1,6 @@
 import { it, beforeEach, describe, expect, vi } from 'vitest'
 
 import { route } from '../route'
-import encrypter from '../encrypter'
 import config from '../../config'
 import emailService from '../emailService'
 import templates from '@unlock-protocol/email-templates'
@@ -29,6 +28,7 @@ describe('route', () => {
 
     it('should use the template with all the params', async () => {
       expect.assertions(2)
+      expect.assertions(2)
       templates.template = {
         subject: 'subject',
         text: 'text',
@@ -37,19 +37,10 @@ describe('route', () => {
         template: 'template',
         params: {
           hello: 'world',
-          encryptedEmail: {
-            value: 'email',
-            encrypt: true,
-          },
         },
         recipient: 'julien@unlock-protocol.com',
         attachments: ['data:text/plain;base64,aGVsbG8gd29ybGQ='],
       }
-
-      encrypter.signParam = vi.fn((value) => {
-        expect(value).toEqual(args.params.encryptedEmail.value)
-        return 'encrypted!'
-      })
 
       await route(args)
 

@@ -17,6 +17,7 @@
     "@mui/x-charts": "7.27.1",
     "@privy-io/react-auth": "2.6.2",
     "@tanstack/react-query": "5.66.11",
+    "@unlock-protocol/contracts": "workspace:*",
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "@unlock-protocol/ui": "workspace:./packages/ui",
     "clsx": "2.1.1",
@@ -38,7 +39,6 @@
     "clean-api": "docusaurus clean-api-docs all",
     "swizzle": "docusaurus swizzle",
     "deploy": "yarn build",
-    "deploy-netlify": "./scripts/deploy-netlify.sh",
     "deploy-vercel": "./scripts/deploy-vercel.sh",
     "ci": "yarn build",
     "clear": "docusaurus clear",
@@ -60,7 +60,7 @@
     ]
   },
   "devDependencies": {
-    "autoprefixer": "10.4.20",
+    "autoprefixer": "10.4.21",
     "postcss": "8.5.3",
     "postcss-import": "16.1.0",
     "postcss-nesting": "13.0.1",

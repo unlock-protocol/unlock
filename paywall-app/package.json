@@ -7,8 +7,6 @@
     "build:next": "next build",
     "build:cdn": "yarn vite build",
     "deploy": "yarn build",
-    "deploy-netlify": "./scripts/deploy-netlify.sh",
-    "deploy-fleek": "./scripts/deploy-fleek.sh",
     "deploy-vercel": "./scripts/deploy-vercel.sh",
     "start": "next start",
     "test": "echo 'no tests'",
@@ -17,7 +15,7 @@
   },
   "dependencies": {
     "@unlock-protocol/paywall": "workspace:./packages/paywall",
-    "next": "14.2.24",
+    "next": "14.2.26",
     "vite-plugin-node-polyfills": "0.23.0"
   },
   "license": "MIT",
@@ -27,7 +25,7 @@
     "eslint": "9.21.0",
     "prettier": "3.5.3",
     "typescript": "5.8.2",
-    "vite": "6.2.0"
+    "vite": "6.2.5"
   },
   "browserslist": [
     "defaults",

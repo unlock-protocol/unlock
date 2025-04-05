@@ -2,101 +2,50 @@
 title: Use Cases
 description:
   We explore the potential of what can be done with Unlock Protocol by outlining
-  some of the most common use cases?
+  some of the most common use cases.
 sidebar_position: 4
 ---
 
-import Tabs from '@theme/Tabs'
-import TabItem from '@theme/TabItem'
-
 # What you can do with Unlock Protocol?
 
-The actual use cases for Unlock Protocol are quite vast due to the flexible
-nature of how the protocol was written but we've gathered resources and examples
-here for the most common ones so you can get a sense of the possibilities.
+While most of the initial buzz around NFTs centered around a single early use case of digital collectibles, it’s important to remember that NFTs are a fundamental technology. Membership NFTs are a protocol-level building block that can be integrated into myriad applications. The examples shown here are illustrative, but not exhaustive.
 
-<Tabs>
-  <TabItem value="ticketing" label="Ticketing" default>
-    <h4>Guides</h4>
-    <ul>
-      <li>
-        <a href="https://unlock-protocol.com/guides/how-to-sell-nft-tickets-for-an-event/">
-          A comprehensive guide to event ticketing on Unlock Protocol
-        </a>
-      </li>
-      <li>
-        <a href="https://unlock-protocol.com/blog/ethcc5-2022-ticketing">
-          EthCC a success story
-        </a>
-      </li>
-    </ul>
-    <h4>Tools</h4>
-    <ul>
-      <li>
-        <a href="https://unlock-protocol.com/blog/email-airdrop-nft">
-          Email airdrop tickets
-        </a>{' '}
-        from the members page inside the Unlock Dashboard.
-      </li>
-      <li>
-        We built a tool for scanning QR codes to{' '}
-        <a href="https://app.unlock-protocol.com/verification">verifying</a> NFT
-        tickets.
-      </li>
-    </ul>
-  </TabItem>
-  <TabItem value="memberships" label="Memberships & Subscriptions">
-    <ul>
-      <li>
-        <a href="https://unlock-protocol.com/guides/how-to-resell-a-membership/">
-          How to resell a membership
-        </a>
-      </li>
-      <li>
-        <a href="https://unlock-protocol.com/guides/how-to-cancel-a-users-membership/">
-          How to cancel a user's membership
-        </a>
-      </li>
-      <li>
-        <a href="https://unlock-protocol.com/guides/how-to-airdrop-memberships/">
-          How to airdrop memberships
-        </a>
-      </li>
-      <li>
-        <a href="https://unlock-protocol.com/guides/how-to-sell-membership-nfts/">
-          How to sell membership NFT's
-        </a>
-      </li>
-      <li>
-        <a href="https://unlock-protocol.com/guides/recurring-memberships/">
-          How to set up recurring memberships
-        </a>
-      </li>
-    </ul>
-  </TabItem>
-  <TabItem value="credentials" label="Credentials">
-    <ul>
-      <li>
-        <a href="https://unlock-protocol.com/blog/cdaa-unlock-case-study">
-          A success story from CDAA
-        </a>
-      </li>
-      <li>
-        Also built on Unlock:{' '}
-        <a href="https://www.joinclimatefriends.com/">Climate Frens</a>,
-        <a href="https://w3academy.io/courses/rabbit-hole/"> web3 academy</a>
-      </li>
-      <li>
-        <a href="https://unlock-protocol.com/guides/how-to-make-keys-non-transferrable">
-          How to make keys non-transferable
-        </a>
-      </li>
-      <li>
-        <a href="../../tools/checkout/paywall#pessimistic-unlocking">
-          How to ensure the Paywall doesn't unlock content until a credential is
-          issued (pessimistic unlocking).
-        </a>
-      </li>
-    </ul>
-  </TabItem>
-</Tabs>
+## Event ticketing
+
+Event ticketing is a natural use case for membership NFTs. At its core, a ticket is a membership that grants holders access to a certain place at a certain time for a certain event.
+
+The basic traits of NFTs make them well-suited for event ticketing: they can be easily purchased or airdropped, they are unique, they cannot be duplicated, and they can be set to be non-transferable if the event organizer prefers.
+
+Additionally, using NFTs for event ticketing grants the possibility to expand the relationship between the event organizer or performer and the attendee or fan beyond the limited duration of the event itself.
+
+Since NFTs are portable across different systems, holders of NFTs from a particular event can access special privileges or benefits to future events, view “behind the scenes” content that can only be unlocked with that NFT, or be given several other perks. For example, since NFTs can be dynamic, after a sporting event, your NFT “ticket stub” that was a skeuomorphic rendering of a traditional paper ticket before the event could morph into a high-resolution video collectible of a highlight (e.g. the winning goal) after the event, with different rarity traits and different highlights being distributed to different ticket holders at various membership levels.
+
+## Media memberships
+
+The advertising-based business model has gutted quality journalism and media, and has led to the rise of algorithmically-driven social media feeds that prioritize shock and outrage over civil discourse, all in the name of garnering more eyeballs and clicks.
+
+Membership NFTs are an alternative to the status quo, giving members who hold a particular NFT direct access to the media shared by creators. This applies to the written word, music, videos, images, experiences, and more.
+
+The current attention-based model is great for gatekeepers, and is horrible for creators. For example, it takes approximately 1,000,000 plays of a music stream on Spotify per month to net an artist $5000. (Contrast this to an artist with only 500 members in their fan club, where each member is paying $10/month. It’s the same revenue to the creator on a fraction of the base, plus the creator has a direct relationship — both emotional and financial — with their fans that can deepen and broaden the experience between them.)
+
+Media memberships can be implemented as content paywalls for written content, access to streams or rich media, passes to physical spaces (e.g. galleries), or any experience the creator desires.
+
+## DAO memberships
+
+In many first-generation DAOs, membership was granted solely based on an individual holding a certain number of fungible (that is, purchasable or tradable) ERC-20 tokens. This resulted in a number of negative externalities, including DAOs having the potential to be dominated by “whales” who could simply afford to buy-in to the organization, as opposed to having the membership of the organization populated by individuals who contributed to or were aligned with the mission.
+
+Worse yet, since ERC-20 tokens don’t have a “time” component to them (i.e. they never expire), once a whale was in a DAO, they were in for as long as they wanted to stay, potentially forever.
+
+In contrast, NFTs have several unique properties that make them an obvious primitive to use for DAO memberships. Membership NFTs provide access to a DAO’s content website, online and offline communities, members-only benefits, or perhaps even voting rights. Unlock Protocol extends this core function in an important way, enabling NFT-based memberships to be time-bound (e.g. for a day, month, year, or any other length of time), meaning that membership in the DAO is bound to a season, a year, or whatever duration the DAO itself decides is the correct cadence.
+
+This solves the two key problems of ERC-20 based membership qualification for DAOs. First, Unlock Protocol membership NFTs can be set to expire, eliminating the “tenure” issue of ERC-20s where a free-rider who is not contributing still has access to all DAO benefits in perpetuity.
+
+Secondly, a “one-person, one-membership, one-vote” mechanism can be set up, if desired by the DAO itself, in order to avoid the problem of a whale skewing DAO votes based solely on the size of their holdings of the DAO’s ERC-20 treasury.
+
+## Certifications and credentials
+
+Since NFTs can be set to be non-transferrable and can be granted to particular individuals, using NFTs for online credentialing and certification is a common use case as well. Once someone shows mastery of a topic by completing an exam or exhibiting skills using another mechanism, a time-based NFT can be issued to verify that skill onchain.
+
+These certifications or credentials can be time-bound, if the situation requires it, expiring after one year, two years, or whatever length of time is appropriate. This is most important where the certification is part of an industry that either is evolving rapidly (e.g. financial services) or has continuing education requirements that necessitate ongoing training (e.g. certain professional fields).
+
+In addition to “educational”-type certifications, another type of credential is a Proof Of Attendance Protocol (POAP). POAPs are NFTs that are granted to people in attendance at events, whether virtual or in the real world. These NFTs restrict their tokens from being transferred, and the NFTs can only be claimed during an event. The tokens prove you were in attendance at an event and can be used to provide special memberships or benefits to only those supporters who were in attendance.

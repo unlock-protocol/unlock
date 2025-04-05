@@ -10,12 +10,7 @@ dotenv.config({
 })
 
 // Remember to add mapping in webpack for all environment variables below
-const requiredVariables = [
-  'SMTP_HOST',
-  'SMTP_USERNAME',
-  'SMTP_PASSWORD',
-  'BASE64_WEDLOCKS_PRIVATE_KEY',
-]
+const requiredVariables = ['SMTP_HOST', 'SMTP_USERNAME', 'SMTP_PASSWORD']
 requiredVariables.forEach((envVar) => {
   if (!process.env[envVar]) {
     if (['test'].indexOf(unlockEnv) === -1) {
@@ -26,16 +21,6 @@ requiredVariables.forEach((envVar) => {
     }
   }
 })
-
-let wedlocksPrivateKey
-if (process.env.BASE64_WEDLOCKS_PRIVATE_KEY) {
-  // This env variable is passed as base 64 to comply with the multiline reco by circleci:
-  // https://circleci.com/docs/2.0/env-vars/#encoding-multi-line-environment-variables
-  wedlocksPrivateKey = Buffer.from(
-    process.env.BASE64_WEDLOCKS_PRIVATE_KEY,
-    'base64'
-  ).toString('utf-8')
-}
 
 console.log(
   `module.exports = ${JSON.stringify({
@@ -49,7 +34,6 @@ console.log(
     authType: 'plain',
 
     unlockEnv,
-    wedlocksPrivateKey,
     sender: process.env.SMTP_FROM_ADDRESS || 'hello@unlock-protocol.com',
   })}`
 )

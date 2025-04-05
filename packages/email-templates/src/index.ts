@@ -1,10 +1,7 @@
-import confirmEmail from './templates/confirmEmail'
-import welcome from './templates/welcome'
 import keyOwnership from './templates/keyOwnership'
 import keyMined from './templates/keyMined'
-import debug from './templates/debug'
-import transferCode from './templates/transferCode'
 import keyAirdropped from './templates/keyAirdropped'
+import transferCode from './templates/transferCode'
 import keyExpiring from './templates/keyExpiring'
 import keyExpired from './templates/keyExpired'
 import eventKeyMined from './templates/eventKeyMined'
@@ -17,7 +14,6 @@ import eventDeployed from './templates/eventDeployed'
 import LockTemplates from './templates/locks'
 import bases from './templates/base/index'
 import custom from './templates/custom'
-import nextAuthCode from './templates/nextAuthCode'
 import eventCollectionCreated from './templates/eventCollectionCreated'
 import eventApprovedInCollection from './templates/eventApprovedInCollection'
 import eventDeniedInCollection from './templates/eventDeniedInCollection'
@@ -30,9 +26,6 @@ export interface EmailTemplateProps {
 }
 
 type Template =
-  | 'debug'
-  | 'welcome'
-  | 'confirmEmail'
   | 'keyMined'
   | 'keyAirdropped'
   | 'keyOwnership'
@@ -47,7 +40,6 @@ type Template =
   | 'certificationKeyMined'
   | 'certificationKeyAirdropped'
   | 'custom'
-  | 'nextAuthCode'
   | 'eventCollectionCreated'
   | 'eventApprovedInCollection'
   | 'eventDeniedInCollection'
@@ -55,11 +47,8 @@ type Template =
   | 'eventSubmittedToCollectionSubmitter'
 
 export const EmailTemplates: Record<string, EmailTemplateProps> = {
-  confirmEmail,
-  welcome,
   keyOwnership,
   keyMined,
-  debug,
   transferCode,
   keyAirdropped,
   keyExpired,
@@ -72,7 +61,6 @@ export const EmailTemplates: Record<string, EmailTemplateProps> = {
   custom,
   inviteEvent,
   eventDeployed,
-  nextAuthCode,
   eventCollectionCreated,
   eventApprovedInCollection,
   eventDeniedInCollection,
