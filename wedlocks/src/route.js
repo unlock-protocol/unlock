@@ -1,6 +1,5 @@
 import nodemailer from 'nodemailer'
 import config from '../config'
-import encrypter from './encrypter'
 import wrap from './wrap'
 import templates from '@unlock-protocol/email-templates'
 
@@ -23,11 +22,7 @@ const getTemplateAndParams = async (args, opts) => {
   const templateParams = {}
   Object.keys(args.params).forEach((key) => {
     const param = args.params[key]
-    if (typeof param === 'object' && param.encrypt) {
-      templateParams[key] = encrypter.signParam(param.value)
-    } else {
-      templateParams[key] = param
-    }
+    templateParams[key] = param
   })
 
   if (template.nowrap) {
@@ -82,11 +77,7 @@ export const preview = async (args) => {
 
   Object.keys(args.params).forEach((key) => {
     const param = args.params[key]
-    if (typeof param === 'object' && param.encrypt) {
-      templateParams[key] = encrypter.signParam(param.value)
-    } else {
-      templateParams[key] = param
-    }
+    templateParams[key] = param
   })
   if (!args.json) {
     return template.html(templateParams)

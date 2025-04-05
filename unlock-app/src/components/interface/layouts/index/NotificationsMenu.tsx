@@ -1,12 +1,14 @@
 import { Menu, MenuButton, MenuItems, Transition } from '@headlessui/react'
-import { Fragment, ReactNode, useState } from 'react'
+import { Fragment, ReactNode, useState, useEffect } from 'react'
 import { BiBell as BellIcon } from 'react-icons/bi'
 import { Button } from '@unlock-protocol/ui'
 import { PromptEmailLink } from '../../PromptEmailLink'
+import { Blog, BlogLink, saveLatestBlogs } from '../../LatestBlogs'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { usePathname } from 'next/navigation'
 import { Modal } from '@unlock-protocol/ui'
 import { LoginModal } from '@privy-io/react-auth'
+import { getLocalStorageItem } from '~/hooks/useAppStorage'
 
 interface NotificationAction {
   label: string
@@ -23,8 +25,15 @@ interface NotificationProps {
 export function NotificationsMenu() {
   const [isOpen, setIsOpen] = useState(false)
   const [showModal, setShowModal] = useState(false)
+  const [blogs, setBlogs] = useState<Blog[] | null>(
+    getLocalStorageItem('latest_blogs')?.blogs
+  )
   const { account, email } = useAuthenticate()
   const pathname = usePathname()
+
+  useEffect(() => {
+    saveLatestBlogs('/api/blogs', setBlogs)
+  }, [])
 
   if (!account) {
     return null
@@ -46,6 +55,18 @@ export function NotificationsMenu() {
     })
   }
 
+  blogs &&
+    blogs.forEach((blog: Blog) =>
+      notifications.push({
+        id: blog.id,
+        content: <BlogLink blog={blog} setBlogs={setBlogs} />,
+        timestamp: new Date(),
+      })
+    )
+
+  const viewedBlogs = blogs?.filter((blog) => blog.viewed == true).length || 0
+  const total_notifications = notifications.length - viewedBlogs
+
   return (
     <>
       <Menu as="div" className="relative mr-4 z-10">
@@ -59,9 +80,9 @@ export function NotificationsMenu() {
                 onClick={() => setIsOpen(!isOpen)}
               >
                 <BellIcon className="h-6 w-6" />
-                {notifications.length > 0 && (
+                {total_notifications > 0 && (
                   <span className="absolute -top-2 -right-1 h-4 w-4 rounded-full bg-red-500 text-xs text-white flex items-center justify-center">
-                    {notifications.length}
+                    {total_notifications}
                   </span>
                 )}
               </Button>

@@ -14,7 +14,7 @@
   "devDependencies": {
     "@types/handlebars": "4.1.0",
     "typescript": "5.8.2",
-    "vitest": "2.1.9"
+    "vitest": "3.0.9"
   },
   "repository": {
     "type": "git",

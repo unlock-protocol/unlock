@@ -10,7 +10,7 @@
     "@headlessui/react": "2.2.0",
     "@openzeppelin/merkle-tree": "1.0.8",
     "@privy-io/react-auth": "2.6.2",
-    "@sentry/nextjs": "9.3.0",
+    "@sentry/nextjs": "9.10.1",
     "@tanstack/react-query": "5.66.11",
     "@tw-classed/react": "1.8.0",
     "@unlock-protocol/contracts": "workspace:*",
@@ -26,20 +26,20 @@
     "embla-carousel-react": "8.5.2",
     "eslint": "9.22.0",
     "ethers": "6.13.5",
-    "next": "14.2.24",
+    "next": "14.2.26",
     "react-markdown": "10.0.0",
-    "tailwind-merge": "3.0.2",
+    "tailwind-merge": "3.1.0",
     "typescript": "5.8.2"
   },
   "devDependencies": {
     "@types/react": "18.3.18",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "@vitejs/plugin-react": "4.3.4",
-    "autoprefixer": "10.4.20",
+    "autoprefixer": "10.4.21",
     "jsdom": "26.0.0",
     "postcss": "8.5.3",
     "tailwindcss": "3.4.17",
-    "vitest": "2.1.9"
+    "vitest": "3.0.9"
   },
   "scripts": {
     "dev": "next dev",
