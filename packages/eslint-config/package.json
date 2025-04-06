@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@babel/eslint-parser": "7.27.0",
-    "@eslint/compat": "1.2.7",
+    "@eslint/compat": "1.2.8",
     "@typescript-eslint/eslint-plugin": "8.29.0",
     "@typescript-eslint/parser": "8.29.0",
     "@vitest/eslint-plugin": "1.1.36",
@@ -28,7 +28,7 @@
     "eslint-plugin-evm-address-to-checksummed": "0.0.6",
     "eslint-plugin-json": "4.0.1",
     "eslint-plugin-mocha": "10.5.0",
-    "eslint-plugin-prettier": "5.2.3",
+    "eslint-plugin-prettier": "5.2.6",
     "typescript": "5.8.2"
   },
   "devDependencies": {

@@ -1,18 +1,18 @@
 {
   "name": "@unlock-protocol/provider",
   "devDependencies": {
-    "@cloudflare/workers-types": "4.20250303.0",
+    "@cloudflare/workers-types": "4.20250404.0",
     "@types/node": "22.13.15",
     "@unlock-protocol/contracts": "workspace:^",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/networks": "workspace:^",
-    "eslint": "9.22.0",
+    "eslint": "9.23.0",
     "typescript": "5.8.2",
     "vitest": "3.0.9"
   },
   "dependencies": {
     "ethers": "6.13.5",
-    "wrangler": "3.111.0"
+    "wrangler": "3.114.4"
   },
   "scripts": {
     "dev": "yarn wrangler dev",
