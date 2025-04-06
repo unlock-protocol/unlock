@@ -40686,7 +40686,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-gyp@npm:11.1.0, node-gyp@npm:latest":
+"node-gyp@npm:11.2.0":
+  version: 11.2.0
+  resolution: "node-gyp@npm:11.2.0"
+  dependencies:
+    env-paths: "npm:^2.2.0"
+    exponential-backoff: "npm:^3.1.1"
+    graceful-fs: "npm:^4.2.6"
+    make-fetch-happen: "npm:^14.0.3"
+    nopt: "npm:^8.0.0"
+    proc-log: "npm:^5.0.0"
+    semver: "npm:^7.3.5"
+    tar: "npm:^7.4.3"
+    tinyglobby: "npm:^0.2.12"
+    which: "npm:^5.0.0"
+  bin:
+    node-gyp: bin/node-gyp.js
+  checksum: 10/806fd8e3adc9157e17bf0d4a2c899cf6b98a0bbe9f453f630094ce791866271f6cddcaf2133e6513715d934fcba2014d287c7053d5d7934937b3a34d5a3d84ad
+  languageName: node
+  linkType: hard
+
+"node-gyp@npm:latest":
   version: 11.1.0
   resolution: "node-gyp@npm:11.1.0"
   dependencies:
@@ -52199,7 +52219,7 @@ __metadata:
     eslint-plugin-sort-keys-fix: "npm:1.1.2"
     husky: "npm:9.1.7"
     lint-staged: "npm:15.5.0"
-    node-gyp: "npm:11.1.0"
+    node-gyp: "npm:11.2.0"
     prettier: "npm:3.5.3"
     prettier-plugin-solidity: "npm:1.4.2"
     typescript: "npm:5.8.2"
