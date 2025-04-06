@@ -14081,24 +14081,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/protocol-kit@npm:5.2.5":
-  version: 5.2.5
-  resolution: "@safe-global/protocol-kit@npm:5.2.5"
+"@safe-global/protocol-kit@npm:6.0.2":
+  version: 6.0.2
+  resolution: "@safe-global/protocol-kit@npm:6.0.2"
   dependencies:
     "@noble/curves": "npm:^1.6.0"
     "@peculiar/asn1-schema": "npm:^2.3.13"
     "@safe-global/safe-deployments": "npm:^1.37.31"
     "@safe-global/safe-modules-deployments": "npm:^2.2.7"
-    "@safe-global/types-kit": "npm:^1.0.4"
+    "@safe-global/types-kit": "npm:^2.0.1"
     abitype: "npm:^1.0.2"
-    semver: "npm:^7.6.3"
+    semver: "npm:^7.7.1"
     viem: "npm:^2.21.8"
   dependenciesMeta:
     "@noble/curves":
       optional: true
     "@peculiar/asn1-schema":
       optional: true
-  checksum: 10/d7b35a568e182e13c00da1917fe6639ce99955058d5fd4cf8751c0f0e1a25167192836cee664876669f358f41454074daab68cd4da9a5b92c857ba2fe3828dfd
+  checksum: 10/27712cbc0bf9d04c1cc2104c81096e7c3e7f275ecd2685f30eb595767590ab106f96f4f4dfcdb31ddd8939e26fa939ad76e563df5505ebcfe05dfffa40dc0a19
   languageName: node
   linkType: hard
 
@@ -14145,6 +14145,15 @@ __metadata:
   dependencies:
     abitype: "npm:^1.0.2"
   checksum: 10/920a94d7095940a173c2f3b23086b6bf8ead04c520f245187c5bfadded5ee0c94db1295003eda46613e5fa812eba20d594995c2a2ab566edfde6d74d9e41d160
+  languageName: node
+  linkType: hard
+
+"@safe-global/types-kit@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@safe-global/types-kit@npm:2.0.1"
+  dependencies:
+    abitype: "npm:^1.0.2"
+  checksum: 10/6a8dc0a15805550df2d780c54e4916f105d08daa710e2e04f50f5929e6fa7fd580fad5557a814fa8629d5c4b298209a5e1e0593b821016ebae75aabfcf891f62
   languageName: node
   linkType: hard
 
@@ -19245,7 +19254,7 @@ __metadata:
     "@openzeppelin/hardhat-upgrades": "npm:3.9.0"
     "@openzeppelin/upgrades-core": "npm:1.42.2"
     "@safe-global/api-kit": "npm:2.5.11"
-    "@safe-global/protocol-kit": "npm:5.2.5"
+    "@safe-global/protocol-kit": "npm:6.0.2"
     "@tenderly/hardhat-tenderly": "npm:2.5.2"
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
@@ -47609,7 +47618,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.0.0, semver@npm:^7.3.2, semver@npm:^7.3.4, semver@npm:^7.3.5, semver@npm:^7.3.7, semver@npm:^7.3.8, semver@npm:^7.5.2, semver@npm:^7.5.3, semver@npm:^7.5.4, semver@npm:^7.6.0, semver@npm:^7.6.2, semver@npm:^7.6.3":
+"semver@npm:^7.0.0, semver@npm:^7.3.2, semver@npm:^7.3.4, semver@npm:^7.3.5, semver@npm:^7.3.7, semver@npm:^7.3.8, semver@npm:^7.5.2, semver@npm:^7.5.3, semver@npm:^7.5.4, semver@npm:^7.6.0, semver@npm:^7.6.2, semver@npm:^7.6.3, semver@npm:^7.7.1":
   version: 7.7.1
   resolution: "semver@npm:7.7.1"
   bin:
