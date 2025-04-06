@@ -2,25 +2,6 @@ import handlebars from 'handlebars'
 import { readFileSync } from 'fs'
 import { join } from 'path'
 
-export const prepareAll = (template, opts = {}) => {
-  const prepared = { attachments: [], ...template }
-  Object.keys(template).forEach((format) => {
-    if (['html', 'text', 'subject'].indexOf(format) > -1) {
-      const [compiled, getImages] = prepare(template[format], opts)
-
-      prepared[format] = (args) => {
-        const content = compiled(args)
-        const images = getImages()
-        images?.forEach((image) => {
-          prepared.attachments.push(image)
-        })
-        return content
-      }
-    }
-  })
-  return prepared
-}
-
 export const prepare = (content, opts = {}) => {
   const images = []
   handlebars.registerHelper('inlineImage', function (filename) {

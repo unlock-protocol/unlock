@@ -1,11 +1,12 @@
 import Handlebars from 'handlebars'
 import { links } from './helpers/links'
 import { formattedCustomContent } from './helpers/customContent'
+import { prepareAll } from './prepare'
 
 Handlebars.registerHelper('links', links)
 Handlebars.registerHelper('formattedCustomContent', formattedCustomContent)
 
-export default {
+export default prepareAll({
   subject: 'You have received a new NFT!',
   html: `<h1>You have received a new NFT!</h1>
 
@@ -18,4 +19,4 @@ export default {
 {{links txUrl openSeaUrl true}}
 
 `,
-}
+})
