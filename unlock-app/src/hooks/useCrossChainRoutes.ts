@@ -4,19 +4,11 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Lock } from '~/unlockTypes'
 import { purchasePriceFor } from './usePricing'
 import { getReferrer } from '~/utils/checkoutLockUtils'
-import {
-  getCrossChainRoute as getDecentCrossChainRoute,
-  prepareSharedParams as prepareDecentSharedParams,
-} from '~/utils/theBox'
-import {
-  getCrossChainRoute as getRelayLinkCrossChainRoute,
-  prepareSharedParams as prepareRelayLinkSharedParams,
-} from '~/utils/relayLink'
+import { getCrossChainRoute, prepareSharedParams } from '~/utils/relayLink'
 
 import { networks } from '@unlock-protocol/networks'
 import { Token } from '@unlock-protocol/types'
 import { useAuthenticate } from './useAuthenticate'
-import { useSearchParam } from 'react-use'
 
 export interface CrossChainRoute {
   network: number
@@ -56,17 +48,6 @@ export const useCrossChainRoutes = ({
 }: CrossChainRoutesOption) => {
   // For each of the networks, check the balance of the user on the native token, and then check the balance with the token
   // and then list all the tokens
-
-  const xchainApi = useSearchParam('xchain')
-  const prepareSharedParams =
-    xchainApi === 'decent'
-      ? prepareDecentSharedParams
-      : prepareRelayLinkSharedParams
-  const getCrossChainRoute =
-    xchainApi === 'decent'
-      ? getDecentCrossChainRoute
-      : getRelayLinkCrossChainRoute
-
   const { account } = useAuthenticate()
   const web3Service = useWeb3Service()
 
@@ -134,7 +115,6 @@ export const useCrossChainRoutes = ({
     ],
     queryFn: async () => {
       return prepareSharedParams({
-        sender: account!,
         lock,
         prices: prices!,
         recipients,
