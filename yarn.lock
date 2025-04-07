@@ -9583,12 +9583,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/eslint-plugin-next@npm:15.2.2":
-  version: 15.2.2
-  resolution: "@next/eslint-plugin-next@npm:15.2.2"
+"@next/eslint-plugin-next@npm:15.2.4":
+  version: 15.2.4
+  resolution: "@next/eslint-plugin-next@npm:15.2.4"
   dependencies:
     fast-glob: "npm:3.3.1"
-  checksum: 10/4d6bffbfab275cdf291b5eaa2b4b42591fc1568f35874aed409eb887b1291b75ebbc0fd7069e1035244e1a70ac75ebbe570ac6cdb46e8ce29c7ec7d55c616177
+  checksum: 10/366590ea51436ae71f0cb4b0864d3189326d4ea710dc3634fcccf4585ce04d095f1477301635ddea6f11383828411ab5980bc2ad345538b3502670425e6cbb30
   languageName: node
   linkType: hard
 
@@ -19075,7 +19075,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:8.29.0"
     "@vitest/eslint-plugin": "npm:1.1.36"
     eslint: "npm:9.23.0"
-    eslint-config-next: "npm:15.2.2"
+    eslint-config-next: "npm:15.2.4"
     eslint-config-prettier: "npm:10.1.1"
     eslint-plugin-evm-address-to-checksummed: "npm:0.0.6"
     eslint-plugin-json: "npm:4.0.1"
@@ -19629,7 +19629,7 @@ __metadata:
     dotenv: "npm:16.4.7"
     embla-carousel-react: "npm:8.5.2"
     eslint: "npm:9.23.0"
-    eslint-config-next: "npm:15.2.2"
+    eslint-config-next: "npm:15.2.4"
     ethers: "npm:6.13.5"
     feed: "npm:4.2.2"
     gray-matter: "npm:4.0.3"
@@ -28801,11 +28801,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-next@npm:15.2.2":
-  version: 15.2.2
-  resolution: "eslint-config-next@npm:15.2.2"
+"eslint-config-next@npm:15.2.4":
+  version: 15.2.4
+  resolution: "eslint-config-next@npm:15.2.4"
   dependencies:
-    "@next/eslint-plugin-next": "npm:15.2.2"
+    "@next/eslint-plugin-next": "npm:15.2.4"
     "@rushstack/eslint-patch": "npm:^1.10.3"
     "@typescript-eslint/eslint-plugin": "npm:^5.4.2 || ^6.0.0 || ^7.0.0 || ^8.0.0"
     "@typescript-eslint/parser": "npm:^5.4.2 || ^6.0.0 || ^7.0.0 || ^8.0.0"
@@ -28821,7 +28821,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10/3bfb85f1d6f5de36e5c9a892a401945e7f470627f040a080aaebc86eb79c14461080d75e5149c415b5eb38e039565a0664212ec6ba960c5183daa6b9b274795d
+  checksum: 10/8e206d89910dbe05282ae1d80da8db87d1dc6870c90366b342aacf248daabfa6baf2433042614e6fa15f8bf51038c7faa2ef5ee25559526b7586fbd37fbb7d14
   languageName: node
   linkType: hard
 
