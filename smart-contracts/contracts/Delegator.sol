@@ -6,9 +6,9 @@ import "@openzeppelin/contracts-upgradeable5/token/ERC20/extensions/ERC20VotesUp
 import "@openzeppelin/contracts-upgradeable5/token/ERC20/ERC20Upgradeable.sol";
 
 contract Delegate {
-  constructor(address token, address to) {
+  constructor(address token, address to, address funder) {
     ERC20VotesUpgradeable(token).delegate(to); // Delegate tokens
-    IERC20(token).approve(msg.sender, type(uint).max); // Approve the caller to spend all tokens
+    IERC20(token).approve(funder, type(uint).max); // Approve the funder to get all their tokens
   }
 }
 
@@ -26,7 +26,7 @@ contract Delegator {
   }
 
   function delegate(address to, uint amount) external {
-    Delegate d = new Delegate(TOKEN, to);
+    Delegate d = new Delegate(TOKEN, to, msg.sender);
     delegations[to] = Delegation(address(d), msg.sender);
     IERC20(TOKEN).transferFrom(msg.sender, address(d), amount);
   }
