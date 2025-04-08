@@ -60,6 +60,9 @@ export const Approvals = ({ eventCollection }: ApprovalsProps) => {
   const [approvingEvents, setApprovingEvents] = useState<string[]>([])
   const [rejectingEvents, setRejectingEvents] = useState<string[]>([])
 
+  // State for notifying past attendees
+  const [notifyPastAttendees, setNotifyPastAttendees] = useState(false)
+
   // Guard clause to ensure eventCollection and slug are defined
   if (!eventCollection || !eventCollection.slug) {
     return <p className="text-center text-red-500">Invalid event collection.</p>
@@ -87,7 +90,11 @@ export const Approvals = ({ eventCollection }: ApprovalsProps) => {
   const handleApprove = async (eventSlug: string) => {
     setApprovingEvents((prev) => [...prev, eventSlug])
     try {
-      await approveEvent({ collectionSlug: eventCollection.slug!, eventSlug })
+      await approveEvent({
+        collectionSlug: eventCollection.slug!,
+        eventSlug,
+        notifyPastAttendees, // Pass the notification preference
+      })
     } finally {
       setApprovingEvents((prev) => prev.filter((slug) => slug !== eventSlug))
     }
@@ -109,6 +116,22 @@ export const Approvals = ({ eventCollection }: ApprovalsProps) => {
 
   return (
     <div className="space-y-6">
+      <div className="p-4 bg-gray-100 rounded-lg">
+        <label className="flex items-center gap-2 text-base font-medium cursor-pointer">
+          <input
+            type="checkbox"
+            checked={notifyPastAttendees}
+            onChange={(e) => setNotifyPastAttendees(e.target.checked)}
+            className="w-4 h-4 text-brand-ui-primary rounded focus:ring-brand-ui-primary"
+          />
+          <span>Notify past event attendees when approving events</span>
+        </label>
+        <p className="mt-2 text-sm text-gray-600">
+          When checked, an email will be sent to all attendees of past events in
+          this collection when you approve a new event.
+        </p>
+      </div>
+
       {paginatedEvents.map((event: UnapprovedEvent, index: number) => (
         <EventCard
           key={event.slug}

@@ -10,6 +10,9 @@ import {
   removeManagerAddressOperation,
   updateEventCollectionOperation,
 } from '../../src/operations/eventCollectionOperations'
+import EventCollectionOperations from '../../src/operations/eventCollectionOperations'
+import { SubgraphService } from '@unlock-protocol/unlock-js'
+import { sendEmail } from '../../src/operations/wedlocksOperations'
 
 // interface for link types
 interface Link {
@@ -59,6 +62,38 @@ vi.mock('../../src/utils/createSlug', () => ({
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/(^-|-$)/g, ''),
+}))
+
+// Mock external dependencies
+vi.mock('@unlock-protocol/unlock-js', () => ({
+  SubgraphService: vi.fn().mockImplementation(() => ({
+    keys: () => [
+      { owner: '0x123', expired: false },
+      { owner: '0x456', expired: false },
+    ],
+  })),
+}))
+
+vi.mock('../../src/operations/userMetadataOperations', () => ({
+  getMetadata: vi.fn().mockImplementation((params) => {
+    if (params.userAddress === '0x123') {
+      return {
+        email: 'user1@example.com',
+        fullname: 'User One',
+      }
+    }
+    if (params.userAddress === '0x456') {
+      return {
+        email: 'user2@example.com',
+        public: { fullname: 'User Two' },
+      }
+    }
+    return null
+  }),
+}))
+
+vi.mock('../../src/operations/wedlocksOperations', () => ({
+  sendEmail: vi.fn(),
 }))
 
 describe('eventCollectionOperations', () => {
@@ -472,6 +507,213 @@ describe('eventCollectionOperations', () => {
           '0x123'
         )
       ).rejects.toThrow('Event not found')
+    })
+  })
+
+  describe('getKeyHoldersForLock', () => {
+    it('should return attendees with email addresses', async () => {
+      expect.assertions(3)
+      const attendees = await EventCollectionOperations.getKeyHoldersForLock(
+        '0xLockAddress',
+        1
+      )
+
+      expect(attendees.length).toBe(2)
+      expect(attendees[0]).toEqual({
+        owner: '0x123',
+        email: 'user1@example.com',
+        name: 'User One',
+      })
+      expect(attendees[1]).toEqual({
+        owner: '0x456',
+        email: 'user2@example.com',
+        name: 'User Two',
+      })
+    })
+
+    it('should handle errors gracefully', async () => {
+      expect.assertions(1)
+      vi.mocked(SubgraphService).mockImplementationOnce(() => ({
+        keys: () => {
+          throw new Error('Subgraph error')
+        },
+      }))
+
+      const attendees = await EventCollectionOperations.getKeyHoldersForLock(
+        '0xLockAddress',
+        1
+      )
+      expect(attendees).toEqual([])
+    })
+  })
+
+  describe('approveEventOperation', () => {
+    const mockCollection = {
+      slug: 'test-collection',
+      title: 'Test Collection',
+      managerAddresses: ['0xManager'],
+    }
+
+    const mockEvent = {
+      slug: 'test-event',
+      name: 'Test Event',
+      data: {
+        startDate: '2024-03-20',
+        ticket: {
+          event_address: '0xLockAddress',
+          network: 1,
+        },
+      },
+    }
+
+    beforeEach(() => {
+      EventCollection.findByPk = vi.fn().mockResolvedValue(mockCollection)
+      EventData.findOne = vi.fn().mockResolvedValue(mockEvent)
+      EventCollectionAssociation.findOne = vi.fn().mockResolvedValue({
+        eventSlug: 'test-event',
+        collectionSlug: 'test-collection',
+        submitterAddress: '0xSubmitter',
+        update: vi.fn(),
+      })
+    })
+
+    it('should approve event and send notifications', async () => {
+      expect.assertions(2)
+
+      await EventCollectionOperations.approveEventOperation(
+        'test-collection',
+        'test-event',
+        '0xManager',
+        true
+      )
+
+      // Should send email to submitter
+      expect(sendEmail).toHaveBeenCalledWith(
+        expect.objectContaining({
+          template: 'eventApprovedInCollection',
+          recipient: expect.any(String),
+        })
+      )
+
+      // Should send emails to past attendees
+      expect(sendEmail).toHaveBeenCalledWith(
+        expect.objectContaining({
+          template: 'newEventInCollection',
+          recipient: expect.any(String),
+        })
+      )
+    })
+
+    it('should reject unauthorized approvals', async () => {
+      expect.assertions(1)
+
+      await expect(
+        EventCollectionOperations.approveEventOperation(
+          'test-collection',
+          'test-event',
+          '0xUnauthorized',
+          true
+        )
+      ).rejects.toThrow('Not authorized to approve events')
+    })
+  })
+
+  describe('bulkApproveEventsOperation', () => {
+    const mockCollection = {
+      slug: 'test-collection',
+      title: 'Test Collection',
+      managerAddresses: ['0xManager'],
+    }
+
+    const mockEvents = [
+      {
+        slug: 'event-1',
+        name: 'Event One',
+        data: {
+          startDate: '2024-03-20',
+          ticket: {
+            event_address: '0xLockAddress1',
+            network: 1,
+          },
+        },
+      },
+      {
+        slug: 'event-2',
+        name: 'Event Two',
+        data: {
+          startDate: '2024-03-21',
+          ticket: {
+            event_address: '0xLockAddress2',
+            network: 1,
+          },
+        },
+      },
+    ]
+
+    beforeEach(() => {
+      EventCollection.findByPk = vi.fn().mockResolvedValue(mockCollection)
+      EventData.findAll = vi.fn().mockResolvedValue(mockEvents)
+      EventCollectionAssociation.findAll = vi.fn().mockResolvedValue(
+        mockEvents.map((event) => ({
+          eventSlug: event.slug,
+          collectionSlug: 'test-collection',
+          submitterAddress: '0xSubmitter',
+          save: vi.fn(),
+        }))
+      )
+    })
+
+    it('should bulk approve events and send notifications efficiently', async () => {
+      expect.assertions(3)
+
+      await EventCollectionOperations.bulkApproveEventsOperation(
+        'test-collection',
+        ['event-1', 'event-2'],
+        '0xManager',
+        true
+      )
+
+      // Should send emails to submitters
+      expect(sendEmail).toHaveBeenCalledWith(
+        expect.objectContaining({
+          template: 'eventApprovedInCollection',
+          recipient: expect.any(String),
+        })
+      )
+
+      // Should send emails to past attendees
+      expect(sendEmail).toHaveBeenCalledWith(
+        expect.objectContaining({
+          template: 'newEventInCollection',
+          recipient: expect.any(String),
+        })
+      )
+
+      // Should avoid duplicate notifications
+      const uniqueRecipients = new Set(
+        vi
+          .mocked(sendEmail)
+          .mock.calls.filter(
+            (call) => call[0].template === 'newEventInCollection'
+          )
+          .map((call) => call[0].recipient)
+      )
+      expect(uniqueRecipients.size).toBeLessThanOrEqual(2) // Only our two mock attendees
+    })
+
+    it('should handle empty event list gracefully', async () => {
+      expect.assertions(1)
+
+      EventCollectionAssociation.findAll = vi.fn().mockResolvedValue([])
+
+      await expect(
+        EventCollectionOperations.bulkApproveEventsOperation(
+          'test-collection',
+          [],
+          '0xManager',
+          true
+        )
+      ).rejects.toThrow('No events to approve')
     })
   })
 })

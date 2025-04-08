@@ -49,14 +49,21 @@ const RemoveManagerBody = z.object({
     .min(1, 'Manager address to remove is required'),
 })
 
-// Schema for approving events
-const ApproveEventsBody = z.object({
-  eventSlugs: z.array(z.string()).min(1, 'At least one event slug is required'),
+// Schema for approving a single event
+const ApproveEventBody = z.object({
+  eventSlug: z.string().min(1, 'Event slug is required'),
+  notifyPastAttendees: z.boolean().optional().default(false),
 })
 
 // Schema for removing events
 const RemoveEventsBody = z.object({
   eventSlugs: z.array(z.string()).min(1, 'At least one event slug is required'),
+})
+
+// Schema for bulk approving events
+const BulkApproveEventsBody = z.object({
+  eventSlugs: z.array(z.string()).min(1, 'At least one event slug is required'),
+  notifyPastAttendees: z.boolean().optional().default(false),
 })
 
 /**
@@ -295,18 +302,25 @@ export const approveEvent: RequestHandler = async (
   res: Response
 ) => {
   const { slug: collectionSlug } = req.params
-  const { eventSlug } = req.body
 
-  if (!eventSlug) {
-    res.status(400).json({ error: 'eventSlug is required' })
+  // Validate request body using Zod schema
+  const result = ApproveEventBody.safeParse(req.body)
+  if (!result.success) {
+    res.status(400).json({
+      error: 'Invalid request body',
+      details: result.error.errors,
+    })
     return
   }
+
+  const { eventSlug, notifyPastAttendees } = result.data
 
   try {
     const association = await approveEventOperation(
       collectionSlug,
       eventSlug,
-      req.user!.walletAddress
+      req.user!.walletAddress,
+      notifyPastAttendees
     )
     res.status(200).json(association)
     return
@@ -371,23 +385,25 @@ export const bulkApproveEvents: RequestHandler = async (
   res: Response
 ) => {
   const { slug: collectionSlug } = req.params
-  const parsedBody = ApproveEventsBody.safeParse(req.body)
 
-  if (!parsedBody.success) {
+  // Validate request body using Zod schema
+  const result = BulkApproveEventsBody.safeParse(req.body)
+  if (!result.success) {
     res.status(400).json({
       error: 'Invalid request body',
-      details: parsedBody.error.errors,
+      details: result.error.errors,
     })
     return
   }
 
-  const { eventSlugs } = parsedBody.data
+  const { eventSlugs, notifyPastAttendees } = result.data
 
   try {
     const associations = await bulkApproveEventsOperation(
       collectionSlug,
       eventSlugs,
-      req.user!.walletAddress
+      req.user!.walletAddress,
+      notifyPastAttendees
     )
     res.status(200).json(associations)
     return

@@ -7,6 +7,102 @@ import { sendEmail } from './wedlocksOperations'
 import config from '../config/config'
 import logger from '../logger'
 import { getPrivyUserByAddress } from './privyUserOperations'
+import { Op } from 'sequelize'
+import { subgraph } from '../config/subgraph'
+import * as userMetadataOperations from './userMetadataOperations'
+import { SubgraphService } from '@unlock-protocol/unlock-js'
+
+export interface Attendee {
+  owner: string
+  email?: string
+  name?: string
+}
+
+export interface EventApprovalProps {
+  collectionSlug: string
+  eventSlug: string
+  userAddress: string
+  notifyPastAttendees?: boolean
+}
+
+export interface BulkEventApprovalProps {
+  collectionSlug: string
+  eventSlugs: string[]
+  userAddress: string
+  notifyPastAttendees?: boolean
+}
+
+/**
+ * Retrieves key holders (attendees) for a specific lock.
+ * This fetches both the key data from the blockchain and any associated email/metadata.
+ *
+ * @param lockAddress - The address of the lock (event ticket).
+ * @param network - The network ID where the lock is deployed.
+ * @returns Array of attendee objects with owner address and available email/name.
+ */
+async function getKeyHoldersForLock(
+  lockAddress: string,
+  network: number
+): Promise<Attendee[]> {
+  try {
+    const subgraphService = new SubgraphService()
+
+    // Get keys from the subgraph
+    const keys = await subgraphService.keys({
+      first: 1000, // Limiting to 1000 keys for performance
+      where: {
+        lock: lockAddress.toLowerCase(),
+        expired: false, // Only active keys
+      },
+      network,
+    })
+
+    if (!keys || keys.length === 0) {
+      return []
+    }
+
+    const attendees: Attendee[] = []
+
+    // Process each key in batches to optimize metadata retrieval
+    const metadataPromises = keys.map(async (key) => {
+      const attendee: Attendee = {
+        owner: key.owner,
+      }
+
+      try {
+        // Check if we have any metadata for this key owner
+        const userMetadata = await userMetadataOperations.getMetadata({
+          lockAddress,
+          userAddress: key.owner,
+          network,
+        })
+
+        if (userMetadata) {
+          attendee.email = userMetadata.email
+          attendee.name =
+            userMetadata.fullname ||
+            (userMetadata.public && userMetadata.public.fullname)
+        }
+
+        return attendee
+      } catch (error) {
+        logger.error(
+          `Failed to get metadata for key owner ${key.owner}:`,
+          error
+        )
+        return attendee
+      }
+    })
+
+    const results = await Promise.all(metadataPromises)
+
+    // Only include attendees with email addresses
+    return results.filter((attendee: Attendee) => attendee.email)
+  } catch (error) {
+    logger.error(`Failed to get key holders for lock ${lockAddress}:`, error)
+    return []
+  }
+}
 
 // event collection body schema
 const EventCollectionBody = z.object({
@@ -374,12 +470,14 @@ export const addEventToCollectionOperation = async (
  * @param collectionSlug - The slug of the event collection.
  * @param eventSlug - The slug of the event to approve.
  * @param userAddress - The address of the user performing the operation.
+ * @param notifyPastAttendees - Whether to notify past event attendees.
  * @returns The updated association object.
  */
 export const approveEventOperation = async (
   collectionSlug: string,
   eventSlug: string,
-  userAddress: string
+  userAddress: string,
+  notifyPastAttendees = false
 ): Promise<EventCollectionAssociation> => {
   const collection = await EventCollection.findByPk(collectionSlug)
   if (!collection) {
@@ -410,23 +508,94 @@ export const approveEventOperation = async (
       where: { slug: eventSlug },
     })
 
-    if (event && association.submitterAddress) {
-      const submitterResult = await getPrivyUserByAddress(
-        association.submitterAddress
-      )
+    if (event) {
+      // Notify the submitter about the approval
+      if (association.submitterAddress) {
+        const submitterResult = await getPrivyUserByAddress(
+          association.submitterAddress
+        )
 
-      if (submitterResult.success && submitterResult.user?.email?.address) {
-        await sendEmail({
-          template: 'eventApprovedInCollection',
-          recipient: submitterResult.user.email.address,
-          params: {
-            eventName: event.name,
-            eventDate: event.data.startDate,
-            eventUrl: `${config.unlockApp}/event/${event.slug}`,
-            collectionName: collection.title,
-            collectionUrl: `${config.unlockApp}/events/${collection.slug}`,
-          },
-        })
+        if (submitterResult.success && submitterResult.user?.email?.address) {
+          await sendEmail({
+            template: 'eventApprovedInCollection',
+            recipient: submitterResult.user.email.address,
+            params: {
+              eventName: event.name,
+              eventDate: event.data.startDate,
+              eventUrl: `${config.unlockApp}/event/${event.slug}`,
+              collectionName: collection.title,
+              collectionUrl: `${config.unlockApp}/events/${collection.slug}`,
+            },
+          })
+        }
+      }
+
+      // If notifyPastAttendees is true, send notifications to past event attendees
+      if (notifyPastAttendees) {
+        // Find all approved events in this collection
+        const approvedEventAssociations =
+          await EventCollectionAssociation.findAll({
+            where: {
+              collectionSlug,
+              isApproved: true,
+              eventSlug: {
+                [Op.ne]: eventSlug, // Exclude the event being approved
+              },
+            },
+          })
+
+        // Get unique attendee email addresses from past events
+        const pastEventSlugs = approvedEventAssociations.map(
+          (association) => association.eventSlug
+        )
+
+        if (pastEventSlugs.length > 0) {
+          // Collect all past events attendees
+          for (const pastEventSlug of pastEventSlugs) {
+            try {
+              const pastEvent = await EventData.findOne({
+                where: { slug: pastEventSlug },
+              })
+
+              if (pastEvent && pastEvent.data.ticket?.event_address) {
+                const lockAddress = pastEvent.data.ticket.event_address
+                const network = pastEvent.data.ticket.network || 1 // Default to mainnet if not specified
+
+                // This should be replaced with actual code to get key holders (attendees) of the event
+                // Using a placeholder approach that would need to be implemented based on your data model
+                const attendees = await getKeyHoldersForLock(
+                  lockAddress,
+                  network
+                )
+
+                // Send email to each attendee
+                for (const attendee of attendees) {
+                  if (attendee.email) {
+                    await sendEmail({
+                      template: 'newEventInCollection',
+                      recipient: attendee.email,
+                      params: {
+                        attendeeName: attendee.name || 'there', // Fallback if name not available
+                        eventName: event.name,
+                        eventDate: event.data.startDate,
+                        eventUrl: `${config.unlockApp}/event/${event.slug}`,
+                        collectionName: collection.title,
+                        collectionUrl: `${config.unlockApp}/events/${collection.slug}`,
+                        pastEventName: pastEvent.name,
+                      },
+                    })
+                  }
+                }
+              }
+            } catch (error) {
+              logger.error(
+                `Error processing attendees for event ${pastEventSlug}:`,
+                error
+              )
+              // Continue with other events even if one fails
+            }
+          }
+        }
       }
     }
   } catch (error) {
@@ -514,12 +683,14 @@ export const removeEventFromCollectionOperation = async (
  * @param collectionSlug - The slug of the event collection.
  * @param eventSlugs - An array of event slugs to approve.
  * @param userAddress - The address of the user performing the operation.
+ * @param notifyPastAttendees - Whether to notify past event attendees.
  * @returns An array of updated association objects.
  */
 export const bulkApproveEventsOperation = async (
   collectionSlug: string,
   eventSlugs: string[],
-  userAddress: string
+  userAddress: string,
+  notifyPastAttendees = false
 ): Promise<EventCollectionAssociation[]> => {
   const collection = await EventCollection.findByPk(collectionSlug)
   if (!collection) {
@@ -542,12 +713,165 @@ export const bulkApproveEventsOperation = async (
     throw new Error('No events to approve')
   }
 
+  // First, update all associations to approved in a single operation if possible
+  const updatedAssociations = []
   for (const association of associations) {
     association.isApproved = true
     await association.save()
+    updatedAssociations.push(association)
   }
 
-  return associations
+  // Handle notifications if requested
+  if (notifyPastAttendees && associations.length > 0) {
+    try {
+      // Fetch the approved events data
+      const approvedEventSlugs = associations.map(
+        (association) => association.eventSlug
+      )
+
+      const approvedEvents = await EventData.findAll({
+        where: {
+          slug: approvedEventSlugs,
+        },
+      })
+
+      // Get all existing approved events in this collection (excluding the newly approved ones)
+      const existingApprovedAssociations =
+        await EventCollectionAssociation.findAll({
+          where: {
+            collectionSlug,
+            isApproved: true,
+            eventSlug: {
+              [Op.notIn]: approvedEventSlugs,
+            },
+          },
+        })
+
+      if (existingApprovedAssociations.length > 0) {
+        // Get past event slugs
+        const pastEventSlugs = existingApprovedAssociations.map(
+          (association) => association.eventSlug
+        )
+
+        // Map to store attendees to avoid duplicate notifications
+        const attendeeMap = new Map<
+          string,
+          { email: string; name?: string; pastEventName: string }
+        >()
+
+        // Collect all attendees from past events
+        if (pastEventSlugs.length > 0) {
+          for (const pastEventSlug of pastEventSlugs) {
+            try {
+              const pastEvent = await EventData.findOne({
+                where: { slug: pastEventSlug },
+              })
+
+              if (pastEvent && pastEvent.data.ticket?.event_address) {
+                const lockAddress = pastEvent.data.ticket.event_address
+                const network = pastEvent.data.ticket.network || 1
+
+                // Get attendees for this event
+                const attendees = await getKeyHoldersForLock(
+                  lockAddress,
+                  network
+                )
+
+                // Add to map with pastEventName
+                for (const attendee of attendees) {
+                  if (attendee.email && !attendeeMap.has(attendee.email)) {
+                    attendeeMap.set(attendee.email, {
+                      email: attendee.email,
+                      name: attendee.name,
+                      pastEventName: pastEvent.name,
+                    })
+                  }
+                }
+              }
+            } catch (error) {
+              logger.error(
+                `Error processing attendees for event ${pastEventSlug}:`,
+                error
+              )
+              // Continue with other events even if one fails
+            }
+          }
+        }
+
+        // Send notifications for each approved event to all unique attendees
+        for (const event of approvedEvents) {
+          // Only proceed if we have attendees and event data
+          if (attendeeMap.size > 0 && event) {
+            for (const [email, attendeeData] of attendeeMap.entries()) {
+              try {
+                await sendEmail({
+                  template: 'newEventInCollection',
+                  recipient: email,
+                  params: {
+                    attendeeName: attendeeData.name || 'there',
+                    eventName: event.name,
+                    eventDate: event.data.startDate,
+                    eventUrl: `${config.unlockApp}/event/${event.slug}`,
+                    collectionName: collection.title,
+                    collectionUrl: `${config.unlockApp}/events/${collection.slug}`,
+                    pastEventName: attendeeData.pastEventName,
+                  },
+                })
+              } catch (error) {
+                logger.error(
+                  `Failed to send notification email to ${email}:`,
+                  error
+                )
+                // Continue with other emails even if one fails
+              }
+            }
+          }
+        }
+      }
+
+      // Also notify the submitters of these events about approval
+      for (const association of associations) {
+        try {
+          const event = approvedEvents.find(
+            (e) => e.slug === association.eventSlug
+          )
+
+          if (event && association.submitterAddress) {
+            const submitterResult = await getPrivyUserByAddress(
+              association.submitterAddress
+            )
+
+            if (
+              submitterResult.success &&
+              submitterResult.user?.email?.address
+            ) {
+              await sendEmail({
+                template: 'eventApprovedInCollection',
+                recipient: submitterResult.user.email.address,
+                params: {
+                  eventName: event.name,
+                  eventDate: event.data.startDate,
+                  eventUrl: `${config.unlockApp}/event/${event.slug}`,
+                  collectionName: collection.title,
+                  collectionUrl: `${config.unlockApp}/events/${collection.slug}`,
+                },
+              })
+            }
+          }
+        } catch (error) {
+          logger.error(
+            `Failed to send approval notification for event ${association.eventSlug}:`,
+            error
+          )
+        }
+      }
+    } catch (error) {
+      logger.error('Failed to send bulk approval notifications:', error)
+      // Continue even if notifications fail
+    }
+  }
+
+  return updatedAssociations
 }
 
 /**
@@ -623,3 +947,15 @@ export const bulkRemoveEventsOperation = async (
     include: [{ model: EventData, as: 'events' }],
   })) as EventCollection
 }
+
+const EventCollectionOperations = {
+  createEventCollectionOperation,
+  addEventToCollectionOperation,
+  approveEventOperation,
+  removeEventFromCollectionOperation,
+  bulkApproveEventsOperation,
+  bulkRemoveEventsOperation,
+  getKeyHoldersForLock,
+}
+
+export default EventCollectionOperations
