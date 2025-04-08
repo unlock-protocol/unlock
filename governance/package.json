@@ -9,7 +9,7 @@
     "@gnosis-guild/zodiac-core": "2.0.5",
     "@matterlabs/hardhat-zksync-deploy": "1.7.0",
     "@matterlabs/hardhat-zksync-solc": "1.2.5",
-    "@matterlabs/hardhat-zksync-upgradable": "1.8.2",
+    "@matterlabs/hardhat-zksync-upgradable": "1.9.0",
     "@matterlabs/hardhat-zksync-verify": "1.7.1",
     "@nomicfoundation/hardhat-ethers": "3.0.8",
     "@nomicfoundation/hardhat-network-helpers": "1.0.12",
