@@ -98,6 +98,21 @@ vi.mock('../../src/operations/wedlocksOperations', () => ({
   }),
 }))
 
+// Add mock for privy user operations
+vi.mock('../../src/operations/privyUserOperations', () => ({
+  getPrivyUserByAddress: vi.fn().mockImplementation(async (address) => {
+    if (address === '0xSubmitter') {
+      return {
+        success: true,
+        user: {
+          email: { address: 'submitter@example.com' },
+        },
+      }
+    }
+    return { success: false, user: null }
+  }),
+}))
+
 describe('eventCollectionOperations', () => {
   let mockFindOne: ReturnType<typeof vi.fn>
   let scopedEventData: any
@@ -535,11 +550,20 @@ describe('eventCollectionOperations', () => {
 
     it('should handle errors gracefully', async () => {
       expect.assertions(1)
-      vi.mocked(SubgraphService).mockImplementationOnce(() => ({
-        keys: () => {
-          throw new Error('Subgraph error')
-        },
-      }))
+      // Provide a more complete mock for SubgraphService to satisfy types
+      const mockSubgraphService = {
+        keys: vi.fn().mockRejectedValue(new Error('Subgraph error')),
+        // Add other necessary methods if the function uses them
+        locks: vi.fn(),
+        key: vi.fn(),
+        keyHolders: vi.fn(),
+        lock: vi.fn(),
+        // ... add other methods as needed based on SubgraphService type
+      } as unknown as SubgraphService // Cast to bypass strict type checking in mock
+
+      vi.mocked(SubgraphService).mockImplementationOnce(
+        () => mockSubgraphService
+      )
 
       const attendees = await EventCollectionOperations.getKeyHoldersForLock(
         '0xLockAddress',
