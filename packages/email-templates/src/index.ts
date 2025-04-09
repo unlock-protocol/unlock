@@ -55,6 +55,7 @@ type Template =
   | 'eventDeniedInCollection'
   | 'eventSubmittedToCollectionManager'
   | 'eventSubmittedToCollectionSubmitter'
+  | 'newEventInCollection'
 
 export const EmailTemplates: Record<string, EmailTemplateProps> = {
   confirmEmail,
