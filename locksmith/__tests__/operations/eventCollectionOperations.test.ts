@@ -93,7 +93,9 @@ vi.mock('../../src/operations/userMetadataOperations', () => ({
 }))
 
 vi.mock('../../src/operations/wedlocksOperations', () => ({
-  sendEmail: vi.fn(),
+  sendEmail: vi.fn().mockImplementation((emailData) => {
+    console.log('Email sent:', emailData)
+  }),
 }))
 
 describe('eventCollectionOperations', () => {
