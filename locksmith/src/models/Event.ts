@@ -9,6 +9,8 @@ import { CheckoutConfig } from './checkoutConfig'
 import config from '../config/config'
 import { EventStatus } from '@unlock-protocol/types'
 
+export type EventType = 'unlock' | 'external'
+
 export class EventData extends Model<
   InferAttributes<EventData>,
   InferCreationAttributes<EventData>
@@ -24,6 +26,7 @@ export class EventData extends Model<
   declare eventUrl: string | null
   declare status: EventStatus
   declare transactionHash: string | null
+  declare eventType: CreationOptional<EventType>
 }
 
 EventData.init(
@@ -65,6 +68,9 @@ EventData.init(
     eventUrl: {
       type: DataTypes.VIRTUAL,
       get() {
+        if (this.getDataValue('eventType') === 'external') {
+          return this.getDataValue('data')?.external_url || null
+        }
         return `${config.unlockApp}/event/${this.getDataValue('slug')}`
       },
     },
@@ -76,6 +82,11 @@ EventData.init(
     transactionHash: {
       type: DataTypes.STRING,
       allowNull: true,
+    },
+    eventType: {
+      type: DataTypes.ENUM('unlock', 'external'),
+      defaultValue: 'unlock',
+      allowNull: false,
     },
   },
   {

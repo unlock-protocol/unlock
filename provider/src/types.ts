@@ -27,6 +27,19 @@ export interface Env {
 
   // KV namespace for caching contracts addresses
   ALLOWED_CONTRACTS?: KVNamespace
+
+  // KV namespace for caching requests
+  REQUEST_CACHE?: KVNamespace
+}
+
+/**
+ * Interface for RPC request format
+ */
+export interface RpcRequest {
+  id: number | string
+  jsonrpc: string
+  method: string
+  params: any[]
 }
 
 // Cloudflare Rate Limiting API interface
@@ -41,4 +54,48 @@ export enum ContractType {
   UNLOCK_PROTOCOL_CONTRACT = 'UNLOCK_PROTOCOL_CONTRACT',
   OTHER_CONTRACT = 'OTHER_CONTRACT',
   NOT_DEPLOYED = 'NOT_DEPLOYED',
+}
+
+/**
+ * Represents the result of processing a single RPC request
+ */
+export interface ProcessedRequest {
+  request: RpcRequest
+  response: any | null
+  shouldForward: boolean
+  rateLimited: boolean
+  shouldCache?: boolean
+  fromCache?: boolean
+}
+
+/**
+ * Represents the result of processing a batch of RPC requests
+ */
+export interface BatchProcessingResult {
+  processedRequests: ProcessedRequest[]
+  requestsToForward: RpcRequest[]
+}
+
+/**
+ * Result of forwarding requests to the provider
+ */
+export interface ForwardingResult {
+  responses?: any[]
+  error?: {
+    message: string
+    originalError: any
+  }
+}
+
+/**
+ * Result of processing and forwarding requests
+ */
+export interface ProcessingResult {
+  responses: any[]
+  isBatchRequest: boolean
+  error?: {
+    message: string
+    originalError: any
+    status?: number
+  }
 }

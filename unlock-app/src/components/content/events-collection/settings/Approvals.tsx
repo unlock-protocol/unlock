@@ -13,6 +13,7 @@ interface UnapprovedEvent {
   eventUrl: string
   id: number
   name: string
+  eventType: string
   data: {
     name: string
     slug: string
