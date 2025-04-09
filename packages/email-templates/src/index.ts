@@ -19,6 +19,8 @@ import eventApprovedInCollection from './templates/eventApprovedInCollection'
 import eventDeniedInCollection from './templates/eventDeniedInCollection'
 import eventSubmittedToCollectionManager from './templates/eventSubmittedToCollectionManager'
 import eventSubmittedToCollectionSubmitter from './templates/eventSubmittedToCollectionSubmitter'
+import newEventInCollection from './templates/newEventInCollection'
+
 export interface EmailTemplateProps {
   nowrap?: boolean
   subject: string
@@ -45,6 +47,7 @@ type Template =
   | 'eventDeniedInCollection'
   | 'eventSubmittedToCollectionManager'
   | 'eventSubmittedToCollectionSubmitter'
+  | 'newEventInCollection'
 
 export const EmailTemplates: Record<string, EmailTemplateProps> = {
   keyOwnership,
@@ -66,6 +69,7 @@ export const EmailTemplates: Record<string, EmailTemplateProps> = {
   eventDeniedInCollection,
   eventSubmittedToCollectionManager,
   eventSubmittedToCollectionSubmitter,
+  newEventInCollection,
 }
 
 const templates: Record<string, EmailTemplateProps> = {}
