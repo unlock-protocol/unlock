@@ -10574,12 +10574,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuintun/qrcode@npm:4.1.17":
-  version: 4.1.17
-  resolution: "@nuintun/qrcode@npm:4.1.17"
+"@nuintun/qrcode@npm:5.0.2":
+  version: 5.0.2
+  resolution: "@nuintun/qrcode@npm:5.0.2"
   dependencies:
     tslib: "npm:^2.8.1"
-  checksum: 10/d3a52b028b2c7b4157db1030b9aa91722a10bbeb2450a06aa2ac1c6441566d1fd0db75ed96cdca3a4859e64fec4f247fe022800be18c7415bec058e788a2e594
+  checksum: 10/bc4db29654ba03a8f819316043b11e8d288cb70a7c676e7c9b714f7313b948515bbeb265e1487f8057d1f39575abbdf013d0324b3fc60a4e5c52012fd851501f
   languageName: node
   linkType: hard
 
@@ -19194,7 +19194,7 @@ __metadata:
     "@guildxyz/sdk": "npm:2.6.9"
     "@logtail/node": "npm:0.5.2"
     "@logtail/winston": "npm:0.5.2"
-    "@nuintun/qrcode": "npm:4.1.17"
+    "@nuintun/qrcode": "npm:5.0.2"
     "@openzeppelin/defender-sdk": "npm:2.4.0"
     "@openzeppelin/merkle-tree": "npm:1.0.8"
     "@privy-io/server-auth": "npm:1.17.1"
