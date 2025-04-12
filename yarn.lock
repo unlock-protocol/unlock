@@ -19008,7 +19008,7 @@ __metadata:
     tsup: "npm:8.4.0"
     tsx: "npm:4.19.3"
     typescript: "npm:5.8.2"
-    vite: "npm:6.2.5"
+    vite: "npm:6.2.6"
     vite-plugin-svgr: "npm:4.3.0"
     vite-tsconfig-paths: "npm:4.3.2"
   peerDependencies:
@@ -19304,7 +19304,7 @@ __metadata:
     next: "npm:14.2.26"
     prettier: "npm:3.5.3"
     typescript: "npm:5.8.2"
-    vite: "npm:6.2.5"
+    vite: "npm:6.2.6"
     vite-plugin-node-polyfills: "npm:0.23.0"
   languageName: unknown
   linkType: soft
@@ -19322,7 +19322,7 @@ __metadata:
     postmate: "npm:1.5.2"
     tsup: "npm:8.4.0"
     typescript: "npm:5.8.2"
-    vite: "npm:6.2.5"
+    vite: "npm:6.2.6"
     vite-plugin-css-injected-by-js: "npm:3.5.2"
     vite-plugin-node-polyfills: "npm:0.23.0"
     vitest: "npm:3.1.1"
@@ -19464,7 +19464,7 @@ __metadata:
     tsx: "npm:4.19.3"
     typescript: "npm:5.8.2"
     url-loader: "npm:4.1.1"
-    vite: "npm:6.2.5"
+    vite: "npm:6.2.6"
     vite-plugin-node-polyfills: "npm:0.23.0"
     vite-plugin-svgr: "npm:4.3.0"
     vite-tsconfig-paths: "npm:4.3.2"
@@ -52804,7 +52804,59 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:6.2.5, vite@npm:^5.0.0 || ^6.0.0":
+"vite@npm:6.2.6":
+  version: 6.2.6
+  resolution: "vite@npm:6.2.6"
+  dependencies:
+    esbuild: "npm:^0.25.0"
+    fsevents: "npm:~2.3.3"
+    postcss: "npm:^8.5.3"
+    rollup: "npm:^4.30.1"
+  peerDependencies:
+    "@types/node": ^18.0.0 || ^20.0.0 || >=22.0.0
+    jiti: ">=1.21.0"
+    less: "*"
+    lightningcss: ^1.21.0
+    sass: "*"
+    sass-embedded: "*"
+    stylus: "*"
+    sugarss: "*"
+    terser: ^5.16.0
+    tsx: ^4.8.1
+    yaml: ^2.4.2
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  peerDependenciesMeta:
+    "@types/node":
+      optional: true
+    jiti:
+      optional: true
+    less:
+      optional: true
+    lightningcss:
+      optional: true
+    sass:
+      optional: true
+    sass-embedded:
+      optional: true
+    stylus:
+      optional: true
+    sugarss:
+      optional: true
+    terser:
+      optional: true
+    tsx:
+      optional: true
+    yaml:
+      optional: true
+  bin:
+    vite: bin/vite.js
+  checksum: 10/d8fb01a190e31fcf2189e028aed444d68255b5397d5e2c52fa73f8a0de0b052b06fbbe3793c88e7992f4297832336a23cf8bec14c88b9c2ef8aa0bce98219e50
+  languageName: node
+  linkType: hard
+
+"vite@npm:^5.0.0 || ^6.0.0":
   version: 6.2.5
   resolution: "vite@npm:6.2.5"
   dependencies:
