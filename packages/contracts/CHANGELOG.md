@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.0.34
+
+Default alias for exported version under `PUBLICLOCK_LATEST_VERSION` and `UNLOCK_LATEST_VERSION` now points to v15 and v14
+
 ## 0.0.33
 
 - fixes typos in docstring that prevents docgen from generating proper docs
