@@ -15,7 +15,7 @@ For example, a newsletter publisher may want to email updates to subscribers. We
 
 # Broader Availability of Metadata Collection
 
-Today we're proud to announce an extension to our embeddable Paywall application which allows creators to specify a number of form fields which should be presented to the purchaser before the purchase transaction begins. The technology behind this is our metadata system which we've already used behind-the-scenes in a few places. If you're already familiar with our Paywall, you can learn how to add metadata to your existing configuration [here](https://docs.unlock-protocol.com/tools/paywall/collecting-metadata). For everyone else, the remainder of this post is a worked example.
+Today we're proud to announce an extension to our embeddable Paywall application which allows creators to specify a number of form fields which should be presented to the purchaser before the purchase transaction begins. The technology behind this is our metadata system which we've already used behind-the-scenes in a few places. If you're already familiar with our Paywall, you can learn how to add metadata to your existing configuration [here](https://docs.unlock-protocol.com/tools/checkout/collecting-metadata). For everyone else, the remainder of this post is a worked example.
 
 # Collecting Information From Purchasers
 
