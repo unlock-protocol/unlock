@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueries } from '@tanstack/react-query'
 import configure from '~/config'
 import { L2_RESOLVER_ADDRESS, L2_RESOLVER_ABI } from '~/utils/baseResolver'
 import { limitFunction } from 'p-limit'
@@ -8,6 +8,10 @@ import ensProvider from '~/utils/ensProvider'
 const config = configure()
 
 const maxConcurrency = 10
+
+// cache constants
+const NAME_STALE_TIME = 1 * 24 * 60 * 60 * 1000
+const NAME_CACHE_TIME = 1 * 24 * 60 * 60 * 1000
 
 const BasenameContract = new ethers.Contract(
   L2_RESOLVER_ADDRESS,
@@ -110,41 +114,27 @@ export const resolveAddress = async (
   }
 }
 
-// cache for resolved names
-const nameResolutionCache: Record<string, { name: string; timestamp: number }> =
-  {}
-const CACHE_DURATION = 30 * 60 * 1000 // 30 minutes
-
+/**
+ * Resolves a batch of addresses using React Query's cache.
+ * Streams updates as each address is resolved.
+ * @param addresses Array of addresses to resolve
+ * @returns Record of addresses to resolved names
+ */
 export const batchNameResolver = async (
   addresses: string[]
 ): Promise<Record<string, string>> => {
+  // Remove duplicates
   const uniqueAddresses = Array.from(new Set(addresses))
   const resolvedMap: Record<string, string> = {}
-  const now = Date.now()
 
-  // Filter addresses that need resolution
-  const addressesToResolve = uniqueAddresses.filter((address) => {
-    const cached = nameResolutionCache[address]
-    if (cached && now - cached.timestamp < CACHE_DURATION) {
-      resolvedMap[address] = cached.name
-      return false
-    }
-    return true
-  })
-
-  // Resolve remaining addresses in batches
+  // Resolve addresses in parallel but process in batches
   const batchSize = 5
-  for (let i = 0; i < addressesToResolve.length; i += batchSize) {
-    const batch = addressesToResolve.slice(i, i + batchSize)
+  for (let i = 0; i < uniqueAddresses.length; i += batchSize) {
+    const batch = uniqueAddresses.slice(i, i + batchSize)
     await Promise.all(
       batch.map(async (address) => {
         const resolved = await resolveAddress(address)
-        nameResolutionCache[address] = {
-          name: resolved,
-          timestamp: now,
-        }
         resolvedMap[address] = resolved
-        return resolved
       })
     )
   }
@@ -189,8 +179,8 @@ export const useNameResolver = (
   skipResolution: boolean = false
 ) => {
   const queryParams = {
-    staleTime: Infinity,
-    cacheTime: Infinity,
+    staleTime: NAME_STALE_TIME,
+    gcTime: NAME_CACHE_TIME,
     retry: 0,
     refetchOnWindowFocus: false,
     retryOnMount: false,
@@ -198,24 +188,100 @@ export const useNameResolver = (
     refetchOnReconnect: false,
   }
 
-  const { data: ensName, isPending: isEnsNameLoading } = useQuery({
-    queryKey: ['ensName', address],
-    queryFn: () => getEnsName(address),
-    enabled: !!address && !skipResolution,
-    ...queryParams,
+  const results = useQueries({
+    queries: [
+      {
+        queryKey: ['ensName', address],
+        queryFn: () => getEnsName(address),
+        enabled: !!address && !skipResolution,
+        ...queryParams,
+      },
+      {
+        queryKey: ['baseName', address],
+        queryFn: () => getBaseName(address),
+        enabled: !!address && !skipResolution,
+        ...queryParams,
+      },
+    ],
   })
 
-  const { data: baseName, isPending: isBaseNameLoading } = useQuery({
-    queryKey: ['baseName', address],
-    queryFn: () => getBaseName(address),
-    enabled: !!address && !skipResolution,
-    ...queryParams,
-  })
+  const [ensResult, baseResult] = results
 
   return {
-    ensName: skipResolution ? undefined : ensName,
-    baseName: skipResolution ? undefined : baseName,
-    isEnsNameLoading,
-    isBaseNameLoading,
+    ensName: skipResolution ? undefined : ensResult.data,
+    baseName: skipResolution ? undefined : baseResult.data,
+    isEnsNameLoading: ensResult.isPending,
+    isBaseNameLoading: baseResult.isPending,
+  }
+}
+
+/**
+ * Custom hook for resolving a single address using React Query.
+ * Uses the query cache for efficient resolution.
+ * @param address Address to resolve
+ * @param preferredResolver Preferred resolution method
+ * @param skipResolution Whether to skip resolution
+ * @returns Object with resolved name and loading state
+ */
+export const useResolvedName = (
+  address: string | undefined,
+  preferredResolver: 'ens' | 'base' | 'multiple' = 'multiple',
+  skipResolution: boolean = false
+) => {
+  const { data: resolvedName, isPending: isLoading } = useQuery({
+    queryKey: ['resolvedName', address, preferredResolver],
+    queryFn: async () => {
+      if (!address) return undefined
+      return resolveAddress(address, preferredResolver)
+    },
+    enabled: !!address && !skipResolution,
+    staleTime: NAME_STALE_TIME,
+    gcTime: NAME_CACHE_TIME,
+    refetchOnWindowFocus: false,
+  })
+
+  return { resolvedName, isLoading }
+}
+
+/**
+ * Custom hook for batch resolving multiple addresses efficiently
+ * Updates names as they resolve, allowing UI to update incrementally
+ */
+export const useBatchNameResolver = (
+  addresses: string[],
+  skipResolution: boolean = false
+) => {
+  const uniqueAddresses = Array.from(new Set(addresses.filter(Boolean)))
+
+  const results = useQueries({
+    queries: uniqueAddresses.map((address) => ({
+      queryKey: ['resolvedName', address, 'multiple'],
+      queryFn: () => {
+        return resolveAddress(address, 'multiple')
+      },
+      staleTime: NAME_STALE_TIME,
+      gcTime: NAME_CACHE_TIME,
+      enabled: !skipResolution && !!address,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    })),
+  })
+
+  const resolvedNames = results.reduce(
+    (acc, result, index) => {
+      const address = uniqueAddresses[index]
+      // Use the resolved name if available, otherwise default to the original address
+      acc[address] = result.data || address
+      return acc
+    },
+    {} as Record<string, string>
+  )
+
+  // The hook is loading if any of the individual queries are pending
+  const isLoading = results.some((result) => result.isPending)
+
+  return {
+    resolvedNames,
+    isLoading,
   }
 }

@@ -67,27 +67,27 @@ const query = `query Locks($owner: String!) {
       version
     }
   }
-}`;
+}`
 
 // We set the variable's value to the user's address
-const variables = { owner: userAddress };
+const variables = { owner: userAddress }
 
 // We send a POST request to the subgraph endpoint of our choice (change if using a different network!)
 // The body of the request must include a stringified version of and object built with the query and variables
 const result = await fetch(
-  "https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock",
+  'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock',
   {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
     },
     body: JSON.stringify({
       query,
       variables,
     }),
   }
-).then((r) => r.json());
+).then((r) => r.json())
 ```
 
 The `result` variable will be populated with the result of the query. It will be an array, with all of the information that was retrieved, and matching the query's format. More specifically, here it includes the following: a `data` object that includes a single property: `lockManagers` and a list of matching locks!
@@ -99,7 +99,7 @@ The `result` variable will be populated with the result of the query. It will be
       {
         "id": "0x3ba39a6185ac5d35927e6166255bebee9f61112d",
         "address": "0x3ba39a6185ac5d35927e6166255bebee9f61112d",
-        "name": "First Goerli Lock",
+        "name": "First Lock",
         "lockManagers": ["0xdd8e2548da5a992a63ae5520c6bc92c37a2bcc44"],
         "price": "70000000000000000",
         "tokenAddress": "0x0000000000000000000000000000000000000000",
@@ -109,7 +109,7 @@ The `result` variable will be populated with the result of the query. It will be
       {
         "id": "0x874161a65ab3341b958c815cc933b9868ac4790e",
         "address": "0x874161a65ab3341b958c815cc933b9868ac4790e",
-        "name": "Second Goerli lock",
+        "name": "Second lock",
         "lockManagers": ["0xdd8e2548da5a992a63ae5520c6bc92c37a2bcc44"],
         "price": "10000000000000000",
         "tokenAddress": "0x0000000000000000000000000000000000000000",
