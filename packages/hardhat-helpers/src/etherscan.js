@@ -19,6 +19,7 @@ const etherscan = {
     linea: 'S66J314Q7PICPB4RP2G117KDFQRBEUYIFX',
     polygonZkEVM: '8H4ZB9SQBMQ7WA1TCIXFQVCHTVX8DXTY9Y',
     scroll: 'BZEXNPN6KKKJQ8VIMNXZDZNEX7QQZWZQ3P',
+    zksyncmainnet: 'DA4PRV1SXC8SKKPYYUEWE82XHX4I92Z2DI',
   },
   // TODO : generate from networks package!
   customChains: [
