@@ -17,10 +17,10 @@ const fetchGraph = async (query, url = THE_GRAPH_URL) => {
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
+      Authorization: `Bearer ${process.env.SUBGRAPH_QUERY_API_KEY}`,
     },
     body: JSON.stringify({ query }),
   })
-
   return await req.json()
 }
 
@@ -36,11 +36,21 @@ const getLatestDeployment = async (url) => {
   return deployment
 }
 
+const getGraphId = async (chainId) => {
+  const url = `https://subgraph.unlock-protocol.com/${chainId}`
+  const response = await fetch(url, {
+    // prevent redirect
+    redirect: 'manual',
+  })
+  const { graphId } = await response.json()
+  return graphId
+}
+
 const checkHealth = async ({ id, name, subgraph }) => {
   const errors = []
 
-  const { graphId } = subgraph
-  const subgraphUrl = `https://thegraph.com/explorer/subgraphs/${graphId}?view=Query`
+  const graphId = await getGraphId(id)
+  const subgraphUrl = `https://gateway.thegraph.com/api/subgraphs/id/${graphId}`
 
   // get latest deployment id
   let deploymentId
