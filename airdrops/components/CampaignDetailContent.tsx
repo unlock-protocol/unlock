@@ -3,7 +3,16 @@ import { StandardMerkleTree } from '@openzeppelin/merkle-tree'
 import { AbiCoder, ethers } from 'ethers'
 import { usePrivy, useWallets } from '@privy-io/react-auth'
 import { Container } from './layout/Container'
-import { Button, Checkbox, ToastHelper } from '@unlock-protocol/ui'
+import {
+  Button,
+  Checkbox,
+  ToastHelper,
+  isAddressOrEns,
+  ToggleSwitch,
+  Combobox,
+  minifyAddress,
+  isAddress,
+} from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
@@ -13,6 +22,13 @@ import ReactMarkdown from 'react-markdown'
 import { terms } from '../src/utils/terms'
 import { UPAirdrops } from '@unlock-protocol/contracts'
 import { useEligibility } from './hooks/useEligibility'
+import { useDelegation } from './hooks/useDelegation'
+import { Web3Service } from '@unlock-protocol/unlock-js'
+import { networks } from '@unlock-protocol/networks'
+import { communityStewards } from '../src/utils/stewards'
+import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
+import { FaSpinner, FaCheckCircle as CheckIcon } from 'react-icons/fa'
+import { useDelegationReducer } from '../src/reducers/delegation'
 
 interface CampaignDetailContentProps {
   airdrop: AirdropData
@@ -68,6 +84,7 @@ export default function CampaignDetailContent({
   const { authenticated } = usePrivy()
   const { wallets } = useWallets()
   const [termsOfServiceSignature, setTermsOfServiceSignature] = useState('')
+  const { state, actions } = useDelegationReducer()
 
   useEffect(() => {
     setTermsOfServiceSignature('')
@@ -78,9 +95,36 @@ export default function CampaignDetailContent({
     refetch,
   } = useEligibility(airdrop)
 
+  const {
+    data: { hasDelegated },
+    refetch: refetchDelegation,
+  } = useDelegation(airdrop)
+
   const eligibleFormatted = eligible
     ? ethers.formatUnits(eligible, airdrop.token?.decimals)
     : ''
+
+  const onResolveName = async (address: string) => {
+    if (address.length === 0) return null
+    try {
+      actions.startResolving()
+      const web3Service = new Web3Service(networks)
+      const result = await web3Service.resolveName(address)
+      let resolvedAddress = null
+      if (result) {
+        resolvedAddress = result?.address
+      } else {
+        actions.setDelegateError(true)
+      }
+      actions.finishResolving()
+      return resolvedAddress
+    } catch (error) {
+      console.error('Error resolving ENS name:', error)
+      actions.setDelegateError(true)
+      actions.finishResolving()
+      return null
+    }
+  }
 
   const onBoxChecked = async () => {
     if (!termsOfServiceSignature) {
@@ -119,6 +163,48 @@ export default function CampaignDetailContent({
       setTermsOfServiceSignature(signature)
     } else {
       setTermsOfServiceSignature('')
+    }
+  }
+
+  const onDelegate = async () => {
+    try {
+      actions.startDelegating()
+      const provider = await wallets[0].getEthereumProvider()
+      const ethersProvider = new ethers.BrowserProvider(provider)
+      const signer = await ethersProvider.getSigner()
+
+      await wallets[0].switchChain(airdrop.chainId)
+
+      const tokenAbi = ['function delegate(address delegatee) external']
+      const tokenContract = new ethers.Contract(
+        airdrop.token.address,
+        tokenAbi,
+        signer
+      )
+      const delegatee = state.isSelfDelegate
+        ? wallets[0].address
+        : state.delegateAddress
+
+      if (!ethers.isAddress(delegatee)) {
+        throw new Error('Invalid delegate address')
+      }
+
+      const delegatePromise = async () => {
+        const tx = await tokenContract.delegate(delegatee)
+        await tx.wait()
+        await refetchDelegation()
+        return
+      }
+
+      await ToastHelper.promise(delegatePromise(), {
+        loading: 'Delegating your tokens...',
+        success: `Successfully delegated voting power to ${state.isSelfDelegate ? 'yourself' : delegatee}!`,
+        error: 'Failed to delegate tokens. Please try again.',
+      })
+    } catch (error) {
+      console.error(error)
+    } finally {
+      actions.finishDelegating()
     }
   }
 
@@ -225,14 +311,122 @@ export default function CampaignDetailContent({
 
                   {!claimed ? (
                     <>
-                      {' '}
+                      {!hasDelegated && (
+                        <div className="p-4 mb-4 border rounded-lg bg-yellow-50 border-yellow-200">
+                          <p className="mb-4 text-yellow-800">
+                            Before claiming your tokens, you need to delegate
+                            your voting power. This helps secure the protocol by
+                            allowing you to participate in governance.
+                          </p>
+
+                          {/* delegation UI with ToggleSwitch */}
+                          <div className="space-y-4 mt-4">
+                            <div className="flex items-center justify-between">
+                              <span className="text-sm font-medium text-gray-700">
+                                Delegate to yourself
+                              </span>
+                              <ToggleSwitch
+                                enabled={state.isSelfDelegate}
+                                setEnabled={(enabled) =>
+                                  actions.setSelfDelegate(enabled)
+                                }
+                              />
+                            </div>
+
+                            {!state.isSelfDelegate && (
+                              <div className="mt-4 space-y-4">
+                                <Combobox
+                                  options={communityStewards.map((steward) => ({
+                                    label: `${steward.name} - ${minifyAddress(steward.address)}`,
+                                    value: steward.address,
+                                  }))}
+                                  placeholder="Select a community steward or enter an address"
+                                  onChange={async (value, isCustom) => {
+                                    const data = value.toString()
+                                    if (isCustom) {
+                                      const userAddress =
+                                        await onResolveName(data)
+                                      if (!isAddress(userAddress)) {
+                                        return actions.setDelegateError(true)
+                                      }
+                                      actions.setDelegateAddress(
+                                        userAddress.toString()
+                                      )
+                                    }
+                                  }}
+                                  onSelect={(option) => {
+                                    actions.setDelegateAddress(
+                                      option.value.toString()
+                                    )
+                                    actions.clearDelegateError()
+                                  }}
+                                  customOption={true}
+                                  disabled={state.delegating}
+                                  description={
+                                    <div className="mt-1">
+                                      {state.isResolving ? (
+                                        <div className="flex items-center text-sm text-gray-600">
+                                          <FaSpinner className="animate-spin h-4 w-4 mr-2" />
+                                          Resolving address...
+                                        </div>
+                                      ) : state.delegateAddress &&
+                                        !state.delegateAddressError ? (
+                                        <div className="p-2 border rounded-md border-green-200 bg-green-50">
+                                          <p className="text-sm text-green-700 flex items-center">
+                                            <CheckIcon className="h-4 w-4 mr-1" />
+                                            Delegating to:{' '}
+                                            {minifyAddress(
+                                              state.delegateAddress
+                                            )}
+                                          </p>
+                                        </div>
+                                      ) : state.delegateAddressError ? (
+                                        <p className="text-sm text-red-500 flex items-center">
+                                          <ErrorIcon className="h-4 w-4 mr-1" />
+                                          Enter a valid address or ENS name
+                                        </p>
+                                      ) : null}
+                                    </div>
+                                  }
+                                />
+                              </div>
+                            )}
+                          </div>
+
+                          <Button
+                            className="mt-4"
+                            onClick={onDelegate}
+                            loading={state.delegating}
+                            disabled={
+                              state.delegating ||
+                              (!state.isSelfDelegate &&
+                                (!state.delegateAddress ||
+                                  !isAddressOrEns(state.delegateAddress) ||
+                                  state.delegateAddressError))
+                            }
+                          >
+                            Delegate Voting Power
+                          </Button>
+                        </div>
+                      )}
+
+                      {hasDelegated && (
+                        <div className="p-4 mb-4 border rounded-lg bg-green-50 border-green-200">
+                          <p className="text-green-800">
+                            ✅ You have delegated your voting power. You can now
+                            claim your tokens.
+                          </p>
+                        </div>
+                      )}
+
                       <Checkbox
                         label="I have read and agree to the Airdrop Terms and Conditions"
                         checked={!!termsOfServiceSignature}
                         onChange={onBoxChecked}
+                        disabled={!hasDelegated}
                       />
                       <Button
-                        disabled={!termsOfServiceSignature}
+                        disabled={!termsOfServiceSignature || !hasDelegated}
                         onClick={onClaim}
                       >
                         Claim Tokens
