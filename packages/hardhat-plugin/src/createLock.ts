@@ -84,7 +84,7 @@ export async function createLock(
     version < 14
       ? 'createUpgradeableLockAtVersion(bytes,uint16)'
       : 'createUpgradeableLockAtVersion(bytes,uint16,bytes[])'
-  const tx = await unlock[sig](...createLockArgs)
+  const tx = await unlock.getFunction(sig)(...createLockArgs)
   const { logs, hash: transactionHash } = await tx.wait()
   const { args } = logs.find(
     ({ fragment }: any) => fragment && fragment.name === 'NewLock'
