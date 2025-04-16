@@ -8,17 +8,30 @@ jobs:
   run-all-tests:
     uses: ./.github/workflows/_tests.yml
 
-  deploy-locksmith-staging:
+  deploy-locksmith-web-staging:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
+    name: Deploy locksmith web on Railway (Staging)
     needs: run-all-tests
-    uses: ./.github/workflows/_heroku.yml
+    uses: ./.github/workflows/_railway.yml
     with:
+      service: locksmith-web
+      service-id: op://secrets/railway/locksmith-web-staging-service-id
       bypass_diff_check: bypass
-      service: locksmith
-      app-name: unlock-locksmith-staging
     secrets:
-      HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
-      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      railway-token: op://secrets/railway/railway-token
+      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+
+  deploy-locksmith-worker-staging:
+    if: ${{ github.repository_owner == 'unlock-protocol' }}
+    name: Deploy locksmith worker on Railway (Staging)
+    needs: run-all-tests
+    uses: ./.github/workflows/_railway.yml
+    with:
+      service: locksmith-worker
+      service-id: op://secrets/railway/locksmith-worker-staging-service-id
+      bypass_diff_check: bypass
+    secrets:
+      railway-token: op://secrets/railway/railway-token
       OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
   # Vercel Deployments
@@ -81,7 +94,6 @@ jobs:
       SMTP_HOST: ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SMTP_HOST }}
       SMTP_USERNAME: ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SMTP_USERNAME }}
       SMTP_PASSWORD: ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SMTP_PASSWORD }}
-      BASE64_WEDLOCKS_PRIVATE_KEY: ${{ secrets.WEDLOCKS_NETLIFY_STAGING_BASE64_WEDLOCKS_PRIVATE_KEY }}
 
   deploy-unlock-app-vercel:
     needs: run-all-tests
@@ -100,9 +112,6 @@ jobs:
           UNLOCK_APP_VERCEL_STAGING_VERCEL_PROJECT_ID: op://secrets/vercel/project-id-unlock-app-staging
           UNLOCK_APP_VERCEL_STAGING_VERCEL_ORG_ID: op://secrets/vercel/org-id
           UNLOCK_APP_VERCEL_STAGING_VERCEL_TOKEN: op://secrets/vercel/deployment-token
-          UNLOCK_APP_VERCEL_STAGING_NEXT_PUBLIC_BASE64_WEDLOCKS_PUBLIC_KEY: op://secrets/wedlocks/public-key
-          UNLOCK_APP_VERCEL_STAGING_GOOGLE_CLIENT_SECRET: op://secrets/google/staging-secret
-          UNLOCK_APP_VERCEL_STAGING_NEXTAUTH_SECRET: op://secrets/nextauth/staging-secret
       - uses: ./.github/actions/vercel
         with:
           service: unlock-app
