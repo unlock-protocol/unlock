@@ -1,18 +1,19 @@
-# ILockKeyTransferHook
+# Solidity API
+
+## ILockKeyTransferHook
 
 Functions to be implemented by a hasValidKey Hook.
 
 _Lock hooks are configured by calling `setEventHooks` on the lock._
 
-## Methods
-
 ### onKeyTransfer
 
 ```solidity
-function onKeyTransfer(address lockAddress, uint256 tokenId, address operator, address from, address to, uint256 expirationTimestamp) external nonpayable
+function onKeyTransfer(address lockAddress, uint256 tokenId, address operator, address from, address to, uint256 expirationTimestamp) external
 ```
 
-If the lock owner has registered an implementer then this hook is called every time balanceOf is called
+If the lock owner has registered an implementer then this hook
+is called every time balanceOf is called
 
 #### Parameters
 

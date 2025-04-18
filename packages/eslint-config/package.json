@@ -17,22 +17,22 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@babel/eslint-parser": "7.26.5",
-    "@eslint/compat": "1.2.7",
-    "@typescript-eslint/eslint-plugin": "8.25.0",
-    "@typescript-eslint/parser": "8.25.0",
-    "@vitest/eslint-plugin": "1.1.36",
-    "eslint": "9.21.0",
-    "eslint-config-next": "15.2.2",
-    "eslint-config-prettier": "10.0.2",
+    "@babel/eslint-parser": "7.27.0",
+    "@eslint/compat": "1.2.8",
+    "@typescript-eslint/eslint-plugin": "8.29.0",
+    "@typescript-eslint/parser": "8.29.0",
+    "@vitest/eslint-plugin": "1.1.39",
+    "eslint": "9.23.0",
+    "eslint-config-next": "15.2.4",
+    "eslint-config-prettier": "10.1.1",
     "eslint-plugin-evm-address-to-checksummed": "0.0.6",
     "eslint-plugin-json": "4.0.1",
     "eslint-plugin-mocha": "10.5.0",
-    "eslint-plugin-prettier": "5.2.3",
+    "eslint-plugin-prettier": "5.2.6",
     "typescript": "5.8.2"
   },
   "devDependencies": {
     "globals": "16.0.0",
-    "vitest": "2.1.9"
+    "vitest": "3.1.1"
   }
 }

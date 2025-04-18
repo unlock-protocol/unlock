@@ -20,6 +20,9 @@ vi.mock('@privy-io/react-auth', () => ({
       },
     ],
   }),
+  useConnectWallet: () => ({
+    connectWallet: vi.fn(),
+  }),
 }))
 
 let emit = vi.fn()
@@ -33,7 +36,9 @@ vi.mock('~/utils/iframe', async () => {
 describe('useCheckoutCommunication', () => {
   beforeEach(() => {
     emit = vi.fn()
-    vi.spyOn(Postmate, 'Model').mockResolvedValue({ emit })
+    vi.spyOn(Postmate, 'Model').mockImplementation(() =>
+      Promise.resolve({ emit })
+    )
   })
 
   it('emits a userInfo event when emitUserInfo is called', async () => {

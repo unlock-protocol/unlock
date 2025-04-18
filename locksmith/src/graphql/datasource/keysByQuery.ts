@@ -53,8 +53,8 @@ const locksByFilter = async ({
 
   if (filter === 'expired') {
     keyFilter.expiration_lt = expireTimestamp // all expired keys
-  } else {
-    keyFilter.expiration_gt = expireTimestamp // all non expired keys
+  } else if (expireTimestamp && expireTimestamp > 0) {
+    keyFilter.expiration_gte = expireTimestamp // all non expired keys
   }
 
   if (owners?.length) {

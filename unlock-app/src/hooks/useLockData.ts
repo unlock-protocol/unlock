@@ -36,6 +36,7 @@ export const useLockData = ({ lockAddress, network }: Options) => {
       }
     },
     refetchInterval: false,
+    enabled: !!lockAddress && !!network,
   })
   return {
     lock,
