@@ -15,8 +15,8 @@ nonMembersOnly: |
 
 On June 21st, 2019, the team at [Betaworks Studios](https://betaworks-studios.com/) invited us to talk about Non Fungible Tokens.
 
-They are a type of crypto token which aims at represented unique (or rare) "things". This is intentionnaly vague because they can be used to represent many many things, both virtual and physical.
+They are a type of crypto token which aims at represented unique (or rare) "things". This is intentionnaly vague because they can be used to represent many things, both virtual and physical.
 
 For example, Non Fungible Tokens can be used to represent membership. If you are a member to Unlock's blog, then you own a Non Fungible Token called a "key".
 
-Among other things, this key will let you access access the slides of the presentation below!
+Among other things, this key will let you access the slides of the presentation below!
