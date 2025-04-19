@@ -14,6 +14,7 @@ import EventCollectionOperations from '../../src/operations/eventCollectionOpera
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { sendEmail } from '../../src/operations/wedlocksOperations'
 import { getPrivyUserByAddress } from '../../src/operations/privyUserOperations'
+import { getMetadata } from '../../src/operations/userMetadataOperations'
 
 // interface for link types
 interface Link {
@@ -120,6 +121,40 @@ describe('eventCollectionOperations', () => {
 
   beforeEach(() => {
     vi.resetAllMocks() // Reset mocks before each test
+
+    // Re-apply global mocks needed by multiple tests after reset
+    vi.mocked(SubgraphService).mockImplementation(
+      () =>
+        ({
+          keys: vi.fn().mockResolvedValue([
+            { owner: '0x123', expired: false },
+            { owner: '0x456', expired: false },
+          ]),
+          locks: vi.fn(),
+          key: vi.fn(),
+          keyHolders: vi.fn(),
+          lock: vi.fn(),
+          // Add other necessary methods if needed, or cast to bypass strict type checking
+        }) as unknown as SubgraphService
+    )
+
+    vi.mocked(getMetadata).mockImplementation(
+      async (_tokenAddress, userAddress) => {
+        if (userAddress === '0x123') {
+          return {
+            email: 'user1@example.com',
+            fullname: 'User One',
+          }
+        }
+        if (userAddress === '0x456') {
+          return {
+            email: 'user2@example.com',
+            public: { fullname: 'User Two' }, // Assuming public is nested
+          }
+        }
+        return null
+      }
+    )
 
     // Mock the scoped EventData
     mockFindOne = vi.fn()
@@ -613,6 +648,36 @@ describe('eventCollectionOperations', () => {
         submitterAddress: '0xSubmitter',
         update: vi.fn(),
       })
+      // Mock findAll to return a different approved event for past attendee check
+      EventCollectionAssociation.findAll = vi.fn().mockResolvedValue([
+        {
+          eventSlug: 'past-event',
+          collectionSlug: 'test-collection',
+          isApproved: true,
+        },
+      ])
+      // Mock EventData.findOne for the past event's details
+      vi.mocked(EventData.findOne).mockImplementation(async (options) => {
+        // Cast where to any to access slug directly
+        const slug = (options?.where as any)?.slug
+
+        if (slug === 'test-event') {
+          return mockEvent as any // Cast mock return
+        }
+        if (slug === 'past-event') {
+          return {
+            slug: 'past-event',
+            name: 'Past Event',
+            data: {
+              ticket: {
+                event_address: '0xPastLockAddress',
+                network: 1,
+              },
+            },
+          } as any // Cast mock return
+        }
+        return null
+      })
     })
 
     it('should approve event and send notifications', async () => {
@@ -690,19 +755,58 @@ describe('eventCollectionOperations', () => {
 
     beforeEach(() => {
       EventCollection.findByPk = vi.fn().mockResolvedValue(mockCollection)
+      // Mock EventData.findAll for the events being approved
       EventData.findAll = vi.fn().mockResolvedValue(mockEvents)
-      EventCollectionAssociation.findAll = vi.fn().mockResolvedValue(
-        mockEvents.map((event) => ({
-          eventSlug: event.slug,
-          collectionSlug: 'test-collection',
-          submitterAddress: '0xSubmitter',
-          save: vi.fn(),
-        }))
-      )
+
+      // Mock EventCollectionAssociation.findAll
+      vi.mocked(EventCollectionAssociation.findAll)
+        // First call: return associations being approved
+        .mockResolvedValueOnce(
+          mockEvents.map(
+            (event) =>
+              ({
+                eventSlug: event.slug,
+                collectionSlug: 'test-collection',
+                submitterAddress: '0xSubmitter',
+                isApproved: false, // Before approval
+                save: vi.fn(),
+              } as any) // Correct parenthesis placement
+          )
+        )
+        // Second call (for past attendees): return a different approved event
+        .mockResolvedValue([
+          {
+            eventSlug: 'past-event-bulk',
+            collectionSlug: 'test-collection',
+            isApproved: true,
+          } as any, // Cast mock return
+        ])
+
+      // Mock EventData.findOne for the past event's details in bulk op
+      vi.mocked(EventData.findOne).mockImplementation(async (options) => {
+        // Cast where to any to access slug directly
+        const slug = (options?.where as any)?.slug
+
+        if (slug === 'past-event-bulk') {
+          return {
+            slug: 'past-event-bulk',
+            name: 'Past Event Bulk',
+            data: {
+              ticket: {
+                event_address: '0xPastLockAddressBulk',
+                network: 1,
+              },
+            },
+          } as any // Cast mock return
+        }
+        return null // Important for other findOne calls
+      })
     })
 
     it('should bulk approve events and send notifications efficiently', async () => {
       expect.assertions(3)
+      // Re-apply privy mock specific to this context if needed (already global)
+      // vi.mocked(getPrivyUserByAddress).mockResolvedValue({ ... });
 
       await EventCollectionOperations.bulkApproveEventsOperation(
         'test-collection',
