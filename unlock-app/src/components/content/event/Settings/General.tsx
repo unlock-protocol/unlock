@@ -27,6 +27,7 @@ import { GoogleMapsAutoComplete } from '../Form'
 import { DefaultLayoutSkeleton } from './DefaultLayoutSkeleton'
 import { BannerlessLayoutSkeleton } from './BannerlessLayoutSkeleton'
 import { regexUrlPattern } from '~/utils/regexUrlPattern'
+import { EventsLayout } from '../Layout/constants'
 
 interface GeneralProps {
   event: Event
@@ -82,14 +83,6 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
   useEffect(() => {
     setMapAddress(getValues('ticket.event_address'))
   }, [event.ticket?.event_address])
-
-  const [selectedLayout, setSelectedLayout] = useState(
-    getValues('layout') || 'default'
-  )
-
-  const handleSelect = (layout: any) => {
-    setSelectedLayout(layout)
-  }
 
   const save = async (values: {
     name: string
@@ -219,17 +212,18 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
               return (
                 <div className="flex flex-col sm:flex-row justify-around gap-8 mx-4 sm:mx-8 my-4 h-auto sm:h-64">
                   <DefaultLayoutSkeleton
-                    selectedLayout={selectedLayout}
+                    isSelected={
+                      !getValues('layout') ||
+                      getValues('layout') === EventsLayout.Default
+                    }
                     handleSelect={() => {
-                      onChange('default')
-                      handleSelect('default')
+                      onChange(EventsLayout.Default)
                     }}
                   />
                   <BannerlessLayoutSkeleton
-                    selectedLayout={selectedLayout}
+                    isSelected={getValues('layout') === EventsLayout.Bannerless}
                     handleSelect={() => {
-                      onChange('bannerless')
-                      handleSelect('bannerless')
+                      onChange(EventsLayout.Bannerless)
                     }}
                   />
                 </div>

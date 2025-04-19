@@ -2,12 +2,12 @@ import { SmallPrimeCard } from '~/components/interface/prime/PrimeOnly'
 import { useUnlockPrime } from '~/hooks/useUnlockPrime'
 
 interface BannerlessLayoutSkeletonProps {
-  selectedLayout: string
+  isSelected: boolean
   handleSelect: () => void
 }
 
 export const BannerlessLayoutSkeleton = ({
-  selectedLayout,
+  isSelected,
   handleSelect,
 }: BannerlessLayoutSkeletonProps) => {
   const { isPrime } = useUnlockPrime()
@@ -20,7 +20,7 @@ export const BannerlessLayoutSkeleton = ({
   }
   const buttonClasses = disabled
     ? ''
-    : `cursor-pointer  ${selectedLayout === 'bannerless' ? 'border-ui-main-500' : ''}`
+    : `cursor-pointer  ${isSelected ? 'border-ui-main-500' : ''}`
   return (
     <div className="flex flex-col">
       <p className={disabled ? 'text-slate-400' : ''}>Bannerless</p>
