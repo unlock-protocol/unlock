@@ -46,7 +46,7 @@ export const EventContentWithProps = ({
   const router = useRouter()
   const handleCreateEvent = () => {
     router.push(
-      'https://unlock-protocol-1.hubspotpagebuilder.com/unlock-protocol-newsletter-signup-0'
+      'https://app.deform.cc/form/2fc896d4-f643-46e5-80a8-2a25ea45f41f/?page_number=0'
     )
   }
   if (isLoading) {
