@@ -6,11 +6,13 @@ import { EventCollection } from '@unlock-protocol/unlock-js'
 interface ApproveEventInput {
   collectionSlug: string
   eventSlug: string
+  notifyPastAttendees?: boolean
 }
 
 interface BulkApproveEventsInput {
   collectionSlug: string
   eventSlugs: string[]
+  notifyPastAttendees?: boolean
 }
 
 interface RejectEventInput {
@@ -52,9 +54,13 @@ export const useEventCollectionApprovals = (eventCollectionSlug: string) => {
 
   // Approve an event
   const approveEventMutation = useMutation({
-    mutationFn: async ({ eventSlug }: Omit<ApproveEventInput, 'slug'>) => {
+    mutationFn: async ({
+      eventSlug,
+      notifyPastAttendees = false,
+    }: Omit<ApproveEventInput, 'slug'>) => {
       const response = await locksmith.approveEvent(eventCollectionSlug, {
         eventSlug,
+        notifyPastAttendees,
       })
       return response
     },
@@ -73,9 +79,11 @@ export const useEventCollectionApprovals = (eventCollectionSlug: string) => {
   const bulkApproveEventsMutation = useMutation({
     mutationFn: async ({
       eventSlugs,
+      notifyPastAttendees = false,
     }: Omit<BulkApproveEventsInput, 'slug'>) => {
       const response = await locksmith.bulkApproveEvents(eventCollectionSlug, {
         eventSlugs,
+        notifyPastAttendees,
       })
       return response
     },
