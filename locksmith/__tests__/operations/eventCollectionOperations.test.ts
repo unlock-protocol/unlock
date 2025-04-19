@@ -13,6 +13,7 @@ import {
 import EventCollectionOperations from '../../src/operations/eventCollectionOperations'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { sendEmail } from '../../src/operations/wedlocksOperations'
+import { getPrivyUserByAddress } from '../../src/operations/privyUserOperations'
 
 // interface for link types
 interface Link {
@@ -126,6 +127,17 @@ describe('eventCollectionOperations', () => {
       findOne: mockFindOne,
     }
     ;(EventData.scope as any).mockReturnValue(scopedEventData)
+
+    // Mock getPrivyUserByAddress
+    vi.mocked(getPrivyUserByAddress).mockImplementation(async (address) => {
+      if (address === '0xSubmitter') {
+        return {
+          success: true,
+          user: { email: { address: 'submitter@example.com' } },
+        }
+      }
+      return { success: false, user: null }
+    })
   })
 
   describe('createEventCollectionOperation', () => {
