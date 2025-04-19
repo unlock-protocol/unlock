@@ -9,7 +9,7 @@ description: >-
 
 # Unlock Protocol Litepaper
 
-_(Prefer to read this offline? [Click here to download.](https://19942922.fs1.hubspotusercontent-na1.net/hubfs/19942922/Unlock%20Protocol%20Litepaper%20rev09192024.pdf))_
+_(Prefer to read this offline? [Click here to download.](/unlock-protocol-litepaper.pdf))_
 
 ## Changelog
 
