@@ -28,14 +28,18 @@
     "directory": "packages/contracts"
   },
   "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "2.2.3",
+    "@typechain/ethers-v5": "11.1.2",
     "@unlock-protocol/networks": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "@unlock-protocol/types": "workspace:^",
     "copyfiles": "2.4.1",
     "eslint": "9.23.0",
+    "ethers": "6.13.5",
     "fs-extra": "11.3.0",
     "hardhat": "2.22.19",
     "solidity-docgen": "0.6.0-beta.36",
+    "typechain": "8.3.2",
     "typescript": "5.8.2"
   },
   "files": [

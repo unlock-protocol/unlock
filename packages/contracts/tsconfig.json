@@ -6,5 +6,5 @@
     "lib": ["es2019"],
     "outDir": "dist"
   },
-  "exclude": ["deprec", "test", "dist", "task", "hardhat.config.js"]
+ "exclude": ["deprec", "test", "dist", "task"]
 }

@@ -17729,6 +17729,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@typechain/ethers-v5@npm:11.1.2":
+  version: 11.1.2
+  resolution: "@typechain/ethers-v5@npm:11.1.2"
+  dependencies:
+    lodash: "npm:^4.17.15"
+    ts-essentials: "npm:^7.0.1"
+  peerDependencies:
+    "@ethersproject/abi": ^5.0.0
+    "@ethersproject/providers": ^5.0.0
+    ethers: ^5.1.3
+    typechain: ^8.3.2
+    typescript: ">=4.3.0"
+  checksum: 10/0d992825f6462d617e7de384488c70d73a14dac3852ab0c299c2811183965457346b5a151f9f2fa367cc3668e950d070d5c1337bc13d7112d510d8fc35f2b30f
+  languageName: node
+  linkType: hard
+
 "@typechain/ethers-v6@npm:0.5.1":
   version: 0.5.1
   resolution: "@typechain/ethers-v6@npm:0.5.1"
@@ -19394,14 +19410,18 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/contracts@workspace:packages/contracts"
   dependencies:
+    "@nomiclabs/hardhat-ethers": "npm:2.2.3"
+    "@typechain/ethers-v5": "npm:11.1.2"
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/types": "workspace:^"
     copyfiles: "npm:2.4.1"
     eslint: "npm:9.23.0"
+    ethers: "npm:6.13.5"
     fs-extra: "npm:11.3.0"
     hardhat: "npm:2.22.19"
     solidity-docgen: "npm:0.6.0-beta.36"
+    typechain: "npm:8.3.2"
     typescript: "npm:5.8.2"
   languageName: unknown
   linkType: soft
@@ -51982,31 +52002,31 @@ __metadata:
 
 "typescript@patch:typescript@npm%3A5.7.3#optional!builtin<compat/typescript>":
   version: 5.7.3
-  resolution: "typescript@patch:typescript@npm%3A5.7.3#optional!builtin<compat/typescript>::version=5.7.3&hash=5786d5"
+  resolution: "typescript@patch:typescript@npm%3A5.7.3#optional!builtin<compat/typescript>::version=5.7.3&hash=8c6c40"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10/dc58d777eb4c01973f7fbf1fd808aad49a0efdf545528dab9b07d94fdcb65b8751742804c3057e9619a4627f2d9cc85547fdd49d9f4326992ad0181b49e61d81
+  checksum: 10/3ac7b7e3e899273d2fbdce6e24b93d4d53a705ad7a7e4cc83b4c57bcb6d25948abcd2a21994f6b9c73ab03960f395aae95f0458de292a66ce0134233261714c3
   languageName: node
   linkType: hard
 
 "typescript@patch:typescript@npm%3A5.8.2#optional!builtin<compat/typescript>":
   version: 5.8.2
-  resolution: "typescript@patch:typescript@npm%3A5.8.2#optional!builtin<compat/typescript>::version=5.8.2&hash=5786d5"
+  resolution: "typescript@patch:typescript@npm%3A5.8.2#optional!builtin<compat/typescript>::version=5.8.2&hash=8c6c40"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10/97920a082ffc57583b1cb6bc4faa502acc156358e03f54c7fc7fdf0b61c439a717f4c9070c449ee9ee683d4cfc3bb203127c2b9794b2950f66d9d307a4ff262c
+  checksum: 10/6ae9b2c4d3254ec2eaee6f26ed997e19c02177a212422993209f81e87092b2bb0a4738085549c5b0164982a5609364c047c72aeb281f6c8d802cd0d1c6f0d353
   languageName: node
   linkType: hard
 
 "typescript@patch:typescript@npm%3A^5.0.0#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.4.4#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.5.4#optional!builtin<compat/typescript>":
   version: 5.8.3
-  resolution: "typescript@patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"
+  resolution: "typescript@patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=8c6c40"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10/b9b1e73dabac5dc730c041325dbd9c99467c1b0d239f1b74ec3b90d831384af3e2ba973946232df670519147eb51a2c20f6f96163cea2b359f03de1e2091cc4f
+  checksum: 10/98470634034ec37fd9ea61cc82dcf9a27950d0117a4646146b767d085a2ec14b137aae9642a83d1c62732d7fdcdac19bb6288b0bb468a72f7a06ae4e1d2c72c9
   languageName: node
   linkType: hard
 
