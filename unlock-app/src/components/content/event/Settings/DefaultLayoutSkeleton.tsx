@@ -1,17 +1,17 @@
 interface DefaultLayoutSkeletonProps {
-  selectedLayout: string
+  isSelected: boolean
   handleSelect: () => void
 }
 
 export const DefaultLayoutSkeleton = ({
-  selectedLayout,
+  isSelected,
   handleSelect,
 }: DefaultLayoutSkeletonProps) => {
   return (
     <div className="flex flex-col">
       <p>Default</p>
       <div
-        className={`h-full cursor-pointer border-4  rounded-lg overflow-hidden ${selectedLayout === 'default' ? 'border-ui-main-500' : ''}`}
+        className={`h-full cursor-pointer border-4  rounded-lg overflow-hidden ${isSelected ? 'border-ui-main-500' : ''}`}
         onClick={() => handleSelect()}
       >
         <div className="h-full">
