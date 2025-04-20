@@ -1,6 +1,9 @@
 import { HardhatUserConfig } from 'hardhat/config'
 import 'solidity-docgen'
 require('./task/exportAbis')
+import 'solidity-docgen'
+import '@nomiclabs/hardhat-ethers'
+import '@typechain/hardhat'
 
 const contractsPath = './src/contracts'
 
@@ -49,6 +52,10 @@ const config: HardhatUserConfig = {
   },
   paths: {
     sources: contractsPath,
+  },
+  typechain: {
+    outDir: 'types',
+    target: 'ethers-v5',
   },
   mocha: {
     timeout: 2000000,
