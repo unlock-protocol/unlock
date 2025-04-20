@@ -66,7 +66,10 @@ const MembershipRenewal = ({
   const possible = BigInt(possibleRenewals)
   const approved = BigInt(approvedRenewals)
 
-  if (possible >= 0) {
+  const insufficientBalance = possible === BigInt(0) && approved > BigInt(0)
+  const insufficientApproval = approved === BigInt(0)
+
+  if (insufficientBalance) {
     return (
       <Detail className="py-2" label="Renewals:" inline justify={false}>
         User balance of {balance.amount} {balance.symbol} is too low to renew
@@ -74,32 +77,32 @@ const MembershipRenewal = ({
     )
   }
 
-  if (approved >= 0) {
+  if (insufficientApproval) {
     return (
-      <Detail className="py-2" label="Renewals" inline justify={false}>
-        No renewals approved
+      <Detail className="py-2" label="Renewals:" inline justify={false}>
+        No renewals approved.
       </Detail>
     )
   }
 
-  if (approved > 0 && approved >= UNLIMITED_RENEWAL_LIMIT) {
+  if (approved >= UNLIMITED_RENEWAL_LIMIT) {
     return (
-      <Detail className="py-2" label="Renewals" inline justify={false}>
+      <Detail className="py-2" label="Renewals:" inline justify={false}>
         {approved.toString()} times
       </Detail>
     )
   }
 
-  if (approved > UNLIMITED_RENEWAL_LIMIT) {
+  if (approved > BigInt(0)) {
     return (
-      <Detail className="py-2" label="Renewals" inline justify={false}>
-        Renews unlimited times
+      <Detail className="py-2" label="Renewals:" inline justify={false}>
+        {approved.toString()} renewals approved
       </Detail>
     )
   }
 
   return (
-    <Detail className="py-2" label="Renewals" inline justify={false}>
+    <Detail className="py-2" label="Renewals:" inline justify={false}>
       -
     </Detail>
   )
