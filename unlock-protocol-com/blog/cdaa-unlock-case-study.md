@@ -13,6 +13,6 @@ The Certified Digital Asset Advisor (CDAA) designation is the only community-own
 
 Once a financial advisor completes the required coursework and passes a rigorous final exam, they receive the CDAA Certification Token. CDAA is an on-chain, NFT-based professional credential, powered by Unlock Protocol, that provably shows the advisor has achieved this distinction.
 
-[See the full case study](https://19942922.fs1.hubspotusercontent-na1.net/hubfs/19942922/CDAA%20-%20Unlock%20Case%20Study.pdf).
+[See the full case study](/case-studies/cdaa.pdf).
 
-[![CDAA thumbnail](/images/blog/cdaa/cdaa-thumbnail.png)](https://19942922.fs1.hubspotusercontent-na1.net/hubfs/19942922/CDAA%20-%20Unlock%20Case%20Study.pdf)
+[![CDAA thumbnail](/images/blog/cdaa/cdaa-thumbnail.png)](/case-studies/cdaa.pdf)
