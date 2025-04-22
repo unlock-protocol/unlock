@@ -1,12 +1,5 @@
-/**
- * @type import('hardhat/config').HardhatUserConfig
- */
-
-// to build contract docs
-// require('@primitivefi/hardhat-dodoc')
-require('solidity-docgen')
-
-const fs = require('fs-extra')
+import { HardhatUserConfig } from 'hardhat/config'
+import 'solidity-docgen'
 require('./task/exportAbis')
 
 const contractsPath = './src/contracts'
@@ -18,7 +11,7 @@ const settings = {
   },
 }
 
-module.exports = {
+const config: HardhatUserConfig = {
   solidity: {
     compilers: [
       { version: '0.5.17', settings },
@@ -61,3 +54,5 @@ module.exports = {
     timeout: 2000000,
   },
 }
+
+export default config
