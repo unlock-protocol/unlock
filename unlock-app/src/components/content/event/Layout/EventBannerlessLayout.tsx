@@ -44,7 +44,48 @@ export const EventBannerlessLayout = ({
   hasPassed,
 }: EventBannerlessProps) => {
   return (
-    <div className="md:flex md:flex-row-reverse md:gap-4 md:mt-16 mt-8">
+    <div className="mt-8 flex flex-col-reverse md:justify-between md:flex-row md:gap-4 md:mt-16">
+      {/* Event description */}
+      <div className="flex flex-col col-span-3 gap-4 md:col-span-2">
+        <h1 className="mt-4 text-3xl font-bold md:text-6xl">{event.name}</h1>
+        <section className="flex flex-col gap-4">
+          {organizers && organizers.length > 0 && (
+            <Hosts organizers={organizers} />
+          )}
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 rounded-xl">
+            {hasDate && (
+              <EventDetail label="Date" icon={CalendarIcon}>
+                <div
+                  // @ts-expect-error property 'background_color' does not exist on type 'Event'
+                  style={{ color: `#${event.background_color}` }}
+                  className="flex flex-col text-lg font-normal text-brand-dark"
+                >
+                  {(startDate || endDate) && (
+                    <span>
+                      {startDate} {endDate && <>to {endDate}</>}
+                    </span>
+                  )}
+                  {startTime && endTime && (
+                    <span>
+                      {startTime} {endTime && <>to {endTime}</>}
+                    </span>
+                  )}
+                </div>
+              </EventDetail>
+            )}
+            {hasLocation && <EventLocation event={event} />}
+          </div>
+          <div>
+            {event.description && (
+              <div className="mt-4 markdown">
+                <ReactMarkdown children={event.description} />
+              </div>
+            )}
+          </div>
+        </section>
+      </div>
+
+      {/* RSVP section with image on top */}
       <section className="flex flex-col gap-4">
         <div className="flex justify-center w-full">
           <section className="flex justify-between flex-col">
@@ -89,44 +130,6 @@ export const EventBannerlessLayout = ({
         )}
         <AttendeeCues checkoutConfig={checkoutConfig} />
       </section>
-      <div className="flex flex-col col-span-3 gap-4 md:col-span-2">
-        <h1 className="mt-4 text-3xl font-bold md:text-6xl">{event.name}</h1>
-        <section className="flex flex-col gap-4">
-          {organizers && organizers.length > 0 && (
-            <Hosts organizers={organizers} />
-          )}
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 rounded-xl">
-            {hasDate && (
-              <EventDetail label="Date" icon={CalendarIcon}>
-                <div
-                  // @ts-expect-error property 'background_color' does not exist on type 'Event'
-                  style={{ color: `#${event.background_color}` }}
-                  className="flex flex-col text-lg font-normal text-brand-dark"
-                >
-                  {(startDate || endDate) && (
-                    <span>
-                      {startDate} {endDate && <>to {endDate}</>}
-                    </span>
-                  )}
-                  {startTime && endTime && (
-                    <span>
-                      {startTime} {endTime && <>to {endTime}</>}
-                    </span>
-                  )}
-                </div>
-              </EventDetail>
-            )}
-            {hasLocation && <EventLocation event={event} />}
-          </div>
-          <div>
-            {event.description && (
-              <div className="mt-4 markdown">
-                <ReactMarkdown children={event.description} />
-              </div>
-            )}
-          </div>
-        </section>
-      </div>
     </div>
   )
 }

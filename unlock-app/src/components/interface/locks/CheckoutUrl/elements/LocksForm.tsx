@@ -300,6 +300,17 @@ export const LocksForm = ({
     return orderedLocks
   })
 
+  useEffect(() => {
+    const orderedLocks = {} as LocksProps
+    Object.entries(locksDefault).forEach(([address, properties], index) => {
+      orderedLocks[address] = {
+        ...properties,
+        order: index,
+      }
+    })
+    setLocks(orderedLocks)
+  }, [locksDefault])
+
   // preload default and set recurring (es. saved config)
   useEffect(() => {
     const getRecurringCb = async () => {
