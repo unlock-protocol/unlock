@@ -8204,7 +8204,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@logtail/core@npm:^0.5.2, @logtail/core@npm:^0.5.4":
+"@logtail/core@npm:^0.5.4":
   version: 0.5.4
   resolution: "@logtail/core@npm:0.5.4"
   dependencies:
@@ -8215,23 +8215,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@logtail/node@npm:0.5.2":
-  version: 0.5.2
-  resolution: "@logtail/node@npm:0.5.2"
-  dependencies:
-    "@logtail/core": "npm:^0.5.2"
-    "@logtail/types": "npm:^0.5.2"
-    "@msgpack/msgpack": "npm:^2.5.1"
-    "@types/stack-trace": "npm:^0.0.33"
-    cross-fetch: "npm:^4.0.0"
-    minimatch: "npm:^9.0.5"
-    serialize-error: "npm:8.1.0"
-    stack-trace: "npm:0.0.10"
-  checksum: 10/0fc231d22782966daf4ed87d074c6f49461ee992795586fc5f98ecd4ac18c4680bae6030625f1ba31f7ce70533bc3f836ae5e953c893210a89869cbd61f4cce9
-  languageName: node
-  linkType: hard
-
-"@logtail/node@npm:^0.5.2":
+"@logtail/node@npm:0.5.4, @logtail/node@npm:^0.5.2":
   version: 0.5.4
   resolution: "@logtail/node@npm:0.5.4"
   dependencies:
@@ -19797,7 +19781,7 @@ __metadata:
     "@ambire/signature-validator": "npm:1.4.1"
     "@aws-sdk/client-s3": "npm:3.717.0"
     "@guildxyz/sdk": "npm:2.6.9"
-    "@logtail/node": "npm:0.5.2"
+    "@logtail/node": "npm:0.5.4"
     "@logtail/winston": "npm:0.5.2"
     "@nuintun/qrcode": "npm:5.0.2"
     "@openzeppelin/defender-sdk": "npm:2.4.0"
@@ -26504,15 +26488,6 @@ __metadata:
   dependencies:
     node-fetch: "npm:^2.7.0"
   checksum: 10/e4ab1d390a5b6ca8bb0605f028af2ffc1127d2e407b954654949f506d04873c4863ece264662c074865d7874060e35f938cec74fe7b5736d46d545e2685f6aec
-  languageName: node
-  linkType: hard
-
-"cross-fetch@npm:^4.0.0":
-  version: 4.1.0
-  resolution: "cross-fetch@npm:4.1.0"
-  dependencies:
-    node-fetch: "npm:^2.7.0"
-  checksum: 10/07624940607b64777d27ec9c668ddb6649e8c59ee0a5a10e63a51ce857e2bbb1294a45854a31c10eccb91b65909a5b199fcb0217339b44156f85900a7384f489
   languageName: node
   linkType: hard
 
