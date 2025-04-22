@@ -17,20 +17,16 @@ const { Token } = require('@uniswap/sdk-core')
 const uniswapV3SDK = require('@uniswap/v3-sdk')
 const { Pool, Position } = uniswapV3SDK
 
-
 const FULL_RANGE_LOWER_TICK = -887220
 const FULL_RANGE_UPPER_TICK = 887220
 const SLIPPAGE = 995 // 0.5% slippage
-const DEADLINE_BUFFER = 24 * 60 * 60 * 45 // 45 days - For live proposals to account for the time it takes to execute the proposal
+const DEADLINE_BUFFER = 24 * 60 * 60 * 365 * 80
 
-
-const ETH_AMOUNT = '10' // How much ETH to use for liquidity
+const ETH_AMOUNT = '10'
 const DEADLINE = Math.floor(Date.now() / 1000) + DEADLINE_BUFFER
 
-
-const TIMELOCK_ADDRESS = '0xB34567C4cA697b39F72e1a8478f285329A98ed1b' // Timelock address (DAO treasury)
-const POOL_ADDRESS = '0x9EF81F4E2F2f15Ff1c0C3f8c9ECc636580025242' // UP/WETH pool address on Base
-
+const TIMELOCK_ADDRESS = '0xB34567C4cA697b39F72e1a8478f285329A98ed1b'
+const POOL_ADDRESS = '0x9EF81F4E2F2f15Ff1c0C3f8c9ECc636580025242'
 
 const calculateMinimumAmount = (amountDesired) => {
   const amountMin = JSBI.divide(
@@ -40,13 +36,11 @@ const calculateMinimumAmount = (amountDesired) => {
   return amountMin
 }
 
-
 const getPoolState = async (chainId = 8453) => {
   const poolContract = await ethers.getContractAt(
     IUniswapV3PoolABI,
     POOL_ADDRESS
   )
-
 
   const [token0Address, token1Address, fee, liquidity, slot0] =
     await Promise.all([
@@ -57,12 +51,10 @@ const getPoolState = async (chainId = 8453) => {
       poolContract.slot0(),
     ])
 
-
   const { symbol: token0Symbol, decimals: token0Decimals } =
     await getTokenInfo(token0Address)
   const { symbol: token1Symbol, decimals: token1Decimals } =
     await getTokenInfo(token1Address)
-
 
   return new Pool(
     new Token(chainId, token0Address, Number(token0Decimals), token0Symbol),
@@ -74,16 +66,13 @@ const getPoolState = async (chainId = 8453) => {
   )
 }
 
-
 const calculatePosition = async (ethAmount) => {
   const pool = await getPoolState()
-
 
   const amount0Desired = ethers.parseUnits(
     ethAmount.toString(),
     pool.token0.decimals
   )
-
 
   const position = Position.fromAmount0({
     pool,
@@ -93,12 +82,10 @@ const calculatePosition = async (ethAmount) => {
     useFullPrecision: true,
   })
 
-
   const amount0DesiredRaw = position.mintAmounts.amount0.toString()
   const amount1DesiredRaw = position.mintAmounts.amount1.toString()
   const amount0Min = calculateMinimumAmount(amount0DesiredRaw)
   const amount1Min = calculateMinimumAmount(amount1DesiredRaw)
-
 
   return {
     params: {
@@ -121,12 +108,10 @@ const calculatePosition = async (ethAmount) => {
   }
 }
 
-
 const WETH_ABI = ['function deposit() payable']
 const POSITION_MANAGER_ABI = [
   'function mint((address token0, address token1, uint24 fee, int24 tickLower, int24 tickUpper, uint256 amount0Desired, uint256 amount1Desired, uint256 amount0Min, uint256 amount1Min, address recipient, uint256 deadline)) returns (uint256 tokenId, uint128 liquidity, uint256 amount0, uint256 amount1)',
 ]
-
 
 module.exports = async () => {
   const { tokens } = await getNetwork()
@@ -134,7 +119,6 @@ module.exports = async () => {
   const {
     uniswapV3: { positionManager: positionManagerAddress },
   } = networks[chainId]
-
 
   const weth = tokens.find((token) => token.symbol === 'WETH')
   const up = tokens.find((token) => token.symbol === 'UP')
@@ -145,34 +129,27 @@ module.exports = async () => {
   const ethAmount = ethers.parseEther(ETH_AMOUNT)
   const needsWrapping = wethBalance < ethAmount
 
-
   const [wethAllowance, upAllowance] = await Promise.all([
     wethContract.allowance(TIMELOCK_ADDRESS, positionManagerAddress),
     upContract.allowance(TIMELOCK_ADDRESS, positionManagerAddress),
   ])
 
-
   const needsWethApproval = wethAllowance < ethAmount
   const needsUpApproval = upAllowance < requiredAmounts.token1
 
-
   const proposalName = `Add Liquidity to UP/WETH Uniswap Pool
 
-
 This proposal adds ${ETH_AMOUNT} ETH and the corresponding amount of UP tokens to a full-range position in the UP/WETH Uniswap V3 pool on Base. This will:
-
 
 1. Improve liquidity and price stability for the UP token
 2. Generate fee income for the DAO from trading activity
 3. Support the UP token ecosystem by making it easier for users to buy and sell the token
-
 
 The proposal follows these steps:
 ${needsWrapping ? "1. Wrap ETH to WETH (since the treasury's WETH balance is insufficient)" : ''}
 ${needsWethApproval ? `${needsWrapping ? '2' : '1'}. Approve WETH for the position manager` : ''}
 ${needsUpApproval ? `${needsWrapping || needsWethApproval ? (needsWrapping && needsWethApproval ? '3' : '2') : '1'}. Approve UP tokens for the position manager` : ''}
 ${needsWrapping ? '4' : needsWethApproval || needsUpApproval ? (needsWethApproval && needsUpApproval ? '4' : '3') : '2'}. Create the full-range liquidity position
-
 
 The position will be owned by the DAO treasury (Timelock contract) and can be managed through future governance proposals.
 `
@@ -187,7 +164,6 @@ The position will be owned by the DAO treasury (Timelock contract) and can be ma
     })
   }
 
-
   if (needsWethApproval) {
     calls.push({
       contractAddress: weth.address,
@@ -196,7 +172,6 @@ The position will be owned by the DAO treasury (Timelock contract) and can be ma
       functionArgs: [positionManagerAddress, ethAmount],
     })
   }
-
 
   if (needsUpApproval) {
     calls.push({
@@ -207,7 +182,6 @@ The position will be owned by the DAO treasury (Timelock contract) and can be ma
     })
   }
 
-
   calls.push({
     contractAddress: positionManagerAddress,
     contractNameOrAbi: POSITION_MANAGER_ABI,
@@ -215,12 +189,8 @@ The position will be owned by the DAO treasury (Timelock contract) and can be ma
     functionArgs: [params],
   })
 
-
   return {
     proposalName,
     calls,
   }
 }
-
-
-
