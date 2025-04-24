@@ -373,6 +373,24 @@ export const RegistrationForm = ({
         </>
       )}
 
+      <Controller
+        name="recipient"
+        control={control}
+        render={({ field }) => {
+          return (
+            <AddressInput
+              optional
+              withIcon
+              placeholder="0x..."
+              label="Wallet address or ENS"
+              description="Get the NFT ticket right in your wallet."
+              onResolveName={handleResolve.mutateAsync}
+              {...field}
+            />
+          )
+        }}
+      />
+
       {metadataInputs?.map((metadataInputItem: any) => {
         const {
           name,
@@ -399,7 +417,6 @@ export const RegistrationForm = ({
               render={({ field }) => (
                 <Checkbox
                   label={`${inputLabel}`}
-                  fieldSize="medium"
                   disabled={isLoading}
                   error={errors[name]?.message?.toString()}
                   checked={field.value === 'true'}
@@ -430,25 +447,7 @@ export const RegistrationForm = ({
         )
       })}
 
-      <Controller
-        name="recipient"
-        control={control}
-        render={({ field }) => {
-          return (
-            <AddressInput
-              optional
-              withIcon
-              placeholder="0x..."
-              label="Wallet address or ENS"
-              description="Enter your address to get the NFT ticket right in your wallet."
-              onResolveName={handleResolve.mutateAsync}
-              {...field}
-            />
-          )
-        }}
-      />
-
-      <div className="mt-2">
+      <div className="">
         <Controller
           name="termsAccepted"
           control={control}
@@ -466,7 +465,7 @@ export const RegistrationForm = ({
                   label=""
                 />
               </div>
-              <div className="text-sm">
+              <div className="text-base">
                 <label htmlFor="termsAccepted" className="cursor-pointer">
                   I agree to the{' '}
                   <Link
@@ -474,7 +473,7 @@ export const RegistrationForm = ({
                     href={`${config.unlockStaticUrl}/terms`}
                     className="text-brand-ui-primary hover:underline"
                   >
-                    Terms of Service
+                    terms of service
                   </Link>
                 </label>
               </div>
