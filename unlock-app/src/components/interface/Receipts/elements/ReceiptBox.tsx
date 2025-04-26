@@ -83,7 +83,6 @@ const ReceiptDetails = ({ supplier, receiptDetails, isCancelReceipt }) => {
     },
     enabled: !!(receiptDetails.tokenAddress && receiptDetails.network),
   })
-  console.log(receiptDetails, isLoadingSymbol, tokenSymbol)
 
   const { data: receiptPrice, isLoading: isLoadingPrice } = useGetPrice({
     network: receiptDetails.network,
