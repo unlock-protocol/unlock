@@ -17,8 +17,8 @@ export const ExportPrivateKey = () => {
         address: account!,
       })
     } catch (error) {
-      console.error("Failed to export wallet:", error)
-      alert("An error occurred while exporting your wallet. Please try again.")
+      console.error('Failed to export wallet:', error)
+      alert('An error occurred while exporting your wallet. Please try again.')
     }
   }
 
