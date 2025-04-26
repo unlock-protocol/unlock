@@ -15,7 +15,6 @@ export interface CreateLockArgs {
   beneficiary?: string
   version?: number
   unlockAddress?: string
-  additionalTransactions?: [string?]
 }
 
 export interface CreateLockFunction {
@@ -37,7 +36,6 @@ export async function createLock(
     beneficiary,
     version = PUBLIC_LOCK_LATEST_VERSION,
     unlockAddress,
-    additionalTransactions = [],
   }: CreateLockArgs
 ): Promise<{
   lock: Contract
@@ -76,15 +74,7 @@ export async function createLock(
 
   // create the lock
   const unlock = await getUnlockContract(hre, unlockAddress)
-  const createLockArgs =
-    version < 14
-      ? [calldata, version]
-      : [calldata, version, additionalTransactions]
-  const sig =
-    version < 14
-      ? 'createUpgradeableLockAtVersion(bytes,uint16)'
-      : 'createUpgradeableLockAtVersion(bytes,uint16,bytes[])'
-  const tx = await unlock.getFunction(sig)(...createLockArgs)
+  const tx = await unlock.createUpgradeableLockAtVersion(calldata, version)
   const { logs, hash: transactionHash } = await tx.wait()
   const { args } = logs.find(
     ({ fragment }: any) => fragment && fragment.name === 'NewLock'
