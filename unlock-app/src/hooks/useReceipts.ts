@@ -16,12 +16,6 @@ interface GetReceiptProps {
   isManager: boolean
 }
 
-interface ReceiptsUrlProps {
-  network: number
-  lockAddress: string
-  tokenId: string
-}
-
 type Job = {
   id: string
   payload: {
