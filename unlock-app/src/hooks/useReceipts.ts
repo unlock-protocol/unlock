@@ -33,14 +33,40 @@ type Job = {
   updatedAt: string
 }
 
-export const useGetReceiptsPageUrl = ({
-  network,
+export const receiptsUrl = ({
   lockAddress,
+  network,
+  receipts,
+}: {
+  lockAddress: string
+  network: number
+  receipts: any[]
+}) => {
+  const url = new URL(`${window.location.origin}/receipts`)
+
+  url.searchParams.append('address', lockAddress)
+  url.searchParams.append('network', `${network}`)
+  if (receipts) {
+    receipts.map(({ receipt }: { receipt: { id: string } }) => {
+      url.searchParams.append('hash', receipt.id)
+    })
+  }
+  return url.toString()
+}
+
+export const useGetReceiptsForKey = ({
+  lockAddress,
+  network,
   tokenId,
-}: ReceiptsUrlProps) => {
+}: {
+  lockAddress: string
+  network: number
+  tokenId: string
+}) => {
   return useQuery({
-    queryKey: ['getReceiptsPageUrl', lockAddress, network, tokenId],
-    queryFn: async () => {
+    queryKey: ['getReceiptsForKey', network, lockAddress, tokenId],
+    queryFn: async (): Promise<any> => {
+      // First, get the hashes!
       const key = await graphService.key(
         {
           where: {
@@ -52,19 +78,27 @@ export const useGetReceiptsPageUrl = ({
           network,
         }
       )
-      const url = new URL(`${window.location.origin}/receipts`)
-
-      url.searchParams.append('address', lockAddress)
-      url.searchParams.append('network', `${network}`)
 
       const hashes = key?.transactionsHash || []
 
-      hashes.map((hash: string) => {
-        url.searchParams.append('hash', hash)
-      })
-
-      return url.toString()
+      // Ok, now we have the hashes, let's get the receipts
+      const receipts = await Promise.all(
+        hashes.map(async (hash) => {
+          try {
+            const { data } = await locksmith.getReceipt(
+              network,
+              ethers.getAddress(lockAddress),
+              hash
+            )
+            return data.receipt ? data : null
+          } catch (error) {
+            return null
+          }
+        })
+      )
+      return receipts.filter((receipt) => !!receipt)
     },
+    enabled: !!lockAddress && !!network && !!tokenId,
   })
 }
 

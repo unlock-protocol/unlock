@@ -22,7 +22,7 @@ export const useGetPrice = ({
   const provider = web3Service.providerForNetwork(network)
 
   return useQuery({
-    queryKey: ['getPrice', network, currencyContractAddress],
+    queryKey: ['getPrice', network, amount, currencyContractAddress],
     queryFn: async (): Promise<any> => {
       const tokenAddress =
         currencyContractAddress === DEFAULT_USER_ACCOUNT_ADDRESS

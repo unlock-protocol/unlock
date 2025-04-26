@@ -63,7 +63,15 @@ const NotAuthorizedBar = () => {
   )
 }
 
-const ReceiptDetails = ({ supplier, receiptDetails, isCancelReceipt }) => {
+const ReceiptDetails = ({
+  supplier,
+  receiptDetails,
+  isCancelReceipt,
+}: {
+  supplier: any
+  receiptDetails: any
+  isCancelReceipt: boolean
+}) => {
   const web3Service = useWeb3Service()
 
   const { data: tokenSymbol, isLoading: isLoadingSymbol } = useQuery({
@@ -152,9 +160,15 @@ const Purchaser = ({
   isPurchaser,
   setPurchaserDrawer,
   purchaserDrawer,
-  disabledInput,
   purchaser,
   receiptDetails,
+}: {
+  isCancelReceipt: boolean
+  isPurchaser: boolean
+  setPurchaserDrawer: (value: boolean) => void
+  purchaserDrawer: boolean
+  purchaser: any
+  receiptDetails: any
 }) => {
   return (
     <div className="grid gap-2">
@@ -167,7 +181,6 @@ const Purchaser = ({
             onClick={() => setPurchaserDrawer(!purchaserDrawer)}
             className="print:hidden"
             size="tiny"
-            disabled={disabledInput}
             variant="outlined-primary"
           >
             {purchaser ? 'Edit' : 'Add details'}
@@ -216,12 +229,6 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
     network,
   })
 
-  const { isPending: isUpdatingReceipt } = useUpdateReceipt({
-    lockAddress,
-    hash,
-    network,
-  })
-
   const { purchaser, supplier, receipt: receiptDetails } = receipt ?? {}
 
   // enable edit of purchaser only if purchaser match the account
@@ -232,8 +239,6 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
     receiptDetails?.recipient?.toLowerCase() === account?.toLowerCase()
 
   const isCancelReceipt = receiptDetails?.payer == lockAddress
-
-  const disabledInput = isLoadingReceipt || isUpdatingReceipt
 
   const transactionDate =
     receiptDetails && receiptDetails.timestamp
@@ -266,8 +271,8 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
     )
   }
 
-  if (!receipt) {
-    return <p>Receipt not found!</p>
+  if (!receipt || !receiptDetails) {
+    return <p>There is no receipt for this transaction. </p>
   }
 
   if (!isManager && !isPurchaser && !isRecipient) {
@@ -354,7 +359,6 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
                 isPurchaser={isPurchaser}
                 setPurchaserDrawer={setPurchaserDrawer}
                 purchaserDrawer={purchaserDrawer}
-                disabledInput={disabledInput}
                 purchaser={purchaser}
                 receiptDetails={receiptDetails}
               />
