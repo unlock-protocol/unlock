@@ -15,7 +15,7 @@ import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import { ADDRESS_ZERO, MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
 import { durationAsText } from '~/utils/durations'
 import { locksmith } from '~/config/locksmith'
-import { useGetReceiptsPageUrl } from '~/hooks/useReceipts'
+import { receiptsUrl, useGetReceiptsForKey } from '~/hooks/useReceipts'
 import Link from 'next/link'
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
 import { addressMinify } from '~/utils/strings'
@@ -278,12 +278,13 @@ export const MetadataCard = ({
   // defaults to the owner when the manager is not set
   const manager = data?.keyManager ?? data?.keyholderAddress
 
-  const { isPending: isLoadingUrl, data: receiptsPageUrl } =
-    useGetReceiptsPageUrl({
+  const { data: receipts, isLoading: isLoadingReceipts } = useGetReceiptsForKey(
+    {
       lockAddress,
       network,
-      tokenId: metadata.token,
-    })
+      tokenId,
+    }
+  )
 
   const { data: subscription, isPending: isSubscriptionLoading } = useQuery({
     queryKey: ['subscription', lockAddress, tokenId, network],
@@ -366,21 +367,25 @@ export const MetadataCard = ({
           <Link href={metadataPageUrl}>Edit token properties</Link>
         </Button>
 
-        {receiptsPageUrl?.length && (
-          <Button
-            variant="outlined-primary"
-            size="small"
-            disabled={isLoadingUrl}
-            loading={isLoadingUrl}
+        <Button
+          variant="outlined-primary"
+          size="small"
+          disabled={receipts?.length === 0}
+          loading={isLoadingReceipts}
+        >
+          <Link
+            href={receiptsUrl({
+              lockAddress,
+              network,
+              receipts,
+            })}
           >
-            <Link href={receiptsPageUrl}>
-              <div className="flex items-center gap-2">
-                <span>Show receipts</span>
-                <ReceiptIcon size={18} />
-              </div>
-            </Link>
-          </Button>
-        )}
+            <div className="flex items-center gap-2">
+              <span>{receipts?.length > 1 ? 'Receipts' : 'Receipt'}</span>
+              <ReceiptIcon size={18} />
+            </div>
+          </Link>
+        </Button>
       </div>
 
       <div className="pt-6">

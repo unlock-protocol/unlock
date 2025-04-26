@@ -47,7 +47,7 @@ import { RiFileCopyLine as CopyLineIcon } from 'react-icons/ri'
 import { ExtendMembershipModal } from './Extend'
 import { Key as HookKey } from '~/hooks/useKeys'
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
-import { useGetReceiptsPageUrl } from '~/hooks/useReceipts'
+import { receiptsUrl, useGetReceiptsForKey } from '~/hooks/useReceipts'
 import { AddToPhoneWallet } from './AddToPhoneWallet'
 import { useRouter } from 'next/navigation'
 import { Platform } from '~/services/passService'
@@ -200,19 +200,14 @@ function Key({ ownedKey, owner, network }: Props) {
 
   const networkName = networks[ownedKey.network]?.name
 
-  const { isPending: isLoadingUrl, data: receiptsPageUrl } =
-    useGetReceiptsPageUrl({
-      lockAddress: lock.address,
-      network,
-      tokenId,
-    })
+  const { data: receipts } = useGetReceiptsForKey({
+    lockAddress: lock.address,
+    network,
+    tokenId,
+  })
 
   const onReceiptsPage = () => {
-    if (!receiptsPageUrl) {
-      return
-    }
-
-    router.push(receiptsPageUrl)
+    router.push(receiptsUrl({ lockAddress: lock.address, network, receipts }))
   }
 
   const checkIfImageUrlIsVideo = async () => {
@@ -387,11 +382,11 @@ function Key({ ownedKey, owner, network }: Props) {
                       </MenuButton>
                     )}
                   </Menu.Item>
-                  {owner == account && receiptsPageUrl?.length && (
+                  {owner == account && !!receipts?.length && (
                     <Menu.Item>
                       {({ active, disabled }) => (
                         <MenuButton
-                          disabled={disabled || isLoadingUrl}
+                          disabled={disabled}
                           active={active}
                           onClick={onReceiptsPage}
                         >
