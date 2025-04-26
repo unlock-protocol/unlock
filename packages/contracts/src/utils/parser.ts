@@ -6,8 +6,8 @@ type contractVersion = {
   abiPath: string
 }
 
-const PUBLICLOCK_LATEST_VERSION = 14
-const UNLOCK_LATEST_VERSION = 13
+const PUBLICLOCK_LATEST_VERSION = 15
+const UNLOCK_LATEST_VERSION = 14
 
 const exportLatest = (contract: string, versionNumber: number) => {
   const varName = `${contract.toLocaleUpperCase()}_LATEST_VERSION`
