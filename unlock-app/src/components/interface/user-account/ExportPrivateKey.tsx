@@ -11,10 +11,15 @@ export const ExportPrivateKey = () => {
 
   const { exportWallet, authenticated, user } = usePrivy()
   const exportFromPrivy = async () => {
-    setShowExportModal(true)
-    await exportWallet({
-      address: account!,
-    })
+    try {
+      setShowExportModal(true)
+      await exportWallet({
+        address: account!,
+      })
+    } catch (error) {
+      console.error("Failed to export wallet:", error)
+      alert("An error occurred while exporting your wallet. Please try again.")
+    }
   }
 
   return (
