@@ -5,14 +5,17 @@ import { SettingsContext } from '~/components/interface/locks/Settings'
 import { PaymentSettings } from '../interface/user-account/PaymentSettings'
 import AccountInfo from '../interface/user-account/AccountInfo'
 import { Funding } from '../interface/user-account/Funding'
+import { ExportPrivateKey } from '../interface/user-account/ExportPrivateKey'
+import { usePrivy } from '@privy-io/react-auth'
 
 export const SettingsContent = () => {
   const [selectedIndex, setSelectedIndex] = useState(0)
+  const { user } = usePrivy()
 
   const tabs: {
     label: string
     description?: string
-    id: 'account' | 'payments' | 'funding'
+    id: 'account' | 'payments' | 'funding' | 'export'
     children: ReactNode
   }[] = [
     {
@@ -35,6 +38,15 @@ export const SettingsContent = () => {
       children: <Funding />,
     },
   ]
+
+  if (user?.wallet?.walletClientType === 'privy') {
+    tabs.push({
+      id: 'export',
+      label: 'Export',
+      description: 'Export your account private key.',
+      children: <ExportPrivateKey />,
+    })
+  }
 
   return (
     <SettingsContext.Provider value={{ setTab: setSelectedIndex }}>
