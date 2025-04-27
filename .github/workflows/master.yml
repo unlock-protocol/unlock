@@ -15,8 +15,9 @@ jobs:
     uses: ./.github/workflows/_railway.yml
     with:
       service: locksmith-web
-      service-id: op://secrets/railway/locksmith-web-staging-service-id
+      service-id: op://secrets/railway/locksmith-web-service-id
       bypass_diff_check: bypass
+      environment: staging
     secrets:
       railway-token: op://secrets/railway/railway-token
       OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
@@ -28,8 +29,9 @@ jobs:
     uses: ./.github/workflows/_railway.yml
     with:
       service: locksmith-worker
-      service-id: op://secrets/railway/locksmith-worker-staging-service-id
+      service-id: op://secrets/railway/locksmith-worker-service-id
       bypass_diff_check: bypass
+      environment: staging
     secrets:
       railway-token: op://secrets/railway/railway-token
       OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
