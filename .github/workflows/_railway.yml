@@ -31,7 +31,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       RAILWAY_TOKEN: ${{ secrets.railway-token }}
-      SVC_ID_REF: ${{ inputs.service-id }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -43,12 +42,9 @@ jobs:
           export-env: true
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          RAILWAY_TOKEN: ${{ secrets.railway-token }}
-          SVC_ID: ${{ inputs.service-id }}
-          ENVIRONMENT: ${{ inputs.environment }}
 
       - name: Install Railway CLI
         run: npm i -g @railway/cli
 
       - name: Deploy to Railway
-        run: railway up --service=${{ env.SVC_ID }} --environment=${{ env.ENVIRONMENT }}
+        run: railway up --ci --service=${{ inputs.service-id }} --environment=${{ inputs.environment }}
