@@ -15,10 +15,6 @@ on:
         description: 'The Railway environment to deploy to'
         type: string
         required: true
-      bypass_diff_check:
-        description: 'Bypass the monorepo diff check'
-        required: false
-        type: string
       railway-token:
         description: 'Railway auth token'
         required: true

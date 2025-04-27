@@ -15,8 +15,6 @@ jobs:
     steps:
       - name: Load secrets from 1Password
         uses: 1Password/load-secrets-action@v2.0.0
-        with:
-          export-env: true
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
       - name: Deploy on Railway
@@ -24,7 +22,6 @@ jobs:
         with:
           service: web
           service-id: op://secrets/railway/locksmith-web-service-id
-          bypass_diff_check: bypass
           environment: staging
           railway-token: op://secrets/railway/railway-token
 
@@ -35,8 +32,6 @@ jobs:
     steps:
       - name: Load secrets from 1Password
         uses: 1Password/load-secrets-action@v2.0.0
-        with:
-          export-env: true
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
       - name: Deploy on Railway
@@ -44,7 +39,6 @@ jobs:
         with:
           service: worker
           service-id: op://secrets/railway/locksmith-worker-service-id
-          bypass_diff_check: bypass
           environment: staging
           railway-token: op://secrets/railway/railway-token
 
