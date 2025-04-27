@@ -28,7 +28,7 @@ jobs:
     name: Deploy ${{ inputs.service }} on Railway
     runs-on: ubuntu-latest
     env:
-      RAILWAY_SERVICE_ID: ${{ secrets.railway-token }}
+      RAILWAY_TOKEN: ${{ secrets.railway-token }}
     steps:
       - uses: actions/checkout@v4
         with:
