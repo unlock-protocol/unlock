@@ -19,9 +19,10 @@ on:
         description: 'Bypass the monorepo diff check'
         required: false
         type: string
-    secrets:
-      OP_SERVICE_ACCOUNT_TOKEN:
+      railway-token:
+        description: 'Railway auth token'
         required: true
+        type: string
 
 jobs:
   deploy-to-railway:
