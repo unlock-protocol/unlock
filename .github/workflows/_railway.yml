@@ -20,8 +20,6 @@ on:
         required: false
         type: string
     secrets:
-      railway-token:
-        required: true
       OP_SERVICE_ACCOUNT_TOKEN:
         required: true
 
@@ -30,18 +28,11 @@ jobs:
     name: Deploy ${{ inputs.service }} on Railway
     runs-on: ubuntu-latest
     env:
-      RAILWAY_TOKEN: ${{ secrets.railway-token }}
+      RAILWAY_SERVICE_ID: ${{ secrets.railway-token }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Load secrets from 1Password
-        uses: 1Password/load-secrets-action@v2.0.0
-        with:
-          export-env: true
-        env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
       - name: Install Railway CLI
         run: npm i -g @railway/cli
