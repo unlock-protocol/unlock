@@ -13,6 +13,9 @@ jobs:
     needs: run-all-tests
     runs-on: ubuntu-24.04
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Load secrets from 1Password
         uses: 1Password/load-secrets-action@v2.0.0
         env:
@@ -30,6 +33,9 @@ jobs:
     needs: run-all-tests
     runs-on: ubuntu-24.04
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Load secrets from 1Password
         uses: 1Password/load-secrets-action@v2.0.0
         env:
