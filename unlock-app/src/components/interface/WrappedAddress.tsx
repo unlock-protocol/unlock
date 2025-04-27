@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { Address } from '@unlock-protocol/ui'
 import { ToastHelper } from '@unlock-protocol/ui'
 import networks from '@unlock-protocol/networks'
-import { resolveAddress } from '~/hooks/useNameResolver'
+import { useResolvedName } from '~/hooks/useNameResolver'
 
 /**
  * @typedef {Object} WrappedAddressProps
@@ -50,7 +50,7 @@ const normalizeAddress = (address: string | `0x${string}`): `0x${string}` => {
  */
 export const WrappedAddress: React.FC<WrappedAddressProps> = ({
   address,
-  resolvedName,
+  resolvedName: providedResolvedName,
   preferredResolver = 'multiple',
   showCopyIcon = true,
   showExternalLink = true,
@@ -64,34 +64,26 @@ export const WrappedAddress: React.FC<WrappedAddressProps> = ({
   // Normalize the address to always start with 0x
   const normalizedAddress = normalizeAddress(address)
 
-  // If resolvedName is provided or skipResolution is true, we should skip the name resolution
-  const shouldSkipResolution = Boolean(resolvedName || skipResolution)
+  // To prevent redundant calls:
+  // 1. If a resolvedName is provided, we shouldn't query at all
+  // 2. If skipResolution is true, we also shouldn't query
+  const shouldQuery = !providedResolvedName && !skipResolution
 
-  /**
-   * Wrapper function for resolving names.
-   */
-  const resolveMultipleNames = useCallback(
-    async (address: string): Promise<string | undefined> => {
-      if (shouldSkipResolution) return resolvedName || undefined
-
-      // If we already have a resolvedName, return it immediately
-      if (resolvedName) return resolvedName
-
-      return resolveAddress(address, preferredResolver)
-    },
-    [shouldSkipResolution, preferredResolver, resolvedName]
+  // Use the React Query hook only when necessary
+  const { resolvedName: queryResolvedName } = useResolvedName(
+    shouldQuery ? normalizedAddress : undefined,
+    preferredResolver,
+    !shouldQuery // explicitly skip if we shouldn't query
   )
+
+  // Use provided name if available, otherwise use the resolved name from the query
+  const effectiveResolvedName = providedResolvedName || queryResolvedName
 
   /**
    * Handles the copy action for the address.
-   * This function is triggered when the address is copied to the clipboard.
-   * It displays a success toast notification with a message that varies based on the type of address.
    */
   const handleCopy = useCallback(() => {
-    // Initialize a message variable to hold the success message
     let message: string
-
-    // Determine the appropriate message based on the type of address
     switch (addressType) {
       case 'lock':
         message = 'Lock address copied to clipboard'
@@ -105,43 +97,24 @@ export const WrappedAddress: React.FC<WrappedAddressProps> = ({
       default:
         message = 'Address copied to clipboard'
     }
-
-    // Show a success toast notification with the determined message
     ToastHelper.success(message)
-  }, [addressType]) // include addressType to ensure the latest value is used
+  }, [addressType])
 
   /**
    * Generates the explorer URL based on the provided network.
-   * This function checks if the network is valid and retrieves the corresponding explorer URL for the normalized address.
-   * @returns {string | undefined} The explorer URL for the address or undefined if no valid network is provided.
    */
   const getExplorerUrl = useCallback(() => {
     if (network && networks[network]) {
       const { explorer } = networks[network]
       return explorer?.urls?.address(normalizedAddress) || undefined
     }
-    // Return undefined if no network is provided or if it's not found.
     return undefined
   }, [network, normalizedAddress])
-
-  /**
-   * When skipResolution is true, we need to ensure that:
-   * 1. We still provide the useName function but it should return immediately
-   * 2. If no resolvedName was provided, we use address as fallback for resolvedName
-   *    to ensure something is always displayed instead of a placeholder
-   */
-  const effectiveResolvedName =
-    skipResolution && !resolvedName ? undefined : resolvedName
-
-  // Always pass resolveMultipleNames, even when skipping resolution
-  const nameResolver =
-    shouldSkipResolution && !resolvedName ? undefined : resolveMultipleNames
 
   return (
     <Address
       address={normalizedAddress}
       resolvedName={effectiveResolvedName}
-      useName={nameResolver}
       onCopied={handleCopy}
       showCopyIcon={showCopyIcon}
       showExternalLink={showExternalLink}
