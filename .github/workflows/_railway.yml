@@ -15,15 +15,10 @@ on:
         description: 'The Railway environment to deploy to'
         type: string
         required: true
-      bypass_diff_check:
-        description: 'Bypass the monorepo diff check'
-        required: false
-        type: string
-    secrets:
       railway-token:
+        description: 'Railway auth token'
         required: true
-      OP_SERVICE_ACCOUNT_TOKEN:
-        required: true
+        type: string
 
 jobs:
   deploy-to-railway:
@@ -35,13 +30,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Load secrets from 1Password
-        uses: 1Password/load-secrets-action@v2.0.0
-        with:
-          export-env: true
-        env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
       - name: Install Railway CLI
         run: npm i -g @railway/cli
