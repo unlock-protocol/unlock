@@ -39,12 +39,12 @@ Some impressive projects leveraging Unlock Protocol for decentralized science,
 or DeSci, tagged us in this round.
 [Omni Analytics](https://twitter.com/omnianalytics) maintaining the top spot for
 community support in this category, has continued to use the funding they've
-recieved by adding more content to their "Learning Data Science on the Ethereum
+received by adding more content to their "Learning Data Science on the Ethereum
 Blockchain" course. Congratulations to
 [Active Inference Institute](https://www.activeinference.org/) who caught
 community attention with their plans to create a first of its kind open-source
 package Active Blockference which aims to implement Active Inference simulations
-for congnitive modeling for the blockchain space, use Active Blockference to
+for cognitive modeling for the blockchain space, use Active Blockference to
 understand behavior in ETH/Web3 ecosystems and improve educational materials
 around use of Active Blockference.
 
@@ -52,7 +52,7 @@ around use of Active Blockference.
 
 We saw an increase in the number of web3 social projects taking advantage of
 the power of Unlock Protocol too! [Nimi](https://nimi.io/) was a crowd favorite
-with a dApp that allows you to aggregate your soical profiles. Other notable
+with a dApp that allows you to aggregate your social profiles. Other notable
 projects include [Cobogo](https://cobogo.io) for creator profiles and
 fundraising for the creator economy, [Maven Foundation](https://maven.foundation/)
 is continuing their work on building tools to empower social influencers and
@@ -100,7 +100,7 @@ create a powerful healing modality for domestic violence victims using art to
 process trauma and is building an art workshop platform on Unlock Protocol to
 deliver it. They continue to be the only grantee on the platform addressing the
 issue of domestic violence so we're watching closely to see how the community
-reacts to the progess they'll make between this round and next as they get off
+reacts to the progress they'll make between this round and next as they get off
 the ground. Another project supporting women's reproductive rights while also
 bringing you an innovative music experience is
 [Beats Per Mint](https://tell.ie/beatspermint/j6upJTcHktEE) who will soon be
