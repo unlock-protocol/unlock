@@ -11,6 +11,10 @@ on:
         description: 'The Railway service ID to deploy to (or 1Password reference)'
         type: string
         required: true
+      environment:
+        description: 'The Railway environment to deploy to'
+        type: string
+        required: true
       bypass_diff_check:
         description: 'Bypass the monorepo diff check'
         required: false
@@ -41,9 +45,10 @@ jobs:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           RAILWAY_TOKEN: ${{ secrets.railway-token }}
           SVC_ID: ${{ inputs.service-id }}
+          ENVIRONMENT: ${{ inputs.environment }}
 
       - name: Install Railway CLI
         run: npm i -g @railway/cli
 
       - name: Deploy to Railway
-        run: railway up --service=${{ env.SVC_ID }}
+        run: railway up --service=${{ env.SVC_ID }} --environment=${{ env.ENVIRONMENT }}
