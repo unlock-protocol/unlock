@@ -12,16 +12,30 @@ jobs:
     secrets:
       OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
-  deploy-locksmith-production:
+  deploy-locksmith-web-production:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
-    uses: ./.github/workflows/_heroku.yml
+    name: Deploy locksmith web on Railway (Production)
+    uses: ./.github/workflows/_railway.yml
     with:
+      service: locksmith-web
+      service-id: op://secrets/railway/locksmith-web-service-id
       bypass_diff_check: bypass
-      service: locksmith
-      app-name: unlock-locksmith-production
+      environment: production
     secrets:
-      HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
-      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      railway-token: op://secrets/railway/railway-token
+      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+
+  deploy-locksmith-worker-production:
+    if: ${{ github.repository_owner == 'unlock-protocol' }}
+    name: Deploy locksmith worker on Railway (Production)
+    uses: ./.github/workflows/_railway.yml
+    with:
+      service: locksmith-worker
+      service-id: op://secrets/railway/locksmith-worker-service-id
+      bypass_diff_check: bypass
+      environment: production
+    secrets:
+      railway-token: op://secrets/railway/railway-token
       OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
   # Vercel Deployments

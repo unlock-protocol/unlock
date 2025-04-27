@@ -17,10 +17,10 @@ const fetchGraph = async (query, url = THE_GRAPH_URL) => {
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
+      Authorization: `Bearer ${process.env.SUBGRAPH_QUERY_API_KEY}`,
     },
     body: JSON.stringify({ query }),
   })
-
   return await req.json()
 }
 
@@ -36,35 +36,29 @@ const getLatestDeployment = async (url) => {
   return deployment
 }
 
-const parseSubgraphType = ({ endpoint, studioEndpoint }) => {
-  // custom if not the graph
-  if (!endpoint.includes('thegraph')) return 'custom'
-  if (
-    // studioEndpoint ||
-    (endpoint || '').includes('studio')
-  )
-    return 'studio'
-  return 'hosted'
+const getGraphId = async (chainId) => {
+  const url = `https://subgraph.unlock-protocol.com/${chainId}`
+  const response = await fetch(url, {
+    // prevent redirect
+    redirect: 'manual',
+  })
+  const { graphId } = await response.json()
+  return graphId
 }
 
 const checkHealth = async ({ id, name, subgraph }) => {
   const errors = []
-  const subgraphType = parseSubgraphType(subgraph)
-  if (subgraphType !== 'studio') {
-    errors.push(`⚠️: Subgraph not migrated to studio (${subgraphType})`)
-  }
-  if (subgraphType === 'custom') {
-    errors.push(`⚠️: Not hosted by The Graph, couldn't fetch status.`)
-    return errors
-  }
+
+  const graphId = await getGraphId(id)
+  const subgraphUrl = `https://gateway.thegraph.com/api/subgraphs/id/${graphId}`
 
   // get latest deployment id
   let deploymentId
   try {
-    deploymentId = await getLatestDeployment(subgraph.endpoint)
+    deploymentId = await getLatestDeployment(subgraphUrl)
   } catch (error) {
     errors.push(
-      `❌ failed to fetch latest deployment from The Graph (${subgraph.endpoint})!`
+      `❌ failed to fetch latest deployment from The Graph (${subgraphUrl})!`
     )
     errors.push(error)
   }
@@ -109,13 +103,10 @@ const checkHealth = async ({ id, name, subgraph }) => {
 
   // log errors
   if (errors.length) {
-    console.log(`${name} (${id}) -- ${subgraphType}`)
+    console.log(`${name} (${id})`)
     console.log(errors.join('\n'))
     console.log(`------ \n`)
-    log(
-      `[SUBGRAPH] ${name} (${id}) -- ${subgraphType} - ${errors.join('\n')}`,
-      'error'
-    )
+    log(`[SUBGRAPH] ${name} (${id})  - ${errors.join('\n')}`, 'error')
   }
   return errors
 }
@@ -134,6 +125,7 @@ async function main() {
   const results = await Promise.all(
     networksToCheck.map(async (chainName) => {
       const errors = await checkHealth(networks[chainName])
+      console.log(errors)
       if (errors.length > 0) {
         hasErrors = true
       }
