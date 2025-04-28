@@ -21,7 +21,7 @@ jobs:
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
       - name: Deploy on Railway
-        uses: ./.github/workflows/_railway.yml
+        uses: ./.github/actions/railway
         with:
           service: web
           service-id: op://secrets/railway/locksmith-web-service-id
@@ -41,7 +41,7 @@ jobs:
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
       - name: Deploy on Railway
-        uses: ./.github/workflows/_railway.yml
+        uses: ./.github/actions/railway
         with:
           service: worker
           service-id: op://secrets/railway/locksmith-worker-service-id
