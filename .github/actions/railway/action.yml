@@ -1,38 +1,34 @@
 name: Deploy on Railway
 
-on:
-  workflow_call:
-    inputs:
-      service:
-        description: 'The service/app to build'
-        type: string
-        required: true
-      service-id:
-        description: 'The Railway service ID to deploy to (or 1Password reference)'
-        type: string
-        required: true
-      environment:
-        description: 'The Railway environment to deploy to'
-        type: string
-        required: true
-      railway-token:
-        description: 'Railway auth token'
-        required: true
-        type: string
+inputs:
+  service:
+    description: 'The service/app to build'
+    type: string
+    required: true
+  service-id:
+    description: 'The Railway service ID to deploy to (or 1Password reference)'
+    type: string
+    required: true
+  environment:
+    description: 'The Railway environment to deploy to'
+    type: string
+    required: true
+  railway-token:
+    description: 'Railway auth token'
+    type: string
+    required: true
 
-jobs:
-  deploy-to-railway:
-    name: Deploy ${{ inputs.service }} on Railway
-    runs-on: ubuntu-latest
-    env:
-      RAILWAY_TOKEN: ${{ secrets.railway-token }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+runs:
+  using: 'composite'
+  env:
+    RAILWAY_TOKEN: ${{ secrets.railway-token }}
+  steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
 
-      - name: Install Railway CLI
-        run: npm i -g @railway/cli
+    - name: Install Railway CLI
+      run: npm i -g @railway/cli
 
-      - name: Deploy to Railway
-        run: railway up --ci --service=${{ inputs.service-id }} --environment=${{ inputs.environment }}
+    - name: Deploy to Railway
+      run: railway up --ci --service=${{ inputs.service-id }} --environment=${{ inputs.environment }}
