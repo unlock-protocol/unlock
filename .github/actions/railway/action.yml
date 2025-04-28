@@ -17,14 +17,17 @@ inputs:
     description: 'Railway auth token'
     type: string
     required: true
-env:
-  RAILWAY_TOKEN: ${{ inputs.railway-token }}
 runs:
   using: 'composite'
   steps:
     - name: Install Railway CLI
       shell: bash
       run: npm i -g @railway/cli
+
+    - name: Set RAILWAY_TOKEN
+      shell: bash
+      run: |
+        echo "RAILWAY_TOKEN=${{ inputs.railway-token }}" >> $GITHUB_ENV
 
     - name: Deploy to Railway
       shell: bash
