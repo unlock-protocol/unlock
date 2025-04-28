@@ -21,7 +21,7 @@ inputs:
 runs:
   using: 'composite'
   env:
-    RAILWAY_TOKEN: ${{ secrets.railway-token }}
+    RAILWAY_TOKEN: ${{ inputs.railway-token }}
   steps:
     - uses: actions/checkout@v4
       with:
