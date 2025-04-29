@@ -10,7 +10,7 @@ jobs:
 
   deploy-locksmith-web-staging:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
-    # needs: run-all-tests
+    needs: run-all-tests
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -35,7 +35,7 @@ jobs:
 
   deploy-locksmith-worker-staging:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
-    # needs: run-all-tests
+    needs: run-all-tests
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
