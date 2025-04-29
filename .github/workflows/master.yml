@@ -23,7 +23,7 @@ jobs:
           export-env: true
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          RAILWAY_TOKEN: op://secrets/railway/railway-token
+          RAILWAY_TOKEN: op://secrets/railway/railway-token-staging
           RAILWAY_SERVICE_ID: op://secrets/railway/locksmith-web-service-id
       - name: Deploy on Railway
         uses: ./.github/actions/railway
@@ -48,7 +48,7 @@ jobs:
           export-env: true
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          RAILWAY_TOKEN: op://secrets/railway/railway-token
+          RAILWAY_TOKEN: op://secrets/railway/railway-token-staging
           RAILWAY_SERVICE_ID: op://secrets/railway/locksmith-worker-service-id
       - name: Deploy on Railway
         uses: ./.github/actions/railway
