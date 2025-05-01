@@ -12420,7 +12420,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/upgrades-core@npm:1.42.2, @openzeppelin/upgrades-core@npm:^1.32.2, @openzeppelin/upgrades-core@npm:^1.37.0, @openzeppelin/upgrades-core@npm:^1.38.0, @openzeppelin/upgrades-core@npm:^1.41.0":
+"@openzeppelin/upgrades-core@npm:1.44.0":
+  version: 1.44.0
+  resolution: "@openzeppelin/upgrades-core@npm:1.44.0"
+  dependencies:
+    "@nomicfoundation/slang": "npm:^0.18.3"
+    bignumber.js: "npm:^9.1.2"
+    cbor: "npm:^10.0.0"
+    chalk: "npm:^4.1.0"
+    compare-versions: "npm:^6.0.0"
+    debug: "npm:^4.1.1"
+    ethereumjs-util: "npm:^7.0.3"
+    minimatch: "npm:^9.0.5"
+    minimist: "npm:^1.2.7"
+    proper-lockfile: "npm:^4.1.1"
+    solidity-ast: "npm:^0.4.60"
+  bin:
+    openzeppelin-upgrades-core: dist/cli/cli.js
+  checksum: 10/255eaf514726e8e4fab35b7c63688318665aaf91d526bed8d1f87602122754863575a06f0bf54c489d752fbfa3e4d860c4e3c302d320851051cd038f5f983b49
+  languageName: node
+  linkType: hard
+
+"@openzeppelin/upgrades-core@npm:^1.32.2, @openzeppelin/upgrades-core@npm:^1.37.0, @openzeppelin/upgrades-core@npm:^1.38.0, @openzeppelin/upgrades-core@npm:^1.41.0":
   version: 1.42.2
   resolution: "@openzeppelin/upgrades-core@npm:1.42.2"
   dependencies:
@@ -19437,7 +19458,7 @@ __metadata:
     "@nomicfoundation/hardhat-verify": "npm:2.0.13"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@openzeppelin/hardhat-upgrades": "npm:3.9.0"
-    "@openzeppelin/upgrades-core": "npm:1.42.2"
+    "@openzeppelin/upgrades-core": "npm:1.44.0"
     "@safe-global/api-kit": "npm:3.0.1"
     "@safe-global/protocol-kit": "npm:6.0.2"
     "@tenderly/hardhat-tenderly": "npm:2.5.2"
@@ -19466,7 +19487,7 @@ __metadata:
     "@matterlabs/hardhat-zksync-verify": "npm:1.7.1"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@nomiclabs/hardhat-waffle": "npm:2.0.6"
-    "@openzeppelin/upgrades-core": "npm:1.42.2"
+    "@openzeppelin/upgrades-core": "npm:1.44.0"
     "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
@@ -23271,6 +23292,13 @@ __metadata:
   version: 9.1.2
   resolution: "bignumber.js@npm:9.1.2"
   checksum: 10/d89b8800a987225d2c00dcbf8a69dc08e92aa0880157c851c287b307d31ceb2fc2acb0c62c3e3a3d42b6c5fcae9b004035f13eb4386e56d529d7edac18d5c9d8
+  languageName: node
+  linkType: hard
+
+"bignumber.js@npm:^9.1.2":
+  version: 9.3.0
+  resolution: "bignumber.js@npm:9.3.0"
+  checksum: 10/60b79efcf7b56b925fca8eebd10d1f4b70aa2bf6eade7f5af0266f0092226dd2abcd9a3ee315ecb39459750d5a630ce3980b707e5d7bea32c97ffd378e8cc159
   languageName: node
   linkType: hard
 
@@ -48911,7 +48939,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"solidity-ast@npm:^0.4.38, solidity-ast@npm:^0.4.51, solidity-ast@npm:^0.4.56":
+"solidity-ast@npm:^0.4.38, solidity-ast@npm:^0.4.51, solidity-ast@npm:^0.4.56, solidity-ast@npm:^0.4.60":
   version: 0.4.60
   resolution: "solidity-ast@npm:0.4.60"
   checksum: 10/1811d4f5c3b767875819127a9eed125700840124d4d958a09f77cca33f224b4d075567344e366d12569fc6a1974798a30359fb817abf7cbaf320fbd7891e95bd
