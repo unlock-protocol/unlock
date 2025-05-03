@@ -6,7 +6,7 @@
     "@unlock-protocol/contracts": "workspace:^",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/networks": "workspace:^",
-    "eslint": "9.23.0",
+    "eslint": "9.25.1",
     "typescript": "5.8.2",
     "vitest": "3.0.9"
   },
