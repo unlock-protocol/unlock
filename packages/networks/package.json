@@ -47,6 +47,6 @@
   "dependencies": {
     "eslint-plugin-sort-keys-fix": "1.1.2",
     "ethers": "6.13.5",
-    "tsx": "4.19.3"
+    "tsx": "4.19.4"
   }
 }
