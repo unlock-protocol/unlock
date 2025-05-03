@@ -299,7 +299,6 @@ export const MetadataInputs = ({
                   <Checkbox
                     label={inputLabel}
                     disabled={disabled}
-                    fieldSize="small"
                     error={errors?.metadata?.[id]?.[name]?.message}
                     checked={field.value === 'true'}
                     onChange={(e) =>
@@ -552,7 +551,7 @@ export function Metadata({ checkoutService }: Props) {
             })}
 
             {/* Terms of Service */}
-            <div className="mt-4 mb-2">
+            <div className="mt-0 mb-2">
               <Controller
                 name="termsAccepted"
                 control={control}
@@ -571,7 +570,7 @@ export function Metadata({ checkoutService }: Props) {
                         label=""
                       />
                     </div>
-                    <div className="text-sm">
+                    <div className="text-base">
                       <label htmlFor="termsAccepted" className="cursor-pointer">
                         I agree to the{' '}
                         <Link
@@ -579,7 +578,7 @@ export function Metadata({ checkoutService }: Props) {
                           href={`${config.unlockStaticUrl}/terms`}
                           className="text-brand-ui-primary hover:underline"
                         >
-                          Terms of Service
+                          terms of service
                         </Link>
                       </label>
                     </div>

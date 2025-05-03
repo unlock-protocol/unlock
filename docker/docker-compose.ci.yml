@@ -268,7 +268,7 @@ services:
 
   ipfs:
     # Required for subgraph
-    image: ipfs/go-ipfs:v0.33.2
+    image: ipfs/go-ipfs:v0.34.1
     ports:
       - '5001:5001'
 

@@ -45,9 +45,7 @@ export const EventContentWithProps = ({
 }: EventContentWithPropsProps) => {
   const router = useRouter()
   const handleCreateEvent = () => {
-    router.push(
-      'https://unlock-protocol-1.hubspotpagebuilder.com/unlock-protocol-newsletter-signup-0'
-    )
+    router.push('/event/new')
   }
   if (isLoading) {
     return <LoadingIcon />

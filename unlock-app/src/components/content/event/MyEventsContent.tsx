@@ -1,5 +1,8 @@
 'use client'
 
+import { IoTicketSharp } from 'react-icons/io5'
+import { MdOutlineCollections } from 'react-icons/md'
+
 import { Button } from '@unlock-protocol/ui'
 import Link from 'next/link'
 import EventList from '~/components/interface/locks/List/elements/EventList'
@@ -18,11 +21,26 @@ export default function MyEventsContent() {
           </span>
         </div>
         {account && (
-          <Link href="/event/new">
-            <Button className="w-full md:w-auto md:ml-auto" size="large">
-              Create new event
-            </Button>
-          </Link>
+          <div className="flex flex-row items-center gap-4">
+            <Link href="/events/new-collection">
+              <Button
+                iconLeft={<MdOutlineCollections />}
+                className="w-full md:w-auto md:ml-auto"
+                size="medium"
+              >
+                New collection
+              </Button>
+            </Link>
+            <Link href="/event/new">
+              <Button
+                iconLeft={<IoTicketSharp />}
+                className="w-full md:w-auto md:ml-auto"
+                size="medium"
+              >
+                Host an event
+              </Button>
+            </Link>
+          </div>
         )}
       </div>
     )

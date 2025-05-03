@@ -174,9 +174,10 @@ if (process.env.DATABASE_URL) {
   config.database.password = process.env.DB_PASSWORD
   config.database.database = process.env.DB_NAME
   config.database.host = process.env.DB_HOSTNAME
+  config.database.port = Number(process.env.DB_PORT || 5432)
 }
 
-const connectionString = `postgresql://${config.database.username}:${config.database.password}@${config.database.host}/${config.database.database}`
+const connectionString = `postgresql://${config.database.username}:${config.database.password}@${config.database.host}:${config.database.port}/${config.database.database}`
 
 config.databaseUrl = connectionString
 
