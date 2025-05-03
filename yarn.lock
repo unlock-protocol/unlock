@@ -18746,12 +18746,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:18.3.5":
-  version: 18.3.5
-  resolution: "@types/react-dom@npm:18.3.5"
+"@types/react-dom@npm:18.3.6":
+  version: 18.3.6
+  resolution: "@types/react-dom@npm:18.3.6"
   peerDependencies:
     "@types/react": ^18.0.0
-  checksum: 10/02095b326f373867498e0eb2b5ebb60f9bd9535db0d757ea13504c4b7d75e16605cf1d43ce7a2e67893d177b51db4357cabb2842fb4257c49427d02da1a14e09
+  checksum: 10/ae179355401c64423d39946eda22c5f7f74c94ce61c21505024d4d82c33853ec40bc9b370f75e4a7750b0524aba4d95a43fcc328d8d14684dc2abb41ba529de8
   languageName: node
   linkType: hard
 
@@ -18824,13 +18824,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:18.3.18":
-  version: 18.3.18
-  resolution: "@types/react@npm:18.3.18"
+"@types/react@npm:18.3.20":
+  version: 18.3.20
+  resolution: "@types/react@npm:18.3.20"
   dependencies:
     "@types/prop-types": "npm:*"
     csstype: "npm:^3.0.2"
-  checksum: 10/7fdd8b853e0d291d4138133f93f8d5c333da918e5804afcea61a923aab4bdfc9bb15eb21a5640959b452972b8715ddf10ffb12b3bd071898b9e37738636463f2
+  checksum: 10/020c51e63b60862e6d772f0cdea0b9441182eedab6289dabd8add0708ded62003834c4e7c6f23a1ccd3ca9486b46296057c3f881c34261a0483765351f8d0bc3
   languageName: node
   linkType: hard
 
@@ -19415,7 +19415,7 @@ __metadata:
     "@sentry/nextjs": "npm:9.10.1"
     "@tanstack/react-query": "npm:5.71.10"
     "@tw-classed/react": "npm:1.8.0"
-    "@types/react": "npm:18.3.18"
+    "@types/react": "npm:18.3.20"
     "@unlock-protocol/contracts": "workspace:*"
     "@unlock-protocol/core": "workspace:./packages/core"
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon"
@@ -19487,8 +19487,8 @@ __metadata:
     "@storybook/addon-links": "npm:8.6.3"
     "@storybook/react": "npm:8.6.3"
     "@storybook/react-vite": "npm:8.6.3"
-    "@types/react": "npm:18.3.18"
-    "@types/react-dom": "npm:18.3.5"
+    "@types/react": "npm:18.3.20"
+    "@types/react-dom": "npm:18.3.6"
     "@vitejs/plugin-react": "npm:4.3.4"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
@@ -19930,8 +19930,8 @@ __metadata:
     "@tailwindcss/typography": "npm:0.5.16"
     "@tanstack/react-query": "npm:5.71.10"
     "@tw-classed/react": "npm:1.8.0"
-    "@types/react": "npm:18.3.18"
-    "@types/react-dom": "npm:18.3.5"
+    "@types/react": "npm:18.3.20"
+    "@types/react-dom": "npm:18.3.6"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
     "@vitejs/plugin-react": "npm:4.3.4"
     autoprefixer: "npm:10.4.21"
@@ -19985,7 +19985,7 @@ __metadata:
     "@types/file-saver": "npm:2.0.7"
     "@types/postmate": "npm:1.5.4"
     "@types/qrcode.react": "npm:3.0.0"
-    "@types/react": "npm:18.3.18"
+    "@types/react": "npm:18.3.20"
     "@types/react-gtm-module": "npm:2.0.4"
     "@types/remove-markdown": "npm:0.3.4"
     "@unlock-protocol/core": "workspace:./packages/core"
@@ -20105,7 +20105,7 @@ __metadata:
     "@tanstack/react-query": "npm:5.71.10"
     "@testing-library/react": "npm:16.2.0"
     "@types/node": "npm:22.13.15"
-    "@types/react": "npm:18.3.18"
+    "@types/react": "npm:18.3.20"
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/ui": "workspace:./packages/ui"
