@@ -5553,15 +5553,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/compat@npm:1.2.8":
-  version: 1.2.8
-  resolution: "@eslint/compat@npm:1.2.8"
+"@eslint/compat@npm:1.2.9":
+  version: 1.2.9
+  resolution: "@eslint/compat@npm:1.2.9"
   peerDependencies:
     eslint: ^9.10.0
   peerDependenciesMeta:
     eslint:
       optional: true
-  checksum: 10/f344d73e6b46a2303504b55198f9c480be4881ee10d35c12cae57ba1565575157540765764a971afaafd990163b2ed2227f9efa363a6ed4d27ea350dc2847a52
+  checksum: 10/ddab5d1858d0069850ce1b2259d325687e100e646465931bbbd9f534e048f88d8400fca6386680e1340a7370cfc03618993a260599be468211a2b73828e7cd57
   languageName: node
   linkType: hard
 
@@ -19403,7 +19403,7 @@ __metadata:
   resolution: "@unlock-protocol/eslint-config@workspace:packages/eslint-config"
   dependencies:
     "@babel/eslint-parser": "npm:7.27.0"
-    "@eslint/compat": "npm:1.2.8"
+    "@eslint/compat": "npm:1.2.9"
     "@typescript-eslint/eslint-plugin": "npm:8.29.0"
     "@typescript-eslint/parser": "npm:8.29.0"
     "@vitest/eslint-plugin": "npm:1.1.39"
