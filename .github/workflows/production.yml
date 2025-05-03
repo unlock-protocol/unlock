@@ -12,17 +12,53 @@ jobs:
     secrets:
       OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
-  deploy-locksmith-production:
+  deploy-locksmith-web-production:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
-    uses: ./.github/workflows/_heroku.yml
-    with:
-      bypass_diff_check: bypass
-      service: locksmith
-      app-name: unlock-locksmith-production
-    secrets:
-      HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
-      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Load secrets from 1Password
+        uses: 1Password/load-secrets-action@v2.0.0
+        with:
+          # Export loaded secrets as environment variables
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          RAILWAY_TOKEN: op://secrets/railway/railway-token-production
+          RAILWAY_SERVICE_ID: op://secrets/railway/locksmith-web-service-id
+      - name: Deploy on Railway
+        uses: ./.github/actions/railway
+        with:
+          service: web
+          environment: production
+          service-id: ${{ env.RAILWAY_SERVICE_ID }}
+          railway-token: ${{ env.RAILWAY_TOKEN }}
+
+  deploy-locksmith-worker-production:
+    if: ${{ github.repository_owner == 'unlock-protocol' }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Load secrets from 1Password
+        uses: 1Password/load-secrets-action@v2.0.0
+        with:
+          # Export loaded secrets as environment variables
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          RAILWAY_TOKEN: op://secrets/railway/railway-token-production
+          RAILWAY_SERVICE_ID: op://secrets/railway/locksmith-worker-service-id
+      - name: Deploy on Railway
+        uses: ./.github/actions/railway
+        with:
+          service: worker
+          environment: production
+          service-id: ${{ env.RAILWAY_SERVICE_ID }}
+          railway-token: ${{ env.RAILWAY_TOKEN }}
 
   # Vercel Deployments
   deploy-paywall-app-production:
