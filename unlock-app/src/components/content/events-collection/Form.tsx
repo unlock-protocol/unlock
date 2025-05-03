@@ -182,9 +182,14 @@ export const EventCollectionForm = ({
               onClick={() => router.back()}
             />
           </Button>
-          <h1 className="text-xl font-bold text-center text-brand-dark">
-            Create an Event Collection
-          </h1>
+          <div className="flex flex-col items-center gap-4">
+            <h1 className="text-xl font-bold text-center text-brand-dark">
+              Create an Event Collection
+            </h1>
+            <div>
+              Event collection pages let you group multiple related events.
+            </div>
+          </div>
         </div>
 
         <form className="mb-6" onSubmit={methods.handleSubmit(handleSubmit)}>
