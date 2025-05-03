@@ -19866,7 +19866,7 @@ __metadata:
     qrcode.react: "npm:4.1.0"
     react-device-detect: "npm:2.2.3"
     react-dropzone: "npm:14.3.8"
-    react-google-autocomplete: "npm:2.7.4"
+    react-google-autocomplete: "npm:2.7.5"
     react-gtm-module: "npm:2.0.11"
     react-hook-form: "npm:7.53.2"
     react-icons: "npm:5.3.0"
@@ -45316,15 +45316,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-google-autocomplete@npm:2.7.4":
-  version: 2.7.4
-  resolution: "react-google-autocomplete@npm:2.7.4"
+"react-google-autocomplete@npm:2.7.5":
+  version: 2.7.5
+  resolution: "react-google-autocomplete@npm:2.7.5"
   dependencies:
     lodash.debounce: "npm:^4.0.8"
     prop-types: "npm:^15.5.0"
   peerDependencies:
     react: ">=16.8.0"
-  checksum: 10/eb1dd61516d9fdc26f7142ee71d24135a6c9f88037e059b9f1b5171258c71d74ba5b74b19e8f9881719c01359f811121ba17f8fdba720e81d5c50b00a0bb6b0a
+  checksum: 10/0d19e4700564d072ab96e2ab5d3bc6634516635182d430b35bff1ab2301291acb6851b1a0def7f7bfbc800c39116dcccce0642ae865fdb1db7967574e7957475
   languageName: node
   linkType: hard
 
