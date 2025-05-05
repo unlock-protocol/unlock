@@ -52,6 +52,8 @@ const cronTabTesting = `
 
 const crontab = config.isProduction ? crontabProduction : cronTabTesting
 
+console.log('DATABASE', config.databaseUrl)
+
 export const addJob = async (jobName: string, payload: any, opts = {}) => {
   // Default priority for tasks is 0, we do not want to make clients wait
   return quickAddJob(
