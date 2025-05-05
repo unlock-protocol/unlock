@@ -10,7 +10,7 @@
     "@headlessui/react": "2.2.0",
     "@openzeppelin/merkle-tree": "1.0.8",
     "@privy-io/react-auth": "2.12.0",
-    "@sentry/nextjs": "9.10.1",
+    "@sentry/nextjs": "9.15.0",
     "@tanstack/react-query": "5.71.10",
     "@tw-classed/react": "1.8.0",
     "@unlock-protocol/contracts": "workspace:*",
