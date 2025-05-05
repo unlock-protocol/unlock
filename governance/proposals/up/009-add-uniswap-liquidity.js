@@ -19,7 +19,7 @@ const { Pool, Position } = uniswapV3SDK
 
 const FULL_RANGE_LOWER_TICK = -887220
 const FULL_RANGE_UPPER_TICK = 887220
-const SLIPPAGE = 995 // 0.5% slippage
+const SLIPPAGE = 950 // 5% slippage
 const DEADLINE_BUFFER = 24 * 60 * 60 * 365 * 80
 
 const ETH_AMOUNT = '10'
@@ -135,7 +135,7 @@ module.exports = async () => {
   ])
 
   const needsWethApproval = wethAllowance < ethAmount
-  const needsUpApproval = upAllowance < requiredAmounts.token1
+  const needsUpApproval = upAllowance < BigInt(requiredAmounts.token1)
 
   const proposalName = `Add Liquidity to UP/WETH Uniswap Pool
 
