@@ -108,6 +108,36 @@ const calculatePosition = async (ethAmount) => {
   }
 }
 
+const buildProposalDescription = ({
+  ethAmount,
+  needsWrapping,
+  needsWethApproval,
+  needsUpApproval,
+}) => `Add Liquidity to UP/WETH Uniswap Pool
+
+This proposal deposits ${ethAmount} ETH and the corresponding amount of UP
+tokens into a full-range position in the UP/WETH Uniswap V3 pool on Base. It will:
+
+1. Improve liquidity and price stability for UP  
+2. Generate fee income for the DAO  
+3. Make it easier for users to trade UP  
+
+The proposal executes these steps:
+${[
+  needsWrapping
+    ? 'Wrap ETH to WETH (treasury WETH balance is insufficient)'
+    : null,
+  needsWethApproval ? 'Approve WETH for the position manager' : null,
+  needsUpApproval ? 'Approve UP tokens for the position manager' : null,
+  'Create the full‑range liquidity position',
+]
+  .filter(Boolean)
+  .map((step, i) => `${i + 1}. ${step}`)
+  .join('\n')}
+
+The position will be owned by the DAO treasury (Timelock contract) and
+can be managed through future governance proposals.`
+
 const WETH_ABI = ['function deposit() payable']
 const POSITION_MANAGER_ABI = [
   'function mint((address token0, address token1, uint24 fee, int24 tickLower, int24 tickUpper, uint256 amount0Desired, uint256 amount1Desired, uint256 amount0Min, uint256 amount1Min, address recipient, uint256 deadline)) returns (uint256 tokenId, uint128 liquidity, uint256 amount0, uint256 amount1)',
@@ -137,22 +167,13 @@ module.exports = async () => {
   const needsWethApproval = wethAllowance < ethAmount
   const needsUpApproval = upAllowance < BigInt(requiredAmounts.token1)
 
-  const proposalName = `Add Liquidity to UP/WETH Uniswap Pool
+  const proposalName = buildProposalDescription({
+    ethAmount: ETH_AMOUNT,
+    needsWrapping,
+    needsWethApproval,
+    needsUpApproval,
+  })
 
-This proposal adds ${ETH_AMOUNT} ETH and the corresponding amount of UP tokens to a full-range position in the UP/WETH Uniswap V3 pool on Base. This will:
-
-1. Improve liquidity and price stability for the UP token
-2. Generate fee income for the DAO from trading activity
-3. Support the UP token ecosystem by making it easier for users to buy and sell the token
-
-The proposal follows these steps:
-${needsWrapping ? "1. Wrap ETH to WETH (since the treasury's WETH balance is insufficient)" : ''}
-${needsWethApproval ? `${needsWrapping ? '2' : '1'}. Approve WETH for the position manager` : ''}
-${needsUpApproval ? `${needsWrapping || needsWethApproval ? (needsWrapping && needsWethApproval ? '3' : '2') : '1'}. Approve UP tokens for the position manager` : ''}
-${needsWrapping ? '4' : needsWethApproval || needsUpApproval ? (needsWethApproval && needsUpApproval ? '4' : '3') : '2'}. Create the full-range liquidity position
-
-The position will be owned by the DAO treasury (Timelock contract) and can be managed through future governance proposals.
-`
   const calls = []
   if (needsWrapping) {
     calls.push({
