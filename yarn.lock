@@ -20803,7 +20803,7 @@ __metadata:
     "@vitest/eslint-plugin": "npm:1.1.39"
     eslint: "npm:9.26.0"
     eslint-config-next: "npm:15.3.1"
-    eslint-config-prettier: "npm:10.1.1"
+    eslint-config-prettier: "npm:10.1.3"
     eslint-plugin-evm-address-to-checksummed: "npm:0.0.6"
     eslint-plugin-json: "npm:4.0.1"
     eslint-plugin-mocha: "npm:10.5.0"
@@ -30720,14 +30720,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-prettier@npm:10.1.1":
-  version: 10.1.1
-  resolution: "eslint-config-prettier@npm:10.1.1"
+"eslint-config-prettier@npm:10.1.3":
+  version: 10.1.3
+  resolution: "eslint-config-prettier@npm:10.1.3"
   peerDependencies:
     eslint: ">=7.0.0"
   bin:
     eslint-config-prettier: bin/cli.js
-  checksum: 10/e78e195a4f19e0de9bf655648bb3433877d6a5368537f1b1049976b74180844a00dd7c1ba3144e3da6e8b6864f8dcdfcda6c7338a537883fcf5b212ef6dcd0e0
+  checksum: 10/89207971364d2454e24696d19f569e160dcb8a64149b522ecffd6b19b0d9aca145990c31c387c4b6cc9d1bc41e5e4c6edb71eacc3601f536284a0870913f31b8
   languageName: node
   linkType: hard
 
