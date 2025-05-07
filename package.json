@@ -13,7 +13,7 @@
     "@typescript-eslint/parser": "8.31.1",
     "babel-plugin-polyfill-corejs2": "0.4.12",
     "node-gyp": "11.2.0",
-    "prettier-plugin-solidity": "1.4.2",
+    "prettier-plugin-solidity": "1.4.3",
     "typescript": "5.8.2"
   },
   "devDependencies": {
