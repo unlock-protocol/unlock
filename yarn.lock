@@ -20669,7 +20669,7 @@ __metadata:
     dayjs: "npm:1.11.13"
     embla-carousel-react: "npm:8.5.2"
     eslint: "npm:9.25.1"
-    ethers: "npm:6.13.5"
+    ethers: "npm:6.14.0"
     jsdom: "npm:26.1.0"
     next: "npm:14.2.26"
     postcss: "npm:8.5.3"
@@ -20770,7 +20770,7 @@ __metadata:
     docusaurus-node-polyfills: "npm:1.0.0"
     docusaurus-plugin-openapi-docs: "npm:4.2.0"
     docusaurus-theme-openapi-docs: "npm:4.2.0"
-    ethers: "npm:6.13.5"
+    ethers: "npm:6.14.0"
     postcss: "npm:8.5.3"
     postcss-import: "npm:16.1.0"
     postcss-nesting: "npm:13.0.1"
@@ -20842,7 +20842,7 @@ __metadata:
     "@unlock-protocol/networks": "workspace:./packages/networks"
     arb-shared-dependencies: "npm:1.0.0"
     eslint: "npm:9.25.1"
-    ethers: "npm:6.13.5"
+    ethers: "npm:6.14.0"
     ethers-multisend: "npm:3.1.0"
     fs-extra: "npm:11.3.0"
     hardhat: "npm:2.22.19"
@@ -20867,7 +20867,7 @@ __metadata:
     "@unlock-protocol/types": "workspace:^"
     copyfiles: "npm:2.4.1"
     eslint: "npm:9.25.1"
-    ethers: "npm:6.13.5"
+    ethers: "npm:6.14.0"
     hardhat: "npm:2.22.19"
     tsup: "npm:8.4.0"
     typescript: "npm:5.8.2"
@@ -21066,7 +21066,7 @@ __metadata:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:^"
     eslint: "npm:9.25.1"
-    ethers: "npm:6.13.5"
+    ethers: "npm:6.14.0"
     typescript: "npm:5.8.2"
     vitest: "npm:3.0.9"
     wrangler: "npm:3.114.4"
@@ -21357,7 +21357,7 @@ __metadata:
     embla-carousel-react: "npm:8.5.2"
     eslint: "npm:9.25.1"
     eslint-config-next: "npm:15.2.4"
-    ethers: "npm:6.13.5"
+    ethers: "npm:6.14.0"
     feed: "npm:4.2.2"
     gray-matter: "npm:4.0.3"
     next: "npm:14.2.26"
@@ -31705,6 +31705,21 @@ __metadata:
     tslib: "npm:2.7.0"
     ws: "npm:8.17.1"
   checksum: 10/ccba21a83679fb6a7c3eb9d187593501565d140064f2db28057a64d6707678bacf2adf4555882c4814688246da73173560df81fd3361fd2f227b5d3c75cb8685
+  languageName: node
+  linkType: hard
+
+"ethers@npm:6.14.0":
+  version: 6.14.0
+  resolution: "ethers@npm:6.14.0"
+  dependencies:
+    "@adraffy/ens-normalize": "npm:1.10.1"
+    "@noble/curves": "npm:1.2.0"
+    "@noble/hashes": "npm:1.3.2"
+    "@types/node": "npm:22.7.5"
+    aes-js: "npm:4.0.0-beta.5"
+    tslib: "npm:2.7.0"
+    ws: "npm:8.17.1"
+  checksum: 10/a74621712d68983d6d9d8ea2fcfe01d7c1c0f88c33c776fa545d6c768088be66eb25ff0a9f1f1d96c39c75420bd9412db9514825faa5e2756758456156467f28
   languageName: node
   linkType: hard
 
