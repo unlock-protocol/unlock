@@ -19,7 +19,7 @@
     "@matterlabs/hardhat-zksync-verify": "1.7.1",
     "@nomiclabs/hardhat-ethers": "2.2.3",
     "@nomiclabs/hardhat-waffle": "2.0.6",
-    "@openzeppelin/upgrades-core": "1.42.2",
+    "@openzeppelin/upgrades-core": "1.44.0",
     "@unlock-protocol/contracts": "workspace:^",
     "@unlock-protocol/networks": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:^",
