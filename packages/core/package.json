@@ -27,7 +27,7 @@
     "vitest": "3.0.9"
   },
   "peerDependencies": {
-    "zod": "3.24.2"
+    "zod": "3.24.4"
   },
   "dependencies": {
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
