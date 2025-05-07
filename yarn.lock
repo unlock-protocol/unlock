@@ -18858,9 +18858,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/react@npm:16.2.0":
-  version: 16.2.0
-  resolution: "@testing-library/react@npm:16.2.0"
+"@testing-library/react@npm:16.3.0":
+  version: 16.3.0
+  resolution: "@testing-library/react@npm:16.3.0"
   dependencies:
     "@babel/runtime": "npm:^7.12.5"
   peerDependencies:
@@ -18874,7 +18874,7 @@ __metadata:
       optional: true
     "@types/react-dom":
       optional: true
-  checksum: 10/cf10bfa9a363384e6861417696fff4a464a64f98ec6f0bb7f1fa7cbb550d075d23a2f6a943b7df85dded7bde3234f6ea6b6e36f95211f4544b846ea72c288289
+  checksum: 10/0ee9e31dd0d2396a924682d0e61a4ecc6bfab8eaff23dbf8a72c3c2ce22c116fa578148baeb4de75b968ef99d22e6e6aa0a00dba40286f71184918bb6bb5b06a
   languageName: node
   linkType: hard
 
@@ -21341,7 +21341,7 @@ __metadata:
     "@observablehq/plot": "npm:0.6.17"
     "@radix-ui/react-avatar": "npm:1.1.3"
     "@tanstack/react-query": "npm:5.71.10"
-    "@testing-library/react": "npm:16.2.0"
+    "@testing-library/react": "npm:16.3.0"
     "@types/node": "npm:22.15.3"
     "@types/react": "npm:18.3.18"
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon"
