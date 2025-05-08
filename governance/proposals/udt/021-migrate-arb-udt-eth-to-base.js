@@ -33,10 +33,6 @@ module.exports = async ({
   const udt = await getERC20Contract(udtMainnetAddress)
   const mainnetUDTBalance = await udt.balanceOf(mainnetTimelockAddress)
 
-  // get mainnet WETH balance
-  const weth = await ethers.getContractAt(IWETH, WETH)
-  const mainnetWETHBalance = await getBalance(mainnetTimelockAddress, WETH)
-
   // get mainnet ETH balance
   const mainnetETHBalance = await getBalance(mainnetTimelockAddress)
 
@@ -52,13 +48,6 @@ module.exports = async ({
         mainnetUDTBalance, // amount
       ]),
     },
-    // withdraw all WETH into ETH
-    {
-      contractAddress: WETH,
-      calldata: weth.interface.encodeFunctionData('withdraw', [
-        mainnetWETHBalance,
-      ]),
-    },
     // call to bridge ETH
     {
       contractAddress: bridgeAddress,
@@ -67,7 +56,7 @@ module.exports = async ({
         defaultGasAmount, // _minGasLimit,
         '0x', // _extraData
       ]),
-      value: mainnetETHBalance + mainnetWETHBalance,
+      value: mainnetETHBalance,
     },
     // call to bridge UDT
     {
@@ -84,10 +73,10 @@ module.exports = async ({
   ]
 
   // parse calls for Safe
-  const proposalName = `# Transfer UDT and ETH/WETH to Base
+  const proposalName = `# Transfer UDT and ETH to Base
 
-This proposal will bridge the UDT and native ETH/WETH owned by the DAO to Base 
-and transfer them to the new UP Governor.
+This proposal will bridge the UDT and native ETH owned by the DAO 
+and transfer them to the new Unlock DAO Governor on Base.
 
 These tokens have been bridged from Arbitrum to Mainnet in a previous proposal.
 `
