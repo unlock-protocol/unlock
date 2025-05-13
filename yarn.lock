@@ -8463,7 +8463,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@headlessui/react@npm:2.2.0, @headlessui/react@npm:^2.2.0":
+"@headlessui/react@npm:2.2.2":
+  version: 2.2.2
+  resolution: "@headlessui/react@npm:2.2.2"
+  dependencies:
+    "@floating-ui/react": "npm:^0.26.16"
+    "@react-aria/focus": "npm:^3.17.1"
+    "@react-aria/interactions": "npm:^3.21.3"
+    "@tanstack/react-virtual": "npm:^3.13.6"
+    use-sync-external-store: "npm:^1.5.0"
+  peerDependencies:
+    react: ^18 || ^19 || ^19.0.0-rc
+    react-dom: ^18 || ^19 || ^19.0.0-rc
+  checksum: 10/59a0686816f332b366a2e314408bccf71ff528580ee7223052316326cebe0536dc0b63c9cf50772a04147b240fa35c2434fdc84a386e45dc9339ca2485e1f22d
+  languageName: node
+  linkType: hard
+
+"@headlessui/react@npm:^2.2.0":
   version: 2.2.0
   resolution: "@headlessui/react@npm:2.2.0"
   dependencies:
@@ -18720,6 +18736,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/react-virtual@npm:^3.13.6":
+  version: 3.13.8
+  resolution: "@tanstack/react-virtual@npm:3.13.8"
+  dependencies:
+    "@tanstack/virtual-core": "npm:3.13.8"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10/a68db4cccc0de54ba0da2ae4292671bd4fa339d1cdfab160d8a067d5bb78f77e2f75d234089d4cf45bc688e51f702604c7f2d4031f8e9b8ce82cb71a0fa7b4f0
+  languageName: node
+  linkType: hard
+
 "@tanstack/react-virtual@npm:^3.8.1":
   version: 3.13.4
   resolution: "@tanstack/react-virtual@npm:3.13.4"
@@ -18736,6 +18764,13 @@ __metadata:
   version: 3.13.4
   resolution: "@tanstack/virtual-core@npm:3.13.4"
   checksum: 10/c18618d1d737e7a82f826b7892ac4f5763bba991400601cd1fc8d7a56d5b473ea88418dfbf08d91bb15e354c19c0f8c79b078e606a3533972683d027353033e7
+  languageName: node
+  linkType: hard
+
+"@tanstack/virtual-core@npm:3.13.8":
+  version: 3.13.8
+  resolution: "@tanstack/virtual-core@npm:3.13.8"
+  checksum: 10/21982fa3b55bb4a7936a013b5ec151ce636eb108b38b56519391b9ebffc1cbcd81de0472229d237f84fc8c44e61a6a3890dba6371d04d921a61023d506902a0b
   languageName: node
   linkType: hard
 
@@ -20647,7 +20682,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/airdrops@workspace:airdrops"
   dependencies:
-    "@headlessui/react": "npm:2.2.0"
+    "@headlessui/react": "npm:2.2.2"
     "@openzeppelin/merkle-tree": "npm:1.0.8"
     "@privy-io/react-auth": "npm:2.12.0"
     "@sentry/nextjs": "npm:9.15.0"
@@ -21153,7 +21188,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/ui@workspace:packages/ui"
   dependencies:
-    "@headlessui/react": "npm:2.2.0"
+    "@headlessui/react": "npm:2.2.2"
     "@mdx-js/preact": "npm:3.1.0"
     "@mdx-js/react": "npm:3.1.0"
     "@radix-ui/react-tooltip": "npm:1.2.4"
@@ -21337,7 +21372,7 @@ __metadata:
   resolution: "@unlock-protocol/unlock-protocol-com@workspace:unlock-protocol-com"
   dependencies:
     "@babel/core": "npm:7.26.0"
-    "@headlessui/react": "npm:2.2.0"
+    "@headlessui/react": "npm:2.2.2"
     "@observablehq/plot": "npm:0.6.17"
     "@radix-ui/react-avatar": "npm:1.1.3"
     "@tanstack/react-query": "npm:5.71.10"
@@ -54742,6 +54777,15 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
   checksum: 10/08bf581a8a2effaefc355e9d18ed025d436230f4cc973db2f593166df357cf63e47b9097b6e5089b594758bde322e1737754ad64905e030d70f8ff7ee671fd01
+  languageName: node
+  linkType: hard
+
+"use-sync-external-store@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "use-sync-external-store@npm:1.5.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10/ddae7c4572511f7f641d6977bd0725340aa7dbeda8250418b54c1a57ec285083d96cf50d1a1acbd6cf729f7a87071b2302c6fbd29310432bf1b21a961a313279
   languageName: node
   linkType: hard
 
