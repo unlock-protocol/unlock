@@ -51,8 +51,6 @@ Handlebars.registerHelper(
 )
 
 const emailTemplates = {
-  confirmEmail,
-  welcome,
   keyOwnership,
   keyMined,
   transferCode,
