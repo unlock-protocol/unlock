@@ -2,8 +2,6 @@
 const { copySync } = require('fs-extra')
 
 require('@nomicfoundation/hardhat-ethers')
-require('@nomicfoundation/hardhat-verify')
-require('@openzeppelin/hardhat-upgrades')
 
 // import helpers
 const {
@@ -21,6 +19,9 @@ if (process.env.ZK_SYNC) {
   require('@matterlabs/hardhat-zksync-solc')
   require('@matterlabs/hardhat-zksync-verify')
   require('@matterlabs/hardhat-zksync-upgradable')
+} else {
+  require('@nomicfoundation/hardhat-verify')
+  require('@openzeppelin/hardhat-upgrades')
 }
 
 const settings = {
@@ -85,7 +86,9 @@ const config = {
 if (process.env.ZK_SYNC) {
   config.zksolc = {
     version: 'latest',
-    settings: {},
+    settings: {
+      suppressedErrors: ['sendtransfer'],
+    },
   }
 }
 

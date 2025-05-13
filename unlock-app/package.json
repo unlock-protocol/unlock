@@ -9,7 +9,6 @@
   "dependencies": {
     "@airstack/airstack-react": "0.6.4",
     "@crossmint/client-sdk-react-ui": "1.2.2",
-    "@decent.xyz/box-common": "4.0.122",
     "@enzoferey/ethers-error-parser": "0.2.3",
     "@guildxyz/sdk": "2.6.9",
     "@headlessui/react": "2.1.9",
@@ -51,7 +50,7 @@
     "qrcode.react": "4.1.0",
     "react-device-detect": "2.2.3",
     "react-dropzone": "14.3.8",
-    "react-google-autocomplete": "2.7.4",
+    "react-google-autocomplete": "2.7.5",
     "react-gtm-module": "2.0.11",
     "react-hook-form": "7.53.2",
     "react-icons": "5.3.0",

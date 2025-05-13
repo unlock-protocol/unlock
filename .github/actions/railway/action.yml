@@ -1,0 +1,29 @@
+name: Deploy on Railway
+
+inputs:
+  service:
+    description: 'The service/app to build'
+    type: string
+    required: true
+  service-id:
+    description: 'The Railway service ID to deploy to (or 1Password reference)'
+    type: string
+    required: true
+  environment:
+    description: 'The Railway environment to deploy to'
+    type: string
+    required: true
+  railway-token:
+    description: 'Railway auth token'
+    type: string
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Install Railway CLI
+      shell: bash
+      run: npm i -g @railway/cli
+
+    - name: Deploy to Railway
+      shell: bash
+      run: railway up --ci --service=${{ inputs.service-id }} --environment=${{ inputs.environment }}
