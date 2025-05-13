@@ -20800,7 +20800,7 @@ __metadata:
     "@eslint/compat": "npm:1.2.9"
     "@typescript-eslint/eslint-plugin": "npm:8.31.1"
     "@typescript-eslint/parser": "npm:8.31.1"
-    "@vitest/eslint-plugin": "npm:1.1.39"
+    "@vitest/eslint-plugin": "npm:1.1.44"
     eslint: "npm:9.26.0"
     eslint-config-next: "npm:15.3.1"
     eslint-config-prettier: "npm:10.1.1"
@@ -21667,11 +21667,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitest/eslint-plugin@npm:1.1.39":
-  version: 1.1.39
-  resolution: "@vitest/eslint-plugin@npm:1.1.39"
+"@vitest/eslint-plugin@npm:1.1.44":
+  version: 1.1.44
+  resolution: "@vitest/eslint-plugin@npm:1.1.44"
   peerDependencies:
-    "@typescript-eslint/utils": ^8.24.0
+    "@typescript-eslint/utils": ">= 8.24.0"
     eslint: ">= 8.57.0"
     typescript: ">= 5.0.0"
     vitest: "*"
@@ -21680,7 +21680,7 @@ __metadata:
       optional: true
     vitest:
       optional: true
-  checksum: 10/67edb46db8202400985b8fbc516edaa12bd1e3d24668ea78a8ba5bd90ebbe9c4e77fc4cfda8d7aa27ac51668a1e3445fe27f937128711d26cd5c2d562987e7a1
+  checksum: 10/6d9f833991086a454e875fdc64da1d4fc75a4bca285c11637368d74439102fc74455ffa9223a4adc38c69f31b7a8031a689dd254b0e207d50ed7e43b78b709a8
   languageName: node
   linkType: hard
 
@@ -54425,7 +54425,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:8.31.1"
     "@typescript-eslint/parser": "npm:8.31.1"
     "@vitest/coverage-v8": "npm:3.0.9"
-    "@vitest/eslint-plugin": "npm:1.1.39"
+    "@vitest/eslint-plugin": "npm:1.1.44"
     babel-plugin-polyfill-corejs2: "npm:0.4.12"
     eslint: "npm:9.25.1"
     eslint-plugin-evm-address-to-checksummed: "npm:0.0.6"
