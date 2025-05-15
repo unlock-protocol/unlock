@@ -2,12 +2,13 @@ import Handlebars from 'handlebars'
 import { links } from './helpers/links'
 import { certificationLink } from './helpers/certificationLink'
 import { formattedCustomContent } from './helpers/customContent'
+import { prepareAll } from './prepare'
 
 Handlebars.registerHelper('links', links)
 Handlebars.registerHelper('certificationLink', certificationLink)
 Handlebars.registerHelper('formattedCustomContent', formattedCustomContent)
 
-export default {
+export default prepareAll({
   subject: `Your certification for {{{lockName}}}`,
   html: `<h1>Your NFT certification for "{{lockName}}" was airdropped!</h1>
 {{certificationLink lockName certificationUrl}}
@@ -20,4 +21,4 @@ export default {
   <p>You can transfer it to your own wallet <a href="{{transferUrl}}">by going there</a>.</p>
 {{/if}}
 `,
-}
+})

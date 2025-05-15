@@ -1,4 +1,6 @@
-export default {
+import { prepareAll } from './prepare'
+
+export default prepareAll({
   subject: 'Your Transfer Code is Here',
   html: `
 <h1> Your Transfer Code is Here </h1>
@@ -12,4 +14,4 @@ export default {
 
 
 `,
-}
+})

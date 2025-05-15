@@ -1,13 +1,12 @@
 // @vitest-environment jsdom
 
 import eventKeyMined from '../../templates/eventKeyMined'
-import { prepareAll } from '../../templates/prepare'
 import { expect, it, describe } from 'vitest'
 import { asHtml } from '../utils'
 describe('eventKeyMined', () => {
   it('should have transaction receipt link', () => {
     expect.assertions(2)
-    const template = prepareAll(eventKeyMined)
+    const template = eventKeyMined
     const content = template.html({
       keyId: '1337',
       lockName: 'Ethereal NYC 2023',
@@ -26,7 +25,7 @@ describe('eventKeyMined', () => {
 
   it('should not have transaction receipt link', () => {
     expect.assertions(3)
-    const template = prepareAll(eventKeyMined)
+    const template = eventKeyMined
     const content = template.html({
       keyId: '1337',
       lockName: 'Ethereal NYC 2023',

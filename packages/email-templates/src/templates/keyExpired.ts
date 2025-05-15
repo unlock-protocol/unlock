@@ -1,10 +1,11 @@
 import Handlebars from 'handlebars'
 
 import { formattedCustomContent } from './helpers/customContent'
+import { prepareAll } from './prepare'
 
 Handlebars.registerHelper('formattedCustomContent', formattedCustomContent)
 
-export default {
+export default prepareAll({
   subject: 'Your "{{lockName}}" membership has expired!',
   html: `<h1>Your Membership NFT is expired!</h1>
 
@@ -14,4 +15,4 @@ export default {
 
 <p>You can extend it directly from the <a href="{{keychainUrl}}">Unlock Keychain</a>, so you don't lose any benefit.</p>
 `,
-}
+})
