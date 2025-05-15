@@ -1,10 +1,11 @@
 import Handlebars from 'handlebars'
 
 import { formattedCustomContent } from './helpers/customContent'
+import { prepareAll } from './prepare'
 
 Handlebars.registerHelper('formattedCustomContent', formattedCustomContent)
 
-export default {
+export default prepareAll({
   subject: 'You are invited to RSVP for {{eventName}}',
   html: `<h1>You are invited to {{eventName}}!</h1>
 
@@ -19,4 +20,4 @@ export default {
 
 
 `,
-}
+})
