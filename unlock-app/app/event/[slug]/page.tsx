@@ -6,6 +6,8 @@ import { Metadata } from 'next'
 import { fetchEventMetadata } from '~/utils/eventMetadata'
 import { fetchMetadata as fetchFramesMetadata } from 'frames.js/next'
 import { config } from '~/config/app'
+import { truncateString } from '../../../src/utils/truncateString'
+import removeMd from 'remove-markdown'
 
 export interface EventPageProps {
   params: {
@@ -45,13 +47,18 @@ export async function generateMetadata({
     Object.entries(framesMetadata).filter(([_, value]) => value !== undefined)
   )
 
+  const truncatedDescription = truncateString(
+    removeMd(event.description || '', { useImgAltText: false }),
+    650
+  )
+
   // Construct and return the metadata object for the event page, including Open Graph and Twitter card info
   return {
     title: event.name || 'Event',
-    description: event.description || '',
+    description: truncatedDescription,
     openGraph: {
       title: event.name || 'Event',
-      description: event.description || '',
+      description: truncatedDescription,
       images: [
         {
           url: event.image || '/default-event-image.png',
@@ -61,7 +68,7 @@ export async function generateMetadata({
     twitter: {
       card: 'summary_large_image',
       title: event.name || 'Event',
-      description: event.description || '',
+      description: truncatedDescription,
       images: [event.image || '/default-event-image.png'],
     },
     other: {
