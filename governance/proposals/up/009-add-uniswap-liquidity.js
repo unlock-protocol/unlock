@@ -124,9 +124,7 @@ tokens into a full-range position in the UP/WETH Uniswap V3 pool on Base. It wil
 
 The proposal executes these steps:
 ${[
-  needsWrapping
-    ? 'Wrap ETH to WETH (treasury WETH balance is insufficient)'
-    : null,
+  needsWrapping ? 'Wrap ETH to WETH' : null,
   needsWethApproval ? 'Approve WETH for the position manager' : null,
   needsUpApproval ? 'Approve UP tokens for the position manager' : null,
   'Create the full‑range liquidity position',
@@ -155,9 +153,8 @@ module.exports = async () => {
   const wethContract = await ethers.getContractAt(ERC20_ABI, weth.address)
   const upContract = await ethers.getContractAt(ERC20_ABI, up.address)
   const { params, requiredAmounts } = await calculatePosition(ETH_AMOUNT)
-  const wethBalance = await wethContract.balanceOf(TIMELOCK_ADDRESS)
   const ethAmount = ethers.parseEther(ETH_AMOUNT)
-  const needsWrapping = wethBalance < ethAmount
+  const needsWrapping = ethAmount
 
   const [wethAllowance, upAllowance] = await Promise.all([
     wethContract.allowance(TIMELOCK_ADDRESS, positionManagerAddress),
@@ -175,13 +172,13 @@ module.exports = async () => {
   })
 
   const calls = []
-  if (needsWrapping) {
+  if (needsWrapping != 0n) {
     calls.push({
       contractAddress: weth.address,
       contractNameOrAbi: WETH_ABI,
       functionName: 'deposit',
       functionArgs: [],
-      value: ethAmount,
+      value: needsWrapping,
     })
   }
 
