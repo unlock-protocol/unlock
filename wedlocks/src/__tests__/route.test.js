@@ -38,8 +38,8 @@ describe('route', () => {
     it('should use the template with all the params', async () => {
       expect.assertions(2)
       templates.template = {
-        subject: 'subject',
-        text: 'text',
+        subject: async () => 'subject',
+        text: async () => 'text',
       }
       const args = {
         template: 'template',
@@ -63,8 +63,8 @@ describe('route', () => {
     it('should send the email using the transporter', async () => {
       expect.assertions(2)
       templates.template = {
-        subject: 'subject',
-        text: 'text',
+        subject: async () => 'subject',
+        text: async () => 'text',
       }
 
       const args = {
@@ -101,8 +101,8 @@ describe('route', () => {
     it('should send the email using the transporter with custom sender', async () => {
       expect.assertions(2)
       templates.template = {
-        subject: 'subject',
-        text: 'text',
+        subject: async () => 'subject',
+        text: async () => 'text',
       }
 
       const args = {
@@ -141,8 +141,8 @@ describe('route', () => {
       it('should yield its enveloppe', async () => {
         expect.assertions(2)
         templates.template = {
-          subject: 'subject',
-          text: 'text',
+          subject: async () => 'subject',
+          text: async () => 'text',
         }
         const args = {
           template: 'template',
@@ -172,8 +172,8 @@ describe('route', () => {
       it('should yield the error message', async () => {
         expect.assertions(2)
         templates.template = {
-          subject: 'subject',
-          text: 'text',
+          subject: async () => 'subject',
+          text: async () => 'text',
         }
         const args = {
           template: 'template',
