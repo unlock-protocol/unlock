@@ -8,9 +8,11 @@
   ],
   "main": "dist",
   "dependencies": {
-    "handlebars": "4.7.8"
+    "handlebars": "4.7.8",
+    "tsx": "4.19.3"
   },
   "devDependencies": {
+    "@types/handlebars": "4.1.0",
     "typescript": "5.8.2",
     "vitest": "3.0.9"
   },
@@ -20,7 +22,8 @@
     "directory": "packages/email-templates"
   },
   "scripts": {
-    "build": "tsc -p .",
+    "precompile": "tsx src/precompile.ts",
+    "build": "yarn run precompile && tsc -p .",
     "tsc": "tsc",
     "clean": "rm -rf dist",
     "test": "UNLOCK_ENV=test vitest run --coverage --environment=node"

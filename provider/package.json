@@ -1,7 +1,7 @@
 {
   "name": "@unlock-protocol/provider",
   "devDependencies": {
-    "@cloudflare/workers-types": "4.20250404.0",
+    "@cloudflare/workers-types": "4.20250507.0",
     "@types/node": "22.15.3",
     "@unlock-protocol/contracts": "workspace:^",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "ethers": "6.13.5",
-    "wrangler": "3.114.4"
+    "wrangler": "3.114.8"
   },
   "scripts": {
     "dev": "yarn wrangler dev",

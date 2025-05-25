@@ -302,7 +302,15 @@ const AttendeesContent = ({ checkoutConfig, event }: AttendeesProps) => {
               page={page}
               MemberCard={renderMemberCard}
               NoMemberNoFilter={() => (
-                <p>No ticket minted from this contract yet!</p>
+                <p>
+                  No ticket minted from this contract yet!
+                  {event.requiresApproval && (
+                    <span>
+                      💡 Remember to filter your results to see attendee
+                      applications!
+                    </span>
+                  )}
+                </p>
               )}
               NoMemberWithFilter={() => <p>No ticket matches your filter.</p>}
               MembersActions={membersActions}
