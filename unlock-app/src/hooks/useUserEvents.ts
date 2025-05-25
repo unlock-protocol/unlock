@@ -48,7 +48,12 @@ const getPastEventsByManager = async (account: string) => {
       }
     })
   )
-  return events
+  return events.sort((a, b) => {
+    return (
+      new Date(b.ticket.event_start_date).getTime() -
+      new Date(a.ticket.event_start_date).getTime()
+    )
+  })
 }
 
 export const useUserEvents = (account: string) => {
