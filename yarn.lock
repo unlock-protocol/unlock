@@ -21363,7 +21363,7 @@ __metadata:
     babel-preset-react-app: "npm:10.1.0"
     calendar-link: "npm:2.8.0"
     dayjs: "npm:1.11.13"
-    dotenv: "npm:16.4.7"
+    dotenv: "npm:16.5.0"
     embla-carousel-react: "npm:8.6.0"
     eslint: "npm:9.25.1"
     eslint-config-next: "npm:15.3.2"
