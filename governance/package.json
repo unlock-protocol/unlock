@@ -3,12 +3,12 @@
   "description": "Scripts for the management of the Unlock Protocol",
   "private": true,
   "dependencies": {
-    "@arbitrum/sdk": "4.0.3",
+    "@arbitrum/sdk": "4.0.4",
     "@eth-optimism/sdk": "3.3.3",
-    "@gnosis-guild/zodiac": "4.0.3",
+    "@gnosis-guild/zodiac": "4.1.1",
     "@gnosis-guild/zodiac-core": "2.0.5",
     "@matterlabs/hardhat-zksync-deploy": "1.7.0",
-    "@matterlabs/hardhat-zksync-solc": "1.2.5",
+    "@matterlabs/hardhat-zksync-solc": "1.3.0",
     "@matterlabs/hardhat-zksync-upgradable": "1.9.0",
     "@matterlabs/hardhat-zksync-verify": "1.7.1",
     "@nomicfoundation/hardhat-ethers": "3.0.8",
@@ -30,7 +30,7 @@
     "ethers": "6.13.5",
     "ethers-multisend": "3.1.0",
     "fs-extra": "11.3.0",
-    "hardhat": "2.22.19",
+    "hardhat": "2.24.0",
     "zksync-ethers": "6.17.0"
   },
   "scripts": {

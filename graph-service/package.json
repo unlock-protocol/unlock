@@ -1,9 +1,9 @@
 {
   "name": "graph-service",
   "dependencies": {
-    "@cloudflare/workers-types": "4.20250404.0",
+    "@cloudflare/workers-types": "4.20250507.0",
     "@sentry/node": "9.15.0",
-    "wrangler": "3.114.4"
+    "wrangler": "3.114.8"
   },
   "devDependencies": {
     "vitest": "3.0.9"
