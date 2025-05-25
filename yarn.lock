@@ -5371,7 +5371,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docusaurus/plugin-content-docs@npm:3.7.0, @docusaurus/plugin-content-docs@npm:^3.5.0":
+"@docusaurus/plugin-content-docs@npm:3.7.0":
   version: 3.7.0
   resolution: "@docusaurus/plugin-content-docs@npm:3.7.0"
   dependencies:
@@ -5673,7 +5673,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docusaurus/utils-validation@npm:3.7.0, @docusaurus/utils-validation@npm:^3.5.0":
+"@docusaurus/utils-validation@npm:3.7.0":
   version: 3.7.0
   resolution: "@docusaurus/utils-validation@npm:3.7.0"
   dependencies:
@@ -5689,7 +5689,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docusaurus/utils@npm:3.7.0, @docusaurus/utils@npm:^3.5.0":
+"@docusaurus/utils@npm:3.7.0":
   version: 3.7.0
   resolution: "@docusaurus/utils@npm:3.7.0"
   dependencies:
@@ -20757,7 +20757,7 @@ __metadata:
     clsx: "npm:2.1.1"
     docusaurus-gtm-plugin: "npm:0.0.2"
     docusaurus-node-polyfills: "npm:1.0.0"
-    docusaurus-plugin-openapi-docs: "npm:4.2.0"
+    docusaurus-plugin-openapi-docs: "npm:4.4.0"
     docusaurus-theme-openapi-docs: "npm:4.2.0"
     ethers: "npm:6.13.5"
     postcss: "npm:8.5.3"
@@ -29336,14 +29336,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"docusaurus-plugin-openapi-docs@npm:4.2.0":
-  version: 4.2.0
-  resolution: "docusaurus-plugin-openapi-docs@npm:4.2.0"
+"docusaurus-plugin-openapi-docs@npm:4.4.0":
+  version: 4.4.0
+  resolution: "docusaurus-plugin-openapi-docs@npm:4.4.0"
   dependencies:
     "@apidevtools/json-schema-ref-parser": "npm:^11.5.4"
-    "@docusaurus/plugin-content-docs": "npm:^3.5.0"
-    "@docusaurus/utils": "npm:^3.5.0"
-    "@docusaurus/utils-validation": "npm:^3.5.0"
     "@redocly/openapi-core": "npm:^1.10.5"
     allof-merge: "npm:^0.6.6"
     chalk: "npm:^4.1.2"
@@ -29359,8 +29356,11 @@ __metadata:
     swagger2openapi: "npm:^7.0.8"
     xml-formatter: "npm:^2.6.1"
   peerDependencies:
-    react: ^16.8.4 || ^17.0.0 || ^18.0.0
-  checksum: 10/4268eea5cdb6b47ff01bf90abaa0018351b17fd36cf69cd441f2de9e2638d1fd42bcd990c261d5d50e6c92ae026848c5ca264ebcd6855b4742c762e3970aaeae
+    "@docusaurus/plugin-content-docs": ^3.5.0
+    "@docusaurus/utils": ^3.5.0
+    "@docusaurus/utils-validation": ^3.5.0
+    react: ^16.8.4 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10/ca3097fb225a7da2cd6e626ed2c1d08bae0304cd63c9b40c8ab9c696576d546d148b3f0ea331fd8e18dbee20cc41ce562213bc03325df03146e56953dd00000c
   languageName: node
   linkType: hard
 
