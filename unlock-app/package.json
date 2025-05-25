@@ -29,7 +29,7 @@
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js",
     "@vercel/og": "0.6.8",
     "@vercel/speed-insights": "1.0.14",
-    "@xstate/react": "5.0.2",
+    "@xstate/react": "5.0.3",
     "axios": "1.8.4",
     "calendar-link": "2.7.0",
     "csv": "6.3.11",
