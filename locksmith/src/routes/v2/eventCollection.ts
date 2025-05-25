@@ -8,6 +8,7 @@ import {
   bulkRemoveEvents,
   createEventCollection,
   getEventCollection,
+  getEventCollectionsByManagerAddress,
   getUnapprovedEventsForCollection,
   removeEventFromCollection,
   removeManagerAddress,
@@ -18,6 +19,9 @@ const router: express.Router = express.Router({ mergeParams: true })
 
 // Create a new event collection
 router.post('/', authenticatedMiddleware, createEventCollection)
+
+// List all event collections by manager address
+router.get('/by-manager/:managerAddress', getEventCollectionsByManagerAddress)
 
 // Retrieve an event collection
 router.get('/:slug', getEventCollection)

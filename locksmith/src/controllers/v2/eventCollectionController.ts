@@ -9,6 +9,7 @@ import {
   bulkRemoveEventsOperation,
   createEventCollectionOperation,
   getEventCollectionOperation,
+  getEventCollectionsOperationByManagerAddress,
   getUnapprovedEventsForCollectionOperation,
   removeEventFromCollectionOperation,
   removeManagerAddressOperation,
@@ -103,6 +104,26 @@ export const getEventCollection: RequestHandler = async (
       return
     }
     res.status(400).json({ error: (error as Error).message })
+    return
+  }
+}
+
+export const getEventCollectionsByManagerAddress: RequestHandler = async (
+  req: Request,
+  res: Response
+) => {
+  const { managerAddress } = req.params
+  if (!managerAddress) {
+    res.status(400).json({ error: 'Manager address is required' })
+    return
+  }
+  try {
+    const eventCollections =
+      await getEventCollectionsOperationByManagerAddress(managerAddress)
+    res.status(200).json(eventCollections)
+    return
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message })
     return
   }
 }
