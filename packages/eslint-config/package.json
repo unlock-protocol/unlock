@@ -21,7 +21,7 @@
     "@eslint/compat": "1.2.9",
     "@typescript-eslint/eslint-plugin": "8.31.1",
     "@typescript-eslint/parser": "8.31.1",
-    "@vitest/eslint-plugin": "1.1.39",
+    "@vitest/eslint-plugin": "1.1.44",
     "eslint": "9.26.0",
     "eslint-config-next": "15.3.2",
     "eslint-config-prettier": "10.1.1",
