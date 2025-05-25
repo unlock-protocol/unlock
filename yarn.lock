@@ -21119,7 +21119,7 @@ __metadata:
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
     "@unlock-protocol/types": "workspace:^"
-    eslint: "npm:9.24.0"
+    eslint: "npm:9.26.0"
     postmate: "npm:1.5.2"
     tsup: "npm:8.4.0"
     typescript: "npm:5.8.2"
