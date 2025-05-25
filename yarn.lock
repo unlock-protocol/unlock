@@ -21219,7 +21219,7 @@ __metadata:
   resolution: "@unlock-protocol/types@workspace:packages/types"
   dependencies:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
-    eslint: "npm:9.23.0"
+    eslint: "npm:9.26.0"
     typescript: "npm:5.8.2"
   languageName: unknown
   linkType: soft
