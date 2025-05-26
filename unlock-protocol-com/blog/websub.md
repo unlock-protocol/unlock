@@ -11,7 +11,7 @@ As developers integrate the Unlock Protocol in their applications, we are gettin
 
 ![Websub](/images/blog/websub.png)
 
-Today, we're excited to announce our [WebSub endpoints](https://docs.unlock-protocol.com/unlock/developers/locksmith/webhooks)!
+Today, we're excited to announce our [WebSub endpoints](https://docs.unlock-protocol.com/tools/locksmith/webhooks/)!
 
 WebSub is a [W3C protocol](https://www.w3.org/TR/websub/) that provides a common mechanism for communication between publishers of any kind of Web content and their subscribers, based on HTTP **web hooks**.
 
