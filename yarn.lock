@@ -11355,7 +11355,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomicfoundation/hardhat-ignition@npm:0.15.10, @nomicfoundation/hardhat-ignition@npm:^0.15.5":
+"@nomicfoundation/hardhat-ignition@npm:0.15.11":
+  version: 0.15.11
+  resolution: "@nomicfoundation/hardhat-ignition@npm:0.15.11"
+  dependencies:
+    "@nomicfoundation/ignition-core": "npm:^0.15.11"
+    "@nomicfoundation/ignition-ui": "npm:^0.15.11"
+    chalk: "npm:^4.0.0"
+    debug: "npm:^4.3.2"
+    fs-extra: "npm:^10.0.0"
+    json5: "npm:^2.2.3"
+    prompts: "npm:^2.4.2"
+  peerDependencies:
+    "@nomicfoundation/hardhat-verify": ^2.0.1
+    hardhat: ^2.18.0
+  checksum: 10/c471d59406d22de381eea48c23954afd2088fd135c06c32f0be7fd30bc8054a3d0f0c7de85e25d9bc5331145e216325bb8b1c96b038f21f8336abfdd194aa27a
+  languageName: node
+  linkType: hard
+
+"@nomicfoundation/hardhat-ignition@npm:^0.15.5":
   version: 0.15.10
   resolution: "@nomicfoundation/hardhat-ignition@npm:0.15.10"
   dependencies:
@@ -11484,7 +11502,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomicfoundation/ignition-core@npm:0.15.11":
+"@nomicfoundation/ignition-core@npm:0.15.11, @nomicfoundation/ignition-core@npm:^0.15.11":
   version: 0.15.11
   resolution: "@nomicfoundation/ignition-core@npm:0.15.11"
   dependencies:
@@ -11522,6 +11540,13 @@ __metadata:
   version: 0.15.10
   resolution: "@nomicfoundation/ignition-ui@npm:0.15.10"
   checksum: 10/e245d1ab5ffc1ff88a4d91b2a2e3a39a0175e5ab65bc3deeb36245eaeac2a891319e53fec6fb28294e174b4c9494e9bea2c795e0be486efb3564b483260a6a5a
+  languageName: node
+  linkType: hard
+
+"@nomicfoundation/ignition-ui@npm:^0.15.11":
+  version: 0.15.11
+  resolution: "@nomicfoundation/ignition-ui@npm:0.15.11"
+  checksum: 10/1d330ba7320153bf17ac10f5cd6e144b02ec0bd212b1859ffc75b2875028c5e63c743c82fee8abdbef5f811556175350e15991367711ace1868bb0fb72faedba
   languageName: node
   linkType: hard
 
@@ -20871,7 +20896,7 @@ __metadata:
   dependencies:
     "@nomicfoundation/hardhat-chai-matchers": "npm:2.0.8"
     "@nomicfoundation/hardhat-ethers": "npm:3.0.8"
-    "@nomicfoundation/hardhat-ignition": "npm:0.15.10"
+    "@nomicfoundation/hardhat-ignition": "npm:0.15.11"
     "@nomicfoundation/hardhat-ignition-ethers": "npm:0.15.11"
     "@nomicfoundation/hardhat-toolbox": "npm:5.0.0"
     "@nomicfoundation/ignition-core": "npm:0.15.11"
