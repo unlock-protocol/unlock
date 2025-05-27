@@ -7,7 +7,7 @@
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/networks": "workspace:^",
     "eslint": "9.25.1",
-    "typescript": "5.8.2",
+    "typescript": "5.8.3",
     "vitest": "3.1.4"
   },
   "dependencies": {
