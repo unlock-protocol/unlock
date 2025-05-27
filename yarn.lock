@@ -15732,14 +15732,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/protocol-kit@npm:6.0.2":
-  version: 6.0.2
-  resolution: "@safe-global/protocol-kit@npm:6.0.2"
+"@safe-global/protocol-kit@npm:6.0.4":
+  version: 6.0.4
+  resolution: "@safe-global/protocol-kit@npm:6.0.4"
   dependencies:
     "@noble/curves": "npm:^1.6.0"
     "@peculiar/asn1-schema": "npm:^2.3.13"
-    "@safe-global/safe-deployments": "npm:^1.37.31"
-    "@safe-global/safe-modules-deployments": "npm:^2.2.7"
+    "@safe-global/safe-deployments": "npm:^1.37.32"
+    "@safe-global/safe-modules-deployments": "npm:^2.2.8"
     "@safe-global/types-kit": "npm:^2.0.1"
     abitype: "npm:^1.0.2"
     semver: "npm:^7.7.1"
@@ -15749,7 +15749,7 @@ __metadata:
       optional: true
     "@peculiar/asn1-schema":
       optional: true
-  checksum: 10/27712cbc0bf9d04c1cc2104c81096e7c3e7f275ecd2685f30eb595767590ab106f96f4f4dfcdb31ddd8939e26fa939ad76e563df5505ebcfe05dfffa40dc0a19
+  checksum: 10/2c7f9cbd842c613d0722d6a32badc76befb2f29b95cbbec86b2bb645a9705e2ad06237f7ac613737d688cf8af237cefefad341ed67cfc0c132fcf39b5566e423
   languageName: node
   linkType: hard
 
@@ -15774,7 +15774,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/safe-deployments@npm:^1.37.31, @safe-global/safe-deployments@npm:^1.37.32":
+"@safe-global/safe-deployments@npm:^1.37.32":
   version: 1.37.32
   resolution: "@safe-global/safe-deployments@npm:1.37.32"
   dependencies:
@@ -15783,7 +15783,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/safe-modules-deployments@npm:^2.2.7":
+"@safe-global/safe-modules-deployments@npm:^2.2.7, @safe-global/safe-modules-deployments@npm:^2.2.8":
   version: 2.2.8
   resolution: "@safe-global/safe-modules-deployments@npm:2.2.8"
   checksum: 10/7d2f0cffcbfc827e435c7f2510d373109c6f4a74b85119246d49ccc80d183fc71cde5a4b77aa710081da27efc81366dd28cf53e9fcbb9583d4dd3ac567f9ddf6
@@ -20971,7 +20971,7 @@ __metadata:
     "@openzeppelin/hardhat-upgrades": "npm:3.9.0"
     "@openzeppelin/upgrades-core": "npm:1.44.0"
     "@safe-global/api-kit": "npm:3.0.1"
-    "@safe-global/protocol-kit": "npm:6.0.2"
+    "@safe-global/protocol-kit": "npm:6.0.4"
     "@tenderly/hardhat-tenderly": "npm:2.5.2"
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
