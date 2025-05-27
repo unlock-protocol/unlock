@@ -39,7 +39,7 @@
     "eslint": "9.26.0",
     "fs-extra": "11.3.0",
     "tsup": "8.4.0",
-    "typescript": "5.8.2"
+    "typescript": "5.8.3"
   },
   "files": [
     "dist"

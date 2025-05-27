@@ -27,6 +27,6 @@
   "devDependencies": {
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "eslint": "9.26.0",
-    "typescript": "5.8.2"
+    "typescript": "5.8.3"
   }
 }
