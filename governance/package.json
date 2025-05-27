@@ -20,6 +20,8 @@
     "@safe-global/api-kit": "3.0.1",
     "@safe-global/protocol-kit": "6.0.4",
     "@tenderly/hardhat-tenderly": "2.5.2",
+    "@uniswap/sdk-core": "7.7.2",
+    "@uniswap/v3-sdk": "3.25.2",
     "@unlock-protocol/contracts": "workspace:./packages/contracts",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/hardhat-helpers": "workspace:^",
