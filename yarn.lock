@@ -18781,17 +18781,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:5.71.10":
-  version: 5.71.10
-  resolution: "@tanstack/query-core@npm:5.71.10"
-  checksum: 10/f432fed7454f6a27daa8ea01393b68b3b4365cf8c75eb52b6e92ed6dfb00ebedd85310c2a4c953d68ec1130c490762529da48ca877a256ff74ebea003524da51
-  languageName: node
-  linkType: hard
-
 "@tanstack/query-core@npm:5.74.9":
   version: 5.74.9
   resolution: "@tanstack/query-core@npm:5.74.9"
   checksum: 10/53853e79757a7aeb7f417bbe84c931356d4278d5d38ebf6a632b2c1db01022e065049e9da5bdae24778d85a8c51219f160ae2950dfad55fae8c6da0461673ec5
+  languageName: node
+  linkType: hard
+
+"@tanstack/query-core@npm:5.77.2":
+  version: 5.77.2
+  resolution: "@tanstack/query-core@npm:5.77.2"
+  checksum: 10/71d8b12d14cc14eb75541b09ca8a89140d40eb3c6e562d937b28d31e9fef1e40ff0658329ccccf278d4e5aa01c7c187d963d5e001cd2177af3dcb643965c7da9
   languageName: node
   linkType: hard
 
@@ -18806,17 +18806,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:5.71.10":
-  version: 5.71.10
-  resolution: "@tanstack/react-query@npm:5.71.10"
-  dependencies:
-    "@tanstack/query-core": "npm:5.71.10"
-  peerDependencies:
-    react: ^18 || ^19
-  checksum: 10/0a72510880b94087659ef7cda51737f2173d1d8c163e377784d0c05c09cec2f073ee84a5738e199f80eff7cdaf654b2fe0fa39e442d08c680feb697860444b6d
-  languageName: node
-  linkType: hard
-
 "@tanstack/react-query@npm:5.74.11":
   version: 5.74.11
   resolution: "@tanstack/react-query@npm:5.74.11"
@@ -18825,6 +18814,17 @@ __metadata:
   peerDependencies:
     react: ^18 || ^19
   checksum: 10/89e1348f6f5a372e86176fb75cd0b73a988c3d506f741e5fe5280e41ea00ccd744f3bf4e87801e2c406f3a3dddeda2e8e27740a9fe6a123c6e2cb0e5060a23d7
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:5.77.2":
+  version: 5.77.2
+  resolution: "@tanstack/react-query@npm:5.77.2"
+  dependencies:
+    "@tanstack/query-core": "npm:5.77.2"
+  peerDependencies:
+    react: ^18 || ^19
+  checksum: 10/ee33b5dc185de6d16d87867dadf9b239c97a65c02d8177532da948e6ace5c442743eac8c0515190ccfabbc92badf917856bf8df58f7ce6712ef0328a99d8b597
   languageName: node
   linkType: hard
 
@@ -20787,7 +20787,7 @@ __metadata:
     "@openzeppelin/merkle-tree": "npm:1.0.8"
     "@privy-io/react-auth": "npm:2.12.0"
     "@sentry/nextjs": "npm:9.15.0"
-    "@tanstack/react-query": "npm:5.71.10"
+    "@tanstack/react-query": "npm:5.77.2"
     "@tw-classed/react": "npm:1.8.0"
     "@types/react": "npm:18.3.18"
     "@unlock-protocol/contracts": "workspace:*"
@@ -20896,7 +20896,7 @@ __metadata:
     "@mui/material": "npm:6.4.11"
     "@mui/x-charts": "npm:7.29.1"
     "@privy-io/react-auth": "npm:2.12.0"
-    "@tanstack/react-query": "npm:5.71.10"
+    "@tanstack/react-query": "npm:5.77.2"
     "@unlock-protocol/contracts": "workspace:*"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/ui": "workspace:./packages/ui"
@@ -21478,7 +21478,7 @@ __metadata:
     "@headlessui/react": "npm:2.2.4"
     "@observablehq/plot": "npm:0.6.17"
     "@radix-ui/react-avatar": "npm:1.1.9"
-    "@tanstack/react-query": "npm:5.71.10"
+    "@tanstack/react-query": "npm:5.77.2"
     "@testing-library/react": "npm:16.3.0"
     "@types/node": "npm:22.15.3"
     "@types/react": "npm:18.3.18"
