@@ -66,6 +66,6 @@
   "dependencies": {
     "@nomicfoundation/hardhat-ethers": "3.0.8",
     "hardhat-gas-reporter": "2.2.3",
-    "solidity-coverage": "0.8.14"
+    "solidity-coverage": "0.8.16"
   }
 }
