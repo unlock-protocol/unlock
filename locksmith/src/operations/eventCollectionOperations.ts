@@ -7,6 +7,7 @@ import { sendEmail } from './wedlocksOperations'
 import config from '../config/config'
 import logger from '../logger'
 import { getPrivyUserByAddress } from './privyUserOperations'
+import { Op } from 'sequelize'
 
 // event collection body schema
 const EventCollectionBody = z.object({
@@ -130,6 +131,19 @@ export const getEventCollectionOperation = async (slug: string) => {
   }
 
   return eventCollection
+}
+
+export const getEventCollectionsOperationByManagerAddress = async (
+  managerAddress: string
+) => {
+  const eventCollections = await EventCollection.findAll({
+    where: {
+      managerAddresses: {
+        [Op.contains]: [managerAddress],
+      },
+    },
+  })
+  return eventCollections
 }
 
 /**

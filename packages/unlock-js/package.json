@@ -48,8 +48,8 @@
     "hardhat": "2.23.0",
     "prettier": "3.5.3",
     "tsup": "8.4.0",
-    "typescript": "5.8.2",
-    "vitest": "3.1.1"
+    "typescript": "5.8.3",
+    "vitest": "3.1.4"
   },
   "dependencies": {
     "graphql": "16.11.0",
