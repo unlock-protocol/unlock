@@ -12,7 +12,6 @@ const { getTokenInfo } = require('@unlock-protocol/hardhat-helpers')
 const {
   abi: IUniswapV3PoolABI,
 } = require('@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Pool.sol/IUniswapV3Pool.json')
-const JSBI = require('jsbi')
 const { Token } = require('@uniswap/sdk-core')
 const uniswapV3SDK = require('@uniswap/v3-sdk')
 const { Pool, Position } = uniswapV3SDK
@@ -29,11 +28,8 @@ const TIMELOCK_ADDRESS = '0xB34567C4cA697b39F72e1a8478f285329A98ed1b'
 const POOL_ADDRESS = '0x9EF81F4E2F2f15Ff1c0C3f8c9ECc636580025242'
 
 const calculateMinimumAmount = (amountDesired) => {
-  const amountMin = JSBI.divide(
-    JSBI.multiply(JSBI.BigInt(amountDesired), JSBI.BigInt(SLIPPAGE)),
-    JSBI.BigInt(1000)
-  ).toString()
-  return amountMin
+  const amountMin = (BigInt(amountDesired) * BigInt(SLIPPAGE)) / BigInt(1000)
+  return amountMin.toString()
 }
 
 const getPoolState = async (chainId = 8453) => {
@@ -78,7 +74,7 @@ const calculatePosition = async (ethAmount) => {
     pool,
     tickLower: FULL_RANGE_LOWER_TICK,
     tickUpper: FULL_RANGE_UPPER_TICK,
-    amount0: JSBI.BigInt(amount0Desired.toString()),
+    amount0: amount0Desired.toString(),
     useFullPrecision: true,
   })
 
@@ -111,12 +107,14 @@ const calculatePosition = async (ethAmount) => {
 const buildProposalDescription = ({
   ethAmount,
   needsWrapping,
-  needsWethApproval,
-  needsUpApproval,
+  correspondingUpAmount,
+  upDecimals,
 }) => `Add Liquidity to UP/WETH Uniswap Pool
 
-This proposal deposits ${ethAmount} ETH and the corresponding amount of UP
-tokens into a full-range position in the UP/WETH Uniswap V3 pool on Base. It will:
+This proposal deposits ${ethAmount} ETH and the corresponding amount of $UP
+tokens (${Number(ethers.formatUnits(correspondingUpAmount, upDecimals)).toFixed(
+  2
+)} UP) into a full-range position in the UP/WETH Uniswap V3 pool on Base. It will:
 
 1. Improve liquidity and price stability for UP  
 2. Generate fee income for the DAO  
@@ -125,8 +123,8 @@ tokens into a full-range position in the UP/WETH Uniswap V3 pool on Base. It wil
 The proposal executes these steps:
 ${[
   needsWrapping ? 'Wrap ETH to WETH' : null,
-  needsWethApproval ? 'Approve WETH for the position manager' : null,
-  needsUpApproval ? 'Approve UP tokens for the position manager' : null,
+  'Approve WETH for the position manager',
+  'Approve UP tokens for the position manager',
   'Create the full‑range liquidity position',
 ]
   .filter(Boolean)
@@ -150,25 +148,15 @@ module.exports = async () => {
 
   const weth = tokens.find((token) => token.symbol === 'WETH')
   const up = tokens.find((token) => token.symbol === 'UP')
-  const wethContract = await ethers.getContractAt(ERC20_ABI, weth.address)
-  const upContract = await ethers.getContractAt(ERC20_ABI, up.address)
   const { params, requiredAmounts } = await calculatePosition(ETH_AMOUNT)
   const ethAmount = ethers.parseEther(ETH_AMOUNT)
   const needsWrapping = ethAmount
 
-  const [wethAllowance, upAllowance] = await Promise.all([
-    wethContract.allowance(TIMELOCK_ADDRESS, positionManagerAddress),
-    upContract.allowance(TIMELOCK_ADDRESS, positionManagerAddress),
-  ])
-
-  const needsWethApproval = wethAllowance < ethAmount
-  const needsUpApproval = upAllowance < BigInt(requiredAmounts.token1)
-
   const proposalName = buildProposalDescription({
     ethAmount: ETH_AMOUNT,
     needsWrapping,
-    needsWethApproval,
-    needsUpApproval,
+    upDecimals: up.decimals,
+    correspondingUpAmount: requiredAmounts.token1,
   })
 
   const calls = []
@@ -182,23 +170,19 @@ module.exports = async () => {
     })
   }
 
-  if (needsWethApproval) {
-    calls.push({
-      contractAddress: weth.address,
-      contractNameOrAbi: ERC20_ABI,
-      functionName: 'approve',
-      functionArgs: [positionManagerAddress, ethAmount],
-    })
-  }
+  calls.push({
+    contractAddress: weth.address,
+    contractNameOrAbi: ERC20_ABI,
+    functionName: 'approve',
+    functionArgs: [positionManagerAddress, ethAmount],
+  })
 
-  if (needsUpApproval) {
-    calls.push({
-      contractAddress: up.address,
-      contractNameOrAbi: ERC20_ABI,
-      functionName: 'approve',
-      functionArgs: [positionManagerAddress, requiredAmounts.token1],
-    })
-  }
+  calls.push({
+    contractAddress: up.address,
+    contractNameOrAbi: ERC20_ABI,
+    functionName: 'approve',
+    functionArgs: [positionManagerAddress, requiredAmounts.token1],
+  })
 
   calls.push({
     contractAddress: positionManagerAddress,
