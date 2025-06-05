@@ -170,6 +170,8 @@ RUN_FORK=8453 yarn hardhat gov --gov-address 0x65bA0624403Fc5Ca2b20479e9F626eD4D
   0x000000 1000
 ```
 
+RUN_FORK=8453 yarn hardhat gov --gov-address 0x65bA0624403Fc5Ca2b20479e9F626eD4D78E0aD9 \
+ --proposal proposals/up/009-add-uniswap-liquidity.js
 **JS async proposal**
 
 ```js
