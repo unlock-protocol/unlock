@@ -14,6 +14,10 @@ export const EventCollectionList = () => {
     isPending: isLoadingUserEventCollections,
   } = useUserEventCollections(account!)
 
+  if (!account) {
+    return <WalletNotConnected />
+  }
+
   if (isLoadingUserEventCollections || !userEventCollections) {
     return (
       <Placeholder.Root>
@@ -24,12 +28,9 @@ export const EventCollectionList = () => {
     )
   }
 
-
   return (
     <>
-      {!account ? (
-        <WalletNotConnected />
-      ) : userEventCollections.length > 0 ? (
+      {userEventCollections.length > 0 ? (
         userEventCollections.map((eventCollection: any) => (
           <EventCollectionCard
             key={eventCollection.slug}
