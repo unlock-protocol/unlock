@@ -24,7 +24,6 @@ export const EventCollectionList = () => {
     )
   }
 
-  console.log({ userEventCollections })
 
   return (
     <>
