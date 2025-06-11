@@ -5305,6 +5305,30 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
+  /v2/event-collection/by-manager/{managerAddress}:
+    get:
+      operationId: getEventCollectionsByManager
+      parameters:
+        - name: managerAddress
+          in: path
+          required: true
+          schema:
+            type: string
+      description: Get all event collections managed by a specific address
+      responses:
+        200:
+          description: Successfully retrieved event collections
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EventCollection'
+        404:
+          $ref: '#/components/responses/404.NotFound'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
   /v2/privy/check:
     post:
       operationId: checkPrivyUser

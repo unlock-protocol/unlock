@@ -21,18 +21,6 @@ interface EventCardProps {
   }
 }
 
-interface EventImageProps {
-  imageUrl: string
-}
-
-const EventImage = ({ imageUrl }: EventImageProps) => {
-  return (
-    <div className="relative block overflow-hidden rounded-2xl h-20 w-20 group">
-      <img alt="logo" className="object-cover h-full aspect-1" src={imageUrl} />
-    </div>
-  )
-}
-
 export const EventCard = ({ event }: EventCardProps) => {
   const { name, checkoutConfig, slug, ticket, image: imageUrl } = event
   const eventDate = dayjs(ticket.event_start_date).format('D MMM YYYY')
@@ -52,7 +40,14 @@ export const EventCard = ({ event }: EventCardProps) => {
     <Card variant="simple" shadow="lg" padding="md">
       <div className="flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-4 w-full md:w-1/3">
-          <EventImage imageUrl={imageUrl} />
+          <div className="relative block overflow-hidden rounded-2xl h-20 w-20 group">
+            <img
+              alt="logo"
+              className="object-cover h-full aspect-1"
+              src={imageUrl}
+            />
+          </div>
+
           <div className="flex flex-col gap-2 flex-grow">
             <div className="flex gap-2">
               <span className="text-xl md:text-2xl font-bold overflow-hidden overflow-ellipsis line-clamp-3">

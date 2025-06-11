@@ -96,7 +96,7 @@ To date, five cohorts of Grantees have already been selected, making it a total 
 
 ![decentraland](/images/blog/unlock-2021-review/decentraland.png)
 
-We’re amazed at seeing our community of Grantees create game-changing use cases for Unlock, creating documentation or helping extend the reach of the protocol. [Want to see what Grantees are building? Head over to the Unlock Showcase](https://www.unlockshowcase.com/). Created by Cohort 1 Grantee Kalidou Diagne, the showcase features a gallery of all projects built using Unlock Protocol.
+We’re amazed at seeing our community of Grantees create game-changing use cases for Unlock, creating documentation or helping extend the reach of the protocol. [Want to see what Grantees are building? Head over to the Unlock Showcase](https://showcase.unlock-protocol.com/). Created by Cohort 1 Grantee Kalidou Diagne, the showcase features a gallery of all projects built using Unlock Protocol.
 
 We’re always on the lookout for new Grant applications. Want to join our token grant Program? [You can submit your project here](https://share.hsforms.com/1gAdLgNOESNCWJ9bJxCUAMwbvg22).
 
