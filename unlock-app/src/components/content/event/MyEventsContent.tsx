@@ -8,6 +8,7 @@ import { Disclosure } from '@headlessui/react'
 
 import Link from 'next/link'
 import EventList from '~/components/interface/locks/List/elements/EventList'
+import EventCollectionList from '~/components/interface/locks/List/elements/EventCollectionList'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import {
   RiArrowDropUpLine as UpIcon,
@@ -72,6 +73,28 @@ export default function MyEventsContent() {
             <Disclosure.Panel>
               <div className="flex flex-col gap-6">
                 <EventList />
+              </div>
+            </Disclosure.Panel>
+          </div>
+        )}
+      </Disclosure>
+      <Disclosure defaultOpen>
+        {({ open }) => (
+          <div className="flex flex-col gap-2">
+            <Disclosure.Button className="flex items-center justify-between w-full outline-none ring-0">
+              <h2 className="text-lg font-bold text-brand-ui-primary">
+                My event collections
+              </h2>
+              {open ? (
+                <UpIcon className="fill-brand-ui-primary" size={24} />
+              ) : (
+                <DownIcon className="fill-brand-ui-primary" size={24} />
+              )}
+            </Disclosure.Button>
+
+            <Disclosure.Panel>
+              <div className="flex flex-col gap-6">
+                <EventCollectionList />
               </div>
             </Disclosure.Panel>
           </div>
