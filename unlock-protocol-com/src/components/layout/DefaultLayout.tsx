@@ -96,7 +96,7 @@ const MENU = {
             },
             {
               title: 'Buy UP',
-              url: 'https://app.uniswap.org/explore/tokens/base/0xac27fa800955849d6d17cc8952ba9dd6eaa66187',
+              url: 'https://relay.link/bridge/base?toCurrency=0xac27fa800955849d6d17cc8952ba9dd6eaa66187',
             },
             {
               title: 'Docs',
