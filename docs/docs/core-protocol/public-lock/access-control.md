@@ -30,7 +30,7 @@ Unlike a Role, a Title is implemented at the Key level and confers some of the r
 
 #### _KeyOwner_
 
-The owner of a given key (an NFT distinguished by its unique _tokenID)._ The key will appear in this person's wallet( if it supports the erc721 standard), and grants them access to the lock from which the key was purchased. The keyOwner may not transfer, share or cancel their key, unless they are also the keyManager for this key.
+The owner of a given key (an NFT distinguished by its unique _tokenID)._ The key will appear in this person's wallet ( if it supports the erc721 standard), and grants them access to the lock from which the key was purchased. The keyOwner may not transfer, share or cancel their key, unless they are also the keyManager for this key.
 
 #### _KeyManager_
 

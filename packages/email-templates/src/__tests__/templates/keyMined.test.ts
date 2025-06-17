@@ -1,7 +1,6 @@
 // @vitest-environment jsdom
 
 import keyMined from '../../templates/keyMined'
-import { prepareAll } from '../../templates/prepare'
 import { asHtml } from '../utils'
 import { expect, it, describe } from 'vitest'
 
@@ -9,7 +8,7 @@ describe('keyMined', () => {
   it('should have the right subject', () => {
     expect.assertions(1)
     expect(
-      prepareAll(keyMined).subject({
+      keyMined.subject({
         keyId: '1337',
         lockName: 'Ethereal NYC 202',
         keychainUrl: 'https://app.unlock-protocol.com/keychain',
@@ -21,7 +20,7 @@ describe('keyMined', () => {
   it('should have the right text', () => {
     expect.assertions(2)
     const content = asHtml(
-      prepareAll(keyMined).html({
+      keyMined.html({
         keyId: '1337',
         lockName: 'Ethereal NYC 202',
         keychainUrl: 'https://app.unlock-protocol.com/keychain',
@@ -37,7 +36,7 @@ describe('keyMined', () => {
   it('should have a link to the keychain', () => {
     expect.assertions(1)
     const content = asHtml(
-      prepareAll(keyMined).html({
+      keyMined.html({
         keyId: '1337',
         lockName: 'Ethereal NYC 202',
         keychainUrl: 'https://app.unlock-protocol.com/keychain',
@@ -52,7 +51,7 @@ describe('keyMined', () => {
   it('should have a link to the block explorer', () => {
     expect.assertions(1)
     const content = asHtml(
-      prepareAll(keyMined).html({
+      keyMined.html({
         keyId: '1337',
         lockName: 'Ethereal NYC 202',
         keychainUrl: 'https://app.unlock-protocol.com/keychain',
@@ -67,7 +66,7 @@ describe('keyMined', () => {
 
   it('should have the right text and have only tx open sea url', () => {
     expect.assertions(2)
-    const content = prepareAll(keyMined).html({
+    const content = keyMined.html({
       keyId: '1337',
       lockName: 'Ethereal NYC 202',
       network: 'Polygon',
@@ -83,7 +82,7 @@ describe('keyMined', () => {
 
   it('should contains custom content', () => {
     expect.assertions(2)
-    const content = prepareAll(keyMined).html({
+    const content = keyMined.html({
       keyId: '1337',
       lockName: 'Ethereal NYC 202',
       network: 'Polygon',
@@ -98,7 +97,7 @@ describe('keyMined', () => {
 
   it('should have transaction receipt link', () => {
     expect.assertions(2)
-    const content = prepareAll(keyMined).html({
+    const content = keyMined.html({
       keyId: '1337',
       lockName: 'Ethereal NYC 202',
       network: 'Polygon',
@@ -117,7 +116,7 @@ describe('keyMined', () => {
 
   it('should not contains transaction receipt link', () => {
     expect.assertions(2)
-    const content = prepareAll(keyMined).html({
+    const content = keyMined.html({
       keyId: '1337',
       lockName: 'Ethereal NYC 202',
       network: 'Polygon',
