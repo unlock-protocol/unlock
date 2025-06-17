@@ -28,10 +28,15 @@ export const EventCollectionList = () => {
     )
   }
 
+  // Ensure userEventCollections is an array before checking length and mapping
+  const eventCollections = Array.isArray(userEventCollections)
+    ? userEventCollections
+    : []
+
   return (
     <>
-      {userEventCollections.length > 0 ? (
-        userEventCollections.map((eventCollection: any) => (
+      {eventCollections.length > 0 ? (
+        eventCollections.map((eventCollection: any) => (
           <EventCollectionCard
             key={eventCollection.slug}
             eventCollection={eventCollection}

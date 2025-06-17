@@ -194,19 +194,20 @@ export default function AddEventsToCollectionDrawer({
   }
 
   // Filter the user's events to exclude existing event slugs
-  const filteredUserEvents = userEvents?.filter(
-    (userEvent) => !existingEventSlugs.includes(userEvent.slug!)
-  )
+  const filteredUserEvents = Array.isArray(userEvents)
+    ? userEvents.filter(
+        (userEvent) => !existingEventSlugs.includes(userEvent.slug!)
+      )
+    : []
 
-  const userEventsOptions =
-    filteredUserEvents?.map((eventOption) => {
-      return {
-        label: eventOption?.name
-          ? eventOption.name.replace(/^ticket for\s+/i, '')
-          : '',
-        value: eventOption?.slug || '',
-      }
-    }) || []
+  const userEventsOptions = filteredUserEvents.map((eventOption) => {
+    return {
+      label: eventOption?.name
+        ? eventOption.name.replace(/^ticket for\s+/i, '')
+        : '',
+      value: eventOption?.slug || '',
+    }
+  })
 
   const renderInitialOptions = () => (
     <div className="flex flex-col gap-4">
