@@ -13,11 +13,13 @@ export const EventList = () => {
   )
 
   // prune out the "ticket for" prefix from the event name
-  const prunedEvents =
-    userEvents?.map((event) => ({
-      ...event,
-      name: event?.name?.replace(/^ticket for\s+/i, ''),
-    })) || []
+  // Ensure userEvents is an array before mapping
+  const prunedEvents = Array.isArray(userEvents)
+    ? userEvents.map((event) => ({
+        ...event,
+        name: event?.name?.replace(/^ticket for\s+/i, ''),
+      }))
+    : []
 
   if (!account || isLoadingUserEvents) {
     return (

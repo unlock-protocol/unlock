@@ -112,7 +112,9 @@ export default function EventsCollectionDetailContent({
 
   // Extract existing event slugs
   const existingEventSlugs = useMemo(() => {
-    return eventCollection?.events?.map((event) => event.slug) || []
+    return Array.isArray(eventCollection?.events)
+      ? eventCollection.events.map((event) => event.slug)
+      : []
   }, [eventCollection?.events])
 
   // parse event date and time with timezone
