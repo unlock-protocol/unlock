@@ -7,7 +7,7 @@ describe('url', () => {
       'ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/wiki/Vincent_van_Gogh.html'
 
     expect(rewriteIpfsUrl(url)).toBe(
-      'ipfs://cloudflare-ipfs.com/ipfs/wiki/Vincent_van_Gogh.html'
+      'ipfs://ipfs.io/ipfs/wiki/Vincent_van_Gogh.html'
     )
   })
 
