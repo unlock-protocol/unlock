@@ -11,7 +11,7 @@ export const rewriteIpfsUrl = (stringUrl: string) => {
     if (url.protocol === 'ipfs:') {
       const path = `/ipfs${url.pathname}`
       url.protocol = 'https:'
-      url.hostname = 'cloudflare-ipfs.com'
+      url.hostname = 'ipfs.io'
       url.pathname = path
     }
     return url.toString()
