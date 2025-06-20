@@ -34,7 +34,7 @@ export const EventCollectionCard = ({
 
         <div className="flex items-center w-full md:w-1/6 justify-end">
           <Link
-            href={`/event/${eventCollection.slug}`}
+            href={`/events/${eventCollection.slug}`}
             aria-label="arrow right"
           >
             <button className="flex items-center justify-between w-full md:w-auto">
