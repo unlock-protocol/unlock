@@ -1,5 +1,6 @@
 import { rewriteIpfsUrl } from '../../utils/url'
 import { it, describe, expect } from 'vitest'
+
 describe('url', () => {
   it('correctly parse url', () => {
     expect.assertions(1)
@@ -7,7 +8,7 @@ describe('url', () => {
       'ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/wiki/Vincent_van_Gogh.html'
 
     expect(rewriteIpfsUrl(url)).toBe(
-      'ipfs://ipfs.io/ipfs/wiki/Vincent_van_Gogh.html'
+      'https://ipfs.io/ipfs/bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/wiki/Vincent_van_Gogh.html'
     )
   })
 
@@ -15,7 +16,7 @@ describe('url', () => {
     expect.assertions(1)
     const url = 'https://google.it'
 
-    expect(rewriteIpfsUrl(url)).toBe('https://google.it/')
+    expect(rewriteIpfsUrl(url)).toBe('https://google.it')
   })
 
   it('wrong url returns same url', () => {
