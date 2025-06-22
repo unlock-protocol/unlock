@@ -30,8 +30,8 @@ describe('route', () => {
       expect.assertions(2)
       expect.assertions(2)
       templates.template = {
-        subject: 'subject',
-        text: 'text',
+        subject: async () => 'subject',
+        text: async () => 'text',
       }
       const args = {
         template: 'template',
@@ -55,8 +55,8 @@ describe('route', () => {
     it('should send the email using the email service', async () => {
       expect.assertions(1)
       templates.template = {
-        subject: 'subject',
-        text: 'text',
+        subject: async () => 'subject',
+        text: async () => 'text',
       }
 
       const args = {
@@ -85,8 +85,8 @@ describe('route', () => {
     it('should send the email using the email service with custom sender', async () => {
       expect.assertions(1)
       templates.template = {
-        subject: 'subject',
-        text: 'text',
+        subject: async () => 'subject',
+        text: async () => 'text',
       }
 
       const args = {
@@ -117,8 +117,8 @@ describe('route', () => {
       it('should yield its enveloppe', async () => {
         expect.assertions(1)
         templates.template = {
-          subject: 'subject',
-          text: 'text',
+          subject: async () => 'subject',
+          text: async () => 'text',
         }
         const args = {
           template: 'template',
@@ -143,8 +143,8 @@ describe('route', () => {
       it('should yield the error message', async () => {
         expect.assertions(1)
         templates.template = {
-          subject: 'subject',
-          text: 'text',
+          subject: async () => 'subject',
+          text: async () => 'text',
         }
         const args = {
           template: 'template',

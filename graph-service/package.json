@@ -1,12 +1,12 @@
 {
   "name": "graph-service",
   "dependencies": {
-    "@cloudflare/workers-types": "4.20250303.0",
-    "@sentry/node": "9.10.1",
-    "wrangler": "3.111.0"
+    "@cloudflare/workers-types": "4.20250507.0",
+    "@sentry/node": "9.15.0",
+    "wrangler": "4.16.1"
   },
   "devDependencies": {
-    "vitest": "3.0.9"
+    "vitest": "3.1.4"
   },
   "scripts": {
     "dev": "yarn wrangler dev",

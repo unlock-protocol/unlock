@@ -22,6 +22,56 @@ Handlebars.registerHelper('inlineImage', (filename) => `cid:${filename}`)
  * @param {string} [args.replyTo] - Reply-to email address
  * @returns {Promise} Result of sending the email
  */
+const getTemplateAndParams = async (args, opts) => {
+  let template = templates[args.template.toLowerCase()]
+
+  if (!template && args.failoverTemplate) {
+    template = templates[args.failoverTemplate.toLowerCase()]
+  }
+
+  if (!template) {
+    throw new Error('Missing template')
+  }
+
+  const templateParams = {}
+  Object.keys(args.params).forEach((key) => {
+    const param = args.params[key]
+    templateParams[key] = param
+  })
+
+  if (template.nowrap) {
+    return [template, templateParams]
+  }
+
+  // Wrap the template
+  return [await wrap(template, opts), templateParams]
+}
+
+const buildEmail = async (template, templateParams, args) => {
+  return {
+    from: {
+      name: args?.emailSender || 'Unlock Labs',
+      address: config.sender,
+    },
+    to: args.recipient,
+    replyTo: args?.replyTo || undefined,
+    subject: await template.subject(templateParams),
+    text: template.text ? await template.text(templateParams) : undefined,
+    html: template.html ? await template.html(templateParams) : undefined,
+    attachments: []
+      .concat(args.attachments, template.attachments)
+      .filter((x) => !!x),
+  }
+}
+
+// This function loads the template and performs the actual email sending
+// args: {
+//  template: templateName string
+//  failoverTemplate: failoverTemplate string
+//  recipient: email address string
+//  params: params for the template (as a hash). Each param is key: value where value can be either a string, or an object with {sign: <boolean></boolean>, value: <string>}
+//  attachments: array of attachments as data-uri strings (nodemailer will handle them)
+// }
 export const route = async (args) => {
   const {
     template: templateName,

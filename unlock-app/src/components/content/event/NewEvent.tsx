@@ -10,6 +10,7 @@ import { formDataToMetadata } from '~/components/interface/locks/metadata/utils'
 import { useProvider } from '~/hooks/useProvider'
 import { EventStatus } from '@unlock-protocol/types'
 import { PaywallConfigType } from '@unlock-protocol/core'
+import { EventsLayout } from './Layout/constants'
 
 export interface TransactionDetails {
   hash: string
@@ -43,6 +44,14 @@ export const defaultEventCheckoutConfigForLockOnNetwork = (
             placeholder: 'Satoshi Nakamoto',
             defaultValue: '',
           },
+          {
+            name: 'newsletter-optin',
+            type: 'checkbox',
+            label: 'I agree to receive emails from partners',
+            public: false,
+            required: false,
+            placeholder: '',
+          },
         ],
       },
     },
@@ -66,6 +75,7 @@ export const NewEvent = () => {
             ...formData.metadata,
           }),
           ...formData.metadata,
+          layout: EventsLayout.Bannerless,
         },
         status: EventStatus.PENDING,
       }
