@@ -17,7 +17,7 @@ const FETCH_LIMIT = 20
 async function fetchUnprocessedKeys(network: number, page = 0) {
   const subgraph = new SubgraphService()
   const skip = page ? page * FETCH_LIMIT : 0
-
+  const oneWeekAgo = Math.floor(new Date().getTime() / 1000) - 7 * 24 * 60 * 60 // 1 week ago in seconds
   try {
     const keys = await subgraph.keys(
       {
@@ -25,6 +25,9 @@ async function fetchUnprocessedKeys(network: number, page = 0) {
         skip,
         orderBy: KeyOrderBy.CreatedAtBlock,
         orderDirection: OrderDirection.Desc,
+        where: {
+          createdAt_gt: oneWeekAgo,
+        },
       },
       {
         networks: [network],
