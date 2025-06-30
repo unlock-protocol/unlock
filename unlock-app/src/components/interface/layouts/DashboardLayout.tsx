@@ -30,12 +30,6 @@ export default function DashboardLayout({
       ) : (
         // Render children within the default layout
         <div className="overflow-hidden bg-ui-secondary-200">
-          <div className="w-full text-lg bg-red-500 text-white p-8 text-center">
-            ⚠️ we are experiencing issues with our hosting provider (Heroku) and
-            one of our databases is inaccessible. <br />
-            We are working to restore full service as soon as possible. Thank
-            you for your patience.
-          </div>
           <TermsOfServiceModal />
           <Container>
             <ConnectModal />
