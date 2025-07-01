@@ -35,7 +35,7 @@
     "directory": "packages/hardhat-plugin"
   },
   "devDependencies": {
-    "@nomicfoundation/hardhat-chai-matchers": "2.0.8",
+    "@nomicfoundation/hardhat-chai-matchers": "2.0.9",
     "@nomicfoundation/hardhat-ignition": "0.15.11",
     "@nomicfoundation/hardhat-ignition-ethers": "0.15.11",
     "@nomicfoundation/hardhat-toolbox": "5.0.0",
