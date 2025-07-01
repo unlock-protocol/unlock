@@ -9567,20 +9567,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/core-downloads-tracker@npm:^6.4.11":
-  version: 6.4.11
-  resolution: "@mui/core-downloads-tracker@npm:6.4.11"
-  checksum: 10/78f01e6449d01eddd0956e21b1e716353025653689808978be964be0d4ce927f0379fe4e15f387576ebf7d6a4f42451e5f5016f868e332d38ac32fc5a5452be3
+"@mui/core-downloads-tracker@npm:^6.4.12":
+  version: 6.4.12
+  resolution: "@mui/core-downloads-tracker@npm:6.4.12"
+  checksum: 10/514b711e32323237456db395cfc579e27fe9ab8115c17a7c52085e72afb1645efe8f259897a45f90d0ef3ed1eacf67d032f88912523f796e889ce64cb8a5d508
   languageName: node
   linkType: hard
 
-"@mui/material@npm:6.4.11":
-  version: 6.4.11
-  resolution: "@mui/material@npm:6.4.11"
+"@mui/material@npm:6.4.12":
+  version: 6.4.12
+  resolution: "@mui/material@npm:6.4.12"
   dependencies:
     "@babel/runtime": "npm:^7.26.0"
-    "@mui/core-downloads-tracker": "npm:^6.4.11"
-    "@mui/system": "npm:^6.4.11"
+    "@mui/core-downloads-tracker": "npm:^6.4.12"
+    "@mui/system": "npm:^6.4.12"
     "@mui/types": "npm:~7.2.24"
     "@mui/utils": "npm:^6.4.9"
     "@popperjs/core": "npm:^2.11.8"
@@ -9593,7 +9593,7 @@ __metadata:
   peerDependencies:
     "@emotion/react": ^11.5.0
     "@emotion/styled": ^11.3.0
-    "@mui/material-pigment-css": ^6.4.11
+    "@mui/material-pigment-css": ^6.4.12
     "@types/react": ^17.0.0 || ^18.0.0 || ^19.0.0
     react: ^17.0.0 || ^18.0.0 || ^19.0.0
     react-dom: ^17.0.0 || ^18.0.0 || ^19.0.0
@@ -9606,7 +9606,7 @@ __metadata:
       optional: true
     "@types/react":
       optional: true
-  checksum: 10/aa100d42d5fd702447dedd7cddba087149ede9682154cd595b79778783c0b76993cc37b43722852187c02cb1eceb911c55b1808aff69d8a8709153ffb85fc030
+  checksum: 10/408c4eb31a76bf4eb709a2a60b5922a6976f7b73beafee7073120c7a2a08e6f01d80875c4330d430d17f9e91d2244795db6165288d42fb1c5023fc530e289936
   languageName: node
   linkType: hard
 
@@ -9650,9 +9650,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/system@npm:^6.4.11":
-  version: 6.4.11
-  resolution: "@mui/system@npm:6.4.11"
+"@mui/system@npm:^6.4.12":
+  version: 6.4.12
+  resolution: "@mui/system@npm:6.4.12"
   dependencies:
     "@babel/runtime": "npm:^7.26.0"
     "@mui/private-theming": "npm:^6.4.9"
@@ -9674,7 +9674,7 @@ __metadata:
       optional: true
     "@types/react":
       optional: true
-  checksum: 10/49a205206413ef2cffd9134b2b62d3a4697ce26eca6d03cedd725fe06682dc8985f9755e5730521da2215bc1dcf1d40fb58c39f57da1fd8252e4101acfad7119
+  checksum: 10/5c647149a537b4c131192172825697bc85a6dae164b8dc2f98e532bc91306d2810a2f4d8b37a2f0a9ae0dd9ef4ad78a0fd9347a5c69ebe9181a66c02c765af6b
   languageName: node
   linkType: hard
 
@@ -20986,7 +20986,7 @@ __metadata:
     "@emotion/styled": "npm:11.14.0"
     "@flockler/react-flockler-embed": "npm:1.0.4"
     "@mdx-js/react": "npm:3.1.0"
-    "@mui/material": "npm:6.4.11"
+    "@mui/material": "npm:6.4.12"
     "@mui/x-charts": "npm:7.29.1"
     "@privy-io/react-auth": "npm:2.12.0"
     "@tanstack/react-query": "npm:5.77.2"
