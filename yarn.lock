@@ -21586,7 +21586,7 @@ __metadata:
     babel-preset-react-app: "npm:10.1.0"
     calendar-link: "npm:2.8.0"
     dayjs: "npm:1.11.13"
-    dotenv: "npm:16.5.0"
+    dotenv: "npm:16.6.1"
     embla-carousel-react: "npm:8.6.0"
     eslint: "npm:9.25.1"
     eslint-config-next: "npm:15.3.2"
@@ -29809,6 +29809,13 @@ __metadata:
   version: 16.5.0
   resolution: "dotenv@npm:16.5.0"
   checksum: 10/e68a16834f1a41cc2dfb01563bc150668ad675e6cd09191211467b5c0806b6ecd6ec438e021aa8e01cd0e72d2b70ef4302bec7cc0fe15b6955f85230b62dc8a9
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:16.6.1":
+  version: 16.6.1
+  resolution: "dotenv@npm:16.6.1"
+  checksum: 10/1d1897144344447ffe62aa1a6d664f4cd2e0784e0aff787eeeec1940ded32f8e4b5b506d665134fc87157baa086fce07ec6383970a2b6d2e7985beaed6a4cc14
   languageName: node
   linkType: hard
 
