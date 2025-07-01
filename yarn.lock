@@ -4490,10 +4490,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloudflare/workers-types@npm:4.20250507.0":
-  version: 4.20250507.0
-  resolution: "@cloudflare/workers-types@npm:4.20250507.0"
-  checksum: 10/f782bf7e1598d10e3460212193c9cfa01b672337086dbce1079150127c27ed69bba49ddfec2d39c469170a9b7d3fc4a556abcbac7f035b4d74954cb2bb825a7b
+"@cloudflare/workers-types@npm:4.20250701.0":
+  version: 4.20250701.0
+  resolution: "@cloudflare/workers-types@npm:4.20250701.0"
+  checksum: 10/5e8f9ea4db3d8467fd4c3187df906fd7a3ec824b4f9e0c3b1ad54cfd385ef4219bfdcf0e8580e43288f99bed86ca891f94b1e9247ca9349e659c7c78c174096d
   languageName: node
   linkType: hard
 
@@ -21293,7 +21293,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/provider@workspace:provider"
   dependencies:
-    "@cloudflare/workers-types": "npm:4.20250507.0"
+    "@cloudflare/workers-types": "npm:4.20250701.0"
     "@types/node": "npm:22.15.3"
     "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
@@ -34449,7 +34449,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "graph-service@workspace:graph-service"
   dependencies:
-    "@cloudflare/workers-types": "npm:4.20250507.0"
+    "@cloudflare/workers-types": "npm:4.20250701.0"
     "@sentry/node": "npm:9.15.0"
     vitest: "npm:3.1.4"
     wrangler: "npm:4.16.1"
