@@ -20961,7 +20961,7 @@ __metadata:
     react-dom: "npm:18.3.1"
     storybook: "npm:8.6.14"
     tsup: "npm:8.4.0"
-    tsx: "npm:4.19.4"
+    tsx: "npm:4.20.3"
     typescript: "npm:5.8.3"
     vite: "npm:6.3.4"
     vite-plugin-svgr: "npm:4.3.0"
@@ -21017,7 +21017,7 @@ __metadata:
   dependencies:
     "@types/handlebars": "npm:4.1.0"
     handlebars: "npm:4.7.8"
-    tsx: "npm:4.19.3"
+    tsx: "npm:4.20.3"
     typescript: "npm:5.8.3"
     vitest: "npm:3.1.4"
   languageName: unknown
@@ -53739,22 +53739,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsx@npm:4.19.3":
-  version: 4.19.3
-  resolution: "tsx@npm:4.19.3"
-  dependencies:
-    esbuild: "npm:~0.25.0"
-    fsevents: "npm:~2.3.3"
-    get-tsconfig: "npm:^4.7.5"
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  bin:
-    tsx: dist/cli.mjs
-  checksum: 10/a7e7f41e5593b242772050abacf51908aa8a6d4d9ea6c29e80161eb557d664a0f4cc8d38d0c8c151fddb6c2e9e337af27ba0e269c9707ccd7eeff0e0ea7fcf98
-  languageName: node
-  linkType: hard
-
 "tsx@npm:4.19.4":
   version: 4.19.4
   resolution: "tsx@npm:4.19.4"
@@ -53768,6 +53752,22 @@ __metadata:
   bin:
     tsx: dist/cli.mjs
   checksum: 10/4dde315aeda70b9cadfecbc8d05b1625f5831018b9cb2db25cbbd03c5f5ee9c59cdc6652a0fd8492176b50944a5af1d5af352b944d024f4a719f58d6f2ac3a7f
+  languageName: node
+  linkType: hard
+
+"tsx@npm:4.20.3":
+  version: 4.20.3
+  resolution: "tsx@npm:4.20.3"
+  dependencies:
+    esbuild: "npm:~0.25.0"
+    fsevents: "npm:~2.3.3"
+    get-tsconfig: "npm:^4.7.5"
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  bin:
+    tsx: dist/cli.mjs
+  checksum: 10/62f40d06a41deebd51690b086f4387d842a826542639b6a26fd6cf09158c6b44956ca9d9088146330ab0622587b2329981cc3584b89025040f3aa100c50ac13c
   languageName: node
   linkType: hard
 
