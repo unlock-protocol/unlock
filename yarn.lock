@@ -20903,7 +20903,7 @@ __metadata:
     next: "npm:14.2.26"
     postcss: "npm:8.5.3"
     react-markdown: "npm:10.1.0"
-    tailwind-merge: "npm:3.2.0"
+    tailwind-merge: "npm:3.3.1"
     tailwindcss: "npm:3.4.17"
     typescript: "npm:5.8.3"
     vitest: "npm:3.1.4"
@@ -21611,7 +21611,7 @@ __metadata:
     remark-html: "npm:16.0.1"
     rss: "npm:1.2.2"
     showdown-highlight: "npm:3.1.0"
-    tailwind-merge: "npm:3.2.0"
+    tailwind-merge: "npm:3.3.1"
     tailwindcss: "npm:3.4.17"
     typescript: "npm:5.8.3"
     use-local-storage: "npm:3.0.0"
@@ -52507,6 +52507,13 @@ __metadata:
   version: 3.2.0
   resolution: "tailwind-merge@npm:3.2.0"
   checksum: 10/ece231b18bf27cb70847e236d987e254c152e0440dbeb59c08ddf157de79fe89d6b7d1127c75d753e868f31dd77ded38ce8d23a1e405ff735a6642407c671fb9
+  languageName: node
+  linkType: hard
+
+"tailwind-merge@npm:3.3.1":
+  version: 3.3.1
+  resolution: "tailwind-merge@npm:3.3.1"
+  checksum: 10/ad97f0763afdfdce785b8de50bc546951bb3cc803ab4f809cb10d654d9b7e28b0d19dead70ab9070edf479af68622a5f6ba16a21584fa8c21236855709dc648f
   languageName: node
   linkType: hard
 
