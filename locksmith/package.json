@@ -100,7 +100,7 @@
   },
   "devDependencies": {
     "@types/cookie-parser": "1.4.8",
-    "@types/cors": "2.8.17",
+    "@types/cors": "2.8.19",
     "@types/geoip-country": "4.0.2",
     "@types/isomorphic-fetch": "0.0.39",
     "@types/jsonwebtoken": "9.0.9",
