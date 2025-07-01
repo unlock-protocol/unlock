@@ -11438,14 +11438,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomicfoundation/hardhat-network-helpers@npm:1.0.12":
-  version: 1.0.12
-  resolution: "@nomicfoundation/hardhat-network-helpers@npm:1.0.12"
+"@nomicfoundation/hardhat-network-helpers@npm:1.0.13":
+  version: 1.0.13
+  resolution: "@nomicfoundation/hardhat-network-helpers@npm:1.0.13"
   dependencies:
     ethereumjs-util: "npm:^7.1.4"
   peerDependencies:
     hardhat: ^2.9.5
-  checksum: 10/6774bdaa76b6792b408dbdf9b4ff5c19315fa9d5be53e53d6b68cd56aba82d18cfa2548a71a2ced41542989bddd3ab4d11e009579d34678202e26f11c43c2a44
+  checksum: 10/3613ea570e0b27de851531f5d957140852e893a4b138147e62eadbb7cf3650f16fba43ee4ebaf27b5a5cfb294a3aa1c22b8bb6c685f483e0889372f0c80a7f13
   languageName: node
   linkType: hard
 
@@ -21058,7 +21058,7 @@ __metadata:
     "@matterlabs/hardhat-zksync-upgradable": "npm:1.9.0"
     "@matterlabs/hardhat-zksync-verify": "npm:1.8.0"
     "@nomicfoundation/hardhat-ethers": "npm:3.0.8"
-    "@nomicfoundation/hardhat-network-helpers": "npm:1.0.12"
+    "@nomicfoundation/hardhat-network-helpers": "npm:1.0.13"
     "@nomicfoundation/hardhat-verify": "npm:2.0.13"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@openzeppelin/hardhat-upgrades": "npm:3.9.0"
@@ -21312,7 +21312,7 @@ __metadata:
   dependencies:
     "@connext/interfaces": "npm:2.0.5"
     "@nomicfoundation/hardhat-ethers": "npm:3.0.8"
-    "@nomicfoundation/hardhat-network-helpers": "npm:1.0.12"
+    "@nomicfoundation/hardhat-network-helpers": "npm:1.0.13"
     "@nomicfoundation/hardhat-verify": "npm:2.0.13"
     "@openzeppelin/contracts": "npm:5.0.2"
     "@openzeppelin/contracts-upgradeable": "npm:4.9.6"
