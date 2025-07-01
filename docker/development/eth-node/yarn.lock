@@ -842,6 +842,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nomicfoundation/hardhat-ethers@npm:3.0.9":
+  version: 3.0.9
+  resolution: "@nomicfoundation/hardhat-ethers@npm:3.0.9"
+  dependencies:
+    debug: "npm:^4.1.1"
+    lodash.isequal: "npm:^4.5.0"
+  peerDependencies:
+    ethers: ^6.14.0
+    hardhat: ^2.0.0
+  checksum: 10/68e4864cb0dc1491060a0c00a38d08a039c253efe8a12f070df3db5f4df633240b7657e8678bbbfe724b8915ea9dff2fe9bdb6f07da98af129d911059bf76510
+  languageName: node
+  linkType: hard
+
 "@nomicfoundation/solidity-analyzer-darwin-arm64@npm:0.1.2":
   version: 0.1.2
   resolution: "@nomicfoundation/solidity-analyzer-darwin-arm64@npm:0.1.2"
@@ -1220,7 +1233,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/eth-node@workspace:."
   dependencies:
-    "@nomicfoundation/hardhat-ethers": "npm:3.0.8"
+    "@nomicfoundation/hardhat-ethers": "npm:3.0.9"
     "@unlock-protocol/contracts": "npm:latest"
     "@unlock-protocol/hardhat-plugin": "npm:latest"
     "@unlock-protocol/networks": "npm:latest"
