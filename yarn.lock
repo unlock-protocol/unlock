@@ -13663,9 +13663,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/upgrades-core@npm:1.44.0":
-  version: 1.44.0
-  resolution: "@openzeppelin/upgrades-core@npm:1.44.0"
+"@openzeppelin/upgrades-core@npm:1.44.1":
+  version: 1.44.1
+  resolution: "@openzeppelin/upgrades-core@npm:1.44.1"
   dependencies:
     "@nomicfoundation/slang": "npm:^0.18.3"
     bignumber.js: "npm:^9.1.2"
@@ -13680,7 +13680,7 @@ __metadata:
     solidity-ast: "npm:^0.4.60"
   bin:
     openzeppelin-upgrades-core: dist/cli/cli.js
-  checksum: 10/255eaf514726e8e4fab35b7c63688318665aaf91d526bed8d1f87602122754863575a06f0bf54c489d752fbfa3e4d860c4e3c302d320851051cd038f5f983b49
+  checksum: 10/2fb67ab24731aadc3e545101c5a81fa04977610d38ae42a5b22257a3179acfae4e0fb0f83864a6aee6ac8d90a34988a6ad1b41d702c4b47100c209ab5525ab66
   languageName: node
   linkType: hard
 
@@ -21062,7 +21062,7 @@ __metadata:
     "@nomicfoundation/hardhat-verify": "npm:2.0.13"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@openzeppelin/hardhat-upgrades": "npm:3.9.0"
-    "@openzeppelin/upgrades-core": "npm:1.44.0"
+    "@openzeppelin/upgrades-core": "npm:1.44.1"
     "@safe-global/api-kit": "npm:3.0.1"
     "@safe-global/protocol-kit": "npm:6.0.4"
     "@tenderly/hardhat-tenderly": "npm:2.5.2"
@@ -21093,7 +21093,7 @@ __metadata:
     "@matterlabs/hardhat-zksync-verify": "npm:1.8.0"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@nomiclabs/hardhat-waffle": "npm:2.0.6"
-    "@openzeppelin/upgrades-core": "npm:1.44.0"
+    "@openzeppelin/upgrades-core": "npm:1.44.1"
     "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
