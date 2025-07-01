@@ -37,7 +37,7 @@
     "@vitejs/plugin-react": "4.4.1",
     "autoprefixer": "10.4.21",
     "jsdom": "26.1.0",
-    "postcss": "8.5.3",
+    "postcss": "8.5.6",
     "tailwindcss": "3.4.17",
     "vitest": "3.1.4"
   },
