@@ -33,10 +33,10 @@
     "ethers": "^6.13.0"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "5.0.5",
+    "@graphql-codegen/cli": "5.0.7",
     "@graphql-codegen/typescript": "4.1.6",
     "@graphql-codegen/typescript-graphql-request": "6.2.0",
-    "@graphql-codegen/typescript-operations": "4.6.0",
+    "@graphql-codegen/typescript-operations": "4.6.1",
     "@nomicfoundation/hardhat-ethers": "3.0.8",
     "@openapitools/openapi-generator-cli": "2.20.0",
     "@unlock-protocol/contracts": "workspace:./packages/contracts",
