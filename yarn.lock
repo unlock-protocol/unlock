@@ -22091,7 +22091,7 @@ __metadata:
     babel-loader: "npm:10.0.0"
     babel-plugin-require-context-hook: "npm:1.0.0"
     babel-preset-react-app: "npm:10.1.0"
-    calendar-link: "npm:2.8.0"
+    calendar-link: "npm:2.11.0"
     dayjs: "npm:1.11.13"
     dotenv: "npm:16.5.0"
     embla-carousel-react: "npm:8.6.0"
@@ -26488,6 +26488,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"calendar-link@npm:2.11.0":
+  version: 2.11.0
+  resolution: "calendar-link@npm:2.11.0"
+  dependencies:
+    dayjs: "npm:^1.9.3"
+  checksum: 10/5823ba4bac9e54f606eb153185ca7d5357932b556ecbade023acdf35b465c76ff77aa261ca76efd7a1f1135546a0cff5155e44ab1676a7fdf06f4a161a9db476
+  languageName: node
+  linkType: hard
+
 "calendar-link@npm:2.7.0":
   version: 2.7.0
   resolution: "calendar-link@npm:2.7.0"
@@ -26495,15 +26504,6 @@ __metadata:
     dayjs: "npm:^1.9.3"
     query-string: "npm:^6.13.6"
   checksum: 10/27c1dc0cd0a0afd008681e7f90fbd72206db7376b1dc291453feed98756bfa15caebacb27336c886a8b50f55ac682d22a3d2305ef8b212fb6821db807c0e7def
-  languageName: node
-  linkType: hard
-
-"calendar-link@npm:2.8.0":
-  version: 2.8.0
-  resolution: "calendar-link@npm:2.8.0"
-  dependencies:
-    dayjs: "npm:^1.9.3"
-  checksum: 10/0d19f0d0156c9bb190c86c73a10f78d3c0dba596007c58cacc055bb6587a6bc614c557e05f968e584f6153486d0a5837f7c80d4e8ae917353400da9faf6abc53
   languageName: node
   linkType: hard
 
