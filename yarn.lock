@@ -20614,7 +20614,7 @@ __metadata:
     typescript: "npm:5.8.3"
     vitest: "npm:3.1.4"
     winston: "npm:3.17.0"
-    worker-mailer: "npm:1.0.1"
+    worker-mailer: "npm:1.1.4"
     wrangler: "npm:3.112.0"
   languageName: unknown
   linkType: soft
@@ -51979,10 +51979,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"worker-mailer@npm:1.0.1":
-  version: 1.0.1
-  resolution: "worker-mailer@npm:1.0.1"
-  checksum: 10/58b158444ba60ec96415ce47f5a3cefc48fde34c02a327d4bcf6bd3453887bd90ff53de176b2d677e0d747a791b271277ff47513ed1ce16e34681e61210e1777
+"worker-mailer@npm:1.1.4":
+  version: 1.1.4
+  resolution: "worker-mailer@npm:1.1.4"
+  checksum: 10/069d890631ba466f8eccf693660fedb77fc51eed9475bd2da3136de006b0d4498947ee0e2de6def8da679a709c2977bc8eec40343c7332915de83f80aab7f4f7
   languageName: node
   linkType: hard
 

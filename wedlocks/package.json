@@ -18,7 +18,7 @@
     "prettier": "3.5.3",
     "typescript": "5.8.3",
     "winston": "3.17.0",
-    "worker-mailer": "1.0.1",
+    "worker-mailer": "1.1.4",
     "wrangler": "3.112.0"
   },
   "scripts": {
