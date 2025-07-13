@@ -10,7 +10,7 @@
     "@docusaurus/preset-classic": "3.7.0",
     "@docusaurus/theme-classic": "3.7.0",
     "@emotion/react": "11.14.0",
-    "@emotion/styled": "11.14.0",
+    "@emotion/styled": "11.14.1",
     "@flockler/react-flockler-embed": "1.0.4",
     "@mdx-js/react": "3.1.0",
     "@mui/material": "6.4.11",
