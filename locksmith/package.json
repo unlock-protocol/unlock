@@ -89,7 +89,7 @@
     "remark-parse": "11.0.0",
     "satori": "0.12.2",
     "sequelize": "6.37.7",
-    "sequelize-cli": "6.6.2",
+    "sequelize-cli": "6.6.3",
     "siwe": "3.0.0",
     "stripe": "18.0.0",
     "unified": "11.0.5",
