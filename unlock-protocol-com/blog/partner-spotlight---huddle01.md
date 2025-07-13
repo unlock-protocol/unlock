@@ -1,10 +1,10 @@
 ---
-title: 'Partner Spotlight | Huddle01'
-subtitle: ''
-authorName: 'Stella Achenbach'
-publishDate: 'Fri May 09 2025 01:27:57 GMT+0000 (Coordinated Universal Time)'
-description: 'Huddle01 is building the future of decentralized connections, and Unlock DAO has been a long-standing advocate and user of the tool! Tomorrow, Friday, May 9th, we are joined by Huddle01 Product Manager Ramit Agrawal to learn more about the story of Huddle01, how Ramit got involved, and exciting things the team is currently launching. Huddle01 is a demand-first DePIN dedicated platform accelerating digital connectivity with highly optimised, low-latency data routing for distributed systems. Th...'
-image: '/images/blog/partner-spotlight---huddle01/40b5bb76a0d59e046fca904950d3b2f0.jpg'
+title: "Partner Spotlight | Huddle01"
+subtitle: ""
+authorName: "Stella Achenbach"
+publishDate: "Fri May 09 2025 01:27:57 GMT+0000 (Coordinated Universal Time)"
+description: "Huddle01 is building the future of decentralized connections, and Unlock DAO has been a long-standing advocate and user of the tool! Tomorrow, Friday, May 9th, we are joined by Huddle01 Product Manager Ramit Agrawal to learn more about the story of Huddle01, how Ramit got involved, and exciting things the team is currently launching. Huddle01 is a demand-first DePIN dedicated platform accelerating digital connectivity with highly optimised, low-latency data routing for distributed systems. Th..."
+image: "/images/blog/partner-spotlight---huddle01/40b5bb76a0d59e046fca904950d3b2f0.jpg"
 ---
 
 ![Partner Spotlight | Huddle01](https://storage.googleapis.com/papyrus_images/40b5bb76a0d59e046fca904950d3b2f0.jpg)

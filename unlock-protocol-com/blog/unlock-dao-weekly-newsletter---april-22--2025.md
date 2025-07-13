@@ -1,10 +1,10 @@
 ---
-title: 'Unlock DAO Weekly Newsletter | April 22, 2025'
-subtitle: ''
-authorName: 'Stella Achenbach'
-publishDate: 'Thu Apr 24 2025 16:26:18 GMT+0000 (Coordinated Universal Time)'
-description: 'Hey Locksmiths!We hope this message finds you energized and inspired. As we move deeper into 2025, your dedication, creativity, and support are shaping the future of Unlock Protocol DAO. Let’s keep up the momentum, celebrate our wins, and tackle new challenges together.Protocol UpdatesJulien delivered another series of updates this week after a short break:Key bug fixes and enhancements rolled out for upcoming events, including better attendee filtering and RSVP email options.A backend migrat...'
-image: '/images/blog/unlock-dao-weekly-newsletter---april-22--2025/0daa5988025ca3dea53d9e5b26790974.jpg'
+title: "Unlock DAO Weekly Newsletter | April 22, 2025"
+subtitle: ""
+authorName: "Stella Achenbach"
+publishDate: "Thu Apr 24 2025 16:26:18 GMT+0000 (Coordinated Universal Time)"
+description: "Hey Locksmiths!We hope this message finds you energized and inspired. As we move deeper into 2025, your dedication, creativity, and support are shaping the future of Unlock Protocol DAO. Let’s keep up the momentum, celebrate our wins, and tackle new challenges together.Protocol UpdatesJulien delivered another series of updates this week after a short break:Key bug fixes and enhancements rolled out for upcoming events, including better attendee filtering and RSVP email options.A backend migrat..."
+image: "/images/blog/unlock-dao-weekly-newsletter---april-22--2025/0daa5988025ca3dea53d9e5b26790974.jpg"
 ---
 
 ![Unlock DAO Weekly Newsletter | April 22, 2025](https://storage.googleapis.com/papyrus_images/0daa5988025ca3dea53d9e5b26790974.jpg)

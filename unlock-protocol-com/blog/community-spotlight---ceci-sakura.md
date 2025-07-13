@@ -1,10 +1,10 @@
 ---
-title: 'Community Spotlight | Ceci Sakura'
-subtitle: ''
-authorName: 'Stella Achenbach'
-publishDate: 'Fri Apr 25 2025 14:33:03 GMT+0000 (Coordinated Universal Time)'
-description: 'Did you know that Unlock DAO is a decentralized autonomous organization that governs the actual protocol? These are ordinary people, like you and me, making decisions about the protocol and its future developments in a decentralized manner, utilizing the $UP token as a governance currency. DAO Members propose new ideas through proposals and vote on them to help the protocol be future-proof. However, aside from DAO Members, we also have DAO Contributors, Ambassadors, and Stewards. These member...'
-image: '/images/blog/community-spotlight---ceci-sakura/07bea750e2a02e66115962e87bdd29e9.jpg'
+title: "Community Spotlight | Ceci Sakura"
+subtitle: ""
+authorName: "Stella Achenbach"
+publishDate: "Fri Apr 25 2025 14:33:03 GMT+0000 (Coordinated Universal Time)"
+description: "Did you know that Unlock DAO is a decentralized autonomous organization that governs the actual protocol? These are ordinary people, like you and me, making decisions about the protocol and its future developments in a decentralized manner, utilizing the $UP token as a governance currency. DAO Members propose new ideas through proposals and vote on them to help the protocol be future-proof. However, aside from DAO Members, we also have DAO Contributors, Ambassadors, and Stewards. These member..."
+image: "/images/blog/community-spotlight---ceci-sakura/07bea750e2a02e66115962e87bdd29e9.jpg"
 ---
 
 ![Community Spotlight | Ceci Sakura](https://storage.googleapis.com/papyrus_images/07bea750e2a02e66115962e87bdd29e9.jpg)

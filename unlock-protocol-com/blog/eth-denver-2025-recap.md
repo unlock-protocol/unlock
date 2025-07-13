@@ -1,10 +1,10 @@
 ---
-title: 'ETH Denver 2025 Recap'
-subtitle: ''
-authorName: 'Stella Achenbach'
-publishDate: 'Tue Apr 08 2025 14:45:54 GMT+0000 (Coordinated Universal Time)'
-description: 'This year marked the first time Unlock Protocol debuted as a DAO at ETH Denver. We are proud and grateful to the community members who attended and represented the protocol! Special thanks go here to Will T, Steven Sinatra, Wonderwomancode, CaptainSouthPaw, Lana Dingwall, Yonks, and stellaachenbach! The "Year of the Regenerate" saw the DAO actively engage in sponsorships, networking, and community building, leaving a lasting impression on the Ethereum ecosystem. With this short report, we aim...'
-image: '/images/blog/eth-denver-2025-recap/3511301ffbb5d913130e044c91f9c315.jpg'
+title: "ETH Denver 2025 Recap"
+subtitle: ""
+authorName: "Stella Achenbach"
+publishDate: "Tue Apr 08 2025 14:45:54 GMT+0000 (Coordinated Universal Time)"
+description: "This year marked the first time Unlock Protocol debuted as a DAO at ETH Denver. We are proud and grateful to the community members who attended and represented the protocol! Special thanks go here to Will T, Steven Sinatra, Wonderwomancode, CaptainSouthPaw, Lana Dingwall, Yonks, and stellaachenbach! The \"Year of the Regenerate\" saw the DAO actively engage in sponsorships, networking, and community building, leaving a lasting impression on the Ethereum ecosystem. With this short report, we aim..."
+image: "/images/blog/eth-denver-2025-recap/3511301ffbb5d913130e044c91f9c315.jpg"
 ---
 
 ![ETH Denver 2025 Recap](https://storage.googleapis.com/papyrus_images/3511301ffbb5d913130e044c91f9c315.jpg)

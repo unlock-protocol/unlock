@@ -1,10 +1,10 @@
 ---
-title: 'Unlock Joins Gitcoin GG23: Supporting Open-Source Innovation'
-subtitle: ''
-authorName: 'Stella Achenbach'
-publishDate: 'Thu Apr 10 2025 15:42:15 GMT+0000 (Coordinated Universal Time)'
-description: 'What is Gitcoin and GG23Gitcoin is a pioneering platform that connects developers and open-source contributors with funding opportunities. Through its innovative quadratic funding model, Gitcoin ensures that projects receive proportionally higher funding if supported by many, not necessarily by the amount itself. Since its inception, Gitcoin has distributed over $59 million to support public goods, fostering the development of open-source technologies that benefit everyone. Most of what enabl...'
-image: '/images/blog/unlock-joins-gitcoin-gg23--supporting-open-source-innovation/76d7936077430e409d2b7b058ebd7ea9.jpg'
+title: "Unlock Joins Gitcoin GG23: Supporting Open-Source Innovation"
+subtitle: ""
+authorName: "Stella Achenbach"
+publishDate: "Thu Apr 10 2025 15:42:15 GMT+0000 (Coordinated Universal Time)"
+description: "What is Gitcoin and GG23Gitcoin is a pioneering platform that connects developers and open-source contributors with funding opportunities. Through its innovative quadratic funding model, Gitcoin ensures that projects receive proportionally higher funding if supported by many, not necessarily by the amount itself. Since its inception, Gitcoin has distributed over $59 million to support public goods, fostering the development of open-source technologies that benefit everyone. Most of what enabl..."
+image: "/images/blog/unlock-joins-gitcoin-gg23--supporting-open-source-innovation/76d7936077430e409d2b7b058ebd7ea9.jpg"
 ---
 
 ![Unlock Joins Gitcoin GG23: Supporting Open-Source Innovation](https://storage.googleapis.com/papyrus_images/76d7936077430e409d2b7b058ebd7ea9.jpg)

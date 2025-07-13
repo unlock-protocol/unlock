@@ -1,10 +1,10 @@
 ---
-title: 'Unlock DAO Weekly Newsletter | April 8, 2025'
-subtitle: ''
-authorName: 'Stella Achenbach'
-publishDate: 'Fri Apr 11 2025 16:00:00 GMT+0000 (Coordinated Universal Time)'
+title: "Unlock DAO Weekly Newsletter | April 8, 2025"
+subtitle: ""
+authorName: "Stella Achenbach"
+publishDate: "Fri Apr 11 2025 16:00:00 GMT+0000 (Coordinated Universal Time)"
 description: "Hey Locksmiths!We hope this message finds you well and inspired as we continue building the future of decentralized access together. This week’s updates are packed with exciting developments, community-driven initiatives, and opportunities for you to shine within the Unlock ecosystem. Let’s dive in and keep the momentum going!Protocol UpdatesJulien couldn't attend this week's meeting so that we will receive further protocol updates by next week. Don't forget to consider applying to the tradin..."
-image: '/images/blog/unlock-dao-weekly-newsletter---april-8--2025/eb8f9bd9482cba483b2bebf634dfa3a3.jpg'
+image: "/images/blog/unlock-dao-weekly-newsletter---april-8--2025/eb8f9bd9482cba483b2bebf634dfa3a3.jpg"
 ---
 
 ![Unlock DAO Weekly Newsletter | April 8, 2025](https://storage.googleapis.com/papyrus_images/eb8f9bd9482cba483b2bebf634dfa3a3.jpg)

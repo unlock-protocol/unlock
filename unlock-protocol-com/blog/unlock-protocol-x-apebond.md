@@ -1,10 +1,10 @@
 ---
-title: 'Unlock Protocol x ApeBond'
-subtitle: ''
-authorName: 'Stella Achenbach'
-publishDate: 'Wed May 07 2025 00:01:57 GMT+0000 (Coordinated Universal Time)'
+title: "Unlock Protocol x ApeBond"
+subtitle: ""
+authorName: "Stella Achenbach"
+publishDate: "Wed May 07 2025 00:01:57 GMT+0000 (Coordinated Universal Time)"
 description: "BackgroundSince last year, Unlock Protocol DAO has been in conversations with ICHI Finance and ApeBond to launch a campaign together to get the $UP token into more hands. As you might know, the $UP tokens' primary purpose is governance and therefore the medium of control over changes to the actual protocol technology (not the website, but how the technology you can access through the website works). Now that the campaign with ApeBond is live, we want to take a moment to explain not just what’..."
-image: '/images/blog/unlock-protocol-x-apebond/8df1d9fd10b484034dc919d2d7361d7f.jpg'
+image: "/images/blog/unlock-protocol-x-apebond/8df1d9fd10b484034dc919d2d7361d7f.jpg"
 ---
 
 ![Unlock Protocol x ApeBond](https://storage.googleapis.com/papyrus_images/8df1d9fd10b484034dc919d2d7361d7f.jpg)
