@@ -72,7 +72,7 @@ const buildEmail = async (template, templateParams, args) => {
 //  params: params for the template (as a hash). Each param is key: value where value can be either a string, or an object with {sign: <boolean></boolean>, value: <string>}
 //  attachments: array of attachments as data-uri strings (nodemailer will handle them)
 // }
-export const route = async (args) => {
+export const route = async (args, config) => {
   const {
     template: templateName,
     params,
@@ -94,7 +94,10 @@ export const route = async (args) => {
 
   // Prepare email data
   const email = {
-    from: { name: emailSender || 'Unlock Labs', email: config.sender },
+    from: {
+      name: emailSender || 'Unlock Labs',
+      email: 'hello@unlock-protocol.com',
+    },
     to: { email: recipient },
     replyTo: replyTo ? { email: replyTo } : undefined,
     subject,
@@ -106,7 +109,7 @@ export const route = async (args) => {
   }
 
   // Send email
-  return emailService.send(email)
+  return emailService.send(config, email)
 }
 
 /**

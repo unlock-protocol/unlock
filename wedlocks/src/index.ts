@@ -9,8 +9,9 @@ interface HandlerResponse {
 }
 
 export default {
-  async fetch(request: Request): Promise<Response> {
+  async fetch(request: Request, env: Env): Promise<Response> {
     const body = await request.text()
+
     const url = new URL(request.url)
     const headers: Record<string, string> = {}
     for (const pair of request.headers.entries()) {
@@ -25,7 +26,7 @@ export default {
         path: url.pathname,
         queryStringParameters: Object.fromEntries(url.searchParams.entries()),
       },
-      {},
+      env,
       (error: Error | null, response: HandlerResponse) => {
         if (error) {
           return new Response(error.message, {

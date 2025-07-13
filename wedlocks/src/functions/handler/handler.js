@@ -6,7 +6,7 @@ const headers = {
   'Access-Control-Allow-Headers': 'Content-Type',
 }
 
-export const handler = async (event, context, responseCallback) => {
+export const handler = async (event, env, responseCallback) => {
   const callback = (err /** always null! */, response) => {
     if (response.statusCode >= 400) {
       logger.error({
@@ -93,7 +93,16 @@ export const handler = async (event, context, responseCallback) => {
   }
 
   try {
-    const response = await route(body)
+    const response = await route(body, {
+      host: env.SMTP_HOST,
+      authType: 'plain',
+      port: env.SMTP_PORT,
+      secure: false,
+      credentials: {
+        username: env.SMTP_USERNAME,
+        password: env.SMTP_PASSWORD,
+      },
+    })
 
     return callback(null, {
       statusCode: 204,

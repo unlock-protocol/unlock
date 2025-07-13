@@ -6,3 +6,10 @@ compatibility_date = "2024-09-23"
 [dev]
 port = 9999
 
+[vars]
+SMTP_HOST = "smtp.sendgrid.net"
+SMTP_PORT = 587
+SMTP_USERNAME = "apikey"
+
+
+
