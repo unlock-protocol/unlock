@@ -1,4 +1,3 @@
-import config from '../config'
 import templates, {
   PrecompiledTemplates,
 } from '@unlock-protocol/email-templates'
@@ -51,7 +50,7 @@ const buildEmail = async (template, templateParams, args) => {
   return {
     from: {
       name: args?.emailSender || 'Unlock Labs',
-      address: config.sender,
+      address: 'hello@unlock-protocol.com',
     },
     to: args.recipient,
     replyTo: args?.replyTo || undefined,
@@ -149,7 +148,7 @@ export const preview = async (args) => {
     return JSON.stringify({
       from: {
         name: emailSender || 'Unlock Labs',
-        address: config.sender,
+        address: 'hello@unlock-protocol.com',
       },
       to: recipient || 'recipient@example.com',
       replyTo: replyTo || undefined,

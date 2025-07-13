@@ -68,7 +68,7 @@ describe('route', () => {
 
       emailService.send.mockImplementationOnce((options) => {
         expect(options).toEqual({
-          from: { name: 'Unlock Labs', email: config.sender },
+          from: { name: 'Unlock Labs', email: `hello@unlock-protocol.com` },
           to: { email: args.recipient },
           replyTo: undefined,
           subject: 'subject',
@@ -99,7 +99,7 @@ describe('route', () => {
 
       emailService.send.mockImplementationOnce((options) => {
         expect(options).toEqual({
-          from: { name: 'Custom Sender', email: config.sender },
+          from: { name: 'Custom Sender', email: 'hello@unlock-protocol.com' },
           to: { email: args.recipient },
           replyTo: undefined,
           subject: 'subject',
