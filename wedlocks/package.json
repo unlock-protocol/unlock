@@ -15,19 +15,20 @@
     "dotenv": "16.5.0",
     "eslint": "9.25.1",
     "handlebars": "4.7.8",
-    "netlify-cli": "15.11.0",
-    "nodemailer": "6.10.1",
     "prettier": "3.5.3",
     "typescript": "5.8.3",
-    "winston": "3.17.0"
+    "winston": "3.17.0",
+    "worker-mailer": "1.1.4",
+    "wrangler": "3.112.0"
   },
   "scripts": {
-    "build": "netlify build",
-    "dev": "UNLOCK_ENV=dev netlify functions:serve",
-    "test": "UNLOCK_ENV=test vitest run --coverage --environment=node",
+    "dev": "yarn wrangler dev",
+    "deploy": "yarn wrangler deploy",
+    "set-env-vars": "op run --env-file=.op.env --  ./scripts/set-env-vars.sh",
+    "test": "vitest run --config ./vitest.config.ts",
+    "ci": "yarn lint && yarn test",
     "lint": "eslint",
-    "ci": "yarn test && yarn lint",
-    "deploy-netlify": "./scripts/deploy-netlify.sh"
+    "test:watch": "vitest --config ./vitest.config.ts"
   },
   "author": "",
   "license": "MIT",
