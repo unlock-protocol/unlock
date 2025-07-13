@@ -22,10 +22,10 @@
   "devDependencies": {
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
-    "eslint": "9.26.0",
-    "prettier": "3.5.3",
+    "eslint": "9.30.0",
+    "prettier": "3.6.2",
     "typescript": "5.8.3",
-    "vite": "6.3.4"
+    "vite": "6.3.5"
   },
   "browserslist": [
     "defaults",
