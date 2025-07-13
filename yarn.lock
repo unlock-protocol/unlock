@@ -21443,7 +21443,7 @@ __metadata:
     cookie-parser: "npm:1.4.7"
     cors: "npm:2.8.5"
     dayjs: "npm:1.11.13"
-    dotenv: "npm:16.4.7"
+    dotenv: "npm:17.0.0"
     eslint: "npm:9.22.0"
     eslint-config-standard: "npm:17.1.0"
     ethers: "npm:6.13.5"
@@ -21730,7 +21730,7 @@ __metadata:
     calendar-link: "npm:2.7.0"
     csv: "npm:6.3.11"
     dayjs: "npm:1.11.13"
-    dotenv: "npm:16.4.7"
+    dotenv: "npm:17.0.0"
     eslint: "npm:9.22.0"
     ethers: "npm:6.13.5"
     file-saver: "npm:2.0.5"
@@ -21841,7 +21841,7 @@ __metadata:
     babel-preset-react-app: "npm:10.1.0"
     calendar-link: "npm:2.8.0"
     dayjs: "npm:1.11.13"
-    dotenv: "npm:16.5.0"
+    dotenv: "npm:17.0.0"
     embla-carousel-react: "npm:8.6.0"
     eslint: "npm:9.25.1"
     eslint-config-next: "npm:15.3.2"
@@ -21888,7 +21888,7 @@ __metadata:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     babel-loader: "npm:10.0.0"
     babel-plugin-wildcard: "npm:7.0.0"
-    dotenv: "npm:16.5.0"
+    dotenv: "npm:17.0.0"
     eslint: "npm:9.25.1"
     handlebars: "npm:4.7.8"
     netlify-cli: "npm:15.11.0"
@@ -30064,17 +30064,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:16.4.7, dotenv@npm:^16.0.0, dotenv@npm:^16.0.3, dotenv@npm:^16.3.1, dotenv@npm:^16.4.5":
-  version: 16.4.7
-  resolution: "dotenv@npm:16.4.7"
-  checksum: 10/f13bfe97db88f0df4ec505eeffb8925ec51f2d56a3d0b6d916964d8b4af494e6fb1633ba5d09089b552e77ab2a25de58d70259b2c5ed45ec148221835fc99a0c
-  languageName: node
-  linkType: hard
-
-"dotenv@npm:16.5.0":
-  version: 16.5.0
-  resolution: "dotenv@npm:16.5.0"
-  checksum: 10/e68a16834f1a41cc2dfb01563bc150668ad675e6cd09191211467b5c0806b6ecd6ec438e021aa8e01cd0e72d2b70ef4302bec7cc0fe15b6955f85230b62dc8a9
+"dotenv@npm:17.0.0":
+  version: 17.0.0
+  resolution: "dotenv@npm:17.0.0"
+  checksum: 10/31ef3618e19d6db7d5be3a8831147f10995b2ab18dce038588050160f780c6e0bdaece3d2b866a0138b860db1eb14f1da9e1fcf0493ee0bb7264664bac075c69
   languageName: node
   linkType: hard
 
@@ -30082,6 +30075,13 @@ __metadata:
   version: 14.3.2
   resolution: "dotenv@npm:14.3.2"
   checksum: 10/b735b395979a62a046bf3e853e747c6f7128c2c4629c5a1dc598171b7fac90e232d8fb93bee2636934de5b2f78b7de92ca668609911e9b33f3ce2c17e021d84e
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^16.0.0, dotenv@npm:^16.0.3, dotenv@npm:^16.3.1, dotenv@npm:^16.4.5":
+  version: 16.4.7
+  resolution: "dotenv@npm:16.4.7"
+  checksum: 10/f13bfe97db88f0df4ec505eeffb8925ec51f2d56a3d0b6d916964d8b4af494e6fb1633ba5d09089b552e77ab2a25de58d70259b2c5ed45ec148221835fc99a0c
   languageName: node
   linkType: hard
 
