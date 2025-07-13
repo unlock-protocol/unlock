@@ -1,7 +1,7 @@
 import Attendees from '~/components/content/event/attendees/Attendees'
 import { Event, PaywallConfigType } from '@unlock-protocol/core'
 import { EventPageProps } from '../page'
-import { toFormData } from 'axios'
+import { toFormData } from '~/components/interface/locks/metadata/utils'
 import { notFound } from 'next/navigation'
 import { fetchEventMetadata } from '~/utils/eventMetadata'
 import { AuthRequired } from 'app/Components/ProtectedContent'
@@ -29,10 +29,7 @@ const AttendeesPage = async ({ params }: EventPageProps) => {
 
   return (
     <AuthRequired>
-      <Attendees
-        event={JSON.parse(JSON.stringify(event))}
-        checkoutConfig={JSON.parse(JSON.stringify(checkoutConfig))}
-      />
+      <Attendees event={event} checkoutConfig={checkoutConfig} />
     </AuthRequired>
   )
 }

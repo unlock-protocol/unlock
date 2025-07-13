@@ -3,22 +3,15 @@
  * @param {*} stringUrl
  * @returns
  */
-export const rewriteIpfsUrl = (stringUrl: string) => {
-  try {
-    const url: URL = new URL(stringUrl)
-    // Handling IPFS addresses
-    // TODO: add detection when IPFS is supported!
-    if (url.protocol === 'ipfs:') {
-      const path = `/ipfs${url.pathname}`
-      url.protocol = 'https:'
-      url.hostname = 'cloudflare-ipfs.com'
-      url.pathname = path
-    }
-    return url.toString()
-  } catch (error) {
-    console.error(`Error handling ${stringUrl}`)
-    return stringUrl
+export function rewriteIpfsUrl(url: string) {
+  const prefix = 'ipfs://'
+  if (!url.startsWith(prefix)) {
+    // Not an IPFS URL, return as-is
+    return url
   }
+  // Strip the ipfs:// scheme and prepend the gateway
+  const path = url.slice(prefix.length)
+  return `https://ipfs.io/ipfs/${path}`
 }
 
 export const getURL = (url?: string) => {

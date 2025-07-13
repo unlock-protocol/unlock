@@ -194,14 +194,14 @@ export class PaymentProcessor {
     ]
 
     // retrieve lock currency
-    const { creditCardCurrency = 'usd' } = await getSettings({
+    const { creditCardCurrency = 'usd', creditCardPrice } = await getSettings({
       lockAddress: lock,
       network,
     })
 
     const paymentIntentParams: any = {
       amount: Math.ceil(pricing.total * 100),
-      currency: creditCardCurrency,
+      currency: creditCardPrice ? creditCardCurrency : 'usd', // Defaults to USD if no credit card price is set
       customer: connectedCustomer.id,
       payment_method: method.id,
       capture_method: 'manual', // We need to confirm on front-end but will capture payment back on backend.
