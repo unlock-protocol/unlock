@@ -2,18 +2,16 @@ import React from 'react'
 import { Metadata } from 'next'
 import { fetchMetadata } from 'frames.js/next'
 import { CheckoutPage as CheckoutPageComponent } from '~/components/interface/checkout'
-import { getConfig } from '../frames/checkout/components/utils'
+import { getConfig } from '../../frames/checkout/components/utils'
 import { config as appConfig } from '~/config/app'
-import { redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
 
 type Props = {
-  searchParams: { id: string }
+  params: { id: string }
 }
 
-export async function generateMetadata({
-  searchParams,
-}: Props): Promise<Metadata> {
-  const id = searchParams?.id?.trim()
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const id = params?.id?.trim()
 
   // Default metadata without frame data
   const baseMetadata: Metadata = {
@@ -55,12 +53,14 @@ export async function generateMetadata({
   }
 }
 
-const CheckoutPage: React.FC<Props> = ({ searchParams }) => {
-  const id = searchParams?.id?.trim()
+const CheckoutPage: React.FC<Props> = ({ params }) => {
+  const { id } = params
 
-  // If there's an ID in the query string, redirect to the new URL format
-  if (id && id.length > 0) {
-    redirect(`/checkout/${id}`)
+  // Validate the ID format (basic UUID validation)
+  const uuidRegex =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+  if (!uuidRegex.test(id)) {
+    notFound()
   }
 
   return <CheckoutPageComponent />

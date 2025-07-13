@@ -1,6 +1,6 @@
 'use client'
 
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, useParams } from 'next/navigation'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { getPaywallConfigFromQuery } from '~/utils/paywallConfig'
 import getOauthConfigFromQuery from '~/utils/oauth'
@@ -16,11 +16,16 @@ import { isInIframe } from '~/utils/iframe'
 
 export function CheckoutContainer() {
   const searchParams = useSearchParams()
+  const params = useParams()
+
+  // Get checkout ID from either path params or query string
+  const checkoutId =
+    params?.id?.toString() || searchParams.get('id')?.toString()
 
   // Fetch config from parent in iframe context
   const communication = useCheckoutCommunication()
   const { isLoading, data: checkout } = useCheckoutConfig({
-    id: searchParams.get('id')?.toString(),
+    id: checkoutId,
   })
 
   const referrerAddress = searchParams.get('referrerAddress')?.toString()
