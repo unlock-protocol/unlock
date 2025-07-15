@@ -8,16 +8,16 @@
     "@babel/core": "7.27.1",
     "@babel/node": "7.27.1",
     "@babel/preset-env": "7.27.1",
-    "@typescript-eslint/parser": "8.31.1",
+    "@typescript-eslint/parser": "8.35.1",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "babel-loader": "10.0.0",
     "babel-plugin-wildcard": "7.0.0",
-    "dotenv": "16.5.0",
-    "eslint": "9.25.1",
+    "dotenv": "16.6.1",
+    "eslint": "9.30.0",
     "handlebars": "4.7.8",
     "netlify-cli": "15.11.0",
     "nodemailer": "6.10.1",
-    "prettier": "3.5.3",
+    "prettier": "3.6.2",
     "typescript": "5.8.3",
     "winston": "3.17.0"
   },
@@ -34,6 +34,6 @@
   "devDependencies": {
     "@babel/plugin-transform-runtime": "7.27.1",
     "regenerator-runtime": "0.14.1",
-    "vitest": "3.1.4"
+    "vitest": "3.2.4"
   }
 }
