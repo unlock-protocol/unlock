@@ -551,7 +551,7 @@ export function Metadata({ checkoutService }: Props) {
             })}
 
             {/* Terms of Service */}
-            <div className="mt-0 mb-2">
+            <div className="mt-2 mb-2">
               <Controller
                 name="termsAccepted"
                 control={control}
@@ -563,6 +563,7 @@ export function Metadata({ checkoutService }: Props) {
                   <div className="flex items-start">
                     <div className="flex-shrink-0">
                       <Checkbox
+                        fieldSize="medium"
                         ref={ref}
                         id="termsAccepted"
                         checked={value}
@@ -570,7 +571,7 @@ export function Metadata({ checkoutService }: Props) {
                         label=""
                       />
                     </div>
-                    <div className="text-base">
+                    <div className="text-sm">
                       <label htmlFor="termsAccepted" className="cursor-pointer">
                         I agree to the{' '}
                         <Link
@@ -580,6 +581,7 @@ export function Metadata({ checkoutService }: Props) {
                         >
                           terms of service
                         </Link>
+                        .
                       </label>
                     </div>
                   </div>

@@ -29,7 +29,10 @@ export default async function preparePurchase(options, provider) {
     totalPrice,
     erc20Address,
     totalAmountToApprove,
-  } = await getPurchaseKeysArguments.bind(this)(options)
+  } = await getPurchaseKeysArguments.bind(this)({
+    ...options,
+    provider,
+  })
 
   const txs = []
   // If the lock is priced in ERC20, we need to approve the transfer
