@@ -34,7 +34,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
 
     return (
       <FieldLayout size={fieldSize} description={description} error={error}>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <input ref={ref} type="checkbox" className={inputClass} {...rest} />
           <label className={labelSizeStyle} htmlFor={label}>
             {label}

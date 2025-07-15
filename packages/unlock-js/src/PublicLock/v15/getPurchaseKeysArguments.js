@@ -16,6 +16,7 @@ export default async function getPurchaseKeysArguments({
   decimals,
   totalApproval, // explicit approval amount
   data: _data,
+  provider,
 }) {
   // If erc20Address was not provided, get it
   if (!erc20Address) {
@@ -66,7 +67,12 @@ export default async function getPurchaseKeysArguments({
           return await lockContract.keyPrice()
         }
       }
-      return formatKeyPrice(keyPrice, erc20Address, decimals, this.provider)
+      return formatKeyPrice(
+        keyPrice,
+        erc20Address,
+        decimals,
+        this.provider || provider
+      )
     })
   )
   const keyManagers = (_keyManagers || defaultArray).map((km) => km || ZERO)

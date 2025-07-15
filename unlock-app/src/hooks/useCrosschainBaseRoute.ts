@@ -81,7 +81,6 @@ export const useBaseRoute = ({
         srcChainId: 8453,
         sharedParams: sharedParams!,
       })
-
       return route
     },
     enabled: !!purchaseData && !isPurchaseDataLoading,
