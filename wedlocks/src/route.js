@@ -81,31 +81,24 @@ export const route = async (args, config) => {
     attachments,
   } = args
   // process parameters
-  const processedParams = processParams(params)
+  const [template, templateParams] = await getTemplateAndParams(args)
 
-  // Validate template exists
-  templateRenderer.validateTemplateExists(templateName)
-
-  // Render email content
-  const subject = templateRenderer.renderSubject(templateName, processedParams)
-  const html = templateRenderer.renderHtml(templateName, processedParams)
-  const text = templateRenderer.renderText(templateName, processedParams)
-
-  // Prepare email data
-  const email = {
-    from: {
-      name: emailSender || 'Unlock Labs',
-      email: 'hello@unlock-protocol.com',
-    },
-    to: { email: recipient },
-    replyTo: replyTo ? { email: replyTo } : undefined,
-    subject,
-    html,
-    text,
-    attachments: []
-      .concat(attachments || [], templates[templateName]?.attachments || [])
-      .filter(Boolean),
-  }
+  const email = await buildEmail(template, templateParams, args)
+  // // Prepare email data
+  // const email = {
+  //   from: {
+  //     name: emailSender || 'Unlock Labs',
+  //     email: 'hello@unlock-protocol.com',
+  //   },
+  //   to: { email: recipient },
+  //   replyTo: replyTo ? { email: replyTo } : undefined,
+  //   subject,
+  //   html,
+  //   text,
+  //   attachments: []
+  //     .concat(attachments || [], templates[templateName]?.attachments || [])
+  //     .filter(Boolean),
+  // }
 
   // Send email
   return emailService.send(config, email)
