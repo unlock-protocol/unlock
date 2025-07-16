@@ -1,6 +1,6 @@
 'use client'
 
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, useParams } from 'next/navigation'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { getPaywallConfigFromQuery } from '~/utils/paywallConfig'
 import getOauthConfigFromQuery from '~/utils/oauth'
@@ -16,12 +16,44 @@ import { isInIframe } from '~/utils/iframe'
 
 export function CheckoutContainer() {
   const searchParams = useSearchParams()
+  const params = useParams()
+
+  // Get checkout ID from either path params or query string
+  const checkoutId =
+    params?.id?.toString() || searchParams.get('id')?.toString()
 
   // Fetch config from parent in iframe context
   const communication = useCheckoutCommunication()
   const { isLoading, data: checkout } = useCheckoutConfig({
-    id: searchParams.get('id')?.toString(),
+    id: checkoutId,
   })
+
+  // Handle missing checkoutId
+  if (!checkoutId) {
+    return (
+      <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] max-h-[42rem]">
+        <div className="flex items-center justify-end mx-4 mt-4">
+          <CloseButton
+            onClick={() => {
+              if (!isInIframe()) {
+                window.history.back()
+              } else {
+                communication.emitCloseModal()
+              }
+            }}
+          />
+        </div>
+        <main className="p-6">
+          <p>
+            No checkout ID was provided. Please check your link or try again.
+          </p>
+        </main>
+        <footer>
+          <PoweredByUnlock />
+        </footer>
+      </div>
+    )
+  }
 
   const referrerAddress = searchParams.get('referrerAddress')?.toString()
   // Get paywallConfig or oauthConfig from the query parameters.
