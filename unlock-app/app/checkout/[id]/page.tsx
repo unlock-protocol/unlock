@@ -1,6 +1,5 @@
 import React from 'react'
 import { Metadata } from 'next'
-import { fetchMetadata } from 'frames.js/next'
 import { CheckoutPage as CheckoutPageComponent } from '~/components/interface/checkout'
 import { getConfig } from '../../frames/checkout/components/utils'
 import { config as appConfig } from '~/config/app'
@@ -37,9 +36,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         images: [`/og/checkout?id=${id}`],
       },
       other: {
-        ...(await fetchMetadata(
-          new URL(`/frames/checkout?id=${id}`, appConfig.unlockApp)
-        )),
+        'fc:frame': 'vNext',
+        'fc:frame:image': `${appConfig.unlockApp}/og/checkout?id=${id}`,
+        'fc:frame:post_url': `${appConfig.unlockApp}/frames/checkout?id=${id}`,
+        // we can add more frame meta tags here if needed
       },
       alternates: {
         canonical: `${appConfig.unlockApp}/checkout/${id}`,
@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
     return metadata
   } catch (error) {
-    console.error('Error generating metadata:', error)
+    console.error(`Error generating metadata for config id '${id}':`, error)
     return baseMetadata
   }
 }
