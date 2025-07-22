@@ -22164,7 +22164,7 @@ __metadata:
   resolution: "@unlock-protocol/types@workspace:packages/types"
   dependencies:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
-    eslint: "npm:9.26.0"
+    eslint: "npm:9.31.0"
     typescript: "npm:5.8.3"
   languageName: unknown
   linkType: soft
