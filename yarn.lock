@@ -4638,10 +4638,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloudflare/workers-types@npm:4.20250507.0":
-  version: 4.20250507.0
-  resolution: "@cloudflare/workers-types@npm:4.20250507.0"
-  checksum: 10/f782bf7e1598d10e3460212193c9cfa01b672337086dbce1079150127c27ed69bba49ddfec2d39c469170a9b7d3fc4a556abcbac7f035b4d74954cb2bb825a7b
+"@cloudflare/workers-types@npm:4.20250722.0":
+  version: 4.20250722.0
+  resolution: "@cloudflare/workers-types@npm:4.20250722.0"
+  checksum: 10/158b8c599073845cbd90950968023b133edd75f28a2eb04836e86dd957c452d7ebe84f5194d675f4b6297171ccf58509fd53d42778a52d9c4d5f0cf454e67bb0
   languageName: node
   linkType: hard
 
@@ -14253,13 +14253,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pkgr/core@npm:^0.2.3":
-  version: 0.2.4
-  resolution: "@pkgr/core@npm:0.2.4"
-  checksum: 10/8544f0346c3f7035b9e2fdf60179c68b12d3c76b3fba9533844099af67cf5c0ce5257538f5faa05953d48cc1536d046f003231f321b2f75b3fb449db8410a2b7
-  languageName: node
-  linkType: hard
-
 "@pkgr/core@npm:^0.2.4":
   version: 0.2.7
   resolution: "@pkgr/core@npm:0.2.7"
@@ -22062,7 +22055,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/provider@workspace:provider"
   dependencies:
-    "@cloudflare/workers-types": "npm:4.20250507.0"
+    "@cloudflare/workers-types": "npm:4.20250722.0"
     "@types/node": "npm:22.15.34"
     "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
@@ -30661,13 +30654,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:16.5.0":
-  version: 16.5.0
-  resolution: "dotenv@npm:16.5.0"
-  checksum: 10/e68a16834f1a41cc2dfb01563bc150668ad675e6cd09191211467b5c0806b6ecd6ec438e021aa8e01cd0e72d2b70ef4302bec7cc0fe15b6955f85230b62dc8a9
-  languageName: node
-  linkType: hard
-
 "dotenv@npm:16.6.1":
   version: 16.6.1
   resolution: "dotenv@npm:16.6.1"
@@ -31882,26 +31868,6 @@ __metadata:
   peerDependencies:
     eslint: ">=7.0.0"
   checksum: 10/cc2e9cc8efda173967fb31a27b5ebbab989a20a06fd310bb88e4ddf4299c1445365b48c74eadf37eacffb1b16386e5a866ed098a2c242ad61763aea17f324c83
-  languageName: node
-  linkType: hard
-
-"eslint-plugin-prettier@npm:5.2.6":
-  version: 5.2.6
-  resolution: "eslint-plugin-prettier@npm:5.2.6"
-  dependencies:
-    prettier-linter-helpers: "npm:^1.0.0"
-    synckit: "npm:^0.11.0"
-  peerDependencies:
-    "@types/eslint": ">=8.0.0"
-    eslint: ">=8.0.0"
-    eslint-config-prettier: ">= 7.0.0 <10.0.0 || >=10.1.0"
-    prettier: ">=3.0.0"
-  peerDependenciesMeta:
-    "@types/eslint":
-      optional: true
-    eslint-config-prettier:
-      optional: true
-  checksum: 10/8f82a3c6bbf2db358476e745501349c8f3d5f0976f15c4af2a07dd62bb70291d29500ad09a354bb33e645c98a378d35544a92e9758aeb65530b1ec6e2dc8b8f9
   languageName: node
   linkType: hard
 
@@ -35306,7 +35272,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "graph-service@workspace:graph-service"
   dependencies:
-    "@cloudflare/workers-types": "npm:4.20250507.0"
+    "@cloudflare/workers-types": "npm:4.20250722.0"
     "@sentry/node": "npm:9.15.0"
     vitest: "npm:3.1.4"
     wrangler: "npm:4.22.0"
@@ -53387,16 +53353,6 @@ __metadata:
   dependencies:
     get-port: "npm:^3.1.0"
   checksum: 10/13c05461a32f06f9f41993374b3b9e3145105baede4097bd385e57d841ac0b47dad51737a919c1592df5b04aabdfee03f1d28562c37d5a76ef704069db1b4522
-  languageName: node
-  linkType: hard
-
-"synckit@npm:^0.11.0":
-  version: 0.11.4
-  resolution: "synckit@npm:0.11.4"
-  dependencies:
-    "@pkgr/core": "npm:^0.2.3"
-    tslib: "npm:^2.8.1"
-  checksum: 10/37c9fc5af9f06379d263c514e477000074d8af9ef9d3a63354b31dcce39bbf778a67accc2c66c52a13d6fd3871a7fbd36120f713a59edb6fa16358616f3a260f
   languageName: node
   linkType: hard
 
