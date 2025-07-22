@@ -9,7 +9,7 @@
   "dependencies": {
     "@headlessui/react": "2.2.4",
     "@openzeppelin/merkle-tree": "1.0.8",
-    "@privy-io/react-auth": "2.12.0",
+    "@privy-io/react-auth": "2.19.2",
     "@sentry/nextjs": "9.15.0",
     "@tanstack/react-query": "5.83.0",
     "@tw-classed/react": "1.8.0",
