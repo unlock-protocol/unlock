@@ -16,7 +16,7 @@
     "eslint": "9.30.0",
     "handlebars": "4.7.8",
     "netlify-cli": "15.11.0",
-    "nodemailer": "6.10.1",
+    "nodemailer": "7.0.5",
     "prettier": "3.6.2",
     "typescript": "5.8.3",
     "winston": "3.17.0"
