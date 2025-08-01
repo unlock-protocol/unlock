@@ -16,7 +16,7 @@
     "@mui/material": "6.4.12",
     "@mui/x-charts": "7.29.1",
     "@privy-io/react-auth": "2.12.0",
-    "@tanstack/react-query": "5.83.0",
+    "@tanstack/react-query": "5.84.0",
     "@unlock-protocol/contracts": "workspace:*",
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "@unlock-protocol/ui": "workspace:./packages/ui",

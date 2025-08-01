@@ -19335,6 +19335,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/query-core@npm:5.83.1":
+  version: 5.83.1
+  resolution: "@tanstack/query-core@npm:5.83.1"
+  checksum: 10/531650bafd70e2b5219ec79dd487461414e4ed8040067d8e3206d237ee39dd0b34a2573d20f751dfd1413b3d8df0b023fe22469c98765e3c8fab8391acf2f3c8
+  languageName: node
+  linkType: hard
+
 "@tanstack/react-query@npm:5.59.19":
   version: 5.59.19
   resolution: "@tanstack/react-query@npm:5.59.19"
@@ -19354,6 +19361,17 @@ __metadata:
   peerDependencies:
     react: ^18 || ^19
   checksum: 10/59609393109af3a50fbf5bc84491220b7e171b7e7f67cfc5792dd0c649b26606baf1663c045b531982e4aea7d96214fd6cdcb7d1cf5e14b4846073b46dcd3ac4
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:5.84.0":
+  version: 5.84.0
+  resolution: "@tanstack/react-query@npm:5.84.0"
+  dependencies:
+    "@tanstack/query-core": "npm:5.83.1"
+  peerDependencies:
+    react: ^18 || ^19
+  checksum: 10/f035a575a60f2a0dd7c5aec55ab334f24034c44bd75dbe6e43d163fcd6913bb060277dca2b54079c6fac2ead9462e0c4c9ce09dbcf240ed9f76f55c9fca36d50
   languageName: node
   linkType: hard
 
@@ -21667,7 +21685,7 @@ __metadata:
     "@openzeppelin/merkle-tree": "npm:1.0.8"
     "@privy-io/react-auth": "npm:2.12.0"
     "@sentry/nextjs": "npm:9.15.0"
-    "@tanstack/react-query": "npm:5.83.0"
+    "@tanstack/react-query": "npm:5.84.0"
     "@tw-classed/react": "npm:1.8.0"
     "@types/react": "npm:18.3.23"
     "@unlock-protocol/contracts": "workspace:*"
@@ -21776,7 +21794,7 @@ __metadata:
     "@mui/material": "npm:6.4.12"
     "@mui/x-charts": "npm:7.29.1"
     "@privy-io/react-auth": "npm:2.12.0"
-    "@tanstack/react-query": "npm:5.83.0"
+    "@tanstack/react-query": "npm:5.84.0"
     "@unlock-protocol/contracts": "workspace:*"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/ui": "workspace:./packages/ui"
@@ -22360,7 +22378,7 @@ __metadata:
     "@headlessui/react": "npm:2.2.4"
     "@observablehq/plot": "npm:0.6.17"
     "@radix-ui/react-avatar": "npm:1.1.10"
-    "@tanstack/react-query": "npm:5.83.0"
+    "@tanstack/react-query": "npm:5.84.0"
     "@testing-library/react": "npm:16.3.0"
     "@types/node": "npm:22.15.34"
     "@types/react": "npm:18.3.23"
