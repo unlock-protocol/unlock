@@ -19,7 +19,7 @@
     "@stripe/react-stripe-js": "3.0.0",
     "@stripe/stripe-js": "7.0.0",
     "@tanstack/react-query": "5.59.19",
-    "@testing-library/dom": "10.4.0",
+    "@testing-library/dom": "10.4.1",
     "@tw-classed/react": "1.7.0",
     "@unlock-protocol/core": "workspace:./packages/core",
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon",
