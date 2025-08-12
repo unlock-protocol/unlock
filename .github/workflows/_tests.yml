@@ -42,7 +42,7 @@ jobs:
       matrix:
         target: ${{fromJson( inputs.changed )}}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Running ${{ matrix.target }} tests
         run: ./scripts/tests.sh ${{ matrix.target }}
         shell: bash
@@ -54,7 +54,7 @@ jobs:
   #     DOCKER_BUILDKIT: 1
   #     BUILDKIT_PROGRESS: plain
   #   steps:
-  #     - uses: actions/checkout@v4
+  #     - uses: actions/checkout@v5
   #     - uses: actions/setup-node@v4
   #       with:
   #         node-version: 20
