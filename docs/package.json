@@ -13,7 +13,7 @@
     "@emotion/styled": "11.14.1",
     "@flockler/react-flockler-embed": "1.0.4",
     "@mdx-js/react": "3.1.0",
-    "@mui/material": "6.4.12",
+    "@mui/material": "6.5.0",
     "@mui/x-charts": "7.29.1",
     "@privy-io/react-auth": "2.12.0",
     "@tanstack/react-query": "5.84.0",
