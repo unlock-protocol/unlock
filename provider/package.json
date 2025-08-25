@@ -2,7 +2,7 @@
   "name": "@unlock-protocol/provider",
   "devDependencies": {
     "@cloudflare/workers-types": "4.20250801.0",
-    "@types/node": "22.15.34",
+    "@types/node": "22.18.0",
     "@unlock-protocol/contracts": "workspace:^",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/networks": "workspace:^",
