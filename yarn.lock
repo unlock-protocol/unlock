@@ -16401,19 +16401,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/api-kit@npm:3.0.1":
-  version: 3.0.1
-  resolution: "@safe-global/api-kit@npm:3.0.1"
+"@safe-global/api-kit@npm:3.0.2":
+  version: 3.0.2
+  resolution: "@safe-global/api-kit@npm:3.0.2"
   dependencies:
-    "@safe-global/protocol-kit": "npm:^6.0.1"
-    "@safe-global/types-kit": "npm:^2.0.0"
+    "@safe-global/protocol-kit": "npm:^6.0.5"
+    "@safe-global/types-kit": "npm:^2.0.1"
     node-fetch: "npm:^2.7.0"
     viem: "npm:^2.21.8"
-  checksum: 10/8eb9725596941cd1d04765814f9bf29b7d8a7893fce45d6f9d77ede75a098f6acb79f9b1d2ab666a4283f1ff0733d4c8c6569b489bdafdc314033ceeadcd6737
+  checksum: 10/fdf722fec2b47bdd16af0c73478432679cfe7505598a67afe0ba435974273101ce922dd7a7e6706e64d09cb717175bd015456db8e1a91e42e35ce193fa7bd3cb
   languageName: node
   linkType: hard
 
-"@safe-global/protocol-kit@npm:6.1.0":
+"@safe-global/protocol-kit@npm:6.1.0, @safe-global/protocol-kit@npm:^6.0.5":
   version: 6.1.0
   resolution: "@safe-global/protocol-kit@npm:6.1.0"
   dependencies:
@@ -16434,36 +16434,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/protocol-kit@npm:^6.0.1":
-  version: 6.0.3
-  resolution: "@safe-global/protocol-kit@npm:6.0.3"
-  dependencies:
-    "@noble/curves": "npm:^1.6.0"
-    "@peculiar/asn1-schema": "npm:^2.3.13"
-    "@safe-global/safe-deployments": "npm:^1.37.32"
-    "@safe-global/safe-modules-deployments": "npm:^2.2.7"
-    "@safe-global/types-kit": "npm:^2.0.1"
-    abitype: "npm:^1.0.2"
-    semver: "npm:^7.7.1"
-    viem: "npm:^2.21.8"
-  dependenciesMeta:
-    "@noble/curves":
-      optional: true
-    "@peculiar/asn1-schema":
-      optional: true
-  checksum: 10/60eb2301b47e07cc1c6ec1664d6f1697ba02a4b2812ee63c3819312b34e6281e9549b37914c9fd58a1641bfb819a109223ac0c802dfe3862e6ec1e6dfb10fa42
-  languageName: node
-  linkType: hard
-
-"@safe-global/safe-deployments@npm:^1.37.32":
-  version: 1.37.32
-  resolution: "@safe-global/safe-deployments@npm:1.37.32"
-  dependencies:
-    semver: "npm:^7.6.2"
-  checksum: 10/95dcf1b4a8e44783979c621bb4aa0f1718be2fca0d35868065dc4baf76e891a8f26c037b4302f5ba537e07b959125c4f66a302ee1ff8170b0310c28f4e5edab5
-  languageName: node
-  linkType: hard
-
 "@safe-global/safe-deployments@npm:^1.37.35":
   version: 1.37.36
   resolution: "@safe-global/safe-deployments@npm:1.37.36"
@@ -16480,14 +16450,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/safe-modules-deployments@npm:^2.2.7":
-  version: 2.2.8
-  resolution: "@safe-global/safe-modules-deployments@npm:2.2.8"
-  checksum: 10/7d2f0cffcbfc827e435c7f2510d373109c6f4a74b85119246d49ccc80d183fc71cde5a4b77aa710081da27efc81366dd28cf53e9fcbb9583d4dd3ac567f9ddf6
-  languageName: node
-  linkType: hard
-
-"@safe-global/types-kit@npm:^2.0.0, @safe-global/types-kit@npm:^2.0.1":
+"@safe-global/types-kit@npm:^2.0.1":
   version: 2.0.1
   resolution: "@safe-global/types-kit@npm:2.0.1"
   dependencies:
@@ -19501,13 +19464,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:5.83.0":
-  version: 5.83.0
-  resolution: "@tanstack/query-core@npm:5.83.0"
-  checksum: 10/68d76438ad8b95dce07c848a29bac01144bddbad0a6a860569eae909ecf6ea0dda378b3c5f55c45a415a34af79c90917bb5055912d315307416ef2a28b449699
-  languageName: node
-  linkType: hard
-
 "@tanstack/query-core@npm:5.83.1":
   version: 5.83.1
   resolution: "@tanstack/query-core@npm:5.83.1"
@@ -19523,17 +19479,6 @@ __metadata:
   peerDependencies:
     react: ^18 || ^19
   checksum: 10/def87fc10646c79a355a05f9a76faa0b4ca511073cd80ebe2a701d05f43969c41498e42bd5228c3c6047d5af3e5805ced5a72a890504f776b861eaf4d17eea0d
-  languageName: node
-  linkType: hard
-
-"@tanstack/react-query@npm:5.83.0":
-  version: 5.83.0
-  resolution: "@tanstack/react-query@npm:5.83.0"
-  dependencies:
-    "@tanstack/query-core": "npm:5.83.0"
-  peerDependencies:
-    react: ^18 || ^19
-  checksum: 10/59609393109af3a50fbf5bc84491220b7e171b7e7f67cfc5792dd0c649b26606baf1663c045b531982e4aea7d96214fd6cdcb7d1cf5e14b4846073b46dcd3ac4
   languageName: node
   linkType: hard
 
@@ -21905,7 +21850,7 @@ __metadata:
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@openzeppelin/hardhat-upgrades": "npm:3.9.0"
     "@openzeppelin/upgrades-core": "npm:1.44.1"
-    "@safe-global/api-kit": "npm:3.0.1"
+    "@safe-global/api-kit": "npm:3.0.2"
     "@safe-global/protocol-kit": "npm:6.1.0"
     "@tenderly/hardhat-tenderly": "npm:2.5.2"
     "@uniswap/sdk-core": "npm:7.7.2"
