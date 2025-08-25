@@ -19998,12 +19998,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/connect-timeout@npm:0.0.39":
-  version: 0.0.39
-  resolution: "@types/connect-timeout@npm:0.0.39"
+"@types/connect-timeout@npm:1.9.0":
+  version: 1.9.0
+  resolution: "@types/connect-timeout@npm:1.9.0"
   dependencies:
     "@types/express": "npm:*"
-  checksum: 10/5e74a437fb3b3a5fbdfbe1693218a663291c60b976ab2b8c29538f37a879bf81780b2868b88195166f2ea713d10b16c4da7da40dca24f16af7d20ca682b96fa9
+  checksum: 10/6337f3a87c79adf56bfe517fed33f8806704b85071212864202266b86a206338cc8a4af5e75119a0f06a04d944a5623fb457a8c9d06b910f9a813fff75592855
   languageName: node
   linkType: hard
 
@@ -21939,7 +21939,7 @@ __metadata:
     "@sentry/node": "npm:9.3.0"
     "@sentry/tracing": "npm:7.114.0"
     "@types/archiver": "npm:6.0.3"
-    "@types/connect-timeout": "npm:0.0.39"
+    "@types/connect-timeout": "npm:1.9.0"
     "@types/cookie-parser": "npm:1.4.9"
     "@types/cors": "npm:2.8.19"
     "@types/geoip-country": "npm:4.0.2"
@@ -21962,7 +21962,7 @@ __metadata:
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
     archiver: "npm:7.0.1"
     color-scheme: "npm:1.0.1"
-    connect-timeout: "npm:1.9.0"
+    connect-timeout: "npm:1.9.1"
     cookie-parser: "npm:1.4.7"
     cors: "npm:2.8.5"
     dayjs: "npm:1.11.13"
@@ -28211,15 +28211,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"connect-timeout@npm:1.9.0":
-  version: 1.9.0
-  resolution: "connect-timeout@npm:1.9.0"
+"connect-timeout@npm:1.9.1":
+  version: 1.9.1
+  resolution: "connect-timeout@npm:1.9.1"
   dependencies:
     http-errors: "npm:~1.6.1"
     ms: "npm:2.0.0"
     on-finished: "npm:~2.3.0"
-    on-headers: "npm:~1.0.1"
-  checksum: 10/e5c15ed3d03c7b431142b0f65af5291e288a871dd0c66dd95f5b1ecee7838457368d2f853c3563cef84eb26ce48838fa74816e37bfaaa528f09c65ca8f864094
+    on-headers: "npm:~1.1.0"
+  checksum: 10/6b47dd331c55bc184dcf281176df224bd23e24c43639182ae83a8448638a3510cdf4449ee9ab2bd90976eee08976a291fa7667ca4a6d629c561de6886fe9237e
   languageName: node
   linkType: hard
 
@@ -44698,10 +44698,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"on-headers@npm:^1.0.0, on-headers@npm:~1.0.1, on-headers@npm:~1.0.2":
+"on-headers@npm:^1.0.0, on-headers@npm:~1.0.2":
   version: 1.0.2
   resolution: "on-headers@npm:1.0.2"
   checksum: 10/870766c16345855e2012e9422ba1ab110c7e44ad5891a67790f84610bd70a72b67fdd71baf497295f1d1bf38dd4c92248f825d48729c53c0eae5262fb69fa171
+  languageName: node
+  linkType: hard
+
+"on-headers@npm:~1.1.0":
+  version: 1.1.0
+  resolution: "on-headers@npm:1.1.0"
+  checksum: 10/98aa64629f986fb8cc4517dd8bede73c980e31208cba97f4442c330959f60ced3dc6214b83420491f5111fc7c4f4343abe2ea62c85f505cf041d67850f238776
   languageName: node
   linkType: hard
 
