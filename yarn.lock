@@ -20611,12 +20611,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:22.15.34":
-  version: 22.15.34
-  resolution: "@types/node@npm:22.15.34"
+"@types/node@npm:22.18.0":
+  version: 22.18.0
+  resolution: "@types/node@npm:22.18.0"
   dependencies:
     undici-types: "npm:~6.21.0"
-  checksum: 10/b0fb6674f6c17e3d515531d7f787ccd6676641ba161a6a0e6a93a2d5bc2089fde492eac24b5152a11413bf07a818055a9ec9077d3200b03cf7ea9718470a8417
+  checksum: 10/c4e4cdac52aae71e120fb4a02a08f774366e8bd6654de9376fb1113fb66cfa2706176b72f188069cdecdb40e5cdde2befa031dc720a0cc0b1e349af9e38492ad
   languageName: node
   linkType: hard
 
@@ -22075,7 +22075,7 @@ __metadata:
   resolution: "@unlock-protocol/provider@workspace:provider"
   dependencies:
     "@cloudflare/workers-types": "npm:4.20250801.0"
-    "@types/node": "npm:22.15.34"
+    "@types/node": "npm:22.18.0"
     "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:^"
@@ -22356,7 +22356,7 @@ __metadata:
     "@radix-ui/react-avatar": "npm:1.1.10"
     "@tanstack/react-query": "npm:5.84.0"
     "@testing-library/react": "npm:16.3.0"
-    "@types/node": "npm:22.15.34"
+    "@types/node": "npm:22.18.0"
     "@types/react": "npm:18.3.23"
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
