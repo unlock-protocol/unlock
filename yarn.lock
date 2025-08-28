@@ -6847,7 +6847,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/config-helpers@npm:^0.2.0, @eslint/config-helpers@npm:^0.2.1":
+"@eslint/config-helpers@npm:^0.2.1":
   version: 0.2.1
   resolution: "@eslint/config-helpers@npm:0.2.1"
   checksum: 10/7627d01a654c61a71387edd235e663fea50a23f0f521a174b77d94e3d1f6834a5da9205a101ffbe4ee5cf6fab1f384693c7b47080f059debdf338dd9b590aadf
@@ -6934,13 +6934,6 @@ __metadata:
   version: 9.22.0
   resolution: "@eslint/js@npm:9.22.0"
   checksum: 10/2d7725f29ee4a7c85f5b5c499945d60f7701877b41b580d3f7badef43901ac98e4f8f76e4cfaef9ba116966c5f7b67132161e31e02f2eeccb0d09b548f6ea1b2
-  languageName: node
-  linkType: hard
-
-"@eslint/js@npm:9.23.0":
-  version: 9.23.0
-  resolution: "@eslint/js@npm:9.23.0"
-  checksum: 10/d1d38fa2c4234f6ebed8e202530c9dccf565c47283f4e3c53955a47fed2bf8c59988f535672a32b53c14fed72e456c1c5cb050cd98a45474086b9693cbfa97d6
   languageName: node
   linkType: hard
 
@@ -11734,20 +11727,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomicfoundation/hardhat-chai-matchers@npm:2.0.8":
-  version: 2.0.8
-  resolution: "@nomicfoundation/hardhat-chai-matchers@npm:2.0.8"
+"@nomicfoundation/hardhat-chai-matchers@npm:2.1.0":
+  version: 2.1.0
+  resolution: "@nomicfoundation/hardhat-chai-matchers@npm:2.1.0"
   dependencies:
     "@types/chai-as-promised": "npm:^7.1.3"
     chai-as-promised: "npm:^7.1.1"
     deep-eql: "npm:^4.0.1"
     ordinal: "npm:^1.0.3"
   peerDependencies:
-    "@nomicfoundation/hardhat-ethers": ^3.0.0
+    "@nomicfoundation/hardhat-ethers": ^3.1.0
     chai: ^4.2.0
-    ethers: ^6.1.0
-    hardhat: ^2.9.4
-  checksum: 10/1e40d2ae1627d9c62c90e85f60d38a24768198b3f525659f958c44d395d751876be13198e20ffd2b3336b8650225652610f0c36f0e376c8ee6b0854bcd0f6bb0
+    ethers: ^6.14.0
+    hardhat: ^2.26.0
+  checksum: 10/5c4235c3cd89b7cfa15643a6ae2053f765d4df8a5188da46251da8dd42bc7775dae2dbc221efacaf75b5840779bb86f82af98a5589fefafd9215ddd474adc260
   languageName: node
   linkType: hard
 
@@ -11774,6 +11767,19 @@ __metadata:
     ethers: ^6.1.0
     hardhat: ^2.0.0
   checksum: 10/5fe3d1bbf598ad232040ed3df8990c325098ade46bc00e389b9f1c51e0eafad6bab66f373e9814cdbeaede62c43182956def68e71e40142b5651d88402c4f294
+  languageName: node
+  linkType: hard
+
+"@nomicfoundation/hardhat-ethers@npm:3.1.0":
+  version: 3.1.0
+  resolution: "@nomicfoundation/hardhat-ethers@npm:3.1.0"
+  dependencies:
+    debug: "npm:^4.1.1"
+    lodash.isequal: "npm:^4.5.0"
+  peerDependencies:
+    ethers: ^6.14.0
+    hardhat: ^2.26.0
+  checksum: 10/f5eff398b94b89d1f12b5294a9dbf261f6f0b51815abcae921e37ec76d513d988da709cc2f839fcae2f404da4c476cfdc70c92dea19417db6a81b753de4f8acf
   languageName: node
   linkType: hard
 
@@ -20538,15 +20544,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:22.13.15":
-  version: 22.13.15
-  resolution: "@types/node@npm:22.13.15"
-  dependencies:
-    undici-types: "npm:~6.20.0"
-  checksum: 10/4d120b0f98d9cc9f941a408b84a261cf90ab074dabdfd41bcd900f883109599a45928c92df1c3a25601ae7e108a985b3bb4adfdf4d527840de42d23d0f04f920
-  languageName: node
-  linkType: hard
-
 "@types/node@npm:22.18.0":
   version: 22.18.0
   resolution: "@types/node@npm:22.18.0"
@@ -21829,8 +21826,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/hardhat-plugin@workspace:packages/hardhat-plugin"
   dependencies:
-    "@nomicfoundation/hardhat-chai-matchers": "npm:2.0.8"
-    "@nomicfoundation/hardhat-ethers": "npm:3.0.8"
+    "@nomicfoundation/hardhat-chai-matchers": "npm:2.1.0"
+    "@nomicfoundation/hardhat-ethers": "npm:3.1.0"
     "@nomicfoundation/hardhat-ignition": "npm:0.15.11"
     "@nomicfoundation/hardhat-ignition-ethers": "npm:0.15.11"
     "@nomicfoundation/hardhat-toolbox": "npm:5.0.0"
@@ -21838,22 +21835,22 @@ __metadata:
     "@typechain/ethers-v6": "npm:0.5.1"
     "@typechain/hardhat": "npm:9.1.0"
     "@types/mocha": "npm:10.0.10"
-    "@types/node": "npm:22.13.15"
+    "@types/node": "npm:22.18.0"
     "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/eslint-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
-    eslint: "npm:9.23.0"
-    ethers: "npm:6.13.5"
-    hardhat: "npm:2.22.19"
-    hardhat-gas-reporter: "npm:2.2.3"
-    mocha: "npm:11.1.0"
-    prettier: "npm:3.5.3"
+    eslint: "npm:9.34.0"
+    ethers: "npm:6.15.0"
+    hardhat: "npm:2.26.3"
+    hardhat-gas-reporter: "npm:2.3.0"
+    mocha: "npm:11.7.1"
+    prettier: "npm:3.6.2"
     solidity-coverage: "npm:0.8.16"
     ts-mocha: "npm:11.1.0"
     ts-node: "npm:10.9.2"
     typechain: "npm:8.3.2"
-    typescript: "npm:5.8.3"
+    typescript: "npm:5.9.2"
   peerDependencies:
     "@unlock-protocol/contracts": "*"
     "@unlock-protocol/networks": "*"
@@ -27268,7 +27265,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chokidar@npm:^4.0.0, chokidar@npm:^4.0.3":
+"chokidar@npm:^4.0.0, chokidar@npm:^4.0.1, chokidar@npm:^4.0.3":
   version: 4.0.3
   resolution: "chokidar@npm:4.0.3"
   dependencies:
@@ -30223,6 +30220,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"diff@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "diff@npm:7.0.0"
+  checksum: 10/e9b8e48d054c9c0c093c65ce8e2637af94b35f2427001607b14e5e0589e534ea3413a7f91ebe6d7c5a1494ace49cb7c7c3972f442ddd96a4767ff091999a082e
+  languageName: node
+  linkType: hard
+
 "diffie-hellman@npm:^5.0.3":
   version: 5.0.3
   resolution: "diffie-hellman@npm:5.0.3"
@@ -32072,56 +32076,6 @@ __metadata:
   bin:
     eslint: bin/eslint.js
   checksum: 10/0a21a46fb4a4d83840d60d7a3689bc1b2f6b3594a92d8fcb08b8d8f8d14be1098fa71d41b3863590af5a74fee847afa0a98d002dbbbe867cdb3b3eced3d7765e
-  languageName: node
-  linkType: hard
-
-"eslint@npm:9.23.0":
-  version: 9.23.0
-  resolution: "eslint@npm:9.23.0"
-  dependencies:
-    "@eslint-community/eslint-utils": "npm:^4.2.0"
-    "@eslint-community/regexpp": "npm:^4.12.1"
-    "@eslint/config-array": "npm:^0.19.2"
-    "@eslint/config-helpers": "npm:^0.2.0"
-    "@eslint/core": "npm:^0.12.0"
-    "@eslint/eslintrc": "npm:^3.3.1"
-    "@eslint/js": "npm:9.23.0"
-    "@eslint/plugin-kit": "npm:^0.2.7"
-    "@humanfs/node": "npm:^0.16.6"
-    "@humanwhocodes/module-importer": "npm:^1.0.1"
-    "@humanwhocodes/retry": "npm:^0.4.2"
-    "@types/estree": "npm:^1.0.6"
-    "@types/json-schema": "npm:^7.0.15"
-    ajv: "npm:^6.12.4"
-    chalk: "npm:^4.0.0"
-    cross-spawn: "npm:^7.0.6"
-    debug: "npm:^4.3.2"
-    escape-string-regexp: "npm:^4.0.0"
-    eslint-scope: "npm:^8.3.0"
-    eslint-visitor-keys: "npm:^4.2.0"
-    espree: "npm:^10.3.0"
-    esquery: "npm:^1.5.0"
-    esutils: "npm:^2.0.2"
-    fast-deep-equal: "npm:^3.1.3"
-    file-entry-cache: "npm:^8.0.0"
-    find-up: "npm:^5.0.0"
-    glob-parent: "npm:^6.0.2"
-    ignore: "npm:^5.2.0"
-    imurmurhash: "npm:^0.1.4"
-    is-glob: "npm:^4.0.0"
-    json-stable-stringify-without-jsonify: "npm:^1.0.1"
-    lodash.merge: "npm:^4.6.2"
-    minimatch: "npm:^3.1.2"
-    natural-compare: "npm:^1.4.0"
-    optionator: "npm:^0.9.3"
-  peerDependencies:
-    jiti: "*"
-  peerDependenciesMeta:
-    jiti:
-      optional: true
-  bin:
-    eslint: bin/eslint.js
-  checksum: 10/fed63151adea5e4c732bc945dd8d30e6b670d0191b8aa4baff13a0826e29153499f7a59cb88a5a634f31d61c2bea2339ca4b9ff5976e9a61b2222abfb7431e4d
   languageName: node
   linkType: hard
 
@@ -35691,6 +35645,31 @@ __metadata:
   peerDependencies:
     hardhat: ^2.16.0
   checksum: 10/150d44d2b8ebf76b8ab67a0b5b9cf7c4297e8330fbebc4134305e46385235b723b077caac2a9977b3bd8477e97be3b0f4be6026c47b69eadd7b325c45fc7c2cb
+  languageName: node
+  linkType: hard
+
+"hardhat-gas-reporter@npm:2.3.0":
+  version: 2.3.0
+  resolution: "hardhat-gas-reporter@npm:2.3.0"
+  dependencies:
+    "@ethersproject/abi": "npm:^5.7.0"
+    "@ethersproject/bytes": "npm:^5.7.0"
+    "@ethersproject/units": "npm:^5.7.0"
+    "@solidity-parser/parser": "npm:^0.20.1"
+    axios: "npm:^1.6.7"
+    brotli-wasm: "npm:^2.0.1"
+    chalk: "npm:4.1.2"
+    cli-table3: "npm:^0.6.3"
+    ethereum-cryptography: "npm:^2.1.3"
+    glob: "npm:^10.3.10"
+    jsonschema: "npm:^1.4.1"
+    lodash: "npm:^4.17.21"
+    markdown-table: "npm:2.0.0"
+    sha1: "npm:^1.1.1"
+    viem: "npm:^2.27.0"
+  peerDependencies:
+    hardhat: ^2.16.0
+  checksum: 10/e884dfa075a56a4d9f4d37127ce14f1b04bf2e7b26c32842428b311641ea6892c42ecd1c46e42c5484f0d128a49527f67cfabf1af578eeaac716dfa111d781d0
   languageName: node
   linkType: hard
 
@@ -42889,34 +42868,34 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mocha@npm:11.1.0":
-  version: 11.1.0
-  resolution: "mocha@npm:11.1.0"
+"mocha@npm:11.7.1":
+  version: 11.7.1
+  resolution: "mocha@npm:11.7.1"
   dependencies:
-    ansi-colors: "npm:^4.1.3"
     browser-stdout: "npm:^1.3.1"
-    chokidar: "npm:^3.5.3"
+    chokidar: "npm:^4.0.1"
     debug: "npm:^4.3.5"
-    diff: "npm:^5.2.0"
+    diff: "npm:^7.0.0"
     escape-string-regexp: "npm:^4.0.0"
     find-up: "npm:^5.0.0"
     glob: "npm:^10.4.5"
     he: "npm:^1.2.0"
     js-yaml: "npm:^4.1.0"
     log-symbols: "npm:^4.1.0"
-    minimatch: "npm:^5.1.6"
+    minimatch: "npm:^9.0.5"
     ms: "npm:^2.1.3"
+    picocolors: "npm:^1.1.1"
     serialize-javascript: "npm:^6.0.2"
     strip-json-comments: "npm:^3.1.1"
     supports-color: "npm:^8.1.1"
-    workerpool: "npm:^6.5.1"
+    workerpool: "npm:^9.2.0"
     yargs: "npm:^17.7.2"
     yargs-parser: "npm:^21.1.1"
     yargs-unparser: "npm:^2.0.0"
   bin:
     _mocha: bin/_mocha
     mocha: bin/mocha.js
-  checksum: 10/50d1305813d1b3f5882e17d0fbe66793c82bc6b5286ed3e56bbe9edf52446ed27486f41b08a2b4b79e2dbbbb34e0e51d647d58de61b7aedb6f076296b374a263
+  checksum: 10/2b376eb178c4af99a9e2562b01ef7f509be6273146c29edd15f1281fcd85ee2096c2f8404210d8f9c6a522eba81396b3fe5b27b987adf2b3d57e2dce9ef7520b
   languageName: node
   linkType: hard
 
@@ -57730,6 +57709,13 @@ __metadata:
   version: 6.5.1
   resolution: "workerpool@npm:6.5.1"
   checksum: 10/b1b00139fe62f2ebec556a2af8085bf6e7502ad26cf2a4dcb34fb4408b2e68aa12c88b0a50cb463b24f2806d60fa491fc0da933b56ec3b53646aeec0025d14cb
+  languageName: node
+  linkType: hard
+
+"workerpool@npm:^9.2.0":
+  version: 9.3.3
+  resolution: "workerpool@npm:9.3.3"
+  checksum: 10/8d7852c2a819f49952dd8dc71c7be7885762012d47c7dcf7b9c7751161c64b1e0714fc5d20e694cb26dbdca000ba0de688164d8a124afda26eefd5108845b656
   languageName: node
   linkType: hard
 
