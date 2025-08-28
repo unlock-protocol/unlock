@@ -11937,6 +11937,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nomicfoundation/hardhat-verify@npm:2.1.1":
+  version: 2.1.1
+  resolution: "@nomicfoundation/hardhat-verify@npm:2.1.1"
+  dependencies:
+    "@ethersproject/abi": "npm:^5.1.2"
+    "@ethersproject/address": "npm:^5.0.2"
+    cbor: "npm:^8.1.0"
+    debug: "npm:^4.1.1"
+    lodash.clonedeep: "npm:^4.5.0"
+    picocolors: "npm:^1.1.0"
+    semver: "npm:^6.3.0"
+    table: "npm:^6.8.0"
+    undici: "npm:^5.14.0"
+  peerDependencies:
+    hardhat: ^2.26.0
+  checksum: 10/51f435d4b4387d8a21c4a9177862cc1fb5fdfdd34a8c6a9b8617599e94b11d027cfb1749294e46c1bb1ddd34e303242100310660f275ee658daece6ccea81cb7
+  languageName: node
+  linkType: hard
+
 "@nomicfoundation/hardhat-verify@npm:^2.0.8":
   version: 2.0.13
   resolution: "@nomicfoundation/hardhat-verify@npm:2.0.13"
@@ -21776,7 +21795,7 @@ __metadata:
     "@matterlabs/hardhat-zksync-verify": "npm:1.8.0"
     "@nomicfoundation/hardhat-ethers": "npm:3.0.8"
     "@nomicfoundation/hardhat-network-helpers": "npm:1.0.12"
-    "@nomicfoundation/hardhat-verify": "npm:2.0.14"
+    "@nomicfoundation/hardhat-verify": "npm:2.1.1"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@openzeppelin/hardhat-upgrades": "npm:3.9.0"
     "@openzeppelin/upgrades-core": "npm:1.44.1"
