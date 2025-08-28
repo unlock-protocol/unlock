@@ -39,7 +39,7 @@
     "hardhat-tracer": "3.1.0",
     "prettier": "3.3.3",
     "prettier-plugin-solidity": "1.4.3",
-    "solhint": "5.0.5",
+    "solhint": "6.0.1",
     "solidity-coverage": "0.8.16",
     "yesno": "0.4.0"
   },
