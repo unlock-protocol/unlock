@@ -21991,7 +21991,7 @@ __metadata:
     "@matterlabs/hardhat-zksync-solc": "npm:1.4.0"
     "@matterlabs/hardhat-zksync-upgradable": "npm:1.10.0"
     "@matterlabs/hardhat-zksync-verify": "npm:1.8.0"
-    "@nomicfoundation/hardhat-ethers": "npm:3.0.8"
+    "@nomicfoundation/hardhat-ethers": "npm:3.1.0"
     "@nomicfoundation/hardhat-network-helpers": "npm:1.0.12"
     "@nomicfoundation/hardhat-verify": "npm:2.1.1"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
