@@ -22806,24 +22806,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitest/eslint-plugin@npm:1.3.3":
-  version: 1.3.3
-  resolution: "@vitest/eslint-plugin@npm:1.3.3"
-  dependencies:
-    "@typescript-eslint/utils": "npm:^8.24.1"
-  peerDependencies:
-    eslint: ">= 8.57.0"
-    typescript: ">= 5.0.0"
-    vitest: "*"
-  peerDependenciesMeta:
-    typescript:
-      optional: true
-    vitest:
-      optional: true
-  checksum: 10/17b286de0d0715d025a35ff980f837741a7bb32a00f231cb96c61e50b8d4c73cd860abab1042808216d14d231ebb0c8e3ef85e28b17ffe50d2c0e963ce920945
-  languageName: node
-  linkType: hard
-
 "@vitest/eslint-plugin@npm:1.3.4":
   version: 1.3.4
   resolution: "@vitest/eslint-plugin@npm:1.3.4"
@@ -55935,7 +55917,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:8.38.0"
     "@typescript-eslint/parser": "npm:8.38.0"
     "@vitest/coverage-v8": "npm:3.1.4"
-    "@vitest/eslint-plugin": "npm:1.3.3"
+    "@vitest/eslint-plugin": "npm:1.3.4"
     babel-plugin-polyfill-corejs2: "npm:0.4.12"
     eslint: "npm:9.31.0"
     eslint-plugin-evm-address-to-checksummed: "npm:0.0.6"
