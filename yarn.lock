@@ -21931,7 +21931,7 @@ __metadata:
     clsx: "npm:2.1.1"
     docusaurus-gtm-plugin: "npm:0.0.2"
     docusaurus-node-polyfills: "npm:1.0.0"
-    docusaurus-plugin-openapi-docs: "npm:4.4.0"
+    docusaurus-plugin-openapi-docs: "npm:4.5.1"
     docusaurus-theme-openapi-docs: "npm:4.5.1"
     ethers: "npm:6.13.5"
     postcss: "npm:8.5.6"
@@ -30662,9 +30662,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"docusaurus-plugin-openapi-docs@npm:4.4.0":
-  version: 4.4.0
-  resolution: "docusaurus-plugin-openapi-docs@npm:4.4.0"
+"docusaurus-plugin-openapi-docs@npm:4.5.1":
+  version: 4.5.1
+  resolution: "docusaurus-plugin-openapi-docs@npm:4.5.1"
   dependencies:
     "@apidevtools/json-schema-ref-parser": "npm:^11.5.4"
     "@redocly/openapi-core": "npm:^1.10.5"
@@ -30686,7 +30686,7 @@ __metadata:
     "@docusaurus/utils": ^3.5.0
     "@docusaurus/utils-validation": ^3.5.0
     react: ^16.8.4 || ^17.0.0 || ^18.0.0 || ^19.0.0
-  checksum: 10/ca3097fb225a7da2cd6e626ed2c1d08bae0304cd63c9b40c8ab9c696576d546d148b3f0ea331fd8e18dbee20cc41ce562213bc03325df03146e56953dd00000c
+  checksum: 10/496ce49d494f06803a61eaa6c6810782668269574c12a1a55315742974884a7ffd6e2c75875d8fd9909611bdccaa4de42419e0debbf47def0db6974617b9e5ba
   languageName: node
   linkType: hard
 
