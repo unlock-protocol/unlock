@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "../interfaces/IUniversalRouter.sol";
-import "@uniswap/v3-periphery/contracts/libraries/TransferHelper.sol";
-import "../interfaces/IMintableERC20.sol";
-import "../interfaces/IPermit2.sol";
 import "../interfaces/IUnlock.sol";
 import "../interfaces/IWETH.sol";
+import "../interfaces/IUniswapOracleV3.sol";
 
 library SafeCast160 {
   error UnsafeCast();
@@ -24,18 +23,15 @@ contract UnlockSwapBurner {
   using SafeCast160 for uint256;
 
   // addresses on current chain
-  address public unlockAddress;
-
-  // required by Uniswap Universal Router
-  address public permit2;
-  address public uniswapUniversalRouter;
+  address public immutable UNLOCK_ADDRESS;
+  address public immutable UNISWAP_UNIVERSAL_ROUTER;
 
   // dead address to burn
-  address public constant burnAddress =
+  address public immutable BURN_ADDRESS =
     0x000000000000000000000000000000000000dEaD;
 
   // specified in https://docs.uniswap.org/contracts/universal-router/technical-reference#v3_swap_exact_in
-  uint256 constant V3_SWAP_EXACT_IN = 0x00;
+  uint256 immutable V3_SWAP_EXACT_IN = 0x00;
 
   // events
   event SwapBurn(address tokenAddress, uint amountSpent, uint amountBurnt);
@@ -47,31 +43,74 @@ contract UnlockSwapBurner {
     uint amount
   );
   error UnauthorizedSwap();
+  error OracleV3QuoteFailed(
+    address tokenIn,
+    address tokenOut,
+    uint256 tokenAmount
+  );
+  error OracleNotFound(address token);
 
   /**
    * Set the address of Uniswap Permit2 helper contract
    * @param _unlockAddress the address of the Unlock factory contract
-   * @param _permit2Address the address of Uniswap PERMIT2 contract
+   * @param _uniswapUniversalRouter the address of Uniswap Universal Router contract
    */
-  constructor(
-    address _unlockAddress,
-    address _permit2Address,
-    address _uniswapUniversalRouter
-  ) {
-    unlockAddress = _unlockAddress;
-    permit2 = _permit2Address;
-    uniswapUniversalRouter = _uniswapUniversalRouter;
+  constructor(address _unlockAddress, address _uniswapUniversalRouter) {
+    UNLOCK_ADDRESS = _unlockAddress;
+    UNISWAP_UNIVERSAL_ROUTER = _uniswapUniversalRouter;
   }
 
   /**
    * Simple helper to retrieve balance in ERC20 or native tokens
    * @param token the address of the token (address(0) for native token)
    */
-  function getBalance(address token) internal view returns (uint) {
+  function _getBalance(address token) internal view returns (uint) {
     return
       token == address(0)
         ? address(this).balance
-        : IMintableERC20(token).balanceOf(address(this));
+        : IERC20(token).balanceOf(address(this));
+  }
+
+  function _getOracleAddress(address token) internal view returns (address) {
+    address oracleAddress = IUnlock(UNLOCK_ADDRESS).uniswapOracles(token);
+    if (oracleAddress == address(0)) {
+      revert OracleNotFound(token);
+    }
+    return oracleAddress;
+  }
+
+  function _getAmountOutMinimum(
+    address tokenIn,
+    address governanceTokenAddress,
+    uint256 tokenAmount,
+    address wrappedAddress
+  ) internal view returns (uint256 amountOutMinimum) {
+    // get the expected amount of tokens in WETH
+    uint256 amountInWeth;
+    if (tokenIn == wrappedAddress) {
+      amountInWeth = tokenAmount;
+    } else {
+      address wethOracleAddress = _getOracleAddress(tokenIn);
+      amountInWeth = IUniswapOracleV3(wethOracleAddress).consult(
+        address(tokenIn),
+        tokenAmount,
+        wrappedAddress
+      );
+    }
+
+    // get the expected amount of UDT
+    address udtOracleAddress = _getOracleAddress(governanceTokenAddress);
+    uint256 quoteAmount = IUniswapOracleV3(udtOracleAddress).consult(
+      wrappedAddress,
+      amountInWeth,
+      governanceTokenAddress
+    );
+
+    if (quoteAmount == 0) {
+      revert OracleV3QuoteFailed(tokenIn, governanceTokenAddress, tokenAmount);
+    }
+    // Apply 2% slippage tolerance
+    amountOutMinimum = (quoteAmount * 95) / 100;
   }
 
   /**
@@ -82,14 +121,14 @@ contract UnlockSwapBurner {
     uint24 poolFee
   ) public payable returns (uint amount) {
     // get info from unlock
-    address udtAddress = IUnlock(unlockAddress).governanceToken();
-    address wrappedAddress = IUnlock(unlockAddress).weth();
+    address governanceTokenAddress = IUnlock(UNLOCK_ADDRESS).governanceToken();
+    address wrappedAddress = IUnlock(UNLOCK_ADDRESS).weth();
 
     // get total balance of token to swap
-    uint tokenAmount = getBalance(tokenAddress);
-    uint udtBefore = getBalance(udtAddress);
+    uint tokenAmount = _getBalance(tokenAddress);
+    uint udtBefore = _getBalance(governanceTokenAddress);
 
-    if (tokenAddress == udtAddress) {
+    if (tokenAddress == governanceTokenAddress) {
       revert UnauthorizedSwap();
     }
 
@@ -97,34 +136,24 @@ contract UnlockSwapBurner {
     if (tokenAddress == address(0)) {
       IWETH(wrappedAddress).deposit{value: tokenAmount}();
       tokenAddress = wrappedAddress;
-      tokenAmount = getBalance(tokenAddress);
+      tokenAmount = _getBalance(tokenAddress);
     }
 
-    // approve ERC20 spending
-    if (tokenAddress != address(0)) {
-      // Approve the router to spend src ERC20
-      TransferHelper.safeApprove(
-        tokenAddress,
-        uniswapUniversalRouter,
-        tokenAmount
-      );
-
-      // approve PERMIT2 to manipulate the token
-      IERC20(tokenAddress).approve(permit2, tokenAmount);
-    }
-
-    // issue PERMIT2 Allowance
-    IPermit2(permit2).approve(
+    // get the amount out minimum from the oracle
+    uint amountOutMinimum = _getAmountOutMinimum(
       tokenAddress,
-      uniswapUniversalRouter,
-      tokenAmount.toUint160(),
-      uint48(block.timestamp + 60) // expires after 1min
+      governanceTokenAddress,
+      tokenAmount,
+      wrappedAddress
     );
+
+    // transfer the tokens to the router
+    IERC20(tokenAddress).transfer(UNISWAP_UNIVERSAL_ROUTER, tokenAmount);
 
     bytes memory defaultPath = abi.encodePacked(
       wrappedAddress,
       uint24(3000), // default UDT pool fee is set to 0.3%
-      udtAddress
+      governanceTokenAddress
     );
 
     // encode parameters for the swap om UniversalRouter
@@ -133,30 +162,33 @@ contract UnlockSwapBurner {
     inputs[0] = abi.encode(
       address(this), // recipient
       tokenAmount, // amountIn
-      0, // amountOutMinimum
+      amountOutMinimum, // amountOutMinimum
       tokenAddress == wrappedAddress
         ? defaultPath
         : abi.encodePacked(tokenAddress, poolFee, defaultPath), // path
-      true // funds are not coming from PERMIT2
+      false // funds are not coming from PERMIT2
     );
 
     // Executes the swap.
-    IUniversalRouter(uniswapUniversalRouter).execute(
+    IUniversalRouter(UNISWAP_UNIVERSAL_ROUTER).execute(
       commands,
       inputs,
       block.timestamp + 60 // expires after 1min
     );
 
     // calculate how much UDT has been received
-    uint amountUDTOut = getBalance(udtAddress) - udtBefore;
+    uint amountUDTOut = _getBalance(governanceTokenAddress) - udtBefore;
     if (amountUDTOut == 0) {
-      revert UDTSwapFailed(uniswapUniversalRouter, tokenAddress, tokenAmount);
+      revert UDTSwapFailed(UNISWAP_UNIVERSAL_ROUTER, tokenAddress, tokenAmount);
     }
 
     // burn the newly received UDT
-    bool success = IERC20(udtAddress).transfer(burnAddress, amountUDTOut);
+    bool success = IERC20(governanceTokenAddress).transfer(
+      BURN_ADDRESS,
+      amountUDTOut
+    );
     if (success == false) {
-      revert UDTSwapFailed(uniswapUniversalRouter, tokenAddress, tokenAmount);
+      revert UDTSwapFailed(UNISWAP_UNIVERSAL_ROUTER, tokenAddress, tokenAmount);
     } else {
       emit SwapBurn(tokenAddress, tokenAmount, amountUDTOut);
     }
