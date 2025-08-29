@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "autoprefixer": "10.4.21",
-    "eslint-config-next": "15.3.2",
+    "eslint-config-next": "15.5.2",
     "feed": "4.2.2",
     "gray-matter": "4.0.3",
     "next-transpile-modules": "10.0.1",
