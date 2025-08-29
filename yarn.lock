@@ -8959,9 +8959,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@headlessui/react@npm:2.2.4":
-  version: 2.2.4
-  resolution: "@headlessui/react@npm:2.2.4"
+"@headlessui/react@npm:2.2.7":
+  version: 2.2.7
+  resolution: "@headlessui/react@npm:2.2.7"
   dependencies:
     "@floating-ui/react": "npm:^0.26.16"
     "@react-aria/focus": "npm:^3.20.2"
@@ -8971,7 +8971,7 @@ __metadata:
   peerDependencies:
     react: ^18 || ^19 || ^19.0.0-rc
     react-dom: ^18 || ^19 || ^19.0.0-rc
-  checksum: 10/0e146027069a21a8852d4b678903ad7181003566e7e086575d12854812f06b98e4baa2f40eecc9d6ab65512fb7a88c38c3c2b177def3b2a9e438e83ae449a35c
+  checksum: 10/2b6ea8fe91305b646a6a655bd0610e6c5d718949545eb2130a1011d4ec7575a775344b1d950cb04b20d4b376fb9bf589cbaa9e94a2f021889a4cafbc154d0925
   languageName: node
   linkType: hard
 
@@ -21771,7 +21771,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/airdrops@workspace:airdrops"
   dependencies:
-    "@headlessui/react": "npm:2.2.4"
+    "@headlessui/react": "npm:2.2.7"
     "@openzeppelin/merkle-tree": "npm:1.0.8"
     "@privy-io/react-auth": "npm:2.12.0"
     "@sentry/nextjs": "npm:9.15.0"
@@ -22281,7 +22281,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/ui@workspace:packages/ui"
   dependencies:
-    "@headlessui/react": "npm:2.2.4"
+    "@headlessui/react": "npm:2.2.7"
     "@mdx-js/preact": "npm:3.1.0"
     "@mdx-js/react": "npm:3.1.0"
     "@radix-ui/react-tooltip": "npm:1.2.7"
@@ -22465,7 +22465,7 @@ __metadata:
   resolution: "@unlock-protocol/unlock-protocol-com@workspace:unlock-protocol-com"
   dependencies:
     "@babel/core": "npm:7.26.0"
-    "@headlessui/react": "npm:2.2.4"
+    "@headlessui/react": "npm:2.2.7"
     "@observablehq/plot": "npm:0.6.17"
     "@radix-ui/react-avatar": "npm:1.1.10"
     "@tanstack/react-query": "npm:5.84.0"
