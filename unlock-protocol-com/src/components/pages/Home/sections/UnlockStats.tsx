@@ -1,29 +1,13 @@
 import React, { ReactNode } from 'react'
+import { useStats } from 'src/hooks/useStats'
+import numeral from 'numeral'
 
 interface StatProps {
   value: string
   title: string
-  icon?: any
+  icon?: React.ComponentType<{ className?: string }>
   description: ReactNode
 }
-
-const STATS: StatProps[] = [
-  {
-    value: '7,176',
-    title: 'Membership Smart Contracts (Locks) Deployed',
-    description: 'All time, production networks only',
-  },
-  {
-    value: '315,167',
-    title: 'Membership NFTs (Keys) Minted',
-    description: 'All time, production networks only',
-  },
-  {
-    value: '282%',
-    title: 'Growth in Number of Deployed Smart Contracts',
-    description: 'Year-over-year, production networks only',
-  },
-]
 
 function Stat({ value, title, description }: StatProps) {
   return (
@@ -38,6 +22,26 @@ function Stat({ value, title, description }: StatProps) {
 }
 
 export default function UnlockStats() {
+  const { totalLocksDeployed, totalKeysSold, isLoading } = useStats()
+
+  const STATS: StatProps[] = [
+    {
+      value: isLoading ? '...' : numeral(totalLocksDeployed).format('0,0'),
+      title: 'Membership Smart Contracts (Locks) Deployed',
+      description: 'All time, production networks only',
+    },
+    {
+      value: isLoading ? '...' : numeral(totalKeysSold).format('0,0'),
+      title: 'Membership NFTs (Keys) Minted',
+      description: 'All time, production networks only',
+    },
+    {
+      value: '282%',
+      title: 'Growth in Number of Deployed Smart Contracts',
+      description: 'Year-over-year, production networks only',
+    },
+  ]
+
   return (
     <div className="flex flex-col gap-14">
       <span className="text-2xl font-bold text-black md:text-4xl">
