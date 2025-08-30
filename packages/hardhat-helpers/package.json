@@ -27,7 +27,7 @@
     "ethers": "6.13.5",
     "hardhat": "2.26.1",
     "typescript": "5.8.3",
-    "zksync-ethers": "6.18.0"
+    "zksync-ethers": "6.20.1"
   },
   "devDependencies": {
     "copyfiles": "2.4.1",
