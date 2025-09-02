@@ -26,6 +26,9 @@ env:
 runs:
   using: 'composite'
   steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 22
     - run: echo Deploying ${{ inputs.service }}.
       shell: bash
     - name: Deploy to Vercel
