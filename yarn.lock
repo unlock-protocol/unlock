@@ -21433,7 +21433,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/scope-manager@npm:8.41.0":
+"@typescript-eslint/scope-manager@npm:8.41.0, @typescript-eslint/scope-manager@npm:^8.41.0":
   version: 8.41.0
   resolution: "@typescript-eslint/scope-manager@npm:8.41.0"
   dependencies:
@@ -21992,7 +21992,7 @@ __metadata:
     "@eslint/compat": "npm:1.3.1"
     "@typescript-eslint/eslint-plugin": "npm:8.38.0"
     "@typescript-eslint/parser": "npm:8.38.0"
-    "@vitest/eslint-plugin": "npm:1.3.4"
+    "@vitest/eslint-plugin": "npm:1.3.6"
     eslint: "npm:9.32.0"
     eslint-config-next: "npm:15.4.5"
     eslint-config-prettier: "npm:10.1.8"
@@ -22873,10 +22873,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitest/eslint-plugin@npm:1.3.4":
-  version: 1.3.4
-  resolution: "@vitest/eslint-plugin@npm:1.3.4"
+"@vitest/eslint-plugin@npm:1.3.6":
+  version: 1.3.6
+  resolution: "@vitest/eslint-plugin@npm:1.3.6"
   dependencies:
+    "@typescript-eslint/scope-manager": "npm:^8.41.0"
     "@typescript-eslint/utils": "npm:^8.24.1"
   peerDependencies:
     eslint: ">= 8.57.0"
@@ -22887,7 +22888,7 @@ __metadata:
       optional: true
     vitest:
       optional: true
-  checksum: 10/f41e1a5c020ba164a920ef873a18e2647cbe650f10cff9593cf4f39d0208a29b6ca4526f0ed9d6ed907974334bd70aca175f771fe160c5cad32559eaf6ad0b88
+  checksum: 10/95ab8394c123db470202f9153a502d38ca6ee72b51d4e55ea5e8d41bd4b01a2e3f840306b5c00c0473ccc7400f7841044273453ffea59ed1d2532251ec7cc707
   languageName: node
   linkType: hard
 
@@ -55962,7 +55963,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:8.38.0"
     "@typescript-eslint/parser": "npm:8.38.0"
     "@vitest/coverage-v8": "npm:3.2.4"
-    "@vitest/eslint-plugin": "npm:1.3.4"
+    "@vitest/eslint-plugin": "npm:1.3.6"
     babel-plugin-polyfill-corejs2: "npm:0.4.12"
     eslint: "npm:9.31.0"
     eslint-plugin-evm-address-to-checksummed: "npm:0.0.6"
