@@ -22295,7 +22295,7 @@ __metadata:
     ethers: "npm:6.13.5"
     fs-extra: "npm:11.2.0"
     hardhat: "npm:2.22.19"
-    hardhat-contract-sizer: "npm:2.10.0"
+    hardhat-contract-sizer: "npm:2.10.1"
     hardhat-erc1820: "npm:0.1.0"
     hardhat-gas-reporter: "npm:2.2.3"
     hardhat-storage-layout: "npm:0.1.7"
@@ -35805,16 +35805,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hardhat-contract-sizer@npm:2.10.0":
-  version: 2.10.0
-  resolution: "hardhat-contract-sizer@npm:2.10.0"
+"hardhat-contract-sizer@npm:2.10.1":
+  version: 2.10.1
+  resolution: "hardhat-contract-sizer@npm:2.10.1"
   dependencies:
     chalk: "npm:^4.0.0"
     cli-table3: "npm:^0.6.0"
     strip-ansi: "npm:^6.0.0"
   peerDependencies:
     hardhat: ^2.0.0
-  checksum: 10/2b3011fe5333c2f1dbcfa6c73dcb1c61da9e2e045775c24bb773fe5f3ac14e9923907fef0e61fc2897e82a61997ce74e73baadb7f69dfdeccc86ae878cf67792
+  checksum: 10/521e985f0e6b5c1d06e38be8b374ae30f26ed6a72740ecfeeea1d8d5ee1341b98f699ed5587cc429e6de84da2c22df612e394ce492d393a4922702e82cc051f9
   languageName: node
   linkType: hard
 
