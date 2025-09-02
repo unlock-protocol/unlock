@@ -144,7 +144,7 @@ export async function renewFiatKey({
     const fulfillmentDispatcher = new Dispatcher()
 
     // retrieve lock currency
-    const { creditCardCurrency = 'usd' } = await getSettings({
+    const { creditCardCurrency = 'usd', creditCardPrice } = await getSettings({
       lockAddress,
       network,
     })
@@ -152,7 +152,7 @@ export async function renewFiatKey({
     const paymentIntent = await stripe.paymentIntents.create(
       {
         amount: subscription.amount,
-        currency: creditCardCurrency,
+        currency: creditCardPrice ? creditCardCurrency : 'usd', // Use USD as default currency if no price is set
         capture_method: 'manual',
         // Confirm the payment off-session automatically.
         confirm: true,

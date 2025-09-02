@@ -70,6 +70,6 @@ Over the past year, the grants program has had success spawning work in areas of
 
 - [Web3Academy](https://w3academy.io/)
 - [dProgramming University](https://dprogramminguniversity.com/courses/unlock-protocol-101/)
-- [Unlock Showcase](https://www.unlockshowcase.com/)
+- [Unlock Showcase](https://showcase.unlock-protocol.com/)
 
 With the upgraded grants program, we can’t wait to see what the community creates next! You can fill out a grant application here!
