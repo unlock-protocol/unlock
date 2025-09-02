@@ -9848,18 +9848,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mdx-js/preact@npm:3.1.0":
-  version: 3.1.0
-  resolution: "@mdx-js/preact@npm:3.1.0"
+"@mdx-js/preact@npm:3.1.1":
+  version: 3.1.1
+  resolution: "@mdx-js/preact@npm:3.1.1"
   dependencies:
     "@types/mdx": "npm:^2.0.0"
   peerDependencies:
     preact: ">=10.0.0"
-  checksum: 10/1d11f5d737f986d2f2e9e37f50531743eb2eca4ded2c070c581d990d1a92e5dc97057cbabe472bb942fa31e27d37a4adcb5ad212e66e02b2c13a128d39568108
+  checksum: 10/945405494ba82bd73ee0a500ee63b3b10224e3a0b79ab7e291dce3b945c37d63a7066cbbb5b728677a232902696ca7c11a10caaf9523f9e3a9606b521eb4c8f0
   languageName: node
   linkType: hard
 
-"@mdx-js/react@npm:3.1.0, @mdx-js/react@npm:^3.0.0":
+"@mdx-js/react@npm:3.1.1":
+  version: 3.1.1
+  resolution: "@mdx-js/react@npm:3.1.1"
+  dependencies:
+    "@types/mdx": "npm:^2.0.0"
+  peerDependencies:
+    "@types/react": ">=16"
+    react: ">=16"
+  checksum: 10/52a740e2f37761694fa94d4704b7825084b4055616a95c8b8f4c1676190d399ddc5cdbb399ffc45b550beecd30497a7224c2e5b05bf43ecb668c7473641037d1
+  languageName: node
+  linkType: hard
+
+"@mdx-js/react@npm:^3.0.0":
   version: 3.1.0
   resolution: "@mdx-js/react@npm:3.1.0"
   dependencies:
@@ -21946,7 +21958,7 @@ __metadata:
     "@emotion/react": "npm:11.14.0"
     "@emotion/styled": "npm:11.14.1"
     "@flockler/react-flockler-embed": "npm:1.0.4"
-    "@mdx-js/react": "npm:3.1.0"
+    "@mdx-js/react": "npm:3.1.1"
     "@mui/material": "npm:6.5.0"
     "@mui/x-charts": "npm:7.29.1"
     "@privy-io/react-auth": "npm:2.12.0"
@@ -22348,8 +22360,8 @@ __metadata:
   resolution: "@unlock-protocol/ui@workspace:packages/ui"
   dependencies:
     "@headlessui/react": "npm:2.2.7"
-    "@mdx-js/preact": "npm:3.1.0"
-    "@mdx-js/react": "npm:3.1.0"
+    "@mdx-js/preact": "npm:3.1.1"
+    "@mdx-js/react": "npm:3.1.1"
     "@radix-ui/react-tooltip": "npm:1.2.7"
     "@storybook/addon-actions": "npm:8.6.14"
     "@storybook/addon-docs": "npm:8.6.14"
