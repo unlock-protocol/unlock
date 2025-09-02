@@ -9547,7 +9547,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@logtail/node@npm:0.5.4, @logtail/node@npm:^0.5.4":
+"@logtail/node@npm:0.5.4":
   version: 0.5.4
   resolution: "@logtail/node@npm:0.5.4"
   dependencies:
@@ -9558,6 +9558,20 @@ __metadata:
     minimatch: "npm:^9.0.5"
     stack-trace: "npm:0.0.10"
   checksum: 10/c1f64c227536e82755343a9baa209ac939801a455c06485014fd43b2a2e369a9fc8f962f95996ccee260232b72a8992aaabd2b46092ba768848b38603448278c
+  languageName: node
+  linkType: hard
+
+"@logtail/node@npm:^0.5.5":
+  version: 0.5.5
+  resolution: "@logtail/node@npm:0.5.5"
+  dependencies:
+    "@logtail/core": "npm:^0.5.4"
+    "@logtail/types": "npm:^0.5.3"
+    "@msgpack/msgpack": "npm:^2.5.1"
+    "@types/stack-trace": "npm:^0.0.33"
+    minimatch: "npm:^9.0.5"
+    stack-trace: "npm:0.0.10"
+  checksum: 10/a918ae88a81ad10b37893e6cb2ea0b7b65246856cece54cb3dc77b62f7bfa78317bb588628276bc96a5b7f2fdd0f5577fdfa2171bdda269edf64220b7fb57ac7
   languageName: node
   linkType: hard
 
@@ -9577,16 +9591,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@logtail/winston@npm:0.5.4":
-  version: 0.5.4
-  resolution: "@logtail/winston@npm:0.5.4"
+"@logtail/winston@npm:0.5.5":
+  version: 0.5.5
+  resolution: "@logtail/winston@npm:0.5.5"
   dependencies:
-    "@logtail/node": "npm:^0.5.4"
+    "@logtail/node": "npm:^0.5.5"
     "@logtail/types": "npm:^0.5.3"
     winston-transport: "npm:^4.3.0"
   peerDependencies:
     winston: ">=3.2.1"
-  checksum: 10/a7dd15fa5164bf8aa4e07d828ff209ca2940c5c2477a2c2c0e9eb60d87d7f346a437f3601fd9a89f918e8f412b2bd07ff6c057fc230a0461912885d90e187b7f
+  checksum: 10/506177428c2fd47a6110ac833d38f82830ba252497d9b11f1246e75e7f0b5cb1d6739bd76629374806559e25f23cc03cc2ec02a6f96d911971ec115cab4cce07
   languageName: node
   linkType: hard
 
@@ -22113,7 +22127,7 @@ __metadata:
     "@aws-sdk/client-s3": "npm:3.717.0"
     "@guildxyz/sdk": "npm:2.6.9"
     "@logtail/node": "npm:0.5.4"
-    "@logtail/winston": "npm:0.5.4"
+    "@logtail/winston": "npm:0.5.5"
     "@nuintun/qrcode": "npm:5.0.2"
     "@openzeppelin/defender-sdk": "npm:2.4.0"
     "@openzeppelin/merkle-tree": "npm:1.0.8"
