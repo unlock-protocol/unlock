@@ -22,15 +22,15 @@
   },
   "devDependencies": {
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
-    "tsup": "8.4.0",
+    "tsup": "8.5.0",
     "typescript": "5.8.3",
-    "vitest": "3.1.4"
+    "vitest": "3.2.4"
   },
   "peerDependencies": {
-    "zod": "3.24.4"
+    "zod": "3.25.76"
   },
   "dependencies": {
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
-    "eslint": "9.25.1"
+    "eslint": "9.31.0"
   }
 }
