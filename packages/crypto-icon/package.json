@@ -38,14 +38,14 @@
     "@storybook/react-vite": "8.6.14",
     "@types/react": "18.3.23",
     "@types/react-dom": "18.3.7",
-    "@vitejs/plugin-react": "4.4.1",
+    "@vitejs/plugin-react": "4.7.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "storybook": "8.6.14",
-    "tsup": "8.4.0",
-    "tsx": "4.19.4",
+    "tsup": "8.5.0",
+    "tsx": "4.20.3",
     "typescript": "5.8.3",
-    "vite": "6.3.4",
+    "vite": "6.3.5",
     "vite-plugin-svgr": "4.3.0",
     "vite-tsconfig-paths": "4.3.2"
   }
