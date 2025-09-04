@@ -1,4 +1,3 @@
-version: '3.2'
 services:
   graph-node:
     image: graphprotocol/graph-node:v0.39.1
