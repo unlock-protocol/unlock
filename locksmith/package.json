@@ -114,7 +114,7 @@
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "eslint": "9.22.0",
     "eslint-config-standard": "17.1.0",
-    "nock": "14.0.8",
+    "nock": "14.0.10",
     "node-mocks-http": "1.16.2",
     "parse-data-uri": "0.2.0",
     "run-script-os": "1.1.6",
