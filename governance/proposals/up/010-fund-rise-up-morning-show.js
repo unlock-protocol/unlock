@@ -5,24 +5,16 @@
 const { ethers } = require('hardhat')
 const ERC20_ABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/erc20.json')
 const uniswapV3SDK = require('@uniswap/v3-sdk')
-const { Pool, Route, Trade, SwapRouter } = uniswapV3SDK
-const {
-  CurrencyAmount,
-  Percent,
-  Token,
-  TradeType,
-} = require('@uniswap/sdk-core')
-// import { Pool, Route, Trade, SwapRouter } from '@uniswap/v3-sdk'
+const { Route, Trade, SwapRouter } = uniswapV3SDK
+const { CurrencyAmount, Percent, TradeType } = require('@uniswap/sdk-core')
 const { getNetwork, getTokenInfo } = require('@unlock-protocol/hardhat-helpers')
 const {
   getUniswapV3Quote,
-  getUniswapV3QuoteWithValidation,
   buildSwapParams,
-  calculateMinimumAmount,
-  validateUniswapV3Pool,
   initializeTokens,
-  getPool,
+  getPoolByAddress,
 } = require('../../helpers/uniswap')
+const SWAP_ROUTER_ABI = require('../../helpers/abi/swapRouter2.json')
 
 // Placeholder constants - to be configured per proposal
 const ETH_SWAP_AMOUNT = '0.01' // ETH amount to swap (reduced for testing)
@@ -33,15 +25,12 @@ const TIMELOCK_ADDRESS = '0xB34567C4cA697b39F72e1a8478f285329A98ed1b' // Base ti
 const SWAP_ROUTER_ADDRESS = '0x2626664c2603336E57B271c5C0b26F421741e481' // SwapRouter02 on Base
 const POOL_ADDRESS = '0xd0b53D9277642d899DF5C87A3966A349A798F224'
 
-const SLIPPAGE = 50 // 0.5% slippage (50 basis points)
+const SLIPPAGE = new Percent(50, 10_000) // 0.5%
 const DEADLINE_BUFFER = 24 * 60 * 60 * 365 * 80
 const UNISWAP_FEE = 500 // 0.05% fee tier
 
 // ABIs
 const WETH_ABI = ['function deposit() payable']
-const SWAP_ROUTER_ABI = [
-  'function exactInputSingle((address tokenIn, address tokenOut, uint24 fee, address recipient, uint256 deadline, uint256 amountIn, uint256 amountOutMinimum, uint160 sqrtPriceLimitX96)) external returns (uint256 amountOut)',
-]
 
 module.exports = async ({
   ethSwapAmount = ETH_SWAP_AMOUNT,
@@ -63,22 +52,13 @@ module.exports = async ({
   )
   const deadline = Math.floor(Date.now() / 1000) + DEADLINE_BUFFER
 
-  await validateUniswapV3Pool(POOL_ADDRESS)
-
-  // Get expected USDC output from swap with enhanced validation
-  const expectedUsdcOut = await getUniswapV3QuoteWithValidation(
+  // Get expected USDC output from swap
+  const expectedUsdcOut = await getUniswapV3Quote(
     weth.address,
     usdc.address,
     UNISWAP_FEE,
     amountIn
   )
-  const minimumUsdcOut = calculateMinimumAmount(expectedUsdcOut, SLIPPAGE)
-
-  // Verify we'll get enough USDC to make the transfer
-  if (minimumUsdcOut < transferAmount) {
-    const errorMsg = `Insufficient USDC expected from swap. Need ${ethers.formatUnits(transferAmount, usdcDecimals)} USDC but will get minimum ${ethers.formatUnits(minimumUsdcOut, usdcDecimals)} USDC`
-    throw new Error(errorMsg)
-  }
 
   const calls = []
 
@@ -98,12 +78,14 @@ module.exports = async ({
   })
 
   // 3. Swap WETH to USDC
-  const pool = await getPool(weth.address, usdc.address, UNISWAP_FEE)
+  const pool = await getPoolByAddress(POOL_ADDRESS)
+
   const { token0: WETH_TOKEN, token1: USDC_TOKEN } = await initializeTokens(
     weth.address,
     usdc.address
   )
   const swapRoute = new Route([pool], WETH_TOKEN, USDC_TOKEN)
+
   const uncheckedTrade = Trade.createUncheckedTrade({
     route: swapRoute,
     inputAmount: CurrencyAmount.fromRawAmount(WETH_TOKEN, amountIn.toString()),
@@ -113,6 +95,7 @@ module.exports = async ({
     ),
     tradeType: TradeType.EXACT_INPUT,
   })
+
   const { calldata: swapData, value: swapValue } =
     SwapRouter.swapCallParameters([uncheckedTrade], {
       slippageTolerance: SLIPPAGE,
@@ -124,6 +107,7 @@ module.exports = async ({
     value: swapValue,
     data: swapData,
   })
+
   const swapParams = buildSwapParams(
     args[0].tokenIn,
     args[0].tokenOut,
@@ -133,6 +117,12 @@ module.exports = async ({
     args[0].amountIn.toString(),
     args[0].amountOutMinimum.toString()
   )
+
+  // Verify we'll get enough USDC to make the transfer
+  if (args[0].amountOutMinimum < transferAmount) {
+    const errorMsg = `Insufficient USDC expected from swap. Need ${ethers.formatUnits(transferAmount, usdcDecimals)} USDC but will get minimum ${ethers.formatUnits(args[0].amountOutMinimum, usdcDecimals)} USDC`
+    throw new Error(errorMsg)
+  }
 
   calls.push({
     contractAddress: SWAP_ROUTER_ADDRESS,
@@ -180,7 +170,7 @@ This proposal will:
 
 **Swap Details:**
 - Expected USDC from swap: ~${ethers.formatUnits(expectedUsdcOut, usdcDecimals)} USDC
-- Minimum USDC (with ${SLIPPAGE / 100}% slippage): ~${ethers.formatUnits(minimumUsdcOut, usdcDecimals)} USDC
+- Minimum USDC (with ${SLIPPAGE.toFixed(2)}% slippage): ~${ethers.formatUnits(args[0].amountOutMinimum.toString(), usdcDecimals)} USDC
 - Transfer amount: ${ethers.formatUnits(transferAmount, usdcDecimals)} USDC
 - Any excess USDC remains in DAO treasury
 
