@@ -11889,6 +11889,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nomicfoundation/hardhat-errors@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@nomicfoundation/hardhat-errors@npm:3.0.0"
+  dependencies:
+    "@nomicfoundation/hardhat-utils": "npm:^3.0.0"
+  checksum: 10/5ead5c34e2bf990c714ec9c290bf4dc6d7187cb9d3f0cf52e42f5271be8db64096aa2eed7edeacf0347a95fc8affe6f778f8d452e137c2adc15af63097d69fa6
+  languageName: node
+  linkType: hard
+
 "@nomicfoundation/hardhat-ethers@npm:3.0.5":
   version: 3.0.5
   resolution: "@nomicfoundation/hardhat-ethers@npm:3.0.5"
@@ -11941,21 +11950,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomicfoundation/hardhat-ignition@npm:0.15.11":
-  version: 0.15.11
-  resolution: "@nomicfoundation/hardhat-ignition@npm:0.15.11"
+"@nomicfoundation/hardhat-ignition@npm:3.0.1":
+  version: 3.0.1
+  resolution: "@nomicfoundation/hardhat-ignition@npm:3.0.1"
   dependencies:
-    "@nomicfoundation/ignition-core": "npm:^0.15.11"
-    "@nomicfoundation/ignition-ui": "npm:^0.15.11"
-    chalk: "npm:^4.0.0"
+    "@nomicfoundation/hardhat-errors": "npm:^3.0.0"
+    "@nomicfoundation/hardhat-utils": "npm:^3.0.0"
+    "@nomicfoundation/ignition-core": "npm:^3.0.1"
+    "@nomicfoundation/ignition-ui": "npm:^3.0.1"
+    chalk: "npm:^5.3.0"
     debug: "npm:^4.3.2"
-    fs-extra: "npm:^10.0.0"
     json5: "npm:^2.2.3"
     prompts: "npm:^2.4.2"
   peerDependencies:
-    "@nomicfoundation/hardhat-verify": ^2.0.1
-    hardhat: ^2.18.0
-  checksum: 10/c471d59406d22de381eea48c23954afd2088fd135c06c32f0be7fd30bc8054a3d0f0c7de85e25d9bc5331145e216325bb8b1c96b038f21f8336abfdd194aa27a
+    "@nomicfoundation/hardhat-verify": ^3.0.0
+    hardhat: ^3.0.0
+  checksum: 10/4047339bee1be0ff1772f572c843d43203b87fdc30982bd30a9d32c26c4089191390d242877be253af68839f08b02a2c1ff9e72a0134a3c4c0bfb481db7bf80e
   languageName: node
   linkType: hard
 
@@ -12047,6 +12057,22 @@ __metadata:
     typechain: ^8.3.0
     typescript: ">=4.5.0"
   checksum: 10/9d4936607439c5ab196f5b992f0754c95fbdf3b89cdd6175e0c8f0d948425a789d40ea7bebd1b45b925c96a4783b38f423452c68e21e916edd4d3675f49d0ccf
+  languageName: node
+  linkType: hard
+
+"@nomicfoundation/hardhat-utils@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@nomicfoundation/hardhat-utils@npm:3.0.0"
+  dependencies:
+    "@streamparser/json-node": "npm:^0.0.22"
+    debug: "npm:^4.3.2"
+    env-paths: "npm:^2.2.0"
+    ethereum-cryptography: "npm:^2.2.1"
+    fast-equals: "npm:^5.0.1"
+    json-stream-stringify: "npm:^3.1.6"
+    rfdc: "npm:^1.3.1"
+    undici: "npm:^6.16.1"
+  checksum: 10/247eed9645126b1524fe7049aba5f03a8785975a9cd06f8d20adb285f68289507a413cd04ef0646d2bbb62f5bf86222f94f4cddbcd8b5bf886c927fa8487946a
   languageName: node
   linkType: hard
 
@@ -12160,20 +12186,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomicfoundation/ignition-core@npm:^0.15.11":
-  version: 0.15.11
-  resolution: "@nomicfoundation/ignition-core@npm:0.15.11"
+"@nomicfoundation/ignition-core@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "@nomicfoundation/ignition-core@npm:3.0.1"
   dependencies:
     "@ethersproject/address": "npm:5.6.1"
+    "@nomicfoundation/hardhat-errors": "npm:^3.0.0"
+    "@nomicfoundation/hardhat-utils": "npm:^3.0.0"
     "@nomicfoundation/solidity-analyzer": "npm:^0.1.1"
-    cbor: "npm:^9.0.0"
+    cbor2: "npm:^1.9.0"
     debug: "npm:^4.3.2"
-    ethers: "npm:^6.7.0"
-    fs-extra: "npm:^10.0.0"
+    ethers: "npm:^6.14.0"
     immer: "npm:10.0.2"
-    lodash: "npm:4.17.21"
+    lodash-es: "npm:4.17.21"
     ndjson: "npm:2.0.0"
-  checksum: 10/cb34c25325fb737d89cfd8bd7bb5a42709e30d636c920e0726a9a9431350db7b192ebcc7e2464f824ed6c5c43b5282a42f40c114aa7e41e9ef8a1448d0f0f967
+  checksum: 10/c4f5e9dfbb425c92a395a697524ff7920c756a6688a7bef5354d4931f7b64d4980194506ae838b1abfa1501e83ef048903d07a4fbf7448d349509364300b93da
   languageName: node
   linkType: hard
 
@@ -12184,10 +12211,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomicfoundation/ignition-ui@npm:^0.15.11":
-  version: 0.15.11
-  resolution: "@nomicfoundation/ignition-ui@npm:0.15.11"
-  checksum: 10/1d330ba7320153bf17ac10f5cd6e144b02ec0bd212b1859ffc75b2875028c5e63c743c82fee8abdbef5f811556175350e15991367711ace1868bb0fb72faedba
+"@nomicfoundation/ignition-ui@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "@nomicfoundation/ignition-ui@npm:3.0.1"
+  checksum: 10/b82413a7c1caef6dd23d3ce2102a0139f7e3aa620ed678e21777239cceb03c13ae965615ab5d01262032cf1bd90cd3201beee0ff537697c6cbb867d2bc5d9f70
   languageName: node
   linkType: hard
 
@@ -19329,6 +19356,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@streamparser/json-node@npm:^0.0.22":
+  version: 0.0.22
+  resolution: "@streamparser/json-node@npm:0.0.22"
+  dependencies:
+    "@streamparser/json": "npm:^0.0.22"
+  checksum: 10/3ec9bbedb4d7a8e832070a66c6871e92d1d0b2c956470cb08594c9a7fc240b6155658bbb0f02356031248382afdd42880269d3d04bd22c70b255e8b0d580aba5
+  languageName: node
+  linkType: hard
+
+"@streamparser/json@npm:^0.0.22":
+  version: 0.0.22
+  resolution: "@streamparser/json@npm:0.0.22"
+  checksum: 10/46ae2dbb2ff9e932479b9073b8af18e5f2348739581f2fd238ad452047e0d19adc8730a9f0ba77b42ceb30322a192a3e271bf5682269df57024c717e07f6b625
+  languageName: node
+  linkType: hard
+
 "@stripe/react-stripe-js@npm:3.0.0":
   version: 3.0.0
   resolution: "@stripe/react-stripe-js@npm:3.0.0"
@@ -22130,7 +22173,7 @@ __metadata:
   dependencies:
     "@nomicfoundation/hardhat-chai-matchers": "npm:2.1.0"
     "@nomicfoundation/hardhat-ethers": "npm:3.1.0"
-    "@nomicfoundation/hardhat-ignition": "npm:0.15.11"
+    "@nomicfoundation/hardhat-ignition": "npm:3.0.1"
     "@nomicfoundation/hardhat-ignition-ethers": "npm:0.15.14"
     "@nomicfoundation/hardhat-toolbox": "npm:5.0.0"
     "@nomicfoundation/ignition-core": "npm:0.15.13"
@@ -27231,6 +27274,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cbor2@npm:^1.9.0":
+  version: 1.12.0
+  resolution: "cbor2@npm:1.12.0"
+  checksum: 10/2213c0b0b32bd20936889f7d670b125fe29147baa1dde8a9d815969da16e7f70b540016214b61078eadc4e460034008f801a1d102070e762532b319fc734b2c3
+  languageName: node
+  linkType: hard
+
 "cbor@npm:^10.0.0":
   version: 10.0.3
   resolution: "cbor@npm:10.0.3"
@@ -27382,6 +27432,13 @@ __metadata:
   version: 5.4.1
   resolution: "chalk@npm:5.4.1"
   checksum: 10/29df3ffcdf25656fed6e95962e2ef86d14dfe03cd50e7074b06bad9ffbbf6089adbb40f75c00744d843685c8d008adaf3aed31476780312553caf07fa86e5bc7
+  languageName: node
+  linkType: hard
+
+"chalk@npm:^5.3.0":
+  version: 5.6.0
+  resolution: "chalk@npm:5.6.0"
+  checksum: 10/f0e0646a72adbd0f6e73441d3872d7f2f40ba98052924f08a30c10634ec6b1e2cd19cc3c40cc21081dad640e2a1a2749030418571690b89bd7782babf7f89866
   languageName: node
   linkType: hard
 
@@ -33681,6 +33738,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fast-equals@npm:^5.0.1":
+  version: 5.2.2
+  resolution: "fast-equals@npm:5.2.2"
+  checksum: 10/87939dc01c6634f844369c2d774c9bf82b6c5935eb45c698fdfd2e708439c6c94a67a41c67c7e063759394e319850ee563e717e65776c8f5997566b0cbb17c7a
+  languageName: node
+  linkType: hard
+
 "fast-fifo@npm:^1.0.0, fast-fifo@npm:^1.2.0, fast-fifo@npm:^1.3.2":
   version: 1.3.2
   resolution: "fast-fifo@npm:1.3.2"
@@ -39441,7 +39505,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json-stream-stringify@npm:^3.1.4":
+"json-stream-stringify@npm:^3.1.4, json-stream-stringify@npm:^3.1.6":
   version: 3.1.6
   resolution: "json-stream-stringify@npm:3.1.6"
   checksum: 10/d52919465b4a31d7a0b5720ca0e6268f757fc1515486d5c77cfb75f7a9e4b58e13a73a2f811d6d322b9a101750d3961b48a68ee9d9b299ac3846ef2921a62a81
@@ -40325,7 +40389,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash-es@npm:^4.17.21":
+"lodash-es@npm:4.17.21, lodash-es@npm:^4.17.21":
   version: 4.17.21
   resolution: "lodash-es@npm:4.17.21"
   checksum: 10/03f39878ea1e42b3199bd3f478150ab723f93cc8730ad86fec1f2804f4a07c6e30deaac73cad53a88e9c3db33348bb8ceeb274552390e7a75d7849021c02df43
@@ -50145,7 +50209,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rfdc@npm:^1.2.0, rfdc@npm:^1.3.0, rfdc@npm:^1.4.1":
+"rfdc@npm:^1.2.0, rfdc@npm:^1.3.0, rfdc@npm:^1.3.1, rfdc@npm:^1.4.1":
   version: 1.4.1
   resolution: "rfdc@npm:1.4.1"
   checksum: 10/2f3d11d3d8929b4bfeefc9acb03aae90f971401de0add5ae6c5e38fec14f0405e6a4aad8fdb76344bfdd20c5193110e3750cbbd28ba86d73729d222b6cf4a729
@@ -55582,6 +55646,13 @@ __metadata:
   version: 6.21.2
   resolution: "undici@npm:6.21.2"
   checksum: 10/9cd9ead22599c23aa2a7dfa5b80fa1491bebb294bf1dc64c9c0f90ea4ec8e272a4db2810e2565d65b952249f105523d2929d7cc951f88cf0a1f082143bae8d75
+  languageName: node
+  linkType: hard
+
+"undici@npm:^6.16.1":
+  version: 6.21.3
+  resolution: "undici@npm:6.21.3"
+  checksum: 10/b6b8f4a90e294c11fabbb174b471a310840695ed0154a44b81e9bb4a08867ed738c8a7eac4eb46c7902d502fbccf03fa2cf2e5f18d9a2218d82e4294e3f74a2b
   languageName: node
   linkType: hard
 
