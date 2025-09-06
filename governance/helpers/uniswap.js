@@ -232,13 +232,6 @@ const buildSwapParams = function (
   }
 }
 
-// Calculate minimum amount with slippage protection
-const calculateMinimumAmount = function (amountOut, slippageBasisPoints = 50) {
-  return (
-    (BigInt(amountOut) * BigInt(10000 - slippageBasisPoints)) / BigInt(10000)
-  )
-}
-
 // Get quote for exact input swap using Uniswap V3 Quoter
 const getUniswapV3Quote = async function (tokenIn, tokenOut, fee, amountIn) {
   try {
@@ -332,7 +325,6 @@ module.exports = {
   getPoolImmutables,
   getUniswapV3Quote,
   buildSwapParams,
-  calculateMinimumAmount,
   initializeTokens,
   getPoolByAddress,
 }
