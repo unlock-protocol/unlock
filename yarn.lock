@@ -19915,14 +19915,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tw-classed/react@npm:1.8.0":
-  version: 1.8.0
-  resolution: "@tw-classed/react@npm:1.8.0"
+"@tw-classed/react@npm:1.8.1":
+  version: 1.8.1
+  resolution: "@tw-classed/react@npm:1.8.1"
   dependencies:
     "@tw-classed/core": "npm:1.7.0"
   peerDependencies:
     react: ">=16.8.0"
-  checksum: 10/7bfc82d7d099da8429e8178860a92b6f08987e84e8b94d3167aa03bae1619c4479712a9696f1fcaede54267b20856aed9914cb958978a4cf6a72ca19767fcb05
+  checksum: 10/58a7d56c693273def79f4d56b5723993f22e7c5177dbcf619ee8b8bb9137a865d0ca20f00b415613a9dd5865c35d6059e6e40a9cbd863e31e7477c4dc7f7ba7c
   languageName: node
   linkType: hard
 
@@ -21935,7 +21935,7 @@ __metadata:
     "@privy-io/react-auth": "npm:2.12.0"
     "@sentry/nextjs": "npm:9.15.0"
     "@tanstack/react-query": "npm:5.85.6"
-    "@tw-classed/react": "npm:1.8.0"
+    "@tw-classed/react": "npm:1.8.1"
     "@types/react": "npm:18.3.23"
     "@unlock-protocol/contracts": "workspace:*"
     "@unlock-protocol/core": "workspace:./packages/core"
@@ -22454,7 +22454,7 @@ __metadata:
     "@tailwindcss/forms": "npm:0.5.10"
     "@tailwindcss/typography": "npm:0.5.16"
     "@tanstack/react-query": "npm:5.84.0"
-    "@tw-classed/react": "npm:1.8.0"
+    "@tw-classed/react": "npm:1.8.1"
     "@types/react": "npm:18.3.23"
     "@types/react-dom": "npm:18.3.7"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
