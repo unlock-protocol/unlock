@@ -1,6 +1,6 @@
 services:
   graph-node:
-    image: graphprotocol/graph-node:v0.39.1
+    image: graphprotocol/graph-node:v0.40.1
     ports:
       - '8000:8000'
       - '8001:8001'
