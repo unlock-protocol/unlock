@@ -15943,6 +15943,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rollup/pluginutils@npm:^5.2.0":
+  version: 5.3.0
+  resolution: "@rollup/pluginutils@npm:5.3.0"
+  dependencies:
+    "@types/estree": "npm:^1.0.0"
+    estree-walker: "npm:^2.0.2"
+    picomatch: "npm:^4.0.2"
+  peerDependencies:
+    rollup: ^1.20.0||^2.0.0||^3.0.0||^4.0.0
+  peerDependenciesMeta:
+    rollup:
+      optional: true
+  checksum: 10/6c7dbab90e0ca5918a36875f745a0f30b47d5e0f45b42ed381ad8f7fed76b23e935766b66e3ae75375a42a80369569913abc8fd2529f4338471a1b2b4dfebaff
+  languageName: node
+  linkType: hard
+
 "@rollup/rollup-android-arm-eabi@npm:4.35.0":
   version: 4.35.0
   resolution: "@rollup/rollup-android-arm-eabi@npm:4.35.0"
@@ -22018,7 +22034,7 @@ __metadata:
     tsx: "npm:4.20.5"
     typescript: "npm:5.8.3"
     vite: "npm:6.3.5"
-    vite-plugin-svgr: "npm:4.3.0"
+    vite-plugin-svgr: "npm:4.5.0"
     vite-tsconfig-paths: "npm:4.3.2"
   peerDependencies:
     react: 18.3.1
@@ -56804,6 +56820,19 @@ __metadata:
   peerDependencies:
     vite: ">=2.6.0"
   checksum: 10/9ade316f20dae881f4ee65e4f2a35be11cf75b22a411bfcdb55bd61382c0249395cb925775e06a49e0fdffe483e64d5a25068c3ddfc5823fb72013cf4d932d17
+  languageName: node
+  linkType: hard
+
+"vite-plugin-svgr@npm:4.5.0":
+  version: 4.5.0
+  resolution: "vite-plugin-svgr@npm:4.5.0"
+  dependencies:
+    "@rollup/pluginutils": "npm:^5.2.0"
+    "@svgr/core": "npm:^8.1.0"
+    "@svgr/plugin-jsx": "npm:^8.1.0"
+  peerDependencies:
+    vite: ">=2.6.0"
+  checksum: 10/1d6a186fa416ec7b1f85031e08511d9f08e267ace0f223b90851571e572232a6198c26dfaa8bd2cc60b1fa894201fd25b7e8c3310b86be216bd9b97824515094
   languageName: node
   linkType: hard
 
