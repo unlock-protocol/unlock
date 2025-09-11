@@ -36,13 +36,13 @@
     "@tailwindcss/aspect-ratio": "0.4.2",
     "@tailwindcss/forms": "0.5.10",
     "@tailwindcss/typography": "0.5.16",
-    "@tanstack/react-query": "5.84.0",
+    "@tanstack/react-query": "5.87.4",
     "@tw-classed/react": "1.8.1",
     "ethers": "6.15.0",
     "prism-react-renderer": "2.4.1",
     "react-dropzone": "14.3.8",
-    "react-hook-form": "7.61.1",
-    "react-hot-toast": "2.5.2",
+    "react-hook-form": "7.62.0",
+    "react-hot-toast": "2.6.0",
     "react-icons": "5.5.0",
     "react-use-clipboard": "1.0.9",
     "tailwind-merge": "3.3.1",
@@ -82,7 +82,7 @@
     "url-loader": "4.1.1",
     "vite": "6.3.5",
     "vite-plugin-node-polyfills": "0.24.0",
-    "vite-plugin-svgr": "4.3.0",
+    "vite-plugin-svgr": "4.5.0",
     "vite-tsconfig-paths": "4.3.2"
   }
 }
