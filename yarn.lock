@@ -22010,7 +22010,7 @@ __metadata:
     typescript: "npm:5.8.3"
     vitest: "npm:3.2.4"
   peerDependencies:
-    zod: 3.25.76
+    zod: 4.1.8
   languageName: unknown
   linkType: soft
 
@@ -22302,7 +22302,7 @@ __metadata:
     vitest-fetch-mock: "npm:0.4.5"
     winston: "npm:3.17.0"
     yargs: "npm:17.7.2"
-    zod: "npm:3.24.4"
+    zod: "npm:4.1.8"
   languageName: unknown
   linkType: soft
 
@@ -22585,7 +22585,7 @@ __metadata:
     vitest-fetch-mock: "npm:0.4.5"
     vitest-localstorage-mock: "npm:0.1.2"
     xstate: "npm:5.14.0"
-    zod: "npm:3.24.4"
+    zod: "npm:4.1.8"
   peerDependencies:
     react: 18.3.1
     react-dom: 18.3.1
@@ -56810,19 +56810,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-svgr@npm:4.3.0":
-  version: 4.3.0
-  resolution: "vite-plugin-svgr@npm:4.3.0"
-  dependencies:
-    "@rollup/pluginutils": "npm:^5.1.3"
-    "@svgr/core": "npm:^8.1.0"
-    "@svgr/plugin-jsx": "npm:^8.1.0"
-  peerDependencies:
-    vite: ">=2.6.0"
-  checksum: 10/9ade316f20dae881f4ee65e4f2a35be11cf75b22a411bfcdb55bd61382c0249395cb925775e06a49e0fdffe483e64d5a25068c3ddfc5823fb72013cf4d932d17
-  languageName: node
-  linkType: hard
-
 "vite-plugin-svgr@npm:4.5.0":
   version: 4.5.0
   resolution: "vite-plugin-svgr@npm:4.5.0"
@@ -58709,10 +58696,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:3.24.4":
-  version: 3.24.4
-  resolution: "zod@npm:3.24.4"
-  checksum: 10/3d545792fa54bb27ee5dbc34a5709e81f603185fcc94c8204b5d95c20dc4c81d870ff9c51f3884a30ef05cdc601449f4c4df254ac4783f0827b1faed7c1cdb48
+"zod@npm:4.1.8":
+  version: 4.1.8
+  resolution: "zod@npm:4.1.8"
+  checksum: 10/1a317c26b39d145d7045be6775d30497545fd1c5a13ce0f3f373ec06676ff7b2e0715f522525c183aae01f18d05d4789ee19533c3e9203087a5adf6753e588e5
   languageName: node
   linkType: hard
 
