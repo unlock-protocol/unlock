@@ -11982,6 +11982,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nomicfoundation/hardhat-network-helpers@npm:1.1.0":
+  version: 1.1.0
+  resolution: "@nomicfoundation/hardhat-network-helpers@npm:1.1.0"
+  dependencies:
+    ethereumjs-util: "npm:^7.1.4"
+  peerDependencies:
+    hardhat: ^2.26.0
+  checksum: 10/c18645b1fc571db37976c57946efb0f021c7cd42473984a4e14ea2c5be62aaf768183ada3d878d72b3e328fab7b8577de82037e9257466c107acacec1f3fe123
+  languageName: node
+  linkType: hard
+
 "@nomicfoundation/hardhat-toolbox@npm:4.0.0":
   version: 4.0.0
   resolution: "@nomicfoundation/hardhat-toolbox@npm:4.0.0"
@@ -22128,7 +22139,7 @@ __metadata:
     "@matterlabs/hardhat-zksync-upgradable": "npm:1.10.0"
     "@matterlabs/hardhat-zksync-verify": "npm:1.8.0"
     "@nomicfoundation/hardhat-ethers": "npm:3.1.0"
-    "@nomicfoundation/hardhat-network-helpers": "npm:1.0.12"
+    "@nomicfoundation/hardhat-network-helpers": "npm:1.1.0"
     "@nomicfoundation/hardhat-verify": "npm:2.1.1"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@openzeppelin/hardhat-upgrades": "npm:3.9.0"
@@ -56807,19 +56818,6 @@ __metadata:
   peerDependencies:
     vite: ^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0
   checksum: 10/9c85b94bd74728c1d93c337b4032ba4bec56054caddb0205475abc8c281b047649bb5e1dcdd77206b0b13c707e49d379551df4fb18843e41ace03f62e5a06380
-  languageName: node
-  linkType: hard
-
-"vite-plugin-svgr@npm:4.3.0":
-  version: 4.3.0
-  resolution: "vite-plugin-svgr@npm:4.3.0"
-  dependencies:
-    "@rollup/pluginutils": "npm:^5.1.3"
-    "@svgr/core": "npm:^8.1.0"
-    "@svgr/plugin-jsx": "npm:^8.1.0"
-  peerDependencies:
-    vite: ">=2.6.0"
-  checksum: 10/9ade316f20dae881f4ee65e4f2a35be11cf75b22a411bfcdb55bd61382c0249395cb925775e06a49e0fdffe483e64d5a25068c3ddfc5823fb72013cf4d932d17
   languageName: node
   linkType: hard
 
