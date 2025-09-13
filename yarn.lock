@@ -21975,7 +21975,7 @@ __metadata:
     react-markdown: "npm:10.1.0"
     tailwind-merge: "npm:3.3.1"
     tailwindcss: "npm:3.4.17"
-    typescript: "npm:5.8.3"
+    typescript: "npm:5.9.2"
     vitest: "npm:3.2.4"
   peerDependencies:
     react: 18.3.1
@@ -22007,7 +22007,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     eslint: "npm:9.31.0"
     tsup: "npm:8.5.0"
-    typescript: "npm:5.8.3"
+    typescript: "npm:5.9.2"
     vitest: "npm:3.2.4"
   peerDependencies:
     zod: 3.25.76
@@ -22032,7 +22032,7 @@ __metadata:
     storybook: "npm:8.6.14"
     tsup: "npm:8.5.0"
     tsx: "npm:4.20.5"
-    typescript: "npm:5.8.3"
+    typescript: "npm:5.9.2"
     vite: "npm:6.3.5"
     vite-plugin-svgr: "npm:4.5.0"
     vite-tsconfig-paths: "npm:4.3.2"
@@ -22088,7 +22088,7 @@ __metadata:
     "@types/handlebars": "npm:4.1.0"
     handlebars: "npm:4.7.8"
     tsx: "npm:4.20.5"
-    typescript: "npm:5.8.3"
+    typescript: "npm:5.9.2"
     vitest: "npm:3.2.4"
   languageName: unknown
   linkType: soft
@@ -22173,7 +22173,7 @@ __metadata:
     ethers: "npm:6.13.5"
     hardhat: "npm:2.26.3"
     tsup: "npm:8.5.0"
-    typescript: "npm:5.8.3"
+    typescript: "npm:5.9.2"
     zksync-ethers: "npm:6.18.0"
   languageName: unknown
   linkType: soft
@@ -22370,7 +22370,7 @@ __metadata:
     "@unlock-protocol/networks": "workspace:^"
     eslint: "npm:9.31.0"
     ethers: "npm:6.13.5"
-    typescript: "npm:5.8.3"
+    typescript: "npm:5.9.2"
     vitest: "npm:3.2.4"
     wrangler: "npm:4.33.1"
   languageName: unknown
@@ -22683,7 +22683,7 @@ __metadata:
     showdown-highlight: "npm:3.1.0"
     tailwind-merge: "npm:3.3.1"
     tailwindcss: "npm:3.4.17"
-    typescript: "npm:5.8.3"
+    typescript: "npm:5.9.2"
     use-local-storage: "npm:3.0.0"
     vitest: "npm:3.2.4"
     yaml-front-matter: "npm:4.1.1"
@@ -55981,7 +55981,7 @@ __metadata:
     node-gyp: "npm:11.4.2"
     prettier: "npm:3.5.3"
     prettier-plugin-solidity: "npm:1.4.3"
-    typescript: "npm:5.8.3"
+    typescript: "npm:5.9.2"
     typescript-eslint: "npm:8.43.0"
     vitest: "npm:3.2.4"
   languageName: unknown
@@ -56807,19 +56807,6 @@ __metadata:
   peerDependencies:
     vite: ^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0
   checksum: 10/9c85b94bd74728c1d93c337b4032ba4bec56054caddb0205475abc8c281b047649bb5e1dcdd77206b0b13c707e49d379551df4fb18843e41ace03f62e5a06380
-  languageName: node
-  linkType: hard
-
-"vite-plugin-svgr@npm:4.3.0":
-  version: 4.3.0
-  resolution: "vite-plugin-svgr@npm:4.3.0"
-  dependencies:
-    "@rollup/pluginutils": "npm:^5.1.3"
-    "@svgr/core": "npm:^8.1.0"
-    "@svgr/plugin-jsx": "npm:^8.1.0"
-  peerDependencies:
-    vite: ">=2.6.0"
-  checksum: 10/9ade316f20dae881f4ee65e4f2a35be11cf75b22a411bfcdb55bd61382c0249395cb925775e06a49e0fdffe483e64d5a25068c3ddfc5823fb72013cf4d932d17
   languageName: node
   linkType: hard
 
