@@ -22661,7 +22661,7 @@ __metadata:
     eslint: "npm:9.31.0"
     eslint-config-next: "npm:15.5.2"
     ethers: "npm:6.13.5"
-    feed: "npm:4.2.2"
+    feed: "npm:5.1.0"
     gray-matter: "npm:4.0.3"
     next: "npm:14.2.26"
     next-seo: "npm:6.8.0"
@@ -34004,7 +34004,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"feed@npm:4.2.2, feed@npm:^4.2.2":
+"feed@npm:5.1.0":
+  version: 5.1.0
+  resolution: "feed@npm:5.1.0"
+  dependencies:
+    xml-js: "npm:^1.6.11"
+  checksum: 10/c0b7cd6e6a5d5406f871cdaf4487d273c00e35f3c04975bb9095e10cc5234ec1b797d11a37f6502476d212e1ba0854f3de7302c4750bdeb7aec3aedcd4e50426
+  languageName: node
+  linkType: hard
+
+"feed@npm:^4.2.2":
   version: 4.2.2
   resolution: "feed@npm:4.2.2"
   dependencies:
@@ -56807,19 +56816,6 @@ __metadata:
   peerDependencies:
     vite: ^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0
   checksum: 10/9c85b94bd74728c1d93c337b4032ba4bec56054caddb0205475abc8c281b047649bb5e1dcdd77206b0b13c707e49d379551df4fb18843e41ace03f62e5a06380
-  languageName: node
-  linkType: hard
-
-"vite-plugin-svgr@npm:4.3.0":
-  version: 4.3.0
-  resolution: "vite-plugin-svgr@npm:4.3.0"
-  dependencies:
-    "@rollup/pluginutils": "npm:^5.1.3"
-    "@svgr/core": "npm:^8.1.0"
-    "@svgr/plugin-jsx": "npm:^8.1.0"
-  peerDependencies:
-    vite: ">=2.6.0"
-  checksum: 10/9ade316f20dae881f4ee65e4f2a35be11cf75b22a411bfcdb55bd61382c0249395cb925775e06a49e0fdffe483e64d5a25068c3ddfc5823fb72013cf4d932d17
   languageName: node
   linkType: hard
 
