@@ -21002,13 +21002,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/retry@npm:0.12.2":
-  version: 0.12.2
-  resolution: "@types/retry@npm:0.12.2"
-  checksum: 10/e5675035717b39ce4f42f339657cae9637cf0c0051cf54314a6a2c44d38d91f6544be9ddc0280587789b6afd056be5d99dbe3e9f4df68c286c36321579b1bf4a
-  languageName: node
-  linkType: hard
-
 "@types/sax@npm:^1.2.1":
   version: 1.2.7
   resolution: "@types/sax@npm:1.2.7"
@@ -22172,7 +22165,7 @@ __metadata:
     multer-s3: "npm:3.0.1"
     nock: "npm:14.0.10"
     node-mocks-http: "npm:1.16.2"
-    p-retry: "npm:6.2.1"
+    p-retry: "npm:7.0.0"
     parse-data-uri: "npm:0.2.0"
     passkit-generator: "npm:3.2.0"
     path-to-regexp: "npm:8.2.0"
@@ -38085,7 +38078,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-network-error@npm:^1.0.0":
+"is-network-error@npm:^1.1.0":
   version: 1.1.0
   resolution: "is-network-error@npm:1.1.0"
   checksum: 10/b2fe6aac07f814a9de275efd05934c832c129e7ba292d27614e9e8eec9e043b7a0bbeaeca5d0916b0f462edbec2aa2eaee974ee0a12ac095040e9515c222c251
@@ -45219,14 +45212,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"p-retry@npm:6.2.1":
-  version: 6.2.1
-  resolution: "p-retry@npm:6.2.1"
+"p-retry@npm:7.0.0":
+  version: 7.0.0
+  resolution: "p-retry@npm:7.0.0"
   dependencies:
-    "@types/retry": "npm:0.12.2"
-    is-network-error: "npm:^1.0.0"
-    retry: "npm:^0.13.1"
-  checksum: 10/7104ef13703b155d70883b0d3654ecc03148407d2711a4516739cf93139e8bec383451e14925e25e3c1ae04dbace3ed53c26dc3853c1e9b9867fcbdde25f4cdc
+    is-network-error: "npm:^1.1.0"
+  checksum: 10/d5fabc7c1875038109e3214dcf88a43e7d925f43c412e9f48a9edc7b38a387134ca673f6dbf83db172e68ceb152cad6b93a0cf32fa81236e4fbb4660d8b9acac
   languageName: node
   linkType: hard
 
