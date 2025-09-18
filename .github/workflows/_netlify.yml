@@ -52,7 +52,7 @@ jobs:
     steps:
       - name: 'Free up disk space'
         run: sudo rm -rf /usr/share/dotnet && sudo rm -rf /opt/ghc && sudo rm -rf "/usr/local/share/boost" && sudo rm -rf "$AGENT_TOOLSDIRECTORY"
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: Check for changes in ${{ inputs.service }}
@@ -76,7 +76,7 @@ jobs:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: 'Export secrets to env'
         id: filter_secrets
         run: |
