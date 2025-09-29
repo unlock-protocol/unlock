@@ -30,11 +30,11 @@ const MENU = {
             },
             {
               title: 'Libraries and Tools',
-              url: 'https://docs.unlock-protocol.com/libraries-and-sdks/',
+              url: 'https://docs.unlock-protocol.com/tools/',
             },
             {
               title: 'Code Examples',
-              url: 'https://docs.unlock-protocol.com/examples/',
+              url: 'https://docs.unlock-protocol.com/tutorials/',
             },
             {
               title: 'Video Tutorials',
