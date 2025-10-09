@@ -19547,10 +19547,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:5.87.4":
-  version: 5.87.4
-  resolution: "@tanstack/query-core@npm:5.87.4"
-  checksum: 10/30f82a3bcea5dac5e7a3d2caa1734264832e5b54a0c01c791b06e3faefd7a1359f454e5e4cbde9cefe149ab8176c26e63d323dbf5b877dab38d90b6979b4bbba
+"@tanstack/query-core@npm:5.90.2":
+  version: 5.90.2
+  resolution: "@tanstack/query-core@npm:5.90.2"
+  checksum: 10/38b9ba6150cd74884f4233ab8cf617f006a819afe0cc43c0574dec11fac835f45e40a4148a83b6506bd8041ccc856bc6c975e08c0e9977b57a2554df33479910
   languageName: node
   linkType: hard
 
@@ -19576,14 +19576,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:5.87.4":
-  version: 5.87.4
-  resolution: "@tanstack/react-query@npm:5.87.4"
+"@tanstack/react-query@npm:5.90.2":
+  version: 5.90.2
+  resolution: "@tanstack/react-query@npm:5.90.2"
   dependencies:
-    "@tanstack/query-core": "npm:5.87.4"
+    "@tanstack/query-core": "npm:5.90.2"
   peerDependencies:
     react: ^18 || ^19
-  checksum: 10/e8fdd39298a89f11744195503f9de147241813edcf198e2a63fa2b1dfbee96d847672c46fa5537ac886745add29968ed4f074f3bf17b0d8bf362a2575cfc6061
+  checksum: 10/001260539db3c9f7369817c22840175e0a32631dd7cbb50b85cf116d2aa11f632fbeb1303fe3840fe2d88cbaf699f08e98e830d4843c5fbd1ff4549ea50e4a8c
   languageName: node
   linkType: hard
 
@@ -22487,7 +22487,7 @@ __metadata:
     "@tailwindcss/aspect-ratio": "npm:0.4.2"
     "@tailwindcss/forms": "npm:0.5.10"
     "@tailwindcss/typography": "npm:0.5.16"
-    "@tanstack/react-query": "npm:5.87.4"
+    "@tanstack/react-query": "npm:5.90.2"
     "@tw-classed/react": "npm:1.8.1"
     "@types/react": "npm:18.3.24"
     "@types/react-dom": "npm:18.3.7"
@@ -22500,7 +22500,7 @@ __metadata:
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
     react-dropzone: "npm:14.3.8"
-    react-hook-form: "npm:7.62.0"
+    react-hook-form: "npm:7.63.0"
     react-hot-toast: "npm:2.6.0"
     react-icons: "npm:5.5.0"
     react-use-clipboard: "npm:1.0.9"
@@ -48581,12 +48581,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:7.62.0":
-  version: 7.62.0
-  resolution: "react-hook-form@npm:7.62.0"
+"react-hook-form@npm:7.63.0":
+  version: 7.63.0
+  resolution: "react-hook-form@npm:7.63.0"
   peerDependencies:
     react: ^16.8.0 || ^17 || ^18 || ^19
-  checksum: 10/092dcf0317ed3e314b124ed9df3f3494cf3447326078cd857f6fdc47aad0504e466ab2fb593bbb8e79c247b8772159f83aebe54a7e5799926b00d7e401d127a6
+  checksum: 10/df07de6fce42bbcd65ed100aaea7d0e907c555c2635c253517225c84f06eab0ebd278578ada4f479ad582c18a52898c4f1cabca327a12a74b8b7e6e54718edbe
   languageName: node
   linkType: hard
 
