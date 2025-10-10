@@ -1,7 +1,7 @@
 import { ToastHelper } from '@unlock-protocol/ui'
 import { config } from '~/config/app'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { ethers } from 'ethers'
+import { Contract, ContractRunner } from 'ethers'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import KickbackAbi from './KickbackAbi'
 import { Button, Placeholder } from '@unlock-protocol/ui'
@@ -28,6 +28,7 @@ export const SaveRootForRefunds = ({
   const { kickbackAddress } = config.networks[event.attendeeRefund!.network]
   const web3Service = useWeb3Service()
   const provider = web3Service.providerForNetwork(network)
+  const readRunner = provider as unknown as ContractRunner
   const { getWalletService } = useProvider()
 
   const {
@@ -37,11 +38,7 @@ export const SaveRootForRefunds = ({
   } = useQuery({
     queryKey: ['getProof', lockAddress],
     queryFn: async () => {
-      const contract = new ethers.Contract(
-        kickbackAddress!,
-        KickbackAbi,
-        provider
-      )
+      const contract = new Contract(kickbackAddress!, KickbackAbi, readRunner)
 
       return contract.roots(lockAddress)
     },
@@ -50,7 +47,7 @@ export const SaveRootForRefunds = ({
   const setProof = useMutation({
     mutationFn: async (root: string) => {
       const walletService = await getWalletService(network)
-      const contract = new ethers.Contract(
+      const contract = new Contract(
         kickbackAddress!,
         KickbackAbi,
         walletService.signer

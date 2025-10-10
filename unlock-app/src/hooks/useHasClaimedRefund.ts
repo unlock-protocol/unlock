@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { ethers } from 'ethers'
+import { Contract, ContractRunner } from 'ethers'
 import KickbackAbi from '~/components/content/event/Settings/Components/Kickback/KickbackAbi'
 import { config } from '~/config/app'
 import { useWeb3Service } from '~/utils/withWeb3Service'
@@ -12,14 +12,15 @@ export const useHasClaimedRefund = (
   const web3Service = useWeb3Service()
   const { kickbackAddress } = config.networks[network]
   const provider = web3Service.providerForNetwork(network)
+  const contractRunner = provider as unknown as ContractRunner
 
   return useQuery({
     queryKey: ['hasClaimedRefund', account, lockAddress, network],
     queryFn: async () => {
-      const contract = new ethers.Contract(
+      const contract = new Contract(
         kickbackAddress!,
         KickbackAbi,
-        provider
+        contractRunner
       )
       const claimed = await contract.issuedRefunds(lockAddress, account)
       return !!claimed
