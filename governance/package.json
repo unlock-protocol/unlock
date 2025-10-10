@@ -15,7 +15,7 @@
     "@nomicfoundation/hardhat-network-helpers": "1.0.12",
     "@nomicfoundation/hardhat-verify": "2.1.1",
     "@nomiclabs/hardhat-ethers": "2.2.3",
-    "@openzeppelin/hardhat-upgrades": "3.9.0",
+    "@openzeppelin/hardhat-upgrades": "3.9.1",
     "@openzeppelin/upgrades-core": "1.44.1",
     "@safe-global/api-kit": "4.0.0",
     "@safe-global/protocol-kit": "6.1.1",
