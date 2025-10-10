@@ -11,7 +11,7 @@
     "vitest": "3.2.4"
   },
   "dependencies": {
-    "ethers": "6.13.5",
+    "ethers": "6.15.0",
     "wrangler": "4.33.1"
   },
   "scripts": {
