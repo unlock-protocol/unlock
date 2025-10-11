@@ -34,7 +34,7 @@
     "calendar-link": "2.7.0",
     "csv": "6.3.11",
     "dayjs": "1.11.18",
-    "dotenv": "16.4.7",
+    "dotenv": "17.2.3",
     "eslint": "9.22.0",
     "ethers": "6.13.5",
     "file-saver": "2.0.5",
