@@ -20729,12 +20729,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:22.18.0":
-  version: 22.18.0
-  resolution: "@types/node@npm:22.18.0"
+"@types/node@npm:22.18.9":
+  version: 22.18.9
+  resolution: "@types/node@npm:22.18.9"
   dependencies:
     undici-types: "npm:~6.21.0"
-  checksum: 10/c4e4cdac52aae71e120fb4a02a08f774366e8bd6654de9376fb1113fb66cfa2706176b72f188069cdecdb40e5cdde2befa031dc720a0cc0b1e349af9e38492ad
+  checksum: 10/81d656d6d51b87b56290f630ee2464f7f9911377b8f038c3d41fa2b9b550ee5f8215ac95eeb56a1e051aae0fdf58883038e478a29d123be59cbcfd6bc3c05f9d
   languageName: node
   linkType: hard
 
@@ -22168,7 +22168,7 @@ __metadata:
     "@typechain/ethers-v6": "npm:0.5.1"
     "@typechain/hardhat": "npm:9.1.0"
     "@types/mocha": "npm:10.0.10"
-    "@types/node": "npm:22.18.0"
+    "@types/node": "npm:22.18.9"
     "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/eslint-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
@@ -22341,7 +22341,7 @@ __metadata:
   resolution: "@unlock-protocol/provider@workspace:provider"
   dependencies:
     "@cloudflare/workers-types": "npm:4.20250831.0"
-    "@types/node": "npm:22.18.0"
+    "@types/node": "npm:22.18.9"
     "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:^"
@@ -22622,7 +22622,7 @@ __metadata:
     "@radix-ui/react-avatar": "npm:1.1.10"
     "@tanstack/react-query": "npm:5.85.6"
     "@testing-library/react": "npm:16.3.0"
-    "@types/node": "npm:22.18.0"
+    "@types/node": "npm:22.18.9"
     "@types/react": "npm:18.3.24"
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
