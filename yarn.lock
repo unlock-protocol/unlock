@@ -22078,7 +22078,7 @@ __metadata:
     "@eslint/compat": "npm:1.3.2"
     "@typescript-eslint/eslint-plugin": "npm:8.41.0"
     "@typescript-eslint/parser": "npm:8.41.0"
-    "@vitest/eslint-plugin": "npm:1.3.9"
+    "@vitest/eslint-plugin": "npm:1.3.16"
     eslint: "npm:9.34.0"
     eslint-config-next: "npm:15.5.2"
     eslint-config-prettier: "npm:10.1.8"
@@ -22959,9 +22959,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitest/eslint-plugin@npm:1.3.9":
-  version: 1.3.9
-  resolution: "@vitest/eslint-plugin@npm:1.3.9"
+"@vitest/eslint-plugin@npm:1.3.16":
+  version: 1.3.16
+  resolution: "@vitest/eslint-plugin@npm:1.3.16"
   dependencies:
     "@typescript-eslint/scope-manager": "npm:^8.41.0"
     "@typescript-eslint/utils": "npm:^8.24.1"
@@ -22974,7 +22974,7 @@ __metadata:
       optional: true
     vitest:
       optional: true
-  checksum: 10/87647cc2860774359011f4e59284c28dc440b771cc5f9aa976a6b78b9029acf2c5687b32326c9ad7ac7d9802250abf93f858f9a38c78b7ea8a7532ab939d9fa2
+  checksum: 10/9ba3626d1563ed3e3d2ae02b7eb57b5e7e9a4fdd8b48b1026e0ae0d8f8533ff6a995378f32f1f8899e5d3cf00dfeb364bb716605fee735c820af52e32949e092
   languageName: node
   linkType: hard
 
@@ -55867,7 +55867,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:8.45.0"
     "@typescript-eslint/parser": "npm:8.45.0"
     "@vitest/coverage-v8": "npm:3.2.4"
-    "@vitest/eslint-plugin": "npm:1.3.9"
+    "@vitest/eslint-plugin": "npm:1.3.16"
     babel-plugin-polyfill-corejs2: "npm:0.4.12"
     eslint: "npm:9.31.0"
     eslint-plugin-evm-address-to-checksummed: "npm:0.0.6"
