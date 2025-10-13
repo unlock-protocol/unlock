@@ -20877,7 +20877,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=13.7.0, @types/node@npm:>=8.1.0, @types/node@npm:^22.7.5":
+"@types/node@npm:*, @types/node@npm:>=13.7.0, @types/node@npm:^22.7.5":
   version: 22.13.12
   resolution: "@types/node@npm:22.13.12"
   dependencies:
@@ -22473,7 +22473,7 @@ __metadata:
     sequelize: "npm:6.37.7"
     sequelize-cli: "npm:6.6.3"
     siwe: "npm:3.0.0"
-    stripe: "npm:18.0.0"
+    stripe: "npm:19.1.0"
     supertest: "npm:7.0.0"
     tsx: "npm:4.19.4"
     typescript: "npm:5.7.3"
@@ -53561,13 +53561,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stripe@npm:18.0.0":
-  version: 18.0.0
-  resolution: "stripe@npm:18.0.0"
+"stripe@npm:19.1.0":
+  version: 19.1.0
+  resolution: "stripe@npm:19.1.0"
   dependencies:
-    "@types/node": "npm:>=8.1.0"
     qs: "npm:^6.11.0"
-  checksum: 10/94f081c14ed0fb26d10748be7f41695d24fce8852f25a27abe67a67fab06eddcfca32f067e6bc84d1d91e220c9aa2ab4ca8ff006e407bae904068b6aa31c922c
+  peerDependencies:
+    "@types/node": ">=16"
+  peerDependenciesMeta:
+    "@types/node":
+      optional: true
+  checksum: 10/7392f08d6193a302212a0dcfaf3a8994dfa4ddbe512888bccec1c2ada17c494d48f15b49362c9d9aa3077967c110c5a0109486aaf45873eb27053268cbe5af65
   languageName: node
   linkType: hard
 
