@@ -17,7 +17,7 @@
     "@unlock-protocol/networks": "latest",
     "eslint": "9.37.0",
     "ethers": "6.15.0",
-    "fs-extra": "11.3.1",
+    "fs-extra": "11.3.2",
     "hardhat": "2.26.3",
     "hardhat-erc1820": "0.1.0",
     "ts-node": "10.9.2",
