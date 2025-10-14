@@ -37,7 +37,7 @@
     "@unlock-protocol/tsconfig": "workspace:^",
     "@unlock-protocol/types": "workspace:^",
     "eslint": "9.37.0",
-    "fs-extra": "11.3.1",
+    "fs-extra": "11.3.2",
     "tsup": "8.5.0",
     "typescript": "5.9.2"
   },
