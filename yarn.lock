@@ -21177,13 +21177,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:18.3.24":
-  version: 18.3.24
-  resolution: "@types/react@npm:18.3.24"
+"@types/react@npm:18.3.26":
+  version: 18.3.26
+  resolution: "@types/react@npm:18.3.26"
   dependencies:
     "@types/prop-types": "npm:*"
     csstype: "npm:^3.0.2"
-  checksum: 10/3f8529961afa40696f4a677e0f4399cb5da1fca9828c00634f884db261fc29a68af0b0397611fff4dd81847ac85036a1b72e987eafd994cdf4ddb1a1bcce7d61
+  checksum: 10/04852f5a93f1ac5140313e6c3bb7ce1abad84425709df838154102d0ed3d422c78f7c6ea114c1ee183cba6db0475a371d7dc9c0fdf991697c42da5cc24ca0512
   languageName: node
   linkType: hard
 
@@ -22129,7 +22129,7 @@ __metadata:
     "@sentry/nextjs": "npm:9.15.0"
     "@tanstack/react-query": "npm:5.85.6"
     "@tw-classed/react": "npm:1.8.1"
-    "@types/react": "npm:18.3.24"
+    "@types/react": "npm:18.3.26"
     "@unlock-protocol/contracts": "workspace:*"
     "@unlock-protocol/core": "workspace:./packages/core"
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon"
@@ -22201,7 +22201,7 @@ __metadata:
     "@storybook/addon-links": "npm:8.6.14"
     "@storybook/react": "npm:8.6.14"
     "@storybook/react-vite": "npm:8.6.14"
-    "@types/react": "npm:18.3.24"
+    "@types/react": "npm:18.3.26"
     "@types/react-dom": "npm:18.3.7"
     "@vitejs/plugin-react": "npm:4.7.0"
     react: "npm:18.3.1"
@@ -22648,7 +22648,7 @@ __metadata:
     "@tailwindcss/typography": "npm:0.5.19"
     "@tanstack/react-query": "npm:5.90.2"
     "@tw-classed/react": "npm:1.8.1"
-    "@types/react": "npm:18.3.24"
+    "@types/react": "npm:18.3.26"
     "@types/react-dom": "npm:18.3.7"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
     "@vitejs/plugin-react": "npm:4.7.0"
@@ -22703,7 +22703,7 @@ __metadata:
     "@types/file-saver": "npm:2.0.7"
     "@types/postmate": "npm:1.5.4"
     "@types/qrcode.react": "npm:3.0.0"
-    "@types/react": "npm:18.3.24"
+    "@types/react": "npm:18.3.26"
     "@types/react-gtm-module": "npm:2.0.4"
     "@types/remove-markdown": "npm:0.3.4"
     "@unlock-protocol/core": "workspace:./packages/core"
@@ -22823,7 +22823,7 @@ __metadata:
     "@tanstack/react-query": "npm:5.85.6"
     "@testing-library/react": "npm:16.3.0"
     "@types/node": "npm:22.18.0"
-    "@types/react": "npm:18.3.24"
+    "@types/react": "npm:18.3.26"
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/ui": "workspace:./packages/ui"
