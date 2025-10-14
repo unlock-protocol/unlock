@@ -36,7 +36,7 @@
     "@tailwindcss/aspect-ratio": "0.4.2",
     "@tailwindcss/forms": "0.5.10",
     "@tailwindcss/typography": "0.5.16",
-    "@tanstack/react-query": "5.90.2",
+    "@tanstack/react-query": "5.90.3",
     "@tw-classed/react": "1.8.1",
     "ethers": "6.15.0",
     "prism-react-renderer": "2.4.1",
