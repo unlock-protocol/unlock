@@ -22133,7 +22133,7 @@ __metadata:
     postcss: "npm:8.5.6"
     react-markdown: "npm:10.1.0"
     tailwind-merge: "npm:3.3.1"
-    tailwindcss: "npm:3.4.17"
+    tailwindcss: "npm:3.4.18"
     typescript: "npm:5.8.3"
     vitest: "npm:3.2.4"
   peerDependencies:
@@ -22236,7 +22236,7 @@ __metadata:
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
     react-icons: "npm:5.5.0"
-    tailwindcss: "npm:3.4.17"
+    tailwindcss: "npm:3.4.18"
   languageName: unknown
   linkType: soft
 
@@ -22647,7 +22647,7 @@ __metadata:
     react-use-clipboard: "npm:1.0.9"
     storybook: "npm:8.6.14"
     tailwind-merge: "npm:3.3.1"
-    tailwindcss: "npm:3.4.17"
+    tailwindcss: "npm:3.4.18"
     tsup: "npm:8.5.0"
     tsx: "npm:4.20.6"
     typescript: "npm:5.9.2"
@@ -22736,7 +22736,7 @@ __metadata:
     remove-markdown: "npm:0.5.5"
     siwe: "npm:3.0.0"
     tailwind-merge: "npm:3.0.2"
-    tailwindcss: "npm:3.4.17"
+    tailwindcss: "npm:3.4.18"
     typescript: "npm:5.6.3"
     unified: "npm:11.0.5"
     validator: "npm:13.12.0"
@@ -22841,7 +22841,7 @@ __metadata:
     rss: "npm:1.2.2"
     showdown-highlight: "npm:3.1.0"
     tailwind-merge: "npm:3.3.1"
-    tailwindcss: "npm:3.4.17"
+    tailwindcss: "npm:3.4.18"
     typescript: "npm:5.8.3"
     use-local-storage: "npm:3.0.0"
     vitest: "npm:3.2.4"
@@ -39337,7 +39337,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jiti@npm:^1.17.1, jiti@npm:^1.20.0, jiti@npm:^1.21.6":
+"jiti@npm:^1.17.1, jiti@npm:^1.20.0, jiti@npm:^1.21.7":
   version: 1.21.7
   resolution: "jiti@npm:1.21.7"
   bin:
@@ -40338,7 +40338,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lilconfig@npm:^3.0.0, lilconfig@npm:^3.1.1, lilconfig@npm:^3.1.3":
+"lilconfig@npm:^3.1.1, lilconfig@npm:^3.1.3":
   version: 3.1.3
   resolution: "lilconfig@npm:3.1.3"
   checksum: 10/b932ce1af94985f0efbe8896e57b1f814a48c8dbd7fc0ef8469785c6303ed29d0090af3ccad7e36b626bfca3a4dc56cc262697e9a8dd867623cf09a39d54e4c3
@@ -47112,25 +47112,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-load-config@npm:^4.0.2":
-  version: 4.0.2
-  resolution: "postcss-load-config@npm:4.0.2"
-  dependencies:
-    lilconfig: "npm:^3.0.0"
-    yaml: "npm:^2.3.4"
-  peerDependencies:
-    postcss: ">=8.0.9"
-    ts-node: ">=9.0.0"
-  peerDependenciesMeta:
-    postcss:
-      optional: true
-    ts-node:
-      optional: true
-  checksum: 10/e2c2ed9b7998a5b123e1ce0c124daf6504b1454c67dcc1c8fdbcc5ffb2597b7de245e3ac34f63afc928d3fd3260b1e36492ebbdb01a9ff63f16b3c8b7b925d1b
-  languageName: node
-  linkType: hard
-
-"postcss-load-config@npm:^6.0.1":
+"postcss-load-config@npm:^4.0.2 || ^5.0 || ^6.0, postcss-load-config@npm:^6.0.1":
   version: 6.0.1
   resolution: "postcss-load-config@npm:6.0.1"
   dependencies:
@@ -54047,9 +54029,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:3.4.17":
-  version: 3.4.17
-  resolution: "tailwindcss@npm:3.4.17"
+"tailwindcss@npm:3.4.18":
+  version: 3.4.18
+  resolution: "tailwindcss@npm:3.4.18"
   dependencies:
     "@alloc/quick-lru": "npm:^5.2.0"
     arg: "npm:^5.0.2"
@@ -54059,7 +54041,7 @@ __metadata:
     fast-glob: "npm:^3.3.2"
     glob-parent: "npm:^6.0.2"
     is-glob: "npm:^4.0.3"
-    jiti: "npm:^1.21.6"
+    jiti: "npm:^1.21.7"
     lilconfig: "npm:^3.1.3"
     micromatch: "npm:^4.0.8"
     normalize-path: "npm:^3.0.0"
@@ -54068,7 +54050,7 @@ __metadata:
     postcss: "npm:^8.4.47"
     postcss-import: "npm:^15.1.0"
     postcss-js: "npm:^4.0.1"
-    postcss-load-config: "npm:^4.0.2"
+    postcss-load-config: "npm:^4.0.2 || ^5.0 || ^6.0"
     postcss-nested: "npm:^6.2.0"
     postcss-selector-parser: "npm:^6.1.2"
     resolve: "npm:^1.22.8"
@@ -54076,7 +54058,7 @@ __metadata:
   bin:
     tailwind: lib/cli.js
     tailwindcss: lib/cli.js
-  checksum: 10/b0e00533ae3800223b5b71af9cb1dd9bfea5ef5ffa01300f1ced99de9511487aa41e03106173e4168c56c8f6600ee21c98c1d75a5def23cddf9b39b4ad71210d
+  checksum: 10/c05e2652860559f9855286830442a78d383ec9387849bb792eb42ba5102d21b1e32c42ec3183a3238689df4e1138a96e00374116d6fd1b244103b2d9adec359d
   languageName: node
   linkType: hard
 
@@ -58601,7 +58583,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yaml@npm:^2.1.3, yaml@npm:^2.3.1, yaml@npm:^2.3.4, yaml@npm:^2.7.0":
+"yaml@npm:^2.1.3, yaml@npm:^2.3.1, yaml@npm:^2.7.0":
   version: 2.7.0
   resolution: "yaml@npm:2.7.0"
   bin:
