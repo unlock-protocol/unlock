@@ -219,10 +219,6 @@ export function Layout({ children }: Props) {
             url: 'https://docs.unlock-protocol.com/governance/roadmap/',
           },
           {
-            label: 'Careers',
-            url: 'https://www.notion.so/unlockprotocol/Unlock-Jobs-907811d15c4d490091eb298f71b0954c',
-          },
-          {
             label: 'Media Kit',
             url: 'https://unlockprotocol.notion.site/Press-Kit-35836bdcc88f400eb5bb429c477c3333',
           },
