@@ -69,10 +69,6 @@ const SHOWCASE_FOOTER = {
           label: 'Roadmap',
           url: 'https://docs.unlock-protocol.com/governance/roadmap/',
         },
-        {
-          label: 'Careers',
-          url: 'https://www.notion.so/unlockprotocol/Unlock-Jobs-907811d15c4d490091eb298f71b0954c',
-        },
       ],
     },
     {
