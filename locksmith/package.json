@@ -91,7 +91,7 @@
     "sequelize": "6.37.7",
     "sequelize-cli": "6.6.3",
     "siwe": "3.0.0",
-    "stripe": "18.0.0",
+    "stripe": "19.1.0",
     "unified": "11.0.5",
     "vitest-fetch-mock": "0.4.5",
     "winston": "3.17.0",
