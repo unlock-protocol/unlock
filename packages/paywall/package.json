@@ -33,7 +33,7 @@
     "@unlock-protocol/networks": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:^",
     "@unlock-protocol/types": "workspace:^",
-    "eslint": "9.34.0",
+    "eslint": "9.38.0",
     "tsup": "8.5.0",
     "typescript": "5.9.2",
     "vite": "6.3.6",
