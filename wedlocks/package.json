@@ -12,7 +12,7 @@
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "babel-loader": "10.0.0",
     "babel-plugin-wildcard": "7.0.0",
-    "dotenv": "16.6.1",
+    "dotenv": "17.2.3",
     "eslint": "9.36.0",
     "handlebars": "4.7.8",
     "netlify-cli": "15.11.0",
