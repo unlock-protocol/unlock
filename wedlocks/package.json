@@ -18,7 +18,7 @@
     "netlify-cli": "15.11.0",
     "nodemailer": "7.0.7",
     "prettier": "3.6.2",
-    "typescript": "5.9.2",
+    "typescript": "5.9.3",
     "winston": "3.18.3"
   },
   "scripts": {
