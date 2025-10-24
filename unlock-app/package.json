@@ -79,7 +79,7 @@
     "@types/react-gtm-module": "2.0.4",
     "@types/remove-markdown": "0.3.4",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
-    "@vitejs/plugin-react": "4.3.4",
+    "@vitejs/plugin-react": "5.1.0",
     "autoprefixer": "10.4.21",
     "jsdom": "26.0.0",
     "postcss": "8.4.49",
