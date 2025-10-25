@@ -22778,7 +22778,7 @@ __metadata:
     lottie-react: "npm:2.4.1"
     next: "npm:14.2.26"
     next-recaptcha-v3: "npm:1.5.2"
-    p-limit: "npm:6.2.0"
+    p-limit: "npm:7.2.0"
     postcss: "npm:8.4.49"
     postmate: "npm:1.5.2"
     qr-scanner: "npm:1.4.2"
@@ -45684,12 +45684,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"p-limit@npm:6.2.0":
-  version: 6.2.0
-  resolution: "p-limit@npm:6.2.0"
+"p-limit@npm:7.2.0":
+  version: 7.2.0
+  resolution: "p-limit@npm:7.2.0"
   dependencies:
-    yocto-queue: "npm:^1.1.1"
-  checksum: 10/70e8df3e5f1c173c9bd9fa8390a3c5c2797505240ae42973536992b1f5f59a922153c2f35ff1bf36fb72a0f025b0f13fca062a4233e830adad446960d56b4d84
+    yocto-queue: "npm:^1.2.1"
+  checksum: 10/ea1cae6e8bbf84a65cc832e4d6a802ec34902bfe0da2fba0c6fadb72f0c51d48db67b7fb2df8433dde5f4a970cf482b9c2cb4edbfa8cfadd7f4341c6fdb38a5d
   languageName: node
   linkType: hard
 
@@ -58885,7 +58885,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yocto-queue@npm:^1.0.0, yocto-queue@npm:^1.1.1":
+"yocto-queue@npm:^1.0.0, yocto-queue@npm:^1.2.1":
   version: 1.2.1
   resolution: "yocto-queue@npm:1.2.1"
   checksum: 10/0843d6c2c0558e5c06e98edf9c17942f25c769e21b519303a5c2adefd5b738c9b2054204dc856ac0cd9d134b1bc27d928ce84fd23c9e2423b7e013d5a6f50577

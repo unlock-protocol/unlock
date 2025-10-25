@@ -44,7 +44,7 @@
     "lottie-react": "2.4.1",
     "next": "14.2.26",
     "next-recaptcha-v3": "1.5.2",
-    "p-limit": "6.2.0",
+    "p-limit": "7.2.0",
     "postmate": "1.5.2",
     "qr-scanner": "1.4.2",
     "qrcode.react": "4.1.0",
