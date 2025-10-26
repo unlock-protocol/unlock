@@ -9698,7 +9698,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@logtail/node@npm:0.5.4, @logtail/node@npm:^0.5.4":
+"@logtail/core@npm:^0.5.6":
+  version: 0.5.6
+  resolution: "@logtail/core@npm:0.5.6"
+  dependencies:
+    "@logtail/tools": "npm:^0.5.6"
+    "@logtail/types": "npm:^0.5.6"
+    serialize-error: "npm:8.1.0"
+  checksum: 10/939802a95217cd5bed78c13074ce112e927c442c4b93f5bc7bc4583353e3547d144588a425d3d655d4467454796e0360ab597c9b0f57faaf0f5dbaae6f72fde8
+  languageName: node
+  linkType: hard
+
+"@logtail/node@npm:0.5.4":
   version: 0.5.4
   resolution: "@logtail/node@npm:0.5.4"
   dependencies:
@@ -9712,12 +9723,35 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@logtail/node@npm:^0.5.6":
+  version: 0.5.6
+  resolution: "@logtail/node@npm:0.5.6"
+  dependencies:
+    "@logtail/core": "npm:^0.5.6"
+    "@logtail/types": "npm:^0.5.6"
+    "@msgpack/msgpack": "npm:^2.5.1"
+    "@types/stack-trace": "npm:^0.0.33"
+    minimatch: "npm:^9.0.5"
+    stack-trace: "npm:0.0.10"
+  checksum: 10/6bd98af88fe56e35e0a7a77ef981d57aad2d5bdc7e02468a7ef672575d5c931d373e27915de9ee87c61ca13c953c8d48aa595c41188462473d046213d9643b3c
+  languageName: node
+  linkType: hard
+
 "@logtail/tools@npm:^0.5.4":
   version: 0.5.4
   resolution: "@logtail/tools@npm:0.5.4"
   dependencies:
     "@logtail/types": "npm:^0.5.3"
   checksum: 10/e7371bc3c00be91582c2c0df166cd071c22a63e9d9d03b710d35f50ad6b6357bbe729a272d60ac4c5d30599feaf34cbc82daf2014666a369523de2db9dd6fb90
+  languageName: node
+  linkType: hard
+
+"@logtail/tools@npm:^0.5.6":
+  version: 0.5.6
+  resolution: "@logtail/tools@npm:0.5.6"
+  dependencies:
+    "@logtail/types": "npm:^0.5.6"
+  checksum: 10/0257895f0b2d015fc159c600217268172e9568dcedb263c9937502f48a6c10ec9544abb81fac8c883795c65c8df7166f5655f849c7756e07b722bac535914573
   languageName: node
   linkType: hard
 
@@ -9728,16 +9762,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@logtail/winston@npm:0.5.4":
-  version: 0.5.4
-  resolution: "@logtail/winston@npm:0.5.4"
+"@logtail/types@npm:^0.5.6":
+  version: 0.5.6
+  resolution: "@logtail/types@npm:0.5.6"
+  checksum: 10/cddbdfc84ebd1c3ea9aea4f99286c4dc191ebe968b780c9661d89f7850828487f975afa42c184aa57df3dfd0119dcdb9efb1e1ddaaafe7876c17b458ff0446b8
+  languageName: node
+  linkType: hard
+
+"@logtail/winston@npm:0.5.6":
+  version: 0.5.6
+  resolution: "@logtail/winston@npm:0.5.6"
   dependencies:
-    "@logtail/node": "npm:^0.5.4"
-    "@logtail/types": "npm:^0.5.3"
+    "@logtail/node": "npm:^0.5.6"
+    "@logtail/types": "npm:^0.5.6"
     winston-transport: "npm:^4.3.0"
   peerDependencies:
     winston: ">=3.2.1"
-  checksum: 10/a7dd15fa5164bf8aa4e07d828ff209ca2940c5c2477a2c2c0e9eb60d87d7f346a437f3601fd9a89f918e8f412b2bd07ff6c057fc230a0461912885d90e187b7f
+  checksum: 10/7ba972a2b6cb1b71c642959e8f755dc19d0fdcd0b8e6b846065ab48afbdd06589a1f22fb3a660af6a34f14706ba8cc1015fe46d2b09017c9c84ce1260a41015d
   languageName: node
   linkType: hard
 
@@ -22444,7 +22485,7 @@ __metadata:
     "@aws-sdk/client-s3": "npm:3.908.0"
     "@guildxyz/sdk": "npm:2.6.9"
     "@logtail/node": "npm:0.5.4"
-    "@logtail/winston": "npm:0.5.4"
+    "@logtail/winston": "npm:0.5.6"
     "@nuintun/qrcode": "npm:5.0.2"
     "@openzeppelin/defender-sdk": "npm:2.4.0"
     "@openzeppelin/merkle-tree": "npm:1.0.8"
