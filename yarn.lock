@@ -9109,7 +9109,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@humanwhocodes/momoa@npm:^2.0.2":
+"@humanwhocodes/momoa@npm:^2.0.2, @humanwhocodes/momoa@npm:^2.0.4":
   version: 2.0.4
   resolution: "@humanwhocodes/momoa@npm:2.0.4"
   checksum: 10/d3c0601bc0c2ac77bd5804053a6e85698a0dfaec956d538483da79e9ad7467ffa79210293a22249fc9354ffe30e640af0bd386f864b2cd15ea8a48b534620e44
@@ -19143,6 +19143,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@solidity-parser/parser@npm:^0.20.2":
+  version: 0.20.2
+  resolution: "@solidity-parser/parser@npm:0.20.2"
+  checksum: 10/405009cd712cc410df60e45510ddd2ca615d208b152903be71cef4b9440720287ffd3792f88a92eb0de375c2ea66b442e84c843cb810612d6b6e45fd51a2b49b
+  languageName: node
+  linkType: hard
+
 "@speed-highlight/core@npm:^1.2.7":
   version: 1.2.7
   resolution: "@speed-highlight/core@npm:1.2.7"
@@ -22633,7 +22640,7 @@ __metadata:
     hardhat-tracer: "npm:3.1.0"
     prettier: "npm:3.3.3"
     prettier-plugin-solidity: "npm:1.4.3"
-    solhint: "npm:5.0.5"
+    solhint: "npm:6.0.1"
     solidity-coverage: "npm:0.8.16"
     yesno: "npm:0.4.0"
   languageName: unknown
@@ -24547,6 +24554,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ajv-errors@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "ajv-errors@npm:1.0.1"
+  peerDependencies:
+    ajv: ">=5.0.0"
+  checksum: 10/7d8907f7ff3df7cb5b224ddd95c43ebd3d8bac3fd74fe942d644adc68ed3f67d5bb971b897ab8d21607a1ecf6071a987024b96439e040c9fd45625a9b87da1bb
+  languageName: node
+  linkType: hard
+
 "ajv-errors@npm:^3.0.0":
   version: 3.0.0
   resolution: "ajv-errors@npm:3.0.0"
@@ -26354,6 +26370,21 @@ __metadata:
   peerDependencies:
     ajv: 4.11.8 - 8
   checksum: 10/2e12818e99f6f32434aa94d7baae7de3dd4dfcb3643c0209f50495a08e3eb0ba3c2a6fdc2b238158bc677981d90b7a508dfa0b71b6da1ed5ee8ba513c8dbf1c7
+  languageName: node
+  linkType: hard
+
+"better-ajv-errors@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "better-ajv-errors@npm:2.0.2"
+  dependencies:
+    "@babel/code-frame": "npm:^7.27.1"
+    "@humanwhocodes/momoa": "npm:^2.0.4"
+    chalk: "npm:^4.1.2"
+    jsonpointer: "npm:^5.0.1"
+    leven: "npm:^3.1.0 < 4"
+  peerDependencies:
+    ajv: 4.11.8 - 8
+  checksum: 10/89617aebb5c6f4cf618f525ab0711b4a865d20cccdd4d8d81364686d87a0ada7e97af092bd1d466d4b1d487a8e60accf0a541b91d7d903504d7a1643a5d993e5
   languageName: node
   linkType: hard
 
@@ -39923,7 +39954,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsonpointer@npm:^5.0.0":
+"jsonpointer@npm:^5.0.0, jsonpointer@npm:^5.0.1":
   version: 5.0.1
   resolution: "jsonpointer@npm:5.0.1"
   checksum: 10/0b40f712900ad0c846681ea2db23b6684b9d5eedf55807b4708c656f5894b63507d0e28ae10aa1bddbea551241035afe62b6df0800fc94c2e2806a7f3adecd7c
@@ -52569,14 +52600,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"solhint@npm:5.0.5":
-  version: 5.0.5
-  resolution: "solhint@npm:5.0.5"
+"solhint@npm:6.0.1":
+  version: 6.0.1
+  resolution: "solhint@npm:6.0.1"
   dependencies:
-    "@solidity-parser/parser": "npm:^0.19.0"
+    "@solidity-parser/parser": "npm:^0.20.2"
     ajv: "npm:^6.12.6"
+    ajv-errors: "npm:^1.0.1"
     antlr4: "npm:^4.13.1-patch-1"
     ast-parents: "npm:^0.0.1"
+    better-ajv-errors: "npm:^2.0.2"
     chalk: "npm:^4.1.2"
     commander: "npm:^10.0.0"
     cosmiconfig: "npm:^8.0.0"
@@ -52589,7 +52622,6 @@ __metadata:
     pluralize: "npm:^8.0.0"
     prettier: "npm:^2.8.3"
     semver: "npm:^7.5.2"
-    strip-ansi: "npm:^6.0.1"
     table: "npm:^6.8.1"
     text-table: "npm:^0.2.0"
   dependenciesMeta:
@@ -52597,7 +52629,7 @@ __metadata:
       optional: true
   bin:
     solhint: solhint.js
-  checksum: 10/07cce3796e0123fda1e27bb0f81fb94290fb0d4bddc703a10236c81403a3a09fe1bfcbf37c583590778509546b92d43c0799456b4ae9dd183233fd8fe6e88554
+  checksum: 10/d22f6a626132a2a9351b59533ba2da127742de8ffdf34336a4beb7e3e1194d7f2e4b0f1635aa187d8996b3c77cece4d1311583c88fc3659eb40893ae15c66777
   languageName: node
   linkType: hard
 
