@@ -4765,6 +4765,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@bytecodealliance/preview2-shim@npm:0.17.2":
+  version: 0.17.2
+  resolution: "@bytecodealliance/preview2-shim@npm:0.17.2"
+  checksum: 10/24bf1698fcf8c1cd25089b46eccbdae2db5585ca1d69ec15e5ad5a095f19d710bb73071bb17ed1a4745bd2707cc68754d0c17ce13800cd1aa465cce3c6aaff88
+  languageName: node
+  linkType: hard
+
 "@cloudflare/kv-asset-handler@npm:0.4.0":
   version: 0.4.0
   resolution: "@cloudflare/kv-asset-handler@npm:0.4.0"
@@ -12320,6 +12327,15 @@ __metadata:
   version: 0.17.0
   resolution: "@nomicfoundation/slang-win32-x64-msvc@npm:0.17.0"
   checksum: 10/75e70c6e07add0981406cb43f4b83c7e49c67d649b0e658afd1a485952b1ef8b9f89ca6cd4ef4432e5b33d53c8a06a76f7446127bc9e28fafbb980fad72fcf18
+  languageName: node
+  linkType: hard
+
+"@nomicfoundation/slang@npm:1.2.0":
+  version: 1.2.0
+  resolution: "@nomicfoundation/slang@npm:1.2.0"
+  dependencies:
+    "@bytecodealliance/preview2-shim": "npm:0.17.2"
+  checksum: 10/694f67c16192ca0c8d8e76026722fdd192420746f654bd4789951a56d14df9dd4e1986b35223c32ce1e62f05023e9216cc692278b36d6cc2eb18bf059ad49429
   languageName: node
   linkType: hard
 
@@ -22632,7 +22648,7 @@ __metadata:
     hardhat-storage-layout: "npm:0.1.7"
     hardhat-tracer: "npm:3.1.0"
     prettier: "npm:3.3.3"
-    prettier-plugin-solidity: "npm:1.4.3"
+    prettier-plugin-solidity: "npm:2.1.0"
     solhint: "npm:5.0.5"
     solidity-coverage: "npm:0.8.16"
     yesno: "npm:0.4.0"
@@ -48015,15 +48031,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier-plugin-solidity@npm:1.4.3":
-  version: 1.4.3
-  resolution: "prettier-plugin-solidity@npm:1.4.3"
+"prettier-plugin-solidity@npm:2.1.0":
+  version: 2.1.0
+  resolution: "prettier-plugin-solidity@npm:2.1.0"
   dependencies:
+    "@nomicfoundation/slang": "npm:1.2.0"
     "@solidity-parser/parser": "npm:^0.20.1"
-    semver: "npm:^7.7.1"
+    semver: "npm:^7.7.2"
   peerDependencies:
-    prettier: ">=2.3.0"
-  checksum: 10/785d47e4b58eb8886945f77c5604285e1843b3f3929b677a2b668c341eeb1540fd31285d09a80bb4ec024920d2f4c27d4221b970b53cae11d534ec2e32609f24
+    prettier: ">=3.0.0"
+  checksum: 10/35ae366b7cbb434c31d33f793d13839e136eeb778cb74bc4ffa0eb65a6a3eace34b1b3158a02daf42072c8a120991fcf86842b67c51341b2fa8287747b71ae41
   languageName: node
   linkType: hard
 
@@ -56353,7 +56370,7 @@ __metadata:
     lint-staged: "npm:15.5.2"
     node-gyp: "npm:11.4.2"
     prettier: "npm:3.5.3"
-    prettier-plugin-solidity: "npm:1.4.3"
+    prettier-plugin-solidity: "npm:2.1.0"
     typescript: "npm:5.8.3"
     typescript-eslint: "npm:8.45.0"
     vitest: "npm:3.2.4"
