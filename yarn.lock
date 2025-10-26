@@ -13926,6 +13926,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@opentelemetry/semantic-conventions@npm:^1.34.0":
+  version: 1.37.0
+  resolution: "@opentelemetry/semantic-conventions@npm:1.37.0"
+  checksum: 10/919951c2ddbe5509dad26afc7b09d9a5e3c169de187013d1836d2771a7e840e85ea500725128b798d7659d89aff480c07fd039cf77858df3f3573a15063db7c3
+  languageName: node
+  linkType: hard
+
 "@opentelemetry/sql-common@npm:^0.40.1":
   version: 0.40.1
   resolution: "@opentelemetry/sql-common@npm:0.40.1"
@@ -14692,6 +14699,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@prisma/instrumentation@npm:6.11.1":
+  version: 6.11.1
+  resolution: "@prisma/instrumentation@npm:6.11.1"
+  dependencies:
+    "@opentelemetry/instrumentation": "npm:^0.52.0 || ^0.53.0 || ^0.54.0 || ^0.55.0 || ^0.56.0 || ^0.57.0"
+  peerDependencies:
+    "@opentelemetry/api": ^1.8
+  checksum: 10/b1b20f4ef09e51d9c15bba57e13b24c8f3669c36ddd688be0a6f91dbb8760324b7f509b58ee7c20ebf232da81e060da33893bf02d9f8010eaa7288a71d5a2b78
+  languageName: node
+  linkType: hard
+
 "@prisma/instrumentation@npm:6.4.1":
   version: 6.4.1
   resolution: "@prisma/instrumentation@npm:6.4.1"
@@ -14700,17 +14718,6 @@ __metadata:
   peerDependencies:
     "@opentelemetry/api": ^1.8
   checksum: 10/bd0927838f7d501043ed395a2f59b30523e18bc7ed90af2eb15719f62dd84500fed4a4570c6d10fed8742f49f5f754b10bb057b9f7dba9e9d2c8015f1e0e65af
-  languageName: node
-  linkType: hard
-
-"@prisma/instrumentation@npm:6.6.0":
-  version: 6.6.0
-  resolution: "@prisma/instrumentation@npm:6.6.0"
-  dependencies:
-    "@opentelemetry/instrumentation": "npm:^0.52.0 || ^0.53.0 || ^0.54.0 || ^0.55.0 || ^0.56.0 || ^0.57.0"
-  peerDependencies:
-    "@opentelemetry/api": ^1.8
-  checksum: 10/18480c9dfb2592aeae5b7d43449af7e88e47cf177d58d4ab147d01a90477f4abc91a900f345c22cf0c381171db94c20a2fa74f519cfa775dba060fd9a3eed220
   languageName: node
   linkType: hard
 
@@ -16105,13 +16112,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-android-arm-eabi@npm:4.35.0":
-  version: 4.35.0
-  resolution: "@rollup/rollup-android-arm-eabi@npm:4.35.0"
-  conditions: os=android & cpu=arm
-  languageName: node
-  linkType: hard
-
 "@rollup/rollup-android-arm-eabi@npm:4.37.0":
   version: 4.37.0
   resolution: "@rollup/rollup-android-arm-eabi@npm:4.37.0"
@@ -16133,10 +16133,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-android-arm64@npm:4.35.0":
-  version: 4.35.0
-  resolution: "@rollup/rollup-android-arm64@npm:4.35.0"
-  conditions: os=android & cpu=arm64
+"@rollup/rollup-android-arm-eabi@npm:4.52.5":
+  version: 4.52.5
+  resolution: "@rollup/rollup-android-arm-eabi@npm:4.52.5"
+  conditions: os=android & cpu=arm
   languageName: node
   linkType: hard
 
@@ -16161,10 +16161,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-darwin-arm64@npm:4.35.0":
-  version: 4.35.0
-  resolution: "@rollup/rollup-darwin-arm64@npm:4.35.0"
-  conditions: os=darwin & cpu=arm64
+"@rollup/rollup-android-arm64@npm:4.52.5":
+  version: 4.52.5
+  resolution: "@rollup/rollup-android-arm64@npm:4.52.5"
+  conditions: os=android & cpu=arm64
   languageName: node
   linkType: hard
 
@@ -16189,10 +16189,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-darwin-x64@npm:4.35.0":
-  version: 4.35.0
-  resolution: "@rollup/rollup-darwin-x64@npm:4.35.0"
-  conditions: os=darwin & cpu=x64
+"@rollup/rollup-darwin-arm64@npm:4.52.5":
+  version: 4.52.5
+  resolution: "@rollup/rollup-darwin-arm64@npm:4.52.5"
+  conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
@@ -16217,10 +16217,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-freebsd-arm64@npm:4.35.0":
-  version: 4.35.0
-  resolution: "@rollup/rollup-freebsd-arm64@npm:4.35.0"
-  conditions: os=freebsd & cpu=arm64
+"@rollup/rollup-darwin-x64@npm:4.52.5":
+  version: 4.52.5
+  resolution: "@rollup/rollup-darwin-x64@npm:4.52.5"
+  conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
@@ -16245,10 +16245,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-freebsd-x64@npm:4.35.0":
-  version: 4.35.0
-  resolution: "@rollup/rollup-freebsd-x64@npm:4.35.0"
-  conditions: os=freebsd & cpu=x64
+"@rollup/rollup-freebsd-arm64@npm:4.52.5":
+  version: 4.52.5
+  resolution: "@rollup/rollup-freebsd-arm64@npm:4.52.5"
+  conditions: os=freebsd & cpu=arm64
   languageName: node
   linkType: hard
 
@@ -16273,10 +16273,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-arm-gnueabihf@npm:4.35.0":
-  version: 4.35.0
-  resolution: "@rollup/rollup-linux-arm-gnueabihf@npm:4.35.0"
-  conditions: os=linux & cpu=arm & libc=glibc
+"@rollup/rollup-freebsd-x64@npm:4.52.5":
+  version: 4.52.5
+  resolution: "@rollup/rollup-freebsd-x64@npm:4.52.5"
+  conditions: os=freebsd & cpu=x64
   languageName: node
   linkType: hard
 
@@ -16301,10 +16301,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-arm-musleabihf@npm:4.35.0":
-  version: 4.35.0
-  resolution: "@rollup/rollup-linux-arm-musleabihf@npm:4.35.0"
-  conditions: os=linux & cpu=arm & libc=musl
+"@rollup/rollup-linux-arm-gnueabihf@npm:4.52.5":
+  version: 4.52.5
+  resolution: "@rollup/rollup-linux-arm-gnueabihf@npm:4.52.5"
+  conditions: os=linux & cpu=arm & libc=glibc
   languageName: node
   linkType: hard
 
@@ -16329,10 +16329,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-arm64-gnu@npm:4.35.0":
-  version: 4.35.0
-  resolution: "@rollup/rollup-linux-arm64-gnu@npm:4.35.0"
-  conditions: os=linux & cpu=arm64 & libc=glibc
+"@rollup/rollup-linux-arm-musleabihf@npm:4.52.5":
+  version: 4.52.5
+  resolution: "@rollup/rollup-linux-arm-musleabihf@npm:4.52.5"
+  conditions: os=linux & cpu=arm & libc=musl
   languageName: node
   linkType: hard
 
@@ -16357,10 +16357,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-arm64-musl@npm:4.35.0":
-  version: 4.35.0
-  resolution: "@rollup/rollup-linux-arm64-musl@npm:4.35.0"
-  conditions: os=linux & cpu=arm64 & libc=musl
+"@rollup/rollup-linux-arm64-gnu@npm:4.52.5":
+  version: 4.52.5
+  resolution: "@rollup/rollup-linux-arm64-gnu@npm:4.52.5"
+  conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
@@ -16385,9 +16385,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-loongarch64-gnu@npm:4.35.0":
-  version: 4.35.0
-  resolution: "@rollup/rollup-linux-loongarch64-gnu@npm:4.35.0"
+"@rollup/rollup-linux-arm64-musl@npm:4.52.5":
+  version: 4.52.5
+  resolution: "@rollup/rollup-linux-arm64-musl@npm:4.52.5"
+  conditions: os=linux & cpu=arm64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@rollup/rollup-linux-loong64-gnu@npm:4.52.5":
+  version: 4.52.5
+  resolution: "@rollup/rollup-linux-loong64-gnu@npm:4.52.5"
   conditions: os=linux & cpu=loong64 & libc=glibc
   languageName: node
   linkType: hard
@@ -16413,13 +16420,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-powerpc64le-gnu@npm:4.35.0":
-  version: 4.35.0
-  resolution: "@rollup/rollup-linux-powerpc64le-gnu@npm:4.35.0"
-  conditions: os=linux & cpu=ppc64 & libc=glibc
-  languageName: node
-  linkType: hard
-
 "@rollup/rollup-linux-powerpc64le-gnu@npm:4.37.0":
   version: 4.37.0
   resolution: "@rollup/rollup-linux-powerpc64le-gnu@npm:4.37.0"
@@ -16441,10 +16441,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-riscv64-gnu@npm:4.35.0":
-  version: 4.35.0
-  resolution: "@rollup/rollup-linux-riscv64-gnu@npm:4.35.0"
-  conditions: os=linux & cpu=riscv64 & libc=glibc
+"@rollup/rollup-linux-ppc64-gnu@npm:4.52.5":
+  version: 4.52.5
+  resolution: "@rollup/rollup-linux-ppc64-gnu@npm:4.52.5"
+  conditions: os=linux & cpu=ppc64 & libc=glibc
   languageName: node
   linkType: hard
 
@@ -16465,6 +16465,13 @@ __metadata:
 "@rollup/rollup-linux-riscv64-gnu@npm:4.44.1":
   version: 4.44.1
   resolution: "@rollup/rollup-linux-riscv64-gnu@npm:4.44.1"
+  conditions: os=linux & cpu=riscv64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@rollup/rollup-linux-riscv64-gnu@npm:4.52.5":
+  version: 4.52.5
+  resolution: "@rollup/rollup-linux-riscv64-gnu@npm:4.52.5"
   conditions: os=linux & cpu=riscv64 & libc=glibc
   languageName: node
   linkType: hard
@@ -16490,10 +16497,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-s390x-gnu@npm:4.35.0":
-  version: 4.35.0
-  resolution: "@rollup/rollup-linux-s390x-gnu@npm:4.35.0"
-  conditions: os=linux & cpu=s390x & libc=glibc
+"@rollup/rollup-linux-riscv64-musl@npm:4.52.5":
+  version: 4.52.5
+  resolution: "@rollup/rollup-linux-riscv64-musl@npm:4.52.5"
+  conditions: os=linux & cpu=riscv64 & libc=musl
   languageName: node
   linkType: hard
 
@@ -16518,10 +16525,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-x64-gnu@npm:4.35.0":
-  version: 4.35.0
-  resolution: "@rollup/rollup-linux-x64-gnu@npm:4.35.0"
-  conditions: os=linux & cpu=x64 & libc=glibc
+"@rollup/rollup-linux-s390x-gnu@npm:4.52.5":
+  version: 4.52.5
+  resolution: "@rollup/rollup-linux-s390x-gnu@npm:4.52.5"
+  conditions: os=linux & cpu=s390x & libc=glibc
   languageName: node
   linkType: hard
 
@@ -16546,10 +16553,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-x64-musl@npm:4.35.0":
-  version: 4.35.0
-  resolution: "@rollup/rollup-linux-x64-musl@npm:4.35.0"
-  conditions: os=linux & cpu=x64 & libc=musl
+"@rollup/rollup-linux-x64-gnu@npm:4.52.5":
+  version: 4.52.5
+  resolution: "@rollup/rollup-linux-x64-gnu@npm:4.52.5"
+  conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
@@ -16574,10 +16581,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-win32-arm64-msvc@npm:4.35.0":
-  version: 4.35.0
-  resolution: "@rollup/rollup-win32-arm64-msvc@npm:4.35.0"
-  conditions: os=win32 & cpu=arm64
+"@rollup/rollup-linux-x64-musl@npm:4.52.5":
+  version: 4.52.5
+  resolution: "@rollup/rollup-linux-x64-musl@npm:4.52.5"
+  conditions: os=linux & cpu=x64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@rollup/rollup-openharmony-arm64@npm:4.52.5":
+  version: 4.52.5
+  resolution: "@rollup/rollup-openharmony-arm64@npm:4.52.5"
+  conditions: os=openharmony & cpu=arm64
   languageName: node
   linkType: hard
 
@@ -16602,10 +16616,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-win32-ia32-msvc@npm:4.35.0":
-  version: 4.35.0
-  resolution: "@rollup/rollup-win32-ia32-msvc@npm:4.35.0"
-  conditions: os=win32 & cpu=ia32
+"@rollup/rollup-win32-arm64-msvc@npm:4.52.5":
+  version: 4.52.5
+  resolution: "@rollup/rollup-win32-arm64-msvc@npm:4.52.5"
+  conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
@@ -16630,9 +16644,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-win32-x64-msvc@npm:4.35.0":
-  version: 4.35.0
-  resolution: "@rollup/rollup-win32-x64-msvc@npm:4.35.0"
+"@rollup/rollup-win32-ia32-msvc@npm:4.52.5":
+  version: 4.52.5
+  resolution: "@rollup/rollup-win32-ia32-msvc@npm:4.52.5"
+  conditions: os=win32 & cpu=ia32
+  languageName: node
+  linkType: hard
+
+"@rollup/rollup-win32-x64-gnu@npm:4.52.5":
+  version: 4.52.5
+  resolution: "@rollup/rollup-win32-x64-gnu@npm:4.52.5"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -16654,6 +16675,13 @@ __metadata:
 "@rollup/rollup-win32-x64-msvc@npm:4.44.1":
   version: 4.44.1
   resolution: "@rollup/rollup-win32-x64-msvc@npm:4.44.1"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@rollup/rollup-win32-x64-msvc@npm:4.52.5":
+  version: 4.52.5
+  resolution: "@rollup/rollup-win32-x64-msvc@npm:4.52.5"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -16872,15 +16900,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry-internal/browser-utils@npm:9.15.0":
-  version: 9.15.0
-  resolution: "@sentry-internal/browser-utils@npm:9.15.0"
-  dependencies:
-    "@sentry/core": "npm:9.15.0"
-  checksum: 10/e227209c894f56bd14907f579bc55d16285e9bd5bb663608a7f36329a812cf7afa5c47e8a5e9ddc772b1f7855cd747d779c3e4d9476235751c1ab6b8e229bacf
-  languageName: node
-  linkType: hard
-
 "@sentry-internal/browser-utils@npm:9.3.0":
   version: 9.3.0
   resolution: "@sentry-internal/browser-utils@npm:9.3.0"
@@ -16890,12 +16909,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry-internal/feedback@npm:9.15.0":
-  version: 9.15.0
-  resolution: "@sentry-internal/feedback@npm:9.15.0"
+"@sentry-internal/browser-utils@npm:9.46.0":
+  version: 9.46.0
+  resolution: "@sentry-internal/browser-utils@npm:9.46.0"
   dependencies:
-    "@sentry/core": "npm:9.15.0"
-  checksum: 10/204978536a478c7f267f26d90cffce1dc8b5ddbbea050b75ab452bf37b94547ed08db4b1946e0412e867bcf0ba7cd457a9d86ba973da5aea6695306c175c2708
+    "@sentry/core": "npm:9.46.0"
+  checksum: 10/b32b395e12ab8651c8447a36050703799759798fc7ca7d1d7b34b8761ee1a35779cd633d97610026180239df2f7cf604b2e77bef9212734867fbc8a63539f3db
   languageName: node
   linkType: hard
 
@@ -16908,13 +16927,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry-internal/replay-canvas@npm:9.15.0":
-  version: 9.15.0
-  resolution: "@sentry-internal/replay-canvas@npm:9.15.0"
+"@sentry-internal/feedback@npm:9.46.0":
+  version: 9.46.0
+  resolution: "@sentry-internal/feedback@npm:9.46.0"
   dependencies:
-    "@sentry-internal/replay": "npm:9.15.0"
-    "@sentry/core": "npm:9.15.0"
-  checksum: 10/11c1a69de2a3ffef4e40d7ddedf2b9f896074b4673741b2c62d89cc4fdfedc09e36c523e69ae0423c9ba17da81f14e5501549adab0bd17cf88531e258d51173b
+    "@sentry/core": "npm:9.46.0"
+  checksum: 10/43f4460303937c0480717256de318e1936b2226bd0e67bf8812912321d28526260cd1f90d0ee89f6a719dc68b9b1dd177080bb194af581696688190b3babd463
   languageName: node
   linkType: hard
 
@@ -16928,13 +16946,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry-internal/replay@npm:9.15.0":
-  version: 9.15.0
-  resolution: "@sentry-internal/replay@npm:9.15.0"
+"@sentry-internal/replay-canvas@npm:9.46.0":
+  version: 9.46.0
+  resolution: "@sentry-internal/replay-canvas@npm:9.46.0"
   dependencies:
-    "@sentry-internal/browser-utils": "npm:9.15.0"
-    "@sentry/core": "npm:9.15.0"
-  checksum: 10/f99d2e5fd0fdc5000aa38c241dcd76079476469499ac73b15bdb717cf92e12fab035de229db338f9fce2b610feb02742a934c97c04329c2213ef28a2ebb7780e
+    "@sentry-internal/replay": "npm:9.46.0"
+    "@sentry/core": "npm:9.46.0"
+  checksum: 10/30c8946cd02ad1ed647a385284242f516018135f4a4c42c9b174ed244c97f4dca6450ed8a32edbe7bff89f1e3a67dd5a5849b145d7ca6712e19fa3b4bbafafc8
   languageName: node
   linkType: hard
 
@@ -16945,6 +16963,16 @@ __metadata:
     "@sentry-internal/browser-utils": "npm:9.3.0"
     "@sentry/core": "npm:9.3.0"
   checksum: 10/7216aeb3d6fe87de948277be2c0645b410f230f261de677d1e3b759d7f24c7032366bed8c42feb371b666ac7dc2b8004aef9aa7feca356ec07cb1b7fe3384b5f
+  languageName: node
+  linkType: hard
+
+"@sentry-internal/replay@npm:9.46.0":
+  version: 9.46.0
+  resolution: "@sentry-internal/replay@npm:9.46.0"
+  dependencies:
+    "@sentry-internal/browser-utils": "npm:9.46.0"
+    "@sentry/core": "npm:9.46.0"
+  checksum: 10/995c19035760f689f456c1cd2029706f3e584179403c2a6b671a3548ca73c42b0cd806dd891bd30cad5d998f18727ae614075c4e35dae4b3efb44f9eec76ec25
   languageName: node
   linkType: hard
 
@@ -16966,23 +16994,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/babel-plugin-component-annotate@npm:3.3.1":
-  version: 3.3.1
-  resolution: "@sentry/babel-plugin-component-annotate@npm:3.3.1"
-  checksum: 10/6bbbacfa1bc1da19a6f47a4fd98c9df29acfabf5681d000fdc057af153de19119bd26fb3cd83789c0d553db72957e03ef78e96d14f9d3bc936ed7ceb3879c65b
-  languageName: node
-  linkType: hard
-
-"@sentry/browser@npm:9.15.0":
-  version: 9.15.0
-  resolution: "@sentry/browser@npm:9.15.0"
-  dependencies:
-    "@sentry-internal/browser-utils": "npm:9.15.0"
-    "@sentry-internal/feedback": "npm:9.15.0"
-    "@sentry-internal/replay": "npm:9.15.0"
-    "@sentry-internal/replay-canvas": "npm:9.15.0"
-    "@sentry/core": "npm:9.15.0"
-  checksum: 10/ae8abe4f22187da8239de348f472c101db8add3fe3101c7e57c51621160b72a83e69045527204733ce81801918f155b1d3aec0c3a8c7666bd51fb0bc0992538f
+"@sentry/babel-plugin-component-annotate@npm:3.6.1":
+  version: 3.6.1
+  resolution: "@sentry/babel-plugin-component-annotate@npm:3.6.1"
+  checksum: 10/b65732b1be4123a0da37875b608b66fa3bef50698df90dc4d3236cd182f21708aeb50a94f9108d2cf6d199d76a55c698c52d9cb4bbdc2f859108b4d46321a15a
   languageName: node
   linkType: hard
 
@@ -16996,6 +17011,19 @@ __metadata:
     "@sentry-internal/replay-canvas": "npm:9.3.0"
     "@sentry/core": "npm:9.3.0"
   checksum: 10/cd7cffa6374f16e16b01d64e24c3fe36a2600ebcb54fb6e8d5d9d9bcfee06821e8f18fd288268caa8cb8ced31681db4b510eea47dea07cec803b465e1b2985ed
+  languageName: node
+  linkType: hard
+
+"@sentry/browser@npm:9.46.0":
+  version: 9.46.0
+  resolution: "@sentry/browser@npm:9.46.0"
+  dependencies:
+    "@sentry-internal/browser-utils": "npm:9.46.0"
+    "@sentry-internal/feedback": "npm:9.46.0"
+    "@sentry-internal/replay": "npm:9.46.0"
+    "@sentry-internal/replay-canvas": "npm:9.46.0"
+    "@sentry/core": "npm:9.46.0"
+  checksum: 10/b9d989990789cedc9f4d3f537bccf4282fedad1c880ef54ae8a982fddaf3a8aa6e3f1173a6177ab4040909f22bfa8a4e9908af00dd037ab5cb17812ea66aa0cf
   languageName: node
   linkType: hard
 
@@ -17015,19 +17043,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/bundler-plugin-core@npm:3.3.1":
-  version: 3.3.1
-  resolution: "@sentry/bundler-plugin-core@npm:3.3.1"
+"@sentry/bundler-plugin-core@npm:3.6.1":
+  version: 3.6.1
+  resolution: "@sentry/bundler-plugin-core@npm:3.6.1"
   dependencies:
     "@babel/core": "npm:^7.18.5"
-    "@sentry/babel-plugin-component-annotate": "npm:3.3.1"
-    "@sentry/cli": "npm:2.42.2"
+    "@sentry/babel-plugin-component-annotate": "npm:3.6.1"
+    "@sentry/cli": "npm:^2.49.0"
     dotenv: "npm:^16.3.1"
     find-up: "npm:^5.0.0"
     glob: "npm:^9.3.2"
     magic-string: "npm:0.30.8"
     unplugin: "npm:1.0.1"
-  checksum: 10/61244c8d3bf12e7a72b6b281b1e5f5fcc83bb7eda09dd48dec9a288ec354dd57a446b9df997530cad2a060bb77e4c621d2278d2988ca78e264b0714cd0827ff4
+  checksum: 10/6445bda6a963acc8fedd857c3783a21aa2ca147f8c5dced5b064d8d5756e87903346ce113a1f792f47f908184332917f8e413f52441dd33d0fb0eb197d638dc1
   languageName: node
   linkType: hard
 
@@ -17038,9 +17066,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/cli-darwin@npm:2.42.2":
-  version: 2.42.2
-  resolution: "@sentry/cli-darwin@npm:2.42.2"
+"@sentry/cli-darwin@npm:2.57.0":
+  version: 2.57.0
+  resolution: "@sentry/cli-darwin@npm:2.57.0"
   conditions: os=darwin
   languageName: node
   linkType: hard
@@ -17052,10 +17080,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/cli-linux-arm64@npm:2.42.2":
-  version: 2.42.2
-  resolution: "@sentry/cli-linux-arm64@npm:2.42.2"
-  conditions: (os=linux | os=freebsd) & cpu=arm64
+"@sentry/cli-linux-arm64@npm:2.57.0":
+  version: 2.57.0
+  resolution: "@sentry/cli-linux-arm64@npm:2.57.0"
+  conditions: (os=linux | os=freebsd | os=android) & cpu=arm64
   languageName: node
   linkType: hard
 
@@ -17066,10 +17094,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/cli-linux-arm@npm:2.42.2":
-  version: 2.42.2
-  resolution: "@sentry/cli-linux-arm@npm:2.42.2"
-  conditions: (os=linux | os=freebsd) & cpu=arm
+"@sentry/cli-linux-arm@npm:2.57.0":
+  version: 2.57.0
+  resolution: "@sentry/cli-linux-arm@npm:2.57.0"
+  conditions: (os=linux | os=freebsd | os=android) & cpu=arm
   languageName: node
   linkType: hard
 
@@ -17080,10 +17108,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/cli-linux-i686@npm:2.42.2":
-  version: 2.42.2
-  resolution: "@sentry/cli-linux-i686@npm:2.42.2"
-  conditions: (os=linux | os=freebsd) & (cpu=x86 | cpu=ia32)
+"@sentry/cli-linux-i686@npm:2.57.0":
+  version: 2.57.0
+  resolution: "@sentry/cli-linux-i686@npm:2.57.0"
+  conditions: (os=linux | os=freebsd | os=android) & (cpu=x86 | cpu=ia32)
   languageName: node
   linkType: hard
 
@@ -17094,10 +17122,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/cli-linux-x64@npm:2.42.2":
-  version: 2.42.2
-  resolution: "@sentry/cli-linux-x64@npm:2.42.2"
-  conditions: (os=linux | os=freebsd) & cpu=x64
+"@sentry/cli-linux-x64@npm:2.57.0":
+  version: 2.57.0
+  resolution: "@sentry/cli-linux-x64@npm:2.57.0"
+  conditions: (os=linux | os=freebsd | os=android) & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@sentry/cli-win32-arm64@npm:2.57.0":
+  version: 2.57.0
+  resolution: "@sentry/cli-win32-arm64@npm:2.57.0"
+  conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
@@ -17108,9 +17143,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/cli-win32-i686@npm:2.42.2":
-  version: 2.42.2
-  resolution: "@sentry/cli-win32-i686@npm:2.42.2"
+"@sentry/cli-win32-i686@npm:2.57.0":
+  version: 2.57.0
+  resolution: "@sentry/cli-win32-i686@npm:2.57.0"
   conditions: os=win32 & (cpu=x86 | cpu=ia32)
   languageName: node
   linkType: hard
@@ -17122,9 +17157,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/cli-win32-x64@npm:2.42.2":
-  version: 2.42.2
-  resolution: "@sentry/cli-win32-x64@npm:2.42.2"
+"@sentry/cli-win32-x64@npm:2.57.0":
+  version: 2.57.0
+  resolution: "@sentry/cli-win32-x64@npm:2.57.0"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -17166,17 +17201,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/cli@npm:2.42.2":
-  version: 2.42.2
-  resolution: "@sentry/cli@npm:2.42.2"
+"@sentry/cli@npm:^2.49.0":
+  version: 2.57.0
+  resolution: "@sentry/cli@npm:2.57.0"
   dependencies:
-    "@sentry/cli-darwin": "npm:2.42.2"
-    "@sentry/cli-linux-arm": "npm:2.42.2"
-    "@sentry/cli-linux-arm64": "npm:2.42.2"
-    "@sentry/cli-linux-i686": "npm:2.42.2"
-    "@sentry/cli-linux-x64": "npm:2.42.2"
-    "@sentry/cli-win32-i686": "npm:2.42.2"
-    "@sentry/cli-win32-x64": "npm:2.42.2"
+    "@sentry/cli-darwin": "npm:2.57.0"
+    "@sentry/cli-linux-arm": "npm:2.57.0"
+    "@sentry/cli-linux-arm64": "npm:2.57.0"
+    "@sentry/cli-linux-i686": "npm:2.57.0"
+    "@sentry/cli-linux-x64": "npm:2.57.0"
+    "@sentry/cli-win32-arm64": "npm:2.57.0"
+    "@sentry/cli-win32-i686": "npm:2.57.0"
+    "@sentry/cli-win32-x64": "npm:2.57.0"
     https-proxy-agent: "npm:^5.0.0"
     node-fetch: "npm:^2.6.7"
     progress: "npm:^2.0.3"
@@ -17193,13 +17229,15 @@ __metadata:
       optional: true
     "@sentry/cli-linux-x64":
       optional: true
+    "@sentry/cli-win32-arm64":
+      optional: true
     "@sentry/cli-win32-i686":
       optional: true
     "@sentry/cli-win32-x64":
       optional: true
   bin:
     sentry-cli: bin/sentry-cli
-  checksum: 10/f92800b54a88c2f9f1d7a2604bb6b4a17c429a836871df2b966595af7d382bdac490586b19e5ab81d278d38d498207fcdbd94ceba0a50acec2ab77f1a6a4f3af
+  checksum: 10/f73049676c210040fc704965d93668c2e56fb4347c378a3d418c1965457e28ac250cab3a042dd230730636de04df9a7c735789487baf7714f75385589733ef66
   languageName: node
   linkType: hard
 
@@ -17233,17 +17271,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/core@npm:9.15.0":
-  version: 9.15.0
-  resolution: "@sentry/core@npm:9.15.0"
-  checksum: 10/718238d93a35fb2344a0b55bdb4108213391558382f7a1e29ffc00118658bca2f78c383529f2efdea107447840a5deb696fec4f8208cbbe760086505c780437e
-  languageName: node
-  linkType: hard
-
 "@sentry/core@npm:9.3.0":
   version: 9.3.0
   resolution: "@sentry/core@npm:9.3.0"
   checksum: 10/80ca12b8cf2bd862fcf82b92b26b4a6915596814262c642f57f3ca8fd859162efd7b94863eadbc7b1b22b9c62789be99b94fa0f3b8467605ca462d0b2fed5856
+  languageName: node
+  linkType: hard
+
+"@sentry/core@npm:9.46.0":
+  version: 9.46.0
+  resolution: "@sentry/core@npm:9.46.0"
+  checksum: 10/a42a5e92f4650ba89b5caa1885cd2cf2766b2726dfb03d567299ba6d6ada6c87436d20af2cd0444a14df082e71415f526b4597e0af69927b216ad8e09a233ad9
   languageName: node
   linkType: hard
 
@@ -17266,30 +17304,6 @@ __metadata:
     "@sentry/types": "npm:5.30.0"
     tslib: "npm:^1.9.3"
   checksum: 10/e74bf519f5e284decb81eea8fd7c75b02827bde36c8ccef5ad0b941043e62a6d6578d7f1ad9dba33e03d240593140990b1999215a35abb344e2b4f3e09b15c90
-  languageName: node
-  linkType: hard
-
-"@sentry/nextjs@npm:9.15.0":
-  version: 9.15.0
-  resolution: "@sentry/nextjs@npm:9.15.0"
-  dependencies:
-    "@opentelemetry/api": "npm:^1.9.0"
-    "@opentelemetry/semantic-conventions": "npm:^1.30.0"
-    "@rollup/plugin-commonjs": "npm:28.0.1"
-    "@sentry-internal/browser-utils": "npm:9.15.0"
-    "@sentry/core": "npm:9.15.0"
-    "@sentry/node": "npm:9.15.0"
-    "@sentry/opentelemetry": "npm:9.15.0"
-    "@sentry/react": "npm:9.15.0"
-    "@sentry/vercel-edge": "npm:9.15.0"
-    "@sentry/webpack-plugin": "npm:3.3.1"
-    chalk: "npm:3.0.0"
-    resolve: "npm:1.22.8"
-    rollup: "npm:4.35.0"
-    stacktrace-parser: "npm:^0.1.10"
-  peerDependencies:
-    next: ^13.2.0 || ^14.0 || ^15.0.0-rc.0
-  checksum: 10/5adecc43d4c8d4e626dcfdfaf9198a69f5d5c8076c98c342af0bb05c8ed0f189a62fdb3ecdfdbfd8be94ce6b482b81ae6c2d32541771aaf4f0494e0937ae3c20
   languageName: node
   linkType: hard
 
@@ -17317,45 +17331,46 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/node@npm:9.15.0":
-  version: 9.15.0
-  resolution: "@sentry/node@npm:9.15.0"
+"@sentry/nextjs@npm:9.46.0":
+  version: 9.46.0
+  resolution: "@sentry/nextjs@npm:9.46.0"
   dependencies:
     "@opentelemetry/api": "npm:^1.9.0"
-    "@opentelemetry/context-async-hooks": "npm:^1.30.1"
-    "@opentelemetry/core": "npm:^1.30.1"
-    "@opentelemetry/instrumentation": "npm:^0.57.2"
-    "@opentelemetry/instrumentation-amqplib": "npm:^0.46.1"
-    "@opentelemetry/instrumentation-connect": "npm:0.43.1"
-    "@opentelemetry/instrumentation-dataloader": "npm:0.16.1"
-    "@opentelemetry/instrumentation-express": "npm:0.47.1"
-    "@opentelemetry/instrumentation-fastify": "npm:0.44.2"
-    "@opentelemetry/instrumentation-fs": "npm:0.19.1"
-    "@opentelemetry/instrumentation-generic-pool": "npm:0.43.1"
-    "@opentelemetry/instrumentation-graphql": "npm:0.47.1"
-    "@opentelemetry/instrumentation-hapi": "npm:0.45.2"
-    "@opentelemetry/instrumentation-http": "npm:0.57.2"
-    "@opentelemetry/instrumentation-ioredis": "npm:0.47.1"
-    "@opentelemetry/instrumentation-kafkajs": "npm:0.7.1"
-    "@opentelemetry/instrumentation-knex": "npm:0.44.1"
-    "@opentelemetry/instrumentation-koa": "npm:0.47.1"
-    "@opentelemetry/instrumentation-lru-memoizer": "npm:0.44.1"
-    "@opentelemetry/instrumentation-mongodb": "npm:0.52.0"
-    "@opentelemetry/instrumentation-mongoose": "npm:0.46.1"
-    "@opentelemetry/instrumentation-mysql": "npm:0.45.1"
-    "@opentelemetry/instrumentation-mysql2": "npm:0.45.2"
-    "@opentelemetry/instrumentation-pg": "npm:0.51.1"
-    "@opentelemetry/instrumentation-redis-4": "npm:0.46.1"
-    "@opentelemetry/instrumentation-tedious": "npm:0.18.1"
-    "@opentelemetry/instrumentation-undici": "npm:0.10.1"
-    "@opentelemetry/resources": "npm:^1.30.1"
-    "@opentelemetry/sdk-trace-base": "npm:^1.30.1"
-    "@opentelemetry/semantic-conventions": "npm:^1.30.0"
-    "@prisma/instrumentation": "npm:6.6.0"
-    "@sentry/core": "npm:9.15.0"
-    "@sentry/opentelemetry": "npm:9.15.0"
-    import-in-the-middle: "npm:^1.13.0"
-  checksum: 10/7d49955720266152446f4943310223634f302ab55393e8d47e95d746ac10af0a6ac209fb412c8b27c158e93553f951b76d2cae08204ab59deb983713d02b65e4
+    "@opentelemetry/semantic-conventions": "npm:^1.34.0"
+    "@rollup/plugin-commonjs": "npm:28.0.1"
+    "@sentry-internal/browser-utils": "npm:9.46.0"
+    "@sentry/core": "npm:9.46.0"
+    "@sentry/node": "npm:9.46.0"
+    "@sentry/opentelemetry": "npm:9.46.0"
+    "@sentry/react": "npm:9.46.0"
+    "@sentry/vercel-edge": "npm:9.46.0"
+    "@sentry/webpack-plugin": "npm:^3.5.0"
+    chalk: "npm:3.0.0"
+    resolve: "npm:1.22.8"
+    rollup: "npm:^4.35.0"
+    stacktrace-parser: "npm:^0.1.10"
+  peerDependencies:
+    next: ^13.2.0 || ^14.0 || ^15.0.0-rc.0
+  checksum: 10/60112fcc4dd2f74e6973f908408d9ff2671de4fdd92594c767e2ef50abc092810d58b0eb7b942ea967828342dbe4c13b857786cbe3f08665b303987357ff2ca8
+  languageName: node
+  linkType: hard
+
+"@sentry/node-core@npm:9.46.0":
+  version: 9.46.0
+  resolution: "@sentry/node-core@npm:9.46.0"
+  dependencies:
+    "@sentry/core": "npm:9.46.0"
+    "@sentry/opentelemetry": "npm:9.46.0"
+    import-in-the-middle: "npm:^1.14.2"
+  peerDependencies:
+    "@opentelemetry/api": ^1.9.0
+    "@opentelemetry/context-async-hooks": ^1.30.1 || ^2.0.0
+    "@opentelemetry/core": ^1.30.1 || ^2.0.0
+    "@opentelemetry/instrumentation": ">=0.57.1 <1"
+    "@opentelemetry/resources": ^1.30.1 || ^2.0.0
+    "@opentelemetry/sdk-trace-base": ^1.30.1 || ^2.0.0
+    "@opentelemetry/semantic-conventions": ^1.34.0
+  checksum: 10/1c42912ae0d6dd77cf7ca0cb05956e74557c193a23b5e5157926105f47c1d4cedb6aef66d468b6845a5a48ef53b831ef2dcc72ad06c6e154bcd4d1b00b8950a2
   languageName: node
   linkType: hard
 
@@ -17398,6 +17413,49 @@ __metadata:
     "@sentry/opentelemetry": "npm:9.3.0"
     import-in-the-middle: "npm:^1.13.0"
   checksum: 10/f0c98d99674c017f7d7ec8d5b96b36f7c4a150e904e9d08743620eec8e4dabe328dcbd942e359aa2a8d0f647e441b0d19e80636fd1579e2ec05923fe081da2f5
+  languageName: node
+  linkType: hard
+
+"@sentry/node@npm:9.46.0":
+  version: 9.46.0
+  resolution: "@sentry/node@npm:9.46.0"
+  dependencies:
+    "@opentelemetry/api": "npm:^1.9.0"
+    "@opentelemetry/context-async-hooks": "npm:^1.30.1"
+    "@opentelemetry/core": "npm:^1.30.1"
+    "@opentelemetry/instrumentation": "npm:^0.57.2"
+    "@opentelemetry/instrumentation-amqplib": "npm:^0.46.1"
+    "@opentelemetry/instrumentation-connect": "npm:0.43.1"
+    "@opentelemetry/instrumentation-dataloader": "npm:0.16.1"
+    "@opentelemetry/instrumentation-express": "npm:0.47.1"
+    "@opentelemetry/instrumentation-fs": "npm:0.19.1"
+    "@opentelemetry/instrumentation-generic-pool": "npm:0.43.1"
+    "@opentelemetry/instrumentation-graphql": "npm:0.47.1"
+    "@opentelemetry/instrumentation-hapi": "npm:0.45.2"
+    "@opentelemetry/instrumentation-http": "npm:0.57.2"
+    "@opentelemetry/instrumentation-ioredis": "npm:0.47.1"
+    "@opentelemetry/instrumentation-kafkajs": "npm:0.7.1"
+    "@opentelemetry/instrumentation-knex": "npm:0.44.1"
+    "@opentelemetry/instrumentation-koa": "npm:0.47.1"
+    "@opentelemetry/instrumentation-lru-memoizer": "npm:0.44.1"
+    "@opentelemetry/instrumentation-mongodb": "npm:0.52.0"
+    "@opentelemetry/instrumentation-mongoose": "npm:0.46.1"
+    "@opentelemetry/instrumentation-mysql": "npm:0.45.1"
+    "@opentelemetry/instrumentation-mysql2": "npm:0.45.2"
+    "@opentelemetry/instrumentation-pg": "npm:0.51.1"
+    "@opentelemetry/instrumentation-redis-4": "npm:0.46.1"
+    "@opentelemetry/instrumentation-tedious": "npm:0.18.1"
+    "@opentelemetry/instrumentation-undici": "npm:0.10.1"
+    "@opentelemetry/resources": "npm:^1.30.1"
+    "@opentelemetry/sdk-trace-base": "npm:^1.30.1"
+    "@opentelemetry/semantic-conventions": "npm:^1.34.0"
+    "@prisma/instrumentation": "npm:6.11.1"
+    "@sentry/core": "npm:9.46.0"
+    "@sentry/node-core": "npm:9.46.0"
+    "@sentry/opentelemetry": "npm:9.46.0"
+    import-in-the-middle: "npm:^1.14.2"
+    minimatch: "npm:^9.0.0"
+  checksum: 10/15dedae73c086a320d0c350c68bb73dae93586665e716d3b254ee02054af42c646191c5922adf242908669de63bc9972cca9a8f29495f2523913b080fa0e192d
   languageName: node
   linkType: hard
 
@@ -17477,22 +17535,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/opentelemetry@npm:9.15.0":
-  version: 9.15.0
-  resolution: "@sentry/opentelemetry@npm:9.15.0"
-  dependencies:
-    "@sentry/core": "npm:9.15.0"
-  peerDependencies:
-    "@opentelemetry/api": ^1.9.0
-    "@opentelemetry/context-async-hooks": ^1.30.1
-    "@opentelemetry/core": ^1.30.1
-    "@opentelemetry/instrumentation": ^0.57.1
-    "@opentelemetry/sdk-trace-base": ^1.30.1
-    "@opentelemetry/semantic-conventions": ^1.28.0
-  checksum: 10/a899cf452057c224be2661e3a6fcc43f08b83fbcc585dd9ee0f4c0764af1ee835dc95026c0ff9d0005591892e0b08a90be3827a8aef6c74be1ec926e2f1c7eb0
-  languageName: node
-  linkType: hard
-
 "@sentry/opentelemetry@npm:9.3.0":
   version: 9.3.0
   resolution: "@sentry/opentelemetry@npm:9.3.0"
@@ -17509,16 +17551,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/react@npm:9.15.0":
-  version: 9.15.0
-  resolution: "@sentry/react@npm:9.15.0"
+"@sentry/opentelemetry@npm:9.46.0":
+  version: 9.46.0
+  resolution: "@sentry/opentelemetry@npm:9.46.0"
   dependencies:
-    "@sentry/browser": "npm:9.15.0"
-    "@sentry/core": "npm:9.15.0"
-    hoist-non-react-statics: "npm:^3.3.2"
+    "@sentry/core": "npm:9.46.0"
   peerDependencies:
-    react: ^16.14.0 || 17.x || 18.x || 19.x
-  checksum: 10/e58ac349d6b75fb6a1232c54e6c5efe3b88aed9ecbbe5619b358ea1f41975e06a1677a650f90c1b2d57ef5533022ccf77d28004a965510dda5b61bd3304ec90f
+    "@opentelemetry/api": ^1.9.0
+    "@opentelemetry/context-async-hooks": ^1.30.1 || ^2.0.0
+    "@opentelemetry/core": ^1.30.1 || ^2.0.0
+    "@opentelemetry/sdk-trace-base": ^1.30.1 || ^2.0.0
+    "@opentelemetry/semantic-conventions": ^1.34.0
+  checksum: 10/a29de286adf207d3210163da33f9e89a187e5009f8d16717028feb8cb7fc7117c3453d3364a9ac0d8063d21d27d62fc51cffc12552b013bf6286653804a5e5d2
   languageName: node
   linkType: hard
 
@@ -17532,6 +17576,19 @@ __metadata:
   peerDependencies:
     react: ^16.14.0 || 17.x || 18.x || 19.x
   checksum: 10/fde56d62ea0ec76cc144ad8afc7081dac2037ebca280325d92f2567df2b587d7d579b25e91729e565b79a2e1ac8172dee2e8612e6920e4279ed91df6102812c3
+  languageName: node
+  linkType: hard
+
+"@sentry/react@npm:9.46.0":
+  version: 9.46.0
+  resolution: "@sentry/react@npm:9.46.0"
+  dependencies:
+    "@sentry/browser": "npm:9.46.0"
+    "@sentry/core": "npm:9.46.0"
+    hoist-non-react-statics: "npm:^3.3.2"
+  peerDependencies:
+    react: ^16.14.0 || 17.x || 18.x || 19.x
+  checksum: 10/bc1ae6e1135b4dea3a7e819d757c1390a80b54fc33e7ed198447614ef91fb7a6b3b92e5780d99589b53822d309fa9612e48573dacd8ef1d6759b888251b0af13
   languageName: node
   linkType: hard
 
@@ -17590,16 +17647,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/vercel-edge@npm:9.15.0":
-  version: 9.15.0
-  resolution: "@sentry/vercel-edge@npm:9.15.0"
-  dependencies:
-    "@opentelemetry/api": "npm:^1.9.0"
-    "@sentry/core": "npm:9.15.0"
-  checksum: 10/b2db3d960ba3ddd3db08c27801a7efa26a5472ca587219a00e9c66310b3b60c29faf5d272306d5077b565ca30bb2d513dcaa64eca46d9ef5f0d1ea0d0dd235f5
-  languageName: node
-  linkType: hard
-
 "@sentry/vercel-edge@npm:9.3.0":
   version: 9.3.0
   resolution: "@sentry/vercel-edge@npm:9.3.0"
@@ -17607,6 +17654,19 @@ __metadata:
     "@opentelemetry/api": "npm:^1.9.0"
     "@sentry/core": "npm:9.3.0"
   checksum: 10/e064a808233eb1950ca796a5ebbc44db775f29c328f332dac3dc465691a56a0f4937422ee998b3df4ef154cf64c90c609796b54d29e3a7509ceb026c9f82bc63
+  languageName: node
+  linkType: hard
+
+"@sentry/vercel-edge@npm:9.46.0":
+  version: 9.46.0
+  resolution: "@sentry/vercel-edge@npm:9.46.0"
+  dependencies:
+    "@opentelemetry/api": "npm:^1.9.0"
+    "@opentelemetry/resources": "npm:^1.30.1"
+    "@opentelemetry/semantic-conventions": "npm:^1.34.0"
+    "@sentry/core": "npm:9.46.0"
+    "@sentry/opentelemetry": "npm:9.46.0"
+  checksum: 10/6e5d9204a8333b96974f41334b689b4fef1324b58591be6a7baad5f755ea10129abdb8a667c5a431c131e2e0aeaca9c66a9216de2d686cd4e684bbb3fb21ffde
   languageName: node
   linkType: hard
 
@@ -17623,16 +17683,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/webpack-plugin@npm:3.3.1":
-  version: 3.3.1
-  resolution: "@sentry/webpack-plugin@npm:3.3.1"
+"@sentry/webpack-plugin@npm:^3.5.0":
+  version: 3.6.1
+  resolution: "@sentry/webpack-plugin@npm:3.6.1"
   dependencies:
-    "@sentry/bundler-plugin-core": "npm:3.3.1"
+    "@sentry/bundler-plugin-core": "npm:3.6.1"
     unplugin: "npm:1.0.1"
     uuid: "npm:^9.0.0"
   peerDependencies:
     webpack: ">=4.40.0"
-  checksum: 10/199b12ce0074986d87268897edfd537eea1746886b7e99068a036f512102358a56fc7c8614bb6d6036ff44111fa28edf6ae05fd27303230f43390d0193dd2fe4
+  checksum: 10/2d3fbb2688398f58e859d36058a88b3668583741fc3be036ba5f09dc6ad9703ddcad486ba4f76e5fa257a8473dc66d7f0e47407e60d6b4943f8952615752d3fd
   languageName: node
   linkType: hard
 
@@ -22171,7 +22231,7 @@ __metadata:
     "@headlessui/react": "npm:2.2.9"
     "@openzeppelin/merkle-tree": "npm:1.0.8"
     "@privy-io/react-auth": "npm:2.12.0"
-    "@sentry/nextjs": "npm:9.15.0"
+    "@sentry/nextjs": "npm:9.46.0"
     "@tanstack/react-query": "npm:5.90.2"
     "@tw-classed/react": "npm:1.8.1"
     "@types/react": "npm:18.3.26"
@@ -35954,7 +36014,7 @@ __metadata:
   resolution: "graph-service@workspace:graph-service"
   dependencies:
     "@cloudflare/workers-types": "npm:4.20251011.0"
-    "@sentry/node": "npm:9.15.0"
+    "@sentry/node": "npm:9.46.0"
     vitest: "npm:3.2.4"
     wrangler: "npm:4.42.2"
   languageName: unknown
@@ -37740,6 +37800,18 @@ __metadata:
     cjs-module-lexer: "npm:^1.2.2"
     module-details-from-path: "npm:^1.0.3"
   checksum: 10/fea083fb2d6a9607702e3f4d675b19c52f3ebc271c9050f2a041966910bfd04047b100b13112f10109415c87c312206a8591d4a883fdedeb1f27e6637a96c852
+  languageName: node
+  linkType: hard
+
+"import-in-the-middle@npm:^1.14.2":
+  version: 1.15.0
+  resolution: "import-in-the-middle@npm:1.15.0"
+  dependencies:
+    acorn: "npm:^8.14.0"
+    acorn-import-attributes: "npm:^1.9.5"
+    cjs-module-lexer: "npm:^1.2.2"
+    module-details-from-path: "npm:^1.0.3"
+  checksum: 10/a1ff65ea557ffe67e63dd67b411255fedd8622b324ff22ba99f4436b8fcf74da0333e62b4e8142f447e5db64a42ec9e65f926d50fa55e89c4e4d64626d8cf5f8
   languageName: node
   linkType: hard
 
@@ -50598,78 +50670,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup@npm:4.35.0":
-  version: 4.35.0
-  resolution: "rollup@npm:4.35.0"
-  dependencies:
-    "@rollup/rollup-android-arm-eabi": "npm:4.35.0"
-    "@rollup/rollup-android-arm64": "npm:4.35.0"
-    "@rollup/rollup-darwin-arm64": "npm:4.35.0"
-    "@rollup/rollup-darwin-x64": "npm:4.35.0"
-    "@rollup/rollup-freebsd-arm64": "npm:4.35.0"
-    "@rollup/rollup-freebsd-x64": "npm:4.35.0"
-    "@rollup/rollup-linux-arm-gnueabihf": "npm:4.35.0"
-    "@rollup/rollup-linux-arm-musleabihf": "npm:4.35.0"
-    "@rollup/rollup-linux-arm64-gnu": "npm:4.35.0"
-    "@rollup/rollup-linux-arm64-musl": "npm:4.35.0"
-    "@rollup/rollup-linux-loongarch64-gnu": "npm:4.35.0"
-    "@rollup/rollup-linux-powerpc64le-gnu": "npm:4.35.0"
-    "@rollup/rollup-linux-riscv64-gnu": "npm:4.35.0"
-    "@rollup/rollup-linux-s390x-gnu": "npm:4.35.0"
-    "@rollup/rollup-linux-x64-gnu": "npm:4.35.0"
-    "@rollup/rollup-linux-x64-musl": "npm:4.35.0"
-    "@rollup/rollup-win32-arm64-msvc": "npm:4.35.0"
-    "@rollup/rollup-win32-ia32-msvc": "npm:4.35.0"
-    "@rollup/rollup-win32-x64-msvc": "npm:4.35.0"
-    "@types/estree": "npm:1.0.6"
-    fsevents: "npm:~2.3.2"
-  dependenciesMeta:
-    "@rollup/rollup-android-arm-eabi":
-      optional: true
-    "@rollup/rollup-android-arm64":
-      optional: true
-    "@rollup/rollup-darwin-arm64":
-      optional: true
-    "@rollup/rollup-darwin-x64":
-      optional: true
-    "@rollup/rollup-freebsd-arm64":
-      optional: true
-    "@rollup/rollup-freebsd-x64":
-      optional: true
-    "@rollup/rollup-linux-arm-gnueabihf":
-      optional: true
-    "@rollup/rollup-linux-arm-musleabihf":
-      optional: true
-    "@rollup/rollup-linux-arm64-gnu":
-      optional: true
-    "@rollup/rollup-linux-arm64-musl":
-      optional: true
-    "@rollup/rollup-linux-loongarch64-gnu":
-      optional: true
-    "@rollup/rollup-linux-powerpc64le-gnu":
-      optional: true
-    "@rollup/rollup-linux-riscv64-gnu":
-      optional: true
-    "@rollup/rollup-linux-s390x-gnu":
-      optional: true
-    "@rollup/rollup-linux-x64-gnu":
-      optional: true
-    "@rollup/rollup-linux-x64-musl":
-      optional: true
-    "@rollup/rollup-win32-arm64-msvc":
-      optional: true
-    "@rollup/rollup-win32-ia32-msvc":
-      optional: true
-    "@rollup/rollup-win32-x64-msvc":
-      optional: true
-    fsevents:
-      optional: true
-  bin:
-    rollup: dist/bin/rollup
-  checksum: 10/1fd13b8cb874106727cc4241e7b09167b835247185f52a0ac0d4b302df6dd01feec32e53ee3fead757c0c033f8b15ae6f0e093854de1878ae9e5dee37ec52579
-  languageName: node
-  linkType: hard
-
 "rollup@npm:^4.34.8":
   version: 4.37.0
   resolution: "rollup@npm:4.37.0"
@@ -50817,6 +50817,87 @@ __metadata:
   bin:
     rollup: dist/bin/rollup
   checksum: 10/59976247cd855bc48b7192c82a6751bd04213e5a265109c652a6c43bde9056038c6399c0cf50ea3001edd5c11bb878a59e1055bb651b3bd6bbd0373c0345ed0c
+  languageName: node
+  linkType: hard
+
+"rollup@npm:^4.35.0":
+  version: 4.52.5
+  resolution: "rollup@npm:4.52.5"
+  dependencies:
+    "@rollup/rollup-android-arm-eabi": "npm:4.52.5"
+    "@rollup/rollup-android-arm64": "npm:4.52.5"
+    "@rollup/rollup-darwin-arm64": "npm:4.52.5"
+    "@rollup/rollup-darwin-x64": "npm:4.52.5"
+    "@rollup/rollup-freebsd-arm64": "npm:4.52.5"
+    "@rollup/rollup-freebsd-x64": "npm:4.52.5"
+    "@rollup/rollup-linux-arm-gnueabihf": "npm:4.52.5"
+    "@rollup/rollup-linux-arm-musleabihf": "npm:4.52.5"
+    "@rollup/rollup-linux-arm64-gnu": "npm:4.52.5"
+    "@rollup/rollup-linux-arm64-musl": "npm:4.52.5"
+    "@rollup/rollup-linux-loong64-gnu": "npm:4.52.5"
+    "@rollup/rollup-linux-ppc64-gnu": "npm:4.52.5"
+    "@rollup/rollup-linux-riscv64-gnu": "npm:4.52.5"
+    "@rollup/rollup-linux-riscv64-musl": "npm:4.52.5"
+    "@rollup/rollup-linux-s390x-gnu": "npm:4.52.5"
+    "@rollup/rollup-linux-x64-gnu": "npm:4.52.5"
+    "@rollup/rollup-linux-x64-musl": "npm:4.52.5"
+    "@rollup/rollup-openharmony-arm64": "npm:4.52.5"
+    "@rollup/rollup-win32-arm64-msvc": "npm:4.52.5"
+    "@rollup/rollup-win32-ia32-msvc": "npm:4.52.5"
+    "@rollup/rollup-win32-x64-gnu": "npm:4.52.5"
+    "@rollup/rollup-win32-x64-msvc": "npm:4.52.5"
+    "@types/estree": "npm:1.0.8"
+    fsevents: "npm:~2.3.2"
+  dependenciesMeta:
+    "@rollup/rollup-android-arm-eabi":
+      optional: true
+    "@rollup/rollup-android-arm64":
+      optional: true
+    "@rollup/rollup-darwin-arm64":
+      optional: true
+    "@rollup/rollup-darwin-x64":
+      optional: true
+    "@rollup/rollup-freebsd-arm64":
+      optional: true
+    "@rollup/rollup-freebsd-x64":
+      optional: true
+    "@rollup/rollup-linux-arm-gnueabihf":
+      optional: true
+    "@rollup/rollup-linux-arm-musleabihf":
+      optional: true
+    "@rollup/rollup-linux-arm64-gnu":
+      optional: true
+    "@rollup/rollup-linux-arm64-musl":
+      optional: true
+    "@rollup/rollup-linux-loong64-gnu":
+      optional: true
+    "@rollup/rollup-linux-ppc64-gnu":
+      optional: true
+    "@rollup/rollup-linux-riscv64-gnu":
+      optional: true
+    "@rollup/rollup-linux-riscv64-musl":
+      optional: true
+    "@rollup/rollup-linux-s390x-gnu":
+      optional: true
+    "@rollup/rollup-linux-x64-gnu":
+      optional: true
+    "@rollup/rollup-linux-x64-musl":
+      optional: true
+    "@rollup/rollup-openharmony-arm64":
+      optional: true
+    "@rollup/rollup-win32-arm64-msvc":
+      optional: true
+    "@rollup/rollup-win32-ia32-msvc":
+      optional: true
+    "@rollup/rollup-win32-x64-gnu":
+      optional: true
+    "@rollup/rollup-win32-x64-msvc":
+      optional: true
+    fsevents:
+      optional: true
+  bin:
+    rollup: dist/bin/rollup
+  checksum: 10/e29ef8b386cb33709073c5e466fa9dfda2ecd29b3143ff30badff56acef5004de94fba14668aee9f0163c009a731dfe040b9daea2c67102f39634c13fc06a14f
   languageName: node
   linkType: hard
 
