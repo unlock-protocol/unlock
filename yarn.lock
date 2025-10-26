@@ -9698,7 +9698,32 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@logtail/node@npm:0.5.4, @logtail/node@npm:^0.5.4":
+"@logtail/core@npm:^0.5.6":
+  version: 0.5.6
+  resolution: "@logtail/core@npm:0.5.6"
+  dependencies:
+    "@logtail/tools": "npm:^0.5.6"
+    "@logtail/types": "npm:^0.5.6"
+    serialize-error: "npm:8.1.0"
+  checksum: 10/939802a95217cd5bed78c13074ce112e927c442c4b93f5bc7bc4583353e3547d144588a425d3d655d4467454796e0360ab597c9b0f57faaf0f5dbaae6f72fde8
+  languageName: node
+  linkType: hard
+
+"@logtail/node@npm:0.5.6":
+  version: 0.5.6
+  resolution: "@logtail/node@npm:0.5.6"
+  dependencies:
+    "@logtail/core": "npm:^0.5.6"
+    "@logtail/types": "npm:^0.5.6"
+    "@msgpack/msgpack": "npm:^2.5.1"
+    "@types/stack-trace": "npm:^0.0.33"
+    minimatch: "npm:^9.0.5"
+    stack-trace: "npm:0.0.10"
+  checksum: 10/6bd98af88fe56e35e0a7a77ef981d57aad2d5bdc7e02468a7ef672575d5c931d373e27915de9ee87c61ca13c953c8d48aa595c41188462473d046213d9643b3c
+  languageName: node
+  linkType: hard
+
+"@logtail/node@npm:^0.5.4":
   version: 0.5.4
   resolution: "@logtail/node@npm:0.5.4"
   dependencies:
@@ -9721,10 +9746,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@logtail/tools@npm:^0.5.6":
+  version: 0.5.6
+  resolution: "@logtail/tools@npm:0.5.6"
+  dependencies:
+    "@logtail/types": "npm:^0.5.6"
+  checksum: 10/0257895f0b2d015fc159c600217268172e9568dcedb263c9937502f48a6c10ec9544abb81fac8c883795c65c8df7166f5655f849c7756e07b722bac535914573
+  languageName: node
+  linkType: hard
+
 "@logtail/types@npm:^0.5.3":
   version: 0.5.3
   resolution: "@logtail/types@npm:0.5.3"
   checksum: 10/f7c4af77972f01ef176955626ded68e88a02a4dd7a8fdbbae7f002e77e95ee202b82b23b4035cc228157aff322f409aeca6652d9db88c962b82bb7898c6d2403
+  languageName: node
+  linkType: hard
+
+"@logtail/types@npm:^0.5.6":
+  version: 0.5.6
+  resolution: "@logtail/types@npm:0.5.6"
+  checksum: 10/cddbdfc84ebd1c3ea9aea4f99286c4dc191ebe968b780c9661d89f7850828487f975afa42c184aa57df3dfd0119dcdb9efb1e1ddaaafe7876c17b458ff0446b8
   languageName: node
   linkType: hard
 
@@ -22443,7 +22484,7 @@ __metadata:
     "@ambire/signature-validator": "npm:1.4.1"
     "@aws-sdk/client-s3": "npm:3.908.0"
     "@guildxyz/sdk": "npm:2.6.9"
-    "@logtail/node": "npm:0.5.4"
+    "@logtail/node": "npm:0.5.6"
     "@logtail/winston": "npm:0.5.4"
     "@nuintun/qrcode": "npm:5.0.2"
     "@openzeppelin/defender-sdk": "npm:2.4.0"
