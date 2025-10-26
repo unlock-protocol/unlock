@@ -19,7 +19,7 @@
     "babel-preset-react-app": "10.1.0",
     "calendar-link": "2.11.0",
     "dayjs": "1.11.18",
-    "dotenv": "16.6.1",
+    "dotenv": "17.2.3",
     "embla-carousel-react": "8.6.0",
     "eslint": "9.31.0",
     "ethers": "6.15.0",
