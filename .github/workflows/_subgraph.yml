@@ -23,7 +23,7 @@ jobs:
       - name: Prepare the network files
         run: yarn workspace @unlock-protocol/subgraph prepare
       - name: Load secrets from 1Password
-        uses: 1Password/load-secrets-action@v2.0.0
+        uses: 1Password/load-secrets-action@v3.0.0
         with:
           export-env: true
         env:
