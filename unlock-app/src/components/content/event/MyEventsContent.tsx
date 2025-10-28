@@ -10,11 +10,9 @@ import Link from 'next/link'
 import EventList from '~/components/interface/locks/List/elements/EventList'
 import EventCollectionList from '~/components/interface/locks/List/elements/EventCollectionList'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
-import { useState } from 'react'
 
 export default function MyEventsContent() {
   const { account } = useAuthenticate()
-  const [selectedIndex, setSelectedIndex] = useState(0)
 
   const tabs = [
     {
@@ -65,23 +63,22 @@ export default function MyEventsContent() {
   return (
     <>
       <SectionHeader />
-      <Tab.Group selectedIndex={selectedIndex} onChange={setSelectedIndex}>
+      <Tab.Group>
         <Tab.List className="flex gap-2 border-b border-gray-300">
-          {tabs.map(({ label }, index) => {
-            const isActive = index === selectedIndex
-            return (
-              <Tab
-                key={index}
-                className={`px-4 py-2 text-base font-semibold outline-none transition-colors border-b-2 ${
-                  isActive
+          {tabs.map(({ label }, index) => (
+            <Tab
+              key={index}
+              className={({ selected }) =>
+                `px-4 py-2 text-base font-semibold outline-none transition-colors border-b-2 ${
+                  selected
                     ? 'border-brand-ui-primary text-brand-ui-primary'
                     : 'border-transparent text-gray-600 hover:text-brand-ui-primary'
-                }`}
-              >
-                {label}
-              </Tab>
-            )
-          })}
+                }`
+              }
+            >
+              {label}
+            </Tab>
+          ))}
         </Tab.List>
         <Tab.Panels className="mt-6">
           {tabs.map(({ children }, index) => (
