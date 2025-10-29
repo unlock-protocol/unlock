@@ -22854,7 +22854,7 @@ __metadata:
     eslint: "npm:9.38.0"
     eslint-config-next: "npm:15.5.2"
     ethers: "npm:6.15.0"
-    feed: "npm:4.2.2"
+    feed: "npm:5.1.0"
     gray-matter: "npm:4.0.3"
     next: "npm:14.2.26"
     next-seo: "npm:6.8.0"
@@ -34231,7 +34231,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"feed@npm:4.2.2, feed@npm:^4.2.2":
+"feed@npm:5.1.0":
+  version: 5.1.0
+  resolution: "feed@npm:5.1.0"
+  dependencies:
+    xml-js: "npm:^1.6.11"
+  checksum: 10/c0b7cd6e6a5d5406f871cdaf4487d273c00e35f3c04975bb9095e10cc5234ec1b797d11a37f6502476d212e1ba0854f3de7302c4750bdeb7aec3aedcd4e50426
+  languageName: node
+  linkType: hard
+
+"feed@npm:^4.2.2":
   version: 4.2.2
   resolution: "feed@npm:4.2.2"
   dependencies:
