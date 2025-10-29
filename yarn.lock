@@ -22168,7 +22168,7 @@ __metadata:
     react-markdown: "npm:10.1.0"
     tailwind-merge: "npm:3.3.1"
     tailwindcss: "npm:3.4.18"
-    typescript: "npm:5.8.3"
+    typescript: "npm:5.9.3"
     vitest: "npm:3.2.4"
   peerDependencies:
     react: 18.3.1
@@ -22188,7 +22188,7 @@ __metadata:
     fs-extra: "npm:11.3.2"
     hardhat: "npm:2.26.3"
     solidity-docgen: "npm:0.6.0-beta.36"
-    typescript: "npm:5.9.2"
+    typescript: "npm:5.9.3"
   languageName: unknown
   linkType: soft
 
@@ -22200,7 +22200,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     eslint: "npm:9.38.0"
     tsup: "npm:8.5.0"
-    typescript: "npm:5.8.3"
+    typescript: "npm:5.9.3"
     vitest: "npm:3.2.4"
   peerDependencies:
     zod: 3.25.76
@@ -22225,7 +22225,7 @@ __metadata:
     storybook: "npm:8.6.14"
     tsup: "npm:8.5.0"
     tsx: "npm:4.20.6"
-    typescript: "npm:5.8.3"
+    typescript: "npm:5.9.3"
     vite: "npm:7.0.7"
     vite-plugin-svgr: "npm:4.5.0"
     vite-tsconfig-paths: "npm:4.3.2"
@@ -22281,7 +22281,7 @@ __metadata:
     "@types/handlebars": "npm:4.1.0"
     handlebars: "npm:4.7.8"
     tsx: "npm:4.20.6"
-    typescript: "npm:5.8.3"
+    typescript: "npm:5.9.3"
     vitest: "npm:3.2.4"
   languageName: unknown
   linkType: soft
@@ -22303,7 +22303,7 @@ __metadata:
     eslint-plugin-mocha: "npm:10.5.0"
     eslint-plugin-prettier: "npm:5.5.4"
     globals: "npm:16.4.0"
-    typescript: "npm:5.9.2"
+    typescript: "npm:5.9.3"
     vitest: "npm:3.2.4"
   languageName: unknown
   linkType: soft
@@ -22366,7 +22366,7 @@ __metadata:
     ethers: "npm:6.15.0"
     hardhat: "npm:2.26.3"
     tsup: "npm:8.5.0"
-    typescript: "npm:5.8.3"
+    typescript: "npm:5.9.3"
     zksync-ethers: "npm:6.21.0"
   languageName: unknown
   linkType: soft
@@ -22399,7 +22399,7 @@ __metadata:
     ts-mocha: "npm:11.1.0"
     ts-node: "npm:10.9.2"
     typechain: "npm:8.3.2"
-    typescript: "npm:5.9.2"
+    typescript: "npm:5.9.3"
   peerDependencies:
     "@unlock-protocol/contracts": "*"
     "@unlock-protocol/networks": "*"
@@ -22511,7 +22511,7 @@ __metadata:
     fs-extra: "npm:11.3.2"
     tsup: "npm:8.5.0"
     tsx: "npm:4.20.6"
-    typescript: "npm:5.9.2"
+    typescript: "npm:5.9.3"
   languageName: unknown
   linkType: soft
 
@@ -22525,7 +22525,7 @@ __metadata:
     eslint: "npm:9.37.0"
     next: "npm:14.2.26"
     prettier: "npm:3.6.2"
-    typescript: "npm:5.9.2"
+    typescript: "npm:5.9.3"
     vite: "npm:7.0.7"
     vite-plugin-node-polyfills: "npm:0.24.0"
   languageName: unknown
@@ -22543,7 +22543,7 @@ __metadata:
     eslint: "npm:9.38.0"
     postmate: "npm:1.5.2"
     tsup: "npm:8.5.0"
-    typescript: "npm:5.9.2"
+    typescript: "npm:5.9.3"
     vite: "npm:7.0.7"
     vite-plugin-css-injected-by-js: "npm:3.5.2"
     vite-plugin-node-polyfills: "npm:0.24.0"
@@ -22563,7 +22563,7 @@ __metadata:
     "@unlock-protocol/networks": "workspace:^"
     eslint: "npm:9.38.0"
     ethers: "npm:6.15.0"
-    typescript: "npm:5.8.3"
+    typescript: "npm:5.9.3"
     vitest: "npm:3.2.4"
     wrangler: "npm:4.42.2"
   languageName: unknown
@@ -22684,7 +22684,7 @@ __metadata:
     tailwindcss: "npm:3.4.18"
     tsup: "npm:8.5.0"
     tsx: "npm:4.20.6"
-    typescript: "npm:5.9.2"
+    typescript: "npm:5.9.3"
     url-loader: "npm:4.1.1"
     vite: "npm:7.0.7"
     vite-plugin-node-polyfills: "npm:0.24.0"
@@ -22820,7 +22820,7 @@ __metadata:
     prettier: "npm:3.6.2"
     siwe: "npm:3.0.0"
     tsup: "npm:8.5.0"
-    typescript: "npm:5.9.2"
+    typescript: "npm:5.9.3"
     vitest: "npm:3.2.4"
   peerDependencies:
     axios: 1.12.0
@@ -22876,7 +22876,7 @@ __metadata:
     showdown-highlight: "npm:3.1.0"
     tailwind-merge: "npm:3.3.1"
     tailwindcss: "npm:3.4.18"
-    typescript: "npm:5.8.3"
+    typescript: "npm:5.9.3"
     use-local-storage: "npm:3.0.0"
     vitest: "npm:3.2.4"
     yaml-front-matter: "npm:4.1.1"
@@ -22903,7 +22903,7 @@ __metadata:
     nodemailer: "npm:7.0.7"
     prettier: "npm:3.6.2"
     regenerator-runtime: "npm:0.14.1"
-    typescript: "npm:5.9.2"
+    typescript: "npm:5.9.3"
     vitest: "npm:3.2.4"
     winston: "npm:3.18.3"
   languageName: unknown
@@ -55634,13 +55634,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:5.9.2":
-  version: 5.9.2
-  resolution: "typescript@npm:5.9.2"
+"typescript@npm:5.9.3":
+  version: 5.9.3
+  resolution: "typescript@npm:5.9.3"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10/cc2fe6c822819de5d453fa25aa9f32096bf70dde215d481faa1ad84a283dfb264e33988ed8f6d36bc803dd0b16dbe943efa311a798ef76d5b3892a05dfbfd628
+  checksum: 10/c089d9d3da2729fd4ac517f9b0e0485914c4b3c26f80dc0cffcb5de1719a17951e92425d55db59515c1a7ddab65808466debb864d0d56dcf43f27007d0709594
   languageName: node
   linkType: hard
 
@@ -55694,13 +55694,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>":
-  version: 5.9.2
-  resolution: "typescript@patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"
+"typescript@patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>":
+  version: 5.9.3
+  resolution: "typescript@patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=5786d5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10/bd810ab13e8e557225a8b5122370385440b933e4e077d5c7641a8afd207fdc8be9c346e3c678adba934b64e0e70b0acf5eef9493ea05170a48ce22bef845fdc7
+  checksum: 10/696e1b017bc2635f4e0c94eb4435357701008e2f272f553d06e35b494b8ddc60aa221145e286c28ace0c89ee32827a28c2040e3a69bdc108b1a5dc8fb40b72e3
   languageName: node
   linkType: hard
 
@@ -56258,7 +56258,7 @@ __metadata:
     node-gyp: "npm:11.4.2"
     prettier: "npm:3.5.3"
     prettier-plugin-solidity: "npm:1.4.3"
-    typescript: "npm:5.8.3"
+    typescript: "npm:5.9.3"
     typescript-eslint: "npm:8.45.0"
     vitest: "npm:3.2.4"
   languageName: unknown
