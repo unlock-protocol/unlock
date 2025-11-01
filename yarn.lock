@@ -21023,13 +21023,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/pdfmake@npm:0.2.11":
-  version: 0.2.11
-  resolution: "@types/pdfmake@npm:0.2.11"
+"@types/pdfmake@npm:0.2.12":
+  version: 0.2.12
+  resolution: "@types/pdfmake@npm:0.2.12"
   dependencies:
     "@types/node": "npm:*"
     "@types/pdfkit": "npm:*"
-  checksum: 10/4d1392d6740d873594c56b64fe89b54a73eecf1f93f9d689c7f03ad01057959c880b5c54acfbbe652755f7bc2c83b538967b5d22e83e328d8369570dcddfab43
+  checksum: 10/a1dff188ec30ac4f3aa995cb74a2d213e7ae229a2aa269390383e91b62e984da1061ce43ced52f358596e51e3b5b7d77a4d3db1234e74e632c6e765a397824d0
   languageName: node
   linkType: hard
 
@@ -22408,7 +22408,7 @@ __metadata:
     "@types/multer-s3": "npm:3.0.3"
     "@types/node": "npm:22.10.5"
     "@types/node-cron": "npm:3.0.11"
-    "@types/pdfmake": "npm:0.2.11"
+    "@types/pdfmake": "npm:0.2.12"
     "@types/supertest": "npm:6.0.3"
     "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/core": "workspace:./packages/core"
