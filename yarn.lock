@@ -22159,7 +22159,7 @@ __metadata:
     copyfiles: "npm:2.4.1"
     eslint: "npm:9.38.0"
     fs-extra: "npm:11.3.2"
-    hardhat: "npm:2.26.3"
+    hardhat: "npm:2.26.5"
     solidity-docgen: "npm:0.6.0-beta.36"
     typescript: "npm:5.9.2"
   languageName: unknown
@@ -22314,7 +22314,7 @@ __metadata:
     ethers: "npm:6.15.0"
     ethers-multisend: "npm:3.1.0"
     fs-extra: "npm:11.3.2"
-    hardhat: "npm:2.26.3"
+    hardhat: "npm:2.26.5"
     zksync-ethers: "npm:6.21.0"
   languageName: unknown
   linkType: soft
@@ -22337,7 +22337,7 @@ __metadata:
     copyfiles: "npm:2.4.1"
     eslint: "npm:9.38.0"
     ethers: "npm:6.15.0"
-    hardhat: "npm:2.26.3"
+    hardhat: "npm:2.26.5"
     tsup: "npm:8.5.0"
     typescript: "npm:5.8.3"
     zksync-ethers: "npm:6.21.0"
@@ -22364,7 +22364,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:^"
     eslint: "npm:9.38.0"
     ethers: "npm:6.15.0"
-    hardhat: "npm:2.26.3"
+    hardhat: "npm:2.26.5"
     hardhat-gas-reporter: "npm:2.3.0"
     mocha: "npm:11.7.4"
     prettier: "npm:3.6.2"
@@ -22789,7 +22789,7 @@ __metadata:
     ethers: "npm:6.15.0"
     graphql: "npm:16.11.0"
     graphql-request: "npm:7.3.1"
-    hardhat: "npm:2.26.3"
+    hardhat: "npm:2.26.5"
     prettier: "npm:3.6.2"
     siwe: "npm:3.0.0"
     tsup: "npm:8.5.0"
@@ -36374,9 +36374,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hardhat@npm:2.26.3":
-  version: 2.26.3
-  resolution: "hardhat@npm:2.26.3"
+"hardhat@npm:2.26.5":
+  version: 2.26.5
+  resolution: "hardhat@npm:2.26.5"
   dependencies:
     "@ethereumjs/util": "npm:^9.1.0"
     "@ethersproject/abi": "npm:^5.1.2"
@@ -36427,7 +36427,7 @@ __metadata:
       optional: true
   bin:
     hardhat: internal/cli/bootstrap.js
-  checksum: 10/77fabed0a9f5a5871bd071cd1eae3ce120ee878370a0d58e1a762fd49d01b68385b955c111d4a55147b1540333712ef36796fd5ee142e504aad17e2b2f746d6d
+  checksum: 10/4c8dee9e25f93410966ac72c7166963e3191b7f20cbf2f982b39ee0ffc31008311ec3915eae095a4dea4b5672766fdf69c30580f52a40a15ba4fe267ff268c3a
   languageName: node
   linkType: hard
 

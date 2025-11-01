@@ -45,7 +45,7 @@
     "@unlock-protocol/types": "workspace:./packages/types",
     "eslint": "9.38.0",
     "ethers": "6.15.0",
-    "hardhat": "2.26.3",
+    "hardhat": "2.26.5",
     "prettier": "3.6.2",
     "tsup": "8.5.0",
     "typescript": "5.9.2",

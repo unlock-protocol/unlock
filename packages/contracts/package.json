@@ -34,7 +34,7 @@
     "copyfiles": "2.4.1",
     "eslint": "9.38.0",
     "fs-extra": "11.3.2",
-    "hardhat": "2.26.3",
+    "hardhat": "2.26.5",
     "solidity-docgen": "0.6.0-beta.36",
     "typescript": "5.9.2"
   },
