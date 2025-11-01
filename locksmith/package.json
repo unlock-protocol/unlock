@@ -61,7 +61,7 @@
     "connect-timeout": "1.9.1",
     "cookie-parser": "1.4.7",
     "cors": "2.8.5",
-    "dayjs": "1.11.18",
+    "dayjs": "1.11.19",
     "dotenv": "16.4.7",
     "ethers": "6.13.5",
     "express": "5.0.0-beta.3",

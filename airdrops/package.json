@@ -22,7 +22,7 @@
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js",
     "@vercel/og": "0.8.5",
     "@vercel/speed-insights": "1.2.0",
-    "dayjs": "1.11.18",
+    "dayjs": "1.11.19",
     "embla-carousel-react": "8.6.0",
     "eslint": "9.38.0",
     "ethers": "6.15.0",
