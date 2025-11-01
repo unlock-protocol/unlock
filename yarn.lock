@@ -11955,16 +11955,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomicfoundation/hardhat-ethers@npm:3.1.0":
-  version: 3.1.0
-  resolution: "@nomicfoundation/hardhat-ethers@npm:3.1.0"
+"@nomicfoundation/hardhat-ethers@npm:3.1.2":
+  version: 3.1.2
+  resolution: "@nomicfoundation/hardhat-ethers@npm:3.1.2"
   dependencies:
     debug: "npm:^4.1.1"
     lodash.isequal: "npm:^4.5.0"
   peerDependencies:
     ethers: ^6.14.0
     hardhat: ^2.26.0
-  checksum: 10/f5eff398b94b89d1f12b5294a9dbf261f6f0b51815abcae921e37ec76d513d988da709cc2f839fcae2f404da4c476cfdc70c92dea19417db6a81b753de4f8acf
+  checksum: 10/5b1120b27e3ac61d6aad5eab25ea0491d8ab80a1b5e2f1ee83d3377a8af881d64b1c216f3ead554ab4de172106fc3d9d280c08624272bd6bfb81ea789e9220b5
   languageName: node
   linkType: hard
 
@@ -22293,7 +22293,7 @@ __metadata:
     "@matterlabs/hardhat-zksync-solc": "npm:1.5.1"
     "@matterlabs/hardhat-zksync-upgradable": "npm:1.10.0"
     "@matterlabs/hardhat-zksync-verify": "npm:1.8.0"
-    "@nomicfoundation/hardhat-ethers": "npm:3.1.0"
+    "@nomicfoundation/hardhat-ethers": "npm:3.1.2"
     "@nomicfoundation/hardhat-network-helpers": "npm:1.0.12"
     "@nomicfoundation/hardhat-verify": "npm:2.1.1"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
@@ -22349,7 +22349,7 @@ __metadata:
   resolution: "@unlock-protocol/hardhat-plugin@workspace:packages/hardhat-plugin"
   dependencies:
     "@nomicfoundation/hardhat-chai-matchers": "npm:2.1.0"
-    "@nomicfoundation/hardhat-ethers": "npm:3.1.0"
+    "@nomicfoundation/hardhat-ethers": "npm:3.1.2"
     "@nomicfoundation/hardhat-ignition": "npm:0.15.11"
     "@nomicfoundation/hardhat-ignition-ethers": "npm:0.15.14"
     "@nomicfoundation/hardhat-toolbox": "npm:5.0.0"
@@ -22779,7 +22779,7 @@ __metadata:
     "@graphql-codegen/typescript": "npm:4.1.6"
     "@graphql-codegen/typescript-graphql-request": "npm:6.3.0"
     "@graphql-codegen/typescript-operations": "npm:4.6.1"
-    "@nomicfoundation/hardhat-ethers": "npm:3.1.0"
+    "@nomicfoundation/hardhat-ethers": "npm:3.1.2"
     "@openapitools/openapi-generator-cli": "npm:2.25.0"
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
