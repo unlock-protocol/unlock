@@ -121,7 +121,7 @@
     "supertest": "7.0.0",
     "tsx": "4.19.4",
     "typescript": "5.7.3",
-    "vitest": "3.0.9"
+    "vitest": "4.0.6"
   },
   "files": [
     "build",
