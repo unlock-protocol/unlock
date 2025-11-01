@@ -24,7 +24,7 @@
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "tsup": "8.5.0",
     "typescript": "5.8.3",
-    "vitest": "3.2.4"
+    "vitest": "4.0.6"
   },
   "peerDependencies": {
     "zod": "3.25.76"

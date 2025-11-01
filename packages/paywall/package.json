@@ -39,7 +39,7 @@
     "vite": "7.0.7",
     "vite-plugin-css-injected-by-js": "3.5.2",
     "vite-plugin-node-polyfills": "0.24.0",
-    "vitest": "3.2.4",
+    "vitest": "4.0.6",
     "vitest-fetch-mock": "0.4.5"
   },
   "dependencies": {
