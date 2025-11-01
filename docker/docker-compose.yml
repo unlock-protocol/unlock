@@ -7,7 +7,7 @@ services:
       - '8020:8020'
 
   ipfs:
-    image: ipfs/kubo:v0.38.1
+    image: ipfs/kubo:v0.38.2
     ports:
       - '5001:5001'
 
