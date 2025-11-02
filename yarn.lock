@@ -23007,7 +23007,7 @@ __metadata:
     numeral: "npm:2.0.6"
     path-match: "npm:1.2.4"
     postcss: "npm:8.5.6"
-    prettier: "npm:3.5.3"
+    prettier: "npm:3.6.2"
     raw-loader: "npm:4.0.2"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
@@ -48124,15 +48124,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:3.5.3":
-  version: 3.5.3
-  resolution: "prettier@npm:3.5.3"
-  bin:
-    prettier: bin/prettier.cjs
-  checksum: 10/7050c08f674d9e49fbd9a4c008291d0715471f64e94cc5e4b01729affce221dfc6875c8de7e66b728c64abc9352eefb7eaae071b5f79d30081be207b53774b78
-  languageName: node
-  linkType: hard
-
 "prettier@npm:3.6.2":
   version: 3.6.2
   resolution: "prettier@npm:3.6.2"
@@ -56522,7 +56513,7 @@ __metadata:
     husky: "npm:9.1.7"
     lint-staged: "npm:15.5.2"
     node-gyp: "npm:11.4.2"
-    prettier: "npm:3.5.3"
+    prettier: "npm:3.6.2"
     prettier-plugin-solidity: "npm:1.4.3"
     typescript: "npm:5.8.3"
     typescript-eslint: "npm:8.45.0"
