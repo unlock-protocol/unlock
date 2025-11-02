@@ -20720,10 +20720,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/geoip-country@npm:4.0.2":
-  version: 4.0.2
-  resolution: "@types/geoip-country@npm:4.0.2"
-  checksum: 10/bdabdea429d1fba8f93cab50a3f601ba4ddb55d24eaa00f04967e6261c6540d42104ef7b8fed314cf65f4ae466f858b8880c454beb8742abe299d2f02a035e19
+"@types/geoip-country@npm:5.0.0":
+  version: 5.0.0
+  resolution: "@types/geoip-country@npm:5.0.0"
+  checksum: 10/d33d43e4999380aad6d9b1b9f43afa23d15df8cd9b30f82e8aa8a1d0d4765e525b603f58c745156231f0bab3590a85eeab98db4355b63f3376430ad92bf03c89
   languageName: node
   linkType: hard
 
@@ -22572,7 +22572,7 @@ __metadata:
     "@types/connect-timeout": "npm:1.9.0"
     "@types/cookie-parser": "npm:1.4.9"
     "@types/cors": "npm:2.8.19"
-    "@types/geoip-country": "npm:4.0.2"
+    "@types/geoip-country": "npm:5.0.0"
     "@types/isomorphic-fetch": "npm:0.0.39"
     "@types/jsonwebtoken": "npm:9.0.10"
     "@types/lodash": "npm:4.17.20"
@@ -22603,7 +22603,7 @@ __metadata:
     express: "npm:5.0.0-beta.3"
     express-winston: "npm:4.2.0"
     fuse.js: "npm:7.0.0"
-    geoip-country: "npm:5.0.202510102342"
+    geoip-country: "npm:5.0.202510312342"
     google-auth-library: "npm:9.15.1"
     graphile-worker: "npm:0.16.6"
     graphql: "npm:16.10.0"
@@ -35374,15 +35374,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"geoip-country@npm:5.0.202510102342":
-  version: 5.0.202510102342
-  resolution: "geoip-country@npm:5.0.202510102342"
+"geoip-country@npm:5.0.202510312342":
+  version: 5.0.202510312342
+  resolution: "geoip-country@npm:5.0.202510312342"
   dependencies:
     async: "npm:^2.6.4"
     countries-list: "npm:^3.1.1"
     ip-address: "npm:^6.4.0"
     yauzl: "npm:^2.10.0"
-  checksum: 10/9cd5eb2eba16ceb1cae5b123f4fb2dbad18e02051e4613d1dc916d3f60731a8faca8d6d290481710c0645e81798ae9add12d6ffc11d25393f957695c1f361d96
+  checksum: 10/5542e8109507c7c0bc073be5f7a25fc616b7971c7149a677f7bf9005bdc02393fb987e85d0716306c48bc91074201cd272f38a77a8a868e49750fac4a031acd5
   languageName: node
   linkType: hard
 
