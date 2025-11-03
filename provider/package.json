@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "ethers": "6.15.0",
-    "wrangler": "4.42.2"
+    "wrangler": "4.45.3"
   },
   "scripts": {
     "dev": "yarn wrangler dev",
