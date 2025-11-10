@@ -29,7 +29,7 @@
   "author": "Unlock Inc",
   "license": "MIT",
   "peerDependencies": {
-    "axios": "1.12.0",
+    "axios": "1.13.1",
     "ethers": "^6.13.0"
   },
   "devDependencies": {
@@ -43,7 +43,7 @@
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "@unlock-protocol/types": "workspace:./packages/types",
-    "eslint": "9.38.0",
+    "eslint": "9.39.0",
     "ethers": "6.15.0",
     "hardhat": "2.26.3",
     "prettier": "3.6.2",

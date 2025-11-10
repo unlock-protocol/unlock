@@ -23044,7 +23044,7 @@ __metadata:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/types": "workspace:./packages/types"
-    eslint: "npm:9.38.0"
+    eslint: "npm:9.39.0"
     ethers: "npm:6.15.0"
     graphql: "npm:16.11.0"
     graphql-request: "npm:7.3.1"
@@ -23055,7 +23055,7 @@ __metadata:
     typescript: "npm:5.9.2"
     vitest: "npm:3.2.4"
   peerDependencies:
-    axios: 1.12.0
+    axios: 1.13.1
     ethers: ^6.13.0
   languageName: unknown
   linkType: soft
