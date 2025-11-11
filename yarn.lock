@@ -22390,7 +22390,7 @@ __metadata:
     "@vercel/speed-insights": "npm:1.2.0"
     "@vitejs/plugin-react": "npm:4.7.0"
     autoprefixer: "npm:10.4.21"
-    dayjs: "npm:1.11.18"
+    dayjs: "npm:1.11.19"
     embla-carousel-react: "npm:8.6.0"
     eslint: "npm:9.39.0"
     ethers: "npm:6.15.0"
@@ -22682,7 +22682,7 @@ __metadata:
     connect-timeout: "npm:1.9.1"
     cookie-parser: "npm:1.4.7"
     cors: "npm:2.8.5"
-    dayjs: "npm:1.11.18"
+    dayjs: "npm:1.11.19"
     dotenv: "npm:16.4.7"
     eslint: "npm:9.22.0"
     eslint-config-standard: "npm:17.1.0"
@@ -22969,7 +22969,7 @@ __metadata:
     axios: "npm:1.12.0"
     calendar-link: "npm:2.7.0"
     csv: "npm:6.3.11"
-    dayjs: "npm:1.11.18"
+    dayjs: "npm:1.11.19"
     dotenv: "npm:16.4.7"
     eslint: "npm:9.22.0"
     ethers: "npm:6.13.5"
@@ -23080,7 +23080,7 @@ __metadata:
     babel-plugin-require-context-hook: "npm:1.0.0"
     babel-preset-react-app: "npm:10.1.0"
     calendar-link: "npm:2.11.0"
-    dayjs: "npm:1.11.18"
+    dayjs: "npm:1.11.19"
     dotenv: "npm:16.6.1"
     embla-carousel-react: "npm:8.6.0"
     eslint: "npm:9.39.0"
@@ -30416,10 +30416,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dayjs@npm:1.11.18":
-  version: 1.11.18
-  resolution: "dayjs@npm:1.11.18"
-  checksum: 10/7d29a90834cf4da2feb437c2f34b8235c3f94493a06d2f1bf9f506f1fa49eadf796f26e1d685b9fe8cb5e75ce6ee067825115e196f1af3d07b3552ff857bfc39
+"dayjs@npm:1.11.19":
+  version: 1.11.19
+  resolution: "dayjs@npm:1.11.19"
+  checksum: 10/185b820d68492b83a3ce2b8ddc7543034edc1dfd1423183f6ae4707b29929a3cc56503a81826309279f9084680c15966b99456e74cf41f7d1f6a2f98f9c7196f
   languageName: node
   linkType: hard
 
