@@ -22416,7 +22416,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/types": "workspace:^"
     copyfiles: "npm:2.4.1"
-    eslint: "npm:9.38.0"
+    eslint: "npm:9.39.0"
     fs-extra: "npm:11.3.2"
     hardhat: "npm:2.26.3"
     solidity-docgen: "npm:0.6.0-beta.36"
