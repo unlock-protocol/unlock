@@ -108,7 +108,7 @@
     "@types/multer-s3": "3.0.3",
     "@types/node": "22.10.5",
     "@types/node-cron": "3.0.11",
-    "@types/pdfmake": "0.2.11",
+    "@types/pdfmake": "0.2.12",
     "@types/supertest": "6.0.3",
     "@unlock-protocol/eslint-config": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
