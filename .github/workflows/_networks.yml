@@ -25,7 +25,7 @@ jobs:
       - uses: actions/setup-node@v4
         if: steps.changed-files.outputs.any_changed == 'true'
         with:
-          node-version: 22.21.0
+          node-version: 22.21.1
       - run: yarn
         if: steps.changed-files.outputs.any_changed == 'true'
         shell: bash
