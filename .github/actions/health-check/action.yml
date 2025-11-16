@@ -4,7 +4,7 @@ description: Check the state of the Unlock Protocol across all chains
 runs:
   using: 'composite'
   steps:
-    - uses: actions/setup-node@v4
+    - uses: actions/setup-node@v6
       with:
         node-version: 22.21.0
     - run: yarn
