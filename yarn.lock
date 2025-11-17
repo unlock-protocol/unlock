@@ -22265,9 +22265,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/sdk-core@npm:7.7.2":
-  version: 7.7.2
-  resolution: "@uniswap/sdk-core@npm:7.7.2"
+"@uniswap/sdk-core@npm:7.9.0":
+  version: 7.9.0
+  resolution: "@uniswap/sdk-core@npm:7.9.0"
   dependencies:
     "@ethersproject/address": "npm:^5.0.2"
     "@ethersproject/bytes": "npm:^5.7.0"
@@ -22278,7 +22278,7 @@ __metadata:
     jsbi: "npm:^3.1.4"
     tiny-invariant: "npm:^1.1.0"
     toformat: "npm:^2.0.0"
-  checksum: 10/1b61578784f553127efa2171df49fc3caf0bc1727eb0dd4f52cda0490efa762cf226a1d131bb8a32d6caddf5c3c4767d672377d0be562a4a7f4a6e41723a13b3
+  checksum: 10/3dd194ed4b6ed602c3de8d3e260840c5d2f3f27b7ff4ed1e18143f7178e587155ca5d7311bc3368b388df0e892f85aa7ff4a32fce78ed44e0750e4793cfe9528
   languageName: node
   linkType: hard
 
@@ -22568,7 +22568,7 @@ __metadata:
     "@safe-global/api-kit": "npm:4.0.0"
     "@safe-global/protocol-kit": "npm:6.1.1"
     "@tenderly/hardhat-tenderly": "npm:2.5.2"
-    "@uniswap/sdk-core": "npm:7.7.2"
+    "@uniswap/sdk-core": "npm:7.9.0"
     "@uniswap/v3-sdk": "npm:3.26.0"
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
