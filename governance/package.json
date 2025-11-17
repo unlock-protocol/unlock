@@ -32,7 +32,7 @@
     "ethers": "6.15.0",
     "ethers-multisend": "3.1.0",
     "fs-extra": "11.3.2",
-    "hardhat": "2.26.3",
+    "hardhat": "2.26.5",
     "zksync-ethers": "6.21.0"
   },
   "scripts": {
