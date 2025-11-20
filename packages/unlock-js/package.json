@@ -37,7 +37,7 @@
     "@graphql-codegen/typescript": "4.1.6",
     "@graphql-codegen/typescript-graphql-request": "6.3.0",
     "@graphql-codegen/typescript-operations": "4.6.1",
-    "@nomicfoundation/hardhat-ethers": "3.1.0",
+    "@nomicfoundation/hardhat-ethers": "3.1.2",
     "@openapitools/openapi-generator-cli": "2.25.0",
     "@unlock-protocol/contracts": "workspace:./packages/contracts",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
