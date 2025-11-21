@@ -22773,7 +22773,7 @@ __metadata:
     pdf-lib: "npm:1.17.1"
     pdfmake: "npm:0.2.20"
     pg: "npm:8.13.3"
-    rate-limiter-flexible: "npm:5.0.5"
+    rate-limiter-flexible: "npm:8.1.0"
     react: "npm:18.3.1"
     remark-html: "npm:16.0.1"
     remark-parse: "npm:11.0.0"
@@ -49049,10 +49049,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rate-limiter-flexible@npm:5.0.5":
-  version: 5.0.5
-  resolution: "rate-limiter-flexible@npm:5.0.5"
-  checksum: 10/51277add0367968e83227446e7f68a15a15ee30ba9a7ff6c0e3998981a46d36d7c750e511f30c0bf391513aa84dab626ee5b8e56ae28d1bade70c08a0c8f163d
+"rate-limiter-flexible@npm:8.1.0":
+  version: 8.1.0
+  resolution: "rate-limiter-flexible@npm:8.1.0"
+  checksum: 10/26bdb6b2d8f369ae399f0108193d54f3aad04d115453c15dadb67663ff40795bcba27bd3d43816e3fe80c5f7cacace5876070028d2341e8c1dc54c87fd140961
   languageName: node
   linkType: hard
 
