@@ -8,9 +8,9 @@ export const POST = frames(async (ctx) => {
     throw new Error('Invalid frame message')
   }
 
+  const lock = ctx.state.lock!
+  const { address: lockAddress, network, priceForUser } = lock
   const userAddress = ctx.message.address!
-  const { address: lockAddress } = ctx.state.lock!
-  const network = Number(ctx.state.lock!.network)
 
   const web3Service = new Web3Service(networks)
 
@@ -20,12 +20,13 @@ export const POST = frames(async (ctx) => {
     params: {
       lockAddress,
       owner: userAddress,
+      totalApproval: priceForUser,
     },
   })
 
   return transaction({
     chainId: `eip155:${network}`,
     method: 'eth_sendTransaction',
-    params: calldata[calldata.length - 1],
+    params: calldata[0],
   })
 })

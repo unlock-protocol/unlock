@@ -13,7 +13,7 @@ const getInitialFrame = frames(async (ctx) => {
   const lock = await getLockDataFromCheckout(id)
   state.lock = lock
 
-  return getDefaultFrame(state)
+  return await getDefaultFrame(ctx)
 })
 
 const getOtherFrames = frames(async (ctx) => {
@@ -46,7 +46,7 @@ const getOtherFrames = frames(async (ctx) => {
     }
   }
 
-  return getDefaultFrame(state)
+  return await getDefaultFrame(ctx)
 })
 
 export const GET = getInitialFrame
