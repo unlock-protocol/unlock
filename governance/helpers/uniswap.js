@@ -7,9 +7,12 @@ const {
   UDT,
   getTokenInfo,
 } = require('@unlock-protocol/hardhat-helpers')
-
+const uniswapV3SDK = require('@uniswap/v3-sdk')
+const { Pool } = uniswapV3SDK
+const { Token } = require('@uniswap/sdk-core')
 // default fee
 const FEE = 500
+const QUOTER_ADDRESS = '0x3d4e44Eb1374240CE5F1B871ab261CD16335B76a' // Base Quoter V2
 
 // returns the sqrt price as a 64x96
 bn.config({ EXPONENTIAL_AT: 999999, DECIMAL_PLACES: 40 })
@@ -207,6 +210,112 @@ const deployUniswapV3Oracle = async function () {
   return oracle
 }
 
+// Build swap parameters for Uniswap V3 SwapRouter
+const buildSwapParams = function (
+  tokenIn,
+  tokenOut,
+  fee,
+  recipient,
+  deadline,
+  amountIn,
+  amountOutMinimum
+) {
+  return {
+    tokenIn,
+    tokenOut,
+    fee,
+    recipient,
+    deadline,
+    amountIn,
+    amountOutMinimum,
+    sqrtPriceLimitX96: 0,
+  }
+}
+
+// Get quote for exact input swap using Uniswap V3 Quoter
+const getUniswapV3Quote = async function (tokenIn, tokenOut, fee, amountIn) {
+  try {
+    const QuoterV2ABI = [
+      'function quoteExactInputSingle((address tokenIn, address tokenOut, uint256 amountIn, uint24 fee, uint160 sqrtPriceLimitX96)) external returns (uint256 amountOut, uint160 sqrtPriceX96After, uint32 initializedTicksCrossed, uint256 gasEstimate)',
+    ]
+
+    const quoter = await ethers.getContractAt(QuoterV2ABI, QUOTER_ADDRESS)
+
+    const quoteParams = {
+      tokenIn,
+      tokenOut,
+      amountIn,
+      fee,
+      amount: '0',
+      sqrtPriceLimitX96: 0,
+    }
+
+    const quote = await quoter.quoteExactInputSingle.staticCall(quoteParams)
+    const amountOut = quote[0]
+
+    return amountOut
+  } catch (error) {
+    throw error.message
+  }
+}
+
+async function getToken(address) {
+  const contract = await ethers.getContractAt(
+    [
+      'function symbol() view returns (string)',
+      'function decimals() view returns (uint8)',
+      'function name() view returns (string)',
+    ],
+    address
+  )
+
+  const [symbol, decimals, name] = await Promise.all([
+    contract.symbol(),
+    contract.decimals(),
+    contract.name(),
+  ])
+
+  const { chainId } = await ethers.provider.getNetwork()
+  return new Token(Number(chainId), address, Number(decimals), symbol, name)
+}
+
+async function initializeTokens(token0Address, token1Address) {
+  const TOKEN0_TOKEN = await getToken(token0Address)
+  const TOKEN1_TOKEN = await getToken(token1Address)
+  return {
+    token0: TOKEN0_TOKEN,
+    token1: TOKEN1_TOKEN,
+  }
+}
+
+async function getPoolByAddress(address) {
+  const {
+    abi: IUniswapV3PoolABI,
+  } = require('@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Pool.sol/IUniswapV3Pool.json')
+
+  const poolContract = await ethers.getContractAt(IUniswapV3PoolABI, address)
+
+  const [token0Addr, token1Addr, fee, liquidity, slot0] = await Promise.all([
+    poolContract.token0(),
+    poolContract.token1(),
+    poolContract.fee(),
+    poolContract.liquidity(),
+    poolContract.slot0(),
+  ])
+
+  const token0 = await getToken(token0Addr)
+  const token1 = await getToken(token1Addr)
+
+  return new Pool(
+    token0,
+    token1,
+    Number(fee),
+    slot0[0].toString(),
+    liquidity.toString(),
+    Number(slot0[1])
+  )
+}
+
 module.exports = {
   createOrGetUniswapV3Pool: createOrGetPool,
   deployUniswapV3Oracle,
@@ -214,4 +323,8 @@ module.exports = {
   getTokenInfo,
   getPoolState,
   getPoolImmutables,
+  getUniswapV3Quote,
+  buildSwapParams,
+  initializeTokens,
+  getPoolByAddress,
 }
