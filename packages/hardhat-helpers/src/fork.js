@@ -39,6 +39,13 @@ async function getWhales(chainId = 1) {
         [tokens.WBTC]: '0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6',
         [tokens.UDT]: '0xF5C28ce24Acf47849988f147d5C75787c0103534',
       }
+    case 8453:
+      return {
+        [tokens.USDC]: '0x27a16dc786820B16E5c9028b75B99F6f604b5d26',
+        [tokens.DAI]: '0x0772f014009162efB833eF34d3eA3f243FC735Ba',
+        [tokens.UP]: '0x3074517c5F5428f42C74543C68001E0Ca86FE7dd',
+        // [tokens.UDT]: '',
+      }
     default:
       break
   }
@@ -151,6 +158,7 @@ const addERC20 = async function (
   address,
   amount = ethers.parseEther('1000')
 ) {
+  const chainId = await getChainId()
   const { ethers } = require('hardhat')
   const {
     nativeCurrency: { wrapped },
@@ -174,11 +182,11 @@ const addERC20 = async function (
   }
 
   // otherwise use transfer from whales
-  const whales = await getWhales()
-  if (!whales[tokenAddress])
-    throw Error(`No whale for this address: ${tokenAddress}`)
-  const whale = await ethers.getSigner(whales[tokenAddress])
-  await impersonate(whale.address)
+  const whales = await getWhales(chainId)
+  const whaleAddress = whales[tokenAddress]
+  if (!whaleAddress) throw Error(`No whale for this address: ${tokenAddress}`)
+  const whale = await ethers.getSigner(whaleAddress)
+  await impersonate(whaleAddress)
 
   const erc20Contract = await ethers.getContractAt(ERC20_ABI, tokenAddress)
   await erc20Contract.connect(whale).transfer(address, amount)

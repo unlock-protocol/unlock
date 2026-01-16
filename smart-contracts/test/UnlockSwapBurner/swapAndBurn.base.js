@@ -2,7 +2,6 @@ const { ethers } = require('hardhat')
 const assert = require('assert')
 const {
   getBalance,
-  PERMIT2_ADDRESS,
   addSomeETH,
   addERC20,
   impersonate,
@@ -64,25 +63,21 @@ describe(`swapAndBurn`, function () {
     const UnlockSwapBurner = await ethers.getContractFactory('UnlockSwapBurner')
     swapBurner = await UnlockSwapBurner.deploy(
       unlockAddress,
-      PERMIT2_ADDRESS,
       universalRouterAddress
     )
 
-    burnAddress = await swapBurner.burnAddress()
+    burnAddress = await swapBurner.BURN_ADDRESS()
   })
 
   describe('constructor', () => {
     it('unlock is set properly', async () => {
-      assert.equal(await swapBurner.unlockAddress(), unlockAddress)
+      assert.equal(await swapBurner.UNLOCK_ADDRESS(), unlockAddress)
     })
     it('uniswap routers are set properly', async () => {
       assert.equal(
-        await swapBurner.uniswapUniversalRouter(),
+        await swapBurner.UNISWAP_UNIVERSAL_ROUTER(),
         universalRouterAddress
       )
-    })
-    it('permit2 is set properly', async () => {
-      assert.equal(await swapBurner.permit2(), PERMIT2_ADDRESS)
     })
   })
 
@@ -150,7 +145,7 @@ describe(`swapAndBurn`, function () {
           assert.equal(balanceSwapBurnBefore, amount)
 
           // lets go
-          const tx = await swapBurner.swapAndBurn(tokenAddress, 3000)
+          const tx = await swapBurner.swapAndBurn(tokenAddress, 500)
           receipt = await tx.wait()
         })
 
