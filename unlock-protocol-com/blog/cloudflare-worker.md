@@ -13,7 +13,7 @@ A Worker can be used to alter a request or a response, or even completely rewrit
 
 # Token gating with a lock
 
-As the web is [moving away from ads as its only business model](https://medium.com/unlock-protocol/the-end-of-the-ad-supported-web-d4d093fb462f), many websites are adding paywalls or other kinds of memberships to restrict access to some content or features. _Unfortunately, from a developer perspective, adding a a membership to a website is non-trivial_. Publishers have to first add a database of user accounts, then, they have to add mechanisms to collect payments, and finally they have to add logic to each of their webpage to enforce access control.
+As the web is [moving away from ads as its only business model](https://medium.com/unlock-protocol/the-end-of-the-ad-supported-web-d4d093fb462f), many websites are adding paywalls or other kinds of memberships to restrict access to some content or features. _Unfortunately, from a developer perspective, adding a membership to a website is non-trivial_. Publishers have to first add a database of user accounts, then, they have to add mechanisms to collect payments, and finally they have to add logic to each of their webpage to enforce access control.
 
 This amount of work not only takes times and resources, but often, it is not even not compatible with some other architectural constraints: static sites for examples, cannot implement this kind of access control... Similarly, for end users, a web where users have to create accounts with every single web site is only going to mean that we'll user even fewer websites: the friction would be just too high.
 

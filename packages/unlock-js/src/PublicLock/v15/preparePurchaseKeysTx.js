@@ -21,7 +21,10 @@ export default async function preparePurchase(options, provider) {
   const lockContract = await this.getLockContract(lockAddress, provider)
   options.lockContract = lockContract
   const { purchaseArgs, totalPrice, erc20Address, totalAmountToApprove } =
-    await getPurchaseKeysArguments.bind(this)(options)
+    await getPurchaseKeysArguments.bind(this)({
+      ...options,
+      provider,
+    })
 
   const txs = []
 

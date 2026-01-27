@@ -17,12 +17,27 @@ interface KeyToGrant {
   expiration?: number
 }
 
+type WalletServiceConnectParams = Parameters<
+  InstanceType<typeof WalletService>['connect']
+>
+type WalletServiceProvider = WalletServiceConnectParams[0] &
+  ethers.JsonRpcProvider
+type WalletServiceSigner = NonNullable<WalletServiceConnectParams[1]> &
+  ethers.Signer
+
+type KeyManagerTransferSignatureParams = Parameters<
+  InstanceType<typeof KeyManager>['createTransferSignature']
+>[0]
+type KeyManagerSigner = KeyManagerTransferSignatureParams['signer']
+
 /**
  * Helper function to return a provider for a network id
  * @param network
  * @returns
  */
-export const getProviderForNetwork = async function (network = 1) {
+export const getProviderForNetwork = async function (
+  network = 1
+): Promise<WalletServiceProvider> {
   // Get the provider URL
   const providerUrl = networks[network].provider
 
@@ -32,10 +47,10 @@ export const getProviderForNetwork = async function (network = 1) {
   // Only append the secret if it exists
   if (secretKey) {
     const authenticatedUrl = `https://rpc.unlock-protocol.com/${network}?secret=${secretKey}`
-    return new ethers.JsonRpcProvider(authenticatedUrl)
+    return new ethers.JsonRpcProvider(authenticatedUrl) as WalletServiceProvider
   }
 
-  return new ethers.JsonRpcProvider(providerUrl)
+  return new ethers.JsonRpcProvider(providerUrl) as WalletServiceProvider
 }
 
 /**
@@ -44,8 +59,12 @@ export const getProviderForNetwork = async function (network = 1) {
  * @param network
  * @returns
  */
-export const getPublicProviderForNetwork = async function (network = 1) {
-  return new ethers.JsonRpcProvider(networks[network].publicProvider)
+export const getPublicProviderForNetwork = async function (
+  network = 1
+): Promise<WalletServiceProvider> {
+  return new ethers.JsonRpcProvider(
+    networks[network].publicProvider
+  ) as WalletServiceProvider
 }
 
 interface PurchaserArgs {
@@ -54,10 +73,12 @@ interface PurchaserArgs {
 }
 
 // Helper function to get the local purchaser, if the address does not matter
-export const getLocalPurchaser = async function ({ network = 1 }) {
+export const getLocalPurchaser = async function ({
+  network = 1,
+}: PurchaserArgs): Promise<WalletServiceSigner> {
   const provider = await getPublicProviderForNetwork(network)
   const wallet = new ethers.Wallet(config.purchaserCredentials, provider)
-  return wallet
+  return wallet as unknown as WalletServiceSigner
 }
 
 /**
@@ -68,7 +89,7 @@ export const getLocalPurchaser = async function ({ network = 1 }) {
 export const getPurchaser = async function ({
   network = 1,
   address = undefined,
-}: PurchaserArgs): Promise<ethers.Signer> {
+}: PurchaserArgs): Promise<WalletServiceSigner> {
   // If we have a provider, we need to fetch that one... or yield an error!
   const defenderRelayCredential = config.defenderRelayCredentials[network]
   if (
@@ -88,7 +109,7 @@ export const getPurchaser = async function ({
     if (!address || address === (await wallet.getAddress())) {
       const relayerStatus = await defender.relaySigner.getRelayerStatus()
       if (!relayerStatus.paused) {
-        return wallet as unknown as ethers.Signer
+        return wallet as unknown as WalletServiceSigner
       } else {
         logger.warn(
           `The OpenZeppelin Relayer purchaser at ${address} is paused! We will use the local purchaser instead.`
@@ -99,7 +120,7 @@ export const getPurchaser = async function ({
   const provider = await getPublicProviderForNetwork(network)
   const wallet = new ethers.Wallet(config.purchaserCredentials, provider)
   if (!address || address === (await wallet.getAddress())) {
-    return wallet as ethers.Signer
+    return wallet as unknown as WalletServiceSigner
   }
   throw new Error(`The purchaser at ${address} is unavailable!`)
 }
@@ -111,8 +132,8 @@ export const getPurchaser = async function ({
  */
 export const getAllPurchasers = async function ({
   network = 1,
-}: PurchaserArgs) {
-  const purchasers = []
+}: PurchaserArgs): Promise<WalletServiceSigner[]> {
+  const purchasers: WalletServiceSigner[] = []
   const defenderRelayCredential = config.defenderRelayCredentials[network]
   if (
     defenderRelayCredential?.relayerApiKey &&
@@ -128,11 +149,11 @@ export const getAllPurchasers = async function ({
       // @ts-expect-error - polyfill
       wallet.signTypedData = wallet._signTypedData
     }
-    purchasers.push(wallet)
+    purchasers.push(wallet as unknown as WalletServiceSigner)
   }
   const provider = await getPublicProviderForNetwork(network)
   const wallet = new ethers.Wallet(config.purchaserCredentials, provider)
-  purchasers.push(wallet)
+  purchasers.push(wallet as unknown as WalletServiceSigner)
   return purchasers
 }
 
@@ -165,7 +186,7 @@ export const getSignerFromOnKeyPurchaserHookOnLock = async function ({
     provider
   )
 
-  let wallet = null
+  let wallet: WalletServiceSigner | null = null
 
   // Ok let's now select a purchaser that is set as signer, or throw an Error!
   // Can we do Promise.all to reduce latency?
@@ -199,7 +220,7 @@ export const getSignerWhoIsKeyGranterOnLock = async function ({
 }: {
   lockAddress: string
   network: number
-}) {
+}): Promise<WalletServiceSigner | null> {
   const web3Service = getWeb3Service()
 
   const purchasers = await getAllPurchasers({ network })
@@ -217,7 +238,11 @@ export const getSignerWhoIsKeyGranterOnLock = async function ({
       return null
     })
   )
-  return keyGranters.find((purchaser) => purchaser !== null)
+  return (
+    keyGranters.find(
+      (purchaser): purchaser is WalletServiceSigner => purchaser !== null
+    ) ?? null
+  )
 }
 
 export default class Dispatcher {
@@ -361,8 +386,8 @@ export default class Dispatcher {
       })
     )
     const signer = signers.find(
-      (purchaser) => purchaser !== null
-    ) as ethers.Signer
+      (purchaser): purchaser is WalletServiceSigner => purchaser !== null
+    )
 
     if (!signer) {
       throw new Error(
@@ -372,7 +397,7 @@ export default class Dispatcher {
 
     const transferCode = await keyManager.createTransferSignature({
       params,
-      signer,
+      signer: signer as unknown as KeyManagerSigner,
       network,
     })
     return transferCode
@@ -464,7 +489,7 @@ export default class Dispatcher {
       getPurchaser({ network }),
     ])
 
-    await walletService.connect(provider, wallet as ethers.Signer)
+    await walletService.connect(provider, wallet)
 
     const referrer = networks[network]?.multisig
 
@@ -497,10 +522,10 @@ export default class Dispatcher {
     const walletService = new WalletService(networks)
 
     // Get a purchaser that is a key granter!
-    const wallet = (await getSignerWhoIsKeyGranterOnLock({
+    const wallet = await getSignerWhoIsKeyGranterOnLock({
       lockAddress,
       network,
-    })) as ethers.Signer
+    })
     if (!wallet) {
       throw new Error('No signer set as key granter on this lock!')
     }
@@ -540,7 +565,7 @@ export default class Dispatcher {
       getProviderForNetwork(network),
       getPurchaser({ network }),
     ])
-    await walletService.connect(provider, wallet as ethers.Signer)
+    await walletService.connect(provider, wallet)
     return executeAndRetry(
       walletService.extendKey(
         {
@@ -566,10 +591,10 @@ export default class Dispatcher {
     const walletService = new WalletService(networks)
 
     // Get a purchaser that is a key granter
-    const wallet = (await getSignerWhoIsKeyGranterOnLock({
+    const wallet = await getSignerWhoIsKeyGranterOnLock({
       lockAddress,
       network,
-    })) as ethers.Signer
+    })
     if (!wallet) {
       throw new Error('No signer set as key granter on this lock!')
     }
@@ -621,7 +646,7 @@ export default class Dispatcher {
       getPurchaser({ network }),
     ])
     const walletService = new WalletService(networks)
-    await walletService.connect(provider, wallet as ethers.Signer)
+    await walletService.connect(provider, wallet)
     const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
 
     return executeAndRetry(
@@ -657,7 +682,7 @@ export default class Dispatcher {
       getProviderForNetwork(network),
       getPurchaser({ network }),
     ])
-    await walletService.connect(provider, wallet as ethers.Signer)
+    await walletService.connect(provider, wallet)
 
     const referrer = networks[network]?.multisig
     const teamMultisig = networks[network]?.multisig

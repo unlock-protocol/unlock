@@ -9,12 +9,12 @@
   "main": "dist",
   "dependencies": {
     "handlebars": "4.7.8",
-    "tsx": "4.19.3"
+    "tsx": "4.20.6"
   },
   "devDependencies": {
     "@types/handlebars": "4.1.0",
     "typescript": "5.8.3",
-    "vitest": "3.1.4"
+    "vitest": "3.2.4"
   },
   "repository": {
     "type": "git",

@@ -16,16 +16,16 @@ jobs:
           fetch-depth: 0
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v46
+        uses: tj-actions/changed-files@v47
         with:
           files: |
             packages/networks/src/networks/**
 
       # setup monorepo only if a file has changed
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         if: steps.changed-files.outputs.any_changed == 'true'
         with:
-          node-version: 20
+          node-version: 22.21.0
       - run: yarn
         if: steps.changed-files.outputs.any_changed == 'true'
         shell: bash
