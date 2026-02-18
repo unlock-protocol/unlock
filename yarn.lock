@@ -8063,15 +8063,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gnosis-guild/zodiac-core@npm:2.1.4":
-  version: 2.1.4
-  resolution: "@gnosis-guild/zodiac-core@npm:2.1.4"
+"@gnosis-guild/zodiac-core@npm:3.0.1":
+  version: 3.0.1
+  resolution: "@gnosis-guild/zodiac-core@npm:3.0.1"
   dependencies:
     "@openzeppelin/contracts": "npm:5.0.2"
     "@openzeppelin/contracts-upgradeable": "npm:5.0.2"
     ethers: "npm:^6.13.2"
     semver: "npm:^7.6.3"
-  checksum: 10/4e125a00a4a32dada5fc147815a597fb979db3d59bbc4b491973c633e30048f9abf2de91ca8680d5802688445a43b59d2f616a95e21d6459d35e561b499f0fbe
+  checksum: 10/7af89077b07c9016b8cec8d825891163b1fa757da4da1374f4610ff374017163cd8d781c5d2f5756b601a1b13aa9fd6e9b5789416e189e185736d1db8d6be7db
   languageName: node
   linkType: hard
 
@@ -22611,7 +22611,7 @@ __metadata:
     "@arbitrum/sdk": "npm:4.0.4"
     "@eth-optimism/sdk": "npm:3.3.3"
     "@gnosis-guild/zodiac": "npm:4.2.1"
-    "@gnosis-guild/zodiac-core": "npm:2.1.4"
+    "@gnosis-guild/zodiac-core": "npm:3.0.1"
     "@matterlabs/hardhat-zksync-deploy": "npm:1.8.0"
     "@matterlabs/hardhat-zksync-solc": "npm:1.5.1"
     "@matterlabs/hardhat-zksync-upgradable": "npm:1.10.0"
