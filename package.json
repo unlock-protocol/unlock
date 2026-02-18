@@ -22,7 +22,7 @@
     "eslint": "9.39.0",
     "eslint-plugin-evm-address-to-checksummed": "0.0.6",
     "eslint-plugin-json": "4.0.1",
-    "eslint-plugin-mocha": "10.5.0",
+    "eslint-plugin-mocha": "11.2.0",
     "eslint-plugin-prettier": "5.5.4",
     "eslint-plugin-sort-keys-fix": "1.1.2",
     "husky": "9.1.7",
