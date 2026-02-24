@@ -28,7 +28,7 @@ interface Schema {
   easContract: string
 }
 
-const getSchemaDataStructure = async (schemaUID: string, network: number) => {
+const getSchemaDataStructure = async (schemaUID: string) => {
   if (!window.ethereum) {
     throw new Error('Ethereum provider not found')
   }

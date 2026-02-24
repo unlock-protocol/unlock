@@ -9,7 +9,7 @@ import { z } from 'zod'
 export const createTransferCode: RequestHandler = async (request, response) => {
   const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
   const network = Number(request.params.network)
-  const keyId = request.params.keyId
+  const keyId = normalizer.getParam(request.params.keyId)!
   const dispatcher = new Dispatcher()
   const subgraph = new SubgraphService()
   const key = await subgraph.key(

@@ -25,7 +25,7 @@ export const saveCustomContent = async (
   try {
     const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
     const network = Number(request.params.network)
-    const template = request.params.template?.toUpperCase()
+    const template = Normalizer.getParam(request.params.template)!.toUpperCase()
 
     const { content } = await CustomEmail.parseAsync(request.body)
 
@@ -59,7 +59,7 @@ export const getCustomContent = async (
   try {
     const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
     const network = Number(request.params.network)
-    const template = request.params.template?.toUpperCase()
+    const template = Normalizer.getParam(request.params.template)!.toUpperCase()
 
     const customEmail = await emailOperations.getCustomTemplateContent({
       lockAddress,
@@ -125,7 +125,7 @@ export const EventInviteBody = z.object({
 })
 
 export const sendEventInvite: RequestHandler = async (request, response) => {
-  const slug = request.params.slug.toLowerCase().trim()
+  const slug = Normalizer.getParam(request.params.slug)!.toLowerCase().trim()
   const event = await getEventBySlug(slug, true)
 
   const { recipients } = await EventInviteBody.parseAsync(request.body)

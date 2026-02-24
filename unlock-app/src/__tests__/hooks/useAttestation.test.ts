@@ -63,7 +63,7 @@ describe('getSchemaDataStructure', () => {
   })
 
   it('returns the schema record', async () => {
-    const result = await getSchemaDataStructure('0xschema123', 84532)
+    const result = await getSchemaDataStructure('0xschema123')
 
     expect(result).toEqual('string name')
   })

@@ -4,11 +4,18 @@ export function emailAddress(input: string): string {
   return input.toLocaleLowerCase()
 }
 
-export function ethereumAddress(input?: string): string {
-  if (!input) {
+export function getParam(
+  value: string | string[] | undefined
+): string | undefined {
+  return Array.isArray(value) ? value[0] : value
+}
+
+export function ethereumAddress(input?: string | string[]): string {
+  const value = getParam(input)
+  if (!value) {
     return ''
   }
-  return ethers.getAddress(input.trim())
+  return ethers.getAddress(value.trim())
 }
 
 export const getValidNumber = (value: string | number): number | undefined => {
@@ -60,6 +67,7 @@ export const toLowerCaseKeys = (
 export default {
   emailAddress,
   ethereumAddress,
+  getParam,
   toLowerCaseKeys,
   getValidNumber,
   url,

@@ -5,7 +5,7 @@ import { getWeb3Service } from '../../initializers'
 export const keyOwnerMiddleware: RequestHandler = async (req, res, next) => {
   const network = Number(req.params.network)
   const lockAddress = Normalizer.ethereumAddress(req.params.lockAddress)
-  const keyId = req.params.keyId
+  const keyId = Normalizer.getParam(req.params.keyId)!
   const userAddress = Normalizer.ethereumAddress(req.user!.walletAddress!)
 
   if (!lockAddress) {

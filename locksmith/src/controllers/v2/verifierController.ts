@@ -146,7 +146,7 @@ export const getEventVerifiers = async (
   request: Request,
   response: Response
 ) => {
-  const slug = request.params.slug
+  const slug = Normalizer.getParam(request.params.slug)!
 
   const list = await VerifierOperations.getEventVerifiers(slug)
 
@@ -159,8 +159,8 @@ export const addEventVerifier = async (
   request: Request,
   response: Response
 ) => {
-  const slug = request.params.slug
-  const address = request.params.address
+  const slug = Normalizer.getParam(request.params.slug)!
+  const address = Normalizer.getParam(request.params.address)!
 
   const loggedUserAddress = Normalizer.ethereumAddress(
     request.user!.walletAddress!
@@ -189,8 +189,8 @@ export const deleteEventVerifier = async (
   request: Request,
   response: Response
 ) => {
-  const slug = request.params.slug
-  const address = request.params.address
+  const slug = Normalizer.getParam(request.params.slug)!
+  const address = Normalizer.getParam(request.params.address)!
 
   await VerifierOperations.deleteVerifierForEvent(address, slug)
   const list = await VerifierOperations.getEventVerifiers(slug)

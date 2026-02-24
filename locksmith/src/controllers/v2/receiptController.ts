@@ -23,7 +23,7 @@ export class ReceiptController {
   async getReceipt(request: Request, response: Response) {
     const network = Number(request.params.network || 1)
     const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
-    const hash = request.params.hash
+    const hash = Normalizer.getParam(request.params.hash) ?? ''
 
     try {
       const receiptDetails = await receiptOperations.getReceiptDetails({
@@ -48,7 +48,7 @@ export class ReceiptController {
   async savePurchaser(request: Request, response: Response) {
     const network = Number(request.params.network || 1)
     const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
-    const hash = request.params.hash ?? ''
+    const hash = Normalizer.getParam(request.params.hash) ?? ''
     const props = await PurchaserBody.parseAsync(request.body)
 
     try {

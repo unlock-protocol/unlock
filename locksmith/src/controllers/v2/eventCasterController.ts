@@ -2,6 +2,7 @@ import { RequestHandler } from 'express'
 import { z } from 'zod'
 import { getEventFormEventCaster } from '../../operations/eventCasterOperations'
 import { addJob } from '../../worker/worker'
+import { getParam } from '../../utils/normalizer'
 
 // This is the API endpoint used by EventCaster to create events
 const CreateEventBody = z.object({
@@ -54,7 +55,7 @@ export const rsvpForEvent: RequestHandler = async (request, response) => {
 
   let event
   try {
-    event = await getEventFormEventCaster(request.params.eventId)
+    event = await getEventFormEventCaster(getParam(request.params.eventId)!)
   } catch (error) {
     response.status(422).json({ message: error.message })
     return
@@ -73,7 +74,7 @@ export const rsvpForEvent: RequestHandler = async (request, response) => {
     farcasterId: user.fid,
     ownerAddress,
     contract: event.contract,
-    eventId: request.params.eventId,
+    eventId: getParam(request.params.eventId)!,
   })
 
   response.sendStatus(204)

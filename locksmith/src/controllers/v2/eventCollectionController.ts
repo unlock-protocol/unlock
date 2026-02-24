@@ -1,6 +1,7 @@
 import { RequestHandler, Request, Response } from 'express'
 import { z } from 'zod'
 import '../../models/associations'
+import { getParam } from '../../utils/normalizer'
 import {
   addEventToCollectionOperation,
   addManagerAddressOperation,
@@ -92,7 +93,7 @@ export const getEventCollection: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
-  const { slug } = req.params
+  const slug = getParam(req.params.slug)!
 
   try {
     const eventCollection = await getEventCollectionOperation(slug)
@@ -112,7 +113,7 @@ export const getEventCollectionsByManagerAddress: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
-  const { managerAddress } = req.params
+  const managerAddress = getParam(req.params.managerAddress)!
   if (!managerAddress) {
     res.status(400).json({ error: 'Manager address is required' })
     return
@@ -137,7 +138,7 @@ export const updateEventCollection: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
-  const { slug } = req.params
+  const slug = getParam(req.params.slug)!
   const parsedBody = await EventCollectionBody.parseAsync(req.body)
   try {
     const eventCollection = await updateEventCollectionOperation(
@@ -170,7 +171,7 @@ export const addManagerAddress: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
-  const { slug } = req.params
+  const slug = getParam(req.params.slug)!
   const parsedBody = await AddManagerBody.safeParseAsync(req.body)
 
   if (!parsedBody.success) {
@@ -213,7 +214,7 @@ export const removeManagerAddress: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
-  const { slug } = req.params
+  const slug = getParam(req.params.slug)!
   const parsedBody = await RemoveManagerBody.safeParseAsync(req.body)
 
   if (!parsedBody.success) {
@@ -256,7 +257,7 @@ export const addEventToCollection: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
-  const { slug: collectionSlug } = req.params
+  const collectionSlug = getParam(req.params.slug)!
   const parsedBody = await AddEventToCollectionBody.safeParseAsync(req.body)
   if (!parsedBody.success) {
     res.status(400).json({
@@ -294,7 +295,7 @@ export const getUnapprovedEventsForCollection: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
-  const { slug } = req.params
+  const slug = getParam(req.params.slug)!
   try {
     const unapprovedEvents =
       await getUnapprovedEventsForCollectionOperation(slug)
@@ -315,7 +316,7 @@ export const approveEvent: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
-  const { slug: collectionSlug } = req.params
+  const collectionSlug = getParam(req.params.slug)!
   const { eventSlug } = req.body
 
   if (!eventSlug) {
@@ -353,7 +354,7 @@ export const removeEventFromCollection: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
-  const { slug: collectionSlug } = req.params
+  const collectionSlug = getParam(req.params.slug)!
   const { eventSlug } = req.body
 
   if (!eventSlug) {
@@ -391,7 +392,7 @@ export const bulkApproveEvents: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
-  const { slug: collectionSlug } = req.params
+  const collectionSlug = getParam(req.params.slug)!
   const parsedBody = ApproveEventsBody.safeParse(req.body)
 
   if (!parsedBody.success) {
@@ -434,7 +435,7 @@ export const bulkRemoveEvents: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
-  const { slug: collectionSlug } = req.params
+  const collectionSlug = getParam(req.params.slug)!
   const parsedBody = RemoveEventsBody.safeParse(req.body)
 
   if (!parsedBody.success) {

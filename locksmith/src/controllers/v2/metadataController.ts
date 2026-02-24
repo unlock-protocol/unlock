@@ -45,7 +45,7 @@ export const getLockMetadata: RequestHandler = async (request, response) => {
 }
 
 export const getKeyMetadata: RequestHandler = async (request, response) => {
-  const keyId = request.params.keyId.toLowerCase()
+  const keyId = Normalizer.getParam(request.params.keyId)!.toLowerCase()
   const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
   const network = Number(request.params.network)
   const host = `${request.protocol}://${request.headers.host}`
@@ -164,7 +164,7 @@ export const updateLockMetadata: RequestHandler = async (request, response) => {
 }
 
 export const updateKeyMetadata: RequestHandler = async (request, response) => {
-  const keyId = request.params.keyId.toLowerCase()
+  const keyId = Normalizer.getParam(request.params.keyId)!.toLowerCase()
   const { metadata } = request.body
   const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
   const network = Number(request.params.network)

@@ -118,7 +118,7 @@ export const getAllEvents: RequestHandler = async (request, response) => {
 // For backward compatibility, if the event does not exist, we look for a lock
 // whose slug matches and get the event data from that lock.
 export const getEvent: RequestHandler = async (request, response) => {
-  const slug = request.params.slug.toLowerCase().trim()
+  const slug = normalizer.getParam(request.params.slug)!.toLowerCase().trim()
   const event = await getEventBySlug(
     slug,
     true /** includeProtected and we will cleanup later */
@@ -237,7 +237,7 @@ export const approveRefunds: RequestHandler = async (request, response) => {
   }
 
   const refundAmount = ethers.parseUnits(amount.toString(), decimals)
-  const slug = request.params.slug.toLowerCase().trim()
+  const slug = normalizer.getParam(request.params.slug)!.toLowerCase().trim()
 
   // Then, get the list of all attendees that attendees!
   const list = await getCheckedInAttendees(slug)
@@ -268,7 +268,7 @@ export const approveRefunds: RequestHandler = async (request, response) => {
 }
 
 export const approvedRefunds: RequestHandler = async (request, response) => {
-  const slug = request.params.slug.toLowerCase().trim()
+  const slug = normalizer.getParam(request.params.slug)!.toLowerCase().trim()
   let file
   try {
     file = await downloadJsonFromS3(
@@ -291,7 +291,7 @@ export const approvedRefunds: RequestHandler = async (request, response) => {
 }
 
 export const updateEventData: RequestHandler = async (request, response) => {
-  const { slug } = request.params
+  const slug = normalizer.getParam(request.params.slug)!
   const { status, transactionHash, checkoutConfig } = request.body
 
   try {

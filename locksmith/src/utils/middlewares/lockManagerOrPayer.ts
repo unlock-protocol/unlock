@@ -11,7 +11,7 @@ export const lockManagerOrPayerMiddleware: RequestHandler = async (
 ) => {
   const lockAddress = Normalizer.ethereumAddress(req.params.lockAddress)
   const network = Number(req.params.network)
-  const hash = req.params.hash
+  const hash = Normalizer.getParam(req.params.hash)!
   const userAddress = Normalizer.ethereumAddress(req.user!.walletAddress!)
 
   if (!lockAddress) {
