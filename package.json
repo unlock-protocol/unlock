@@ -95,6 +95,9 @@
   },
   "engineStrict": true,
   "homepage": "https://github.com/unlock-protocol/unlock#readme",
+  "resolutions": {
+    "viem": "2.46.3"
+  },
   "packageManager": "yarn@4.10.3",
   "lint-staged": {
     "*.{js,ts,tsx}": "yarn run lint --fix",
