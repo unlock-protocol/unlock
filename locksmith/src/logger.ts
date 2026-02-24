@@ -25,7 +25,7 @@ logger.add(
 if (process.env.NODE_ENV === 'production') {
   if (config.logtailSourceToken) {
     const logtail = new Logtail(config.logtailSourceToken)
-    logger.add(new LogtailTransport(logtail))
+    logger.add(new LogtailTransport(logtail as any))
   }
 }
 

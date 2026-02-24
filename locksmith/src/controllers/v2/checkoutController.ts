@@ -6,6 +6,7 @@ import {
   deleteCheckoutConfigById,
 } from '../../operations/checkoutConfigOperations'
 import { PaywallConfig } from '@unlock-protocol/core'
+import { getParam } from '../../utils/normalizer'
 
 /**
  * Create or update a checkout configuration.
@@ -18,7 +19,7 @@ export const createOrUpdateCheckoutConfig: RequestHandler = async (
   request,
   response
 ) => {
-  const id: string | undefined = request.params.id
+  const id = getParam(request.params.id)
   const { config, name } = request.body
   if (!(config && name)) {
     response.status(400).send({
@@ -64,7 +65,7 @@ export const createOrUpdateCheckoutConfig: RequestHandler = async (
  * This endpoint fetches the requested config without performing an authorization check.
  */
 export const getCheckoutConfig: RequestHandler = async (request, response) => {
-  const id = request.params.id
+  const id = getParam(request.params.id)!
 
   const checkoutConfig = await getCheckoutConfigById(id)
   if (!checkoutConfig) {
@@ -115,7 +116,7 @@ export const deleteCheckoutConfig: RequestHandler = async (
   request,
   response
 ) => {
-  const id = request.params.id
+  const id = getParam(request.params.id)!
   const userAddress = request.user!.walletAddress
 
   const existingConfig = await getCheckoutConfigById(id)

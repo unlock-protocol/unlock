@@ -88,7 +88,7 @@ export const retrieveEncryptedPrivatekey = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  const { emailAddress } = req.params
+  const emailAddress = Normalizer.getParam(req.params.emailAddress)!
   const ejected = await UserOperations.ejectionStatus(emailAddress)
 
   if (ejected) {
@@ -137,7 +137,7 @@ export const retrieveRecoveryPhrase = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  const { emailAddress } = req.params
+  const emailAddress = Normalizer.getParam(req.params.emailAddress)!
   const ejected = await UserOperations.ejectionStatus(emailAddress)
 
   if (ejected) {
@@ -158,7 +158,7 @@ export const retrieveRecoveryPhrase = async (
 }
 
 export const updateUser = async (req: Request, res: Response): Promise<any> => {
-  const { emailAddress } = req.params
+  const emailAddress = Normalizer.getParam(req.params.emailAddress)!
   const { user } = req.body.message
   const ejected = await UserOperations.ejectionStatus(emailAddress)
 
@@ -189,7 +189,7 @@ export const updatePaymentDetails = async (
   res: Response
 ): Promise<any> => {
   const { publicKey } = req.body.message.user
-  const { emailAddress } = req.params
+  const emailAddress = Normalizer.getParam(req.params.emailAddress)!
   const token = req.body.message.user.stripeTokenId
   const ejected = await UserOperations.ejectionStatus(emailAddress)
 
@@ -211,7 +211,7 @@ export const updateAddressPaymentDetails = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  const { ethereumAddress } = req.params
+  const ethereumAddress = Normalizer.getParam(req.params.ethereumAddress)!
 
   if (ethereumAddress == null) {
     res.sendStatus(401)
@@ -239,7 +239,7 @@ export const getAddressPaymentDetails = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  const { ethereumAddress } = req.params
+  const ethereumAddress = Normalizer.getParam(req.params.ethereumAddress)!
   if (!ethereumAddress || !req.signee) {
     res.sendStatus(401)
     return
@@ -267,7 +267,7 @@ export const deleteAddressPaymentDetails = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  const { ethereumAddress } = req.params
+  const ethereumAddress = Normalizer.getParam(req.params.ethereumAddress)!
 
   if (!ethereumAddress || !req.signee) {
     res.sendStatus(401)
@@ -320,14 +320,14 @@ export const updatePasswordEncryptedPrivateKey = async (
 }
 
 export const cards = async (req: Request, res: Response) => {
-  const { emailAddress } = req.params
+  const emailAddress = Normalizer.getParam(req.params.emailAddress)!
   const result = await UserOperations.getCards(emailAddress)
   res.json(result)
   return
 }
 
 export const eject = async (req: Request, res: Response) => {
-  const address = req.params.ethereumAddress
+  const address = Normalizer.getParam(req.params.ethereumAddress)!
   const ejected = await UserOperations.ejectionStatusByAddress(address)
 
   if (
@@ -353,7 +353,7 @@ export const eject = async (req: Request, res: Response) => {
 }
 
 export const exist = async (request: Request, response: Response) => {
-  const { emailAddress } = request.params
+  const emailAddress = Normalizer.getParam(request.params.emailAddress)!
   const user = await UserOperations.findByEmail(emailAddress)
 
   if (!user) {
@@ -366,7 +366,7 @@ export const exist = async (request: Request, response: Response) => {
 
 // Method used for nextAuth
 export const existNextAuth = async (request: Request, response: Response) => {
-  const { emailAddress } = request.params
+  const emailAddress = Normalizer.getParam(request.params.emailAddress)!
   const userAccountType =
     await UserOperations.findLoginMethodsByEmail(emailAddress)
 
