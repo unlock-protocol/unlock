@@ -6,7 +6,7 @@
     "module": "esnext" /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */,
     "lib": [
       "dom",
-      "es2017"
+      "es2021"
     ] /* Specify library files to be included in the compilation. */,
     "jsx": "preserve" /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */,
     "removeComments": false /* Do not emit comments to output. */,
