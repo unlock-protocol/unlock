@@ -19811,10 +19811,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stripe/stripe-js@npm:7.0.0":
-  version: 7.0.0
-  resolution: "@stripe/stripe-js@npm:7.0.0"
-  checksum: 10/053a196a008d559ac4949960844ca18885a0f375020b7cca8d1413a0c0d7d5ad5964d3d42a3cbd1f9bfdead41b30b8657eef8a1334d400d94b3e967de4377a78
+"@stripe/stripe-js@npm:8.1.0":
+  version: 8.1.0
+  resolution: "@stripe/stripe-js@npm:8.1.0"
+  checksum: 10/46684ba79976cbf3074000af1466738404e6aae4d45ac83cb7c47e858280312173b71aefa945a1626d9cbafafc8613f71a8c554508c96e1d1a8370435e2e0db9
   languageName: node
   linkType: hard
 
@@ -23006,7 +23006,7 @@ __metadata:
     "@radix-ui/react-avatar": "npm:1.1.10"
     "@sentry/nextjs": "npm:9.3.0"
     "@stripe/react-stripe-js": "npm:3.0.0"
-    "@stripe/stripe-js": "npm:7.0.0"
+    "@stripe/stripe-js": "npm:8.1.0"
     "@tanstack/react-query": "npm:5.59.19"
     "@testing-library/dom": "npm:10.4.1"
     "@testing-library/react": "npm:16.0.1"
