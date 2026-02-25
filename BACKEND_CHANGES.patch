@@ -1,0 +1,192 @@
+# Backend Changes for Membership Renewal Status Filter
+
+## File 1: locksmith/src/operations/subscriptionOperations.ts
+
+```typescript
+// Add this type definition at the top of the file
+export type RenewalStatus =
+  | 'all'
+  | 'will_renew'
+  | 'wont_renew_expired_card'
+  | 'wont_renew_cancelled'
+  | 'wont_renew_insufficient_funds'
+
+// Add this function to filter keys based on renewal status
+export const applyRenewalStatusFilter = (
+  query: any,
+  renewalStatus?: RenewalStatus
+) => {
+  if (!renewalStatus || renewalStatus === 'all') {
+    return query
+  }
+
+  // Ensure join with KeySubscription
+  query = query.leftJoinAndSelect(
+    'key.subscription',
+    'subscription'
+  )
+
+  switch (renewalStatus) {
+    case 'will_renew':
+      // Active subscription, not cancelled, payment method valid
+      query = query.andWhere('subscription.cancelled = :cancelled', {
+        cancelled: false,
+      })
+      query = query.andWhere(
+        'subscription.paymentMethodValid = :paymentMethodValid',
+        { paymentMethodValid: true }
+      )
+      query = query.andWhere(
+        'subscription.nextChargeAttemptAt IS NOT NULL'
+      )
+      break
+
+    case 'wont_renew_expired_card':
+      query = query.andWhere(
+        'subscription.paymentMethodValid = :paymentMethodValid',
+        { paymentMethodValid: false }
+      )
+      query = query.andWhere(
+        'subscription.paymentFailureReason = :reason',
+        { reason: 'card_expired' }
+      )
+      break
+
+    case 'wont_renew_cancelled':
+      query = query.andWhere('subscription.cancelled = :cancelled', {
+        cancelled: true,
+      })
+      break
+
+    case 'wont_renew_insufficient_funds':
+      query = query.andWhere(
+        'subscription.paymentMethodValid = :paymentMethodValid',
+        { paymentMethodValid: true }
+      )
+      query = query.andWhere(
+        'subscription.paymentFailureReason = :reason',
+        { reason: 'insufficient_funds' }
+      )
+      break
+  }
+
+  return query
+}
+```
+
+## File 2: locksmith/src/operations/keyOperations.ts
+
+Add to the getKeysByPage function parameters and implementation:
+
+```typescript
+import { applyRenewalStatusFilter, RenewalStatus } from './subscriptionOperations'
+
+interface KeyFilters {
+  lockAddress?: string
+  owner?: string
+  query?: string
+  filterKey?: string
+  expiration?: ExpirationStatus
+  approval?: ApprovalStatus
+  renewalStatus?: RenewalStatus // ADD THIS
+}
+
+export const getKeysByPage = async (
+  { page, limit }: { page: number; limit: number },
+  filters: KeyFilters
+) => {
+  const {
+    lockAddress,
+    owner,
+    renewalStatus, // ADD THIS
+  } = filters
+
+  let query = keyRepository.createQueryBuilder('key')
+
+  if (lockAddress) {
+    query = query.andWhere('LOWER(key.lockAddress) = LOWER(:lockAddress)', {
+      lockAddress,
+    })
+  }
+
+  if (owner) {
+    query = query.andWhere('LOWER(key.owner) = LOWER(:owner)', { owner })
+  }
+
+  // ADD THIS: Apply renewal status filter
+  query = applyRenewalStatusFilter(query, renewalStatus)
+
+  query = query.skip(page * limit).take(limit)
+
+  const [keys, total] = await query.getManyAndCount()
+
+  return { keys, total, page, limit }
+}
+```
+
+## File 3: locksmith/src/controllers/v2/keyController.ts
+
+Update the keysByPage controller method:
+
+```typescript
+import { RenewalStatus } from '../../operations/subscriptionOperations'
+
+export const keysByPage = async (req: Request, res: Response) => {
+  const {
+    page = 0,
+    limit = 50,
+    lockAddress,
+    owner,
+    renewalStatus = 'all', // ADD THIS
+  } = req.query as {
+    page?: string
+    limit?: string
+    lockAddress?: string
+    owner?: string
+    renewalStatus?: RenewalStatus | 'all' // ADD THIS
+  }
+
+  const pagination = {
+    page: Number(page),
+    limit: Number(limit),
+  }
+
+  const filters = {
+    lockAddress,
+    owner,
+    renewalStatus: (renewalStatus as RenewalStatus) || 'all', // ADD THIS
+  }
+
+  const result = await getKeysByPage(pagination, filters)
+
+  return res.status(200).json(result)
+}
+```
+
+## File 4: locksmith/src/routes/v2/keys.ts
+
+Add validation for renewalStatus parameter (if using Joi):
+
+```typescript
+router.get(
+  '/keys',
+  celebrate({
+    query: Joi.object({
+      page: Joi.number().optional(),
+      limit: Joi.number().optional(),
+      lockAddress: Joi.string().optional(),
+      owner: Joi.string().optional(),
+      renewalStatus: Joi.string() // ADD THIS
+        .valid(
+          'all',
+          'will_renew',
+          'wont_renew_expired_card',
+          'wont_renew_cancelled',
+          'wont_renew_insufficient_funds'
+        )
+        .optional(),
+    }),
+  }),
+  keysByPage
+)
+```
