@@ -28,7 +28,7 @@ export class TicketsController {
   async sign(request: Request, response: Response) {
     const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
     const network = Number(request.params.network)
-    const tokenId = request.params.keyId
+    const tokenId = Normalizer.getParam(request.params.keyId)!
 
     const dispatcher = new Dispatcher()
     const [payload, signature] = await dispatcher.signToken(
@@ -49,10 +49,10 @@ export class TicketsController {
     try {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const network = Number(request.params.network)
-      const id = request.params.keyId.toLowerCase()
+      const id = Normalizer.getParam(request.params.keyId)!.toLowerCase()
       const address = Normalizer.ethereumAddress(request.user!.walletAddress!)
       // event slug is used by /:network/lock/:lockAddress/:eventSlug/key/:keyId/check' route
-      const eventSlug = request.params.eventSlug
+      const eventSlug = Normalizer.getParam(request.params.eventSlug)
       const verifier = eventSlug
         ? await Verifier.findOne({
             where: {
@@ -173,7 +173,7 @@ export class TicketsController {
     try {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const network = Number(request.params.network)
-      const keyId = request.params.keyId.toLowerCase()
+      const keyId = Normalizer.getParam(request.params.keyId)!.toLowerCase()
       const subgraph = new SubgraphService()
       const key = await subgraph.key(
         {
@@ -228,7 +228,7 @@ export class TicketsController {
     try {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const network = Number(request.params.network)
-      const tokenId = request.params.keyId.toLowerCase()
+      const tokenId = Normalizer.getParam(request.params.keyId)!.toLowerCase()
 
       const qrCode = (
         await generateQrCode({
@@ -263,7 +263,7 @@ export class TicketsController {
     try {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const network = Number(request.params.network)
-      const tokenId = request.params.keyId.toLowerCase()
+      const tokenId = Normalizer.getParam(request.params.keyId)!.toLowerCase()
 
       const verificationUrl = await generateQrCodeUrl({
         network,
@@ -288,7 +288,7 @@ export class TicketsController {
 export const generateTicket: RequestHandler = async (request, response) => {
   const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
   const network = Number(request.params.network)
-  const tokenId = request.params.keyId.toLowerCase()
+  const tokenId = Normalizer.getParam(request.params.keyId)!.toLowerCase()
   const subgraph = new SubgraphService()
   const loggedInUser = request.user!.walletAddress
   const key = await subgraph.key(
@@ -329,8 +329,10 @@ export const generateTicket: RequestHandler = async (request, response) => {
 export const getTicket: RequestHandler = async (request, response) => {
   const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
   const network = Number(request.params.network)
-  const eventSlug = request.params.eventSlug
-  const tokenId = request.params.keyId.toLowerCase().trim()
+  const eventSlug = Normalizer.getParam(request.params.eventSlug)
+  const tokenId = Normalizer.getParam(request.params.keyId)!
+    .toLowerCase()
+    .trim()
   const userAddress = request.user?.walletAddress
   const subgraph = new SubgraphService()
 

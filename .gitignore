@@ -50,3 +50,7 @@ locksmith/uploads
 
 # RPC provider worker
 provider/.wrangler/
+
+#Misc
+CLAUDE.md
+dev_deploy.sh

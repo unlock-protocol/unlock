@@ -8,7 +8,7 @@ export const generateCertificate: RequestHandler = async (
 ) => {
   const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
   const network = Number(request.params.network)
-  const tokenId = request.params.keyId.toLowerCase()
+  const tokenId = Normalizer.getParam(request.params.keyId)!.toLowerCase()
 
   const certificate = await createCertificate({
     lockAddress,

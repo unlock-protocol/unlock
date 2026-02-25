@@ -86,7 +86,7 @@ export const stripeConnected = async (req: Request, res: Response) => {
  */
 export const lockIcon = async (req: Request, res: Response) => {
   const lockAddress = Normalizer.ethereumAddress(req.params.lockAddress)
-  const network = parseInt(req.params.network) || 1 // defaults to mainnet
+  const network = parseInt(Normalizer.getParam(req.params.network)!) || 1 // defaults to mainnet
   const { original } = req.query
 
   let icon = await getLockIcon({

@@ -67,7 +67,7 @@ export const isEventVerifierOrManagerMiddleware: RequestHandler = async (
   next
 ) => {
   try {
-    const eventSlug = req.params.eventSlug
+    const eventSlug = Normalizer.getParam(req.params.eventSlug)!
     const address = Normalizer.ethereumAddress(req.user!.walletAddress!)
 
     const eventVerifiers = await getEventVerifiers(eventSlug)

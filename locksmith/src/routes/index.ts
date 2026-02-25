@@ -71,7 +71,7 @@ router.use(
   '/api/key/:chain([0-9]{1,12}):lock(0x[0-9A-Fa-f]{40}):rest(/[0-9]{0,12})?',
   (req, res) => {
     res.redirect(
-      `/api/key/${req.params.chain}/${req.params.lock}${req.params.rest || ''}`
+      `/api/key/${(req.params as any).chain}/${(req.params as any).lock}${(req.params as any).rest || ''}`
     )
     return
   }

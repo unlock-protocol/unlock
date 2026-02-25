@@ -30,7 +30,7 @@ export const generateGoogleWalletPass: RequestHandler = async (
     // Normalize and extract the lock address, network, and key ID from the request parameters
     const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
     const network = Number(request.params.network)
-    const keyId = request.params.keyId
+    const keyId = normalizer.getParam(request.params.keyId)!
 
     // Retrieve Google application credentials
     const { client_email, private_key } =
@@ -111,7 +111,7 @@ export const generateAppleWalletPass: RequestHandler = async (
     // Normalize and extract the lock address, network, and key ID from the request parameters
     const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
     const network = Number(request.params.network)
-    const keyId = request.params.keyId
+    const keyId = normalizer.getParam(request.params.keyId)!
 
     // Retrieve the network name using the network ID
     const networkName = networks[network]?.name

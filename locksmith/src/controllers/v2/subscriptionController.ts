@@ -12,7 +12,7 @@ export class SubscriptionController {
   async getSubscription(request: Request, response: Response) {
     const network = Number(request.params.network)
     const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
-    const keyId = Number(request.params.keyId)
+    const keyId = Number(normalizer.getParam(request.params.keyId))
     const subscriptions: Subscription[] =
       await subscriptionOperations.getSubscriptionsForLockByOwner({
         tokenId: keyId.toString(),
@@ -32,7 +32,7 @@ export class SubscriptionController {
   async cancelStripeSubscription(request: Request, response: Response) {
     const network = Number(request.params.network)
     const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
-    const keyId = Number(request.params.keyId)
+    const keyId = Number(normalizer.getParam(request.params.keyId))
     const userAddress = normalizer.ethereumAddress(request.user!.walletAddress)
     await KeySubscription.destroy({
       where: {

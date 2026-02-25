@@ -96,7 +96,7 @@ export class SubgraphService {
   async locks(variables: AllLocksQueryVariables, options?: QueryOptions) {
     const networks =
       options?.networks?.map((item) => this.networks[item]) ||
-      Object.values(this.networks).filter((item) => item.id !== 31337)
+      Object.values(this.networks)
 
     const items = []
     for (let i = 0; i < networks.length; i++) {
@@ -135,7 +135,7 @@ export class SubgraphService {
   ) {
     const networks =
       options?.networks?.map((item) => this.networks[item]) ||
-      Object.values(this.networks).filter((item) => item.id !== 31337)
+      Object.values(this.networks)
 
     const items = []
     for (let i = 0; i < networks.length; i++) {
@@ -181,7 +181,7 @@ export class SubgraphService {
   async keys(variables: AllKeysQueryVariables, options?: QueryOptions) {
     const networks =
       options?.networks?.map((item) => this.networks[item]) ||
-      Object.values(this.networks).filter((item) => item.id !== 31337)
+      Object.values(this.networks)
 
     const items = []
     for (let i = 0; i < networks.length; i++) {
@@ -217,7 +217,7 @@ export class SubgraphService {
   async receipts(variables: AllReceiptsQueryVariables, options?: QueryOptions) {
     const networks =
       options?.networks?.map((item) => this.networks[item]) ||
-      Object.values(this.networks).filter((item) => item.id !== 31337)
+      Object.values(this.networks)
 
     const items = []
     for (let i = 0; i < networks.length; i++) {

@@ -13,7 +13,9 @@ import logger from '../../logger'
 
 export const allReceipts: RequestHandler = async (request, response) => {
   const network = Number(request.params.network)
-  const lockAddress = ethers.getAddress(request.params.lockAddress)
+  const lockAddress = ethers.getAddress(
+    normalizer.getParam(request.params.lockAddress)!
+  )
 
   const items = await getAllReceiptsWithSupplierData(network, lockAddress)
 
