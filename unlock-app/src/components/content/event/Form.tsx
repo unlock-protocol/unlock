@@ -591,7 +591,6 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
                                   },
                                 })
                               }}
-                              // @ts-expect-error supportedValuesOf
                               options={Intl.supportedValuesOf('timeZone').map(
                                 (tz: string) => {
                                   return {
