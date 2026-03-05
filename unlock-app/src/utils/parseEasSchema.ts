@@ -13,17 +13,25 @@ const displayNames: Record<string, string> = {
 }
 
 const parseSchema = (schema: string): SchemaField[] => {
-  return schema.split(',').map((field) => {
-    const trimmed = field.trim()
-    const lastSpaceIndex = trimmed.lastIndexOf(' ')
-    const name = trimmed.slice(lastSpaceIndex + 1)
+  return schema
+    .split(',')
+    .map((field) => field.trim())
+    .filter((field) => field.length > 0)
+    .map((trimmed) => {
+      const lastSpaceIndex = trimmed.lastIndexOf(' ')
+      if (lastSpaceIndex < 0) {
+        throw new Error(
+          `Invalid schema field: "${trimmed}" (expected "type name")`
+        )
+      }
+      const name = trimmed.slice(lastSpaceIndex + 1)
 
-    return {
-      type: trimmed.slice(0, lastSpaceIndex),
-      name,
-      displayName: name in displayNames ? displayNames[name] : name,
-    }
-  })
+      return {
+        type: trimmed.slice(0, lastSpaceIndex),
+        name,
+        displayName: name in displayNames ? displayNames[name] : name,
+      }
+    })
 }
 
 export const transformDataToEas = (

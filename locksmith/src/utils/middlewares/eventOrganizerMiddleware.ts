@@ -1,6 +1,5 @@
 import { RequestHandler } from 'express'
 import { IsEventOrganizerEnum, isEventOrganizer } from '../eventOrganizers'
-import { getParam } from '../normalizer'
 
 export const eventOrganizerMiddleware: RequestHandler = async (
   request,
@@ -9,7 +8,7 @@ export const eventOrganizerMiddleware: RequestHandler = async (
 ) => {
   const userAddress = request.user!.walletAddress
 
-  const slug = getParam(request.params.slug)
+  const slug = request.params.slug
 
   if (!slug) {
     return next()

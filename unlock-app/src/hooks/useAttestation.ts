@@ -13,11 +13,13 @@ import {
   NO_EXPIRATION,
 } from '@ethereum-attestation-service/eas-sdk'
 import { BrowserProvider } from 'ethers'
-import { networks } from '@unlock-protocol/networks'
-import { baseSepolia, base } from '@unlock-protocol/networks'
 import { transformDataToEas } from '~/utils/parseEasSchema'
 import { locksmithClient } from '~/config/locksmith'
 import { config } from '~/config/app'
+
+// EAS predeploy addresses (same on all OP Stack chains including Base Sepolia)
+const EAS_CONTRACT_ADDRESS = '0x4200000000000000000000000000000000000021'
+const SCHEMA_REGISTRY_ADDRESS = '0x4200000000000000000000000000000000000020'
 
 // Defining the nature of the Schema object passed to the CreateOffchainAttestation function
 
@@ -35,13 +37,7 @@ const getSchemaDataStructure = async (schemaUID: string) => {
   const provider = new BrowserProvider(window.ethereum)
   const signer = await provider.getSigner()
 
-  const networkConfig = networks[network]
-  const schemaRegistryContractAddress = networkConfig.eas?.schemaRegistry
-  if (!schemaRegistryContractAddress) {
-    throw new Error('EAS not supported on this network yet')
-  }
-
-  const schemaRegistry = new SchemaRegistry(schemaRegistryContractAddress)
+  const schemaRegistry = new SchemaRegistry(SCHEMA_REGISTRY_ADDRESS)
   schemaRegistry.connect(signer as any)
 
   const schemaRecord = await schemaRegistry.getSchema({ uid: schemaUID })
@@ -51,19 +47,14 @@ const getSchemaDataStructure = async (schemaUID: string) => {
 
 export const createOffchainAttestation = async (
   schema: Schema, // Schema object sent by the schemaOption choice
-  data: any, // Data comning from the form in CreateAttestationDrawer
+  data: any, // Data coming from the form in CreateAttestationDrawer
   lockAddress: string,
-  network: number, // Placeholder for future use
+  network: number,
   owner: string // The key holder's address (recipient of the attestation)
 ) => {
-  // Initialize EAS with the EAS contract address ONLY ON BASE for v1
-  const easConfig = baseSepolia.eas || base.eas
-  if (!easConfig) {
-    throw new Error('EAS config not found for this network')
-  }
   const provider = new BrowserProvider(window.ethereum)
   const signer = await provider.getSigner()
-  const eas = new EAS(easConfig.contractAddress)
+  const eas = new EAS(EAS_CONTRACT_ADDRESS)
   eas.connect(signer as any)
   const offchain = await eas.getOffchain()
 
@@ -75,7 +66,7 @@ export const createOffchainAttestation = async (
 
   const offChainAttestation = await offchain.signOffchainAttestation(
     {
-      recipient: lockAddress,
+      recipient: owner,
       expirationTime: NO_EXPIRATION,
       time: BigInt(Math.floor(Date.now() / 1000)),
       revocable: true,

@@ -6,12 +6,10 @@
  * to make it easy to work with Unlock.
  */
 
-import hre from 'hardhat'
+import { ethers, unlock } from 'hardhat'
 
 import { deployErc20, outputSubgraphNetworkConf } from '../lib'
 import locksArgs from '../lib/locks'
-
-const { ethers, unlock } = hre
 
 const locksmithHost = process.env.LOCKSMITH_HOST || '127.0.0.1'
 const locksmithPort = process.env.LOCKSMITH_PORT || 3000
@@ -79,8 +77,8 @@ async function main() {
    */
   const { unlock: unlockContract } = await unlock.deployProtocol()
   const [publicLockVersion, unlockVersion] = await Promise.all([
-    unlockContract.publicLockLatestVersion(),
-    unlockContract.unlockVersion(),
+    await unlockContract.publicLockLatestVersion(),
+    await unlockContract.unlockVersion(),
   ])
   log(
     `UNLOCK PROTOCOL DEPLOYED : Unlock v${unlockVersion}, PublicLock v${publicLockVersion}`
@@ -109,7 +107,9 @@ async function main() {
   await Promise.all(
     locksArgs(erc20Address).map(async (lockParams) => {
       const { lock } = await unlock.createLock({ ...lockParams })
-      log(`LOCK "${lockParams.name}" DEPLOYED TO ${await lock.getAddress()}`)
+      log(
+        `LOCK "${await lockParams.name}" DEPLOYED TO ${await lock.getAddress()}`
+      )
 
       if (
         lockParams.currencyContractAddress &&
@@ -120,7 +120,7 @@ async function main() {
         )
         const approveTx = await erc20.connect(purchaser).getFunction('approve')(
           await lock.getAddress(),
-          ethers.parseUnits('500', decimals)
+          ethers.utils.parseUnits('500', decimals)
         )
         await approveTx.wait()
       }

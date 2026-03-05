@@ -42,7 +42,7 @@ const renderField = (
       <Checkbox
         key={field.name}
         label={field.displayName}
-        {...register(field.name, { required: true })}
+        {...register(field.name)}
       />
     )
   }
@@ -56,7 +56,6 @@ const renderField = (
       error={errorMessage}
       {...register(field.name, {
         required: true,
-        ...(inputType === 'number' && { valueAsNumber: true }),
       })}
     />
   )
