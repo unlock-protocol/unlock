@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { Request } from 'express'
 import { authMiddleware } from '../utils/middlewares/auth'
 
 import lockRouter from './lock'
@@ -69,7 +69,7 @@ router.use('/claim', claimRouter)
 // Redirects for broken base URLs
 router.use(
   '/api/key/:chain([0-9]{1,12}):lock(0x[0-9A-Fa-f]{40}):rest(/[0-9]{0,12})?',
-  (req, res) => {
+  (req: Request<{ chain: string; lock: string; rest?: string }>, res) => {
     res.redirect(
       `/api/key/${(req.params as any).chain}/${(req.params as any).lock}${(req.params as any).rest || ''}`
     )

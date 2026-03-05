@@ -6,12 +6,10 @@
  * to make it easy to work with Unlock.
  */
 
-import hre from 'hardhat'
+import { ethers, unlock } from 'hardhat'
 
 import { deployErc20, outputSubgraphNetworkConf } from '../lib'
 import locksArgs from '../lib/locks'
-
-const { ethers, unlock } = hre
 
 const locksmithHost = process.env.LOCKSMITH_HOST || '127.0.0.1'
 const locksmithPort = process.env.LOCKSMITH_PORT || 3000

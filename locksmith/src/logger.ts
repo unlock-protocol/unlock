@@ -1,5 +1,5 @@
 import winston from 'winston'
-import { Logtail } from '@logtail/node'
+import { Logtail } from '@logtail/winston/node_modules/@logtail/node'
 import { LogtailTransport } from '@logtail/winston'
 import config from '../config/config'
 
