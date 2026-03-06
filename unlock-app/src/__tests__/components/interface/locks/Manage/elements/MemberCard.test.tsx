@@ -1,5 +1,5 @@
-import { render, screen, fireEvent } from '@testing-library/react'
-import { vi, describe, it, expect, beforeEach } from 'vitest'
+import { render, screen, fireEvent, cleanup } from '@testing-library/react'
+import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest'
 import {
   MemberCard,
   MemberCardProps,
@@ -41,7 +41,7 @@ vi.mock('~/components/interface/ExpireAndRefundModal', () => ({
     ) : null,
 }))
 
-vi.mock('./MetadataCard', () => ({
+vi.mock('~/components/interface/locks/Manage/elements/MetadataCard', () => ({
   MetadataCard: () => <div data-testid="metadata-card">Metadata Card</div>,
 }))
 
@@ -103,10 +103,14 @@ describe('MemberCard', () => {
       lockName: 'Test Lock',
     },
     lockAddress: '0xabcdef1234567890abcdef1234567890abcdef12',
-    network: 1,
+    network: 84532, // Base Sepolia - needed for isBaseNetwork check
     expirationDuration: '2592000',
     isManager: true,
   }
+
+  afterEach(() => {
+    cleanup()
+  })
 
   beforeEach(() => {
     vi.clearAllMocks()
@@ -119,6 +123,8 @@ describe('MemberCard', () => {
       render(<MemberCard {...defaultProps} />)
 
       expect(screen.getByTestId('collapse')).not.toBe(null)
+      // WrappedAddress is inside the collapse content, need to open it
+      fireEvent.click(screen.getByTestId('collapse-toggle'))
       expect(screen.getByTestId('wrapped-address')).not.toBe(null)
     })
 
@@ -126,6 +132,9 @@ describe('MemberCard', () => {
       expect.assertions(1)
 
       render(<MemberCard {...defaultProps} />)
+
+      // Owner address is inside the collapse content
+      fireEvent.click(screen.getByTestId('collapse-toggle'))
 
       expect(
         screen.getByText('0x1234567890abcdef1234567890abcdef12345678')
@@ -150,7 +159,16 @@ describe('MemberCard', () => {
 
       render(<MemberCard {...defaultProps} isManager={false} />)
 
-      // Open the collapse
+      // Collapse is disabled when not manager, but we can check the button isn't rendered
+      // even if content were visible
+      expect(screen.queryByText('Create Attestation')).toBe(null)
+    })
+
+    it('does not render the "Create Attestation" button on non-base networks', () => {
+      expect.assertions(1)
+
+      render(<MemberCard {...defaultProps} isManager={true} network={1} />)
+
       fireEvent.click(screen.getByTestId('collapse-toggle'))
 
       expect(screen.queryByText('Create Attestation')).toBe(null)
