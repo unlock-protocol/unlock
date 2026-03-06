@@ -6,10 +6,6 @@ export const baseSepolia: NetworkConfig = {
   },
   chain: 'base-sepolia',
   description: 'A public testnet for Base',
-  eas: {
-    contractAddress: '0x4200000000000000000000000000000000000021',
-    schemaRegistry: '0x4200000000000000000000000000000000000020',
-  },
   explorer: {
     name: 'Base Sepolia Etherscan',
     urls: {

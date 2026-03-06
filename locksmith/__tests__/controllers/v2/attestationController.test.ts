@@ -5,11 +5,11 @@ import { expect, vi, beforeEach, describe, it } from 'vitest'
 import { Attestation } from '../../../src/models/attestation'
 
 const lockAddress = '0x62CcB13A72E6F991dE53b9B7AC42885151588Cd2'
-const lockManager = '0x00192fb10df37c9fb26829eb2cc623cd1bf599e8'
+const lockManager = '0x00192Fb10dF37c9FB26829eb2CC623cd1BF599E8'
 const network = 84532 // Base Sepolia
 
 const attestationData = {
-  tokenId: '0x1234567890abcdef1234567890abcdef12345678',
+  tokenId: '0x1234567890AbcdEF1234567890aBcdef12345678',
   schemaId:
     '0x3a9923db8a119d3bd312ca18781631c2f96fe5d31e67b437eb919148bfd84be6',
   attestationId:

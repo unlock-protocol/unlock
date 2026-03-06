@@ -63,8 +63,6 @@ export const createOffchainAttestation = async (
   }
   const provider = new BrowserProvider(window.ethereum)
   const signer = await provider.getSigner()
-  const signerAddress = await signer.getAddress()
-
   const eas = new EAS(easConfig.contractAddress)
   eas.connect(signer as any)
   const offchain = await eas.getOffchain()

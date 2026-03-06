@@ -49,9 +49,9 @@ describe('CreateAttestationDrawer', () => {
         <CreateAttestationDrawer
           isOpen={true}
           setIsOpen={mockSetIsOpen}
-          lockAddress="0x1234567890abcdef1234567890abcdef12345678"
+          lockAddress="0x1234567890AbcdEF1234567890aBcdef12345678"
           network={84532}
-          owner="0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          owner="0xaAaAaAaaAaAaAaaAaAAAAAAAAaaaAaAaAaaAaaAa"
         />
       )
       expect(screen.getByText('Create Attestation')).not.toBe(null)
@@ -88,9 +88,9 @@ describe('CreateAttestationDrawer', () => {
         <CreateAttestationDrawer
           isOpen={true}
           setIsOpen={mockSetIsOpen}
-          lockAddress="0x1234567890abcdef1234567890abcdef12345678"
+          lockAddress="0x1234567890AbcdEF1234567890aBcdef12345678"
           network={84532}
-          owner="0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          owner="0xaAaAaAaaAaAaAaaAaAAAAAAAAaaaAaAaAaaAaaAa"
         />
       )
 
@@ -109,8 +109,9 @@ describe('CreateAttestationDrawer', () => {
           <CreateAttestationDrawer
             isOpen={true}
             setIsOpen={mockSetIsOpen}
-            lockAddress="0x1234567890abcdef1234567890abcdef12345678"
+            lockAddress="0x1234567890AbcdEF1234567890aBcdef12345678"
             network={84532}
+            owner="0xaAaAaAaaAaAaAaaAaAAAAAAAAaaaAaAaAaaAaaAa"
           />
         )
         // Fill in required fields (default "Basic" schema has only firstName and lastName)
@@ -141,9 +142,9 @@ describe('CreateAttestationDrawer', () => {
         <CreateAttestationDrawer
           isOpen={true}
           setIsOpen={mockSetIsOpen}
-          lockAddress="0x1234567890abcdef1234567890abcdef12345678"
+          lockAddress="0x1234567890AbcdEF1234567890aBcdef12345678"
           network={84532}
-          owner="0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          owner="0xaAaAaAaaAaAaAaaAaAAAAAAAAaaaAaAaAaaAaaAa"
         />
       )
 
@@ -175,9 +176,9 @@ describe('CreateAttestationDrawer', () => {
         <CreateAttestationDrawer
           isOpen={true}
           setIsOpen={mockSetIsOpen}
-          lockAddress="0x1234567890abcdef1234567890abcdef12345678"
+          lockAddress="0x1234567890AbcdEF1234567890aBcdef12345678"
           network={84532}
-          owner="0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          owner="0xaAaAaAaaAaAaAaaAaAAAAAAAAaaaAaAaAaaAaaAa"
         />
       )
 
