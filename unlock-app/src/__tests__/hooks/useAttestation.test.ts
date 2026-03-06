@@ -4,17 +4,48 @@ const mockGetSigner = vi.fn()
 const mockGetSchema = vi.fn()
 const mockConnect = vi.fn()
 
+// Mock all external dependencies before importing the module under test
 vi.mock('ethers', () => ({
-  BrowserProvider: vi.fn(() => ({
-    getSigner: mockGetSigner,
-  })),
+  BrowserProvider: vi.fn(function () {
+    return { getSigner: mockGetSigner }
+  }),
 }))
 
 vi.mock('@ethereum-attestation-service/eas-sdk', () => ({
-  SchemaRegistry: vi.fn(() => ({
-    connect: mockConnect,
-    getSchema: mockGetSchema,
-  })),
+  SchemaRegistry: vi.fn(function () {
+    return { connect: mockConnect, getSchema: mockGetSchema }
+  }),
+  EAS: vi.fn(function () {
+    return {}
+  }),
+  SchemaEncoder: vi.fn(function () {
+    return {}
+  }),
+  NO_EXPIRATION: 0n,
+}))
+
+vi.mock('@unlock-protocol/networks', () => ({
+  networks: {
+    84532: {
+      eas: {
+        schemaRegistry: '0xSchemaRegistryAddress',
+      },
+    },
+  },
+  baseSepolia: {},
+  base: {},
+}))
+
+vi.mock('~/utils/parseEasSchema', () => ({
+  transformDataToEas: vi.fn(),
+}))
+
+vi.mock('~/config/locksmith', () => ({
+  locksmithClient: { post: vi.fn() },
+}))
+
+vi.mock('~/config/app', () => ({
+  config: { locksmithHost: 'http://localhost:8080' },
 }))
 
 import getSchemaDataStructure from '../../hooks/useAttestation'
@@ -22,8 +53,7 @@ import getSchemaDataStructure from '../../hooks/useAttestation'
 describe('getSchemaDataStructure', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-
-    global.window = { ethereum: {} } as any
+    ;(window as any).ethereum = {}
 
     mockGetSigner.mockResolvedValue({ address: '0xSigner' })
     mockGetSchema.mockResolvedValue({
@@ -33,8 +63,8 @@ describe('getSchemaDataStructure', () => {
   })
 
   it('returns the schema record', async () => {
-    const result = await getSchemaDataStructure('0xschema123')
+    const result = await getSchemaDataStructure('0xschema123', 84532)
 
-    expect(result).toEqual({ uid: '0xschema123', schema: 'string name' })
+    expect(result).toEqual('string name')
   })
 })

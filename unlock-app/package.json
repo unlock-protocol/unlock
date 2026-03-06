@@ -10,6 +10,7 @@
     "@airstack/airstack-react": "0.6.4",
     "@crossmint/client-sdk-react-ui": "1.2.2",
     "@enzoferey/ethers-error-parser": "0.2.3",
+    "@ethereum-attestation-service/eas-sdk": "2.9.0",
     "@guildxyz/sdk": "2.6.9",
     "@headlessui/react": "2.1.9",
     "@hookform/resolvers": "5.0.1",
