@@ -45,6 +45,7 @@ import eventCollectionRouter from './v2/eventCollection'
 import eventCasterRouter from './v2/eventCaster'
 import privyRouter from './v2/privy'
 import merkleTreeRouter from './v2/merkleTree'
+import attestationRouter from './v2/attestation'
 
 const router: express.Router = express.Router({ mergeParams: true })
 
@@ -71,7 +72,7 @@ router.use(
   '/api/key/:chain([0-9]{1,12}):lock(0x[0-9A-Fa-f]{40}):rest(/[0-9]{0,12})?',
   (req: Request<{ chain: string; lock: string; rest?: string }>, res) => {
     res.redirect(
-      `/api/key/${(req.params as any).chain}/${(req.params as any).lock}${(req.params as any).rest || ''}`
+      `/api/key/${req.params.chain}/${req.params.lock}${req.params.rest || ''}`
     )
     return
   }
@@ -121,6 +122,7 @@ router.use('/v2/event-collection', eventCollectionRouter)
 router.use('/v2/eventcaster', eventCasterRouter)
 router.use('/v2/privy', privyRouter)
 router.use('/v2/merkle-tree', merkleTreeRouter)
+router.use('/v2/attestations', attestationRouter)
 router.use('/', (_, res) => {
   res.send('<a href="https://unlock-protocol.com/">Unlock Protocol</a>')
 })
