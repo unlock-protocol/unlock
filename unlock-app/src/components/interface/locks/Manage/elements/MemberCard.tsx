@@ -6,6 +6,7 @@ import { expirationAsDate } from '~/utils/durations'
 import { MetadataCard as MetadataCardDefault } from './MetadataCard'
 import { ExpireAndRefundModal } from '~/components/interface/ExpireAndRefundModal'
 import ExtendKeysDrawer from '~/components/creator/members/ExtendKeysDrawer'
+import CreateAttestationDrawer from '~/components/creator/members/CreateAttestationDrawer'
 import { WrappedAddress } from '~/components/interface/WrappedAddress'
 
 export interface MemberCardProps {
@@ -64,6 +65,7 @@ export const MemberCard = ({
   const [isOpen, setIsOpen] = useState(false)
   const [expireAndRefundOpen, setExpireAndRefundOpen] = useState(false)
   const [extendKeysOpen, setExtendKeysOpen] = useState(false)
+  const [isAttestationDrawerOpen, setCreateAttestationDrawer] = useState(false)
 
   const isKeyValid = (timestamp: KeyMetadata['expiration']) => {
     const now = new Date().getTime() / 1000
@@ -75,6 +77,7 @@ export const MemberCard = ({
   const canExtendKey =
     expiration !== MAX_UINT && version !== undefined && version >= 11
   const refundDisabled = !(isManager && isKeyValid(expiration))
+  const isBaseNetwork = network == 8453 || network == 84532 || network == 31337
 
   // Extract metadata fields
   const { token: tokenId, lockName } = metadata ?? {}
@@ -86,6 +89,9 @@ export const MemberCard = ({
    * Default member info display if none is provided
    */
   const MemberInfoDefault = () => {
+    {
+      console.log('Network: ', network, typeof network)
+    }
     return (
       <>
         {/* Modals */}
@@ -113,6 +119,14 @@ export const MemberCard = ({
           }
         />
 
+        <CreateAttestationDrawer
+          isOpen={isAttestationDrawerOpen}
+          setIsOpen={setCreateAttestationDrawer}
+          lockAddress={lockAddress}
+          network={network}
+          owner={owner}
+        />
+
         {/* Member details layout */}
         <div className="flex md:flex-row flex-col gap-4 w-full">
           <Detail label="#" valueSize="medium" className="w-8">
@@ -135,10 +149,20 @@ export const MemberCard = ({
               {expirationAsDate(expiration)}
             </Detail>
           )}
-
           {/* Manager actions - only shown to lock managers */}
           {isManager && (
             <div className="w-full col-span-3 gap-3 mx-auto md:mx-0 md:ml-auto md:col-span-2 md:w-auto">
+              {isBaseNetwork && (
+                <Button
+                  variant="primary"
+                  size="small"
+                  onClick={() => setCreateAttestationDrawer(true)}
+                  className="mt-1 mb-2"
+                >
+                  Create Attestation
+                </Button>
+              )}
+
               {!refundDisabled && (
                 <Button
                   size="small"
@@ -153,6 +177,7 @@ export const MemberCard = ({
                   Cancel
                 </Button>
               )}
+
               {canExtendKey && (
                 <Button
                   variant="outlined-primary"
