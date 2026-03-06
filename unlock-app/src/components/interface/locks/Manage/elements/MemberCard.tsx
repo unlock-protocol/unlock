@@ -89,9 +89,6 @@ export const MemberCard = ({
    * Default member info display if none is provided
    */
   const MemberInfoDefault = () => {
-    {
-      console.log('Network: ', network, typeof network)
-    }
     return (
       <>
         {/* Modals */}
