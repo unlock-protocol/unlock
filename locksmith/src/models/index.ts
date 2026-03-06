@@ -22,6 +22,7 @@ export * from './UnsubscribeList'
 export * from './Rsvp'
 export * from './role'
 export * from './Event'
+export * from './attestation'
 
 // define associations
 import './associations'

@@ -3,7 +3,13 @@ import networks from '@unlock-protocol/networks'
 import { minifyAddress } from '~/utils'
 import { Size } from '~/types'
 
-interface CertificateProps {
+export interface AttestationData {
+  attestationId?: string
+  firstName?: string
+  lastName?: string
+}
+
+export interface CertificateProps {
   name: string
   description: ReactNode
   owner: string
@@ -23,6 +29,7 @@ interface CertificateProps {
     trait_type: string
     value: string | number | ReactNode
   }>
+  attestation?: AttestationData
 }
 
 interface Props {
@@ -138,6 +145,7 @@ export const Certificate = ({
   networkName,
   isMobile = false,
   customMetadata = [],
+  attestation,
 }: CertificateProps) => {
   const networkNameById = networks[network]?.name
 
@@ -161,7 +169,8 @@ export const Certificate = ({
         style={{
           display: 'flex',
           flexDirection: 'column',
-          gap: isMobile ? '40px' : '96px',
+          justifyContent: 'space-between',
+          gap: isMobile ? '40px' : '0px',
           padding: isMobile ? '24px' : '44px 48px',
           marginTop: '12px',
           height: '100%',
@@ -196,7 +205,20 @@ export const Certificate = ({
               }}
             >
               <CertificateLabel>This is to certify</CertificateLabel>
-              <CertificateValue>{minifyAddress(owner)}</CertificateValue>
+              {attestation?.firstName || attestation?.lastName ? (
+                <CertificateValue size="large">
+                  {[attestation.firstName, attestation.lastName]
+                    .filter(Boolean)
+                    .join(' ')}
+                </CertificateValue>
+              ) : (
+                <CertificateValue>{minifyAddress(owner)}</CertificateValue>
+              )}
+              {(attestation?.firstName || attestation?.lastName) && (
+                <CertificateValue size="small">
+                  {minifyAddress(owner)}
+                </CertificateValue>
+              )}
             </div>
             <div
               style={{
@@ -255,7 +277,7 @@ export const Certificate = ({
               flexDirection: isMobile ? 'column' : 'row',
               justifyContent: 'space-between',
               gap: isMobile ? '16px' : '8px',
-              marginTop: isMobile ? '30px' : '100px',
+              marginTop: isMobile ? '30px' : '0px',
               flexWrap: 'wrap',
             }}
           >
@@ -287,6 +309,14 @@ export const Certificate = ({
                 </div>
               </CertificateValue>
             </ValueWrapper>
+            {attestation?.attestationId && (
+              <ValueWrapper>
+                <CertificateLabel>Attestation ID</CertificateLabel>
+                <CertificateValue size="tiny">
+                  {minifyAddress(attestation.attestationId)}
+                </CertificateValue>
+              </ValueWrapper>
+            )}
           </div>
 
           <div

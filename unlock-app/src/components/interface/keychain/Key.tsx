@@ -46,8 +46,16 @@ import {
 import { RiFileCopyLine as CopyLineIcon } from 'react-icons/ri'
 import { ExtendMembershipModal } from './Extend'
 import { Key as HookKey } from '~/hooks/useKeys'
-import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
+import {
+  TbReceipt as ReceiptIcon,
+  TbCertificate as CertificateIcon,
+} from 'react-icons/tb'
 import { receiptsUrl, useGetReceiptsForKey } from '~/hooks/useReceipts'
+import {
+  useGetAttestationsForKey,
+  downloadAttestationPdf,
+} from '~/hooks/useKeyAttestations'
+import { DownloadAttestationDrawer } from './DownloadAttestationDrawer'
 import { AddToPhoneWallet } from './AddToPhoneWallet'
 import { useRouter } from 'next/navigation'
 import { Platform } from '~/services/passService'
@@ -89,6 +97,7 @@ function Key({ ownedKey, owner, network }: Props) {
   const [expireAndRefunded, setExpireAndRefunded] = useState(false)
   const [showExtendMembershipModal, setShowExtendMembership] = useState(false)
   const [showTransferModal, setShowTransferModal] = useState(false)
+  const [showAttestationDrawer, setShowAttestationDrawer] = useState(false)
   const videoRef = useRef(null)
   const [canPlayImageAsVideo, setCanPlayImageAsVideo] = useState(false)
   const isKeyExpired = isExpired || expireAndRefunded
@@ -206,6 +215,36 @@ function Key({ ownedKey, owner, network }: Props) {
     tokenId,
   })
 
+  const { data: attestations } = useGetAttestationsForKey({
+    lockAddress: lock.address,
+    network,
+    owner,
+  })
+
+  const hasAttestations = attestations && attestations.length > 0
+
+  const handleDownloadAttestation = async () => {
+    if (!attestations || attestations.length === 0) return
+
+    if (attestations.length === 1) {
+      // Single attestation: direct download
+      try {
+        await downloadAttestationPdf({
+          lockAddress: lock.address,
+          network,
+          attestationId: attestations[0].attestationId,
+        })
+        ToastHelper.success('Certificate downloaded successfully!')
+      } catch (error) {
+        console.error('Failed to download attestation:', error)
+        ToastHelper.error('Failed to download certificate. Please try again.')
+      }
+    } else {
+      // Multiple attestations: open drawer
+      setShowAttestationDrawer(true)
+    }
+  }
+
   const onReceiptsPage = () => {
     router.push(receiptsUrl({ lockAddress: lock.address, network, receipts }))
   }
@@ -277,6 +316,15 @@ function Key({ ownedKey, owner, network }: Props) {
         tokenId={tokenId}
         expiration={expiration}
       />
+      {attestations && attestations.length > 1 && (
+        <DownloadAttestationDrawer
+          isOpen={showAttestationDrawer}
+          setIsOpen={setShowAttestationDrawer}
+          attestations={attestations}
+          lockAddress={lock.address}
+          network={network}
+        />
+      )}
       <div className="flex items-center justify-between">
         <div>
           {isKeyExpired ? (
@@ -392,6 +440,20 @@ function Key({ ownedKey, owner, network }: Props) {
                         >
                           <ReceiptIcon />
                           Show receipts
+                        </MenuButton>
+                      )}
+                    </Menu.Item>
+                  )}
+                  {owner == account && hasAttestations && (
+                    <Menu.Item>
+                      {({ active, disabled }) => (
+                        <MenuButton
+                          disabled={disabled}
+                          active={active}
+                          onClick={handleDownloadAttestation}
+                        >
+                          <CertificateIcon />
+                          Download attestation
                         </MenuButton>
                       )}
                     </Menu.Item>
