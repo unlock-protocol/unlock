@@ -1,5 +1,5 @@
 import winston from 'winston'
-import { Logtail } from '@logtail/winston/node_modules/@logtail/node'
+import { Logtail } from '@logtail/node'
 import { LogtailTransport } from '@logtail/winston'
 import config from '../config/config'
 
@@ -25,7 +25,7 @@ logger.add(
 if (process.env.NODE_ENV === 'production') {
   if (config.logtailSourceToken) {
     const logtail = new Logtail(config.logtailSourceToken)
-    logger.add(new LogtailTransport(logtail as any))
+    logger.add(new LogtailTransport(logtail))
   }
 }
 
