@@ -13,5 +13,5 @@
     "skipLibCheck": true
   },
   "exclude": ["dist", "node_modules"],
-  "include": ["hardhat.config.ts", "scripts", "utils", "lib"]
+  "include": ["scripts", "utils", "lib"]
 }
