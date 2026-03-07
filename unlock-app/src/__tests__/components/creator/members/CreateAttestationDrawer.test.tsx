@@ -111,6 +111,7 @@ describe('CreateAttestationDrawer', () => {
             setIsOpen={mockSetIsOpen}
             lockAddress="0x1234567890AbcdEF1234567890aBcdef12345678"
             network={84532}
+            owner="0xaAaAaAaaAaAaAaaAaAAAAAAAAaaaAaAaAaaAaaAa"
           />
         )
         // Fill in required fields (default "Basic" schema has only firstName and lastName)
