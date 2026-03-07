@@ -19798,16 +19798,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stripe/react-stripe-js@npm:3.0.0":
-  version: 3.0.0
-  resolution: "@stripe/react-stripe-js@npm:3.0.0"
+"@stripe/react-stripe-js@npm:5.2.0":
+  version: 5.2.0
+  resolution: "@stripe/react-stripe-js@npm:5.2.0"
   dependencies:
     prop-types: "npm:^15.7.2"
   peerDependencies:
-    "@stripe/stripe-js": ^1.44.1 || ^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 10/cd99976a6d67e3f3bb385f338038ec45db97773870cdc5a744ece3dcddd319bbb3284d13617134914712cf783bf24df8846657671302a951d23ef235becb4dcc
+    "@stripe/stripe-js": ">=8.0.0 <9.0.0"
+    react: ">=16.8.0 <20.0.0"
+    react-dom: ">=16.8.0 <20.0.0"
+  checksum: 10/2c945e9ef0b681023cdab1b6debd3592de12191010aa9e51d9bcdf27e82b7dd5f08aa8ca81f91ffda61d1fd641340b736d24376e7338cfba39c3b192c5b07ead
   languageName: node
   linkType: hard
 
@@ -23005,7 +23005,7 @@ __metadata:
     "@privy-io/react-auth": "npm:2.6.4"
     "@radix-ui/react-avatar": "npm:1.1.10"
     "@sentry/nextjs": "npm:9.3.0"
-    "@stripe/react-stripe-js": "npm:3.0.0"
+    "@stripe/react-stripe-js": "npm:5.2.0"
     "@stripe/stripe-js": "npm:7.0.0"
     "@tanstack/react-query": "npm:5.59.19"
     "@testing-library/dom": "npm:10.4.1"
