@@ -95,14 +95,14 @@ vi.mock('~/constants', () => ({
 describe('MemberCard', () => {
   const defaultProps: MemberCardProps = {
     token: '1',
-    owner: '0x1234567890abcdef1234567890abcdef12345678',
+    owner: '0x1234567890AbcdEF1234567890aBcdef12345678',
     expiration: '1735689600', // Future timestamp
     version: 12,
     metadata: {
       token: '1',
       lockName: 'Test Lock',
     },
-    lockAddress: '0xabcdef1234567890abcdef1234567890abcdef12',
+    lockAddress: '0xabCDEF1234567890ABcDEF1234567890aBCDeF12',
     network: 84532, // Base Sepolia - needed for isBaseNetwork check
     expirationDuration: '2592000',
     isManager: true,
@@ -137,7 +137,7 @@ describe('MemberCard', () => {
       fireEvent.click(screen.getByTestId('collapse-toggle'))
 
       expect(
-        screen.getByText('0x1234567890abcdef1234567890abcdef12345678')
+        screen.getByText('0x1234567890AbcdEF1234567890aBcdef12345678')
       ).not.toBe(null)
     })
   })
