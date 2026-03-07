@@ -43,14 +43,14 @@
     "@typechain/ethers-v6": "0.5.1",
     "@typechain/hardhat": "9.1.0",
     "@types/mocha": "10.0.10",
-    "@types/node": "22.19.1",
+    "@types/node": "22.18.12",
     "@unlock-protocol/contracts": "workspace:^",
     "@unlock-protocol/eslint-config": "workspace:^",
     "@unlock-protocol/networks": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:^",
-    "eslint": "9.39.1",
+    "eslint": "9.38.0",
     "ethers": "6.15.0",
-    "hardhat": "2.27.0",
+    "hardhat": "2.26.3",
     "mocha": "11.7.4",
     "prettier": "3.6.2",
     "ts-mocha": "11.1.0",
@@ -64,7 +64,7 @@
     "ethers": "6"
   },
   "dependencies": {
-    "@nomicfoundation/hardhat-ethers": "3.1.2",
+    "@nomicfoundation/hardhat-ethers": "3.1.0",
     "hardhat-gas-reporter": "2.3.0",
     "solidity-coverage": "0.8.16"
   }

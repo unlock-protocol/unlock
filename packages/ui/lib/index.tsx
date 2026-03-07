@@ -27,7 +27,11 @@ export { Footer } from '~/components/Footer/Footer'
 export { Placeholder } from '~/components/Placeholder'
 export { Toggle } from '~/components/Toggle/Toggle'
 export { Detail } from '~/components/Detail/Detail'
-export { Certificate } from '~/components/Certificate/Certificate'
+export {
+  Certificate,
+  type AttestationData,
+  type CertificateProps,
+} from '~/components/Certificate/Certificate'
 export { Card } from '~/components/Card/Card'
 export { Tabs } from '~/components/Tabs/Tabs'
 export * from './types'

@@ -69,11 +69,7 @@ export const LockList = () => {
 
   // Filter networks to only include valid networks
   const networkItems = Object.entries(networks || {})
-    .filter(
-      ([network]) =>
-        (network && !['31337'].includes(network)) ||
-        network === defaultNetwork.toString()
-    )
+    .filter(([network]) => network || network === defaultNetwork.toString())
     .sort(([a], [b]) =>
       a === defaultNetwork.toString()
         ? -1
