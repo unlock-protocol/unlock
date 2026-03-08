@@ -127,130 +127,130 @@ export const useCrossChainRoutes = ({
         tokenId,
       })
     },
+    enabled: !!prices && hasPrices,
   })
 
-  const routeResults = useQueries({
-    queries: balanceResults
-      .filter((result) => !!result?.data?.balance)
-      .filter((result) => Number(result!.data!.balance) > 0)
-      .reduce<{ network: number; balance: string; token: Token }[]>(
-        (
-          previous: { network: number; balance: string; token: Token }[],
-          result
-        ) => {
-          const network = result.data!.network
-          const { tokens, nativeCurrency } = networks[network]
-          if (!tokens || !result.data) {
-            return previous
-          }
-          return [
-            ...previous,
-            ...tokens.map((token) => {
-              return { ...result.data, token }
-            }),
-            {
-              ...result.data,
-              token: {
-                address: ZeroAddress,
-                decimals: nativeCurrency.decimals,
-                name: nativeCurrency.name,
-                symbol: nativeCurrency.symbol,
-              },
+  const tokensToCheck = balanceResults
+    .filter((result) => !!result?.data?.balance)
+    .filter((result) => Number(result!.data!.balance) > 0)
+    .reduce<{ network: number; balance: string; token: Token }[]>(
+      (
+        previous: { network: number; balance: string; token: Token }[],
+        result
+      ) => {
+        const network = result.data!.network
+        const { tokens, nativeCurrency } = networks[network]
+        if (!tokens || !result.data) {
+          return previous
+        }
+        return [
+          ...previous,
+          ...tokens.map((token) => {
+            return { ...result.data, token }
+          }),
+          {
+            ...result.data,
+            token: {
+              address: ZeroAddress,
+              decimals: nativeCurrency.decimals,
+              name: nativeCurrency.name,
+              symbol: nativeCurrency.symbol,
             },
-          ]
-        },
-        []
-      )
-      .map(
-        ({
+          },
+        ]
+      },
+      []
+    )
+
+  const routeResults = useQueries({
+    queries: tokensToCheck.map(
+      ({
+        token,
+        network,
+        balance: nativeBalance,
+      }: {
+        token: Token
+        network: number
+        balance: string
+      }) => ({
+        queryKey: [
+          'getCrossChainRoute',
+          account,
+          lock,
+          prices,
+          recipients,
           token,
           network,
-          balance: nativeBalance,
-        }: {
-          token: Token
-          network: number
-          balance: string
-        }) => ({
-          queryKey: [
-            'getCrossChainRoute',
-            account,
-            lock,
-            prices,
-            recipients,
-            token,
-            network,
-            nativeBalance,
-            sharedParams,
-          ],
-          queryFn: async () => {
-            try {
-              if (!prices) {
-                return null
-              }
-              // Skip any identical route
-              if (
-                network === lock.network &&
-                (token.address === lock.currencyContractAddress ||
-                  (!lock.currencyContractAddress &&
-                    token.address === ZeroAddress))
-              ) {
-                return null
-              }
-              const route = await getCrossChainRoute({
-                sender: account!,
-                lock,
-                prices,
-                recipients,
-                keyManagers: keyManagers || recipients,
-                referrers: recipients.map(() =>
-                  getReferrer(account!, paywallConfig, lock.address)
-                ),
-                purchaseData: purchaseData || recipients.map(() => '0x'),
-                srcToken: token.address,
-                srcChainId: network,
-                sharedParams,
-              })
-              if (!route) {
-                console.info(
-                  `No route found from ${networks[network].name} and ${token.symbol} to ${networks[lock.network].name} and ${lock.currencySymbol}`
-                )
-                return null
-              }
-
-              let userTokenBalance
-              if (route.tokenPayment.tokenAddress === ZeroAddress) {
-                userTokenBalance = nativeBalance
-              } else {
-                userTokenBalance = await web3Service.getAddressBalance(
-                  account!,
-                  network,
-                  route.tokenPayment.tokenAddress
-                )
-              }
-
-              const amount = BigInt(route.tokenPayment.amount)
-              const cost = ethers.formatUnits(
-                amount,
-                route.tokenPayment.decimals
-              )
-              if (Number(cost) > Number(userTokenBalance)) {
-                // Skip any route for which the user does not have enough tokens
-                return null
-              }
-              return {
-                resolvedAt: new Date().getTime(), // maintaining order
-                userTokenBalance,
-                ...route,
-              } as CrossChainRouteWithBalance
-            } catch (error) {
-              console.error(error)
+          nativeBalance,
+          sharedParams,
+        ],
+        queryFn: async () => {
+          try {
+            if (!prices) {
               return null
             }
-          },
-          enabled: enabled && hasPrices && !!sharedParams,
-          staleTime: 1000 * 60 * 5, // 5 minutes
-        })
-      ),
+            // Skip any identical route
+            if (
+              network === lock.network &&
+              (token.address === lock.currencyContractAddress ||
+                (!lock.currencyContractAddress &&
+                  token.address === ZeroAddress))
+            ) {
+              return null
+            }
+            const route = await getCrossChainRoute({
+              sender: account!,
+              lock,
+              prices,
+              recipients,
+              keyManagers: keyManagers || recipients,
+              referrers: recipients.map(() =>
+                getReferrer(account!, paywallConfig, lock.address)
+              ),
+              purchaseData: purchaseData || recipients.map(() => '0x'),
+              srcToken: token.address,
+              srcChainId: network,
+              sharedParams,
+            })
+            console.log('have a route?', route)
+            if (!route) {
+              console.info(
+                `No route found from ${networks[network].name} and ${token.symbol} to ${networks[lock.network].name} and ${lock.currencySymbol}`
+              )
+              return null
+            }
+
+            let userTokenBalance
+            if (route.tokenPayment.tokenAddress === ZeroAddress) {
+              userTokenBalance = nativeBalance
+            } else {
+              userTokenBalance = await web3Service.getAddressBalance(
+                account!,
+                network,
+                route.tokenPayment.tokenAddress
+              )
+            }
+
+            const amount = BigInt(route.tokenPayment.amount)
+            const cost = ethers.formatUnits(amount, route.tokenPayment.decimals)
+            if (Number(cost) > Number(userTokenBalance)) {
+              // Skip any route for which the user does not have enough tokens
+              return null
+            }
+            return {
+              resolvedAt: new Date().getTime(), // maintaining order
+              userTokenBalance,
+              ...route,
+            } as CrossChainRouteWithBalance
+          } catch (error) {
+            console.error(error)
+            return null
+          }
+        },
+        enabled: enabled && hasPrices && !!sharedParams,
+        staleTime: 1000 * 60 * 5, // 5 minutes
+      })
+    ),
   })
 
   const routes = routeResults

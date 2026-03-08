@@ -15,9 +15,9 @@ jobs:
       BUILDKIT_PROGRESS: plain
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 22.21.0
       - run: yarn
       - run: yarn build
       - name: Prepare the network files

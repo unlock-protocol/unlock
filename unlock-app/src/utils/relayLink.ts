@@ -65,6 +65,14 @@ export const prepareSharedParams = async ({
     return { callData }
   }
 
+  const keyPrices = prices.map((price) => {
+    const priceParsed = ethers.parseUnits(
+      price.amount.toString(),
+      price.decimals
+    )
+    return priceParsed.toString()
+  })
+
   // This is a purchase
   const transactions = await web3Service.purchaseKeys({
     lockAddress: lock.address,
@@ -72,13 +80,7 @@ export const prepareSharedParams = async ({
     params: {
       lockAddress: lock.address,
       owners: recipients,
-      keyPrices: prices.map((price) => {
-        const priceParsed = ethers.parseUnits(
-          price.amount.toString(),
-          price.decimals
-        )
-        return priceParsed.toString()
-      }),
+      keyPrices,
       data: purchaseData,
       referrers,
       keyManagers,
@@ -183,4 +185,5 @@ export const getCrossChainRoute = async ({
       },
     } as CrossChainRoute
   }
+  return undefined
 }

@@ -30,11 +30,11 @@ const MENU = {
             },
             {
               title: 'Libraries and Tools',
-              url: 'https://docs.unlock-protocol.com/libraries-and-sdks/',
+              url: 'https://docs.unlock-protocol.com/tools/',
             },
             {
               title: 'Code Examples',
-              url: 'https://docs.unlock-protocol.com/examples/',
+              url: 'https://docs.unlock-protocol.com/tutorials/',
             },
             {
               title: 'Video Tutorials',
@@ -217,10 +217,6 @@ export function Layout({ children }: Props) {
           {
             label: 'Roadmap',
             url: 'https://docs.unlock-protocol.com/governance/roadmap/',
-          },
-          {
-            label: 'Careers',
-            url: 'https://www.notion.so/unlockprotocol/Unlock-Jobs-907811d15c4d490091eb298f71b0954c',
           },
           {
             label: 'Media Kit',
