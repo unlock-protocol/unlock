@@ -1,7 +1,6 @@
 const { expect } = require('chai')
 const { ethers } = require('hardhat')
 const { upgrades } = require('hardhat')
-const { reverts } = require('../helpers')
 
 describe('Delegator Contract', function () {
   let token, delegator
@@ -40,8 +39,8 @@ describe('Delegator Contract', function () {
     await tx.wait()
 
     const delegationContractAddress = await delegator.delegations(
-      delegateAddress,
-      ownerAddress
+      ownerAddress,
+      delegateAddress
     )
 
     // Now check the balances
@@ -53,7 +52,7 @@ describe('Delegator Contract', function () {
     // And check delegations!
     expect(await token.delegates(delegateAddress)).to.equal(ethers.ZeroAddress)
     expect(await token.delegates(delegatorAddress)).to.equal(ethers.ZeroAddress)
-    expect(await token.delegates(ownerAddress)).to.equal(ownerAddress) // Onwer still delegates to themselves
+    expect(await token.delegates(ownerAddress)).to.equal(ownerAddress) // Owner still delegates to themselves
     expect(await token.delegates(delegationContractAddress)).to.equal(
       delegateAddress
     )
@@ -61,7 +60,7 @@ describe('Delegator Contract', function () {
     // And check the votes!
     expect(await token.getVotes(delegateAddress)).to.equal(amount)
     expect(await token.getVotes(delegatorAddress)).to.equal(0n)
-    expect(await token.getVotes(ownerAddress)).to.equal(balanceBefore - amount) // Onwer still getVotes to themselves
+    expect(await token.getVotes(ownerAddress)).to.equal(balanceBefore - amount) // Owner still votes for themselves
     expect(await token.getVotes(delegationContractAddress)).to.equal(0n)
 
     // Delegate more!
@@ -81,7 +80,7 @@ describe('Delegator Contract', function () {
     // And check delegations!
     expect(await token.delegates(delegateAddress)).to.equal(ethers.ZeroAddress)
     expect(await token.delegates(delegatorAddress)).to.equal(ethers.ZeroAddress)
-    expect(await token.delegates(ownerAddress)).to.equal(ownerAddress) // Onwer still delegates to themselves
+    expect(await token.delegates(ownerAddress)).to.equal(ownerAddress) // Owner still delegates to themselves
     expect(await token.delegates(delegationContractAddress)).to.equal(
       delegateAddress
     )
@@ -91,11 +90,44 @@ describe('Delegator Contract', function () {
     expect(await token.getVotes(delegatorAddress)).to.equal(0n)
     expect(await token.getVotes(ownerAddress)).to.equal(
       balanceBefore - amount * 2n
-    ) // Onwer still getVotes to themselves
+    ) // Owner still votes for themselves
     expect(await token.getVotes(delegationContractAddress)).to.equal(0n)
   })
 
-  it('can delegate to multiple addresses')
+  it('can delegate to multiple addresses', async () => {
+    const [owner, delegateA, delegateB] = await ethers.getSigners()
+    const ownerAddress = await owner.getAddress()
+    const delegatorAddress = await delegator.getAddress()
+
+    const amountA = ethers.parseUnits('100', 18)
+    const amountB = ethers.parseUnits('200', 18)
+    const balanceBefore = await token.balanceOf(ownerAddress)
+
+    // Delegate to two different addresses
+    await token.approve(delegatorAddress, amountA + amountB)
+    await (await delegator.delegate(delegateA.address, amountA)).wait()
+    await (await delegator.delegate(delegateB.address, amountB)).wait()
+
+    const delegationA = await delegator.delegations(
+      ownerAddress,
+      delegateA.address
+    )
+    const delegationB = await delegator.delegations(
+      ownerAddress,
+      delegateB.address
+    )
+
+    // Balances should be split across both delegation contracts
+    expect(await token.balanceOf(ownerAddress)).to.equal(
+      balanceBefore - amountA - amountB
+    )
+    expect(await token.balanceOf(delegationA)).to.equal(amountA)
+    expect(await token.balanceOf(delegationB)).to.equal(amountB)
+
+    // Votes should be correctly attributed
+    expect(await token.getVotes(delegateA.address)).to.equal(amountA)
+    expect(await token.getVotes(delegateB.address)).to.equal(amountB)
+  })
 
   it('should let an owner get their tokens back after they delegated', async () => {
     const [owner, delegate] = await ethers.getSigners()
@@ -104,7 +136,6 @@ describe('Delegator Contract', function () {
     const delegatorAddress = await delegator.getAddress()
 
     const amount = ethers.parseUnits('1337', 18)
-    await token.approve(delegatorAddress, amount)
 
     const balanceBefore = await token.balanceOf(ownerAddress)
 

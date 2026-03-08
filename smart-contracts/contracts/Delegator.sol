@@ -1,17 +1,9 @@
-/* solhint-disable no-inline-assembly */
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+// ABOUTME: Allows a token holder to delegate voting power to multiple addresses simultaneously.
+pragma solidity ^0.8.21;
 
-import "@openzeppelin/contracts-upgradeable5/token/ERC20/extensions/ERC20VotesUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable5/token/ERC20/ERC20Upgradeable.sol";
-import "hardhat/console.sol";
-
-contract Delegate {
-  constructor(address token, address to) {
-    ERC20VotesUpgradeable(token).delegate(to); // Delegates to the specified address
-    IERC20(token).approve(msg.sender, type(uint).max); // Approve the caller to get all the tokens
-  }
-}
+import {IERC20} from "@openzeppelin/contracts-upgradeable5/token/ERC20/ERC20Upgradeable.sol";
+import {Delegate} from "./Delegate.sol";
 
 contract Delegator {
   address public immutable TOKEN;
@@ -21,9 +13,9 @@ contract Delegator {
     TOKEN = token;
   }
 
-  function delegate(address to, uint amount) external {
+  function delegate(address to, uint256 amount) external {
     if (address(delegations[msg.sender][to]) == address(0)) {
-      // Deploy a new contract
+      // Deploy a new contract to hold tokens and delegate votes
       Delegate d = new Delegate(TOKEN, to);
       delegations[msg.sender][to] = d;
     }
