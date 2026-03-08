@@ -1,13 +1,5 @@
-import templates, {
-  PrecompiledTemplates,
-} from '@unlock-protocol/email-templates'
-import Handlebars from 'handlebars/runtime'
 import { templateRenderer } from './templateRenderer'
 import emailService from './emailService'
-import { processParams } from './paramsProcessor'
-
-// Set a default inlineImage helper
-Handlebars.registerHelper('inlineImage', (filename) => `cid:${filename}`)
 
 /**
  * Loads a template and sends an email using the provided parameters
@@ -15,93 +7,58 @@ Handlebars.registerHelper('inlineImage', (filename) => `cid:${filename}`)
  * @param {string} args.template - Name of the template to use
  * @param {string} [args.failoverTemplate] - Fallback template name if main template fails
  * @param {string} args.recipient - Email address of the recipient
- * @param {Object} args.params - Template parameters as key-value pairs. Values can be strings or {encrypt: boolean, value: string}
+ * @param {Object} args.params - Template parameters as key-value pairs
  * @param {Array} [args.attachments] - Array of attachments as data-uri strings
  * @param {string} [args.emailSender] - Custom sender name, defaults to "Unlock Labs"
  * @param {string} [args.replyTo] - Reply-to email address
+ * @param {Object} smtpConfig - SMTP configuration for worker-mailer
  * @returns {Promise} Result of sending the email
  */
-const getTemplateAndParams = async (args, opts) => {
-  let template = templates[args.template.toLowerCase()]
-
-  if (!template && args.failoverTemplate) {
-    template = templates[args.failoverTemplate.toLowerCase()]
-  }
-
-  if (!template) {
-    throw new Error('Missing template')
-  }
-
-  const templateParams = {}
-  Object.keys(args.params).forEach((key) => {
-    const param = args.params[key]
-    templateParams[key] = param
-  })
-
-  if (template.nowrap) {
-    return [template, templateParams]
-  }
-
-  // Wrap the template
-  return [await wrap(template, opts), templateParams]
-}
-
-const buildEmail = async (template, templateParams, args) => {
-  return {
-    from: {
-      name: args?.emailSender || 'Unlock Labs',
-      address: 'hello@unlock-protocol.com',
-    },
-    to: args.recipient,
-    replyTo: args?.replyTo || undefined,
-    subject: await template.subject(templateParams),
-    text: template.text ? await template.text(templateParams) : undefined,
-    html: template.html ? await template.html(templateParams) : undefined,
-    attachments: []
-      .concat(args.attachments, template.attachments)
-      .filter((x) => !!x),
-  }
-}
-
-// This function loads the template and performs the actual email sending
-// args: {
-//  template: templateName string
-//  failoverTemplate: failoverTemplate string
-//  recipient: email address string
-//  params: params for the template (as a hash). Each param is key: value where value can be either a string, or an object with {sign: <boolean></boolean>, value: <string>}
-//  attachments: array of attachments as data-uri strings (nodemailer will handle them)
-// }
-export const route = async (args, config) => {
+export const route = async (args, smtpConfig) => {
   const {
     template: templateName,
-    params,
+    failoverTemplate,
+    params = {},
     emailSender,
     recipient,
     replyTo,
     attachments,
   } = args
-  // process parameters
-  const [template, templateParams] = await getTemplateAndParams(args)
 
-  const email = await buildEmail(template, templateParams, args)
-  // // Prepare email data
-  // const email = {
-  //   from: {
-  //     name: emailSender || 'Unlock Labs',
-  //     email: 'hello@unlock-protocol.com',
-  //   },
-  //   to: { email: recipient },
-  //   replyTo: replyTo ? { email: replyTo } : undefined,
-  //   subject,
-  //   html,
-  //   text,
-  //   attachments: []
-  //     .concat(attachments || [], templates[templateName]?.attachments || [])
-  //     .filter(Boolean),
-  // }
+  // Validate template exists (throws if missing)
+  try {
+    templateRenderer.validateTemplateExists(templateName)
+  } catch {
+    if (failoverTemplate) {
+      templateRenderer.validateTemplateExists(failoverTemplate)
+    } else {
+      throw new Error('Missing template')
+    }
+  }
 
-  // Send email
-  return emailService.send(config, email)
+  const resolvedTemplate =
+    templateRenderer.validateTemplateExists(templateName) !== undefined
+      ? templateName
+      : failoverTemplate
+
+  const subject = templateRenderer.renderSubject(templateName, params)
+  const text = templateRenderer.renderText(templateName, params)
+  const html = templateRenderer.renderHtml(templateName, params)
+
+  const email = {
+    from: {
+      name: emailSender || 'Unlock Labs',
+      email: 'hello@unlock-protocol.com',
+    },
+    to: { email: recipient },
+    replyTo: replyTo ? { email: replyTo } : undefined,
+    subject,
+    html,
+    text,
+    attachments: [].concat(attachments || []).filter(Boolean),
+  }
+
+  return emailService.send(email, smtpConfig)
 }
 
 /**
@@ -127,13 +84,6 @@ export const preview = async (args) => {
     attachments,
   } = args
   try {
-    const precompiledTemplate = PrecompiledTemplates[templateName]
-    if (!precompiledTemplate) {
-      return `<html><body>
-        <h1>Template Not Found: ${templateName}</h1>
-        <p>Available templates: ${Object.keys(templates).join(', ')}</p>
-        </body></html>`
-    }
     const renderedHtml = templateRenderer.renderHtml(templateName, params || {})
     const subject = templateRenderer.renderSubject(templateName, params || {})
     const text = templateRenderer.renderText(templateName, params || {})
@@ -141,7 +91,7 @@ export const preview = async (args) => {
     return JSON.stringify({
       from: {
         name: emailSender || 'Unlock Labs',
-        address: 'hello@unlock-protocol.com',
+        email: 'hello@unlock-protocol.com',
       },
       to: recipient || 'recipient@example.com',
       replyTo: replyTo || undefined,
@@ -160,4 +110,7 @@ export const preview = async (args) => {
  * Returns a list of all available email templates
  * @returns {Promise<string>} JSON string of template names
  */
-export const list = async () => JSON.stringify(Object.keys(templates))
+export const list = async () => {
+  const templates = await import('@unlock-protocol/email-templates')
+  return JSON.stringify(Object.keys(templates.default))
+}

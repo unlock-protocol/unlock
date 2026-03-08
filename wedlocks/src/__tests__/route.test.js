@@ -1,7 +1,6 @@
 import { it, beforeEach, describe, expect, vi } from 'vitest'
 
 import { route } from '../route'
-import config from '../../config'
 import emailService from '../emailService'
 import templates from '@unlock-protocol/email-templates'
 
@@ -27,8 +26,7 @@ describe('route', () => {
     })
 
     it('should use the template with all the params', async () => {
-      expect.assertions(2)
-      expect.assertions(2)
+      expect.assertions(1)
       templates.template = {
         subject: async () => 'subject',
         text: async () => 'text',
@@ -48,7 +46,8 @@ describe('route', () => {
         expect.objectContaining({
           subject: 'subject',
           text: 'text',
-        })
+        }),
+        undefined // smtpConfig passed from handler; undefined in tests
       )
     })
 
