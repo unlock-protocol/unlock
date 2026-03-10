@@ -9,4 +9,4 @@ read -r -d '' FILE << EOM
 } 
 EOM
 
-echo $FILE | yarn wrangler secret:bulk
+echo $FILE | yarn wrangler secret bulk
