@@ -4,7 +4,7 @@ import { fetchSafeOutbound } from './safeOutboundUrl'
 
 export const imageUrlToBase64 = async (url: string, lockAddress: string) => {
   // Fallback to the lock icon if the image is not available
-  const icon = lockIcon.lockIcon(lockAddress)
+  const icon = lockIcon.lockIcon(lockAddress, { grayscale: 0 })
   const dataURI = `data:image/svg+xml; charset=utf-8;base64,${Buffer.from(
     icon
   ).toString('base64')}`
