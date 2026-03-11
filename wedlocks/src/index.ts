@@ -1,6 +1,11 @@
 import { handler } from './functions/handler/handler'
 
-export type Env = Record<string, never>
+export interface Env {
+  SMTP_HOST: string
+  SMTP_PORT: string
+  SMTP_USERNAME: string
+  SMTP_PASSWORD: string
+}
 
 interface HandlerResponse {
   statusCode: number
