@@ -96,7 +96,7 @@ export const handler = async (event, env, responseCallback) => {
     const response = await route(body, {
       host: env.SMTP_HOST,
       authType: 'plain',
-      port: env.SMTP_PORT,
+      port: Number(env.SMTP_PORT),
       secure: false,
       credentials: {
         username: env.SMTP_USERNAME,

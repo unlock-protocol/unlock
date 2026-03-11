@@ -34,6 +34,33 @@ export const templateRenderer = {
   },
 
   renderHtml: (templateSpec, data) => {
+    const precompiledTemplate = PrecompiledTemplates[templateSpec]
+    if (!precompiledTemplate) {
+      throw new Error(`Template not found: ${templateSpec}`)
+    }
+    const originalInlineImage = Handlebars.helpers.inlineImage
+    let renderedContent, renderedHtml
+    try {
+      // Use CID references for email delivery (not embedded base64)
+      Handlebars.registerHelper('inlineImage', (filename) => `cid:${filename}`)
+      const templateFn = Handlebars.template(precompiledTemplate.html)
+      renderedContent = templateFn(data || {})
+      const originalTemplate = templates[templateSpec]
+      const baseTemplateName = originalTemplate?.base || 'defaultBase'
+      const baseTemplateSpec = PrecompiledTemplates.bases[baseTemplateName]
+      if (baseTemplateSpec) {
+        const baseTemplateFn = Handlebars.template(baseTemplateSpec)
+        renderedHtml = baseTemplateFn({ content: renderedContent })
+      } else {
+        renderedHtml = renderedContent
+      }
+    } finally {
+      Handlebars.registerHelper('inlineImage', originalInlineImage)
+    }
+    return renderedHtml
+  },
+
+  renderHtmlPreview: (templateSpec, data) => {
     try {
       const precompiledTemplate = PrecompiledTemplates[templateSpec]
       if (!precompiledTemplate) {
@@ -69,8 +96,7 @@ export const templateRenderer = {
       return renderedHtml
     } catch (error) {
       return `<p>Error rendering template: ${error.message}</p>
-              <p>Debug info: Template spec: ${templateSpec}, 
-              Found in PrecompiledTemplates: ${!!PrecompiledTemplates[templateSpec]}</p>`
+              <pre>${error.stack}</pre>`
     }
   },
 

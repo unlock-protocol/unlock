@@ -25,25 +25,23 @@ export const route = async (args, smtpConfig) => {
     attachments,
   } = args
 
-  // Validate template exists (throws if missing)
+  // Resolve which template to use, falling back to failoverTemplate if needed
+  let resolvedTemplate
   try {
     templateRenderer.validateTemplateExists(templateName)
+    resolvedTemplate = templateName
   } catch {
     if (failoverTemplate) {
       templateRenderer.validateTemplateExists(failoverTemplate)
+      resolvedTemplate = failoverTemplate
     } else {
       throw new Error('Missing template')
     }
   }
 
-  const resolvedTemplate =
-    templateRenderer.validateTemplateExists(templateName) !== undefined
-      ? templateName
-      : failoverTemplate
-
-  const subject = templateRenderer.renderSubject(templateName, params)
-  const text = templateRenderer.renderText(templateName, params)
-  const html = templateRenderer.renderHtml(templateName, params)
+  const subject = templateRenderer.renderSubject(resolvedTemplate, params)
+  const text = templateRenderer.renderText(resolvedTemplate, params)
+  const html = templateRenderer.renderHtml(resolvedTemplate, params)
 
   const email = {
     from: {
@@ -84,7 +82,10 @@ export const preview = async (args) => {
     attachments,
   } = args
   try {
-    const renderedHtml = templateRenderer.renderHtml(templateName, params || {})
+    const renderedHtml = templateRenderer.renderHtmlPreview(
+      templateName,
+      params || {}
+    )
     const subject = templateRenderer.renderSubject(templateName, params || {})
     const text = templateRenderer.renderText(templateName, params || {})
     if (!json) return renderedHtml

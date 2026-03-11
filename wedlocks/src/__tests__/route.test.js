@@ -5,7 +5,6 @@ import emailService from '../emailService'
 import templates from '@unlock-protocol/email-templates'
 
 vi.mock('../emailService')
-vi.mock('../encrypter')
 
 describe('route', () => {
   describe('when there is no matching template', () => {
