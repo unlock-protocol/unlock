@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { config } from '~/config/app'
 import { useAuthenticate } from './useAuthenticate'
-import { ethers } from 'ethers'
+import { Contract, ContractRunner } from 'ethers'
 import { useProvider } from './useProvider'
 import { ToastHelper } from '@unlock-protocol/ui'
 import { useWeb3Service } from '~/utils/withWeb3Service'
@@ -44,10 +44,13 @@ export const usePrimeRefund = () => {
         lockAddress: config.prime.contract,
         network: config.prime.network,
       })
-      const hook = new ethers.Contract(
+      const provider = await web3Service.providerForNetwork(
+        config.prime.network
+      )
+      const hook = new Contract(
         hookAddress,
         HOOK_ABI,
-        await web3Service.providerForNetwork(config.prime.network)
+        provider as unknown as ContractRunner
       )
       const amount = await hook.refunds(account, 0)
       const timestamp = await hook.refunds(account, 1)
@@ -66,11 +69,7 @@ export const usePrimeRefund = () => {
         lockAddress: config.prime.contract,
         network: config.prime.network,
       })
-      const hook = new ethers.Contract(
-        hookAddress,
-        HOOK_ABI,
-        walletService.signer
-      )
+      const hook = new Contract(hookAddress, HOOK_ABI, walletService.signer)
 
       return ToastHelper.promise(
         hook
