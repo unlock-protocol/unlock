@@ -17,7 +17,7 @@ A standalone Next.js governance app deployed at `vote.unlock-protocol.com` that 
 ### New Monorepo App
 
 - **Location:** `governance-app/` at monorepo root
-- **Framework:** Next.js 14 (App Router, edge runtime)
+- **Framework:** Next.js 14 (App Router, `nodejs` runtime — NOT edge; Privy SDK requires Node.js APIs incompatible with Cloudflare's edge runtime)
 - **Deployment:** Cloudflare Pages via `@cloudflare/next-on-pages` (free tier)
 - **Domain:** `vote.unlock-protocol.com`
 
@@ -55,15 +55,18 @@ Extend `subgraph/config/base.json` and `subgraph/schema.graphql` to index govern
 **Proposal**
 
 ```
-id: ID!
+id: ID!                    # on-chain proposalId as decimal string (uint256)
 proposer: String!
 description: String!
-state: String!           # Pending | Active | Canceled | Defeated | Succeeded | Queued | Executed
+state: String!             # Pending | Active | Canceled | Defeated | Succeeded | Queued | Executed
 forVotes: BigInt!
 againstVotes: BigInt!
 abstainVotes: BigInt!
-startTimestamp: BigInt!
-endTimestamp: BigInt!
+snapshotTimestamp: BigInt! # timestamp at which voting power is snapshotted (from ProposalCreated event)
+startTimestamp: BigInt!    # voting opens
+endTimestamp: BigInt!      # voting closes
+quorum: BigInt!            # quorum required at snapshot, fetched via Governor.quorum(snapshotTimestamp)
+proposalThreshold: BigInt! # minimum voting power to propose, fetched via Governor.proposalThreshold()
 targets: [String!]!
 values: [BigInt!]!
 calldatas: [Bytes!]!
@@ -72,12 +75,13 @@ queuedAt: BigInt
 executedAt: BigInt
 canceledAt: BigInt
 transactionHash: String!
+votes: [Vote!]! @derivedFrom(field: "proposal")
 ```
 
 **Vote**
 
 ```
-id: ID!                  # proposalId-voterAddress
+id: ID!                  # "<proposalId (decimal string)>-<voterAddress (lowercase)>"
 proposal: Proposal!
 voter: String!
 support: Int!            # 0=against, 1=for, 2=abstain
@@ -90,12 +94,23 @@ transactionHash: String!
 **Delegate**
 
 ```
-id: ID!                  # delegator address
-delegatedTo: String!
-votingPower: BigInt!
-tokenBalance: BigInt!
+id: ID!                       # delegator address (lowercase)
+delegatedTo: String!          # address this delegator has delegated to (address(0) = self-delegated)
+votingPower: BigInt!          # current voting power (from DelegateVotesChanged)
+tokenBalance: BigInt!         # current UP token balance (from Transfer events)
 updatedAt: BigInt!
 ```
+
+**DelegateSummary** (derived, for leaderboard)
+
+```
+id: ID!                       # delegate address (lowercase)
+totalDelegatedPower: BigInt!  # sum of voting power delegated to this address
+delegatorCount: Int!          # number of addresses delegating to this address
+updatedAt: BigInt!
+```
+
+The `DelegateSummary` entity is updated on every `DelegateChanged` and `DelegateVotesChanged` event to maintain an up-to-date leaderboard without requiring reverse traversal of `Delegate` records.
 
 ### New Event Handlers
 
@@ -120,19 +135,21 @@ updatedAt: BigInt!
 ### `/` — Proposal List
 
 - Tabbed filter: All | Active | Pending | Succeeded | Defeated | Executed
-- Each proposal card shows: title (first line of description), state badge, vote counts, time remaining or end date
+- Each proposal card shows: title (first line of description), state badge, vote counts, quorum indicator (votes cast vs. quorum threshold), time remaining or end date
 - Sorted by creation date descending
 - Public (no wallet required)
 
 ### `/proposals/[id]` — Proposal Detail
 
 - Full proposal description (markdown rendered)
-- Vote breakdown: for / against / abstain bars with percentages and raw counts
-- Timeline: created → voting opens → voting closes → queued → executed
-- Decoded calldata: show target contract, function name, and arguments in human-readable form
+- Vote breakdown: for / against / abstain bars with percentages and raw counts, quorum threshold line shown on bar
+- Voting period info: voting delay and voting period duration displayed (sourced from `Governor.votingDelay()` and `Governor.votingPeriod()` via RPC on page load)
+- Timeline: created → voting opens → voting closes → queued → executed; timestamps shown as absolute dates + relative ("2 days ago")
+- Decoded calldata: show target contract, function name, and arguments in human-readable form (ABI sourced from `@unlock-protocol/contracts` package; unknown contracts shown as raw hex)
+- Proposal threshold displayed: minimum voting power required to have submitted this proposal
 - Cast vote UI: For / Against / Abstain buttons + optional reason field
   - Requires connected wallet
-  - Shows user's voting power at proposal snapshot
+  - Shows user's voting power at the proposal's `snapshotTimestamp` (via `Governor.getVotes(address, snapshotTimestamp)`)
   - Disabled if already voted, voting not active, or no voting power
 - Public browsing, wallet required to vote
 
@@ -144,13 +161,13 @@ updatedAt: BigInt!
   - Add target calls: contract address, function signature, arguments, ETH value
   - Multiple calls supported (add/remove)
 - **Advanced mode (second tab):**
-  - JSON editor accepting the same format as `governance/proposals/up/` CLI proposals:
+  - JSON editor accepting a browser-safe subset of the CLI proposal format:
     ```json
     {
       "proposalName": "...",
       "calls": [
         {
-          "contractNameOrAbi": "...",
+          "contractAbi": [...],
           "contractAddress": "0x...",
           "functionName": "...",
           "functionArgs": []
@@ -158,17 +175,18 @@ updatedAt: BigInt!
       ]
     }
     ```
-  - Validated on parse before submission
+  - `contractAbi` must be an inline ABI array (JSON). The CLI's `contractNameOrAbi` string form (package import) is not supported in the browser. The UI shows a clear error if a string is provided instead of an array.
+  - Validated on parse (ABI validity, address checksum, function existence in ABI) before submission
 - Proposal threshold check on submit: show user's current voting power vs. required threshold; block submission if insufficient
 - Wallet required to submit; browsing and drafting are open to all
 
 ### `/delegate` — Delegation
 
-- Shows user's UP token balance
-- Shows current delegate (self or another address)
-- Change delegate: address input + confirm transaction
-- Leaderboard section: top delegates by voting power
-- Wallet required to change delegation; top delegates list is public
+- Shows user's UP token balance and current voting power
+- Shows current delegate address; if `address(0)` is returned from the contract, display as "Self" (OpenZeppelin ERC20Votes returns `address(0)` for undelegated accounts — these have no voting power; users must explicitly delegate to themselves or another address to activate voting power)
+- Change delegate: ENS/address input + confirm transaction. Entering own address = self-delegate.
+- Leaderboard section: top delegates by total delegated voting power (sourced from `DelegateSummary` entities)
+- Wallet required to change delegation; leaderboard and delegate profiles are public
 
 ---
 
@@ -190,10 +208,18 @@ updatedAt: BigInt!
 
 ### Unit Tests (Vitest)
 
-- Subgraph AssemblyScript mapping handlers
-- Proposal state derivation logic
+- Proposal state derivation logic (client-side RPC fallback path)
 - Calldata decoding utilities
 - Vote weight calculation
+- JSON proposal format validation
+
+### Subgraph Tests (matchstick-as)
+
+AssemblyScript mapping handlers are tested with `matchstick-as` (The Graph's native testing framework), not Vitest. Tests cover:
+
+- `ProposalCreated` → correct Proposal entity creation
+- `VoteCast` → correct Vote entity and Proposal vote count update
+- `DelegateChanged` / `DelegateVotesChanged` → correct Delegate and DelegateSummary updates
 
 ### Integration Tests
 
@@ -209,19 +235,41 @@ updatedAt: BigInt!
 
 ---
 
-## Key Contracts (Base)
+## Key Contracts (Base Mainnet, Chain ID 8453)
 
-| Contract     | Role                                        |
-| ------------ | ------------------------------------------- |
-| `UPGovernor` | Governance: propose, vote, queue, execute   |
-| `UPToken`    | ERC20Votes: voting power, delegation        |
-| `UPTimelock` | Timelock controller: 7-day delay on mainnet |
+| Contract     | Address                                      | Role                                      |
+| ------------ | -------------------------------------------- | ----------------------------------------- |
+| `UPGovernor` | TBD — confirm from deployment logs           | Governance: propose, vote, queue, execute |
+| `UPToken`    | `0xaC27fa800955849d6D17cC8952Ba9dD6EAA66187` | ERC20Votes: voting power, delegation      |
+| `UPTimelock` | `0xB34567C4cA697b39F72e1a8478f285329A98ed1b` | Timelock controller: 7-day delay          |
+
+ABIs are available in `@unlock-protocol/contracts` (exported as `UPGovernor`, `UPToken`, `UPTimelock`).
+
+> **Note:** UPGovernor Base mainnet address is not hardcoded in the governance scripts (it is passed as a CLI param). Confirm the canonical address from the team or the Base block explorer before deploying.
+
+**Base Sepolia (testnet, Chain ID 84532):**
+
+- UPGovernor: `0xfdbe81e89fcaa4e7b47d62a25636cc158f07aa0d`
+
+---
+
+## RPC Fallback: Live Proposal State
+
+When The Graph is unavailable, the app falls back to reading proposal state directly from the Governor contract via viem. The fallback path:
+
+1. Call `Governor.state(proposalId)` — returns a `uint8` enum (0=Pending, 1=Active, 2=Canceled, 3=Defeated, 4=Succeeded, 5=Queued, 7=Executed)
+2. Call `Governor.proposalVotes(proposalId)` — returns `(againstVotes, forVotes, abstainVotes)`
+3. Call `Governor.proposalSnapshot(proposalId)` and `Governor.proposalDeadline(proposalId)` — for timeline
+4. Call `Governor.quorum(snapshotTimestamp)` — for quorum display
+
+The degraded-mode banner is shown when any The Graph query fails.
 
 ---
 
 ## Out of Scope
 
-- UDT (legacy) governor support
-- Cross-chain proposal execution UI (remains CLI-based)
+- UDT (legacy) governor support — historical UDT proposals remain viewable on Tally (Tally's UI may go away but the data remains on-chain)
+- Cross-chain proposal execution UI (remains CLI-based via `governance/` scripts)
 - Tally API integration (avoided due to product-pivot uncertainty)
 - Server-side caching layer (Cloudflare edge + The Graph is sufficient)
+- URL redirects from old Tally links (Tally stays live for UDT history; no redirect needed)
