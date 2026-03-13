@@ -2,6 +2,7 @@
 .vscode
 tmp_site/
 node_modules/
+.next/
 
 # ZeppelinOS
 zos.dev-*.json
