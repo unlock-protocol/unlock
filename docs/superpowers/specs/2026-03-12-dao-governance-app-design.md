@@ -223,10 +223,10 @@ Equivalent to https://www.tally.xyz/gov/unlock-protocol/delegates.
 Equivalent to https://www.tally.xyz/gov/unlock-protocol/treasury.
 
 - Displays token balances held by the UPTimelock contract (`0xB34567C4cA697b39F72e1a8478f285329A98ed1b`)
-- **ETH balance** — via `provider.getBalance(timelockAddress)`, shown with USD value (price from a public price feed, e.g. CoinGecko API)
-- **UP token balance** — via `UPToken.balanceOf(timelockAddress)`, shown with USD value
+- **ETH balance** — via `provider.getBalance(timelockAddress)`
+- **UP token balance** — via `UPToken.balanceOf(timelockAddress)`
 - **Other ERC20 balances** — scan for known tokens from `@unlock-protocol/networks` token list; show any with non-zero balance
-- Total treasury value in USD (sum of all assets)
+- No USD conversion — raw token amounts only
 - Public (no wallet required)
 - Note: treasury data is fetched live via RPC on each page load; no subgraph indexing needed
 
