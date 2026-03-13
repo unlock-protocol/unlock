@@ -76,14 +76,21 @@ description: String!
 # reachable state (that variant only exists in GovernorTimelockAccess).
 # Quorum failure maps to Defeated, not Expired.
 #
+# UPGovernor uses GovernorCountingSimpleUpgradeable with COUNTING_MODE
+# "support=bravo&quorum=for,abstain":
+#   - quorum check: forVotes + abstainVotes >= quorum
+#   - victory check: forVotes > againstVotes
+# Both must pass for Succeeded; either failure → Defeated.
+#
 # Derivation order (check top-to-bottom, stop at first match):
-#   canceledAt set             → Canceled
-#   executedAt set             → Executed
-#   etaSeconds set             → Queued (executable when block.timestamp >= etaSeconds)
-#   now < voteStartTimestamp   → Pending
-#   now <= voteEndTimestamp    → Active
-#   forVotes > againstVotes AND forVotes >= quorum → Succeeded
-#   otherwise                  → Defeated  (includes quorum-not-reached)
+#   canceledAt set                          → Canceled
+#   executedAt set                          → Executed
+#   etaSeconds set                          → Queued (executable when block.timestamp >= etaSeconds)
+#   now < voteStartTimestamp                → Pending
+#   now <= voteEndTimestamp                 → Active
+#   forVotes > againstVotes
+#     AND forVotes + abstainVotes >= quorum → Succeeded
+#   otherwise                               → Defeated
 forVotes: BigInt!
 againstVotes: BigInt!
 abstainVotes: BigInt!
@@ -135,7 +142,7 @@ proposalsVoted: Int!          # total number of proposals this delegate has vote
 updatedAt: BigInt!
 ```
 
-The `DelegateSummary` entity is updated on every `DelegateChanged`, `DelegateVotesChanged`, and `VoteCast` event. `proposalsVoted` is incremented whenever a `VoteCast` event is emitted where `voter == id`. The delegates leaderboard shows `proposalsVoted` as the participation metric (not a rate, since total proposal count requires a separate query — simpler to show raw count).
+The `DelegateSummary` entity is updated on every `DelegateChanged`, `DelegateVotesChanged`, `VoteCast`, and `VoteCastWithParams` event. `proposalsVoted` is incremented whenever either `VoteCast` or `VoteCastWithParams` is emitted where `voter == id`. The delegates leaderboard shows `proposalsVoted` as the participation metric (not a rate, since total proposal count requires a separate query — simpler to show raw count).
 
 ### New Event Handlers
 
@@ -174,7 +181,7 @@ Overview dashboard, equivalent to https://www.tally.xyz/gov/unlock-protocol.
 Equivalent to https://www.tally.xyz/gov/unlock-protocol/proposals.
 
 - Tabbed filter: All | Active | Pending | Succeeded | Queued | Defeated | Executed | Canceled
-- Each proposal card shows: title (first line of description), state badge, proposer address (truncated), for/against/abstain vote counts, quorum indicator, time remaining or end date
+- Each proposal card shows: title (first line of description), state badge, proposer address (truncated), for/against/abstain vote counts, quorum indicator (`forVotes + abstainVotes` vs quorum threshold), time remaining or end date
 - Sorted by creation date descending
 - "New proposal" button linking to `/propose`
 - Public (no wallet required)
@@ -182,7 +189,7 @@ Equivalent to https://www.tally.xyz/gov/unlock-protocol/proposals.
 ### `/proposals/[id]` — Proposal Detail
 
 - Full proposal description (markdown rendered)
-- Vote breakdown: for / against / abstain bars with percentages and raw counts, quorum threshold line shown on bar
+- Vote breakdown: for / against / abstain bars with percentages and raw counts; quorum threshold line shown against `forVotes + abstainVotes` (per `COUNTING_MODE=quorum:for,abstain`)
 - Voting period info: voting delay and voting period duration displayed (sourced from `Governor.votingDelay()` and `Governor.votingPeriod()` via RPC on page load)
 - **Proposal lifecycle timeline** — horizontal stepper showing all stages with timestamps (absolute + relative). Each stage is marked as completed, active, or pending:
   1. **Submitted** — `createdAtTimestamp` (block timestamp of `ProposalCreated` event, before voting delay)
