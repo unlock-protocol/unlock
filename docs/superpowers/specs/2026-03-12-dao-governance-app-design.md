@@ -132,11 +132,26 @@ The `DelegateSummary` entity is updated on every `DelegateChanged` and `Delegate
 
 ## Pages & Features
 
-### `/` — Proposal List
+### `/` — DAO Home
 
-- Tabbed filter: All | Active | Pending | Succeeded | Defeated | Executed
-- Each proposal card shows: title (first line of description), state badge, vote counts, quorum indicator (votes cast vs. quorum threshold), time remaining or end date
+Overview dashboard, equivalent to https://www.tally.xyz/gov/unlock-protocol.
+
+- **DAO header**: name ("Unlock DAO"), description, links to unlock-protocol.com and social
+- **Key stats bar**: token symbol (UP), quorum (3,000,000 UP), total proposals, total token holders (from subgraph), voting period duration
+- **Recent proposals**: last 5 proposals with state badge, title, and vote summary — links to `/proposals` for full list
+- **Delegates snapshot**: top 3 delegates by voting power — links to `/delegates` for full list
+- **Treasury snapshot**: ETH + UP balance of the timelock address — links to `/treasury` for full breakdown
+- **"New proposal" button** linking to `/propose`
+- Public (no wallet required)
+
+### `/proposals` — Proposals List
+
+Equivalent to https://www.tally.xyz/gov/unlock-protocol/proposals.
+
+- Tabbed filter: All | Active | Pending | Succeeded | Defeated | Executed | Canceled
+- Each proposal card shows: title (first line of description), state badge, proposer address (truncated), for/against/abstain vote counts, quorum indicator, time remaining or end date
 - Sorted by creation date descending
+- "New proposal" button linking to `/propose`
 - Public (no wallet required)
 
 ### `/proposals/[id]` — Proposal Detail
@@ -192,13 +207,35 @@ The `DelegateSummary` entity is updated on every `DelegateChanged` and `Delegate
 - Proposal threshold check on submit: show user's current voting power vs. required threshold; block submission if insufficient
 - Wallet required to submit; browsing and drafting are open to all
 
-### `/delegate` — Delegation
+### `/delegates` — Delegates List
 
-- Shows user's UP token balance and current voting power
-- Shows current delegate address; if `address(0)` is returned from the contract, display as "Self" (OpenZeppelin ERC20Votes returns `address(0)` for undelegated accounts — these have no voting power; users must explicitly delegate to themselves or another address to activate voting power)
-- Change delegate: ENS/address input + confirm transaction. Entering own address = self-delegate.
-- Leaderboard section: top delegates by total delegated voting power (sourced from `DelegateSummary` entities)
-- Wallet required to change delegation; leaderboard and delegate profiles are public
+Equivalent to https://www.tally.xyz/gov/unlock-protocol/delegates.
+
+- Full leaderboard of all delegates sorted by total delegated voting power (sourced from `DelegateSummary` entities)
+- Each row: rank, address (ENS resolved if available), voting power, % of total supply delegated, number of delegators, recent vote participation rate
+- Search by address or ENS
+- **"Delegate to me" / "Delegate" button** for connected wallet — calls `UPToken.delegate(address)`
+- Connected wallet's own delegation status shown at top if wallet is connected (current delegate, own voting power)
+- Public; wallet required to change delegation
+
+### `/treasury` — Treasury
+
+Equivalent to https://www.tally.xyz/gov/unlock-protocol/treasury.
+
+- Displays token balances held by the UPTimelock contract (`0xB34567C4cA697b39F72e1a8478f285329A98ed1b`)
+- **ETH balance** — via `provider.getBalance(timelockAddress)`, shown with USD value (price from a public price feed, e.g. CoinGecko API)
+- **UP token balance** — via `UPToken.balanceOf(timelockAddress)`, shown with USD value
+- **Other ERC20 balances** — scan for known tokens from `@unlock-protocol/networks` token list; show any with non-zero balance
+- Total treasury value in USD (sum of all assets)
+- Public (no wallet required)
+- Note: treasury data is fetched live via RPC on each page load; no subgraph indexing needed
+
+### `/delegate` — Personal Delegation
+
+- Shows connected user's UP token balance, current voting power, and current delegate
+- If `address(0)` is returned, display as "Not delegated" with a warning: voting power is inactive until delegated (even to self)
+- Change delegate: ENS/address input + confirm `UPToken.delegate()` transaction. Entering own address = self-delegate.
+- Wallet required; redirects to connect wallet if not connected
 
 ---
 
