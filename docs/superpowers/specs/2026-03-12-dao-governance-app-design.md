@@ -30,7 +30,16 @@ Two data sources used together:
 | The Graph (Base subgraph) | Historical proposals, vote tallies, delegation history   |
 | Direct RPC via viem       | Live proposal state, user voting power, real-time counts |
 
-React Query manages caching (stale-while-revalidate, 30s TTL). If The Graph is unavailable, the app falls back to direct RPC reads.
+React Query manages caching (stale-while-revalidate, 30s TTL). If The Graph is unavailable, a degraded-mode banner is shown. The fallback is page-specific:
+
+| Page              | Degraded mode behaviour                                                            |
+| ----------------- | ---------------------------------------------------------------------------------- |
+| `/proposals/[id]` | Fully functional — state, votes, timeline, and lifecycle actions via RPC           |
+| `/treasury`       | Fully functional — all balances via RPC                                            |
+| `/delegate`       | Fully functional — personal delegation status via RPC                              |
+| `/`               | Shows error state for aggregates/recent-proposals section; token stats unavailable |
+| `/proposals`      | Shows error state — proposal history requires subgraph                             |
+| `/delegates`      | Shows error state — leaderboard requires subgraph                                  |
 
 ### Auth & Wallet
 
@@ -107,10 +116,11 @@ updatedAt: BigInt!
 id: ID!                       # delegate address (lowercase)
 totalDelegatedPower: BigInt!  # sum of voting power delegated to this address
 delegatorCount: Int!          # number of addresses delegating to this address
+proposalsVoted: Int!          # total number of proposals this delegate has voted on (incremented on VoteCast)
 updatedAt: BigInt!
 ```
 
-The `DelegateSummary` entity is updated on every `DelegateChanged` and `DelegateVotesChanged` event to maintain an up-to-date leaderboard without requiring reverse traversal of `Delegate` records.
+The `DelegateSummary` entity is updated on every `DelegateChanged`, `DelegateVotesChanged`, and `VoteCast` event. `proposalsVoted` is incremented whenever a `VoteCast` event is emitted where `voter == id`. The delegates leaderboard shows `proposalsVoted` as the participation metric (not a rate, since total proposal count requires a separate query — simpler to show raw count).
 
 ### New Event Handlers
 
@@ -137,7 +147,7 @@ The `DelegateSummary` entity is updated on every `DelegateChanged` and `Delegate
 Overview dashboard, equivalent to https://www.tally.xyz/gov/unlock-protocol.
 
 - **DAO header**: name ("Unlock DAO"), description, links to unlock-protocol.com and social
-- **Key stats bar**: token symbol (UP), quorum (3,000,000 UP), total proposals, total token holders (from subgraph), voting period duration
+- **Key stats bar**: token symbol (UP), quorum (3,000,000 UP), total proposals (count of `Proposal` entities), voting period duration — token holder count is excluded from initial scope (requires a subgraph aggregate not in the current schema)
 - **Recent proposals**: last 5 proposals with state badge, title, and vote summary — links to `/proposals` for full list
 - **Delegates snapshot**: top 3 delegates by voting power — links to `/delegates` for full list
 - **Treasury snapshot**: ETH + UP balance of the timelock address — links to `/treasury` for full breakdown
@@ -148,7 +158,7 @@ Overview dashboard, equivalent to https://www.tally.xyz/gov/unlock-protocol.
 
 Equivalent to https://www.tally.xyz/gov/unlock-protocol/proposals.
 
-- Tabbed filter: All | Active | Pending | Succeeded | Defeated | Executed | Expired | Canceled
+- Tabbed filter: All | Active | Pending | Succeeded | Queued | Defeated | Executed | Expired | Canceled
 - Each proposal card shows: title (first line of description), state badge, proposer address (truncated), for/against/abstain vote counts, quorum indicator, time remaining or end date
 - Sorted by creation date descending
 - "New proposal" button linking to `/propose`
@@ -212,7 +222,7 @@ Equivalent to https://www.tally.xyz/gov/unlock-protocol/proposals.
 Equivalent to https://www.tally.xyz/gov/unlock-protocol/delegates.
 
 - Full leaderboard of all delegates sorted by total delegated voting power (sourced from `DelegateSummary` entities)
-- Each row: rank, address (ENS resolved if available), voting power, % of total supply delegated, number of delegators, recent vote participation rate
+- Each row: rank, address (ENS resolved if available), voting power, % of total supply delegated, number of delegators, proposals voted on (raw count from `DelegateSummary.proposalsVoted`)
 - Search by address or ENS
 - **"Delegate to me" / "Delegate" button** for connected wallet — calls `UPToken.delegate(address)`
 - Connected wallet's own delegation status shown at top if wallet is connected (current delegate, own voting power)
@@ -225,7 +235,7 @@ Equivalent to https://www.tally.xyz/gov/unlock-protocol/treasury.
 - Displays token balances held by the UPTimelock contract (`0xB34567C4cA697b39F72e1a8478f285329A98ed1b`)
 - **ETH balance** — via `provider.getBalance(timelockAddress)`
 - **UP token balance** — via `UPToken.balanceOf(timelockAddress)`
-- **Other ERC20 balances** — scan for known tokens from `@unlock-protocol/networks` token list; show any with non-zero balance
+- **Other ERC20 balances** — check balances for the curated token list from `@unlock-protocol/networks`; show any with non-zero balance. This is a **known-token allowlist view**, not a complete inventory — arbitrary ERC20s transferred to the timelock that are not in the network token list will not appear. Unknown holdings can be discovered manually via a block explorer link to the timelock address (provided on the page).
 - No USD conversion — raw token amounts only
 - Public (no wallet required)
 - Note: treasury data is fetched live via RPC on each page load; no subgraph indexing needed
