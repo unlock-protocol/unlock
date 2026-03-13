@@ -49,4 +49,4 @@ locksmith/uploads
 .github/actions/blog/.yarn/install-state.gz
 
 # RPC provider worker
-provider/.wrangler/
+provider/.wrangler/.worktrees
