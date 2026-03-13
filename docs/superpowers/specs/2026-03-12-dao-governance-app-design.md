@@ -58,14 +58,14 @@ Extend `subgraph/config/base.json` and `subgraph/schema.graphql` to index govern
 id: ID!                    # on-chain proposalId as decimal string (uint256)
 proposer: String!
 description: String!
-state: String!             # Pending | Active | Canceled | Defeated | Succeeded | Queued | Executed
+state: String!             # Pending | Active | Canceled | Defeated | Succeeded | Queued | Expired | Executed
 forVotes: BigInt!
 againstVotes: BigInt!
 abstainVotes: BigInt!
-snapshotTimestamp: BigInt! # timestamp at which voting power is snapshotted (from ProposalCreated event)
-startTimestamp: BigInt!    # voting opens
-endTimestamp: BigInt!      # voting closes
-quorum: BigInt!            # quorum required at snapshot, fetched via Governor.quorum(snapshotTimestamp)
+voteStartTimestamp: BigInt! # when voting opens — from ProposalCreated.voteStart; also the snapshot point for voting power
+voteEndTimestamp: BigInt!   # when voting closes — from ProposalCreated.voteEnd
+createdAtTimestamp: BigInt! # block timestamp of proposal creation (before voting delay)
+quorum: BigInt!            # quorum required at voteStart, fetched via Governor.quorum(voteStartTimestamp)
 proposalThreshold: BigInt! # minimum voting power to propose, fetched via Governor.proposalThreshold()
 targets: [String!]!
 values: [BigInt!]!
@@ -95,7 +95,7 @@ transactionHash: String!
 
 ```
 id: ID!                       # delegator address (lowercase)
-delegatedTo: String!          # address this delegator has delegated to (address(0) = self-delegated)
+delegatedTo: String!          # address this delegator has delegated to; address(0) means not yet delegated (no voting power active); self-delegation is when delegatedTo == id
 votingPower: BigInt!          # current voting power (from DelegateVotesChanged)
 tokenBalance: BigInt!         # current UP token balance (from Transfer events)
 updatedAt: BigInt!
@@ -148,7 +148,7 @@ Overview dashboard, equivalent to https://www.tally.xyz/gov/unlock-protocol.
 
 Equivalent to https://www.tally.xyz/gov/unlock-protocol/proposals.
 
-- Tabbed filter: All | Active | Pending | Succeeded | Defeated | Executed | Canceled
+- Tabbed filter: All | Active | Pending | Succeeded | Defeated | Executed | Expired | Canceled
 - Each proposal card shows: title (first line of description), state badge, proposer address (truncated), for/against/abstain vote counts, quorum indicator, time remaining or end date
 - Sorted by creation date descending
 - "New proposal" button linking to `/propose`
@@ -160,9 +160,9 @@ Equivalent to https://www.tally.xyz/gov/unlock-protocol/proposals.
 - Vote breakdown: for / against / abstain bars with percentages and raw counts, quorum threshold line shown on bar
 - Voting period info: voting delay and voting period duration displayed (sourced from `Governor.votingDelay()` and `Governor.votingPeriod()` via RPC on page load)
 - **Proposal lifecycle timeline** — horizontal stepper showing all stages with timestamps (absolute + relative). Each stage is marked as completed, active, or pending:
-  1. **Submitted** — block timestamp of `ProposalCreated` event
-  2. **Voting opens** — `snapshotTimestamp + votingDelay`
-  3. **Voting closed** — `endTimestamp`; annotated with outcome: "Passed", "Defeated", or "Quorum not reached"
+  1. **Submitted** — `createdAtTimestamp` (block timestamp of `ProposalCreated` event, before voting delay)
+  2. **Voting opens** — `voteStartTimestamp` (from `ProposalCreated.voteStart`; also the snapshot point for voting power)
+  3. **Voting closed** — `voteEndTimestamp`; annotated with outcome: "Passed", "Defeated", "Quorum not reached", or "Expired"
   4. **Queued** — timestamp when `Governor.queue()` was called (from subgraph `queuedAt`); shows timelock expiry countdown
   5. **Executed** — timestamp when `Governor.execute()` was called (from subgraph `executedAt`)
 - **Lifecycle action buttons** — one prominent action button shown per eligible state, visible to any connected wallet:
@@ -175,7 +175,7 @@ Equivalent to https://www.tally.xyz/gov/unlock-protocol/proposals.
 - Proposal threshold displayed: minimum voting power required to have submitted this proposal
 - **Cast vote UI**: For / Against / Abstain buttons + optional reason field
   - Requires connected wallet
-  - Shows user's voting power at the proposal's `snapshotTimestamp` (via `Governor.getVotes(address, snapshotTimestamp)`)
+  - Shows user's voting power at the proposal's `voteStartTimestamp` (via `Governor.getVotes(address, voteStartTimestamp)`)
   - Disabled if already voted, voting not active, or no voting power
   - Replaced by "You voted For / Against / Abstain" label if user has already voted
 - Public browsing, wallet required to vote or trigger lifecycle actions
@@ -307,7 +307,7 @@ ABIs are available in `@unlock-protocol/contracts` (exported as `UPGovernor`, `U
 
 When The Graph is unavailable, the app falls back to reading proposal state directly from the Governor contract via viem. The fallback path:
 
-1. Call `Governor.state(proposalId)` — returns a `uint8` enum (0=Pending, 1=Active, 2=Canceled, 3=Defeated, 4=Succeeded, 5=Queued, 7=Executed)
+1. Call `Governor.state(proposalId)` — returns a `uint8` enum (0=Pending, 1=Active, 2=Canceled, 3=Defeated, 4=Succeeded, 5=Queued, 6=Expired, 7=Executed)
 2. Call `Governor.proposalVotes(proposalId)` — returns `(againstVotes, forVotes, abstainVotes)`
 3. Call `Governor.proposalSnapshot(proposalId)` and `Governor.proposalDeadline(proposalId)` — for timeline
 4. Call `Governor.quorum(snapshotTimestamp)` — for quorum display
