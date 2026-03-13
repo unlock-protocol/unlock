@@ -64,25 +64,35 @@ Extend `subgraph/config/base.json` and `subgraph/schema.graphql` to index govern
 **Proposal**
 
 ```
-id: ID!                    # on-chain proposalId as decimal string (uint256)
+id: ID!                     # on-chain proposalId as decimal string (uint256)
 proposer: String!
 description: String!
-state: String!             # Pending | Active | Canceled | Defeated | Succeeded | Queued | Expired | Executed
+# Event-driven flags only — do NOT store a `state` string.
+# Time-based states (Pending, Active, Succeeded, Defeated, Expired) drift
+# between events and cannot be kept current by event handlers alone.
+# Clients derive the current state from the fields below at query time:
+#   canceledAt set       → Canceled
+#   executedAt set       → Executed
+#   etaSeconds set       → Queued (executable when block.timestamp >= etaSeconds)
+#   now < voteStart      → Pending
+#   voteStart <= now <= voteEnd → Active
+#   now > voteEnd, forVotes > againstVotes, forVotes >= quorum → Succeeded
+#   now > voteEnd, forVotes <= againstVotes → Defeated
+#   now > voteEnd, forVotes < quorum → Expired (quorum not reached)
 forVotes: BigInt!
 againstVotes: BigInt!
 abstainVotes: BigInt!
-voteStartTimestamp: BigInt! # when voting opens — from ProposalCreated.voteStart; also the snapshot point for voting power
-voteEndTimestamp: BigInt!   # when voting closes — from ProposalCreated.voteEnd
-createdAtTimestamp: BigInt! # block timestamp of proposal creation (before voting delay)
-quorum: BigInt!            # quorum required at voteStart, fetched via Governor.quorum(voteStartTimestamp)
-proposalThreshold: BigInt! # minimum voting power to propose, fetched via Governor.proposalThreshold()
+voteStartTimestamp: BigInt!  # from ProposalCreated.voteStart; also the voting-power snapshot point
+voteEndTimestamp: BigInt!    # from ProposalCreated.voteEnd
+createdAtTimestamp: BigInt!  # block timestamp of ProposalCreated (before voting delay)
+quorum: BigInt!              # from Governor.quorum(voteStartTimestamp) at index time
+proposalThreshold: BigInt!   # from Governor.proposalThreshold() at index time
 targets: [String!]!
 values: [BigInt!]!
 calldatas: [Bytes!]!
-createdAt: BigInt!
-queuedAt: BigInt
-executedAt: BigInt
-canceledAt: BigInt
+etaSeconds: BigInt           # from ProposalQueued.etaSeconds — timestamp when proposal becomes executable
+executedAt: BigInt           # block timestamp of ProposalExecuted
+canceledAt: BigInt           # block timestamp of ProposalCanceled
 transactionHash: String!
 votes: [Vote!]! @derivedFrom(field: "proposal")
 ```
@@ -128,9 +138,9 @@ The `DelegateSummary` entity is updated on every `DelegateChanged`, `DelegateVot
 
 - `ProposalCreated` → create Proposal entity
 - `VoteCast` / `VoteCastWithParams` → create Vote entity, update Proposal vote counts
-- `ProposalQueued` → update Proposal state and queuedAt
-- `ProposalExecuted` → update Proposal state and executedAt
-- `ProposalCanceled` → update Proposal state and canceledAt
+- `ProposalQueued` → set `Proposal.etaSeconds` from event param
+- `ProposalExecuted` → set `Proposal.executedAt`
+- `ProposalCanceled` → set `Proposal.canceledAt`
 
 **UPToken contract (Base):**
 
@@ -173,12 +183,12 @@ Equivalent to https://www.tally.xyz/gov/unlock-protocol/proposals.
   1. **Submitted** — `createdAtTimestamp` (block timestamp of `ProposalCreated` event, before voting delay)
   2. **Voting opens** — `voteStartTimestamp` (from `ProposalCreated.voteStart`; also the snapshot point for voting power)
   3. **Voting closed** — `voteEndTimestamp`; annotated with outcome: "Passed", "Defeated", "Quorum not reached", or "Expired"
-  4. **Queued** — timestamp when `Governor.queue()` was called (from subgraph `queuedAt`); shows timelock expiry countdown
-  5. **Executed** — timestamp when `Governor.execute()` was called (from subgraph `executedAt`)
+  4. **Queued** — `etaSeconds` from `ProposalQueued` event; shows countdown to execution eligibility ("Executable in 3d 4h" or "Executable now")
+  5. **Executed** — `executedAt` block timestamp
 - **Lifecycle action buttons** — one prominent action button shown per eligible state, visible to any connected wallet:
   - State `Succeeded` → **"Queue proposal"** button — calls `Governor.queue(targets, values, calldatas, descriptionHash)`; visible to all, not gated to proposer
-  - State `Queued` + timelock expired → **"Execute proposal"** button — calls `Governor.execute(targets, values, calldatas, descriptionHash)`; disabled with countdown if timelock has not yet elapsed
-  - State `Queued` + timelock not expired → disabled "Execute" button showing time remaining (e.g. "Executable in 3d 4h")
+  - State `Queued` + `block.timestamp >= etaSeconds` → **"Execute proposal"** button — calls `Governor.execute(targets, values, calldatas, descriptionHash)`
+  - State `Queued` + `block.timestamp < etaSeconds` → disabled "Execute" button showing countdown to `etaSeconds` (e.g. "Executable in 3d 4h")
   - All other states → no action button
 - **Outcome badge** — prominently displayed once voting closes: "Passed ✓", "Defeated ✗", "Quorum not reached", "Canceled", or "Executed ✓"
 - Decoded calldata: show target contract, function name, and arguments in human-readable form (ABI sourced from `@unlock-protocol/contracts` package; unknown contracts shown as raw hex)
