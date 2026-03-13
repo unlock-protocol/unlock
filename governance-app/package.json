@@ -31,7 +31,10 @@
   },
   "scripts": {
     "build": "next build --no-lint",
+    "ci": "yarn lint . && yarn build",
     "dev": "next dev",
+    "deploy": "yarn build",
+    "deploy-vercel": "./scripts/deploy-vercel.sh",
     "lint": "eslint",
     "start": "next start"
   }

@@ -143,6 +143,28 @@ jobs:
         env:
           UNLOCK_APP_VERCEL_STAGING_NEXTAUTH_URL: 'https://staging-app.unlock-protocol.com'
 
+  deploy-governance-app-vercel:
+    needs: run-all-tests
+    if: ${{ github.repository_owner == 'unlock-protocol'  }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Load secrets from 1Password
+        uses: 1Password/load-secrets-action@v2.0.0
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          GOVERNANCE_APP_VERCEL_STAGING_VERCEL_PROJECT_ID: op://secrets/vercel/project-id-governance-app-staging
+          GOVERNANCE_APP_VERCEL_STAGING_VERCEL_ORG_ID: op://secrets/vercel/org-id
+          GOVERNANCE_APP_VERCEL_STAGING_VERCEL_TOKEN: op://secrets/vercel/deployment-token
+      - uses: ./.github/actions/vercel
+        with:
+          service: governance-app
+          target-env: staging
+
   deploy-docs-production:
     if: ${{ github.repository_owner == 'unlock-protocol' }} # make sure we dont deploy from forks
     runs-on: ubuntu-24.04
