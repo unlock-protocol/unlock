@@ -152,8 +152,6 @@ jobs:
         with:
           fetch-depth: 0
       - name: Load secrets from 1Password
-        id: load-governance-app-vercel-secrets
-        continue-on-error: true
         uses: 1Password/load-secrets-action@v2.0.0
         with:
           export-env: true
@@ -163,13 +161,9 @@ jobs:
           GOVERNANCE_APP_VERCEL_STAGING_VERCEL_ORG_ID: op://secrets/vercel/org-id
           GOVERNANCE_APP_VERCEL_STAGING_VERCEL_TOKEN: op://secrets/vercel/deployment-token
       - uses: ./.github/actions/vercel
-        if: ${{ steps.load-governance-app-vercel-secrets.outcome == 'success' }}
         with:
           service: governance-app
           target-env: staging
-      - name: Skip deployment until Vercel project is provisioned
-        if: ${{ steps.load-governance-app-vercel-secrets.outcome != 'success' }}
-        run: echo "Skipping governance-app staging deploy because the 1Password project ID secret has not been provisioned yet."
 
   deploy-docs-production:
     if: ${{ github.repository_owner == 'unlock-protocol' }} # make sure we dont deploy from forks
