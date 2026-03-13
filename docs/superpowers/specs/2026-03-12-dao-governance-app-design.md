@@ -239,13 +239,11 @@ AssemblyScript mapping handlers are tested with `matchstick-as` (The Graph's nat
 
 | Contract     | Address                                      | Role                                      |
 | ------------ | -------------------------------------------- | ----------------------------------------- |
-| `UPGovernor` | TBD — confirm from deployment logs           | Governance: propose, vote, queue, execute |
+| `UPGovernor` | `0x65bA0624403Fc5Ca2b20479e9F626eD4D78E0aD9` | Governance: propose, vote, queue, execute |
 | `UPToken`    | `0xaC27fa800955849d6D17cC8952Ba9dD6EAA66187` | ERC20Votes: voting power, delegation      |
 | `UPTimelock` | `0xB34567C4cA697b39F72e1a8478f285329A98ed1b` | Timelock controller: 7-day delay          |
 
-ABIs are available in `@unlock-protocol/contracts` (exported as `UPGovernor`, `UPToken`, `UPTimelock`).
-
-> **Note:** UPGovernor Base mainnet address is not hardcoded in the governance scripts (it is passed as a CLI param). Confirm the canonical address from the team or the Base block explorer before deploying.
+ABIs are available in `@unlock-protocol/contracts` (exported as `UPGovernor`, `UPToken`, `UPTimelock`). Addresses are also available at runtime via `@unlock-protocol/networks` (`base.dao.governor`, `base.dao.timelock`, `base.dao.token`).
 
 **Base Sepolia (testnet, Chain ID 84532):**
 
