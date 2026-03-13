@@ -68,17 +68,22 @@ id: ID!                     # on-chain proposalId as decimal string (uint256)
 proposer: String!
 description: String!
 # Event-driven flags only — do NOT store a `state` string.
-# Time-based states (Pending, Active, Succeeded, Defeated, Expired) drift
-# between events and cannot be kept current by event handlers alone.
-# Clients derive the current state from the fields below at query time:
-#   canceledAt set       → Canceled
-#   executedAt set       → Executed
-#   etaSeconds set       → Queued (executable when block.timestamp >= etaSeconds)
-#   now < voteStart      → Pending
-#   voteStart <= now <= voteEnd → Active
-#   now > voteEnd, forVotes > againstVotes, forVotes >= quorum → Succeeded
-#   now > voteEnd, forVotes <= againstVotes → Defeated
-#   now > voteEnd, forVotes < quorum → Expired (quorum not reached)
+# Time-based states (Pending, Active, Succeeded, Defeated) drift between
+# events and cannot be kept current by event handlers alone.
+# Clients derive the current state from the fields below at query time.
+#
+# UPGovernor uses GovernorTimelockControlUpgradeable — `Expired` is NOT a
+# reachable state (that variant only exists in GovernorTimelockAccess).
+# Quorum failure maps to Defeated, not Expired.
+#
+# Derivation order (check top-to-bottom, stop at first match):
+#   canceledAt set             → Canceled
+#   executedAt set             → Executed
+#   etaSeconds set             → Queued (executable when block.timestamp >= etaSeconds)
+#   now < voteStartTimestamp   → Pending
+#   now <= voteEndTimestamp    → Active
+#   forVotes > againstVotes AND forVotes >= quorum → Succeeded
+#   otherwise                  → Defeated  (includes quorum-not-reached)
 forVotes: BigInt!
 againstVotes: BigInt!
 abstainVotes: BigInt!
@@ -168,7 +173,7 @@ Overview dashboard, equivalent to https://www.tally.xyz/gov/unlock-protocol.
 
 Equivalent to https://www.tally.xyz/gov/unlock-protocol/proposals.
 
-- Tabbed filter: All | Active | Pending | Succeeded | Queued | Defeated | Executed | Expired | Canceled
+- Tabbed filter: All | Active | Pending | Succeeded | Queued | Defeated | Executed | Canceled
 - Each proposal card shows: title (first line of description), state badge, proposer address (truncated), for/against/abstain vote counts, quorum indicator, time remaining or end date
 - Sorted by creation date descending
 - "New proposal" button linking to `/propose`
@@ -182,7 +187,7 @@ Equivalent to https://www.tally.xyz/gov/unlock-protocol/proposals.
 - **Proposal lifecycle timeline** — horizontal stepper showing all stages with timestamps (absolute + relative). Each stage is marked as completed, active, or pending:
   1. **Submitted** — `createdAtTimestamp` (block timestamp of `ProposalCreated` event, before voting delay)
   2. **Voting opens** — `voteStartTimestamp` (from `ProposalCreated.voteStart`; also the snapshot point for voting power)
-  3. **Voting closed** — `voteEndTimestamp`; annotated with outcome: "Passed", "Defeated", "Quorum not reached", or "Expired"
+  3. **Voting closed** — `voteEndTimestamp`; annotated with outcome: "Passed" or "Defeated" (quorum not reached shown as a sub-label: "Defeated — quorum not reached")
   4. **Queued** — `etaSeconds` from `ProposalQueued` event; shows countdown to execution eligibility ("Executable in 3d 4h" or "Executable now")
   5. **Executed** — `executedAt` block timestamp
 - **Lifecycle action buttons** — one prominent action button shown per eligible state, visible to any connected wallet:
@@ -190,7 +195,7 @@ Equivalent to https://www.tally.xyz/gov/unlock-protocol/proposals.
   - State `Queued` + `block.timestamp >= etaSeconds` → **"Execute proposal"** button — calls `Governor.execute(targets, values, calldatas, descriptionHash)`
   - State `Queued` + `block.timestamp < etaSeconds` → disabled "Execute" button showing countdown to `etaSeconds` (e.g. "Executable in 3d 4h")
   - All other states → no action button
-- **Outcome badge** — prominently displayed once voting closes: "Passed ✓", "Defeated ✗", "Quorum not reached", "Canceled", or "Executed ✓"
+- **Outcome badge** — prominently displayed once voting closes: "Passed ✓", "Defeated ✗" (with sub-label "quorum not reached" if applicable), "Canceled", or "Executed ✓"
 - Decoded calldata: show target contract, function name, and arguments in human-readable form (ABI sourced from `@unlock-protocol/contracts` package; unknown contracts shown as raw hex)
 - Proposal threshold displayed: minimum voting power required to have submitted this proposal
 - **Cast vote UI**: For / Against / Abstain buttons + optional reason field
@@ -205,8 +210,14 @@ Equivalent to https://www.tally.xyz/gov/unlock-protocol/proposals.
 - **Simple mode (default tab):**
   - Title field (becomes first line of description)
   - Description field (markdown, full proposal body)
-  - Add target calls: contract address, function signature, arguments, ETH value
+  - Add target calls — each call has:
+    - **Contract**: dropdown of known protocol contracts (those exported from `@unlock-protocol/contracts`: `UPGovernor`, `UPToken`, `UPTimelock`, `Unlock`, `PublicLock`) plus a "Custom contract" option
+    - Known contracts: function dropdown populated from their ABI (bundled at build time from `@unlock-protocol/contracts`)
+    - Custom contract: address field + inline ABI paste (same as advanced mode per-call)
+    - Arguments: typed inputs derived from the selected function's ABI
+    - ETH value: optional
   - Multiple calls supported (add/remove)
+  - MVP scope: the known-contract dropdown covers the most common governance actions (protocol upgrades, parameter changes, token transfers from timelock). Arbitrary contracts require advanced mode.
 - **Advanced mode (second tab):**
   - JSON editor accepting a browser-safe subset of the CLI proposal format:
     ```json
@@ -327,7 +338,7 @@ ABIs are available in `@unlock-protocol/contracts` (exported as `UPGovernor`, `U
 
 When The Graph is unavailable, the app falls back to reading proposal state directly from the Governor contract via viem. The fallback path:
 
-1. Call `Governor.state(proposalId)` — returns a `uint8` enum (0=Pending, 1=Active, 2=Canceled, 3=Defeated, 4=Succeeded, 5=Queued, 6=Expired, 7=Executed)
+1. Call `Governor.state(proposalId)` — returns a `uint8` enum (0=Pending, 1=Active, 2=Canceled, 3=Defeated, 4=Succeeded, 5=Queued, 7=Executed). Note: `6=Expired` is defined in the OZ enum but is not reachable via `UPGovernor` (`GovernorTimelockControlUpgradeable` does not use it); handle defensively but do not surface in UI.
 2. Call `Governor.proposalVotes(proposalId)` — returns `(againstVotes, forVotes, abstainVotes)`
 3. Call `Governor.proposalSnapshot(proposalId)` and `Governor.proposalDeadline(proposalId)` — for timeline
 4. Call `Governor.quorum(snapshotTimestamp)` — for quorum display
