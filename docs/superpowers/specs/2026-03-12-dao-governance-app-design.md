@@ -144,14 +144,26 @@ The `DelegateSummary` entity is updated on every `DelegateChanged` and `Delegate
 - Full proposal description (markdown rendered)
 - Vote breakdown: for / against / abstain bars with percentages and raw counts, quorum threshold line shown on bar
 - Voting period info: voting delay and voting period duration displayed (sourced from `Governor.votingDelay()` and `Governor.votingPeriod()` via RPC on page load)
-- Timeline: created → voting opens → voting closes → queued → executed; timestamps shown as absolute dates + relative ("2 days ago")
+- **Proposal lifecycle timeline** — horizontal stepper showing all stages with timestamps (absolute + relative). Each stage is marked as completed, active, or pending:
+  1. **Submitted** — block timestamp of `ProposalCreated` event
+  2. **Voting opens** — `snapshotTimestamp + votingDelay`
+  3. **Voting closed** — `endTimestamp`; annotated with outcome: "Passed", "Defeated", or "Quorum not reached"
+  4. **Queued** — timestamp when `Governor.queue()` was called (from subgraph `queuedAt`); shows timelock expiry countdown
+  5. **Executed** — timestamp when `Governor.execute()` was called (from subgraph `executedAt`)
+- **Lifecycle action buttons** — one prominent action button shown per eligible state, visible to any connected wallet:
+  - State `Succeeded` → **"Queue proposal"** button — calls `Governor.queue(targets, values, calldatas, descriptionHash)`; visible to all, not gated to proposer
+  - State `Queued` + timelock expired → **"Execute proposal"** button — calls `Governor.execute(targets, values, calldatas, descriptionHash)`; disabled with countdown if timelock has not yet elapsed
+  - State `Queued` + timelock not expired → disabled "Execute" button showing time remaining (e.g. "Executable in 3d 4h")
+  - All other states → no action button
+- **Outcome badge** — prominently displayed once voting closes: "Passed ✓", "Defeated ✗", "Quorum not reached", "Canceled", or "Executed ✓"
 - Decoded calldata: show target contract, function name, and arguments in human-readable form (ABI sourced from `@unlock-protocol/contracts` package; unknown contracts shown as raw hex)
 - Proposal threshold displayed: minimum voting power required to have submitted this proposal
-- Cast vote UI: For / Against / Abstain buttons + optional reason field
+- **Cast vote UI**: For / Against / Abstain buttons + optional reason field
   - Requires connected wallet
   - Shows user's voting power at the proposal's `snapshotTimestamp` (via `Governor.getVotes(address, snapshotTimestamp)`)
   - Disabled if already voted, voting not active, or no voting power
-- Public browsing, wallet required to vote
+  - Replaced by "You voted For / Against / Abstain" label if user has already voted
+- Public browsing, wallet required to vote or trigger lifecycle actions
 
 ### `/propose` — Create Proposal
 
@@ -201,6 +213,9 @@ The `DelegateSummary` entity is updated on every `DelegateChanged` and `Delegate
 | Transaction rejected       | Toast notification with error message                        |
 | Transaction pending        | Optimistic UI + polling until confirmed                      |
 | Proposal threshold not met | Inline warning on `/propose` at submission                   |
+| Timelock not yet elapsed   | Execute button disabled with countdown; no action possible   |
+| Proposal already queued    | Queue button hidden; cannot queue twice                      |
+| Proposal already executed  | Execute button hidden; show executed timestamp               |
 
 ---
 
