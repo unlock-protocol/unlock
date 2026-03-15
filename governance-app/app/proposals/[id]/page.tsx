@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation'
 import { ProposalStateBadge } from '~/components/proposals/ProposalStateBadge'
 import { ProposalErrorState } from '~/components/proposals/ProposalErrorState'
+import { ProposalWritePanel } from '~/components/proposals/ProposalWritePanel'
+import { governanceConfig } from '~/config/governance'
 import {
   formatDateTime,
   formatRelativeTime,
@@ -225,24 +227,17 @@ export default async function ProposalDetailPage({
               </dl>
             </section>
 
-            <section className="rounded-[2rem] border border-brand-ui-primary/10 bg-white p-6 shadow-sm">
-              <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-ui-primary/55">
-                Lifecycle action
-              </h3>
-              <div className="mt-4 rounded-3xl bg-ui-secondary-200 p-5">
-                <div className="text-lg font-semibold text-brand-ui-primary">
-                  {proposal.state === 'Succeeded'
-                    ? 'Queue proposal'
-                    : proposal.state === 'Queued'
-                      ? 'Execute proposal'
-                      : 'No action available'}
-                </div>
-                <p className="mt-2 text-sm leading-6 text-brand-ui-primary/70">
-                  Write flows land in a later slice. This page already derives
-                  the live action state, including queued execution readiness.
-                </p>
-              </div>
-            </section>
+            <ProposalWritePanel
+              calldatas={proposal.calldatas}
+              descriptionHash={proposal.descriptionHash}
+              etaSeconds={proposal.etaSeconds?.toString() || null}
+              latestTimestamp={overview.latestTimestamp.toString()}
+              proposalId={proposal.id}
+              state={proposal.state}
+              targets={proposal.targets}
+              values={proposal.values.map((value) => value.toString())}
+              voteStartTimestamp={proposal.voteStartTimestamp.toString()}
+            />
           </aside>
         </div>
       </section>
