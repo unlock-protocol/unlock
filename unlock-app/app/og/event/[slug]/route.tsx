@@ -5,8 +5,10 @@ import { DefaultImage } from '../../../frames/event/Components/DefaultImage'
 
 export async function GET(
   request: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
+  const { slug } = await params
+
   // Loading fonts from static assets
   const inter400 = await fetch(
     new URL('/fonts/inter-400.woff', request.url)
@@ -16,7 +18,7 @@ export async function GET(
   ).then((res) => res.arrayBuffer())
 
   const { data: eventMetadata } = await locksmith
-    .getEvent(params.slug)
+    .getEvent(slug)
     .catch((error) => {
       console.error(error)
       return { data: null }
