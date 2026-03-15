@@ -10,15 +10,15 @@ import { truncateString } from '../../../src/utils/truncateString'
 import removeMd from 'remove-markdown'
 
 export interface EventPageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 export async function generateMetadata({
   params,
 }: EventPageProps): Promise<Metadata> {
-  const { slug } = params
+  const { slug } = await params
 
   // Fetch the event metadata using the shared function
   const eventMetadata = await fetchEventMetadata(slug)
@@ -88,7 +88,7 @@ export async function generateMetadata({
 }
 
 const EventPage = async ({ params }: EventPageProps) => {
-  const { slug } = params
+  const { slug } = await params
 
   // Fetch the event metadata using the shared function
   const eventMetadata = await fetchEventMetadata(slug)

@@ -6,13 +6,14 @@ import { getConfig } from '../frames/checkout/components/utils'
 import { config as appConfig } from '~/config/app'
 
 type Props = {
-  searchParams: { id: string }
+  searchParams: Promise<{ id: string }>
 }
 
 export async function generateMetadata({
   searchParams,
 }: Props): Promise<Metadata> {
-  const id = searchParams?.id?.trim()
+  const { id: rawId } = await searchParams
+  const id = rawId?.trim()
 
   // Default metadata without frame data
   const baseMetadata: Metadata = {

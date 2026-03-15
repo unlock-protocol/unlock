@@ -28,16 +28,16 @@ export interface EventCollectionDetail {
 }
 
 export interface EventCollectionDetailPageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 // dynamically generate metadata for the event collection
 export async function generateMetadata({
   params,
 }: EventCollectionDetailPageProps): Promise<Metadata> {
-  const { slug } = params
+  const { slug } = await params
 
   let eventCollection
   try {
@@ -78,7 +78,7 @@ export async function generateMetadata({
 const EventCollectionDetailPage = async ({
   params,
 }: EventCollectionDetailPageProps) => {
-  const { slug } = params
+  const { slug } = await params
   const queryClient = new QueryClient()
 
   let eventCollection

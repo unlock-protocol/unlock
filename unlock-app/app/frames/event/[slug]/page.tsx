@@ -19,13 +19,14 @@ interface SearchParams {
 }
 
 interface HomeProps {
-  params: { slug: string }
-  searchParams: SearchParams
+  params: Promise<{ slug: string }>
+  searchParams: Promise<SearchParams>
 }
 
 export default async function Frame(props: HomeProps) {
-  const slug = props.params.slug
-  const previousFrame = getPreviousFrame(props.searchParams)
+  const { slug } = await props.params
+  const searchParams = await props.searchParams
+  const previousFrame = getPreviousFrame(searchParams)
   // await validateActionSignature(previousFrame.postBody)
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [state] = useFramesReducer(reducer, { view: 'default' }, previousFrame)

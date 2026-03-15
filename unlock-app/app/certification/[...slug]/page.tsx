@@ -3,15 +3,16 @@ import { CertificationPreviewContent } from '~/components/content/certification/
 import { locksmith } from '~/config/locksmith'
 
 export interface CertificationPreviewPageProps {
-  params: {
+  params: Promise<{
     slug: string[]
-  }
+  }>
 }
 
 const CertificationPreviewPage = async ({
   params,
 }: CertificationPreviewPageProps) => {
-  const [certSlug, tokenId] = params.slug
+  const { slug: slugParts } = await params
+  const [certSlug, tokenId] = slugParts
 
   let lockAddress, network
 

@@ -12,9 +12,9 @@ export const metadata: Metadata = {
 const EventCollectionSettingsPage = async ({
   params,
 }: {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }) => {
-  const { slug } = params
+  const { slug } = await params
 
   // fetch the event collection details
   const eventCollection = await getEventCollection(slug)
