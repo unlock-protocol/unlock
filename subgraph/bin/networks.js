@@ -57,6 +57,7 @@ function setupFolderConfig() {
 
 function createNetworkConfig(network, chainName) {
   const name = networkName(chainName)
+  const governanceToken = network.tokens?.find(({ symbol }) => symbol === 'UP')
   const networkFile = {
     network: name,
     deployments: [
@@ -75,6 +76,19 @@ function createNetworkConfig(network, chainName) {
         startBlock: deployment.startBlock,
       }
     })
+  }
+
+  if (network.dao?.governor && governanceToken?.address) {
+    networkFile.governance = {
+      governor: {
+        address: network.dao.governor,
+        startBlock: network.startBlock,
+      },
+      token: {
+        address: governanceToken.address,
+        startBlock: network.startBlock,
+      },
+    }
   }
 
   const configPath = path.join(configFolderPath, `${name}.json`)
