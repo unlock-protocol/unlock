@@ -7,7 +7,7 @@ import { fetchEventMetadata } from '~/utils/eventMetadata'
 import { AuthRequired } from 'app/Components/ProtectedContent'
 
 const AttendeesPage = async ({ params }: EventPageProps) => {
-  const { slug } = params
+  const { slug } = await params
 
   // Fetch the event metadata using the shared function
   const eventMetadata = await fetchEventMetadata(slug)
