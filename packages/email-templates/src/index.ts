@@ -1,3 +1,4 @@
+import debug from './templates/debug'
 import keyOwnership from './templates/keyOwnership'
 import keyMined from './templates/keyMined'
 import keyAirdropped from './templates/keyAirdropped'
@@ -51,6 +52,7 @@ Handlebars.registerHelper(
 )
 
 const emailTemplates = {
+  debug,
   keyOwnership,
   keyMined,
   transferCode,

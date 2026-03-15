@@ -28,4 +28,4 @@ if [ -z "$LOCKSMITH_SECRET_KEY" ]; then
   echo "Make sure to set this variable from 1Password before deploying to production."
 fi
 
-echo $FILE | yarn wrangler secret:bulk
+echo $FILE | yarn wrangler secret bulk
