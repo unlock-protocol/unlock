@@ -21203,6 +21203,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:22.13.10":
+  version: 22.13.10
+  resolution: "@types/node@npm:22.13.10"
+  dependencies:
+    undici-types: "npm:~6.20.0"
+  checksum: 10/57dc6a5e0110ca9edea8d7047082e649fa7fa813f79e4a901653b9174141c622f4336435648baced5b38d9f39843f404fa2d8d7a10981610da26066bc8caab48
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:22.18.12":
   version: 22.18.12
   resolution: "@types/node@npm:22.18.12"
@@ -22601,6 +22610,34 @@ __metadata:
     globals: "npm:16.5.0"
     typescript: "npm:5.9.2"
     vitest: "npm:3.2.4"
+  languageName: unknown
+  linkType: soft
+
+"@unlock-protocol/governance-app@workspace:governance-app":
+  version: 0.0.0-use.local
+  resolution: "@unlock-protocol/governance-app@workspace:governance-app"
+  dependencies:
+    "@privy-io/react-auth": "npm:2.12.0"
+    "@tanstack/react-query": "npm:5.90.2"
+    "@types/node": "npm:22.13.10"
+    "@types/react": "npm:18.3.26"
+    "@types/react-dom": "npm:18.3.7"
+    "@unlock-protocol/contracts": "workspace:./packages/contracts"
+    "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
+    "@unlock-protocol/networks": "workspace:./packages/networks"
+    "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
+    "@unlock-protocol/ui": "workspace:./packages/ui"
+    autoprefixer: "npm:10.4.21"
+    eslint: "npm:9.22.0"
+    next: "npm:14.2.32"
+    postcss: "npm:8.4.49"
+    react: "npm:18.3.1"
+    react-dom: "npm:18.3.1"
+    tailwindcss: "npm:3.4.18"
+    typescript: "npm:5.8.3"
+  peerDependencies:
+    react: 18.3.1
+    react-dom: 18.3.1
   languageName: unknown
   linkType: soft
 
