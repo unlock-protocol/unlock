@@ -15,17 +15,17 @@ import {
   VoteCastWithParams,
 } from '../generated/UPGovernor/UPGovernor'
 
-export const governorAddress = '0x00000000000000000000000000000000000000A1'
-export const upTokenAddress = '0x00000000000000000000000000000000000000A2'
+export const governorAddress = '0x00000000000000000000000000000000000000a1'
+export const upTokenAddress = '0x00000000000000000000000000000000000000a2'
 export const proposalId = BigInt.fromI32(1)
-export const proposerAddress = '0x00000000000000000000000000000000000000B1'
+export const proposerAddress = '0x00000000000000000000000000000000000000b1'
 export const voterAddress = '0x00000000000000000000000000000000000000b2'
 export const secondVoterAddress = '0x00000000000000000000000000000000000000b6'
 export const delegatorAddress = '0x00000000000000000000000000000000000000b3'
-export const delegateAddress = '0x00000000000000000000000000000000000000B4'
+export const delegateAddress = '0x00000000000000000000000000000000000000b4'
 export const secondDelegateAddress =
   '0x00000000000000000000000000000000000000b5'
-export const targetAddress = '0x00000000000000000000000000000000000000C1'
+export const targetAddress = '0x00000000000000000000000000000000000000c1'
 
 export function mockGovernorCalls(
   voteStart: BigInt,
