@@ -153,9 +153,9 @@ type Proposal @entity {
   forVotes: BigInt!
   againstVotes: BigInt!
   abstainVotes: BigInt!
-  voteStartTimestamp: BigInt!
-  voteEndTimestamp: BigInt!
-  createdAtTimestamp: BigInt!
+  voteStartBlock: BigInt!
+  voteEndBlock: BigInt!
+  createdAt: BigInt!
   quorum: BigInt!
   proposalThreshold: BigInt!
   targets: [String!]!

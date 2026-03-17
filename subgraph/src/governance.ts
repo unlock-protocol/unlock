@@ -29,9 +29,9 @@ export function handleProposalCreated(event: ProposalCreated): void {
   proposal.forVotes = BigInt.zero()
   proposal.againstVotes = BigInt.zero()
   proposal.abstainVotes = BigInt.zero()
-  proposal.voteStartTimestamp = event.params.voteStart
-  proposal.voteEndTimestamp = event.params.voteEnd
-  proposal.createdAtTimestamp = event.block.timestamp
+  proposal.voteStartBlock = event.params.voteStart
+  proposal.voteEndBlock = event.params.voteEnd
+  proposal.createdAt = event.block.timestamp
   proposal.quorum = quorumCall.reverted ? BigInt.zero() : quorumCall.value
   proposal.proposalThreshold = proposalThresholdCall.reverted
     ? BigInt.zero()
