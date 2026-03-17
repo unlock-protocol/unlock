@@ -144,3 +144,53 @@ type ReferrerFee @entity {
   "In the Unlock ecosystem, a “Lock” is a smart contract that creates (or “mints”) NFTs"
   lock: Lock!
 }
+
+type Proposal @entity {
+  "On-chain proposalId as a decimal string"
+  id: ID!
+  proposer: String!
+  description: String!
+  forVotes: BigInt!
+  againstVotes: BigInt!
+  abstainVotes: BigInt!
+  voteStartBlock: BigInt!
+  voteEndBlock: BigInt!
+  createdAt: BigInt!
+  quorum: BigInt!
+  proposalThreshold: BigInt!
+  targets: [String!]!
+  values: [BigInt!]!
+  calldatas: [Bytes!]!
+  etaSeconds: BigInt
+  executedAt: BigInt
+  canceledAt: BigInt
+  transactionHash: String!
+  votes: [Vote!]! @derivedFrom(field: "proposal")
+}
+
+type Vote @entity {
+  id: ID!
+  proposal: Proposal!
+  voter: String!
+  support: Int!
+  weight: BigInt!
+  reason: String
+  createdAt: BigInt!
+  transactionHash: String!
+}
+
+type Delegate @entity {
+  id: ID!
+  delegatedTo: String!
+  votingPower: BigInt!
+  tokenBalance: BigInt!
+  updatedAt: BigInt!
+}
+
+type DelegateSummary @entity {
+  id: ID!
+  totalDelegatedPower: BigInt!
+  delegatorCount: Int!
+  proposalsVoted: Int!
+  updatedAt: BigInt!
+}

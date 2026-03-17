@@ -39,6 +39,65 @@ dataSources:
           handler: handleGNPChanged
       file: ./src/unlock.ts
 {{/deployments}}
+{{#governance}}
+  - kind: ethereum
+    name: UPGovernor
+    network: {{ network }}
+    source:
+      abi: UPGovernor
+      address: '{{governor.address}}'
+      startBlock: {{ governor.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Proposal
+        - Vote
+        - DelegateSummary
+      abis:
+        - name: UPGovernor
+          file: ./abis/UPGovernor.json
+      eventHandlers:
+        - event: ProposalCreated(uint256,address,address[],uint256[],string[],bytes[],uint256,uint256,string)
+          handler: handleProposalCreated
+        - event: VoteCast(indexed address,uint256,uint8,uint256,string)
+          handler: handleVoteCast
+        - event: VoteCastWithParams(indexed address,uint256,uint8,uint256,string,bytes)
+          handler: handleVoteCastWithParams
+        - event: ProposalQueued(uint256,uint256)
+          handler: handleProposalQueued
+        - event: ProposalExecuted(uint256)
+          handler: handleProposalExecuted
+        - event: ProposalCanceled(uint256)
+          handler: handleProposalCanceled
+      file: ./src/governance.ts
+  - kind: ethereum
+    name: UPToken
+    network: {{ network }}
+    source:
+      abi: UPToken
+      address: '{{token.address}}'
+      startBlock: {{ token.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Delegate
+        - DelegateSummary
+      abis:
+        - name: UPToken
+          file: ./abis/UPToken.json
+      eventHandlers:
+        - event: DelegateChanged(indexed address,indexed address,indexed address)
+          handler: handleDelegateChanged
+        - event: DelegateVotesChanged(indexed address,uint256,uint256)
+          handler: handleDelegateVotesChanged
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleUPTokenTransfer
+      file: ./src/governance.ts
+{{/governance}}
 templates:
   - kind: ethereum
     name: PublicLock

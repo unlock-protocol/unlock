@@ -17,6 +17,7 @@ const getVersions = (contractName) =>
 
 const unlockVersions = ['v11']
 const publicLockVersions = getVersions('PublicLock')
+const governanceContracts = ['UPGovernor', 'UPToken']
 
 function setupFolder() {
   // make sure we clean up
@@ -47,8 +48,13 @@ function parseAndCopyAbis() {
   setupFolder()
   publicLockVersions.map((version) => copyAbi('PublicLock', version))
   unlockVersions.map((version) => copyAbi('Unlock', version))
+  governanceContracts.map((contractName) => {
+    const { abi } = abis[contractName]
+    const abiPath = path.join(abisFolderPath, `${contractName}.json`)
+    fs.writeJSONSync(abiPath, abi, { spaces: 2 })
+  })
   console.log(
-    `Abis file saved at: ${abisFolderPath} (PublicLock : ${publicLockVersions.toString()} - Unlock: ${unlockVersions.toString()})`
+    `Abis file saved at: ${abisFolderPath} (PublicLock : ${publicLockVersions.toString()} - Unlock: ${unlockVersions.toString()} - Governance: ${governanceContracts.toString()})`
   )
 
   // merge
