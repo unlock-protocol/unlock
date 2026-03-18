@@ -4,7 +4,10 @@ export type LockIconOptions = {
   grayscale: number
 }
 
-export const lockIcon = (address: string, options: LockIconOptions) => {
+export const lockIcon = (
+  address: string,
+  options: LockIconOptions = { grayscale: 0 }
+) => {
   const grayscale = Math.min(1, Math.max(0, options.grayscale))
   const saturation = 1 - grayscale
 
