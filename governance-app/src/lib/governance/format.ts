@@ -71,5 +71,5 @@ export function percentage(value: bigint, total: bigint) {
     return '0%'
   }
 
-  return `${((Number(value) / Number(total)) * 100).toFixed(1)}%`
+  return `${(Number((value * 10000n) / total) / 100).toFixed(1)}%`
 }
