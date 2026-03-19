@@ -34,6 +34,7 @@
   "workspaces": [
     "packages/**",
     "governance",
+    "governance-app",
     "smart-contracts",
     "subgraph",
     "tests",
@@ -90,6 +91,9 @@
   },
   "engines": {
     "node": ">=20.0.0"
+  },
+  "resolutions": {
+    "next": "14.2.35"
   },
   "engineStrict": true,
   "homepage": "https://github.com/unlock-protocol/unlock#readme",
