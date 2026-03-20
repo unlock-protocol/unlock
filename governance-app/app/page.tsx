@@ -3,13 +3,20 @@ import { ProposalCard } from '~/components/proposals/ProposalCard'
 import { ProposalErrorState } from '~/components/proposals/ProposalErrorState'
 import { formatTokenAmount } from '~/lib/governance/format'
 import { getGovernanceOverview } from '~/lib/governance/proposals'
+import { getTreasuryOverview } from '~/lib/governance/treasury'
 
 export const dynamic = 'force-dynamic'
 
 export default async function HomePage() {
   try {
-    const overview = await getGovernanceOverview()
+    const [overview, treasury] = await Promise.all([
+      getGovernanceOverview(),
+      getTreasuryOverview(),
+    ])
     const recentProposals = overview.proposals.slice(0, 3)
+    const treasurySnapshot = treasury.assets
+      .filter((asset) => asset.symbol === 'ETH' || asset.symbol === 'UP')
+      .slice(0, 2)
 
     return (
       <section className="space-y-8">
@@ -54,6 +61,28 @@ export default async function HomePage() {
               label="Voting period"
               value={`${overview.votingPeriod.toString()} seconds`}
             />
+          </div>
+        </div>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between gap-4">
+            <h3 className="text-2xl font-semibold text-brand-ui-primary">
+              Treasury snapshot
+            </h3>
+            <Link
+              className="text-sm font-semibold text-brand-ui-primary"
+              href="/treasury"
+            >
+              View treasury
+            </Link>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2">
+            {treasurySnapshot.map((asset) => (
+              <StatCard
+                key={asset.symbol}
+                label={asset.symbol}
+                value={`${formatTokenAmount(asset.balance, asset.decimals)} ${asset.symbol}`}
+              />
+            ))}
           </div>
         </div>
         <div className="space-y-4">
