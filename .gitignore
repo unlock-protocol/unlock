@@ -49,5 +49,8 @@ locksmith/uploads
 .github/actions/blog/.yarn
 .github/actions/blog/.yarn/install-state.gz
 
+# Git worktrees
+.worktrees/
+
 # RPC provider worker
 provider/.wrangler/.worktrees
