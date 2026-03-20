@@ -50,6 +50,7 @@ export type GovernanceOverview = {
   latestTimestamp: bigint
   proposalThreshold: bigint
   proposals: ProposalRecord[]
+  tokenSymbol: string
   votingDelay: bigint
   votingPeriod: bigint
 }

@@ -4,6 +4,7 @@ import { UPGovernor } from '@unlock-protocol/contracts'
 import { governanceConfig } from '~/config/governance'
 
 const governorAbi = getContractAbi(UPGovernor)
+const erc20Abi = ['function symbol() view returns (string)']
 
 export const getRpcProvider = cache(
   () => new JsonRpcProvider(governanceConfig.rpcUrl, governanceConfig.chainId)
@@ -19,6 +20,14 @@ export const getGovernorContract = cache(
 )
 
 export const getGovernorInterface = cache(() => new Interface(governorAbi))
+
+export const getTokenContract = cache(
+  () => new Contract(governanceConfig.tokenAddress, erc20Abi, getRpcProvider())
+)
+
+export const getTokenSymbol = cache(async () => {
+  return (await getTokenContract().symbol()) as string
+})
 
 export const getBlockTimestamp = cache(async (blockNumber: number) => {
   const block = await getRpcProvider().getBlock(blockNumber)

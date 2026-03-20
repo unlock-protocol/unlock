@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { ProposalCard } from '~/components/proposals/ProposalCard'
 import { ProposalErrorState } from '~/components/proposals/ProposalErrorState'
-import { governanceConfig } from '~/config/governance'
 import { formatTokenAmount } from '~/lib/governance/format'
 import { getGovernanceOverview } from '~/lib/governance/proposals'
 
@@ -49,7 +48,7 @@ export default async function HomePage() {
             />
             <StatCard
               label="Proposal threshold"
-              value={`${formatTokenAmount(overview.proposalThreshold)} ${governanceConfig.tokenSymbol}`}
+              value={`${formatTokenAmount(overview.proposalThreshold)} ${overview.tokenSymbol}`}
             />
             <StatCard
               label="Voting period"
@@ -75,6 +74,7 @@ export default async function HomePage() {
                 key={proposal.id}
                 now={overview.latestTimestamp}
                 proposal={proposal}
+                tokenSymbol={overview.tokenSymbol}
               />
             ))}
           </div>

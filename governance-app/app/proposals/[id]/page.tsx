@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation'
 import { ProposalStateBadge } from '~/components/proposals/ProposalStateBadge'
 import { ProposalErrorState } from '~/components/proposals/ProposalErrorState'
-import { governanceConfig } from '~/config/governance'
 import {
   formatDateTime,
   formatRelativeTime,
@@ -82,8 +81,7 @@ export default async function ProposalDetailPage({
                   Vote breakdown
                 </h3>
                 <div className="text-sm text-brand-ui-primary/60">
-                  Quorum counts {governanceConfig.tokenSymbol} votes for +
-                  abstain
+                  Quorum counts {overview.tokenSymbol} votes for + abstain
                 </div>
               </div>
               <div className="mt-6 grid gap-4 md:grid-cols-3">
@@ -115,8 +113,7 @@ export default async function ProposalDetailPage({
                 </div>
                 <div className="mt-2 text-lg font-semibold text-brand-ui-primary">
                   {formatTokenAmount(quorumVotes)} /{' '}
-                  {formatTokenAmount(proposal.quorum)}{' '}
-                  {governanceConfig.tokenSymbol}
+                  {formatTokenAmount(proposal.quorum)} {overview.tokenSymbol}
                 </div>
               </div>
             </section>
@@ -211,7 +208,7 @@ export default async function ProposalDetailPage({
               <dl className="mt-4 space-y-4 text-sm text-brand-ui-primary/72">
                 <DetailRow
                   label="Proposal threshold"
-                  value={`${formatTokenAmount(proposal.proposalThreshold)} ${governanceConfig.tokenSymbol}`}
+                  value={`${formatTokenAmount(proposal.proposalThreshold)} ${overview.tokenSymbol}`}
                 />
                 <DetailRow
                   label="Voting delay"

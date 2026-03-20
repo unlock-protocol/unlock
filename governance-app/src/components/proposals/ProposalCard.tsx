@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { governanceConfig } from '~/config/governance'
 import {
   formatDateTime,
   formatRelativeTime,
@@ -12,12 +11,17 @@ import { ProposalStateBadge } from './ProposalStateBadge'
 type ProposalCardProps = {
   now: bigint
   proposal: ProposalRecord
+  tokenSymbol: string
 }
 
-export function ProposalCard({ now, proposal }: ProposalCardProps) {
+export function ProposalCard({
+  now,
+  proposal,
+  tokenSymbol,
+}: ProposalCardProps) {
   const quorumProgress = `${formatTokenAmount(
     proposal.forVotes + proposal.abstainVotes
-  )} / ${formatTokenAmount(proposal.quorum)} ${governanceConfig.tokenSymbol}`
+  )} / ${formatTokenAmount(proposal.quorum)} ${tokenSymbol}`
   const deadlineLabel =
     proposal.state === 'Active'
       ? `Ends ${formatRelativeTime(proposal.voteEndTimestamp, now)}`
@@ -48,9 +52,21 @@ export function ProposalCard({ now, proposal }: ProposalCardProps) {
         </div>
       </div>
       <div className="mt-6 grid gap-3 md:grid-cols-4">
-        <VoteMetric label="For" value={proposal.forVotes} />
-        <VoteMetric label="Against" value={proposal.againstVotes} />
-        <VoteMetric label="Abstain" value={proposal.abstainVotes} />
+        <VoteMetric
+          label="For"
+          tokenSymbol={tokenSymbol}
+          value={proposal.forVotes}
+        />
+        <VoteMetric
+          label="Against"
+          tokenSymbol={tokenSymbol}
+          value={proposal.againstVotes}
+        />
+        <VoteMetric
+          label="Abstain"
+          tokenSymbol={tokenSymbol}
+          value={proposal.abstainVotes}
+        />
         <div className="rounded-3xl bg-ui-secondary-200 p-4">
           <div className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-ui-primary/45">
             Quorum
@@ -64,7 +80,15 @@ export function ProposalCard({ now, proposal }: ProposalCardProps) {
   )
 }
 
-function VoteMetric({ label, value }: { label: string; value: bigint }) {
+function VoteMetric({
+  label,
+  tokenSymbol,
+  value,
+}: {
+  label: string
+  tokenSymbol: string
+  value: bigint
+}) {
   return (
     <div className="rounded-3xl bg-ui-secondary-200 p-4">
       <div className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-ui-primary/45">
@@ -73,9 +97,7 @@ function VoteMetric({ label, value }: { label: string; value: bigint }) {
       <div className="mt-2 text-lg font-semibold text-brand-ui-primary">
         {formatTokenAmount(value)}
       </div>
-      <div className="text-sm text-brand-ui-primary/65">
-        {governanceConfig.tokenSymbol}
-      </div>
+      <div className="text-sm text-brand-ui-primary/65">{tokenSymbol}</div>
     </div>
   )
 }

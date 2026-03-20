@@ -52,6 +52,7 @@ export default async function ProposalsPage({
                 key={proposal.id}
                 now={overview.latestTimestamp}
                 proposal={proposal}
+                tokenSymbol={overview.tokenSymbol}
               />
             ))
           ) : (

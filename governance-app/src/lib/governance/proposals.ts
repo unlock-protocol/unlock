@@ -4,7 +4,7 @@ import { cache } from 'react'
 import { Interface, type InterfaceAbi } from 'ethers'
 import { governanceConfig } from '~/config/governance'
 import { deriveProposalState } from './state'
-import { getGovernorContract, getLatestTimestamp } from './rpc'
+import { getGovernorContract, getLatestTimestamp, getTokenSymbol } from './rpc'
 import { getProposalsFromSubgraph } from './subgraph'
 import type {
   DecodedCalldata,
@@ -15,13 +15,19 @@ import type {
 export const getGovernanceOverview = cache(
   async (): Promise<GovernanceOverview> => {
     const governor = getGovernorContract()
-    const [latestTimestamp, proposalThreshold, votingDelay, votingPeriod] =
-      await Promise.all([
-        getLatestTimestamp(),
-        governor.proposalThreshold() as Promise<bigint>,
-        governor.votingDelay() as Promise<bigint>,
-        governor.votingPeriod() as Promise<bigint>,
-      ])
+    const [
+      latestTimestamp,
+      proposalThreshold,
+      votingDelay,
+      votingPeriod,
+      tokenSymbol,
+    ] = await Promise.all([
+      getLatestTimestamp(),
+      governor.proposalThreshold() as Promise<bigint>,
+      governor.votingDelay() as Promise<bigint>,
+      governor.votingPeriod() as Promise<bigint>,
+      getTokenSymbol(),
+    ])
 
     const rawProposals = await getProposalsFromSubgraph(proposalThreshold)
 
@@ -34,6 +40,7 @@ export const getGovernanceOverview = cache(
       latestTimestamp,
       proposalThreshold,
       proposals,
+      tokenSymbol,
       votingDelay,
       votingPeriod,
     }
