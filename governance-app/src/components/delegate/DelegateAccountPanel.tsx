@@ -26,7 +26,7 @@ type DelegateAccountState = {
   votingPower: bigint
 }
 
-export function DelegateAccountPanel() {
+export function DelegateAccountPanel({ tokenSymbol }: { tokenSymbol: string }) {
   if (!governanceEnv.privyAppId) {
     return (
       <section className="space-y-6">
@@ -191,13 +191,13 @@ function DelegateWalletPanel() {
                 label="UP balance"
                 value={`${formatTokenAmount(
                   delegationQuery.data?.tokenBalance || 0n
-                )} ${governanceConfig.tokenSymbol}`}
+                )} ${tokenSymbol}`}
               />
               <MetricCard
                 label="Current voting power"
                 value={`${formatTokenAmount(
                   delegationQuery.data?.votingPower || 0n
-                )} ${governanceConfig.tokenSymbol}`}
+                )} ${tokenSymbol}`}
               />
             </div>
 
