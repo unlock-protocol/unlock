@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { ProposalCard } from '~/components/proposals/ProposalCard'
 import { ProposalErrorState } from '~/components/proposals/ProposalErrorState'
 import { formatTokenAmount } from '~/lib/governance/format'
+import { getDelegateOverview } from '~/lib/governance/delegates'
 import { getGovernanceOverview } from '~/lib/governance/proposals'
 import { getTreasuryOverview } from '~/lib/governance/treasury'
 
@@ -9,11 +10,13 @@ export const dynamic = 'force-dynamic'
 
 export default async function HomePage() {
   try {
-    const [overview, treasury] = await Promise.all([
+    const [overview, treasury, delegates] = await Promise.all([
       getGovernanceOverview(),
       getTreasuryOverview(),
+      getDelegateOverview(),
     ])
     const recentProposals = overview.proposals.slice(0, 3)
+    const topDelegates = delegates.delegates.slice(0, 3)
     const treasurySnapshot = treasury.assets
       .filter((asset) => asset.symbol === 'ETH' || asset.symbol === 'UP')
       .slice(0, 2)
@@ -61,6 +64,28 @@ export default async function HomePage() {
               label="Voting period"
               value={`${overview.votingPeriod.toString()} seconds`}
             />
+          </div>
+        </div>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between gap-4">
+            <h3 className="text-2xl font-semibold text-brand-ui-primary">
+              Delegates snapshot
+            </h3>
+            <Link
+              className="text-sm font-semibold text-brand-ui-primary"
+              href="/delegates"
+            >
+              View delegates
+            </Link>
+          </div>
+          <div className="grid gap-4 md:grid-cols-3">
+            {topDelegates.map((delegate) => (
+              <StatCard
+                key={delegate.address}
+                label={delegate.address}
+                value={`${formatTokenAmount(delegate.votingPower)} UP`}
+              />
+            ))}
           </div>
         </div>
         <div className="space-y-4">
