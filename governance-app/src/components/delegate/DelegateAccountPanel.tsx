@@ -43,12 +43,12 @@ export function DelegateAccountPanel({ tokenSymbol }: { tokenSymbol: string }) {
   return (
     <section className="space-y-6">
       <HeroCard />
-      <DelegateWalletPanel />
+      <DelegateWalletPanel tokenSymbol={tokenSymbol} />
     </section>
   )
 }
 
-function DelegateWalletPanel() {
+function DelegateWalletPanel({ tokenSymbol }: { tokenSymbol: string }) {
   const { address, authenticated, canConnect, connect, getSigner, isReady } =
     useGovernanceWallet()
   const [delegateInput, setDelegateInput] = useState('')
