@@ -21,6 +21,7 @@ type ProposalWritePanelProps = {
   proposalId: string
   state: ProposalState
   targets: string[]
+  tokenSymbol: string
   values: string[]
   voteStartTimestamp: string
 }
@@ -53,6 +54,7 @@ function ProposalWritePanelConnected({
   proposalId,
   state,
   targets,
+  tokenSymbol,
   values,
   voteStartTimestamp,
 }: ProposalWritePanelProps) {
@@ -229,7 +231,7 @@ function ProposalWritePanelConnected({
               </div>
               <div className="mt-2 text-2xl font-semibold text-brand-ui-primary">
                 {formatTokenAmount(voteStatusQuery.data?.votingPower || 0n)}{' '}
-                {governanceConfig.tokenSymbol}
+                {tokenSymbol}
               </div>
               <p className="mt-2 text-sm leading-6 text-brand-ui-primary/70">
                 {userSupport !== null

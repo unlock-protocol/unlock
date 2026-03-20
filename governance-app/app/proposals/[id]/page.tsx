@@ -2,7 +2,6 @@ import { notFound } from 'next/navigation'
 import { ProposalStateBadge } from '~/components/proposals/ProposalStateBadge'
 import { ProposalErrorState } from '~/components/proposals/ProposalErrorState'
 import { ProposalWritePanel } from '~/components/proposals/ProposalWritePanel'
-import { governanceConfig } from '~/config/governance'
 import {
   formatDateTime,
   formatRelativeTime,
@@ -235,6 +234,7 @@ export default async function ProposalDetailPage({
               proposalId={proposal.id}
               state={proposal.state}
               targets={proposal.targets}
+              tokenSymbol={overview.tokenSymbol}
               values={proposal.values.map((value) => value.toString())}
               voteStartTimestamp={proposal.voteStartTimestamp.toString()}
             />
