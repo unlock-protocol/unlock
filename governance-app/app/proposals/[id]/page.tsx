@@ -251,8 +251,9 @@ export default async function ProposalDetailPage({
       </section>
     )
   } catch (error) {
+    console.error('[proposals/[id]/page] governance data load failed:', error)
     return (
-      <ProposalErrorState description="The proposal detail page could not load on-chain governance data from Base. Check RPC connectivity or try again shortly." />
+      <ProposalErrorState description="This proposal could not load governance data from the subgraph. Ensure BASE_SUBGRAPH_URL is set and the subgraph is reachable." />
     )
   }
 }

@@ -40,7 +40,7 @@ export default async function ProposalsPage({
               </p>
             </div>
             <div className="rounded-3xl bg-white px-5 py-4 text-sm text-brand-ui-primary/70 shadow-sm">
-              {overview.proposals.length} proposals indexed from RPC
+              {overview.proposals.length} proposals
             </div>
           </div>
         </div>
@@ -64,8 +64,9 @@ export default async function ProposalsPage({
       </section>
     )
   } catch (error) {
+    console.error('[proposals/page] getGovernanceOverview failed:', error)
     return (
-      <ProposalErrorState description="The proposals page could not load Base governance history from the governor contract. Check RPC connectivity or try again shortly." />
+      <ProposalErrorState description="The proposals page could not load governance data from the subgraph. Ensure BASE_SUBGRAPH_URL is set and the subgraph is reachable." />
     )
   }
 }

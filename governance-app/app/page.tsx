@@ -82,8 +82,9 @@ export default async function HomePage() {
       </section>
     )
   } catch (error) {
+    console.error('[home/page] governance data load failed:', error)
     return (
-      <ProposalErrorState description="The DAO home page could not load Base governance data. Check RPC connectivity or try again shortly." />
+      <ProposalErrorState description="The DAO home page could not load governance data from the subgraph. Ensure BASE_SUBGRAPH_URL is set and the subgraph is reachable." />
     )
   }
 }
