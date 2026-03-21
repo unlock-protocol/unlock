@@ -1,6 +1,6 @@
 'use client'
 
-import { useLogin, usePrivy, useWallets } from '@privy-io/react-auth'
+import { useLogin, usePrivy, useWallets, useLogout } from '@privy-io/react-auth'
 import { BrowserProvider } from 'ethers'
 import { governanceConfig } from '~/config/governance'
 import { governanceEnv } from '~/config/env'
@@ -13,6 +13,7 @@ export function useGovernanceWallet() {
   const { authenticated, ready: privyReady } = usePrivy()
   const { wallets, ready: walletsReady } = useWallets()
   const { login } = useLogin()
+  const { logout } = useLogout()
   const wallet = wallets[0] || null
 
   async function getBrowserProvider() {
@@ -55,6 +56,7 @@ export function useGovernanceWallet() {
     authenticated,
     canConnect: Boolean(governanceEnv.privyAppId),
     connect: login,
+    disconnect: logout,
     getBrowserProvider,
     getSigner,
     isReady: privyReady && walletsReady,
