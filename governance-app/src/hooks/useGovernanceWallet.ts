@@ -3,7 +3,6 @@
 import { useLogin, usePrivy, useWallets, useLogout } from '@privy-io/react-auth'
 import { BrowserProvider } from 'ethers'
 import { governanceConfig } from '~/config/governance'
-import { governanceEnv } from '~/config/env'
 
 function chainHex(chainId: number) {
   return `0x${chainId.toString(16)}`
@@ -54,7 +53,6 @@ export function useGovernanceWallet() {
   return {
     address: wallet?.address || null,
     authenticated,
-    canConnect: Boolean(governanceEnv.privyAppId),
     connect: login,
     disconnect: logout,
     getBrowserProvider,
