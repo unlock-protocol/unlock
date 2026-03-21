@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { Button, Input, ToastHelper } from '@unlock-protocol/ui'
+import { AddressInput, Button, ToastHelper } from '@unlock-protocol/ui'
 import {
   Contract,
   getAddress,
@@ -86,8 +86,15 @@ function DelegateWalletPanel({ tokenSymbol }: { tokenSymbol: string }) {
         throw new Error('Connect a wallet before delegating.')
       }
 
+      const candidate = delegateInput.trim()
+      if (!candidate) {
+        throw new Error('Enter a delegate address.')
+      }
+      if (!isAddress(candidate)) {
+        throw new Error('Enter a valid Ethereum address.')
+      }
+      const resolvedAddress = getAddress(candidate)
       const signer = await getSigner()
-      const resolvedAddress = await resolveDelegateInput(delegateInput)
       const token = new Contract(
         governanceConfig.tokenAddress,
         tokenAbi,
@@ -214,13 +221,15 @@ function DelegateWalletPanel({ tokenSymbol }: { tokenSymbol: string }) {
         </p>
 
         <div className="mt-6 space-y-4">
-          <Input
-            description="Enter an Ethereum address or ENS name."
+          <AddressInput
+            description="Enter an Ethereum address, ENS name, or Basename."
             disabled={delegateMutation.isPending}
             label="Delegate target"
-            onChange={(event) => setDelegateInput(event.target.value)}
+            onChange={(value: any) => setDelegateInput(value)}
+            onResolveName={resolveNameForInput}
             placeholder="vitalik.eth or 0x..."
             value={delegateInput}
+            withIcon
           />
           <div className="flex flex-wrap gap-3">
             <Button
@@ -307,15 +316,12 @@ function StateCard({
   )
 }
 
-async function resolveDelegateInput(value: string) {
-  const candidate = value.trim()
-
-  if (!candidate) {
-    throw new Error('Enter a delegate address or ENS name.')
-  }
+// onResolveName callback for AddressInput — returns { type, address } format
+async function resolveNameForInput(input: string) {
+  const candidate = input.trim()
 
   if (isAddress(candidate)) {
-    return getAddress(candidate)
+    return { type: 'address', address: getAddress(candidate) }
   }
 
   // ENS resolution must use mainnet where the ENS registry lives
@@ -324,9 +330,8 @@ async function resolveDelegateInput(value: string) {
     Network.from(1)
   )
   const ensAddress = await mainnetProvider.resolveName(candidate)
-
   if (ensAddress) {
-    return getAddress(ensAddress)
+    return { type: 'name', address: getAddress(ensAddress) }
   }
 
   // Basename resolution uses Base network (names registered under .base.eth)
@@ -335,10 +340,9 @@ async function resolveDelegateInput(value: string) {
     Network.from(8453)
   )
   const basenameAddress = await baseProvider.resolveName(candidate)
-
   if (basenameAddress) {
-    return getAddress(basenameAddress)
+    return { type: 'name', address: getAddress(basenameAddress) }
   }
 
-  throw new Error('Unable to resolve that ENS or Basename.')
+  return { type: 'error' }
 }
