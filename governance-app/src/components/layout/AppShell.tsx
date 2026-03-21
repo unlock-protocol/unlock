@@ -1,5 +1,7 @@
 // ABOUTME: Top-level app shell wrapping all governance pages.
 // Renders GovernanceHeader (wallet connect), content area, and Footer.
+'use client'
+
 import { Footer } from '@unlock-protocol/ui'
 import { GovernanceHeader } from './GovernanceHeader'
 import { ConnectModal } from '~/components/ConnectModal'
