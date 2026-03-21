@@ -3,6 +3,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { AddressInput, Button, ToastHelper } from '@unlock-protocol/ui'
 import {
@@ -26,7 +27,10 @@ type DelegateAccountState = {
 
 export function DelegateFormSection() {
   const { address, authenticated, getSigner } = useGovernanceWallet()
-  const [delegateInput, setDelegateInput] = useState('')
+  const searchParams = useSearchParams()
+  const [delegateInput, setDelegateInput] = useState(
+    () => searchParams.get('delegate') ?? ''
+  )
   const [addressInputKey, setAddressInputKey] = useState(0)
   const [tokenSymbol, setTokenSymbol] = useState('UP')
 
@@ -36,6 +40,14 @@ export function DelegateFormSection() {
     setDelegateInput(value)
     setAddressInputKey((k) => k + 1)
   }
+
+  // Pre-fill when the ?delegate= query param changes (e.g. from leaderboard row button).
+  useEffect(() => {
+    const target = searchParams.get('delegate')
+    if (target && isAddress(target)) {
+      setDelegateInputExternal(getAddress(target))
+    }
+  }, [searchParams])
 
   useEffect(() => {
     getTokenSymbol().then(setTokenSymbol)

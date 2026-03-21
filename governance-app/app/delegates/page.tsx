@@ -1,15 +1,31 @@
 // ABOUTME: Delegates page — personal delegation form (wallet-connected) and
 // the full delegate leaderboard ordered by voting power.
 import { ProposalErrorState } from '~/components/proposals/ProposalErrorState'
-import { DelegateLeaderboardRow } from '~/components/delegates/DelegateLeaderboardRow'
+import {
+  DelegateLeaderboardRow,
+  type DelegateRowData,
+} from '~/components/delegates/DelegateLeaderboardRow'
 import { DelegateFormSection } from '~/components/delegates/DelegateFormSection'
-import { getDelegateOverview } from '~/lib/governance/delegates'
+import {
+  getDelegateOverview,
+  formatDelegatedShare,
+} from '~/lib/governance/delegates'
+import { formatTokenAmount } from '~/lib/governance/format'
 
 export const dynamic = 'force-dynamic'
 
 export default async function DelegatesPage() {
   try {
     const overview = await getDelegateOverview()
+
+    const rows: DelegateRowData[] = overview.delegates.map((d, index) => ({
+      address: d.address,
+      rank: index + 1,
+      votingPower: formatTokenAmount(d.votingPower),
+      tokenBalance: formatTokenAmount(d.tokenBalance),
+      delegatorCount: d.delegatorCount,
+      delegatedShare: formatDelegatedShare(d.votingPower, overview.totalSupply),
+    }))
 
     return (
       <section className="space-y-8">
@@ -29,13 +45,8 @@ export default async function DelegatesPage() {
           </p>
         </div>
         <div className="grid gap-4">
-          {overview.delegates.map((delegate, index) => (
-            <DelegateLeaderboardRow
-              key={delegate.address}
-              delegate={delegate}
-              rank={index + 1}
-              totalSupply={overview.totalSupply}
-            />
+          {rows.map((row) => (
+            <DelegateLeaderboardRow key={row.address} {...row} />
           ))}
         </div>
       </section>
