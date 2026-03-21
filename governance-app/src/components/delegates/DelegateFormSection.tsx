@@ -25,7 +25,7 @@ type DelegateAccountState = {
 }
 
 export function DelegateFormSection() {
-  const { address, getSigner } = useGovernanceWallet()
+  const { address, authenticated, getSigner } = useGovernanceWallet()
   const [delegateInput, setDelegateInput] = useState('')
   const [addressInputKey, setAddressInputKey] = useState(0)
   const [tokenSymbol, setTokenSymbol] = useState('UP')
@@ -112,7 +112,7 @@ export function DelegateFormSection() {
   const isSelfDelegated =
     !isNotDelegated && delegationState.toLowerCase() === address?.toLowerCase()
 
-  if (!address) return null
+  if (!authenticated || !address) return null
 
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
