@@ -2,6 +2,8 @@
 // Renders GovernanceHeader (wallet connect), content area, and Footer.
 import { Footer } from '@unlock-protocol/ui'
 import { GovernanceHeader } from './GovernanceHeader'
+import { ConnectModal } from '~/components/ConnectModal'
+import { TermsOfServiceModal } from '~/components/TermsOfServiceModal'
 
 type AppShellProps = {
   children: React.ReactNode
@@ -43,6 +45,8 @@ const FOOTER_CONFIG = {
 export function AppShell({ children }: AppShellProps) {
   return (
     <div className="min-h-screen bg-ui-secondary-200">
+      <TermsOfServiceModal />
+      <ConnectModal />
       <GovernanceHeader />
       <main className="mx-auto max-w-7xl px-6 py-10">{children}</main>
       <Footer {...FOOTER_CONFIG} />
