@@ -51,7 +51,9 @@ export function AppShell({ children }: AppShellProps) {
       <ConnectModal />
       <GovernanceHeader />
       <main className="mx-auto max-w-7xl px-6 py-10">{children}</main>
-      <Footer {...FOOTER_CONFIG} />
+      <div className="mx-auto max-w-7xl px-6">
+        <Footer {...FOOTER_CONFIG} />
+      </div>
     </div>
   )
 }
