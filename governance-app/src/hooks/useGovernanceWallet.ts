@@ -2,6 +2,7 @@
 
 import { useLogin, usePrivy, useWallets, useLogout } from '@privy-io/react-auth'
 import { BrowserProvider } from 'ethers'
+import { useRouter } from 'next/navigation'
 import { governanceConfig } from '~/config/governance'
 
 function chainHex(chainId: number) {
@@ -12,7 +13,10 @@ export function useGovernanceWallet() {
   const { authenticated, ready: privyReady } = usePrivy()
   const { wallets, ready: walletsReady } = useWallets()
   const { login } = useLogin()
-  const { logout } = useLogout()
+  const router = useRouter()
+  const { logout } = useLogout({
+    onSuccess: () => router.refresh(),
+  })
   const wallet = wallets[0] || null
 
   async function ensureBaseNetwork() {

@@ -27,7 +27,15 @@ type DelegateAccountState = {
 export function DelegateFormSection() {
   const { address, getSigner } = useGovernanceWallet()
   const [delegateInput, setDelegateInput] = useState('')
+  const [addressInputKey, setAddressInputKey] = useState(0)
   const [tokenSymbol, setTokenSymbol] = useState('UP')
+
+  // AddressInput manages its own internal state initialized from `value` on mount.
+  // This helper increments the key to force a remount when we set the value externally.
+  function setDelegateInputExternal(value: string) {
+    setDelegateInput(value)
+    setAddressInputKey((k) => k + 1)
+  }
 
   useEffect(() => {
     getTokenSymbol().then(setTokenSymbol)
@@ -63,7 +71,7 @@ export function DelegateFormSection() {
   useEffect(() => {
     if (!delegationQuery.data || delegateInput.trim()) return
     const { delegatedTo } = delegationQuery.data
-    setDelegateInput(delegatedTo === ZeroAddress ? '' : delegatedTo)
+    setDelegateInputExternal(delegatedTo === ZeroAddress ? '' : delegatedTo)
   }, [delegateInput, delegationQuery.data])
 
   const delegateMutation = useMutation({
@@ -176,6 +184,7 @@ export function DelegateFormSection() {
 
         <div className="mt-6 space-y-4">
           <AddressInput
+            key={addressInputKey}
             description="Enter an Ethereum address, ENS name, or Basename."
             disabled={delegateMutation.isPending}
             label="Delegate target"
@@ -188,7 +197,7 @@ export function DelegateFormSection() {
           <div className="flex flex-wrap gap-3">
             <Button
               disabled={delegateMutation.isPending}
-              onClick={() => setDelegateInput(address)}
+              onClick={() => setDelegateInputExternal(address!)}
               variant="outlined-primary"
             >
               Self-delegate
