@@ -22496,6 +22496,7 @@ __metadata:
     "@unlock-protocol/ui": "workspace:./packages/ui"
     autoprefixer: "npm:10.4.21"
     eslint: "npm:9.22.0"
+    ethers: "npm:6.15.0"
     next: "npm:14.2.35"
     postcss: "npm:8.4.49"
     react: "npm:18.3.1"
