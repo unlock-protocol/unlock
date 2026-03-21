@@ -36,6 +36,5 @@ export const governanceRoutes = [
   { href: '/proposals', label: 'Proposals' },
   { href: '/delegates', label: 'Delegates' },
   { href: '/treasury', label: 'Treasury' },
-  { href: '/delegate', label: 'My Delegation' },
   { href: '/propose', label: 'New Proposal' },
 ] as const
