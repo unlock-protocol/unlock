@@ -11,14 +11,13 @@ import {
   isAddress,
   JsonRpcProvider,
   Network,
+  ZeroAddress,
 } from 'ethers'
 import Link from 'next/link'
 import { governanceConfig } from '~/config/governance'
 import { formatTokenAmount, truncateAddress } from '~/lib/governance/format'
 import { getTokenSymbol, tokenAbi } from '~/lib/governance/rpc'
 import { useGovernanceWallet } from '~/hooks/useGovernanceWallet'
-
-const zeroAddress = '0x0000000000000000000000000000000000000000'
 
 type DelegateAccountState = {
   delegatedTo: string
@@ -65,7 +64,7 @@ export default function DelegatePage() {
   useEffect(() => {
     if (!delegationQuery.data || delegateInput.trim()) return
     const { delegatedTo } = delegationQuery.data
-    setDelegateInput(delegatedTo === zeroAddress ? '' : delegatedTo)
+    setDelegateInput(delegatedTo === ZeroAddress ? '' : delegatedTo)
   }, [delegateInput, delegationQuery.data])
 
   const delegateMutation = useMutation({
@@ -101,8 +100,8 @@ export default function DelegatePage() {
     },
   })
 
-  const delegationState = delegationQuery.data?.delegatedTo || zeroAddress
-  const isNotDelegated = delegationState === zeroAddress
+  const delegationState = delegationQuery.data?.delegatedTo || ZeroAddress
+  const isNotDelegated = delegationState === ZeroAddress
   const isSelfDelegated =
     !isNotDelegated && delegationState.toLowerCase() === address?.toLowerCase()
 
