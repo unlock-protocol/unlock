@@ -4,11 +4,11 @@ import { useEffect, useState } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Input, ToastHelper } from '@unlock-protocol/ui'
 import {
-  BrowserProvider,
   Contract,
   getAddress,
   isAddress,
   JsonRpcProvider,
+  Network,
 } from 'ethers'
 import Link from 'next/link'
 import type { ReactNode } from 'react'
@@ -101,11 +101,7 @@ function DelegateWalletPanel({ tokenSymbol }: { tokenSymbol: string }) {
       }
 
       const signer = await getSigner()
-      const browserProvider = signer.provider as BrowserProvider
-      const resolvedAddress = await resolveDelegateInput(
-        delegateInput,
-        browserProvider
-      )
+      const resolvedAddress = await resolveDelegateInput(delegateInput)
       const token = new Contract(
         governanceConfig.tokenAddress,
         tokenAbi,
@@ -335,7 +331,7 @@ function StateCard({
   )
 }
 
-async function resolveDelegateInput(value: string, provider: BrowserProvider) {
+async function resolveDelegateInput(value: string) {
   const candidate = value.trim()
 
   if (!candidate) {
@@ -346,11 +342,27 @@ async function resolveDelegateInput(value: string, provider: BrowserProvider) {
     return getAddress(candidate)
   }
 
-  const resolvedAddress = await provider.resolveName(candidate)
+  // ENS resolution must use mainnet where the ENS registry lives
+  const mainnetProvider = new JsonRpcProvider(
+    governanceConfig.mainnetRpcUrl,
+    Network.from(1)
+  )
+  const ensAddress = await mainnetProvider.resolveName(candidate)
 
-  if (!resolvedAddress) {
-    throw new Error('Unable to resolve that ENS name.')
+  if (ensAddress) {
+    return getAddress(ensAddress)
   }
 
-  return getAddress(resolvedAddress)
+  // Basename resolution uses Base network (names registered under .base.eth)
+  const baseProvider = new JsonRpcProvider(
+    governanceConfig.rpcUrl,
+    Network.from(8453)
+  )
+  const basenameAddress = await baseProvider.resolveName(candidate)
+
+  if (basenameAddress) {
+    return getAddress(basenameAddress)
+  }
+
+  throw new Error('Unable to resolve that ENS or Basename.')
 }
