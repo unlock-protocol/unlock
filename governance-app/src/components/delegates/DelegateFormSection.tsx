@@ -117,18 +117,7 @@ export function DelegateFormSection() {
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
       <section className="rounded-[2rem] border border-brand-ui-primary/10 bg-white p-8 shadow-sm">
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-brand-ui-primary/45">
-              Connected wallet
-            </p>
-            <h3 className="mt-2 text-3xl font-semibold text-brand-ui-primary">
-              {truncateAddress(address, 6)}
-            </h3>
-          </div>
-        </div>
-
-        <div className="mt-6 grid gap-4 md:grid-cols-2">
+        <div className="grid gap-4 md:grid-cols-2">
           <div className="rounded-3xl bg-ui-secondary-200 p-5">
             <div className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-ui-primary/45">
               UP balance
