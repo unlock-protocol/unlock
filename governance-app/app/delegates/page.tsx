@@ -13,16 +13,6 @@ export default async function DelegatesPage() {
 
     return (
       <section className="space-y-8">
-        <div className="rounded-[2rem] border border-brand-ui-primary/10 bg-white p-8 shadow-sm">
-          <h2 className="text-4xl font-semibold text-brand-ui-primary">
-            Manage your Unlock DAO voting power
-          </h2>
-          <p className="mt-4 max-w-3xl text-base leading-7 text-brand-ui-primary/72">
-            Review your current UP balance and voting power, and delegate to
-            yourself or another address. Connect your wallet to get started.
-          </p>
-        </div>
-
         <DelegateFormSection />
 
         <div className="rounded-[2rem] border border-brand-ui-primary/10 bg-white p-8 shadow-sm">
