@@ -1,4 +1,4 @@
-import { Contract, Interface, type InterfaceAbi, JsonRpcProvider } from 'ethers'
+import { Contract, type InterfaceAbi, JsonRpcProvider } from 'ethers'
 import { cache } from 'react'
 import { UPGovernor, UPToken } from '@unlock-protocol/contracts'
 import { governanceConfig } from '~/config/governance'
@@ -18,8 +18,6 @@ export const getGovernorContract = cache(
       getRpcProvider()
     )
 )
-
-export const getGovernorInterface = cache(() => new Interface(governorAbi))
 
 export const getTokenContract = cache(
   () => new Contract(governanceConfig.tokenAddress, tokenAbi, getRpcProvider())

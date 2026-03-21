@@ -15,17 +15,12 @@ export function useGovernanceWallet() {
   const { logout } = useLogout()
   const wallet = wallets[0] || null
 
-  async function getBrowserProvider() {
+  async function ensureBaseNetwork() {
     if (!wallet) {
       throw new Error('Connect a wallet to continue.')
     }
-
     const ethereumProvider = await wallet.getEthereumProvider()
-    return new BrowserProvider(ethereumProvider, 'any')
-  }
-
-  async function ensureBaseNetwork() {
-    const provider = await getBrowserProvider()
+    const provider = new BrowserProvider(ethereumProvider, 'any')
     const network = await provider.getNetwork()
 
     if (Number(network.chainId) === governanceConfig.chainId) {
@@ -55,9 +50,7 @@ export function useGovernanceWallet() {
     authenticated,
     connect: login,
     disconnect: logout,
-    getBrowserProvider,
     getSigner,
     isReady: privyReady && walletsReady,
-    wallet,
   }
 }
