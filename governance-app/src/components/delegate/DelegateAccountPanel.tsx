@@ -1,3 +1,5 @@
+// ABOUTME: Delegation management panel — shows current delegate, token balance,
+// voting power, and a form to change the delegate. Requires a connected wallet.
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -11,7 +13,6 @@ import {
   Network,
 } from 'ethers'
 import Link from 'next/link'
-import type { ReactNode } from 'react'
 import { governanceConfig } from '~/config/governance'
 import { formatTokenAmount, truncateAddress } from '~/lib/governance/format'
 import { tokenAbi } from '~/lib/governance/rpc'
@@ -35,8 +36,7 @@ export function DelegateAccountPanel({ tokenSymbol }: { tokenSymbol: string }) {
 }
 
 function DelegateWalletPanel({ tokenSymbol }: { tokenSymbol: string }) {
-  const { address, authenticated, connect, getSigner, isReady } =
-    useGovernanceWallet()
+  const { address, getSigner } = useGovernanceWallet()
   const [delegateInput, setDelegateInput] = useState('')
 
   const delegationQuery = useQuery({
@@ -121,36 +121,14 @@ function DelegateWalletPanel({ tokenSymbol }: { tokenSymbol: string }) {
     },
   })
 
+  if (!address) {
+    return null
+  }
+
   const delegationState = delegationQuery.data?.delegatedTo || zeroAddress
   const isNotDelegated = delegationState === zeroAddress
   const isSelfDelegated =
-    !isNotDelegated &&
-    Boolean(address) &&
-    delegationState.toLowerCase() === address?.toLowerCase()
-
-  if (!authenticated) {
-    return (
-      <section className="rounded-[2rem] border border-brand-ui-primary/10 bg-white p-8 shadow-sm">
-        <p className="text-base leading-7 text-brand-ui-primary/72">
-          Connect a wallet to view your UP balance, voting power, and manage
-          your delegation.
-        </p>
-        <div className="mt-6">
-          <Button onClick={() => connect()}>Connect wallet</Button>
-        </div>
-      </section>
-    )
-  }
-
-  if (!address) {
-    return (
-      <StateCard
-        eyebrow="Waiting for wallet"
-        title={isReady ? 'Select a wallet in Privy' : 'Loading wallet state'}
-        description="Once a wallet is connected, this page will load your current delegate, token balance, and voting power."
-      />
-    )
-  }
+    !isNotDelegated && delegationState.toLowerCase() === address.toLowerCase()
 
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
@@ -233,15 +211,14 @@ function DelegateWalletPanel({ tokenSymbol }: { tokenSymbol: string }) {
           />
           <div className="flex flex-wrap gap-3">
             <Button
-              disabled={!address || delegateMutation.isPending}
-              onClick={() => setDelegateInput(address || '')}
+              disabled={delegateMutation.isPending}
+              onClick={() => setDelegateInput(address)}
               variant="outlined-primary"
             >
               Self-delegate
             </Button>
             <Button
               disabled={
-                !address ||
                 !delegateInput.trim() ||
                 delegateMutation.isPending ||
                 delegationQuery.isLoading
@@ -281,38 +258,11 @@ function HeroCard() {
         Manage your Unlock DAO voting power
       </h2>
       <p className="mt-4 max-w-3xl text-base leading-7 text-brand-ui-primary/72">
-        Connect a wallet, review your current UP balance and voting power, and
-        delegate to yourself or another address. Delegating to your own address
-        activates your voting power without handing it to someone else.
+        Review your current UP balance and voting power, and delegate to
+        yourself or another address. Delegating to your own address activates
+        your voting power without handing it to someone else.
       </p>
     </div>
-  )
-}
-
-function StateCard({
-  action,
-  description,
-  eyebrow,
-  title,
-}: {
-  action?: ReactNode
-  description: string
-  eyebrow: string
-  title: string
-}) {
-  return (
-    <section className="rounded-[2rem] border border-brand-ui-primary/10 bg-white p-8 shadow-sm">
-      <p className="text-xs font-semibold uppercase tracking-[0.24em] text-brand-ui-primary/45">
-        {eyebrow}
-      </p>
-      <h3 className="mt-4 text-3xl font-semibold text-brand-ui-primary">
-        {title}
-      </h3>
-      <p className="mt-4 max-w-2xl text-base leading-7 text-brand-ui-primary/72">
-        {description}
-      </p>
-      {action ? <div className="mt-6">{action}</div> : null}
-    </section>
   )
 }
 
