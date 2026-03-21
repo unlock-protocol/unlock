@@ -13,7 +13,6 @@ import {
 import Link from 'next/link'
 import type { ReactNode } from 'react'
 import { governanceConfig } from '~/config/governance'
-import { governanceEnv } from '~/config/env'
 import { formatTokenAmount, truncateAddress } from '~/lib/governance/format'
 import { tokenAbi } from '~/lib/governance/rpc'
 import { useGovernanceWallet } from '~/hooks/useGovernanceWallet'
@@ -27,19 +26,6 @@ type DelegateAccountState = {
 }
 
 export function DelegateAccountPanel({ tokenSymbol }: { tokenSymbol: string }) {
-  if (!governanceEnv.privyAppId) {
-    return (
-      <section className="space-y-6">
-        <HeroCard />
-        <StateCard
-          eyebrow="Wallet config required"
-          title="Privy is not configured for this environment"
-          description="Set NEXT_PUBLIC_PRIVY_APP_ID to enable wallet connection and delegation writes locally."
-        />
-      </section>
-    )
-  }
-
   return (
     <section className="space-y-6">
       <HeroCard />
@@ -49,7 +35,7 @@ export function DelegateAccountPanel({ tokenSymbol }: { tokenSymbol: string }) {
 }
 
 function DelegateWalletPanel({ tokenSymbol }: { tokenSymbol: string }) {
-  const { address, authenticated, canConnect, connect, getSigner, isReady } =
+  const { address, authenticated, connect, getSigner, isReady } =
     useGovernanceWallet()
   const [delegateInput, setDelegateInput] = useState('')
 
@@ -134,16 +120,6 @@ function DelegateWalletPanel({ tokenSymbol }: { tokenSymbol: string }) {
     !isNotDelegated &&
     Boolean(address) &&
     delegationState.toLowerCase() === address?.toLowerCase()
-
-  if (!canConnect) {
-    return (
-      <StateCard
-        eyebrow="Wallet config required"
-        title="Privy is not configured for this environment"
-        description="Set NEXT_PUBLIC_PRIVY_APP_ID to enable wallet connection and delegation writes locally."
-      />
-    )
-  }
 
   if (!authenticated) {
     return (

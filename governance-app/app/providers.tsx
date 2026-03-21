@@ -12,20 +12,20 @@ type ProviderProps = {
 }
 
 function WalletProvider({ children }: ProviderProps) {
-  if (!governanceEnv.privyAppId) {
-    return <>{children}</>
-  }
-
   return (
     <PrivyProvider
       appId={governanceEnv.privyAppId}
       config={{
-        loginMethods: ['wallet', 'email', 'google'],
+        loginMethods: ['wallet', 'email', 'google', 'farcaster'],
         embeddedWallets: {
           createOnLogin: 'off',
         },
         appearance: {
-          landingHeader: 'Unlock DAO Governance',
+          landingHeader: '',
+        },
+        // @ts-expect-error internal api
+        _render: {
+          standalone: true,
         },
       }}
     >
