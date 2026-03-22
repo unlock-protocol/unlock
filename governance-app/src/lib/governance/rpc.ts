@@ -1,10 +1,10 @@
-import { Contract, Interface, type InterfaceAbi, JsonRpcProvider } from 'ethers'
+import { Contract, type InterfaceAbi, JsonRpcProvider } from 'ethers'
 import { cache } from 'react'
 import { UPGovernor, UPToken } from '@unlock-protocol/contracts'
 import { governanceConfig } from '~/config/governance'
 
-const governorAbi = getContractAbi(UPGovernor)
-const tokenAbi = getContractAbi(UPToken)
+export const governorAbi = getContractAbi(UPGovernor)
+export const tokenAbi = getContractAbi(UPToken)
 
 export const getRpcProvider = cache(
   () => new JsonRpcProvider(governanceConfig.rpcUrl, governanceConfig.chainId)
@@ -18,8 +18,6 @@ export const getGovernorContract = cache(
       getRpcProvider()
     )
 )
-
-export const getGovernorInterface = cache(() => new Interface(governorAbi))
 
 export const getTokenContract = cache(
   () => new Contract(governanceConfig.tokenAddress, tokenAbi, getRpcProvider())
@@ -49,7 +47,7 @@ export const getLatestTimestamp = cache(async () => {
   return BigInt(block.timestamp)
 })
 
-function getContractAbi(abi: unknown): InterfaceAbi {
+export function getContractAbi(abi: unknown): InterfaceAbi {
   if (abi && typeof abi === 'object' && 'abi' in abi) {
     return (abi as { abi: InterfaceAbi }).abi
   }

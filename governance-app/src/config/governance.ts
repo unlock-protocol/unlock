@@ -5,12 +5,13 @@ import {
   PublicLock,
   Unlock,
 } from '@unlock-protocol/contracts'
-import { base } from '@unlock-protocol/networks'
+import { base, mainnet } from '@unlock-protocol/networks'
 import { governanceEnv } from './env'
 
 export const governanceConfig = {
   chainId: 8453,
   chainName: 'Base',
+  mainnetRpcUrl: governanceEnv.mainnetRpcUrl || mainnet.provider,
   governorAddress:
     base.dao?.governor || '0x65bA0624403Fc5Ca2b20479e9F626eD4D78E0aD9',
   governorStartBlock: base.startBlock || 1750000,
@@ -35,6 +36,5 @@ export const governanceRoutes = [
   { href: '/proposals', label: 'Proposals' },
   { href: '/delegates', label: 'Delegates' },
   { href: '/treasury', label: 'Treasury' },
-  { href: '/delegate', label: 'My Delegation' },
   { href: '/propose', label: 'New Proposal' },
 ] as const
