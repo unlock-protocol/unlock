@@ -27,7 +27,9 @@ async function resolveAddressName(
     )
     const basename = await baseProvider.lookupAddress(address)
     if (basename) return basename
-  } catch {}
+  } catch (_) {
+    // Basename resolution failed — fall through to ENS
+  }
 
   try {
     const mainnetProvider = new JsonRpcProvider(
@@ -36,7 +38,9 @@ async function resolveAddressName(
     )
     const ensName = await mainnetProvider.lookupAddress(address)
     if (ensName) return ensName
-  } catch {}
+  } catch (_) {
+    // ENS resolution failed — return undefined
+  }
 
   return undefined
 }
