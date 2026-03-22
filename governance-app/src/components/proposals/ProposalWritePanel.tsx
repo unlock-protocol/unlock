@@ -58,7 +58,7 @@ function ProposalWritePanelConnected({
   values,
   voteStartTimestamp,
 }: ProposalWritePanelProps) {
-  const { address, authenticated, canConnect, connect, getSigner, isReady } =
+  const { address, authenticated, connect, getSigner, isReady } =
     useGovernanceWallet()
   const router = useRouter()
   const [reason, setReason] = useState('')
@@ -197,14 +197,7 @@ function ProposalWritePanelConnected({
 
   return (
     <>
-      {!canConnect ? (
-        <WalletStateCard
-          title="Wallet actions are unavailable"
-          description="Privy is not configured in this environment."
-        />
-      ) : null}
-
-      {canConnect && !authenticated ? (
+      {!authenticated ? (
         <WalletStateCard
           action={<Button onClick={() => connect()}>Connect wallet</Button>}
           title="Connect a wallet to interact with this proposal"
@@ -212,7 +205,7 @@ function ProposalWritePanelConnected({
         />
       ) : null}
 
-      {canConnect && authenticated && !address ? (
+      {authenticated && !address ? (
         <WalletStateCard
           title={isReady ? 'Select a wallet in Privy' : 'Loading wallet state'}
           description="Once a wallet is connected, this page will load your vote status and enable governance actions."
