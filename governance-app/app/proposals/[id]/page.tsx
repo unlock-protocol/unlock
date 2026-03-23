@@ -230,13 +230,11 @@ export default async function ProposalDetailPage({
               calldatas={proposal.calldatas}
               descriptionHash={proposal.descriptionHash}
               etaSeconds={proposal.etaSeconds?.toString() || null}
-              latestTimestamp={overview.latestTimestamp.toString()}
               proposalId={proposal.id}
               state={proposal.state}
               targets={proposal.targets}
               tokenSymbol={overview.tokenSymbol}
               values={proposal.values.map((value) => value.toString())}
-              voteStartTimestamp={proposal.voteStartTimestamp.toString()}
             />
           </aside>
         </div>

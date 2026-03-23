@@ -17,13 +17,11 @@ type ProposalWritePanelProps = {
   calldatas: string[]
   descriptionHash: string
   etaSeconds: string | null
-  latestTimestamp: string
   proposalId: string
   state: ProposalState
   targets: string[]
   tokenSymbol: string
   values: string[]
-  voteStartTimestamp: string
 }
 
 type VoteStatus = {
@@ -50,19 +48,16 @@ function ProposalWritePanelConnected({
   calldatas,
   descriptionHash,
   etaSeconds,
-  latestTimestamp,
   proposalId,
   state,
   targets,
   tokenSymbol,
   values,
-  voteStartTimestamp,
 }: ProposalWritePanelProps) {
   const { address, authenticated, connect, getSigner, isReady } =
     useGovernanceWallet()
   const router = useRouter()
   const [reason, setReason] = useState('')
-  const now = BigInt(latestTimestamp)
 
   const voteStatusQuery = useQuery({
     enabled: Boolean(address),
@@ -77,17 +72,21 @@ function ProposalWritePanelConnected({
         governorAbi,
         provider
       )
+      // proposalSnapshot returns the block number used as the voting snapshot —
+      // use it as fromBlock to avoid scanning from genesis (RPC providers cap ranges).
+      const snapshotBlock = (await governor.proposalSnapshot(
+        BigInt(proposalId)
+      )) as bigint
       const [votingPower, voteEvents, voteWithParamsEvents] = await Promise.all(
         [
-          governor.getVotes(
-            address,
-            BigInt(voteStartTimestamp)
-          ) as Promise<bigint>,
+          governor.getVotes(address, snapshotBlock) as Promise<bigint>,
           governor.queryFilter(
-            governor.filters.VoteCast(address, BigInt(proposalId))
+            governor.filters.VoteCast(address, BigInt(proposalId)),
+            snapshotBlock
           ),
           governor.queryFilter(
-            governor.filters.VoteCastWithParams(address, BigInt(proposalId))
+            governor.filters.VoteCastWithParams(address, BigInt(proposalId)),
+            snapshotBlock
           ),
         ]
       )
@@ -134,7 +133,7 @@ function ProposalWritePanelConnected({
       )
     },
     onSuccess: async () => {
-      ToastHelper.success('Vote recorded on Base.')
+      ToastHelper.success(`Vote recorded on ${governanceConfig.chainName}.`)
       setReason('')
       await voteStatusQuery.refetch()
       router.refresh()
@@ -192,8 +191,10 @@ function ProposalWritePanelConnected({
     userSupport === null
 
   const canQueue = state === 'Succeeded'
+  // Use live client-side time so the button activates without a page reload.
+  const nowLive = BigInt(Math.floor(Date.now() / 1000))
   const canExecute =
-    state === 'Queued' && !!etaSeconds && now >= BigInt(etaSeconds)
+    state === 'Queued' && !!etaSeconds && nowLive >= BigInt(etaSeconds)
 
   return (
     <>
@@ -223,18 +224,21 @@ function ProposalWritePanelConnected({
                 Voting power at snapshot
               </div>
               <div className="mt-2 text-2xl font-semibold text-brand-ui-primary">
-                {formatTokenAmount(voteStatusQuery.data?.votingPower || 0n)}{' '}
-                {tokenSymbol}
+                {voteStatusQuery.isLoading
+                  ? 'Loading…'
+                  : `${formatTokenAmount(voteStatusQuery.data?.votingPower || 0n)} ${tokenSymbol}`}
               </div>
               <p className="mt-2 text-sm leading-6 text-brand-ui-primary/70">
-                {userSupport !== null
-                  ? `You voted ${supportLabel(userSupport)}.`
-                  : state !== 'Active'
-                    ? 'Voting is not currently active for this proposal.'
-                    : voteStatusQuery.data &&
-                        voteStatusQuery.data.votingPower === 0n
-                      ? 'You had no voting power at the proposal snapshot.'
-                      : 'Choose For, Against, or Abstain and optionally include a reason.'}
+                {voteStatusQuery.isLoading
+                  ? 'Fetching your voting power…'
+                  : userSupport !== null
+                    ? `You voted ${supportLabel(userSupport)}.`
+                    : state !== 'Active'
+                      ? 'Voting is not currently active for this proposal.'
+                      : voteStatusQuery.data &&
+                          voteStatusQuery.data.votingPower === 0n
+                        ? 'You had no voting power at the proposal snapshot.'
+                        : 'Choose For, Against, or Abstain and optionally include a reason.'}
               </p>
             </div>
 
@@ -297,7 +301,7 @@ function ProposalWritePanelConnected({
                   : state === 'Queued' && etaSeconds
                     ? canExecute
                       ? 'The timelock delay has elapsed. Execution is now available.'
-                      : `Execution unlocks ${formatRelativeTime(BigInt(etaSeconds), now)}.`
+                      : `Execution unlocks ${formatRelativeTime(BigInt(etaSeconds), nowLive)}.`
                     : 'Queueing and execution become available only after a proposal succeeds.'}
               </p>
             </div>
