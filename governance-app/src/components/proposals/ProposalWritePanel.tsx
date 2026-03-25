@@ -56,13 +56,14 @@ function ProposalWritePanelConnected({
     useGovernanceWallet()
   const router = useRouter()
   const [reason, setReason] = useState('')
-  // Tick every minute while Queued so canExecute activates without a reload.
+  const [pendingSupport, setPendingSupport] = useState<0 | 1 | 2 | null>(null)
+  // Tick every 15s while Queued so canExecute activates without a reload.
   const [now, setNow] = useState(() => BigInt(Math.floor(Date.now() / 1000)))
   useEffect(() => {
     if (state !== 'Queued') return
     const id = setInterval(
       () => setNow(BigInt(Math.floor(Date.now() / 1000))),
-      60_000
+      15_000
     )
     return () => clearInterval(id)
   }, [state])
@@ -80,21 +81,24 @@ function ProposalWritePanelConnected({
         governorAbi,
         provider
       )
-      // proposalSnapshot returns the block number used as the voting snapshot —
-      // use it as fromBlock to avoid scanning from genesis (RPC providers cap ranges).
-      const snapshotBlock = (await governor.proposalSnapshot(
-        BigInt(proposalId)
-      )) as bigint
+      // Bound queryFilter to the voting period to stay within RPC provider
+      // block-range caps (typically 2,000–10,000 blocks).
+      const [snapshotBlock, deadlineBlock] = await Promise.all([
+        governor.proposalSnapshot(BigInt(proposalId)) as Promise<bigint>,
+        governor.proposalDeadline(BigInt(proposalId)) as Promise<bigint>,
+      ])
       const [votingPower, voteEvents, voteWithParamsEvents] = await Promise.all(
         [
           governor.getVotes(address, snapshotBlock) as Promise<bigint>,
           governor.queryFilter(
             governor.filters.VoteCast(address, BigInt(proposalId)),
-            snapshotBlock
+            snapshotBlock,
+            deadlineBlock
           ),
           governor.queryFilter(
             governor.filters.VoteCastWithParams(address, BigInt(proposalId)),
-            snapshotBlock
+            snapshotBlock,
+            deadlineBlock
           ),
         ]
       )
@@ -118,6 +122,7 @@ function ProposalWritePanelConnected({
 
   const voteMutation = useMutation({
     mutationFn: async (support: 0 | 1 | 2) => {
+      setPendingSupport(support)
       const signer = await getSigner()
       const governor = new Contract(
         governanceConfig.governorAddress,
@@ -136,12 +141,14 @@ function ProposalWritePanelConnected({
       await tx.wait()
     },
     onError: (error) => {
+      setPendingSupport(null)
       ToastHelper.error(
         error instanceof Error ? error.message : 'Unable to cast vote.'
       )
     },
     onSuccess: async () => {
       ToastHelper.success(`Vote recorded on ${governanceConfig.chainName}.`)
+      setPendingSupport(null)
       setReason('')
       await voteStatusQuery.refetch()
       router.refresh()
@@ -266,23 +273,23 @@ function ProposalWritePanelConnected({
 
             <div className="mt-5 grid gap-3 sm:grid-cols-3">
               <Button
-                disabled={!canVote}
-                loading={voteMutation.isPending}
+                disabled={!canVote || voteMutation.isPending}
+                loading={pendingSupport === 1 && voteMutation.isPending}
                 onClick={() => voteMutation.mutate(1)}
               >
                 Vote For
               </Button>
               <Button
-                disabled={!canVote}
-                loading={voteMutation.isPending}
+                disabled={!canVote || voteMutation.isPending}
+                loading={pendingSupport === 0 && voteMutation.isPending}
                 onClick={() => voteMutation.mutate(0)}
                 variant="outlined-primary"
               >
                 Vote Against
               </Button>
               <Button
-                disabled={!canVote}
-                loading={voteMutation.isPending}
+                disabled={!canVote || voteMutation.isPending}
+                loading={pendingSupport === 2 && voteMutation.isPending}
                 onClick={() => voteMutation.mutate(2)}
                 variant="secondary"
               >
