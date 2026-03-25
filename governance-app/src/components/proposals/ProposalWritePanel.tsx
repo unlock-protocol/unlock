@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, TextBox, ToastHelper } from '@unlock-protocol/ui'
@@ -32,12 +32,10 @@ type VoteStatus = {
 export function ProposalWritePanel(props: ProposalWritePanelProps) {
   if (!governanceEnv.privyAppId) {
     return (
-      <>
-        <WalletStateCard
-          title="Wallet actions require Privy configuration"
-          description="Set NEXT_PUBLIC_PRIVY_APP_ID to enable voting, queueing, and execution flows locally."
-        />
-      </>
+      <WalletStateCard
+        title="Wallet actions require Privy configuration"
+        description="Set NEXT_PUBLIC_PRIVY_APP_ID to enable voting, queueing, and execution flows locally."
+      />
     )
   }
 
@@ -58,6 +56,16 @@ function ProposalWritePanelConnected({
     useGovernanceWallet()
   const router = useRouter()
   const [reason, setReason] = useState('')
+  // Tick every minute while Queued so canExecute activates without a reload.
+  const [now, setNow] = useState(() => BigInt(Math.floor(Date.now() / 1000)))
+  useEffect(() => {
+    if (state !== 'Queued') return
+    const id = setInterval(
+      () => setNow(BigInt(Math.floor(Date.now() / 1000))),
+      60_000
+    )
+    return () => clearInterval(id)
+  }, [state])
 
   const voteStatusQuery = useQuery({
     enabled: Boolean(address),
@@ -191,10 +199,8 @@ function ProposalWritePanelConnected({
     userSupport === null
 
   const canQueue = state === 'Succeeded'
-  // Use live client-side time so the button activates without a page reload.
-  const nowLive = BigInt(Math.floor(Date.now() / 1000))
   const canExecute =
-    state === 'Queued' && !!etaSeconds && nowLive >= BigInt(etaSeconds)
+    state === 'Queued' && !!etaSeconds && now >= BigInt(etaSeconds)
 
   return (
     <>
@@ -226,19 +232,23 @@ function ProposalWritePanelConnected({
               <div className="mt-2 text-2xl font-semibold text-brand-ui-primary">
                 {voteStatusQuery.isLoading
                   ? 'Loading…'
-                  : `${formatTokenAmount(voteStatusQuery.data?.votingPower || 0n)} ${tokenSymbol}`}
+                  : voteStatusQuery.isError
+                    ? 'Unavailable'
+                    : `${formatTokenAmount(voteStatusQuery.data?.votingPower || 0n)} ${tokenSymbol}`}
               </div>
               <p className="mt-2 text-sm leading-6 text-brand-ui-primary/70">
                 {voteStatusQuery.isLoading
                   ? 'Fetching your voting power…'
-                  : userSupport !== null
-                    ? `You voted ${supportLabel(userSupport)}.`
-                    : state !== 'Active'
-                      ? 'Voting is not currently active for this proposal.'
-                      : voteStatusQuery.data &&
-                          voteStatusQuery.data.votingPower === 0n
-                        ? 'You had no voting power at the proposal snapshot.'
-                        : 'Choose For, Against, or Abstain and optionally include a reason.'}
+                  : voteStatusQuery.isError
+                    ? 'Could not load vote status. Check your connection and reload.'
+                    : userSupport !== null
+                      ? `You voted ${supportLabel(userSupport)}.`
+                      : state !== 'Active'
+                        ? 'Voting is not currently active for this proposal.'
+                        : voteStatusQuery.data &&
+                            voteStatusQuery.data.votingPower === 0n
+                          ? 'You had no voting power at the proposal snapshot.'
+                          : 'Choose For, Against, or Abstain and optionally include a reason.'}
               </p>
             </div>
 
@@ -301,7 +311,7 @@ function ProposalWritePanelConnected({
                   : state === 'Queued' && etaSeconds
                     ? canExecute
                       ? 'The timelock delay has elapsed. Execution is now available.'
-                      : `Execution unlocks ${formatRelativeTime(BigInt(etaSeconds), nowLive)}.`
+                      : `Execution unlocks ${formatRelativeTime(BigInt(etaSeconds), now)}.`
                     : 'Queueing and execution become available only after a proposal succeeds.'}
               </p>
             </div>
