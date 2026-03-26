@@ -113,7 +113,8 @@ function ProposalWritePanelConnected({
         : await governor.castVote(BigInt(proposalId), support)
 
       ToastHelper.success('Vote transaction submitted.')
-      await tx.wait()
+      const receipt = await tx.wait()
+      if (receipt?.status === 0) throw new Error('Vote transaction reverted.')
     },
     onError: (error) => {
       setPendingSupport(null)
@@ -158,7 +159,12 @@ function ProposalWritePanelConnected({
           ? 'Queue transaction submitted.'
           : 'Execution transaction submitted.'
       )
-      await tx.wait()
+      const receipt = await tx.wait()
+      if (receipt?.status === 0) {
+        throw new Error(
+          `${action === 'queue' ? 'Queue' : 'Execution'} transaction reverted.`
+        )
+      }
     },
     onError: (error) => {
       ToastHelper.error(
@@ -346,11 +352,12 @@ async function fetchVoteFromSubgraph(
 ): Promise<number | null> {
   // Vote ID in the subgraph is "<proposalId>-<lowercaseAddress>" (from Address.toHexString()).
   const id = `${proposalId}-${voter.toLowerCase()}`
-  const query = `{ vote(id: "${id}") { support } }`
+  // Use variables to avoid GraphQL string injection.
+  const query = `query ($id: ID!) { vote(id: $id) { support } }`
   const response = await fetch(governanceConfig.subgraphUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ query }),
+    body: JSON.stringify({ query, variables: { id } }),
   })
   if (!response.ok) return null
   const json = await response.json()
