@@ -81,42 +81,17 @@ function ProposalWritePanelConnected({
         governorAbi,
         provider
       )
-      // Bound queryFilter to the voting period to stay within RPC provider
-      // block-range caps (typically 2,000–10,000 blocks).
-      const [snapshotBlock, deadlineBlock] = await Promise.all([
-        governor.proposalSnapshot(BigInt(proposalId)) as Promise<bigint>,
-        governor.proposalDeadline(BigInt(proposalId)) as Promise<bigint>,
+      // Query votingPower and the user's cast vote in parallel.
+      // Vote lookup uses the subgraph to avoid queryFilter block-range limits.
+      const snapshotBlock = (await governor.proposalSnapshot(
+        BigInt(proposalId)
+      )) as bigint
+      const [votingPower, voteData] = await Promise.all([
+        governor.getVotes(address, snapshotBlock) as Promise<bigint>,
+        fetchVoteFromSubgraph(proposalId, address!),
       ])
-      const [votingPower, voteEvents, voteWithParamsEvents] = await Promise.all(
-        [
-          governor.getVotes(address, snapshotBlock) as Promise<bigint>,
-          governor.queryFilter(
-            governor.filters.VoteCast(address, BigInt(proposalId)),
-            snapshotBlock,
-            deadlineBlock
-          ),
-          governor.queryFilter(
-            governor.filters.VoteCastWithParams(address, BigInt(proposalId)),
-            snapshotBlock,
-            deadlineBlock
-          ),
-        ]
-      )
 
-      const latestVoteEvent = [...voteEvents, ...voteWithParamsEvents].sort(
-        (left, right) => right.blockNumber - left.blockNumber
-      )[0]
-      const parsedVote = latestVoteEvent
-        ? governor.interface.parseLog(latestVoteEvent)
-        : null
-
-      return {
-        support:
-          parsedVote && 'support' in parsedVote.args
-            ? Number(parsedVote.args.support)
-            : null,
-        votingPower,
-      }
+      return { support: voteData, votingPower }
     },
   })
 
@@ -363,6 +338,24 @@ function WalletStateCard({
       {action ? <div className="mt-5">{action}</div> : null}
     </section>
   )
+}
+
+async function fetchVoteFromSubgraph(
+  proposalId: string,
+  voter: string
+): Promise<number | null> {
+  // Vote ID in the subgraph is "<proposalId>-<lowercaseAddress>" (from Address.toHexString()).
+  const id = `${proposalId}-${voter.toLowerCase()}`
+  const query = `{ vote(id: "${id}") { support } }`
+  const response = await fetch(governanceConfig.subgraphUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query }),
+  })
+  if (!response.ok) return null
+  const json = await response.json()
+  const vote = json?.data?.vote
+  return vote ? Number(vote.support) : null
 }
 
 function supportLabel(support: number) {
