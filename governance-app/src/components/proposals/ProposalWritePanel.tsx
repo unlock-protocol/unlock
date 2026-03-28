@@ -4,13 +4,13 @@ import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, TextBox, ToastHelper } from '@unlock-protocol/ui'
-import { Contract, JsonRpcProvider } from 'ethers'
+import { Contract } from 'ethers'
 import { useRouter } from 'next/navigation'
 import { governanceEnv } from '~/config/env'
 import { governanceConfig } from '~/config/governance'
 import { useGovernanceWallet } from '~/hooks/useGovernanceWallet'
 import { formatRelativeTime, formatTokenAmount } from '~/lib/governance/format'
-import { governorAbi } from '~/lib/governance/rpc'
+import { getRpcProvider, governorAbi } from '~/lib/governance/rpc'
 import type { ProposalState } from '~/lib/governance/types'
 
 type ProposalWritePanelProps = {
@@ -72,14 +72,10 @@ function ProposalWritePanelConnected({
     enabled: Boolean(address),
     queryKey: ['proposal-vote-status', proposalId, address],
     queryFn: async (): Promise<VoteStatus> => {
-      const provider = new JsonRpcProvider(
-        governanceConfig.rpcUrl,
-        governanceConfig.chainId
-      )
       const governor = new Contract(
         governanceConfig.governorAddress,
         governorAbi,
-        provider
+        getRpcProvider()
       )
       // Query votingPower and the user's cast vote in parallel.
       // Vote lookup uses the subgraph to avoid queryFilter block-range limits.
@@ -114,8 +110,7 @@ function ProposalWritePanelConnected({
         : await governor.castVote(BigInt(proposalId), support)
 
       ToastHelper.success('Vote transaction submitted.')
-      const receipt = await tx.wait()
-      if (receipt?.status === 0) throw new Error('Vote transaction reverted.')
+      await tx.wait()
     },
     onError: (error) => {
       setPendingSupport(null)
@@ -160,12 +155,7 @@ function ProposalWritePanelConnected({
           ? 'Queue transaction submitted.'
           : 'Execution transaction submitted.'
       )
-      const receipt = await tx.wait()
-      if (receipt?.status === 0) {
-        throw new Error(
-          `${action === 'queue' ? 'Queue' : 'Execution'} transaction reverted.`
-        )
-      }
+      await tx.wait()
     },
     onError: (error) => {
       ToastHelper.error(
@@ -307,7 +297,9 @@ function ProposalWritePanelConnected({
 
             <div className="mt-5">
               <Button
-                disabled={!canQueue && !canExecute}
+                disabled={
+                  (!canQueue && !canExecute) || actionMutation.isPending
+                }
                 loading={actionMutation.isPending}
                 onClick={() =>
                   actionMutation.mutate(canQueue ? 'queue' : 'execute')
