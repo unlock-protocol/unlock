@@ -98,6 +98,7 @@ function ProposalWritePanelConnected({
   const voteMutation = useMutation({
     mutationFn: async (support: 0 | 1 | 2) => {
       setPendingSupport(support)
+      // getSigner() calls ensureBaseNetwork() which switches to Base or throws.
       const signer = await getSigner()
       const governor = new Contract(
         governanceConfig.governorAddress,
@@ -359,8 +360,12 @@ async function fetchVoteFromSubgraph(
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query, variables: { id } }),
   })
-  if (!response.ok) return null
+  if (!response.ok)
+    throw new Error(`Subgraph request failed: ${response.status}`)
   const json = await response.json()
+  if (json?.errors?.length)
+    throw new Error(`Subgraph error: ${json.errors[0].message}`)
+  // null means the vote entity does not exist — user has not voted.
   const vote = json?.data?.vote
   return vote ? Number(vote.support) : null
 }
