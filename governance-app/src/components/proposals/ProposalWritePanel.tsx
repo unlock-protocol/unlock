@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Button, TextBox, ToastHelper } from '@unlock-protocol/ui'
 import { Contract } from 'ethers'
 import { useRouter } from 'next/navigation'
@@ -55,6 +55,7 @@ function ProposalWritePanelConnected({
   const { address, authenticated, connect, getSigner, isReady } =
     useGovernanceWallet()
   const router = useRouter()
+  const queryClient = useQueryClient()
   const [reason, setReason] = useState('')
   const [pendingSupport, setPendingSupport] = useState<0 | 1 | 2 | null>(null)
   // Tick every 15s while Queued so canExecute activates without a reload.
@@ -109,7 +110,7 @@ function ProposalWritePanelConnected({
           )
         : await governor.castVote(BigInt(proposalId), support)
 
-      ToastHelper.success('Vote transaction submitted.')
+      ToastHelper.success(`Vote submitted — tx: ${tx.hash.slice(0, 10)}…`)
       await tx.wait()
     },
     onError: (error) => {
@@ -118,11 +119,18 @@ function ProposalWritePanelConnected({
         error instanceof Error ? error.message : 'Unable to cast vote.'
       )
     },
-    onSuccess: async () => {
+    onSuccess: async (_, support) => {
       ToastHelper.success(`Vote recorded on ${governanceConfig.chainName}.`)
       setPendingSupport(null)
       setReason('')
-      await voteStatusQuery.refetch()
+      // Optimistically update the query cache — the subgraph lags behind chain
+      // state, so refetching immediately would return stale data and re-enable
+      // the vote buttons. Setting the cache directly keeps the UI consistent.
+      queryClient.setQueryData(
+        ['proposal-vote-status', proposalId, address],
+        (prev: VoteStatus | undefined) =>
+          prev ? { ...prev, support } : undefined
+      )
       router.refresh()
     },
   })
@@ -151,9 +159,7 @@ function ProposalWritePanelConnected({
             )
 
       ToastHelper.success(
-        action === 'queue'
-          ? 'Queue transaction submitted.'
-          : 'Execution transaction submitted.'
+        `${action === 'queue' ? 'Queue' : 'Execution'} submitted — tx: ${tx.hash.slice(0, 10)}…`
       )
       await tx.wait()
     },
