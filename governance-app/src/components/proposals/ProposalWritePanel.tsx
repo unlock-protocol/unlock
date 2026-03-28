@@ -304,9 +304,7 @@ function ProposalWritePanelConnected({
             <div className="mt-5">
               <Button
                 disabled={
-                  (!canQueue && !canExecute) ||
-                  actionMutation.isPending ||
-                  actionMutation.isSuccess
+                  (!canQueue && !canExecute) || actionMutation.isPending
                 }
                 loading={actionMutation.isPending}
                 onClick={() =>
@@ -372,7 +370,9 @@ async function fetchVoteFromSubgraph(
     throw new Error(`Subgraph error: ${json.errors[0].message}`)
   // null means the vote entity does not exist — user has not voted.
   const vote = json?.data?.vote
-  return vote ? Number(vote.support) : null
+  if (!vote) return null
+  const support = Number(vote.support)
+  return [0, 1, 2].includes(support) ? support : null
 }
 
 function toUserMessage(error: unknown, fallback: string): string {
