@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Button, TextBox, ToastHelper } from '@unlock-protocol/ui'
-import { Contract } from 'ethers'
+import { Contract, isError } from 'ethers'
 import { useRouter } from 'next/navigation'
 import { governanceEnv } from '~/config/env'
 import { governanceConfig } from '~/config/governance'
@@ -219,7 +219,7 @@ function ProposalWritePanelConnected({
                   ? 'Loading…'
                   : voteStatusQuery.isError
                     ? 'Unavailable'
-                    : `${formatTokenAmount(voteStatusQuery.data?.votingPower || 0n)} ${tokenSymbol}`}
+                    : `${formatTokenAmount(voteStatusQuery.data?.votingPower ?? 0n)} ${tokenSymbol}`}
               </div>
               <p className="mt-2 text-sm leading-6 text-brand-ui-primary/70">
                 {voteStatusQuery.isLoading
@@ -378,8 +378,10 @@ async function fetchVoteFromSubgraph(
 function toUserMessage(error: unknown, fallback: string): string {
   if (!(error instanceof Error)) return fallback
   // ethers ACTION_REJECTED = user cancelled the wallet popup
-  if ((error as any).code === 'ACTION_REJECTED') return 'Transaction rejected.'
-  return error.message.slice(0, 120)
+  if (isError(error, 'ACTION_REJECTED')) return 'Transaction rejected.'
+  // Trim verbose RPC/revert data before showing to the user.
+  const msg = error.message.replace(/\s*\(.*\)\s*$/, '').trim()
+  return msg.slice(0, 120) || fallback
 }
 
 function supportLabel(support: number) {
