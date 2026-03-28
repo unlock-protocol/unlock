@@ -172,6 +172,9 @@ function ProposalWritePanelConnected({
       ToastHelper.success(
         action === 'queue' ? 'Proposal queued.' : 'Proposal executed.'
       )
+      queryClient.invalidateQueries({
+        queryKey: ['proposal-vote-status', proposalId, address],
+      })
       router.refresh()
     },
   })
@@ -315,7 +318,9 @@ function ProposalWritePanelConnected({
                   ? 'Queue proposal'
                   : canExecute
                     ? 'Execute proposal'
-                    : 'No action available'}
+                    : state === 'Queued'
+                      ? 'Waiting for timelock'
+                      : 'No action available'}
               </Button>
             </div>
           </section>
