@@ -120,7 +120,7 @@ function ProposalWritePanelConnected({
       )
     },
     onSuccess: async (_, support) => {
-      ToastHelper.success(`Vote recorded on ${governanceConfig.chainName}.`)
+      ToastHelper.success(`Vote confirmed on ${governanceConfig.chainName}.`)
       setPendingSupport(null)
       setReason('')
       // Optimistically update the query cache — the subgraph lags behind chain
@@ -349,7 +349,9 @@ async function fetchVoteFromSubgraph(
   proposalId: string,
   voter: string
 ): Promise<number | null> {
-  // Vote ID in the subgraph is "<proposalId>-<lowercaseAddress>" (from Address.toHexString()).
+  // Vote ID in the subgraph is "<proposalId>-<lowercaseAddress>".
+  // Format defined in subgraph/src/governance.ts createVote():
+  //   new Vote(proposalId.toString().concat('-').concat(voter.toHexString()))
   const id = `${proposalId}-${voter.toLowerCase()}`
   // Use variables to avoid GraphQL string injection.
   const query = `query ($id: ID!) { vote(id: $id) { support } }`
