@@ -83,9 +83,10 @@ function ProposalWritePanelConnected({
       const snapshotBlock = (await governor.proposalSnapshot(
         BigInt(proposalId)
       )) as bigint
+      if (!address) return { support: null, votingPower: 0n }
       const [votingPower, voteData] = await Promise.all([
         governor.getVotes(address, snapshotBlock) as Promise<bigint>,
-        fetchVoteFromSubgraph(proposalId, address!),
+        fetchVoteFromSubgraph(proposalId, address),
       ])
 
       return { support: voteData, votingPower }
@@ -115,9 +116,7 @@ function ProposalWritePanelConnected({
     },
     onError: (error) => {
       setPendingSupport(null)
-      ToastHelper.error(
-        error instanceof Error ? error.message : 'Unable to cast vote.'
-      )
+      ToastHelper.error(toUserMessage(error, 'Unable to cast vote.'))
     },
     onSuccess: async (_, support) => {
       ToastHelper.success(`Vote confirmed on ${governanceConfig.chainName}.`)
@@ -164,9 +163,7 @@ function ProposalWritePanelConnected({
       await tx.wait()
     },
     onError: (error) => {
-      ToastHelper.error(
-        error instanceof Error ? error.message : 'Unable to submit action.'
-      )
+      ToastHelper.error(toUserMessage(error, 'Unable to submit action.'))
     },
     onSuccess: async (_, action) => {
       ToastHelper.success(
@@ -307,7 +304,9 @@ function ProposalWritePanelConnected({
             <div className="mt-5">
               <Button
                 disabled={
-                  (!canQueue && !canExecute) || actionMutation.isPending
+                  (!canQueue && !canExecute) ||
+                  actionMutation.isPending ||
+                  actionMutation.isSuccess
                 }
                 loading={actionMutation.isPending}
                 onClick={() =>
@@ -364,6 +363,7 @@ async function fetchVoteFromSubgraph(
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query, variables: { id } }),
+    signal: AbortSignal.timeout(10_000),
   })
   if (!response.ok)
     throw new Error(`Subgraph request failed: ${response.status}`)
@@ -373,6 +373,13 @@ async function fetchVoteFromSubgraph(
   // null means the vote entity does not exist — user has not voted.
   const vote = json?.data?.vote
   return vote ? Number(vote.support) : null
+}
+
+function toUserMessage(error: unknown, fallback: string): string {
+  if (!(error instanceof Error)) return fallback
+  // ethers ACTION_REJECTED = user cancelled the wallet popup
+  if ((error as any).code === 'ACTION_REJECTED') return 'Transaction rejected.'
+  return error.message.slice(0, 120)
 }
 
 function supportLabel(support: number) {
