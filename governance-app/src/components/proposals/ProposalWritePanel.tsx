@@ -126,12 +126,14 @@ function ProposalWritePanelConnected({
       // Optimistically update the query cache — the subgraph lags behind chain
       // state, so refetching immediately would return stale data and re-enable
       // the vote buttons. Setting the cache directly keeps the UI consistent.
+      // router.refresh() is intentionally omitted here: RSC page data does not
+      // change when a vote is cast, and calling it would race against the
+      // optimistic update by triggering a background refetch of stale data.
       queryClient.setQueryData(
         ['proposal-vote-status', proposalId, address],
         (prev: VoteStatus | undefined) =>
           prev ? { ...prev, support } : undefined
       )
-      router.refresh()
     },
   })
 

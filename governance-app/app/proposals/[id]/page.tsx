@@ -74,14 +74,25 @@ export default async function ProposalDetailPage({
               <div className="prose prose-sm text-brand-ui-primary/72">
                 <ReactMarkdown
                   components={{
-                    // Proposal descriptions are user-controlled (on-chain). Open
-                    // links in a new tab with noopener noreferrer to prevent
-                    // tab-napping and mitigate phishing via crafted hrefs.
-                    a: ({ href, children }) => (
-                      <a href={href} rel="noopener noreferrer" target="_blank">
-                        {children}
-                      </a>
-                    ),
+                    // Proposal descriptions are user-controlled (on-chain).
+                    // Only allow http/https hrefs — data: and other non-http
+                    // schemes are not blocked by React 18 and could be abused.
+                    a: ({ href, children }) => {
+                      const safe =
+                        href?.startsWith('https://') ||
+                        href?.startsWith('http://')
+                      return safe ? (
+                        <a
+                          href={href}
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          {children}
+                        </a>
+                      ) : (
+                        <span>{children}</span>
+                      )
+                    },
                   }}
                 >
                   {proposal.description}

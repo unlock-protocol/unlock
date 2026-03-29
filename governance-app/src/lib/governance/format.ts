@@ -71,9 +71,9 @@ export function formatDuration(seconds: bigint | number) {
   if (days) parts.push(`${days}d`)
   if (hours) parts.push(`${hours}h`)
   if (minutes) parts.push(`${minutes}m`)
-  // Seconds are intentionally omitted for multi-day durations — the precision
-  // is not useful when displaying governance delay/period values to users.
-  if (secs && !days) parts.push(`${secs}s`)
+  // Seconds are shown only for sub-hour durations — once hours or days are
+  // present the precision is not useful for governance delay/period display.
+  if (secs && !days && !hours) parts.push(`${secs}s`)
 
   return parts.join(' ')
 }
