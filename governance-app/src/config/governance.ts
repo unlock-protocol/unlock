@@ -33,10 +33,12 @@ export const governanceConfig = {
 } as const
 
 export function txExplorerUrl(hash: string) {
+  if (!/^0x[0-9a-fA-F]{64}$/.test(hash)) return null
   return `${governanceConfig.explorerUrl}/tx/${hash}`
 }
 
 export function addressExplorerUrl(address: string) {
+  if (!/^0x[0-9a-fA-F]{40}$/.test(address)) return null
   return `${governanceConfig.explorerUrl}/address/${address}`
 }
 

@@ -247,7 +247,10 @@ function ProposalWritePanelConnected({
 
   const canQueue = state === 'Succeeded'
   const canExecute =
-    state === 'Queued' && !!etaSeconds && now >= BigInt(etaSeconds)
+    state === 'Queued' &&
+    etaSeconds !== null &&
+    BigInt(etaSeconds) > 0n &&
+    now >= BigInt(etaSeconds)
 
   return (
     <>
@@ -290,16 +293,17 @@ function ProposalWritePanelConnected({
                     {formatDateTime(castVote.createdAt)}
                   </p>
                 )}
-                {castVote.transactionHash && (
-                  <a
-                    className="mt-2 block text-sm text-brand-ui-primary/65 underline hover:text-brand-ui-primary"
-                    href={txExplorerUrl(castVote.transactionHash)}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    View in block explorer
-                  </a>
-                )}
+                {castVote.transactionHash &&
+                  txExplorerUrl(castVote.transactionHash) && (
+                    <a
+                      className="mt-2 block text-sm text-brand-ui-primary/65 underline hover:text-brand-ui-primary"
+                      href={txExplorerUrl(castVote.transactionHash)!}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      View in block explorer
+                    </a>
+                  )}
               </div>
             </section>
           ) : /* While loading, show nothing to avoid a flash of the vote form. */
@@ -419,6 +423,7 @@ function ProposalWritePanelConnected({
               {(canQueue || canExecute) && (
                 <div className="mt-5">
                   <Button
+                    disabled={actionMutation.isPending}
                     loading={actionMutation.isPending}
                     onClick={() =>
                       actionMutation.mutate(canQueue ? 'queue' : 'execute')

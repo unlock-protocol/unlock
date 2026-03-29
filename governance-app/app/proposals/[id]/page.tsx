@@ -104,7 +104,7 @@ export default async function ProposalDetailPage({
                     },
                   }}
                 >
-                  {proposal.description.replace(/^[^\n]*\n?/, '')}
+                  {proposal.description.replace(/^[^\r\n]*[\r\n]+/, '')}
                 </ReactMarkdown>
               </div>
             </div>
@@ -112,7 +112,9 @@ export default async function ProposalDetailPage({
               Proposed by{' '}
               <AddressLink
                 address={proposal.proposer}
-                externalLinkUrl={addressExplorerUrl(proposal.proposer)}
+                externalLinkUrl={
+                  addressExplorerUrl(proposal.proposer) ?? undefined
+                }
                 showExternalLink
               />
             </div>
@@ -202,7 +204,7 @@ export default async function ProposalDetailPage({
                 <dd className="mt-1 font-medium text-brand-ui-primary">
                   <a
                     className="underline hover:text-brand-ui-primary/70"
-                    href={txExplorerUrl(proposal.transactionHash)}
+                    href={txExplorerUrl(proposal.transactionHash) ?? '#'}
                     rel="noopener noreferrer"
                     target="_blank"
                   >
