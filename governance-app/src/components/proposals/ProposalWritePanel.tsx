@@ -10,7 +10,11 @@ import { governanceEnv } from '~/config/env'
 import { governanceConfig } from '~/config/governance'
 import { useConnectModal } from '~/hooks/useConnectModal'
 import { useGovernanceWallet } from '~/hooks/useGovernanceWallet'
-import { formatRelativeTime, formatTokenAmount } from '~/lib/governance/format'
+import {
+  formatDateTime,
+  formatRelativeTime,
+  formatTokenAmount,
+} from '~/lib/governance/format'
 import {
   getTokenContract,
   getRpcProvider,
@@ -29,8 +33,14 @@ type ProposalWritePanelProps = {
   values: string[]
 }
 
+type CastVote = {
+  support: number
+  createdAt: bigint
+  transactionHash: string
+}
+
 type VoteStatus = {
-  support: number | null
+  castVote: CastVote | null
   tokenBalance: bigint
   votingPower: bigint
 }
@@ -91,14 +101,14 @@ function ProposalWritePanelConnected({
       const snapshotBlock = (await governor.proposalSnapshot(
         BigInt(proposalId)
       )) as bigint
-      if (!address) return { support: null, tokenBalance: 0n, votingPower: 0n }
-      const [votingPower, tokenBalance, voteData] = await Promise.all([
+      if (!address) return { castVote: null, tokenBalance: 0n, votingPower: 0n }
+      const [votingPower, tokenBalance, castVote] = await Promise.all([
         governor.getVotes(address, snapshotBlock) as Promise<bigint>,
         getTokenContract().balanceOf(address) as Promise<bigint>,
         fetchVoteFromSubgraph(proposalId, address),
       ])
 
-      return { support: voteData, tokenBalance, votingPower }
+      return { castVote, tokenBalance, votingPower }
     },
   })
 
@@ -140,7 +150,17 @@ function ProposalWritePanelConnected({
       queryClient.setQueryData(
         ['proposal-vote-status', proposalId, address],
         (prev: VoteStatus | undefined) =>
-          prev ? { ...prev, support } : undefined
+          prev
+            ? {
+                ...prev,
+                castVote: {
+                  support,
+                  // Approximate timestamp; subgraph will have the real value on next fetch.
+                  createdAt: BigInt(Math.floor(Date.now() / 1000)),
+                  transactionHash: '',
+                },
+              }
+            : undefined
       )
     },
   })
@@ -212,12 +232,13 @@ function ProposalWritePanelConnected({
     },
   })
 
-  const userSupport = voteStatusQuery.data?.support ?? null
+  const castVote = voteStatusQuery.data?.castVote ?? null
   const canVote =
     state === 'Active' &&
+    !voteStatusQuery.isLoading &&
     voteStatusQuery.data &&
     voteStatusQuery.data.votingPower > 0n &&
-    userSupport === null
+    castVote === null
 
   const canQueue = state === 'Succeeded'
   const canExecute =
@@ -242,107 +263,116 @@ function ProposalWritePanelConnected({
 
       {address ? (
         <>
-          {/* Show cast vote only when voting is open or the user already voted. */}
-          {state === 'Active' || userSupport !== null ? (
-            <>
-              {/* User already voted — show confirmation, no form. */}
-              {userSupport !== null ? (
-                <WalletStateCard
-                  title={`You voted ${supportLabel(userSupport)}`}
-                  description="Your vote has been recorded on-chain for this proposal."
-                />
-              ) : /* No voting power — either no tokens or tokens not delegated. */
-              !voteStatusQuery.isLoading &&
-                !voteStatusQuery.isError &&
-                voteStatusQuery.data?.votingPower === 0n ? (
-                <WalletStateCard
-                  title="No voting power"
-                  description={
-                    voteStatusQuery.data.tokenBalance > 0n
-                      ? `You held ${formatTokenAmount(voteStatusQuery.data.tokenBalance)} ${tokenSymbol} but had not delegated at the proposal snapshot. Delegate your tokens before the next proposal to participate.`
-                      : `You held no ${tokenSymbol} at the proposal snapshot block.`
-                  }
-                  action={
-                    voteStatusQuery.data.tokenBalance > 0n ? (
-                      <Button
-                        as="a"
-                        href="/delegates"
-                        size="small"
-                        variant="outlined-primary"
-                      >
-                        Delegate tokens
-                      </Button>
-                    ) : undefined
-                  }
-                />
-              ) : (
-                <section className="rounded-[2rem] border border-brand-ui-primary/10 bg-white p-6 shadow-sm">
-                  <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-ui-primary/55">
-                    Cast vote
-                  </h3>
-                  <div className="mt-4 rounded-3xl bg-ui-secondary-200 p-5">
-                    <div className="text-sm text-brand-ui-primary/65">
-                      Voting power at snapshot
-                    </div>
-                    <div className="mt-2 text-2xl font-semibold text-brand-ui-primary">
-                      {voteStatusQuery.isLoading
-                        ? 'Loading…'
-                        : voteStatusQuery.isError
-                          ? 'Unavailable'
-                          : `${formatTokenAmount(voteStatusQuery.data?.votingPower ?? 0n)} ${tokenSymbol}`}
-                    </div>
-                    <p className="mt-2 text-sm leading-6 text-brand-ui-primary/70">
-                      {voteStatusQuery.isLoading
-                        ? 'Fetching your voting power…'
-                        : voteStatusQuery.isError
-                          ? 'Could not load vote status. Check your connection and reload.'
-                          : 'Choose For, Against, or Abstain and optionally include a reason.'}
-                    </p>
-                  </div>
-
-                  <div className="mt-5">
-                    <TextBox
-                      description="Optional reason submitted on-chain with your vote."
-                      disabled={voteMutation.isPending}
-                      label="Vote reason"
-                      onChange={(event) => setReason(event.target.value)}
-                      placeholder="Share your rationale"
-                      rows={4}
-                      value={reason}
-                    />
-                  </div>
-
-                  <div className="mt-5 grid grid-cols-3 gap-2">
+          {/* Already voted — show confirmation with date and tx. Never show form. */}
+          {castVote !== null ? (
+            <section className="rounded-[2rem] border border-brand-ui-primary/10 bg-white p-6 shadow-sm">
+              <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-ui-primary/55">
+                Your vote
+              </h3>
+              <div className="mt-4 rounded-3xl bg-ui-secondary-200 p-5">
+                <div className="text-2xl font-semibold text-brand-ui-primary">
+                  {supportLabel(castVote.support)}
+                </div>
+                {castVote.createdAt > 0n && (
+                  <p className="mt-1 text-sm text-brand-ui-primary/65">
+                    {formatDateTime(castVote.createdAt)}
+                  </p>
+                )}
+                {castVote.transactionHash && (
+                  <p className="mt-1 break-all font-mono text-xs text-brand-ui-primary/50">
+                    {castVote.transactionHash}
+                  </p>
+                )}
+              </div>
+            </section>
+          ) : /* While loading, show nothing to avoid a flash of the vote form. */
+          voteStatusQuery.isLoading ? null : state === 'Active' ? (
+            /* No voting power — either no tokens or tokens not delegated. */
+            !voteStatusQuery.isError &&
+            voteStatusQuery.data?.votingPower === 0n ? (
+              <WalletStateCard
+                title="No voting power"
+                description={
+                  voteStatusQuery.data.tokenBalance > 0n
+                    ? `You held ${formatTokenAmount(voteStatusQuery.data.tokenBalance)} ${tokenSymbol} but had not delegated at the proposal snapshot. Delegate your tokens before the next proposal to participate.`
+                    : `You held no ${tokenSymbol} at the proposal snapshot block.`
+                }
+                action={
+                  voteStatusQuery.data.tokenBalance > 0n ? (
                     <Button
-                      disabled={voteMutation.isPending}
-                      loading={pendingSupport === 1 && voteMutation.isPending}
-                      onClick={() => voteMutation.mutate(1)}
-                      size="small"
-                    >
-                      Vote For
-                    </Button>
-                    <Button
-                      disabled={voteMutation.isPending}
-                      loading={pendingSupport === 0 && voteMutation.isPending}
-                      onClick={() => voteMutation.mutate(0)}
+                      as="a"
+                      href="/delegates"
                       size="small"
                       variant="outlined-primary"
                     >
-                      Vote Against
+                      Delegate tokens
                     </Button>
-                    <Button
-                      disabled={voteMutation.isPending}
-                      loading={pendingSupport === 2 && voteMutation.isPending}
-                      onClick={() => voteMutation.mutate(2)}
-                      size="small"
-                      variant="secondary"
-                    >
-                      Abstain
-                    </Button>
+                  ) : undefined
+                }
+              />
+            ) : (
+              <section className="rounded-[2rem] border border-brand-ui-primary/10 bg-white p-6 shadow-sm">
+                <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-ui-primary/55">
+                  Cast vote
+                </h3>
+                <div className="mt-4 rounded-3xl bg-ui-secondary-200 p-5">
+                  <div className="text-sm text-brand-ui-primary/65">
+                    Voting power at snapshot
                   </div>
-                </section>
-              )}
-            </>
+                  <div className="mt-2 text-2xl font-semibold text-brand-ui-primary">
+                    {voteStatusQuery.isError
+                      ? 'Unavailable'
+                      : `${formatTokenAmount(voteStatusQuery.data?.votingPower ?? 0n)} ${tokenSymbol}`}
+                  </div>
+                  <p className="mt-2 text-sm leading-6 text-brand-ui-primary/70">
+                    {voteStatusQuery.isError
+                      ? 'Could not load vote status. Check your connection and reload.'
+                      : 'Choose For, Against, or Abstain and optionally include a reason.'}
+                  </p>
+                </div>
+
+                <div className="mt-5">
+                  <TextBox
+                    description="Optional reason submitted on-chain with your vote."
+                    disabled={voteMutation.isPending}
+                    label="Vote reason"
+                    onChange={(event) => setReason(event.target.value)}
+                    placeholder="Share your rationale"
+                    rows={4}
+                    value={reason}
+                  />
+                </div>
+
+                <div className="mt-5 grid grid-cols-3 gap-2">
+                  <Button
+                    disabled={voteMutation.isPending}
+                    loading={pendingSupport === 1 && voteMutation.isPending}
+                    onClick={() => voteMutation.mutate(1)}
+                    size="small"
+                  >
+                    Vote For
+                  </Button>
+                  <Button
+                    disabled={voteMutation.isPending}
+                    loading={pendingSupport === 0 && voteMutation.isPending}
+                    onClick={() => voteMutation.mutate(0)}
+                    size="small"
+                    variant="outlined-primary"
+                  >
+                    Vote Against
+                  </Button>
+                  <Button
+                    disabled={voteMutation.isPending}
+                    loading={pendingSupport === 2 && voteMutation.isPending}
+                    onClick={() => voteMutation.mutate(2)}
+                    size="small"
+                    variant="secondary"
+                  >
+                    Abstain
+                  </Button>
+                </div>
+              </section>
+            )
           ) : null}
 
           {(canQueue || state === 'Queued') && (
@@ -412,13 +442,13 @@ function WalletStateCard({
 async function fetchVoteFromSubgraph(
   proposalId: string,
   voter: string
-): Promise<number | null> {
+): Promise<CastVote | null> {
   // Vote ID in the subgraph is "<proposalId>-<lowercaseAddress>".
   // Format defined in subgraph/src/governance.ts createVote():
   //   new Vote(proposalId.toString().concat('-').concat(voter.toHexString()))
   const id = `${proposalId}-${voter.toLowerCase()}`
   // Use variables to avoid GraphQL string injection.
-  const query = `query ($id: ID!) { vote(id: $id) { support } }`
+  const query = `query ($id: ID!) { vote(id: $id) { support createdAt transactionHash } }`
   const response = await fetch(governanceConfig.subgraphUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -436,7 +466,12 @@ async function fetchVoteFromSubgraph(
   const vote = json.data.vote
   if (!vote) return null
   const support = Number(vote.support)
-  return [0, 1, 2].includes(support) ? support : null
+  if (![0, 1, 2].includes(support)) return null
+  return {
+    support,
+    createdAt: BigInt(vote.createdAt ?? 0),
+    transactionHash: vote.transactionHash ?? '',
+  }
 }
 
 function toUserMessage(error: unknown, fallback: string): string {
