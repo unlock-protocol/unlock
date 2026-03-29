@@ -100,6 +100,8 @@ export default async function ProposalDetailPage({
                     img: ({ alt }) => <span>{alt}</span>,
                   }}
                 >
+                  {/* Strip the first line (the title) — it's already shown in
+                      the <h2> above. Handles \n, \r\n, and single-line bodies. */}
                   {proposal.description.replace(/^[^\r\n]*[\r\n]*/, '')}
                 </ReactMarkdown>
               </div>
@@ -198,14 +200,18 @@ export default async function ProposalDetailPage({
                   Transaction
                 </dt>
                 <dd className="mt-1 font-medium text-brand-ui-primary">
-                  <a
-                    className="underline hover:text-brand-ui-primary/70"
-                    href={txExplorerUrl(proposal.transactionHash) ?? '#'}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    Proposal submission transaction
-                  </a>
+                  {txExplorerUrl(proposal.transactionHash) ? (
+                    <a
+                      className="underline hover:text-brand-ui-primary/70"
+                      href={txExplorerUrl(proposal.transactionHash)!}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      Proposal submission transaction
+                    </a>
+                  ) : (
+                    <span>Proposal submission transaction</span>
+                  )}
                 </dd>
               </div>
             </dl>

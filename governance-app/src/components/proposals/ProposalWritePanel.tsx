@@ -237,6 +237,9 @@ function ProposalWritePanelConnected({
   const castVote = voteStatusQuery.data?.castVote ?? null
 
   const canQueue = state === 'Succeeded'
+  // canExecute uses the client-side clock — if subgraph state lags, the button
+  // may appear prematurely. The on-chain pre-flight in actionMutation.mutationFn
+  // is the authoritative check and will revert before any gas is spent.
   const canExecute =
     state === 'Queued' &&
     etaSeconds !== null &&
@@ -345,9 +348,10 @@ function ProposalWritePanelConnected({
 
                 <div className="mt-5">
                   <TextBox
-                    description="Optional reason submitted on-chain with your vote."
+                    description="Optional reason submitted on-chain with your vote. Max 1000 characters."
                     disabled={voteMutation.isPending}
                     label="Vote reason"
+                    maxLength={1000}
                     onChange={(event) => setReason(event.target.value)}
                     placeholder="Share your rationale"
                     rows={4}
