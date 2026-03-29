@@ -369,8 +369,10 @@ async function fetchVoteFromSubgraph(
   const json = await response.json()
   if (json?.errors?.length)
     throw new Error(`Subgraph error: ${json.errors[0].message}`)
+  // Validate that the response has the expected shape before reading data.
+  if (!json?.data) throw new Error('Unexpected subgraph response: missing data')
   // null means the vote entity does not exist — user has not voted.
-  const vote = json?.data?.vote
+  const vote = json.data.vote
   if (!vote) return null
   const support = Number(vote.support)
   return [0, 1, 2].includes(support) ? support : null

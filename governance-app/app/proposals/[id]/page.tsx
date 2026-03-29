@@ -72,7 +72,20 @@ export default async function ProposalDetailPage({
                 {proposal.title}
               </h2>
               <div className="prose prose-sm text-brand-ui-primary/72">
-                <ReactMarkdown>{proposal.description}</ReactMarkdown>
+                <ReactMarkdown
+                  components={{
+                    // Proposal descriptions are user-controlled (on-chain). Open
+                    // links in a new tab with noopener noreferrer to prevent
+                    // tab-napping and mitigate phishing via crafted hrefs.
+                    a: ({ href, children }) => (
+                      <a href={href} rel="noopener noreferrer" target="_blank">
+                        {children}
+                      </a>
+                    ),
+                  }}
+                >
+                  {proposal.description}
+                </ReactMarkdown>
               </div>
             </div>
             <div className="rounded-3xl bg-ui-secondary-200 px-4 py-3 text-sm text-brand-ui-primary/70">

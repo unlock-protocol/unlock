@@ -19,9 +19,13 @@ export function TruncatedId({ id, keep = 4 }: TruncatedIdProps) {
   async function handleCopy(e: React.MouseEvent) {
     e.preventDefault()
     e.stopPropagation()
-    await navigator.clipboard.writeText(id)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+    try {
+      await navigator.clipboard.writeText(id)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch {
+      // Clipboard API unavailable (non-HTTPS or permission denied) — fail silently.
+    }
   }
 
   return (
