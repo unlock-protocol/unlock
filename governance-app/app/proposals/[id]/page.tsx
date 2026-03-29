@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import ReactMarkdown from 'react-markdown'
+import { Address } from '@unlock-protocol/ui'
 import { TruncatedId } from '~/components/TruncatedId'
 import { ProposalStateBadge } from '~/components/proposals/ProposalStateBadge'
 import { ProposalErrorState } from '~/components/proposals/ProposalErrorState'
@@ -10,7 +11,6 @@ import {
   formatRelativeTime,
   formatTokenAmount,
   percentage,
-  truncateAddress,
 } from '~/lib/governance/format'
 import {
   decodeProposalCalldatas,
@@ -18,7 +18,7 @@ import {
   getProposalById,
 } from '~/lib/governance/proposals'
 import { isExecutable } from '~/lib/governance/state'
-import { txExplorerUrl } from '~/config/governance'
+import { addressExplorerUrl, txExplorerUrl } from '~/config/governance'
 
 export const dynamic = 'force-dynamic'
 
@@ -109,7 +109,12 @@ export default async function ProposalDetailPage({
               </div>
             </div>
             <div className="rounded-3xl bg-ui-secondary-200 px-4 py-3 text-sm text-brand-ui-primary/70">
-              Proposed by {truncateAddress(proposal.proposer)}
+              Proposed by{' '}
+              <Address
+                address={proposal.proposer}
+                externalLinkUrl={addressExplorerUrl(proposal.proposer)}
+                showExternalLink
+              />
             </div>
           </div>
         </section>
@@ -201,7 +206,7 @@ export default async function ProposalDetailPage({
                     rel="noopener noreferrer"
                     target="_blank"
                   >
-                    {truncateAddress(proposal.transactionHash, 8)}
+                    Proposal submission transaction
                   </a>
                 </dd>
               </div>
@@ -212,14 +217,9 @@ export default async function ProposalDetailPage({
         {/* Col 1, Row 2 — vote breakdown + proposed calls */}
         <div className="space-y-6">
           <section className="rounded-[2rem] border border-brand-ui-primary/10 bg-white p-5 shadow-sm sm:p-8">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <h3 className="text-xl font-semibold text-brand-ui-primary sm:text-2xl">
-                Vote breakdown
-              </h3>
-              <div className="text-sm text-brand-ui-primary/60">
-                Quorum: for + abstain
-              </div>
-            </div>
+            <h3 className="text-xl font-semibold text-brand-ui-primary sm:text-2xl">
+              Vote breakdown
+            </h3>
             <div className="mt-5 grid grid-cols-3 gap-3 sm:gap-4">
               <VotePanel
                 label="For"
@@ -237,15 +237,11 @@ export default async function ProposalDetailPage({
                 value={proposal.abstainVotes}
               />
             </div>
-            <div className="mt-5 rounded-3xl bg-ui-secondary-200 p-4 sm:p-5">
-              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-ui-primary/45">
-                Quorum progress
-              </div>
-              <div className="mt-2 text-lg font-semibold text-brand-ui-primary">
-                {formatTokenAmount(quorumVotes)} /{' '}
-                {formatTokenAmount(proposal.quorum)} {overview.tokenSymbol}
-              </div>
-            </div>
+            <QuorumPanel
+              quorum={proposal.quorum}
+              quorumVotes={quorumVotes}
+              tokenSymbol={overview.tokenSymbol}
+            />
           </section>
 
           <section className="rounded-[2rem] border border-brand-ui-primary/10 bg-white p-5 shadow-sm sm:p-8">
@@ -329,6 +325,57 @@ function TimelineRow({ label, value }: { label: string; value: string }) {
         {label}
       </div>
       <div className="mt-1 text-sm text-brand-ui-primary/75">{value}</div>
+    </div>
+  )
+}
+
+function QuorumPanel({
+  quorum,
+  quorumVotes,
+  tokenSymbol,
+}: {
+  quorum: bigint
+  quorumVotes: bigint
+  tokenSymbol: string
+}) {
+  const reached = quorum === 0n || quorumVotes >= quorum
+  const progressPct =
+    quorum === 0n
+      ? 100
+      : Math.min(100, Number((quorumVotes * 10000n) / quorum) / 100)
+
+  return (
+    <div className="mt-5 rounded-3xl bg-ui-secondary-200 p-4 sm:p-5">
+      <div className="flex items-center justify-between gap-2">
+        <div className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-ui-primary/45">
+          Quorum
+        </div>
+        {reached && (
+          <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-semibold text-emerald-700">
+            Reached
+          </span>
+        )}
+      </div>
+      <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-brand-ui-primary/10">
+        <div
+          className={`h-full rounded-full transition-all ${reached ? 'bg-emerald-500' : 'bg-brand-ui-primary/40'}`}
+          style={{ width: `${progressPct}%` }}
+        />
+      </div>
+      <div className="mt-2 text-sm text-brand-ui-primary/65">
+        {reached ? (
+          <>
+            {formatTokenAmount(quorumVotes)} {tokenSymbol} voted (quorum:{' '}
+            {formatTokenAmount(quorum)})
+          </>
+        ) : (
+          <>
+            {formatTokenAmount(quorumVotes)} / {formatTokenAmount(quorum)}{' '}
+            {tokenSymbol} — {formatTokenAmount(quorum - quorumVotes)} more
+            needed
+          </>
+        )}
+      </div>
     </div>
   )
 }

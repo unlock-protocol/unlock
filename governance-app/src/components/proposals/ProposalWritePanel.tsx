@@ -292,12 +292,12 @@ function ProposalWritePanelConnected({
                 )}
                 {castVote.transactionHash && (
                   <a
-                    className="mt-1 block break-all font-mono text-xs text-brand-ui-primary/50 underline hover:text-brand-ui-primary"
+                    className="mt-2 block text-sm text-brand-ui-primary/65 underline hover:text-brand-ui-primary"
                     href={txExplorerUrl(castVote.transactionHash)}
                     rel="noopener noreferrer"
                     target="_blank"
                   >
-                    {castVote.transactionHash}
+                    View in block explorer
                   </a>
                 )}
               </div>

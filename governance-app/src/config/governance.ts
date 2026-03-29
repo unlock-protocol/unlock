@@ -36,6 +36,10 @@ export function txExplorerUrl(hash: string) {
   return `${governanceConfig.explorerUrl}/tx/${hash}`
 }
 
+export function addressExplorerUrl(address: string) {
+  return `${governanceConfig.explorerUrl}/address/${address}`
+}
+
 export const governanceRoutes = [
   { href: '/', label: 'Home' },
   { href: '/proposals', label: 'Proposals' },
