@@ -71,7 +71,7 @@ export default async function ProposalDetailPage({
               <h2 className="text-2xl font-semibold text-brand-ui-primary sm:text-4xl">
                 {proposal.title}
               </h2>
-              <div className="prose prose-sm text-brand-ui-primary/72">
+              <div className="prose prose-sm break-words text-brand-ui-primary/72">
                 <ReactMarkdown
                   components={{
                     // Proposal descriptions are user-controlled (on-chain).
