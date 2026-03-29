@@ -342,51 +342,44 @@ function ProposalWritePanelConnected({
             </>
           ) : null}
 
-          <section className="rounded-[2rem] border border-brand-ui-primary/10 bg-white p-6 shadow-sm">
-            <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-ui-primary/55">
-              Lifecycle action
-            </h3>
-            <div className="mt-4 rounded-3xl bg-ui-secondary-200 p-5">
-              <div className="text-lg font-semibold text-brand-ui-primary">
-                {canQueue
-                  ? 'Queue proposal'
-                  : state === 'Queued'
-                    ? canExecute
+          {(canQueue || state === 'Queued') && (
+            <section className="rounded-[2rem] border border-brand-ui-primary/10 bg-white p-6 shadow-sm">
+              <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-ui-primary/55">
+                Lifecycle action
+              </h3>
+              <div className="mt-4 rounded-3xl bg-ui-secondary-200 p-5">
+                <div className="text-lg font-semibold text-brand-ui-primary">
+                  {canQueue
+                    ? 'Queue proposal'
+                    : canExecute
                       ? 'Execute proposal'
-                      : 'Waiting for timelock'
-                    : 'No action available'}
-              </div>
-              <p className="mt-2 text-sm leading-6 text-brand-ui-primary/70">
-                {canQueue
-                  ? 'This proposal passed and can now be queued in the timelock.'
-                  : state === 'Queued' && etaSeconds
-                    ? canExecute
+                      : 'Waiting for timelock'}
+                </div>
+                <p className="mt-2 text-sm leading-6 text-brand-ui-primary/70">
+                  {canQueue
+                    ? 'This proposal passed and can now be queued in the timelock.'
+                    : canExecute
                       ? 'The timelock delay has elapsed. Execution is now available.'
-                      : `Execution unlocks ${formatRelativeTime(BigInt(etaSeconds), now)}.`
-                    : 'Queueing and execution become available only after a proposal succeeds.'}
-              </p>
-            </div>
+                      : etaSeconds
+                        ? `Execution unlocks ${formatRelativeTime(BigInt(etaSeconds), now)}.`
+                        : 'Queued — waiting for the timelock ETA to be set.'}
+                </p>
+              </div>
 
-            <div className="mt-5">
-              <Button
-                disabled={
-                  (!canQueue && !canExecute) || actionMutation.isPending
-                }
-                loading={actionMutation.isPending}
-                onClick={() =>
-                  actionMutation.mutate(canQueue ? 'queue' : 'execute')
-                }
-              >
-                {canQueue
-                  ? 'Queue proposal'
-                  : canExecute
-                    ? 'Execute proposal'
-                    : state === 'Queued'
-                      ? 'Waiting for timelock'
-                      : 'No action available'}
-              </Button>
-            </div>
-          </section>
+              {(canQueue || canExecute) && (
+                <div className="mt-5">
+                  <Button
+                    loading={actionMutation.isPending}
+                    onClick={() =>
+                      actionMutation.mutate(canQueue ? 'queue' : 'execute')
+                    }
+                  >
+                    {canQueue ? 'Queue proposal' : 'Execute proposal'}
+                  </Button>
+                </div>
+              )}
+            </section>
+          )}
         </>
       ) : null}
     </>
