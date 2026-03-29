@@ -34,7 +34,8 @@ type ProposalWritePanelProps = {
 }
 
 type CastVote = {
-  support: number
+  // null when voted on-chain but subgraph hasn't indexed the vote yet
+  support: number | null
   createdAt: bigint
   transactionHash: string
 }
@@ -102,11 +103,21 @@ function ProposalWritePanelConnected({
         BigInt(proposalId)
       )) as bigint
       if (!address) return { castVote: null, tokenBalance: 0n, votingPower: 0n }
-      const [votingPower, tokenBalance, castVote] = await Promise.all([
-        governor.getVotes(address, snapshotBlock) as Promise<bigint>,
-        getTokenContract().balanceOf(address) as Promise<bigint>,
-        fetchVoteFromSubgraph(proposalId, address),
-      ])
+      const [votingPower, tokenBalance, hasVoted, castVoteFromSubgraph] =
+        await Promise.all([
+          governor.getVotes(address, snapshotBlock) as Promise<bigint>,
+          getTokenContract().balanceOf(address) as Promise<bigint>,
+          governor.hasVoted(BigInt(proposalId), address) as Promise<boolean>,
+          fetchVoteFromSubgraph(proposalId, address),
+        ])
+
+      // hasVoted is authoritative — if on-chain says voted but subgraph hasn't
+      // indexed it yet, return a partial castVote so the form is never shown.
+      const castVote =
+        castVoteFromSubgraph ??
+        (hasVoted
+          ? { support: null, createdAt: 0n, transactionHash: '' }
+          : null)
 
       return { castVote, tokenBalance, votingPower }
     },
@@ -233,12 +244,6 @@ function ProposalWritePanelConnected({
   })
 
   const castVote = voteStatusQuery.data?.castVote ?? null
-  const canVote =
-    state === 'Active' &&
-    !voteStatusQuery.isLoading &&
-    voteStatusQuery.data &&
-    voteStatusQuery.data.votingPower > 0n &&
-    castVote === null
 
   const canQueue = state === 'Succeeded'
   const canExecute =
@@ -271,8 +276,15 @@ function ProposalWritePanelConnected({
               </h3>
               <div className="mt-4 rounded-3xl bg-ui-secondary-200 p-5">
                 <div className="text-2xl font-semibold text-brand-ui-primary">
-                  {supportLabel(castVote.support)}
+                  {castVote.support !== null
+                    ? supportLabel(castVote.support)
+                    : 'Vote recorded'}
                 </div>
+                {castVote.support === null && (
+                  <p className="mt-1 text-sm text-brand-ui-primary/65">
+                    Confirming on the subgraph…
+                  </p>
+                )}
                 {castVote.createdAt > 0n && (
                   <p className="mt-1 text-sm text-brand-ui-primary/65">
                     {formatDateTime(castVote.createdAt)}
