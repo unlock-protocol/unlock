@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import ReactMarkdown from 'react-markdown'
-import { Address } from '@unlock-protocol/ui'
+import { AddressLink } from '~/components/AddressLink'
 import { TruncatedId } from '~/components/TruncatedId'
 import { ProposalStateBadge } from '~/components/proposals/ProposalStateBadge'
 import { ProposalErrorState } from '~/components/proposals/ProposalErrorState'
@@ -110,7 +110,7 @@ export default async function ProposalDetailPage({
             </div>
             <div className="rounded-3xl bg-ui-secondary-200 px-4 py-3 text-sm text-brand-ui-primary/70">
               Proposed by{' '}
-              <Address
+              <AddressLink
                 address={proposal.proposer}
                 externalLinkUrl={addressExplorerUrl(proposal.proposer)}
                 showExternalLink
