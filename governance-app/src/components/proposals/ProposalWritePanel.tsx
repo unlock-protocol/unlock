@@ -211,78 +211,81 @@ function ProposalWritePanelConnected({
 
       {address ? (
         <>
-          <section className="rounded-[2rem] border border-brand-ui-primary/10 bg-white p-6 shadow-sm">
-            <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-ui-primary/55">
-              Cast vote
-            </h3>
-            <div className="mt-4 rounded-3xl bg-ui-secondary-200 p-5">
-              <div className="text-sm text-brand-ui-primary/65">
-                Voting power at snapshot
+          {/* Show cast vote only when voting is open or the user already voted. */}
+          {state === 'Active' || userSupport !== null ? (
+            <section className="rounded-[2rem] border border-brand-ui-primary/10 bg-white p-6 shadow-sm">
+              <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-ui-primary/55">
+                Cast vote
+              </h3>
+              <div className="mt-4 rounded-3xl bg-ui-secondary-200 p-5">
+                <div className="text-sm text-brand-ui-primary/65">
+                  Voting power at snapshot
+                </div>
+                <div className="mt-2 text-2xl font-semibold text-brand-ui-primary">
+                  {voteStatusQuery.isLoading
+                    ? 'Loading…'
+                    : voteStatusQuery.isError
+                      ? 'Unavailable'
+                      : `${formatTokenAmount(voteStatusQuery.data?.votingPower ?? 0n)} ${tokenSymbol}`}
+                </div>
+                <p className="mt-2 text-sm leading-6 text-brand-ui-primary/70">
+                  {voteStatusQuery.isLoading
+                    ? 'Fetching your voting power…'
+                    : voteStatusQuery.isError
+                      ? 'Could not load vote status. Check your connection and reload.'
+                      : userSupport !== null
+                        ? `You voted ${supportLabel(userSupport)}.`
+                        : state !== 'Active'
+                          ? 'Voting is not currently active for this proposal.'
+                          : voteStatusQuery.data &&
+                              voteStatusQuery.data.votingPower === 0n
+                            ? 'You had no voting power at the proposal snapshot.'
+                            : 'Choose For, Against, or Abstain and optionally include a reason.'}
+                </p>
               </div>
-              <div className="mt-2 text-2xl font-semibold text-brand-ui-primary">
-                {voteStatusQuery.isLoading
-                  ? 'Loading…'
-                  : voteStatusQuery.isError
-                    ? 'Unavailable'
-                    : `${formatTokenAmount(voteStatusQuery.data?.votingPower ?? 0n)} ${tokenSymbol}`}
+
+              <div className="mt-5">
+                <TextBox
+                  description="Optional reason submitted on-chain with your vote."
+                  disabled={!canVote || voteMutation.isPending}
+                  label="Vote reason"
+                  onChange={(event) => setReason(event.target.value)}
+                  placeholder="Share your rationale"
+                  rows={4}
+                  value={reason}
+                />
               </div>
-              <p className="mt-2 text-sm leading-6 text-brand-ui-primary/70">
-                {voteStatusQuery.isLoading
-                  ? 'Fetching your voting power…'
-                  : voteStatusQuery.isError
-                    ? 'Could not load vote status. Check your connection and reload.'
-                    : userSupport !== null
-                      ? `You voted ${supportLabel(userSupport)}.`
-                      : state !== 'Active'
-                        ? 'Voting is not currently active for this proposal.'
-                        : voteStatusQuery.data &&
-                            voteStatusQuery.data.votingPower === 0n
-                          ? 'You had no voting power at the proposal snapshot.'
-                          : 'Choose For, Against, or Abstain and optionally include a reason.'}
-              </p>
-            </div>
 
-            <div className="mt-5">
-              <TextBox
-                description="Optional reason submitted on-chain with your vote."
-                disabled={!canVote || voteMutation.isPending}
-                label="Vote reason"
-                onChange={(event) => setReason(event.target.value)}
-                placeholder="Share your rationale"
-                rows={4}
-                value={reason}
-              />
-            </div>
-
-            <div className="mt-5 grid grid-cols-3 gap-2">
-              <Button
-                disabled={!canVote || voteMutation.isPending}
-                loading={pendingSupport === 1 && voteMutation.isPending}
-                onClick={() => voteMutation.mutate(1)}
-                size="small"
-              >
-                Vote For
-              </Button>
-              <Button
-                disabled={!canVote || voteMutation.isPending}
-                loading={pendingSupport === 0 && voteMutation.isPending}
-                onClick={() => voteMutation.mutate(0)}
-                size="small"
-                variant="outlined-primary"
-              >
-                Vote Against
-              </Button>
-              <Button
-                disabled={!canVote || voteMutation.isPending}
-                loading={pendingSupport === 2 && voteMutation.isPending}
-                onClick={() => voteMutation.mutate(2)}
-                size="small"
-                variant="secondary"
-              >
-                Abstain
-              </Button>
-            </div>
-          </section>
+              <div className="mt-5 grid grid-cols-3 gap-2">
+                <Button
+                  disabled={!canVote || voteMutation.isPending}
+                  loading={pendingSupport === 1 && voteMutation.isPending}
+                  onClick={() => voteMutation.mutate(1)}
+                  size="small"
+                >
+                  Vote For
+                </Button>
+                <Button
+                  disabled={!canVote || voteMutation.isPending}
+                  loading={pendingSupport === 0 && voteMutation.isPending}
+                  onClick={() => voteMutation.mutate(0)}
+                  size="small"
+                  variant="outlined-primary"
+                >
+                  Vote Against
+                </Button>
+                <Button
+                  disabled={!canVote || voteMutation.isPending}
+                  loading={pendingSupport === 2 && voteMutation.isPending}
+                  onClick={() => voteMutation.mutate(2)}
+                  size="small"
+                  variant="secondary"
+                >
+                  Abstain
+                </Button>
+              </div>
+            </section>
+          ) : null}
 
           <section className="rounded-[2rem] border border-brand-ui-primary/10 bg-white p-6 shadow-sm">
             <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-ui-primary/55">
