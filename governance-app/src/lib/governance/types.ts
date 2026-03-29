@@ -6,6 +6,7 @@ export type ProposalState =
   | 'Queued'
   | 'Executed'
   | 'Canceled'
+  | 'Expired'
 
 export type DecodedCalldata =
   | {
