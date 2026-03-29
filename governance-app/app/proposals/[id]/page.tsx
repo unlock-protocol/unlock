@@ -146,22 +146,29 @@ export default async function ProposalDetailPage({
                 label="Voting closes"
                 value={formatDateTime(proposal.voteEndTimestamp)}
               />
-              <TimelineRow
-                label="Queued / ETA"
-                value={
-                  proposal.etaSeconds
-                    ? `${formatDateTime(proposal.etaSeconds)} (${executeLabel})`
-                    : 'Not queued'
-                }
-              />
-              <TimelineRow
-                label="Executed"
-                value={formatDateTime(proposal.executedAt)}
-              />
-              <TimelineRow
-                label="Canceled"
-                value={formatDateTime(proposal.canceledAt)}
-              />
+              {proposal.etaSeconds ? (
+                <TimelineRow
+                  label="Queued / ETA"
+                  value={`${formatDateTime(proposal.etaSeconds)} (${executeLabel})`}
+                />
+              ) : proposal.state === 'Succeeded' ? (
+                <TimelineRow
+                  label="Queued / ETA"
+                  value="Not yet queued — queue this proposal to start the timelock."
+                />
+              ) : null}
+              {proposal.executedAt ? (
+                <TimelineRow
+                  label="Executed"
+                  value={formatDateTime(proposal.executedAt)}
+                />
+              ) : null}
+              {proposal.canceledAt ? (
+                <TimelineRow
+                  label="Canceled"
+                  value={formatDateTime(proposal.canceledAt)}
+                />
+              ) : null}
             </div>
           </section>
 
