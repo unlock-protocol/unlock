@@ -254,11 +254,12 @@ function ProposalWritePanelConnected({
               />
             </div>
 
-            <div className="mt-5 grid gap-3 sm:grid-cols-3">
+            <div className="mt-5 grid grid-cols-3 gap-2">
               <Button
                 disabled={!canVote || voteMutation.isPending}
                 loading={pendingSupport === 1 && voteMutation.isPending}
                 onClick={() => voteMutation.mutate(1)}
+                size="small"
               >
                 Vote For
               </Button>
@@ -266,6 +267,7 @@ function ProposalWritePanelConnected({
                 disabled={!canVote || voteMutation.isPending}
                 loading={pendingSupport === 0 && voteMutation.isPending}
                 onClick={() => voteMutation.mutate(0)}
+                size="small"
                 variant="outlined-primary"
               >
                 Vote Against
@@ -274,6 +276,7 @@ function ProposalWritePanelConnected({
                 disabled={!canVote || voteMutation.isPending}
                 loading={pendingSupport === 2 && voteMutation.isPending}
                 onClick={() => voteMutation.mutate(2)}
+                size="small"
                 variant="secondary"
               >
                 Abstain
