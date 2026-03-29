@@ -147,6 +147,31 @@ function ProposalWritePanelConnected({
         governorAbi,
         signer
       )
+
+      // Pre-flight: read on-chain state to give a clear error before spending
+      // gas. The subgraph state can lag, so this catches state mismatches early.
+      const onChainState = (await governor.state(BigInt(proposalId))) as bigint
+      const expectedState = action === 'queue' ? 4n : 5n // 4=Succeeded, 5=Queued
+      if (onChainState !== expectedState) {
+        const stateLabels: Record<string, string> = {
+          '0': 'Pending',
+          '1': 'Active',
+          '2': 'Canceled',
+          '3': 'Defeated',
+          '4': 'Succeeded',
+          '5': 'Queued',
+          '6': 'Expired',
+          '7': 'Executed',
+        }
+        const label =
+          stateLabels[onChainState.toString()] ?? `state ${onChainState}`
+        throw new Error(
+          action === 'queue'
+            ? `Cannot queue: proposal is ${label} on-chain (expected Succeeded).`
+            : `Cannot execute: proposal is ${label} on-chain (expected Queued).`
+        )
+      }
+
       const tx =
         action === 'queue'
           ? await governor.queue(
@@ -392,9 +417,12 @@ function toUserMessage(error: unknown, fallback: string): string {
   if (!(error instanceof Error)) return fallback
   // ethers ACTION_REJECTED = user cancelled the wallet popup
   if (isError(error, 'ACTION_REJECTED')) return 'Transaction rejected.'
-  // Trim verbose RPC/revert data before showing to the user.
-  const msg = error.message.replace(/\s*\(.*\)\s*$/, '').trim()
-  return msg.slice(0, 120) || fallback
+  // ethers CALL_EXCEPTION carries a clean reason string — use it directly.
+  if (isError(error, 'CALL_EXCEPTION') && error.reason) return error.reason
+  // For other errors, strip only verbose RPC context that appears after a
+  // newline, keeping the first line which usually has the useful message.
+  const firstLine = error.message.split('\n')[0].trim()
+  return firstLine.slice(0, 160) || fallback
 }
 
 function supportLabel(support: number) {
