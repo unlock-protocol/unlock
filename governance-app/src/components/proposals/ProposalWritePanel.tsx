@@ -7,7 +7,7 @@ import { Button, TextBox, ToastHelper } from '@unlock-protocol/ui'
 import { Contract, isError } from 'ethers'
 import { useRouter } from 'next/navigation'
 import { governanceEnv } from '~/config/env'
-import { governanceConfig } from '~/config/governance'
+import { governanceConfig, txExplorerUrl } from '~/config/governance'
 import { useConnectModal } from '~/hooks/useConnectModal'
 import { useGovernanceWallet } from '~/hooks/useGovernanceWallet'
 import {
@@ -279,9 +279,14 @@ function ProposalWritePanelConnected({
                   </p>
                 )}
                 {castVote.transactionHash && (
-                  <p className="mt-1 break-all font-mono text-xs text-brand-ui-primary/50">
+                  <a
+                    className="mt-1 block break-all font-mono text-xs text-brand-ui-primary/50 underline hover:text-brand-ui-primary"
+                    href={txExplorerUrl(castVote.transactionHash)}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
                     {castVote.transactionHash}
-                  </p>
+                  </a>
                 )}
               </div>
             </section>

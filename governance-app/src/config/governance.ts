@@ -22,6 +22,7 @@ export const governanceConfig = {
     'https://subgraph.unlock-protocol.com/8453',
   timelockAddress: '0xB34567C4cA697b39F72e1a8478f285329A98ed1b',
   tokenAddress: '0xaC27fa800955849d6D17cC8952Ba9dD6EAA66187',
+  explorerUrl: 'https://basescan.org',
   knownContracts: [
     { label: 'UPGovernor', abi: UPGovernor, kind: 'governor' },
     { label: 'UPToken', abi: UPToken, kind: 'token' },
@@ -30,6 +31,10 @@ export const governanceConfig = {
     { label: 'PublicLock', abi: PublicLock, kind: 'publicLock' },
   ],
 } as const
+
+export function txExplorerUrl(hash: string) {
+  return `${governanceConfig.explorerUrl}/tx/${hash}`
+}
 
 export const governanceRoutes = [
   { href: '/', label: 'Home' },

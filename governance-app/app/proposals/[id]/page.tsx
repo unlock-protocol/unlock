@@ -18,6 +18,7 @@ import {
   getProposalById,
 } from '~/lib/governance/proposals'
 import { isExecutable } from '~/lib/governance/state'
+import { txExplorerUrl } from '~/config/governance'
 
 export const dynamic = 'force-dynamic'
 
@@ -189,10 +190,21 @@ export default async function ProposalDetailPage({
                 label="Voting period"
                 value={formatDuration(overview.votingPeriod)}
               />
-              <DetailRow
-                label="Transaction"
-                value={truncateAddress(proposal.transactionHash, 8)}
-              />
+              <div>
+                <dt className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-ui-primary/45">
+                  Transaction
+                </dt>
+                <dd className="mt-1 font-medium text-brand-ui-primary">
+                  <a
+                    className="underline hover:text-brand-ui-primary/70"
+                    href={txExplorerUrl(proposal.transactionHash)}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    {truncateAddress(proposal.transactionHash, 8)}
+                  </a>
+                </dd>
+              </div>
             </dl>
           </section>
         </aside>
