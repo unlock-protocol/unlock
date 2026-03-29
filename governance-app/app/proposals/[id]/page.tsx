@@ -103,7 +103,7 @@ export default async function ProposalDetailPage({
                     },
                   }}
                 >
-                  {proposal.description}
+                  {proposal.description.replace(/^[^\n]*\n?/, '')}
                 </ReactMarkdown>
               </div>
             </div>

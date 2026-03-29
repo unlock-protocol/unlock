@@ -245,11 +245,16 @@ function ProposalWritePanelConnected({
           {/* Show cast vote only when voting is open or the user already voted. */}
           {state === 'Active' || userSupport !== null ? (
             <>
-              {/* No voting power — either no tokens at all, or tokens not delegated. */}
-              {!voteStatusQuery.isLoading &&
-              !voteStatusQuery.isError &&
-              userSupport === null &&
-              voteStatusQuery.data?.votingPower === 0n ? (
+              {/* User already voted — show confirmation, no form. */}
+              {userSupport !== null ? (
+                <WalletStateCard
+                  title={`You voted ${supportLabel(userSupport)}`}
+                  description="Your vote has been recorded on-chain for this proposal."
+                />
+              ) : /* No voting power — either no tokens or tokens not delegated. */
+              !voteStatusQuery.isLoading &&
+                !voteStatusQuery.isError &&
+                voteStatusQuery.data?.votingPower === 0n ? (
                 <WalletStateCard
                   title="No voting power"
                   description={
@@ -291,16 +296,14 @@ function ProposalWritePanelConnected({
                         ? 'Fetching your voting power…'
                         : voteStatusQuery.isError
                           ? 'Could not load vote status. Check your connection and reload.'
-                          : userSupport !== null
-                            ? `You voted ${supportLabel(userSupport)}.`
-                            : 'Choose For, Against, or Abstain and optionally include a reason.'}
+                          : 'Choose For, Against, or Abstain and optionally include a reason.'}
                     </p>
                   </div>
 
                   <div className="mt-5">
                     <TextBox
                       description="Optional reason submitted on-chain with your vote."
-                      disabled={!canVote || voteMutation.isPending}
+                      disabled={voteMutation.isPending}
                       label="Vote reason"
                       onChange={(event) => setReason(event.target.value)}
                       placeholder="Share your rationale"
@@ -311,7 +314,7 @@ function ProposalWritePanelConnected({
 
                   <div className="mt-5 grid grid-cols-3 gap-2">
                     <Button
-                      disabled={!canVote || voteMutation.isPending}
+                      disabled={voteMutation.isPending}
                       loading={pendingSupport === 1 && voteMutation.isPending}
                       onClick={() => voteMutation.mutate(1)}
                       size="small"
@@ -319,7 +322,7 @@ function ProposalWritePanelConnected({
                       Vote For
                     </Button>
                     <Button
-                      disabled={!canVote || voteMutation.isPending}
+                      disabled={voteMutation.isPending}
                       loading={pendingSupport === 0 && voteMutation.isPending}
                       onClick={() => voteMutation.mutate(0)}
                       size="small"
@@ -328,7 +331,7 @@ function ProposalWritePanelConnected({
                       Vote Against
                     </Button>
                     <Button
-                      disabled={!canVote || voteMutation.isPending}
+                      disabled={voteMutation.isPending}
                       loading={pendingSupport === 2 && voteMutation.isPending}
                       onClick={() => voteMutation.mutate(2)}
                       size="small"
