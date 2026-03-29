@@ -8,6 +8,7 @@ import { Contract, isError } from 'ethers'
 import { useRouter } from 'next/navigation'
 import { governanceEnv } from '~/config/env'
 import { governanceConfig } from '~/config/governance'
+import { useConnectModal } from '~/hooks/useConnectModal'
 import { useGovernanceWallet } from '~/hooks/useGovernanceWallet'
 import { formatRelativeTime, formatTokenAmount } from '~/lib/governance/format'
 import { getRpcProvider, governorAbi } from '~/lib/governance/rpc'
@@ -52,8 +53,8 @@ function ProposalWritePanelConnected({
   tokenSymbol,
   values,
 }: ProposalWritePanelProps) {
-  const { address, authenticated, connect, getSigner, isReady } =
-    useGovernanceWallet()
+  const { address, authenticated, getSigner, isReady } = useGovernanceWallet()
+  const { openConnectModal } = useConnectModal()
   const router = useRouter()
   const queryClient = useQueryClient()
   const [reason, setReason] = useState('')
@@ -191,7 +192,7 @@ function ProposalWritePanelConnected({
     <>
       {!authenticated ? (
         <WalletStateCard
-          action={<Button onClick={() => connect()}>Connect wallet</Button>}
+          action={<Button onClick={openConnectModal}>Connect wallet</Button>}
           title="Connect a wallet to interact with this proposal"
           description="Voting, queueing, and execution all require a connected wallet on Base."
         />

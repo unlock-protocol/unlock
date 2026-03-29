@@ -1,4 +1,6 @@
 import { notFound } from 'next/navigation'
+import ReactMarkdown from 'react-markdown'
+import { TruncatedId } from '~/components/TruncatedId'
 import { ProposalStateBadge } from '~/components/proposals/ProposalStateBadge'
 import { ProposalErrorState } from '~/components/proposals/ProposalErrorState'
 import { ProposalWritePanel } from '~/components/proposals/ProposalWritePanel'
@@ -58,15 +60,15 @@ export default async function ProposalDetailPage({
               <div className="flex flex-wrap items-center gap-3">
                 <ProposalStateBadge state={proposal.state} />
                 <span className="text-xs font-semibold uppercase tracking-[0.24em] text-brand-ui-primary/45">
-                  Proposal {proposal.id}
+                  Proposal <TruncatedId id={proposal.id} keep={4} />
                 </span>
               </div>
               <h2 className="text-4xl font-semibold text-brand-ui-primary">
                 {proposal.title}
               </h2>
-              <p className="max-w-3xl whitespace-pre-wrap text-base leading-7 text-brand-ui-primary/72">
-                {proposal.description}
-              </p>
+              <div className="prose prose-sm max-w-3xl text-brand-ui-primary/72">
+                <ReactMarkdown>{proposal.description}</ReactMarkdown>
+              </div>
             </div>
             <div className="rounded-3xl bg-ui-secondary-200 px-5 py-4 text-sm text-brand-ui-primary/70">
               Proposed by {truncateAddress(proposal.proposer)}
@@ -74,7 +76,7 @@ export default async function ProposalDetailPage({
           </div>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_360px]">
+        <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,2fr)_360px]">
           <div className="space-y-6">
             <section className="rounded-[2rem] border border-brand-ui-primary/10 bg-white p-8 shadow-sm">
               <div className="flex items-center justify-between gap-4">
@@ -116,45 +118,6 @@ export default async function ProposalDetailPage({
                   {formatTokenAmount(quorumVotes)} /{' '}
                   {formatTokenAmount(proposal.quorum)} {overview.tokenSymbol}
                 </div>
-              </div>
-            </section>
-
-            <section className="rounded-[2rem] border border-brand-ui-primary/10 bg-white p-8 shadow-sm">
-              <h3 className="text-2xl font-semibold text-brand-ui-primary">
-                Lifecycle
-              </h3>
-              <div className="mt-6 space-y-4">
-                <TimelineRow
-                  label="Submitted"
-                  value={formatDateTime(proposal.createdAtTimestamp)}
-                />
-                <TimelineRow
-                  label="Voting opens"
-                  value={`${formatDateTime(proposal.voteStartTimestamp)} (${formatRelativeTime(
-                    proposal.voteStartTimestamp,
-                    overview.latestTimestamp
-                  )})`}
-                />
-                <TimelineRow
-                  label="Voting closes"
-                  value={formatDateTime(proposal.voteEndTimestamp)}
-                />
-                <TimelineRow
-                  label="Queued / ETA"
-                  value={
-                    proposal.etaSeconds
-                      ? `${formatDateTime(proposal.etaSeconds)} (${executeLabel})`
-                      : 'Not queued'
-                  }
-                />
-                <TimelineRow
-                  label="Executed"
-                  value={formatDateTime(proposal.executedAt)}
-                />
-                <TimelineRow
-                  label="Canceled"
-                  value={formatDateTime(proposal.canceledAt)}
-                />
               </div>
             </section>
 
@@ -202,6 +165,56 @@ export default async function ProposalDetailPage({
           </div>
 
           <aside className="space-y-6">
+            <ProposalWritePanel
+              calldatas={proposal.calldatas}
+              descriptionHash={proposal.descriptionHash}
+              etaSeconds={proposal.etaSeconds?.toString() || null}
+              proposalId={proposal.id}
+              state={proposal.state}
+              targets={proposal.targets}
+              tokenSymbol={overview.tokenSymbol}
+              values={proposal.values.map((value) => value.toString())}
+            />
+
+            <section className="rounded-[2rem] border border-brand-ui-primary/10 bg-white p-6 shadow-sm">
+              <h3 className="text-2xl font-semibold text-brand-ui-primary">
+                Lifecycle
+              </h3>
+              <div className="mt-4 space-y-3">
+                <TimelineRow
+                  label="Submitted"
+                  value={formatDateTime(proposal.createdAtTimestamp)}
+                />
+                <TimelineRow
+                  label="Voting opens"
+                  value={`${formatDateTime(proposal.voteStartTimestamp)} (${formatRelativeTime(
+                    proposal.voteStartTimestamp,
+                    overview.latestTimestamp
+                  )})`}
+                />
+                <TimelineRow
+                  label="Voting closes"
+                  value={formatDateTime(proposal.voteEndTimestamp)}
+                />
+                <TimelineRow
+                  label="Queued / ETA"
+                  value={
+                    proposal.etaSeconds
+                      ? `${formatDateTime(proposal.etaSeconds)} (${executeLabel})`
+                      : 'Not queued'
+                  }
+                />
+                <TimelineRow
+                  label="Executed"
+                  value={formatDateTime(proposal.executedAt)}
+                />
+                <TimelineRow
+                  label="Canceled"
+                  value={formatDateTime(proposal.canceledAt)}
+                />
+              </div>
+            </section>
+
             <section className="rounded-[2rem] border border-brand-ui-primary/10 bg-white p-6 shadow-sm">
               <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-ui-primary/55">
                 Governance settings
@@ -225,17 +238,6 @@ export default async function ProposalDetailPage({
                 />
               </dl>
             </section>
-
-            <ProposalWritePanel
-              calldatas={proposal.calldatas}
-              descriptionHash={proposal.descriptionHash}
-              etaSeconds={proposal.etaSeconds?.toString() || null}
-              proposalId={proposal.id}
-              state={proposal.state}
-              targets={proposal.targets}
-              tokenSymbol={overview.tokenSymbol}
-              values={proposal.values.map((value) => value.toString())}
-            />
           </aside>
         </div>
       </section>
