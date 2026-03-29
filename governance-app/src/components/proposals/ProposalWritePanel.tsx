@@ -20,6 +20,7 @@ import {
   getRpcProvider,
   governorAbi,
 } from '~/lib/governance/rpc'
+import { ON_CHAIN_STATE } from '~/lib/governance/proposals'
 import type { ProposalState } from '~/lib/governance/types'
 
 type ProposalWritePanelProps = {
@@ -190,18 +191,8 @@ function ProposalWritePanelConnected({
       const onChainState = (await governor.state(BigInt(proposalId))) as bigint
       const expectedState = action === 'queue' ? 4n : 5n // 4=Succeeded, 5=Queued
       if (onChainState !== expectedState) {
-        const stateLabels: Record<string, string> = {
-          '0': 'Pending',
-          '1': 'Active',
-          '2': 'Canceled',
-          '3': 'Defeated',
-          '4': 'Succeeded',
-          '5': 'Queued',
-          '6': 'Expired',
-          '7': 'Executed',
-        }
         const label =
-          stateLabels[onChainState.toString()] ?? `state ${onChainState}`
+          ON_CHAIN_STATE[Number(onChainState)] ?? `state ${onChainState}`
         throw new Error(
           action === 'queue'
             ? `Cannot queue: proposal is ${label} on-chain (expected Succeeded).`
@@ -213,13 +204,13 @@ function ProposalWritePanelConnected({
         action === 'queue'
           ? await governor.queue(
               targets,
-              values.map((value) => BigInt(value || '0')),
+              values.map((value) => BigInt(value || 0)),
               calldatas,
               descriptionHash
             )
           : await governor.execute(
               targets,
-              values.map((value) => BigInt(value || '0')),
+              values.map((value) => BigInt(value || 0)),
               calldatas,
               descriptionHash
             )

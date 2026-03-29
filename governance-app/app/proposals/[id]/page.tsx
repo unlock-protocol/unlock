@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import { AddressLink } from '~/components/AddressLink'
 import { TruncatedId } from '~/components/TruncatedId'
 import { ProposalStateBadge } from '~/components/proposals/ProposalStateBadge'
@@ -74,14 +75,13 @@ export default async function ProposalDetailPage({
               </h2>
               <div className="prose prose-sm break-words text-brand-ui-primary/72">
                 <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
                   components={{
                     // Proposal descriptions are user-controlled (on-chain).
-                    // Only allow http/https — data: and other non-http schemes
-                    // are not blocked by React 18 and could be abused.
+                    // Only allow https — http leaks over mixed-content and
+                    // data: / other non-http schemes can be abused.
                     a: ({ href, children }) => {
-                      const safe =
-                        href?.startsWith('https://') ||
-                        href?.startsWith('http://')
+                      const safe = href?.startsWith('https://')
                       return safe ? (
                         <a
                           href={href}
@@ -94,17 +94,13 @@ export default async function ProposalDetailPage({
                         <span>{children}</span>
                       )
                     },
-                    // Block images from arbitrary URLs — tracking pixels,
-                    // fingerprinting beacons, and NSFW content are all possible.
-                    img: ({ src, alt }) => {
-                      const safe =
-                        src?.startsWith('https://') ||
-                        src?.startsWith('http://')
-                      return safe ? <img alt={alt ?? ''} src={src} /> : null
-                    },
+                    // Strip all images — proposal content is user-controlled
+                    // on-chain data; any https:// image is a potential tracking
+                    // pixel or fingerprinting beacon shown to every visitor.
+                    img: ({ alt }) => <span>{alt}</span>,
                   }}
                 >
-                  {proposal.description.replace(/^[^\r\n]*[\r\n]+/, '')}
+                  {proposal.description.replace(/^[^\r\n]*[\r\n]*/, '')}
                 </ReactMarkdown>
               </div>
             </div>

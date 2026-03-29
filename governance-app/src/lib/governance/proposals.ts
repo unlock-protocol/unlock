@@ -14,7 +14,7 @@ import type {
 } from './types'
 
 // Maps the numeric IProposalState enum returned by governor.state() to our type.
-const ON_CHAIN_STATE: Record<number, ProposalState> = {
+export const ON_CHAIN_STATE: Record<number, ProposalState> = {
   0: 'Pending',
   1: 'Active',
   2: 'Canceled',
