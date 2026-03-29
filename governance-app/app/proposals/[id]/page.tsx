@@ -75,8 +75,8 @@ export default async function ProposalDetailPage({
                 <ReactMarkdown
                   components={{
                     // Proposal descriptions are user-controlled (on-chain).
-                    // Only allow http/https hrefs — data: and other non-http
-                    // schemes are not blocked by React 18 and could be abused.
+                    // Only allow http/https — data: and other non-http schemes
+                    // are not blocked by React 18 and could be abused.
                     a: ({ href, children }) => {
                       const safe =
                         href?.startsWith('https://') ||
@@ -92,6 +92,14 @@ export default async function ProposalDetailPage({
                       ) : (
                         <span>{children}</span>
                       )
+                    },
+                    // Block images from arbitrary URLs — tracking pixels,
+                    // fingerprinting beacons, and NSFW content are all possible.
+                    img: ({ src, alt }) => {
+                      const safe =
+                        src?.startsWith('https://') ||
+                        src?.startsWith('http://')
+                      return safe ? <img alt={alt ?? ''} src={src} /> : null
                     },
                   }}
                 >

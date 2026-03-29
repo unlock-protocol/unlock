@@ -30,6 +30,8 @@ type VoteStatus = {
   votingPower: bigint
 }
 
+// ProposalWritePanel intentionally contains no hooks — the early-return guard
+// below is only safe because of this. All hooks live in ProposalWritePanelConnected.
 export function ProposalWritePanel(props: ProposalWritePanelProps) {
   if (!governanceEnv.privyAppId) {
     return (
@@ -149,13 +151,13 @@ function ProposalWritePanelConnected({
         action === 'queue'
           ? await governor.queue(
               targets,
-              values.map((value) => BigInt(value)),
+              values.map((value) => BigInt(value || '0')),
               calldatas,
               descriptionHash
             )
           : await governor.execute(
               targets,
-              values.map((value) => BigInt(value)),
+              values.map((value) => BigInt(value || '0')),
               calldatas,
               descriptionHash
             )
