@@ -6,6 +6,7 @@ import { ProposalErrorState } from '~/components/proposals/ProposalErrorState'
 import { ProposalWritePanel } from '~/components/proposals/ProposalWritePanel'
 import {
   formatDateTime,
+  formatDuration,
   formatRelativeTime,
   formatTokenAmount,
   percentage,
@@ -53,194 +54,192 @@ export default async function ProposalDetailPage({
       : 'Not queued'
 
     return (
-      <section className="space-y-8">
-        <div className="rounded-[2rem] border border-brand-ui-primary/10 bg-white p-8 shadow-sm">
-          <div className="flex flex-wrap items-start justify-between gap-4">
-            <div className="space-y-3">
-              <div className="flex flex-wrap items-center gap-3">
+      // 3-item DOM order: [header] → [aside] → [main]
+      // Mobile stacks in that order: title → cast vote → breakdown/calls
+      // Desktop: 2-col grid — header (col1 row1), aside (col2 row1-2), main (col1 row2)
+      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,2fr)_360px]">
+        {/* Col 1, Row 1 — proposal header */}
+        <section className="rounded-[2rem] border border-brand-ui-primary/10 bg-white p-5 shadow-sm sm:p-8">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div className="min-w-0 flex-1 space-y-3">
+              <div className="flex flex-wrap items-center gap-2">
                 <ProposalStateBadge state={proposal.state} />
                 <span className="text-xs font-semibold uppercase tracking-[0.24em] text-brand-ui-primary/45">
                   Proposal <TruncatedId id={proposal.id} keep={4} />
                 </span>
               </div>
-              <h2 className="text-4xl font-semibold text-brand-ui-primary">
+              <h2 className="text-2xl font-semibold text-brand-ui-primary sm:text-4xl">
                 {proposal.title}
               </h2>
-              <div className="prose prose-sm max-w-3xl text-brand-ui-primary/72">
+              <div className="prose prose-sm text-brand-ui-primary/72">
                 <ReactMarkdown>{proposal.description}</ReactMarkdown>
               </div>
             </div>
-            <div className="rounded-3xl bg-ui-secondary-200 px-5 py-4 text-sm text-brand-ui-primary/70">
+            <div className="rounded-3xl bg-ui-secondary-200 px-4 py-3 text-sm text-brand-ui-primary/70">
               Proposed by {truncateAddress(proposal.proposer)}
             </div>
           </div>
-        </div>
+        </section>
 
-        <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,2fr)_360px]">
-          <div className="space-y-6">
-            <section className="rounded-[2rem] border border-brand-ui-primary/10 bg-white p-8 shadow-sm">
-              <div className="flex items-center justify-between gap-4">
-                <h3 className="text-2xl font-semibold text-brand-ui-primary">
-                  Vote breakdown
-                </h3>
-                <div className="text-sm text-brand-ui-primary/60">
-                  Quorum counts {overview.tokenSymbol} votes for + abstain
-                </div>
-              </div>
-              <div className="mt-6 grid gap-4 md:grid-cols-3">
-                <VotePanel
-                  label="For"
-                  percentageLabel={percentage(proposal.forVotes, totalVotes)}
-                  value={proposal.forVotes}
-                />
-                <VotePanel
-                  label="Against"
-                  percentageLabel={percentage(
-                    proposal.againstVotes,
-                    totalVotes
-                  )}
-                  value={proposal.againstVotes}
-                />
-                <VotePanel
-                  label="Abstain"
-                  percentageLabel={percentage(
-                    proposal.abstainVotes,
-                    totalVotes
-                  )}
-                  value={proposal.abstainVotes}
-                />
-              </div>
-              <div className="mt-6 rounded-3xl bg-ui-secondary-200 p-5">
-                <div className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-ui-primary/45">
-                  Quorum progress
-                </div>
-                <div className="mt-2 text-lg font-semibold text-brand-ui-primary">
-                  {formatTokenAmount(quorumVotes)} /{' '}
-                  {formatTokenAmount(proposal.quorum)} {overview.tokenSymbol}
-                </div>
-              </div>
-            </section>
+        {/* Col 2, Rows 1–2 — actions sidebar (shown after title on mobile) */}
+        <aside className="space-y-6 lg:row-span-2">
+          <ProposalWritePanel
+            calldatas={proposal.calldatas}
+            descriptionHash={proposal.descriptionHash}
+            etaSeconds={proposal.etaSeconds?.toString() || null}
+            proposalId={proposal.id}
+            state={proposal.state}
+            targets={proposal.targets}
+            tokenSymbol={overview.tokenSymbol}
+            values={proposal.values.map((value) => value.toString())}
+          />
 
-            <section className="rounded-[2rem] border border-brand-ui-primary/10 bg-white p-8 shadow-sm">
-              <h3 className="text-2xl font-semibold text-brand-ui-primary">
-                Proposed calls
+          <section className="rounded-[2rem] border border-brand-ui-primary/10 bg-white p-5 shadow-sm sm:p-6">
+            <h3 className="text-lg font-semibold text-brand-ui-primary">
+              Lifecycle
+            </h3>
+            <div className="mt-4 space-y-3">
+              <TimelineRow
+                label="Submitted"
+                value={formatDateTime(proposal.createdAtTimestamp)}
+              />
+              <TimelineRow
+                label="Voting opens"
+                value={`${formatDateTime(proposal.voteStartTimestamp)} (${formatRelativeTime(
+                  proposal.voteStartTimestamp,
+                  overview.latestTimestamp
+                )})`}
+              />
+              <TimelineRow
+                label="Voting closes"
+                value={formatDateTime(proposal.voteEndTimestamp)}
+              />
+              <TimelineRow
+                label="Queued / ETA"
+                value={
+                  proposal.etaSeconds
+                    ? `${formatDateTime(proposal.etaSeconds)} (${executeLabel})`
+                    : 'Not queued'
+                }
+              />
+              <TimelineRow
+                label="Executed"
+                value={formatDateTime(proposal.executedAt)}
+              />
+              <TimelineRow
+                label="Canceled"
+                value={formatDateTime(proposal.canceledAt)}
+              />
+            </div>
+          </section>
+
+          <section className="rounded-[2rem] border border-brand-ui-primary/10 bg-white p-5 shadow-sm sm:p-6">
+            <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-ui-primary/55">
+              Governance settings
+            </h3>
+            <dl className="mt-4 space-y-4 text-sm text-brand-ui-primary/72">
+              <DetailRow
+                label="Proposal threshold"
+                value={`${formatTokenAmount(proposal.proposalThreshold)} ${overview.tokenSymbol}`}
+              />
+              <DetailRow
+                label="Voting delay"
+                value={formatDuration(overview.votingDelay)}
+              />
+              <DetailRow
+                label="Voting period"
+                value={formatDuration(overview.votingPeriod)}
+              />
+              <DetailRow
+                label="Transaction"
+                value={truncateAddress(proposal.transactionHash, 8)}
+              />
+            </dl>
+          </section>
+        </aside>
+
+        {/* Col 1, Row 2 — vote breakdown + proposed calls */}
+        <div className="space-y-6">
+          <section className="rounded-[2rem] border border-brand-ui-primary/10 bg-white p-5 shadow-sm sm:p-8">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <h3 className="text-xl font-semibold text-brand-ui-primary sm:text-2xl">
+                Vote breakdown
               </h3>
-              <div className="mt-6 space-y-4">
-                {decodedCalls.map((call, index) => (
-                  <div
-                    key={`${proposal.id}-${index}`}
-                    className="rounded-3xl bg-ui-secondary-200 p-5"
-                  >
-                    <div className="flex flex-wrap items-center justify-between gap-3">
-                      <div className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-ui-primary/45">
-                        Call {index + 1}
+              <div className="text-sm text-brand-ui-primary/60">
+                Quorum: for + abstain
+              </div>
+            </div>
+            <div className="mt-5 grid grid-cols-3 gap-3 sm:gap-4">
+              <VotePanel
+                label="For"
+                percentageLabel={percentage(proposal.forVotes, totalVotes)}
+                value={proposal.forVotes}
+              />
+              <VotePanel
+                label="Against"
+                percentageLabel={percentage(proposal.againstVotes, totalVotes)}
+                value={proposal.againstVotes}
+              />
+              <VotePanel
+                label="Abstain"
+                percentageLabel={percentage(proposal.abstainVotes, totalVotes)}
+                value={proposal.abstainVotes}
+              />
+            </div>
+            <div className="mt-5 rounded-3xl bg-ui-secondary-200 p-4 sm:p-5">
+              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-ui-primary/45">
+                Quorum progress
+              </div>
+              <div className="mt-2 text-lg font-semibold text-brand-ui-primary">
+                {formatTokenAmount(quorumVotes)} /{' '}
+                {formatTokenAmount(proposal.quorum)} {overview.tokenSymbol}
+              </div>
+            </div>
+          </section>
+
+          <section className="rounded-[2rem] border border-brand-ui-primary/10 bg-white p-5 shadow-sm sm:p-8">
+            <h3 className="text-xl font-semibold text-brand-ui-primary sm:text-2xl">
+              Proposed calls
+            </h3>
+            <div className="mt-5 space-y-4">
+              {decodedCalls.map((call, index) => (
+                <div
+                  key={`${proposal.id}-${index}`}
+                  className="rounded-3xl bg-ui-secondary-200 p-4 sm:p-5"
+                >
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-ui-primary/45">
+                      Call {index + 1}
+                    </div>
+                    <div className="text-sm text-brand-ui-primary/65">
+                      Value: {formatTokenAmount(call.value)} ETH
+                    </div>
+                  </div>
+                  {call.kind === 'decoded' ? (
+                    <div className="mt-3 space-y-2">
+                      <div className="text-base font-semibold text-brand-ui-primary sm:text-lg">
+                        {call.contractLabel}.{call.functionName}()
                       </div>
-                      <div className="text-sm text-brand-ui-primary/65">
-                        Value: {formatTokenAmount(call.value)} ETH
+                      <div className="text-sm text-brand-ui-primary/70">
+                        {call.args.length
+                          ? call.args.join(', ')
+                          : 'No arguments'}
                       </div>
                     </div>
-                    {call.kind === 'decoded' ? (
-                      <div className="mt-3 space-y-2">
-                        <div className="text-lg font-semibold text-brand-ui-primary">
-                          {call.contractLabel}.{call.functionName}()
-                        </div>
-                        <div className="text-sm text-brand-ui-primary/70">
-                          {call.args.length
-                            ? call.args.join(', ')
-                            : 'No arguments'}
-                        </div>
+                  ) : (
+                    <div className="mt-3 space-y-2 text-sm text-brand-ui-primary/70">
+                      <div className="break-all">{call.target}</div>
+                      <div className="break-all font-mono text-xs">
+                        {call.calldata}
                       </div>
-                    ) : (
-                      <div className="mt-3 space-y-2 text-sm text-brand-ui-primary/70">
-                        <div>Target: {call.target}</div>
-                        <div className="break-all font-mono text-xs">
-                          {call.calldata}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </section>
-          </div>
-
-          <aside className="space-y-6">
-            <ProposalWritePanel
-              calldatas={proposal.calldatas}
-              descriptionHash={proposal.descriptionHash}
-              etaSeconds={proposal.etaSeconds?.toString() || null}
-              proposalId={proposal.id}
-              state={proposal.state}
-              targets={proposal.targets}
-              tokenSymbol={overview.tokenSymbol}
-              values={proposal.values.map((value) => value.toString())}
-            />
-
-            <section className="rounded-[2rem] border border-brand-ui-primary/10 bg-white p-6 shadow-sm">
-              <h3 className="text-2xl font-semibold text-brand-ui-primary">
-                Lifecycle
-              </h3>
-              <div className="mt-4 space-y-3">
-                <TimelineRow
-                  label="Submitted"
-                  value={formatDateTime(proposal.createdAtTimestamp)}
-                />
-                <TimelineRow
-                  label="Voting opens"
-                  value={`${formatDateTime(proposal.voteStartTimestamp)} (${formatRelativeTime(
-                    proposal.voteStartTimestamp,
-                    overview.latestTimestamp
-                  )})`}
-                />
-                <TimelineRow
-                  label="Voting closes"
-                  value={formatDateTime(proposal.voteEndTimestamp)}
-                />
-                <TimelineRow
-                  label="Queued / ETA"
-                  value={
-                    proposal.etaSeconds
-                      ? `${formatDateTime(proposal.etaSeconds)} (${executeLabel})`
-                      : 'Not queued'
-                  }
-                />
-                <TimelineRow
-                  label="Executed"
-                  value={formatDateTime(proposal.executedAt)}
-                />
-                <TimelineRow
-                  label="Canceled"
-                  value={formatDateTime(proposal.canceledAt)}
-                />
-              </div>
-            </section>
-
-            <section className="rounded-[2rem] border border-brand-ui-primary/10 bg-white p-6 shadow-sm">
-              <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-ui-primary/55">
-                Governance settings
-              </h3>
-              <dl className="mt-4 space-y-4 text-sm text-brand-ui-primary/72">
-                <DetailRow
-                  label="Proposal threshold"
-                  value={`${formatTokenAmount(proposal.proposalThreshold)} ${overview.tokenSymbol}`}
-                />
-                <DetailRow
-                  label="Voting delay"
-                  value={`${overview.votingDelay.toString()} seconds`}
-                />
-                <DetailRow
-                  label="Voting period"
-                  value={`${overview.votingPeriod.toString()} seconds`}
-                />
-                <DetailRow
-                  label="Transaction"
-                  value={truncateAddress(proposal.transactionHash, 8)}
-                />
-              </dl>
-            </section>
-          </aside>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
         </div>
-      </section>
+      </div>
     )
   } catch (error) {
     console.error('[proposals/[id]/page] governance data load failed:', error)
