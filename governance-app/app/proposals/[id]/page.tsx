@@ -84,21 +84,29 @@ export default async function ProposalDetailPage({
                   components={{
                     // Proposal descriptions are user-controlled (on-chain).
                     // Allow https:// external links and #anchor links.
-                    // http:, data:, javascript: and other schemes are blocked.
+                    // http:, data:, javascript: and other schemes are blocked
+                    // (rendered as plain text — no indication shown since the
+                    // text content is preserved and the intent is still clear).
                     a: ({ href, children }) => {
-                      const safe =
-                        href?.startsWith('https://') || href?.startsWith('#')
-                      return safe ? (
-                        <a
-                          href={href}
-                          rel="noopener noreferrer"
-                          target="_blank"
-                        >
-                          {children}
-                        </a>
-                      ) : (
-                        <span>{children}</span>
-                      )
+                      const isExternal = href?.startsWith('https://')
+                      const isAnchor = href?.startsWith('#')
+                      if (isExternal) {
+                        return (
+                          <a
+                            href={href}
+                            rel="noopener noreferrer"
+                            target="_blank"
+                          >
+                            {children}
+                          </a>
+                        )
+                      }
+                      if (isAnchor) {
+                        // Same-page anchor — no target="_blank" (would open a
+                        // new tab without the fragment resolving correctly).
+                        return <a href={href}>{children}</a>
+                      }
+                      return <span>{children}</span>
                     },
                     // Strip all images — proposal content is user-controlled
                     // on-chain data; any https:// image is a potential tracking
