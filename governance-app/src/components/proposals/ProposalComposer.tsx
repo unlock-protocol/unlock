@@ -154,7 +154,12 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
         payload.description
       )
       const receipt = await tx.wait()
-      if (receipt && receipt.status === 0) {
+      if (!receipt) {
+        throw new Error(
+          'Transaction was dropped or replaced before confirmation.'
+        )
+      }
+      if (receipt.status === 0) {
         throw new Error('Transaction reverted on-chain.')
       }
       return tx.hash as string
@@ -166,11 +171,10 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
     },
     onSuccess: (txHash) => {
       const explorerLink = txExplorerUrl(txHash)
-      ToastHelper.success(
-        explorerLink
-          ? `Proposal submitted. View on Basescan: ${explorerLink}`
-          : 'Proposal submitted to the governor.'
-      )
+      ToastHelper.success('Proposal submitted to the governor.')
+      if (explorerLink) {
+        window.open(explorerLink, '_blank', 'noopener,noreferrer')
+      }
       setTitle('')
       setDescription('')
       setCalls([createEmptyCall()])
