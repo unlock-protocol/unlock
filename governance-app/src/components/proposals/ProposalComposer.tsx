@@ -14,7 +14,7 @@ import {
   JsonRpcProvider,
 } from 'ethers'
 import { governanceEnv } from '~/config/env'
-import { governanceConfig } from '~/config/governance'
+import { governanceConfig, txExplorerUrl } from '~/config/governance'
 import { useGovernanceWallet } from '~/hooks/useGovernanceWallet'
 import { formatTokenAmount } from '~/lib/governance/format'
 import { getContractAbi, governorAbi, tokenAbi } from '~/lib/governance/rpc'
@@ -49,7 +49,31 @@ type PreparedCall = {
   value: bigint
 }
 
+type ProposalPayload = {
+  calldatas: string[]
+  description: string
+  targets: string[]
+  values: bigint[]
+}
+
 const customContractOption = 'Custom contract'
+
+const defaultAdvancedJson = JSON.stringify(
+  {
+    proposalName: 'Upgrade Unlock governance parameters',
+    description: 'Describe the rationale and expected outcome here.',
+    calls: [
+      {
+        contractAbi: [],
+        contractAddress: governanceConfig.timelockAddress,
+        functionName: '',
+        functionArgs: [],
+      },
+    ],
+  },
+  null,
+  2
+)
 
 export function ProposalComposer({ tokenSymbol }: { tokenSymbol: string }) {
   if (!governanceEnv.privyAppId) {
@@ -79,28 +103,15 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [calls, setCalls] = useState<CallDraft[]>([createEmptyCall()])
-  const [advancedJson, setAdvancedJson] = useState(
-    JSON.stringify(
-      {
-        proposalName: 'Upgrade Unlock governance parameters',
-        description: 'Describe the rationale and expected outcome here.',
-        calls: [
-          {
-            contractAbi: [],
-            contractAddress: governanceConfig.timelockAddress,
-            functionName: '',
-            functionArgs: [],
-          },
-        ],
-      },
-      null,
-      2
-    )
+  const [advancedJson, setAdvancedJson] = useState(defaultAdvancedJson)
+  const [pendingPayload, setPendingPayload] = useState<ProposalPayload | null>(
+    null
   )
 
   const thresholdQuery = useQuery({
     enabled: Boolean(address),
     queryKey: ['proposal-threshold', address],
+    staleTime: 0,
     queryFn: async () => {
       const provider = new JsonRpcProvider(
         governanceConfig.rpcUrl,
@@ -129,36 +140,39 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
   })
 
   const composerMutation = useMutation({
-    mutationFn: async () => {
+    mutationFn: async (payload: ProposalPayload) => {
       const signer = await getSigner()
       const governor = new Contract(
         governanceConfig.governorAddress,
         governorAbi,
         signer
       )
-      const proposalPayload =
-        mode === 'simple'
-          ? buildSimpleProposalPayload(title, description, calls)
-          : buildAdvancedProposalPayload(advancedJson)
       const tx = await governor.propose(
-        proposalPayload.targets,
-        proposalPayload.values,
-        proposalPayload.calldatas,
-        proposalPayload.description
+        payload.targets,
+        payload.values,
+        payload.calldatas,
+        payload.description
       )
-
       await tx.wait()
+      return tx.hash as string
     },
     onError: (error) => {
       ToastHelper.error(
         error instanceof Error ? error.message : 'Unable to submit proposal.'
       )
     },
-    onSuccess: () => {
-      ToastHelper.success('Proposal submitted to the governor.')
+    onSuccess: (txHash) => {
+      const explorerLink = txExplorerUrl(txHash)
+      ToastHelper.success(
+        explorerLink
+          ? `Proposal submitted. View on Basescan: ${explorerLink}`
+          : 'Proposal submitted to the governor.'
+      )
       setTitle('')
       setDescription('')
       setCalls([createEmptyCall()])
+      setAdvancedJson(defaultAdvancedJson)
+      setPendingPayload(null)
     },
   })
 
@@ -167,7 +181,16 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
     thresholdState &&
     thresholdState.votingPower >= thresholdState.proposalThreshold
   const hasRequiredFields =
-    mode === 'simple' ? title.trim() !== '' && description.trim() !== '' : true
+    mode === 'simple'
+      ? title.trim() !== '' && description.trim() !== ''
+      : (() => {
+          try {
+            JSON.parse(advancedJson)
+            return true
+          } catch {
+            return false
+          }
+        })()
 
   return (
     <>
@@ -267,19 +290,85 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
                   ? 'Your wallet currently meets the proposal threshold.'
                   : 'Your wallet does not currently meet the proposal threshold.'}
               </p>
-              <div className="mt-5">
-                <Button
-                  disabled={
-                    !meetsThreshold ||
-                    !hasRequiredFields ||
-                    composerMutation.isPending
-                  }
-                  loading={composerMutation.isPending}
-                  onClick={() => composerMutation.mutate()}
-                >
-                  Submit proposal
-                </Button>
-              </div>
+              {pendingPayload ? (
+                <div className="mt-5 space-y-4">
+                  <div className="rounded-2xl bg-ui-secondary-200 p-4 text-sm text-brand-ui-primary/80">
+                    <p className="font-semibold text-brand-ui-primary">
+                      Review before signing
+                    </p>
+                    <p className="mt-2 text-xs text-brand-ui-primary/55 uppercase tracking-[0.18em]">
+                      Targets
+                    </p>
+                    {pendingPayload.targets.map((t, i) => (
+                      <p key={i} className="mt-1 break-all font-mono text-xs">
+                        {t}
+                      </p>
+                    ))}
+                    <p className="mt-3 text-xs text-brand-ui-primary/55 uppercase tracking-[0.18em]">
+                      ETH values (wei)
+                    </p>
+                    {pendingPayload.values.map((v, i) => (
+                      <p key={i} className="mt-1 font-mono text-xs">
+                        {v.toString()}
+                      </p>
+                    ))}
+                    <p className="mt-3 text-xs text-brand-ui-primary/55 uppercase tracking-[0.18em]">
+                      Description
+                    </p>
+                    <p className="mt-1 text-xs">
+                      {pendingPayload.description.slice(0, 120)}
+                      {pendingPayload.description.length > 120 ? '…' : ''}
+                    </p>
+                  </div>
+                  <div className="flex gap-3">
+                    <Button
+                      disabled={composerMutation.isPending}
+                      loading={composerMutation.isPending}
+                      onClick={() => composerMutation.mutate(pendingPayload)}
+                    >
+                      Confirm &amp; sign
+                    </Button>
+                    <Button
+                      disabled={composerMutation.isPending}
+                      onClick={() => setPendingPayload(null)}
+                      variant="outlined-primary"
+                    >
+                      Edit
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="mt-5">
+                  <Button
+                    disabled={
+                      !meetsThreshold ||
+                      !hasRequiredFields ||
+                      composerMutation.isPending
+                    }
+                    onClick={() => {
+                      try {
+                        const payload =
+                          mode === 'simple'
+                            ? buildSimpleProposalPayload(
+                                title,
+                                description,
+                                calls
+                              )
+                            : buildAdvancedProposalPayload(advancedJson)
+                        setPendingPayload(payload)
+                      } catch (error) {
+                        ToastHelper.error(
+                          error instanceof Error
+                            ? error.message
+                            : 'Invalid proposal.'
+                        )
+                      }
+                    }}
+                  >
+                    Submit proposal
+                  </Button>
+                </div>
+              )}
             </section>
           </aside>
         </div>

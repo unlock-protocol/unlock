@@ -2,7 +2,6 @@ import {
   UPGovernor,
   UPTimelock,
   UPToken,
-  PublicLock,
   Unlock,
 } from '@unlock-protocol/contracts'
 import { base, mainnet } from '@unlock-protocol/networks'
@@ -56,12 +55,8 @@ export const governanceConfig = {
       abi: Unlock,
       kind: 'unlock',
     },
-    {
-      label: 'PublicLock',
-      address: '',
-      abi: PublicLock,
-      kind: 'publicLock',
-    },
+    // PublicLock is intentionally excluded — every Lock is a separate deployed
+    // instance; users must supply the specific address via "Custom contract".
   ],
 } as const
 
