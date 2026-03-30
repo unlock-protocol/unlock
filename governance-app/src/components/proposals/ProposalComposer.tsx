@@ -153,7 +153,10 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
         payload.calldatas,
         payload.description
       )
-      await tx.wait()
+      const receipt = await tx.wait()
+      if (receipt && receipt.status === 0) {
+        throw new Error('Transaction reverted on-chain.')
+      }
       return tx.hash as string
     },
     onError: (error) => {
@@ -178,7 +181,8 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
 
   const thresholdState = thresholdQuery.data
   const meetsThreshold =
-    thresholdState &&
+    thresholdQuery.isSuccess &&
+    thresholdState !== undefined &&
     thresholdState.votingPower >= thresholdState.proposalThreshold
   const hasRequiredFields =
     mode === 'simple'
@@ -286,9 +290,13 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
                 Submit proposal
               </h3>
               <p className="mt-4 text-sm leading-6 text-brand-ui-primary/70">
-                {meetsThreshold
-                  ? 'Your wallet currently meets the proposal threshold.'
-                  : 'Your wallet does not currently meet the proposal threshold.'}
+                {thresholdQuery.isPending
+                  ? 'Checking your voting power…'
+                  : thresholdQuery.isError
+                    ? 'Could not load voting power. Check your RPC connection.'
+                    : meetsThreshold
+                      ? 'Your wallet currently meets the proposal threshold.'
+                      : 'Your wallet does not currently meet the proposal threshold.'}
               </p>
               {pendingPayload ? (
                 <div className="mt-5 space-y-4">
