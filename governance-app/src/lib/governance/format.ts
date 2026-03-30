@@ -58,6 +58,26 @@ export function formatRelativeTime(timestamp: bigint, now: bigint) {
   return 'just now'
 }
 
+export function formatDuration(seconds: bigint | number) {
+  const s = Number(seconds)
+  if (s <= 0) return '0 seconds'
+
+  const days = Math.floor(s / 86400)
+  const hours = Math.floor((s % 86400) / 3600)
+  const minutes = Math.floor((s % 3600) / 60)
+  const secs = s % 60
+
+  const parts: string[] = []
+  if (days) parts.push(`${days}d`)
+  if (hours) parts.push(`${hours}h`)
+  if (minutes) parts.push(`${minutes}m`)
+  // Seconds are shown only for sub-hour durations — once hours or days are
+  // present the precision is not useful for governance delay/period display.
+  if (secs && !days && !hours) parts.push(`${secs}s`)
+
+  return parts.join(' ')
+}
+
 export function truncateAddress(address: string, size = 4) {
   if (address.length <= size * 2 + 2) {
     return address

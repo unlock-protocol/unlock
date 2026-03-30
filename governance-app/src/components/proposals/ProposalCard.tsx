@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { TruncatedId } from '~/components/TruncatedId'
 import {
   formatDateTime,
   formatRelativeTime,
@@ -37,7 +38,12 @@ export function ProposalCard({
           <div className="flex flex-wrap items-center gap-3">
             <ProposalStateBadge state={proposal.state} />
             <span className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-ui-primary/45">
-              Proposal {proposal.id}
+              Proposal{' '}
+              <TruncatedId
+                id={proposal.id}
+                keep={4}
+                label="Copy full proposal ID"
+              />
             </span>
           </div>
           <h2 className="text-2xl font-semibold text-brand-ui-primary">
