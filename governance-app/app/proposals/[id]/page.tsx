@@ -67,7 +67,12 @@ export default async function ProposalDetailPage({
               <div className="flex flex-wrap items-center gap-2">
                 <ProposalStateBadge state={proposal.state} />
                 <span className="text-xs font-semibold uppercase tracking-[0.24em] text-brand-ui-primary/45">
-                  Proposal <TruncatedId id={proposal.id} keep={4} />
+                  Proposal{' '}
+                  <TruncatedId
+                    id={proposal.id}
+                    keep={4}
+                    label="Copy full proposal ID"
+                  />
                 </span>
               </div>
               <h2 className="text-2xl font-semibold text-brand-ui-primary sm:text-4xl">
@@ -78,10 +83,11 @@ export default async function ProposalDetailPage({
                   remarkPlugins={[remarkGfm]}
                   components={{
                     // Proposal descriptions are user-controlled (on-chain).
-                    // Only allow https — http leaks over mixed-content and
-                    // data: / other non-http schemes can be abused.
+                    // Allow https:// external links and #anchor links.
+                    // http:, data:, javascript: and other schemes are blocked.
                     a: ({ href, children }) => {
-                      const safe = href?.startsWith('https://')
+                      const safe =
+                        href?.startsWith('https://') || href?.startsWith('#')
                       return safe ? (
                         <a
                           href={href}

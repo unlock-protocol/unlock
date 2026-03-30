@@ -79,15 +79,22 @@ function ProposalWritePanelConnected({
   const [reason, setReason] = useState('')
   const [pendingSupport, setPendingSupport] = useState<0 | 1 | 2 | null>(null)
   // Tick every 15s while Queued so canExecute activates without a reload.
+  // The interval stops once canExecute becomes true (ETA has passed).
   const [now, setNow] = useState(() => BigInt(Math.floor(Date.now() / 1000)))
   useEffect(() => {
     if (state !== 'Queued') return
+    if (
+      etaSeconds !== null &&
+      BigInt(etaSeconds) > 0n &&
+      now >= BigInt(etaSeconds)
+    )
+      return
     const id = setInterval(
       () => setNow(BigInt(Math.floor(Date.now() / 1000))),
       15_000
     )
     return () => clearInterval(id)
-  }, [state])
+  }, [state, etaSeconds, now])
 
   const voteStatusQuery = useQuery({
     enabled: Boolean(address),

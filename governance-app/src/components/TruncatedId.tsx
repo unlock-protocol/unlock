@@ -8,9 +8,14 @@ import { MdContentCopy as CopyIcon, MdCheck as CheckIcon } from 'react-icons/md'
 type TruncatedIdProps = {
   id: string
   keep?: number
+  label?: string
 }
 
-export function TruncatedId({ id, keep = 4 }: TruncatedIdProps) {
+export function TruncatedId({
+  id,
+  keep = 4,
+  label = 'Copy full ID',
+}: TruncatedIdProps) {
   const [copied, setCopied] = useState(false)
   const resetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -40,7 +45,7 @@ export function TruncatedId({ id, keep = 4 }: TruncatedIdProps) {
     <span className="inline-flex items-center gap-1">
       <span className="font-mono">{display}</span>
       <button
-        aria-label="Copy full proposal ID"
+        aria-label={label}
         className="text-brand-ui-primary/40 transition-colors hover:text-brand-ui-primary"
         onClick={handleCopy}
         type="button"
