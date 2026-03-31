@@ -164,7 +164,9 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
       if (receipt.status === 0) {
         throw new Error('Transaction reverted on-chain.')
       }
-      return tx.hash as string
+      // Use receipt.hash — it reflects the actually-mined tx hash in case of
+      // EIP-1559 replacement, not the original broadcast hash.
+      return receipt.hash as string
     },
     onError: (error) => {
       ToastHelper.error(
@@ -189,7 +191,9 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
     thresholdState.votingPower >= thresholdState.proposalThreshold
   const hasRequiredFields =
     mode === 'simple'
-      ? title.trim() !== '' && description.trim() !== ''
+      ? title.trim() !== '' &&
+        description.trim() !== '' &&
+        calls.every((c) => c.functionName !== '')
       : (() => {
           try {
             JSON.parse(advancedJson)
@@ -357,9 +361,19 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
                       composerMutation.isPending
                     }
                     onClick={async () => {
-                      // Refetch threshold before building payload so the gate
-                      // reflects current voting power, not cached data.
-                      await thresholdQuery.refetch()
+                      // Refetch to get current voting power before building
+                      // the payload — the closure's meetsThreshold may be stale.
+                      const result = await thresholdQuery.refetch()
+                      const fresh = result.data
+                      if (
+                        !fresh ||
+                        fresh.votingPower < fresh.proposalThreshold
+                      ) {
+                        ToastHelper.error(
+                          'Voting power no longer meets the proposal threshold.'
+                        )
+                        return
+                      }
                       try {
                         const payload =
                           mode === 'simple'
@@ -382,19 +396,7 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
                     Submit proposal
                   </Button>
                   {submittedTxHash ? (
-                    <div className="rounded-2xl bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
-                      Proposal submitted.{' '}
-                      {txExplorerUrl(submittedTxHash) ? (
-                        <a
-                          className="underline"
-                          href={txExplorerUrl(submittedTxHash)!}
-                          rel="noopener noreferrer"
-                          target="_blank"
-                        >
-                          View on Basescan
-                        </a>
-                      ) : null}
-                    </div>
+                    <SubmittedBanner txHash={submittedTxHash} />
                   ) : null}
                 </div>
               )}
@@ -713,6 +715,25 @@ function WalletStateCard({
       </p>
       {action ? <div className="mt-5">{action}</div> : null}
     </section>
+  )
+}
+
+function SubmittedBanner({ txHash }: { txHash: string }) {
+  const explorerLink = txExplorerUrl(txHash)
+  return (
+    <div className="rounded-2xl bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+      Proposal submitted.{' '}
+      {explorerLink ? (
+        <a
+          className="underline"
+          href={explorerLink}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          View on Basescan
+        </a>
+      ) : null}
+    </div>
   )
 }
 
