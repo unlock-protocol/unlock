@@ -193,7 +193,9 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
     mode === 'simple'
       ? title.trim() !== '' &&
         description.trim() !== '' &&
-        calls.every((c) => c.functionName !== '')
+        calls.every(
+          (c) => c.functionName !== '' && c.args.every((a) => a.trim() !== '')
+        )
       : (() => {
           try {
             JSON.parse(advancedJson)
@@ -325,6 +327,16 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
                     {pendingPayload.values.map((v, i) => (
                       <p key={i} className="mt-1 font-mono text-xs">
                         {v.toString()}
+                      </p>
+                    ))}
+                    <p className="mt-3 text-xs text-brand-ui-primary/55 uppercase tracking-[0.18em]">
+                      Calldatas
+                    </p>
+                    {pendingPayload.calldatas.map((cd, i) => (
+                      <p key={i} className="mt-1 break-all font-mono text-xs">
+                        {cd.length > 18
+                          ? `${cd.slice(0, 10)}…${cd.slice(-8)}`
+                          : cd}
                       </p>
                     ))}
                     <p className="mt-3 text-xs text-brand-ui-primary/55 uppercase tracking-[0.18em]">
@@ -745,7 +757,7 @@ function createEmptyCall(): CallDraft {
     customAddress: '',
     functionName: '',
     kind: 'known',
-    knownContract: governanceConfig.knownContracts[0].label,
+    knownContract: governanceConfig.knownContracts[0]?.label ?? '',
     value: '0',
   }
 }
@@ -790,8 +802,16 @@ function buildAdvancedProposalPayload(advancedJson: string) {
       throw new Error('contractAbi must be an inline ABI array.')
     }
 
+    if (typeof call.contractAddress !== 'string' || !call.contractAddress) {
+      throw new Error('contractAddress is required and must be a string.')
+    }
+
     if (!isAddress(call.contractAddress)) {
       throw new Error(`Invalid contract address: ${call.contractAddress}`)
+    }
+
+    if (typeof call.functionName !== 'string' || !call.functionName) {
+      throw new Error('functionName is required and must be a string.')
     }
 
     const contractInterface = new Interface(call.contractAbi as InterfaceAbi)
