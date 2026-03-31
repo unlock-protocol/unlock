@@ -108,6 +108,7 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
   const [pendingPayload, setPendingPayload] = useState<ProposalPayload | null>(
     null
   )
+  const [submittedTxHash, setSubmittedTxHash] = useState<string | null>(null)
 
   const thresholdQuery = useQuery({
     enabled: Boolean(address),
@@ -171,16 +172,13 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
       )
     },
     onSuccess: (txHash) => {
-      const explorerLink = txExplorerUrl(txHash)
       ToastHelper.success('Proposal submitted to the governor.')
-      if (explorerLink) {
-        window.open(explorerLink, '_blank', 'noopener,noreferrer')
-      }
       setTitle('')
       setDescription('')
       setCalls([createEmptyCall()])
       setAdvancedJson(defaultAdvancedJson)
       setPendingPayload(null)
+      setSubmittedTxHash(txHash)
     },
   })
 
@@ -351,14 +349,17 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
                   </div>
                 </div>
               ) : (
-                <div className="mt-5">
+                <div className="mt-5 space-y-4">
                   <Button
                     disabled={
                       !meetsThreshold ||
                       !hasRequiredFields ||
                       composerMutation.isPending
                     }
-                    onClick={() => {
+                    onClick={async () => {
+                      // Refetch threshold before building payload so the gate
+                      // reflects current voting power, not cached data.
+                      await thresholdQuery.refetch()
                       try {
                         const payload =
                           mode === 'simple'
@@ -380,6 +381,21 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
                   >
                     Submit proposal
                   </Button>
+                  {submittedTxHash ? (
+                    <div className="rounded-2xl bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+                      Proposal submitted.{' '}
+                      {txExplorerUrl(submittedTxHash) ? (
+                        <a
+                          className="underline"
+                          href={txExplorerUrl(submittedTxHash)!}
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          View on Basescan
+                        </a>
+                      ) : null}
+                    </div>
+                  ) : null}
                 </div>
               )}
             </section>
