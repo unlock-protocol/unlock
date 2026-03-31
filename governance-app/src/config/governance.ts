@@ -24,6 +24,8 @@ export const governanceConfig = {
   subgraphUrl:
     governanceEnv.baseSubgraphUrl ||
     'https://subgraph.unlock-protocol.com/8453',
+  // Canonical Base timelock — packages/networks NetworkConfig.dao does not expose
+  // timelock yet, so this is hardcoded; update if the networks package adds it.
   timelockAddress: '0xB34567C4cA697b39F72e1a8478f285329A98ed1b',
   tokenAddress: upTokenAddress,
   explorerUrl: 'https://basescan.org',
@@ -43,7 +45,6 @@ export const governanceConfig = {
     },
     {
       label: 'UPTimelock',
-      // Canonical Base timelock address — matches packages/networks/src/networks/base.ts dao.timelock
       address: '0xB34567C4cA697b39F72e1a8478f285329A98ed1b',
       abi: UPTimelock,
       kind: 'timelock',

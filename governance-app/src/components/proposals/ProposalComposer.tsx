@@ -22,6 +22,7 @@ import { getContractAbi, governorAbi, tokenAbi } from '~/lib/governance/rpc'
 type ProposalComposerMode = 'simple' | 'advanced'
 
 type CallDraft = {
+  id: string
   args: string[]
   customAbi: string
   customAddress: string
@@ -111,7 +112,7 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
   const thresholdQuery = useQuery({
     enabled: Boolean(address),
     queryKey: ['proposal-threshold', address],
-    staleTime: 0,
+    staleTime: 60_000,
     queryFn: async () => {
       const provider = new JsonRpcProvider(
         governanceConfig.rpcUrl,
@@ -448,7 +449,7 @@ function SimpleComposer({
           <CallEditor
             call={call}
             index={index}
-            key={`${index}-${call.knownContract}`}
+            key={call.id}
             onChange={(nextCall) => onChangeCall(index, nextCall)}
             onRemove={() => onRemoveCall(index)}
           />
@@ -522,10 +523,12 @@ function CallEditor({
                 event.target.value === customContractOption
                   ? {
                       ...createEmptyCall(),
+                      id: call.id,
                       kind: 'custom',
                     }
                   : {
                       ...createEmptyCall(),
+                      id: call.id,
                       knownContract: event.target.value,
                     }
               )
@@ -699,6 +702,7 @@ function WalletStateCard({
 
 function createEmptyCall(): CallDraft {
   return {
+    id: crypto.randomUUID(),
     args: [],
     customAbi: '[]',
     customAddress: '',
