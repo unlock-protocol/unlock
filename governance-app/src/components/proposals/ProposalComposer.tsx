@@ -196,7 +196,8 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
         calls.every(
           (c) =>
             c.functionName !== '' &&
-            c.args.every((a) => a.trim() !== '') &&
+            // Skip empty-value check — string-type args may intentionally be "".
+            // parseArgument validates values at build time per their ABI type.
             (c.kind !== 'custom' || isAddress(c.customAddress))
         )
       : (() => {
@@ -285,13 +286,13 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
                 </div>
                 <div className="mt-2 text-2xl font-semibold text-brand-ui-primary">
                   {thresholdQuery.isSuccess
-                    ? `${formatTokenAmount(thresholdState!.votingPower)} ${tokenSymbol}`
+                    ? `${formatTokenAmount(thresholdState?.votingPower ?? 0n)} ${tokenSymbol}`
                     : '—'}
                 </div>
                 <p className="mt-2 text-sm leading-6 text-brand-ui-primary/70">
                   Required:{' '}
                   {thresholdQuery.isSuccess
-                    ? `${formatTokenAmount(thresholdState!.proposalThreshold)} ${tokenSymbol}`
+                    ? `${formatTokenAmount(thresholdState?.proposalThreshold ?? 0n)} ${tokenSymbol}`
                     : '—'}
                 </p>
               </div>
@@ -310,6 +311,16 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
                       ? 'Your wallet currently meets the proposal threshold.'
                       : 'Your wallet does not currently meet the proposal threshold.'}
               </p>
+              {thresholdQuery.isError ? (
+                <div className="mt-3">
+                  <Button
+                    onClick={() => thresholdQuery.refetch()}
+                    variant="outlined-primary"
+                  >
+                    Retry
+                  </Button>
+                </div>
+              ) : null}
               {pendingPayload ? (
                 <div className="mt-5 space-y-4">
                   <div className="rounded-2xl bg-ui-secondary-200 p-4 text-sm text-brand-ui-primary/80">
@@ -374,7 +385,11 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
                     disabled={
                       !meetsThreshold ||
                       !hasRequiredFields ||
-                      composerMutation.isPending
+                      composerMutation.isPending ||
+                      thresholdQuery.isPending
+                    }
+                    loading={
+                      thresholdQuery.isPending && !thresholdQuery.isError
                     }
                     onClick={async () => {
                       // Refetch to get current voting power before building
@@ -509,7 +524,12 @@ function CallEditor({
   onRemove: () => void
 }) {
   const contractChoices = [
-    ...governanceConfig.knownContracts.map(({ label }) => label),
+    // Only offer contracts that have a resolved address — empty-address entries
+    // (e.g. Unlock when base.unlockAddress is undefined) would silently fail at
+    // submit time with an opaque isAddress error.
+    ...governanceConfig.knownContracts
+      .filter(({ address }) => address)
+      .map(({ label }) => label),
     customContractOption,
   ]
   const contractChoice =
