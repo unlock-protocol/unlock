@@ -194,7 +194,10 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
       ? title.trim() !== '' &&
         description.trim() !== '' &&
         calls.every(
-          (c) => c.functionName !== '' && c.args.every((a) => a.trim() !== '')
+          (c) =>
+            c.functionName !== '' &&
+            c.args.every((a) => a.trim() !== '') &&
+            (c.kind !== 'custom' || isAddress(c.customAddress))
         )
       : (() => {
           try {
@@ -333,11 +336,12 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
                       Calldatas
                     </p>
                     {pendingPayload.calldatas.map((cd, i) => (
-                      <p key={i} className="mt-1 break-all font-mono text-xs">
-                        {cd.length > 18
-                          ? `${cd.slice(0, 10)}…${cd.slice(-8)}`
-                          : cd}
-                      </p>
+                      <div
+                        key={i}
+                        className="mt-1 max-h-24 overflow-y-auto rounded bg-white/60 p-1"
+                      >
+                        <p className="break-all font-mono text-xs">{cd}</p>
+                      </div>
                     ))}
                     <p className="mt-3 text-xs text-brand-ui-primary/55 uppercase tracking-[0.18em]">
                       Description
