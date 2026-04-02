@@ -755,6 +755,8 @@ function WalletStateCard({
 }
 
 function SubmittedBanner({ txHash }: { txHash: string }) {
+  // txHash comes from a mined TransactionReceipt — txExplorerUrl validates the
+  // 32-byte hex pattern before constructing the URL, so href is safe.
   const explorerLink = txExplorerUrl(txHash)
   return (
     <div className="rounded-2xl bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
@@ -797,6 +799,10 @@ function buildSimpleProposalPayload(
 
   if (!description.trim()) {
     throw new Error('Enter a proposal description.')
+  }
+
+  if (calls.length === 0) {
+    throw new Error('At least one call is required.')
   }
 
   const preparedCalls = calls.map((call) => prepareSimpleCall(call))
@@ -978,7 +984,10 @@ function getFunctionChoices(abi: unknown) {
 
   try {
     return new Interface(getContractAbi(abi)).fragments.filter(
-      (fragment) => fragment.type === 'function'
+      (fragment) =>
+        fragment.type === 'function' &&
+        ((fragment as FunctionFragment).stateMutability === 'nonpayable' ||
+          (fragment as FunctionFragment).stateMutability === 'payable')
     ) as FunctionFragment[]
   } catch {
     return [] as FunctionFragment[]
