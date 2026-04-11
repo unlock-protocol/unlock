@@ -197,6 +197,18 @@ describe('buildAdvancedProposalPayload', () => {
     )
   })
 
+  it('throws when JSON is not an object (null, array, primitive)', () => {
+    expect(() => buildAdvancedProposalPayload('null')).toThrow(
+      /must be an object/
+    )
+    expect(() => buildAdvancedProposalPayload('[]')).toThrow(
+      /must be an object/
+    )
+    expect(() => buildAdvancedProposalPayload('42')).toThrow(
+      /must be an object/
+    )
+  })
+
   it('throws when proposalName is missing', () => {
     const json = JSON.stringify({
       calls: [

@@ -71,11 +71,16 @@ function resolveContractAbi(abi: unknown): InterfaceAbi {
 }
 
 function parseAdvancedProposal(advancedJson: string) {
+  let parsed: unknown
   try {
-    return JSON.parse(advancedJson) as AdvancedProposal
+    parsed = JSON.parse(advancedJson)
   } catch {
     throw new Error('Proposal JSON is invalid.')
   }
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+    throw new Error('Proposal JSON must be an object.')
+  }
+  return parsed as AdvancedProposal
 }
 
 export function parseCustomAbi(
