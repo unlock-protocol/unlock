@@ -129,9 +129,16 @@ export function parseArgument(type: string, value: string): unknown {
       )
     }
     const childType = arrayMatch[1]
+    const fixedLength = arrayMatch[2] ? parseInt(arrayMatch[2], 10) : null
 
     if (!Array.isArray(parsed)) {
       throw new Error(`Expected an array for ${type}.`)
+    }
+
+    if (fixedLength !== null && parsed.length !== fixedLength) {
+      throw new Error(
+        `${type} requires exactly ${fixedLength} element${fixedLength === 1 ? '' : 's'}, got ${parsed.length}.`
+      )
     }
 
     return parsed.map((item) =>
@@ -158,7 +165,19 @@ export function parseArgument(type: string, value: string): unknown {
     return value === 'true'
   }
 
-  if (type.startsWith('uint') || type.startsWith('int')) {
+  if (type.startsWith('uint')) {
+    try {
+      const v = BigInt(value)
+      if (v < 0n) {
+        throw new Error()
+      }
+      return v
+    } catch {
+      throw new Error(`Invalid integer value for ${type}: "${value}"`)
+    }
+  }
+
+  if (type.startsWith('int')) {
     try {
       return BigInt(value)
     } catch {

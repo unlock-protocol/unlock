@@ -113,6 +113,27 @@ describe('parseArgument', () => {
       /Unsupported argument type/
     )
   })
+
+  it('throws on negative value for uint type', () => {
+    expect(() => parseArgument('uint256', '-1')).toThrow(/Invalid integer/)
+    expect(() => parseArgument('uint8', '-100')).toThrow(/Invalid integer/)
+  })
+
+  it('accepts negative value for signed int type', () => {
+    expect(parseArgument('int256', '-1')).toBe(-1n)
+  })
+
+  it('throws when fixed array has wrong element count', () => {
+    expect(() => parseArgument('uint256[3]', '[1,2]')).toThrow(
+      /requires exactly 3 elements/
+    )
+    expect(() =>
+      parseArgument(
+        'address[2]',
+        `["${validAddress}","${validAddress}","${validAddress}"]`
+      )
+    ).toThrow(/requires exactly 2 elements/)
+  })
 })
 
 // ---------------------------------------------------------------------------
