@@ -200,12 +200,18 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
               <ModeButton
                 active={mode === 'simple'}
                 label="Simple mode"
-                onClick={() => setMode('simple')}
+                onClick={() => {
+                  setMode('simple')
+                  setPendingPayload(null)
+                }}
               />
               <ModeButton
                 active={mode === 'advanced'}
                 label="Advanced JSON"
-                onClick={() => setMode('advanced')}
+                onClick={() => {
+                  setMode('advanced')
+                  setPendingPayload(null)
+                }}
               />
             </div>
 

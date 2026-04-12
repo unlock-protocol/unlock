@@ -319,6 +319,11 @@ export function buildAdvancedProposalPayload(
 
     let ethValue = 0n
     if (call.value && call.value !== '0') {
+      if (typeof call.value !== 'string') {
+        throw new Error(
+          `"value" for call to ${call.functionName} must be a quoted string to avoid precision loss — use "${call.value}" instead of ${call.value}.`
+        )
+      }
       try {
         ethValue = BigInt(call.value)
       } catch {
