@@ -211,8 +211,11 @@ export function parseArgument(type: string, value: string): unknown {
   }
 
   if (type.startsWith('bytes')) {
-    if (!/^0x[0-9a-fA-F]*$/.test(value)) {
-      throw new Error(`${type} must be 0x-prefixed hex (e.g. 0xabcd).`)
+    // Require 0x prefix and an even number of hex chars (each byte = 2 chars).
+    if (!/^0x([0-9a-fA-F]{2})*$/.test(value)) {
+      throw new Error(
+        `${type} must be 0x-prefixed hex with an even number of hex chars (e.g. 0xabcd).`
+      )
     }
     // For fixed-size bytesN, validate exact byte length.
     const fixedSizeMatch = type.match(/^bytes(\d+)$/)

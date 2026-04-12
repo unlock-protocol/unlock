@@ -365,16 +365,17 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
                         // Refetch to get current voting power before building
                         // the payload — the closure's meetsThreshold may be stale.
                         const result = await thresholdQuery.refetch()
-                        // If the refetch fails, React Query returns the last
-                        // cached data, so `fresh` may reflect stale power. The
-                        // governor contract enforces the threshold on-chain.
-                        const fresh = result.data
+                        // If the refetch errored, do not fall back to stale cache.
                         if (
-                          !fresh ||
-                          fresh.votingPower < fresh.proposalThreshold
+                          result.status === 'error' ||
+                          !result.data ||
+                          result.data.votingPower <
+                            result.data.proposalThreshold
                         ) {
                           ToastHelper.error(
-                            'Voting power no longer meets the proposal threshold.'
+                            result.status === 'error'
+                              ? 'Could not verify voting power. Check your connection and try again.'
+                              : 'Voting power no longer meets the proposal threshold.'
                           )
                           return
                         }

@@ -78,6 +78,10 @@ describe('parseArgument', () => {
     expect(() => parseArgument('bytes', 'abcd')).toThrow(/0x-prefixed/)
   })
 
+  it('throws on bytes with odd-length hex (e.g. 0xabc = 1.5 bytes)', () => {
+    expect(() => parseArgument('bytes', '0xabc')).toThrow(/even number of hex/)
+  })
+
   it('parses dynamic bytes', () => {
     expect(parseArgument('bytes', '0xdeadbeef')).toBe('0xdeadbeef')
   })
