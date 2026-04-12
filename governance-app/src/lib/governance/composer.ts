@@ -112,6 +112,31 @@ export function getFunctionChoices(abi: unknown): FunctionFragment[] {
   }
 }
 
+// Throws if a raw JS number is used for an integer ABI type — JSON numbers
+// above Number.MAX_SAFE_INTEGER silently lose precision before ethers sees them.
+function assertNoNumberInIntPosition(
+  arg: unknown,
+  type: string,
+  path: string
+): void {
+  const arrayMatch = type.match(/^(.+)\[\d*\]$/)
+  if (arrayMatch && Array.isArray(arg)) {
+    const childType = arrayMatch[1]
+    ;(arg as unknown[]).forEach((item, i) =>
+      assertNoNumberInIntPosition(item, childType, `${path}[${i}]`)
+    )
+    return
+  }
+  if (
+    (type.startsWith('uint') || type.startsWith('int')) &&
+    typeof arg === 'number'
+  ) {
+    throw new Error(
+      `Argument "${path}" (${type}) must be a quoted string to avoid precision loss — use "${arg}" instead of ${arg}.`
+    )
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Argument parser
 // ---------------------------------------------------------------------------
@@ -306,11 +331,13 @@ export function buildAdvancedProposalPayload(
       )
     }
 
+    const args = call.functionArgs ?? []
+    fragment.inputs.forEach((input, i) =>
+      assertNoNumberInIntPosition(args[i], input.type, input.name || `arg${i}`)
+    )
+
     return {
-      calldata: contractInterface.encodeFunctionData(
-        fragment,
-        call.functionArgs ?? []
-      ),
+      calldata: contractInterface.encodeFunctionData(fragment, args),
       target: getAddress(call.contractAddress),
       value: ethValue,
     }

@@ -361,23 +361,23 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
                       !thresholdQuery.isError
                     }
                     onClick={async () => {
-                      // Refetch to get current voting power before building
-                      // the payload — the closure's meetsThreshold may be stale.
-                      const result = await thresholdQuery.refetch()
-                      // If the refetch fails, React Query returns the last
-                      // cached data, so `fresh` may reflect stale power. The
-                      // governor contract enforces the threshold on-chain.
-                      const fresh = result.data
-                      if (
-                        !fresh ||
-                        fresh.votingPower < fresh.proposalThreshold
-                      ) {
-                        ToastHelper.error(
-                          'Voting power no longer meets the proposal threshold.'
-                        )
-                        return
-                      }
                       try {
+                        // Refetch to get current voting power before building
+                        // the payload — the closure's meetsThreshold may be stale.
+                        const result = await thresholdQuery.refetch()
+                        // If the refetch fails, React Query returns the last
+                        // cached data, so `fresh` may reflect stale power. The
+                        // governor contract enforces the threshold on-chain.
+                        const fresh = result.data
+                        if (
+                          !fresh ||
+                          fresh.votingPower < fresh.proposalThreshold
+                        ) {
+                          ToastHelper.error(
+                            'Voting power no longer meets the proposal threshold.'
+                          )
+                          return
+                        }
                         const payload =
                           mode === 'simple'
                             ? buildSimpleProposalPayload(

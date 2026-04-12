@@ -283,6 +283,22 @@ describe('buildAdvancedProposalPayload', () => {
     expect(() => buildAdvancedProposalPayload(json)).toThrow(/must be an array/)
   })
 
+  it('throws when a uint arg is a JS number (precision loss risk)', () => {
+    const json = JSON.stringify({
+      proposalName: 'Title',
+      calls: [
+        {
+          contractAbi: erc20Abi,
+          contractAddress: validAddress,
+          functionName: 'transfer',
+          // amount is uint256 — passing as JS number, not quoted string
+          functionArgs: [validAddress, 1000000000000000000],
+        },
+      ],
+    })
+    expect(() => buildAdvancedProposalPayload(json)).toThrow(/precision loss/)
+  })
+
   it('builds a valid payload', () => {
     const payload = buildAdvancedProposalPayload(validJson)
     expect(payload.targets).toHaveLength(1)
