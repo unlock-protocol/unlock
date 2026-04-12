@@ -287,6 +287,58 @@ describe('buildAdvancedProposalPayload', () => {
     expect(() => buildAdvancedProposalPayload(json)).toThrow(/must be an array/)
   })
 
+  it('throws when a uint arg inside a tuple is a JS number', () => {
+    const tupleAbi = [
+      {
+        name: 'deposit',
+        type: 'function',
+        stateMutability: 'nonpayable',
+        inputs: [
+          {
+            name: 'params',
+            type: 'tuple',
+            components: [
+              { name: 'recipient', type: 'address' },
+              { name: 'amount', type: 'uint256' },
+            ],
+          },
+        ],
+        outputs: [],
+      },
+    ]
+    const json = JSON.stringify({
+      proposalName: 'Title',
+      calls: [
+        {
+          contractAbi: tupleAbi,
+          contractAddress: validAddress,
+          functionName: 'deposit',
+          functionArgs: [
+            { recipient: validAddress, amount: 1000000000000000000 },
+          ],
+        },
+      ],
+    })
+    expect(() => buildAdvancedProposalPayload(json)).toThrow(/precision loss/)
+  })
+
+  it('throws when functionArgs has fewer elements than the ABI requires', () => {
+    const json = JSON.stringify({
+      proposalName: 'Title',
+      calls: [
+        {
+          contractAbi: erc20Abi,
+          contractAddress: validAddress,
+          functionName: 'transfer',
+          functionArgs: [validAddress], // missing amount
+        },
+      ],
+    })
+    expect(() => buildAdvancedProposalPayload(json)).toThrow(
+      /requires 2 arguments/
+    )
+  })
+
   it('throws when call.value is a JS number (precision loss risk)', () => {
     const json = JSON.stringify({
       proposalName: 'Title',

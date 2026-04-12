@@ -6,6 +6,7 @@ import {
   Interface,
   type InterfaceAbi,
   isAddress,
+  type ParamType,
 } from 'ethers'
 import { governanceConfig } from '~/config/governance'
 
@@ -114,25 +115,55 @@ export function getFunctionChoices(abi: unknown): FunctionFragment[] {
 
 // Throws if a raw JS number is used for an integer ABI type — JSON numbers
 // above Number.MAX_SAFE_INTEGER silently lose precision before ethers sees them.
+// Uses ParamType so it can recurse correctly into arrays and tuple components.
 function assertNoNumberInIntPosition(
   arg: unknown,
-  type: string,
+  param: ParamType,
   path: string
 ): void {
-  const arrayMatch = type.match(/^(.+)\[\d*\]$/)
-  if (arrayMatch && Array.isArray(arg)) {
-    const childType = arrayMatch[1]
-    ;(arg as unknown[]).forEach((item, i) =>
-      assertNoNumberInIntPosition(item, childType, `${path}[${i}]`)
-    )
+  // Array types — recurse using arrayChildren for element type info
+  if (param.isArray()) {
+    if (Array.isArray(arg) && param.arrayChildren) {
+      ;(arg as unknown[]).forEach((item, i) =>
+        assertNoNumberInIntPosition(item, param.arrayChildren!, `${path}[${i}]`)
+      )
+    }
     return
   }
+
+  // Tuple types — recurse into each component
+  if (param.isTuple() && param.components) {
+    if (Array.isArray(arg)) {
+      // Positional encoding: [value0, value1, ...]
+      param.components.forEach((component, i) =>
+        assertNoNumberInIntPosition(
+          (arg as unknown[])[i],
+          component,
+          `${path}[${i}]`
+        )
+      )
+    } else if (arg && typeof arg === 'object') {
+      // Named encoding: { field0: value0, field1: value1, ... }
+      param.components.forEach((component) => {
+        if (component.name) {
+          assertNoNumberInIntPosition(
+            (arg as Record<string, unknown>)[component.name],
+            component,
+            `${path}.${component.name}`
+          )
+        }
+      })
+    }
+    return
+  }
+
+  // Integer types
   if (
-    (type.startsWith('uint') || type.startsWith('int')) &&
+    (param.type.startsWith('uint') || param.type.startsWith('int')) &&
     typeof arg === 'number'
   ) {
     throw new Error(
-      `Argument "${path}" (${type}) must be a quoted string to avoid precision loss — use "${arg}" instead of ${arg}.`
+      `Argument "${path}" (${param.type}) must be a quoted string to avoid precision loss — use "${arg}" instead of ${arg}.`
     )
   }
 }
@@ -340,8 +371,13 @@ export function buildAdvancedProposalPayload(
     }
 
     const args = call.functionArgs ?? []
+    if (args.length < fragment.inputs.length) {
+      throw new Error(
+        `functionArgs for "${call.functionName}" requires ${fragment.inputs.length} argument${fragment.inputs.length === 1 ? '' : 's'}, got ${args.length}.`
+      )
+    }
     fragment.inputs.forEach((input, i) =>
-      assertNoNumberInIntPosition(args[i], input.type, input.name || `arg${i}`)
+      assertNoNumberInIntPosition(args[i], input, input.name || `arg${i}`)
     )
 
     return {

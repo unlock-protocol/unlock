@@ -169,8 +169,15 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
         )
       : (() => {
           try {
-            JSON.parse(advancedJson)
-            return true
+            const p = JSON.parse(advancedJson)
+            return (
+              p &&
+              typeof p === 'object' &&
+              typeof p.proposalName === 'string' &&
+              p.proposalName.trim() !== '' &&
+              Array.isArray(p.calls) &&
+              p.calls.length > 0
+            )
           } catch {
             return false
           }
@@ -590,7 +597,12 @@ function CallEditor({
               description="Paste an ABI array. String package imports are not supported in the browser."
               label="Custom ABI"
               onChange={(event) =>
-                onChange({ ...call, customAbi: event.target.value })
+                onChange({
+                  ...call,
+                  args: [],
+                  customAbi: event.target.value,
+                  functionName: '',
+                })
               }
               rows={8}
               value={call.customAbi}
