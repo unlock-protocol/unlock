@@ -339,6 +339,24 @@ describe('buildAdvancedProposalPayload', () => {
     )
   })
 
+  it('throws when call.value is negative in advanced mode', () => {
+    const json = JSON.stringify({
+      proposalName: 'Title',
+      calls: [
+        {
+          contractAbi: erc20Abi,
+          contractAddress: validAddress,
+          functionName: 'transfer',
+          functionArgs: [validAddress, '0'],
+          value: '-1',
+        },
+      ],
+    })
+    expect(() => buildAdvancedProposalPayload(json)).toThrow(
+      /cannot be negative/
+    )
+  })
+
   it('throws when call.value is a JS number (precision loss risk)', () => {
     const json = JSON.stringify({
       proposalName: 'Title',

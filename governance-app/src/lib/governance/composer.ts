@@ -144,14 +144,14 @@ function assertNoNumberInIntPosition(
       )
     } else if (arg && typeof arg === 'object') {
       // Named encoding: { field0: value0, field1: value1, ... }
-      param.components.forEach((component) => {
-        if (component.name) {
-          assertNoNumberInIntPosition(
-            (arg as Record<string, unknown>)[component.name],
-            component,
-            `${path}.${component.name}`
-          )
-        }
+      param.components.forEach((component, ci) => {
+        // Use component name when available; fall back to index for unnamed components.
+        const key = component.name || String(ci)
+        assertNoNumberInIntPosition(
+          (arg as Record<string, unknown>)[key],
+          component,
+          `${path}.${key}`
+        )
       })
     }
     return
@@ -362,6 +362,11 @@ export function buildAdvancedProposalPayload(
           `Invalid value "${call.value}" for call to ${call.functionName}. Use a whole number in wei.`
         )
       }
+      if (ethValue < 0n) {
+        throw new Error(
+          `ETH value for call to ${call.functionName} cannot be negative.`
+        )
+      }
     }
 
     if (call.functionArgs !== undefined && !Array.isArray(call.functionArgs)) {
@@ -465,6 +470,9 @@ function prepareSimpleCall(call: CallDraft): PreparedCall {
       throw new Error(
         `Invalid ETH value "${call.value}". Enter a whole number in wei.`
       )
+    }
+    if (ethValue < 0n) {
+      throw new Error('ETH value cannot be negative.')
     }
   }
 
