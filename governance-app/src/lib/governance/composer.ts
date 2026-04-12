@@ -376,6 +376,11 @@ export function buildAdvancedProposalPayload(
         `functionArgs for "${call.functionName}" requires ${fragment.inputs.length} argument${fragment.inputs.length === 1 ? '' : 's'}, got ${args.length}.`
       )
     }
+    if (args.length > fragment.inputs.length) {
+      throw new Error(
+        `functionArgs for "${call.functionName}" expects ${fragment.inputs.length} argument${fragment.inputs.length === 1 ? '' : 's'} but got ${args.length} — extra arguments are silently dropped by ethers.`
+      )
+    }
     fragment.inputs.forEach((input, i) =>
       assertNoNumberInIntPosition(args[i], input, input.name || `arg${i}`)
     )
@@ -429,6 +434,15 @@ function prepareSimpleCall(call: CallDraft): PreparedCall {
   }
   const parsedArgs = fragment.inputs.map((input, index) =>
     parseArgument(input.type, call.args[index] || '')
+  )
+  // Tuple inputs pass through JSON.parse in parseArgument, which can produce
+  // JS numbers for large integers — run the same precision guard as advanced mode.
+  fragment.inputs.forEach((input, index) =>
+    assertNoNumberInIntPosition(
+      parsedArgs[index],
+      input,
+      input.name || `arg${index}`
+    )
   )
   const target =
     call.kind === 'custom'

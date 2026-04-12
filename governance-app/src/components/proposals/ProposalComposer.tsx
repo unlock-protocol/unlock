@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Input, TextBox, ToastHelper } from '@unlock-protocol/ui'
@@ -129,8 +129,7 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
       if (receipt.status === 0) {
         throw new Error('Transaction reverted on-chain.')
       }
-      // Use receipt.hash — it reflects the actually-mined tx hash in case of
-      // EIP-1559 replacement, not the original broadcast hash.
+      // Use receipt.hash — the canonical on-chain hash from the mined receipt.
       return receipt.hash as string
     },
     onError: (error) => {
@@ -154,9 +153,10 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
     thresholdQuery.isSuccess &&
     thresholdState !== undefined &&
     thresholdState.votingPower >= thresholdState.proposalThreshold
-  const hasRequiredFields =
-    mode === 'simple'
-      ? title.trim() !== '' &&
+  const hasRequiredFields = useMemo(() => {
+    if (mode === 'simple') {
+      return (
+        title.trim() !== '' &&
         description.trim() !== '' &&
         calls.every(
           (c) =>
@@ -167,21 +167,22 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
               (isAddress(c.customAddress) &&
                 !('error' in parseCustomAbi(c.customAbi))))
         )
-      : (() => {
-          try {
-            const p = JSON.parse(advancedJson)
-            return (
-              p &&
-              typeof p === 'object' &&
-              typeof p.proposalName === 'string' &&
-              p.proposalName.trim() !== '' &&
-              Array.isArray(p.calls) &&
-              p.calls.length > 0
-            )
-          } catch {
-            return false
-          }
-        })()
+      )
+    }
+    try {
+      const p = JSON.parse(advancedJson)
+      return (
+        p &&
+        typeof p === 'object' &&
+        typeof p.proposalName === 'string' &&
+        p.proposalName.trim() !== '' &&
+        Array.isArray(p.calls) &&
+        p.calls.length > 0
+      )
+    } catch {
+      return false
+    }
+  }, [mode, title, description, calls, advancedJson])
 
   return (
     <>
