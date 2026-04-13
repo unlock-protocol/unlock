@@ -308,6 +308,21 @@ describe('buildAdvancedProposalPayload', () => {
     expect(() => buildAdvancedProposalPayload(json)).toThrow(/proposalName/)
   })
 
+  it('throws when proposalName is a non-string value (not a TypeError)', () => {
+    // {"proposalName": 42} used to throw TypeError from .trim(); now validated first
+    const json = JSON.stringify({ proposalName: 42, calls: [] })
+    expect(() => buildAdvancedProposalPayload(json)).toThrow(
+      /proposalName is required and must be a string/
+    )
+  })
+
+  it('throws when calls is missing (not an array)', () => {
+    const json = JSON.stringify({ proposalName: 'Title' })
+    expect(() => buildAdvancedProposalPayload(json)).toThrow(
+      /calls must be an array/
+    )
+  })
+
   it('throws when calls array is empty', () => {
     const json = JSON.stringify({ proposalName: 'Title', calls: [] })
     expect(() => buildAdvancedProposalPayload(json)).toThrow(

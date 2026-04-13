@@ -26,15 +26,9 @@ export type CallDraft = {
 }
 
 type AdvancedProposal = {
-  proposalName: string
-  description?: string
-  calls: Array<{
-    contractAbi: unknown[]
-    contractAddress: string
-    functionArgs: unknown[]
-    functionName: string
-    value?: string
-  }>
+  proposalName: unknown
+  description?: unknown
+  calls: unknown
 }
 
 type PreparedCall = {
@@ -293,7 +287,9 @@ export function parseArgument(type: string, value: string): unknown {
 
   if (type === 'tuple' || type.startsWith('tuple(') || type.startsWith('(')) {
     // Tuple args (both ethers-normalised 'tuple(...)' and raw '(...)' forms).
-    // Pass the parsed JSON through for ethers to encode.
+    // Pass the parsed JSON through for ethers to encode. Note: callers
+    // (prepareSimpleCall) run assertNoNumberInIntPosition on the result to
+    // catch JS numbers in integer positions before encoding.
     try {
       return JSON.parse(value)
     } catch {
@@ -339,17 +335,21 @@ export function buildAdvancedProposalPayload(
   advancedJson: string
 ): ProposalPayload {
   const parsed = parseAdvancedProposal(advancedJson)
-  const title = parsed.proposalName?.trim()
 
-  if (!title) {
-    throw new Error('proposalName is required.')
+  if (typeof parsed.proposalName !== 'string' || !parsed.proposalName.trim()) {
+    throw new Error('proposalName is required and must be a string.')
   }
+  const title = parsed.proposalName.trim()
 
-  if (!Array.isArray(parsed.calls) || parsed.calls.length === 0) {
+  if (!Array.isArray(parsed.calls)) {
+    throw new Error('calls must be an array.')
+  }
+  if (parsed.calls.length === 0) {
     throw new Error('At least one advanced call is required.')
   }
 
-  const preparedCalls = parsed.calls.map((call) => {
+  const preparedCalls = (parsed.calls as unknown[]).map((rawCall) => {
+    const call = rawCall as Record<string, unknown>
     if (!Array.isArray(call.contractAbi)) {
       throw new Error('contractAbi must be an inline ABI array.')
     }
@@ -424,7 +424,10 @@ export function buildAdvancedProposalPayload(
     }
   })
 
-  const body = parsed.description?.trim()
+  const body =
+    typeof parsed.description === 'string'
+      ? parsed.description.trim()
+      : undefined
 
   return {
     calldatas: preparedCalls.map(({ calldata }) => calldata),

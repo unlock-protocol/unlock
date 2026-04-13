@@ -8,9 +8,20 @@ import { base, mainnet } from '@unlock-protocol/networks'
 import { governanceEnv } from './env'
 
 // UP token address — from packages/networks base.tokens where symbol === 'UP'
-const upTokenAddress =
-  base.tokens?.find((t) => t.symbol === 'UP')?.address ||
-  '0xaC27fa800955849d6D17cC8952Ba9dD6EAA66187'
+const upTokenAddress = base.tokens?.find((t) => t.symbol === 'UP')?.address
+if (!upTokenAddress) {
+  throw new Error(
+    'UP token address not found in @unlock-protocol/networks base.tokens — update the networks package.'
+  )
+}
+
+// Canonical Base governor — must be provided by @unlock-protocol/networks
+const governorAddress = base.dao?.governor
+if (!governorAddress) {
+  throw new Error(
+    'Governor address not found in @unlock-protocol/networks base.dao.governor — update the networks package.'
+  )
+}
 
 // Canonical Base timelock — packages/networks NetworkConfig.dao does not expose
 // timelock yet, so this is hardcoded; update if the networks package adds it.
@@ -20,8 +31,7 @@ export const governanceConfig = {
   chainId: 8453,
   chainName: 'Base',
   mainnetRpcUrl: governanceEnv.mainnetRpcUrl || mainnet.provider,
-  governorAddress:
-    base.dao?.governor || '0x65bA0624403Fc5Ca2b20479e9F626eD4D78E0aD9',
+  governorAddress,
   governorStartBlock: base.startBlock || 1750000,
   proposalQuorumMode: 'for,abstain',
   rpcUrl: governanceEnv.baseRpcUrl || base.provider,
@@ -34,8 +44,7 @@ export const governanceConfig = {
   knownContracts: [
     {
       label: 'UPGovernor',
-      address:
-        base.dao?.governor || '0x65bA0624403Fc5Ca2b20479e9F626eD4D78E0aD9',
+      address: governorAddress,
       abi: UPGovernor,
       kind: 'governor',
     },
