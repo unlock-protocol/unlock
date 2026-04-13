@@ -179,6 +179,7 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
   const thresholdState = thresholdQuery.data
   const meetsThreshold =
     thresholdQuery.isSuccess &&
+    !!thresholdState &&
     thresholdState.votingPower >= thresholdState.proposalThreshold
   const hasRequiredFields = useMemo(() => {
     if (mode === 'simple') {
