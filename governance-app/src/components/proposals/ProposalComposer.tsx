@@ -120,6 +120,9 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
         payload.calldatas,
         payload.description
       )
+      // Store tx.hash immediately so the Basescan link is available even if
+      // tx.wait() times out and the mutation ends in an error state.
+      setSubmittedTxHash(tx.hash as string)
       const receipt = await Promise.race([
         tx.wait(),
         new Promise<never>((_, reject) =>

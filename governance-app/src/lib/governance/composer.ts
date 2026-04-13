@@ -381,9 +381,11 @@ export function buildAdvancedProposalPayload(
         `"value" for call to ${call.functionName} must be a quoted string to avoid precision loss — use "${call.value}" instead of ${call.value}.`
       )
     }
+    // Note: '-0' is safe here — BigInt('-0') === 0n, so it skips the truthy
+    // guard (falsy) and the negative check is never reached.
     if (call.value && call.value !== '0') {
       try {
-        ethValue = BigInt(call.value)
+        ethValue = BigInt(call.value as string)
       } catch {
         throw new Error(
           `Invalid value "${call.value}" for call to ${call.functionName}. Use a whole number in wei.`
@@ -493,6 +495,8 @@ function prepareSimpleCall(call: CallDraft): PreparedCall {
   }
 
   let ethValue = 0n
+  // '-0' is safe: BigInt('-0') === 0n, so it fails the truthy guard and
+  // the negative check is never reached.
   if (call.value && call.value !== '0') {
     try {
       ethValue = BigInt(call.value)
