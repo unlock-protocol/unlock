@@ -47,5 +47,3 @@ export const getLatestTimestamp = cache(async () => {
 
   return BigInt(block.timestamp)
 })
-
-export { getContractAbi }

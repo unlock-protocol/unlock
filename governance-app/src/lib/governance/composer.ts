@@ -129,13 +129,15 @@ function assertNoNumberInIntPosition(
   if (param.isTuple() && param.components) {
     if (Array.isArray(arg)) {
       // Positional encoding: [value0, value1, ...]
-      param.components.forEach((component, i) =>
-        assertNoNumberInIntPosition(
-          (arg as unknown[])[i],
-          component,
-          `${path}[${i}]`
-        )
-      )
+      param.components.forEach((component, i) => {
+        const element = (arg as unknown[])[i]
+        if (element === undefined) {
+          throw new Error(
+            `Missing element at index ${i} in tuple argument at "${path}" — expected ${param.components!.length} element(s).`
+          )
+        }
+        assertNoNumberInIntPosition(element, component, `${path}[${i}]`)
+      })
     } else if (arg && typeof arg === 'object') {
       // Named encoding: { field0: value0, field1: value1, ... }
       param.components.forEach((component, ci) => {
@@ -299,9 +301,12 @@ export function parseArgument(type: string, value: string): unknown {
 
   if (type === 'tuple' || type.startsWith('tuple(') || type.startsWith('(')) {
     // Tuple args (both ethers-normalised 'tuple(...)' and raw '(...)' forms).
-    // Pass the parsed JSON through for ethers to encode. Note: callers
-    // (prepareSimpleCall) run assertNoNumberInIntPosition on the result to
-    // catch JS numbers in integer positions before encoding.
+    // Pass the parsed JSON through for ethers to encode.
+    //
+    // WARNING: this function does NOT run assertNoNumberInIntPosition on the
+    // parsed result — that guard lives in the caller (prepareSimpleCall) and
+    // applies post-parse. Direct callers of parseArgument for tuple types must
+    // run that guard themselves to catch JS numbers in integer positions.
     try {
       return JSON.parse(value)
     } catch {
@@ -480,6 +485,11 @@ function prepareSimpleCall(call: CallDraft): PreparedCall {
 
   if (!fragment) {
     throw new Error(`Function not found in ABI: ${call.functionName}`)
+  }
+  if (call.args.length > fragment.inputs.length) {
+    throw new Error(
+      `Function "${call.functionName}" expects ${fragment.inputs.length} argument${fragment.inputs.length === 1 ? '' : 's'} but ${call.args.length} were provided — extra arguments would be silently dropped.`
+    )
   }
   const parsedArgs = fragment.inputs.map((input, index) =>
     parseArgument(input.type, call.args[index] || '')

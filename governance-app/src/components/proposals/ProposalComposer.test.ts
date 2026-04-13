@@ -270,6 +270,22 @@ describe('buildSimpleProposalPayload', () => {
       buildSimpleProposalPayload('Title', 'Desc', [customCall])
     ).toThrow(/valid custom contract address/)
   })
+
+  it('throws when args array has more elements than the ABI requires', () => {
+    const customCall = {
+      id: 'custom-id',
+      args: [validAddress, '500', 'extra'],
+      customAbi: JSON.stringify(erc20Abi),
+      customAddress: validAddress,
+      functionName: 'transfer(address,uint256)',
+      kind: 'custom' as const,
+      knownContract: '',
+      value: '0',
+    }
+    expect(() =>
+      buildSimpleProposalPayload('Title', 'Desc', [customCall])
+    ).toThrow(/extra arguments would be silently dropped/)
+  })
 })
 
 // ---------------------------------------------------------------------------
@@ -444,6 +460,42 @@ describe('buildAdvancedProposalPayload', () => {
     })
     expect(() => buildAdvancedProposalPayload(json)).toThrow(
       /Missing field "amount"/
+    )
+  })
+
+  it('throws when positional tuple is too short', () => {
+    const tupleAbi = [
+      {
+        name: 'deposit',
+        type: 'function',
+        stateMutability: 'nonpayable',
+        inputs: [
+          {
+            name: 'params',
+            type: 'tuple',
+            components: [
+              { name: 'recipient', type: 'address' },
+              { name: 'amount', type: 'uint256' },
+            ],
+          },
+        ],
+        outputs: [],
+      },
+    ]
+    const json = JSON.stringify({
+      proposalName: 'Title',
+      calls: [
+        {
+          contractAbi: tupleAbi,
+          contractAddress: validAddress,
+          functionName: 'deposit',
+          // positional array missing 'amount' — should surface clear error
+          functionArgs: [[validAddress]],
+        },
+      ],
+    })
+    expect(() => buildAdvancedProposalPayload(json)).toThrow(
+      /Missing element at index 1/
     )
   })
 
