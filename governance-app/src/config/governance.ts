@@ -12,6 +12,10 @@ const upTokenAddress =
   base.tokens?.find((t) => t.symbol === 'UP')?.address ||
   '0xaC27fa800955849d6D17cC8952Ba9dD6EAA66187'
 
+// Canonical Base timelock — packages/networks NetworkConfig.dao does not expose
+// timelock yet, so this is hardcoded; update if the networks package adds it.
+const timelockAddress = '0xB34567C4cA697b39F72e1a8478f285329A98ed1b'
+
 export const governanceConfig = {
   chainId: 8453,
   chainName: 'Base',
@@ -24,9 +28,7 @@ export const governanceConfig = {
   subgraphUrl:
     governanceEnv.baseSubgraphUrl ||
     'https://subgraph.unlock-protocol.com/8453',
-  // Canonical Base timelock — packages/networks NetworkConfig.dao does not expose
-  // timelock yet, so this is hardcoded; update if the networks package adds it.
-  timelockAddress: '0xB34567C4cA697b39F72e1a8478f285329A98ed1b',
+  timelockAddress,
   tokenAddress: upTokenAddress,
   explorerUrl: 'https://basescan.org',
   knownContracts: [
@@ -45,7 +47,7 @@ export const governanceConfig = {
     },
     {
       label: 'UPTimelock',
-      address: '0xB34567C4cA697b39F72e1a8478f285329A98ed1b',
+      address: timelockAddress,
       abi: UPTimelock,
       kind: 'timelock',
     },

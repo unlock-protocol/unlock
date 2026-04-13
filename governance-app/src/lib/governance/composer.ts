@@ -231,9 +231,10 @@ export function parseArgument(type: string, value: string): unknown {
     if (v < 0n) {
       throw new Error(`Invalid integer value for ${type}: "${value}"`)
     }
-    const uBitMatch = type.match(/^uint(\d+)$/)
+    // Bare 'uint' is an alias for uint256 in Solidity — match both forms.
+    const uBitMatch = type.match(/^uint(\d*)$/)
     if (uBitMatch) {
-      const bits = parseInt(uBitMatch[1], 10)
+      const bits = uBitMatch[1] ? parseInt(uBitMatch[1], 10) : 256
       const max = 2n ** BigInt(bits) - 1n
       if (v > max) {
         throw new Error(`${type} value ${v} exceeds maximum ${max}.`)
@@ -249,9 +250,10 @@ export function parseArgument(type: string, value: string): unknown {
     } catch {
       throw new Error(`Invalid integer value for ${type}: "${value}"`)
     }
-    const iBitMatch = type.match(/^int(\d+)$/)
+    // Bare 'int' is an alias for int256 in Solidity — match both forms.
+    const iBitMatch = type.match(/^int(\d*)$/)
     if (iBitMatch) {
-      const bits = parseInt(iBitMatch[1], 10)
+      const bits = iBitMatch[1] ? parseInt(iBitMatch[1], 10) : 256
       const min = -(2n ** BigInt(bits - 1))
       const max = 2n ** BigInt(bits - 1) - 1n
       if (v < min || v > max) {

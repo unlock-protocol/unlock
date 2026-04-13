@@ -120,7 +120,20 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
         payload.calldatas,
         payload.description
       )
-      const receipt = await tx.wait()
+      const receipt = await Promise.race([
+        tx.wait(),
+        new Promise<never>((_, reject) =>
+          setTimeout(
+            () =>
+              reject(
+                new Error(
+                  'Transaction not mined after 5 minutes — check Basescan for status.'
+                )
+              ),
+            5 * 60 * 1000
+          )
+        ),
+      ])
       if (!receipt) {
         throw new Error(
           'Transaction was dropped or replaced before confirmation.'
@@ -177,7 +190,11 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
         typeof p.proposalName === 'string' &&
         p.proposalName.trim() !== '' &&
         Array.isArray(p.calls) &&
-        p.calls.length > 0
+        p.calls.length > 0 &&
+        p.calls.every(
+          (c: { functionName?: string }) =>
+            typeof c.functionName === 'string' && c.functionName.trim() !== ''
+        )
       )
     } catch {
       return false
