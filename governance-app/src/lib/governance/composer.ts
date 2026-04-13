@@ -222,30 +222,53 @@ export function parseArgument(type: string, value: string): unknown {
   }
 
   if (type.startsWith('uint')) {
+    let v: bigint
     try {
-      const v = BigInt(value)
-      if (v < 0n) {
-        throw new Error()
-      }
-      return v
+      v = BigInt(value)
     } catch {
       throw new Error(`Invalid integer value for ${type}: "${value}"`)
     }
+    if (v < 0n) {
+      throw new Error(`Invalid integer value for ${type}: "${value}"`)
+    }
+    const uBitMatch = type.match(/^uint(\d+)$/)
+    if (uBitMatch) {
+      const bits = parseInt(uBitMatch[1], 10)
+      const max = 2n ** BigInt(bits) - 1n
+      if (v > max) {
+        throw new Error(`${type} value ${v} exceeds maximum ${max}.`)
+      }
+    }
+    return v
   }
 
   if (type.startsWith('int')) {
+    let v: bigint
     try {
-      return BigInt(value)
+      v = BigInt(value)
     } catch {
       throw new Error(`Invalid integer value for ${type}: "${value}"`)
     }
+    const iBitMatch = type.match(/^int(\d+)$/)
+    if (iBitMatch) {
+      const bits = parseInt(iBitMatch[1], 10)
+      const min = -(2n ** BigInt(bits - 1))
+      const max = 2n ** BigInt(bits - 1) - 1n
+      if (v < min || v > max) {
+        throw new Error(`${type} value ${v} is out of range [${min}, ${max}].`)
+      }
+    }
+    return v
   }
 
   if (type.startsWith('bytes')) {
-    // Require 0x prefix and an even number of hex chars (each byte = 2 chars).
+    if (!value.startsWith('0x')) {
+      throw new Error(`${type} must start with 0x (e.g. 0xabcd).`)
+    }
+    // Each byte = 2 hex chars; odd-length strings like 0xabc are invalid.
     if (!/^0x([0-9a-fA-F]{2})*$/.test(value)) {
       throw new Error(
-        `${type} must be 0x-prefixed hex with an even number of hex chars (e.g. 0xabcd).`
+        `${type} must have an even number of hex chars after 0x (e.g. 0xabcd, not 0xabc).`
       )
     }
     // For fixed-size bytesN, validate exact byte length.
@@ -349,12 +372,14 @@ export function buildAdvancedProposalPayload(
     }
 
     let ethValue = 0n
+    // Check string type before truthy guard — numeric 0 is falsy and would
+    // otherwise skip the precision check entirely.
+    if (call.value !== undefined && typeof call.value !== 'string') {
+      throw new Error(
+        `"value" for call to ${call.functionName} must be a quoted string to avoid precision loss — use "${call.value}" instead of ${call.value}.`
+      )
+    }
     if (call.value && call.value !== '0') {
-      if (typeof call.value !== 'string') {
-        throw new Error(
-          `"value" for call to ${call.functionName} must be a quoted string to avoid precision loss — use "${call.value}" instead of ${call.value}.`
-        )
-      }
       try {
         ethValue = BigInt(call.value)
       } catch {

@@ -75,11 +75,23 @@ describe('parseArgument', () => {
   })
 
   it('throws on bytes without 0x prefix', () => {
-    expect(() => parseArgument('bytes', 'abcd')).toThrow(/0x-prefixed/)
+    expect(() => parseArgument('bytes', 'abcd')).toThrow(/must start with 0x/)
   })
 
   it('throws on bytes with odd-length hex (e.g. 0xabc = 1.5 bytes)', () => {
     expect(() => parseArgument('bytes', '0xabc')).toThrow(/even number of hex/)
+  })
+
+  it('throws when uint8 value overflows', () => {
+    expect(() => parseArgument('uint8', '256')).toThrow(/exceeds maximum/)
+    expect(() => parseArgument('uint8', '255')).not.toThrow()
+  })
+
+  it('throws when int8 value is out of range', () => {
+    expect(() => parseArgument('int8', '128')).toThrow(/out of range/)
+    expect(() => parseArgument('int8', '-129')).toThrow(/out of range/)
+    expect(() => parseArgument('int8', '127')).not.toThrow()
+    expect(() => parseArgument('int8', '-128')).not.toThrow()
   })
 
   it('parses dynamic bytes', () => {
@@ -195,6 +207,54 @@ describe('buildSimpleProposalPayload', () => {
     expect(payload.targets).toHaveLength(1)
     expect(payload.values).toHaveLength(1)
     expect(payload.calldatas).toHaveLength(1)
+  })
+
+  it('encodes a custom-contract call correctly', () => {
+    const customCall = {
+      id: 'custom-id',
+      args: [validAddress, '500'],
+      customAbi: JSON.stringify(erc20Abi),
+      customAddress: validAddress,
+      functionName: 'transfer(address,uint256)',
+      kind: 'custom' as const,
+      knownContract: '',
+      value: '0',
+    }
+    const payload = buildSimpleProposalPayload('Title', 'Desc', [customCall])
+    expect(payload.targets[0]).toBe(validAddress)
+    expect(payload.calldatas[0]).toMatch(/^0x/)
+  })
+
+  it('throws on custom call with invalid ABI', () => {
+    const customCall = {
+      id: 'custom-id',
+      args: [],
+      customAbi: 'not json',
+      customAddress: validAddress,
+      functionName: 'transfer(address,uint256)',
+      kind: 'custom' as const,
+      knownContract: '',
+      value: '0',
+    }
+    expect(() =>
+      buildSimpleProposalPayload('Title', 'Desc', [customCall])
+    ).toThrow(/Custom ABI is invalid/)
+  })
+
+  it('throws on custom call with non-address', () => {
+    const customCall = {
+      id: 'custom-id',
+      args: [validAddress, '0'],
+      customAbi: JSON.stringify(erc20Abi),
+      customAddress: '0xinvalid',
+      functionName: 'transfer(address,uint256)',
+      kind: 'custom' as const,
+      knownContract: '',
+      value: '0',
+    }
+    expect(() =>
+      buildSimpleProposalPayload('Title', 'Desc', [customCall])
+    ).toThrow(/valid custom contract address/)
   })
 })
 
@@ -355,6 +415,22 @@ describe('buildAdvancedProposalPayload', () => {
     expect(() => buildAdvancedProposalPayload(json)).toThrow(
       /cannot be negative/
     )
+  })
+
+  it('throws when call.value is 0 as a JS number (falsy precision bypass)', () => {
+    const json = JSON.stringify({
+      proposalName: 'Title',
+      calls: [
+        {
+          contractAbi: erc20Abi,
+          contractAddress: validAddress,
+          functionName: 'transfer',
+          functionArgs: [validAddress, '0'],
+          value: 0, // numeric zero — falsy, would bypass old truthy guard
+        },
+      ],
+    })
+    expect(() => buildAdvancedProposalPayload(json)).toThrow(/precision loss/)
   })
 
   it('throws when call.value is a JS number (precision loss risk)', () => {
