@@ -141,11 +141,13 @@ function assertNoNumberInIntPosition(
       param.components.forEach((component, ci) => {
         // Use component name when available; fall back to index for unnamed components.
         const key = component.name || String(ci)
-        assertNoNumberInIntPosition(
-          (arg as Record<string, unknown>)[key],
-          component,
-          `${path}.${key}`
-        )
+        const fieldValue = (arg as Record<string, unknown>)[key]
+        if (fieldValue === undefined) {
+          throw new Error(
+            `Missing field "${key}" in tuple argument at "${path}" — expected ${param.components!.length} field(s).`
+          )
+        }
+        assertNoNumberInIntPosition(fieldValue, component, `${path}.${key}`)
       })
     }
     return
@@ -374,11 +376,11 @@ export function buildAdvancedProposalPayload(
     }
 
     let ethValue = 0n
-    // Check string type before truthy guard — numeric 0 is falsy and would
-    // otherwise skip the precision check entirely.
+    // All values must be quoted strings for consistent handling; numeric 0
+    // is falsy and would otherwise bypass the truthy guard below entirely.
     if (call.value !== undefined && typeof call.value !== 'string') {
       throw new Error(
-        `"value" for call to ${call.functionName} must be a quoted string to avoid precision loss — use "${call.value}" instead of ${call.value}.`
+        `"value" for call to ${call.functionName} must be a quoted string — use "${call.value}" instead of the number ${call.value}.`
       )
     }
     // Note: '-0' is safe here — BigInt('-0') === 0n, so it skips the truthy

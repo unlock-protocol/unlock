@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Input, TextBox, ToastHelper } from '@unlock-protocol/ui'
@@ -74,6 +74,11 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
     null
   )
   const [submittedTxHash, setSubmittedTxHash] = useState<string | null>(null)
+  // Holds the tx.hash between governor.propose() and the mined receipt so the
+  // Basescan link is available even if tx.wait() times out.  A ref avoids
+  // calling a state setter inside mutationFn (which breaks purity and can
+  // update state after unmount).
+  const pendingTxHashRef = useRef<string | null>(null)
 
   const thresholdQuery = useQuery({
     enabled: Boolean(address),
@@ -120,9 +125,9 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
         payload.calldatas,
         payload.description
       )
-      // Store tx.hash immediately so the Basescan link is available even if
-      // tx.wait() times out and the mutation ends in an error state.
-      setSubmittedTxHash(tx.hash as string)
+      // Store tx.hash in a ref (not state) so it's available if the wait times
+      // out — callers in onError/onSuccess will flush it to state.
+      pendingTxHashRef.current = tx.hash as string
       const receipt = await Promise.race([
         tx.wait(),
         new Promise<never>((_, reject) =>
@@ -149,11 +154,18 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
       return receipt.hash as string
     },
     onError: (error) => {
+      // Flush any pending tx hash so the Basescan link is visible even though
+      // the wait timed out or the transaction was dropped.
+      if (pendingTxHashRef.current) {
+        setSubmittedTxHash(pendingTxHashRef.current)
+        pendingTxHashRef.current = null
+      }
       ToastHelper.error(
         error instanceof Error ? error.message : 'Unable to submit proposal.'
       )
     },
     onSuccess: (txHash) => {
+      pendingTxHashRef.current = null
       ToastHelper.success('Proposal submitted to the governor.')
       setTitle('')
       setDescription('')
@@ -387,12 +399,10 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
                       !meetsThreshold ||
                       !hasRequiredFields ||
                       composerMutation.isPending ||
-                      thresholdQuery.isPending ||
-                      thresholdQuery.isFetching
+                      thresholdQuery.isPending
                     }
                     loading={
-                      (thresholdQuery.isPending || thresholdQuery.isFetching) &&
-                      !thresholdQuery.isError
+                      thresholdQuery.isPending && !thresholdQuery.isError
                     }
                     onClick={async () => {
                       try {

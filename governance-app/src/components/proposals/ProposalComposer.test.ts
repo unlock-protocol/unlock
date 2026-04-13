@@ -397,6 +397,42 @@ describe('buildAdvancedProposalPayload', () => {
     expect(() => buildAdvancedProposalPayload(json)).toThrow(/precision loss/)
   })
 
+  it('throws when a named-tuple field is absent (missing key)', () => {
+    const tupleAbi = [
+      {
+        name: 'deposit',
+        type: 'function',
+        stateMutability: 'nonpayable',
+        inputs: [
+          {
+            name: 'params',
+            type: 'tuple',
+            components: [
+              { name: 'recipient', type: 'address' },
+              { name: 'amount', type: 'uint256' },
+            ],
+          },
+        ],
+        outputs: [],
+      },
+    ]
+    const json = JSON.stringify({
+      proposalName: 'Title',
+      calls: [
+        {
+          contractAbi: tupleAbi,
+          contractAddress: validAddress,
+          functionName: 'deposit',
+          // 'amount' field missing — should surface a clear error, not an opaque ABI error
+          functionArgs: [{ recipient: validAddress }],
+        },
+      ],
+    })
+    expect(() => buildAdvancedProposalPayload(json)).toThrow(
+      /Missing field "amount"/
+    )
+  })
+
   it('throws when functionArgs has fewer elements than the ABI requires', () => {
     const json = JSON.stringify({
       proposalName: 'Title',
@@ -445,10 +481,12 @@ describe('buildAdvancedProposalPayload', () => {
         },
       ],
     })
-    expect(() => buildAdvancedProposalPayload(json)).toThrow(/precision loss/)
+    expect(() => buildAdvancedProposalPayload(json)).toThrow(
+      /must be a quoted string/
+    )
   })
 
-  it('throws when call.value is a JS number (precision loss risk)', () => {
+  it('throws when call.value is a JS number (must be quoted string)', () => {
     const json = JSON.stringify({
       proposalName: 'Title',
       calls: [
@@ -457,11 +495,13 @@ describe('buildAdvancedProposalPayload', () => {
           contractAddress: validAddress,
           functionName: 'transfer',
           functionArgs: [validAddress, '0'],
-          value: 1000000000000000000, // unquoted — precision loss risk
+          value: 1000000000000000000, // unquoted — must be a string
         },
       ],
     })
-    expect(() => buildAdvancedProposalPayload(json)).toThrow(/precision loss/)
+    expect(() => buildAdvancedProposalPayload(json)).toThrow(
+      /must be a quoted string/
+    )
   })
 
   it('throws when a uint arg is a JS number (precision loss risk)', () => {
