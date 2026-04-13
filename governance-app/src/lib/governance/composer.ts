@@ -58,7 +58,7 @@ export function resolveKnownContractAddress(contractLabel: string) {
   return knownContractAddresses[contractLabel] || ''
 }
 
-function resolveContractAbi(abi: unknown): InterfaceAbi {
+export function getContractAbi(abi: unknown): InterfaceAbi {
   if (abi && typeof abi === 'object' && 'abi' in abi) {
     return (abi as { abi: InterfaceAbi }).abi
   }
@@ -96,7 +96,7 @@ export function parseCustomAbi(
 export function getFunctionChoices(abi: unknown): FunctionFragment[] {
   if (!abi) return []
   try {
-    return new Interface(resolveContractAbi(abi)).fragments.filter(
+    return new Interface(getContractAbi(abi)).fragments.filter(
       (fragment) =>
         fragment.type === 'function' &&
         ((fragment as FunctionFragment).stateMutability === 'nonpayable' ||
@@ -193,12 +193,22 @@ export function parseArgument(type: string, value: string): unknown {
       )
     }
 
-    return parsed.map((item) =>
-      parseArgument(
+    return parsed.map((item) => {
+      // JSON.parse silently loses precision for integers > Number.MAX_SAFE_INTEGER.
+      // Require quoted strings for integer-type array elements to avoid this.
+      if (
+        typeof item === 'number' &&
+        (childType.startsWith('uint') || childType.startsWith('int'))
+      ) {
+        throw new Error(
+          `Array element for ${childType} in ${type} must be a quoted string to avoid precision loss — use "${item}" instead of ${item}.`
+        )
+      }
+      return parseArgument(
         childType,
         typeof item === 'string' ? item : JSON.stringify(item)
       )
-    )
+    })
   }
 
   if (type === 'address') {
@@ -383,8 +393,8 @@ export function buildAdvancedProposalPayload(
         `"value" for call to ${call.functionName} must be a quoted string — use "${call.value}" instead of the number ${call.value}.`
       )
     }
-    // Note: '-0' is safe here — BigInt('-0') === 0n, so it skips the truthy
-    // guard (falsy) and the negative check is never reached.
+    // Note: '-0' is safe here — it's a truthy string so it enters the block,
+    // but BigInt('-0') === 0n, so 0n < 0n is false and no error is thrown.
     if (call.value && call.value !== '0') {
       try {
         ethValue = BigInt(call.value as string)
@@ -465,7 +475,7 @@ function prepareSimpleCall(call: CallDraft): PreparedCall {
     throw new Error(`Select a function for the call to ${label}.`)
   }
 
-  const contractInterface = new Interface(resolveContractAbi(abi))
+  const contractInterface = new Interface(getContractAbi(abi))
   const fragment = contractInterface.getFunction(call.functionName)
 
   if (!fragment) {

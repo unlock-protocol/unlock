@@ -1,7 +1,8 @@
-import { Contract, type InterfaceAbi, JsonRpcProvider } from 'ethers'
+import { Contract, JsonRpcProvider } from 'ethers'
 import { cache } from 'react'
 import { UPGovernor, UPToken } from '@unlock-protocol/contracts'
 import { governanceConfig } from '~/config/governance'
+import { getContractAbi } from '~/lib/governance/composer'
 
 export const governorAbi = getContractAbi(UPGovernor)
 export const tokenAbi = getContractAbi(UPToken)
@@ -47,10 +48,4 @@ export const getLatestTimestamp = cache(async () => {
   return BigInt(block.timestamp)
 })
 
-export function getContractAbi(abi: unknown): InterfaceAbi {
-  if (abi && typeof abi === 'object' && 'abi' in abi) {
-    return (abi as { abi: InterfaceAbi }).abi
-  }
-
-  return abi as InterfaceAbi
-}
+export { getContractAbi }

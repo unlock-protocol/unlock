@@ -186,6 +186,7 @@ function ProposalComposerConnected({ tokenSymbol }: { tokenSymbol: string }) {
       return (
         title.trim() !== '' &&
         description.trim() !== '' &&
+        calls.length > 0 &&
         calls.every(
           (c) =>
             c.functionName !== '' &&

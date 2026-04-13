@@ -108,9 +108,23 @@ describe('parseArgument', () => {
     expect(result).toEqual([validAddress])
   })
 
-  it('parses uint256[3] fixed array', () => {
-    const result = parseArgument('uint256[3]', '[1,2,3]')
+  it('parses uint256[3] fixed array (quoted strings)', () => {
+    const result = parseArgument('uint256[3]', '["1","2","3"]')
     expect(result).toEqual([1n, 2n, 3n])
+  })
+
+  it('throws when uint256[] contains unquoted JS number (precision loss risk)', () => {
+    // JSON.parse silently loses precision for integers > Number.MAX_SAFE_INTEGER
+    expect(() => parseArgument('uint256[]', '[1]')).toThrow(
+      /must be a quoted string to avoid precision loss/
+    )
+  })
+
+  it('throws when uint256[] contains large integer without quotes', () => {
+    // 9999999999999999999 > Number.MAX_SAFE_INTEGER — JSON.parse truncates it
+    expect(() => parseArgument('uint256[]', '[9999999999999999999]')).toThrow(
+      /must be a quoted string to avoid precision loss/
+    )
   })
 
   it('throws on non-array for array type', () => {
@@ -140,7 +154,7 @@ describe('parseArgument', () => {
   })
 
   it('throws when fixed array has wrong element count', () => {
-    expect(() => parseArgument('uint256[3]', '[1,2]')).toThrow(
+    expect(() => parseArgument('uint256[3]', '["1","2"]')).toThrow(
       /requires exactly 3 elements/
     )
     expect(() =>
