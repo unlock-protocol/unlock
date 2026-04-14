@@ -6,26 +6,27 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ToastProvider, UnlockUIProvider } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { governanceEnv } from '~/config/env'
+import { ConnectModalProvider } from '~/hooks/useConnectModal'
 
 type ProviderProps = {
   children: React.ReactNode
 }
 
 function WalletProvider({ children }: ProviderProps) {
-  if (!governanceEnv.privyAppId) {
-    return <>{children}</>
-  }
-
   return (
     <PrivyProvider
       appId={governanceEnv.privyAppId}
       config={{
-        loginMethods: ['wallet', 'email', 'google'],
+        loginMethods: ['wallet', 'email', 'google', 'farcaster'],
         embeddedWallets: {
           createOnLogin: 'off',
         },
         appearance: {
-          landingHeader: 'Unlock DAO Governance',
+          landingHeader: '',
+        },
+        // @ts-expect-error internal api
+        _render: {
+          standalone: true,
         },
       }}
     >
@@ -51,9 +52,11 @@ export function Providers({ children }: ProviderProps) {
   return (
     <UnlockUIProvider Link={Link}>
       <WalletProvider>
-        <QueryClientProvider client={queryClient}>
-          <ToastProvider>{children}</ToastProvider>
-        </QueryClientProvider>
+        <ConnectModalProvider>
+          <QueryClientProvider client={queryClient}>
+            <ToastProvider>{children}</ToastProvider>
+          </QueryClientProvider>
+        </ConnectModalProvider>
       </WalletProvider>
     </UnlockUIProvider>
   )
