@@ -1,10 +1,11 @@
 // ABOUTME: Governance proposal data access layer. Fetches proposals via subgraph,
 // ABOUTME: derives on-chain state using current timestamp from RPC.
 import { cache } from 'react'
-import { Interface, type InterfaceAbi } from 'ethers'
+import { Interface } from 'ethers'
 import { governanceConfig } from '~/config/governance'
 import { deriveProposalState } from './state'
 import { getGovernorContract, getLatestTimestamp, getTokenSymbol } from './rpc'
+import { getContractAbi } from './composer'
 import { getProposalsFromSubgraph } from './subgraph'
 import type {
   DecodedCalldata,
@@ -156,12 +157,4 @@ function stringifyArgument(value: unknown): string {
   }
 
   return String(value)
-}
-
-function getContractAbi(abi: unknown): InterfaceAbi {
-  if (abi && typeof abi === 'object' && 'abi' in abi) {
-    return (abi as { abi: InterfaceAbi }).abi
-  }
-
-  return abi as InterfaceAbi
 }
