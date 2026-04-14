@@ -491,6 +491,10 @@ function prepareSimpleCall(call: CallDraft): PreparedCall {
       `Function "${call.functionName}" expects ${fragment.inputs.length} argument${fragment.inputs.length === 1 ? '' : 's'} but ${call.args.length} were provided — extra arguments would be silently dropped.`
     )
   }
+  // Missing args fall through to '' (empty string) — the UI always pre-populates
+  // call.args from the selected function so this path is only hit in degenerate
+  // cases.  parseArgument validates each value at build time per its ABI type,
+  // so an empty string for a required field will produce a clear error there.
   const parsedArgs = fragment.inputs.map((input, index) =>
     parseArgument(input.type, call.args[index] || '')
   )
@@ -517,8 +521,8 @@ function prepareSimpleCall(call: CallDraft): PreparedCall {
   }
 
   let ethValue = 0n
-  // '-0' is safe: BigInt('-0') === 0n, so it fails the truthy guard and
-  // the negative check is never reached.
+  // '-0' is safe: it passes the truthy guard (non-empty string), but
+  // BigInt('-0') === 0n so 0n < 0n is false and no error is thrown.
   if (call.value && call.value !== '0') {
     try {
       ethValue = BigInt(call.value)

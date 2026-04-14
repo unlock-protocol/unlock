@@ -516,6 +516,23 @@ describe('buildAdvancedProposalPayload', () => {
     )
   })
 
+  it('accepts "-0" as value (truthy but BigInt("-0") === 0n)', () => {
+    const json = JSON.stringify({
+      proposalName: 'Title',
+      calls: [
+        {
+          contractAbi: erc20Abi,
+          contractAddress: validAddress,
+          functionName: 'transfer',
+          functionArgs: [validAddress, '0'],
+          value: '-0', // truthy string, enters block, but BigInt('-0') === 0n
+        },
+      ],
+    })
+    // Should not throw — negative-value guard is not reached
+    expect(() => buildAdvancedProposalPayload(json)).not.toThrow()
+  })
+
   it('throws when call.value is negative in advanced mode', () => {
     const json = JSON.stringify({
       proposalName: 'Title',
