@@ -43,14 +43,19 @@ export const checkLegacyAccount = async (
 
 // This method is meant to be called when the user is signed in with Privy,
 // BUT NOT yet signed in with Locksmith and hence does not have an access token.
-export const onSignedInWithPrivy = async (user: User) => {
+// walletAddressOverride is used when the wallet was just created and the user
+// object has not yet been updated by Privy with the new wallet address.
+export const onSignedInWithPrivy = async (
+  user: User,
+  walletAddressOverride?: string
+) => {
   try {
     const accessToken = await privyGetAccessToken()
     if (!accessToken) {
       console.error('No access token found in Privy')
       return null
     }
-    const walletAddress = user.wallet?.address
+    const walletAddress = walletAddressOverride || user.wallet?.address
     if (walletAddress) {
       const response = await locksmith.loginWithPrivy({
         accessToken,
@@ -172,6 +177,10 @@ export const PrivyMigration = () => {
     if (!user.wallet?.address && !hasLegacyAccount) {
       const walletAddress = await createWalletForUser()
       if (!walletAddress) return
+      // Pass the new wallet address explicitly: the user object captured in this
+      // closure predates the wallet creation and still has wallet: undefined.
+      await onSignedInWithPrivy(user, walletAddress)
+      return
     }
 
     // Proceed with normal login flow
