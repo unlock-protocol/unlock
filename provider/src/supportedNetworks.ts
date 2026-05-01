@@ -1,16 +1,44 @@
 import { Env } from './types'
+import networks from '@unlock-protocol/networks'
 
-// Public fallback RPC endpoints for chains whose Alchemy CDN endpoints return HTTP 525
-// from Cloudflare Workers due to an SSL handshake issue on Alchemy's infrastructure.
-// These are used as fallbacks when the primary Alchemy provider fails.
-export const fallbackProvider = (networkId: string): string | undefined => {
-  return {
-    '43114': 'https://1rpc.io/avax/c',
-    '56': 'https://1rpc.io/bnb',
-    '324': 'https://1rpc.io/zksync2-era',
-    '42220': 'https://1rpc.io/celo',
-    '534352': 'https://1rpc.io/scroll',
-  }[networkId]
+// 1RPC endpoints as level 2 fallback — not on Cloudflare CDN, no API key required.
+// 84532 (Base Sepolia) is intentionally omitted — 1RPC does not support it.
+const oneRpcEndpoints: Record<string, string> = {
+  '1': 'https://1rpc.io/eth',
+  '10': 'https://1rpc.io/op',
+  '56': 'https://1rpc.io/bnb',
+  '100': 'https://1rpc.io/gnosis',
+  '137': 'https://1rpc.io/matic',
+  '324': 'https://1rpc.io/zksync2-era',
+  '1101': 'https://1rpc.io/polygon/zkevm',
+  '42161': 'https://1rpc.io/arb',
+  '42220': 'https://1rpc.io/celo',
+  '43114': 'https://1rpc.io/avax/c',
+  '8453': 'https://1rpc.io/base',
+  '11155111': 'https://1rpc.io/sepolia',
+  '59144': 'https://1rpc.io/linea',
+  '534352': 'https://1rpc.io/scroll',
+}
+
+// Returns ordered fallback URLs to try when the primary Alchemy provider fails.
+// Level 1: official public RPC from the @unlock-protocol/networks package
+// Level 2: 1RPC (not on Cloudflare CDN, avoids SSL handshake issues)
+export const getFallbackProviders = (networkId: string): string[] => {
+  const fallbacks: string[] = []
+
+  const network = (networks as Record<number, { publicProvider?: string }>)[
+    Number(networkId)
+  ]
+  if (network?.publicProvider) {
+    fallbacks.push(network.publicProvider)
+  }
+
+  const oneRpcUrl = oneRpcEndpoints[networkId]
+  if (oneRpcUrl) {
+    fallbacks.push(oneRpcUrl)
+  }
+
+  return fallbacks
 }
 
 // This is the list of networks currently supported

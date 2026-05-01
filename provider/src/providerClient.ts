@@ -1,7 +1,7 @@
 // ABOUTME: Forwards RPC requests to the upstream provider, with fallback for providers
 // that fail due to Cloudflare CDN SSL issues (HTTP 525) on certain chain endpoints.
 import { Env, ForwardingResult, RpcRequest } from './types'
-import supportedNetworks, { fallbackProvider } from './supportedNetworks'
+import supportedNetworks, { getFallbackProviders } from './supportedNetworks'
 
 const fetchFromProvider = async (
   url: string,
@@ -40,12 +40,12 @@ export const forwardRequestsToProvider = async (
     let response = await fetchFromProvider(primaryUrl!, requestsToForward)
 
     if (!response.ok) {
-      const fallbackUrl = fallbackProvider(networkId)
-      if (fallbackUrl) {
+      for (const fallbackUrl of getFallbackProviders(networkId)) {
         console.warn(
-          `Primary provider for network ${networkId} returned HTTP ${response.status}, falling back to public endpoint`
+          `Provider for network ${networkId} returned HTTP ${response.status}, trying fallback: ${fallbackUrl}`
         )
         response = await fetchFromProvider(fallbackUrl, requestsToForward)
+        if (response.ok) break
       }
     }
 

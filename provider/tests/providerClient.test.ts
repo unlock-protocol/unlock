@@ -43,7 +43,11 @@ describe('forwardRequestsToProvider', () => {
   })
 
   it('wraps single response object in array', async () => {
-    const singleResponse = JSON.stringify({ jsonrpc: '2.0', id: 1, result: '0xabc' })
+    const singleResponse = JSON.stringify({
+      jsonrpc: '2.0',
+      id: 1,
+      result: '0xabc',
+    })
     global.fetch = vi.fn().mockResolvedValue(
       new Response(singleResponse, { status: 200 })
     )
@@ -57,19 +61,15 @@ describe('forwardRequestsToProvider', () => {
     expect(result.responses![0]).toMatchObject({ result: '0xabc' })
   })
 
-  it('falls back to public provider when primary returns 525', async () => {
+  it('falls back to level 1 (networks publicProvider) when primary fails', async () => {
     global.fetch = vi
       .fn()
-      .mockResolvedValueOnce(
-        new Response('error code: 525', { status: 525 })
-      )
-      .mockResolvedValueOnce(
-        new Response(successResponse, { status: 200 })
-      )
+      .mockResolvedValueOnce(new Response('error code: 525', { status: 525 }))
+      .mockResolvedValueOnce(new Response(successResponse, { status: 200 }))
 
     const result = await forwardRequestsToProvider(
       [mockRpcRequest],
-      '43114', // Avalanche — has a known fallback
+      '43114', // Avalanche — has publicProvider + 1RPC as fallbacks
       mockEnv as any
     )
     expect(result.responses).toHaveLength(1)
@@ -77,43 +77,47 @@ describe('forwardRequestsToProvider', () => {
     expect(global.fetch).toHaveBeenCalledTimes(2)
   })
 
-  it('falls back to public provider when primary returns non-OK status', async () => {
+  it('falls back to level 2 (1RPC) when primary and level 1 both fail', async () => {
     global.fetch = vi
       .fn()
-      .mockResolvedValueOnce(new Response('Service Unavailable', { status: 503 }))
+      .mockResolvedValueOnce(new Response('error code: 525', { status: 525 }))
+      .mockResolvedValueOnce(
+        new Response('Service Unavailable', { status: 503 })
+      )
       .mockResolvedValueOnce(new Response(successResponse, { status: 200 }))
 
     const result = await forwardRequestsToProvider(
       [mockRpcRequest],
-      '56', // BSC — has a known fallback
+      '43114', // Avalanche — has both level 1 and level 2 fallbacks
       mockEnv as any
     )
     expect(result.responses).toHaveLength(1)
-    expect(global.fetch).toHaveBeenCalledTimes(2)
+    expect(result.responses![0]).toMatchObject({ result: '0x1234' })
+    expect(global.fetch).toHaveBeenCalledTimes(3)
   })
 
-  it('returns error when primary fails and no fallback exists', async () => {
-    global.fetch = vi.fn().mockResolvedValue(
-      new Response('error code: 525', { status: 525 })
-    )
+  it('returns error when all providers fail for chain with two fallbacks', async () => {
+    global.fetch = vi
+      .fn()
+      .mockResolvedValue(new Response('error code: 525', { status: 525 }))
 
     const result = await forwardRequestsToProvider(
       [mockRpcRequest],
-      '1', // ETH mainnet — no fallback
+      '43114', // Avalanche — primary + 2 fallbacks = 3 total calls
       mockEnv as any
     )
     expect(result.error).toBeDefined()
-    expect(global.fetch).toHaveBeenCalledTimes(1)
+    expect(global.fetch).toHaveBeenCalledTimes(3)
   })
 
-  it('returns error when both primary and fallback fail', async () => {
-    global.fetch = vi.fn().mockResolvedValue(
-      new Response('error code: 525', { status: 525 })
-    )
+  it('returns error when all providers fail for chain with one fallback', async () => {
+    global.fetch = vi
+      .fn()
+      .mockResolvedValue(new Response('error code: 525', { status: 525 }))
 
     const result = await forwardRequestsToProvider(
       [mockRpcRequest],
-      '43114', // Avalanche — fallback exists but also fails
+      '84532', // Base Sepolia — primary + 1 fallback (no 1RPC) = 2 total calls
       mockEnv as any
     )
     expect(result.error).toBeDefined()
