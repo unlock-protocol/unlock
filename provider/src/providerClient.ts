@@ -1,5 +1,3 @@
-// ABOUTME: Forwards RPC requests to the upstream provider, with fallback for providers
-// that fail due to Cloudflare CDN SSL issues (HTTP 525) on certain chain endpoints.
 import { Env, ForwardingResult, RpcRequest } from './types'
 import supportedNetworks, { getFallbackProviders } from './supportedNetworks'
 
@@ -18,14 +16,6 @@ const fetchFromProvider = async (
   })
 }
 
-/**
- * Forwards requests to the provider, with fallback to public RPC on non-OK response
- *
- * @param requestsToForward The requests to forward to the provider
- * @param networkId The network ID
- * @param env The environment variables
- * @returns A ForwardingResult containing either the responses or an error
- */
 export const forwardRequestsToProvider = async (
   requestsToForward: RpcRequest[],
   networkId: string,
@@ -37,9 +27,19 @@ export const forwardRequestsToProvider = async (
 
   try {
     const primaryUrl = supportedNetworks(env, networkId)
-    let response = await fetchFromProvider(primaryUrl!, requestsToForward)
+    if (!primaryUrl) {
+      return {
+        error: {
+          message: `Unsupported network: ${networkId}`,
+          originalError: new Error('Unsupported network'),
+        },
+      }
+    }
 
-    if (!response.ok) {
+    let response = await fetchFromProvider(primaryUrl, requestsToForward)
+
+    // Only fall back on 5xx server errors — 4xx errors (auth, rate-limit) should surface to the caller
+    if (response.status >= 500) {
       for (const fallbackUrl of getFallbackProviders(networkId)) {
         console.warn(
           `Provider for network ${networkId} returned HTTP ${response.status}, trying fallback: ${fallbackUrl}`
@@ -72,7 +72,6 @@ export const forwardRequestsToProvider = async (
       }
     }
 
-    // Convert single response to array if needed
     const responsesArray = Array.isArray(providerResponse)
       ? providerResponse
       : [providerResponse]
