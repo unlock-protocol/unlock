@@ -5,11 +5,11 @@ import { Env } from './types'
 // These are used as fallbacks when the primary Alchemy provider fails.
 export const fallbackProvider = (networkId: string): string | undefined => {
   return {
-    '43114': 'https://api.avax.network/ext/bc/C/rpc',
-    '56': 'https://bsc-dataseed.binance.org/',
-    '324': 'https://mainnet.era.zksync.io',
-    '42220': 'https://forno.celo.org',
-    '534352': 'https://rpc.scroll.io',
+    '43114': 'https://1rpc.io/avax/c',
+    '56': 'https://1rpc.io/bnb',
+    '324': 'https://1rpc.io/zksync2-era',
+    '42220': 'https://1rpc.io/celo',
+    '534352': 'https://1rpc.io/scroll',
   }[networkId]
 }
 
