@@ -91,7 +91,7 @@ describe('forwardRequestsToProvider', () => {
       .fn()
       .mockResolvedValueOnce(new Response('error code: 525', { status: 525 }))
       .mockResolvedValueOnce(
-        new Response('Service Unavailable', { status: 503 }),
+        new Response('Service Unavailable', { status: 503 })
       )
       .mockResolvedValueOnce(new Response(successResponse, { status: 200 }))
 
