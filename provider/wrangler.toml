@@ -1,6 +1,7 @@
 name = "rpc-provider"
 main = "src/index.ts"
-compatibility_date = "2022-08-17"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["global_fetch_strictly_public"]
 tail_consumers = [{service = "rpc-provider-tail"}]
 
 # Optional environment variables

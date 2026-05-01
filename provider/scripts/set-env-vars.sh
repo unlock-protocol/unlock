@@ -1,5 +1,43 @@
 #!/bin/bash
 
+set -e
+
+REQUIRED_VARS=(
+  MAINNET_PROVIDER
+  OPTIMISM_PROVIDER
+  BSC_PROVIDER
+  GNOSIS_PROVIDER
+  POLYGON_PROVIDER
+  ZKSYNC_PROVIDER
+  ZKEVM_PROVIDER
+  ARBITRUM_PROVIDER
+  CELO_PROVIDER
+  AVALANCHE_PROVIDER
+  BASE_SEPOLIA_PROVIDER
+  BASE_PROVIDER
+  SEPOLIA_PROVIDER
+  LINEA_PROVIDER
+  SCROLL_PROVIDER
+  LOCKSMITH_SECRET_KEY
+)
+
+# Validate all required vars are set and non-empty
+MISSING=()
+for VAR in "${REQUIRED_VARS[@]}"; do
+  if [ -z "${!VAR}" ]; then
+    MISSING+=("$VAR")
+  fi
+done
+
+if [ ${#MISSING[@]} -gt 0 ]; then
+  echo "ERROR: The following required environment variables are not set:"
+  for VAR in "${MISSING[@]}"; do
+    echo "  - $VAR"
+  done
+  echo "Run 'op run --env-file=.op.env -- ./scripts/set-env-vars.sh' to load from 1Password."
+  exit 1
+fi
+
 read -r -d '' FILE << EOM
 {
   "MAINNET_PROVIDER": "$MAINNET_PROVIDER",
@@ -18,14 +56,8 @@ read -r -d '' FILE << EOM
   "LINEA_PROVIDER": "$LINEA_PROVIDER",
   "SCROLL_PROVIDER": "$SCROLL_PROVIDER",
   "LOCKSMITH_SECRET_KEY": "$LOCKSMITH_SECRET_KEY"
-} 
+}
 EOM
 
-# Check if LOCKSMITH_SECRET_KEY is set
-if [ -z "$LOCKSMITH_SECRET_KEY" ]; then
-  echo "Warning: LOCKSMITH_SECRET_KEY environment variable is not set."
-  echo "Locksmith authentication will not work correctly."
-  echo "Make sure to set this variable from 1Password before deploying to production."
-fi
-
+echo "All required environment variables are set. Pushing secrets to Cloudflare..."
 echo $FILE | yarn wrangler secret bulk

@@ -1,5 +1,18 @@
 import { Env } from './types'
 
+// Public fallback RPC endpoints for chains whose Alchemy CDN endpoints return HTTP 525
+// from Cloudflare Workers due to an SSL handshake issue on Alchemy's infrastructure.
+// These are used as fallbacks when the primary Alchemy provider fails.
+export const fallbackProvider = (networkId: string): string | undefined => {
+  return {
+    '43114': 'https://api.avax.network/ext/bc/C/rpc',
+    '56': 'https://bsc-dataseed.binance.org/',
+    '324': 'https://mainnet.era.zksync.io',
+    '42220': 'https://forno.celo.org',
+    '534352': 'https://rpc.scroll.io',
+  }[networkId]
+}
+
 // This is the list of networks currently supported
 const supportedNetworks = (env: Env, networkId: string): string | undefined => {
   return {
