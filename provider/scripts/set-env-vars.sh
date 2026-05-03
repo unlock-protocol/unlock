@@ -38,7 +38,7 @@ if [ ${#MISSING[@]} -gt 0 ]; then
   exit 1
 fi
 
-read -r -d '' FILE << EOM
+FILE=$(cat <<EOM
 {
   "MAINNET_PROVIDER": "$MAINNET_PROVIDER",
   "OPTIMISM_PROVIDER": "$OPTIMISM_PROVIDER",
@@ -58,6 +58,7 @@ read -r -d '' FILE << EOM
   "LOCKSMITH_SECRET_KEY": "$LOCKSMITH_SECRET_KEY"
 }
 EOM
+)
 
 echo "All required environment variables are set. Pushing secrets to Cloudflare..."
-echo $FILE | yarn wrangler secret bulk
+printf '%s' "$FILE" | yarn wrangler secret bulk

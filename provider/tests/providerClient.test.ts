@@ -119,6 +119,40 @@ describe('forwardRequestsToProvider', () => {
     expect(global.fetch).toHaveBeenCalledTimes(1)
   })
 
+  it('surfaces 4xx from fallback instead of trying additional fallbacks', async () => {
+    global.fetch = vi
+      .fn()
+      .mockResolvedValueOnce(new Response('error code: 525', { status: 525 }))
+      .mockResolvedValueOnce(new Response('Too Many Requests', { status: 429 }))
+      .mockResolvedValueOnce(new Response(successResponse, { status: 200 }))
+
+    const result = await forwardRequestsToProvider(
+      [mockRpcRequest],
+      '43114',
+      mockEnv as any
+    )
+    expect(result.error).toBeDefined()
+    expect(result.error?.message).toContain('HTTP 429')
+    expect(global.fetch).toHaveBeenCalledTimes(2)
+  })
+
+  it('tries the next fallback when a fallback provider throws', async () => {
+    global.fetch = vi
+      .fn()
+      .mockResolvedValueOnce(new Response('error code: 525', { status: 525 }))
+      .mockRejectedValueOnce(new Error('Fallback network error'))
+      .mockResolvedValueOnce(new Response(successResponse, { status: 200 }))
+
+    const result = await forwardRequestsToProvider(
+      [mockRpcRequest],
+      '43114',
+      mockEnv as any
+    )
+    expect(result.responses).toHaveLength(1)
+    expect(result.responses![0]).toMatchObject({ result: '0x1234' })
+    expect(global.fetch).toHaveBeenCalledTimes(3)
+  })
+
   it('returns error when all providers fail for chain with two fallbacks', async () => {
     global.fetch = vi
       .fn()

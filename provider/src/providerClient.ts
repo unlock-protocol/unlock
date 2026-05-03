@@ -44,8 +44,17 @@ export const forwardRequestsToProvider = async (
         console.warn(
           `Provider for network ${networkId} returned HTTP ${response.status}, trying fallback: ${fallbackUrl}`
         )
-        response = await fetchFromProvider(fallbackUrl, requestsToForward)
-        if (response.ok) break
+        try {
+          response = await fetchFromProvider(fallbackUrl, requestsToForward)
+        } catch (error) {
+          console.warn(
+            `Fallback provider for network ${networkId} threw, trying next fallback: ${fallbackUrl}`,
+            error
+          )
+          continue
+        }
+
+        if (response.ok || response.status < 500) break
       }
     }
 
