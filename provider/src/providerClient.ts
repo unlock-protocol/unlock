@@ -108,6 +108,8 @@ export const forwardRequestsToProvider = async (
     try {
       // Use text() + JSON.parse rather than response.json() so parse errors include
       // the raw response body, making malformed-response debugging easier.
+      // A 200 with a non-JSON body (e.g. a CDN HTML error page) returns an error here
+      // without retrying fallbacks — 200 means the provider accepted the request.
       const responseText = await response.text()
       providerResponse = JSON.parse(responseText)
     } catch (error) {
@@ -132,7 +134,6 @@ export const forwardRequestsToProvider = async (
       error: {
         message: 'Failed to forward requests to provider',
         originalError: error,
-        status: undefined,
       },
     }
   }
