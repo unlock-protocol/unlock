@@ -105,15 +105,21 @@ export const forwardRequestsToProvider = async (
     }
 
     let providerResponse
+    let responseText = ''
     try {
       // Use text() + JSON.parse rather than response.json() so parse errors include
       // the raw response body, making malformed-response debugging easier.
       // A 200 with a non-JSON body (e.g. a CDN HTML error page) returns an error here
       // without retrying fallbacks — 200 means the provider accepted the request.
-      const responseText = await response.text()
+      responseText = await response.text()
       providerResponse = JSON.parse(responseText)
     } catch (error) {
-      console.error('Error parsing JSON response:', error)
+      console.error(
+        'Error parsing JSON response:',
+        error,
+        'Raw body:',
+        responseText
+      )
       return {
         error: {
           message: 'Failed to parse provider response',

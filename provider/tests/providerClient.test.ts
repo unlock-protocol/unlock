@@ -1,6 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { forwardRequestsToProvider } from '../src/providerClient'
-import { oneRpcEndpoints, getFallbackProviders } from '../src/supportedNetworks'
+import supportedNetworks, {
+  oneRpcEndpoints,
+  getFallbackProviders,
+} from '../src/supportedNetworks'
 import { createMockEnv, setupGlobalMocks } from './__fixtures__/testUtils'
 
 const mockRpcRequest = {
@@ -316,19 +319,24 @@ describe('forwardRequestsToProvider', () => {
   })
 
   it('all oneRpcEndpoints keys are present in the supported networks list', () => {
-    // Every 1RPC entry must correspond to a chain we actually serve — catches
+    // Every 1RPC entry must correspond to a chain this worker actually serves — catches
     // copy-paste drift between oneRpcEndpoints and supportedNetworks.
     const oneRpcNetworkIds = Object.keys(oneRpcEndpoints)
     for (const networkId of oneRpcNetworkIds) {
-      // getFallbackProviders returns the 1RPC URL only when the network exists,
-      // so a non-empty result confirms the chain is in the supported map.
+      // Verify the chain is actually served (not just incidentally in oneRpcEndpoints)
+      const primaryUrl = supportedNetworks(mockEnv as any, networkId)
+      expect(
+        primaryUrl,
+        `networkId ${networkId} in oneRpcEndpoints but not in supportedNetworks`
+      ).toBeTruthy()
+      // Verify the 1RPC URL is in the fallback chain
       const fallbacks = getFallbackProviders(networkId)
       const hasOneRpc = fallbacks.some((url) =>
         url.startsWith('https://1rpc.io')
       )
       expect(
         hasOneRpc,
-        `networkId ${networkId} in oneRpcEndpoints but not reachable via getFallbackProviders`
+        `networkId ${networkId} 1RPC URL missing from getFallbackProviders`
       ).toBe(true)
     }
   })
