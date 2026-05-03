@@ -1,7 +1,8 @@
 import { Env, ForwardingResult, RpcRequest } from './types'
 import supportedNetworks, { getFallbackProviders } from './supportedNetworks'
 
-// 5 s per attempt × 3 max attempts = 15 s worst-case, well within the CF Workers 30 s wall-clock limit.
+// Covers connection + headers (time-to-first-byte), not response body streaming.
+// CF Workers enforces its own 30 s wall-clock limit as a backstop for body reads.
 const FETCH_TIMEOUT_MS = 5_000
 
 const fetchFromProvider = async (
@@ -41,6 +42,7 @@ export const forwardRequestsToProvider = async (
     }
 
     let response: Response | null = null
+    let triedFallbacks = false
     try {
       response = await fetchFromProvider(primaryUrl, requestsToForward)
     } catch (error) {
@@ -61,6 +63,7 @@ export const forwardRequestsToProvider = async (
       response.status === 404
     ) {
       for (const fallbackUrl of getFallbackProviders(networkId)) {
+        triedFallbacks = true
         console.info(
           `Previous attempt for network ${networkId} ${response ? `returned HTTP ${response.status}` : 'threw'}, trying next fallback: ${fallbackUrl}`
         )
@@ -95,10 +98,12 @@ export const forwardRequestsToProvider = async (
         error: {
           message: response
             ? `Provider returned HTTP ${response.status}`
-            : 'All providers failed with network errors',
+            : triedFallbacks
+              ? 'All providers failed with network errors'
+              : 'Provider failed with a network error',
           originalError: response
             ? new Error(`HTTP ${response.status}`)
-            : new Error('All providers threw network errors'),
+            : new Error('Provider threw a network error'),
           status: response?.status,
         },
       }
