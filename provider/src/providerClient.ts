@@ -50,19 +50,23 @@ export const forwardRequestsToProvider = async (
       )
     }
 
-    // Fall back on 5xx server errors and 429 (rate-limit is provider-specific, so another provider may succeed).
-    // Other 4xx errors from the primary (including 404) surface immediately — a 404 from Alchemy on a
-    // supported chain indicates a misconfiguration beyond the SSL issue this fallback chain is designed to fix.
-    // Note: 404 from a *fallback* provider is treated differently (skipped, not definitive) — see the
-    // isDefinitiveClientError condition inside the loop, which treats fallback 404 as endpoint misconfiguration.
-    if (!response || response.status >= 500 || response.status === 429) {
+    // Fall back on 5xx server errors, 429 (rate-limit is provider-specific), and 404 (provider may be
+    // misconfigured at the endpoint level — another provider may still succeed).
+    // Other 4xx errors (403, 400, etc.) surface immediately — they indicate a request-level problem
+    // that no provider can resolve differently.
+    if (
+      !response ||
+      response.status >= 500 ||
+      response.status === 429 ||
+      response.status === 404
+    ) {
       for (const fallbackUrl of getFallbackProviders(networkId)) {
         console.info(
           `Previous attempt for network ${networkId} ${response ? `returned HTTP ${response.status}` : 'threw'}, trying next fallback: ${fallbackUrl}`
         )
         // Cancel the unconsumed body before overwriting the response reference to
         // avoid holding open the connection in the Cloudflare Workers runtime.
-        response?.body?.cancel()
+        await response?.body?.cancel()
         try {
           response = await fetchFromProvider(fallbackUrl, requestsToForward)
         } catch (error) {
@@ -75,7 +79,7 @@ export const forwardRequestsToProvider = async (
         }
 
         // Stop on success (2xx) or definitive client errors where no provider could help.
-        // Continue on 429 (rate-limit) and 404 (likely provider endpoint misconfiguration).
+        // Continue on 429 (rate-limit) and 404 (endpoint misconfiguration — try next provider).
         const isDefinitiveClientError =
           response.status >= 400 &&
           response.status < 500 &&
@@ -86,7 +90,7 @@ export const forwardRequestsToProvider = async (
     }
 
     if (!response || !response.ok) {
-      response?.body?.cancel()
+      await response?.body?.cancel()
       return {
         error: {
           message: response

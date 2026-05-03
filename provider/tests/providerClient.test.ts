@@ -282,19 +282,20 @@ describe('forwardRequestsToProvider', () => {
     expect(global.fetch).toHaveBeenCalledTimes(2)
   })
 
-  it('primary 404 surfaces immediately without trying fallbacks', async () => {
+  it('primary 404 tries fallbacks (consistent with fallback 404 handling)', async () => {
     global.fetch = vi
       .fn()
       .mockResolvedValueOnce(new Response('Not Found', { status: 404 }))
+      .mockResolvedValueOnce(new Response(successResponse, { status: 200 }))
 
     const result = await forwardRequestsToProvider(
       [mockRpcRequest],
       '43114',
       mockEnv as any
     )
-    expect(result.error).toBeDefined()
-    expect(result.error?.message).toContain('HTTP 404')
-    expect(global.fetch).toHaveBeenCalledTimes(1)
+    expect(result.responses).toHaveLength(1)
+    expect(result.responses![0]).toMatchObject({ result: '0x1234' })
+    expect(global.fetch).toHaveBeenCalledTimes(2)
   })
 
   it('all oneRpcEndpoints keys are present in the supported networks list', () => {
