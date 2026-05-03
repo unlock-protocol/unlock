@@ -2,7 +2,8 @@ import { Env, ForwardingResult, RpcRequest } from './types'
 import supportedNetworks, { getFallbackProviders } from './supportedNetworks'
 
 // AbortSignal.timeout aborts the entire fetch lifecycle (connection, headers, and body streaming).
-// CF Workers enforces its own 30 s wall-clock limit as an outer backstop.
+// 5 s is tuned for Alchemy; public fallback RPCs (publicProvider, 1RPC) can be slower.
+// 3 providers × 5 s = 15 s worst-case — within the CF Workers 30 s wall-clock limit.
 const FETCH_TIMEOUT_MS = 5_000
 
 const fetchFromProvider = async (
