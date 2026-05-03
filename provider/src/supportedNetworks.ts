@@ -5,6 +5,7 @@ import networks from '@unlock-protocol/networks'
 // 84532 (Base Sepolia) is intentionally omitted — 1RPC does not support it.
 // When adding a new chain to supportedNetworks, add its 1RPC URL here if available:
 // https://docs.1rpc.io/overview/supported-networks
+// Note: these are static strings and should be reviewed periodically in case 1RPC changes endpoint paths.
 const oneRpcEndpoints: Record<string, string> = {
   '1': 'https://1rpc.io/eth',
   '10': 'https://1rpc.io/op',
