@@ -2,6 +2,8 @@
 
 set -e
 
+command -v jq >/dev/null 2>&1 || { echo "ERROR: jq is required but not installed. Install it with: brew install jq (macOS) or apt install jq (Linux)"; exit 1; }
+
 REQUIRED_VARS=(
   MAINNET_PROVIDER
   OPTIMISM_PROVIDER
