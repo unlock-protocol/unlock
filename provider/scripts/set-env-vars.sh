@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -eu
 
 command -v jq >/dev/null 2>&1 || { echo "ERROR: jq is required but not installed. Install it with: brew install jq (macOS) or apt install jq (Linux)"; exit 1; }
 
@@ -26,7 +26,7 @@ REQUIRED_VARS=(
 # Validate all required vars are set and non-empty
 MISSING=()
 for VAR in "${REQUIRED_VARS[@]}"; do
-  if [ -z "${!VAR}" ]; then
+  if [ -z "${!VAR:-}" ]; then
     MISSING+=("$VAR")
   fi
 done

@@ -68,8 +68,9 @@ export const forwardRequestsToProvider = async (
         console.info(
           `Previous attempt for network ${networkId} ${response ? `returned HTTP ${response.status}` : 'threw'}, trying next fallback: ${fallbackUrl}`
         )
-        // Cancel the unconsumed body before overwriting the response reference to
-        // avoid holding open the connection in the Cloudflare Workers runtime.
+        // `response` here is always the previous attempt's response (or null if it threw).
+        // Cancel its unconsumed body before overwriting the reference — holding an open
+        // ReadableStream keeps the upstream connection alive in the CF Workers runtime.
         await response?.body?.cancel()
         try {
           response = await fetchFromProvider(fallbackUrl, requestsToForward)
