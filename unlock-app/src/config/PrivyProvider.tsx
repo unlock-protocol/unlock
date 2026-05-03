@@ -1,6 +1,6 @@
 'use client'
 
-import { saveAccessToken } from '~/utils/session'
+import { getAccessToken, saveAccessToken } from '~/utils/session'
 import {
   getAccessToken as privyGetAccessToken,
   PrivyProvider,
@@ -43,14 +43,21 @@ export const checkLegacyAccount = async (
 
 // This method is meant to be called when the user is signed in with Privy,
 // BUT NOT yet signed in with Locksmith and hence does not have an access token.
-export const onSignedInWithPrivy = async (user: User) => {
+// walletAddressOverride is used when the wallet was just created and the user
+// object has not yet been updated by Privy with the new wallet address.
+export const onSignedInWithPrivy = async (
+  user: User,
+  walletAddressOverride?: string
+) => {
   try {
     const accessToken = await privyGetAccessToken()
     if (!accessToken) {
       console.error('No access token found in Privy')
       return null
     }
-    const walletAddress = user.wallet?.address
+    // Prefer the live wallet address from the user object; fall back to the
+    // override only when Privy has not yet reflected the newly created wallet.
+    const walletAddress = user.wallet?.address || walletAddressOverride
     if (walletAddress) {
       const response = await locksmith.loginWithPrivy({
         accessToken,
@@ -67,6 +74,7 @@ export const onSignedInWithPrivy = async (user: User) => {
         )
         return walletAddress
       }
+      return null
     } else {
       console.error(
         'No wallet linked on Privy account, cannot authenticate with Locksmith'
@@ -172,7 +180,16 @@ export const PrivyMigration = () => {
     if (!user.wallet?.address && !hasLegacyAccount) {
       const walletAddress = await createWalletForUser()
       if (!walletAddress) return
+      // Pass the new wallet address explicitly: the user object captured in this
+      // closure predates the wallet creation and still has wallet: undefined.
+      await onSignedInWithPrivy(user, walletAddress)
+      return
     }
+
+    // Skip if already authenticated — Privy re-fires this effect when it updates
+    // the reactive user object after wallet creation, which would cause a second
+    // redundant Locksmith auth call and duplicate locksmith.authenticated events.
+    if (getAccessToken()) return
 
     // Proceed with normal login flow
     await onSignedInWithPrivy(user)
