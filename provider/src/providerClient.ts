@@ -36,7 +36,17 @@ export const forwardRequestsToProvider = async (
       }
     }
 
-    let response = await fetchFromProvider(primaryUrl, requestsToForward)
+    let response: Response
+    try {
+      response = await fetchFromProvider(primaryUrl, requestsToForward)
+    } catch (error) {
+      console.warn(
+        `Primary provider for network ${networkId} threw, trying fallbacks:`,
+        error
+      )
+      // Synthesize a 503 so the fallback loop below is entered
+      response = new Response('', { status: 503 })
+    }
 
     // Only fall back on 5xx server errors — 4xx errors (auth, rate-limit) should surface to the caller
     if (response.status >= 500) {
@@ -54,7 +64,7 @@ export const forwardRequestsToProvider = async (
           continue
         }
 
-        if (response.ok || response.status < 500) break
+        if (response.status < 500) break
       }
     }
 

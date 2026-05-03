@@ -181,15 +181,32 @@ describe('forwardRequestsToProvider', () => {
     expect(global.fetch).toHaveBeenCalledTimes(2)
   })
 
-  it('returns error when fetch itself throws', async () => {
+  it('tries fallbacks when primary fetch throws, then returns error if all fail', async () => {
     global.fetch = vi.fn().mockRejectedValue(new Error('Network error'))
 
+    // Network '1' has publicProvider + 1RPC fallbacks = 3 total attempts
     const result = await forwardRequestsToProvider(
       [mockRpcRequest],
       '1',
       mockEnv as any
     )
     expect(result.error).toBeDefined()
-    expect(result.error?.message).toContain('Failed to forward')
+    expect(global.fetch).toHaveBeenCalledTimes(3)
+  })
+
+  it('succeeds via fallback when primary fetch throws', async () => {
+    global.fetch = vi
+      .fn()
+      .mockRejectedValueOnce(new Error('Network error'))
+      .mockResolvedValueOnce(new Response(successResponse, { status: 200 }))
+
+    const result = await forwardRequestsToProvider(
+      [mockRpcRequest],
+      '43114',
+      mockEnv as any
+    )
+    expect(result.responses).toHaveLength(1)
+    expect(result.responses![0]).toMatchObject({ result: '0x1234' })
+    expect(global.fetch).toHaveBeenCalledTimes(2)
   })
 })
