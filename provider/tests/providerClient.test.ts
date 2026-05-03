@@ -260,4 +260,24 @@ describe('forwardRequestsToProvider', () => {
     expect(result.responses![0]).toMatchObject({ result: '0x1234' })
     expect(global.fetch).toHaveBeenCalledTimes(2)
   })
+
+  it('treats AbortSignal timeout the same as a network throw — fallback fires', async () => {
+    const timeoutError = new DOMException(
+      'The operation was aborted.',
+      'TimeoutError'
+    )
+    global.fetch = vi
+      .fn()
+      .mockRejectedValueOnce(timeoutError)
+      .mockResolvedValueOnce(new Response(successResponse, { status: 200 }))
+
+    const result = await forwardRequestsToProvider(
+      [mockRpcRequest],
+      '43114',
+      mockEnv as any
+    )
+    expect(result.responses).toHaveLength(1)
+    expect(result.responses![0]).toMatchObject({ result: '0x1234' })
+    expect(global.fetch).toHaveBeenCalledTimes(2)
+  })
 })

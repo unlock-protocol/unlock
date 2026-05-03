@@ -53,10 +53,12 @@ export const forwardRequestsToProvider = async (
     // Fall back on 5xx server errors and 429 (rate-limit is provider-specific, so another provider may succeed).
     // Other 4xx errors from the primary (including 404) surface immediately — a 404 from Alchemy on a
     // supported chain indicates a misconfiguration beyond the SSL issue this fallback chain is designed to fix.
+    // Note: 404 from a *fallback* provider is treated differently (retried) — see the isDefinitiveClientError
+    // condition inside the loop, which treats fallback 404 as a provider endpoint misconfiguration.
     if (!response || response.status >= 500 || response.status === 429) {
       for (const fallbackUrl of getFallbackProviders(networkId)) {
         console.info(
-          `Last attempt for network ${networkId} ${response ? `returned HTTP ${response.status}` : 'threw'}, trying next fallback: ${fallbackUrl}`
+          `Previous attempt for network ${networkId} ${response ? `returned HTTP ${response.status}` : 'threw'}, trying next fallback: ${fallbackUrl}`
         )
         // Cancel the unconsumed body before overwriting the response reference to
         // avoid holding open the connection in the Cloudflare Workers runtime.
