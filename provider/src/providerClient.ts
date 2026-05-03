@@ -95,6 +95,8 @@ export const forwardRequestsToProvider = async (
     }
 
     if (!response || !response.ok) {
+      // Safety net: also cancels the primary body when getFallbackProviders is empty
+      // (the per-iteration cancel above only runs when at least one fallback exists).
       await response?.body?.cancel()
       return {
         error: {

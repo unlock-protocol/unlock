@@ -17,7 +17,7 @@
   "scripts": {
     "dev": "yarn wrangler dev",
     "deploy": "yarn set-env-vars && yarn wrangler deploy",
-    "deploy:code-only": "test \"$SKIP_SECRET_SYNC\" = '1' || (echo 'ERROR: set SKIP_SECRET_SYNC=1 to deploy without syncing secrets' >&2; false) && yarn wrangler deploy",
+    "deploy:code-only": "./scripts/deploy-code-only.sh",
     "set-env-vars": "op run --env-file=.op.env --  ./scripts/set-env-vars.sh",
     "test": "vitest run --config ./vitest.config.ts",
     "ci": "yarn lint && yarn test",
