@@ -298,6 +298,23 @@ describe('forwardRequestsToProvider', () => {
     expect(global.fetch).toHaveBeenCalledTimes(2)
   })
 
+  it('returns error when provider returns 200 with non-JSON body (e.g. HTML error page)', async () => {
+    global.fetch = vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response('<html>Error page</html>', { status: 200 })
+      )
+
+    const result = await forwardRequestsToProvider(
+      [mockRpcRequest],
+      '1',
+      mockEnv as any
+    )
+    expect(result.error).toBeDefined()
+    expect(result.error?.message).toContain('Failed to parse provider response')
+    expect(result.error?.status).toBe(200)
+  })
+
   it('all oneRpcEndpoints keys are present in the supported networks list', () => {
     // Every 1RPC entry must correspond to a chain we actually serve — catches
     // copy-paste drift between oneRpcEndpoints and supportedNetworks.

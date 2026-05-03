@@ -132,6 +132,7 @@ export const forwardRequestsToProvider = async (
       error: {
         message: 'Failed to forward requests to provider',
         originalError: error,
+        status: undefined,
       },
     }
   }
