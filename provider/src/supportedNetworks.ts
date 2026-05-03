@@ -3,6 +3,8 @@ import networks from '@unlock-protocol/networks'
 
 // 1RPC endpoints as level 2 fallback — not on Cloudflare CDN, no API key required.
 // 84532 (Base Sepolia) is intentionally omitted — 1RPC does not support it.
+// When adding a new chain to supportedNetworks, add its 1RPC URL here if available:
+// https://docs.1rpc.io/overview/supported-networks
 const oneRpcEndpoints: Record<string, string> = {
   '1': 'https://1rpc.io/eth',
   '10': 'https://1rpc.io/op',
