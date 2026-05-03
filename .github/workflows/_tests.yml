@@ -54,9 +54,23 @@ jobs:
           build-args: BUILDKIT_INLINE_CACHE=1
           target: deps
           tags: unlockprotocol/unlock-dev:latest
-          cache-from: type=gha,scope=docker-deps
-          cache-to: type=gha,scope=docker-deps,mode=max
+          cache-from: |
+            type=gha,scope=docker-deps
+            type=registry,ref=unlockprotocol/unlock-dev:latest
           load: true
+      # Export once per workflow run to avoid concurrent writes to the same GHA cache scope.
+      - name: Export Docker deps cache
+        if: ${{ (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && matrix.target == fromJson(inputs.changed)[0] }}
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          build-args: BUILDKIT_INLINE_CACHE=1
+          target: deps
+          tags: unlockprotocol/unlock-dev:latest
+          cache-from: |
+            type=gha,scope=docker-deps
+            type=registry,ref=unlockprotocol/unlock-dev:latest
+          cache-to: type=gha,scope=docker-deps,mode=max
       - name: Running ${{ matrix.target }} tests
         run: ./scripts/tests.sh ${{ matrix.target }}
         shell: bash
