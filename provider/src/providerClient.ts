@@ -36,7 +36,7 @@ export const forwardRequestsToProvider = async (
       }
     }
 
-    let response: Response
+    let response: Response | null = null
     try {
       response = await fetchFromProvider(primaryUrl, requestsToForward)
     } catch (error) {
@@ -44,16 +44,14 @@ export const forwardRequestsToProvider = async (
         `Primary provider for network ${networkId} threw, trying fallbacks:`,
         error
       )
-      // Synthesize a 503 so the fallback loop below is entered
-      response = new Response('', { status: 503 })
     }
 
     // Fall back on 5xx server errors and 429 (rate-limit is provider-specific, so another provider may succeed).
     // Other 4xx errors (auth failures, bad requests) surface immediately — they indicate request-level problems.
-    if (response.status >= 500 || response.status === 429) {
+    if (!response || response.status >= 500 || response.status === 429) {
       for (const fallbackUrl of getFallbackProviders(networkId)) {
         console.warn(
-          `Provider for network ${networkId} returned HTTP ${response.status}, trying fallback: ${fallbackUrl}`
+          `Provider for network ${networkId} ${response ? `returned HTTP ${response.status}` : 'threw'}, falling back to: ${fallbackUrl}`
         )
         try {
           response = await fetchFromProvider(fallbackUrl, requestsToForward)
@@ -62,6 +60,7 @@ export const forwardRequestsToProvider = async (
             `Fallback provider for network ${networkId} threw, moving to next fallback: ${fallbackUrl}`,
             error
           )
+          response = null
           continue
         }
 
@@ -70,12 +69,16 @@ export const forwardRequestsToProvider = async (
       }
     }
 
-    if (!response.ok) {
+    if (!response || !response.ok) {
       return {
         error: {
-          message: `Provider returned HTTP ${response.status}`,
-          originalError: new Error(`HTTP ${response.status}`),
-          status: response.status,
+          message: response
+            ? `Provider returned HTTP ${response.status}`
+            : 'All providers failed with network errors',
+          originalError: response
+            ? new Error(`HTTP ${response.status}`)
+            : new Error('All providers threw network errors'),
+          status: response?.status,
         },
       }
     }
