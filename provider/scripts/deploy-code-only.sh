@@ -10,4 +10,5 @@ if [ "${SKIP_SECRET_SYNC:-}" != "1" ]; then
 fi
 
 echo "WARNING: Deploying without syncing secrets — ensure Cloudflare secrets are current" >&2
+# Call wrangler directly (not 'yarn deploy') to avoid triggering set-env-vars.
 yarn wrangler deploy
