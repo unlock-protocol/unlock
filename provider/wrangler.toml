@@ -1,6 +1,9 @@
 name = "rpc-provider"
 main = "src/index.ts"
 compatibility_date = "2024-09-23"
+# global_fetch_strictly_public prevents Cloudflare from routing fetch() through its
+# internal CDN paths, which cause SSL handshake failures (HTTP 525) with Alchemy endpoints
+# for certain chains. Keep this flag — removing it re-introduces those failures.
 compatibility_flags = ["global_fetch_strictly_public"]
 tail_consumers = [{service = "rpc-provider-tail"}]
 

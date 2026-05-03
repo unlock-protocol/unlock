@@ -17,7 +17,7 @@
   "scripts": {
     "dev": "yarn wrangler dev",
     "deploy": "yarn set-env-vars && yarn wrangler deploy",
-    "deploy:code-only": "yarn wrangler deploy",
+    "deploy:code-only": "echo 'WARNING: skipping secret sync — ensure Cloudflare secrets are current before using this' && yarn wrangler deploy",
     "set-env-vars": "op run --env-file=.op.env --  ./scripts/set-env-vars.sh",
     "test": "vitest run --config ./vitest.config.ts",
     "ci": "yarn lint && yarn test",

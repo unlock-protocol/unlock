@@ -50,7 +50,7 @@ export const forwardRequestsToProvider = async (
     // Other 4xx errors (auth failures, bad requests) surface immediately — they indicate request-level problems.
     if (!response || response.status >= 500 || response.status === 429) {
       for (const fallbackUrl of getFallbackProviders(networkId)) {
-        console.warn(
+        console.info(
           `Provider for network ${networkId} ${response ? `returned HTTP ${response.status}` : 'threw'}, falling back to: ${fallbackUrl}`
         )
         try {
