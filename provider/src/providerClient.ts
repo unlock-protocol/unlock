@@ -48,8 +48,9 @@ export const forwardRequestsToProvider = async (
       response = new Response('', { status: 503 })
     }
 
-    // Only fall back on 5xx server errors — 4xx errors (auth, rate-limit) should surface to the caller
-    if (response.status >= 500) {
+    // Fall back on 5xx server errors and 429 (rate-limit is provider-specific, so another provider may succeed).
+    // Other 4xx errors (auth failures, bad requests) surface immediately — they indicate request-level problems.
+    if (response.status >= 500 || response.status === 429) {
       for (const fallbackUrl of getFallbackProviders(networkId)) {
         console.warn(
           `Provider for network ${networkId} returned HTTP ${response.status}, trying fallback: ${fallbackUrl}`
@@ -58,13 +59,14 @@ export const forwardRequestsToProvider = async (
           response = await fetchFromProvider(fallbackUrl, requestsToForward)
         } catch (error) {
           console.warn(
-            `Fallback provider for network ${networkId} threw, trying next fallback: ${fallbackUrl}`,
+            `Fallback provider for network ${networkId} threw, moving to next fallback: ${fallbackUrl}`,
             error
           )
           continue
         }
 
-        if (response.status < 500) break
+        // Stop if we got a clean response or a non-retryable error (4xx except 429)
+        if (response.status < 500 && response.status !== 429) break
       }
     }
 

@@ -105,10 +105,10 @@ describe('forwardRequestsToProvider', () => {
     expect(global.fetch).toHaveBeenCalledTimes(3)
   })
 
-  it('does not fall back on 4xx errors (e.g. rate limit)', async () => {
+  it('does not fall back on non-retryable 4xx errors (e.g. 403 auth failure)', async () => {
     global.fetch = vi
       .fn()
-      .mockResolvedValue(new Response('Too Many Requests', { status: 429 }))
+      .mockResolvedValue(new Response('Forbidden', { status: 403 }))
 
     const result = await forwardRequestsToProvider(
       [mockRpcRequest],
@@ -116,13 +116,13 @@ describe('forwardRequestsToProvider', () => {
       mockEnv as any
     )
     expect(result.error).toBeDefined()
+    expect(result.error?.message).toContain('HTTP 403')
     expect(global.fetch).toHaveBeenCalledTimes(1)
   })
 
-  it('surfaces 4xx from fallback instead of trying additional fallbacks', async () => {
+  it('falls back when primary returns 429 (rate-limit is provider-specific)', async () => {
     global.fetch = vi
       .fn()
-      .mockResolvedValueOnce(new Response('error code: 525', { status: 525 }))
       .mockResolvedValueOnce(new Response('Too Many Requests', { status: 429 }))
       .mockResolvedValueOnce(new Response(successResponse, { status: 200 }))
 
@@ -131,8 +131,42 @@ describe('forwardRequestsToProvider', () => {
       '43114',
       mockEnv as any
     )
+    expect(result.responses).toHaveLength(1)
+    expect(result.responses![0]).toMatchObject({ result: '0x1234' })
+    expect(global.fetch).toHaveBeenCalledTimes(2)
+  })
+
+  it('continues past a 429 fallback to the next fallback provider', async () => {
+    global.fetch = vi
+      .fn()
+      .mockResolvedValueOnce(new Response('error code: 525', { status: 525 }))
+      .mockResolvedValueOnce(new Response('Too Many Requests', { status: 429 }))
+      .mockResolvedValueOnce(new Response(successResponse, { status: 200 }))
+
+    const result = await forwardRequestsToProvider(
+      [mockRpcRequest],
+      '43114', // Avalanche — primary + publicProvider + 1RPC
+      mockEnv as any
+    )
+    expect(result.responses).toHaveLength(1)
+    expect(result.responses![0]).toMatchObject({ result: '0x1234' })
+    expect(global.fetch).toHaveBeenCalledTimes(3)
+  })
+
+  it('surfaces non-retryable 4xx from fallback instead of trying additional fallbacks', async () => {
+    global.fetch = vi
+      .fn()
+      .mockResolvedValueOnce(new Response('error code: 525', { status: 525 }))
+      .mockResolvedValueOnce(new Response('Forbidden', { status: 403 }))
+      .mockResolvedValueOnce(new Response(successResponse, { status: 200 }))
+
+    const result = await forwardRequestsToProvider(
+      [mockRpcRequest],
+      '43114',
+      mockEnv as any
+    )
     expect(result.error).toBeDefined()
-    expect(result.error?.message).toContain('HTTP 429')
+    expect(result.error?.message).toContain('HTTP 403')
     expect(global.fetch).toHaveBeenCalledTimes(2)
   })
 
@@ -153,7 +187,7 @@ describe('forwardRequestsToProvider', () => {
     expect(global.fetch).toHaveBeenCalledTimes(3)
   })
 
-  it('returns error when all providers fail for chain with two fallbacks', async () => {
+  it('returns error when all providers fail with 5xx for chain with two fallbacks', async () => {
     global.fetch = vi
       .fn()
       .mockResolvedValue(new Response('error code: 525', { status: 525 }))
@@ -167,7 +201,7 @@ describe('forwardRequestsToProvider', () => {
     expect(global.fetch).toHaveBeenCalledTimes(3)
   })
 
-  it('returns error when all providers fail for chain with one fallback', async () => {
+  it('returns error when all providers fail with 5xx for chain with one fallback', async () => {
     global.fetch = vi
       .fn()
       .mockResolvedValue(new Response('error code: 525', { status: 525 }))
