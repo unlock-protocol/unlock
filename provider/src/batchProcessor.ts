@@ -152,7 +152,7 @@ export const processAndForwardRequests = async (
             error: {
               message: forwardingResult.error.message,
               originalError: forwardingResult.error.originalError,
-              status: 500,
+              status: forwardingResult.error.status || 500,
             },
           }
         }
@@ -163,7 +163,7 @@ export const processAndForwardRequests = async (
           error: {
             message: forwardingResult.error.message,
             originalError: forwardingResult.error.originalError,
-            status: 500,
+            status: forwardingResult.error.status || 500,
           },
         }
       }

@@ -73,6 +73,7 @@ export const forwardRequestsToProvider = async (
         error: {
           message: `Provider returned HTTP ${response.status}`,
           originalError: new Error(`HTTP ${response.status}`),
+          status: response.status,
         },
       }
     }
