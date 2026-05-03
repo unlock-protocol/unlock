@@ -1,7 +1,8 @@
 import { Env, ForwardingResult, RpcRequest } from './types'
 import supportedNetworks, { getFallbackProviders } from './supportedNetworks'
 
-const FETCH_TIMEOUT_MS = 10_000
+// 5 s per attempt × 3 max attempts = 15 s worst-case, well within the CF Workers 30 s wall-clock limit.
+const FETCH_TIMEOUT_MS = 5_000
 
 const fetchFromProvider = async (
   url: string,
@@ -55,7 +56,7 @@ export const forwardRequestsToProvider = async (
     if (!response || response.status >= 500 || response.status === 429) {
       for (const fallbackUrl of getFallbackProviders(networkId)) {
         console.info(
-          `Provider for network ${networkId} ${response ? `returned HTTP ${response.status}` : 'threw'}, falling back to: ${fallbackUrl}`
+          `Last attempt for network ${networkId} ${response ? `returned HTTP ${response.status}` : 'threw'}, trying next fallback: ${fallbackUrl}`
         )
         // Cancel the unconsumed body before overwriting the response reference to
         // avoid holding open the connection in the Cloudflare Workers runtime.
