@@ -1,8 +1,8 @@
 import { Env, ForwardingResult, RpcRequest } from './types'
 import supportedNetworks, { getFallbackProviders } from './supportedNetworks'
 
-// Covers connection + headers (time-to-first-byte), not response body streaming.
-// CF Workers enforces its own 30 s wall-clock limit as a backstop for body reads.
+// AbortSignal.timeout aborts the entire fetch lifecycle (connection, headers, and body streaming).
+// CF Workers enforces its own 30 s wall-clock limit as an outer backstop.
 const FETCH_TIMEOUT_MS = 5_000
 
 const fetchFromProvider = async (
