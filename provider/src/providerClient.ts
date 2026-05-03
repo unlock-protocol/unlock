@@ -112,6 +112,7 @@ export const forwardRequestsToProvider = async (
         error: {
           message: 'Failed to parse provider response',
           originalError: error,
+          status: response.status,
         },
       }
     }

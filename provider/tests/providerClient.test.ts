@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { forwardRequestsToProvider } from '../src/providerClient'
+import { oneRpcEndpoints, getFallbackProviders } from '../src/supportedNetworks'
 import { createMockEnv, setupGlobalMocks } from './__fixtures__/testUtils'
 
 const mockRpcRequest = {
@@ -279,5 +280,38 @@ describe('forwardRequestsToProvider', () => {
     expect(result.responses).toHaveLength(1)
     expect(result.responses![0]).toMatchObject({ result: '0x1234' })
     expect(global.fetch).toHaveBeenCalledTimes(2)
+  })
+
+  it('primary 404 surfaces immediately without trying fallbacks', async () => {
+    global.fetch = vi
+      .fn()
+      .mockResolvedValueOnce(new Response('Not Found', { status: 404 }))
+
+    const result = await forwardRequestsToProvider(
+      [mockRpcRequest],
+      '43114',
+      mockEnv as any
+    )
+    expect(result.error).toBeDefined()
+    expect(result.error?.message).toContain('HTTP 404')
+    expect(global.fetch).toHaveBeenCalledTimes(1)
+  })
+
+  it('all oneRpcEndpoints keys are present in the supported networks list', () => {
+    // Every 1RPC entry must correspond to a chain we actually serve — catches
+    // copy-paste drift between oneRpcEndpoints and supportedNetworks.
+    const oneRpcNetworkIds = Object.keys(oneRpcEndpoints)
+    for (const networkId of oneRpcNetworkIds) {
+      // getFallbackProviders returns the 1RPC URL only when the network exists,
+      // so a non-empty result confirms the chain is in the supported map.
+      const fallbacks = getFallbackProviders(networkId)
+      const hasOneRpc = fallbacks.some((url) =>
+        url.startsWith('https://1rpc.io')
+      )
+      expect(
+        hasOneRpc,
+        `networkId ${networkId} in oneRpcEndpoints but not reachable via getFallbackProviders`
+      ).toBe(true)
+    }
   })
 })
