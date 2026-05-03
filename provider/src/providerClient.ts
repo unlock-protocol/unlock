@@ -1,6 +1,8 @@
 import { Env, ForwardingResult, RpcRequest } from './types'
 import supportedNetworks, { getFallbackProviders } from './supportedNetworks'
 
+const FETCH_TIMEOUT_MS = 10_000
+
 const fetchFromProvider = async (
   url: string,
   requestsToForward: RpcRequest[]
@@ -13,6 +15,7 @@ const fetchFromProvider = async (
       Origin: 'https://rpc.unlock-protocol.com/',
       'Content-Type': 'application/json',
     }),
+    signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
   })
 }
 
@@ -53,6 +56,9 @@ export const forwardRequestsToProvider = async (
         console.info(
           `Provider for network ${networkId} ${response ? `returned HTTP ${response.status}` : 'threw'}, falling back to: ${fallbackUrl}`
         )
+        // Cancel the unconsumed body before overwriting the response reference to
+        // avoid holding open the connection in the Cloudflare Workers runtime.
+        response?.body?.cancel()
         try {
           response = await fetchFromProvider(fallbackUrl, requestsToForward)
         } catch (error) {
@@ -76,6 +82,7 @@ export const forwardRequestsToProvider = async (
     }
 
     if (!response || !response.ok) {
+      response?.body?.cancel()
       return {
         error: {
           message: response
