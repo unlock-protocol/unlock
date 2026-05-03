@@ -22,6 +22,7 @@ vi.mock('~/config/locksmith', () => ({
 
 vi.mock('~/utils/session', () => ({
   saveAccessToken: vi.fn(),
+  getAccessToken: vi.fn(),
 }))
 
 import { getAccessToken as privyGetAccessToken } from '@privy-io/react-auth'
@@ -110,6 +111,16 @@ describe('onSignedInWithPrivy', () => {
     const result = await onSignedInWithPrivy(user)
 
     expect(mockLoginWithPrivy).not.toHaveBeenCalled()
+    expect(result).toBeNull()
+  })
+
+  it('returns null when Locksmith returns no access token', async () => {
+    mockLoginWithPrivy.mockResolvedValue({ data: {} } as any)
+    const user = makeUser(WALLET_ADDRESS)
+    const result = await onSignedInWithPrivy(user)
+
+    expect(mockLoginWithPrivy).toHaveBeenCalled()
+    expect(mockSaveAccessToken).not.toHaveBeenCalled()
     expect(result).toBeNull()
   })
 })

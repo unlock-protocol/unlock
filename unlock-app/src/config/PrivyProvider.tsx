@@ -1,6 +1,6 @@
 'use client'
 
-import { saveAccessToken } from '~/utils/session'
+import { getAccessToken, saveAccessToken } from '~/utils/session'
 import {
   getAccessToken as privyGetAccessToken,
   PrivyProvider,
@@ -74,6 +74,7 @@ export const onSignedInWithPrivy = async (
         )
         return walletAddress
       }
+      return null
     } else {
       console.error(
         'No wallet linked on Privy account, cannot authenticate with Locksmith'
@@ -184,6 +185,11 @@ export const PrivyMigration = () => {
       await onSignedInWithPrivy(user, walletAddress)
       return
     }
+
+    // Skip if already authenticated — Privy re-fires this effect when it updates
+    // the reactive user object after wallet creation, which would cause a second
+    // redundant Locksmith auth call and duplicate locksmith.authenticated events.
+    if (getAccessToken()) return
 
     // Proceed with normal login flow
     await onSignedInWithPrivy(user)
