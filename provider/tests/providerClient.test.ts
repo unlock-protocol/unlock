@@ -153,7 +153,7 @@ describe('forwardRequestsToProvider', () => {
     expect(global.fetch).toHaveBeenCalledTimes(3)
   })
 
-  it('surfaces non-retryable 4xx from fallback instead of trying additional fallbacks', async () => {
+  it('surfaces definitive 4xx (e.g. 403) from fallback without trying additional fallbacks', async () => {
     global.fetch = vi
       .fn()
       .mockResolvedValueOnce(new Response('error code: 525', { status: 525 }))
@@ -168,6 +168,23 @@ describe('forwardRequestsToProvider', () => {
     expect(result.error).toBeDefined()
     expect(result.error?.message).toContain('HTTP 403')
     expect(global.fetch).toHaveBeenCalledTimes(2)
+  })
+
+  it('continues past a 404 fallback (likely provider misconfiguration, not bad request)', async () => {
+    global.fetch = vi
+      .fn()
+      .mockResolvedValueOnce(new Response('error code: 525', { status: 525 }))
+      .mockResolvedValueOnce(new Response('Not Found', { status: 404 }))
+      .mockResolvedValueOnce(new Response(successResponse, { status: 200 }))
+
+    const result = await forwardRequestsToProvider(
+      [mockRpcRequest],
+      '43114',
+      mockEnv as any
+    )
+    expect(result.responses).toHaveLength(1)
+    expect(result.responses![0]).toMatchObject({ result: '0x1234' })
+    expect(global.fetch).toHaveBeenCalledTimes(3)
   })
 
   it('tries the next fallback when a fallback provider throws', async () => {

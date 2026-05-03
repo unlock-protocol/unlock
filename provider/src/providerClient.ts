@@ -64,8 +64,14 @@ export const forwardRequestsToProvider = async (
           continue
         }
 
-        // Stop if we got a clean response or a non-retryable error (4xx except 429)
-        if (response.status < 500 && response.status !== 429) break
+        // Stop on success (2xx) or definitive client errors where no provider could help.
+        // Continue on 429 (rate-limit) and 404 (likely provider endpoint misconfiguration).
+        const isDefinitiveClientError =
+          response.status >= 400 &&
+          response.status < 500 &&
+          response.status !== 429 &&
+          response.status !== 404
+        if (response.ok || isDefinitiveClientError) break
       }
     }
 

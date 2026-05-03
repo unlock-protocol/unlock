@@ -28,9 +28,7 @@ const oneRpcEndpoints: Record<string, string> = {
 export const getFallbackProviders = (networkId: string): string[] => {
   const fallbacks: string[] = []
 
-  const network = (networks as Record<number, { publicProvider?: string }>)[
-    Number(networkId)
-  ]
+  const network = networks[networkId]
   if (network?.publicProvider) {
     fallbacks.push(network.publicProvider)
   }
