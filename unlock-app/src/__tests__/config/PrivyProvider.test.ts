@@ -37,7 +37,7 @@ const mockSaveAccessToken = vi.mocked(saveAccessToken)
 
 const PRIVY_TOKEN = 'privy-access-token'
 const LOCKSMITH_TOKEN = 'locksmith-access-token'
-const WALLET_ADDRESS = '0x1234567890abcdef1234567890abcdef12345678'
+const WALLET_ADDRESS = '0x1234567890AbcdEF1234567890aBcdef12345678'
 
 function makeUser(walletAddress?: string) {
   return {
@@ -95,7 +95,7 @@ describe('onSignedInWithPrivy', () => {
   })
 
   it('prefers walletAddressOverride over user.wallet.address', async () => {
-    const overrideAddress = '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef'
+    const overrideAddress = '0xDeaDbeefdEAdbeefdEadbEEFdeadbeEFdEaDbeeF'
     const user = makeUser(WALLET_ADDRESS)
     const result = await onSignedInWithPrivy(user, overrideAddress)
 
