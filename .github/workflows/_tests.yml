@@ -51,6 +51,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
+          build-args: BUILDKIT_INLINE_CACHE=1
           target: deps
           tags: unlockprotocol/unlock-dev:latest
           cache-from: type=gha,scope=docker-deps
