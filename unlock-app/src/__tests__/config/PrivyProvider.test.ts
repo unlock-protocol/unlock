@@ -1,5 +1,3 @@
-// ABOUTME: Tests for PrivyProvider auth helpers, specifically the wallet creation flow.
-// ABOUTME: Covers the bug where a stale user object caused auth to fail after wallet creation.
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 // Mock @privy-io/react-auth before importing the module under test
@@ -94,16 +92,16 @@ describe('onSignedInWithPrivy', () => {
     expect(result).toBe(WALLET_ADDRESS)
   })
 
-  it('prefers walletAddressOverride over user.wallet.address', async () => {
+  it('prefers user.wallet.address over walletAddressOverride when both are present', async () => {
     const overrideAddress = '0xDeaDbeefdEAdbeefdEadbEEFdeadbeEFdEaDbeeF'
     const user = makeUser(WALLET_ADDRESS)
     const result = await onSignedInWithPrivy(user, overrideAddress)
 
     expect(mockLoginWithPrivy).toHaveBeenCalledWith({
       accessToken: PRIVY_TOKEN,
-      walletAddress: overrideAddress,
+      walletAddress: WALLET_ADDRESS,
     })
-    expect(result).toBe(overrideAddress)
+    expect(result).toBe(WALLET_ADDRESS)
   })
 
   it('returns null when Privy access token is missing', async () => {

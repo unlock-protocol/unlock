@@ -55,7 +55,9 @@ export const onSignedInWithPrivy = async (
       console.error('No access token found in Privy')
       return null
     }
-    const walletAddress = walletAddressOverride || user.wallet?.address
+    // Prefer the live wallet address from the user object; fall back to the
+    // override only when Privy has not yet reflected the newly created wallet.
+    const walletAddress = user.wallet?.address || walletAddressOverride
     if (walletAddress) {
       const response = await locksmith.loginWithPrivy({
         accessToken,
