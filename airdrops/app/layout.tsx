@@ -1,3 +1,4 @@
+import '@ensdomains/ethers-patch-v6'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { Metadata } from 'next'

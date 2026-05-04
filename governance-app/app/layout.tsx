@@ -1,3 +1,4 @@
+import '@ensdomains/ethers-patch-v6'
 import type { Metadata } from 'next'
 import './globals.css'
 import { AppShell } from '~/components/layout/AppShell'

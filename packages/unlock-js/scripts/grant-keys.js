@@ -1,3 +1,4 @@
+require('@ensdomains/ethers-patch-v6')
 const ethers = require('ethers')
 const networks = require('@unlock-protocol/networks')
 const { WalletService, Web3Service } = require('../dist/index.js')
