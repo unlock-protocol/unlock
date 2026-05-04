@@ -1,5 +1,6 @@
 'use client'
 
+import '@ensdomains/ethers-patch-v6'
 import Link from 'next/link'
 import { PrivyProvider } from '@privy-io/react-auth'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'

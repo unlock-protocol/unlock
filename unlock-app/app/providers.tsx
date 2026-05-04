@@ -1,5 +1,6 @@
 'use client'
 
+import '@ensdomains/ethers-patch-v6'
 import React, { Suspense } from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { ReCaptchaProvider } from 'next-recaptcha-v3'
