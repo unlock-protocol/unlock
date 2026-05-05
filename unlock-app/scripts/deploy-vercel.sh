@@ -33,9 +33,9 @@ if [ -n "$VERCEL_PROJECT_ID" ] && [ -n "$VERCEL_TOKEN" ] && [ -n "$VERCEL_ORG_ID
   # move to root directory
   cd ..
   # Pinned: "File digest missing" upload bug affects large SSR Next.js apps on recent CLI versions.
-  # v52.2.1 broken, v44.4.1 API-rejected. Binary search: trying v50.0.0 (midpoint 48-52).
-  npx -y vercel@50.0.0 build -y --cwd . --token $VERCEL_TOKEN $PROD
-  npx -y vercel@50.0.0 deploy --cwd . --prebuilt --token $VERCEL_TOKEN $PROD --env GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
+  # v44.4.1 API-rejected, v48-52+ broken. Trying v48.0.0 — absolute minimum satisfying API.
+  npx -y vercel@48.0.0 build -y --cwd . --token $VERCEL_TOKEN $PROD
+  npx -y vercel@48.0.0 deploy --cwd . --prebuilt --token $VERCEL_TOKEN $PROD --env GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
 else
   echo "Failed to deploy to Vercel because we're missing VERCEL_TOKEN, VERCEL_PROJECT_ID and/or VERCEL_ORG_ID"
   exit 1
