@@ -1,6 +1,6 @@
 'use client'
 
-import { getAccessToken, saveAccessToken } from '~/utils/session'
+import { getAccessToken, saveAccessToken, removeAccessToken, removeCurrentAccount } from '~/utils/session'
 import {
   getAccessToken as privyGetAccessToken,
   PrivyProvider,
@@ -9,6 +9,7 @@ import {
   User,
   usePrivy,
   LinkedAccountWithMetadata,
+  WalletWithMetadata,
 } from '@privy-io/react-auth'
 import { ReactNode, useContext, useEffect, useState } from 'react'
 import { config } from './app'
@@ -55,9 +56,13 @@ export const onSignedInWithPrivy = async (
       console.error('No access token found in Privy')
       return null
     }
-    // Prefer the live wallet address from the user object; fall back to the
-    // override only when Privy has not yet reflected the newly created wallet.
-    const walletAddress = user.wallet?.address || walletAddressOverride
+    // Find the first EVM wallet across all linked accounts. user.wallet is just
+    // the first linked wallet and may be Solana; linkedAccounts has chainType.
+    const evmAccount = user.linkedAccounts.find(
+      (a): a is WalletWithMetadata =>
+        a.type === 'wallet' && a.chainType === 'ethereum'
+    )
+    const walletAddress = evmAccount?.address ?? walletAddressOverride
     if (walletAddress) {
       const response = await locksmith.loginWithPrivy({
         accessToken,
@@ -74,14 +79,22 @@ export const onSignedInWithPrivy = async (
         )
         return walletAddress
       }
+      // Locksmith responded but issued no token — clear stale cache so the
+      // user can reconnect with a different wallet.
+      removeAccessToken(walletAddress)
+      removeCurrentAccount()
       return null
     } else {
       console.error(
-        'No wallet linked on Privy account, cannot authenticate with Locksmith'
+        'No EVM wallet linked on Privy account, cannot authenticate with Locksmith'
       )
       return null
     }
   } catch (error) {
+    // 401 or network error — clear stale cache so the getAccessToken() guard in
+    // PrivyMigration does not silently block retry, and the user can reconnect.
+    if (walletAddress) removeAccessToken(walletAddress)
+    removeCurrentAccount()
     console.error(error)
     return null
   }
@@ -176,8 +189,12 @@ export const PrivyMigration = () => {
       }
     }
 
-    // Only create wallet if user doesn't have one AND doesn't have a legacy account
-    if (!user.wallet?.address && !hasLegacyAccount) {
+    // Create EVM wallet if the user has no EVM wallet (may have only Solana).
+    const hasEvmWallet = user.linkedAccounts.some(
+      (a): a is WalletWithMetadata =>
+        a.type === 'wallet' && a.chainType === 'ethereum'
+    )
+    if (!hasEvmWallet && !hasLegacyAccount) {
       const walletAddress = await createWalletForUser()
       if (!walletAddress) return
       // Pass the new wallet address explicitly: the user object captured in this
