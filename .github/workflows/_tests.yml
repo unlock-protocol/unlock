@@ -29,7 +29,7 @@ on:
         description: 'Whether this workflow run may write the shared Docker deps cache'
         type: boolean
         required: false
-        default: true
+        default: false
 
 jobs:
   unit-tests:
@@ -60,6 +60,7 @@ jobs:
           context: .
           build-args: BUILDKIT_INLINE_CACHE=1
           target: deps
+          push: false
           tags: unlockprotocol/unlock-dev:latest
           cache-from: |
             type=gha,scope=docker-deps
@@ -74,6 +75,7 @@ jobs:
           context: .
           build-args: BUILDKIT_INLINE_CACHE=1
           target: deps
+          push: false
           tags: unlockprotocol/unlock-dev:latest
           cache-from: |
             type=gha,scope=docker-deps

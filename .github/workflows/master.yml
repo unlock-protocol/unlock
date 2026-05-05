@@ -7,6 +7,8 @@ on:
 jobs:
   run-all-tests:
     uses: ./.github/workflows/_tests.yml
+    with:
+      export_cache: true
 
   deploy-locksmith-web-staging:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
