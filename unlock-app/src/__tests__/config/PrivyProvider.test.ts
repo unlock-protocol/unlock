@@ -23,6 +23,12 @@ vi.mock('~/config/locksmith', () => ({
 vi.mock('~/utils/session', () => ({
   saveAccessToken: vi.fn(),
   getAccessToken: vi.fn(),
+  removeAccessToken: vi.fn(),
+  removeCurrentAccount: vi.fn(),
+}))
+
+vi.mock('axios', () => ({
+  isAxiosError: vi.fn().mockReturnValue(false),
 }))
 
 import { getAccessToken as privyGetAccessToken } from '@privy-io/react-auth'
@@ -37,10 +43,18 @@ const mockSaveAccessToken = vi.mocked(saveAccessToken)
 const PRIVY_TOKEN = 'privy-access-token'
 const LOCKSMITH_TOKEN = 'locksmith-access-token'
 const WALLET_ADDRESS = '0x1234567890AbcdEF1234567890aBcdef12345678'
+const SOLANA_ADDRESS = 'BgNcYPxA8GAdbUhS9ErgoTdLcHmsX2yz1mMqikNoYmnu'
 
-function makeUser(walletAddress?: string) {
+function makeUser(
+  walletAddress?: string,
+  chainType: 'ethereum' | 'solana' = 'ethereum'
+) {
+  const linkedAccounts = walletAddress
+    ? [{ type: 'wallet', address: walletAddress, chainType }]
+    : []
   return {
     wallet: walletAddress ? { address: walletAddress } : undefined,
+    linkedAccounts,
     email: undefined,
   } as any
 }
@@ -54,7 +68,7 @@ describe('onSignedInWithPrivy', () => {
     } as any)
   })
 
-  it('authenticates with Locksmith using user.wallet.address', async () => {
+  it('authenticates with Locksmith using EVM wallet from linkedAccounts', async () => {
     const user = makeUser(WALLET_ADDRESS)
     const result = await onSignedInWithPrivy(user)
 
@@ -69,7 +83,7 @@ describe('onSignedInWithPrivy', () => {
     expect(result).toBe(WALLET_ADDRESS)
   })
 
-  it('returns null when user has no wallet and no override is provided', async () => {
+  it('returns null when user has no EVM wallet and no override is provided', async () => {
     const user = makeUser() // no wallet
     const result = await onSignedInWithPrivy(user)
 
@@ -77,9 +91,9 @@ describe('onSignedInWithPrivy', () => {
     expect(result).toBeNull()
   })
 
-  it('uses walletAddressOverride when user object is stale (no wallet after creation)', async () => {
-    // This is the bug scenario: wallet was just created but user object is stale
-    const staleUser = makeUser() // user object captured before wallet was created
+  it('uses walletAddressOverride when user has no EVM wallet in linkedAccounts', async () => {
+    // Stale user object captured before EVM wallet was created
+    const staleUser = makeUser()
     const result = await onSignedInWithPrivy(staleUser, WALLET_ADDRESS)
 
     expect(mockLoginWithPrivy).toHaveBeenCalledWith({
@@ -93,14 +107,25 @@ describe('onSignedInWithPrivy', () => {
     expect(result).toBe(WALLET_ADDRESS)
   })
 
-  it('prefers user.wallet.address over walletAddressOverride when both are present', async () => {
+  it('uses EVM wallet from linkedAccounts, ignores walletAddressOverride', async () => {
     const overrideAddress = '0xDeaDbeefdEAdbeefdEadbEEFdeadbeEFdEaDbeeF'
-    const user = makeUser(WALLET_ADDRESS)
+    const user = makeUser(WALLET_ADDRESS) // has EVM wallet in linkedAccounts
     const result = await onSignedInWithPrivy(user, overrideAddress)
 
     expect(mockLoginWithPrivy).toHaveBeenCalledWith({
       accessToken: PRIVY_TOKEN,
-      walletAddress: WALLET_ADDRESS,
+      walletAddress: WALLET_ADDRESS, // linkedAccounts EVM wallet wins
+    })
+    expect(result).toBe(WALLET_ADDRESS)
+  })
+
+  it('skips Solana wallet and uses override instead', async () => {
+    const user = makeUser(SOLANA_ADDRESS, 'solana') // only Solana in linkedAccounts
+    const result = await onSignedInWithPrivy(user, WALLET_ADDRESS)
+
+    expect(mockLoginWithPrivy).toHaveBeenCalledWith({
+      accessToken: PRIVY_TOKEN,
+      walletAddress: WALLET_ADDRESS, // override used since no EVM in linkedAccounts
     })
     expect(result).toBe(WALLET_ADDRESS)
   })
