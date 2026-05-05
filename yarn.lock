@@ -42705,67 +42705,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next@npm:*":
-  version: 15.2.3
-  resolution: "next@npm:15.2.3"
-  dependencies:
-    "@next/env": "npm:15.2.3"
-    "@next/swc-darwin-arm64": "npm:15.2.3"
-    "@next/swc-darwin-x64": "npm:15.2.3"
-    "@next/swc-linux-arm64-gnu": "npm:15.2.3"
-    "@next/swc-linux-arm64-musl": "npm:15.2.3"
-    "@next/swc-linux-x64-gnu": "npm:15.2.3"
-    "@next/swc-linux-x64-musl": "npm:15.2.3"
-    "@next/swc-win32-arm64-msvc": "npm:15.2.3"
-    "@next/swc-win32-x64-msvc": "npm:15.2.3"
-    "@swc/counter": "npm:0.1.3"
-    "@swc/helpers": "npm:0.5.15"
-    busboy: "npm:1.6.0"
-    caniuse-lite: "npm:^1.0.30001579"
-    postcss: "npm:8.4.31"
-    sharp: "npm:^0.33.5"
-    styled-jsx: "npm:5.1.6"
-  peerDependencies:
-    "@opentelemetry/api": ^1.1.0
-    "@playwright/test": ^1.41.2
-    babel-plugin-react-compiler: "*"
-    react: ^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0
-    react-dom: ^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0
-    sass: ^1.3.0
-  dependenciesMeta:
-    "@next/swc-darwin-arm64":
-      optional: true
-    "@next/swc-darwin-x64":
-      optional: true
-    "@next/swc-linux-arm64-gnu":
-      optional: true
-    "@next/swc-linux-arm64-musl":
-      optional: true
-    "@next/swc-linux-x64-gnu":
-      optional: true
-    "@next/swc-linux-x64-musl":
-      optional: true
-    "@next/swc-win32-arm64-msvc":
-      optional: true
-    "@next/swc-win32-x64-msvc":
-      optional: true
-    sharp:
-      optional: true
-  peerDependenciesMeta:
-    "@opentelemetry/api":
-      optional: true
-    "@playwright/test":
-      optional: true
-    babel-plugin-react-compiler:
-      optional: true
-    sass:
-      optional: true
-  bin:
-    next: dist/bin/next
-  checksum: 10/91714227d09ad1a41340bfa10a2ad212fa372d5d6255dd14cc47cccb4795a04c8ac08a8b10998d2d7bf90eeca46668091d4a0398ec11224310fd96a484bca867
-  languageName: node
-  linkType: hard
-
 "next@npm:14.2.26":
   version: 14.2.26
   resolution: "next@npm:14.2.26"
