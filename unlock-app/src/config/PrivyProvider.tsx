@@ -50,6 +50,8 @@ export const onSignedInWithPrivy = async (
   user: User,
   walletAddressOverride?: string
 ) => {
+  // Hoist so the catch block can clear stale cache for the same address.
+  let walletAddress: string | undefined
   try {
     const accessToken = await privyGetAccessToken()
     if (!accessToken) {
@@ -62,7 +64,7 @@ export const onSignedInWithPrivy = async (
       (a): a is WalletWithMetadata =>
         a.type === 'wallet' && a.chainType === 'ethereum'
     )
-    const walletAddress = evmAccount?.address ?? walletAddressOverride
+    walletAddress = evmAccount?.address ?? walletAddressOverride
     if (walletAddress) {
       const response = await locksmith.loginWithPrivy({
         accessToken,
@@ -85,8 +87,9 @@ export const onSignedInWithPrivy = async (
       removeCurrentAccount()
       return null
     } else {
-      console.error(
-        'No EVM wallet linked on Privy account, cannot authenticate with Locksmith'
+      // No EVM wallet yet — PrivyMigration will create one and retry.
+      console.info(
+        'No EVM wallet linked on Privy account; wallet creation pending'
       )
       return null
     }
@@ -176,12 +179,17 @@ export const PrivyMigration = () => {
   const handleMigrationIfNeeded = async (user: User) => {
     let hasLegacyAccount = false
 
+    const hasEvmWallet = user.linkedAccounts.some(
+      (a): a is WalletWithMetadata =>
+        a.type === 'wallet' && a.chainType === 'ethereum'
+    )
+
     // Check for legacy account if user logged in with email
     if (user.email?.address) {
       hasLegacyAccount = await checkLegacyAccount(user.email.address)
 
-      // Only show migration modal if user has legacy account but no Privy wallet
-      if (hasLegacyAccount && !user.wallet?.address) {
+      // Only show migration modal if user has legacy account but no EVM wallet
+      if (hasLegacyAccount && !hasEvmWallet) {
         setShowMigrationModal(true)
         // close connect modal
         window.dispatchEvent(new CustomEvent('legacy.account.detected'))
@@ -190,10 +198,6 @@ export const PrivyMigration = () => {
     }
 
     // Create EVM wallet if the user has no EVM wallet (may have only Solana).
-    const hasEvmWallet = user.linkedAccounts.some(
-      (a): a is WalletWithMetadata =>
-        a.type === 'wallet' && a.chainType === 'ethereum'
-    )
     if (!hasEvmWallet && !hasLegacyAccount) {
       const walletAddress = await createWalletForUser()
       if (!walletAddress) return
