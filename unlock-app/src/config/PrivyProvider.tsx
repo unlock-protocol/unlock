@@ -100,8 +100,10 @@ export const onSignedInWithPrivy = async (
     // Only clear stale cache on auth failures (4xx) — transient 5xx/network
     // errors should not wipe a valid session.
     if (isAxiosError(error) && error.response?.status && error.response.status >= 400 && error.response.status < 500) {
-      if (walletAddress) removeAccessToken(walletAddress)
-      removeCurrentAccount()
+      if (walletAddress) {
+        removeAccessToken(walletAddress)
+        removeCurrentAccount()
+      }
     }
     console.error(error)
     return null
