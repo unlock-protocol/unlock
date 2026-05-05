@@ -33,9 +33,9 @@ if [ -n "$VERCEL_PROJECT_ID" ] && [ -n "$VERCEL_TOKEN" ] && [ -n "$VERCEL_ORG_ID
   # move to root directory
   cd ..
   # Pinned: v53+ introduced a "File digest missing" upload bug for large SSR Next.js apps.
-  # v44.4.1 was the last known-working version (July 2025). Verify before upgrading.
-  npx -y vercel@44.4.1 build -y --cwd . --token $VERCEL_TOKEN $PROD
-  npx -y vercel@44.4.1 deploy --cwd . --prebuilt --token $VERCEL_TOKEN $PROD
+  # v52.2.1 is the last known-working version before the regression. Verify before upgrading past v52.
+  npx -y vercel@52.2.1 build -y --cwd . --token $VERCEL_TOKEN $PROD
+  npx -y vercel@52.2.1 deploy --cwd . --prebuilt --token $VERCEL_TOKEN $PROD
 else
   echo "Failed to deploy to Vercel because we're missing VERCEL_TOKEN, VERCEL_PROJECT_ID and/or VERCEL_ORG_ID"
   exit 1
