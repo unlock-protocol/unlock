@@ -52,7 +52,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      - name: Cache and export Docker deps layer
+      # Only one matrix entry writes the shared GHA cache; siblings restore from GHA or Docker Hub fallback.
+      - name: Build and export Docker deps layer
         if: ${{ inputs.export_cache && matrix.target == fromJson(inputs.changed)[0] }}
         uses: docker/build-push-action@v6
         with:
@@ -65,7 +66,8 @@ jobs:
             type=registry,ref=unlockprotocol/unlock-dev:latest
           cache-to: type=gha,scope=docker-deps,mode=max
           load: true
-      - name: Cache Docker deps layer
+      # All other matrix entries restore the deps image without attempting another cache export.
+      - name: Restore Docker deps layer
         if: ${{ !inputs.export_cache || matrix.target != fromJson(inputs.changed)[0] }}
         uses: docker/build-push-action@v6
         with:
