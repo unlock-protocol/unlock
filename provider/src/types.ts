@@ -84,6 +84,7 @@ export interface ForwardingResult {
   error?: {
     message: string
     originalError: any
+    status?: number
   }
 }
 
