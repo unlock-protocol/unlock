@@ -22,7 +22,7 @@ runs:
   steps:
     - name: Install Railway CLI
       shell: bash
-      run: npm i -g @railway/cli@4.5.4
+      run: npm i -g @railway/cli
 
     - name: Deploy to Railway
       shell: bash
