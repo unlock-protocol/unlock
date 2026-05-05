@@ -255,21 +255,18 @@ export const Privy = ({ children }: { children: ReactNode }) => {
     typeof window !== 'undefined' &&
     window.location.pathname.includes('migrate-user')
 
-  // Any iframe context is an embedded paywall — Google OAuth fails on third-party
-  // domains and wallet-only login is the right restriction regardless of URL.
+  // Any iframe context is an embedded paywall — Google OAuth and Farcaster fail on
+  // third-party domains, but wallet and email login still work fine.
   const isInPaywall = isInIframe()
 
   return (
     <AuthenticationContext.Provider value={{ account, setAccount }}>
       <PrivyProvider
         config={{
-          /* For the meantime, when users are authenticating via paywall on an external website (embedded paywall),
-           * we can only allow the wallet method to login.
-           */
           loginMethods: isMigratePage
             ? ['email']
             : isInPaywall
-              ? ['wallet']
+              ? ['wallet', 'email']
               : ['wallet', 'email', 'google', 'farcaster'],
           embeddedWallets: {
             createOnLogin: 'off',
