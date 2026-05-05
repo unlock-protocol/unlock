@@ -96,6 +96,27 @@ jobs:
       SMTP_USERNAME: ${{ secrets.WEDLOCKS_NETLIFY_PROD_SMTP_USERNAME }}
       SMTP_PASSWORD: ${{ secrets.WEDLOCKS_NETLIFY_PROD_SMTP_PASSWORD }}
 
+  deploy-governance-app-vercel:
+    if: ${{ github.repository_owner == 'unlock-protocol' }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Load secrets from 1Password
+        uses: 1Password/load-secrets-action@v2.0.0
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          GOVERNANCE_APP_VERCEL_PROD_VERCEL_PROJECT_ID: op://secrets/vercel/project-id-governance-app-prod
+          GOVERNANCE_APP_VERCEL_PROD_VERCEL_ORG_ID: op://secrets/vercel/org-id
+          GOVERNANCE_APP_VERCEL_PROD_VERCEL_TOKEN: op://secrets/vercel/deployment-token
+      - uses: ./.github/actions/vercel
+        with:
+          service: governance-app
+          target-env: prod
+
   deploy-unlock-app-vercel:
     if: ${{ github.repository_owner == 'unlock-protocol'  }}
     runs-on: ubuntu-24.04
