@@ -20,6 +20,12 @@ import { MigrationModal } from '~/components/legacy-auth/MigrationNotificationMo
 import { isInIframe } from '~/utils/iframe'
 import { setLocalStorageItem } from '~/hooks/useAppStorage'
 
+const findEvmWallet = (user: User): WalletWithMetadata | undefined =>
+  user.linkedAccounts.find(
+    (a): a is WalletWithMetadata =>
+      a.type === 'wallet' && a.chainType === 'ethereum'
+  )
+
 // check for legacy account
 export const checkLegacyAccount = async (
   emailAddress: string
@@ -58,13 +64,9 @@ export const onSignedInWithPrivy = async (
       console.error('No access token found in Privy')
       return null
     }
-    // Find the first EVM wallet across all linked accounts. user.wallet is just
-    // the first linked wallet and may be Solana; linkedAccounts has chainType.
-    const evmAccount = user.linkedAccounts.find(
-      (a): a is WalletWithMetadata =>
-        a.type === 'wallet' && a.chainType === 'ethereum'
-    )
-    walletAddress = evmAccount?.address ?? walletAddressOverride
+    // user.wallet is just the first linked wallet and may be Solana;
+    // findEvmWallet checks chainType to find a real EVM wallet.
+    walletAddress = findEvmWallet(user)?.address ?? walletAddressOverride
     if (walletAddress) {
       const response = await locksmith.loginWithPrivy({
         accessToken,
@@ -94,10 +96,13 @@ export const onSignedInWithPrivy = async (
       return null
     }
   } catch (error) {
-    // 401 or network error — clear stale cache so the getAccessToken() guard in
-    // PrivyMigration does not silently block retry, and the user can reconnect.
-    if (walletAddress) removeAccessToken(walletAddress)
-    removeCurrentAccount()
+    // Only clear stale cache on auth failures (4xx) — transient 5xx/network
+    // errors should not wipe a valid session.
+    const status = (error as any)?.response?.status
+    if (status && status >= 400 && status < 500) {
+      if (walletAddress) removeAccessToken(walletAddress)
+      removeCurrentAccount()
+    }
     console.error(error)
     return null
   }
@@ -179,10 +184,7 @@ export const PrivyMigration = () => {
   const handleMigrationIfNeeded = async (user: User) => {
     let hasLegacyAccount = false
 
-    const hasEvmWallet = user.linkedAccounts.some(
-      (a): a is WalletWithMetadata =>
-        a.type === 'wallet' && a.chainType === 'ethereum'
-    )
+    const hasEvmWallet = !!findEvmWallet(user)
 
     // Check for legacy account if user logged in with email
     if (user.email?.address) {
