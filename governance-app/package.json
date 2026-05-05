@@ -37,6 +37,7 @@
     "ci": "yarn lint . && yarn test && yarn build",
     "dev": "next dev",
     "deploy": "yarn build",
+    "deploy-vercel": "./scripts/deploy-vercel.sh",
     "lint": "eslint",
     "start": "next start",
     "test": "vitest run"
