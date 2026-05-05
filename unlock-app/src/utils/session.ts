@@ -46,6 +46,10 @@ export const removeAccessToken = (
   deleteLocalStorageItem(getSessionKey(address))
 }
 
+export const removeCurrentAccount = () => {
+  deleteLocalStorageItem(CURRENT_ACCOUNT_KEY)
+}
+
 export const saveAccessToken = ({
   walletAddress,
   accessToken,
