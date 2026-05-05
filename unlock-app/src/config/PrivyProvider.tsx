@@ -175,8 +175,8 @@ export const PrivyMigration = () => {
 
   const { createWallet } = useCreateWallet({
     onError: (error) => {
-      console.error('Error creating wallet:', error)
-      ToastHelper.error('Failed to create wallet. Please try again.')
+      // Suppress — createWalletForUser's catch block handles user-facing errors.
+      console.info('useCreateWallet onError (handled by caller):', error)
     },
   })
 
@@ -185,7 +185,12 @@ export const PrivyMigration = () => {
     try {
       const newWallet = await createWallet()
       return newWallet.address
-    } catch (error) {
+    } catch (error: any) {
+      // "embedded_wallet_already_exists" means a concurrent call already created
+      // the wallet; find it in linkedAccounts and proceed normally.
+      if (error?.code === 'embedded_wallet_already_exists' && user) {
+        return findEvmWallet(user)?.address ?? null
+      }
       console.error('Error creating wallet:', error)
       ToastHelper.error('Failed to create wallet. Please try again.')
       return null
@@ -250,9 +255,9 @@ export const Privy = ({ children }: { children: ReactNode }) => {
     typeof window !== 'undefined' &&
     window.location.pathname.includes('migrate-user')
 
-  // Check if we're in an iframe && not in the Unlock dashboard
-  const isInPaywall =
-    isInIframe() && !window.location.href.includes(config.unlockApp)
+  // Any iframe context is an embedded paywall — Google OAuth fails on third-party
+  // domains and wallet-only login is the right restriction regardless of URL.
+  const isInPaywall = isInIframe()
 
   return (
     <AuthenticationContext.Provider value={{ account, setAccount }}>
