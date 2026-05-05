@@ -11,6 +11,7 @@ import {
   LinkedAccountWithMetadata,
   WalletWithMetadata,
 } from '@privy-io/react-auth'
+import { isAxiosError } from 'axios'
 import { ReactNode, useContext, useEffect, useState } from 'react'
 import { config } from './app'
 import { ToastHelper } from '@unlock-protocol/ui'
@@ -98,8 +99,7 @@ export const onSignedInWithPrivy = async (
   } catch (error) {
     // Only clear stale cache on auth failures (4xx) — transient 5xx/network
     // errors should not wipe a valid session.
-    const status = (error as any)?.response?.status
-    if (status && status >= 400 && status < 500) {
+    if (isAxiosError(error) && error.response?.status && error.response.status >= 400 && error.response.status < 500) {
       if (walletAddress) removeAccessToken(walletAddress)
       removeCurrentAccount()
     }
