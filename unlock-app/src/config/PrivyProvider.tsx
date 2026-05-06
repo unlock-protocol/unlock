@@ -263,13 +263,10 @@ export const Privy = ({ children }: { children: ReactNode }) => {
     <AuthenticationContext.Provider value={{ account, setAccount }}>
       <PrivyProvider
         config={{
-          /* For the meantime, when users are authenticating via paywall on an external website (embedded paywall),
-           * we can only allow the wallet method to login.
-           */
           loginMethods: isMigratePage
             ? ['email']
             : isInPaywall
-              ? ['wallet']
+              ? ['wallet', 'email']
               : ['wallet', 'email', 'google', 'farcaster'],
           embeddedWallets: {
             createOnLogin: 'off',
