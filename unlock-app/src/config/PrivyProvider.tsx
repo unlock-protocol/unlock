@@ -175,8 +175,7 @@ export const PrivyMigration = () => {
 
   const { createWallet } = useCreateWallet({
     onError: (error) => {
-      // Suppress — createWalletForUser's catch block handles user-facing errors.
-      console.info('useCreateWallet onError (handled by caller):', error)
+      console.info('useCreateWallet onError:', error)
     },
   })
 
@@ -186,13 +185,11 @@ export const PrivyMigration = () => {
       const newWallet = await createWallet()
       return newWallet.address
     } catch (error: any) {
-      // "embedded_wallet_already_exists" means a concurrent call already created
-      // the wallet; find it in linkedAccounts and proceed normally.
-      if (error?.code === 'embedded_wallet_already_exists' && user) {
-        return findEvmWallet(user)?.address ?? null
-      }
+      // Any error here may be benign (race condition, Privy internal retry, etc.)
+      // and the wallet may already have been created. The user object update will
+      // re-trigger handleMigrationIfNeeded which will complete auth via the EVM
+      // wallet already present in linkedAccounts.
       console.error('Error creating wallet:', error)
-      ToastHelper.error('Failed to create wallet. Please try again.')
       return null
     }
   }
