@@ -252,13 +252,8 @@ export const Privy = ({ children }: { children: ReactNode }) => {
     typeof window !== 'undefined' &&
     window.location.pathname.includes('migrate-user')
 
-<<<<<<< HEAD
   // Any iframe context is an embedded paywall — Google OAuth and Farcaster fail on
   // third-party domains, but wallet and email login still work fine.
-=======
-  // Any iframe context is an embedded paywall — Google OAuth fails on third-party
-  // domains and wallet-only login is the right restriction regardless of URL.
->>>>>>> origin/master
   const isInPaywall = isInIframe()
 
   return (
