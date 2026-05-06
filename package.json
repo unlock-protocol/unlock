@@ -34,6 +34,7 @@
   "workspaces": [
     "packages/**",
     "governance",
+    "governance-app",
     "smart-contracts",
     "subgraph",
     "tests",
@@ -92,6 +93,9 @@
     "node": ">=20.0.0"
   },
   "engineStrict": true,
+  "resolutions": {
+    "next": "14.2.35"
+  },
   "homepage": "https://github.com/unlock-protocol/unlock#readme",
   "packageManager": "yarn@4.9.1",
   "lint-staged": {

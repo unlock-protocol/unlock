@@ -38,4 +38,4 @@ if [ -n "$VERCEL_PROJECT_ID" ] && [ -n "$VERCEL_TOKEN" ] && [ -n "$VERCEL_ORG_ID
 else
   echo "Failed to deploy to Vercel because we're missing VERCEL_TOKEN, VERCEL_PROJECT_ID and/or VERCEL_ORG_ID"
   exit 1
-fi 
+fi

@@ -90,6 +90,19 @@ services:
     ports:
       - 3002:3002
 
+  governance-app:
+    # Container for the governance application
+    env_file:
+      - ./${UNLOCK_ENV}.env
+    image: governance-app
+    build:
+      context: ../
+      target: dev
+      cache_from:
+        - unlockprotocol/unlock-dev
+      args:
+        BUILD_DIR: governance-app
+
   paywall-app:
     # Container for the paywall application
     env_file:
