@@ -22375,7 +22375,7 @@ __metadata:
     typescript: "npm:5.8.3"
     vitest: "npm:3.2.4"
   peerDependencies:
-    zod: 3.25.76
+    zod: 4.4.3
   languageName: unknown
   linkType: soft
 
@@ -22699,7 +22699,7 @@ __metadata:
     vitest-fetch-mock: "npm:0.4.5"
     winston: "npm:3.17.0"
     yargs: "npm:17.7.2"
-    zod: "npm:3.24.4"
+    zod: "npm:4.4.3"
   languageName: unknown
   linkType: soft
 
@@ -22982,7 +22982,7 @@ __metadata:
     vitest-fetch-mock: "npm:0.4.5"
     vitest-localstorage-mock: "npm:0.1.2"
     xstate: "npm:5.14.0"
-    zod: "npm:3.24.4"
+    zod: "npm:4.4.3"
   peerDependencies:
     react: 18.3.1
     react-dom: 18.3.1
@@ -59355,10 +59355,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:3.24.4":
-  version: 3.24.4
-  resolution: "zod@npm:3.24.4"
-  checksum: 10/3d545792fa54bb27ee5dbc34a5709e81f603185fcc94c8204b5d95c20dc4c81d870ff9c51f3884a30ef05cdc601449f4c4df254ac4783f0827b1faed7c1cdb48
+"zod@npm:4.4.3":
+  version: 4.4.3
+  resolution: "zod@npm:4.4.3"
+  checksum: 10/804b9a42aa8f35f2b3c5a8dff906291cb749115f83ee2afe3576d70b5b5c53c965365c7f4967690647a9c54af9838ff232a85ff9577a0a36c44b68bc6cdefe36
   languageName: node
   linkType: hard
 
