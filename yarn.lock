@@ -21070,30 +21070,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:22.13.10":
-  version: 22.13.10
-  resolution: "@types/node@npm:22.13.10"
-  dependencies:
-    undici-types: "npm:~6.20.0"
-  checksum: 10/57dc6a5e0110ca9edea8d7047082e649fa7fa813f79e4a901653b9174141c622f4336435648baced5b38d9f39843f404fa2d8d7a10981610da26066bc8caab48
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:22.18.12":
-  version: 22.18.12
-  resolution: "@types/node@npm:22.18.12"
+"@types/node@npm:22.19.18":
+  version: 22.19.18
+  resolution: "@types/node@npm:22.19.18"
   dependencies:
     undici-types: "npm:~6.21.0"
-  checksum: 10/41b8853302deac6895aa978193fcab53bf8d1f6f5df5fad38e2a33c2c853c3689e905c9dde373e45bb87273b2690e5ac2d6f40809fe72f45264952ba3ae3b196
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:22.19.1":
-  version: 22.19.1
-  resolution: "@types/node@npm:22.19.1"
-  dependencies:
-    undici-types: "npm:~6.21.0"
-  checksum: 10/40d5368faa6d9be6c27ebca2362734bc9e035a742e0b5cafee40ba3b355d7cfcaedbc93618c76465451e53f1af0c811b4b85ee9b85e2e942f34a4c5310fa047b
+  checksum: 10/464dbc4fb223f7b9d031e377e1207462c57271702e5ca73e3333cdabdbdc73b20ec5d07331ddd7c736ad69c83028c9d7ec6493eda8f7543b36bfe749a68849bf
   languageName: node
   linkType: hard
 
@@ -22486,7 +22468,7 @@ __metadata:
   dependencies:
     "@privy-io/react-auth": "npm:2.12.0"
     "@tanstack/react-query": "npm:5.90.2"
-    "@types/node": "npm:22.13.10"
+    "@types/node": "npm:22.19.18"
     "@types/react": "npm:18.3.26"
     "@types/react-dom": "npm:18.3.7"
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
@@ -22588,7 +22570,7 @@ __metadata:
     "@typechain/ethers-v6": "npm:0.5.1"
     "@typechain/hardhat": "npm:9.1.0"
     "@types/mocha": "npm:10.0.10"
-    "@types/node": "npm:22.19.1"
+    "@types/node": "npm:22.19.18"
     "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/eslint-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
@@ -22761,7 +22743,7 @@ __metadata:
   resolution: "@unlock-protocol/provider@workspace:provider"
   dependencies:
     "@cloudflare/workers-types": "npm:4.20251011.0"
-    "@types/node": "npm:22.18.12"
+    "@types/node": "npm:22.19.18"
     "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:^"
@@ -23042,7 +23024,7 @@ __metadata:
     "@radix-ui/react-avatar": "npm:1.1.10"
     "@tanstack/react-query": "npm:5.90.2"
     "@testing-library/react": "npm:16.3.0"
-    "@types/node": "npm:22.18.12"
+    "@types/node": "npm:22.19.18"
     "@types/react": "npm:18.3.26"
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
