@@ -22,7 +22,10 @@ runs:
   steps:
     - name: Install Railway CLI
       shell: bash
-      run: npm i -g @railway/cli
+      # Pinned: v4.45.0 is the minimum that accepts the current RAILWAY_TOKEN format.
+      # Dockerfile path is set via railway.toml — verify new versions still support
+      # subdirectory dockerfilePath before upgrading.
+      run: npm i -g @railway/cli@4.45.0
 
     - name: Deploy to Railway
       shell: bash

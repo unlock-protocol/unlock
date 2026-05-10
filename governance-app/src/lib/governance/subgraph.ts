@@ -73,7 +73,9 @@ async function fetchSubgraph<T>(query: string): Promise<T> {
 }
 
 function getTitle(description: string) {
-  return description.split('\n')[0]?.trim() || 'Untitled proposal'
+  const firstLine = description.split('\n')[0]?.trim() || 'Untitled proposal'
+  // Strip leading markdown heading markers (e.g. "## Title" → "Title")
+  return firstLine.replace(/^#+\s*/, '') || 'Untitled proposal'
 }
 
 export const getProposalsFromSubgraph = cache(

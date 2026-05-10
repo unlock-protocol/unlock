@@ -5,6 +5,7 @@ const stateClassNames: Record<ProposalState, string> = {
   Canceled: 'bg-slate-200 text-slate-700',
   Defeated: 'bg-rose-100 text-rose-700',
   Executed: 'bg-sky-100 text-sky-700',
+  Expired: 'bg-slate-200 text-slate-700',
   Pending: 'bg-amber-100 text-amber-700',
   Queued: 'bg-violet-100 text-violet-700',
   Succeeded: 'bg-teal-100 text-teal-700',
