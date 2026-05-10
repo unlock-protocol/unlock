@@ -55,7 +55,7 @@ jobs:
     needs:
       - check-changes
       - run-tests
-    if: ${{ github.event.pull_request.head.repo.full_name == github.repository && needs.check-changes.outputs.changed != '[]' && contains(fromJson(needs.check-changes.outputs.changed), 'unlock-protocol-com') }}
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository && contains(fromJson(needs.check-changes.outputs.changed), 'unlock-protocol-com') }}
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -79,7 +79,7 @@ jobs:
     needs:
       - check-changes
       - run-tests
-    if: ${{ github.event.pull_request.head.repo.full_name == github.repository && needs.check-changes.outputs.changed != '[]' && (contains(fromJson(needs.check-changes.outputs.changed), 'paywall-app') || contains(fromJson(needs.check-changes.outputs.changed), 'packages/paywall')) }}
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository && (contains(fromJson(needs.check-changes.outputs.changed), 'paywall-app') || contains(fromJson(needs.check-changes.outputs.changed), 'packages/paywall')) }}
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
