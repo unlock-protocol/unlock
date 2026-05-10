@@ -41,8 +41,16 @@ export const templateRenderer = {
     const originalInlineImage = Handlebars.helpers.inlineImage
     let renderedContent, renderedHtml
     try {
-      // Use CID references for email delivery (not embedded base64)
-      Handlebars.registerHelper('inlineImage', (filename) => `cid:${filename}`)
+      // Embed images as base64 data URIs; worker-mailer has no CID attachment support
+      Handlebars.registerHelper('inlineImage', (filename) => {
+        if (
+          PrecompiledTemplates.embeddedImages &&
+          PrecompiledTemplates.embeddedImages[filename]
+        ) {
+          return PrecompiledTemplates.embeddedImages[filename]
+        }
+        return `cid:${filename}`
+      })
       const templateFn = Handlebars.template(precompiledTemplate.html)
       renderedContent = templateFn(data || {})
       const originalTemplate = templates[templateSpec]

@@ -106,7 +106,6 @@ export const handler = async (event, env, responseCallback) => {
 
     return callback(null, {
       statusCode: 204,
-      details: response,
     })
   } catch (error) {
     logger.error({
@@ -121,7 +120,6 @@ export const handler = async (event, env, responseCallback) => {
       return callback(null, {
         statusCode: 500,
         body: 'Security restriction: Dynamic code generation not allowed',
-        details: errorString,
       })
     }
 
@@ -132,23 +130,19 @@ export const handler = async (event, env, responseCallback) => {
       return callback(null, {
         statusCode: 500,
         body: 'SMTP connections are not supported. Please use HTTP APIs for email services.',
-        details:
-          'The email was rendered correctly but cannot be sent. Please use an HTTP-based email API.',
       })
     }
 
     if (errorString.includes('not found in precompiled templates')) {
       return callback(null, {
         statusCode: 404,
-        body: errorString,
-        details: 'Only precompiled templates are supported',
+        body: 'Template not found',
       })
     }
 
     return callback(null, {
       statusCode: 500,
       body: 'Server Error',
-      details: errorString,
     })
   }
 }

@@ -95,15 +95,14 @@ export const preview = async (args) => {
         email: 'hello@unlock-protocol.com',
       },
       to: recipient || 'recipient@example.com',
-      replyTo: replyTo || undefined,
+      replyTo: replyTo ? { email: replyTo } : undefined,
       subject,
       html: renderedHtml,
       text,
       attachments: [].concat(attachments || []).filter(Boolean),
     })
   } catch (error) {
-    return `<p>Error previewing email template: ${error.message}</p>
-            <pre>${error.stack}</pre>`
+    return `<p>Error previewing email template: ${error.message}</p>`
   }
 }
 

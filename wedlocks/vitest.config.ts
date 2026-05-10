@@ -7,9 +7,8 @@ export default defineConfig({
     include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     mockReset: false,
     environment: 'node',
-    // 5 minute timeout
-    testTimeout: 1000 * 60 * 5,
-    hookTimeout: 1000 * 60 * 5,
+    testTimeout: 1000 * 30,
+    hookTimeout: 1000 * 30,
     setupFiles: ['./src/__tests__/setup.js'],
     deps: {
       inline: ['@unlock-protocol/email-templates', 'worker-mailer'],
