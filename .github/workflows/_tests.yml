@@ -21,6 +21,7 @@ on:
           "wedlocks",
           "provider",
           "unlock-app",
+          "governance-app",
           "packages/core"
           ]'
 
