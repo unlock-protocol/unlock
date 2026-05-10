@@ -93,7 +93,7 @@
     "node": ">=20.0.0"
   },
   "resolutions": {
-    "next": "14.2.35"
+    "next": "16.2.6"
   },
   "engineStrict": true,
   "homepage": "https://github.com/unlock-protocol/unlock#readme",
