@@ -26,6 +26,7 @@ jobs:
         if: steps.changed-files.outputs.any_changed == 'true'
         with:
           node-version: 22.21.0
+          cache: 'yarn'
       - run: yarn
         if: steps.changed-files.outputs.any_changed == 'true'
         shell: bash

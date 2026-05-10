@@ -43,3 +43,5 @@ jobs:
           target: deps
           push: true
           tags: ${{ steps.prep.outputs.tagged_image }},${{ steps.prep.outputs.latest }}
+          cache-from: type=gha,scope=docker-deps
+          cache-to: type=gha,scope=docker-deps,mode=max
