@@ -92,6 +92,9 @@
   "engines": {
     "node": ">=20.0.0"
   },
+  "resolutions": {
+    "next": "14.2.35"
+  },
   "engineStrict": true,
   "homepage": "https://github.com/unlock-protocol/unlock#readme",
   "packageManager": "yarn@4.10.3",

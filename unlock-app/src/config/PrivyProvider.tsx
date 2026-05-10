@@ -1,6 +1,11 @@
 'use client'
 
-import { saveAccessToken } from '~/utils/session'
+import {
+  getAccessToken,
+  saveAccessToken,
+  removeAccessToken,
+  removeCurrentAccount,
+} from '~/utils/session'
 import {
   getAccessToken as privyGetAccessToken,
   PrivyProvider,
@@ -9,7 +14,9 @@ import {
   User,
   usePrivy,
   LinkedAccountWithMetadata,
+  WalletWithMetadata,
 } from '@privy-io/react-auth'
+import { isAxiosError } from 'axios'
 import { ReactNode, useContext, useEffect, useState } from 'react'
 import { config } from './app'
 import { ToastHelper } from '@unlock-protocol/ui'
@@ -18,6 +25,12 @@ import AuthenticationContext from '~/contexts/AuthenticationContext'
 import { MigrationModal } from '~/components/legacy-auth/MigrationNotificationModal'
 import { isInIframe } from '~/utils/iframe'
 import { setLocalStorageItem } from '~/hooks/useAppStorage'
+
+const findEvmWallet = (user: User): WalletWithMetadata | undefined =>
+  user.linkedAccounts.find(
+    (a): a is WalletWithMetadata =>
+      a.type === 'wallet' && a.chainType === 'ethereum'
+  )
 
 // check for legacy account
 export const checkLegacyAccount = async (
@@ -43,14 +56,23 @@ export const checkLegacyAccount = async (
 
 // This method is meant to be called when the user is signed in with Privy,
 // BUT NOT yet signed in with Locksmith and hence does not have an access token.
-export const onSignedInWithPrivy = async (user: User) => {
+// walletAddressOverride is used when the wallet was just created and the user
+// object has not yet been updated by Privy with the new wallet address.
+export const onSignedInWithPrivy = async (
+  user: User,
+  walletAddressOverride?: string
+) => {
+  // Hoist so the catch block can clear stale cache for the same address.
+  let walletAddress: string | undefined
   try {
     const accessToken = await privyGetAccessToken()
     if (!accessToken) {
       console.error('No access token found in Privy')
       return null
     }
-    const walletAddress = user.wallet?.address
+    // user.wallet is just the first linked wallet and may be Solana;
+    // findEvmWallet checks chainType to find a real EVM wallet.
+    walletAddress = findEvmWallet(user)?.address ?? walletAddressOverride
     if (walletAddress) {
       const response = await locksmith.loginWithPrivy({
         accessToken,
@@ -67,13 +89,32 @@ export const onSignedInWithPrivy = async (user: User) => {
         )
         return walletAddress
       }
+      // Locksmith responded but issued no token — clear stale cache so the
+      // user can reconnect with a different wallet.
+      removeAccessToken(walletAddress)
+      removeCurrentAccount()
+      return null
     } else {
-      console.error(
-        'No wallet linked on Privy account, cannot authenticate with Locksmith'
+      // No EVM wallet yet — PrivyMigration will create one and retry.
+      console.info(
+        'No EVM wallet linked on Privy account; wallet creation pending'
       )
       return null
     }
   } catch (error) {
+    // Only clear stale cache on auth failures (4xx) — transient 5xx/network
+    // errors should not wipe a valid session.
+    if (
+      isAxiosError(error) &&
+      error.response?.status &&
+      error.response.status >= 400 &&
+      error.response.status < 500
+    ) {
+      if (walletAddress) {
+        removeAccessToken(walletAddress)
+        removeCurrentAccount()
+      }
+    }
     console.error(error)
     return null
   }
@@ -134,8 +175,7 @@ export const PrivyMigration = () => {
 
   const { createWallet } = useCreateWallet({
     onError: (error) => {
-      console.error('Error creating wallet:', error)
-      ToastHelper.error('Failed to create wallet. Please try again.')
+      console.info('useCreateWallet onError:', error)
     },
   })
 
@@ -144,9 +184,12 @@ export const PrivyMigration = () => {
     try {
       const newWallet = await createWallet()
       return newWallet.address
-    } catch (error) {
+    } catch (error: any) {
+      // Any error here may be benign (race condition, Privy internal retry, etc.)
+      // and the wallet may already have been created. The user object update will
+      // re-trigger handleMigrationIfNeeded which will complete auth via the EVM
+      // wallet already present in linkedAccounts.
       console.error('Error creating wallet:', error)
-      ToastHelper.error('Failed to create wallet. Please try again.')
       return null
     }
   }
@@ -155,12 +198,14 @@ export const PrivyMigration = () => {
   const handleMigrationIfNeeded = async (user: User) => {
     let hasLegacyAccount = false
 
+    const hasEvmWallet = !!findEvmWallet(user)
+
     // Check for legacy account if user logged in with email
     if (user.email?.address) {
       hasLegacyAccount = await checkLegacyAccount(user.email.address)
 
-      // Only show migration modal if user has legacy account but no Privy wallet
-      if (hasLegacyAccount && !user.wallet?.address) {
+      // Only show migration modal if user has legacy account but no EVM wallet
+      if (hasLegacyAccount && !hasEvmWallet) {
         setShowMigrationModal(true)
         // close connect modal
         window.dispatchEvent(new CustomEvent('legacy.account.detected'))
@@ -168,11 +213,20 @@ export const PrivyMigration = () => {
       }
     }
 
-    // Only create wallet if user doesn't have one AND doesn't have a legacy account
-    if (!user.wallet?.address && !hasLegacyAccount) {
+    // Create EVM wallet if the user has no EVM wallet (may have only Solana).
+    if (!hasEvmWallet && !hasLegacyAccount) {
       const walletAddress = await createWalletForUser()
       if (!walletAddress) return
+      // Pass the new wallet address explicitly: the user object captured in this
+      // closure predates the wallet creation and still has wallet: undefined.
+      await onSignedInWithPrivy(user, walletAddress)
+      return
     }
+
+    // Skip if already authenticated — Privy re-fires this effect when it updates
+    // the reactive user object after wallet creation, which would cause a second
+    // redundant Locksmith auth call and duplicate locksmith.authenticated events.
+    if (getAccessToken()) return
 
     // Proceed with normal login flow
     await onSignedInWithPrivy(user)
@@ -198,21 +252,18 @@ export const Privy = ({ children }: { children: ReactNode }) => {
     typeof window !== 'undefined' &&
     window.location.pathname.includes('migrate-user')
 
-  // Check if we're in an iframe && not in the Unlock dashboard
-  const isInPaywall =
-    isInIframe() && !window.location.href.includes(config.unlockApp)
+  // Any iframe context is an embedded paywall — Google OAuth and Farcaster fail on
+  // third-party domains, but wallet and email login still work fine.
+  const isInPaywall = isInIframe()
 
   return (
     <AuthenticationContext.Provider value={{ account, setAccount }}>
       <PrivyProvider
         config={{
-          /* For the meantime, when users are authenticating via paywall on an external website (embedded paywall),
-           * we can only allow the wallet method to login.
-           */
           loginMethods: isMigratePage
             ? ['email']
             : isInPaywall
-              ? ['wallet']
+              ? ['wallet', 'email']
               : ['wallet', 'email', 'google', 'farcaster'],
           embeddedWallets: {
             createOnLogin: 'off',

@@ -21,6 +21,7 @@ jobs:
         "unlock-protocol-com",
         "wedlocks",
         "unlock-app",
+        "governance-app",
         "packages/core",
         "docs"
         ]'

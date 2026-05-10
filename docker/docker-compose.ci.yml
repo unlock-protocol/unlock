@@ -59,6 +59,22 @@ services:
     expose:
       - 3000
 
+  governance-app:
+    env_file:
+      - ./${UNLOCK_ENV}.env
+    image: governance-app
+    build:
+      context: ../
+      target: dev
+      cache_from:
+        - unlockprotocol/unlock-dev
+      args:
+        BUILD_DIR: governance-app
+    ports:
+      - 3004:3004
+    expose:
+      - 3004
+
   provider:
     # Container for the static site
     env_file:
