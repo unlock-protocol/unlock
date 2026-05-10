@@ -1,22 +1,23 @@
 {
   "name": "@unlock-protocol/provider",
   "devDependencies": {
-    "@cloudflare/workers-types": "4.20250507.0",
-    "@types/node": "22.15.3",
+    "@cloudflare/workers-types": "4.20251011.0",
+    "@types/node": "22.18.12",
     "@unlock-protocol/contracts": "workspace:^",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/networks": "workspace:^",
-    "eslint": "9.25.1",
+    "eslint": "9.39.0",
     "typescript": "5.8.3",
-    "vitest": "3.1.4"
+    "vitest": "3.2.4"
   },
   "dependencies": {
-    "ethers": "6.13.5",
-    "wrangler": "4.16.1"
+    "ethers": "6.15.0",
+    "wrangler": "4.45.3"
   },
   "scripts": {
     "dev": "yarn wrangler dev",
-    "deploy": "yarn wrangler deploy",
+    "deploy": "yarn set-env-vars && yarn wrangler deploy",
+    "deploy:code-only": "./scripts/deploy-code-only.sh",
     "set-env-vars": "op run --env-file=.op.env --  ./scripts/set-env-vars.sh",
     "test": "vitest run --config ./vitest.config.ts",
     "ci": "yarn lint && yarn test",

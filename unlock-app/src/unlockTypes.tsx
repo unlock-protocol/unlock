@@ -78,7 +78,7 @@ export interface Action {
 
 export type Dispatch = (action: Action) => any
 
-// This is currrently the way ethers checks the keystore format.
+// This is currently the way ethers checks the keystore format.
 export interface EncryptedPrivateKey {
   version: number
   [param: string]: any
@@ -158,7 +158,7 @@ export interface KeyMetadata {
   lockName: string
   expiration: string
   keyholderAddress: string
-  // Can have any other arbitrary properies, as long as the values are strings.
+  // Can have any other arbitrary properties, as long as the values are strings.
   [key: string]: string
 }
 

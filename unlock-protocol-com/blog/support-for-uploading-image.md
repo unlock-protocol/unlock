@@ -3,7 +3,7 @@ title: Uploading NFT images
 subTitle: You can now upload images for your NFT collection in advance before minting.
 authorName: searchableguy
 publishDate: 23 Feburary, 2023
-description: You can now upload images for for your NFT collection in advance before minting.
+description: You can now upload images for your NFT collection in advance before minting.
 image: /images/blog/support-for-uploading-images/image_upload.png
 ---
 

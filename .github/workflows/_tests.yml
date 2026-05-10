@@ -14,6 +14,7 @@ on:
           "packages/hardhat-plugin",
           "packages/unlock-js",
           "packages/paywall",
+          "paywall-app",
           "smart-contracts",
           "governance",
           "subgraph",
@@ -21,8 +22,14 @@ on:
           "wedlocks",
           "provider",
           "unlock-app",
+          "governance-app",
           "packages/core"
           ]'
+      export_cache:
+        description: 'Whether this workflow run may write the shared Docker deps cache'
+        type: boolean
+        required: false
+        default: false
 
 jobs:
   unit-tests:
@@ -43,6 +50,37 @@ jobs:
         target: ${{fromJson( inputs.changed )}}
     steps:
       - uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      # Only one matrix entry writes the shared GHA cache; siblings restore from GHA or Docker Hub fallback.
+      - name: Build and export Docker deps layer
+        if: ${{ inputs.export_cache && matrix.target == fromJson(inputs.changed)[0] }}
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          build-args: BUILDKIT_INLINE_CACHE=1
+          target: deps
+          push: false
+          tags: unlockprotocol/unlock-dev:latest
+          cache-from: |
+            type=gha,scope=docker-deps
+            type=registry,ref=unlockprotocol/unlock-dev:latest
+          cache-to: type=gha,scope=docker-deps,mode=max
+          load: true
+      # All other matrix entries restore the deps image without attempting another cache export.
+      - name: Restore Docker deps layer
+        if: ${{ !inputs.export_cache || matrix.target != fromJson(inputs.changed)[0] }}
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          build-args: BUILDKIT_INLINE_CACHE=1
+          target: deps
+          push: false
+          tags: unlockprotocol/unlock-dev:latest
+          cache-from: |
+            type=gha,scope=docker-deps
+            type=registry,ref=unlockprotocol/unlock-dev:latest
+          load: true
       - name: Running ${{ matrix.target }} tests
         run: ./scripts/tests.sh ${{ matrix.target }}
         shell: bash

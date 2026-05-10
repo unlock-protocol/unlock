@@ -1,4 +1,3 @@
-version: '3.2'
 services:
   eth-node:
     # hardhat node
@@ -60,6 +59,22 @@ services:
     expose:
       - 3000
 
+  governance-app:
+    env_file:
+      - ./${UNLOCK_ENV}.env
+    image: governance-app
+    build:
+      context: ../
+      target: dev
+      cache_from:
+        - unlockprotocol/unlock-dev
+      args:
+        BUILD_DIR: governance-app
+    ports:
+      - 3004:3004
+    expose:
+      - 3004
+
   provider:
     # Container for the static site
     env_file:
@@ -89,19 +104,6 @@ services:
         BUILD_DIR: unlock-protocol-com
     ports:
       - 3002:3002
-
-  governance-app:
-    # Container for the governance application
-    env_file:
-      - ./${UNLOCK_ENV}.env
-    image: governance-app
-    build:
-      context: ../
-      target: dev
-      cache_from:
-        - unlockprotocol/unlock-dev
-      args:
-        BUILD_DIR: governance-app
 
   paywall-app:
     # Container for the paywall application
@@ -281,7 +283,7 @@ services:
 
   ipfs:
     # Required for subgraph
-    image: ipfs/go-ipfs:v0.34.1
+    image: ipfs/go-ipfs:v0.35.0
     ports:
       - '5001:5001'
 
