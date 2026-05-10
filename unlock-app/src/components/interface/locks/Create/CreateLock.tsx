@@ -211,7 +211,16 @@ const CreateLock = ({ onSubmit, defaultValues }: CreateLockProps) => {
           />
         </div>
         <div className="md:max-w-lg">
-          <CreateLockForm onSubmit={onSubmit} defaultValues={defaultValues} />
+          <CreateLockForm
+            onSubmit={onSubmit}
+            defaultValues={defaultValues}
+            guide={{
+              description:
+                'Designing a membership program before you deploy helps you choose the right benefits, pricing, and supply.',
+              href: 'https://unlock-protocol.com/guides/how-to-create-a-membership-program/',
+              linkLabel: 'Read the membership guide',
+            }}
+          />
         </div>
       </div>
     </div>

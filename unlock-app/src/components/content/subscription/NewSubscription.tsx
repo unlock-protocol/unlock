@@ -114,6 +114,12 @@ export const Deploy: React.FC = () => {
               <CreateLockForm
                 onSubmit={onSubmitMutation.mutate}
                 hideFields={['quantity']}
+                guide={{
+                  description:
+                    'Subscriptions need a renewal period and ERC-20 pricing so renewals can be approved automatically.',
+                  href: 'https://unlock-protocol.com/guides/onchain-subscriptions/',
+                  linkLabel: 'Read the subscription guide',
+                }}
                 defaultOptions={{
                   expirationDuration: {
                     label: 'Renew every',
