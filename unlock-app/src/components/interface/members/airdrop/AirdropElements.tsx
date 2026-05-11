@@ -27,10 +27,23 @@ interface AirdropListItemProps {
   onRemove: MouseEventHandler<HTMLButtonElement>
 }
 
-export function AirdropListItem({
-  value: { wallet, count, email, expiration, neverExpire },
-  onRemove,
-}: AirdropListItemProps) {
+const defaultAirdropFields = new Set([
+  'wallet',
+  'count',
+  'email',
+  'expiration',
+  'neverExpire',
+  'manager',
+  'balance',
+  'line',
+])
+
+export function AirdropListItem({ value, onRemove }: AirdropListItemProps) {
+  const { wallet, count, email, expiration, neverExpire } = value
+  const customAttributeNames = Object.keys(value).filter(
+    (key) => !defaultAirdropFields.has(key)
+  )
+
   return (
     <div className="flex items-center justify-between w-full px-2 py-1 text-sm bg-white rounded-lg shadow">
       <div className="space-x-2">
@@ -42,6 +55,10 @@ export function AirdropListItem({
           {expiration &&
             `valid until ${new Date(expiration).toLocaleDateString()}`}
           {neverExpire && 'never expires'}
+          {customAttributeNames.length > 0 &&
+            ` · ${customAttributeNames.length} custom ${
+              customAttributeNames.length > 1 ? 'attributes' : 'attribute'
+            }`}
         </span>
       </div>
       <IconButton
