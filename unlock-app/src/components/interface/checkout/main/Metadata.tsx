@@ -23,7 +23,10 @@ import {
   Toggle,
 } from '@unlock-protocol/ui'
 import { twMerge } from 'tailwind-merge'
-import { formResultToMetadata } from '~/utils/userMetadata'
+import {
+  formResultToMetadata,
+  userMetadataToFormResult,
+} from '~/utils/userMetadata'
 import { ToastHelper } from '@unlock-protocol/ui'
 import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
@@ -37,7 +40,10 @@ import {
   MetadataInputType as MetadataInput,
   PaywallConfigType,
 } from '@unlock-protocol/core'
-import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
+import {
+  useUpdateUsersMetadata,
+  useUserMetadata,
+} from '~/hooks/useUserMetadata'
 import Disconnect from './Disconnect'
 import { shouldSkip } from './utils'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
@@ -87,6 +93,8 @@ export const MetadataInputs = ({
     register,
     setValue,
     control,
+    getValues,
+    watch,
     formState: { errors },
   } = useFormContext<FormData>()
   const networkConfig = config.networks[lock.network]
@@ -129,6 +137,67 @@ export const MetadataInputs = ({
 
   const recipient = recipientFromConfig(paywallConfig, lock) || account
   const hideRecipient = shouldSkip({ paywallConfig, lock }).skipRecipient
+  const watchedRecipient = watch(`metadata.${id}.recipient`)
+  const [resolvedRecipient, setResolvedRecipient] = useState('')
+  const { data: savedUserMetadata } = useUserMetadata({
+    network: lock.network,
+    lockAddress: lock.address,
+    userAddress: resolvedRecipient,
+  })
+
+  useEffect(() => {
+    let ignore = false
+
+    const resolveRecipient = async () => {
+      const nextRecipient = watchedRecipient || recipient
+
+      if (!nextRecipient || !isAddressOrEns(nextRecipient)) {
+        setResolvedRecipient('')
+        return
+      }
+
+      try {
+        const address = await getAddressForName(nextRecipient)
+
+        if (!ignore) {
+          setResolvedRecipient(address || '')
+        }
+      } catch {
+        if (!ignore) {
+          setResolvedRecipient('')
+        }
+      }
+    }
+
+    resolveRecipient()
+
+    return () => {
+      ignore = true
+    }
+  }, [recipient, watchedRecipient])
+
+  useEffect(() => {
+    if (!savedUserMetadata || !metadataInputs?.length) {
+      return
+    }
+
+    const savedValues = userMetadataToFormResult(
+      savedUserMetadata,
+      metadataInputs
+    )
+
+    Object.entries(savedValues).forEach(([name, value]) => {
+      const field = `metadata.${id}.${name}` as `metadata.${number}.${string}`
+      const currentValue = getValues(field)
+
+      if (currentValue === undefined || currentValue === '') {
+        setValue(field, value, {
+          shouldDirty: false,
+          shouldValidate: false,
+        })
+      }
+    })
+  }, [getValues, id, metadataInputs, savedUserMetadata, setValue])
 
   const [hideEmailInput, setHideEmailInput] = useState<boolean>(
     !!email && id === 0

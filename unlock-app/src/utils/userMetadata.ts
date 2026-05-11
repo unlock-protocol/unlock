@@ -29,3 +29,38 @@ export function formResultToMetadata(
 
   return result
 }
+
+interface StoredUserMetadata {
+  public?: Record<string, string>
+  protected?: Record<string, string>
+}
+
+const normalizeMetadataKeys = (metadata?: Record<string, string>) => {
+  return Object.fromEntries(
+    Object.entries(metadata || {}).map(([key, value]) => [
+      key.toLowerCase(),
+      value,
+    ])
+  )
+}
+
+export function userMetadataToFormResult(
+  metadata: StoredUserMetadata,
+  inputs: MetadataInputType[]
+): Record<string, string> {
+  const publicMetadata = normalizeMetadataKeys(metadata.public)
+  const protectedMetadata = normalizeMetadataKeys(metadata.protected)
+
+  return inputs.reduce<Record<string, string>>((result, input) => {
+    const normalizedName = input.name.toLowerCase()
+    const savedValue = input.public
+      ? (publicMetadata[normalizedName] ?? protectedMetadata[normalizedName])
+      : (protectedMetadata[normalizedName] ?? publicMetadata[normalizedName])
+
+    if (savedValue !== undefined) {
+      result[input.name] = savedValue
+    }
+
+    return result
+  }, {})
+}
