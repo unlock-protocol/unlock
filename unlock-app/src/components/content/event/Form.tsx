@@ -1,7 +1,7 @@
 import { FaRegLightbulb } from 'react-icons/fa'
 import { usePlacesWidget } from 'react-google-autocomplete'
 import { config } from '~/config/app'
-import { useEffect, useState } from 'react'
+import { FormEvent, RefObject, useEffect, useMemo, useState } from 'react'
 import { Lock, Token } from '@unlock-protocol/types'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 import { BiLogoZoom as ZoomIcon } from 'react-icons/bi'
@@ -44,32 +44,54 @@ export interface NewEventForm {
   metadata: Partial<MetadataFormData>
 }
 
+export type NewEventFormDefaults = Partial<
+  Omit<NewEventForm, 'lock' | 'metadata'>
+> & {
+  lock?: Partial<NewEventForm['lock']>
+  metadata?: Partial<NewEventForm['metadata']>
+}
+
 interface GoogleMapsAutoCompleteProps {
   onChange: (address: string, location: string, timezone: string) => void
   defaultValue?: string
+}
+
+interface GooglePlaceResult {
+  formatted_address?: string
+  geometry?: {
+    location?: {
+      lat?: () => number
+      lng?: () => number
+    }
+  }
 }
 
 export const GoogleMapsAutoComplete = ({
   onChange,
   defaultValue,
 }: GoogleMapsAutoCompleteProps) => {
-  const onPlaceSelected = async (place: any, inputRef: any) => {
-    const lat = place.geometry?.location?.lat()
-    const lng = place.geometry?.location?.lng()
+  const onPlaceSelected = async (
+    place: unknown,
+    inputRef: RefObject<HTMLInputElement>
+  ) => {
+    const selectedPlace = place as GooglePlaceResult
+    const inputValue = inputRef.current?.value || ''
+    const lat = selectedPlace.geometry?.location?.lat?.()
+    const lng = selectedPlace.geometry?.location?.lng?.()
 
     //  We use a dedicated API key because this Timezone API  does not support restricting by referrers as of Sept 2024
     const timezoneInfo = await fetch(
       `https://maps.googleapis.com/maps/api/timezone/json?location=${lat}%2C${lng}&timestamp=${Math.floor(new Date().getTime() / 1000)}&key=AIzaSyB7AMd20omjPeJRS2rDBbq8HKZIoRZQD_o`
     ).then((response) => response.json())
 
-    if (place.formatted_address) {
+    if (selectedPlace.formatted_address) {
       return onChange(
-        inputRef.value,
-        place.formatted_address,
+        inputValue,
+        selectedPlace.formatted_address,
         timezoneInfo.timeZoneId
       )
     }
-    return onChange(inputRef.value, inputRef.value, timezoneInfo.timeZoneId)
+    return onChange(inputValue, inputValue, timezoneInfo.timeZoneId)
   }
 
   const { ref } = usePlacesWidget({
@@ -77,7 +99,7 @@ export const GoogleMapsAutoComplete = ({
       types: [],
     },
     apiKey: config.googleMapsApiKey,
-    onPlaceSelected: (place: any, inputRef: any) => {
+    onPlaceSelected: (place, inputRef) => {
       onPlaceSelected(place, inputRef)
     },
   })
@@ -96,17 +118,33 @@ export const GoogleMapsAutoComplete = ({
 interface FormProps {
   onSubmit: (data: NewEventForm) => void
   compact?: boolean
+  defaultValues?: NewEventFormDefaults
 }
 
-export const Form = ({ onSubmit, compact = false }: FormProps) => {
+const getBooleanDefault = (value: unknown, fallback: boolean) => {
+  if (typeof value === 'boolean') {
+    return value
+  }
+
+  if (value === 'true') {
+    return true
+  }
+
+  if (value === 'false') {
+    return false
+  }
+
+  return fallback
+}
+
+export const Form = ({
+  onSubmit,
+  compact = false,
+  defaultValues,
+}: FormProps) => {
   const [oldMaxNumberOfKeys, setOldMaxNumberOfKeys] = useState<number>(0)
   const { networks } = useConfig()
   const { account } = useAuthenticate()
-  const [isInPerson, setIsInPerson] = useState(true)
-  const [screeningEnabled, enableScreening] = useState(false)
-  const [isUnlimitedCapacity, setIsUnlimitedCapacity] = useState(false)
-  const [attendeeRefund, setAttendeeRefund] = useState(false)
-  const [isFree, setIsFree] = useState(true)
   const [isCurrencyModalOpen, setCurrencyModalOpen] = useState(false)
   const { mutateAsync: uploadImage, isPending: isUploading } = useImageUpload()
 
@@ -117,10 +155,8 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
   const moreNetworkOptions = useAvailableNetworks(true)
   const network = networkOptions[0]?.value
 
-  const methods = useForm<NewEventForm>({
-    mode: 'onChange',
-    shouldUnregister: false,
-    defaultValues: {
+  const baseDefaultValues = useMemo<NewEventForm>(
+    () => ({
       network,
       lock: {
         name: '',
@@ -146,7 +182,53 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
         requiresApproval: false,
         emailSender: '',
       },
-    },
+    }),
+    [network, networks, today]
+  )
+
+  const formDefaultValues = useMemo<NewEventForm>(
+    () => ({
+      ...baseDefaultValues,
+      ...defaultValues,
+      lock: {
+        ...baseDefaultValues.lock,
+        ...defaultValues?.lock,
+      },
+      metadata: {
+        ...baseDefaultValues.metadata,
+        ...defaultValues?.metadata,
+        ticket: {
+          ...baseDefaultValues.metadata.ticket,
+          ...defaultValues?.metadata?.ticket,
+        },
+      },
+    }),
+    [baseDefaultValues, defaultValues]
+  )
+
+  const [isInPerson, setIsInPerson] = useState(
+    getBooleanDefault(
+      formDefaultValues.metadata.ticket?.event_is_in_person,
+      true
+    )
+  )
+  const [screeningEnabled, enableScreening] = useState(
+    getBooleanDefault(formDefaultValues.metadata.requiresApproval, false)
+  )
+  const [isUnlimitedCapacity, setIsUnlimitedCapacity] = useState(
+    formDefaultValues.lock.maxNumberOfKeys === undefined
+  )
+  const [attendeeRefund, setAttendeeRefund] = useState(
+    !!formDefaultValues.metadata.attendeeRefund
+  )
+  const [isFree, setIsFree] = useState(
+    Number(formDefaultValues.lock.keyPrice || 0) === 0
+  )
+
+  const methods = useForm<NewEventForm>({
+    mode: 'onChange',
+    shouldUnregister: false,
+    defaultValues: formDefaultValues,
   })
 
   const {
@@ -210,13 +292,15 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
     },
   })
 
-  const processAndSubmit = (values: any) => {
+  const processAndSubmit = (values: NewEventForm) => {
     if (attendeeRefund) {
       values.metadata.attendeeRefund = {
         amount: values.lock!.keyPrice,
         currency: values.lock!.currencyContractAddress,
         network: values.network,
       }
+    } else {
+      delete values.metadata.attendeeRefund
     }
     onSubmit(values)
   }
@@ -265,16 +349,20 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
                   description="This illustration will be used for your event page, as well as the NFT tickets by default. Use 512 by 512 pixels for best results."
                   isUploading={isUploading}
                   preview={metadataImage!}
-                  onChange={async (fileOrFileUrl: any) => {
+                  onChange={async (
+                    fileOrFileUrl: string | File[] | FormEvent<HTMLDivElement>
+                  ) => {
                     if (typeof fileOrFileUrl === 'string') {
                       setValue('metadata.image', fileOrFileUrl)
-                    } else {
+                    } else if (Array.isArray(fileOrFileUrl)) {
                       const items = await uploadImage(fileOrFileUrl[0])
                       const image = items?.[0]?.publicUrl
                       if (!image) {
                         return
                       }
                       setValue('metadata.image', image)
+                    } else {
+                      return
                     }
                     trigger('metadata.image')
                   }}
