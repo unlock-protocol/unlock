@@ -28,6 +28,7 @@ import { DefaultLayoutSkeleton } from './DefaultLayoutSkeleton'
 import { BannerlessLayoutSkeleton } from './BannerlessLayoutSkeleton'
 import { regexUrlPattern } from '~/utils/regexUrlPattern'
 import { EventsLayout } from '../Layout/constants'
+import { getCheckoutConfigLocks, shouldSyncEventImageToNft } from './utils'
 
 interface GeneralProps {
   event: Event
@@ -69,6 +70,36 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
 
   const { mutateAsync: uploadImage, isPending: isUploading } = useImageUpload()
 
+  const syncMatchingNftImages = async (nextEventImage: string) => {
+    const locks = getCheckoutConfigLocks(checkoutConfig)
+
+    await Promise.all(
+      locks.map(async ({ lockAddress, network }) => {
+        const { data: metadata } = await locksmith.lockMetadata(
+          network,
+          lockAddress
+        )
+
+        if (
+          !shouldSyncEventImageToNft({
+            nextEventImage,
+            previousEventImage: event.image,
+            currentNftImage: metadata?.image,
+          })
+        ) {
+          return
+        }
+
+        await locksmith.updateLockMetadata(network, lockAddress, {
+          metadata: {
+            ...metadata,
+            image: nextEventImage,
+          },
+        })
+      })
+    )
+  }
+
   const isSameDay = dayjs(event.ticket?.event_end_date).isSame(
     event.ticket?.event_start_date,
     'day'
@@ -91,14 +122,17 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
     layout: string
   }) => {
     await ToastHelper.promise(
-      locksmith.saveEventData({
-        data: formDataToMetadata({
-          ...event,
-          ...values,
-        }),
-        // @ts-expect-error
-        checkoutConfig,
-      }),
+      (async () => {
+        await locksmith.saveEventData({
+          data: formDataToMetadata({
+            ...event,
+            ...values,
+          }),
+          // @ts-expect-error
+          checkoutConfig,
+        })
+        await syncMatchingNftImages(values.image)
+      })(),
       {
         success: 'Event saved!',
         error:
