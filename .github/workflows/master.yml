@@ -169,6 +169,7 @@ jobs:
 
   cache_deps:
     needs: run-all-tests
+    continue-on-error: true
     uses: ./.github/workflows/_docker-cache.yml
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
