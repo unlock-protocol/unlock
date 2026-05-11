@@ -10,6 +10,8 @@ interface ReceiptDetailsProps {
   tokenId?: string
 }
 
+type PurchaserDetails = Partial<Receipt & { email?: string }>
+
 export const getSingleReceiptDetails = async ({
   hash,
   network,
@@ -37,9 +39,7 @@ const getPurchaserDetails = async ({
   lockAddress,
   network,
   hash,
-}: ReceiptDetailsProps): Promise<Partial<
-  Receipt & { email?: string }
-> | null> => {
+}: ReceiptDetailsProps): Promise<PurchaserDetails | null> => {
   const purchaserDetails = await Receipt.findOne({
     where: {
       network,
@@ -51,7 +51,9 @@ const getPurchaserDetails = async ({
   // return purchaser metadata details there is not stored data
   if (!purchaserDetails) {
     // get purchaser metadata details
-    let metadata: any
+    let metadata:
+      | { userMetadata?: { protected?: Record<string, unknown> } }
+      | undefined
     const receipt = await getSingleReceiptDetails({ hash, network })
     if (receipt?.payer) {
       metadata = await getMetadata(lockAddress, receipt.payer, true)
@@ -93,8 +95,8 @@ export const getReceiptDetails = async ({
   hash,
 }: ReceiptDetailsProps): Promise<{
   supplier: ReceiptBase | null
-  purchaser: Partial<Receipt> | null
-  receipt: any
+  purchaser: PurchaserDetails | null
+  receipt: Awaited<ReturnType<typeof getSingleReceiptDetails>>
 }> => {
   const purchaserDetails = await getPurchaserDetails({
     lockAddress,

@@ -1,13 +1,19 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
-import { locksmith } from '~/config/locksmith'
+import { config } from '~/config/app'
+import { locksmith, locksmithClient } from '~/config/locksmith'
 import { graphService } from '~/config/subgraph'
 
 interface ReceiptProps {
   network: number
   lockAddress: string
   hash: string
+}
+
+interface EmailReceiptProps extends ReceiptProps {
+  content: string
+  subject: string
 }
 
 interface GetReceiptProps {
@@ -114,6 +120,25 @@ export const useGetReceipt = ({ lockAddress, network, hash }: ReceiptProps) => {
     enabled: !!lockAddress && !!network,
   })
 }
+
+export const useEmailReceipt = ({ lockAddress, network, hash }: ReceiptProps) =>
+  useMutation({
+    mutationFn: async ({
+      content,
+      subject,
+    }: Pick<EmailReceiptProps, 'content' | 'subject'>) => {
+      const response = await locksmithClient.post(
+        `${config.locksmithHost}/v2/receipts/${network}/${ethers.getAddress(
+          lockAddress
+        )}/${hash}/email`,
+        {
+          content,
+          subject,
+        }
+      )
+      return response.data
+    },
+  })
 
 export const useGetReceiptsBase = ({
   network,

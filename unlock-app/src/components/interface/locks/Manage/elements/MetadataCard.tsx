@@ -3,7 +3,9 @@ import {
   Modal,
   Detail,
   AddressInput,
+  Input,
   isAddressOrEns,
+  TextBox,
   Tooltip,
 } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
@@ -15,7 +17,11 @@ import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import { ADDRESS_ZERO, MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
 import { durationAsText } from '~/utils/durations'
 import { locksmith } from '~/config/locksmith'
-import { receiptsUrl, useGetReceiptsForKey } from '~/hooks/useReceipts'
+import {
+  receiptsUrl,
+  useEmailReceipt,
+  useGetReceiptsForKey,
+} from '~/hooks/useReceipts'
 import Link from 'next/link'
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
 import { addressMinify } from '~/utils/strings'
@@ -239,6 +245,111 @@ const ChangeManagerModal = ({
     </>
   )
 }
+
+interface EmailReceiptModalProps {
+  isOpen: boolean
+  setIsOpen: (isOpen: boolean) => void
+  lockAddress: string
+  lockName?: string
+  network: number
+  receiptHash: string
+  receiptUrl: string
+}
+
+interface EmailReceiptForm {
+  content: string
+  subject: string
+}
+
+const EmailReceiptModal = ({
+  isOpen,
+  setIsOpen,
+  lockAddress,
+  lockName,
+  network,
+  receiptHash,
+  receiptUrl,
+}: EmailReceiptModalProps) => {
+  const keychainUrl = new URL('/keychain', receiptUrl).toString()
+  const defaultSubject = `Your requested receipt for ${
+    lockName || 'your membership'
+  }`
+  const defaultContent = `To access your receipt, [open the receipt page](${receiptUrl}). You can also manage your membership from [Unlock's Keychain](${keychainUrl}).`
+  const { mutateAsync: emailReceipt, isPending } = useEmailReceipt({
+    lockAddress,
+    network,
+    hash: receiptHash,
+  })
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<EmailReceiptForm>({
+    defaultValues: {
+      subject: defaultSubject,
+      content: defaultContent,
+    },
+  })
+
+  useEffect(() => {
+    if (isOpen) {
+      reset({
+        subject: defaultSubject,
+        content: defaultContent,
+      })
+    }
+  }, [defaultContent, defaultSubject, isOpen, reset])
+
+  const onSubmit = async (values: EmailReceiptForm) => {
+    await ToastHelper.promise(emailReceipt(values), {
+      success: 'Receipt email sent',
+      loading: 'Sending receipt email...',
+      error: 'We could not send the receipt email.',
+    })
+    setIsOpen(false)
+  }
+
+  return (
+    <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+      <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)}>
+        <header>
+          <h3 className="text-xl font-semibold">Email receipt</h3>
+        </header>
+        <Input
+          label="Subject"
+          error={errors.subject?.message}
+          {...register('subject', {
+            required: 'Subject is required',
+          })}
+        />
+        <TextBox
+          rows={5}
+          label="Message"
+          error={errors.content?.message}
+          {...register('content', {
+            required: 'Message is required',
+          })}
+        />
+        <div className="flex justify-end gap-3">
+          <Button
+            type="button"
+            variant="outlined-primary"
+            disabled={isPending}
+            onClick={() => setIsOpen(false)}
+          >
+            Cancel
+          </Button>
+          <Button type="submit" loading={isPending}>
+            Send email
+          </Button>
+        </div>
+      </form>
+    </Modal>
+  )
+}
+
 export const MetadataCard = ({
   metadata,
   owner,
@@ -252,6 +363,7 @@ export const MetadataCard = ({
   const [data, setData] = useState(metadata)
 
   const [addEmailModalOpen, setAddEmailModalOpen] = useState(false)
+  const [emailReceiptModalOpen, setEmailReceiptModalOpen] = useState(false)
 
   const items = Object.entries(data || {}).filter(([key]) => {
     return !keysToIgnore.includes(key)
@@ -333,6 +445,15 @@ export const MetadataCard = ({
   }
 
   const metadataPageUrl = `/locks/metadata?lockAddress=${lockAddress}&network=${network}&keyId=${tokenId}`
+  const receiptHash = receipts?.[0]?.receipt?.id
+  const receiptPageUrl =
+    receipts?.length > 0
+      ? receiptsUrl({
+          lockAddress,
+          network,
+          receipts,
+        })
+      : ''
 
   const ownerIsManager = owner?.toLowerCase() === manager?.toLowerCase()
 
@@ -361,6 +482,17 @@ export const MetadataCard = ({
         extraDataItems={items as any}
         onEmailChange={onEmailChange}
       />
+      {receiptHash && receiptPageUrl && (
+        <EmailReceiptModal
+          isOpen={emailReceiptModalOpen}
+          setIsOpen={setEmailReceiptModalOpen}
+          lockAddress={lockAddress}
+          lockName={lockMetadata?.name}
+          network={network}
+          receiptHash={receiptHash}
+          receiptUrl={receiptPageUrl}
+        />
+      )}
 
       <div className="flex flex-col gap-3 md:flex-row">
         <Button variant="outlined-primary" size="small">
@@ -412,21 +544,33 @@ export const MetadataCard = ({
                       </Button>
 
                       {lockSettings?.sendEmail ? (
-                        SendEmailMapping[eventType as keyof LockType] && (
-                          <Button
-                            size="tiny"
-                            variant="outlined-primary"
-                            onClick={onSendQrCode}
-                            disabled={
-                              sendEmailMutation.isPending ||
-                              sendEmailMutation.isSuccess
-                            }
-                          >
-                            {sendEmailMutation.isSuccess
-                              ? 'Email sent'
-                              : SendEmailMapping[eventType as keyof LockType]}
-                          </Button>
-                        )
+                        <>
+                          {SendEmailMapping[eventType as keyof LockType] && (
+                            <Button
+                              size="tiny"
+                              variant="outlined-primary"
+                              onClick={onSendQrCode}
+                              disabled={
+                                sendEmailMutation.isPending ||
+                                sendEmailMutation.isSuccess
+                              }
+                            >
+                              {sendEmailMutation.isSuccess
+                                ? 'Email sent'
+                                : SendEmailMapping[eventType as keyof LockType]}
+                            </Button>
+                          )}
+                          {receiptHash && (
+                            <Button
+                              size="tiny"
+                              variant="outlined-primary"
+                              disabled={isLoadingReceipts}
+                              onClick={() => setEmailReceiptModalOpen(true)}
+                            >
+                              Email receipt
+                            </Button>
+                          )}
+                        </>
                       ) : (
                         <Button size="tiny" variant="outlined-primary" disabled>
                           Email are disabled
