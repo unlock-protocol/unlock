@@ -2,7 +2,8 @@
 
 import { MdOutlineTipsAndUpdates } from 'react-icons/md'
 import { Button } from '@unlock-protocol/ui'
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
+import { ZeroAddress } from 'ethers'
 import { ConnectWalletModal } from '../../ConnectWalletModal'
 import { LockDetailCard } from './elements/LockDetailCard'
 import { Members } from './elements/Members'
@@ -13,6 +14,7 @@ import {
   ApprovalStatus,
   ExpirationStatus,
   FilterBar,
+  RenewalStatus,
 } from './elements/FilterBar'
 import { useLockManager } from '~/hooks/useLockManager'
 import Link from 'next/link'
@@ -64,8 +66,37 @@ export const ManageLockContent = ({
     filterKey: 'owner',
     expiration: ExpirationStatus.ALL,
     approval: ApprovalStatus.MINTED,
+    renewal: RenewalStatus.ALL,
   })
   const [page, setPage] = useState(1)
+
+  const lock = centralizedLockData?.lock
+  const lockPrice = lock?.keyPrice ?? lock?.price
+  const currencyAddress = lock?.currencyContractAddress ?? lock?.tokenAddress
+  const lockVersion = lock?.publicLockVersion ?? lock?.version
+  const isRecurringLock =
+    !!lock &&
+    Number(lockPrice) > 0 &&
+    !!currencyAddress &&
+    currencyAddress !== ZeroAddress &&
+    Number(lockVersion) >= 11 &&
+    lock?.expirationDuration !== -1 &&
+    Number(lock?.expirationDuration) < 60 * 60 * 24 * 365 * 100
+
+  useEffect(() => {
+    if (!isRecurringLock) {
+      setFilters((currentFilters) => {
+        if (currentFilters.renewal === RenewalStatus.ALL) {
+          return currentFilters
+        }
+
+        return {
+          ...currentFilters,
+          renewal: RenewalStatus.ALL,
+        }
+      })
+    }
+  }, [isRecurringLock])
 
   // Handler for toggling airdrop modal
   const toggleAirdropKeys = useCallback(() => {
@@ -186,6 +217,7 @@ export const ManageLockContent = ({
                   setLoading={setLoading}
                   setPage={setPage}
                   page={page}
+                  showRenewalFilter={isRecurringLock}
                 />
 
                 {/* Members list component with centralized data */}

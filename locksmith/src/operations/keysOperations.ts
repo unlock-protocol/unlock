@@ -1,5 +1,5 @@
-import { keysByQuery } from '../graphql/datasource'
-import { SubgraphKey, SubgraphLock } from '@unlock-protocol/unlock-js'
+import { keysByQuery } from '../graphql/datasource/keysByQuery'
+import type { SubgraphKey, SubgraphLock } from '@unlock-protocol/unlock-js'
 import * as metadataOperations from './metadataOperations'
 import Fuse from 'fuse.js'
 import normalizer from '../utils/normalizer'
@@ -7,6 +7,71 @@ import { getUserAddressesMatchingData } from './userMetadataOperations'
 import { Rsvp } from '../models'
 import { PAGE_SIZE } from '@unlock-protocol/core'
 import { getWeb3Service } from '../initializers'
+import * as subscriptionOperations from './subscriptionOperations'
+
+export enum RenewalStatus {
+  ALL = 'all',
+  WILL_RENEW = 'will_renew',
+  NEEDS_APPROVAL = 'needs_approval',
+  INSUFFICIENT_BALANCE = 'insufficient_balance',
+  NOT_RENEWABLE = 'not_renewable',
+}
+
+type Subscription = Awaited<
+  ReturnType<typeof subscriptionOperations.getSubscriptionsForLockByOwner>
+>[number]
+
+const RENEWAL_FILTER_STATUSES = new Set<string>([
+  RenewalStatus.WILL_RENEW,
+  RenewalStatus.NEEDS_APPROVAL,
+  RenewalStatus.INSUFFICIENT_BALANCE,
+  RenewalStatus.NOT_RENEWABLE,
+])
+
+const toBigInt = (value?: string) => {
+  try {
+    return BigInt(value || 0)
+  } catch {
+    return BigInt(0)
+  }
+}
+
+export const getRenewalStatusForSubscriptions = (
+  subscriptions: Subscription[] = []
+) => {
+  if (subscriptions.length === 0) {
+    return RenewalStatus.NOT_RENEWABLE
+  }
+
+  let hasApproval = false
+  let hasBalance = false
+
+  for (const subscription of subscriptions) {
+    const approvedRenewals = toBigInt(subscription.approvedRenewals)
+    const possibleRenewals = toBigInt(subscription.possibleRenewals)
+
+    if (approvedRenewals > 0 && possibleRenewals > 0) {
+      return RenewalStatus.WILL_RENEW
+    }
+
+    hasApproval = hasApproval || approvedRenewals > 0
+    hasBalance = hasBalance || possibleRenewals > 0
+  }
+
+  if (!hasBalance) {
+    return RenewalStatus.INSUFFICIENT_BALANCE
+  }
+
+  if (!hasApproval) {
+    return RenewalStatus.NEEDS_APPROVAL
+  }
+
+  return RenewalStatus.NOT_RENEWABLE
+}
+
+const shouldFilterByRenewal = (renewal?: string) => {
+  return !!renewal && RENEWAL_FILTER_STATUSES.has(renewal)
+}
 
 const KEY_FILTER_MAPPING: { [key: string]: string } = {
   owner: 'keyholderAddress',
@@ -39,6 +104,87 @@ async function filterKeys(keys: any[], filters: any) {
   return fuse.remove((item: any) => {
     return item?.checkedInAt
   })
+}
+
+const getKeysForRenewalFilter = async ({
+  network,
+  addresses,
+  filters,
+}: {
+  network: number
+  addresses: string[]
+  filters: any
+}) => {
+  let lock: any
+  let after = filters.after || ''
+  let hasMore = true
+  const keys: Partial<SubgraphKey>[] = []
+
+  while (hasMore) {
+    const [currentLock] = await keysByQuery({
+      network,
+      addresses,
+      filters: {
+        ...filters,
+        page: 0,
+        max: 1000,
+        after,
+      },
+    })
+
+    if (!currentLock) {
+      break
+    }
+
+    lock = lock || currentLock
+    const currentKeys = currentLock.keys || []
+    keys.push(...currentKeys)
+
+    after = currentKeys[currentKeys.length - 1]?.tokenId || ''
+    hasMore = currentKeys.length === 1000 && !!after
+  }
+
+  if (!lock) {
+    return undefined
+  }
+
+  return {
+    ...lock,
+    keys,
+  }
+}
+
+const addRenewalStatus = async ({
+  keys,
+  network,
+  lockAddress,
+}: {
+  keys: any[]
+  network: number
+  lockAddress: string
+}) => {
+  return Promise.all(
+    keys.map(async (key) => {
+      if (!key?.token) {
+        return {
+          ...key,
+          renewalStatus: RenewalStatus.NOT_RENEWABLE,
+        }
+      }
+
+      const subscriptions =
+        await subscriptionOperations.getSubscriptionsForLockByOwner({
+          tokenId: `${key.token}`,
+          lockAddress,
+          network,
+        })
+
+      return {
+        ...key,
+        renewalStatus: getRenewalStatusForSubscriptions(subscriptions),
+      }
+    })
+  )
 }
 
 type Lock = Omit<Partial<SubgraphLock>, 'keys'> & {
@@ -140,6 +286,7 @@ export async function getKeysWithMetadata({
   let lock: any
   const limit = filters.max || PAGE_SIZE
   const page = filters.page || 0
+  const hasRenewalFilter = shouldFilterByRenewal(filters.renewal)
   if (['pending', 'denied'].indexOf(filters.approval) > -1) {
     const rsvps = await Rsvp.findAll({
       where: {
@@ -172,13 +319,19 @@ export async function getKeysWithMetadata({
     }
   } else {
     // Get from subgraph!
-    lock = (
-      await keysByQuery({
-        network,
-        addresses: [lockAddress],
-        filters: keysFilter,
-      })
-    )[0]
+    lock = hasRenewalFilter
+      ? await getKeysForRenewalFilter({
+          network,
+          addresses: [lockAddress],
+          filters: keysFilter,
+        })
+      : (
+          await keysByQuery({
+            network,
+            addresses: [lockAddress],
+            filters: keysFilter,
+          })
+        )[0]
   }
 
   // only lock manager can see metadata
@@ -191,9 +344,24 @@ export async function getKeysWithMetadata({
   }
 
   const keys = buildKeysWithMetadata(lock as Lock, metadataItems)
-  const filteredKeys = await filterKeys(keys, filters)
+  let filteredKeys = await filterKeys(keys, filters)
+  let total = lock.totalKeys
+
+  if (hasRenewalFilter) {
+    filteredKeys = (
+      await addRenewalStatus({
+        keys: filteredKeys,
+        network,
+        lockAddress,
+      })
+    ).filter((key) => key.renewalStatus === filters.renewal)
+
+    total = filteredKeys.length
+    filteredKeys = filteredKeys.slice(page * limit, (page + 1) * limit)
+  }
+
   return {
     keys: filteredKeys,
-    total: lock.totalKeys,
+    total,
   }
 }

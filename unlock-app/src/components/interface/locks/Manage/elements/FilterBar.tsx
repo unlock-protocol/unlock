@@ -15,6 +15,7 @@ interface FilterBarProps {
   lockAddress?: string
   hideExpirationFilter?: boolean
   hideApprovalFilter?: boolean
+  showRenewalFilter?: boolean
   setLockAddress?: (address: string) => void
   setFilters: (filters: FilterProps) => void
   setLoading?: (loading: boolean) => void
@@ -80,16 +81,34 @@ export enum ApprovalStatus {
   DENIED = 'denied',
 }
 
+export enum RenewalStatus {
+  ALL = 'all',
+  WILL_RENEW = 'will_renew',
+  NEEDS_APPROVAL = 'needs_approval',
+  INSUFFICIENT_BALANCE = 'insufficient_balance',
+  NOT_RENEWABLE = 'not_renewable',
+}
+
+const RENEWAL_STATUS_LABELS = {
+  [RenewalStatus.ALL]: 'All',
+  [RenewalStatus.WILL_RENEW]: 'Will renew',
+  [RenewalStatus.NEEDS_APPROVAL]: 'Needs approval',
+  [RenewalStatus.INSUFFICIENT_BALANCE]: 'Low balance',
+  [RenewalStatus.NOT_RENEWABLE]: 'Not renewable',
+}
+
 interface AttributeFilterProps {
   values: any
   currentValue: string
   onChange: (value: string) => void
+  labels?: Record<string, string>
 }
 
 const AttributeFilter = ({
   values,
   currentValue,
   onChange,
+  labels,
 }: AttributeFilterProps) => {
   return (
     <div className="flex gap-1 flex-wrap md:flex-nowrap">
@@ -105,7 +124,7 @@ const AttributeFilter = ({
               return onChange(value as string)
             }}
           >
-            {value}
+            {labels?.[value] || value}
           </Button>
         )
       })}
@@ -118,6 +137,7 @@ export const FilterBar = ({
   lockAddress,
   hideExpirationFilter = false,
   hideApprovalFilter = true,
+  showRenewalFilter = false,
   setLockAddress,
   setFilters,
   setLoading,
@@ -160,6 +180,9 @@ export const FilterBar = ({
   const [expandExpirationFilter, setExpandExpirationFilter] = useState(false)
   const [expandApprovalFilter, setExpandApprovalFilter] = useState(
     filters.approval !== ApprovalStatus.MINTED
+  )
+  const [expandRenewalFilter, setExpandRenewalFilter] = useState(
+    filters.renewal !== RenewalStatus.ALL
   )
 
   const filterOptions = FILTER_ITEMS.filter((filter: Filter) => {
@@ -252,12 +275,45 @@ export const FilterBar = ({
               onChange={(approval: string) => {
                 setFiltersAndResetPage({
                   approval: approval as ApprovalStatus,
+                  renewal:
+                    approval === ApprovalStatus.MINTED
+                      ? filters.renewal
+                      : RenewalStatus.ALL,
                 })
               }}
             />
           )}
         </div>
       )}
+
+      {showRenewalFilter && filters.approval === ApprovalStatus.MINTED && (
+        <div className="flex flex-row gap-2 items-start md:items-center md:h-6">
+          <Button
+            className="justify-start"
+            variant="borderless"
+            size="small"
+            onClick={() => setExpandRenewalFilter(!expandRenewalFilter)}
+          >
+            <div className="w-24 md:w-fit  flex items-center gap-1">
+              <FilterIcon size={18} />
+              <span>Renewal {expandRenewalFilter ? ':' : ''}</span>
+            </div>
+          </Button>
+          {expandRenewalFilter && (
+            <AttributeFilter
+              values={RenewalStatus}
+              labels={RENEWAL_STATUS_LABELS}
+              currentValue={filters.renewal}
+              onChange={(renewal: string) => {
+                setFiltersAndResetPage({
+                  renewal: renewal as RenewalStatus,
+                })
+              }}
+            />
+          )}
+        </div>
+      )}
+
       <div className="flex flex-row gap-2 items-start md:items-center md:h-6">
         <Button
           className="justify-start"

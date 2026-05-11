@@ -4,7 +4,7 @@ import { ImageBar } from './ImageBar'
 import { MemberCard as DefaultMemberCard, MemberCardProps } from './MemberCard'
 import { paginate } from '~/utils/pagination'
 import { PaginationBar } from './PaginationBar'
-import { ApprovalStatus, ExpirationStatus } from './FilterBar'
+import { ApprovalStatus, ExpirationStatus, RenewalStatus } from './FilterBar'
 import { graphService } from '~/config/subgraph'
 import { locksmith } from '~/config/locksmith'
 import { Placeholder } from '@unlock-protocol/ui'
@@ -43,6 +43,7 @@ export interface FilterProps {
   filterKey: string
   expiration: ExpirationStatus
   approval: ApprovalStatus
+  renewal: RenewalStatus
 }
 
 export interface MembersProps {
@@ -84,7 +85,7 @@ const getMembers = async (
   filters: FilterProps,
   page: number
 ) => {
-  const { query, filterKey, expiration, approval } = filters
+  const { query, filterKey, expiration, approval, renewal } = filters
   const response = await locksmith.keysByPage(
     network,
     lockAddress,
@@ -92,6 +93,7 @@ const getMembers = async (
     filterKey,
     expiration,
     approval,
+    renewal,
     page - 1, // API starts at 0
     PAGE_SIZE
   )
@@ -122,6 +124,7 @@ export const Members = ({
     filterKey: 'owner',
     expiration: ExpirationStatus.ALL,
     approval: ApprovalStatus.MINTED,
+    renewal: RenewalStatus.ALL,
   },
   MemberCard = DefaultMemberCard,
   NoMemberWithFilter = DefaultNoMemberWithFilter,
@@ -175,6 +178,7 @@ export const Members = ({
       filters.filterKey,
       filters.expiration,
       filters.approval,
+      filters.renewal,
     ],
     queryFn: async () => {
       const membersResponse = await getMembers(
@@ -237,6 +241,7 @@ export const Members = ({
   const hasActiveFilter =
     filters?.approval !== 'minted' ||
     filters?.expiration !== 'all' ||
+    filters?.renewal !== 'all' ||
     filters?.filterKey !== 'owner' ||
     filters?.query?.length > 0
 

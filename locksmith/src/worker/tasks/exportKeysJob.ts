@@ -13,6 +13,7 @@ export const ExportKeysJobPayload = z.object({
   filterKey: z.string(),
   expiration: z.string(),
   approval: z.string(),
+  renewal: z.string().optional(),
   loggedInUserAddress: z.string(),
 })
 // TODO: add progress status
@@ -32,6 +33,7 @@ const exportKeysJob: Task = async (payload) => {
       filterKey: parsed.filterKey,
       expiration: parsed.expiration,
       approval: parsed.approval,
+      renewal: parsed.renewal ?? keysOperations.RenewalStatus.ALL,
       max,
       after: allKeys[allKeys.length - 1]?.token,
     }
