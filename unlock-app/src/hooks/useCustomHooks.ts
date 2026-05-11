@@ -44,9 +44,9 @@ export function useCustomHook({
     isPending,
     refetch,
   } = useQuery({
-    queryKey: ['getHookValues', lockAddress, network],
+    queryKey: ['getHookValues', lockAddress, network, version?.toString()],
     queryFn: getHookValues,
-    enabled: lockAddress?.length > 0,
+    enabled: lockAddress?.length > 0 && version !== undefined,
   })
 
   return {
