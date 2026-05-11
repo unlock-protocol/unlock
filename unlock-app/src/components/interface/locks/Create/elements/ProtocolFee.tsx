@@ -7,7 +7,7 @@ export const ProtocolFee = ({ network }: { network: number }) => {
   const { data: protocolFee } = useProtocolFee(network)
   if (protocolFee) {
     return (
-      <p>
+      <p className="text-sm leading-5 text-brand-dark">
         There is currently a {protocolFee}%{' '}
         <Link
           className="underline"
