@@ -1725,6 +1725,47 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
+  /v2/api/ticket/{network}/{lockAddress}/{keyId}/membership-email:
+    post:
+      operationId: emailMembershipDetails
+      security:
+        - User: ['LockManager']
+      description: Send membership details and receipt PDFs by email.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                  description: Custom message to include in the email.
+      responses:
+        200:
+          description: Email sent.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent:
+                    type: boolean
+                    default: true
+                    nullable: false
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
   /v2/api/ticket/{network}/{lockAddress}/{keyId}/qr:
     get:
       operationId: ticketQRCode

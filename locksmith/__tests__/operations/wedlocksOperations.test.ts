@@ -124,6 +124,59 @@ describe('Wedlocks operations', () => {
       })
     })
 
+    it('should include custom content and extra attachments', async () => {
+      expect.assertions(1)
+
+      const lockAddress = '0x95de5F777A3e283bFf0c47374998E10D8A2183C7'
+      const ownerAddress = '0x70997970C51812dc3A010C7d01b50e0d17dc79C8'
+      const lockName = 'Alice in Wonderland'
+
+      await addMetadata({
+        chain: network,
+        tokenAddress: lockAddress,
+        userAddress: ownerAddress,
+        data: {
+          protected: {
+            email: 'julien@unlock-protocol.com',
+          },
+        },
+      })
+      await notifyNewKeyToWedlocks(
+        {
+          lock: {
+            address: lockAddress,
+            name: lockName,
+          },
+          owner: ownerAddress,
+          manager: ownerAddress,
+        },
+        network,
+        {
+          customContent: 'Membership details',
+          attachments: [
+            {
+              path: 'data:application/pdf;base64,abc123',
+              filename: 'receipt_1.pdf',
+            },
+          ],
+        }
+      )
+
+      const body = JSON.parse(vi.mocked(fetch).mock.calls[0][1]!.body as string)
+
+      expect(body).toMatchObject({
+        params: {
+          customContent: '<p>Membership details</p>\n',
+        },
+        attachments: [
+          {
+            path: 'data:application/pdf;base64,abc123',
+            filename: 'receipt_1.pdf',
+          },
+        ],
+      })
+    })
+
     it('should not notify wedlocks if there is no metadata', async () => {
       expect.assertions(1)
 

@@ -14,7 +14,8 @@ import { useLockManager } from '~/hooks/useLockManager'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import { ADDRESS_ZERO, MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
 import { durationAsText } from '~/utils/durations'
-import { locksmith } from '~/config/locksmith'
+import { locksmith, locksmithClient } from '~/config/locksmith'
+import { config } from '~/config/app'
 import { receiptsUrl, useGetReceiptsForKey } from '~/hooks/useReceipts'
 import Link from 'next/link'
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
@@ -239,6 +240,65 @@ const ChangeManagerModal = ({
     </>
   )
 }
+
+const EmailMembershipDetailsModal = ({
+  isOpen,
+  setIsOpen,
+  defaultContent,
+  loading,
+  onSubmit,
+}: {
+  isOpen: boolean
+  setIsOpen: (status: boolean) => void
+  defaultContent: string
+  loading: boolean
+  onSubmit: (values: { content: string }) => Promise<void>
+}) => {
+  const { register, handleSubmit, reset } = useForm<{ content: string }>({
+    defaultValues: {
+      content: defaultContent,
+    },
+  })
+
+  useEffect(() => {
+    if (isOpen) {
+      reset({
+        content: defaultContent,
+      })
+    }
+  }, [defaultContent, isOpen, reset])
+
+  return (
+    <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+      <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
+        <span className="mr-0 font-semibold text-md">
+          Email membership details
+        </span>
+        <textarea
+          className="w-full min-h-36 rounded-lg border border-gray-300 p-3 text-sm text-gray-900 focus:border-brand-ui-primary focus:outline-none focus:ring-1 focus:ring-brand-ui-primary"
+          disabled={loading}
+          {...register('content', {
+            required: true,
+          })}
+        />
+        <div className="flex items-center justify-end gap-2">
+          <Button
+            variant="secondary"
+            type="button"
+            onClick={() => setIsOpen(false)}
+            disabled={loading}
+          >
+            Abort
+          </Button>
+          <Button type="submit" disabled={loading} loading={loading}>
+            Send email
+          </Button>
+        </div>
+      </form>
+    </Modal>
+  )
+}
+
 export const MetadataCard = ({
   metadata,
   owner,
@@ -252,6 +312,8 @@ export const MetadataCard = ({
   const [data, setData] = useState(metadata)
 
   const [addEmailModalOpen, setAddEmailModalOpen] = useState(false)
+  const [emailMembershipDetailsModalOpen, setEmailMembershipDetailsModalOpen] =
+    useState(false)
 
   const items = Object.entries(data || {}).filter(([key]) => {
     return !keysToIgnore.includes(key)
@@ -269,6 +331,9 @@ export const MetadataCard = ({
     Object.entries(types ?? {}).find(([, value]) => value === true) ?? []
 
   const { lockAddress, token: tokenId } = data ?? {}
+  const membershipName =
+    lockMetadata?.name || data?.lockName || 'your membership'
+  const defaultMembershipEmailContent = `To access your receipt for ${membershipName}, visit Unlock's Keychain. From Unlock's Keychain, you can view, edit, and print a PDF of your receipt.`
 
   const { isManager: isLockManager } = useLockManager({
     lockAddress,
@@ -306,6 +371,17 @@ export const MetadataCard = ({
     mutationFn: sendEmail,
   })
 
+  const sendMembershipDetailsMutation = useMutation({
+    mutationFn: ({ content }: { content: string }) => {
+      return locksmithClient.post(
+        `${config.locksmithHost}/v2/api/ticket/${network}/${lockAddress}/${tokenId}/membership-email`,
+        {
+          content,
+        }
+      )
+    },
+  })
+
   const onSendQrCode = async () => {
     if (!network) return
 
@@ -316,6 +392,19 @@ export const MetadataCard = ({
 
       error: 'We could not send email.',
     })
+  }
+
+  const onSendMembershipDetails = async (values: { content: string }) => {
+    if (!network) return
+
+    const sendPromise = sendMembershipDetailsMutation.mutateAsync(values)
+    ToastHelper.promise(sendPromise, {
+      success: 'Email sent',
+      loading: 'Sending email...',
+      error: 'We could not send email.',
+    })
+    await sendPromise
+    setEmailMembershipDetailsModalOpen(false)
   }
 
   const hasEmail = Object.entries(data || {})
@@ -360,6 +449,14 @@ export const MetadataCard = ({
         hasEmail={hasEmail}
         extraDataItems={items as any}
         onEmailChange={onEmailChange}
+      />
+
+      <EmailMembershipDetailsModal
+        isOpen={emailMembershipDetailsModalOpen}
+        setIsOpen={setEmailMembershipDetailsModalOpen}
+        defaultContent={defaultMembershipEmailContent}
+        loading={sendMembershipDetailsMutation.isPending}
+        onSubmit={onSendMembershipDetails}
       />
 
       <div className="flex flex-col gap-3 md:flex-row">
@@ -412,21 +509,37 @@ export const MetadataCard = ({
                       </Button>
 
                       {lockSettings?.sendEmail ? (
-                        SendEmailMapping[eventType as keyof LockType] && (
+                        <>
+                          {SendEmailMapping[eventType as keyof LockType] && (
+                            <Button
+                              size="tiny"
+                              variant="outlined-primary"
+                              onClick={onSendQrCode}
+                              disabled={
+                                sendEmailMutation.isPending ||
+                                sendEmailMutation.isSuccess
+                              }
+                            >
+                              {sendEmailMutation.isSuccess
+                                ? 'Email sent'
+                                : SendEmailMapping[eventType as keyof LockType]}
+                            </Button>
+                          )}
                           <Button
                             size="tiny"
                             variant="outlined-primary"
-                            onClick={onSendQrCode}
+                            onClick={() =>
+                              setEmailMembershipDetailsModalOpen(true)
+                            }
                             disabled={
-                              sendEmailMutation.isPending ||
-                              sendEmailMutation.isSuccess
+                              isLoadingReceipts ||
+                              !receipts?.length ||
+                              sendMembershipDetailsMutation.isPending
                             }
                           >
-                            {sendEmailMutation.isSuccess
-                              ? 'Email sent'
-                              : SendEmailMapping[eventType as keyof LockType]}
+                            Email membership details
                           </Button>
-                        )
+                        </>
                       ) : (
                         <Button size="tiny" variant="outlined-primary" disabled>
                           Email are disabled
