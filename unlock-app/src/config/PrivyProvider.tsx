@@ -26,6 +26,32 @@ import { MigrationModal } from '~/components/legacy-auth/MigrationNotificationMo
 import { isInIframe } from '~/utils/iframe'
 import { setLocalStorageItem } from '~/hooks/useAppStorage'
 
+type PrivyLoginMethod = 'wallet' | 'email' | 'google' | 'farcaster'
+
+export const getPrivyLoginMethods = ({
+  isInPaywall,
+  isMigratePage,
+  isTransferPage,
+}: {
+  isInPaywall: boolean
+  isMigratePage: boolean
+  isTransferPage: boolean
+}): PrivyLoginMethod[] => {
+  if (isMigratePage) {
+    return ['email']
+  }
+
+  if (isTransferPage) {
+    return ['wallet']
+  }
+
+  if (isInPaywall) {
+    return ['wallet', 'email']
+  }
+
+  return ['wallet', 'email', 'google', 'farcaster']
+}
+
 const findEvmWallet = (user: User): WalletWithMetadata | undefined =>
   user.linkedAccounts.find(
     (a): a is WalletWithMetadata =>
@@ -251,6 +277,8 @@ export const Privy = ({ children }: { children: ReactNode }) => {
   const isMigratePage =
     typeof window !== 'undefined' &&
     window.location.pathname.includes('migrate-user')
+  const isTransferPage =
+    typeof window !== 'undefined' && window.location.pathname === '/transfer'
 
   // Any iframe context is an embedded paywall — Google OAuth and Farcaster fail on
   // third-party domains, but wallet and email login still work fine.
@@ -260,11 +288,11 @@ export const Privy = ({ children }: { children: ReactNode }) => {
     <AuthenticationContext.Provider value={{ account, setAccount }}>
       <PrivyProvider
         config={{
-          loginMethods: isMigratePage
-            ? ['email']
-            : isInPaywall
-              ? ['wallet', 'email']
-              : ['wallet', 'email', 'google', 'farcaster'],
+          loginMethods: getPrivyLoginMethods({
+            isInPaywall,
+            isMigratePage,
+            isTransferPage,
+          }),
           embeddedWallets: {
             createOnLogin: 'off',
           },

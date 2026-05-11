@@ -14,6 +14,7 @@ import { useTransferFee } from '~/hooks/useTransferFee'
 import { useQuery } from '@tanstack/react-query'
 import { useProvider } from '~/hooks/useProvider'
 import { useReCaptcha } from 'next-recaptcha-v3'
+import { useEmbeddedWallet } from '~/hooks/useEmbeddedWallet'
 
 interface SendTransferFormProps {
   createTransferCode: ReturnType<typeof useTransferCode>['createTransferCode']
@@ -96,6 +97,8 @@ export const ConfirmTransferForm = ({
   const web3Service = useWeb3Service()
   const manager = new KeyManager(config.networks)
   const { getWalletService } = useProvider()
+  const { isEmbeddedWallet, isLoading: isWalletTypeLoading } =
+    useEmbeddedWallet()
   const {
     handleSubmit,
     register,
@@ -112,6 +115,13 @@ export const ConfirmTransferForm = ({
   const { transferDone } = useTransferDone()
 
   const onSubmit = async ({ transferCode }: ConfirmTransferData) => {
+    if (isEmbeddedWallet) {
+      ToastHelper.error(
+        'Transfers to Unlock accounts are not supported. Please connect an external wallet.'
+      )
+      return
+    }
+
     const walletService = await getWalletService(network)
     const signer = walletService.signer
 
@@ -189,6 +199,12 @@ export const ConfirmTransferForm = ({
           any existing NFT membership, it&apos;s user data will be overwritten.
         </p>
       </div>
+      {isEmbeddedWallet && (
+        <div className="p-4 text-sm text-red-700 border border-red-200 rounded-lg bg-red-50">
+          Transfers to Unlock accounts are not supported. Sign out and connect
+          an external wallet to continue.
+        </div>
+      )}
       <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)}>
         <Input
           {...register('transferCode', {
@@ -211,7 +227,11 @@ export const ConfirmTransferForm = ({
           <Button variant="outlined-primary" onClick={onCancel}>
             Cancel
           </Button>
-          <Button loading={isSubmitting} disabled={!isValid} type="submit">
+          <Button
+            loading={isSubmitting}
+            disabled={!isValid || isWalletTypeLoading || isEmbeddedWallet}
+            type="submit"
+          >
             Confirm Transfer
           </Button>
         </div>

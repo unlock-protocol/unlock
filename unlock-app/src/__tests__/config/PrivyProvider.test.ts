@@ -34,7 +34,10 @@ vi.mock('axios', () => ({
 import { getAccessToken as privyGetAccessToken } from '@privy-io/react-auth'
 import { locksmith } from '~/config/locksmith'
 import { saveAccessToken } from '~/utils/session'
-import { onSignedInWithPrivy } from '~/config/PrivyProvider'
+import {
+  getPrivyLoginMethods,
+  onSignedInWithPrivy,
+} from '~/config/PrivyProvider'
 
 const mockPrivyGetAccessToken = vi.mocked(privyGetAccessToken)
 const mockLoginWithPrivy = vi.mocked(locksmith.loginWithPrivy)
@@ -147,5 +150,37 @@ describe('onSignedInWithPrivy', () => {
     expect(mockLoginWithPrivy).toHaveBeenCalled()
     expect(mockSaveAccessToken).not.toHaveBeenCalled()
     expect(result).toBeNull()
+  })
+})
+
+describe('getPrivyLoginMethods', () => {
+  it('only allows wallet login on the transfer page', () => {
+    expect(
+      getPrivyLoginMethods({
+        isInPaywall: false,
+        isMigratePage: false,
+        isTransferPage: true,
+      })
+    ).toEqual(['wallet'])
+  })
+
+  it('keeps migration pages email-only', () => {
+    expect(
+      getPrivyLoginMethods({
+        isInPaywall: false,
+        isMigratePage: true,
+        isTransferPage: true,
+      })
+    ).toEqual(['email'])
+  })
+
+  it('keeps embedded paywalls limited to wallet and email', () => {
+    expect(
+      getPrivyLoginMethods({
+        isInPaywall: true,
+        isMigratePage: false,
+        isTransferPage: false,
+      })
+    ).toEqual(['wallet', 'email'])
   })
 })
