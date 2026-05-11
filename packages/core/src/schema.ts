@@ -162,6 +162,15 @@ export const PaywallConfig = z
         description: 'Title for your checkout. This will show up on the head.',
       })
       .optional(),
+    accentColor: z
+      .string({
+        description:
+          'Optional checkout accent color as a hex value, used for primary buttons, links, borders, and highlights.',
+      })
+      .regex(/^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/, {
+        message: 'Accent color must be a 3 or 6 digit hex value.',
+      })
+      .optional(),
     icon: z
       .string({
         description:

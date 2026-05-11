@@ -58,6 +58,20 @@ export const isValidIcon = (icon) => {
   return true
 }
 
+export const isValidAccentColor = (accentColor) => {
+  if (typeof accentColor !== 'string') {
+    log('The paywall config\'s "accentColor" property is not a string.')
+    return false
+  }
+
+  if (!/^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(accentColor)) {
+    log('The paywall config\'s "accentColor" property is not a hex color.')
+    return false
+  }
+
+  return true
+}
+
 export const isValidCTA = (callToAction) => {
   const callsToAction = [
     'default',
@@ -198,6 +212,11 @@ export const isValidPaywallConfig = (config) => {
       log('The paywall config\'s "icon" is not valid.')
       return false
     }
+  }
+
+  if (config.accentColor && !isValidAccentColor(config.accentColor)) {
+    log('The paywall config\'s "accentColor" is not valid.')
+    return false
   }
 
   if (

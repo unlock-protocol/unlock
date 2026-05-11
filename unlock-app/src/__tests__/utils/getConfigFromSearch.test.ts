@@ -15,6 +15,7 @@ const validConfig = {
   icon: 'http://image.com/image.tiff',
   minRecipients: 1,
   maxRecipients: 5,
+  accentColor: '#ff3366',
 }
 
 describe('getPaywallConfigFromQuery', () => {
@@ -48,17 +49,35 @@ describe('getPaywallConfigFromQuery', () => {
         skipRecipient: false,
         minRecipients: 1,
         maxRecipients: 5,
+        accentColor: '#ff3366',
       })
     )
   })
 
+  it('should reject a paywall config with an invalid accent color', () => {
+    expect.assertions(1)
+    expect(
+      getPaywallConfigFromQuery({
+        paywallConfig: JSON.stringify({
+          ...validConfig,
+          accentColor: 'javascript:alert(1)',
+        }),
+      })
+    ).toBeUndefined()
+  })
+
   it('should handle ReadonlyURLSearchParams input', () => {
     expect.assertions(1)
-    const searchParams = new URLSearchParams({ lock: '0x123', network: '1' })
+    const searchParams = new URLSearchParams({
+      lock: '0x123',
+      network: '1',
+      accentColor: '#0af',
+    })
     const result = getPaywallConfigFromQuery(searchParams)
     expect(result).toEqual({
       title: 'Unlock Protocol',
       network: 1,
+      accentColor: '#0af',
       locks: {
         '0x123': {},
       },

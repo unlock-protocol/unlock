@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useMemo } from 'react'
+import type { CSSProperties } from 'react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { checkoutMachine } from './checkoutMachine'
 import { Quantity } from './Quantity'
@@ -63,6 +64,16 @@ export function Checkout({
   useEffect(() => {
     console.debug('Unlock paywall config', paywallConfig)
   }, [paywallConfig])
+
+  const accentColorStyle = useMemo(() => {
+    if (!paywallConfig.accentColor) {
+      return undefined
+    }
+
+    return {
+      '--unlock-brand-ui-primary': paywallConfig.accentColor,
+    } as CSSProperties
+  }, [paywallConfig.accentColor])
 
   useEffect(() => {
     if (paywallConfigChanged) {
@@ -244,7 +255,10 @@ export function Checkout({
   }, [matched])
 
   return (
-    <div className="bg-white z-10  shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem] text-left">
+    <div
+      className="bg-white z-10  shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem] text-left"
+      style={accentColorStyle}
+    >
       <TopNavigation
         onClose={!paywallConfig?.persistentCheckout ? onClose : undefined}
         onBack={onBack}

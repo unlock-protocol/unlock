@@ -23,7 +23,7 @@ module.exports = {
           beige: '#FFFDF8',
           yellow: '#F2C65E',
           ui: {
-            primary: '#603DEB',
+            primary: 'var(--unlock-brand-ui-primary, #603DEB)',
             secondary: '#020207',
           },
         },
