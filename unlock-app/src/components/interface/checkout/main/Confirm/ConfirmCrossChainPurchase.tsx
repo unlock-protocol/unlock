@@ -80,6 +80,11 @@ export function ConfirmCrossChainPurchase({
   const symbol = route.tokenPayment.isNative
     ? route.currency
     : route.tokenPayment.symbol
+  const estimatedTotal = `${formatNumber(
+    Number(
+      ethers.formatUnits(route.tokenPayment.amount, route.tokenPayment.decimals)
+    )
+  )} ${symbol}`
 
   const isLoading = isPricingDataLoading || isInitialDataLoading
 
@@ -180,17 +185,13 @@ export function ConfirmCrossChainPurchase({
         )}
 
         {pricingData && (
-          <Pricing
-            isCardEnabled={false}
-            keyPrice={`${formatNumber(
-              Number(
-                ethers.formatUnits(
-                  route.tokenPayment.amount,
-                  route.tokenPayment.decimals
-                )
-              )
-            )} ${symbol}`}
-          />
+          <div className="grid gap-2">
+            <Pricing isCardEnabled={false} keyPrice={estimatedTotal} />
+            <p className="text-sm text-gray-500">
+              Estimated cross-chain total quoted by {route.provider.name}.
+              Wallet gas may vary before confirmation.
+            </p>
+          </div>
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
