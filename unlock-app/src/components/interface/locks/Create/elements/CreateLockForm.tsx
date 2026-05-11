@@ -1,9 +1,10 @@
-import { useCallback, useState } from 'react'
+import { ReactNode, useCallback, useState } from 'react'
 import {
   Button,
   Combobox,
   Input,
   Select,
+  Tooltip,
   ToggleSwitch,
 } from '@unlock-protocol/ui'
 import { Token } from '@unlock-protocol/types'
@@ -20,6 +21,7 @@ import { useAvailableNetworks } from '~/utils/networks'
 import { SelectToken } from './SelectToken'
 import { ProtocolFee } from './ProtocolFee'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { FiInfo as InfoIcon } from 'react-icons/fi'
 
 export interface LockFormProps {
   name: string
@@ -41,6 +43,22 @@ interface CreateLockFormProps {
   isLoading?: boolean
   defaultOptions?: any
 }
+
+interface TooltipLabelProps {
+  children: ReactNode
+  tip: string
+}
+
+const TooltipLabel = ({ children, tip }: TooltipLabelProps) => (
+  <span className="inline-flex items-center gap-1">
+    <span>{children}</span>
+    <Tooltip tip={tip} label={tip} side="right">
+      <span className="inline-flex text-gray-500">
+        <InfoIcon aria-hidden size={16} />
+      </span>
+    </Tooltip>
+  </span>
+)
 
 export const NetworkDescription = ({ network }: { network: number }) => {
   const { description, url, faucets, nativeCurrency } = networks[network!]
@@ -181,6 +199,10 @@ export const CreateLockForm = ({
                 label="Network:"
                 tooltip={
                   <p className="py-2">
+                    Choose where the membership contract will be deployed. This
+                    affects gas fees, available currencies, and which wallets
+                    can use the membership.
+                    <br />
                     Unlock supports{' '}
                     <Link
                       target="_blank"
@@ -203,9 +225,13 @@ export const CreateLockForm = ({
                 moreOptions={additionalNetworkOptions}
               />
             )}
-            <div className="relative">
+            <div className="relative flex flex-col gap-1">
+              <label className="block px-1 text-base" htmlFor="">
+                <TooltipLabel tip="This is the public name for the membership contract and the NFT members receive.">
+                  Name:
+                </TooltipLabel>
+              </label>
               <Input
-                label="Name:"
                 autoComplete="off"
                 placeholder="Lock Name"
                 {...register('name', {
@@ -222,10 +248,12 @@ export const CreateLockForm = ({
             <div className="flex flex-col gap-1">
               <div className="flex items-center justify-between">
                 <label className="block px-1 text-base" htmlFor="">
-                  {defaultOptions.expirationDuration?.label
-                    ? defaultOptions.expirationDuration.label
-                    : 'Membership duration'}
-                  :
+                  <TooltipLabel tip="This is how long each purchased membership remains valid before it expires or needs to be renewed.">
+                    {defaultOptions.expirationDuration?.label
+                      ? defaultOptions.expirationDuration.label
+                      : 'Membership duration'}
+                    :
+                  </TooltipLabel>
                 </label>
                 {!defaultOptions.notUnlimited && (
                   <ToggleSwitch
@@ -279,7 +307,9 @@ export const CreateLockForm = ({
               <div className="flex flex-col gap-1">
                 <div className="flex items-center justify-between">
                   <label className="block px-1 text-base" htmlFor="">
-                    Number of memberships for sale:
+                    <TooltipLabel tip="This is the number of memberships buyers can mint from this lock. Managers can still airdrop memberships separately.">
+                      Number of memberships for sale:
+                    </TooltipLabel>
                   </label>
                   <ToggleSwitch
                     title="Unlimited"
@@ -320,7 +350,9 @@ export const CreateLockForm = ({
             <div className="relative flex flex-col gap-1">
               <div className="flex items-center justify-between">
                 <label className="px-1 mb-2 text-base" htmlFor="">
-                  Membership price:
+                  <TooltipLabel tip="Set the amount and currency buyers pay for one membership. Free memberships can still collect member details during checkout.">
+                    Membership price:
+                  </TooltipLabel>
                 </label>
                 {!defaultOptions.notFree && (
                   <ToggleSwitch
