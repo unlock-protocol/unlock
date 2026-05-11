@@ -17,7 +17,7 @@ import { Event, PaywallConfigType } from '@unlock-protocol/core'
 import { useEvent } from '~/hooks/useEvent'
 import { SettingEmail } from '~/components/interface/locks/Settings/elements/SettingEmail'
 import { FaUsers } from 'react-icons/fa'
-import { TbSettings } from 'react-icons/tb'
+import { TbCopy, TbSettings } from 'react-icons/tb'
 import { useEventVerifiers } from '~/hooks/useEventVerifiers'
 import { EventDefaultLayout } from './Layout/EventDefaultLayout'
 import { EventBannerlessLayout } from './Layout/EventBannerlessLayout'
@@ -123,6 +123,18 @@ export const EventDetails = ({
         <div className="flex flex-col-reverse px-4 md:px-0 md:flex-row-reverse gap-2 ">
           {isOrganizer && (
             <>
+              <Button
+                onClick={() => {
+                  router.push(
+                    `/event/new?clone=${encodeURIComponent(eventProp.slug)}`
+                  )
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <Icon icon={TbCopy} size={20} />
+                  <span>Clone event</span>
+                </div>
+              </Button>
               <Button
                 onClick={() => {
                   router.push(`/event/${eventProp.slug}/settings`)
