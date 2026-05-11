@@ -4,13 +4,14 @@ import { ImageBar } from './ImageBar'
 import { MemberCard as DefaultMemberCard, MemberCardProps } from './MemberCard'
 import { paginate } from '~/utils/pagination'
 import { PaginationBar } from './PaginationBar'
-import { ApprovalStatus, ExpirationStatus } from './FilterBar'
+import { ApprovalStatus, ExpirationStatus, RenewalStatus } from './FilterBar'
 import { graphService } from '~/config/subgraph'
-import { locksmith } from '~/config/locksmith'
+import { locksmith, locksmithClient } from '~/config/locksmith'
 import { Placeholder } from '@unlock-protocol/ui'
 import { PAGE_SIZE } from '@unlock-protocol/core'
 import { useBatchNameResolver } from '~/hooks/useNameResolver'
 import { useLockManager } from '~/hooks/useLockManager'
+import { config } from '~/config/app'
 
 /**
  * Default placeholder component when there are no members and no filters applied
@@ -43,6 +44,7 @@ export interface FilterProps {
   filterKey: string
   expiration: ExpirationStatus
   approval: ApprovalStatus
+  renewal: RenewalStatus
 }
 
 export interface MembersProps {
@@ -84,16 +86,23 @@ const getMembers = async (
   filters: FilterProps,
   page: number
 ) => {
-  const { query, filterKey, expiration, approval } = filters
-  const response = await locksmith.keysByPage(
-    network,
-    lockAddress,
-    query,
-    filterKey,
-    expiration,
-    approval,
-    page - 1, // API starts at 0
-    PAGE_SIZE
+  const { query, filterKey, expiration, approval, renewal } = filters
+  const response = await locksmithClient.get(
+    new URL(
+      `/v2/api/${network}/locks/${lockAddress}/keys-by-page`,
+      config.locksmithHost
+    ).toString(),
+    {
+      params: {
+        query,
+        filterKey,
+        expiration,
+        approval,
+        renewal,
+        page: page - 1, // API starts at 0
+        max: PAGE_SIZE,
+      },
+    }
   )
   return response.data
 }
@@ -122,6 +131,7 @@ export const Members = ({
     filterKey: 'owner',
     expiration: ExpirationStatus.ALL,
     approval: ApprovalStatus.MINTED,
+    renewal: RenewalStatus.ALL,
   },
   MemberCard = DefaultMemberCard,
   NoMemberWithFilter = DefaultNoMemberWithFilter,
@@ -175,6 +185,7 @@ export const Members = ({
       filters.filterKey,
       filters.expiration,
       filters.approval,
+      filters.renewal,
     ],
     queryFn: async () => {
       const membersResponse = await getMembers(
@@ -237,6 +248,7 @@ export const Members = ({
   const hasActiveFilter =
     filters?.approval !== 'minted' ||
     filters?.expiration !== 'all' ||
+    filters?.renewal !== RenewalStatus.ALL ||
     filters?.filterKey !== 'owner' ||
     filters?.query?.length > 0
 

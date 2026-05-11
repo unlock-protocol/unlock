@@ -15,6 +15,7 @@ interface FilterBarProps {
   lockAddress?: string
   hideExpirationFilter?: boolean
   hideApprovalFilter?: boolean
+  showRenewalFilter?: boolean
   setLockAddress?: (address: string) => void
   setFilters: (filters: FilterProps) => void
   setLoading?: (loading: boolean) => void
@@ -80,6 +81,15 @@ export enum ApprovalStatus {
   DENIED = 'denied',
 }
 
+export enum RenewalStatus {
+  ALL = 'all',
+  WILL_RENEW = 'will renew',
+  NEEDS_APPROVAL = 'needs approval',
+  BALANCE_LOW = 'balance low',
+  NEEDS_PURCHASE = 'needs purchase',
+  NOT_RENEWABLE = 'not renewable',
+}
+
 interface AttributeFilterProps {
   values: any
   currentValue: string
@@ -118,6 +128,7 @@ export const FilterBar = ({
   lockAddress,
   hideExpirationFilter = false,
   hideApprovalFilter = true,
+  showRenewalFilter = false,
   setLockAddress,
   setFilters,
   setLoading,
@@ -156,10 +167,25 @@ export const FilterBar = ({
     }
   }, [setLoading, isTyping])
 
+  useEffect(() => {
+    if (showRenewalFilter || filters.renewal === RenewalStatus.ALL) {
+      return
+    }
+
+    setFilters({
+      ...filters,
+      renewal: RenewalStatus.ALL,
+    })
+    setPage(1)
+  }, [filters, setFilters, setPage, showRenewalFilter])
+
   const [openSearch, setOpenSearch] = useState(false)
   const [expandExpirationFilter, setExpandExpirationFilter] = useState(false)
   const [expandApprovalFilter, setExpandApprovalFilter] = useState(
     filters.approval !== ApprovalStatus.MINTED
+  )
+  const [expandRenewalFilter, setExpandRenewalFilter] = useState(
+    filters.renewal !== RenewalStatus.ALL
   )
 
   const filterOptions = FILTER_ITEMS.filter((filter: Filter) => {
@@ -252,6 +278,32 @@ export const FilterBar = ({
               onChange={(approval: string) => {
                 setFiltersAndResetPage({
                   approval: approval as ApprovalStatus,
+                })
+              }}
+            />
+          )}
+        </div>
+      )}
+      {showRenewalFilter && (
+        <div className="flex flex-row gap-2 items-start md:items-center md:h-6">
+          <Button
+            className="justify-start"
+            variant="borderless"
+            size="small"
+            onClick={() => setExpandRenewalFilter(!expandRenewalFilter)}
+          >
+            <div className="w-24 md:w-fit  flex items-center gap-1">
+              <FilterIcon size={18} />
+              <span>Renewal {expandRenewalFilter ? ':' : ''}</span>
+            </div>
+          </Button>
+          {expandRenewalFilter && (
+            <AttributeFilter
+              values={RenewalStatus}
+              currentValue={filters.renewal}
+              onChange={(renewal: string) => {
+                setFiltersAndResetPage({
+                  renewal: renewal as RenewalStatus,
                 })
               }}
             />

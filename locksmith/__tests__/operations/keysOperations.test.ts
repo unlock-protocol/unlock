@@ -9,6 +9,17 @@ import { Rsvp } from '../../src/models'
 const network = 4
 const lockAddress = '0x62CcB13A72E6F991dE53b9B7AC42885151588Cd2'
 const wrongLockAddress = '0x70997970C51812dc3A010C7d01b50e0d17dc79C8'
+const mockGetMembershipState = vi.hoisted(() =>
+  vi.fn(async ({ tokenId }: { tokenId: string }) => {
+    return {
+      currency: 'USDC',
+      isRenewable: true,
+      isAutoRenewable: tokenId === '1',
+      isRenewableIfReApproved: tokenId === '2',
+      isRenewableIfRePurchased: tokenId === '3',
+    }
+  })
+)
 
 const lock = {
   address: '0xxee',
@@ -125,6 +136,13 @@ vi.mock('../../src/operations/metadataOperations', () => {
     },
   }
 })
+
+vi.mock('../../src/operations/membershipOperations', () => {
+  return {
+    getMembershipState: mockGetMembershipState,
+  }
+})
+
 describe('keysOperations operations', () => {
   describe('buildKeysWithMetadata', () => {
     it('should merge keys items with the corresponding metadata', () => {
@@ -426,6 +444,32 @@ describe('keysOperations operations', () => {
           transactionsHash: ['0x'],
         },
       ])
+    })
+
+    it('should filter keys by renewal status', async () => {
+      expect.assertions(3)
+
+      const { address } = await loginRandomUser(app)
+      const { keys, total } = await getKeysWithMetadata({
+        network,
+        lockAddress,
+        filters: {
+          filterKey: 'owner',
+          approval: 'minted',
+          renewal: 'needs approval',
+          max: 10,
+          page: 0,
+        },
+        loggedInUserAddress: address,
+      })
+
+      expect(total).toBe(1)
+      expect(keys.length).toBe(1)
+      expect(keys[0]).toMatchObject({
+        token: '2',
+        renewalStatus: 'needs approval',
+        renewalCurrency: 'USDC',
+      })
     })
 
     describe('pending keys', () => {
