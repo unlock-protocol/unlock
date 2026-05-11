@@ -12,16 +12,14 @@ import { ToastHelper } from '@unlock-protocol/ui'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import dayjs from 'dayjs'
 import { formatDate } from '~/utils/lock'
-import { omit } from 'lodash'
 import { useMultipleLockData } from '~/hooks/useLockData'
 import { useState } from 'react'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 import { useProvider } from '~/hooks/useProvider'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { airdropMemberToMetadata } from '~/utils/airdropMetadata'
 
 dayjs.extend(customParseFormat)
-
-type Metadata = Record<'public' | 'protected', Record<string, string>>
 
 export const AirdropForm = ({ locks }: { locks: PaywallLocksConfigType }) => {
   const results = useMultipleLockData(locks) as {
@@ -88,35 +86,9 @@ export const AirdropFormForLock = ({ lock }: { lock: Lock }) => {
 
     async function sendTransaction(newItems: AirdropMember[]): Promise<void> {
       // Create metadata
-      const users = newItems.map(({ wallet: userAddress, ...rest }) => {
-        const data = omit(rest, [
-          'manager',
-          'neverExpire',
-          'count',
-          'expiration',
-          'balance',
-          'line',
-        ])
-        const metadata = Object.entries(data).reduce<Metadata>(
-          (result, [key, value]) => {
-            const [name, designation] = key.split('.')
-
-            if (designation !== 'public') {
-              // @ts-expect-error
-              result.protected[name] = value
-            } else {
-              // @ts-expect-error
-              result.public[name] = value
-            }
-
-            return result
-          },
-          {
-            protected: {},
-            public: {},
-          }
-        )
-
+      const users = newItems.map((member) => {
+        const { wallet: userAddress } = member
+        const metadata = airdropMemberToMetadata(member)
         const user = {
           userAddress,
           lockAddress: lock.address,
@@ -187,7 +159,7 @@ export const AirdropFormForLock = ({ lock }: { lock: Lock }) => {
             `Successfully granted ${options.recipients.length} keys to ${newItems.length} recipients`
           )
         })
-        .catch((error: any) => {
+        .catch((error: unknown) => {
           console.error(error)
           throw new Error('We were unable to airdrop these memberships.')
         })
@@ -205,7 +177,7 @@ export const AirdropFormForLock = ({ lock }: { lock: Lock }) => {
       promises.push(promise)
     }
 
-    Promise.allSettled(promises).catch((error: any) => {
+    Promise.allSettled(promises).catch((error: unknown) => {
       console.error(error)
       ToastHelper.error('We were unable to airdrop some memberships.')
     })

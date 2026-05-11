@@ -11,7 +11,7 @@ import { useList } from 'react-use'
 import { AirdropListItem } from './AirdropElements'
 import { Lock } from '~/unlockTypes'
 import { formatDate } from '~/utils/lock'
-import { ChangeEvent, useCallback, useState } from 'react'
+import { ChangeEvent, MouseEvent, useCallback, useState } from 'react'
 import { ToastHelper } from '@unlock-protocol/ui'
 import { KeyManager } from '@unlock-protocol/unlock-js'
 import { useConfig } from '~/utils/withConfig'
@@ -28,6 +28,23 @@ export interface Props {
   emailRequired?: boolean
 }
 
+type CustomMetadataField = {
+  key: string
+  name: string
+  designation: 'public' | 'protected'
+}
+
+const reservedMetadataFields = new Set([
+  'balance',
+  'count',
+  'email',
+  'expiration',
+  'line',
+  'manager',
+  'neverexpire',
+  'wallet',
+])
+
 export function AirdropInternalForm({
   add,
   defaultValues,
@@ -36,6 +53,9 @@ export function AirdropInternalForm({
 }: Props) {
   const config = useConfig()
   const [useEmail, setUseEmail] = useState(false)
+  const [customFieldName, setCustomFieldName] = useState('')
+  const [customFieldIsPublic, setCustomFieldIsPublic] = useState(false)
+  const [customFields, setCustomFields] = useState<CustomMetadataField[]>([])
   const {
     handleSubmit,
     register,
@@ -65,6 +85,45 @@ export function AirdropInternalForm({
         })
       }
     }
+  }
+
+  const addCustomField = () => {
+    const name = customFieldName.trim()
+    const lowerName = name.toLowerCase()
+
+    if (!name) {
+      ToastHelper.error('Enter a field name first.')
+      return
+    }
+
+    if (name.includes('.')) {
+      ToastHelper.error('Field names cannot include periods.')
+      return
+    }
+
+    if (reservedMetadataFields.has(lowerName)) {
+      ToastHelper.error('That field is already handled by the airdrop form.')
+      return
+    }
+
+    const designation = customFieldIsPublic ? 'public' : 'protected'
+    const key = `${name}.${designation}`
+    const fieldExists = customFields.some(
+      (field) => field.key.toLowerCase() === key.toLowerCase()
+    )
+
+    if (fieldExists) {
+      ToastHelper.error('That field has already been added.')
+      return
+    }
+
+    setCustomFields((fields) => [...fields, { key, name, designation }])
+    setCustomFieldName('')
+  }
+
+  const removeCustomField = (key: string) => {
+    resetField(key as keyof AirdropMember)
+    setCustomFields((fields) => fields.filter((field) => field.key !== key))
   }
 
   const required = useEmail ? 'Email is required' : 'Wallet address is required'
@@ -197,7 +256,7 @@ export function AirdropInternalForm({
                       <AddressInput
                         withIcon
                         value={wallet}
-                        onChange={(value: any) => {
+                        onChange={(value: string) => {
                           setValue('wallet', value)
                         }}
                         required
@@ -229,6 +288,62 @@ export function AirdropInternalForm({
           error={errors.email?.message}
         />
       )}
+
+      <div className="grid gap-3 p-4 border border-gray-300 rounded-lg">
+        <span className="text-base font-medium">Custom attributes</span>
+        <div className="grid gap-3 md:grid-cols-[1fr_auto_auto] md:items-end">
+          <Input
+            label="Attribute name"
+            placeholder="Company"
+            value={customFieldName}
+            onChange={(event: ChangeEvent<HTMLInputElement>) =>
+              setCustomFieldName(event.target.value)
+            }
+          />
+          <div className="flex items-center gap-2 pb-2">
+            <span className="text-sm">
+              {customFieldIsPublic ? 'Public' : 'Protected'}
+            </span>
+            <Toggle
+              size="small"
+              value={customFieldIsPublic}
+              onChange={(value: boolean) => setCustomFieldIsPublic(value)}
+            />
+          </div>
+          <Button
+            type="button"
+            variant="outlined-primary"
+            onClick={addCustomField}
+          >
+            Add field
+          </Button>
+        </div>
+
+        {customFields.length > 0 && (
+          <div className="grid gap-3">
+            {customFields.map((field) => (
+              <div
+                key={field.key}
+                className="grid gap-2 md:grid-cols-[1fr_auto] md:items-end"
+              >
+                <Input
+                  label={`${field.name} (${field.designation})`}
+                  {...register(field.key as keyof AirdropMember)}
+                />
+                <Button
+                  type="button"
+                  size="small"
+                  variant="outlined-primary"
+                  onClick={() => removeCustomField(field.key)}
+                >
+                  Remove
+                </Button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
       <div className="flex flex-row gap-4 w-full">
         <Input
           pattern="\d+"
@@ -352,7 +467,7 @@ export function AirdropManualForm({
           <Button
             loading={isConfirming}
             disabled={isConfirming}
-            onClick={async (event: any) => {
+            onClick={async (event: MouseEvent<HTMLButtonElement>) => {
               event.preventDefault()
               setIsConfirming(true)
               try {
