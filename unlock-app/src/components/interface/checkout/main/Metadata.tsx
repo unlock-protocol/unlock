@@ -5,6 +5,7 @@ import {
   useFieldArray,
   useForm,
   useFormContext,
+  useWatch,
 } from 'react-hook-form'
 import {
   ChangeEvent,
@@ -12,6 +13,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react'
 import {
@@ -23,7 +25,10 @@ import {
   Toggle,
 } from '@unlock-protocol/ui'
 import { twMerge } from 'tailwind-merge'
-import { formResultToMetadata } from '~/utils/userMetadata'
+import {
+  formResultToMetadata,
+  userMetadataToFormValues,
+} from '~/utils/userMetadata'
 import { ToastHelper } from '@unlock-protocol/ui'
 import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
@@ -37,7 +42,10 @@ import {
   MetadataInputType as MetadataInput,
   PaywallConfigType,
 } from '@unlock-protocol/core'
-import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
+import {
+  useReadUserMetadata,
+  useUpdateUsersMetadata,
+} from '~/hooks/useUserMetadata'
 import Disconnect from './Disconnect'
 import { shouldSkip } from './utils'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
@@ -85,6 +93,7 @@ export const MetadataInputs = ({
   const web3Service = useWeb3Service()
   const {
     register,
+    getValues,
     setValue,
     control,
     formState: { errors },
@@ -128,11 +137,66 @@ export const MetadataInputs = ({
   )
 
   const recipient = recipientFromConfig(paywallConfig, lock) || account
+  const selectedRecipient =
+    useWatch({
+      control,
+      name: `metadata.${id}.recipient`,
+    }) || recipient
   const hideRecipient = shouldSkip({ paywallConfig, lock }).skipRecipient
+  const hydratedMetadataKey = useRef('')
+
+  const { data: savedMetadata } = useReadUserMetadata({
+    network: lock.network,
+    lockAddress: lock.address,
+    userAddress: selectedRecipient,
+    enabled:
+      !!metadataInputs?.length &&
+      !!selectedRecipient &&
+      !!isAccount(selectedRecipient),
+  })
 
   const [hideEmailInput, setHideEmailInput] = useState<boolean>(
     !!email && id === 0
   )
+
+  useEffect(() => {
+    if (!metadataInputs?.length || !savedMetadata?.metadata) {
+      return
+    }
+
+    const metadataKey = `${lock.network}:${lock.address}:${selectedRecipient}`
+    if (hydratedMetadataKey.current === metadataKey) {
+      return
+    }
+
+    const savedValues = userMetadataToFormValues(savedMetadata.metadata)
+    metadataInputs.forEach((input) => {
+      const savedValue = savedValues[input.name]
+      const field = `metadata.${id}.${input.name}` as const
+      const currentValue = getValues(field)
+
+      if (
+        savedValue !== undefined &&
+        (currentValue === undefined || currentValue === '')
+      ) {
+        setValue(field, savedValue, {
+          shouldDirty: false,
+          shouldValidate: false,
+        })
+      }
+    })
+
+    hydratedMetadataKey.current = metadataKey
+  }, [
+    getValues,
+    id,
+    lock.address,
+    lock.network,
+    metadataInputs,
+    savedMetadata?.metadata,
+    selectedRecipient,
+    setValue,
+  ])
 
   // register email value from user's account - to only apply to first recipient
   useEffect(() => {

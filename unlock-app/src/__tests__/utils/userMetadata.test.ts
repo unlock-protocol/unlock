@@ -1,5 +1,9 @@
 import type { MetadataInputType } from '@unlock-protocol/core'
-import { getPublicInputs, formResultToMetadata } from '../../utils/userMetadata'
+import {
+  getPublicInputs,
+  formResultToMetadata,
+  userMetadataToFormValues,
+} from '../../utils/userMetadata'
 import { expect, it, describe } from 'vitest'
 const inputs: MetadataInputType[] = [
   {
@@ -53,6 +57,28 @@ describe('userMetadata utils', () => {
         publicData: {
           'First Name': 'Saxton',
         },
+      })
+    })
+  })
+
+  describe('userMetadataToFormValues', () => {
+    it('merges public and protected saved metadata into form values', () => {
+      expect.assertions(1)
+
+      expect(
+        userMetadataToFormValues({
+          public: {
+            'First Name': 'Saxton',
+          },
+          protected: {
+            'Last Name': 'Hale',
+            Subscribed: true,
+          },
+        })
+      ).toEqual({
+        'First Name': 'Saxton',
+        'Last Name': 'Hale',
+        Subscribed: 'true',
       })
     })
   })
