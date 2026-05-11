@@ -269,6 +269,18 @@ export const findByWalletAddress = async (walletAddress: string) => {
   return user
 }
 
+export const isUnlockAccountAddress = async (
+  walletAddress: ethereumAddress
+) => {
+  const user = await User.findOne({
+    where: {
+      publicKey: Normalizer.ethereumAddress(walletAddress),
+    },
+  })
+
+  return !!user
+}
+
 const UserOperations = {
   createUser,
   getUserPrivateKeyByEmailAddress,
@@ -285,6 +297,7 @@ const UserOperations = {
   findUserAccountByEmail,
   createUserAccount,
   findByEmail,
+  isUnlockAccountAddress,
 }
 
 export default UserOperations
