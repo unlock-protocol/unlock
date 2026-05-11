@@ -23,7 +23,10 @@ import {
   Toggle,
 } from '@unlock-protocol/ui'
 import { twMerge } from 'tailwind-merge'
-import { formResultToMetadata } from '~/utils/userMetadata'
+import {
+  formResultToMetadata,
+  userMetadataToFormResult,
+} from '~/utils/userMetadata'
 import { ToastHelper } from '@unlock-protocol/ui'
 import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
@@ -37,7 +40,10 @@ import {
   MetadataInputType as MetadataInput,
   PaywallConfigType,
 } from '@unlock-protocol/core'
-import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
+import {
+  useUpdateUsersMetadata,
+  useUserMetadata,
+} from '~/hooks/useUserMetadata'
 import Disconnect from './Disconnect'
 import { shouldSkip } from './utils'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
@@ -389,6 +395,7 @@ export function Metadata({ checkoutService }: Props) {
     control,
     handleSubmit,
     formState: { isSubmitting, errors },
+    setValue,
     watch,
   } = methods
 
@@ -398,6 +405,30 @@ export function Metadata({ checkoutService }: Props) {
   })
 
   const recipient = recipientFromConfig(paywallConfig, lock) || account || ''
+  const canLoadUserMetadata =
+    !!account &&
+    !!isAccount(recipient) &&
+    recipient.toLowerCase() === account.toLowerCase()
+
+  const { data: savedUserMetadata, isLoading: isUserMetadataLoading } =
+    useUserMetadata({
+      network: lock!.network,
+      lockAddress: lock!.address,
+      userAddress: canLoadUserMetadata ? recipient : '',
+      viewerAddress: account,
+      enabled: canLoadUserMetadata,
+    })
+
+  const savedFormMetadata = useMemo(() => {
+    if (!canLoadUserMetadata) {
+      return {}
+    }
+
+    return userMetadataToFormResult(
+      savedUserMetadata?.metadata,
+      metadataInputs || []
+    )
+  }, [canLoadUserMetadata, metadataInputs, savedUserMetadata?.metadata])
 
   const { isLoading: isMemberLoading, data: isMember } = useQuery({
     queryKey: ['isMember', recipient, lock?.address],
@@ -427,7 +458,7 @@ export function Metadata({ checkoutService }: Props) {
 
   useEffect(() => {
     // Don't do anything if we're loading member status or if quantity is invalid
-    if (isMemberLoading || quantity <= 0) {
+    if (isMemberLoading || isUserMetadataLoading || quantity <= 0) {
       return
     }
 
@@ -440,7 +471,8 @@ export function Metadata({ checkoutService }: Props) {
     if (quantity > fields.length) {
       const fieldsRequired = quantity - fields.length
       for (let i = 0; i < fieldsRequired; i++) {
-        const addAccountAddress = fields.length === 0 && !isMember && !!account
+        const fieldIndex = fields.length + i
+        const addAccountAddress = fieldIndex === 0 && !isMember && !!account
         const isValidAddress = isAddressOrEns(recipient) || isAccount(recipient)
         const recipientValue = addAccountAddress
           ? isValidAddress
@@ -448,7 +480,10 @@ export function Metadata({ checkoutService }: Props) {
             : account
           : ''
         append(
-          { recipient: recipientValue },
+          {
+            recipient: recipientValue,
+            ...(fieldIndex === 0 ? savedFormMetadata : {}),
+          },
           {
             shouldFocus: false,
           }
@@ -461,7 +496,28 @@ export function Metadata({ checkoutService }: Props) {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [quantity, recipient, isMember, isMemberLoading, account])
+  }, [
+    quantity,
+    recipient,
+    isMember,
+    isMemberLoading,
+    isUserMetadataLoading,
+    account,
+    savedFormMetadata,
+  ])
+
+  useEffect(() => {
+    if (fields.length === 0) {
+      return
+    }
+
+    Object.entries(savedFormMetadata).forEach(([name, value]) => {
+      setValue(`metadata.0.${name}`, value, {
+        shouldDirty: false,
+        shouldTouch: false,
+      })
+    })
+  }, [fields.length, savedFormMetadata, setValue])
 
   const termsAccepted = watch('termsAccepted')
 
@@ -518,7 +574,7 @@ export function Metadata({ checkoutService }: Props) {
     <Fragment>
       <Stepper service={checkoutService} />
       <main className="h-full px-6 overflow-auto">
-        {isMemberLoading ? (
+        {isMemberLoading || isUserMetadataLoading ? (
           <Placeholder.Root className="py-6">
             <Placeholder.Line />
             <Placeholder.Line />
@@ -599,7 +655,12 @@ export function Metadata({ checkoutService }: Props) {
       <footer className="grid items-center px-6 pt-6 border-t">
         <Button
           loading={isLoading}
-          disabled={isLoading || isMemberLoading || !termsAccepted}
+          disabled={
+            isLoading ||
+            isMemberLoading ||
+            isUserMetadataLoading ||
+            !termsAccepted
+          }
           className="w-full"
           form="metadata"
         >
