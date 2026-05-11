@@ -9810,7 +9810,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@matterlabs/hardhat-zksync-solc@npm:1.5.1, @matterlabs/hardhat-zksync-solc@npm:^1.5.0":
+"@matterlabs/hardhat-zksync-solc@npm:1.5.1, @matterlabs/hardhat-zksync-solc@npm:^1.5.0, @matterlabs/hardhat-zksync-solc@npm:^1.5.1":
   version: 1.5.1
   resolution: "@matterlabs/hardhat-zksync-solc@npm:1.5.1"
   dependencies:
@@ -9833,29 +9833,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@matterlabs/hardhat-zksync-solc@npm:^1.3.0":
-  version: 1.3.0
-  resolution: "@matterlabs/hardhat-zksync-solc@npm:1.3.0"
-  dependencies:
-    "@matterlabs/hardhat-zksync-telemetry": "npm:^1.1.0"
-    "@nomiclabs/hardhat-docker": "npm:^2.0.2"
-    chai: "npm:^4.3.4"
-    chalk: "npm:^4.1.2"
-    debug: "npm:^4.3.5"
-    dockerode: "npm:^4.0.2"
-    fs-extra: "npm:^11.2.0"
-    proper-lockfile: "npm:^4.1.2"
-    semver: "npm:^7.6.2"
-    sinon: "npm:^18.0.0"
-    sinon-chai: "npm:^3.7.0"
-    undici: "npm:^6.18.2"
-  peerDependencies:
-    hardhat: ^2.22.5
-  checksum: 10/b2c3d065d52afb620cc5c09a9da4143d726d9aef9e5febd29f109fa9f90bb09f399ea7e24f7f29db81315241ad01bf4bae4931e0f31092d0732aabd8e31b2443
-  languageName: node
-  linkType: hard
-
-"@matterlabs/hardhat-zksync-telemetry@npm:^1.1.0, @matterlabs/hardhat-zksync-telemetry@npm:^1.1.1":
+"@matterlabs/hardhat-zksync-telemetry@npm:^1.1.1":
   version: 1.1.1
   resolution: "@matterlabs/hardhat-zksync-telemetry@npm:1.1.1"
   dependencies:
@@ -9894,16 +9872,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@matterlabs/hardhat-zksync-verify@npm:1.8.0":
-  version: 1.8.0
-  resolution: "@matterlabs/hardhat-zksync-verify@npm:1.8.0"
+"@matterlabs/hardhat-zksync-verify@npm:1.9.1":
+  version: 1.9.1
+  resolution: "@matterlabs/hardhat-zksync-verify@npm:1.9.1"
   dependencies:
     "@ethersproject/abi": "npm:^5.7.0"
     "@ethersproject/address": "npm:5.7.0"
-    "@matterlabs/hardhat-zksync-solc": "npm:^1.3.0"
-    "@matterlabs/hardhat-zksync-telemetry": "npm:^1.1.0"
+    "@matterlabs/hardhat-zksync-solc": "npm:^1.5.1"
+    "@matterlabs/hardhat-zksync-telemetry": "npm:^1.1.1"
     "@nomicfoundation/hardhat-verify": "npm:^2.0.8"
-    axios: "npm:^1.7.2"
+    axios: "npm:^1.12.2"
     cbor: "npm:^9.0.2"
     chai: "npm:^4.3.4"
     chalk: "npm:^4.1.2"
@@ -9914,7 +9892,7 @@ __metadata:
   peerDependencies:
     "@nomicfoundation/hardhat-verify": ^2.0.8
     hardhat: ^2.22.5
-  checksum: 10/de3526aaa2b6885cf3d16f2eed9ad3e9ee4e3fa5f6b29fe10556d0e14e3ab064946849498b98eb3c3411e2d5b37e19ffa8c40fd95a4e6d32837d0ea86ac0d46e
+  checksum: 10/fc278aefed611323b2d831e4d1a53a76ef6d412d866f36f7576a234b9638b8483581a91cea1a6f5964cbb1d53de8f3a8e3d7fc90fe6c96286ad7202393b67c10
   languageName: node
   linkType: hard
 
@@ -22523,7 +22501,7 @@ __metadata:
     "@matterlabs/hardhat-zksync-deploy": "npm:1.8.0"
     "@matterlabs/hardhat-zksync-solc": "npm:1.5.1"
     "@matterlabs/hardhat-zksync-upgradable": "npm:1.10.0"
-    "@matterlabs/hardhat-zksync-verify": "npm:1.8.0"
+    "@matterlabs/hardhat-zksync-verify": "npm:1.9.1"
     "@nomicfoundation/hardhat-ethers": "npm:3.1.2"
     "@nomicfoundation/hardhat-network-helpers": "npm:1.0.12"
     "@nomicfoundation/hardhat-verify": "npm:2.1.3"
@@ -22557,7 +22535,7 @@ __metadata:
     "@matterlabs/hardhat-zksync-deploy": "npm:1.8.0"
     "@matterlabs/hardhat-zksync-solc": "npm:1.5.1"
     "@matterlabs/hardhat-zksync-upgradable": "npm:1.10.0"
-    "@matterlabs/hardhat-zksync-verify": "npm:1.8.0"
+    "@matterlabs/hardhat-zksync-verify": "npm:1.9.1"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@nomiclabs/hardhat-waffle": "npm:2.0.6"
     "@openzeppelin/upgrades-core": "npm:1.44.1"
@@ -25991,6 +25969,17 @@ __metadata:
     form-data: "npm:^4.0.0"
     proxy-from-env: "npm:^1.1.0"
   checksum: 10/a10f0dd836613924e48cf03dc2eff3fd21b14f764807aedaee4880a70c0f142aaebdb21da7ce27104d4c16ca00d0e452a20a20851f60e385a8d5bad1ae909d46
+  languageName: node
+  linkType: hard
+
+"axios@npm:^1.12.2":
+  version: 1.16.0
+  resolution: "axios@npm:1.16.0"
+  dependencies:
+    follow-redirects: "npm:^1.16.0"
+    form-data: "npm:^4.0.5"
+    proxy-from-env: "npm:^2.1.0"
+  checksum: 10/cf8b521ff732c21550b38c8739aef556ea5e14b268468bb89e4307416ab262b462e582474e810963a3d61c2392ab47ad35c11d05eff027de7c97113bc7411623
   languageName: node
   linkType: hard
 
@@ -34955,6 +34944,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"follow-redirects@npm:^1.16.0":
+  version: 1.16.0
+  resolution: "follow-redirects@npm:1.16.0"
+  peerDependenciesMeta:
+    debug:
+      optional: true
+  checksum: 10/3fbe3d80b3b544c22705d837aa5d4a0d07a740d913534a2620b0a004c610af4148e3b58723536dd099aaa1c9d3a155964bde9665d6e5cb331460809a1fc572fd
+  languageName: node
+  linkType: hard
+
 "for-each@npm:^0.3.3, for-each@npm:^0.3.5":
   version: 0.3.5
   resolution: "for-each@npm:0.3.5"
@@ -35030,6 +35029,19 @@ __metadata:
     hasown: "npm:^2.0.2"
     mime-types: "npm:^2.1.12"
   checksum: 10/a4b62e21932f48702bc468cc26fb276d186e6b07b557e3dd7cc455872bdbb82db7db066844a64ad3cf40eaf3a753c830538183570462d3649fdfd705601cbcfb
+  languageName: node
+  linkType: hard
+
+"form-data@npm:^4.0.5":
+  version: 4.0.5
+  resolution: "form-data@npm:4.0.5"
+  dependencies:
+    asynckit: "npm:^0.4.0"
+    combined-stream: "npm:^1.0.8"
+    es-set-tostringtag: "npm:^2.1.0"
+    hasown: "npm:^2.0.2"
+    mime-types: "npm:^2.1.12"
+  checksum: 10/52ecd6e927c8c4e215e68a7ad5e0f7c1031397439672fd9741654b4a94722c4182e74cc815b225dcb5be3f4180f36428f67c6dd39eaa98af0dcfdd26c00c19cd
   languageName: node
   linkType: hard
 
@@ -48544,6 +48556,13 @@ __metadata:
   version: 1.1.0
   resolution: "proxy-from-env@npm:1.1.0"
   checksum: 10/f0bb4a87cfd18f77bc2fba23ae49c3b378fb35143af16cc478171c623eebe181678f09439707ad80081d340d1593cd54a33a0113f3ccb3f4bc9451488780ee23
+  languageName: node
+  linkType: hard
+
+"proxy-from-env@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "proxy-from-env@npm:2.1.0"
+  checksum: 10/fbbaf4dab2a6231dc9e394903a5f66f20475e36b734335790b46feb9da07c37d6b32e2c02e3e2ea4d4b23774c53d8562e5b7cc73282cb43f4a597b7eacaee2ee
   languageName: node
   linkType: hard
 
