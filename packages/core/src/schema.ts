@@ -168,6 +168,13 @@ export const PaywallConfig = z
           'The URL for a icon to display in the top left corner of the modal.',
       })
       .optional(),
+    accentColor: z
+      .string({
+        description:
+          'A hex color used to customize the checkout accent color for buttons, links, and selected states.',
+      })
+      .regex(/^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/)
+      .optional(),
     locks: z.record(PaywallLockConfig),
     metadataInputs: z.array(MetadataInput).optional(),
     persistentCheckout: z

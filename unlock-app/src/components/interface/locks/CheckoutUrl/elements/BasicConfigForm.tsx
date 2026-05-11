@@ -86,6 +86,15 @@ export const BasicConfigForm = ({ onChange, defaultValues }: Props) => {
       />
 
       <Input
+        label="Accent Color"
+        size="small"
+        placeholder="#603DEB"
+        description={BasicPaywallConfigSchema.shape.accentColor.description}
+        error={errors.accentColor?.message}
+        {...register('accentColor')}
+      />
+
+      <Input
         label="Referrer Address"
         size="small"
         description={BasicPaywallConfigSchema.shape.referrer.description}

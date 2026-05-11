@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useMemo } from 'react'
+import { CSSProperties, useCallback, useEffect, useMemo } from 'react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { checkoutMachine } from './checkoutMachine'
 import { Quantity } from './Quantity'
@@ -27,6 +27,7 @@ import { Connected } from '../Connected'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { AllowList } from './AllowList'
 import PrivyFunding from './embedded-wallet/PrivyFunding'
+import { getCheckoutAccentColor } from './accentColor'
 
 interface Props {
   paywallConfig: PaywallConfigType
@@ -59,6 +60,12 @@ export function Checkout({
   const router = useRouter()
   const searchParams = useSearchParams()
   const pathname = usePathname()
+  const accentColor = getCheckoutAccentColor(paywallConfig.accentColor)
+  const accentColorStyle = accentColor
+    ? ({
+        '--unlock-checkout-accent': accentColor,
+      } as CSSProperties)
+    : undefined
 
   useEffect(() => {
     console.debug('Unlock paywall config', paywallConfig)
@@ -244,7 +251,40 @@ export function Checkout({
   }, [matched])
 
   return (
-    <div className="bg-white z-10  shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem] text-left">
+    <div
+      className={`bg-white z-10 shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem] text-left ${
+        accentColor ? 'unlock-checkout-accent' : ''
+      }`}
+      style={accentColorStyle}
+    >
+      {accentColor && (
+        <style>{`
+          .unlock-checkout-accent .text-brand-ui-primary,
+          .unlock-checkout-accent .hover\\:text-brand-ui-primary:hover {
+            color: var(--unlock-checkout-accent) !important;
+          }
+
+          .unlock-checkout-accent .fill-brand-ui-primary,
+          .unlock-checkout-accent .group:hover .group-hover\\:fill-brand-ui-primary {
+            fill: var(--unlock-checkout-accent) !important;
+          }
+
+          .unlock-checkout-accent .bg-brand-ui-primary {
+            background-color: var(--unlock-checkout-accent) !important;
+          }
+
+          .unlock-checkout-accent .border-brand-ui-primary,
+          .unlock-checkout-accent .hover\\:border-brand-ui-primary:hover,
+          .unlock-checkout-accent .focus\\:border-brand-ui-primary:focus {
+            border-color: var(--unlock-checkout-accent) !important;
+          }
+
+          .unlock-checkout-accent .ring-brand-ui-primary,
+          .unlock-checkout-accent .focus\\:ring-brand-ui-primary:focus {
+            --tw-ring-color: var(--unlock-checkout-accent) !important;
+          }
+        `}</style>
+      )}
       <TopNavigation
         onClose={!paywallConfig?.persistentCheckout ? onClose : undefined}
         onBack={onBack}
