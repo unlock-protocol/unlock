@@ -7,7 +7,13 @@ import {
   describe,
   test,
 } from 'matchstick-as/assembly/index'
-import { Address, BigInt, Bytes } from '@graphprotocol/graph-ts'
+import {
+  Address,
+  BigInt,
+  Bytes,
+  Wrapped,
+  ethereum,
+} from '@graphprotocol/graph-ts'
 import {
   handleTransfer,
   handleCancelKey,
@@ -40,11 +46,76 @@ import {
   lockAddress,
   lockManagers,
 } from './constants'
+import { bigIntToTopic, newTransactionReceipt } from './mockTxReceipt'
 
 // mock contract functions
 import './mocks'
 
 const keyID = `${lockAddress}-${tokenId}`
+const secondTokenId = tokenId + 1
+const secondKeyID = `${lockAddress}-${secondTokenId}`
+const erc721TransferTopic0 =
+  '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
+const structPurchaseSelector = '0x4609b39b'
+
+function addressToTopic(address: Address): Bytes {
+  const addressHex = address.toHexString().slice(2)
+  const paddedHex = addressHex.padStart(64, '0')
+  return Bytes.fromHexString('0x' + paddedHex) as Bytes
+}
+
+function createMintTransferLog(
+  tokenId: BigInt,
+  transactionLogIndex: u32
+): ethereum.Log {
+  const defaultBytes = Bytes.fromHexString('0x00')
+  const defaultBigInt = BigInt.fromU32(0)
+  return new ethereum.Log(
+    Address.fromString(lockAddress),
+    [
+      Bytes.fromHexString(erc721TransferTopic0),
+      addressToTopic(Address.fromString(nullAddress)),
+      addressToTopic(Address.fromString(keyOwnerAddress)),
+      bigIntToTopic(tokenId),
+    ],
+    Bytes.fromHexString('0x'),
+    defaultBytes,
+    defaultBytes,
+    defaultBytes,
+    defaultBigInt,
+    BigInt.fromU32(transactionLogIndex),
+    BigInt.fromU32(transactionLogIndex),
+    'Transfer',
+    new Wrapped(false)
+  )
+}
+
+function createStructPurchaseInput(referrers: Address[]): Bytes {
+  const purchaseArgs = new Array<ethereum.Tuple>(referrers.length)
+  for (let i = 0; i < referrers.length; i++) {
+    const purchaseArgValues: Array<ethereum.Value> = [
+      ethereum.Value.fromUnsignedBigInt(BigInt.fromU32(0)),
+      ethereum.Value.fromAddress(Address.fromString(keyOwnerAddress)),
+      ethereum.Value.fromAddress(referrers[i]),
+      ethereum.Value.fromAddress(Address.fromString(nullAddress)),
+      ethereum.Value.fromAddress(Address.fromString(nullAddress)),
+      ethereum.Value.fromBytes(Bytes.fromHexString('0x')),
+      ethereum.Value.fromUnsignedBigInt(BigInt.fromU32(0)),
+    ]
+    purchaseArgs[i] = changetype<ethereum.Tuple>(purchaseArgValues)
+  }
+
+  const purchaseValues: Array<ethereum.Value> = [
+    ethereum.Value.fromTupleArray(purchaseArgs),
+  ]
+  const encoded = ethereum.encode(
+    ethereum.Value.fromTuple(changetype<ethereum.Tuple>(purchaseValues))
+  )!
+
+  return changetype<Bytes>(
+    Bytes.fromHexString(structPurchaseSelector).concat(encoded)
+  )
+}
 
 describe('Burn a key', () => {
   beforeAll(() => {
@@ -329,5 +400,46 @@ describe('RenewKeyPurchase', () => {
       'transactionsHash',
       `[${creationHash}, ${renewHash}]`
     )
+  })
+})
+
+describe('Key referrer', () => {
+  afterAll(() => {
+    clearStore()
+  })
+
+  test('stores the matching purchase referrer on newly minted keys', () => {
+    mockDataSourceV11()
+    const firstReferrer = Address.fromString(lockManagers[0])
+    const secondReferrer = Address.fromString(lockManagers[1])
+    const input = createStructPurchaseInput([firstReferrer, secondReferrer])
+    const receipt = newTransactionReceipt([
+      createMintTransferLog(BigInt.fromU32(tokenId), 4),
+      createMintTransferLog(BigInt.fromU32(secondTokenId), 5),
+    ])
+
+    const firstTransfer = createTransferEvent(
+      Address.fromString(nullAddress),
+      Address.fromString(keyOwnerAddress),
+      BigInt.fromU32(tokenId)
+    )
+    firstTransfer.transaction.input = input
+    firstTransfer.transactionLogIndex = BigInt.fromU32(4)
+    firstTransfer.receipt = receipt
+
+    const secondTransfer = createTransferEvent(
+      Address.fromString(nullAddress),
+      Address.fromString(keyOwnerAddress),
+      BigInt.fromU32(secondTokenId)
+    )
+    secondTransfer.transaction.input = input
+    secondTransfer.transactionLogIndex = BigInt.fromU32(5)
+    secondTransfer.receipt = receipt
+
+    handleTransfer(firstTransfer)
+    handleTransfer(secondTransfer)
+
+    assert.fieldEquals('Key', keyID, 'referrer', lockManagers[0])
+    assert.fieldEquals('Key', secondKeyID, 'referrer', lockManagers[1])
   })
 })
