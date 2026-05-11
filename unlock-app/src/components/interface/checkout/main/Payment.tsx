@@ -353,6 +353,10 @@ export function Payment({ checkoutService }: Props) {
                 paymentMethods['crosschain'] &&
                 crosschainRoutes?.map((route, index) => {
                   const symbol = route.tokenPayment?.symbol || route.symbol
+                  const crossChainTotal = ethers.formatUnits(
+                    route.tokenPayment.amount,
+                    route.tokenPayment.decimals
+                  )
 
                   if (!symbol) {
                     // Some routes are returned with Decent without a token
@@ -378,18 +382,26 @@ export function Payment({ checkoutService }: Props) {
                         <h3 className="font-bold">
                           Pay with {symbol} on {route.networkName}
                         </h3>
-                        <AmountBadge
-                          amount={formatNumber(
-                            Number(
-                              ethers.formatUnits(
-                                route.tokenPayment.amount,
-                                route.tokenPayment.decimals
-                              )
-                            )
-                          )}
-                          symbol={symbol}
-                        />
+                        <AmountBadge amount={crossChainTotal} symbol={symbol} />
                       </div>
+                      {pricingData && (
+                        <div className="grid gap-1 text-xs text-gray-500">
+                          <div className="flex items-center justify-between gap-2">
+                            <span>Membership price</span>
+                            <span className="font-medium text-gray-700">
+                              {formatNumber(pricingData.total)}{' '}
+                              {lockTickerSymbol(lock, baseSymbol).toUpperCase()}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between gap-2">
+                            <span>Estimated total with fees</span>
+                            <span className="font-medium text-gray-700">
+                              {formatNumber(Number(crossChainTotal))}{' '}
+                              {symbol.toUpperCase()}
+                            </span>
+                          </div>
+                        </div>
+                      )}
                       <div className="flex items-center justify-between w-full">
                         <div className="w-full text-sm text-left text-gray-500">
                           Your balance of {symbol?.toUpperCase()} on{' '}

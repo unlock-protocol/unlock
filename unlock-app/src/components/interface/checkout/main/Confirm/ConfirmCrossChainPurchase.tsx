@@ -81,6 +81,11 @@ export function ConfirmCrossChainPurchase({
     ? route.currency
     : route.tokenPayment.symbol
 
+  const crossChainTotal = ethers.formatUnits(
+    route.tokenPayment.amount,
+    route.tokenPayment.decimals
+  )
+
   const isLoading = isPricingDataLoading || isInitialDataLoading
 
   const onError = (error: any, message?: string) => {
@@ -180,17 +185,30 @@ export function ConfirmCrossChainPurchase({
         )}
 
         {pricingData && (
-          <Pricing
-            isCardEnabled={false}
-            keyPrice={`${formatNumber(
-              Number(
-                ethers.formatUnits(
-                  route.tokenPayment.amount,
-                  route.tokenPayment.decimals
-                )
-              )
-            )} ${symbol}`}
-          />
+          <div className="grid gap-2">
+            <Pricing
+              isCardEnabled={false}
+              keyPrice={`${formatNumber(Number(crossChainTotal))} ${symbol}`}
+            />
+            <div className="grid gap-1 p-3 text-sm border rounded-lg">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-gray-500">Membership price</span>
+                <span className="font-medium">
+                  {formatNumber(pricingData.total)}{' '}
+                  {lockTickerSymbol(
+                    lock as Lock,
+                    config.networks[lock!.network].nativeCurrency.symbol
+                  ).toUpperCase()}
+                </span>
+              </div>
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-gray-500">Estimated total with fees</span>
+                <span className="font-medium">
+                  {formatNumber(Number(crossChainTotal))} {symbol.toUpperCase()}
+                </span>
+              </div>
+            </div>
+          </div>
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
