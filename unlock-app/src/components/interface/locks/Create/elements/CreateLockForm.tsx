@@ -42,10 +42,15 @@ interface CreateLockFormProps {
   defaultOptions?: any
 }
 
+const formHelpTextClassName = 'px-1 text-sm leading-6 text-gray-700'
+const formWarningTextClassName =
+  'mt-1 text-sm font-medium leading-6 text-red-600'
+const formErrorTextClassName = 'block px-1 mt-1 text-sm leading-5 text-red-600'
+
 export const NetworkDescription = ({ network }: { network: number }) => {
   const { description, url, faucets, nativeCurrency } = networks[network!]
   return (
-    <div>
+    <div className={formHelpTextClassName}>
       {description}{' '}
       {url && (
         <>
@@ -57,7 +62,7 @@ export const NetworkDescription = ({ network }: { network: number }) => {
         </>
       )}
       {network === 1 && (
-        <p className="text-red-600 font-bold">
+        <p className={formWarningTextClassName}>
           Due to high gas costs, we strongly discourage the use of the Ethereum
           Mainnet.
         </p>
@@ -214,7 +219,7 @@ export const CreateLockForm = ({
                 })}
               />
               {errors?.name && (
-                <span className="absolute text-xs text-red-700">
+                <span className={formErrorTextClassName}>
                   A name is required.
                 </span>
               )}
@@ -269,7 +274,7 @@ export const CreateLockForm = ({
                   />
                 )}
                 {errors?.expirationDuration && (
-                  <span className="absolute mt-1 text-xs text-red-700">
+                  <span className={formErrorTextClassName}>
                     Please enter amount of days.
                   </span>
                 )}
@@ -309,7 +314,7 @@ export const CreateLockForm = ({
                     })}
                   />
                   {errors?.maxNumberOfKeys && (
-                    <span className="absolute mt-1 text-xs text-red-700">
+                    <span className={formErrorTextClassName}>
                       Please choose a number of memberships for your lock.
                     </span>
                   )}
@@ -364,7 +369,7 @@ export const CreateLockForm = ({
                   />
                 </div>
                 {errors?.keyPrice && (
-                  <span className="text-xs text-red-700 ">
+                  <span className={formErrorTextClassName}>
                     Please enter a positive number for the price
                   </span>
                 )}
