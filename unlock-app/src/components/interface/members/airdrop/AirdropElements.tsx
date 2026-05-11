@@ -27,22 +27,47 @@ interface AirdropListItemProps {
   onRemove: MouseEventHandler<HTMLButtonElement>
 }
 
-export function AirdropListItem({
-  value: { wallet, count, email, expiration, neverExpire },
-  onRemove,
-}: AirdropListItemProps) {
+const memberFields = new Set([
+  'balance',
+  'count',
+  'email',
+  'expiration',
+  'line',
+  'manager',
+  'neverExpire',
+  'wallet',
+])
+
+const formatMetadataField = (key: string) => {
+  const [name, designation] = key.split('.')
+  return designation === 'public' ? `${name} (public)` : name
+}
+
+export function AirdropListItem({ value, onRemove }: AirdropListItemProps) {
+  const { wallet, count, email, expiration, neverExpire } = value
+  const metadataItems = Object.entries(value).filter(([key, item]) => {
+    return !memberFields.has(key) && item !== undefined && item !== ''
+  })
+
   return (
     <div className="flex items-center justify-between w-full px-2 py-1 text-sm bg-white rounded-lg shadow">
-      <div className="space-x-2">
+      <div className="space-y-1">
         <span>
           {addressMinify(wallet)} {email ? `(${email})` : ''}{' '}
         </span>
-        <span className="text-gray-500">
+        <span className="block text-gray-500">
           {count} {count > 1 ? 'keys' : 'key'}{' '}
           {expiration &&
             `valid until ${new Date(expiration).toLocaleDateString()}`}
           {neverExpire && 'never expires'}
         </span>
+        {metadataItems.length > 0 && (
+          <span className="block text-gray-500">
+            {metadataItems
+              .map(([key, item]) => `${formatMetadataField(key)}: ${item}`)
+              .join(', ')}
+          </span>
+        )}
       </div>
       <IconButton
         onClick={onRemove}
