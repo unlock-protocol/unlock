@@ -7,9 +7,12 @@ import {
   addManagerAddressOperation,
   createEventCollectionOperation,
   createEventCollectionSlug,
+  getEventCollectionOperation,
+  PUBLIC_EVENTS_COLLECTION_SLUG,
   removeManagerAddressOperation,
   updateEventCollectionOperation,
 } from '../../src/operations/eventCollectionOperations'
+import { EventStatus } from '@unlock-protocol/types'
 
 // interface for link types
 interface Link {
@@ -53,6 +56,14 @@ vi.mock('../../src/models/EventCollectionAssociation', () => ({
   },
 }))
 
+vi.mock('../../src/operations/privyUserOperations', () => ({
+  getPrivyUserByAddress: vi.fn(),
+}))
+
+vi.mock('../../src/operations/wedlocksOperations', () => ({
+  sendEmail: vi.fn(),
+}))
+
 vi.mock('../../src/utils/createSlug', () => ({
   kebabCase: (str: string) =>
     str
@@ -63,6 +74,7 @@ vi.mock('../../src/utils/createSlug', () => ({
 
 describe('eventCollectionOperations', () => {
   let mockFindOne: ReturnType<typeof vi.fn>
+  let mockFindAll: ReturnType<typeof vi.fn>
   let scopedEventData: any
 
   beforeEach(() => {
@@ -70,8 +82,10 @@ describe('eventCollectionOperations', () => {
 
     // Mock the scoped EventData
     mockFindOne = vi.fn()
+    mockFindAll = vi.fn()
     scopedEventData = {
       findOne: mockFindOne,
+      findAll: mockFindAll,
     }
     ;(EventData.scope as any).mockReturnValue(scopedEventData)
   })
@@ -197,6 +211,39 @@ describe('eventCollectionOperations', () => {
       expect(EventCollection.findByPk).toHaveBeenCalledWith(
         'test-collection-with-special-characters'
       )
+    })
+  })
+
+  describe('getEventCollectionOperation', () => {
+    it('should return the public all-events virtual collection', async () => {
+      const events = [
+        {
+          slug: 'deployed-event',
+          name: 'Deployed Event',
+          status: EventStatus.DEPLOYED,
+        },
+      ]
+
+      mockFindAll.mockResolvedValueOnce(events)
+
+      const result = await getEventCollectionOperation(
+        PUBLIC_EVENTS_COLLECTION_SLUG
+      )
+
+      expect(EventCollection.findByPk).not.toHaveBeenCalled()
+      expect(EventData.scope).toHaveBeenCalledWith('withoutId')
+      expect(mockFindAll).toHaveBeenCalledWith({
+        where: {
+          status: EventStatus.DEPLOYED,
+        },
+        order: [['createdAt', 'DESC']],
+      })
+      expect(result).toMatchObject({
+        slug: PUBLIC_EVENTS_COLLECTION_SLUG,
+        title: 'All Events',
+        managerAddresses: [],
+        events,
+      })
     })
   })
 

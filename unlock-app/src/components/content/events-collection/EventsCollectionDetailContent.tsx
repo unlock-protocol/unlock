@@ -13,6 +13,7 @@ import { useEventCollectionDetails } from '~/hooks/useEventCollection'
 import {
   getEventAttributes,
   isCollectionManager,
+  PUBLIC_EVENTS_COLLECTION_SLUG,
 } from '~/utils/eventCollections'
 import { FaGithub, FaGlobe, FaXTwitter, FaYoutube } from 'react-icons/fa6'
 import { SiFarcaster as FarcasterIcon } from 'react-icons/si'
@@ -83,6 +84,7 @@ export default function EventsCollectionDetailContent({
   // event detail drawer
   const [isEventDetailDrawerOpen, setIsEventDetailDrawerOpen] = useState(false)
   const [selectedEvent, setSelectedEvent] = useState<any | null>(null)
+  const isPublicEventsCollection = slug === PUBLIC_EVENTS_COLLECTION_SLUG
 
   const hasValidEvents = useMemo(() => {
     return (
@@ -284,12 +286,14 @@ export default function EventsCollectionDetailContent({
             <div className="flex flex-col gap-6 lg:col-span-10">
               <div className="flex flex-col sm:flex-row items-center space-y-2 justify-between my-5">
                 <h2 className="text-3xl font-bold">Events</h2>
-                <Button onClick={handleAddEvent} className="w-full sm:w-auto">
-                  <div className="flex items-center gap-2">
-                    <Icon icon={TbPlus} size={20} />
-                    {isManager ? 'Add Event' : 'Submit Event'}
-                  </div>
-                </Button>
+                {!isPublicEventsCollection && (
+                  <Button onClick={handleAddEvent} className="w-full sm:w-auto">
+                    <div className="flex items-center gap-2">
+                      <Icon icon={TbPlus} size={20} />
+                      {isManager ? 'Add Event' : 'Submit Event'}
+                    </div>
+                  </Button>
+                )}
               </div>
               {hasValidEvents ? (
                 <>
@@ -334,13 +338,17 @@ export default function EventsCollectionDetailContent({
                   src="/images/illustrations/no-locks.svg"
                   description={
                     <div>
-                      No events have been added yet.{' '}
-                      <span
-                        onClick={handleAddEvent}
-                        className="text-brand-ui-primary cursor-pointer"
-                      >
-                        {isManager ? 'Add an event' : 'Submit an event'}
-                      </span>
+                      {isPublicEventsCollection
+                        ? 'No public events are available yet.'
+                        : 'No events have been added yet. '}
+                      {!isPublicEventsCollection && (
+                        <span
+                          onClick={handleAddEvent}
+                          className="text-brand-ui-primary cursor-pointer"
+                        >
+                          {isManager ? 'Add an event' : 'Submit an event'}
+                        </span>
+                      )}
                     </div>
                   }
                 />
@@ -352,13 +360,15 @@ export default function EventsCollectionDetailContent({
       </div>
 
       {/* Add Event Drawer */}
-      <AddEventsToCollectionDrawer
-        collectionSlug={eventCollection?.slug}
-        isOpen={isAddEventDrawerOpen}
-        setIsOpen={setIsAddEventDrawerOpen}
-        isManager={isManager!}
-        existingEventSlugs={existingEventSlugs}
-      />
+      {!isPublicEventsCollection && (
+        <AddEventsToCollectionDrawer
+          collectionSlug={eventCollection?.slug}
+          isOpen={isAddEventDrawerOpen}
+          setIsOpen={setIsAddEventDrawerOpen}
+          isManager={isManager!}
+          existingEventSlugs={existingEventSlugs}
+        />
+      )}
       {/* Event Detail Drawer */}
       {eventCollection?.slug && (
         <EventDetailDrawer

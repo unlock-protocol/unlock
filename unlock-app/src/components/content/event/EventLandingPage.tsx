@@ -4,6 +4,7 @@ import { Button } from '@unlock-protocol/ui'
 import Link from 'next/link'
 import { LockTypeLandingPage } from '~/components/interface/LockTypeLandingPage'
 import Image from 'next/image'
+import { PUBLIC_EVENTS_COLLECTION_SLUG } from '~/utils/eventCollections'
 
 const customers = [
   {
@@ -136,9 +137,14 @@ export const EventLandingPageCallToAction = ({
   handleCreateEvent,
 }: EventLandingPageCallToActionProps) => {
   return (
-    <Button onClick={handleCreateEvent} className="my-8">
-      Get started for free
-    </Button>
+    <div className="my-8 flex flex-col gap-3 sm:flex-row">
+      <Button onClick={handleCreateEvent}>Get started for free</Button>
+      <Button variant="outlined-primary">
+        <Link href={`/events/${PUBLIC_EVENTS_COLLECTION_SLUG}`}>
+          Browse events
+        </Link>
+      </Button>
+    </div>
   )
 }
 

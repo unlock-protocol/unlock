@@ -1,5 +1,7 @@
 import { locksmith } from '~/config/locksmith'
 
+export const PUBLIC_EVENTS_COLLECTION_SLUG = 'all-events'
+
 /**
  * Represents the attributes of an event.
  */

@@ -8,6 +8,9 @@ import config from '../config/config'
 import logger from '../logger'
 import { getPrivyUserByAddress } from './privyUserOperations'
 import { Op } from 'sequelize'
+import { EventStatus } from '@unlock-protocol/types'
+
+export const PUBLIC_EVENTS_COLLECTION_SLUG = 'all-events'
 
 // event collection body schema
 const EventCollectionBody = z.object({
@@ -111,6 +114,29 @@ export const createEventCollectionOperation = async (
  * @throws An error if the event collection is not found.
  */
 export const getEventCollectionOperation = async (slug: string) => {
+  if (slug === PUBLIC_EVENTS_COLLECTION_SLUG) {
+    const events = await EventData.scope('withoutId').findAll({
+      where: {
+        status: EventStatus.DEPLOYED,
+      },
+      order: [['createdAt', 'DESC']],
+    })
+
+    return {
+      slug: PUBLIC_EVENTS_COLLECTION_SLUG,
+      title: 'All Events',
+      description:
+        'Discover events created with Unlock Protocol, collected automatically in one place.',
+      coverImage: '/images/illustrations/events/party.svg',
+      banner: '/images/illustrations/events/farcon-hero.png',
+      links: [],
+      managerAddresses: [],
+      createdAt: new Date(0),
+      updatedAt: new Date(0),
+      events,
+    }
+  }
+
   const eventCollection = await EventCollection.findByPk(slug, {
     include: [
       {
