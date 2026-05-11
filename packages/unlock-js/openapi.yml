@@ -770,6 +770,33 @@ components:
         checkoutConfig:
           $ref: '#/components/schemas/CheckoutConfig'
 
+    CreateHuddleRoomRequest:
+      type: object
+      required:
+        - lockAddress
+        - network
+        - title
+      properties:
+        lockAddress:
+          type: string
+          pattern: '^0x[a-fA-F0-9]{40}$'
+        network:
+          type: integer
+        title:
+          type: string
+
+    CreateHuddleRoomResponse:
+      type: object
+      required:
+        - roomId
+        - roomUrl
+      properties:
+        roomId:
+          type: string
+        roomUrl:
+          type: string
+          format: uri
+
   parameters:
     Network:
       in: path
@@ -4640,6 +4667,34 @@ paths:
 
         500:
           $ref: '#/components/responses/500.InternalError'
+
+  /v2/events/huddle-room:
+    post:
+      operationId: createHuddleRoom
+      security:
+        - User: []
+      description: Create a token-gated Huddle room for an event lock.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateHuddleRoomRequest'
+      responses:
+        201:
+          description: Huddle room created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateHuddleRoomResponse'
+        400:
+          $ref: '#/components/responses/400.Invalid'
+        403:
+          $ref: '#/components/responses/403.Forbidden'
+        502:
+          description: Huddle room creation failed
+        503:
+          description: Huddle integration is not configured
 
   /v2/events/update/{slug}:
     post:

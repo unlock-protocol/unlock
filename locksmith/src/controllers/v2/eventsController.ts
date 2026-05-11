@@ -27,6 +27,7 @@ import { downloadJsonFromS3 } from '../../utils/downloadJsonFromS3'
 import logger from '../../logger'
 import { getWeb3Service } from '../../initializers'
 import { EventStatus } from '@unlock-protocol/types'
+import { createTokenGatedHuddleRoom } from '../../operations/huddleOperations'
 
 // DEPRECATED!
 export const getEventDetailsByLock: RequestHandler = async (
@@ -324,6 +325,64 @@ export const updateEventData: RequestHandler = async (request, response) => {
     response.status(500).json({
       error: 'Failed to update event',
       details: error.message,
+    })
+  }
+}
+
+const CreateHuddleRoomBody = z.object({
+  lockAddress: z.string().regex(/^0x[a-fA-F0-9]{40}$/),
+  network: z.coerce.number().int(),
+  title: z.string().min(1),
+})
+
+export const createHuddleRoom: RequestHandler = async (request, response) => {
+  try {
+    const { lockAddress, network, title } =
+      await CreateHuddleRoomBody.parseAsync(request.body)
+    const isLockManager = await getWeb3Service().isLockManager(
+      lockAddress,
+      request.user!.walletAddress,
+      network
+    )
+
+    if (!isLockManager) {
+      response.status(403).json({
+        error: 'User is not a lock manager for this event lock',
+      })
+      return
+    }
+
+    const room = await createTokenGatedHuddleRoom({
+      lockAddress,
+      network,
+      title,
+    })
+
+    response.status(201).json(room)
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      response.status(400).json({
+        error: 'Invalid request body',
+        details: error.errors,
+      })
+      return
+    }
+
+    const message = (error as Error).message
+    const statusCode =
+      message === 'Huddle is not configured'
+        ? 503
+        : message.includes('does not support')
+          ? 400
+          : 502
+
+    logger.error('Failed to create Huddle room', {
+      error,
+      requestBody: request.body,
+    })
+    response.status(statusCode).json({
+      error: 'Failed to create Huddle room',
+      details: message,
     })
   }
 }
