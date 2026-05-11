@@ -8,6 +8,7 @@ import { TIMEOUT_ON_SUBGRAPH } from './constants'
 interface Key {
   expiration?: number
   minted?: number
+  referrer?: string
   tokenId: string
   owner: string
 }
@@ -49,6 +50,7 @@ export default class KeyData {
         tokenId: key?.tokenId,
         owner: key?.owner,
         minted: key?.createdAt ? parseInt(key.createdAt) : undefined,
+        referrer: key?.referrer,
       }
 
       return data
@@ -75,6 +77,13 @@ export default class KeyData {
         trait_type: 'Minted',
         display_type: 'date',
         value: data.minted,
+      })
+    }
+    if (data.referrer) {
+      attributes.push({
+        trait_type: 'refer',
+        display_type: 'string',
+        value: data.referrer,
       })
     }
     return {

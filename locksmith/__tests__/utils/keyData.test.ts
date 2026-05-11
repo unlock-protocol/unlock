@@ -27,5 +27,22 @@ describe('KeyData', () => {
         })
       })
     })
+
+    describe('when the data has a referrer', () => {
+      it('adds the refer attribute', () => {
+        const referrer = '0x0000000000000000000000000000000000000abc'
+
+        expect.assertions(1)
+        expect(keyData.openSeaPresentation({ referrer })).toEqual({
+          attributes: [
+            {
+              display_type: 'string',
+              trait_type: 'refer',
+              value: referrer,
+            },
+          ],
+        })
+      })
+    })
   })
 })

@@ -16,6 +16,7 @@ import {
   nullAddress,
   tokenId,
   GNP_CHANGED_TOPIC0,
+  ERC20_TRANSFER_TOPIC0,
 } from './constants'
 
 const defaultAddress = Address.fromString(defaultMockAddress)
@@ -101,6 +102,34 @@ function createTransferEventLog(
     defaultBigInt,
     defaultBigInt,
     defaultBigInt,
+    'Transfer',
+    new Wrapped(false)
+  )
+}
+
+export function createKeyTransferEventLog(
+  from: Address,
+  to: Address,
+  tokenId: BigInt,
+  transactionLogIndex: BigInt
+): ethereum.Log {
+  const eventSignature = Bytes.fromHexString(ERC20_TRANSFER_TOPIC0)
+  const topics = [
+    eventSignature,
+    addressToTopic(from),
+    addressToTopic(to),
+    bigIntToTopic(tokenId),
+  ]
+  return new ethereum.Log(
+    Address.fromString(lockAddress),
+    topics,
+    Bytes.fromHexString('0x'),
+    defaultAddressBytes,
+    defaultIntBytes,
+    defaultAddressBytes,
+    defaultBigInt,
+    transactionLogIndex,
+    transactionLogIndex,
     'Transfer',
     new Wrapped(false)
   )
