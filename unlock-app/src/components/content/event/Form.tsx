@@ -42,6 +42,7 @@ export interface NewEventForm {
   lock: Omit<Lock, 'address' | 'key'>
   currencySymbol: string
   metadata: Partial<MetadataFormData>
+  createHuddleRoom?: boolean
 }
 
 interface GoogleMapsAutoCompleteProps {
@@ -103,6 +104,7 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
   const { networks } = useConfig()
   const { account } = useAuthenticate()
   const [isInPerson, setIsInPerson] = useState(true)
+  const [createHuddleRoom, setCreateHuddleRoom] = useState(false)
   const [screeningEnabled, enableScreening] = useState(false)
   const [isUnlimitedCapacity, setIsUnlimitedCapacity] = useState(false)
   const [attendeeRefund, setAttendeeRefund] = useState(false)
@@ -130,6 +132,7 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
         keyPrice: '0',
       },
       currencySymbol: networks[network].nativeCurrency.symbol,
+      createHuddleRoom: false,
       metadata: {
         description: '',
         ticket: {
@@ -426,6 +429,10 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
                         enabled={isInPerson}
                         setEnabled={setIsInPerson}
                         onChange={(enabled) => {
+                          if (enabled) {
+                            setCreateHuddleRoom(false)
+                            setValue('createHuddleRoom', false)
+                          }
                           setValue(
                             'metadata.ticket.event_is_in_person',
                             enabled
@@ -446,31 +453,59 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
                     </div>
 
                     {!isInPerson && (
-                      <Input
-                        {...register('metadata.ticket.event_address', {
-                          required: {
-                            value: true,
-                            message: 'Add a link to your event',
-                          },
-                        })}
-                        onChange={(event) => {
-                          if (!regexUrlPattern.test(event.target.value)) {
-                            setError('metadata.ticket.event_address', {
-                              type: 'manual',
-                              message: 'Please enter a valid URL',
-                            })
-                          } else {
-                            clearErrors('metadata.ticket.event_address')
+                      <div className="grid gap-2">
+                        <Input
+                          {...register('metadata.ticket.event_address', {
+                            required: {
+                              value: !createHuddleRoom,
+                              message: 'Add a link to your event',
+                            },
+                          })}
+                          disabled={createHuddleRoom}
+                          onChange={(event) => {
+                            if (!regexUrlPattern.test(event.target.value)) {
+                              setError('metadata.ticket.event_address', {
+                                type: 'manual',
+                                message: 'Please enter a valid URL',
+                              })
+                            } else {
+                              clearErrors('metadata.ticket.event_address')
+                            }
+                          }}
+                          type="text"
+                          placeholder={
+                            createHuddleRoom
+                              ? 'Huddle room will be created automatically'
+                              : 'Zoom or Google Meet Link'
                           }
-                        }}
-                        type="text"
-                        placeholder={'Zoom or Google Meet Link'}
-                        error={
-                          // @ts-expect-error Property 'event_address' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
-                          errors.metadata?.ticket?.event_address
-                            ?.message as string
-                        }
-                      />
+                          error={
+                            // @ts-expect-error Property 'event_address' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
+                            errors.metadata?.ticket?.event_address
+                              ?.message as string
+                          }
+                        />
+                        <Checkbox
+                          checked={createHuddleRoom}
+                          label="Create a token-gated Huddle room automatically"
+                          onChange={(
+                            event: React.ChangeEvent<HTMLInputElement>
+                          ) => {
+                            const checked = event.target.checked
+                            setCreateHuddleRoom(checked)
+                            setValue('createHuddleRoom', checked)
+                            if (checked) {
+                              setValue('metadata.ticket.event_address', '')
+                              setValue('metadata.ticket.event_location', '')
+                              clearErrors('metadata.ticket.event_address')
+                            } else {
+                              setError('metadata.ticket.event_address', {
+                                type: 'manual',
+                                message: 'Please enter a valid URL',
+                              })
+                            }
+                          }}
+                        />
+                      </div>
                     )}
 
                     {isInPerson && (

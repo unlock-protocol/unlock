@@ -148,6 +148,10 @@ const config = {
   coinbaseCloudPrivateKey: process.env.COINBASE_CLOUD_PRIVATE_KEY,
   // https://console.cloud.google.com/apis/dashboard
   googleAuthClientId: process.env.GOOGLE_AUTH_CLIENT_ID,
+  huddle: {
+    apiKey: process.env.HUDDLE_API_KEY,
+    projectId: process.env.HUDDLE_PROJECT_ID,
+  },
 }
 
 if (process.env.ON_HEROKU) {
