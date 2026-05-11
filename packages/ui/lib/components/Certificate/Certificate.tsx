@@ -76,16 +76,49 @@ const CertificateValue = ({ children, size = 'medium' }: Props) => {
     large: 700,
   }
 
+  const lineHeights: Record<any, any> = {
+    tiny: '16px',
+    small: '20px',
+    medium: '24px',
+    large: '32px',
+  }
+
   return (
     <span
       style={{
         display: 'flex',
+        color: '#111827',
         fontSize: sizes[size],
         fontWeight: weights[size],
+        lineHeight: lineHeights[size],
+        wordBreak: 'break-word',
       }}
     >
       {children}
     </span>
+  )
+}
+
+const CertificateDescription = ({
+  children,
+  isMobile = false,
+}: Props & { isMobile?: boolean }) => {
+  return (
+    <div
+      style={{
+        color: '#4b5563',
+        display: 'flex',
+        flexDirection: 'column',
+        fontSize: isMobile ? '13px' : '14px',
+        lineHeight: isMobile ? '20px' : '22px',
+        marginTop: '12px',
+        maxHeight: isMobile ? '120px' : '132px',
+        overflow: 'hidden',
+        wordBreak: 'break-word',
+      }}
+    >
+      {children}
+    </div>
   )
 }
 
@@ -144,10 +177,11 @@ export const Certificate = ({
   return (
     <div
       style={{
-        background: '#FFFDF8',
+        background: '#ffffff',
         display: 'flex',
         position: 'relative',
-        border: '1px solid #e5e7eb',
+        border: '1px solid #d1d5db',
+        borderRadius: '20px',
         overflow: 'hidden',
         flexDirection: isMobile ? 'column' : 'row',
         width: '100%',
@@ -159,11 +193,11 @@ export const Certificate = ({
       {badge && <Badge>{badge}</Badge>}
       <div
         style={{
+          background: '#fffdf8',
           display: 'flex',
           flexDirection: 'column',
-          gap: isMobile ? '40px' : '96px',
+          gap: isMobile ? '32px' : '56px',
           padding: isMobile ? '24px' : '44px 48px',
-          marginTop: '12px',
           height: '100%',
           flex: 2,
         }}
@@ -208,22 +242,9 @@ export const Certificate = ({
               <CertificateLabel>has completed</CertificateLabel>
               <CertificateValue size="large">{name}</CertificateValue>
               {description && (
-                <div
-                  style={{
-                    display: 'flex',
-                    marginTop: '10px',
-                  }}
-                >
-                  <CertificateLabel>
-                    <span
-                      style={{
-                        display: 'flex',
-                      }}
-                    >
-                      {description}
-                    </span>
-                  </CertificateLabel>
-                </div>
+                <CertificateDescription isMobile={isMobile}>
+                  {description}
+                </CertificateDescription>
               )}
             </div>
 
@@ -255,7 +276,7 @@ export const Certificate = ({
               flexDirection: isMobile ? 'column' : 'row',
               justifyContent: 'space-between',
               gap: isMobile ? '16px' : '8px',
-              marginTop: isMobile ? '30px' : '100px',
+              marginTop: isMobile ? '24px' : '48px',
               flexWrap: 'wrap',
             }}
           >
@@ -324,18 +345,20 @@ export const Certificate = ({
               flexDirection: 'column',
               gap: '16px',
               width: isMobile ? '100%' : '300px',
-              background: '#FAFBFC',
-              borderRight: isMobile ? 'none' : '1px solid #9ca3af',
-              borderLeft: isMobile ? 'none' : '1px solid #9ca3af',
+              background: '#f3f4f6',
+              borderLeft: isMobile ? 'none' : '1px solid #d1d5db',
               padding: isMobile ? '0 16px 40px 16px' : '40px 24px 0 24px',
               marginLeft: 'auto',
-              marginRight: isMobile ? 'none' : '50px',
             }}
           >
             <img
               style={{
+                background: '#ffffff',
+                border: '1px solid #e5e7eb',
                 width: '100%',
-                borderRadius: '16px',
+                height: isMobile ? '220px' : '240px',
+                borderRadius: '20px',
+                objectFit: 'cover',
                 overflow: 'hidden',
               }}
               width={200}

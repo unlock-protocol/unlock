@@ -114,7 +114,7 @@ export const CertificationPreviewContent = ({
   // Get all custom metadata that aren't `minted` or `certification_issuer`
   const customMetadata =
     metadata?.attributes?.filter(
-      (attr: any) =>
+      (attr: { trait_type?: string; value?: string | number }) =>
         attr.trait_type !== 'Minted' &&
         attr.trait_type !== 'certification_issuer' &&
         attr.trait_type &&
@@ -141,7 +141,7 @@ export const CertificationPreviewContent = ({
     transactionsHash: <TransactionHashButton />,
     externalUrl: certificationData.external_url,
     isMobile,
-    ...customMetadata,
+    customMetadata,
   }
 
   return (
