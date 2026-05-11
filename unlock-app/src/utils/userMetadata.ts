@@ -29,3 +29,18 @@ export function formResultToMetadata(
 
   return result
 }
+
+export function userMetadataToFormValues(metadata?: {
+  public?: Record<string, unknown>
+  protected?: Record<string, unknown>
+}): Record<string, string> {
+  return Object.entries({
+    ...(metadata?.public || {}),
+    ...(metadata?.protected || {}),
+  }).reduce<Record<string, string>>((values, [key, value]) => {
+    if (value !== undefined && value !== null) {
+      values[key] = String(value)
+    }
+    return values
+  }, {})
+}
