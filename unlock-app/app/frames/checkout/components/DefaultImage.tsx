@@ -9,7 +9,8 @@ interface DefaultImageProps {
 }
 
 export function DefaultImage({ lock, rightSideContent }: DefaultImageProps) {
-  const { image, defaultImage, price, name, description } = lock
+  const { image, defaultImage, price, name, description, isSoldOut, isMember } =
+    lock
 
   const defaultRightSideContent = (
     <div tw="flex flex-col">
@@ -22,6 +23,8 @@ export function DefaultImage({ lock, rightSideContent }: DefaultImageProps) {
         </p>
       </div>
       <p tw="m-0 p-0 text-3xl">🏷️ {price}</p>
+      {isSoldOut ? <p tw="text-red-500">SOLD OUT !</p> : null}
+      {isMember ? <p>ALREADY A MEMBER !</p> : null}
     </div>
   )
   const leftImage = (
