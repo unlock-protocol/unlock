@@ -68,19 +68,20 @@ export const getEventUrl = ({
 
 export const getCheckoutUrl = (checkoutConfig: CheckoutConfig) => {
   const url = new URL(`${window.location.origin}/checkout`)
+  const config = { ...checkoutConfig.config }
 
   // remove redirectUri if not applicable
-  if (checkoutConfig.config?.redirectUri?.length === 0) {
-    delete checkoutConfig.config.redirectUri
+  if (config?.redirectUri?.length === 0) {
+    delete config.redirectUri
   }
 
   if (checkoutConfig.id) {
-    url.searchParams.append('id', checkoutConfig.id)
+    return new URL(
+      `/checkout/${encodeURIComponent(checkoutConfig.id)}`,
+      window.location.origin
+    ).toString()
   } else {
-    url.searchParams.append(
-      'checkoutConfig',
-      JSON.stringify(checkoutConfig.config)
-    )
+    url.searchParams.append('checkoutConfig', JSON.stringify(config))
   }
   return url.toString()
 }
