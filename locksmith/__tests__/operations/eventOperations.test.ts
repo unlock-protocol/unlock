@@ -1,6 +1,11 @@
 import { expect, vi } from 'vitest'
 
-import { CheckoutConfig, EventData, KeyMetadata } from '../../src/models'
+import {
+  CheckoutConfig,
+  EventData,
+  KeyMetadata,
+  LockMetadata,
+} from '../../src/models'
 import { getEventFixture } from '../../__tests__/fixtures/events'
 
 import {
@@ -42,6 +47,7 @@ describe('eventOperations', () => {
     await EventData.truncate({ cascade: true })
     await CheckoutConfig.truncate()
     await KeyMetadata.truncate()
+    await LockMetadata.truncate()
   })
   describe('createEventSlug', () => {
     it('should create the event with the correct slug', async () => {
@@ -228,6 +234,75 @@ describe('eventOperations', () => {
 
       const savedEventWithoutProtectedData = await getEventBySlug(slug, false)
       expect(savedEventWithoutProtectedData!.data.replyTo).toEqual(undefined)
+    })
+
+    it('should update lock NFT images that still match the previous event image', async () => {
+      expect.assertions(3)
+      const network = 11155111
+      const matchingLock = '0xF174cc512D9aac892cc53330F829028046d0fF6B'
+      const customLock = '0x1234567890AbcdEF1234567890aBcdef12345678'
+      const eventParams = getEventFixture({
+        data: {
+          name: 'Image Sync Event',
+          image: 'https://example.com/old-event.jpg',
+        },
+        checkoutConfig: {
+          config: {
+            locks: {
+              [matchingLock]: {
+                network,
+              },
+              [customLock]: {
+                network,
+              },
+            },
+          },
+        },
+      })
+      const [event] = await saveEvent(eventParams, '0x123')
+      await LockMetadata.upsert({
+        address: matchingLock,
+        chain: network,
+        data: {
+          name: 'Ticket for Image Sync Event',
+          image: 'https://example.com/old-event.jpg',
+          description: 'Keep me',
+        },
+      })
+      await LockMetadata.upsert({
+        address: customLock,
+        chain: network,
+        data: {
+          name: 'Custom Ticket',
+          image: 'https://example.com/custom-ticket.jpg',
+        },
+      })
+
+      await saveEvent(
+        {
+          data: {
+            slug: event.slug,
+            name: 'Image Sync Event',
+            image: 'https://example.com/new-event.jpg',
+          },
+        },
+        '0x123'
+      )
+
+      const updatedMatchingLock = await LockMetadata.findOne({
+        where: { address: matchingLock, chain: network },
+      })
+      const untouchedCustomLock = await LockMetadata.findOne({
+        where: { address: customLock, chain: network },
+      })
+
+      expect(updatedMatchingLock!.data.image).toEqual(
+        'https://example.com/new-event.jpg'
+      )
+      expect(updatedMatchingLock!.data.description).toEqual('Keep me')
+      expect(untouchedCustomLock!.data.image).toEqual(
+        'https://example.com/custom-ticket.jpg'
+      )
     })
   })
 

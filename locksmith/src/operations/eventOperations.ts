@@ -10,12 +10,13 @@ import {
   toFormData,
   formDataToMetadata,
 } from '@unlock-protocol/core'
-import { CheckoutConfig, EventData, KeyMetadata } from '../models'
+import { CheckoutConfig, EventData, KeyMetadata, LockMetadata } from '../models'
 import { saveCheckoutConfig } from './checkoutConfigOperations'
 import { EventBodyType } from '../controllers/v2/eventsController'
 import { Op } from 'sequelize'
 import { removeProtectedAttributesFromObject } from '../utils/protectedAttributes'
 import { EventStatus } from '@unlock-protocol/types'
+import normalizer from '../utils/normalizer'
 
 interface AttributeProps {
   value: string
@@ -227,6 +228,13 @@ export const saveEvent = async (
   const previousEvent = await EventData.scope('withoutId').findOne({
     where: { slug },
   })
+  const previousImage = previousEvent?.data?.image
+  const nextImage = parsed.data?.image
+  const checkoutConfig =
+    parsed.checkoutConfig ??
+    (previousEvent?.checkoutConfigId
+      ? await CheckoutConfig.findByPk(previousEvent.checkoutConfigId)
+      : undefined)
 
   if (previousEvent) {
     data = defaultsDeep(
@@ -255,6 +263,19 @@ export const saveEvent = async (
     }
   )
 
+  if (
+    previousEvent &&
+    previousImage &&
+    nextImage &&
+    previousImage !== nextImage
+  ) {
+    await syncEventImageToLockMetadata(
+      checkoutConfig?.config,
+      previousImage,
+      nextImage
+    )
+  }
+
   if (!savedEvent.checkoutConfigId && parsed.checkoutConfig) {
     const checkoutConfig = await PaywallConfig.strip().parseAsync(
       parsed.checkoutConfig.config
@@ -270,6 +291,44 @@ export const saveEvent = async (
   }
 
   return [savedEvent, !parsed.data.slug]
+}
+
+const syncEventImageToLockMetadata = async (
+  checkoutConfig: PaywallConfigType | undefined,
+  previousImage: string,
+  nextImage: string
+) => {
+  const locks = checkoutConfig?.locks
+  if (!locks) {
+    return
+  }
+
+  await Promise.all(
+    Object.entries(locks).map(async ([lockAddress, lockConfig]) => {
+      const network = lockConfig.network || checkoutConfig.network
+      if (!network) {
+        return
+      }
+      const normalizedLockAddress = normalizer.ethereumAddress(lockAddress)
+
+      const lockMetadata = await LockMetadata.findOne({
+        where: {
+          address: normalizedLockAddress,
+          chain: network,
+        },
+      })
+
+      if (!lockMetadata || lockMetadata.data?.image !== previousImage) {
+        return
+      }
+
+      lockMetadata.data = {
+        ...lockMetadata.data,
+        image: nextImage,
+      }
+      await lockMetadata.save()
+    })
+  )
 }
 
 export const getCheckedInAttendees = async (slug: string) => {
