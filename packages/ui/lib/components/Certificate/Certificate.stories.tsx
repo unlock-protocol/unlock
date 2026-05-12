@@ -45,3 +45,47 @@ export const CertificateWithBadge = {
     externalUrl: 'https://example.it',
   },
 } satisfies Story
+
+export const CertificateWithAttestation = {
+  args: {
+    name: 'Blockchain Developer Certification',
+    description:
+      'This certification validates expertise in blockchain development, smart contract programming, and decentralized application design.',
+    owner: '0xF3850C690BFF6c1E343D2449bBbbb00b0E934f7b',
+    issuer: 'Unlock Protocol Academy',
+    network: 8453,
+    tokenId: 42,
+    lockAddress: '0x62CcB13A72E6F991dE53b9B7AC42885151588Cd2',
+    transactionsHash: '0x1234...5678',
+    issueDate: '15 Jan 2025',
+    image:
+      'https://www.pngkit.com/png/detail/99-993245_atrc-certified-logo-certification.png',
+    externalUrl: 'https://unlock-protocol.com',
+    attestation: {
+      attestationId:
+        '0x3a9923db8a119d3bd312ca18781631c2f96fe5d31e67b437eb919148bfd84be6',
+      firstName: 'John',
+      lastName: 'Doe',
+    },
+  },
+} satisfies Story
+
+export const CertificateWithPartialAttestation = {
+  args: {
+    name: 'Web3 Fundamentals',
+    description: 'Completed the Web3 Fundamentals course with distinction.',
+    owner: '0xF3850C690BFF6c1E343D2449bBbbb00b0E934f7b',
+    issuer: 'Unlock Labs',
+    network: 84532,
+    tokenId: 101,
+    lockAddress: '0x62CcB13A72E6F991dE53b9B7AC42885151588Cd2',
+    transactionsHash: '0xabcd...efgh',
+    issueDate: '20 Jan 2025',
+    image:
+      'https://www.pngkit.com/png/detail/99-993245_atrc-certified-logo-certification.png',
+    externalUrl: 'https://unlock-protocol.com',
+    attestation: {
+      firstName: 'Jane',
+    },
+  },
+} satisfies Story

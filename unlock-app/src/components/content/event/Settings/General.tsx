@@ -342,7 +342,6 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
                           },
                         })
                       }}
-                      // @ts-expect-error supportedValuesOf
                       options={Intl.supportedValuesOf('timeZone').map(
                         (tz: string) => {
                           return {

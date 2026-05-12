@@ -11,7 +11,7 @@
     "start": "hardhat node"
   },
   "dependencies": {
-    "@nomicfoundation/hardhat-ethers": "3.1.2",
+    "@nomicfoundation/hardhat-ethers": "3.1.0",
     "@unlock-protocol/contracts": "latest",
     "@unlock-protocol/hardhat-plugin": "latest",
     "@unlock-protocol/networks": "latest",
