@@ -14,6 +14,7 @@ jobs:
         "packages/hardhat-plugin",
         "packages/unlock-js",
         "packages/paywall",
+        "paywall-app",
         "smart-contracts",
         "subgraph",
         "governance",
@@ -21,6 +22,7 @@ jobs:
         "unlock-protocol-com",
         "wedlocks",
         "unlock-app",
+        "governance-app",
         "packages/core",
         "docs"
         ]'
@@ -35,6 +37,7 @@ jobs:
     uses: ./.github/workflows/_tests.yml
     with:
       changed: ${{ needs.check-changes.outputs.changed }}
+      export_cache: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
 
   smart-contracts-coverage:
     needs: check-changes
@@ -49,8 +52,10 @@ jobs:
 
   # Vercel Deployments
   deploy-unlock-protocol-com:
-    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
-    needs: run-tests
+    needs:
+      - check-changes
+      - run-tests
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository && contains(fromJson(needs.check-changes.outputs.changed), 'unlock-protocol-com') }}
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -71,8 +76,10 @@ jobs:
           target-env: staging
 
   deploy-paywall-app:
-    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
-    needs: run-tests
+    needs:
+      - check-changes
+      - run-tests
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository && (contains(fromJson(needs.check-changes.outputs.changed), 'paywall-app') || contains(fromJson(needs.check-changes.outputs.changed), 'packages/paywall')) }}
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4

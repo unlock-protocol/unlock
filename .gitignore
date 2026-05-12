@@ -2,6 +2,7 @@
 .vscode
 tmp_site/
 node_modules/
+.next/
 
 # ZeppelinOS
 zos.dev-*.json
@@ -48,5 +49,8 @@ locksmith/uploads
 .github/actions/blog/.yarn
 .github/actions/blog/.yarn/install-state.gz
 
+# Git worktrees
+.worktrees/
+
 # RPC provider worker
-provider/.wrangler/
+provider/.wrangler/.worktrees
