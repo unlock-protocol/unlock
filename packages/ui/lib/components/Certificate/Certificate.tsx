@@ -40,6 +40,7 @@ const ValueWrapper = ({ children }: Props) => {
         textAlign: 'left',
         flex: 1,
         minWidth: '150px',
+        maxWidth: '100%',
       }}
     >
       {children}
@@ -55,6 +56,9 @@ const CertificateLabel = ({ children }: Props) => {
         color: '#374151',
         fontSize: '12px',
         lineHeight: '16px',
+        fontWeight: 600,
+        letterSpacing: 0,
+        textTransform: 'uppercase',
       }}
     >
       {children}
@@ -79,13 +83,37 @@ const CertificateValue = ({ children, size = 'medium' }: Props) => {
   return (
     <span
       style={{
-        display: 'flex',
+        display: 'block',
         fontSize: sizes[size],
         fontWeight: weights[size],
+        lineHeight: size === 'large' ? '30px' : '22px',
+        color: '#111827',
+        overflowWrap: 'break-word',
+        wordBreak: 'break-word',
       }}
     >
       {children}
     </span>
+  )
+}
+
+const CertificateDescription = ({ children }: Props) => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '8px',
+        color: '#4b5563',
+        fontSize: '14px',
+        lineHeight: '22px',
+        maxWidth: '680px',
+        overflowWrap: 'break-word',
+        wordBreak: 'break-word',
+      }}
+    >
+      {children}
+    </div>
   )
 }
 
@@ -147,13 +175,14 @@ export const Certificate = ({
         background: '#FFFDF8',
         display: 'flex',
         position: 'relative',
-        border: '1px solid #e5e7eb',
+        border: '1px solid #e0d7c7',
         overflow: 'hidden',
         flexDirection: isMobile ? 'column' : 'row',
         width: '100%',
         minHeight: '500px',
         height: '100%',
         alignItems: 'stretch',
+        borderRadius: '8px',
       }}
     >
       {badge && <Badge>{badge}</Badge>}
@@ -161,30 +190,42 @@ export const Certificate = ({
         style={{
           display: 'flex',
           flexDirection: 'column',
-          gap: isMobile ? '40px' : '96px',
-          padding: isMobile ? '24px' : '44px 48px',
-          marginTop: '12px',
+          justifyContent: 'space-between',
+          gap: isMobile ? '32px' : '56px',
+          padding: isMobile ? '28px 24px' : '48px 56px',
           height: '100%',
           flex: 2,
+          minWidth: 0,
         }}
       >
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <h2
             style={{
               display: 'flex',
-              fontSize: isMobile ? '20px' : '36px',
+              fontSize: isMobile ? '22px' : '40px',
+              lineHeight: isMobile ? '30px' : '48px',
               fontWeight: 700,
-              textTransform: 'uppercase',
+              color: '#111827',
             }}
           >
-            Certification
+            Certificate of Completion
           </h2>
           <div
             style={{
               display: 'flex',
+              width: '72px',
+              height: '4px',
+              marginTop: '16px',
+              background: '#ff6771',
+              borderRadius: '999px',
+            }}
+          />
+          <div
+            style={{
+              display: 'flex',
               flexDirection: 'column',
-              gap: '24px',
-              marginTop: '12px',
+              gap: '28px',
+              marginTop: '28px',
             }}
           >
             {issueDate && <CertificateValue>{issueDate}</CertificateValue>}
@@ -196,7 +237,9 @@ export const Certificate = ({
               }}
             >
               <CertificateLabel>This is to certify</CertificateLabel>
-              <CertificateValue>{minifyAddress(owner)}</CertificateValue>
+              <CertificateValue size="large">
+                {minifyAddress(owner)}
+              </CertificateValue>
             </div>
             <div
               style={{
@@ -208,22 +251,7 @@ export const Certificate = ({
               <CertificateLabel>has completed</CertificateLabel>
               <CertificateValue size="large">{name}</CertificateValue>
               {description && (
-                <div
-                  style={{
-                    display: 'flex',
-                    marginTop: '10px',
-                  }}
-                >
-                  <CertificateLabel>
-                    <span
-                      style={{
-                        display: 'flex',
-                      }}
-                    >
-                      {description}
-                    </span>
-                  </CertificateLabel>
-                </div>
+                <CertificateDescription>{description}</CertificateDescription>
               )}
             </div>
 
@@ -233,16 +261,31 @@ export const Certificate = ({
                   display: 'flex',
                   flexDirection: isMobile ? 'column' : 'row',
                   justifyContent: 'flex-start',
-                  gap: isMobile ? '16px' : '8px',
-                  marginTop: '24px',
+                  gap: '12px',
+                  marginTop: '8px',
                   flexWrap: 'wrap',
                 }}
               >
                 {customMetadata.map((attribute, index) => (
-                  <ValueWrapper key={index}>
+                  <div
+                    key={index}
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '6px',
+                      minWidth: isMobile ? '100%' : '180px',
+                      flex: 1,
+                      padding: '12px 14px',
+                      background: '#ffffff',
+                      border: '1px solid #e5e7eb',
+                      borderRadius: '8px',
+                    }}
+                  >
                     <CertificateLabel>{attribute.trait_type}</CertificateLabel>
-                    <CertificateValue>{attribute.value}</CertificateValue>
-                  </ValueWrapper>
+                    <CertificateValue size="small">
+                      {attribute.value}
+                    </CertificateValue>
+                  </div>
                 ))}
               </div>
             )}
@@ -254,9 +297,10 @@ export const Certificate = ({
               display: 'flex',
               flexDirection: isMobile ? 'column' : 'row',
               justifyContent: 'space-between',
-              gap: isMobile ? '16px' : '8px',
-              marginTop: isMobile ? '30px' : '100px',
+              gap: isMobile ? '16px' : '12px',
               flexWrap: 'wrap',
+              paddingTop: '24px',
+              borderTop: '1px solid #e5e0d8',
             }}
           >
             {expiration && (
@@ -281,6 +325,8 @@ export const Certificate = ({
                 <div
                   style={{
                     display: 'flex',
+                    overflowWrap: 'break-word',
+                    wordBreak: 'break-word',
                   }}
                 >
                   {transactionsHash}
@@ -307,6 +353,7 @@ export const Certificate = ({
           width: '100%',
           minWidth: '300px',
           flex: 1,
+          background: '#f6f3ee',
         }}
       >
         <div
@@ -324,10 +371,10 @@ export const Certificate = ({
               flexDirection: 'column',
               gap: '16px',
               width: isMobile ? '100%' : '300px',
-              background: '#FAFBFC',
-              borderRight: isMobile ? 'none' : '1px solid #9ca3af',
-              borderLeft: isMobile ? 'none' : '1px solid #9ca3af',
-              padding: isMobile ? '0 16px 40px 16px' : '40px 24px 0 24px',
+              background: '#ffffff',
+              borderRight: isMobile ? 'none' : '1px solid #e5e7eb',
+              borderLeft: isMobile ? 'none' : '1px solid #e5e7eb',
+              padding: isMobile ? '0 24px 40px 24px' : '40px 24px 0 24px',
               marginLeft: 'auto',
               marginRight: isMobile ? 'none' : '50px',
             }}
@@ -335,8 +382,9 @@ export const Certificate = ({
             <img
               style={{
                 width: '100%',
-                borderRadius: '16px',
+                borderRadius: '8px',
                 overflow: 'hidden',
+                border: '1px solid #e5e7eb',
               }}
               width={200}
               height={200}

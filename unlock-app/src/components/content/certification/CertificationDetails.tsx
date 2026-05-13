@@ -34,6 +34,11 @@ import { UpdateTransferFee } from '~/components/interface/locks/Settings/forms/U
 import { PaywallConfigType, getLockTypeByMetadata } from '@unlock-protocol/core'
 import { useLockData } from '~/hooks/useLockData'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import {
+  getCertificateDetailsMetadata,
+  getCertificationRecipientName,
+  getCustomCertificationMetadata,
+} from './utils'
 
 interface CertificationDetailsProps {
   lockAddress: string
@@ -209,6 +214,10 @@ export const CertificationDetails = ({
   }
 
   const certificationData = toFormData(metadata!)
+  const customMetadata = getCustomCertificationMetadata(metadata)
+  const recipientName = getCertificationRecipientName(customMetadata)
+  const certificateDetailsMetadata =
+    getCertificateDetailsMetadata(customMetadata)
 
   const transactionsHash: string = key?.transactionsHash?.[0] || '22'
 
@@ -371,11 +380,16 @@ export const CertificationDetails = ({
               ) : undefined
             }
             issuer={issuer}
-            owner={!hasValidKey ? key?.owner : addressMinify(key?.owner)}
+            owner={
+              recipientName ||
+              (!hasValidKey ? key?.owner : addressMinify(key?.owner)) ||
+              ''
+            }
             expiration={showExpiration ? expiration : undefined}
             transactionsHash={<TransactionHashButton />}
             externalUrl={certificationData.external_url}
             isMobile={isMobile}
+            customMetadata={certificateDetailsMetadata}
           />
         )}
 

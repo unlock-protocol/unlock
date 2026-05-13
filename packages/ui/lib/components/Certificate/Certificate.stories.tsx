@@ -9,6 +9,36 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const certificateWithRecipientDetailsArgs = {
+  name: 'Unlock Certification Builder',
+  description:
+    'Awarded for completing the Unlock certification workshop, including lock setup, airdrop delivery, metadata review, and credential sharing. This description intentionally spans multiple sentences so the certificate preview can exercise long-form wrapping without crowding the issuer panel or the verification details.',
+  owner: 'Ada Lovelace',
+  issuer: 'Unlock Labs',
+  network: 8453,
+  tokenId: 2026,
+  lockAddress: '0xF3850C690BFF6c1E343D2449bBbbb00b0E934f7b',
+  transactionsHash: '0x0dEADBEEF1234567890abcdef1234567890abcdef',
+  issueDate: '13 May 2026',
+  image:
+    'https://www.pngkit.com/png/detail/99-993245_atrc-certified-logo-certification.png',
+  externalUrl: 'https://unlock-protocol.com',
+  customMetadata: [
+    {
+      trait_type: 'Cohort',
+      value: 'Spring 2026',
+    },
+    {
+      trait_type: 'Level',
+      value: 'Advanced',
+    },
+    {
+      trait_type: 'Credential ID',
+      value: 'CERT-2026-BASE-0001',
+    },
+  ],
+}
+
 export const CertificateBase = {
   args: {
     name: 'Example Certification',
@@ -43,5 +73,16 @@ export const CertificateWithBadge = {
     image:
       'https://www.pngkit.com/png/detail/99-993245_atrc-certified-logo-certification.png',
     externalUrl: 'https://example.it',
+  },
+} satisfies Story
+
+export const CertificateWithRecipientDetails = {
+  args: certificateWithRecipientDetailsArgs,
+} satisfies Story
+
+export const CertificateWithRecipientDetailsMobile = {
+  args: {
+    ...certificateWithRecipientDetailsArgs,
+    isMobile: true,
   },
 } satisfies Story
