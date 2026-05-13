@@ -19,6 +19,9 @@ vi.mock('@unlock-protocol/unlock-js', async () => {
   const actual: any = await vi.importActual('@unlock-protocol/unlock-js')
   return {
     ...actual,
+    SubgraphService: vi.fn().mockImplementation(() => ({
+      lock: async () => null,
+    })),
     Web3Service: vi.fn().mockImplementation(() => {
       return {
         isLockManager: (lock: string) => lockAddressMock === lock,
@@ -78,6 +81,7 @@ describe('Wedlocks operations', () => {
   beforeEach(() => {
     fetchMock.resetMocks()
     fetchMock.enableMocks()
+    fetchMock.mockResponse(JSON.stringify({ data: { locks: [] } }))
   })
 
   describe('notifyNewKeyToWedlocks', () => {
@@ -162,7 +166,10 @@ describe('Wedlocks operations', () => {
         }
       )
 
-      const body = JSON.parse(vi.mocked(fetch).mock.calls[0][1]!.body as string)
+      const wedlocksCall = vi
+        .mocked(fetch)
+        .mock.calls.find(([url]) => url === config.services.wedlocks)
+      const body = JSON.parse(wedlocksCall![1]!.body as string)
 
       expect(body).toMatchObject({
         params: {
