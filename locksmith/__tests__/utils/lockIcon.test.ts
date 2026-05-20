@@ -8,4 +8,15 @@ describe('lockIcon', () => {
     expect(lockIcon1).toMatch(/^<svg/)
     expect(lockIcon1).not.toEqual(lockIcon2)
   })
+
+  it('should apply grayscale saturation when requested', () => {
+    expect.assertions(2)
+
+    const icon = lockIcon('0x95da5F777A3e283bFf0c47374998E10D8A2183C7', {
+      grayscale: 0.75,
+    })
+
+    expect(icon).toContain('<filter id="grayscale">')
+    expect(icon).toContain('<feColorMatrix type="saturate" values="0.25" />')
+  })
 })

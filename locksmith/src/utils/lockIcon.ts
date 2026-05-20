@@ -1,6 +1,14 @@
 import ColorScheme = require('color-scheme')
 
-export const lockIcon = (address: string) => {
+export type LockIconOptions = {
+  grayscale?: number
+}
+
+const clamp = (value: number) => Math.min(1, Math.max(0, value))
+
+export const lockIcon = (address: string, options: LockIconOptions = {}) => {
+  const saturation = 1 - clamp(options.grayscale ?? 0)
+
   /**
    * This computes how much rotation to apply to the lock glyph
    * @param {string} address
@@ -97,8 +105,11 @@ export const lockIcon = (address: string) => {
       <defs>
         <circle id="a" cx="108" cy="108" r="108" />
         <circle id="c" cx="108" cy="108" r="60.75" />
+        <filter id="grayscale">
+          <feColorMatrix type="saturate" values="${saturation}" />
+        </filter>
       </defs>
-      <g>
+      <g filter="url(#grayscale)">
         <mask id="b" fill="#fff">
           <use xlink:href="#a" />
         </mask>
