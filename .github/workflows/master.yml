@@ -7,6 +7,8 @@ on:
 jobs:
   run-all-tests:
     uses: ./.github/workflows/_tests.yml
+    with:
+      export_cache: true
 
   deploy-locksmith-web-staging:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
@@ -166,8 +168,8 @@ jobs:
           target-env: prod
 
   cache_deps:
-    uses: ./.github/workflows/_docker-cache.yml
     needs: run-all-tests
+    uses: ./.github/workflows/_docker-cache.yml
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
