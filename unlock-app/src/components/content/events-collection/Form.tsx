@@ -23,6 +23,7 @@ import { WrappedAddress } from '~/components/interface/WrappedAddress'
 import { FiTrash as TrashIcon } from 'react-icons/fi'
 import { LinksField } from './LinksField'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { GuideCallout } from '~/components/interface/GuideCallout'
 
 interface Links {
   farcaster?: string
@@ -194,6 +195,11 @@ export const EventCollectionForm = ({
 
         <form className="mb-6" onSubmit={methods.handleSubmit(handleSubmit)}>
           <div className="grid gap-6">
+            <GuideCallout
+              description="When a collection groups ticketed events, start with the event ticketing guide so each event has the right ticket, RSVP, and check-in setup."
+              href="https://unlock-protocol.com/guides/how-to-sell-nft-tickets-for-an-event/"
+              linkLabel="Read the event ticketing guide"
+            />
             {/* Basic Information */}
             <Disclosure label="Basic Information" defaultOpen>
               <p className="mb-5">
