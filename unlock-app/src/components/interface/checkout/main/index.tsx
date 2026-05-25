@@ -27,6 +27,10 @@ import { Connected } from '../Connected'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { AllowList } from './AllowList'
 import PrivyFunding from './embedded-wallet/PrivyFunding'
+import {
+  getCheckoutAccentColor,
+  getCheckoutAccentStyle,
+} from '~/utils/checkoutTheme'
 
 interface Props {
   paywallConfig: PaywallConfigType
@@ -34,6 +38,45 @@ interface Props {
   handleClose?: (params: Record<string, string>) => void
   communication?: ReturnType<typeof useCheckoutCommunication>
 }
+
+const CHECKOUT_ACCENT_STYLES = `
+[data-unlock-checkout-accent="true"] .bg-brand-ui-primary,
+[data-unlock-checkout-accent="true"] .disabled\\:hover\\:bg-brand-ui-primary:disabled:hover,
+[data-unlock-checkout-accent="true"] .bg-ui-main-500 {
+  background-color: var(--unlock-checkout-accent) !important;
+}
+
+[data-unlock-checkout-accent="true"] .hover\\:bg-brand-dark:hover {
+  background-color: var(--unlock-checkout-accent) !important;
+  filter: brightness(0.9);
+}
+
+[data-unlock-checkout-accent="true"] .text-brand-ui-primary,
+[data-unlock-checkout-accent="true"] .text-ui-main-500,
+[data-unlock-checkout-accent="true"] .borderless-primary {
+  color: var(--unlock-checkout-accent) !important;
+}
+
+[data-unlock-checkout-accent="true"] .hover\\:text-brand-ui-primary:hover,
+[data-unlock-checkout-accent="true"] .hover\\:text-ui-main-400:hover {
+  color: var(--unlock-checkout-accent) !important;
+}
+
+[data-unlock-checkout-accent="true"] .fill-brand-ui-primary,
+[data-unlock-checkout-accent="true"] .fill-ui-main-500 {
+  fill: var(--unlock-checkout-accent) !important;
+}
+
+[data-unlock-checkout-accent="true"] .group:hover .group-hover\\:fill-brand-ui-primary {
+  fill: var(--unlock-checkout-accent) !important;
+}
+
+[data-unlock-checkout-accent="true"] .border-brand-ui-primary,
+[data-unlock-checkout-accent="true"] .border-ui-main-100,
+[data-unlock-checkout-accent="true"] .focus\\:border-brand-ui-primary:focus {
+  border-color: var(--unlock-checkout-accent) !important;
+}
+`
 
 export function Checkout({
   paywallConfig,
@@ -59,6 +102,8 @@ export function Checkout({
   const router = useRouter()
   const searchParams = useSearchParams()
   const pathname = usePathname()
+  const accentColor = getCheckoutAccentColor(paywallConfig)
+  const accentStyle = getCheckoutAccentStyle(accentColor)
 
   useEffect(() => {
     console.debug('Unlock paywall config', paywallConfig)
@@ -244,7 +289,12 @@ export function Checkout({
   }, [matched])
 
   return (
-    <div className="bg-white z-10  shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem] text-left">
+    <div
+      className="bg-white z-10  shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem] text-left"
+      data-unlock-checkout-accent={accentColor ? 'true' : undefined}
+      style={accentStyle}
+    >
+      {accentColor && <style>{CHECKOUT_ACCENT_STYLES}</style>}
       <TopNavigation
         onClose={!paywallConfig?.persistentCheckout ? onClose : undefined}
         onBack={onBack}
