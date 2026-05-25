@@ -42,8 +42,10 @@ export function getPaywallConfigFromQuery(
   }
 
   // Attempt to parse and validate a full PaywallConfig
-  if (typeof queryObj.paywallConfig === 'string') {
-    const rawConfig = queryObj.paywallConfig
+  const fullConfig = queryObj.paywallConfig || queryObj.checkoutConfig
+
+  if (typeof fullConfig === 'string') {
+    const rawConfig = fullConfig
     const decodedConfig = rawConfig
 
     let parsedConfig: any

@@ -1,6 +1,6 @@
 'use client'
 
-import { useSearchParams } from 'next/navigation'
+import { useParams, useSearchParams } from 'next/navigation'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { getPaywallConfigFromQuery } from '~/utils/paywallConfig'
 import getOauthConfigFromQuery from '~/utils/oauth'
@@ -16,11 +16,16 @@ import { isInIframe } from '~/utils/iframe'
 
 export function CheckoutContainer() {
   const searchParams = useSearchParams()
+  const params = useParams<{ id?: string | string[] }>()
+  const checkoutIdFromPath = Array.isArray(params?.id)
+    ? params.id[0]
+    : params?.id
+  const checkoutId = checkoutIdFromPath || searchParams.get('id')?.toString()
 
   // Fetch config from parent in iframe context
   const communication = useCheckoutCommunication()
   const { isLoading, data: checkout } = useCheckoutConfig({
-    id: searchParams.get('id')?.toString(),
+    id: checkoutId,
   })
 
   const referrerAddress = searchParams.get('referrerAddress')?.toString()
@@ -52,7 +57,7 @@ export function CheckoutContainer() {
       })?.[1]
       ?.toString()
 
-  if (!(paywallConfig || oauthConfig) || isLoading) {
+  if (checkoutId && isLoading) {
     return <LoadingIcon size={20} className="animate-spin" />
   }
 

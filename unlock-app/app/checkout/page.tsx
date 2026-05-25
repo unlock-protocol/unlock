@@ -4,15 +4,44 @@ import { fetchMetadata } from 'frames.js/next'
 import { CheckoutPage as CheckoutPageComponent } from '~/components/interface/checkout'
 import { getConfig } from '../frames/checkout/components/utils'
 import { config as appConfig } from '~/config/app'
+import { permanentRedirect } from 'next/navigation'
 
 type Props = {
-  searchParams: { id: string }
+  searchParams: Record<string, string | string[] | undefined>
+}
+
+const getSearchParam = (
+  searchParams: Props['searchParams'],
+  key: string
+): string | undefined => {
+  const value = searchParams?.[key]
+  return Array.isArray(value) ? value[0] : value
+}
+
+const getPathCheckoutUrl = (
+  id: string,
+  searchParams: Props['searchParams']
+) => {
+  const remainingParams = new URLSearchParams()
+
+  Object.entries(searchParams || {}).forEach(([key, value]) => {
+    if (key === 'id' || value === undefined) {
+      return
+    }
+
+    const values = Array.isArray(value) ? value : [value]
+    values.forEach((item) => remainingParams.append(key, item))
+  })
+
+  const queryString = remainingParams.toString()
+  const path = `/checkout/${encodeURIComponent(id)}`
+  return queryString ? `${path}?${queryString}` : path
 }
 
 export async function generateMetadata({
   searchParams,
 }: Props): Promise<Metadata> {
-  const id = searchParams?.id?.trim()
+  const id = getSearchParam(searchParams, 'id')?.trim()
 
   // Default metadata without frame data
   const baseMetadata: Metadata = {
@@ -42,16 +71,28 @@ export async function generateMetadata({
           new URL(`/frames/checkout?id=${id}`, appConfig.unlockApp)
         )),
       },
+      alternates: {
+        canonical: `${appConfig.unlockApp}/checkout/${encodeURIComponent(id)}`,
+      },
     }
 
     return metadata
   } catch (error) {
-    console.error('Error generating metadata:', error)
+    console.error(
+      `Error generating metadata for checkout config '${id}':`,
+      error
+    )
     return baseMetadata
   }
 }
 
-const CheckoutPage: React.FC = () => {
+const CheckoutPage: React.FC<Props> = ({ searchParams }) => {
+  const id = getSearchParam(searchParams, 'id')?.trim()
+
+  if (id) {
+    permanentRedirect(getPathCheckoutUrl(id, searchParams))
+  }
+
   return <CheckoutPageComponent />
 }
 
