@@ -4,19 +4,26 @@ import { IoTicketSharp } from 'react-icons/io5'
 import { MdOutlineCollections } from 'react-icons/md'
 
 import { Button } from '@unlock-protocol/ui'
-import { Disclosure } from '@headlessui/react'
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
 
 import Link from 'next/link'
 import EventList from '~/components/interface/locks/List/elements/EventList'
 import EventCollectionList from '~/components/interface/locks/List/elements/EventCollectionList'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
-import {
-  RiArrowDropUpLine as UpIcon,
-  RiArrowDropDownLine as DownIcon,
-} from 'react-icons/ri'
 
 export default function MyEventsContent() {
   const { account } = useAuthenticate()
+
+  const tabs = [
+    {
+      label: 'My events',
+      content: <EventList />,
+    },
+    {
+      label: 'My event collections',
+      content: <EventCollectionList />,
+    },
+  ]
 
   const SectionHeader = () => {
     return (
@@ -56,50 +63,25 @@ export default function MyEventsContent() {
   return (
     <>
       <SectionHeader />
-      <Disclosure defaultOpen>
-        {({ open }) => (
-          <div className="flex flex-col gap-2">
-            <Disclosure.Button className="flex items-center justify-between w-full outline-none ring-0">
-              <h2 className="text-lg font-bold text-brand-ui-primary">
-                My events
-              </h2>
-              {open ? (
-                <UpIcon className="fill-brand-ui-primary" size={24} />
-              ) : (
-                <DownIcon className="fill-brand-ui-primary" size={24} />
-              )}
-            </Disclosure.Button>
-
-            <Disclosure.Panel>
-              <div className="flex flex-col gap-6">
-                <EventList />
-              </div>
-            </Disclosure.Panel>
-          </div>
-        )}
-      </Disclosure>
-      <Disclosure defaultOpen>
-        {({ open }) => (
-          <div className="flex flex-col gap-2">
-            <Disclosure.Button className="flex items-center justify-between w-full outline-none ring-0">
-              <h2 className="text-lg font-bold text-brand-ui-primary">
-                My event collections
-              </h2>
-              {open ? (
-                <UpIcon className="fill-brand-ui-primary" size={24} />
-              ) : (
-                <DownIcon className="fill-brand-ui-primary" size={24} />
-              )}
-            </Disclosure.Button>
-
-            <Disclosure.Panel>
-              <div className="flex flex-col gap-6">
-                <EventCollectionList />
-              </div>
-            </Disclosure.Panel>
-          </div>
-        )}
-      </Disclosure>
+      <TabGroup>
+        <TabList className="flex flex-wrap gap-2 border-b border-gray-200">
+          {tabs.map(({ label }) => (
+            <Tab
+              key={label}
+              className="border-b-2 border-transparent px-4 py-3 text-sm font-semibold text-gray-600 outline-none data-[selected]:border-brand-ui-primary data-[selected]:text-brand-ui-primary"
+            >
+              {label}
+            </Tab>
+          ))}
+        </TabList>
+        <TabPanels className="pt-6">
+          {tabs.map(({ label, content }) => (
+            <TabPanel key={label}>
+              <div className="flex flex-col gap-6">{content}</div>
+            </TabPanel>
+          ))}
+        </TabPanels>
+      </TabGroup>
     </>
   )
 }
