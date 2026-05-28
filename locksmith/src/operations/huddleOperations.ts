@@ -65,21 +65,23 @@ export const buildTokenGatedRoomPayload = ({
   title,
 }: CreateTokenGatedHuddleRoomOptions & { chain: string }) => {
   const normalizedLockAddress = normalizer.ethereumAddress(lockAddress)
+  const tokenGatingInfo = {
+    chain,
+    chainId: network,
+    contractAddress: normalizedLockAddress,
+    tokenType: 'ERC721',
+  }
+
   return {
     roomLocked: false,
+    title,
     metadata: {
       title,
       hostWallets,
-      tokenGatingInfo: {
-        type: 'unlock-event-lock',
-        tokenGatingConditions: [
-          {
-            chain,
-            chainId: network,
-            contractAddress: normalizedLockAddress,
-            tokenType: 'ERC721',
-          },
-        ],
+      tokenGatingInfo,
+      unlock: {
+        lockAddress: normalizedLockAddress,
+        network,
       },
     },
   }

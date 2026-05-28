@@ -43,19 +43,19 @@ describe('huddleOperations', () => {
       })
     ).toMatchObject({
       roomLocked: false,
+      title: 'Token gated event',
       metadata: {
         title: 'Token gated event',
         hostWallets: ['0x0000000000000000000000000000000000000001'],
         tokenGatingInfo: {
-          type: 'unlock-event-lock',
-          tokenGatingConditions: [
-            {
-              chain: 'BASE',
-              chainId: 8453,
-              contractAddress: '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C',
-              tokenType: 'ERC721',
-            },
-          ],
+          chain: 'BASE',
+          chainId: 8453,
+          contractAddress: '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C',
+          tokenType: 'ERC721',
+        },
+        unlock: {
+          lockAddress: '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C',
+          network: 8453,
         },
       },
     })
