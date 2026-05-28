@@ -132,6 +132,12 @@ const config = {
   privyAppId: process.env.PRIVY_APP_ID,
   privyAppSecret: process.env.PRIVY_APP_SECRET,
   eventCasterApiKey: process.env.EVENTCASTER_API_KEY,
+  huddle: {
+    apiKey: process.env.HUDDLE01_API_KEY,
+    projectId: process.env.HUDDLE01_PROJECT_ID,
+    iframeBaseUrl:
+      process.env.HUDDLE01_IFRAME_URL || 'https://iframe.huddle01.com',
+  },
   // Secret key to authenticate with the provider service
   providerSecretKey: process.env.PROVIDER_SECRET_KEY,
   logtailSourceToken: process.env.LOGTAIL,
