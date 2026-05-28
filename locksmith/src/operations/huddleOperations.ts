@@ -1,7 +1,6 @@
 import normalizer from '../utils/normalizer'
 
-const HUDDLE_CREATE_ROOM_URL =
-  'https://api.huddle01.com/api/v2/sdk/rooms/create-room'
+const HUDDLE_CREATE_ROOM_URL = 'https://api.huddle01.com/api/v1/create-room'
 
 const HUDDLE_CHAIN_BY_NETWORK: Record<number, string> = {
   1: 'ETHEREUM',
@@ -27,6 +26,13 @@ export interface CreateTokenGatedHuddleRoomOptions {
   network: number
   title: string
   hostWallets?: string[]
+}
+
+interface BuildTokenGatedRoomPayloadOptions {
+  chain: string
+  hostWallets?: string[]
+  lockAddress: string
+  title: string
 }
 
 interface HuddleCreateRoomResponse {
@@ -61,29 +67,16 @@ export const buildTokenGatedRoomPayload = ({
   chain,
   hostWallets,
   lockAddress,
-  network,
   title,
-}: CreateTokenGatedHuddleRoomOptions & { chain: string }) => {
+}: BuildTokenGatedRoomPayloadOptions) => {
   const normalizedLockAddress = normalizer.ethereumAddress(lockAddress)
-  const tokenGatingInfo = {
-    chain,
-    chainId: network,
-    contractAddress: normalizedLockAddress,
-    tokenType: 'ERC721',
-  }
 
   return {
-    roomLocked: false,
+    chain,
+    contractAddress: [normalizedLockAddress],
+    ...(hostWallets?.length ? { hostWallets } : {}),
     title,
-    metadata: {
-      title,
-      hostWallets,
-      tokenGatingInfo,
-      unlock: {
-        lockAddress: normalizedLockAddress,
-        network,
-      },
-    },
+    tokenType: 'ERC721',
   }
 }
 
@@ -111,7 +104,6 @@ export const createTokenGatedHuddleRoom = async ({
         chain,
         hostWallets,
         lockAddress,
-        network,
         title,
       })
     ),

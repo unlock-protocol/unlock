@@ -32,32 +32,20 @@ describe('huddleOperations', () => {
     ).toBe('https://iframe.huddle01.com/abc-def-ghi?projectId=project-id')
   })
 
-  it('builds token-gating metadata for the event lock', () => {
+  it('builds a Huddle token-gated room payload for the event lock', () => {
     expect(
       buildTokenGatedRoomPayload({
-        chain: 'BASE',
+        chain: 'POLYGON',
         hostWallets: ['0x0000000000000000000000000000000000000001'],
         lockAddress: '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C',
-        network: 8453,
         title: 'Token gated event',
       })
-    ).toMatchObject({
-      roomLocked: false,
+    ).toEqual({
+      chain: 'POLYGON',
+      contractAddress: ['0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'],
+      hostWallets: ['0x0000000000000000000000000000000000000001'],
       title: 'Token gated event',
-      metadata: {
-        title: 'Token gated event',
-        hostWallets: ['0x0000000000000000000000000000000000000001'],
-        tokenGatingInfo: {
-          chain: 'BASE',
-          chainId: 8453,
-          contractAddress: '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C',
-          tokenType: 'ERC721',
-        },
-        unlock: {
-          lockAddress: '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C',
-          network: 8453,
-        },
-      },
+      tokenType: 'ERC721',
     })
   })
 
@@ -83,9 +71,16 @@ describe('huddleOperations', () => {
     })
 
     expect(fetchMock).toHaveBeenCalledWith(
-      'https://api.huddle01.com/api/v2/sdk/rooms/create-room',
+      'https://api.huddle01.com/api/v1/create-room',
       expect.objectContaining({
         method: 'POST',
+        body: JSON.stringify({
+          chain: 'BASE',
+          contractAddress: ['0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'],
+          hostWallets: ['0x0000000000000000000000000000000000000001'],
+          title: 'Token gated event',
+          tokenType: 'ERC721',
+        }),
         headers: {
           'Content-Type': 'application/json',
           'x-api-key': 'huddle-api-key',
