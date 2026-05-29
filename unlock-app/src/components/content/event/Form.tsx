@@ -35,6 +35,7 @@ import Link from 'next/link'
 import { regexUrlPattern } from '~/utils/regexUrlPattern'
 import { ProtocolFee } from '~/components/interface/locks/Create/elements/ProtocolFee'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { AttendeeRefundType } from '@unlock-protocol/core'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewEventForm {
@@ -42,7 +43,9 @@ export interface NewEventForm {
   lock: Omit<Lock, 'address' | 'key'>
   currencySymbol: string
   createHuddleRoom: boolean
-  metadata: Partial<MetadataFormData>
+  metadata: Partial<MetadataFormData> & {
+    attendeeRefund?: AttendeeRefundType
+  }
 }
 
 interface GoogleMapsAutoCompleteProps {
@@ -50,11 +53,28 @@ interface GoogleMapsAutoCompleteProps {
   defaultValue?: string
 }
 
+interface GoogleMapsPlace {
+  formatted_address?: string
+  geometry?: {
+    location?: {
+      lat: () => number
+      lng: () => number
+    }
+  }
+}
+
+interface GoogleMapsInputRef {
+  value: string
+}
+
 export const GoogleMapsAutoComplete = ({
   onChange,
   defaultValue,
 }: GoogleMapsAutoCompleteProps) => {
-  const onPlaceSelected = async (place: any, inputRef: any) => {
+  const onPlaceSelected = async (
+    place: GoogleMapsPlace,
+    inputRef: GoogleMapsInputRef
+  ) => {
     const lat = place.geometry?.location?.lat()
     const lng = place.geometry?.location?.lng()
 
@@ -78,7 +98,7 @@ export const GoogleMapsAutoComplete = ({
       types: [],
     },
     apiKey: config.googleMapsApiKey,
-    onPlaceSelected: (place: any, inputRef: any) => {
+    onPlaceSelected: (place: GoogleMapsPlace, inputRef: GoogleMapsInputRef) => {
       onPlaceSelected(place, inputRef)
     },
   })
@@ -213,10 +233,10 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
     },
   })
 
-  const processAndSubmit = (values: any) => {
+  const processAndSubmit = (values: NewEventForm) => {
     if (attendeeRefund) {
       values.metadata.attendeeRefund = {
-        amount: values.lock!.keyPrice,
+        amount: Number(values.lock.keyPrice),
         currency: values.lock!.currencyContractAddress,
         network: values.network,
       }
@@ -268,7 +288,7 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
                   description="This illustration will be used for your event page, as well as the NFT tickets by default. Use 512 by 512 pixels for best results."
                   isUploading={isUploading}
                   preview={metadataImage!}
-                  onChange={async (fileOrFileUrl: any) => {
+                  onChange={async (fileOrFileUrl: string | File[]) => {
                     if (typeof fileOrFileUrl === 'string') {
                       setValue('metadata.image', fileOrFileUrl)
                     } else {
