@@ -44,6 +44,7 @@ describe('huddleOperations', () => {
       chain: 'POLYGON',
       contractAddress: ['0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'],
       hostWallets: ['0x0000000000000000000000000000000000000001'],
+      roomType: 'VIDEO',
       title: 'Token gated event',
       tokenType: 'ERC721',
     })
@@ -78,6 +79,7 @@ describe('huddleOperations', () => {
           chain: 'BASE',
           contractAddress: ['0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'],
           hostWallets: ['0x0000000000000000000000000000000000000001'],
+          roomType: 'VIDEO',
           title: 'Token gated event',
           tokenType: 'ERC721',
         }),

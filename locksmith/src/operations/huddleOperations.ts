@@ -75,6 +75,7 @@ export const buildTokenGatedRoomPayload = ({
     chain,
     contractAddress: [normalizedLockAddress],
     ...(hostWallets?.length ? { hostWallets } : {}),
+    roomType: 'VIDEO',
     title,
     tokenType: 'ERC721',
   }
