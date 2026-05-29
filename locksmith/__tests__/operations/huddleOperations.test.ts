@@ -38,15 +38,26 @@ describe('huddleOperations', () => {
         chain: 'POLYGON',
         hostWallets: ['0x0000000000000000000000000000000000000001'],
         lockAddress: '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C',
+        network: 137,
         title: 'Token gated event',
       })
     ).toEqual({
-      chain: 'POLYGON',
-      contractAddress: ['0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'],
-      hostWallets: ['0x0000000000000000000000000000000000000001'],
-      roomType: 'VIDEO',
-      title: 'Token gated event',
-      tokenType: 'ERC721',
+      roomLocked: false,
+      metadata: {
+        title: 'Token gated event',
+        hostWallets: ['0x0000000000000000000000000000000000000001'],
+        tokenGatingInfo: {
+          type: 'unlock-event-lock',
+          tokenGatingConditions: [
+            {
+              chain: 'POLYGON',
+              chainId: 137,
+              contractAddress: '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C',
+              tokenType: 'ERC721',
+            },
+          ],
+        },
+      },
     })
   })
 
@@ -72,16 +83,26 @@ describe('huddleOperations', () => {
     })
 
     expect(fetchMock).toHaveBeenCalledWith(
-      'https://api.huddle01.com/api/v1/create-room',
+      'https://api.huddle01.com/api/v2/sdk/rooms/create-room',
       expect.objectContaining({
         method: 'POST',
         body: JSON.stringify({
-          chain: 'BASE',
-          contractAddress: ['0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'],
-          hostWallets: ['0x0000000000000000000000000000000000000001'],
-          roomType: 'VIDEO',
-          title: 'Token gated event',
-          tokenType: 'ERC721',
+          roomLocked: false,
+          metadata: {
+            title: 'Token gated event',
+            hostWallets: ['0x0000000000000000000000000000000000000001'],
+            tokenGatingInfo: {
+              type: 'unlock-event-lock',
+              tokenGatingConditions: [
+                {
+                  chain: 'BASE',
+                  chainId: 8453,
+                  contractAddress: '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C',
+                  tokenType: 'ERC721',
+                },
+              ],
+            },
+          },
         }),
         headers: {
           'Content-Type': 'application/json',
