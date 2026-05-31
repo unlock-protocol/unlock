@@ -82,7 +82,7 @@ export default function EventsCollectionDetailContent({
 
   // event detail drawer
   const [isEventDetailDrawerOpen, setIsEventDetailDrawerOpen] = useState(false)
-  const [selectedEvent, setSelectedEvent] = useState<any | null>(null)
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
 
   const hasValidEvents = useMemo(() => {
     return (
@@ -146,7 +146,7 @@ export default function EventsCollectionDetailContent({
     const upcoming: Event[] = []
     const past: Event[] = []
 
-    eventCollection.events.forEach((event: any) => {
+    eventCollection.events.forEach((event: Event) => {
       const eventEndDate = parseEventDateTime(event, true)
       if (!eventEndDate) return
 
