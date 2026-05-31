@@ -6,9 +6,7 @@ import logger from '../../logger'
 import * as receiptOperations from '../../../src/operations/receiptOperations'
 import { sendEmail } from '../../operations/wedlocksOperations'
 import config from '../../config/config'
-import { unified } from 'unified'
-import remarkParse from 'remark-parse'
-import remarkHtml from 'remark-html'
+import { buildReceiptEmailParams } from '../../utils/receiptEmail'
 
 export const PurchaserBody = z.object({
   fullname: z.string().optional().default(''),
@@ -108,30 +106,19 @@ export class ReceiptController {
         return
       }
 
-      const receiptUrl = new URL('/receipts', config.unlockApp)
-      receiptUrl.searchParams.set('address', lockAddress)
-      receiptUrl.searchParams.set('network', network.toString())
-      receiptUrl.searchParams.append('hash', hash)
-
-      const keychainUrl = new URL('/keychain', config.unlockApp)
-      const htmlContent = await unified()
-        .use(remarkParse)
-        .use(remarkHtml)
-        .process(content)
-
       const sent = await sendEmail({
         network,
         template: 'custom',
         failoverTemplate: 'debug',
         recipient,
-        params: {
-          content: String(htmlContent?.value),
-          keychainUrl: keychainUrl.toString(),
+        params: await buildReceiptEmailParams({
+          content,
+          hash,
           lockAddress,
-          network: network.toString(),
-          receiptUrl: receiptUrl.toString(),
+          network,
           subject,
-        },
+          unlockApp: config.unlockApp,
+        }),
       })
 
       response.status(200).json({
