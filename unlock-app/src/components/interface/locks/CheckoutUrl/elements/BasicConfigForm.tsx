@@ -10,6 +10,8 @@ import {
 import { z } from 'zod'
 import { useState } from 'react'
 import { useImageUpload } from '~/hooks/useImageUpload'
+import { onResolveName } from '~/utils/resolvers'
+import { isAddress, isValidEnsName } from '@unlock-protocol/ui'
 
 interface Props {
   onChange: (values: z.infer<typeof BasicPaywallConfigSchema>) => void
@@ -18,6 +20,9 @@ interface Props {
 export const BasicConfigForm = ({ onChange, defaultValues }: Props) => {
   const { mutateAsync: uploadImage, isPending: isUploading } = useImageUpload()
   const [isOpen, setIsOpen] = useState(false)
+  const [referrerError, setReferrerError] = useState('')
+  const [referrerSuccess, setReferrerSuccess] = useState('')
+  const [isResolvingReferrer, setIsResolvingReferrer] = useState(false)
 
   const {
     register,
@@ -26,14 +31,57 @@ export const BasicConfigForm = ({ onChange, defaultValues }: Props) => {
     formState: { errors },
   } = useForm<z.infer<typeof BasicPaywallConfigSchema>>({
     reValidateMode: 'onChange',
-    defaultValues: defaultValues as any,
+    defaultValues,
   })
+  const referrerInput = register('referrer', {})
 
   const image = watch('icon')
   // Define an onChange handler for each input field
-  const handleInputChange = () => {
-    const updatedValues = watch() // Get all form values
-    onChange(updatedValues) // Call the onChange prop with updated values
+  const handleInputChange = (
+    updatedValues: Partial<z.infer<typeof BasicPaywallConfigSchema>> = {}
+  ) => {
+    onChange({
+      ...watch(),
+      ...updatedValues,
+    })
+  }
+
+  const resolveReferrer = async (referrer: string) => {
+    const trimmedReferrer = referrer.trim()
+    setReferrerError('')
+    setReferrerSuccess('')
+
+    if (!trimmedReferrer || isAddress(trimmedReferrer)) {
+      return
+    }
+
+    if (!isValidEnsName(trimmedReferrer)) {
+      setReferrerError('Enter a valid Ethereum address or ENS name.')
+      return
+    }
+
+    setIsResolvingReferrer(true)
+    try {
+      const resolvedName = await onResolveName(trimmedReferrer)
+      if (
+        resolvedName?.type === 'error' ||
+        !resolvedName?.address ||
+        !isAddress(resolvedName.address)
+      ) {
+        setReferrerError('Could not resolve this ENS name.')
+        return
+      }
+      setValue('referrer', resolvedName.address, {
+        shouldDirty: true,
+        shouldValidate: true,
+      })
+      setReferrerSuccess(`Resolved from ${trimmedReferrer}`)
+      handleInputChange({ referrer: resolvedName.address })
+    } catch {
+      setReferrerError('Could not resolve this ENS name.')
+    } finally {
+      setIsResolvingReferrer(false)
+    }
   }
 
   return (
@@ -60,7 +108,7 @@ export const BasicConfigForm = ({ onChange, defaultValues }: Props) => {
             description="Upload an image to use as the icon for your checkout"
             isUploading={isUploading}
             preview={image!}
-            onChange={async (fileOrFileUrl: any) => {
+            onChange={async (fileOrFileUrl: File[] | string) => {
               let icon = fileOrFileUrl
               if (typeof fileOrFileUrl !== 'string') {
                 const items = await uploadImage(fileOrFileUrl[0])
@@ -89,8 +137,14 @@ export const BasicConfigForm = ({ onChange, defaultValues }: Props) => {
         label="Referrer Address"
         size="small"
         description={BasicPaywallConfigSchema.shape.referrer.description}
-        error={errors.referrer?.message}
-        {...register('referrer', {})}
+        error={errors.referrer?.message || referrerError}
+        success={referrerSuccess}
+        disabled={isResolvingReferrer}
+        {...referrerInput}
+        onBlur={(event) => {
+          referrerInput.onBlur(event)
+          resolveReferrer(event.target.value)
+        }}
       />
 
       <Input

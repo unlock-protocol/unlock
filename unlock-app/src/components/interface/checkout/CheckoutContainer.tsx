@@ -13,6 +13,47 @@ import { ethers } from 'ethers'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { Connect } from './Connect'
 import { isInIframe } from '~/utils/iframe'
+import { useQuery } from '@tanstack/react-query'
+import { Web3Service } from '@unlock-protocol/unlock-js'
+import { config as AppConfig } from '~/config/app'
+
+const resolveReferrer = async (web3Service: Web3Service, referrer?: string) => {
+  if (!referrer || ethers.isAddress(referrer)) {
+    return referrer
+  }
+
+  const resolvedName = await web3Service.resolveName(referrer)
+  if (resolvedName?.address && ethers.isAddress(resolvedName.address)) {
+    return resolvedName.address
+  }
+
+  return referrer
+}
+
+const resolvePaywallConfigReferrers = async (
+  paywallConfig: PaywallConfigType
+) => {
+  const web3Service = new Web3Service(AppConfig.networks)
+  const locks = Object.fromEntries(
+    await Promise.all(
+      Object.entries(paywallConfig.locks || {}).map(
+        async ([lockAddress, lockConfig]) => [
+          lockAddress,
+          {
+            ...lockConfig,
+            referrer: await resolveReferrer(web3Service, lockConfig.referrer),
+          },
+        ]
+      )
+    )
+  )
+
+  return {
+    ...paywallConfig,
+    referrer: await resolveReferrer(web3Service, paywallConfig.referrer),
+    locks,
+  }
+}
 
 export function CheckoutContainer() {
   const searchParams = useSearchParams()
@@ -29,15 +70,28 @@ export function CheckoutContainer() {
   const oauthConfigFromQuery = getOauthConfigFromQuery(searchParams)
 
   const oauthConfig = communication.oauthConfig || oauthConfigFromQuery
-  const paywallConfig =
+  const configuredPaywallConfig =
     (checkout?.config as PaywallConfigType) ||
     communication.paywallConfig ||
     paywallConfigFromQuery
 
-  // If the referrer address is valid, override the paywall config referrer with it.
-  if (referrerAddress && paywallConfig && ethers.isAddress(referrerAddress)) {
-    paywallConfig.referrer = referrerAddress
-  }
+  const paywallConfig =
+    referrerAddress &&
+    configuredPaywallConfig &&
+    ethers.isAddress(referrerAddress)
+      ? {
+          ...configuredPaywallConfig,
+          referrer: referrerAddress,
+        }
+      : configuredPaywallConfig
+
+  const { data: resolvedPaywallConfig, isLoading: isResolvingReferrers } =
+    useQuery({
+      queryKey: ['resolvePaywallConfigReferrers', paywallConfig],
+      queryFn: async () => resolvePaywallConfigReferrers(paywallConfig!),
+      enabled: !!paywallConfig,
+      staleTime: Infinity,
+    })
 
   const checkoutRedirectURI =
     paywallConfig?.redirectUri ||
@@ -52,18 +106,27 @@ export function CheckoutContainer() {
       })?.[1]
       ?.toString()
 
-  if (!(paywallConfig || oauthConfig) || isLoading) {
+  if (
+    !(resolvedPaywallConfig || oauthConfig) ||
+    isLoading ||
+    isResolvingReferrers
+  ) {
     return <LoadingIcon size={20} className="animate-spin" />
   }
 
   if (oauthConfig) {
-    return <Connect paywallConfig={paywallConfig} oauthConfig={oauthConfig} />
+    return (
+      <Connect
+        paywallConfig={resolvedPaywallConfig}
+        oauthConfig={oauthConfig}
+      />
+    )
   }
 
-  if (paywallConfig) {
+  if (resolvedPaywallConfig) {
     return (
       <Checkout
-        paywallConfig={paywallConfig}
+        paywallConfig={resolvedPaywallConfig}
         redirectURI={
           checkoutRedirectURI ? new URL(checkoutRedirectURI) : undefined
         }
