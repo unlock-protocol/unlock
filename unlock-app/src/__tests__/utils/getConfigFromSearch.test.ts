@@ -52,6 +52,34 @@ describe('getPaywallConfigFromQuery', () => {
     )
   })
 
+  it('should preserve a valid accent color from the paywall config', () => {
+    expect.assertions(1)
+    expect(
+      getPaywallConfigFromQuery({
+        paywallConfig: JSON.stringify({
+          ...validConfig,
+          accentColor: '#F97316',
+        }),
+      })
+    ).toEqual(
+      expect.objectContaining({
+        accentColor: '#F97316',
+      })
+    )
+  })
+
+  it('should reject an invalid accent color from the paywall config', () => {
+    expect.assertions(1)
+    expect(
+      getPaywallConfigFromQuery({
+        paywallConfig: JSON.stringify({
+          ...validConfig,
+          accentColor: 'orange',
+        }),
+      })
+    ).toBeUndefined()
+  })
+
   it('should handle ReadonlyURLSearchParams input', () => {
     expect.assertions(1)
     const searchParams = new URLSearchParams({ lock: '0x123', network: '1' })
@@ -63,5 +91,33 @@ describe('getPaywallConfigFromQuery', () => {
         '0x123': {},
       },
     })
+  })
+
+  it('should include a valid accentColor from simple query parameters', () => {
+    expect.assertions(1)
+    const searchParams = new URLSearchParams({
+      lock: '0x123',
+      network: '1',
+      accentColor: '#14B8A6',
+    })
+    const result = getPaywallConfigFromQuery(searchParams)
+    expect(result).toEqual({
+      title: 'Unlock Protocol',
+      network: 1,
+      accentColor: '#14B8A6',
+      locks: {
+        '0x123': {},
+      },
+    })
+  })
+
+  it('should reject invalid accentColor from simple query parameters', () => {
+    expect.assertions(1)
+    const searchParams = new URLSearchParams({
+      lock: '0x123',
+      network: '1',
+      accentColor: 'teal',
+    })
+    expect(getPaywallConfigFromQuery(searchParams)).toBeUndefined()
   })
 })

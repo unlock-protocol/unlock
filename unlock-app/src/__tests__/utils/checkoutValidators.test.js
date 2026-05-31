@@ -232,6 +232,23 @@ describe('Form field validators', () => {
         ).toBe(false)
       })
 
+      it('fails when accentColor is invalid', () => {
+        expect.assertions(2)
+
+        expect(
+          validators.isValidPaywallConfig({
+            ...validConfig,
+            accentColor: '603DEB',
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidPaywallConfig({
+            ...validConfig,
+            accentColor: 'purple',
+          })
+        ).toBe(false)
+      })
+
       it('should fail when metadataInputs is present but invalid', () => {
         expect.assertions(1)
 
@@ -786,6 +803,23 @@ describe('Form field validators', () => {
               name: '',
             },
           },
+        })
+      ).toBe(true)
+    })
+
+    it('is valid when accentColor is a hex color', () => {
+      expect.assertions(2)
+
+      expect(
+        validators.isValidPaywallConfig({
+          ...validConfig,
+          accentColor: '#603DEB',
+        })
+      ).toBe(true)
+      expect(
+        validators.isValidPaywallConfig({
+          ...validConfig,
+          accentColor: '#fff',
         })
       ).toBe(true)
     })

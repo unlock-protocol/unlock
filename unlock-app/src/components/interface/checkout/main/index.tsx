@@ -1,5 +1,6 @@
 'use client'
 
+import type { CSSProperties } from 'react'
 import { useCallback, useEffect, useMemo } from 'react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { checkoutMachine } from './checkoutMachine'
@@ -35,6 +36,8 @@ interface Props {
   communication?: ReturnType<typeof useCheckoutCommunication>
 }
 
+const accentColorRegex = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/
+
 export function Checkout({
   paywallConfig,
   redirectURI,
@@ -50,6 +53,9 @@ export function Checkout({
   const { account, signOut } = useAuthenticate()
 
   const { mint, messageToSign } = state.context
+  const accentColor = accentColorRegex.test(paywallConfig.accentColor || '')
+    ? paywallConfig.accentColor
+    : undefined
   const matched = state.value.toString()
   const paywallConfigChanged = !isEqual(
     paywallConfig,
@@ -243,8 +249,56 @@ export function Checkout({
     }
   }, [matched])
 
+  const accentStyle = accentColor
+    ? ({
+        '--unlock-checkout-accent-color': accentColor,
+      } as CSSProperties)
+    : undefined
+
   return (
-    <div className="bg-white z-10  shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem] text-left">
+    <div
+      className={`bg-white z-10 shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem] text-left ${
+        accentColor ? 'unlock-checkout-custom-accent' : ''
+      }`}
+      style={accentStyle}
+    >
+      {accentColor && (
+        <style>
+          {`
+            .unlock-checkout-custom-accent .text-brand-ui-primary,
+            .unlock-checkout-custom-accent .hover\\:text-brand-ui-primary:hover,
+            .unlock-checkout-custom-accent .group:hover .group-hover\\:text-brand-ui-primary {
+              color: var(--unlock-checkout-accent-color) !important;
+            }
+
+            .unlock-checkout-custom-accent .fill-brand-ui-primary,
+            .unlock-checkout-custom-accent .hover\\:fill-brand-ui-primary:hover,
+            .unlock-checkout-custom-accent .group:hover .group-hover\\:fill-brand-ui-primary {
+              fill: var(--unlock-checkout-accent-color) !important;
+            }
+
+            .unlock-checkout-custom-accent .bg-brand-ui-primary,
+            .unlock-checkout-custom-accent .hover\\:bg-brand-ui-primary:hover,
+            .unlock-checkout-custom-accent .hover\\:bg-brand-dark:hover {
+              background-color: var(--unlock-checkout-accent-color) !important;
+            }
+
+            .unlock-checkout-custom-accent .hover\\:bg-ui-main-50:hover {
+              background-color: color-mix(in srgb, var(--unlock-checkout-accent-color) 12%, white) !important;
+            }
+
+            .unlock-checkout-custom-accent .border-brand-ui-primary,
+            .unlock-checkout-custom-accent .focus\\:border-brand-ui-primary:focus {
+              border-color: var(--unlock-checkout-accent-color) !important;
+            }
+
+            .unlock-checkout-custom-accent .ring-brand-ui-primary,
+            .unlock-checkout-custom-accent .focus\\:ring-brand-ui-primary:focus {
+              --tw-ring-color: var(--unlock-checkout-accent-color) !important;
+            }
+          `}
+        </style>
+      )}
       <TopNavigation
         onClose={!paywallConfig?.persistentCheckout ? onClose : undefined}
         onBack={onBack}

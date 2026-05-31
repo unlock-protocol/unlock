@@ -201,6 +201,16 @@ export const isValidPaywallConfig = (config) => {
   }
 
   if (
+    typeof config.accentColor !== 'undefined' &&
+    !/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(config.accentColor)
+  ) {
+    log(
+      'The paywall config\'s "accentColor" must be a valid hex color, such as #603DEB.'
+    )
+    return false
+  }
+
+  if (
     config.callToAction !== undefined &&
     (typeof config.callToAction !== 'object' ||
       !isValidCTA(config.callToAction))

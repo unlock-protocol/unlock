@@ -12,6 +12,7 @@ export const BasicPaywallConfigSchema = PaywallConfigSchema.pick({
   endingCallToAction: true,
   title: true,
   icon: true,
+  accentColor: true,
   persistentCheckout: true,
   referrer: true,
   messageToSign: true,

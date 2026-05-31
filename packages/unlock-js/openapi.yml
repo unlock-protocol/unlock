@@ -106,6 +106,10 @@ components:
             locks:
               type: object
               additionalProperties: true
+            accentColor:
+              type: string
+              pattern: '^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$'
+              description: Accent color for the checkout UI.
         createdAt:
           type: string
           format: date-time

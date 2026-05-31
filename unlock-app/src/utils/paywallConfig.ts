@@ -2,6 +2,8 @@ import { PaywallConfigType } from '@unlock-protocol/core'
 import { isValidPaywallConfig } from './checkoutValidators'
 import { ReadonlyURLSearchParams } from 'next/navigation'
 
+const accentColorRegex = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/
+
 /**
  * Extracts and validates the PaywallConfig from the query parameters.
  *
@@ -68,10 +70,19 @@ export function getPaywallConfigFromQuery(
     const lock = queryObj.lock
     const title = queryObj.title || 'Unlock Protocol'
     const network = Number(queryObj.network)
+    const accentColor = queryObj.accentColor
+
+    if (
+      typeof accentColor !== 'undefined' &&
+      (typeof accentColor !== 'string' || !accentColorRegex.test(accentColor))
+    ) {
+      return undefined
+    }
 
     return {
       title,
       network,
+      ...(accentColor ? { accentColor } : {}),
       locks: {
         [lock]: {},
       },

@@ -33,6 +33,9 @@ export const BasicConfigForm = ({ onChange, defaultValues }: Props) => {
   // Define an onChange handler for each input field
   const handleInputChange = () => {
     const updatedValues = watch() // Get all form values
+    if (!updatedValues.accentColor) {
+      delete updatedValues.accentColor
+    }
     onChange(updatedValues) // Call the onChange prop with updated values
   }
 
@@ -83,6 +86,20 @@ export const BasicConfigForm = ({ onChange, defaultValues }: Props) => {
           required: "Title can't be empty",
         })}
         error={errors.title?.message}
+      />
+
+      <Input
+        label="Accent Color"
+        size="small"
+        placeholder="#603DEB"
+        description={BasicPaywallConfigSchema.shape.accentColor.description}
+        {...register('accentColor', {
+          pattern: {
+            value: /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/,
+            message: 'Use a hex color like #603DEB.',
+          },
+        })}
+        error={errors.accentColor?.message}
       />
 
       <Input
