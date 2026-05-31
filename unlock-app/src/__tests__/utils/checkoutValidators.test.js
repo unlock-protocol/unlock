@@ -243,6 +243,41 @@ describe('Form field validators', () => {
         ).toBeFalsy()
       })
 
+      it('should fail when hooks is present but invalid', () => {
+        expect.assertions(4)
+
+        expect(
+          validators.isValidPaywallConfig({
+            ...validConfig,
+            hooks: [],
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidPaywallConfig({
+            ...validConfig,
+            hooks: {
+              unknown: 'https://example.com/hook',
+            },
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidPaywallConfig({
+            ...validConfig,
+            hooks: {
+              status: 'not-a-url',
+            },
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidPaywallConfig({
+            ...validConfig,
+            hooks: {
+              status: 'ftp://example.com/hook',
+            },
+          })
+        ).toBe(false)
+      })
+
       it('icon', () => {
         expect.assertions(3)
 
@@ -812,6 +847,22 @@ describe('Form field validators', () => {
           metadataInputs,
         })
       ).toBeTruthy()
+    })
+
+    it('is valid when checkout hooks are present', () => {
+      expect.assertions(1)
+
+      expect(
+        validators.isValidPaywallConfig({
+          ...validConfig,
+          hooks: {
+            status: 'https://example.com/status',
+            authenticated: 'https://example.com/authenticated',
+            transactionSent: 'https://example.com/transaction',
+            metadata: 'https://example.com/metadata',
+          },
+        })
+      ).toBe(true)
     })
   })
 

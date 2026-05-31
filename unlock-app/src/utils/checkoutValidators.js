@@ -93,6 +93,35 @@ export const isValidCTA = (callToAction) => {
   return true
 }
 
+export const isValidCheckoutHooks = (hooks) => {
+  const hookNames = ['status', 'authenticated', 'transactionSent', 'metadata']
+  const hookKeys = Object.keys(hooks || {})
+
+  if (!hooks || typeof hooks !== 'object' || Array.isArray(hooks)) {
+    log('The paywall config\'s "hooks" property is not an object.')
+    return false
+  }
+  if (hookKeys.filter((key) => !hookNames.includes(key)).length) {
+    log('The paywall config\'s "hooks" properties contain an unexpected entry.')
+    return false
+  }
+  if (
+    hookKeys.filter(
+      (key) =>
+        typeof hooks[key] !== 'string' ||
+        !isURL(hooks[key], {
+          require_protocol: true,
+          protocols: ['http', 'https'],
+          disallow_auth: true,
+        })
+    ).length
+  ) {
+    log('The paywall config\'s "hooks" properties must be HTTP(S) URLs.')
+    return false
+  }
+  return true
+}
+
 export const isValidConfigLock = (lock, configLocks) => {
   if (!isAccount(lock)) {
     log(
@@ -232,6 +261,12 @@ export const isValidPaywallConfig = (config) => {
 
   if (config.metadataInputs) {
     if (!isValidMetadataArray(config.metadataInputs)) {
+      return false
+    }
+  }
+
+  if (config.hooks) {
+    if (!isValidCheckoutHooks(config.hooks)) {
       return false
     }
   }

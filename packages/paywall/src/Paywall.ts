@@ -11,6 +11,7 @@ import {
   PaywallProvider,
 } from './utils/provider'
 import { unlockAppUrl } from './urls'
+import { notifyCheckoutHook } from './utils/hooks'
 
 export const checkoutIframeClassName = 'unlock-protocol-checkout'
 
@@ -67,6 +68,8 @@ export interface MethodCallResult {
   error?: any
 }
 /* end type definitions */
+
+type HookEvent = 'status' | 'authenticated' | 'transactionSent' | 'metadata'
 
 /**
  * Using a single child object
@@ -241,12 +244,21 @@ export class Paywall {
     }
   }
 
+  notifyHook = (event: HookEvent, payload: unknown) => {
+    const hookUrl = this.paywallConfig?.hooks?.[event]
+    if (hookUrl) {
+      void notifyCheckoutHook(hookUrl, payload)
+    }
+  }
+
   handleTransactionInfoEvent = async ({
     hash,
     lock,
     ...rest
   }: TransactionInfo) => {
-    dispatchEvent(unlockEvents.transactionSent, { hash, lock, ...rest })
+    const payload = { hash, lock, ...rest }
+    dispatchEvent(unlockEvents.transactionSent, payload)
+    this.notifyHook('transactionSent', payload)
     if (!this.paywallConfig?.pessimistic && hash && lock) {
       this.unlockPage([lock])
     }
@@ -254,11 +266,13 @@ export class Paywall {
 
   async handleMetadataEvent(metadata: any) {
     dispatchEvent(unlockEvents.metadata, metadata)
+    this.notifyHook('metadata', metadata)
   }
 
   handleUserInfoEvent = async (info: UserInfo) => {
     this.userAccountAddress = info.address
     dispatchEvent(unlockEvents.authenticated, info)
+    this.notifyHook('authenticated', info)
     this.cacheUserInfo(info)
     this.checkKeysAndLock()
   }
@@ -356,16 +370,20 @@ export class Paywall {
 
   lockPage = () => {
     this.lockStatus = 'locked'
-    dispatchEvent(unlockEvents.status, {
+    const payload = {
       state: this.lockStatus,
-    })
+    }
+    dispatchEvent(unlockEvents.status, payload)
+    this.notifyHook('status', payload)
   }
 
   unlockPage = (locks: string[] = []) => {
     this.lockStatus = 'unlocked'
-    dispatchEvent(unlockEvents.status, {
+    const payload = {
       locks,
       state: this.lockStatus,
-    })
+    }
+    dispatchEvent(unlockEvents.status, payload)
+    this.notifyHook('status', payload)
   }
 }

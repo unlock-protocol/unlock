@@ -155,6 +155,42 @@ export const PaywallLockConfig = z.object({
 
 export type PaywallLockConfigType = z.infer<typeof PaywallLockConfig>
 
+const WebhookUrl = (description: string) =>
+  z
+    .string({
+      description,
+    })
+    .url()
+    .refine(
+      (value) => {
+        try {
+          return ['http:', 'https:'].includes(new URL(value).protocol)
+        } catch {
+          return false
+        }
+      },
+      {
+        message: 'Webhook URL must use http or https.',
+      }
+    )
+
+export const CheckoutHooks = z.object({
+  status: WebhookUrl(
+    'Webhook URL called when the paywall emits a status event.'
+  ).optional(),
+  authenticated: WebhookUrl(
+    'Webhook URL called when the paywall emits an authenticated event.'
+  ).optional(),
+  transactionSent: WebhookUrl(
+    'Webhook URL called when the paywall emits a transactionSent event.'
+  ).optional(),
+  metadata: WebhookUrl(
+    'Webhook URL called when the paywall emits a metadata event.'
+  ).optional(),
+})
+
+export type CheckoutHooksType = z.infer<typeof CheckoutHooks>
+
 export const PaywallConfig = z
   .object({
     title: z
@@ -169,6 +205,7 @@ export const PaywallConfig = z
       })
       .optional(),
     locks: z.record(PaywallLockConfig),
+    hooks: CheckoutHooks.optional(),
     metadataInputs: z.array(MetadataInput).optional(),
     persistentCheckout: z
       .boolean({
