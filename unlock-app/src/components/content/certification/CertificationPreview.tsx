@@ -109,7 +109,8 @@ export const CertificationPreviewContent = ({
     ? certification?.expiration
     : expirationAsDate(certification?.expiration)
 
-  const isMobile = window?.innerWidth < 768
+  const isMobile =
+    typeof window !== 'undefined' ? window.innerWidth < 768 : false
 
   // Get all custom metadata that aren't `minted` or `certification_issuer`
   const customMetadata =

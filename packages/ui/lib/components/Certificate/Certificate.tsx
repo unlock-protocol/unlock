@@ -62,21 +62,21 @@ const CertificateLabel = ({ children }: Props) => {
   )
 }
 const CertificateValue = ({ children, size = 'medium' }: Props) => {
-  const sizes: Record<any, any> = {
+  const sizes: Record<Size, string> = {
     tiny: '12px',
     small: '14px',
     medium: '16px',
     large: '24px',
   }
 
-  const weights: Record<any, any> = {
+  const weights: Record<Size, number> = {
     tiny: 500,
     small: 600,
     medium: 600,
     large: 700,
   }
 
-  const lineHeights: Record<any, any> = {
+  const lineHeights: Record<Size, string> = {
     tiny: '16px',
     small: '20px',
     medium: '24px',
@@ -396,6 +396,7 @@ export const Certificate = ({
                     className="hover:text-brand-ui-primary"
                     href={externalUrl ?? '#'}
                     target="_blank"
+                    rel="noreferrer"
                   >
                     <div
                       style={{
@@ -426,6 +427,7 @@ export const Certificate = ({
                   networks[network]?.explorer?.urls.address(lockAddress) || '#'
                 }
                 target="_blank"
+                rel="noreferrer"
               >
                 <div
                   style={{
