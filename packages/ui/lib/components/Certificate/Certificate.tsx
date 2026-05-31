@@ -30,6 +30,27 @@ interface Props {
   size?: Size
 }
 
+const certificateValueSizes: Record<Size, string> = {
+  tiny: '12px',
+  small: '14px',
+  medium: '16px',
+  large: '24px',
+}
+
+const certificateValueWeights: Record<Size, number> = {
+  tiny: 500,
+  small: 600,
+  medium: 600,
+  large: 700,
+}
+
+const certificateValueLineHeights: Record<Size, string> = {
+  tiny: '16px',
+  small: '20px',
+  medium: '24px',
+  large: '32px',
+}
+
 const ValueWrapper = ({ children }: Props) => {
   return (
     <div
@@ -62,35 +83,14 @@ const CertificateLabel = ({ children }: Props) => {
   )
 }
 const CertificateValue = ({ children, size = 'medium' }: Props) => {
-  const sizes: Record<Size, string> = {
-    tiny: '12px',
-    small: '14px',
-    medium: '16px',
-    large: '24px',
-  }
-
-  const weights: Record<Size, number> = {
-    tiny: 500,
-    small: 600,
-    medium: 600,
-    large: 700,
-  }
-
-  const lineHeights: Record<Size, string> = {
-    tiny: '16px',
-    small: '20px',
-    medium: '24px',
-    large: '32px',
-  }
-
   return (
     <span
       style={{
         display: 'flex',
         color: '#111827',
-        fontSize: sizes[size],
-        fontWeight: weights[size],
-        lineHeight: lineHeights[size],
+        fontSize: certificateValueSizes[size],
+        fontWeight: certificateValueWeights[size],
+        lineHeight: certificateValueLineHeights[size],
         wordBreak: 'break-word',
       }}
     >

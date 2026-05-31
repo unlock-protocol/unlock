@@ -21,6 +21,13 @@ interface CertificationPreviewProps {
   expiration?: string | number
 }
 
+type CustomMetadataAttribute = {
+  trait_type?: string
+  value?: string | number
+}
+
+const skippedCustomMetadataTraits = new Set(['Minted', 'certification_issuer'])
+
 export const CertificationPreviewContent = ({
   lockAddress,
   network,
@@ -115,11 +122,14 @@ export const CertificationPreviewContent = ({
   // Get all custom metadata that aren't `minted` or `certification_issuer`
   const customMetadata =
     metadata?.attributes?.filter(
-      (attr: { trait_type?: string; value?: string | number }) =>
-        attr.trait_type !== 'Minted' &&
-        attr.trait_type !== 'certification_issuer' &&
-        attr.trait_type &&
-        attr.value
+      (
+        attr: CustomMetadataAttribute
+      ): attr is Required<CustomMetadataAttribute> =>
+        !!attr.trait_type &&
+        !skippedCustomMetadataTraits.has(attr.trait_type) &&
+        attr.value !== undefined &&
+        attr.value !== null &&
+        attr.value !== ''
     ) || []
 
   const certificateProps = {
