@@ -11,7 +11,7 @@ import { useList } from 'react-use'
 import { AirdropListItem } from './AirdropElements'
 import { Lock } from '~/unlockTypes'
 import { formatDate } from '~/utils/lock'
-import { ChangeEvent, useCallback, useState } from 'react'
+import { ChangeEvent, MouseEvent, useCallback, useState } from 'react'
 import { ToastHelper } from '@unlock-protocol/ui'
 import { KeyManager } from '@unlock-protocol/unlock-js'
 import { useConfig } from '~/utils/withConfig'
@@ -19,6 +19,16 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { onResolveName } from '~/utils/resolvers'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { getAddressForName } from '~/hooks/useNameResolver'
+import { RiCloseLine as RemoveIcon } from 'react-icons/ri'
+import {
+  buildAirdropCustomMetadata,
+  validateAirdropCustomAttributes,
+  type AirdropCustomAttribute,
+} from '~/utils/airdropCustomAttributes'
+
+interface CustomAttribute extends AirdropCustomAttribute {
+  id: number
+}
 
 export interface Props {
   add(member: AirdropMember): void
@@ -79,6 +89,20 @@ export function AirdropInternalForm({
   const maxKeysPerAddress = lock?.maxKeysPerAddress || 1
   const web3Service = useWeb3Service()
   const networkConfig = config.networks[lock.network]
+  const [customAttributes, setCustomAttributes] = useState<CustomAttribute[]>(
+    []
+  )
+
+  const updateCustomAttribute = (
+    id: number,
+    values: Partial<CustomAttribute>
+  ) => {
+    setCustomAttributes((attributes) =>
+      attributes.map((attribute) =>
+        attribute.id === id ? { ...attribute, ...values } : attribute
+      )
+    )
+  }
 
   const onWalletChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
@@ -102,19 +126,30 @@ export function AirdropInternalForm({
 
   const onSubmitHandler = useCallback(
     async (member: AirdropMember) => {
+      const customAttributeError =
+        validateAirdropCustomAttributes(customAttributes)
+      if (customAttributeError) {
+        ToastHelper.error(customAttributeError)
+        return
+      }
+
       try {
         const address = await getAddressForName(member.wallet)
         member.wallet = address
-        const parsed = AirdropMember.parse(member)
+        const parsed = AirdropMember.parse({
+          ...member,
+          ...buildAirdropCustomMetadata(customAttributes),
+        })
         add(parsed)
         reset()
         setValue('wallet', '')
+        setCustomAttributes([])
       } catch (error) {
         ToastHelper.error("There was an error with the member's info. ")
         console.error(error)
       }
     },
-    [add, reset, setValue]
+    [add, customAttributes, reset, setValue]
   )
 
   return (
@@ -197,7 +232,7 @@ export function AirdropInternalForm({
                       <AddressInput
                         withIcon
                         value={wallet}
-                        onChange={(value: any) => {
+                        onChange={(value: string) => {
                           setValue('wallet', value)
                         }}
                         required
@@ -293,6 +328,89 @@ export function AirdropInternalForm({
         />
       )}
 
+      <div className="grid gap-3">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-base font-medium">Custom attributes</h3>
+            <p className="text-sm text-gray-600">
+              Save recipient-specific metadata with this airdrop.
+            </p>
+          </div>
+          <Button
+            size="small"
+            variant="outlined-primary"
+            type="button"
+            onClick={() => {
+              setCustomAttributes((attributes) => [
+                ...attributes,
+                {
+                  id: Date.now(),
+                  name: '',
+                  value: '',
+                  isPublic: false,
+                },
+              ])
+            }}
+          >
+            Add attribute
+          </Button>
+        </div>
+        {customAttributes.map(({ id, name, value, isPublic }) => (
+          <div
+            key={id}
+            className="grid gap-2 p-3 border border-gray-200 rounded-lg"
+          >
+            <div className="grid gap-2 md:grid-cols-2">
+              <Input
+                label="Attribute name"
+                placeholder="membership_type"
+                value={name}
+                onChange={(event) =>
+                  updateCustomAttribute(id, { name: event.target.value })
+                }
+              />
+              <Input
+                label="Value"
+                placeholder="VIP"
+                value={value}
+                onChange={(event) =>
+                  updateCustomAttribute(id, { value: event.target.value })
+                }
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <ToggleSwitch
+                size="small"
+                title="Public"
+                enabled={isPublic}
+                setEnabled={(enabled: boolean) =>
+                  updateCustomAttribute(id, { isPublic: enabled })
+                }
+                onChange={(enabled: boolean) =>
+                  updateCustomAttribute(id, { isPublic: enabled })
+                }
+              />
+              <Button
+                size="small"
+                variant="borderless"
+                type="button"
+                aria-label="Remove custom attribute"
+                onClick={() =>
+                  setCustomAttributes((attributes) =>
+                    attributes.filter((attribute) => attribute.id !== id)
+                  )
+                }
+              >
+                <span className="inline-flex items-center gap-1">
+                  <RemoveIcon size={16} />
+                  Remove
+                </span>
+              </Button>
+            </div>
+          </div>
+        ))}
+      </div>
+
       <Button loading={isSubmitting} disabled={isSubmitting} type="submit">
         Add recipient
       </Button>
@@ -352,7 +470,7 @@ export function AirdropManualForm({
           <Button
             loading={isConfirming}
             disabled={isConfirming}
-            onClick={async (event: any) => {
+            onClick={async (event: MouseEvent<HTMLButtonElement>) => {
               event.preventDefault()
               setIsConfirming(true)
               try {
