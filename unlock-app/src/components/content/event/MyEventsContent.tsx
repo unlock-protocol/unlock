@@ -11,6 +11,16 @@ import EventList from '~/components/interface/locks/List/elements/EventList'
 import EventCollectionList from '~/components/interface/locks/List/elements/EventCollectionList'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 
+const getTabClassName = ({ selected }: { selected: boolean }) => {
+  return [
+    'flex items-center gap-2 px-4 py-3 text-base font-semibold border-b-2 rounded-t-md outline-none transition-colors',
+    'focus-visible:ring-2 focus-visible:ring-brand-ui-primary focus-visible:ring-offset-2',
+    selected
+      ? 'border-brand-ui-primary text-brand-ui-primary'
+      : 'border-transparent text-gray-700 hover:text-brand-ui-primary',
+  ].join(' ')
+}
+
 export default function MyEventsContent() {
   const { account } = useAuthenticate()
 
@@ -24,11 +34,11 @@ export default function MyEventsContent() {
           </span>
         </div>
         {account && (
-          <div className="flex flex-row items-center gap-4">
+          <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center md:gap-4">
             <Link href="/events/new-collection">
               <Button
                 iconLeft={<MdOutlineCollections />}
-                className="w-full md:w-auto md:ml-auto"
+                className="w-full sm:w-auto"
                 size="medium"
               >
                 New collection
@@ -37,7 +47,7 @@ export default function MyEventsContent() {
             <Link href="/event/new">
               <Button
                 iconLeft={<IoTicketSharp />}
-                className="w-full md:w-auto md:ml-auto"
+                className="w-full sm:w-auto"
                 size="medium"
               >
                 Host an event
@@ -53,30 +63,15 @@ export default function MyEventsContent() {
     <>
       <SectionHeader />
       <Tab.Group>
-        <Tab.List className="flex flex-wrap gap-2 mt-8 border-b border-gray-300">
-          <Tab
-            className={({ selected }) =>
-              [
-                'flex items-center gap-2 px-4 py-3 text-base font-semibold border-b-2 outline-none',
-                selected
-                  ? 'border-brand-ui-primary text-brand-ui-primary'
-                  : 'border-transparent text-gray-700 hover:text-brand-ui-primary',
-              ].join(' ')
-            }
-          >
+        <Tab.List
+          aria-label="Event sections"
+          className="flex flex-wrap gap-2 mt-8 border-b border-gray-300"
+        >
+          <Tab className={getTabClassName}>
             <IoTicketSharp />
             <span>My events</span>
           </Tab>
-          <Tab
-            className={({ selected }) =>
-              [
-                'flex items-center gap-2 px-4 py-3 text-base font-semibold border-b-2 outline-none',
-                selected
-                  ? 'border-brand-ui-primary text-brand-ui-primary'
-                  : 'border-transparent text-gray-700 hover:text-brand-ui-primary',
-              ].join(' ')
-            }
-          >
+          <Tab className={getTabClassName}>
             <MdOutlineCollections />
             <span>My event collections</span>
           </Tab>
