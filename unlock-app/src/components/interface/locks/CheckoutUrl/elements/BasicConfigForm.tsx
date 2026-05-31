@@ -1,5 +1,5 @@
 import { BasicPaywallConfigSchema } from '~/unlockTypes'
-import { useForm } from 'react-hook-form'
+import { type DefaultValues, useForm } from 'react-hook-form'
 import {
   Input,
   Checkbox,
@@ -18,21 +18,27 @@ interface Props {
 export const BasicConfigForm = ({ onChange, defaultValues }: Props) => {
   const { mutateAsync: uploadImage, isPending: isUploading } = useImageUpload()
   const [isOpen, setIsOpen] = useState(false)
+  type BasicPaywallConfig = z.infer<typeof BasicPaywallConfigSchema>
 
   const {
     register,
     watch,
     setValue,
     formState: { errors },
-  } = useForm<z.infer<typeof BasicPaywallConfigSchema>>({
+  } = useForm<BasicPaywallConfig>({
     reValidateMode: 'onChange',
-    defaultValues: defaultValues as any,
+    defaultValues: defaultValues as
+      | DefaultValues<BasicPaywallConfig>
+      | undefined,
   })
 
   const image = watch('icon')
   // Define an onChange handler for each input field
   const handleInputChange = () => {
     const updatedValues = watch() // Get all form values
+    if (!updatedValues.accentColor) {
+      delete updatedValues.accentColor
+    }
     onChange(updatedValues) // Call the onChange prop with updated values
   }
 
@@ -60,7 +66,7 @@ export const BasicConfigForm = ({ onChange, defaultValues }: Props) => {
             description="Upload an image to use as the icon for your checkout"
             isUploading={isUploading}
             preview={image!}
-            onChange={async (fileOrFileUrl: any) => {
+            onChange={async (fileOrFileUrl: File[] | string) => {
               let icon = fileOrFileUrl
               if (typeof fileOrFileUrl !== 'string') {
                 const items = await uploadImage(fileOrFileUrl[0])
@@ -83,6 +89,20 @@ export const BasicConfigForm = ({ onChange, defaultValues }: Props) => {
           required: "Title can't be empty",
         })}
         error={errors.title?.message}
+      />
+
+      <Input
+        label="Accent Color"
+        size="small"
+        placeholder="#603DEB"
+        description={BasicPaywallConfigSchema.shape.accentColor.description}
+        {...register('accentColor', {
+          pattern: {
+            value: /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/,
+            message: 'Use a hex color like #603DEB.',
+          },
+        })}
+        error={errors.accentColor?.message}
       />
 
       <Input
