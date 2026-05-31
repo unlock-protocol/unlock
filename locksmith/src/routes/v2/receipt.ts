@@ -56,4 +56,11 @@ router.post(
   (req, res) => receiptController.savePurchaser(req, res)
 )
 
+router.post(
+  '/:network/:lockAddress/:hash/email',
+  authenticatedMiddleware,
+  lockManagerMiddleware,
+  (req, res) => receiptController.emailReceipt(req, res)
+)
+
 export default router

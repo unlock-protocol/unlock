@@ -4,6 +4,9 @@ import * as z from 'zod'
 import Normalizer from '../../utils/normalizer'
 import logger from '../../logger'
 import * as receiptOperations from '../../../src/operations/receiptOperations'
+import { sendEmail } from '../../operations/wedlocksOperations'
+import config from '../../config/config'
+import { buildReceiptEmailParams } from '../../utils/receiptEmail'
 
 export const PurchaserBody = z.object({
   fullname: z.string().optional().default(''),
@@ -17,6 +20,11 @@ export const PurchaserBody = z.object({
 })
 
 export type PurchaserBodyProps = z.infer<typeof PurchaserBody>
+
+export const EmailReceiptBody = z.object({
+  subject: z.string().min(1),
+  content: z.string().min(1),
+})
 
 export class ReceiptController {
   // Get Receipts details by providing `network` / `lockAddress` / `hash`
@@ -35,8 +43,8 @@ export class ReceiptController {
       // Returns receipts details
       response.status(200).json(receiptDetails)
       return
-    } catch (err: any) {
-      logger.error(err.message)
+    } catch (err: unknown) {
+      logger.error(err instanceof Error ? err.message : err)
       response.status(500).send({
         message: 'Impossible to retrieve receipt details.',
       })
@@ -68,10 +76,59 @@ export class ReceiptController {
         ...dataValues,
       })
       return
-    } catch (err: any) {
-      logger.error(err.message)
+    } catch (err: unknown) {
+      logger.error(err instanceof Error ? err.message : err)
       response.status(500).json({
         message: 'Failed to save purchaser details.',
+      })
+      return
+    }
+  }
+
+  async emailReceipt(request: Request, response: Response) {
+    const network = Number(request.params.network || 1)
+    const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+    const hash = request.params.hash ?? ''
+    const { subject, content } = await EmailReceiptBody.parseAsync(request.body)
+
+    try {
+      const receiptDetails = await receiptOperations.getReceiptDetails({
+        lockAddress,
+        network,
+        hash,
+      })
+      const recipient = receiptDetails.purchaser?.email
+
+      if (!recipient) {
+        response.status(400).json({
+          message: 'No email address is available for this receipt.',
+        })
+        return
+      }
+
+      const sent = await sendEmail({
+        network,
+        template: 'custom',
+        failoverTemplate: 'debug',
+        recipient,
+        params: await buildReceiptEmailParams({
+          content,
+          hash,
+          lockAddress,
+          network,
+          subject,
+          unlockApp: config.unlockApp,
+        }),
+      })
+
+      response.status(200).json({
+        sent,
+      })
+      return
+    } catch (err: unknown) {
+      logger.error(err instanceof Error ? err.message : err)
+      response.status(500).json({
+        message: 'Failed to email receipt.',
       })
       return
     }
