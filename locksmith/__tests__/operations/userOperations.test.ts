@@ -221,6 +221,33 @@ describe('Updating encrypted private key', () => {
   })
 })
 
+describe('isUnlockAccountAddress', () => {
+  const publicKey = '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83'
+
+  it('returns true when the address belongs to an Unlock account', async () => {
+    expect.assertions(2)
+    User.findOne = vi.fn(() => ({ publicKey }))
+
+    const result = await UserOperations.isUnlockAccountAddress(publicKey)
+
+    expect(result).toBe(true)
+    expect(User.findOne).toHaveBeenCalledWith({
+      where: {
+        publicKey,
+      },
+    })
+  })
+
+  it('returns false when the address is not an Unlock account', async () => {
+    expect.assertions(1)
+    User.findOne = vi.fn(() => null)
+
+    const result = await UserOperations.isUnlockAccountAddress(publicKey)
+
+    expect(result).toBe(false)
+  })
+})
+
 describe("Retrieving a user's cards", () => {
   describe('when the user has credit cards', () => {
     beforeAll(() => {

@@ -64,7 +64,7 @@ export const useTransferDone = () => {
   })
 
   return {
-    transferDone: mutation.mutate,
+    transferDone: mutation.mutateAsync,
     isLoading: mutation.isPending,
     isError: mutation.isError,
     error: mutation.error,

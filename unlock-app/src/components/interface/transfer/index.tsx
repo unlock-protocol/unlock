@@ -95,7 +95,7 @@ export const ConfirmTransferForm = ({
   const router = useRouter()
   const web3Service = useWeb3Service()
   const manager = new KeyManager(config.networks)
-  const { getWalletService } = useProvider()
+  const { getWalletService, provider } = useProvider()
   const {
     handleSubmit,
     register,
@@ -112,6 +112,13 @@ export const ConfirmTransferForm = ({
   const { transferDone } = useTransferDone()
 
   const onSubmit = async ({ transferCode }: ConfirmTransferData) => {
+    if ((provider as { isUnlock?: boolean } | undefined)?.isUnlock) {
+      ToastHelper.error(
+        'Transfers to Unlock accounts are not supported. Please connect a self-custodied wallet.'
+      )
+      return
+    }
+
     const walletService = await getWalletService(network)
     const signer = walletService.signer
 
@@ -123,25 +130,37 @@ export const ConfirmTransferForm = ({
       ).toString('hex'),
     ].join('')
 
-    await transferDone(
-      {
-        ...transferObject,
-        transferSignature,
-        network,
-      },
-      {
-        onError(error) {
-          if (error instanceof AxiosError) {
-            if (error.status === 409) {
-              return ToastHelper.error(
-                'Too many requests. Please wait a few minutes before trying again.'
-              )
-            }
-            ToastHelper.error(error.message)
-          }
+    try {
+      await transferDone(
+        {
+          ...transferObject,
+          transferSignature,
+          network,
         },
+        {
+          onError(error) {
+            if (error instanceof AxiosError) {
+              if (error.status === 409) {
+                return ToastHelper.error(
+                  'Too many requests. Please wait a few minutes before trying again.'
+                )
+              }
+
+              const responseMessage = (
+                error.response?.data as { message?: string }
+              )?.message
+
+              ToastHelper.error(responseMessage || error.message)
+            }
+          },
+        }
+      )
+    } catch (error) {
+      if (!(error instanceof AxiosError)) {
+        ToastHelper.error('Error preparing transfer. Please try again later.')
       }
-    )
+      return
+    }
 
     try {
       const total = await web3Service.totalKeys(
@@ -171,8 +190,8 @@ export const ConfirmTransferForm = ({
         // Push to keychain on success
         router.push('/keychain')
       }
-    } catch (error: any) {
-      console.log(error.message)
+    } catch (error) {
+      console.log(error instanceof Error ? error.message : error)
       ToastHelper.error('Error transferring key. Please try again later.')
     }
   }

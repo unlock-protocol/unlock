@@ -5,6 +5,7 @@ import normalizer from '../../utils/normalizer'
 import { UserTokenMetadata } from '../../models'
 import { sendEmail } from '../../operations/wedlocksOperations'
 import { z } from 'zod'
+import UserOperations from '../../operations/userOperations'
 
 export const createTransferCode: RequestHandler = async (request, response) => {
   const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
@@ -130,6 +131,17 @@ export const transferDone: RequestHandler = async (request, response) => {
   if (!isTransferSignedByLocksmith) {
     response.status(403).send({
       message: 'Transfer signature is not valid',
+    })
+    return
+  }
+
+  const isUnlockAccount =
+    await UserOperations.isUnlockAccountAddress(userAddress)
+
+  if (isUnlockAccount) {
+    response.status(403).send({
+      message:
+        'Transfers to Unlock accounts are not supported. Please connect a self-custodied wallet.',
     })
     return
   }
