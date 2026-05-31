@@ -274,6 +274,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                 <Link
                   className="underline text-brand-ui-primary "
                   target="_blank"
+                  rel="noreferrer"
                   href="https://unlock-protocol.com/guides/how-to-choose-a-network-for-your-smart-contract-deployment/"
                 >
                   Read our guide
