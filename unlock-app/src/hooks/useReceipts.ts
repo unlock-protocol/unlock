@@ -226,21 +226,22 @@ const fetchReceiptsStatus = async ({ queryKey }: any) => {
   return data
 }
 
+const RECEIPTS_STATUS_TIMEOUT = 5 * 60 * 1000
+const RECEIPTS_STATUS_REFETCH_INTERVAL = 3000
+
 export const useReceiptsStatus = (
   network: number,
   lockAddress: string,
   condition = true
 ) => {
   const [timeoutReached, setTimeoutReached] = useState(false)
-  const timeout = 5 * 60 * 1000
-  const refetchInterval = 3000
 
   useEffect(() => {
     let timer: NodeJS.Timeout
     if (condition) {
       timer = setTimeout(() => {
         setTimeoutReached(true)
-      }, timeout)
+      }, RECEIPTS_STATUS_TIMEOUT)
     }
 
     return () => timer && clearTimeout(timer)
@@ -250,6 +251,7 @@ export const useReceiptsStatus = (
     queryKey: ['receiptsStatus', network, lockAddress],
     queryFn: fetchReceiptsStatus,
     enabled: !timeoutReached,
-    refetchInterval: condition && !timeoutReached ? refetchInterval : false,
+    refetchInterval:
+      condition && !timeoutReached ? RECEIPTS_STATUS_REFETCH_INTERVAL : false,
   })
 }
