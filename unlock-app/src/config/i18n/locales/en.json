@@ -1,0 +1,190 @@
+{
+  "common": {
+    "usedBy": "Used by",
+    "faqTitle": "Frequently Asked Questions"
+  },
+  "header": {
+    "events": "Events",
+    "locks": "Locks",
+    "keys": "Keys",
+    "connect": "Connect",
+    "language": "Language"
+  },
+  "footer": {
+    "updatesTitle": "Sign up for Updates",
+    "updatesDescription": "Receive fresh news about Unlock, including new features and opportunities to contribute",
+    "about": "About",
+    "aboutUnlock": "About Unlock",
+    "roadmap": "Roadmap",
+    "governance": "Governance",
+    "unlockDao": "Unlock DAO",
+    "forum": "Forum",
+    "snapshot": "Snapshot",
+    "community": "Community",
+    "showcase": "Showcase",
+    "blog": "Blog",
+    "events": "Events",
+    "grants": "Grants",
+    "resources": "Resources",
+    "docs": "Docs",
+    "developers": "Developers",
+    "guides": "Guides",
+    "integrations": "Integrations",
+    "mediaKit": "Media kit"
+  },
+  "event": {
+    "heroTitle": "Easy-peasy event tickets and registration",
+    "cta": "Get started for free",
+    "subtitle": "Create event tickets and landing pages for your conference, event, or meetup in under five minutes with Unlock Protocol.",
+    "description": "Create events in the easiest possible way. Set up your event landing page, sell or airdrop tickets as NFTs and via email, and perform check-in with a dedicated QR code. Easy.",
+    "customersTitle": "Trusted by event organizers and community meetups around the world",
+    "features": [
+      {
+        "name": "QR codes and proof of purchase ticketing",
+        "description": "The easiest way to authenticate tickets. Once an attendee purchases a ticket, they will receive an email along with a QR code to check in at the venue."
+      },
+      {
+        "name": "Check-ins at the venue are a breeze",
+        "description": "Volunteers or door staff can check attendees in with just a smartphone, and ensure tickets aren't transferred or reused once someone has come through the door."
+      },
+      {
+        "name": "Increase attendance rates up to 90%",
+        "description": "\"I'm Going!\" commitment feature requires attendees to stake a small amount of money when RSVPing for free events which they get as a \"kickback\" if they attend, while no-shows forfeit their commitment."
+      }
+    ],
+    "problems": {
+      "title": "The Problem",
+      "subtitle": "Legacy ticketing solutions don't meet the needs of web3 and crypto event organizers",
+      "items": [
+        {
+          "description": "Your web3 or crypto event isn't walking the walk, and is using a legacy ticketing solution like Eventbrite, Meetup or Luma instead of embracing the very technology your attendees expect you to champion."
+        },
+        {
+          "description": "You're losing money on ticket sales because of upsells, hidden fees, and slow payouts from your existing ticketing provider."
+        },
+        {
+          "description": "Your attendees stop engaging the moment the event is over, and are not continuing conversations as an ongoing, connected community."
+        }
+      ]
+    },
+    "faqs": [
+      {
+        "title": "Will attendees need wallets?",
+        "description": "No! Attendees do not need wallets, but they will need user accounts if they do not have their own wallets. Unlock accounts require an email and password."
+      },
+      {
+        "title": "What blockchain is this on?",
+        "descriptionBeforeLink": "You can pick between ",
+        "linkLabel": "all the networks on which the Unlock Protocol",
+        "descriptionAfterLink": " has been deployed: Polygon, Gnosis Chain, Optimism, ..."
+      },
+      {
+        "title": "Can I charge for the tickets?",
+        "description": "Yes, when deploying your contract you can pick a currency, as well as enable credit card, Apple Pay and Google Pay."
+      },
+      {
+        "title": "Are attendees receiving tickets?",
+        "description": "Yes they are! Once the blockchain transaction is completed, they will receive an email that includes a ticket. On this ticket there is a unique QR code that can be scanned by organizers to verify its validity. Additionally, verifiers can redeem the QR code so that if another attendee arrives with the same QR code, they will be rejected!"
+      }
+    ],
+    "callToActionTitle": "Ticketing events with Unlock is simple.",
+    "callToActionSubtitle": "From creating the event description to selling tickets to check-in, Unlock built the tools you need.",
+    "callToActionDescription": "Psst, you can also Airdrop tickets to frens or have them stake. Just cherry on your sundae for other customization."
+  },
+  "subscription": {
+    "heroTitle": "Subscription Management made for creators",
+    "cta": "Create your subscription now",
+    "subtitle": "Create. Get paid. Repeat.",
+    "description": "The only way for fans to subscribe and support your writing, podcasts, music, digital art, and creativity onchain with automatically recurring payments. Five minute setup.",
+    "customers": [
+      "Subscribe for $5/mo",
+      "Subscribe for $5/mo",
+      "Subscribe for $60/yr"
+    ],
+    "features": [
+      {
+        "name": "Fans can support you and meet you where you are",
+        "description": "Connect with your fans and supporters on nearly any creator platform."
+      },
+      {
+        "name": "Automatically recurring subscriptions",
+        "description": "Predictable recurring revenue for you with subscriptions that renew weekly, monthly, or yearly."
+      },
+      {
+        "name": "Get paid instantly whenever you want",
+        "description": "You have direct control of your approach to monetization. Cash out at any time."
+      }
+    ],
+    "faqs": [
+      {
+        "title": "What kind of perks can I give my subscribers?",
+        "description": "Subscriber-only content, early access to drops, discounts, online and IRL meetups, swag, and more - nearly any kind of perks are possible."
+      },
+      {
+        "title": "What creator platforms are compatible with SUBSCRIPTIONS by Unlock Labs?",
+        "description": "SUBSCRIPTIONS by Unlock Labs is a subscriptions and payments system that is compatible with any creator platform that supports sharing of links. You can ask fans to subscribe anywhere you can share a link in your content or in your creator bio."
+      },
+      {
+        "title": "What onchain-native platforms are supported?",
+        "description": "SUBSCRIPTIONS by Unlock Labs has been integrated with Farcaster/Warpcast, Paragraph, Pods, Common Ground, P00LS, Bonfire, and many other onchain platforms."
+      },
+      {
+        "title": "Do I need to be technical to implement this?",
+        "description": "No. Setup and sharing can be done completely without needing to write any code."
+      },
+      {
+        "title": "How much does it cost?",
+        "description": "There is a 1% protocol fee on subscriptions. This fee is used to support the ongoing development of Unlock Protocol."
+      },
+      {
+        "title": "Are credit cards supported?",
+        "description": "Yes, fans can support you via credit card as well. Credit card payments will include additional fees, paid by the fan, to cover credit card processing and infrastructure costs."
+      }
+    ],
+    "callToActionTitle": "Have a direct connection to your fans and supporters",
+    "callToActionSubtitle": "Create a direct relationship with your fans and supporters independent of any platform"
+  },
+  "certification": {
+    "heroTitleLine1": "Certifications",
+    "heroTitleLine2": "show",
+    "heroTitleLine3": "expertise",
+    "cta": "Create your certification now",
+    "subtitle": "Bring your certification or credentialing program onchain with Unlock.",
+    "description": "Unlock Protocol brings certifications and credentials into web3. Deploy a contract, issue credentials, and perform verification. All onchain, all in minutes.",
+    "features": [
+      {
+        "name": "Award certifications based on proven expertise",
+        "description": "You can grant certifications and credentials to individuals or organizations that pass exams, attend continuing education training, or meet specific criteria."
+      },
+      {
+        "name": "Validate certifications online and onchain",
+        "description": "Verify certifications and credentials through third parties or directly on the blockchain. Since certifications can't be transferred and can be set to expire (if required), you know the certification is valid."
+      },
+      {
+        "name": "Share on LinkedIn and elsewhere",
+        "description": "Individuals can share their certifications on LinkedIn, on their personal websites or social media, as well as on their resume or CV."
+      }
+    ],
+    "faqs": [
+      {
+        "title": "Will certificants need wallets?",
+        "description": "No! Certificants do not need wallets, but they will need user accounts if they do not have their own wallets. Unlock accounts require an email and password."
+      },
+      {
+        "title": "What blockchain is this on?",
+        "description": "You can pick between all the networks on which the Unlock Protocol has been deployed: Polygon, Gnosis Chain, Optimism, and others."
+      },
+      {
+        "title": "Can I charge for the certification?",
+        "description": "Yes, when deploying your contract you can pick a currency, as well as enable credit card, Apple Pay and Google Pay."
+      },
+      {
+        "title": "Can I set certifications to expire?",
+        "description": "Yes, certifications can be set to expire and require renewal after one year, two years, or any length of time you desire."
+      }
+    ],
+    "callToActionTitle": "Easy to set up, provably secure credentialing",
+    "callToActionSubtitle": "Issue transparent, provable credentials for professional certifications, continuing education credits, industry expertise, and more.",
+    "callToActionDescription": "Since the certifications and credentials are represented as NFTs, they can also be as visually appealing as you would like them to be and can support your brand and marketing strategy."
+  }
+}

@@ -1,8 +1,11 @@
+'use client'
+
 import { Disclosure } from '@headlessui/react'
 import Image from 'next/image'
 import { BsPlusLg as PlusIcon } from 'react-icons/bs'
 import { ReactNode } from 'react'
 import { Icon } from '@unlock-protocol/ui'
+import { useTranslations } from '~/contexts/LanguageContext'
 
 interface AccordionProps {
   title?: string
@@ -93,6 +96,8 @@ export const LockTypeLandingPage = ({
   callToAction,
   problemSection,
 }: LockTypeLandingPageProps) => {
+  const t = useTranslations('common')
+
   return (
     <div className="w-full mt-8 flex flex-col gap-12 md:gap-24">
       <section className="gap-4 gap-x-5 flex flex-row">
@@ -113,7 +118,7 @@ export const LockTypeLandingPage = ({
       <section className="flex flex-col items-center content-center justify-center text-whit justify-items-center">
         <div className="flex flex-col gap-10 text-center">
           <span className="font-bold text-gray-700">
-            {customers?.title || 'Used by'}
+            {customers?.title || t('usedBy')}
           </span>
           <ul className="flex flex-row flex-wrap justify-around gap-4 md:mx-10">
             {customers?.items?.map(({ image, name, children }, index) => {
@@ -206,12 +211,12 @@ export const LockTypeLandingPage = ({
       {(faqs || [])?.length > 0 && (
         <section>
           <h3 className="my-12 text-3xl font-bold text-center">
-            Frequently Asked Questions
+            {t('faqTitle')}
           </h3>
           {faqs?.map(({ title, description }, index) => {
             return (
               <Accordion key={index} title={title}>
-                <p>{description}</p>
+                {description}
               </Accordion>
             )
           })}

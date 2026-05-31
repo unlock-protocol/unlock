@@ -5,6 +5,8 @@ import { UserMenu } from '../../connect/UserMenu'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { usePathname } from 'next/navigation'
 import { NotificationsMenu } from './NotificationsMenu'
+import { LanguageSwitcher } from '../../LanguageSwitcher'
+import { useTranslations } from '~/contexts/LanguageContext'
 
 // Paths where menu should be hidden
 const HIDDEN_MENU_PATHS = ['/migrate-user', '/recover']
@@ -12,12 +14,6 @@ const HIDDEN_MENU_PATHS = ['/migrate-user', '/recover']
 const HIDDEN_CONNECT_PATHS = ['/migrate-user', '/recover']
 
 // Menu sections shown everywhere when logged in
-const MENU_SECTIONS = [
-  { title: 'Events', url: '/my-events' },
-  { title: 'Locks', url: '/locks' },
-  { title: 'Keys', url: '/keychain' },
-]
-
 interface DashboardHeaderProps {
   showMenu?: boolean
 }
@@ -28,6 +24,7 @@ export default function DashboardHeader({
   const { account, privyReady } = useAuthenticate()
   const { openConnectModal } = useConnectModal()
   const pathname = usePathname()
+  const t = useTranslations('header')
 
   // Determine logo config based on pathname
   const getLogo = () => {
@@ -68,7 +65,13 @@ export default function DashboardHeader({
     },
     showSocialIcons: false,
     logo: getLogo(),
-    menuSections: shouldShowMenu ? MENU_SECTIONS : [],
+    menuSections: shouldShowMenu
+      ? [
+          { title: t('events'), url: '/my-events' },
+          { title: t('locks'), url: '/locks' },
+          { title: t('keys'), url: '/keychain' },
+        ]
+      : [],
   }
 
   return (
@@ -81,6 +84,9 @@ export default function DashboardHeader({
           ),
         },
         {
+          content: <LanguageSwitcher />,
+        },
+        {
           content: !shouldConnect ? null : account ? (
             <UserMenu />
           ) : (
@@ -91,7 +97,7 @@ export default function DashboardHeader({
                 openConnectModal()
               }}
             >
-              Connect
+              {t('connect')}
             </Button>
           ),
         },
