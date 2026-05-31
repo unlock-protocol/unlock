@@ -249,7 +249,10 @@ export const Members = ({
   if (noItems) {
     if (!hasActiveFilter) {
       return (
-        <NoMemberNoFilter toggleAirdropKeys={() => {}} isManager={isManager} />
+        <NoMemberNoFilter
+          toggleAirdropKeys={() => undefined}
+          isManager={isManager}
+        />
       )
     }
 

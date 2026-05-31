@@ -220,7 +220,7 @@ export const FilterBar = ({
               size="small"
               defaultValue={lockAddress}
               onChange={(newValue) => {
-                setLockAddress && setLockAddress(newValue.toString())
+                setLockAddress?.(newValue.toString())
               }}
               options={lockOptions}
             />
