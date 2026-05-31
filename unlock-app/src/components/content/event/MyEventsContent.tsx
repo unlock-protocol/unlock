@@ -4,16 +4,17 @@ import { IoTicketSharp } from 'react-icons/io5'
 import { MdOutlineCollections } from 'react-icons/md'
 
 import { Button } from '@unlock-protocol/ui'
-import { Disclosure } from '@headlessui/react'
+import { Tab } from '@headlessui/react'
 
 import Link from 'next/link'
 import EventList from '~/components/interface/locks/List/elements/EventList'
 import EventCollectionList from '~/components/interface/locks/List/elements/EventCollectionList'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import {
-  RiArrowDropUpLine as UpIcon,
-  RiArrowDropDownLine as DownIcon,
-} from 'react-icons/ri'
+  getMyEventsTabClassName,
+  myEventsTabListAriaLabel,
+  myEventsTabs,
+} from '~/utils/myEventsTabs'
 
 export default function MyEventsContent() {
   const { account } = useAuthenticate()
@@ -28,11 +29,11 @@ export default function MyEventsContent() {
           </span>
         </div>
         {account && (
-          <div className="flex flex-row items-center gap-4">
+          <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center md:gap-4">
             <Link href="/events/new-collection">
               <Button
                 iconLeft={<MdOutlineCollections />}
-                className="w-full md:w-auto md:ml-auto"
+                className="w-full sm:w-auto"
                 size="medium"
               >
                 New collection
@@ -41,7 +42,7 @@ export default function MyEventsContent() {
             <Link href="/event/new">
               <Button
                 iconLeft={<IoTicketSharp />}
-                className="w-full md:w-auto md:ml-auto"
+                className="w-full sm:w-auto"
                 size="medium"
               >
                 Host an event
@@ -56,50 +57,33 @@ export default function MyEventsContent() {
   return (
     <>
       <SectionHeader />
-      <Disclosure defaultOpen>
-        {({ open }) => (
-          <div className="flex flex-col gap-2">
-            <Disclosure.Button className="flex items-center justify-between w-full outline-none ring-0">
-              <h2 className="text-lg font-bold text-brand-ui-primary">
-                My events
-              </h2>
-              {open ? (
-                <UpIcon className="fill-brand-ui-primary" size={24} />
-              ) : (
-                <DownIcon className="fill-brand-ui-primary" size={24} />
-              )}
-            </Disclosure.Button>
-
-            <Disclosure.Panel>
-              <div className="flex flex-col gap-6">
-                <EventList />
-              </div>
-            </Disclosure.Panel>
-          </div>
-        )}
-      </Disclosure>
-      <Disclosure defaultOpen>
-        {({ open }) => (
-          <div className="flex flex-col gap-2">
-            <Disclosure.Button className="flex items-center justify-between w-full outline-none ring-0">
-              <h2 className="text-lg font-bold text-brand-ui-primary">
-                My event collections
-              </h2>
-              {open ? (
-                <UpIcon className="fill-brand-ui-primary" size={24} />
-              ) : (
-                <DownIcon className="fill-brand-ui-primary" size={24} />
-              )}
-            </Disclosure.Button>
-
-            <Disclosure.Panel>
-              <div className="flex flex-col gap-6">
-                <EventCollectionList />
-              </div>
-            </Disclosure.Panel>
-          </div>
-        )}
-      </Disclosure>
+      <Tab.Group>
+        <Tab.List
+          aria-label={myEventsTabListAriaLabel}
+          className="flex flex-wrap gap-2 mt-8 border-b border-gray-300"
+        >
+          <Tab className={getMyEventsTabClassName}>
+            <IoTicketSharp />
+            <span>{myEventsTabs[0].label}</span>
+          </Tab>
+          <Tab className={getMyEventsTabClassName}>
+            <MdOutlineCollections />
+            <span>{myEventsTabs[1].label}</span>
+          </Tab>
+        </Tab.List>
+        <Tab.Panels className="pt-6">
+          <Tab.Panel>
+            <div className="flex flex-col gap-6">
+              <EventList />
+            </div>
+          </Tab.Panel>
+          <Tab.Panel>
+            <div className="flex flex-col gap-6">
+              <EventCollectionList />
+            </div>
+          </Tab.Panel>
+        </Tab.Panels>
+      </Tab.Group>
     </>
   )
 }
