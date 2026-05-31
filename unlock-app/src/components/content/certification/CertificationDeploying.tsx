@@ -28,6 +28,15 @@ export const CertificationDeploying = ({
   const config = useConfig()
   const router = useRouter()
   const { hash: transactionHash, network } = transactionDetails
+  const certificationPath = lockAddress
+    ? getCertificationPath({
+        metadata: {
+          slug,
+        },
+        lockAddress,
+        network,
+      })
+    : undefined
 
   let status: DeployStatus = 'progress'
   let title = 'Waiting for your transaction to be mined'
@@ -54,16 +63,8 @@ export const CertificationDeploying = ({
   }
 
   const goToCertification = () => {
-    if (!lockAddress) return
-    router.push(
-      getCertificationPath({
-        metadata: {
-          slug,
-        },
-        lockAddress,
-        network,
-      })
-    )
+    if (!certificationPath) return
+    router.push(certificationPath)
   }
 
   return (
@@ -97,6 +98,15 @@ export const CertificationDeploying = ({
         <span className="mb-4 font-base">{message}</span>
         {status === 'deployed' && lockAddress && (
           <div className="flex flex-col items-center content-center text-center">
+            {certificationPath && (
+              <Link
+                href={certificationPath}
+                className="inline-flex items-center gap-2 mb-4 font-semibold text-brand-ui-primary hover:underline"
+              >
+                View certification page
+                <ExternalLinkIcon size={18} />
+              </Link>
+            )}
             {updateTransferFeeMutation.isSuccess ? (
               <>
                 <p>We have also built a page for you!</p>

@@ -13,6 +13,7 @@ import { MAX_UINT } from '~/constants'
 import LinkedinShareButton from './LinkedInShareButton'
 import { useCertification } from '~/hooks/useCertification'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { getCertificationCustomMetadata } from '~/utils/certificationMetadata'
 
 interface CertificationPreviewProps {
   lockAddress?: string
@@ -109,17 +110,10 @@ export const CertificationPreviewContent = ({
     ? certification?.expiration
     : expirationAsDate(certification?.expiration)
 
-  const isMobile = window?.innerWidth < 768
+  const isMobile =
+    typeof window !== 'undefined' ? window.innerWidth < 768 : false
 
-  // Get all custom metadata that aren't `minted` or `certification_issuer`
-  const customMetadata =
-    metadata?.attributes?.filter(
-      (attr: any) =>
-        attr.trait_type !== 'Minted' &&
-        attr.trait_type !== 'certification_issuer' &&
-        attr.trait_type &&
-        attr.value
-    ) || []
+  const customMetadata = getCertificationCustomMetadata(metadata?.attributes)
 
   const certificateProps = {
     tokenId: certification?.tokenId,
@@ -141,7 +135,7 @@ export const CertificationPreviewContent = ({
     transactionsHash: <TransactionHashButton />,
     externalUrl: certificationData.external_url,
     isMobile,
-    ...customMetadata,
+    customMetadata,
   }
 
   return (
