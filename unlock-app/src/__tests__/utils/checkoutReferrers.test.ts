@@ -37,6 +37,16 @@ describe('checkout referrer resolution', () => {
     )
   })
 
+  it('keeps the original ENS referrer when the resolver fails', async () => {
+    const resolver = {
+      resolveName: vi.fn().mockRejectedValue(new Error('resolver unavailable')),
+    }
+
+    await expect(resolveReferrer(resolver, 'missing.eth')).resolves.toBe(
+      'missing.eth'
+    )
+  })
+
   it('resolves top-level and lock-specific paywall config referrers', async () => {
     const lockAddress = '0x1111111111111111111111111111111111111111'
     const lockReferrer = '0x2222222222222222222222222222222222222222'

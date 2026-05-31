@@ -13,9 +13,13 @@ export const resolveReferrer = async (
     return referrer
   }
 
-  const resolvedName = await web3Service.resolveName(referrer)
-  if (resolvedName?.address && ethers.isAddress(resolvedName.address)) {
-    return resolvedName.address
+  try {
+    const resolvedName = await web3Service.resolveName(referrer)
+    if (resolvedName?.address && ethers.isAddress(resolvedName.address)) {
+      return resolvedName.address
+    }
+  } catch {
+    return referrer
   }
 
   return referrer
