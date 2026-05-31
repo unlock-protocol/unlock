@@ -28,6 +28,7 @@ import { ProtocolFee } from '~/components/interface/locks/Create/elements/Protoc
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { GuideCallout } from '~/components/content/GuideCallout'
+import { contextualGuideCallouts } from '~/utils/contextualGuides'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewCertificationForm {
@@ -147,12 +148,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
       </div>
       <form className="mb-6" onSubmit={methods.handleSubmit(onSubmit)}>
         <div className="grid gap-6">
-          <GuideCallout
-            title="Need help creating a certification?"
-            description="Use the certification guide to plan credential details, issuing, recipient notifications, and LinkedIn sharing."
-            href="https://unlock-protocol.com/guides/certifications/"
-            linkLabel="Open certification guide"
-          />
+          <GuideCallout {...contextualGuideCallouts.certification} />
           <Disclosure label="Basic Information" defaultOpen>
             <p className="mb-5">
               All of these fields can also be adjusted later.

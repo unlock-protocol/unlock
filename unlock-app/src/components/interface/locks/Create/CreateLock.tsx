@@ -17,6 +17,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useProvider } from '~/hooks/useProvider'
 import { GuideCallout } from '~/components/content/GuideCallout'
+import { contextualGuideCallouts } from '~/utils/contextualGuides'
 
 export type Step = 'data' | 'summary' | 'deploy'
 
@@ -214,12 +215,7 @@ const CreateLock = ({ onSubmit, defaultValues }: CreateLockProps) => {
         </div>
         <div className="md:max-w-lg">
           <div className="mb-4">
-            <GuideCallout
-              title="Need help creating a membership?"
-              description="Use the membership guide to plan tiers, benefits, pricing, and duration before deploying your lock."
-              href="https://unlock-protocol.com/guides/how-to-create-a-membership-program/"
-              linkLabel="Open membership guide"
-            />
+            <GuideCallout {...contextualGuideCallouts.membership} />
           </div>
           <CreateLockForm onSubmit={onSubmit} defaultValues={defaultValues} />
         </div>

@@ -36,6 +36,7 @@ import { regexUrlPattern } from '~/utils/regexUrlPattern'
 import { ProtocolFee } from '~/components/interface/locks/Create/elements/ProtocolFee'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { GuideCallout } from '~/components/content/GuideCallout'
+import { contextualGuideCallouts } from '~/utils/contextualGuides'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewEventForm {
@@ -280,12 +281,7 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
 
       <form className="mb-6" onSubmit={methods.handleSubmit(processAndSubmit)}>
         <div className="grid gap-6">
-          <GuideCallout
-            title="Need help creating an event?"
-            description="Use the event ticketing guide to plan ticket supply, pricing, attendee approval, distribution, and check-in."
-            href="https://unlock-protocol.com/guides/how-to-sell-nft-tickets-for-an-event/"
-            linkLabel="Open event guide"
-          />
+          <GuideCallout {...contextualGuideCallouts.event} />
           <Disclosure label="Basic Information" defaultOpen>
             <p className="mb-5">
               All of these fields can also be adjusted later.
