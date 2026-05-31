@@ -28,6 +28,7 @@ import { DefaultLayoutSkeleton } from './DefaultLayoutSkeleton'
 import { BannerlessLayoutSkeleton } from './BannerlessLayoutSkeleton'
 import { regexUrlPattern } from '~/utils/regexUrlPattern'
 import { EventsLayout } from '../Layout/constants'
+import { getCheckoutConfigLocks, shouldSyncEventImageToNft } from './utils'
 
 interface GeneralProps {
   event: Event
@@ -35,6 +36,22 @@ interface GeneralProps {
     id?: string
     config: PaywallConfigType
   }
+}
+
+type EventSettingsForm = Pick<
+  Event,
+  'name' | 'description' | 'image' | 'ticket' | 'layout'
+>
+
+const getTimeZoneOptions = () => {
+  const intl = Intl as typeof Intl & {
+    supportedValuesOf?: (key: 'timeZone') => string[]
+  }
+
+  return (intl.supportedValuesOf?.('timeZone') ?? []).map((tz) => ({
+    value: tz,
+    label: tz,
+  }))
 }
 
 const today = dayjs().format('YYYY-MM-DD')
@@ -49,7 +66,7 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
     handleSubmit,
     control,
     formState: { errors, isSubmitting },
-  } = useForm({
+  } = useForm<EventSettingsForm>({
     mode: 'onSubmit',
     reValidateMode: 'onSubmit',
     defaultValues: {
@@ -69,6 +86,36 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
 
   const { mutateAsync: uploadImage, isPending: isUploading } = useImageUpload()
 
+  const syncMatchingNftImages = async (nextEventImage: string) => {
+    const locks = getCheckoutConfigLocks(checkoutConfig)
+
+    await Promise.all(
+      locks.map(async ({ lockAddress, network }) => {
+        const { data: metadata } = await locksmith.lockMetadata(
+          network,
+          lockAddress
+        )
+
+        if (
+          !shouldSyncEventImageToNft({
+            nextEventImage,
+            previousEventImage: event.image,
+            currentNftImage: metadata?.image,
+          })
+        ) {
+          return
+        }
+
+        await locksmith.updateLockMetadata(network, lockAddress, {
+          metadata: {
+            ...metadata,
+            image: nextEventImage,
+          },
+        })
+      })
+    )
+  }
+
   const isSameDay = dayjs(event.ticket?.event_end_date).isSame(
     event.ticket?.event_start_date,
     'day'
@@ -82,23 +129,21 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
 
   useEffect(() => {
     setMapAddress(getValues('ticket.event_address'))
-  }, [event.ticket?.event_address])
+  }, [event.ticket?.event_address, getValues])
 
-  const save = async (values: {
-    name: string
-    description: string
-    image: string
-    layout: string
-  }) => {
+  const save = async (values: EventSettingsForm) => {
     await ToastHelper.promise(
-      locksmith.saveEventData({
-        data: formDataToMetadata({
-          ...event,
-          ...values,
-        }),
-        // @ts-expect-error
-        checkoutConfig,
-      }),
+      (async () => {
+        await locksmith.saveEventData({
+          data: formDataToMetadata({
+            ...event,
+            ...values,
+          }),
+          // @ts-expect-error checkoutConfig accepts this app config shape at runtime.
+          checkoutConfig,
+        })
+        await syncMatchingNftImages(values.image)
+      })(),
       {
         success: 'Event saved!',
         error:
@@ -134,7 +179,7 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
                   description="This illustration will be used for the event page. Use 512 by 512 pixels for best results."
                   isUploading={isUploading}
                   preview={value || event.image}
-                  onChange={async (fileOrFileUrl: any) => {
+                  onChange={async (fileOrFileUrl: File[] | string) => {
                     if (typeof fileOrFileUrl === 'string') {
                       onChange(fileOrFileUrl)
                     } else {
@@ -335,22 +380,14 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
                 render={({ field: { onChange, value } }) => {
                   return (
                     <Select
-                      onChange={(newValue: any) => {
+                      onChange={(newValue: string | number) => {
                         onChange({
                           target: {
                             value: newValue,
                           },
                         })
                       }}
-                      // @ts-expect-error supportedValuesOf
-                      options={Intl.supportedValuesOf('timeZone').map(
-                        (tz: string) => {
-                          return {
-                            value: tz,
-                            label: tz,
-                          }
-                        }
-                      )}
+                      options={getTimeZoneOptions()}
                       label="Timezone"
                       defaultValue={value}
                     />
