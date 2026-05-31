@@ -1,7 +1,7 @@
 import { Button, Input, Select } from '@unlock-protocol/ui'
 import { MdFilterList as FilterIcon } from 'react-icons/md'
 import { BiSearch as SearchIcon } from 'react-icons/bi'
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { MemberFilter } from '~/unlockTypes'
 import { useDebounce } from 'react-use'
 import { FilterProps } from './Members'
@@ -98,7 +98,7 @@ const RENEWAL_STATUS_LABELS = {
 }
 
 interface AttributeFilterProps {
-  values: any
+  values: Record<string, string>
   currentValue: string
   onChange: (value: string) => void
   labels?: Record<string, string>
@@ -112,7 +112,7 @@ const AttributeFilter = ({
 }: AttributeFilterProps) => {
   return (
     <div className="flex gap-1 flex-wrap md:flex-nowrap">
-      {Object.values(values as string[]).map((value: string, index) => {
+      {Object.values(values).map((value: string, index) => {
         const isActive = value === currentValue
         const variant = isActive ? 'borderless-primary' : 'borderless'
         return (
@@ -121,7 +121,7 @@ const AttributeFilter = ({
             size="small"
             variant={variant}
             onClick={() => {
-              return onChange(value as string)
+              return onChange(value)
             }}
           >
             {labels?.[value] || value}
@@ -148,7 +148,7 @@ export const FilterBar = ({
   const [rawQueryValue, setRawQueryValue] = useState('')
   const [filterKey, setFilterKey] = useState(filters.filterKey ?? 'owner')
 
-  const setFiltersAndResetPage = (newFilter: any) => {
+  const setFiltersAndResetPage = (newFilter: Partial<FilterProps>) => {
     setFilters({
       ...filters,
       filterKey,
@@ -332,17 +332,17 @@ export const FilterBar = ({
               size="small"
               options={filterOptions}
               defaultValue={filterKey}
-              onChange={(filter: any) => {
-                setFilterKey(filter)
+              onChange={(filter: string | number) => {
+                setFilterKey(filter.toString())
                 setRawQueryValue('')
               }}
             />
             <Input
               placeholder={placeholder}
               size="small"
-              onChange={(e: any) => {
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 setIsTyping(true)
-                setRawQueryValue(e?.target?.value)
+                setRawQueryValue(e.target.value)
               }}
               value={rawQueryValue}
             />

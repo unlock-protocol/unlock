@@ -12,6 +12,24 @@ import { PAGE_SIZE } from '@unlock-protocol/core'
 import { useBatchNameResolver } from '~/hooks/useNameResolver'
 import { useLockManager } from '~/hooks/useLockManager'
 
+interface MemberKey {
+  token: string
+  keyholderAddress: string
+  expiration: string
+  [key: string]: unknown
+}
+
+interface MembersLockData {
+  version?: number
+  expirationDuration?: string
+}
+
+interface MembersMeta {
+  page?: number
+  byPage?: number
+  total?: number
+}
+
 /**
  * Default placeholder component when there are no members and no filters applied
  */
@@ -64,15 +82,15 @@ export interface MembersProps {
     isManager: boolean
   }>
   NoMemberWithFilter?: React.FC
-  MembersActions?: React.FC<{ keys: any; filters: FilterProps }>
+  MembersActions?: React.FC<{ keys: MemberKey[]; filters: FilterProps }>
 
   // Optional pre-loaded data - allows parent components to provide data directly
   centralizedLockData?: {
-    lock?: any
-    lockSettings?: any
+    lock?: MembersLockData
+    lockSettings?: Record<string, unknown>
     isManager?: boolean
-    eventDetails?: any
-    metadata?: any
+    eventDetails?: Record<string, unknown>
+    metadata?: Record<string, unknown>
   } | null
 }
 
@@ -188,14 +206,15 @@ export const Members = ({
         page
       )
 
-      // Extract unique member addresses
-      const memberAddresses = (membersResponse?.keys || []).map(
-        (metadata: any) => metadata.keyholderAddress
-      )
+      const keys = (membersResponse?.keys || []) as MemberKey[]
+      const meta = (membersResponse?.meta || {}) as MembersMeta
+      const memberAddresses = keys.map(({ keyholderAddress }) => {
+        return keyholderAddress
+      })
 
       return {
-        keys: membersResponse?.keys || [],
-        meta: membersResponse?.meta || {},
+        keys,
+        meta,
         memberAddresses,
       }
     },
@@ -295,7 +314,7 @@ export const Members = ({
       {MembersActions && <MembersActions filters={filters} keys={keys} />}
 
       {/* Render member cards */}
-      {(keys || []).map((metadata: any) => {
+      {(keys || []).map((metadata) => {
         const { token, keyholderAddress: owner, expiration } = metadata ?? {}
 
         // Avoid redundant prop spreading
@@ -303,11 +322,11 @@ export const Members = ({
           token,
           owner,
           expiration,
-          version: lock?.version,
+          version: lock?.version ?? 0,
           metadata,
           lockAddress,
           network,
-          expirationDuration: lock?.expirationDuration,
+          expirationDuration: lock?.expirationDuration ?? '0',
           lockSettings,
           resolvedName: getResolvedNameWithFallback(owner),
           isManager,
