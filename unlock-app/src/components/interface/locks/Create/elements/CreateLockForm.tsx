@@ -35,11 +35,29 @@ export interface LockFormProps {
 }
 
 interface CreateLockFormProps {
-  onSubmit: any
+  onSubmit: (values: LockFormProps) => void
   defaultValues?: Partial<LockFormProps>
   hideFields?: string[]
   isLoading?: boolean
-  defaultOptions?: any
+  defaultOptions?: CreateLockFormDefaultOptions
+}
+
+interface CreateLockFormDefaultOptions {
+  expirationDuration?: {
+    label?: string
+    values: {
+      label: string
+      value: number | string
+    }[]
+  }
+  notFree?: boolean
+  notUnlimited?: boolean
+  noNative?: boolean
+}
+
+interface FaucetLink {
+  name: string
+  url: string
 }
 
 const formHelpTextClassName = 'px-1 text-sm leading-6 text-gray-700'
@@ -73,7 +91,7 @@ export const NetworkDescription = ({ network }: { network: number }) => {
           {faucets.length > 1
             ? ' Try one of these faucets: '
             : ' Try this faucet: '}
-          {faucets.map((faucet: any, index) => {
+          {faucets.map((faucet: FaucetLink, index) => {
             return (
               <>
                 <Link className="underline" href={faucet.url} target="_blank">
