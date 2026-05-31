@@ -28,6 +28,14 @@ interface CustomAttribute {
   isPublic: boolean
 }
 
+const getCustomAttributeKey = (name: string, isPublic: boolean) => {
+  const normalizedName = name.trim().replace(/\./g, '_')
+  if (!normalizedName) {
+    return ''
+  }
+  return isPublic ? `${normalizedName}.public` : normalizedName
+}
+
 export interface Props {
   add(member: AirdropMember): void
   lock: Lock
@@ -105,15 +113,41 @@ export function AirdropInternalForm({
   const getCustomMetadata = useCallback(() => {
     return customAttributes.reduce<Record<string, string>>(
       (metadata, { name, value, isPublic }) => {
-        const normalizedName = name.trim().replace(/\./g, '_')
-        if (!normalizedName || !value) {
+        const key = getCustomAttributeKey(name, isPublic)
+        const trimmedValue = value.trim()
+        if (!key || !trimmedValue) {
           return metadata
         }
-        metadata[isPublic ? `${normalizedName}.public` : normalizedName] = value
+        metadata[key] = trimmedValue
         return metadata
       },
       {}
     )
+  }, [customAttributes])
+
+  const validateCustomAttributes = useCallback(() => {
+    const keys = new Set<string>()
+
+    for (const attribute of customAttributes) {
+      const hasName = attribute.name.trim().length > 0
+      const hasValue = attribute.value.trim().length > 0
+
+      if (hasName !== hasValue) {
+        return 'Custom attributes need both a name and a value.'
+      }
+
+      const key = getCustomAttributeKey(attribute.name, attribute.isPublic)
+      if (!key) {
+        continue
+      }
+
+      if (keys.has(key)) {
+        return 'Custom attribute names must be unique.'
+      }
+      keys.add(key)
+    }
+
+    return null
   }, [customAttributes])
 
   const onWalletChange = useCallback(
@@ -138,6 +172,12 @@ export function AirdropInternalForm({
 
   const onSubmitHandler = useCallback(
     async (member: AirdropMember) => {
+      const customAttributeError = validateCustomAttributes()
+      if (customAttributeError) {
+        ToastHelper.error(customAttributeError)
+        return
+      }
+
       try {
         const address = await getAddressForName(member.wallet)
         member.wallet = address
@@ -154,7 +194,7 @@ export function AirdropInternalForm({
         console.error(error)
       }
     },
-    [add, getCustomMetadata, reset, setValue]
+    [add, getCustomMetadata, reset, setValue, validateCustomAttributes]
   )
 
   return (
@@ -399,6 +439,7 @@ export function AirdropInternalForm({
                 size="small"
                 variant="borderless"
                 type="button"
+                aria-label="Remove custom attribute"
                 onClick={() =>
                   setCustomAttributes((attributes) =>
                     attributes.filter((attribute) => attribute.id !== id)
