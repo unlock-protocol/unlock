@@ -32,6 +32,7 @@ export const NewCertification = () => {
     const walletService = await getWalletService(formData.network)
     try {
       formData.metadata.slug = await getSlugForName(formData.lock.name)
+      const expirationDuration = formData.lock.expirationDuration
       const lockParams = {
         ...formData.lock,
         name: formData.lock.name,
@@ -41,8 +42,9 @@ export const NewCertification = () => {
           ? UNLIMITED_KEYS_COUNT
           : formData?.lock?.maxNumberOfKeys,
         expirationDuration:
-          Math.ceil(formData?.lock?.expirationDuration * 60 * 60 * 24) ||
-          UNLIMITED_KEYS_DURATION,
+          typeof expirationDuration === 'number'
+            ? Math.ceil(expirationDuration * 60 * 60 * 24)
+            : UNLIMITED_KEYS_DURATION,
       }
       lockAddress = await walletService.createLock(
         lockParams,

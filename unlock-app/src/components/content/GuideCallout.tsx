@@ -21,6 +21,7 @@ export const GuideCallout = ({
         className="font-medium underline text-brand-ui-primary"
         href={href}
         target="_blank"
+        rel="noreferrer"
       >
         {linkLabel}
       </Link>

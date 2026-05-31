@@ -32,11 +32,15 @@ import { GuideCallout } from '~/components/content/GuideCallout'
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewCertificationForm {
   network: number
-  lock: Omit<Lock, 'address' | 'key'>
+  lock: Omit<Lock, 'address' | 'key' | 'expirationDuration'> & {
+    expirationDuration?: number
+  }
   currencySymbol: string
   unlimitedQuantity: boolean
   metadata: Partial<MetadataFormData>
 }
+
+type ImageUploadValue = File[] | string
 
 interface FormProps {
   onSubmit: (data: NewCertificationForm) => void
@@ -160,7 +164,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                   description="This illustration will be used for the NFT Certification. Use 512 by 512 pixels for best results."
                   isUploading={isUploading}
                   preview={metadataImage!}
-                  onChange={async (fileOrFileUrl: any) => {
+                  onChange={async (fileOrFileUrl: ImageUploadValue) => {
                     if (typeof fileOrFileUrl === 'string') {
                       setValue('metadata.image', fileOrFileUrl)
                     } else {
@@ -240,7 +244,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                       setEnabled={setForever}
                       onChange={(enabled) => {
                         if (enabled) {
-                          setValue('lock.expirationDuration', undefined as any)
+                          setValue('lock.expirationDuration', undefined)
                         }
                       }}
                     />

@@ -99,7 +99,7 @@ export const CreateLockSteps = () => {
           publicLockVersion: networks[network].publicLockVersionToDeploy,
         },
         {},
-        (error: any, transactionHash) => {
+        (error: Error | null, transactionHash: string | null) => {
           if (error) {
             console.error(error)
             ToastHelper.error(
