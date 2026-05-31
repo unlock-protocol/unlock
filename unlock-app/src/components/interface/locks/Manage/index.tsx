@@ -2,7 +2,7 @@
 
 import { MdOutlineTipsAndUpdates } from 'react-icons/md'
 import { Button } from '@unlock-protocol/ui'
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { ConnectWalletModal } from '../../ConnectWalletModal'
 import { LockDetailCard } from './elements/LockDetailCard'
 import { Members } from './elements/Members'
@@ -13,6 +13,7 @@ import {
   ApprovalStatus,
   ExpirationStatus,
   FilterBar,
+  RenewalStatus,
 } from './elements/FilterBar'
 import { useLockManager } from '~/hooks/useLockManager'
 import Link from 'next/link'
@@ -20,6 +21,7 @@ import { Picker } from '../../Picker'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useCentralizedLockData } from '~/hooks/useCentralizedLockData'
 import { ActionBar } from '../elements/ActionBar'
+import { isRecurringRenewalLock } from '~/utils/renewalFilters'
 
 import { NotManagerBanner } from '../Settings'
 import { TopActionBar } from '../elements/TopActionBar'
@@ -64,8 +66,27 @@ export const ManageLockContent = ({
     filterKey: 'owner',
     expiration: ExpirationStatus.ALL,
     approval: ApprovalStatus.MINTED,
+    renewal: RenewalStatus.ALL,
   })
   const [page, setPage] = useState(1)
+
+  const lock = centralizedLockData?.lock
+  const isRecurringLock = isRecurringRenewalLock(lock)
+
+  useEffect(() => {
+    if (!isRecurringLock) {
+      setFilters((currentFilters) => {
+        if (currentFilters.renewal === RenewalStatus.ALL) {
+          return currentFilters
+        }
+
+        return {
+          ...currentFilters,
+          renewal: RenewalStatus.ALL,
+        }
+      })
+    }
+  }, [isRecurringLock])
 
   // Handler for toggling airdrop modal
   const toggleAirdropKeys = useCallback(() => {
@@ -186,6 +207,7 @@ export const ManageLockContent = ({
                   setLoading={setLoading}
                   setPage={setPage}
                   page={page}
+                  showRenewalFilter={isRecurringLock}
                 />
 
                 {/* Members list component with centralized data */}

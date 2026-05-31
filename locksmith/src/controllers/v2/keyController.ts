@@ -26,6 +26,7 @@ export default class KeyController {
         filterKey,
         expiration = 'active',
         approval = 'minted',
+        renewal = keysOperations.RenewalStatus.ALL,
       } = request.query ?? {}
 
       if (!filterKey) {
@@ -41,6 +42,7 @@ export default class KeyController {
         filterKey,
         expiration,
         approval,
+        renewal,
         max: Math.min(PAGE_SIZE, Number(max)),
       }
 
@@ -81,6 +83,7 @@ export default class KeyController {
         filterKey: request.query.filterKey,
         expiration: request.query.expiration ?? 'active',
         approval: request.query.approval ?? 'minted',
+        renewal: request.query.renewal ?? keysOperations.RenewalStatus.ALL,
         loggedInUserAddress: Normalizer.ethereumAddress(
           request.user!.walletAddress
         ),
@@ -150,6 +153,7 @@ export default class KeyController {
         filterKey,
         expiration = 'active',
         approval = 'minted',
+        renewal = keysOperations.RenewalStatus.ALL,
       } = request.query ?? {}
 
       if (!filterKey) {
@@ -165,6 +169,7 @@ export default class KeyController {
         filterKey,
         expiration,
         approval,
+        renewal,
         max: Math.min(PAGE_SIZE, Number(max)),
       }
 

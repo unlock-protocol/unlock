@@ -4,13 +4,31 @@ import { ImageBar } from './ImageBar'
 import { MemberCard as DefaultMemberCard, MemberCardProps } from './MemberCard'
 import { paginate } from '~/utils/pagination'
 import { PaginationBar } from './PaginationBar'
-import { ApprovalStatus, ExpirationStatus } from './FilterBar'
+import { ApprovalStatus, ExpirationStatus, RenewalStatus } from './FilterBar'
 import { graphService } from '~/config/subgraph'
 import { locksmith } from '~/config/locksmith'
 import { Placeholder } from '@unlock-protocol/ui'
 import { PAGE_SIZE } from '@unlock-protocol/core'
 import { useBatchNameResolver } from '~/hooks/useNameResolver'
 import { useLockManager } from '~/hooks/useLockManager'
+
+interface MemberKey {
+  token: string
+  keyholderAddress: string
+  expiration: string
+  [key: string]: unknown
+}
+
+interface MembersLockData {
+  version?: number
+  expirationDuration?: string
+}
+
+interface MembersMeta {
+  page?: number
+  byPage?: number
+  total?: number
+}
 
 /**
  * Default placeholder component when there are no members and no filters applied
@@ -43,6 +61,7 @@ export interface FilterProps {
   filterKey: string
   expiration: ExpirationStatus
   approval: ApprovalStatus
+  renewal: RenewalStatus
 }
 
 export interface MembersProps {
@@ -63,15 +82,15 @@ export interface MembersProps {
     isManager: boolean
   }>
   NoMemberWithFilter?: React.FC
-  MembersActions?: React.FC<{ keys: any; filters: FilterProps }>
+  MembersActions?: React.FC<{ keys: MemberKey[]; filters: FilterProps }>
 
   // Optional pre-loaded data - allows parent components to provide data directly
   centralizedLockData?: {
-    lock?: any
-    lockSettings?: any
+    lock?: MembersLockData
+    lockSettings?: Record<string, unknown>
     isManager?: boolean
-    eventDetails?: any
-    metadata?: any
+    eventDetails?: Record<string, unknown>
+    metadata?: Record<string, unknown>
   } | null
 }
 
@@ -84,7 +103,7 @@ const getMembers = async (
   filters: FilterProps,
   page: number
 ) => {
-  const { query, filterKey, expiration, approval } = filters
+  const { query, filterKey, expiration, approval, renewal } = filters
   const response = await locksmith.keysByPage(
     network,
     lockAddress,
@@ -92,6 +111,7 @@ const getMembers = async (
     filterKey,
     expiration,
     approval,
+    renewal,
     page - 1, // API starts at 0
     PAGE_SIZE
   )
@@ -122,6 +142,7 @@ export const Members = ({
     filterKey: 'owner',
     expiration: ExpirationStatus.ALL,
     approval: ApprovalStatus.MINTED,
+    renewal: RenewalStatus.ALL,
   },
   MemberCard = DefaultMemberCard,
   NoMemberWithFilter = DefaultNoMemberWithFilter,
@@ -175,6 +196,7 @@ export const Members = ({
       filters.filterKey,
       filters.expiration,
       filters.approval,
+      filters.renewal,
     ],
     queryFn: async () => {
       const membersResponse = await getMembers(
@@ -184,14 +206,15 @@ export const Members = ({
         page
       )
 
-      // Extract unique member addresses
-      const memberAddresses = (membersResponse?.keys || []).map(
-        (metadata: any) => metadata.keyholderAddress
-      )
+      const keys = (membersResponse?.keys || []) as MemberKey[]
+      const meta = (membersResponse?.meta || {}) as MembersMeta
+      const memberAddresses = keys.map(({ keyholderAddress }) => {
+        return keyholderAddress
+      })
 
       return {
-        keys: membersResponse?.keys || [],
-        meta: membersResponse?.meta || {},
+        keys,
+        meta,
         memberAddresses,
       }
     },
@@ -237,6 +260,7 @@ export const Members = ({
   const hasActiveFilter =
     filters?.approval !== 'minted' ||
     filters?.expiration !== 'all' ||
+    filters?.renewal !== 'all' ||
     filters?.filterKey !== 'owner' ||
     filters?.query?.length > 0
 
@@ -244,7 +268,10 @@ export const Members = ({
   if (noItems) {
     if (!hasActiveFilter) {
       return (
-        <NoMemberNoFilter toggleAirdropKeys={() => {}} isManager={isManager} />
+        <NoMemberNoFilter
+          toggleAirdropKeys={() => undefined}
+          isManager={isManager}
+        />
       )
     }
 
@@ -287,7 +314,7 @@ export const Members = ({
       {MembersActions && <MembersActions filters={filters} keys={keys} />}
 
       {/* Render member cards */}
-      {(keys || []).map((metadata: any) => {
+      {(keys || []).map((metadata) => {
         const { token, keyholderAddress: owner, expiration } = metadata ?? {}
 
         // Avoid redundant prop spreading
@@ -295,11 +322,11 @@ export const Members = ({
           token,
           owner,
           expiration,
-          version: lock?.version,
+          version: lock?.version ?? 0,
           metadata,
           lockAddress,
           network,
-          expirationDuration: lock?.expirationDuration,
+          expirationDuration: lock?.expirationDuration ?? '0',
           lockSettings,
           resolvedName: getResolvedNameWithFallback(owner),
           isManager,

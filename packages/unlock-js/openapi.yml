@@ -201,6 +201,15 @@ components:
           type: string
           nullable: false
 
+        renewalStatus:
+          type: string
+          nullable: true
+          enum:
+            - will_renew
+            - needs_approval
+            - insufficient_balance
+            - not_renewable
+
     UserMetadataInput:
       type: object
       nullable: false
@@ -2432,6 +2441,17 @@ paths:
             type: string
           description: Approval status (relevant for offchain approvals on events for example)
         - in: query
+          name: renewal
+          schema:
+            type: string
+            enum:
+              - all
+              - will_renew
+              - needs_approval
+              - insufficient_balance
+              - not_renewable
+          description: Renewal status for recurring memberships
+        - in: query
           name: page
           schema:
             type: integer
@@ -2491,6 +2511,17 @@ paths:
           schema:
             type: string
           description: Approval status (relevant for offchain approvals on events for example)
+        - in: query
+          name: renewal
+          schema:
+            type: string
+            enum:
+              - all
+              - will_renew
+              - needs_approval
+              - insufficient_balance
+              - not_renewable
+          description: Renewal status for recurring memberships
         - in: query
           name: page
           schema:
@@ -2563,6 +2594,17 @@ paths:
           schema:
             type: string
           description: Approval status (relevant for offchain approvals on events for example)
+        - in: query
+          name: renewal
+          schema:
+            type: string
+            enum:
+              - all
+              - will_renew
+              - needs_approval
+              - insufficient_balance
+              - not_renewable
+          description: Renewal status for recurring memberships
       responses:
         '200':
           description: Successfully started Keys Job

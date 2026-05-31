@@ -1,6 +1,8 @@
 import {
   buildKeysWithMetadata,
   getKeysWithMetadata,
+  getRenewalStatusForSubscriptions,
+  RenewalStatus,
 } from '../../src/operations/keysOperations'
 import { loginRandomUser } from '../test-helpers/utils'
 import app from '../app'
@@ -125,7 +127,77 @@ vi.mock('../../src/operations/metadataOperations', () => {
     },
   }
 })
+
+vi.mock('../../src/operations/subscriptionOperations', () => {
+  return {
+    getSubscriptionsForLockByOwner: ({ tokenId }: { tokenId: string }) => {
+      const subscriptions: Record<string, any[]> = {
+        '1': [
+          {
+            approvedRenewals: '1',
+            possibleRenewals: '1',
+          },
+        ],
+        '2': [
+          {
+            approvedRenewals: '0',
+            possibleRenewals: '1',
+          },
+        ],
+        '3': [
+          {
+            approvedRenewals: '1',
+            possibleRenewals: '0',
+          },
+        ],
+      }
+
+      return subscriptions[tokenId] || []
+    },
+  }
+})
 describe('keysOperations operations', () => {
+  describe('getRenewalStatusForSubscriptions', () => {
+    it('should classify keys that will renew', () => {
+      expect(
+        getRenewalStatusForSubscriptions([
+          {
+            approvedRenewals: '1',
+            possibleRenewals: '1',
+          } as any,
+        ])
+      ).toBe(RenewalStatus.WILL_RENEW)
+    })
+
+    it('should classify keys that need approval', () => {
+      expect(
+        getRenewalStatusForSubscriptions([
+          {
+            approvedRenewals: '0',
+            possibleRenewals: '1',
+          } as any,
+        ])
+      ).toBe(RenewalStatus.NEEDS_APPROVAL)
+    })
+
+    it('should classify keys with insufficient balance', () => {
+      expect(
+        getRenewalStatusForSubscriptions([
+          {
+            approvedRenewals: '1',
+            possibleRenewals: '0',
+          } as any,
+        ])
+      ).toBe(RenewalStatus.INSUFFICIENT_BALANCE)
+    })
+
+    it('should classify keys without subscriptions as not renewable', () => {
+      expect(getRenewalStatusForSubscriptions([])).toBe(
+        RenewalStatus.NOT_RENEWABLE
+      )
+    })
+  })
+
   describe('buildKeysWithMetadata', () => {
     it('should merge keys items with the corresponding metadata', () => {
       expect.assertions(2)
@@ -453,6 +525,28 @@ describe('keysOperations operations', () => {
         expect(keys.length).toBe(1)
         expect(keys[0].approval).toBe('pending')
         expect(keys[0].email).toBe('kld.diagne@gmail.com')
+      })
+    })
+
+    it('should filter keys by renewal status', async () => {
+      expect.assertions(3)
+
+      const { address } = await loginRandomUser(app)
+      const { keys, total } = await getKeysWithMetadata({
+        network,
+        lockAddress,
+        filters: {
+          approval: 'minted',
+          renewal: RenewalStatus.NEEDS_APPROVAL,
+        },
+        loggedInUserAddress: address,
+      })
+
+      expect(keys.length).toBe(1)
+      expect(total).toBe(1)
+      expect(keys[0]).toMatchObject({
+        token: '2',
+        renewalStatus: RenewalStatus.NEEDS_APPROVAL,
       })
     })
   })
