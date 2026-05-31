@@ -20,6 +20,10 @@ import { useAvailableNetworks } from '~/utils/networks'
 import { SelectToken } from './SelectToken'
 import { ProtocolFee } from './ProtocolFee'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import {
+  getCreateLockFaucetPrompt,
+  shouldShowCreateLockNetworkWarning,
+} from '~/utils/createLockFormNotices'
 
 export interface LockFormProps {
   name: string
@@ -79,7 +83,7 @@ export const NetworkDescription = ({ network }: { network: number }) => {
           ).{' '}
         </>
       )}
-      {network === 1 && (
+      {shouldShowCreateLockNetworkWarning(network) && (
         <p className={formWarningTextClassName}>
           Due to high gas costs, we strongly discourage the use of the Ethereum
           Mainnet.
@@ -87,10 +91,10 @@ export const NetworkDescription = ({ network }: { network: number }) => {
       )}
       {faucets && (
         <div className="mt-1">
-          Need some {nativeCurrency.name} to pay for gas?
-          {faucets.length > 1
-            ? ' Try one of these faucets: '
-            : ' Try this faucet: '}
+          {getCreateLockFaucetPrompt({
+            faucetCount: faucets.length,
+            nativeCurrencyName: nativeCurrency.name,
+          })}
           {faucets.map((faucet: FaucetLink, index) => {
             return (
               <>
