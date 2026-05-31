@@ -49,11 +49,24 @@ interface GoogleMapsAutoCompleteProps {
   defaultValue?: string
 }
 
+interface GooglePlaceResult {
+  formatted_address?: string
+  geometry?: {
+    location?: {
+      lat: () => number
+      lng: () => number
+    }
+  }
+}
+
 export const GoogleMapsAutoComplete = ({
   onChange,
   defaultValue,
 }: GoogleMapsAutoCompleteProps) => {
-  const onPlaceSelected = async (place: any, inputRef: any) => {
+  const onPlaceSelected = async (
+    place: GooglePlaceResult,
+    inputRef: HTMLInputElement
+  ) => {
     const lat = place.geometry?.location?.lat()
     const lng = place.geometry?.location?.lng()
 
@@ -77,7 +90,7 @@ export const GoogleMapsAutoComplete = ({
       types: [],
     },
     apiKey: config.googleMapsApiKey,
-    onPlaceSelected: (place: any, inputRef: any) => {
+    onPlaceSelected: (place: GooglePlaceResult, inputRef: HTMLInputElement) => {
       onPlaceSelected(place, inputRef)
     },
   })
@@ -241,7 +254,7 @@ export const Form = ({
     },
   })
 
-  const processAndSubmit = (values: any) => {
+  const processAndSubmit = (values: NewEventForm) => {
     if (attendeeRefund) {
       values.metadata.attendeeRefund = {
         amount: values.lock!.keyPrice,
@@ -296,7 +309,7 @@ export const Form = ({
                   description="This illustration will be used for your event page, as well as the NFT tickets by default. Use 512 by 512 pixels for best results."
                   isUploading={isUploading}
                   preview={metadataImage!}
-                  onChange={async (fileOrFileUrl: any) => {
+                  onChange={async (fileOrFileUrl: File[] | string) => {
                     if (typeof fileOrFileUrl === 'string') {
                       setValue('metadata.image', fileOrFileUrl)
                     } else {
