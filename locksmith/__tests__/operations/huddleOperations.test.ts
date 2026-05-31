@@ -123,4 +123,28 @@ describe('huddleOperations', () => {
       })
     ).rejects.toThrow('Huddle01 is not configured')
   })
+
+  it('fails before calling Huddle when the network is unsupported', async () => {
+    await expect(
+      createTokenGatedHuddleRoom({
+        lockAddress: '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C',
+        network: 999999,
+        title: 'Token gated event',
+      })
+    ).rejects.toThrow('Huddle01 does not support network 999999')
+
+    expect(fetchMock).not.toHaveBeenCalled()
+  })
+
+  it('fails clearly when Huddle returns no room id', async () => {
+    fetchMock.mockResponseOnce(JSON.stringify({ data: {} }))
+
+    await expect(
+      createTokenGatedHuddleRoom({
+        lockAddress: '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C',
+        network: 8453,
+        title: 'Token gated event',
+      })
+    ).rejects.toThrow('Huddle01 room creation response did not include roomId')
+  })
 })
