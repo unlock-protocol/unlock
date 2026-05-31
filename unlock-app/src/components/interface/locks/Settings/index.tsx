@@ -20,6 +20,7 @@ import { SettingPayments } from './elements/SettingPayments'
 import { SettingEmail } from './elements/SettingEmail'
 import { SettingTab } from '~/components/content/lock/LocksSettingsContent'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { SettingAccessCodes } from './elements/SettingAccessCodes'
 
 interface LockSettingsPageProps {
   lockAddress: string
@@ -50,6 +51,16 @@ export const SettingsContext = createContext<{
 export const useTabSettings = () => {
   return useContext(SettingsContext)
 }
+
+const SETTING_TAB_IDS: SettingTab[] = [
+  'general',
+  'terms',
+  'payments',
+  'access-codes',
+  'roles',
+  'emails',
+  'advanced',
+]
 
 const LockSettingsPage = ({
   lockAddress,
@@ -89,14 +100,15 @@ const LockSettingsPage = ({
     })
 
   const isLoading = isLoadingLock || isLoadingManager
+  const isPaidLock = parseFloat(lock?.keyPrice ?? '0') > 0
 
   /**
    * Open default tab by id
    */
   useEffect(() => {
     if (!defaultTab) return
-    const defaultTabIndex = tabs?.findIndex(({ id }) => id === defaultTab)
-    if (defaultTabIndex === undefined) return
+    const defaultTabIndex = SETTING_TAB_IDS.findIndex((id) => id === defaultTab)
+    if (defaultTabIndex < 0) return
 
     setSelectedIndex(defaultTabIndex)
   }, [defaultTab])
@@ -150,6 +162,22 @@ const LockSettingsPage = ({
       ),
       description:
         'Payments settings lets you change the price and currency of your memberships, as well as enable credit cards and recurring payments.',
+    },
+    {
+      id: 'access-codes',
+      label: 'Access Codes',
+      children: (
+        <SettingAccessCodes
+          lockAddress={lockAddress}
+          network={network}
+          isManager={isManager}
+          isLoading={isLoading}
+          isPaidLock={isPaidLock}
+          publicLockVersion={publicLockVersion}
+        />
+      ),
+      description:
+        'Create discount codes for paid locks, or password access codes for free locks.',
     },
     {
       id: 'roles',

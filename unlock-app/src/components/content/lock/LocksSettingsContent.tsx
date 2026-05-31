@@ -10,6 +10,7 @@ export type SettingTab =
   | 'general'
   | 'terms'
   | 'payments'
+  | 'access-codes'
   | 'roles'
   | 'advanced'
   | 'emails'
