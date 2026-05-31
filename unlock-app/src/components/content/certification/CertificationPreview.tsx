@@ -13,6 +13,7 @@ import { MAX_UINT } from '~/constants'
 import LinkedinShareButton from './LinkedInShareButton'
 import { useCertification } from '~/hooks/useCertification'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { getCertificationCustomMetadata } from '~/utils/certificationMetadata'
 
 interface CertificationPreviewProps {
   lockAddress?: string
@@ -20,13 +21,6 @@ interface CertificationPreviewProps {
   tokenId?: string
   expiration?: string | number
 }
-
-type CustomMetadataAttribute = {
-  trait_type?: string
-  value?: string | number
-}
-
-const skippedCustomMetadataTraits = new Set(['Minted', 'certification_issuer'])
 
 export const CertificationPreviewContent = ({
   lockAddress,
@@ -119,18 +113,7 @@ export const CertificationPreviewContent = ({
   const isMobile =
     typeof window !== 'undefined' ? window.innerWidth < 768 : false
 
-  // Get all custom metadata that aren't `minted` or `certification_issuer`
-  const customMetadata =
-    metadata?.attributes?.filter(
-      (
-        attr: CustomMetadataAttribute
-      ): attr is Required<CustomMetadataAttribute> =>
-        !!attr.trait_type &&
-        !skippedCustomMetadataTraits.has(attr.trait_type) &&
-        attr.value !== undefined &&
-        attr.value !== null &&
-        attr.value !== ''
-    ) || []
+  const customMetadata = getCertificationCustomMetadata(metadata?.attributes)
 
   const certificateProps = {
     tokenId: certification?.tokenId,
