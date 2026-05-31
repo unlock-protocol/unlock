@@ -49,11 +49,24 @@ interface GoogleMapsAutoCompleteProps {
   defaultValue?: string
 }
 
+interface GooglePlaceResult {
+  formatted_address?: string
+  geometry?: {
+    location?: {
+      lat: () => number
+      lng: () => number
+    }
+  }
+}
+
 export const GoogleMapsAutoComplete = ({
   onChange,
   defaultValue,
 }: GoogleMapsAutoCompleteProps) => {
-  const onPlaceSelected = async (place: any, inputRef: any) => {
+  const onPlaceSelected = async (
+    place: GooglePlaceResult,
+    inputRef: HTMLInputElement
+  ) => {
     const lat = place.geometry?.location?.lat()
     const lng = place.geometry?.location?.lng()
 
@@ -77,7 +90,7 @@ export const GoogleMapsAutoComplete = ({
       types: [],
     },
     apiKey: config.googleMapsApiKey,
-    onPlaceSelected: (place: any, inputRef: any) => {
+    onPlaceSelected: (place: GooglePlaceResult, inputRef: HTMLInputElement) => {
       onPlaceSelected(place, inputRef)
     },
   })
@@ -96,32 +109,59 @@ export const GoogleMapsAutoComplete = ({
 interface FormProps {
   onSubmit: (data: NewEventForm) => void
   compact?: boolean
+  defaultValues?: NewEventForm
 }
 
-export const Form = ({ onSubmit, compact = false }: FormProps) => {
+const parseBooleanValue = (value: unknown, fallback: boolean) => {
+  if (value === undefined || value === null) {
+    return fallback
+  }
+  if (typeof value === 'string') {
+    return value !== 'false'
+  }
+  return Boolean(value)
+}
+
+export const Form = ({
+  onSubmit,
+  compact = false,
+  defaultValues,
+}: FormProps) => {
   const [oldMaxNumberOfKeys, setOldMaxNumberOfKeys] = useState<number>(0)
   const { networks } = useConfig()
   const { account } = useAuthenticate()
-  const [isInPerson, setIsInPerson] = useState(true)
-  const [screeningEnabled, enableScreening] = useState(false)
-  const [isUnlimitedCapacity, setIsUnlimitedCapacity] = useState(false)
-  const [attendeeRefund, setAttendeeRefund] = useState(false)
-  const [isFree, setIsFree] = useState(true)
+  const networkOptions = useAvailableNetworks()
+  const moreNetworkOptions = useAvailableNetworks(true)
+  const network = networkOptions[0]?.value
+  const initialNetwork =
+    defaultValues?.network ?? network ?? Number(Object.keys(networks)[0])
+  const [isInPerson, setIsInPerson] = useState(
+    parseBooleanValue(defaultValues?.metadata?.ticket?.event_is_in_person, true)
+  )
+  const [screeningEnabled, enableScreening] = useState(
+    parseBooleanValue(defaultValues?.metadata?.requiresApproval, false)
+  )
+  const [isUnlimitedCapacity, setIsUnlimitedCapacity] = useState(
+    defaultValues ? !defaultValues.lock.maxNumberOfKeys : false
+  )
+  const [attendeeRefund, setAttendeeRefund] = useState(
+    !!defaultValues?.metadata?.attendeeRefund
+  )
+  const [isFree, setIsFree] = useState(
+    Number(defaultValues?.lock?.keyPrice ?? 0) === 0
+  )
   const [isCurrencyModalOpen, setCurrencyModalOpen] = useState(false)
   const { mutateAsync: uploadImage, isPending: isUploading } = useImageUpload()
 
   const web3Service = useWeb3Service()
 
   const today = dayjs().format('YYYY-MM-DD')
-  const networkOptions = useAvailableNetworks()
-  const moreNetworkOptions = useAvailableNetworks(true)
-  const network = networkOptions[0]?.value
 
   const methods = useForm<NewEventForm>({
     mode: 'onChange',
     shouldUnregister: false,
-    defaultValues: {
-      network,
+    defaultValues: defaultValues ?? {
+      network: initialNetwork,
       lock: {
         name: '',
         expirationDuration: UNLIMITED_KEYS_DURATION,
@@ -129,7 +169,7 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
         currencyContractAddress: null,
         keyPrice: '0',
       },
-      currencySymbol: networks[network].nativeCurrency.symbol,
+      currencySymbol: networks[initialNetwork].nativeCurrency.symbol,
       metadata: {
         description: '',
         ticket: {
@@ -165,7 +205,7 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
   })
 
   const [mapAddress, setMapAddress] = useState(
-    encodeURIComponent(getValues('metadata.ticket.event_address') || 'Ethereum')
+    getValues('metadata.ticket.event_address') || 'Ethereum'
   )
 
   const { isPending: isLoadingBalance, data: balance } = useQuery({
@@ -195,8 +235,12 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
 
   const router = useRouter()
 
-  const [currencyNetwork, setCurrencyNetwork] = useState<string>()
-  const [kickbackSupported, setKickBackSupported] = useState<boolean>(false)
+  const [currencyNetwork, setCurrencyNetwork] = useState<string>(
+    networks[initialNetwork]?.name
+  )
+  const [kickbackSupported, setKickBackSupported] = useState<boolean>(
+    !!networks[initialNetwork]?.kickbackAddress
+  )
 
   register('metadata.image', {
     required: {
@@ -210,7 +254,7 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
     },
   })
 
-  const processAndSubmit = (values: any) => {
+  const processAndSubmit = (values: NewEventForm) => {
     if (attendeeRefund) {
       values.metadata.attendeeRefund = {
         amount: values.lock!.keyPrice,
@@ -265,7 +309,7 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
                   description="This illustration will be used for your event page, as well as the NFT tickets by default. Use 512 by 512 pixels for best results."
                   isUploading={isUploading}
                   preview={metadataImage!}
-                  onChange={async (fileOrFileUrl: any) => {
+                  onChange={async (fileOrFileUrl: File[] | string) => {
                     if (typeof fileOrFileUrl === 'string') {
                       setValue('metadata.image', fileOrFileUrl)
                     } else {
