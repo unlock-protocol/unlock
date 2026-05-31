@@ -20,20 +20,14 @@ import { onResolveName } from '~/utils/resolvers'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { getAddressForName } from '~/hooks/useNameResolver'
 import { RiCloseLine as RemoveIcon } from 'react-icons/ri'
+import {
+  buildAirdropCustomMetadata,
+  validateAirdropCustomAttributes,
+  type AirdropCustomAttribute,
+} from '~/utils/airdropCustomAttributes'
 
-interface CustomAttribute {
+interface CustomAttribute extends AirdropCustomAttribute {
   id: number
-  name: string
-  value: string
-  isPublic: boolean
-}
-
-const getCustomAttributeKey = (name: string, isPublic: boolean) => {
-  const normalizedName = name.trim().replace(/\./g, '_')
-  if (!normalizedName) {
-    return ''
-  }
-  return isPublic ? `${normalizedName}.public` : normalizedName
 }
 
 export interface Props {
@@ -110,46 +104,6 @@ export function AirdropInternalForm({
     )
   }
 
-  const getCustomMetadata = useCallback(() => {
-    return customAttributes.reduce<Record<string, string>>(
-      (metadata, { name, value, isPublic }) => {
-        const key = getCustomAttributeKey(name, isPublic)
-        const trimmedValue = value.trim()
-        if (!key || !trimmedValue) {
-          return metadata
-        }
-        metadata[key] = trimmedValue
-        return metadata
-      },
-      {}
-    )
-  }, [customAttributes])
-
-  const validateCustomAttributes = useCallback(() => {
-    const keys = new Set<string>()
-
-    for (const attribute of customAttributes) {
-      const hasName = attribute.name.trim().length > 0
-      const hasValue = attribute.value.trim().length > 0
-
-      if (hasName !== hasValue) {
-        return 'Custom attributes need both a name and a value.'
-      }
-
-      const key = getCustomAttributeKey(attribute.name, attribute.isPublic)
-      if (!key) {
-        continue
-      }
-
-      if (keys.has(key)) {
-        return 'Custom attribute names must be unique.'
-      }
-      keys.add(key)
-    }
-
-    return null
-  }, [customAttributes])
-
   const onWalletChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
       const value = event.target.value
@@ -172,7 +126,8 @@ export function AirdropInternalForm({
 
   const onSubmitHandler = useCallback(
     async (member: AirdropMember) => {
-      const customAttributeError = validateCustomAttributes()
+      const customAttributeError =
+        validateAirdropCustomAttributes(customAttributes)
       if (customAttributeError) {
         ToastHelper.error(customAttributeError)
         return
@@ -183,7 +138,7 @@ export function AirdropInternalForm({
         member.wallet = address
         const parsed = AirdropMember.parse({
           ...member,
-          ...getCustomMetadata(),
+          ...buildAirdropCustomMetadata(customAttributes),
         })
         add(parsed)
         reset()
@@ -194,7 +149,7 @@ export function AirdropInternalForm({
         console.error(error)
       }
     },
-    [add, getCustomMetadata, reset, setValue, validateCustomAttributes]
+    [add, customAttributes, reset, setValue]
   )
 
   return (
