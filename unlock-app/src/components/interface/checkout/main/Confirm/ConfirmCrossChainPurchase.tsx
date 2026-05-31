@@ -26,6 +26,39 @@ interface Props {
   onError: (message: string) => void
 }
 
+interface CrossChainPurchaseError {
+  code?: unknown
+  message?: unknown
+  error?: {
+    message?: unknown
+  }
+}
+
+const getCrossChainPurchaseError = (
+  error: unknown
+): CrossChainPurchaseError => {
+  return error && typeof error === 'object'
+    ? (error as CrossChainPurchaseError)
+    : {}
+}
+
+const getCrossChainPurchaseErrorMessage = (error: unknown) => {
+  if (error instanceof Error) {
+    return error.message
+  }
+
+  if (typeof error === 'string') {
+    return error
+  }
+
+  const details = getCrossChainPurchaseError(error)
+  if (typeof details.error?.message === 'string') {
+    return details.error.message
+  }
+
+  return typeof details.message === 'string' ? details.message : undefined
+}
+
 export function ConfirmCrossChainPurchase({
   checkoutService,
   onConfirmed,
@@ -88,9 +121,10 @@ export function ConfirmCrossChainPurchase({
 
   const isLoading = isPricingDataLoading || isInitialDataLoading
 
-  const onError = (error: any, message?: string) => {
+  const onError = (error: unknown, message?: string) => {
     console.error(error)
-    switch (error.code) {
+    const { code } = getCrossChainPurchaseError(error)
+    switch (code) {
       case -32000:
       case 4001:
       case 'ACTION_REJECTED':
@@ -100,7 +134,11 @@ export function ConfirmCrossChainPurchase({
         ToastHelper.error('Insufficient funds.')
         break
       default:
-        ToastHelper.error(message || error?.error?.message || error.message)
+        ToastHelper.error(
+          message ||
+            getCrossChainPurchaseErrorMessage(error) ||
+            'Transaction failed.'
+        )
     }
   }
 
@@ -143,7 +181,7 @@ export function ConfirmCrossChainPurchase({
 
       const tx = await walletService.signer.sendTransaction(route.tx)
       onConfirmed(lockAddress, route.network, tx.hash)
-    } catch (error: any) {
+    } catch (error: unknown) {
       setIsConfirming(false)
       onError(error)
     }
