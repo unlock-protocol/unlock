@@ -74,5 +74,30 @@ describe('event Settings utils', () => {
         })
       ).toBe(false)
     })
+
+    it('does not sync when the lock has no current NFT image to compare', () => {
+      expect(
+        shouldSyncEventImageToNft({
+          nextEventImage: 'https://example.com/new.png',
+          previousEventImage: 'https://example.com/old.png',
+        })
+      ).toBe(false)
+    })
+
+    it('does not sync without both previous and next event images', () => {
+      expect(
+        shouldSyncEventImageToNft({
+          previousEventImage: 'https://example.com/old.png',
+          currentNftImage: 'https://example.com/old.png',
+        })
+      ).toBe(false)
+
+      expect(
+        shouldSyncEventImageToNft({
+          nextEventImage: 'https://example.com/new.png',
+          currentNftImage: 'https://example.com/old.png',
+        })
+      ).toBe(false)
+    })
   })
 })
