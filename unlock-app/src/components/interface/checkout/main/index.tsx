@@ -132,7 +132,9 @@ export function Checkout({
       redirectURI,
       communication,
       mint,
+      signOut,
       paywallConfig.messageToSign,
+      paywallConfig?.useDelegatedProvider,
       messageToSignSignature,
       messageToSignSigner,
     ]
@@ -247,7 +249,7 @@ export function Checkout({
         return null
       }
     }
-  }, [matched])
+  }, [checkoutService, communication, matched, onClose])
 
   const accentStyle = accentColor
     ? ({

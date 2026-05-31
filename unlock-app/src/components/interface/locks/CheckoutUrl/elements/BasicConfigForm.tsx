@@ -1,5 +1,5 @@
 import { BasicPaywallConfigSchema } from '~/unlockTypes'
-import { useForm } from 'react-hook-form'
+import { type DefaultValues, useForm } from 'react-hook-form'
 import {
   Input,
   Checkbox,
@@ -18,15 +18,18 @@ interface Props {
 export const BasicConfigForm = ({ onChange, defaultValues }: Props) => {
   const { mutateAsync: uploadImage, isPending: isUploading } = useImageUpload()
   const [isOpen, setIsOpen] = useState(false)
+  type BasicPaywallConfig = z.infer<typeof BasicPaywallConfigSchema>
 
   const {
     register,
     watch,
     setValue,
     formState: { errors },
-  } = useForm<z.infer<typeof BasicPaywallConfigSchema>>({
+  } = useForm<BasicPaywallConfig>({
     reValidateMode: 'onChange',
-    defaultValues: defaultValues as any,
+    defaultValues: defaultValues as
+      | DefaultValues<BasicPaywallConfig>
+      | undefined,
   })
 
   const image = watch('icon')
@@ -63,7 +66,7 @@ export const BasicConfigForm = ({ onChange, defaultValues }: Props) => {
             description="Upload an image to use as the icon for your checkout"
             isUploading={isUploading}
             preview={image!}
-            onChange={async (fileOrFileUrl: any) => {
+            onChange={async (fileOrFileUrl: File[] | string) => {
               let icon = fileOrFileUrl
               if (typeof fileOrFileUrl !== 'string') {
                 const items = await uploadImage(fileOrFileUrl[0])

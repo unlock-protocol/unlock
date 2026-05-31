@@ -21,11 +21,11 @@ const accentColorRegex = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/
  * @returns The validated PaywallConfigType or undefined if invalid
  */
 export function getPaywallConfigFromQuery(
-  query: Record<string, any> | ReadonlyURLSearchParams
+  query: Record<string, unknown> | ReadonlyURLSearchParams
 ): PaywallConfigType | undefined {
-  let queryObj: Record<string, any> = {}
+  let queryObj: Record<string, unknown> = {}
 
-  // Convert ReadonlyURLSearchParams to Record<string, any> if necessary
+  // Convert ReadonlyURLSearchParams to Record<string, unknown> if necessary
   if (query instanceof URLSearchParams) {
     query.forEach((value, key) => {
       // If the key already exists, convert the value to an array
@@ -48,10 +48,10 @@ export function getPaywallConfigFromQuery(
     const rawConfig = queryObj.paywallConfig
     const decodedConfig = rawConfig
 
-    let parsedConfig: any
+    let parsedConfig: Record<string, unknown>
 
     try {
-      parsedConfig = JSON.parse(decodedConfig)
+      parsedConfig = JSON.parse(decodedConfig) as Record<string, unknown>
       // Use nullish coalescing operator to preserve null values
       parsedConfig.minRecipients = parsedConfig?.minRecipients ?? 1
       parsedConfig.maxRecipients = parsedConfig?.maxRecipients ?? 1
@@ -68,7 +68,8 @@ export function getPaywallConfigFromQuery(
   // Construct a simple PaywallConfig from individual parameters
   if (typeof queryObj.lock === 'string') {
     const lock = queryObj.lock
-    const title = queryObj.title || 'Unlock Protocol'
+    const title =
+      typeof queryObj.title === 'string' ? queryObj.title : 'Unlock Protocol'
     const network = Number(queryObj.network)
     const accentColor = queryObj.accentColor
 
