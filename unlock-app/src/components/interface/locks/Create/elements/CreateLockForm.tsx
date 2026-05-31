@@ -7,7 +7,7 @@ import {
   Tooltip,
   ToggleSwitch,
 } from '@unlock-protocol/ui'
-import { Token } from '@unlock-protocol/types'
+import type { Faucet, Token } from '@unlock-protocol/types'
 import { useForm, useWatch } from 'react-hook-form'
 import { ToastHelper } from '@unlock-protocol/ui'
 import { BalanceWarning } from './BalanceWarning'
@@ -37,11 +37,26 @@ export interface LockFormProps {
 }
 
 interface CreateLockFormProps {
-  onSubmit: any
+  onSubmit: (values: LockFormProps) => void | Promise<void>
   defaultValues?: Partial<LockFormProps>
   hideFields?: string[]
   isLoading?: boolean
-  defaultOptions?: any
+  defaultOptions?: CreateLockDefaultOptions
+}
+
+interface CreateLockSelectOption {
+  label: string
+  value: number | string
+}
+
+interface CreateLockDefaultOptions {
+  expirationDuration?: {
+    label?: string
+    values: CreateLockSelectOption[]
+  }
+  noNative?: boolean
+  notFree?: boolean
+  notUnlimited?: boolean
 }
 
 interface TooltipLabelProps {
@@ -86,7 +101,7 @@ export const NetworkDescription = ({ network }: { network: number }) => {
           {faucets.length > 1
             ? ' Try one of these faucets: '
             : ' Try this faucet: '}
-          {faucets.map((faucet: any, index) => {
+          {faucets.map((faucet: Faucet, index) => {
             return (
               <>
                 <Link className="underline" href={faucet.url} target="_blank">
