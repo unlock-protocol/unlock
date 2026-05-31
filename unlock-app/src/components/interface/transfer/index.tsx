@@ -190,8 +190,8 @@ export const ConfirmTransferForm = ({
         // Push to keychain on success
         router.push('/keychain')
       }
-    } catch (error: any) {
-      console.log(error.message)
+    } catch (error) {
+      console.log(error instanceof Error ? error.message : error)
       ToastHelper.error('Error transferring key. Please try again later.')
     }
   }
