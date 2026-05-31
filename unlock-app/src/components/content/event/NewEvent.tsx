@@ -66,6 +66,30 @@ export const defaultEventCheckoutConfigForLockOnNetwork = (
   } as PaywallConfigType
 }
 
+export const cloneEventCheckoutConfigForLockOnNetwork = (
+  checkoutConfig: PaywallConfigType,
+  sourceLockAddress: string,
+  lockAddress: string,
+  network: number
+) => {
+  const sourceLockConfig = checkoutConfig.locks?.[sourceLockAddress]
+
+  if (!sourceLockConfig) {
+    return defaultEventCheckoutConfigForLockOnNetwork(lockAddress, network)
+  }
+
+  return {
+    ...checkoutConfig,
+    network,
+    locks: {
+      [lockAddress]: {
+        ...sourceLockConfig,
+        network,
+      },
+    },
+  } as PaywallConfigType
+}
+
 const parseBooleanValue = (value: unknown, fallback: boolean) => {
   if (value === undefined || value === null) {
     return fallback
@@ -74,6 +98,12 @@ const parseBooleanValue = (value: unknown, fallback: boolean) => {
     return value !== 'false'
   }
   return Boolean(value)
+}
+
+interface ClonedEventValues {
+  checkoutConfig: PaywallConfigType
+  formValues: NewEventForm
+  lockAddress: string
 }
 
 export const NewEvent = () => {
@@ -92,7 +122,7 @@ export const NewEvent = () => {
     queryKey: ['clonedEventValues', cloneSlug],
     enabled: !!cloneSlug,
     retry: false,
-    queryFn: async (): Promise<NewEventForm> => {
+    queryFn: async (): Promise<ClonedEventValues> => {
       const { data: clonedEvent } = await locksmith.getEvent(cloneSlug!)
       const event = toFormData({
         ...clonedEvent.data,
@@ -102,7 +132,7 @@ export const NewEvent = () => {
       const [lockAddress, lockConfig] =
         Object.entries(checkoutConfig?.locks || {})[0] || []
 
-      if (!lockAddress || !lockConfig) {
+      if (!checkoutConfig || !lockAddress || !lockConfig) {
         throw new Error('Event does not have a lock to clone.')
       }
 
@@ -117,38 +147,42 @@ export const NewEvent = () => {
       const { name, slug, ...metadata } = event
 
       return {
-        network,
-        lock: {
-          name: `Copy of ${name || lock?.name || 'Event'}`,
-          expirationDuration:
-            lock?.expirationDuration || UNLIMITED_KEYS_DURATION,
-          maxNumberOfKeys: lock?.maxNumberOfKeys,
-          currencyContractAddress: lock?.currencyContractAddress || null,
-          keyPrice: lock?.keyPrice?.toString() || '0',
-        },
-        currencySymbol:
-          lock?.currencySymbol || networks[network].nativeCurrency.symbol,
-        metadata: {
-          ...metadata,
-          description: event.description || '',
-          image: event.image || '',
-          requiresApproval: parseBooleanValue(event.requiresApproval, false),
-          emailSender: event.emailSender || '',
-          replyTo: event.replyTo || '',
-          ticket: {
-            event_is_in_person: parseBooleanValue(
-              event.ticket?.event_is_in_person,
-              true
-            ),
-            event_start_date: event.ticket?.event_start_date || '',
-            event_start_time: event.ticket?.event_start_time || '',
-            event_end_date: event.ticket?.event_end_date || '',
-            event_end_time: event.ticket?.event_end_time || '',
-            event_timezone:
-              event.ticket?.event_timezone ||
-              Intl.DateTimeFormat().resolvedOptions().timeZone,
-            event_address: event.ticket?.event_address || '',
-            event_location: event.ticket?.event_location || '',
+        checkoutConfig,
+        lockAddress,
+        formValues: {
+          network,
+          lock: {
+            name: `Copy of ${name || lock?.name || 'Event'}`,
+            expirationDuration:
+              lock?.expirationDuration || UNLIMITED_KEYS_DURATION,
+            maxNumberOfKeys: lock?.maxNumberOfKeys,
+            currencyContractAddress: lock?.currencyContractAddress || null,
+            keyPrice: lock?.keyPrice?.toString() || '0',
+          },
+          currencySymbol:
+            lock?.currencySymbol || networks[network].nativeCurrency.symbol,
+          metadata: {
+            ...metadata,
+            description: event.description || '',
+            image: event.image || '',
+            requiresApproval: parseBooleanValue(event.requiresApproval, false),
+            emailSender: event.emailSender || '',
+            replyTo: event.replyTo || '',
+            ticket: {
+              event_is_in_person: parseBooleanValue(
+                event.ticket?.event_is_in_person,
+                true
+              ),
+              event_start_date: event.ticket?.event_start_date || '',
+              event_start_time: event.ticket?.event_start_time || '',
+              event_end_date: event.ticket?.event_end_date || '',
+              event_end_time: event.ticket?.event_end_time || '',
+              event_timezone:
+                event.ticket?.event_timezone ||
+                Intl.DateTimeFormat().resolvedOptions().timeZone,
+              event_address: event.ticket?.event_address || '',
+              event_location: event.ticket?.event_location || '',
+            },
           },
         },
       }
@@ -222,10 +256,17 @@ export const NewEvent = () => {
           status: EventStatus.DEPLOYED,
           checkoutConfig: {
             name: `Checkout config for ${formData.lock.name}`,
-            config: defaultEventCheckoutConfigForLockOnNetwork(
-              lockAddress,
-              formData.network
-            ),
+            config: clonedEventValues
+              ? cloneEventCheckoutConfigForLockOnNetwork(
+                  clonedEventValues.checkoutConfig,
+                  clonedEventValues.lockAddress,
+                  lockAddress,
+                  formData.network
+                )
+              : defaultEventCheckoutConfigForLockOnNetwork(
+                  lockAddress,
+                  formData.network
+                ),
           },
         })
       }
@@ -246,7 +287,7 @@ export const NewEvent = () => {
         <Form
           key={cloneSlug || 'new-event'}
           onSubmit={onSubmit}
-          defaultValues={clonedEventValues}
+          defaultValues={clonedEventValues?.formValues}
         />
       )}
     </div>
