@@ -15,15 +15,48 @@ import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { formatNumber } from '~/utils/formatter'
 import { PricingData } from './PricingData'
 import Disconnect from '../Disconnect'
-import { ethers } from 'ethers'
 import { approveTransfer, getAllowance } from '@unlock-protocol/unlock-js'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useProvider } from '~/hooks/useProvider'
+import { getCrossChainRoutePayment } from '~/utils/crossChainRoute'
 
 interface Props {
   checkoutService: CheckoutService
   onConfirmed: (lock: string, network: number, hash?: string) => void
   onError: (message: string) => void
+}
+
+interface CrossChainPurchaseError {
+  code?: unknown
+  message?: unknown
+  error?: {
+    message?: unknown
+  }
+}
+
+const getCrossChainPurchaseError = (
+  error: unknown
+): CrossChainPurchaseError => {
+  return error && typeof error === 'object'
+    ? (error as CrossChainPurchaseError)
+    : {}
+}
+
+const getCrossChainPurchaseErrorMessage = (error: unknown) => {
+  if (error instanceof Error) {
+    return error.message
+  }
+
+  if (typeof error === 'string') {
+    return error
+  }
+
+  const details = getCrossChainPurchaseError(error)
+  if (typeof details.error?.message === 'string') {
+    return details.error.message
+  }
+
+  return typeof details.message === 'string' ? details.message : undefined
 }
 
 export function ConfirmCrossChainPurchase({
@@ -77,15 +110,16 @@ export function ConfirmCrossChainPurchase({
   const isPricingDataAvailable =
     !isPricingDataLoading && !isPricingDataError && !!pricingData
 
-  const symbol = route.tokenPayment.isNative
-    ? route.currency
-    : route.tokenPayment.symbol
+  const crossChainPayment = getCrossChainRoutePayment(route)
+  const symbol = crossChainPayment?.symbol || route.currency
+  const crossChainTotal = crossChainPayment?.amount || '0'
 
   const isLoading = isPricingDataLoading || isInitialDataLoading
 
-  const onError = (error: any, message?: string) => {
+  const onError = (error: unknown, message?: string) => {
     console.error(error)
-    switch (error.code) {
+    const { code } = getCrossChainPurchaseError(error)
+    switch (code) {
       case -32000:
       case 4001:
       case 'ACTION_REJECTED':
@@ -95,7 +129,11 @@ export function ConfirmCrossChainPurchase({
         ToastHelper.error('Insufficient funds.')
         break
       default:
-        ToastHelper.error(message || error?.error?.message || error.message)
+        ToastHelper.error(
+          message ||
+            getCrossChainPurchaseErrorMessage(error) ||
+            'Transaction failed.'
+        )
     }
   }
 
@@ -138,7 +176,7 @@ export function ConfirmCrossChainPurchase({
 
       const tx = await walletService.signer.sendTransaction(route.tx)
       onConfirmed(lockAddress, route.network, tx.hash)
-    } catch (error: any) {
+    } catch (error: unknown) {
       setIsConfirming(false)
       onError(error)
     }
@@ -180,17 +218,30 @@ export function ConfirmCrossChainPurchase({
         )}
 
         {pricingData && (
-          <Pricing
-            isCardEnabled={false}
-            keyPrice={`${formatNumber(
-              Number(
-                ethers.formatUnits(
-                  route.tokenPayment.amount,
-                  route.tokenPayment.decimals
-                )
-              )
-            )} ${symbol}`}
-          />
+          <div className="grid gap-2">
+            <Pricing
+              isCardEnabled={false}
+              keyPrice={`${formatNumber(Number(crossChainTotal))} ${symbol}`}
+            />
+            <div className="grid gap-1 p-3 text-sm border rounded-lg">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-gray-500">Membership price</span>
+                <span className="font-medium">
+                  {formatNumber(pricingData.total)}{' '}
+                  {lockTickerSymbol(
+                    lock as Lock,
+                    config.networks[lock!.network].nativeCurrency.symbol
+                  ).toUpperCase()}
+                </span>
+              </div>
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-gray-500">Estimated total with fees</span>
+                <span className="font-medium">
+                  {formatNumber(Number(crossChainTotal))} {symbol.toUpperCase()}
+                </span>
+              </div>
+            </div>
+          </div>
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
