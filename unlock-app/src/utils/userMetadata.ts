@@ -29,3 +29,30 @@ export function formResultToMetadata(
 
   return result
 }
+
+interface ShouldHydrateMetadataInputOptions {
+  inputType?: string
+  savedValue: unknown
+  currentValue: unknown
+  isDirty: boolean
+}
+
+const isEmptyMetadataValue = (value: unknown) =>
+  value === undefined || value === null || value === ''
+
+export function shouldHydrateMetadataInput({
+  inputType,
+  savedValue,
+  currentValue,
+  isDirty,
+}: ShouldHydrateMetadataInputOptions) {
+  if (isEmptyMetadataValue(savedValue) || isDirty) {
+    return false
+  }
+
+  if (inputType === 'checkbox') {
+    return true
+  }
+
+  return isEmptyMetadataValue(currentValue)
+}

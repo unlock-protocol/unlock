@@ -12,6 +12,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react'
 import {
@@ -23,7 +24,10 @@ import {
   Toggle,
 } from '@unlock-protocol/ui'
 import { twMerge } from 'tailwind-merge'
-import { formResultToMetadata } from '~/utils/userMetadata'
+import {
+  formResultToMetadata,
+  shouldHydrateMetadataInput,
+} from '~/utils/userMetadata'
 import { ToastHelper } from '@unlock-protocol/ui'
 import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
@@ -37,7 +41,10 @@ import {
   MetadataInputType as MetadataInput,
   PaywallConfigType,
 } from '@unlock-protocol/core'
-import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
+import {
+  useUpdateUsersMetadata,
+  useUserMetadata,
+} from '~/hooks/useUserMetadata'
 import Disconnect from './Disconnect'
 import { shouldSkip } from './utils'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
@@ -387,8 +394,11 @@ export function Metadata({ checkoutService }: Props) {
 
   const {
     control,
+    getFieldState,
+    getValues,
     handleSubmit,
     formState: { isSubmitting, errors },
+    setValue,
     watch,
   } = methods
 
@@ -398,6 +408,19 @@ export function Metadata({ checkoutService }: Props) {
   })
 
   const recipient = recipientFromConfig(paywallConfig, lock) || account || ''
+  const shouldLoadSavedMetadata =
+    !!account &&
+    !!recipient &&
+    isAccount(recipient) &&
+    recipient.toLowerCase() === account.toLowerCase()
+  const hydratedMetadataFor = useRef<string | null>(null)
+
+  const { data: savedUserMetadata } = useUserMetadata({
+    network: lock!.network,
+    lockAddress: lock!.address,
+    userAddress: recipient,
+    enabled: shouldLoadSavedMetadata,
+  })
 
   const { isLoading: isMemberLoading, data: isMember } = useQuery({
     queryKey: ['isMember', recipient, lock?.address],
@@ -462,6 +485,54 @@ export function Metadata({ checkoutService }: Props) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quantity, recipient, isMember, isMemberLoading, account])
+
+  useEffect(() => {
+    if (!savedUserMetadata || !fields.length || !metadataInputs?.length) {
+      return
+    }
+
+    const metadataKey = `${lock!.network}:${lock!.address}:${recipient.toLowerCase()}`
+    if (hydratedMetadataFor.current === metadataKey) {
+      return
+    }
+
+    const savedValues = {
+      ...(savedUserMetadata.public || {}),
+      ...(savedUserMetadata.protected || {}),
+    }
+
+    metadataInputs.forEach(({ name, type }) => {
+      const savedValue = savedValues[name]
+      const field = `metadata.0.${name}` as `metadata.0.${string}`
+      const currentValue = getValues(field)
+      const { isDirty } = getFieldState(field)
+
+      if (
+        shouldHydrateMetadataInput({
+          inputType: type,
+          savedValue,
+          currentValue,
+          isDirty,
+        })
+      ) {
+        setValue(field, `${savedValue}`, {
+          shouldDirty: false,
+          shouldValidate: false,
+        })
+      }
+    })
+
+    hydratedMetadataFor.current = metadataKey
+  }, [
+    fields.length,
+    getFieldState,
+    getValues,
+    lock,
+    metadataInputs,
+    recipient,
+    savedUserMetadata,
+    setValue,
+  ])
 
   const termsAccepted = watch('termsAccepted')
 

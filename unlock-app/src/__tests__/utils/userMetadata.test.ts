@@ -1,5 +1,9 @@
 import type { MetadataInputType } from '@unlock-protocol/core'
-import { getPublicInputs, formResultToMetadata } from '../../utils/userMetadata'
+import {
+  getPublicInputs,
+  formResultToMetadata,
+  shouldHydrateMetadataInput,
+} from '../../utils/userMetadata'
 import { expect, it, describe } from 'vitest'
 const inputs: MetadataInputType[] = [
   {
@@ -54,6 +58,73 @@ describe('userMetadata utils', () => {
           'First Name': 'Saxton',
         },
       })
+    })
+  })
+
+  describe('shouldHydrateMetadataInput', () => {
+    it('fills empty inputs from saved metadata', () => {
+      expect.assertions(1)
+
+      expect(
+        shouldHydrateMetadataInput({
+          inputType: 'text',
+          savedValue: 'Ada',
+          currentValue: '',
+          isDirty: false,
+        })
+      ).toBe(true)
+    })
+
+    it('does not replace non-empty text inputs', () => {
+      expect.assertions(1)
+
+      expect(
+        shouldHydrateMetadataInput({
+          inputType: 'text',
+          savedValue: 'Ada',
+          currentValue: 'Grace',
+          isDirty: false,
+        })
+      ).toBe(false)
+    })
+
+    it('does not replace inputs changed by the buyer', () => {
+      expect.assertions(1)
+
+      expect(
+        shouldHydrateMetadataInput({
+          inputType: 'checkbox',
+          savedValue: 'true',
+          currentValue: 'false',
+          isDirty: true,
+        })
+      ).toBe(false)
+    })
+
+    it('hydrates checkbox inputs with their saved value', () => {
+      expect.assertions(1)
+
+      expect(
+        shouldHydrateMetadataInput({
+          inputType: 'checkbox',
+          savedValue: 'true',
+          currentValue: 'false',
+          isDirty: false,
+        })
+      ).toBe(true)
+    })
+
+    it('ignores empty saved metadata values', () => {
+      expect.assertions(1)
+
+      expect(
+        shouldHydrateMetadataInput({
+          inputType: 'text',
+          savedValue: '',
+          currentValue: '',
+          isDirty: false,
+        })
+      ).toBe(false)
     })
   })
 })
