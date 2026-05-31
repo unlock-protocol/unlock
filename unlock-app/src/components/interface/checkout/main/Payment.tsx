@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import { ethers } from 'ethers'
 import { CheckoutService } from './checkoutMachine'
 
 import { useConfig } from '~/utils/withConfig'
@@ -28,6 +27,7 @@ import Disconnect from './Disconnect'
 import { TransactionPreparationError } from './TransactionPreparationError'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import InsufficientFundsWarning from '../InsufficientFundsWarning'
+import { getCrossChainRoutePayment } from '~/utils/crossChainRoute'
 
 interface Props {
   checkoutService: CheckoutService
@@ -352,17 +352,14 @@ export function Payment({ checkoutService }: Props) {
               {!enableClaim &&
                 paymentMethods['crosschain'] &&
                 crosschainRoutes?.map((route, index) => {
-                  const symbol = route.tokenPayment?.symbol || route.symbol
-                  const crossChainTotal = ethers.formatUnits(
-                    route.tokenPayment.amount,
-                    route.tokenPayment.decimals
-                  )
+                  const crossChainPayment = getCrossChainRoutePayment(route)
 
-                  if (!symbol) {
+                  if (!crossChainPayment) {
                     // Some routes are returned with Decent without a token
                     console.error('Missing symbol for route', route)
                     return null
                   }
+                  const { amount: crossChainTotal, symbol } = crossChainPayment
                   return (
                     <button
                       key={index}

@@ -15,10 +15,10 @@ import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { formatNumber } from '~/utils/formatter'
 import { PricingData } from './PricingData'
 import Disconnect from '../Disconnect'
-import { ethers } from 'ethers'
 import { approveTransfer, getAllowance } from '@unlock-protocol/unlock-js'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useProvider } from '~/hooks/useProvider'
+import { getCrossChainRoutePayment } from '~/utils/crossChainRoute'
 
 interface Props {
   checkoutService: CheckoutService
@@ -110,14 +110,9 @@ export function ConfirmCrossChainPurchase({
   const isPricingDataAvailable =
     !isPricingDataLoading && !isPricingDataError && !!pricingData
 
-  const symbol = route.tokenPayment.isNative
-    ? route.currency
-    : route.tokenPayment.symbol
-
-  const crossChainTotal = ethers.formatUnits(
-    route.tokenPayment.amount,
-    route.tokenPayment.decimals
-  )
+  const crossChainPayment = getCrossChainRoutePayment(route)
+  const symbol = crossChainPayment?.symbol || route.currency
+  const crossChainTotal = crossChainPayment?.amount || '0'
 
   const isLoading = isPricingDataLoading || isInitialDataLoading
 
