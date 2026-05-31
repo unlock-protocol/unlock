@@ -1,7 +1,7 @@
 import { FaRegLightbulb } from 'react-icons/fa'
 import { usePlacesWidget } from 'react-google-autocomplete'
 import { config } from '~/config/app'
-import { useEffect, useState } from 'react'
+import { RefObject, useEffect, useState } from 'react'
 import { Lock, Token } from '@unlock-protocol/types'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 import { BiLogoZoom as ZoomIcon } from 'react-icons/bi'
@@ -35,6 +35,8 @@ import Link from 'next/link'
 import { regexUrlPattern } from '~/utils/regexUrlPattern'
 import { ProtocolFee } from '~/components/interface/locks/Create/elements/ProtocolFee'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { GuideCallout } from '~/components/content/GuideCallout'
+import { contextualGuideCallouts } from '~/utils/contextualGuides'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewEventForm {
@@ -49,11 +51,26 @@ interface GoogleMapsAutoCompleteProps {
   defaultValue?: string
 }
 
+interface GooglePlace {
+  formatted_address?: string
+  geometry?: {
+    location?: {
+      lat: () => number
+      lng: () => number
+    }
+  }
+}
+
+type ImageUploadValue = File[] | string
+
 export const GoogleMapsAutoComplete = ({
   onChange,
   defaultValue,
 }: GoogleMapsAutoCompleteProps) => {
-  const onPlaceSelected = async (place: any, inputRef: any) => {
+  const onPlaceSelected = async (
+    place: GooglePlace,
+    inputRef: RefObject<HTMLInputElement>
+  ) => {
     const lat = place.geometry?.location?.lat()
     const lng = place.geometry?.location?.lng()
 
@@ -64,12 +81,16 @@ export const GoogleMapsAutoComplete = ({
 
     if (place.formatted_address) {
       return onChange(
-        inputRef.value,
+        inputRef.current?.value || '',
         place.formatted_address,
         timezoneInfo.timeZoneId
       )
     }
-    return onChange(inputRef.value, inputRef.value, timezoneInfo.timeZoneId)
+    return onChange(
+      inputRef.current?.value || '',
+      inputRef.current?.value || '',
+      timezoneInfo.timeZoneId
+    )
   }
 
   const { ref } = usePlacesWidget({
@@ -77,7 +98,7 @@ export const GoogleMapsAutoComplete = ({
       types: [],
     },
     apiKey: config.googleMapsApiKey,
-    onPlaceSelected: (place: any, inputRef: any) => {
+    onPlaceSelected: (place: GooglePlace, inputRef) => {
       onPlaceSelected(place, inputRef)
     },
   })
@@ -210,9 +231,17 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
     },
   })
 
-  const processAndSubmit = (values: any) => {
+  const processAndSubmit = (values: NewEventForm) => {
     if (attendeeRefund) {
-      values.metadata.attendeeRefund = {
+      const metadataWithRefund = values.metadata as NewEventForm['metadata'] & {
+        attendeeRefund?: {
+          amount: string
+          currency: string | null
+          network: number
+        }
+      }
+
+      metadataWithRefund.attendeeRefund = {
         amount: values.lock!.keyPrice,
         currency: values.lock!.currencyContractAddress,
         network: values.network,
@@ -252,6 +281,7 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
 
       <form className="mb-6" onSubmit={methods.handleSubmit(processAndSubmit)}>
         <div className="grid gap-6">
+          <GuideCallout {...contextualGuideCallouts.event} />
           <Disclosure label="Basic Information" defaultOpen>
             <p className="mb-5">
               All of these fields can also be adjusted later.
@@ -265,7 +295,7 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
                   description="This illustration will be used for your event page, as well as the NFT tickets by default. Use 512 by 512 pixels for best results."
                   isUploading={isUploading}
                   preview={metadataImage!}
-                  onChange={async (fileOrFileUrl: any) => {
+                  onChange={async (fileOrFileUrl: ImageUploadValue) => {
                     if (typeof fileOrFileUrl === 'string') {
                       setValue('metadata.image', fileOrFileUrl)
                     } else {
@@ -362,6 +392,7 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
                             <Link
                               className="underline text-brand-ui-primary "
                               target="_blank"
+                              rel="noreferrer"
                               href="https://unlock-protocol.com/guides/how-to-choose-a-network-for-your-smart-contract-deployment/"
                             >
                               Read our guide

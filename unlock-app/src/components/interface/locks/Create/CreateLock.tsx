@@ -16,6 +16,8 @@ import { BsArrowLeft as ArrowBack } from 'react-icons/bs'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useProvider } from '~/hooks/useProvider'
+import { GuideCallout } from '~/components/content/GuideCallout'
+import { contextualGuideCallouts } from '~/utils/contextualGuides'
 
 export type Step = 'data' | 'summary' | 'deploy'
 
@@ -98,7 +100,7 @@ export const CreateLockSteps = () => {
           publicLockVersion: networks[network].publicLockVersionToDeploy,
         },
         {},
-        (error: any, transactionHash) => {
+        (error: Error | null, transactionHash: string | null) => {
           if (error) {
             console.error(error)
             ToastHelper.error(
@@ -198,6 +200,7 @@ const CreateLock = ({ onSubmit, defaultValues }: CreateLockProps) => {
             <Link
               className="underline text-brand-ui-primary "
               target="_blank"
+              rel="noreferrer"
               href="https://unlock-protocol.com/guides/how-to-choose-a-network-for-your-smart-contract-deployment/"
             >
               Read our guide
@@ -211,6 +214,9 @@ const CreateLock = ({ onSubmit, defaultValues }: CreateLockProps) => {
           />
         </div>
         <div className="md:max-w-lg">
+          <div className="mb-4">
+            <GuideCallout {...contextualGuideCallouts.membership} />
+          </div>
           <CreateLockForm onSubmit={onSubmit} defaultValues={defaultValues} />
         </div>
       </div>

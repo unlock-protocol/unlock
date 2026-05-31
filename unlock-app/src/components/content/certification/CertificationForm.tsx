@@ -27,15 +27,21 @@ import { BalanceWarning } from '~/components/interface/locks/Create/elements/Bal
 import { ProtocolFee } from '~/components/interface/locks/Create/elements/ProtocolFee'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useWeb3Service } from '~/utils/withWeb3Service'
+import { GuideCallout } from '~/components/content/GuideCallout'
+import { contextualGuideCallouts } from '~/utils/contextualGuides'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewCertificationForm {
   network: number
-  lock: Omit<Lock, 'address' | 'key'>
+  lock: Omit<Lock, 'address' | 'key' | 'expirationDuration'> & {
+    expirationDuration?: number
+  }
   currencySymbol: string
   unlimitedQuantity: boolean
   metadata: Partial<MetadataFormData>
 }
+
+type ImageUploadValue = File[] | string
 
 interface FormProps {
   onSubmit: (data: NewCertificationForm) => void
@@ -142,6 +148,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
       </div>
       <form className="mb-6" onSubmit={methods.handleSubmit(onSubmit)}>
         <div className="grid gap-6">
+          <GuideCallout {...contextualGuideCallouts.certification} />
           <Disclosure label="Basic Information" defaultOpen>
             <p className="mb-5">
               All of these fields can also be adjusted later.
@@ -153,7 +160,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                   description="This illustration will be used for the NFT Certification. Use 512 by 512 pixels for best results."
                   isUploading={isUploading}
                   preview={metadataImage!}
-                  onChange={async (fileOrFileUrl: any) => {
+                  onChange={async (fileOrFileUrl: ImageUploadValue) => {
                     if (typeof fileOrFileUrl === 'string') {
                       setValue('metadata.image', fileOrFileUrl)
                     } else {
@@ -233,7 +240,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                       setEnabled={setForever}
                       onChange={(enabled) => {
                         if (enabled) {
-                          setValue('lock.expirationDuration', undefined as any)
+                          setValue('lock.expirationDuration', undefined)
                         }
                       }}
                     />
@@ -263,6 +270,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                 <Link
                   className="underline text-brand-ui-primary "
                   target="_blank"
+                  rel="noreferrer"
                   href="https://unlock-protocol.com/guides/how-to-choose-a-network-for-your-smart-contract-deployment/"
                 >
                   Read our guide
