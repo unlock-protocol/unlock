@@ -3,6 +3,7 @@
 import React, { Suspense } from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { ReCaptchaProvider } from 'next-recaptcha-v3'
+import type { FallbackRender } from '@sentry/react'
 
 import { AirstackProvider } from '@airstack/airstack-react'
 import { ErrorBoundary } from '@sentry/nextjs'
@@ -17,6 +18,20 @@ import { queryClient } from '~/config/queryClient'
 import { config } from '~/config/app'
 import { LanguageProvider } from '~/contexts/LanguageContext'
 
+const renderErrorFallback: FallbackRender = ({
+  error,
+  componentStack,
+  eventId,
+  resetError,
+}) => (
+  <ErrorFallback
+    error={error instanceof Error ? error : new Error(String(error))}
+    componentStack={componentStack}
+    eventId={eventId}
+    resetError={resetError}
+  />
+)
+
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <Privy>
@@ -30,9 +45,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
                     <AirstackProvider
                       apiKey={'162b7c4dda5c44afdb0857b6b04454f99'}
                     >
-                      <ErrorBoundary
-                        fallback={(props: any) => <ErrorFallback {...props} />}
-                      >
+                      <ErrorBoundary fallback={renderErrorFallback}>
                         <ShouldOpenConnectModal />
                         {children}
                       </ErrorBoundary>
