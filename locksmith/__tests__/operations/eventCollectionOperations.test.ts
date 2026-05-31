@@ -7,9 +7,11 @@ import {
   addManagerAddressOperation,
   createEventCollectionOperation,
   createEventCollectionSlug,
+  getEventCollectionOperation,
   removeManagerAddressOperation,
   updateEventCollectionOperation,
 } from '../../src/operations/eventCollectionOperations'
+import { EventStatus } from '@unlock-protocol/types'
 
 // interface for link types
 interface Link {
@@ -27,6 +29,30 @@ interface UpdatedEventCollectionData {
   managerAddresses: string[]
 }
 
+type MockFn = ReturnType<typeof vi.fn>
+
+interface ScopedEventData {
+  findOne: MockFn
+}
+
+interface MockEventCollection {
+  slug?: string
+  managerAddresses: string[]
+  save?: MockFn
+  update?: MockFn
+}
+
+interface MockPublicEvent {
+  slug: string
+  data: Record<string, string>
+}
+
+interface MockEvent {
+  slug: string
+}
+
+const asMock = (fn: unknown) => fn as MockFn
+
 // Mocks necessary models and utilities
 vi.mock('../../src/models/EventCollection', () => ({
   EventCollection: {
@@ -41,6 +67,7 @@ vi.mock('../../src/models/Event', () => ({
     scope: vi.fn(),
     belongsToMany: vi.fn(),
     findOne: vi.fn(),
+    findAll: vi.fn(),
   },
 }))
 
@@ -53,6 +80,14 @@ vi.mock('../../src/models/EventCollectionAssociation', () => ({
   },
 }))
 
+vi.mock('../../src/operations/wedlocksOperations', () => ({
+  sendEmail: vi.fn(),
+}))
+
+vi.mock('../../src/operations/privyUserOperations', () => ({
+  getPrivyUserByAddress: vi.fn().mockResolvedValue({ success: false }),
+}))
+
 vi.mock('../../src/utils/createSlug', () => ({
   kebabCase: (str: string) =>
     str
@@ -63,7 +98,7 @@ vi.mock('../../src/utils/createSlug', () => ({
 
 describe('eventCollectionOperations', () => {
   let mockFindOne: ReturnType<typeof vi.fn>
-  let scopedEventData: any
+  let scopedEventData: ScopedEventData
 
   beforeEach(() => {
     vi.resetAllMocks() // Reset mocks before each test
@@ -73,15 +108,15 @@ describe('eventCollectionOperations', () => {
     scopedEventData = {
       findOne: mockFindOne,
     }
-    ;(EventData.scope as any).mockReturnValue(scopedEventData)
+    asMock(EventData.scope).mockReturnValue(scopedEventData)
   })
 
   describe('createEventCollectionOperation', () => {
     // Verify the creation of an event collection with all provided data
     it('should create an event collection with provided data', async () => {
       const mockSlug = 'test-collection'
-      ;(EventCollection.findByPk as any).mockResolvedValueOnce(null)
-      ;(EventCollection.create as any).mockResolvedValueOnce({
+      asMock(EventCollection.findByPk).mockResolvedValueOnce(null)
+      asMock(EventCollection.create).mockResolvedValueOnce({
         slug: mockSlug,
         title: 'Test Collection',
         description: 'A test collection',
@@ -133,8 +168,8 @@ describe('eventCollectionOperations', () => {
     // Verify the behavior when manager addresses are provided vs. when they are not
     it('should use provided manager addresses and include creator address', async () => {
       const mockSlug = 'test-collection'
-      ;(EventCollection.findByPk as any).mockResolvedValueOnce(null)
-      ;(EventCollection.create as any).mockResolvedValueOnce({
+      asMock(EventCollection.findByPk).mockResolvedValueOnce(null)
+      asMock(EventCollection.create).mockResolvedValueOnce({
         slug: mockSlug,
         managerAddresses: ['0x456', '0x789', '0x123'],
       })
@@ -168,7 +203,7 @@ describe('eventCollectionOperations', () => {
 
   describe('createEventCollectionSlug', () => {
     it('should create a unique slug', async () => {
-      ;(EventCollection.findByPk as any)
+      asMock(EventCollection.findByPk)
         .mockResolvedValueOnce({}) // First call returns an existing collection
         .mockResolvedValueOnce(null) // Second call returns null (unique slug)
 
@@ -187,7 +222,7 @@ describe('eventCollectionOperations', () => {
     })
 
     it('should handle special characters', async () => {
-      ;(EventCollection.findByPk as any).mockResolvedValueOnce(null)
+      asMock(EventCollection.findByPk).mockResolvedValueOnce(null)
 
       const slug = await createEventCollectionSlug(
         'Test Collection with Spécial Chàracters!'
@@ -197,6 +232,52 @@ describe('eventCollectionOperations', () => {
       expect(EventCollection.findByPk).toHaveBeenCalledWith(
         'test-collection-with-special-characters'
       )
+    })
+
+    it('should reserve the public event collection slug', async () => {
+      asMock(EventCollection.findByPk).mockResolvedValueOnce(null)
+
+      const slug = await createEventCollectionSlug('All')
+
+      expect(slug).toBe('all-1')
+      expect(EventCollection.findByPk).toHaveBeenCalledWith('all-1')
+    })
+  })
+
+  describe('getEventCollectionOperation', () => {
+    it('should return the virtual public event collection for deployed events', async () => {
+      const mockEvents: MockPublicEvent[] = [
+        {
+          slug: 'test-event',
+          data: {
+            description: 'Public event',
+            replyTo: 'private@example.com',
+          },
+        },
+      ]
+
+      asMock(EventData.findAll).mockResolvedValue(mockEvents)
+
+      const result = await getEventCollectionOperation('all')
+
+      expect(EventCollection.findByPk).not.toHaveBeenCalled()
+      expect(EventData.findAll).toHaveBeenCalledWith({
+        where: {
+          eventType: 'unlock',
+          status: EventStatus.DEPLOYED,
+        },
+        order: [['createdAt', 'DESC']],
+      })
+      expect(result).toMatchObject({
+        slug: 'all',
+        title: 'Unlock Events',
+        managerAddresses: [],
+        isVirtual: true,
+        events: mockEvents,
+      })
+      expect(mockEvents[0].data).toEqual({
+        description: 'Public event',
+      })
     })
   })
 
@@ -215,7 +296,7 @@ describe('eventCollectionOperations', () => {
         update: vi.fn(),
       }
 
-      ;(EventCollection.findByPk as any).mockResolvedValue(mockEventCollection)
+      asMock(EventCollection.findByPk).mockResolvedValue(mockEventCollection)
 
       const updatedData: UpdatedEventCollectionData = {
         title: 'New Title',
@@ -235,7 +316,7 @@ describe('eventCollectionOperations', () => {
 
     // Verify that an error is thrown when the collection is not found
     it('should throw an error when the collection is not found', async () => {
-      ;(EventCollection.findByPk as any).mockResolvedValue(null)
+      asMock(EventCollection.findByPk).mockResolvedValue(null)
 
       await expect(
         updateEventCollectionOperation(
@@ -253,7 +334,7 @@ describe('eventCollectionOperations', () => {
         managerAddresses: ['0x123'],
       }
 
-      ;(EventCollection.findByPk as any).mockResolvedValue(mockEventCollection)
+      asMock(EventCollection.findByPk).mockResolvedValue(mockEventCollection)
 
       await expect(
         updateEventCollectionOperation(
@@ -268,13 +349,13 @@ describe('eventCollectionOperations', () => {
   describe('addManagerAddressOperation', () => {
     // Successfully adding a new manager
     it('should add a new manager address to the collection when authorized', async () => {
-      const mockCollection = {
+      const mockCollection: MockEventCollection = {
         slug: 'test-collection',
         managerAddresses: ['0x123'],
         save: vi.fn().mockResolvedValue(true),
-      } as any
+      }
 
-      ;(EventCollection.findByPk as any).mockResolvedValue(mockCollection)
+      asMock(EventCollection.findByPk).mockResolvedValue(mockCollection)
 
       const result = await addManagerAddressOperation(
         'test-collection',
@@ -291,12 +372,12 @@ describe('eventCollectionOperations', () => {
 
     // Attempting to add a manager when not authorized
     it('should throw an error when the requester is not authorized to add managers', async () => {
-      const mockCollection = {
+      const mockCollection: MockEventCollection = {
         slug: 'test-collection',
         managerAddresses: ['0x123'],
-      } as any
+      }
 
-      ;(EventCollection.findByPk as any).mockResolvedValue(mockCollection)
+      asMock(EventCollection.findByPk).mockResolvedValue(mockCollection)
 
       await expect(
         addManagerAddressOperation('test-collection', '0x456', '0x789')
@@ -305,12 +386,12 @@ describe('eventCollectionOperations', () => {
 
     // Attempting to add an already existing manager
     it('should throw an error when the manager address already exists', async () => {
-      const mockCollection = {
+      const mockCollection: MockEventCollection = {
         slug: 'test-collection',
         managerAddresses: ['0x123', '0x456'],
-      } as any
+      }
 
-      ;(EventCollection.findByPk as any).mockResolvedValue(mockCollection)
+      asMock(EventCollection.findByPk).mockResolvedValue(mockCollection)
 
       await expect(
         addManagerAddressOperation('test-collection', '0x456', '0x123')
@@ -319,7 +400,7 @@ describe('eventCollectionOperations', () => {
 
     // Handling scenarios where the event collection does not exist
     it('should throw an error when the event collection does not exist', async () => {
-      ;(EventCollection.findByPk as any).mockResolvedValue(null)
+      asMock(EventCollection.findByPk).mockResolvedValue(null)
 
       await expect(
         addManagerAddressOperation('non-existent', '0x456', '0x123')
@@ -330,13 +411,13 @@ describe('eventCollectionOperations', () => {
   describe('removeManagerAddressOperation', () => {
     // Successfully removing an existing manager
     it('should remove an existing manager address from the collection when authorized', async () => {
-      const mockCollection = {
+      const mockCollection: MockEventCollection = {
         slug: 'test-collection',
         managerAddresses: ['0x123', '0x456'],
         save: vi.fn().mockResolvedValue(true),
-      } as any
+      }
 
-      ;(EventCollection.findByPk as any).mockResolvedValue(mockCollection)
+      asMock(EventCollection.findByPk).mockResolvedValue(mockCollection)
 
       const result = await removeManagerAddressOperation(
         'test-collection',
@@ -353,12 +434,12 @@ describe('eventCollectionOperations', () => {
 
     // Attempting to remove a manager when not authorized
     it('should throw an error when the requester is not authorized to remove managers', async () => {
-      const mockCollection = {
+      const mockCollection: MockEventCollection = {
         slug: 'test-collection',
         managerAddresses: ['0x123', '0x456'],
-      } as any
+      }
 
-      ;(EventCollection.findByPk as any).mockResolvedValue(mockCollection)
+      asMock(EventCollection.findByPk).mockResolvedValue(mockCollection)
 
       await expect(
         removeManagerAddressOperation('test-collection', '0x456', '0x789')
@@ -369,12 +450,12 @@ describe('eventCollectionOperations', () => {
 
     // Attempting to remove a non-existent manager
     it('should throw an error when the manager address to remove does not exist', async () => {
-      const mockCollection = {
+      const mockCollection: MockEventCollection = {
         slug: 'test-collection',
         managerAddresses: ['0x123'],
-      } as any
+      }
 
-      ;(EventCollection.findByPk as any).mockResolvedValue(mockCollection)
+      asMock(EventCollection.findByPk).mockResolvedValue(mockCollection)
 
       await expect(
         removeManagerAddressOperation('test-collection', '0x456', '0x123')
@@ -383,12 +464,12 @@ describe('eventCollectionOperations', () => {
 
     // Preventing the removal of the last remaining manager
     it('should throw an error when attempting to remove the last manager', async () => {
-      const mockCollection = {
+      const mockCollection: MockEventCollection = {
         slug: 'test-collection',
         managerAddresses: ['0x123'],
-      } as any
+      }
 
-      ;(EventCollection.findByPk as any).mockResolvedValue(mockCollection)
+      asMock(EventCollection.findByPk).mockResolvedValue(mockCollection)
 
       await expect(
         removeManagerAddressOperation('test-collection', '0x123', '0x123')
@@ -397,7 +478,7 @@ describe('eventCollectionOperations', () => {
 
     // Handling scenarios where the event collection does not exist
     it('should throw an error when the event collection does not exist', async () => {
-      ;(EventCollection.findByPk as any).mockResolvedValue(null)
+      asMock(EventCollection.findByPk).mockResolvedValue(null)
 
       await expect(
         removeManagerAddressOperation('non-existent', '0x456', '0x123')
@@ -408,18 +489,16 @@ describe('eventCollectionOperations', () => {
   describe('addEventToCollectionOperation', () => {
     // Verify adding an event to the collection
     it('should add an event to the collection', async () => {
-      const mockCollection = {
+      const mockCollection: MockEventCollection = {
         slug: 'test-collection',
         managerAddresses: ['0x123'],
       }
-      const mockEvent = { slug: 'test-event' }
+      const mockEvent: MockEvent = { slug: 'test-event' }
       const mockAssociation = { isApproved: true }
 
-      ;(EventCollection.findByPk as any).mockResolvedValue(
-        mockCollection as any
-      )
-      mockFindOne.mockResolvedValue(mockEvent as any)
-      ;(EventCollectionAssociation.findOrCreate as any).mockResolvedValue([
+      asMock(EventCollection.findByPk).mockResolvedValue(mockCollection)
+      mockFindOne.mockResolvedValue(mockEvent)
+      asMock(EventCollectionAssociation.findOrCreate).mockResolvedValue([
         mockAssociation,
         true,
       ])
@@ -453,7 +532,7 @@ describe('eventCollectionOperations', () => {
 
     // Verify that an error is thrown when the collection is not found
     it('should throw an error when the collection is not found', async () => {
-      ;(EventCollection.findByPk as any).mockResolvedValue(null)
+      asMock(EventCollection.findByPk).mockResolvedValue(null)
 
       await expect(
         addEventToCollectionOperation('non-existent', 'test-event', '0x123')
@@ -462,7 +541,7 @@ describe('eventCollectionOperations', () => {
 
     // Verify that an error is thrown when the event is not found
     it('should throw an error when the event is not found', async () => {
-      ;(EventCollection.findByPk as any).mockResolvedValue({} as any)
+      asMock(EventCollection.findByPk).mockResolvedValue({})
       mockFindOne.mockResolvedValue(null)
 
       await expect(

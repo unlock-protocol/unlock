@@ -136,9 +136,12 @@ export const EventLandingPageCallToAction = ({
   handleCreateEvent,
 }: EventLandingPageCallToActionProps) => {
   return (
-    <Button onClick={handleCreateEvent} className="my-8">
-      Get started for free
-    </Button>
+    <div className="flex flex-col gap-3 my-8 sm:flex-row">
+      <Button onClick={handleCreateEvent}>Get started for free</Button>
+      <Button as={Link} href="/events/all" variant="outlined-primary">
+        Browse events
+      </Button>
+    </div>
   )
 }
 
