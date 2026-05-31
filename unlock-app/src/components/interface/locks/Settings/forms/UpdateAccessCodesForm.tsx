@@ -1,11 +1,11 @@
 import { useMutation } from '@tanstack/react-query'
 import { Button, ToastHelper } from '@unlock-protocol/ui'
-import { Hook, HookType } from '@unlock-protocol/types'
 import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
 import { useCustomHook } from '~/hooks/useCustomHooks'
 import { useProvider } from '~/hooks/useProvider'
+import { getAccessCodeHookAddress } from '~/utils/accessCodes'
 import { useConfig } from '~/utils/withConfig'
 import { HooksFormProps } from './UpdateHooksForm'
 import { PasswordCappedContractHook } from './hooksComponents/PasswordCappedContractHook'
@@ -34,14 +34,7 @@ export const UpdateAccessCodesForm = ({
     version,
   })
 
-  const selectedHookType = isPaidLock
-    ? HookType.PROMO_CODE_CAPPED
-    : HookType.PASSWORD_CAPPED
-
-  const hookAddress =
-    networks?.[network]?.hooks?.onKeyPurchaseHook?.find(
-      (hook: Hook) => hook.id === selectedHookType
-    )?.address ?? ''
+  const hookAddress = getAccessCodeHookAddress(networks?.[network], isPaidLock)
 
   const codeType = isPaidLock ? 'discount codes' : 'passwords'
 
