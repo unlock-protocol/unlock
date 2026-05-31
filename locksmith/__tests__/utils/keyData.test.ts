@@ -1,4 +1,9 @@
+import { vi } from 'vitest'
 import KeyData from '../../src/utils/keyData'
+
+vi.mock('@unlock-protocol/unlock-js', () => ({
+  SubgraphService: vi.fn(),
+}))
 
 describe('KeyData', () => {
   const keyData = new KeyData()

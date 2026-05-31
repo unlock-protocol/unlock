@@ -2,6 +2,7 @@ import {
   afterAll,
   assert,
   beforeAll,
+  beforeEach,
   clearStore,
   dataSourceMock,
   describe,
@@ -404,6 +405,10 @@ describe('RenewKeyPurchase', () => {
 })
 
 describe('Key referrer', () => {
+  beforeEach(() => {
+    clearStore()
+  })
+
   afterAll(() => {
     clearStore()
   })
@@ -441,5 +446,24 @@ describe('Key referrer', () => {
 
     assert.fieldEquals('Key', keyID, 'referrer', lockManagers[0])
     assert.fieldEquals('Key', secondKeyID, 'referrer', lockManagers[1])
+  })
+
+  test('keeps indexing when a batched purchase receipt is unavailable', () => {
+    mockDataSourceV11()
+    const input = createStructPurchaseInput([
+      Address.fromString(lockManagers[0]),
+    ])
+
+    const transfer = createTransferEvent(
+      Address.fromString(nullAddress),
+      Address.fromString(keyOwnerAddress),
+      BigInt.fromU32(tokenId)
+    )
+    transfer.transaction.input = input
+
+    handleTransfer(transfer)
+
+    assert.entityCount('Key', 1)
+    assert.fieldEquals('Key', keyID, 'owner', keyOwnerAddress)
   })
 })

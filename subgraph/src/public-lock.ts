@@ -65,7 +65,12 @@ function calldataWithoutSelector(input: Bytes): Bytes {
 }
 
 function purchaseTransferIndex(event: TransferEvent): i32 {
-  const logs = event.receipt!.logs
+  const receipt = event.receipt
+  if (receipt == null) {
+    return -1
+  }
+
+  const logs = receipt.logs
   let transferIndex = 0
 
   for (let i = 0; i < logs.length; i++) {
@@ -122,7 +127,7 @@ function purchaseReferrer(event: TransferEvent): Address {
       return emptyReferrer()
     }
     const referrers = decoded.toTuple()[2].toAddressArray()
-    if (index >= referrers.length) {
+    if (index < 0 || index >= referrers.length) {
       return emptyReferrer()
     }
     return referrers[index]
@@ -137,7 +142,7 @@ function purchaseReferrer(event: TransferEvent): Address {
       return emptyReferrer()
     }
     const purchaseArgs = decoded.toTuple()[0].toTupleArray<ethereum.Tuple>()
-    if (index >= purchaseArgs.length) {
+    if (index < 0 || index >= purchaseArgs.length) {
       return emptyReferrer()
     }
     return purchaseArgs[index][2].toAddress()
