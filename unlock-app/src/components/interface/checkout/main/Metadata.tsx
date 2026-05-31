@@ -24,7 +24,10 @@ import {
   Toggle,
 } from '@unlock-protocol/ui'
 import { twMerge } from 'tailwind-merge'
-import { formResultToMetadata } from '~/utils/userMetadata'
+import {
+  formResultToMetadata,
+  shouldHydrateMetadataInput,
+} from '~/utils/userMetadata'
 import { ToastHelper } from '@unlock-protocol/ui'
 import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
@@ -391,6 +394,7 @@ export function Metadata({ checkoutService }: Props) {
 
   const {
     control,
+    getFieldState,
     getValues,
     handleSubmit,
     formState: { isSubmitting, errors },
@@ -497,18 +501,19 @@ export function Metadata({ checkoutService }: Props) {
       ...(savedUserMetadata.protected || {}),
     }
 
-    metadataInputs.forEach(({ name }) => {
+    metadataInputs.forEach(({ name, type }) => {
       const savedValue = savedValues[name]
       const field = `metadata.0.${name}` as `metadata.0.${string}`
       const currentValue = getValues(field)
+      const { isDirty } = getFieldState(field)
 
       if (
-        savedValue !== undefined &&
-        savedValue !== null &&
-        savedValue !== '' &&
-        (currentValue === undefined ||
-          currentValue === null ||
-          currentValue === '')
+        shouldHydrateMetadataInput({
+          inputType: type,
+          savedValue,
+          currentValue,
+          isDirty,
+        })
       ) {
         setValue(field, `${savedValue}`, {
           shouldDirty: false,
@@ -520,6 +525,7 @@ export function Metadata({ checkoutService }: Props) {
     hydratedMetadataFor.current = metadataKey
   }, [
     fields.length,
+    getFieldState,
     getValues,
     lock,
     metadataInputs,
