@@ -3,7 +3,6 @@
 import { MdOutlineTipsAndUpdates } from 'react-icons/md'
 import { Button } from '@unlock-protocol/ui'
 import { useState, useCallback, useEffect } from 'react'
-import { ZeroAddress } from 'ethers'
 import { ConnectWalletModal } from '../../ConnectWalletModal'
 import { LockDetailCard } from './elements/LockDetailCard'
 import { Members } from './elements/Members'
@@ -22,6 +21,7 @@ import { Picker } from '../../Picker'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useCentralizedLockData } from '~/hooks/useCentralizedLockData'
 import { ActionBar } from '../elements/ActionBar'
+import { isRecurringRenewalLock } from '~/utils/renewalFilters'
 
 import { NotManagerBanner } from '../Settings'
 import { TopActionBar } from '../elements/TopActionBar'
@@ -71,17 +71,7 @@ export const ManageLockContent = ({
   const [page, setPage] = useState(1)
 
   const lock = centralizedLockData?.lock
-  const lockPrice = lock?.keyPrice ?? lock?.price
-  const currencyAddress = lock?.currencyContractAddress ?? lock?.tokenAddress
-  const lockVersion = lock?.publicLockVersion ?? lock?.version
-  const isRecurringLock =
-    !!lock &&
-    Number(lockPrice) > 0 &&
-    !!currencyAddress &&
-    currencyAddress !== ZeroAddress &&
-    Number(lockVersion) >= 11 &&
-    lock?.expirationDuration !== -1 &&
-    Number(lock?.expirationDuration) < 60 * 60 * 24 * 365 * 100
+  const isRecurringLock = isRecurringRenewalLock(lock)
 
   useEffect(() => {
     if (!isRecurringLock) {
