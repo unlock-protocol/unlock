@@ -10,16 +10,11 @@ import Link from 'next/link'
 import EventList from '~/components/interface/locks/List/elements/EventList'
 import EventCollectionList from '~/components/interface/locks/List/elements/EventCollectionList'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
-
-const getTabClassName = ({ selected }: { selected: boolean }) => {
-  return [
-    'flex items-center gap-2 px-4 py-3 text-base font-semibold border-b-2 rounded-t-md outline-none transition-colors',
-    'focus-visible:ring-2 focus-visible:ring-brand-ui-primary focus-visible:ring-offset-2',
-    selected
-      ? 'border-brand-ui-primary text-brand-ui-primary'
-      : 'border-transparent text-gray-700 hover:text-brand-ui-primary',
-  ].join(' ')
-}
+import {
+  getMyEventsTabClassName,
+  myEventsTabListAriaLabel,
+  myEventsTabs,
+} from '~/utils/myEventsTabs'
 
 export default function MyEventsContent() {
   const { account } = useAuthenticate()
@@ -64,16 +59,16 @@ export default function MyEventsContent() {
       <SectionHeader />
       <Tab.Group>
         <Tab.List
-          aria-label="Event sections"
+          aria-label={myEventsTabListAriaLabel}
           className="flex flex-wrap gap-2 mt-8 border-b border-gray-300"
         >
-          <Tab className={getTabClassName}>
+          <Tab className={getMyEventsTabClassName}>
             <IoTicketSharp />
-            <span>My events</span>
+            <span>{myEventsTabs[0].label}</span>
           </Tab>
-          <Tab className={getTabClassName}>
+          <Tab className={getMyEventsTabClassName}>
             <MdOutlineCollections />
-            <span>My event collections</span>
+            <span>{myEventsTabs[1].label}</span>
           </Tab>
         </Tab.List>
         <Tab.Panels className="pt-6">
