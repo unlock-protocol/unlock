@@ -22,6 +22,7 @@ import { SelectToken } from './SelectToken'
 import { ProtocolFee } from './ProtocolFee'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { FiInfo as InfoIcon } from 'react-icons/fi'
+import { createLockTooltips } from '~/utils/createLockTooltips'
 
 export interface LockFormProps {
   name: string
@@ -214,9 +215,7 @@ export const CreateLockForm = ({
                 label="Network:"
                 tooltip={
                   <p className="py-2">
-                    Choose where the membership contract will be deployed. This
-                    affects gas fees, available currencies, and which wallets
-                    can use the membership.
+                    {createLockTooltips.network}
                     <br />
                     Unlock supports{' '}
                     <Link
@@ -242,9 +241,7 @@ export const CreateLockForm = ({
             )}
             <div className="relative flex flex-col gap-1">
               <label className="block px-1 text-base" htmlFor="">
-                <TooltipLabel tip="This is the public name for the membership contract and the NFT members receive.">
-                  Name:
-                </TooltipLabel>
+                <TooltipLabel tip={createLockTooltips.name}>Name:</TooltipLabel>
               </label>
               <Input
                 autoComplete="off"
@@ -263,7 +260,7 @@ export const CreateLockForm = ({
             <div className="flex flex-col gap-1">
               <div className="flex items-center justify-between">
                 <label className="block px-1 text-base" htmlFor="">
-                  <TooltipLabel tip="This is how long each purchased membership remains valid before it expires or needs to be renewed.">
+                  <TooltipLabel tip={createLockTooltips.duration}>
                     {defaultOptions.expirationDuration?.label
                       ? defaultOptions.expirationDuration.label
                       : 'Membership duration'}
@@ -322,7 +319,7 @@ export const CreateLockForm = ({
               <div className="flex flex-col gap-1">
                 <div className="flex items-center justify-between">
                   <label className="block px-1 text-base" htmlFor="">
-                    <TooltipLabel tip="This is the number of memberships buyers can mint from this lock. Managers can still airdrop memberships separately.">
+                    <TooltipLabel tip={createLockTooltips.quantity}>
                       Number of memberships for sale:
                     </TooltipLabel>
                   </label>
@@ -365,7 +362,7 @@ export const CreateLockForm = ({
             <div className="relative flex flex-col gap-1">
               <div className="flex items-center justify-between">
                 <label className="px-1 mb-2 text-base" htmlFor="">
-                  <TooltipLabel tip="Set the amount and currency buyers pay for one membership. Free memberships can still collect member details during checkout.">
+                  <TooltipLabel tip={createLockTooltips.price}>
                     Membership price:
                   </TooltipLabel>
                 </label>
