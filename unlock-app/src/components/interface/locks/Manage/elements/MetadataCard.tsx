@@ -8,7 +8,7 @@ import {
   TextBox,
   Tooltip,
 } from '@unlock-protocol/ui'
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { Controller, FieldValues, useForm } from 'react-hook-form'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { ToastHelper } from '@unlock-protocol/ui'
@@ -35,12 +35,41 @@ import { UpdateEmailModal } from '~/components/content/event/attendees/UpdateEma
 import { useProvider } from '~/hooks/useProvider'
 import networks from '@unlock-protocol/networks'
 
+type MetadataFieldValue =
+  | string
+  | number
+  | boolean
+  | null
+  | undefined
+  | string[]
+
+interface MembershipMetadata extends Record<string, MetadataFieldValue> {
+  createdAt: number
+  keyholderAddress: string
+  keyManager?: string
+  lockAddress: string
+  token: string
+  transactionsHash?: string[]
+  email?: string
+}
+
+interface SubscriptionBalance {
+  amount: string
+  symbol: string
+}
+
+interface Subscription {
+  approvedRenewals?: string
+  balance?: SubscriptionBalance
+  possibleRenewals?: string
+}
+
 interface MetadataCardProps {
-  metadata: any
+  metadata: MembershipMetadata
   owner: string
   network: number
   expirationDuration?: string
-  lockSettings?: Record<string, any>
+  lockSettings?: { sendEmail?: boolean } & Record<string, unknown>
   isExpired?: boolean
 }
 
@@ -165,7 +194,7 @@ const ChangeManagerModal = ({
     },
   })
 
-  const onSubmit = async ({ newManager }: any) => {
+  const onSubmit = async ({ newManager }: { newManager: string }) => {
     await changeManagerMutation.mutateAsync(newManager)
   }
 
@@ -207,8 +236,12 @@ const ChangeManagerModal = ({
                       label="New Manager"
                       value={newManager}
                       disabled={changeManagerMutation.isPending}
-                      onChange={(value: any) => {
-                        setValue('newManager', value, {
+                      onChange={(
+                        value: string | ChangeEvent<HTMLInputElement>
+                      ) => {
+                        const newManager =
+                          typeof value === 'string' ? value : value.target.value
+                        setValue('newManager', newManager, {
                           shouldValidate: true,
                         })
                       }}
@@ -360,7 +393,7 @@ export const MetadataCard = ({
 }: MetadataCardProps) => {
   const [showTransferKey, setShowTransferKey] = useState(false)
 
-  const [data, setData] = useState(metadata)
+  const [data, setData] = useState<MembershipMetadata>(metadata)
 
   const [addEmailModalOpen, setAddEmailModalOpen] = useState(false)
   const [emailReceiptModalOpen, setEmailReceiptModalOpen] = useState(false)
@@ -368,6 +401,10 @@ export const MetadataCard = ({
   const items = Object.entries(data || {}).filter(([key]) => {
     return !keysToIgnore.includes(key)
   })
+  const emailExtraDataItems = items.filter(
+    (item): item is [string, string | number] =>
+      ['string', 'number'].includes(typeof item[1])
+  )
 
   const { data: lockMetadata } = useMetadata({
     lockAddress: metadata.lockAddress,
@@ -398,17 +435,18 @@ export const MetadataCard = ({
     }
   )
 
-  const { data: subscription, isPending: isSubscriptionLoading } = useQuery({
-    queryKey: ['subscription', lockAddress, tokenId, network],
-    queryFn: async () => {
-      const response = await locksmith.getSubscription(
-        network,
-        lockAddress,
-        tokenId
-      )
-      return response.data.subscriptions?.[0] ?? null
-    },
-  })
+  const { data: subscription, isPending: isSubscriptionLoading } =
+    useQuery<Subscription | null>({
+      queryKey: ['subscription', lockAddress, tokenId, network],
+      queryFn: async () => {
+        const response = await locksmith.getSubscription(
+          network,
+          lockAddress,
+          tokenId
+        )
+        return response.data.subscriptions?.[0] ?? null
+      },
+    })
 
   const sendEmail = async () => {
     return locksmith.emailTicket(network, lockAddress, tokenId)
@@ -479,7 +517,7 @@ export const MetadataCard = ({
         lockAddress={lockAddress}
         network={network!}
         hasEmail={hasEmail}
-        extraDataItems={items as any}
+        extraDataItems={emailExtraDataItems}
         onEmailChange={onEmailChange}
       />
       {receiptHash && receiptPageUrl && (
@@ -590,7 +628,7 @@ export const MetadataCard = ({
               }
             />
 
-            {items?.map(([key, value]: any, index) => {
+            {items?.map(([key, value], index) => {
               return (
                 <Detail
                   className="py-2"
@@ -706,7 +744,7 @@ export const MetadataCard = ({
                     <div className="flex items-center gap-2">
                       <span>Created at:</span>
                       {networks[network].explorer?.urls?.transaction &&
-                      data.transactionsHash[0] ? (
+                      data.transactionsHash?.[0] ? (
                         <Link
                           target="_blank"
                           rel="noreferrer"
@@ -798,11 +836,15 @@ export const MetadataCard = ({
                     {subscription.balance?.amount}{' '}
                     {subscription.balance?.symbol}
                   </Detail>
-                  <MembershipRenewal
-                    possibleRenewals={subscription.possibleRenewals!}
-                    approvedRenewals={subscription.approvedRenewals!}
-                    balance={subscription.balance as any}
-                  />
+                  {subscription.possibleRenewals &&
+                    subscription.approvedRenewals &&
+                    subscription.balance && (
+                      <MembershipRenewal
+                        possibleRenewals={subscription.possibleRenewals}
+                        approvedRenewals={subscription.approvedRenewals}
+                        balance={subscription.balance}
+                      />
+                    )}
                   {
                     <Detail
                       className="py-2"

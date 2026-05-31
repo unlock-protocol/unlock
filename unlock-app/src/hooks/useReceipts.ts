@@ -1,4 +1,8 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import {
+  QueryFunctionContext,
+  useMutation,
+  useQuery,
+} from '@tanstack/react-query'
 import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import { config } from '~/config/app'
@@ -33,6 +37,23 @@ type Job = {
   updatedAt: string
 }
 
+export interface ReceiptWithDetails {
+  receipt?: {
+    id: string
+  } | null
+  [key: string]: unknown
+}
+
+type ReceiptDetails = Record<string, unknown>
+
+interface ReceiptSupplierInput extends Record<string, unknown> {
+  vatRatePercentage?: number | null
+}
+
+interface ReceiptsBaseData extends ReceiptSupplierInput {
+  vatBasisPointsRate?: number | null
+}
+
 export const receiptsUrl = ({
   lockAddress,
   network,
@@ -40,14 +61,17 @@ export const receiptsUrl = ({
 }: {
   lockAddress: string
   network: number
-  receipts: any[]
+  receipts: ReceiptWithDetails[]
 }) => {
   const url = new URL(`${window.location.origin}/receipts`)
 
   url.searchParams.append('address', lockAddress)
   url.searchParams.append('network', `${network}`)
   if (receipts) {
-    receipts.map(({ receipt }: { receipt: { id: string } }) => {
+    receipts.forEach(({ receipt }) => {
+      if (!receipt?.id) {
+        return
+      }
       url.searchParams.append('hash', receipt.id)
     })
   }
@@ -65,7 +89,7 @@ export const useGetReceiptsForKey = ({
 }) => {
   return useQuery({
     queryKey: ['getReceiptsForKey', network, lockAddress, tokenId],
-    queryFn: async (): Promise<any> => {
+    queryFn: async (): Promise<ReceiptWithDetails[]> => {
       // First, get the hashes!
       const key = await graphService.key(
         {
@@ -79,7 +103,7 @@ export const useGetReceiptsForKey = ({
         }
       )
 
-      const hashes = key?.transactionsHash || []
+      const hashes = (key?.transactionsHash || []) as string[]
 
       // Ok, now we have the hashes, let's get the receipts
       const receipts = await Promise.all(
@@ -96,7 +120,9 @@ export const useGetReceiptsForKey = ({
           }
         })
       )
-      return receipts.filter((receipt) => !!receipt)
+      return receipts.filter(
+        (receipt): receipt is ReceiptWithDetails => !!receipt
+      )
     },
     enabled: !!lockAddress && !!network && !!tokenId,
   })
@@ -105,7 +131,7 @@ export const useGetReceiptsForKey = ({
 export const useGetReceipt = ({ lockAddress, network, hash }: ReceiptProps) => {
   return useQuery({
     queryKey: ['getReceiptsDetails', network, lockAddress, hash],
-    queryFn: async (): Promise<any> => {
+    queryFn: async (): Promise<ReceiptDetails> => {
       try {
         const receiptResponse = await locksmith.getReceipt(
           network,
@@ -114,7 +140,7 @@ export const useGetReceipt = ({ lockAddress, network, hash }: ReceiptProps) => {
         )
         return receiptResponse.data
       } catch (error) {
-        return {} as any
+        return {}
       }
     },
     enabled: !!lockAddress && !!network,
@@ -147,14 +173,15 @@ export const useGetReceiptsBase = ({
 }: GetReceiptProps) => {
   return useQuery({
     queryKey: ['getReceiptsBase', network, lockAddress],
-    queryFn: async (): Promise<Partial<any>> => {
+    queryFn: async (): Promise<Partial<ReceiptsBaseData>> => {
       const supplier = await locksmith.getReceiptsBase(network, lockAddress)
+      const supplierData = supplier.data as ReceiptsBaseData
       // convert basis points to percentage
       const vatRatePercentage: number | null =
-        (supplier?.data?.vatBasisPointsRate ?? 0) / 100 || null
+        (supplierData?.vatBasisPointsRate ?? 0) / 100 || null
 
       return {
-        ...supplier.data,
+        ...supplierData,
         vatRatePercentage,
       }
     },
@@ -169,7 +196,7 @@ export const useUpdateReceipt = ({
 }: ReceiptProps) => {
   return useMutation({
     mutationKey: ['updateReceipt', lockAddress, network, hash],
-    mutationFn: async (purchaser: any) => {
+    mutationFn: async (purchaser: Record<string, unknown>) => {
       try {
         const receiptResponse = await locksmith.saveReceipt(
           network,
@@ -183,7 +210,7 @@ export const useUpdateReceipt = ({
         )
         return receiptResponse.data
       } catch (error) {
-        return {} as any
+        return {}
       }
     },
   })
@@ -195,7 +222,7 @@ export const useUpdateReceiptsBase = ({
 }: GetReceiptProps) => {
   return useMutation({
     mutationKey: ['saveReceiptsBase', network, lockAddress],
-    mutationFn: async (supplier: any) => {
+    mutationFn: async (supplier: ReceiptSupplierInput) => {
       if (!isManager) {
         throw new Error('Not authorized to update receipts base')
       }
@@ -220,7 +247,9 @@ export const useUpdateReceiptsBase = ({
   })
 }
 
-const fetchReceiptsStatus = async ({ queryKey }: any) => {
+const fetchReceiptsStatus = async ({
+  queryKey,
+}: QueryFunctionContext<readonly ['receiptsStatus', number, string]>) => {
   const [, network, lockAddress] = queryKey
   const { data } = await locksmith.getReceiptsStatus(network, lockAddress)
   return data
@@ -247,7 +276,7 @@ export const useReceiptsStatus = (
     return () => timer && clearTimeout(timer)
   }, [condition])
 
-  return useQuery<Job | any>({
+  return useQuery<Job>({
     queryKey: ['receiptsStatus', network, lockAddress],
     queryFn: fetchReceiptsStatus,
     enabled: !timeoutReached,
