@@ -1,12 +1,13 @@
-import { useCallback, useState } from 'react'
+import { ReactNode, useCallback, useState } from 'react'
 import {
   Button,
   Combobox,
   Input,
   Select,
+  Tooltip,
   ToggleSwitch,
 } from '@unlock-protocol/ui'
-import { Token } from '@unlock-protocol/types'
+import type { Faucet, Token } from '@unlock-protocol/types'
 import { useForm, useWatch } from 'react-hook-form'
 import { ToastHelper } from '@unlock-protocol/ui'
 import { BalanceWarning } from './BalanceWarning'
@@ -20,6 +21,8 @@ import { useAvailableNetworks } from '~/utils/networks'
 import { SelectToken } from './SelectToken'
 import { ProtocolFee } from './ProtocolFee'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { FiInfo as InfoIcon } from 'react-icons/fi'
+import { createLockTooltips } from '~/utils/createLockTooltips'
 
 export interface LockFormProps {
   name: string
@@ -35,12 +38,43 @@ export interface LockFormProps {
 }
 
 interface CreateLockFormProps {
-  onSubmit: any
+  onSubmit: (values: LockFormProps) => void | Promise<void>
   defaultValues?: Partial<LockFormProps>
   hideFields?: string[]
   isLoading?: boolean
-  defaultOptions?: any
+  defaultOptions?: CreateLockDefaultOptions
 }
+
+interface CreateLockSelectOption {
+  label: string
+  value: number | string
+}
+
+interface CreateLockDefaultOptions {
+  expirationDuration?: {
+    label?: string
+    values: CreateLockSelectOption[]
+  }
+  noNative?: boolean
+  notFree?: boolean
+  notUnlimited?: boolean
+}
+
+interface TooltipLabelProps {
+  children: ReactNode
+  tip: string
+}
+
+const TooltipLabel = ({ children, tip }: TooltipLabelProps) => (
+  <span className="inline-flex items-center gap-1">
+    <span>{children}</span>
+    <Tooltip tip={tip} label={tip} side="right">
+      <span className="inline-flex text-gray-500">
+        <InfoIcon aria-hidden size={16} />
+      </span>
+    </Tooltip>
+  </span>
+)
 
 export const NetworkDescription = ({ network }: { network: number }) => {
   const { description, url, faucets, nativeCurrency } = networks[network!]
@@ -68,7 +102,7 @@ export const NetworkDescription = ({ network }: { network: number }) => {
           {faucets.length > 1
             ? ' Try one of these faucets: '
             : ' Try this faucet: '}
-          {faucets.map((faucet: any, index) => {
+          {faucets.map((faucet: Faucet, index) => {
             return (
               <>
                 <Link className="underline" href={faucet.url} target="_blank">
@@ -181,6 +215,8 @@ export const CreateLockForm = ({
                 label="Network:"
                 tooltip={
                   <p className="py-2">
+                    {createLockTooltips.network}
+                    <br />
                     Unlock supports{' '}
                     <Link
                       target="_blank"
@@ -203,9 +239,11 @@ export const CreateLockForm = ({
                 moreOptions={additionalNetworkOptions}
               />
             )}
-            <div className="relative">
+            <div className="relative flex flex-col gap-1">
+              <label className="block px-1 text-base" htmlFor="">
+                <TooltipLabel tip={createLockTooltips.name}>Name:</TooltipLabel>
+              </label>
               <Input
-                label="Name:"
                 autoComplete="off"
                 placeholder="Lock Name"
                 {...register('name', {
@@ -222,10 +260,12 @@ export const CreateLockForm = ({
             <div className="flex flex-col gap-1">
               <div className="flex items-center justify-between">
                 <label className="block px-1 text-base" htmlFor="">
-                  {defaultOptions.expirationDuration?.label
-                    ? defaultOptions.expirationDuration.label
-                    : 'Membership duration'}
-                  :
+                  <TooltipLabel tip={createLockTooltips.duration}>
+                    {defaultOptions.expirationDuration?.label
+                      ? defaultOptions.expirationDuration.label
+                      : 'Membership duration'}
+                    :
+                  </TooltipLabel>
                 </label>
                 {!defaultOptions.notUnlimited && (
                   <ToggleSwitch
@@ -279,7 +319,9 @@ export const CreateLockForm = ({
               <div className="flex flex-col gap-1">
                 <div className="flex items-center justify-between">
                   <label className="block px-1 text-base" htmlFor="">
-                    Number of memberships for sale:
+                    <TooltipLabel tip={createLockTooltips.quantity}>
+                      Number of memberships for sale:
+                    </TooltipLabel>
                   </label>
                   <ToggleSwitch
                     title="Unlimited"
@@ -320,7 +362,9 @@ export const CreateLockForm = ({
             <div className="relative flex flex-col gap-1">
               <div className="flex items-center justify-between">
                 <label className="px-1 mb-2 text-base" htmlFor="">
-                  Membership price:
+                  <TooltipLabel tip={createLockTooltips.price}>
+                    Membership price:
+                  </TooltipLabel>
                 </label>
                 {!defaultOptions.notFree && (
                   <ToggleSwitch
