@@ -111,6 +111,24 @@ describe('getPaywallConfigFromQuery', () => {
     })
   })
 
+  it('should include a short hex accentColor from simple query parameters', () => {
+    expect.assertions(1)
+    const searchParams = new URLSearchParams({
+      lock: '0x123',
+      network: '1',
+      accentColor: '#fff',
+    })
+    const result = getPaywallConfigFromQuery(searchParams)
+    expect(result).toEqual({
+      title: 'Unlock Protocol',
+      network: 1,
+      accentColor: '#fff',
+      locks: {
+        '0x123': {},
+      },
+    })
+  })
+
   it('should reject invalid accentColor from simple query parameters', () => {
     expect.assertions(1)
     const searchParams = new URLSearchParams({
