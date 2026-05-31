@@ -1,0 +1,190 @@
+{
+  "common": {
+    "usedBy": "Usado por",
+    "faqTitle": "Preguntas frecuentes"
+  },
+  "header": {
+    "events": "Eventos",
+    "locks": "Locks",
+    "keys": "Llaves",
+    "connect": "Conectar",
+    "language": "Idioma"
+  },
+  "footer": {
+    "updatesTitle": "Recibe novedades",
+    "updatesDescription": "Recibe noticias recientes sobre Unlock, incluidas nuevas funciones y oportunidades para contribuir",
+    "about": "Acerca de",
+    "aboutUnlock": "Acerca de Unlock",
+    "roadmap": "Hoja de ruta",
+    "governance": "Gobernanza",
+    "unlockDao": "Unlock DAO",
+    "forum": "Foro",
+    "snapshot": "Snapshot",
+    "community": "Comunidad",
+    "showcase": "Showcase",
+    "blog": "Blog",
+    "events": "Eventos",
+    "grants": "Grants",
+    "resources": "Recursos",
+    "docs": "Docs",
+    "developers": "Desarrolladores",
+    "guides": "Guías",
+    "integrations": "Integraciones",
+    "mediaKit": "Kit de prensa"
+  },
+  "event": {
+    "heroTitle": "Tickets y registro para eventos sin complicaciones",
+    "cta": "Comienza gratis",
+    "subtitle": "Crea tickets y páginas de evento para tu conferencia, evento o meetup en menos de cinco minutos con Unlock Protocol.",
+    "description": "Crea eventos de la forma más sencilla posible. Configura tu página de evento, vende o envía tickets como NFT y por correo electrónico, y realiza check-in con un código QR dedicado.",
+    "customersTitle": "Organizadores de eventos y meetups comunitarios de todo el mundo confían en Unlock",
+    "features": [
+      {
+        "name": "Códigos QR y tickets con prueba de compra",
+        "description": "La forma más sencilla de autenticar tickets. Cuando una persona compra un ticket, recibe un correo electrónico con un código QR para hacer check-in en el lugar."
+      },
+      {
+        "name": "Check-ins sencillos en la entrada",
+        "description": "El personal de entrada o voluntariado puede registrar asistentes con solo un smartphone y asegurarse de que los tickets no se transfieran ni se reutilicen después del ingreso."
+      },
+      {
+        "name": "Aumenta la asistencia hasta 90%",
+        "description": "La función de compromiso \"Voy a asistir\" permite que asistentes de eventos gratuitos depositen una pequeña cantidad al confirmar asistencia y la recuperen si asisten; quienes no asisten pierden ese compromiso."
+      }
+    ],
+    "problems": {
+      "title": "El problema",
+      "subtitle": "Las soluciones tradicionales de ticketing no cubren las necesidades de organizadores de eventos web3 y cripto",
+      "items": [
+        {
+          "description": "Tu evento web3 o cripto no refleja sus propios valores si usa una solución tradicional como Eventbrite, Meetup o Luma en lugar de adoptar la tecnología que tus asistentes esperan."
+        },
+        {
+          "description": "Pierdes dinero en la venta de tickets por ventas adicionales, comisiones ocultas y pagos lentos de tu proveedor actual de ticketing."
+        },
+        {
+          "description": "Tus asistentes dejan de participar cuando termina el evento y no continúan la conversación como una comunidad conectada."
+        }
+      ]
+    },
+    "faqs": [
+      {
+        "title": "¿Las personas asistentes necesitan wallets?",
+        "description": "No. Las personas asistentes no necesitan wallets, pero sí cuentas de usuario si no tienen una wallet propia. Las cuentas de Unlock requieren correo electrónico y contraseña."
+      },
+      {
+        "title": "¿En qué blockchain funciona?",
+        "descriptionBeforeLink": "Puedes elegir entre ",
+        "linkLabel": "todas las redes en las que Unlock Protocol",
+        "descriptionAfterLink": " está desplegado: Polygon, Gnosis Chain, Optimism y más."
+      },
+      {
+        "title": "¿Puedo cobrar por los tickets?",
+        "description": "Sí. Al desplegar tu contrato puedes elegir una moneda y habilitar tarjeta de crédito, Apple Pay y Google Pay."
+      },
+      {
+        "title": "¿Las personas asistentes reciben tickets?",
+        "description": "Sí. Cuando se completa la transacción en blockchain, reciben un correo electrónico que incluye un ticket con un código QR único. Los organizadores pueden escanearlo para verificar su validez. Además, los verificadores pueden canjear el QR para rechazar cualquier intento de usar el mismo código de nuevo."
+      }
+    ],
+    "callToActionTitle": "Crear ticketing para eventos con Unlock es simple.",
+    "callToActionSubtitle": "Desde crear la descripción del evento hasta vender tickets y hacer check-in, Unlock tiene las herramientas que necesitas.",
+    "callToActionDescription": "También puedes enviar tickets por airdrop o usar staking. Más opciones de personalización para tu evento."
+  },
+  "subscription": {
+    "heroTitle": "Gestión de suscripciones para creadores",
+    "cta": "Crea tu suscripción ahora",
+    "subtitle": "Crea. Cobra. Repite.",
+    "description": "La forma para que tus fans se suscriban y apoyen tu escritura, podcasts, música, arte digital y creatividad onchain con pagos recurrentes automáticos. Configuración en cinco minutos.",
+    "customers": [
+      "Suscríbete por $5/mes",
+      "Suscríbete por $5/mes",
+      "Suscríbete por $60/año"
+    ],
+    "features": [
+      {
+        "name": "Tus fans pueden apoyarte donde ya estás",
+        "description": "Conecta con tus fans y personas que te apoyan en casi cualquier plataforma para creadores."
+      },
+      {
+        "name": "Suscripciones recurrentes automáticas",
+        "description": "Ingresos recurrentes predecibles con suscripciones que se renuevan semanal, mensual o anualmente."
+      },
+      {
+        "name": "Cobra al instante cuando quieras",
+        "description": "Tienes control directo sobre tu forma de monetizar. Retira fondos en cualquier momento."
+      }
+    ],
+    "faqs": [
+      {
+        "title": "¿Qué beneficios puedo dar a mis suscriptores?",
+        "description": "Contenido exclusivo, acceso anticipado a lanzamientos, descuentos, encuentros en línea o presenciales, merchandising y más: casi cualquier beneficio es posible."
+      },
+      {
+        "title": "¿Qué plataformas para creadores son compatibles con SUBSCRIPTIONS by Unlock Labs?",
+        "description": "SUBSCRIPTIONS by Unlock Labs es un sistema de suscripciones y pagos compatible con cualquier plataforma para creadores que permita compartir enlaces. Puedes pedir a tus fans que se suscriban en cualquier lugar donde puedas compartir un enlace en tu contenido o biografía."
+      },
+      {
+        "title": "¿Qué plataformas onchain están soportadas?",
+        "description": "SUBSCRIPTIONS by Unlock Labs se ha integrado con Farcaster/Warpcast, Paragraph, Pods, Common Ground, P00LS, Bonfire y muchas otras plataformas onchain."
+      },
+      {
+        "title": "¿Necesito conocimientos técnicos para implementarlo?",
+        "description": "No. La configuración y el uso compartido pueden hacerse sin escribir código."
+      },
+      {
+        "title": "¿Cuánto cuesta?",
+        "description": "Hay una comisión de protocolo de 1% en las suscripciones. Esta comisión apoya el desarrollo continuo de Unlock Protocol."
+      },
+      {
+        "title": "¿Se aceptan tarjetas de crédito?",
+        "description": "Sí, tus fans también pueden apoyarte con tarjeta de crédito. Los pagos con tarjeta incluyen cargos adicionales, pagados por el fan, para cubrir procesamiento e infraestructura."
+      }
+    ],
+    "callToActionTitle": "Ten una conexión directa con tus fans y personas que te apoyan",
+    "callToActionSubtitle": "Crea una relación directa con tu audiencia sin depender de ninguna plataforma"
+  },
+  "certification": {
+    "heroTitleLine1": "Certificaciones",
+    "heroTitleLine2": "que demuestran",
+    "heroTitleLine3": "experiencia",
+    "cta": "Crea tu certificación ahora",
+    "subtitle": "Lleva tu programa de certificaciones o credenciales onchain con Unlock.",
+    "description": "Unlock Protocol lleva certificaciones y credenciales a web3. Despliega un contrato, emite credenciales y realiza verificaciones. Todo onchain, en minutos.",
+    "features": [
+      {
+        "name": "Otorga certificaciones basadas en experiencia comprobada",
+        "description": "Puedes otorgar certificaciones y credenciales a personas u organizaciones que aprueban exámenes, completan formación continua o cumplen criterios específicos."
+      },
+      {
+        "name": "Valida certificaciones en línea y onchain",
+        "description": "Verifica certificaciones y credenciales a través de terceros o directamente en blockchain. Como las certificaciones no se pueden transferir y pueden expirar si es necesario, sabes que la certificación es válida."
+      },
+      {
+        "name": "Comparte en LinkedIn y otros lugares",
+        "description": "Las personas pueden compartir sus certificaciones en LinkedIn, en sus sitios personales o redes sociales, y también en su currículum."
+      }
+    ],
+    "faqs": [
+      {
+        "title": "¿Las personas certificadas necesitan wallets?",
+        "description": "No. Las personas certificadas no necesitan wallets, pero sí cuentas de usuario si no tienen una wallet propia. Las cuentas de Unlock requieren correo electrónico y contraseña."
+      },
+      {
+        "title": "¿En qué blockchain funciona?",
+        "description": "Puedes elegir entre todas las redes en las que Unlock Protocol está desplegado: Polygon, Gnosis Chain, Optimism y otras."
+      },
+      {
+        "title": "¿Puedo cobrar por la certificación?",
+        "description": "Sí. Al desplegar tu contrato puedes elegir una moneda y habilitar tarjeta de crédito, Apple Pay y Google Pay."
+      },
+      {
+        "title": "¿Puedo hacer que las certificaciones expiren?",
+        "description": "Sí, las certificaciones pueden configurarse para expirar y requerir renovación después de un año, dos años o cualquier periodo que quieras."
+      }
+    ],
+    "callToActionTitle": "Credenciales fáciles de configurar y verificablemente seguras",
+    "callToActionSubtitle": "Emite credenciales transparentes y verificables para certificaciones profesionales, créditos de educación continua, experiencia de industria y más.",
+    "callToActionDescription": "Como las certificaciones y credenciales se representan como NFT, también pueden ser tan atractivas visualmente como quieras y apoyar tu marca y estrategia de marketing."
+  }
+}

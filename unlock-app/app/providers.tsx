@@ -15,30 +15,33 @@ import Privy from '~/config/PrivyProvider'
 import LoadingFallback from './Components/LoadingFallback'
 import { queryClient } from '~/config/queryClient'
 import { config } from '~/config/app'
+import { LanguageProvider } from '~/contexts/LanguageContext'
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <Privy>
       <QueryClientProvider client={queryClient}>
         <ReCaptchaProvider reCaptchaKey={config.recaptchaKey}>
-          <GlobalWrapper>
-            <Suspense fallback={<LoadingFallback />}>
-              <ConnectModalProvider>
-                <ToastProvider>
-                  <AirstackProvider
-                    apiKey={'162b7c4dda5c44afdb0857b6b04454f99'}
-                  >
-                    <ErrorBoundary
-                      fallback={(props: any) => <ErrorFallback {...props} />}
+          <LanguageProvider>
+            <GlobalWrapper>
+              <Suspense fallback={<LoadingFallback />}>
+                <ConnectModalProvider>
+                  <ToastProvider>
+                    <AirstackProvider
+                      apiKey={'162b7c4dda5c44afdb0857b6b04454f99'}
                     >
-                      <ShouldOpenConnectModal />
-                      {children}
-                    </ErrorBoundary>
-                  </AirstackProvider>
-                </ToastProvider>
-              </ConnectModalProvider>
-            </Suspense>
-          </GlobalWrapper>
+                      <ErrorBoundary
+                        fallback={(props: any) => <ErrorFallback {...props} />}
+                      >
+                        <ShouldOpenConnectModal />
+                        {children}
+                      </ErrorBoundary>
+                    </AirstackProvider>
+                  </ToastProvider>
+                </ConnectModalProvider>
+              </Suspense>
+            </GlobalWrapper>
+          </LanguageProvider>
         </ReCaptchaProvider>
       </QueryClientProvider>
     </Privy>
