@@ -64,6 +64,8 @@ type Key @entity {
   expiration: BigInt!
   "The tokenURI on an NFT is a unique identifier"
   tokenURI: String
+  "Address of the referrer used when the key was purchased"
+  referrer: Bytes
   "Block key was created"
   createdAtBlock: BigInt!
   "Timestamp of the block in which the key was created"

@@ -1,4 +1,11 @@
-import { Address, BigInt, log, Bytes, store } from '@graphprotocol/graph-ts'
+import {
+  Address,
+  BigInt,
+  log,
+  Bytes,
+  store,
+  ethereum,
+} from '@graphprotocol/graph-ts'
 import {
   CancelKey as CancelKeyEvent,
   ExpirationChanged as ExpirationChangedUntilV11Event,
@@ -40,6 +47,110 @@ import {
 } from './helpers'
 import { tryCreateCancelReceipt, createReceipt } from './receipt'
 
+const nullAddress = '0x0000000000000000000000000000000000000000'
+const zeroAddressTopic =
+  '0x0000000000000000000000000000000000000000000000000000000000000000'
+const erc721TransferTopic0 =
+  '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
+const v9PurchaseSelector = '0x8be4b870'
+const arrayPurchaseSelector = '0x33818997'
+const structPurchaseSelector = '0x4609b39b'
+
+function calldataWithoutSelector(input: Bytes): Bytes {
+  const hexInput = input.toHexString()
+  if (hexInput.length <= 10) {
+    return Bytes.fromHexString('0x')
+  }
+  return Bytes.fromHexString('0x' + hexInput.substr(10))
+}
+
+function purchaseTransferIndex(event: TransferEvent): i32 {
+  const receipt = event.receipt
+  if (receipt == null) {
+    return -1
+  }
+
+  const logs = receipt.logs
+  let transferIndex = 0
+
+  for (let i = 0; i < logs.length; i++) {
+    const txLog = logs[i]
+    if (
+      txLog.address == event.address &&
+      txLog.topics.length >= 4 &&
+      txLog.topics[0].toHexString() == erc721TransferTopic0 &&
+      txLog.topics[1].toHexString() == zeroAddressTopic
+    ) {
+      if (txLog.transactionLogIndex == event.transactionLogIndex) {
+        return transferIndex
+      }
+      transferIndex++
+    }
+  }
+
+  return 0
+}
+
+function emptyReferrer(): Address {
+  return Address.fromString(nullAddress)
+}
+
+function purchaseReferrer(event: TransferEvent): Address {
+  const input = event.transaction.input
+  const hexInput = input.toHexString()
+  if (hexInput.length <= 10) {
+    return emptyReferrer()
+  }
+
+  const selector = hexInput.substr(0, 10)
+  const args = calldataWithoutSelector(input)
+
+  if (selector == v9PurchaseSelector) {
+    const decoded = ethereum.decode(
+      '(uint256,address,address,address,bytes)',
+      args
+    )
+    if (decoded == null) {
+      return emptyReferrer()
+    }
+    return decoded.toTuple()[2].toAddress()
+  }
+
+  const index = purchaseTransferIndex(event)
+
+  if (selector == arrayPurchaseSelector) {
+    const decoded = ethereum.decode(
+      '(uint256[],address[],address[],address[],bytes[])',
+      args
+    )
+    if (decoded == null) {
+      return emptyReferrer()
+    }
+    const referrers = decoded.toTuple()[2].toAddressArray()
+    if (index < 0 || index >= referrers.length) {
+      return emptyReferrer()
+    }
+    return referrers[index]
+  }
+
+  if (selector == structPurchaseSelector) {
+    const decoded = ethereum.decode(
+      '((uint256,address,address,address,address,bytes,uint256)[])',
+      args
+    )
+    if (decoded == null) {
+      return emptyReferrer()
+    }
+    const purchaseArgs = decoded.toTuple()[0].toTupleArray<ethereum.Tuple>()
+    if (index < 0 || index >= purchaseArgs.length) {
+      return emptyReferrer()
+    }
+    return purchaseArgs[index][2].toAddress()
+  }
+
+  return emptyReferrer()
+}
+
 function newKey(event: TransferEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
   const key = new Key(keyID)
@@ -54,6 +165,10 @@ function newKey(event: TransferEvent): void {
   const tokenURI = lockContract.try_tokenURI(event.params.tokenId)
   if (!tokenURI.reverted) {
     key.tokenURI = tokenURI.value
+  }
+  const referrer = purchaseReferrer(event)
+  if (referrer.toHexString() != nullAddress) {
+    key.referrer = referrer
   }
   key.expiration = getKeyExpirationTimestampFor(
     event.address,
@@ -121,11 +236,10 @@ export function handleLockConfig(event: LockConfigEvent): void {
 }
 
 export function handleTransfer(event: TransferEvent): void {
-  const zeroAddress = '0x0000000000000000000000000000000000000000'
-  if (event.params.from.toHex() == zeroAddress) {
+  if (event.params.from.toHex() == nullAddress) {
     // create key
     newKey(event)
-  } else if (event.params.to.toHex() == zeroAddress) {
+  } else if (event.params.to.toHex() == nullAddress) {
     // burn key
     const lock = Lock.load(event.address.toHexString())
     if (lock) {
