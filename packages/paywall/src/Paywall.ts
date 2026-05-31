@@ -34,7 +34,7 @@ export interface TransactionInfo {
   hash: string
   lock: string
   tokenIds?: string[]
-  metadata?: any
+  metadata?: unknown
 }
 
 export enum CheckoutEvents {
@@ -51,7 +51,7 @@ export enum CheckoutEvents {
 
 export interface MethodCall {
   method: string
-  params: any
+  params: unknown
   id: string | number
 }
 
@@ -64,20 +64,32 @@ export interface OauthConfig {
 
 export interface MethodCallResult {
   id: number
-  response?: any
-  error?: any
+  response?: unknown
+  error?: unknown
 }
 /* end type definitions */
 
 type HookEvent = 'status' | 'authenticated' | 'transactionSent' | 'metadata'
+type CheckoutEventPayload = unknown
+
+interface EthereumProviderLike {
+  isPaywallProvider?: boolean
+  enable?: () => Promise<unknown> | unknown
+  request?: (args: MethodCall) => Promise<unknown>
+  sendAsync?: (
+    args: MethodCall,
+    callback: (error: unknown, response: unknown) => void
+  ) => void
+  on?: (eventName: string, callback: () => void) => void
+}
 
 /**
  * Using a single child object
  */
-let postmateChild: any
+let postmateChild: Postmate.ParentAPI | undefined
 
 export class Paywall {
-  childCallBuffer: [string, any?][] = []
+  childCallBuffer: [string, unknown?][] = []
 
   networkConfigs: NetworkConfigs
 
@@ -89,7 +101,7 @@ export class Paywall {
 
   lockStatus?: string
 
-  provider?: any
+  provider?: EthereumProviderLike
 
   child?: Postmate.ParentAPI
 
@@ -102,7 +114,7 @@ export class Paywall {
    * provider passed from the child iframe.
    * @param provider?
    */
-  connect = async (provider?: any) => {
+  connect = async (provider?: EthereumProviderLike) => {
     this.provider = provider || getInjectedProvider()
   }
 
@@ -138,12 +150,12 @@ export class Paywall {
         userAddress?: string
         transactionInfo?: TransactionInfo
       } = {}
-      const eventHandler = (name: string, data: any) => {
+      const eventHandler = (name: string, data: CheckoutEventPayload) => {
         if (name == 'checkout.userInfo') {
-          returnValue.userAddress = data.address
+          returnValue.userAddress = (data as UserInfo).address
         }
         if (name == 'checkout.transactionInfo') {
-          returnValue.transactionInfo = data
+          returnValue.transactionInfo = data as TransactionInfo
         }
         if (name === 'checkout.closeModal') {
           return resolve(returnValue)
@@ -164,15 +176,24 @@ export class Paywall {
       config.autoconnect = true // force autoconnect, when the provider is external
     }
     // Use provider in parameter, fall back to injected provider in window (if any)
-    this.paywallConfig = injectProviderInfo(config, this.provider)
+    this.paywallConfig = injectProviderInfo(
+      config,
+      this.provider as Parameters<typeof injectProviderInfo>[1]
+    )
     // Always do this last!
     this.loadCache()
 
-    this.paywallConfig = injectProviderInfo(config, this.provider)
+    this.paywallConfig = injectProviderInfo(
+      config,
+      this.provider as Parameters<typeof injectProviderInfo>[1]
+    )
     this.checkKeysAndLock()
     this.sendOrBuffer(
       'setConfig',
-      injectProviderInfo(config || this.paywallConfig, this.provider)
+      injectProviderInfo(
+        config || this.paywallConfig,
+        this.provider as Parameters<typeof injectProviderInfo>[1]
+      )
     )
   }
 
@@ -182,7 +203,7 @@ export class Paywall {
 
   shakeHands = async (
     unlockAppUrl: string,
-    eventHandler?: (name: string, data?: any) => void
+    eventHandler?: (name: string, data?: CheckoutEventPayload) => void
   ) => {
     if (!postmateChild) {
       postmateChild = await new Postmate({
@@ -199,36 +220,39 @@ export class Paywall {
       if (typeof eventHandler === 'function')
         eventHandler(CheckoutEvents.closeModal)
     })
-    this.child!.on(CheckoutEvents.userInfo, (data: any) => {
-      this.handleUserInfoEvent(data)
+    this.child!.on(CheckoutEvents.userInfo, (data: CheckoutEventPayload) => {
+      this.handleUserInfoEvent(data as UserInfo)
       if (typeof eventHandler === 'function')
         eventHandler(CheckoutEvents.userInfo, data)
     })
-    this.child!.on(CheckoutEvents.methodCall, (data: any) => {
-      this.handleMethodCallEvent(data)
+    this.child!.on(CheckoutEvents.methodCall, (data: CheckoutEventPayload) => {
+      this.handleMethodCallEvent(data as MethodCall)
       if (typeof eventHandler === 'function')
         eventHandler(CheckoutEvents.methodCall, data)
     })
-    this.child!.on(CheckoutEvents.onEvent, (data: any) => {
-      this.handleOnEventEvent(data)
+    this.child!.on(CheckoutEvents.onEvent, (data: CheckoutEventPayload) => {
+      this.handleOnEventEvent(data as string)
       if (typeof eventHandler === 'function')
         eventHandler(CheckoutEvents.onEvent, data)
     })
-    this.child!.on(CheckoutEvents.enable, (data: any) => {
+    this.child!.on(CheckoutEvents.enable, (data: CheckoutEventPayload) => {
       this.handleEnable()
       if (typeof eventHandler === 'function')
         eventHandler(CheckoutEvents.enable, data)
     })
-    this.child!.on(CheckoutEvents.metadata, (data: any) => {
+    this.child!.on(CheckoutEvents.metadata, (data: CheckoutEventPayload) => {
       this.handleMetadataEvent(data)
       if (typeof eventHandler === 'function')
         eventHandler(CheckoutEvents.metadata, data)
     })
-    this.child!.on(CheckoutEvents.transactionInfo, (data: any) => {
-      this.handleTransactionInfoEvent(data)
-      if (typeof eventHandler === 'function')
-        eventHandler(CheckoutEvents.transactionInfo, data)
-    })
+    this.child!.on(
+      CheckoutEvents.transactionInfo,
+      (data: CheckoutEventPayload) => {
+        this.handleTransactionInfoEvent(data as TransactionInfo)
+        if (typeof eventHandler === 'function')
+          eventHandler(CheckoutEvents.transactionInfo, data)
+      }
+    )
 
     // flush the buffer of child calls from before the iframe was ready
     this.childCallBuffer.forEach((bufferedCall) =>
@@ -236,7 +260,7 @@ export class Paywall {
     )
   }
 
-  sendOrBuffer = (method: string, args: any) => {
+  sendOrBuffer = (method: string, args: unknown) => {
     if (this.child) {
       this.child.call(method, args)
     } else {
@@ -264,7 +288,7 @@ export class Paywall {
     }
   }
 
-  async handleMetadataEvent(metadata: any) {
+  async handleMetadataEvent(metadata: unknown) {
     dispatchEvent(unlockEvents.metadata, metadata)
     this.notifyHook('metadata', metadata)
   }
@@ -278,7 +302,15 @@ export class Paywall {
   }
 
   handleMethodCallEvent = async ({ method, params, id }: MethodCall) => {
-    const provider = this.provider as any
+    const provider = this.provider
+    if (!provider) {
+      console.error(
+        'unknown method to call provider! Please make sure you use and EIP1193 provider!',
+        { provider }
+      )
+      return
+    }
+
     if (provider.request) {
       return provider
         .request({ method, params, id })
@@ -291,7 +323,7 @@ export class Paywall {
     } else if (provider.sendAsync) {
       provider.sendAsync(
         { method, params, id },
-        (error: any, response: any) => {
+        (error: unknown, response: unknown) => {
           this.child!.call('resolveMethodCall', { id, error, response })
         }
       )
@@ -304,7 +336,14 @@ export class Paywall {
   }
 
   handleOnEventEvent = async (eventName: string) => {
-    const provider = this.provider as any
+    const provider = this.provider
+    if (!provider?.on) {
+      console.error(
+        'unknown method to call provider! Please make sure you use and EIP1193 provider!',
+        { provider }
+      )
+      return
+    }
     provider.on(eventName, () => {
       this.child!.call('resolveOnEvent', eventName)
     })
