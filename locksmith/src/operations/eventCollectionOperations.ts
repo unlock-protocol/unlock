@@ -8,6 +8,22 @@ import config from '../config/config'
 import logger from '../logger'
 import { getPrivyUserByAddress } from './privyUserOperations'
 import { Op } from 'sequelize'
+import { EventStatus } from '@unlock-protocol/types'
+import { removeProtectedAttributesFromObject } from '../utils/protectedAttributes'
+
+export const PUBLIC_EVENT_COLLECTION_SLUG = 'all'
+
+const PUBLIC_EVENT_COLLECTION_DETAILS = {
+  slug: PUBLIC_EVENT_COLLECTION_SLUG,
+  title: 'Unlock Events',
+  description:
+    'Discover upcoming community events created with Unlock Protocol.',
+  coverImage: '/images/illustrations/events/party.svg',
+  banner: '/images/illustrations/events/farcon-hero.png',
+  links: [],
+  managerAddresses: [],
+  isVirtual: true,
+}
 
 // event collection body schema
 const EventCollectionBody = z.object({
@@ -44,6 +60,10 @@ export async function createEventCollectionSlug(
 
   const baseSlug = kebabCase(cleanTitle)
   const slug = index ? `${baseSlug}-${index}` : baseSlug
+
+  if (slug === PUBLIC_EVENT_COLLECTION_SLUG) {
+    return createEventCollectionSlug(title, index ? index + 1 : 1)
+  }
 
   // Check if the slug already exists
   const existingCollection = await EventCollection.findByPk(slug)
@@ -111,6 +131,27 @@ export const createEventCollectionOperation = async (
  * @throws An error if the event collection is not found.
  */
 export const getEventCollectionOperation = async (slug: string) => {
+  if (slug === PUBLIC_EVENT_COLLECTION_SLUG) {
+    const events = await EventData.findAll({
+      where: {
+        eventType: 'unlock',
+        status: EventStatus.DEPLOYED,
+      },
+      order: [['createdAt', 'DESC']],
+    })
+
+    events.forEach((event) => {
+      event.data = removeProtectedAttributesFromObject(event.data)
+    })
+
+    return {
+      ...PUBLIC_EVENT_COLLECTION_DETAILS,
+      createdAt: new Date(0),
+      updatedAt: new Date(0),
+      events,
+    }
+  }
+
   const eventCollection = await EventCollection.findByPk(slug, {
     include: [
       {

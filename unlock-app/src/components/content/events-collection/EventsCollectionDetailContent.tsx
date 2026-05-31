@@ -96,6 +96,8 @@ export default function EventsCollectionDetailContent({
     eventCollection?.managerAddresses,
     account!
   )
+  const { isVirtual = false } =
+    (eventCollection as { isVirtual?: boolean } | undefined) || {}
 
   const handleAddEvent = () => {
     if (!account) {
@@ -284,12 +286,14 @@ export default function EventsCollectionDetailContent({
             <div className="flex flex-col gap-6 lg:col-span-10">
               <div className="flex flex-col sm:flex-row items-center space-y-2 justify-between my-5">
                 <h2 className="text-3xl font-bold">Events</h2>
-                <Button onClick={handleAddEvent} className="w-full sm:w-auto">
-                  <div className="flex items-center gap-2">
-                    <Icon icon={TbPlus} size={20} />
-                    {isManager ? 'Add Event' : 'Submit Event'}
-                  </div>
-                </Button>
+                {!isVirtual && (
+                  <Button onClick={handleAddEvent} className="w-full sm:w-auto">
+                    <div className="flex items-center gap-2">
+                      <Icon icon={TbPlus} size={20} />
+                      {isManager ? 'Add Event' : 'Submit Event'}
+                    </div>
+                  </Button>
+                )}
               </div>
               {hasValidEvents ? (
                 <>
@@ -335,12 +339,14 @@ export default function EventsCollectionDetailContent({
                   description={
                     <div>
                       No events have been added yet.{' '}
-                      <span
-                        onClick={handleAddEvent}
-                        className="text-brand-ui-primary cursor-pointer"
-                      >
-                        {isManager ? 'Add an event' : 'Submit an event'}
-                      </span>
+                      {!isVirtual && (
+                        <span
+                          onClick={handleAddEvent}
+                          className="text-brand-ui-primary cursor-pointer"
+                        >
+                          {isManager ? 'Add an event' : 'Submit an event'}
+                        </span>
+                      )}
                     </div>
                   }
                 />

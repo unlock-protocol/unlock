@@ -7,9 +7,11 @@ import {
   addManagerAddressOperation,
   createEventCollectionOperation,
   createEventCollectionSlug,
+  getEventCollectionOperation,
   removeManagerAddressOperation,
   updateEventCollectionOperation,
 } from '../../src/operations/eventCollectionOperations'
+import { EventStatus } from '@unlock-protocol/types'
 
 // interface for link types
 interface Link {
@@ -41,6 +43,7 @@ vi.mock('../../src/models/Event', () => ({
     scope: vi.fn(),
     belongsToMany: vi.fn(),
     findOne: vi.fn(),
+    findAll: vi.fn(),
   },
 }))
 
@@ -51,6 +54,14 @@ vi.mock('../../src/models/EventCollectionAssociation', () => ({
     findAll: vi.fn(),
     belongsTo: vi.fn(),
   },
+}))
+
+vi.mock('../../src/operations/wedlocksOperations', () => ({
+  sendEmail: vi.fn(),
+}))
+
+vi.mock('../../src/operations/privyUserOperations', () => ({
+  getPrivyUserByAddress: vi.fn().mockResolvedValue({ success: false }),
 }))
 
 vi.mock('../../src/utils/createSlug', () => ({
@@ -197,6 +208,52 @@ describe('eventCollectionOperations', () => {
       expect(EventCollection.findByPk).toHaveBeenCalledWith(
         'test-collection-with-special-characters'
       )
+    })
+
+    it('should reserve the public event collection slug', async () => {
+      ;(EventCollection.findByPk as any).mockResolvedValueOnce(null)
+
+      const slug = await createEventCollectionSlug('All')
+
+      expect(slug).toBe('all-1')
+      expect(EventCollection.findByPk).toHaveBeenCalledWith('all-1')
+    })
+  })
+
+  describe('getEventCollectionOperation', () => {
+    it('should return the virtual public event collection for deployed events', async () => {
+      const mockEvents = [
+        {
+          slug: 'test-event',
+          data: {
+            description: 'Public event',
+            replyTo: 'private@example.com',
+          },
+        },
+      ] as any
+
+      ;(EventData.findAll as any).mockResolvedValue(mockEvents)
+
+      const result = await getEventCollectionOperation('all')
+
+      expect(EventCollection.findByPk).not.toHaveBeenCalled()
+      expect(EventData.findAll).toHaveBeenCalledWith({
+        where: {
+          eventType: 'unlock',
+          status: EventStatus.DEPLOYED,
+        },
+        order: [['createdAt', 'DESC']],
+      })
+      expect(result).toMatchObject({
+        slug: 'all',
+        title: 'Unlock Events',
+        managerAddresses: [],
+        isVirtual: true,
+        events: mockEvents,
+      })
+      expect(mockEvents[0].data).toEqual({
+        description: 'Public event',
+      })
     })
   })
 
