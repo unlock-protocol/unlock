@@ -826,16 +826,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomicfoundation/hardhat-ethers@npm:3.1.2":
-  version: 3.1.2
-  resolution: "@nomicfoundation/hardhat-ethers@npm:3.1.2"
+"@nomicfoundation/hardhat-ethers@npm:3.1.3":
+  version: 3.1.3
+  resolution: "@nomicfoundation/hardhat-ethers@npm:3.1.3"
   dependencies:
     debug: "npm:^4.1.1"
     lodash.isequal: "npm:^4.5.0"
   peerDependencies:
     ethers: ^6.14.0
-    hardhat: ^2.26.0
-  checksum: 10/5b1120b27e3ac61d6aad5eab25ea0491d8ab80a1b5e2f1ee83d3377a8af881d64b1c216f3ead554ab4de172106fc3d9d280c08624272bd6bfb81ea789e9220b5
+    hardhat: ^2.28.0
+  checksum: 10/80560158720fb2cfadc0b550e09f4f26dfcba1fc6ab8725c0601daed1a52c02e4c1ef9d649f0531f67bd998af4a2327bdc0bbde698108987f57685b37075f3e4
   languageName: node
   linkType: hard
 
@@ -1201,7 +1201,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/eth-node@workspace:."
   dependencies:
-    "@nomicfoundation/hardhat-ethers": "npm:3.1.2"
+    "@nomicfoundation/hardhat-ethers": "npm:3.1.3"
     "@unlock-protocol/contracts": "npm:latest"
     "@unlock-protocol/hardhat-plugin": "npm:latest"
     "@unlock-protocol/networks": "npm:latest"
