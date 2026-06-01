@@ -22653,7 +22653,7 @@ __metadata:
     color-scheme: "npm:1.0.1"
     connect-timeout: "npm:1.9.1"
     cookie-parser: "npm:1.4.7"
-    cors: "npm:2.8.5"
+    cors: "npm:2.8.6"
     dayjs: "npm:1.11.19"
     dotenv: "npm:16.4.7"
     eslint: "npm:9.22.0"
@@ -29282,13 +29282,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cors@npm:2.8.5":
-  version: 2.8.5
-  resolution: "cors@npm:2.8.5"
+"cors@npm:2.8.6":
+  version: 2.8.6
+  resolution: "cors@npm:2.8.6"
   dependencies:
     object-assign: "npm:^4"
     vary: "npm:^1"
-  checksum: 10/66e88e08edee7cbce9d92b4d28a2028c88772a4c73e02f143ed8ca76789f9b59444eed6b1c167139e76fa662998c151322720093ba229f9941365ada5a6fc2c6
+  checksum: 10/aa7174305b21ceb90f9c84f4eaa32f04432d333addbfdc0d1eb7310393c48902e5364aada5ac2f5d054528d63b3179238444475426fcb74e1e345077de485727
   languageName: node
   linkType: hard
 
