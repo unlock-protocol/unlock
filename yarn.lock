@@ -16803,14 +16803,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/protocol-kit@npm:6.1.1":
-  version: 6.1.1
-  resolution: "@safe-global/protocol-kit@npm:6.1.1"
+"@safe-global/protocol-kit@npm:6.1.2":
+  version: 6.1.2
+  resolution: "@safe-global/protocol-kit@npm:6.1.2"
   dependencies:
     "@noble/curves": "npm:^1.6.0"
     "@peculiar/asn1-schema": "npm:^2.3.13"
-    "@safe-global/safe-deployments": "npm:^1.37.42"
-    "@safe-global/safe-modules-deployments": "npm:^2.2.14"
+    "@safe-global/safe-deployments": "npm:^1.37.49"
+    "@safe-global/safe-modules-deployments": "npm:^2.2.21"
     "@safe-global/types-kit": "npm:^3.0.0"
     abitype: "npm:^1.0.2"
     semver: "npm:^7.7.2"
@@ -16820,7 +16820,7 @@ __metadata:
       optional: true
     "@peculiar/asn1-schema":
       optional: true
-  checksum: 10/0137d82fba08e20296b7f98165c0e401a957f427cc8907ed6f2825c26fb5b82dc8849ae2492d173b39f30afad1d78eb7294702c9eaab9a257b28d6f82ba39050
+  checksum: 10/b5b49bc0979449567ae8890673838560bff5392013adaba913a5bf41914c9dc36ef5fc44ad1e92c8f68e6bc88dc09eed1c031b40129833c431f1fba1db8bf425
   languageName: node
   linkType: hard
 
@@ -16854,12 +16854,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/safe-deployments@npm:^1.37.42":
-  version: 1.37.44
-  resolution: "@safe-global/safe-deployments@npm:1.37.44"
+"@safe-global/safe-deployments@npm:^1.37.49":
+  version: 1.37.56
+  resolution: "@safe-global/safe-deployments@npm:1.37.56"
   dependencies:
     semver: "npm:^7.6.2"
-  checksum: 10/5d1a6817caecbba27ded9676df31e2ee7690593f4b821831f381223d8cf5c5ac710dd5874a8d495325b6947ac0a5032c0a3969dab8544705c7d20278a1a34f58
+  checksum: 10/fd9a226aed59fe017bfade1b0f62e78df246c58a1ad8f88739023c785a1b3226fe5a14c09226f8b5541fb348e84c3cf1cd5b41571a0c3e6685ceeaafb00d4a9a
   languageName: node
   linkType: hard
 
@@ -16870,10 +16870,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/safe-modules-deployments@npm:^2.2.14":
-  version: 2.2.15
-  resolution: "@safe-global/safe-modules-deployments@npm:2.2.15"
-  checksum: 10/040b73fe78a961729ace0cf5718a0864866a4f4bd459913eabde737f68b573e9ca94e558ae47e79d743450901b6b2191249c73c07d27cb9feb44f5f60634bf4e
+"@safe-global/safe-modules-deployments@npm:^2.2.21":
+  version: 2.2.25
+  resolution: "@safe-global/safe-modules-deployments@npm:2.2.25"
+  checksum: 10/94d67d96c9e09f423aebab7cadf37eeec9f7a291bbf692ac4c60c5a1fa3a68b9dc847ca1ac2a45d264db3717ca0c50bc7eb74270a66fc6d46bb8f8d97d3e6e79
   languageName: node
   linkType: hard
 
@@ -22531,7 +22531,7 @@ __metadata:
     "@openzeppelin/hardhat-upgrades": "npm:3.9.1"
     "@openzeppelin/upgrades-core": "npm:1.44.1"
     "@safe-global/api-kit": "npm:4.0.0"
-    "@safe-global/protocol-kit": "npm:6.1.1"
+    "@safe-global/protocol-kit": "npm:6.1.2"
     "@tenderly/hardhat-tenderly": "npm:2.5.2"
     "@uniswap/sdk-core": "npm:7.9.0"
     "@uniswap/v3-sdk": "npm:3.26.0"
