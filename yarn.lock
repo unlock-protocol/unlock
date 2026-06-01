@@ -23104,7 +23104,7 @@ __metadata:
     eslint: "npm:9.39.0"
     handlebars: "npm:4.7.8"
     netlify-cli: "npm:15.11.0"
-    nodemailer: "npm:7.0.10"
+    nodemailer: "npm:7.0.13"
     prettier: "npm:3.6.2"
     regenerator-runtime: "npm:0.14.1"
     typescript: "npm:5.9.2"
@@ -44845,10 +44845,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nodemailer@npm:7.0.10":
-  version: 7.0.10
-  resolution: "nodemailer@npm:7.0.10"
-  checksum: 10/b9b8794ffc6c0d84440a9dd422664908e9c2003a15cb0e6bdd240a3625121de3978323c2ba4af78080fd735ef514d6caed376bd5f5dd6c17cf0d2c399d0dc354
+"nodemailer@npm:7.0.13":
+  version: 7.0.13
+  resolution: "nodemailer@npm:7.0.13"
+  checksum: 10/4ae37bfb6896f1555de150c1098a7c1b28eb1da240a4c7adede81a8af0dcc184298cfbf804930599c076ea574428e0c18c6b28f0dc2072cebb30c1da5fd0b688
   languageName: node
   linkType: hard
 
