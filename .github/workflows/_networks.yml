@@ -65,7 +65,7 @@ jobs:
 
       - name: Add PR Comment
         if: ${{ always() && steps.changed-files.outputs.any_changed == 'true' }}
-        uses: mshick/add-pr-comment@v2.8.2
+        uses: mshick/add-pr-comment@v3.11.0
         with:
           message-path: results.txt
           message-id: networks-check
