@@ -30,7 +30,7 @@
     "@unlock-protocol/networks": "workspace:^",
     "eslint": "9.22.0",
     "fs-extra": "11.2.0",
-    "handlebars": "4.7.8",
+    "handlebars": "4.7.9",
     "yargs": "17.7.2"
   },
   "installConfig": {
