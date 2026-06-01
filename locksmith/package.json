@@ -49,7 +49,7 @@
     "@sentry/tracing": "7.114.0",
     "@types/archiver": "6.0.4",
     "@types/connect-timeout": "1.9.0",
-    "@types/lodash": "4.17.20",
+    "@types/lodash": "4.17.24",
     "@unlock-protocol/contracts": "workspace:^",
     "@unlock-protocol/core": "workspace:./packages/core",
     "@unlock-protocol/networks": "workspace:./packages/networks",
