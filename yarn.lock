@@ -7458,7 +7458,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/bignumber@npm:5.8.0, @ethersproject/bignumber@npm:^5.0.0, @ethersproject/bignumber@npm:^5.0.7, @ethersproject/bignumber@npm:^5.1.1, @ethersproject/bignumber@npm:^5.6.2, @ethersproject/bignumber@npm:^5.7.0, @ethersproject/bignumber@npm:^5.8.0":
+"@ethersproject/bignumber@npm:5.8.0, @ethersproject/bignumber@npm:^5.0.0, @ethersproject/bignumber@npm:^5.0.7, @ethersproject/bignumber@npm:^5.1.1, @ethersproject/bignumber@npm:^5.5.0, @ethersproject/bignumber@npm:^5.6.2, @ethersproject/bignumber@npm:^5.7.0, @ethersproject/bignumber@npm:^5.8.0":
   version: 5.8.0
   resolution: "@ethersproject/bignumber@npm:5.8.0"
   dependencies:
@@ -22198,11 +22198,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/sdk-core@npm:7.9.0":
-  version: 7.9.0
-  resolution: "@uniswap/sdk-core@npm:7.9.0"
+"@uniswap/sdk-core@npm:7.16.1":
+  version: 7.16.1
+  resolution: "@uniswap/sdk-core@npm:7.16.1"
   dependencies:
     "@ethersproject/address": "npm:^5.0.2"
+    "@ethersproject/bignumber": "npm:^5.5.0"
     "@ethersproject/bytes": "npm:^5.7.0"
     "@ethersproject/keccak256": "npm:5.7.0"
     "@ethersproject/strings": "npm:5.7.0"
@@ -22211,7 +22212,8 @@ __metadata:
     jsbi: "npm:^3.1.4"
     tiny-invariant: "npm:^1.1.0"
     toformat: "npm:^2.0.0"
-  checksum: 10/3dd194ed4b6ed602c3de8d3e260840c5d2f3f27b7ff4ed1e18143f7178e587155ca5d7311bc3368b388df0e892f85aa7ff4a32fce78ed44e0750e4793cfe9528
+    tslib: "npm:^2.3.0"
+  checksum: 10/8e1dbdff14bcdcec0d5ce66717e0b59ca0f5e26adf011a809a5ab4cf27856f0fded8bbe8817470131a2e4048439bbfd43d5a3b7e2f4e36ecfee15e87937b00f3
   languageName: node
   linkType: hard
 
@@ -22533,7 +22535,7 @@ __metadata:
     "@safe-global/api-kit": "npm:4.0.0"
     "@safe-global/protocol-kit": "npm:6.1.1"
     "@tenderly/hardhat-tenderly": "npm:2.5.2"
-    "@uniswap/sdk-core": "npm:7.9.0"
+    "@uniswap/sdk-core": "npm:7.16.1"
     "@uniswap/v3-sdk": "npm:3.26.0"
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
