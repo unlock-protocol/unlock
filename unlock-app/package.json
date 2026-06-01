@@ -43,7 +43,7 @@
     "graphql": "16.9.0",
     "lottie-react": "2.4.1",
     "next": "14.2.35",
-    "next-recaptcha-v3": "1.5.2",
+    "next-recaptcha-v3": "1.5.3",
     "p-limit": "6.2.0",
     "postmate": "1.5.2",
     "qr-scanner": "1.4.2",

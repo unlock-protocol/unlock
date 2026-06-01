@@ -22952,7 +22952,7 @@ __metadata:
     jsdom: "npm:26.0.0"
     lottie-react: "npm:2.4.1"
     next: "npm:14.2.35"
-    next-recaptcha-v3: "npm:1.5.2"
+    next-recaptcha-v3: "npm:1.5.3"
     p-limit: "npm:6.2.0"
     postcss: "npm:8.4.49"
     postmate: "npm:1.5.2"
@@ -44390,13 +44390,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next-recaptcha-v3@npm:1.5.2":
-  version: 1.5.2
-  resolution: "next-recaptcha-v3@npm:1.5.2"
+"next-recaptcha-v3@npm:1.5.3":
+  version: 1.5.3
+  resolution: "next-recaptcha-v3@npm:1.5.3"
   peerDependencies:
-    next: ^13 || ^14 || ^15
+    next: ^13 || ^14 || ^15 || ^16
     react: ^18 || ^19
-  checksum: 10/18f84252bfb93c2e670eb6c2bafb3e15116e4eaa47c1980ca2f189acf66335b176aaa762eeaa1298fedd390a9d360b1c8a0831f98cb4f74f65a772604a838207
+  checksum: 10/260ac15a4d86048ed0dfa2cf6628b044d7e8fb78f8dd33ec7a6643b76169bc585461b28ab2f6971d6bd7548bdd44a7d129d0894e9438499125fccc2777a7a367
   languageName: node
   linkType: hard
 
