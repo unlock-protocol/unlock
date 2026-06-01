@@ -73,7 +73,7 @@
     "graphql": "16.10.0",
     "ics": "3.8.1",
     "isomorphic-fetch": "3.0.0",
-    "jsonwebtoken": "9.0.2",
+    "jsonwebtoken": "9.0.3",
     "memory-cache-node": "1.4.0",
     "multer": "1.4.5-lts.2",
     "multer-s3": "3.0.1",
