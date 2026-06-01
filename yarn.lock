@@ -22977,7 +22977,7 @@ __metadata:
     tailwindcss: "npm:3.4.18"
     typescript: "npm:5.6.3"
     unified: "npm:11.0.5"
-    validator: "npm:13.15.20"
+    validator: "npm:13.15.35"
     vitest: "npm:3.0.9"
     vitest-fetch-mock: "npm:0.4.5"
     vitest-localstorage-mock: "npm:0.1.2"
@@ -57102,10 +57102,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"validator@npm:13.15.20":
-  version: 13.15.20
-  resolution: "validator@npm:13.15.20"
-  checksum: 10/498f9b201dda7b09207bbc13606e6f90595987eab9e3a60fc5b8d8d96141c9351192aea56d392c78640e2462770eedccf545cf13b2ef43e87d73a755ba485c5d
+"validator@npm:13.15.35":
+  version: 13.15.35
+  resolution: "validator@npm:13.15.35"
+  checksum: 10/62f25728064d5dedaabb10a53647cbb4f9aa762a2a53e16642469d4839ad235e467e9f18d0992c492ec1d35e1d5034956fdc680953fc7d8f764cc6d4c83cf2ae
   languageName: node
   linkType: hard
 
