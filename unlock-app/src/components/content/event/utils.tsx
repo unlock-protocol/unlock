@@ -4,11 +4,24 @@ import timezone from 'dayjs/plugin/timezone'
 import { Metadata } from '~/components/interface/locks/metadata/utils'
 import { config } from '~/config/app'
 import { CheckoutConfig } from '@unlock-protocol/core'
+import { getCanonicalCheckoutPath } from '~/utils/checkoutUrl'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
-export const getEventDate = (ticket: any): Date | null => {
+interface EventDateFields {
+  event_start_date?: string | null
+  event_start_time?: string | null
+  event_end_date?: string | null
+  event_end_time?: string | null
+  event_timezone?: string
+}
+
+interface EventPathProps {
+  slug?: string | null
+}
+
+export const getEventDate = (ticket?: EventDateFields | null): Date | null => {
   if (ticket?.event_start_date) {
     const timestamp = [ticket.event_start_date, ticket.event_start_time].join(
       ' '
@@ -20,7 +33,9 @@ export const getEventDate = (ticket: any): Date | null => {
   return null
 }
 
-export const getEventEndDate = (ticket: any): Date | null => {
+export const getEventEndDate = (
+  ticket?: EventDateFields | null
+): Date | null => {
   if (ticket?.event_end_date) {
     const timestamp = [ticket.event_end_date, ticket.event_end_time].join(' ')
 
@@ -35,7 +50,7 @@ interface EventUrlProps {
   metadata?: Partial<Metadata>
   lockAddress?: string // TODO: remove
   network?: string | number // TODO: remove
-  event?: any // TODO: type this
+  event?: EventPathProps
 }
 
 export const getEventPath = ({
@@ -75,7 +90,10 @@ export const getCheckoutUrl = (checkoutConfig: CheckoutConfig) => {
   }
 
   if (checkoutConfig.id) {
-    url.searchParams.append('id', checkoutConfig.id)
+    return new URL(
+      getCanonicalCheckoutPath(checkoutConfig.id),
+      window.location.origin
+    ).toString()
   } else {
     url.searchParams.append(
       'checkoutConfig',
