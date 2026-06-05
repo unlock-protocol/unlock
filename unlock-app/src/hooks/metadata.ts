@@ -43,10 +43,13 @@ export const useUpdateMetadata = ({
       console.error(error)
       ToastHelper.error('Metadata update failed')
     },
-    onSuccess: () => {
+    onSuccess: async (metadata) => {
       ToastHelper.success('Metadata updated')
-      queryClient.invalidateQueries({
-        queryKey: ['metadata', lockAddress],
+      const queryKey = ['metadata', network, lockAddress, keyId]
+
+      queryClient.setQueryData(queryKey, metadata)
+      await queryClient.invalidateQueries({
+        queryKey,
       })
     },
   })
