@@ -8,6 +8,13 @@ describe('Normalizer', () => {
         'test@example.com'
       )
     })
+
+    it('trims surrounding whitespace', () => {
+      expect.assertions(1)
+      expect(Normalizer.emailAddress('  igor@gateway.fm  ')).toEqual(
+        'igor@gateway.fm'
+      )
+    })
   })
 
   describe('ethereumAddress', () => {
