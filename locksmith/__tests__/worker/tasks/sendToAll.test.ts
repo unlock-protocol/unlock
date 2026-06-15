@@ -3,9 +3,9 @@ import { resolveRecipientEmail } from '../../../src/worker/tasks/sendToAll'
 describe('sendToAll', () => {
   describe('resolveRecipientEmail', () => {
     it('trims and lowercases the email so whitespace addresses are not dropped', () => {
-      expect(
-        resolveRecipientEmail({ email: '  Igor@Gateway.fm  ' })
-      ).toEqual('igor@gateway.fm')
+      expect(resolveRecipientEmail({ email: '  Igor@Gateway.fm  ' })).toEqual(
+        'igor@gateway.fm'
+      )
     })
 
     it('reads alternative email keys regardless of case', () => {
