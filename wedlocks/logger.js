@@ -1,7 +1,6 @@
 /* eslint no-console: 0 */
 
 import winston from 'winston'
-import config from './config'
 
 /**
  * The logger. Logging to stdout
@@ -11,8 +10,10 @@ import config from './config'
 const LEVEL = Symbol.for('level')
 const MESSAGE = Symbol.for('message')
 
+const unlockEnv = process.env.UNLOCK_ENV || 'dev'
+
 const consoleTransport = new winston.transports.Console({
-  silent: config.unlockEnv === 'test',
+  silent: unlockEnv === 'test',
   log: function (info, callback) {
     setImmediate(() => this.emit('logged', info))
 
@@ -30,5 +31,5 @@ const consoleTransport = new winston.transports.Console({
 export default winston.createLogger({
   format: winston.format.json(),
   transports: [consoleTransport],
-  level: config.unlockEnv === 'dev' ? 'debug' : 'info',
+  level: unlockEnv === 'dev' ? 'debug' : 'info',
 })
