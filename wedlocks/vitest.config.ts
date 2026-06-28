@@ -5,7 +5,7 @@ export default defineConfig({
     globals: true,
     dir: 'src/__tests__',
     include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-    mockReset: false,
+    clearMocks: true,
     environment: 'node',
     testTimeout: 1000 * 30,
     hookTimeout: 1000 * 30,

@@ -1,6 +1,8 @@
 import { templateRenderer } from './templateRenderer'
 import emailService from './emailService'
 
+const DEFAULT_SENDER_ADDRESS = 'hello@unlock-protocol.com'
+
 /**
  * Loads a template and sends an email using the provided parameters
  * @param {Object} args - The email arguments
@@ -12,9 +14,11 @@ import emailService from './emailService'
  * @param {string} [args.emailSender] - Custom sender name, defaults to "Unlock Labs"
  * @param {string} [args.replyTo] - Reply-to email address
  * @param {Object} smtpConfig - SMTP configuration for worker-mailer
+ * @param {Object} [options] - Delivery options that are not SMTP settings
+ * @param {string} [options.senderAddress] - Sender email address
  * @returns {Promise} Result of sending the email
  */
-export const route = async (args, smtpConfig) => {
+export const route = async (args, smtpConfig, options = {}) => {
   const {
     template: templateName,
     failoverTemplate,
@@ -28,12 +32,11 @@ export const route = async (args, smtpConfig) => {
   // Resolve which template to use, falling back to failoverTemplate if needed
   let resolvedTemplate
   try {
-    templateRenderer.validateTemplateExists(templateName)
-    resolvedTemplate = templateName
+    resolvedTemplate = templateRenderer.validateTemplateExists(templateName)
   } catch {
     if (failoverTemplate) {
-      templateRenderer.validateTemplateExists(failoverTemplate)
-      resolvedTemplate = failoverTemplate
+      resolvedTemplate =
+        templateRenderer.validateTemplateExists(failoverTemplate)
     } else {
       throw new Error('Missing template')
     }
@@ -46,14 +49,18 @@ export const route = async (args, smtpConfig) => {
   const email = {
     from: {
       name: emailSender || 'Unlock Labs',
-      email: 'hello@unlock-protocol.com',
+      email: options.senderAddress || DEFAULT_SENDER_ADDRESS,
     },
     to: { email: recipient },
-    replyTo: replyTo ? { email: replyTo } : undefined,
+    reply: replyTo ? { email: replyTo } : undefined,
     subject,
     html,
     text,
-    attachments: [].concat(attachments || []).filter(Boolean),
+    attachments: templateRenderer.normalizeAttachments(
+      []
+        .concat(attachments || [])
+        .concat(templateRenderer.getTemplateAttachments(resolvedTemplate))
+    ),
   }
 
   return emailService.send(email, smtpConfig)
@@ -66,6 +73,7 @@ export const route = async (args, smtpConfig) => {
  * @param {Object} [args.params] - Template parameters
  * @param {boolean} [args.json] - Whether to return JSON format
  * @param {string} [args.emailSender] - Custom sender name
+ * @param {string} [args.senderAddress] - Sender email address
  * @param {string} [args.recipient] - Test recipient email
  * @param {string} [args.replyTo] - Reply-to email address
  * @param {Array} [args.attachments] - Array of attachments
@@ -77,32 +85,44 @@ export const preview = async (args) => {
     params,
     json,
     emailSender,
+    senderAddress,
     recipient,
     replyTo,
     attachments,
   } = args
   try {
+    const resolvedTemplate =
+      templateRenderer.validateTemplateExists(templateName)
     const renderedHtml = templateRenderer.renderHtmlPreview(
-      templateName,
+      resolvedTemplate,
       params || {}
     )
-    const subject = templateRenderer.renderSubject(templateName, params || {})
-    const text = templateRenderer.renderText(templateName, params || {})
+    const subject = templateRenderer.renderSubject(
+      resolvedTemplate,
+      params || {}
+    )
+    const text = templateRenderer.renderText(resolvedTemplate, params || {})
     if (!json) return renderedHtml
     return JSON.stringify({
       from: {
         name: emailSender || 'Unlock Labs',
-        email: 'hello@unlock-protocol.com',
+        email: senderAddress || DEFAULT_SENDER_ADDRESS,
       },
       to: recipient || 'recipient@example.com',
       replyTo: replyTo ? { email: replyTo } : undefined,
       subject,
       html: renderedHtml,
       text,
-      attachments: [].concat(attachments || []).filter(Boolean),
+      attachments: templateRenderer.normalizeAttachments(
+        []
+          .concat(attachments || [])
+          .concat(templateRenderer.getTemplateAttachments(resolvedTemplate))
+      ),
     })
   } catch (error) {
-    return `<p>Error previewing email template: ${error.message}</p>`
+    return `<p>Error previewing email template: ${templateRenderer.escapeHtml(
+      error.message
+    )}</p>`
   }
 }
 
@@ -111,6 +131,5 @@ export const preview = async (args) => {
  * @returns {Promise<string>} JSON string of template names
  */
 export const list = async () => {
-  const templates = await import('@unlock-protocol/email-templates')
-  return JSON.stringify(Object.keys(templates.default))
+  return JSON.stringify(templateRenderer.listTemplateNames())
 }

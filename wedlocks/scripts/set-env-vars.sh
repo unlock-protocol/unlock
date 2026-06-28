@@ -3,7 +3,7 @@
 
 set -euo pipefail
 
-echo "$SMTP_HOST" | yarn wrangler secret put SMTP_HOST
-echo "$SMTP_PORT" | yarn wrangler secret put SMTP_PORT
-echo "$SMTP_USERNAME" | yarn wrangler secret put SMTP_USERNAME
-echo "$SMTP_PASSWORD" | yarn wrangler secret put SMTP_PASSWORD
+printf '%s' "$SMTP_HOST" | yarn wrangler secret put SMTP_HOST
+printf '%s' "$SMTP_PORT" | yarn wrangler secret put SMTP_PORT
+printf '%s' "$SMTP_USERNAME" | yarn wrangler secret put SMTP_USERNAME
+printf '%s' "$SMTP_PASSWORD" | yarn wrangler secret put SMTP_PASSWORD

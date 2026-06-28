@@ -10,7 +10,7 @@ port = 9999
 SMTP_HOST = "smtp.sendgrid.net"
 SMTP_PORT = 587
 SMTP_USERNAME = "apikey"
+SMTP_FROM_ADDRESS = "hello@unlock-protocol.com"
 UNLOCK_ENV = "production"
-
 
 

@@ -9,13 +9,8 @@ export const emailService = {
    * @param {Object} emailData - The email data object
    */
   async send(emailData, smtpConfig) {
-    try {
-      const mailer = await WorkerMailer.connect(smtpConfig)
-      return mailer.send(emailData)
-    } catch (error) {
-      console.error('Email service error:', error.message)
-      throw error
-    }
+    const mailer = await WorkerMailer.connect(smtpConfig)
+    return mailer.send(emailData)
   },
 }
 

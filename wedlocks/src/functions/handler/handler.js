@@ -6,6 +6,40 @@ const headers = {
   'Access-Control-Allow-Headers': 'Content-Type',
 }
 
+const getHeader = (eventHeaders = {}, headerName) => {
+  const normalizedHeaderName = headerName.toLowerCase()
+  const matchingHeader = Object.keys(eventHeaders).find(
+    (key) => key.toLowerCase() === normalizedHeaderName
+  )
+  return matchingHeader ? eventHeaders[matchingHeader] : undefined
+}
+
+const isTemplateNotFoundError = (error) =>
+  error?.name === 'TemplateNotFoundError' ||
+  error?.message === 'Missing template'
+
+const isWorkerCodeEvalError = (error) => {
+  const code = error?.code || error?.cause?.code
+  const message = error?.message || String(error)
+  return (
+    code === 'ERR_WORKER_UNSUPPORTED_CODE_EVAL' ||
+    /codeeval|code generation from strings|dynamic code generation/i.test(
+      message
+    )
+  )
+}
+
+const isSmtpRuntimeError = (error) => {
+  const code = error?.code || error?.cause?.code
+  const message = error?.message || String(error)
+  return (
+    code === 'ERR_WORKER_UNSUPPORTED_SOCKET' ||
+    /not implemented.*(dns|socket|connect)|edns|cloudflare:sockets/i.test(
+      message
+    )
+  )
+}
+
 export const handler = async (event, env, responseCallback) => {
   const callback = (err /** always null! */, response) => {
     if (response.statusCode >= 400) {
@@ -48,14 +82,17 @@ export const handler = async (event, env, responseCallback) => {
       const body = await preview({
         template: match[1],
         params: event.queryStringParameters,
-        json: !!event.headers.accept?.match('application/json'),
+        senderAddress: env.SMTP_FROM_ADDRESS,
+        json: !!getHeader(event.headers, 'accept')?.match('application/json'),
       })
 
       return callback(null, {
         statusCode: 200,
         body,
         headers: {
-          'Content-Type': event.headers.accept?.match('application/json')
+          'Content-Type': getHeader(event.headers, 'accept')?.match(
+            'application/json'
+          )
             ? 'application/json'
             : 'text/html; charset=utf-8',
         },
@@ -75,7 +112,8 @@ export const handler = async (event, env, responseCallback) => {
     })
   }
 
-  if (!event.headers || event.headers['content-type'] !== 'application/json') {
+  const contentType = getHeader(event.headers, 'content-type')
+  if (!contentType || !contentType.includes('application/json')) {
     return callback(null, {
       statusCode: 415,
       body: 'Unsupported Media Type',
@@ -93,16 +131,27 @@ export const handler = async (event, env, responseCallback) => {
   }
 
   try {
-    const response = await route(body, {
-      host: env.SMTP_HOST,
-      authType: 'plain',
-      port: Number(env.SMTP_PORT),
-      secure: false,
-      credentials: {
-        username: env.SMTP_USERNAME,
-        password: env.SMTP_PASSWORD,
+    const smtpPort = Number(env.SMTP_PORT ?? 587)
+    if (!Number.isFinite(smtpPort)) {
+      throw new Error('Invalid SMTP port')
+    }
+
+    const response = await route(
+      body,
+      {
+        host: env.SMTP_HOST,
+        authType: 'plain',
+        port: smtpPort,
+        secure: false,
+        credentials: {
+          username: env.SMTP_USERNAME,
+          password: env.SMTP_PASSWORD,
+        },
       },
-    })
+      {
+        senderAddress: env.SMTP_FROM_ADDRESS,
+      }
+    )
 
     return callback(null, {
       statusCode: 204,
@@ -113,27 +162,21 @@ export const handler = async (event, env, responseCallback) => {
       error,
     })
 
-    // Handle different error types with helpful messages
-    const errorString = error.toString()
-
-    if (errorString.includes('codeeval') || errorString.includes('security')) {
+    if (isWorkerCodeEvalError(error)) {
       return callback(null, {
         statusCode: 500,
         body: 'Security restriction: Dynamic code generation not allowed',
       })
     }
 
-    if (
-      errorString.includes('Not implemented') ||
-      errorString.includes('EDNS')
-    ) {
+    if (isSmtpRuntimeError(error)) {
       return callback(null, {
         statusCode: 500,
         body: 'SMTP connections are not supported. Please use HTTP APIs for email services.',
       })
     }
 
-    if (errorString.includes('not found in precompiled templates')) {
+    if (isTemplateNotFoundError(error)) {
       return callback(null, {
         statusCode: 404,
         body: 'Template not found',

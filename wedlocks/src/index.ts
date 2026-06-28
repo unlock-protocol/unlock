@@ -2,9 +2,10 @@ import { handler } from './functions/handler/handler'
 
 export interface Env {
   SMTP_HOST: string
-  SMTP_PORT: string
+  SMTP_PORT: string | number
   SMTP_USERNAME: string
   SMTP_PASSWORD: string
+  SMTP_FROM_ADDRESS?: string
 }
 
 interface HandlerResponse {

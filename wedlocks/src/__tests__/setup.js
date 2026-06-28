@@ -61,10 +61,30 @@ vi.mock('../templateRenderer', () => ({
     renderSubject: vi.fn(() => 'subject'),
     renderText: vi.fn(() => 'text'),
     renderHtml: vi.fn(() => undefined),
+    renderHtmlPreview: vi.fn(() => '<p>preview</p>'),
+    escapeHtml: vi.fn((value) => String(value)),
+    listTemplateNames: vi.fn(() => ['template']),
+    getTemplateAttachments: vi.fn(() => []),
+    normalizeAttachments: vi.fn((attachments = []) =>
+      []
+        .concat(attachments || [])
+        .filter(Boolean)
+        .map((attachment, index) => {
+          if (typeof attachment !== 'string') {
+            return attachment
+          }
+          return {
+            filename: `attachment-${index + 1}.plain`,
+            content: attachment.split(',').pop(),
+            mimeType: 'text/plain',
+          }
+        })
+    ),
     validateTemplateExists: vi.fn((templateName) => {
       if (templateName === 'notATemplate') {
         throw new Error('Missing template')
       }
+      return templateName
     }),
   },
 }))

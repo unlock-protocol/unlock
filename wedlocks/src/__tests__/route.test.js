@@ -68,11 +68,17 @@ describe('route', () => {
         expect(options).toEqual({
           from: { name: 'Unlock Labs', email: `hello@unlock-protocol.com` },
           to: { email: args.recipient },
-          replyTo: undefined,
+          reply: undefined,
           subject: 'subject',
           html: undefined,
           text: 'text',
-          attachments: ['data:text/plain;base64,aGVsbG8gd29ybGQ='],
+          attachments: [
+            {
+              filename: 'attachment-1.plain',
+              content: 'aGVsbG8gd29ybGQ=',
+              mimeType: 'text/plain',
+            },
+          ],
         })
         return Promise.resolve({ messageId: 'abc123' })
       })
@@ -99,16 +105,48 @@ describe('route', () => {
         expect(options).toEqual({
           from: { name: 'Custom Sender', email: 'hello@unlock-protocol.com' },
           to: { email: args.recipient },
-          replyTo: undefined,
+          reply: undefined,
           subject: 'subject',
           html: undefined,
           text: 'text',
-          attachments: ['data:text/plain;base64,aGVsbG8gd29ybGQ='],
+          attachments: [
+            {
+              filename: 'attachment-1.plain',
+              content: 'aGVsbG8gd29ybGQ=',
+              mimeType: 'text/plain',
+            },
+          ],
         })
         return Promise.resolve({ messageId: 'abc123' })
       })
 
       await route(args)
+    })
+
+    it('should send the email using a configured sender address', async () => {
+      expect.assertions(1)
+      templates.template = {
+        subject: async () => 'subject',
+        text: async () => 'text',
+      }
+
+      const args = {
+        template: 'template',
+        params: { hello: 'world' },
+        recipient: 'julien@unlock-protocol.com',
+      }
+
+      emailService.send.mockImplementationOnce((options) => {
+        expect(options.from).toEqual({
+          name: 'Unlock Labs',
+          email: 'staging@unlock-protocol.com',
+        })
+        return Promise.resolve({ messageId: 'abc123' })
+      })
+
+      await route(args, undefined, {
+        senderAddress: 'staging@unlock-protocol.com',
+      })
     })
 
     describe('when the email was sent succesfuly', () => {
