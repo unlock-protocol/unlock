@@ -22,12 +22,12 @@
     "wrangler": "3.112.0"
   },
   "scripts": {
-    "dev": "yarn wrangler dev",
-    "deploy": "yarn wrangler deploy",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
     "set-env-vars": "op run --env-file=.op.env --  ./scripts/set-env-vars.sh",
     "test": "UNLOCK_ENV=test vitest run --config ./vitest.config.ts",
     "ci": "yarn lint && yarn test",
-    "lint": "eslint",
+    "lint": "eslint src logger.js vite.config.ts vitest.config.ts",
     "test:watch": "vitest --config ./vitest.config.ts"
   },
   "author": "",

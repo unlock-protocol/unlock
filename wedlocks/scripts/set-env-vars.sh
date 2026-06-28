@@ -3,7 +3,6 @@
 
 set -euo pipefail
 
-printf '%s' "$SMTP_HOST" | yarn wrangler secret put SMTP_HOST
-printf '%s' "$SMTP_PORT" | yarn wrangler secret put SMTP_PORT
-printf '%s' "$SMTP_USERNAME" | yarn wrangler secret put SMTP_USERNAME
-printf '%s' "$SMTP_PASSWORD" | yarn wrangler secret put SMTP_PASSWORD
+# SMTP_HOST, SMTP_PORT, and SMTP_USERNAME are configured as Worker vars in
+# wrangler.toml. Cloudflare rejects secrets that reuse those binding names.
+printf '%s' "$SMTP_PASSWORD" | yarn exec wrangler secret put SMTP_PASSWORD
