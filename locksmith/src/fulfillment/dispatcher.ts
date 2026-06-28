@@ -1,5 +1,3 @@
-import { Defender } from '@openzeppelin/defender-sdk'
-
 import { KeyManager, WalletService } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import { ethers } from 'ethers'
@@ -90,71 +88,22 @@ export const getPurchaser = async function ({
   network = 1,
   address = undefined,
 }: PurchaserArgs): Promise<WalletServiceSigner> {
-  // If we have a provider, we need to fetch that one... or yield an error!
-  const defenderRelayCredential = config.defenderRelayCredentials[network]
-  if (
-    defenderRelayCredential?.relayerApiKey &&
-    defenderRelayCredential?.relayerApiSecret
-  ) {
-    const defender = new Defender(defenderRelayCredential)
-    const provider = defender.relaySigner.getProvider()
-    const wallet = await defender.relaySigner.getSigner(provider, {
-      speed: 'fast',
-    })
-    // @ts-expect-error - polyfill
-    if (!wallet.signTypedData) {
-      // @ts-expect-error - polyfill
-      wallet.signTypedData = wallet._signTypedData
-    }
-    if (!address || address === (await wallet.getAddress())) {
-      const relayerStatus = await defender.relaySigner.getRelayerStatus()
-      if (!relayerStatus.paused) {
-        return wallet as unknown as WalletServiceSigner
-      } else {
-        logger.warn(
-          `The OpenZeppelin Relayer purchaser at ${address} is paused! We will use the local purchaser instead.`
-        )
-      }
-    }
-  }
-  const provider = await getPublicProviderForNetwork(network)
-  const wallet = new ethers.Wallet(config.purchaserCredentials, provider)
+  const wallet = await getLocalPurchaser({ network })
   if (!address || address === (await wallet.getAddress())) {
-    return wallet as unknown as WalletServiceSigner
+    return wallet
   }
   throw new Error(`The purchaser at ${address} is unavailable!`)
 }
 
 /**
- * Helper function that yields a provider and connected wallet based on the config
+ * Helper function that yields all the signers available on a network.
  * @param network
  * @returns
  */
 export const getAllPurchasers = async function ({
   network = 1,
 }: PurchaserArgs): Promise<WalletServiceSigner[]> {
-  const purchasers: WalletServiceSigner[] = []
-  const defenderRelayCredential = config.defenderRelayCredentials[network]
-  if (
-    defenderRelayCredential?.relayerApiKey &&
-    defenderRelayCredential?.relayerApiSecret
-  ) {
-    const defender = new Defender(defenderRelayCredential)
-    const provider = defender.relaySigner.getProvider()
-    const wallet = await defender.relaySigner.getSigner(provider, {
-      speed: 'fast',
-    })
-    // @ts-expect-error - polyfill
-    if (!wallet.signTypedData) {
-      // @ts-expect-error - polyfill
-      wallet.signTypedData = wallet._signTypedData
-    }
-    purchasers.push(wallet as unknown as WalletServiceSigner)
-  }
-  const provider = await getPublicProviderForNetwork(network)
-  const wallet = new ethers.Wallet(config.purchaserCredentials, provider)
-  purchasers.push(wallet as unknown as WalletServiceSigner)
-  return purchasers
+  return [await getLocalPurchaser({ network })]
 }
 
 /**

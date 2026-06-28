@@ -41,7 +41,6 @@
     "@logtail/node": "0.5.4",
     "@logtail/winston": "0.5.4",
     "@nuintun/qrcode": "5.0.2",
-    "@openzeppelin/defender-sdk": "2.4.0",
     "@openzeppelin/merkle-tree": "1.0.8",
     "@privy-io/server-auth": "1.32.5",
     "@resvg/resvg-js": "2.6.2",
