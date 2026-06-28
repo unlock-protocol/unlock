@@ -16,6 +16,24 @@ const Payload = z.object({
   subject: z.string(),
 })
 
+// Extracts the recipient email from a member's protected metadata, trimming
+// and lowercasing it. Returns undefined when no email is present so that
+// members without an email are skipped rather than enqueued as failing jobs.
+export const resolveRecipientEmail = (
+  protectedMetadata?: Record<string, unknown>
+): string | undefined => {
+  if (!protectedMetadata) {
+    return undefined
+  }
+  const lowercased = normalizer.toLowerCaseKeys(protectedMetadata)
+  const raw =
+    lowercased.email || lowercased.emailaddress || lowercased.email_address
+  if (typeof raw !== 'string' || !raw.trim()) {
+    return undefined
+  }
+  return normalizer.emailAddress(raw)
+}
+
 export const sendToAllJob: Task = async (payload, helper) => {
   const parsed = await Payload.parse(payload)
   const users = await UserTokenMetadata.findAll({
@@ -24,15 +42,13 @@ export const sendToAllJob: Task = async (payload, helper) => {
       chain: parsed.network,
     },
   })
-  const recipients = await users.map((item) => {
-    const metadata = item.data?.userMetadata?.protected
-    if (!metadata) {
+  const recipients = users.map((item) => {
+    const email = resolveRecipientEmail(item.data?.userMetadata?.protected)
+    if (!email) {
       return null
     }
-    const lowercased = normalizer.toLowerCaseKeys(metadata)
     return {
-      email:
-        lowercased.email || lowercased.emailaddress || lowercased.email_address,
+      email,
       walletAddress: item.userAddress,
     }
   })
