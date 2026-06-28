@@ -1,0 +1,54 @@
+name: Cloudflare Worker Deployments
+
+on:
+  workflow_call:
+    inputs:
+      workspace:
+        description: 'The package workspace to deploy'
+        type: string
+        required: true
+      environment:
+        description: 'The Wrangler environment to deploy'
+        type: string
+        required: true
+      smoke-test-url:
+        description: 'URL to verify after deployment'
+        type: string
+        required: true
+    secrets:
+      CLOUDFLARE_API_TOKEN:
+        required: true
+      SMTP_PASSWORD:
+        required: true
+
+jobs:
+  deploy-cloudflare-worker:
+    runs-on: ubuntu-24.04
+    env:
+      CLOUDFLARE_ACCOUNT_ID: 30fa248ff7b03cfcac765dae9509bba0
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22.21.0
+      - name: Enable Corepack
+        run: corepack enable
+      - name: Install dependencies
+        run: yarn install --immutable
+      - name: Check Cloudflare credentials
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo '::error::CLOUDFLARE_API_TOKEN is required to deploy Cloudflare Workers.'
+            exit 1
+          fi
+      - name: Deploy Worker
+        run: yarn workspace @unlock-protocol/${{ inputs.workspace }} exec wrangler deploy --env ${{ inputs.environment }}
+      - name: Update SMTP password
+        run: printf '%s' "$SMTP_PASSWORD" | yarn workspace @unlock-protocol/${{ inputs.workspace }} exec wrangler secret put SMTP_PASSWORD --env ${{ inputs.environment }}
+        env:
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+      - name: Smoke test Worker
+        run: |
+          body=$(curl -fsS -H 'Accept: application/json' '${{ inputs.smoke-test-url }}')
+          printf '%s' "$body" | grep -q '"subject":"Debug Email"'

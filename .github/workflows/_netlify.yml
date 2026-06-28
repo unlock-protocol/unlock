@@ -63,7 +63,7 @@ jobs:
             changed="changed"
           fi
           echo $changed
-          echo "::set-output name=changed::$changed"
+          echo "changed=$changed" >> "$GITHUB_OUTPUT"
         shell: bash
         id: check_changes
 
