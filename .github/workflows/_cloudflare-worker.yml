@@ -25,7 +25,6 @@ jobs:
   deploy-cloudflare-worker:
     runs-on: ubuntu-24.04
     env:
-      CLOUDFLARE_ACCOUNT_ID: 30fa248ff7b03cfcac765dae9509bba0
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
     steps:
       - uses: actions/checkout@v4
@@ -50,5 +49,5 @@ jobs:
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
       - name: Smoke test Worker
         run: |
-          body=$(curl -fsS -H 'Accept: application/json' '${{ inputs.smoke-test-url }}')
+          body=$(curl --retry 5 --retry-all-errors --retry-delay 3 -fsS -H 'Accept: application/json' "${{ inputs['smoke-test-url'] }}")
           printf '%s' "$body" | grep -q '"subject":"Debug Email"'
