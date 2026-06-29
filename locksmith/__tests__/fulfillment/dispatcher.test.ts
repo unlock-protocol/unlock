@@ -147,6 +147,15 @@ describe('Dispatcher', () => {
       expect(await purchaser.getAddress()).toBe(localPurchaserAddress)
     })
 
+    it('getPurchaser matches the requested address case-insensitively', async () => {
+      expect.assertions(1)
+      const purchaser = await getPurchaser({
+        network: 31337,
+        address: localPurchaserAddress.toLowerCase(),
+      })
+      expect(await purchaser.getAddress()).toBe(localPurchaserAddress)
+    })
+
     it('getPurchaser throws when an unavailable address is requested', async () => {
       expect.assertions(1)
       await expect(

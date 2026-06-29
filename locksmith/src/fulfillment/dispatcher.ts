@@ -89,7 +89,12 @@ export const getPurchaser = async function ({
   address = undefined,
 }: PurchaserArgs): Promise<WalletServiceSigner> {
   const wallet = await getLocalPurchaser({ network })
-  if (!address || address === (await wallet.getAddress())) {
+  // Compare case-insensitively: callers may pass a lowercased address while
+  // wallet.getAddress() returns a checksummed one.
+  if (
+    !address ||
+    address.toLowerCase() === (await wallet.getAddress()).toLowerCase()
+  ) {
     return wallet
   }
   throw new Error(`The purchaser at ${address} is unavailable!`)
