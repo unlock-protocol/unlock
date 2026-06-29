@@ -113,7 +113,7 @@ jobs:
     with:
       workspace: wedlocks
       environment: staging
-      smoke-test-url: https://wedlocks-staging.unlock-protocol.workers.dev/preview/debug?foo=bar
+      smoke-test-url: https://staging-wedlocks.unlock-protocol.com/preview/debug?foo=bar
     secrets:
       SMTP_PASSWORD: ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SMTP_PASSWORD }}
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
