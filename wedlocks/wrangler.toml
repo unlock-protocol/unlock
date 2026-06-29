@@ -16,6 +16,9 @@ UNLOCK_ENV = "production"
 
 [env.staging]
 name = "wedlocks-staging"
+routes = [
+  { pattern = "staging-wedlocks.unlock-protocol.com/*", zone_name = "unlock-protocol.com" },
+]
 
 [env.staging.vars]
 SMTP_HOST = "smtp.sendgrid.net"
