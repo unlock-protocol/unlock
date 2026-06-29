@@ -1,6 +1,10 @@
 import { EventEmitter } from 'events'
 import { BigNumber, Wallet } from 'ethers'
-import Dispatcher from '../../src/fulfillment/dispatcher'
+import Dispatcher, {
+  getAllPurchasers,
+  getPurchaser,
+} from '../../src/fulfillment/dispatcher'
+import config from '../../src/config/config'
 import { vi } from 'vitest'
 const lockAddress = '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267'
 const recipient = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
@@ -124,6 +128,42 @@ describe('Dispatcher', () => {
           maxPriorityFeePerGas: BigInt(40000000000),
         }
       )
+    })
+  })
+  describe('purchasers (local signer only, no Defender)', () => {
+    const localPurchaserAddress = new Wallet(config.purchaserCredentials)
+      .address
+
+    it('getAllPurchasers returns only the local purchaser', async () => {
+      expect.assertions(2)
+      const purchasers = await getAllPurchasers({ network: 31337 })
+      expect(purchasers).toHaveLength(1)
+      expect(await purchasers[0].getAddress()).toBe(localPurchaserAddress)
+    })
+
+    it('getPurchaser returns the local purchaser', async () => {
+      expect.assertions(1)
+      const purchaser = await getPurchaser({ network: 31337 })
+      expect(await purchaser.getAddress()).toBe(localPurchaserAddress)
+    })
+
+    it('getPurchaser matches the requested address case-insensitively', async () => {
+      expect.assertions(1)
+      const purchaser = await getPurchaser({
+        network: 31337,
+        address: localPurchaserAddress.toLowerCase(),
+      })
+      expect(await purchaser.getAddress()).toBe(localPurchaserAddress)
+    })
+
+    it('getPurchaser throws when an unavailable address is requested', async () => {
+      expect.assertions(1)
+      await expect(
+        getPurchaser({
+          network: 31337,
+          address: '0x0000000000000000000000000000000000000001',
+        })
+      ).rejects.toThrow('The purchaser at')
     })
   })
 })

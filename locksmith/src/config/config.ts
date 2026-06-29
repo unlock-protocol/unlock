@@ -1,6 +1,5 @@
 import '../utils/envLoader'
 import { Options } from 'sequelize'
-import networks from '@unlock-protocol/networks'
 
 export const isProduction = ['prod'].includes(
   process.env.UNLOCK_ENV?.toLowerCase().trim() ?? ''
@@ -35,26 +34,11 @@ const prodConfig = {
 
 const defaultConfig = isProduction ? prodConfig : stagingConfig
 
-interface DefenderRelayCredentials {
-  [network: number]: {
-    relayerApiKey: string
-    relayerApiSecret: string
-  }
-}
-
 // Interface for Google API credentials
 interface GoogleWalletCredentials {
   client_email: string
   private_key: string
 }
-
-const defenderRelayCredentials: DefenderRelayCredentials = {}
-Object.values(networks).forEach((network) => {
-  defenderRelayCredentials[network.id] = {
-    relayerApiKey: process.env[`DEFENDER_RELAY_KEY_${network.id}`] || '',
-    relayerApiSecret: process.env[`DEFENDER_RELAY_SECRET_${network.id}`] || '',
-  }
-})
 
 /*
   To obtain and set up your Google application credentials, follow these steps:
@@ -137,7 +121,6 @@ const config = {
   logtailSourceToken: process.env.LOGTAIL,
   sessionDuration: Number(process.env.SESSION_DURATION || 86400 * 60), // 60 days
   requestTimeout: '25s',
-  defenderRelayCredentials,
   databaseUrl: process.env.DATABASE_URL || '',
   sentry: {
     dsn: 'https://30c5b6884872435f8cbda4978c349af9@o555569.ingest.sentry.io/5685514',

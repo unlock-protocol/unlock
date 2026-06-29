@@ -289,6 +289,71 @@ const StripeNotReady = ({
   )
 }
 
+// Shown when a lock already has Stripe connected but the credit-card key granter
+// is no longer authorized on the lock (e.g. after the granter address changed).
+// Without this, credit card purchases fail silently while the UI shows "enabled".
+const CreditCardGranterWarning = ({
+  lockAddress,
+  network,
+  keyGranter,
+  isManager,
+  disabled,
+}: ConnectStripeProps) => {
+  const web3Service = useWeb3Service()
+  const { getWalletService } = useProvider()
+
+  const {
+    isPending,
+    data: isGranted,
+    refetch,
+  } = useQuery({
+    queryKey: ['checkIsKeyGranter', lockAddress, network, keyGranter],
+    queryFn: () => web3Service.isKeyGranter(lockAddress, keyGranter, network),
+  })
+
+  const grantKeyGrantorRoleMutation = useMutation({
+    mutationFn: async (): Promise<any> => {
+      const walletService = await getWalletService(network)
+      return walletService.addKeyGranter({ lockAddress, keyGranter })
+    },
+  })
+
+  const onReauthorize = async () => {
+    await ToastHelper.promise(grantKeyGrantorRoleMutation.mutateAsync(), {
+      error: "Can't re-authorize, please try again.",
+      success: 'Credit card payments re-authorized.',
+      loading: 'Re-authorizing credit card payments.',
+    })
+    await refetch()
+  }
+
+  if (isPending || isGranted) {
+    return null
+  }
+
+  return (
+    <div className="grid gap-2 p-4 border border-red-200 rounded-xl bg-red-50">
+      <span className="font-semibold text-red-600">
+        Action required: credit card payments are paused
+      </span>
+      <span className="text-sm text-gray-700">
+        {`Unlock's payment processor is no longer authorized to grant keys on
+        this lock, so credit card purchases will fail until it is re-authorized.`}
+      </span>
+      {isManager && (
+        <Button
+          size="small"
+          className="w-full md:w-2/3"
+          onClick={onReauthorize}
+          disabled={disabled || grantKeyGrantorRoleMutation.isPending}
+        >
+          Re-authorize credit card payments
+        </Button>
+      )}
+    </div>
+  )
+}
+
 export const CreditCardWithStripeForm = ({
   lockAddress,
   network,
@@ -413,6 +478,13 @@ export const CreditCardWithStripeForm = ({
     if (ConnectStatus.CONNECTED === stripeConnectionState) {
       return (
         <div className="grid gap-4">
+          <CreditCardGranterWarning
+            lockAddress={lockAddress}
+            network={network}
+            keyGranter={keyGranter as string}
+            isManager={isManager}
+            disabled={disabled}
+          />
           <DisconnectStripe
             isManager={isManager}
             onDisconnect={onDisconnectStripe}
