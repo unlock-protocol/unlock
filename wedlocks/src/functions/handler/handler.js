@@ -40,6 +40,26 @@ const isSmtpRuntimeError = (error) => {
   )
 }
 
+const getAssetBaseUrl = (event) => {
+  const rawUrl = event?.rawUrl || event?.url
+  if (rawUrl) {
+    try {
+      return new URL('/__wedlocks/images/', rawUrl).toString()
+    } catch {
+      return undefined
+    }
+  }
+
+  const host = getHeader(event.headers, 'host')
+  if (!host) {
+    return undefined
+  }
+
+  const forwardedProto = getHeader(event.headers, 'x-forwarded-proto')
+  const proto = forwardedProto || 'https'
+  return `${proto}://${host}/__wedlocks/images/`
+}
+
 export const handler = async (event, env, responseCallback) => {
   const callback = (err /** always null! */, response) => {
     if (response.statusCode >= 400) {
@@ -83,6 +103,7 @@ export const handler = async (event, env, responseCallback) => {
         template: match[1],
         params: event.queryStringParameters,
         senderAddress: env.SMTP_FROM_ADDRESS,
+        assetBaseUrl: getAssetBaseUrl(event),
         json: !!getHeader(event.headers, 'accept')?.match('application/json'),
       })
 
@@ -150,6 +171,7 @@ export const handler = async (event, env, responseCallback) => {
       },
       {
         senderAddress: env.SMTP_FROM_ADDRESS,
+        assetBaseUrl: getAssetBaseUrl(event),
       }
     )
 

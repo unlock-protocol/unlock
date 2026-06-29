@@ -1,4 +1,5 @@
 import { handler } from './functions/handler/handler'
+import { templateRenderer } from './templateRenderer'
 
 export interface Env {
   SMTP_HOST: string
@@ -16,9 +17,26 @@ interface HandlerResponse {
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
+    const url = new URL(request.url)
+    const imageMatch = url.pathname.match(/^\/__wedlocks\/images\/([^/]+)$/)
+    if (imageMatch) {
+      const image = templateRenderer.getEmbeddedImage(
+        decodeURIComponent(imageMatch[1])
+      )
+      if (!image) {
+        return new Response('Not Found', { status: 404 })
+      }
+
+      return new Response(image.body, {
+        headers: {
+          'Content-Type': image.contentType,
+          'Cache-Control': 'public, max-age=31536000, immutable',
+        },
+      })
+    }
+
     const body = await request.text()
 
-    const url = new URL(request.url)
     const headers: Record<string, string> = {}
     for (const pair of request.headers.entries()) {
       headers[pair[0]] = pair[1]
@@ -30,6 +48,7 @@ export default {
         headers,
         body,
         path: url.pathname,
+        rawUrl: request.url,
         queryStringParameters: Object.fromEntries(url.searchParams.entries()),
       },
       env,
