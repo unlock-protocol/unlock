@@ -29,8 +29,9 @@ export default {
       })
     }
     const networkId = matched[1]
+    const networkConfig = networks[networkId]
 
-    const { graphId } = networks[networkId].subgraph
+    const graphId = networkConfig?.subgraph?.graphId
 
     if (request.method === 'GET' && graphId) {
       return new Response(JSON.stringify({ graphId }), {
@@ -69,38 +70,46 @@ export default {
       })
     }
 
-    // Forward the GraphQL request to the subgraph
-    const graphResponse = await fetch(subgraphUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ query, variables }),
-    })
+    try {
+      // Forward the GraphQL request to the subgraph
+      const graphResponse = await fetch(subgraphUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query, variables }),
+      })
 
-    // Extract response data and headers
-    const responseData = await graphResponse.text()
-    const responseHeaders = new Headers(graphResponse.headers)
+      // Extract response data and headers
+      const responseData = await graphResponse.text()
+      const responseHeaders = new Headers(graphResponse.headers)
 
-    // Append CORS headers to the response
-    Object.entries(corsHeaders).forEach(([key, value]) => {
-      responseHeaders.set(key, value)
-    })
+      // Append CORS headers to the response
+      Object.entries(corsHeaders).forEach(([key, value]) => {
+        responseHeaders.set(key, value)
+      })
 
-    if (graphResponse.status !== 200) {
-      console.log({
+      if (graphResponse.status !== 200) {
+        console.log({
+          status: graphResponse.status,
+          subgraphUrl,
+          query,
+          variables,
+          responseData,
+        })
+      }
+
+      // Return the response from the subgraph
+      return new Response(responseData, {
         status: graphResponse.status,
-        subgraphUrl,
-        query,
-        variables,
-        responseData,
+        headers: responseHeaders,
+      })
+    } catch (error) {
+      console.error('Error forwarding graph request:', error)
+      return new Response('Internal Server Error', {
+        status: 500,
+        headers: corsHeaders,
       })
     }
-
-    // Return the response from the subgraph
-    return new Response(responseData, {
-      status: graphResponse.status,
-      headers: responseHeaders,
-    })
   },
 }

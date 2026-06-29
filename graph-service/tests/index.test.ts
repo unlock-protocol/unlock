@@ -37,10 +37,22 @@ describe('Graph Service', () => {
     expect(await response.text()).toBe('Unsupported network ID: 999999')
   })
 
-  // Test for non-POST requests
-  it('should return 405 for non-POST requests', async () => {
+  // Test for GET explorer redirects
+  it('should redirect GET requests to The Graph explorer', async () => {
     const request = new Request('https://example.com/1', {
       method: 'GET',
+    })
+    const response = await worker.fetch(request, mockEnv)
+    expect(response.status).toBe(307)
+    expect(response.headers.get('location')).toContain(
+      'https://thegraph.com/explorer/subgraphs/'
+    )
+  })
+
+  // Test for non-POST requests
+  it('should return 405 for non-GET/POST requests', async () => {
+    const request = new Request('https://example.com/1', {
+      method: 'PUT',
     })
     const response = await worker.fetch(request, mockEnv)
     expect(response.status).toBe(405)

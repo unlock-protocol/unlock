@@ -111,9 +111,18 @@ jobs:
     needs: run-all-tests
     uses: ./.github/workflows/_cloudflare-worker.yml
     with:
-      workspace: wedlocks
-      environment: staging
-      smoke-test-url: https://staging-wedlocks.unlock-protocol.com/preview/debug?foo=bar
+      workspace: '@unlock-protocol/wedlocks'
+      wrangler-environment: staging
+      post-deploy-command: |
+        if [ -z "$SMTP_PASSWORD" ]; then
+          echo '::error::SMTP_PASSWORD is required to update wedlocks SMTP credentials.'
+          exit 1
+        fi
+
+        printf '%s' "$SMTP_PASSWORD" | yarn workspace "$WORKSPACE" exec wrangler secret put SMTP_PASSWORD --env "$WRANGLER_ENVIRONMENT"
+      smoke-test-command: |
+        body=$(curl --retry 5 --retry-all-errors --retry-delay 3 -fsS -H 'Accept: application/json' 'https://staging-wedlocks.unlock-protocol.com/preview/debug?foo=bar')
+        printf '%s' "$body" | grep -q '"subject":"Debug Email"'
     secrets:
       SMTP_PASSWORD: ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SMTP_PASSWORD }}
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

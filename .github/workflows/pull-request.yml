@@ -19,6 +19,7 @@ jobs:
         "subgraph",
         "governance",
         "provider",
+        "graph-service",
         "unlock-protocol-com",
         "wedlocks",
         "unlock-app",
@@ -49,6 +50,30 @@ jobs:
   # the check for changes in network files is included within the workflow itself
   networks-changed:
     uses: ./.github/workflows/_networks.yml
+
+  cloudflare-deploy-credentials:
+    needs: check-changes
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository && (contains(fromJson(needs.check-changes.outputs.changed), 'wedlocks') || contains(fromJson(needs.check-changes.outputs.changed), 'provider') || contains(fromJson(needs.check-changes.outputs.changed), 'graph-service')) }}
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Verify Cloudflare API token
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo '::error::CLOUDFLARE_API_TOKEN is required to deploy Cloudflare Workers.'
+            exit 1
+          fi
+
+          response=$(curl -sS -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+            "https://api.cloudflare.com/client/v4/accounts/30fa248ff7b03cfcac765dae9509bba0")
+          success=$(printf '%s' "$response" | jq -r '.success')
+
+          if [ "$success" != "true" ]; then
+            echo '::error::CLOUDFLARE_API_TOKEN cannot access Cloudflare account 30fa248ff7b03cfcac765dae9509bba0.'
+            printf '%s' "$response" | jq -r '.errors[]?.message'
+            exit 1
+          fi
 
   # Vercel Deployments
   deploy-unlock-protocol-com:

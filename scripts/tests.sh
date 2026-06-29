@@ -9,7 +9,14 @@ BASE_DOCKER_COMPOSE=$REPO_ROOT/docker/docker-compose.yml
 DOCKER_COMPOSE_FILE=$REPO_ROOT/docker/docker-compose.ci.yml
 
 UNLOCK_SERVICE_NAME="${SERVICE/packages\//}"
-COMMAND="yarn workspace @unlock-protocol/$UNLOCK_SERVICE_NAME run ci"
+PACKAGE_JSON_PATH="$REPO_ROOT/$SERVICE/package.json"
+if [ ! -f "$PACKAGE_JSON_PATH" ]; then
+  echo "No package.json found for $SERVICE at $PACKAGE_JSON_PATH"
+  exit 1
+fi
+
+WORKSPACE_NAME=$(node -e "console.log(require(process.argv[1]).name)" "$PACKAGE_JSON_PATH")
+COMMAND="yarn workspace $WORKSPACE_NAME run ci"
 
 # Setting the right env var
 export UNLOCK_ENV=test

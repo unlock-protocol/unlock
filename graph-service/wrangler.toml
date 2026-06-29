@@ -1,5 +1,6 @@
 name = "graph-service"
 main = "src/index.ts"
+account_id = "30fa248ff7b03cfcac765dae9509bba0"
 compatibility_date = "2024-07-29"
 tail_consumers = [{service = "graph-service-tail"}]
 
