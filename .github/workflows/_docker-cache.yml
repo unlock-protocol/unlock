@@ -10,6 +10,7 @@ on:
 
 jobs:
   cache_docker_deps_layer:
+    continue-on-error: true
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4

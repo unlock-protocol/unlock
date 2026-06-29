@@ -44,7 +44,6 @@ export const route = async (args, smtpConfig, options = {}) => {
 
   const subject = templateRenderer.renderSubject(resolvedTemplate, params)
   const text = templateRenderer.renderText(resolvedTemplate, params)
-  const html = templateRenderer.renderHtml(resolvedTemplate, params)
 
   const email = {
     from: {
@@ -54,7 +53,9 @@ export const route = async (args, smtpConfig, options = {}) => {
     to: { email: recipient },
     reply: replyTo ? { email: replyTo } : undefined,
     subject,
-    html,
+    html: templateRenderer.renderHtml(resolvedTemplate, params, {
+      assetBaseUrl: options.assetBaseUrl,
+    }),
     text,
     attachments: templateRenderer.normalizeAttachments(
       []
@@ -95,7 +96,10 @@ export const preview = async (args) => {
       templateRenderer.validateTemplateExists(templateName)
     const renderedHtml = templateRenderer.renderHtmlPreview(
       resolvedTemplate,
-      params || {}
+      params || {},
+      {
+        assetBaseUrl: args.assetBaseUrl,
+      }
     )
     const subject = templateRenderer.renderSubject(
       resolvedTemplate,

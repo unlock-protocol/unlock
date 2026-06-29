@@ -84,17 +84,14 @@ jobs:
 
   deploy-wedlocks:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
-    uses: ./.github/workflows/_netlify.yml
+    uses: ./.github/workflows/_cloudflare-worker.yml
     with:
-      service: wedlocks
-      target-env: prod
-      bypass_diff_check: bypass
+      workspace: wedlocks
+      environment: production
+      smoke-test-url: https://wedlocks.unlock-protocol.com/preview/debug?foo=bar
     secrets:
-      SITE_ID: ${{ secrets.WEDLOCKS_NETLIFY_PROD_SITE_ID }}
-      AUTH_TOKEN: ${{ secrets.WEDLOCKS_NETLIFY_PROD_AUTH_TOKEN }}
-      SMTP_HOST: ${{ secrets.WEDLOCKS_NETLIFY_PROD_SMTP_HOST }}
-      SMTP_USERNAME: ${{ secrets.WEDLOCKS_NETLIFY_PROD_SMTP_USERNAME }}
       SMTP_PASSWORD: ${{ secrets.WEDLOCKS_NETLIFY_PROD_SMTP_PASSWORD }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
   deploy-unlock-app-vercel:
     if: ${{ github.repository_owner == 'unlock-protocol'  }}

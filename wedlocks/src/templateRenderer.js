@@ -73,6 +73,27 @@ const embeddedInlineImage = (filename) => {
   return `cid:${filename}`
 }
 
+const publicInlineImage = (assetBaseUrl) => (filename) => {
+  if (!assetBaseUrl) {
+    return embeddedInlineImage(filename)
+  }
+  const baseUrl = assetBaseUrl.endsWith('/') ? assetBaseUrl : `${assetBaseUrl}/`
+  return new URL(encodeURIComponent(filename), baseUrl).toString()
+}
+
+const decodeBase64 = (base64Content) => {
+  if (typeof atob === 'function') {
+    const binaryString = atob(base64Content)
+    const bytes = new Uint8Array(binaryString.length)
+    for (let index = 0; index < binaryString.length; index++) {
+      bytes[index] = binaryString.charCodeAt(index)
+    }
+    return bytes
+  }
+
+  return Uint8Array.from(Buffer.from(base64Content, 'base64'))
+}
+
 const renderHtmlWithInlineImages = (templateSpec, data, inlineImageHelper) => {
   const resolvedTemplate = templateRenderer.resolveTemplateName(templateSpec)
   const precompiledTemplate = PrecompiledTemplates[resolvedTemplate]
@@ -146,15 +167,21 @@ export const templateRenderer = {
     }
   },
 
-  renderHtml: (templateSpec, data) => {
-    // worker-mailer has no CID inline attachment support, so delivery uses
-    // embedded data URIs for template images.
-    return renderHtmlWithInlineImages(templateSpec, data, embeddedInlineImage)
+  renderHtml: (templateSpec, data, options = {}) => {
+    return renderHtmlWithInlineImages(
+      templateSpec,
+      data,
+      publicInlineImage(options.assetBaseUrl)
+    )
   },
 
-  renderHtmlPreview: (templateSpec, data) => {
+  renderHtmlPreview: (templateSpec, data, options = {}) => {
     try {
-      return renderHtmlWithInlineImages(templateSpec, data, embeddedInlineImage)
+      return renderHtmlWithInlineImages(
+        templateSpec,
+        data,
+        publicInlineImage(options.assetBaseUrl)
+      )
     } catch (error) {
       if (error instanceof TemplateNotFoundError) {
         return `<p>Template not found: ${escapeHtml(templateSpec)}</p>
@@ -175,6 +202,23 @@ export const templateRenderer = {
   getTemplateAttachments: (templateSpec) => {
     const originalTemplate = templateRenderer.getTemplateMetadata(templateSpec)
     return originalTemplate?.attachments || []
+  },
+
+  getEmbeddedImage: (filename) => {
+    const image = PrecompiledTemplates.embeddedImages?.[filename]
+    if (!image) {
+      return undefined
+    }
+
+    const match = image.match(/^data:([^;,]+);base64,(.*)$/)
+    if (!match) {
+      return undefined
+    }
+
+    return {
+      contentType: match[1],
+      body: decodeBase64(match[2]),
+    }
   },
 
   normalizeAttachments: (attachments = []) => {
