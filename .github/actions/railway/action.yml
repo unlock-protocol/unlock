@@ -1,21 +1,18 @@
 name: Deploy on Railway
+description: Deploys a service to Railway
 
 inputs:
   service:
     description: 'The service/app to build'
-    type: string
     required: true
   service-id:
     description: 'The Railway service ID to deploy to (or 1Password reference)'
-    type: string
     required: true
   environment:
     description: 'The Railway environment to deploy to'
-    type: string
     required: true
   railway-token:
     description: 'Railway auth token'
-    type: string
     required: true
 runs:
   using: 'composite'
@@ -29,4 +26,15 @@ runs:
 
     - name: Deploy to Railway
       shell: bash
-      run: railway up --ci --service=${{ inputs.service-id }} --environment=${{ inputs.environment }}
+      run: |
+        for attempt in 1 2 3; do
+          if railway up --ci --service="${{ inputs.service-id }}" --environment="${{ inputs.environment }}"; then
+            exit 0
+          fi
+
+          if [ "$attempt" -eq 3 ]; then
+            exit 1
+          fi
+
+          sleep $((attempt * 15))
+        done

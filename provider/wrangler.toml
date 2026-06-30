@@ -1,5 +1,6 @@
 name = "rpc-provider"
 main = "src/index.ts"
+account_id = "30fa248ff7b03cfcac765dae9509bba0"
 # 2024-09-23 is the minimum date required for global_fetch_strictly_public (added ~late 2024).
 # The Cloudflare compatibility changelog between the previous date (2022-08-17) and this one
 # was reviewed before this change landed: the only flags that affect this worker are fetch-related

@@ -37,6 +37,8 @@ The tests cover various scenarios including:
 
 ## Deployment
 
+Production deployments run from the `production` branch through the shared Cloudflare Worker GitHub Actions workflow.
+
 To deploy the service to Cloudflare Workers:
 
 ```

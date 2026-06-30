@@ -1,0 +1,99 @@
+name: Cloudflare Worker Deployments
+
+on:
+  workflow_call:
+    inputs:
+      workspace:
+        description: 'The package workspace to deploy'
+        type: string
+        required: true
+      wrangler-environment:
+        description: 'The optional Wrangler environment to deploy'
+        type: string
+        required: false
+        default: ''
+      sync-secrets-command:
+        description: 'Optional command to sync Worker secrets before deployment'
+        type: string
+        required: false
+        default: ''
+      pre-deploy-command:
+        description: 'Optional command to run before deployment'
+        type: string
+        required: false
+        default: ''
+      post-deploy-command:
+        description: 'Optional command to run after deployment'
+        type: string
+        required: false
+        default: ''
+      smoke-test-command:
+        description: 'Command to verify the Worker after deployment'
+        type: string
+        required: true
+    secrets:
+      CLOUDFLARE_API_TOKEN:
+        required: true
+      OP_SERVICE_ACCOUNT_TOKEN:
+        required: false
+      SMTP_PASSWORD:
+        required: false
+
+jobs:
+  deploy-cloudflare-worker:
+    name: Deploy ${{ inputs.workspace }}
+    runs-on: ubuntu-24.04
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+      SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+      WORKSPACE: ${{ inputs.workspace }}
+      WRANGLER_ENVIRONMENT: ${{ inputs['wrangler-environment'] }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22.21.0
+      - name: Enable Corepack
+        run: corepack enable
+      - name: Install dependencies
+        run: yarn install --immutable
+      - name: Check Cloudflare credentials
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo '::error::CLOUDFLARE_API_TOKEN is required to deploy Cloudflare Workers.'
+            exit 1
+          fi
+      - name: Check 1Password credentials
+        if: ${{ inputs.sync-secrets-command != '' }}
+        run: |
+          if [ -z "$OP_SERVICE_ACCOUNT_TOKEN" ]; then
+            echo '::error::OP_SERVICE_ACCOUNT_TOKEN is required to sync Cloudflare Worker secrets from 1Password.'
+            exit 1
+          fi
+      - name: Install 1Password CLI
+        if: ${{ inputs.sync-secrets-command != '' }}
+        uses: 1Password/install-cli-action@v1
+      - name: Sync Worker secrets
+        if: ${{ inputs.sync-secrets-command != '' }}
+        run: ${{ inputs.sync-secrets-command }}
+        shell: bash
+      - name: Run pre-deploy command
+        if: ${{ inputs.pre-deploy-command != '' }}
+        run: ${{ inputs.pre-deploy-command }}
+        shell: bash
+      - name: Deploy Worker
+        run: |
+          args=(deploy)
+          if [ -n "$WRANGLER_ENVIRONMENT" ]; then
+            args+=(--env "$WRANGLER_ENVIRONMENT")
+          fi
+
+          yarn workspace "$WORKSPACE" exec wrangler "${args[@]}"
+      - name: Run post-deploy command
+        if: ${{ inputs.post-deploy-command != '' }}
+        run: ${{ inputs.post-deploy-command }}
+        shell: bash
+      - name: Smoke test Worker
+        run: ${{ inputs.smoke-test-command }}
+        shell: bash

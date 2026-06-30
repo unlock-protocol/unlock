@@ -84,17 +84,54 @@ jobs:
 
   deploy-wedlocks:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
-    uses: ./.github/workflows/_netlify.yml
+    uses: ./.github/workflows/_cloudflare-worker.yml
     with:
-      service: wedlocks
-      target-env: prod
-      bypass_diff_check: bypass
+      workspace: '@unlock-protocol/wedlocks'
+      wrangler-environment: production
+      pre-deploy-command: yarn workspace @unlock-protocol/email-templates build
+      post-deploy-command: |
+        if [ -z "$SMTP_PASSWORD" ]; then
+          echo '::error::SMTP_PASSWORD is required to update wedlocks SMTP credentials.'
+          exit 1
+        fi
+
+        printf '%s' "$SMTP_PASSWORD" | yarn workspace "$WORKSPACE" exec wrangler secret put SMTP_PASSWORD --env "$WRANGLER_ENVIRONMENT"
+      smoke-test-command: |
+        body=$(curl --retry 5 --retry-all-errors --retry-delay 3 -fsS -H 'Accept: application/json' 'https://wedlocks.unlock-protocol.com/preview/debug?foo=bar')
+        printf '%s' "$body" | grep -q '"subject":"Debug Email"'
     secrets:
-      SITE_ID: ${{ secrets.WEDLOCKS_NETLIFY_PROD_SITE_ID }}
-      AUTH_TOKEN: ${{ secrets.WEDLOCKS_NETLIFY_PROD_AUTH_TOKEN }}
-      SMTP_HOST: ${{ secrets.WEDLOCKS_NETLIFY_PROD_SMTP_HOST }}
-      SMTP_USERNAME: ${{ secrets.WEDLOCKS_NETLIFY_PROD_SMTP_USERNAME }}
       SMTP_PASSWORD: ${{ secrets.WEDLOCKS_NETLIFY_PROD_SMTP_PASSWORD }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+  deploy-rpc-provider:
+    if: ${{ github.repository_owner == 'unlock-protocol' }}
+    uses: ./.github/workflows/_cloudflare-worker.yml
+    with:
+      workspace: '@unlock-protocol/provider'
+      sync-secrets-command: yarn workspace @unlock-protocol/provider set-env-vars
+      smoke-test-command: |
+        body=$(curl --retry 5 --retry-all-errors --retry-delay 3 -fsS \
+          -H 'Content-Type: application/json' \
+          --data '{"jsonrpc":"2.0","id":1,"method":"eth_chainId","params":[]}' \
+          'https://rpc.unlock-protocol.com/1')
+        printf '%s' "$body" | grep -q '"result":"0x1"'
+    secrets:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+
+  deploy-graph-service:
+    if: ${{ github.repository_owner == 'unlock-protocol' }}
+    uses: ./.github/workflows/_cloudflare-worker.yml
+    with:
+      workspace: graph-service
+      sync-secrets-command: yarn workspace graph-service set-graph-urls
+      smoke-test-command: |
+        headers=$(mktemp)
+        curl --retry 5 --retry-all-errors --retry-delay 3 -fsS -D "$headers" -o /dev/null 'https://subgraph.unlock-protocol.com/1'
+        grep -iq '^location: https://thegraph.com/explorer/subgraphs/' "$headers"
+    secrets:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
   deploy-unlock-app-vercel:
     if: ${{ github.repository_owner == 'unlock-protocol'  }}
