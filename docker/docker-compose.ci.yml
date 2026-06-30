@@ -90,6 +90,21 @@ services:
     ports:
       - 8787:8787
 
+  graph-service:
+    # Container for the Cloudflare Graph Service worker
+    env_file:
+      - ./${UNLOCK_ENV}.env
+    image: graph-service
+    build:
+      context: ../
+      target: dev
+      cache_from:
+        - unlockprotocol/unlock-dev
+      args:
+        BUILD_DIR: graph-service
+    ports:
+      - 8788:8787
+
   unlock-protocol-com:
     # Container for the static site
     env_file:

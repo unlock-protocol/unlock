@@ -21,6 +21,7 @@ on:
           "unlock-protocol-com",
           "wedlocks",
           "provider",
+          "graph-service",
           "unlock-app",
           "governance-app",
           "packages/core"

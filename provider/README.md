@@ -108,6 +108,8 @@ You can use the `yarn dev` to run locally.
 
 # Deployment
 
+Production deployments run from the `production` branch through the shared Cloudflare Worker GitHub Actions workflow.
+
 You can use the `yarn deploy` to deploy to Cloudflare.
 
 # KV Namespaces
@@ -157,5 +159,4 @@ Then set it in 1Password, under `secrets/rpc-providers`.
 
 ## TODO
 
-- Deploy through Github action
 - Measure all the things
