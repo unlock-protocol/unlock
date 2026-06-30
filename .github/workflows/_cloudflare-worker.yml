@@ -17,6 +17,11 @@ on:
         type: string
         required: false
         default: ''
+      pre-deploy-command:
+        description: 'Optional command to run before deployment'
+        type: string
+        required: false
+        default: ''
       post-deploy-command:
         description: 'Optional command to run after deployment'
         type: string
@@ -72,6 +77,10 @@ jobs:
       - name: Sync Worker secrets
         if: ${{ inputs.sync-secrets-command != '' }}
         run: ${{ inputs.sync-secrets-command }}
+        shell: bash
+      - name: Run pre-deploy command
+        if: ${{ inputs.pre-deploy-command != '' }}
+        run: ${{ inputs.pre-deploy-command }}
         shell: bash
       - name: Deploy Worker
         run: |
