@@ -1,0 +1,41 @@
+name = "wedlocks"
+main = "src/index.ts"
+account_id = "30fa248ff7b03cfcac765dae9509bba0"
+compatibility_flags = [ "nodejs_compat" ]
+compatibility_date = "2024-09-23"
+
+[dev]
+port = 9999
+
+[vars]
+SMTP_HOST = "smtp.sendgrid.net"
+SMTP_PORT = 587
+SMTP_USERNAME = "apikey"
+SMTP_FROM_ADDRESS = "hello@unlock-protocol.com"
+UNLOCK_ENV = "production"
+
+[env.staging]
+name = "wedlocks-staging"
+routes = [
+  { pattern = "staging-wedlocks.unlock-protocol.com/*", zone_name = "unlock-protocol.com" },
+]
+
+[env.staging.vars]
+SMTP_HOST = "smtp.sendgrid.net"
+SMTP_PORT = 587
+SMTP_USERNAME = "apikey"
+SMTP_FROM_ADDRESS = "hello@unlock-protocol.com"
+UNLOCK_ENV = "staging"
+
+[env.production]
+name = "wedlocks"
+routes = [
+  { pattern = "wedlocks.unlock-protocol.com/*", zone_name = "unlock-protocol.com" },
+]
+
+[env.production.vars]
+SMTP_HOST = "smtp.sendgrid.net"
+SMTP_PORT = 587
+SMTP_USERNAME = "apikey"
+SMTP_FROM_ADDRESS = "hello@unlock-protocol.com"
+UNLOCK_ENV = "production"

@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
 import { Request } from 'express'
 export function emailAddress(input: string): string {
-  return input.toLocaleLowerCase()
+  return input.trim().toLocaleLowerCase()
 }
 
 export function ethereumAddress(input?: string): string {
