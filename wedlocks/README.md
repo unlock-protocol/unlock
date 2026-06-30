@@ -5,7 +5,7 @@ Wedlocks is the email sending service for Unlock.
 You can use it locally with:
 
 ```bash
-netlify functions:serve
+yarn dev
 ```
 
 ## API
@@ -13,7 +13,7 @@ netlify functions:serve
 There is a single API:
 
 ```bash
-curl -X POST http://localhost:9999/.netlify/functions/handler/ \
+curl -X POST http://localhost:9999/ \
    -H 'Content-Type: application/json' \
    -d '{
     "template": "debug",
@@ -28,7 +28,7 @@ curl -X POST http://localhost:9999/.netlify/functions/handler/ \
 You can also preview emails in a web browser by going to:
 
 ```
-http://localhost:9999/.netlify/functions/handler/preview/<template>?<foo>=<bar>
+http://localhost:9999/preview/<template>?<foo>=<bar>
 ```
 
 Where `<template>` is the template to use and `<foo>` are properties and `<bar>` are values in the template.

@@ -1,12 +1,10 @@
 import { it, beforeEach, describe, expect, vi } from 'vitest'
 
-import nodemailer from 'nodemailer'
 import { route } from '../route'
-import config from '../../config'
-
+import emailService from '../emailService'
 import templates from '@unlock-protocol/email-templates'
 
-vi.mock('nodemailer')
+vi.mock('../emailService')
 
 describe('route', () => {
   describe('when there is no matching template', () => {
@@ -22,21 +20,12 @@ describe('route', () => {
   })
 
   describe('when there is a matching template', () => {
-    let transporter = {
-      sendMail: vi.fn(() => {
-        return Promise.resolve({ sent: true })
-      }),
-    }
-
     beforeEach(() => {
-      nodemailer.createTransport = vi.fn((params) => {
-        expect(params).toEqual(config)
-        return transporter
-      })
+      emailService.send.mockClear()
     })
 
     it('should use the template with all the params', async () => {
-      expect.assertions(2)
+      expect.assertions(1)
       templates.template = {
         subject: async () => 'subject',
         text: async () => 'text',
@@ -52,16 +41,17 @@ describe('route', () => {
 
       await route(args)
 
-      expect(transporter.sendMail).toHaveBeenCalledWith(
+      expect(emailService.send).toHaveBeenCalledWith(
         expect.objectContaining({
           subject: 'subject',
           text: 'text',
-        })
+        }),
+        undefined // smtpConfig passed from handler; undefined in tests
       )
     })
 
-    it('should send the email using the transporter', async () => {
-      expect.assertions(2)
+    it('should send the email using the email service', async () => {
+      expect.assertions(1)
       templates.template = {
         subject: async () => 'subject',
         text: async () => 'text',
@@ -74,32 +64,30 @@ describe('route', () => {
         attachments: ['data:text/plain;base64,aGVsbG8gd29ybGQ='],
       }
 
-      const transporter = {
-        sendMail: vi.fn((options) => {
-          expect(options).toEqual({
-            from: {
-              name: 'Unlock Labs',
-              address: config.sender,
+      emailService.send.mockImplementationOnce((options) => {
+        expect(options).toEqual({
+          from: { name: 'Unlock Labs', email: `hello@unlock-protocol.com` },
+          to: { email: args.recipient },
+          reply: undefined,
+          subject: 'subject',
+          html: undefined,
+          text: 'text',
+          attachments: [
+            {
+              filename: 'attachment-1.plain',
+              content: 'aGVsbG8gd29ybGQ=',
+              mimeType: 'text/plain',
             },
-            html: undefined,
-            subject: 'subject',
-            text: 'text',
-            to: args.recipient,
-            attachments: ['data:text/plain;base64,aGVsbG8gd29ybGQ='],
-          })
-          return Promise.resolve({ sent: true })
-        }),
-      }
-      nodemailer.createTransport = vi.fn((params) => {
-        expect(params).toEqual(config)
-        return transporter
+          ],
+        })
+        return Promise.resolve({ messageId: 'abc123' })
       })
 
       await route(args)
     })
 
-    it('should send the email using the transporter with custom sender', async () => {
-      expect.assertions(2)
+    it('should send the email using the email service with custom sender', async () => {
+      expect.assertions(1)
       templates.template = {
         subject: async () => 'subject',
         text: async () => 'text',
@@ -113,33 +101,57 @@ describe('route', () => {
         emailSender: 'Custom Sender',
       }
 
-      const transporter = {
-        sendMail: vi.fn((options) => {
-          expect(options).toEqual({
-            from: {
-              name: 'Custom Sender',
-              address: config.sender,
+      emailService.send.mockImplementationOnce((options) => {
+        expect(options).toEqual({
+          from: { name: 'Custom Sender', email: 'hello@unlock-protocol.com' },
+          to: { email: args.recipient },
+          reply: undefined,
+          subject: 'subject',
+          html: undefined,
+          text: 'text',
+          attachments: [
+            {
+              filename: 'attachment-1.plain',
+              content: 'aGVsbG8gd29ybGQ=',
+              mimeType: 'text/plain',
             },
-            html: undefined,
-            subject: 'subject',
-            text: 'text',
-            to: args.recipient,
-            attachments: ['data:text/plain;base64,aGVsbG8gd29ybGQ='],
-          })
-          return Promise.resolve({ sent: true })
-        }),
-      }
-      nodemailer.createTransport = vi.fn((params) => {
-        expect(params).toEqual(config)
-        return transporter
+          ],
+        })
+        return Promise.resolve({ messageId: 'abc123' })
       })
 
       await route(args)
     })
 
+    it('should send the email using a configured sender address', async () => {
+      expect.assertions(1)
+      templates.template = {
+        subject: async () => 'subject',
+        text: async () => 'text',
+      }
+
+      const args = {
+        template: 'template',
+        params: { hello: 'world' },
+        recipient: 'julien@unlock-protocol.com',
+      }
+
+      emailService.send.mockImplementationOnce((options) => {
+        expect(options.from).toEqual({
+          name: 'Unlock Labs',
+          email: 'staging@unlock-protocol.com',
+        })
+        return Promise.resolve({ messageId: 'abc123' })
+      })
+
+      await route(args, undefined, {
+        senderAddress: 'staging@unlock-protocol.com',
+      })
+    })
+
     describe('when the email was sent succesfuly', () => {
       it('should yield its enveloppe', async () => {
-        expect.assertions(2)
+        expect.assertions(1)
         templates.template = {
           subject: async () => 'subject',
           text: async () => 'text',
@@ -149,16 +161,11 @@ describe('route', () => {
           params: { hello: 'world' },
           recipient: 'julien@unlock-protocol.com',
         }
-        const transporter = {
-          sendMail: vi.fn(() => {
-            return Promise.resolve({
-              messageId: 'abc123',
-            })
-          }),
-        }
-        nodemailer.createTransport = vi.fn((params) => {
-          expect(params).toEqual(config)
-          return transporter
+
+        emailService.send.mockImplementationOnce(() => {
+          return Promise.resolve({
+            messageId: 'abc123',
+          })
         })
 
         const result = await route(args)
@@ -170,7 +177,7 @@ describe('route', () => {
 
     describe('when the email was not sent successfully', () => {
       it('should yield the error message', async () => {
-        expect.assertions(2)
+        expect.assertions(1)
         templates.template = {
           subject: async () => 'subject',
           text: async () => 'text',
@@ -180,14 +187,9 @@ describe('route', () => {
           params: { hello: 'world' },
           recipient: 'julien@unlock-protocol.com',
         }
-        const transporter = {
-          sendMail: vi.fn(() => {
-            return Promise.reject(new Error('something went wrong'))
-          }),
-        }
-        nodemailer.createTransport = vi.fn((params) => {
-          expect(params).toEqual(config)
-          return transporter
+
+        emailService.send.mockImplementationOnce(() => {
+          return Promise.reject(new Error('something went wrong'))
         })
 
         try {
