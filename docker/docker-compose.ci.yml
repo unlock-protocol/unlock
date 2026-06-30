@@ -103,7 +103,7 @@ services:
       args:
         BUILD_DIR: graph-service
     ports:
-      - 8788:8788
+      - 8788:8787
 
   unlock-protocol-com:
     # Container for the static site

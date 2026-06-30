@@ -2,6 +2,14 @@ import { getSubgraphUrl } from './networks'
 import { Env, GraphQLRequest } from './types'
 import networks from '@unlock-protocol/networks'
 
+const getHostname = (value: string) => {
+  try {
+    return new URL(value).hostname
+  } catch {
+    return 'invalid-url'
+  }
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     // Define CORS headers to allow cross-origin requests
@@ -90,12 +98,12 @@ export default {
       })
 
       if (graphResponse.status !== 200) {
-        console.log({
+        console.log('Graph service upstream returned non-200', {
           status: graphResponse.status,
-          subgraphUrl,
-          query,
-          variables,
-          responseData,
+          statusText: graphResponse.statusText,
+          networkId,
+          subgraphHost: getHostname(subgraphUrl),
+          responseBytes: responseData.length,
         })
       }
 

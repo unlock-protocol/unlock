@@ -43,7 +43,7 @@ jobs:
       OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
       SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
       WORKSPACE: ${{ inputs.workspace }}
-      WRANGLER_ENVIRONMENT: ${{ inputs.wrangler-environment }}
+      WRANGLER_ENVIRONMENT: ${{ inputs['wrangler-environment'] }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v6
