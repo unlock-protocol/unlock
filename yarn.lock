@@ -20720,7 +20720,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@unlock-protocol/email-templates@workspace:packages/email-templates":
+"@unlock-protocol/email-templates@workspace:./packages/email-templates, @unlock-protocol/email-templates@workspace:packages/email-templates":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/email-templates@workspace:packages/email-templates"
   dependencies:
@@ -21370,6 +21370,7 @@ __metadata:
     "@babel/plugin-transform-runtime": "npm:7.28.3"
     "@babel/preset-env": "npm:7.28.3"
     "@typescript-eslint/parser": "npm:8.46.2"
+    "@unlock-protocol/email-templates": "workspace:./packages/email-templates"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     babel-loader: "npm:10.0.0"
     babel-plugin-wildcard: "npm:7.0.0"

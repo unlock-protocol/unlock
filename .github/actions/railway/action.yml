@@ -26,4 +26,15 @@ runs:
 
     - name: Deploy to Railway
       shell: bash
-      run: railway up --ci --service=${{ inputs.service-id }} --environment=${{ inputs.environment }}
+      run: |
+        for attempt in 1 2 3; do
+          if railway up --ci --service="${{ inputs.service-id }}" --environment="${{ inputs.environment }}"; then
+            exit 0
+          fi
+
+          if [ "$attempt" -eq 3 ]; then
+            exit 1
+          fi
+
+          sleep $((attempt * 15))
+        done

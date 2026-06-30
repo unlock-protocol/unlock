@@ -88,6 +88,7 @@ jobs:
     with:
       workspace: '@unlock-protocol/wedlocks'
       wrangler-environment: production
+      pre-deploy-command: yarn workspace @unlock-protocol/email-templates build
       post-deploy-command: |
         if [ -z "$SMTP_PASSWORD" ]; then
           echo '::error::SMTP_PASSWORD is required to update wedlocks SMTP credentials.'
