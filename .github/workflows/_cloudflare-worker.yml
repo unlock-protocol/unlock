@@ -73,7 +73,7 @@ jobs:
           fi
       - name: Install 1Password CLI
         if: ${{ inputs.sync-secrets-command != '' }}
-        uses: 1Password/install-cli-action@v1
+        uses: 1Password/install-cli-action@v4
       - name: Sync Worker secrets
         if: ${{ inputs.sync-secrets-command != '' }}
         run: ${{ inputs.sync-secrets-command }}
