@@ -18019,10 +18019,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stripe/stripe-js@npm:7.0.0":
-  version: 7.0.0
-  resolution: "@stripe/stripe-js@npm:7.0.0"
-  checksum: 10/053a196a008d559ac4949960844ca18885a0f375020b7cca8d1413a0c0d7d5ad5964d3d42a3cbd1f9bfdead41b30b8657eef8a1334d400d94b3e967de4377a78
+"@stripe/stripe-js@npm:9.9.0":
+  version: 9.9.0
+  resolution: "@stripe/stripe-js@npm:9.9.0"
+  checksum: 10/65cbfed63fc5fe0f442376bc67f5be9d137e721ca7a4c4f9f5b5ef7b7be5faabeb73a0e82b035b2d8c0fada087adef02fd2fa08833fe49bcda4d375b25f7a50e
   languageName: node
   linkType: hard
 
@@ -21187,7 +21187,7 @@ __metadata:
     "@radix-ui/react-avatar": "npm:1.1.10"
     "@sentry/nextjs": "npm:9.3.0"
     "@stripe/react-stripe-js": "npm:3.0.0"
-    "@stripe/stripe-js": "npm:7.0.0"
+    "@stripe/stripe-js": "npm:9.9.0"
     "@tanstack/react-query": "npm:5.59.19"
     "@testing-library/dom": "npm:10.4.1"
     "@testing-library/react": "npm:16.0.1"
