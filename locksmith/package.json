@@ -69,7 +69,7 @@
     "geoip-country": "5.0.202510312342",
     "google-auth-library": "9.15.1",
     "graphile-worker": "0.16.6",
-    "graphql": "16.10.0",
+    "graphql": "17.0.1",
     "ics": "3.8.1",
     "isomorphic-fetch": "3.0.0",
     "jsonwebtoken": "9.0.2",
