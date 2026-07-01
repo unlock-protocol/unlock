@@ -17,7 +17,7 @@
     "eslint": "9.39.0",
     "handlebars": "4.7.8",
     "prettier": "3.6.2",
-    "typescript": "5.9.2",
+    "typescript": "6.0.3",
     "winston": "3.18.3",
     "worker-mailer": "1.1.4",
     "wrangler": "3.112.0"
