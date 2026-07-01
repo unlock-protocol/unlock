@@ -111,7 +111,7 @@
     "@types/supertest": "6.0.3",
     "@unlock-protocol/eslint-config": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
-    "eslint": "9.22.0",
+    "eslint": "10.6.0",
     "eslint-config-standard": "17.1.0",
     "nock": "14.0.10",
     "node-mocks-http": "1.16.2",

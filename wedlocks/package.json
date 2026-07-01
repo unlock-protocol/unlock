@@ -14,7 +14,7 @@
     "babel-loader": "10.0.0",
     "babel-plugin-wildcard": "7.0.0",
     "dotenv": "16.6.1",
-    "eslint": "9.39.0",
+    "eslint": "10.6.0",
     "handlebars": "4.7.8",
     "prettier": "3.6.2",
     "typescript": "5.9.2",

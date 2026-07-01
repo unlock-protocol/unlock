@@ -48,7 +48,7 @@
     "@unlock-protocol/eslint-config": "workspace:^",
     "@unlock-protocol/networks": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:^",
-    "eslint": "9.39.1",
+    "eslint": "10.6.0",
     "ethers": "6.15.0",
     "hardhat": "2.27.0",
     "mocha": "11.7.4",
