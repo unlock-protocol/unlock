@@ -72,6 +72,7 @@ query AllKeys(
     manager
     expiration
     tokenURI
+    referrer
     createdAt
     createdAtBlock
     cancelled
@@ -137,6 +138,7 @@ query allLocksWithKeys(
       manager
       expiration
       tokenURI
+      referrer
       createdAt
       createdAtBlock
       cancelled

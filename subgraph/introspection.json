@@ -395,6 +395,18 @@
             {
               "args": [],
               "deprecationReason": null,
+              "description": "Address of the referrer used when the key was purchased",
+              "isDeprecated": false,
+              "name": "referrer",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Bytes",
+                "ofType": null
+              }
+            },
+            {
+              "args": [],
+              "deprecationReason": null,
               "description": "Block key was created",
               "isDeprecated": false,
               "name": "createdAtBlock",

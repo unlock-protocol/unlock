@@ -1,4 +1,11 @@
-import { Address, BigInt, log, Bytes, store } from '@graphprotocol/graph-ts'
+import {
+  Address,
+  BigInt,
+  log,
+  Bytes,
+  store,
+  ethereum,
+} from '@graphprotocol/graph-ts'
 import {
   CancelKey as CancelKeyEvent,
   ExpirationChanged as ExpirationChangedUntilV11Event,
@@ -39,6 +46,158 @@ import {
   KEY_GRANTER,
 } from './helpers'
 import { tryCreateCancelReceipt, createReceipt } from './receipt'
+import { ERC20_TRANSFER_TOPIC0, nullAddress } from '../tests/constants'
+
+const PURCHASE_ARRAY_SELECTOR = '0x33818997'
+const PURCHASE_STRUCT_ARRAY_SELECTOR = '0x4609b39b'
+const PURCHASE_SINGLE_SELECTOR = '0x8be4b870'
+
+function selectorFor(input: Bytes): string {
+  if (input.length < 4) {
+    return ''
+  }
+  return Bytes.fromUint8Array(input.subarray(0, 4)).toHexString()
+}
+
+function callData(input: Bytes): Bytes {
+  if (input.length <= 4) {
+    return Bytes.fromHexString('0x')
+  }
+  return Bytes.fromUint8Array(input.subarray(4))
+}
+
+function purchaseIndexFor(event: TransferEvent, recipients: Address[]): i32 {
+  const eventIndex = mintTransferIndex(event)
+  if (eventIndex >= 0) {
+    return eventIndex
+  }
+
+  for (let i = 0; i < recipients.length; i++) {
+    if (recipients[i] == event.params.to) {
+      return i
+    }
+  }
+
+  return recipients.length == 1 ? 0 : -1
+}
+
+function mintTransferIndex(event: TransferEvent): i32 {
+  if (event.receipt == null) {
+    return -1
+  }
+
+  const receipt = event.receipt!
+  const logs: ethereum.Log[] = receipt.logs
+  let index: i32 = -1
+
+  for (let i = 0; i < logs.length; i++) {
+    const txLog = logs[i]
+    if (
+      txLog.address == event.address &&
+      txLog.topics.length >= 4 &&
+      txLog.topics[0].toHexString() == ERC20_TRANSFER_TOPIC0
+    ) {
+      const from = ethereum.decode('address', txLog.topics[1])!.toAddress()
+      if (from.toHexString() == nullAddress) {
+        index = index + 1
+        if (txLog.transactionLogIndex == event.transactionLogIndex) {
+          return index
+        }
+      }
+    }
+  }
+
+  return -1
+}
+
+function referrerFromArrayPurchase(event: TransferEvent, data: Bytes): Address {
+  const decoded = ethereum.decode(
+    '(uint256[],address[],address[],address[],bytes[])',
+    data
+  )
+  if (decoded == null) {
+    return Address.fromString(nullAddress)
+  }
+
+  const values = decoded!.toTuple()
+  const recipients = values[1].toAddressArray()
+  const referrers = values[2].toAddressArray()
+  const index = purchaseIndexFor(event, recipients)
+
+  if (index >= 0 && index < referrers.length) {
+    return referrers[index]
+  }
+
+  return Address.fromString(nullAddress)
+}
+
+function referrerFromStructArrayPurchase(
+  event: TransferEvent,
+  data: Bytes
+): Address {
+  const decoded = ethereum.decode(
+    '(uint256,address,address,address,address,bytes,uint256)[]',
+    data
+  )
+  if (decoded == null) {
+    return Address.fromString(nullAddress)
+  }
+
+  const purchaseArgs = decoded!.toArray()
+  const recipients = new Array<Address>(purchaseArgs.length)
+
+  for (let i = 0; i < purchaseArgs.length; i++) {
+    recipients[i] = purchaseArgs[i].toTuple()[1].toAddress()
+  }
+
+  const index = purchaseIndexFor(event, recipients)
+  if (index >= 0 && index < purchaseArgs.length) {
+    return purchaseArgs[index].toTuple()[2].toAddress()
+  }
+
+  return Address.fromString(nullAddress)
+}
+
+function referrerFromSinglePurchase(
+  event: TransferEvent,
+  data: Bytes
+): Address {
+  const decoded = ethereum.decode(
+    '(uint256,address,address,address,bytes)',
+    data
+  )
+  if (decoded == null) {
+    return Address.fromString(nullAddress)
+  }
+
+  const values = decoded!.toTuple()
+  const recipient = values[1].toAddress()
+  if (recipient != event.params.to) {
+    return Address.fromString(nullAddress)
+  }
+
+  return values[2].toAddress()
+}
+
+function referrerFromPurchase(event: TransferEvent): Address {
+  const input = event.transaction.input
+  const selector = selectorFor(input)
+  const data = callData(input)
+
+  if (selector == PURCHASE_ARRAY_SELECTOR) {
+    return referrerFromArrayPurchase(event, data)
+  }
+
+  if (selector == PURCHASE_STRUCT_ARRAY_SELECTOR) {
+    return referrerFromStructArrayPurchase(event, data)
+  }
+
+  if (selector == PURCHASE_SINGLE_SELECTOR) {
+    return referrerFromSinglePurchase(event, data)
+  }
+
+  return Address.fromString(nullAddress)
+}
 
 function newKey(event: TransferEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
@@ -66,6 +225,10 @@ function newKey(event: TransferEvent): void {
     event.params.tokenId,
     event.params.to
   )
+  const referrer = referrerFromPurchase(event)
+  if (referrer.toHexString() != nullAddress) {
+    key.referrer = referrer
+  }
 
   addTransactionHashToKey(key, event.transaction.hash.toHexString())
   key.save()

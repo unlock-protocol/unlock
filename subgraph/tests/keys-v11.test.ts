@@ -7,7 +7,7 @@ import {
   describe,
   test,
 } from 'matchstick-as/assembly/index'
-import { Address, BigInt, Bytes } from '@graphprotocol/graph-ts'
+import { Address, BigInt, Bytes, ethereum } from '@graphprotocol/graph-ts'
 import {
   handleTransfer,
   handleCancelKey,
@@ -39,12 +39,49 @@ import {
   expiration,
   lockAddress,
   lockManagers,
+  keyPrice,
 } from './constants'
+import {
+  createKeyTransferEventLog,
+  newTransactionReceipt,
+} from './mockTxReceipt'
 
 // mock contract functions
 import './mocks'
 
 const keyID = `${lockAddress}-${tokenId}`
+const purchaseArraySelector = '0x33818997'
+const purchaseStructInput =
+  '0x4609b39b0000000000000000000000000000000000000000000000000000000000000020' +
+  '0000000000000000000000000000000000000000000000000000000000000001' +
+  '0000000000000000000000000000000000000000000000000000000000000020' +
+  '00000000000000000000000000000000000000000000000000000000000003e8' +
+  '0000000000000000000000000000000000000000000000000000000000000002' +
+  '0000000000000000000000000000000000000000000000000000000000000999' +
+  '0000000000000000000000000000000000000000000000000000000000000999' +
+  '0000000000000000000000000000000000000000000000000000000000000123' +
+  '00000000000000000000000000000000000000000000000000000000000000e0' +
+  '0000000000000000000000000000000000000000000000000000000000000000' +
+  '0000000000000000000000000000000000000000000000000000000000000000'
+
+function createPurchaseInput(
+  recipient: Address,
+  referrer: Address,
+  keyManager: Address
+): Bytes {
+  const values: Array<ethereum.Value> = [
+    ethereum.Value.fromUnsignedBigIntArray([BigInt.fromU32(keyPrice)]),
+    ethereum.Value.fromAddressArray([recipient]),
+    ethereum.Value.fromAddressArray([referrer]),
+    ethereum.Value.fromAddressArray([keyManager]),
+    ethereum.Value.fromBytesArray([Bytes.fromHexString('0x')]),
+  ]
+  const tuple = changetype<ethereum.Tuple>(values)
+
+  return Bytes.fromHexString(purchaseArraySelector).concat(
+    ethereum.encode(ethereum.Value.fromTuple(tuple))!
+  )
+}
 
 describe('Burn a key', () => {
   beforeAll(() => {
@@ -97,6 +134,63 @@ describe('Key transfers', () => {
     assert.fieldEquals('Key', keyID, 'createdAtBlock', '1')
     const hash = newTransferEvent.transaction.hash.toHexString()
     assert.fieldEquals('Key', keyID, 'transactionsHash', `[${hash}]`)
+  })
+
+  test('Creation of a new key stores the purchase referrer', () => {
+    const referrer = Address.fromString(
+      '0x0000000000000000000000000000000000000999'
+    )
+    const newTransferEvent = createTransferEvent(
+      Address.fromString(nullAddress),
+      Address.fromString(keyOwnerAddress),
+      BigInt.fromU32(tokenId)
+    )
+    const transactionLogIndex = BigInt.fromU32(4)
+
+    newTransferEvent.transaction.input = createPurchaseInput(
+      Address.fromString(keyOwnerAddress),
+      referrer,
+      Address.fromString(lockManagers[0])
+    )
+    newTransferEvent.transactionLogIndex = transactionLogIndex
+    newTransferEvent.receipt = newTransactionReceipt([
+      createKeyTransferEventLog(
+        Address.fromString(nullAddress),
+        Address.fromString(keyOwnerAddress),
+        BigInt.fromU32(tokenId),
+        transactionLogIndex
+      ),
+    ])
+
+    handleTransfer(newTransferEvent)
+    assert.fieldEquals('Key', keyID, 'referrer', referrer.toHexString())
+  })
+
+  test('Creation of a new key stores the v15 purchase referrer', () => {
+    const referrer = Address.fromString(
+      '0x0000000000000000000000000000000000000999'
+    )
+    const newTransferEvent = createTransferEvent(
+      Address.fromString(nullAddress),
+      Address.fromString(keyOwnerAddress),
+      BigInt.fromU32(tokenId)
+    )
+    const transactionLogIndex = BigInt.fromU32(4)
+
+    newTransferEvent.transaction.input =
+      Bytes.fromHexString(purchaseStructInput)
+    newTransferEvent.transactionLogIndex = transactionLogIndex
+    newTransferEvent.receipt = newTransactionReceipt([
+      createKeyTransferEventLog(
+        Address.fromString(nullAddress),
+        Address.fromString(keyOwnerAddress),
+        BigInt.fromU32(tokenId),
+        transactionLogIndex
+      ),
+    ])
+
+    handleTransfer(newTransferEvent)
+    assert.fieldEquals('Key', keyID, 'referrer', referrer.toHexString())
   })
 
   test('Transfer of an existing key', () => {
