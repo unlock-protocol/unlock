@@ -29,7 +29,7 @@ export const deployContract = async (
   const address = await contract.getAddress()
   console.log(` > contract deployed at : ${address} (tx: ${hash})`)
 
-  if (!(await isLocalhost())) {
+  if (!(await isLocalhost()) && !process.env.SKIP_VERIFY) {
     const args = {
       address,
       deployArgs,
@@ -73,8 +73,8 @@ export const deployUpgradeableContract = async (
   const implementation =
     await upgrades.erc1967.getImplementationAddress(address)
 
-  if (!(await isLocalhost())) {
-    await verify({ address, deployArgs })
+  if (!(await isLocalhost()) && !process.env.SKIP_VERIFY) {
+    await verify({ address })
   }
   console.log(` > contract deployed w proxy at : ${address} (tx: ${hash})`)
 
@@ -86,7 +86,7 @@ export const deployUpgradeableContract = async (
   }
 }
 
-export const verify = async ({ address, deployArgs, contract }) => {
+export const verify = async ({ address, deployArgs = [], contract }) => {
   const { run } = require('hardhat')
   let tries = 0
   while (tries < 5) {

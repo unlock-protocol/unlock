@@ -20,6 +20,7 @@ const etherscan = {
     polygonZkEVM: '8H4ZB9SQBMQ7WA1TCIXFQVCHTVX8DXTY9Y',
     scroll: 'BZEXNPN6KKKJQ8VIMNXZDZNEX7QQZWZQ3P',
     zksyncmainnet: 'DA4PRV1SXC8SKKPYYUEWE82XHX4I92Z2DI',
+    lens: 'placeholder',
   },
   // TODO : generate from networks package!
   customChains: [
@@ -61,6 +62,14 @@ const etherscan = {
       urls: {
         apiURL: 'https://api.scrollscan.com/api',
         browserURL: 'https://scrollscan.com/',
+      },
+    },
+    {
+      network: 'lens',
+      chainId: 232,
+      urls: {
+        apiURL: 'https://explorer.lens.xyz/api',
+        browserURL: 'https://explorer.lens.xyz/',
       },
     },
   ],

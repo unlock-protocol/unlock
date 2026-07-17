@@ -79,6 +79,13 @@ module.exports = {
       { version: '0.8.7', settings }, // required for test/Lock/upgrades/V11
       { version: '0.8.13', settings }, // required for test/Lock/upgrades/V12
       {
+        version: '0.8.20',
+        settings: {
+          ...settings,
+          evmVersion: 'shanghai',
+        },
+      },
+      {
         version: '0.8.21',
         settings: {
           ...settings,

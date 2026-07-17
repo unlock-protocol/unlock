@@ -118,13 +118,18 @@ async function main({
       console.log(`> Transfered ownership of KeyManager to owner ${owner}`)
 
       // Transfer ownership of proxyadmin!
-      const proxyAdmin = await upgrades.admin.getInstance()
+      const proxyAdminAddress =
+        await upgrades.erc1967.getAdminAddress(unlockAddress)
+      const proxyAdmin = await ethers.getContractAt(
+        ['function owner() view returns (address)'],
+        proxyAdminAddress
+      )
       const proxyAdminOwner = await proxyAdmin.owner()
       if (proxyAdminOwner === deployer.address) {
         console.log(
           `> Proxy admin is owned by deployer, transfering to owner ${owner}`
         )
-        await upgrades.admin.transferProxyAdminOwnership(owner)
+        await upgrades.admin.transferProxyAdminOwnership(unlockAddress, owner)
         console.log(`> Transfered proxy admin ownership to ${owner}`)
       } else if (proxyAdminOwner === owner) {
         console.log(`> Proxy admin is already owned by ${owner}`)

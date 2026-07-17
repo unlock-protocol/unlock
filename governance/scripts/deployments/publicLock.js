@@ -50,7 +50,7 @@ async function main({ publicLockVersion, publicLockAddress }) {
   }
 
   // renounce the manager role that was added during initilization
-  const { hash: txRenounceHash } = await publicLock.revokeRole(
+  const { hash: txRenounceHash } = await publicLock.renounceRole(
     LOCK_MANAGER_ROLE,
     await signer.getAddress()
   )

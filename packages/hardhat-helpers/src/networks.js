@@ -67,14 +67,18 @@ Object.keys(networks).forEach((key) => {
     }
   }
 
-  if (key.includes('zksync')) {
+  if (key.includes('zksync') || key === 'lens') {
+    let verifyURL = networks[key].isTestNetwork
+      ? 'https://explorer.sepolia.era.zksync.dev/contract_verification'
+      : 'https://zksync2-mainnet-explorer.zksync.io/contract_verification'
+    if (key === 'lens') {
+      verifyURL = 'https://explorer.lens.xyz/contract_verification'
+    }
     hardhatNetworks[key] = {
       ...hardhatNetworks[key],
       zksync: true,
       ethNetwork: networks[key].isTestNetwork ? 'sepolia' : 'mainnet',
-      verifyURL: networks[key].isTestNetwork
-        ? 'https://explorer.sepolia.era.zksync.dev/contract_verification'
-        : 'https://zksync2-mainnet-explorer.zksync.io/contract_verification',
+      verifyURL,
     }
   }
 

@@ -20815,6 +20815,7 @@ __metadata:
     "@unlock-protocol/hardhat-plugin": "workspace:^"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     arb-shared-dependencies: "npm:1.0.0"
+    dotenv: "npm:^16.3.1"
     eslint: "npm:9.39.0"
     ethers: "npm:6.15.0"
     ethers-multisend: "npm:3.1.0"

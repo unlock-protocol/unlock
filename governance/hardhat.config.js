@@ -1,4 +1,5 @@
 // hardhat.config.js
+require('dotenv').config()
 const { copySync } = require('fs-extra')
 
 require('@nomicfoundation/hardhat-ethers')
@@ -75,6 +76,7 @@ const config = {
     compilers: [
       // required to compile oracle as Uniswap v3-periphery supports only solc < 0.8
       { version: '0.7.6', settings: { ...settings, evmVersion: 'istanbul' } },
+      { version: '0.8.20', settings: { ...settings, evmVersion: 'shanghai' } },
       { version: '0.8.21', settings: { ...settings, evmVersion: 'shanghai' } },
     ],
   },
