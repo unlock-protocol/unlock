@@ -4,6 +4,7 @@ import { Button } from '@unlock-protocol/ui'
 import Link from 'next/link'
 import { LockTypeLandingPage } from '~/components/interface/LockTypeLandingPage'
 import Image from 'next/image'
+import { TbCalendarEvent } from 'react-icons/tb'
 
 const customers = [
   {
@@ -136,9 +137,14 @@ export const EventLandingPageCallToAction = ({
   handleCreateEvent,
 }: EventLandingPageCallToActionProps) => {
   return (
-    <Button onClick={handleCreateEvent} className="my-8">
-      Get started for free
-    </Button>
+    <div className="flex flex-col sm:flex-row gap-3 my-8">
+      <Button onClick={handleCreateEvent}>Get started for free</Button>
+      <Link href="/events/all-events">
+        <Button variant="outlined-primary" iconLeft={<TbCalendarEvent />}>
+          Explore events
+        </Button>
+      </Link>
+    </div>
   )
 }
 

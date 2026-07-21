@@ -84,6 +84,10 @@ export default function EventsCollectionDetailContent({
   const [isEventDetailDrawerOpen, setIsEventDetailDrawerOpen] = useState(false)
   const [selectedEvent, setSelectedEvent] = useState<any | null>(null)
 
+  const isVirtualCollection = Boolean(
+    (eventCollection as { isVirtual?: boolean } | undefined)?.isVirtual
+  )
+
   const hasValidEvents = useMemo(() => {
     return (
       eventCollection?.events?.some(
@@ -284,12 +288,14 @@ export default function EventsCollectionDetailContent({
             <div className="flex flex-col gap-6 lg:col-span-10">
               <div className="flex flex-col sm:flex-row items-center space-y-2 justify-between my-5">
                 <h2 className="text-3xl font-bold">Events</h2>
-                <Button onClick={handleAddEvent} className="w-full sm:w-auto">
-                  <div className="flex items-center gap-2">
-                    <Icon icon={TbPlus} size={20} />
-                    {isManager ? 'Add Event' : 'Submit Event'}
-                  </div>
-                </Button>
+                {!isVirtualCollection && (
+                  <Button onClick={handleAddEvent} className="w-full sm:w-auto">
+                    <div className="flex items-center gap-2">
+                      <Icon icon={TbPlus} size={20} />
+                      {isManager ? 'Add Event' : 'Submit Event'}
+                    </div>
+                  </Button>
+                )}
               </div>
               {hasValidEvents ? (
                 <>
@@ -333,15 +339,19 @@ export default function EventsCollectionDetailContent({
                 <ImageBar
                   src="/images/illustrations/no-locks.svg"
                   description={
-                    <div>
-                      No events have been added yet.{' '}
-                      <span
-                        onClick={handleAddEvent}
-                        className="text-brand-ui-primary cursor-pointer"
-                      >
-                        {isManager ? 'Add an event' : 'Submit an event'}
-                      </span>
-                    </div>
+                    isVirtualCollection ? (
+                      'No public events are available yet.'
+                    ) : (
+                      <div>
+                        No events have been added yet.{' '}
+                        <span
+                          onClick={handleAddEvent}
+                          className="text-brand-ui-primary cursor-pointer"
+                        >
+                          {isManager ? 'Add an event' : 'Submit an event'}
+                        </span>
+                      </div>
+                    )
                   }
                 />
               )}
@@ -352,13 +362,15 @@ export default function EventsCollectionDetailContent({
       </div>
 
       {/* Add Event Drawer */}
-      <AddEventsToCollectionDrawer
-        collectionSlug={eventCollection?.slug}
-        isOpen={isAddEventDrawerOpen}
-        setIsOpen={setIsAddEventDrawerOpen}
-        isManager={isManager!}
-        existingEventSlugs={existingEventSlugs}
-      />
+      {!isVirtualCollection && (
+        <AddEventsToCollectionDrawer
+          collectionSlug={eventCollection?.slug}
+          isOpen={isAddEventDrawerOpen}
+          setIsOpen={setIsAddEventDrawerOpen}
+          isManager={isManager!}
+          existingEventSlugs={existingEventSlugs}
+        />
+      )}
       {/* Event Detail Drawer */}
       {eventCollection?.slug && (
         <EventDetailDrawer

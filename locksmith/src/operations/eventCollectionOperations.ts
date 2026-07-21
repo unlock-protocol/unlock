@@ -8,6 +8,22 @@ import config from '../config/config'
 import logger from '../logger'
 import { getPrivyUserByAddress } from './privyUserOperations'
 import { Op } from 'sequelize'
+import { EventStatus } from '@unlock-protocol/types'
+import { removeProtectedAttributesFromObject } from '../utils/protectedAttributes'
+
+export const PUBLIC_EVENTS_COLLECTION_SLUG = 'all-events'
+
+const PUBLIC_EVENTS_COLLECTION = {
+  slug: PUBLIC_EVENTS_COLLECTION_SLUG,
+  title: 'Explore Unlock Events',
+  description:
+    'Discover public events created with Unlock Protocol. New deployed events appear here automatically.',
+  coverImage: '/images/illustrations/events/farcon-hero.png',
+  banner: '/images/illustrations/events/party.svg',
+  links: [],
+  managerAddresses: [],
+  isVirtual: true,
+} as const
 
 // event collection body schema
 const EventCollectionBody = z.object({
@@ -44,6 +60,10 @@ export async function createEventCollectionSlug(
 
   const baseSlug = kebabCase(cleanTitle)
   const slug = index ? `${baseSlug}-${index}` : baseSlug
+
+  if (slug === PUBLIC_EVENTS_COLLECTION_SLUG) {
+    return createEventCollectionSlug(title, 1)
+  }
 
   // Check if the slug already exists
   const existingCollection = await EventCollection.findByPk(slug)
@@ -111,6 +131,28 @@ export const createEventCollectionOperation = async (
  * @throws An error if the event collection is not found.
  */
 export const getEventCollectionOperation = async (slug: string) => {
+  if (slug === PUBLIC_EVENTS_COLLECTION_SLUG) {
+    const events = await EventData.scope('withoutId').findAll({
+      where: {
+        status: EventStatus.DEPLOYED,
+        eventType: 'unlock',
+        checkoutConfigId: {
+          [Op.ne]: null,
+        },
+      },
+      order: [['createdAt', 'DESC']],
+    })
+
+    events.forEach((event) => {
+      event.data = removeProtectedAttributesFromObject(event.data)
+    })
+
+    return {
+      ...PUBLIC_EVENTS_COLLECTION,
+      events,
+    }
+  }
+
   const eventCollection = await EventCollection.findByPk(slug, {
     include: [
       {
