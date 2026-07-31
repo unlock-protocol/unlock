@@ -6,6 +6,7 @@ import {
   getAllEvents,
   approveRefunds,
   approvedRefunds,
+  createHuddleRoom,
   updateEventData,
   saveExternalEventDetails,
 } from '../../controllers/v2/eventsController'
@@ -48,6 +49,8 @@ router.post(
   eventOrganizerMiddleware,
   saveEventDetails
 )
+
+router.post('/huddle-room', authenticatedMiddleware, createHuddleRoom)
 
 router.post('/update/:slug', authenticatedMiddleware, updateEventData)
 

@@ -4,13 +4,14 @@ import { useState } from 'react'
 import { Form, NewEventForm } from './Form'
 import { ToastHelper } from '@unlock-protocol/ui'
 import { LockDeploying } from './LockDeploying'
-import { locksmith } from '~/config/locksmith'
+import { locksmith, locksmithClient } from '~/config/locksmith'
 import { networks } from '@unlock-protocol/networks'
 import { formDataToMetadata } from '~/components/interface/locks/metadata/utils'
 import { useProvider } from '~/hooks/useProvider'
 import { EventStatus } from '@unlock-protocol/types'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { EventsLayout } from './Layout/constants'
+import { config } from '~/config/app'
 
 export interface TransactionDetails {
   hash: string
@@ -58,6 +59,40 @@ export const defaultEventCheckoutConfigForLockOnNetwork = (
   } as PaywallConfigType
 }
 
+const eventDataFromForm = (formData: NewEventForm, slug?: string) => ({
+  ...formDataToMetadata({
+    name: formData.lock.name,
+    ...formData.metadata,
+  }),
+  ...formData.metadata,
+  ...(slug ? { slug } : {}),
+  layout: EventsLayout.Bannerless,
+})
+
+const createHuddleRoom = async ({
+  lockAddress,
+  network,
+  title,
+}: {
+  lockAddress: string
+  network: number
+  title: string
+}) => {
+  const response = await locksmithClient.post(
+    `${config.locksmithHost}/v2/events/huddle-room`,
+    {
+      lockAddress,
+      network,
+      title,
+    }
+  )
+
+  return response.data as {
+    roomId: string
+    roomUrl: string
+  }
+}
+
 export const NewEvent = () => {
   const [transactionDetails, setTransactionDetails] =
     useState<TransactionDetails>()
@@ -69,14 +104,7 @@ export const NewEvent = () => {
 
       // Create initial event with pending status
       const pendingEventData = {
-        data: {
-          ...formDataToMetadata({
-            name: formData.lock.name,
-            ...formData.metadata,
-          }),
-          ...formData.metadata,
-          layout: EventsLayout.Bannerless,
-        },
+        data: eventDataFromForm(formData),
         status: EventStatus.PENDING,
       }
 
@@ -109,16 +137,42 @@ export const NewEvent = () => {
 
       // If lock is created, update metadata and update event status to deployed
       if (lockAddress) {
+        let metadata = formData.metadata
+
+        if (formData.createHuddleRoom) {
+          const huddleRoom = await createHuddleRoom({
+            lockAddress,
+            network: formData.network,
+            title: formData.lock.name,
+          })
+          metadata = {
+            ...formData.metadata,
+            ticket: {
+              ...formData.metadata.ticket,
+              event_is_in_person: false,
+              event_address: huddleRoom.roomUrl,
+              event_location: 'Huddle01',
+            },
+          }
+        }
+
         // Update lock metadata
         await locksmith.updateLockMetadata(formData.network, lockAddress, {
           metadata: {
             name: `Ticket for ${formData.lock.name}`,
-            image: formData.metadata.image,
+            image: metadata.image,
           },
         })
 
         // Update existing event with checkout config and deployed status
-        await locksmith.updateEventData(pendingEvent.slug, {
+        await locksmith.saveEventData({
+          data: eventDataFromForm(
+            {
+              ...formData,
+              metadata,
+            },
+            pendingEvent.slug
+          ),
           status: EventStatus.DEPLOYED,
           checkoutConfig: {
             name: `Checkout config for ${formData.lock.name}`,

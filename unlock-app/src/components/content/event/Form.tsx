@@ -35,13 +35,17 @@ import Link from 'next/link'
 import { regexUrlPattern } from '~/utils/regexUrlPattern'
 import { ProtocolFee } from '~/components/interface/locks/Create/elements/ProtocolFee'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { AttendeeRefundType } from '@unlock-protocol/core'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewEventForm {
   network: number
   lock: Omit<Lock, 'address' | 'key'>
   currencySymbol: string
-  metadata: Partial<MetadataFormData>
+  createHuddleRoom: boolean
+  metadata: Partial<MetadataFormData> & {
+    attendeeRefund?: AttendeeRefundType
+  }
 }
 
 interface GoogleMapsAutoCompleteProps {
@@ -49,11 +53,28 @@ interface GoogleMapsAutoCompleteProps {
   defaultValue?: string
 }
 
+interface GoogleMapsPlace {
+  formatted_address?: string
+  geometry?: {
+    location?: {
+      lat: () => number
+      lng: () => number
+    }
+  }
+}
+
+interface GoogleMapsInputRef {
+  value: string
+}
+
 export const GoogleMapsAutoComplete = ({
   onChange,
   defaultValue,
 }: GoogleMapsAutoCompleteProps) => {
-  const onPlaceSelected = async (place: any, inputRef: any) => {
+  const onPlaceSelected = async (
+    place: GoogleMapsPlace,
+    inputRef: GoogleMapsInputRef
+  ) => {
     const lat = place.geometry?.location?.lat()
     const lng = place.geometry?.location?.lng()
 
@@ -77,7 +98,7 @@ export const GoogleMapsAutoComplete = ({
       types: [],
     },
     apiKey: config.googleMapsApiKey,
-    onPlaceSelected: (place: any, inputRef: any) => {
+    onPlaceSelected: (place: GoogleMapsPlace, inputRef: GoogleMapsInputRef) => {
       onPlaceSelected(place, inputRef)
     },
   })
@@ -130,6 +151,7 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
         keyPrice: '0',
       },
       currencySymbol: networks[network].nativeCurrency.symbol,
+      createHuddleRoom: false,
       metadata: {
         description: '',
         ticket: {
@@ -183,6 +205,7 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
   const noBalance = balance === 0 && !isLoadingBalance
 
   const ticket = details?.metadata?.ticket
+  const createHuddleRoom = watch('createHuddleRoom')
 
   const metadataImage = watch('metadata.image')
   const isSameDay = dayjs(ticket?.event_end_date).isSame(
@@ -210,10 +233,10 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
     },
   })
 
-  const processAndSubmit = (values: any) => {
+  const processAndSubmit = (values: NewEventForm) => {
     if (attendeeRefund) {
       values.metadata.attendeeRefund = {
-        amount: values.lock!.keyPrice,
+        amount: Number(values.lock.keyPrice),
         currency: values.lock!.currencyContractAddress,
         network: values.network,
       }
@@ -265,7 +288,7 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
                   description="This illustration will be used for your event page, as well as the NFT tickets by default. Use 512 by 512 pixels for best results."
                   isUploading={isUploading}
                   preview={metadataImage!}
-                  onChange={async (fileOrFileUrl: any) => {
+                  onChange={async (fileOrFileUrl: string | File[]) => {
                     if (typeof fileOrFileUrl === 'string') {
                       setValue('metadata.image', fileOrFileUrl)
                     } else {
@@ -426,6 +449,9 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
                         enabled={isInPerson}
                         setEnabled={setIsInPerson}
                         onChange={(enabled) => {
+                          if (enabled) {
+                            setValue('createHuddleRoom', false)
+                          }
                           setValue(
                             'metadata.ticket.event_is_in_person',
                             enabled
@@ -446,31 +472,62 @@ export const Form = ({ onSubmit, compact = false }: FormProps) => {
                     </div>
 
                     {!isInPerson && (
-                      <Input
-                        {...register('metadata.ticket.event_address', {
-                          required: {
-                            value: true,
-                            message: 'Add a link to your event',
-                          },
-                        })}
-                        onChange={(event) => {
-                          if (!regexUrlPattern.test(event.target.value)) {
-                            setError('metadata.ticket.event_address', {
-                              type: 'manual',
-                              message: 'Please enter a valid URL',
-                            })
-                          } else {
-                            clearErrors('metadata.ticket.event_address')
+                      <div className="grid gap-2">
+                        <Input
+                          {...register('metadata.ticket.event_address', {
+                            required: {
+                              value: !createHuddleRoom,
+                              message: 'Add a link to your event',
+                            },
+                            validate: (value) =>
+                              createHuddleRoom ||
+                              regexUrlPattern.test(value || '') ||
+                              'Please enter a valid URL',
+                          })}
+                          disabled={createHuddleRoom}
+                          onChange={(event) => {
+                            if (!regexUrlPattern.test(event.target.value)) {
+                              setError('metadata.ticket.event_address', {
+                                type: 'manual',
+                                message: 'Please enter a valid URL',
+                              })
+                            } else {
+                              clearErrors('metadata.ticket.event_address')
+                            }
+                          }}
+                          type="text"
+                          placeholder={
+                            createHuddleRoom
+                              ? 'Huddle room will be created automatically'
+                              : 'Zoom or Google Meet Link'
                           }
-                        }}
-                        type="text"
-                        placeholder={'Zoom or Google Meet Link'}
-                        error={
-                          // @ts-expect-error Property 'event_address' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
-                          errors.metadata?.ticket?.event_address
-                            ?.message as string
-                        }
-                      />
+                          error={
+                            // @ts-expect-error Property 'event_address' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
+                            errors.metadata?.ticket?.event_address
+                              ?.message as string
+                          }
+                        />
+                        <Checkbox
+                          label="Create a token-gated Huddle room automatically"
+                          checked={!!createHuddleRoom}
+                          onChange={(
+                            event: React.ChangeEvent<HTMLInputElement>
+                          ) => {
+                            const checked = event.target.checked
+                            setValue('createHuddleRoom', checked)
+                            if (checked) {
+                              setValue('metadata.ticket.event_address', '')
+                              setValue('metadata.ticket.event_location', '')
+                              clearErrors('metadata.ticket.event_address')
+                            } else {
+                              setError('metadata.ticket.event_address', {
+                                type: 'manual',
+                                message: 'Please enter a valid URL',
+                              })
+                            }
+                          }}
+                        />
+                      </div>
                     )}
 
                     {isInPerson && (

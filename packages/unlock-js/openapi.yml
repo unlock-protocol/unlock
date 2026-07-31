@@ -152,6 +152,32 @@ components:
               value:
                 type: string
 
+    HuddleRoomBody:
+      type: object
+      required:
+        - lockAddress
+        - network
+        - title
+      properties:
+        lockAddress:
+          type: string
+          pattern: '^0x[a-fA-F0-9]{40}$'
+        network:
+          type: number
+        title:
+          type: string
+
+    HuddleRoom:
+      type: object
+      required:
+        - roomId
+        - roomUrl
+      properties:
+        roomId:
+          type: string
+        roomUrl:
+          type: string
+
     Verifier:
       type: object
       nullable: false
@@ -4638,6 +4664,34 @@ paths:
         400:
           $ref: '#/components/responses/400.Invalid'
 
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/events/huddle-room:
+    post:
+      operationId: createHuddleRoom
+      security:
+        - User: []
+      description: Create a token-gated Huddle01 room for an Unlock event lock.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HuddleRoomBody'
+      responses:
+        201:
+          description: Huddle01 room created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HuddleRoom'
+        400:
+          $ref: '#/components/responses/400.Invalid'
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+        403:
+          $ref: '#/components/responses/403.Forbidden'
         500:
           $ref: '#/components/responses/500.InternalError'
 
