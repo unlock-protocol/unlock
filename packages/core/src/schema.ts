@@ -65,7 +65,7 @@ export const PaywallLockConfig = z.object({
   referrer: z
     .string({
       description:
-        '(Recommended) The address of the purchase referrer. This address may receive a referrer fee if the lock was configured for this, and will receive Unlock Governance tokens if applicable. Put your address if unsure.',
+        '(Recommended) The address or ENS name of the purchase referrer. This account may receive a referrer fee if the lock was configured for this, and will receive Unlock Governance tokens if applicable. Put your address if unsure.',
     })
     .optional(),
   recurringPayments: z
@@ -188,7 +188,7 @@ export const PaywallConfig = z
     referrer: z
       .string({
         description:
-          '(Recommended) The address of the purchase referrer. This address may receive a referrer fee if the lock was configured for this, and will receive Unlock Governance tokens if applicable. Put your address if unsure.',
+          '(Recommended) The address or ENS name of the purchase referrer. This account may receive a referrer fee if the lock was configured for this, and will receive Unlock Governance tokens if applicable. Put your address if unsure.',
       })
       .optional(),
     messageToSign: z
