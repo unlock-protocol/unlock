@@ -21,7 +21,7 @@
     "hardhat": "2.26.3",
     "hardhat-erc1820": "0.1.0",
     "ts-node": "10.9.2",
-    "typescript": "5.9.3"
+    "typescript": "7.0.2"
   },
   "packageManager": "yarn@4.10.3"
 }
