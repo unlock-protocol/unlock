@@ -3,8 +3,9 @@ import net from 'net'
 
 /**
  * Reject Locksmith outbound http(s) URLs that would hit private / link-local /
- * metadata addresses (SSRF). Used for WebSub hub.callback verification and
- * Apple Wallet pass thumbnail fetches (lock metadata.image) and OG/certification imageURLToDataURI fetches.
+ * metadata addresses (SSRF). Used for WebSub hub.callback verification,
+ * Apple Wallet pass thumbnail fetches (lock metadata.image), OG/certification
+ * imageURLToDataURI fetches, and unauthenticated /image tokenURI fetches.
  */
 
 function ipv4ToInt(ip: string): number {
