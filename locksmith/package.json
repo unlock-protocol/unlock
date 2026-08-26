@@ -78,7 +78,7 @@
     "multer-s3": "3.0.1",
     "p-retry": "6.2.1",
     "passkit-generator": "3.2.0",
-    "path-to-regexp": "8.2.0",
+    "path-to-regexp": "8.4.0",
     "pdf-lib": "1.17.1",
     "pdfmake": "0.2.20",
     "pg": "8.13.3",
