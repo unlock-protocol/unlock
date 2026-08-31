@@ -60,13 +60,17 @@ import AuthenticationContext from '~/contexts/AuthenticationContext'
 
 const setProvider = vi.fn()
 
-// The provider already in context — deliberately the *wrong* wallet, matching
-// the state that produced the original bug.
-const staleProvider = {
-  underlying: { __address: OTHER },
+const makeContextProvider = (address: string, parentOrigin?: () => string) => ({
+  parentOrigin,
   getNetwork: vi.fn().mockResolvedValue({ chainId: '8453' }),
-  send: vi.fn().mockResolvedValue(undefined),
-}
+  send: vi.fn(async (method: string) =>
+    method === 'eth_accounts' ? [address] : undefined
+  ),
+})
+
+// Context holds a provider for a different address than the authenticated
+// account; WalletService must not be built from it.
+let contextProvider = makeContextProvider(OTHER)
 
 const wrapper = ({ children }: { children: React.ReactNode }) =>
   React.createElement(
@@ -74,7 +78,7 @@ const wrapper = ({ children }: { children: React.ReactNode }) =>
     { value: { account: AUTHENTICATED, setAccount: vi.fn() } },
     React.createElement(
       ProviderContext.Provider,
-      { value: { provider: staleProvider, setProvider } },
+      { value: { provider: contextProvider, setProvider } },
       children
     )
   )
@@ -82,6 +86,7 @@ const wrapper = ({ children }: { children: React.ReactNode }) =>
 describe('useProvider', () => {
   beforeEach(() => {
     connectedWallets = []
+    contextProvider = makeContextProvider(OTHER)
     connectWallet.mockClear()
     toastError.mockClear()
     setProvider.mockClear()
@@ -104,8 +109,8 @@ describe('useProvider', () => {
     expect(usedProvider.underlying).toEqual({ __address: AUTHENTICATED })
   })
 
-  it('signs with the authenticated wallet, not the stale context provider', async () => {
-    // Context still holds the previously-connected wrong wallet.
+  it('uses the authenticated wallet when context manages another account', async () => {
+    // The context provider does not manage the authenticated account.
     connectedWallets = [makeWallet(AUTHENTICATED)]
 
     const { result } = renderHook(() => useProvider(), { wrapper })
@@ -118,7 +123,7 @@ describe('useProvider', () => {
     expect(setProvider).toHaveBeenCalled()
   })
 
-  it('throws instead of proceeding when the wrong wallet is connected', async () => {
+  it('prompts for the authenticated wallet and refuses the wrong one', async () => {
     connectedWallets = [makeWallet(OTHER)]
 
     const { result } = renderHook(() => useProvider(), { wrapper })
@@ -126,24 +131,80 @@ describe('useProvider', () => {
     await expect(result.current.getWalletService(8453)).rejects.toThrow(
       /Wrong wallet connected/
     )
-    // Crucially, it must not have built a WalletService on the wrong account:
-    // that is what surfaced as an unrelated contract revert.
+    // WalletService must never be built from a provider for another account.
     expect(walletServiceConnect).not.toHaveBeenCalled()
-  })
-
-  it('prompts for the authenticated address and names it in the error', async () => {
-    connectedWallets = [makeWallet(OTHER)]
-
-    const { result } = renderHook(() => useProvider(), { wrapper })
-
-    await expect(result.current.getWalletService(8453)).rejects.toThrow(
-      /Wrong wallet connected/
-    )
     expect(connectWallet).toHaveBeenCalledWith({
       suggestedAddress: AUTHENTICATED,
     })
-    expect(toastError).toHaveBeenCalledWith(
-      expect.stringContaining(AUTHENTICATED)
+    expect(toastError).not.toHaveBeenCalled()
+  })
+
+  it('preserves a delegated provider when Privy has no connected wallet', async () => {
+    contextProvider = makeContextProvider(
+      OTHER,
+      () => 'https://checkout.example.com'
+    )
+
+    const { result } = renderHook(() => useProvider(), { wrapper })
+    await result.current.getWalletService(8453)
+
+    expect(walletServiceConnect).toHaveBeenCalledWith(contextProvider)
+    expect(connectWallet).not.toHaveBeenCalled()
+    expect(setProvider).not.toHaveBeenCalled()
+  })
+
+  it('preserves a delegated provider when Privy also has the authenticated wallet', async () => {
+    connectedWallets = [makeWallet(AUTHENTICATED)]
+    contextProvider = makeContextProvider(
+      OTHER,
+      () => 'https://checkout.example.com'
+    )
+
+    const { result } = renderHook(() => useProvider(), { wrapper })
+    await result.current.getWalletService(8453)
+
+    expect(walletServiceConnect).toHaveBeenCalledWith(contextProvider)
+    expect(setProvider).not.toHaveBeenCalled()
+  })
+
+  it('reuses a context provider whose default signer is authenticated', async () => {
+    const wallet = makeWallet(AUTHENTICATED)
+    connectedWallets = [wallet]
+    contextProvider = makeContextProvider(AUTHENTICATED)
+
+    const { result } = renderHook(() => useProvider(), { wrapper })
+    await result.current.getWalletService(8453)
+
+    expect(walletServiceConnect).toHaveBeenCalledWith(contextProvider)
+    expect(wallet.getEthereumProvider).not.toHaveBeenCalled()
+    expect(setProvider).not.toHaveBeenCalled()
+  })
+
+  it('watches an asset through the authenticated wallet provider', async () => {
+    connectedWallets = [makeWallet(OTHER), makeWallet(AUTHENTICATED)]
+
+    const { result } = renderHook(() => useProvider(), { wrapper })
+    await result.current.watchAsset({
+      address: '0xLock',
+      network: 8453,
+      tokenId: '42',
+    })
+
+    const activeProvider = setProvider.mock.calls[0][0]
+    expect(contextProvider.send).toHaveBeenCalledTimes(1)
+    expect(contextProvider.send).toHaveBeenCalledWith('eth_accounts', [])
+    expect(activeProvider.send).toHaveBeenNthCalledWith(
+      1,
+      'wallet_switchEthereumChain',
+      [{ chainId: '0x2105' }]
+    )
+    expect(activeProvider.send).toHaveBeenNthCalledWith(
+      2,
+      'wallet_watchAsset',
+      {
+        type: 'ERC721',
+        options: { address: '0xLock', tokenId: '42' },
+      }
     )
   })
 })

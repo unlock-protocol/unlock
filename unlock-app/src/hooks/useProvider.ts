@@ -14,6 +14,10 @@ interface WatchAssetInterface {
   tokenId: string
 }
 
+interface ProviderWithSend {
+  send?: (method: string, params: unknown[]) => Promise<unknown>
+}
+
 export const useProvider = () => {
   const { setProvider, provider } = useContext(ProviderContext)
   const { account } = useContext(AuthenticationContext)
@@ -99,6 +103,18 @@ export const useProvider = () => {
     }
   }
 
+  const getProviderAccount = async (targetProvider?: ProviderWithSend) => {
+    try {
+      const accounts = await targetProvider?.send?.('eth_accounts', [])
+      if (!Array.isArray(accounts) || typeof accounts[0] !== 'string') {
+        return undefined
+      }
+      return accounts[0].toLowerCase()
+    } catch {
+      return undefined
+    }
+  }
+
   /**
    * Resolves the provider belonging to the authenticated account, prompting
    * the user to connect it if it is not already available.
@@ -108,9 +124,18 @@ export const useProvider = () => {
    * from a different address than the one the UI shows as connected.
    */
   const resolveAuthenticatedProvider = async () => {
-    if (!account) return provider
+    // Delegated providers are owned by the checkout's parent page. They may
+    // authenticate through SIWE without exposing a wallet through Privy.
+    if (!account || provider?.parentOrigin) return provider
 
     const authenticatedAddress = account.toLowerCase()
+
+    // Reuse the context provider when its default signer already matches.
+    // WalletService also uses signer index 0, so checking that same account
+    // avoids replacing the provider and re-rendering the application tree.
+    if ((await getProviderAccount(provider)) === authenticatedAddress) {
+      return provider
+    }
 
     // Privy exposes every connected wallet and makes no promise about their
     // order, so the authenticated one has to be looked up by address.
@@ -125,9 +150,6 @@ export const useProvider = () => {
       // state. The user retries once connected, by which point this hook has
       // re-rendered with the new wallet.
       connectWallet({ suggestedAddress: account })
-      ToastHelper.error(
-        `Please switch to address ${account} in your wallet, then try again.`
-      )
       return null
     }
 
@@ -138,17 +160,11 @@ export const useProvider = () => {
     // Keep the context in sync for later renders. The returned value is what
     // this call must use: `provider` from context is captured at render time
     // and will still hold the previous wallet for the rest of this call.
-    setProvider(browserProvider)
+    if (browserProvider) {
+      setProvider(browserProvider)
+    }
 
     return browserProvider
-  }
-
-  /**
-   * Ensures the connected wallet matches the authenticated account
-   * Returns true if successful, false otherwise
-   */
-  const ensureCorrectWallet = async () => {
-    return (await resolveAuthenticatedProvider()) !== null
   }
 
   /**
@@ -231,8 +247,11 @@ export const useProvider = () => {
     network,
     tokenId,
   }: WatchAssetInterface) => {
-    await switchProviderNetwork(network)
-    await provider.send('wallet_watchAsset', {
+    const activeProvider = await resolveAuthenticatedProvider()
+    if (!activeProvider) return
+
+    await switchProviderNetwork(network, activeProvider)
+    await activeProvider.send('wallet_watchAsset', {
       type: 'ERC721',
       options: {
         address,
@@ -249,6 +268,5 @@ export const useProvider = () => {
     account: provider ? account : undefined,
     watchAsset,
     provider,
-    ensureCorrectWallet,
   }
 }
