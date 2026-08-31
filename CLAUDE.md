@@ -7,6 +7,7 @@ Unlock is a decentralized membership/subscription protocol on EVM blockchains. N
 Yarn 4.10.3 workspaces, Node >= 20 required, TypeScript throughout.
 
 **Applications:**
+
 - `unlock-app/` — Main dashboard (Next.js 14, Privy auth, ethers.js v6, React Query, Tailwind)
 - `locksmith/` — Backend API (Express 5, Sequelize/Postgres, Graphile Worker jobs)
 - `governance-app/` — DAO governance UI
@@ -16,6 +17,7 @@ Yarn 4.10.3 workspaces, Node >= 20 required, TypeScript throughout.
 - `unlock-protocol-com/` — Marketing site (Docusaurus)
 
 **Core:**
+
 - `smart-contracts/` — Solidity (Hardhat, OpenZeppelin upgradeable proxies)
 - `subgraph/` — The Graph indexer (AssemblyScript, GraphQL)
 - `governance/` — DAO tooling (proposals, voting, cross-chain)
@@ -80,7 +82,7 @@ cd subgraph && yarn test
 
 ## Supported Networks
 
-Mainnet, Optimism, BSC, Gnosis, Polygon, zkSync, zkEVM, Arbitrum, Celo, Avalanche, Base, Sepolia, Base Sepolia, Linea, Scroll (15+ total). Network config lives in `packages/networks`.
+Mainnet, Optimism, BSC, Gnosis, Polygon, Arbitrum, Celo, Avalanche, Base, Sepolia, Base Sepolia, Linea, Scroll (13 total). Network config lives in `packages/networks`.
 
 ## CI/CD
 

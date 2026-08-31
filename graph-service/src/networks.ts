@@ -10,8 +10,6 @@ export function getSubgraphUrl(
     '56': env.BSC_SUBGRAPH,
     '100': env.GNOSIS_SUBGRAPH,
     '137': env.POLYGON_SUBGRAPH,
-    '324': env.ZKSYNC_SUBGRAPH,
-    '1101': env.ZKEVM_SUBGRAPH,
     '42161': env.ARBITRUM_SUBGRAPH,
     '42220': env.CELO_SUBGRAPH,
     '43114': env.AVALANCHE_SUBGRAPH,

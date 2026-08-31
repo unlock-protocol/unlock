@@ -30,6 +30,14 @@ describe('forwardRequestsToProvider', () => {
     expect(result).toEqual({ responses: [] })
   })
 
+  it.each(['324', '1101'])(
+    'does not resolve retired network %s',
+    (networkId) => {
+      expect(supportedNetworks(mockEnv as any, networkId)).toBeUndefined()
+      expect(getFallbackProviders(networkId)).toEqual([])
+    }
+  )
+
   it('returns error for unsupported network', async () => {
     const result = await forwardRequestsToProvider(
       [mockRpcRequest],

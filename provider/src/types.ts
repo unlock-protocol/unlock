@@ -7,12 +7,10 @@ export interface Env {
   MAINNET_PROVIDER: string
   OPTIMISM_PROVIDER: string
   POLYGON_PROVIDER: string
-  ZKSYNC_PROVIDER: string
   BASE_SEPOLIA_PROVIDER: string
   BASE_PROVIDER: string
   SEPOLIA_PROVIDER: string
   LINEA_PROVIDER: string
-  ZKEVM_PROVIDER: string
   SCROLL_PROVIDER: string
 
   // Optional environment variable for configuring cache duration in seconds
