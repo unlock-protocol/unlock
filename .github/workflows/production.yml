@@ -109,6 +109,8 @@ jobs:
     with:
       workspace: '@unlock-protocol/provider'
       sync-secrets-command: yarn workspace @unlock-protocol/provider set-env-vars
+      # wrangler bundles these workspace packages from their dist/ output
+      pre-deploy-command: yarn workspace @unlock-protocol/types build && yarn workspace @unlock-protocol/networks build && yarn workspace @unlock-protocol/contracts build
       smoke-test-command: |
         body=$(curl --retry 5 --retry-all-errors --retry-delay 3 -fsS \
           -H 'Content-Type: application/json' \
@@ -125,6 +127,8 @@ jobs:
     with:
       workspace: graph-service
       sync-secrets-command: yarn workspace graph-service set-graph-urls
+      # wrangler bundles @unlock-protocol/networks from its dist/ output
+      pre-deploy-command: yarn workspace @unlock-protocol/types build && yarn workspace @unlock-protocol/networks build
       smoke-test-command: |
         headers=$(mktemp)
         curl --retry 5 --retry-all-errors --retry-delay 3 -fsS -D "$headers" -o /dev/null 'https://subgraph.unlock-protocol.com/1'
