@@ -38,8 +38,6 @@
     "@ambire/signature-validator": "1.4.1",
     "@aws-sdk/client-s3": "3.908.0",
     "@guildxyz/sdk": "2.6.9",
-    "@logtail/node": "0.5.4",
-    "@logtail/winston": "0.5.4",
     "@nuintun/qrcode": "5.0.2",
     "@openzeppelin/merkle-tree": "1.0.8",
     "@privy-io/server-auth": "1.32.5",
