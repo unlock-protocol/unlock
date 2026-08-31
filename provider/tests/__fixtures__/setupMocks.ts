@@ -109,9 +109,7 @@ export const createMockEnv = (): Partial<Env> & {
   SEPOLIA_PROVIDER: 'https://mock-sepolia.example.com',
   BASE_PROVIDER: 'https://mock-base.example.com',
   BASE_SEPOLIA_PROVIDER: 'https://mock-base-sepolia.example.com',
-  ZKSYNC_PROVIDER: 'https://mock-zksync.example.com',
   LINEA_PROVIDER: 'https://mock-linea.example.com',
-  ZKEVM_PROVIDER: 'https://mock-zkevm.example.com',
   SCROLL_PROVIDER: 'https://mock-scroll.example.com',
   // Rate limiters
   STANDARD_RATE_LIMITER: {

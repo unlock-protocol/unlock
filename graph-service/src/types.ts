@@ -19,8 +19,6 @@ export interface Env {
   SEPOLIA_SUBGRAPH: string
   LINEA_SUBGRAPH: string
   SCROLL_SUBGRAPH: string
-  ZKSYNC_SUBGRAPH: string
-  ZKEVM_SUBGRAPH: string
   SENTRY_DSN: string
   [key: string]: string
 }
