@@ -11,7 +11,11 @@ const loadLoggerWithEnv = async (nodeEnv: string) => {
     const { logger } = await import('../src/logger')
     return logger
   } finally {
-    process.env.NODE_ENV = previous
+    if (previous === undefined) {
+      delete process.env.NODE_ENV
+    } else {
+      process.env.NODE_ENV = previous
+    }
     vi.resetModules()
   }
 }

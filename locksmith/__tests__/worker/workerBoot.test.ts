@@ -9,10 +9,16 @@ describe('worker module import', () => {
   })
 
   it('does not print the database URL', async () => {
-    const log = vi.spyOn(console, 'log').mockImplementation(() => {})
+    const methods = ['log', 'info', 'warn', 'error', 'debug'] as const
+    const spies = methods.map((method) =>
+      vi.spyOn(console, method).mockImplementation(() => {})
+    )
     vi.resetModules()
     await import('../../src/worker/worker')
-    const printed = log.mock.calls.map((call) => call.join(' ')).join('\n')
+    const printed = spies
+      .flatMap((spy) => spy.mock.calls)
+      .map((call) => call.join(' '))
+      .join('\n')
     expect(printed).not.toMatch(/DATABASE|postgres(ql)?:\/\//)
   })
 })
