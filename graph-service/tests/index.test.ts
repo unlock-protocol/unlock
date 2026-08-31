@@ -16,8 +16,6 @@ const mockEnv: Env = {
   CELO_SUBGRAPH: 'test-celo-subgraph',
   LINEA_SUBGRAPH: 'test-linea-subgraph',
   SCROLL_SUBGRAPH: 'test-scroll-subgraph',
-  ZKSYNC_SUBGRAPH: 'test-zksync-subgraph',
-  ZKEVM_SUBGRAPH: 'test-zkevm-subgraph',
 }
 
 // Grouping tests related to the graph service
@@ -36,6 +34,20 @@ describe('Graph Service', () => {
     expect(response.status).toBe(400)
     expect(await response.text()).toBe('Unsupported network ID: 999999')
   })
+
+  it.each(['324', '1101'])(
+    'should return 400 for retired network %s',
+    async (networkId) => {
+      const request = new Request(`https://example.com/${networkId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: '{ locks { id } }' }),
+      })
+      const response = await worker.fetch(request, mockEnv)
+      expect(response.status).toBe(400)
+      expect(await response.text()).toBe(`Unsupported network ID: ${networkId}`)
+    }
+  )
 
   // Test for GET explorer redirects
   it('should redirect GET requests to The Graph explorer', async () => {
