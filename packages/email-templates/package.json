@@ -8,7 +8,7 @@
   ],
   "main": "dist",
   "dependencies": {
-    "handlebars": "4.7.8",
+    "handlebars": "4.7.9",
     "tsx": "4.20.6"
   },
   "devDependencies": {
