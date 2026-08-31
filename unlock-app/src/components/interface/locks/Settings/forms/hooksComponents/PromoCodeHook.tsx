@@ -20,6 +20,7 @@ export const PromoCodeHook = ({
   lockAddress,
   network,
   hookAddress,
+  disabled,
   setEventsHooksMutation,
 }: CustomComponentProps) => {
   const {
@@ -110,6 +111,7 @@ export const PromoCodeHook = ({
                 error={errors.code?.message as string}
                 placeholder="FRIENDS20"
                 label="Code:"
+                disabled={disabled}
                 {...register('promo.code', {
                   required: true,
                 })}
@@ -121,6 +123,7 @@ export const PromoCodeHook = ({
                 error={errors.discount?.message as string}
                 placeholder="20"
                 label="Discount (%):"
+                disabled={disabled}
                 {...register('promo.discount', {
                   valueAsNumber: true,
                   min: 0,
@@ -135,6 +138,7 @@ export const PromoCodeHook = ({
                 error={errors.cap?.message as string}
                 placeholder="100"
                 label="Number of uses:"
+                disabled={disabled}
                 {...register('promo.cap', {
                   valueAsNumber: true,
                   min: 0,
@@ -146,7 +150,7 @@ export const PromoCodeHook = ({
               <Button
                 type="submit"
                 className="w-24"
-                disabled={!isValid}
+                disabled={disabled || !isValid}
                 size="small"
                 loading={
                   setPromoCodeMutation.isPending ||
@@ -174,6 +178,7 @@ export const PromoCodeHook = ({
                   lockAddress={lockAddress}
                   hookAddress={hookAddress}
                   network={network}
+                  disabled={disabled}
                 />
               )
             })}
@@ -189,6 +194,7 @@ interface PromoCodeProps {
   lockAddress: string
   network: number
   hookAddress: string
+  disabled: boolean
 }
 
 export const PromoCode = ({
@@ -197,6 +203,7 @@ export const PromoCode = ({
   lockAddress,
   hookAddress,
   network,
+  disabled,
 }: PromoCodeProps) => {
   const [loading, setLoading] = useState(false)
   const [promoCodeDetails, setPromoCodeDetails] = useState<{
@@ -238,8 +245,9 @@ export const PromoCode = ({
         {loading && <LoadingIcon size={24} />}
         {!loading && (
           <TrashIcon
-            className="cursor-pointer"
+            className={disabled ? 'text-gray-400' : 'cursor-pointer'}
             onClick={async () => {
+              if (disabled) return
               setLoading(true)
               await savePromoCode({ code, discount: 0, cap: 0 })
               setLoading(false)

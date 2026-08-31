@@ -4,6 +4,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from 'react'
 import { SettingTerms } from './elements/SettingTerms'
@@ -20,11 +21,20 @@ import { SettingPayments } from './elements/SettingPayments'
 import { SettingEmail } from './elements/SettingEmail'
 import { SettingTab } from '~/components/content/lock/LocksSettingsContent'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { SettingDiscountCodes } from './elements/SettingDiscountCodes'
+import { shouldShowDiscountCodesTab } from './settingsTabs'
 
 interface LockSettingsPageProps {
   lockAddress: string
   network: number
   defaultTab?: SettingTab
+}
+
+interface SettingsTabConfig {
+  label: string
+  description?: string
+  id: SettingTab
+  children: ReactNode
 }
 
 export const NotManagerBanner = () => {
@@ -90,112 +100,137 @@ const LockSettingsPage = ({
 
   const isLoading = isLoadingLock || isLoadingManager
 
+  const tabs = useMemo<SettingsTabConfig[]>(() => {
+    const settingsTabs: SettingsTabConfig[] = [
+      {
+        id: 'general',
+        label: 'General',
+        children: (
+          <SettingGeneral
+            lockAddress={lockAddress}
+            network={network}
+            isManager={isManager}
+            isLoading={isLoading}
+            lock={lock}
+          />
+        ),
+      },
+      {
+        id: 'terms',
+        label: 'Membership Terms',
+        children: (
+          <SettingTerms
+            lockAddress={lockAddress}
+            network={network}
+            isManager={isManager}
+            lock={lock}
+            isLoading={isLoading}
+            publicLockVersion={publicLockVersion}
+          />
+        ),
+        description:
+          'Membership Terms include the price, currency, duration, payment mechanisms... as well as cancellation terms and transfer fees.',
+      },
+      {
+        id: 'payments',
+        label: 'Payments',
+        children: (
+          <SettingPayments
+            lockAddress={lockAddress}
+            network={network}
+            isManager={isManager}
+            lock={lock}
+            isLoading={isLoading}
+          />
+        ),
+        description:
+          'Payments settings lets you change the price and currency of your memberships, as well as enable credit cards and recurring payments.',
+      },
+      {
+        id: 'roles',
+        label: 'Roles',
+        children: (
+          <SettingRoles
+            lockAddress={lockAddress}
+            network={network}
+            isManager={isManager}
+            isLoading={isLoading}
+          />
+        ),
+        description:
+          'Your Lock includes multiple roles, such as "Lock Manager". Here you can configure which addresses are assigned which roles.',
+      },
+      {
+        id: 'emails',
+        label: 'Emails',
+        children: (
+          <SettingEmail
+            lockAddress={lockAddress}
+            network={network}
+            isManager={isManager}
+            isLoading={isLoading}
+          />
+        ),
+        description:
+          "Customize the emails sent to users when they purchase your lock's membership NFTs.",
+      },
+      {
+        id: 'advanced',
+        label: 'Advanced',
+        children: (
+          <SettingMisc
+            lockAddress={lockAddress}
+            network={network}
+            isManager={isManager}
+            isLoading={isLoading}
+            publicLockLatestVersion={publicLockLatestVersion}
+            publicLockVersion={publicLockVersion}
+          />
+        ),
+        description:
+          'This section lets you configure referral fees, hooks and upgrade your lock to the latest version of the protocol.',
+      },
+    ]
+
+    if (shouldShowDiscountCodesTab({ isLoading, lock })) {
+      settingsTabs.splice(3, 0, {
+        id: 'discountCodes',
+        label: 'Discount Codes',
+        children: (
+          <SettingDiscountCodes
+            lockAddress={lockAddress}
+            network={network}
+            isManager={isManager}
+            isLoading={isLoading}
+            publicLockVersion={publicLockVersion}
+          />
+        ),
+        description:
+          'Create and manage discount codes directly for this paid lock.',
+      })
+    }
+
+    return settingsTabs
+  }, [
+    isLoading,
+    isManager,
+    lock,
+    lockAddress,
+    network,
+    publicLockLatestVersion,
+    publicLockVersion,
+  ])
+
   /**
    * Open default tab by id
    */
   useEffect(() => {
     if (!defaultTab) return
-    const defaultTabIndex = tabs?.findIndex(({ id }) => id === defaultTab)
-    if (defaultTabIndex === undefined) return
+    const defaultTabIndex = tabs.findIndex(({ id }) => id === defaultTab)
+    if (defaultTabIndex < 0) return
 
     setSelectedIndex(defaultTabIndex)
-  }, [defaultTab])
-
-  const tabs: {
-    label: string
-    description?: string
-    id: SettingTab
-    children: ReactNode
-  }[] = [
-    {
-      id: 'general',
-      label: 'General',
-      children: (
-        <SettingGeneral
-          lockAddress={lockAddress}
-          network={network}
-          isManager={isManager}
-          isLoading={isLoading}
-          lock={lock}
-        />
-      ),
-    },
-    {
-      id: 'terms',
-      label: 'Membership Terms',
-      children: (
-        <SettingTerms
-          lockAddress={lockAddress}
-          network={network}
-          isManager={isManager}
-          lock={lock}
-          isLoading={isLoading}
-          publicLockVersion={publicLockVersion}
-        />
-      ),
-      description:
-        'Membership Terms include the price, currency, duration, payment mechanisms... as well as cancellation terms and transfer fees.',
-    },
-    {
-      id: 'payments',
-      label: 'Payments',
-      children: (
-        <SettingPayments
-          lockAddress={lockAddress}
-          network={network}
-          isManager={isManager}
-          lock={lock}
-          isLoading={isLoading}
-        />
-      ),
-      description:
-        'Payments settings lets you change the price and currency of your memberships, as well as enable credit cards and recurring payments.',
-    },
-    {
-      id: 'roles',
-      label: 'Roles',
-      children: (
-        <SettingRoles
-          lockAddress={lockAddress}
-          network={network}
-          isManager={isManager}
-          isLoading={isLoading}
-        />
-      ),
-      description:
-        'Your Lock includes multiple roles, such as "Lock Manager". Here you can configure which addresses are assigned which roles.',
-    },
-    {
-      id: 'emails',
-      label: 'Emails',
-      children: (
-        <SettingEmail
-          lockAddress={lockAddress}
-          network={network}
-          isManager={isManager}
-          isLoading={isLoading}
-        />
-      ),
-      description:
-        "Customize the emails sent to users when they purchase your lock's membership NFTs.",
-    },
-    {
-      id: 'advanced',
-      label: 'Advanced',
-      children: (
-        <SettingMisc
-          lockAddress={lockAddress}
-          network={network}
-          isManager={isManager}
-          isLoading={isLoading}
-          publicLockLatestVersion={publicLockLatestVersion}
-          publicLockVersion={publicLockVersion}
-        />
-      ),
-      description:
-        'This section lets you configure referral fees, hooks and upgrade your lock to the latest version of the protocol.',
-    },
-  ]
+  }, [defaultTab, tabs])
 
   return (
     <SettingsContext.Provider
