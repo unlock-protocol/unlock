@@ -121,17 +121,39 @@ export const login: RequestHandler = async (request, response) => {
   }
 }
 
+// Logs enough about a rejected Privy login to diagnose it from the logs alone:
+// the request body is not logged by the request logger, so record its shape.
+const rejectPrivyLogin = (
+  request: Parameters<RequestHandler>[0],
+  response: Parameters<RequestHandler>[1],
+  status: number,
+  reason: string
+) => {
+  logger.warn('Privy login rejected', {
+    reason,
+    status,
+    origin: request.headers.origin,
+    userAgent: request.headers['user-agent'],
+    contentType: request.headers['content-type'],
+    contentLength: request.headers['content-length'],
+    bodyKeys: Object.keys(request.body ?? {}),
+  })
+  response.status(status).json({ error: reason })
+}
+
 export const loginWithPrivy: RequestHandler = async (request, response) => {
   try {
-    const { accessToken, walletAddress } = request.body
+    // Express leaves `request.body` undefined when no body parser matched
+    // the content type, so treat that the same as an empty body.
+    const { accessToken, walletAddress } = request.body ?? {}
 
     if (!accessToken) {
-      response.status(400).json({ error: 'Access token is required' })
+      rejectPrivyLogin(request, response, 400, 'Access token is required')
       return
     }
 
     if (!walletAddress) {
-      response.status(400).json({ error: 'walletAddress is required' })
+      rejectPrivyLogin(request, response, 400, 'walletAddress is required')
       return
     }
 
@@ -145,10 +167,13 @@ export const loginWithPrivy: RequestHandler = async (request, response) => {
     const user = await privy.getUserByWalletAddress(walletAddress)
 
     if (!user || userAuthClaims.userId !== user.id) {
-      response.status(401).json({
-        error:
-          'The wallet you are authenticating with does not match your authentication token',
-      })
+      rejectPrivyLogin(
+        request,
+        response,
+        401,
+        'The wallet you are authenticating with does not match your authentication token'
+      )
+      return
     }
 
     // Create a new session
