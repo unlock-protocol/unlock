@@ -118,7 +118,6 @@ const config = {
   eventCasterApiKey: process.env.EVENTCASTER_API_KEY,
   // Secret key to authenticate with the provider service
   providerSecretKey: process.env.PROVIDER_SECRET_KEY,
-  logtailSourceToken: process.env.LOGTAIL,
   sessionDuration: Number(process.env.SESSION_DURATION || 86400 * 60), // 60 days
   requestTimeout: '25s',
   databaseUrl: process.env.DATABASE_URL || '',
