@@ -25,7 +25,6 @@ const config = {
     wedlocks: process.env.WEDLOCKS || 'http://localhost:1337',
   },
   recaptchaSecret: process.env.RECAPTCHA_SECRET,
-  logtailSourceToken: process.env.LOGTAIL,
   requestTimeout: '25s',
   defenderRelayCredentials,
   sentry: {

@@ -18,8 +18,7 @@ export const logError = ({
   )
 
 async function main() {
-  // ignore zksync bcz of their custom veriffier
-  const networks = await getAllNetworks({ exclude: [324] })
+  const networks = await getAllNetworks()
   const errors: any[] = []
   for (const { network } of networks) {
     const { id: chainId, name } = network
