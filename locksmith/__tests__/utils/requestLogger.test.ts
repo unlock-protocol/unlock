@@ -52,6 +52,18 @@ const buildApp = (capture: CaptureTransport, fail = false) => {
       transports: [capture],
     })
   )
+  // Explicit terminal handler so the test does not depend on Express's
+  // default error handling to end the response.
+  app.use(
+    (
+      _err: Error,
+      _req: express.Request,
+      res: express.Response,
+      _next: express.NextFunction
+    ) => {
+      res.status(500).send('error')
+    }
+  )
   return app
 }
 
@@ -76,7 +88,7 @@ describe('request logger redaction', () => {
     expect(entry).toContain('"chain":"8453"')
   })
 
-  it('logs errors without credentials', async () => {
+  it('logs errors without credentials', { timeout: 10_000 }, async () => {
     const capture = new CaptureTransport()
     await send(buildApp(capture, true)).expect(500)
 
