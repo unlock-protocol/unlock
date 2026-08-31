@@ -20542,7 +20542,7 @@ __metadata:
     ethers: "npm:6.15.0"
     jsdom: "npm:26.1.0"
     next: "npm:14.2.35"
-    postcss: "npm:8.5.6"
+    postcss: "npm:8.5.23"
     react-markdown: "npm:10.1.0"
     tailwind-merge: "npm:3.3.1"
     tailwindcss: "npm:3.4.18"
@@ -20641,7 +20641,7 @@ __metadata:
     docusaurus-plugin-openapi-docs: "npm:4.5.1"
     docusaurus-theme-openapi-docs: "npm:4.5.1"
     ethers: "npm:6.15.0"
-    postcss: "npm:8.5.6"
+    postcss: "npm:8.5.23"
     postcss-import: "npm:16.1.1"
     postcss-nesting: "npm:13.0.2"
     prism-react-renderer: "npm:2.4.1"
@@ -20704,7 +20704,7 @@ __metadata:
     eslint: "npm:9.22.0"
     ethers: "npm:6.15.0"
     next: "npm:14.2.35"
-    postcss: "npm:8.4.49"
+    postcss: "npm:8.5.23"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
     react-markdown: "npm:10.1.0"
@@ -21077,7 +21077,7 @@ __metadata:
     "@vitejs/plugin-react": "npm:4.7.0"
     autoprefixer: "npm:10.4.21"
     ethers: "npm:6.15.0"
-    postcss: "npm:8.5.6"
+    postcss: "npm:8.5.23"
     prism-react-renderer: "npm:2.4.1"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
@@ -21157,7 +21157,7 @@ __metadata:
     next: "npm:14.2.35"
     next-recaptcha-v3: "npm:1.5.2"
     p-limit: "npm:6.2.0"
-    postcss: "npm:8.4.49"
+    postcss: "npm:8.5.23"
     postmate: "npm:1.5.2"
     qr-scanner: "npm:1.4.2"
     qrcode.react: "npm:4.1.0"
@@ -21268,7 +21268,7 @@ __metadata:
     next-transpile-modules: "npm:10.0.1"
     numeral: "npm:2.0.6"
     path-match: "npm:1.2.4"
-    postcss: "npm:8.5.6"
+    postcss: "npm:8.5.23"
     prettier: "npm:3.5.3"
     raw-loader: "npm:4.0.2"
     react: "npm:18.3.1"
@@ -39844,6 +39844,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nanoid@npm:^3.3.16":
+  version: 3.3.18
+  resolution: "nanoid@npm:3.3.18"
+  bin:
+    nanoid: bin/nanoid.cjs
+  checksum: 10/1b3b4fdac831b92b56d1dbe8b1e63a372432faf86ea383134e3b53141ef8108a60b7f84343b5cefecac9550bb74edf8164da93ea07d1c4f757039bc75d8a5d9e
+  languageName: node
+  linkType: hard
+
 "native-abort-controller@npm:^1.0.3, native-abort-controller@npm:^1.0.4":
   version: 1.0.4
   resolution: "native-abort-controller@npm:1.0.4"
@@ -43067,14 +43076,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:8.5.6, postcss@npm:^8.5.4, postcss@npm:^8.5.6":
-  version: 8.5.6
-  resolution: "postcss@npm:8.5.6"
+"postcss@npm:8.5.23":
+  version: 8.5.23
+  resolution: "postcss@npm:8.5.23"
   dependencies:
-    nanoid: "npm:^3.3.11"
+    nanoid: "npm:^3.3.16"
     picocolors: "npm:^1.1.1"
     source-map-js: "npm:^1.2.1"
-  checksum: 10/9e4fbe97574091e9736d0e82a591e29aa100a0bf60276a926308f8c57249698935f35c5d2f4e80de778d0cbb8dcffab4f383d85fd50c5649aca421c3df729b86
+  checksum: 10/8387f421216696bf62a13e5a270e9fefdafc81e196903c0f8d7653f8bab315367cc2261b3c22cf197e492cb075f31bdfc07fd9c3be1cb165ff3cabe14c5a039a
   languageName: node
   linkType: hard
 
@@ -43086,6 +43095,17 @@ __metadata:
     picocolors: "npm:^1.1.1"
     source-map-js: "npm:^1.2.1"
   checksum: 10/6d7e21a772e8b05bf102636918654dac097bac013f0dc8346b72ac3604fc16829646f94ea862acccd8f82e910b00e2c11c1f0ea276543565d278c7ca35516a7c
+  languageName: node
+  linkType: hard
+
+"postcss@npm:^8.5.4, postcss@npm:^8.5.6":
+  version: 8.5.6
+  resolution: "postcss@npm:8.5.6"
+  dependencies:
+    nanoid: "npm:^3.3.11"
+    picocolors: "npm:^1.1.1"
+    source-map-js: "npm:^1.2.1"
+  checksum: 10/9e4fbe97574091e9736d0e82a591e29aa100a0bf60276a926308f8c57249698935f35c5d2f4e80de778d0cbb8dcffab4f383d85fd50c5649aca421c3df729b86
   languageName: node
   linkType: hard
 
