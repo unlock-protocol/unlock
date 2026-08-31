@@ -1,7 +1,6 @@
+// ABOUTME: Application logger. Railway's log view (stdout) is the only log
+// ABOUTME: sink, so the console transport stays on everywhere except in tests.
 import winston from 'winston'
-import { Logtail } from '@logtail/node'
-import { LogtailTransport } from '@logtail/winston'
-import config from '../config/config'
 
 const { combine, timestamp, json, simple } = winston.format
 
@@ -14,19 +13,9 @@ export const logger = winston.createLogger({
 // No output in tests
 logger.add(
   new winston.transports.Console({
-    silent: !!(
-      process.env?.NODE_ENV &&
-      ['test', 'production'].indexOf(process.env?.NODE_ENV) > -1
-    ),
+    silent: process.env?.NODE_ENV === 'test',
     format: simple(),
   })
 )
-
-if (process.env.NODE_ENV === 'production') {
-  if (config.logtailSourceToken) {
-    const logtail = new Logtail(config.logtailSourceToken)
-    logger.add(new LogtailTransport(logtail))
-  }
-}
 
 export default logger
