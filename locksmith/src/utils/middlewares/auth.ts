@@ -1,5 +1,5 @@
 import crypto from 'crypto'
-import { RequestHandler, response } from 'express'
+import { RequestHandler } from 'express'
 import { Application } from '../../models/application'
 import { logger } from '../../logger'
 import normalizer from '../normalizer'
@@ -115,10 +115,10 @@ export const authMiddleware: RequestHandler = async (req, _, next) => {
       }
       return next()
     }
-    response.status(400).send({
-      message: 'Unsupported authorization type',
-    })
-    return
+    // Unknown schemes are treated as unauthenticated rather than rejected:
+    // this middleware also fronts public routes.
+    logger.warn('Unsupported authorization scheme', { scheme: tokenType })
+    return next()
   } catch (error) {
     logger.info(error.message)
     return next()
