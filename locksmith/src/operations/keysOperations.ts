@@ -7,6 +7,8 @@ import { getUserAddressesMatchingData } from './userMetadataOperations'
 import { Rsvp } from '../models'
 import { PAGE_SIZE } from '@unlock-protocol/core'
 import { getWeb3Service } from '../initializers'
+import * as membershipOperations from './membershipOperations'
+import pLimit from 'p-limit'
 
 const KEY_FILTER_MAPPING: { [key: string]: string } = {
   owner: 'keyholderAddress',
@@ -14,6 +16,17 @@ const KEY_FILTER_MAPPING: { [key: string]: string } = {
   email: 'email',
   transactionHash: 'transactionsHash',
 }
+
+const RENEWAL_FILTER_FETCH_LIMIT = 5000
+
+type RenewalStatus =
+  | 'all'
+  | 'will renew'
+  | 'needs approval'
+  | 'balance low'
+  | 'needs purchase'
+  | 'not renewable'
+
 /**
  * Filters keys base on query
  * @param {Array} keys - list of keys
@@ -39,6 +52,86 @@ async function filterKeys(keys: any[], filters: any) {
   return fuse.remove((item: any) => {
     return item?.checkedInAt
   })
+}
+
+const getRenewalStatus = (membershipState: {
+  isRenewable: boolean
+  isAutoRenewable: boolean
+  isRenewableIfReApproved: boolean
+  isRenewableIfRePurchased: boolean
+}): RenewalStatus => {
+  if (!membershipState.isRenewable) {
+    return 'not renewable'
+  }
+
+  if (membershipState.isAutoRenewable) {
+    return 'will renew'
+  }
+
+  if (membershipState.isRenewableIfReApproved) {
+    return 'needs approval'
+  }
+
+  if (membershipState.isRenewableIfRePurchased) {
+    return 'needs purchase'
+  }
+
+  return 'balance low'
+}
+
+async function addRenewalStatusToKeys({
+  keys,
+  lock,
+  lockAddress,
+  network,
+}: {
+  keys: any[]
+  lock: Partial<SubgraphLock>
+  lockAddress: string
+  network: number
+}) {
+  const renewalStatusLimit = pLimit(5)
+
+  return Promise.all(
+    keys.map((key) =>
+      renewalStatusLimit(async () => {
+        if (!key?.token) {
+          return {
+            ...key,
+            renewalStatus: 'not renewable',
+          }
+        }
+
+        try {
+          const membershipState = await membershipOperations.getMembershipState(
+            {
+              key: {
+                expiration: key.expiration,
+                lock: {
+                  version: lock?.version,
+                },
+              },
+              tokenAddress: lock?.tokenAddress || '',
+              network,
+              lockAddress,
+              tokenId: `${key.token}`,
+            },
+          )
+
+          return {
+            ...key,
+            renewalStatus: getRenewalStatus(membershipState),
+            renewalCurrency: membershipState.currency,
+          }
+        } catch {
+          return {
+            ...key,
+            renewalStatus: 'not renewable',
+          }
+        }
+      })
+    )
+  )
 }
 
 type Lock = Omit<Partial<SubgraphLock>, 'keys'> & {
@@ -119,6 +212,10 @@ export async function getKeysWithMetadata({
   let metadataItems: any[] = []
 
   let keysFilter = filters
+  const renewalFilter = filters.renewal || 'all'
+  const shouldFilterByRenewal =
+    renewalFilter !== 'all' &&
+    ['pending', 'denied'].indexOf(filters.approval) === -1
 
   // Ok so if the filters is not an _onchain_ thing we need to first get the addresses that would match it!
   if (filters.filterKey === 'email' && filters.query) {
@@ -140,6 +237,15 @@ export async function getKeysWithMetadata({
   let lock: any
   const limit = filters.max || PAGE_SIZE
   const page = filters.page || 0
+
+  if (shouldFilterByRenewal) {
+    keysFilter = {
+      ...keysFilter,
+      page: 0,
+      max: RENEWAL_FILTER_FETCH_LIMIT,
+    }
+  }
+
   if (['pending', 'denied'].indexOf(filters.approval) > -1) {
     const rsvps = await Rsvp.findAll({
       where: {
@@ -191,7 +297,24 @@ export async function getKeysWithMetadata({
   }
 
   const keys = buildKeysWithMetadata(lock as Lock, metadataItems)
-  const filteredKeys = await filterKeys(keys, filters)
+  let filteredKeys = await filterKeys(keys, filters)
+
+  if (shouldFilterByRenewal) {
+    filteredKeys = (
+      await addRenewalStatusToKeys({
+        keys: filteredKeys,
+        lock,
+        lockAddress,
+        network,
+      })
+    ).filter((key) => key.renewalStatus === renewalFilter)
+
+    return {
+      keys: filteredKeys.slice(page * limit, page * limit + limit),
+      total: filteredKeys.length,
+    }
+  }
+
   return {
     keys: filteredKeys,
     total: lock.totalKeys,

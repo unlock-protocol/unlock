@@ -26,6 +26,7 @@ export default class KeyController {
         filterKey,
         expiration = 'active',
         approval = 'minted',
+        renewal = 'all',
       } = request.query ?? {}
 
       if (!filterKey) {
@@ -41,6 +42,7 @@ export default class KeyController {
         filterKey,
         expiration,
         approval,
+        renewal,
         max: Math.min(PAGE_SIZE, Number(max)),
       }
 
@@ -150,6 +152,7 @@ export default class KeyController {
         filterKey,
         expiration = 'active',
         approval = 'minted',
+        renewal = 'all',
       } = request.query ?? {}
 
       if (!filterKey) {
@@ -165,6 +168,7 @@ export default class KeyController {
         filterKey,
         expiration,
         approval,
+        renewal,
         max: Math.min(PAGE_SIZE, Number(max)),
       }
 

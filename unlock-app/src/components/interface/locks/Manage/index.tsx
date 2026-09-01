@@ -13,6 +13,7 @@ import {
   ApprovalStatus,
   ExpirationStatus,
   FilterBar,
+  RenewalStatus,
 } from './elements/FilterBar'
 import { useLockManager } from '~/hooks/useLockManager'
 import Link from 'next/link'
@@ -20,6 +21,7 @@ import { Picker } from '../../Picker'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useCentralizedLockData } from '~/hooks/useCentralizedLockData'
 import { ActionBar } from '../elements/ActionBar'
+import { ADDRESS_ZERO, MAX_UINT } from '~/constants'
 
 import { NotManagerBanner } from '../Settings'
 import { TopActionBar } from '../elements/TopActionBar'
@@ -64,8 +66,17 @@ export const ManageLockContent = ({
     filterKey: 'owner',
     expiration: ExpirationStatus.ALL,
     approval: ApprovalStatus.MINTED,
+    renewal: RenewalStatus.ALL,
   })
   const [page, setPage] = useState(1)
+
+  const selectedLock = centralizedLockData?.lock
+  const showRenewalFilter = Boolean(
+    Number(selectedLock?.version || 0) >= 11 &&
+      selectedLock?.expirationDuration !== MAX_UINT &&
+      selectedLock?.tokenAddress &&
+      selectedLock.tokenAddress !== ADDRESS_ZERO
+  )
 
   // Handler for toggling airdrop modal
   const toggleAirdropKeys = useCallback(() => {
@@ -186,6 +197,7 @@ export const ManageLockContent = ({
                   setLoading={setLoading}
                   setPage={setPage}
                   page={page}
+                  showRenewalFilter={showRenewalFilter}
                 />
 
                 {/* Members list component with centralized data */}

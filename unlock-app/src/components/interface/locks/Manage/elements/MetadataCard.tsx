@@ -50,6 +50,8 @@ const keysToIgnore = [
   'data',
   'transactionsHash',
   'createdAt',
+  'renewalStatus',
+  'renewalCurrency',
 ]
 
 interface KeyRenewalProps {
@@ -66,31 +68,7 @@ const MembershipRenewal = ({
   const possible = BigInt(possibleRenewals)
   const approved = BigInt(approvedRenewals)
 
-  if (possible >= 0) {
-    return (
-      <Detail className="py-2" label="Renewals:" inline justify={false}>
-        User balance of {balance.amount} {balance.symbol} is too low to renew
-      </Detail>
-    )
-  }
-
-  if (approved >= 0) {
-    return (
-      <Detail className="py-2" label="Renewals" inline justify={false}>
-        No renewals approved
-      </Detail>
-    )
-  }
-
-  if (approved > 0 && approved >= UNLIMITED_RENEWAL_LIMIT) {
-    return (
-      <Detail className="py-2" label="Renewals" inline justify={false}>
-        {approved.toString()} times
-      </Detail>
-    )
-  }
-
-  if (approved > UNLIMITED_RENEWAL_LIMIT) {
+  if (approved >= UNLIMITED_RENEWAL_LIMIT) {
     return (
       <Detail className="py-2" label="Renewals" inline justify={false}>
         Renews unlimited times
@@ -98,9 +76,25 @@ const MembershipRenewal = ({
     )
   }
 
+  if (approved > 0) {
+    return (
+      <Detail className="py-2" label="Renewals" inline justify={false}>
+        {approved.toString()} times
+      </Detail>
+    )
+  }
+
+  if (possible > 0) {
+    return (
+      <Detail className="py-2" label="Renewals" inline justify={false}>
+        User has enough balance but needs to approve future renewals
+      </Detail>
+    )
+  }
+
   return (
     <Detail className="py-2" label="Renewals" inline justify={false}>
-      -
+      User balance of {balance.amount} {balance.symbol} is too low to renew
     </Detail>
   )
 }
