@@ -57,6 +57,19 @@ const config = {
         destination: '/checkout/:path*',
         permanent: true,
       },
+      // redirect old checkout query string format to new path format
+      {
+        source: '/checkout',
+        has: [
+          {
+            type: 'query',
+            key: 'id',
+            value: '(?<id>.*)',
+          },
+        ],
+        destination: '/checkout/:id',
+        permanent: true,
+      },
     ]
   },
 }
