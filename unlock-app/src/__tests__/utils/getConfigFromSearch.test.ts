@@ -1,5 +1,11 @@
 import { getPaywallConfigFromQuery } from '../../utils/paywallConfig'
-import { it, describe, expect } from 'vitest'
+import { it, describe, expect, vi } from 'vitest'
+
+vi.mock('~/config/app', () => ({
+  config: {
+    env: 'dev',
+  },
+}))
 
 const lock = '0x1234567890123456789012345678901234567890'
 const validConfig = {
@@ -48,6 +54,20 @@ describe('getPaywallConfigFromQuery', () => {
         skipRecipient: false,
         minRecipients: 1,
         maxRecipients: 5,
+      })
+    )
+  })
+
+  it('should support legacy checkoutConfig query params', () => {
+    expect.assertions(1)
+    expect(
+      getPaywallConfigFromQuery({
+        checkoutConfig: JSON.stringify(validConfig),
+      })
+    ).toEqual(
+      expect.objectContaining({
+        title: 'Valid Title',
+        locks: validConfig.locks,
       })
     )
   })
