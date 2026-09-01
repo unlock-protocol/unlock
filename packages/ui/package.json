@@ -49,8 +49,8 @@
     "tailwindcss": "3.4.18"
   },
   "peerDependencies": {
-    "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "react": "19.2.7",
+    "react-dom": "19.2.7"
   },
   "repository": {
     "type": "git",
@@ -66,14 +66,14 @@
     "@storybook/addon-links": "8.6.14",
     "@storybook/react": "8.6.14",
     "@storybook/react-vite": "8.6.14",
-    "@types/react": "18.3.26",
-    "@types/react-dom": "18.3.7",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js",
     "@vitejs/plugin-react": "4.7.0",
     "autoprefixer": "10.4.21",
     "postcss": "8.5.6",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
     "storybook": "8.6.14",
     "tailwindcss": "3.4.18",
     "tsup": "8.5.0",
