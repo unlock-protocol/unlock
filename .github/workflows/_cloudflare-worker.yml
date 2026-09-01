@@ -51,7 +51,7 @@ jobs:
       WRANGLER_ENVIRONMENT: ${{ inputs['wrangler-environment'] }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: 22.21.0
       - name: Enable Corepack
