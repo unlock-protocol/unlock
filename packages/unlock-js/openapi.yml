@@ -596,6 +596,8 @@ components:
           type: array
           items:
             type: string
+        isVirtual:
+          type: boolean
         createdAt:
           type: string
           format: date-time

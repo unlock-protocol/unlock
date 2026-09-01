@@ -7,9 +7,13 @@ import {
   addManagerAddressOperation,
   createEventCollectionOperation,
   createEventCollectionSlug,
+  getEventCollectionOperation,
+  PUBLIC_EVENTS_COLLECTION_SLUG,
   removeManagerAddressOperation,
   updateEventCollectionOperation,
 } from '../../src/operations/eventCollectionOperations'
+import { EventStatus } from '@unlock-protocol/types'
+import { Op } from 'sequelize'
 
 // interface for link types
 interface Link {
@@ -61,8 +65,29 @@ vi.mock('../../src/utils/createSlug', () => ({
       .replace(/(^-|-$)/g, ''),
 }))
 
+vi.mock('../../src/operations/wedlocksOperations', () => ({
+  sendEmail: vi.fn(),
+}))
+
+vi.mock('../../src/operations/privyUserOperations', () => ({
+  getPrivyUserByAddress: vi.fn().mockResolvedValue({ success: false }),
+}))
+
+vi.mock('../../src/config/config', () => ({
+  default: {
+    unlockApp: 'https://app.unlock-protocol.com',
+  },
+}))
+
+vi.mock('../../src/logger', () => ({
+  default: {
+    error: vi.fn(),
+  },
+}))
+
 describe('eventCollectionOperations', () => {
   let mockFindOne: ReturnType<typeof vi.fn>
+  let mockFindAll: ReturnType<typeof vi.fn>
   let scopedEventData: any
 
   beforeEach(() => {
@@ -70,8 +95,10 @@ describe('eventCollectionOperations', () => {
 
     // Mock the scoped EventData
     mockFindOne = vi.fn()
+    mockFindAll = vi.fn()
     scopedEventData = {
       findOne: mockFindOne,
+      findAll: mockFindAll,
     }
     ;(EventData.scope as any).mockReturnValue(scopedEventData)
   })
@@ -197,6 +224,62 @@ describe('eventCollectionOperations', () => {
       expect(EventCollection.findByPk).toHaveBeenCalledWith(
         'test-collection-with-special-characters'
       )
+    })
+
+    it('reserves the public events collection slug', async () => {
+      ;(EventCollection.findByPk as any).mockResolvedValueOnce(null)
+
+      const slug = await createEventCollectionSlug('All Events')
+
+      expect(slug).toBe('all-events-1')
+      expect(EventCollection.findByPk).toHaveBeenCalledOnce()
+      expect(EventCollection.findByPk).toHaveBeenCalledWith('all-events-1')
+    })
+  })
+
+  describe('getEventCollectionOperation', () => {
+    it('returns a read-only virtual collection of deployed Unlock events', async () => {
+      const event = {
+        slug: 'community-meetup',
+        data: {
+          name: 'Community meetup',
+          replyTo: 'private@example.com',
+          attributes: [],
+        },
+      }
+      mockFindAll.mockResolvedValue([event])
+
+      const result = await getEventCollectionOperation(
+        PUBLIC_EVENTS_COLLECTION_SLUG
+      )
+
+      expect(EventCollection.findByPk).not.toHaveBeenCalled()
+      expect(mockFindAll).toHaveBeenCalledWith({
+        where: {
+          status: EventStatus.DEPLOYED,
+          eventType: 'unlock',
+          checkoutConfigId: {
+            [Op.ne]: null,
+          },
+        },
+        order: [['createdAt', 'DESC']],
+      })
+      expect(result).toMatchObject({
+        slug: PUBLIC_EVENTS_COLLECTION_SLUG,
+        title: 'Explore Unlock Events',
+        managerAddresses: [],
+        isVirtual: true,
+        events: [
+          {
+            slug: 'community-meetup',
+            data: {
+              name: 'Community meetup',
+              attributes: [],
+            },
+          },
+        ],
+      })
+      expect(result.events[0].data).not.toHaveProperty('replyTo')
     })
   })
 
