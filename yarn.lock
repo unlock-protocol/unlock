@@ -20893,7 +20893,7 @@ __metadata:
     sequelize: "npm:6.37.7"
     sequelize-cli: "npm:6.6.3"
     siwe: "npm:3.0.0"
-    stripe: "npm:19.1.0"
+    stripe: "npm:22.3.0"
     supertest: "npm:7.0.0"
     tsx: "npm:4.19.4"
     typescript: "npm:5.7.3"
@@ -48438,17 +48438,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stripe@npm:19.1.0":
-  version: 19.1.0
-  resolution: "stripe@npm:19.1.0"
-  dependencies:
-    qs: "npm:^6.11.0"
+"stripe@npm:22.3.0":
+  version: 22.3.0
+  resolution: "stripe@npm:22.3.0"
   peerDependencies:
-    "@types/node": ">=16"
+    "@types/node": ">=18"
   peerDependenciesMeta:
     "@types/node":
       optional: true
-  checksum: 10/7392f08d6193a302212a0dcfaf3a8994dfa4ddbe512888bccec1c2ada17c494d48f15b49362c9d9aa3077967c110c5a0109486aaf45873eb27053268cbe5af65
+  checksum: 10/8fdde162dea0a7bde7158df7fe8767fd96ae43fda6b61c5acbfedbe08febad884e349938bac2e00f8c3bd7b3890574197f7f04016311db61bb2584bf6ab906f2
   languageName: node
   linkType: hard
 
