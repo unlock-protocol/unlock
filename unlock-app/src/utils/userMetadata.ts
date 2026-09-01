@@ -29,3 +29,29 @@ export function formResultToMetadata(
 
   return result
 }
+
+export function userMetadataToFormResult(
+  metadata:
+    | {
+        public?: Record<string, unknown>
+        protected?: Record<string, unknown>
+      }
+    | undefined,
+  inputs: MetadataInputType[]
+): Record<string, string> {
+  const storedMetadata = {
+    ...(metadata?.public || {}),
+    ...(metadata?.protected || {}),
+  }
+
+  return inputs.reduce<Record<string, string>>((result, input) => {
+    const value =
+      storedMetadata[input.name] ?? storedMetadata[input.name.toLowerCase()]
+
+    if (value !== undefined && value !== null) {
+      result[input.name] = `${value}`
+    }
+
+    return result
+  }, {})
+}
