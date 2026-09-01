@@ -2,6 +2,7 @@ import { PKPass } from 'passkit-generator'
 import fetch from 'isomorphic-fetch'
 import logger from '../../../logger'
 import path from 'node:path'
+import { assertSafeCallbackUrl } from '../../../utils/safeCallbackUrl'
 import { getCertificates } from './getCertificates'
 
 // Resolve the absolute path to the pass model template directory
@@ -25,7 +26,10 @@ const contentTypeToExtensionMap: { [key: string]: string } = {
 
 // utility to retrieve an image via HTTP and return it as a Buffer
 async function fetchImageAsBuffer(imageUrl: string) {
-  const response = await fetch(imageUrl)
+  // Lock managers can set metadata.image; pass generation fetches it server-side
+  // on an unauthenticated GET. Fail closed on private/link-local targets.
+  const safeUrl = await assertSafeCallbackUrl(imageUrl)
+  const response = await fetch(safeUrl, { redirect: 'error' } as RequestInit)
   if (!response.ok) {
     throw new Error(`Failed to fetch image: ${response.statusText}`)
   }
