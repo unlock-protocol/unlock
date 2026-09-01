@@ -20563,7 +20563,7 @@ __metadata:
     "@unlock-protocol/types": "workspace:^"
     copyfiles: "npm:2.4.1"
     eslint: "npm:9.38.0"
-    fs-extra: "npm:11.3.2"
+    fs-extra: "npm:11.3.5"
     hardhat: "npm:2.26.3"
     solidity-docgen: "npm:0.6.0-beta.36"
     typescript: "npm:5.9.2"
@@ -20750,7 +20750,7 @@ __metadata:
     eslint: "npm:9.39.0"
     ethers: "npm:6.15.0"
     ethers-multisend: "npm:3.1.0"
-    fs-extra: "npm:11.3.2"
+    fs-extra: "npm:11.3.5"
     hardhat: "npm:2.26.3"
     zksync-ethers: "npm:6.21.0"
   languageName: unknown
@@ -20915,7 +20915,7 @@ __metadata:
     eslint: "npm:9.39.1"
     eslint-plugin-sort-keys-fix: "npm:1.1.2"
     ethers: "npm:6.15.0"
-    fs-extra: "npm:11.3.2"
+    fs-extra: "npm:11.3.5"
     tsup: "npm:8.5.0"
     tsx: "npm:4.20.6"
     typescript: "npm:5.9.2"
@@ -31960,6 +31960,17 @@ __metadata:
     jsonfile: "npm:^6.0.1"
     universalify: "npm:^2.0.0"
   checksum: 10/d559545c73fda69c75aa786f345c2f738b623b42aea850200b1582e006a35278f63787179e3194ba19413c26a280441758952b0c7e88dd96762d497e365a6c3e
+  languageName: node
+  linkType: hard
+
+"fs-extra@npm:11.3.5":
+  version: 11.3.5
+  resolution: "fs-extra@npm:11.3.5"
+  dependencies:
+    graceful-fs: "npm:^4.2.0"
+    jsonfile: "npm:^6.0.1"
+    universalify: "npm:^2.0.0"
+  checksum: 10/dc8408818eec8b03efad8742d079ecab749a2f7bc9f208e429b447fcac7632fae52e09312d6d42218efe7e2efa97f03ff232d639ade4aa7fcd8c00ebe9ad0c0c
   languageName: node
   linkType: hard
 
