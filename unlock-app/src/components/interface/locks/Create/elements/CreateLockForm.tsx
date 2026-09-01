@@ -20,6 +20,7 @@ import { useAvailableNetworks } from '~/utils/networks'
 import { SelectToken } from './SelectToken'
 import { ProtocolFee } from './ProtocolFee'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { GuideCallout } from '~/components/interface/GuideCallout'
 
 export interface LockFormProps {
   name: string
@@ -40,6 +41,11 @@ interface CreateLockFormProps {
   hideFields?: string[]
   isLoading?: boolean
   defaultOptions?: any
+  guide?: {
+    description: string
+    href: string
+    linkLabel: string
+  }
 }
 
 export const NetworkDescription = ({ network }: { network: number }) => {
@@ -90,6 +96,7 @@ export const CreateLockForm = ({
   hideFields = [],
   isLoading = false,
   defaultOptions = {},
+  guide,
 }: CreateLockFormProps) => {
   const { networks } = useConfig()
   const web3Service = useWeb3Service()
@@ -176,6 +183,7 @@ export const CreateLockForm = ({
             className="flex flex-col w-full gap-6"
             onSubmit={handleSubmit(onHandleSubmit)}
           >
+            {guide && <GuideCallout {...guide} />}
             {!hideFields.includes('network') && (
               <Combobox
                 label="Network:"
