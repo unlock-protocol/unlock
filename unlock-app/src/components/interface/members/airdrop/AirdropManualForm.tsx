@@ -5,13 +5,17 @@ import {
   Toggle,
   AddressInput,
 } from '@unlock-protocol/ui'
-import { useForm, Controller, useWatch } from 'react-hook-form'
+import { useForm, Controller, useWatch, useFieldArray } from 'react-hook-form'
 import { AirdropMember } from './AirdropElements'
 import { useList } from 'react-use'
 import { AirdropListItem } from './AirdropElements'
+import {
+  CustomMetadataField,
+  applyCustomMetadataFields,
+} from './customMetadata'
 import { Lock } from '~/unlockTypes'
 import { formatDate } from '~/utils/lock'
-import { ChangeEvent, useCallback, useState } from 'react'
+import { ChangeEvent, MouseEvent, useCallback, useState } from 'react'
 import { ToastHelper } from '@unlock-protocol/ui'
 import { KeyManager } from '@unlock-protocol/unlock-js'
 import { useConfig } from '~/utils/withConfig'
@@ -26,6 +30,20 @@ export interface Props {
   list: AirdropMember[]
   defaultValues?: Partial<AirdropMember>
   emailRequired?: boolean
+}
+
+const metadataFieldNamePattern = /^[a-zA-Z0-9_-]+$/
+
+type AirdropFormValues = {
+  wallet: string
+  count?: number
+  expiration?: string
+  neverExpire?: boolean
+  manager?: string
+  email?: string
+  balance?: number
+  line?: number
+  customFields?: CustomMetadataField[]
 }
 
 export function AirdropInternalForm({
@@ -45,9 +63,17 @@ export function AirdropInternalForm({
     watch,
     control,
     formState: { errors, isSubmitting },
-  } = useForm<AirdropMember>({
+  } = useForm<AirdropFormValues>({
     defaultValues,
     mode: 'onSubmit',
+  })
+  const {
+    fields: customFields,
+    append: appendCustomField,
+    remove: removeCustomField,
+  } = useFieldArray({
+    control,
+    name: 'customFields',
   })
 
   const formValues = watch()
@@ -55,11 +81,11 @@ export function AirdropInternalForm({
     control,
   })
 
-  const addressFieldChanged = (name: keyof AirdropMember) => {
+  const addressFieldChanged = (name: 'wallet' | 'manager') => {
     return async (event: React.ChangeEvent<HTMLInputElement>) => {
       const address = await getAddressForName(event.target.value)
       if (address) {
-        return setValue(name as string, address, {
+        return setValue(name, address, {
           shouldValidate: true,
           shouldDirty: true,
         })
@@ -101,11 +127,11 @@ export function AirdropInternalForm({
   )
 
   const onSubmitHandler = useCallback(
-    async (member: AirdropMember) => {
+    async (member: AirdropFormValues) => {
       try {
         const address = await getAddressForName(member.wallet)
         member.wallet = address
-        const parsed = AirdropMember.parse(member)
+        const parsed = AirdropMember.parse(applyCustomMetadataFields(member))
         add(parsed)
         reset()
         setValue('wallet', '')
@@ -181,7 +207,7 @@ export function AirdropInternalForm({
                   type="email"
                   ref={ref}
                   onBlur={onBlur}
-                  onChange={(event) => {
+                  onChange={(event: ChangeEvent<HTMLInputElement>) => {
                     onChange(onWalletChange(event))
                   }}
                 />
@@ -197,7 +223,7 @@ export function AirdropInternalForm({
                       <AddressInput
                         withIcon
                         value={wallet}
-                        onChange={(value: any) => {
+                        onChange={(value: string) => {
                           setValue('wallet', value)
                         }}
                         required
@@ -293,6 +319,80 @@ export function AirdropInternalForm({
         />
       )}
 
+      <div className="grid gap-3">
+        <div>
+          <h3 className="font-medium">Custom metadata</h3>
+          <p className="text-sm text-gray-600">
+            Add attributes that should be saved for this recipient.
+          </p>
+        </div>
+        {customFields.map((field, index) => (
+          <div
+            key={field.id}
+            className="grid gap-3 p-3 border border-gray-200 rounded-lg"
+          >
+            <div className="grid gap-3 md:grid-cols-2">
+              <Input
+                label="Field name"
+                {...register(`customFields.${index}.name`, {
+                  validate: (value) => {
+                    if (!value) {
+                      return true
+                    }
+
+                    return metadataFieldNamePattern.test(value)
+                      ? true
+                      : 'Use letters, numbers, underscores, and hyphens only.'
+                  },
+                })}
+                error={errors.customFields?.[index]?.name?.message}
+              />
+              <Input
+                label="Value"
+                {...register(`customFields.${index}.value`)}
+                error={errors.customFields?.[index]?.value?.message}
+              />
+            </div>
+            <div className="flex items-end justify-between gap-3">
+              <label className="grid gap-1 text-sm">
+                <span>Visibility</span>
+                <select
+                  className="px-3 py-2 bg-white border border-gray-300 rounded-lg"
+                  {...register(`customFields.${index}.visibility`)}
+                >
+                  <option value="protected">Protected</option>
+                  <option value="public">Public</option>
+                </select>
+              </label>
+              <Button
+                type="button"
+                variant="outlined-primary"
+                size="small"
+                onClick={() => removeCustomField(index)}
+              >
+                Remove
+              </Button>
+            </div>
+          </div>
+        ))}
+        <div>
+          <Button
+            type="button"
+            variant="outlined-primary"
+            size="small"
+            onClick={() =>
+              appendCustomField({
+                name: '',
+                value: '',
+                visibility: 'protected',
+              })
+            }
+          >
+            Add custom field
+          </Button>
+        </div>
+      </div>
+
       <Button loading={isSubmitting} disabled={isSubmitting} type="submit">
         Add recipient
       </Button>
@@ -352,7 +452,7 @@ export function AirdropManualForm({
           <Button
             loading={isConfirming}
             disabled={isConfirming}
-            onClick={async (event: any) => {
+            onClick={async (event: MouseEvent<HTMLButtonElement>) => {
               event.preventDefault()
               setIsConfirming(true)
               try {
