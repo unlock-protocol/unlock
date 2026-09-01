@@ -6309,6 +6309,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ensdomains/ethers-patch-v6@npm:0.0.5":
+  version: 0.0.5
+  resolution: "@ensdomains/ethers-patch-v6@npm:0.0.5"
+  peerDependencies:
+    ethers: 6
+    typescript: ^5
+  checksum: 10/dd8b14cccacd4f6493922a98741372f9f968471de2429d08d57c86ca62eb46898f8840e6ec2583581b7fca8d359f724f351abbd30ee8afce02a1818a0426206c
+  languageName: node
+  linkType: hard
+
 "@envelop/core@npm:^5.2.3":
   version: 5.2.3
   resolution: "@envelop/core@npm:5.2.3"
@@ -20517,6 +20527,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/airdrops@workspace:airdrops"
   dependencies:
+    "@ensdomains/ethers-patch-v6": "npm:0.0.5"
     "@headlessui/react": "npm:2.2.9"
     "@openzeppelin/merkle-tree": "npm:1.0.8"
     "@privy-io/react-auth": "npm:2.12.0"
@@ -20690,6 +20701,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/governance-app@workspace:governance-app"
   dependencies:
+    "@ensdomains/ethers-patch-v6": "npm:0.0.5"
     "@privy-io/react-auth": "npm:2.12.0"
     "@tanstack/react-query": "npm:5.90.2"
     "@types/node": "npm:22.13.10"
@@ -21109,6 +21121,7 @@ __metadata:
   dependencies:
     "@airstack/airstack-react": "npm:0.6.4"
     "@crossmint/client-sdk-react-ui": "npm:1.2.2"
+    "@ensdomains/ethers-patch-v6": "npm:0.0.5"
     "@enzoferey/ethers-error-parser": "npm:0.2.3"
     "@guildxyz/sdk": "npm:2.6.9"
     "@headlessui/react": "npm:2.1.9"
@@ -21209,6 +21222,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/unlock-js@workspace:packages/unlock-js"
   dependencies:
+    "@ensdomains/ethers-patch-v6": "npm:0.0.5"
     "@graphql-codegen/cli": "npm:5.0.7"
     "@graphql-codegen/typescript": "npm:4.1.6"
     "@graphql-codegen/typescript-graphql-request": "npm:6.3.0"
