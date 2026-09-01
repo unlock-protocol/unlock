@@ -1,5 +1,6 @@
 import logger from '../logger'
 import lockIcon from './lockIcon'
+import { assertSafeCallbackUrl } from './safeCallbackUrl'
 
 export const imageUrlToBase64 = async (url: string, lockAddress: string) => {
   // Fallback to the lock icon if the image is not available
@@ -12,12 +13,16 @@ export const imageUrlToBase64 = async (url: string, lockAddress: string) => {
 
 export const imageURLToDataURI = async (url: string, fallbackURL?: string) => {
   try {
-    const response = await fetch(url, {
+    // OG / certification paths fetch lock metadata.image (and event cover) on
+    // unauthenticated routes. Fail closed on private/link-local targets.
+    const safeUrl = await assertSafeCallbackUrl(url)
+    const response = await fetch(safeUrl, {
       method: 'GET',
       headers: {
         'Content-Type': 'image/png',
       },
-    })
+      redirect: 'error',
+    } as RequestInit)
     const contentType = response.headers.get('content-type')
     const arrayBuffer = await response.arrayBuffer()
     const buffer = Buffer.from(arrayBuffer)

@@ -10,6 +10,7 @@ import {
   getLockIcon,
   getKeyIcon,
 } from '../operations/lockOperations'
+import { assertSafeCallbackUrl } from '../utils/safeCallbackUrl'
 
 export const connectStripe = async (req: Request, res: Response) => {
   const { message } = JSON.parse(decodeURIComponent(req.query.data!.toString()))
@@ -142,10 +143,18 @@ export const getTokenURIImage: RequestHandler<{
       )
       // If we have a tokenURI, we can fetch the image from the metadata
       if (key.tokenURI) {
-        const metadata = await fetch(key.tokenURI)
+        // Unauthenticated /image route: fail closed on private/link-local
+        // tokenURI (and the redirected image URL) the same way OG/Apple paths do.
+        const safeTokenURI = await assertSafeCallbackUrl(key.tokenURI)
+        const metadata = await fetch(safeTokenURI, {
+          redirect: 'error',
+        } as RequestInit)
         const json = await metadata.json()
-        response.redirect(json?.image)
-        return
+        if (typeof json?.image === 'string' && json.image.length > 0) {
+          const safeImage = await assertSafeCallbackUrl(json.image)
+          response.redirect(safeImage)
+          return
+        }
       }
     }
 
