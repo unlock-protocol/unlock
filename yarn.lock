@@ -12475,7 +12475,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk-base-client@npm:^1.10.0, @openzeppelin/defender-sdk-base-client@npm:^1.14.4, @openzeppelin/defender-sdk-base-client@npm:^1.15.2":
+"@openzeppelin/defender-sdk-base-client@npm:^1.10.0, @openzeppelin/defender-sdk-base-client@npm:^1.15.2":
   version: 1.15.2
   resolution: "@openzeppelin/defender-sdk-base-client@npm:1.15.2"
   dependencies:
@@ -12496,7 +12496,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk-deploy-client@npm:^1.10.0, @openzeppelin/defender-sdk-deploy-client@npm:^1.14.4":
+"@openzeppelin/defender-sdk-deploy-client@npm:^1.10.0":
   version: 1.15.2
   resolution: "@openzeppelin/defender-sdk-deploy-client@npm:1.15.2"
   dependencies:
@@ -12518,7 +12518,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk-network-client@npm:^1.10.0, @openzeppelin/defender-sdk-network-client@npm:^1.14.4":
+"@openzeppelin/defender-sdk-network-client@npm:^1.10.0":
   version: 1.15.2
   resolution: "@openzeppelin/defender-sdk-network-client@npm:1.15.2"
   dependencies:
@@ -12540,57 +12540,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/hardhat-upgrades@npm:3.4.0":
-  version: 3.4.0
-  resolution: "@openzeppelin/hardhat-upgrades@npm:3.4.0"
-  dependencies:
-    "@openzeppelin/defender-sdk-base-client": "npm:^1.14.4"
-    "@openzeppelin/defender-sdk-deploy-client": "npm:^1.14.4"
-    "@openzeppelin/defender-sdk-network-client": "npm:^1.14.4"
-    "@openzeppelin/upgrades-core": "npm:^1.38.0"
-    chalk: "npm:^4.1.0"
-    debug: "npm:^4.1.1"
-    ethereumjs-util: "npm:^7.1.5"
-    proper-lockfile: "npm:^4.1.1"
-    undici: "npm:^6.11.1"
-  peerDependencies:
-    "@nomicfoundation/hardhat-ethers": ^3.0.0
-    "@nomicfoundation/hardhat-verify": ^2.0.0
-    ethers: ^6.6.0
-    hardhat: ^2.0.2
-  peerDependenciesMeta:
-    "@nomicfoundation/hardhat-verify":
-      optional: true
-  bin:
-    migrate-oz-cli-project: dist/scripts/migrate-oz-cli-project.js
-  checksum: 10/e407ddd3df3c901c52e577cd2462017176bb88055b6bfbce8fc66d056b1e5cc8aa1686ccde637223bf8bbbde77f63269a7291517ef4053454d804bed1b921756
-  languageName: node
-  linkType: hard
-
-"@openzeppelin/hardhat-upgrades@npm:3.9.1":
-  version: 3.9.1
-  resolution: "@openzeppelin/hardhat-upgrades@npm:3.9.1"
+"@openzeppelin/hardhat-upgrades@npm:4.0.2":
+  version: 4.0.2
+  resolution: "@openzeppelin/hardhat-upgrades@npm:4.0.2"
   dependencies:
     "@openzeppelin/defender-sdk-base-client": "npm:^2.1.0"
     "@openzeppelin/defender-sdk-deploy-client": "npm:^2.1.0"
     "@openzeppelin/defender-sdk-network-client": "npm:^2.1.0"
-    "@openzeppelin/upgrades-core": "npm:^1.41.0"
+    "@openzeppelin/upgrades-core": "npm:^1.45.0"
     chalk: "npm:^4.1.0"
     debug: "npm:^4.1.1"
     ethereumjs-util: "npm:^7.1.5"
     proper-lockfile: "npm:^4.1.1"
-    undici: "npm:^6.11.1"
+    undici: "npm:^8.3.0"
   peerDependencies:
-    "@nomicfoundation/hardhat-ethers": ^3.0.6
-    "@nomicfoundation/hardhat-verify": ^2.0.14
-    ethers: ^6.6.0
-    hardhat: ^2.24.1
+    "@nomicfoundation/hardhat-ethers": ^4.0.0
+    "@nomicfoundation/hardhat-verify": ^3.0.10
+    ethers: ^6.14.0
+    hardhat: ^3.6.0
   peerDependenciesMeta:
     "@nomicfoundation/hardhat-verify":
       optional: true
   bin:
     migrate-oz-cli-project: dist/scripts/migrate-oz-cli-project.js
-  checksum: 10/2f3a1b7b2619effda08a399c4003e94018da4a168f1e91d49eb21772042c4d050b5289602fed1f35070da208e544d979a53ab715b8c1b937280e6d40f334021b
+  checksum: 10/53a699e244bbac37e8a4bbddff5446831c10fe0b9bd08e604ca386b71974eaa1fea3f2ea988ec46372cd769dd2da70646870185938698bc3b769aa4b709b4ead
   languageName: node
   linkType: hard
 
@@ -12672,7 +12645,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/upgrades-core@npm:^1.32.2, @openzeppelin/upgrades-core@npm:^1.37.0, @openzeppelin/upgrades-core@npm:^1.38.0, @openzeppelin/upgrades-core@npm:^1.41.0":
+"@openzeppelin/upgrades-core@npm:^1.32.2, @openzeppelin/upgrades-core@npm:^1.37.0, @openzeppelin/upgrades-core@npm:^1.41.0":
   version: 1.42.2
   resolution: "@openzeppelin/upgrades-core@npm:1.42.2"
   dependencies:
@@ -12689,6 +12662,27 @@ __metadata:
   bin:
     openzeppelin-upgrades-core: dist/cli/cli.js
   checksum: 10/7000c7cf6822eab2b8a927acc1f09b769004667644e389ae582cd4f87f74433cdd3bc80477f95990d40bb60c15b85e61e5ad4cd47e0e7e70c4e5cbef6cbad10c
+  languageName: node
+  linkType: hard
+
+"@openzeppelin/upgrades-core@npm:^1.45.0":
+  version: 1.46.0
+  resolution: "@openzeppelin/upgrades-core@npm:1.46.0"
+  dependencies:
+    "@nomicfoundation/slang": "npm:^0.18.3"
+    bignumber.js: "npm:^9.1.2"
+    cbor: "npm:^10.0.0"
+    chalk: "npm:^4.1.0"
+    compare-versions: "npm:^6.0.0"
+    debug: "npm:^4.1.1"
+    ethereumjs-util: "npm:^7.0.3"
+    minimatch: "npm:^10.2.5"
+    minimist: "npm:^1.2.7"
+    proper-lockfile: "npm:^4.1.1"
+    solidity-ast: "npm:^0.4.60"
+  bin:
+    openzeppelin-upgrades-core: dist/cli/cli.js
+  checksum: 10/2c3eab80faef575676faacd2ce96e8ea7da2fb7f796f234653d49c81e71305b08a3503f242da702c7e94010c4783d83ea7db0542158618204a6c221b92f3b485
   languageName: node
   linkType: hard
 
@@ -20734,7 +20728,7 @@ __metadata:
     "@nomicfoundation/hardhat-network-helpers": "npm:1.0.12"
     "@nomicfoundation/hardhat-verify": "npm:2.1.3"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
-    "@openzeppelin/hardhat-upgrades": "npm:3.9.1"
+    "@openzeppelin/hardhat-upgrades": "npm:4.0.2"
     "@openzeppelin/upgrades-core": "npm:1.44.1"
     "@safe-global/api-kit": "npm:4.0.0"
     "@safe-global/protocol-kit": "npm:6.1.1"
@@ -20988,7 +20982,7 @@ __metadata:
     "@openzeppelin/contracts-upgradeable": "npm:4.9.6"
     "@openzeppelin/contracts-upgradeable5": "npm:@openzeppelin/contracts-upgradeable@5.0.2"
     "@openzeppelin/contracts5": "npm:@openzeppelin/contracts@5.0.2"
-    "@openzeppelin/hardhat-upgrades": "npm:3.4.0"
+    "@openzeppelin/hardhat-upgrades": "npm:4.0.2"
     "@openzeppelin/merkle-tree": "npm:1.0.8"
     "@openzeppelin/upgrades-core": "npm:1.39.0"
     "@uniswap/v3-core": "npm:1.0.1"
@@ -24229,6 +24223,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"balanced-match@npm:^4.0.2":
+  version: 4.0.4
+  resolution: "balanced-match@npm:4.0.4"
+  checksum: 10/fb07bb66a0959c2843fc055838047e2a95ccebb837c519614afb067ebfdf2fa967ca8d712c35ced07f2cd26fc6f07964230b094891315ad74f11eba3d53178a0
+  languageName: node
+  linkType: hard
+
 "bare-events@npm:^2.2.0":
   version: 2.5.4
   resolution: "bare-events@npm:2.5.4"
@@ -24650,6 +24651,15 @@ __metadata:
   dependencies:
     balanced-match: "npm:^1.0.0"
   checksum: 10/a61e7cd2e8a8505e9f0036b3b6108ba5e926b4b55089eeb5550cd04a471fe216c96d4fe7e4c7f995c728c554ae20ddfc4244cad10aef255e72b62930afd233d1
+  languageName: node
+  linkType: hard
+
+"brace-expansion@npm:^5.0.5":
+  version: 5.0.7
+  resolution: "brace-expansion@npm:5.0.7"
+  dependencies:
+    balanced-match: "npm:^4.0.2"
+  checksum: 10/98c12de33fa53ab07b2b5179f6740045508c61c4319638faf47a0d72615db80058f66c0d1cb74dc8ed591bbf507c068027e80cfb86a2f467bfd330574e13ed7b
   languageName: node
   linkType: hard
 
@@ -39276,6 +39286,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"minimatch@npm:^10.2.5":
+  version: 10.2.5
+  resolution: "minimatch@npm:10.2.5"
+  dependencies:
+    brace-expansion: "npm:^5.0.5"
+  checksum: 10/19e87a931aff60ee7b9d80f39f817b8bfc54f61f8356ee3549fbf636dbccacacfec8d803eac73293955c4527cd085247dfc064bce4a5e349f8f3b85e2bf5da0f
+  languageName: node
+  linkType: hard
+
 "minimatch@npm:^5.0.1, minimatch@npm:^5.1.0, minimatch@npm:^5.1.6":
   version: 5.1.6
   resolution: "minimatch@npm:5.1.6"
@@ -50578,6 +50597,13 @@ __metadata:
   version: 6.21.2
   resolution: "undici@npm:6.21.2"
   checksum: 10/9cd9ead22599c23aa2a7dfa5b80fa1491bebb294bf1dc64c9c0f90ea4ec8e272a4db2810e2565d65b952249f105523d2929d7cc951f88cf0a1f082143bae8d75
+  languageName: node
+  linkType: hard
+
+"undici@npm:^8.3.0":
+  version: 8.5.0
+  resolution: "undici@npm:8.5.0"
+  checksum: 10/e95913777afd47d76babfe62547bb4e9a94b93f44b50c84b4e0b6fa41c00364e31ff4f433a955b1592c3162f43e8757e2e0feae6eea195187730594523393568
   languageName: node
   linkType: hard
 
