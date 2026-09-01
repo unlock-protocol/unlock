@@ -18472,32 +18472,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tw-classed/core@npm:1.7.0":
-  version: 1.7.0
-  resolution: "@tw-classed/core@npm:1.7.0"
-  checksum: 10/7a3e1fb154a2297276d46d0be5847124b01dcea30e13b2b6b82cf2b99b8dacd59f6cbb88124a1dfffae274d71eb62c38df1086abd9485d69e0327186c990f272
+"@tw-classed/core@npm:2.0.0":
+  version: 2.0.0
+  resolution: "@tw-classed/core@npm:2.0.0"
+  checksum: 10/021fbc6246cf60826630511f7af5e0fd7740a9eabe5c81253461931015b43d4bf5630bcfd01ed7ac3e30f2efa665d6856bf5d9d74559637bdfd3767061618785
   languageName: node
   linkType: hard
 
-"@tw-classed/react@npm:1.7.0":
-  version: 1.7.0
-  resolution: "@tw-classed/react@npm:1.7.0"
+"@tw-classed/react@npm:2.0.0":
+  version: 2.0.0
+  resolution: "@tw-classed/react@npm:2.0.0"
   dependencies:
-    "@tw-classed/core": "npm:1.7.0"
+    "@tw-classed/core": "npm:2.0.0"
   peerDependencies:
+    "@base-ui/react": ">=1.0.0"
     react: ">=16.8.0"
-  checksum: 10/40670eaf1a5f0da936683a8a96f301d822648dfa09f9a376eebfe630630a339c9d2892101bbca3bb4198717df778b7d47fe994b4ecba2b29f4523e808650c84e
-  languageName: node
-  linkType: hard
-
-"@tw-classed/react@npm:1.8.1":
-  version: 1.8.1
-  resolution: "@tw-classed/react@npm:1.8.1"
-  dependencies:
-    "@tw-classed/core": "npm:1.7.0"
-  peerDependencies:
-    react: ">=16.8.0"
-  checksum: 10/58a7d56c693273def79f4d56b5723993f22e7c5177dbcf619ee8b8bb9137a865d0ca20f00b415613a9dd5865c35d6059e6e40a9cbd863e31e7477c4dc7f7ba7c
+  checksum: 10/e310bd3df4c48d7652497f5dcd6e72f4f3948245844b22c13a03c249de48c4efa7ba3688ca923ad306d61f9cbead510f77a4e1e0a8653b46519d8049c3a62963
   languageName: node
   linkType: hard
 
@@ -20522,7 +20512,7 @@ __metadata:
     "@privy-io/react-auth": "npm:2.12.0"
     "@sentry/nextjs": "npm:9.15.0"
     "@tanstack/react-query": "npm:5.90.2"
-    "@tw-classed/react": "npm:1.8.1"
+    "@tw-classed/react": "npm:2.0.0"
     "@types/react": "npm:18.3.26"
     "@unlock-protocol/contracts": "workspace:*"
     "@unlock-protocol/core": "workspace:./packages/core"
@@ -21070,7 +21060,7 @@ __metadata:
     "@tailwindcss/forms": "npm:0.5.10"
     "@tailwindcss/typography": "npm:0.5.19"
     "@tanstack/react-query": "npm:5.90.2"
-    "@tw-classed/react": "npm:1.8.1"
+    "@tw-classed/react": "npm:2.0.0"
     "@types/react": "npm:18.3.26"
     "@types/react-dom": "npm:18.3.7"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
@@ -21122,7 +21112,7 @@ __metadata:
     "@testing-library/dom": "npm:10.4.1"
     "@testing-library/react": "npm:16.0.1"
     "@testing-library/react-hooks": "npm:8.0.1"
-    "@tw-classed/react": "npm:1.7.0"
+    "@tw-classed/react": "npm:2.0.0"
     "@types/file-saver": "npm:2.0.7"
     "@types/postmate": "npm:1.5.4"
     "@types/qrcode.react": "npm:3.0.0"
