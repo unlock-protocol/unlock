@@ -18285,9 +18285,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tenderly/hardhat-integration@npm:^1.1.0":
-  version: 1.1.1
-  resolution: "@tenderly/hardhat-integration@npm:1.1.1"
+"@tenderly/hardhat-integration@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "@tenderly/hardhat-integration@npm:1.2.0"
   dependencies:
     "@tenderly/api-client": "npm:^1.1.0"
     axios: "npm:^1.6.7"
@@ -18301,13 +18301,13 @@ __metadata:
     typescript: "npm:^5.5.4"
   peerDependencies:
     hardhat: ^2.22.6
-  checksum: 10/6416d0695c1b78281b080ad7a7311750c6796ea938de8337e5180a0b425cc5a3a3ac96598f58fa925dca477411007fb9395511272c1c3d751da58ae2774504cc
+  checksum: 10/b7e13855c55aab734236826298a5b00a24d9b47e4bcf7217d21cb53f0fdb613750ac82dffc1d12837b3abe651f57a7f257c026ee5ff4e8c5febc2974f043e70f
   languageName: node
   linkType: hard
 
-"@tenderly/hardhat-tenderly@npm:2.5.2":
-  version: 2.5.2
-  resolution: "@tenderly/hardhat-tenderly@npm:2.5.2"
+"@tenderly/hardhat-tenderly@npm:2.6.0":
+  version: 2.6.0
+  resolution: "@tenderly/hardhat-tenderly@npm:2.6.0"
   dependencies:
     "@ethersproject/bignumber": "npm:^5.7.0"
     "@nomicfoundation/hardhat-ethers": "npm:^3.0.0"
@@ -18315,10 +18315,10 @@ __metadata:
     "@nomicfoundation/hardhat-verify": "npm:^2.0.8"
     "@openzeppelin/hardhat-upgrades": "npm:^3.3.0"
     "@openzeppelin/upgrades-core": "npm:^1.32.2"
-    "@tenderly/hardhat-integration": "npm:^1.1.0"
+    "@tenderly/hardhat-integration": "npm:^1.2.0"
     dotenv: "npm:^16.4.5"
     ethers: "npm:^6.8.1"
-  checksum: 10/b9b5ee25ffca25b5f641b94ebe2b8469652261faa22e900d3aa8fd0c573bd769c551b60ea051f24d4959c467315bbb6c7f83202e767de46b77d7cb2f5630586d
+  checksum: 10/55b0c46bc333b409c1b16ea3f2ebe26d0463085415a23d6f0839b60bc9b2d04f4bd1d5e5d4d0c4b0bd34588c0e2c0a5d50ec06bcb6336eab36a7a80ffca98024
   languageName: node
   linkType: hard
 
@@ -20738,7 +20738,7 @@ __metadata:
     "@openzeppelin/upgrades-core": "npm:1.44.1"
     "@safe-global/api-kit": "npm:4.0.0"
     "@safe-global/protocol-kit": "npm:6.1.1"
-    "@tenderly/hardhat-tenderly": "npm:2.5.2"
+    "@tenderly/hardhat-tenderly": "npm:2.6.0"
     "@uniswap/sdk-core": "npm:7.9.0"
     "@uniswap/v3-sdk": "npm:3.26.0"
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
