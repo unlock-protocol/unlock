@@ -4,6 +4,7 @@ import { setTimeout, clearTimeout } from 'timers'
 import { Op } from 'sequelize'
 import { Hook, HookEvent } from '../../models'
 import { logger } from '../../logger'
+import { assertSafeCallbackUrl } from '../../utils/safeCallbackUrl'
 
 interface NotifyOptions {
   timeout?: number
@@ -36,11 +37,14 @@ export async function notify({
     })
     headers['X-Hub-Signature'] = `${algorithm}=${signature}`
   }
+  // Defense in depth for hooks persisted before callback SSRF checks.
+  await assertSafeCallbackUrl(hookCallback)
   const response = await fetch(hookCallback, {
     headers: headers,
     method: 'POST',
     body: content,
     signal: ac.signal,
+    redirect: 'error',
   }).catch((error) => {
     logger.error('Error in notify function: ', error)
     return {
