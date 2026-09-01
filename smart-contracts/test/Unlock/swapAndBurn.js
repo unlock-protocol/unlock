@@ -6,7 +6,6 @@ const {
   addSomeETH,
   getBalance,
   ADDRESS_ZERO,
-  PERMIT2_ADDRESS,
   getEvent,
 } = require('@unlock-protocol/hardhat-helpers')
 const { compareBigNumbers } = require('../helpers')
@@ -31,16 +30,11 @@ describe('Unlock / swapAndBurn', async () => {
     )
 
     const SwapBurner = await ethers.getContractFactory('UnlockSwapBurner')
-    swapBurner = await SwapBurner.deploy(
-      udtAddress,
-      PERMIT2_ADDRESS,
-      ADDRESS_ZERO
-    )
+    swapBurner = await SwapBurner.deploy(udtAddress, ADDRESS_ZERO)
 
     const MockSwapBurner = await ethers.getContractFactory('MockSwapBurner')
     mockSwapBurner = await MockSwapBurner.deploy(
       await udt.getAddress(),
-      PERMIT2_ADDRESS,
       ADDRESS_ZERO
     )
   })
@@ -71,11 +65,7 @@ describe('Unlock / swapAndBurn', async () => {
       )
 
       const SwapBurner = await ethers.getContractFactory('UnlockSwapBurner')
-      const newSwapBurner = await SwapBurner.deploy(
-        udtAddress,
-        PERMIT2_ADDRESS,
-        ADDRESS_ZERO
-      )
+      const newSwapBurner = await SwapBurner.deploy(udtAddress, ADDRESS_ZERO)
 
       const tx = await unlock.setSwapBurner(await newSwapBurner.getAddress())
       const receipt = await tx.wait()
