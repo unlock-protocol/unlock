@@ -353,6 +353,14 @@ export function Payment({ checkoutService }: Props) {
                 paymentMethods['crosschain'] &&
                 crosschainRoutes?.map((route, index) => {
                   const symbol = route.tokenPayment?.symbol || route.symbol
+                  const estimatedTotal = formatNumber(
+                    Number(
+                      ethers.formatUnits(
+                        route.tokenPayment.amount,
+                        route.tokenPayment.decimals
+                      )
+                    )
+                  )
 
                   if (!symbol) {
                     // Some routes are returned with Decent without a token
@@ -379,14 +387,7 @@ export function Payment({ checkoutService }: Props) {
                           Pay with {symbol} on {route.networkName}
                         </h3>
                         <AmountBadge
-                          amount={formatNumber(
-                            Number(
-                              ethers.formatUnits(
-                                route.tokenPayment.amount,
-                                route.tokenPayment.decimals
-                              )
-                            )
-                          )}
+                          amount={estimatedTotal}
                           symbol={symbol}
                         />
                       </div>
@@ -404,6 +405,9 @@ export function Payment({ checkoutService }: Props) {
                             {route.provider.name}
                           </Link>
                           .
+                          <br />
+                          Estimated cross-chain total: ~{estimatedTotal}{' '}
+                          {symbol.toUpperCase()}. Wallet gas may vary.
                         </div>
                         <RightArrowIcon
                           className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
