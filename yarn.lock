@@ -20677,7 +20677,7 @@ __metadata:
     eslint-config-next: "npm:15.5.6"
     eslint-config-prettier: "npm:10.1.8"
     eslint-plugin-evm-address-to-checksummed: "npm:0.0.6"
-    eslint-plugin-json: "npm:4.0.1"
+    eslint-plugin-json: "npm:5.0.0"
     eslint-plugin-mocha: "npm:10.5.0"
     eslint-plugin-prettier: "npm:5.5.4"
     globals: "npm:16.5.0"
@@ -29796,13 +29796,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-json@npm:4.0.1":
-  version: 4.0.1
-  resolution: "eslint-plugin-json@npm:4.0.1"
+"eslint-plugin-json@npm:5.0.0":
+  version: 5.0.0
+  resolution: "eslint-plugin-json@npm:5.0.0"
   dependencies:
     lodash: "npm:^4.17.21"
     vscode-json-languageservice: "npm:^4.1.6"
-  checksum: 10/d891eb5326cca9af5d4a2ebdef5e04761d9a2fca56841d533f755dd475539818d9f43cc7f1e19952276fca8493ea58b4e143ee68f75b2971e2ea8e5e244e0929
+  checksum: 10/1b81c5920d5912c33be071f41efc5f30c6552c8bf54776a8a2a04c7e96fcf8c925ef490428023464e2f90ace594da47c9f0d3bfc3c0bb0f7780b0804cebdb924
   languageName: node
   linkType: hard
 
@@ -50905,7 +50905,7 @@ __metadata:
     babel-plugin-polyfill-corejs2: "npm:0.4.12"
     eslint: "npm:9.39.0"
     eslint-plugin-evm-address-to-checksummed: "npm:0.0.6"
-    eslint-plugin-json: "npm:4.0.1"
+    eslint-plugin-json: "npm:5.0.0"
     eslint-plugin-mocha: "npm:10.5.0"
     eslint-plugin-prettier: "npm:5.5.4"
     eslint-plugin-sort-keys-fix: "npm:1.1.2"
