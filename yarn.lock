@@ -20545,7 +20545,7 @@ __metadata:
     postcss: "npm:8.5.6"
     react-markdown: "npm:10.1.0"
     tailwind-merge: "npm:3.3.1"
-    tailwindcss: "npm:3.4.18"
+    tailwindcss: "npm:3.4.19"
     typescript: "npm:5.8.3"
     vitest: "npm:3.2.4"
   peerDependencies:
@@ -20648,7 +20648,7 @@ __metadata:
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
     react-icons: "npm:5.5.0"
-    tailwindcss: "npm:3.4.18"
+    tailwindcss: "npm:3.4.19"
   languageName: unknown
   linkType: soft
 
@@ -20709,7 +20709,7 @@ __metadata:
     react-dom: "npm:18.3.1"
     react-markdown: "npm:10.1.0"
     remark-gfm: "npm:4.0.1"
-    tailwindcss: "npm:3.4.18"
+    tailwindcss: "npm:3.4.19"
     typescript: "npm:5.8.3"
     vitest: "npm:3.0.9"
   peerDependencies:
@@ -21088,7 +21088,7 @@ __metadata:
     react-use-clipboard: "npm:1.0.9"
     storybook: "npm:8.6.14"
     tailwind-merge: "npm:3.3.1"
-    tailwindcss: "npm:3.4.18"
+    tailwindcss: "npm:3.4.19"
     tsup: "npm:8.5.0"
     tsx: "npm:4.20.6"
     typescript: "npm:5.9.2"
@@ -21177,7 +21177,7 @@ __metadata:
     remove-markdown: "npm:0.5.5"
     siwe: "npm:3.0.0"
     tailwind-merge: "npm:3.0.2"
-    tailwindcss: "npm:3.4.18"
+    tailwindcss: "npm:3.4.19"
     typescript: "npm:5.6.3"
     unified: "npm:11.0.5"
     validator: "npm:13.15.20"
@@ -21282,7 +21282,7 @@ __metadata:
     rss: "npm:1.2.2"
     showdown-highlight: "npm:3.1.0"
     tailwind-merge: "npm:3.3.1"
-    tailwindcss: "npm:3.4.18"
+    tailwindcss: "npm:3.4.19"
     typescript: "npm:5.8.3"
     use-local-storage: "npm:3.0.0"
     vitest: "npm:3.2.4"
@@ -48905,9 +48905,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:3.4.18":
-  version: 3.4.18
-  resolution: "tailwindcss@npm:3.4.18"
+"tailwindcss@npm:3.4.19":
+  version: 3.4.19
+  resolution: "tailwindcss@npm:3.4.19"
   dependencies:
     "@alloc/quick-lru": "npm:^5.2.0"
     arg: "npm:^5.0.2"
@@ -48934,7 +48934,7 @@ __metadata:
   bin:
     tailwind: lib/cli.js
     tailwindcss: lib/cli.js
-  checksum: 10/c05e2652860559f9855286830442a78d383ec9387849bb792eb42ba5102d21b1e32c42ec3183a3238689df4e1138a96e00374116d6fd1b244103b2d9adec359d
+  checksum: 10/f4e5e3dc3e1d96c453520f6787d0f36a9b9ae20bfa443102181fb772ba236e796eaf0888181becd5f00ffa6e99c17605224db216ff660a4ed7e7bb2d94b0b071
   languageName: node
   linkType: hard
 
