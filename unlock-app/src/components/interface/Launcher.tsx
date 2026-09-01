@@ -43,6 +43,26 @@ const options = [
     cta: 'Deploy a custom membership',
     href: '/locks/create',
   },
+  {
+    image: {
+      src: '/images/illustrations/deploy-lock/custom-membership.png',
+      width: 250,
+      height: 250,
+      alt: 'launch an art collection',
+    },
+    cta: 'Launch an art collection',
+    href: '/locks/create',
+  },
+  {
+    image: {
+      src: '/images/illustrations/deploy-lock/subscription.png',
+      width: 250,
+      height: 250,
+      alt: 'sell products or merchandise',
+    },
+    cta: 'Sell products or merchandise',
+    href: '/locks/create',
+  },
 ]
 
 export const Launcher = () => {

@@ -16,6 +16,7 @@ import { BsArrowLeft as ArrowBack } from 'react-icons/bs'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useProvider } from '~/hooks/useProvider'
+import { GuideCallout } from '~/components/interface/GuideCallout'
 
 export type Step = 'data' | 'summary' | 'deploy'
 
@@ -211,6 +212,12 @@ const CreateLock = ({ onSubmit, defaultValues }: CreateLockProps) => {
           />
         </div>
         <div className="md:max-w-lg">
+          <GuideCallout
+            className="mb-6"
+            description="Before deploying a membership contract, review the planning guide for benefits, tiers, duration, supply, pricing, and checkout setup."
+            href="https://unlock-protocol.com/guides/how-to-create-a-membership-program/"
+            linkLabel="Read the membership guide"
+          />
           <CreateLockForm onSubmit={onSubmit} defaultValues={defaultValues} />
         </div>
       </div>
