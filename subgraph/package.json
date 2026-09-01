@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "ethers": "6.13.5",
-    "graphql": "16.9.0",
+    "graphql": "17.0.1",
     "matchstick-as": "0.6.0",
     "mustache": "4.2.0"
   }
