@@ -13,6 +13,11 @@ import { MAX_UINT } from '~/constants'
 import LinkedinShareButton from './LinkedInShareButton'
 import { useCertification } from '~/hooks/useCertification'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import {
+  getCertificateDetailsMetadata,
+  getCertificationRecipientName,
+  getCustomCertificationMetadata,
+} from './utils'
 
 interface CertificationPreviewProps {
   lockAddress?: string
@@ -112,14 +117,10 @@ export const CertificationPreviewContent = ({
   const isMobile = window?.innerWidth < 768
 
   // Get all custom metadata that aren't `minted` or `certification_issuer`
-  const customMetadata =
-    metadata?.attributes?.filter(
-      (attr: any) =>
-        attr.trait_type !== 'Minted' &&
-        attr.trait_type !== 'certification_issuer' &&
-        attr.trait_type &&
-        attr.value
-    ) || []
+  const customMetadata = getCustomCertificationMetadata(metadata)
+  const recipientName = getCertificationRecipientName(customMetadata)
+  const certificateDetailsMetadata =
+    getCertificateDetailsMetadata(customMetadata)
 
   const certificateProps = {
     tokenId: certification?.tokenId,
@@ -134,14 +135,17 @@ export const CertificationPreviewContent = ({
       <span className="text-xl">Preview</span>
     ) : undefined,
     issuer,
-    owner: !hasValidKey
-      ? certification?.owner
-      : addressMinify(certification?.owner),
+    owner:
+      recipientName ||
+      (!hasValidKey
+        ? certification?.owner
+        : addressMinify(certification?.owner)) ||
+      '',
     expiration: showExpiration ? expiration : undefined,
     transactionsHash: <TransactionHashButton />,
     externalUrl: certificationData.external_url,
     isMobile,
-    ...customMetadata,
+    customMetadata: certificateDetailsMetadata,
   }
 
   return (
