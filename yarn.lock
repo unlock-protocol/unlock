@@ -21153,7 +21153,7 @@ __metadata:
     from-exponential: "npm:1.1.1"
     graphql: "npm:16.9.0"
     jsdom: "npm:26.0.0"
-    lottie-react: "npm:2.4.1"
+    lottie-react: "npm:3.1.1"
     next: "npm:14.2.35"
     next-recaptcha-v3: "npm:1.5.2"
     p-limit: "npm:6.2.0"
@@ -37278,22 +37278,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lottie-react@npm:2.4.1":
-  version: 2.4.1
-  resolution: "lottie-react@npm:2.4.1"
+"lottie-react@npm:3.1.1":
+  version: 3.1.1
+  resolution: "lottie-react@npm:3.1.1"
   dependencies:
-    lottie-web: "npm:^5.10.2"
+    lottie-web: "npm:^5.13.0"
   peerDependencies:
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-  checksum: 10/d1c54c3d90e322db988ea1dc92900a122e699e1d833368b8a817f4bd2ccc6d5600ab3cd0f34aa6e0bcbab28425f6de514b6d567e13164693cbde2c82af08fa06
+    react: ^18.2.0 || ^19.0.0
+    react-dom: ^18.2.0 || ^19.0.0
+  checksum: 10/b54b3e51f49deb1b03f49bf4638e965639ea82125c7e753d01753d6c7207d9fd9f7bf2f04a75c7c7e97a6091364f8efd400db1b5b3ec8ac3a5fdfc6053d9b71f
   languageName: node
   linkType: hard
 
-"lottie-web@npm:^5.10.2":
-  version: 5.12.2
-  resolution: "lottie-web@npm:5.12.2"
-  checksum: 10/cd377d54a675b37ac9359306b84097ea402dff3d74a2f45e6e0dbcff1df94b3a978e92e48fd34765754bdbb94bd2d8d4da31954d95f156e77489596b235cac91
+"lottie-web@npm:^5.13.0":
+  version: 5.13.0
+  resolution: "lottie-web@npm:5.13.0"
+  checksum: 10/ccc65b91ddc569c874de265252ef41cb546798515dd63c5ee366844efd1e10335c080c483ce4305faba0cebd54c4afd6bb918fd0d6f4394dcc284fc0c3944941
   languageName: node
   linkType: hard
 
