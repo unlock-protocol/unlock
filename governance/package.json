@@ -18,7 +18,7 @@
     "@openzeppelin/hardhat-upgrades": "3.9.1",
     "@openzeppelin/upgrades-core": "1.44.1",
     "@safe-global/api-kit": "4.0.0",
-    "@safe-global/protocol-kit": "6.1.1",
+    "@safe-global/protocol-kit": "8.0.1",
     "@tenderly/hardhat-tenderly": "2.5.2",
     "@uniswap/sdk-core": "7.9.0",
     "@uniswap/v3-sdk": "3.26.0",
