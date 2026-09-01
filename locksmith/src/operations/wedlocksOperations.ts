@@ -34,7 +34,7 @@ type Params = {
   openSeaUrl?: string
 }
 
-type Attachment = {
+export type Attachment = {
   path: string
   filename: string
 }
@@ -371,7 +371,16 @@ export interface CertificationProps {
   certificationUrl: string
 }
 
-export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
+interface NotifyNewKeyOptions {
+  customContent?: string
+  attachments?: Attachment[]
+}
+
+export const notifyNewKeyToWedlocks = async (
+  key: Key,
+  network: number,
+  options: NotifyNewKeyOptions = {}
+) => {
   try {
     const keyManager = new KeyManager()
     const lockAddress = Normalizer.ethereumAddress(key.lock.address)
@@ -463,6 +472,7 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
       event: eventDetail,
       types,
     })
+    attachments.push(...(options.attachments ?? []))
 
     // email templates
     const templates = getTemplates({
@@ -477,11 +487,15 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
       isAirdropped: isAirdroppedRecipient,
     })
 
-    const customContent = await getCustomContent(
-      lockAddress,
-      network!,
-      template
-    )
+    const customContent =
+      options.customContent !== undefined
+        ? String(
+            await unified()
+              .use(remarkParse)
+              .use(remarkHtml)
+              .process(options.customContent)
+          )
+        : await getCustomContent(lockAddress, network!, template)
     const withLockImage = (customContent || '')?.length > 0
     const lockImage = `${config.services.locksmith}/lock/${lockAddress}/icon`
 

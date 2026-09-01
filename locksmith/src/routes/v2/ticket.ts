@@ -55,6 +55,15 @@ router.post(
   }
 )
 
+router.post(
+  '/:network/:lockAddress/:keyId/membership-email',
+  authenticatedMiddleware,
+  lockManagerMiddleware,
+  (req, res) => {
+    ticketsController.sendMembershipDetailsEmail(req, res)
+  }
+)
+
 router.get(
   '/:network/:lockAddress/:keyId/qr',
   authenticatedMiddleware,

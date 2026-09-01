@@ -1,6 +1,9 @@
 import { Request, RequestHandler, Response } from 'express'
 import Dispatcher from '../../fulfillment/dispatcher'
-import { notifyNewKeyToWedlocks } from '../../operations/wedlocksOperations'
+import {
+  notifyNewKeyToWedlocks,
+  type Attachment,
+} from '../../operations/wedlocksOperations'
 import Normalizer from '../../utils/normalizer'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 import logger from '../../logger'
@@ -17,8 +20,67 @@ import { Verifier } from '../../models/verifier'
 import { getEventForLock } from '../../operations/eventOperations'
 import { notify } from '../../worker/helpers'
 import { getWeb3Service } from '../../initializers'
+import { getReceiptDetails } from '../../operations/receiptOperations'
+import { createReceiptPDFBuffer } from '../../utils/receipts'
 
 export class TicketsController {
+  async getReceiptAttachments({
+    lockAddress,
+    network,
+    hashes,
+  }: {
+    lockAddress: string
+    network: number
+    hashes: string[]
+  }): Promise<Attachment[]> {
+    if (!hashes.length) {
+      return []
+    }
+
+    const web3Service = getWeb3Service()
+    const lock = await web3Service.getLock(lockAddress, network)
+    const attachments: Attachment[] = []
+
+    for (const hash of hashes) {
+      const receiptDetails = await getReceiptDetails({
+        lockAddress,
+        network,
+        hash,
+      })
+      if (!receiptDetails.receipt) {
+        continue
+      }
+
+      const supplier = receiptDetails.supplier
+      const receipt = {
+        ...receiptDetails.receipt,
+        vat: supplier?.vat,
+        service: supplier?.servicePerformed,
+        supplierName: supplier?.supplierName,
+        supplierAddress:
+          supplier?.addressLine1 && supplier?.addressLine2
+            ? `${supplier.addressLine1}\n${supplier.addressLine2}`
+            : supplier?.addressLine1 || supplier?.addressLine2 || '',
+        city: supplier?.city,
+        state: supplier?.state,
+        zip: supplier?.zip,
+        country: supplier?.country,
+      }
+      const pdfBuffer = await createReceiptPDFBuffer(receipt, lock)
+      const receiptNumber = String(receipt.receiptNumber || hash).replace(
+        /[^a-z0-9_-]/gi,
+        '-'
+      )
+
+      attachments.push({
+        path: `data:application/pdf;base64,${pdfBuffer.toString('base64')}`,
+        filename: `receipt_${receiptNumber}.pdf`,
+      })
+    }
+
+    return attachments
+  }
+
   /**
    * API to generate signatures that prove validity of a token
    * @param request
@@ -203,9 +265,76 @@ export class TicketsController {
           },
           manager: key.manager,
           owner: key.owner,
+          transactionsHash: key.transactionsHash,
         },
         network
       )
+      response.status(200).send({
+        sent,
+      })
+      return
+    } catch (err) {
+      logger.error(err.message)
+      response.sendStatus(500)
+      return
+    }
+  }
+
+  /**
+   * API call to email membership details and receipt PDFs to a member.
+   * This can only be called by a lock manager.
+   */
+  async sendMembershipDetailsEmail(request: Request, response: Response) {
+    try {
+      const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+      const network = Number(request.params.network)
+      const keyId = request.params.keyId.toLowerCase()
+      const content =
+        typeof request.body?.content === 'string' ? request.body.content : ''
+      const subgraph = new SubgraphService()
+      const key = await subgraph.key(
+        {
+          where: {
+            lock: lockAddress.toLowerCase(),
+            tokenId: keyId,
+          },
+        },
+        {
+          network,
+        }
+      )
+
+      if (!key) {
+        response.status(404).send({
+          message: 'No key found for this lock and keyId',
+        })
+        return
+      }
+
+      const attachments = await this.getReceiptAttachments({
+        lockAddress,
+        network,
+        hashes: key.transactionsHash ?? [],
+      })
+
+      const sent = await notifyNewKeyToWedlocks(
+        {
+          tokenId: keyId,
+          lock: {
+            address: lockAddress,
+            name: key.lock.name || 'Unlock Lock',
+          },
+          manager: key.manager,
+          owner: key.owner,
+          transactionsHash: key.transactionsHash,
+        },
+        network,
+        {
+          customContent: content,
+          attachments,
+        }
+      )
+
       response.status(200).send({
         sent,
       })
