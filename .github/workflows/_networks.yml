@@ -11,18 +11,18 @@ jobs:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.4.0
         with:
           fetch-depth: 0
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v47
+        uses: tj-actions/changed-files@v47.0.6
         with:
           files: |
             packages/networks/src/networks/**
 
       # setup monorepo only if a file has changed
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v6.5.0
         if: steps.changed-files.outputs.any_changed == 'true'
         with:
           node-version: 22.21.0
