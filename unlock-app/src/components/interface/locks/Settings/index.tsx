@@ -20,6 +20,9 @@ import { SettingPayments } from './elements/SettingPayments'
 import { SettingEmail } from './elements/SettingEmail'
 import { SettingTab } from '~/components/content/lock/LocksSettingsContent'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { SettingDiscountCodes } from './elements/SettingDiscountCodes'
+import { getVisibleSettingTabIds } from './settingsTabs'
+import type { VisibleSettingTab } from './settingsTabs'
 
 interface LockSettingsPageProps {
   lockAddress: string
@@ -90,24 +93,16 @@ const LockSettingsPage = ({
 
   const isLoading = isLoadingLock || isLoadingManager
 
-  /**
-   * Open default tab by id
-   */
-  useEffect(() => {
-    if (!defaultTab) return
-    const defaultTabIndex = tabs?.findIndex(({ id }) => id === defaultTab)
-    if (defaultTabIndex === undefined) return
-
-    setSelectedIndex(defaultTabIndex)
-  }, [defaultTab])
-
-  const tabs: {
-    label: string
-    description?: string
-    id: SettingTab
-    children: ReactNode
-  }[] = [
+  const allTabs: Record<
+    VisibleSettingTab,
     {
+      label: string
+      description?: string
+      id: SettingTab
+      children: ReactNode
+    }
+  > = {
+    general: {
       id: 'general',
       label: 'General',
       children: (
@@ -120,7 +115,7 @@ const LockSettingsPage = ({
         />
       ),
     },
-    {
+    terms: {
       id: 'terms',
       label: 'Membership Terms',
       children: (
@@ -136,7 +131,7 @@ const LockSettingsPage = ({
       description:
         'Membership Terms include the price, currency, duration, payment mechanisms... as well as cancellation terms and transfer fees.',
     },
-    {
+    payments: {
       id: 'payments',
       label: 'Payments',
       children: (
@@ -151,7 +146,7 @@ const LockSettingsPage = ({
       description:
         'Payments settings lets you change the price and currency of your memberships, as well as enable credit cards and recurring payments.',
     },
-    {
+    roles: {
       id: 'roles',
       label: 'Roles',
       children: (
@@ -165,7 +160,7 @@ const LockSettingsPage = ({
       description:
         'Your Lock includes multiple roles, such as "Lock Manager". Here you can configure which addresses are assigned which roles.',
     },
-    {
+    emails: {
       id: 'emails',
       label: 'Emails',
       children: (
@@ -179,7 +174,22 @@ const LockSettingsPage = ({
       description:
         "Customize the emails sent to users when they purchase your lock's membership NFTs.",
     },
-    {
+    'discount-codes': {
+      id: 'discount-codes',
+      label: 'Discount Codes',
+      children: (
+        <SettingDiscountCodes
+          lockAddress={lockAddress}
+          network={network}
+          isManager={isManager}
+          isLoading={isLoading}
+          publicLockVersion={publicLockVersion}
+        />
+      ),
+      description:
+        'Create discount codes for paid memberships without opening the Advanced hooks settings.',
+    },
+    advanced: {
       id: 'advanced',
       label: 'Advanced',
       children: (
@@ -195,7 +205,22 @@ const LockSettingsPage = ({
       description:
         'This section lets you configure referral fees, hooks and upgrade your lock to the latest version of the protocol.',
     },
-  ]
+  }
+
+  const visibleTabIds = getVisibleSettingTabIds(lock)
+  const tabs = visibleTabIds.map((tabId) => allTabs[tabId])
+  const defaultTabIndex = defaultTab
+    ? tabs.findIndex(({ id }) => id === defaultTab)
+    : undefined
+
+  /**
+   * Open default tab by id
+   */
+  useEffect(() => {
+    if (defaultTabIndex === undefined || defaultTabIndex < 0) return
+
+    setSelectedIndex(defaultTabIndex)
+  }, [defaultTabIndex])
 
   return (
     <SettingsContext.Provider

@@ -22,6 +22,9 @@ interface UpdateHooksFormProps {
   isManager: boolean
   disabled: boolean
   version?: bigint
+  fields?: FormPropsKey[]
+  includedHookTypes?: Partial<Record<FormPropsKey, HookType[]>>
+  showGeneralOptions?: boolean
 }
 
 interface FormProps {
@@ -34,7 +37,7 @@ interface FormProps {
   keyGrant?: string
 }
 
-type FormPropsKey = keyof FormProps
+export type FormPropsKey = keyof FormProps
 
 interface OptionProps {
   label: string
@@ -146,6 +149,8 @@ interface HookSelectProps {
   lockAddress: string
   defaultValues?: HooksFormProps
   setEventsHooksMutation: any
+  includedHookTypes?: HookType[]
+  showGeneralOptions?: boolean
 }
 
 const HookSelect = ({
@@ -156,6 +161,8 @@ const HookSelect = ({
   lockAddress,
   network,
   defaultValues,
+  includedHookTypes,
+  showGeneralOptions = true,
 }: HookSelectProps) => {
   const [selectedOption, setSelectedOption] = useState<string | null>('')
   const [defaultValue, setDefaultValue] = useState<string>('')
@@ -182,13 +189,23 @@ const HookSelect = ({
 
   const hookOptionsByName = (HookMapping[name]?.options ?? []).filter(
     (option) => {
+      if (
+        includedHookTypes?.length &&
+        !includedHookTypes.includes(option.value as HookType)
+      ) {
+        return false
+      }
+
       const wasDeployed = hooks[hookName]?.find((deployedHook: Hook) => {
         return deployedHook.id === option.value
       })
       return wasDeployed
     }
   )
-  const options = [...GENERAL_OPTIONS, ...hookOptionsByName]
+  const options = [
+    ...(showGeneralOptions ? GENERAL_OPTIONS : []),
+    ...hookOptionsByName,
+  ]
   if (selectedOption !== '') {
     options.push({
       label: 'None',
@@ -269,6 +286,9 @@ export const UpdateHooksForm = ({
   network,
   disabled,
   version,
+  fields,
+  includedHookTypes,
+  showGeneralOptions,
 }: UpdateHooksFormProps) => {
   const { getWalletService } = useProvider()
   const [defaultValues, setDefaultValues] = useState<HooksFormProps>()
@@ -333,9 +353,10 @@ export const UpdateHooksForm = ({
   return (
     <FormProvider {...methods}>
       <div className="flex gap-4 flex-col">
-        {Object.entries(HookMapping)?.map(
-          ([field, { label, fromPublicLockVersion = 0, hookName }]) => {
-            const fieldName = field as FormPropsKey
+        {(fields ?? (Object.keys(HookMapping) as FormPropsKey[]))?.map(
+          (fieldName) => {
+            const { label, fromPublicLockVersion = 0, hookName } =
+              HookMapping[fieldName]
             const hasRequiredVersion =
               version && version >= fromPublicLockVersion
 
@@ -351,6 +372,8 @@ export const UpdateHooksForm = ({
                 lockAddress={lockAddress}
                 network={network}
                 defaultValues={defaultValues}
+                includedHookTypes={includedHookTypes?.[fieldName]}
+                showGeneralOptions={showGeneralOptions}
               />
             )
           }

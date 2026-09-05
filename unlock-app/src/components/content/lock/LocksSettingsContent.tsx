@@ -11,6 +11,7 @@ export type SettingTab =
   | 'terms'
   | 'payments'
   | 'roles'
+  | 'discount-codes'
   | 'advanced'
   | 'emails'
   | 'verifiers'
