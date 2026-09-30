@@ -17,15 +17,8 @@ import {
   MAX_BATCH_VOTES,
   supportsAtomic,
   type VoteDirection,
-  VOTE_SUPPORT,
   verifyVoteCastLogs,
 } from '~/lib/governance/batchVoting'
-
-type OptimisticVote = {
-  abstainVotes: bigint
-  againstVotes: bigint
-  forVotes: bigint
-}
 
 type BatchCallStatus = {
   receipts?: Array<{
@@ -51,12 +44,10 @@ export function BatchVotingList({
   const [direction, setDirection] = useState<VoteDirection | null>(null)
   const [busy, setBusy] = useState(false)
   const [message, setMessage] = useState('')
+  const [submissionError, setSubmissionError] = useState<string | null>(null)
   const [reviewOpen, setReviewOpen] = useState(false)
   const [votedProposals, setVotedProposals] = useState<
     Map<string, number | null>
-  >(() => new Map())
-  const [optimisticVotes, setOptimisticVotes] = useState<
-    Map<string, OptimisticVote>
   >(() => new Map())
 
   const activeProposals = useMemo(
@@ -96,9 +87,6 @@ export function BatchVotingList({
           support: await fetchVoteSupport(proposal.id, address).catch(
             () => null
           ),
-          voteTotals: hasVoted
-            ? await fetchProposalVotes(governor, proposal.id)
-            : null,
         }
       })
     )
@@ -110,12 +98,6 @@ export function BatchVotingList({
             if (!result.hasVoted) continue
             next.set(result.id, result.support ?? next.get(result.id) ?? null)
           }
-          return next
-        })
-        setOptimisticVotes((current) => {
-          const next = new Map(current)
-          for (const result of results)
-            if (result.voteTotals) next.set(result.id, result.voteTotals)
           return next
         })
       })
@@ -145,6 +127,7 @@ export function BatchVotingList({
   async function submit() {
     if (!wallet.address || !direction || !selected.length) return
     setBusy(true)
+    setSubmissionError(null)
     setMessage('Preparing your batch vote…')
     try {
       const raw = await wallet.getProvider()
@@ -227,32 +210,10 @@ export function BatchVotingList({
       for (const id of selected)
         if (!(await governor.hasVoted(BigInt(id), wallet.address)))
           throw new Error(`Postcondition failed for proposal ${id}.`)
-      const support = VOTE_SUPPORT[direction]
-      setVotedProposals((current) => {
-        const next = new Map(current)
-        for (const { id } of checks) next.set(id, support)
-        return next
-      })
-      const voteTotals = await Promise.all(
-        checks.map(async ({ id }) => ({
-          id,
-          totals: await fetchProposalVotes(governor, id),
-        }))
-      )
-      setOptimisticVotes((current) => {
-        const next = new Map(current)
-        for (const { id, totals } of voteTotals) next.set(id, totals)
-        return next
-      })
-      setMessage(
-        `Confirmed: ${selected.length} ${direction} vote${selected.length === 1 ? '' : 's'} submitted on Base.`
-      )
-      setSelected([])
-      setDirection(null)
-      setReviewOpen(false)
+      setMessage('Confirmed. Refreshing proposals…')
+      window.location.reload()
     } catch (error) {
-      setReviewOpen(false)
-      setMessage(
+      setSubmissionError(
         error instanceof Error ? error.message : 'Wallet request failed.'
       )
     } finally {
@@ -287,6 +248,7 @@ export function BatchVotingList({
                 disabled={busy}
                 onClick={() => {
                   setMessage('')
+                  setSubmissionError(null)
                   setReviewOpen(true)
                 }}
                 className="rounded-full bg-brand-ui-primary px-4 py-2 text-sm font-semibold text-white disabled:opacity-40"
@@ -299,11 +261,6 @@ export function BatchVotingList({
         </div>
       )}
       <ProposalFilters activeFilter={activeFilter} />
-      {message && (
-        <p className="rounded-xl bg-white p-4 text-sm" role="status">
-          {message}
-        </p>
-      )}
       <Modal
         isOpen={reviewOpen}
         setIsOpen={(isOpen) => {
@@ -313,6 +270,15 @@ export function BatchVotingList({
       >
         {busy ? (
           <BatchVoteProgress message={message} />
+        ) : submissionError ? (
+          <BatchVoteFailure
+            message={submissionError}
+            onCancel={() => {
+              setSubmissionError(null)
+              setReviewOpen(false)
+            }}
+            onRetry={submit}
+          />
         ) : (
           <div className="flex flex-col gap-5">
             <div className="space-y-2">
@@ -372,6 +338,36 @@ export function BatchVotingList({
   )
 }
 
+function BatchVoteFailure({
+  message,
+  onCancel,
+  onRetry,
+}: {
+  message: string
+  onCancel: () => void
+  onRetry: () => void
+}) {
+  return (
+    <div className="flex flex-col gap-5">
+      <div className="space-y-2">
+        <h2 className="text-xl font-semibold text-brand-ui-primary">
+          Batch vote was not confirmed
+        </h2>
+        <p className="text-sm leading-6 text-brand-ui-primary/70">{message}</p>
+      </div>
+      <div className="flex justify-end gap-3">
+        <button
+          className="rounded-full px-4 py-2 text-sm font-medium text-brand-ui-primary"
+          onClick={onCancel}
+        >
+          Cancel
+        </button>
+        <Button onClick={onRetry}>Retry</Button>
+      </div>
+    </div>
+  )
+}
+
 function BatchVoteProgress({ message }: { message: string }) {
   return (
     <div className="flex flex-col items-center gap-4 py-6 text-center">
@@ -415,20 +411,6 @@ function BatchVoteProgress({ message }: { message: string }) {
 
 function isCallsConfirmed(status: unknown) {
   return status === 'CONFIRMED' || status === '0x1' || status === 1
-}
-
-function max(left: bigint, right: bigint) {
-  return left > right ? left : right
-}
-
-async function fetchProposalVotes(
-  governor: Contract,
-  proposalId: string
-): Promise<OptimisticVote> {
-  const [againstVotes, forVotes, abstainVotes] = await governor.proposalVotes(
-    BigInt(proposalId)
-  )
-  return { againstVotes, forVotes, abstainVotes }
 }
 
 async function fetchVoteSupport(
