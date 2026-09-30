@@ -190,17 +190,19 @@ export function BatchVotingList({
         method: 'wallet_sendCalls',
         params: [buildWalletSendCalls(wallet.address, calls)],
       })
+      const callsId = getCallsId(result)
       setMessage('Wallet confirmed. Waiting for Base confirmation…')
       let status: BatchCallStatus | null = null
       for (let i = 0; i < 60; i++) {
-        status = (await raw.request({
+        const nextStatus = (await raw.request({
           method: 'wallet_getCallsStatus',
-          params: [result],
+          params: [callsId],
         })) as BatchCallStatus
-        if (isCallsConfirmed(status.status)) break
+        status = nextStatus
+        if (isCallsConfirmed(nextStatus.status)) break
         await new Promise((resolve) => setTimeout(resolve, 1000))
       }
-      if (!isCallsConfirmed(status?.status))
+      if (!status || !isCallsConfirmed(status.status))
         throw new Error('Atomic batch did not succeed.')
       const receipts = status.receipts || []
       if (!verifyVoteCastLogs(receipts, wallet.address, selected, direction))
@@ -393,7 +395,18 @@ function BatchVoteProgress({ message }: { message: string }) {
 }
 
 function isCallsConfirmed(status: unknown) {
-  return status === 'CONFIRMED' || status === '0x1' || status === 1
+  if (status === 'CONFIRMED' || status === '0x1' || status === 1) return true
+  const code = Number(status)
+  return code >= 200 && code < 300
+}
+
+function getCallsId(result: unknown): string {
+  if (typeof result === 'string') return result
+  if (result && typeof result === 'object') {
+    const id = (result as { id?: unknown }).id
+    if (typeof id === 'string') return id
+  }
+  throw new Error('Wallet did not return a valid batch ID.')
 }
 
 async function fetchVoteSupport(
