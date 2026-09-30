@@ -37,9 +37,9 @@ export function BatchVotingList({
   const [busy, setBusy] = useState(false)
   const [message, setMessage] = useState('')
   const [reviewOpen, setReviewOpen] = useState(false)
-  const [votedProposalIds, setVotedProposalIds] = useState<Set<string>>(
-    new Set()
-  )
+  const [votedProposals, setVotedProposals] = useState<
+    Map<string, number | null>
+  >(() => new Map())
 
   const activeProposals = useMemo(
     () => proposals.filter((proposal) => proposal.state === 'Active'),
@@ -53,7 +53,7 @@ export function BatchVotingList({
 
   useEffect(() => {
     if (!wallet.address) {
-      setVotedProposalIds(new Set())
+      setVotedProposals(new Map())
       return
     }
     const address = wallet.address
@@ -73,20 +73,21 @@ export function BatchVotingList({
       activeProposals.map(async (proposal) => ({
         id: proposal.id,
         hasVoted: await governor.hasVoted(BigInt(proposal.id), address),
+        support: await fetchVoteSupport(proposal.id, address).catch(() => null),
       }))
     )
       .then((results) => {
         if (cancelled) return
-        setVotedProposalIds(
-          new Set(
+        setVotedProposals(
+          new Map(
             results
               .filter((result) => result.hasVoted)
-              .map((result) => result.id)
+              .map((result) => [result.id, result.support])
           )
         )
       })
       .catch(() => {
-        if (!cancelled) setVotedProposalIds(new Set())
+        if (!cancelled) setVotedProposals(new Map())
       })
 
     return () => {
@@ -96,9 +97,9 @@ export function BatchVotingList({
 
   useEffect(() => {
     setSelected((current) =>
-      current.filter((proposalId) => !votedProposalIds.has(proposalId))
+      current.filter((proposalId) => !votedProposals.has(proposalId))
     )
-  }, [votedProposalIds])
+  }, [votedProposals])
 
   function toggle(id: string) {
     setSelected((current) =>
@@ -281,14 +282,35 @@ export function BatchVotingList({
               proposal={proposal}
               tokenSymbol={tokenSymbol}
               selectable={proposal.state === 'Active'}
-              selectionDisabled={votedProposalIds.has(proposal.id)}
+              selectionDisabled={votedProposals.has(proposal.id)}
               selected={selected.includes(proposal.id)}
               onToggle={() => toggle(proposal.id)}
-              voted={votedProposalIds.has(proposal.id)}
+              votedSupport={votedProposals.get(proposal.id)}
             />
           )
         })}
       </div>
     </>
   )
+}
+
+async function fetchVoteSupport(
+  proposalId: string,
+  voter: string
+): Promise<number | null> {
+  const id = `${proposalId}-${voter.toLowerCase()}`
+  const response = await fetch(governanceConfig.subgraphUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      query: 'query ($id: ID!) { vote(id: $id) { support } }',
+      variables: { id },
+    }),
+    signal: AbortSignal.timeout(10_000),
+  })
+  if (!response.ok)
+    throw new Error(`Subgraph request failed: ${response.status}`)
+  const json = await response.json()
+  const support = Number(json?.data?.vote?.support)
+  return [0, 1, 2].includes(support) ? support : null
 }

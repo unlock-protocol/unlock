@@ -18,7 +18,7 @@ type ProposalCardProps = {
   selected?: boolean
   onToggle?: () => void
   selectionDisabled?: boolean
-  voted?: boolean
+  votedSupport?: number | null
 }
 
 export function ProposalCard({
@@ -29,7 +29,7 @@ export function ProposalCard({
   selected = false,
   onToggle,
   selectionDisabled = false,
-  voted = false,
+  votedSupport,
 }: ProposalCardProps) {
   const quorumProgress = `${formatTokenAmount(
     proposal.forVotes + proposal.abstainVotes
@@ -60,10 +60,8 @@ export function ProposalCard({
           <Link href={`/proposals/${proposal.id}`} className="space-y-2">
             <div className="flex flex-wrap items-center gap-3">
               <ProposalStateBadge state={proposal.state} />
-              {voted && (
-                <span className="rounded-full bg-brand-ui-primary/10 px-3 py-1 text-xs font-semibold text-brand-ui-primary/70">
-                  Voted
-                </span>
+              {votedSupport !== undefined && (
+                <VotedBadge support={votedSupport} />
               )}
               <span className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-ui-primary/45">
                 Proposal{' '}
@@ -112,6 +110,38 @@ export function ProposalCard({
         </div>
       </div>
     </article>
+  )
+}
+
+function VotedBadge({ support }: { support: number | null }) {
+  const vote =
+    support === 1
+      ? {
+          label: 'You voted For',
+          className: 'border-emerald-300 bg-emerald-100 text-emerald-900',
+        }
+      : support === 0
+        ? {
+            label: 'You voted Against',
+            className: 'border-red-300 bg-red-100 text-red-900',
+          }
+        : support === 2
+          ? {
+              label: 'You voted Abstain',
+              className: 'border-sky-300 bg-sky-100 text-sky-900',
+            }
+          : {
+              label: 'You voted',
+              className:
+                'border-brand-ui-primary/25 bg-brand-ui-primary/10 text-brand-ui-primary',
+            }
+
+  return (
+    <span
+      className={`rounded-full border px-3 py-1 text-xs font-semibold ${vote.className}`}
+    >
+      {vote.label}
+    </span>
   )
 }
 
