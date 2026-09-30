@@ -59,7 +59,6 @@ export function BatchVotingList({
   useEffect(() => {
     setSelected([])
     setDirection(null)
-    setOptimisticVotes(new Map())
   }, [wallet.address])
 
   useEffect(() => {
@@ -81,11 +80,19 @@ export function BatchVotingList({
     )
 
     Promise.all(
-      activeProposals.map(async (proposal) => ({
-        id: proposal.id,
-        hasVoted: await governor.hasVoted(BigInt(proposal.id), address),
-        support: await fetchVoteSupport(proposal.id, address).catch(() => null),
-      }))
+      activeProposals.map(async (proposal) => {
+        const hasVoted = await governor.hasVoted(BigInt(proposal.id), address)
+        return {
+          id: proposal.id,
+          hasVoted,
+          support: await fetchVoteSupport(proposal.id, address).catch(
+            () => null
+          ),
+          voteTotals: hasVoted
+            ? await fetchProposalVotes(governor, proposal.id)
+            : null,
+        }
+      })
     )
       .then((results) => {
         if (cancelled) return
@@ -95,6 +102,12 @@ export function BatchVotingList({
             if (!result.hasVoted) continue
             next.set(result.id, result.support ?? next.get(result.id) ?? null)
           }
+          return next
+        })
+        setOptimisticVotes((current) => {
+          const next = new Map(current)
+          for (const result of results)
+            if (result.voteTotals) next.set(result.id, result.voteTotals)
           return next
         })
       })
@@ -212,18 +225,15 @@ export function BatchVotingList({
         for (const { id } of checks) next.set(id, support)
         return next
       })
+      const voteTotals = await Promise.all(
+        checks.map(async ({ id }) => ({
+          id,
+          totals: await fetchProposalVotes(governor, id),
+        }))
+      )
       setOptimisticVotes((current) => {
         const next = new Map(current)
-        for (const { id, votingPower } of checks) {
-          const proposal = proposals.find((item) => item.id === id)!
-          next.set(id, {
-            forVotes: proposal.forVotes + (support === 1 ? votingPower : 0n),
-            againstVotes:
-              proposal.againstVotes + (support === 0 ? votingPower : 0n),
-            abstainVotes:
-              proposal.abstainVotes + (support === 2 ? votingPower : 0n),
-          })
-        }
+        for (const { id, totals } of voteTotals) next.set(id, totals)
         return next
       })
       setMessage(
@@ -349,6 +359,16 @@ export function BatchVotingList({
 
 function max(left: bigint, right: bigint) {
   return left > right ? left : right
+}
+
+async function fetchProposalVotes(
+  governor: Contract,
+  proposalId: string
+): Promise<OptimisticVote> {
+  const [againstVotes, forVotes, abstainVotes] = await governor.proposalVotes(
+    BigInt(proposalId)
+  )
+  return { againstVotes, forVotes, abstainVotes }
 }
 
 async function fetchVoteSupport(
