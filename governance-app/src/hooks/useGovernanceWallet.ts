@@ -17,9 +17,13 @@ export function useGovernanceWallet() {
   const { logout } = useLogout({
     onSuccess: () => router.refresh(),
   })
-  // Privy keeps the active connected wallet in wallets[0]. This is the same
-  // convention used by unlock-app for both embedded and external wallets.
-  const wallet = wallets[0] || null
+  // Privy may add an embedded wallet after an external connection and reorder
+  // the list. Prefer the external connection; use the embedded wallet only
+  // when it is the user's only connected wallet.
+  const wallet =
+    wallets.find((candidate) => candidate.walletClientType !== 'privy') ||
+    wallets[0] ||
+    null
 
   async function getProvider() {
     if (!wallet) throw new Error('Connect a wallet to continue.')
