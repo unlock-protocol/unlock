@@ -3,7 +3,6 @@
 import { useLogin, usePrivy, useWallets, useLogout } from '@privy-io/react-auth'
 import { BrowserProvider } from 'ethers'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 import { governanceConfig } from '~/config/governance'
 
 function chainHex(chainId: number) {
@@ -18,17 +17,12 @@ export function useGovernanceWallet() {
   const { logout } = useLogout({
     onSuccess: () => router.refresh(),
   })
-  const [selectedAddress, setSelectedAddress] = useState<string | null>(null)
-  const wallet =
-    wallets.find((candidate) => candidate.address === selectedAddress) ||
-    (wallets.length === 1 ? wallets[0] : null)
-
-  function selectWallet(address: string) {
-    setSelectedAddress(address)
-  }
+  // Privy keeps the active connected wallet in wallets[0]. This is the same
+  // convention used by unlock-app for both embedded and external wallets.
+  const wallet = wallets[0] || null
 
   async function getProvider() {
-    if (!wallet) throw new Error('Choose an external wallet to continue.')
+    if (!wallet) throw new Error('Connect a wallet to continue.')
     return wallet.getEthereumProvider()
   }
 
@@ -64,9 +58,6 @@ export function useGovernanceWallet() {
 
   return {
     address: wallet?.address || null,
-    wallets,
-    selectedWallet: wallet,
-    selectWallet,
     getProvider,
     authenticated,
     connect: login,
