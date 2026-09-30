@@ -27,6 +27,14 @@ type OptimisticVote = {
   forVotes: bigint
 }
 
+type BatchCallStatus = {
+  receipts?: Array<{
+    logs?: Array<{ address?: string; data?: string; topics?: string[] }>
+    status?: number | string
+  }>
+  status?: unknown
+}
+
 export function BatchVotingList({
   proposals,
   now,
@@ -200,18 +208,16 @@ export function BatchVotingList({
         params: [buildWalletSendCalls(wallet.address, calls)],
       })
       setMessage('Wallet confirmed. Waiting for Base confirmation…')
-      let status: any
-      for (let i = 0; i < 30; i++) {
-        status = await raw.request({
+      let status: BatchCallStatus | null = null
+      for (let i = 0; i < 60; i++) {
+        status = (await raw.request({
           method: 'wallet_getCallsStatus',
           params: [result],
-        })
-        if (status?.status === '0x1' || status?.status === 1) break
+        })) as BatchCallStatus
+        if (isCallsConfirmed(status.status)) break
         await new Promise((resolve) => setTimeout(resolve, 1000))
       }
-      if (status?.atomic !== true)
-        throw new Error('Wallet completed without an atomic status.')
-      if (status?.status !== '0x1' && status?.status !== 1)
+      if (!isCallsConfirmed(status?.status))
         throw new Error('Atomic batch did not succeed.')
       const receipts = status.receipts || []
       if (!verifyVoteCastLogs(receipts, wallet.address, selected, direction))
@@ -405,6 +411,10 @@ function BatchVoteProgress({ message }: { message: string }) {
       </div>
     </div>
   )
+}
+
+function isCallsConfirmed(status: unknown) {
+  return status === 'CONFIRMED' || status === '0x1' || status === 1
 }
 
 function max(left: bigint, right: bigint) {
