@@ -17,14 +17,9 @@ import {
   MAX_BATCH_VOTES,
   supportsAtomic,
   type VoteDirection,
-  verifyVoteCastLogs,
 } from '~/lib/governance/batchVoting'
 
 type BatchCallStatus = {
-  receipts?: Array<{
-    logs?: Array<{ address?: string; data?: string; topics?: string[] }>
-    status?: number | string
-  }>
   status?: unknown
 }
 
@@ -204,14 +199,14 @@ export function BatchVotingList({
       }
       if (!status || !isCallsConfirmed(status.status))
         throw new Error('Atomic batch did not succeed.')
-      const receipts = status.receipts || []
-      if (!verifyVoteCastLogs(receipts, wallet.address, selected, direction))
-        throw new Error(
-          'Receipt verification failed: VoteCast logs did not match the selected batch.'
-        )
-      for (const id of selected)
-        if (!(await governor.hasVoted(BigInt(id), wallet.address)))
-          throw new Error(`Postcondition failed for proposal ${id}.`)
+      setMessage('Base confirmed. Verifying your votes…')
+      const readGovernor = new Contract(
+        governanceConfig.governorAddress,
+        getContractAbi(UPGovernor),
+        new JsonRpcProvider(governanceConfig.rpcUrl, governanceConfig.chainId)
+      )
+      if (!(await waitForVotes(readGovernor, selected, wallet.address)))
+        throw new Error('Base did not confirm the selected votes.')
       setMessage('Confirmed. Refreshing proposals…')
       window.location.reload()
     } catch (error) {
@@ -407,6 +402,21 @@ function getCallsId(result: unknown): string {
     if (typeof id === 'string') return id
   }
   throw new Error('Wallet did not return a valid batch ID.')
+}
+
+async function waitForVotes(
+  governor: Contract,
+  proposalIds: string[],
+  voter: string
+) {
+  for (let i = 0; i < 30; i++) {
+    const votes = await Promise.all(
+      proposalIds.map((id) => governor.hasVoted(BigInt(id), voter))
+    )
+    if (votes.every(Boolean)) return true
+    await new Promise((resolve) => setTimeout(resolve, 1_000))
+  }
+  return false
 }
 
 async function fetchVoteSupport(
