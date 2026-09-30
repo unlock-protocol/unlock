@@ -62,10 +62,7 @@ export function BatchVotingList({
     setMessage('Reading Base wallet capabilities and proposal state…')
     setBusy(true)
     try {
-      if (!wallet.address || !wallet.selectedWallet)
-        throw new Error(
-          'Connect and explicitly choose an external wallet first.'
-        )
+      if (!wallet.address) throw new Error('Connect a wallet first.')
       const raw = await wallet.getProvider()
       const caps = await raw.request({
         method: 'wallet_getCapabilities',
@@ -141,13 +138,7 @@ export function BatchVotingList({
   }
 
   async function submit() {
-    if (
-      !wallet.address ||
-      !wallet.selectedWallet ||
-      !direction ||
-      !selected.length
-    )
-      return
+    if (!wallet.address || !direction || !selected.length) return
     if (preflightWallet !== wallet.address) {
       setSelected([])
       setDirection(null)
@@ -282,23 +273,6 @@ export function BatchVotingList({
           {busy ? 'Checking…' : 'Check batch voting eligibility'}
         </button>
       </div>
-      {wallet.wallets.length > 1 && (
-        <label className="block text-sm">
-          External wallet
-          <select
-            className="ml-2 rounded-lg border p-2"
-            value={wallet.address || ''}
-            onChange={(event) => wallet.selectWallet(event.target.value)}
-          >
-            <option value="">Choose a wallet</option>
-            {wallet.wallets.map((item) => (
-              <option key={item.address} value={item.address}>
-                {item.address}
-              </option>
-            ))}
-          </select>
-        </label>
-      )}
       {message && (
         <p className="rounded-xl bg-white p-4 text-sm" role="status">
           {message}
