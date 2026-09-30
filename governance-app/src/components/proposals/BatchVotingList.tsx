@@ -303,36 +303,19 @@ export function BatchVotingList({
         )}
       </Modal>
       <div className="grid gap-5">
-        {proposals.map((proposal) => {
-          const optimisticVote = optimisticVotes.get(proposal.id)
-          const displayedProposal = optimisticVote
-            ? {
-                ...proposal,
-                forVotes: max(proposal.forVotes, optimisticVote.forVotes),
-                againstVotes: max(
-                  proposal.againstVotes,
-                  optimisticVote.againstVotes
-                ),
-                abstainVotes: max(
-                  proposal.abstainVotes,
-                  optimisticVote.abstainVotes
-                ),
-              }
-            : proposal
-          return (
-            <ProposalCard
-              key={proposal.id}
-              now={now}
-              proposal={displayedProposal}
-              tokenSymbol={tokenSymbol}
-              selectable={proposal.state === 'Active'}
-              selectionDisabled={votedProposals.has(proposal.id)}
-              selected={selected.includes(proposal.id)}
-              onToggle={() => toggle(proposal.id)}
-              votedSupport={votedProposals.get(proposal.id)}
-            />
-          )
-        })}
+        {proposals.map((proposal) => (
+          <ProposalCard
+            key={proposal.id}
+            now={now}
+            proposal={proposal}
+            tokenSymbol={tokenSymbol}
+            selectable={proposal.state === 'Active'}
+            selectionDisabled={votedProposals.has(proposal.id)}
+            selected={selected.includes(proposal.id)}
+            onToggle={() => toggle(proposal.id)}
+            votedSupport={votedProposals.get(proposal.id)}
+          />
+        ))}
       </div>
     </>
   )
