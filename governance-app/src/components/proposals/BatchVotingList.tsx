@@ -137,7 +137,7 @@ export function BatchVotingList({
   async function submit() {
     if (!wallet.address || !direction || !selected.length) return
     setBusy(true)
-    setMessage('')
+    setMessage('Preparing your batch vote…')
     try {
       const raw = await wallet.getProvider()
       const capabilities = await raw.request({
@@ -194,10 +194,12 @@ export function BatchVotingList({
         )
       }
       const calls = buildBatchCalls(selected, direction)
+      setMessage('Confirm this batch in MetaMask…')
       const result = await raw.request({
         method: 'wallet_sendCalls',
         params: [buildWalletSendCalls(wallet.address, calls)],
       })
+      setMessage('Wallet confirmed. Waiting for Base confirmation…')
       let status: any
       for (let i = 0; i < 30; i++) {
         status = await raw.request({
@@ -237,11 +239,13 @@ export function BatchVotingList({
         return next
       })
       setMessage(
-        `Verified atomic ${direction} batch: ${selected.length} proposals updated successfully.`
+        `Confirmed: ${selected.length} ${direction} vote${selected.length === 1 ? '' : 's'} submitted on Base.`
       )
       setSelected([])
       setDirection(null)
+      setReviewOpen(false)
     } catch (error) {
+      setReviewOpen(false)
       setMessage(
         error instanceof Error ? error.message : 'Wallet request failed.'
       )
@@ -275,7 +279,10 @@ export function BatchVotingList({
             {direction && (
               <button
                 disabled={busy}
-                onClick={() => setReviewOpen(true)}
+                onClick={() => {
+                  setMessage('')
+                  setReviewOpen(true)
+                }}
                 className="rounded-full bg-brand-ui-primary px-4 py-2 text-sm font-semibold text-white disabled:opacity-40"
               >
                 Review & submit {selected.length} {direction} vote
@@ -291,35 +298,37 @@ export function BatchVotingList({
           {message}
         </p>
       )}
-      <Modal isOpen={reviewOpen} setIsOpen={setReviewOpen} size="small">
-        <div className="flex flex-col gap-5">
-          <div className="space-y-2">
-            <h2 className="text-xl font-semibold text-brand-ui-primary">
-              Review batch vote
-            </h2>
-            <p className="text-sm leading-6 text-brand-ui-primary/70">
-              Cast {direction} votes for {selected.length} selected proposal
-              {selected.length === 1 ? '' : 's'} in one atomic Base batch.
-            </p>
+      <Modal
+        isOpen={reviewOpen}
+        setIsOpen={(isOpen) => {
+          if (!busy) setReviewOpen(isOpen)
+        }}
+        size="small"
+      >
+        {busy ? (
+          <BatchVoteProgress message={message} />
+        ) : (
+          <div className="flex flex-col gap-5">
+            <div className="space-y-2">
+              <h2 className="text-xl font-semibold text-brand-ui-primary">
+                Review batch vote
+              </h2>
+              <p className="text-sm leading-6 text-brand-ui-primary/70">
+                Cast {direction} votes for {selected.length} selected proposal
+                {selected.length === 1 ? '' : 's'} in one atomic Base batch.
+              </p>
+            </div>
+            <div className="flex justify-end gap-3">
+              <button
+                className="rounded-full px-4 py-2 text-sm font-medium text-brand-ui-primary"
+                onClick={() => setReviewOpen(false)}
+              >
+                Cancel
+              </button>
+              <Button onClick={submit}>Continue to wallet</Button>
+            </div>
           </div>
-          <div className="flex justify-end gap-3">
-            <button
-              className="rounded-full px-4 py-2 text-sm font-medium text-brand-ui-primary"
-              onClick={() => setReviewOpen(false)}
-            >
-              Cancel
-            </button>
-            <Button
-              disabled={busy}
-              onClick={() => {
-                setReviewOpen(false)
-                submit()
-              }}
-            >
-              Continue to wallet
-            </Button>
-          </div>
-        </div>
+        )}
       </Modal>
       <div className="grid gap-5">
         {proposals.map((proposal) => {
@@ -354,6 +363,47 @@ export function BatchVotingList({
         })}
       </div>
     </>
+  )
+}
+
+function BatchVoteProgress({ message }: { message: string }) {
+  return (
+    <div className="flex flex-col items-center gap-4 py-6 text-center">
+      <svg
+        aria-hidden="true"
+        className="h-8 w-8 animate-spin text-brand-ui-primary"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          className="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          strokeWidth="4"
+        />
+        <path
+          className="opacity-75"
+          d="M4 12a8 8 0 018-8"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeWidth="4"
+        />
+      </svg>
+      <div className="space-y-2">
+        <h2 className="text-xl font-semibold text-brand-ui-primary">
+          Submitting batch vote
+        </h2>
+        <p
+          aria-live="polite"
+          className="text-sm text-brand-ui-primary/70"
+          role="status"
+        >
+          {message}
+        </p>
+      </div>
+    </div>
   )
 }
 
