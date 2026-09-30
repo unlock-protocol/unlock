@@ -1,7 +1,7 @@
 'use client'
 
 import { Contract, BrowserProvider } from 'ethers'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { UPGovernor } from '@unlock-protocol/contracts'
 import { useGovernanceWallet } from '~/hooks/useGovernanceWallet'
 import { governanceConfig } from '~/config/governance'
@@ -33,99 +33,13 @@ export function BatchVotingList({
   const wallet = useGovernanceWallet()
   const [selected, setSelected] = useState<string[]>([])
   const [direction, setDirection] = useState<VoteDirection | null>(null)
-  const [preflight, setPreflight] = useState<
-    Record<
-      string,
-      { hasVoted: boolean; votingPower: bigint; reason: string | null }
-    >
-  >({})
-  const [capability, setCapability] = useState<
-    'ready' | 'unsupported' | 'unknown'
-  >('unknown')
   const [busy, setBusy] = useState(false)
   const [message, setMessage] = useState('')
-  const [preflightWallet, setPreflightWallet] = useState<string | null>(null)
-
-  const activeProposals = useMemo(
-    () => proposals.filter((p) => p.state === 'Active'),
-    [proposals]
-  )
 
   useEffect(() => {
     setSelected([])
     setDirection(null)
-    setPreflight({})
-    setPreflightWallet(null)
   }, [wallet.address])
-
-  async function runPreflight() {
-    setMessage('Reading Base wallet capabilities and proposal state…')
-    setBusy(true)
-    try {
-      if (!wallet.address) throw new Error('Connect a wallet first.')
-      const raw = await wallet.getProvider()
-      const caps = await raw.request({
-        method: 'wallet_getCapabilities',
-        params: [wallet.address],
-      })
-      const atomic = supportsAtomic(caps)
-      setCapability(atomic ? 'ready' : 'unsupported')
-      if (!atomic)
-        throw new Error(
-          'This wallet does not support atomic batch calls on Base.'
-        )
-      const provider = new BrowserProvider(raw, 'any')
-      const governor = new Contract(
-        governanceConfig.governorAddress,
-        getContractAbi(UPGovernor),
-        provider
-      )
-      const [clockMode, currentClock] = await Promise.all([
-        governor.CLOCK_MODE(),
-        governor.clock(),
-      ])
-      if (!String(clockMode).toLowerCase().includes('timestamp')) {
-        throw new Error(`Unsupported governor clock mode: ${clockMode}`)
-      }
-      const results: typeof preflight = {}
-      for (const proposal of activeProposals) {
-        if (proposal.voteStartTimestamp > BigInt(currentClock)) {
-          results[proposal.id] = {
-            hasVoted: false,
-            votingPower: 0n,
-            reason:
-              'The proposal snapshot is ahead of the current governor clock.',
-          }
-          continue
-        }
-        const [hasVoted, votingPower] = await Promise.all([
-          governor.hasVoted(BigInt(proposal.id), wallet.address),
-          governor.getVotes(wallet.address, proposal.voteStartTimestamp),
-        ])
-        results[proposal.id] = {
-          hasVoted,
-          votingPower,
-          reason: canSelectProposal({
-            state: proposal.state,
-            hasVoted,
-            votingPower,
-          }),
-        }
-      }
-      setPreflight(results)
-      setPreflightWallet(wallet.address)
-      setSelected((current) =>
-        current.filter((id) => !results[id]?.reason).slice(0, MAX_BATCH_VOTES)
-      )
-      setMessage(
-        'Preflight complete. Select eligible proposals, choose a direction, then review the batch.'
-      )
-    } catch (error) {
-      setMessage(error instanceof Error ? error.message : 'Preflight failed.')
-    } finally {
-      setBusy(false)
-    }
-  }
 
   function toggle(id: string) {
     setSelected((current) =>
@@ -139,34 +53,37 @@ export function BatchVotingList({
 
   async function submit() {
     if (!wallet.address || !direction || !selected.length) return
-    if (preflightWallet !== wallet.address) {
-      setSelected([])
-      setDirection(null)
-      setMessage('Wallet changed; run preflight again before submitting.')
-      return
-    }
-    if (
-      !window.confirm(
-        `Submit ${direction} votes for ${selected.length} proposals atomically on Base?`
-      )
-    )
-      return
     setBusy(true)
-    setMessage('Re-checking eligibility before opening the wallet…')
+    setMessage('')
     try {
       const raw = await wallet.getProvider()
+      const capabilities = await raw.request({
+        method: 'wallet_getCapabilities',
+        params: [wallet.address],
+      })
+      if (!supportsAtomic(capabilities)) {
+        throw new Error(
+          'Atomic batch voting is unavailable for this wallet on Base.'
+        )
+      }
       const provider = new BrowserProvider(raw, 'any')
       const governor = new Contract(
         governanceConfig.governorAddress,
         getContractAbi(UPGovernor),
         provider
       )
-      const clockMode = await governor.CLOCK_MODE()
+      const [clockMode, currentClock] = await Promise.all([
+        governor.CLOCK_MODE(),
+        governor.clock(),
+      ])
       if (!String(clockMode).toLowerCase().includes('timestamp'))
         throw new Error(`Unsupported governor clock mode: ${clockMode}`)
       const checks = await Promise.all(
         selected.map(async (id) => {
           const proposal = proposals.find((item) => item.id === id)!
+          if (proposal.voteStartTimestamp > BigInt(currentClock)) {
+            return 'The proposal snapshot is not available yet.'
+          }
           const [hasVoted, votingPower] = await Promise.all([
             governor.hasVoted(BigInt(id), wallet.address),
             governor.getVotes(wallet.address, proposal.voteStartTimestamp),
@@ -182,9 +99,15 @@ export function BatchVotingList({
         setSelected([])
         setDirection(null)
         throw new Error(
-          'A selected proposal is no longer eligible; selection was cleared.'
+          'One or more selected proposals can no longer be voted on.'
         )
       }
+      if (
+        !window.confirm(
+          `Submit ${selected.length} ${direction} vote${selected.length === 1 ? '' : 's'} atomically on Base?`
+        )
+      )
+        return
       const calls = buildBatchCalls(selected, direction)
       const result = await raw.request({
         method: 'wallet_sendCalls',
@@ -249,30 +172,18 @@ export function BatchVotingList({
             ))}
             {direction && (
               <button
-                disabled={busy || selected.some((id) => preflight[id]?.reason)}
+                disabled={busy}
                 onClick={submit}
                 className="rounded-full bg-brand-ui-primary px-4 py-2 text-sm font-semibold text-white disabled:opacity-40"
               >
-                Review & submit {direction} votes
+                Review & submit {selected.length} {direction} vote
+                {selected.length === 1 ? '' : 's'}
               </button>
             )}
           </div>
-          <p className="mt-2 text-xs text-brand-ui-primary/60">
-            Base atomic execution · {MAX_BATCH_VOTES}-proposal maximum · no
-            direction is preselected
-          </p>
         </div>
       )}
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <ProposalFilters activeFilter={activeFilter} />
-        <button
-          onClick={runPreflight}
-          disabled={busy || !wallet.isReady}
-          className="rounded-full border border-brand-ui-primary/15 bg-white px-4 py-2 text-sm font-medium disabled:opacity-40"
-        >
-          {busy ? 'Checking…' : 'Check batch voting eligibility'}
-        </button>
-      </div>
+      <ProposalFilters activeFilter={activeFilter} />
       {message && (
         <p className="rounded-xl bg-white p-4 text-sm" role="status">
           {message}
@@ -280,14 +191,6 @@ export function BatchVotingList({
       )}
       <div className="grid gap-5">
         {proposals.map((proposal) => {
-          const check = preflight[proposal.id]
-          const reason =
-            proposal.state !== 'Active'
-              ? 'Only Active proposals are eligible.'
-              : check?.reason ||
-                (capability === 'unsupported'
-                  ? 'Atomic Base execution is unavailable.'
-                  : "Run preflight to confirm this wallet's snapshot voting power.")
           return (
             <ProposalCard
               key={proposal.id}
@@ -295,10 +198,8 @@ export function BatchVotingList({
               proposal={proposal}
               tokenSymbol={tokenSymbol}
               selectable={proposal.state === 'Active'}
-              selectionDisabled={!check || Boolean(check.reason)}
               selected={selected.includes(proposal.id)}
               onToggle={() => toggle(proposal.id)}
-              unavailableReason={reason}
             />
           )
         })}

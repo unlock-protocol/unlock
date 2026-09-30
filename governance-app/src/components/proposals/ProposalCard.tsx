@@ -17,8 +17,6 @@ type ProposalCardProps = {
   selectable?: boolean
   selected?: boolean
   onToggle?: () => void
-  selectionDisabled?: boolean
-  unavailableReason?: string | null
 }
 
 export function ProposalCard({
@@ -28,8 +26,6 @@ export function ProposalCard({
   selectable = false,
   selected = false,
   onToggle,
-  selectionDisabled = false,
-  unavailableReason,
 }: ProposalCardProps) {
   const quorumProgress = `${formatTokenAmount(
     proposal.forVotes + proposal.abstainVotes
@@ -51,7 +47,6 @@ export function ProposalCard({
               <input
                 type="checkbox"
                 checked={selected}
-                disabled={selectionDisabled}
                 onChange={onToggle}
                 className="h-5 w-5 accent-brand-ui-primary"
               />
@@ -81,11 +76,6 @@ export function ProposalCard({
           Created {formatDateTime(proposal.createdAtTimestamp)}
         </div>
       </div>
-      {unavailableReason && (
-        <p className="mt-4 text-sm text-amber-800">
-          Unavailable for batch voting: {unavailableReason}
-        </p>
-      )}
       <div className="mt-6 grid gap-3 md:grid-cols-4">
         <VoteMetric
           label="For"
