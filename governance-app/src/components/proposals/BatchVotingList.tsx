@@ -1,7 +1,7 @@
 'use client'
 
-import { Contract, BrowserProvider } from 'ethers'
-import { useEffect, useState } from 'react'
+import { Contract, BrowserProvider, JsonRpcProvider } from 'ethers'
+import { useEffect, useMemo, useState } from 'react'
 import { UPGovernor } from '@unlock-protocol/contracts'
 import { Button, Modal } from '@unlock-protocol/ui'
 import { useGovernanceWallet } from '~/hooks/useGovernanceWallet'
@@ -37,11 +37,68 @@ export function BatchVotingList({
   const [busy, setBusy] = useState(false)
   const [message, setMessage] = useState('')
   const [reviewOpen, setReviewOpen] = useState(false)
+  const [votedProposalIds, setVotedProposalIds] = useState<Set<string>>(
+    new Set()
+  )
+
+  const activeProposals = useMemo(
+    () => proposals.filter((proposal) => proposal.state === 'Active'),
+    [proposals]
+  )
 
   useEffect(() => {
     setSelected([])
     setDirection(null)
   }, [wallet.address])
+
+  useEffect(() => {
+    if (!wallet.address) {
+      setVotedProposalIds(new Set())
+      return
+    }
+    const address = wallet.address
+
+    let cancelled = false
+    const provider = new JsonRpcProvider(
+      governanceConfig.rpcUrl,
+      governanceConfig.chainId
+    )
+    const governor = new Contract(
+      governanceConfig.governorAddress,
+      getContractAbi(UPGovernor),
+      provider
+    )
+
+    Promise.all(
+      activeProposals.map(async (proposal) => ({
+        id: proposal.id,
+        hasVoted: await governor.hasVoted(BigInt(proposal.id), address),
+      }))
+    )
+      .then((results) => {
+        if (cancelled) return
+        setVotedProposalIds(
+          new Set(
+            results
+              .filter((result) => result.hasVoted)
+              .map((result) => result.id)
+          )
+        )
+      })
+      .catch(() => {
+        if (!cancelled) setVotedProposalIds(new Set())
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [activeProposals, wallet.address])
+
+  useEffect(() => {
+    setSelected((current) =>
+      current.filter((proposalId) => !votedProposalIds.has(proposalId))
+    )
+  }, [votedProposalIds])
 
   function toggle(id: string) {
     setSelected((current) =>
@@ -224,8 +281,10 @@ export function BatchVotingList({
               proposal={proposal}
               tokenSymbol={tokenSymbol}
               selectable={proposal.state === 'Active'}
+              selectionDisabled={votedProposalIds.has(proposal.id)}
               selected={selected.includes(proposal.id)}
               onToggle={() => toggle(proposal.id)}
+              voted={votedProposalIds.has(proposal.id)}
             />
           )
         })}
