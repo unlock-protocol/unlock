@@ -3,6 +3,7 @@
 import { useLogin, usePrivy, useWallets, useLogout } from '@privy-io/react-auth'
 import { BrowserProvider } from 'ethers'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { governanceConfig } from '~/config/governance'
 
 function chainHex(chainId: number) {
@@ -17,13 +18,25 @@ export function useGovernanceWallet() {
   const { logout } = useLogout({
     onSuccess: () => router.refresh(),
   })
-  const wallet = wallets[0] || null
+  const [selectedAddress, setSelectedAddress] = useState<string | null>(null)
+  const wallet =
+    wallets.find((candidate) => candidate.address === selectedAddress) ||
+    (wallets.length === 1 ? wallets[0] : null)
+
+  function selectWallet(address: string) {
+    setSelectedAddress(address)
+  }
+
+  async function getProvider() {
+    if (!wallet) throw new Error('Choose an external wallet to continue.')
+    return wallet.getEthereumProvider()
+  }
 
   async function ensureBaseNetwork() {
     if (!wallet) {
       throw new Error('Connect a wallet to continue.')
     }
-    const ethereumProvider = await wallet.getEthereumProvider()
+    const ethereumProvider = await getProvider()
     const provider = new BrowserProvider(ethereumProvider, 'any')
     const network = await provider.getNetwork()
 
@@ -51,6 +64,10 @@ export function useGovernanceWallet() {
 
   return {
     address: wallet?.address || null,
+    wallets,
+    selectedWallet: wallet,
+    selectWallet,
+    getProvider,
     authenticated,
     connect: login,
     disconnect: logout,

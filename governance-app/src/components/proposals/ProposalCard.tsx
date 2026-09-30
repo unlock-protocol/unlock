@@ -1,3 +1,4 @@
+'use client'
 import Link from 'next/link'
 import { TruncatedId } from '~/components/TruncatedId'
 import {
@@ -13,12 +14,22 @@ type ProposalCardProps = {
   now: bigint
   proposal: ProposalRecord
   tokenSymbol: string
+  selectable?: boolean
+  selected?: boolean
+  onToggle?: () => void
+  selectionDisabled?: boolean
+  unavailableReason?: string | null
 }
 
 export function ProposalCard({
   now,
   proposal,
   tokenSymbol,
+  selectable = false,
+  selected = false,
+  onToggle,
+  selectionDisabled = false,
+  unavailableReason,
 }: ProposalCardProps) {
   const quorumProgress = `${formatTokenAmount(
     proposal.forVotes + proposal.abstainVotes
@@ -29,34 +40,52 @@ export function ProposalCard({
       : `Ended ${formatDateTime(proposal.voteEndTimestamp)}`
 
   return (
-    <Link
-      className="block rounded-[2rem] border border-brand-ui-primary/10 bg-white p-6 shadow-sm transition hover:border-brand-ui-primary/25"
-      href={`/proposals/${proposal.id}`}
+    <article
+      className={`rounded-[2rem] border bg-white p-6 shadow-sm transition ${selected ? 'border-brand-ui-primary ring-2 ring-brand-ui-primary/15' : 'border-brand-ui-primary/10'}`}
     >
       <div className="flex flex-wrap items-start justify-between gap-4">
-        <div className="space-y-2">
-          <div className="flex flex-wrap items-center gap-3">
-            <ProposalStateBadge state={proposal.state} />
-            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-ui-primary/45">
-              Proposal{' '}
-              <TruncatedId
-                id={proposal.id}
-                keep={4}
-                label="Copy full proposal ID"
+        <div className="flex min-w-0 gap-4">
+          {selectable && (
+            <label className="pt-1">
+              <span className="sr-only">Select proposal {proposal.id}</span>
+              <input
+                type="checkbox"
+                checked={selected}
+                disabled={selectionDisabled}
+                onChange={onToggle}
+                className="h-5 w-5 accent-brand-ui-primary"
               />
-            </span>
-          </div>
-          <h2 className="text-2xl font-semibold text-brand-ui-primary">
-            {proposal.title}
-          </h2>
-          <p className="text-sm text-brand-ui-primary/65">
-            Proposed by {truncateAddress(proposal.proposer)}. {deadlineLabel}
-          </p>
+            </label>
+          )}
+          <Link href={`/proposals/${proposal.id}`} className="space-y-2">
+            <div className="flex flex-wrap items-center gap-3">
+              <ProposalStateBadge state={proposal.state} />
+              <span className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-ui-primary/45">
+                Proposal{' '}
+                <TruncatedId
+                  id={proposal.id}
+                  keep={4}
+                  label="Copy full proposal ID"
+                />
+              </span>
+            </div>
+            <h2 className="text-2xl font-semibold text-brand-ui-primary">
+              {proposal.title}
+            </h2>
+            <p className="text-sm text-brand-ui-primary/65">
+              Proposed by {truncateAddress(proposal.proposer)}. {deadlineLabel}
+            </p>
+          </Link>
         </div>
         <div className="rounded-3xl bg-ui-secondary-200 px-4 py-3 text-sm text-brand-ui-primary/75">
           Created {formatDateTime(proposal.createdAtTimestamp)}
         </div>
       </div>
+      {unavailableReason && (
+        <p className="mt-4 text-sm text-amber-800">
+          Unavailable for batch voting: {unavailableReason}
+        </p>
+      )}
       <div className="mt-6 grid gap-3 md:grid-cols-4">
         <VoteMetric
           label="For"
@@ -82,7 +111,7 @@ export function ProposalCard({
           </div>
         </div>
       </div>
-    </Link>
+    </article>
   )
 }
 

@@ -1,6 +1,5 @@
-import { ProposalCard } from '~/components/proposals/ProposalCard'
+import { BatchVotingList } from '~/components/proposals/BatchVotingList'
 import { ProposalErrorState } from '~/components/proposals/ProposalErrorState'
-import { ProposalFilters } from '~/components/proposals/ProposalFilters'
 import {
   filterProposals,
   getGovernanceOverview,
@@ -44,24 +43,19 @@ export default async function ProposalsPage({
             </div>
           </div>
         </div>
-        <ProposalFilters activeFilter={activeFilter} />
-        <div className="grid gap-5">
-          {proposals.length ? (
-            proposals.map((proposal) => (
-              <ProposalCard
-                key={proposal.id}
-                now={overview.latestTimestamp}
-                proposal={proposal}
-                tokenSymbol={overview.tokenSymbol}
-              />
-            ))
-          ) : (
-            <ProposalErrorState
-              title="No proposals match this filter"
-              description={`There are currently no proposals in the ${activeFilter} state.`}
-            />
-          )}
-        </div>
+        {proposals.length ? (
+          <BatchVotingList
+            proposals={proposals}
+            now={overview.latestTimestamp}
+            tokenSymbol={overview.tokenSymbol}
+            activeFilter={activeFilter}
+          />
+        ) : (
+          <ProposalErrorState
+            title="No proposals match this filter"
+            description={`There are currently no proposals in the ${activeFilter} state.`}
+          />
+        )}
       </section>
     )
   } catch (error) {
