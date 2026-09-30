@@ -17,8 +17,15 @@ import {
   MAX_BATCH_VOTES,
   supportsAtomic,
   type VoteDirection,
+  VOTE_SUPPORT,
   verifyVoteCastLogs,
 } from '~/lib/governance/batchVoting'
+
+type OptimisticVote = {
+  abstainVotes: bigint
+  againstVotes: bigint
+  forVotes: bigint
+}
 
 export function BatchVotingList({
   proposals,
@@ -40,6 +47,9 @@ export function BatchVotingList({
   const [votedProposals, setVotedProposals] = useState<
     Map<string, number | null>
   >(() => new Map())
+  const [optimisticVotes, setOptimisticVotes] = useState<
+    Map<string, OptimisticVote>
+  >(() => new Map())
 
   const activeProposals = useMemo(
     () => proposals.filter((proposal) => proposal.state === 'Active'),
@@ -49,6 +59,7 @@ export function BatchVotingList({
   useEffect(() => {
     setSelected([])
     setDirection(null)
+    setOptimisticVotes(new Map())
   }, [wallet.address])
 
   useEffect(() => {
@@ -78,17 +89,16 @@ export function BatchVotingList({
     )
       .then((results) => {
         if (cancelled) return
-        setVotedProposals(
-          new Map(
-            results
-              .filter((result) => result.hasVoted)
-              .map((result) => [result.id, result.support])
-          )
-        )
+        setVotedProposals((current) => {
+          const next = new Map(current)
+          for (const result of results) {
+            if (!result.hasVoted) continue
+            next.set(result.id, result.support ?? next.get(result.id) ?? null)
+          }
+          return next
+        })
       })
-      .catch(() => {
-        if (!cancelled) setVotedProposals(new Map())
-      })
+      .catch(() => undefined)
 
     return () => {
       cancelled = true
@@ -142,20 +152,28 @@ export function BatchVotingList({
         selected.map(async (id) => {
           const proposal = proposals.find((item) => item.id === id)!
           if (proposal.voteStartTimestamp > BigInt(currentClock)) {
-            return 'The proposal snapshot is not available yet.'
+            return {
+              id,
+              votingPower: 0n,
+              error: 'The proposal snapshot is not available yet.',
+            }
           }
           const [hasVoted, votingPower] = await Promise.all([
             governor.hasVoted(BigInt(id), wallet.address),
             governor.getVotes(wallet.address, proposal.voteStartTimestamp),
           ])
-          return canSelectProposal({
-            state: proposal.state,
-            hasVoted,
+          return {
+            id,
             votingPower,
-          })
+            error: canSelectProposal({
+              state: proposal.state,
+              hasVoted,
+              votingPower,
+            }),
+          }
         })
       )
-      if (checks.some(Boolean)) {
+      if (checks.some((check) => check.error)) {
         setSelected([])
         setDirection(null)
         throw new Error(
@@ -188,8 +206,28 @@ export function BatchVotingList({
       for (const id of selected)
         if (!(await governor.hasVoted(BigInt(id), wallet.address)))
           throw new Error(`Postcondition failed for proposal ${id}.`)
+      const support = VOTE_SUPPORT[direction]
+      setVotedProposals((current) => {
+        const next = new Map(current)
+        for (const { id } of checks) next.set(id, support)
+        return next
+      })
+      setOptimisticVotes((current) => {
+        const next = new Map(current)
+        for (const { id, votingPower } of checks) {
+          const proposal = proposals.find((item) => item.id === id)!
+          next.set(id, {
+            forVotes: proposal.forVotes + (support === 1 ? votingPower : 0n),
+            againstVotes:
+              proposal.againstVotes + (support === 0 ? votingPower : 0n),
+            abstainVotes:
+              proposal.abstainVotes + (support === 2 ? votingPower : 0n),
+          })
+        }
+        return next
+      })
       setMessage(
-        `Verified atomic ${direction} batch: ${selected.length} proposals voted on successfully.`
+        `Verified atomic ${direction} batch: ${selected.length} proposals updated successfully.`
       )
       setSelected([])
       setDirection(null)
@@ -275,11 +313,26 @@ export function BatchVotingList({
       </Modal>
       <div className="grid gap-5">
         {proposals.map((proposal) => {
+          const optimisticVote = optimisticVotes.get(proposal.id)
+          const displayedProposal = optimisticVote
+            ? {
+                ...proposal,
+                forVotes: max(proposal.forVotes, optimisticVote.forVotes),
+                againstVotes: max(
+                  proposal.againstVotes,
+                  optimisticVote.againstVotes
+                ),
+                abstainVotes: max(
+                  proposal.abstainVotes,
+                  optimisticVote.abstainVotes
+                ),
+              }
+            : proposal
           return (
             <ProposalCard
               key={proposal.id}
               now={now}
-              proposal={proposal}
+              proposal={displayedProposal}
               tokenSymbol={tokenSymbol}
               selectable={proposal.state === 'Active'}
               selectionDisabled={votedProposals.has(proposal.id)}
@@ -292,6 +345,10 @@ export function BatchVotingList({
       </div>
     </>
   )
+}
+
+function max(left: bigint, right: bigint) {
+  return left > right ? left : right
 }
 
 async function fetchVoteSupport(
