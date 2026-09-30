@@ -17,6 +17,8 @@ type ProposalCardProps = {
   selectable?: boolean
   selected?: boolean
   onToggle?: () => void
+  selectionDisabled?: boolean
+  voted?: boolean
 }
 
 export function ProposalCard({
@@ -26,6 +28,8 @@ export function ProposalCard({
   selectable = false,
   selected = false,
   onToggle,
+  selectionDisabled = false,
+  voted = false,
 }: ProposalCardProps) {
   const quorumProgress = `${formatTokenAmount(
     proposal.forVotes + proposal.abstainVotes
@@ -47,6 +51,7 @@ export function ProposalCard({
               <input
                 type="checkbox"
                 checked={selected}
+                disabled={selectionDisabled}
                 onChange={onToggle}
                 className="h-5 w-5 accent-brand-ui-primary"
               />
@@ -55,6 +60,11 @@ export function ProposalCard({
           <Link href={`/proposals/${proposal.id}`} className="space-y-2">
             <div className="flex flex-wrap items-center gap-3">
               <ProposalStateBadge state={proposal.state} />
+              {voted && (
+                <span className="rounded-full bg-brand-ui-primary/10 px-3 py-1 text-xs font-semibold text-brand-ui-primary/70">
+                  Voted
+                </span>
+              )}
               <span className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-ui-primary/45">
                 Proposal{' '}
                 <TruncatedId
