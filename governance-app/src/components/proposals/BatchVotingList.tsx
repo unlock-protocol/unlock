@@ -3,6 +3,7 @@
 import { Contract, BrowserProvider } from 'ethers'
 import { useEffect, useState } from 'react'
 import { UPGovernor } from '@unlock-protocol/contracts'
+import { Button, Modal } from '@unlock-protocol/ui'
 import { useGovernanceWallet } from '~/hooks/useGovernanceWallet'
 import { governanceConfig } from '~/config/governance'
 import { getContractAbi } from '~/lib/governance/composer'
@@ -35,6 +36,7 @@ export function BatchVotingList({
   const [direction, setDirection] = useState<VoteDirection | null>(null)
   const [busy, setBusy] = useState(false)
   const [message, setMessage] = useState('')
+  const [reviewOpen, setReviewOpen] = useState(false)
 
   useEffect(() => {
     setSelected([])
@@ -102,12 +104,6 @@ export function BatchVotingList({
           'One or more selected proposals can no longer be voted on.'
         )
       }
-      if (
-        !window.confirm(
-          `Submit ${selected.length} ${direction} vote${selected.length === 1 ? '' : 's'} atomically on Base?`
-        )
-      )
-        return
       const calls = buildBatchCalls(selected, direction)
       const result = await raw.request({
         method: 'wallet_sendCalls',
@@ -173,7 +169,7 @@ export function BatchVotingList({
             {direction && (
               <button
                 disabled={busy}
-                onClick={submit}
+                onClick={() => setReviewOpen(true)}
                 className="rounded-full bg-brand-ui-primary px-4 py-2 text-sm font-semibold text-white disabled:opacity-40"
               >
                 Review & submit {selected.length} {direction} vote
@@ -189,6 +185,36 @@ export function BatchVotingList({
           {message}
         </p>
       )}
+      <Modal isOpen={reviewOpen} setIsOpen={setReviewOpen} size="small">
+        <div className="flex flex-col gap-5">
+          <div className="space-y-2">
+            <h2 className="text-xl font-semibold text-brand-ui-primary">
+              Review batch vote
+            </h2>
+            <p className="text-sm leading-6 text-brand-ui-primary/70">
+              Cast {direction} votes for {selected.length} selected proposal
+              {selected.length === 1 ? '' : 's'} in one atomic Base batch.
+            </p>
+          </div>
+          <div className="flex justify-end gap-3">
+            <button
+              className="rounded-full px-4 py-2 text-sm font-medium text-brand-ui-primary"
+              onClick={() => setReviewOpen(false)}
+            >
+              Cancel
+            </button>
+            <Button
+              disabled={busy}
+              onClick={() => {
+                setReviewOpen(false)
+                submit()
+              }}
+            >
+              Continue to wallet
+            </Button>
+          </div>
+        </div>
+      </Modal>
       <div className="grid gap-5">
         {proposals.map((proposal) => {
           return (
