@@ -35,7 +35,7 @@ on:
 jobs:
   unit-tests:
     name: Unit Tests ${{ matrix.target }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     if: ${{ inputs.changed != '[]' }}
     env:
       DOCKER_BUILDKIT: 1
