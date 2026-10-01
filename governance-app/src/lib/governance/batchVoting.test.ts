@@ -9,13 +9,13 @@ import {
 } from './batchVoting'
 
 describe('batch voting guards', () => {
-  it('caps requests at twenty proposals', () => {
+  it('caps requests at fifty proposals', () => {
     expect(() =>
       buildBatchCalls(
         Array.from({ length: MAX_BATCH_VOTES + 1 }, (_, i) => String(i)),
         'Against'
       )
-    ).toThrow('20')
+    ).toThrow('50')
     expect(buildBatchCalls(['1', '2'], 'Against')).toHaveLength(2)
   })
 
@@ -38,7 +38,7 @@ describe('batch voting guards', () => {
   it('only allows active, unvoted proposals with positive power', () => {
     expect(
       canSelectProposal({ state: 'Pending', hasVoted: false, votingPower: 1n })
-    ).toMatch(/Active/)
+    ).toMatch(/active/i)
     expect(
       canSelectProposal({ state: 'Active', hasVoted: true, votingPower: 1n })
     ).toMatch(/already voted/)

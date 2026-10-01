@@ -1,7 +1,7 @@
 import { Interface } from 'ethers'
 import { governanceConfig } from '~/config/governance'
 
-export const MAX_BATCH_VOTES = 20
+export const MAX_BATCH_VOTES = 50
 export const BASE_CHAIN_ID_HEX = '0x2105'
 export const VOTE_SUPPORT = { For: 1, Against: 0, Abstain: 2 } as const
 export type VoteDirection = keyof typeof VOTE_SUPPORT
@@ -101,7 +101,9 @@ export function verifyVoteCastLogs(
           expected.has(String(id))
         )
           found.add(String(id))
-      } catch {}
+      } catch {
+        // Ignore logs that do not match the governor's VoteCast event.
+      }
     }
   }
   return found.size === expected.size

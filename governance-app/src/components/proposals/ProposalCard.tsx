@@ -31,6 +31,7 @@ export function ProposalCard({
   selectionDisabled = false,
   votedSupport,
 }: ProposalCardProps) {
+  const isUnavailableForBatchVoting = selectable && selectionDisabled
   const quorumProgress = `${formatTokenAmount(
     proposal.forVotes + proposal.abstainVotes
   )} / ${formatTokenAmount(proposal.quorum)} ${tokenSymbol}`
@@ -46,15 +47,32 @@ export function ProposalCard({
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="flex min-w-0 gap-4">
           {selectable && (
-            <label className="pt-1">
-              <span className="sr-only">Select proposal {proposal.id}</span>
+            <label
+              className={`pt-1 ${isUnavailableForBatchVoting ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+              title={
+                isUnavailableForBatchVoting
+                  ? 'Already voted — unavailable for batch voting'
+                  : undefined
+              }
+            >
+              <span className="sr-only">
+                {isUnavailableForBatchVoting
+                  ? `Proposal ${proposal.id} is unavailable for batch voting because you already voted.`
+                  : `Select proposal ${proposal.id}`}
+              </span>
               <input
                 type="checkbox"
                 checked={selected}
                 disabled={selectionDisabled}
                 onChange={onToggle}
-                className="h-5 w-5 accent-brand-ui-primary"
+                className="peer sr-only"
               />
+              <span
+                aria-hidden="true"
+                className={`flex h-7 w-7 items-center justify-center rounded-md border-2 transition peer-focus-visible:ring-2 peer-focus-visible:ring-brand-ui-primary/30 ${isUnavailableForBatchVoting ? 'border-slate-300 bg-slate-100 text-slate-500' : selected ? 'border-brand-ui-primary bg-brand-ui-primary text-white' : 'border-brand-ui-primary/30 bg-white text-transparent'}`}
+              >
+                {isUnavailableForBatchVoting ? <LockedSelectionIcon /> : '✓'}
+              </span>
             </label>
           )}
           <Link href={`/proposals/${proposal.id}`} className="space-y-2">
@@ -110,6 +128,21 @@ export function ProposalCard({
         </div>
       </div>
     </article>
+  )
+}
+
+function LockedSelectionIcon() {
+  return (
+    <svg
+      className="h-4 w-4"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+    >
+      <rect height="10" rx="2" width="14" x="5" y="11" />
+      <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+    </svg>
   )
 }
 
