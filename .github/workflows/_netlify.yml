@@ -46,7 +46,7 @@ on:
 
 jobs:
   check-changes:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     outputs:
       changed: ${{ steps.check_changes.outputs.changed }}
     steps:
@@ -70,7 +70,7 @@ jobs:
   deploy-netlify:
     if: ${{ needs.check-changes.outputs.changed == 'changed' }}
     name: Deploy ${{ inputs.service }} on Netlify ${{ inputs.target-env }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     needs: check-changes
     env:
       DOCKER_BUILDKIT: 1

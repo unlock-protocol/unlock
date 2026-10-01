@@ -14,7 +14,7 @@ jobs:
 
   deploy-locksmith-web-production:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v4
         with:
@@ -38,7 +38,7 @@ jobs:
 
   deploy-locksmith-worker-production:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v4
         with:
@@ -63,7 +63,7 @@ jobs:
   # Vercel Deployments
   deploy-paywall-app-production:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v4
         with:
@@ -139,7 +139,7 @@ jobs:
 
   deploy-unlock-app-vercel:
     if: ${{ github.repository_owner == 'unlock-protocol'  }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v4
         with:

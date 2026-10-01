@@ -42,7 +42,7 @@ on:
 jobs:
   deploy-cloudflare-worker:
     name: Deploy ${{ inputs.workspace }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
