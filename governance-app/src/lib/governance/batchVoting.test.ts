@@ -3,6 +3,8 @@ import {
   buildBatchCalls,
   buildWalletSendCalls,
   canSelectProposal,
+  getBatchVotingErrorMessage,
+  INCOMPATIBLE_WALLET_MESSAGE,
   MAX_BATCH_VOTES,
   supportsAtomic,
   VOTE_SUPPORT,
@@ -60,5 +62,14 @@ describe('batch voting guards', () => {
     expect(
       supportsAtomic({ '0x2105': { atomic: { status: 'unsupported' } } })
     ).toBe(false)
+  })
+
+  it('explains wallet compatibility and batch-size failures', () => {
+    expect(getBatchVotingErrorMessage({ code: -32601 }, 3)).toBe(
+      INCOMPATIBLE_WALLET_MESSAGE
+    )
+    expect(getBatchVotingErrorMessage({ code: 5740 }, 50)).toMatch(
+      /Select fewer proposals/
+    )
   })
 })

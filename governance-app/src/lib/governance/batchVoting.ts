@@ -14,8 +14,10 @@ export type BatchCall = {
 
 const governorInterface = new Interface([
   'function castVote(uint256 proposalId, uint8 support)',
-  'event VoteCast(address indexed voter, uint256 indexed proposalId, uint8 support, uint256 weight, string reason)',
 ])
+
+export const INCOMPATIBLE_WALLET_MESSAGE =
+  'Batch voting requires a compatible wallet such as MetaMask. This wallet is not compatible.'
 
 export function canSelectProposal(input: {
   state: string
@@ -62,49 +64,25 @@ export function supportsAtomic(capabilities: any) {
   return atomic?.status === 'ready' || atomic?.status === 'supported'
 }
 
-export function verifyVoteCastLogs(
-  receipts: Array<{
-    status?: string | number
-    logs?: Array<{ address?: string; topics?: string[]; data?: string }>
-  }>,
-  voter: string,
-  proposalIds: string[],
-  direction: VoteDirection
+export function getBatchVotingErrorMessage(
+  error: unknown,
+  proposalCount: number
 ) {
-  const expected = new Set(proposalIds)
-  const found = new Set<string>()
-  for (const receipt of receipts) {
-    if (
-      receipt.status !== undefined &&
-      receipt.status !== '0x1' &&
-      receipt.status !== 1 &&
-      receipt.status !== '1'
-    )
-      return false
-    for (const log of receipt.logs || []) {
-      if (
-        log.address?.toLowerCase() !==
-          governanceConfig.governorAddress.toLowerCase() ||
-        !log.topics?.length
-      )
-        continue
-      try {
-        const parsed = governorInterface.parseLog({
-          topics: log.topics as string[],
-          data: log.data || '0x',
-        })
-        if (!parsed || parsed.name !== 'VoteCast') continue
-        const [logVoter, id, support] = parsed.args
-        if (
-          String(logVoter).toLowerCase() === voter.toLowerCase() &&
-          String(support) === String(VOTE_SUPPORT[direction]) &&
-          expected.has(String(id))
-        )
-          found.add(String(id))
-      } catch {
-        // Ignore logs that do not match the governor's VoteCast event.
-      }
-    }
+  const rpcError = error as { code?: unknown; message?: unknown } | null
+  const code = Number(rpcError?.code)
+  const message =
+    typeof rpcError?.message === 'string' ? rpcError.message : undefined
+
+  if (code === 5740 || /bundle too large/i.test(message || '')) {
+    return `This wallet cannot process ${proposalCount} proposals in one batch. Select fewer proposals and try again.`
   }
-  return found.size === expected.size
+
+  if (
+    [-32601, 5700, 5710, 5760].includes(code) ||
+    /method not found|method .* not supported/i.test(message || '')
+  ) {
+    return INCOMPATIBLE_WALLET_MESSAGE
+  }
+
+  return message || 'Wallet request failed.'
 }

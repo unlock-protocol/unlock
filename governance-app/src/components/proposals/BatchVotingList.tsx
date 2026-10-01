@@ -11,9 +11,11 @@ import { ProposalCard } from './ProposalCard'
 import { ProposalFilters } from './ProposalFilters'
 import type { ProposalRecord } from '~/lib/governance/types'
 import {
+  BASE_CHAIN_ID_HEX,
   buildBatchCalls,
   buildWalletSendCalls,
   canSelectProposal,
+  getBatchVotingErrorMessage,
   MAX_BATCH_VOTES,
   supportsAtomic,
   type VoteDirection,
@@ -128,12 +130,10 @@ export function BatchVotingList({
       const raw = await wallet.getProvider()
       const capabilities = await raw.request({
         method: 'wallet_getCapabilities',
-        params: [wallet.address],
+        params: [wallet.address, [BASE_CHAIN_ID_HEX]],
       })
       if (!supportsAtomic(capabilities)) {
-        throw new Error(
-          'Atomic batch voting is unavailable for this wallet on Base.'
-        )
+        throw new Error(getBatchVotingErrorMessage({ code: 5760 }, 0))
       }
       const provider = new BrowserProvider(raw, 'any')
       const governor = new Contract(
@@ -180,7 +180,7 @@ export function BatchVotingList({
         )
       }
       const calls = buildBatchCalls(selected, direction)
-      setMessage('Confirm this batch in MetaMask…')
+      setMessage('Confirm this batch in your wallet…')
       const result = await raw.request({
         method: 'wallet_sendCalls',
         params: [buildWalletSendCalls(wallet.address, calls)],
@@ -210,9 +210,7 @@ export function BatchVotingList({
       setMessage('Confirmed. Refreshing proposals…')
       window.location.reload()
     } catch (error) {
-      setSubmissionError(
-        error instanceof Error ? error.message : 'Wallet request failed.'
-      )
+      setSubmissionError(getBatchVotingErrorMessage(error, selected.length))
     } finally {
       setBusy(false)
     }
