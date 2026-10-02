@@ -25,6 +25,11 @@ type BatchCallStatus = {
   status?: unknown
 }
 
+type BatchVoteSuccess = {
+  direction: VoteDirection
+  proposalCount: number
+}
+
 export function BatchVotingList({
   proposals,
   now,
@@ -42,6 +47,8 @@ export function BatchVotingList({
   const [busy, setBusy] = useState(false)
   const [message, setMessage] = useState('')
   const [submissionError, setSubmissionError] = useState<string | null>(null)
+  const [submissionSuccess, setSubmissionSuccess] =
+    useState<BatchVoteSuccess | null>(null)
   const [reviewOpen, setReviewOpen] = useState(false)
   const [votedProposals, setVotedProposals] = useState<
     Map<string, number | null>
@@ -55,6 +62,7 @@ export function BatchVotingList({
   useEffect(() => {
     setSelected([])
     setDirection(null)
+    setSubmissionSuccess(null)
   }, [wallet.address])
 
   useEffect(() => {
@@ -125,6 +133,7 @@ export function BatchVotingList({
     if (!wallet.address || !direction || !selected.length) return
     setBusy(true)
     setSubmissionError(null)
+    setSubmissionSuccess(null)
     setMessage('Preparing your batch vote…')
     try {
       const raw = await wallet.getProvider()
@@ -207,8 +216,14 @@ export function BatchVotingList({
       )
       if (!(await waitForVotes(readGovernor, selected, wallet.address)))
         throw new Error('Base did not confirm the selected votes.')
-      setMessage('Confirmed. Refreshing proposals…')
-      window.location.reload()
+      setVotedProposals((current) => {
+        const next = new Map(current)
+        selected.forEach((proposalId) => next.set(proposalId, null))
+        return next
+      })
+      setSubmissionSuccess({ direction, proposalCount: selected.length })
+      setSelected([])
+      setDirection(null)
     } catch (error) {
       setSubmissionError(getBatchVotingErrorMessage(error, selected.length))
     } finally {
@@ -244,6 +259,7 @@ export function BatchVotingList({
                 onClick={() => {
                   setMessage('')
                   setSubmissionError(null)
+                  setSubmissionSuccess(null)
                   setReviewOpen(true)
                 }}
                 className="rounded-full bg-brand-ui-primary px-4 py-2 text-sm font-semibold text-white disabled:opacity-40"
@@ -259,7 +275,8 @@ export function BatchVotingList({
       <Modal
         isOpen={reviewOpen}
         setIsOpen={(isOpen) => {
-          if (!busy) setReviewOpen(isOpen)
+          if (busy) return
+          setReviewOpen(isOpen)
         }}
         size="small"
       >
@@ -274,6 +291,8 @@ export function BatchVotingList({
             }}
             onRetry={submit}
           />
+        ) : submissionSuccess ? (
+          <BatchVoteSuccessMessage {...submissionSuccess} />
         ) : (
           <div className="flex flex-col gap-5">
             <div className="space-y-2">
@@ -313,6 +332,43 @@ export function BatchVotingList({
         ))}
       </div>
     </>
+  )
+}
+
+function BatchVoteSuccessMessage({
+  direction,
+  proposalCount,
+}: BatchVoteSuccess) {
+  const plural = proposalCount === 1 ? '' : 's'
+
+  return (
+    <div
+      aria-live="polite"
+      className="flex flex-col items-center gap-4 py-6 text-center"
+      role="status"
+    >
+      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+        <svg
+          aria-hidden="true"
+          className="h-7 w-7"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          viewBox="0 0 24 24"
+        >
+          <path d="m5 12 4 4L19 6" />
+        </svg>
+      </div>
+      <div className="space-y-2">
+        <h2 className="text-xl font-semibold text-brand-ui-primary">
+          Vote submitted onchain
+        </h2>
+        <p className="text-sm leading-6 text-brand-ui-primary/70">
+          Your {direction} vote{plural} for {proposalCount} proposal{plural}{' '}
+          {proposalCount === 1 ? 'has' : 'have'} been confirmed on Base.
+        </p>
+      </div>
+    </div>
   )
 }
 
