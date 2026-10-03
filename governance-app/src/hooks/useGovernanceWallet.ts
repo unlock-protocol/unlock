@@ -17,13 +17,24 @@ export function useGovernanceWallet() {
   const { logout } = useLogout({
     onSuccess: () => router.refresh(),
   })
-  const wallet = wallets[0] || null
+  // Privy may add an embedded wallet after an external connection and reorder
+  // the list. Prefer the external connection; use the embedded wallet only
+  // when it is the user's only connected wallet.
+  const wallet =
+    wallets.find((candidate) => candidate.walletClientType !== 'privy') ||
+    wallets[0] ||
+    null
+
+  async function getProvider() {
+    if (!wallet) throw new Error('Connect a wallet to continue.')
+    return wallet.getEthereumProvider()
+  }
 
   async function ensureBaseNetwork() {
     if (!wallet) {
       throw new Error('Connect a wallet to continue.')
     }
-    const ethereumProvider = await wallet.getEthereumProvider()
+    const ethereumProvider = await getProvider()
     const provider = new BrowserProvider(ethereumProvider, 'any')
     const network = await provider.getNetwork()
 
@@ -51,6 +62,7 @@ export function useGovernanceWallet() {
 
   return {
     address: wallet?.address || null,
+    getProvider,
     authenticated,
     connect: login,
     disconnect: logout,
