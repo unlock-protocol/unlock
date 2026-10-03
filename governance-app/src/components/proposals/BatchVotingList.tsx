@@ -185,7 +185,7 @@ export function BatchVotingList({
         setSelected([])
         setDirection(null)
         throw new Error(
-          'One or more selected proposals can no longer be voted on.'
+          'An error occurred or this wallet has no voting power at the proposal snapshot for one or more selected proposals.'
         )
       }
       const calls = buildBatchCalls(selected, direction)
@@ -385,7 +385,7 @@ function BatchVoteFailure({
     <div className="flex flex-col gap-5">
       <div className="space-y-2">
         <h2 className="text-xl font-semibold text-brand-ui-primary">
-          Batch vote was not confirmed
+          Batch vote was not submitted
         </h2>
         <p className="text-sm leading-6 text-brand-ui-primary/70">{message}</p>
       </div>
