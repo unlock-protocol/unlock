@@ -50,7 +50,7 @@ jobs:
       matrix:
         target: ${{fromJson( inputs.changed )}}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.4.0
       - name: Free runner disk space
         run: |
           df -h
@@ -63,11 +63,11 @@ jobs:
           sudo apt-get clean
           df -h
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v3.12.0
       # Only one matrix entry writes the shared GHA cache; siblings restore from GHA or Docker Hub fallback.
       - name: Build and export Docker deps layer
         if: ${{ inputs.export_cache && matrix.target == fromJson(inputs.changed)[0] }}
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v6.19.2
         with:
           context: .
           build-args: BUILDKIT_INLINE_CACHE=1
@@ -82,7 +82,7 @@ jobs:
       # All other matrix entries restore the deps image without attempting another cache export.
       - name: Restore Docker deps layer
         if: ${{ !inputs.export_cache || matrix.target != fromJson(inputs.changed)[0] }}
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v6.19.2
         with:
           context: .
           build-args: BUILDKIT_INLINE_CACHE=1
