@@ -1,6 +1,6 @@
 'use client'
 
-import { Contract, BrowserProvider, JsonRpcProvider } from 'ethers'
+import { Contract, JsonRpcProvider } from 'ethers'
 import { useEffect, useMemo, useState } from 'react'
 import { UPGovernor } from '@unlock-protocol/contracts'
 import { Button, Modal } from '@unlock-protocol/ui'
@@ -136,6 +136,8 @@ export function BatchVotingList({
     setSubmissionSuccess(null)
     setMessage('Preparing your batch vote…')
     try {
+      setMessage('Switching your wallet to Base…')
+      await wallet.ensureBaseNetwork()
       const raw = await wallet.getProvider()
       const capabilities = await raw.request({
         method: 'wallet_getCapabilities',
@@ -144,7 +146,10 @@ export function BatchVotingList({
       if (!supportsAtomic(capabilities)) {
         throw new Error(getBatchVotingErrorMessage({ code: 5760 }, 0))
       }
-      const provider = new BrowserProvider(raw, 'any')
+      const provider = new JsonRpcProvider(
+        governanceConfig.rpcUrl,
+        governanceConfig.chainId
+      )
       const governor = new Contract(
         governanceConfig.governorAddress,
         getContractAbi(UPGovernor),

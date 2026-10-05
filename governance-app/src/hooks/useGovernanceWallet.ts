@@ -48,6 +48,9 @@ export function useGovernanceWallet() {
           chainId: chainHex(governanceConfig.chainId),
         },
       ])
+      const activeChainId = Number(await provider.send('eth_chainId', []))
+      if (activeChainId !== governanceConfig.chainId)
+        throw new Error('Wallet remained on a different network.')
     } catch {
       throw new Error('Please switch your wallet to Base to continue.')
     }
@@ -66,6 +69,7 @@ export function useGovernanceWallet() {
     authenticated,
     connect: login,
     disconnect: logout,
+    ensureBaseNetwork,
     getSigner,
     isReady: privyReady && walletsReady,
   }
