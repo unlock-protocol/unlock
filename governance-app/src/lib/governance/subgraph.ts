@@ -56,7 +56,7 @@ async function fetchSubgraph<T>(query: string): Promise<T> {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query }),
-    next: { revalidate: 60 },
+    cache: 'no-store',
   })
 
   if (!response.ok) {
