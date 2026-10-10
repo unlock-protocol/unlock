@@ -50,8 +50,8 @@ jobs:
       WORKSPACE: ${{ inputs.workspace }}
       WRANGLER_ENVIRONMENT: ${{ inputs['wrangler-environment'] }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v4.4.0
+      - uses: actions/setup-node@v6.5.0
         with:
           node-version: 22.21.0
       - name: Enable Corepack
@@ -73,7 +73,7 @@ jobs:
           fi
       - name: Install 1Password CLI
         if: ${{ inputs.sync-secrets-command != '' }}
-        uses: 1Password/install-cli-action@v1
+        uses: 1Password/install-cli-action@v1.0.0
       - name: Sync Worker secrets
         if: ${{ inputs.sync-secrets-command != '' }}
         run: ${{ inputs.sync-secrets-command }}
