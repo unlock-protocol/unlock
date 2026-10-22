@@ -20657,7 +20657,7 @@ __metadata:
   resolution: "@unlock-protocol/email-templates@workspace:packages/email-templates"
   dependencies:
     "@types/handlebars": "npm:4.1.0"
-    handlebars: "npm:4.7.8"
+    handlebars: "npm:4.7.10"
     tsx: "npm:4.20.6"
     typescript: "npm:5.8.3"
     vitest: "npm:3.2.4"
@@ -21029,7 +21029,7 @@ __metadata:
     ethers: "npm:6.13.5"
     fs-extra: "npm:11.2.0"
     graphql: "npm:16.9.0"
-    handlebars: "npm:4.7.8"
+    handlebars: "npm:4.7.10"
     matchstick-as: "npm:0.6.0"
     mustache: "npm:4.2.0"
     yargs: "npm:17.7.2"
@@ -21306,7 +21306,7 @@ __metadata:
     babel-plugin-wildcard: "npm:7.0.0"
     dotenv: "npm:16.6.1"
     eslint: "npm:9.39.0"
-    handlebars: "npm:4.7.8"
+    handlebars: "npm:4.7.10"
     prettier: "npm:3.6.2"
     regenerator-runtime: "npm:0.14.1"
     typescript: "npm:5.9.2"
@@ -32984,7 +32984,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"handlebars@npm:*, handlebars@npm:4.7.8, handlebars@npm:^4.0.1, handlebars@npm:^4.7.7":
+"handlebars@npm:*, handlebars@npm:^4.0.1, handlebars@npm:^4.7.7":
   version: 4.7.8
   resolution: "handlebars@npm:4.7.8"
   dependencies:
@@ -32999,6 +32999,24 @@ __metadata:
   bin:
     handlebars: bin/handlebars
   checksum: 10/bd528f4dd150adf67f3f857118ef0fa43ff79a153b1d943fa0a770f2599e38b25a7a0dbac1a3611a4ec86970fd2325a81310fb788b5c892308c9f8743bd02e11
+  languageName: node
+  linkType: hard
+
+"handlebars@npm:4.7.10":
+  version: 4.7.10
+  resolution: "handlebars@npm:4.7.10"
+  dependencies:
+    minimist: "npm:^1.2.8"
+    neo-async: "npm:^2.6.2"
+    source-map: "npm:^0.6.1"
+    uglify-js: "npm:^3.1.4"
+    wordwrap: "npm:^1.0.0"
+  dependenciesMeta:
+    uglify-js:
+      optional: true
+  bin:
+    handlebars: bin/handlebars
+  checksum: 10/e7df9b9986594384de11ea27d2f9c694f90dca9ff768ac28851b4cf89f6268a3177ec50c9bb1601c8841f67bee25598b37bdcd53d1f7acd3744619f938ad1f53
   languageName: node
   linkType: hard
 
