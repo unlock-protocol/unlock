@@ -20,7 +20,7 @@
     "typescript": "5.9.2",
     "winston": "3.18.3",
     "worker-mailer": "1.1.4",
-    "wrangler": "3.112.0"
+    "wrangler": "4.59.1"
   },
   "scripts": {
     "dev": "wrangler dev",
