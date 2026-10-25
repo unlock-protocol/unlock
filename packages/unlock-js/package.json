@@ -22,7 +22,7 @@
     "ci": "yarn test && yarn lint && yarn build",
     "prepublishOnly": "yarn build",
     "grant-keys": "node ./scripts/grant-keys.js",
-    "generate:locksmith": "openapi-generator-cli generate -i ./openapi.yml -g typescript-axios -c ./openapi.ts.config.json -o ./src/@generated/client",
+    "generate:locksmith": "openapi-generator-cli generate -i ./openapi.yml -g typescript-axios -c ./openapi.ts.config.json -t ./openapi-templates -o ./src/@generated/client",
     "generate:subgraph": "yarn graphql-codegen",
     "generate": "yarn generate:locksmith && yarn generate:subgraph"
   },
