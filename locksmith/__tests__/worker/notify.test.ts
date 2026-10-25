@@ -2,6 +2,28 @@ import { notify } from '../../src/worker/helpers'
 import { Hook, HookEvent } from '../../src/models'
 import { vi, describe, it, expect } from 'vitest'
 
+vi.mock('../../src/utils/safeOutboundUrl', async () => {
+  const actual = await vi.importActual<
+    typeof import('../../src/utils/safeOutboundUrl')
+  >('../../src/utils/safeOutboundUrl')
+  return {
+    ...actual,
+    fetchSafeOutbound: vi.fn(
+      async (
+        url: string,
+        init: { method?: string; headers?: Record<string, string>; body?: string }
+      ) => {
+        const response = await fetch(url, {
+          method: init.method,
+          headers: init.headers,
+          body: init.body,
+        })
+        return Object.assign(response, { blocked: false })
+      }
+    ),
+  }
+})
+
 const notifyHook = vi.fn()
 notifyHook.mockImplementation(() => new HookEvent())
 
@@ -17,7 +39,7 @@ describe('Test notify helpers', () => {
       })
 
       const hook = new Hook()
-      hook.callback = 'http://localhost:4000/callback'
+      hook.callback = 'https://example.com/callback'
       hook.secret = 'websub'
 
       const response = await notify({
@@ -29,7 +51,7 @@ describe('Test notify helpers', () => {
       expect(response.ok).toBe(true)
       expect(fetchMock).toHaveBeenCalledTimes(1)
       expect(fetchMock).toHaveBeenCalledWith(
-        'http://localhost:4000/callback',
+        'https://example.com/callback',
         expect.objectContaining({
           method: 'POST',
           headers: expect.objectContaining({
@@ -49,7 +71,7 @@ describe('Test notify helpers', () => {
       )
 
       const hook = new Hook()
-      hook.callback = 'http://localhost:4000/callback'
+      hook.callback = 'https://example.com/callback'
       hook.secret = 'websu'
 
       const response = await notify({
@@ -71,7 +93,7 @@ describe('Test notify helpers', () => {
       )
 
       const hook = new Hook()
-      hook.callback = 'http://localhost:4000/callback'
+      hook.callback = 'https://example.com/callback'
 
       const response = await notify({
         hookCallback: hook.callback,
@@ -82,7 +104,7 @@ describe('Test notify helpers', () => {
       expect(response.ok).toBe(false)
       expect(fetchMock).toHaveBeenCalledTimes(1)
       expect(fetchMock).toHaveBeenCalledWith(
-        'http://localhost:4000/callback',
+        'https://example.com/callback',
         expect.not.objectContaining({
           headers: expect.objectContaining({
             'X-Hub-Signature': expect.any(String),

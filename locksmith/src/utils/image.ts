@@ -1,5 +1,6 @@
 import logger from '../logger'
 import lockIcon from './lockIcon'
+import { fetchSafeOutbound } from './safeOutboundUrl'
 
 export const imageUrlToBase64 = async (url: string, lockAddress: string) => {
   // Fallback to the lock icon if the image is not available
@@ -12,12 +13,16 @@ export const imageUrlToBase64 = async (url: string, lockAddress: string) => {
 
 export const imageURLToDataURI = async (url: string, fallbackURL?: string) => {
   try {
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'image/png',
+    const response = await fetchSafeOutbound(
+      url,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'image/png',
+        },
       },
-    })
+      { followRedirects: true }
+    )
     const contentType = response.headers.get('content-type')
     const arrayBuffer = await response.arrayBuffer()
     const buffer = Buffer.from(arrayBuffer)

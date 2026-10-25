@@ -4,7 +4,7 @@ import * as z from 'zod'
 import crypto from 'crypto'
 import logger from '../logger'
 import { Hook } from '../models'
-import { assertSafeCallbackUrl } from '../utils/safeCallbackUrl'
+import { fetchSafeOutbound } from '../utils/safeOutboundUrl'
 export type SubscribeParams = Partial<Record<'lock' | 'network', string>>
 export type SubscribeRequest = Request<SubscribeParams, Record<string, string>>
 
@@ -99,9 +99,6 @@ export class HookController {
   async verifySubscriber(hub: z.infer<typeof Hub>) {
     const challenge = this.getChallege()
 
-    // Block private/link-local/metadata callbacks before any outbound fetch (SSRF).
-    await assertSafeCallbackUrl(hub.callback)
-
     const callbackEndpoint = new URL(hub.callback)
     callbackEndpoint.searchParams.set('hub.challenge', challenge)
     callbackEndpoint.searchParams.set('hub.topic', hub.topic)
@@ -112,9 +109,11 @@ export class HookController {
     callbackEndpoint.searchParams.set('hub.mode', hub.mode)
     callbackEndpoint.searchParams.set('hub.secret', hub.secret!)
 
-    const result = await fetch(callbackEndpoint.toString(), {
-      redirect: 'error',
-    })
+    const result = await fetchSafeOutbound(
+      callbackEndpoint.toString(),
+      { method: 'GET' },
+      { followRedirects: false }
+    )
     if (!result.ok) {
       throw new Error('Failed to confirm subscription intent')
     }
