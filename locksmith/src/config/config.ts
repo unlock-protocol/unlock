@@ -121,6 +121,8 @@ const config = {
   sessionDuration: Number(process.env.SESSION_DURATION || 86400 * 60), // 60 days
   requestTimeout: '25s',
   databaseUrl: process.env.DATABASE_URL || '',
+  // Heartbeat URL pinged by the worker's monitor task (UptimeRobot, Better Stack...)
+  workerHeartbeatUrl: process.env.WORKER_HEARTBEAT_URL,
   sentry: {
     dsn: 'https://30c5b6884872435f8cbda4978c349af9@o555569.ingest.sentry.io/5685514',
   },
