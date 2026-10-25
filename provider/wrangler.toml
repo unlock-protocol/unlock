@@ -15,9 +15,9 @@ tail_consumers = [{service = "rpc-provider-tail"}]
 # Optional environment variables
 [vars]
 # Cache duration in seconds for ENS/Basename resolution (default: 1 day)
-CACHE_DURATION_SECONDS = "86400"
+CACHE_DURATION_SECONDS = "86400" # TODO: extend to 1 month when we have more confidence in the cache
 # "enforce" blocks rate limited requests, any other value only logs them
-RATE_LIMIT_MODE = "enforce" # TODO: extend to 1 month when we have more confidence in the cache
+RATE_LIMIT_MODE = "enforce"
 
 # Rate limiting using Cloudflare's Rate Limiting API
 # The rate limiting API is in open beta
