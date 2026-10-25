@@ -16,6 +16,9 @@ export interface Env {
   // Optional environment variable for configuring cache duration in seconds
   CACHE_DURATION_SECONDS?: string
 
+  // 'enforce' blocks rate limited requests; anything else only logs them
+  RATE_LIMIT_MODE?: string
+
   // Secret key for authenticating requests from Locksmith
   LOCKSMITH_SECRET_KEY?: string
 
