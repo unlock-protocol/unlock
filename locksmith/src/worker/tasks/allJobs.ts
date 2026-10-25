@@ -5,9 +5,10 @@ import { notifyOfKeys } from '../jobs/keys'
 import { notifyOfLocks } from '../jobs/locks'
 import { Op } from 'sequelize'
 
-export const allJobs: Task = async () => {
+export const allJobs: Task = async (payload) => {
+  const fullScan = Boolean((payload as { fullScan?: boolean })?.fullScan)
   try {
-    logger.info('Running keys and locks job')
+    logger.info('Running keys and locks job', { fullScan })
     const subscribers = await Hook.findAll({
       where: {
         mode: 'subscribe',
@@ -17,7 +18,7 @@ export const allJobs: Task = async () => {
       },
     })
 
-    await notifyOfKeys(subscribers)
+    await notifyOfKeys(subscribers, { fullScan })
     await notifyOfLocks(subscribers)
 
     logger.info('Finished running keys and locks job')
