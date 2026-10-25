@@ -101,6 +101,33 @@ describe('Batch Processor', () => {
       })
     })
 
+    it('should block rate limited requests when RATE_LIMIT_MODE is enforce', async () => {
+      const request: RpcRequest = {
+        id: 7,
+        jsonrpc: '2.0',
+        method: 'eth_getStorageAt',
+        params: ['0x123', '0x0', 'latest'],
+      }
+
+      vi.mocked(rateLimit.shouldRateLimit).mockResolvedValue(true)
+
+      const result = await processSingleRequest(request, '8453', mockRequest, {
+        ...mockEnv,
+        RATE_LIMIT_MODE: 'enforce',
+      })
+
+      expect(result).toEqual({
+        request,
+        response: {
+          id: 7,
+          jsonrpc: '2.0',
+          error: { code: -32005, message: 'Rate limit exceeded' },
+        },
+        shouldForward: false,
+        rateLimited: true,
+      })
+    })
+
     it('should mark requests for forwarding when not handled locally', async () => {
       const request: RpcRequest = {
         id: 4,
@@ -220,6 +247,39 @@ describe('Batch Processor', () => {
 
       expect(result.processedRequests).toHaveLength(2)
       expect(result.requestsToForward).toHaveLength(2)
+    })
+
+    it('should only forward the requests that are not rate limited when enforcing', async () => {
+      const requests: RpcRequest[] = [
+        {
+          id: 1,
+          jsonrpc: '2.0',
+          method: 'eth_call',
+          params: [{ to: '0x123' }, 'latest'],
+        },
+        {
+          id: 2,
+          jsonrpc: '2.0',
+          method: 'eth_call',
+          params: [{ to: '0x456' }, 'latest'],
+        },
+      ]
+
+      vi.mocked(rateLimit.shouldRateLimit)
+        .mockResolvedValueOnce(true)
+        .mockResolvedValueOnce(false)
+
+      const result = await processBatchRequests(requests, '1', mockRequest, {
+        ...mockEnv,
+        RATE_LIMIT_MODE: 'enforce',
+      })
+
+      expect(result.requestsToForward).toEqual([requests[1]])
+      expect(result.processedRequests[0].response).toEqual({
+        id: 1,
+        jsonrpc: '2.0',
+        error: { code: -32005, message: 'Rate limit exceeded' },
+      })
     })
   })
 

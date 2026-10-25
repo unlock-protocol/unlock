@@ -26,6 +26,18 @@ export const processChainIdRequest = (
 }
 
 /**
+ * JSON-RPC error returned for rate limited requests.
+ * -32005 is the code clients such as viem and ethers treat as "limit exceeded".
+ */
+export const createRateLimitedResponse = (request: RpcRequest): any => {
+  return {
+    id: request.id,
+    jsonrpc: '2.0',
+    error: { code: -32005, message: 'Rate limit exceeded' },
+  }
+}
+
+/**
  * Process a single RPC request
  * This function determines if the request can be handled locally or needs to be forwarded
  *
@@ -76,11 +88,20 @@ export const processSingleRequest = async (
   )
 
   if (isRateLimited) {
-    // Log the rate limit but still forward the request to maintain current behavior
-    // This would later be changed to block rate-limited requests
-    console.log(
-      `RATE_LIMIT_WOULD_BLOCK: IP=${getClientIP(originalRequest)}, networkId=${chainId}, Request ID=${request.id}, Method=${request.method}`
-    )
+    const logDetails = `IP=${getClientIP(originalRequest)}, networkId=${chainId}, Request ID=${request.id}, Method=${request.method}`
+
+    // Block the request unless the rate limiter is in log-only mode
+    if (env.RATE_LIMIT_MODE === 'enforce') {
+      console.log(`RATE_LIMIT_BLOCKED: ${logDetails}`)
+      return {
+        request,
+        response: createRateLimitedResponse(request),
+        shouldForward: false,
+        rateLimited: true,
+      }
+    }
+
+    console.log(`RATE_LIMIT_WOULD_BLOCK: ${logDetails}`)
     return {
       request,
       response: null,
