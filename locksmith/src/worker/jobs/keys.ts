@@ -14,7 +14,20 @@ import {
 // If this is too high, the memory gets too high and Heroku kills the dyno
 const FETCH_LIMIT = 20
 
-async function fetchUnprocessedKeys(network: number, page = 0) {
+// Pages scanned by the daily full scan, which catches keys missed by a failed run.
+const FULL_SCAN_PAGES = 12
+
+interface KeysPage {
+  // number of keys the subgraph returned for this page
+  fetched: number
+  // keys on this page that were not processed on an earlier run
+  unprocessed: any[]
+}
+
+async function fetchUnprocessedKeys(
+  network: number,
+  page = 0
+): Promise<KeysPage> {
   const subgraph = new SubgraphService()
   const skip = page ? page * FETCH_LIMIT : 0
   const oneWeekAgo = Math.floor(new Date().getTime() / 1000) - 7 * 24 * 60 * 60 // 1 week ago in seconds
@@ -47,22 +60,30 @@ async function fetchUnprocessedKeys(network: number, page = 0) {
     const unprocessedKeys = keys.filter(
       (key: any) => !processedKeys.find((item) => item.objectId === key.id)
     )
-    return unprocessedKeys
+    return { fetched: keys.length, unprocessed: unprocessedKeys }
   } catch (error) {
     logger.error('Error fetching unprocessed keys', { network, error })
-    return []
+    return { fetched: 0, unprocessed: [] }
   }
 }
 
-async function notifyHooksOfAllUnprocessedKeys(hooks: Hook[], network: number) {
+async function notifyHooksOfAllUnprocessedKeys(
+  hooks: Hook[],
+  network: number,
+  fullScan: boolean
+) {
   let page = 0
   const keysOnLockHooks = filterHooksByTopic(hooks, TOPIC_KEYS_ON_LOCK)
   const keysOnNetworkHooks = filterHooksByTopic(hooks, TOPIC_KEYS_ON_NETWORK)
   while (true) {
-    const keys = await fetchUnprocessedKeys(network, page)
+    const { fetched, unprocessed: keys } = await fetchUnprocessedKeys(
+      network,
+      page
+    )
 
-    // If empty, break the loop and return as there are no more new keys to process.
-    if (!keys.length && page > 10) {
+    // The full scan keeps paging through the first pages even when they hold
+    // no new keys, to catch anything a failed run left behind.
+    if (fullScan && !keys.length && page >= FULL_SCAN_PAGES - 1) {
       break
     }
 
@@ -103,11 +124,25 @@ async function notifyHooksOfAllUnprocessedKeys(hooks: Hook[], network: number) {
       await ProcessedHookItem.bulkCreate(processedHookItems)
     }
 
+    // A short page means there are no older keys left to read.
+    if (fetched < FETCH_LIMIT) {
+      break
+    }
+
+    // Keys come newest first: once a whole page was already processed,
+    // every older key was handled by an earlier run.
+    if (!fullScan && !keys.length) {
+      break
+    }
+
     page += 1
   }
 }
 
-export async function notifyOfKeys(hooks: Hook[]) {
+export async function notifyOfKeys(
+  hooks: Hook[],
+  { fullScan = false }: { fullScan?: boolean } = {}
+) {
   for (const network of Object.values(networks)) {
     if (network.id !== 31337) {
       const hooksFilteredByNetwork = hooks.filter(
@@ -116,7 +151,8 @@ export async function notifyOfKeys(hooks: Hook[]) {
       try {
         await notifyHooksOfAllUnprocessedKeys(
           hooksFilteredByNetwork,
-          network.id
+          network.id,
+          fullScan
         )
       } catch (error) {
         logger.error('Error notifying of keys', { network: network.id, error })

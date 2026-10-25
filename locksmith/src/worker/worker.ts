@@ -25,7 +25,8 @@ import exportKeysJob from './tasks/exportKeysJob'
 
 const crontabProduction = `
 */5 * * * * monitor
-*/2 * * * * allJobs
+*/5 * * * * allJobs
+0 3 * * * allJobs ?id=allJobsFullScan {fullScan: true}
 */4 * * * * addRenewalJobs
 30 * * * * addRenewalJobsHourly
 15 0 * * * addRenewalJobsDaily
@@ -38,8 +39,9 @@ const crontabProduction = `
 `
 
 const cronTabTesting = `
-*/1 * * * * monitor
-*/2 * * * * allJobs
+*/5 * * * * monitor
+*/15 * * * * allJobs
+0 3 * * * allJobs ?id=allJobsFullScan {fullScan: true}
 */4 * * * * addRenewalJobs
 30 * * * * addRenewalJobsHourly
 15 0 * * * addRenewalJobsDaily
