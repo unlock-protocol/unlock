@@ -4,6 +4,10 @@ import { setTimeout, clearTimeout } from 'timers'
 import { Op } from 'sequelize'
 import { Hook, HookEvent } from '../../models'
 import { logger } from '../../logger'
+import {
+  BlockedOutboundUrlError,
+  fetchSafeOutbound,
+} from '../../utils/safeOutboundUrl'
 
 interface NotifyOptions {
   timeout?: number
@@ -36,17 +40,24 @@ export async function notify({
     })
     headers['X-Hub-Signature'] = `${algorithm}=${signature}`
   }
-  const response = await fetch(hookCallback, {
-    headers: headers,
-    method: 'POST',
-    body: content,
-    signal: ac.signal,
-  }).catch((error) => {
+  // Defense in depth for hooks persisted before the outbound check.
+  // A blocked callback is not retried. Other failures still are.
+  const response = await fetchSafeOutbound(
+    hookCallback,
+    {
+      headers: headers,
+      method: 'POST',
+      body: content,
+      signal: ac.signal,
+    },
+    { followRedirects: false }
+  ).catch((error) => {
     logger.error('Error in notify function: ', error)
     return {
       ok: false,
-      statusText: 'client error',
-      status: '400',
+      statusText: error.message,
+      status: 400,
+      blocked: error instanceof BlockedOutboundUrlError,
       text: () => error.message,
       json: () => Promise.resolve({ message: error.message }),
     }
@@ -115,6 +126,9 @@ export async function notifyHook(
           body,
         })
 
+        if (response.blocked) {
+          throw new AbortError(response.statusText)
+        }
         if (!response.ok) {
           logger.error(`${id}: ${response.statusText}`)
           throw new Error(response.statusText)

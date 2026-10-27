@@ -1,6 +1,6 @@
 import { PKPass } from 'passkit-generator'
-import fetch from 'isomorphic-fetch'
 import logger from '../../../logger'
+import { fetchSafeOutbound } from '../../../utils/safeOutboundUrl'
 import path from 'node:path'
 import { getCertificates } from './getCertificates'
 
@@ -25,7 +25,11 @@ const contentTypeToExtensionMap: { [key: string]: string } = {
 
 // utility to retrieve an image via HTTP and return it as a Buffer
 async function fetchImageAsBuffer(imageUrl: string) {
-  const response = await fetch(imageUrl)
+  const response = await fetchSafeOutbound(
+    imageUrl,
+    { method: 'GET' },
+    { followRedirects: true }
+  )
   if (!response.ok) {
     throw new Error(`Failed to fetch image: ${response.statusText}`)
   }
