@@ -10,6 +10,10 @@ import {
   getLockIcon,
   getKeyIcon,
 } from '../operations/lockOperations'
+import {
+  assertSafeOutboundUrl,
+  fetchSafeOutbound,
+} from '../utils/safeOutboundUrl'
 
 export const connectStripe = async (req: Request, res: Response) => {
   const { message } = JSON.parse(decodeURIComponent(req.query.data!.toString()))
@@ -142,9 +146,17 @@ export const getTokenURIImage: RequestHandler<{
       )
       // If we have a tokenURI, we can fetch the image from the metadata
       if (key.tokenURI) {
-        const metadata = await fetch(key.tokenURI)
-        const json = await metadata.json()
-        response.redirect(json?.image)
+        const metadata = await fetchSafeOutbound(
+          key.tokenURI,
+          { method: 'GET' },
+          { followRedirects: true }
+        )
+        const json = (await metadata.json()) as { image?: string }
+        if (!json?.image) {
+          throw new Error('token metadata has no image')
+        }
+        const safeImage = await assertSafeOutboundUrl(json.image)
+        response.redirect(safeImage)
         return
       }
     }

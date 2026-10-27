@@ -7,6 +7,31 @@ import { saveEvent } from '../../../src/operations/eventOperations'
 import { getEventFixture } from '../../fixtures/events'
 import { CheckoutConfig, EventData } from '../../../src/models'
 
+// notify() goes through fetchSafeOutbound; route it to fetchMock so the
+// check-in notification can be asserted without real network or DNS.
+vi.mock('../../../src/utils/safeOutboundUrl', async () => {
+  const actual = await vi.importActual<
+    typeof import('../../../src/utils/safeOutboundUrl')
+  >('../../../src/utils/safeOutboundUrl')
+  return {
+    ...actual,
+    fetchSafeOutbound: vi.fn(
+      async (
+        url: string,
+        init: {
+          method?: string
+          headers?: Record<string, string>
+          body?: string
+          signal?: AbortSignal
+        }
+      ) => {
+        const response = await fetch(url, init)
+        return Object.assign(response, { blocked: false })
+      }
+    ),
+  }
+})
+
 function* keyIdGen() {
   const start = Date.now()
   let count = 0
