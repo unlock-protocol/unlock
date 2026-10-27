@@ -2,7 +2,6 @@
   "extends": [
     "config:recommended",
     ":prHourlyLimitNone",
-    ":prConcurrentLimitNone",
     ":pinAllExceptPeerDependencies",
     ":doNotPinPackage(node)"
   ],
@@ -10,122 +9,112 @@
   "schedule": ["on the first day of the month"],
   "packageRules": [
     {
-      "minor": {
-        "groupName": "packages/contracts"
-      },
-      "matchFileNames": ["packages/contracts/**"]
+      "description": "Group non-major updates that no workspace rule below claims",
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "non-major dependencies"
     },
     {
-      "minor": {
-        "groupName": "packages/eslint-config"
-      },
-      "matchFileNames": ["packages/eslint-config/**"]
+      "matchFileNames": ["packages/contracts/**"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "packages/contracts"
     },
     {
-      "minor": {
-        "groupName": "packages/hardhat-plugin"
-      },
-      "matchFileNames": ["packages/hardhat-plugin/**"]
+      "matchFileNames": ["packages/eslint-config/**"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "packages/eslint-config"
     },
     {
-      "minor": {
-        "groupName": "packages/networks"
-      },
-      "matchFileNames": ["packages/networks/**"]
+      "matchFileNames": ["packages/hardhat-plugin/**"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "packages/hardhat-plugin"
     },
     {
-      "minor": {
-        "groupName": "packages/paywall"
-      },
-      "matchFileNames": ["packages/paywall/**"]
+      "matchFileNames": ["packages/networks/**"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "packages/networks"
     },
     {
-      "minor": {
-        "groupName": "packages/tsconfig"
-      },
-      "matchFileNames": ["packages/tsconfig/**"]
+      "matchFileNames": ["packages/paywall/**"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "packages/paywall"
     },
     {
-      "minor": {
-        "groupName": "packages/types"
-      },
-      "matchFileNames": ["packages/types/**"]
+      "matchFileNames": ["packages/tsconfig/**"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "packages/tsconfig"
     },
     {
-      "minor": {
-        "groupName": "packages/ui"
-      },
-      "matchFileNames": ["packages/ui/**"]
+      "matchFileNames": ["packages/types/**"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "packages/types"
     },
     {
-      "minor": {
-        "groupName": "packages/unlock-express"
-      },
-      "matchFileNames": ["packages/unlock-express/**"]
+      "matchFileNames": ["packages/ui/**"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "packages/ui"
     },
     {
-      "minor": {
-        "groupName": "packages/unlock-js"
-      },
-      "matchFileNames": ["packages/unlock-js/**"]
+      "matchFileNames": ["packages/unlock-express/**"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "packages/unlock-express"
     },
     {
-      "minor": {
-        "groupName": "tests"
-      },
-      "matchFileNames": ["tests/**"]
+      "matchFileNames": ["packages/unlock-js/**"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "packages/unlock-js"
     },
     {
-      "minor": {
-        "groupName": "locksmith"
-      },
-      "matchFileNames": ["locksmith/**"]
+      "matchFileNames": ["tests/**"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "tests"
     },
     {
-      "minor": {
-        "groupName": "paywall-app"
-      },
-      "matchFileNames": ["paywall-app/**"]
+      "matchFileNames": ["locksmith/**"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "locksmith"
     },
     {
-      "minor": {
-        "groupName": "smart-contracts"
-      },
-      "matchFileNames": ["smart-contracts/**"]
+      "matchFileNames": ["paywall-app/**"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "paywall-app"
     },
     {
-      "minor": {
-        "groupName": "unlock-app"
-      },
-      "matchFileNames": ["unlock-app/**"]
+      "matchFileNames": ["smart-contracts/**"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "smart-contracts"
     },
     {
-      "minor": {
-        "groupName": "unlock-protocol.com"
-      },
-      "matchFileNames": ["unlock-protocol.com/**"]
+      "matchFileNames": ["unlock-app/**"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "unlock-app"
     },
     {
-      "minor": {
-        "groupName": "wedlocks"
-      },
-      "matchFileNames": ["wedlocks/**"]
+      "matchFileNames": ["unlock-protocol.com/**"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "unlock-protocol.com"
     },
     {
-      "minor": {
-        "groupName": "subgraph"
-      },
-      "matchFileNames": ["subgraph/**"]
+      "matchFileNames": ["wedlocks/**"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "wedlocks"
     },
     {
-      "minor": {
-        "groupName": "eth-node"
-      },
-      "matchFileNames": ["docker/development/eth-node/**"]
+      "matchFileNames": ["subgraph/**"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "subgraph"
+    },
+    {
+      "matchFileNames": ["docker/development/eth-node/**"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "eth-node"
     }
   ],
-  "rebaseWhen": "never",
+  "rebaseWhen": "conflicted",
   "lockFileMaintenance": {
     "enabled": true
+  },
+  "prConcurrentLimit": 10,
+  "vulnerabilityAlerts": {
+    "schedule": ["at any time"]
   }
 }
