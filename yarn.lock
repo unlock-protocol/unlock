@@ -17951,11 +17951,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/core@npm:8.6.15":
-  version: 8.6.15
-  resolution: "@storybook/core@npm:8.6.15"
+"@storybook/core@npm:8.6.19":
+  version: 8.6.19
+  resolution: "@storybook/core@npm:8.6.19"
   dependencies:
-    "@storybook/theming": "npm:8.6.15"
+    "@storybook/theming": "npm:8.6.19"
     better-opn: "npm:^3.0.2"
     browser-assert: "npm:^1.2.1"
     esbuild: "npm:^0.18.0 || ^0.19.0 || ^0.20.0 || ^0.21.0 || ^0.22.0 || ^0.23.0 || ^0.24.0 || ^0.25.0"
@@ -17971,7 +17971,7 @@ __metadata:
   peerDependenciesMeta:
     prettier:
       optional: true
-  checksum: 10/d268d6fa00c38b35e5c363ee33779c2e087ab8e4681e0e205baa2fdb2780ea9feda3c9f6db35d60092778878d2782b2093c744bdf1af173c5688c3e1e0e960ac
+  checksum: 10/b7ae2ac24a44172e550469b55c4c8ee8b19a5c83525aae95a5ae0293b138da8ce210860e49b66557273221ff29a753d5c31aceab5f081fc7c3497e6441a12766
   languageName: node
   linkType: hard
 
@@ -18092,12 +18092,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/theming@npm:8.6.15":
-  version: 8.6.15
-  resolution: "@storybook/theming@npm:8.6.15"
+"@storybook/theming@npm:8.6.19":
+  version: 8.6.19
+  resolution: "@storybook/theming@npm:8.6.19"
   peerDependencies:
     storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
-  checksum: 10/f02760831a13d7af9dbfeb6feea949f4c13c897861cbc75253a6776d133891567889c8d99c7e91a99124d0772c3bde1f978984c83b19117d1d7c908ed7eb8409
+  checksum: 10/39ac3f4c823e161420b9156e2e34dd174d32dec5dee2964be7957e25c63483767d674089129cbec49b3847fa992d00eb22f7c16075f50193a91af2ddd2d70902
   languageName: node
   linkType: hard
 
@@ -20756,7 +20756,7 @@ __metadata:
     "@vitejs/plugin-react": "npm:4.7.0"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
-    storybook: "npm:8.6.15"
+    storybook: "npm:8.6.19"
     tsup: "npm:8.5.0"
     tsx: "npm:4.20.6"
     typescript: "npm:5.8.3"
@@ -21242,7 +21242,7 @@ __metadata:
     react-hot-toast: "npm:2.6.0"
     react-icons: "npm:5.5.0"
     react-use-clipboard: "npm:1.0.9"
-    storybook: "npm:8.6.15"
+    storybook: "npm:8.6.19"
     tailwind-merge: "npm:3.3.1"
     tailwindcss: "npm:3.4.18"
     tsup: "npm:8.5.0"
@@ -48128,11 +48128,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"storybook@npm:8.6.15":
-  version: 8.6.15
-  resolution: "storybook@npm:8.6.15"
+"storybook@npm:8.6.19":
+  version: 8.6.19
+  resolution: "storybook@npm:8.6.19"
   dependencies:
-    "@storybook/core": "npm:8.6.15"
+    "@storybook/core": "npm:8.6.19"
   peerDependencies:
     prettier: ^2 || ^3
   peerDependenciesMeta:
@@ -48142,7 +48142,7 @@ __metadata:
     getstorybook: ./bin/index.cjs
     sb: ./bin/index.cjs
     storybook: ./bin/index.cjs
-  checksum: 10/15762c79ec8444a46bc14cddfadbdd54dfd379828acd38555887a246c01e7c9ebb61e4eafafe04efb3ddf6278fb47035216e7f7d9f94fc205da148870173abdf
+  checksum: 10/a603bfabf466b6a3447bdfe9dfb7de62cefefa40d808fdb7b0ae6af7523c31929616ed3cb0488d5639f5cb7f8d0fa0315e12ea7cce5c561a5777dbba55cde8c4
   languageName: node
   linkType: hard
 
