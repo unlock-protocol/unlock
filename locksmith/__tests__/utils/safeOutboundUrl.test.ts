@@ -1,10 +1,12 @@
 import http from 'http'
+import type { LookupOptions } from 'dns'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import * as dnsPromises from 'dns/promises'
 import {
   assertSafeOutboundUrl,
   fetchSafeOutbound,
   isBlockedIp,
+  safeLookup,
 } from '../../src/utils/safeOutboundUrl'
 
 vi.mock('dns/promises', () => ({
@@ -108,5 +110,49 @@ describe('safeOutboundUrl', () => {
     ).rejects.toThrow(/not allowed/)
     expect(request).toHaveBeenCalledTimes(1)
     request.mockRestore()
+  })
+
+  describe('safeLookup', () => {
+    const lookupWith = (options: LookupOptions) =>
+      new Promise<{ err: Error | null; address?: unknown; family?: number }>(
+        (resolve) => {
+          safeLookup('example.com', options, (err, address, family) =>
+            resolve({ err, address, family })
+          )
+        }
+      )
+
+    it('returns every safe address when Node asks for all of them', async () => {
+      vi.mocked(dnsPromises.lookup).mockResolvedValueOnce([
+        { address: '10.0.0.1', family: 4 },
+        { address: '93.184.216.34', family: 4 },
+        { address: '2606:2800:220:1:248:1893:25c8:1946', family: 6 },
+      ] as never)
+      const result = await lookupWith({ all: true })
+      expect(result.err).toBeNull()
+      expect(result.address).toEqual([
+        { address: '93.184.216.34', family: 4 },
+        { address: '2606:2800:220:1:248:1893:25c8:1946', family: 6 },
+      ])
+    })
+
+    it('returns a single safe address otherwise', async () => {
+      vi.mocked(dnsPromises.lookup).mockResolvedValueOnce([
+        { address: '127.0.0.1', family: 4 },
+        { address: '93.184.216.34', family: 4 },
+      ] as never)
+      const result = await lookupWith({})
+      expect(result.err).toBeNull()
+      expect(result.address).toBe('93.184.216.34')
+      expect(result.family).toBe(4)
+    })
+
+    it('fails when every address is blocked', async () => {
+      vi.mocked(dnsPromises.lookup).mockResolvedValueOnce([
+        { address: '169.254.169.254', family: 4 },
+      ] as never)
+      const result = await lookupWith({ all: true })
+      expect(result.err?.message).toMatch(/blocked address/)
+    })
   })
 })

@@ -1,6 +1,6 @@
 import http from 'http'
 import https from 'https'
-import net from 'net'
+import net, { type LookupFunction } from 'net'
 import * as dnsPromises from 'dns/promises'
 
 /**
@@ -46,7 +46,10 @@ function expandIpv6(ip: string): number[] | null {
       return groups
     }
     const nums = last.split('.').map((part) => Number(part))
-    if (nums.length !== 4 || nums.some((n) => !Number.isInteger(n) || n > 255)) {
+    if (
+      nums.length !== 4 ||
+      nums.some((n) => !Number.isInteger(n) || n > 255)
+    ) {
       return null
     }
     const hi = ((nums[0] << 8) + nums[1]).toString(16)
@@ -138,41 +141,40 @@ export function isBlockedIp(ip: string): boolean {
 }
 
 export async function resolveHostAddresses(host: string): Promise<string[]> {
-  const addresses = await dnsPromises.lookup(host, { all: true, verbatim: true })
+  const addresses = await dnsPromises.lookup(host, {
+    all: true,
+    verbatim: true,
+  })
   return addresses.map((entry) => entry.address)
 }
 
-export function safeLookup(
-  hostname: string,
-  options: unknown,
-  callback?: (
-    err: Error | null,
-    address?: string,
-    family?: number
-  ) => void
-): void {
-  const done =
-    typeof options === 'function'
-      ? (options as (err: Error | null, address?: string, family?: number) => void)
-      : callback
-  if (!done) {
-    return
-  }
+export const safeLookup: LookupFunction = (hostname, options, callback) => {
   resolveHostAddresses(hostname)
     .then((addresses) => {
       const safe = addresses.filter((address) => !isBlockedIp(address))
       if (!safe.length) {
-        done(
+        callback(
           new BlockedOutboundUrlError(
             `outbound host "${hostname}" resolves to a blocked address`
-          )
+          ),
+          ''
         )
         return
       }
-      done(null, safe[0], net.isIPv6(safe[0]) ? 6 : 4)
+      const familyOf = (address: string) => (net.isIPv6(address) ? 6 : 4)
+      // Node >= 20 asks for every address (autoSelectFamily) and expects an
+      // array back; a single address there fails with ERR_INVALID_IP_ADDRESS.
+      if (options.all) {
+        callback(
+          null,
+          safe.map((address) => ({ address, family: familyOf(address) }))
+        )
+        return
+      }
+      callback(null, safe[0], familyOf(safe[0]))
     })
     .catch((error: Error) => {
-      done(error)
+      callback(error, '')
     })
 }
 
@@ -208,7 +210,9 @@ export async function assertSafeOutboundUrl(raw: string): Promise<string> {
 
   if (net.isIP(host)) {
     if (isBlockedIp(host)) {
-      throw new BlockedOutboundUrlError(`outbound host "${host}" is not allowed`)
+      throw new BlockedOutboundUrlError(
+        `outbound host "${host}" is not allowed`
+      )
     }
     return parsed.toString()
   }
@@ -256,7 +260,12 @@ function headerValue(
 
 function requestOnce(
   target: URL,
-  init: { method?: string; headers?: Record<string, string>; body?: string; signal?: AbortSignal }
+  init: {
+    method?: string
+    headers?: Record<string, string>
+    body?: string
+    signal?: AbortSignal
+  }
 ): Promise<RequestResult> {
   return new Promise((resolve, reject) => {
     const lib = target.protocol === 'https:' ? https : http
