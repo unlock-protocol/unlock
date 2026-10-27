@@ -11,7 +11,11 @@ vi.mock('../../src/utils/safeOutboundUrl', async () => {
     fetchSafeOutbound: vi.fn(
       async (
         url: string,
-        init: { method?: string; headers?: Record<string, string>; body?: string }
+        init: {
+          method?: string
+          headers?: Record<string, string>
+          body?: string
+        }
       ) => {
         const response = await fetch(url, {
           method: init.method,
