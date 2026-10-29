@@ -61,7 +61,7 @@ export function buildWalletSendCalls(from: string, calls: BatchCall[]) {
 
 export function supportsAtomic(capabilities: any) {
   const atomic = capabilities?.[BASE_CHAIN_ID_HEX]?.atomic
-  return atomic?.status === 'ready' || atomic?.status === 'supported'
+  return atomic?.status === 'supported'
 }
 
 export function getBatchVotingErrorMessage(

@@ -1,7 +1,8 @@
 'use client'
 
-import { Contract, JsonRpcProvider } from 'ethers'
+import { BrowserProvider, Contract, JsonRpcProvider } from 'ethers'
 import { useEffect, useMemo, useState } from 'react'
+import { useWallets } from '@privy-io/react-auth'
 import { UPGovernor } from '@unlock-protocol/contracts'
 import { Button, Modal } from '@unlock-protocol/ui'
 import { useGovernanceWallet } from '~/hooks/useGovernanceWallet'
@@ -42,6 +43,18 @@ export function BatchVotingList({
   activeFilter: string
 }) {
   const wallet = useGovernanceWallet()
+  const { wallets } = useWallets()
+  const connectedWallet = wallets[0] || null
+  const [batchSupport, setBatchSupport] = useState<{
+    wallet: typeof connectedWallet
+    address: string
+    supported: boolean
+  } | null>(null)
+  const canBatch =
+    !!connectedWallet &&
+    batchSupport?.wallet === connectedWallet &&
+    batchSupport.address === wallet.address &&
+    batchSupport.supported
   const [selected, setSelected] = useState<string[]>([])
   const [direction, setDirection] = useState<VoteDirection | null>(null)
   const [busy, setBusy] = useState(false)
@@ -63,7 +76,44 @@ export function BatchVotingList({
     setSelected([])
     setDirection(null)
     setSubmissionSuccess(null)
-  }, [wallet.address])
+    setVotedProposals(new Map())
+  }, [wallet.address, connectedWallet])
+
+  useEffect(() => {
+    let cancelled = false
+    setBatchSupport(null)
+    if (!connectedWallet || !wallet.address) return
+    const address = wallet.address
+
+    connectedWallet
+      .getEthereumProvider()
+      .then((provider) =>
+        provider.request({
+          method: 'wallet_getCapabilities',
+          params: [address, [BASE_CHAIN_ID_HEX]],
+        })
+      )
+      .then((capabilities) => {
+        if (!cancelled)
+          setBatchSupport({
+            wallet: connectedWallet,
+            address,
+            supported: supportsAtomic(capabilities),
+          })
+      })
+      .catch(() => {
+        if (!cancelled)
+          setBatchSupport({
+            wallet: connectedWallet,
+            address,
+            supported: false,
+          })
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [connectedWallet, wallet.address])
 
   useEffect(() => {
     if (!wallet.address) {
@@ -120,6 +170,7 @@ export function BatchVotingList({
   }, [votedProposals])
 
   function toggle(id: string) {
+    if (!canBatch) return
     setSelected((current) =>
       current.includes(id)
         ? current.filter((item) => item !== id)
@@ -130,15 +181,36 @@ export function BatchVotingList({
   }
 
   async function submit() {
-    if (!wallet.address || !direction || !selected.length) return
+    if (
+      !wallet.address ||
+      !connectedWallet ||
+      !canBatch ||
+      !direction ||
+      !selected.length
+    )
+      return
     setBusy(true)
     setSubmissionError(null)
     setSubmissionSuccess(null)
     setMessage('Preparing your batch vote…')
     try {
       setMessage('Switching your wallet to Base…')
-      await wallet.ensureBaseNetwork()
-      const raw = await wallet.getProvider()
+      const raw = await connectedWallet.getEthereumProvider()
+      const walletProvider = new BrowserProvider(raw, 'any')
+      if (
+        Number((await walletProvider.getNetwork()).chainId) !==
+        governanceConfig.chainId
+      ) {
+        await raw.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: BASE_CHAIN_ID_HEX }],
+        })
+        if (
+          Number(await raw.request({ method: 'eth_chainId' })) !==
+          governanceConfig.chainId
+        )
+          throw new Error('Please switch your wallet to Base to continue.')
+      }
       const capabilities = await raw.request({
         method: 'wallet_getCapabilities',
         params: [wallet.address, [BASE_CHAIN_ID_HEX]],
@@ -238,6 +310,15 @@ export function BatchVotingList({
 
   return (
     <>
+      {connectedWallet &&
+        batchSupport?.wallet === connectedWallet &&
+        batchSupport.address === wallet.address &&
+        !batchSupport.supported && (
+          <p className="mb-4 text-sm text-brand-ui-primary/75" role="status">
+            Batch voting is only available for wallets that already support
+            atomic batches. You can still vote on each proposal individually.
+          </p>
+        )}
       {selected.length > 0 && (
         <div className="sticky top-4 z-10 rounded-2xl border border-brand-ui-primary/10 bg-white p-4 shadow-lg">
           <div className="flex flex-wrap items-center gap-3">
@@ -252,15 +333,16 @@ export function BatchVotingList({
             {(['For', 'Against', 'Abstain'] as VoteDirection[]).map((item) => (
               <button
                 key={item}
+                disabled={!canBatch || busy}
                 onClick={() => setDirection(item)}
-                className={`rounded-full border px-3 py-1 text-sm ${direction === item ? 'border-brand-ui-primary bg-brand-ui-primary text-white' : 'border-brand-ui-primary/15'}`}
+                className={`rounded-full border px-3 py-1 text-sm disabled:opacity-40 ${direction === item ? 'border-brand-ui-primary bg-brand-ui-primary text-white' : 'border-brand-ui-primary/15'}`}
               >
                 {item}
               </button>
             ))}
             {direction && (
               <button
-                disabled={busy}
+                disabled={busy || !canBatch}
                 onClick={() => {
                   setMessage('')
                   setSubmissionError(null)
@@ -329,7 +411,12 @@ export function BatchVotingList({
             proposal={proposal}
             tokenSymbol={tokenSymbol}
             selectable={proposal.state === 'Active'}
-            selectionDisabled={votedProposals.has(proposal.id)}
+            selectionDisabled={!canBatch || votedProposals.has(proposal.id)}
+            selectionDisabledReason={
+              votedProposals.has(proposal.id)
+                ? 'Already voted — unavailable for batch voting'
+                : 'Batch voting is unavailable for this wallet'
+            }
             selected={selected.includes(proposal.id)}
             onToggle={() => toggle(proposal.id)}
             votedSupport={votedProposals.get(proposal.id)}

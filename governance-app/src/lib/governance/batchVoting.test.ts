@@ -52,9 +52,9 @@ describe('batch voting guards', () => {
     ).toBeNull()
   })
 
-  it('accepts only ready or supported atomic capability states', () => {
+  it('accepts only already supported atomic capability states on Base', () => {
     expect(supportsAtomic({ '0x2105': { atomic: { status: 'ready' } } })).toBe(
-      true
+      false
     )
     expect(
       supportsAtomic({ '0x2105': { atomic: { status: 'supported' } } })
@@ -62,6 +62,7 @@ describe('batch voting guards', () => {
     expect(
       supportsAtomic({ '0x2105': { atomic: { status: 'unsupported' } } })
     ).toBe(false)
+    expect(supportsAtomic({})).toBe(false)
   })
 
   it('explains wallet compatibility and batch-size failures', () => {

@@ -18,6 +18,7 @@ type ProposalCardProps = {
   selected?: boolean
   onToggle?: () => void
   selectionDisabled?: boolean
+  selectionDisabledReason?: string
   votedSupport?: number | null
 }
 
@@ -29,6 +30,7 @@ export function ProposalCard({
   selected = false,
   onToggle,
   selectionDisabled = false,
+  selectionDisabledReason,
   votedSupport,
 }: ProposalCardProps) {
   const isUnavailableForBatchVoting = selectable && selectionDisabled
@@ -51,13 +53,13 @@ export function ProposalCard({
               className={`pt-1 ${isUnavailableForBatchVoting ? 'cursor-not-allowed' : 'cursor-pointer'}`}
               title={
                 isUnavailableForBatchVoting
-                  ? 'Already voted — unavailable for batch voting'
+                  ? selectionDisabledReason
                   : undefined
               }
             >
               <span className="sr-only">
                 {isUnavailableForBatchVoting
-                  ? `Proposal ${proposal.id} is unavailable for batch voting because you already voted.`
+                  ? `Proposal ${proposal.id}: ${selectionDisabledReason}`
                   : `Select proposal ${proposal.id}`}
               </span>
               <input
