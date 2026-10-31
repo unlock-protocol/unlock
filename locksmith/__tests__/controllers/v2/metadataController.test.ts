@@ -292,7 +292,7 @@ describe('Metadata v2 endpoints for locksmith', () => {
           lastname: 'Doe',
         },
         protected: {
-          email: 'jane@unlock-protocol.com',
+          email: 'jane@example.com',
           zipcode: 11217,
         },
       }
@@ -313,7 +313,7 @@ describe('Metadata v2 endpoints for locksmith', () => {
 
         expect(keyMetadata.status).toBe(200)
         expect(keyMetadata.body.userMetadata.protected).toStrictEqual({
-          email: 'jane@unlock-protocol.com',
+          email: 'jane@example.com',
           zipcode: 11217,
         })
       })
@@ -337,7 +337,7 @@ describe('Metadata v2 endpoints for locksmith', () => {
 
         expect(keyMetadata.status).toBe(200)
         expect(keyMetadata.body.userMetadata.protected).toStrictEqual({
-          email: 'jane@unlock-protocol.com',
+          email: 'jane@example.com',
           zipcode: 11217,
         })
       })
@@ -354,7 +354,7 @@ describe('Metadata v2 endpoints for locksmith', () => {
 
         expect(keyMetadata.status).toBe(200)
         expect(keyMetadata.body.userMetadata.protected).toStrictEqual({
-          email: 'jane@unlock-protocol.com',
+          email: 'jane@example.com',
           zipcode: 11217,
         })
       })

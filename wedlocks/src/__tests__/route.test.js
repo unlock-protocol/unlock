@@ -35,7 +35,7 @@ describe('route', () => {
         params: {
           hello: 'world',
         },
-        recipient: 'julien@unlock-protocol.com',
+        recipient: 'julien@example.com',
         attachments: ['data:text/plain;base64,aGVsbG8gd29ybGQ='],
       }
 
@@ -60,7 +60,7 @@ describe('route', () => {
       const args = {
         template: 'template',
         params: { hello: 'world' },
-        recipient: 'julien@unlock-protocol.com',
+        recipient: 'julien@example.com',
         attachments: ['data:text/plain;base64,aGVsbG8gd29ybGQ='],
       }
 
@@ -96,7 +96,7 @@ describe('route', () => {
       const args = {
         template: 'template',
         params: { hello: 'world' },
-        recipient: 'julien@unlock-protocol.com',
+        recipient: 'julien@example.com',
         attachments: ['data:text/plain;base64,aGVsbG8gd29ybGQ='],
         emailSender: 'Custom Sender',
       }
@@ -133,7 +133,7 @@ describe('route', () => {
       const args = {
         template: 'template',
         params: { hello: 'world' },
-        recipient: 'julien@unlock-protocol.com',
+        recipient: 'julien@example.com',
       }
 
       emailService.send.mockImplementationOnce((options) => {
@@ -159,7 +159,7 @@ describe('route', () => {
         const args = {
           template: 'template',
           params: { hello: 'world' },
-          recipient: 'julien@unlock-protocol.com',
+          recipient: 'julien@example.com',
         }
 
         emailService.send.mockImplementationOnce(() => {
@@ -185,7 +185,7 @@ describe('route', () => {
         const args = {
           template: 'template',
           params: { hello: 'world' },
-          recipient: 'julien@unlock-protocol.com',
+          recipient: 'julien@example.com',
         }
 
         emailService.send.mockImplementationOnce(() => {

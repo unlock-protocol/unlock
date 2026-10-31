@@ -132,7 +132,7 @@ describe('Email Controller v2', () => {
         .post(`/v2/email/party/invite`)
         .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
         .send({
-          recipients: ['hello@unlock-protocol.com', 'hi@unlock-protocol.com'],
+          recipients: ['hello@example.com', 'hi@example.com'],
         })
       expect(response.status).toBe(404)
       expect(response.body.message).to.equal('No such event')
@@ -165,7 +165,7 @@ describe('Email Controller v2', () => {
           },
           requiresApproval: false,
           emailSender: 'Julien Genestoux',
-          replyTo: 'julien@unlock-protocol.com',
+          replyTo: 'julien@example.com',
         },
         checkoutConfig: {
           config: {
@@ -187,7 +187,7 @@ describe('Email Controller v2', () => {
         .post(`/v2/email/${slug}/invite`)
         .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
         .send({
-          recipients: ['hello@unlock-protocol.com', 'hi@unlock-protocol.com'],
+          recipients: ['hello@example.com', 'hi@example.com'],
         })
       expect(response.status).toBe(403)
     })
@@ -221,7 +221,7 @@ describe('Email Controller v2', () => {
           },
           requiresApproval: false,
           emailSender: 'Julien Genestoux',
-          replyTo: 'julien@unlock-protocol.com',
+          replyTo: 'julien@example.com',
         },
         checkoutConfig: {
           config: {
@@ -241,7 +241,7 @@ describe('Email Controller v2', () => {
         .post(`/v2/email/${slug}/invite`)
         .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
         .send({
-          recipients: ['julien@unlock-protocol.com', 'hi@unlock-protocol.com'],
+          recipients: ['julien@example.com', 'hi@example.com'],
         })
       expect(sendEmail).toHaveBeenCalledWith({
         attachments: [],
@@ -251,9 +251,9 @@ describe('Email Controller v2', () => {
           eventTime: '08:30',
           eventUrl: 'https://staging-app.unlock-protocol.com/event/an-event',
         },
-        replyTo: 'julien@unlock-protocol.com',
+        replyTo: 'julien@example.com',
         emailSender: 'Julien Genestoux',
-        recipient: 'julien@unlock-protocol.com',
+        recipient: 'julien@example.com',
         template: 'inviteEvent',
       })
       expect(response.body).toEqual([true, true])

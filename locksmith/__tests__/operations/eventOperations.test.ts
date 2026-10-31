@@ -209,7 +209,7 @@ describe('eventOperations', () => {
           event_start_date: '2024-05-22',
           event_start_time: '08:30',
         },
-        replyTo: 'julien@unlock-protocol.com',
+        replyTo: 'julien@example.com',
         attributes: [
           { value: '2024-05-22', trait_type: 'event_start_date' },
           { value: '08:30', trait_type: 'event_start_time' },
