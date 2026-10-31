@@ -1,17 +1,12 @@
+// ABOUTME: Tests for lock operations that drive generated key icons.
+// ABOUTME: Covers the grayscale applied to a key's icon once it has expired.
+
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { ethers } from 'ethers'
 
 const defaultLockAddress = '0xb0Feb7BA761A31548FF1cDbEc08affa8FFA3e691'
 
-const { mockGetLock, mockKeyDataGet } = vi.hoisted(() => ({
-  mockGetLock: vi.fn(),
+const { mockKeyDataGet } = vi.hoisted(() => ({
   mockKeyDataGet: vi.fn(),
-}))
-
-vi.mock('../../src/initializers', () => ({
-  getWeb3Service: () => ({
-    getLock: mockGetLock,
-  }),
 }))
 
 vi.mock('../../src/utils/keyData', () => {
@@ -26,18 +21,14 @@ import { getKeyIconGrayscale } from '../../src/operations/lockOperations'
 
 describe('lockOperations', () => {
   beforeEach(() => {
-    mockGetLock.mockReset()
     mockKeyDataGet.mockReset()
     vi.spyOn(Date, 'now').mockReturnValue(1_000_000)
   })
 
   describe('getKeyIconGrayscale', () => {
-    it('returns a linear grayscale amount based on time remaining', async () => {
+    it('returns 0 for keys that are still valid', async () => {
       mockKeyDataGet.mockResolvedValue({
         expiration: 1500,
-      })
-      mockGetLock.mockResolvedValue({
-        expirationDuration: '1000',
       })
 
       const grayscale = await getKeyIconGrayscale({
@@ -46,7 +37,7 @@ describe('lockOperations', () => {
         keyId: '1',
       })
 
-      expect(grayscale).toBe(0.5)
+      expect(grayscale).toBe(0)
     })
 
     it('returns full grayscale for expired keys', async () => {
@@ -77,12 +68,10 @@ describe('lockOperations', () => {
       expect(grayscale).toBe(0)
     })
 
-    it('returns 0 when the lock has no expiration duration (MaxUint256)', async () => {
+    it('returns 0 for a key expiring imminently', async () => {
+      // now = 1000s, expiration = 1010s: still valid for 10s
       mockKeyDataGet.mockResolvedValue({
-        expiration: 1500,
-      })
-      mockGetLock.mockResolvedValue({
-        expirationDuration: ethers.MaxUint256.toString(),
+        expiration: 1010,
       })
 
       const grayscale = await getKeyIconGrayscale({
@@ -92,25 +81,6 @@ describe('lockOperations', () => {
       })
 
       expect(grayscale).toBe(0)
-    })
-
-    it('returns close to 1 for a key expiring imminently', async () => {
-      // now = 1000s, expiration = 1010s (10s left), totalDuration = 1000s
-      // grayscale = 1 - 10/1000 = 0.99
-      mockKeyDataGet.mockResolvedValue({
-        expiration: 1010,
-      })
-      mockGetLock.mockResolvedValue({
-        expirationDuration: '1000',
-      })
-
-      const grayscale = await getKeyIconGrayscale({
-        network: 1,
-        lockAddress: defaultLockAddress,
-        keyId: '1',
-      })
-
-      expect(grayscale).toBeCloseTo(0.99)
     })
 
     it('returns 0 when expiration data cannot be fetched', async () => {

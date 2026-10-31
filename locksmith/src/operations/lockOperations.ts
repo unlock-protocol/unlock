@@ -6,7 +6,6 @@ import lockIconUtils from '../utils/lockIcon'
 import { ticketForFilBangalore } from '../utils/ticket'
 import { getWeb3Service } from '../initializers'
 import KeyData from '../utils/keyData'
-import { ethers } from 'ethers'
 
 interface IconType {
   icon: string
@@ -81,32 +80,9 @@ export const getKeyIconGrayscale = async ({
       return 0
     }
 
+    // Active keys keep full color; only expired keys are greyed out
     const now = Math.floor(Date.now() / 1000)
-    if (expiration <= now) {
-      return 1
-    }
-
-    const web3Service = getWeb3Service()
-    const lock = await web3Service.getLock(lockAddress, network, {
-      fields: ['expirationDuration'],
-    })
-
-    const expirationDuration = lock?.expirationDuration
-    if (
-      expirationDuration === undefined ||
-      expirationDuration === null ||
-      `${expirationDuration}` === ethers.MaxUint256.toString()
-    ) {
-      return 0
-    }
-
-    const totalDuration = Number(expirationDuration)
-    if (totalDuration === 0) {
-      return 0
-    }
-
-    const remainingDuration = expiration - now
-    return Math.min(1, Math.max(0, 1 - remainingDuration / totalDuration))
+    return expiration <= now ? 1 : 0
   } catch {
     return 0
   }
