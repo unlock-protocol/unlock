@@ -5,11 +5,17 @@ import parseDataUri from 'parse-data-uri'
 import lockIconUtils from '../utils/lockIcon'
 import { ticketForFilBangalore } from '../utils/ticket'
 import { getWeb3Service } from '../initializers'
+import KeyData from '../utils/keyData'
 
 interface IconType {
   icon: string
   type: string | null
   isURL: boolean
+  isGenerated: boolean
+}
+
+interface GeneratedIconOptions {
+  grayscale: number
 }
 
 export async function getKeyHolderMetadata(
@@ -42,12 +48,43 @@ export async function isSoldOut(
   return keysAvailable < keysNeeded // true of keysAvailable smaller than keysNeeded
 }
 
-export const getGeneratedLockIcon = (lockAddress: string): IconType => {
-  const svg = lockIconUtils.lockIcon(lockAddress)
+export const getGeneratedLockIcon = (
+  lockAddress: string,
+  options: GeneratedIconOptions | undefined = undefined
+): IconType => {
+  const svg = lockIconUtils.lockIcon(lockAddress, {
+    grayscale: options?.grayscale ?? 0,
+  })
   return {
     icon: svg,
     type: 'image/svg+xml',
     isURL: false,
+    isGenerated: true,
+  }
+}
+
+export const getKeyIconGrayscale = async ({
+  network,
+  lockAddress,
+  keyId,
+}: {
+  network: number
+  lockAddress: string
+  keyId: string
+}): Promise<number> => {
+  try {
+    const keyData = new KeyData()
+    const { expiration } = await keyData.get(lockAddress, keyId, network)
+
+    if (!expiration) {
+      return 0
+    }
+
+    // Active keys keep full color; only expired keys are greyed out
+    const now = Math.floor(Date.now() / 1000)
+    return expiration <= now ? 1 : 0
+  } catch {
+    return 0
   }
 }
 
@@ -81,6 +118,7 @@ export const getLockIcon = async ({
           icon: lockImageUrl,
           type: null,
           isURL: true,
+          isGenerated: false,
         }
       }
     }
@@ -96,12 +134,14 @@ export const getLockIcon = async ({
           icon: parsedDataUri.data,
           type: parsedDataUri.mimeType,
           isURL: false,
+          isGenerated: false,
         }
       } else {
         return {
           icon: lockIcon.icon,
           type: null,
           isURL: true,
+          isGenerated: false,
         }
       }
     } else {
@@ -132,7 +172,7 @@ export const getKeyIcon = async ({
       tokenId: keyId,
     })
 
-    return { type: 'image/svg+xml', icon, isURL: false }
+    return { type: 'image/svg+xml', icon, isURL: false, isGenerated: false }
   }
   return null
 }

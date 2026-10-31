@@ -7,6 +7,7 @@ import logger from '../logger'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 import {
   getGeneratedLockIcon,
+  getKeyIconGrayscale,
   getLockIcon,
   getKeyIcon,
 } from '../operations/lockOperations'
@@ -108,6 +109,14 @@ export const lockIcon = async (req: Request, res: Response) => {
     })
     if (keyIcon) {
       icon = keyIcon
+    } else if (icon.isGenerated) {
+      const grayscale = await getKeyIconGrayscale({
+        network,
+        lockAddress,
+        keyId: String(req.query.id || ''),
+      })
+
+      icon = getGeneratedLockIcon(lockAddress, { grayscale })
     }
   }
 
