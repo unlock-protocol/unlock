@@ -34,6 +34,10 @@ const prodConfig = {
 
 const defaultConfig = isProduction ? prodConfig : stagingConfig
 
+// Tests must never reach a live wedlocks: a `.invalid` host can't resolve,
+// so a request that slips past the fetch mocks fails instead of sending email.
+const testWedlocks = 'http://wedlocks.invalid/.netlify/functions/handler'
+
 // Interface for Google API credentials
 interface GoogleWalletCredentials {
   client_email: string
@@ -75,7 +79,11 @@ const config = {
   unlockApp: process.env.UNLOCK_APP || defaultConfig.unlockApp,
   logging: false,
   services: {
-    wedlocks: process.env.WEDLOCKS || defaultConfig.services.wedlocks,
+    wedlocks:
+      process.env.WEDLOCKS ||
+      (process.env.NODE_ENV === 'test'
+        ? testWedlocks
+        : defaultConfig.services.wedlocks),
     locksmith: defaultConfig.services.locksmith,
   },
   storage: {
