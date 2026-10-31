@@ -27,7 +27,7 @@ export const getEventFixture = (event = {}) => {
         },
         requiresApproval: false,
         emailSender: 'Julien Genestoux',
-        replyTo: 'julien@unlock-protocol.com',
+        replyTo: 'julien@example.com',
       },
       checkoutConfig: { config: { locks: {} } },
     },

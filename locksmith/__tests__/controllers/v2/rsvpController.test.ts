@@ -40,7 +40,7 @@ describe('RSVP', () => {
         .send({
           recipient: userAddress,
           data: {
-            email: 'julien@unlock-protocol.com',
+            email: 'julien@example.com',
             fullname: 'Julien Genestoux',
           },
         })
@@ -58,7 +58,7 @@ describe('RSVP', () => {
         .post(`/v2/rsvp/${network}/${lockAddress}/`)
         .send({
           data: {
-            email: 'julien@unlock-protocol.com',
+            email: 'julien@example.com',
             fullname: 'Julien Genestoux',
           },
         })
@@ -76,7 +76,7 @@ describe('RSVP', () => {
         .post(`/v2/rsvp/${network}/${lockAddress}/`)
         .send({
           data: {
-            email: 'ccarfi@unlock-protocol.com',
+            email: 'ccarfi@example.com',
             fullname: 'Chris Carfi',
           },
         })
@@ -98,7 +98,7 @@ describe('RSVP', () => {
         .post(`/v2/rsvp/${network}/${lockAddress}/`)
         .send({
           data: {
-            email: 'ccarfi@unlock-protocol.com',
+            email: 'ccarfi@example.com',
             fullname: 'Chris Carfi',
           },
         })
