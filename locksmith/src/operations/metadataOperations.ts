@@ -96,7 +96,7 @@ export const getBaseTokenData = async (
   keyId: string,
   network: number
 ) => {
-  const defaultResponse = defaultMappings(address, host, keyId)
+  const defaultResponse = defaultMappings(address, host, keyId, network)
 
   // Cool That is where we get the base token data from the database
   // And where we should get the event data!
@@ -153,11 +153,16 @@ const fetchChainData = async (
   }
 }
 
-const defaultMappings = (address: string, host: string, keyId: string) => {
+const defaultMappings = (
+  address: string,
+  host: string,
+  keyId: string,
+  network: number
+) => {
   const defaultResponse = {
     name: 'Unlock Key',
     description: 'A Key to an Unlock lock.',
-    image: `${host}/lock/${address}/icon?id=${keyId}`,
+    image: `${host}/${network}/lock/${address}/icon?id=${keyId}`,
   }
 
   // Custom mappings
