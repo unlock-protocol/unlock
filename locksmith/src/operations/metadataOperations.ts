@@ -110,6 +110,16 @@ export const getBaseTokenData = async (
     ...baseMetadata,
   }
 
+  // The lock-level generated icon is the same for every key: use the key's
+  // own icon instead, which reflects its state (e.g. greyed out once expired)
+  const lockIconPath = `/lock/${address}/icon`.toLowerCase()
+  if (
+    typeof result.image === 'string' &&
+    result.image.toLowerCase().endsWith(lockIconPath)
+  ) {
+    result.image = defaultResponse.image
+  }
+
   // Temporary for FilBangalore
   // Ok to remove after 03/31/2024
   // Uncoment for reveal!

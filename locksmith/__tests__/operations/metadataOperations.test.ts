@@ -1,4 +1,12 @@
 import * as metadataOperations from '../../src/operations/metadataOperations'
+import { vi } from 'vitest'
+
+vi.mock('../../src/utils/metadata', () => ({
+  getDefaultLockData: async ({ lockAddress }: { lockAddress: string }) => ({
+    name: 'Unlock Lock',
+    image: `https://locksmith.unlock-protocol.com/lock/${lockAddress}/icon`,
+  }),
+}))
 
 const chain = 31337
 
@@ -62,6 +70,39 @@ describe('metadataOperations', () => {
       const address = '0x123'
       const data = await metadataOperations.getKeyCentricData(address)
       expect(data).toEqual({})
+    })
+  })
+  describe('getBaseTokenData', () => {
+    const host = 'https://locksmith.unlock-protocol.com'
+    const network = 8453
+
+    it('points keys of locks using the generated icon to their own icon', async () => {
+      expect.assertions(1)
+      const address = '0x685B12846ed3D3586A0f811C39059CB47fBA2558'
+      const data = await metadataOperations.getBaseTokenData(
+        address,
+        host,
+        '999',
+        network
+      )
+      expect(data.image).toBe(`${host}/${network}/lock/${address}/icon?id=999`)
+    })
+
+    it('keeps a custom lock image', async () => {
+      expect.assertions(1)
+      const address = '0x95de5F777A3e283bFf0c47374998E10D8A2183C7'
+      await metadataOperations.updateDefaultLockMetadata({
+        chain: network,
+        address,
+        data: { image: 'https://example.com/custom.png' },
+      })
+      const data = await metadataOperations.getBaseTokenData(
+        address,
+        host,
+        '1',
+        network
+      )
+      expect(data.image).toBe('https://example.com/custom.png')
     })
   })
 })
