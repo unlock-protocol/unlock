@@ -3,6 +3,7 @@ import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 import { Metadata } from '~/components/interface/locks/metadata/utils'
 import { config } from '~/config/app'
+import { getCheckoutPath } from '~/utils/checkoutPath'
 import { CheckoutConfig } from '@unlock-protocol/core'
 
 dayjs.extend(utc)
@@ -67,16 +68,18 @@ export const getEventUrl = ({
 }
 
 export const getCheckoutUrl = (checkoutConfig: CheckoutConfig) => {
-  const url = new URL(`${window.location.origin}/checkout`)
+  // Saved checkout configs use the path-based URL: `/checkout/<id>`
+  const url = new URL(
+    checkoutConfig.id ? getCheckoutPath(checkoutConfig.id) : '/checkout',
+    window.location.origin
+  )
 
   // remove redirectUri if not applicable
   if (checkoutConfig.config?.redirectUri?.length === 0) {
     delete checkoutConfig.config.redirectUri
   }
 
-  if (checkoutConfig.id) {
-    url.searchParams.append('id', checkoutConfig.id)
-  } else {
+  if (!checkoutConfig.id) {
     url.searchParams.append(
       'checkoutConfig',
       JSON.stringify(checkoutConfig.config)
