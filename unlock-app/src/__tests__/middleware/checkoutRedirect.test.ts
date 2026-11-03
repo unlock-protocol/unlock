@@ -26,12 +26,41 @@ describe('checkout middleware', () => {
     )
   })
 
-  it('lets checkouts without a saved config id through', () => {
-    expect.assertions(3)
-    for (const query of ['', '?paywallConfig=%7B%7D', '?id=']) {
+  describe('checkouts without a checkout id', () => {
+    // A checkout can be rendered without a saved config, by passing the config
+    // itself in the query string. These URLs must be served unchanged.
+    const paywallConfig = encodeURIComponent(
+      JSON.stringify({
+        locks: {
+          '0x54b66CF6b0D089F78595BcdcC8963fAB1EB2294a': { network: 8453 },
+        },
+        title: 'Membership',
+        redirectUri: 'https://example.com/',
+      })
+    )
+    const checkoutConfig = encodeURIComponent(JSON.stringify({ locks: {} }))
+
+    it.each([
+      ['no query string', ''],
+      ['paywallConfig', `?paywallConfig=${paywallConfig}`],
+      [
+        'paywallConfig with other parameters',
+        `?paywallConfig=${paywallConfig}&referrerAddress=0x1234567890123456789012345678901234567890`,
+      ],
+      [
+        'checkoutConfig (getCheckoutUrl without a saved id)',
+        `?checkoutConfig=${checkoutConfig}`,
+      ],
+      ['an empty id', '?id='],
+      ['a blank id', '?id=%20%20'],
+    ])('passes %s through', (_name, query) => {
+      expect.assertions(3)
       const response = middleware(new NextRequest(`${origin}/checkout${query}`))
+
+      expect(response.status).toBe(200)
       expect(response.headers.get('location')).toBeNull()
-    }
+      expect(response.headers.get('x-middleware-next')).toBe('1')
+    })
   })
 
   it('does not redirect unsafe ids', () => {
