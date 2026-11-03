@@ -45,7 +45,12 @@ export const useAvailableNetworks = (all = false) => {
         )
       }
     }
-    filterNetworksForUser()
+    filterNetworksForUser().catch((error) => {
+      console.error(
+        'Could not filter networks for the connected wallet:',
+        error
+      )
+    })
   }, [account])
 
   return availableNetworks
