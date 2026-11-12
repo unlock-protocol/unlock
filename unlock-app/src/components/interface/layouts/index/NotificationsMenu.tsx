@@ -47,7 +47,12 @@ export function NotificationsMenu() {
     2. User doesn't have an email
     3. Not on checkout or demo pages
   */
-  if (!email && !['/checkout', '/demo'].includes(pathname)) {
+  if (
+    !email &&
+    pathname !== '/demo' &&
+    pathname !== '/checkout' &&
+    !pathname.startsWith('/checkout/')
+  ) {
     notifications.push({
       id: '1',
       content: <PromptEmailLink setModalOpen={setShowModal} />,
