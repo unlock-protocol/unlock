@@ -14,13 +14,13 @@ import { PaywallConfigType } from '@unlock-protocol/core'
 import { Connect } from './Connect'
 import { isInIframe } from '~/utils/iframe'
 
-export function CheckoutContainer() {
+export function CheckoutContainer({ checkoutId }: { checkoutId?: string }) {
   const searchParams = useSearchParams()
 
   // Fetch config from parent in iframe context
   const communication = useCheckoutCommunication()
   const { isLoading, data: checkout } = useCheckoutConfig({
-    id: searchParams.get('id')?.toString(),
+    id: checkoutId || searchParams.get('id')?.toString(),
   })
 
   const referrerAddress = searchParams.get('referrerAddress')?.toString()
