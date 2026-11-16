@@ -172,6 +172,7 @@ export const handler = async (event, env, responseCallback) => {
       {
         senderAddress: env.SMTP_FROM_ADDRESS,
         assetBaseUrl: getAssetBaseUrl(event),
+        deliveryDisabled: env.DELIVERY_DISABLED === 'true',
       }
     )
 

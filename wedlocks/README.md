@@ -40,3 +40,7 @@ With the payload sent as a JSON body. The payload needs to include the following
 - params (key/values used in the template)
 
 Check WedlockService in `unlock-app` for more details.
+
+## Staging
+
+Staging sets `DELIVERY_DISABLED = "true"` in `wrangler.toml`: requests are validated and rendered, then dropped before SMTP. Nothing is sent (or billed). Use `/preview/<template>` to check emails on staging.

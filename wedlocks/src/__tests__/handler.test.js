@@ -142,6 +142,48 @@ describe('handler', () => {
     )
   })
 
+  it('should tell route to skip delivery when DELIVERY_DISABLED is set', async () => {
+    expect.assertions(2)
+    route.mockImplementationOnce((_body, _smtpConfig, options) => {
+      expect(options.deliveryDisabled).toBe(true)
+      return Promise.resolve()
+    })
+
+    const response = await handler(
+      {
+        httpMethod: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({ template: 'debug' }),
+      },
+      { DELIVERY_DISABLED: 'true' },
+      (_error, response) => Promise.resolve(response)
+    )
+    expect(response.statusCode).toBe(204)
+  })
+
+  it('should deliver when DELIVERY_DISABLED is not set', async () => {
+    expect.assertions(2)
+    route.mockImplementationOnce((_body, _smtpConfig, options) => {
+      expect(options.deliveryDisabled).toBe(false)
+      return Promise.resolve()
+    })
+
+    const response = await handler(
+      {
+        httpMethod: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({ template: 'debug' }),
+      },
+      {},
+      (_error, response) => Promise.resolve(response)
+    )
+    expect(response.statusCode).toBe(204)
+  })
+
   it('should route the request and yields its response when it is an error', async () => {
     expect.assertions(3)
     const body = {

@@ -16,6 +16,7 @@ const DEFAULT_SENDER_ADDRESS = 'hello@unlock-protocol.com'
  * @param {Object} smtpConfig - SMTP configuration for worker-mailer
  * @param {Object} [options] - Delivery options that are not SMTP settings
  * @param {string} [options.senderAddress] - Sender email address
+ * @param {boolean} [options.deliveryDisabled] - Render the email but do not send it
  * @returns {Promise} Result of sending the email
  */
 export const route = async (args, smtpConfig, options = {}) => {
@@ -62,6 +63,11 @@ export const route = async (args, smtpConfig, options = {}) => {
         .concat(attachments || [])
         .concat(templateRenderer.getTemplateAttachments(resolvedTemplate))
     ),
+  }
+
+  // Non-production environments must never reach SMTP: every send is billed
+  if (options.deliveryDisabled) {
+    return
   }
 
   return emailService.send(email, smtpConfig)

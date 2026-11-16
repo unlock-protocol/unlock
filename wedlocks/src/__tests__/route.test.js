@@ -175,6 +175,34 @@ describe('route', () => {
       })
     })
 
+    describe('when delivery is disabled', () => {
+      it('should render the email but not send it', async () => {
+        expect.assertions(1)
+        templates.template = {
+          subject: async () => 'subject',
+          text: async () => 'text',
+        }
+        const args = {
+          template: 'template',
+          params: { hello: 'world' },
+          recipient: 'julien@example.com',
+        }
+
+        await route(args, undefined, { deliveryDisabled: true })
+
+        expect(emailService.send).not.toHaveBeenCalled()
+      })
+
+      it('should still yield an error for a missing template', async () => {
+        expect.assertions(1)
+        await expect(
+          route({ template: 'notATemplate' }, undefined, {
+            deliveryDisabled: true,
+          })
+        ).rejects.toThrow('Missing template')
+      })
+    })
+
     describe('when the email was not sent successfully', () => {
       it('should yield the error message', async () => {
         expect.assertions(1)
