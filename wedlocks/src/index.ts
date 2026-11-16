@@ -7,6 +7,7 @@ export interface Env {
   SMTP_USERNAME: string
   SMTP_PASSWORD: string
   SMTP_FROM_ADDRESS?: string
+  DELIVERY_DISABLED?: string
 }
 
 interface HandlerResponse {
