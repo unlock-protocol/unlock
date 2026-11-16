@@ -75,7 +75,7 @@ export const getCheckoutUrl = (checkoutConfig: CheckoutConfig) => {
   }
 
   if (checkoutConfig.id) {
-    url.searchParams.append('id', checkoutConfig.id)
+    url.pathname = `/checkout/${encodeURIComponent(checkoutConfig.id)}`
   } else {
     url.searchParams.append(
       'checkoutConfig',
